@@ -1,0 +1,37 @@
+# Dependencies and package-manager output
+node_modules/
+
+# Expo and generated native projects
+.expo/
+expo-env.d.ts
+dist/
+web-build/
+android/
+ios/
+
+# Tests and tooling
+coverage/
+*.log
+*.tsbuildinfo
+__pycache__/
+*.pyc
+
+# Local environment files: commit only the documented placeholder
+.env
+.env.*
+!.env.example
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Local build credentials and EAS state
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.eas/

@@ -1,0 +1,7 @@
+.agents/
+.specify/
+.expo/
+coverage/
+dist/
+node_modules/
+package-lock.json
