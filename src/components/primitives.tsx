@@ -1,5 +1,7 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import { useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -29,30 +31,45 @@ type TextAlign = 'start' | 'center' | 'end';
 
 interface ScreenProps extends PropsWithChildren {
   contentContainerStyle?: StyleProp<ViewStyle>;
+  keyboardAware?: boolean;
   scrollProps?: Omit<ScrollViewProps, 'contentContainerStyle'>;
   testID?: string;
 }
 
-export function Screen({ children, contentContainerStyle, scrollProps, testID }: ScreenProps) {
+export function Screen({
+  children,
+  contentContainerStyle,
+  keyboardAware = false,
+  scrollProps,
+  testID,
+}: ScreenProps) {
   const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <View style={styles.screen} testID={testID}>
       <View pointerEvents="none" style={styles.ambientTop} />
       <View pointerEvents="none" style={styles.ambientBottom} />
-      <ScrollView
-        {...scrollProps}
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[
-          styles.screenContent,
-          direction === 'rtl' ? styles.directionRtl : styles.directionLtr,
-          contentContainerStyle,
-        ]}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        behavior={keyboardAware && Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled={keyboardAware}
+        style={styles.keyboardRoot}
       >
-        <View style={styles.contentWidth}>{children}</View>
-      </ScrollView>
+        <ScrollView
+          {...scrollProps}
+          automaticallyAdjustKeyboardInsets={keyboardAware}
+          contentInsetAdjustmentBehavior="automatic"
+          contentContainerStyle={[
+            styles.screenContent,
+            direction === 'rtl' ? styles.directionRtl : styles.directionLtr,
+            contentContainerStyle,
+          ]}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.contentWidth}>{children}</View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -112,10 +129,13 @@ export function Button({
   disabled = false,
   fullWidth = true,
   icon,
+  onBlur,
+  onFocus,
   style,
   variant = 'primary',
   ...props
 }: ButtonProps) {
+  const [focused, setFocused] = useState(false);
   const direction = usePrototypeStore((state) => state.direction);
   const labelColor = variant === 'primary' ? 'white' : variant === 'secondary' ? 'forest' : 'ghaf';
   const isDisabled = disabled === true;
@@ -126,11 +146,20 @@ export function Button({
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled }}
       disabled={isDisabled}
+      onBlur={(event) => {
+        setFocused(false);
+        onBlur?.(event);
+      }}
+      onFocus={(event) => {
+        setFocused(true);
+        onFocus?.(event);
+      }}
       style={({ pressed }) => [
         styles.button,
         buttonVariants[variant],
         fullWidth ? styles.fullWidth : null,
         direction === 'rtl' ? styles.directionRtl : styles.directionLtr,
+        focused ? styles.focusedControl : null,
         pressed && !isDisabled ? styles.pressed : null,
         isDisabled ? styles.disabled : null,
         style,
@@ -168,11 +197,21 @@ export function Card({ accessibilityLabel, children, elevated = false, style, te
 }
 
 interface InputProps extends TextInputProps {
+  errorText?: string;
   label?: string;
   helperText?: string;
 }
 
-export function Input({ label, helperText, style, ...props }: InputProps) {
+export function Input({
+  errorText,
+  label,
+  helperText,
+  onBlur,
+  onFocus,
+  style,
+  ...props
+}: InputProps) {
+  const [focused, setFocused] = useState(false);
   const direction = usePrototypeStore((state) => state.direction);
 
   return (
@@ -180,12 +219,27 @@ export function Input({ label, helperText, style, ...props }: InputProps) {
       {label ? <Text variant="label">{label}</Text> : null}
       <NativeTextInput
         {...props}
+        accessibilityLabel={props.accessibilityLabel ?? label}
+        onBlur={(event) => {
+          setFocused(false);
+          onBlur?.(event);
+        }}
+        onFocus={(event) => {
+          setFocused(true);
+          onFocus?.(event);
+        }}
         placeholderTextColor={colors.inkMuted}
-        style={[styles.input, direction === 'rtl' ? styles.inputRtl : styles.inputLtr, style]}
+        style={[
+          styles.input,
+          direction === 'rtl' ? styles.inputRtl : styles.inputLtr,
+          focused ? styles.focusedControl : null,
+          errorText ? styles.inputError : null,
+          style,
+        ]}
       />
-      {helperText ? (
-        <Text color="inkMuted" variant="caption">
-          {helperText}
+      {errorText || helperText ? (
+        <Text color={errorText ? 'danger' : 'inkMuted'} variant="caption">
+          {errorText ?? helperText}
         </Text>
       ) : null}
     </View>
@@ -198,14 +252,29 @@ interface IconButtonProps extends Omit<PressableProps, 'children' | 'style'> {
   style?: StyleProp<ViewStyle>;
 }
 
-export function IconButton({ icon, label, style, ...props }: IconButtonProps) {
+export function IconButton({ icon, label, onBlur, onFocus, style, ...props }: IconButtonProps) {
+  const [focused, setFocused] = useState(false);
+
   return (
     <Pressable
       {...props}
       accessibilityLabel={label}
       accessibilityRole="button"
       hitSlop={8}
-      style={({ pressed }) => [styles.iconButton, pressed ? styles.pressed : null, style]}
+      onBlur={(event) => {
+        setFocused(false);
+        onBlur?.(event);
+      }}
+      onFocus={(event) => {
+        setFocused(true);
+        onFocus?.(event);
+      }}
+      style={({ pressed }) => [
+        styles.iconButton,
+        focused ? styles.focusedControl : null,
+        pressed ? styles.pressed : null,
+        style,
+      ]}
     >
       {typeof icon === 'string' ? (
         <Text align="center" style={styles.iconGlyph}>
@@ -274,6 +343,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.ivory,
     overflow: 'hidden',
   },
+  keyboardRoot: {
+    flex: 1,
+  },
   screenContent: {
     flexGrow: 1,
     paddingHorizontal: spacing.lg,
@@ -308,10 +380,10 @@ const styles = StyleSheet.create({
     left: -90,
   },
   directionRtl: {
-    flexDirection: 'row-reverse',
+    direction: 'rtl',
   },
   directionLtr: {
-    flexDirection: 'row',
+    direction: 'ltr',
   },
   textBase: {
     fontFamily: typography.family,
@@ -361,6 +433,10 @@ const styles = StyleSheet.create({
   disabled: {
     opacity: 0.45,
   },
+  focusedControl: {
+    borderColor: colors.gold,
+    borderWidth: 2,
+  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radii.lg,
@@ -389,6 +465,9 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.body,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+  },
+  inputError: {
+    borderColor: colors.danger,
   },
   inputRtl: {
     textAlign: 'right',

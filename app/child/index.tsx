@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 
 import { GhafTree } from '@/components/GhafTree';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { JourneyHeader } from '@/components/journey';
 import { Button, Card, Screen, Text } from '@/components/primitives';
-import { MissionCard, ProgressBar, RoleSwitcher } from '@/components/prototype';
-import { colors, radii, spacing } from '@/design/tokens';
+import { ImpactCard, MissionCard, ProgressBar, RoleSwitcher } from '@/components/prototype';
+import { EmptyState } from '@/components/states';
+import { colors, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import type { PrototypeRole } from '@/models/prototype';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -15,14 +17,14 @@ export default function ChildHomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const child = usePrototypeStore((state) => state.family.child);
-  const mission = usePrototypeStore((state) => state.mission);
+  const mission = usePrototypeStore((state) => state.activeMission);
+  const journeyStatus = usePrototypeStore((state) => state.journeyStatus);
   const ghaf = usePrototypeStore((state) => state.ghaf);
-  const mockMode = usePrototypeStore((state) => state.mockMode);
+  const impact = usePrototypeStore((state) => state.impactSummary);
   const setRole = usePrototypeStore((state) => state.setRole);
-  const resetDemo = usePrototypeStore((state) => state.resetDemo);
+  const openChildMission = usePrototypeStore((state) => state.openChildMission);
   const childName = localize(child.displayName, locale);
 
   const openRole = (nextRole: PrototypeRole) => {
@@ -30,53 +32,64 @@ export default function ChildHomeScreen() {
     router.replace(nextRole === 'parent' ? '/parent' : '/child');
   };
 
-  const reset = () => {
-    resetDemo();
-    router.replace('/parent');
+  const openAdventure = () => {
+    const result = openChildMission();
+    if (result.ok) router.push('/child/mission');
   };
+
+  const action = (() => {
+    if (journeyStatus === 'completed') {
+      return (
+        <Button onPress={() => router.push('/celebration')} testID="open-celebration-button">
+          {t('childHome.completed')}
+        </Button>
+      );
+    }
+    if (journeyStatus === 'awaiting-parent-confirmation') {
+      return (
+        <Button onPress={() => openRole('parent')} variant="secondary">
+          {t('childHome.awaitingParent')}
+        </Button>
+      );
+    }
+    return (
+      <Button onPress={openAdventure} testID="open-adventure-button">
+        {journeyStatus === 'child-in-progress'
+          ? t('childHome.continueAdventure')
+          : t('childHome.startAdventure')}
+      </Button>
+    );
+  })();
 
   return (
     <Screen testID="child-home-screen">
-      <View style={[styles.topBar, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-        <View style={styles.brandBlock}>
-          <Text color="forest" variant="heading">
-            Ghaf · غاف
-          </Text>
-          {mockMode ? (
-            <View
-              style={[styles.mockPill, direction === 'rtl' ? styles.alignEnd : styles.alignStart]}
-            >
-              <Text color="earth" variant="caption">
-                {t('common.mockBadge')}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        <LanguageSwitcher compact showGuidance={false} />
-      </View>
-
-      <View style={styles.intro}>
-        <Text color="gold" variant="label">
-          {t('childHome.eyebrow')}
-        </Text>
-        <Text color="forest" variant="title">
-          {t('childHome.greeting', { name: childName })}
-        </Text>
-        <Text color="inkMuted">{t('childHome.subtitle')}</Text>
-      </View>
+      <JourneyHeader
+        action={<LanguageSwitcher compact showGuidance={false} />}
+        eyebrow={t('childHome.eyebrow')}
+        subtitle={t('childHome.subtitle')}
+        title={t('childHome.greeting', { name: childName })}
+      />
 
       <Card elevated style={styles.treeCard} testID="child-ghaf-card">
         <View pointerEvents="none" style={styles.sparkleOne} />
         <View pointerEvents="none" style={styles.sparkleTwo} />
-        <GhafTree progressPercent={ghaf.progressPercent} size={250} stage={ghaf.stage} />
+        <GhafTree progressPercent={ghaf.progressPercent} size={246} stage={ghaf.stage} />
         <ProgressBar value={ghaf.progressPercent} />
       </Card>
+
+      <View style={styles.section}>
+        <ImpactCard impact={impact} />
+      </View>
 
       <View style={styles.section}>
         <Text color="forest" variant="heading">
           {t('childHome.adventure')}
         </Text>
-        <MissionCard mission={mission} />
+        {mission?.approvedByParent ? (
+          <MissionCard action={action} mission={mission} />
+        ) : (
+          <EmptyState body={t('states.emptyBody')} title={t('states.emptyTitle')} />
+        )}
       </View>
 
       <Card style={styles.controlsCard}>
@@ -84,53 +97,18 @@ export default function ChildHomeScreen() {
           {t('common.switchRole')}
         </Text>
         <RoleSwitcher onChange={openRole} role={role} />
-        <Button onPress={reset} variant="ghost">
-          {t('common.reset')}
-        </Button>
       </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
-  topBar: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: spacing.md,
-    marginBottom: spacing.xxl,
-  },
-  brandBlock: {
-    gap: spacing.xxs,
-  },
-  alignEnd: {
-    alignSelf: 'flex-end',
-  },
-  alignStart: {
-    alignSelf: 'flex-start',
-  },
-  mockPill: {
-    borderRadius: radii.pill,
-    borderCurve: 'continuous',
-    backgroundColor: colors.goldLight,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
-  },
-  intro: {
-    gap: spacing.sm,
-    marginBottom: spacing.xl,
-  },
   treeCard: {
     alignItems: 'center',
     overflow: 'hidden',
+    gap: spacing.sm,
     borderColor: colors.leaf,
-    backgroundColor: '#F7FBF5',
+    backgroundColor: colors.leafMist,
     paddingTop: spacing.sm,
     marginBottom: spacing.lg,
   },

@@ -2,7 +2,7 @@
 
 **Branch**: `main` | **Date**: 2026-08-22 | **Spec**: [spec.md](./spec.md)
 
-**Status**: PROPOSED — planning only. Feature 002 implementation requires explicit team approval.
+**Status**: APPROVED on 2026-08-22 for deterministic mock implementation
 
 **Input**: Feature specification from `specs/002-ghaf-core-mvp/spec.md`
 
@@ -32,6 +32,31 @@ No backend or live AI service is required for the competition prototype.
 Mocked capabilities remain visible and honest: prepared assets are labeled prepared, simulated
 processing is labeled simulated, and pregenerated output is never represented as a live model
 result. Optional-later work cannot block acceptance of the offline path.
+
+## Approval Record
+
+The three-member team approved this plan's deterministic mock path on 2026-08-22. Member 1 — Mobile
+and visual experience is the integration owner for the current Feature 002 implementation work
+period.
+
+| Decision              | Approved implementation default                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------- |
+| Household scenario    | Synthetic extra bread                                                                        |
+| Child                 | Salem, age range 8–10                                                                        |
+| Prepared assets       | Food image, family-wisdom clip, mission narration, and Child evidence image                  |
+| Mission quantity      | 250 g / 2 portions                                                                           |
+| Available time        | 15 minutes                                                                                   |
+| Reward                | Golden Ghaf Leaf, symbolic and nonfinancial                                                  |
+| Locale                | Arabic by default; the same path is available in English                                     |
+| Starting progression  | Stage 2 — Sapling at 48%                                                                     |
+| Approved award        | Deterministic +12 progress, crossing to stage 3 — Young tree                                 |
+| Celebration milestone | Reveal a new branch                                                                          |
+| Required provider     | Mock-only primary path                                                                       |
+| Deferred integrations | Live AI, camera capture, audio recording, and remote storage                                 |
+| Physical target       | The team's primary Android phone; exact model and OS remain BLOCKED pending physical handoff |
+
+Implementation is authorized from T002 onward after the completed T001 approval record. Optional
+live integrations require a later, separate approval and cannot block the mock journey.
 
 ## Technical Context
 
@@ -240,8 +265,8 @@ types deliberately instead of creating a second architecture.
 6. Complete bilingual/RTL polish, failure fallback, reset, focused checks, physical Android review,
    and five complete rehearsals.
 
-Feature 002 implementation MUST stop at this point in bootstrap. These steps become executable only
-after the team reviews this plan and explicitly approves it.
+Feature 002 implementation is now authorized in this order. The team MUST keep the mock path
+primary, complete and repeatedly test it on Android before considering any deferred integration.
 
 ## Team Boundaries
 
@@ -266,23 +291,21 @@ after the team reviews this plan and explicitly approves it.
 | Bilingual content makes screens dense         | Short curated copy, Arabic-first typography review, wrapping tests on the primary device                        |
 | Live provider output varies                   | Structured schema validation plus immediate mock fallback; do not depend on live output for judging             |
 
-## Team Approval Items
+## Approval Resolution
 
-Before implementation, the three members should confirm:
+The ten routes and Parent-home reset target are approved. The prepared assets and defaults are
+listed in the Approval Record. The demo uses the stage-2-at-48% baseline, awards +12 progress,
+crosses to stage 3, and reveals a new branch. Prepared playback is in scope; live recording,
+`expo-image-picker`, camera capture, live AI, and remote storage are deferred. Member 1 owns
+integration for this work period.
 
-1. the ten-screen route names and whether reset returns directly to Parent home;
-2. the one prepared food image, family-wisdom voice clip, mission-narration clip, evidence asset,
-   and bilingual mission story;
-3. the Parent-entered quantity units and demo defaults for available time and reward;
-4. Ghaf progress points, stage thresholds, and the milestone shown in the demo climax;
-5. the prepared audio assets used with required `expo-audio` playback, and whether optional live
-   recording or `expo-image-picker` enters scope;
-6. whether the competition build needs any live AI experiment; mock mode remains required either way;
-7. the primary Android device, preview-build route, and named integration owner for the first work period.
+One physical detail remains **BLOCKED** rather than unresolved product scope: the team must record
+the exact model and Android OS version of its primary phone at physical handoff. Implementation may
+proceed, but T039 cannot pass until that device evidence exists.
 
 ## Post-Design Constitution Re-check
 
-PASS. The data model maintains Parent approval and idempotent impact; the contracts preserve a
+PASS. The approved data model maintains Parent approval and idempotent impact; the contracts preserve a
 complete deterministic mock path; quickstart validation covers both languages, RTL, reset, and
 offline rehearsal. No backend, extra screen, production account, financial feature, unrestricted
 chatbot, safety determination, continuous recording, or enterprise workstream is required.

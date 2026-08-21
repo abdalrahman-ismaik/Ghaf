@@ -17,7 +17,6 @@ const localeOptions: readonly LocaleCode[] = ['ar', 'en'];
 export function LanguageSwitcher({ compact = false, showGuidance = true }: LanguageSwitcherProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
 
   const chooseLocale = (nextLocale: LocaleCode) => {
@@ -35,11 +34,7 @@ export function LanguageSwitcher({ compact = false, showGuidance = true }: Langu
       <View
         accessibilityLabel={t('entry.languageTitle')}
         accessibilityRole="radiogroup"
-        style={[
-          styles.segment,
-          compact ? styles.compactSegment : null,
-          direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-        ]}
+        style={[styles.segment, compact ? styles.compactSegment : null]}
       >
         {localeOptions.map((option) => {
           const isSelected = option === locale;
@@ -89,6 +84,7 @@ const styles = StyleSheet.create({
     width: 'auto',
   },
   segment: {
+    flexDirection: 'row',
     width: '100%',
     padding: 4,
     gap: 4,
@@ -101,12 +97,6 @@ const styles = StyleSheet.create({
   compactSegment: {
     width: 'auto',
     borderRadius: radii.pill,
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
   },
   option: {
     flex: 1,

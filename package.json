@@ -16,7 +16,9 @@
     "format:check": "prettier --check \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.ts\" app.config.ts eslint.config.js vitest.config.mts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
     "expo": "~57.0.15",
+    "expo-audio": "~57.0.4",
     "expo-constants": "~57.0.13",
     "expo-linking": "~57.0.7",
     "expo-localization": "~57.0.1",
@@ -25,6 +27,7 @@
     "i18next": "^26.4.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-hook-form": "^7.85.0",
     "react-i18next": "^17.0.12",
     "react-native": "0.86.2",
     "react-native-gesture-handler": "~2.32.0",
@@ -34,6 +37,7 @@
     "react-native-svg": "15.15.4",
     "react-native-web": "~0.21.0",
     "react-native-worklets": "0.10.1",
+    "zod": "^4.4.3",
     "zustand": "^5.0.15"
   },
   "devDependencies": {

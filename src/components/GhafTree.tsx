@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
   ReduceMotion,
   cancelAnimation,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
@@ -16,10 +17,12 @@ import { colors, motion, radii, spacing } from '@/design/tokens';
 import type { GhafStage } from '@/models/prototype';
 
 interface GhafTreeProps {
+  celebrateMilestone?: boolean;
   progressPercent?: number;
   showProgress?: boolean;
   size?: number;
   stage: GhafStage;
+  transitionFromStage?: GhafStage;
 }
 
 const canopyLeaves = [
@@ -53,14 +56,28 @@ function stageLeafCount(stage: GhafStage): number {
 }
 
 export function GhafTree({
+  celebrateMilestone = false,
   progressPercent = 0,
   showProgress = true,
   size = 260,
   stage,
+  transitionFromStage,
 }: GhafTreeProps) {
   const { t } = useTranslation();
+  const reducedMotion = useReducedMotion();
+  const [transitionRevealed, setTransitionRevealed] = useState(
+    transitionFromStage === undefined || transitionFromStage === stage,
+  );
   const entrance = useSharedValue(0);
+  const milestone = useSharedValue(0);
   const boundedPercent = Math.max(0, Math.min(100, Math.round(progressPercent)));
+  const renderedStage = transitionRevealed ? stage : (transitionFromStage ?? stage);
+
+  useEffect(() => {
+    if (transitionFromStage === undefined || transitionFromStage === stage) return;
+    const timer = setTimeout(() => setTransitionRevealed(true), reducedMotion ? 40 : 720);
+    return () => clearTimeout(timer);
+  }, [reducedMotion, stage, transitionFromStage]);
 
   useEffect(() => {
     entrance.value = 0;
@@ -71,15 +88,34 @@ export function GhafTree({
     });
 
     return () => cancelAnimation(entrance);
-  }, [entrance, stage]);
+  }, [entrance, renderedStage]);
+
+  useEffect(() => {
+    milestone.set(0);
+    if (celebrateMilestone && transitionRevealed) {
+      milestone.set(
+        withTiming(1, {
+          duration: motion.duration.reveal,
+          easing: Easing.out(Easing.back(1.2)),
+          reduceMotion: ReduceMotion.System,
+        }),
+      );
+    }
+    return () => cancelAnimation(milestone);
+  }, [celebrateMilestone, milestone, transitionRevealed]);
 
   const entranceStyle = useAnimatedStyle(() => ({
     opacity: entrance.value,
     transform: [{ translateY: (1 - entrance.value) * 10 }, { scale: 0.96 + entrance.value * 0.04 }],
   }));
 
-  const stageName = t(`ghaf.stageNames.${stage}`);
-  const leafCount = stageLeafCount(stage);
+  const milestoneStyle = useAnimatedStyle(() => ({
+    opacity: milestone.get(),
+    transform: [{ scale: 0.72 + milestone.get() * 0.28 }],
+  }));
+
+  const stageName = t(`ghaf.stageNames.${renderedStage}`);
+  const leafCount = stageLeafCount(renderedStage);
 
   return (
     <View
@@ -101,11 +137,11 @@ export function GhafTree({
             cy="202"
             fill={colors.earth}
             opacity={0.16}
-            rx={stage > 1 ? 60 : 25}
+            rx={renderedStage > 1 ? 60 : 25}
             ry="8"
           />
 
-          {stage <= 1 ? (
+          {renderedStage <= 1 ? (
             <G>
               <Path
                 d="M102 188 C109 174 132 174 139 190 C130 204 108 204 102 188Z"
@@ -121,7 +157,7 @@ export function GhafTree({
             </G>
           ) : null}
 
-          {stage >= 1 ? (
+          {renderedStage >= 1 ? (
             <G>
               <Path
                 d="M120 188 C111 193 106 201 103 211"
@@ -147,7 +183,7 @@ export function GhafTree({
             </G>
           ) : null}
 
-          {stage === 1 ? (
+          {renderedStage === 1 ? (
             <G>
               <Path
                 d="M120 187 C121 166 119 154 121 137"
@@ -167,11 +203,11 @@ export function GhafTree({
             </G>
           ) : null}
 
-          {stage >= 2 ? (
+          {renderedStage >= 2 ? (
             <G>
               <Path
                 d={
-                  stage === 2
+                  renderedStage === 2
                     ? 'M113 195 C117 169 117 142 120 112 C125 144 127 170 129 195Z'
                     : 'M105 199 C113 166 114 126 119 88 C126 125 132 166 136 199Z'
                 }
@@ -179,28 +215,30 @@ export function GhafTree({
               />
               <Path
                 d={
-                  stage === 2 ? 'M120 148 C106 139 99 132 94 123' : 'M121 137 C101 122 87 108 74 92'
+                  renderedStage === 2
+                    ? 'M120 148 C106 139 99 132 94 123'
+                    : 'M121 137 C101 122 87 108 74 92'
                 }
                 fill="none"
                 stroke={colors.earth}
                 strokeLinecap="round"
-                strokeWidth={stage === 2 ? 5 : 8}
+                strokeWidth={renderedStage === 2 ? 5 : 8}
               />
               <Path
                 d={
-                  stage === 2
+                  renderedStage === 2
                     ? 'M123 141 C135 134 141 125 145 116'
                     : 'M124 126 C145 112 159 99 170 83'
                 }
                 fill="none"
                 stroke={colors.earth}
                 strokeLinecap="round"
-                strokeWidth={stage === 2 ? 5 : 8}
+                strokeWidth={renderedStage === 2 ? 5 : 8}
               />
             </G>
           ) : null}
 
-          {stage >= 4 ? (
+          {renderedStage >= 4 ? (
             <G>
               <Path
                 d="M116 119 C99 101 98 78 100 60"
@@ -233,7 +271,7 @@ export function GhafTree({
             </G>
           ) : null}
 
-          {stage >= 3 ? (
+          {renderedStage >= 3 ? (
             <G>
               {canopyLeaves.slice(0, leafCount).map((leaf, index) => (
                 <Ellipse
@@ -249,7 +287,7 @@ export function GhafTree({
             </G>
           ) : null}
 
-          {stage === 2 ? (
+          {renderedStage === 2 ? (
             <G>
               <Ellipse
                 cx="91"
@@ -271,21 +309,21 @@ export function GhafTree({
             </G>
           ) : null}
 
-          {stage >= 4 ? (
+          {renderedStage >= 4 ? (
             <G>
-              {detailLeaves.slice(0, stage === 4 ? 5 : 8).map((leaf) => (
+              {detailLeaves.slice(0, renderedStage === 4 ? 5 : 8).map((leaf) => (
                 <Path
                   d={`M${leaf.cx - 7} ${leaf.cy} C${leaf.cx - 2} ${leaf.cy - 8} ${leaf.cx + 7} ${leaf.cy - 7} ${leaf.cx + 9} ${leaf.cy} C${leaf.cx + 3} ${leaf.cy + 7} ${leaf.cx - 3} ${leaf.cy + 7} ${leaf.cx - 7} ${leaf.cy}Z`}
-                  fill={stage === 5 ? colors.goldLight : colors.leafLight}
+                  fill={renderedStage === 5 ? colors.goldLight : colors.leafLight}
                   key={`${leaf.cx}-${leaf.cy}`}
-                  opacity={stage === 5 ? 0.92 : 0.7}
+                  opacity={renderedStage === 5 ? 0.92 : 0.7}
                   transform={`rotate(${leaf.rotation} ${leaf.cx} ${leaf.cy})`}
                 />
               ))}
             </G>
           ) : null}
 
-          {stage === 5 ? (
+          {renderedStage === 5 ? (
             <G>
               <Circle cx="93" cy="94" fill={colors.gold} r="3" />
               <Circle cx="147" cy="91" fill={colors.gold} r="3" />
@@ -300,12 +338,19 @@ export function GhafTree({
             </G>
           ) : null}
         </Svg>
+        {celebrateMilestone ? (
+          <Animated.View pointerEvents="none" style={[styles.milestoneBurst, milestoneStyle]}>
+            <Text align="center" color="earth" variant="caption">
+              {t('ghaf.newBranch')}
+            </Text>
+          </Animated.View>
+        ) : null}
       </Animated.View>
 
       <View style={styles.stageCopy}>
         <View style={styles.stagePill}>
           <Text align="center" color="forest" variant="caption">
-            {t('ghaf.stage', { current: stage + 1 })}
+            {t('ghaf.stage', { current: renderedStage + 1 })}
           </Text>
         </View>
         <Text align="center" color="forest" variant="heading">
@@ -330,6 +375,18 @@ const styles = StyleSheet.create({
   canvas: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  milestoneBurst: {
+    position: 'absolute',
+    top: spacing.xl,
+    right: spacing.sm,
+    borderRadius: radii.pill,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.gold,
+    backgroundColor: colors.goldGlow,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
   },
   stageCopy: {
     alignItems: 'center',

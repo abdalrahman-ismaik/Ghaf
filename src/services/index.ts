@@ -2,11 +2,16 @@ import { createMockServiceRegistry } from './mock';
 
 export type {
   AIService,
+  ApproveCompletionRequest,
+  CompletionAward,
   ImpactService,
   MediaService,
+  MissionGenerationRequest,
   MissionService,
   PrototypeSessionService,
+  ResetResult,
   ServiceError,
+  ServiceMeta,
   ServiceRegistry,
   ServiceResult,
 } from './interfaces';
@@ -19,5 +24,5 @@ export {
   MockPrototypeSessionService,
 } from './mock';
 
-/** Feature 001 binds every replaceable boundary to a deterministic offline service. */
+/** The competition build binds every replaceable boundary to deterministic local services. */
 export const serviceRegistry = createMockServiceRegistry();

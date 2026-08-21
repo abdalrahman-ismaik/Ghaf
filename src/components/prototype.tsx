@@ -1,16 +1,55 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import type { ReactNode } from 'react';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Card, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
-import type { ImpactSummary, LocaleCode, MissionSummary, PrototypeRole } from '@/models/prototype';
+import type {
+  CapabilityOrigin,
+  ImpactSummary,
+  LocaleCode,
+  Mission,
+  MissionLifecycleStatus,
+  PrototypeRole,
+  Quantity,
+} from '@/models/prototype';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 const numberFormatters: Record<LocaleCode, Intl.NumberFormat> = {
   ar: new Intl.NumberFormat('ar-AE'),
   en: new Intl.NumberFormat('en-AE'),
 };
+
+const originKeys: Record<CapabilityOrigin, string> = {
+  seeded: 'origin.seeded',
+  prepared: 'origin.prepared',
+  simulated: 'origin.simulated',
+  'pregenerated-mock': 'origin.pregeneratedMock',
+  'live-optional': 'origin.liveOptional',
+};
+
+const statusKeys: Record<MissionLifecycleStatus, string> = {
+  'draft-input': 'lifecycleStatus.draftInput',
+  generating: 'lifecycleStatus.generating',
+  'parent-review': 'lifecycleStatus.parentReview',
+  assigned: 'lifecycleStatus.assigned',
+  'child-in-progress': 'lifecycleStatus.childInProgress',
+  'awaiting-parent-confirmation': 'lifecycleStatus.awaitingParentConfirmation',
+  completed: 'lifecycleStatus.completed',
+};
+
+export function formatQuantity(
+  quantity: Quantity,
+  locale: LocaleCode,
+  translate: (key: string, options?: Record<string, unknown>) => string,
+): string {
+  const count = numberFormatters[locale].format(quantity.value);
+  return translate(quantity.unit === 'grams' ? 'mission.grams' : 'mission.portions', {
+    count: quantity.value,
+    formattedCount: count,
+  });
+}
 
 interface ProgressBarProps {
   label?: string;
@@ -22,29 +61,30 @@ export function ProgressBar({ label, value }: ProgressBarProps) {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const boundedValue = Math.max(0, Math.min(100, Math.round(value)));
-  const visibleLabel = label ?? t('ghaf.progressLabel');
-  const accessibleLabel = label ?? t('ghaf.progress', { percent: boundedValue });
+  const fillOrigin =
+    Platform.OS === 'web'
+      ? direction === 'rtl'
+        ? styles.progressFillRight
+        : styles.progressFillLeft
+      : styles.progressFillInlineStart;
 
   return (
     <View style={styles.progressGroup}>
-      <View style={[styles.progressCopy, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.progressCopy}>
         <Text color="inkMuted" variant="caption">
-          {visibleLabel}
+          {label ?? t('ghaf.progressLabel')}
         </Text>
         <Text color="forest" variant="caption">
           {numberFormatters[locale].format(boundedValue)}%
         </Text>
       </View>
       <View
-        accessibilityLabel={accessibleLabel}
+        accessibilityLabel={label ?? t('ghaf.progressLabel')}
         accessibilityRole="progressbar"
         accessibilityValue={{ min: 0, max: 100, now: boundedValue }}
-        style={[
-          styles.progressTrack,
-          direction === 'rtl' ? styles.progressTrackRtl : styles.progressTrackLtr,
-        ]}
+        style={styles.progressTrack}
       >
-        <View style={[styles.progressFill, { width: `${boundedValue}%` }]} />
+        <View style={[styles.progressFill, fillOrigin, { width: `${boundedValue}%` }]} />
       </View>
     </View>
   );
@@ -59,19 +99,19 @@ const roles: readonly PrototypeRole[] = ['parent', 'child'];
 
 export function RoleSwitcher({ onChange, role }: RoleSwitcherProps) {
   const { t } = useTranslation();
-  const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <View
       accessibilityLabel={t('common.switchRole')}
       accessibilityRole="radiogroup"
-      style={[styles.roleSwitcher, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
+      style={styles.roleSwitcher}
     >
       {roles.map((option) => {
         const selected = option === role;
 
         return (
           <Pressable
+            accessibilityLabel={t(`common.${option}`)}
             accessibilityRole="radio"
             accessibilityState={{ checked: selected }}
             key={option}
@@ -81,6 +121,7 @@ export function RoleSwitcher({ onChange, role }: RoleSwitcherProps) {
               selected ? styles.roleOptionSelected : null,
               pressed ? styles.pressed : null,
             ]}
+            testID={`switch-to-${option}-button`}
           >
             <Text align="center" color={selected ? 'white' : 'forest'} variant="label">
               {t(`common.${option}`)}
@@ -92,29 +133,41 @@ export function RoleSwitcher({ onChange, role }: RoleSwitcherProps) {
   );
 }
 
+interface OriginPillProps {
+  origin: CapabilityOrigin;
+}
+
+export function OriginPill({ origin }: OriginPillProps) {
+  const { t } = useTranslation();
+
+  return (
+    <View style={styles.originBadge}>
+      <View style={styles.mockDot} />
+      <Text color="forest" variant="caption">
+        {t(originKeys[origin])}
+      </Text>
+    </View>
+  );
+}
+
 interface MissionCardProps {
-  mission: MissionSummary;
+  action?: ReactNode;
+  mission: Mission;
   showSteps?: boolean;
 }
 
-export function MissionCard({ mission, showSteps = false }: MissionCardProps) {
+export function MissionCard({ action, mission, showSteps = false }: MissionCardProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const formatter = numberFormatters[locale];
 
   return (
     <Card accessibilityLabel={localize(mission.title, locale)} elevated testID="mock-mission-card">
-      <View style={[styles.cardHeader, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-        <View style={styles.mockBadge}>
-          <View style={styles.mockDot} />
-          <Text color="forest" variant="caption">
-            {t('common.mockBadge')}
-          </Text>
-        </View>
+      <View style={styles.cardHeader}>
+        <OriginPill origin={mission.origin} />
         <View style={styles.statusBadge}>
           <Text color="earth" variant="caption">
-            {t('mission.assigned')}
+            {t(statusKeys[mission.status])}
           </Text>
         </View>
       </View>
@@ -131,40 +184,35 @@ export function MissionCard({ mission, showSteps = false }: MissionCardProps) {
           <Text color="earth" variant="label">
             {t('mission.steps')}
           </Text>
-          {mission.steps.map((step, index) => (
-            <View
-              key={step.id}
-              style={[styles.stepRow, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
-            >
+          {mission.steps.map((step) => (
+            <View key={step.id} style={styles.stepRow}>
               <View style={styles.stepNumber}>
                 <Text align="center" color="white" variant="caption">
-                  {formatter.format(index + 1)}
+                  {formatter.format(step.order)}
                 </Text>
               </View>
-              <Text style={styles.stepText}>{localize(step.text, locale)}</Text>
+              <Text style={styles.stepText}>{localize(step.instruction, locale)}</Text>
             </View>
           ))}
         </View>
       ) : null}
 
-      <View style={[styles.missionFooter, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.missionFooter}>
         <View style={styles.footerItem}>
           <Text color="inkMuted" variant="caption">
             {t('mission.impactTarget')}
           </Text>
           <Text color="forest" variant="label">
-            {t('mission.portions', {
-              count: formatter.format(mission.impactTarget.estimatedPortions),
-            })}
+            {formatQuantity(mission.impactTarget, locale, t)}
           </Text>
         </View>
         <View style={styles.footerDivider} />
         <View style={styles.footerItem}>
           <Text color="inkMuted" variant="caption">
-            {t('childHome.rewardPreview')}
+            {t('mission.reward')}
           </Text>
           <Text color="earth" variant="label">
-            {localize(mission.reward, locale)}
+            {mission.reward ? localize(mission.reward, locale) : t('common.optional')}
           </Text>
         </View>
       </View>
@@ -172,6 +220,7 @@ export function MissionCard({ mission, showSteps = false }: MissionCardProps) {
       <Text color="inkMuted" variant="caption">
         {t('mission.sourceNote')}
       </Text>
+      {action ? <View style={styles.action}>{action}</View> : null}
     </Card>
   );
 }
@@ -183,13 +232,14 @@ interface ImpactCardProps {
 export function ImpactCard({ impact }: ImpactCardProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const formatter = numberFormatters[locale];
   const kilograms = impact.rescuedGrams / 1000;
-  const kilogramsLabel = t('impact.kilograms', { count: formatter.format(kilograms) });
 
   const metrics = [
-    { label: t('impact.foodRescued'), value: kilogramsLabel },
+    {
+      label: t('impact.foodRescued'),
+      value: t('impact.kilograms', { count: formatter.format(kilograms) }),
+    },
     { label: t('impact.portions'), value: formatter.format(impact.rescuedPortions) },
     { label: t('impact.missions'), value: formatter.format(impact.completedMissions) },
     { label: t('impact.streak'), value: formatter.format(impact.streakDays) },
@@ -205,7 +255,7 @@ export function ImpactCard({ impact }: ImpactCardProps) {
           {t('impact.estimate')}
         </Text>
       </View>
-      <View style={[styles.metricsGrid, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.metricsGrid}>
         {metrics.map((metric) => (
           <View key={metric.label} style={styles.metric}>
             <Text color="ghaf" variant="heading">
@@ -222,22 +272,18 @@ export function ImpactCard({ impact }: ImpactCardProps) {
 }
 
 const styles = StyleSheet.create({
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
   progressGroup: {
     width: '100%',
     gap: spacing.xs,
   },
   progressCopy: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing.sm,
   },
   progressTrack: {
+    position: 'relative',
     height: 10,
     width: '100%',
     borderRadius: radii.pill,
@@ -245,19 +291,26 @@ const styles = StyleSheet.create({
     backgroundColor: colors.line,
     overflow: 'hidden',
   },
-  progressTrackRtl: {
-    alignItems: 'flex-end',
-  },
-  progressTrackLtr: {
-    alignItems: 'flex-start',
-  },
   progressFill: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
     height: '100%',
     borderRadius: radii.pill,
     borderCurve: 'continuous',
     backgroundColor: colors.ghaf,
   },
+  progressFillInlineStart: {
+    insetInlineStart: 0,
+  },
+  progressFillRight: {
+    right: 0,
+  },
+  progressFillLeft: {
+    left: 0,
+  },
   roleSwitcher: {
+    flexDirection: 'row',
     padding: spacing.xxs,
     gap: spacing.xxs,
     borderRadius: radii.md,
@@ -280,21 +333,23 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.78,
+    transform: [{ scale: 0.99 }],
   },
   cardHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     gap: spacing.xs,
   },
-  mockBadge: {
+  originBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
     borderRadius: radii.pill,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
+    paddingVertical: spacing.xs,
     backgroundColor: colors.leafLight,
   },
   mockDot: {
@@ -307,7 +362,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.pill,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
+    paddingVertical: spacing.xs,
     backgroundColor: colors.goldLight,
   },
   copyStack: {
@@ -318,12 +373,13 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xs,
   },
   stepRow: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
   },
   stepNumber: {
-    width: 28,
-    height: 28,
+    width: 32,
+    height: 32,
     flexShrink: 0,
     borderRadius: radii.pill,
     alignItems: 'center',
@@ -334,6 +390,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   missionFooter: {
+    flexDirection: 'row',
     alignItems: 'stretch',
     gap: spacing.md,
     borderRadius: radii.md,
@@ -350,7 +407,11 @@ const styles = StyleSheet.create({
     width: 1,
     backgroundColor: colors.line,
   },
+  action: {
+    paddingTop: spacing.xs,
+  },
   metricsGrid: {
+    flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
   },

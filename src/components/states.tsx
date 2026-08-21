@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { ActivityIndicator, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { Button, Card, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
@@ -88,17 +89,27 @@ export function ErrorState({ body, onRetry, title }: ErrorStateProps) {
 
 interface CelebrationOverlayProps {
   body?: string;
+  milestone?: string;
   onClose: () => void;
+  reward?: string;
   title?: string;
   visible: boolean;
 }
 
-export function CelebrationOverlay({ body, onClose, title, visible }: CelebrationOverlayProps) {
+export function CelebrationOverlay({
+  body,
+  milestone,
+  onClose,
+  reward,
+  title,
+  visible,
+}: CelebrationOverlayProps) {
   const { t } = useTranslation();
+  const reducedMotion = useReducedMotion();
 
   return (
     <Modal
-      animationType="fade"
+      animationType={reducedMotion ? 'none' : 'fade'}
       onRequestClose={onClose}
       statusBarTranslucent
       transparent
@@ -125,6 +136,21 @@ export function CelebrationOverlay({ body, onClose, title, visible }: Celebratio
           <Text align="center" color="inkMuted">
             {body ?? t('states.celebrationBody')}
           </Text>
+          {milestone ? (
+            <View style={styles.celebrationDetail}>
+              <Text align="center" color="gold" variant="caption">
+                {t('celebration.milestoneTitle')}
+              </Text>
+              <Text align="center" color="forest" variant="label">
+                {milestone}
+              </Text>
+              {reward ? (
+                <Text align="center" color="earth" variant="caption">
+                  {reward}
+                </Text>
+              ) : null}
+            </View>
+          ) : null}
           <Button onPress={onClose}>{t('states.close')}</Button>
         </View>
       </View>
@@ -202,6 +228,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: radii.pill,
     backgroundColor: colors.leafLight,
+  },
+  celebrationDetail: {
+    width: '100%',
+    gap: spacing.xs,
+    borderRadius: radii.md,
+    borderCurve: 'continuous',
+    backgroundColor: colors.goldGlow,
+    padding: spacing.md,
   },
   leafGlyph: {
     color: colors.ghaf,

@@ -9,9 +9,9 @@ description: 'Dependency-ordered implementation backlog for the Ghaf Core MVP'
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`,
 `contracts/service-contracts.md`, and `quickstart.md`
 
-**Implementation gate**: PROPOSED and planning-only. Keep every item unchecked until the three-member
-team reviews the Feature 002 plan, explicitly authorizes implementation, and records one named
-integration owner for the work period.
+**Implementation gate**: APPROVED on 2026-08-22 for the deterministic mock journey. Member 1 is the
+integration owner. Local implementation and evidence tasks are complete; T039 physical Android and
+T041 human rehearsal remain open. Live AI, camera, recording, and storage remain deferred.
 
 **Tests**: Include only the focused logic, state, and mock-flow tests required by the specification
 and plan. Do not add a coverage target or a large test suite.
@@ -30,7 +30,7 @@ and plan. Do not add a coverage target or a large test suite.
 | **Member 2 — AI and application logic**               | `src/models/`, `src/features/` logic, `src/services/`, `src/state/`, and automated tests      |
 | **Member 3 — Product, content, QA, and presentation** | `src/i18n/resources.ts`, synthetic content/assets, acceptance records, and rehearsal evidence |
 
-Member 1 remains the provisional bootstrap integration owner only until the team records a handoff.
+Member 1 is the current Feature 002 integration owner and remains so until the team records a handoff.
 Before every implementation work period, exactly one of the three members MUST be named as integration
 owner in `docs/TEAM_OWNERSHIP.md`. That person serializes changes to shared configuration, the service
 registry, the store, and final integration. Tasks that revisit the same file run in task-ID order and
@@ -41,9 +41,9 @@ MUST NOT be assigned concurrently, even when different phases are otherwise para
 **Purpose**: Resolve the small team choices that affect implementation and prepare only approved
 dependencies and synthetic public-demo content.
 
-- [ ] T001 Member 3 — Record plan approval, selected demo assets/defaults, Ghaf thresholds, primary Android device, and the named integration owner for the work period in docs/TEAM_OWNERSHIP.md
-- [ ] T002 Member 1 — Add only the approved React Hook Form, Zod, Hook Form resolver, and `expo-audio` prepared-playback dependencies while keeping recording and image picking optional-later in package.json and package-lock.json
-- [ ] T003 [P] Member 3 — Create reviewed bilingual mission content and synthetic public-demo fixtures in src/features/missions/demoContent.ts, assets/demo/food-rescue-bread.jpg, assets/demo/family-wisdom.m4a, assets/demo/mission-narration.m4a, and assets/demo/child-evidence.jpg
+- [x] T001 Member 3 — Record plan approval, selected demo assets/defaults, Ghaf thresholds, primary Android device status, and Member 1 as the named integration owner for the work period in docs/TEAM_OWNERSHIP.md
+- [x] T002 Member 1 — Add only the approved React Hook Form, Zod, Hook Form resolver, and `expo-audio` prepared-playback dependencies while keeping recording and image picking optional-later in package.json and package-lock.json
+- [x] T003 [P] Member 3 — Create reviewed bilingual mission content and synthetic public-demo fixtures in src/features/missions/demoContent.ts, assets/demo/food-rescue-bread.jpg, assets/demo/family-wisdom-ar.mp3, assets/demo/family-wisdom-en.mp3, assets/demo/mission-narration-ar.mp3, assets/demo/mission-narration-en.mp3, and assets/demo/child-evidence.jpg
 
 **Checkpoint**: Do not continue unless T001 records explicit approval and one named integration owner.
 
@@ -56,14 +56,14 @@ that every user story consumes.
 
 **Critical**: This phase blocks all user-story implementation.
 
-- [ ] T004 Member 2 — Replace the Feature 001 summary types with the twelve Feature 002 entities, value objects, lifecycle statuses, and ready-to-create session shape in src/models/prototype.ts
-- [ ] T005 Member 2 — Extend ServiceResult metadata and the five service interfaces to match the reviewed internal contracts in src/services/interfaces/index.ts
-- [ ] T006 [P] Member 2 — Implement quantity, mission-input, exact-three-step, bilingual payload, reflection, and submission validation in src/features/missions/validation.ts
-- [ ] T007 [P] Member 2 — Implement guarded pure lifecycle transitions for generation, edit, assignment, Child work, submission, retry, and completion in src/features/missions/lifecycle.ts
-- [ ] T008 Member 2 — Replace the assigned Feature 001 seed with the ready-to-create baseline plus prepared media, evidence, and unassigned pregenerated mission fixtures in src/services/mock/fixtures.ts
-- [ ] T009 Member 2 — Implement deterministic Mission, Media, AI, Impact, and Prototype Session mocks and bind the default registry in src/services/mock/index.ts and src/services/index.ts
-- [ ] T010 Member 2 — Evolve the Zustand session to the Feature 002 shape with typed selectors and an atomic Arabic/Parent/mock ready-to-create reset in src/state/usePrototypeStore.ts
-- [ ] T011 [P] Member 3 — Add reviewed Arabic and English interface copy for all ten screens, validation, mock disclosures, retry, reset, and celebration states in src/i18n/resources.ts
+- [x] T004 Member 2 — Replace the Feature 001 summary types with the twelve Feature 002 entities, value objects, lifecycle statuses, and ready-to-create session shape in src/models/prototype.ts
+- [x] T005 Member 2 — Extend ServiceResult metadata and the five service interfaces to match the reviewed internal contracts in src/services/interfaces/index.ts
+- [x] T006 [P] Member 2 — Implement quantity, mission-input, exact-three-step, bilingual payload, reflection, and submission validation in src/features/missions/validation.ts
+- [x] T007 [P] Member 2 — Implement guarded pure lifecycle transitions for generation, edit, assignment, Child work, submission, retry, and completion in src/features/missions/lifecycle.ts
+- [x] T008 Member 2 — Replace the assigned Feature 001 seed with the ready-to-create baseline plus prepared media, evidence, and unassigned pregenerated mission fixtures in src/services/mock/fixtures.ts
+- [x] T009 Member 2 — Implement deterministic Mission, Media, AI, Impact, and Prototype Session mocks and bind the default registry in src/services/mock/index.ts and src/services/index.ts
+- [x] T010 Member 2 — Evolve the Zustand session to the Feature 002 shape with typed selectors and an atomic Arabic/Parent/mock ready-to-create reset in src/state/usePrototypeStore.ts
+- [x] T011 [P] Member 3 — Add reviewed Arabic and English interface copy for all ten screens, validation, mock disclosures, retry, reset, and celebration states in src/i18n/resources.ts
 
 **Checkpoint**: The application has one coherent local session and five replaceable offline service
 contracts; no route imports fixtures or concrete providers.
@@ -81,17 +81,17 @@ three steps; edit once; then approve one mission for the Child.
 
 ### Focused test
 
-- [ ] T012 [US1] Member 2 — Write failing tests for required input, quantity bounds, exact-three-step payload validation, same-attempt mock fallback replacement, edit return, and assignment approval guards in tests/mission-lifecycle.test.ts
+- [x] T012 [US1] Member 2 — Write failing tests for required input, quantity bounds, exact-three-step payload validation, same-attempt mock fallback replacement, edit return, and assignment approval guards in tests/mission-lifecycle.test.ts
 
 ### Implementation
 
-- [ ] T013 [US1] Member 2 — Implement the small mission form schema, defaults, and conversion to MissionInput in src/features/missions/form.ts
-- [ ] T014 [US1] Member 2 — Implement four-stage simulated generation, structured result validation, same-attempt deterministic fallback, and origin metadata in src/features/missions/generateMission.ts
-- [ ] T015 [US1] Member 2 — Add draft, generation, edit, and approve-for-Child commands without direct screen mutation in src/state/usePrototypeStore.ts
-- [ ] T016 [P] [US1] Member 1 — Build the bounded four-stage loading and honest origin-disclosure component in src/components/MissionGenerationExperience.tsx
-- [ ] T017 [US1] Member 1 — Build the Create Mission form with prepared media controls and link it from Parent home in app/parent/create.tsx and app/parent/index.tsx
-- [ ] T018 [US1] Member 1 — Build the simulated generation route with preserved-input fallback and retry states in app/parent/generating.tsx
-- [ ] T019 [US1] Member 1 — Build bilingual Parent review, edit, and explicit assignment approval in app/parent/review.tsx
+- [x] T013 [US1] Member 2 — Implement the small mission form schema, defaults, and conversion to MissionInput in src/features/missions/form.ts
+- [x] T014 [US1] Member 2 — Implement four-stage simulated generation, structured result validation, same-attempt deterministic fallback, and origin metadata in src/features/missions/generateMission.ts
+- [x] T015 [US1] Member 2 — Add draft, generation, edit, and approve-for-Child commands without direct screen mutation in src/state/usePrototypeStore.ts
+- [x] T016 [P] [US1] Member 1 — Build the bounded four-stage loading and honest origin-disclosure component in src/components/MissionGenerationExperience.tsx
+- [x] T017 [US1] Member 1 — Build the Create Mission form with prepared media controls and link it from Parent home in app/parent/create.tsx and app/parent/index.tsx
+- [x] T018 [US1] Member 1 — Build the simulated generation route with preserved-input fallback and retry states in app/parent/generating.tsx
+- [x] T019 [US1] Member 1 — Build bilingual Parent review, edit, and explicit assignment approval in app/parent/review.tsx
 
 **Checkpoint**: US1 is independently demonstrable with pregenerated content and no network.
 
@@ -107,13 +107,13 @@ evidence path, answer the reflection, submit, and observe awaiting-Parent state 
 
 ### Focused test
 
-- [ ] T020 [US2] Member 2 — Extend lifecycle tests with step completion, locale-preserved progress, evidence-or-confirmation, required reflection, submission guards, and zero-award assertions in tests/mission-lifecycle.test.ts
+- [x] T020 [US2] Member 2 — Extend lifecycle tests with step completion, locale-preserved progress, evidence-or-confirmation, required reflection, submission guards, and zero-award assertions in tests/mission-lifecycle.test.ts
 
 ### Implementation
 
-- [ ] T021 [US2] Member 2 — Add Child step, evidence choice, reflection, and submit-for-confirmation commands in src/state/usePrototypeStore.ts
-- [ ] T022 [US2] Member 1 — Build the Child mission story, real prepared narration playback, three-step progress, evidence choice, reflection, and awaiting-Parent state in app/child/mission.tsx
-- [ ] T023 [US2] Member 1 — Update Child home with assigned-adventure status, reward preview, Ghaf progress, and mission entry in app/child/index.tsx
+- [x] T021 [US2] Member 2 — Add Child step, evidence choice, reflection, and submit-for-confirmation commands in src/state/usePrototypeStore.ts
+- [x] T022 [US2] Member 1 — Build the Child mission story, real prepared narration playback, three-step progress, evidence choice, reflection, and awaiting-Parent state in app/child/mission.tsx
+- [x] T023 [US2] Member 1 — Update Child home with assigned-adventure status, reward preview, Ghaf progress, and mission entry in app/child/index.tsx
 
 **Checkpoint**: US2 is independently testable with a seeded approved mission and changes no impact.
 
@@ -129,13 +129,13 @@ valid labeled quantity and repeat approval five times while totals remain unchan
 
 ### Focused test
 
-- [ ] T024 [US3] Member 2 — Write failing tests for retry-without-award, quantity validation, one awardKey record, and five repeated approval attempts in tests/impact-idempotency.test.ts
+- [x] T024 [US3] Member 2 — Write failing tests for retry-without-award, quantity validation, one awardKey record, and five repeated approval attempts in tests/impact-idempotency.test.ts
 
 ### Implementation
 
-- [ ] T025 [US3] Member 2 — Implement the atomic idempotent completion award and retry-without-award use cases in src/features/impact/awardCompletion.ts
-- [ ] T026 [US3] Member 2 — Integrate requestRetry and approveCompletion commands as single store updates in src/state/usePrototypeStore.ts
-- [ ] T027 [US3] Member 1 — Build Parent submission review, estimated quantity confirmation, retry, approve, and duplicate-action feedback in app/parent/confirmation.tsx
+- [x] T025 [US3] Member 2 — Implement the atomic idempotent completion award and retry-without-award use cases in src/features/impact/awardCompletion.ts
+- [x] T026 [US3] Member 2 — Integrate requestRetry and approveCompletion commands as single store updates in src/state/usePrototypeStore.ts
+- [x] T027 [US3] Member 1 — Build Parent submission review, estimated quantity confirmation, retry, approve, and duplicate-action feedback in app/parent/confirmation.tsx
 
 **Checkpoint**: US3 is independently testable with a seeded submission and cannot double-award.
 
@@ -151,13 +151,13 @@ observe the expected progress, one unlocked milestone, and no seventh stage.
 
 ### Focused test
 
-- [ ] T028 [US4] Member 2 — Write failing pure-function tests for below-threshold progress, configured stage crossing, unique milestones, and stage-5 saturation in tests/ghaf-progress.test.ts
+- [x] T028 [US4] Member 2 — Write failing pure-function tests for below-threshold progress, configured stage crossing, unique milestones, and stage-5 saturation in tests/ghaf-progress.test.ts
 
 ### Implementation
 
-- [ ] T029 [US4] Member 2 — Implement approved local point thresholds, six-stage derivation, milestone uniqueness, and stage-5 clamping in src/features/ghaf-tree/progression.ts
-- [ ] T030 [P] [US4] Member 1 — Preserve the existing six-stage SVG Ghaf rendering and add deterministic stage-transition and milestone details with bounded opacity, transform, and short reveal motion in src/components/GhafTree.tsx
-- [ ] T031 [US4] Member 1 — Extend the existing CelebrationOverlay in src/components/states.tsx and build the impact celebration route with estimated-impact disclosure, milestone, reward, and reset/continue actions in app/celebration.tsx
+- [x] T029 [US4] Member 2 — Implement approved local point thresholds, six-stage derivation, milestone uniqueness, and stage-5 clamping in src/features/ghaf-tree/progression.ts
+- [x] T030 [P] [US4] Member 1 — Preserve the existing six-stage SVG Ghaf rendering and add deterministic stage-transition and milestone details with bounded opacity, transform, and short reveal motion in src/components/GhafTree.tsx
+- [x] T031 [US4] Member 1 — Extend the existing CelebrationOverlay in src/components/states.tsx and build the impact celebration route with estimated-impact disclosure, milestone, reward, and reset/continue actions in app/celebration.tsx
 
 **Checkpoint**: US4 is independently testable from a seeded completion award and keeps the tree central.
 
@@ -173,13 +173,13 @@ five times, and confirm one review mission, one impact award, visible Ghaf feedb
 
 ### Focused tests
 
-- [ ] T032 [P] [US5] Member 2 — Extend reset tests for all source states, exact ready-to-create values, cleared assignment/submission/celebration, and still-available unassigned fallback in tests/prototype-state.test.ts
-- [ ] T033 [P] [US5] Member 2 — Write the complete deterministic service/store smoke test for the ten-screen lifecycle, provider failure, same-attempt fallback, one award, and reset in tests/mock-core-flow.test.ts
+- [x] T032 [P] [US5] Member 2 — Extend reset tests for all source states, exact ready-to-create values, cleared assignment/submission/celebration, and still-available unassigned fallback in tests/prototype-state.test.ts
+- [x] T033 [P] [US5] Member 2 — Write the complete deterministic service/store smoke test for the ten-screen lifecycle, provider failure, same-attempt fallback, one award, and reset in tests/mock-core-flow.test.ts
 
 ### Implementation
 
-- [ ] T034 [US5] Member 2 — Complete retryable provider-error mapping, preserved-input fallback, and atomic session reset behavior in src/features/missions/generateMission.ts, src/services/mock/index.ts, and src/state/usePrototypeStore.ts
-- [ ] T035 [US5] Member 1 — Add a shared bilingual prototype-mode/origin disclosure and reset control that returns to Parent home from every journey state in src/components/PrototypeStatusBar.tsx and app/_layout.tsx
+- [x] T034 [US5] Member 2 — Complete retryable provider-error mapping, preserved-input fallback, and atomic session reset behavior in src/features/missions/generateMission.ts, src/services/mock/index.ts, and src/state/usePrototypeStore.ts
+- [x] T035 [US5] Member 1 — Add a shared bilingual prototype-mode/origin disclosure and reset control that returns to Parent home from every journey state in src/components/PrototypeStatusBar.tsx and app/_layout.tsx
 
 **Checkpoint**: US5 joins US1–US4 into the reliable competition flow; optional live services remain
 nonblocking.
@@ -191,13 +191,13 @@ nonblocking.
 **Purpose**: Apply final bilingual presentation quality, run focused automated checks, record native
 evidence, rehearse the judge path, and enforce the approved MVP boundary.
 
-- [ ] T036 [P] Member 1 — Apply shared RTL-safe logical spacing, keyboard avoidance, touch sizing, focus feedback, and motion-reduction behavior in src/components/primitives.tsx and src/design/tokens.ts
-- [ ] T037 [P] Member 3 — Review Arabic/English mission wording, age suitability, mock disclosures, nonfinancial rewards, and food-safety boundaries in src/i18n/resources.ts and src/features/missions/demoContent.ts
-- [ ] T038 Integration owner — Run typecheck, lint, formatting, and focused tests from package.json and record exact results in docs/DEMO_RUNBOOK.md
+- [x] T036 [P] Member 1 — Apply shared RTL-safe logical spacing, keyboard avoidance, touch sizing, focus feedback, and motion-reduction behavior in src/components/primitives.tsx and src/design/tokens.ts
+- [x] T037 [P] Member 3 — Review Arabic/English mission wording, age suitability, mock disclosures, nonfinancial rewards, and food-safety boundaries in src/i18n/resources.ts and src/features/missions/demoContent.ts
+- [x] T038 Integration owner — Run typecheck, lint, formatting, and focused tests from package.json and record exact results in docs/DEMO_RUNBOOK.md
 - [ ] T039 Member 1 — Complete and record the full journey in Arabic/RTL and English/LTR on the named physical Android device, including prepared-media playback, wrapping, touch, keyboard, and motion review in docs/DEMO_RUNBOOK.md
-- [ ] T040 Member 3 — Record five offline flows, five source-state resets, retry-without-award, five repeated approvals, impact-and-tree feedback within three seconds, and all six Ghaf-stage checks in docs/DEMO_RUNBOOK.md
+- [x] T040 Member 3 — Record five offline flows, five source-state resets, retry-without-award, five repeated approvals, impact-and-tree feedback within three seconds, and all six Ghaf-stage checks in docs/DEMO_RUNBOOK.md
 - [ ] T041 Member 3 — Record Parent input-to-review within 45 seconds, five complete 75–105-second rehearsals, and the three-person concept-comprehension review in docs/DEMO_RUNBOOK.md
-- [ ] T042 Integration owner — Audit exact ten-screen scope, synthetic data, secret absence, honest capability labels, optional-later exclusions, and final PASSED/FAILED/BLOCKED/NOT RUN status in docs/PROTOTYPE_LIMITATIONS.md
+- [x] T042 Integration owner — Audit exact ten-screen scope, synthetic data, secret absence, honest capability labels, optional-later exclusions, and final PASSED/FAILED/BLOCKED/NOT RUN status in docs/PROTOTYPE_LIMITATIONS.md
 
 ---
 
@@ -262,8 +262,8 @@ US1 alone is useful progress but is **not** the competition MVP.
   owns copy/assets/evidence files for the duration recorded in `docs/TEAM_OWNERSHIP.md`.
 - The named integration owner sequences any exception to those boundaries and records the next
   handoff before another work period begins.
-- Keep all 42 items unchecked during repository bootstrap. Checking an item later requires both its
-  file change and the acceptance evidence stated by that task.
+- T001 is complete because the approval record and integration owner are now documented. Checking
+  T002–T042 requires both the specified file change and the acceptance evidence stated by that task.
 
 ## Notes
 
@@ -275,4 +275,5 @@ US1 alone is useful progress but is **not** the competition MVP.
 - No task adds production authentication, a production backend, banking, real rewards, continuous
   recording, an unrestricted Child chatbot, food-safety determination, enterprise security, or a
   screen beyond the approved ten.
-- Feature 002 implementation remains blocked until the team explicitly approves the plan.
+- Feature 002 deterministic mock implementation is approved; optional live integrations remain
+  deferred until the complete mock journey is reliable on the primary Android phone.

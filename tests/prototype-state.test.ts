@@ -1,27 +1,52 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { coerceLocale, getLocaleDirection, type PrototypeSession } from '../src/models/prototype';
+import { coerceLocale, getLocaleDirection } from '../src/models/prototype';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
 
-function expectDocumentedResetState(session: PrototypeSession): void {
-  expect(session.locale).toBe('ar');
-  expect(session.role).toBe('parent');
-  expect(session.mockMode).toBe(true);
-  expect(session.family.id).toBe('family-ghaf-demo');
-  expect(session.mission.id).toBe('mission-bread-rescue-demo');
-  expect(session.mission.status).toBe('assigned');
-  expect(session.mission.source).toBe('pregenerated-mock');
-  expect(session.impact).toEqual({
-    rescuedGrams: 1_250,
-    rescuedPortions: 5,
-    completedMissions: 3,
-    streakDays: 2,
+function expectDocumentedResetState(): void {
+  const session = usePrototypeStore.getState();
+
+  expect(session).toMatchObject({
+    locale: 'ar',
+    direction: 'rtl',
+    role: 'parent',
+    mode: 'mock',
+    mockMode: true,
+    journeyStatus: 'draft-input',
+    activeMission: null,
+    submission: null,
+    confirmation: null,
+    celebration: null,
+    impactSummary: {
+      rescuedGrams: 1_250,
+      rescuedPortions: 5,
+      completedMissions: 3,
+      streakDays: 2,
+    },
+    ghaf: {
+      stage: 2,
+      progressPercent: 48,
+      progressPoints: 48,
+      unlockedMilestoneIds: ['sapling'],
+      newMilestone: null,
+    },
   });
-  expect(session.ghaf).toMatchObject({
-    stage: 2,
-    progressPercent: 48,
-    newMilestone: null,
+  expect(session.missionInput).toMatchObject({
+    childId: null,
+    foodImageId: null,
+    voiceNoteId: null,
+    quantity: null,
+    availableMinutes: 15,
+    reward: null,
   });
+  expect(session.submissionDraft).toEqual({
+    evidenceMediaId: null,
+    parentConfirmationRequested: false,
+    reflection: '',
+  });
+  expect(session.sessionImpactRecords).toEqual([]);
+  expect(session.generation).toBeNull();
+  expect(session.lastError).toBeNull();
 }
 
 describe('locale handling', () => {
@@ -48,13 +73,12 @@ describe('prototype store', () => {
   });
 
   it('starts from the exact documented Arabic-first session', () => {
-    expectDocumentedResetState(usePrototypeStore.getState());
-    expect(usePrototypeStore.getState().direction).toBe('rtl');
+    expectDocumentedResetState();
   });
 
   it('changes role without replacing the shared mission or progress', () => {
     const initial = usePrototypeStore.getState();
-    const initialMissionId = initial.mission.id;
+    initial.applyDemoInput();
 
     initial.setRole('child');
 
@@ -62,14 +86,14 @@ describe('prototype store', () => {
       locale: 'ar',
       direction: 'rtl',
       role: 'child',
-      mission: { id: initialMissionId },
-      impact: initial.impact,
+      missionInput: { childId: 'child-salem-demo' },
+      impactSummary: initial.impactSummary,
       ghaf: initial.ghaf,
     });
 
     usePrototypeStore.getState().switchRole();
     expect(usePrototypeStore.getState().role).toBe('parent');
-    expect(usePrototypeStore.getState().mission.id).toBe(initialMissionId);
+    expect(usePrototypeStore.getState().missionInput.childId).toBe('child-salem-demo');
   });
 
   it('coerces malformed locale updates and resets every mutable field', () => {
@@ -87,18 +111,62 @@ describe('prototype store', () => {
     expect(usePrototypeStore.getState()).toMatchObject({ locale: 'ar', direction: 'rtl' });
 
     usePrototypeStore.getState().resetDemo();
-    expectDocumentedResetState(usePrototypeStore.getState());
-    expect(usePrototypeStore.getState().direction).toBe('rtl');
+    expectDocumentedResetState();
   });
 
-  it('restores the same documented state across five consecutive trials', () => {
-    for (let trial = 0; trial < 5; trial += 1) {
-      usePrototypeStore.getState().setLocale('en');
-      usePrototypeStore.getState().setRole('child');
-      usePrototypeStore.getState().resetDemo();
+  it('cancels only the active generation attempt and preserves the completed draft', () => {
+    const store = usePrototypeStore.getState();
+    store.applyDemoInput();
+    const started = store.startGeneration();
+    if (!started.ok) throw new Error('Expected generation to start');
 
-      expectDocumentedResetState(usePrototypeStore.getState());
-      expect(usePrototypeStore.getState().direction).toBe('rtl');
-    }
+    expect(usePrototypeStore.getState().cancelGeneration('stale-attempt')).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState().journeyStatus).toBe('generating');
+
+    expect(usePrototypeStore.getState().cancelGeneration(started.data)).toMatchObject({
+      ok: true,
+    });
+    expect(usePrototypeStore.getState()).toMatchObject({
+      journeyStatus: 'draft-input',
+      missionInput: {
+        childId: 'child-salem-demo',
+        foodImageId: 'food-rescue-bread',
+        voiceNoteId: 'family-wisdom-ar',
+        quantity: { value: 250, unit: 'grams' },
+      },
+      activeMission: null,
+      generation: null,
+      lastError: null,
+    });
+
+    expect(usePrototypeStore.getState().startGeneration()).toMatchObject({ ok: true });
+  });
+
+  it.each([
+    'draft-input',
+    'generating',
+    'parent-review',
+    'awaiting-parent-confirmation',
+    'completed',
+  ] as const)('atomically restores the baseline from %s', (journeyStatus) => {
+    usePrototypeStore.setState({
+      journeyStatus,
+      locale: 'en',
+      direction: 'ltr',
+      role: 'child',
+      lastError: {
+        code: 'REMOTE_UNAVAILABLE',
+        message: 'Synthetic test error',
+        retryable: true,
+        fallbackAvailable: true,
+      },
+    });
+
+    usePrototypeStore.getState().resetDemo();
+
+    expectDocumentedResetState();
   });
 });

@@ -120,6 +120,49 @@ Motion should reinforce cause and effect:
 Always provide a static final state. Avoid long blocking sequences, excessive particle effects, and
 motion that makes the 90-second demo difficult to control.
 
+## Synthetic Prepared-Media Direction
+
+The two food photographs are synthetic competition-demo fixtures generated with the built-in image
+generator in **generate** mode. They contain no people, identifying information, brands, or food-
+safety judgment. The generated PNGs were converted to repository-sized JPEGs and metadata was
+removed. The exact prompts were:
+
+```text
+Use case: photorealistic-natural
+Asset type: prepared household food-waste situation image for a polished Arabic-first family sustainability mobile prototype
+Primary request: a believable overhead photograph of several pieces of extra Arabic flatbread on a warm ceramic plate, clearly a household leftover-food situation ready for an adult to assess and reuse
+Scene/backdrop: warm ivory stone kitchen surface with a folded desert-sand linen napkin and a subtle Ghaf-green accent bowl at the edge
+Subject: only the plate and extra flatbread; food looks ordinary and dry but not moldy, spoiled, unsafe, or unappetizing
+Style/medium: photorealistic natural editorial food photography, authentic texture, restrained competition-demo polish
+Composition/framing: portrait-friendly 4:3 crop, centered plate, generous clean margins for mobile card cropping
+Lighting/mood: soft UAE morning window light, warm, calm, respectful
+Color palette: warm ivory, desert sand, deep brown, restrained Ghaf green
+Constraints: no people, no hands, no faces, no personal information, no logos, no brands, no text, no watermark, no implication that AI judged food safety, no excessive food styling
+Avoid: mold, decay, garbage bins, dramatic waste imagery, glossy stock-photo look
+```
+
+```text
+Use case: photorealistic-natural
+Asset type: prepared child-evidence image for a polished Arabic-first family sustainability mobile prototype
+Primary request: an overhead photograph showing the successful result of reusing approved extra Arabic flatbread as crisp toasted bread pieces beside a simple fresh family salad, clearly connected to a completed bread-rescue adventure
+Scene/backdrop: warm ivory stone kitchen surface with the same desert-sand linen and restrained Ghaf-green ceramic accent as the input image
+Subject: finished toasted flatbread pieces and a modest family salad; no people or hands
+Style/medium: photorealistic natural editorial food photography, authentic homemade texture, warm and achievable rather than restaurant luxury
+Composition/framing: portrait-friendly 4:3 crop, evidence object centered with generous margins for a mobile evidence card
+Lighting/mood: soft UAE morning window light, celebratory but calm
+Color palette: warm ivory, desert sand, deep brown, Ghaf green, subtle fresh vegetable color
+Constraints: no people, no child, no hands, no faces, no personal information, no logos, no brands, no text, no watermark, no food-safety claim, no before-and-after labels
+Avoid: lavish feast, excessive styling, mold, waste bin, plastic packaging, glossy stock-photo look
+```
+
+The four voice fixtures are synthetic text-to-speech, not recordings of real family members or
+children. They were generated with `edge-tts 7.2.8` using UAE Arabic and British English voices.
+Their exact bilingual scripts, durations, and file mapping are maintained in
+`src/features/missions/demoContent.ts` so visible transcripts match playback. After bilingual copy
+review, all four clips were regenerated from those exact scripts; current durations are 11.424 s
+(family Arabic), 8.376 s (family English), 18.288 s (narration Arabic), and 12.048 s (narration
+English).
+
 ## Screen Hierarchy
 
 Each approved screen should answer three questions at a glance:
@@ -146,4 +189,7 @@ flow is coherent.
 - Motion has a deterministic static fallback.
 
 Physical-device visual approval remains **NOT RUN** until a device/build observation is recorded in
-the demo runbook and repository status table.
+the demo runbook and repository status table. A 412×915 browser review passed the Arabic and English
+Parent home, bilingual review, and celebration compositions; it specifically verified logical row
+order, RTL/LTR progress origin, back direction/position, long-copy wrapping, and the tree's
+Sapling-to-Young-tree climax.

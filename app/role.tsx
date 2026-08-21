@@ -14,9 +14,10 @@ interface RoleChoiceProps {
   label: string;
   onPress: () => void;
   selected: boolean;
+  testID: string;
 }
 
-function RoleChoice({ description, glyph, label, onPress, selected }: RoleChoiceProps) {
+function RoleChoice({ description, glyph, label, onPress, selected, testID }: RoleChoiceProps) {
   return (
     <Pressable
       accessibilityRole="radio"
@@ -27,6 +28,7 @@ function RoleChoice({ description, glyph, label, onPress, selected }: RoleChoice
         selected ? styles.roleChoiceSelected : null,
         pressed ? styles.pressed : null,
       ]}
+      testID={testID}
     >
       <View style={[styles.roleGlyph, selected ? styles.roleGlyphSelected : null]}>
         <Text align="center" color={selected ? 'white' : 'ghaf'} style={styles.roleGlyphText}>
@@ -49,7 +51,6 @@ export default function RoleSelectorScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
-  const direction = usePrototypeStore((state) => state.direction);
   const setRole = usePrototypeStore((state) => state.setRole);
   const resetDemo = usePrototypeStore((state) => state.resetDemo);
 
@@ -60,12 +61,13 @@ export default function RoleSelectorScreen() {
 
   const reset = () => {
     resetDemo();
+    router.dismissAll();
     router.replace('/parent');
   };
 
   return (
     <Screen contentContainerStyle={styles.screenContent} testID="role-screen">
-      <View style={[styles.topBar, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.topBar}>
         <View>
           <Text color="forest" variant="heading">
             Ghaf · غاف
@@ -94,6 +96,7 @@ export default function RoleSelectorScreen() {
           label={t('common.parent')}
           onPress={() => openRole('parent')}
           selected={role === 'parent'}
+          testID="choose-parent-button"
         />
         <RoleChoice
           description={t('role.childDescription')}
@@ -101,10 +104,11 @@ export default function RoleSelectorScreen() {
           label={t('common.child')}
           onPress={() => openRole('child')}
           selected={role === 'child'}
+          testID="choose-child-button"
         />
       </View>
 
-      <Card style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <Card style={styles.disclosure}>
         <View style={styles.disclosureDot} />
         <Text color="inkMuted" style={styles.disclosureText} variant="caption">
           {t('role.shortcutNote')} {t('mission.sourceNote')}
@@ -119,16 +123,11 @@ export default function RoleSelectorScreen() {
 }
 
 const styles = StyleSheet.create({
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
   screenContent: {
     justifyContent: 'center',
   },
   topBar: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -186,6 +185,7 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.99 }],
   },
   disclosure: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     backgroundColor: colors.goldLight,

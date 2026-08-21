@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 
 import { GhafTree } from '@/components/GhafTree';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { JourneyHeader } from '@/components/journey';
 import { Button, Card, Screen, Text } from '@/components/primitives';
 import { ImpactCard, MissionCard, ProgressBar, RoleSwitcher } from '@/components/prototype';
-import { colors, radii, spacing } from '@/design/tokens';
+import { EmptyState } from '@/components/states';
+import { colors, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import type { PrototypeRole } from '@/models/prototype';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -15,15 +17,13 @@ export default function ParentHomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const family = usePrototypeStore((state) => state.family);
-  const mission = usePrototypeStore((state) => state.mission);
-  const impact = usePrototypeStore((state) => state.impact);
+  const journeyStatus = usePrototypeStore((state) => state.journeyStatus);
+  const mission = usePrototypeStore((state) => state.activeMission);
+  const impact = usePrototypeStore((state) => state.impactSummary);
   const ghaf = usePrototypeStore((state) => state.ghaf);
-  const mockMode = usePrototypeStore((state) => state.mockMode);
   const setRole = usePrototypeStore((state) => state.setRole);
-  const resetDemo = usePrototypeStore((state) => state.resetDemo);
   const familyName = localize(family.displayName, locale);
 
   const openRole = (nextRole: PrototypeRole) => {
@@ -31,40 +31,53 @@ export default function ParentHomeScreen() {
     router.replace(nextRole === 'parent' ? '/parent' : '/child');
   };
 
-  const reset = () => {
-    resetDemo();
-    router.replace('/parent');
-  };
+  const missionAction = (() => {
+    if (journeyStatus === 'draft-input') {
+      return (
+        <Button onPress={() => router.push('/parent/create')} testID="resume-editing-button">
+          {t('parentHome.resumeEditing')}
+        </Button>
+      );
+    }
+    if (journeyStatus === 'parent-review') {
+      return (
+        <Button onPress={() => router.push('/parent/review')} testID="open-review-button">
+          {t('parentHome.openReview')}
+        </Button>
+      );
+    }
+    if (journeyStatus === 'awaiting-parent-confirmation') {
+      return (
+        <Button
+          onPress={() => router.push('/parent/confirmation')}
+          testID="review-submission-button"
+        >
+          {t('parentHome.reviewSubmission')}
+        </Button>
+      );
+    }
+    if (journeyStatus === 'completed') {
+      return (
+        <Button onPress={() => router.push('/celebration')} variant="secondary">
+          {t('parentHome.completedTitle')}
+        </Button>
+      );
+    }
+    return (
+      <Button onPress={() => openRole('child')} variant="secondary">
+        {t('parentHome.switchToChild')}
+      </Button>
+    );
+  })();
 
   return (
     <Screen testID="parent-home-screen">
-      <View style={[styles.topBar, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-        <View style={styles.brandBlock}>
-          <Text color="forest" variant="heading">
-            Ghaf · غاف
-          </Text>
-          {mockMode ? (
-            <View
-              style={[styles.mockPill, direction === 'rtl' ? styles.alignEnd : styles.alignStart]}
-            >
-              <Text color="earth" variant="caption">
-                {t('common.mockBadge')}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        <LanguageSwitcher compact showGuidance={false} />
-      </View>
-
-      <View style={styles.intro}>
-        <Text color="gold" variant="label">
-          {t('parentHome.eyebrow')}
-        </Text>
-        <Text color="forest" variant="title">
-          {t('parentHome.greeting', { name: familyName })}
-        </Text>
-        <Text color="inkMuted">{t('parentHome.subtitle')}</Text>
-      </View>
+      <JourneyHeader
+        action={<LanguageSwitcher compact showGuidance={false} />}
+        eyebrow={t('parentHome.eyebrow')}
+        subtitle={t('parentHome.subtitle')}
+        title={t('parentHome.greeting', { name: familyName })}
+      />
 
       <Card elevated style={styles.treeCard} testID="family-ghaf-card">
         <View style={styles.treeCopy}>
@@ -75,7 +88,7 @@ export default function ParentHomeScreen() {
             {t('parentHome.treeHint')}
           </Text>
         </View>
-        <GhafTree progressPercent={ghaf.progressPercent} size={238} stage={ghaf.stage} />
+        <GhafTree progressPercent={ghaf.progressPercent} size={236} stage={ghaf.stage} />
         <ProgressBar value={ghaf.progressPercent} />
       </Card>
 
@@ -87,7 +100,19 @@ export default function ParentHomeScreen() {
         <Text color="forest" variant="heading">
           {t('parentHome.activeMission')}
         </Text>
-        <MissionCard mission={mission} showSteps />
+        {mission ? (
+          <MissionCard action={missionAction} mission={mission} showSteps />
+        ) : (
+          <EmptyState
+            action={
+              <Button onPress={() => router.push('/parent/create')} testID="create-mission-button">
+                {t('parentHome.createMission')}
+              </Button>
+            }
+            body={t('parentHome.readyBody')}
+            title={t('parentHome.readyTitle')}
+          />
+        )}
       </View>
 
       <Card style={styles.controlsCard}>
@@ -95,51 +120,16 @@ export default function ParentHomeScreen() {
           {t('common.switchRole')}
         </Text>
         <RoleSwitcher onChange={openRole} role={role} />
-        <Button onPress={reset} variant="ghost">
-          {t('common.reset')}
-        </Button>
       </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
-  topBar: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: spacing.md,
-    marginBottom: spacing.xxl,
-  },
-  brandBlock: {
-    gap: spacing.xxs,
-  },
-  alignEnd: {
-    alignSelf: 'flex-end',
-  },
-  alignStart: {
-    alignSelf: 'flex-start',
-  },
-  mockPill: {
-    borderRadius: radii.pill,
-    borderCurve: 'continuous',
-    backgroundColor: colors.goldLight,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
-  },
-  intro: {
-    gap: spacing.sm,
-    marginBottom: spacing.xl,
-  },
   treeCard: {
     alignItems: 'center',
     overflow: 'hidden',
+    gap: spacing.sm,
     borderColor: colors.sand,
     paddingTop: spacing.xl,
     marginBottom: spacing.lg,

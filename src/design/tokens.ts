@@ -7,6 +7,7 @@ export const colors = {
   forestSoft: '#2D5945',
   leaf: '#78A86F',
   leafLight: '#DDEDDD',
+  leafMist: '#EFF6EC',
   sand: '#E8D1A6',
   sandLight: '#F4E7CF',
   ivory: '#FBF8F1',
@@ -14,10 +15,14 @@ export const colors = {
   earth: '#624938',
   gold: '#C6973E',
   goldLight: '#F4E6C5',
+  goldGlow: '#FFF7DE',
+  sky: '#DDEDEB',
   ink: '#1D2A24',
   inkMuted: '#66716A',
   line: '#DDE3DC',
   white: '#FFFFFF',
+  success: '#317655',
+  successLight: '#E4F2E8',
   danger: '#A3443F',
   dangerLight: '#F8E4E2',
   transparent: 'transparent',
@@ -88,12 +93,14 @@ export const motion = {
     quick: 160,
     standard: 260,
     slow: 520,
+    reveal: 760,
   },
 } as const;
 
 export const layout = {
   maxContentWidth: 680,
   touchTarget: 48,
+  compactContentWidth: 520,
 } as const;
 
 export const tokens = {

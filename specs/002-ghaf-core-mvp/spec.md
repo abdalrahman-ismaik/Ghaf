@@ -4,7 +4,7 @@
 
 **Created**: 2026-08-22
 
-**Status**: Planning only; team review and explicit approval required before implementation
+**Status**: APPROVED on 2026-08-22 for deterministic mock implementation
 
 **Input**: Define the complete Ghaf competition-prototype journey from family input through a
 parent-approved child adventure, completion confirmation, measured food-rescue impact, and visible
@@ -14,8 +14,9 @@ Ghaf-tree growth, with a deterministic offline demonstration fallback.
 
 > Ghaf is an MVP Prototype for competition evaluation. It is designed to demonstrate the product concept, core interactions, AI value, cultural identity, visual quality, and sustainability impact. It is not intended to demonstrate production infrastructure, regulatory compliance, financial integration, large-scale security, or store-ready deployment.
 
-Feature 002 defines the complete judge-facing experience but does not authorize implementation.
-The team MUST review and approve the first technical plan before any Feature 002 code is written.
+Feature 002 authorizes implementation of the deterministic mock journey defined here. Live AI,
+camera capture, audio recording, remote storage, and other optional-later capabilities remain
+deferred until the prepared offline journey is reliable and separately approved.
 
 ## Prototype Capability Boundaries
 
@@ -29,6 +30,29 @@ The team MUST review and approve the first technical plan before any Feature 002
 Mock, seeded, simulated, and pregenerated behavior MUST be identified honestly in team guidance and
 in the demo wherever a judge could otherwise reasonably understand it as live. Prepared media and
 local interactions may provide the primary reliable demonstration path.
+
+## Approved Demo Defaults
+
+The team approved these implementation and rehearsal defaults on 2026-08-22:
+
+| Decision               | Approved value                                                                            |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| Scenario               | Synthetic extra-bread household food-waste situation                                      |
+| Child                  | Salem, age range 8–10                                                                     |
+| Prepared media         | Food image, family-wisdom clip, mission narration, and Child evidence image               |
+| Estimated impact input | 250 g / 2 portions                                                                        |
+| Available time         | 15 minutes                                                                                |
+| Reward                 | Golden Ghaf Leaf, symbolic and nonfinancial                                               |
+| Default language       | Arabic                                                                                    |
+| Starting tree state    | Stage 2 — Sapling at 48%                                                                  |
+| Completion award       | Deterministic +12 progress, crossing to stage 3 — Young tree                              |
+| Demo milestone         | A new branch appears during the impact celebration                                        |
+| Provider mode          | Mock-only primary path                                                                    |
+| Deferred integrations  | Live AI, camera capture, audio recording, and remote storage                              |
+| Android target         | The team's primary Android phone; exact model and OS are BLOCKED pending physical handoff |
+
+Member 1 — Mobile and visual experience is the integration owner for this implementation work
+period. Ownership and the approval record are maintained in `docs/TEAM_OWNERSHIP.md`.
 
 ## Approved Screen Scope
 
@@ -317,6 +341,63 @@ confirmation, impact update, and Ghaf growth using only seeded content.
 - **FR-047**: Feature 002 MUST NOT introduce production authentication, production child accounts,
   multiple families, schools, banking, real rewards, marketplace, social feed, store release,
   scalable backend, enterprise security, or regulatory-compliance work.
+
+### Approved Requirement Classification
+
+This classification controls implementation order. **DEMO-CRITICAL** requirements form the
+deterministic judge path or its minimum safeguards. **POLISH** requirements improve resilience or
+presentation without blocking the happy-path demonstration. **DEFERRED** requirements are outside
+the approved judging path and MUST NOT delay it.
+
+| Requirement | Classification | Rationale                                                                                            |
+| ----------- | -------------- | ---------------------------------------------------------------------------------------------------- |
+| FR-001      | DEMO-CRITICAL  | Correct Ghaf identity is required on every judge-facing screen.                                      |
+| FR-002      | DEMO-CRITICAL  | Honest prototype labels are a minimum safeguard.                                                     |
+| FR-003      | DEMO-CRITICAL  | The ten-screen limit protects the approved demo scope.                                               |
+| FR-004      | DEMO-CRITICAL  | Entry and language choice begin the rehearsed journey.                                               |
+| FR-005      | DEMO-CRITICAL  | Single-device role switching replaces authentication in the demo.                                    |
+| FR-006      | DEMO-CRITICAL  | Parent home is the start and status hub for the loop.                                                |
+| FR-007      | DEMO-CRITICAL  | Child home exposes the assigned adventure and shared progress.                                       |
+| FR-008      | DEMO-CRITICAL  | Salem's age range is required personalization context.                                               |
+| FR-009      | DEMO-CRITICAL  | The prepared food image is required; the optional live-camera clause is deferred.                    |
+| FR-010      | DEMO-CRITICAL  | The prepared family-wisdom clip is required; live recording is deferred.                             |
+| FR-011      | DEMO-CRITICAL  | The 250 g / 2 portions estimate anchors measurable impact.                                           |
+| FR-012      | DEMO-CRITICAL  | The 15-minute limit and Golden Ghaf Leaf complete the approved mission input.                        |
+| FR-013      | DEMO-CRITICAL  | Required-field validation prevents a broken generation state.                                        |
+| FR-014      | DEMO-CRITICAL  | Visible transformation of family input is Ghaf's AI value.                                           |
+| FR-015      | DEMO-CRITICAL  | The four stages make simulated generation legible to judges.                                         |
+| FR-016      | DEMO-CRITICAL  | Deterministic pregenerated output is the reliable primary provider.                                  |
+| FR-017      | DEMO-CRITICAL  | The structured bilingual mission is the contract for the complete loop.                              |
+| FR-018      | DEMO-CRITICAL  | Personalization connects Salem, family wisdom, bread, impact, and time.                              |
+| FR-019      | DEMO-CRITICAL  | Full Parent review is required before assignment.                                                    |
+| FR-020      | POLISH         | Edit-and-return is useful recovery but is not exercised in the 90-second happy path.                 |
+| FR-021      | DEMO-CRITICAL  | Explicit Parent assignment approval is a core safeguard.                                             |
+| FR-022      | POLISH         | Clear status distinctions improve comprehension without blocking assignment or completion.           |
+| FR-023      | DEMO-CRITICAL  | The approved story, three steps, and prepared narration drive the Child experience.                  |
+| FR-024      | DEMO-CRITICAL  | Visible three-step progress is the Child's primary interaction.                                      |
+| FR-025      | DEMO-CRITICAL  | The completion gate prevents an invalid happy-path submission.                                       |
+| FR-026      | DEMO-CRITICAL  | Prepared evidence or Parent confirmation enables offline submission.                                 |
+| FR-027      | DEMO-CRITICAL  | The reflection completes the behavior-change story.                                                  |
+| FR-028      | DEMO-CRITICAL  | Awaiting confirmation preserves the Parent approval gate and prevents early awards.                  |
+| FR-029      | DEMO-CRITICAL  | No chatbot or food-safety verdict is a minimum safeguard.                                            |
+| FR-030      | DEMO-CRITICAL  | Parent confirmation must show enough context for the final decision.                                 |
+| FR-031      | DEMO-CRITICAL  | Approval completes the path; retry remains its bounded rejection state.                              |
+| FR-032      | DEMO-CRITICAL  | Parent-confirmed impact supplies the displayed 250 g / 2 portions result.                            |
+| FR-033      | POLISH         | Retry-without-award is important recovery behavior outside the rehearsed happy path.                 |
+| FR-034      | POLISH         | Idempotency hardens repeated taps without changing the intended one-tap demo.                        |
+| FR-035      | DEMO-CRITICAL  | One impact record turns completion into a measurable result.                                         |
+| FR-036      | DEMO-CRITICAL  | Coherent totals connect confirmation to both homes and celebration.                                  |
+| FR-037      | DEMO-CRITICAL  | The six-stage model is the deterministic progression contract.                                       |
+| FR-038      | DEMO-CRITICAL  | The +12 stage crossing and new branch are the demo climax.                                           |
+| FR-039      | DEFERRED       | Progress after Full Ghaf tree is outside the prepared stage-2-to-stage-3 judging path.               |
+| FR-040      | DEMO-CRITICAL  | The complete approved flow must work in Arabic and English.                                          |
+| FR-041      | DEMO-CRITICAL  | Correct Arabic RTL and English LTR are core product behavior.                                        |
+| FR-042      | POLISH         | Mixed-script and extreme-label resilience refine bilingual presentation after the core layouts work. |
+| FR-043      | DEMO-CRITICAL  | A no-network mock journey is the primary reliability requirement.                                    |
+| FR-044      | DEMO-CRITICAL  | Exact reset values make repeated rehearsals deterministic.                                           |
+| FR-045      | DEMO-CRITICAL  | Synthetic data and secret exclusion are minimum safeguards.                                          |
+| FR-046      | DEMO-CRITICAL  | Parent approval and no food-safety claim are non-negotiable boundaries.                              |
+| FR-047      | DEMO-CRITICAL  | The exclusion list prevents production scope from displacing the MVP.                                |
 
 ### Key Entities
 

@@ -12,118 +12,151 @@
 
 **Production-ready:** No
 
-The repository is intentionally bounded to a single Expo application, one synthetic family, one
-Parent, one Child, a small approved screen set, replaceable local services, and a deterministic
-competition fallback. Feature 001 establishes the app foundation. Feature 002 is planning-only
-until the team reviews its initial technical plan.
+The repository contains one Expo application, one synthetic family, one Parent, one Child, ten
+approved screens, five replaceable service contracts, deterministic local mocks, and a resettable
+competition journey. Feature 002 implementation is locally complete; physical Android and human
+rehearsal acceptance remain open.
+
+## Exact Approved Screen Scope
+
+```text
+/
+/role
+/parent
+/parent/create
+/parent/generating
+/parent/review
+/child
+/child/mission
+/parent/confirmation
+/celebration
+```
+
+Expo also generates `_sitemap` and `+not-found`; they are framework built-ins, not product screens.
+No additional product route is approved.
 
 ## Capability Boundaries
 
-### Real for the competition prototype
+### Real in this MVP
 
-Once verified on the target build, these interactions are implemented by the application rather
-than represented by slides:
+- navigation across the ten approved screens;
+- Arabic/English switching and locale-aware RTL/LTR layout;
+- one-device Parent/Child role switching, clearly labeled as a shortcut;
+- mission input selection, bounded quantity/time/reward validation, and edit recovery;
+- four visible processing stages;
+- bilingual Parent review and explicit assignment approval;
+- Child narration control, three interactive steps, prepared evidence or Parent confirmation, and
+  required reflection;
+- Parent retry, bounded estimated-quantity confirmation, and idempotent completion;
+- local impact totals, six-stage Ghaf progression, deterministic growth motion, milestone, and
+  one-action reset.
 
-- mobile navigation among the approved routes;
-- Arabic/English selection and locale-aware RTL/LTR presentation;
-- Parent/Child role switching on one device;
-- Parent mission-review and Child mission-completion interactions planned for Feature 002;
-- impact-state update, Ghaf stage change, and demo reset planned for Feature 002;
-- a local typed service boundary that screens can consume.
+These interactions passed focused tests and five browser journeys. Native Android behavior remains
+`BLOCKED`, not inferred from web evidence.
 
-Web runtime claims are recorded in the README and demo runbook. Native Android, preview-build, and
-physical-device claims remain `NOT RUN` until direct device evidence is recorded.
+### Prepared and synthetic
 
-### Mocked
+- `food-rescue-bread.jpg` and `child-evidence.jpg` are generated, metadata-stripped demo images;
+- four Arabic/English MP3 files are synthetic text-to-speech, not recordings of real people;
+- transcripts, durations, and media IDs are declared in `src/features/missions/demoContent.ts`;
+- Metro's static asset references live behind one media-ID resolver;
+- no prepared asset contains a child, face, personal information, brand, or food-safety verdict.
 
-- Mission, media, AI, impact, and prototype-session providers use deterministic local `Mock*`
-  implementations in the foundation.
-- AI processing may be shown as timed visual stages.
-- Voice transcription, image interpretation, evidence review, Parent notifications, persistence,
-  and authentication may be simulated during the initial competition build.
-- No external service is required to complete the mock path.
+Prepared playback is implemented with `expo-audio`. The app requests no microphone or Android
+recording permission and enables neither background recording nor background playback. Native
+playback is not marked passed until the physical phone is tested.
 
-### Seeded
+### Mocked, simulated, and pregenerated
 
-- One family, one Parent profile, one Child profile, and one assigned mission use synthetic data.
-- Reset impact is 1,250 rescued grams, 5 rescued portions, 3 completed missions, and a 2-day streak.
-- Reset Ghaf progress is stage 2 (Sapling) at 48%.
-- Prepared images, audio, evidence, and demonstrations must be team-created or safely licensed and
-  contain no real child information.
+- `MockMissionService`, `MockMediaService`, `MockAIService`, `MockImpactService`, and
+  `MockPrototypeSessionService` provide the required path;
+- visible AI processing is a timed local simulation;
+- the structured bilingual mission is curated and pregenerated, then adjusted deterministically to
+  the entered quantity, time, and optional symbolic reward;
+- transcription, image interpretation, evidence judgment, notifications, authentication, and
+  persistence do not occur;
+- impact is a Parent-entered estimate, not a sensor, scale, or computer-vision result.
 
-### Pregenerated
+Mock, prepared, simulated, pregenerated, and estimated states are labeled in the interface. The
+complete required journey makes no remote API call.
 
-- Feature 001 mission copy is a curated bilingual fixture with source `pregenerated-mock`.
-- A pregenerated mission can remain the Feature 002 offline fallback even if a live AI adapter is
-  later added.
-- Pregenerated content must not be introduced as a live model response.
+### Seeded reset state
 
-### Optional later, if the mock journey is complete
+- Arabic/RTL, Parent, mock mode;
+- an empty ready-to-create mission draft and no assignment/submission/celebration;
+- one synthetic family and Salem, age range 8–10;
+- 1,250 rescued grams, 5 rescued portions, 3 completed missions, and a 2-day streak;
+- Ghaf stage 2 (Sapling) at 48%;
+- prepared media and one unassigned pregenerated mission still available.
 
-- one minimal server-side proxy for transcription and structured mission generation;
-- `expo-audio` playback and visible-action recording;
-- `expo-image-picker` and, only if necessary, camera capture;
-- local persistence or small Supabase storage;
+### Optional later—only after the Android mock gate passes
+
+- one minimal server-side proxy for voice transcription and structured mission generation;
+- visible-action audio recording;
+- image picker or camera capture;
+- small local persistence or Supabase storage;
 - saved mission history.
 
-Each optional capability needs a reviewed plan change and must preserve the deterministic offline
-fallback. An OpenAI secret belongs only on the server side, never in the mobile bundle.
+Any optional adapter must preserve the current contracts and deterministic offline fallback. An
+OpenAI secret belongs only on a server-side proxy, never in the mobile application or repository.
 
 ### Explicit future work
 
-- production registration, authentication, child accounts, password recovery, and authorization;
-- production privacy controls and legal/compliance work;
+- production registration, authentication, child accounts, permissions, and password recovery;
+- production privacy controls, compliance programs, or legal claims;
 - multiple families, schools, administration, and tenancy;
-- banking, payment cards, real financial rewards, and a marketplace;
-- social feed, unrestricted chat, advanced analytics, and production notifications;
-- scalable backend, production monitoring, deployment automation, store signing, and release;
-- accurate computer-vision measurement of food weight or food-safety assessment.
+- banking, cards, real financial rewards, marketplace, or social feed;
+- scalable backend, monitoring, deployment automation, store signing, or release;
+- accurate image-based food weighing, food-safety assessment, or unrestricted Child chat.
 
-These are not missing deliverables for the SMAC 2026 prototype.
+These are intentionally out of scope, not missing competition deliverables.
 
 ## Minimum Safeguards
 
-The prototype retains only these bounded safeguards:
+1. Never commit API keys or place an OpenAI secret in the mobile application.
+2. Use only synthetic/team-created demonstration data; no real child data.
+3. Recording, if later approved, starts only after a visible microphone action and never runs in
+   the background.
+4. Ghaf never claims to decide whether food is safe to eat; a Parent decides what is suitable.
+5. Parent review and approval remain part of the journey.
+6. Never call this prototype production-ready or legally compliant.
 
-1. Never commit API keys.
-2. Never place an OpenAI secret key directly inside the mobile application.
-3. Use synthetic or team-created demo information rather than real child data.
-4. Audio recording begins only after a visible microphone action.
-5. Do not implement continuous or background recording.
-6. Do not claim that AI can determine whether food is safe to eat.
-7. Parent approval remains part of the experience.
-8. Do not claim the prototype is production-ready or legally compliant.
+These safeguards do not create a threat-modeling, incident-response, compliance, retention,
+enterprise-secret, or penetration-testing workstream.
 
-These safeguards do not create a separate threat-modeling, incident-response, compliance,
-retention-policy, enterprise secrets, or penetration-testing workstream.
+## Current Technical Limitations
 
-## Known Technical Limitations
+- Session state is in memory; a browser/app reload restores the initial session.
+- Native global direction changes may require an app reopen; screen-level direction updates
+  immediately.
+- Web static export has no offline service worker. Its visible text fallback keeps the journey
+  usable if an audio file was not cached before network disablement.
+- Android launch, native media playback, keyboard behavior, RTL, touch, reduced motion, and Back
+  handling await a named physical-device rehearsal.
+- The Ghaf tree is a deterministic layered SVG with six discrete stages, not a biological model or
+  real-time 3D experience.
+- The Golden Ghaf Leaf is symbolic and has no monetary value.
+- Android package and iOS bundle identifiers are provisional.
+- The focused 32-test suite protects demo logic; it is intentionally not a production regression
+  program.
+- iOS and web are secondary development surfaces.
 
-- Foundation state is in memory; a reload may discard changes before reset.
-- Native global direction changes may require an app reload, especially during Expo development.
-  Screen-level logical alignment is the fallback, and the final result still needs physical Android
-  verification.
-- Impact values are simplified estimates entered or seeded for demonstration; they are not audited,
-  weighed, or derived from a reliable vision model.
-- Mock AI does not transcribe speech, interpret images, judge evidence, or contact a model.
-- Prepared-media and simulated-loading paths favor demo reliability over live-input realism.
-- The Ghaf tree uses deterministic discrete stages, not biological simulation or real-time 3D.
-- Role switching replaces authentication and does not enforce identity or permission boundaries.
-- Native Android package and iOS bundle identifiers are provisional.
-- Automated tests are deliberately focused; there is no broad production regression suite.
-- iOS and web are secondary convenience surfaces and may not receive the same rehearsal depth.
+## Scope Audit — 2026-08-22
 
-## Claims the Team Must Avoid
+| Audit                                                                  | Result                                                               |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Exactly ten authored product routes                                    | PASSED                                                               |
+| Arabic/English resource parity                                         | PASSED — 279 / 279 leaf keys                                         |
+| Synthetic-only family/media data                                       | PASSED                                                               |
+| Secret-pattern scan                                                    | PASSED                                                               |
+| Legacy product-brand scan                                              | PASSED; Arabic `أثر` appears only with its ordinary meaning “impact” |
+| No network client or production backend in `app/` or `src/`            | PASSED                                                               |
+| No banking, payment, marketplace, social feed, or unrestricted chatbot | PASSED                                                               |
+| Honest mock/prepared/simulated/estimated labels                        | PASSED                                                               |
+| No microphone/recording/background-audio permission                    | PASSED                                                               |
+| Physical Android evidence                                              | BLOCKED                                                              |
+| Human 75–105-second and three-person review                            | NOT RUN                                                              |
 
-Do not say or imply that the prototype:
-
-- is production-ready, store-ready, legally compliant, or secure for real child data;
-- has continuous listening, autonomous Child chat, or objective food-safety intelligence;
-- measures food weight accurately from an image;
-- provides real money, banking, or marketplace rewards;
-- operates live AI, storage, notifications, or evidence review when the demo is using a mock;
-- supports multiple families, schools, or production accounts.
-
-Use direct language during the pitch: the interaction and product concept are real; selected AI,
-media, evidence, and persistence steps are deliberately mocked or pregenerated for a reliable MVP
-Prototype demonstration.
+During the pitch, say: the interaction and product concept are real; AI processing, transcription,
+image understanding, evidence judgment, and persistence are deliberately mocked or pregenerated
+for a reliable MVP Prototype.

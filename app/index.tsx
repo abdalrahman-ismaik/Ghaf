@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { GhafTree } from '@/components/GhafTree';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { DisclosureCard } from '@/components/journey';
 import { Button, Card, Screen, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -59,7 +60,15 @@ export default function EntryScreen() {
         <LanguageSwitcher />
       </View>
 
-      <Button onPress={() => router.push('/role')}>{t('common.enter')}</Button>
+      <DisclosureCard body={t('entry.prototypeDisclosure')} kind="prepared" />
+
+      <Button
+        onPress={() => router.push('/role')}
+        style={styles.enterButton}
+        testID="enter-prototype-button"
+      >
+        {t('common.enter')}
+      </Button>
     </Screen>
   );
 }
@@ -122,5 +131,8 @@ const styles = StyleSheet.create({
   languageBlock: {
     gap: spacing.sm,
     marginBottom: spacing.lg,
+  },
+  enterButton: {
+    marginTop: spacing.lg,
   },
 });

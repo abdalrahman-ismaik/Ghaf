@@ -1,16 +1,43 @@
 # Team Ownership
 
-This is the provisional ownership map for the Ghaf bootstrap work period beginning 2026-08-22.
+This is the provisional ownership map for the Ghaf work period beginning 2026-08-22.
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
 ## Current Integration Owner
 
-**Member 1 — Mobile and visual experience** is the integration owner for the current bootstrap
-period.
+**Member 1 — Mobile and visual experience** is the integration owner for the current Feature 002
+deterministic mock implementation period.
 
 The integration owner coordinates shared configuration, resolves file-boundary conflicts, checks
 the combined diff, runs the final validation gate, and decides when a work period is ready to merge.
 This role does not allow silent overwrites of another member's active changes.
+
+## Feature 002 Approval Record
+
+**Decision date:** 2026-08-22
+
+**Decision:** APPROVED for deterministic mock implementation
+
+**Integration owner:** Member 1 — Mobile and visual experience
+
+| Decision              | Approved value                                                                          |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| Scenario              | Synthetic extra-bread household food-waste situation                                    |
+| Child                 | Salem, age range 8–10                                                                   |
+| Prepared assets       | Food image, family-wisdom clip, mission narration, and Child evidence image             |
+| Quantity              | 250 g / 2 portions                                                                      |
+| Available time        | 15 minutes                                                                              |
+| Reward                | Golden Ghaf Leaf, symbolic and nonfinancial                                             |
+| Default locale        | Arabic                                                                                  |
+| Starting Ghaf state   | Stage 2 — Sapling at 48%                                                                |
+| Completion result     | +12 progress, crossing to stage 3 — Young tree, with a new-branch milestone             |
+| Provider scope        | Mock-only primary path                                                                  |
+| Deferred integrations | Live AI, camera capture, audio recording, and remote storage                            |
+| Android target        | Team's primary Android phone — **BLOCKED:** exact model and OS pending physical handoff |
+
+This approval completed Feature 002 task T001 and authorized the deterministic implementation.
+Implementation and local evidence are now integrated under Member 1; physical Android task T039
+and human rehearsal task T041 remain open.
 
 ## Provisional Human Ownership
 
@@ -61,9 +88,10 @@ files changed, checks run, manual evidence, and gaps, then releases the boundary
 
 Record every integration-owner change here before new work resumes:
 
-| Effective time             | Previous owner | New owner | Active feature/work period        | Reason                         |
-| -------------------------- | -------------- | --------- | --------------------------------- | ------------------------------ |
-| 2026-08-22 bootstrap start | —              | Member 1  | Feature 001 repository foundation | Initial provisional assignment |
+| Effective time                  | Previous owner | New owner | Active feature/work period                    | Reason                             |
+| ------------------------------- | -------------- | --------- | --------------------------------------------- | ---------------------------------- |
+| 2026-08-22 bootstrap start      | —              | Member 1  | Feature 001 repository foundation             | Initial provisional assignment     |
+| 2026-08-22 Feature 002 approval | Member 1       | Member 1  | Feature 002 deterministic mock implementation | Plan approved; ownership continues |
 
 If there is no newer row, Member 1 remains the integration owner.
 

@@ -1,34 +1,35 @@
 # Quickstart and Acceptance Guide: Ghaf Core MVP
 
-**Status**: FUTURE VALIDATION GUIDE — Feature 002 is not implemented. Do not report any scenario in
-this document as passed until the team approves the plan, implements the tasks, and records the
-observed result.
+**Status**: IMPLEMENTED LOCALLY — deterministic mock journey approved 2026-08-22. Automated checks
+and five bilingual browser flows pass. Physical Android and human timed/concept rehearsals remain
+open and must not be inferred from local or web evidence.
 
-## Review gate before implementation
+## Approval record
 
-The three-member team must approve:
+The team approved:
 
 - the ten-screen flow and reset destination;
 - prepared synthetic image, family voice note, mission narration, evidence, and bilingual mission
   content;
 - quantity/time defaults, Ghaf award thresholds, and the celebration milestone;
-- whether live media or AI adds enough value to enter scope;
-- the primary Android device and integration owner for the work period.
+- mock-only generation with live AI/camera/recording/storage deferred;
+- Member 1 — Mobile and visual experience as integration owner.
 
-Mock mode remains required even if an optional live experiment is approved. No OpenAI key belongs
-in the mobile application or repository.
+The exact primary Android model/OS remains blocked pending physical handoff. Mock mode remains
+required if any later live experiment is approved. No OpenAI key belongs in the mobile application
+or repository.
 
-## Prerequisites after approval
+## Prerequisites
 
 - The Feature 001 foundation remains passing.
 - Node.js 22.13 or newer and npm are available.
 - The named Android development build or device is available for native RTL review.
-- Team-created demo assets contain no real Child data and are approved for public presentation.
-- Feature 002 tasks are complete; optional live services are not prerequisites.
+- Synthetic prepared images and audio contain no real Child data.
+- Optional live services are not prerequisites and are not implemented.
 
 ## Install and validate
 
-After implementation, run from the repository root:
+Run from the repository root:
 
 ```bash
 npm ci
@@ -38,9 +39,9 @@ npm run format:check
 npm test
 ```
 
-Expected result after implementation: every command exits successfully, including focused mission
-lifecycle, retry, idempotent impact, Ghaf progression, reset, and complete mock-flow tests. A passing
-current Feature 001 test suite is not evidence that Feature 002 is complete.
+Observed result on 2026-08-22: every command exited successfully. Vitest passed 5 files / 32 tests,
+covering mission lifecycle, rejected-provider fallback, retry, idempotent impact, six-stage Ghaf
+progression, five source-state resets, and the complete mock flow.
 
 Start the development surface with:
 
@@ -128,17 +129,17 @@ Record device model, OS version, build identifier, observed reload behavior, res
 
 | Check                      | Required evidence                             | Initial status |
 | -------------------------- | --------------------------------------------- | -------------- |
-| Automated validation       | Successful command output                     | NOT RUN        |
-| Ten-screen navigation      | Five consecutive reset-and-flow trials        | NOT RUN        |
+| Automated validation       | Successful command output                     | PASSED         |
+| Ten-screen navigation      | Five consecutive reset-and-flow trials        | PASSED (web)   |
 | Arabic journey / RTL       | Named physical Android review                 | NOT RUN        |
 | English journey / LTR      | Named physical Android review                 | NOT RUN        |
-| Offline mock journey       | Five complete offline trials                  | NOT RUN        |
-| Retry without award        | Before/after totals plus focused test         | NOT RUN        |
-| Idempotent approval        | Five repeated approvals plus focused test     | NOT RUN        |
-| Six Ghaf stages            | Isolated deterministic stage review           | NOT RUN        |
+| Offline mock journey       | Five complete offline trials                  | PASSED (web)   |
+| Retry without award        | Before/after totals plus focused test         | PASSED         |
+| Idempotent approval        | Five repeated approvals plus focused test     | PASSED         |
+| Six Ghaf stages            | Isolated deterministic stage review           | PASSED (logic) |
 | 90-second demo             | Timings from five rehearsals                  | NOT RUN        |
 | Three-person concept check | Each person identifies the five core concepts | NOT RUN        |
 
-Feature 002 can be considered implemented only when required checks pass and no unresolved critical
-demo blocker remains. Optional live AI, cloud storage, recording, camera capture, and saved history
-may all remain `NOT RUN` without blocking the MVP Prototype.
+Feature 002 is locally implemented, but the competition build is not demo-accepted until the
+physical Android and human rehearsal rows pass with no critical blocker. Optional live AI, cloud
+storage, recording, camera capture, and saved history may remain unimplemented.
