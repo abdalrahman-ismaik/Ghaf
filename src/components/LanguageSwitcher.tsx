@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/primitives';
-import { colors, radii, spacing } from '@/design/tokens';
+import { colors, layout, radii, spacing } from '@/design/tokens';
 import { configureNativeDirection, setI18nLocale } from '@/i18n';
 import type { LocaleCode } from '@/models/prototype';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -86,25 +86,23 @@ const styles = StyleSheet.create({
   segment: {
     flexDirection: 'row',
     width: '100%',
-    padding: 4,
-    gap: 4,
-    borderRadius: radii.md,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
-    backgroundColor: colors.sandLight,
+    backgroundColor: colors.transparent,
     borderWidth: 1,
     borderColor: colors.sand,
   },
   compactSegment: {
     width: 'auto',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
   },
   option: {
     flex: 1,
-    minHeight: 44,
+    minHeight: layout.touchTarget,
     minWidth: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.sm,
+    borderRadius: 0,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
@@ -112,8 +110,8 @@ const styles = StyleSheet.create({
   compactOption: {
     flex: 0,
     minWidth: 64,
-    minHeight: 38,
-    borderRadius: radii.pill,
+    minHeight: layout.touchTarget,
+    borderRadius: 0,
     paddingHorizontal: spacing.sm,
   },
   optionSelected: {

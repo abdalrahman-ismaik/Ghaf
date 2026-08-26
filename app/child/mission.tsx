@@ -25,6 +25,7 @@ export default function ChildMissionScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
   const mission = usePrototypeStore((state) => state.activeMission);
   const submissionDraft = usePrototypeStore((state) => state.submissionDraft);
   const submission = usePrototypeStore((state) => state.submission);
@@ -70,10 +71,11 @@ export default function ChildMissionScreen() {
           onBack={() => router.replace('/child')}
           title={t('childMission.awaitingTitle')}
         />
-        <Card elevated style={styles.awaitingCard}>
-          <Text align="center" color="forest" variant="title">
-            ✓
-          </Text>
+        <Card style={styles.awaitingCard}>
+          <View style={styles.awaitingMark}>
+            <View style={styles.awaitingCheckShort} />
+            <View style={styles.awaitingCheckLong} />
+          </View>
           <Text align="center" color="inkMuted">
             {t('childMission.awaitingBody')}
           </Text>
@@ -107,7 +109,7 @@ export default function ChildMissionScreen() {
         />
       ) : null}
 
-      <Card elevated style={styles.storyCard}>
+      <Card style={styles.storyCard}>
         <Text color="forest" variant="heading">
           {t('mission.story')}
         </Text>
@@ -140,6 +142,7 @@ export default function ChildMissionScreen() {
             onPress={() => setStepCompleted(step.id, !step.completed)}
             style={({ pressed }) => [
               styles.stepCard,
+              direction === 'rtl' ? styles.rowRtl : null,
               step.completed ? styles.stepCardComplete : null,
               pressed ? styles.pressed : null,
             ]}
@@ -147,8 +150,9 @@ export default function ChildMissionScreen() {
           >
             <View style={[styles.stepCheck, step.completed ? styles.stepCheckComplete : null]}>
               <Text align="center" color={step.completed ? 'white' : 'forest'} variant="label">
-                {step.completed ? '✓' : step.order}
+                {step.order}
               </Text>
+              {step.completed ? <View style={styles.completedTick} /> : null}
             </View>
             <Text color="forest" style={styles.stepText} variant="label">
               {localize(step.instruction, locale)}
@@ -231,9 +235,9 @@ const styles = StyleSheet.create({
     minHeight: 84,
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: radii.lg,
+    borderRadius: radii.md,
     borderCurve: 'continuous',
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.surface,
     padding: spacing.md,
@@ -248,7 +252,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderWidth: 1,
     borderColor: colors.leaf,
     backgroundColor: colors.ivory,
@@ -257,6 +261,18 @@ const styles = StyleSheet.create({
     borderColor: colors.ghaf,
     backgroundColor: colors.ghaf,
   },
+  completedTick: {
+    position: 'absolute',
+    right: 4,
+    bottom: 4,
+    width: 6,
+    height: 6,
+    borderRadius: radii.pill,
+    backgroundColor: colors.goldLight,
+  },
+  rowRtl: {
+    flexDirection: 'row-reverse',
+  },
   stepText: {
     minWidth: 0,
     flex: 1,
@@ -264,7 +280,7 @@ const styles = StyleSheet.create({
   evidencePreview: {
     overflow: 'hidden',
     gap: spacing.sm,
-    borderRadius: radii.lg,
+    borderRadius: radii.md,
     borderCurve: 'continuous',
     backgroundColor: colors.leafMist,
     paddingBottom: spacing.md,
@@ -282,6 +298,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: colors.leaf,
     backgroundColor: colors.leafMist,
+  },
+  awaitingMark: {
+    width: 58,
+    height: 52,
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderColor: colors.leaf,
+    backgroundColor: colors.surface,
+  },
+  awaitingCheckShort: {
+    position: 'absolute',
+    left: 14,
+    top: 28,
+    width: 15,
+    height: 3,
+    backgroundColor: colors.ghaf,
+    transform: [{ rotate: '45deg' }],
+  },
+  awaitingCheckLong: {
+    position: 'absolute',
+    left: 24,
+    top: 24,
+    width: 25,
+    height: 3,
+    backgroundColor: colors.ghaf,
+    transform: [{ rotate: '-48deg' }],
   },
   pressed: {
     opacity: 0.78,

@@ -70,12 +70,12 @@ export default function ChildHomeScreen() {
         title={t('childHome.greeting', { name: childName })}
       />
 
-      <Card elevated style={styles.treeCard} testID="child-ghaf-card">
-        <View pointerEvents="none" style={styles.sparkleOne} />
-        <View pointerEvents="none" style={styles.sparkleTwo} />
+      {mission?.approvedByParent ? <View style={styles.primaryAction}>{action}</View> : null}
+
+      <View style={styles.treeCard} testID="child-ghaf-card">
         <GhafTree progressPercent={ghaf.progressPercent} size={246} stage={ghaf.stage} />
         <ProgressBar value={ghaf.progressPercent} />
-      </Card>
+      </View>
 
       <View style={styles.section}>
         <ImpactCard impact={impact} />
@@ -86,7 +86,7 @@ export default function ChildHomeScreen() {
           {t('childHome.adventure')}
         </Text>
         {mission?.approvedByParent ? (
-          <MissionCard action={action} mission={mission} />
+          <MissionCard mission={mission} />
         ) : (
           <EmptyState body={t('states.emptyBody')} title={t('states.emptyTitle')} />
         )}
@@ -103,41 +103,24 @@ export default function ChildHomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  primaryAction: {
+    marginBottom: spacing.xl,
+  },
   treeCard: {
     alignItems: 'center',
-    overflow: 'hidden',
-    gap: spacing.sm,
-    borderColor: colors.leaf,
-    backgroundColor: colors.leafMist,
-    paddingTop: spacing.sm,
-    marginBottom: spacing.lg,
-  },
-  sparkleOne: {
-    position: 'absolute',
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: colors.goldLight,
-    opacity: 0.82,
-    top: spacing.lg,
-    right: spacing.lg,
-  },
-  sparkleTwo: {
-    position: 'absolute',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: colors.leafLight,
-    opacity: 0.9,
-    top: 72,
-    left: spacing.xl,
+    gap: spacing.md,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: spacing.lg,
+    marginBottom: spacing.xl,
   },
   section: {
     gap: spacing.sm,
     marginBottom: spacing.lg,
   },
   controlsCard: {
-    backgroundColor: colors.sandLight,
-    borderColor: colors.sand,
+    backgroundColor: colors.transparent,
+    borderColor: colors.line,
   },
 });

@@ -68,9 +68,7 @@ export default function CelebrationScreen() {
         title={t('celebration.title')}
       />
 
-      <Card elevated style={styles.treeCard} testID="ghaf-growth-celebration">
-        <View pointerEvents="none" style={styles.glowOne} />
-        <View pointerEvents="none" style={styles.glowTwo} />
+      <View style={styles.treeCard} testID="ghaf-growth-celebration">
         <GhafTree
           celebrateMilestone={celebration.milestone !== null}
           progressPercent={ghaf.progressPercent}
@@ -84,7 +82,7 @@ export default function CelebrationScreen() {
             {stageChange}
           </Text>
         </View>
-      </Card>
+      </View>
 
       <View style={styles.stats}>
         <StatPill label={t('impact.foodRescued')} value={rescued} />
@@ -98,12 +96,12 @@ export default function CelebrationScreen() {
       {celebration.milestone ? (
         <Card style={styles.milestoneCard}>
           <View style={styles.milestoneIcon}>
-            <Text align="center" color="earth" style={styles.leafGlyph}>
-              ❧
-            </Text>
+            <View style={styles.milestoneStem} />
+            <View style={[styles.milestoneLeaf, styles.milestoneLeafLeft]} />
+            <View style={[styles.milestoneLeaf, styles.milestoneLeafRight]} />
           </View>
           <View style={styles.milestoneCopy}>
-            <Text color="gold" variant="label">
+            <Text color="earth" variant="label">
               {t('celebration.milestoneTitle')}
             </Text>
             <Text color="forest" variant="heading">
@@ -137,36 +135,19 @@ const styles = StyleSheet.create({
   },
   treeCard: {
     alignItems: 'center',
-    overflow: 'hidden',
     gap: spacing.md,
-    borderColor: colors.gold,
-    backgroundColor: colors.leafMist,
-    marginBottom: spacing.lg,
-  },
-  glowOne: {
-    position: 'absolute',
-    width: 116,
-    height: 116,
-    borderRadius: 58,
-    backgroundColor: colors.goldLight,
-    opacity: 0.72,
-    top: -44,
-    right: -30,
-  },
-  glowTwo: {
-    position: 'absolute',
-    width: 82,
-    height: 82,
-    borderRadius: 41,
-    backgroundColor: colors.sky,
-    opacity: 0.82,
-    bottom: 58,
-    left: -24,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: spacing.lg,
+    marginBottom: spacing.xl,
   },
   stageChange: {
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
-    backgroundColor: colors.goldLight,
+    borderWidth: 1,
+    borderColor: colors.sand,
+    backgroundColor: colors.goldGlow,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
   },
@@ -193,12 +174,35 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
-    backgroundColor: colors.goldLight,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    borderColor: colors.gold,
+    backgroundColor: colors.goldGlow,
   },
-  leafGlyph: {
-    fontSize: 38,
-    lineHeight: 44,
+  milestoneStem: {
+    width: 3,
+    height: 38,
+    borderRadius: radii.pill,
+    backgroundColor: colors.earth,
+    transform: [{ rotate: '8deg' }],
+  },
+  milestoneLeaf: {
+    position: 'absolute',
+    width: 18,
+    height: 10,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
+    backgroundColor: colors.ghaf,
+  },
+  milestoneLeafLeft: {
+    top: 21,
+    left: 12,
+    transform: [{ rotate: '28deg' }],
+  },
+  milestoneLeafRight: {
+    top: 13,
+    right: 11,
+    transform: [{ rotate: '-30deg' }],
   },
   milestoneCopy: {
     minWidth: 0,

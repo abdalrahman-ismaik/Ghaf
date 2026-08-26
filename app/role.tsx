@@ -3,21 +3,32 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { Button, Card, Screen, Text } from '@/components/primitives';
+import { Button, Screen, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
 import type { PrototypeRole } from '@/models/prototype';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface RoleChoiceProps {
   description: string;
-  glyph: string;
+  divider?: boolean;
+  kind: PrototypeRole;
   label: string;
   onPress: () => void;
   selected: boolean;
   testID: string;
 }
 
-function RoleChoice({ description, glyph, label, onPress, selected, testID }: RoleChoiceProps) {
+function RoleChoice({
+  description,
+  divider = false,
+  kind,
+  label,
+  onPress,
+  selected,
+  testID,
+}: RoleChoiceProps) {
+  const direction = usePrototypeStore((state) => state.direction);
+
   return (
     <Pressable
       accessibilityRole="radio"
@@ -25,23 +36,37 @@ function RoleChoice({ description, glyph, label, onPress, selected, testID }: Ro
       onPress={onPress}
       style={({ pressed }) => [
         styles.roleChoice,
+        divider ? styles.roleChoiceDivider : null,
+        direction === 'rtl' ? styles.rowRtl : null,
         selected ? styles.roleChoiceSelected : null,
         pressed ? styles.pressed : null,
       ]}
       testID={testID}
     >
       <View style={[styles.roleGlyph, selected ? styles.roleGlyphSelected : null]}>
-        <Text align="center" color={selected ? 'white' : 'ghaf'} style={styles.roleGlyphText}>
-          {glyph}
-        </Text>
+        <View style={[styles.roleStem, selected ? styles.roleStemSelected : null]} />
+        <View
+          style={[
+            styles.roleLeaf,
+            kind === 'parent' ? styles.roleLeafParent : styles.roleLeafChild,
+            selected ? styles.roleLeafSelected : null,
+          ]}
+        />
+        {kind === 'parent' ? (
+          <View
+            style={[
+              styles.roleLeaf,
+              styles.roleLeafSecond,
+              selected ? styles.roleLeafSelected : null,
+            ]}
+          />
+        ) : null}
       </View>
       <View style={styles.roleCopy}>
-        <Text align="center" color="forest" variant="heading">
+        <Text color="forest" variant="heading">
           {label}
         </Text>
-        <Text align="center" color="inkMuted">
-          {description}
-        </Text>
+        <Text color="inkMuted">{description}</Text>
       </View>
     </Pressable>
   );
@@ -72,7 +97,7 @@ export default function RoleSelectorScreen() {
           <Text color="forest" variant="heading">
             Ghaf · غاف
           </Text>
-          <Text color="gold" variant="caption">
+          <Text color="earth" variant="caption">
             {t('common.prototype')}
           </Text>
         </View>
@@ -80,19 +105,23 @@ export default function RoleSelectorScreen() {
       </View>
 
       <View style={styles.intro}>
-        <Text color="gold" variant="label">
-          {t('role.eyebrow')}
-        </Text>
         <Text color="forest" variant="title">
           {t('role.title')}
         </Text>
         <Text color="inkMuted">{t('role.subtitle')}</Text>
+        <View style={styles.introRecord}>
+          <View style={styles.introLine} />
+          <Text color="earth" variant="caption">
+            {t('role.eyebrow')}
+          </Text>
+        </View>
       </View>
 
       <View accessibilityRole="radiogroup" style={styles.roleGrid}>
         <RoleChoice
           description={t('role.parentDescription')}
-          glyph="⌂"
+          divider
+          kind="parent"
           label={t('common.parent')}
           onPress={() => openRole('parent')}
           selected={role === 'parent'}
@@ -100,7 +129,7 @@ export default function RoleSelectorScreen() {
         />
         <RoleChoice
           description={t('role.childDescription')}
-          glyph="✦"
+          kind="child"
           label={t('common.child')}
           onPress={() => openRole('child')}
           selected={role === 'child'}
@@ -108,12 +137,12 @@ export default function RoleSelectorScreen() {
         />
       </View>
 
-      <Card style={styles.disclosure}>
+      <View style={styles.disclosure}>
         <View style={styles.disclosureDot} />
         <Text color="inkMuted" style={styles.disclosureText} variant="caption">
           {t('role.shortcutNote')} {t('mission.sourceNote')}
         </Text>
-      </Card>
+      </View>
 
       <Button onPress={reset} variant="ghost">
         {t('common.reset')}
@@ -138,32 +167,52 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     marginBottom: spacing.xl,
   },
+  introRecord: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+  },
+  introLine: {
+    width: 32,
+    height: 1,
+    backgroundColor: colors.gold,
+  },
   roleGrid: {
-    gap: spacing.md,
+    overflow: 'hidden',
+    borderRadius: radii.md,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.surface,
     marginBottom: spacing.lg,
   },
   roleChoice: {
-    minHeight: 188,
+    minHeight: 136,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     gap: spacing.md,
-    borderRadius: radii.lg,
-    borderCurve: 'continuous',
-    borderWidth: 1.5,
-    borderColor: colors.line,
+    borderRadius: 0,
     backgroundColor: colors.surface,
-    padding: spacing.xl,
+    padding: spacing.lg,
+  },
+  roleChoiceDivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.line,
+  },
+  rowRtl: {
+    flexDirection: 'row-reverse',
   },
   roleChoiceSelected: {
-    borderColor: colors.ghaf,
     backgroundColor: colors.leafLight,
   },
   roleGlyph: {
-    width: 64,
-    height: 64,
+    width: 58,
+    height: 74,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     backgroundColor: colors.ivory,
     borderWidth: 1,
     borderColor: colors.sand,
@@ -172,12 +221,47 @@ const styles = StyleSheet.create({
     backgroundColor: colors.ghaf,
     borderColor: colors.ghaf,
   },
-  roleGlyphText: {
-    fontSize: 30,
-    lineHeight: 36,
+  roleStem: {
+    position: 'absolute',
+    bottom: 14,
+    width: 3,
+    height: 37,
+    borderRadius: radii.pill,
+    backgroundColor: colors.earth,
+    transform: [{ rotate: '6deg' }],
+  },
+  roleStemSelected: {
+    backgroundColor: colors.goldLight,
+  },
+  roleLeaf: {
+    position: 'absolute',
+    width: 19,
+    height: 10,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
+    backgroundColor: colors.ghaf,
+  },
+  roleLeafSelected: {
+    backgroundColor: colors.white,
+  },
+  roleLeafParent: {
+    top: 20,
+    left: 13,
+    transform: [{ rotate: '25deg' }],
+  },
+  roleLeafChild: {
+    top: 29,
+    right: 11,
+    transform: [{ rotate: '-24deg' }],
+  },
+  roleLeafSecond: {
+    top: 34,
+    right: 10,
+    transform: [{ rotate: '-25deg' }],
   },
   roleCopy: {
     maxWidth: 320,
+    flex: 1,
     gap: spacing.xs,
   },
   pressed: {
@@ -189,6 +273,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
     backgroundColor: colors.goldLight,
+    borderWidth: 1,
     borderColor: colors.sand,
     marginBottom: spacing.lg,
     padding: spacing.md,

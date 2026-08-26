@@ -29,7 +29,7 @@ export function PrototypeStatusBar() {
       <View style={[styles.content, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
           <View style={styles.liveDot} />
-          <Text color="forest" numberOfLines={1} style={styles.disclosureText} variant="caption">
+          <Text color="white" style={styles.disclosureText} variant="caption">
             {t('prototypeStatus.mode')}
           </Text>
         </View>
@@ -41,7 +41,7 @@ export function PrototypeStatusBar() {
           style={({ pressed }) => [styles.resetButton, pressed ? styles.pressed : null]}
           testID="reset-demo-button"
         >
-          <Text align="center" color="ghaf" variant="caption">
+          <Text align="center" color="goldLight" variant="caption">
             {t('common.reset')}
           </Text>
         </Pressable>
@@ -53,9 +53,9 @@ export function PrototypeStatusBar() {
 const styles = StyleSheet.create({
   safeRoot: {
     zIndex: 10,
-    backgroundColor: colors.goldGlow,
+    backgroundColor: colors.forest,
     borderBottomWidth: 1,
-    borderBottomColor: colors.sand,
+    borderBottomColor: colors.forestSoft,
   },
   content: {
     width: '100%',
@@ -84,22 +84,22 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   liveDot: {
-    width: 8,
-    height: 8,
+    width: 4,
+    height: 20,
     flexShrink: 0,
-    borderRadius: radii.pill,
-    backgroundColor: colors.success,
+    borderRadius: radii.sm,
+    backgroundColor: colors.gold,
   },
   resetButton: {
     minHeight: layout.touchTarget,
     minWidth: 88,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.sand,
-    backgroundColor: colors.surface,
+    borderColor: colors.forestSoft,
+    backgroundColor: colors.transparent,
     paddingHorizontal: spacing.sm,
   },
   pressed: {

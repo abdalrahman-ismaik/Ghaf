@@ -69,6 +69,13 @@ export default function ParentHomeScreen() {
       </Button>
     );
   })();
+  const primaryAction = mission ? (
+    missionAction
+  ) : (
+    <Button onPress={() => router.push('/parent/create')} testID="create-mission-button">
+      {t('parentHome.createMission')}
+    </Button>
+  );
 
   return (
     <Screen testID="parent-home-screen">
@@ -79,7 +86,9 @@ export default function ParentHomeScreen() {
         title={t('parentHome.greeting', { name: familyName })}
       />
 
-      <Card elevated style={styles.treeCard} testID="family-ghaf-card">
+      <View style={styles.primaryAction}>{primaryAction}</View>
+
+      <View style={styles.treeCard} testID="family-ghaf-card">
         <View style={styles.treeCopy}>
           <Text align="center" color="forest" variant="heading">
             {t('parentHome.treeTitle')}
@@ -90,7 +99,7 @@ export default function ParentHomeScreen() {
         </View>
         <GhafTree progressPercent={ghaf.progressPercent} size={236} stage={ghaf.stage} />
         <ProgressBar value={ghaf.progressPercent} />
-      </Card>
+      </View>
 
       <View style={styles.section}>
         <ImpactCard impact={impact} />
@@ -101,17 +110,9 @@ export default function ParentHomeScreen() {
           {t('parentHome.activeMission')}
         </Text>
         {mission ? (
-          <MissionCard action={missionAction} mission={mission} showSteps />
+          <MissionCard mission={mission} showSteps />
         ) : (
-          <EmptyState
-            action={
-              <Button onPress={() => router.push('/parent/create')} testID="create-mission-button">
-                {t('parentHome.createMission')}
-              </Button>
-            }
-            body={t('parentHome.readyBody')}
-            title={t('parentHome.readyTitle')}
-          />
+          <EmptyState body={t('parentHome.readyBody')} title={t('parentHome.readyTitle')} />
         )}
       </View>
 
@@ -126,17 +127,20 @@ export default function ParentHomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  primaryAction: {
+    marginBottom: spacing.xl,
+  },
   treeCard: {
     alignItems: 'center',
-    overflow: 'hidden',
-    gap: spacing.sm,
-    borderColor: colors.sand,
-    paddingTop: spacing.xl,
-    marginBottom: spacing.lg,
+    gap: spacing.md,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: spacing.lg,
+    marginBottom: spacing.xl,
   },
   treeCopy: {
     width: '100%',
-    alignItems: 'center',
     gap: spacing.xs,
   },
   section: {
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   controlsCard: {
-    backgroundColor: colors.sandLight,
-    borderColor: colors.sand,
+    backgroundColor: colors.transparent,
+    borderColor: colors.line,
   },
 });

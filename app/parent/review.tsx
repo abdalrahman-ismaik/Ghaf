@@ -23,14 +23,8 @@ function LanguagePreview({ language, label, mission }: LanguagePreviewProps) {
     String(fixedT(key, options));
 
   return (
-    <Card
-      style={[
-        styles.languageCard,
-        language === 'ar' ? styles.previewDirectionArabic : styles.previewDirectionEnglish,
-      ]}
-      testID={`mission-preview-${language}`}
-    >
-      <View style={styles.languageBadge}>
+    <Card style={styles.languageCard} testID={`mission-preview-${language}`}>
+      <View style={[styles.languageBadge, language === 'ar' ? styles.languageBadgeArabic : null]}>
         <Text color="earth" variant="caption">
           {label}
         </Text>
@@ -47,7 +41,10 @@ function LanguagePreview({ language, label, mission }: LanguagePreviewProps) {
       </Text>
       <View style={styles.steps}>
         {mission.steps.map((step) => (
-          <View key={`${language}-${step.id}`} style={styles.previewStep}>
+          <View
+            key={`${language}-${step.id}`}
+            style={[styles.previewStep, language === 'ar' ? styles.previewStepArabic : null]}
+          >
             <View style={styles.stepNumber}>
               <Text align="center" color="white" variant="caption">
                 {step.order}
@@ -203,28 +200,26 @@ const styles = StyleSheet.create({
   },
   languageCard: {
     gap: spacing.md,
-  },
-  previewDirectionArabic: {
-    direction: 'rtl',
-  },
-  previewDirectionEnglish: {
-    direction: 'ltr',
+    borderTopColor: colors.ghaf,
   },
   languageBadge: {
     alignSelf: 'flex-start',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
-    backgroundColor: colors.goldLight,
+    borderWidth: 1,
+    borderColor: colors.sand,
+    backgroundColor: colors.goldGlow,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
+  languageBadgeArabic: {
+    alignSelf: 'flex-end',
+  },
   arabicCopy: {
-    direction: 'rtl',
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   englishCopy: {
-    direction: 'ltr',
     textAlign: 'left',
     writingDirection: 'ltr',
   },
@@ -242,13 +237,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: spacing.sm,
   },
+  previewStepArabic: {
+    flexDirection: 'row-reverse',
+  },
   stepNumber: {
     width: 30,
     height: 30,
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     backgroundColor: colors.ghaf,
   },
   stepCopy: {

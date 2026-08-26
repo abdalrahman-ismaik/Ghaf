@@ -162,7 +162,7 @@ export function MissionCard({ action, mission, showSteps = false }: MissionCardP
   const formatter = numberFormatters[locale];
 
   return (
-    <Card accessibilityLabel={localize(mission.title, locale)} elevated testID="mock-mission-card">
+    <Card accessibilityLabel={localize(mission.title, locale)} testID="mock-mission-card">
       <View style={styles.cardHeader}>
         <OriginPill origin={mission.origin} />
         <View style={styles.statusBadge}>
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   progressTrack: {
     position: 'relative',
-    height: 10,
+    height: 6,
     width: '100%',
     borderRadius: radii.pill,
     borderCurve: 'continuous',
@@ -311,11 +311,10 @@ const styles = StyleSheet.create({
   },
   roleSwitcher: {
     flexDirection: 'row',
-    padding: spacing.xxs,
-    gap: spacing.xxs,
-    borderRadius: radii.md,
+    gap: 0,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
-    backgroundColor: colors.sandLight,
+    backgroundColor: colors.transparent,
     borderWidth: 1,
     borderColor: colors.sand,
   },
@@ -324,7 +323,7 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.sm,
+    borderRadius: 0,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.md,
   },
@@ -346,11 +345,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    borderColor: colors.leaf,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
-    backgroundColor: colors.leafLight,
+    backgroundColor: colors.leafMist,
   },
   mockDot: {
     width: 7,
@@ -359,7 +360,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.ghaf,
   },
   statusBadge: {
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    borderColor: colors.sand,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
@@ -370,7 +373,9 @@ const styles = StyleSheet.create({
   },
   stepsBlock: {
     gap: spacing.sm,
-    paddingTop: spacing.xs,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
   },
   stepRow: {
     flexDirection: 'row',
@@ -381,7 +386,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     flexShrink: 0,
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.ghaf,
@@ -393,10 +398,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     gap: spacing.md,
-    borderRadius: radii.md,
-    borderCurve: 'continuous',
-    backgroundColor: colors.ivory,
-    padding: spacing.md,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: spacing.md,
   },
   footerItem: {
     flex: 1,
@@ -413,16 +418,21 @@ const styles = StyleSheet.create({
   metricsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: colors.line,
   },
   metric: {
     minWidth: '45%',
     flexGrow: 1,
     flexBasis: 0,
     gap: spacing.xxs,
-    borderRadius: radii.md,
-    borderCurve: 'continuous',
-    backgroundColor: colors.ivory,
+    minHeight: 94,
+    justifyContent: 'center',
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.transparent,
     padding: spacing.md,
   },
 });

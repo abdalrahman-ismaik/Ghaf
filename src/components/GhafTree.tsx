@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle, Ellipse, G, Path } from 'react-native-svg';
+import Svg, { Circle, Ellipse, G, Line, Path, Rect } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/primitives';
@@ -26,14 +26,14 @@ interface GhafTreeProps {
 }
 
 const canopyLeaves = [
-  { cx: 77, cy: 92, rx: 28, ry: 21, color: '#91B47E' },
-  { cx: 112, cy: 67, rx: 31, ry: 25, color: '#6E9D64' },
-  { cx: 148, cy: 76, rx: 34, ry: 27, color: '#80AA70' },
-  { cx: 174, cy: 103, rx: 29, ry: 24, color: '#67955F' },
-  { cx: 126, cy: 104, rx: 39, ry: 30, color: '#527F55' },
-  { cx: 91, cy: 122, rx: 29, ry: 22, color: '#739F66' },
-  { cx: 154, cy: 126, rx: 36, ry: 25, color: '#5E8C58' },
-  { cx: 124, cy: 137, rx: 37, ry: 24, color: '#47784E' },
+  { cx: 77, cy: 92, rx: 28, ry: 21, color: '#88A47A' },
+  { cx: 112, cy: 67, rx: 31, ry: 25, color: '#668B69' },
+  { cx: 148, cy: 76, rx: 34, ry: 27, color: '#789975' },
+  { cx: 174, cy: 103, rx: 29, ry: 24, color: '#567E61' },
+  { cx: 126, cy: 104, rx: 39, ry: 30, color: '#3F6C55' },
+  { cx: 91, cy: 122, rx: 29, ry: 22, color: '#6D8C68' },
+  { cx: 154, cy: 126, rx: 36, ry: 25, color: '#4D765B' },
+  { cx: 124, cy: 137, rx: 37, ry: 24, color: '#315F4A' },
 ] as const;
 
 const detailLeaves = [
@@ -96,7 +96,7 @@ export function GhafTree({
       milestone.set(
         withTiming(1, {
           duration: motion.duration.reveal,
-          easing: Easing.out(Easing.back(1.2)),
+          easing: Easing.bezier(0.16, 1, 0.3, 1),
           reduceMotion: ReduceMotion.System,
         }),
       );
@@ -125,8 +125,34 @@ export function GhafTree({
     >
       <Animated.View style={[styles.canvas, { width: size, height: size }, entranceStyle]}>
         <Svg height="100%" viewBox="0 0 240 240" width="100%">
-          <Circle cx="120" cy="116" fill={colors.sandLight} opacity={0.58} r="102" />
-          <Circle cx="188" cy="48" fill={colors.goldLight} opacity={0.88} r="18" />
+          <Line
+            opacity="0.72"
+            stroke={colors.line}
+            strokeWidth="1"
+            x1="40"
+            x2="40"
+            y1="10"
+            y2="230"
+          />
+          <Line
+            opacity="0.72"
+            stroke={colors.line}
+            strokeWidth="1"
+            x1="200"
+            x2="200"
+            y1="10"
+            y2="230"
+          />
+          <Line
+            opacity="0.72"
+            stroke={colors.line}
+            strokeWidth="1"
+            x1="10"
+            x2="230"
+            y1="200"
+            y2="200"
+          />
+          <Rect fill={colors.gold} height="16" width="4" x="28" y="28" />
           <Path
             d="M30 202 C70 188 167 188 210 202 C177 224 65 224 30 202Z"
             fill={colors.sand}
@@ -380,7 +406,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: spacing.xl,
     right: spacing.sm,
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.gold,
@@ -389,14 +415,20 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
   },
   stageCopy: {
+    width: '100%',
     alignItems: 'center',
     gap: spacing.xxs,
+    paddingTop: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
   },
   stagePill: {
     alignSelf: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
-    backgroundColor: colors.leafLight,
+    borderWidth: 1,
+    borderColor: colors.leaf,
+    backgroundColor: colors.leafMist,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
   },

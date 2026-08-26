@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { GhafTree } from '@/components/GhafTree';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { DisclosureCard } from '@/components/journey';
-import { Button, Card, Screen, Text } from '@/components/primitives';
+import { Button, Screen, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -38,29 +38,21 @@ export default function EntryScreen() {
         ) : null}
       </View>
 
-      <Card elevated style={styles.heroCard}>
+      <View style={styles.heroCard}>
         <GhafTree progressPercent={ghaf.progressPercent} size={226} stage={ghaf.stage} />
         <View style={styles.heroCopy}>
-          <Text align="center" color="gold" variant="label">
-            {t('entry.eyebrow')}
-          </Text>
-          <Text align="center" color="forest" variant="title">
+          <Text color="forest" variant="title">
             {t('entry.tagline')}
           </Text>
-          <Text align="center" color="inkMuted">
-            {t('entry.intro')}
-          </Text>
+          <Text color="inkMuted">{t('entry.intro')}</Text>
+          <View style={styles.heroRecord}>
+            <View style={styles.heroRecordLine} />
+            <Text color="earth" variant="caption">
+              {t('entry.eyebrow')}
+            </Text>
+          </View>
         </View>
-      </Card>
-
-      <View style={styles.languageBlock}>
-        <Text align="center" color="forest" variant="label">
-          {t('entry.languageTitle')}
-        </Text>
-        <LanguageSwitcher />
       </View>
-
-      <DisclosureCard body={t('entry.prototypeDisclosure')} kind="prepared" />
 
       <Button
         onPress={() => router.push('/role')}
@@ -69,6 +61,15 @@ export default function EntryScreen() {
       >
         {t('common.enter')}
       </Button>
+
+      <View style={styles.languageBlock}>
+        <Text color="forest" variant="label">
+          {t('entry.languageTitle')}
+        </Text>
+        <LanguageSwitcher />
+      </View>
+
+      <DisclosureCard body={t('entry.prototypeDisclosure')} kind="prepared" />
     </Screen>
   );
 }
@@ -80,17 +81,19 @@ const styles = StyleSheet.create({
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     gap: spacing.sm,
     marginBottom: spacing.lg,
   },
   brandMark: {
-    width: 44,
+    width: 32,
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
-    backgroundColor: colors.leafLight,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    borderColor: colors.leaf,
+    backgroundColor: colors.leafMist,
   },
   brandLeaf: {
     width: 20,
@@ -103,36 +106,51 @@ const styles = StyleSheet.create({
   brandCopy: {
     flexDirection: 'row',
     alignItems: 'baseline',
+    flex: 1,
     gap: spacing.xs,
   },
   prototypeBadge: {
-    position: 'absolute',
-    top: -20,
-    right: 0,
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
-    backgroundColor: colors.goldLight,
+    borderWidth: 1,
+    borderColor: colors.sand,
+    backgroundColor: colors.goldGlow,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
   },
   heroCard: {
     alignItems: 'center',
-    overflow: 'hidden',
-    backgroundColor: colors.surface,
-    borderColor: colors.sand,
-    paddingTop: spacing.xs,
+    gap: spacing.lg,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    paddingTop: spacing.lg,
     paddingBottom: spacing.xl,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   heroCopy: {
     width: '100%',
     gap: spacing.sm,
   },
+  heroRecord: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+  },
+  heroRecordLine: {
+    width: 32,
+    height: 1,
+    backgroundColor: colors.gold,
+  },
   languageBlock: {
     gap: spacing.sm,
+    paddingTop: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
     marginBottom: spacing.lg,
   },
   enterButton: {
-    marginTop: spacing.lg,
+    marginBottom: spacing.xl,
   },
 });

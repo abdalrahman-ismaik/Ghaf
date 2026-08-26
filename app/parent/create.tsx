@@ -247,9 +247,14 @@ export default function CreateMissionScreen() {
             </Text>
           </View>
           <View style={[styles.rewardCheck, hasReward ? styles.rewardCheckSelected : null]}>
-            <Text align="center" color={hasReward ? 'white' : 'inkMuted'} variant="caption">
-              {hasReward ? '✓' : '+'}
-            </Text>
+            {hasReward ? (
+              <View style={styles.rewardCheckMark}>
+                <View style={styles.rewardCheckShort} />
+                <View style={styles.rewardCheckLong} />
+              </View>
+            ) : (
+              <View style={styles.rewardUnchecked} />
+            )}
           </View>
         </Pressable>
       </Card>
@@ -274,17 +279,17 @@ const styles = StyleSheet.create({
   },
   unitRow: {
     flexDirection: 'row',
-    gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radii.sm,
+    overflow: 'hidden',
   },
   unitButton: {
     minHeight: layout.touchTarget,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.md,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderRadius: 0,
     backgroundColor: colors.surface,
     paddingHorizontal: spacing.sm,
   },
@@ -297,7 +302,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing.xs,
-    borderRadius: radii.md,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.goldLight,
@@ -318,7 +323,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.surface,
@@ -326,6 +331,34 @@ const styles = StyleSheet.create({
   rewardCheckSelected: {
     borderColor: colors.gold,
     backgroundColor: colors.ghaf,
+  },
+  rewardUnchecked: {
+    width: 5,
+    height: 5,
+    borderRadius: radii.pill,
+    backgroundColor: colors.inkMuted,
+  },
+  rewardCheckMark: {
+    width: 17,
+    height: 14,
+  },
+  rewardCheckShort: {
+    position: 'absolute',
+    left: 2,
+    top: 7,
+    width: 7,
+    height: 2,
+    backgroundColor: colors.white,
+    transform: [{ rotate: '45deg' }],
+  },
+  rewardCheckLong: {
+    position: 'absolute',
+    left: 6,
+    top: 6,
+    width: 11,
+    height: 2,
+    backgroundColor: colors.white,
+    transform: [{ rotate: '-48deg' }],
   },
   pressed: {
     opacity: 0.78,

@@ -123,12 +123,11 @@ export function CelebrationOverlay({
           style={StyleSheet.absoluteFill}
         />
         <View accessibilityViewIsModal style={styles.celebrationCard}>
-          <View pointerEvents="none" style={styles.confettiOne} />
-          <View pointerEvents="none" style={styles.confettiTwo} />
+          <View pointerEvents="none" style={styles.celebrationRule} />
           <View style={styles.celebrationIcon}>
-            <Text align="center" style={styles.leafGlyph}>
-              ❧
-            </Text>
+            <View style={styles.branchStem} />
+            <View style={[styles.branchLeaf, styles.branchLeafLeft]} />
+            <View style={[styles.branchLeaf, styles.branchLeafRight]} />
           </View>
           <Text align="center" color="forest" variant="title">
             {title ?? t('states.celebrationTitle')}
@@ -138,7 +137,7 @@ export function CelebrationOverlay({
           </Text>
           {milestone ? (
             <View style={styles.celebrationDetail}>
-              <Text align="center" color="gold" variant="caption">
+              <Text align="center" color="earth" variant="caption">
                 {t('celebration.milestoneTitle')}
               </Text>
               <Text align="center" color="forest" variant="label">
@@ -166,9 +165,9 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   loadingOrb: {
-    width: 76,
-    height: 76,
-    borderRadius: radii.pill,
+    width: 72,
+    height: 56,
+    borderRadius: radii.md,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.leafLight,
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
   emptySeed: {
     width: 62,
     height: 48,
-    borderRadius: radii.pill,
+    borderRadius: radii.md,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
@@ -194,7 +193,7 @@ const styles = StyleSheet.create({
   errorMark: {
     width: 62,
     height: 62,
-    borderRadius: radii.pill,
+    borderRadius: radii.md,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.dangerLight,
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: radii.xl,
+    borderRadius: radii.lg,
     borderCurve: 'continuous',
     backgroundColor: colors.ivory,
     padding: spacing.xxl,
@@ -226,8 +225,10 @@ const styles = StyleSheet.create({
     height: 88,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
-    backgroundColor: colors.leafLight,
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderColor: colors.leaf,
+    backgroundColor: colors.leafMist,
   },
   celebrationDetail: {
     width: '100%',
@@ -237,29 +238,37 @@ const styles = StyleSheet.create({
     backgroundColor: colors.goldGlow,
     padding: spacing.md,
   },
-  leafGlyph: {
-    color: colors.ghaf,
-    fontSize: 52,
-    lineHeight: 58,
+  branchStem: {
+    width: 3,
+    height: 48,
+    borderRadius: radii.pill,
+    backgroundColor: colors.earth,
+    transform: [{ rotate: '8deg' }],
   },
-  confettiOne: {
+  branchLeaf: {
     position: 'absolute',
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: colors.goldLight,
-    opacity: 0.7,
-    top: -45,
-    right: -30,
+    width: 23,
+    height: 13,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
+    backgroundColor: colors.ghaf,
   },
-  confettiTwo: {
+  branchLeafLeft: {
+    top: 27,
+    left: 20,
+    transform: [{ rotate: '28deg' }],
+  },
+  branchLeafRight: {
+    top: 17,
+    right: 19,
+    transform: [{ rotate: '-32deg' }],
+  },
+  celebrationRule: {
     position: 'absolute',
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: colors.leafLight,
-    opacity: 0.75,
-    bottom: -35,
-    left: -24,
+    top: 0,
+    left: spacing.xl,
+    right: spacing.xl,
+    height: 4,
+    backgroundColor: colors.gold,
   },
 });

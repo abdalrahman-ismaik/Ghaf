@@ -32,10 +32,10 @@ export function JourneyHeader({
   return (
     <View style={styles.header}>
       {onBack || action ? (
-        <View style={styles.headerActions}>
+        <View style={[styles.headerActions, direction === 'rtl' ? styles.rowRtl : null]}>
           {onBack ? (
             <IconButton
-              icon={direction === 'rtl' ? '→' : '←'}
+              icon={<DirectionArrow reverse={direction === 'rtl'} />}
               label={backLabel ?? t('common.back')}
               onPress={onBack}
               testID="back-button"
@@ -47,15 +47,50 @@ export function JourneyHeader({
         </View>
       ) : null}
       <View style={styles.headerCopy}>
-        <Text color="gold" variant="label">
-          {eyebrow}
-        </Text>
         <Text color="forest" variant="title">
           {title}
         </Text>
         {subtitle ? <Text color="inkMuted">{subtitle}</Text> : null}
+        <View style={styles.headerRecord}>
+          <View style={styles.headerRecordLine} />
+          <Text color="earth" variant="caption">
+            {eyebrow}
+          </Text>
+        </View>
       </View>
     </View>
+  );
+}
+
+function DirectionArrow({ reverse }: { reverse: boolean }) {
+  return (
+    <View style={[styles.arrow, reverse ? styles.arrowReverse : null]}>
+      <View style={styles.arrowShaft} />
+      <View style={[styles.arrowHead, styles.arrowHeadTop]} />
+      <View style={[styles.arrowHead, styles.arrowHeadBottom]} />
+    </View>
+  );
+}
+
+function CheckMark({ selected }: { selected: boolean }) {
+  if (!selected) return <View style={styles.unselectedMark} />;
+
+  return (
+    <View style={styles.checkMark}>
+      <View style={styles.checkShort} />
+      <View style={styles.checkLong} />
+    </View>
+  );
+}
+
+function AudioControlMark({ playing }: { playing: boolean }) {
+  return playing ? (
+    <View style={styles.pauseMark}>
+      <View style={styles.pauseBar} />
+      <View style={styles.pauseBar} />
+    </View>
+  ) : (
+    <View style={styles.playMark} />
   );
 }
 
@@ -66,15 +101,10 @@ interface DisclosureCardProps {
 }
 
 export function DisclosureCard({ body, kind = 'prepared', title }: DisclosureCardProps) {
-  const glyph =
-    kind === 'prepared' ? '◆' : kind === 'simulated' ? '✦' : kind === 'safety' ? '!' : '≈';
-
   return (
     <View style={[styles.disclosure, kind === 'safety' ? styles.safetyDisclosure : null]}>
       <View style={[styles.disclosureGlyph, kind === 'safety' ? styles.safetyGlyph : null]}>
-        <Text align="center" color={kind === 'safety' ? 'danger' : 'earth'} variant="caption">
-          {glyph}
-        </Text>
+        <View style={[styles.disclosureMark, kind === 'safety' ? styles.safetyMark : null]} />
       </View>
       <View style={styles.disclosureCopy}>
         {title ? (
@@ -140,9 +170,7 @@ export function PreparedSelectionCard({
           </Text>
         </View>
         <View style={[styles.check, selected ? styles.checkSelected : null]}>
-          <Text align="center" color={selected ? 'white' : 'inkMuted'} variant="caption">
-            {selected ? '✓' : '+'}
-          </Text>
+          <CheckMark selected={selected} />
         </View>
       </View>
       <View
@@ -204,9 +232,7 @@ export function PreparedAudioButton({
         testID={testID}
       >
         <View style={styles.audioGlyph}>
-          <Text align="center" color="white" variant="label">
-            {status.playing ? 'Ⅱ' : '▶'}
-          </Text>
+          <AudioControlMark playing={status.playing} />
         </View>
         <View style={styles.audioCopy}>
           <Text color="forest" variant="label">
@@ -291,11 +317,52 @@ const styles = StyleSheet.create({
   headerCopy: {
     gap: spacing.sm,
   },
+  headerRecord: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+  },
+  headerRecordLine: {
+    width: 32,
+    height: 1,
+    backgroundColor: colors.gold,
+  },
+  rowRtl: {
+    flexDirection: 'row-reverse',
+  },
+  arrow: {
+    width: 22,
+    height: 16,
+    justifyContent: 'center',
+  },
+  arrowReverse: {
+    transform: [{ rotate: '180deg' }],
+  },
+  arrowShaft: {
+    width: 20,
+    height: 1.5,
+    backgroundColor: colors.forest,
+  },
+  arrowHead: {
+    position: 'absolute',
+    left: 0,
+    width: 8,
+    height: 1.5,
+    backgroundColor: colors.forest,
+    transformOrigin: 'left center',
+  },
+  arrowHeadTop: {
+    transform: [{ rotate: '42deg' }],
+  },
+  arrowHeadBottom: {
+    transform: [{ rotate: '-42deg' }],
+  },
   disclosure: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    borderRadius: radii.md,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.sand,
@@ -307,16 +374,25 @@ const styles = StyleSheet.create({
     backgroundColor: colors.dangerLight,
   },
   disclosureGlyph: {
-    width: 34,
-    height: 34,
+    width: 18,
+    height: 36,
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
-    backgroundColor: colors.goldLight,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    borderColor: colors.gold,
   },
   safetyGlyph: {
-    backgroundColor: colors.surface,
+    borderColor: colors.danger,
+  },
+  disclosureMark: {
+    width: 4,
+    height: 18,
+    backgroundColor: colors.gold,
+  },
+  safetyMark: {
+    backgroundColor: colors.danger,
   },
   disclosureCopy: {
     minWidth: 0,
@@ -326,9 +402,9 @@ const styles = StyleSheet.create({
   selectionCard: {
     minHeight: layout.touchTarget,
     overflow: 'hidden',
-    borderRadius: radii.lg,
+    borderRadius: radii.md,
     borderCurve: 'continuous',
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.surface,
   },
@@ -362,7 +438,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.ivory,
@@ -374,7 +450,7 @@ const styles = StyleSheet.create({
   preparedBadge: {
     position: 'absolute',
     top: spacing.sm,
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     backgroundColor: colors.goldLight,
     paddingHorizontal: spacing.sm,
@@ -398,11 +474,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: radii.lg,
+    borderRadius: radii.md,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.leaf,
-    backgroundColor: colors.leafMist,
+    backgroundColor: colors.surface,
     padding: spacing.md,
   },
   audioGlyph: {
@@ -411,8 +487,56 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     backgroundColor: colors.ghaf,
+  },
+  unselectedMark: {
+    width: 5,
+    height: 5,
+    borderRadius: radii.pill,
+    backgroundColor: colors.inkMuted,
+  },
+  checkMark: {
+    width: 17,
+    height: 14,
+  },
+  checkShort: {
+    position: 'absolute',
+    left: 2,
+    top: 7,
+    width: 7,
+    height: 2,
+    backgroundColor: colors.white,
+    transform: [{ rotate: '45deg' }],
+  },
+  checkLong: {
+    position: 'absolute',
+    left: 6,
+    top: 6,
+    width: 11,
+    height: 2,
+    backgroundColor: colors.white,
+    transform: [{ rotate: '-48deg' }],
+  },
+  pauseMark: {
+    flexDirection: 'row',
+    gap: spacing.xxs,
+  },
+  pauseBar: {
+    width: 3,
+    height: 15,
+    backgroundColor: colors.white,
+  },
+  playMark: {
+    width: 0,
+    height: 0,
+    borderTopWidth: 8,
+    borderBottomWidth: 8,
+    borderLeftWidth: 13,
+    borderTopColor: colors.transparent,
+    borderBottomColor: colors.transparent,
+    borderLeftColor: colors.white,
+    marginLeft: spacing.xxs,
   },
   audioCopy: {
     minWidth: 0,
@@ -421,11 +545,15 @@ const styles = StyleSheet.create({
   },
   sectionHeading: {
     gap: spacing.xs,
+    paddingTop: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
   },
   statPill: {
     minWidth: 148,
     flex: 1,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.transparent,
+    borderTopColor: colors.ghaf,
     padding: spacing.md,
   },
 });

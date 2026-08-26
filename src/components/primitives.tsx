@@ -47,8 +47,13 @@ export function Screen({
 
   return (
     <View style={styles.screen} testID={testID}>
-      <View pointerEvents="none" style={styles.ambientTop} />
-      <View pointerEvents="none" style={styles.ambientBottom} />
+      <View
+        pointerEvents="none"
+        style={[styles.fieldRule, direction === 'rtl' ? styles.fieldRuleRtl : styles.fieldRuleLtr]}
+      >
+        <View style={styles.fieldRuleCap} />
+        <View style={styles.fieldRuleMark} />
+      </View>
       <KeyboardAvoidingView
         behavior={keyboardAware && Platform.OS === 'ios' ? 'padding' : undefined}
         enabled={keyboardAware}
@@ -58,11 +63,7 @@ export function Screen({
           {...scrollProps}
           automaticallyAdjustKeyboardInsets={keyboardAware}
           contentInsetAdjustmentBehavior="automatic"
-          contentContainerStyle={[
-            styles.screenContent,
-            direction === 'rtl' ? styles.directionRtl : styles.directionLtr,
-            contentContainerStyle,
-          ]}
+          contentContainerStyle={[styles.screenContent, contentContainerStyle]}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -102,6 +103,12 @@ export function Text({
   return (
     <NativeText
       {...props}
+      accessibilityRole={
+        props.accessibilityRole ??
+        (variant === 'display' || variant === 'title' || variant === 'heading'
+          ? 'header'
+          : undefined)
+      }
       style={[
         styles.textBase,
         textVariants[variant],
@@ -158,7 +165,7 @@ export function Button({
         styles.button,
         buttonVariants[variant],
         fullWidth ? styles.fullWidth : null,
-        direction === 'rtl' ? styles.directionRtl : styles.directionLtr,
+        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
         focused ? styles.focusedControl : null,
         pressed && !isDisabled ? styles.pressed : null,
         isDisabled ? styles.disabled : null,
@@ -238,7 +245,11 @@ export function Input({
         ]}
       />
       {errorText || helperText ? (
-        <Text color={errorText ? 'danger' : 'inkMuted'} variant="caption">
+        <Text
+          accessibilityLiveRegion={errorText ? 'polite' : undefined}
+          color={errorText ? 'danger' : 'inkMuted'}
+          variant="caption"
+        >
           {errorText ?? helperText}
         </Text>
       ) : null}
@@ -292,7 +303,7 @@ const textVariants = StyleSheet.create({
     fontSize: typography.sizes.display,
     lineHeight: typography.lineHeights.display,
     fontWeight: typography.weights.heavy,
-    letterSpacing: -1.2,
+    letterSpacing: -1,
   },
   title: {
     fontSize: typography.sizes.title,
@@ -348,8 +359,8 @@ const styles = StyleSheet.create({
   },
   screenContent: {
     flexGrow: 1,
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xxl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.xxxl,
     paddingBottom: spacing.huge,
   },
   contentWidth: {
@@ -357,33 +368,40 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: layout.maxContentWidth,
   },
-  ambientTop: {
+  fieldRule: {
     position: 'absolute',
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    borderCurve: 'continuous',
-    backgroundColor: colors.sandLight,
-    opacity: 0.58,
-    top: -135,
-    right: -90,
+    top: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: colors.line,
+    opacity: 0.72,
   },
-  ambientBottom: {
+  fieldRuleRtl: {
+    right: spacing.sm,
+  },
+  fieldRuleLtr: {
+    left: spacing.sm,
+  },
+  fieldRuleCap: {
     position: 'absolute',
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    borderCurve: 'continuous',
-    backgroundColor: colors.leafLight,
-    opacity: 0.48,
-    bottom: -125,
-    left: -90,
+    top: spacing.xl,
+    width: 1,
+    height: 44,
+    backgroundColor: colors.ghaf,
   },
-  directionRtl: {
-    direction: 'rtl',
+  fieldRuleMark: {
+    position: 'absolute',
+    top: 86,
+    width: 5,
+    height: 5,
+    marginLeft: -2,
+    backgroundColor: colors.gold,
   },
-  directionLtr: {
-    direction: 'ltr',
+  rowRtl: {
+    flexDirection: 'row-reverse',
+  },
+  rowLtr: {
+    flexDirection: 'row',
   },
   textBase: {
     fontFamily: typography.family,
@@ -444,8 +462,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
     padding: spacing.lg,
-    gap: spacing.md,
-    ...shadows.soft,
+    gap: spacing.lg,
   },
   cardElevated: {
     ...shadows.lifted,
@@ -459,7 +476,7 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
     borderRadius: radii.md,
     borderCurve: 'continuous',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.ivory,
     color: colors.ink,
     fontFamily: typography.family,
     fontSize: typography.sizes.body,
@@ -480,11 +497,11 @@ const styles = StyleSheet.create({
   iconButton: {
     width: layout.touchTarget,
     height: layout.touchTarget,
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.transparent,
     borderWidth: 1,
     borderColor: colors.line,
   },

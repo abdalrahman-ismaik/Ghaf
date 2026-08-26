@@ -79,7 +79,7 @@ export default function ParentConfirmationScreen() {
         />
       ) : (
         <>
-          <Card elevated style={styles.submissionCard}>
+          <Card style={styles.submissionCard}>
             <Text color="forest" variant="heading">
               {localize(mission.title, locale)}
             </Text>
@@ -89,7 +89,7 @@ export default function ParentConfirmationScreen() {
                 <View key={step.id} style={styles.stepRow}>
                   <View style={styles.check}>
                     <Text align="center" color="white" variant="caption">
-                      ✓
+                      {step.order}
                     </Text>
                   </View>
                   <Text style={styles.stepText}>{localize(step.instruction, locale)}</Text>
@@ -117,14 +117,14 @@ export default function ParentConfirmationScreen() {
             )}
           </View>
 
-          <Card style={styles.reflectionCard}>
+          <View style={styles.reflectionCard}>
             <Text color="forest" variant="label">
               {t('confirmation.reflection')}
             </Text>
             <Text color="earth">“{submission.reflection}”</Text>
-          </Card>
+          </View>
 
-          <Card style={styles.quantityCard}>
+          <View style={styles.quantityCard}>
             <Input
               errorText={quantityError ? t('validation.confirmedQuantityRequired') : undefined}
               helperText={
@@ -146,15 +146,15 @@ export default function ParentConfirmationScreen() {
               value={quantity}
             />
             <DisclosureCard body={t('confirmation.estimateNote')} kind="estimated" />
-          </Card>
+          </View>
 
           <View style={styles.retryBlock}>
-            <Card style={styles.retryGuidanceCard}>
+            <View style={styles.retryGuidanceCard}>
               <Text color="forest" variant="label">
                 {t('confirmation.retryGuidanceLabel')}
               </Text>
               <Text color="inkMuted">{retryGuidance}</Text>
-            </Card>
+            </View>
             <Text color="inkMuted" variant="caption">
               {t('confirmation.retryNoAward')}
             </Text>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     backgroundColor: colors.ghaf,
   },
   stepText: {
@@ -217,12 +217,19 @@ const styles = StyleSheet.create({
   },
   reflectionCard: {
     gap: spacing.sm,
-    borderColor: colors.goldLight,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.gold,
     backgroundColor: colors.goldGlow,
+    padding: spacing.lg,
     marginBottom: spacing.xl,
   },
   quantityCard: {
     gap: spacing.md,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: spacing.lg,
     marginBottom: spacing.xl,
   },
   retryBlock: {
@@ -235,5 +242,7 @@ const styles = StyleSheet.create({
   retryGuidanceCard: {
     gap: spacing.xs,
     backgroundColor: colors.sandLight,
+    borderRadius: radii.sm,
+    padding: spacing.md,
   },
 });

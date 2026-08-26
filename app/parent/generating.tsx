@@ -6,7 +6,7 @@ import { useReducedMotion } from 'react-native-reanimated';
 
 import { DisclosureCard, JourneyHeader } from '@/components/journey';
 import { MissionGenerationExperience } from '@/components/MissionGenerationExperience';
-import { Button, Card, Screen, Text } from '@/components/primitives';
+import { Button, Screen, Text } from '@/components/primitives';
 import { formatQuantity } from '@/components/prototype';
 import { ErrorState } from '@/components/states';
 import { colors, spacing } from '@/design/tokens';
@@ -118,14 +118,14 @@ export default function MissionGeneratingScreen() {
             stages={stages}
             title={t('generation.title')}
           />
-          <Card style={styles.contextCard}>
-            <Text color="gold" variant="label">
+          <View style={styles.contextCard}>
+            <Text color="earth" variant="label">
               {generationContext}
             </Text>
             <Text accessibilityLiveRegion="polite" color="forest">
               {bodies[generation.currentStageIndex]}
             </Text>
-          </Card>
+          </View>
           <DisclosureCard body={t('generation.disclosure')} kind="simulated" />
         </>
       ) : (
@@ -152,8 +152,11 @@ const styles = StyleSheet.create({
   },
   contextCard: {
     gap: spacing.xs,
-    borderColor: colors.goldLight,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.gold,
     backgroundColor: colors.goldGlow,
+    padding: spacing.md,
     marginVertical: spacing.lg,
   },
   retryBlock: {

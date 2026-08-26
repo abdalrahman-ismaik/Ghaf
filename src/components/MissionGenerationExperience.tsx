@@ -40,30 +40,32 @@ export function MissionGenerationExperience({
     return () => cancelAnimation(reveal);
   }, [activeIndex, reveal]);
 
-  const orbStyle = useAnimatedStyle(() => ({
+  const plateStyle = useAnimatedStyle(() => ({
     opacity: 0.66 + reveal.get() * 0.34,
-    transform: [{ scale: 0.92 + reveal.get() * 0.08 }],
+    transform: [{ translateY: (1 - reveal.get()) * 8 }],
   }));
 
   return (
-    <Card elevated style={styles.card} testID="generation-experience">
+    <Card style={styles.card} testID="generation-experience">
       <View style={styles.hero}>
-        <View pointerEvents="none" style={styles.halo} />
-        <Animated.View style={[styles.orb, orbStyle]}>
-          <View style={styles.orbCore}>
-            <Text align="center" color="white" style={styles.orbGlyph}>
-              ❧
-            </Text>
+        <Animated.View style={[styles.recordPlate, plateStyle]}>
+          <View style={styles.recordSpine} />
+          <View style={styles.signalRows}>
+            <View style={[styles.signalLine, styles.signalLineLong]} />
+            <View style={[styles.signalLine, styles.signalLineShort]} />
+            <View style={[styles.signalLine, styles.signalLineMedium]} />
+            <View style={[styles.signalLine, styles.signalLineLong]} />
           </View>
+          <View style={styles.recordNode} />
         </Animated.View>
       </View>
 
       <View accessibilityLiveRegion="polite" style={styles.copy}>
-        <Text align="center" color="forest" variant="title">
+        <Text color="forest" variant="title">
           {title}
         </Text>
-        <View style={styles.disclosurePill}>
-          <Text align="center" color="earth" variant="caption">
+        <View style={styles.disclosureLine}>
+          <Text color="earth" variant="caption">
             {disclosure}
           </Text>
         </View>
@@ -73,7 +75,7 @@ export function MissionGenerationExperience({
         {stages.map((stage, index) => {
           const complete = index < activeIndex;
           const active = index === activeIndex;
-          const stateLabel = complete ? '✓' : String(index + 1);
+          const stateLabel = String(index + 1);
 
           return (
             <View
@@ -91,11 +93,12 @@ export function MissionGenerationExperience({
               >
                 <Text
                   align="center"
-                  color={active || complete ? 'white' : 'inkMuted'}
+                  color={active ? 'white' : complete ? 'ghaf' : 'inkMuted'}
                   variant="caption"
                 >
                   {stateLabel}
                 </Text>
+                {complete ? <View style={styles.completedTick} /> : null}
               </View>
               <View style={styles.stageCopy}>
                 <Text color={active ? 'forest' : complete ? 'ghaf' : 'inkMuted'} variant="label">
@@ -115,58 +118,69 @@ const styles = StyleSheet.create({
   card: {
     overflow: 'hidden',
     gap: spacing.xl,
-    borderColor: colors.sand,
+    borderColor: colors.line,
     backgroundColor: colors.surface,
     paddingVertical: spacing.xl,
   },
   hero: {
-    height: 136,
-    alignItems: 'center',
+    height: 118,
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
-  halo: {
-    position: 'absolute',
-    width: 132,
-    height: 132,
-    borderRadius: 66,
-    borderCurve: 'continuous',
-    backgroundColor: colors.goldGlow,
+  recordPlate: {
+    height: 104,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: radii.md,
+    backgroundColor: colors.ivory,
     borderWidth: 1,
-    borderColor: colors.goldLight,
+    borderColor: colors.line,
   },
-  orb: {
-    width: 94,
-    height: 94,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 47,
-    borderCurve: 'continuous',
-    backgroundColor: colors.leafLight,
-  },
-  orbCore: {
-    width: 64,
-    height: 64,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 32,
-    borderCurve: 'continuous',
+  recordSpine: {
+    position: 'absolute',
+    left: spacing.lg,
+    top: 0,
+    bottom: 0,
+    width: 3,
     backgroundColor: colors.ghaf,
   },
-  orbGlyph: {
-    fontSize: 38,
-    lineHeight: 44,
+  signalRows: {
+    gap: spacing.sm,
+    paddingLeft: spacing.xxxl,
+    paddingRight: spacing.lg,
+  },
+  signalLine: {
+    height: 3,
+    backgroundColor: colors.leaf,
+  },
+  signalLineLong: {
+    width: '88%',
+  },
+  signalLineMedium: {
+    width: '68%',
+  },
+  signalLineShort: {
+    width: '42%',
+    backgroundColor: colors.gold,
+  },
+  recordNode: {
+    position: 'absolute',
+    left: spacing.md,
+    top: 46,
+    width: 11,
+    height: 11,
+    borderRadius: radii.sm,
+    borderWidth: 2,
+    borderColor: colors.ivory,
+    backgroundColor: colors.gold,
   },
   copy: {
-    alignItems: 'center',
     gap: spacing.sm,
   },
-  disclosurePill: {
-    maxWidth: 380,
-    borderRadius: radii.pill,
-    borderCurve: 'continuous',
-    backgroundColor: colors.goldLight,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+  disclosureLine: {
+    borderTopWidth: 1,
+    borderTopColor: colors.gold,
+    paddingTop: spacing.sm,
   },
   timeline: {
     gap: spacing.xs,
@@ -183,7 +197,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.line,
@@ -195,6 +209,14 @@ const styles = StyleSheet.create({
   },
   stageMarkerComplete: {
     borderColor: colors.ghaf,
+    backgroundColor: colors.leafMist,
+  },
+  completedTick: {
+    position: 'absolute',
+    right: 3,
+    bottom: 3,
+    width: 6,
+    height: 6,
     backgroundColor: colors.ghaf,
   },
   stageCopy: {
@@ -204,8 +226,7 @@ const styles = StyleSheet.create({
   },
   activeLine: {
     width: '100%',
-    height: 3,
-    borderRadius: radii.pill,
+    height: 1,
     backgroundColor: colors.gold,
   },
 });
