@@ -1,6 +1,5 @@
 import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { I18nManager } from 'react-native';
 
 import type { LocaleCode, LocalizedText, TextDirection } from '@/models/prototype';
 
@@ -32,15 +31,41 @@ export function isRtlLocale(locale: LocaleCode): boolean {
   return getDirection(locale) === 'rtl';
 }
 
+interface WebDocumentLocaleTarget {
+  dir: string;
+  lang: string;
+}
+
+/** Keep browser language semantics aligned with the in-app locale and logical layout. */
+export function synchronizeWebDocumentLocale(
+  locale: LocaleCode,
+  target: WebDocumentLocaleTarget | null = typeof document === 'undefined'
+    ? null
+    : document.documentElement,
+): void {
+  if (!target) return;
+  target.lang = locale;
+  target.dir = getDirection(locale);
+}
+
 export function localize(value: LocalizedText, locale: LocaleCode): string {
   return value[locale] || value.ar || value.en;
+}
+
+/** Build persisted bilingual fixture text from the single i18n source of truth. */
+export function bilingualResource(key: string): LocalizedText {
+  return {
+    ar: String(i18n.getFixedT('ar')(key)),
+    en: String(i18n.getFixedT('en')(key)),
+  };
 }
 
 /**
  * Screen content mirrors immediately through logical styles. Native navigation
  * chrome may require an app restart after forceRTL changes.
  */
-export function configureNativeDirection(locale: LocaleCode): boolean {
+export async function configureNativeDirection(locale: LocaleCode): Promise<boolean> {
+  const { I18nManager } = await import('react-native');
   const shouldUseRtl = isRtlLocale(locale);
   const restartRecommended = I18nManager.isRTL !== shouldUseRtl;
 

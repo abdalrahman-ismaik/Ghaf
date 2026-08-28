@@ -9,7 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
 import { colors } from '@/design/tokens';
-import { configureNativeDirection, setI18nLocale } from '@/i18n';
+import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 /*
@@ -31,6 +31,7 @@ export default function RootLayout() {
   useEffect(() => {
     configureNativeDirection(locale);
     void setI18nLocale(locale);
+    if (Platform.OS === 'web') synchronizeWebDocumentLocale(locale);
   }, [locale]);
 
   useEffect(() => {

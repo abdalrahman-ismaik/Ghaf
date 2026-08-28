@@ -18,7 +18,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: PROVISIONAL_ANDROID_PACKAGE,
-    predictiveBackGestureEnabled: false,
+    predictiveBackGestureEnabled: true,
   },
   web: {
     bundler: 'metro',

@@ -1,22 +1,16 @@
-import type { DemoMediaAssetId } from '@/features/missions/demoContent';
+import type { ImageSourcePropType } from 'react-native';
 
-/**
- * Metro requires static asset references. Keeping them in one UI-only map makes
- * the prepared demo path explicit and prevents routes from inventing remote URLs.
- */
-const bundledMediaSources = {
-  'child-evidence': require('../../assets/demo/child-evidence.jpg') as number,
-  'family-wisdom-ar': require('../../assets/demo/family-wisdom-ar.mp3') as number,
-  'family-wisdom-en': require('../../assets/demo/family-wisdom-en.mp3') as number,
-  'food-rescue-bread': require('../../assets/demo/food-rescue-bread.jpg') as number,
-  'mission-narration-ar': require('../../assets/demo/mission-narration-ar.mp3') as number,
-  'mission-narration-en': require('../../assets/demo/mission-narration-en.mp3') as number,
-} as const satisfies Record<DemoMediaAssetId, number>;
+import type { PreparedMediaFixture } from '@/models/familyGrowth';
 
-/**
- * Single Metro adapter for prepared media IDs. Screens deal in the same IDs exposed by
- * MediaService; a future remote resolver can replace this adapter without changing route logic.
- */
-export function resolveDemoMediaSource(id: DemoMediaAssetId): number {
-  return bundledMediaSources[id];
+const preparedMediaSources = {
+  fixture_recycling_clean_v1:
+    require('../../assets/images/fixture-recycling-clean-v1.png') as number,
+  fixture_salem_plan_ar_v1: null,
+} as const satisfies Record<PreparedMediaFixture['id'], ImageSourcePropType | null>;
+
+/** Metro-safe resolver for the only two reviewed Feature 003 media fixtures. */
+export function resolvePreparedMediaSource(
+  id: PreparedMediaFixture['id'],
+): ImageSourcePropType | null {
+  return preparedMediaSources[id];
 }

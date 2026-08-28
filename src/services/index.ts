@@ -1,28 +1,35 @@
-import { createMockServiceRegistry } from './mock';
+import { createFeature003ServiceRegistry } from './mock';
+import type { Feature003ServiceRegistry } from './interfaces';
 
 export type {
-  AIService,
-  ApproveCompletionRequest,
-  CompletionAward,
-  ImpactService,
+  ChildCoachService,
+  FamilyProjectionService,
+  Feature003ServiceRegistry,
+  GardenService,
   MediaService,
-  MissionGenerationRequest,
-  MissionService,
+  ParentGuideService,
+  ParentSummaryPolicy,
+  PreparedChildCoachProvider,
+  PreparedParentGuideProvider,
   PrototypeSessionService,
-  ResetResult,
-  ServiceError,
+  RecognitionService,
   ServiceMeta,
-  ServiceRegistry,
   ServiceResult,
+  TaskService,
 } from './interfaces';
 export {
-  createMockServiceRegistry,
-  MockAIService,
-  MockImpactService,
-  MockMediaService,
-  MockMissionService,
-  MockPrototypeSessionService,
+  createFeature003ServiceRegistry,
+  DeterministicChildCoachProvider,
+  DeterministicFamilyProjectionService,
+  DeterministicGardenService,
+  DeterministicMediaService,
+  DeterministicParentGuideProvider,
+  DeterministicParentSummaryPolicy,
+  DeterministicPrototypeSessionService,
+  DeterministicRecognitionService,
+  DeterministicTaskService,
 } from './mock';
+export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 
-/** The competition build binds every replaceable boundary to deterministic local services. */
-export const serviceRegistry = createMockServiceRegistry();
+/** The active competition registry contains deterministic Feature 003 services only. */
+export const serviceRegistry: Feature003ServiceRegistry = createFeature003ServiceRegistry();

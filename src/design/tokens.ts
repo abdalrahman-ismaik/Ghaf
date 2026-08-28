@@ -8,6 +8,9 @@ export const colors = {
   leaf: '#718E6A',
   leafLight: '#DCE5D7',
   leafMist: '#EDF1E8',
+  mangrove: '#246B64',
+  water: '#77A8A1',
+  waterLight: '#D9E9E5',
   sand: '#CBB98F',
   sandLight: '#E9E0CC',
   ivory: '#F3F0E7',
@@ -18,13 +21,15 @@ export const colors = {
   goldGlow: '#F3E8D1',
   sky: '#D6E2DE',
   ink: '#172621',
-  inkMuted: '#606B65',
+  inkMuted: '#5B665F',
   line: '#CBCDC2',
   white: '#FFFFFF',
   success: '#317655',
   successLight: '#DDEBE1',
   danger: '#963E36',
   dangerLight: '#F1DEDA',
+  coral: '#A94A3F',
+  coralLight: '#F1DEDA',
   transparent: 'transparent',
 } as const;
 
@@ -56,19 +61,19 @@ export const typography = {
   }),
   sizes: {
     caption: 12,
-    label: 13,
+    label: 14,
     body: 16,
     heading: 21,
-    title: 32,
-    display: 46,
+    title: 30,
+    display: 42,
   },
   lineHeights: {
-    caption: 18,
-    label: 19,
-    body: 25,
-    heading: 29,
+    caption: 19,
+    label: 21,
+    body: 26,
+    heading: 30,
     title: 39,
-    display: 53,
+    display: 51,
   },
   weights: {
     regular: '400',
@@ -90,17 +95,20 @@ export const shadows = {
 
 export const motion = {
   duration: {
-    quick: 160,
-    standard: 260,
-    slow: 520,
-    reveal: 760,
+    quick: 120,
+    standard: 220,
+    slow: 220,
+    reveal: 650,
+    growth: 650,
   },
+  easing: [0.2, 0.8, 0.2, 1] as const,
 } as const;
 
 export const layout = {
   maxContentWidth: 720,
   touchTarget: 48,
   compactContentWidth: 520,
+  screenPadding: 20,
 } as const;
 
 export const tokens = {

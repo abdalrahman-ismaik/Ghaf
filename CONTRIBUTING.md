@@ -1,32 +1,31 @@
 # Contributing to Ghaf — غاف
 
-Ghaf is a three-member competition prototype. Contributions should make the approved demo path
-clearer, more polished, or more reliable without introducing production scope.
+Ghaf is a three-member SMAC 2026 prototype. Contributions should improve the approved Feature 003
+vertical slice without overstating implementation, AI, sustainability, cultural authority, child
+safety, or production readiness.
 
 ## Before You Start
 
-1. Run `git status --short` and preserve work you do not own.
-2. Read `.specify/memory/constitution.md`.
-3. Read the active feature's `spec.md`, `plan.md`, and `tasks.md`.
-4. Check [TEAM_OWNERSHIP.md](docs/TEAM_OWNERSHIP.md) and announce the exact task and file boundary.
-5. Confirm that no other person or agent is writing those files.
+1. Run `git status --short` and preserve unrelated work.
+2. Read the repository's canonical `AGENTS.md`.
+3. Read `.specify/memory/constitution.md` and the active feature's `spec.md`, `plan.md`, and
+   `tasks.md`.
+4. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
+   user-facing change.
+5. Check `TEAM_OWNERSHIP.md` and reserve the exact file boundary.
+6. Confirm no person or agent is writing the same file or shared configuration.
 
-If the requested behavior is outside the active specification, pause and ask the integration owner
-to update the Spec Kit artifacts. Feature 002 implementation must not start until its first plan is
-reviewed and approved by the team.
+Feature 003 is the active approved Spec Kit package. Update its artifacts before changing behavior
+outside the current specification; do not silently widen Feature 002 or manually edit the Spec
+Kit-managed block in `AGENTS.md`.
 
 ## Setup
 
-Requirements are Node.js 22.13 or newer and npm. Install exactly from the lockfile:
+Use Node.js 22.13 or newer and npm. The repository `.nvmrc` records the baseline.
 
 ```bash
 npm ci
-```
-
-Start the development server:
-
-```bash
-npm start
+npm run web -- --offline
 ```
 
 Android is the primary target:
@@ -35,11 +34,119 @@ Android is the primary target:
 npm run android
 ```
 
-No API key, backend, Expo account, or real child information is needed for Feature 001.
+Run the complete local gate with `npm run verify`; see
+[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) for runtime choices and troubleshooting.
+
+The deterministic P0 path requires no API key, backend account, real Child data, camera, or
+microphone permission.
+
+## Work Reservation
+
+Record this before editing:
+
+```text
+Work period: date/time or session label
+Owner: Member or agent
+Feature/tasks: exact Spec Kit IDs
+Write scope: exact files/directories
+Expected handoff: outcome and validation
+Cross-cutting review: Arabic/culture/safeguarding/accessibility as applicable
+```
+
+Only the integration owner changes shared app configuration or resolves dependency conflicts.
+At most four agents may run concurrently, with disjoint write scopes.
+
+## Branch and Commit Discipline
+
+- Keep work small enough to map to one or a few Feature 003 task IDs.
+- Use a short-lived branch such as `003-garden-reward-loop`; the integration owner decides timing.
+- Do not commit across another owner's active boundary.
+- Inspect `git diff --check`, `git diff --stat`, and `git status --short` before handoff.
+- Do not use destructive Git commands or discard unrelated changes.
+- Do not push, merge, force-push, deploy, or rewrite shared history without explicit authorization.
+
+Example commit messages:
+
+```text
+feat: add deterministic seed award loop
+feat: add bounded child coach fixtures
+test: keep private categories out of family circle
+docs: record Arabic Android rehearsal
+```
+
+## Implementation Conventions
+
+- Keep Expo Router screens thin and put reusable UI in `src/components/`.
+- Put task, reward, garden, circle, and assistant behavior in bounded feature modules.
+- Consume service interfaces through the central registry; screens never import a concrete remote
+  provider.
+- Preserve one complete local deterministic provider and reset path.
+- Use shared tokens and logical start/end layout; do not add one-off colors, spacing, radii, motion,
+  or left/right assumptions.
+- Put shared user-facing copy in the Arabic/English resources.
+- Treat loading, retry, fallback, assistant, and celebration as screen states unless the approved
+  specification defines a route.
+- Use code-native SVG and existing libraries before installing a new UI or illustration system.
+- If an optional remote AI provider is approved, keep the secret on a server, validate structured
+  output, time out quickly, and fall back within the same attempt.
+
+## Behavioral-Design Review
+
+Every task or reward change must answer:
+
+- Is the action positive, specific, observable, achievable, and age/ability appropriate?
+- Can the Child choose, ask for help, complete with help, retry, or use a safe equivalent?
+- Is the award predictable, proportionate, nonfinancial, and shown before acceptance?
+- Does completing the accepted task with permitted help keep the displayed award?
+- Does the task declare recognition mode, valid routine phase, `visibilityScope`, and
+  `circleEligible`?
+- If circle-eligible, is it Green Impact and household-visible, with the projection stripped to one
+  coarse family action?
+- Does praise describe the action or strategy rather than the Child's worth?
+- Can a miss occur without debt, shame, public failure, punitive streak loss, or dying growth?
+- For a recurrent fade-first acquisition task, does the third confirmation only prompt a Parent
+  review, with maintenance producing zero future Seeds/persistent growth and no automatic switch?
+- Does privacy filtering happen before any shared visual/counter update, and is the task excluded
+  from cross-family views if it concerns prayer, kinship, affection, food consumption, wellbeing,
+  hygiene, disability, media, reflection, Parent notes, or Child-assistant content?
+
+Do not introduce random rewards, loot boxes, purchasable currency, points removal, fixed-child
+labels, or raw sibling/cousin ranking.
+
+## Content and Cultural Review
+
+- Use Modern Standard Arabic until named Emirati-language review is recorded.
+- Review Arabic gender, diacritics, mixed scripts, numerals, line breaks, and RTL order.
+- Wedding, majlis, hospitality, dialect, and all faith content require local human review.
+- Offer valid phrase choices; do not mark a family expression wrong.
+- Keep prayer and faith content Parent-enabled, private, nonpunitive, and outside circle data.
+- Parent owns food safety. Never reward how much a Child eats or “cleaning the plate.”
+- Age-gate cooking, waste, electrical, outdoor, and cleaning tasks. Children report hazards rather
+  than repair or touch them.
+- Do not invent litres saved, carbon avoided, food rescued, or trees planted.
+
+## AI and Data Review
+
+For P0, use synthetic profiles, prepared image/voice fixtures, and deterministic assistant
+responses. If an approved secure server boundary exists, demonstrate at least one real model
+transformation with synthetic input and the same-attempt fallback; otherwise record live AI as
+`BLOCKED` or `NOT RUN`. The Child Coach is a bounded task tool, not open chat. The Parent Guide
+summarizes observable records, not “normality,” diagnosis, emotion, personality, truthfulness,
+religiosity, or parenting quality.
+
+Reject a change that introduces:
+
+- real Child photo/voice processing without a separately approved safeguard design;
+- ambient/background listening;
+- facial recognition or emotion inference;
+- secret or attachment language;
+- hidden Parent surveillance;
+- cross-family sharing of tasks, notes, reflections, media, or sensitive categories; or
+- an API secret in client code, fixtures, logs, documentation, or source control.
 
 ## Validation Commands
 
-Run the checks relevant to your change before handoff:
+Run the checks relevant to the change:
 
 ```bash
 npm run typecheck
@@ -48,81 +155,30 @@ npm run format:check
 npm test
 ```
 
-For a dependency change, use `npm install <package>` so both `package.json` and the lockfile are
-updated, and explain why the existing stack is insufficient. Do not install overlapping UI, state,
-form, media, or animation libraries.
+Also run targeted tests for changed state transitions and a manual journey from the reset baseline.
+For user-facing changes, test Arabic/RTL and English/LTR, font scaling, reduced motion, touch targets,
+Back behavior, empty/loading/retry states, and external-service denial.
 
-For user-facing changes, also run the manual steps in [DEMO_RUNBOOK.md](docs/DEMO_RUNBOOK.md). A
-source review is not evidence for a native RTL, physical-device, offline APK, camera, microphone, or
-audio result. Record such checks as `NOT RUN` until directly observed.
+A source review is not evidence for a native, physical, media, permission, timing, or human-
+comprehension result. Record those as `NOT RUN` or `BLOCKED` until directly observed in
+`DEMO_RUNBOOK.md`.
 
-## Branch and Commit Discipline
-
-- Keep work small enough to map to one or a few Spec Kit task IDs.
-- Prefer a short-lived branch named for the feature and topic, for example
-  `001-foundation-ghaf-tree`; the integration owner decides the team's exact branch timing.
-- Do not commit directly over another member's active file boundary.
-- Review `git diff --check`, `git diff --stat`, and `git status --short` before handoff.
-- Do not use destructive Git commands or discard unrelated changes.
-- Do not commit secrets, real child data, generated caches, or local build artifacts.
-- Do not push, force-push, merge, or rewrite shared history without explicit authorization.
-
-Commit messages should be short and outcome-oriented, for example:
+## Handoff Format
 
 ```text
-feat: add bilingual role selector
-test: cover deterministic demo reset
-docs: record Android rehearsal steps
-```
-
-## File Ownership and Handoffs
-
-Member 1 is the current bootstrap-period integration owner. Ownership is provisional, but it must
-be explicit for every work period. The full matrix and handoff record are in
-[TEAM_OWNERSHIP.md](docs/TEAM_OWNERSHIP.md).
-
-Use this handoff shape:
-
-```text
-Task: T0XX — short outcome
-Files owned: exact paths or directories
+Task: F003-T0XX — short outcome
+Files owned: exact paths/directories
+Product invariants checked: concise list
 Checks: command — PASSED/FAILED/BLOCKED/NOT RUN
-Manual evidence: device/build/locale, or NOT RUN
+Manual evidence: device/build/locale or NOT RUN
+Content review: reviewer/scope or NOT RUN
 Known gaps: concise list
 Ready for integration: yes/no
 ```
 
-Only the integration owner changes shared configuration during integration. At most four agents
-may run concurrently, and they must have disjoint write scopes. Read-only review can run in
-parallel.
-
-## Implementation Conventions
-
-- Keep `app/` routes thin and put reusable UI under `src/components/`.
-- Use shared tokens rather than one-off colors, spacing, radii, shadows, or motion values.
-- Use logical start/end alignment and locale-aware text alignment for Arabic and English.
-- Put user-facing shared strings in the bilingual resources unless a deliberately hard-coded
-  prototype string is documented.
-- Consume service interfaces through the registry; never import a concrete remote provider into a
-  screen.
-- Start external behavior with a deterministic mock and preserve a complete offline path.
-- Keep reset deterministic and update its tests if the approved baseline changes.
-- Label seeded, pregenerated, mocked, and future behavior honestly in the UI and docs.
-- Use only synthetic or team-created profiles, media, and mission content.
-
-## Scope Guard
-
-Do not add production authentication, multi-family tenancy, school administration, payments,
-banking, real rewards, a marketplace, social feed, unrestricted child chat, continuous/background
-recording, production analytics, deployment automation, enterprise security/compliance work, a
-second application, or a 3D/VR experience.
-
-Do not claim that AI determines food safety. Any future recording starts only after a visible
-microphone action, and an OpenAI secret must never be placed in the mobile application.
-
 ## Definition of a Good Handoff
 
-A change is ready for integration when it matches the active specification, stays inside its file
-boundary, uses the existing small architecture, includes proportional checks, works with the mock
-fallback, preserves Arabic/English behavior where relevant, and reports all unrun validation
-honestly. Production completeness is not the target; judge-facing coherence is.
+A change is ready when it matches the active Feature 003 specification, preserves the deterministic
+fallback and reset, follows reward/AI/privacy invariants, has Arabic/English parity, stays inside its
+file boundary, includes proportional tests, and reports every unrun check honestly. Competition
+coherence is the target; production completeness is not.
