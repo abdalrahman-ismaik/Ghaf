@@ -235,7 +235,7 @@ describe('US4 symbolic garden and privacy-safe circle consequence', () => {
     const afterFirst = counters();
     const receipt = structuredClone(first.data.receipt);
 
-    // Garden and circle routes are read-only views of this authoritative session state.
+    // Garden and circle reads must leave the stored counters unchanged.
     expect(serviceRegistry.garden.stageForSeeds(afterFirst.mangroveSeeds)).toBe('sapling');
     expect(serviceRegistry.garden.nextThresholdForSeeds(afterFirst.mangroveSeeds)).toBe(120);
     expect(counters()).toEqual(afterFirst);

@@ -1,6 +1,6 @@
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 
-// These identifiers are intentionally provisional for the competition prototype.
+// The competition build uses temporary app identifiers.
 const PROVISIONAL_ANDROID_PACKAGE = 'ae.ac.ku.ghaf.prototype';
 const PROVISIONAL_IOS_BUNDLE_IDENTIFIER = 'ae.ac.ku.ghaf.prototype';
 

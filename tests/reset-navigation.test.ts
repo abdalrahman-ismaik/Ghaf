@@ -83,15 +83,15 @@ describe('mounted reset locale and history boundary', () => {
       '/',
     );
 
-    // Expo Router may asynchronously replace its own state after our marker is
-    // installed. Repeated Back events at the reset root must still be trapped.
+    // Expo Router can replace our marker after reset.
+    // Back at the reset root must remain blocked in that case.
     history.replaceState({ id: 'expo-router-root' });
     for (let attempt = 1; attempt <= 3; attempt += 1) {
       popstateListeners[0]?.({ state: { id: `expo-router-root-${attempt}` } } as PopStateEvent);
     }
     expect(history.pushState).toHaveBeenCalledTimes(5);
 
-    // Normal Back movement among routes created after reset remains available.
+    // Back still works for routes opened after reset.
     fakeWindow.location.pathname = '/role';
     popstateListeners[0]?.({ state: { id: 'post-reset-role' } } as PopStateEvent);
     expect(history.pushState).toHaveBeenCalledTimes(5);

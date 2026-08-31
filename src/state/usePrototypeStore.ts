@@ -56,7 +56,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
   readonly resetPrototype: () => Omit<ResetResult, 'session'>;
-  /** Temporary route-shell alias; resetPrototype is the Feature 003 source of truth. */
+  // Route shell still uses this alias; resetPrototype owns the reset behavior.
   readonly resetDemo: () => '/';
 
   readonly createTaskDraft: (input: {
