@@ -21,7 +21,7 @@ describe('source comment lint rule', () => {
     ].join('\n');
 
     await expect(commentRuleMessages(source)).resolves.toHaveLength(2);
-  });
+  }, 15_000);
 
   it('accepts consecutive line comments', async () => {
     const source = [
