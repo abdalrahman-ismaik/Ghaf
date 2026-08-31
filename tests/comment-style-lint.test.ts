@@ -36,12 +36,26 @@ describe('source comment lint rule', () => {
   it('keeps license headers and build directives that require block syntax', async () => {
     const source = [
       '/*! Project license */',
+      '/* Copyright 2026 Example. Licensed under MIT. */',
       "const url = './module';",
       'void import(/* @vite-ignore */ url);',
+      'void import(/* webpackMode: "eager" */ url);',
+      'void import(/* webpackPrefetch: true */ url);',
       'const value = /* @__PURE__ */ Number(1);',
+      '/* c8 ignore next 8 */',
     ].join('\n');
 
     await expect(commentRuleMessages(source)).resolves.toHaveLength(0);
+  });
+
+  it('rejects ordinary comments that imitate preserved license syntax', async () => {
+    const source = [
+      '/*! ordinary implementation note */',
+      '/* Check the license state before loading. */',
+      '/* Copyright handling belongs in this function. */',
+    ].join('\n');
+
+    await expect(commentRuleMessages(source)).resolves.toHaveLength(3);
   });
 
   it('does not treat strings, globs, or regular expressions as comments', async () => {

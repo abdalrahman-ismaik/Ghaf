@@ -2,15 +2,22 @@ const { defineConfig } = require('eslint/config');
 const expoConfig = require('eslint-config-expo/flat');
 
 const preservedBlockDirective =
-  /^(?:@vite-ignore|webpack(?:Ignore|ChunkName):.+|[@#]__(?:PURE|INLINE)__|@__NO_SIDE_EFFECTS__|(?:c8|istanbul)\s+ignore(?:\s+\w+)?)$/u;
+  /^(?:@vite-ignore|webpack(?:ChunkName|Mode|Prefetch|Preload|Ignore|Exports|FetchPriority|Include|Exclude)\s*:\s*.+|[@#]__(?:PURE|INLINE|NO_SIDE_EFFECTS)__|c8\s+ignore\s+(?:next(?:\s+\d+)?|start|stop)|istanbul\s+ignore\s+(?:next|if|else|file))$/u;
+
+function isLicenseBlock(value) {
+  const withoutBang = value.replace(/^!\s*/u, '');
+  return (
+    /(?:^|\n)\s*\*?\s*(?:@license\b|@preserve\b|SPDX-License-Identifier:|Copyright(?:\s+\(c\)|\s+©)?\s+\d{4}\b|Licensed under\b)/iu.test(
+      withoutBang,
+    ) ||
+    /(?:©|\(c\))\s*\d{4}/iu.test(withoutBang) ||
+    (value.startsWith('!') && /\blicen[cs]e\b/iu.test(withoutBang))
+  );
+}
 
 function mustKeepBlockSyntax(comment) {
   const value = comment.value.trim();
-  return (
-    value.startsWith('!') ||
-    /(?:^|\n)\s*\*?\s*(?:@license\b|@preserve\b|SPDX-License-Identifier:)/iu.test(value) ||
-    preservedBlockDirective.test(value)
-  );
+  return isLicenseBlock(value) || preservedBlockDirective.test(value);
 }
 
 const ghafCommentRules = {
