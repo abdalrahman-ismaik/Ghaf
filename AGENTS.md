@@ -163,6 +163,23 @@ parallel; overlapping writes may not.
 Run no more than four agents concurrently. Use the smallest applicable project agent and honor its
 write scope. The integration owner resolves shared configuration, dependency, and final merge work.
 
+## Comment and Commit Conventions
+
+- In source languages that support `//`, every new or edited comment uses `//`. Write a multi-line
+  comment as consecutive `//` lines; do not add `/* ... */` or `/** ... */` block comments.
+- Use the valid native comment syntax in files where `//` is not supported. Preserve generated
+  content, license text, Spec Kit-managed markers, and tool-required directives.
+- Keep comments concise, factual, and clear. Do not introduce intentional spelling or grammar
+  mistakes.
+- Commit each completed, independently verifiable function, fix, or feature slice as a small,
+  cohesive commit. Split unrelated work into separate commits and avoid accumulating one large
+  catch-all commit.
+- During longer assignments, create a checkpoint around every 30 minutes when the work forms a
+  coherent, validated state. Do not fabricate timestamps or split incomplete work only to imitate
+  a particular activity pattern.
+- Use the repository's configured contributor identity and accurate authorship metadata. Do not
+  override or fabricate another person's identity.
+
 ## Validation
 
 Run checks proportional to the change:
