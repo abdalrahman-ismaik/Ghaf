@@ -210,10 +210,9 @@ export interface PreAcceptanceTaskProposal {
   readonly origin: 'prepared';
 }
 
-/**
- * A bounded negotiation attached to the still-unaccepted assignment. No task or counter changes
- * until the Parent resolves it and the assigned Child explicitly accepts the reviewed proposal.
- */
+// This bounded request stays with the unaccepted assignment.
+// The task and counters stay unchanged until the Parent resolves it.
+// The assigned Child must then accept the reviewed proposal.
 export interface PreAcceptanceTaskAdjustment {
   readonly requestId: string;
   readonly sourceAssignmentId: string;
@@ -228,9 +227,7 @@ export interface PreAcceptanceTaskAdjustment {
   readonly origin: 'synthetic_local';
 }
 
-/**
- * A local, future-only request. It never replaces the accepted TaskJourney or carries a reward.
- */
+// This local request affects future tasks only. It cannot replace the accepted journey or give a reward.
 export interface ProspectiveTaskAdjustment {
   readonly kind: ProspectiveTaskAdjustmentKind;
   readonly requestedBy: 'child' | 'parent';
@@ -402,7 +399,7 @@ export interface PrototypeSession {
   readonly landscapeProgress: Readonly<Record<LandscapeId, LandscapeProgress>>;
   readonly circleGoal: CircleGoal;
   readonly recognitionLedger: Readonly<Record<string, RecognitionReceipt>>;
-  /** Added by the application store as recurrent tasks are confirmed; reset sessions may omit it. */
+  // The store adds this after recurrent task confirmations. Reset sessions can leave it out.
   readonly routineProgressByTask?: Readonly<Record<string, RoutineProgressState>>;
   readonly preparedParentGuideFixtureId: 'guide_recycling_refine_v1';
   readonly preparedChildCoachFixtureId: 'coach_recycling_steps_v1';
@@ -726,6 +723,6 @@ export interface DomainError {
   readonly fallbackAvailable: boolean;
 }
 
-/** Pure policy functions use this envelope; service providers add provenance metadata. */
+// Pure policy functions return this result shape. Services add provider metadata around it.
 export type DomainResult<T> =
   { readonly ok: true; readonly data: T } | { readonly ok: false; readonly error: DomainError };

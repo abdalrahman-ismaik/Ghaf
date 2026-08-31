@@ -80,7 +80,7 @@ export function evaluateRecognitionPolicy(
 ): DomainResult<RecognitionPolicyResult> {
   const recognitionKey = recognitionKeyForSubmission(input.submissionId);
 
-  // Ledger lookup is intentionally first. Duplicate attempts never re-enter validation/projection.
+  // Check a stored receipt first so one submission cannot run validation or projection twice.
   if (input.existingReceipt) {
     if (input.existingReceipt.recognitionKey !== recognitionKey) {
       return failure(

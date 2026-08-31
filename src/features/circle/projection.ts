@@ -57,10 +57,8 @@ export type ResolvedCircleFixture =
       readonly origin: 'local_fallback';
     };
 
-/**
- * Treat the seeded circle as untrusted display input. Invalid or expanded
- * shapes collapse to constants so no raw or private field can reach the UI.
- */
+// Check seeded circle data before display.
+// Invalid or extra fields use fixed fallback values, so private data cannot reach the UI.
 export function resolveCircleFixture(input: unknown): ResolvedCircleFixture {
   const parsed = seededCircleFixtureSchema.safeParse(input);
   if (!parsed.success) {

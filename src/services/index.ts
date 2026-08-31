@@ -31,5 +31,5 @@ export {
 } from './mock';
 export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 
-/** The active competition registry contains deterministic Feature 003 services only. */
+// Competition uses only deterministic Feature 003 services from this registry.
 export const serviceRegistry: Feature003ServiceRegistry = createFeature003ServiceRegistry();

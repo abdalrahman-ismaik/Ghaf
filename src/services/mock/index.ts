@@ -540,8 +540,8 @@ function descriptivePraise(praise: LocalizedText): boolean {
   if (!safety.accepted) return false;
   if (praise.en === PREPARED_PRAISE.en && praise.ar === PREPARED_PRAISE.ar) return true;
 
-  // The editable P0 praise surface is structured action/help praise. Whole-field matching keeps
-  // labels and inferred character clauses out even when they follow an otherwise valid action.
+  // Editable praise accepts only the approved action-and-help patterns.
+  // Matching the full field blocks labels or character claims after otherwise valid praise.
   const boundedEnglishPraise =
     /^(?:You\s+)?sorted\s+(?:the\s+)?(?:clean\s+)?(?:paper|plastic|items|materials|recyclables)(?:\s+approved\s+by\s+an?\s+adult)?\s+and\s+asked\s+(?:(?:an?\s+adult\s+)?for\s+help\s+when\s+(?:unsure|needed)|an?\s+adult\s+before\s+continuing)[.!]?$/iu;
   const boundedArabicPraise =

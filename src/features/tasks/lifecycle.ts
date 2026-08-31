@@ -47,7 +47,7 @@ export interface TaskLifecycleTransitionInput {
 
 export interface TaskLifecycleTransition {
   readonly lifecycle: TaskLifecycleStatus;
-  /** The lifecycle guard never mutates persistent progress; recognition commits elsewhere. */
+  // Lifecycle transitions do not change persistent progress. Recognition applies those changes later.
   readonly effects: typeof ZERO_PERSISTENT_EFFECTS;
 }
 

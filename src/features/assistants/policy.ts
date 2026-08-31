@@ -308,10 +308,8 @@ const summaryCorrectionSchema = z.discriminatedUnion('operation', [
     .strict(),
 ]);
 
-// P0 corrections are structured observable facts, not open-ended prose. These whole-field
-// grammars intentionally admit only the reviewed synthetic subject, action, count, object, and
-// help clauses used by the prepared summary/correction surface. An unrecognized trailing clause
-// therefore fails closed without trying to enumerate diagnoses, traits, or inferred conditions.
+// P0 corrections accept only reviewed full-field facts about Salem's action, count, object, and help.
+// Any extra text is rejected, including claims about traits, diagnoses, or inferred conditions.
 const BOUNDED_OBSERVABLE_ENGLISH_FACT =
   /^Salem (?:independently completed two Green Impact steps and asked for adult help once|completed one (?:sorting|reviewed recycling) step and asked (?:an adult (?:before continuing|to check the (?:items|materials))|for adult help once)|asked an adult to check the (?:items|materials) once)\.$/u;
 const BOUNDED_OBSERVABLE_ARABIC_FACT =
