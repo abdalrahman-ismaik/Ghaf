@@ -5,7 +5,7 @@ const preservedBlockDirective =
   /^(?:@vite-ignore|[@#]__(?:PURE|INLINE|NO_SIDE_EFFECTS)__|c8\s+ignore\s+(?:next(?:\s+\d+)?|start|stop)|istanbul\s+ignore\s+(?:next|if|else|file))$/u;
 
 const webpackDirectivePart =
-  /^(?:webpackChunkName\s*:\s*(?:"[^"\r\n]+"|'[^'\r\n]+')|webpackMode\s*:\s*(?:"(?:lazy|lazy-once|eager|weak)"|'(?:lazy|lazy-once|eager|weak)')|webpack(?:Prefetch|Preload)\s*:\s*(?:true|false|\d+)|webpackIgnore\s*:\s*(?:true|false)|webpackFetchPriority\s*:\s*(?:"(?:high|low|auto)"|'(?:high|low|auto)')|webpack(?:Include|Exclude)\s*:\s*\/(?:\\.|[^/\r\n])+\/[dgimsuvy]*|webpackExports\s*:\s*(?:"[^"\r\n]+"|'[^'\r\n]+'|\[(?:\s*(?:"[^"\r\n]+"|'[^'\r\n]+')(?:\s*,\s*(?:"[^"\r\n]+"|'[^'\r\n]+'))*)?\]))$/u;
+  /^(?:webpackChunkName\s*:\s*(?:"[^"\r\n]+"|'[^'\r\n]+')|webpackMode\s*:\s*(?:"(?:lazy|lazy-once|eager|weak)"|'(?:lazy|lazy-once|eager|weak)')|webpack(?:Prefetch|Preload)\s*:\s*(?:true|false|-?\d+)|webpackIgnore\s*:\s*(?:true|false)|webpackFetchPriority\s*:\s*(?:"(?:high|low|auto)"|'(?:high|low|auto)')|webpack(?:Include|Exclude)\s*:\s*\/(?:\\.|[^/\r\n])+\/[dgimsuvy]*|webpackExports\s*:\s*(?:"[^"\r\n]+"|'[^'\r\n]+'|\[(?:\s*(?:"[^"\r\n]+"|'[^'\r\n]+')(?:\s*,\s*(?:"[^"\r\n]+"|'[^'\r\n]+'))*)?\]))$/u;
 
 function isWebpackDirective(value) {
   const parts = value

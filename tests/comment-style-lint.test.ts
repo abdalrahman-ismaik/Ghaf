@@ -41,6 +41,7 @@ describe('source comment lint rule', () => {
       'void import(/* @vite-ignore */ url);',
       'void import(/* webpackMode: "eager" */ url);',
       'void import(/* webpackPrefetch: true */ url);',
+      'void import(/* webpackPrefetch: -1 */ url);',
       'void import(',
       '  /*',
       '   * webpackChunkName: "screen",',
