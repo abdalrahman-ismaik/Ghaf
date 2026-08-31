@@ -1,0 +1,5 @@
+# Keep repository checks deterministic in Windows checkouts with core.autocrlf enabled.
+* text=auto eol=lf
+
+# Shell tooling must stay LF so Bash can parse it.
+*.sh text eol=lf
