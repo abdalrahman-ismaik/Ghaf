@@ -5,7 +5,9 @@ const eslint = new ESLint({ cwd: process.cwd() });
 const ruleId = 'ghaf/line-comments-only';
 
 async function commentRuleMessages(source: string, filePath = 'comment-rule-probe.ts') {
-  const [result] = await eslint.lintText(source, { filePath });
+  const results = await eslint.lintText(source, { filePath });
+  const result = results[0];
+  if (!result) throw new Error('ESLint returned no result for the comment-rule probe');
   return result.messages.filter((message) => message.ruleId === ruleId);
 }
 
