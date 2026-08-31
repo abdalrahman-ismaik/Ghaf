@@ -10,6 +10,7 @@ import { JourneyHeader } from '@/components/journey';
 import { Button, Input, Screen, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
 import { P0_RECYCLING_TEMPLATE } from '@/features/tasks/demoContent';
+import { TASK_REFLECTION_MAX_LENGTH } from '@/features/tasks/validation';
 import { bilingualResource, localize } from '@/i18n';
 import type { ChildCoachIntent, ChildCoachResult, LocalizedText } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
@@ -374,7 +375,7 @@ export default function ChildTaskScreen() {
             accessibilityLanguage={locale === 'ar' ? 'ar-AE' : 'en-AE'}
             direction={direction}
             label={t('childTask.reflection')}
-            maxLength={180}
+            maxLength={TASK_REFLECTION_MAX_LENGTH}
             multiline
             onChangeText={(value) => {
               const current = childTaskDraft.reflection ?? { ar: '', en: '' };

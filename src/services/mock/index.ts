@@ -29,6 +29,7 @@ import {
 import { transitionTaskLifecycle } from '../../features/tasks/lifecycle';
 import {
   matchesCanonicalP0TaskContent,
+  validateOptionalTaskReflection,
   validateTaskForReview,
   validateTaskTemplate,
 } from '../../features/tasks/validation';
@@ -450,6 +451,8 @@ export class DeterministicTaskService implements TaskService {
     if (input.observableFacts.some((fact) => !nonEmptyLocalized(fact))) {
       return failure('INVALID_INPUT', 'Observable facts must be bilingual and non-empty');
     }
+    const reflection = validateOptionalTaskReflection(input.reflection);
+    if (!reflection.ok) return { ok: false, error: reflection.error };
     const transition = transitionTaskLifecycle({
       current: journey.lifecycle,
       action: 'submit',

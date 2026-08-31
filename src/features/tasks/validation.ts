@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import type { DomainResult, Task, TaskTemplate } from '../../models/familyGrowth';
+import type { DomainResult, LocalizedText, Task, TaskTemplate } from '../../models/familyGrowth';
 import { P0_RECYCLING_TEMPLATE, P0_SAFE_EQUIVALENT_TEMPLATE, TASK_TEMPLATES } from './demoContent';
+
+export const TASK_REFLECTION_MAX_LENGTH = 180;
 
 const localizedTextSchema = z
   .object({
@@ -9,6 +11,14 @@ const localizedTextSchema = z
     en: z.string().trim().min(1),
   })
   .strict();
+
+const optionalTaskReflectionSchema = z
+  .object({
+    ar: z.string().max(TASK_REFLECTION_MAX_LENGTH),
+    en: z.string().max(TASK_REFLECTION_MAX_LENGTH),
+  })
+  .strict()
+  .nullable();
 
 const categorySchema = z.enum([
   'faith_gratitude',
@@ -220,6 +230,18 @@ function unsafeTask(message: string): DomainResult<never> {
       fallbackAvailable: true,
     },
   };
+}
+
+export function validateOptionalTaskReflection(
+  reflection: unknown,
+): DomainResult<LocalizedText | null> {
+  const parsed = optionalTaskReflectionSchema.safeParse(reflection);
+  if (!parsed.success) {
+    return invalidTask(
+      `The optional task reflection must stay within ${TASK_REFLECTION_MAX_LENGTH} characters`,
+    );
+  }
+  return { ok: true, data: parsed.data };
 }
 
 const HAZARDOUS_ENGLISH_INSTRUCTION =

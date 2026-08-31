@@ -4,6 +4,7 @@ import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features
 import { P0_EXECUTABLE_CHOICE, P0_SAFE_EQUIVALENT_TEMPLATE } from '../features/tasks/demoContent';
 import {
   matchesCanonicalP0TaskContent,
+  validateOptionalTaskReflection,
   validateTaskForReview,
   validateTaskTemplate,
 } from '../features/tasks/validation';
@@ -908,12 +909,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const normalized = reflection ? { ar: reflection.ar, en: reflection.en } : null;
     const resolved =
       normalized && (normalized.ar.trim() || normalized.en.trim()) ? normalized : null;
-    if (resolved && (resolved.ar.length > 180 || resolved.en.length > 180)) {
-      return failure(
-        'INVALID_INPUT',
-        'The optional task reflection must stay within 180 characters',
-      );
-    }
+    const validated = validateOptionalTaskReflection(resolved);
+    if (!validated.ok) return { ok: false, error: validated.error };
     const next: ChildTaskDraftState = { ...state.childTaskDraft, reflection: resolved };
     set({ childTaskDraft: next });
     return { ok: true, data: next, meta: { origin: 'synthetic', fallbackUsed: false } };

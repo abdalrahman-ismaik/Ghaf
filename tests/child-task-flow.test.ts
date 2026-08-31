@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { P0_RECYCLING_TEMPLATE, TASK_TEMPLATES } from '../src/features/tasks/demoContent';
+import { TASK_REFLECTION_MAX_LENGTH } from '../src/features/tasks/validation';
 import type { PreparedMediaFixture } from '../src/models/familyGrowth';
 import { serviceRegistry } from '../src/services';
 import { createResetSourceSession } from '../src/services/mock/fixtures';
@@ -560,6 +561,41 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     });
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('in_progress');
     expect(counters()).toEqual(baseline);
+  });
+
+  it('rejects overlong reflections at both the draft and submission boundaries', () => {
+    const baseline = counters();
+    expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
+    expectOk(usePrototypeStore.getState().startAssignment());
+    const overlong = 'x'.repeat(TASK_REFLECTION_MAX_LENGTH + 1);
+    const reflection = { ar: overlong, en: overlong };
+
+    expect(usePrototypeStore.getState().setChildTaskReflection(reflection)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_INPUT' },
+    });
+    expect(usePrototypeStore.getState().childTaskDraft.reflection).toBeNull();
+
+    expect(
+      usePrototypeStore.getState().submitTask({
+        definitionAcknowledged: true,
+        completionMode: 'permitted_help',
+        helpUsed: null,
+        preparedMediaFixtureId: null,
+        reflection,
+        observableFacts: [
+          {
+            ar: 'فرز سالم المواد النظيفة التي وافق عليها شخص بالغ.',
+            en: 'Salem sorted the clean items an adult approved.',
+          },
+        ],
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+    expect(usePrototypeStore.getState().journey?.lifecycle).toBe('in_progress');
+    expect(counters()).toEqual(baseline);
+
+    const routeSource = readFileSync(new URL('../app/child/task.tsx', import.meta.url), 'utf8');
+    expect(routeSource).toContain('maxLength={TASK_REFLECTION_MAX_LENGTH}');
   });
 
   it('submits with permitted help and no media or reflection while all four counters stay unchanged', () => {
