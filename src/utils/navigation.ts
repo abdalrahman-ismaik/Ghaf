@@ -18,12 +18,9 @@ function historyStateWithMarker(
   return { ...base, [RESET_BOUNDARY_KEY]: marker };
 }
 
-/**
- * Browsers do not expose an API that deletes earlier same-tab history. Keep a
- * marked root entry in front of pre-reset routes and restore its guard whenever
- * Back reaches the boundary. Post-reset navigation can still move normally,
- * but it cannot reveal a route from the cleared journey.
- */
+// Browsers cannot delete older history entries from the current tab. Keep a marked root
+// before pre-reset routes and restore its guard when Back reaches the boundary.
+// Later navigation still works but cannot reopen routes from the cleared journey.
 function armWebResetHistoryBoundary(webWindow: Window): void {
   if (resetHistoryOwner !== webWindow || !resetHistoryListener) {
     if (resetHistoryOwner && resetHistoryListener) {
@@ -36,8 +33,8 @@ function armWebResetHistoryBoundary(webWindow: Window): void {
         event.state &&
         typeof event.state === 'object' &&
         (event.state as Record<string, unknown>)[RESET_BOUNDARY_KEY] === RESET_BOUNDARY;
-      // Expo Router can asynchronously replace history.state after navigation.
-      // The root URL is the durable boundary even when its marker is stripped.
+      // Expo Router may replace history.state after navigation.
+      // Use the root URL as a fallback boundary when the marker disappears.
       if (reachedMarkedBoundary || webWindow.location.pathname === '/') {
         webWindow.history.pushState(historyStateWithMarker(event.state, RESET_GUARD), '', '/');
       }
@@ -50,15 +47,13 @@ function armWebResetHistoryBoundary(webWindow: Window): void {
   webWindow.history.pushState(historyStateWithMarker(boundaryState, RESET_GUARD), '', '/');
 }
 
-/**
- * Router state is deliberately outside the prototype aggregate. Reset the
- * aggregate first, then collapse the visible stack and replace its root.
- */
+// Router state stays outside the prototype store. Reset the store first, then clear
+// the visible stack and replace its root.
 export function replaceHistoryWithEntry(router: EntryReplaceRouter): void {
   try {
     router.dismissAll();
   } catch {
-    // A root-only stack has nothing to dismiss; replace still establishes `/`.
+    // A stack already at root cannot be dismissed, but replace still restores `/`.
   }
   router.replace('/');
 

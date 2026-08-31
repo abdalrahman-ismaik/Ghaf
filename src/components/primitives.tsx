@@ -33,9 +33,9 @@ export type TextVariant = 'display' | 'title' | 'heading' | 'body' | 'label' | '
 export type TextAlign = 'start' | 'center' | 'end';
 
 export interface ScreenProps extends PropsWithChildren {
-  /** Applied to the scroll/static viewport. Keep screen-level centering here. */
+  // Styles the scrolling or static viewport. Put screen centering here.
   contentContainerStyle?: StyleProp<ViewStyle>;
-  /** Applied to the readable-width content column. Keep section rhythm here. */
+  // Styles the readable content column. Put section spacing here.
   contentStyle?: StyleProp<ViewStyle>;
   keyboardAware?: boolean;
   keyboardVerticalOffset?: number;

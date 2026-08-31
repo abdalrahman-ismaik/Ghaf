@@ -97,7 +97,7 @@ interface OriginDisclosureProps {
   readonly title?: string;
 }
 
-/** Capability truth stays beside the object it qualifies, not in a remote footer. */
+// Show the capability label beside the item it describes, not in a distant footer.
 export function OriginDisclosure({
   body,
   compact = false,

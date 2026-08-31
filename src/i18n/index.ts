@@ -36,7 +36,7 @@ interface WebDocumentLocaleTarget {
   lang: string;
 }
 
-/** Keep browser language semantics aligned with the in-app locale and logical layout. */
+// Match the web document language and direction to the current app locale.
 export function synchronizeWebDocumentLocale(
   locale: LocaleCode,
   target: WebDocumentLocaleTarget | null = typeof document === 'undefined'
@@ -52,7 +52,7 @@ export function localize(value: LocalizedText, locale: LocaleCode): string {
   return value[locale] || value.ar || value.en;
 }
 
-/** Build persisted bilingual fixture text from the single i18n source of truth. */
+// Build stored Arabic and English fixture text from the shared translation resources.
 export function bilingualResource(key: string): LocalizedText {
   return {
     ar: String(i18n.getFixedT('ar')(key)),
@@ -60,10 +60,8 @@ export function bilingualResource(key: string): LocalizedText {
   };
 }
 
-/**
- * Screen content mirrors immediately through logical styles. Native navigation
- * chrome may require an app restart after forceRTL changes.
- */
+// Logical styles mirror screen content at once. Native navigation chrome may need
+// an app restart after forceRTL changes.
 export async function configureNativeDirection(locale: LocaleCode): Promise<boolean> {
   const { I18nManager } = await import('react-native');
   const shouldUseRtl = isRtlLocale(locale);

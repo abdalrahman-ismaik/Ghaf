@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   inlineAccentRtl: {
-    // The document/Yoga direction already places the first child at logical start.
+    // Yoga follows the document direction, so the first item stays at the logical start.
     flexDirection: 'row',
   },
   inlineAccentLine: {
