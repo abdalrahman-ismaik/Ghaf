@@ -35,7 +35,8 @@ function setAssignedSalemJourney(): void {
 
 describe('US2 Child choice, bounded help, and submission flow', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
     setAssignedSalemJourney();
   });
 

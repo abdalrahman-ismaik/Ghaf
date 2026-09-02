@@ -295,6 +295,19 @@ export class ChildVoiceController {
     );
   }
 
+  clearTaskBinding(actorRole: ChildVoiceActorRole): ServiceResult<ChildVoiceView> {
+    if (actorRole !== 'parent') {
+      return failure('INVALID_TRANSITION', 'Only the Parent can clear prepared voice task state');
+    }
+    if (this.voiceSession) {
+      const reset = this.registry.syntheticVoice.reset(this.voiceSession, this.childAuthority());
+      if (!reset.ok) return reset;
+    }
+    this.voiceSession = null;
+    this.taskContext = null;
+    return success(this.getView());
+  }
+
   resetPrototype(actorRole: ChildVoiceActorRole): ServiceResult<ChildVoiceView> {
     if (actorRole !== 'parent') {
       return failure('INVALID_TRANSITION', 'Only the Parent can reset prepared voice permission');

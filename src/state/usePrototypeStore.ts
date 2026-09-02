@@ -46,6 +46,11 @@ import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import { serviceRegistry, type ParentGuideService, type ServiceResult } from '../services';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
+type PrototypeJourney = NonNullable<PrototypeSession['journey']>;
+type ActiveChildAssignmentJourney = PrototypeJourney & {
+  readonly lifecycle: 'chosen' | 'in_progress';
+  readonly assignment: NonNullable<PrototypeJourney['assignment']>;
+};
 
 const childVoiceController = createChildVoiceController(serviceRegistry);
 
@@ -183,15 +188,23 @@ function createEmptyChildTaskDraft(): ChildTaskDraftState {
   };
 }
 
-function validateActiveChildTask(
+function validateActiveChildAssignment(
   state: PrototypeStoreState,
-): ServiceResult<NonNullable<PrototypeSession['journey']>> {
+  includeChosen: boolean,
+): ServiceResult<ActiveChildAssignmentJourney> {
   const journey = state.journey;
   if (state.role !== 'child') {
     return failure('INVALID_TRANSITION', 'Only the Child demo role can edit task-scoped input');
   }
-  if (!journey?.assignment || journey.lifecycle !== 'in_progress') {
-    return failure('INVALID_TRANSITION', 'An in-progress Parent-approved task is required');
+  const lifecycleAllowed =
+    journey?.lifecycle === 'in_progress' || (includeChosen && journey?.lifecycle === 'chosen');
+  if (!journey?.assignment || !lifecycleAllowed) {
+    return failure(
+      'INVALID_TRANSITION',
+      includeChosen
+        ? 'An active Parent-approved assignment is required'
+        : 'An in-progress Parent-approved task is required',
+    );
   }
   if (journey.assignment.childId !== state.activeChildId) {
     return failure('NOT_ASSIGNED_CHILD', 'This assignment belongs to another synthetic Child');
@@ -206,9 +219,15 @@ function validateActiveChildTask(
   }
   return {
     ok: true,
-    data: journey,
+    data: journey as ActiveChildAssignmentJourney,
     meta: { origin: 'synthetic', fallbackUsed: false },
   };
+}
+
+function validateActiveChildTask(
+  state: PrototypeStoreState,
+): ServiceResult<ActiveChildAssignmentJourney> {
+  return validateActiveChildAssignment(state, false);
 }
 
 function sessionSnapshot(state: PrototypeStoreState): PrototypeSession {
@@ -407,6 +426,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     }
     const result = serviceRegistry.task.createDraft(input);
     if (result.ok) {
+      const clearedVoice = childVoiceController.clearTaskBinding('parent');
+      if (!clearedVoice.ok) return clearedVoice;
       set((state) => ({
         activeChildId: input.childId,
         activeAssignmentId: null,
@@ -414,6 +435,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         parentGuideSuggestion: null,
         childCoachResult: null,
         ageAdaptedCoachResult: null,
+        childVoiceView: clearedVoice.data,
         confirmationPlan: null,
         lastRecognitionAttempt: null,
         prospectiveTaskAdjustment: null,
@@ -971,19 +993,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   prepareChildVoice: () => {
     const state = get();
-    const journey = state.journey;
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child can open the prepared voice rehearsal');
-    }
-    if (
-      !journey?.assignment ||
-      (journey.lifecycle !== 'chosen' && journey.lifecycle !== 'in_progress')
-    ) {
-      return failure('INVALID_TRANSITION', 'An active Parent-approved assignment is required');
-    }
-    if (journey.assignment.childId !== state.activeChildId) {
-      return failure('NOT_ASSIGNED_CHILD', 'This assignment belongs to another synthetic Child');
-    }
+    const guarded = validateActiveChildAssignment(state, true);
+    if (!guarded.ok) return guarded;
+    const journey = guarded.data;
     const result = childVoiceController.bindActiveTask({
       actorRole: 'child',
       childId: state.activeChildId,
@@ -999,17 +1011,12 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   runChildVoiceCommand: (command) => {
     const state = get();
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child can use the prepared voice rehearsal');
-    }
-    const journey = state.journey;
+    const guarded = validateActiveChildAssignment(state, true);
+    if (!guarded.ok) return guarded;
+    const journey = guarded.data;
     if (
-      !journey?.assignment ||
-      (journey.lifecycle !== 'chosen' && journey.lifecycle !== 'in_progress') ||
-      journey.assignment.childId !== state.activeChildId ||
       journey.task.id !== state.childVoiceView.taskId ||
-      journey.task.version !== state.childVoiceView.approvedTaskVersion ||
-      journey.assignment.taskVersion !== journey.task.version
+      journey.task.version !== state.childVoiceView.approvedTaskVersion
     ) {
       return failure('INVALID_TRANSITION', 'Prepared voice is not bound to the active assignment');
     }
@@ -1040,19 +1047,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   requestChildCoach: async (input) => {
     const state = get();
-    const journey = state.journey;
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child demo role can request task coaching');
-    }
-    if (
-      !journey?.assignment ||
-      (journey.lifecycle !== 'chosen' && journey.lifecycle !== 'in_progress')
-    ) {
-      return failure('INVALID_TRANSITION', 'An active Parent-approved assignment is required');
-    }
-    if (journey.assignment.childId !== state.activeChildId) {
-      return failure('NOT_ASSIGNED_CHILD', 'This assignment belongs to another synthetic Child');
-    }
+    const guarded = validateActiveChildAssignment(state, true);
+    if (!guarded.ok) return guarded;
+    const journey = guarded.data;
     if (journey.task.version !== 1 || journey.assignment.taskVersion !== 1) {
       return failure(
         'INVALID_TRANSITION',

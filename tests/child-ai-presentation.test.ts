@@ -184,6 +184,27 @@ describe('Child AI presentation controller', () => {
     });
   });
 
+  it('lets only the Parent clear a completed task binding while keeping the grants', () => {
+    const controller = grantedController();
+    expectOk(controller.start('child'));
+    expectOk(controller.stop('child'));
+    expectOk(controller.send('child'));
+
+    expect(controller.clearTaskBinding('child')).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(controller.getView().availability).toBe('sent');
+
+    expect(expectOk(controller.clearTaskBinding('parent'))).toMatchObject({
+      permissionEnabled: true,
+      availability: 'task_required',
+      lifecycle: 'idle',
+      transcript: null,
+      sentAt: null,
+    });
+  });
+
   it('changes rendered language without mutating task or voice state', () => {
     const controller = grantedController();
     expectOk(controller.start('child'));
@@ -347,6 +368,79 @@ describe('Child AI presentation store integration', () => {
       role: 'parent',
       ageAdaptedCoachResult: null,
       childVoiceView: INITIAL_CHILD_VOICE_VIEW,
+    });
+  });
+
+  it('rejects voice and Coach commands when the assignment binding becomes stale', async () => {
+    reviewP0Task();
+    expectOk(usePrototypeStore.getState().setChildVoicePermission(true));
+    expectOk(usePrototypeStore.getState().approveAssignment());
+    usePrototypeStore.getState().setRole('child');
+    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
+    expectOk(usePrototypeStore.getState().startAssignment());
+    expectOk(usePrototypeStore.getState().prepareChildVoice());
+
+    const journey = usePrototypeStore.getState().journey!;
+    usePrototypeStore.setState({
+      journey: {
+        ...journey,
+        assignment: { ...journey.assignment!, taskId: 'stale_other_task' },
+      },
+    });
+
+    expect(usePrototypeStore.getState().prepareChildVoice()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState().runChildVoiceCommand({ type: 'start' })).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(
+      await usePrototypeStore.getState().requestChildCoach({
+        requestId: 'stale-assignment-coach-v1',
+        intent: 'show_steps',
+      }),
+    ).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+  });
+
+  it('clears a sent transcript before a later journey reuses the same task fixture', () => {
+    reviewP0Task();
+    expectOk(usePrototypeStore.getState().setChildVoicePermission(true));
+    expectOk(usePrototypeStore.getState().approveAssignment());
+    usePrototypeStore.getState().setRole('child');
+    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
+    expectOk(usePrototypeStore.getState().startAssignment());
+    expectOk(usePrototypeStore.getState().prepareChildVoice());
+    expectOk(usePrototypeStore.getState().runChildVoiceCommand({ type: 'start' }));
+    expectOk(usePrototypeStore.getState().runChildVoiceCommand({ type: 'stop' }));
+    expectOk(usePrototypeStore.getState().runChildVoiceCommand({ type: 'send' }));
+    expect(usePrototypeStore.getState().childVoiceView.availability).toBe('sent');
+
+    usePrototypeStore.getState().setRole('parent');
+    reviewP0Task();
+    expect(usePrototypeStore.getState().childVoiceView).toMatchObject({
+      permissionEnabled: true,
+      availability: 'task_required',
+      lifecycle: 'idle',
+      transcript: null,
+      sentAt: null,
+    });
+
+    expectOk(usePrototypeStore.getState().approveAssignment());
+    usePrototypeStore.getState().setRole('child');
+    expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
+    expectOk(usePrototypeStore.getState().startAssignment());
+    expect(expectOk(usePrototypeStore.getState().prepareChildVoice())).toMatchObject({
+      availability: 'ready',
+      lifecycle: 'idle',
+      transcript: null,
+      sentAt: null,
     });
   });
 });
