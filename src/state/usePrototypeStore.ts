@@ -7,6 +7,11 @@ import {
   type ChildVoiceView,
 } from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
+import {
+  createFamilyExperienceController,
+  type FamilyExperiencePresentation,
+  type FamilyExperienceResult,
+} from '../features/family/familyExperienceController';
 import { P0_EXECUTABLE_CHOICE, P0_SAFE_EQUIVALENT_TEMPLATE } from '../features/tasks/demoContent';
 import {
   matchesCanonicalP0TaskContent,
@@ -43,6 +48,7 @@ import type {
   SyntheticChildId,
 } from '../models/familyGrowth';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
+import type { LeagueParticipantId, PreparedLeagueEncouragementId } from '../models/familyLeague';
 import { serviceRegistry, type ParentGuideService, type ServiceResult } from '../services';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
@@ -53,6 +59,7 @@ type ActiveChildAssignmentJourney = PrototypeJourney & {
 };
 
 const childVoiceController = createChildVoiceController(serviceRegistry);
+const familyExperienceController = createFamilyExperienceController();
 
 export interface PrototypeStoreState extends PrototypeSession {
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
@@ -66,11 +73,27 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly routineProgressByTask: Readonly<Record<string, RoutineProgressState>>;
   readonly childTaskDraft: ChildTaskDraftState;
   readonly taskDraftRevision: number;
+  readonly familyExperience: FamilyExperiencePresentation;
 
   readonly setLocale: (value: unknown) => void;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
+  readonly enterParentExperience: () => FamilyExperienceResult<FamilyExperiencePresentation>;
+  readonly enterChildExperience: (
+    childId: SyntheticChildId,
+  ) => FamilyExperienceResult<FamilyExperiencePresentation>;
+  readonly setSyntheticChildAccess: (
+    childId: SyntheticChildId,
+    enabled: boolean,
+  ) => FamilyExperienceResult<FamilyExperiencePresentation>;
+  readonly createPreparedFamilyReward: () => FamilyExperienceResult<FamilyExperiencePresentation>;
+  readonly markPreparedFamilyRewardGiven: () => FamilyExperienceResult<FamilyExperiencePresentation>;
+  readonly startPreparedFamilyLeague: () => FamilyExperienceResult<FamilyExperiencePresentation>;
+  readonly sendPreparedLeagueEncouragement: (
+    recipientId: LeagueParticipantId,
+    phraseId: PreparedLeagueEncouragementId,
+  ) => FamilyExperienceResult<FamilyExperiencePresentation>;
   readonly resetPrototype: () => ServiceResult<Omit<ResetResult, 'session'>>;
   // Route shell still uses this alias; resetPrototype owns the reset behavior.
   readonly resetDemo: () => ServiceResult<'/'>;
@@ -255,6 +278,18 @@ function sessionSnapshot(state: PrototypeStoreState): PrototypeSession {
   };
 }
 
+function syncRecognizedFamilyExperience(
+  state: PrototypeStoreState,
+): FamilyExperienceResult<FamilyExperiencePresentation> | null {
+  if (
+    state.familyExperience.activeEntry?.role !== 'parent' ||
+    state.journey?.lifecycle !== 'recognized'
+  ) {
+    return null;
+  }
+  return familyExperienceController.syncRecognizedJourney(sessionSnapshot(state));
+}
+
 function guideRequestFromState(
   state: PrototypeStoreState,
   input: { readonly requestId: string; readonly intent: ParentGuideIntent },
@@ -369,6 +404,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     serviceRegistry.prototypeSession.getInitialSession().routineProgressByTask ?? {},
   childTaskDraft: createEmptyChildTaskDraft(),
   taskDraftRevision: 0,
+  familyExperience: familyExperienceController.getPresentation(),
 
   setLocale: (value) => {
     const locale = coerceLocale(value);
@@ -391,6 +427,58 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     };
   },
 
+  enterParentExperience: () => {
+    const result = familyExperienceController.enterParent();
+    if (result.ok) {
+      set({ familyExperience: result.data, role: 'parent', activeChildId: 'child_salem' });
+    }
+    return result;
+  },
+
+  enterChildExperience: (childId) => {
+    const result = familyExperienceController.enterChild(childId);
+    if (result.ok) {
+      set({ familyExperience: result.data, role: 'child', activeChildId: childId });
+    }
+    return result;
+  },
+
+  setSyntheticChildAccess: (childId, enabled) => {
+    const result = enabled
+      ? familyExperienceController.restoreChild(childId)
+      : familyExperienceController.revokeChild(childId);
+    if (result.ok) set({ familyExperience: result.data });
+    return result;
+  },
+
+  createPreparedFamilyReward: () => {
+    const synchronized = syncRecognizedFamilyExperience(get());
+    if (synchronized && !synchronized.ok) return synchronized;
+    const result = familyExperienceController.createPreparedReward();
+    if (result.ok) set({ familyExperience: result.data });
+    return result;
+  },
+
+  markPreparedFamilyRewardGiven: () => {
+    const result = familyExperienceController.markPreparedRewardGiven();
+    if (result.ok) set({ familyExperience: result.data });
+    return result;
+  },
+
+  startPreparedFamilyLeague: () => {
+    const synchronized = syncRecognizedFamilyExperience(get());
+    if (synchronized && !synchronized.ok) return synchronized;
+    const result = familyExperienceController.startPreparedLeague();
+    if (result.ok) set({ familyExperience: result.data });
+    return result;
+  },
+
+  sendPreparedLeagueEncouragement: (recipientId, phraseId) => {
+    const result = familyExperienceController.sendPreparedEncouragement(recipientId, phraseId);
+    if (result.ok) set({ familyExperience: result.data });
+    return result;
+  },
+
   resetPrototype: () => {
     if (get().role !== 'parent') {
       return failure('INVALID_TRANSITION', 'Switch to the Parent demo role before reset');
@@ -398,6 +486,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
     const reset = serviceRegistry.prototypeSession.resetPrototype();
+    const familyExperience = familyExperienceController.reset();
     set((state) => ({
       ...reset.session,
       parentGuideSuggestion: null,
@@ -411,6 +500,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       routineProgressByTask: reset.session.routineProgressByTask ?? {},
       childTaskDraft: createEmptyChildTaskDraft(),
       taskDraftRevision: state.taskDraftRevision + 1,
+      familyExperience,
     }));
     return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
   },
@@ -1272,10 +1362,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     );
     if (!result.ok || result.data.disposition === 'already_confirmed') return result;
 
+    const currentFamilyExperience = get().familyExperience;
+    const familyExperience =
+      currentFamilyExperience.activeEntry?.role === 'parent'
+        ? familyExperienceController.syncRecognizedJourney(result.data.session)
+        : null;
+
     set({
       ...result.data.session,
       confirmationPlan: plan,
       lastRecognitionAttempt: result.data,
+      familyExperience: familyExperience?.ok ? familyExperience.data : currentFamilyExperience,
     });
     return result;
   },
