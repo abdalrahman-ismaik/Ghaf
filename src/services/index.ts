@@ -4,6 +4,7 @@ import type { Feature003ServiceRegistry } from './interfaces';
 export type {
   ChildCoachService,
   CoachAdaptationService,
+  FamilyLeagueService,
   FamilyRewardService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
@@ -26,6 +27,7 @@ export {
   DeterministicChildCoachProvider,
   DeterministicCoachAdaptationService,
   DeterministicFamilyRewardService,
+  DeterministicFamilyLeagueService,
   DeterministicFamilyProjectionService,
   DeterministicGardenService,
   DeterministicMediaService,

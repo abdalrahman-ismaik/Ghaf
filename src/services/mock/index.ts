@@ -29,6 +29,15 @@ import {
   summarizeMonthlyMonetaryCommitments,
 } from '../../features/family-rewards';
 import {
+  calculateWeeklyGrowthResults,
+  confirmChallengeLeaf,
+  createFamilyLeagueWeek,
+  evaluateChallengeLeafEligibility,
+  projectLeagueParticipants,
+  rolloverFamilyLeagueWeek,
+  sendPreparedEncouragement,
+} from '../../features/league';
+import {
   applyCanopy,
   applyCircle,
   planAfterConfirmation,
@@ -78,6 +87,15 @@ import type {
   ReviseFamilyRewardPlanInput,
 } from '../../models/familyReward';
 import type {
+  ChallengeLeafCandidate,
+  ConfirmChallengeLeafInput,
+  CreateLeagueWeekInput,
+  FamilyLeagueWeek,
+  LeagueProjectionInput,
+  LeagueRolloverInput,
+  SyntheticLeagueParticipant,
+} from '../../models/familyLeague';
+import type {
   ActiveCoachContext,
   AssignmentApprovalResult,
   CheckInRouteState,
@@ -111,6 +129,7 @@ import type {
 } from '../../models/familyGrowth';
 import type {
   CoachAdaptationService,
+  FamilyLeagueService,
   FamilyRewardService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
@@ -1454,6 +1473,40 @@ export class DeterministicFamilyRewardService implements FamilyRewardService {
   }
 }
 
+export class DeterministicFamilyLeagueService implements FamilyLeagueService {
+  evaluateEligibility(candidate: ChallengeLeafCandidate, participant: SyntheticLeagueParticipant) {
+    return evaluateChallengeLeafEligibility(candidate, participant);
+  }
+
+  createWeek(input: CreateLeagueWeekInput): ReturnType<FamilyLeagueService['createWeek']> {
+    return fromDomain(createFamilyLeagueWeek(input));
+  }
+
+  confirmLeaf(input: ConfirmChallengeLeafInput): ReturnType<FamilyLeagueService['confirmLeaf']> {
+    return fromDomain(confirmChallengeLeaf(input));
+  }
+
+  calculateResults(week: FamilyLeagueWeek): ReturnType<FamilyLeagueService['calculateResults']> {
+    return fromDomain(calculateWeeklyGrowthResults(week));
+  }
+
+  projectParticipants(
+    input: LeagueProjectionInput | unknown,
+  ): ReturnType<FamilyLeagueService['projectParticipants']> {
+    return fromDomain(projectLeagueParticipants(input));
+  }
+
+  sendPreparedEncouragement(
+    input: unknown,
+  ): ReturnType<FamilyLeagueService['sendPreparedEncouragement']> {
+    return fromDomain(sendPreparedEncouragement(input), PREPARED_META);
+  }
+
+  rollover(input: LeagueRolloverInput): ReturnType<FamilyLeagueService['rollover']> {
+    return fromDomain(rolloverFamilyLeagueWeek(input));
+  }
+}
+
 export class DeterministicParentSummaryPolicy implements ParentSummaryPolicy {
   validate(summary: ParentPatternSummary): ServiceResult<ParentPatternSummary> {
     return fromDomain(validateParentSummary(summary), PREPARED_META);
@@ -1508,6 +1561,7 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     syntheticVoice: new DeterministicSyntheticVoiceService(),
     access,
     familyReward: new DeterministicFamilyRewardService(access),
+    familyLeague: new DeterministicFamilyLeagueService(),
     parentSummary: new DeterministicParentSummaryPolicy(),
     prototypeSession: new DeterministicPrototypeSessionService(),
   };

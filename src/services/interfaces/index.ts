@@ -45,6 +45,20 @@ import type {
   ReviseFamilyRewardPlanInput,
 } from '../../models/familyReward';
 import type {
+  ChallengeLeafCandidate,
+  ConfirmChallengeLeafInput,
+  CreateLeagueWeekInput,
+  FamilyLeagueWeek,
+  LeagueEligibilityDecision,
+  LeagueParticipantProjection,
+  LeagueProjectionInput,
+  LeagueRolloverInput,
+  LeagueRolloverResult,
+  PreparedEncouragementApplication,
+  SyntheticLeagueParticipant,
+  WeeklyGrowthResult,
+} from '../../models/familyLeague';
+import type {
   AssignmentApprovalResult,
   AssistantDisclosure,
   CheckInRouteState,
@@ -272,6 +286,21 @@ export interface FamilyRewardService {
   ): ServiceResult<readonly MonetaryCommitmentSummary[]>;
 }
 
+export interface FamilyLeagueService {
+  evaluateEligibility(
+    candidate: ChallengeLeafCandidate,
+    participant: SyntheticLeagueParticipant,
+  ): LeagueEligibilityDecision;
+  createWeek(input: CreateLeagueWeekInput): ServiceResult<FamilyLeagueWeek>;
+  confirmLeaf(input: ConfirmChallengeLeafInput): ServiceResult<FamilyLeagueWeek>;
+  calculateResults(week: FamilyLeagueWeek): ServiceResult<readonly WeeklyGrowthResult[]>;
+  projectParticipants(
+    input: LeagueProjectionInput | unknown,
+  ): ServiceResult<readonly LeagueParticipantProjection[]>;
+  sendPreparedEncouragement(input: unknown): ServiceResult<PreparedEncouragementApplication>;
+  rollover(input: LeagueRolloverInput): ServiceResult<LeagueRolloverResult>;
+}
+
 export interface PreparedParentGuideProvider extends ParentGuideService {
   readonly mode: 'deterministic_prepared';
   readonly fixtureId: 'guide_recycling_refine_v1';
@@ -310,6 +339,7 @@ export interface Feature003ServiceRegistry {
   readonly syntheticVoice: SyntheticVoiceService;
   readonly access: SyntheticAccessService;
   readonly familyReward: FamilyRewardService;
+  readonly familyLeague: FamilyLeagueService;
   readonly parentSummary: ParentSummaryPolicy;
   readonly prototypeSession: PrototypeSessionService;
 }

@@ -509,10 +509,10 @@ goal while keeping the Green Circle unchanged.
 help/adaptation credit, shared ties, rollover isolation, strict projection, protected-category
 rejection, opt-out, and prepared encouragement.
 
-- [ ] T121 [P] [US9] Add RED tests for League eligibility, five-Leaf weeks, idempotent confirmation, scores, ties, opt-out, rollover, strict projections, and encouragement allowlists in `tests/family-league.test.ts`
-- [ ] T122 [P] [US9] Define Challenge Leaves, League weeks, participants, results, minimal projections, eligibility decisions, rollover input, and prepared encouragement in `src/models/familyLeague.ts`
-- [ ] T123 [US9] Implement deterministic eligibility, week creation, confirmation credit, score/competition-position calculation, strict projection, prepared encouragement, cooperative totals, and rollover in `src/features/league/index.ts`
-- [ ] T124 [US9] Export the Family League service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/family-league.test.ts`
+- [x] T121 [P] [US9] Add RED tests for League eligibility, five-Leaf weeks, idempotent confirmation, scores, ties, opt-out, rollover, strict projections, and encouragement allowlists in `tests/family-league.test.ts`
+- [x] T122 [P] [US9] Define Challenge Leaves, League weeks, participants, results, minimal projections, eligibility decisions, rollover input, and prepared encouragement in `src/models/familyLeague.ts`
+- [x] T123 [US9] Implement deterministic eligibility, week creation, confirmation credit, score/competition-position calculation, strict projection, prepared encouragement, cooperative totals, and rollover in `src/features/league/index.ts`
+- [x] T124 [US9] Export the Family League service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/family-league.test.ts`
 
 **Checkpoint**: User Story 9 is independently usable with synthetic invitees only, and no League
 method accepts task text, evidence, Seeds, speed, or Green Circle state.
