@@ -435,7 +435,8 @@ describe('US6 bilingual offline operator and reset flow', () => {
     expect(source).toContain("submitted: '/child/task'");
     expect(source).toContain("recognized: '/garden'");
     expect(source).toContain("['submitted', 'retry', 'confirmed', 'recognized']");
-    expect(source).toContain('status={salemHandoffLabel}');
+    expect(source).toContain("childAccess.child_salem === 'paired'");
+    expect(source).toContain('salemHandoffLabel');
     expect(source).toContain('statusTestID="salem-handoff-status"');
     expect(source).not.toContain("{t('role.body')} {t('origin.synthetic')}");
     expect(source).not.toContain("{t('origin.synthetic')}");

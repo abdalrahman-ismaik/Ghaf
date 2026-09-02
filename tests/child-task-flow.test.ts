@@ -295,7 +295,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(parentHomeSource).toContain('pre-acceptance-parent-review');
     expect(parentHomeSource).toContain('resolve-smaller-task-button');
     expect(parentHomeSource).toContain('resolve-safe-equivalent-button');
-    expect(parentHomeSource).toContain("setRole('child')");
+    expect(parentHomeSource).toContain("enterChildExperience('child_salem')");
     expect(parentHomeSource).toContain("router.replace('/child')");
   });
 

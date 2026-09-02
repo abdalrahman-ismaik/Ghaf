@@ -4,7 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { FamilyCanopy } from '@/components/family-growth/FamilyCanopy';
+import { FamilyLeaguePanel } from '@/components/family-growth/FamilyLeaguePanel';
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
+import { FamilyRewardPanel } from '@/components/family-growth/FamilyRewardPanel';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { JourneyHeader, OriginDisclosure } from '@/components/journey';
 import { Button, Screen, Text } from '@/components/primitives';
@@ -29,8 +31,16 @@ export default function ParentHomeScreen() {
   const resolvePreAcceptanceAdjustment = usePrototypeStore(
     (state) => state.resolvePreAcceptanceAdjustment,
   );
-  const setRole = usePrototypeStore((state) => state.setRole);
+  const familyExperience = usePrototypeStore((state) => state.familyExperience);
+  const enterChildExperience = usePrototypeStore((state) => state.enterChildExperience);
+  const createPreparedFamilyReward = usePrototypeStore((state) => state.createPreparedFamilyReward);
+  const markPreparedFamilyRewardGiven = usePrototypeStore(
+    (state) => state.markPreparedFamilyRewardGiven,
+  );
+  const startPreparedFamilyLeague = usePrototypeStore((state) => state.startPreparedFamilyLeague);
   const [adjustmentError, setAdjustmentError] = useState<string | null>(null);
+  const [rewardError, setRewardError] = useState<string | null>(null);
+  const [leagueError, setLeagueError] = useState<string | null>(null);
 
   useEffect(() => {
     if (role !== 'parent') router.replace('/role');
@@ -61,8 +71,30 @@ export default function ParentHomeScreen() {
       setAdjustmentError(t('errors.safeRetry'));
       return;
     }
-    setRole('child');
+    const entry = enterChildExperience('child_salem');
+    if (!entry.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return;
+    }
     requestAnimationFrame(() => router.replace('/child'));
+  };
+
+  const createReward = () => {
+    setRewardError(null);
+    const result = createPreparedFamilyReward();
+    if (!result.ok) setRewardError(t('errors.safeRetry'));
+  };
+
+  const markRewardGiven = () => {
+    setRewardError(null);
+    const result = markPreparedFamilyRewardGiven();
+    if (!result.ok) setRewardError(t('errors.safeRetry'));
+  };
+
+  const startLeague = () => {
+    setLeagueError(null);
+    const result = startPreparedFamilyLeague();
+    if (!result.ok) setLeagueError(t('errors.safeRetry'));
   };
 
   const nextRoute =
@@ -243,6 +275,27 @@ export default function ParentHomeScreen() {
           {t('parentHome.openCircle')}
         </Button>
       </View>
+
+      <FamilyRewardPanel
+        error={rewardError}
+        onCreate={createReward}
+        onMarkGiven={markRewardGiven}
+        plan={familyExperience.reward}
+        role="parent"
+      />
+
+      <FamilyLeaguePanel
+        canSendEncouragement={false}
+        cooperativeConfirmedCount={familyExperience.league?.cooperativeConfirmedCount ?? 0}
+        cooperativeGoal={familyExperience.league?.cooperativeGoal ?? 15}
+        encouragementSent={false}
+        error={leagueError}
+        onSendEncouragement={() => undefined}
+        onStart={startLeague}
+        participants={familyExperience.league?.participants ?? []}
+        role="parent"
+        started={familyExperience.league !== null}
+      />
 
       <ParentPatternSummary summary={PARENT_SUMMARY_FIXTURE} testID="prepared-parent-summary" />
 

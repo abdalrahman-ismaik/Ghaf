@@ -4,6 +4,8 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { FamilyLeaguePanel } from '@/components/family-growth/FamilyLeaguePanel';
+import { FamilyRewardPanel } from '@/components/family-growth/FamilyRewardPanel';
 import { JourneyHeader } from '@/components/journey';
 import { Button, Screen, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
@@ -56,7 +58,12 @@ export default function ChildHomeScreen() {
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
   const chooseAssignment = usePrototypeStore((state) => state.chooseAssignment);
   const startAssignment = usePrototypeStore((state) => state.startAssignment);
+  const familyExperience = usePrototypeStore((state) => state.familyExperience);
+  const sendPreparedLeagueEncouragement = usePrototypeStore(
+    (state) => state.sendPreparedLeagueEncouragement,
+  );
   const [error, setError] = useState<string | null>(null);
+  const [leagueError, setLeagueError] = useState<string | null>(null);
   const preAcceptanceAdjustment = usePrototypeStore((state) => state.preAcceptanceAdjustment);
   const requestSmallerTask = usePrototypeStore((state) => state.requestSmallerTask);
   const respondToPreAcceptanceAdjustment = usePrototypeStore(
@@ -127,6 +134,12 @@ export default function ChildHomeScreen() {
     setError(null);
     const result = respondToPreAcceptanceAdjustment(decision);
     if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const sendLeagueEncouragement = () => {
+    setLeagueError(null);
+    const result = sendPreparedLeagueEncouragement('child_alya', 'one_leaf_together');
+    if (!result.ok) setLeagueError(t('errors.safeRetry'));
   };
 
   if (role !== 'child') {
@@ -431,6 +444,28 @@ export default function ChildHomeScreen() {
           </Text>
         </View>
       ) : null}
+
+      <FamilyRewardPanel
+        error={null}
+        onCreate={() => undefined}
+        onMarkGiven={() => undefined}
+        plan={familyExperience.reward}
+        role="child"
+      />
+
+      <FamilyLeaguePanel
+        canSendEncouragement={activeChildId === 'child_salem'}
+        cooperativeConfirmedCount={familyExperience.league?.cooperativeConfirmedCount ?? 0}
+        cooperativeGoal={familyExperience.league?.cooperativeGoal ?? 15}
+        encouragementSent={(familyExperience.league?.preparedEncouragementCount ?? 0) > 0}
+        error={leagueError}
+        onSendEncouragement={sendLeagueEncouragement}
+        onStart={() => undefined}
+        participants={familyExperience.league?.participants ?? []}
+        role="child"
+        started={familyExperience.league !== null}
+      />
+
       <Button onPress={() => replaceStackWithRole(router)} variant="ghost">
         {t('navigation.switchToParent')}
       </Button>

@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { SyntheticAccessPanel } from '@/components/family-growth/SyntheticAccessPanel';
 import { JourneyHeader } from '@/components/journey';
 import { Screen, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
@@ -29,8 +30,11 @@ export default function RoleScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
-  const setRole = usePrototypeStore((state) => state.setRole);
-  const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
+  const familyExperience = usePrototypeStore((state) => state.familyExperience);
+  const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
+  const enterChildExperience = usePrototypeStore((state) => state.enterChildExperience);
+  const setSyntheticChildAccess = usePrototypeStore((state) => state.setSyntheticChildAccess);
+  const [accessError, setAccessError] = useState<string | null>(null);
   const salemHandoffLabel =
     journey?.assignment?.childId === 'child_salem'
       ? journey.lifecycle === 'assigned'
@@ -47,8 +51,12 @@ export default function RoleScreen() {
       : null;
 
   const openParent = () => {
-    setRole('parent');
-    setActiveChild('child_salem');
+    setAccessError(null);
+    const result = enterParentExperience();
+    if (!result.ok) {
+      setAccessError(t('errors.safeRetry'));
+      return;
+    }
     requestAnimationFrame(() => {
       router.replace(
         journey && ['submitted', 'retry', 'confirmed', 'recognized'].includes(journey.lifecycle)
@@ -59,8 +67,12 @@ export default function RoleScreen() {
   };
 
   const openChild = (childId: SyntheticChildId) => {
-    setRole('child');
-    setActiveChild(childId);
+    setAccessError(null);
+    const result = enterChildExperience(childId);
+    if (!result.ok) {
+      setAccessError(t('errors.safeRetry'));
+      return;
+    }
     requestAnimationFrame(() => {
       const handoffRoute =
         childId === 'child_salem' && journey?.assignment?.childId === childId
@@ -69,6 +81,16 @@ export default function RoleScreen() {
       router.replace(handoffRoute);
     });
   };
+
+  const changeChildAccess = (childId: SyntheticChildId, enabled: boolean) => {
+    setAccessError(null);
+    const result = setSyntheticChildAccess(childId, enabled);
+    if (!result.ok) setAccessError(t('errors.safeRetry'));
+  };
+
+  const childAccess = Object.fromEntries(
+    familyExperience.access.children.map((profile) => [profile.childId, profile.pairingStatus]),
+  ) as Readonly<Record<SyntheticChildId, 'paired' | 'revoked'>>;
 
   return (
     <Screen contentContainerStyle={styles.screenContent} testID="role-screen">
@@ -94,20 +116,38 @@ export default function RoleScreen() {
         </Text>
         <Text color="inkMuted">{t('role.childBody')}</Text>
         <ProfileChoice
+          disabled={childAccess.child_salem !== 'paired'}
           label={t('role.chooseSalem')}
           onPress={() => openChild('child_salem')}
           selected={role === 'child' && activeChildId === 'child_salem'}
-          status={salemHandoffLabel}
+          status={
+            childAccess.child_salem === 'paired'
+              ? salemHandoffLabel
+              : t('familyAccess.profileRevoked')
+          }
           statusTestID="salem-handoff-status"
           testID="choose-salem-button"
         />
         <ProfileChoice
+          disabled={childAccess.child_alya !== 'paired'}
           label={t('role.chooseAlya')}
           onPress={() => openChild('child_alya')}
           selected={role === 'child' && activeChildId === 'child_alya'}
+          status={childAccess.child_alya === 'paired' ? null : t('familyAccess.profileRevoked')}
           testID="choose-alya-button"
         />
       </View>
+
+      <SyntheticAccessPanel
+        canManage={familyExperience.activeEntry?.role === 'parent'}
+        error={accessError}
+        onChangeAccess={changeChildAccess}
+        profiles={familyExperience.access.children.map((profile) => ({
+          childId: profile.childId,
+          label: t(profile.childId === 'child_salem' ? 'role.chooseSalem' : 'role.chooseAlya'),
+          status: profile.pairingStatus === 'paired' ? 'ready' : 'revoked',
+        }))}
+      />
 
       <View style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={styles.disclosureRule} />
@@ -166,6 +206,7 @@ function RoleChoice({
 }
 
 function ProfileChoice({
+  disabled,
   label,
   onPress,
   selected,
@@ -173,6 +214,7 @@ function ProfileChoice({
   statusTestID,
   testID,
 }: {
+  disabled: boolean;
   label: string;
   onPress: () => void;
   selected: boolean;
@@ -186,7 +228,8 @@ function ProfileChoice({
     <Pressable
       accessibilityLabel={[label, status].filter(Boolean).join('. ')}
       accessibilityRole="button"
-      accessibilityState={{ selected }}
+      accessibilityState={{ disabled, selected }}
+      disabled={disabled}
       onBlur={() => setFocused(false)}
       onFocus={() => setFocused(true)}
       onPress={onPress}
@@ -195,6 +238,7 @@ function ProfileChoice({
         direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
         selected ? styles.profileSelected : null,
         focused ? styles.focused : null,
+        disabled ? styles.disabled : null,
         pressed ? styles.pressed : null,
       ]}
       testID={testID}
@@ -292,4 +336,5 @@ const styles = StyleSheet.create({
   disclosureRule: { width: 1, minHeight: 44, backgroundColor: colors.gold },
   focused: { borderColor: colors.gold, borderWidth: 2 },
   pressed: { opacity: 0.74, transform: [{ scale: 0.99 }] },
+  disabled: { opacity: 0.56 },
 });
