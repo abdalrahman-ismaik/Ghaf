@@ -389,7 +389,8 @@ required cultural, safety, Arabic, and safeguarding review.
 ## Arabic, RTL, and Localization
 
 - Arabic is the default demo locale and first content field in bilingual Parent review.
-- Use `I18nManager`/locale state and logical flex/alignment helpers consistently.
+- Keep native direction fixed during runtime; use locale state and logical flex/alignment helpers
+  consistently for the visible interface.
 - Mirror back/forward arrows and ordered journey movement; do not mirror trees, checkmarks, Arabic
   calligraphy, the dallah, or nondirectional symbols.
 - Give Arabic body copy at least 1.55× line height and test diacritics without clipping.

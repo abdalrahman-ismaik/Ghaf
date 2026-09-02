@@ -38,13 +38,12 @@ validation; it is not a P0 dependency.
 **Language/Version**: TypeScript 6.0 in strict mode (`noUncheckedIndexedAccess`) on Node.js
 22.13+; React 19.2 and React Native 0.86 through Expo SDK 57
 
-**Primary Dependencies**: Existing Expo Router 57, React Native `StyleSheet`, Zustand 5, Zod 4,
-React Hook Form, `i18next`/`react-i18next`, `expo-localization`, `react-native-svg`, Reanimated 4,
-Gesture Handler, Safe Area Context, Screens, and `expo-audio` prepared playback. No new library is
-introduced. The integration owner applied Expo-compatible patch alignment within the existing SDK
-57 stack: Expo `57.0.15 → 57.0.17`, Expo Linking `57.0.7 → 57.0.8`, Expo Router
-`57.0.15 → 57.0.17`, React Native `0.86.2 → 0.86.3`, and ESLint Config Expo
-`57.0.1 → 57.0.2`; `package-lock.json` records the corresponding transitive patch resolution.
+**Primary Dependencies**: Expo Router 57, React Native `StyleSheet`, Zustand 5, Zod 4,
+`i18next`/`react-i18next`, `expo-localization`, `react-native-svg`, Reanimated 4, Gesture Handler,
+Safe Area Context, and Screens. The prepared voice path needs no audio/form package. The integration
+owner aligned the existing SDK 57 stack to Expo `57.0.19`, Expo Linking `57.0.9`, Expo Router
+`57.0.18`, React Native `0.86.3`, and ESLint Config Expo `57.0.2`; `package-lock.json` records the
+corresponding transitive patch resolution.
 
 **Storage**: In-memory, schema-versioned Zustand prototype session plus deterministic local typed
 fixtures. Reload persistence is deliberately not promised; the Parent-only reset is authoritative.
