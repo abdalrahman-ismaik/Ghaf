@@ -345,6 +345,17 @@ before editing, shares this worktree, preserves other changes, does not commit, 
 boundary to `/root`. No route, production account, real invitation, payment, persistence guarantee,
 real Child media, live Child AI, or unrestricted communication is authorized in this window.
 
+### Final RTL authority correction reservations
+
+The independent visual audit found that an Arabic-system Android can combine native Yoga RTL with
+the existing store-selected `row-reverse` styles. These temporary boundaries replace the earlier
+direction-editing reservations only for the correction below.
+
+| Owner / workstream | Exact reserved boundary | Handoff condition |
+| ------------------ | ----------------------- | ----------------- |
+| `/root` — root and route direction integration | `app/_layout.tsx`, `app/{index.tsx,role.tsx,child/index.tsx,child/task.tsx,parent/index.tsx,parent/task/review.tsx}`, `src/components/{LanguageSwitcher.tsx,PrototypeStatusBar.tsx,journey.tsx,primitives.tsx}`, direction tests, and current evidence documents | Locale sets the inherited Yoga direction once; shared/routes stop applying a second row reversal; focused/full/browser checks pass |
+| `/root/rtl_family_components` — family component direction cleanup | `src/components/family-growth/**` only | Family components inherit root direction, retain directional-icon transforms only where needed, remove conditional row reversal, run formatting/typecheck, and return the boundary without committing |
+
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
 
 **Integration owner**: `/root`
