@@ -4,7 +4,7 @@ import type { PreparedMediaFixture } from '@/models/familyGrowth';
 
 const preparedMediaSources = {
   fixture_recycling_clean_v1:
-    require('../../assets/images/fixture-recycling-clean-v1.png') as number,
+    require('../../assets/images/fixture-recycling-clean-v1.webp') as number,
   fixture_salem_plan_ar_v1: null,
 } as const satisfies Record<PreparedMediaFixture['id'], ImageSourcePropType | null>;
 

@@ -3,7 +3,9 @@
 - **Created**: 2026-08-26
 - **Purpose**: Optional synthetic recycling-task image for the Feature 003 competition prototype.
 - **Origin**: Generated with Codex's built-in image-generation tool (`gpt-image`) from synthetic input only.
-- **Transformation**: Exported as a 1448×1086 RGB PNG, copied into the repository, and stripped of embedded metadata with ExifTool.
+- **Source transformation**: Exported as a 1448×1086 RGB PNG, copied into the repository, and stripped of embedded metadata with ExifTool.
+- **Android runtime asset**: Encoded from that reviewed source as a 1448×1086 RGB WebP at quality 86. The runtime file is 124,028 bytes instead of 2,268,093 bytes for the source PNG, a 94.5% reduction. The PNG remains as the reviewed archival source and is not imported by Metro.
+- **Runtime verification**: The WebP was visually compared with the source at full resolution on 2026-09-02. Composition, objects, color intent, crop, and accessible meaning remain unchanged. It has no EXIF entries, ICC profile, XMP, comment, or URL metadata.
 - **Runtime disclosure**: The interface must label this image **prepared / synthetic**, explain that a Parent can see it, and keep it optional and removable.
 
 ## Accessible description
