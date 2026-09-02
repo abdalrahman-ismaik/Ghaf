@@ -461,6 +461,7 @@ describe('Child AI presentation source contract', () => {
     expect(parentRoute).toContain('setChildVoicePermission');
     expect(childRoute).toContain('<LanguageSwitcher compact showGuidance={false} />');
     expect(childRoute).toContain('<SyntheticVoicePanel');
+    expect(childRoute).toContain('taskSupported={preparedCoachAvailable}');
     expect(childRoute).toContain('ageAdaptedCoachResult');
     expect(childRoute).toContain("{ intent: 'need_adult', key: 'adultExit' }");
     expect(childRoute).not.toContain(
@@ -506,6 +507,8 @@ describe('Child AI presentation source contract', () => {
       'replay',
       'reset',
       'sent',
+      'unavailable',
+      'taskUnavailable',
     ] as const;
     for (const key of voiceKeys) {
       expect(resources.ar.translation.childVoice[key].trim()).not.toBe('');

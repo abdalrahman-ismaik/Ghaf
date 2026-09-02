@@ -388,7 +388,11 @@ export default function ChildTaskScreen() {
           </Text>
         ) : null}
       </View>
-      <SyntheticVoicePanel onCommand={runVoiceCommand} view={childVoiceView} />
+      <SyntheticVoicePanel
+        onCommand={runVoiceCommand}
+        taskSupported={preparedCoachAvailable}
+        view={childVoiceView}
+      />
       <Button
         accessibilityState={{ expanded: showOptionalMedia }}
         onPress={() => setShowOptionalMedia((value) => !value)}

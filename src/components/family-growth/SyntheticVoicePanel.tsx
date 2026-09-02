@@ -9,21 +9,24 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface SyntheticVoicePanelProps {
   view: ChildVoiceView;
+  taskSupported: boolean;
   onCommand: (command: ChildVoiceCommand) => void;
 }
 
-export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProps) {
+export function SyntheticVoicePanel({ view, taskSupported, onCommand }: SyntheticVoicePanelProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const transcript = view.transcript ? localize(view.transcript, locale) : null;
   const rowStyle = direction === 'rtl' ? styles.rowRtl : styles.rowLtr;
-  const canReviewPlayback = view.availability === 'review' || view.availability === 'sent';
+  const canReviewPlayback =
+    taskSupported && (view.availability === 'review' || view.availability === 'sent');
   const canReset =
-    view.availability === 'ready' ||
-    view.availability === 'active' ||
-    view.availability === 'review' ||
-    view.availability === 'sent';
+    taskSupported &&
+    (view.availability === 'ready' ||
+      view.availability === 'active' ||
+      view.availability === 'review' ||
+      view.availability === 'sent');
 
   const updatePlayback = (
     captionsEnabled: boolean,
@@ -54,9 +57,20 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
       <View
         accessibilityLiveRegion="polite"
         style={styles.state}
-        testID={`child-voice-state-${view.availability}`}
+        testID={
+          taskSupported ? `child-voice-state-${view.availability}` : 'child-voice-state-unavailable'
+        }
       >
-        {view.availability === 'parent_permission_required' ? (
+        {!taskSupported ? (
+          <>
+            <Text color="forest" variant="label">
+              {t('childVoice.unavailable')}
+            </Text>
+            <Text color="inkMuted">{t('childVoice.taskUnavailable')}</Text>
+          </>
+        ) : null}
+
+        {taskSupported && view.availability === 'parent_permission_required' ? (
           <>
             <Text color="forest" variant="label">
               {t('childVoice.disabled')}
@@ -65,7 +79,7 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
           </>
         ) : null}
 
-        {view.availability === 'task_required' ? (
+        {taskSupported && view.availability === 'task_required' ? (
           <>
             <Text color="forest" variant="label">
               {t('childVoice.enabled')}
@@ -74,7 +88,7 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
           </>
         ) : null}
 
-        {view.availability === 'ready' ? (
+        {taskSupported && view.availability === 'ready' ? (
           <>
             <Text color="forest" variant="label">
               {t('childVoice.ready')}
@@ -85,7 +99,7 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
           </>
         ) : null}
 
-        {view.availability === 'active' ? (
+        {taskSupported && view.availability === 'active' ? (
           <>
             <View style={[styles.activeStatus, rowStyle]} testID="child-voice-active-indicator">
               {view.activeIndicatorVisible ? <View aria-hidden style={styles.activeDot} /> : null}
@@ -100,7 +114,7 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
           </>
         ) : null}
 
-        {view.availability === 'review' ? (
+        {taskSupported && view.availability === 'review' ? (
           <>
             <Text color="forest" variant="label">
               {t('childVoice.reviewTitle')}
@@ -109,7 +123,7 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
           </>
         ) : null}
 
-        {view.availability === 'sent' ? (
+        {taskSupported && view.availability === 'sent' ? (
           <Text color="forest" variant="label">
             {t('childVoice.sent')}
           </Text>
@@ -196,7 +210,7 @@ export function SyntheticVoicePanel({ view, onCommand }: SyntheticVoicePanelProp
         </>
       ) : null}
 
-      {view.availability === 'review' ? (
+      {taskSupported && view.availability === 'review' ? (
         <>
           <Text color="inkMuted" variant="caption">
             {t('childVoice.rehearsalOnly')}

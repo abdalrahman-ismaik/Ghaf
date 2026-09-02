@@ -256,6 +256,9 @@ export const resources = {
         reset: 'إعادة التدرّب الصوتي',
         sent: 'تم إرسال النص في المحاكاة فقط.',
         taskRequired: 'افتح مهمة معتمدة وابدأها قبل التدرّب الصوتي.',
+        unavailable: 'التدرّب غير متاح لهذه المهمة',
+        taskUnavailable:
+          'التدرّب الصوتي المُعدّ مسبقاً غير متاح لهذه النسخة المعدّلة. استخدم الخطوات المعدّلة أو اطلب مساعدة شخص بالغ.',
         error: 'لم تتغير الحالة. تحقق من المهمة وإذن وليّ الأمر، ثم حاول مرة أخرى.',
       },
       coachPolicy: {
@@ -660,6 +663,9 @@ export const resources = {
         reset: 'Reset voice rehearsal',
         sent: 'Transcript sent in the simulation only.',
         taskRequired: 'Open and start an approved task before using voice rehearsal.',
+        unavailable: 'Rehearsal unavailable for this task',
+        taskUnavailable:
+          'The prepared voice rehearsal is unavailable for this adjusted version. Use the adjusted steps or ask an adult for help.',
         error: 'Nothing changed. Check the task and Parent permission, then try again.',
       },
       coachPolicy: {
