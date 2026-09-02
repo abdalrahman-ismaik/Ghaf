@@ -54,6 +54,39 @@ describe('Android runtime readiness', () => {
     );
     expect(config.plugins).not.toContain('expo-audio');
     expect(config.plugins?.flat()).not.toContain('expo-audio');
+    expect(config.plugins).toContainEqual([
+      'expo-localization',
+      { supportedLocales: { android: ['ar', 'en'], ios: ['ar', 'en'] } },
+    ]);
+  });
+
+  it('uses one mounted locale effect without forcing native direction at runtime', () => {
+    const layout = readFileSync(join(sourceRoot, 'app/_layout.tsx'), 'utf8');
+    const languageSwitcher = readFileSync(
+      join(sourceRoot, 'src/components/LanguageSwitcher.tsx'),
+      'utf8',
+    );
+    const localization = readFileSync(join(sourceRoot, 'src/i18n/index.ts'), 'utf8');
+
+    expect(layout).toContain('void setI18nLocale(locale)');
+    expect(languageSwitcher).not.toMatch(/setI18nLocale|configureNativeDirection|I18nManager/);
+    expect(`${layout}\n${localization}`).not.toMatch(/forceRTL|configureNativeDirection/);
+  });
+
+  it('clears protected stacks and keeps headings, touch targets, and narrow headers accessible', () => {
+    const navigation = readFileSync(join(sourceRoot, 'src/utils/navigation.ts'), 'utf8');
+    const primitives = readFileSync(join(sourceRoot, 'src/components/primitives.tsx'), 'utf8');
+    const journey = readFileSync(join(sourceRoot, 'src/components/journey.tsx'), 'utf8');
+    const voice = readFileSync(
+      join(sourceRoot, 'src/components/family-growth/SyntheticVoicePanel.tsx'),
+      'utf8',
+    );
+
+    expect(navigation).toMatch(/replaceStackWithRole[\s\S]*router\.dismissAll\(\)/);
+    expect(primitives).toContain("variant === 'heading'");
+    expect(primitives).toContain('minHeight: layout.touchTarget');
+    expect(journey).toContain("flexWrap: 'wrap'");
+    expect(voice.match(/variant="secondary"/g)?.length ?? 0).toBeGreaterThanOrEqual(3);
   });
 
   it('keeps exactly the ten authored product routes', () => {
