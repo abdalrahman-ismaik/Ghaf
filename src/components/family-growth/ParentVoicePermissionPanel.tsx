@@ -55,7 +55,8 @@ export function ParentVoicePermissionPanel({ enabled, onChange }: ParentVoicePer
       ) : null}
 
       <Button
-        accessibilityLabel={actionLabel}
+        accessibilityHint={actionLabel}
+        accessibilityLabel={t('childVoice.parentSetting')}
         accessibilityState={{ selected: enabled }}
         onPress={() => onChange(!enabled)}
         testID={enabled ? 'disable-child-voice-button' : 'enable-child-voice-button'}

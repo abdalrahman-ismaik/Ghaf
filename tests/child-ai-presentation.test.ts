@@ -494,6 +494,9 @@ describe('Child AI presentation source contract', () => {
       'title',
       'disclosure',
       'permissionRequired',
+      'parentTitle',
+      'parentBody',
+      'parentSetting',
       'parentEnable',
       'parentDisable',
       'start',
@@ -514,6 +517,15 @@ describe('Child AI presentation source contract', () => {
       expect(resources.ar.translation.childVoice[key].trim()).not.toBe('');
       expect(resources.en.translation.childVoice[key].trim()).not.toBe('');
     }
+    expect(resources.ar.translation.childVoice.parentBody).toContain('الذكاء الاصطناعي');
+    expect(resources.en.translation.childVoice.parentBody).toContain('AI');
+
+    const permissionPanel = readFileSync(
+      new URL('../src/components/family-growth/ParentVoicePermissionPanel.tsx', import.meta.url),
+      'utf8',
+    );
+    expect(permissionPanel).toContain("accessibilityLabel={t('childVoice.parentSetting')}");
+    expect(permissionPanel).toContain('accessibilityHint={actionLabel}');
 
     const resourceSource = readFileSync(
       new URL('../src/i18n/resources.ts', import.meta.url),

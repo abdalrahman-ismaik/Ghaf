@@ -228,13 +228,15 @@ export const resources = {
         title: 'التدرّب الصوتي الاصطناعي',
         disclosure:
           'محاكاة محلية بنص مُعدّ مسبقاً. لا يوجد استماع أو التقاط في الخلفية، ولا تسجيل للصوت، ولا استخدام للميكروفون، ولا إرسال حقيقي.',
-        permissionRequired: 'يجب أن يفعّل وليّ الأمر هذا التدرّب أولاً.',
-        parentTitle: 'إذن وليّ الأمر للتدرّب الصوتي',
+        permissionRequired: 'يجب أن يفعّل وليّ الأمر إذني الصوت والذكاء الاصطناعي أولاً.',
+        parentTitle: 'إذن وليّ الأمر للصوت والذكاء الاصطناعي',
         parentBody:
-          'يسمح هذا الإذن للطفل بتجربة محاكاة مقيّدة بالمهمة المعتمدة، من دون تشغيل الميكروفون أو تسجيل صوت.',
-        parentEnable: 'تفعيل التدرّب الصوتي',
-        parentDisable: 'إيقاف التدرّب الصوتي',
-        enabled: 'مفعّل لهذا الطفل؛ ولا يبدأ إلا مع مهمة معتمدة.',
+          'يفعّل هذا الإجراء إذني الصوت والذكاء الاصطناعي المخزّنين لهذا الطفل من أجل المحاكاة المقيّدة بالمهمة. ولا يشغّل الميكروفون أو يسجّل صوتاً.',
+        parentSetting: 'إذنا الصوت والذكاء الاصطناعي للتدرّب',
+        parentEnable: 'تفعيل إذني الصوت والذكاء الاصطناعي',
+        parentDisable: 'إيقاف إذني الصوت والذكاء الاصطناعي',
+        enabled:
+          'إذنا الصوت والذكاء الاصطناعي مفعّلان لهذا الطفل؛ ولا يبدأ التدرّب إلا مع مهمة معتمدة.',
         disabled: 'غير مفعّل.',
         ready: 'جاهز للتدرّب المُحاكى.',
         start: 'بدء التدرّب',
@@ -634,13 +636,15 @@ export const resources = {
         title: 'Synthetic voice rehearsal',
         disclosure:
           'A local simulation with a prepared transcript. There is no background listening or capture, no audio recording or microphone use, and no real sending.',
-        permissionRequired: 'The Parent must enable this rehearsal first.',
-        parentTitle: 'Parent permission for voice rehearsal',
+        permissionRequired: 'The Parent must enable voice and AI permissions first.',
+        parentTitle: 'Parent permission for voice and AI',
         parentBody:
-          'This permission lets the Child try a task-bound simulation without turning on the microphone or recording audio.',
-        parentEnable: 'Enable voice rehearsal',
-        parentDisable: 'Disable voice rehearsal',
-        enabled: 'Enabled for this Child; rehearsal still requires an approved task.',
+          "This action enables the stored voice and AI permissions for this Child's task-bound simulation. It does not turn on the microphone or record audio.",
+        parentSetting: 'Voice and AI rehearsal permissions',
+        parentEnable: 'Enable voice and AI permissions',
+        parentDisable: 'Disable voice and AI permissions',
+        enabled:
+          'Voice and AI permissions are enabled for this Child; rehearsal still requires an approved task.',
         disabled: 'Not enabled.',
         ready: 'Ready for the simulated rehearsal.',
         start: 'Start rehearsal',
