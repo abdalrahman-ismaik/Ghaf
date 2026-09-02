@@ -424,7 +424,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(childTaskSource).toContain("case 'create_if_then_cue'");
     expect(childTaskSource).toContain("case 'rehearse_reviewed_phrase'");
     expect(childTaskSource).toContain("case 'need_adult'");
-    expect(childTaskSource).toContain('coach.steps.slice(0, 2)');
+    expect(childTaskSource).toContain('adapted.steps.slice(0, 2)');
     expect(childTaskSource).toContain('[coach.ifThenCue]');
     expect(childTaskSource).not.toContain('coach.steps.map((step');
   });
