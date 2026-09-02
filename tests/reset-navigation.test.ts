@@ -1,7 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { synchronizeWebDocumentLocale } from '../src/i18n';
-import { replaceHistoryWithEntry, replaceStackWithRole } from '../src/utils/navigation';
+import {
+  replaceHistoryWithEntry,
+  replaceStackWithRole,
+  replaceStackWithRoute,
+} from '../src/utils/navigation';
 
 describe('mounted reset locale and history boundary', () => {
   afterEach(() => {
@@ -107,5 +111,19 @@ describe('mounted reset locale and history boundary', () => {
 
     expect(router.dismissAll).toHaveBeenCalledOnce();
     expect(router.replace).toHaveBeenCalledWith('/role');
+  });
+
+  it('clears protected journey history before entering the selected experience', () => {
+    const router = {
+      dismissAll: vi.fn(() => {
+        throw new Error('already at root');
+      }),
+      replace: vi.fn(),
+    };
+
+    replaceStackWithRoute(router, '/child/task');
+
+    expect(router.dismissAll).toHaveBeenCalledOnce();
+    expect(router.replace).toHaveBeenCalledWith('/child/task');
   });
 });

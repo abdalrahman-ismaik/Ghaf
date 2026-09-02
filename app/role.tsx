@@ -10,6 +10,7 @@ import { Screen, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
 import type { DemoRole, SyntheticChildId, TaskLifecycleStatus } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRoute } from '@/utils/navigation';
 
 const CHILD_HANDOFF_ROUTES: Partial<
   Record<TaskLifecycleStatus, '/child' | '/child/task' | '/garden'>
@@ -58,11 +59,11 @@ export default function RoleScreen() {
       return;
     }
     requestAnimationFrame(() => {
-      router.replace(
+      const handoffRoute =
         journey && ['submitted', 'retry', 'confirmed', 'recognized'].includes(journey.lifecycle)
           ? '/parent/check-in'
-          : '/parent',
-      );
+          : '/parent';
+      replaceStackWithRoute(router, handoffRoute);
     });
   };
 
@@ -78,7 +79,7 @@ export default function RoleScreen() {
         childId === 'child_salem' && journey?.assignment?.childId === childId
           ? (CHILD_HANDOFF_ROUTES[journey.lifecycle] ?? '/child')
           : '/child';
-      router.replace(handoffRoute);
+      replaceStackWithRoute(router, handoffRoute);
     });
   };
 
