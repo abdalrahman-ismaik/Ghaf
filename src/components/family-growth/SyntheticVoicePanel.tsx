@@ -16,9 +16,7 @@ export interface SyntheticVoicePanelProps {
 export function SyntheticVoicePanel({ view, taskSupported, onCommand }: SyntheticVoicePanelProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const transcript = view.transcript ? localize(view.transcript, locale) : null;
-  const rowStyle = direction === 'rtl' ? styles.rowRtl : styles.rowLtr;
   const canReviewPlayback =
     taskSupported && (view.availability === 'review' || view.availability === 'sent');
   const canReset =
@@ -37,7 +35,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
 
   return (
     <Card testID="synthetic-voice-panel" variant="water">
-      <View style={[styles.heading, rowStyle]}>
+      <View style={styles.heading}>
         <View aria-hidden style={styles.voiceMark}>
           <View style={styles.voiceMarkBarShort} />
           <View style={styles.voiceMarkBarTall} />
@@ -105,7 +103,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
 
         {taskSupported && view.availability === 'active' ? (
           <>
-            <View style={[styles.activeStatus, rowStyle]} testID="child-voice-active-indicator">
+            <View style={styles.activeStatus} testID="child-voice-active-indicator">
               {view.activeIndicatorVisible ? <View aria-hidden style={styles.activeDot} /> : null}
               <Text color="forest" variant="label">
                 {t('childVoice.active')}
@@ -155,7 +153,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
             {t('childVoice.simulatedPlayback')}
           </Text>
 
-          <View style={[styles.actionGrid, rowStyle]}>
+          <View style={styles.actionGrid}>
             <Button
               accessibilityState={{ selected: view.captionsEnabled }}
               fullWidth={false}
@@ -223,7 +221,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
           <Text color="inkMuted" variant="caption">
             {t('childVoice.rehearsalOnly')}
           </Text>
-          <View style={[styles.actionGrid, rowStyle]}>
+          <View style={styles.actionGrid}>
             <Button
               fullWidth={false}
               onPress={() => onCommand({ type: 'delete' })}
@@ -261,14 +259,9 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
 
 const styles = StyleSheet.create({
   heading: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
   },
   copy: {
     minWidth: 0,
@@ -310,6 +303,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   activeStatus: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -330,6 +324,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   actionGrid: {
+    flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.xs,
   },

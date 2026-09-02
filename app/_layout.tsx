@@ -24,6 +24,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="light" />
-      <View style={styles.root}>
+      <View style={[styles.root, { direction }]}>
         <PrototypeStatusBar />
         <Stack
           screenOptions={{

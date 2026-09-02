@@ -28,7 +28,6 @@ export default function RoleScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
-  const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
   const familyExperience = usePrototypeStore((state) => state.familyExperience);
@@ -112,7 +111,7 @@ export default function RoleScreen() {
       />
 
       <View style={styles.childMode}>
-        <Text color="forest" variant="heading">
+        <Text accessibilityRole="header" color="forest" variant="heading">
           {t('role.childTitle')}
         </Text>
         <Text color="inkMuted">{t('role.childBody')}</Text>
@@ -150,7 +149,7 @@ export default function RoleScreen() {
         }))}
       />
 
-      <View style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.disclosure}>
         <View style={styles.disclosureRule} />
         <Text color="earth" style={styles.disclosureCopy} variant="caption">
           {t('parentHome.syntheticPrivacyBoundary')}
@@ -174,7 +173,6 @@ function RoleChoice({
   type: DemoRole;
 }) {
   const [focused, setFocused] = useState(false);
-  const direction = usePrototypeStore((state) => state.direction);
   return (
     <Pressable
       accessibilityRole="button"
@@ -184,7 +182,6 @@ function RoleChoice({
       onPress={onPress}
       style={({ pressed }) => [
         styles.roleChoice,
-        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
         selected ? styles.selected : null,
         focused ? styles.focused : null,
         pressed ? styles.pressed : null,
@@ -224,7 +221,6 @@ function ProfileChoice({
   testID: string;
 }) {
   const [focused, setFocused] = useState(false);
-  const direction = usePrototypeStore((state) => state.direction);
   return (
     <Pressable
       accessibilityLabel={[label, status].filter(Boolean).join('. ')}
@@ -236,7 +232,6 @@ function ProfileChoice({
       onPress={onPress}
       style={({ pressed }) => [
         styles.profileChoice,
-        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
         selected ? styles.profileSelected : null,
         focused ? styles.focused : null,
         disabled ? styles.disabled : null,
@@ -261,9 +256,8 @@ function ProfileChoice({
 
 const styles = StyleSheet.create({
   screenContent: { justifyContent: 'center', paddingBottom: spacing.huge },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   roleChoice: {
+    flexDirection: 'row',
     minHeight: 132,
     alignItems: 'center',
     gap: spacing.lg,
@@ -313,6 +307,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.lg,
   },
   profileChoice: {
+    flexDirection: 'row',
     minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.sm,
@@ -332,7 +327,7 @@ const styles = StyleSheet.create({
     borderColor: colors.inkMuted,
   },
   profileMarkSelected: { borderColor: colors.mangrove, backgroundColor: colors.mangrove },
-  disclosure: { alignItems: 'flex-start', gap: spacing.sm },
+  disclosure: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
   disclosureCopy: { flex: 1, minWidth: 0 },
   disclosureRule: { width: 1, minHeight: 44, backgroundColor: colors.gold },
   focused: { borderColor: colors.gold, borderWidth: 2 },

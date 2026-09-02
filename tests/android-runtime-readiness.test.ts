@@ -69,8 +69,18 @@ describe('Android runtime readiness', () => {
     const localization = readFileSync(join(sourceRoot, 'src/i18n/index.ts'), 'utf8');
 
     expect(layout).toContain('void setI18nLocale(locale)');
+    expect(layout).toContain('style={[styles.root, { direction }]}');
     expect(languageSwitcher).not.toMatch(/setI18nLocale|configureNativeDirection|I18nManager/);
     expect(`${layout}\n${localization}`).not.toMatch(/forceRTL|configureNativeDirection/);
+
+    const presentationSource = [
+      ...sourceFiles(join(sourceRoot, 'app')),
+      ...sourceFiles(join(sourceRoot, 'src/components')),
+    ]
+      .filter((path) => ['.ts', '.tsx'].includes(extname(path)))
+      .map((path) => readFileSync(path, 'utf8'))
+      .join('\n');
+    expect(presentationSource).not.toContain("flexDirection: 'row-reverse'");
   });
 
   it('clears protected stacks and keeps headings, touch targets, and narrow headers accessible', () => {
@@ -82,8 +92,12 @@ describe('Android runtime readiness', () => {
       'utf8',
     );
 
-    expect(navigation).toMatch(/replaceStackWithRole[\s\S]*router\.dismissAll\(\)/);
-    expect(primitives).toContain("variant === 'heading'");
+    expect(navigation).toMatch(/replaceStackWithRoute[\s\S]*router\.dismissAll\(\)/);
+    expect(readFileSync(join(sourceRoot, 'app/role.tsx'), 'utf8')).toContain(
+      'replaceStackWithRoute(router, handoffRoute)',
+    );
+    expect(primitives).not.toMatch(/variant === 'display'[\s\S]*variant === 'heading'/);
+    expect(journey).toContain('accessibilityRole="header"');
     expect(primitives).toContain('minHeight: layout.touchTarget');
     expect(journey).toContain("flexWrap: 'wrap'");
     expect(voice.match(/variant="secondary"/g)?.length ?? 0).toBeGreaterThanOrEqual(3);

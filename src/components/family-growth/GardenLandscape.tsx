@@ -89,12 +89,11 @@ export function GardenLandscape({
   testID,
   tracks,
 }: GardenLandscapeProps) {
-  const direction = usePrototypeStore((state) => state.direction);
   const supportingLandscapeIds = LANDSCAPE_ORDER.filter((id) => id !== activeLandscapeId);
 
   return (
     <View accessibilityLabel={accessibilityLabel} style={styles.landscape} testID={testID}>
-      <View style={[styles.landscapeHeading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.landscapeHeading}>
         <LandscapeMark />
         <Text color="forest" style={styles.landscapeHeadingText} variant="label">
           {labels.inspiredBy}
@@ -110,12 +109,7 @@ export function GardenLandscape({
         />
 
         <View style={styles.supportingLedger}>
-          <View
-            style={[
-              styles.connectionLine,
-              direction === 'rtl' ? styles.connectionLineRtl : styles.connectionLineLtr,
-            ]}
-          />
+          <View style={styles.connectionLine} />
           {supportingLandscapeIds.map((id, index) => (
             <CompactHorizonTrack
               content={tracks[id]}
@@ -127,7 +121,7 @@ export function GardenLandscape({
         </View>
       </View>
 
-      <View style={[styles.symbolicNote, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.symbolicNote}>
         <SymbolicMark />
         <Text color="inkMuted" style={styles.noteText} variant="caption">
           {labels.symbolicDisclosure}
@@ -157,24 +151,10 @@ export function LandscapeTrack({
         <LandscapeSpecimen active id={id} stage={content.stage} />
         {reveal.shouldRender ? (
           <>
-            <Animated.View
-              aria-hidden
-              style={[
-                styles.recognitionSeedCue,
-                direction === 'rtl' ? styles.recognitionSeedCueRtl : styles.recognitionSeedCueLtr,
-                reveal.seedCueStyle,
-              ]}
-            >
+            <Animated.View aria-hidden style={[styles.recognitionSeedCue, reveal.seedCueStyle]}>
               <RecognitionSeedMark />
             </Animated.View>
-            <Animated.View
-              aria-hidden
-              style={[
-                styles.biologicalDetail,
-                direction === 'rtl' ? styles.biologicalDetailRtl : styles.biologicalDetailLtr,
-                reveal.detailStyle,
-              ]}
-            >
+            <Animated.View aria-hidden style={[styles.biologicalDetail, reveal.detailStyle]}>
               <BiologicalDetailMark landscapeId={id} />
             </Animated.View>
           </>
@@ -182,16 +162,16 @@ export function LandscapeTrack({
       </View>
 
       <View style={styles.trackCopy}>
-        <View style={[styles.trackHeader, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+        <View style={styles.trackHeader}>
           <View style={styles.trackNames}>
-            <Text color="forest" variant="heading">
+            <Text accessibilityRole="header" color="forest" variant="heading">
               {content.name}
             </Text>
             <Text color="mangrove" variant="caption">
               {content.categoryLabel}
             </Text>
           </View>
-          <View style={[styles.activeFlag, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+          <View style={styles.activeFlag}>
             <View style={styles.activeFlagLine} />
             <Text color="forest" variant="caption">
               {activeLabel}
@@ -206,11 +186,7 @@ export function LandscapeTrack({
           <StageRuler currentStage={content.stage} />
         </View>
 
-        <ProgressBand
-          accessibilityLabel={content.progressLabel}
-          direction={direction}
-          progress={progress}
-        />
+        <ProgressBand accessibilityLabel={content.progressLabel} progress={progress} />
         <Text color="inkMuted" variant="caption">
           {content.progressLabel}
         </Text>
@@ -225,8 +201,6 @@ export function LandscapeTrack({
 }
 
 function CompactHorizonTrack({ content, id, isLast }: CompactHorizonTrackProps) {
-  const direction = usePrototypeStore((state) => state.direction);
-
   return (
     <View
       accessibilityLabel={content.accessibilityLabel}
@@ -239,13 +213,8 @@ function CompactHorizonTrack({ content, id, isLast }: CompactHorizonTrackProps) 
       style={[styles.compactTrack, isLast ? styles.compactTrackLast : null]}
       testID={`compact-landscape-${id}`}
     >
-      <View
-        style={[
-          styles.connectionNode,
-          direction === 'rtl' ? styles.connectionNodeRtl : styles.connectionNodeLtr,
-        ]}
-      />
-      <View style={[styles.compactTrackBody, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.connectionNode} />
+      <View style={styles.compactTrackBody}>
         <View style={styles.compactSpecimenFrame}>
           <LandscapeSpecimen active={false} id={id} stage={content.stage} />
         </View>
@@ -253,7 +222,7 @@ function CompactHorizonTrack({ content, id, isLast }: CompactHorizonTrackProps) 
           <Text color="forest" variant="label">
             {content.name}
           </Text>
-          <View style={[styles.compactMeta, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+          <View style={styles.compactMeta}>
             <Text color="forest" variant="caption">
               {content.stageLabel}
             </Text>
@@ -711,13 +680,9 @@ function Mangrove({ stageIndex }: { readonly stageIndex: number }) {
 }
 
 function StageRuler({ currentStage }: { readonly currentStage: GardenStage }) {
-  const direction = usePrototypeStore((state) => state.direction);
   const currentIndex = STAGE_INDEX[currentStage];
   return (
-    <View
-      aria-hidden
-      style={[styles.stageRuler, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
-    >
+    <View aria-hidden style={styles.stageRuler}>
       {LANDSCAPE_STAGE_ORDER.map((stage, index) => (
         <View
           key={stage}
@@ -742,11 +707,9 @@ const LANDSCAPE_STAGE_ORDER: readonly GardenStage[] = [
 
 function ProgressBand({
   accessibilityLabel,
-  direction,
   progress,
 }: {
   readonly accessibilityLabel: string;
-  readonly direction: 'rtl' | 'ltr';
   readonly progress: number;
 }) {
   return (
@@ -756,13 +719,7 @@ function ProgressBand({
       accessibilityValue={{ min: 0, max: 100, now: progress }}
       style={styles.progressTrack}
     >
-      <View
-        style={[
-          styles.progressFill,
-          direction === 'rtl' ? styles.progressFillRtl : styles.progressFillLtr,
-          { width: `${progress}%` },
-        ]}
-      />
+      <View style={[styles.progressFill, { width: `${progress}%` }]} />
     </View>
   );
 }
@@ -904,6 +861,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   landscapeHeading: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
   },
@@ -943,32 +901,22 @@ const styles = StyleSheet.create({
     pointerEvents: 'none',
     top: 0,
     bottom: spacing.xl,
+    start: spacing.lg,
     width: 1,
     backgroundColor: colors.earth,
     opacity: 0.3,
-  },
-  connectionLineLtr: {
-    left: spacing.lg,
-  },
-  connectionLineRtl: {
-    right: spacing.lg,
   },
   connectionNode: {
     position: 'absolute',
     pointerEvents: 'none',
     top: spacing.xl,
+    start: spacing.md,
     width: 9,
     height: 9,
     borderWidth: 2,
     borderColor: colors.earth,
     borderRadius: radii.pill,
     backgroundColor: colors.surface,
-  },
-  connectionNodeLtr: {
-    left: spacing.md,
-  },
-  connectionNodeRtl: {
-    right: spacing.md,
   },
   compactTrack: {
     position: 'relative',
@@ -984,6 +932,7 @@ const styles = StyleSheet.create({
   },
   compactTrackBody: {
     minWidth: 0,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
   },
@@ -1001,6 +950,7 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   compactMeta: {
+    flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
     gap: spacing.xs,
@@ -1015,35 +965,26 @@ const styles = StyleSheet.create({
     position: 'absolute',
     pointerEvents: 'none',
     bottom: spacing.xs,
+    start: spacing.sm,
     zIndex: 2,
     width: 42,
     height: 32,
-  },
-  recognitionSeedCueLtr: {
-    left: spacing.sm,
-  },
-  recognitionSeedCueRtl: {
-    right: spacing.sm,
   },
   biologicalDetail: {
     position: 'absolute',
     pointerEvents: 'none',
     top: spacing.xs,
+    end: spacing.sm,
     zIndex: 2,
     width: 56,
     height: 46,
-  },
-  biologicalDetailLtr: {
-    right: spacing.sm,
-  },
-  biologicalDetailRtl: {
-    left: spacing.sm,
   },
   trackCopy: {
     width: '100%',
     gap: spacing.xs,
   },
   trackHeader: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -1057,6 +998,7 @@ const styles = StyleSheet.create({
     minHeight: 32,
     maxWidth: 160,
     flexShrink: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -1070,6 +1012,7 @@ const styles = StyleSheet.create({
   },
   stageRuler: {
     minHeight: 12,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -1098,13 +1041,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     bottom: 0,
+    start: 0,
     backgroundColor: colors.mangrove,
-  },
-  progressFillLtr: {
-    left: 0,
-  },
-  progressFillRtl: {
-    right: 0,
   },
   symbolicNote: {
     minHeight: 48,
@@ -1118,11 +1056,5 @@ const styles = StyleSheet.create({
   },
   noteText: {
     flex: 1,
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
   },
 });

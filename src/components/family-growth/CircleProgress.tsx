@@ -3,7 +3,6 @@ import Svg, { Circle, Ellipse, G, Line, Path, Rect } from 'react-native-svg';
 
 import { Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 const MAX_PROGRESS_MARKERS = 24;
 
@@ -46,7 +45,6 @@ export function CircleProgress({
   testID,
   title,
 }: CircleProgressProps) {
-  const direction = usePrototypeStore((state) => state.direction);
   const markerCount = getMarkerCount(goal);
   const filledMarkerCount = getFilledMarkerCount(current, goal, markerCount);
   const safeGoal = Math.max(0, Number.isFinite(goal) ? goal : 0);
@@ -57,7 +55,7 @@ export function CircleProgress({
     <View style={styles.circle} testID={testID}>
       {showHeading ? (
         <View style={styles.heading}>
-          <Text color="forest" variant="heading">
+          <Text accessibilityRole="header" color="forest" variant="heading">
             {title}
           </Text>
           <Text color="inkMuted">{body}</Text>
@@ -65,7 +63,7 @@ export function CircleProgress({
       ) : null}
 
       <View style={styles.sharedGround}>
-        <View style={[styles.gardenRow, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+        <View style={styles.gardenRow}>
           {gardens.map((garden, index) => (
             <View
               accessibilityLabel={garden.accessibilityLabel}
@@ -87,9 +85,7 @@ export function CircleProgress({
           accessibilityValue={{ min: 0, max: safeGoal, now: safeCurrent }}
           style={styles.goalChannel}
         >
-          <View
-            style={[styles.channelMarkers, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
-          >
+          <View style={styles.channelMarkers}>
             {Array.from({ length: markerCount }, (_, index) => {
               const filled = index < filledMarkerCount;
               const isCurrent = filled && index === filledMarkerCount - 1;
@@ -115,12 +111,7 @@ export function CircleProgress({
           {progressLabel}
         </Text>
 
-        <View
-          style={[
-            styles.householdContribution,
-            direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-          ]}
-        >
+        <View style={styles.householdContribution}>
           <HouseholdContributionMark />
           <Text color="forest" style={styles.contributionText} variant="caption">
             {householdContributionLabel}
@@ -131,7 +122,7 @@ export function CircleProgress({
       {milestoneReached && milestoneLabel ? (
         <View
           accessibilityLiveRegion={announceMilestone ? 'polite' : undefined}
-          style={[styles.milestone, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
+          style={styles.milestone}
         >
           <MilestoneMark />
           <Text color="forest" style={styles.milestoneText} variant="label">
@@ -275,9 +266,8 @@ function DisclosureLine({
   readonly kind: 'privacy' | 'synthetic';
   readonly text: string;
 }) {
-  const direction = usePrototypeStore((state) => state.direction);
   return (
-    <View style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+    <View style={styles.disclosure}>
       <DisclosureMark kind={kind} />
       <Text color="inkMuted" style={styles.disclosureText} variant="caption">
         {text}
@@ -352,6 +342,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.waterLight,
   },
   gardenRow: {
+    flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexWrap: 'wrap',
@@ -380,6 +371,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   channelMarkers: {
+    flexDirection: 'row',
     alignItems: 'flex-end',
     gap: spacing.xxs,
     zIndex: 1,
@@ -420,6 +412,7 @@ const styles = StyleSheet.create({
   },
   householdContribution: {
     minHeight: 56,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     paddingTop: spacing.sm,
@@ -431,6 +424,7 @@ const styles = StyleSheet.create({
   },
   milestone: {
     minHeight: 56,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
@@ -450,16 +444,11 @@ const styles = StyleSheet.create({
   },
   disclosure: {
     minHeight: 44,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
   },
   disclosureText: {
     flex: 1,
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
   },
 });

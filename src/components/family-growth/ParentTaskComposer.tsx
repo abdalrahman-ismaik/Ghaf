@@ -33,7 +33,6 @@ const GUIDE_INTENTS: readonly { intent: ParentGuideIntent; key: string }[] = [
 export function ParentTaskComposer({ onReadyForReview }: ParentTaskComposerProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const journey = usePrototypeStore((state) => state.journey);
   const suggestion = usePrototypeStore((state) => state.parentGuideSuggestion);
   const createTaskDraft = usePrototypeStore((state) => state.createTaskDraft);
@@ -193,10 +192,7 @@ export function ParentTaskComposer({ onReadyForReview }: ParentTaskComposerProps
           <Text color="forest" variant="label">
             {t('taskNew.categoryLabel')}
           </Text>
-          <View
-            accessibilityRole="radiogroup"
-            style={[styles.chipGrid, direction === 'rtl' ? styles.rowRtl : null]}
-          >
+          <View accessibilityRole="radiogroup" style={styles.chipGrid}>
             {TASK_CATEGORIES.map((category) => {
               const selected = category.id === categoryId;
               const disabled = Boolean(journey);
@@ -251,7 +247,6 @@ export function ParentTaskComposer({ onReadyForReview }: ParentTaskComposerProps
                   }}
                   style={({ pressed }) => [
                     styles.templateRow,
-                    direction === 'rtl' ? styles.rowRtl : null,
                     selected ? styles.templateActive : null,
                     pressed && !disabled ? styles.pressed : null,
                     disabled ? styles.disabled : null,
@@ -317,12 +312,12 @@ export function ParentTaskComposer({ onReadyForReview }: ParentTaskComposerProps
 
       {selectedTemplateId === P0_RECYCLING_TEMPLATE.id ? (
         <View style={styles.guideSection}>
-          <View style={[styles.guideHeading, direction === 'rtl' ? styles.rowRtl : null]}>
+          <View style={styles.guideHeading}>
             <View style={styles.guideMark}>
               <View style={styles.guideLeaf} />
             </View>
             <View style={styles.grow}>
-              <Text color="forest" variant="heading">
+              <Text accessibilityRole="header" color="forest" variant="heading">
                 {t('taskNew.guideTitle')}
               </Text>
               <Text color="inkMuted" variant="caption">
@@ -330,7 +325,7 @@ export function ParentTaskComposer({ onReadyForReview }: ParentTaskComposerProps
               </Text>
             </View>
           </View>
-          <View style={[styles.intentGrid, direction === 'rtl' ? styles.rowRtl : null]}>
+          <View style={styles.intentGrid}>
             {GUIDE_INTENTS.map(({ intent, key }) => (
               <Button
                 busy={busyIntent === intent}
@@ -450,7 +445,6 @@ function ParentChildChoice({
   testID: string;
 }) {
   const [focused, setFocused] = useState(false);
-  const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <Pressable
@@ -462,7 +456,6 @@ function ParentChildChoice({
       onPress={onPress}
       style={({ pressed }) => [
         styles.fixedSelection,
-        direction === 'rtl' ? styles.rowRtl : null,
         selected ? styles.childSelectionActive : null,
         focused ? styles.focused : null,
         pressed ? styles.pressed : null,
@@ -485,7 +478,6 @@ const styles = StyleSheet.create({
   section: { gap: spacing.sm },
   childChoices: { gap: spacing.xs },
   grow: { flex: 1, minWidth: 0, gap: spacing.xxs },
-  rowRtl: { flexDirection: 'row-reverse' },
   fixedSelection: {
     minHeight: layout.touchTarget,
     flexDirection: 'row',

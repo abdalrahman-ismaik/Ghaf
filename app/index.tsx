@@ -6,22 +6,19 @@ import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button, Screen, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
-
 export default function EntryScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <Screen contentContainerStyle={styles.screenContent} testID="entry-screen">
-      <View style={[styles.wordmark, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.wordmark}>
         <View style={styles.brandSpecimen}>
           <View style={styles.brandStem} />
           <View style={[styles.brandLeaf, styles.brandLeafOne]} />
           <View style={[styles.brandLeaf, styles.brandLeafTwo]} />
         </View>
-        <View style={[styles.wordmarkCopy, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+        <View style={styles.wordmarkCopy}>
           <Text
             accessibilityRole="text"
             color="forest"
@@ -128,11 +125,11 @@ export default function EntryScreen() {
       </View>
 
       <View style={styles.heroCopy}>
-        <Text color="forest" variant="title">
+        <Text accessibilityRole="header" color="forest" variant="title">
           {t('entry.title')}
         </Text>
         <Text color="inkMuted">{t('entry.body')}</Text>
-        <View style={[styles.landscapeRecord, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+        <View style={styles.landscapeRecord}>
           <View style={styles.recordLine} />
           <Text color="earth" variant="caption">
             {t('entry.landscape')}
@@ -151,7 +148,7 @@ export default function EntryScreen() {
         <LanguageSwitcher />
       </View>
 
-      <View style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.disclosure}>
         <View style={styles.disclosureMark} />
         <View style={styles.disclosureCopy}>
           <Text color="forest" variant="label">
@@ -171,10 +168,8 @@ export default function EntryScreen() {
 
 const styles = StyleSheet.create({
   screenContent: { justifyContent: 'center', paddingBottom: spacing.huge },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
-  wordmark: { alignItems: 'center', gap: spacing.sm },
-  wordmarkCopy: { flex: 1, alignItems: 'baseline', gap: spacing.xs },
+  wordmark: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  wordmarkCopy: { flex: 1, flexDirection: 'row', alignItems: 'baseline', gap: spacing.xs },
   brandSpecimen: {
     width: 50,
     height: 64,
@@ -214,6 +209,7 @@ const styles = StyleSheet.create({
   },
   heroCopy: { gap: spacing.sm },
   landscapeRecord: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     paddingTop: spacing.xs,
@@ -226,6 +222,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
   },
   disclosure: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.sm,
     borderTopWidth: 1,

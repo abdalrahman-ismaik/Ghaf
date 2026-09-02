@@ -73,7 +73,7 @@ export default function CircleScreen() {
           style={styles.unavailable}
           testID="circle-unavailable"
         >
-          <Text color="forest" variant="heading">
+          <Text accessibilityRole="header" color="forest" variant="heading">
             {t('circle.unavailableTitle')}
           </Text>
           <Text color="inkMuted">{t('circle.unavailableBody')}</Text>

@@ -3,7 +3,6 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 import { SecondaryButton, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 function TrustedAdultIcon() {
   return (
@@ -42,13 +41,8 @@ export function TrustedAdultExit({
   onPress,
   testID,
 }: TrustedAdultExitProps) {
-  const direction = usePrototypeStore((state) => state.direction);
-
   return (
-    <View
-      style={[styles.adultExit, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
-      testID={testID}
-    >
+    <View style={styles.adultExit} testID={testID}>
       <View style={styles.adultExitIcon}>
         <TrustedAdultIcon />
       </View>
@@ -72,9 +66,8 @@ export function TrustedAdultExit({
 }
 
 const styles = StyleSheet.create({
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   adultExit: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
     borderRadius: radii.lg,

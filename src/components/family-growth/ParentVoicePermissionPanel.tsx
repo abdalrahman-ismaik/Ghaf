@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Card, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface ParentVoicePermissionPanelProps {
   enabled: boolean;
@@ -12,12 +11,11 @@ export interface ParentVoicePermissionPanelProps {
 
 export function ParentVoicePermissionPanel({ enabled, onChange }: ParentVoicePermissionPanelProps) {
   const { t } = useTranslation();
-  const direction = usePrototypeStore((state) => state.direction);
   const actionLabel = t(enabled ? 'childVoice.parentDisable' : 'childVoice.parentEnable');
 
   return (
     <Card testID="parent-voice-permission-panel" variant={enabled ? 'water' : 'paper'}>
-      <View style={[styles.heading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.heading}>
         <View aria-hidden style={styles.voiceMark} />
         <View style={styles.copy}>
           <Text accessibilityRole="header" color="forest" variant="heading">
@@ -32,11 +30,7 @@ export function ParentVoicePermissionPanel({ enabled, onChange }: ParentVoicePer
 
       <View
         accessibilityLiveRegion="polite"
-        style={[
-          styles.status,
-          direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-          enabled ? styles.statusEnabled : styles.statusDisabled,
-        ]}
+        style={[styles.status, enabled ? styles.statusEnabled : styles.statusDisabled]}
         testID="parent-voice-permission-status"
       >
         <View
@@ -69,14 +63,9 @@ export function ParentVoicePermissionPanel({ enabled, onChange }: ParentVoicePer
 
 const styles = StyleSheet.create({
   heading: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
   },
   copy: {
     minWidth: 0,
@@ -93,6 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.waterLight,
   },
   status: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
     borderRadius: radii.md,

@@ -180,7 +180,7 @@ export function ParentCheckIn({ onRecognized, onResumeChild }: ParentCheckInProp
   if (journey.lifecycle === 'retry') {
     return (
       <View style={styles.retryPanel} testID="kind-retry-state">
-        <Text color="forest" variant="heading">
+        <Text accessibilityRole="header" color="forest" variant="heading">
           {t('checkIn.retry')}
         </Text>
         <Text color="inkMuted">
@@ -270,7 +270,7 @@ export function ParentCheckIn({ onRecognized, onResumeChild }: ParentCheckInProp
       ) : (
         <View style={styles.decisions}>
           <View style={styles.praiseEditor}>
-            <Text color="forest" variant="heading">
+            <Text accessibilityRole="header" color="forest" variant="heading">
               {t('checkIn.praiseLabel')}
             </Text>
             <Input

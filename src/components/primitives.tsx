@@ -132,12 +132,6 @@ export function Text({
       accessibilityLanguage={
         props.accessibilityLanguage ?? ((language ?? locale) === 'ar' ? 'ar-AE' : 'en-AE')
       }
-      accessibilityRole={
-        props.accessibilityRole ??
-        (variant === 'display' || variant === 'title' || variant === 'heading'
-          ? 'header'
-          : undefined)
-      }
       style={[
         styles.textBase,
         typographyStyle,
@@ -181,7 +175,6 @@ export function Button({
   ...props
 }: ButtonProps) {
   const [focused, setFocused] = useState(false);
-  const direction = usePrototypeStore((state) => state.direction);
   const resolvedVariant = variant === 'ghost' ? 'quiet' : variant;
   const labelColor = resolvedVariant === 'primary' ? 'white' : 'forest';
   const isDisabled = disabled === true || busy;
@@ -206,7 +199,6 @@ export function Button({
         styles.button,
         buttonVariants[resolvedVariant],
         fullWidth ? styles.fullWidth : null,
-        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
         focused ? styles.focusedControl : null,
         pressed && !isDisabled
           ? resolvedVariant === 'primary'
@@ -481,12 +473,6 @@ const styles = StyleSheet.create({
     marginStart: -spacing.xxs / 2,
     backgroundColor: colors.gold,
   },
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
   textBase: {
     includeFontPadding: true,
   },
@@ -510,6 +496,7 @@ const styles = StyleSheet.create({
   },
   button: {
     minHeight: layout.touchTarget,
+    flexDirection: 'row',
     borderRadius: radii.md,
     borderCurve: 'continuous',
     borderWidth: 1,

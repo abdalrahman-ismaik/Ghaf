@@ -15,7 +15,6 @@ export function PrototypeStatusBar() {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
-  const direction = usePrototypeStore((state) => state.direction);
   const resetPrototype = usePrototypeStore((state) => state.resetPrototype);
   const [confirming, setConfirming] = useState(false);
   const canReset = role === 'parent' && pathname !== '/' && pathname !== '/role';
@@ -29,8 +28,8 @@ export function PrototypeStatusBar() {
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]} testID="prototype-status-bar">
-      <View style={[styles.content, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-        <View style={[styles.identity, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.content}>
+        <View style={styles.identity}>
           <View style={styles.identityRule} />
           <Text color="white" variant="caption">
             {t('common.prototype')} · {t('origin.synthetic')}
@@ -38,10 +37,7 @@ export function PrototypeStatusBar() {
         </View>
         {canReset ? (
           confirming ? (
-            <View
-              accessibilityLiveRegion="polite"
-              style={[styles.confirmation, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
-            >
+            <View accessibilityLiveRegion="polite" style={styles.confirmation}>
               <Text color="white" variant="caption">
                 {t('reset.title')}
               </Text>
@@ -100,6 +96,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.forestSoft,
   },
   content: {
+    flexDirection: 'row',
     width: '100%',
     maxWidth: layout.maxContentWidth + spacing.xl * 2,
     minHeight: layout.touchTarget,
@@ -110,12 +107,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.xxs,
   },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
-  identity: { flex: 1, minWidth: 0, alignItems: 'center', gap: spacing.xs },
+  identity: {
+    flex: 1,
+    minWidth: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
   identityRule: { width: 4, height: 20, backgroundColor: colors.gold },
   confirmation: {
     flexShrink: 1,
+    flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'flex-end',

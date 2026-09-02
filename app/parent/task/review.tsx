@@ -73,7 +73,7 @@ function BilingualTerms({ terms, title }: { terms: readonly BilingualTerm[]; tit
   const { t } = useTranslation();
   return (
     <View style={styles.termsRecord} testID="task-recognition-policy">
-      <Text color="forest" variant="heading">
+      <Text accessibilityRole="header" color="forest" variant="heading">
         {title}
       </Text>
       <LanguageTerms language="ar" languageLabel={t('language.arabic')} terms={terms} />
@@ -98,10 +98,7 @@ function LanguageTerms({
         {languageLabel}
       </Text>
       {terms.map((term) => (
-        <View
-          key={`${language}-${term.label.en}`}
-          style={[styles.termRow, language === 'ar' ? styles.termRowRtl : styles.termRowLtr]}
-        >
+        <View key={`${language}-${term.label.en}`} style={[styles.termRow, { direction }]}>
           <Text
             color="inkMuted"
             direction={direction}
@@ -300,14 +297,13 @@ const styles = StyleSheet.create({
   },
   termsLanguage: { gap: spacing.xs },
   termRow: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
     paddingBottom: spacing.xs,
   },
-  termRowRtl: { flexDirection: 'row-reverse' },
-  termRowLtr: { flexDirection: 'row' },
   termLabel: { flex: 2, minWidth: 0 },
   termValue: { flex: 3, minWidth: 0 },
   metadata: {

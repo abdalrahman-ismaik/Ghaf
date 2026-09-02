@@ -49,7 +49,6 @@ export default function ChildHomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const children = usePrototypeStore((state) => state.children);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
@@ -214,7 +213,7 @@ export default function ChildHomeScreen() {
             <Text color="earth" variant="caption">
               {t('origin.prepared')}
             </Text>
-            <Text color="forest" variant="heading">
+            <Text accessibilityRole="header" color="forest" variant="heading">
               {t('childHome.adjustmentTitle')}
             </Text>
             <Text color="inkMuted">{t('childHome.adjustmentBody')}</Text>
@@ -281,9 +280,9 @@ export default function ChildHomeScreen() {
           <Text color="mangrove" variant="caption">
             {t('childHome.currentWork')}
           </Text>
-          <View style={[styles.choiceHeader, direction === 'rtl' ? styles.rowRtl : null]}>
+          <View style={styles.choiceHeader}>
             <View style={styles.grow}>
-              <Text color="forest" variant="heading">
+              <Text accessibilityRole="header" color="forest" variant="heading">
                 {currentTemplate.id === P0_RECYCLING_TEMPLATE.id
                   ? t('childTask.title')
                   : localize(currentTemplate.title, locale)}
@@ -371,7 +370,7 @@ export default function ChildHomeScreen() {
       {previewChoices.length > 0 ? (
         <View style={styles.previewSection} testID="preview-only-choices">
           <View style={styles.previewHeading}>
-            <Text color="forest" variant="heading">
+            <Text accessibilityRole="header" color="forest" variant="heading">
               {t('childHome.preparedChoices')}
             </Text>
             <Text color="inkMuted" variant="caption">
@@ -383,10 +382,7 @@ export default function ChildHomeScreen() {
               const template = templateFor(choice);
               if (!template) return null;
               return (
-                <View
-                  key={choice.id}
-                  style={[styles.previewChoice, direction === 'rtl' ? styles.rowRtl : null]}
-                >
+                <View key={choice.id} style={styles.previewChoice}>
                   <View style={styles.grow}>
                     <Text color="forest" variant="label">
                       {localize(template.title, locale)}
@@ -510,7 +506,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   choiceHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
-  rowRtl: { flexDirection: 'row-reverse' },
   grow: { flex: 1, minWidth: 0, gap: spacing.xs },
   taskMeta: { gap: spacing.xxs },
   choiceActions: { gap: spacing.xs },

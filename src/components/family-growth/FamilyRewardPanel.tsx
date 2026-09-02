@@ -36,7 +36,7 @@ export function FamilyRewardPanel({
   return (
     <Card testID="family-reward-panel" variant={plan?.lifecycle === 'unlocked' ? 'water' : 'paper'}>
       <View style={styles.heading}>
-        <Text color="forest" variant="heading">
+        <Text accessibilityRole="header" color="forest" variant="heading">
           {t('familyReward.title')}
         </Text>
         <Text color="inkMuted">

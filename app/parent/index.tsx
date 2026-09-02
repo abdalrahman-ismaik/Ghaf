@@ -23,7 +23,6 @@ export default function ParentHomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
   const journey = usePrototypeStore((state) => state.journey);
@@ -141,7 +140,7 @@ export default function ParentHomeScreen() {
         title={t('parentHome.canopyTitle')}
       />
 
-      <View style={[styles.milestoneRecord, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.milestoneRecord}>
         <View style={styles.milestoneMark} />
         <View style={styles.grow}>
           <Text color="forest" variant="label">
@@ -178,7 +177,7 @@ export default function ParentHomeScreen() {
             <Text color="earth" variant="caption">
               {t('origin.synthetic')}
             </Text>
-            <Text color="forest" variant="heading">
+            <Text accessibilityRole="header" color="forest" variant="heading">
               {t('parentHome.adjustmentReviewTitle')}
             </Text>
             <Text color="inkMuted">{t('parentHome.adjustmentReviewBody')}</Text>
@@ -313,9 +312,8 @@ export default function ParentHomeScreen() {
 }
 
 function ChildNextAction({ name, next, support }: { name: string; next: string; support: string }) {
-  const direction = usePrototypeStore((state) => state.direction);
   return (
-    <View style={[styles.childRow, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+    <View style={styles.childRow}>
       <View style={styles.childGlyph}>
         <View style={styles.childLeaf} />
       </View>
@@ -334,9 +332,8 @@ function ChildNextAction({ name, next, support }: { name: string; next: string; 
 
 const styles = StyleSheet.create({
   screenContent: { paddingBottom: spacing.huge },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   milestoneRecord: {
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     borderBottomWidth: 1,
@@ -363,6 +360,7 @@ const styles = StyleSheet.create({
   resolutionOption: { gap: spacing.sm },
   childRow: {
     minHeight: 96,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
     borderBottomWidth: 1,

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Button, Card, Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
 import type { SyntheticChildId } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface SyntheticAccessProfile {
   readonly childId: SyntheticChildId;
@@ -26,12 +25,11 @@ export function SyntheticAccessPanel({
   profiles,
 }: SyntheticAccessPanelProps) {
   const { t } = useTranslation();
-  const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <Card testID="synthetic-access-panel" variant="tonal">
       <View style={styles.heading}>
-        <Text color="forest" variant="heading">
+        <Text accessibilityRole="header" color="forest" variant="heading">
           {t('familyAccess.title')}
         </Text>
         <Text color="inkMuted">{t('familyAccess.body')}</Text>
@@ -46,11 +44,7 @@ export function SyntheticAccessPanel({
           return (
             <View
               key={profile.childId}
-              style={[
-                styles.profile,
-                direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-                enabled ? styles.profileReady : styles.profileRevoked,
-              ]}
+              style={[styles.profile, enabled ? styles.profileReady : styles.profileRevoked]}
               testID={`access-profile-${profile.childId}`}
             >
               <View
@@ -100,9 +94,8 @@ export function SyntheticAccessPanel({
 const styles = StyleSheet.create({
   heading: { gap: spacing.xs },
   profileList: { gap: spacing.sm },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   profile: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.sm,
     borderStartWidth: 1,

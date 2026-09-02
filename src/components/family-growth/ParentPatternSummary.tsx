@@ -17,7 +17,6 @@ export interface ParentPatternSummaryProps {
 export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const [current, setCurrent] = useState(summary);
   const [isEditing, setIsEditing] = useState(false);
   const [draftAr, setDraftAr] = useState(summary.observableFacts[0].ar);
@@ -60,10 +59,10 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
 
   return (
     <View style={styles.summary} testID={testID}>
-      <View style={[styles.heading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.heading}>
         <View style={styles.guideMark} />
         <View style={styles.grow}>
-          <Text color="forest" variant="heading">
+          <Text accessibilityRole="header" color="forest" variant="heading">
             {t('parentHome.summaryTitle')}
           </Text>
           <Text color="earth" variant="caption">
@@ -197,9 +196,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.md,
   },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
-  heading: { alignItems: 'center', gap: spacing.sm },
+  heading: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   grow: { flex: 1, minWidth: 0, gap: spacing.xxs },
   guideMark: {
     width: 18,

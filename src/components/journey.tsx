@@ -33,7 +33,7 @@ export function JourneyHeader({
   return (
     <View style={styles.header}>
       {onBack || action ? (
-        <View style={[styles.headerActions, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+        <View style={styles.headerActions}>
           {onBack ? (
             <IconButton
               icon={<DirectionArrow reverse={direction === 'rtl'} />}
@@ -52,12 +52,12 @@ export function JourneyHeader({
         </View>
       ) : null}
       <View style={styles.headerCopy}>
-        <Text color="forest" variant="title">
+        <Text accessibilityRole="header" color="forest" variant="title">
           {title}
         </Text>
         {subtitle ? <Text color="inkMuted">{subtitle}</Text> : null}
         {resolvedContext ? (
-          <View style={[styles.headerContext, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+          <View style={styles.headerContext}>
             <View style={styles.headerContextLine} />
             <Text color="earth" style={styles.headerContextText} variant="caption">
               {resolvedContext}
@@ -110,7 +110,6 @@ export function OriginDisclosure({
   testID,
   title,
 }: OriginDisclosureProps) {
-  const direction = usePrototypeStore((state) => state.direction);
   return (
     <View
       accessibilityLabel={[label, title, body].filter(Boolean).join('. ')}
@@ -119,7 +118,6 @@ export function OriginDisclosure({
         styles.originDisclosure,
         disclosureOriginStyles[origin],
         compact ? styles.originDisclosureCompact : null,
-        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
       ]}
       testID={testID}
     >
@@ -159,6 +157,7 @@ const styles = StyleSheet.create({
   header: { gap: spacing.lg },
   headerActions: {
     minHeight: layout.touchTarget,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -167,14 +166,18 @@ const styles = StyleSheet.create({
   headerAction: { maxWidth: '100%', flexShrink: 0 },
   headerSpacer: { width: layout.touchTarget, height: layout.touchTarget },
   headerCopy: { gap: spacing.sm },
-  headerContext: { alignItems: 'center', gap: spacing.sm, paddingTop: spacing.xs },
+  headerContext: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+  },
   headerContextLine: { width: spacing.xxl, height: 1, backgroundColor: colors.gold },
   headerContextText: { flexShrink: 1 },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   arrowReverse: { transform: [{ scaleX: -1 }] },
   originDisclosure: {
     minHeight: layout.touchTarget,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     borderRadius: radii.sm,

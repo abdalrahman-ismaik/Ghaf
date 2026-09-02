@@ -202,7 +202,7 @@ export default function ChildTaskScreen() {
           accessibilityState={{ expanded: showDefinitionDetails }}
           fullWidth={false}
           onPress={() => setShowDefinitionDetails((value) => !value)}
-          style={direction === 'rtl' ? styles.definitionToggleRtl : styles.definitionToggleLtr}
+          style={styles.definitionToggle}
           testID="toggle-definition-details-button"
           variant="ghost"
         >
@@ -235,7 +235,7 @@ export default function ChildTaskScreen() {
         />
         <View accessibilityLiveRegion="polite" style={styles.submitted}>
           <View style={styles.submittedLeaf} />
-          <Text color="forest" variant="heading">
+          <Text accessibilityRole="header" color="forest" variant="heading">
             {t('childTask.submitted')}
           </Text>
           <Text color="inkMuted">{t('taskReview.noEarlyReward')}</Text>
@@ -266,7 +266,7 @@ export default function ChildTaskScreen() {
         accessibilityState={{ expanded: showDefinitionDetails }}
         fullWidth={false}
         onPress={() => setShowDefinitionDetails((value) => !value)}
-        style={direction === 'rtl' ? styles.definitionToggleRtl : styles.definitionToggleLtr}
+        style={styles.definitionToggle}
         testID="toggle-definition-details-button"
         variant="ghost"
       >
@@ -278,7 +278,7 @@ export default function ChildTaskScreen() {
       </Button>
       <TaskSteps steps={taskSteps} testID="child-task-steps" />
       <View style={styles.coach}>
-        <Text color="forest" variant="heading">
+        <Text accessibilityRole="header" color="forest" variant="heading">
           {t('childTask.coachTitle')}
         </Text>
         {preparedCoachAvailable ? (
@@ -289,12 +289,7 @@ export default function ChildTaskScreen() {
             <Text color="inkMuted" variant="caption">
               {t('assistant.noChat')}
             </Text>
-            <View
-              style={[
-                styles.intentGrid,
-                direction === 'rtl' ? styles.intentGridRtl : styles.intentGridLtr,
-              ]}
-            >
+            <View style={styles.intentGrid}>
               {COACH_INTENTS.slice(
                 0,
                 ageAdaptedCoachResult?.policy.quickChoiceLimit ?? COACH_INTENTS.length,
@@ -414,7 +409,7 @@ export default function ChildTaskScreen() {
       </Button>
       {showOptionalMedia ? (
         <View style={styles.mediaSection} testID="optional-media-section">
-          <Text color="forest" variant="heading">
+          <Text accessibilityRole="header" color="forest" variant="heading">
             {t('childTask.mediaTitle')}
           </Text>
           <Text color="inkMuted" variant="caption">
@@ -469,7 +464,6 @@ export default function ChildTaskScreen() {
         onPress={() => setAcknowledged((value) => !value)}
         style={({ pressed }) => [
           styles.acknowledgement,
-          direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
           acknowledged ? styles.acknowledged : null,
           pressed ? styles.pressed : null,
         ]}
@@ -496,8 +490,7 @@ export default function ChildTaskScreen() {
 const styles = StyleSheet.create({
   screenContent: { paddingBottom: spacing.huge },
   grow: { flex: 1, minWidth: 0 },
-  definitionToggleLtr: { alignSelf: 'flex-start' },
-  definitionToggleRtl: { alignSelf: 'flex-end' },
+  definitionToggle: { alignSelf: 'flex-start' },
   coach: {
     gap: spacing.md,
     borderTopWidth: 1,
@@ -505,9 +498,7 @@ const styles = StyleSheet.create({
     borderColor: colors.water,
     paddingVertical: spacing.lg,
   },
-  intentGrid: { flexWrap: 'wrap', gap: spacing.xs },
-  intentGridRtl: { flexDirection: 'row-reverse' },
-  intentGridLtr: { flexDirection: 'row' },
+  intentGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   coachResult: { gap: spacing.sm, backgroundColor: colors.waterLight, padding: spacing.md },
   coachPolicy: {
     gap: spacing.xxs,
@@ -535,8 +526,6 @@ const styles = StyleSheet.create({
     borderRadius: radii.sm,
   },
   checkSelected: { borderColor: colors.ghaf, backgroundColor: colors.ghaf },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   pressed: { opacity: 0.74, transform: [{ scale: 0.99 }] },
   submitted: { alignItems: 'center', gap: spacing.md, paddingVertical: spacing.huge },
   submittedLeaf: {

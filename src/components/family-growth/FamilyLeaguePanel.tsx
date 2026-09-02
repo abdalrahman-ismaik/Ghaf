@@ -40,14 +40,13 @@ export function FamilyLeaguePanel({
 }: FamilyLeaguePanelProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
-  const direction = usePrototypeStore((state) => state.direction);
   const safeGoal = Math.max(1, cooperativeGoal);
   const progress = Math.min(100, (Math.max(0, cooperativeConfirmedCount) / safeGoal) * 100);
 
   return (
     <Card testID="family-league-panel" variant="tonal">
       <View style={styles.heading}>
-        <Text color="forest" variant="heading">
+        <Text accessibilityRole="header" color="forest" variant="heading">
           {t('familyLeague.title')}
         </Text>
         <Text color="inkMuted">
@@ -88,13 +87,7 @@ export function FamilyLeaguePanel({
               }}
               style={styles.progressTrack}
             >
-              <View
-                style={[
-                  styles.progressFill,
-                  direction === 'rtl' ? styles.progressRtl : styles.progressLtr,
-                  { width: `${progress}%` },
-                ]}
-              />
+              <View style={[styles.progressFill, { width: `${progress}%` }]} />
             </View>
           </View>
 
@@ -102,7 +95,7 @@ export function FamilyLeaguePanel({
             {participants.map((participant) => (
               <View
                 key={`${participant.nickname.en}-${participant.treeAvatarToken}`}
-                style={[styles.participant, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
+                style={styles.participant}
               >
                 <View aria-hidden style={styles.avatarMark} />
                 <View style={styles.participantCopy}>
@@ -172,20 +165,18 @@ const styles = StyleSheet.create({
   progressFill: {
     height: '100%',
     position: 'absolute',
+    start: 0,
     backgroundColor: colors.ghaf,
   },
-  progressRtl: { end: 0 },
-  progressLtr: { start: 0 },
   participants: { borderTopWidth: 1, borderTopColor: colors.line },
   participant: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
     paddingVertical: spacing.sm,
   },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
   avatarMark: {
     width: spacing.lg,
     height: spacing.xl,

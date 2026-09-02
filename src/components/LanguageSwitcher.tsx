@@ -22,7 +22,6 @@ export function LanguageSwitcher({
 }: LanguageSwitcherProps) {
   const { t } = useTranslation();
   const [focusedLocale, setFocusedLocale] = useState<LocaleCode | null>(null);
-  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const setLocale = usePrototypeStore((state) => state.setLocale);
 
@@ -37,11 +36,7 @@ export function LanguageSwitcher({
       <View
         accessibilityLabel={t('language.title')}
         accessibilityRole="radiogroup"
-        style={[
-          styles.segment,
-          compact ? styles.compactSegment : null,
-          direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-        ]}
+        style={[styles.segment, compact ? styles.compactSegment : null]}
       >
         {localeOptions.map((option) => {
           const isSelected = option === locale;
@@ -98,6 +93,7 @@ const styles = StyleSheet.create({
     width: 'auto',
   },
   segment: {
+    flexDirection: 'row',
     width: '100%',
     overflow: 'hidden',
     borderRadius: radii.md,
@@ -109,12 +105,6 @@ const styles = StyleSheet.create({
   compactSegment: {
     width: 'auto',
     borderRadius: radii.sm,
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
   },
   option: {
     flex: 1,

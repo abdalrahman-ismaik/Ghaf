@@ -3,7 +3,6 @@ import Svg, { Circle, Ellipse, G, Path, Rect } from 'react-native-svg';
 
 import { Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 const CANOPY_LEAVES = [
   { cx: 73, cy: 63, rotation: -26 },
@@ -67,12 +66,11 @@ export function FamilyCanopy({
   testID,
   title,
 }: FamilyCanopyProps) {
-  const direction = usePrototypeStore((state) => state.direction);
   const earnedLeafCount = getVisibleLeafCount(contributionLeaves, goalLeaves);
 
   return (
     <View style={styles.canopy} testID={testID}>
-      <View style={[styles.canopyLayout, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+      <View style={styles.canopyLayout}>
         <View
           accessibilityLabel={accessibilityLabel}
           accessibilityRole="image"
@@ -173,13 +171,8 @@ export function FamilyCanopy({
 
         <View style={styles.canopyCopy}>
           <View style={styles.titleGroup}>
-            <View
-              style={[
-                styles.titleRule,
-                direction === 'rtl' ? styles.titleRuleRtl : styles.titleRuleLtr,
-              ]}
-            />
-            <Text color="forest" variant="heading">
+            <View style={styles.titleRule} />
+            <Text accessibilityRole="header" color="forest" variant="heading">
               {title}
             </Text>
           </View>
@@ -207,7 +200,6 @@ export function HouseholdContribution({
   meaning,
   progressLabel,
 }: HouseholdContributionProps) {
-  const direction = usePrototypeStore((state) => state.direction);
   const progress = getProgressPercent(current, goal);
   const safeGoal = Math.max(0, Number.isFinite(goal) ? goal : 0);
   const safeCurrent = Math.max(0, Math.min(safeGoal, Number.isFinite(current) ? current : 0));
@@ -220,19 +212,8 @@ export function HouseholdContribution({
         accessibilityValue={{ min: 0, max: safeGoal, now: safeCurrent }}
         style={styles.progressTrack}
       >
-        <View
-          style={[
-            styles.progressFill,
-            direction === 'rtl' ? styles.progressFillRtl : styles.progressFillLtr,
-            { width: `${progress}%` },
-          ]}
-        />
-        <View
-          style={[
-            styles.progressRoot,
-            direction === 'rtl' ? styles.progressRootRtl : styles.progressRootLtr,
-          ]}
-        />
+        <View style={[styles.progressFill, { width: `${progress}%` }]} />
+        <View style={styles.progressRoot} />
       </View>
       <Text color="forest" variant="label">
         {progressLabel}
@@ -241,9 +222,7 @@ export function HouseholdContribution({
         {meaning}
       </Text>
       {latestContributionLabel ? (
-        <View
-          style={[styles.latestContribution, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
-        >
+        <View style={styles.latestContribution}>
           <NewLeafMark />
           <Text color="earth" style={styles.latestContributionText} variant="caption">
             {latestContributionLabel}
@@ -292,6 +271,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.leafMist,
   },
   canopyLayout: {
+    flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
     gap: spacing.xl,
@@ -320,13 +300,8 @@ const styles = StyleSheet.create({
   titleRule: {
     width: 48,
     height: 3,
-    backgroundColor: colors.gold,
-  },
-  titleRuleLtr: {
     alignSelf: 'flex-start',
-  },
-  titleRuleRtl: {
-    alignSelf: 'flex-end',
+    backgroundColor: colors.gold,
   },
   contribution: {
     gap: spacing.xs,
@@ -342,31 +317,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     bottom: 0,
+    start: 0,
     backgroundColor: colors.ghaf,
-  },
-  progressFillLtr: {
-    left: 0,
-  },
-  progressFillRtl: {
-    right: 0,
   },
   progressRoot: {
     position: 'absolute',
     pointerEvents: 'none',
     top: 2,
     bottom: 2,
+    start: spacing.xs,
     width: 3,
     borderRadius: radii.pill,
     backgroundColor: colors.gold,
   },
-  progressRootLtr: {
-    left: spacing.xs,
-  },
-  progressRootRtl: {
-    right: spacing.xs,
-  },
   latestContribution: {
     minHeight: 48,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     paddingHorizontal: spacing.sm,
@@ -376,11 +342,5 @@ const styles = StyleSheet.create({
   },
   latestContributionText: {
     flex: 1,
-  },
-  rowLtr: {
-    flexDirection: 'row',
-  },
-  rowRtl: {
-    flexDirection: 'row-reverse',
   },
 });
