@@ -9,6 +9,42 @@ import type {
   VoicePlaybackInput,
 } from '../../models/assistantVoice';
 import type {
+  AccessView,
+  CapabilityAuthorization,
+  CapabilityAuthorizationInput,
+  ChildAccessSession,
+  ChildPermissionGrant,
+  ChildPermissionQueryInput,
+  DeviceAccessState,
+  DeviceRevocationInput,
+  PairingApprovalInput,
+  PairingConsumptionInput,
+  PairingRequest,
+  PairingRequestInput,
+  ParentAccessSession,
+  PermissionUpdateInput,
+  ProjectAccessSessionInput,
+  ReauthenticationInput,
+  ReauthenticationProof,
+  SensitiveActionInput,
+  SyntheticChildSignIn,
+  SyntheticParentSignIn,
+} from '../../models/access';
+import type {
+  FamilyRewardEvaluation,
+  FamilyRewardEvaluationOptions,
+  FamilyRewardGivenResult,
+  FamilyRewardPlan,
+  FamilyRewardPlanDraft,
+  FamilyRewardRevision,
+  FamilyRewardViewer,
+  GiveFamilyRewardInput,
+  MonetaryCommitmentRequest,
+  MonetaryCommitmentSummary,
+  PrivateFamilyRewardView,
+  ReviseFamilyRewardPlanInput,
+} from '../../models/familyReward';
+import type {
   AssignmentApprovalResult,
   AssistantDisclosure,
   CheckInRouteState,
@@ -198,6 +234,44 @@ export interface SyntheticVoiceService {
   reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
 }
 
+export interface SyntheticAccessService {
+  signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
+  signInChild(input: SyntheticChildSignIn): ServiceResult<ChildAccessSession>;
+  projectSession(input: ProjectAccessSessionInput): ServiceResult<AccessView>;
+  authorizeCapability(input: CapabilityAuthorizationInput): ServiceResult<CapabilityAuthorization>;
+  requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest>;
+  approvePairing(input: PairingApprovalInput): ServiceResult<PairingRequest>;
+  consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession>;
+  revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState>;
+  issueReauthentication(input: ReauthenticationInput): ServiceResult<ReauthenticationProof>;
+  authorizeSensitiveAction(input: SensitiveActionInput): ServiceResult<ReauthenticationProof>;
+  getChildPermissions(input: ChildPermissionQueryInput): ServiceResult<ChildPermissionGrant>;
+  updateChildPermissions(input: PermissionUpdateInput): ServiceResult<ChildPermissionGrant>;
+}
+
+export interface FamilyRewardService {
+  createPlan(
+    input: FamilyRewardPlanDraft,
+    monetaryAuthorization?: SensitiveActionInput,
+  ): ServiceResult<FamilyRewardPlan>;
+  revisePromisedPlan(
+    plan: unknown,
+    input: ReviseFamilyRewardPlanInput,
+    monetaryAuthorization?: SensitiveActionInput,
+  ): ServiceResult<FamilyRewardRevision>;
+  evaluatePlan(
+    plan: unknown,
+    events: readonly unknown[],
+    options: FamilyRewardEvaluationOptions,
+  ): ServiceResult<FamilyRewardEvaluation>;
+  markGiven(plan: unknown, input: GiveFamilyRewardInput): ServiceResult<FamilyRewardGivenResult>;
+  projectPrivate(plan: unknown, viewer: FamilyRewardViewer): ServiceResult<PrivateFamilyRewardView>;
+  summarizeMonthlyCommitment(
+    plans: readonly unknown[],
+    request: MonetaryCommitmentRequest,
+  ): ServiceResult<readonly MonetaryCommitmentSummary[]>;
+}
+
 export interface PreparedParentGuideProvider extends ParentGuideService {
   readonly mode: 'deterministic_prepared';
   readonly fixtureId: 'guide_recycling_refine_v1';
@@ -234,6 +308,8 @@ export interface Feature003ServiceRegistry {
   readonly childCoach: PreparedChildCoachProvider;
   readonly coachAdaptation: CoachAdaptationService;
   readonly syntheticVoice: SyntheticVoiceService;
+  readonly access: SyntheticAccessService;
+  readonly familyReward: FamilyRewardService;
   readonly parentSummary: ParentSummaryPolicy;
   readonly prototypeSession: PrototypeSessionService;
 }

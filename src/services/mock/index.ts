@@ -19,6 +19,15 @@ import {
   startVoiceSession,
   stopVoiceSessionWithPreparedTranscript,
 } from '../../features/assistants/voiceSession';
+import { DeterministicSyntheticAccessService } from '../../features/access';
+import {
+  createFamilyRewardPlan,
+  evaluateFamilyRewardPlan,
+  markFamilyRewardGiven,
+  projectFamilyRewardPlan,
+  reviseFamilyRewardPlan,
+  summarizeMonthlyMonetaryCommitments,
+} from '../../features/family-rewards';
 import {
   applyCanopy,
   applyCircle,
@@ -57,6 +66,17 @@ import type {
   VoiceAccessContext,
   VoicePlaybackInput,
 } from '../../models/assistantVoice';
+import type { SensitiveActionInput } from '../../models/access';
+import type {
+  FamilyRewardErrorCode,
+  FamilyRewardEvaluationOptions,
+  FamilyRewardPlanDraft,
+  FamilyRewardResult,
+  FamilyRewardViewer,
+  GiveFamilyRewardInput,
+  MonetaryCommitmentRequest,
+  ReviseFamilyRewardPlanInput,
+} from '../../models/familyReward';
 import type {
   ActiveCoachContext,
   AssignmentApprovalResult,
@@ -91,6 +111,7 @@ import type {
 } from '../../models/familyGrowth';
 import type {
   CoachAdaptationService,
+  FamilyRewardService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
   GardenService,
@@ -104,6 +125,7 @@ import type {
   ServiceMeta,
   ServiceResult,
   SyntheticVoiceService,
+  SyntheticAccessService,
   TaskService,
 } from '../interfaces';
 import {
@@ -115,6 +137,8 @@ import {
   PREPARED_PRAISE,
   PREPARED_MEDIA_FIXTURES,
 } from './fixtures';
+
+export { DeterministicSyntheticAccessService };
 
 const PREPARED_META: ServiceMeta = { origin: 'prepared', fallbackUsed: false };
 const SYNTHETIC_META: ServiceMeta = { origin: 'synthetic', fallbackUsed: false };
@@ -144,6 +168,29 @@ function fromDomain<T>(
   meta: ServiceMeta = SYNTHETIC_META,
 ): ServiceResult<T> {
   return result.ok ? success(result.data, meta) : { ok: false, error: result.error };
+}
+
+function familyRewardErrorCode(code: FamilyRewardErrorCode): DomainErrorCode {
+  switch (code) {
+    case 'PROTECTED_ACTIVITY':
+      return 'SAFETY_REJECTED';
+    case 'WRONG_CHILD':
+    case 'NOT_AUTHORIZED':
+      return 'PRIVACY_REJECTED';
+    case 'PREREQUISITE_NOT_MET':
+    case 'IMMUTABLE_UNLOCKED_PLAN':
+    case 'STALE_VERSION':
+      return 'INVALID_TRANSITION';
+    case 'INVALID_INPUT':
+    case 'INVALID_TRANSITION':
+      return code;
+  }
+}
+
+function fromFamilyReward<T>(result: FamilyRewardResult<T>): ServiceResult<T> {
+  return result.ok
+    ? success(result.data)
+    : failure(familyRewardErrorCode(result.error.code), result.error.message);
 }
 
 function nonEmptyLocalized(value: LocalizedText): boolean {
@@ -1305,6 +1352,108 @@ export class DeterministicSyntheticVoiceService implements SyntheticVoiceService
   }
 }
 
+export class DeterministicFamilyRewardService implements FamilyRewardService {
+  constructor(private readonly access: SyntheticAccessService) {}
+
+  createPlan(
+    input: FamilyRewardPlanDraft,
+    monetaryAuthorization?: SensitiveActionInput,
+  ): ReturnType<FamilyRewardService['createPlan']> {
+    const created = createFamilyRewardPlan(input);
+    if (!created.ok) return fromFamilyReward(created);
+    if (created.data.promise.kind === 'money') {
+      const authorized = this.authorizeMonetaryChange(
+        created.data.createdByGuardianId,
+        'create_monetary_family_reward',
+        monetaryAuthorization,
+      );
+      if (!authorized.ok) return authorized;
+    }
+    return fromFamilyReward(created);
+  }
+
+  revisePromisedPlan(
+    plan: unknown,
+    input: ReviseFamilyRewardPlanInput,
+    monetaryAuthorization?: SensitiveActionInput,
+  ): ReturnType<FamilyRewardService['revisePromisedPlan']> {
+    const revised = reviseFamilyRewardPlan(plan, input);
+    if (!revised.ok) return fromFamilyReward(revised);
+    if (
+      revised.data.priorVersion.promise.kind === 'money' ||
+      revised.data.revisedPlan.promise.kind === 'money'
+    ) {
+      const authorized = this.authorizeMonetaryChange(
+        input.guardianId,
+        'change_monetary_family_reward',
+        monetaryAuthorization,
+      );
+      if (!authorized.ok) return authorized;
+    }
+    return fromFamilyReward(revised);
+  }
+
+  evaluatePlan(
+    plan: unknown,
+    events: readonly unknown[],
+    options: FamilyRewardEvaluationOptions,
+  ): ReturnType<FamilyRewardService['evaluatePlan']> {
+    return fromFamilyReward(evaluateFamilyRewardPlan(plan, events, options));
+  }
+
+  markGiven(
+    plan: unknown,
+    input: GiveFamilyRewardInput,
+  ): ReturnType<FamilyRewardService['markGiven']> {
+    return fromFamilyReward(markFamilyRewardGiven(plan, input));
+  }
+
+  projectPrivate(
+    plan: unknown,
+    viewer: FamilyRewardViewer,
+  ): ReturnType<FamilyRewardService['projectPrivate']> {
+    return fromFamilyReward(projectFamilyRewardPlan(plan, viewer));
+  }
+
+  summarizeMonthlyCommitment(
+    plans: readonly unknown[],
+    request: MonetaryCommitmentRequest,
+  ): ReturnType<FamilyRewardService['summarizeMonthlyCommitment']> {
+    return fromFamilyReward(summarizeMonthlyMonetaryCommitments(plans, request));
+  }
+
+  private authorizeMonetaryChange(
+    guardianId: string,
+    purpose: SensitiveActionInput['purpose'],
+    authorization?: SensitiveActionInput,
+  ): ServiceResult<true> {
+    if (
+      !authorization ||
+      authorization.purpose !== purpose ||
+      authorization.parentSession.sessionKind !== 'parent' ||
+      authorization.parentSession.principal.parentId !== guardianId
+    ) {
+      return failure(
+        'PRIVACY_REJECTED',
+        'A matching one-use Parent reauthentication proof is required for monetary metadata',
+      );
+    }
+    const authorized = this.access.authorizeSensitiveAction(authorization);
+    if (!authorized.ok) return authorized;
+    if (
+      authorized.data.parentId !== guardianId ||
+      !authorized.data.consumed ||
+      authorized.data.consumedAt === null
+    ) {
+      return failure(
+        'PRIVACY_REJECTED',
+        'The consumed reauthentication proof does not match the acting guardian',
+      );
+    }
+    return success(true);
+  }
+}
+
 export class DeterministicParentSummaryPolicy implements ParentSummaryPolicy {
   validate(summary: ParentPatternSummary): ServiceResult<ParentPatternSummary> {
     return fromDomain(validateParentSummary(summary), PREPARED_META);
@@ -1346,6 +1495,7 @@ export class DeterministicPrototypeSessionService implements PrototypeSessionSer
 }
 
 export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
+  const access = new DeterministicSyntheticAccessService();
   return {
     task: new DeterministicTaskService(),
     recognition: new DeterministicRecognitionService(),
@@ -1356,6 +1506,8 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     childCoach: new DeterministicChildCoachProvider(),
     coachAdaptation: new DeterministicCoachAdaptationService(),
     syntheticVoice: new DeterministicSyntheticVoiceService(),
+    access,
+    familyReward: new DeterministicFamilyRewardService(access),
     parentSummary: new DeterministicParentSummaryPolicy(),
     prototypeSession: new DeterministicPrototypeSessionService(),
   };

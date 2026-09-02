@@ -475,7 +475,7 @@ permissions, and every wrong-actor/purpose/device/expiry/replay path.
 - [x] T113 [P] [US7] Add RED tests for least-privilege Parent/Child projections, expiring one-use pairing, device revocation, scoped reauthentication, and Parent-owned language/voice/media/AI grants in `tests/access-control.test.ts`
 - [x] T114 [P] [US7] Define synthetic principals, separate access sessions/views, capabilities, pairing requests, reauthentication proofs, device state, and Child grants in `src/models/access.ts`
 - [x] T115 [US7] Implement fail-closed deterministic access, pairing, projection, reauthentication, revocation, and permission policies in `src/features/access/index.ts`
-- [ ] T116 [US7] Export the synthetic access service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/access-control.test.ts`
+- [x] T116 [US7] Export the synthetic access service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/access-control.test.ts`
 
 **Checkpoint**: User Story 7 is independently usable from the service facade and has no real
 credential, biometric, network, or persistence path.
@@ -490,10 +490,10 @@ League position, and payment behavior.
 **Independent Test**: Every lifecycle/milestone/promise kind passes; protected activity, League
 inputs, withdrawal, retroactive edits, cross-Child views, and Seed conversion fail.
 
-- [ ] T117 [P] [US8] Add RED tests for Family Reward plan validation, all milestone kinds, lifecycle idempotency, protected-category exclusion, private projection, prospective edits, and monthly currency totals in `tests/family-reward.test.ts`
-- [ ] T118 [P] [US8] Define Family Reward plans, milestones, eligibility events, progress snapshots, private views, revisions, and monthly commitments in `src/models/familyReward.ts`
-- [ ] T119 [US8] Implement deterministic plan creation, personal milestone evaluation, monotonic transitions, future-only revision, private projection, and commitment aggregation in `src/features/family-rewards/index.ts`
-- [ ] T120 [US8] Export the Family Reward service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/family-reward.test.ts`
+- [x] T117 [P] [US8] Add RED tests for Family Reward plan validation, all milestone kinds, lifecycle idempotency, protected-category exclusion, private projection, prospective edits, and monthly currency totals in `tests/family-reward.test.ts`
+- [x] T118 [P] [US8] Define Family Reward plans, milestones, eligibility events, progress snapshots, private views, revisions, and monthly commitments in `src/models/familyReward.ts`
+- [x] T119 [US8] Implement deterministic plan creation, personal milestone evaluation, monotonic transitions, future-only revision, private projection, and commitment aggregation in `src/features/family-rewards/index.ts`
+- [x] T120 [US8] Export the Family Reward service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/family-reward.test.ts`
 
 **Checkpoint**: User Story 8 is independently usable and exposes no payment, wallet, custody,
 exchange-rate, rank, or public-reward operation.
