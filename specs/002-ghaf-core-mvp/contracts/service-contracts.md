@@ -235,12 +235,48 @@ interface AIService {
   generateMission(
     request: MissionGenerationRequest,
   ): Promise<ServiceResult<GeneratedMissionPayload>>;
+  respondToCoach(request: CoachRequest): Promise<ServiceResult<CoachResponse>>;
 }
 ```
 
 `MockAIService` selects a curated mission fixture using age band, prepared food scenario, quantity,
 and available time, then returns `pregenerated-mock`. An optional remote adapter sends no secret
 from the device and selects no model inside this contract; the server owns current provider details.
+
+The AI-only extension adds these bounded types:
+
+```ts
+type CoachAgeGroup = '6-8' | '9-11' | '12-14';
+
+interface CoachRequest {
+  requestId: string;
+  taskId: string;
+  ageGroup: CoachAgeGroup;
+  locale: 'ar' | 'en';
+  inputMode: 'text' | 'voice-transcript';
+  message: string;
+  currentTask: LocalizedText;
+  permissions: { aiEnabled: boolean; voiceEnabled: boolean };
+}
+
+interface CoachResponse {
+  schemaVersion: '1.0';
+  requestId: string;
+  taskId: string;
+  message: LocalizedText;
+  quickChoices: readonly LocalizedText[];
+  askAdult: { label: LocalizedText; recommended: boolean };
+  languageMode: 'ar' | 'en' | 'code-switched';
+  safety: { foodSafetyVerdict: false; requiresAdult: boolean };
+}
+```
+
+Coach validation rejects disabled permissions, voice transcripts without voice permission,
+unrelated or unsafe outputs, food-safety verdicts, religious or medical rulings, private-data
+requests, missing task IDs, and responses exceeding the age group's bounded length/choice rules.
+The optional gateway receives only synthetic prototype content, returns one of the two structured
+payloads, and owns the deploy-time provider/model choice. The mobile adapter contains no provider
+secret and immediately exposes the deterministic fallback on timeout or invalid output.
 
 ## `ImpactService`
 

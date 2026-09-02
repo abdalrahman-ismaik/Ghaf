@@ -2,7 +2,8 @@
 
 **Branch**: `main` | **Date**: 2026-08-22 | **Spec**: [spec.md](./spec.md)
 
-**Status**: APPROVED on 2026-08-22 for deterministic mock implementation
+**Status**: APPROVED on 2026-08-22 for deterministic mock implementation; AI-only extension
+approved on 2026-09-01
 
 **Input**: Feature specification from `specs/002-ghaf-core-mvp/spec.md`
 
@@ -18,7 +19,8 @@ Child completes exactly three steps and a reflection, the Parent confirms the re
 family's estimated impact and six-stage Ghaf tree update visibly. Ten thin Expo Router screens use
 bounded Zustand actions as application use cases. Those actions call the five existing service
 interfaces through one registry, with deterministic local mocks as the required implementation.
-No backend or live AI service is required for the competition prototype.
+The offline mock remains the acceptance provider. The 2026-09-01 extension adds an opt-in live AI
+gateway and a headless, task-focused Ghaf Coach contract without changing any existing UI.
 
 ## Prototype Capability Decision
 
@@ -26,7 +28,8 @@ No backend or live AI service is required for the competition prototype.
 | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Must be real for the competition prototype** | Mobile navigation; Parent and Child screens; Arabic and English; RTL; mission review interaction; mission completion interaction; impact update; Ghaf growth animation; role switching; demo reset  |
 | **May initially be mocked**                    | AI mission generation; voice transcription; image interpretation; evidence review; Parent notifications; data persistence; authentication                                                           |
-| **May later become real if time permits**      | OpenAI API call; Supabase storage; voice transcription; camera capture; audio recording; saved mission history                                                                                      |
+| **Approved optional AI extension**             | Structured live mission generation and task-focused age-adaptive Coach replies through a minimal Cloudflare Workers AI gateway                                                                      |
+| **May later become real if time permits**      | Supabase storage; live voice transcription; camera capture; audio recording; saved mission history                                                                                                  |
 | **Explicitly future work**                     | Production authentication; production child accounts; production privacy controls; multiple families; schools; banking; real rewards; marketplace; social feed; App Store release; scalable backend |
 
 Mocked capabilities remain visible and honest: prepared assets are labeled prepared, simulated
@@ -55,8 +58,10 @@ period.
 | Deferred integrations | Live AI, camera capture, audio recording, and remote storage                                 |
 | Physical target       | The team's primary Android phone; exact model and OS remain BLOCKED pending physical handoff |
 
-Implementation is authorized from T002 onward after the completed T001 approval record. Optional
-live integrations require a later, separate approval and cannot block the mock journey.
+Implementation is authorized from T002 onward after the completed T001 approval record. The
+2026-09-01 PDF request separately authorizes only the AI integration described in this amendment;
+it cannot block the mock journey and does not authorize the PDF's UI, authentication, League,
+Family Reward, navigation, or typography changes.
 
 ## Technical Context
 
@@ -151,6 +156,21 @@ The approved baseline makes no network request. A later live AI experiment may a
 server-side proxy—preferably a Supabase Edge Function—behind `AIService`. It may transcribe a voice
 note and request a mission matching the same structured contract. The mobile application never
 contains an OpenAI secret, and the mock provider remains selectable without changing a screen.
+
+### Approved AI-only extension (2026-09-01)
+
+- Extend `AIService` with a bounded Coach operation carrying current-task context, one of the
+  approved 6–8, 9–11, or 12–14 age groups, locale, input mode, and Parent AI/voice permissions.
+- Keep prompts, response schemas, safety checks, timeouts, and deterministic replies under
+  `src/features/ai/` and `src/services/`; do not add a Coach screen or edit an existing component.
+- Add a secret-free mobile HTTP adapter. Provider credentials or bindings stay server-side.
+- Supply a small Cloudflare Worker using Workers AI and structured JSON. Default to the free daily
+  allocation and an active multilingual open-weight model, while allowing the model ID to be
+  changed at deployment without rebuilding the app.
+- Keep `MockAIService` as fallback for both mission generation and Coach replies. Invalid, unsafe,
+  timed-out, or unavailable live output is never shown as live success.
+- Do not implement recording or transcription. Voice input in this extension is already-produced
+  text and remains permission-gated so later push-to-talk UI can call the same contract safely.
 
 ## Approved Screen Evaluation
 

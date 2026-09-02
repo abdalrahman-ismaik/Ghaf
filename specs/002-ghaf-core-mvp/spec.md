@@ -4,7 +4,8 @@
 
 **Created**: 2026-08-22
 
-**Status**: APPROVED on 2026-08-22 for deterministic mock implementation
+**Status**: APPROVED on 2026-08-22 for deterministic mock implementation; AI-only extension
+approved on 2026-09-01 from `Ghaf_Product_Experience_Redesign.pdf`
 
 **Input**: Define the complete Ghaf competition-prototype journey from family input through a
 parent-approved child adventure, completion confirmation, measured food-rescue impact, and visible
@@ -14,9 +15,11 @@ Ghaf-tree growth, with a deterministic offline demonstration fallback.
 
 > Ghaf is an MVP Prototype for competition evaluation. It is designed to demonstrate the product concept, core interactions, AI value, cultural identity, visual quality, and sustainability impact. It is not intended to demonstrate production infrastructure, regulatory compliance, financial integration, large-scale security, or store-ready deployment.
 
-Feature 002 authorizes implementation of the deterministic mock journey defined here. Live AI,
-camera capture, audio recording, remote storage, and other optional-later capabilities remain
-deferred until the prepared offline journey is reliable and separately approved.
+Feature 002 authorizes implementation of the deterministic mock journey defined here. The
+2026-09-01 AI-only extension additionally authorizes a task-focused, age-adaptive bilingual Ghaf
+Coach and optional live mission generation behind the existing `AIService` boundary. Camera
+capture, audio recording, remote storage, authentication, League, Family Reward, typography, and
+screen redesign work remain outside this implementation. No AI extension may add or change UI.
 
 ## Prototype Capability Boundaries
 
@@ -24,7 +27,8 @@ deferred until the prepared offline journey is reliable and separately approved.
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Must be real in the prototype**         | Mobile navigation; the ten approved Parent and Child screens; Arabic and English presentation; RTL behavior; Parent mission review and approval; Child mission completion; Parent completion confirmation; impact updates; deterministic Ghaf growth animation; prototype role switching; and demo reset |
 | **May initially be mocked**               | AI mission generation; voice transcription; image interpretation; evidence review; Parent notifications; data persistence; and authentication                                                                                                                                                            |
-| **May later become real if time permits** | Live AI mission generation; remotely saved demo media; live voice transcription; camera capture; audio recording; and saved mission history                                                                                                                                                              |
+| **May later become real if time permits** | Remotely saved demo media; live voice transcription; camera capture; audio recording; and saved mission history                                                                                                                                                                                          |
+| **Approved optional AI extension**        | Live structured mission generation and task-focused Ghaf Coach replies through a secret-free mobile gateway, with deterministic local fallback                                                                                                                                                           |
 | **Explicitly future work**                | Production authentication; production child accounts; production privacy controls; multiple families; schools; banking; real rewards; a marketplace; a social feed; store release; and a scalable backend                                                                                                |
 
 Mock, seeded, simulated, and pregenerated behavior MUST be identified honestly in team guidance and
@@ -341,6 +345,26 @@ confirmation, impact update, and Ghaf growth using only seeded content.
 - **FR-047**: Feature 002 MUST NOT introduce production authentication, production child accounts,
   multiple families, schools, banking, real rewards, marketplace, social feed, store release,
   scalable backend, enterprise security, or regulatory-compliance work.
+- **FR-048**: The Ghaf Coach MUST remain bounded to the currently approved task and MUST NOT expose
+  an unrestricted chat surface or answer unrelated requests.
+- **FR-049**: Coach communication MUST support the PDF's three age groups: ages 6–8 receive one
+  short instruction and an early Ask an adult option; ages 9–11 receive two or three short steps
+  and quick choices; ages 12–14 receive concise, respectful language that is not childish.
+- **FR-050**: Coach results MUST include Arabic and English content, accept natural Arabic-English
+  code-switching, use clear Modern Standard Arabic for requirements and safety guidance, and avoid
+  invented dialect, religious rulings, or exaggerated cultural language.
+- **FR-051**: AI requests MUST carry Parent-controlled AI and voice permission state. Voice-derived
+  text MUST be rejected when voice permission is disabled, and no implementation in this extension
+  may start recording or add background capture.
+- **FR-052**: Every Coach result MUST include a prominent bilingual Ask an adult action and MUST
+  keep the current task identifier in its request and response contract.
+- **FR-053**: Live AI MUST be opt-in, use no provider secret in the mobile bundle, validate all
+  structured output locally, time out, and fall back to deterministic mock behavior without
+  blocking the approved offline journey.
+- **FR-054**: AI MUST NOT provide food-safety verdicts, medical or religious rulings, private-data
+  requests, unrestricted messaging, or autonomous mission assignment or completion decisions.
+- **FR-055**: The AI-only extension MUST NOT change routes, components, typography, navigation,
+  authentication, League, Family Reward, or other visual behavior from the existing implementation.
 
 ### Approved Requirement Classification
 

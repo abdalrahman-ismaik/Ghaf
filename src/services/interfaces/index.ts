@@ -3,6 +3,8 @@ import type {
   CelebrationPayload,
   ChildProfile,
   ChildSubmission,
+  CoachRequest,
+  CoachResponse,
   GeneratedMissionPayload,
   GhafProgress,
   ImpactRecord,
@@ -70,6 +72,7 @@ export interface AIService {
   generateMission(
     request: MissionGenerationRequest,
   ): Promise<ServiceResult<GeneratedMissionPayload>>;
+  respondToCoach(request: CoachRequest): Promise<ServiceResult<CoachResponse>>;
 }
 
 export interface ApproveCompletionRequest {

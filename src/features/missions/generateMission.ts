@@ -21,6 +21,7 @@ export interface GenerateMissionOptions {
   readonly child: Pick<ChildProfile, 'id' | 'ageBand'>;
   readonly primaryService: AIService;
   readonly fallbackService: AIService;
+  readonly primaryMode?: 'mock' | 'live-optional';
 }
 
 function invalidResponse(message: string): ServiceResult<GeneratedMissionResult> {
@@ -61,14 +62,15 @@ export async function generateMissionWithFallback({
   child,
   primaryService,
   fallbackService,
+  primaryMode = 'live-optional',
 }: GenerateMissionOptions): Promise<ServiceResult<GeneratedMissionResult>> {
-  const request = {
+  const primaryRequest = {
     attemptId,
     child,
     input,
-    mode: 'mock' as const,
+    mode: primaryMode,
   };
-  const primary = await invokeProvider(primaryService, request, true);
+  const primary = await invokeProvider(primaryService, primaryRequest, true);
 
   if (primary.ok) {
     const parsed = generatedMissionPayloadSchema.safeParse(primary.data);
@@ -83,7 +85,11 @@ export async function generateMissionWithFallback({
     return primary;
   }
 
-  const fallback = await invokeProvider(fallbackService, request, false);
+  const fallback = await invokeProvider(
+    fallbackService,
+    { ...primaryRequest, mode: 'mock' },
+    false,
+  );
   if (!fallback.ok) return fallback;
   const parsedFallback = generatedMissionPayloadSchema.safeParse(fallback.data);
   if (!parsedFallback.success) {

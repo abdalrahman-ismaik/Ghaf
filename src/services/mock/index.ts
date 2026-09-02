@@ -1,4 +1,6 @@
 import { awardCompletion, requestRetryWithoutAward } from '../../features/impact/awardCompletion';
+import { createDeterministicCoachResponse } from '../../features/ai/policy';
+import { coachRequestSchema } from '../../features/ai/validation';
 import { transitionLifecycle } from '../../features/missions/lifecycle';
 import {
   generatedMissionPayloadSchema,
@@ -8,6 +10,7 @@ import {
 import type {
   CapabilityOrigin,
   ChildSubmission,
+  CoachResponse,
   GeneratedMissionPayload,
   MediaKind,
   MediaReference,
@@ -299,6 +302,19 @@ export class MockAIService implements AIService {
     };
 
     return success(customizedPayload, 'pregenerated-mock');
+  }
+
+  async respondToCoach(
+    request: Parameters<AIService['respondToCoach']>[0],
+  ): Promise<ServiceResult<CoachResponse>> {
+    const parsed = coachRequestSchema.safeParse(request);
+    if (!parsed.success) {
+      return failure(
+        'INVALID_INPUT',
+        parsed.error.issues[0]?.message ?? 'The mock Coach request is invalid',
+      );
+    }
+    return success(createDeterministicCoachResponse(request), 'pregenerated-mock');
   }
 }
 

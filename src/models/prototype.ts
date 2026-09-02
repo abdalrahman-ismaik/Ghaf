@@ -10,6 +10,43 @@ export interface LocalizedText {
   readonly en: string;
 }
 
+export type CoachAgeGroup = '6-8' | '9-11' | '12-14';
+export type CoachInputMode = 'text' | 'voice-transcript';
+export type CoachLanguageMode = LocaleCode | 'code-switched';
+
+export interface ParentAIControls {
+  readonly aiEnabled: boolean;
+  readonly voiceEnabled: boolean;
+}
+
+export interface CoachRequest {
+  readonly requestId: string;
+  readonly taskId: string;
+  readonly ageGroup: CoachAgeGroup;
+  readonly locale: LocaleCode;
+  readonly inputMode: CoachInputMode;
+  readonly message: string;
+  readonly currentTask: LocalizedText;
+  readonly permissions: ParentAIControls;
+}
+
+export interface CoachResponse {
+  readonly schemaVersion: '1.0';
+  readonly requestId: string;
+  readonly taskId: string;
+  readonly message: LocalizedText;
+  readonly quickChoices: readonly LocalizedText[];
+  readonly askAdult: {
+    readonly label: LocalizedText;
+    readonly recommended: boolean;
+  };
+  readonly languageMode: CoachLanguageMode;
+  readonly safety: {
+    readonly foodSafetyVerdict: false;
+    readonly requiresAdult: boolean;
+  };
+}
+
 export type CapabilityOrigin =
   'seeded' | 'prepared' | 'simulated' | 'pregenerated-mock' | 'live-optional';
 

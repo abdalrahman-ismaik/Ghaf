@@ -277,3 +277,28 @@ US1 alone is useful progress but is **not** the competition MVP.
   screen beyond the approved ten.
 - Feature 002 deterministic mock implementation is approved; optional live integrations remain
   deferred until the complete mock journey is reliable on the primary Android phone.
+
+---
+
+## Phase 9: Approved AI-only Extension (2026-09-01)
+
+**Purpose**: Implement the AI requirements from `Ghaf_Product_Experience_Redesign.pdf` without
+changing the UI or expanding the broader product redesign.
+
+- [x] T043 Member 3 — Record the age-adaptive, bilingual, task-bounded Coach requirements and the
+      unchanged-UI boundary in spec.md, plan.md, and contracts/service-contracts.md
+- [x] T044 Member 2 — Add Coach request/response models, Parent AI/voice permission gates, language
+      detection, age policies, prompt construction, and structured response validation in
+      src/models/prototype.ts and src/features/ai/
+- [x] T045 Member 2 — Extend MockAIService with deterministic bilingual age-adaptive Coach replies
+      and preserve mock mission generation in src/services/mock/index.ts
+- [x] T046 Member 2 — Add the timeout-bounded, schema-validating mobile gateway adapter and opt-in
+      AI registry selection in src/services/remote/, src/services/index.ts, and the AI generation call
+      site in src/state/usePrototypeStore.ts
+- [x] T047 Member 2 — Add a minimal Cloudflare Workers AI gateway with structured mission and Coach
+      output, deploy-time model selection, no mobile provider secret, and no production persistence in
+      workers/ghaf-ai/
+- [x] T048 Member 2 — Add focused AI safety, age adaptation, code-switching, permission, remote
+      validation, and fallback tests in tests/ai-features.test.ts and affected existing tests
+- [x] T049 Integration owner — Run typecheck, lint, format check, and focused/full automated tests;
+      record live provider deployment and physical voice/UI behavior as NOT RUN unless separately done

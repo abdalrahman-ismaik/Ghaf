@@ -17,6 +17,10 @@ import type { AIService, ServiceResult } from '../src/services/interfaces';
 import type { GeneratedMissionPayload } from '../src/models/prototype';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
 
+const unsupportedCoach: AIService['respondToCoach'] = async () => {
+  throw new Error('Coach is not used by this mission-provider test double');
+};
+
 describe('mission input and payload validation', () => {
   it('requires Child, prepared media, a labeled bounded quantity, and bounded time', () => {
     const valid = createDemoMissionInput();
@@ -168,6 +172,7 @@ describe('guarded mission lifecycle', () => {
   it('keeps one attempt and the original input when a provider uses mock fallback', async () => {
     const input = createDemoMissionInput();
     const failingService: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: async (): Promise<ServiceResult<GeneratedMissionPayload>> => ({
         ok: false,
         error: {
@@ -200,6 +205,7 @@ describe('guarded mission lifecycle', () => {
 
   it('uses the deterministic fallback when an optional provider rejects', async () => {
     const rejectingService: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: async () => {
         throw new Error('Synthetic network rejection');
       },
@@ -223,6 +229,7 @@ describe('guarded mission lifecycle', () => {
   it('honors an unavailable-fallback error and never invokes the fallback service', async () => {
     let fallbackCalls = 0;
     const noFallback: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: async () => ({
         ok: false,
         error: {
@@ -234,6 +241,7 @@ describe('guarded mission lifecycle', () => {
       }),
     };
     const fallback: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: async () => {
         fallbackCalls += 1;
         return {
@@ -294,6 +302,7 @@ describe('guarded mission lifecycle', () => {
       resolve?: (result: ServiceResult<GeneratedMissionPayload>) => void;
     } = {};
     const slowService: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: () =>
         new Promise((resolve) => {
           deferred.resolve = resolve;
@@ -336,6 +345,7 @@ describe('guarded mission lifecycle', () => {
       resolve?: (result: ServiceResult<GeneratedMissionPayload>) => void;
     } = {};
     const slowFailure: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: () =>
         new Promise((resolve) => {
           deferred.resolve = resolve;

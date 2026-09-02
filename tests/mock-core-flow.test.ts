@@ -3,6 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
 import { serviceRegistry, type AIService } from '../src/services';
 
+const unsupportedCoach: AIService['respondToCoach'] = async () => {
+  throw new Error('Coach is not used by this mission-provider test double');
+};
+
 afterEach(() => {
   vi.unstubAllGlobals();
 });
@@ -38,6 +42,7 @@ describe('complete deterministic mock journey', () => {
     ]);
 
     const unavailableProvider: AIService = {
+      respondToCoach: unsupportedCoach,
       generateMission: async () => ({
         ok: false,
         error: {

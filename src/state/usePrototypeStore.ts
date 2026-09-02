@@ -18,6 +18,7 @@ import {
   type TextDirection,
 } from '../models/prototype';
 import {
+  configuredAIService,
   serviceRegistry,
   type AIService,
   type CompletionAward,
@@ -181,7 +182,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     });
   },
 
-  completeGeneration: async (primaryService = serviceRegistry.ai) => {
+  completeGeneration: async (primaryService = configuredAIService) => {
     const state = get();
     if (state.journeyStatus !== 'generating' || !state.generation) {
       const result = failure('INVALID_TRANSITION', 'Generation has not started');
