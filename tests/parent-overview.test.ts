@@ -50,7 +50,8 @@ async function requestPreparedSummary() {
 
 describe('US5 cooperative Parent overview and bounded pattern summary', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
   });
 
   it('has a dedicated bounded Parent pattern-summary component for the overview route', () => {

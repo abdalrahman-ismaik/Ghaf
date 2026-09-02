@@ -22,6 +22,7 @@ function currentCounters() {
 }
 
 async function completeOfflineCycle(cycle: number): Promise<void> {
+  usePrototypeStore.getState().setRole('parent');
   const reset = usePrototypeStore.getState().resetPrototype();
   expect(reset).toMatchObject({
     ok: true,
@@ -210,7 +211,8 @@ function unavailableParentGuide(
 
 describe('Feature 003 deterministic external-service-denied store flow', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
   });
 
   afterEach(() => {

@@ -169,7 +169,8 @@ function expectCanonicalResetState(): void {
 
 describe('schema-3 Prototype Session reset', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
   });
 
   it('starts from the exact Arabic Parent/Salem canonical fixture', () => {
@@ -250,7 +251,8 @@ describe('schema-3 Prototype Session reset', () => {
 
 describe('atomic praise-first recognition', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
     usePrototypeStore.setState(createSubmittedP0Session());
   });
 

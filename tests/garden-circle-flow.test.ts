@@ -68,7 +68,8 @@ const VALID_CONTEXT: ProjectionEligibilityContext = {
 
 describe('US4 symbolic garden and privacy-safe circle consequence', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
     usePrototypeStore.setState(createSubmittedP0Session());
   });
 

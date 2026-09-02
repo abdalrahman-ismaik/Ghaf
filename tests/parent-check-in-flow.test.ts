@@ -57,7 +57,8 @@ function planAndPresentPraise(): void {
 
 describe('US3 Parent check-in, retry, and praise-first recognition', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
     usePrototypeStore.setState(createSubmittedP0Session());
     usePrototypeStore.getState().setRole('parent');
   });
@@ -548,7 +549,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expectOk(usePrototypeStore.getState().planFutureTaskAdjustment('smaller'));
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).not.toBeNull();
 
-    usePrototypeStore.getState().resetPrototype();
+    expectOk(usePrototypeStore.getState().resetPrototype());
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
     usePrototypeStore.setState(createSubmittedP0Session());
@@ -863,7 +864,8 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     ] as const;
 
     for (const corruption of corruptions) {
-      usePrototypeStore.getState().resetPrototype();
+      usePrototypeStore.getState().setRole('parent');
+      expectOk(usePrototypeStore.getState().resetPrototype());
       usePrototypeStore.setState(createSubmittedP0Session());
       usePrototypeStore.getState().setRole('parent');
       planAndPresentPraise();

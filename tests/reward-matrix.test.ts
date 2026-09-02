@@ -197,7 +197,8 @@ describe('Feature 003 recognition and reward policy', () => {
         ? { ...submitted.journey.submission, taskVersion: 2 }
         : null,
     };
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
     usePrototypeStore.setState({
       ...submitted,
       role: 'parent',
