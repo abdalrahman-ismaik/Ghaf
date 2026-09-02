@@ -18,7 +18,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: PROVISIONAL_ANDROID_PACKAGE,
+    allowBackup: false,
+    blockedPermissions: [
+      'android.permission.MODIFY_AUDIO_SETTINGS',
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.RECORD_AUDIO',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+    ],
     predictiveBackGestureEnabled: true,
+    softwareKeyboardLayoutMode: 'resize',
   },
   web: {
     bundler: 'metro',
@@ -26,15 +34,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     'expo-router',
-    [
-      'expo-audio',
-      {
-        microphonePermission: false,
-        recordAudioAndroid: false,
-        enableBackgroundRecording: false,
-        enableBackgroundPlayback: false,
-      },
-    ],
     [
       'expo-localization',
       {
