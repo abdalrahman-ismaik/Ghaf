@@ -3,15 +3,19 @@ import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { TrustedAdultExit } from '@/components/family-growth/TrustedAdultExit';
 import { PreparedMedia } from '@/components/family-growth/PreparedMedia';
+import { SyntheticVoicePanel } from '@/components/family-growth/SyntheticVoicePanel';
 import { DefinitionOfDone, TaskSteps } from '@/components/family-growth/TaskPanels';
 import { JourneyHeader } from '@/components/journey';
 import { Button, Input, Screen, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
+import type { ChildVoiceCommand } from '@/features/assistants/childVoiceController';
 import { P0_RECYCLING_TEMPLATE } from '@/features/tasks/demoContent';
 import { TASK_REFLECTION_MAX_LENGTH } from '@/features/tasks/validation';
 import { bilingualResource, localize } from '@/i18n';
+import type { AgeAdaptedCoachResult } from '@/models/assistantVoice';
 import type { ChildCoachIntent, ChildCoachResult, LocalizedText } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -24,13 +28,14 @@ const COACH_INTENTS: readonly { intent: ChildCoachIntent; key: string }[] = [
 
 function coachLinesForIntent(
   coach: ChildCoachResult,
+  adapted: AgeAdaptedCoachResult,
   intent: ChildCoachIntent,
 ): readonly LocalizedText[] {
   switch (intent) {
     case 'show_steps':
-      return coach.steps;
+      return adapted.steps;
     case 'simplify_task':
-      return coach.steps.slice(0, 2);
+      return adapted.steps.slice(0, 2);
     case 'create_if_then_cue':
     case 'rehearse_reviewed_phrase':
     case 'respond_to_prepared_fixture':
@@ -51,8 +56,12 @@ export default function ChildTaskScreen() {
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
   const coach = usePrototypeStore((state) => state.childCoachResult);
+  const ageAdaptedCoachResult = usePrototypeStore((state) => state.ageAdaptedCoachResult);
+  const childVoiceView = usePrototypeStore((state) => state.childVoiceView);
   const childTaskDraft = usePrototypeStore((state) => state.childTaskDraft);
   const startAssignment = usePrototypeStore((state) => state.startAssignment);
+  const prepareChildVoice = usePrototypeStore((state) => state.prepareChildVoice);
+  const runChildVoiceCommand = usePrototypeStore((state) => state.runChildVoiceCommand);
   const requestChildCoach = usePrototypeStore((state) => state.requestChildCoach);
   const selectPreparedMedia = usePrototypeStore((state) => state.selectPreparedMedia);
   const removePreparedMedia = usePrototypeStore((state) => state.removePreparedMedia);
@@ -84,6 +93,12 @@ export default function ChildTaskScreen() {
     if (!hasTaskPrerequisite) router.replace('/child');
   }, [hasTaskPrerequisite, role, router]);
 
+  useEffect(() => {
+    if (role === 'child' && journey?.lifecycle === 'in_progress') {
+      prepareChildVoice();
+    }
+  }, [journey?.lifecycle, journey?.task.id, journey?.task.version, prepareChildVoice, role]);
+
   const askCoach = async (intent: ChildCoachIntent) => {
     setBusyIntent(intent);
     setError(null);
@@ -112,6 +127,12 @@ export default function ChildTaskScreen() {
     }
   };
 
+  const runVoiceCommand = (command: ChildVoiceCommand) => {
+    setError(null);
+    const result = runChildVoiceCommand(command);
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
   if (role !== 'child') return null;
   if (!hasTaskPrerequisite) return null;
   if (!journey?.assignment) return null;
@@ -122,7 +143,10 @@ export default function ChildTaskScreen() {
       ? t('childTask.title')
       : localize(content.title, locale);
   const fixtures = serviceRegistry.media.listPrepared();
-  const coachDisclosure = coach?.meta.disclosure.text ?? serviceRegistry.childCoach.disclosure.text;
+  const coachDisclosure =
+    ageAdaptedCoachResult?.aiDisclosure ??
+    coach?.meta.disclosure.text ??
+    serviceRegistry.childCoach.disclosure.text;
   const preparedCoachAvailable = journey.task.version === 1;
   const taskSteps = preparedCoachAvailable
     ? [
@@ -134,7 +158,9 @@ export default function ChildTaskScreen() {
     : [localize(content.positiveAction, locale), localize(content.safety.stopAndAskAdult, locale)];
   const displayedCoachIntent = activeCoachIntent ?? (coach ? 'show_steps' : null);
   const displayedCoachLines =
-    coach && displayedCoachIntent ? coachLinesForIntent(coach, displayedCoachIntent) : [];
+    coach && ageAdaptedCoachResult && displayedCoachIntent
+      ? coachLinesForIntent(coach, ageAdaptedCoachResult, displayedCoachIntent)
+      : [];
   const coachIntentLabel = displayedCoachIntent
     ? t(
         displayedCoachIntent === 'need_adult'
@@ -151,6 +177,7 @@ export default function ChildTaskScreen() {
     return (
       <Screen testID="child-task-start-screen">
         <JourneyHeader
+          action={<LanguageSwitcher compact showGuidance={false} />}
           eyebrow={t('origin.prepared')}
           onBack={() => router.replace('/child')}
           subtitle={localize(content.whyItMatters, locale)}
@@ -192,7 +219,11 @@ export default function ChildTaskScreen() {
   if (journey.lifecycle === 'submitted') {
     return (
       <Screen testID="child-task-submitted-screen">
-        <JourneyHeader eyebrow={t('origin.synthetic')} title={childFacingTitle} />
+        <JourneyHeader
+          action={<LanguageSwitcher compact showGuidance={false} />}
+          eyebrow={t('origin.synthetic')}
+          title={childFacingTitle}
+        />
         <View accessibilityLiveRegion="polite" style={styles.submitted}>
           <View style={styles.submittedLeaf} />
           <Text color="forest" variant="heading">
@@ -208,6 +239,7 @@ export default function ChildTaskScreen() {
   return (
     <Screen contentContainerStyle={styles.screenContent} keyboardAware testID="child-task-screen">
       <JourneyHeader
+        action={<LanguageSwitcher compact showGuidance={false} />}
         eyebrow={t('origin.prepared')}
         onBack={() => router.replace('/child')}
         subtitle={localize(content.whyItMatters, locale)}
@@ -252,7 +284,10 @@ export default function ChildTaskScreen() {
                 direction === 'rtl' ? styles.intentGridRtl : styles.intentGridLtr,
               ]}
             >
-              {COACH_INTENTS.map(({ intent, key }) => (
+              {COACH_INTENTS.slice(
+                0,
+                ageAdaptedCoachResult?.policy.quickChoiceLimit ?? COACH_INTENTS.length,
+              ).map(({ intent, key }, index) => (
                 <Button
                   busy={busyIntent === intent}
                   busyLabel={t('assistant.loading')}
@@ -262,7 +297,9 @@ export default function ChildTaskScreen() {
                   onPress={() => void askCoach(intent)}
                   variant="ghost"
                 >
-                  {t(`childTask.${key}`)}
+                  {ageAdaptedCoachResult?.quickChoices[index]
+                    ? localize(ageAdaptedCoachResult.quickChoices[index], locale)
+                    : t(`childTask.${key}`)}
                 </Button>
               ))}
             </View>
@@ -272,7 +309,7 @@ export default function ChildTaskScreen() {
             {t('childTask.adjustedCoachUnavailable')}
           </Text>
         )}
-        {preparedCoachAvailable && coach ? (
+        {preparedCoachAvailable && coach && ageAdaptedCoachResult ? (
           <View
             accessibilityLiveRegion="polite"
             style={styles.coachResult}
@@ -286,6 +323,30 @@ export default function ChildTaskScreen() {
             <Text color="forest" variant="caption">
               {t('assistant.preparedLabel')}
             </Text>
+            <View style={styles.coachPolicy} testID="child-coach-age-policy">
+              <Text color="forest" variant="label">
+                {t('coachPolicy.title')}
+              </Text>
+              <Text color="inkMuted" variant="caption">
+                {t('coachPolicy.ageAdapted', {
+                  band: ageAdaptedCoachResult.ageBand.replace('_', '–'),
+                })}
+              </Text>
+              <Text color="inkMuted" variant="caption">
+                {t('coachPolicy.maximumSteps', {
+                  count: ageAdaptedCoachResult.policy.maximumSteps,
+                })}
+                {' · '}
+                {t(
+                  ageAdaptedCoachResult.policy.pace === 'slow'
+                    ? 'coachPolicy.slowerPace'
+                    : 'coachPolicy.standardPace',
+                )}
+              </Text>
+              <Text color="inkMuted" variant="caption">
+                {t('coachPolicy.taskBound')} {t('coachPolicy.noOpenChat')}
+              </Text>
+            </View>
             {coachIntentLabel ? (
               <Text color="mangrove" variant="label">
                 {coachIntentLabel}
@@ -327,6 +388,7 @@ export default function ChildTaskScreen() {
           </Text>
         ) : null}
       </View>
+      <SyntheticVoicePanel onCommand={runVoiceCommand} view={childVoiceView} />
       <Button
         accessibilityState={{ expanded: showOptionalMedia }}
         onPress={() => setShowOptionalMedia((value) => !value)}
@@ -432,6 +494,12 @@ const styles = StyleSheet.create({
   intentGridRtl: { flexDirection: 'row-reverse' },
   intentGridLtr: { flexDirection: 'row' },
   coachResult: { gap: spacing.sm, backgroundColor: colors.waterLight, padding: spacing.md },
+  coachPolicy: {
+    gap: spacing.xxs,
+    borderStartWidth: 2,
+    borderStartColor: colors.mangrove,
+    paddingStart: spacing.sm,
+  },
   mediaSection: { gap: spacing.md },
   acknowledgement: {
     minHeight: layout.touchTarget,

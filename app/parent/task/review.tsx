@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { ParentVoicePermissionPanel } from '@/components/family-growth/ParentVoicePermissionPanel';
 import { JourneyHeader } from '@/components/journey';
 import { SafetyBoundary } from '@/components/family-growth/TaskPanels';
 import { Button, Screen, Text } from '@/components/primitives';
@@ -129,7 +130,9 @@ export default function ParentTaskReviewScreen() {
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
   const journey = usePrototypeStore((state) => state.journey);
+  const childVoiceView = usePrototypeStore((state) => state.childVoiceView);
   const approveAssignment = usePrototypeStore((state) => state.approveAssignment);
+  const setChildVoicePermission = usePrototypeStore((state) => state.setChildVoicePermission);
   const returnReviewedTaskToDraft = usePrototypeStore((state) => state.returnReviewedTaskToDraft);
   const [error, setError] = useState<string | null>(null);
   const approvalNavigationPending = useRef(false);
@@ -221,6 +224,15 @@ export default function ParentTaskReviewScreen() {
       <SafetyBoundary bilingual safety={content.safety} testID="task-safety-boundary" />
 
       <BilingualTerms terms={policyTerms} title={t('taskReview.recognition')} />
+
+      <ParentVoicePermissionPanel
+        enabled={childVoiceView.permissionEnabled}
+        onChange={(enabled) => {
+          setError(null);
+          const result = setChildVoicePermission(enabled);
+          if (!result.ok) setError(t('errors.safeRetry'));
+        }}
+      />
 
       <View style={styles.metadata} testID="bilingual-review-metadata">
         <BilingualField
