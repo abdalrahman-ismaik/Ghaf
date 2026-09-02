@@ -13,6 +13,7 @@ import type {
   PairingConsumptionInput,
   PairingRequest,
   PairingRequestInput,
+  PairingRevocationInput,
   ParentAccessSession,
   PermissionUpdateInput,
   ProjectAccessSessionInput,
@@ -357,6 +358,34 @@ export class DeterministicSyntheticAccessService {
     };
     this.pairingRequests.set(approved.id, { ...approved });
     return success({ ...approved }, approved.id);
+  }
+
+  revokePairing(input: PairingRevocationInput): ServiceResult<PairingRequest> {
+    const parent = this.resolveParent(input.parentSession, input.now, 'manage_child_devices');
+    if (!parent.ok) return parent;
+    const request = this.pairingRequests.get(input.requestId);
+    if (!request) return failure('NOT_FOUND', 'The synthetic pairing request was not found');
+    const expired = isExpired(request.expiresAt, input.now);
+    if (expired === null) return failure('INVALID_INPUT', 'A valid deterministic time is required');
+    if (expired) {
+      this.pairingRequests.set(request.id, { ...request, status: 'expired' });
+      return failure('INVALID_TRANSITION', 'The synthetic pairing request expired');
+    }
+    if (
+      !['pending', 'approved'].includes(request.status) ||
+      request.householdId !== parent.data.householdId ||
+      request.childId !== input.childId ||
+      request.requestingDeviceId !== input.requestingDeviceId
+    ) {
+      return failure('INVALID_TRANSITION', 'The pairing request cannot be revoked by this Parent');
+    }
+    const revoked: PairingRequest = {
+      ...request,
+      status: 'revoked',
+      revokedAt: input.now,
+    };
+    this.pairingRequests.set(revoked.id, { ...revoked });
+    return success({ ...revoked }, revoked.id);
   }
 
   consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession> {

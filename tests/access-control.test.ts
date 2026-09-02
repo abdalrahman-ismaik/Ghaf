@@ -2,7 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import {
   ACCESS_SESSION_TTL_MS,
+  CHILD_CAPABILITIES,
   PAIRING_TTL_MS,
+  PARENT_CAPABILITIES,
   REAUTHENTICATION_TTL_MS,
   SYNTHETIC_CHILD_CREDENTIAL_FIXTURES,
   SYNTHETIC_PARENT_ACCESS_FIXTURE,
@@ -134,6 +136,18 @@ describe('synthetic Parent and Child access', () => {
     });
     expect(SYNTHETIC_CHILD_CREDENTIAL_FIXTURES.child_salem).not.toHaveProperty('pin');
     expect(SYNTHETIC_CHILD_CREDENTIAL_FIXTURES.child_alya).not.toHaveProperty('pictureSequence');
+    expect(Object.isFrozen(PARENT_CAPABILITIES)).toBe(true);
+    expect(Object.isFrozen(CHILD_CAPABILITIES)).toBe(true);
+    expect(Object.isFrozen(SYNTHETIC_PARENT_ACCESS_FIXTURE)).toBe(true);
+    expect(Object.isFrozen(SYNTHETIC_CHILD_CREDENTIAL_FIXTURES.child_salem)).toBe(true);
+  });
+
+  it('does not allow runtime mutation of the Child capability allowlist', () => {
+    expect(() =>
+      (CHILD_CAPABILITIES as unknown as string[]).push('enter_parent_experience'),
+    ).toThrow();
+    const childSession = pairSalem({ requestId: 'pairing_frozen_capabilities' });
+    expect(childSession.capabilities).not.toContain('enter_parent_experience');
   });
 
   it('expires sessions from explicit deterministic time input', () => {
@@ -298,6 +312,48 @@ describe('synthetic Parent and Child access', () => {
     ).toMatchObject({ ok: false });
   });
 
+  it('allows a Parent to revoke an approved pairing before it is consumed', () => {
+    const request = expectOk(
+      service.requestPairing({
+        requestId: 'pairing_revoke_before_consume',
+        pairingCode: 'synthetic-code-revoke-before-consume',
+        childId: 'child_salem',
+        requestingDeviceId: 'device_revoke_before_consume',
+        now: BASE_TIME,
+      }),
+    );
+    expectOk(
+      service.approvePairing({
+        requestId: request.id,
+        childId: request.childId,
+        requestingDeviceId: request.requestingDeviceId,
+        parentSession,
+        now: BASE_TIME,
+      }),
+    );
+    expectOk(
+      service.revokePairing({
+        requestId: request.id,
+        childId: request.childId,
+        requestingDeviceId: request.requestingDeviceId,
+        parentSession,
+        now: BASE_TIME,
+      }),
+    );
+
+    expect(
+      service.consumePairing({
+        requestId: request.id,
+        pairingCode: request.pairingCode,
+        childId: request.childId,
+        deviceId: request.requestingDeviceId,
+        childCredentialFixtureId: SYNTHETIC_CHILD_CREDENTIAL_FIXTURES.child_salem.fixtureId,
+        sessionId: 'child_session_revoked_before_consume',
+        now: BASE_TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
   it('revokes one Child/device binding and denies later sign-in', () => {
     const childSession = pairSalem({ requestId: 'pairing_revoke', deviceId: 'device_revoke' });
     const revoked = expectOk(
@@ -324,17 +380,22 @@ describe('synthetic Parent and Child access', () => {
     });
   });
 
-  it('denies every Parent-only capability to a Child session', () => {
+  it('enforces every Parent and Child capability by stored session kind', () => {
     const childSession = pairSalem({ requestId: 'pairing_capabilities' });
-    for (const capability of [
-      'enter_parent_experience',
-      'view_parent_reports',
-      'manage_family_rewards',
-      'manage_league_membership',
-      'manage_child_permissions',
-    ] as const) {
+    for (const capability of PARENT_CAPABILITIES) {
       expect(
         service.authorizeCapability({ session: childSession, capability, now: BASE_TIME }),
+      ).toMatchObject({ ok: false });
+      expect(
+        service.authorizeCapability({ session: parentSession, capability, now: BASE_TIME }),
+      ).toMatchObject({ ok: true, data: { capability, authorized: true } });
+    }
+    for (const capability of CHILD_CAPABILITIES) {
+      expect(
+        service.authorizeCapability({ session: childSession, capability, now: BASE_TIME }),
+      ).toMatchObject({ ok: true, data: { capability, authorized: true } });
+      expect(
+        service.authorizeCapability({ session: parentSession, capability, now: BASE_TIME }),
       ).toMatchObject({ ok: false });
     }
   });

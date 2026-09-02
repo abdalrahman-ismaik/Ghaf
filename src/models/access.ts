@@ -31,7 +31,7 @@ export type ChildCapability =
 
 export type AccessCapability = ParentCapability | ChildCapability;
 
-export const PARENT_CAPABILITIES: readonly ParentCapability[] = [
+export const PARENT_CAPABILITIES: readonly ParentCapability[] = Object.freeze([
   'enter_parent_experience',
   'view_parent_reports',
   'manage_tasks',
@@ -40,9 +40,9 @@ export const PARENT_CAPABILITIES: readonly ParentCapability[] = [
   'manage_league_membership',
   'manage_child_permissions',
   'manage_child_devices',
-];
+]);
 
-export const CHILD_CAPABILITIES: readonly ChildCapability[] = [
+export const CHILD_CAPABILITIES: readonly ChildCapability[] = Object.freeze([
   'enter_child_experience',
   'view_own_tasks',
   'submit_own_tasks',
@@ -51,7 +51,7 @@ export const CHILD_CAPABILITIES: readonly ChildCapability[] = [
   'view_own_permissions',
   'use_task_coach',
   'use_prepared_media',
-];
+]);
 
 export interface SyntheticParentAccessFixture {
   readonly fixtureId: 'parent_access_al_noor_v1';
@@ -70,37 +70,37 @@ export interface SyntheticChildCredentialFixture {
   readonly origin: 'synthetic';
 }
 
-export const SYNTHETIC_PARENT_ACCESS_FIXTURE: SyntheticParentAccessFixture = {
+export const SYNTHETIC_PARENT_ACCESS_FIXTURE: SyntheticParentAccessFixture = Object.freeze({
   fixtureId: 'parent_access_al_noor_v1',
   parentId: 'parent_al_noor',
   householdId: 'household_al_noor',
   verificationKind: 'deterministic_parent_fixture',
   origin: 'synthetic',
-};
+});
 
 export const SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID =
   'parent_reauthentication_al_noor_v1' as const;
 
 export const SYNTHETIC_CHILD_CREDENTIAL_FIXTURES: Readonly<
   Record<SyntheticChildId, SyntheticChildCredentialFixture>
-> = {
-  child_salem: {
+> = Object.freeze({
+  child_salem: Object.freeze({
     fixtureId: 'child_access_salem_v1',
     childId: 'child_salem',
     householdId: 'household_al_noor',
     avatarId: 'avatar_salem_ghaf',
     verificationKind: 'avatar_pin_fixture',
     origin: 'synthetic',
-  },
-  child_alya: {
+  }),
+  child_alya: Object.freeze({
     fixtureId: 'child_access_alya_v1',
     childId: 'child_alya',
     householdId: 'household_al_noor',
     avatarId: 'avatar_alya_sidr',
     verificationKind: 'avatar_picture_sequence_fixture',
     origin: 'synthetic',
-  },
-};
+  }),
+});
 
 export interface SyntheticParentPrincipal {
   readonly role: 'parent';
@@ -287,6 +287,14 @@ export interface PairingRequestInput {
 }
 
 export interface PairingApprovalInput {
+  readonly requestId: string;
+  readonly childId: SyntheticChildId;
+  readonly requestingDeviceId: string;
+  readonly parentSession: AccessSession;
+  readonly now: string;
+}
+
+export interface PairingRevocationInput {
   readonly requestId: string;
   readonly childId: SyntheticChildId;
   readonly requestingDeviceId: string;
