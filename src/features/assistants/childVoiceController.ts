@@ -311,6 +311,17 @@ export class ChildVoiceController {
     if (!voice.ok) return voice;
     const ai = this.updateSensitiveGrant('ai', false);
     if (!ai.ok) return ai;
+    if (this.grant.languagePreference !== 'ar') {
+      const language = this.registry.access.updateChildPermissions({
+        parentSession: this.parentSession,
+        childId: this.grant.childId,
+        expectedVersion: this.grant.version,
+        change: { kind: 'language', value: 'ar' },
+        now: this.nextTime(),
+      });
+      if (!language.ok) return language;
+      this.grant = language.data;
+    }
 
     this.voiceSession = null;
     this.taskContext = null;

@@ -227,6 +227,22 @@ describe('Child AI presentation controller', () => {
       expect(controller.getView().lifecycle).toBe('recording');
     },
   );
+
+  it('restores the Arabic voice preference when reset follows English enablement', () => {
+    const controller = createChildVoiceController(createFeature003ServiceRegistry());
+    expectOk(
+      controller.configureParentPermission({
+        actorRole: 'parent',
+        childId: 'child_salem',
+        languagePreference: 'en',
+        enabled: true,
+      }),
+    );
+    expectOk(controller.bindActiveTask(taskContext));
+
+    expectOk(controller.resetPrototype('parent'));
+    expect(controller.getView()).toEqual(INITIAL_CHILD_VOICE_VIEW);
+  });
 });
 
 describe('Child AI presentation store integration', () => {
