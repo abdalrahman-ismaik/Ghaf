@@ -23,7 +23,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 const COACH_INTENTS: readonly { intent: ChildCoachIntent; key: string }[] = [
   { intent: 'show_steps', key: 'showSteps' },
   { intent: 'simplify_task', key: 'helpPlan' },
-  { intent: 'rehearse_reviewed_phrase', key: 'phrasePractice' },
+  { intent: 'need_adult', key: 'adultExit' },
 ] as const;
 
 function coachLinesForIntent(

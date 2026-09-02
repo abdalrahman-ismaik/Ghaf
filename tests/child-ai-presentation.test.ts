@@ -360,6 +360,10 @@ describe('Child AI presentation source contract', () => {
     expect(childRoute).toContain('<LanguageSwitcher compact showGuidance={false} />');
     expect(childRoute).toContain('<SyntheticVoicePanel');
     expect(childRoute).toContain('ageAdaptedCoachResult');
+    expect(childRoute).toContain("{ intent: 'need_adult', key: 'adultExit' }");
+    expect(childRoute).not.toContain(
+      "{ intent: 'rehearse_reviewed_phrase', key: 'phrasePractice' }",
+    );
     expect(store).toContain('childVoiceController.adaptCoach');
     expect(store).toContain('childVoiceController.resetPrototype');
   });
