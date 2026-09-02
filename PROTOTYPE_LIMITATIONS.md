@@ -8,7 +8,7 @@ grounding, and sustainability storytelling. It is not production-ready and must 
 an authenticated child service, social network, diagnostic product, religious authority, verified
 impact platform, or legally compliant deployment.
 
-As of 2026-08-28, Feature 003 is implemented as a deterministic local P0. Automated checks and
+As of 2026-09-02, Feature 003 is implemented as a deterministic local P0. Automated checks and
 Arabic/English web-proxy journeys have passed; physical Android and named human reviews remain
 `BLOCKED` or `NOT RUN` as recorded in `DEMO_RUNBOOK.md`. The documents under `docs/` preserve the
 earlier Feature 002 food-rescue evidence and do not pass current native or human criteria.
@@ -235,8 +235,12 @@ cannot upgrade Android or named-human results.
   prepared-transcript boundary. No native playback, microphone, transcription, or Child audio is
   claimed.
 - This host now has a Java runtime, Android SDK, ADB, emulator binary, and a `Pixel_9_Pro_XL` AVD.
-  Those tools allow a fresh emulator attempt but do not pass a physical-device gate. Exact build,
-  launch, Back, RTL, IME, TalkBack, font-scale, and performance results remain evidence-dependent.
+  Expo config introspection and a production Android Hermes export passed, but the AVD could not
+  boot with only about 147 MiB free on `C:`. Native install, launch, Back, RTL, IME, TalkBack,
+  font-scale, reduced-motion, offline, and performance observations therefore remain `NOT RUN`.
+- The prepared recycling image uses a 1448×1086 WebP at runtime (124,028 bytes, 94.5% smaller than
+  the reviewed PNG source). The PNG stays as the archival review fixture; this payload result is not
+  a native frame-rate or memory measurement.
 
 ## Public Demo Disclosure
 

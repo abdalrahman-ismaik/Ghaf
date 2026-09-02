@@ -585,6 +585,18 @@ session and ledger without extending `PrototypeSession` schema version `3`.
 - Keep the task submission as the sole dominant Child-task action. Optional voice controls are
   secondary, real section headings expose heading semantics, and compact header actions may wrap at
   narrow widths and high font scaling.
+- Keep the reviewed PNG fixture as the archival source and use its visually checked 1448×1086 WebP
+  derivative at runtime. The 124,028-byte derivative reduces this packaged image by 94.5% without
+  adding an image pipeline or changing the synthetic provenance label.
+
+### Phase result
+
+Phases L–O are implemented and pass the full repository verification at 30 files / 463 tests. The
+production web export preserved 12 static pages (ten authored routes plus sitemap/not-found), and a
+headed 412×915 plus 320×700 Arabic/English replay verified access, Reward, League, locale direction,
+narrow-width containment, and protected handoff history. Android config introspection and a
+5,089,552-byte Hermes export passed. The configured API 35 AVD could not boot with only about 147 MiB
+free on `C:`, so installation and native runtime observations remain `BLOCKED` or `NOT RUN`.
 
 ### Constitution check
 

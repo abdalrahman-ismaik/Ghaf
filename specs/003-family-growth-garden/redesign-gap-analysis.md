@@ -56,10 +56,10 @@ constitution, active specification, and child-safety/privacy rules remain contro
 | -------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Authority and contracts                | Implemented                           | Production identity, consent, persistence, and provider architecture still require a separate specification.                                                  |
 | Synthetic access                       | Implemented and focused-tested        | The fixtures demonstrate role separation, pairing, revocation, scoped proofs, and permissions; they do not authenticate real people.                          |
-| Private Family Reward                  | Domain implemented; frontend selected | The application adapter must derive eligibility only from the authoritative recognized journey and receipt. Payment behavior remains excluded.                |
-| Weekly Family League                   | Domain implemented; frontend selected | Fixed synthetic views and prepared encouragement may be shown in-route. Real invitations, relationship checks, moderation, and notifications remain excluded. |
+| Private Family Reward                  | Implemented and focused-tested         | The application adapter derives eligibility only from the authoritative recognized journey and receipt. Payment behavior remains excluded.                    |
+| Weekly Family League                   | Implemented and focused-tested         | Fixed synthetic views and prepared encouragement render in-route. Real invitations, relationship checks, moderation, and notifications remain excluded.       |
 | Age-adaptive Coach and synthetic voice | Implemented and focused-tested        | Only the canonical prepared task/transcript path exists. Microphone capture, transcription, provider calls, and reviewed dialect content remain deferred.     |
-| Registry and convergence               | Implemented for domain services       | The existing ten routes and P0 reset path are unchanged; native Android, frontend redesign, and named-human validation were not run.                          |
+| Registry and convergence               | Implemented through presentation      | The ten routes and P0 reset path remain intact; browser presentation and Android export passed, while native Android and named-human validation were not run.  |
 
 ## Frontend and Android gap decision
 
@@ -69,6 +69,13 @@ receipt wiring and views, and synthetic Family League state and views. Their evi
 scores and exact boundaries are recorded in `plan.md`. The wider screen inventory, production
 identity/social/payment/media capabilities, natural code-switch understanding, and named human
 evidence remain out of scope or gated.
+
+The selected frontend phases are now implemented. `/role` uses service-authorized synthetic entry
+and Parent-only Child revoke/restore; `/parent` and `/child` show strict private Reward and League
+projections; recognition receipts drive eligible Reward/League progress without changing permanent
+P0 counters. Android package/config hardening, the smaller runtime fixture, full verification, and a
+responsive bilingual browser replay passed. The configured emulator could not boot because the host
+had about 147 MiB free, so no native or physical acceptance claim is made.
 
 ## Safety interpretation
 

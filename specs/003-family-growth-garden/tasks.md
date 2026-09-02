@@ -612,33 +612,34 @@ checks preserve all P0 counters and capability boundaries.
       `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`,
       `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,redesign-gap-analysis.md}`, and
       `specs/003-family-growth-garden/contracts/acceptance-contract.md`
-- [ ] T141 [P] [US12] Add and observe RED controller tests for service-authorized entry,
+- [x] T141 [P] [US12] Add and observe RED controller tests for service-authorized entry,
       revoke/restore, private Reward create-before/create-after receipt sync, Parent-only given,
       League initialization, receipt-bound credit, strict projection, prepared encouragement, P0
       isolation, and reset in `tests/family-experience-presentation.test.ts`
-- [ ] T142 [P] [US12] Add and observe RED static tests for supported Expo patches, minimized Android
+- [x] T142 [P] [US12] Add and observe RED static tests for supported Expo patches, minimized Android
       permissions/dependencies, fixed runtime direction strategy, safe Back/handoff source behavior,
       secondary optional voice controls, semantic headings, narrow header resilience, and route count in
       `tests/android-runtime-readiness.test.ts`
-- [ ] T143 [US12] Implement the resettable private controller in
+- [x] T143 [US12] Implement the resettable private controller in
       `src/features/family/familyExperienceController.ts`; accept only authoritative session snapshots
       and receipts, and expose no credentials, raw eligibility events, raw League weeks, or service
       registry to presentation code
-- [ ] T144 [US12] Expose safe projections and commands through `src/state/usePrototypeStore.ts`,
+- [x] T144 [US12] Expose safe projections and commands through `src/state/usePrototypeStore.ts`,
       including exact reset and receipt sync after successful recognition, while preserving schema
       version `3` and every current P0 counter transition
-- [ ] T145 [US12] Add `SyntheticAccessPanel.tsx`, mount it on `/role`, and replace direct entry
+- [x] T145 [US12] Add `SyntheticAccessPanel.tsx`, mount it on `/role`, and replace direct entry
       actions with service-authorized Parent/Child entry plus Parent-only profile revoke/restore
-- [ ] T146 [US12] Add private `FamilyRewardPanel.tsx` Parent/Salem views, prepared bilingual copy,
+- [x] T146 [US12] Add private `FamilyRewardPanel.tsx` Parent/Salem views, prepared bilingual copy,
       creation and Parent-only given actions on the existing `/parent` and `/child` routes
-- [ ] T147 [US12] Add `FamilyLeaguePanel.tsx` Parent/Child states, direct minimal participant labels,
+- [x] T147 [US12] Add `FamilyLeaguePanel.tsx` Parent/Child states, direct minimal participant labels,
       one cooperative goal, and allowlisted encouragement on the existing home routes without reusing
       the Green Circle visual or counters
-- [ ] T148 [US12] Align Expo SDK 57 patches; remove unused audio/form dependencies and plugin; block
+- [x] T148 [US12] Align Expo SDK 57 patches; remove unused audio/form dependencies and plugin; block
       recording/external-storage permissions; disable Android backup; make keyboard mode explicit; use
       one runtime direction authority; fix Back, optional-action hierarchy, heading semantics, narrow
-      headers, stale voice states, and token escapes within the reserved files
-- [ ] T149 [US12] Run focused/full checks, dependency/config scans, exact route inventory, production-
+      headers, stale voice states, and token escapes; replace the runtime prepared image with its
+      visually checked WebP while retaining the reviewed PNG source
+- [x] T149 [US12] Run focused/full checks, dependency/config scans, exact route inventory, production-
       mode web export, browser proxy, and all available local Android emulator checks; record each as
       `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` without upgrading unobserved physical/human gates
 - [ ] T150 [US12] Perform independent defect-first and visual-strategy reviews against the final

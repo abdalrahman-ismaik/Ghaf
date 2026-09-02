@@ -10,8 +10,8 @@
 | Competition               | Khalifa University SMAC 2026                                                                                               |
 | Official theme            | AI Adventures in Sustainability                                                                                            |
 | Target feature            | Feature 003 — Family Growth Garden                                                                                         |
-| Decision                  | Deterministic P0 and Child voice/type presentation implemented; access, Reward, League, and Android integration authorized |
-| Latest validated baseline | Feature 003: 25 files / 435 tests before this integration; physical Android and named human gates remain open              |
+| Decision                  | Deterministic P0, Child voice/type, synthetic access, private Reward, and synthetic League are implemented in ten routes   |
+| Latest validated baseline | Feature 003: 30 files / 463 tests; Android config/export and bilingual web proxy pass; native and human gates remain open   |
 | Primary platform          | Android; Arabic-first with equivalent English support                                                                      |
 | Prototype data            | Synthetic only                                                                                                             |
 
@@ -347,7 +347,7 @@ extra routes.
 
 ## Post-P0 Product Experience Redesign
 
-The September 2026 redesign began as deterministic domain services. Its approved frontend phase
+The September 2026 redesign began as deterministic domain services. Its implemented frontend phase
 keeps the current ten-route P0 and exposes the safe parts as states inside `/role`, `/parent`, and
 `/child`: separate local synthetic access projections, a private Family Reward promise, a fixed
 synthetic weekly League, and richer prepared voice controls. Native and human acceptance remain
