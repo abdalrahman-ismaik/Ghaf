@@ -567,29 +567,84 @@ switching, denial, and reset pass without a new route, dependency, microphone, s
 network request, or reward mutation.
 
 - [x] T132 [US11] Authorize the later presentation slice, exact reset values, type rules, and
-  capability boundaries in `spec.md`, `plan.md`, `contracts/acceptance-contract.md`, `DESIGN.md`,
-  `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
+      capability boundaries in `spec.md`, `plan.md`, `contracts/acceptance-contract.md`, `DESIGN.md`,
+      `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
 - [x] T133 [P] [US11] Add and observe RED locale-role, source-boundary, scaling, and mixed-script
-  tests in `tests/bilingual-typography.test.ts`
+      tests in `tests/bilingual-typography.test.ts`
 - [x] T134 [P] [US11] Add and observe RED Parent-grant, age-derived Coach, voice lifecycle,
-  locale-preservation, reset, copy-parity, route, and forbidden-import tests in
-  `tests/child-ai-presentation.test.ts`
+      locale-preservation, reset, copy-parity, route, and forbidden-import tests in
+      `tests/child-ai-presentation.test.ts`
 - [x] T135 [US11] Implement complete Arabic/English typography roles in `src/design/tokens.ts`,
-  consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
-  clipping in `src/components/family-growth/TaskPanels.tsx`
+      consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
+      clipping in `src/components/family-growth/TaskPanels.tsx`
 - [x] T136 [US11] Implement the private service-authorized application adapter in
-  `src/features/assistants/childVoiceController.ts` and expose only safe Coach/voice projections and
-  commands through `src/state/usePrototypeStore.ts`
+      `src/features/assistants/childVoiceController.ts` and expose only safe Coach/voice projections and
+      commands through `src/state/usePrototypeStore.ts`
 - [x] T137 [US11] Add reusable Parent permission and Child synthetic voice panels, mount them on the
-  existing review/task routes, expose the existing language switch, and add paired resources in
-  `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
-  `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
+      existing review/task routes, expose the existing language switch, and add paired resources in
+      `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
+      `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
 - [x] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
-  export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
-  defects within the reserved window
+      export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
+      defects within the reserved window
 - [x] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
-  reservation, and commit the validated convergence checkpoint
+      reservation, and commit the validated convergence checkpoint
 
 **Checkpoint**: User Story 11 is demonstrable as prepared/synthetic UI only. Parent enablement is
 explicit, locale changes do not alter the task or voice state, reset is exact, and Android/human
 acceptance remains evidence-dependent.
+
+---
+
+## Phase 19: User Story 12 — Family Experience Frontend and Android Readiness (Priority: P3)
+
+**Goal**: Make the completed synthetic access, private Family Reward, and synthetic Family League
+domains demonstrable inside the existing ten routes while correcting source-verifiable Android,
+direction, navigation, hierarchy, and accessibility risks.
+
+**Independent Test**: A fresh reset supports service-authorized Parent/Child entry, one Child
+revocation/restore, a private Salem promise, a fixed synthetic week, receipt-bound Reward/League
+updates, Arabic/English switching, and another exact reset. Expo/config/source/full/browser/emulator
+checks preserve all P0 counters and capability boundaries.
+
+- [x] T140 [US12] Reconcile all current Markdown, score feasible gaps, authorize in-route frontend
+      and Android phases, reserve exact files, and preserve production/native/human exclusions in
+      `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`,
+      `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,redesign-gap-analysis.md}`, and
+      `specs/003-family-growth-garden/contracts/acceptance-contract.md`
+- [ ] T141 [P] [US12] Add and observe RED controller tests for service-authorized entry,
+      revoke/restore, private Reward create-before/create-after receipt sync, Parent-only given,
+      League initialization, receipt-bound credit, strict projection, prepared encouragement, P0
+      isolation, and reset in `tests/family-experience-presentation.test.ts`
+- [ ] T142 [P] [US12] Add and observe RED static tests for supported Expo patches, minimized Android
+      permissions/dependencies, fixed runtime direction strategy, safe Back/handoff source behavior,
+      secondary optional voice controls, semantic headings, narrow header resilience, and route count in
+      `tests/android-runtime-readiness.test.ts`
+- [ ] T143 [US12] Implement the resettable private controller in
+      `src/features/family/familyExperienceController.ts`; accept only authoritative session snapshots
+      and receipts, and expose no credentials, raw eligibility events, raw League weeks, or service
+      registry to presentation code
+- [ ] T144 [US12] Expose safe projections and commands through `src/state/usePrototypeStore.ts`,
+      including exact reset and receipt sync after successful recognition, while preserving schema
+      version `3` and every current P0 counter transition
+- [ ] T145 [US12] Add `SyntheticAccessPanel.tsx`, mount it on `/role`, and replace direct entry
+      actions with service-authorized Parent/Child entry plus Parent-only profile revoke/restore
+- [ ] T146 [US12] Add private `FamilyRewardPanel.tsx` Parent/Salem views, prepared bilingual copy,
+      creation and Parent-only given actions on the existing `/parent` and `/child` routes
+- [ ] T147 [US12] Add `FamilyLeaguePanel.tsx` Parent/Child states, direct minimal participant labels,
+      one cooperative goal, and allowlisted encouragement on the existing home routes without reusing
+      the Green Circle visual or counters
+- [ ] T148 [US12] Align Expo SDK 57 patches; remove unused audio/form dependencies and plugin; block
+      recording/external-storage permissions; disable Android backup; make keyboard mode explicit; use
+      one runtime direction authority; fix Back, optional-action hierarchy, heading semantics, narrow
+      headers, stale voice states, and token escapes within the reserved files
+- [ ] T149 [US12] Run focused/full checks, dependency/config scans, exact route inventory, production-
+      mode web export, browser proxy, and all available local Android emulator checks; record each as
+      `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` without upgrading unobserved physical/human gates
+- [ ] T150 [US12] Perform independent defect-first and visual-strategy reviews against the final
+      diff, fix confirmed defects, update exact evidence/counts, release every reservation, and commit
+      each independently verified slice
+
+**Checkpoint**: Access, Reward, and League are truthful deterministic in-route experiences; Android
+static/emulator evidence is current; the original Parent → Child → confirmation → Garden → Circle
+journey remains the dominant ten-route path; production and named-human claims remain excluded.

@@ -401,6 +401,40 @@ reward state, and no microphone, speech, network, or provider request.
    off, the voice view has the exact idle values, Arabic RTL is restored, and the next Parent may
    enable and run the rehearsal again.
 
+### User Story 12 - Family Experiences Are Demonstrable on Android (Priority: P3)
+
+As a family using the shared prototype device, the Parent can manage truthful local access, make a
+private Family Reward promise, and start a safe synthetic weekly League while each Child sees only
+their own permitted projection inside the existing journey.
+
+**Why this priority**: The redesign domains already pass focused rules, but their value is hidden
+until a narrow application adapter derives state from the authoritative task journey and exposes
+small mobile-first views. Android dependency, permission, direction, and navigation hygiene must be
+settled at the same boundary so a web proxy is not mistaken for native readiness.
+
+**Independent Test**: From reset, revoke and restore one prepared Child profile, enter each role
+through a service-authorized local session, create Salem's private experience promise, start the
+fixed synthetic League, complete the canonical Parent-confirmed task, and verify the promise unlocks
+and exactly one Salem Challenge Leaf is credited. Repeat reset and locale switching; verify exact
+restoration, ten unchanged routes, no Green Circle/Seed/Garden mutation from League actions, and no
+network, payment, real identity, invitation, microphone, storage, or free-message capability.
+
+**Acceptance Scenarios**:
+
+1. **Given** a prepared Child profile is revoked, **When** it tries to enter the Child experience,
+   **Then** service authorization fails, the route does not change, and a Parent can explicitly
+   restore a new local synthetic pairing.
+2. **Given** the Parent creates the prepared private promise before or after recognition, **When**
+   the authoritative receipt records praise-first 12-Seed Mangrove growth, **Then** the adapter
+   unlocks the promise once without accepting caller-authored eligibility data.
+3. **Given** the Parent starts the fixed synthetic week, **When** the same recognition is applied,
+   **Then** Salem gains one Challenge Leaf, every participant projection stays minimal, prepared
+   encouragement remains allowlisted, and permanent P0 counters change only through recognition.
+4. **Given** Arabic, English, Android Back, keyboard, or large-text conditions, **When** the user
+   moves through the journey, **Then** runtime direction is deterministic, optional controls remain
+   visually secondary, headings and controls retain their meaning, and stale protected routes are
+   not exposed.
+
 ### Edge Cases
 
 - The Parent leaves a required definition, adult-supervision, safety, privacy, reward, or
@@ -528,8 +562,8 @@ network access.
 | Prepared image               | `fixture_recycling_clean_v1`; synthetic/prepared label visible |
 | Prepared audio               | `fixture_salem_plan_ar_v1`; synthetic/prepared label visible   |
 | Assistant mode               | Deterministic prepared; no remote dependency                   |
-| Child voice grants           | Voice and AI off; Parent enablement required                    |
-| Synthetic voice view         | Idle; no transcript; captions on; 1×; replay 0; not active      |
+| Child voice grants           | Voice and AI off; Parent enablement required                   |
+| Synthetic voice view         | Idle; no transcript; captions on; 1×; replay 0; not active     |
 | Celebration state            | `available = false`; `consumed = false`                        |
 
 One valid confirmation changes only these counters:
@@ -1000,6 +1034,55 @@ the historical domain-only result recorded by FR-118.
   font-scale, TalkBack, playback, permission, and touch evidence remains `NOT RUN` until observed on
   a named build and device.
 
+#### Family Experience Frontend and Android Integration
+
+This later phase supersedes only the frontend deferral in FR-118. It preserves the completed
+domain-only result, the ten authored routes, and every production-capability exclusion.
+
+- **FR-128**: Parent and Child entry on `/role` MUST be authorized by the deterministic access
+  service. The UI MAY expose only local synthetic readiness, revocation, and restore controls; it
+  MUST NOT describe the fixture as sign-in, identity verification, consent, or secure persistence.
+- **FR-129**: Revoking one Child fixture MUST prevent that Child session from entering while leaving
+  the other Child and Parent usable. Restore MUST create a fresh one-use pairing and Child session
+  under stored Parent authority. Reset MUST restore both prepared profiles to the initial ready
+  state.
+- **FR-130**: The Parent MAY create one prepared non-monetary Family Reward promise for Salem. Its
+  projection MUST remain `child_guardians_only`; Alya, League, Circle, and public views MUST receive
+  no plan or promise data.
+- **FR-131**: Family Reward evaluation MUST accept eligibility events only from a private adapter
+  which verifies the current recognized journey and its stored `RecognitionReceipt`. Screens and
+  public store commands MUST NOT submit candidate events, Seed deltas, prerequisites, or landscape
+  transitions.
+- **FR-132**: The canonical 12-Seed acquisition receipt MUST unlock the prepared promise exactly
+  once whether the plan is created before or after recognition. Only a Parent-authorized visible
+  action MAY mark it given; League results MUST never unlock or change it.
+- **FR-133**: The Parent MAY initialize one fixed local League week containing the three reviewed
+  synthetic participants and five eligible Challenge Leaves per participating Child. Membership
+  creation MUST consume the existing scoped one-use Parent proof and MUST add no real invitation or
+  relationship claim.
+- **FR-134**: The recognition adapter MAY credit one matching Challenge Leaf only from the same
+  authoritative receipt, approved task/version, Child, and completion mode. League initialization,
+  projection, encouragement, and rollover MUST NOT change Seeds, landscapes, canopy, Green Circle,
+  celebration, or Family Reward state.
+- **FR-135**: Child League presentation MUST consume only the strict participant projection of
+  nickname, tree-avatar token, completed-Leaf count, score, and shared position plus the separate
+  cooperative count. Any encouragement action MUST use one prepared phrase identifier and no free
+  text.
+- **FR-136**: Family access, Reward, and League presentation MUST use existing `/role`, `/parent`,
+  and `/child` route states and shared design tokens. It MUST keep one dominant journey action,
+  direct labels, logical RTL/LTR layout, 48dp controls, unclamped safety copy, and meaningful static
+  output without animation.
+- **FR-137**: Runtime locale switching MUST use one direction authority and MUST NOT persist or call
+  native `I18nManager.forceRTL` during a state-preserving language change. Native startup, restart,
+  and ar→en→ar behavior still require named Android evidence.
+- **FR-138**: The Android configuration MUST keep predictive Back enabled, use resize keyboard
+  layout, disable platform backup for this sensitive prototype, block legacy external-storage and
+  audio-recording permissions, and include no unused real-audio plugin. Expo packages MUST match the
+  installed SDK's supported patch range.
+- **FR-139**: True Back actions MUST pop when safe and role handoffs MUST replace stale protected
+  history. Source and emulator checks MUST be recorded separately; physical-device, TalkBack, 200%
+  font, human comprehension, and named review gates remain open until directly observed.
+
 ### Key Entities
 
 - **Synthetic Household**: Al Noor family; contains the synthetic Parent context, Salem, Alya, one
@@ -1123,6 +1206,21 @@ the historical domain-only result recorded by FR-118.
 - **SC-028**: The unchanged ten-route web proxy demonstrates Parent enablement and the Child's
   prepared voice states in Arabic RTL and English LTR with no dynamic service request. Android 200%
   font scale and TalkBack stay `NOT RUN` unless a named native device becomes available.
+- **SC-029**: Access presentation tests prove Parent entry, two independent Child projections,
+  single-profile revocation, failed revoked entry, fresh restore, and exact reset without exposing a
+  credential value or production-authentication claim.
+- **SC-030**: Family Reward presentation tests prove private Parent/Salem projection, zero Alya
+  projection, authoritative receipt-only evaluation, create-before/create-after unlock equivalence,
+  idempotency, Parent-only given action, and zero League-derived progress.
+- **SC-031**: Family League presentation tests prove fifteen fixed safe Leaves, scoped membership
+  proof, one receipt-bound Salem credit, full permitted-help credit, minimal projections, allowlisted
+  encouragement, and unchanged Seed, Garden, canopy, Circle, and Reward snapshots.
+- **SC-032**: Static Android checks find SDK-compatible Expo patch versions, no unused audio/form
+  dependencies, no requested recording or external-storage permission, backup disabled, resize
+  keyboard behavior, predictive Back enabled, and exactly ten authored routes.
+- **SC-033**: Frontend checks prove no runtime `forceRTL`, optional voice actions use secondary
+  styling, structural headings expose header semantics, compact bilingual headers survive the
+  approved narrow-width proxy, and all resources remain paired and non-empty.
 
 ## Dependencies and Assumptions
 

@@ -19,7 +19,7 @@ earlier Feature 002 food-rescue evidence and do not pass current native or human
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Target real interaction        | Ten-screen navigation; Arabic/English direction; synthetic role/Child selection; task composition; Parent approval; Child steps with optional reflection/evidence; Parent confirmation/retry; deterministic Seeds; privacy-filtered garden/circle update; reset |
 | Prepared and synthetic         | Two Child profiles, one household, cousin-circle aggregates, task catalog, image/voice fixtures, assistant conversations, Parent observations, cultural phrase options                                                                                          |
-| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                                             |
+| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                                            |
 | Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`                                |
 | Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                                                     |
 | Future production work         | Accounts, consent, age assurance, privacy controls, real media, persistence, real family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release                                                            |
@@ -196,8 +196,9 @@ The post-P0 redesign code currently proves rules and state transitions only:
   an account, establish consent, or provide a production security boundary.
 - Family Reward values are private promise metadata. Ghaf does not hold money, transfer value,
   purchase anything, guarantee fulfillment, resolve disputes, or convert Seeds to currency. The
-  current evaluator consumes strict Parent-authorized candidate fixtures; authoritative
-  confirmation/Garden-store event wiring is deferred with the frontend integration.
+  domain evaluator still accepts strict candidate fixtures for isolated tests, but the presentation
+  adapter may supply them only after deriving and checking the authoritative recognized journey and
+  stored receipt. Screens cannot author milestone evidence.
 - League members are synthetic fixtures. There is no real invitation, family relationship check,
   contact, moderation, report, block, retention, deletion, notification, or cross-household service.
 - The League projection is a separate allowlisted model and does not weaken the existing
@@ -212,9 +213,30 @@ The post-P0 redesign code currently proves rules and state transitions only:
 - Arabic-English code-switch understanding and Emirati/Gulf conversational output remain
   unimplemented; any later phrase or voice library requires named human review.
 
-No new domain service or presentation changes the existing P0 route count, reward counters,
-native/human evidence, or public-demo claim. The voice and typography frontend has its own later
-specification and verification phase; web evidence cannot upgrade Android or named-human results.
+No new domain service or presentation changes the existing P0 route count, Green Circle contract,
+permanent reward rules, native/human evidence, or public-demo claim. Synthetic access, Family
+Reward, Family League, voice, and typography use later in-route specification phases; web evidence
+cannot upgrade Android or named-human results.
+
+## Family Experience Frontend and Android Limits
+
+- The access panel projects fixed local fixtures and can revoke or restore a prepared Child/device
+  binding. It does not authenticate anyone, store a secret, prove age/identity/consent, or survive a
+  reload as a production session.
+- The one prepared Family Reward is a non-monetary Parent promise. Unlock means its agreed personal
+  milestone was reached in the local prototype; it does not guarantee the Parent gives the
+  experience. Only the matching Child and guardians may see it.
+- The fixed Family League week uses synthetic relatives and prepared challenge records. There are no
+  real invitations, contacts, messages, reports, or public rankings. League score is not effort,
+  ability, character, or environmental impact.
+- All three experiences are states inside the existing `/role`, `/parent`, and `/child` routes.
+  The redesign document's wider screen inventory is not implemented as new navigation breadth.
+- Removing the unused real-audio module and blocking recording/storage permissions reflects the
+  prepared-transcript boundary. No native playback, microphone, transcription, or Child audio is
+  claimed.
+- This host now has a Java runtime, Android SDK, ADB, emulator binary, and a `Pixel_9_Pro_XL` AVD.
+  Those tools allow a fresh emulator attempt but do not pass a physical-device gate. Exact build,
+  launch, Back, RTL, IME, TalkBack, font-scale, and performance results remain evidence-dependent.
 
 ## Public Demo Disclosure
 

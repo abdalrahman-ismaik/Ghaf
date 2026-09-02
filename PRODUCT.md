@@ -4,20 +4,29 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-08-28                                                                                                                   |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Product                   | Ghaf — غاف                                                                                                                               |
-| Competition               | Khalifa University SMAC 2026                                                                                                             |
-| Official theme            | AI Adventures in Sustainability                                                                                                          |
-| Target feature            | Feature 003 — Family Growth Garden                                                                                                       |
-| Decision                  | Deterministic P0 implemented; automated and bilingual web-proxy validation passed                                                        |
-| Latest validated baseline | Feature 003: 17 files / 305 tests plus Arabic RTL and English LTR web-proxy journeys; physical Android and named human gates remain open |
-| Primary platform          | Android; Arabic-first with equivalent English support                                                                                    |
-| Prototype data            | Synthetic only                                                                                                                           |
+| Item                      | Truth as of 2026-09-02                                                                                                     |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Product                   | Ghaf — غاف                                                                                                                 |
+| Competition               | Khalifa University SMAC 2026                                                                                               |
+| Official theme            | AI Adventures in Sustainability                                                                                            |
+| Target feature            | Feature 003 — Family Growth Garden                                                                                         |
+| Decision                  | Deterministic P0 and Child voice/type presentation implemented; access, Reward, League, and Android integration authorized |
+| Latest validated baseline | Feature 003: 25 files / 435 tests before this integration; physical Android and named human gates remain open              |
+| Primary platform          | Android; Arabic-first with equivalent English support                                                                      |
+| Prototype data            | Synthetic only                                                                                                             |
 
 Feature 003 supersedes the single food-rescue mission as the implemented product direction. Food
 rescue remains one useful task family. Feature 002 evidence remains historical and must not be used
 to pass any Feature 003 Android or human-review criterion.
+
+## Platform
+
+**Adaptive** — one Expo/React Native application uses the shared token and component system across
+Android, iOS-compatible, and secondary web-proxy surfaces. Android is the authoritative competition
+target. Arabic is the reset locale, runtime layout follows the active locale without a forced native
+restart, and English provides the same actions and safety meaning. Web output supports visual and
+flow inspection only; it does not pass native Android, TalkBack, Back, IME, permission, touch, or
+font-scale acceptance.
 
 ## Product Promise
 
@@ -336,12 +345,13 @@ extra routes.
 - production notifications, analytics, monitoring, compliance claims, or store release; and
 - a second app, 3D world, or backend that can delay the deterministic competition path.
 
-## Post-P0 Product Experience Redesign Domain Foundation
+## Post-P0 Product Experience Redesign
 
-The September 2026 redesign is implemented first as deterministic domain services, not as a change
-to the current ten-route P0. The later experience may use separate Parent and Child entry, a private
-weekly Family League, optional Family Reward promises, and richer voice/permission controls only
-after their UI, native, human-review, and production boundaries receive separate approval.
+The September 2026 redesign began as deterministic domain services. Its approved frontend phase
+keeps the current ten-route P0 and exposes the safe parts as states inside `/role`, `/parent`, and
+`/child`: separate local synthetic access projections, a private Family Reward promise, a fixed
+synthetic weekly League, and richer prepared voice controls. Native and human acceptance remain
+separate evidence gates.
 
 - **Synthetic access** demonstrates least-privilege Parent/Child sessions, expiring pairing,
   revocation, action-scoped Parent reauthentication, and per-Child grants. It is not production
@@ -358,4 +368,5 @@ after their UI, native, human-review, and production boundaries receive separate
   integration remain unavailable.
 
 The current cooperative P0 circle, fixed nonfinancial Seeds, Arabic-first reset, and exact judge
-journey remain authoritative until the later frontend phase is specified and validated.
+journey remain authoritative. Family Reward reads only receipt-derived personal progress and Family
+League uses a separate minimal projection; neither supplies Green Circle or permanent Garden state.

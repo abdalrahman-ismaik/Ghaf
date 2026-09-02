@@ -429,14 +429,14 @@ the frontend redesign receives its own approved integration window.
 
 ### Phased implementation
 
-| Phase | Domain outcome | Reserved files | Independent evidence |
-| --- | --- | --- | --- |
-| A — authority and contracts | Gap matrix, requirements, entities, service contracts, and executable tasks | Feature 003 Spec Kit artifacts and bounded root product-limit documents | Artifact review finds the current P0 and production boundaries explicit |
-| B — synthetic access | Separate local Parent/Child sessions, least-privilege views, expiring one-use pairing, scoped reauthentication, and Parent-owned grants | `src/models/access.ts`, `src/features/access/**`, `tests/access-control.test.ts` | Wrong actor, purpose, expiry, replay, revocation, and capability cases fail closed |
-| C — private Family Reward | Versioned personal milestone promises, `promised → unlocked → given`, protected-category exclusion, privacy, and monthly commitments | `src/models/familyReward.ts`, `src/features/family-rewards/**`, `tests/family-reward.test.ts` | No League input, payment operation, Seed conversion, retroactive edit, or unlocked withdrawal is accepted |
-| D — weekly Family League | Five-leaf week, idempotent credit, normalized capped score, shared ties, rollover, strict projection, prepared encouragement, and cooperative goal | `src/models/familyLeague.ts`, `src/features/league/**`, `tests/family-league.test.ts` | Score, tie, accessibility, protected-category, privacy, rollover, and allowlist cases pass |
-| E — age-adaptive Coach and synthetic voice | Output constraints for all age bands and explicit task-bound transcript lifecycle | `src/models/assistantVoice.ts`, `src/features/assistants/{ageAdaptation.ts,voiceSession.ts}`, focused tests | No microphone/provider access; all permission, task, transcript, replay, caption, pace, and reset transitions pass |
-| F — registry and convergence | Deterministic services exposed through `serviceRegistry`; complete static and behavioral validation | Existing service facade plus full suite | Typecheck, lint, formatting, tests, diff checks, and route inventory pass |
+| Phase                                      | Domain outcome                                                                                                                                     | Reserved files                                                                                              | Independent evidence                                                                                               |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| A — authority and contracts                | Gap matrix, requirements, entities, service contracts, and executable tasks                                                                        | Feature 003 Spec Kit artifacts and bounded root product-limit documents                                     | Artifact review finds the current P0 and production boundaries explicit                                            |
+| B — synthetic access                       | Separate local Parent/Child sessions, least-privilege views, expiring one-use pairing, scoped reauthentication, and Parent-owned grants            | `src/models/access.ts`, `src/features/access/**`, `tests/access-control.test.ts`                            | Wrong actor, purpose, expiry, replay, revocation, and capability cases fail closed                                 |
+| C — private Family Reward                  | Versioned personal milestone promises, `promised → unlocked → given`, protected-category exclusion, privacy, and monthly commitments               | `src/models/familyReward.ts`, `src/features/family-rewards/**`, `tests/family-reward.test.ts`               | No League input, payment operation, Seed conversion, retroactive edit, or unlocked withdrawal is accepted          |
+| D — weekly Family League                   | Five-leaf week, idempotent credit, normalized capped score, shared ties, rollover, strict projection, prepared encouragement, and cooperative goal | `src/models/familyLeague.ts`, `src/features/league/**`, `tests/family-league.test.ts`                       | Score, tie, accessibility, protected-category, privacy, rollover, and allowlist cases pass                         |
+| E — age-adaptive Coach and synthetic voice | Output constraints for all age bands and explicit task-bound transcript lifecycle                                                                  | `src/models/assistantVoice.ts`, `src/features/assistants/{ageAdaptation.ts,voiceSession.ts}`, focused tests | No microphone/provider access; all permission, task, transcript, replay, caption, pace, and reset transitions pass |
+| F — registry and convergence               | Deterministic services exposed through `serviceRegistry`; complete static and behavioral validation                                                | Existing service facade plus full suite                                                                     | Typecheck, lint, formatting, tests, diff checks, and route inventory pass                                          |
 
 Phases B, C, and D may be developed in parallel because their write boundaries are disjoint. Shared
 registry changes and Phase E remain serialized under the integration owner. Each completed phase is
@@ -497,13 +497,13 @@ asset, loading path, second theme, or type library is introduced.
 
 ### Implementation phases
 
-| Phase | Outcome | Main boundary | Evidence |
-| --- | --- | --- | --- |
-| G — authority update | New story, requirements, reset oracle, design rules, and executable tasks authorize the in-route slice without rewriting Phase E | Feature 003 spec, plan, tasks, acceptance contract, design and limitations | Cross-artifact review finds no route, capability-truth, or reset conflict |
-| H — bilingual type | Locale-resolved complete typography roles and scalable Text/Input use, plus large-label resilience | `src/design/tokens.ts`, `src/components/primitives.tsx`, bounded text-bearing components | RED/GREEN role-resolution and source-boundary tests |
-| I — presentation adapter | Private service authority, explicit Parent grants, age-adapted Coach projection, voice commands, and reset integration | `src/features/assistants/childVoiceController.ts`, `src/state/usePrototypeStore.ts` | Grant-off, grant-on, role, binding, lifecycle, locale-preservation, and reset tests |
-| J — in-route UI | Parent permission panel and Child Coach/voice panel with bilingual copy and accessibility state | Existing review/task routes, reusable family-growth components, resources | Arabic/English web proxy plus source and accessibility checks |
-| K — convergence | Focused/full checks, detector, route/counter preservation, capability scan, and truthful evidence update | Reserved evidence documents only | Typecheck, lint, format, tests, export, detector, and diff review |
+| Phase                    | Outcome                                                                                                                          | Main boundary                                                                            | Evidence                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| G — authority update     | New story, requirements, reset oracle, design rules, and executable tasks authorize the in-route slice without rewriting Phase E | Feature 003 spec, plan, tasks, acceptance contract, design and limitations               | Cross-artifact review finds no route, capability-truth, or reset conflict           |
+| H — bilingual type       | Locale-resolved complete typography roles and scalable Text/Input use, plus large-label resilience                               | `src/design/tokens.ts`, `src/components/primitives.tsx`, bounded text-bearing components | RED/GREEN role-resolution and source-boundary tests                                 |
+| I — presentation adapter | Private service authority, explicit Parent grants, age-adapted Coach projection, voice commands, and reset integration           | `src/features/assistants/childVoiceController.ts`, `src/state/usePrototypeStore.ts`      | Grant-off, grant-on, role, binding, lifecycle, locale-preservation, and reset tests |
+| J — in-route UI          | Parent permission panel and Child Coach/voice panel with bilingual copy and accessibility state                                  | Existing review/task routes, reusable family-growth components, resources                | Arabic/English web proxy plus source and accessibility checks                       |
+| K — convergence          | Focused/full checks, detector, route/counter preservation, capability scan, and truthful evidence update                         | Reserved evidence documents only                                                         | Typecheck, lint, format, tests, export, detector, and diff review                   |
 
 Tests for Phases H and I are written and observed failing before their implementation. Shared route
 and store files remain serialized under `/root`; the three audit agents are read-only. Each coherent
@@ -523,3 +523,72 @@ This addendum advances the existing complete journey instead of adding breadth. 
 mock-first service registry, preserves Arabic-first bilingual behavior, labels every prepared and
 synthetic state at the point of use, requires Parent authority, and introduces neither live Child AI
 nor real media processing. It therefore needs no constitution amendment or complexity exception.
+
+## Family Experience Frontend and Android Addendum (2026-09-02)
+
+### Scope decision
+
+The repository Markdown and source were reconciled after the domain and voice presentation phases.
+The ten-route P0 is complete. The remaining code-sized gaps are the general synthetic-access
+presentation, authoritative Family Reward receipt adapter and private views, synthetic Family
+League state and views, and source-verifiable Android/frontend hardening. The redesign document's
+fourteen conceptual screen families are implemented only as states within `/role`, `/parent`, and
+`/child`; no route is added and the existing judge path remains dominant.
+
+Production accounts, real invitations, payment, durable storage, real voice, live Child AI,
+dialect/code-switch understanding, and named human approval remain excluded. Physical-device and
+human evidence are validation work, not code completion, and keep their current open status.
+
+### Evidence-first priority rubric
+
+Each feasible slice was scored from 1–5 against objective repository evidence. The weighted score
+uses safety/capability truth (30%), contract and service readiness (25%), judge-visible product value
+(20%), Android/mobile value (15%), and delivery risk (10%, where 5 is lowest risk).
+
+| Candidate                                                   | Safety | Ready | Product | Android | Risk | Weighted score | Decision                    |
+| ----------------------------------------------------------- | -----: | ----: | ------: | ------: | ---: | -------------: | --------------------------- |
+| Expo alignment, permissions, direction, Back, accessibility |      5 |     5 |       4 |       5 |    4 |             94 | Phase L                     |
+| Synthetic access entry/revoke/restore                       |      5 |     5 |       4 |       4 |    4 |             91 | Phase M                     |
+| Private Family Reward receipt wiring and views              |      5 |     5 |       5 |       3 |    3 |             91 | Phase N                     |
+| Synthetic Family League state and views                     |      4 |     5 |       4 |       3 |    3 |             80 | Phase O                     |
+| Four new route families                                     |      3 |     1 |       2 |       2 |    1 |             38 | Reject; use in-route states |
+| Production identity, social, payment, or real voice         |      1 |     1 |       1 |       1 |    1 |             20 | Out of scope                |
+
+### Implementation phases
+
+| Phase                                          | Outcome                                                                                                                                                                                         | Main boundary                                                                        | Independent evidence                                                                                |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| L — specification and Android baseline         | Authorize the in-route design, align SDK 57 patches, remove unused native/form packages, minimize Android permissions, settle one direction model, and correct navigation/accessibility defects | Active Spec Kit artifacts, `app.config.ts`, package manifests, bounded shared UI     | Config/source tests, Expo install check, public/prebuild config inspection, static route scan       |
+| M — application authority                      | Private controller creates the reviewed synthetic Parent and paired Child sessions; `/role` enters through projected authority and allows Parent-only revoke/restore                            | `src/features/family/familyExperienceController.ts`, store, role route, access panel | Focused service-backed entry, revocation, restore, privacy, and reset tests                         |
+| N — private Family Reward                      | Prepared non-monetary promise is created by the Parent, evaluated only from authoritative session receipts, projected only to Parent/Salem, and marked given only by Parent                     | Controller, store, Reward panel, Parent/Child home                                   | Create-before/after recognition, idempotency, privacy, Parent-only transition, no League input      |
+| O — synthetic Family League                    | Parent starts the fixed week; recognition may credit one matching Salem Leaf; Child sees direct minimal rankings/cooperative progress and may send one prepared encouragement                   | Controller, store, League panel, Parent/Child home                                   | Membership proof, receipt binding, strict projection, no P0-counter mutation, reset                 |
+| P — convergence and available Android evidence | Re-run automated, browser, production-mode, and local emulator checks; correct review defects; update exact evidence and release reservations                                                   | Evidence documents and reserved implementation files                                 | Full checks, route inventory, config manifests, web proxy, emulator observation, independent review |
+
+Phases M, N, and O share one controller because access authority and reset must be atomic. Their
+tests and commits remain separately reviewable. Routes import only presentation components and
+store commands; screens never construct credentials, reward events, raw League weeks, or service
+requests. The controller owns a replaceable deterministic registry so reset removes every local
+session and ledger without extending `PrototypeSession` schema version `3`.
+
+### Android and frontend strategy
+
+- Keep the current managed Expo/CNG workflow. Align supported patch releases and document a local
+  emulator route; do not add a production store-release claim.
+- Remove the unused real-audio plugin because the approved voice path is transcript simulation.
+  Block microphone recording and legacy external-storage permissions in the merged manifest and
+  disable Android backup for the sensitive shared-device prototype.
+- Keep native layout direction fixed during runtime and derive all visible order/alignment from the
+  locale already held in Zustand. This preserves an immediate state-stable language switch and
+  avoids persisted native direction lag; named cold-start/restart evidence remains required.
+- Use safe `back()` only for true backward navigation and replacement for role handoffs so Android
+  Back cannot reveal a stale protected state. Preserve predictive Back configuration.
+- Keep the task submission as the sole dominant Child-task action. Optional voice controls are
+  secondary, real section headings expose heading semantics, and compact header actions may wrap at
+  narrow widths and high font scaling.
+
+### Constitution check
+
+The work makes already-approved deterministic rules visible without adding breadth. Parent
+authority, Child privacy, praise-first recognition, no-loss progress, strict projections,
+Arabic-first equivalence, truthful synthetic labels, offline reset, and the ten-route slice remain
+intact. No constitution exception is required.

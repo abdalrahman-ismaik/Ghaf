@@ -469,8 +469,8 @@ Photo and voice controls must explain:
 ## Implementation Notes
 
 - Adapt the existing Expo, React Native, strict TypeScript, Expo Router, Zustand, StyleSheet, SVG,
-  Reanimated, audio, service-registry, and deterministic-fixture foundation after verifying it in
-  the repository.
+  Reanimated, service-registry, and deterministic-fixture foundation after verifying it in the
+  repository. Prepared transcript simulation does not require a native audio package.
 - Keep design tokens centralized and synchronize runtime values with this frontmatter.
 - Store content as typed bilingual data; do not scatter Arabic/English literals through screens.
 - Model task, `routinePhase` including `not_applicable`, recognition mode, `visibilityScope`,
@@ -481,6 +481,27 @@ Photo and voice controls must explain:
   an API secret in the mobile bundle.
 - Create Feature 003 through Spec Kit before implementation; do not silently widen Feature 002 or
   manually edit the Spec Kit-managed block in `AGENTS.md`.
+
+## Family Experience In-Route Presentation
+
+- `/role` owns the local synthetic access explanation. Parent and Child choices remain the largest
+  actions; revocation/restore is a compact Parent-only maintenance section below them.
+- `/parent` keeps the next judge-journey action first. Family Reward and League setup appear later
+  as optional household tools and never interrupt a pending adjustment or check-in.
+- `/child` keeps the current task and its action ahead of private Reward and League summaries. The
+  Reward is shown only for its named Child. The League uses one direct cooperative progress line and
+  a vertical participant list rather than a card grid or decorative chart.
+- League rows label name, completed count, score, and shared position directly. Color and tree token
+  are supporting cues, not the only carrier of rank or state. Prepared encouragement is a secondary
+  action and accepts no typed text.
+- Family Reward uses `promised`, `unlocked`, and `given` text states. Unlock is not a payment,
+  guarantee, or exchange, and the panel repeats its private Parent-and-Child scope.
+- Optional voice lifecycle controls use the ghost treatment so Child task submission remains the
+  only filled dominant call to action on `/child/task`.
+- Real structural headings expose the native header role. Header actions may wrap beneath the title
+  at narrow width or high text scale; required text is never clamped.
+- Runtime direction is controlled by the active locale and logical styles. Do not combine manual
+  row reversal with a persisted `I18nManager.forceRTL` restart state.
 
 ## Review Checklist
 
