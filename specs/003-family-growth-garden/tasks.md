@@ -569,12 +569,12 @@ network request, or reward mutation.
 - [x] T132 [US11] Authorize the later presentation slice, exact reset values, type rules, and
   capability boundaries in `spec.md`, `plan.md`, `contracts/acceptance-contract.md`, `DESIGN.md`,
   `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
-- [ ] T133 [P] [US11] Add and observe RED locale-role, source-boundary, scaling, and mixed-script
+- [x] T133 [P] [US11] Add and observe RED locale-role, source-boundary, scaling, and mixed-script
   tests in `tests/bilingual-typography.test.ts`
 - [ ] T134 [P] [US11] Add and observe RED Parent-grant, age-derived Coach, voice lifecycle,
   locale-preservation, reset, copy-parity, route, and forbidden-import tests in
   `tests/child-ai-presentation.test.ts`
-- [ ] T135 [US11] Implement complete Arabic/English typography roles in `src/design/tokens.ts`,
+- [x] T135 [US11] Implement complete Arabic/English typography roles in `src/design/tokens.ts`,
   consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
   clipping in `src/components/family-growth/TaskPanels.tsx`
 - [ ] T136 [US11] Implement the private service-authorized application adapter in

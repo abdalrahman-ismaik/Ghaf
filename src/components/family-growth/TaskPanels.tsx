@@ -847,8 +847,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   stepNumber: {
-    width: spacing.xxxl,
-    height: spacing.xxxl,
+    minWidth: spacing.xxxl,
+    minHeight: spacing.xxxl,
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
@@ -856,6 +856,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.leaf,
     backgroundColor: colors.leafMist,
+    paddingHorizontal: spacing.xxs,
+    paddingVertical: spacing.xxs,
   },
   stepCopy: { minWidth: 0, flex: 1 },
   safetyBoundary: {

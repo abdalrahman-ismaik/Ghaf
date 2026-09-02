@@ -53,36 +53,79 @@ export const radii = {
   pill: 999,
 } as const;
 
+const systemFontFamilies = {
+  ar:
+    Platform.select({
+      ios: 'System',
+      android: 'sans-serif',
+      web: 'system-ui',
+      default: 'System',
+    }) ?? 'System',
+  en:
+    Platform.select({
+      ios: 'System',
+      android: 'sans-serif',
+      web: 'system-ui',
+      default: 'System',
+    }) ?? 'System',
+} as const;
+
 export const typography = {
-  family: Platform.select({
-    ios: 'System',
-    android: 'sans-serif',
-    default: 'System',
-  }),
-  sizes: {
-    caption: 12,
-    label: 14,
-    body: 16,
-    heading: 21,
-    title: 30,
-    display: 42,
-  },
-  lineHeights: {
-    caption: 19,
-    label: 21,
-    body: 26,
-    heading: 30,
-    title: 39,
-    display: 51,
-  },
-  weights: {
-    regular: '400',
-    medium: '500',
-    semibold: '600',
-    bold: '700',
-    heavy: '800',
+  families: systemFontFamilies,
+  roles: {
+    display: {
+      fontSize: 42,
+      fontWeight: '800',
+      ar: { lineHeight: 58, letterSpacing: 0 },
+      en: { lineHeight: 51, letterSpacing: -0.8 },
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: '700',
+      ar: { lineHeight: 43, letterSpacing: 0 },
+      en: { lineHeight: 39, letterSpacing: -0.4 },
+    },
+    heading: {
+      fontSize: 21,
+      fontWeight: '700',
+      ar: { lineHeight: 34, letterSpacing: 0 },
+      en: { lineHeight: 30, letterSpacing: 0 },
+    },
+    body: {
+      fontSize: 16,
+      fontWeight: '400',
+      ar: { lineHeight: 28, letterSpacing: 0 },
+      en: { lineHeight: 26, letterSpacing: 0 },
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: '600',
+      ar: { lineHeight: 23, letterSpacing: 0 },
+      en: { lineHeight: 21, letterSpacing: 0 },
+    },
+    caption: {
+      fontSize: 12,
+      fontWeight: '500',
+      ar: { lineHeight: 20, letterSpacing: 0 },
+      en: { lineHeight: 19, letterSpacing: 0 },
+    },
   },
 } as const;
+
+export type TypographyLanguage = keyof typeof typography.families;
+export type TypographyRole = keyof typeof typography.roles;
+
+export function resolveTypographyRole(role: TypographyRole, language: TypographyLanguage) {
+  const roleToken = typography.roles[role];
+  const scriptToken = roleToken[language];
+  return {
+    fontFamily: typography.families[language],
+    fontSize: roleToken.fontSize,
+    fontWeight: roleToken.fontWeight,
+    lineHeight: scriptToken.lineHeight,
+    letterSpacing: scriptToken.letterSpacing,
+  } as const;
+}
 
 export const shadows = {
   soft: {

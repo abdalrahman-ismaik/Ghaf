@@ -21,15 +21,16 @@ import {
   colors,
   layout,
   radii,
+  resolveTypographyRole,
   shadows,
   spacing,
-  typography,
   type AppColor,
+  type TypographyRole,
 } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-export type TextVariant = 'display' | 'title' | 'heading' | 'body' | 'label' | 'caption';
+export type TextVariant = TypographyRole;
 export type TextAlign = 'start' | 'center' | 'end';
 
 export interface ScreenProps extends PropsWithChildren {
@@ -110,6 +111,8 @@ export function Text({
 }: AppTextProps) {
   const locale = usePrototypeStore((state) => state.locale);
   const storeDirection = usePrototypeStore((state) => state.direction);
+  const resolvedLanguage = language ?? locale;
+  const typographyStyle = resolveTypographyRole(variant, resolvedLanguage);
   const direction = directionOverride ?? storeDirection;
   const alignmentDirection = direction === 'auto' ? storeDirection : direction;
   const directionStyle =
@@ -135,7 +138,7 @@ export function Text({
       }
       style={[
         styles.textBase,
-        textVariants[variant],
+        typographyStyle,
         { color: colors[color] },
         direction === 'rtl'
           ? styles.writingRtl
@@ -288,6 +291,8 @@ export function Input({
 }: InputProps) {
   const [focused, setFocused] = useState(false);
   const storeDirection = usePrototypeStore((state) => state.direction);
+  const locale = usePrototypeStore((state) => state.locale);
+  const inputTypography = resolveTypographyRole('body', locale);
   const direction = directionOverride ?? storeDirection;
 
   return (
@@ -296,6 +301,7 @@ export function Input({
       <NativeTextInput
         {...props}
         accessibilityLabel={props.accessibilityLabel ?? label}
+        accessibilityLanguage={props.accessibilityLanguage ?? (locale === 'ar' ? 'ar-AE' : 'en-AE')}
         accessibilityState={{ ...props.accessibilityState, disabled: props.editable === false }}
         multiline={multiline}
         onBlur={(event) => {
@@ -309,6 +315,7 @@ export function Input({
         placeholderTextColor={colors.inkMuted}
         style={[
           styles.input,
+          inputTypography,
           multiline ? styles.inputMultiline : null,
           direction === 'rtl' ? styles.inputRtl : styles.inputLtr,
           focused ? styles.focusedControl : null,
@@ -375,41 +382,6 @@ export function IconButton({
     </Pressable>
   );
 }
-
-const textVariants = StyleSheet.create({
-  display: {
-    fontSize: typography.sizes.display,
-    lineHeight: typography.lineHeights.display,
-    fontWeight: typography.weights.heavy,
-    letterSpacing: -0.8,
-  },
-  title: {
-    fontSize: typography.sizes.title,
-    lineHeight: typography.lineHeights.title,
-    fontWeight: typography.weights.bold,
-    letterSpacing: -0.4,
-  },
-  heading: {
-    fontSize: typography.sizes.heading,
-    lineHeight: typography.lineHeights.heading,
-    fontWeight: typography.weights.bold,
-  },
-  body: {
-    fontSize: typography.sizes.body,
-    lineHeight: typography.lineHeights.body,
-    fontWeight: typography.weights.regular,
-  },
-  label: {
-    fontSize: typography.sizes.label,
-    lineHeight: typography.lineHeights.label,
-    fontWeight: typography.weights.semibold,
-  },
-  caption: {
-    fontSize: typography.sizes.caption,
-    lineHeight: typography.lineHeights.caption,
-    fontWeight: typography.weights.medium,
-  },
-});
 
 const buttonVariants = StyleSheet.create({
   primary: {
@@ -509,12 +481,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textBase: {
-    fontFamily: typography.family,
     includeFontPadding: true,
   },
   writingRtl: {
     writingDirection: 'rtl',
-    letterSpacing: 0,
   },
   writingLtr: {
     writingDirection: 'ltr',
@@ -590,9 +560,6 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     backgroundColor: colors.surface,
     color: colors.ink,
-    fontFamily: typography.family,
-    fontSize: typography.sizes.body,
-    lineHeight: typography.lineHeights.body,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
