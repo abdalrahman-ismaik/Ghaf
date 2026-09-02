@@ -93,9 +93,9 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
             {t('parentHome.correctSummary')}
           </Text>
           <Input
-            accessibilityLanguage="ar-AE"
             direction="rtl"
             label={t('language.arabic')}
+            language="ar"
             maxLength={180}
             multiline
             onChangeText={(value) => {
@@ -106,9 +106,9 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
             value={draftAr}
           />
           <Input
-            accessibilityLanguage="en-AE"
             direction="ltr"
             label={t('language.english')}
+            language="en"
             maxLength={180}
             multiline
             onChangeText={(value) => {

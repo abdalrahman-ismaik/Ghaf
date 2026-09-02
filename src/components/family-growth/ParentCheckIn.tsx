@@ -274,17 +274,17 @@ export function ParentCheckIn({ onRecognized, onResumeChild }: ParentCheckInProp
               {t('checkIn.praiseLabel')}
             </Text>
             <Input
-              accessibilityLanguage="ar-AE"
               direction="rtl"
               label={t('language.arabic')}
+              language="ar"
               multiline
               onChangeText={(ar) => setPraise((current) => ({ ...current, ar }))}
               value={praise.ar}
             />
             <Input
-              accessibilityLanguage="en-AE"
               direction="ltr"
               label={t('language.english')}
+              language="en"
               multiline
               onChangeText={(en) => setPraise((current) => ({ ...current, en }))}
               value={praise.en}

@@ -276,6 +276,7 @@ interface InputProps extends TextInputProps {
   errorText?: string;
   helperText?: string;
   label?: string;
+  language?: LocaleCode;
 }
 
 export function Input({
@@ -283,6 +284,7 @@ export function Input({
   errorText,
   label,
   helperText,
+  language,
   multiline,
   onBlur,
   onFocus,
@@ -292,7 +294,8 @@ export function Input({
   const [focused, setFocused] = useState(false);
   const storeDirection = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
-  const inputTypography = resolveTypographyRole('body', locale);
+  const resolvedLanguage = language ?? locale;
+  const inputTypography = resolveTypographyRole('body', resolvedLanguage);
   const direction = directionOverride ?? storeDirection;
 
   return (
@@ -301,7 +304,9 @@ export function Input({
       <NativeTextInput
         {...props}
         accessibilityLabel={props.accessibilityLabel ?? label}
-        accessibilityLanguage={props.accessibilityLanguage ?? (locale === 'ar' ? 'ar-AE' : 'en-AE')}
+        accessibilityLanguage={
+          props.accessibilityLanguage ?? (resolvedLanguage === 'ar' ? 'ar-AE' : 'en-AE')
+        }
         accessibilityState={{ ...props.accessibilityState, disabled: props.editable === false }}
         multiline={multiline}
         onBlur={(event) => {

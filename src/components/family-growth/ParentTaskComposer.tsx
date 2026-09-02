@@ -287,26 +287,26 @@ export function ParentTaskComposer({ onReadyForReview }: ParentTaskComposerProps
       {selectedTemplateId === P0_RECYCLING_TEMPLATE.id ? (
         <View style={styles.section}>
           <Input
-            accessibilityLanguage="ar-AE"
             direction="rtl"
             editable={
               !suggestion &&
               (!journey || journey.lifecycle === 'draft' || journey.lifecycle === 'reviewed')
             }
             label={`${t('taskNew.parentTextLabel')} · ${t('language.arabic')}`}
+            language="ar"
             multiline
             onChangeText={(ar) => setParentText((current) => ({ ...current, ar }))}
             testID="parent-wording-ar"
             value={parentText.ar}
           />
           <Input
-            accessibilityLanguage="en-AE"
             direction="ltr"
             editable={
               !suggestion &&
               (!journey || journey.lifecycle === 'draft' || journey.lifecycle === 'reviewed')
             }
             label={`${t('taskNew.parentTextLabel')} · ${t('language.english')}`}
+            language="en"
             multiline
             onChangeText={(en) => setParentText((current) => ({ ...current, en }))}
             testID="parent-wording-en"

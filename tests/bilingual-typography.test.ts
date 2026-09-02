@@ -74,11 +74,31 @@ describe('bilingual typography system', () => {
 
     expect(primitives).toContain('const resolvedLanguage = language ?? locale;');
     expect(primitives).toContain('resolveTypographyRole(variant, resolvedLanguage)');
-    expect(primitives).toContain("resolveTypographyRole('body', locale)");
+    expect(primitives).toMatch(/interface InputProps[\s\S]*?language\?: LocaleCode;/u);
+    expect(primitives).toContain("resolveTypographyRole('body', resolvedLanguage)");
+    expect(primitives).toContain("resolvedLanguage === 'ar' ? 'ar-AE' : 'en-AE'");
     expect(primitives).toContain('accessibilityLanguage');
     expect(primitives).not.toContain('allowFontScaling={false}');
     expect(primitives).not.toContain('adjustsFontSizeToFit');
     expect(primitives).not.toContain('minimumFontScale');
+  });
+
+  it('marks simultaneous Arabic and English input runs with their own language', () => {
+    const bilingualEditors = [
+      '../src/components/family-growth/ParentPatternSummary.tsx',
+      '../src/components/family-growth/ParentTaskComposer.tsx',
+      '../src/components/family-growth/ParentCheckIn.tsx',
+    ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'));
+
+    for (const editor of bilingualEditors) {
+      const inputTags = editor.match(/<Input\b[\s\S]*?\/>/gu) ?? [];
+      expect(
+        inputTags.some((tag) => tag.includes('direction="rtl"') && tag.includes('language="ar"')),
+      ).toBe(true);
+      expect(
+        inputTags.some((tag) => tag.includes('direction="ltr"') && tag.includes('language="en"')),
+      ).toBe(true);
+    }
   });
 
   it('keeps raw typography declarations inside tokens and primitives only', () => {
