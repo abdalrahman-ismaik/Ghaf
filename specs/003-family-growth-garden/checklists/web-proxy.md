@@ -152,3 +152,30 @@ The optional local React Native DevTools process could not start because this ho
 install, compilation, static output, and launch hygiene only. It did not replay the complete
 ten-route browser journey and does not supersede the professional-audit interaction evidence or
 change any Android/human status.
+
+## 2026-09-02 Child voice and bilingual typography replay
+
+The presentation checkpoint exported bundle
+`entry-a36ed701f6f11cbcbc2a457b47e66670.js` with 12 static routes. A headed Playwright browser served
+the export from `http://127.0.0.1:4173` and replayed the new surfaces at 390×844 CSS px.
+
+| Surface/state           | Direct observation                                                                                                                                                                                                                                 | Result               |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| Arabic Parent review    | Voice and AI grants began off; the panel explained prepared local simulation, no background listening/capture, no microphone/recording, and no real send. A distinct Parent action changed the stored state to enabled before assignment approval. | **PASSED web proxy** |
+| Age-adapted Child Coach | Salem's result displayed exactly three complete reviewed steps, three reviewed quick choices, `9_11`, standard pace, task binding, no open chat, prepared/may-be-wrong language, and a persistent adult exit.                                      | **PASSED web proxy** |
+| Active rehearsal        | Start changed the visible status to active with a stop action and explicit “no audio is being recorded” copy. Switching to English preserved the active state and changed document/UI direction.                                                   | **PASSED web proxy** |
+| Transcript review       | Stop loaded the canonical fixture transcript. Captions, 0.75×, 1×, replay, delete-before-send, rehearsal-only send, and reset controls were visible without clamping. Replay changed the visible count from 0 to 1.                                | **PASSED web proxy** |
+| Locale preservation     | English rendered the equivalent transcript and controls; switching back to Arabic retained transcript review and replay count 1 with `html lang=ar`, `dir=rtl`.                                                                                    | **PASSED web proxy** |
+| Send/reset/delete       | Send entered a visibly simulated-only sent state; reset restored ready with no transcript/count. A second review followed by delete also restored ready.                                                                                           | **PASSED web proxy** |
+| Responsive width        | `innerWidth`, `body.scrollWidth`, and `documentElement.scrollWidth` were all 390 CSS px in the sampled Arabic Child state.                                                                                                                         | **PASSED sampled**   |
+
+Artifacts:
+
+- `output/playwright/feature003-voice/parent-permission-ar.png`
+- `output/playwright/feature003-voice/child-review-en-top.png`
+- `output/playwright/feature003-voice/child-review-en-bottom.png`
+
+The browser console contained one 404 for `/favicon.ico` from the local static server and no
+observed application exception. This replay does not pass Android microphone-permission absence,
+native playback, 200% font scale, TalkBack order, physical touch target, safe-area, or bidi gates;
+those remain **BLOCKED / NOT RUN**.

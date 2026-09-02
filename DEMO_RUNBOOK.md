@@ -1,36 +1,37 @@
 # Ghaf Feature 003 Demo Runbook
 
 **Target:** Family Growth Garden deterministic P0
-**Status date:** 2026-08-28
+**Status date:** 2026-09-02
 **Primary target:** physical Android device, Arabic RTL first; English LTR second
 **Internal presentation target:** 120–150 seconds; this is not a published SMAC judging rule
 
 ## Evidence Truth
 
-Feature 003 has a deterministic post-convergence implementation, a final 17-file / 305-test pass,
-and complete Arabic RTL and English LTR ten-route Firefox journeys. The mounted reset fix passed
-document locale/direction and six consecutive real Back actions. It is **not demo-accepted**: physical Android
-is blocked, live AI is unavailable, and every named human-review gate remains open.
+Feature 003 has a deterministic post-convergence implementation. The current Child voice and
+bilingual typography checkpoint passes 25 files / 435 tests and a sampled Arabic/English 390×844
+web replay; the earlier complete ten-route Firefox journeys and mounted reset evidence remain
+recorded below. It is **not demo-accepted**: physical Android is blocked, live AI is unavailable,
+and every named human-review gate remains open.
 Earlier Feature 002 results prove only the reusable food-rescue baseline and are not used below.
 
-| Feature 003 evidence item                               | Status                                  | Evidence required to change status                                                                                       |
-| ------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent     |
-| Typecheck, lint, format, unit, and integration checks   | PASSED final                            | `npm ci`, typecheck, lint, format, 17 files / 305 tests, Expo checks/export, detector, and diff check passed             |
-| Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED    | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed     |
-| Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN             | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                     |
-| Arabic RTL journey                                      | PASSED on web proxy; native BLOCKED     | Firefox 390×844 walkthrough exists; named physical Android build/device does not                                         |
-| English LTR journey                                     | PASSED web proxy; native BLOCKED        | Final Firefox journey covered all ten routes under `lang=en` and computed LTR                                            |
-| Offline/external-service-denied fallback                | PASSED automated; native NOT RUN        | Five deterministic store cycles pass with external providers denied; no named offline Android observation                |
-| Reduced-motion/static outcomes                          | PASSED automated/source; native NOT RUN | Static final-state equality passes; no named Android accessibility setting was exercised                                 |
-| Physical Android acceptance                             | BLOCKED                                 | `adb`, `emulator`, `sdkmanager`, and `java` not found; `ANDROID_HOME`/`ANDROID_SDK_ROOT` unset; no device or named build |
-| Three-person comprehension check                        | NOT RUN                                 | Three observers, question, answers, and date                                                                             |
-| Five timed human rehearsals                             | NOT RUN                                 | Five durations and failure notes                                                                                         |
-| UAE Arabic/cultural review                              | NOT RUN                                 | Named qualified reviewers and reviewed content version                                                                   |
-| Faith-content review                                    | NOT RUN                                 | Named qualified UAE Islamic educator/authority and scope                                                                 |
-| Child-safeguarding review                               | NOT RUN                                 | Named reviewer, findings, and disposition                                                                                |
-| Sustainability task/claim review                        | NOT RUN                                 | Named reviewer, reviewed task/claim version, and disposition                                                             |
-| Accessibility review                                    | NOT RUN                                 | Named reviewer, build/surface, settings, findings, and disposition                                                       |
+| Feature 003 evidence item                               | Status                                          | Evidence required to change status                                                                                                                    |
+| ------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                            | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent                                  |
+| Typecheck, lint, format, unit, and integration checks   | PASSED implementation; Expo patch advisory OPEN | Typecheck, lint, format, 25 files / 435 tests, export, detector, and diff check passed; `expo install --check` reports four recommended patch updates |
+| Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED            | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed                                  |
+| Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN                     | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                                                  |
+| Arabic RTL journey                                      | PASSED on web proxy; native BLOCKED             | Firefox 390×844 walkthrough exists; named physical Android build/device does not                                                                      |
+| English LTR journey                                     | PASSED web proxy; native BLOCKED                | Final Firefox journey covered all ten routes under `lang=en` and computed LTR                                                                         |
+| Offline/external-service-denied fallback                | PASSED automated; native NOT RUN                | Five deterministic store cycles pass with external providers denied; no named offline Android observation                                             |
+| Reduced-motion/static outcomes                          | PASSED automated/source; native NOT RUN         | Static final-state equality passes; no named Android accessibility setting was exercised                                                              |
+| Physical Android acceptance                             | BLOCKED                                         | `adb`, `emulator`, `sdkmanager`, and `java` not found; `ANDROID_HOME`/`ANDROID_SDK_ROOT` unset; no device or named build                              |
+| Three-person comprehension check                        | NOT RUN                                         | Three observers, question, answers, and date                                                                                                          |
+| Five timed human rehearsals                             | NOT RUN                                         | Five durations and failure notes                                                                                                                      |
+| UAE Arabic/cultural review                              | NOT RUN                                         | Named qualified reviewers and reviewed content version                                                                                                |
+| Faith-content review                                    | NOT RUN                                         | Named qualified UAE Islamic educator/authority and scope                                                                                              |
+| Child-safeguarding review                               | NOT RUN                                         | Named reviewer, findings, and disposition                                                                                                             |
+| Sustainability task/claim review                        | NOT RUN                                         | Named reviewer, reviewed task/claim version, and disposition                                                                                          |
+| Accessibility review                                    | NOT RUN                                         | Named reviewer, build/surface, settings, findings, and disposition                                                                                    |
 
 Do not replace `BLOCKED` or `NOT RUN` with `PASSED` because a screen exists, a simulator opens, or a
 Feature 002 test still passes.
@@ -40,26 +41,28 @@ Feature 002 test still passes.
 Feature 003 implementation must expose one Parent-only `resetPrototype()` action that produces the
 following exact state without network access.
 
-| Field                        | Reset value                                                    |
-| ---------------------------- | -------------------------------------------------------------- |
-| Locale/direction             | Arabic / RTL                                                   |
-| Route/history                | `/`; no stale Back history                                     |
-| Demo mode                    | Parent; role switch visibly labeled “not authentication”       |
-| Household                    | Synthetic Al Noor family                                       |
-| Children                     | Salem, age 9; Alya, age 11; both visibly synthetic             |
-| Active Child                 | Salem                                                          |
-| Salem personal earned Seeds  | 48                                                             |
-| Alya personal earned Seeds   | 36                                                             |
-| Salem Mangrove track         | 48/60, **Shoot**                                               |
-| Household Ghaf canopy        | 19/25 contribution leaves                                      |
-| Circle Green Impact goal     | 11/12 eligible Green Impact actions; synthetic/local           |
-| Active assignment/submission | None                                                           |
-| Prepared Parent Guide result | `guide_recycling_refine_v1`                                    |
-| Prepared Child Coach result  | `coach_recycling_steps_v1`                                     |
-| Prepared image               | `fixture_recycling_clean_v1`; synthetic/prepared label visible |
-| Prepared audio               | `fixture_salem_plan_ar_v1`; synthetic/prepared label visible   |
-| Assistant mode               | Deterministic prepared; no remote dependency                   |
-| Celebration consumed         | False                                                          |
+| Field                        | Reset value                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| Locale/direction             | Arabic / RTL                                                                   |
+| Route/history                | `/`; no stale Back history                                                     |
+| Demo mode                    | Parent; role switch visibly labeled “not authentication”                       |
+| Household                    | Synthetic Al Noor family                                                       |
+| Children                     | Salem, age 9; Alya, age 11; both visibly synthetic                             |
+| Active Child                 | Salem                                                                          |
+| Salem personal earned Seeds  | 48                                                                             |
+| Alya personal earned Seeds   | 36                                                                             |
+| Salem Mangrove track         | 48/60, **Shoot**                                                               |
+| Household Ghaf canopy        | 19/25 contribution leaves                                                      |
+| Circle Green Impact goal     | 11/12 eligible Green Impact actions; synthetic/local                           |
+| Active assignment/submission | None                                                                           |
+| Prepared Parent Guide result | `guide_recycling_refine_v1`                                                    |
+| Prepared Child Coach result  | `coach_recycling_steps_v1`                                                     |
+| Prepared image               | `fixture_recycling_clean_v1`; synthetic/prepared label visible                 |
+| Prepared audio               | `fixture_salem_plan_ar_v1`; synthetic/prepared label visible                   |
+| Assistant mode               | Deterministic prepared; no remote dependency                                   |
+| Voice and AI grants          | Off                                                                            |
+| Synthetic voice view         | Idle; transcript `null`; captions on; 1×; replay 0; inactive; sent time `null` |
+| Celebration consumed         | False                                                                          |
 
 The P0 confirmation changes only these counters:
 
@@ -142,18 +145,18 @@ Reset immediately before presenting. Use the verified secure live Parent refinem
 same build/provider passed preflight; otherwise use the prepared deterministic fallback and state
 that it is prepared. Never gamble the core journey on network access.
 
-|     Time | Route/state                  | Operator action                                                                                         | What the judge must understand                                                                                    |
-| -------: | ---------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-|    0–10s | `/`                          | Point out Arabic-first RTL and the synthetic/prepared disclosure; enter                                 | Ghaf is a transparent prototype for real family action                                                            |
-|   10–20s | `/role`                      | Choose Parent and Salem                                                                                 | Two synthetic siblings exist; the role switch is not authentication                                               |
-|   20–32s | `/parent`                    | Show one household canopy and strengths-first Guide summary; tap create                                 | The dashboard is cooperative, not a Child leaderboard                                                             |
-|   32–48s | `/parent/task/new`           | Choose Green Impact and the P0 task; ask Guide to make it clear/safe; point out live or prepared status | A bounded, structured assistant refines a Parent-owned task                                                       |
-|   48–60s | `/parent/task/review`        | Show definition, safety, optional evidence, 12 Seeds, Mangrove; approve                                 | Parent approval precedes assignment and reward                                                                    |
-|   60–70s | `/role` → `/child`           | Switch to Child/Salem and choose the new task                                                           | The Child chooses among approved actions and sees the fixed reward                                                |
-|   70–90s | `/child/task`                | Open Coach steps, play prepared audio or show prepared photo, then submit                               | The intended AI role is bounded task coaching; this response is visibly prepared and media/reflection is optional |
-|  90–108s | `/role` → `/parent/check-in` | Return as Parent; show facts, edit/accept praise, confirm once                                          | Parent recognition—not AI judgment—unlocks the reward                                                             |
-| 108–126s | `/garden`                    | Let 12 Seeds move to Mangrove; show Shoot → Sapling and canopy 19 → 20                                  | Symbolic growth is predictable, permanent, and tied to the action                                                 |
-| 126–145s | `/circle`                    | Show eligible Green actions 11 → 12 and privacy disclosure                                              | Families cooperate through coarse sustainability activity only                                                    |
+|     Time | Route/state                  | Operator action                                                                                                                          | What the judge must understand                                                              |
+| -------: | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+|    0–10s | `/`                          | Point out Arabic-first RTL and the synthetic/prepared disclosure; enter                                                                  | Ghaf is a transparent prototype for real family action                                      |
+|   10–20s | `/role`                      | Choose Parent and Salem                                                                                                                  | Two synthetic siblings exist; the role switch is not authentication                         |
+|   20–32s | `/parent`                    | Show one household canopy and strengths-first Guide summary; tap create                                                                  | The dashboard is cooperative, not a Child leaderboard                                       |
+|   32–48s | `/parent/task/new`           | Choose Green Impact and the P0 task; ask Guide to make it clear/safe; point out live or prepared status                                  | A bounded, structured assistant refines a Parent-owned task                                 |
+|   48–60s | `/parent/task/review`        | Show definition, safety, optional evidence, 12 Seeds, Mangrove; explicitly enable the prepared voice rehearsal, then approve             | Permission is separate from role/assignment; Parent approval precedes assignment and reward |
+|   60–70s | `/role` → `/child`           | Switch to Child/Salem and choose the new task                                                                                            | The Child chooses among approved actions and sees the fixed reward                          |
+|   70–90s | `/child/task`                | Open age-adapted Coach steps; start/stop the synthetic rehearsal, switch language, review or delete its prepared transcript, then submit | AI/voice are bounded, task-specific, prepared, and capture no Child audio                   |
+|  90–108s | `/role` → `/parent/check-in` | Return as Parent; show facts, edit/accept praise, confirm once                                                                           | Parent recognition—not AI judgment—unlocks the reward                                       |
+| 108–126s | `/garden`                    | Let 12 Seeds move to Mangrove; show Shoot → Sapling and canopy 19 → 20                                                                   | Symbolic growth is predictable, permanent, and tied to the action                           |
+| 126–145s | `/circle`                    | Show eligible Green actions 11 → 12 and privacy disclosure                                                                               | Families cooperate through coarse sustainability activity only                              |
 
 Suggested spoken close: “Ghaf helps families turn safe, useful actions into routines through choice,
 specific Parent recognition, live or visibly prepared assistant support, and a shared UAE living
@@ -295,22 +298,26 @@ Secondary web-proxy observations are recorded separately in
 
 ### Automated checks
 
-| Command                                                                    | Date/worktree                          | Result                 | Notes                                                                                                                                     |
-| -------------------------------------------------------------------------- | -------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm ci`                                                                   | 2026-08-28 repository-cleanup worktree | PASSED                 | Exit 0; 861 packages installed; uuid/eslint deprecation notices and 10 moderate advisories; no audit fix run                              |
-| `npm run verify`                                                           | 2026-08-28 repository-cleanup worktree | PASSED                 | Typecheck, lint, maintained-file format check, 17 files / 305 tests, Expo dependency check, and 12-route export                           |
-| `CI=1 BROWSER=none npm run web -- --offline --port 8091`                   | 2026-08-28 repository-cleanup worktree | PASSED app / WARN tool | Served HTTP in offline CLI mode with Arabic/RTL root HTML and no deprecated DOM-prop warning; optional DevTools lacked host `libnspr4.so` |
-| `npm ci`                                                                   | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0; uuid/eslint deprecation notices and 10 moderate advisories; no audit fix/dependency upgrade run                                   |
-| `npm run typecheck`                                                        | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0                                                                                                                                    |
-| `npm run lint`                                                             | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0                                                                                                                                    |
-| `npm run format:check`                                                     | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0; all matched files use Prettier                                                                                                    |
-| `npm test`                                                                 | 2026-08-28 professional-audit worktree | PASSED final           | 17 files / 305 tests                                                                                                                      |
-| `npx expo install --check`                                                 | 2026-08-27 dirty Feature 003 worktree  | PASSED T102            | Exact output: `Dependencies are up to date`; Expo SDK 57 patch alignment documented with no new library                                   |
-| `npx expo config --type public`                                            | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Mock service mode; predictive Back enabled; recording/background flags false                                                              |
-| `npx expo export --platform web --output-dir output/web-feature003-final`  | 2026-08-27 dirty Feature 003 worktree  | PASSED checkpoint      | Static export contained ten product pages plus support pages; generated directory was intentionally not retained                          |
-| `npx expo export --platform web --output-dir output/web-feature003-final2` | 2026-08-27 dirty Feature 003 worktree  | PASSED build           | Pre-convergence bundle; recorded walk is partial and generated directory was intentionally not retained                                   |
-| `npx expo export --platform web --output-dir dist`                         | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0; 12 static routes = ten product routes plus generated sitemap/not-found; `dist` is gitignored                                      |
-| `git diff --check`                                                         | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0                                                                                                                                    |
+| Command                                                                    | Date/worktree                          | Result                 | Notes                                                                                                                                                                                                                                                                                 |
+| -------------------------------------------------------------------------- | -------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run typecheck && npm run lint && npm run format:check && npm test`    | 2026-09-02 Child voice integration     | PASSED                 | Typecheck/lint/format exit 0; 25 files / 435 tests                                                                                                                                                                                                                                    |
+| `npm run build:web`                                                        | 2026-09-02 Child voice integration     | PASSED                 | 12 static routes; ten authored product routes plus sitemap/not-found; bundle `entry-a36ed701f6f11cbcbc2a457b47e66670.js`                                                                                                                                                              |
+| `npm run verify`                                                           | 2026-09-02 Child voice integration     | FAILED dependency gate | The initial run passed all static checks and the then-current 430 tests first; `expo install --check` then reported four installed Expo patch versions behind recommendations; later review regressions raised the independently validated suite to 435 without changing dependencies |
+| Impeccable detector and capability/route scans                             | 2026-09-02 Child voice integration     | PASSED                 | Detector `[]`; ten authored routes; zero forbidden presentation imports/calls; zero added TypeScript block comments                                                                                                                                                                   |
+| `npm ci`                                                                   | 2026-08-28 repository-cleanup worktree | PASSED                 | Exit 0; 861 packages installed; uuid/eslint deprecation notices and 10 moderate advisories; no audit fix run                                                                                                                                                                          |
+| `npm run verify`                                                           | 2026-08-28 repository-cleanup worktree | PASSED                 | Typecheck, lint, maintained-file format check, 17 files / 305 tests, Expo dependency check, and 12-route export                                                                                                                                                                       |
+| `CI=1 BROWSER=none npm run web -- --offline --port 8091`                   | 2026-08-28 repository-cleanup worktree | PASSED app / WARN tool | Served HTTP in offline CLI mode with Arabic/RTL root HTML and no deprecated DOM-prop warning; optional DevTools lacked host `libnspr4.so`                                                                                                                                             |
+| `npm ci`                                                                   | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0; uuid/eslint deprecation notices and 10 moderate advisories; no audit fix/dependency upgrade run                                                                                                                                                                               |
+| `npm run typecheck`                                                        | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0                                                                                                                                                                                                                                                                                |
+| `npm run lint`                                                             | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0                                                                                                                                                                                                                                                                                |
+| `npm run format:check`                                                     | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0; all matched files use Prettier                                                                                                                                                                                                                                                |
+| `npm test`                                                                 | 2026-08-28 professional-audit worktree | PASSED final           | 17 files / 305 tests                                                                                                                                                                                                                                                                  |
+| `npx expo install --check`                                                 | 2026-08-27 dirty Feature 003 worktree  | PASSED T102            | Exact output: `Dependencies are up to date`; Expo SDK 57 patch alignment documented with no new library                                                                                                                                                                               |
+| `npx expo config --type public`                                            | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Mock service mode; predictive Back enabled; recording/background flags false                                                                                                                                                                                                          |
+| `npx expo export --platform web --output-dir output/web-feature003-final`  | 2026-08-27 dirty Feature 003 worktree  | PASSED checkpoint      | Static export contained ten product pages plus support pages; generated directory was intentionally not retained                                                                                                                                                                      |
+| `npx expo export --platform web --output-dir output/web-feature003-final2` | 2026-08-27 dirty Feature 003 worktree  | PASSED build           | Pre-convergence bundle; recorded walk is partial and generated directory was intentionally not retained                                                                                                                                                                               |
+| `npx expo export --platform web --output-dir dist`                         | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0; 12 static routes = ten product routes plus generated sitemap/not-found; `dist` is gitignored                                                                                                                                                                                  |
+| `git diff --check`                                                         | 2026-08-27 dirty Feature 003 worktree  | PASSED final           | Exit 0                                                                                                                                                                                                                                                                                |
 
 The repository-cleanup export produced 12 static routes and bundle
 `entry-735bb0ad95f4d16e3497160215ba85e4.js`; `dist/index.html` began with Arabic `lang="ar"` and
@@ -339,6 +346,10 @@ transition and remains recorded as a framework/bundle follow-up.
 | Final adversarial boundary replay                  | PASSED independent               | 23/23 runtime probes; no remaining source-verifiable HIGH/MEDIUM P0 finding                                                                                  |
 | Missing image/audio/circle fixtures                | PASSED automated/source          | Image error clears selection; transcript/description remain; circle fails closed to local household goal                                                     |
 | Arabic resource parity/canonical fixture stability | PASSED automated                 | `tests/localization-parity.test.ts`; named fluent review remains `NOT RUN`                                                                                   |
+| Parent voice/AI authority and denial               | PASSED automated + sampled web   | Grants start off; Child role cannot grant; Parent uses service-backed reauthentication; Arabic Parent panel showed off/on states                             |
+| Age-derived prepared Coach presentation            | PASSED automated + sampled web   | Salem `9_11` renders at most three complete steps/choices, standard pace, task binding, and persistent adult exit                                            |
+| Synthetic voice lifecycle and locale preservation  | PASSED automated + sampled web   | Active/review/sent/delete/reset, captions, 0.75×/1×, replay, canonical transcript, English/Arabic switching, and stale lifecycle denial                      |
+| Bilingual typography resolver                      | PASSED automated/source          | Six roles resolve per script; Arabic tracking 0 and body leading ≥1.55; `Text`/`Input` share the resolver; detector returned `[]`                            |
 | Current story-level RED history                    | NOT RUN                          | T038/T046/T052/T058/T064/T073 were not recorded before implementation and cannot be reconstructed truthfully                                                 |
 
 ### Final web-proxy pass
@@ -363,18 +374,34 @@ Web proxy details and artifact names are in
 `specs/003-family-growth-garden/checklists/web-proxy.md`. Web cannot pass Android media, keyboard,
 Back, reduced-motion, TalkBack, font-scale, permission, or physical-touch requirements.
 
+### 2026-09-02 Child voice presentation replay
+
+A headed 390×844 browser replay exercised the new prepared-only slice in Arabic and English. The
+Parent permission began off, changed only through the dedicated Parent action, and stayed separate
+from assignment approval. Salem's Coach displayed the `9_11` cap of three steps and three quick
+choices, standard pace, task binding, no-open-chat notice, and the persistent adult exit.
+
+The Child rehearsal visibly completed start, active stop, canonical transcript review, captions,
+0.75×/1× simulated playback, replay count, English/Arabic switching, rehearsal-only send, reset,
+and delete-before-send. The sampled width remained 390px with no horizontal overflow. Screenshots
+are in `output/playwright/feature003-voice/`. One local `/favicon.ico` 404 was the only console error;
+no application exception was observed. Android and named-human evidence remain unchanged.
+
 ### Current implementation blockers and gaps
 
-- Convergence and later adversarial/reset/audit fixes are **PASSED automated**: final full suite 305/305,
-  independent runtime replay 23/23, and no remaining source-verifiable HIGH/MEDIUM P0 finding.
-  Synthetic missing-image/circle injection remains automated proxy evidence.
+- Convergence and later adversarial/reset/audit fixes remain **PASSED automated**; the current full
+  suite is 435/435, and the historical independent runtime replay was 23/23 with no remaining
+  source-verifiable HIGH/MEDIUM P0 finding. Synthetic missing-image/circle injection remains
+  automated proxy evidence.
 - T085 physical Android attempt: **COMPLETE with BLOCKED outcome**. `adb`, `emulator`, `sdkmanager`,
   and `java` were `NOT_FOUND`; `ANDROID_HOME` and `ANDROID_SDK_ROOT` were `NOT_SET`; no named build
   or device exists.
 - Optional live Parent model transformation: **BLOCKED** because there is no approved secure
   server-side boundary; the competition build uses the honestly labeled prepared fallback.
-- Final `npm ci`, typecheck, lint, format, 305-test suite, Expo dependency/config/export, detector,
-  and diff: **PASSED**.
+- Current typecheck, lint, format, 435-test suite, export, detector, capability scan, route inventory,
+  and diff: **PASSED**. The aggregate verify command remains **FAILED at the Expo compatibility
+  gate only** because four installed patch versions trail current recommendations; this
+  no-dependency slice did not change them.
 - Final-bundle Arabic/English journeys, reset locale/direction, and six browser Back actions:
   **PASSED on web proxy**.
 - Android offline, predictive Back, keyboard/IME, prepared playback, permissions, reduced motion,

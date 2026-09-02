@@ -1,8 +1,8 @@
 # Feature 003 Story Evidence
 
-**Recorded**: 2026-08-27 12:23; final post-reset-fix validation update
+**Recorded**: 2026-09-02; Child voice and bilingual typography checkpoint appended below
 **Branch**: `feature/003-family-growth-garden`
-**Worktree**: dirty implementation worktree; no commit hash represents this checkpoint
+**Worktree**: validated Feature 003 branch checkpoint; implementation history is preserved in Git
 **Scope**: current deterministic implementation, focused automated checks, and secondary web
 proxy observations only
 
@@ -144,3 +144,32 @@ Salem 60 Seeds, Mangrove 60/60 Sapling, canopy 20/25, and circle 12/12. The Engl
 proved that unsafe shorthand fails without mutation, explains the necessary recovery, and can then
 continue through a bounded Guide decision. Final reset restored Arabic RTL `/` and survived six
 Back actions. Android/native and named-human evidence remains unchanged and open.
+
+## 2026-09-02 Child voice and bilingual typography evidence
+
+User Story 11 adds a presentation layer over the already-tested prepared Coach and synthetic voice
+domain. It does not add real Child audio, a microphone permission, speech recognition, a network
+provider, or a production identity claim.
+
+| Evidence                              | Observed result                                                                                                                                                                                                                                                                                                | Boundary                                                                                                                   |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `tests/child-ai-presentation.test.ts` | **PASSED — 19/19**: stored Parent authority, Child-side grant denial, exact task/version binding, age-derived Coach policy, all voice transitions, locale preservation, English-to-Arabic reset, stale lifecycle rejection, session isolation, reset/reuse, copy parity, route mounting, and forbidden imports | Deterministic prepared/synthetic behavior only                                                                             |
+| `tests/bilingual-typography.test.ts`  | **PASSED — 9/9**: six roles, Arabic/English resolver, explicit language overrides, Arabic zero tracking and body leading, mixed scripts, scaling guards, shared `Text`/`Input`, and scalable step badge                                                                                                        | Source/token evidence; not native font rendering                                                                           |
+| Full `npm test`                       | **PASSED — 25 files / 435 tests**                                                                                                                                                                                                                                                                              | Includes the existing reward, privacy, route, and reset regression suites                                                  |
+| Static checks                         | `npm run typecheck`, `npm run lint`, `npm run format:check`, ten-route inventory, `git diff --check`, and the Impeccable detector (`[]`) **PASSED**                                                                                                                                                            | The detector is heuristic evidence, not human accessibility review                                                         |
+| Web export                            | **PASSED — 12 static routes**, bundle `entry-a36ed701f6f11cbcbc2a457b47e66670.js`                                                                                                                                                                                                                              | Ten authored routes plus generated sitemap and not-found pages                                                             |
+| Aggregate `npm run verify`            | **FAILED at `expo install --check` only** after typecheck, lint, formatting, and the then-current 430 tests passed; Expo reported four installed patch versions behind its current recommendations. Later review regressions make the independently validated current suite 435 tests.                         | Dependencies were deliberately unchanged because this slice prohibits dependency changes; the web export passed separately |
+
+The headed 390×844 web proxy showed the Arabic Parent permission panel disabled, then enabled by a
+distinct action before assignment approval. The Child task showed three complete `9_11` Coach
+steps, three reviewed quick choices, standard pace, the persistent trusted-adult exit, and a
+prepared/may-be-wrong disclosure. The synthetic rehearsal then completed active, review, captions,
+0.75×/1× simulated rate, replay, Arabic/English switching, rehearsal-only send, reset, and
+delete-before-send states without horizontal overflow. The locale switch preserved the transcript
+and replay count. The only console error was the local static server's pre-existing missing
+`favicon.ico`; no application exception was observed.
+
+Screenshots are recorded under `output/playwright/feature003-voice/`. This is **PASSED automated and
+PASSED sampled web proxy** for US11. Physical Android font scale, TalkBack, permission, playback,
+touch, and native bidi behavior remain **BLOCKED / NOT RUN**, and named Arabic, safeguarding, and
+accessibility review remains **NOT RUN**.
