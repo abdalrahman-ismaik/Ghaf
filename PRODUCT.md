@@ -4,16 +4,16 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-09-02                                                                                                    |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Product                   | Ghaf — غاف                                                                                                                |
-| Competition               | Khalifa University SMAC 2026                                                                                              |
-| Official theme            | AI Adventures in Sustainability                                                                                           |
-| Target feature            | Feature 003 — Family Growth Garden                                                                                        |
-| Decision                  | Deterministic P0, Child voice/type, synthetic access, private Reward, and synthetic League are implemented in ten routes  |
-| Latest validated baseline | Feature 003: 30 files / 464 tests; Android config/export and bilingual web proxy pass; native and human gates remain open |
-| Primary platform          | Android; Arabic-first with equivalent English support                                                                     |
-| Prototype data            | Synthetic only                                                                                                            |
+| Item                      | Truth as of 2026-09-03                                                                                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product                   | Ghaf — غاف                                                                                                                                        |
+| Competition               | Khalifa University SMAC 2026                                                                                                                      |
+| Official theme            | AI Adventures in Sustainability                                                                                                                   |
+| Target feature            | Feature 003 — Family Growth Garden                                                                                                                |
+| Decision                  | Deterministic P0, Child voice/type, synthetic access, private Reward, and synthetic League are implemented in ten routes                          |
+| Latest validated baseline | Feature 003: 30 files / 464 tests; Android config/export, Arabic AVD entry, and bilingual web proxy pass; full native and human gates remain open |
+| Primary platform          | Android; Arabic-first with equivalent English support                                                                                             |
+| Prototype data            | Synthetic only                                                                                                                                    |
 
 Feature 003 supersedes the single food-rescue mission as the implemented product direction. Food
 rescue remains one useful task family. Feature 002 evidence remains historical and must not be used

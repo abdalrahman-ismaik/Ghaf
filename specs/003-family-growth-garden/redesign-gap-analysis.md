@@ -76,8 +76,10 @@ projections; recognition receipts drive eligible Reward/League progress without 
 P0 counters. Android package/config hardening, the smaller runtime fixture, full verification, and a
 responsive bilingual browser replay passed. The configured emulator could not boot because the host
 had about 147 MiB free. A final headless retry passed host and hypervisor checks but still failed the
-emulator disk-space preflight with about 2.0 GiB free, so no native or physical acceptance claim is
-made.
+emulator disk-space preflight with about 2.0 GiB free. After more generated cache space was
+reclaimed, the AVD booted and Expo Go rendered the Arabic entry screen, then the host drive filled
+and ADB went offline before English or journey interaction. This is a sampled native launch, not
+native or physical acceptance.
 
 ## Safety interpretation
 

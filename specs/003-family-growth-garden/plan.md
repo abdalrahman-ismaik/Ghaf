@@ -597,7 +597,9 @@ headed 412×915 plus 320×700 Arabic/English replay verified access, Reward, Lea
 narrow-width containment, and protected handoff history. Android config introspection and a
 5,082,731-byte Hermes export passed. The configured API 35 AVD could not boot with only about 147 MiB
 free on `C:`. A final headless retry still failed the emulator disk-space preflight with about 2.0
-GiB free, so installation and native runtime observations remain `BLOCKED` or `NOT RUN`.
+GiB free. After more generated cache space was reclaimed, the AVD booted and Expo Go 57.0.9 rendered
+the Arabic entry screen from local Metro. The host drive then filled and ADB went offline before
+English or journey interaction, so full native observations remain `BLOCKED` or `NOT RUN`.
 
 ### Constitution check
 

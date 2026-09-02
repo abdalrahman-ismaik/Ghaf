@@ -364,7 +364,9 @@ configuration, image, and review-correction slices are committed, including fina
 the 5,082,731-byte `entry-b3c7bf145c9a72aa784c751ce65ea8a7.hbc` bundle, and the final bilingual
 web replay passes inherited direction, narrow-width containment, explicit headings, matching
 encouragement, and protected Back history. Two independent final re-reviews found no remaining
-P0–P2 defect. Physical Android and every named-human gate remain `BLOCKED` or `NOT RUN`.
+P0–P2 defect. A later API 35 AVD attempt rendered the Arabic entry through Expo Go, but host storage
+filled and ADB went offline before English or journey interaction. Complete native, physical
+Android, and every named-human gate remain `BLOCKED` or `NOT RUN`.
 
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
 

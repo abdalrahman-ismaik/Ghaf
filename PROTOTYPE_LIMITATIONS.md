@@ -8,10 +8,11 @@ grounding, and sustainability storytelling. It is not production-ready and must 
 an authenticated child service, social network, diagnostic product, religious authority, verified
 impact platform, or legally compliant deployment.
 
-As of 2026-09-02, Feature 003 is implemented as a deterministic local P0. Automated checks and
-Arabic/English web-proxy journeys have passed; physical Android and named human reviews remain
-`BLOCKED` or `NOT RUN` as recorded in `DEMO_RUNBOOK.md`. The documents under `docs/` preserve the
-earlier Feature 002 food-rescue evidence and do not pass current native or human criteria.
+As of 2026-09-03, Feature 003 is implemented as a deterministic local P0. Automated checks,
+Arabic/English web-proxy journeys, and one Arabic API 35 AVD entry sample have passed; complete
+native, physical Android, and named human reviews remain `BLOCKED` or `NOT RUN` as recorded in
+`DEMO_RUNBOOK.md`. The documents under `docs/` preserve the earlier Feature 002 food-rescue evidence
+and do not pass current native or human criteria.
 
 ## P0 Capability Matrix
 
@@ -236,10 +237,11 @@ cannot upgrade Android or named-human results.
   prepared-transcript boundary. No native playback, microphone, transcription, or Child audio is
   claimed.
 - This host now has a Java runtime, Android SDK, ADB, emulator binary, and a `Pixel_9_Pro_XL` AVD.
-  Expo config introspection and a production Android Hermes export passed, but the AVD could not
-  pass its disk-space preflight even after about 2.0 GiB became free on `C:`. Native install,
-  launch, Back, RTL, IME, TalkBack, font-scale, reduced-motion, offline, and performance
-  observations therefore remain `NOT RUN`.
+  Expo config introspection and a production Android Hermes export passed. After earlier
+  disk-space preflight failures, the API 35 AVD booted and Expo Go 57.0.9 rendered the Arabic entry
+  screen from local Metro. The host drive then filled and ADB went offline before English or journey
+  interaction. A standalone install, native Back, IME, TalkBack, font-scale, reduced-motion,
+  device-offline, and performance observations therefore remain `BLOCKED` or `NOT RUN`.
 - The prepared recycling image uses a 1448×1086 WebP at runtime (124,028 bytes, 94.5% smaller than
   the reviewed PNG source). The PNG stays as the archival review fixture; this payload result is not
   a native frame-rate or memory measurement.
