@@ -8,31 +8,31 @@
 ## Evidence Truth
 
 Feature 003 has a deterministic post-convergence implementation. The current family experience
-checkpoint passes 30 files / 463 tests and sampled Arabic/English replays at 412×915 and 320×700;
+checkpoint passes 30 files / 464 tests and sampled Arabic/English replays at 412×915 and 320×700;
 the earlier complete ten-route Firefox journeys and mounted reset evidence remain recorded below.
 Android configuration and production export pass, but the configured emulator could not boot. It is
 **not demo-accepted**: physical Android is blocked, live AI is unavailable, and every named
 human-review gate remains open.
 Earlier Feature 002 results prove only the reusable food-rescue baseline and are not used below.
 
-| Feature 003 evidence item                               | Status                                          | Evidence required to change status                                                                                                                    |
-| ------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                            | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent                                  |
-| Typecheck, lint, format, unit, and integration checks   | PASSED implementation; Expo dependencies aligned | `npm run verify` passed typecheck, lint, format, 30 files / 463 tests, Expo dependency alignment, and web export                                                   |
-| Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED            | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed                                  |
-| Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN                     | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                                                  |
-| Arabic RTL journey                                      | PASSED on web proxy; native BLOCKED             | Complete 390×844 journey and current 412×915/320×700 family samples exist; no native launch observation                                                |
-| English LTR journey                                     | PASSED web proxy; native BLOCKED                | Complete 390×844 journey and current narrow-width family sample rendered `lang=en`/LTR; no native launch observation                                  |
-| Offline/external-service-denied fallback                | PASSED automated; native NOT RUN                | Five deterministic store cycles pass with external providers denied; no named offline Android observation                                             |
-| Reduced-motion/static outcomes                          | PASSED automated/source; native NOT RUN         | Static final-state equality passes; no named Android accessibility setting was exercised                                                              |
-| Physical Android acceptance                             | BLOCKED                                         | SDK, ADB, emulator, JBR, and API 35 AVD exist, but the AVD could not boot with about 147 MiB free; no installed build/device observation              |
-| Three-person comprehension check                        | NOT RUN                                         | Three observers, question, answers, and date                                                                                                          |
-| Five timed human rehearsals                             | NOT RUN                                         | Five durations and failure notes                                                                                                                      |
-| UAE Arabic/cultural review                              | NOT RUN                                         | Named qualified reviewers and reviewed content version                                                                                                |
-| Faith-content review                                    | NOT RUN                                         | Named qualified UAE Islamic educator/authority and scope                                                                                              |
-| Child-safeguarding review                               | NOT RUN                                         | Named reviewer, findings, and disposition                                                                                                             |
-| Sustainability task/claim review                        | NOT RUN                                         | Named reviewer, reviewed task/claim version, and disposition                                                                                          |
-| Accessibility review                                    | NOT RUN                                         | Named reviewer, build/surface, settings, findings, and disposition                                                                                    |
+| Feature 003 evidence item                               | Status                                           | Evidence required to change status                                                                                                                              |
+| ------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                             | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent                                            |
+| Typecheck, lint, format, unit, and integration checks   | PASSED implementation; Expo dependencies aligned | `npm run verify` passed typecheck, lint, format, 30 files / 464 tests, Expo dependency alignment, and web export                                                |
+| Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED             | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed                                            |
+| Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN                      | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                                                            |
+| Arabic RTL journey                                      | PASSED on web proxy; native BLOCKED              | Complete 390×844 journey and current 412×915/320×700 family samples exist; no native launch observation                                                         |
+| English LTR journey                                     | PASSED web proxy; native BLOCKED                 | Complete 390×844 journey and current narrow-width family sample rendered `lang=en`/LTR; no native launch observation                                            |
+| Offline/external-service-denied fallback                | PASSED automated; native NOT RUN                 | Five deterministic store cycles pass with external providers denied; no named offline Android observation                                                       |
+| Reduced-motion/static outcomes                          | PASSED automated/source; native NOT RUN          | Static final-state equality passes; no named Android accessibility setting was exercised                                                                        |
+| Physical Android acceptance                             | BLOCKED                                          | SDK, ADB, emulator, JBR, and API 35 AVD exist, but the AVD still failed its disk-space preflight with about 2.0 GiB free; no installed build/device observation |
+| Three-person comprehension check                        | NOT RUN                                          | Three observers, question, answers, and date                                                                                                                    |
+| Five timed human rehearsals                             | NOT RUN                                          | Five durations and failure notes                                                                                                                                |
+| UAE Arabic/cultural review                              | NOT RUN                                          | Named qualified reviewers and reviewed content version                                                                                                          |
+| Faith-content review                                    | NOT RUN                                          | Named qualified UAE Islamic educator/authority and scope                                                                                                        |
+| Child-safeguarding review                               | NOT RUN                                          | Named reviewer, findings, and disposition                                                                                                                       |
+| Sustainability task/claim review                        | NOT RUN                                          | Named reviewer, reviewed task/claim version, and disposition                                                                                                    |
+| Accessibility review                                    | NOT RUN                                          | Named reviewer, build/surface, settings, findings, and disposition                                                                                              |
 
 Do not replace `BLOCKED` or `NOT RUN` with `PASSED` because a screen exists, a simulator opens, or a
 Feature 002 test still passes.
@@ -289,12 +289,13 @@ score, truthfulness score, religiosity, or parenting quality.
 
 Record one row per build/device/locale. Do not infer a pass from web/source evidence.
 
-| Date       | Commit/build   | Device/OS                      | Locale      | Journey         | Offline | Reduced motion | Result  | Observer/notes                                                                                                     |
-| ---------- | -------------- | ------------------------------ | ----------- | --------------- | ------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| 2026-08-27 | none available | none; Android toolchain absent | Arabic RTL  | Could not start | NOT RUN | NOT RUN        | BLOCKED | `adb`, `emulator`, `sdkmanager`, and `java` were `NOT_FOUND`; `ANDROID_HOME` and `ANDROID_SDK_ROOT` were `NOT_SET` |
-| 2026-08-27 | none available | none; Android toolchain absent | English LTR | Could not start | NOT RUN | NOT RUN        | BLOCKED | Same missing build/toolchain/device dependency; no native result inferred                                          |
-| 2026-09-02 | `6679bb8`     | Pixel_9_Pro_XL / API 35 x86_64 | Arabic RTL  | Could not start | NOT RUN | NOT RUN        | BLOCKED | Three safe headless launches failed before boot: only about 147 MiB was free on `C:`                               |
-| 2026-09-02 | `6679bb8`     | Pixel_9_Pro_XL / API 35 x86_64 | English LTR | Could not start | NOT RUN | NOT RUN        | BLOCKED | Same pre-boot disk-space blocker; no application install or native result inferred                                 |
+| Date       | Commit/build   | Device/OS                      | Locale      | Journey         | Offline | Reduced motion | Result  | Observer/notes                                                                                                          |
+| ---------- | -------------- | ------------------------------ | ----------- | --------------- | ------- | -------------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-27 | none available | none; Android toolchain absent | Arabic RTL  | Could not start | NOT RUN | NOT RUN        | BLOCKED | `adb`, `emulator`, `sdkmanager`, and `java` were `NOT_FOUND`; `ANDROID_HOME` and `ANDROID_SDK_ROOT` were `NOT_SET`      |
+| 2026-08-27 | none available | none; Android toolchain absent | English LTR | Could not start | NOT RUN | NOT RUN        | BLOCKED | Same missing build/toolchain/device dependency; no native result inferred                                               |
+| 2026-09-02 | `6679bb8`      | Pixel_9_Pro_XL / API 35 x86_64 | Arabic RTL  | Could not start | NOT RUN | NOT RUN        | BLOCKED | Three safe headless launches failed before boot: only about 147 MiB was free on `C:`                                    |
+| 2026-09-02 | `6679bb8`      | Pixel_9_Pro_XL / API 35 x86_64 | English LTR | Could not start | NOT RUN | NOT RUN        | BLOCKED | Same pre-boot disk-space blocker; no application install or native result inferred                                      |
+| 2026-09-02 | `e4d77ad`      | Pixel_9_Pro_XL / API 35 x86_64 | Not reached | Could not start | NOT RUN | NOT RUN        | BLOCKED | Final headless retry passed host/hypervisor checks but failed the emulator disk-space preflight with about 2.0 GiB free |
 
 Secondary web-proxy observations are recorded separately in
 `specs/003-family-growth-garden/checklists/web-proxy.md`.
@@ -303,12 +304,13 @@ Secondary web-proxy observations are recorded separately in
 
 | Command                                                                    | Date/worktree                          | Result                 | Notes                                                                                                                                                                                                                                                                                 |
 | -------------------------------------------------------------------------- | -------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run verify`                                                           | 2026-09-02 family experience frontend  | PASSED                 | Typecheck, lint, format, 30 files / 463 tests, Expo dependencies current, and 12-page web export; bundle `entry-3746a82ee19bdfeb4140e22a9b7168c9.js`                                                                                                                              |
+| `npm run verify`                                                           | 2026-09-02 family experience frontend  | PASSED                 | Typecheck, lint, format, 30 files / 464 tests, Expo dependencies current, and 12-page web export; bundle `entry-3296e802c2835dbc71e4d5e1108ed2ec.js`                                                                                                                                  |
 | Seven focused presentation/mobile suites                                   | 2026-09-02 family experience frontend  | PASSED                 | 7 files / 42 tests covering family controller/store/UI, bilingual resources/type, Android config, and runtime image selection                                                                                                                                                         |
-| `npx expo config --type introspect --json`                                  | 2026-09-02 family experience frontend  | PASSED                 | Android package resolved; backup false; predictive Back true; `adjustResize`; ar/en locales; recording/audio/external-storage permissions removed                                                                                                                                    |
-| `npx expo export --platform android --output-dir output/android/export`     | 2026-09-02 family experience frontend  | PASSED                 | 1,919 modules; 5,089,552-byte Hermes bundle; SHA-256 `49D9896BB7240D441F53EEC23FE5144A2D63C00B48886F9064ADFD237179C5EF`                                                                                                                                                          |
-| Three hidden/headless API 35 AVD launch attempts                            | 2026-09-02 family experience frontend  | BLOCKED                | Emulator stopped before boot because `C:` had about 147 MiB free; no `adb` device appeared, so install and native interaction checks were not run                                                                                                                                     |
-| Headed production-web family replay                                        | 2026-09-02 family experience frontend  | PASSED sampled         | Arabic/English access, revoke/restore, private Reward, fixed League, encouragement, 320px containment, and protected handoff history; only local `favicon.ico` 404                                                                                                                      |
+| Final correction regression and two independent re-reviews                 | 2026-09-02 family experience frontend  | PASSED                 | 3 files / 13 tests; one inherited direction authority, protected role handoff, structural heading semantics, and prepared encouragement intent; no remaining P0–P2 defect                                                                                                             |
+| `npx expo config --type introspect --json`                                 | 2026-09-02 family experience frontend  | PASSED                 | Android package resolved; backup false; predictive Back true; `adjustResize`; ar/en locales; recording/audio/external-storage permissions removed                                                                                                                                     |
+| `npx expo export --platform android --output-dir output/android/export`    | 2026-09-02 family experience frontend  | PASSED                 | 1,919 modules; 5,082,731-byte Hermes bundle `entry-b3c7bf145c9a72aa784c751ce65ea8a7.hbc`; SHA-256 `761D1CD5887F7F50C60FF95E5049CA61D56436E6881DF8D515643DFE7DE4F186`                                                                                                                  |
+| Three hidden/headless API 35 AVD launch attempts                           | 2026-09-02 family experience frontend  | BLOCKED                | Emulator stopped before boot because `C:` had about 147 MiB free; no `adb` device appeared, so install and native interaction checks were not run                                                                                                                                     |
+| Headed production-web family replay                                        | 2026-09-02 family experience frontend  | PASSED sampled         | Arabic 412×915 and English 320×700 inherited direction, no overflow, explicit heading structure, matching “Keep growing” encouragement, and Parent → role → Salem Back to `about:blank`; initial local `favicon.ico` 404 only                                                         |
 | `npm run typecheck && npm run lint && npm run format:check && npm test`    | 2026-09-02 Child voice integration     | PASSED                 | Typecheck/lint/format exit 0; 25 files / 435 tests                                                                                                                                                                                                                                    |
 | `npm run build:web`                                                        | 2026-09-02 Child voice integration     | PASSED                 | 12 static routes; ten authored product routes plus sitemap/not-found; bundle `entry-a36ed701f6f11cbcbc2a457b47e66670.js`                                                                                                                                                              |
 | `npm run verify`                                                           | 2026-09-02 Child voice integration     | FAILED dependency gate | The initial run passed all static checks and the then-current 430 tests first; `expo install --check` then reported four installed Expo patch versions behind recommendations; later review regressions raised the independently validated suite to 435 without changing dependencies |
@@ -400,24 +402,27 @@ no application exception was observed. Android and named-human evidence remain u
 
 A headed production-web replay at 412×915 and 320×700 exercised synthetic Parent/Child entry,
 Parent-only Salem revoke/restore, private Reward creation/delivery, the fixed three-person League,
-Salem's strict private/minimal projections, and allowlisted encouragement. Arabic began RTL; English
-switched the document and UI to LTR; both narrow samples had no horizontal overflow. A protected
-Child-to-role handoff cleared app history, so browser Back did not reveal a stale Child or Parent
-screen. The only console error was the local server's missing `/favicon.ico`; no application
-exception was observed. Android and named-human status did not change.
+Salem's strict private/minimal projections, and the displayed “Keep growing” encouragement. Arabic
+began with inherited RTL at 412×915; English switched the document and UI to inherited LTR at
+320×700; both samples had no horizontal overflow. Parent → role → Salem cleared app history, so
+browser Back reached `about:blank` rather than a stale Child or Parent screen. Visible heading
+navigation excluded wordmarks, totals, praise, and metrics. The initial local `/favicon.ico` 404 was
+the only console error; no application exception was observed. Android and named-human status did
+not change.
 
 ### Current implementation blockers and gaps
 
 - Convergence and later adversarial/reset/audit fixes remain **PASSED automated**; the current full
-  suite is 463/463, and the historical independent runtime replay was 23/23 with no remaining
+  suite is 464/464, and the historical independent runtime replay was 23/23 with no remaining
   source-verifiable HIGH/MEDIUM P0 finding. Synthetic missing-image/circle injection remains
   automated proxy evidence.
 - Current local Android attempt: **COMPLETE with BLOCKED outcome**. Java, SDK, ADB, emulator, and a
-  `Pixel_9_Pro_XL` API 35 AVD exist, but three safe launch attempts stopped before boot because
-  `C:` had only about 147 MiB free. No application install or native observation occurred.
+  `Pixel_9_Pro_XL` API 35 AVD exist. The final headless retry passed host and hypervisor checks but
+  still failed the emulator disk-space preflight with about 2.0 GiB free. No application install or
+  native observation occurred.
 - Optional live Parent model transformation: **BLOCKED** because there is no approved secure
   server-side boundary; the competition build uses the honestly labeled prepared fallback.
-- Current typecheck, lint, format, 463-test suite, Expo dependency check, web export, Android config
+- Current typecheck, lint, format, 464-test suite, Expo dependency check, web export, Android config
   introspection, Android export, capability scan, route inventory, and diff: **PASSED**.
 - Final-bundle Arabic/English journeys, reset locale/direction, and six browser Back actions:
   **PASSED on web proxy**.

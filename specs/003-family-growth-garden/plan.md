@@ -576,9 +576,10 @@ session and ledger without extending `PrototypeSession` schema version `3`.
 - Remove the unused real-audio plugin because the approved voice path is transcript simulation.
   Block microphone recording and legacy external-storage permissions in the merged manifest and
   disable Android backup for the sensitive shared-device prototype.
-- Keep native layout direction fixed during runtime and derive all visible order/alignment from the
-  locale already held in Zustand. This preserves an immediate state-stable language switch and
-  avoids persisted native direction lag; named cold-start/restart evidence remains required.
+- Set the inherited root layout direction from the locale already held in Zustand, then use plain
+  rows and logical start/end below it. This preserves an immediate state-stable language switch
+  without persisted `I18nManager` direction or a second row reversal; named native evidence remains
+  required.
 - Use safe `back()` only for true backward navigation and replacement for role handoffs so Android
   Back cannot reveal a stale protected state. Preserve predictive Back configuration.
 - Keep the task submission as the sole dominant Child-task action. Optional voice controls are
@@ -590,12 +591,13 @@ session and ledger without extending `PrototypeSession` schema version `3`.
 
 ### Phase result
 
-Phases L–O are implemented and pass the full repository verification at 30 files / 463 tests. The
+Phases L–O are implemented and pass the full repository verification at 30 files / 464 tests. The
 production web export preserved 12 static pages (ten authored routes plus sitemap/not-found), and a
 headed 412×915 plus 320×700 Arabic/English replay verified access, Reward, League, locale direction,
 narrow-width containment, and protected handoff history. Android config introspection and a
-5,089,552-byte Hermes export passed. The configured API 35 AVD could not boot with only about 147 MiB
-free on `C:`, so installation and native runtime observations remain `BLOCKED` or `NOT RUN`.
+5,082,731-byte Hermes export passed. The configured API 35 AVD could not boot with only about 147 MiB
+free on `C:`. A final headless retry still failed the emulator disk-space preflight with about 2.0
+GiB free, so installation and native runtime observations remain `BLOCKED` or `NOT RUN`.
 
 ### Constitution check
 

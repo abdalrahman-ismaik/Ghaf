@@ -180,14 +180,15 @@ User Story 12 makes the previously tested synthetic access, Family Reward, and F
 visible as bounded states inside the ten-route app. It does not add production authentication,
 payments, social networking, persistence, real Child media, or unrestricted communication.
 
-| Evidence | Observed result | Boundary |
-| -------- | --------------- | -------- |
-| Seven focused presentation/mobile suites | **PASSED — 7 files / 42 tests** covering authorized entry, revoke/restore, Reward receipt binding and privacy, League isolation/projection, UI wiring, locale parity, Android config, and runtime image selection | Source and deterministic-controller evidence |
-| Full `npm run verify` | **PASSED — 30 files / 463 tests**, typecheck, lint, maintained-file formatting, Expo dependency alignment, and 12-page web export | Ten authored routes plus generated sitemap/not-found |
-| Android config introspection | **PASSED** with package ID, backup disabled, predictive Back enabled, `adjustResize`, Arabic/English locales, and blocked recording/audio/external-storage permissions | Generated config evidence; not an installed application |
-| Android production export | **PASSED — 1,919 modules**, 5,089,552-byte Hermes bundle, SHA-256 `49D9896BB7240D441F53EEC23FE5144A2D63C00B48886F9064ADFD237179C5EF` | Bundle generation only; no emulator/native-runtime claim |
-| Prepared runtime image | **PASSED** visual/source checks: 1448×1086 WebP, 124,028 bytes, 94.5% smaller than the archival PNG, PSNR 39.99 dB, no metadata | Does not establish Android frame-rate or memory performance |
-| Local Android attempt | **BLOCKED** before boot on `Pixel_9_Pro_XL` API 35 because `C:` had about 147 MiB free | Install, RTL, Back, IME, TalkBack, font scale, reduced motion, offline, touch, and performance remain `NOT RUN` |
+| Evidence                                 | Observed result                                                                                                                                                                                                                              | Boundary                                                                                                        |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Seven focused presentation/mobile suites | **PASSED — 7 files / 42 tests** covering authorized entry, revoke/restore, Reward receipt binding and privacy, League isolation/projection, UI wiring, locale parity, Android config, and runtime image selection                            | Source and deterministic-controller evidence                                                                    |
+| Final correction regression              | **PASSED — 3 files / 13 tests** covering one inherited direction authority, protected role handoff, explicit structural headings, and the matching prepared encouragement intent; two independent re-reviews found no remaining P0–P2 defect | Source and web-proxy evidence; not native accessibility acceptance                                              |
+| Full `npm run verify`                    | **PASSED — 30 files / 464 tests**, typecheck, lint, maintained-file formatting, Expo dependency alignment, and 12-page web export; bundle `entry-3296e802c2835dbc71e4d5e1108ed2ec.js`                                                        | Ten authored routes plus generated sitemap/not-found                                                            |
+| Android config introspection             | **PASSED** with package ID, backup disabled, predictive Back enabled, `adjustResize`, Arabic/English locales, and blocked recording/audio/external-storage permissions                                                                       | Generated config evidence; not an installed application                                                         |
+| Android production export                | **PASSED — 1,919 modules**, 5,082,731-byte Hermes bundle `entry-b3c7bf145c9a72aa784c751ce65ea8a7.hbc`, SHA-256 `761D1CD5887F7F50C60FF95E5049CA61D56436E6881DF8D515643DFE7DE4F186`                                                            | Bundle generation only; no emulator/native-runtime claim                                                        |
+| Prepared runtime image                   | **PASSED** visual/source checks: 1448×1086 WebP, 124,028 bytes, 94.5% smaller than the archival PNG, PSNR 39.99 dB, no metadata                                                                                                              | Does not establish Android frame-rate or memory performance                                                     |
+| Local Android attempt                    | **BLOCKED** before boot on `Pixel_9_Pro_XL` API 35; the final headless retry still failed the emulator disk-space preflight with about 2.0 GiB free on `C:`                                                                                  | Install, RTL, Back, IME, TalkBack, font scale, reduced motion, offline, touch, and performance remain `NOT RUN` |
 
 A headed production-web replay at 412×915 and 320×700 observed Arabic-first entry, Parent-authorized
 role access, Salem revoke/restore, private Reward creation and delivery, a fixed synthetic League,
@@ -195,3 +196,9 @@ Salem-only Reward visibility, prepared encouragement, English LTR equivalence, n
 overflow, and protected role-handoff history. The only console error was the local server's missing
 `favicon.ico`; no application exception was observed. This is **PASSED automated and PASSED sampled
 web proxy** for US12, not Android or named-human acceptance.
+
+The final post-review replay additionally observed `html dir`, computed body direction, and inherited
+row layout at 412×915 Arabic and 320×700 English; both samples kept `scrollWidth === innerWidth`.
+Parent → role → Salem then sent the displayed “Keep growing” fixture, and browser Back reached
+`about:blank` rather than a stale Parent or Child route. Visible heading navigation contained only
+screen and section titles, not the wordmark, Seed/canopy totals, praise, or League metrics.

@@ -183,22 +183,25 @@ those remain **BLOCKED / NOT RUN**.
 ## 2026-09-02 Family experience frontend replay
 
 The final production export generated bundle
-`entry-3746a82ee19bdfeb4140e22a9b7168c9.js` and retained 12 static pages. A headed Playwright browser
+`entry-3296e802c2835dbc71e4d5e1108ed2ec.js` and retained 12 static pages. A headed Playwright browser
 served the export locally and exercised the new in-route family surfaces at 412×915 and 320×700 CSS
 pixels.
 
-| Surface/state | Direct observation | Result |
-| ------------- | ------------------ | ------ |
-| Arabic entry | `/` and `/role` began with `html lang=ar`, `dir=rtl`; the access panel identified fixed synthetic sessions and allowed Parent entry through the governed store action | **PASSED web proxy** |
-| Parent access control | The Parent revoked Salem, the main Salem entry became disabled with truthful blocked copy, and restore re-enabled entry | **PASSED web proxy** |
-| Private Family Reward | The Parent created the prepared non-monetary promise, viewed its personal milestone state, and retained the Parent-only delivery action | **PASSED web proxy** |
-| Synthetic Family League | The Parent started the fixed week; direct participant labels, capped cooperative progress, and synthetic/no-public-ranking disclosure rendered | **PASSED web proxy** |
-| Salem projection | Salem saw the matching private Reward and minimal League projection and could send one allowlisted prepared encouragement | **PASSED web proxy** |
-| Privacy projection | Alya had no Salem Reward projection; routes did not display credentials, raw eligibility events, task records, Seeds, evidence, or private notes in League data | **PASSED source + web sample** |
-| Locale and width | Switching to English produced `lang=en`, `dir=ltr`; Arabic and English each kept `scrollWidth === innerWidth === 320` at the narrow sample | **PASSED sampled** |
-| Protected history | A Child-to-role handoff cleared the protected stack; browser Back left the application instead of exposing the stale Child or Parent screen | **PASSED web proxy** |
+| Surface/state           | Direct observation                                                                                                                                                                      | Result                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Arabic entry            | `/` and `/role` began with `html lang=ar`, `dir=rtl`; the access panel identified fixed synthetic sessions and allowed Parent entry through the governed store action                   | **PASSED web proxy**           |
+| Parent access control   | The Parent revoked Salem, the main Salem entry became disabled with truthful blocked copy, and restore re-enabled entry                                                                 | **PASSED web proxy**           |
+| Private Family Reward   | The Parent created the prepared non-monetary promise, viewed its personal milestone state, and retained the Parent-only delivery action                                                 | **PASSED web proxy**           |
+| Synthetic Family League | The Parent started the fixed week; direct participant labels, capped cooperative progress, and synthetic/no-public-ranking disclosure rendered                                          | **PASSED web proxy**           |
+| Salem projection        | Salem saw the matching private Reward and minimal League projection and sent the allowlisted “Keep growing” phrase named by the action                                                  | **PASSED web proxy**           |
+| Privacy projection      | Alya had no Salem Reward projection; routes did not display credentials, raw eligibility events, task records, Seeds, evidence, or private notes in League data                         | **PASSED source + web sample** |
+| Locale and width        | Arabic at 412×915 produced `lang=ar`, `dir=rtl`, and computed body RTL; English at 320×700 produced `lang=en`, `dir=ltr`, and computed body LTR. Both kept `scrollWidth === innerWidth` | **PASSED sampled**             |
+| Heading structure       | Visible heading navigation contained screen and section titles while excluding the wordmark, Seed/canopy totals, praise text, and League metrics                                        | **PASSED web proxy**           |
+| Protected history       | Parent → role → Salem cleared the protected stack; browser Back reached `about:blank` instead of exposing the stale Parent or Child screen                                              | **PASSED web proxy**           |
 
-Artifacts are under `output/playwright/family-experience/`. The browser console contained one local
-`/favicon.ico` 404 and no observed application exception. This replay does not pass Android launch,
+Final artifacts are `output/playwright/family-experience/final-role-ar-412.webp` and
+`output/playwright/family-experience/final-child-en-320.webp`. The initial local load requested a
+missing `/favicon.ico`; the final session reported zero console errors or warnings and no application
+exception. This replay does not pass Android launch,
 native Back, safe areas, keyboard/IME, TalkBack, 200% font scale, reduced motion, offline runtime,
 physical touch, or performance criteria; those remain **BLOCKED / NOT RUN**.

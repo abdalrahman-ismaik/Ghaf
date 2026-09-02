@@ -180,7 +180,8 @@ The implemented Feature 003 technical limits are:
 - state may remain in memory and reset on reload;
 - all new profiles, tasks, awards, growth, circle data, and assistant responses are local fixtures;
 - no native photo capture, recording, background audio, or real upload exists;
-- native direction changes may require reopen/reload;
+- the active locale controls inherited app direction without `I18nManager.forceRTL`; physical
+  Android bidi behavior still requires direct observation;
 - garden species/stages are deterministic illustrations, not biological models or 3D simulation;
 - Android identifiers, builds, and physical-device behavior remain whatever the actual repository
   and runbook verify;
@@ -236,8 +237,9 @@ cannot upgrade Android or named-human results.
   claimed.
 - This host now has a Java runtime, Android SDK, ADB, emulator binary, and a `Pixel_9_Pro_XL` AVD.
   Expo config introspection and a production Android Hermes export passed, but the AVD could not
-  boot with only about 147 MiB free on `C:`. Native install, launch, Back, RTL, IME, TalkBack,
-  font-scale, reduced-motion, offline, and performance observations therefore remain `NOT RUN`.
+  pass its disk-space preflight even after about 2.0 GiB became free on `C:`. Native install,
+  launch, Back, RTL, IME, TalkBack, font-scale, reduced-motion, offline, and performance
+  observations therefore remain `NOT RUN`.
 - The prepared recycling image uses a 1448×1086 WebP at runtime (124,028 bytes, 94.5% smaller than
   the reviewed PNG source). The PNG stays as the archival review fixture; this payload result is not
   a native frame-rate or memory measurement.

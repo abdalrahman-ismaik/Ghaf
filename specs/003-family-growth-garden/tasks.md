@@ -642,7 +642,7 @@ checks preserve all P0 counters and capability boundaries.
 - [x] T149 [US12] Run focused/full checks, dependency/config scans, exact route inventory, production-
       mode web export, browser proxy, and all available local Android emulator checks; record each as
       `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` without upgrading unobserved physical/human gates
-- [ ] T150 [US12] Perform independent defect-first and visual-strategy reviews against the final
+- [x] T150 [US12] Perform independent defect-first and visual-strategy reviews against the final
       diff, fix confirmed defects, update exact evidence/counts, release every reservation, and commit
       each independently verified slice
 

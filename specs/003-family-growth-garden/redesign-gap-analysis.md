@@ -52,14 +52,14 @@ constitution, active specification, and child-safety/privacy rules remain contro
 
 ## Outcome after this domain window
 
-| Phase                                  | Result                                | Remaining boundary                                                                                                                                            |
-| -------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Authority and contracts                | Implemented                           | Production identity, consent, persistence, and provider architecture still require a separate specification.                                                  |
-| Synthetic access                       | Implemented and focused-tested        | The fixtures demonstrate role separation, pairing, revocation, scoped proofs, and permissions; they do not authenticate real people.                          |
-| Private Family Reward                  | Implemented and focused-tested         | The application adapter derives eligibility only from the authoritative recognized journey and receipt. Payment behavior remains excluded.                    |
-| Weekly Family League                   | Implemented and focused-tested         | Fixed synthetic views and prepared encouragement render in-route. Real invitations, relationship checks, moderation, and notifications remain excluded.       |
-| Age-adaptive Coach and synthetic voice | Implemented and focused-tested        | Only the canonical prepared task/transcript path exists. Microphone capture, transcription, provider calls, and reviewed dialect content remain deferred.     |
-| Registry and convergence               | Implemented through presentation      | The ten routes and P0 reset path remain intact; browser presentation and Android export passed, while native Android and named-human validation were not run.  |
+| Phase                                  | Result                           | Remaining boundary                                                                                                                                            |
+| -------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Authority and contracts                | Implemented                      | Production identity, consent, persistence, and provider architecture still require a separate specification.                                                  |
+| Synthetic access                       | Implemented and focused-tested   | The fixtures demonstrate role separation, pairing, revocation, scoped proofs, and permissions; they do not authenticate real people.                          |
+| Private Family Reward                  | Implemented and focused-tested   | The application adapter derives eligibility only from the authoritative recognized journey and receipt. Payment behavior remains excluded.                    |
+| Weekly Family League                   | Implemented and focused-tested   | Fixed synthetic views and prepared encouragement render in-route. Real invitations, relationship checks, moderation, and notifications remain excluded.       |
+| Age-adaptive Coach and synthetic voice | Implemented and focused-tested   | Only the canonical prepared task/transcript path exists. Microphone capture, transcription, provider calls, and reviewed dialect content remain deferred.     |
+| Registry and convergence               | Implemented through presentation | The ten routes and P0 reset path remain intact; browser presentation and Android export passed, while native Android and named-human validation were not run. |
 
 ## Frontend and Android gap decision
 
@@ -75,7 +75,9 @@ and Parent-only Child revoke/restore; `/parent` and `/child` show strict private
 projections; recognition receipts drive eligible Reward/League progress without changing permanent
 P0 counters. Android package/config hardening, the smaller runtime fixture, full verification, and a
 responsive bilingual browser replay passed. The configured emulator could not boot because the host
-had about 147 MiB free, so no native or physical acceptance claim is made.
+had about 147 MiB free. A final headless retry passed host and hypervisor checks but still failed the
+emulator disk-space preflight with about 2.0 GiB free, so no native or physical acceptance claim is
+made.
 
 ## Safety interpretation
 
