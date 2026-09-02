@@ -140,7 +140,8 @@ function unavailableParentGuide(
 
 async function completeOfflineCycle(cycle: number): Promise<void> {
   const reset = usePrototypeStore.getState().resetPrototype();
-  expect(reset).toEqual({ navigateTo: '/', replaceHistory: true });
+  expectOk(reset);
+  expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
 
   expectOk(
     usePrototypeStore.getState().createTaskDraft({
@@ -444,7 +445,8 @@ describe('US6 bilingual offline operator and reset flow', () => {
       usePrototypeStore.setState(createResetSourceSession(source));
       const reset = usePrototypeStore.getState().resetPrototype();
 
-      expect(reset).toEqual({ navigateTo: '/', replaceHistory: true });
+      expectOk(reset);
+      expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
       expect(sessionSnapshot()).toEqual(createInitialPrototypeSession());
       expect(usePrototypeStore.getState()).toMatchObject({
         locale: 'ar',
@@ -471,9 +473,9 @@ describe('US6 bilingual offline operator and reset flow', () => {
     ]) {
       expect(state[key], key).toBeUndefined();
     }
-    expect(usePrototypeStore.getState().resetPrototype()).toEqual({
-      navigateTo: '/',
-      replaceHistory: true,
+    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({
+      ok: true,
+      data: { navigateTo: '/', replaceHistory: true },
     });
   });
 

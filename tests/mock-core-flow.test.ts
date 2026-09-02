@@ -23,7 +23,10 @@ function currentCounters() {
 
 async function completeOfflineCycle(cycle: number): Promise<void> {
   const reset = usePrototypeStore.getState().resetPrototype();
-  expect(reset).toMatchObject({ navigateTo: '/', replaceHistory: true });
+  expect(reset).toMatchObject({
+    ok: true,
+    data: { navigateTo: '/', replaceHistory: true },
+  });
   expect(currentCounters()).toEqual({
     salemSeeds: 48,
     mangroveSeeds: 48,

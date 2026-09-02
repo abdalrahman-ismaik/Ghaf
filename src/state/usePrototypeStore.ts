@@ -66,9 +66,9 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
-  readonly resetPrototype: () => Omit<ResetResult, 'session'>;
+  readonly resetPrototype: () => ServiceResult<Omit<ResetResult, 'session'>>;
   // Route shell still uses this alias; resetPrototype owns the reset behavior.
-  readonly resetDemo: () => '/';
+  readonly resetDemo: () => ServiceResult<'/'>;
 
   readonly createTaskDraft: (input: {
     readonly childId: SyntheticChildId;
@@ -168,6 +168,10 @@ function failure(
     ok: false,
     error: { code, message, retryable: false, fallbackAvailable },
   };
+}
+
+function success<T>(data: T): ServiceResult<T> {
+  return { ok: true, data, meta: { origin: 'synthetic', fallbackUsed: false } };
 }
 
 function createEmptyChildTaskDraft(): ChildTaskDraftState {
@@ -369,14 +373,18 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resetPrototype: () => {
+    if (get().role !== 'parent') {
+      return failure('INVALID_TRANSITION', 'Switch to the Parent demo role before reset');
+    }
     const voiceReset = childVoiceController.resetPrototype('parent');
+    if (!voiceReset.ok) return voiceReset;
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     set((state) => ({
       ...reset.session,
       parentGuideSuggestion: null,
       childCoachResult: null,
       ageAdaptedCoachResult: null,
-      childVoiceView: voiceReset.ok ? voiceReset.data : INITIAL_CHILD_VOICE_VIEW,
+      childVoiceView: voiceReset.data,
       confirmationPlan: null,
       lastRecognitionAttempt: null,
       prospectiveTaskAdjustment: null,
@@ -385,10 +393,13 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       childTaskDraft: createEmptyChildTaskDraft(),
       taskDraftRevision: state.taskDraftRevision + 1,
     }));
-    return { navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory };
+    return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
   },
 
-  resetDemo: () => get().resetPrototype().navigateTo,
+  resetDemo: () => {
+    const result = get().resetPrototype();
+    return result.ok ? success(result.data.navigateTo) : result;
+  },
 
   createTaskDraft: (input) => {
     if (get().role !== 'parent') {

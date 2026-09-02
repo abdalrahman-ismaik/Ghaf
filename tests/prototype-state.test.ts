@@ -222,8 +222,8 @@ describe('schema-3 Prototype Session reset', () => {
       unsubscribe();
 
       expect(result, `reset attempt ${attempt}`).toMatchObject({
-        navigateTo: '/',
-        replaceHistory: true,
+        ok: true,
+        data: { navigateTo: '/', replaceHistory: true },
       });
       expect(emissions, `reset attempt ${attempt}`).toHaveLength(1);
       expect(emissions[0], `reset attempt ${attempt}`).toEqual(createInitialPrototypeSession());

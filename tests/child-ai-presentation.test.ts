@@ -247,7 +247,8 @@ describe('Child AI presentation controller', () => {
 
 describe('Child AI presentation store integration', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
   });
 
   it('keeps Parent permission explicit and rejects a role-only Child grant', () => {
@@ -332,7 +333,14 @@ describe('Child AI presentation store integration', () => {
       error: { code: 'INVALID_TRANSITION' },
     });
 
-    usePrototypeStore.getState().resetPrototype();
+    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState().childVoiceView).toEqual(voiceBeforeLocaleChange);
+
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
     expect(usePrototypeStore.getState()).toMatchObject({
       locale: 'ar',
       direction: 'rtl',

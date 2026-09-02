@@ -21,8 +21,9 @@ export function PrototypeStatusBar() {
   const canReset = role === 'parent' && pathname !== '/' && pathname !== '/role';
 
   const reset = () => {
-    resetPrototype();
+    const result = resetPrototype();
     setConfirming(false);
+    if (!result.ok) return;
     replaceHistoryWithEntry(router);
   };
 
