@@ -3,35 +3,39 @@ import type {
   AdaptCoachResultInput,
   AgeAdaptedCoachResult,
   ChildCoachOutputPolicy,
+  PreparedCoachMaterial,
 } from '../../models/assistantVoice';
+import { P0_APPROVED_COACH_BINDING, PREPARED_COACH_MATERIALS } from './preparedContent';
+
+export { PREPARED_COACH_MATERIALS } from './preparedContent';
 
 const outputPolicies: Readonly<Record<ChildCoachOutputPolicy['ageBand'], ChildCoachOutputPolicy>> =
-  {
-    '6_8': {
+  Object.freeze({
+    '6_8': Object.freeze({
       ageBand: '6_8',
       maximumSteps: 1,
       pace: 'slow',
       tone: 'very_short',
       quickChoiceLimit: 0,
       adultExitPlacement: 'early',
-    },
-    '9_11': {
+    }),
+    '9_11': Object.freeze({
       ageBand: '9_11',
       maximumSteps: 3,
       pace: 'standard',
       tone: 'friendly_clear',
       quickChoiceLimit: 3,
       adultExitPlacement: 'persistent',
-    },
-    '12_14': {
+    }),
+    '12_14': Object.freeze({
       ageBand: '12_14',
       maximumSteps: 3,
       pace: 'standard',
       tone: 'respectful_mature',
       quickChoiceLimit: 0,
       adultExitPlacement: 'persistent',
-    },
-  };
+    }),
+  });
 
 function failure(message: string): DomainResult<never> {
   return {
@@ -54,19 +58,52 @@ function validLocalizedText(value: LocalizedText): boolean {
   );
 }
 
+function validAgeBand(value: unknown): value is ChildCoachOutputPolicy['ageBand'] {
+  return value === '6_8' || value === '9_11' || value === '12_14';
+}
+
 export function coachOutputPolicyForAgeBand(
   ageBand: ChildCoachOutputPolicy['ageBand'],
 ): ChildCoachOutputPolicy {
-  return outputPolicies[ageBand];
+  if (!validAgeBand(ageBand)) {
+    throw new RangeError('Coach age band is outside the reviewed policy');
+  }
+  return { ...outputPolicies[ageBand] };
+}
+
+function sameLocalizedText(left: LocalizedText, right: LocalizedText): boolean {
+  return left.ar === right.ar && left.en === right.en;
+}
+
+function matchesPreparedFixture(material: PreparedCoachMaterial): boolean {
+  const fixture = PREPARED_COACH_MATERIALS[material.fixtureId];
+  return (
+    !!fixture &&
+    material.taskId === fixture.taskId &&
+    material.approvedTaskVersion === fixture.approvedTaskVersion &&
+    material.origin === fixture.origin &&
+    material.steps.length === fixture.steps.length &&
+    material.steps.every((step, index) => sameLocalizedText(step, fixture.steps[index]!)) &&
+    material.quickChoices.length === fixture.quickChoices.length &&
+    material.quickChoices.every((choice, index) =>
+      sameLocalizedText(choice, fixture.quickChoices[index]!),
+    ) &&
+    sameLocalizedText(material.adultExit, fixture.adultExit) &&
+    sameLocalizedText(material.aiDisclosure, fixture.aiDisclosure)
+  );
 }
 
 export function adaptPreparedCoachResult(
   input: AdaptCoachResultInput,
 ): DomainResult<AgeAdaptedCoachResult> {
   const { context, material } = input;
+  if (!validAgeBand(context.ageBand)) {
+    return failure('Coach age band is outside the reviewed policy');
+  }
   if (
     !context.approvedByParent ||
     !['chosen', 'in_progress'].includes(context.lifecycle) ||
+    context.childId !== P0_APPROVED_COACH_BINDING.childId ||
     context.taskId !== material.taskId ||
     context.approvedTaskVersion !== material.approvedTaskVersion ||
     context.approvedTaskVersion < 1
@@ -75,7 +112,7 @@ export function adaptPreparedCoachResult(
   }
 
   if (
-    material.origin !== 'prepared' ||
+    !matchesPreparedFixture(material) ||
     material.steps.length < 1 ||
     material.steps.length > 4 ||
     !material.steps.every(validLocalizedText) ||

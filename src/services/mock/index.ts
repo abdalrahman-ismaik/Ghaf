@@ -19,6 +19,7 @@ import {
   startVoiceSession,
   stopVoiceSessionWithPreparedTranscript,
 } from '../../features/assistants/voiceSession';
+import { P0_APPROVED_COACH_BINDING } from '../../features/assistants/preparedContent';
 import { DeterministicSyntheticAccessService } from '../../features/access';
 import {
   createFamilyRewardPlan,
@@ -36,6 +37,7 @@ import {
   projectLeagueParticipants,
   rolloverFamilyLeagueWeek,
   sendPreparedEncouragement,
+  SYNTHETIC_LEAGUE_PARTICIPANTS,
 } from '../../features/league';
 import {
   applyCanopy,
@@ -75,15 +77,14 @@ import type {
   VoiceAccessContext,
   VoicePlaybackInput,
 } from '../../models/assistantVoice';
-import type { SensitiveActionInput } from '../../models/access';
+import type { ParentCapability, SensitiveActionPurpose } from '../../models/access';
 import type {
   FamilyRewardErrorCode,
   FamilyRewardEvaluationOptions,
+  FamilyRewardPlan,
   FamilyRewardPlanDraft,
   FamilyRewardResult,
-  FamilyRewardViewer,
   GiveFamilyRewardInput,
-  MonetaryCommitmentRequest,
   ReviseFamilyRewardPlanInput,
 } from '../../models/familyReward';
 import type {
@@ -91,8 +92,10 @@ import type {
   ConfirmChallengeLeafInput,
   CreateLeagueWeekInput,
   FamilyLeagueWeek,
-  LeagueProjectionInput,
+  LeagueEncouragementRequest,
   LeagueRolloverInput,
+  PreparedEncouragement,
+  PreparedEncouragementApplication,
   SyntheticLeagueParticipant,
 } from '../../models/familyLeague';
 import type {
@@ -143,6 +146,7 @@ import type {
   RecognitionService,
   ServiceMeta,
   ServiceResult,
+  SessionAuthorityInput,
   SyntheticVoiceService,
   SyntheticAccessService,
   TaskService,
@@ -1299,10 +1303,10 @@ export class DeterministicChildCoachProvider implements PreparedChildCoachProvid
 
   async respond(request: ChildCoachRequest): Promise<ServiceResult<ChildCoachResult>> {
     const context: ActiveCoachContext = {
-      activeChildId: 'child_salem',
-      assignmentId: 'assignment_recycling_p0_v1',
-      taskId: 'task_recycling_p0_v1',
-      approvedTaskVersion: 1,
+      activeChildId: P0_APPROVED_COACH_BINDING.childId,
+      assignmentId: P0_APPROVED_COACH_BINDING.assignmentId,
+      taskId: P0_APPROVED_COACH_BINDING.taskId,
+      approvedTaskVersion: P0_APPROVED_COACH_BINDING.approvedTaskVersion,
       lifecycle: request.lifecycle,
       approvedByParent: true,
     };
@@ -1319,8 +1323,11 @@ export class DeterministicChildCoachProvider implements PreparedChildCoachProvid
 }
 
 export class DeterministicCoachAdaptationService implements CoachAdaptationService {
-  policyForAgeBand(ageBand: ChildCoachOutputPolicy['ageBand']): ChildCoachOutputPolicy {
-    return coachOutputPolicyForAgeBand(ageBand);
+  policyForAgeBand(ageBand: unknown): ServiceResult<ChildCoachOutputPolicy> {
+    if (ageBand !== '6_8' && ageBand !== '9_11' && ageBand !== '12_14') {
+      return failure('INVALID_INPUT', 'Coach age band is outside the reviewed policy');
+    }
+    return success(coachOutputPolicyForAgeBand(ageBand));
   }
 
   adaptPreparedResult(input: AdaptCoachResultInput): ServiceResult<AgeAdaptedCoachResult> {
@@ -1329,181 +1336,679 @@ export class DeterministicCoachAdaptationService implements CoachAdaptationServi
 }
 
 export class DeterministicSyntheticVoiceService implements SyntheticVoiceService {
-  createIdle(input: CreateVoiceSessionInput): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(createIdleVoiceSession(input));
+  private readonly sessions = new Map<string, SyntheticVoiceSession>();
+
+  constructor(private readonly accessService: SyntheticAccessService) {}
+
+  createIdle(
+    input: CreateVoiceSessionInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    const authorized = this.authorizeCurrentGrant(
+      input.access.childId,
+      input.access.accessSessionId,
+      input.access.grant.version,
+      authority,
+    );
+    if (!authorized.ok) return authorized;
+    if (this.sessions.has(input.voiceSessionId)) {
+      return failure('INVALID_TRANSITION', 'Synthetic voice session identifier is already used');
+    }
+    return this.storeVoiceSession(fromDomain(createIdleVoiceSession(input)));
   }
 
   start(
     session: SyntheticVoiceSession,
     access: VoiceAccessContext,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(startVoiceSession(session, access));
+    const stored = this.resolveVoiceSession(session, authority, true);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(fromDomain(startVoiceSession(stored.data, access)));
   }
 
   stopWithPreparedTranscript(
     session: SyntheticVoiceSession,
     input: StopVoiceSessionInput,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(stopVoiceSessionWithPreparedTranscript(session, input), PREPARED_META);
+    const stored = this.resolveVoiceSession(session, authority, true);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(
+      fromDomain(stopVoiceSessionWithPreparedTranscript(stored.data, input), PREPARED_META),
+    );
   }
 
-  deleteBeforeSend(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(deleteVoiceTranscript(session));
+  deleteBeforeSend(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    const stored = this.resolveVoiceSession(session, authority, false);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(fromDomain(deleteVoiceTranscript(stored.data)));
   }
 
-  send(session: SyntheticVoiceSession, sentAt: string): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(sendVoiceTranscript(session, sentAt));
+  send(
+    session: SyntheticVoiceSession,
+    sentAt: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    const stored = this.resolveVoiceSession(session, authority, true);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(fromDomain(sendVoiceTranscript(stored.data, sentAt)));
   }
 
   setPlayback(
     session: SyntheticVoiceSession,
     input: VoicePlaybackInput,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(setVoicePlayback(session, input));
+    const stored = this.resolveVoiceSession(session, authority, true);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(fromDomain(setVoicePlayback(stored.data, input)));
   }
 
-  replay(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession> {
-    return fromDomain(replayVoiceTranscript(session));
+  replay(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    const stored = this.resolveVoiceSession(session, authority, true);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(fromDomain(replayVoiceTranscript(stored.data)));
   }
 
-  reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession> {
-    return success(resetVoiceSession(session));
+  reset(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    const stored = this.resolveVoiceSession(session, authority, false);
+    if (!stored.ok) return stored;
+    return this.storeVoiceSession(success(resetVoiceSession(stored.data)));
+  }
+
+  private resolveVoiceSession(
+    supplied: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+    currentGrantRequired: boolean,
+  ): ServiceResult<SyntheticVoiceSession> {
+    const stored = this.sessions.get(supplied.voiceSessionId);
+    if (!stored || JSON.stringify(stored) !== JSON.stringify(supplied)) {
+      return failure('INVALID_TRANSITION', 'Synthetic voice session state is stale or forged');
+    }
+    const authorized = currentGrantRequired
+      ? this.authorizeCurrentGrant(
+          stored.childId,
+          stored.accessSessionId,
+          stored.permissionVersion,
+          authority,
+        )
+      : this.authorizeIdentity(stored, authority);
+    return authorized.ok ? success(this.cloneVoiceSession(stored)) : authorized;
+  }
+
+  private storeVoiceSession(
+    result: ServiceResult<SyntheticVoiceSession>,
+  ): ServiceResult<SyntheticVoiceSession> {
+    if (!result.ok) return result;
+    const stored = this.cloneVoiceSession(result.data);
+    this.sessions.set(stored.voiceSessionId, stored);
+    return success(this.cloneVoiceSession(stored), result.meta);
+  }
+
+  private cloneVoiceSession(session: SyntheticVoiceSession): SyntheticVoiceSession {
+    return {
+      voiceSessionId: session.voiceSessionId,
+      childId: session.childId,
+      accessSessionId: session.accessSessionId,
+      taskId: session.taskId,
+      approvedTaskVersion: session.approvedTaskVersion,
+      permissionVersion: session.permissionVersion,
+      lifecycle: session.lifecycle,
+      transcriptFixtureId: session.transcriptFixtureId,
+      transcript: session.transcript ? { ...session.transcript } : null,
+      captionsEnabled: session.captionsEnabled,
+      playbackRate: session.playbackRate,
+      replayCount: session.replayCount,
+      recordingVisible: session.recordingVisible,
+      backgroundRecording: false,
+      sentAt: session.sentAt,
+      origin: 'synthetic',
+    };
+  }
+
+  private authorizeIdentity(
+    session: Pick<SyntheticVoiceSession, 'childId' | 'accessSessionId'>,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<true> {
+    const projected = this.accessService.projectSession(authority);
+    if (!projected.ok) return projected;
+    if (
+      projected.data.viewKind !== 'child' ||
+      projected.data.childId !== session.childId ||
+      projected.data.sessionId !== session.accessSessionId ||
+      !projected.data.capabilities.includes('use_task_coach')
+    ) {
+      return failure('PRIVACY_REJECTED', 'Voice session authority does not match the active Child');
+    }
+    return success(true);
+  }
+
+  private authorizeCurrentGrant(
+    childId: string,
+    accessSessionId: string,
+    permissionVersion: number,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<true> {
+    const identity = this.authorizeIdentity({ childId, accessSessionId }, authority);
+    if (!identity.ok) return identity;
+    if (childId !== 'child_salem' && childId !== 'child_alya') {
+      return failure('PRIVACY_REJECTED', 'Voice is limited to the active synthetic Child');
+    }
+    const grant = this.accessService.getChildPermissions({
+      session: authority.session,
+      childId,
+      now: authority.now,
+    });
+    if (!grant.ok) return grant;
+    if (
+      grant.data.version !== permissionVersion ||
+      !grant.data.voiceGranted ||
+      !grant.data.aiGranted
+    ) {
+      return failure('PRIVACY_REJECTED', 'Stored Parent voice and AI grants are required');
+    }
+    return success(true);
   }
 }
 
 export class DeterministicFamilyRewardService implements FamilyRewardService {
+  private readonly plans = new Map<string, FamilyRewardPlan>();
+
   constructor(private readonly access: SyntheticAccessService) {}
 
   createPlan(
     input: FamilyRewardPlanDraft,
-    monetaryAuthorization?: SensitiveActionInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
   ): ReturnType<FamilyRewardService['createPlan']> {
+    const parent = this.authorizeParent(input.createdByGuardianId, authority);
+    if (!parent.ok) return parent;
     const created = createFamilyRewardPlan(input);
     if (!created.ok) return fromFamilyReward(created);
+    if (this.plans.has(created.data.id)) {
+      return failure('INVALID_TRANSITION', 'Family Reward plan identifier is already used');
+    }
     if (created.data.promise.kind === 'money') {
       const authorized = this.authorizeMonetaryChange(
-        created.data.createdByGuardianId,
         'create_monetary_family_reward',
-        monetaryAuthorization,
+        authority,
+        monetaryProofId,
       );
       if (!authorized.ok) return authorized;
     }
-    return fromFamilyReward(created);
+    return success(this.savePlan(created.data));
   }
 
   revisePromisedPlan(
-    plan: unknown,
+    planId: string,
     input: ReviseFamilyRewardPlanInput,
-    monetaryAuthorization?: SensitiveActionInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
   ): ReturnType<FamilyRewardService['revisePromisedPlan']> {
-    const revised = reviseFamilyRewardPlan(plan, input);
+    const parent = this.authorizeParent(input.guardianId, authority);
+    if (!parent.ok) return parent;
+    const stored = this.resolvePlan(planId);
+    if (!stored.ok) return stored;
+    const revised = reviseFamilyRewardPlan(stored.data, input);
     if (!revised.ok) return fromFamilyReward(revised);
     if (
       revised.data.priorVersion.promise.kind === 'money' ||
       revised.data.revisedPlan.promise.kind === 'money'
     ) {
       const authorized = this.authorizeMonetaryChange(
-        input.guardianId,
         'change_monetary_family_reward',
-        monetaryAuthorization,
+        authority,
+        monetaryProofId,
       );
       if (!authorized.ok) return authorized;
     }
-    return fromFamilyReward(revised);
+    const revisedPlan = this.savePlan(revised.data.revisedPlan);
+    return success({
+      priorVersion: this.clonePlan(revised.data.priorVersion),
+      revisedPlan,
+    });
   }
 
   evaluatePlan(
-    plan: unknown,
-    events: readonly unknown[],
+    planId: string,
+    candidateEvents: readonly unknown[],
     options: FamilyRewardEvaluationOptions,
+    authority: SessionAuthorityInput,
   ): ReturnType<FamilyRewardService['evaluatePlan']> {
-    return fromFamilyReward(evaluateFamilyRewardPlan(plan, events, options));
+    const parent = this.resolveParent(authority);
+    if (!parent.ok) return parent;
+    const stored = this.resolvePlan(planId);
+    if (!stored.ok) return stored;
+    const authorized = this.authorizePlanGuardian(stored.data, authority);
+    if (!authorized.ok) return authorized;
+    const evaluated = evaluateFamilyRewardPlan(stored.data, candidateEvents, options);
+    if (!evaluated.ok) return fromFamilyReward(evaluated);
+    const savedPlan = this.savePlan(evaluated.data.plan);
+    return success({
+      ...evaluated.data,
+      plan: savedPlan,
+      progress: {
+        ...evaluated.data.progress,
+        recognitionKeys: [...evaluated.data.progress.recognitionKeys],
+        eligibleLandscapeTransitions: evaluated.data.progress.eligibleLandscapeTransitions.map(
+          (item) => ({ ...item }),
+        ),
+        landscapesCrossingTarget: [...evaluated.data.progress.landscapesCrossingTarget],
+      },
+    });
   }
 
   markGiven(
-    plan: unknown,
+    planId: string,
     input: GiveFamilyRewardInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
   ): ReturnType<FamilyRewardService['markGiven']> {
-    return fromFamilyReward(markFamilyRewardGiven(plan, input));
+    const parent = this.authorizeParent(input.guardianId, authority);
+    if (!parent.ok) return parent;
+    const stored = this.resolvePlan(planId);
+    if (!stored.ok) return stored;
+    const given = markFamilyRewardGiven(stored.data, input);
+    if (!given.ok) return fromFamilyReward(given);
+    if (given.data.disposition === 'given' && given.data.plan.promise.kind === 'money') {
+      const authorized = this.authorizeMonetaryChange(
+        'change_monetary_family_reward',
+        authority,
+        monetaryProofId,
+      );
+      if (!authorized.ok) return authorized;
+    }
+    return success({ ...given.data, plan: this.savePlan(given.data.plan) });
   }
 
   projectPrivate(
-    plan: unknown,
-    viewer: FamilyRewardViewer,
+    planId: string,
+    authority: SessionAuthorityInput,
   ): ReturnType<FamilyRewardService['projectPrivate']> {
-    return fromFamilyReward(projectFamilyRewardPlan(plan, viewer));
+    const projected = this.access.projectSession(authority);
+    if (!projected.ok) return projected;
+    const stored = this.resolvePlan(planId);
+    if (!stored.ok) {
+      return projected.data.viewKind === 'child'
+        ? failure('PRIVACY_REJECTED', 'Family Reward is not available to this Child')
+        : stored;
+    }
+    const viewer =
+      projected.data.viewKind === 'parent'
+        ? { kind: 'guardian' as const, guardianId: projected.data.parentId }
+        : { kind: 'child' as const, childId: projected.data.childId };
+    const privateView = projectFamilyRewardPlan(stored.data, viewer);
+    return !privateView.ok && projected.data.viewKind === 'child'
+      ? failure('PRIVACY_REJECTED', 'Family Reward is not available to this Child')
+      : fromFamilyReward(privateView);
   }
 
   summarizeMonthlyCommitment(
-    plans: readonly unknown[],
-    request: MonetaryCommitmentRequest,
+    authority: SessionAuthorityInput,
   ): ReturnType<FamilyRewardService['summarizeMonthlyCommitment']> {
-    return fromFamilyReward(summarizeMonthlyMonetaryCommitments(plans, request));
+    const parent = this.resolveParent(authority);
+    if (!parent.ok) return parent;
+    return fromFamilyReward(
+      summarizeMonthlyMonetaryCommitments([...this.plans.values()], {
+        guardianId: parent.data.parentId,
+      }),
+    );
+  }
+
+  private resolvePlan(planId: string): ServiceResult<FamilyRewardPlan> {
+    const stored = this.plans.get(planId);
+    return stored
+      ? success(this.clonePlan(stored))
+      : failure('NOT_FOUND', 'Family Reward plan was not created by this service');
+  }
+
+  private savePlan(plan: FamilyRewardPlan): FamilyRewardPlan {
+    const stored = this.clonePlan(plan);
+    this.plans.set(stored.id, stored);
+    return this.clonePlan(stored);
+  }
+
+  private clonePlan(plan: FamilyRewardPlan): FamilyRewardPlan {
+    return {
+      ...plan,
+      guardianIds: [...plan.guardianIds],
+      promise:
+        plan.promise.kind === 'money'
+          ? { ...plan.promise, label: { ...plan.promise.label } }
+          : { ...plan.promise, label: { ...plan.promise.label } },
+      milestone: { ...plan.milestone },
+    };
   }
 
   private authorizeMonetaryChange(
-    guardianId: string,
-    purpose: SensitiveActionInput['purpose'],
-    authorization?: SensitiveActionInput,
+    purpose: SensitiveActionPurpose,
+    authority: SessionAuthorityInput,
+    proofId?: string,
   ): ServiceResult<true> {
-    if (
-      !authorization ||
-      authorization.purpose !== purpose ||
-      authorization.parentSession.sessionKind !== 'parent' ||
-      authorization.parentSession.principal.parentId !== guardianId
-    ) {
+    if (!proofId?.trim()) {
       return failure(
         'PRIVACY_REJECTED',
         'A matching one-use Parent reauthentication proof is required for monetary metadata',
       );
     }
-    const authorized = this.access.authorizeSensitiveAction(authorization);
+    const authorized = this.access.authorizeSensitiveAction({
+      proofId,
+      parentSession: authority.session,
+      purpose,
+      now: authority.now,
+    });
     if (!authorized.ok) return authorized;
-    if (
-      authorized.data.parentId !== guardianId ||
-      !authorized.data.consumed ||
-      authorized.data.consumedAt === null
-    ) {
+    if (!authorized.data.consumed || authorized.data.consumedAt === null) {
       return failure(
         'PRIVACY_REJECTED',
-        'The consumed reauthentication proof does not match the acting guardian',
+        'The reauthentication proof was not consumed for this monetary change',
       );
     }
     return success(true);
   }
+
+  private resolveParent(authority: SessionAuthorityInput) {
+    const projected = this.access.projectSession(authority);
+    if (!projected.ok) return projected;
+    if (
+      projected.data.viewKind !== 'parent' ||
+      !projected.data.capabilities.includes('manage_family_rewards')
+    ) {
+      return failure('PRIVACY_REJECTED', 'A stored Parent reward capability is required');
+    }
+    return success(projected.data);
+  }
+
+  private authorizeParent(
+    guardianId: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<true> {
+    const parent = this.resolveParent(authority);
+    if (!parent.ok) return parent;
+    if (parent.data.parentId !== guardianId) {
+      return failure('PRIVACY_REJECTED', 'The acting Parent is not this promise guardian');
+    }
+    return success(true);
+  }
+
+  private authorizePlanGuardian(
+    plan: FamilyRewardPlan,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<true> {
+    const parent = this.resolveParent(authority);
+    if (!parent.ok) return parent;
+    const privateView = projectFamilyRewardPlan(plan, {
+      kind: 'guardian',
+      guardianId: parent.data.parentId,
+    });
+    return privateView.ok
+      ? success(true)
+      : failure(familyRewardErrorCode(privateView.error.code), privateView.error.message);
+  }
 }
 
 export class DeterministicFamilyLeagueService implements FamilyLeagueService {
+  private readonly weeks = new Map<string, FamilyLeagueWeek>();
+  private readonly confirmationRequests = new Map<string, string>();
+
+  constructor(private readonly access: SyntheticAccessService) {}
+
   evaluateEligibility(candidate: ChallengeLeafCandidate, participant: SyntheticLeagueParticipant) {
     return evaluateChallengeLeafEligibility(candidate, participant);
   }
 
-  createWeek(input: CreateLeagueWeekInput): ReturnType<FamilyLeagueService['createWeek']> {
-    return fromDomain(createFamilyLeagueWeek(input));
+  createWeek(
+    input: CreateLeagueWeekInput,
+    authority: SessionAuthorityInput,
+    membershipProofId: string,
+  ): ReturnType<FamilyLeagueService['createWeek']> {
+    const parent = this.authorizeParent(authority, 'manage_league_membership');
+    if (!parent.ok) return parent;
+    const created = createFamilyLeagueWeek(input);
+    if (!created.ok) return fromDomain(created);
+    const existing = this.weeks.get(created.data.weekKey);
+    const replaceableRolledWeek =
+      existing &&
+      existing.leaves.length === 0 &&
+      Object.keys(existing.confirmationLedger).length === 0 &&
+      existing.cooperativeConfirmedCount === 0 &&
+      existing.preparedEncouragementLedger.length === 0;
+    if (existing && !replaceableRolledWeek) {
+      return failure('INVALID_TRANSITION', 'Synthetic League week already exists');
+    }
+    if (!membershipProofId?.trim()) {
+      return failure(
+        'PRIVACY_REJECTED',
+        'A one-use Parent proof is required to establish League membership',
+      );
+    }
+    const authorized = this.access.authorizeSensitiveAction({
+      proofId: membershipProofId,
+      parentSession: authority.session,
+      purpose: 'change_league_membership',
+      now: authority.now,
+    });
+    return authorized.ok ? this.storeWeek(fromDomain(created)) : authorized;
   }
 
-  confirmLeaf(input: ConfirmChallengeLeafInput): ReturnType<FamilyLeagueService['confirmLeaf']> {
-    return fromDomain(confirmChallengeLeaf(input));
+  confirmLeaf(
+    input: ConfirmChallengeLeafInput,
+    authority: SessionAuthorityInput,
+  ): ReturnType<FamilyLeagueService['confirmLeaf']> {
+    const validated = confirmChallengeLeaf(input);
+    if (!validated.ok) return fromDomain(validated);
+    const parent = this.authorizeParent(authority, 'confirm_tasks');
+    if (!parent.ok) return parent;
+    const current = this.weeks.get(input.week.weekKey);
+    const existingCredit = current?.confirmationLedger[input.recognitionKey];
+    if (existingCredit) {
+      const requestKey = `${input.week.weekKey}:${input.recognitionKey}`;
+      const repeatedOriginal = this.confirmationRequests.get(requestKey) === JSON.stringify(input);
+      const repeatedCurrent = JSON.stringify(current) === JSON.stringify(input.week);
+      return existingCredit.leafId === input.leafId && (repeatedOriginal || repeatedCurrent)
+        ? success(this.cloneWeek(current))
+        : failure('INVALID_TRANSITION', 'League confirmation retry is stale or forged');
+    }
+    const stored = this.resolveWeek(input.week);
+    if (!stored.ok) return stored;
+    const confirmed = confirmChallengeLeaf({ ...input, week: stored.data });
+    if (!confirmed.ok) return fromDomain(confirmed);
+    this.confirmationRequests.set(
+      `${input.week.weekKey}:${input.recognitionKey}`,
+      JSON.stringify(input),
+    );
+    return this.storeWeek(success(confirmed.data));
   }
 
-  calculateResults(week: FamilyLeagueWeek): ReturnType<FamilyLeagueService['calculateResults']> {
-    return fromDomain(calculateWeeklyGrowthResults(week));
+  calculateResults(
+    week: FamilyLeagueWeek,
+    authority: SessionAuthorityInput,
+  ): ReturnType<FamilyLeagueService['calculateResults']> {
+    const parent = this.authorizeParent(authority, 'manage_league_membership');
+    if (!parent.ok) return parent;
+    const stored = this.resolveWeek(week);
+    return stored.ok ? fromDomain(calculateWeeklyGrowthResults(stored.data)) : stored;
   }
 
   projectParticipants(
-    input: LeagueProjectionInput | unknown,
+    weekKey: string,
+    authority: SessionAuthorityInput,
   ): ReturnType<FamilyLeagueService['projectParticipants']> {
-    return fromDomain(projectLeagueParticipants(input));
+    const viewer = this.authorizeViewer(authority);
+    if (!viewer.ok) return viewer;
+    const stored = this.resolveWeekKey(weekKey);
+    if (!stored.ok) return stored;
+    const calculated = calculateWeeklyGrowthResults(stored.data);
+    if (!calculated.ok) return fromDomain(calculated);
+    return fromDomain(
+      projectLeagueParticipants({
+        participants: calculated.data.map((item) => ({
+          ...item,
+          protectedContentPresent: false as const,
+        })),
+      }),
+    );
   }
 
   sendPreparedEncouragement(
-    input: unknown,
+    input: LeagueEncouragementRequest,
+    authority: SessionAuthorityInput,
   ): ReturnType<FamilyLeagueService['sendPreparedEncouragement']> {
-    return fromDomain(sendPreparedEncouragement(input), PREPARED_META);
+    const projected = this.access.projectSession(authority);
+    if (
+      !projected.ok ||
+      projected.data.viewKind !== 'child' ||
+      !projected.data.capabilities.includes('view_own_league')
+    ) {
+      return failure(
+        'PRIVACY_REJECTED',
+        'Prepared encouragement sender must match the stored Child session',
+      );
+    }
+    if (
+      !input ||
+      typeof input !== 'object' ||
+      Object.keys(input).sort().join(',') !== 'phraseId,recipientId,weekKey'
+    ) {
+      return failure('PRIVACY_REJECTED', 'Prepared encouragement input must not include free text');
+    }
+    const stored = this.resolveWeekKey(input.weekKey);
+    if (!stored.ok) return stored;
+    const prepared = sendPreparedEncouragement({
+      week: stored.data,
+      senderId: projected.data.childId,
+      recipientId: input.recipientId,
+      phraseId: input.phraseId,
+    });
+    if (!prepared.ok) return fromDomain(prepared, PREPARED_META);
+    const existing = stored.data.preparedEncouragementLedger.find(
+      (item) => item.id === prepared.data.encouragement.id,
+    );
+    if (existing) return success({ ...existing, text: { ...existing.text } }, PREPARED_META);
+    return this.storeEncouragement(prepared);
   }
 
-  rollover(input: LeagueRolloverInput): ReturnType<FamilyLeagueService['rollover']> {
-    return fromDomain(rolloverFamilyLeagueWeek(input));
+  rollover(
+    input: LeagueRolloverInput,
+    authority: SessionAuthorityInput,
+  ): ReturnType<FamilyLeagueService['rollover']> {
+    const parent = this.authorizeParent(authority, 'manage_league_membership');
+    if (!parent.ok) return parent;
+    const stored = this.resolveWeek(input.currentWeek);
+    if (!stored.ok) return stored;
+    if (this.weeks.has(input.nextWeekKey)) {
+      return failure('INVALID_TRANSITION', 'The next synthetic League week already exists');
+    }
+    const rolled = rolloverFamilyLeagueWeek({ ...input, currentWeek: stored.data });
+    if (!rolled.ok) return fromDomain(rolled);
+    this.weeks.delete(stored.data.weekKey);
+    for (const requestKey of this.confirmationRequests.keys()) {
+      if (requestKey.startsWith(`${stored.data.weekKey}:`)) {
+        this.confirmationRequests.delete(requestKey);
+      }
+    }
+    const saved = this.storeWeek(success(rolled.data.week));
+    return saved.ok ? success({ ...rolled.data, week: saved.data }) : saved;
+  }
+
+  private resolveWeek(supplied: FamilyLeagueWeek): ServiceResult<FamilyLeagueWeek> {
+    const stored = this.weeks.get(supplied.weekKey);
+    if (!stored || JSON.stringify(stored) !== JSON.stringify(supplied)) {
+      return failure('INVALID_TRANSITION', 'Synthetic League week state is stale or forged');
+    }
+    return success(this.cloneWeek(stored));
+  }
+
+  private resolveWeekKey(weekKey: string): ServiceResult<FamilyLeagueWeek> {
+    if (typeof weekKey !== 'string' || !weekKey.trim()) {
+      return failure('INVALID_INPUT', 'Synthetic League week key is required');
+    }
+    const stored = this.weeks.get(weekKey);
+    return stored
+      ? success(this.cloneWeek(stored))
+      : failure('NOT_FOUND', 'Synthetic League week was not found');
+  }
+
+  private storeWeek(result: ServiceResult<FamilyLeagueWeek>): ServiceResult<FamilyLeagueWeek> {
+    if (!result.ok) return result;
+    const stored = this.cloneWeek(result.data);
+    this.weeks.set(stored.weekKey, stored);
+    return success(this.cloneWeek(stored), result.meta);
+  }
+
+  private storeEncouragement(
+    result: DomainResult<PreparedEncouragementApplication>,
+  ): ServiceResult<PreparedEncouragement> {
+    if (!result.ok) return fromDomain(result, PREPARED_META);
+    const saved = this.storeWeek(success(result.data.week, PREPARED_META));
+    return saved.ok
+      ? success(
+          { ...result.data.encouragement, text: { ...result.data.encouragement.text } },
+          PREPARED_META,
+        )
+      : saved;
+  }
+
+  private cloneWeek(week: FamilyLeagueWeek): FamilyLeagueWeek {
+    return {
+      weekKey: week.weekKey,
+      timeZone: week.timeZone,
+      invitedParticipants: SYNTHETIC_LEAGUE_PARTICIPANTS,
+      optedOutParticipantIds: [...week.optedOutParticipantIds],
+      leaves: week.leaves.map((leaf) => ({
+        ...leaf,
+        approvedTaskRef: { ...leaf.approvedTaskRef },
+        protectedContent: { ...leaf.protectedContent },
+      })),
+      confirmationLedger: Object.fromEntries(
+        Object.entries(week.confirmationLedger).map(([key, entry]) => [key, { ...entry }]),
+      ),
+      cooperativeConfirmedCount: week.cooperativeConfirmedCount,
+      cooperativeGoal: week.cooperativeGoal,
+      preparedEncouragementLedger: week.preparedEncouragementLedger.map((item) => ({
+        ...item,
+        text: { ...item.text },
+      })),
+      origin: 'synthetic_local',
+    };
+  }
+
+  private authorizeParent(
+    authority: SessionAuthorityInput,
+    capability: Extract<ParentCapability, 'manage_league_membership' | 'confirm_tasks'>,
+  ): ServiceResult<true> {
+    const projected = this.access.projectSession(authority);
+    if (
+      !projected.ok ||
+      projected.data.viewKind !== 'parent' ||
+      !projected.data.capabilities.includes(capability)
+    ) {
+      return failure('PRIVACY_REJECTED', 'A matching stored Parent League capability is required');
+    }
+    return success(true);
+  }
+
+  private authorizeViewer(authority: SessionAuthorityInput): ServiceResult<true> {
+    const projected = this.access.projectSession(authority);
+    if (!projected.ok) return projected;
+    const allowed =
+      (projected.data.viewKind === 'parent' &&
+        projected.data.capabilities.includes('manage_league_membership')) ||
+      (projected.data.viewKind === 'child' &&
+        projected.data.capabilities.includes('view_own_league'));
+    return allowed
+      ? success(true)
+      : failure('PRIVACY_REJECTED', 'The stored session cannot view this synthetic League');
   }
 }
 
@@ -1558,10 +2063,10 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     parentGuide: new DeterministicParentGuideProvider(),
     childCoach: new DeterministicChildCoachProvider(),
     coachAdaptation: new DeterministicCoachAdaptationService(),
-    syntheticVoice: new DeterministicSyntheticVoiceService(),
+    syntheticVoice: new DeterministicSyntheticVoiceService(access),
     access,
     familyReward: new DeterministicFamilyRewardService(access),
-    familyLeague: new DeterministicFamilyLeagueService(),
+    familyLeague: new DeterministicFamilyLeagueService(access),
     parentSummary: new DeterministicParentSummaryPolicy(),
     prototypeSession: new DeterministicPrototypeSessionService(),
   };

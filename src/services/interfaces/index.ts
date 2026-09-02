@@ -9,6 +9,7 @@ import type {
   VoicePlaybackInput,
 } from '../../models/assistantVoice';
 import type {
+  AccessSession,
   AccessView,
   CapabilityAuthorization,
   CapabilityAuthorizationInput,
@@ -21,6 +22,7 @@ import type {
   PairingConsumptionInput,
   PairingRequest,
   PairingRequestInput,
+  PairingRevocationInput,
   ParentAccessSession,
   PermissionUpdateInput,
   ProjectAccessSessionInput,
@@ -37,9 +39,7 @@ import type {
   FamilyRewardPlan,
   FamilyRewardPlanDraft,
   FamilyRewardRevision,
-  FamilyRewardViewer,
   GiveFamilyRewardInput,
-  MonetaryCommitmentRequest,
   MonetaryCommitmentSummary,
   PrivateFamilyRewardView,
   ReviseFamilyRewardPlanInput,
@@ -49,12 +49,12 @@ import type {
   ConfirmChallengeLeafInput,
   CreateLeagueWeekInput,
   FamilyLeagueWeek,
+  LeagueEncouragementRequest,
   LeagueEligibilityDecision,
   LeagueParticipantProjection,
-  LeagueProjectionInput,
   LeagueRolloverInput,
   LeagueRolloverResult,
-  PreparedEncouragementApplication,
+  PreparedEncouragement,
   SyntheticLeagueParticipant,
   WeeklyGrowthResult,
 } from '../../models/familyLeague';
@@ -107,6 +107,11 @@ export interface ServiceMeta {
 export type ServiceResult<T> =
   | { readonly ok: true; readonly data: T; readonly meta: ServiceMeta }
   | { readonly ok: false; readonly error: DomainError };
+
+export interface SessionAuthorityInput {
+  readonly session: AccessSession;
+  readonly now: string;
+}
 
 export interface TaskService {
   listCategories(): readonly TaskCategory[];
@@ -224,28 +229,47 @@ export interface ChildCoachService {
 }
 
 export interface CoachAdaptationService {
-  policyForAgeBand(ageBand: ChildCoachOutputPolicy['ageBand']): ChildCoachOutputPolicy;
+  policyForAgeBand(ageBand: unknown): ServiceResult<ChildCoachOutputPolicy>;
   adaptPreparedResult(input: AdaptCoachResultInput): ServiceResult<AgeAdaptedCoachResult>;
 }
 
 export interface SyntheticVoiceService {
-  createIdle(input: CreateVoiceSessionInput): ServiceResult<SyntheticVoiceSession>;
+  createIdle(
+    input: CreateVoiceSessionInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
   start(
     session: SyntheticVoiceSession,
     access: VoiceAccessContext,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession>;
   stopWithPreparedTranscript(
     session: SyntheticVoiceSession,
     input: StopVoiceSessionInput,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession>;
-  deleteBeforeSend(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
-  send(session: SyntheticVoiceSession, sentAt: string): ServiceResult<SyntheticVoiceSession>;
+  deleteBeforeSend(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  send(
+    session: SyntheticVoiceSession,
+    sentAt: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
   setPlayback(
     session: SyntheticVoiceSession,
     input: VoicePlaybackInput,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession>;
-  replay(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
-  reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  replay(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  reset(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
 }
 
 export interface SyntheticAccessService {
@@ -255,6 +279,7 @@ export interface SyntheticAccessService {
   authorizeCapability(input: CapabilityAuthorizationInput): ServiceResult<CapabilityAuthorization>;
   requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest>;
   approvePairing(input: PairingApprovalInput): ServiceResult<PairingRequest>;
+  revokePairing(input: PairingRevocationInput): ServiceResult<PairingRequest>;
   consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession>;
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState>;
   issueReauthentication(input: ReauthenticationInput): ServiceResult<ReauthenticationProof>;
@@ -266,23 +291,33 @@ export interface SyntheticAccessService {
 export interface FamilyRewardService {
   createPlan(
     input: FamilyRewardPlanDraft,
-    monetaryAuthorization?: SensitiveActionInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
   ): ServiceResult<FamilyRewardPlan>;
   revisePromisedPlan(
-    plan: unknown,
+    planId: string,
     input: ReviseFamilyRewardPlanInput,
-    monetaryAuthorization?: SensitiveActionInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
   ): ServiceResult<FamilyRewardRevision>;
   evaluatePlan(
-    plan: unknown,
-    events: readonly unknown[],
+    planId: string,
+    candidateEvents: readonly unknown[],
     options: FamilyRewardEvaluationOptions,
+    authority: SessionAuthorityInput,
   ): ServiceResult<FamilyRewardEvaluation>;
-  markGiven(plan: unknown, input: GiveFamilyRewardInput): ServiceResult<FamilyRewardGivenResult>;
-  projectPrivate(plan: unknown, viewer: FamilyRewardViewer): ServiceResult<PrivateFamilyRewardView>;
+  markGiven(
+    planId: string,
+    input: GiveFamilyRewardInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
+  ): ServiceResult<FamilyRewardGivenResult>;
+  projectPrivate(
+    planId: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<PrivateFamilyRewardView>;
   summarizeMonthlyCommitment(
-    plans: readonly unknown[],
-    request: MonetaryCommitmentRequest,
+    authority: SessionAuthorityInput,
   ): ServiceResult<readonly MonetaryCommitmentSummary[]>;
 }
 
@@ -291,14 +326,31 @@ export interface FamilyLeagueService {
     candidate: ChallengeLeafCandidate,
     participant: SyntheticLeagueParticipant,
   ): LeagueEligibilityDecision;
-  createWeek(input: CreateLeagueWeekInput): ServiceResult<FamilyLeagueWeek>;
-  confirmLeaf(input: ConfirmChallengeLeafInput): ServiceResult<FamilyLeagueWeek>;
-  calculateResults(week: FamilyLeagueWeek): ServiceResult<readonly WeeklyGrowthResult[]>;
+  createWeek(
+    input: CreateLeagueWeekInput,
+    authority: SessionAuthorityInput,
+    membershipProofId: string,
+  ): ServiceResult<FamilyLeagueWeek>;
+  confirmLeaf(
+    input: ConfirmChallengeLeafInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<FamilyLeagueWeek>;
+  calculateResults(
+    week: FamilyLeagueWeek,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<readonly WeeklyGrowthResult[]>;
   projectParticipants(
-    input: LeagueProjectionInput | unknown,
+    weekKey: string,
+    authority: SessionAuthorityInput,
   ): ServiceResult<readonly LeagueParticipantProjection[]>;
-  sendPreparedEncouragement(input: unknown): ServiceResult<PreparedEncouragementApplication>;
-  rollover(input: LeagueRolloverInput): ServiceResult<LeagueRolloverResult>;
+  sendPreparedEncouragement(
+    input: LeagueEncouragementRequest,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<PreparedEncouragement>;
+  rollover(
+    input: LeagueRolloverInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<LeagueRolloverResult>;
 }
 
 export interface PreparedParentGuideProvider extends ParentGuideService {

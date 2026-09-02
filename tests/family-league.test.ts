@@ -11,6 +11,11 @@ import {
   sendPreparedEncouragement,
   SYNTHETIC_LEAGUE_PARTICIPANTS,
 } from '../src/features/league';
+import {
+  SYNTHETIC_CHILD_CREDENTIAL_FIXTURES,
+  SYNTHETIC_PARENT_ACCESS_FIXTURE,
+  SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+} from '../src/models/access';
 import type {
   ChallengeLeafCandidate,
   FamilyLeagueWeek,
@@ -96,16 +101,96 @@ function confirm(
   return result.data;
 }
 
-describe('synthetic Family League week', () => {
-  it('is exposed separately from the unchanged P0 session and Green Circle', () => {
-    const registry = createFeature003ServiceRegistry();
-    const baseline = registry.prototypeSession.getInitialSession();
-    const week = registry.familyLeague.createWeek({
+function createLeagueServiceHarness() {
+  const registry = createFeature003ServiceRegistry();
+  const parent = registry.access.signInParent({
+    sessionId: 'league-harness-parent-session',
+    parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+    deviceId: 'league-harness-parent-device',
+    now: '2026-09-02T10:00:00.000Z',
+  });
+  if (!parent.ok) throw new Error(parent.error.message);
+  const proof = registry.access.issueReauthentication({
+    proofId: 'league-harness-membership-proof',
+    parentSession: parent.data,
+    reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+    purpose: 'change_league_membership',
+    now: '2026-09-02T10:01:00.000Z',
+  });
+  if (!proof.ok) throw new Error(proof.error.message);
+  const parentAuthority = { session: parent.data, now: '2026-09-02T10:01:01.000Z' };
+  const week = registry.familyLeague.createWeek(
+    {
       weekKey: '2026-W36',
       timeZone: 'Asia/Dubai',
       optedOutParticipantIds: ['cousin_noura'],
       leaves: candidates(['cousin_noura']),
+    },
+    parentAuthority,
+    proof.data.id,
+  );
+  if (!week.ok) throw new Error(week.error.message);
+  const pairing = registry.access.requestPairing({
+    requestId: 'league-harness-child-pairing',
+    pairingCode: 'synthetic-code-league-harness',
+    childId: 'child_salem',
+    requestingDeviceId: 'league-harness-child-device',
+    now: '2026-09-02T10:02:00.000Z',
+  });
+  if (!pairing.ok) throw new Error(pairing.error.message);
+  const approved = registry.access.approvePairing({
+    requestId: pairing.data.id,
+    childId: pairing.data.childId,
+    requestingDeviceId: pairing.data.requestingDeviceId,
+    parentSession: parent.data,
+    now: '2026-09-02T10:02:01.000Z',
+  });
+  if (!approved.ok) throw new Error(approved.error.message);
+  const child = registry.access.consumePairing({
+    requestId: pairing.data.id,
+    pairingCode: pairing.data.pairingCode,
+    childId: pairing.data.childId,
+    deviceId: pairing.data.requestingDeviceId,
+    childCredentialFixtureId: SYNTHETIC_CHILD_CREDENTIAL_FIXTURES.child_salem.fixtureId,
+    sessionId: 'league-harness-child-session',
+    now: '2026-09-02T10:02:02.000Z',
+  });
+  if (!child.ok) throw new Error(child.error.message);
+  return {
+    registry,
+    parentAuthority,
+    childAuthority: { session: child.data, now: '2026-09-02T10:03:00.000Z' },
+    week: week.data,
+  };
+}
+
+describe('synthetic Family League week', () => {
+  it('is exposed separately from the unchanged P0 session and Green Circle', () => {
+    const registry = createFeature003ServiceRegistry();
+    const baseline = registry.prototypeSession.getInitialSession();
+    const parent = registry.access.signInParent({
+      sessionId: 'league-parent-session',
+      parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+      deviceId: 'league-parent-device',
+      now: '2026-09-02T10:00:00.000Z',
     });
+    if (!parent.ok) throw new Error(parent.error.message);
+    const proof = registry.access.issueReauthentication({
+      proofId: 'league-membership-proof',
+      parentSession: parent.data,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose: 'change_league_membership',
+      now: '2026-09-02T10:01:00.000Z',
+    });
+    if (!proof.ok) throw new Error(proof.error.message);
+    const authority = { session: parent.data, now: '2026-09-02T10:01:01.000Z' };
+    const input = {
+      weekKey: '2026-W36',
+      timeZone: 'Asia/Dubai' as const,
+      optedOutParticipantIds: ['cousin_noura'] as const,
+      leaves: candidates(['cousin_noura']),
+    };
+    const week = registry.familyLeague.createWeek(input, authority, proof.data.id);
 
     expect(week).toMatchObject({
       ok: true,
@@ -116,6 +201,175 @@ describe('synthetic Family League week', () => {
       landscapeProgress: baseline.landscapeProgress,
       circleGoal: baseline.circleGoal,
     });
+    expect(
+      registry.familyLeague.createWeek({ ...input, weekKey: '2026-W37' }, authority, proof.data.id),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('fails closed when League membership proof is missing or the actor is a Child', () => {
+    const harness = createLeagueServiceHarness();
+    const freshRegistry = createFeature003ServiceRegistry();
+    const parent = freshRegistry.access.signInParent({
+      sessionId: 'league-missing-proof-parent',
+      parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+      deviceId: 'league-missing-proof-device',
+      now: '2026-09-02T10:00:00.000Z',
+    });
+    if (!parent.ok) throw new Error(parent.error.message);
+    const weekInput = {
+      weekKey: '2026-W37',
+      timeZone: 'Asia/Dubai' as const,
+      optedOutParticipantIds: ['cousin_noura'] as const,
+      leaves: candidates(['cousin_noura']),
+    };
+
+    expect(
+      harness.registry.familyLeague.createWeek(
+        weekInput,
+        { session: parent.data, now: '2026-09-02T10:01:00.000Z' },
+        undefined as unknown as string,
+      ),
+    ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+    expect(
+      freshRegistry.familyLeague.createWeek(
+        weekInput,
+        harness.childAuthority,
+        'forged-membership-proof',
+      ),
+    ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+  });
+
+  it('keeps raw League state behind minimal Child projections and prepared actions', () => {
+    const { registry, parentAuthority, childAuthority, week } = createLeagueServiceHarness();
+    const projected = registry.familyLeague.projectParticipants(week.weekKey, childAuthority);
+    expect(projected).toMatchObject({ ok: true });
+    if (!projected.ok) throw new Error(projected.error.message);
+    expect(Object.keys(projected.data[0]!).sort()).toEqual([
+      'completedLeafCount',
+      'nickname',
+      'position',
+      'score',
+      'treeAvatarToken',
+    ]);
+    expect(registry.familyLeague.calculateResults(week, childAuthority)).toMatchObject({
+      ok: false,
+      error: { code: 'PRIVACY_REJECTED' },
+    });
+    expect(registry.familyLeague.calculateResults(week, parentAuthority)).toMatchObject({
+      ok: true,
+    });
+
+    const encouragementInput = {
+      weekKey: week.weekKey,
+      recipientId: 'child_alya' as const,
+      phraseId: 'great_growing' as const,
+    };
+    const sent = registry.familyLeague.sendPreparedEncouragement(
+      encouragementInput,
+      childAuthority,
+    );
+    expect(sent).toMatchObject({
+      ok: true,
+      data: {
+        senderId: 'child_salem',
+        recipientId: 'child_alya',
+        phraseId: 'great_growing',
+      },
+    });
+    if (!sent.ok) throw new Error(sent.error.message);
+    expect(sent.data).not.toHaveProperty('week');
+    expect(
+      registry.familyLeague.sendPreparedEncouragement(encouragementInput, childAuthority),
+    ).toEqual(sent);
+    expect(
+      registry.familyLeague.sendPreparedEncouragement(
+        { ...encouragementInput, freeText: 'private text' } as typeof encouragementInput,
+        childAuthority,
+      ),
+    ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+  });
+
+  it('accepts only the exact original or current state for an idempotent confirmation retry', () => {
+    const { registry, parentAuthority, week } = createLeagueServiceHarness();
+    const input = {
+      week,
+      leafId: 'leaf_child_salem_1',
+      recognitionKey: 'league-service-recognition-1',
+      completionMode: 'permitted_help' as const,
+      accessibilityAdapted: true,
+    };
+    const confirmed = registry.familyLeague.confirmLeaf(input, parentAuthority);
+    expect(confirmed).toMatchObject({
+      ok: true,
+      data: { cooperativeConfirmedCount: 1 },
+    });
+    if (!confirmed.ok) throw new Error(confirmed.error.message);
+    expect(registry.familyLeague.confirmLeaf(input, parentAuthority)).toEqual(confirmed);
+    expect(
+      registry.familyLeague.confirmLeaf(
+        {
+          ...input,
+          week: { ...week, cooperativeGoal: week.cooperativeGoal + 1 },
+        },
+        parentAuthority,
+      ),
+    ).toMatchObject({ ok: false });
+    expect(
+      registry.familyLeague.confirmLeaf({ ...input, week: confirmed.data }, parentAuthority),
+    ).toEqual(confirmed);
+  });
+
+  it('lets a reauthenticated Parent fill the rolled week with changed membership', () => {
+    const { registry, parentAuthority, week } = createLeagueServiceHarness();
+    const permanentProgress: LeaguePermanentProgressSnapshot = {
+      earnedSeedsByChild: { child_salem: 48, child_alya: 36 },
+      gardenByLandscape: {
+        ghaf: { cumulativeSeeds: 0, stage: 'seed' },
+        samar: { cumulativeSeeds: 0, stage: 'seed' },
+        sidr: { cumulativeSeeds: 0, stage: 'seed' },
+        date_palm: { cumulativeSeeds: 0, stage: 'seed' },
+        mangrove: { cumulativeSeeds: 48, stage: 'shoot' },
+      },
+    };
+    const rolled = registry.familyLeague.rollover(
+      {
+        currentWeek: week,
+        nextWeekKey: '2026-W37',
+        timeZone: 'Asia/Dubai',
+        permanentProgressBefore: permanentProgress,
+        permanentProgressAfter: permanentProgress,
+      },
+      parentAuthority,
+    );
+    expect(rolled).toMatchObject({
+      ok: true,
+      data: { week: { optedOutParticipantIds: ['cousin_noura'], leaves: [] } },
+    });
+
+    const proof = registry.access.issueReauthentication({
+      proofId: 'league-refill-membership-proof',
+      parentSession: parentAuthority.session,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose: 'change_league_membership',
+      now: '2026-09-02T10:04:00.000Z',
+    });
+    if (!proof.ok) throw new Error(proof.error.message);
+    const filled = registry.familyLeague.createWeek(
+      {
+        weekKey: '2026-W37',
+        timeZone: 'Asia/Dubai',
+        optedOutParticipantIds: [],
+        leaves: candidates(),
+      },
+      { ...parentAuthority, now: '2026-09-02T10:04:01.000Z' },
+      proof.data.id,
+    );
+    expect(filled).toMatchObject({
+      ok: true,
+      data: { optedOutParticipantIds: [], cooperativeGoal: 15 },
+    });
+    if (!filled.ok) throw new Error(filled.error.message);
+    expect(filled.data.leaves).toHaveLength(15);
   });
 
   it('assigns exactly five unique eligible Leaves to each participating fixed invitee', () => {
@@ -130,6 +384,9 @@ describe('synthetic Family League week', () => {
     expect(new Set(week.leaves.map((item) => item.id)).size).toBe(10);
     expect(week.cooperativeConfirmedCount).toBe(0);
     expect(week.cooperativeGoal).toBe(10);
+    expect(Object.isFrozen(SYNTHETIC_LEAGUE_PARTICIPANTS)).toBe(true);
+    expect(Object.isFrozen(SYNTHETIC_LEAGUE_PARTICIPANTS[0].nickname)).toBe(true);
+    expect(Object.isFrozen(PREPARED_LEAGUE_ENCOURAGEMENTS.great_growing)).toBe(true);
   });
 
   it('rejects wrong counts, duplicate task references, unapproved, age-incompatible, and opt-out Leaves', () => {
@@ -157,6 +414,28 @@ describe('synthetic Family League week', () => {
     }
   });
 
+  it('rejects malformed confirmation fields before storing credit', () => {
+    const week = createWeek(['cousin_noura']);
+    expect(
+      confirmChallengeLeaf({
+        week,
+        leafId: 'leaf_child_salem_1',
+        recognitionKey: 'recognition_malformed_mode',
+        completionMode: 'forced_help' as 'independent',
+        accessibilityAdapted: false,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+    expect(
+      confirmChallengeLeaf({
+        week,
+        leafId: 'leaf_child_salem_1',
+        recognitionKey: 'recognition_malformed_adaptation',
+        completionMode: 'independent',
+        accessibilityAdapted: 'yes' as unknown as boolean,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+  });
+
   it('rejects private and protected activity before assignment', () => {
     expect(
       evaluateChallengeLeafEligibility(
@@ -180,6 +459,55 @@ describe('synthetic Family League week', () => {
           SYNTHETIC_LEAGUE_PARTICIPANTS[0],
         ),
       ).toEqual({ eligible: false, reason: 'protected_content' });
+    }
+  });
+
+  it('revalidates protected content, age, and task uniqueness after week creation', () => {
+    const week = createWeek(['cousin_noura']);
+    const first = week.leaves[0]!;
+    const second = week.leaves[1]!;
+    const mutatedWeeks: readonly FamilyLeagueWeek[] = [
+      {
+        ...week,
+        leaves: week.leaves.map((item) =>
+          item.id === first.id
+            ? {
+                ...item,
+                categoryId: 'faith_gratitude',
+                protectedContent: { ...item.protectedContent, prayer: true },
+              }
+            : item,
+        ),
+      },
+      {
+        ...week,
+        leaves: week.leaves.map((item) =>
+          item.id === second.id ? { ...item, approvedTaskRef: first.approvedTaskRef } : item,
+        ),
+      },
+      {
+        ...week,
+        leaves: week.leaves.map((item) =>
+          item.id === first.id ? { ...item, ageBand: '6_8' } : item,
+        ),
+      },
+      {
+        ...week,
+        leaves: week.leaves.filter((item) => item.participantId !== 'child_alya'),
+        cooperativeGoal: 5,
+      },
+    ];
+
+    for (const mutated of mutatedWeeks) {
+      expect(
+        confirmChallengeLeaf({
+          week: mutated,
+          leafId: first.id,
+          recognitionKey: 'recognition_tampered_week',
+          completionMode: 'independent',
+          accessibilityAdapted: false,
+        }),
+      ).toMatchObject({ ok: false });
     }
   });
 
@@ -232,6 +560,18 @@ describe('synthetic Family League week', () => {
         accessibilityAdapted: false,
       }),
     ).toMatchObject({ ok: false, error: { code: 'NOT_FOUND' } });
+  });
+
+  it('produces every normalized score from zero through the five-Leaf cap', () => {
+    let week = createWeek(['cousin_noura']);
+    const observed: number[] = [];
+    for (let count = 0; count <= 5; count += 1) {
+      const results = calculateWeeklyGrowthResults(week);
+      if (!results.ok) throw new Error(results.error.message);
+      observed.push(results.data.find((item) => item.participantId === 'child_salem')!.score);
+      if (count < 5) week = confirm(week, 'child_salem', count + 1);
+    }
+    expect(observed).toEqual([0, 20, 40, 60, 80, 100]);
   });
 
   it('uses score-only competition positions with shared ties and gaps', () => {
@@ -394,7 +734,8 @@ describe('synthetic Family League week', () => {
           confirmationLedger: {},
           cooperativeConfirmedCount: 0,
           preparedEncouragementLedger: [],
-          optedOutParticipantIds: [],
+          optedOutParticipantIds: ['cousin_noura'],
+          cooperativeGoal: 10,
         },
       },
     });

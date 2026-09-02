@@ -18,6 +18,7 @@ export type {
   RecognitionService,
   ServiceMeta,
   ServiceResult,
+  SessionAuthorityInput,
   SyntheticVoiceService,
   SyntheticAccessService,
   TaskService,

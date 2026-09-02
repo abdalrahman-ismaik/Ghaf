@@ -158,6 +158,12 @@ export interface LeagueProjectionInput {
   readonly participants: readonly LeagueProjectionCandidate[];
 }
 
+export interface LeagueEncouragementRequest {
+  readonly weekKey: string;
+  readonly recipientId: LeagueParticipantId;
+  readonly phraseId: PreparedLeagueEncouragementId;
+}
+
 export interface LeagueParticipantProjection {
   readonly nickname: LocalizedText;
   readonly treeAvatarToken: LeagueTreeAvatarToken;

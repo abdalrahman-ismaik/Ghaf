@@ -6,6 +6,9 @@ import type {
   VoiceAccessContext,
   VoicePlaybackInput,
 } from '../../models/assistantVoice';
+import { P0_APPROVED_COACH_BINDING, PREPARED_VOICE_TRANSCRIPTS } from './preparedContent';
+
+export { PREPARED_VOICE_TRANSCRIPTS } from './preparedContent';
 
 function failure(
   message: string,
@@ -30,10 +33,10 @@ function validText(value: LocalizedText): boolean {
 
 function validAccess(access: VoiceAccessContext): boolean {
   return (
-    access.childId.trim().length > 0 &&
+    access.childId === P0_APPROVED_COACH_BINDING.childId &&
     access.accessSessionId.trim().length > 0 &&
-    access.taskId.trim().length > 0 &&
-    access.approvedTaskVersion > 0 &&
+    access.taskId === P0_APPROVED_COACH_BINDING.taskId &&
+    access.approvedTaskVersion === P0_APPROVED_COACH_BINDING.approvedTaskVersion &&
     access.approvedByParent &&
     ['chosen', 'in_progress'].includes(access.lifecycle) &&
     access.grant.childId === access.childId &&
@@ -66,8 +69,14 @@ function idleShape(
   >,
 ): SyntheticVoiceSession {
   return {
-    ...session,
+    voiceSessionId: session.voiceSessionId,
+    childId: session.childId,
+    accessSessionId: session.accessSessionId,
+    taskId: session.taskId,
+    approvedTaskVersion: session.approvedTaskVersion,
+    permissionVersion: session.permissionVersion,
     lifecycle: 'idle',
+    transcriptFixtureId: null,
     transcript: null,
     captionsEnabled: true,
     playbackRate: 1,
@@ -75,6 +84,27 @@ function idleShape(
     recordingVisible: false,
     backgroundRecording: false,
     sentAt: null,
+    origin: 'synthetic',
+  };
+}
+
+function copySession(session: SyntheticVoiceSession): SyntheticVoiceSession {
+  return {
+    voiceSessionId: session.voiceSessionId,
+    childId: session.childId,
+    accessSessionId: session.accessSessionId,
+    taskId: session.taskId,
+    approvedTaskVersion: session.approvedTaskVersion,
+    permissionVersion: session.permissionVersion,
+    lifecycle: session.lifecycle,
+    transcriptFixtureId: session.transcriptFixtureId,
+    transcript: session.transcript ? { ...session.transcript } : null,
+    captionsEnabled: session.captionsEnabled,
+    playbackRate: session.playbackRate,
+    replayCount: session.replayCount,
+    recordingVisible: session.recordingVisible,
+    backgroundRecording: false,
+    sentAt: session.sentAt,
     origin: 'synthetic',
   };
 }
@@ -110,7 +140,7 @@ export function startVoiceSession(
   }
   return {
     ok: true,
-    data: { ...session, lifecycle: 'recording', recordingVisible: true },
+    data: { ...copySession(session), lifecycle: 'recording', recordingVisible: true },
   };
 }
 
@@ -121,15 +151,25 @@ export function stopVoiceSessionWithPreparedTranscript(
   if (session.lifecycle !== 'recording') {
     return failure('Voice can stop only while recording is visible', 'INVALID_TRANSITION');
   }
-  if (!accessMatches(session, input.access) || !validText(input.transcript)) {
+  const preparedTranscript = PREPARED_VOICE_TRANSCRIPTS[input.transcriptFixtureId];
+  if (
+    !accessMatches(session, input.access) ||
+    !validText(input.transcript) ||
+    !preparedTranscript ||
+    preparedTranscript.taskId !== session.taskId ||
+    preparedTranscript.approvedTaskVersion !== session.approvedTaskVersion ||
+    preparedTranscript.transcript.ar !== input.transcript.ar ||
+    preparedTranscript.transcript.en !== input.transcript.en
+  ) {
     return failure('Prepared transcript or active-task access is invalid');
   }
   return {
     ok: true,
     data: {
-      ...session,
+      ...copySession(session),
       lifecycle: 'transcript_review',
-      transcript: input.transcript,
+      transcriptFixtureId: input.transcriptFixtureId,
+      transcript: { ...input.transcript },
       recordingVisible: false,
       replayCount: 0,
     },
@@ -155,7 +195,7 @@ export function sendVoiceTranscript(
   if (!sentAt.trim() || Number.isNaN(Date.parse(sentAt))) {
     return failure('Voice transcript send time is invalid');
   }
-  return { ok: true, data: { ...session, lifecycle: 'sent', sentAt } };
+  return { ok: true, data: { ...copySession(session), lifecycle: 'sent', sentAt } };
 }
 
 export function setVoicePlayback(
@@ -171,7 +211,7 @@ export function setVoicePlayback(
   return {
     ok: true,
     data: {
-      ...session,
+      ...copySession(session),
       captionsEnabled: input.captionsEnabled,
       playbackRate: input.playbackRate,
     },
@@ -184,7 +224,10 @@ export function replayVoiceTranscript(
   if (!['transcript_review', 'sent'].includes(session.lifecycle) || !session.transcript) {
     return failure('Replay requires a prepared transcript', 'INVALID_TRANSITION');
   }
-  return { ok: true, data: { ...session, replayCount: session.replayCount + 1 } };
+  return {
+    ok: true,
+    data: { ...copySession(session), replayCount: session.replayCount + 1 },
+  };
 }
 
 export function resetVoiceSession(session: SyntheticVoiceSession): SyntheticVoiceSession {

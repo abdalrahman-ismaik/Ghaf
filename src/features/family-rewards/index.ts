@@ -32,6 +32,7 @@ const categoryIdSchema = z.enum([
 ]);
 const landscapeIdSchema = z.enum(['ghaf', 'samar', 'sidr', 'date_palm', 'mangrove']);
 const gardenStageSchema = z.enum(['seed', 'shoot', 'sapling', 'shade', 'flourishing']);
+const rewardMilestoneStageSchema = z.enum(['shoot', 'sapling', 'shade', 'flourishing']);
 const recognitionModeSchema = z.enum(['standard', 'fade_first', 'recognition_only']);
 const routinePhaseSchema = z.enum(['acquisition', 'maintenance', 'not_applicable']);
 const isoTimestampSchema = z
@@ -80,13 +81,13 @@ const milestoneSchema = z.discriminatedUnion('kind', [
     .object({
       kind: z.literal('landscape_stage'),
       landscapeId: landscapeIdSchema,
-      targetStage: gardenStageSchema,
+      targetStage: rewardMilestoneStageSchema,
     })
     .strict(),
   z
     .object({
       kind: z.literal('landscapes_at_stage'),
-      targetStage: gardenStageSchema,
+      targetStage: rewardMilestoneStageSchema,
       requiredCount: z.number().int().min(1).max(5),
     })
     .strict(),

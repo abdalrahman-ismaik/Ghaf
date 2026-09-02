@@ -11,6 +11,7 @@ import type {
 export type FamilyRewardLifecycle = 'promised' | 'unlocked' | 'given';
 export type FamilyRewardVersionState = 'current' | 'superseded';
 export type FamilyRewardPromiseKind = 'money' | 'experience' | 'privilege' | 'gift';
+export type FamilyRewardMilestoneStage = Exclude<GardenStage, 'seed'>;
 
 export type FamilyRewardPromise =
   | {
@@ -32,11 +33,11 @@ export type FamilyRewardMilestone =
   | {
       readonly kind: 'landscape_stage';
       readonly landscapeId: LandscapeId;
-      readonly targetStage: GardenStage;
+      readonly targetStage: FamilyRewardMilestoneStage;
     }
   | {
       readonly kind: 'landscapes_at_stage';
-      readonly targetStage: GardenStage;
+      readonly targetStage: FamilyRewardMilestoneStage;
       readonly requiredCount: number;
     };
 

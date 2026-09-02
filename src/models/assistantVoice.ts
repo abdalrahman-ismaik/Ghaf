@@ -3,6 +3,7 @@ import type { AgeBand, LocalizedText } from './familyGrowth';
 export type CoachPace = 'slow' | 'standard';
 export type CoachTone = 'very_short' | 'friendly_clear' | 'respectful_mature';
 export type AdultExitPlacement = 'early' | 'persistent';
+export type PreparedCoachMaterialFixtureId = 'coach_recycling_steps_v1';
 
 export interface ChildCoachOutputPolicy {
   readonly ageBand: AgeBand;
@@ -23,6 +24,7 @@ export interface ActiveCoachOutputContext {
 }
 
 export interface PreparedCoachMaterial {
+  readonly fixtureId: PreparedCoachMaterialFixtureId;
   readonly taskId: string;
   readonly approvedTaskVersion: number;
   readonly steps: readonly LocalizedText[];
@@ -57,6 +59,14 @@ export interface AgeAdaptedCoachResult {
 
 export type VoicePlaybackRate = 0.75 | 1;
 export type SyntheticVoiceLifecycle = 'idle' | 'recording' | 'transcript_review' | 'sent';
+export type PreparedVoiceTranscriptFixtureId =
+  'voice_recycling_complete_v1' | 'voice_short_review_v1';
+
+export interface PreparedVoiceTranscriptFixture {
+  readonly taskId: string;
+  readonly approvedTaskVersion: number;
+  readonly transcript: LocalizedText;
+}
 
 export interface VoicePermissionSnapshot {
   readonly childId: string;
@@ -83,6 +93,7 @@ export interface SyntheticVoiceSession {
   readonly approvedTaskVersion: number;
   readonly permissionVersion: number;
   readonly lifecycle: SyntheticVoiceLifecycle;
+  readonly transcriptFixtureId: PreparedVoiceTranscriptFixtureId | null;
   readonly transcript: LocalizedText | null;
   readonly captionsEnabled: boolean;
   readonly playbackRate: VoicePlaybackRate;
@@ -100,6 +111,7 @@ export interface CreateVoiceSessionInput {
 
 export interface StopVoiceSessionInput {
   readonly access: VoiceAccessContext;
+  readonly transcriptFixtureId: PreparedVoiceTranscriptFixtureId;
   readonly transcript: LocalizedText;
 }
 

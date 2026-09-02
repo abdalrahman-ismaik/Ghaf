@@ -5,6 +5,7 @@ import {
   SYNTHETIC_CHILDREN,
   SYNTHETIC_HOUSEHOLD,
 } from '../../features/tasks/demoContent';
+import { PREPARED_COACH_MATERIALS } from '../../features/assistants/preparedContent';
 import type {
   ChildCoachResult,
   ChildTaskDraftState,
@@ -28,11 +29,10 @@ const preparedGuideDisclosure = {
   preparedIsExplicit: true,
 } as const;
 
+const preparedCoachMaterial = PREPARED_COACH_MATERIALS.coach_recycling_steps_v1;
+
 const preparedCoachDisclosure = {
-  text: {
-    ar: 'مثال مُعدّ مسبقاً لمساعد بالذكاء الاصطناعي؛ هذه الاستجابة مكتوبة مسبقاً وقد تكون غير صحيحة.',
-    en: 'Prepared AI-assistant example; this response is prewritten and may be wrong.',
-  },
+  text: preparedCoachMaterial.aiDisclosure,
   saysAiMayBeWrong: true,
   saysHumanDecides: false,
   preparedIsExplicit: true,
@@ -76,26 +76,9 @@ export const CHILD_COACH_FIXTURE: ChildCoachResult = {
     fallbackReason: null,
     disclosure: preparedCoachDisclosure,
   },
-  taskId: 'task_recycling_p0_v1',
-  approvedTaskVersion: 1,
-  steps: [
-    {
-      ar: 'اطلب من شخص بالغ فحص المواد النظيفة مسبقاً وتحديد حاوية إعادة التدوير المنزلية.',
-      en: 'Ask an adult to pre-check the clean items and choose the household recycling bin.',
-    },
-    {
-      ar: 'افرز فقط الورق والبلاستيك السليمين وغير الحادّين اللذين وافق عليهما الشخص البالغ.',
-      en: 'Sort only the intact, non-sharp paper and plastic the adult approved.',
-    },
-    {
-      ar: 'توقّف واسأل شخصاً بالغاً إذا كان أي شيء حاداً أو متسرباً أو متسخاً أو مجهولاً.',
-      en: 'Stop and ask an adult if anything is sharp, leaking, dirty, or unknown.',
-    },
-    {
-      ar: 'بعد الفحص الثاني، ساعد في إغلاق كيس إعادة التدوير الخفيف عند الحاجة، ورافق الشخص البالغ عبر المسار الآمن بينما يحمل الكيس ويتولى التخلّص منه، ثم اغسل يديك.',
-      en: 'After the adult checks again, help close the light recycling bag if needed, go with the adult on the safe route while the adult carries/disposes, then wash your hands.',
-    },
-  ],
+  taskId: preparedCoachMaterial.taskId,
+  approvedTaskVersion: preparedCoachMaterial.approvedTaskVersion,
+  steps: preparedCoachMaterial.steps,
   ifThenCue: {
     ar: 'بعد أن يفحص الشخص البالغ المواد، أفرز المواد النظيفة القابلة لإعادة التدوير.',
     en: 'After the adult checks the items, I sort the clean recyclables.',
@@ -105,7 +88,7 @@ export const CHILD_COACH_FIXTURE: ChildCoachResult = {
     en: 'Which step helped keep the task safe? You can skip this question.',
   },
   adultExit: {
-    label: { ar: 'أحتاج إلى شخص بالغ', en: 'I need an adult' },
+    label: preparedCoachMaterial.adultExit,
     alwaysVisible: true,
   },
   changesDefinitionOfDone: false,

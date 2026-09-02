@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID } from '../src/models/access';
+import {
+  SYNTHETIC_CHILD_CREDENTIAL_FIXTURES,
+  SYNTHETIC_PARENT_ACCESS_FIXTURE,
+  SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+} from '../src/models/access';
 import * as familyRewards from '../src/features/family-rewards';
 import {
   createFamilyRewardPlan,
@@ -114,6 +118,15 @@ describe('Family Reward plans', () => {
       ok: true,
       data: { milestone },
     });
+  });
+
+  it.each([
+    { kind: 'landscape_stage', landscapeId: 'mangrove', targetStage: 'seed' },
+    { kind: 'landscapes_at_stage', targetStage: 'seed', requiredCount: 1 },
+  ] as const)('rejects unreachable seed target for $kind', (milestone) => {
+    expect(
+      createFamilyRewardPlan(draft({ milestone: milestone as unknown as FamilyRewardMilestone })),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
   });
 
   it.each([
@@ -442,8 +455,12 @@ describe('Family Reward service authority', () => {
       guardianIds: ['parent_al_noor'],
       createdByGuardianId: 'parent_al_noor',
     });
+    const authority = {
+      session: signedIn.data,
+      now: '2026-09-02T10:01:01.000Z',
+    };
 
-    expect(registry.familyReward.createPlan(monetaryDraft)).toMatchObject({
+    expect(registry.familyReward.createPlan(monetaryDraft, authority)).toMatchObject({
       ok: false,
       error: { code: 'PRIVACY_REJECTED' },
     });
@@ -456,22 +473,132 @@ describe('Family Reward service authority', () => {
       now: '2026-09-02T10:01:00.000Z',
     });
     if (!proof.ok) throw new Error(proof.error.message);
-    const authorization = {
-      proofId: proof.data.id,
-      parentSession: signedIn.data,
-      purpose: 'create_monetary_family_reward' as const,
-      now: '2026-09-02T10:01:01.000Z',
-    };
-
-    expect(registry.familyReward.createPlan(monetaryDraft, authorization)).toMatchObject({
+    const created = registry.familyReward.createPlan(monetaryDraft, authority, proof.data.id);
+    expect(created).toMatchObject({
       ok: true,
       data: { lifecycle: 'promised', promise: { kind: 'money' } },
     });
     expect(
       registry.familyReward.createPlan(
         { ...monetaryDraft, id: 'family-reward-replayed-proof' },
-        authorization,
+        authority,
+        proof.data.id,
       ),
     ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+
+    if (!created.ok) throw new Error(created.error.message);
+    expect(registry.familyReward.projectPrivate(created.data.id, authority)).toMatchObject({
+      ok: true,
+      data: { privacy: 'child_guardians_only' },
+    });
+    expect(
+      registry.familyReward.projectPrivate(created.data.id, {
+        ...authority,
+        session: { ...authority.session, id: 'forged-session' },
+      }),
+    ).toMatchObject({ ok: false });
+
+    const unlocked = registry.familyReward.evaluatePlan(
+      created.data.id,
+      [event({ occurredAt: '2026-09-02T10:03:00.000Z' })],
+      { evaluatedAt: '2026-09-02T10:04:00.000Z' },
+      { ...authority, now: '2026-09-02T10:04:00.000Z' },
+    );
+    if (!unlocked.ok) throw new Error(unlocked.error.message);
+    expect(
+      registry.familyReward.markGiven(
+        unlocked.data.plan.id,
+        { guardianId: 'parent_al_noor', givenAt: '2026-09-02T10:06:00.000Z' },
+        authority,
+      ),
+    ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+
+    const changeProof = registry.access.issueReauthentication({
+      proofId: 'proof-give-reward',
+      parentSession: signedIn.data,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose: 'change_monetary_family_reward',
+      now: '2026-09-02T10:05:00.000Z',
+    });
+    if (!changeProof.ok) throw new Error(changeProof.error.message);
+    expect(
+      registry.familyReward.markGiven(
+        unlocked.data.plan.id,
+        { guardianId: 'parent_al_noor', givenAt: '2026-09-02T10:06:00.000Z' },
+        { ...authority, now: '2026-09-02T10:05:01.000Z' },
+        changeProof.data.id,
+      ),
+    ).toMatchObject({ ok: true, data: { disposition: 'given' } });
+  });
+
+  it('does not reveal private plan existence to another Child', () => {
+    const registry = createFeature003ServiceRegistry();
+    const parent = registry.access.signInParent({
+      sessionId: 'reward-privacy-parent',
+      parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+      deviceId: 'reward-privacy-parent-device',
+      now: '2026-09-02T10:00:00.000Z',
+    });
+    if (!parent.ok) throw new Error(parent.error.message);
+    const parentSession = parent.data;
+    const parentAuthority = { session: parentSession, now: '2026-09-02T10:01:00.000Z' };
+    const created = registry.familyReward.createPlan(
+      draft({
+        id: 'family-reward-private-salem',
+        guardianIds: ['parent_al_noor'],
+        createdByGuardianId: 'parent_al_noor',
+        promise: { kind: 'experience', label },
+      }),
+      parentAuthority,
+    );
+    if (!created.ok) throw new Error(created.error.message);
+
+    function pairChild(childId: 'child_salem' | 'child_alya') {
+      const requestId = `reward-privacy-pair-${childId}`;
+      const deviceId = `reward-privacy-device-${childId}`;
+      const pairing = registry.access.requestPairing({
+        requestId,
+        pairingCode: `synthetic-code-${childId}`,
+        childId,
+        requestingDeviceId: deviceId,
+        now: '2026-09-02T10:02:00.000Z',
+      });
+      if (!pairing.ok) throw new Error(pairing.error.message);
+      const approved = registry.access.approvePairing({
+        requestId,
+        childId,
+        requestingDeviceId: deviceId,
+        parentSession,
+        now: '2026-09-02T10:02:01.000Z',
+      });
+      if (!approved.ok) throw new Error(approved.error.message);
+      const child = registry.access.consumePairing({
+        requestId,
+        pairingCode: pairing.data.pairingCode,
+        childId,
+        deviceId,
+        childCredentialFixtureId: SYNTHETIC_CHILD_CREDENTIAL_FIXTURES[childId].fixtureId,
+        sessionId: `reward-privacy-session-${childId}`,
+        now: '2026-09-02T10:02:02.000Z',
+      });
+      if (!child.ok) throw new Error(child.error.message);
+      return { session: child.data, now: '2026-09-02T10:03:00.000Z' };
+    }
+
+    const salemAuthority = pairChild('child_salem');
+    const alyaAuthority = pairChild('child_alya');
+    expect(registry.familyReward.projectPrivate(created.data.id, salemAuthority)).toMatchObject({
+      ok: true,
+      data: { childId: 'child_salem' },
+    });
+    const crossChild = registry.familyReward.projectPrivate(created.data.id, alyaAuthority);
+    const missing = registry.familyReward.projectPrivate('missing-private-plan', alyaAuthority);
+    expect(crossChild).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+    expect(missing).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+    if (crossChild.ok || missing.ok) throw new Error('Expected private reward rejection');
+    expect(missing.error.message).toBe(crossChild.error.message);
+    expect(
+      registry.familyReward.projectPrivate('missing-private-plan', parentAuthority),
+    ).toMatchObject({ ok: false, error: { code: 'NOT_FOUND' } });
   });
 });

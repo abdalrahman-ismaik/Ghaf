@@ -3,43 +3,23 @@ import { describe, expect, it } from 'vitest';
 import {
   adaptPreparedCoachResult,
   coachOutputPolicyForAgeBand,
+  PREPARED_COACH_MATERIALS,
 } from '../src/features/assistants/ageAdaptation';
-import type { AgeBand, LocalizedText } from '../src/models/familyGrowth';
+import type { AgeBand } from '../src/models/familyGrowth';
 import { serviceRegistry } from '../src/services';
-
-const steps: readonly LocalizedText[] = [
-  { ar: 'اطلب من شخص بالغ فحص المواد.', en: 'Ask an adult to check the items.' },
-  { ar: 'اختر الورق والبلاستيك النظيفين.', en: 'Choose the clean paper and plastic.' },
-  { ar: 'ضع كل نوع في مكانه الصحيح.', en: 'Put each type in the correct place.' },
-  { ar: 'اغسل يديك بعد الانتهاء.', en: 'Wash your hands after finishing.' },
-];
 
 function inputFor(ageBand: AgeBand) {
   return {
     context: {
-      childId: `synthetic_${ageBand}`,
+      childId: 'child_salem',
       ageBand,
-      taskId: 'task_green_v1',
+      taskId: 'task_recycling_p0_v1',
       approvedTaskVersion: 1,
       lifecycle: 'in_progress' as const,
       approvedByParent: true as const,
     },
     material: {
-      taskId: 'task_green_v1',
-      approvedTaskVersion: 1,
-      steps,
-      quickChoices: [
-        { ar: 'أرني خطوتين', en: 'Show two steps' },
-        { ar: 'بسّطها', en: 'Make it simpler' },
-        { ar: 'أحتاج إلى شخص بالغ', en: 'I need an adult' },
-        { ar: 'سؤال إضافي', en: 'One more choice' },
-      ],
-      adultExit: { ar: 'اسأل شخصاً كبيراً', en: 'Ask an adult' },
-      aiDisclosure: {
-        ar: 'هذا مدرب ذكاء اصطناعي وقد يخطئ.',
-        en: 'This is an AI coach and it may be wrong.',
-      },
-      origin: 'prepared' as const,
+      ...PREPARED_COACH_MATERIALS.coach_recycling_steps_v1,
     },
   };
 }
@@ -108,8 +88,50 @@ describe('age-adaptive prepared Coach output', () => {
     expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
   });
 
+  it('rejects caller-authored material carrying a prepared label', () => {
+    const input = inputFor('12_14');
+    const result = adaptPreparedCoachResult({
+      ...input,
+      material: {
+        ...input.material,
+        steps: input.material.steps.map((step, index) =>
+          index === 0 ? { ...step, en: 'Caller supplied instruction.' } : step,
+        ),
+      },
+    });
+
+    expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+  });
+
+  it('does not expose mutable age policies or prepared fixtures', () => {
+    const policy = coachOutputPolicyForAgeBand('9_11');
+    expect(() => {
+      (policy as { maximumSteps: number }).maximumSteps = 1;
+    }).not.toThrow();
+    expect(coachOutputPolicyForAgeBand('9_11').maximumSteps).toBe(3);
+    expect(Object.isFrozen(PREPARED_COACH_MATERIALS)).toBe(true);
+    expect(Object.isFrozen(PREPARED_COACH_MATERIALS.coach_recycling_steps_v1.steps)).toBe(true);
+  });
+
+  it('rejects an unreviewed runtime age band', () => {
+    expect(() => coachOutputPolicyForAgeBand('15_17' as AgeBand)).toThrow(RangeError);
+    expect(serviceRegistry.coachAdaptation.policyForAgeBand('15_17')).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_INPUT' },
+    });
+    expect(
+      adaptPreparedCoachResult({
+        ...inputFor('9_11'),
+        context: { ...inputFor('9_11').context, ageBand: '15_17' as AgeBand },
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+  });
+
   it('exposes Coach adaptation and synthetic voice through the deterministic registry', () => {
-    expect(serviceRegistry.coachAdaptation.policyForAgeBand('9_11').maximumSteps).toBe(3);
+    expect(serviceRegistry.coachAdaptation.policyForAgeBand('9_11')).toMatchObject({
+      ok: true,
+      data: { maximumSteps: 3 },
+    });
     expect(serviceRegistry.syntheticVoice).toBeDefined();
   });
 });

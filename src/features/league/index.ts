@@ -20,43 +20,50 @@ import {
   type WeeklyGrowthResult,
 } from '../../models/familyLeague';
 
-export const SYNTHETIC_LEAGUE_PARTICIPANTS = [
-  {
+export const SYNTHETIC_LEAGUE_PARTICIPANTS: readonly [
+  SyntheticLeagueParticipant,
+  SyntheticLeagueParticipant,
+  SyntheticLeagueParticipant,
+] = Object.freeze([
+  Object.freeze({
     id: 'child_salem',
     relationship: 'sibling',
-    nickname: { ar: 'سالم', en: 'Salem' },
+    nickname: Object.freeze({ ar: 'سالم', en: 'Salem' }),
     treeAvatarToken: 'mangrove_shoot',
     ageBand: '9_11',
     invited: true,
     origin: 'synthetic',
-  },
-  {
+  }),
+  Object.freeze({
     id: 'child_alya',
     relationship: 'sibling',
-    nickname: { ar: 'علياء', en: 'Alya' },
+    nickname: Object.freeze({ ar: 'علياء', en: 'Alya' }),
     treeAvatarToken: 'ghaf_leaf',
     ageBand: '9_11',
     invited: true,
     origin: 'synthetic',
-  },
-  {
+  }),
+  Object.freeze({
     id: 'cousin_noura',
     relationship: 'cousin',
-    nickname: { ar: 'نورة', en: 'Noura' },
+    nickname: Object.freeze({ ar: 'نورة', en: 'Noura' }),
     treeAvatarToken: 'sidr_sapling',
     ageBand: '6_8',
     invited: true,
     origin: 'synthetic',
-  },
-] as const satisfies readonly SyntheticLeagueParticipant[];
+  }),
+]);
 
-export const PREPARED_LEAGUE_ENCOURAGEMENTS = {
-  great_growing: { ar: 'نموّ رائع!', en: 'Great growing!' },
-  keep_growing: { ar: 'استمر في النموّ!', en: 'Keep growing!' },
-  one_leaf_together: { ar: 'ورقة أخرى لهدف الأسرة!', en: 'One more Leaf for the family goal!' },
-} as const satisfies Readonly<
+export const PREPARED_LEAGUE_ENCOURAGEMENTS: Readonly<
   Record<PreparedLeagueEncouragementId, { readonly ar: string; readonly en: string }>
->;
+> = Object.freeze({
+  great_growing: Object.freeze({ ar: 'نموّ رائع!', en: 'Great growing!' }),
+  keep_growing: Object.freeze({ ar: 'استمر في النموّ!', en: 'Keep growing!' }),
+  one_leaf_together: Object.freeze({
+    ar: 'ورقة أخرى لهدف الأسرة!',
+    en: 'One more Leaf for the family goal!',
+  }),
+});
 
 const PARTICIPANT_IDS = SYNTHETIC_LEAGUE_PARTICIPANTS.map((participant) => participant.id) as [
   LeagueParticipantId,
@@ -183,6 +190,15 @@ const familyLeagueWeekSchema = z
     origin: z.literal('synthetic_local'),
   })
   .strict();
+const confirmChallengeLeafInputSchema = z
+  .object({
+    week: familyLeagueWeekSchema,
+    leafId: z.string().trim().min(1),
+    recognitionKey: z.string().trim().min(1),
+    completionMode: completionModeSchema,
+    accessibilityAdapted: z.boolean(),
+  })
+  .strict();
 const projectionCandidateSchema = z
   .object({
     participantId: participantIdSchema,
@@ -301,8 +317,13 @@ function validateLeagueWeek(week: FamilyLeagueWeek): DomainResult<FamilyLeagueWe
   const counts = activeIds.map(
     (participantId) => week.leaves.filter((item) => item.participantId === participantId).length,
   );
-  if (counts.some((count) => count !== 0 && count !== CHALLENGE_LEAVES_PER_WEEK)) {
-    return failure('INVALID_INPUT', 'Each active League participant needs zero or five Leaves');
+  const allUnassigned = counts.every((count) => count === 0);
+  const allAssigned = counts.every((count) => count === CHALLENGE_LEAVES_PER_WEEK);
+  if (!allUnassigned && !allAssigned) {
+    return failure(
+      'INVALID_INPUT',
+      'League participants must be all unassigned or each hold five Leaves',
+    );
   }
   if (
     week.optedOutParticipantIds.some((participantId) =>
@@ -314,8 +335,34 @@ function validateLeagueWeek(week: FamilyLeagueWeek): DomainResult<FamilyLeagueWe
   if (new Set(week.leaves.map((item) => item.id)).size !== week.leaves.length) {
     return failure('INVALID_INPUT', 'Challenge Leaf identifiers must be unique');
   }
+  const taskReferences = week.leaves.map(
+    (item) =>
+      `${item.participantId}:${item.approvedTaskRef.taskId}:${item.approvedTaskRef.taskVersion}`,
+  );
+  if (new Set(taskReferences).size !== taskReferences.length) {
+    return failure('INVALID_INPUT', 'Challenge Leaf task references must remain unique');
+  }
   if (week.leaves.some((item) => item.weekKey !== week.weekKey)) {
     return failure('INVALID_INPUT', 'Challenge Leaves must belong to the active League week');
+  }
+  for (const leaf of week.leaves) {
+    const eligibility = evaluateChallengeLeafEligibility(
+      {
+        id: leaf.id,
+        participantId: leaf.participantId,
+        ageBands: [leaf.ageBand],
+        approvedTaskRef: leaf.approvedTaskRef,
+        categoryId: leaf.categoryId,
+        visibilityScope: leaf.visibilityScope,
+        parentApproved: leaf.parentApproved,
+        accessibilityAdaptable: leaf.accessibilityAdaptable,
+        protectedContent: leaf.protectedContent,
+      },
+      fixedParticipant(leaf.participantId),
+    );
+    if (!eligibility.eligible) {
+      return failure('SAFETY_REJECTED', `Stored Challenge Leaf is unsafe: ${eligibility.reason}`);
+    }
   }
   const confirmedLeaves = week.leaves.filter(
     (item): item is Extract<ChallengeLeaf, { state: 'confirmed' }> => item.state === 'confirmed',
@@ -451,49 +498,55 @@ export function createFamilyLeagueWeek(
 export function confirmChallengeLeaf(
   input: ConfirmChallengeLeafInput,
 ): DomainResult<FamilyLeagueWeek> {
-  const validWeek = validateLeagueWeek(input.week);
-  if (!validWeek.ok) return validWeek;
-  if (!input.recognitionKey.trim()) {
-    return failure('INVALID_INPUT', 'League recognition key cannot be empty');
+  const parsed = confirmChallengeLeafInputSchema.safeParse(input);
+  if (!parsed.success) {
+    return failure('INVALID_INPUT', 'League confirmation does not match the strict input schema');
   }
-  const existingCredit = input.week.confirmationLedger[input.recognitionKey];
+  const normalizedInput = parsed.data as ConfirmChallengeLeafInput;
+  const validWeek = validateLeagueWeek(normalizedInput.week);
+  if (!validWeek.ok) return validWeek;
+  const existingCredit = normalizedInput.week.confirmationLedger[normalizedInput.recognitionKey];
   if (existingCredit) {
-    return existingCredit.leafId === input.leafId
-      ? success(input.week)
+    return existingCredit.leafId === normalizedInput.leafId
+      ? success(normalizedInput.week)
       : failure('INVALID_TRANSITION', 'Recognition key already credits another Challenge Leaf');
   }
-  const leafIndex = input.week.leaves.findIndex((item) => item.id === input.leafId);
+  const leafIndex = normalizedInput.week.leaves.findIndex(
+    (item) => item.id === normalizedInput.leafId,
+  );
   if (leafIndex < 0) return failure('NOT_FOUND', 'Challenge Leaf was not assigned in this week');
-  const leaf = input.week.leaves[leafIndex];
+  const leaf = normalizedInput.week.leaves[leafIndex];
   if (!leaf) return failure('NOT_FOUND', 'Challenge Leaf was not assigned in this week');
   if (leaf.state === 'confirmed') {
-    return leaf.recognitionKey === input.recognitionKey
-      ? success(input.week)
+    return leaf.recognitionKey === normalizedInput.recognitionKey
+      ? success(normalizedInput.week)
       : failure('INVALID_TRANSITION', 'Challenge Leaf is already confirmed');
   }
-  if (input.week.optedOutParticipantIds.includes(leaf.participantId)) {
+  if (normalizedInput.week.optedOutParticipantIds.includes(leaf.participantId)) {
     return failure('INVALID_TRANSITION', 'Opted-out participant cannot receive League credit');
   }
   const confirmed: ChallengeLeaf = {
     ...leaf,
     state: 'confirmed',
-    recognitionKey: input.recognitionKey,
-    completionMode: input.completionMode,
-    accessibilityAdapted: input.accessibilityAdapted,
+    recognitionKey: normalizedInput.recognitionKey,
+    completionMode: normalizedInput.completionMode,
+    accessibilityAdapted: normalizedInput.accessibilityAdapted,
   };
-  const leaves = input.week.leaves.map((item, index) => (index === leafIndex ? confirmed : item));
-  return success({
-    ...input.week,
+  const leaves = normalizedInput.week.leaves.map((item, index) =>
+    index === leafIndex ? confirmed : item,
+  );
+  return validateLeagueWeek({
+    ...normalizedInput.week,
     leaves,
     confirmationLedger: {
-      ...input.week.confirmationLedger,
-      [input.recognitionKey]: {
-        recognitionKey: input.recognitionKey,
+      ...normalizedInput.week.confirmationLedger,
+      [normalizedInput.recognitionKey]: {
+        recognitionKey: normalizedInput.recognitionKey,
         leafId: leaf.id,
         participantId: leaf.participantId,
       },
     },
-    cooperativeConfirmedCount: input.week.cooperativeConfirmedCount + 1,
+    cooperativeConfirmedCount: normalizedInput.week.cooperativeConfirmedCount + 1,
   });
 }
 
@@ -657,11 +710,13 @@ export function rolloverFamilyLeagueWeek(
       weekKey: input.nextWeekKey,
       timeZone: input.timeZone,
       invitedParticipants: SYNTHETIC_LEAGUE_PARTICIPANTS,
-      optedOutParticipantIds: [],
+      optedOutParticipantIds: [...input.currentWeek.optedOutParticipantIds],
       leaves: [],
       confirmationLedger: {},
       cooperativeConfirmedCount: 0,
-      cooperativeGoal: SYNTHETIC_LEAGUE_PARTICIPANTS.length * CHALLENGE_LEAVES_PER_WEEK,
+      cooperativeGoal:
+        (SYNTHETIC_LEAGUE_PARTICIPANTS.length - input.currentWeek.optedOutParticipantIds.length) *
+        CHALLENGE_LEAVES_PER_WEEK,
       preparedEncouragementLedger: [],
       origin: 'synthetic_local',
     },
