@@ -138,7 +138,7 @@ export default function ChildHomeScreen() {
 
   const sendLeagueEncouragement = () => {
     setLeagueError(null);
-    const result = sendPreparedLeagueEncouragement('child_alya', 'one_leaf_together');
+    const result = sendPreparedLeagueEncouragement('child_alya', 'keep_growing');
     if (!result.ok) setLeagueError(t('errors.safeRetry'));
   };
 

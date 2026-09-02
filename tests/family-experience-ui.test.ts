@@ -44,6 +44,7 @@ describe('family experience in-route presentation', () => {
   it('keeps the League cooperative goal and optional controls visually secondary', () => {
     const league = read('src/components/family-growth/FamilyLeaguePanel.tsx');
     const reward = read('src/components/family-growth/FamilyRewardPanel.tsx');
+    const child = read('app/child/index.tsx');
 
     expect(league).toContain('accessibilityRole="progressbar"');
     expect(league).toContain("role === 'child' && canSendEncouragement");
@@ -52,6 +53,7 @@ describe('family experience in-route presentation', () => {
     expect(reward).toContain('variant="secondary"');
     expect(league).not.toContain('variant="primary"');
     expect(reward).not.toContain('variant="primary"');
+    expect(child).toContain("sendPreparedLeagueEncouragement('child_alya', 'keep_growing')");
   });
 
   it('provides equal Arabic and English family-experience copy', () => {
