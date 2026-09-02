@@ -11,6 +11,7 @@ import { colors, spacing } from '@/design/tokens';
 import { bilingualResource } from '@/i18n';
 import type { LocalizedText, RecognitionMode, RoutinePhase } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRole } from '@/utils/navigation';
 
 function BilingualField({ label, value }: { label: string; value: LocalizedText }) {
   const { t } = useTranslation();
@@ -158,7 +159,7 @@ export default function ParentTaskReviewScreen() {
       setError(t('errors.safeRetry'));
       return;
     }
-    router.replace('/role');
+    replaceStackWithRole(router);
   };
 
   const edit = () => {
@@ -166,6 +167,10 @@ export default function ParentTaskReviewScreen() {
     const result = returnReviewedTaskToDraft();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
+      return;
+    }
+    if (router.canGoBack()) {
+      router.back();
       return;
     }
     router.replace('/parent/task/new');

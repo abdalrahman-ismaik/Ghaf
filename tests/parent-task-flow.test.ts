@@ -90,7 +90,7 @@ describe('US1 Parent task approval flow', () => {
       /approvalNavigationPending\.current = true;[\s\S]{0,120}approveAssignment\(\)/,
     );
     expect(source).toContain('!reviewable && !approvalNavigationPending.current');
-    expect(source).toContain("router.replace('/role')");
+    expect(source).toContain('replaceStackWithRole(router)');
   });
 
   it('exposes Salem, all eight categories, all five landscape tracks, and the distinct P0 task', () => {

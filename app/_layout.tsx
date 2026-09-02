@@ -9,7 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
 import { colors } from '@/design/tokens';
-import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
+import { setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 // THESIS: Family action becomes a clear living record. Avoid centered card piles,
@@ -27,7 +27,6 @@ export default function RootLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
-    configureNativeDirection(locale);
     void setI18nLocale(locale);
     if (Platform.OS === 'web') synchronizeWebDocumentLocale(locale);
   }, [locale]);

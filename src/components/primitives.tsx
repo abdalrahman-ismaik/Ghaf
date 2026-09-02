@@ -134,7 +134,9 @@ export function Text({
       }
       accessibilityRole={
         props.accessibilityRole ??
-        (variant === 'display' || variant === 'title' ? 'header' : undefined)
+        (variant === 'display' || variant === 'title' || variant === 'heading'
+          ? 'header'
+          : undefined)
       }
       style={[
         styles.textBase,
@@ -476,7 +478,7 @@ const styles = StyleSheet.create({
     top: spacing.huge + spacing.xxl,
     width: spacing.xxs,
     height: spacing.xxs,
-    marginStart: -2,
+    marginStart: -spacing.xxs / 2,
     backgroundColor: colors.gold,
   },
   rowRtl: {

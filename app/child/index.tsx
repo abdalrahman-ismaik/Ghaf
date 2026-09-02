@@ -16,6 +16,7 @@ import type {
   TaskTemplate,
 } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRole } from '@/utils/navigation';
 
 const LANDSCAPE_LABEL_KEYS: Readonly<Record<LandscapeId, string>> = {
   ghaf: 'garden.ghaf',
@@ -430,7 +431,7 @@ export default function ChildHomeScreen() {
           </Text>
         </View>
       ) : null}
-      <Button onPress={() => router.replace('/role')} variant="ghost">
+      <Button onPress={() => replaceStackWithRole(router)} variant="ghost">
         {t('navigation.switchToParent')}
       </Button>
     </Screen>

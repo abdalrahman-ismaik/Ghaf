@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { PreparedMedia } from '@/components/family-growth/PreparedMedia';
 import { RoutinePhaseReview } from '@/components/family-growth/TaskPanels';
 import { Button, Input, Text } from '@/components/primitives';
-import { colors, spacing } from '@/design/tokens';
+import { colors, radii, spacing } from '@/design/tokens';
 import { bilingualResource, localize } from '@/i18n';
 import type { LocalizedText } from '@/models/familyGrowth';
 import { PREPARED_PRAISE, serviceRegistry } from '@/services';
@@ -397,8 +397,8 @@ const styles = StyleSheet.create({
   confirmedLeaf: {
     width: 52,
     height: 72,
-    borderTopLeftRadius: 999,
-    borderBottomRightRadius: 999,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
     backgroundColor: colors.ghaf,
     transform: [{ rotate: '20deg' }],
   },

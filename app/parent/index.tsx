@@ -15,6 +15,7 @@ import { localize } from '@/i18n';
 import type { ProspectiveTaskAdjustmentKind } from '@/models/familyGrowth';
 import { PARENT_SUMMARY_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRole } from '@/utils/navigation';
 
 export default function ParentHomeScreen() {
   const router = useRouter();
@@ -251,7 +252,7 @@ export default function ParentHomeScreen() {
         origin="synthetic"
       />
 
-      <Button onPress={() => router.replace('/role')} variant="ghost">
+      <Button onPress={() => replaceStackWithRole(router)} variant="ghost">
         {t('navigation.switchToChild')}
       </Button>
     </Screen>

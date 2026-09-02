@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
-import { configureNativeDirection, setI18nLocale } from '@/i18n';
 import type { LocaleCode } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -31,8 +30,6 @@ export function LanguageSwitcher({
     if (nextLocale === locale) return;
 
     setLocale(nextLocale);
-    void configureNativeDirection(nextLocale);
-    void setI18nLocale(nextLocale);
   };
 
   return (

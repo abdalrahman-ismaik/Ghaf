@@ -19,6 +19,7 @@ import type { AgeAdaptedCoachResult } from '@/models/assistantVoice';
 import type { ChildCoachIntent, ChildCoachResult, LocalizedText } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRole } from '@/utils/navigation';
 
 const COACH_INTENTS: readonly { intent: ChildCoachIntent; key: string }[] = [
   { intent: 'show_steps', key: 'showSteps' },
@@ -133,6 +134,14 @@ export default function ChildTaskScreen() {
     if (!result.ok) setError(t('errors.safeRetry'));
   };
 
+  const returnToChildHome = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace('/child');
+  };
+
   if (role !== 'child') return null;
   if (!hasTaskPrerequisite) return null;
   if (!journey?.assignment) return null;
@@ -179,7 +188,7 @@ export default function ChildTaskScreen() {
         <JourneyHeader
           action={<LanguageSwitcher compact showGuidance={false} />}
           eyebrow={t('origin.prepared')}
-          onBack={() => router.replace('/child')}
+          onBack={returnToChildHome}
           subtitle={localize(content.whyItMatters, locale)}
           title={childFacingTitle}
         />
@@ -231,7 +240,9 @@ export default function ChildTaskScreen() {
           </Text>
           <Text color="inkMuted">{t('taskReview.noEarlyReward')}</Text>
         </View>
-        <Button onPress={() => router.replace('/role')}>{t('navigation.switchToParent')}</Button>
+        <Button onPress={() => replaceStackWithRole(router)}>
+          {t('navigation.switchToParent')}
+        </Button>
       </Screen>
     );
   }
@@ -241,7 +252,7 @@ export default function ChildTaskScreen() {
       <JourneyHeader
         action={<LanguageSwitcher compact showGuidance={false} />}
         eyebrow={t('origin.prepared')}
-        onBack={() => router.replace('/child')}
+        onBack={returnToChildHome}
         subtitle={localize(content.whyItMatters, locale)}
         title={childFacingTitle}
       />

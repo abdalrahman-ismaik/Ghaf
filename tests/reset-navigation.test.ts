@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { synchronizeWebDocumentLocale } from '../src/i18n';
-import { replaceHistoryWithEntry } from '../src/utils/navigation';
+import { replaceHistoryWithEntry, replaceStackWithRole } from '../src/utils/navigation';
 
 describe('mounted reset locale and history boundary', () => {
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('mounted reset locale and history boundary', () => {
 
   it('replaces the visible route and traps Back at a reset root boundary', () => {
     const animationFrames: FrameRequestCallback[] = [];
-    const popstateListeners: Array<(event: PopStateEvent) => void> = [];
+    const popstateListeners: ((event: PopStateEvent) => void)[] = [];
     const historyState: { current: Record<string, unknown> } = {
       current: { expoRouterIndex: 7 },
     };
@@ -95,5 +95,17 @@ describe('mounted reset locale and history boundary', () => {
     fakeWindow.location.pathname = '/role';
     popstateListeners[0]?.({ state: { id: 'post-reset-role' } } as PopStateEvent);
     expect(history.pushState).toHaveBeenCalledTimes(5);
+  });
+
+  it('clears protected journey history before a role handoff', () => {
+    const router = {
+      dismissAll: vi.fn(),
+      replace: vi.fn(),
+    };
+
+    replaceStackWithRole(router);
+
+    expect(router.dismissAll).toHaveBeenCalledOnce();
+    expect(router.replace).toHaveBeenCalledWith('/role');
   });
 });

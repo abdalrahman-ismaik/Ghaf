@@ -93,7 +93,11 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
             <Text color="forest" variant="label">
               {t('childVoice.ready')}
             </Text>
-            <Button onPress={() => onCommand({ type: 'start' })} testID="child-voice-start-button">
+            <Button
+              onPress={() => onCommand({ type: 'start' })}
+              testID="child-voice-start-button"
+              variant="secondary"
+            >
               {t('childVoice.start')}
             </Button>
           </>
@@ -108,7 +112,11 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
               </Text>
             </View>
             <Text color="inkMuted">{t('childVoice.activeHelp')}</Text>
-            <Button onPress={() => onCommand({ type: 'stop' })} testID="child-voice-stop-button">
+            <Button
+              onPress={() => onCommand({ type: 'stop' })}
+              testID="child-voice-stop-button"
+              variant="secondary"
+            >
               {t('childVoice.stop')}
             </Button>
           </>
@@ -230,6 +238,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
               onPress={() => onCommand({ type: 'send' })}
               style={styles.action}
               testID="child-voice-send-button"
+              variant="secondary"
             >
               {t('childVoice.send')}
             </Button>

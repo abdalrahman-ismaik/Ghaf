@@ -8,6 +8,7 @@ import { Screen, Text } from '@/components/primitives';
 import { spacing } from '@/design/tokens';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRole } from '@/utils/navigation';
 
 export default function ParentCheckInScreen() {
   const router = useRouter();
@@ -73,7 +74,7 @@ export default function ParentCheckInScreen() {
       />
       <ParentCheckIn
         onRecognized={() => router.replace('/garden')}
-        onResumeChild={() => router.replace('/role')}
+        onResumeChild={() => replaceStackWithRole(router)}
       />
     </Screen>
   );

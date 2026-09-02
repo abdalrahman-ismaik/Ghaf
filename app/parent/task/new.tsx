@@ -13,6 +13,14 @@ export default function ParentTaskNewScreen() {
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
 
+  const returnToParentHome = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace('/parent');
+  };
+
   useEffect(() => {
     if (role !== 'parent') router.replace('/role');
   }, [role, router]);
@@ -33,7 +41,7 @@ export default function ParentTaskNewScreen() {
     >
       <JourneyHeader
         eyebrow={t('origin.synthetic')}
-        onBack={() => router.replace('/parent')}
+        onBack={returnToParentHome}
         subtitle={t('taskNew.body')}
         title={t('taskNew.title')}
       />

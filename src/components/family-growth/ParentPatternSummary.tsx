@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, Text } from '@/components/primitives';
-import { colors, spacing } from '@/design/tokens';
+import { colors, radii, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import type { ParentPatternSummary as ParentPatternSummaryModel } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
@@ -204,8 +204,8 @@ const styles = StyleSheet.create({
   guideMark: {
     width: 18,
     height: 28,
-    borderTopLeftRadius: 999,
-    borderBottomRightRadius: 999,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
     backgroundColor: colors.mangrove,
     transform: [{ rotate: '22deg' }],
   },

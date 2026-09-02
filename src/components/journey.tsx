@@ -44,7 +44,11 @@ export function JourneyHeader({
           ) : (
             <View style={styles.headerSpacer} />
           )}
-          {action ?? <View style={styles.headerSpacer} />}
+          {action ? (
+            <View style={styles.headerAction}>{action}</View>
+          ) : (
+            <View style={styles.headerSpacer} />
+          )}
         </View>
       ) : null}
       <View style={styles.headerCopy}>
@@ -157,8 +161,10 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     gap: spacing.md,
   },
+  headerAction: { maxWidth: '100%', flexShrink: 0 },
   headerSpacer: { width: layout.touchTarget, height: layout.touchTarget },
   headerCopy: { gap: spacing.sm },
   headerContext: { alignItems: 'center', gap: spacing.sm, paddingTop: spacing.xs },
