@@ -447,3 +447,100 @@ AI remains `BLOCKED` for implementation and `NOT RUN` for validation.
 8. The third recurrent fade-first acquisition creates an unselected future-only phase prompt.
 9. Reset from every meaningful state reconstructs the exact baseline and empty ledger.
 10. Missing media returns accessible fallback content and never blocks submission.
+
+## Product Experience Redesign Service Contracts
+
+The redesign services are deterministic local contracts. They are added to the existing registry
+without changing the P0 session or Green Circle contracts.
+
+```ts
+interface SyntheticAccessService {
+  signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
+  signInChild(input: SyntheticChildSignIn): ServiceResult<ChildAccessSession>;
+  projectSession(session: AccessSession): ServiceResult<ParentAccessView | ChildAccessView>;
+  requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest>;
+  approvePairing(input: PairingApprovalInput): ServiceResult<PairingRequest>;
+  consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession>;
+  revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState>;
+  issueReauthentication(input: ReauthenticationInput): ServiceResult<ReauthenticationProof>;
+  authorizeSensitiveAction(input: SensitiveActionInput): ServiceResult<ReauthenticationProof>;
+  updateChildPermissions(input: PermissionUpdateInput): ServiceResult<ChildPermissionGrant>;
+}
+
+interface FamilyRewardService {
+  createPlan(input: CreateFamilyRewardPlanInput): ServiceResult<FamilyRewardPlan>;
+  revisePromisedPlan(input: ReviseFamilyRewardPlanInput): ServiceResult<FamilyRewardPlan>;
+  evaluatePlan(input: EvaluateFamilyRewardPlanInput): ServiceResult<FamilyRewardPlan>;
+  markGiven(input: MarkFamilyRewardGivenInput): ServiceResult<FamilyRewardPlan>;
+  projectPrivate(input: FamilyRewardProjectionInput): ServiceResult<FamilyRewardPrivateView>;
+  summarizeMonthlyCommitment(
+    plans: readonly FamilyRewardPlan[],
+    month: string,
+  ): ServiceResult<readonly MonthlyCommitment[]>;
+}
+
+interface FamilyLeagueService {
+  createWeek(input: CreateLeagueWeekInput): ServiceResult<FamilyLeagueWeek>;
+  confirmLeaf(input: ConfirmChallengeLeafInput): ServiceResult<FamilyLeagueWeek>;
+  calculateResults(week: FamilyLeagueWeek): ServiceResult<readonly WeeklyGrowthResult[]>;
+  projectParticipants(input: LeagueProjectionInput): ServiceResult<LeagueParticipantProjection[]>;
+  sendPreparedEncouragement(
+    input: PreparedEncouragementInput,
+  ): ServiceResult<PreparedEncouragement>;
+  rollover(input: LeagueRolloverInput): ServiceResult<FamilyLeagueWeek>;
+}
+
+interface CoachAdaptationService {
+  policyForAgeBand(ageBand: AgeBand): ChildCoachOutputPolicy;
+  adaptPreparedResult(input: AdaptCoachResultInput): ServiceResult<AgeAdaptedCoachResult>;
+}
+
+interface SyntheticVoiceService {
+  createIdle(input: CreateVoiceSessionInput): ServiceResult<SyntheticVoiceSession>;
+  start(input: StartVoiceSessionInput): ServiceResult<SyntheticVoiceSession>;
+  stopWithPreparedTranscript(
+    input: StopVoiceSessionInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  deleteBeforeSend(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  send(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  setPlayback(input: VoicePlaybackInput): ServiceResult<SyntheticVoiceSession>;
+  replay(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+}
+```
+
+### Required contract properties
+
+- Access and sensitive-action services validate session role, actor, household, device, purpose,
+  expiry, revocation, and replay state from stored values. They never trust a standalone caller role.
+- Pairing and reauthentication values are opaque synthetic fixtures and have no production-security
+  claim.
+- Family Reward creation/change requires a consumed proof for monetary metadata. The evaluator
+  accepts only personal progress and protected-content eligibility fields; its input type has no
+  rank, score, speed, payment, or exchange-rate property.
+- Family Reward lifecycle transitions are monotonic. Duplicate unlock/given attempts return the
+  current value, while withdrawal or retroactive milestone edits fail.
+- League creation validates exactly five unique Parent-approved eligible Leaves per participating
+  Child. Credit is idempotent by recognition key and full for permitted help or adaptation.
+- League ranking sorts score only, uses competition positions with gaps after ties, and cannot use a
+  completion timestamp. Results are capped at 100.
+- League projection rejects unknown or forbidden keys before output. It does not call the Green
+  Circle projector and cannot change P0 counters.
+- Prepared encouragement accepts only reviewed IDs with paired Arabic/English content and no
+  caller-supplied message text.
+- Coach adaptation rejects step overflow and task/version mismatch. Voice transitions require a
+  stored Parent grant, explicit active task, and prepared transcript; no method can accept audio
+  bytes, microphone handles, speaker identity, background mode, or provider credentials.
+
+### Additional focused contract tests
+
+11. Parent and Child projections expose only their allowlisted capabilities and fields.
+12. Pairing and reauthentication reject wrong actor, device, purpose, expiry, replay, and revocation.
+13. Permission updates require Parent authority and matching proof.
+14. Family Reward lifecycle, privacy, eligibility, prospective versioning, and monthly totals.
+15. Family Reward inputs cannot derive from League position or convert Seeds to money.
+16. Exactly-five League assignment, 20-point increments, cap, help/adaptation credit, ties, and
+    rollover isolation.
+17. Strict League projection and prepared-encouragement allowlist rejection.
+18. Age-specific Coach output limits and task/version binding.
+19. Synthetic voice permission, explicit lifecycle, delete-before-send, playback, and reset.

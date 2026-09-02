@@ -606,3 +606,74 @@ After the P0 task is approved, completed, and validly recognized once, only thes
 
 Repeated recognition changes no value. Reset from every lifecycle, assistant, media, garden,
 circle, or celebration state reconstructs the exact table above without network access.
+
+## Product Experience Redesign Domain Models
+
+These models are independent deterministic aggregates in the current phase. They do not change the
+P0 `PrototypeSession` or its schema version.
+
+### Synthetic access
+
+- `SyntheticPrincipal`: one Parent or Child fixture identifier, role, household, and synthetic
+  origin. A Child principal has no email or phone field.
+- `AccessSession`: opaque session ID, principal, issued/expiry times, device ID, and capability
+  allowlist. Parent and Child projections are distinct union members.
+- `PairingRequest`: opaque pairing ID/code, Child ID, requesting device, expiry, status
+  (`pending | approved | consumed | expired | revoked`), and approving Parent when applicable.
+- `ReauthenticationProof`: Parent/session ID, one sensitive purpose, issue/expiry, consumed flag,
+  and synthetic origin.
+- `ChildPermissionGrant`: Child ID, language preference, voice/media/AI booleans, version, updating
+  Parent, and update time.
+
+Every transition receives an explicit deterministic time. Expired or consumed values are rejected,
+and no API accepts a caller-provided role as proof of authority.
+
+### Family Reward
+
+- `FamilyRewardPlan`: plan/Child/guardian IDs, version, promise kind
+  (`money | experience | privilege | gift`), private bilingual description, optional currency and
+  minor-unit amount, one personal milestone, baseline, lifecycle (`promised | unlocked | given`),
+  creation/update/unlock/given times, and synthetic origin.
+- `FamilyRewardMilestone`: eligible Seed delta, one landscape stage, or a number of landscapes at a
+  stage. No union member includes League score or rank.
+- `FamilyRewardEligibilityEvent`: recognition key, Child, category, recognition mode, phase,
+  eligible Seed delta, resulting landscape state, and protected-content flags. It contains no task
+  text, media, reflection, assistant content, Parent note, or money.
+- `FamilyRewardProgressSnapshot`: personal Child progress only.
+- `FamilyRewardPrivateView`: plan details for the matching Child/guardian audience.
+
+Plan edits produce the next version while the plan is still promised. Unlock and given transitions
+are monotonic and idempotent. Monetary promise totals group active promises by month and currency;
+they never multiply Seeds by money.
+
+### Weekly Family League
+
+- `ChallengeLeaf`: week/Leaf/Child identifiers, age band, approved task reference, category,
+  visibility, content-sensitivity flags, accessibility-adapted flag, state
+  (`assigned | confirmed`), and recognition key after confirmation.
+- `FamilyLeagueWeek`: ISO week key plus explicit time-zone identifier, five Leaves per participant,
+  confirmation ledger, cooperative confirmed count, invited synthetic members, opt-out set, and
+  prepared encouragement ledger.
+- `WeeklyGrowthResult`: Child ID, completed count, score in 20-point increments, and competition
+  position. No timestamp or speed field exists.
+- `LeagueParticipantProjection`: allowlisted nickname, tree-avatar token, completed count, score,
+  and position only.
+- `PreparedEncouragement`: sender/recipient synthetic IDs and one bilingual reviewed phrase ID; no
+  free-text field exists.
+
+League scoring and rollover never mutate Seed, landscape, recognition, canopy, or Green Circle
+state. The strict League projection is separate from `GreenCircleEventDTO`.
+
+### Age-adaptive Coach and synthetic voice
+
+- `ChildCoachOutputPolicy`: age band, maximum step count, sentence/pace/tone keys, quick-choice
+  support, and early adult-exit requirement.
+- `AgeAdaptedCoachResult`: active task/version binding, bounded steps, optional reviewed choices,
+  adult exit, and deterministic prepared origin.
+- `SyntheticVoiceSession`: Child/session/task/version IDs, stored permission version, lifecycle
+  (`idle | recording | transcript_review | sent`), prepared transcript, captions, playback rate,
+  replay availability, and background-recording literal `false`.
+
+Only an explicit start can enter `recording`; stop supplies a prepared transcript and enters review.
+Delete clears it before send, and reset returns the exact idle value. No model carries audio bytes,
+microphone permission, speaker identity, biometric data, or provider metadata.

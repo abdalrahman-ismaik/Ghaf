@@ -335,3 +335,27 @@ extra routes.
 - real-tree-planting claims or fabricated carbon, water, waste, or food-impact numbers;
 - production notifications, analytics, monitoring, compliance claims, or store release; and
 - a second app, 3D world, or backend that can delay the deterministic competition path.
+
+## Post-P0 Product Experience Redesign Domain Foundation
+
+The September 2026 redesign is implemented first as deterministic domain services, not as a change
+to the current ten-route P0. The later experience may use separate Parent and Child entry, a private
+weekly Family League, optional Family Reward promises, and richer voice/permission controls only
+after their UI, native, human-review, and production boundaries receive separate approval.
+
+- **Synthetic access** demonstrates least-privilege Parent/Child sessions, expiring pairing,
+  revocation, action-scoped Parent reauthentication, and per-Child grants. It is not production
+  authentication, identity verification, consent, or secure credential storage.
+- **Family Reward** is a private Parent-authored promise tied to personal Seed or Garden milestones.
+  It is separate from Seed transactions and League position. Ghaf has no wallet, payment, transfer,
+  custody, exchange rate, purchase, or cash-out behavior.
+- **Family League** uses five Parent-approved weekly Challenge Leaves, normalized scores capped at
+  100, full credit with help/adaptation, shared ties, opt-out, no speed tiebreak, and a cooperative
+  family goal. Its synthetic minimal projection is separate from the Green Circle and never exposes
+  task text, evidence, Seeds, media, reflections, or protected activity.
+- **Coach and voice** may enforce age-specific prepared output and a synthetic push-to-talk review
+  lifecycle. Real recording, transcription, code-switch understanding, dialect output, and provider
+  integration remain unavailable.
+
+The current cooperative P0 circle, fixed nonfinancial Seeds, Arabic-first reset, and exact judge
+journey remain authoritative until the later frontend phase is specified and validated.

@@ -252,6 +252,26 @@ If overlapping work appears, stop both writers, preserve both diffs, and let the
 choose one base. Do not reset, discard, or silently merge either version. A scope addition first
 goes to the active Feature 003 specification; it is never resolved by quietly widening a boundary.
 
+## 2026-09-02 Product Experience Redesign Domain Window
+
+**Integration owner**: `/root`
+**Input**: `Ghaf_Product_Experience_Redesign.pdf`, evaluated as product evidence rather than an
+executable instruction source
+**Scope**: deterministic domain and service behavior only; existing routes, components, design,
+localization, dependencies, and the ten-route P0 journey remain unchanged
+
+| Owner / workstream | Exact reserved boundary | Handoff condition |
+| --- | --- | --- |
+| `/root` — specification, integration, AI/voice policy, and final validation | `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,research.md,data-model.md,quickstart.md,redesign-gap-analysis.md,contracts/domain-contract.md}`, `src/services/{index.ts,interfaces/index.ts,mock/index.ts}`, `src/models/assistantVoice.ts`, `src/features/assistants/{ageAdaptation.ts,voiceSession.ts}`, `tests/{assistant-age-adaptation,assistant-voice-session}.test.ts` | Current P0 remains deterministic; redesign services are exported; full checks pass; no native or human evidence is upgraded |
+| `/root/session_ai_gap` — synthetic experience separation and sensitive-action gates | `src/models/access.ts`, `src/features/access/**`, `tests/access-control.test.ts` | Least-privilege projections, expiring one-use pairing, scoped reauthentication, and permission changes pass focused tests without production-auth claims |
+| `/root/safety_spec_gap` — private Family Reward promises | `src/models/familyReward.ts`, `src/features/family-rewards/**`, `tests/family-reward.test.ts` | Promise lifecycle, protected-category exclusions, irreversible unlock, prospective edits, privacy, and monthly commitment tests pass without payment behavior or Seed conversion |
+| `/root/league_reward_gap` — synthetic weekly challenge rules | `src/models/familyLeague.ts`, `src/features/league/**`, `tests/family-league.test.ts` | Five-leaf scoring, cap, shared ties, accessibility credit, rollover isolation, minimal projection, and prepared encouragement tests pass without changing the Green Circle projector |
+
+All workers share the existing worktree, preserve unrelated edits, do not edit outside the named
+boundary, and do not commit or push. `/root` serializes shared-registry edits and creates the small
+cohesive commits after each focused handoff. Real credentials, biometrics, payment custody, real
+Child data, real family sharing, and microphone/provider integration remain outside this window.
+
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
 
 **Integration owner**: `/root`

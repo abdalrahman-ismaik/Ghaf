@@ -447,3 +447,110 @@ and any eleventh route remain outside this task list.
 - [x] T108 reshape Child task and garden composition so the approved contract remains complete while the first action/steps and changed Mangrove are dominant; keep optional evidence progressive and all five tracks visible
 - [x] T109 fix logical RTL accents, duplicate copy/accessibility labels, redundant wrappers/actions, and enforce the documented bounded provider timeout with late-result protection
 - [x] T110 rerun the full bilingual P0 journey, reset, duplicate recognition, focused adversarial branches, detector, export, type-check, lint, formatting, and complete test suite; record exact before/after evidence without upgrading Android or human gates
+
+## Phase 12: Product Experience Redesign authority and contracts
+
+**Goal**: Reconcile the redesign brief with the constitution and preserve the current P0 before any
+new domain behavior is added.
+
+**Independent Test**: The gap matrix classifies every redesign area, the active artifacts describe
+the same domain-only boundary, and production/frontend work remains explicitly deferred.
+
+- [x] T111 [P] Record the implemented, partial, missing, conflicting, and deferred redesign capabilities with page-level source mapping and phased disposition in `specs/003-family-growth-garden/redesign-gap-analysis.md`
+- [x] T112 Add US7–US10, FR-099–FR-118, SC-019–SC-024, technical decisions, domain entities, service contracts, validation scenarios, capability limits, and exact ownership boundaries in `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `specs/003-family-growth-garden/spec.md`, `specs/003-family-growth-garden/plan.md`, `specs/003-family-growth-garden/research.md`, `specs/003-family-growth-garden/data-model.md`, `specs/003-family-growth-garden/contracts/domain-contract.md`, and `specs/003-family-growth-garden/quickstart.md`
+
+**Checkpoint**: The existing ten-route P0 and its reset oracle remain unchanged; the redesign is
+authorized only as deterministic service/domain work.
+
+---
+
+## Phase 13: User Story 7 — Synthetic Parent and Child Access (Priority: P3)
+
+**Goal**: Demonstrate separate least-privilege local sessions and Parent-gated sensitive changes
+without claiming production authentication.
+
+**Independent Test**: Focused tests cover both projections, pairing, revocation, reauthentication,
+permissions, and every wrong-actor/purpose/device/expiry/replay path.
+
+- [ ] T113 [P] [US7] Add RED tests for least-privilege Parent/Child projections, expiring one-use pairing, device revocation, scoped reauthentication, and Parent-owned language/voice/media/AI grants in `tests/access-control.test.ts`
+- [ ] T114 [P] [US7] Define synthetic principals, separate access sessions/views, capabilities, pairing requests, reauthentication proofs, device state, and Child grants in `src/models/access.ts`
+- [ ] T115 [US7] Implement fail-closed deterministic access, pairing, projection, reauthentication, revocation, and permission policies in `src/features/access/index.ts`
+- [ ] T116 [US7] Export the synthetic access service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/access-control.test.ts`
+
+**Checkpoint**: User Story 7 is independently usable from the service facade and has no real
+credential, biometric, network, or persistence path.
+
+---
+
+## Phase 14: User Story 8 — Private Family Reward Promise (Priority: P3)
+
+**Goal**: Model a private Parent promise tied only to personal progress, separate from Seeds,
+League position, and payment behavior.
+
+**Independent Test**: Every lifecycle/milestone/promise kind passes; protected activity, League
+inputs, withdrawal, retroactive edits, cross-Child views, and Seed conversion fail.
+
+- [ ] T117 [P] [US8] Add RED tests for Family Reward plan validation, all milestone kinds, lifecycle idempotency, protected-category exclusion, private projection, prospective edits, and monthly currency totals in `tests/family-reward.test.ts`
+- [ ] T118 [P] [US8] Define Family Reward plans, milestones, eligibility events, progress snapshots, private views, revisions, and monthly commitments in `src/models/familyReward.ts`
+- [ ] T119 [US8] Implement deterministic plan creation, personal milestone evaluation, monotonic transitions, future-only revision, private projection, and commitment aggregation in `src/features/family-rewards/index.ts`
+- [ ] T120 [US8] Export the Family Reward service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/family-reward.test.ts`
+
+**Checkpoint**: User Story 8 is independently usable and exposes no payment, wallet, custody,
+exchange-rate, rank, or public-reward operation.
+
+---
+
+## Phase 15: User Story 9 — Fair Synthetic Weekly Challenge (Priority: P3)
+
+**Goal**: Add a bounded five-Leaf synthetic League with normalized weekly results and a cooperative
+goal while keeping the Green Circle unchanged.
+
+**Independent Test**: Focused tests prove exactly-five assignment, score increments/cap, full
+help/adaptation credit, shared ties, rollover isolation, strict projection, protected-category
+rejection, opt-out, and prepared encouragement.
+
+- [ ] T121 [P] [US9] Add RED tests for League eligibility, five-Leaf weeks, idempotent confirmation, scores, ties, opt-out, rollover, strict projections, and encouragement allowlists in `tests/family-league.test.ts`
+- [ ] T122 [P] [US9] Define Challenge Leaves, League weeks, participants, results, minimal projections, eligibility decisions, rollover input, and prepared encouragement in `src/models/familyLeague.ts`
+- [ ] T123 [US9] Implement deterministic eligibility, week creation, confirmation credit, score/competition-position calculation, strict projection, prepared encouragement, cooperative totals, and rollover in `src/features/league/index.ts`
+- [ ] T124 [US9] Export the Family League service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/family-league.test.ts`
+
+**Checkpoint**: User Story 9 is independently usable with synthetic invitees only, and no League
+method accepts task text, evidence, Seeds, speed, or Green Circle state.
+
+---
+
+## Phase 16: User Story 10 — Age-Adaptive Coach and Synthetic Voice (Priority: P3)
+
+**Goal**: Enforce age-specific prepared Coach output and a task-bound push-to-talk review state
+machine without microphone or provider integration.
+
+**Independent Test**: All age bands and voice transitions pass; permission, task/version, state,
+background, and delete-before-send failures are explicit.
+
+- [ ] T125 [P] [US10] Add RED tests for age-specific step/tone/pace/choice/adult-exit rules in `tests/assistant-age-adaptation.test.ts`
+- [ ] T126 [P] [US10] Add RED tests for stored grant, task binding, explicit start/stop, prepared transcript review/delete/send, captions, replay, slower playback, and reset in `tests/assistant-voice-session.test.ts`
+- [ ] T127 [P] [US10] Define Coach output and synthetic voice-session contracts in `src/models/assistantVoice.ts`
+- [ ] T128 [US10] Implement prepared-result adaptation in `src/features/assistants/ageAdaptation.ts` and voice transitions in `src/features/assistants/voiceSession.ts`
+- [ ] T129 [US10] Export Coach adaptation and synthetic voice services through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run both focused test files
+
+**Checkpoint**: User Story 10 is independently usable and contains no microphone, audio bytes,
+speech provider, biometric inference, background recording, or unreviewed dialect content.
+
+---
+
+## Phase 17: Redesign domain convergence
+
+**Purpose**: Verify the new services together without changing the existing P0 evidence class.
+
+- [ ] T130 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`, `git diff --check`, and a ten-route inventory; fix only defects within this window's reserved boundaries
+- [ ] T131 Review the complete diff for child-safety, privacy, capability truth, comment syntax, secret/network/media absence, and P0 regression; record checks and release all 2026-09-02 boundaries in `TEAM_OWNERSHIP.md`
+
+### Product Experience Redesign dependencies
+
+- Phase 12 blocks Phases 13–16.
+- Phases 13, 14, and 15 use disjoint model/feature/test files and may run in parallel after Phase 12.
+- Phase 16 is independent at the pure-policy level but shares the final service registry with every
+  prior phase, so T116, T120, T124, and T129 are serialized by `/root`.
+- Phase 17 begins only after the selected domain phases pass independently.
+- Frontend routes, components, design, typography, localization copy, native media, real providers,
+  production accounts/invitations/payment, and named human reviews are not tasks in this window.

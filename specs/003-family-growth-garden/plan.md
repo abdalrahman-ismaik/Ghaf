@@ -409,3 +409,56 @@ transition. No complexity exception is required.
 ## Complexity Tracking
 
 No constitution violation or architectural exception requires justification.
+
+## Product Experience Redesign Domain Addendum (2026-09-02)
+
+### Scope and technical context
+
+The September redesign brief was compared against the shipped Feature 003 domain and recorded in
+`redesign-gap-analysis.md`. This addendum authorizes a post-P0 deterministic domain foundation only.
+It does not replace the existing ten-route journey, add a screen, change `PrototypeSession` schema
+version `3`, weaken the Green Circle projector, or claim production authentication, payment,
+invitation, persistence, or voice processing.
+
+The implementation remains strict TypeScript with Vitest and existing dependencies. New behavior
+lives in small models and pure feature services, is registered through the existing service facade,
+and consumes only synthetic fixtures or caller-provided deterministic test data. The current Zustand
+P0 aggregate remains unchanged so reset and judge-flow evidence stay stable until the frontend
+redesign receives its own approved integration window.
+
+### Phased implementation
+
+| Phase | Domain outcome | Reserved files | Independent evidence |
+| --- | --- | --- | --- |
+| A — authority and contracts | Gap matrix, requirements, entities, service contracts, and executable tasks | Feature 003 Spec Kit artifacts and bounded root product-limit documents | Artifact review finds the current P0 and production boundaries explicit |
+| B — synthetic access | Separate local Parent/Child sessions, least-privilege views, expiring one-use pairing, scoped reauthentication, and Parent-owned grants | `src/models/access.ts`, `src/features/access/**`, `tests/access-control.test.ts` | Wrong actor, purpose, expiry, replay, revocation, and capability cases fail closed |
+| C — private Family Reward | Versioned personal milestone promises, `promised → unlocked → given`, protected-category exclusion, privacy, and monthly commitments | `src/models/familyReward.ts`, `src/features/family-rewards/**`, `tests/family-reward.test.ts` | No League input, payment operation, Seed conversion, retroactive edit, or unlocked withdrawal is accepted |
+| D — weekly Family League | Five-leaf week, idempotent credit, normalized capped score, shared ties, rollover, strict projection, prepared encouragement, and cooperative goal | `src/models/familyLeague.ts`, `src/features/league/**`, `tests/family-league.test.ts` | Score, tie, accessibility, protected-category, privacy, rollover, and allowlist cases pass |
+| E — age-adaptive Coach and synthetic voice | Output constraints for all age bands and explicit task-bound transcript lifecycle | `src/models/assistantVoice.ts`, `src/features/assistants/{ageAdaptation.ts,voiceSession.ts}`, focused tests | No microphone/provider access; all permission, task, transcript, replay, caption, pace, and reset transitions pass |
+| F — registry and convergence | Deterministic services exposed through `serviceRegistry`; complete static and behavioral validation | Existing service facade plus full suite | Typecheck, lint, formatting, tests, diff checks, and route inventory pass |
+
+Phases B, C, and D may be developed in parallel because their write boundaries are disjoint. Shared
+registry changes and Phase E remain serialized under the integration owner. Each completed phase is
+committed as a cohesive checkpoint after its focused tests pass.
+
+### Security and privacy boundaries
+
+- Synthetic access tokens are opaque local values with explicit expiry and replay handling; they
+  are not passwords, biometrics, identity verification, or production sessions.
+- The Family Reward evaluator receives a personal progress snapshot and never accepts League rank,
+  another Child's progress, a Seed exchange rate, or a payment command.
+- League eligibility is decided before assignment. Its projector is a new strict allowlist and does
+  not reuse or relax `GreenCircleEventDTO` validation.
+- Voice state accepts a prepared synthetic transcript only after explicit start/stop and stored
+  Parent permission. It never calls camera, microphone, speech, network, or biometric APIs.
+- Emirati/Gulf conversational content and real Arabic-English code-switch understanding remain
+  blocked pending named human review and an approved provider boundary.
+
+### Constitution check after addendum
+
+The addendum preserves the complete P0 journey, uses deterministic mock-first services, adds no
+dependency or route, and labels every new capability synthetic. A private promise is metadata rather
+than a real financial reward; a local access fixture is not production authentication; and the
+League uses only synthetic participants behind a separate minimal privacy projection. Production
+infrastructure and claims remain excluded, so no constitution amendment or complexity exception is
+required for this domain-only foundation.

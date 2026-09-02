@@ -276,6 +276,100 @@ reset, switch to English, and complete it again.
    decisions, safety, privacy, reward, disclosures, and final counters are available in the
    corresponding direction.
 
+---
+
+### User Story 7 - Synthetic Parent and Child Access Stay Separate (Priority: P3)
+
+As a prototype family, we can exercise distinct local Parent and Child sessions without treating a
+visual role switch as authority or claiming production authentication.
+
+**Why this priority**: The redesign needs a testable access boundary before sensitive Reward,
+membership, media, voice, or AI settings can be modeled safely.
+
+**Independent Test**: Sign in with the deterministic Parent fixture, issue and approve an expiring
+Child pairing code, open a Child session, and prove the Child projection cannot read or change
+Parent-only data. Exercise expired, replayed, revoked, wrong-purpose, and wrong-actor failures.
+
+**Acceptance Scenarios**:
+
+1. **Given** a synthetic Parent session, **When** a pairing request is approved once before expiry,
+   **Then** a local Child device session is issued without a Child email address or phone number.
+2. **Given** a Child session, **When** it requests Parent reports, Family Reward changes, League
+   membership changes, or permission changes, **Then** the capability check denies the request.
+3. **Given** a sensitive Parent action, **When** a valid action-scoped reauthentication proof is
+   consumed, **Then** the action may proceed once; stale, replayed, or wrong-purpose proofs fail.
+
+---
+
+### User Story 8 - Parent Manages a Private Family Reward Promise (Priority: P3)
+
+As a Parent, I can define an optional private promise tied to a Child's personal Seed or Garden
+milestone, without converting Seeds to money or making League position affect eligibility.
+
+**Why this priority**: The feature can represent a clear family agreement while preserving
+permanent symbolic progress, child dignity, and the absence of payment infrastructure.
+
+**Independent Test**: Create each supported milestone and promise kind with a valid Parent proof;
+evaluate progress before and after the milestone; mark an unlocked promise given; and prove protected
+categories, rank inputs, retroactive edits, withdrawal, cross-Child reads, and Seed-to-money
+conversion are rejected.
+
+**Acceptance Scenarios**:
+
+1. **Given** a valid private plan, **When** the personal milestone is reached after praise and Garden
+   recognition, **Then** its lifecycle moves from `promised` to `unlocked` exactly once.
+2. **Given** an unlocked plan, **When** any caller tries to withdraw or alter the agreed milestone,
+   **Then** the plan stays unlocked and unchanged.
+3. **Given** monetary promise metadata, **When** monthly commitments are summarized, **Then** only
+   Parent-entered amounts are totaled and no Seed-to-currency rate or payment action exists.
+
+---
+
+### User Story 9 - Family Uses a Fair Synthetic Weekly Challenge (Priority: P3)
+
+As an invited synthetic family group, children can complete five age-appropriate Challenge Leaves,
+see a normalized weekly result, share tied positions, and contribute to a cooperative goal without
+exposing tasks, evidence, Seeds, or protected activity.
+
+**Why this priority**: The redesign separates permanent personal growth from a bounded weekly
+competition and keeps cooperation visible alongside it.
+
+**Independent Test**: Assign exactly five eligible Leaves, confirm them with and without permitted
+help, verify capped scores and shared ties, roll to a new week without changing Seeds or Garden,
+and validate the strict Child-facing projection and prepared encouragement allowlist.
+
+**Acceptance Scenarios**:
+
+1. **Given** five assigned Challenge Leaves, **When** three are confirmed, **Then** the Weekly Growth
+   Score is 60; extra non-Challenge tasks never increase it beyond 100.
+2. **Given** equal scores, **When** positions are calculated, **Then** tied children share a position
+   and completion timestamps are not accepted as ranking input.
+3. **Given** a League projection candidate, **When** it contains task text, evidence, Seeds, media,
+   reflections, Parent notes, or protected categories, **Then** it is rejected before projection.
+
+---
+
+### User Story 10 - Coach Adapts Safely and Reviews Synthetic Voice (Priority: P3)
+
+As a Child, I receive age-appropriate task coaching and can rehearse a synthetic push-to-talk flow
+only when a Parent grant permits it, while the current approved task and adult exit remain visible.
+
+**Why this priority**: The existing input allowlist is useful but does not yet enforce age-specific
+output shape or the voice review lifecycle proposed by the redesign.
+
+**Independent Test**: Validate output constraints for all three age bands and exercise explicit
+start, stop, transcript review, delete-before-send, send, replay, captions, slower playback,
+permission denial, task mismatch, and reset without requesting a microphone.
+
+**Acceptance Scenarios**:
+
+1. **Given** a supported age band, **When** a prepared Coach result is adapted, **Then** its step
+   count, tone, pace, choices, and adult-exit metadata satisfy that band's bounded policy.
+2. **Given** no stored Parent voice grant or a mismatched active task, **When** voice start is
+   requested, **Then** the request fails without creating a recording state.
+3. **Given** a synthetic transcript under review, **When** the Child deletes it before send, **Then**
+   no submitted transcript remains and replay is unavailable.
+
 ### Edge Cases
 
 - The Parent leaves a required definition, adult-supervision, safety, privacy, reward, or
@@ -766,6 +860,70 @@ required when motion is reduced or unavailable.
 - **FR-098**: A reload MAY clear rehearsal state only when that limitation is disclosed; reset MUST
   still restore the exact baseline.
 
+#### Product Experience Redesign Domain Foundation
+
+These requirements are a post-P0, domain-only foundation. They MUST NOT add routes, alter the
+validated ten-route journey, weaken the Green Circle projector, or imply that production identity,
+payment, invitation, or voice infrastructure exists.
+
+- **FR-099**: The existing Feature 003 P0 session, route contract, reset oracle, and deterministic
+  Parent → Child → confirmation → growth journey MUST remain the default behavior.
+- **FR-100**: Parent and Child access MUST use separate synthetic session types and least-privilege
+  projections; a mutable visual role value MUST NOT grant Parent capabilities.
+- **FR-101**: The deterministic access service MUST support a synthetic Parent fixture and a Child
+  avatar credential without requiring a Child email address or phone number, and MUST label both as
+  local prototype behavior rather than production authentication.
+- **FR-102**: A Child device pairing request MUST expire, require Parent approval, be consumable once,
+  bind to one synthetic Child/device pair, and remain revocable; expired, replayed, mismatched, or
+  revoked requests MUST fail closed.
+- **FR-103**: Creating or changing monetary Family Reward metadata, League membership, or voice,
+  media, or AI permission MUST require an unexpired Parent reauthentication proof scoped to that
+  exact action; a proof MUST fail after use or for a different actor or purpose.
+- **FR-104**: A Child session MUST NOT edit Family Rewards, change League membership, change
+  permissions, enter the Parent experience, or view Parent-only reports.
+- **FR-105**: Language preference and separate voice, media, and AI grants MUST be stored per Child;
+  sensitive grant changes MUST be Parent-owned and reauthenticated.
+- **FR-106**: A Family Reward Plan MUST be a private Parent promise with lifecycle
+  `promised → unlocked → given` and MUST remain separate from Seed transactions, Garden growth, and
+  Weekly Growth Score.
+- **FR-107**: A Family Reward milestone MAY use eligible new Seeds, one named landscape reaching a
+  stage, or a count of landscapes reaching a stage; it MUST depend only on personal progress and
+  MUST NOT accept League score, rank, speed, or another Child's progress.
+- **FR-108**: A Family Reward promise MAY describe money, an experience, a privilege, or a gift, but
+  the application MUST NOT transfer, store, reserve, purchase, or take custody of value and MUST NOT
+  define a universal Seed-to-currency exchange rate.
+- **FR-109**: Family Reward plans and amounts MUST be visible only to the relevant Child and
+  guardians. Prayer, affection, emotional disclosure, eating, demonstrating love, private wellbeing,
+  or recognition-only activity MUST NOT generate Family Reward eligibility.
+- **FR-110**: An unlocked Family Reward MUST NOT be withdrawn or have its agreed milestone changed.
+  Parent edits MUST create a prospective plan version, and a monthly summary MAY total only active
+  Parent-entered monetary promises in one matching currency.
+- **FR-111**: A synthetic League week MUST assign exactly five age-appropriate, Parent-approved,
+  accessibility-adaptable Challenge Leaves per participating Child; protected or private activity
+  MUST be rejected before assignment.
+- **FR-112**: Weekly Growth Score MUST equal confirmed Challenge Leaves divided by five multiplied by
+  100, capped at 100. Permitted help and accessibility adaptations MUST earn full credit, tied scores
+  MUST share a position, and completion speed MUST NOT be ranking input.
+- **FR-113**: League credit MUST be idempotent by recognition key. Weekly rollover MUST clear weekly
+  assignments, credit, score, and encouragement while preserving all earned Seeds and Garden growth.
+- **FR-114**: A Child-facing League projection MUST contain only an approved synthetic nickname,
+  tree-avatar token, completed-Leaf count, score, and position. It MUST reject task text, exact task
+  history, evidence, Seeds, media, reflections, assistant content, Parent notes, and protected
+  categories before producing output.
+- **FR-115**: League interaction MUST use prepared bilingual encouragement identifiers only, prohibit
+  free text and direct contact, and add each confirmed Challenge Leaf to a separate cooperative
+  weekly family goal.
+- **FR-116**: Child Coach output policy MUST define age-specific maximum steps, pace, tone,
+  quick-choice availability, and early adult exit while retaining the same Parent-approved task and
+  prepared-only P0 provider.
+- **FR-117**: A synthetic voice session MUST be push-to-talk only, bind to the active approved task
+  and stored Parent grant, and model visible start/stop, transcript review, delete-before-send,
+  captions, replay, slower playback, send, and reset. It MUST NOT request a microphone, process real
+  voice, identify a speaker, or run in the background.
+- **FR-118**: Access, Family Reward, League, age-adaptation, and voice behavior MUST be exposed through
+  small deterministic service contracts with no network, new dependency, client secret, production
+  persistence claim, or frontend integration in this phase.
+
 ### Key Entities
 
 - **Synthetic Household**: Al Noor family; contains the synthetic Parent context, Salem, Alya, one
@@ -799,6 +957,20 @@ required when motion is reduced or unavailable.
   description/transcript, Parent visibility statement, and remove path.
 - **Prototype Session**: Locale, demo mode, active Child, task lifecycle, counters, prepared fixture
   identifiers, celebration state, and one exact reset baseline.
+- **Synthetic Access Session**: A local Parent or Child principal plus an allowlisted capability
+  projection; never a production identity or security claim.
+- **Pairing Request / Reauthentication Proof**: Expiring, scoped, replay-resistant local tokens used
+  to demonstrate Parent approval and sensitive-action gates.
+- **Child Permission Grant**: Parent-owned language, voice, media, and AI preferences for one
+  synthetic Child.
+- **Family Reward Plan**: A versioned private promise, personal milestone, lifecycle, and optional
+  Parent-entered amount with no payment or exchange behavior.
+- **Challenge Leaf / League Week**: Five age-appropriate approved weekly challenges, idempotent
+  confirmation credit, normalized score, shared position, cooperative total, and rollover state.
+- **League Projection**: A strict minimal synthetic participant view that cannot carry task,
+  evidence, Seed, or protected-category data.
+- **Synthetic Voice Session**: Task-bound local interaction state from explicit start through
+  transcript review/delete/send/replay; it never represents captured Child audio.
 
 ## Success Criteria _(mandatory)_
 
@@ -845,6 +1017,24 @@ required when motion is reduced or unavailable.
 - **SC-018**: Optional live Parent refinement is described as live only after direct evidence of an
   approved secure boundary, validated synthetic-input result, timeout/fallback, and secret
   isolation; otherwise it remains `BLOCKED`/`NOT RUN` without impairing P0.
+- **SC-019**: Every access capability, pairing request, and reauthentication proof test returns the
+  expected least-privilege result, including expired, replayed, revoked, wrong-actor, and
+  wrong-purpose failures.
+- **SC-020**: Family Reward tests cover every lifecycle transition and milestone kind, reject every
+  protected-category and League-derived input, preserve unlocked plans, and find no payment or
+  Seed-to-currency operation.
+- **SC-021**: League tests assign exactly five Leaves, produce scores 0/20/40/60/80/100, cap extra
+  credit at 100, share tied positions, ignore completion time, preserve full credit with permitted
+  help, and leave Seeds/Garden unchanged at rollover.
+- **SC-022**: Every forbidden League projection field is rejected before output; prepared
+  encouragement accepts only the bilingual allowlist and cooperative weekly credit remains separate
+  from the Green Circle.
+- **SC-023**: Age-adaptation tests enforce the configured output shape for all three bands while
+  voice-session tests cover permission, task binding, explicit start/stop, transcript deletion,
+  send, captions, replay, slower playback, and reset without microphone access.
+- **SC-024**: `npm run typecheck`, `npm run lint`, `npm run format:check`, and `npm test` pass with the
+  existing ten-route P0 behavior unchanged; frontend, Android, and named-human gates remain at their
+  prior evidence status.
 
 ## Dependencies and Assumptions
 
@@ -854,6 +1044,13 @@ required when motion is reduced or unavailable.
   named fluent/cultural reviewer approves revisions.
 - The competition prototype uses one shared device, synthetic profiles, local prepared fixtures,
   and no production authentication or persistence guarantee.
+- The redesign domain foundation may demonstrate separate local sessions, fixed synthetic
+  participants, expiring pairing, and reauthentication state, but none is a production identity,
+  tenancy, consent, or security system.
+- A Family Reward is only Parent-authored private promise metadata. Ghaf never holds or transfers
+  value, and League performance never unlocks it.
+- The synthetic League is separate from the current Green Circle. Its strict projection and weekly
+  cooperative count cannot be passed to the existing circle projector or P0 counters.
 - The deterministic prepared assistant path is sufficient for P0 completion and offline
   acceptance. Optional live Parent refinement is nonblocking and currently lacks an approved
   secure boundary.
@@ -896,16 +1093,19 @@ build, device, reviewer, secure boundary, or other required dependency is unavai
 
 - Any authored product route beyond the ten-route contract or a second application.
 - Production accounts, authentication, guardian-consent systems, age assurance, multi-family
-  tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment.
+  tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment;
+  deterministic synthetic access fixtures do not remove this boundary.
 - Real Child names, profiles, photos, voice, free text, location, school, biometrics, or family
   stories; camera capture, ambient/background listening, or real media analysis.
 - Unrestricted Child chat, AI companionship, therapy, diagnosis, developmental screening, emotion
   or personality inference, face/voice recognition, deception detection, religious rulings, or
   automated welfare decisions.
-- Real social discovery, invitations, public profiles, public rankings, messages, comments,
-  reactions, direct Child contact, or cross-household task/media/reflection sharing.
-- Money, purchases, banking, gift cards, redeemable currency, ads, random rewards, loot boxes,
-  scarcity, debt, deductions, punitive streaks, or dying vegetation.
+- Real social discovery, invitations, public profiles, public rankings, free messages, comments,
+  reactions, direct Child contact, or cross-household task/media/reflection sharing. The domain-only
+  League uses fixed synthetic invitees and allowlisted encouragement identifiers.
+- Payment, purchase, transfer, custody, banking, gift cards, redeemable currency, universal
+  Seed-to-money conversion, ads, random rewards, loot boxes, scarcity, debt, deductions, punitive
+  streaks, or dying vegetation. Private Parent promise metadata does not implement any of these.
 - Real-tree planting, verified carbon/water/waste/food claims, unsupported impact conversions, or
   AI food-safety decisions.
 - Production legal-compliance claims, a broad backend, a 3D/VR garden, or architecture work that

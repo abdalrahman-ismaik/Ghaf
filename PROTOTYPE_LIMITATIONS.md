@@ -181,6 +181,31 @@ The implemented Feature 003 technical limits are:
 - old Feature 002 tests and screenshots do not pass Feature 003 acceptance; and
 - web/source evidence does not pass native Android or named-human acceptance.
 
+## Product Experience Redesign Domain Limits
+
+The post-P0 redesign code currently proves rules and state transitions only:
+
+- Parent/Child sessions, pairing codes, reauthentication proofs, devices, and permissions are fixed
+  synthetic values. They do not authenticate a person, protect secrets, survive reinstall, recover
+  an account, establish consent, or provide a production security boundary.
+- Family Reward values are private promise metadata. Ghaf does not hold money, transfer value,
+  purchase anything, guarantee fulfillment, resolve disputes, or convert Seeds to currency.
+- League members are synthetic fixtures. There is no real invitation, family relationship check,
+  contact, moderation, report, block, retention, deletion, notification, or cross-household service.
+- The League projection is a separate allowlisted model and does not weaken the existing
+  identity-free Green Circle. Its rank is a synthetic weekly calculation, not a judgment of effort,
+  ability, character, or family contribution.
+- Voice interaction is a synthetic state machine over a prepared transcript. There is no microphone
+  request, audio capture, speech recognition, speaker identification, provider call, or background
+  listening.
+- Age-adaptive output metadata does not assess developmental level or ability. Parents keep control
+  of task suitability, help, accessibility adaptations, and participation.
+- Arabic-English code-switch understanding and Emirati/Gulf conversational output remain
+  unimplemented; any later phrase or voice library requires named human review.
+
+No new domain service changes the existing P0 route count, reset values, native/human evidence, or
+public-demo claim. Frontend integration requires its own specification and verification pass.
+
 ## Public Demo Disclosure
 
 Use this language during the pitch:

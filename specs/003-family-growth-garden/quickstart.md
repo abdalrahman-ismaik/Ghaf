@@ -358,3 +358,53 @@ remain `NOT RUN`.
 After implementation, write actual command, route, build/device, locale, timing, fallback, and human
 evidence into `../../DEMO_RUNBOOK.md`. A planning artifact, passing web export, or old Feature 002
 record does not make Feature 003 Android-accepted or demo-accepted.
+
+## 13. Verify the Product Experience Redesign Domain Foundation
+
+This verification is source/domain evidence only. It does not exercise a new screen, real account,
+payment, invitation, microphone, or native flow.
+
+Run each phase independently:
+
+```bash
+npm test -- tests/access-control.test.ts
+npm test -- tests/family-reward.test.ts
+npm test -- tests/family-league.test.ts
+npm test -- tests/assistant-age-adaptation.test.ts tests/assistant-voice-session.test.ts
+```
+
+For synthetic access, verify separate Parent/Child projections, no Child email/phone requirement,
+pairing approval and one-use consumption, device revocation, action-scoped reauthentication, and
+Parent-only permission changes. Repeat every request with the wrong actor, device, purpose, expired
+time, replayed value, and revoked device; each must fail closed.
+
+For Family Reward, create Seed-delta, landscape-stage, and landscape-count milestones across money,
+experience, privilege, and gift promises. Verify `promised → unlocked → given`, duplicate no-ops,
+irreversible unlock, prospective-only edits, matching Child/guardian privacy, protected-category
+rejection, and monthly totals grouped by currency. Confirm no API accepts rank, League score,
+payment, custody, or a Seed exchange rate.
+
+For Family League, assign exactly five eligible Leaves per participating synthetic Child. Confirm
+0/1/2/3/4/5 Leaves map to 0/20/40/60/80/100, extra credit stays at 100, help/adaptation earns full
+credit, ties share position, and timestamps are not ranking inputs. Roll to a new week and compare
+the supplied permanent Seed/Garden snapshot byte-for-byte. Validate every forbidden projection field
+and every non-allowlisted encouragement attempt.
+
+For Coach and voice, test all age bands, maximum steps, tone/pace keys, quick choices, task/version
+binding, early adult exit, stored permission, explicit start/stop, prepared transcript review,
+delete-before-send, send, captions, 1×/0.75× replay, and reset. Scan the implementation to confirm it
+contains no microphone, speech provider, network, audio bytes, background recording, speaker
+identity, or biometric path.
+
+Then run the full non-native gate:
+
+```bash
+npm run typecheck
+npm run lint
+npm run format:check
+npm test
+git diff --check
+```
+
+The original P0 reset and route inventory must remain unchanged. Frontend, Android, Arabic dialect,
+real identity, real media, security, payment, and named-human evidence retain their previous status.

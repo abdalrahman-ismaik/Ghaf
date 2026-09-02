@@ -281,10 +281,89 @@ claim.
   keep them nonexecuting and flagged for review.
 - Claim the deterministic provider is live AI: rejected by capability-truth requirements.
 
+## Decision 15 — Preserve P0 While Building the Redesign as Domain Services
+
+**Decision**: Keep the validated ten-route session and reset oracle unchanged. Implement the
+redesign's access, Family Reward, League, and voice concepts as deterministic domain services first,
+then integrate them into UI only in a later approved window.
+
+**Rationale**: The current vertical slice is complete and independently testable. A schema or route
+migration would mix frontend work into this assignment and weaken the known offline fallback.
+
+**Alternatives considered**:
+
+- Replace the P0 store immediately: rejected because it would invalidate reset and route evidence.
+- Add a backend or second application: rejected by the constitution and current architecture.
+
+## Decision 16 — Model Access Security Truthfully as Synthetic
+
+**Decision**: Use separate least-privilege Parent/Child session values, expiring one-use pairing,
+revocation, and action-scoped reauthentication. Label every credential and proof synthetic; do not
+store real email, phone, PIN, picture sequence, passkey, or biometric data.
+
+**Rationale**: These contracts make authority testable without implying production identity or
+security. Fail-closed expiry, replay, actor, device, and purpose checks are useful before any later
+provider exists.
+
+**Alternatives considered**:
+
+- Treat the existing role switch as authority: rejected because any caller can mutate it.
+- Add real local credentials: rejected because secure enrollment, recovery, storage, consent, and
+  threat modeling are not approved for this prototype.
+
+## Decision 17 — Keep Family Reward Separate From Symbolic Seeds
+
+**Decision**: A Family Reward is a versioned, private Parent promise evaluated from personal
+milestone snapshots after recognition. It may carry a Parent-entered amount or nonmonetary
+description, but exposes no payment operation, exchange rate, wallet, custody, or League field.
+
+**Rationale**: [American Academy of Pediatrics guidance](https://www.healthychildren.org/English/family-life/family-dynamics/Pages/Positive-Reinforcement-Through-Rewards.aspx)
+supports clear positive goals, agreed rewards, no demerits, and gradual fading. The existing
+praise-first recognition sequence already supplies the required ordering and permanent progress.
+
+**Alternatives considered**:
+
+- Give Seeds a cash value: rejected because it creates a universal exchange and changes the meaning
+  of the existing nonfinancial ledger.
+- Unlock from League position: rejected because every Child must be able to reach a personal plan.
+
+## Decision 18 — Combine a Bounded Weekly Challenge With Cooperation
+
+**Decision**: Use five Parent-approved Challenge Leaves, a 20-point increment per confirmed Leaf, a
+100 cap, full help/accessibility credit, shared competition positions, opt-out, no speed tiebreak,
+and a separate cooperative weekly total. Reset weekly state without touching Seeds or Garden.
+
+**Rationale**: [Sailer and Homner's meta-analysis](https://doi.org/10.1007/s10648-019-09498-w)
+reports heterogeneous effects and indicates that competitive-plus-collaborative designs can
+outperform competition alone. The evidence does not justify claiming that rankings help every
+Child, so the engine must preserve choice, adaptations, ties, privacy, and cooperation.
+
+**Alternatives considered**:
+
+- Rank by raw task or Seed totals: rejected because ages, ability, and task values differ.
+- Use completion speed as a tiebreaker: rejected because it pressures Children and accessibility
+  needs.
+- Reuse the Green Circle DTO: rejected because the Circle intentionally contains no Child identity.
+
+## Decision 19 — Implement Voice as a Synthetic State Machine
+
+**Decision**: Model explicit start, recording, stop, transcript review, delete, send, replay,
+captions, slower playback, and reset against one approved task and one stored Parent grant. Supply
+only prepared transcript text; make no microphone, speech, network, or biometric call.
+
+**Rationale**: This proves sequencing, permission, task binding, and delete-before-send behavior
+without processing Child audio or upgrading native/media evidence.
+
+**Alternatives considered**:
+
+- Capture real audio now: rejected because consent, retention, deletion, provider use, native
+  permission, and physical-device evidence are not approved.
+- Represent push-to-talk with one boolean: rejected because it cannot prove review, deletion, or
+  replay guards.
+
 ## Research Resolution
 
-No `NEEDS CLARIFICATION` item remains. The implementation can proceed after the generated Feature
-003 data model, contracts, quickstart, tasks, checklist, and cross-artifact analysis confirm these
-decisions. Any later request for a backend, live Child media/AI, real accounts/circle sharing,
-production persistence, impact conversion, or additional route is a scope change and must return to
-the specification.
+No `NEEDS CLARIFICATION` item remains for the deterministic domain foundation. Real authentication,
+real Child media/AI, real invitations, payments, production persistence, natural code-switch
+understanding, reviewed dialect content, additional routes, and frontend integration remain later
+scope changes.
