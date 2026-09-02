@@ -353,7 +353,7 @@ direction-editing reservations only for the correction below.
 
 | Owner / workstream | Exact reserved boundary | Handoff condition |
 | ------------------ | ----------------------- | ----------------- |
-| `/root` — root and route direction integration | `app/_layout.tsx`, `app/{index.tsx,role.tsx,child/index.tsx,child/task.tsx,parent/index.tsx,parent/task/review.tsx}`, `src/components/{LanguageSwitcher.tsx,PrototypeStatusBar.tsx,journey.tsx,primitives.tsx}`, direction tests, and current evidence documents | Locale sets the inherited Yoga direction once; shared/routes stop applying a second row reversal; focused/full/browser checks pass |
+| `/root` — root and route direction integration | `app/**`, `src/components/{LanguageSwitcher.tsx,PrototypeStatusBar.tsx,journey.tsx,primitives.tsx}`, direction tests, and current evidence documents | Locale sets the inherited Yoga direction once; shared/routes stop applying a second row reversal; structural headings are explicit; focused/full/browser checks pass |
 | `/root/rtl_family_components` — family component direction cleanup | `src/components/family-growth/**` only | Family components inherit root direction, retain directional-icon transforms only where needed, remove conditional row reversal, run formatting/typecheck, and return the boundary without committing |
 
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
