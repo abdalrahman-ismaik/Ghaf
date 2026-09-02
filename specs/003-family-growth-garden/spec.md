@@ -370,6 +370,37 @@ permission denial, task mismatch, and reset without requesting a microphone.
 3. **Given** a synthetic transcript under review, **When** the Child deletes it before send, **Then**
    no submitted transcript remains and replay is unavailable.
 
+### User Story 11 - Child Uses Prepared Voice and Bilingual Type In-Route (Priority: P3)
+
+As a Parent and Child sharing the prototype device, the Parent can explicitly enable the prepared
+voice rehearsal during task review, and the Child can use the age-adapted Coach and synthetic
+transcript controls in Arabic or English without leaving the approved task.
+
+**Why this priority**: The redesign domain already enforces the safe voice and age rules, but it is
+not demonstrable until a narrow presentation adapter connects those rules to the existing route.
+The same surface also needs script-aware typography so long Arabic safety and transcript copy stays
+readable rather than relying on one unexamined metric set.
+
+**Independent Test**: Enable the prepared voice grant as the Parent, assign and start the canonical
+task, then exercise Coach adaptation and every synthetic voice state in Arabic and English. Repeat
+without the Parent grant and after reset; verify denial, exact idle restoration, unchanged task and
+reward state, and no microphone, speech, network, or provider request.
+
+**Acceptance Scenarios**:
+
+1. **Given** voice and AI grants are off, **When** the Child opens the active task, **Then** the
+   synthetic voice start action is disabled and explains that Parent enablement is required.
+2. **Given** the Parent explicitly enabled the prepared rehearsal and Salem starts the approved
+   version-one task, **When** the Child uses the Coach and voice controls, **Then** the Coach shows
+   the reviewed 9–11 shape and the voice surface supports visible start, stop, transcript review,
+   delete-before-send, captions, 0.75× or 1× simulated replay, send, and reset.
+3. **Given** any idle, active-rehearsal, transcript-review, or sent state, **When** the locale changes,
+   **Then** Child, task, task version, lifecycle, transcript state, captions, speed, and replay count
+   remain unchanged while text, direction, accessibility language, and script metrics update.
+4. **Given** Parent reset from any voice state, **When** the demo returns to `/`, **Then** grants are
+   off, the voice view has the exact idle values, Arabic RTL is restored, and the next Parent may
+   enable and run the rehearsal again.
+
 ### Edge Cases
 
 - The Parent leaves a required definition, adult-supervision, safety, privacy, reward, or
@@ -497,6 +528,8 @@ network access.
 | Prepared image               | `fixture_recycling_clean_v1`; synthetic/prepared label visible |
 | Prepared audio               | `fixture_salem_plan_ar_v1`; synthetic/prepared label visible   |
 | Assistant mode               | Deterministic prepared; no remote dependency                   |
+| Child voice grants           | Voice and AI off; Parent enablement required                    |
+| Synthetic voice view         | Idle; no transcript; captions on; 1×; replay 0; not active      |
 | Celebration state            | `available = false`; `consumed = false`                        |
 
 One valid confirmation changes only these counters:
@@ -926,6 +959,47 @@ payment, invitation, or voice infrastructure exists.
   small deterministic service contracts with no network, new dependency, client secret, production
   persistence claim, or frontend integration in this phase.
 
+#### Child Voice and Bilingual Typography Presentation
+
+This is a later in-route presentation phase over the completed redesign domain. It does not change
+the historical domain-only result recorded by FR-118.
+
+- **FR-119**: The presentation MUST use only the existing `/parent/task/review` and `/child/task`
+  routes and MUST NOT add or replace an authored route.
+- **FR-120**: Voice and AI grants MUST start off. A distinct visible Parent action on task review
+  MUST create the synthetic Parent/Child access authority and enable both stored grants before voice
+  start can succeed; assignment approval and the mutable shared-device role value MUST NOT silently
+  grant voice access.
+- **FR-121**: Child Coach results MUST pass through the registered age-adaptation service using the
+  active synthetic Child profile. Salem's `9_11` result MUST show at most three complete reviewed
+  steps, at most three reviewed quick choices, `friendly_clear` tone, standard pace, and a persistent
+  trusted-adult exit without changing the definition of done.
+- **FR-122**: `/child/task` MUST expose the synthetic voice lifecycle as explicit visible controls:
+  start, stop into the canonical prepared transcript, transcript review, delete-before-send, send,
+  captions on/off, 0.75× and 1× simulated playback, replay, and reset. The surface MUST say that no
+  microphone or Child audio is captured and that send completes a prepared rehearsal rather than
+  invoking live AI or attaching evidence.
+- **FR-123**: The Child task MUST expose Arabic/English switching. Switching locale in any voice
+  state MUST preserve the active Child, approved task/version, task lifecycle, voice lifecycle,
+  captions, playback rate, replay count, and transcript while updating visible copy, direction, and
+  accessibility language from the canonical bilingual resources and typed fixtures.
+- **FR-124**: The existing single typography system MUST define complete `display`, `title`,
+  `heading`, `body`, `label`, and `caption` role tokens for Arabic and English. Both scripts MUST use
+  the established platform system-family policy; Arabic tracking MUST be zero, Arabic body leading
+  MUST be at least 1.55 times its size, and `Text` plus `Input` MUST resolve metrics from explicit
+  language or the active locale.
+- **FR-125**: Parent reset MUST revoke or clear the presentation grants and restore the exact
+  synthetic voice view to idle, transcript `null`, captions `true`, playback rate `1`, replay count
+  `0`, active indicator `false`, and sent time `null` without changing the PrototypeSession schema.
+- **FR-126**: Every voice, language, and permission action MUST expose its role and selected,
+  disabled, busy, or expanded state as applicable; transition status and the visible transcript MUST
+  not depend on color or sound, all controls MUST retain 48×48dp targets, and Child safety or action
+  copy MUST not be clamped.
+- **FR-127**: This presentation MUST add no dependency and MUST import no microphone permission,
+  audio recording, speech recognition, network, biometric, or model-provider API. Physical Android
+  font-scale, TalkBack, playback, permission, and touch evidence remains `NOT RUN` until observed on
+  a named build and device.
+
 ### Key Entities
 
 - **Synthetic Household**: Al Noor family; contains the synthetic Parent context, Salem, Alya, one
@@ -1037,6 +1111,18 @@ payment, invitation, or voice infrastructure exists.
 - **SC-024**: `npm run typecheck`, `npm run lint`, `npm run format:check`, and `npm test` pass with the
   existing ten-route P0 behavior unchanged; frontend, Android, and named-human gates remain at their
   prior evidence status.
+- **SC-025**: Source and behavioral tests prove Parent grant-off denial, service-authorized grant-on
+  access, age-derived `9_11` Coach presentation, every legal synthetic voice transition, every
+  illegal skipped transition, and exact reset from idle, active-rehearsal, review, and sent states.
+- **SC-026**: Arabic and English resource keys remain equal and non-empty; changing locale in every
+  synthetic voice lifecycle leaves its task and state snapshot unchanged while selecting the other
+  canonical transcript and accessibility language.
+- **SC-027**: Typography tests resolve all six roles for both locales, find zero Arabic negative
+  tracking, confirm Arabic body leading of at least 1.55, and find no font-size/family/line-height
+  escape outside the token and primitive boundary.
+- **SC-028**: The unchanged ten-route web proxy demonstrates Parent enablement and the Child's
+  prepared voice states in Arabic RTL and English LTR with no dynamic service request. Android 200%
+  font scale and TalkBack stay `NOT RUN` unless a named native device becomes available.
 
 ## Dependencies and Assumptions
 

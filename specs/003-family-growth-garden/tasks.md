@@ -554,3 +554,42 @@ speech provider, biometric inference, background recording, or unreviewed dialec
 - Phase 17 begins only after the selected domain phases pass independently.
 - Frontend routes, components, design, typography, localization copy, native media, real providers,
   production accounts/invitations/payment, and named human reviews are not tasks in this window.
+
+---
+
+## Phase 18: User Story 11 — Child Voice and Bilingual Typography Presentation (Priority: P3)
+
+**Goal**: Demonstrate the completed prepared Coach and synthetic voice domain inside the existing
+journey, with explicit Parent grants and one locale-aware system-font typography source.
+
+**Independent Test**: Parent enablement, age-adapted Coach output, every voice state, Arabic/English
+switching, denial, and reset pass without a new route, dependency, microphone, speech provider,
+network request, or reward mutation.
+
+- [x] T132 [US11] Authorize the later presentation slice, exact reset values, type rules, and
+  capability boundaries in `spec.md`, `plan.md`, `contracts/acceptance-contract.md`, `DESIGN.md`,
+  `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
+- [ ] T133 [P] [US11] Add and observe RED locale-role, source-boundary, scaling, and mixed-script
+  tests in `tests/bilingual-typography.test.ts`
+- [ ] T134 [P] [US11] Add and observe RED Parent-grant, age-derived Coach, voice lifecycle,
+  locale-preservation, reset, copy-parity, route, and forbidden-import tests in
+  `tests/child-ai-presentation.test.ts`
+- [ ] T135 [US11] Implement complete Arabic/English typography roles in `src/design/tokens.ts`,
+  consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
+  clipping in `src/components/family-growth/TaskPanels.tsx`
+- [ ] T136 [US11] Implement the private service-authorized application adapter in
+  `src/features/assistants/childVoiceController.ts` and expose only safe Coach/voice projections and
+  commands through `src/state/usePrototypeStore.ts`
+- [ ] T137 [US11] Add reusable Parent permission and Child synthetic voice panels, mount them on the
+  existing review/task routes, expose the existing language switch, and add paired resources in
+  `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
+  `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
+- [ ] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
+  export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
+  defects within the reserved window
+- [ ] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
+  reservation, and commit the validated convergence checkpoint
+
+**Checkpoint**: User Story 11 is demonstrable as prepared/synthetic UI only. Parent enablement is
+explicit, locale changes do not alter the task or voice state, reset is exact, and Android/human
+acceptance remains evidence-dependent.

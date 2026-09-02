@@ -37,32 +37,44 @@ typography:
     fontWeight: 800
     lineHeight: '51px'
     letterSpacing: '-0.8px'
+    arabicLineHeight: '58px'
+    arabicLetterSpacing: '0px'
   title:
     fontFamily: 'System, sans-serif'
     fontSize: '30px'
     fontWeight: 700
     lineHeight: '39px'
     letterSpacing: '-0.4px'
-  headline:
+    arabicLineHeight: '43px'
+    arabicLetterSpacing: '0px'
+  heading:
     fontFamily: 'System, sans-serif'
     fontSize: '21px'
     fontWeight: 700
     lineHeight: '30px'
+    arabicLineHeight: '34px'
+    arabicLetterSpacing: '0px'
   body:
     fontFamily: 'System, sans-serif'
     fontSize: '16px'
     fontWeight: 400
     lineHeight: '26px'
+    arabicLineHeight: '28px'
+    arabicLetterSpacing: '0px'
   label:
     fontFamily: 'System, sans-serif'
     fontSize: '14px'
     fontWeight: 600
     lineHeight: '21px'
+    arabicLineHeight: '23px'
+    arabicLetterSpacing: '0px'
   caption:
     fontFamily: 'System, sans-serif'
     fontSize: '12px'
     fontWeight: 500
     lineHeight: '19px'
+    arabicLineHeight: '20px'
+    arabicLetterSpacing: '0px'
 rounded:
   sm: '6px'
   md: '10px'
@@ -307,6 +319,10 @@ celebration are states within them.
 - `AssistantTrigger`: action label such as “Make this clearer,” not an empty sparkle icon.
 - `AssistantSheet`: bounded intent, disclosure, concise response, Accept/Dismiss, and human-help exit.
 - `PreparedMedia`: thumbnail or audio control, synthetic origin, visibility statement, remove action.
+- `ParentVoicePermissionPanel`: a separate Parent action for stored synthetic voice and AI grants;
+  it never rides on assignment approval or the shared-device role selector.
+- `SyntheticVoicePanel`: task-bound prepared rehearsal with explicit active, transcript-review,
+  sent, delete, caption, simulated-rate, replay, and reset states; no microphone or audio capture.
 - `ParentPatternSummary`: time window, strengths, observed facts, uncertainty, question, adjustment,
   and non-diagnostic disclosure.
 
@@ -341,6 +357,12 @@ fixture remains the offline acceptance path.
 - Child output is limited to the current Parent-approved task and curated intents.
 - Ages 6–8 use curated intents without free text; ages 9–11 use structured intents/template input;
   ages 12–14 may use guardian-enabled bounded text or push-to-talk. No band gets unrestricted chat.
+- The presentation consumes the registered age-adaptation result rather than slicing or rewriting
+  Coach content in a route. Salem's prepared 9–11 result contains no more than three complete steps
+  and three reviewed quick choices with a persistent adult exit.
+- The synthetic push-to-talk presentation begins only after a distinct Parent grant. “Active” is a
+  visible state simulation, stop loads a canonical prepared transcript, replay is simulated, and
+  send ends the rehearsal without live model processing or evidence attachment.
 - The Coach never issues religious rulings, food-safety judgments, medical advice, or instructions
   involving hot liquids, electricity, sharps, chemicals, unknown waste, or unsupervised routes.
 - The Guide never diagnoses, labels normality, infers emotion/personality/religiosity, or scores a
@@ -375,6 +397,21 @@ required cultural, safety, Arabic, and safeguarding review.
 - Never concatenate translated fragments to build a sentence or plural.
 - Test long Arabic titles, mixed Arabic/English names, 4/6/8/12/15 counts, and screen-reader order.
 - Locale switching must preserve the current safe app state and update navigation direction.
+
+### Bilingual typography roles
+
+- `src/design/tokens.ts` is the only type-token authority. The six roles are `display`, `title`,
+  `heading`, `body`, `label`, and `caption`; screens do not invent sizes or families.
+- Arabic and English use the established platform system family so text appears immediately without
+  a font asset or loading reflow. Locale-specific role records own leading and tracking.
+- English keeps the approved 51/39 px display/title leading and −0.8/−0.4 px tracking. Arabic uses
+  58/43 px leading for those roles and zero tracking throughout so shaping is not pulled apart.
+- Arabic heading/body/label/caption leading is 34/28/23/20 px. The 16 px Arabic body ratio is 1.75,
+  above the 1.55 minimum and leaves room for diacritics and Android font padding.
+- Explicit `language` on `Text` selects that script's metrics even when the surrounding interface
+  uses the other locale. `Input` resolves the same body role from the active locale.
+- Font scaling remains enabled. Text-bearing counters use minimum dimensions and padding instead of
+  fixed boxes, and required Child actions, transcripts, disclosures, and safety text are unclamped.
 
 ## Accessibility
 

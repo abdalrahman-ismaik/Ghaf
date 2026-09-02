@@ -19,7 +19,7 @@ earlier Feature 002 food-rescue evidence and do not pass current native or human
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Target real interaction        | Ten-screen navigation; Arabic/English direction; synthetic role/Child selection; task composition; Parent approval; Child steps with optional reflection/evidence; Parent confirmation/retry; deterministic Seeds; privacy-filtered garden/circle update; reset |
 | Prepared and synthetic         | Two Child profiles, one household, cousin-circle aggregates, task catalog, image/voice fixtures, assistant conversations, Parent observations, cultural phrase options                                                                                          |
-| Prepared fallback              | AI task refinement, prepared-photo response, push-to-talk transcript, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                                                                |
+| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                                             |
 | Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`                                |
 | Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                                                     |
 | Future production work         | Accounts, consent, age assurance, privacy controls, real media, persistence, real family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release                                                            |
@@ -73,6 +73,12 @@ It does not:
 The Coach says it is AI and may be wrong. A future real provider requires age-appropriate filters,
 monitoring, reporting, a reviewed escalation policy, clear Parent visibility, an alternative
 trusted-adult path, minimum data, and current provider/UAE requirements.
+
+The later in-route voice presentation remains a rehearsal over one canonical bilingual transcript.
+It starts disabled, requires a distinct stored synthetic Parent voice and AI grant, and never treats
+assignment approval or the shared-device role selector as permission. Its active indicator does not
+mean a microphone is open. Stop loads prepared text, simulated replay changes a counter only, and
+send closes the rehearsal without model processing or evidence attachment.
 
 ## Parent AI Limits
 
@@ -197,16 +203,18 @@ The post-P0 redesign code currently proves rules and state transitions only:
 - The League projection is a separate allowlisted model and does not weaken the existing
   identity-free Green Circle. Its rank is a synthetic weekly calculation, not a judgment of effort,
   ability, character, or family contribution.
-- Voice interaction is a synthetic state machine over a prepared transcript. There is no microphone
-  request, audio capture, speech recognition, speaker identification, provider call, or background
-  listening.
+- Voice interaction is a synthetic state machine and presentation over a prepared transcript. There
+  is no microphone request, audio capture, speech recognition, speaker identification, provider
+  call, or background listening. Parent/Child access objects and grants remain local fixtures rather
+  than production authorization.
 - Age-adaptive output metadata does not assess developmental level or ability. Parents keep control
   of task suitability, help, accessibility adaptations, and participation.
 - Arabic-English code-switch understanding and Emirati/Gulf conversational output remain
   unimplemented; any later phrase or voice library requires named human review.
 
-No new domain service changes the existing P0 route count, reset values, native/human evidence, or
-public-demo claim. Frontend integration requires its own specification and verification pass.
+No new domain service or presentation changes the existing P0 route count, reward counters,
+native/human evidence, or public-demo claim. The voice and typography frontend has its own later
+specification and verification phase; web evidence cannot upgrade Android or named-human results.
 
 ## Public Demo Disclosure
 

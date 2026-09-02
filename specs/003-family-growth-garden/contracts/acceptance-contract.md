@@ -45,9 +45,9 @@ phase-review, and celebration are states of these routes.
 |   2 | `/role`               | Always reachable as a shared-device demo selector; visibly not authentication                                                                                                                                | Demo mode and active synthetic Child only after an explicit choice     |
 |   3 | `/parent`             | Parent mode; a Child-mode deep link returns to `/role` without exposing Parent-only detail                                                                                                                   | None on entry                                                          |
 |   4 | `/parent/task/new`    | Parent mode; otherwise return to `/role`                                                                                                                                                                     | Draft edits only                                                       |
-|   5 | `/parent/task/review` | Parent mode plus a complete review candidate; otherwise return to `/parent/task/new` without losing valid draft input                                                                                        | `draft → reviewed` only after validation; no assignment on entry       |
+|   5 | `/parent/task/review` | Parent mode plus a complete review candidate; otherwise return to `/parent/task/new` without losing valid draft input; prepared voice remains off unless the Parent uses its distinct enable action             | Optional stored synthetic voice/AI grant; assignment stays separate    |
 |   6 | `/child`              | Child mode plus an active synthetic profile; otherwise return to `/role`                                                                                                                                     | `assigned → chosen` only after the assigned Child deliberately chooses |
-|   7 | `/child/task`         | Child mode plus an assignment for the active Child; a missing or wrong-profile assignment returns to `/child` without revealing private task detail                                                          | `chosen → in_progress` only after an explicit open/start action        |
+|   7 | `/child/task`         | Child mode plus an assignment for the active Child; a missing or wrong-profile assignment returns to `/child` without revealing private task detail; Coach and voice remain task/version-bound                 | Explicit task start and synthetic voice-state commands only            |
 |   8 | `/parent/check-in`    | Parent mode plus the matching journey in `submitted`, `retry`, `confirmed` with pending praise, or `recognized` with its matching ledger receipt; otherwise return to `/parent` without creating recognition | None on entry; available actions depend on the admitted state          |
 |   9 | `/garden`             | Safe read-only family landscape before confirmation and the recognized consequence afterward; available from the authored family flow                                                                        | None on entry                                                          |
 |  10 | `/circle`             | Safe synthetic/local aggregate before and after the milestone; no individual record is exposed                                                                                                               | None on entry                                                          |
@@ -120,12 +120,16 @@ one action without a remote dependency.
 | Prepared image                 | `fixture_recycling_clean_v1`; prepared/synthetic label visible |
 | Prepared audio                 | `fixture_salem_plan_ar_v1`; prepared/synthetic label visible   |
 | Assistant mode                 | Deterministic prepared; no remote dependency                   |
+| Child voice grants             | Voice and AI off; Parent enablement required                   |
+| Synthetic voice lifecycle      | `idle`; transcript `null`; active indicator `false`            |
+| Voice playback                 | Captions `true`; rate `1`; replay count `0`; sent time `null`  |
 | Celebration state              | `available = false`; `consumed = false`                        |
 
 Reset MUST be exercised from draft, prepared-assistant result, prepared fallback, prepared-media
 selected, prepared-media removed, image/audio unavailable fallback, reviewed, assigned, chosen,
 `in_progress`, submitted, retry, confirmed/recognized, celebration available, celebration
-consumed, garden, and circle states. From a Child-only state, first switch to Parent demo mode
+consumed, garden, circle, voice active-rehearsal, voice transcript-review, and voice sent states.
+From a Child-only state, first switch to Parent demo mode
 without manually changing counters, then invoke reset. Acceptance requires five consecutive exact
 resets from every named source state; one mismatch is `FAILED` and must not be repaired by manually
 editing counters.
@@ -230,6 +234,10 @@ The deterministic acceptance path makes no external request.
 | Prepared Parent Guide opens                                                            | Uses `guide_recycling_refine_v1`; labels the result prepared; says AI may be wrong and the Parent decides.                                         |
 | Optional live Parent call times out, fails schema/safety validation, or is unavailable | On the same route and attempt, retain Parent input and show the reviewed prepared result with a fallback/prepared label.                           |
 | Child Coach opens                                                                      | Uses only `coach_recycling_steps_v1`; stays bound to the active approved task; shows **I need an adult** and the prepared/may-be-wrong disclosure. |
+| Child voice opens without Parent grant                                                  | Shows the disabled Parent-required state and creates no voice session.                                                                              |
+| Parent enables prepared Child voice                                                     | Uses stored synthetic Parent authority to enable voice and AI separately; assignment approval does not grant either permission.                   |
+| Synthetic voice rehearsal runs                                                         | Shows explicit start/stop/review/delete/send/caption/0.75×/1×/replay/reset controls and says no microphone or Child audio is captured.             |
+| Synthetic voice transcript is sent                                                     | Marks the prepared review rehearsal complete; does not claim live AI processing, attach evidence, or change task/reward state.                     |
 | Prepared image is absent                                                               | Show an accessible descriptive synthetic placeholder; completion remains available.                                                                |
 | Prepared audio is absent                                                               | Show the canonical transcript and Coach steps; do not request microphone permission.                                                               |
 | All external services are denied                                                       | Parent Guide, Child Coach, summary, media fallbacks, reward, garden, circle, and reset remain usable.                                              |
@@ -267,6 +275,10 @@ route and in-route assistant/retry/celebration state, verify:
 - only directional arrows mirror; trees, checkmarks, landscape objects, and nondirectional symbols
   do not mirror;
 - canonical Arabic safety and assistant copy from `../../../DEMO_RUNBOOK.md` is not improvised;
+- voice lifecycle, transcript, caption choice, simulated playback rate, replay count, active Child,
+  task, and task version survive locale switching unchanged;
+- explicit Arabic or English text selects the matching system-family role metrics; Arabic body
+  leading is at least 1.55 and Arabic tracking is zero;
 - mixed Arabic/English names, Latin fixture IDs, 12-Seed values, numerals, diacritics, and long labels
   wrap without clipping;
 - normal-size text meets at least 4.5:1 contrast, large text meets at least 3:1, and essential UI
@@ -275,7 +287,8 @@ route and in-route assistant/retry/celebration state, verify:
 - required copy and dominant actions remain operable at 200% font scale;
 - dominant controls are at least 48×48dp and adjacent small targets have at least 8dp separation;
 - screen-reader order, labels, roles, selected/disabled states, and bottom-sheet focus are logical;
-- submission, confirmation, reward, Sapling stage, and circle milestone are each announced once;
+- voice start, transcript review, delete, send, submission, confirmation, reward, Sapling stage,
+  and circle milestone are each announced once;
 - prepared audio has visible equivalent text and prepared imagery has a concise description and
   point-of-use origin label;
 - reduced motion produces the same static counters, stage, cause, and symbolic-growth disclosure

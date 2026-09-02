@@ -294,6 +294,24 @@ confirmation/Garden store. Registry recreation or reload may clear all new proce
 this is not production persistence. No external security issue records were created because this
 was not a sealed Codex Security scan and no issue destination was provided.
 
+## 2026-09-02 Child Voice and Bilingual Typography Integration Window
+
+**Integration owner**: `/root`
+**Read-only reviewers**: `/root/child_voice_path`, `/root/typography_audit`, and
+`/root/ui_test_audit`
+**Scope**: authorize and implement one in-route, prepared-only Child voice rehearsal plus the
+existing system-font bilingual typography refinement; no route, dependency, microphone, speech
+provider, network service, or production identity is added
+
+| Owner / workstream | Exact reserved boundary | Handoff condition |
+| --- | --- | --- |
+| `/root` — specification, application adapter, Parent grant, Child presentation, typography, and validation | `TEAM_OWNERSHIP.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`, `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,contracts/acceptance-contract.md,checklists/story-evidence.md,checklists/web-proxy.md}`, `src/design/tokens.ts`, `src/components/{primitives.tsx,LanguageSwitcher.tsx}`, `src/components/family-growth/{TaskPanels.tsx,ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`, `src/features/assistants/childVoiceController.ts`, `src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, `app/{child/task.tsx,parent/task/review.tsx}`, and `tests/{bilingual-typography,child-ai-presentation}.test.ts` | Parent enablement is explicit and service-authorized; the Child receives age-adapted prepared Coach output and a fully labeled synthetic transcript rehearsal; both scripts use the shared typography resolver; focused/full checks pass; native and named-human evidence stays truthful |
+
+The reviewers are read-only and hold no file boundary. All changes remain inside the exact reserved
+files, preserve the ten-route journey and P0 counters, and are committed by `/root` as small,
+validated slices. Real Child audio, camera or microphone permission, speech recognition, biometric
+inference, live Child AI, and background capture remain prohibited.
+
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
 
 **Integration owner**: `/root`

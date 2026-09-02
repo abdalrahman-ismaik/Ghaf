@@ -465,3 +465,61 @@ than a real financial reward; a local access fixture is not production authentic
 League uses only synthetic participants behind a separate minimal privacy projection. Production
 infrastructure and claims remain excluded, so no constitution amendment or complexity exception is
 required for this domain-only foundation.
+
+## Child Voice and Bilingual Typography Presentation Addendum (2026-09-02)
+
+### Scope and architecture
+
+This later integration window makes only the completed Coach adaptation and synthetic voice domain
+demonstrable inside the existing Parent review and Child task routes. The presentation adds no route,
+dependency, remote call, real audio, or PrototypeSession schema field. The existing deterministic
+Parent → Child → confirmation → growth journey and all reward/projection counters remain unchanged.
+
+A new application-layer controller owns the synthetic Parent and Child access sessions, stored
+grants, current service authority, and opaque voice session. The Zustand store exposes only a safe
+presentation projection plus bounded commands; it never exposes Parent credentials or constructs a
+voice transition in a screen. The Parent explicitly enables or disables the prepared rehearsal on
+task review. The Child route cannot turn grants on, and the shared-device role flag is checked only
+as an application guard in addition to—not instead of—the access service's stored authority.
+
+Coach requests continue through the prepared provider, then pass through the registered age-
+adaptation service with the active Child profile. The reusable Child panel renders the returned
+complete step/choice prefixes and persistent adult exit. The voice panel maps the existing domain
+lifecycle to honest presentation language: “active” means a synthetic rehearsal indicator, stop
+loads a fixed prepared transcript, replay changes only a local deterministic count, and send closes
+the rehearsal without live AI processing or evidence attachment.
+
+The current token file remains the single theme authority. Its six semantic roles become complete
+script-aware records. Both Arabic and English retain the established platform system family; Arabic
+uses zero tracking and at least 1.55 body leading, while English retains the approved display/title
+tracking. `Text` and `Input` resolve the same role from explicit language or active locale. No font
+asset, loading path, second theme, or type library is introduced.
+
+### Implementation phases
+
+| Phase | Outcome | Main boundary | Evidence |
+| --- | --- | --- | --- |
+| G — authority update | New story, requirements, reset oracle, design rules, and executable tasks authorize the in-route slice without rewriting Phase E | Feature 003 spec, plan, tasks, acceptance contract, design and limitations | Cross-artifact review finds no route, capability-truth, or reset conflict |
+| H — bilingual type | Locale-resolved complete typography roles and scalable Text/Input use, plus large-label resilience | `src/design/tokens.ts`, `src/components/primitives.tsx`, bounded text-bearing components | RED/GREEN role-resolution and source-boundary tests |
+| I — presentation adapter | Private service authority, explicit Parent grants, age-adapted Coach projection, voice commands, and reset integration | `src/features/assistants/childVoiceController.ts`, `src/state/usePrototypeStore.ts` | Grant-off, grant-on, role, binding, lifecycle, locale-preservation, and reset tests |
+| J — in-route UI | Parent permission panel and Child Coach/voice panel with bilingual copy and accessibility state | Existing review/task routes, reusable family-growth components, resources | Arabic/English web proxy plus source and accessibility checks |
+| K — convergence | Focused/full checks, detector, route/counter preservation, capability scan, and truthful evidence update | Reserved evidence documents only | Typecheck, lint, format, tests, export, detector, and diff review |
+
+Tests for Phases H and I are written and observed failing before their implementation. Shared route
+and store files remain serialized under `/root`; the three audit agents are read-only. Each coherent
+phase is committed after its focused checks pass.
+
+### Validation boundary
+
+Automated tests verify type roles, access authorization, lifecycle, reset, localization parity,
+route count, source imports, and unchanged reward counters. The web proxy can verify visible copy,
+direction, control states, and absence of dynamic requests. It cannot pass native Android font
+scale, TalkBack reading, physical touch, audio, permission, predictive Back, or device rendering;
+those remain `NOT RUN` until a named Android build and device are available.
+
+### Constitution check
+
+This addendum advances the existing complete journey instead of adding breadth. It uses the current
+mock-first service registry, preserves Arabic-first bilingual behavior, labels every prepared and
+synthetic state at the point of use, requires Parent authority, and introduces neither live Child AI
+nor real media processing. It therefore needs no constitution amendment or complexity exception.
