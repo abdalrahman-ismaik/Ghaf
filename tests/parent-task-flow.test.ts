@@ -58,7 +58,8 @@ function createReviewableP0Draft() {
 
 describe('US1 Parent task approval flow', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().resetPrototype();
+    usePrototypeStore.getState().setRole('parent');
+    expectOk(usePrototypeStore.getState().resetPrototype());
   });
 
   it('has both authored Parent task routes for composing and reviewing the assignment', () => {
