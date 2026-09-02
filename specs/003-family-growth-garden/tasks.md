@@ -571,16 +571,16 @@ network request, or reward mutation.
   `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
 - [x] T133 [P] [US11] Add and observe RED locale-role, source-boundary, scaling, and mixed-script
   tests in `tests/bilingual-typography.test.ts`
-- [ ] T134 [P] [US11] Add and observe RED Parent-grant, age-derived Coach, voice lifecycle,
+- [x] T134 [P] [US11] Add and observe RED Parent-grant, age-derived Coach, voice lifecycle,
   locale-preservation, reset, copy-parity, route, and forbidden-import tests in
   `tests/child-ai-presentation.test.ts`
 - [x] T135 [US11] Implement complete Arabic/English typography roles in `src/design/tokens.ts`,
   consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
   clipping in `src/components/family-growth/TaskPanels.tsx`
-- [ ] T136 [US11] Implement the private service-authorized application adapter in
+- [x] T136 [US11] Implement the private service-authorized application adapter in
   `src/features/assistants/childVoiceController.ts` and expose only safe Coach/voice projections and
   commands through `src/state/usePrototypeStore.ts`
-- [ ] T137 [US11] Add reusable Parent permission and Child synthetic voice panels, mount them on the
+- [x] T137 [US11] Add reusable Parent permission and Child synthetic voice panels, mount them on the
   existing review/task routes, expose the existing language switch, and add paired resources in
   `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
   `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
