@@ -5,6 +5,7 @@ import {
   coachOutputPolicyForAgeBand,
 } from '../src/features/assistants/ageAdaptation';
 import type { AgeBand, LocalizedText } from '../src/models/familyGrowth';
+import { serviceRegistry } from '../src/services';
 
 const steps: readonly LocalizedText[] = [
   { ar: 'اطلب من شخص بالغ فحص المواد.', en: 'Ask an adult to check the items.' },
@@ -105,5 +106,10 @@ describe('age-adaptive prepared Coach output', () => {
     });
 
     expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+  });
+
+  it('exposes Coach adaptation and synthetic voice through the deterministic registry', () => {
+    expect(serviceRegistry.coachAdaptation.policyForAgeBand('9_11').maximumSteps).toBe(3);
+    expect(serviceRegistry.syntheticVoice).toBeDefined();
   });
 });

@@ -99,12 +99,18 @@ describe('synthetic voice session', () => {
   });
 
   it.each([
-    [{ ...access, grant: { ...access.grant, voiceEnabled: false } }, 'permission'],
-    [{ ...access, grant: { ...access.grant, aiEnabled: false } }, 'permission'],
-    [{ ...access, taskId: 'task_other' }, 'task'],
-    [{ ...access, approvedTaskVersion: 2 }, 'task'],
-    [{ ...access, approvedByParent: false as const }, 'approval'],
-  ])('fails start for invalid %s context', (invalidAccess) => {
+    {
+      label: 'voice permission',
+      invalidAccess: { ...access, grant: { ...access.grant, voiceEnabled: false } },
+    },
+    {
+      label: 'AI permission',
+      invalidAccess: { ...access, grant: { ...access.grant, aiEnabled: false } },
+    },
+    { label: 'task identity', invalidAccess: { ...access, taskId: 'task_other' } },
+    { label: 'task version', invalidAccess: { ...access, approvedTaskVersion: 2 } },
+    { label: 'Parent approval', invalidAccess: { ...access, approvedByParent: false } },
+  ])('fails start for invalid $label context', ({ invalidAccess }) => {
     expect(startVoiceSession(idleSession(), invalidAccess)).toMatchObject({
       ok: false,
       error: { code: 'INVALID_INPUT' },

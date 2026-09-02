@@ -6,6 +6,20 @@ import {
   validateParentSummary,
 } from '../../features/assistants/policy';
 import {
+  adaptPreparedCoachResult,
+  coachOutputPolicyForAgeBand,
+} from '../../features/assistants/ageAdaptation';
+import {
+  createIdleVoiceSession,
+  deleteVoiceTranscript,
+  replayVoiceTranscript,
+  resetVoiceSession,
+  sendVoiceTranscript,
+  setVoicePlayback,
+  startVoiceSession,
+  stopVoiceSessionWithPreparedTranscript,
+} from '../../features/assistants/voiceSession';
+import {
   applyCanopy,
   applyCircle,
   planAfterConfirmation,
@@ -33,6 +47,16 @@ import {
   validateTaskForReview,
   validateTaskTemplate,
 } from '../../features/tasks/validation';
+import type {
+  AdaptCoachResultInput,
+  AgeAdaptedCoachResult,
+  ChildCoachOutputPolicy,
+  CreateVoiceSessionInput,
+  StopVoiceSessionInput,
+  SyntheticVoiceSession,
+  VoiceAccessContext,
+  VoicePlaybackInput,
+} from '../../models/assistantVoice';
 import type {
   ActiveCoachContext,
   AssignmentApprovalResult,
@@ -66,6 +90,7 @@ import type {
   TaskTemplate,
 } from '../../models/familyGrowth';
 import type {
+  CoachAdaptationService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
   GardenService,
@@ -78,6 +103,7 @@ import type {
   RecognitionService,
   ServiceMeta,
   ServiceResult,
+  SyntheticVoiceService,
   TaskService,
 } from '../interfaces';
 import {
@@ -1226,6 +1252,59 @@ export class DeterministicChildCoachProvider implements PreparedChildCoachProvid
   }
 }
 
+export class DeterministicCoachAdaptationService implements CoachAdaptationService {
+  policyForAgeBand(ageBand: ChildCoachOutputPolicy['ageBand']): ChildCoachOutputPolicy {
+    return coachOutputPolicyForAgeBand(ageBand);
+  }
+
+  adaptPreparedResult(input: AdaptCoachResultInput): ServiceResult<AgeAdaptedCoachResult> {
+    return fromDomain(adaptPreparedCoachResult(input), PREPARED_META);
+  }
+}
+
+export class DeterministicSyntheticVoiceService implements SyntheticVoiceService {
+  createIdle(input: CreateVoiceSessionInput): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(createIdleVoiceSession(input));
+  }
+
+  start(
+    session: SyntheticVoiceSession,
+    access: VoiceAccessContext,
+  ): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(startVoiceSession(session, access));
+  }
+
+  stopWithPreparedTranscript(
+    session: SyntheticVoiceSession,
+    input: StopVoiceSessionInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(stopVoiceSessionWithPreparedTranscript(session, input), PREPARED_META);
+  }
+
+  deleteBeforeSend(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(deleteVoiceTranscript(session));
+  }
+
+  send(session: SyntheticVoiceSession, sentAt: string): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(sendVoiceTranscript(session, sentAt));
+  }
+
+  setPlayback(
+    session: SyntheticVoiceSession,
+    input: VoicePlaybackInput,
+  ): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(setVoicePlayback(session, input));
+  }
+
+  replay(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession> {
+    return fromDomain(replayVoiceTranscript(session));
+  }
+
+  reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession> {
+    return success(resetVoiceSession(session));
+  }
+}
+
 export class DeterministicParentSummaryPolicy implements ParentSummaryPolicy {
   validate(summary: ParentPatternSummary): ServiceResult<ParentPatternSummary> {
     return fromDomain(validateParentSummary(summary), PREPARED_META);
@@ -1275,6 +1354,8 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     media: new DeterministicMediaService(),
     parentGuide: new DeterministicParentGuideProvider(),
     childCoach: new DeterministicChildCoachProvider(),
+    coachAdaptation: new DeterministicCoachAdaptationService(),
+    syntheticVoice: new DeterministicSyntheticVoiceService(),
     parentSummary: new DeterministicParentSummaryPolicy(),
     prototypeSession: new DeterministicPrototypeSessionService(),
   };

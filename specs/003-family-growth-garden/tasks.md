@@ -531,7 +531,7 @@ background, and delete-before-send failures are explicit.
 - [x] T126 [P] [US10] Add RED tests for stored grant, task binding, explicit start/stop, prepared transcript review/delete/send, captions, replay, slower playback, and reset in `tests/assistant-voice-session.test.ts`
 - [x] T127 [P] [US10] Define Coach output and synthetic voice-session contracts in `src/models/assistantVoice.ts`
 - [x] T128 [US10] Implement prepared-result adaptation in `src/features/assistants/ageAdaptation.ts` and voice transitions in `src/features/assistants/voiceSession.ts`
-- [ ] T129 [US10] Export Coach adaptation and synthetic voice services through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run both focused test files
+- [x] T129 [US10] Export Coach adaptation and synthetic voice services through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run both focused test files
 
 **Checkpoint**: User Story 10 is independently usable and contains no microphone, audio bytes,
 speech provider, biometric inference, background recording, or unreviewed dialect content.

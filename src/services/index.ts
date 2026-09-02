@@ -3,6 +3,7 @@ import type { Feature003ServiceRegistry } from './interfaces';
 
 export type {
   ChildCoachService,
+  CoachAdaptationService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
   GardenService,
@@ -15,11 +16,13 @@ export type {
   RecognitionService,
   ServiceMeta,
   ServiceResult,
+  SyntheticVoiceService,
   TaskService,
 } from './interfaces';
 export {
   createFeature003ServiceRegistry,
   DeterministicChildCoachProvider,
+  DeterministicCoachAdaptationService,
   DeterministicFamilyProjectionService,
   DeterministicGardenService,
   DeterministicMediaService,
@@ -28,6 +31,7 @@ export {
   DeterministicPrototypeSessionService,
   DeterministicRecognitionService,
   DeterministicTaskService,
+  DeterministicSyntheticVoiceService,
 } from './mock';
 export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 

@@ -1,4 +1,14 @@
 import type {
+  AdaptCoachResultInput,
+  AgeAdaptedCoachResult,
+  ChildCoachOutputPolicy,
+  CreateVoiceSessionInput,
+  StopVoiceSessionInput,
+  SyntheticVoiceSession,
+  VoiceAccessContext,
+  VoicePlaybackInput,
+} from '../../models/assistantVoice';
+import type {
   AssignmentApprovalResult,
   AssistantDisclosure,
   CheckInRouteState,
@@ -163,6 +173,31 @@ export interface ChildCoachService {
   respond(request: ChildCoachRequest): Promise<ServiceResult<ChildCoachResult>>;
 }
 
+export interface CoachAdaptationService {
+  policyForAgeBand(ageBand: ChildCoachOutputPolicy['ageBand']): ChildCoachOutputPolicy;
+  adaptPreparedResult(input: AdaptCoachResultInput): ServiceResult<AgeAdaptedCoachResult>;
+}
+
+export interface SyntheticVoiceService {
+  createIdle(input: CreateVoiceSessionInput): ServiceResult<SyntheticVoiceSession>;
+  start(
+    session: SyntheticVoiceSession,
+    access: VoiceAccessContext,
+  ): ServiceResult<SyntheticVoiceSession>;
+  stopWithPreparedTranscript(
+    session: SyntheticVoiceSession,
+    input: StopVoiceSessionInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  deleteBeforeSend(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  send(session: SyntheticVoiceSession, sentAt: string): ServiceResult<SyntheticVoiceSession>;
+  setPlayback(
+    session: SyntheticVoiceSession,
+    input: VoicePlaybackInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  replay(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+}
+
 export interface PreparedParentGuideProvider extends ParentGuideService {
   readonly mode: 'deterministic_prepared';
   readonly fixtureId: 'guide_recycling_refine_v1';
@@ -197,6 +232,8 @@ export interface Feature003ServiceRegistry {
   readonly media: MediaService;
   readonly parentGuide: PreparedParentGuideProvider;
   readonly childCoach: PreparedChildCoachProvider;
+  readonly coachAdaptation: CoachAdaptationService;
+  readonly syntheticVoice: SyntheticVoiceService;
   readonly parentSummary: ParentSummaryPolicy;
   readonly prototypeSession: PrototypeSessionService;
 }
