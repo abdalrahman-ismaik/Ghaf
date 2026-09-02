@@ -189,7 +189,9 @@ The post-P0 redesign code currently proves rules and state transitions only:
   synthetic values. They do not authenticate a person, protect secrets, survive reinstall, recover
   an account, establish consent, or provide a production security boundary.
 - Family Reward values are private promise metadata. Ghaf does not hold money, transfer value,
-  purchase anything, guarantee fulfillment, resolve disputes, or convert Seeds to currency.
+  purchase anything, guarantee fulfillment, resolve disputes, or convert Seeds to currency. The
+  current evaluator consumes strict Parent-authorized candidate fixtures; authoritative
+  confirmation/Garden-store event wiring is deferred with the frontend integration.
 - League members are synthetic fixtures. There is no real invitation, family relationship check,
   contact, moderation, report, block, retention, deletion, notification, or cross-household service.
 - The League projection is a separate allowlisted model and does not weaken the existing

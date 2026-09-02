@@ -421,10 +421,11 @@ version `3`, weaken the Green Circle projector, or claim production authenticati
 invitation, persistence, or voice processing.
 
 The implementation remains strict TypeScript with Vitest and existing dependencies. New behavior
-lives in small models and pure feature services, is registered through the existing service facade,
-and consumes only synthetic fixtures or caller-provided deterministic test data. The current Zustand
-P0 aggregate remains unchanged so reset and judge-flow evidence stay stable until the frontend
-redesign receives its own approved integration window.
+lives in small models and pure feature reducers behind process-local in-memory deterministic service
+facades. It consumes only synthetic fixtures or caller-provided deterministic test data. Recreating
+the registry or reloading may clear these new ledgers; they are not production persistence. The
+current Zustand P0 aggregate remains unchanged so reset and judge-flow evidence stay stable until
+the frontend redesign receives its own approved integration window.
 
 ### Phased implementation
 
@@ -445,8 +446,10 @@ committed as a cohesive checkpoint after its focused tests pass.
 
 - Synthetic access tokens are opaque local values with explicit expiry and replay handling; they
   are not passwords, biometrics, identity verification, or production sessions.
-- The Family Reward evaluator receives a personal progress snapshot and never accepts League rank,
-  another Child's progress, a Seed exchange rate, or a payment command.
+- The Family Reward service evaluator accepts strict caller-provided candidate fixtures only after
+  stored Parent authorization in this domain-only prototype. Frontend integration must derive them
+  from the authoritative confirmation/Garden store; that adapter is deferred. The candidate schema
+  never accepts League rank, another Child's progress, a Seed exchange rate, or a payment command.
 - League eligibility is decided before assignment. Its projector is a new strict allowlist and does
   not reuse or relax `GreenCircleEventDTO` validation.
 - Voice state accepts a prepared synthetic transcript only after explicit start/stop and stored

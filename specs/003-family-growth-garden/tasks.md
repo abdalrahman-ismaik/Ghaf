@@ -542,8 +542,8 @@ speech provider, biometric inference, background recording, or unreviewed dialec
 
 **Purpose**: Verify the new services together without changing the existing P0 evidence class.
 
-- [ ] T130 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`, `git diff --check`, and a ten-route inventory; fix only defects within this window's reserved boundaries
-- [ ] T131 Review the complete diff for child-safety, privacy, capability truth, comment syntax, secret/network/media absence, and P0 regression; record checks and release all 2026-09-02 boundaries in `TEAM_OWNERSHIP.md`
+- [x] T130 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`, `git diff --check`, and a ten-route inventory; fix only defects within this window's reserved boundaries
+- [x] T131 Review the complete diff for child-safety, privacy, capability truth, comment syntax, secret/network/media absence, and P0 regression; record checks and release all 2026-09-02 boundaries in `TEAM_OWNERSHIP.md`
 
 ### Product Experience Redesign dependencies
 

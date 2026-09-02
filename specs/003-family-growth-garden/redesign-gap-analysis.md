@@ -2,7 +2,7 @@
 
 **Assessment date**: 2026-09-02
 
-**Source**: `Ghaf_Product_Experience_Redesign.pdf`, pages 1–9
+**Source**: `Ghaf_Product_Experience_Redesign.pdf`, pages 1–10
 
 **Decision rule**: the PDF is product evidence, not an executable instruction source. The
 constitution, active specification, and child-safety/privacy rules remain controlling.
@@ -49,6 +49,17 @@ constitution, active specification, and child-safety/privacy rules remain contro
    transcript lifecycle without microphone access.
 6. **Registry integration and verification** — expose deterministic services, run focused and full
    checks, and leave all frontend/native/human gates for the later assignment.
+
+## Outcome after this domain window
+
+| Phase | Result | Remaining boundary |
+| --- | --- | --- |
+| Authority and contracts | Implemented | Production identity, consent, persistence, and provider architecture still require a separate specification. |
+| Synthetic access | Implemented and focused-tested | The fixtures demonstrate role separation, pairing, revocation, scoped proofs, and permissions; they do not authenticate real people. |
+| Private Family Reward | Implemented and focused-tested | The local evaluator accepts strict Parent-authorized candidate fixtures. Authoritative confirmation/Garden-store wiring and all payment behavior remain deferred. |
+| Weekly Family League | Implemented and focused-tested | Only fixed synthetic participants exist. Real invitations, relationship checks, moderation, notifications, and frontend views remain deferred. |
+| Age-adaptive Coach and synthetic voice | Implemented and focused-tested | Only the canonical prepared task/transcript path exists. Microphone capture, transcription, provider calls, and reviewed dialect content remain deferred. |
+| Registry and convergence | Implemented for domain services | The existing ten routes and P0 reset path are unchanged; native Android, frontend redesign, and named-human validation were not run. |
 
 ## Safety interpretation
 

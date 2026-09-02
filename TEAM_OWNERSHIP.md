@@ -272,6 +272,28 @@ boundary, and do not commit or push. `/root` serializes shared-registry edits an
 cohesive commits after each focused handoff. Real credentials, biometrics, payment custody, real
 Child data, real family sharing, and microphone/provider integration remain outside this window.
 
+**Product experience redesign domain release — 2026-09-02**: all reserved boundaries are released
+to `/root`. The six phased checkpoints are recorded in commits `eefc435`, `cd86631`, `e8e0630`,
+`4e4d5ca`, `acfc02b`, `0f46eb3`, `533d74a`, `978257a`, and `44f5077`. The settled domain code adds
+only deterministic access, private Family Reward, synthetic Family League, age-adaptation, and
+synthetic voice contracts; no `app/**` file or authored route changed.
+
+| Final evidence | Result |
+| --- | --- |
+| Focused redesign suites | **PASSED** — 5 files / 95 tests |
+| Full static and behavioral checks | **PASSED** — typecheck, lint, format check, 23 files / 407 tests, and `git diff --check` |
+| Route/P0 preservation | **PASSED** — exactly 10 authored routes; zero `app/**` diff; the existing Zustand P0 aggregate and Green Circle projector remain separate |
+| Source boundary scan | **PASSED** — no added block comments in TypeScript and no added network, secret, microphone, audio-capture, speech-provider, or biometric path |
+| Independent review | `/root/session_ai_gap`, `/root/league_reward_gap`, and `/root/safety_spec_gap` found no remaining P0–P3 implementation defect after final corrections |
+| Deferred evidence | Frontend redesign, physical Android, real microphone/provider behavior, production identity/invitation/payment/persistence, and named Arabic/UAE/safeguarding/accessibility review are **NOT RUN** or out of scope |
+| Integration readiness | **Ready for the domain-only branch checkpoint**; not ready to claim frontend, native-demo, production-security, or human-review acceptance |
+
+The Family Reward facade deliberately accepts strict Parent-authorized candidate event fixtures in
+this local domain phase. A later frontend phase must derive those events from the authoritative
+confirmation/Garden store. Registry recreation or reload may clear all new process-local ledgers;
+this is not production persistence. No external security issue records were created because this
+was not a sealed Codex Security scan and no issue destination was provided.
+
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
 
 **Integration owner**: `/root`

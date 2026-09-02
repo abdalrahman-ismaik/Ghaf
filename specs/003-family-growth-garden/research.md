@@ -331,7 +331,9 @@ praise-first recognition sequence already supplies the required ordering and per
 
 **Decision**: Use five Parent-approved Challenge Leaves, a 20-point increment per confirmed Leaf, a
 100 cap, full help/accessibility credit, shared competition positions, opt-out, no speed tiebreak,
-and a separate cooperative weekly total. Reset weekly state without touching Seeds or Garden.
+and a separate cooperative weekly total. Rollover clears assignments, credit, score, and
+encouragement without touching Seeds or Garden, and preserves opt-out until a proof-scoped Parent
+membership change.
 
 **Rationale**: [Sailer and Homner's meta-analysis](https://doi.org/10.1007/s10648-019-09498-w)
 reports heterogeneous effects and indicates that competitive-plus-collaborative designs can

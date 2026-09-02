@@ -457,55 +457,124 @@ without changing the P0 session or Green Circle contracts.
 interface SyntheticAccessService {
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
   signInChild(input: SyntheticChildSignIn): ServiceResult<ChildAccessSession>;
-  projectSession(session: AccessSession): ServiceResult<ParentAccessView | ChildAccessView>;
+  projectSession(
+    input: ProjectAccessSessionInput,
+  ): ServiceResult<ParentAccessView | ChildAccessView>;
+  authorizeCapability(input: CapabilityAuthorizationInput): ServiceResult<CapabilityAuthorization>;
   requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest>;
   approvePairing(input: PairingApprovalInput): ServiceResult<PairingRequest>;
+  revokePairing(input: PairingRevocationInput): ServiceResult<PairingRequest>;
   consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession>;
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState>;
   issueReauthentication(input: ReauthenticationInput): ServiceResult<ReauthenticationProof>;
   authorizeSensitiveAction(input: SensitiveActionInput): ServiceResult<ReauthenticationProof>;
+  getChildPermissions(input: ChildPermissionQueryInput): ServiceResult<ChildPermissionGrant>;
   updateChildPermissions(input: PermissionUpdateInput): ServiceResult<ChildPermissionGrant>;
 }
 
 interface FamilyRewardService {
-  createPlan(input: CreateFamilyRewardPlanInput): ServiceResult<FamilyRewardPlan>;
-  revisePromisedPlan(input: ReviseFamilyRewardPlanInput): ServiceResult<FamilyRewardPlan>;
-  evaluatePlan(input: EvaluateFamilyRewardPlanInput): ServiceResult<FamilyRewardPlan>;
-  markGiven(input: MarkFamilyRewardGivenInput): ServiceResult<FamilyRewardPlan>;
-  projectPrivate(input: FamilyRewardProjectionInput): ServiceResult<FamilyRewardPrivateView>;
+  createPlan(
+    input: FamilyRewardPlanDraft,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
+  ): ServiceResult<FamilyRewardPlan>;
+  revisePromisedPlan(
+    planId: string,
+    input: ReviseFamilyRewardPlanInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
+  ): ServiceResult<FamilyRewardRevision>;
+  evaluatePlan(
+    planId: string,
+    candidateEvents: readonly unknown[],
+    options: FamilyRewardEvaluationOptions,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<FamilyRewardEvaluation>;
+  markGiven(
+    planId: string,
+    input: GiveFamilyRewardInput,
+    authority: SessionAuthorityInput,
+    monetaryProofId?: string,
+  ): ServiceResult<FamilyRewardGivenResult>;
+  projectPrivate(
+    planId: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<PrivateFamilyRewardView>;
   summarizeMonthlyCommitment(
-    plans: readonly FamilyRewardPlan[],
-    month: string,
-  ): ServiceResult<readonly MonthlyCommitment[]>;
+    authority: SessionAuthorityInput,
+  ): ServiceResult<readonly MonetaryCommitmentSummary[]>;
 }
 
 interface FamilyLeagueService {
-  createWeek(input: CreateLeagueWeekInput): ServiceResult<FamilyLeagueWeek>;
-  confirmLeaf(input: ConfirmChallengeLeafInput): ServiceResult<FamilyLeagueWeek>;
-  calculateResults(week: FamilyLeagueWeek): ServiceResult<readonly WeeklyGrowthResult[]>;
-  projectParticipants(input: LeagueProjectionInput): ServiceResult<LeagueParticipantProjection[]>;
+  createWeek(
+    input: CreateLeagueWeekInput,
+    authority: SessionAuthorityInput,
+    membershipProofId: string,
+  ): ServiceResult<FamilyLeagueWeek>;
+  confirmLeaf(
+    input: ConfirmChallengeLeafInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<FamilyLeagueWeek>;
+  calculateResults(
+    week: FamilyLeagueWeek,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<readonly WeeklyGrowthResult[]>;
+  projectParticipants(
+    weekKey: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<readonly LeagueParticipantProjection[]>;
   sendPreparedEncouragement(
-    input: PreparedEncouragementInput,
+    input: LeagueEncouragementRequest,
+    authority: SessionAuthorityInput,
   ): ServiceResult<PreparedEncouragement>;
-  rollover(input: LeagueRolloverInput): ServiceResult<FamilyLeagueWeek>;
+  rollover(
+    input: LeagueRolloverInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<LeagueRolloverResult>;
 }
 
 interface CoachAdaptationService {
-  policyForAgeBand(ageBand: AgeBand): ChildCoachOutputPolicy;
+  policyForAgeBand(ageBand: unknown): ServiceResult<ChildCoachOutputPolicy>;
   adaptPreparedResult(input: AdaptCoachResultInput): ServiceResult<AgeAdaptedCoachResult>;
 }
 
 interface SyntheticVoiceService {
-  createIdle(input: CreateVoiceSessionInput): ServiceResult<SyntheticVoiceSession>;
-  start(input: StartVoiceSessionInput): ServiceResult<SyntheticVoiceSession>;
-  stopWithPreparedTranscript(
-    input: StopVoiceSessionInput,
+  createIdle(
+    input: CreateVoiceSessionInput,
+    authority: SessionAuthorityInput,
   ): ServiceResult<SyntheticVoiceSession>;
-  deleteBeforeSend(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
-  send(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
-  setPlayback(input: VoicePlaybackInput): ServiceResult<SyntheticVoiceSession>;
-  replay(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
-  reset(session: SyntheticVoiceSession): ServiceResult<SyntheticVoiceSession>;
+  start(
+    session: SyntheticVoiceSession,
+    access: VoiceAccessContext,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  stopWithPreparedTranscript(
+    session: SyntheticVoiceSession,
+    input: StopVoiceSessionInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  deleteBeforeSend(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  send(
+    session: SyntheticVoiceSession,
+    sentAt: string,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  setPlayback(
+    session: SyntheticVoiceSession,
+    input: VoicePlaybackInput,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  replay(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
+  reset(
+    session: SyntheticVoiceSession,
+    authority: SessionAuthorityInput,
+  ): ServiceResult<SyntheticVoiceSession>;
 }
 ```
 
@@ -515,22 +584,31 @@ interface SyntheticVoiceService {
   expiry, revocation, and replay state from stored values. They never trust a standalone caller role.
 - Pairing and reauthentication values are opaque synthetic fixtures and have no production-security
   claim.
-- Family Reward creation/change requires a consumed proof for monetary metadata. The evaluator
-  accepts only personal progress and protected-content eligibility fields; its input type has no
-  rank, score, speed, payment, or exchange-rate property.
+- Family Reward creation/change requires a consumed proof for monetary metadata. The deterministic
+  evaluator accepts caller-provided candidate fixtures only from a stored Parent-authorized
+  service call and validates every field, prerequisite, Child, and recognition-key duplicate. Its
+  event type has no rank, score, speed, payment, or exchange-rate property. A future frontend MUST
+  replace these candidate fixtures with events derived from the authoritative confirmation/Garden
+  store before this evaluator is exposed outside the local prototype adapter.
 - Family Reward lifecycle transitions are monotonic. Duplicate unlock/given attempts return the
   current value, while withdrawal or retroactive milestone edits fail.
 - League creation validates exactly five unique Parent-approved eligible Leaves per participating
-  Child. Credit is idempotent by recognition key and full for permitted help or adaptation.
+  Child. A rolled empty week may be filled once with a new proof-scoped membership set; a populated
+  week cannot be replaced. Credit is idempotent by recognition key and full for permitted help or
+  adaptation.
 - League ranking sorts score only, uses competition positions with gaps after ties, and cannot use a
   completion timestamp. Results are capped at 100.
-- League projection rejects unknown or forbidden keys before output. It does not call the Green
-  Circle projector and cannot change P0 counters.
+- Child League projection accepts a week key only, derives raw state from its private service
+  ledger, and emits only the minimal projection. The pure projector rejects unknown or forbidden
+  keys before output. Neither path calls the Green Circle projector or changes P0 counters.
 - Prepared encouragement accepts only reviewed IDs with paired Arabic/English content and no
   caller-supplied message text.
-- Coach adaptation rejects step overflow and task/version mismatch. Voice transitions require a
-  stored Parent grant, explicit active task, and prepared transcript; no method can accept audio
-  bytes, microphone handles, speaker identity, background mode, or provider credentials.
+- Coach adaptation exact-matches the reviewed fixture, rejects invalid age/task/version/Child
+  binding, and selects a reviewed prefix of complete steps and choices up to the age-band limits; it
+  never truncates localized text. Voice start, stop, playback, replay, and send require the current
+  stored Parent grant plus the canonical task-bound prepared transcript; delete and reset remain
+  available to the same Child after revocation. No method can accept audio bytes, microphone
+  handles, speaker identity, background mode, or provider credentials.
 
 ### Additional focused contract tests
 

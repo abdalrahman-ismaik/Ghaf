@@ -662,7 +662,8 @@ they never multiply Seeds by money.
   free-text field exists.
 
 League scoring and rollover never mutate Seed, landscape, recognition, canopy, or Green Circle
-state. The strict League projection is separate from `GreenCircleEventDTO`.
+state. Rollover preserves the opt-out set until a Parent-authorized membership change. The strict
+League projection is separate from `GreenCircleEventDTO`.
 
 ### Age-adaptive Coach and synthetic voice
 

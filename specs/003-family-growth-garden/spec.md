@@ -905,7 +905,9 @@ payment, invitation, or voice infrastructure exists.
   100, capped at 100. Permitted help and accessibility adaptations MUST earn full credit, tied scores
   MUST share a position, and completion speed MUST NOT be ranking input.
 - **FR-113**: League credit MUST be idempotent by recognition key. Weekly rollover MUST clear weekly
-  assignments, credit, score, and encouragement while preserving all earned Seeds and Garden growth.
+  assignments, credit, score, and encouragement while preserving all earned Seeds and Garden
+  growth. A Child's opt-out MUST persist across rollover until a Parent-authorized membership
+  change, so rollover cannot silently re-enroll the Child.
 - **FR-114**: A Child-facing League projection MUST contain only an approved synthetic nickname,
   tree-avatar token, completed-Leaf count, score, and position. It MUST reject task text, exact task
   history, evidence, Seeds, media, reflections, assistant content, Parent notes, and protected
