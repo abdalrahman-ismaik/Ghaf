@@ -1,5 +1,11 @@
 import { create } from 'zustand';
 
+import {
+  createChildVoiceController,
+  INITIAL_CHILD_VOICE_VIEW,
+  type ChildVoiceCommand,
+  type ChildVoiceView,
+} from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
 import { P0_EXECUTABLE_CHOICE, P0_SAFE_EQUIVALENT_TEMPLATE } from '../features/tasks/demoContent';
 import {
@@ -36,13 +42,18 @@ import type {
   RoutineProgressState,
   SyntheticChildId,
 } from '../models/familyGrowth';
+import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import { serviceRegistry, type ParentGuideService, type ServiceResult } from '../services';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
 
+const childVoiceController = createChildVoiceController(serviceRegistry);
+
 export interface PrototypeStoreState extends PrototypeSession {
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
+  readonly ageAdaptedCoachResult: AgeAdaptedCoachResult | null;
+  readonly childVoiceView: ChildVoiceView;
   readonly confirmationPlan: ConfirmationPlan | null;
   readonly lastRecognitionAttempt: RecognitionAttemptResult | null;
   readonly prospectiveTaskAdjustment: ProspectiveTaskAdjustment | null;
@@ -99,6 +110,9 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly setChildTaskReflection: (
     reflection: LocalizedText | null,
   ) => ServiceResult<ChildTaskDraftState>;
+  readonly setChildVoicePermission: (enabled: boolean) => ServiceResult<ChildVoiceView>;
+  readonly prepareChildVoice: () => ServiceResult<ChildVoiceView>;
+  readonly runChildVoiceCommand: (command: ChildVoiceCommand) => ServiceResult<ChildVoiceView>;
   readonly requestChildCoach: (input: {
     readonly requestId: string;
     readonly intent: ChildCoachIntent;
@@ -322,6 +336,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...serviceRegistry.prototypeSession.getInitialSession(),
   parentGuideSuggestion: null,
   childCoachResult: null,
+  ageAdaptedCoachResult: null,
+  childVoiceView: INITIAL_CHILD_VOICE_VIEW,
   confirmationPlan: null,
   lastRecognitionAttempt: null,
   prospectiveTaskAdjustment: null,
@@ -353,11 +369,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resetPrototype: () => {
+    const voiceReset = childVoiceController.resetPrototype('parent');
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     set((state) => ({
       ...reset.session,
       parentGuideSuggestion: null,
       childCoachResult: null,
+      ageAdaptedCoachResult: null,
+      childVoiceView: voiceReset.ok ? voiceReset.data : INITIAL_CHILD_VOICE_VIEW,
       confirmationPlan: null,
       lastRecognitionAttempt: null,
       prospectiveTaskAdjustment: null,
@@ -383,6 +402,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         journey: result.data,
         parentGuideSuggestion: null,
         childCoachResult: null,
+        ageAdaptedCoachResult: null,
         confirmationPlan: null,
         lastRecognitionAttempt: null,
         prospectiveTaskAdjustment: null,
@@ -916,6 +936,97 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return { ok: true, data: next, meta: { origin: 'synthetic', fallbackUsed: false } };
   },
 
+  setChildVoicePermission: (enabled) => {
+    const state = get();
+    if (state.role !== 'parent') {
+      return failure('INVALID_TRANSITION', 'Only the Parent can change prepared voice permission');
+    }
+    if (
+      !state.journey ||
+      (state.journey.lifecycle !== 'reviewed' && state.journey.lifecycle !== 'assigned')
+    ) {
+      return failure('INVALID_TRANSITION', 'A reviewed task is required');
+    }
+    const childId = state.journey.assignment?.childId ?? state.journey.task.targetChildId;
+    const result = childVoiceController.configureParentPermission({
+      actorRole: 'parent',
+      childId,
+      languagePreference: state.locale,
+      enabled,
+    });
+    if (result.ok) set({ childVoiceView: result.data });
+    return result;
+  },
+
+  prepareChildVoice: () => {
+    const state = get();
+    const journey = state.journey;
+    if (state.role !== 'child') {
+      return failure('INVALID_TRANSITION', 'Only the Child can open the prepared voice rehearsal');
+    }
+    if (
+      !journey?.assignment ||
+      (journey.lifecycle !== 'chosen' && journey.lifecycle !== 'in_progress')
+    ) {
+      return failure('INVALID_TRANSITION', 'An active Parent-approved assignment is required');
+    }
+    if (journey.assignment.childId !== state.activeChildId) {
+      return failure('NOT_ASSIGNED_CHILD', 'This assignment belongs to another synthetic Child');
+    }
+    const result = childVoiceController.bindActiveTask({
+      actorRole: 'child',
+      childId: state.activeChildId,
+      ageBand: state.children[state.activeChildId].ageBand,
+      taskId: journey.task.id,
+      approvedTaskVersion: journey.task.version,
+      lifecycle: journey.lifecycle,
+      approvedByParent: journey.assignment.approvedByParent,
+    });
+    if (result.ok) set({ childVoiceView: result.data });
+    return result;
+  },
+
+  runChildVoiceCommand: (command) => {
+    const state = get();
+    if (state.role !== 'child') {
+      return failure('INVALID_TRANSITION', 'Only the Child can use the prepared voice rehearsal');
+    }
+    const journey = state.journey;
+    if (
+      !journey?.assignment ||
+      (journey.lifecycle !== 'chosen' && journey.lifecycle !== 'in_progress') ||
+      journey.assignment.childId !== state.activeChildId ||
+      journey.task.id !== state.childVoiceView.taskId ||
+      journey.task.version !== state.childVoiceView.approvedTaskVersion ||
+      journey.assignment.taskVersion !== journey.task.version
+    ) {
+      return failure('INVALID_TRANSITION', 'Prepared voice is not bound to the active assignment');
+    }
+    const result = (() => {
+      switch (command.type) {
+        case 'start':
+          return childVoiceController.start('child');
+        case 'stop':
+          return childVoiceController.stop('child');
+        case 'delete':
+          return childVoiceController.deleteBeforeSend('child');
+        case 'send':
+          return childVoiceController.send('child');
+        case 'replay':
+          return childVoiceController.replay('child');
+        case 'reset':
+          return childVoiceController.resetVoice('child');
+        case 'playback':
+          return childVoiceController.setPlayback('child', {
+            captionsEnabled: command.captionsEnabled,
+            playbackRate: command.playbackRate,
+          });
+      }
+    })();
+    if (result.ok) set({ childVoiceView: result.data });
+    return result;
+  },
+
   requestChildCoach: async (input) => {
     const state = get();
     const journey = state.journey;
@@ -944,7 +1055,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       locale: state.locale,
       child: {
         id: state.activeChildId,
-        ageBand: '9_11' as const,
+        ageBand: state.children[state.activeChildId].ageBand,
         synthetic: true as const,
       },
       assignmentId: journey.assignment.id,
@@ -960,7 +1071,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       get().journey?.task.id === request.taskId &&
       get().journey?.task.version === request.approvedTaskVersion
     ) {
-      set({ childCoachResult: result.data });
+      const adapted = childVoiceController.adaptCoach({
+        actorRole: 'child',
+        childId: request.child.id,
+        ageBand: request.child.ageBand,
+        taskId: request.taskId,
+        approvedTaskVersion: request.approvedTaskVersion,
+        lifecycle: request.lifecycle,
+        approvedByParent: true,
+      });
+      if (!adapted.ok) return adapted;
+      set({ childCoachResult: result.data, ageAdaptedCoachResult: adapted.data });
     }
     return result;
   },
