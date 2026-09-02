@@ -472,9 +472,9 @@ without claiming production authentication.
 **Independent Test**: Focused tests cover both projections, pairing, revocation, reauthentication,
 permissions, and every wrong-actor/purpose/device/expiry/replay path.
 
-- [ ] T113 [P] [US7] Add RED tests for least-privilege Parent/Child projections, expiring one-use pairing, device revocation, scoped reauthentication, and Parent-owned language/voice/media/AI grants in `tests/access-control.test.ts`
-- [ ] T114 [P] [US7] Define synthetic principals, separate access sessions/views, capabilities, pairing requests, reauthentication proofs, device state, and Child grants in `src/models/access.ts`
-- [ ] T115 [US7] Implement fail-closed deterministic access, pairing, projection, reauthentication, revocation, and permission policies in `src/features/access/index.ts`
+- [x] T113 [P] [US7] Add RED tests for least-privilege Parent/Child projections, expiring one-use pairing, device revocation, scoped reauthentication, and Parent-owned language/voice/media/AI grants in `tests/access-control.test.ts`
+- [x] T114 [P] [US7] Define synthetic principals, separate access sessions/views, capabilities, pairing requests, reauthentication proofs, device state, and Child grants in `src/models/access.ts`
+- [x] T115 [US7] Implement fail-closed deterministic access, pairing, projection, reauthentication, revocation, and permission policies in `src/features/access/index.ts`
 - [ ] T116 [US7] Export the synthetic access service through `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, and `src/services/index.ts`, then run `npm test -- tests/access-control.test.ts`
 
 **Checkpoint**: User Story 7 is independently usable from the service facade and has no real
