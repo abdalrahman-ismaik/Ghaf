@@ -584,10 +584,10 @@ network request, or reward mutation.
   existing review/task routes, expose the existing language switch, and add paired resources in
   `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
   `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
-- [ ] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
+- [x] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
   export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
   defects within the reserved window
-- [ ] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
+- [x] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
   reservation, and commit the validated convergence checkpoint
 
 **Checkpoint**: User Story 11 is demonstrable as prepared/synthetic UI only. Parent enablement is

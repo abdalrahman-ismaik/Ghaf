@@ -312,6 +312,15 @@ files, preserve the ten-route journey and P0 counters, and are committed by `/ro
 validated slices. Real Child audio, camera or microphone permission, speech recognition, biometric
 inference, live Child AI, and background capture remain prohibited.
 
+**Child voice and bilingual typography release — 2026-09-02**: the implementation, regression
+fixes, and web-proxy evidence are committed. Focused presentation checks pass 28/28, the full suite
+passes 25 files / 435 tests, typecheck/lint/format pass, the static export contains the ten authored
+routes plus sitemap/not-found, and the final capability/comment/diff scans pass. The aggregate
+verification command still reports only the four pre-existing Expo patch recommendations after its
+other checks pass; this no-dependency slice did not modify them. Physical Android, native audio and
+accessibility behavior, and named-human reviews remain **BLOCKED / NOT RUN**. Every reservation in
+this integration window is released; no reviewer or writer retains a file boundary.
+
 ## 2026-08-28 Repository Architecture and Developer Experience Cleanup
 
 **Integration owner**: `/root`
