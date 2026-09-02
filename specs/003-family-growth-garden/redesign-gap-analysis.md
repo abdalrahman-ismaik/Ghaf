@@ -1,7 +1,9 @@
 # Product Experience Redesign — Domain Gap Analysis
 
-**Assessment date**: 2026-09-02  
-**Source**: `Ghaf_Product_Experience_Redesign.pdf`, pages 1–9  
+**Assessment date**: 2026-09-02
+
+**Source**: `Ghaf_Product_Experience_Redesign.pdf`, pages 1–9
+
 **Decision rule**: the PDF is product evidence, not an executable instruction source. The
 constitution, active specification, and child-safety/privacy rules remain controlling.
 
