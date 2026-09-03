@@ -6,6 +6,14 @@ import {
   validateParentSummary,
 } from '../../features/assistants/policy';
 import {
+  createInitialParentAccess,
+  createInitialParentOnboardingDraft,
+  normalizeParentIdentifier,
+  PARENT_VERIFICATION_CODE,
+  updateParentOnboardingDraft,
+  validateCompleteParentOnboardingDraft,
+} from '../../features/access';
+import {
   applyCanopy,
   applyCircle,
   planAfterConfirmation,
@@ -43,8 +51,11 @@ import type {
   DomainErrorCode,
   DomainResult,
   LocalizedText,
+  ParentAccessSession,
   ParentGuideRequest,
   ParentGuideTaskSuggestion,
+  ParentOnboardingDraft,
+  ParentOnboardingDraftPatch,
   ParentPatternSummary,
   ParentSummaryCorrection,
   ParentSummaryCorrectionAttempt,
@@ -70,6 +81,7 @@ import type {
   Feature003ServiceRegistry,
   GardenService,
   MediaService,
+  ParentAccessService,
   ParentGuideService,
   ParentSummaryPolicy,
   PreparedChildCoachProvider,
@@ -1239,6 +1251,100 @@ export class DeterministicParentSummaryPolicy implements ParentSummaryPolicy {
   }
 }
 
+export class DeterministicParentAccessService implements ParentAccessService {
+  getInitialAccess(): ParentAccessSession {
+    return createInitialParentAccess();
+  }
+
+  getInitialOnboardingDraft(): ParentOnboardingDraft {
+    return createInitialParentOnboardingDraft();
+  }
+
+  requestVerification(input: {
+    readonly current: ParentAccessSession;
+    readonly identifier: unknown;
+    readonly networkAvailable?: boolean;
+  }): ServiceResult<ParentAccessSession> {
+    if (input.current.state === 'authenticated_parent') {
+      return failure('INVALID_TRANSITION', 'The synthetic Parent session is already authenticated');
+    }
+    const normalized = normalizeParentIdentifier(input.identifier);
+    if (!normalized.ok) return { ok: false, error: normalized.error };
+
+    const offlineFallbackUsed = input.networkAvailable === false;
+    return success(
+      {
+        state: 'code_sent',
+        ...normalized.data,
+        origin: 'synthetic',
+        delivery: 'local_fixture',
+        offlineFallbackUsed,
+        returnGate: 'pin',
+        productionAuthentication: false,
+      },
+      { origin: 'synthetic', fallbackUsed: offlineFallbackUsed, fixtureId: 'parent_access_r001' },
+    );
+  }
+
+  verifyCode(current: ParentAccessSession, code: unknown): ServiceResult<ParentAccessSession> {
+    if (current.state === 'verified' || current.state === 'authenticated_parent') {
+      return success(current, {
+        origin: 'synthetic',
+        fallbackUsed: current.offlineFallbackUsed,
+        fixtureId: 'parent_access_r001',
+      });
+    }
+    if (current.state !== 'code_sent' && current.state !== 'verifying') {
+      return failure('INVALID_TRANSITION', 'Request the synthetic verification code first');
+    }
+    if (typeof code !== 'string' || !/^\d{6}$/u.test(code) || code !== PARENT_VERIFICATION_CODE) {
+      return failure('INVALID_INPUT', 'The synthetic verification code is not correct');
+    }
+    return success(
+      { ...current, state: 'verified' },
+      {
+        origin: 'synthetic',
+        fallbackUsed: current.offlineFallbackUsed,
+        fixtureId: 'parent_access_r001',
+      },
+    );
+  }
+
+  updateOnboardingDraft(
+    current: ParentOnboardingDraft,
+    patch: ParentOnboardingDraftPatch,
+  ): ServiceResult<ParentOnboardingDraft> {
+    return fromDomain(updateParentOnboardingDraft(current, patch));
+  }
+
+  completeOnboarding(
+    current: ParentAccessSession,
+    draft: ParentOnboardingDraft,
+  ): ServiceResult<ParentAccessSession> {
+    if (current.state === 'authenticated_parent') {
+      return success(current, {
+        origin: 'synthetic',
+        fallbackUsed: current.offlineFallbackUsed,
+        fixtureId: 'parent_access_r001',
+      });
+    }
+    if (current.state !== 'verified') {
+      return failure('INVALID_TRANSITION', 'Complete synthetic Parent verification first');
+    }
+    const validatedDraft = validateCompleteParentOnboardingDraft(draft);
+    if (!validatedDraft.ok) return { ok: false, error: validatedDraft.error };
+
+    return success(
+      { ...current, state: 'authenticated_parent' },
+      {
+        origin: 'synthetic',
+        fallbackUsed: current.offlineFallbackUsed,
+        fixtureId: 'parent_access_r001',
+      },
+    );
+  }
+}
+
 export class DeterministicPrototypeSessionService implements PrototypeSessionService {
   getInitialSession(): PrototypeSession {
     return createInitialPrototypeSession();
@@ -1276,6 +1382,7 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     parentGuide: new DeterministicParentGuideProvider(),
     childCoach: new DeterministicChildCoachProvider(),
     parentSummary: new DeterministicParentSummaryPolicy(),
+    parentAccess: new DeterministicParentAccessService(),
     prototypeSession: new DeterministicPrototypeSessionService(),
   };
 }

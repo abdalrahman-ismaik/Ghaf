@@ -65,6 +65,56 @@ export interface SyntheticChildProfile {
   readonly earnedSeeds: number;
 }
 
+export type ParentAccessState =
+  'signed_out' | 'code_sent' | 'verifying' | 'verified' | 'authenticated_parent';
+
+export type ParentIdentifierKind = 'phone' | 'email';
+
+export interface ParentAccessSession {
+  readonly state: ParentAccessState;
+  readonly normalizedIdentifier: string | null;
+  readonly identifierKind: ParentIdentifierKind | null;
+  readonly maskedDestination: string | null;
+  readonly origin: 'synthetic';
+  readonly delivery: 'local_fixture' | null;
+  readonly offlineFallbackUsed: boolean;
+  readonly returnGate: 'pin';
+  readonly productionAuthentication: false;
+}
+
+export type ChildTreeAvatarId = 'ghaf_tree' | 'leaf' | 'flower' | 'energy_leaf' | 'water_drop';
+
+export type ChildPreferredLanguage = LocaleCode | 'both';
+
+export type BasicAccessibilityDefault =
+  'larger_text' | 'simpler_instructions' | 'high_contrast' | 'reduced_motion';
+
+export interface ParentOnboardingChildDraft {
+  readonly nickname: string;
+  readonly avatarId: ChildTreeAvatarId;
+  readonly ageBand: AgeBand;
+  readonly preferredLanguage: ChildPreferredLanguage;
+  readonly accessibilityDefaults: readonly BasicAccessibilityDefault[];
+}
+
+export interface ParentOnboardingDraft {
+  readonly familyName: string;
+  readonly appLanguage: LocaleCode;
+  readonly child: ParentOnboardingChildDraft;
+}
+
+export interface ParentOnboardingDraftPatch {
+  readonly familyName?: string;
+  readonly appLanguage?: LocaleCode;
+  readonly child?: Partial<ParentOnboardingChildDraft>;
+}
+
+export interface NormalizedParentIdentifier {
+  readonly normalizedIdentifier: string;
+  readonly identifierKind: ParentIdentifierKind;
+  readonly maskedDestination: string;
+}
+
 export interface TaskCategory {
   readonly id: TaskCategoryId;
   readonly label: LocalizedText;

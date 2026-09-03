@@ -21,6 +21,9 @@ import type {
   ParentGuideIntent,
   ParentGuideRequest,
   ParentGuideTaskSuggestion,
+  ParentAccessSession,
+  ParentOnboardingDraft,
+  ParentOnboardingDraftPatch,
   PendingConfirmationPlan,
   PreAcceptanceTaskAdjustment,
   PreparedMediaFixture,
@@ -41,6 +44,8 @@ import { serviceRegistry, type ParentGuideService, type ServiceResult } from '..
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly parentAccess: ParentAccessSession;
+  readonly parentOnboardingDraft: ParentOnboardingDraft;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
   readonly confirmationPlan: ConfirmationPlan | null;
@@ -54,6 +59,15 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly setLocale: (value: unknown) => void;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
+  readonly requestParentVerification: (input: {
+    readonly identifier: unknown;
+    readonly networkAvailable?: boolean;
+  }) => ServiceResult<ParentAccessSession>;
+  readonly verifyParentCode: (code: unknown) => Promise<ServiceResult<ParentAccessSession>>;
+  readonly updateParentOnboardingDraft: (
+    patch: ParentOnboardingDraftPatch,
+  ) => ServiceResult<ParentOnboardingDraft>;
+  readonly completeParentOnboarding: () => ServiceResult<ParentAccessSession>;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
   readonly resetPrototype: () => Omit<ResetResult, 'session'>;
   // Route shell still uses this alias; resetPrototype owns the reset behavior.
@@ -320,6 +334,8 @@ function validateGuideSuggestion(
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...serviceRegistry.prototypeSession.getInitialSession(),
+  parentAccess: serviceRegistry.parentAccess.getInitialAccess(),
+  parentOnboardingDraft: serviceRegistry.parentAccess.getInitialOnboardingDraft(),
   parentGuideSuggestion: null,
   childCoachResult: null,
   confirmationPlan: null,
@@ -340,6 +356,62 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   switchRole: () => set((state) => ({ role: state.role === 'parent' ? 'child' : 'parent' })),
 
+  requestParentVerification: (input) => {
+    const result = serviceRegistry.parentAccess.requestVerification({
+      current: get().parentAccess,
+      ...input,
+    });
+    if (result.ok) set({ parentAccess: result.data });
+    return result;
+  },
+
+  verifyParentCode: async (code) => {
+    const current = get().parentAccess;
+    if (current.state === 'verified' || current.state === 'authenticated_parent') {
+      return serviceRegistry.parentAccess.verifyCode(current, code);
+    }
+    if (current.state !== 'code_sent') {
+      return serviceRegistry.parentAccess.verifyCode(current, code);
+    }
+
+    const verifying: ParentAccessSession = { ...current, state: 'verifying' };
+    set({ parentAccess: verifying });
+    await Promise.resolve();
+
+    if (get().parentAccess !== verifying) {
+      return failure('INVALID_TRANSITION', 'The synthetic verification attempt was interrupted');
+    }
+    const result = serviceRegistry.parentAccess.verifyCode(verifying, code);
+    set({ parentAccess: result.ok ? result.data : current });
+    return result;
+  },
+
+  updateParentOnboardingDraft: (patch) => {
+    const result = serviceRegistry.parentAccess.updateOnboardingDraft(
+      get().parentOnboardingDraft,
+      patch,
+    );
+    if (result.ok) set({ parentOnboardingDraft: result.data });
+    return result;
+  },
+
+  completeParentOnboarding: () => {
+    const current = get();
+    const result = serviceRegistry.parentAccess.completeOnboarding(
+      current.parentAccess,
+      current.parentOnboardingDraft,
+    );
+    if (result.ok) {
+      set({
+        parentAccess: result.data,
+        role: 'parent',
+        locale: current.parentOnboardingDraft.appLanguage,
+        direction: getLocaleDirection(current.parentOnboardingDraft.appLanguage),
+      });
+    }
+    return result;
+  },
+
   setActiveChild: (childId) => {
     if (!get().children[childId]) {
       return failure('NOT_FOUND', 'Synthetic Child was not found');
@@ -356,6 +428,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     set((state) => ({
       ...reset.session,
+      parentAccess: serviceRegistry.parentAccess.getInitialAccess(),
+      parentOnboardingDraft: serviceRegistry.parentAccess.getInitialOnboardingDraft(),
       parentGuideSuggestion: null,
       childCoachResult: null,
       confirmationPlan: null,
@@ -1203,3 +1277,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 }));
 
 export type PrototypeStoreSnapshot = PrototypeSession;
+
+export function selectParentAccessState(state: PrototypeStoreState) {
+  return state.parentAccess.state;
+}
+
+export function selectIsParentAuthenticated(state: PrototypeStoreState): boolean {
+  return state.parentAccess.state === 'authenticated_parent';
+}

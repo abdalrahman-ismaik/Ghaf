@@ -12,6 +12,9 @@ import type {
   LocalizedText,
   ParentGuideRequest,
   ParentGuideTaskSuggestion,
+  ParentAccessSession,
+  ParentOnboardingDraft,
+  ParentOnboardingDraftPatch,
   ParentPatternSummary,
   ParentSummaryCorrection,
   ParentSummaryCorrectionAttempt,
@@ -183,6 +186,25 @@ export interface ParentSummaryPolicy {
   ): ServiceResult<ParentSummaryCorrectionAttempt>;
 }
 
+export interface ParentAccessService {
+  getInitialAccess(): ParentAccessSession;
+  getInitialOnboardingDraft(): ParentOnboardingDraft;
+  requestVerification(input: {
+    readonly current: ParentAccessSession;
+    readonly identifier: unknown;
+    readonly networkAvailable?: boolean;
+  }): ServiceResult<ParentAccessSession>;
+  verifyCode(current: ParentAccessSession, code: unknown): ServiceResult<ParentAccessSession>;
+  updateOnboardingDraft(
+    current: ParentOnboardingDraft,
+    patch: ParentOnboardingDraftPatch,
+  ): ServiceResult<ParentOnboardingDraft>;
+  completeOnboarding(
+    current: ParentAccessSession,
+    draft: ParentOnboardingDraft,
+  ): ServiceResult<ParentAccessSession>;
+}
+
 export interface PrototypeSessionService {
   getInitialSession(): PrototypeSession;
   resetPrototype(): ResetResult;
@@ -198,5 +220,6 @@ export interface Feature003ServiceRegistry {
   readonly parentGuide: PreparedParentGuideProvider;
   readonly childCoach: PreparedChildCoachProvider;
   readonly parentSummary: ParentSummaryPolicy;
+  readonly parentAccess: ParentAccessService;
   readonly prototypeSession: PrototypeSessionService;
 }
