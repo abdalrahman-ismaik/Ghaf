@@ -2,15 +2,23 @@ import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
 import { useEffect } from 'react';
-import { Stack, usePathname } from 'expo-router';
+import { Alexandria_400Regular } from '@expo-google-fonts/alexandria/400Regular';
+import { Alexandria_700Bold } from '@expo-google-fonts/alexandria/700Bold';
+import { Alexandria_800ExtraBold } from '@expo-google-fonts/alexandria/800ExtraBold';
+import { ReadexPro_400Regular } from '@expo-google-fonts/readex-pro/400Regular';
+import { ReadexPro_500Medium } from '@expo-google-fonts/readex-pro/500Medium';
+import { ReadexPro_600SemiBold } from '@expo-google-fonts/readex-pro/600SemiBold';
+import { ReadexPro_700Bold } from '@expo-google-fonts/readex-pro/700Bold';
+import { useFonts } from 'expo-font';
+import { Redirect, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
 import { colors } from '@/design/tokens';
 import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectIsParentAuthenticated, usePrototypeStore } from '@/state/usePrototypeStore';
 
 // THESIS: Family action becomes a clear living record. Avoid centered card piles,
 // pastel wellness styling, and generic achievement chrome.
@@ -24,7 +32,19 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
+  const isParentAuthenticated = usePrototypeStore(selectIsParentAuthenticated);
   const pathname = usePathname();
+  const [fontsLoaded, fontError] = useFonts({
+    Alexandria_400Regular,
+    Alexandria_700Bold,
+    Alexandria_800ExtraBold,
+    ReadexPro_400Regular,
+    ReadexPro_500Medium,
+    ReadexPro_600SemiBold,
+    ReadexPro_700Bold,
+  });
+  const inApprovedAccessFlow = pathname === '/' || pathname.startsWith('/access/');
+  const isBlockedLegacyAccess = pathname === '/role' || pathname.startsWith('/child');
 
   useEffect(() => {
     configureNativeDirection(locale);
@@ -38,18 +58,39 @@ export default function RootLayout() {
     }
   }, [pathname]);
 
+  if (!fontsLoaded && !fontError) {
+    return (
+      <View style={styles.fontLoading}>
+        <ActivityIndicator color={colors.ghaf} size="small" />
+      </View>
+    );
+  }
+
+  if (isBlockedLegacyAccess) {
+    return <Redirect href={isParentAuthenticated ? '/parent' : '/'} />;
+  }
+
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style={inApprovedAccessFlow ? 'dark' : 'light'} />
       <View style={styles.root}>
-        <PrototypeStatusBar />
+        {inApprovedAccessFlow ? null : <PrototypeStatusBar />}
         <Stack
           screenOptions={{
             animation: 'fade',
             contentStyle: { backgroundColor: colors.ivory },
             headerShown: false,
           }}
-        />
+        >
+          <Stack.Screen
+            name="access/parent/family-created-success"
+            options={{
+              animation: 'fade',
+              contentStyle: { backgroundColor: colors.transparent },
+              presentation: 'transparentModal',
+            }}
+          />
+        </Stack>
       </View>
     </SafeAreaProvider>
   );
@@ -60,5 +101,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.ivory,
     overflow: 'hidden',
+  },
+  fontLoading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.ivory,
   },
 });
