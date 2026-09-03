@@ -1,29 +1,33 @@
 # Ghaf Feature 003 Demo Runbook
 
-**Current target:** Feature 003 Revision 2 — approved Ghaf R001 Batch 1 foundations, Welcome, and
-first-time Parent onboarding
+**Current target:** Feature 003 Revision 3 pre-Stitch planning, preserving the approved Ghaf R001
+Batch 1 foundations, Welcome, and first-time Parent onboarding as the only current release
 **Status date:** 2026-09-03
-**Implementation status:** **PARTIALLY IMPLEMENTED — R001 Batch 1 only; later Revision 2 screens
-remain blocked on approved designs**
+**Implementation status:** **DOCUMENTATION READY; DESIGN/RUNTIME BLOCKED for the complete Revision
+3 journey — R001 Batch 1 remains the only partially implemented release**
 **Primary target:** physical Android device, Arabic RTL first; English LTR second
 
-## Revision 2 Evidence Truth
+## Current Revision 3 Planning and Runtime Truth
 
-The seven user-approved R001 Batch 1 routes are implemented and freshly validated below. This does
-not release or validate Child access, persistent role navigation, pairing, reauthentication,
-Challenge Leaves, League ranking, Family Rewards, later screens, or the complete Revision 2 judge
+Revision 3 product/domain planning is documented, but its Growth Journey has no approved Stitch
+release or runtime implementation. The seven user-approved R001 Batch 1 routes remain the only
+released Revision 2 runtime slice and are recorded below. They do not release or validate Child
+access, persistent role navigation, pairing, reauthentication, Challenge Leaves, League ranking,
+Family Rewards, Impact Path, badges, learning, RevealBundle, or the complete Revision 3 judge
 journey. The 2026-08-28 ten-route results remain Revision 1 evidence only.
 
-| Revision 2 evidence item                                                                   | Status                                 | Requirement to change status                                           |
-| ------------------------------------------------------------------------------------------ | -------------------------------------- | ---------------------------------------------------------------------- |
-| Product/specification alignment                                                            | PASSED for Batch 1; full gate BLOCKED  | R001 partial release is recorded; excluded full contracts remain stale |
-| Approved Google Stitch frames                                                              | PASSED for seven Arabic Batch 1 frames | English/state and later route frames remain missing                    |
-| Runtime implementation                                                                     | PASSED for Batch 1 only                | Seven native routes plus shared access foundations                     |
-| Automated and web validation                                                               | PASSED for Batch 1 web proxy           | Fresh checks and viewport journey recorded below                       |
-| Physical Android Arabic/English journey                                                    | BUILD/INSTALL PASSED; JOURNEY NOT RUN  | Named OS/observer and direct Arabic/English results                     |
-| Production/live AI                                                                         | BLOCKED                                | Approved secure server boundary and direct evidence                    |
-| Synthetic access/League/Reward comprehension                                               | NOT RUN                                | Named observers complete the revised questions                         |
-| Arabic/UAE culture, League fairness, reward, safeguarding, voice, and accessibility review | NOT RUN                                | Named reviewers, reviewed version, findings, and disposition           |
+| Current evidence item                                                                               | Status                                      | Requirement to change status                                                      |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------- |
+| Revision 3 product/domain planning                                                                  | DOCUMENTED; not runtime evidence            | Revalidate after any product, domain, or design-intake change                     |
+| Approved Google Stitch frames                                                                       | PASSED for seven Arabic R001 Batch 1 frames | English/state, remaining Revision 2, and all Growth Journey frames remain missing |
+| Runtime implementation                                                                              | PASSED for R001 Batch 1 only                | Seven native routes plus shared access foundations                                |
+| Revision 3 Growth Journey design/runtime                                                            | BLOCKED                                     | Complete approved Stitch release, prerequisite routes, RED tests, and owner gate  |
+| Automated and web validation                                                                        | PASSED for R001 Batch 1 web proxy           | Fresh checks and viewport journey recorded below                                  |
+| Physical Android Arabic/English journey                                                             | BUILD/INSTALL PASSED; JOURNEY NOT RUN       | Named OS/observer and direct Arabic/English results                               |
+| Growth Journey native/responsive/accessibility evidence                                             | NOT RUN                                     | Released implementation and direct evidence matrix                                |
+| Production/live AI                                                                                  | BLOCKED                                     | Approved secure server boundary and direct evidence                               |
+| Synthetic access/League/Reward/Growth comprehension                                                 | NOT RUN                                     | Named observers complete the revised questions                                    |
+| Arabic/UAE culture, League fairness, reward, Growth content, safeguarding, and accessibility review | NOT RUN                                     | Named reviewers, reviewed version, findings, and disposition                      |
 
 ### R001 Batch 1 evidence — 2026-09-02
 
@@ -47,9 +51,81 @@ journey. The 2026-08-28 ten-route results remain Revision 1 evidence only.
 - TalkBack, native keyboard/Back, native 200% font scale, and reduced-motion observation: `NOT RUN`.
   Web evidence does not pass those gates.
 
-### Full Revision 2 reset baseline
+## Future Revision 3 Growth Journey Oracle — BLOCKED / NOT RUN
 
-The complete revised reset contract remains a later design/implementation target:
+This section is an acceptance oracle for a future approved build, not evidence that the experience
+exists. Design comparison is **BLOCKED** until the complete applicable Stitch release is supplied
+and approved. Runtime, native, accessibility, recovery, and human-comprehension results are **NOT
+RUN**. No Revision 1 or R001 result transfers to this oracle.
+
+### Revision 3 canonical reset target
+
+The Parent-authorized deterministic demo reset must restore the following profile-scoped state
+without a network. Ordinary introduction replay, app relaunch, navigation, or returning to Garden
+must preserve earned progress and must not invoke this reset.
+
+| Field                | Revision 3 reset value                                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Locale and access    | Arabic RTL; signed out at `/`; no protected Back history                                                                                                                 |
+| Profiles             | Synthetic Salem, age 9, and Alya, age 11; Salem selected for the oracle                                                                                                  |
+| Lifetime Seeds       | Salem 108; independent from Mangrove and Family Reward eligibility                                                                                                       |
+| Mangrove             | Salem 48/60, Shoot                                                                                                                                                       |
+| Family Reward        | Private Salem plan, AED 25, `promised`, 108/120 eligible Seeds                                                                                                           |
+| League and canopy    | Salem 4/5 Leaves and score 80; canopy 19/25; seeded invite-only standings                                                                                                |
+| Impact Path          | Water & Coast is not open; current/pending station is none; next threshold is 120                                                                                        |
+| Badge prestate       | `badge.journey.seed_start.v1` and `badge.journey.growing_branch.v1` are earned from provable history; `badge.journey.expanding_shade.v1` is 108/120; no migration reveal |
+| Mastery and learning | Sorting 0, water 2, energy 1, nature 2, coast care 2; Ghaf Basics complete                                                                                               |
+| Installation intro   | Outside the Parent-reset fixture; current seen/version flags are preserved and only an operator first-run reset may clear them                                           |
+| Child presentation   | Story preference is preserved per profile; transient replay/deep-link/nested-route intent is cleared without changing progress                                           |
+| Active work          | No active assignment, submission, approval, reauthentication, or pairing session                                                                                         |
+| Reveal               | No pending or consumed result for the next approval; migration queues no RevealBundle                                                                                    |
+| Providers/media      | Deterministic prepared Guide, Coach, summary, image, and voice fixtures available offline                                                                                |
+
+The exactly 16 configured badge definitions may be evaluated from immutable evidence, but reset
+must not manufacture a badge, station, task, learning, or activity event. Re-running the migration
+or evaluator changes nothing and never queues a reveal.
+
+### Revision 3 confirmation and RevealBundle oracle
+
+One valid Parent approval of `task_recycling_p0_v1` commits one idempotent domain result. The UI may
+pace the result, but it must present the consequences in this canonical order:
+
+1. action-specific Parent praise;
+2. an optional self-reported activity result only when its approved method and confirmed quantity
+   support that label;
+3. exactly 12 Seeds, changing lifetime Seeds 108 → 120;
+4. mapped Mangrove growth 48/60 Shoot → 60/60 Sapling, archived independently from the Path;
+5. household canopy 19/25 → 20/25, Salem's fifth Challenge Leaf, weekly score 80 → 100, and the
+   resulting private invite-only League projection;
+6. Impact Path opening at 120/180, next station 132, the newly earned Expanding Shade and Smart
+   Sorting — Bud badges, and any eligible one-time safe-help recognition as a non-badge praise
+   line; and
+7. private Family Reward progress 108/120 → 120/120 and `promised → unlocked`, with its message
+   last.
+
+The Path must not overwrite Mangrove progress, League score, canopy, or private Reward eligibility.
+Station 180 must not grow a landscape unless that same immutable approval has independently
+qualified landscape provenance. Reopening or recovering the single RevealBundle presents the same
+committed result; duplicate approval, learning completion, activity completion, or reveal replay
+adds nothing.
+
+### Revision 3 screen and device evidence matrix
+
+| Evidence                     | Status  | Required direct observation                                                                                                           |
+| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Canonical composition        | BLOCKED | Compare every approved Arabic PNG at 390×844; use exported HTML only as non-runtime measurement hints                                 |
+| Responsive native layout     | NOT RUN | 320×568, 360×800, 430×932, SM_T835/tablet, safe areas, natural scrolling, and no fixed-canvas clipping                                |
+| Arabic/English and bidi      | NOT RUN | True RTL/LTR, mixed-script values, logical directional icons, long labels, and equivalent content                                     |
+| Input and accessibility      | NOT RUN | Keyboard visible, 200% text, TalkBack, focus order, 48dp targets, contrast, captions, and reduced motion                              |
+| Lifecycle and recovery       | NOT RUN | Cold/warm/hot launch, first-install/return/replay, Back/deep-link origin, interrupted reveal, duplicate events, and profile isolation |
+| Offline and physical Android | NOT RUN | Complete deterministic journey on a named Android build/device with network unavailable                                               |
+| Human/content review         | NOT RUN | Named Arabic/UAE cultural, factual, rights, safeguarding, accessibility, and comprehension reviewers                                  |
+
+### Historical Revision 2 planned reset baseline
+
+This pre-Growth reset description is retained only to show Revision 2 lineage. The Revision 3
+oracle above supersedes it for the future complete build; neither state is implemented by R001
+Batch 1.
 
 - signed out at the combined Arabic RTL welcome/language/access screen with no stale Back history;
 - one synthetic household with Salem and Alya; no production account, token, credential, or
@@ -64,13 +140,13 @@ The complete revised reset contract remains a later design/implementation target
 - deterministic prepared Parent Guide, Child Coach, summary, image, and voice fixtures available
   without a network.
 
-One valid planned confirmation must present Parent praise first, then exactly 12 Seeds, Mangrove
-60/60 Sapling, one household-canopy leaf, Salem's fifth Challenge Leaf and weekly score 100, and only
-then the private Family Reward unlock at 120/120. A duplicate changes nothing. Weekly rollover resets
-only Leaves, score, and rank; it never resets Seeds, landscapes, canopy history, or unlocked/given
-rewards.
+One valid planned Revision 2 confirmation presented Parent praise first, then exactly 12 Seeds,
+Mangrove 60/60 Sapling, one household-canopy leaf, Salem's fifth Challenge Leaf and weekly score
+100, and only then the private Family Reward unlock at 120/120. A duplicate changed nothing. Weekly
+rollover reset only Leaves, score, and rank; it never reset Seeds, landscapes, canopy history, or
+unlocked/given rewards.
 
-### Required new evidence after design approval
+### Remaining Revision 2 prerequisite evidence after design approval
 
 - Parent/Child route isolation and denial of Child access to Parent controls.
 - Wrong/forgotten Child PIN, pairing waiting/expiry/revocation, and protected-change
@@ -90,37 +166,39 @@ rewards.
 **Historical target:** ten-route Family Growth Garden deterministic P0
 **Internal presentation target:** 120–150 seconds; this was not a published SMAC judging rule
 
-## Evidence Truth
+## Historical Revision 1 — Evidence Truth
 
-Feature 003 has a deterministic post-convergence implementation, a final 17-file / 305-test pass,
-and complete Arabic RTL and English LTR ten-route Firefox journeys. The mounted reset fix passed
-document locale/direction and six consecutive real Back actions. It is **not demo-accepted**: physical Android
-is blocked, live AI is unavailable, and every named human-review gate remains open.
+Feature 003 Revision 1 had a deterministic post-convergence implementation, a final 17-file /
+305-test pass, and complete Arabic RTL and English LTR ten-route Firefox journeys. The mounted reset
+fix passed document locale/direction and six consecutive real Back actions. It was **not
+demo-accepted**: its physical Android journey remained blocked, live AI was unavailable, and every
+named human-review gate remained open. The later R001 APK build/install does not retroactively pass
+that historical journey.
 Earlier Feature 002 results prove only the reusable food-rescue baseline and are not used below.
 
-| Feature 003 evidence item                               | Status                                  | Evidence required to change status                                                                                       |
-| ------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent     |
-| Typecheck, lint, format, unit, and integration checks   | PASSED final                            | `npm ci`, typecheck, lint, format, 17 files / 305 tests, Expo checks/export, detector, and diff check passed             |
-| Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED    | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed     |
-| Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN             | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                     |
-| Arabic RTL journey                                      | PASSED on web proxy; native BLOCKED     | Firefox 390×844 walkthrough exists; named physical Android build/device does not                                         |
-| English LTR journey                                     | PASSED web proxy; native BLOCKED        | Final Firefox journey covered all ten routes under `lang=en` and computed LTR                                            |
-| Offline/external-service-denied fallback                | PASSED automated; native NOT RUN        | Five deterministic store cycles pass with external providers denied; no named offline Android observation                |
-| Reduced-motion/static outcomes                          | PASSED automated/source; native NOT RUN | Static final-state equality passes; no named Android accessibility setting was exercised                                 |
-| Physical Android acceptance                             | BLOCKED                                 | `adb`, `emulator`, `sdkmanager`, and `java` not found; `ANDROID_HOME`/`ANDROID_SDK_ROOT` unset; no device or named build |
-| Three-person comprehension check                        | NOT RUN                                 | Three observers, question, answers, and date                                                                             |
-| Five timed human rehearsals                             | NOT RUN                                 | Five durations and failure notes                                                                                         |
-| UAE Arabic/cultural review                              | NOT RUN                                 | Named qualified reviewers and reviewed content version                                                                   |
-| Faith-content review                                    | NOT RUN                                 | Named qualified UAE Islamic educator/authority and scope                                                                 |
-| Child-safeguarding review                               | NOT RUN                                 | Named reviewer, findings, and disposition                                                                                |
-| Sustainability task/claim review                        | NOT RUN                                 | Named reviewer, reviewed task/claim version, and disposition                                                             |
-| Accessibility review                                    | NOT RUN                                 | Named reviewer, build/surface, settings, findings, and disposition                                                       |
+| Feature 003 evidence item                               | Status                                  | Evidence required to change status                                                                                   |
+| ------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent |
+| Typecheck, lint, format, unit, and integration checks   | PASSED final                            | `npm ci`, typecheck, lint, format, 17 files / 305 tests, Expo checks/export, detector, and diff check passed         |
+| Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED    | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed |
+| Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN             | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                 |
+| Arabic RTL journey                                      | PASSED on web proxy; native BLOCKED     | Firefox 390×844 walkthrough exists; named physical Android build/device does not                                     |
+| English LTR journey                                     | PASSED web proxy; native BLOCKED        | Final Firefox journey covered all ten routes under `lang=en` and computed LTR                                        |
+| Offline/external-service-denied fallback                | PASSED automated; native NOT RUN        | Five deterministic store cycles pass with external providers denied; no named offline Android observation            |
+| Reduced-motion/static outcomes                          | PASSED automated/source; native NOT RUN | Static final-state equality passes; no named Android accessibility setting was exercised                             |
+| Physical Android acceptance                             | BLOCKED for Revision 1 journey          | That validation environment lacked Android tooling; later R001 build/install is separately scoped                    |
+| Three-person comprehension check                        | NOT RUN                                 | Three observers, question, answers, and date                                                                         |
+| Five timed human rehearsals                             | NOT RUN                                 | Five durations and failure notes                                                                                     |
+| UAE Arabic/cultural review                              | NOT RUN                                 | Named qualified reviewers and reviewed content version                                                               |
+| Faith-content review                                    | NOT RUN                                 | Named qualified UAE Islamic educator/authority and scope                                                             |
+| Child-safeguarding review                               | NOT RUN                                 | Named reviewer, findings, and disposition                                                                            |
+| Sustainability task/claim review                        | NOT RUN                                 | Named reviewer, reviewed task/claim version, and disposition                                                         |
+| Accessibility review                                    | NOT RUN                                 | Named reviewer, build/surface, settings, findings, and disposition                                                   |
 
 Do not replace `BLOCKED` or `NOT RUN` with `PASSED` because a screen exists, a simulator opens, or a
 Feature 002 test still passes.
 
-## Canonical Reset State
+## Historical Revision 1 — Canonical Reset State
 
 Feature 003 implementation must expose one Parent-only `resetPrototype()` action that produces the
 following exact state without network access.
@@ -158,7 +236,7 @@ The P0 confirmation changes only these counters:
 A repeated confirmation changes nothing. The circle update is permitted because the P0 event is an
 eligible Green Impact task. Private or non-environmental categories must never update the circle.
 
-## P0 Task Fixture
+## Historical Revision 1 — P0 Task Fixture
 
 **English title:** Sort clean recyclables and go with an adult to the guardian-approved safe recycling bin
 **Arabic title:** فرز المواد النظيفة القابلة لإعادة التدوير ومرافقة شخص بالغ إلى حاوية إعادة تدوير آمنة يحددها وليّ الأمر
@@ -221,7 +299,7 @@ starter catalog's 8-Seed single-step sorting task.
 
 Photo and voice are optional prepared fixtures. Completion cannot depend on media or disclosure.
 
-## Judge Journey
+## Historical Revision 1 — Judge Journey
 
 Reset immediately before presenting. Use the verified secure live Parent refinement only if the
 same build/provider passed preflight; otherwise use the prepared deterministic fallback and state
@@ -245,7 +323,7 @@ specific Parent recognition, live or visibly prepared assistant support, and a s
 landscape—without public ranking, punishment, or pretending that a digital tree is a real
 environmental measurement.”
 
-## Prepared Assistant Fixtures
+## Historical Revision 1 — Prepared Assistant Fixtures
 
 ### Parent Guide — `guide_recycling_refine_v1`
 
@@ -328,7 +406,7 @@ review recorded in the evidence table; Codex must not improvise alternate safety
 Do not say normal, abnormal, lazy, defiant, good child, ADHD, diagnosis, emotion score, personality
 score, truthfulness score, religiosity, or parenting quality.
 
-## Expected Screen Evidence
+## Historical Revision 1 — Expected Screen Evidence
 
 - All ten routes are reachable through the authored flow; assistant/loading/celebration are states.
 - Arabic and English contain equivalent decisions, safety, privacy, fixed reward, and disclosure.
@@ -341,7 +419,7 @@ score, truthfulness score, religiosity, or parenting quality.
 - The circle reaches 12/12 using one eligible coarse Green Impact action, not 12 Seeds.
 - Reset from task, assistant, submitted, check-in, garden, and circle returns the canonical state.
 
-## Fallback Matrix
+## Historical Revision 1 — Fallback Matrix
 
 | Failure                                   | Required operator/app response                                      | Forbidden response                                |
 | ----------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------- |
@@ -356,7 +434,7 @@ score, truthfulness score, religiosity, or parenting quality.
 | Duplicate confirm                         | Show “Already confirmed”; leave all counters unchanged              | Award again                                       |
 | Physical-device unavailable               | Mark Android evidence `BLOCKED`; use web only as a fallback preview | Call the Android criterion passed                 |
 
-## Reset Procedure
+## Historical Revision 1 — Reset Procedure
 
 1. Open the Parent-only demo controls.
 2. Choose **Reset synthetic demo** and confirm.
@@ -366,7 +444,7 @@ score, truthfulness score, religiosity, or parenting quality.
 5. If any value differs, stop and record a reset defect; do not manually patch counters during a
    judged run.
 
-## Fresh Validation Record
+## Historical Revision 1 — Fresh Validation Record
 
 Record one row per build/device/locale. Do not infer a pass from web/source evidence.
 

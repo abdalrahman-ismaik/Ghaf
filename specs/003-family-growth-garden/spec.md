@@ -1,4 +1,4 @@
-# Feature Specification: Family Growth Garden — Revision 2
+# Feature Specification: Family Growth Garden — Revision 3 Planning
 
 **Feature Branch**: `feature/003-family-growth-garden`
 
@@ -6,14 +6,18 @@
 
 **Revision 2 Approved**: 2026-09-01
 
-**Status**: Product contract approved. Ghaf R001 Batch 1 is **PARTIALLY RELEASED** for native
-foundations, Welcome, and first-time Parent onboarding. Every later Revision 2 screen, role shell,
-and full-journey gate remains **BLOCKED** pending approved Stitch frames and reconciliation.
+**Revision 3 Growth Journey Planning Accepted**: 2026-09-03
+
+**Status**: Revision 3 product/domain planning is documented. Ghaf R001 Batch 1 remains
+**PARTIALLY RELEASED** for native foundations, Welcome, and first-time Parent onboarding. Every
+later Revision 2 screen and every Growth Journey screen, route, asset, dependency, test, and
+full-journey gate remains **BLOCKED** pending approved Stitch frames and reconciliation.
 
 **Input**: Replace the old linear ten-screen demonstration with one Arabic-first Android
 application containing separately gated deterministic synthetic Parent and Child experiences,
 role-specific navigation, a fair weekly Ghaf Family League, private noncustodial Family Rewards,
-bounded task-focused AI support, and growing UAE landscapes.
+bounded task-focused AI support, growing UAE landscapes, and a private Seed-derived Impact Path
+with permanent deterministic badges and finite sourced learning.
 
 ## Revision History and Evidence Boundary
 
@@ -21,6 +25,7 @@ bounded task-focused AI support, and growing UAE landscapes.
 | -------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | 1        | 2026-08-26 | Linear ten-route Parent/Child demo with a cooperative aggregate Circle                                                              | Historical implementation and evidence only                             |
 | 2        | 2026-09-01 | Separate synthetic access, role navigation, five-Leaf League, Family Rewards, voice/language controls, Alexandria/Readex typography | R001 Batch 1 partially released; full implementation/validation not run |
+| 3        | 2026-09-03 | Revision 2 plus private Growth Journey, one Impact Path, 16 badges, sourced learning, and a combined result                         | Product/domain plan recorded; all new design/runtime evidence not run   |
 
 Revision 1 remains a preserved historical checkpoint. Its completed tasks, automated tests, web
 walkthroughs, route inventory, screenshots, and open Android/human gates MUST NOT be counted as
@@ -32,12 +37,12 @@ Revision 2 evidence. Revision 2 intentionally supersedes the following Revision 
 - the prohibition on all monetary reward promises; and
 - system typography and the completed Revision 1 screen geometry.
 
-Revision 2 does not authorize production authentication, payments, stored value, networking, real
+Revision 3 does not authorize production authentication, payments, stored value, networking, real
 family invitations, real Child media, or implementation of designs inferred from text alone.
 
 ### Current Capability Truth
 
-| Capability           | Revision 2 contract                                                                                                         | Current status                                                         |
+| Capability           | Revision 3 contract                                                                                                         | Current status                                                         |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | Product structure    | One app with separately gated Parent and Child experiences and role-specific navigation                                     | Seven R001 access routes frozen; all later routes/frames `BLOCKED`     |
 | Parent/Child access  | Deterministic synthetic sign-in, PIN/picture sequence, pairing, and reauthentication simulations                            | Approved prototype target; not production authentication               |
@@ -46,6 +51,7 @@ family invitations, real Child media, or implementation of designs inferred from
 | AI and voice         | Prepared task-bounded Coach/Guide; simulated push-to-talk and prepared media in P0                                          | Approved target; real voice and live Child AI out of scope             |
 | Typography           | Alexandria for display; Readex Pro for body, controls, dialogue, and numeric data                                           | R001 local package/weight decision released; native evidence `NOT RUN` |
 | Visual design        | Calm premium Parent mode; brighter polished Child mode; shared modern UAE botanical identity                                | R001 Parent onboarding approved; every later family remains `BLOCKED`  |
+| Growth Journey       | One private Seed-derived path, 16 deterministic badges, one learning package/equivalent, and one combined reveal            | Prompt pack reconciled for planning; Stitch/runtime `BLOCKED`          |
 | Prior implementation | Revision 1 Expo application                                                                                                 | Historical only; not reusable acceptance evidence                      |
 
 ### Approved Design Batch 1 — Ghaf R001
@@ -71,9 +77,10 @@ release any later screen family.
 Ghaf remains an autonomy-supportive family routine tool. It is not an obedience system,
 surveillance product, diagnostic service, public social network, wallet, bank, or payment service.
 
-## Revision 2 P0 Scope
+## Revision 3 P0 Scope
 
-Revision 2 P0 contains:
+Revision 3 inherits the complete Revision 2 P0 contract and adds only the bounded Growth Journey
+slice below. P0 contains:
 
 - one synthetic Al Noor household with Salem, age 9, and Alya, age 11;
 - one seeded, synthetic, invite-only sibling/cousin League containing Salem, Alya, Mariam, and
@@ -92,7 +99,14 @@ Revision 2 P0 contains:
   Parent summary;
 - prepared synthetic image and voice fixtures with visible origin labels;
 - specific praise followed by 12 Seeds, Mangrove growth, one Challenge Leaf, one family-canopy
-  contribution, and a private Family Reward unlock;
+  contribution, deterministic station/badge evaluation, and a private Family Reward unlock;
+- a brief first-install Opening Moment and exactly three role-neutral introduction panels that can
+  be skipped or replayed without changing profile progress;
+- one 120–180 Water & Coast chapter, Today/Garden entry points, the exact 16-badge registry,
+  Gallery/Detail, one combined RevealBundle, and one Mangrove learning package with an equal-credit
+  accessible route;
+- one Parent read-only selected-Child progress view with no sibling comparison, behavior score, or
+  inferred interest;
 - Arabic-first RTL and a fully localized equivalent English LTR experience; and
 - one deterministic Parent-authorized reset that restores access, week, reward, garden,
   permissions, pairing, and task state without a remote service.
@@ -123,6 +137,9 @@ or file names are not yet fixed.
 | Child Garden                    | Five landscapes, personal progress, temporary celebration, and private reward-unlock sheet                                  |
 | Child League                    | Invite-only standings, five Leaves, cooperative canopy target, and prepared encouragement                                   |
 | Profile/settings context        | Role-appropriate language, voice, captions, motion, text size, permissions, devices, PIN reset, and reauthentication states |
+| First-run introduction          | Native launch handoff, brief Opening Moment, and three role-neutral skippable/replayable panels before R001 access          |
+| Impact Path and badges          | Today/Garden entry, one 120–180 chapter, private Gallery, Badge Detail, archive, and exact component progress               |
+| Learning and Parent progress    | Finite Mangrove story/equal-credit alternative plus selected-Child read-only Parent progress                                |
 
 This is an approximate family count because setup, pairing, reauthentication, permissions, and
 celebration MAY be states or continuations inside their owning family. Stitch intake determines the
@@ -138,6 +155,10 @@ final realization without changing the product meaning.
 - The Garden celebration is a temporary state, not a permanent destination.
 - AI appears inside the task or Parent decision it supports, never as a chat tab.
 - The former Circle becomes the persistent Ghaf Family League plus cooperative family canopy.
+- Impact Path and My Badges are nested inside Garden, with one Today entry; they never become a
+  fourth Child tab or replace League.
+- First-run introduction completion and Skip hand off to R001 `/` and cannot create an account,
+  role, profile, Seed, badge, or task event.
 - Normal product navigation contains no role toggle. A hidden synthetic demo control MAY coordinate
   state for judges but MUST be labeled and inaccessible to a Child journey.
 
@@ -380,6 +401,91 @@ English flows with network, camera, microphone, payment, and live AI unavailable
    that prior result is labeled historical and cannot change a Revision 2 `NOT RUN` or `BLOCKED`
    gate.
 
+---
+
+### User Story 9 — Family Sees a Safe First-Run Introduction (Priority: P1)
+
+As a first-time family member, I can understand Ghaf's promise, Parent approval loop, and private
+Growth Journey before choosing an access path, without being forced to wait or creating progress.
+
+**Why this priority**: The major feature must be understandable without confusing product
+orientation with Parent household setup or a reward event.
+
+**Independent Test**: From clean first-install presentation state, complete or skip the brief
+Opening Moment and three role-neutral panels in Arabic and English, then verify handoff to R001 `/`,
+manual replay to its safe origin, and zero task/profile/Seed/badge mutation.
+
+**Acceptance Scenarios**:
+
+1. **Given** the native launch surface is released and routing is safe, **When** first install opens,
+   **Then** an interruptible Opening Moment may appear once before panel 1 and never masquerades as
+   the system splash.
+2. **Given** any introduction panel, **When** the person selects Skip, **Then** the current
+   introduction version is marked seen atomically and R001 `/` opens without creating an account,
+   role, or profile.
+3. **Given** the core-loop demonstration, **When** the sample task/approval/Seed interaction runs,
+   **Then** it uses isolated presentation state and changes no domain ledger.
+4. **Given** manual replay from a valid role surface, **When** it finishes or is dismissed, **Then**
+   the recorded authorized origin returns and all progress remains unchanged.
+
+---
+
+### User Story 10 — Child Explores Impact Path and Private Badges (Priority: P1)
+
+As a Child, I can open a private, understandable path from Today or Garden and see permanent badges
+whose exact action, learning, and Seed criteria are visible.
+
+**Why this priority**: The Growth Journey must make permanent progress legible without becoming a
+second currency, public status system, or pressure loop.
+
+**Independent Test**: From the canonical post-approval Salem state, open Garden, confirm Mangrove
+60/60 remains archived, open the 120/180 Water & Coast chapter with next station 132, inspect the
+four earned badges and one structured in-progress/locked detail, then exit without mutation.
+
+**Acceptance Scenarios**:
+
+1. **Given** the canonical valid approval, **When** its receipt commits, **Then** lifetime Seeds
+   change 108→120 once, Mangrove independently changes 48/60→60/60 once, and the same event earns
+   only badge criteria supported by committed evidence.
+2. **Given** the Path at 120, **When** it renders, **Then** Mangrove remains 60/60 complete, chapter
+   progress is 120/180, the next station is exactly 132, and 12 Seeds remain.
+3. **Given** a composite badge, **When** only some components qualify, **Then** each component and
+   exact current/target state remains visible and the badge is not awarded.
+4. **Given** another Child profile or an empty profile, **When** Gallery opens, **Then** Salem's
+   counts, awards, reveals, names, and Back origin never leak into it.
+5. **Given** any Path or Gallery screen, **When** it is opened, scrolled, filtered, revisited, or
+   closed, **Then** no Seed, station, mastery, badge, learning, garden, League, or reward mutation
+   occurs.
+
+---
+
+### User Story 11 — Child Learns Once and Parent Supports Progress Privately (Priority: P1)
+
+As a Child, I can complete one finite Mangrove learning package through a story or equal-credit
+accessible route, while my Parent can inspect my private progress without comparison or diagnosis.
+
+**Why this priority**: A badge must connect to meaningful, reviewable learning and family support,
+not merely a total or decorative collectible.
+
+**Independent Test**: Reach station 132 through a later provenance-valid +12 approval, complete
+either route of `learning.mangrove_roots.v1`, verify zero Seed/garden delta and idempotent badge
+evaluation, then inspect the selected-Child Parent progress view.
+
+**Acceptance Scenarios**:
+
+1. **Given** station 132 is reached, **When** its unlocks evaluate, **Then** the Mangrove learning
+   package and Mangrove Care component progress open; the badge is not automatically earned.
+2. **Given** either learning route, **When** its no-fail check or Parent-guided confirmation
+   completes, **Then** one unique learning event is stored, Seed/garden delta remains zero, and only
+   criteria naming that package are re-evaluated.
+3. **Given** a wrong answer, **When** the Child retries, **Then** a neutral explanation appears and
+   nothing is lost.
+4. **Given** one event with several outcomes, **When** the result is shown, **Then** at most one
+   recoverable RevealBundle appears and it ends without autoplay.
+5. **Given** Parent progress for one selected profile, **When** it renders, **Then** it shows exact
+   criteria, dates, and possible support without sibling comparison, rank, behavior score,
+   diagnostic inference, or behavior-inferred interest.
+
 ### Edge Cases
 
 - Parent verification, Child PIN, picture sequence, pairing code, or reauthentication is wrong,
@@ -409,31 +515,51 @@ English flows with network, camera, microphone, payment, and live AI unavailable
   correct without artificial letter spacing.
 - Font scaling, long Arabic labels, diacritics, reduced motion, keyboard, or Back navigation must
   not hide safety, score meaning, reward privacy, or the dominant action.
+- First-run introduction is interrupted, skipped, replayed, localized mid-step, or opened from a
+  retained deep link; it returns safely and changes no domain state.
+- Lifetime Seeds, Mangrove progress, and Family Reward eligible progress happen to use similar
+  values; no selector, reducer, screen, or reset treats them as one field.
+- A Seed station is reached while an action/learning component is incomplete; the station remains
+  reached and the badge remains visibly in progress.
+- Learning completion, activity completion, migration, and approval events replay; their immutable
+  IDs make every duplicate a no-op.
+- A RevealBundle is interrupted, re-entered, already seen, or contains no new badge; it recovers or
+  exits finitely without replaying consequences or stacking another modal.
+- A source becomes unavailable or its review is incomplete; factual content remains gated and the
+  offline equal-credit learning route remains understandable.
+- A 180-Seed path threshold is reached from Seeds unrelated to Mangrove; no landscape advances
+  without its independent mapping and provenance.
 
-## Exact Revision 2 Demonstration Contract
+## Exact Revision 3 Demonstration Contract
 
 ### Canonical Reset Fixture
 
-| Field                               | Reset value                                                                              |
-| ----------------------------------- | ---------------------------------------------------------------------------------------- |
-| Locale/direction                    | Arabic / RTL                                                                             |
-| Access                              | Signed out at welcome/access; no Parent or Child protected history                       |
-| Household                           | Synthetic Al Noor family                                                                 |
-| Profiles                            | Salem 9, Alya 11; synthetic; Parent-created tree avatars                                 |
-| League members                      | Salem, Alya, Mariam, Rashid; synthetic invite-only siblings/cousins                      |
-| Week                                | Active deterministic week with exactly five Challenge Leaf slots per participating Child |
-| Salem weekly state                  | 4/5 confirmed; score 80; fifth slot is the P0 recycling task                             |
-| Other standings before confirmation | Mariam 5/5 = 100; Alya 3/5 = 60; Rashid 2/5 = 40                                         |
-| Mangrove                            | Salem 48/60, Shoot                                                                       |
-| Family canopy                       | 19/25 cooperative leaves                                                                 |
-| Family Reward                       | Salem; 108/120 new eligible Seeds; AED 25; `promised`; private                           |
-| Active task                         | None until Parent assigns the P0 fixture                                                 |
-| Prepared Parent Guide               | `guide_recycling_refine_v1`                                                              |
-| Prepared Child Coach                | `coach_recycling_steps_v1`                                                               |
-| Prepared image/audio                | `fixture_recycling_clean_v1`; `fixture_salem_plan_ar_v1`                                 |
-| Access/pairing fixtures             | Deterministic Parent verification, Salem PIN, and six-digit family pairing flow          |
-| Permissions                         | Real camera/microphone off; prepared/simulated voice enabled; captions on                |
-| Celebration                         | Not available; not consumed                                                              |
+| Field                               | Reset value                                                                                    |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Locale/direction                    | Arabic / RTL                                                                                   |
+| Access                              | Signed out at welcome/access; no Parent or Child protected history                             |
+| Household                           | Synthetic Al Noor family                                                                       |
+| Profiles                            | Salem 9, Alya 11; synthetic; Parent-created tree avatars                                       |
+| League members                      | Salem, Alya, Mariam, Rashid; synthetic invite-only siblings/cousins                            |
+| Week                                | Active deterministic week with exactly five Challenge Leaf slots per participating Child       |
+| Salem weekly state                  | 4/5 confirmed; score 80; fifth slot is the P0 recycling task                                   |
+| Other standings before confirmation | Mariam 5/5 = 100; Alya 3/5 = 60; Rashid 2/5 = 40                                               |
+| Mangrove                            | Salem 48/60, Shoot                                                                             |
+| Family canopy                       | 19/25 cooperative leaves                                                                       |
+| Family Reward                       | Salem; 108/120 new eligible Seeds; AED 25; `promised`; private                                 |
+| Lifetime Seeds                      | Salem 108; independent of Family Reward eligibility and Mangrove progress                      |
+| Impact Path                         | Water & Coast not yet open; next threshold 120; no pending station reveal                      |
+| Badge evidence                      | Seed Start and Growing Branch backfilled from provable history; no migration reveal            |
+| Mastery/learning                    | Sorting 0, water 2, energy 1, nature 2, coast care 2; Ghaf Basics complete                     |
+| Installation presentation           | Outside the Parent-reset fixture; seen/version flags persist until an operator first-run reset |
+| Child presentation/navigation       | Per-profile story preference persists; transient replay/deep-link/nested-route intent clears   |
+| Active task                         | None until Parent assigns the P0 fixture                                                       |
+| Prepared Parent Guide               | `guide_recycling_refine_v1`                                                                    |
+| Prepared Child Coach                | `coach_recycling_steps_v1`                                                                     |
+| Prepared image/audio                | `fixture_recycling_clean_v1`; `fixture_salem_plan_ar_v1`                                       |
+| Access/pairing fixtures             | Deterministic Parent verification, Salem PIN, and six-digit family pairing flow                |
+| Permissions                         | Real camera/microphone off; prepared/simulated voice enabled; captions on                      |
+| Reveal                              | No pending bundle; prior migration backfill never queues one                                   |
 
 ### P0 Task and Confirmation Oracle
 
@@ -443,15 +569,24 @@ crossing, adult-carried disposal, unsafe-heat/traffic alternative, and handwashi
 `standard + acquisition`, `recurrence = once`, fixed 12 Seeds, Mangrove mapping, household
 visibility, explicit Family Reward contribution eligibility, and Salem's fifth Challenge Leaf.
 
-One valid confirmation creates one immutable result and the following presentation order:
+One valid confirmation creates one immutable result and at most one recoverable RevealBundle in
+the following presentation order:
+
+The canonical recycling fixture has no approved quantitative impact conversion, so it omits the
+optional self-reported activity-result slot. If a later reviewed task carries one, it appears after
+praise with an honest `estimated` or `self-reported` label and never as verified impact.
 
 1. Parent-specific praise naming safe sorting and appropriate help-seeking.
 2. Exactly 12 Seeds.
 3. Mangrove 48/60 Shoot → 60/60 Sapling.
 4. One cooperative family-canopy leaf, 19/25 → 20/25.
 5. Salem Challenge Leaves 4/5 → 5/5 and Weekly Growth Score 80 → 100.
-6. Private reward progress 108/120 → 120/120 and `promised → unlocked`.
-7. Only after praise and garden growth, the private reward-unlock message.
+6. Impact Path opens at 120/180; `badge.journey.expanding_shade.v1` and
+   `badge.skill.sorting.bud.v1` become earned, bringing the derived Gallery count to four.
+7. If the exact one-time safe-help conditions are met, its non-badge recognition appears as one
+   praise line with zero Seed/mastery value.
+8. Private reward progress 108/120 → 120/120 and `promised → unlocked`.
+9. The private reward-unlock message appears last.
 
 Post-confirmation League standings are:
 
@@ -698,6 +833,107 @@ separate domain results even when one confirmation unlocks them together.
 - **R2-FR-092**: Permission and device controls MUST represent off, requested, denied, approved,
   revoked, offline, and successful-update states without implying real P0 media capture.
 
+### Growth Journey Amendment — Revision 3
+
+- **R3-FR-001**: The supplied Growth Journey prompt pack MUST remain planning/generation input. No
+  Growth route, screen, asset, token change, dependency, test, or runtime state MAY be implemented
+  until a user-approved Stitch release and integration-owner gate name the exact boundary.
+- **R3-FR-002**: R001 Welcome and Parent onboarding MUST remain the released access authority until
+  a later approved batch explicitly layers or supersedes its entry composition.
+- **R3-FR-003**: Impact Path MUST be one free private cumulative projection derived only from
+  committed positive lifetime Seed transactions. It MUST NOT mint, spend, transfer, purchase,
+  convert, rank, or expire progress.
+- **R3-FR-004**: Impact Path, My Badges, Badge Detail, and Learning Package MUST remain contextual
+  under Child Garden with at most one compact Today entry; Child navigation MUST remain Today,
+  Garden, and League.
+- **R3-FR-005**: The approved invite-only Family League MUST remain distinct. Growth Journey MUST
+  prohibit public/global ranking and public badge status without removing the private five-Leaf
+  standings, shared ties, or League label.
+- **R3-FR-006**: Lifetime Seed total, landscape-stage progress, family-canopy progress, Challenge
+  Leaves/League score, and Family Reward eligible progress MUST use separate fields, provenance,
+  selectors, and reset rules even when fixture values coincide.
+- **R3-FR-007**: P0 MUST define `water_coast_care_v1`, one Water & Coast chapter spanning lifetime
+  Seeds 120–180 with exact stations 120, 132, 144, 156, 168, and 180 and the versioned unlock
+  ownership in `data-model.md`. Any content-blocked unlock MUST remain visibly unavailable rather
+  than being substituted, auto-completed, or silently omitted.
+- **R3-FR-008**: At 120, Mangrove MUST remain archived as 60/60 complete while the path shows
+  120/180 and exactly 12 Seeds to station 132. No denominator or state MAY overwrite the other.
+- **R3-FR-009**: Station 132 MUST unlock `learning.mangrove_roots.v1` and visible progress toward
+  `badge.habitat.mangrove_care.v1`; it MUST NOT award that badge automatically.
+- **R3-FR-010**: Station 156 MUST award Water Care Bud only when the station and two distinct valid
+  acquisition-phase water credits both qualify. Station 180 MUST NOT advance a landscape unless
+  that landscape's independent mapping and eligible provenance also qualify.
+- **R3-FR-011**: The P0 badge registry MUST contain exactly the 16 stable definitions in
+  `docs/content/BADGE_CATALOG.md`; fixture-only badges and decorative unidentified locked tiles are
+  prohibited.
+- **R3-FR-012**: Every badge MUST expose Arabic/English name, exact deterministic criterion,
+  structured component progress, permanence/privacy, original-art accessibility label, a
+  provenance-backed earned date where available or an explicit historical-date-unavailable state,
+  source/review metadata, and one canonical state.
+- **R3-FR-013**: Mastery stages MUST be Bud/Branch/Shade — برعم/غصن/ظل and MUST NOT be described as
+  rarity, social status, price, odds, or competitive class.
+- **R3-FR-014**: A lifetime Seed threshold MUST NOT imply mastery of an action, habitat, visit, or
+  learning objective. Composite badges MUST remain incomplete until every named evidence component
+  qualifies.
+- **R3-FR-015**: The established eight task categories, recognition mode, routine phase, safety,
+  visibility, Green, League, and Family Reward decisions MUST remain authoritative. Versioned
+  mastery/action mappings are additive and MUST NOT create a parallel task taxonomy.
+- **R3-FR-016**: The canonical `task_recycling_p0_v1` valid acquisition approval MUST add at most one
+  credit each to `skill.sorting` and `skill.coast_care`. A renamed alias or duplicate event MUST NOT
+  duplicate Seeds, mastery, station, badge, League, garden, canopy, or reward consequences.
+- **R3-FR-017**: All P0 mastery criteria MUST accept acquisition evidence only. Maintenance MAY be
+  stored at a maximum of one lifetime credit per Child/family for a future explicitly opted-in
+  definition but MUST advance no P0 badge; recognition-only advances none.
+- **R3-FR-018**: `recognition.safe_help_once.v1` MUST remain one-time descriptive recognition with no
+  badge tile, target, Seed, mastery, rank, or recommendation value.
+- **R3-FR-019**: Parent approval, learning completion, and activity completion MUST have distinct
+  immutable profile-scoped event IDs. Duplicate evaluation MUST return the prior result and create
+  no new transaction, award, unlock, or reveal.
+- **R3-FR-020**: Learning and explicitly defined activity completion MUST always produce zero Seeds
+  and zero garden growth and MAY re-evaluate only criteria naming the exact package/activity.
+- **R3-FR-021**: Historical migration MUST backfill only awards provable from immutable evidence,
+  MUST record migration/evaluation version, and MUST NOT mint Seeds, infer missing mastery, or queue
+  a celebration.
+- **R3-FR-022**: One triggering event MUST create at most one pending/seen recoverable
+  `RevealBundle`. The canonical approval presentation MUST be praise → any self-reported activity
+  result → Seeds → mapped garden → canopy/Challenge Leaf/League → path/badges/safe-help recognition
+  → private Family Reward last, with reduced-motion parity and a finite exit.
+- **R3-FR-023**: P0 MUST provide one finite `learning.mangrove_roots.v1` story and one visible
+  story-disabled or Parent-guided equivalent covering the same reviewed objective and badge credit.
+  Wrong answers MUST allow explanation/retry without loss; opening, scrolling, or time MUST NOT
+  count as completion.
+- **R3-FR-024**: Factual badge/story content MUST keep verified fact separate from creative lore,
+  render a source row, identify source dates accurately, and remain gated until named factual,
+  Arabic/UAE cultural, safeguarding, accessibility, and rights reviews pass.
+- **R3-FR-025**: Place-inspired content MUST require no GPS, location, location/venue check-in,
+  Child photo/audio, or external web access and MUST NOT imply a visit, official badge,
+  government/tourism/UNESCO endorsement, partnership, certification, or measured environmental
+  impact.
+- **R3-FR-026**: Parent Progress MUST project only the selected Child's current chapter, exact recent
+  earned criteria and provenance-backed dates, an explicit date-unavailable state for historical
+  migration, structured in-progress components, and optional Child-selected preference. It MUST NOT
+  compare siblings, show League rank as mastery, score behavior, diagnose, or infer interests from
+  activity.
+- **R3-FR-027**: Entry MAY include a brief immediately interruptible Opening Moment and MUST include
+  exactly three role-neutral, skippable/replayable introduction panels after approval. Their
+  illustrative task/Seed state MUST be isolated and Finish/Skip MUST hand off to R001 `/`.
+- **R3-FR-028**: Opening/introduction version, safe replay origin, and retained authorized deep link
+  MUST be presentation/navigation state separate from every domain ledger. Manual replay MUST
+  preserve progress; Parent-authorized demo reset MUST restore the exact canonical fixture; an
+  operator-only first-run reset MAY separately clear presentation preferences.
+- **R3-FR-029**: Every profile ID MUST scope achievement progress, awards, completion events,
+  reveals, migration, Child-specific preferences, and nested-route origin so Salem, Alya, and a new
+  Child cannot receive or view one another's state. Install-level first-run preferences remain
+  separate presentation state.
+- **R3-FR-030**: Growth Journey MUST contain no paid path, purchase, boost, ad, random reward, loot
+  box, spin, rarity odds, loss-framed streak, countdown, expiring earned progress, autoplay,
+  infinite feed, nagging reminder, public profile, public badge sharing, chat, or opponent badge
+  comparison.
+- **R3-FR-031**: Arabic and English MUST use the approved Alexandria/Readex system, true page-level
+  direction, live scalable text, 48dp targets, source/detail focus semantics, and isolated progress,
+  date, time, and mixed-script tokens. The visual digit style MUST be consistent within the approved
+  release and MUST NOT be guessed before Stitch.
+
 ## Key Entities
 
 - **Synthetic Access Session**: Role-bound Parent or Child prototype access state with explicit
@@ -723,7 +959,23 @@ separate domain results even when one confirmation unlocks them together.
 - **Monthly Promise Summary**: Private derived maximum monetary commitment for one month.
 - **Prepared Assistant/Voice Fixture**: Task-bound structured result, origin label, transcript,
   captions, playback controls, delete state, and adult exit.
-- **Revision 2 Prototype Session**: Locale, access, profiles, navigation role, task lifecycle,
+- **Lifetime Seed Projection**: Derived total of committed positive Seed transactions for one
+  profile; independent of landscape and Family Reward ledgers.
+- **Impact Path Chapter and Station**: Versioned cumulative range and deterministic threshold/unlock
+  definitions; station state is derived from lifetime Seeds and immutable unlock receipts.
+- **Achievement Definition and Progress**: One of exactly 16 P0 criteria plus a profile-scoped
+  projection of every component, canonical state, presentation flag, and immutable award.
+- **Mastery Evidence**: Acquisition/maintenance evidence mapped from an immutable reviewed task
+  version without replacing the established category/lifecycle policy.
+- **Learning/Activity Completion Event**: Idempotent zero-Seed, zero-garden evidence satisfying only
+  a named criterion.
+- **RevealBundle**: At most one pending/seen presentation projection per triggering event, containing
+  all committed consequences without becoming their authority.
+- **Learning Source Record**: Versioned factual claim/source metadata separated from creative lore
+  and human review/rights status.
+- **First-Run Presentation Preference**: Opening/introduction version and replay origin stored apart
+  from accounts, profiles, and reward state.
+- **Revision 3 Prototype Session**: Locale, access, profiles, navigation role, task lifecycle,
   garden, week, rewards, permissions, pairing, fixtures, idempotency records, and exact reset.
 
 ## Success Criteria _(mandatory)_
@@ -774,12 +1026,55 @@ separate domain results even when one confirmation unlocks them together.
   demo-accepted.
 - **R2-SC-021**: Every Parent/Child settings and permission-state test exposes only the controls
   allowed for that role, and zero Child path reveals a Parent permission, reward, report, or invite.
+- **R3-SC-001**: A new user-approved Stitch inventory covers the complete reachable Growth Journey
+  and prerequisite shells with canonical Arabic, matched English, mandatory screen specifications,
+  material states, assets, motion/reduced motion, Back/deep-link, responsive, and review evidence;
+  zero Growth runtime task begins before its gate passes.
+- **R3-SC-002**: The canonical approval changes lifetime Seeds 108→120 and Mangrove 48/60→60/60
+  exactly once while Family Reward eligible progress independently changes 108/120→120/120; five
+  duplicate attempts change zero fields.
+- **R3-SC-003**: The post-approval path shows Mangrove archived 60/60, chapter 120/180, next station
+  132, and 12 Seeds remaining in every locale/device fixture without denominator substitution.
+- **R3-SC-004**: The runtime registry contains exactly the 16 stable badge IDs and no additional
+  fixture/display badge; all criteria and canonical Salem progress match `BADGE_CATALOG.md`.
+- **R3-SC-005**: A threshold/composite test matrix at immediately below, equal to, and above every
+  120/132/144/156/168/180 station and every badge target awards only fully qualified results.
+- **R3-SC-006**: Approval, learning, activity, and migration replay tests produce exactly one event/
+  award/unlock per unique profile-scoped key, zero duplicate Seeds/growth, and at most one
+  RevealBundle.
+- **R3-SC-007**: Both Mangrove learning routes complete the same objective/criterion with zero Seed
+  and garden delta; wrong-answer retries and content-open/scroll/time paths create no completion or
+  loss.
+- **R3-SC-008**: Clean first-install, Skip, Finish, interrupted introduction, locale switch, manual
+  replay, authorized/unauthorized deep link, and operator reset all route correctly and mutate zero
+  domain rewards.
+- **R3-SC-009**: Salem, Alya, and a new profile independently render path/gallery/reveal/Back origin;
+  a field-injection and switching corpus yields zero cross-profile awards, counts, names, or routes.
+- **R3-SC-010**: Every triggering event renders no more than one finite result surface, preserves the
+  reconciled consequence order with private Family Reward last, and has equivalent reduced-motion
+  and recovery behavior.
+- **R3-SC-011**: Growth Journey contains zero paid/random/scarcity/public-status/location/proof/
+  endorsement controls or claims across source, routes, resources, fixtures, and rendered screens.
+- **R3-SC-012**: Every factual P0 detail maps to its source ledger and records named factual,
+  Arabic/UAE cultural, safeguarding, accessibility, and rights dispositions before being called
+  content-approved.
+- **R3-SC-013**: Arabic RTL and English LTR pass 390×844 reference comparison, 320×568, 360×800,
+  430×932, SM_T835/tablet, scrolling, keyboard, 200% text, TalkBack, 48dp targets, focus restoration,
+  native Back/deep links, offline, reduced motion, and cold/warm/hot launch with direct evidence.
 
 ## Dependencies and Assumptions
 
 - The user supplied and approved Ghaf R001 Batch 1 on 2026-09-02. Exact foundations and Parent-
   onboarding routes are resolved only within that partial release; all later routes, components,
   geometry, assets, and motion remain blocked on later frames.
+- The user supplied the Growth Journey prompt pack on 2026-09-03 and authorized planning. It has no
+  approved Stitch release ID, PNG, screen specification, or runtime authority yet.
+- The canonical P0 executable task remains `task_recycling_p0_v1`. Growth Journey adds versioned
+  mastery mappings; it does not create a second executable task or silently rename the fixture.
+- The synthetic fixture intentionally may show the same number for lifetime Seeds and Family Reward
+  eligible progress, but their ledgers and provenance remain independent.
+- Minimal versioned local persistence is a proposed requirement for first-run preferences and earned
+  achievements. Its provider/dependency remains unresolved until a measured post-Stitch gap review.
 - The existing Expo application may be adapted only inside a released design boundary; it remains
   a technical baseline, not inherited Revision 2 acceptance evidence.
 - The prototype uses synthetic sign-in, pairing, membership, rewards, media, and assistant data.
@@ -795,34 +1090,40 @@ separate domain results even when one confirmation unlocks them together.
 
 ## External Review and Evidence Gates
 
-| Gate                                   | Status at Revision 2 approval | Requirement to change status                                                         |
-| -------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------ |
-| Product contract documentation         | `PASSED`                      | Reopen for any product, safety, or evidence-boundary change                          |
-| Approved Stitch frames                 | `PARTIAL`                     | R001 Batch 1 approved; complete Arabic/English families/states remain blocked        |
-| Revision 2 implementation plan/tasks   | `PARTIAL`                     | Only `design-intake/release-gate.md` boundary is released; full T120 remains blocked |
-| Automated Revision 2 behavior          | `NOT RUN`                     | New tests against the implemented Revision 2 contracts                               |
-| Arabic/English web proxy               | `NOT RUN`                     | Fresh Revision 2 walkthrough; Revision 1 walkthrough is historical                   |
-| Physical Android                       | `BLOCKED`                     | Named Revision 2 build, device/OS, locales, observer, and results                    |
-| Native accessibility/permissions/voice | `NOT RUN`                     | Direct named-build observations                                                      |
-| Five rehearsals and comprehension      | `NOT RUN`                     | Recorded operators/observers, timings, answers, date                                 |
-| Arabic/UAE language and culture        | `NOT RUN`                     | Named reviewers and reviewed content/frame version                                   |
-| Child safeguarding and reward ethics   | `NOT RUN`                     | Named reviewers, findings, and disposition                                           |
-| Sustainability and accessibility       | `NOT RUN`                     | Named reviewers, scope, findings, and disposition                                    |
+| Gate                                   | Status at Revision 3 planning | Requirement to change status                                                          |
+| -------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------- |
+| Product contract documentation         | `PASSED`                      | Reopen for any product, safety, or evidence-boundary change                           |
+| Approved Stitch frames                 | `PARTIAL`                     | R001 Batch 1 approved; complete Arabic/English families/states remain blocked         |
+| Revision 2 implementation plan/tasks   | `PARTIAL`                     | Only `design-intake/release-gate.md` boundary is released; full T120 remains blocked  |
+| Automated Revision 2 behavior          | `PARTIAL — R001`              | R001 focused tests pass; full Revision 2 contract tests remain `NOT RUN`              |
+| Arabic/English web proxy               | `PARTIAL — R001`              | R001 bilingual proxy passed; full Revision 2 walkthrough remains `NOT RUN`            |
+| Physical Android                       | `PARTIAL — BUILD/INSTALL`     | R001 release built/installed on SM_T835; observed bilingual journey remains `NOT RUN` |
+| Native accessibility/permissions/voice | `NOT RUN`                     | Direct named-build observations                                                       |
+| Five rehearsals and comprehension      | `NOT RUN`                     | Recorded operators/observers, timings, answers, date                                  |
+| Arabic/UAE language and culture        | `NOT RUN`                     | Named reviewers and reviewed content/frame version                                    |
+| Child safeguarding and reward ethics   | `NOT RUN`                     | Named reviewers, findings, and disposition                                            |
+| Sustainability and accessibility       | `NOT RUN`                     | Named reviewers, scope, findings, and disposition                                     |
+| Growth Journey design/runtime          | `BLOCKED`                     | Approved release, closed prerequisites, RED tests, and integration-owner release      |
+| Growth factual/cultural/rights content | `NOT RUN`                     | Named review of exact content and original assets                                     |
 
-No source inspection, Revision 1 test, or prior web frame may upgrade a Revision 2 runtime/native/
-human gate.
+No source inspection, prompt text, Revision 1 test, R001 frame, or prior web result may upgrade a
+later Revision 2 or Revision 3 runtime/native/human gate.
 
 ## Out of Scope
 
 - Production authentication, identity verification, secure account recovery, guardian consent
   systems, age assurance, biometrics, real device binding, or multi-family tenancy.
 - Payment transfer, stored value, wallet balances, custody, payout, redemption, universal
-  Seed-to-AED exchange, banking, cards, purchases, ads, paid boosts, wagering, or winner-take-all
-  prizes.
+  Seed-to-AED exchange, banking, cards, purchases, ads, paid paths, premium tiers, paid boosts,
+  wagering, or winner-take-all prizes.
 - Real Child names, contact details, location, school, photos, voice, unrestricted free text,
   background listening, biometric recognition, emotion inference, or media upload/analysis.
 - Real invitations, public discovery, global leaderboards, public profiles, direct messages,
   comments, unrestricted reactions, location sharing, or cross-household task/evidence sharing.
+- Public badges or sharing, tradable/purchasable badges, rarity odds, loot boxes, spins, random
+  drops, countdowns, streak loss, expiring earned progress, autoplay, or infinite reward feeds.
+- GPS/location badges, attraction check-ins, visit/photo/audio proof, official accreditation,
+  government/tourism/UNESCO endorsement, copied brand art, or unrestricted Child web browsing.
 - Rewards or comparison for prayer, affection, emotional disclosure, eating, body/weight outcomes,
   wellbeing disclosure, or proof of family love.
 - AI companionship, therapy, diagnosis, developmental screening, religious rulings, deception

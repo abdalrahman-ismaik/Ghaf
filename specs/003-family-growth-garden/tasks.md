@@ -1,10 +1,12 @@
-# Tasks: Family Growth Garden — Revision 2
+# Tasks: Family Growth Garden — Revision 3 Planning Amendment
 
-**Input**: Revision 2 artifacts in `specs/003-family-growth-garden/`
+**Input**: Revision 3 artifacts in `specs/003-family-growth-garden/` and user-supplied planning input
+in `docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/`
 
-**Revision 2 status**: Product contract approved 2026-09-01. Ghaf R001 Batch 1 is **PARTIALLY
-RELEASED** for foundations, Welcome, and first-time Parent onboarding. Full T120 and every later
-screen family remain **BLOCKED**.
+**Revision 3 status**: Growth Journey product/domain planning amended 2026-09-03. Ghaf R001 Batch 1
+is **PARTIALLY RELEASED** for foundations, Welcome, and first-time Parent onboarding. Full T120,
+unfinished Revision 2 foundations, the new Growth Stitch gate, and all Growth runtime remain
+**BLOCKED**.
 
 **Format**: `- [ ] T### [P?] [US#?] Description with file path`
 
@@ -132,9 +134,42 @@ verified.
 - [ ] T173 Conduct five timed rehearsals, three-person comprehension, and named Arabic/UAE, safeguarding, reward-ethics, accessibility, and sustainability reviews; record only direct evidence in `DEMO_RUNBOOK.md`
 - [ ] T174 Run final cross-artifact convergence and product/design review, resolve every P0-critical finding, and record integration readiness in `specs/003-family-growth-garden/checklists/revision2-release.md`
 
+## Phase 12: Revision 3 Growth Journey Planning Amendment
+
+**Purpose**: Reconcile the supplied Growth Journey direction into the canonical product/domain
+documentation without authorizing screens or runtime.
+
+- [x] T175 Inventory and classify the Growth Journey prompt pack, preserve it as non-runtime input, and record conflicts and precedence in `specs/003-family-growth-garden/design-intake/growth-journey-preflight.md`
+- [x] T176 Reconcile the Growth direction, R001 boundary, inherited League/task/reward contracts, and runtime hold across `PRODUCT.md`, `RESEARCH_BASIS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, and `specs/003-family-growth-garden/{spec.md,plan.md,research.md}`
+- [x] T177 Record the proposed projection architecture, exact 16-badge registry, Mangrove learning/equal-credit contract, and open review ledger in `docs/architecture/adr/0002-impact-path-projection.md`, `docs/content/BADGE_CATALOG.md`, and `docs/content/LEARNING_STORIES.md`
+- [x] T178 Amend the proposed Growth entities, separate progress authorities, exact reset/result oracles, profile isolation, migration, and recovery contracts in `specs/003-family-growth-garden/data-model.md` and `specs/003-family-growth-garden/contracts/acceptance-contract.md`
+- [x] T179 Reconcile operator guidance, document maps, future judge oracle, architecture overview, and readiness checklists in `README.md`, `docs/README.md`, `CODEX_IMPLEMENTATION_PROMPT.md`, `DEMO_RUNBOOK.md`, `docs/architecture/ARCHITECTURE.md`, `specs/003-family-growth-garden/quickstart.md`, and `specs/003-family-growth-garden/checklists/*.md`
+- [x] T180 Run the Spec Kit context update and cross-artifact analysis, resolve every P0-critical finding, run documentation/repository validation, and commit the Revision 3 planning amendment without staging ignored Windows metadata or generated Android files
+
+## Phase 13: Post-Stitch Growth Journey Execution — Blocked
+
+**Purpose**: Execute only after a complete user-approved Growth release and its prerequisite
+Revision 2 shells receive an explicit integration-owner release.
+
+- [ ] T181 Preserve and inventory the approved Growth Stitch release, canonical PNGs, matched English frames, screen specs, non-runtime exports, states, motion, assets, hashes, provenance, and approval under its exact user-approved ID in `docs/design/stitch/releases/` and `specs/003-family-growth-garden/design-intake/`
+- [ ] T182 Audit that the release supplies complete Child access/Today/Garden/League and result handoff, Parent Check-in and selected-Child origins, and every Growth route/state prerequisite in `specs/003-family-growth-garden/design-intake/`
+- [ ] T183 Freeze exact routes, Back/deep-link behavior, components, responsive rules, persistence/migration choice, digit strategy, content dispositions, and a bounded release gate in `specs/003-family-growth-garden/{plan.md,quickstart.md}` and `specs/003-family-growth-garden/design-intake/`
+- [ ] T184 [P] [US9] Add failing introduction, replay, deferred-deep-link, and split-reset tests in `tests/revision3-introduction.test.ts`
+- [ ] T185 [P] [US10] Add failing Path/badge/mastery evaluator, idempotency, profile-isolation, migration, and reveal-recovery tests in `tests/revision3-growth-journey.test.ts`
+- [ ] T186 [P] [US11] Add failing learning/equal-credit/zero-Seed and Parent selected-Child view tests in `tests/revision3-learning-progress.test.ts`, then record intentional RED results for T184–T186 in `specs/003-family-growth-garden/checklists/revision3-red-green.md`
+- [ ] T187 Implement approved Growth models, pure evaluator, exact fixtures, migration, service seam, store integration, and the smallest approved local persistence adapter in `src/models/**`, `src/features/growth-journey/**`, `src/services/**`, and `src/state/**`
+- [ ] T188 [US9] Implement the approved native launch configuration, interruptible Opening Moment, exactly three introduction panels, Finish/Skip R001 handoff, and safe replay/origin recovery in `app/**` and `src/components/growth-journey/**`
+- [ ] T189 [P] [US10] Build approved reusable native Impact Path, My Badges, Badge Detail, RevealBundle, and reduced-motion components in `src/components/growth-journey/**` without DOM, copied CSS, or web dependencies
+- [ ] T190 [US10] Integrate the approved Today/Garden entry points and Parent Check-in/Child result handoff into the exact released `app/**` paths
+- [ ] T191 [US11] Integrate the approved Mangrove story/equal-credit route and Parent selected-Child progress into the exact released `app/**` paths
+- [ ] T192 [P] Complete Arabic/English resources, bidi/accessibility semantics, source rows, original-art provenance, and named factual/cultural/safeguarding/accessibility/rights dispositions in `src/i18n/**`, `docs/content/**`, and the applicable release/checklist records
+- [ ] T193 Run all tests and repository checks plus 390×844 comparison, small/large/tablet responsive, keyboard, 200% text, RTL/LTR, bidi, TalkBack, reduced-motion, offline, Back/deep-link, kill/relaunch, reset, physical Android, and rehearsal evidence; record truthful results in `DEMO_RUNBOOK.md` and `specs/003-family-growth-garden/checklists/revision3-release.md`
+
 ## Dependencies and Execution Order
 
 - T111–T119 are complete for R001 Batch 1; T120 remains open for the complete Revision 2 intake.
+- T175–T179 are documentation-only and do not complete or bypass T120 or any runtime task. T180
+  closes only after analysis, validation, and the authorized documentation commits.
 - Only the exact R001 partial slices named above may proceed before a full `RELEASED` T120 gate.
 - Every other portion of T121–T174 depends on an explicit full release.
 - US1 and US2 depend on the shared access foundation; US3 depends on Parent access; US4 depends on
@@ -142,19 +177,30 @@ verified.
   US7 depends on League/reward policy; US8 integrates all stories.
 - The Batch 1 portion of T167 may proceed now; its complete task and T168–T174 remain dependent on
   all story phases and the later selected Stitch systems.
+- T181–T193 depend on a separate complete Growth Stitch release, T120 or an explicitly bounded
+  successor gate, and the relevant Child access/shell, Parent Check-in, result, and selected-Child
+  foundations from T121–T174. Growth frames never authorize those prerequisites implicitly.
+- Within Phase 13, T181 → T182 → T183 → T184–T186 RED → T187 domain → T188–T192 UI/content → T193
+  verification. Tasks marked `[P]` still require disjoint file ownership.
 - Parallel `[P]` work owns disjoint files only and never authorizes overlapping route, store, i18n,
   token, test, or design-intake edits.
 
-## Revision 2 MVP
+## Revision 3 MVP
 
 No single story is the MVP. The competition slice requires separate Parent/Child access, Parent
 task assignment, Child bounded completion, praise-first confirmation, permanent garden growth,
 five-Leaf League, private Family Reward unlock, bilingual navigation, and deterministic reset.
+The Growth amendment adds only one first-run introduction, one Water & Coast chapter, the exact 16
+configured private badges, one combined reveal, one Mangrove learning package with equal-credit
+alternative, and one Parent read-only progress view. It adds no fourth tab, second currency,
+public badge profile, location proof, live media/AI, additional chapter, or production sync.
 
 ## Evidence Discipline
 
 - Checked T111–T119 prove only the recorded R001 design-intake work. Runtime and evidence tasks stay
   unchecked until directly completed for their exact scope.
+- Checked T175–T179 prove documentation reconciliation only. They do not prove Stitch design,
+  runtime, persistence, content approval, web, Android, accessibility, or human review.
 - Revision 1 results remain `HISTORICAL`.
 - Web/source evidence cannot pass Android or named-human gates.
 - Synthetic access is not production authentication; Family Reward is not payment/custody; prepared

@@ -6,6 +6,35 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-03 Growth Journey Revision 3 Planning Window
+
+**Owner**: `/root` acting as integration owner
+**Purpose**: Preserve the supplied Growth Journey prompt pack, reconcile it as a proposed Feature
+003 Revision 3, and prepare an implementation-ready product/domain/design-intake plan without
+changing runtime behavior before approved Stitch frames arrive.
+**Implementation status**: **DOCUMENTATION ONLY — DESIGN BLOCKED**.
+**Exclusive write scope**: `AGENTS.md`, `README.md`, `docs/README.md`, `PRODUCT.md`,
+`RESEARCH_BASIS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`,
+`CODEX_IMPLEMENTATION_PROMPT.md`, `DEMO_RUNBOOK.md`, `TEAM_OWNERSHIP.md`,
+`docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/**`, new Growth Journey records under `docs/content/**` and
+`docs/architecture/adr/**`, and documentation under `specs/003-family-growth-garden/**`.
+**Excluded boundary**: `app/**`, `src/**`, `tests/**`, dependencies, generated native projects,
+assets, build evidence, and every runtime screen outside the already released R001 Batch 1.
+**Preservation rule**: Keep R001 and its four implementation commits intact. Extend rather than
+replace the existing task, Seed, garden, League, canopy, Family Reward, privacy, and reset
+contracts. Treat the supplied TypeScript, routes, timings, and Stitch wording as candidate input,
+not runtime authority.
+**Handoff condition**: Canonical documents state the resolved Revision 3 boundary, exact open
+conflicts, proposed state/data contracts, lean MVP, Stitch artifact inventory, dependency-ordered
+tasks, truthful evidence status, and the implementation gate. The window closes only after Spec
+Kit consistency checks and repository validation pass.
+**Handoff result**: **PASSED for documentation preparation**. Spec Kit context refresh and
+cross-artifact analysis completed with no unresolved P0-critical inconsistency; numeric/domain and
+document-map audits were reconciled. Typecheck, lint, format checks, 20 files / 332 tests, diff
+hygiene, exact task/badge identifier checks, and 92 local links across 32 planning Markdown files
+passed. Growth design/runtime and named content/human review remain **BLOCKED** or `NOT RUN` until
+the required approved Stitch release arrives.
+
 ## 2026-09-02 Expo Go Android Reliability Window
 
 **Owner**: `/root` acting as integration owner

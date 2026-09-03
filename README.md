@@ -1,25 +1,25 @@
 # Ghaf — غاف
 
-Ghaf is an Arabic-first Parent–Child family routine prototype for SMAC 2026. The approved Revision 2
-direction combines Parent-approved tasks, bounded AI support, permanent Seeds and UAE landscapes,
-an invite-only weekly Family League, and optional private Parent-funded Family Rewards inside one
-app with separate Parent and Child access experiences.
+Ghaf is an Arabic-first Parent–Child family routine prototype for SMAC 2026. Feature 003 Revision 3
+inherits the approved Revision 2 family experience, then plans one free private Seed-derived Impact
+Path, permanent deterministic badges, and finite sourced learning inside the same application.
 
-> Revision 2 is partially implemented. The approved R001 Batch 1 delivers Welcome and first-time
-> Parent onboarding; all later screens remain on hold until their Google Stitch designs are
-> supplied and approved. The older ten-route journey remains a preserved Revision 1 baseline.
+> R001 Batch 1 is the only released later-revision runtime: it delivers a bounded Revision 2
+> Welcome and first-time Parent-onboarding slice. Every other Revision 2 screen and all Revision 3
+> Growth Journey runtime remain on hold until their Google Stitch designs are supplied and
+> approved. The older ten-route journey remains a preserved Revision 1 baseline.
 
 ## Current status
 
-| Area                 | Current evidence                                                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product contract     | Feature 003 Revision 2 approved; separate access, role navigation, League, Family Reward, voice, and typography documented                        |
-| Runtime              | R001 Batch 1 implemented; all later Revision 2 screens remain **ON HOLD** pending their approved Stitch designs                                   |
-| Historical checks    | Revision 1: 17 test files / 305 tests plus TypeScript, lint, format, Expo checks, and bilingual web-proxy journey passed                          |
-| Revision 2 evidence  | Batch 1: 20 test files / 332 tests and bilingual web-proxy checks passed; full Revision 2 evidence remains incomplete                             |
-| Android              | Windows release APK build/install passed on SM_T835; the observed Arabic/English physical journey and native interaction gates remain **NOT RUN** |
-| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers           |
-| Production readiness | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                         |
+| Area                    | Current evidence                                                                                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product contract        | Feature 003 Revision 3 planning active; inherited Revision 2 rules plus the private Impact Path, badges, and finite learning are documented       |
+| Runtime                 | R001 Batch 1 implemented; all later Revision 2 and all Growth Journey screens remain **ON HOLD** pending approved Stitch designs                  |
+| Historical checks       | Revision 1: 17 test files / 305 tests plus TypeScript, lint, format, Expo checks, and bilingual web-proxy journey passed                          |
+| Later-revision evidence | Batch 1: 20 test files / 332 tests and bilingual web-proxy checks passed; full Revision 2 and all Revision 3 evidence remain incomplete           |
+| Android                 | Windows release APK build/install passed on SM_T835; the observed Arabic/English physical journey and native interaction gates remain **NOT RUN** |
+| Human review            | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers           |
+| Production readiness    | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                         |
 
 The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
 does not count as native-device or human-review evidence.
@@ -141,6 +141,13 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
   north star.
 - [Google Stitch prompt pack](GHAF_GOOGLE_STITCH_PROMPT_PACK.md) — approved design-generation input;
   generated screens are not implementation authority until the user approves them.
+- [Growth Journey prompt pack](docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/README.md) — Revision 3 source
+  material and generation input; runtime implementation remains Stitch-blocked.
+- [Growth Journey preflight](specs/003-family-growth-garden/design-intake/growth-journey-preflight.md)
+  — resolved product conflicts, required prerequisite screens, and future design evidence.
+- [Badge catalog](docs/content/BADGE_CATALOG.md), [learning stories](docs/content/LEARNING_STORIES.md),
+  and [Impact Path ADR](docs/architecture/adr/0002-impact-path-projection.md) — proposed deterministic
+  content and projection contracts for the pending release.
 - [Research basis](RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale.
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
 - [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
@@ -158,6 +165,9 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
   private categories, or unrestricted messages.
 - Family Rewards are private Parent promises fulfilled outside the app, with no wallet, payment,
   custody, cash-out, or universal Seed-to-AED exchange rate.
+- Impact Path progress is a free private projection of confirmed lifetime Seeds; badges are
+  deterministic and private, while learning completion is idempotent and awards no Seeds or garden
+  growth.
 - Symbolic garden growth is not a claim that real trees were planted or environmental impact was
   measured.
 - Live AI, production authentication/storage, real Child data/media, public ranking, payments,

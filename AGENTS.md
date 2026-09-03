@@ -9,16 +9,19 @@ at specs/003-family-growth-garden/plan.md
 
 ## Current Feature
 
-Ghaf — غاف Feature 003 Revision 2 is the approved Arabic-first product direction: one application
-with separately authenticated-looking Parent and Child prototype experiences, Parent-approved
-tasks, bounded AI coaching, permanent Seeds and UAE landscapes, an invite-only Ghaf Family League,
-and optional private Parent-funded Family Rewards.
+Ghaf — غاف Feature 003 Revision 3 is the active pre-Stitch planning direction. It inherits the
+Arabic-first Revision 2 application with separately authenticated-looking Parent and Child
+prototype experiences, Parent-approved tasks, bounded AI coaching, permanent Seeds and UAE
+landscapes, an invite-only Ghaf Family League, and optional private Parent-funded Family Rewards,
+then adds a private Growth Journey with one Seed-derived Impact Path, permanent deterministic
+badges, and sourced finite learning.
 
 The 2026-08-28 ten-route deterministic build remains a preserved Revision 1 implementation
-baseline. Its automated and bilingual web-proxy evidence does **not** validate Revision 2 access,
-navigation, League, Family Reward, voice, typography, or screen design. The user-approved R001
-Batch 1 implements only Welcome and first-time Parent onboarding. Every later Revision 2 screen is
-**ON HOLD** until the user supplies and approves its Google Stitch design.
+baseline. Its automated and bilingual web-proxy evidence does **not** validate later access,
+navigation, League, Family Reward, voice, typography, Growth Journey, or screen design. The
+user-approved R001 Batch 1 implements only Welcome and first-time Parent onboarding. Every later
+Revision 2 screen and every Revision 3 Growth Journey screen is **ON HOLD** until the user supplies
+and approves its Google Stitch design.
 
 Feature 002's physical Android and human-rehearsal gates remained blocked/not run; “validated” does
 not mean fully demo-accepted.
@@ -36,9 +39,11 @@ Read in this order:
 3. `PRODUCT.md`
 4. `RESEARCH_BASIS.md`
 5. `DESIGN.md` and `DESIGN_DIRECTION.md`
-6. `PROTOTYPE_LIMITATIONS.md`
-7. `TEAM_OWNERSHIP.md`
-8. `DEMO_RUNBOOK.md` when the change affects the judge journey
+6. `docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/README.md` and
+   `specs/003-family-growth-garden/design-intake/growth-journey-preflight.md` for Growth work
+7. `PROTOTYPE_LIMITATIONS.md`
+8. `TEAM_OWNERSHIP.md`
+9. `DEMO_RUNBOOK.md` when the change affects the judge journey
 
 If attachment names include suffixes such as `README(5).md` or `AGENTS(1).md`, find and edit the
 canonical repository files rather than introducing duplicate suffixed files.
@@ -73,13 +78,16 @@ Prepare one polished vertical slice with:
 - five weekly Challenge Leaves per Child, normalized score `(confirmed / 5) × 100`, shared tie
   positions, no speed tiebreak, and one cooperative family-canopy contribution per confirmed Leaf;
 - one private synthetic Family Reward plan at 108/120 eligible Seeds that moves from `Promised` to
-  `Unlocked` only after praise, Seeds, and garden growth; and
+  `Unlocked` only after praise, Seeds, and garden growth;
+- one free private 120–180 Impact Path chapter derived from lifetime confirmed Seeds, exactly 16
+  deterministic badge definitions, one combined result bundle, one Mangrove learning package with
+  an equal-credit accessible route, and one Parent read-only selected-Child progress view; and
 - a deterministic signed-out Arabic-first reset that works without a remote service.
 
 Breadth beyond that list is seeded content or later work. Do not build production accounts,
 networking, real invitations, payment/custody, notifications, analytics, production storage, live
-Child media processing, or a second app in P0. Do not implement Revision 2 screens before the
-approved Stitch frames are supplied.
+Child media processing, or a second app in P0. Do not implement an unreleased Revision 2 or
+Revision 3 Growth screen before its approved Stitch frames are supplied.
 
 ## Product Invariants
 
@@ -93,6 +101,12 @@ approved Stitch frames are supplied.
   agreed before acceptance may display a smaller award.
 - Earned Seeds and garden growth are permanent. No debt, point deduction, punitive streak, public
   failure, dying tree, randomized reward, loot box, or artificial scarcity.
+- Impact Path is one free private projection of confirmed lifetime Seeds. Badges use transparent
+  deterministic criteria, remain permanent/private, and never become paid, random, scarce,
+  tradable, public status, visit proof, or a substitute for a specific action/learning criterion.
+- Learning and explicitly defined activity completion are idempotent, create zero Seeds and garden
+  growth, and may satisfy only the exact named badge criterion. An accessible equivalent receives
+  equal credit.
 - Praise describes an action, strategy, improvement, or help-seeking; it never labels the Child's
   character.
 - Prayer, affection, emotional disclosure, private wellbeing, hygiene, disability-related routines,
@@ -175,6 +189,12 @@ or `NOT RUN` and label prepared responses honestly.
   plans, garden, League, privacy projection, assistant, media, devices/permissions, and prototype
   reset behavior. Keep the Green Impact projection separate from League eligibility.
 - Keep one deterministic local provider for every required path and one one-action reset.
+- Derive Impact Path and badge state from immutable profile-scoped Seed, approval, learning, and
+  activity evidence. Do not create a second currency or let a screen calculate an unlock.
+- Keep lifetime Seeds, landscape growth, League/canopy, and Family Reward eligible progress as
+  separate authorities even when a synthetic fixture uses equal numbers.
+- Preserve the existing task categories, recognition mode, routine phase, privacy, League, Green,
+  and reward-eligibility fields; Growth Journey mastery mappings are additive versioned metadata.
 - Use code-native SVG and existing motion tools before adding illustration or UI frameworks.
 - Alexandria and Readex Pro are approved typography requirements. Their R001 roles and local assets
   are released only for the approved Batch 1 implementation; later token or typography changes
@@ -187,8 +207,8 @@ or `NOT RUN` and label prepared responses honestly.
 
 - Arabic is the starting locale; use logical start/end layout, locale-aware alignment, RTL-aware
   directional icons, readable mixed scripts, and long-label resilience.
-- Use Alexandria for approved display roles and Readex Pro for approved body/control/data roles
-  after the final Stitch handoff; use tabular numerals for rankings, Seeds, and rewards, no
+- Use Alexandria for released R001 and later approved display roles and Readex Pro for released
+  R001 and later approved body/control/data roles; use tabular numerals for rankings, Seeds, and rewards, no
   artificial Arabic letter spacing, no thin Arabic weights, and generous Arabic line height.
 - User-facing strings belong in the bilingual resources; do not hard-code a second source of truth.
 - Modern Standard Arabic is the safe prototype default. Emirati dialect, transliteration,
@@ -281,7 +301,8 @@ search. Preserve unrelated work and avoid destructive Git commands.
 - Update Spec Kit artifacts before implementing behavior outside the active specification.
 - Treat the Google Stitch prompt pack as design input, not implementation authority. Do not edit
   runtime UI, navigation, dependencies, fonts, models, services, state, or tests for an unreleased
-  Revision 2 screen until the user supplies and approves its final Stitch frames.
+  Revision 2 or Revision 3 Growth screen until the user supplies and approves its final Stitch
+  frames.
 - Keep the deterministic competition path complete after every integrated slice.
 - Do not claim live AI, real media analysis, production authentication/security, payment or money
   custody, child-data protection, legal compliance, measured sustainability impact, or production

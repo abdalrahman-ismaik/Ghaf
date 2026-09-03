@@ -1,18 +1,20 @@
-# Codex Handoff — Ghaf Feature 003 Revision 2
+# Codex Handoff — Ghaf Feature 003 Revision 3
 
-## Current instruction: preserve the partial release; do not widen it
+## Current instruction: prepare the Growth release; do not implement it yet
 
-Feature 003 Revision 2 was approved as a product contract on 2026-09-01. The user-approved R001
-Batch 1 implements Welcome and first-time Parent onboarding. Runtime implementation for every
-later screen is **ON HOLD** until the user supplies and approves its final Google Stitch design.
+Feature 003 Revision 3 is the active pre-Stitch planning direction. It inherits the approved
+Revision 2 product contract and adds a private Growth Journey. The user-approved R001 Batch 1
+implements Welcome and first-time Parent onboarding and is the only released runtime. Runtime
+implementation for every later Revision 2 screen and every Growth Journey screen is **ON HOLD**
+until the user supplies and approves its final Google Stitch design.
 
 Do not widen `app/**`, `src/**`, `tests/**`, assets, dependencies, configuration, generated builds,
 or runtime evidence from this document alone. Do not add QR, biometric, authentication, payment,
 media, navigation, or social dependencies during the remaining hold.
 
 The 2026-08-28 ten-route implementation is a preserved Revision 1 baseline. Its 305-test and
-bilingual web-proxy evidence does not validate the Revision 2 screen architecture, access boundary,
-League, Family Reward, voice, typography, or Android behavior.
+bilingual web-proxy evidence does not validate the later screen architecture, access boundary,
+League, Family Reward, voice, typography, Growth Journey, or Android behavior.
 
 ## Approved Revision 2 product contract
 
@@ -46,6 +48,29 @@ League, Family Reward, voice, typography, or Android behavior.
   approved body/control/data family. R001 Batch 1 contains the approved local font roles and
   tokens for that slice; later layouts, roles, and assets remain pending their Stitch handoff.
 
+## Revision 3 Growth Journey contract
+
+- Keep one free private Impact Path derived only from profile-scoped confirmed lifetime Seeds; do
+  not create another currency or a fourth Child tab. Today may show a compact entry and the full
+  path belongs inside Child Garden.
+- The canonical pre-confirmation fixture independently records 108 lifetime Seeds, Mangrove 48/60,
+  and 108/120 Family Reward-eligible Seeds. Those authorities remain separate even when a later
+  fixture gives them equal values.
+- Use exactly the 16 transparent, permanent badge definitions in
+  [`docs/content/BADGE_CATALOG.md`](docs/content/BADGE_CATALOG.md). Badges are private, deterministic,
+  profile-isolated, and never scarce, paid, tradable, random, or public status.
+- Learning and defined activity completion are idempotent and award zero Seeds and zero garden
+  growth. The Mangrove package includes an equal-credit accessible route.
+- One Parent confirmation produces one ordered RevealBundle: action-specific praise, optional
+  truthful self-reported outcome, Seeds, mapped garden growth, canopy/Challenge Leaf/League,
+  Impact Path/badges/safe-help recognition, then private Family Reward last. Screens do not
+  calculate or duplicate unlocks.
+- Opening Moment and the three role-neutral introduction screens are skippable, replayable, and
+  profile-neutral. Finishing or skipping hands off to the existing R001 `/` entry and cannot mutate
+  task, Seed, garden, badge, League, or reward state.
+- Parent progress is a read-only selected-Child projection; Child progress, badge evidence,
+  learning completion, and Child-specific story preferences never leak between profiles.
+
 ## Required design intake before coding another batch
 
 When the user supplies the Stitch designs:
@@ -53,17 +78,24 @@ When the user supplies the Stitch designs:
 1. Preserve the user's image/frame files and record their provenance and approval status.
 2. Compare every frame with `PRODUCT.md`, the active Feature 003 specification, `DESIGN.md`,
    `PROTOTYPE_LIMITATIONS.md`, and the safety/privacy invariants in `AGENTS.md`.
-3. Resolve screen inventory, route/state mapping, all Arabic/English copy, component inventory,
-   responsive/native behavior, typography assets, loading/error/empty/offline states, and reduced
-   motion before changing runtime files.
-4. Update `DESIGN.md` from provisional to approved executable design truth and update the Feature
+3. Confirm the complete prerequisite shell: Child access and Today/Garden/League navigation,
+   Parent Check-in and result handoff, and a Parent selected-Child origin. A Growth-only screen set
+   is not implementable as a coherent journey without those approved frames.
+4. Resolve screen inventory, route/state mapping, all Arabic/English copy, component inventory,
+   responsive/native behavior, typography assets, loading/error/empty/offline states, profile
+   isolation, and reduced motion before changing runtime files.
+5. Update `DESIGN.md` from provisional to approved executable design truth and update the Feature
    003 plan/tasks with exact file boundaries.
-5. Run Spec Kit consistency analysis and reserve implementation files in `TEAM_OWNERSHIP.md`.
-6. Only then implement with focused tests and fresh Revision 2 evidence.
+6. Run Spec Kit consistency analysis and reserve implementation files in `TEAM_OWNERSHIP.md`.
+7. Only then implement with focused tests and fresh revision-specific evidence.
 
-The canonical design-generation input is
-[`GHAF_GOOGLE_STITCH_PROMPT_PACK.md`](GHAF_GOOGLE_STITCH_PROMPT_PACK.md). It is not itself approval
-of generated screens.
+The design-generation inputs are
+[`GHAF_GOOGLE_STITCH_PROMPT_PACK.md`](GHAF_GOOGLE_STITCH_PROMPT_PACK.md) and the supplied
+[`Growth Journey prompt pack`](docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/README.md). They are not
+approval of generated screens. Resolve their requirements through the active contracts and
+[`Growth Journey preflight`](specs/003-family-growth-garden/design-intake/growth-journey-preflight.md)
+before implementation; consult the proposed [Impact Path ADR](docs/architecture/adr/0002-impact-path-projection.md)
+and [learning story contract](docs/content/LEARNING_STORIES.md) for data and content boundaries.
 
 ## Non-negotiable exclusions
 

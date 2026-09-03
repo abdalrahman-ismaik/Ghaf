@@ -1,14 +1,21 @@
-# Phase 0 Research: Family Growth Garden — Revision 2
+# Phase 0 Research: Family Growth Garden — Revision 3
 
 **Feature**: `003-family-growth-garden`
 
-**Revision 2 date**: 2026-09-01
+**Revision 3 planning date**: 2026-09-03
 
-**Status**: Product decisions resolved; visual implementation research is blocked until approved
-Google Stitch frames are supplied.
+**Status**: Product/domain decisions resolved for planning; visual implementation and content
+approval are blocked until approved Google Stitch frames and named reviews are supplied.
+
+**Planning input**:
+[`docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/`](../../docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/)
+
+**Reconciled preflight**:
+[`design-intake/growth-journey-preflight.md`](design-intake/growth-journey-preflight.md)
 
 Revision 1 research described the historical linear ten-route implementation. It remains useful as
-repository history but is not the Revision 2 decision baseline or acceptance evidence.
+repository history but is not the Revision 3 decision baseline or acceptance evidence. Revision 2
+remains the inherited product baseline; R001 evidence applies only to its released access slice.
 
 ## Decision 1 — Keep One App, Separate the Experiences
 
@@ -34,13 +41,15 @@ identity data or building security infrastructure.
 **Alternatives considered**: Real auth/tenancy (outside P0); a visual role switch (insufficient
 boundary); Child email/phone (unnecessary and prohibited).
 
-## Decision 3 — Separate Seeds, League Score, and Family Reward
+## Decision 3 — Separate Every Progress Authority
 
 **Decision**:
 
 - Seeds and landscapes are permanent personal growth.
 - Weekly Growth Score is `confirmed Challenge Leaves / 5 × 100`.
 - Family Reward is a private Parent-funded milestone promise delivered outside Ghaf.
+- Impact Path is a private projection of lifetime confirmed Seeds plus separately proven
+  action/learning evidence; it is not a currency or rank.
 
 **Rationale**: The separation prevents wealth, unlimited task volume, or raw Seed totals from buying
 League position and keeps permanent progress independent of weekly competition.
@@ -99,8 +108,10 @@ and [CDC praise/reward guidance](https://www.cdc.gov/parenting-toddlers/respondi
 ## Decision 7 — Preserve Praise-First, Idempotent Recognition
 
 **Decision**: One immutable confirmation receipt applies the P0 consequence at most once. The
-presentation order is Parent praise → 12 Seeds → Mangrove/canopy growth → fifth Challenge Leaf →
-private reward unlock message. Submission itself changes nothing.
+presentation order is Parent praise → any honestly labelled self-reported activity result → 12
+Seeds → mapped Mangrove growth → family canopy → fifth Challenge Leaf and League result → eligible
+Path/badge/recognition results → private reward unlock message last. Submission itself changes
+nothing. One event creates at most one recoverable RevealBundle.
 
 **Rationale**: Praise and real action remain primary, money remains secondary, and ledger-first
 idempotency prevents double Seeds, score, growth, or unlocks.
@@ -135,36 +146,128 @@ invent dialect or imply one family phrase is universal.
 ## Decision 10 — Approve Font Families, Defer Visual Geometry
 
 **Decision**: Alexandria is the display family and Readex Pro is the body/control/dialogue/numeric
-family in both locales. The sizes in `spec.md` are fixed product requirements. Exact font loading,
-tokens, layout, radii, illustration, navigation appearance, and motion remain blocked on Stitch.
+family in both locales. The sizes in `spec.md` are fixed product requirements. R001 resolves local
+font loading for its released slice. Later token changes, layout, radii, illustration, navigation
+appearance, and motion remain blocked on Stitch.
 
 **Rationale**: Typography is approved product direction, while implementing visual details from
 text alone would conflict with the user's pending screen designs.
 
-**Alternatives considered**: Retain system typography (superseded); guess the Stitch outcome
-(rejected); install fonts now (premature dependency/asset change).
+**Alternatives considered**: Retain system typography (superseded); guess later Stitch geometry
+(rejected); replace the working R001 font integration without a measured need (rejected).
 
 ## Decision 11 — Preserve One Deterministic Aggregate and Fresh Evidence
 
 **Decision**: Reset atomically restores access, pairing, permissions, tasks, Mangrove/canopy,
 five-Leaf week, standings, reward plan, prepared fixtures, and Arabic RTL welcome history. Every
-Revision 2 automated, web, Android, accessibility, and human-review result starts fresh.
+Revision 3 Growth Journey automated, web, Android, accessibility, and human-review evidence starts
+fresh. Direct R001 Batch 1 evidence remains valid only inside its recorded release boundary.
+
+Opening/introduction seen/version flags are install-level preferences; story preference is
+profile-scoped; replay/deep-link/nested-route origin is transient navigation state and carries a
+Child ID whenever it targets a Child surface. Ordinary restart or replay preserves progress and
+preferences. The Parent-authorized demo reset restores the domain fixture, preserves install/profile
+preferences, and clears transient navigation intent. An operator-only first-run reset may clear only
+the install-level flags separately.
 
 **Rationale**: The broader product state must remain repeatable offline, and Revision 1 checks do
 not exercise the new access, League, rewards, typography, or navigation.
 
 ## Decision 12 — Do Not Freeze Routes Before Stitch Intake
 
-**Decision**: The approximately fourteen screen families are product requirements; exact route
-paths, frame/state allocation, component geometry, and assets are not selected until the approved
-Stitch export is inventoried and reconciled.
+**Decision**: The inherited Revision 2 families plus the explicit Growth release inventory in the
+preflight are product requirements. Exact unreleased route paths, frame/state allocation,
+component geometry, and assets are not selected until the approved Stitch export is inventoried
+and reconciled.
 
 **Rationale**: Screen prompts communicate intent but are not final design evidence. A route tree
 chosen now could force the later design into an obsolete architecture.
 
+## Decision 13 — Project One Free Path from the Seed Ledger
+
+**Decision**: Lifetime Seed total is derived only from immutable positive Parent-approved
+transactions. Water & Coast stations project thresholds 120/132/144/156/168/180. Landscape,
+canopy, League, and Family Reward authorities remain separate even when values change in the same
+confirmation. Station 180 completes its Path result but changes a landscape only when that
+landscape's independent mapping and provenance also qualify. See
+[`ADR 0002`](../../docs/architecture/adr/0002-impact-path-projection.md).
+
+**Rationale**: Reusing Seeds preserves a simple mental model; separate provenance prevents a path
+threshold from falsely advancing a landscape, rank, or private reward.
+
+## Decision 14 — Use Transparent Composite Badge Criteria
+
+**Decision**: P0 has exactly the 16 stable badge definitions in `docs/content/BADGE_CATALOG.md`.
+Seed, station, acquisition mastery, learning, activity, and prerequisite components are evaluated
+explicitly and shown separately. Bud/Branch/Shade describes practice, not rarity.
+
+**Rationale**: A high Seed total cannot prove sorting, water care, habitat learning, or a visit.
+Transparent components are testable and more autonomy-supportive than mystery unlocks.
+
+## Decision 15 — Make Learning Finite, Equal-Credit, and Zero-Seed
+
+**Decision**: P0 authors one Mangrove package with a sourced story and a visible story-disabled or
+Parent-guided equivalent. Either route commits one idempotent completion event, adds zero Seeds/
+garden growth, and may satisfy only its named criterion.
+
+**Rationale**: Learning has intrinsic meaning and should not inflate the action-reward economy. An
+equal-credit route prevents story format or accessibility needs from becoming a disadvantage.
+
+## Decision 16 — Reconcile One Result Bundle
+
+**Decision**: One event creates at most one pending/seen RevealBundle. It projects, rather than
+owns, the immutable receipt and retains praise, Seeds, mapped garden, canopy/League, Path/badges/
+recognition, and private Family Reward last. Reduced motion shows the same result.
+
+**Rationale**: One finite causal explanation avoids stacked modals, duplicate awards, and reward
+pressure without discarding established outcomes.
+
+## Decision 17 — Keep Task and League Contracts Intact
+
+**Decision**: Growth mastery/action mappings extend immutable reviewed task versions; they do not
+replace eight categories, `recognitionMode`, `routinePhase`, safety, visibility, Green, League, or
+Family Reward eligibility. The private invite-only League and English label remain; the new “no
+ranking” rule means no public/global ranking or badge comparison. The canonical recycling task can
+add at most one sorting and one coast-care acquisition credit on valid approval. Safe-help
+recognition is one-time descriptive feedback, not a badge or progress source.
+
+**Rationale**: The prompt pack assumed a narrower environmental taxonomy and an unapproved Shared
+Growth shell. Silent replacement would weaken safety/privacy policy and erase an approved product
+decision.
+
+## Decision 18 — Separate Fact, Lore, and Review Authority
+
+**Decision**: Every factual item keeps source metadata and verified fact separate from original
+creative lore. Source access is not Ghaf approval. Named factual, Arabic/UAE cultural,
+safeguarding, accessibility, and rights reviews remain required; place content uses no visit proof
+or official identity.
+
+**Rationale**: Source links can change, and official facts do not grant permission to copy art,
+marks, or imply endorsement.
+
+## Decision 19 — Layer First-Run Presentation Before R001
+
+**Decision**: A native system splash remains separate from an optional brief Opening Moment and
+exactly three role-neutral introduction panels. After visual approval, Finish/Skip hands off to the
+released R001 `/`; manual replay returns to a validated origin and cannot mutate domain state.
+
+**Rationale**: This preserves the implemented access contract while clearly separating product
+orientation from Parent household onboarding.
+
+## Decision 20 — Isolate Profiles and Version Migration
+
+**Decision**: Achievement progress, events, awards, reveals, migration, and route origins include
+profile identity. Migration backfills only provable history and queues no reveal. A small local
+persistence adapter is a proposed gap to measure after Stitch; no dependency is approved now.
+
+**Rationale**: Salem fixtures must not leak to Alya or a new Child, and prototype restart continuity
+must not grow into an unplanned production storage system.
+
 ## Research Resolution
 
-No product `NEEDS CLARIFICATION` item remains. The only open dependency is an intentional design
-input: approved Stitch frames. It is recorded as `BLOCKED`, not as permission to infer a design.
-After the frames arrive, perform a focused design/route/component/font-loading analysis and update
-the plan, contracts, quickstart, and T111+ tasks before implementation.
+No product `NEEDS CLARIFICATION` item remains for planning. Open dependencies are intentional:
+approved complete Stitch frames, a measured local-persistence choice, one consistent visual digit
+strategy, and named content reviews. They are recorded as `BLOCKED`/`NOT RUN`, not permission to
+infer a design or claim approval. After frames arrive, perform a focused design/route/component/
+asset/persistence analysis and update the plan, contracts, quickstart, and post-T174 tasks before
+implementation.
