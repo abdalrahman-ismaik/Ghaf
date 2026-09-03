@@ -1,5 +1,11 @@
 # Bounded Assistant Contract
 
+> **Historical Revision 1 contract — 2026-08-28.** The bounded-AI safety rules remain useful, but
+> this exact interface and fixture contract describes the mounted Revision 1 implementation. It
+> does not authorize Revision 2 voice, permission, access, or screen behavior. Revision 2 P0
+> push-to-talk remains a prepared simulation; update this contract only after the user supplies
+> approved Stitch frames and the design-intake tasks are complete.
+
 ## Capability Truth
 
 Feature 003 P0 has two deterministic, prepared assistants:

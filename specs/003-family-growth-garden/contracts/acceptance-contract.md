@@ -1,380 +1,249 @@
-# Acceptance Contract: Family Growth Garden
+# Acceptance Contract: Family Growth Garden — Revision 2
 
-**Status**: PROPOSED — executable Feature 003 validation contract. No check is passed by this
-document alone.
+**Approved product revision**: 2026-09-01
 
-**Primary acceptance surface**: named physical Android build, Arabic RTL first and English LTR
-second.
+**Current release state**: **DESIGN BLOCKED**. This contract defines future acceptance; it does not
+claim the Revision 2 app or frames exist.
 
-**Deterministic baseline**: local prepared providers with every external service denied.
-
-This contract converts the approved behavior in `../spec.md` and the evidence rules in
-`../../../DEMO_RUNBOOK.md` into repeatable checks. It is not a public API contract, a production
-release checklist, or evidence that the implementation, Android build, cultural content, or human
-journey has passed.
+Revision 1's ten-route implementation and evidence are historical and cannot satisfy an assertion
+below.
 
 ## Evidence Vocabulary
 
-Every recorded check MUST use exactly one of these outcomes:
-
-| Outcome   | Meaning                                                                                              |
-| --------- | ---------------------------------------------------------------------------------------------------- |
-| `PASSED`  | The named command, build, device, locale, or human exercise was run and met every stated assertion.  |
-| `FAILED`  | The check was run and at least one stated assertion did not hold. Record the exact observation.      |
-| `BLOCKED` | A required dependency such as a build, device, reviewer, or approved secure boundary is unavailable. |
-| `NOT RUN` | The check has not been attempted against the current Feature 003 worktree/build.                     |
-
-A fresh evidence exercise remains `NOT RUN` until someone attempts it. Checking whether its named
-prerequisite is available counts as an attempt: if the command, build, device, reviewer, secure
-boundary, or other required dependency is then unavailable, change the result to `BLOCKED` and name
-that dependency. An exercise that runs becomes `PASSED` or `FAILED`; do not leave an attempted,
-dependency-blocked exercise as `NOT RUN` or pre-label an unattempted exercise `BLOCKED`.
-
-A source inspection, unit test, web preview, or Feature 002 result MUST NOT pass a physical-device,
-native RTL, media, Back, accessibility, timing, comprehension, or named-human-review criterion.
-
-## Authored Route and Guard Contract
-
-The integrated application MUST contain exactly these ten product routes. Framework files such as
-`app/_layout.tsx` are not product routes. Loading, assistant, fallback, retry, awaiting-confirmation,
-phase-review, and celebration are states of these routes.
-
-|   # | Route                 | Required entry or safe behavior                                                                                                                                                                              | State mutation allowed on entry                                        |
-| --: | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-|   1 | `/`                   | Always reachable; Arabic RTL after canonical reset                                                                                                                                                           | None                                                                   |
-|   2 | `/role`               | Always reachable as a shared-device demo selector; visibly not authentication                                                                                                                                | Demo mode and active synthetic Child only after an explicit choice     |
-|   3 | `/parent`             | Parent mode; a Child-mode deep link returns to `/role` without exposing Parent-only detail                                                                                                                   | None on entry                                                          |
-|   4 | `/parent/task/new`    | Parent mode; otherwise return to `/role`                                                                                                                                                                     | Draft edits only                                                       |
-|   5 | `/parent/task/review` | Parent mode plus a complete review candidate; otherwise return to `/parent/task/new` without losing valid draft input                                                                                        | `draft → reviewed` only after validation; no assignment on entry       |
-|   6 | `/child`              | Child mode plus an active synthetic profile; otherwise return to `/role`                                                                                                                                     | `assigned → chosen` only after the assigned Child deliberately chooses |
-|   7 | `/child/task`         | Child mode plus an assignment for the active Child; a missing or wrong-profile assignment returns to `/child` without revealing private task detail                                                          | `chosen → in_progress` only after an explicit open/start action        |
-|   8 | `/parent/check-in`    | Parent mode plus the matching journey in `submitted`, `retry`, `confirmed` with pending praise, or `recognized` with its matching ledger receipt; otherwise return to `/parent` without creating recognition | None on entry; available actions depend on the admitted state          |
-|   9 | `/garden`             | Safe read-only family landscape before confirmation and the recognized consequence afterward; available from the authored family flow                                                                        | None on entry                                                          |
-|  10 | `/circle`             | Safe synthetic/local aggregate before and after the milestone; no individual record is exposed                                                                                                               | None on entry                                                          |
-
-For `/garden` and `/circle`, direct entry MUST render the counters represented by current session
-state and MUST NOT infer a completion. Parent-only reset controls MUST not be exposed as a Child
-action even when a shared read-only surface is visible.
-
-For `/parent/check-in`, `submitted` exposes review, kind retry, and confirmation planning; `retry`
-resumes the observable no-loss retry panel until the Parent explicitly returns the task to the
-Child;
-`confirmed` with the matching pending plan resumes the rendered-praise state and its separate
-Parent continuation. `recognized` is admitted only when `recognition:<submission.id>` resolves to
-the immutable matching receipt, and it exposes only the neutral **Already confirmed** outcome. It
-MUST NOT expose retry, praise editing, another confirmation control, recognition continuation, or a
-new announcement/celebration. A missing or mismatched submission, pending plan, or receipt follows
-the safe `/parent` recovery with no mutation.
-
-The replaced Feature 002 product routes MUST be absent from the final route inventory:
-
-- `/parent/create`
-- `/parent/generating`
-- `/parent/review`
-- `/child/mission`
-- `/parent/confirmation`
-- `/celebration`
-
-Historical Feature 002 specifications, documentation, screenshots, and evidence remain intact.
-
-### Navigation and History Assertions
-
-1. `assigned → chosen` and `chosen → in_progress` are two observable, guarded transitions.
-2. Direct navigation to a conditional route without its prerequisite follows the safe behavior in
-   the table and changes no reward or shared counter.
-3. Switching language in a safe current state preserves the task identifier, valid input, and
-   lifecycle state while updating content direction.
-4. Role switching preserves the current approved journey state but never bypasses Parent approval
-   or exposes a task assigned to another synthetic Child.
-5. Parent reset atomically replaces navigation with `/`; pressing native Back MUST NOT reveal any
-   pre-reset draft, task, submission, check-in, garden celebration, or circle milestone.
-6. A web browser history check is only a proxy. Android Back passes only after direct observation on
-   the named physical build.
-7. The resolved Expo configuration MUST set Android predictive Back enabled. On a named supported
-   Android OS/device, the predictive gesture and system Back MUST follow the same guarded
-   destinations as ordinary navigation, MUST NOT mutate the journey, and MUST NOT preview or reveal
-   pre-reset history after reset. Record the config output, build, device, and OS with the native
-   observation.
-
-## Canonical Reset Oracle
-
-The Parent-only **Reset synthetic demo** action requires confirmation and MUST restore all values in
-one action without a remote dependency.
-
-| Field                          | Exact reset value                                              |
-| ------------------------------ | -------------------------------------------------------------- |
-| Locale / direction             | Arabic / RTL                                                   |
-| Route / history                | `/`; no stale Back history                                     |
-| Demo mode                      | Parent; role switch labeled not authentication                 |
-| Household                      | Synthetic Al Noor family                                       |
-| Children                       | Salem, age 9; Alya, age 11; both visibly synthetic             |
-| Active Child                   | Salem                                                          |
-| Salem personal earned Seeds    | 48                                                             |
-| Alya personal earned Seeds     | 36                                                             |
-| Salem Mangrove track           | 48/60, Shoot                                                   |
-| Household Ghaf canopy          | 19/25 contribution leaves                                      |
-| Circle Green Impact goal       | 11/12 eligible actions; synthetic/local                        |
-| Active assignment / submission | None                                                           |
-| Parent Guide fixture           | `guide_recycling_refine_v1`                                    |
-| Child Coach fixture            | `coach_recycling_steps_v1`                                     |
-| Prepared image                 | `fixture_recycling_clean_v1`; prepared/synthetic label visible |
-| Prepared audio                 | `fixture_salem_plan_ar_v1`; prepared/synthetic label visible   |
-| Assistant mode                 | Deterministic prepared; no remote dependency                   |
-| Celebration state              | `available = false`; `consumed = false`                        |
-
-Reset MUST be exercised from draft, prepared-assistant result, prepared fallback, prepared-media
-selected, prepared-media removed, image/audio unavailable fallback, reviewed, assigned, chosen,
-`in_progress`, submitted, retry, confirmed/recognized, celebration available, celebration
-consumed, garden, and circle states. From a Child-only state, first switch to Parent demo mode
-without manually changing counters, then invoke reset. Acceptance requires five consecutive exact
-resets from every named source state; one mismatch is `FAILED` and must not be repaired by manually
-editing counters.
-
-## Lifecycle and No-Early-Reward Oracle
-
-The valid main lifecycle is:
-
-`draft → reviewed → assigned → chosen → in_progress → submitted → confirmed → recognized`
-
-The dignified retry branch is:
-
-`submitted → retry → in_progress`
-
-At each of `reviewed`, `assigned`, `chosen`, `in_progress`, `submitted`, `retry`, and `confirmed`
-before the separate recognition continuation, assert all four reward/projection values remain at
-the reset baseline: Salem 48 Seeds, Mangrove 48/60 Shoot, canopy 19/25, circle 11/12. Optional media,
-optional reflection, permitted adult help, omission of both optional items, neutral submission
-acknowledgement, confirmation planning, and praise presentation MUST NOT change those values.
-
-Repeating the exact Parent assignment-approval command after `assigned` MUST return the same
-assignment and executable choice as a neutral no-op; it MUST create no second assignment or counter
-change. A repeat whose task/version, Child, assignment, or choice does not match remains invalid.
-
-Kind retry MUST preserve every prior earned value, show no failure badge/debt/deduction, and return
-the task to `in_progress`. A safe equivalent or smaller replacement may change a displayed future
-award only when agreed before Child acceptance; permitted help after acceptance never reduces the
-displayed award.
-
-## Confirmation and Idempotency Oracle
-
-The P0 submission is one 12-Seed, recurrence-once `standard + acquisition` Green Impact task with
-`visibilityScope = household` and `circleEligible = true`. Its first valid recognition MUST use two
-distinct visible Parent actions and an observable intermediate state:
-
-1. From `submitted`, the first action validates the editable action-specific praise, creates the
-   pending plan, moves the matching journey to `confirmed`, and renders the final praise in a
-   `praise_presented` state. Capture that state with all four counters unchanged and no recognition
-   receipt, growth, milestone, announcement, or celebration.
-2. Only after that rendered state is present may a second explicit Parent continuation invoke
-   recognition. The handler that records/renders praise MUST NOT also call recognition in the same
-   press, event callback, effect, animation callback, or dispatch chain.
-3. The second action moves the journey to `recognized`, stores one immutable receipt, and changes
-   exactly these four counters:
-
-| Counter                     |        Before |       After first valid confirmation |
-| --------------------------- | ------------: | -----------------------------------: |
-| Salem personal earned Seeds |            48 |                                   60 |
-| Salem Mangrove progress     |  48/60, Shoot |                       60/60, Sapling |
-| Household canopy            |  19/25 leaves |                         20/25 leaves |
-| Circle Green Impact goal    | 11/12 actions | 12/12 actions, cooperative milestone |
-
-No other counter, assignment version, prepared fixture identifier, Child profile, locale, or
-private record may change as an incidental consequence. The circle receives one coarse eligible
-Green action, never 12 Seeds.
-
-Navigate back to `/parent/check-in` for the recognized matching journey five times and exercise the
-guarded duplicate command directly in automated coverage. The rendered route MUST expose only
-**Already confirmed** (or its canonical Arabic equivalent), and every attempt MUST return the same
-receipt as a neutral no-op. It MUST leave the four post-confirmation values unchanged and duplicate
-no Seed transaction, stage reveal, canopy leaf, circle event, milestone, announcement, or
-celebration.
-
-## Privacy-Before-Projection Oracle
-
-The full `Task`, `Submission`, check-in, receipt, and other private domain records stay inside the
-private recognition boundary. That boundary validates recognition/phase, visibility, category, and
-circle eligibility, then derives a minimal strict projection-eligibility context. A shared projector
-MUST NOT accept or strip a raw private domain object. Only the strict context may enter shared
-candidate construction, and only an allowlisted canopy/circle DTO may reach a shared mutation.
-
-Exercise at least these cases and compare the shared counters before and after each attempt:
-
-- a valid `visibilityScope = child_guardian` task with `circleEligible = false` remains valid private
-  data but yields no shared candidate; `child_guardian + true` is rejected before derivation;
-- `circleEligible = true` for a non-Green category;
-- `circleEligible = true` with `visibilityScope = child_guardian`;
-- a raw `Task`, `Submission`, check-in, receipt, or other private domain object offered directly to
-  the shared projector;
-- an otherwise shaped projection candidate with any unknown Child/household identity, Seed
-  quantity, task ID/title/history, timestamp, media, reflection, assistant content, Parent note, or
-  Parent observation field;
-- prayer, kinship, affection, food consumption, hygiene, wellbeing, or disability-related content;
-- invalid recognition/routine-phase combinations; and
-- a duplicate recognition key, which MUST return its stored receipt before context derivation or
-  projection.
-
-Every malformed, unknown-field, invalid-pairing, or sensitive candidate MUST be rejected before DTO
-construction and before a canopy/circle visual or counter changes. A valid private item that is not
-shareable yields no shared DTO rather than being copied into a candidate. A valid circle DTO
-contains only one coarse synthetic family-level eligible Green action. Parent and sibling surfaces
-MUST NOT place Salem and Alya's raw Seeds, pace, rank, or age-unequal contribution trails side by
-side.
-
-## Prepared Assistant and Media Fallback Oracle
-
-The deterministic acceptance path makes no external request.
-
-| Condition                                                                              | Required behavior                                                                                                                                  |
-| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Parent enters “Take the recycling out.”                                                | Input remains unchanged until **Accept suggestion**; **Keep mine** preserves it.                                                                   |
-| Prepared Parent Guide opens                                                            | Uses `guide_recycling_refine_v1`; labels the result prepared; says AI may be wrong and the Parent decides.                                         |
-| Optional live Parent call times out, fails schema/safety validation, or is unavailable | On the same route and attempt, retain Parent input and show the reviewed prepared result with a fallback/prepared label.                           |
-| Child Coach opens                                                                      | Uses only `coach_recycling_steps_v1`; stays bound to the active approved task; shows **I need an adult** and the prepared/may-be-wrong disclosure. |
-| Prepared image is absent                                                               | Show an accessible descriptive synthetic placeholder; completion remains available.                                                                |
-| Prepared audio is absent                                                               | Show the canonical transcript and Coach steps; do not request microphone permission.                                                               |
-| All external services are denied                                                       | Parent Guide, Child Coach, summary, media fallbacks, reward, garden, circle, and reset remain usable.                                              |
-
-The Child Coach has no live mode in P0. No assistant may provide unrestricted chat, diagnostic or
-religious judgment, emotional/personality inference, secrecy/exclusivity language, food-safety
-verdicts, or hazardous instructions. Prepared content MUST never be labeled live.
-
-Optional live Parent refinement remains `BLOCKED` for implementation and `NOT RUN` for validation
-until an approved secure server boundary, structured validation, timeout/fallback evidence, and
-secret isolation are directly demonstrated. Its absence does not block the deterministic P0.
-
-## Parent Summary Correction Oracle
-
-On `/parent`, open the prepared seven-day summary and its bounded correction control. The control
-MUST expose only the defined synthetic observable-fact fields; it MUST NOT become an open prompt,
-Child-analysis surface, or remote conversation. Apply one neutral factual correction and verify the
-same structured and prohibited-language validation runs before the local corrected summary is
-shown with its synthetic/prepared origin and unchanged time window, uncertainty, open question, and
-possible adjustment.
-
-Then attempt a correction containing a character label, diagnosis/condition conclusion,
-emotion/personality/risk inference, truthfulness/religiosity judgment, or parenting/family-quality
-judgment. The correction MUST be rejected with neutral feedback, the last safe summary MUST remain
-available, and no remote request, task/reward mutation, Child-profile inference, or shared
-projection may occur. Run the valid and rejected correction checks in Arabic and English.
-
-## Bilingual, RTL, and Accessibility Oracle
-
-Run the complete journey in Arabic first, reset, then run the equivalent English journey. For every
-route and in-route assistant/retry/celebration state, verify:
-
-- the same decisions, safety boundaries, privacy meaning, fixed award, disclosure, and final values;
-- Arabic logical order/alignment and progress direction; English LTR order/alignment;
-- only directional arrows mirror; trees, checkmarks, landscape objects, and nondirectional symbols
-  do not mirror;
-- canonical Arabic safety and assistant copy from `../../../DEMO_RUNBOOK.md` is not improvised;
-- mixed Arabic/English names, Latin fixture IDs, 12-Seed values, numerals, diacritics, and long labels
-  wrap without clipping;
-- normal-size text meets at least 4.5:1 contrast, large text meets at least 3:1, and essential UI
-  component boundaries/states meet at least 3:1 against adjacent colors, satisfying the applicable
-  WCAG 2.2 AA text and non-text contrast criteria;
-- required copy and dominant actions remain operable at 200% font scale;
-- dominant controls are at least 48×48dp and adjacent small targets have at least 8dp separation;
-- screen-reader order, labels, roles, selected/disabled states, and bottom-sheet focus are logical;
-- submission, confirmation, reward, Sapling stage, and circle milestone are each announced once;
-- prepared audio has visible equivalent text and prepared imagery has a concise description and
-  point-of-use origin label;
-- reduced motion produces the same static counters, stage, cause, and symbolic-growth disclosure
-  without waiting for animation; and
-- the resolved Android configuration has predictive Back enabled and, on a supported named Android
-  build/device, predictive/system Back follows every route guard and cannot reveal stale state after
-  reset.
-
-These checks remain `NOT RUN` until exercised on a current named build. Source or web inspection may
-produce separate proxy evidence but cannot pass the Android criteria.
-
-## Automated Verification Matrix
-
-The implementation MUST provide focused automated evidence for the following behavior. Exact test
-filenames may follow repository conventions, but every row must be traceable to one or more tests.
-
-| Area              | Required assertions                                                                                                                                                                          |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Lifecycle         | Every valid transition; invalid skips rejected; `chosen` distinct from `in_progress`; wrong Child rejected; exact duplicate Parent assignment approval is an idempotent no-op                |
-| Early reward      | Review, assignment, choice, start, submission, media, reflection omission, help, retry, confirmation planning, and praise presentation change none of the four counters                      |
-| Reward matrix     | Five valid recognition/phase rows; every other pair rejected; fixed awards limited to 4/6/8/12/15                                                                                            |
-| Confirmation      | Distinct rendered `praise_presented` state; separate second Parent continuation; no shared handler/effect; one exact four-counter delta; five matching-receipt duplicates are neutral no-ops |
-| Fade-first review | Third recurrent acquisition confirmation prompts an unselected, future-only Parent decision; no automatic phase change; reversal preserves progress                                          |
-| Garden            | Eight category mappings; five track thresholds at and around 0/20/60/120/200; no reversal                                                                                                    |
-| Privacy           | Raw private records never enter the strict projection candidate; unknown identity/Seed/private fields and invalid/sensitive contexts reject before DTO construction or mutation              |
-| Circle            | Only one coarse household-visible eligible Green action is accepted; no task/Child/Seed fields                                                                                               |
-| Child Coach       | Age-band and intent allowlists, active-task binding, prepared fixture/disclosure, prohibited intent/output rejection                                                                         |
-| Parent Guide      | Structured prepared/fallback result, retained input, strengths-first summary shape, bounded local fact correction, revalidation, and prohibited-language rejection                           |
-| Failure fallback  | Network denial, timeout, malformed result, safety rejection, missing image/audio all return to the deterministic path without duplicate state                                                |
-| Localization      | Arabic/English resource-key parity and stable mixed-script fixture values                                                                                                                    |
-| Reset/history     | Every meaningful source state restores the complete oracle; check-in admits only matching submitted/pending-praise/recognized-receipt states; predictive Back config is enabled              |
-| Claims/provenance | No real-tree/unsupported impact claim; prepared/synthetic origin labels are present                                                                                                          |
-
-Run and record at least:
-
-```bash
-npm run typecheck
-npm run lint
-npm run format:check
-npm test
-npx expo install --check
-npx expo config --type public
-npx expo export --platform web --output-dir dist
-git diff --check
-```
-
-Command success does not replace behavior evidence. An unattempted check is `NOT RUN`; after an
-attempt, a missing named dependency makes it `BLOCKED`, while an executed check is `PASSED` or
-`FAILED`.
-
-## Judge-Journey Acceptance
-
-From a fresh reset, complete the route sequence below without hidden setup:
-
-`/ → /role → /parent → /parent/task/new → /parent/task/review → /role → /child → /child/task → /role → /parent/check-in → /garden → /circle`
-
-Although several routes recur in navigation, the inventory remains exactly ten authored routes.
-The current internal target is 120–150 seconds; it is not a published SMAC judging rule. Run five
-uninterrupted rehearsals and record operator, duration, reset result, fallback use, and failure note.
-All five must complete at or below 150 seconds for the rehearsal criterion to pass.
-
-Ask three people unfamiliar with the detailed design what Salem did, what the assistant did, who
-approved the reward, and what another family can see. Record enough of each answer to verify they
-understood the real action, bounded/prepared AI, Parent gate, and one coarse eligible Green action.
-
-## Web Proxy and Physical Android Limits
-
-Web evidence may validate route reachability, deterministic logic, browser console health, basic
-layout, copy presence, and a web-specific history proxy. Label it `PASSED (web proxy)` where
-appropriate. It does not validate Android RTL layout, native Back, keyboard/IME, safe areas, touch
-targets, screen reader, reduced-motion setting, prepared native media, permissions, performance, or
-an installable build.
-
-At planning time, preserve these truthful initial statuses:
-
-The physical Android row is `BLOCKED` because the recorded baseline availability attempt already
-identified the missing named build/device; `BLOCKED` is not the default for an unattempted
-exercise. Each native subcheck remains `NOT RUN` until it is attempted.
-
-| Gate                                                                                                 | Initial Feature 003 status                     |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Automated implementation commands                                                                    | `NOT RUN`                                      |
-| Ten-route deterministic journey                                                                      | `NOT RUN`                                      |
-| Arabic RTL and English LTR physical journey                                                          | `BLOCKED` pending named build/device           |
-| Predictive/native Back, WCAG contrast, keyboard, media, reduced motion, screen reader, and 200% font | `NOT RUN`                                      |
-| Five timed rehearsals and three-person comprehension                                                 | `NOT RUN`                                      |
-| Arabic/UAE cultural, faith, safeguarding, sustainability, and accessibility reviews                  | `NOT RUN`                                      |
-| Optional live Parent refinement                                                                      | implementation `BLOCKED`; validation `NOT RUN` |
+| Status       | Meaning                                                                           |
+| ------------ | --------------------------------------------------------------------------------- |
+| `PASSED`     | Direct evidence exists for the exact Revision 2 artifact/build and assertion      |
+| `FAILED`     | The exact assertion was attempted and did not hold                                |
+| `BLOCKED`    | An attempted or required gate cannot proceed because a named dependency is absent |
+| `NOT RUN`    | No qualifying Revision 2 attempt exists                                           |
+| `HISTORICAL` | Evidence belongs to Revision 1 or an earlier feature and is not reusable          |
+
+Synthetic, prepared, and simulated are capability-origin labels, not evidence statuses.
+
+## AC-00 — Stitch Design-Intake Gate
+
+Implementation is accepted for release only if all are true:
+
+- the user supplied and approved the selected Stitch frames;
+- Arabic RTL and matched English LTR cover every required screen family and state;
+- exact route, navigation, component, token, font-loading, illustration, motion, and Back behavior
+  are recorded in the design/plan artifacts;
+- Parent navigation is Home/Tasks/Garden/Family and Child navigation is Today/Garden/League;
+- cross-role navigation and the old role toggle are absent from ordinary product frames;
+- the product, privacy, competition, reward, AI, Arabic, and accessibility audits pass; and
+- the integration owner explicitly releases the implementation block.
+
+Absent Stitch frames produce `BLOCKED`, never an inferred pass.
+
+## AC-01 — Separate Synthetic Access
+
+| Assertion             | Required result                                                                                                            |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Parent entry          | Synthetic phone/email verification plus PIN/passkey/biometric-gate state; visible nonproduction disclosure                 |
+| Parent setup          | Family name, Child nickname/avatar/age band/language/accessibility only; no Child email/phone/location/school/medical data |
+| Child shared device   | Parent-created profile plus PIN or picture sequence; neutral error/help states                                             |
+| Child separate device | Prepared QR or six-digit code → awaiting Parent → approved/denied/expired/offline/revoked; no real camera/network claim    |
+| Role isolation        | Child cannot open Parent Home/Tasks/Family/rewards/reports/permissions/invitations                                         |
+| Reauthentication      | Required before monetary reward, member, League, trusted-device, or media-permission change                                |
+| Normal navigation     | No role toggle or repeated forced role switching                                                                           |
+
+Every access fixture is synthetic. Production identity verification, cryptography, account
+recovery, tenancy, and secure device binding remain out of scope.
+
+Parent settings contain account protection, Child profiles, paired devices, language, League
+participation, age-band communication, prepared photo/voice/AI permissions, family visibility,
+device removal, and Child-code reset. Child settings contain only language, Parent-approved voice,
+speed, captions, reduced motion, text size, and tree avatar. Permission/device states cover off,
+requested, denied, approved, revoked, offline, and updated; they never imply real P0 capture.
+
+## AC-02 — Role Navigation and Screen Families
+
+The approved Stitch inventory must map Welcome/access; Parent auth/setup, Home, Tasks, Task Builder,
+Check-in, Garden, Family/League management, Family Rewards; Child access/pairing, Today, Task/Coach,
+Garden/celebration/reward unlock, League; and role-appropriate profile/settings/permissions/device/
+reauthentication states.
+
+Task Builder contains Choose, Adjust, and Review/Assign. Celebration is a Garden state. AI is
+contextual, not a tab. Exact route paths are filled after Stitch intake.
+
+## AC-03 — Canonical Reset Oracle
+
+One Parent-authorized reset atomically restores:
+
+| Field         | Expected value                                                                                                    |
+| ------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Entry         | Arabic RTL welcome/access, signed out, no protected Back history                                                  |
+| Household     | Synthetic Al Noor; Salem 9; Alya 11                                                                               |
+| League        | Synthetic Salem/Alya/Mariam/Rashid; five slots each                                                               |
+| Salem         | 4/5 confirmed; Weekly Growth Score 80                                                                             |
+| Other scores  | Mariam 100, Alya 60, Rashid 40                                                                                    |
+| Garden        | Salem Mangrove 48/60 Shoot; family canopy 19/25                                                                   |
+| Family Reward | Salem 108/120 eligible Seeds; AED 25; Promised; private                                                           |
+| Task          | No active assignment/submission until Parent creates it                                                           |
+| Fixtures      | `guide_recycling_refine_v1`, `coach_recycling_steps_v1`, `fixture_recycling_clean_v1`, `fixture_salem_plan_ar_v1` |
+| Permissions   | Real camera/microphone off; prepared voice on; captions on                                                        |
+| Recognition   | Empty ledger; celebration unavailable/unconsumed                                                                  |
+
+Reset must pass from access, pairing, draft, Coach voice, submitted, retry, confirmation,
+celebration, Garden, League, reward, permission, device, and reauthentication states without
+network, auth, camera, microphone, payment, invitation, or AI service.
+
+## AC-04 — No-Early-Recognition Oracle
+
+Assignment, Child choice, start, help/Coach use, prepared voice/media, completion with help,
+submission, and kind retry change all of the following by zero:
+
+- Seeds and landscape stage;
+- family-canopy leaves;
+- Challenge Leaf count and Weekly Growth Score; and
+- Family Reward progress/state.
+
+Help, accessibility adaptation, and an agreed smaller/equivalent task preserve the displayed award
+and full Challenge Leaf credit after Parent confirmation.
+
+## AC-05 — Confirmation and Presentation Oracle
+
+The first valid P0 confirmation stores one immutable receipt and presents:
+
+1. Parent praise naming the safe action/help-seeking;
+2. exactly 12 Seeds;
+3. Mangrove 48/60 Shoot → 60/60 Sapling;
+4. family canopy 19/25 → 20/25, exactly one leaf;
+5. Salem 4/5 → 5/5 and score 80 → 100;
+6. reward progress 108/120 → 120/120 and Promised → Unlocked; and
+7. the private reward message only after praise and garden growth.
+
+Five duplicate confirmation attempts must each return a neutral Already confirmed result and
+change no transaction, stage, leaf, score, reward, rank, announcement, or celebration.
+
+Reduced motion presents the same final values and textual cause immediately.
+
+## AC-06 — Weekly League Oracle
+
+### Score and opportunity rules
+
+- Each participating Child has exactly five planned Leaf slots before the active week.
+- `score = confirmedLeaves / 5 × 100`; possible values are 0, 20, 40, 60, 80, and 100 only.
+- Extra tasks never change score or rank.
+- Permitted help, accessibility adaptations, and agreed equivalents earn the same 20 points.
+- Equal scores share position; speed, timestamps, age, difficulty, raw Seeds, money, and evidence
+  do not break ties.
+
+### Required post-confirmation standings
+
+| Position | Nickname | Score | Leaves |
+| -------: | -------- | ----: | -----: |
+|        1 | Salem    |   100 |    5/5 |
+|        1 | Mariam   |   100 |    5/5 |
+|        3 | Alya     |    60 |    3/5 |
+|        4 | Rashid   |    40 |    2/5 |
+
+### Privacy and rollover
+
+A League row contains only nickname, tree avatar, position, score, and Leaves. Injecting a task,
+evidence, age, accommodation, praise, raw Seed, money, missed reason, note, assistant output, or
+timestamp must reject the projection before rendering/counter change.
+
+Prayer, affection, emotional disclosure, food consumption, private wellbeing, hygiene,
+disability-related routines, and proof of love are ineligible. Only prepared bilingual reactions
+are accepted. Weekly rollover replaces Leaf/score/rank state and changes no permanent garden,
+Seed, canopy history, unlocked reward, or Given record.
+
+Revision 1 `circleEligible` is not a League field and must not drive Revision 2 ranking/projection.
+
+## AC-07 — Family Reward Oracle
+
+| Rule               | Required result                                                                                                            |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Name               | Family Reward — المكافأة العائلية; never wallet/store/exchange                                                             |
+| Audience           | Relevant Child and guardians only                                                                                          |
+| Milestones         | New eligible Seeds, landscape stage, or multiple landscapes at Sapling                                                     |
+| Promise types      | Money, family experience, privilege, or gift                                                                               |
+| State machine      | Promised → Unlocked → Given only                                                                                           |
+| Funding/delivery   | Parent-selected and delivered outside app                                                                                  |
+| Money handling     | No transfer, custody, settlement, redemption, or balance                                                                   |
+| Competition        | No rank/winner dependency and no appearance in League                                                                      |
+| Exchange           | No universal Seed-to-AED rate                                                                                              |
+| Immutability       | Agreed plan snapshot cannot be retroactively changed; future plans version prospectively                                   |
+| Unlock             | Cannot be revoked, reduced, or removed as punishment                                                                       |
+| Monthly summary    | Sum of agreed monetary plans assigned to the month across Promised, Unlocked, and Given; drafts/nonmonetary plans add zero |
+| Protection         | Monetary save/edit requires Parent reauthentication                                                                        |
+| Source eligibility | Every contribution is tied to an immutable task version and fails closed; unknown/prohibited activity adds zero            |
+| Landscape progress | Stage milestones use eligible-contribution provenance, never displayed aggregate stage alone                               |
+
+Prayer, affection, emotional disclosure, eating/body outcomes, and proof of love must fail
+validation as reward milestones, as must private wellbeing or disability-related activity. A
+Family Reward must never condition food, water, clothing, safe shelter, sleep, healthcare,
+education, transport, ordinary family contact, affection, safety, dignity, or ordinary religious
+participation. Seed and landscape progress without explicit eligible provenance adds zero Family
+Reward progress. Duplicate unlock/Given actions are no-ops.
+
+## AC-08 — Task, Coach, and Prepared Voice Oracle
+
+The P0 task is the Parent-approved 12-Seed Mangrove recycling task with adult pre-check, safe clean
+paper/plastic only, prohibited hazards, no road crossing, adult-carried disposal, unsafe-heat/
+traffic alternative, and handwashing.
+
+The Coach:
+
+- is visibly AI and may be wrong;
+- remains bound to that task and never changes the definition of done;
+- provides age-band-limited steps/intents and prominent Ask an adult;
+- never offers unrestricted chat, secrets, dependency, companion, diagnostic, truthfulness,
+  religious-authority, food-safety, or hazardous-action behavior; and
+- in P0 uses prepared voice with visible simulated recording state, transcript,
+  delete-before-send, replay, captions, slower playback, and transcript fallback.
+
+No real microphone, camera, background listening, face/voice recognition, or natural speech claim
+is accepted. MSA carries safety/task meaning; reviewed conversational/code-switch variants are
+limited prepared fixtures.
+
+## AC-09 — Typography, RTL, and Accessibility Oracle
+
+- Alexandria: Child hero 32/44 800, Parent hero 30/42 700, Child screen title 26/38 700, Parent
+  screen title 24/36 700.
+- Readex Pro: Child Arabic body 18/30 400–500, Parent Arabic body 17/28 400, Child button 17/26 600,
+  Parent button 16/24 600, caption minimum 14/22.
+- True page-level RTL in Arabic and true LTR in English; one locale on ordinary controls.
+- No artificial Arabic letter spacing or thin Arabic weight.
+- Correct bidi isolation and tabular alignment for `AED 25`, `١٢٠ بذرة`, ranks, scores, dates, and
+  names.
+- 200% text scale without clipped safety/actions; 48dp targets; accessible contrast and reading
+  order; captions and reduced-motion parity.
+
+Final colors, radii, spacing, icons, illustrations, and motion are not accepted until derived from
+the approved Stitch system.
+
+## AC-10 — Privacy and Capability Truth Oracle
+
+Every tested shared surface applies its allowlist before rendering or mutation. Every synthetic
+access, pairing, member, reward, media, assistant, and voice object shows its origin where confusion
+is possible. The app makes zero claims of production auth, payment/custody, real invitation,
+live Child media/voice, unrestricted AI, real planting, or measured environmental impact.
+
+## Verification Matrix
+
+| Contract    | Documentation/design    | Automated                        | Web                           | Physical Android/human                            |
+| ----------- | ----------------------- | -------------------------------- | ----------------------------- | ------------------------------------------------- |
+| AC-00       | Required before release | —                                | —                             | —                                                 |
+| AC-01–AC-04 | Spec/frame review       | Fresh focused tests              | Fresh role-flow proxy         | Native Back/accessibility review                  |
+| AC-05–AC-07 | Oracle review           | Idempotency/League/reward tests  | Visual ordering/privacy proxy | Judge/human comprehension                         |
+| AC-08       | Safety/content review   | Intent/permission/fallback tests | Prepared-state proxy          | Native playback/permissions + safeguarding review |
+| AC-09       | Frame/token audit       | Resource/style assertions        | RTL/LTR/scale proxy           | Named device, TalkBack, scale, reduced motion     |
+| AC-10       | Claim/privacy review    | Projection/source scan           | Network/request ledger        | Named privacy/capability review                   |
+
+Every cell starts `NOT RUN` for Revision 2 unless the dependency itself is `BLOCKED`. Revision 1
+evidence remains `HISTORICAL`.
 
 ## Release Boundary
 
-This contract is ready for implementation when it is consistent with the approved Feature 003
-specification, plan, data model, service contracts, and tasks. Feature 003 is ready for integration
-only after automated checks and deterministic route/reset/idempotency evidence pass from a named
-worktree state.
+Current result: **NOT READY FOR IMPLEMENTATION** because AC-00 is `BLOCKED` on user-supplied
+approved Stitch frames.
 
-Feature 003 MUST NOT be called **Android-accepted** or **demo-accepted** until the physical bilingual
-journey, offline fallback, predictive/native Back, WCAG contrast, reset/media/accessibility checks,
-five timed rehearsals, three-person comprehension exercise, and required named human reviews are
-recorded in
-`../../../DEMO_RUNBOOK.md`. Missing native or human evidence remains `BLOCKED` or `NOT RUN`; it is
-never inferred.
+After AC-00 passes, update this contract with exact route/frame identifiers before implementation.
+Reconcile or deliberately retire the historical `domain-contract.md` and `assistant-contract.md`
+in the same gate so no Revision 1 interface is mistaken for Revision 2 authority.
+After implementation, Revision 2 is not demo-accepted until the deterministic path, named Android
+build, bilingual/accessibility checks, five rehearsals, three-person comprehension, and named
+Arabic/UAE, safeguarding, reward-ethics, sustainability, and accessibility reviews are directly
+recorded.

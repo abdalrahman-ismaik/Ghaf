@@ -1,912 +1,832 @@
-# Feature Specification: Family Growth Garden
+# Feature Specification: Family Growth Garden — Revision 2
 
 **Feature Branch**: `feature/003-family-growth-garden`
 
-**Created**: 2026-08-26
+**Original Feature Created**: 2026-08-26
 
-**Status**: Product scope approved. The user's implementation instruction authorizes the
-deterministic P0 after the Feature 003 specification, plan, tasks, and cross-artifact quality gates
-pass. Native-device and human-review acceptance remain open and cannot be inferred from artifact
-approval.
+**Revision 2 Approved**: 2026-09-01
 
-**Input**: Create an Arabic-first Parent–Child task, recognition, bounded AI-coaching, and UAE
-living-garden prototype that preserves the Feature 002 historical record while replacing its
-judge-facing product journey with one deterministic, safe, offline-capable ten-route vertical
-slice.
+**Status**: Product contract approved. Ghaf R001 Batch 1 is **PARTIALLY RELEASED** for native
+foundations, Welcome, and first-time Parent onboarding. Every later Revision 2 screen, role shell,
+and full-journey gate remains **BLOCKED** pending approved Stitch frames and reconciliation.
 
-## Feature Context and Historical Boundary
+**Input**: Replace the old linear ten-screen demonstration with one Arabic-first Android
+application containing separately gated deterministic synthetic Parent and Child experiences,
+role-specific navigation, a fair weekly Ghaf Family League, private noncustodial Family Rewards,
+bounded task-focused AI support, and growing UAE landscapes.
 
-Feature 003 changes Ghaf's approved product direction from the Feature 002 food-rescue mission to a
-family growth garden. Feature 002 remains historical evidence for the reusable application
-baseline only. Its specification, routes, screenshots, completed checks, and open physical Android
-and rehearsal gates MUST remain attributed to Feature 002 and MUST NOT be rewritten or counted as
-Feature 003 evidence.
+## Revision History and Evidence Boundary
 
-Feature 003 retires the replaced Feature 002 product routes only after the new route set is
-integrated and verified. It does not create a second application. It remains a competition
-prototype using synthetic data, deterministic prepared assistance, symbolic progress, and honest
-capability labels; it is not production-ready, authenticated, legally compliant, culturally
-approved, or a verified environmental-impact platform.
+| Revision | Date       | Product contract                                                                                                                    | Evidence status                                                         |
+| -------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 1        | 2026-08-26 | Linear ten-route Parent/Child demo with a cooperative aggregate Circle                                                              | Historical implementation and evidence only                             |
+| 2        | 2026-09-01 | Separate synthetic access, role navigation, five-Leaf League, Family Rewards, voice/language controls, Alexandria/Readex typography | R001 Batch 1 partially released; full implementation/validation not run |
 
-### Capability Truth at Specification Approval
+Revision 1 remains a preserved historical checkpoint. Its completed tasks, automated tests, web
+walkthroughs, route inventory, screenshots, and open Android/human gates MUST NOT be counted as
+Revision 2 evidence. Revision 2 intentionally supersedes the following Revision 1 decisions:
 
-| Capability                 | Feature 003 contract                                                                                                                                                      | Current evidence status                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Product interaction        | Ten authored routes, bilingual direction, synthetic role/Child selection, task approval, Child action, Parent confirmation, reward, garden/circle projection, and reset   | Authorized target; implementation evidence begins `NOT RUN`                               |
-| Synthetic/prepared content | Al Noor household, Salem and Alya, cousin-circle aggregate, task catalog, image/voice fixtures, Parent Guide, Child Coach, and Parent summary                             | Required P0 path; MUST be labeled at point of use                                         |
-| Child Coach                | Prepared, task-bounded, deterministic interaction only                                                                                                                    | Live Child coaching is out of P0                                                          |
-| Optional live Parent AI    | One synthetic-input task refinement only when an approved secure server boundary, structured validation, safety checks, timeout, and deterministic fallback are evidenced | `BLOCKED` for implementation and `NOT RUN` for validation until that boundary is approved |
-| Environmental result       | One Parent-confirmed eligible Green Impact action and symbolic garden growth                                                                                              | Activity, not measured environmental impact or a real-tree claim                          |
-| Production capabilities    | Accounts, real Child data/media, real family sharing, unrestricted chat, persistence guarantees, notifications, analytics, or production deployment                       | Future and outside P0                                                                     |
+- the `/role` demo selector and repeated forced Parent/Child switching;
+- the exact linear ten-route contract;
+- a cooperative Circle with no Child ranking;
+- the prohibition on all monetary reward promises; and
+- system typography and the completed Revision 1 screen geometry.
 
-The deterministic prepared journey is the acceptance baseline and MUST complete with every external
-service denied. Prepared output MUST never be described as live.
+Revision 2 does not authorize production authentication, payments, stored value, networking, real
+family invitations, real Child media, or implementation of designs inferred from text alone.
 
-## P0 Scope
+### Current Capability Truth
 
-P0 contains exactly:
+| Capability           | Revision 2 contract                                                                                                         | Current status                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Product structure    | One app with separately gated Parent and Child experiences and role-specific navigation                                     | Seven R001 access routes frozen; all later routes/frames `BLOCKED`     |
+| Parent/Child access  | Deterministic synthetic sign-in, PIN/picture sequence, pairing, and reauthentication simulations                            | Approved prototype target; not production authentication               |
+| Weekly League        | Invite-only synthetic siblings/cousins, exactly five Challenge Leaves, normalized score, tied positions, cooperative canopy | Approved target; implementation `NOT RUN`                              |
+| Family Reward        | Private Parent-funded promise delivered outside Ghaf, with no custody, exchange, or rank dependency                         | Approved target; implementation `NOT RUN`                              |
+| AI and voice         | Prepared task-bounded Coach/Guide; simulated push-to-talk and prepared media in P0                                          | Approved target; real voice and live Child AI out of scope             |
+| Typography           | Alexandria for display; Readex Pro for body, controls, dialogue, and numeric data                                           | R001 local package/weight decision released; native evidence `NOT RUN` |
+| Visual design        | Calm premium Parent mode; brighter polished Child mode; shared modern UAE botanical identity                                | R001 Parent onboarding approved; every later family remains `BLOCKED`  |
+| Prior implementation | Revision 1 Expo application                                                                                                 | Historical only; not reusable acceptance evidence                      |
+
+### Approved Design Batch 1 — Ghaf R001
+
+On 2026-09-02 the user supplied and approved seven Arabic RTL compositions under
+`docs/design/stitch/releases/ghaf-r001/`: Welcome, Parent sign-in, Verification Code, Family Basics,
+Add First Child, Review and Create, and Family Created Success. Their PNGs are canonical
+composition references; exported HTML/CSS/JavaScript is non-runtime measurement and structure
+guidance only.
+
+The partial release authorizes the canonical token/type foundation, local Alexandria/Readex
+loading, RTL primitives, shared access controls, transactional onboarding shell, the exact
+`/access/parent/**` path family, minimal deterministic local Parent verification/onboarding state,
+and a native success modal. No `screen-spec.md`, English frame, separate system-state frame, font
+binary, or illustration asset was supplied. Those gaps are recorded in `design-intake/` and do not
+release any later screen family.
+
+## Revised Product Promise
+
+> Ghaf helps children build positive routines through parent-approved tasks, child-safe AI support,
+> Seeds, growing UAE landscapes, friendly family competition, and optional parent-funded rewards.
+
+Ghaf remains an autonomy-supportive family routine tool. It is not an obedience system,
+surveillance product, diagnostic service, public social network, wallet, bank, or payment service.
+
+## Revision 2 P0 Scope
+
+Revision 2 P0 contains:
 
 - one synthetic Al Noor household with Salem, age 9, and Alya, age 11;
-- one seeded, synthetic, aggregate cousin/family circle;
-- eight curated task categories and five connected UAE landscape tracks visible from local
-  fixtures;
-- one executable, Parent-approved, 12-Seed Green Impact recycling task;
-- one bounded Parent Guide refinement, one bounded Child Coach exchange, and one strengths-first
+- one seeded, synthetic, invite-only sibling/cousin League containing Salem, Alya, Mariam, and
+  Rashid, using nicknames and tree avatars only;
+- one application with separately gated Parent and Child synthetic access paths;
+- Parent navigation: **Home, Tasks, Garden, Family**;
+- Child navigation: **Today, Garden, League**;
+- approximately fourteen screen families, with task building, check-in, rewards, pairing,
+  permissions, settings, and reauthentication shown only when needed;
+- eight curated task categories and five connected UAE landscape tracks from local fixtures;
+- one executable Parent-approved Green Impact recycling task worth exactly 12 Seeds;
+- five weekly Challenge Leaves per participating Child and one fair normalized League calculation;
+- one private Salem Family Reward plan at 108/120 eligible Seeds for AED 25, delivered outside the
+  app and independent of League position;
+- one bounded Parent Guide exchange, one bounded Child Coach exchange, and one strengths-first
   Parent summary;
-- optional prepared synthetic image and voice fixtures with visible origin and visibility labels;
-- Parent review and assignment, Child choice and action, optional evidence/reflection, Parent
-  check-in, kind retry, specific praise, idempotent confirmation, symbolic growth, and privacy-
-  filtered circle progress;
-- Arabic-first RTL and an equivalent English LTR journey; and
-- one Parent-only deterministic reset that requires no remote service.
+- prepared synthetic image and voice fixtures with visible origin labels;
+- specific praise followed by 12 Seeds, Mangrove growth, one Challenge Leaf, one family-canopy
+  contribution, and a private Family Reward unlock;
+- Arabic-first RTL and a fully localized equivalent English LTR experience; and
+- one deterministic Parent-authorized reset that restores access, week, reward, garden,
+  permissions, pairing, and task state without a remote service.
 
-Breadth beyond this slice is curated fixture content or later work, not an additional P0 flow.
+Real accounts, real pairing/networking, real invitations, live Child voice/photo processing,
+payment transfer, production persistence, and a second app remain outside P0.
 
-### Users
+## Screen-Family Architecture
 
-- **Parent or guardian, including a grandparent acting as guardian**: selects a synthetic Child,
-  creates or adapts a task, reviews safety/privacy/reward details, approves assignment, confirms or
-  kindly returns work, edits specific praise, and sees neutral observable summaries.
-- **Child ages 6–14**: chooses among Parent-approved tasks, may ask for help or a smaller equivalent,
-  uses bounded task coaching, submits without early reward, and sees private self-progress.
-- **Demo operator**: resets and performs the exact journey offline in Arabic first and English
-  second while disclosing prepared and synthetic content.
-- **SMAC judge**: sees who chose, acted, assisted, approved, received symbolic progress, and what
-  limited aggregate information may reach the circle.
+The exact file routes, frame geometry, component placement, and state-to-screen allocation MUST be
+confirmed from approved Stitch exports. R001 freezes only Welcome and first-time Parent onboarding
+under `/access/parent/**`; the following broader product families remain fixed while their other URL
+or file names are not yet fixed.
 
-### Authored Route Contract
+| Family                          | Required purpose                                                                                                            |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Welcome and access              | Ghaf promise, language, Parent entry, Child entry, and synthetic-prototype disclosure                                       |
+| Parent authentication and setup | Synthetic phone/email flow, return gate, family name, first Child, language/accessibility defaults                          |
+| Child access and pairing        | Profile selection plus PIN/picture sequence, or simulated QR/short code awaiting Parent approval                            |
+| Parent Home                     | Family canopy, prioritized check-ins, next tasks/support, create task, bounded weekly summary                               |
+| Parent Tasks and Task Builder   | Assigned/pending/completed hub plus contextual Choose, Adjust with Guide, and Review/Assign states in one guided family     |
+| Parent Check-in                 | Evidence/facts, praise, confirm, kind retry, smaller, and equivalent actions                                                |
+| Parent Garden                   | Household/Child filter, five UAE landscapes, symbolic growth, and recent praise                                             |
+| Parent Family                   | Household profiles/devices, League setup/membership, privacy, and cooperative canopy                                        |
+| Family Rewards                  | Private plans, monthly maximum promised, create plan, state changes, and sensitive reauthentication                         |
+| Child Today                     | Two or three approved task choices, Challenge Leaves, private reward progress, and start action                             |
+| Child Task and Coach            | Definition of done, short steps, adult boundary, bounded Coach, simulated push-to-talk, submit/pending states               |
+| Child Garden                    | Five landscapes, personal progress, temporary celebration, and private reward-unlock sheet                                  |
+| Child League                    | Invite-only standings, five Leaves, cooperative canopy target, and prepared encouragement                                   |
+| Profile/settings context        | Role-appropriate language, voice, captions, motion, text size, permissions, devices, PIN reset, and reauthentication states |
 
-Feature 003 MUST expose exactly these ten product routes. Loading, empty, assistant, error, timeout,
-fallback, retry, awaiting-confirmation, phase-review, and celebration experiences are states of
-these routes, not additional routes.
+This is an approximate family count because setup, pairing, reauthentication, permissions, and
+celebration MAY be states or continuations inside their owning family. Stitch intake determines the
+final realization without changing the product meaning.
 
-| Route                 | Required purpose                                                                                                                     |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `/`                   | Entry, language choice, and prototype/synthetic/prepared disclosure                                                                  |
-| `/role`               | Demo Parent/Child mode and synthetic Child selection; explicitly not authentication                                                  |
-| `/parent`             | Cooperative family overview, combined canopy, next tasks, and bounded Guide summary                                                  |
-| `/parent/task/new`    | Curated task/customization and bounded Parent Guide refinement                                                                       |
-| `/parent/task/review` | Bilingual task, safety, privacy, recognition, reward, landscape, and assignment approval                                             |
-| `/child`              | Parent-approved choices, personal Seeds, own-goal progress, and garden preview                                                       |
-| `/child/task`         | Definition of done, steps, bounded Coach, optional prepared media/reflection, and submission                                         |
-| `/parent/check-in`    | Completion review, editable praise, kind retry/equivalent, confirmation, neutral observation, and eligible future-phase review state |
-| `/garden`             | Confirmed landscape growth and one household-canopy consequence                                                                      |
-| `/circle`             | Cooperative aggregate household/cousin/family view with privacy and synthetic/local disclosure                                       |
+### Navigation Contract
+
+- Parent bottom navigation contains exactly **Home, Tasks, Garden, Family**.
+- Child bottom navigation contains exactly **Today, Garden, League**.
+- Neither navigation exposes the other role.
+- Task Builder, Parent Check-in, Family Rewards, pairing, permissions, settings, device management,
+  and reauthentication are contextual, not permanent tabs.
+- The Garden celebration is a temporary state, not a permanent destination.
+- AI appears inside the task or Parent decision it supports, never as a chat tab.
+- The former Circle becomes the persistent Ghaf Family League plus cooperative family canopy.
+- Normal product navigation contains no role toggle. A hidden synthetic demo control MAY coordinate
+  state for judges but MUST be labeled and inaccessible to a Child journey.
 
 ## User Scenarios & Testing _(mandatory)_
 
-### User Story 1 - Parent Approves a Safe, Useful Task (Priority: P1)
+### User Story 1 — Parent Enters a Protected Synthetic Experience (Priority: P1)
 
-As a Parent or guardian, I can choose Salem, start from a reviewed Green Impact task, use a bounded
-Guide to clarify it, compare the suggestion with my wording, and approve the exact bilingual task
-only after I understand its definition of done, safety, privacy, fixed reward, and garden mapping.
+As a Parent, I can use a dedicated sign-in/setup experience and reach Parent Home without exposing
+Parent controls to a Child.
 
-**Why this priority**: Parent authorship and approval are the first safety gate and make the
-assistant's value visible without letting AI assign work or judge a Child.
+**Why this priority**: Tasks, confirmations, rewards, invitations, reports, and permissions require
+a clear guardian boundary even in a synthetic competition prototype.
 
-**Independent Test**: From the reset Parent overview, create the P0 task, invoke the prepared Guide,
-keep the original unchanged until accepting the suggestion, review both languages and every
-required boundary, then approve exactly one assignment for Salem.
+**Independent Test**: From reset, choose Parent access, complete the deterministic phone-or-email
+verification simulation, create or enter the Al Noor family, pass the Parent PIN/passkey/biometric
+simulation, and reach Home. Attempt Child-to-Parent navigation and a sensitive action without
+reauthentication; both must remain blocked.
 
 **Acceptance Scenarios**:
 
-1. **Given** the reset state, **When** the Parent opens task creation, **Then** Salem, all eight
-   categories, all five landscape tracks, and the curated P0 Green Impact task are available from
-   synthetic local content.
-2. **Given** the Parent enters “Take the recycling out,” **When** the prepared Guide is invoked,
-   **Then** the response is labeled prepared, says AI may be wrong, improves clarity and safety,
-   and does not replace the Parent's text until the Parent chooses **Accept suggestion**.
-3. **Given** the Guide suggestion, **When** the Parent chooses **Keep mine**, **Then** the original
-   task remains unchanged and no assignment is created.
-4. **Given** the P0 task is ready for review, **When** the Parent opens review, **Then** Arabic appears
-   first and English second with equivalent title, definition of done, purpose, effort,
-   supervision, exclusions, optional evidence, recognition mode, phase, 12-Seed award,
-   recurrence, landscape, visibility, and circle eligibility.
-5. **Given** any safety-critical field is absent or invalid, **When** approval is attempted, **Then**
-   assignment remains blocked and the Parent sees the required correction.
-6. **Given** the complete reviewed task, **When** the Parent explicitly approves it, **Then** one
-   assignment becomes available to Salem and no Seed, garden, canopy, or circle counter changes.
+1. **Given** the Arabic welcome screen, **When** Parent access is selected, **Then** the flow shows
+   one synthetic phone/email field, verification state, optional simulated passkey/biometric return
+   access, and a visible demo disclosure.
+2. **Given** first-time setup, **When** the Parent creates the Al Noor family, **Then** the Parent can
+   add Salem using nickname, tree avatar, age band, preferred language, and basic accessibility
+   defaults without entering a Child email, phone, school, location, or medical record.
+3. **Given** a Child session, **When** Parent content is requested, **Then** Parent Home, Tasks,
+   Family, rewards, reports, invitations, and permissions remain inaccessible.
+4. **Given** a request to change money, members, trusted devices, or media permissions, **When** the
+   Parent has not reauthenticated, **Then** the change is blocked without discarding the draft.
 
 ---
 
-### User Story 2 - Child Chooses and Completes with Bounded Help (Priority: P1)
+### User Story 2 — Child Enters Directly or Pairs a Synthetic Device (Priority: P1)
 
-As Salem, I can choose the Parent-approved task, start it deliberately, see achievable steps, ask
-the prepared Coach for task-specific help or an adult, and submit with or without optional prepared
-media or reflection.
+As a Child, I can select my Parent-created profile on a shared device or complete a Parent-approved
+simulated pairing flow on a separate device without using an email address or phone number.
 
-**Why this priority**: The Child must remain an active, dignified participant rather than the
-object of Parent tracking or assistant judgment.
+**Why this priority**: Child access must be short, dignified, and unable to open guardian controls.
 
-**Independent Test**: Begin with the approved assignment, select it from Child home, enter the task,
-use one prepared Coach intent, choose “I need an adult,” complete with permitted help, omit optional
-media/reflection, and submit for Parent check.
+**Independent Test**: Enter Salem through the four-digit synthetic PIN, exercise a wrong PIN and
+forgotten-PIN state, reset, then enter a six-digit pairing code, observe awaiting approval, approve
+it through the Parent fixture, and reach Today.
 
 **Acceptance Scenarios**:
 
-1. **Given** two or three Parent-approved choices, **When** Salem opens Child home, **Then** each choice
-   shows its purpose, effort, help/supervision, landscape, recognition mode, and any fixed award,
-   without sibling ranking.
-2. **Given** the P0 task is assigned, **When** Salem chooses it, **Then** lifecycle state becomes
-   `chosen` and does not skip directly to `in_progress`.
-3. **Given** the chosen task, **When** Salem explicitly starts or opens the actionable task, **Then**
-   state becomes `in_progress`, the approved definition of done remains unchanged, and no reward is
-   issued.
-4. **Given** the active task, **When** Salem opens the Coach, **Then** only task-bounded prepared
-   intents are available, the Coach says it is AI and may be wrong, and an **I need an adult** exit
-   is visible.
-5. **Given** prepared photo or voice controls, **When** Salem considers either, **Then** its synthetic
-   origin, optional nature, Parent visibility, and remove path are explained before use.
-6. **Given** Salem completes with permitted adult help, **When** the task is submitted without media
-   or reflection, **Then** submission succeeds, acknowledges the effort neutrally, and changes zero
-   Seeds, landscape progress, canopy leaves, or circle actions.
+1. **Given** shared-device Child access, **When** Salem is selected, **Then** only Salem's PIN or
+   Parent-selected picture sequence is requested and a neutral wrong-entry state reveals no Parent
+   content.
+2. **Given** a forgotten Child code, **When** help is requested, **Then** the Child is directed to a
+   Parent without blame or account-lockout theater.
+3. **Given** separate-device access, **When** a prepared QR or short family code is entered, **Then**
+   the state becomes awaiting Parent approval and no real camera, network, or tenancy is implied.
+4. **Given** an expired, denied, or revoked pairing, **When** the Child retries, **Then** the state is
+   clear, private, and recoverable through Parent help.
 
 ---
 
-### User Story 3 - Parent Recognizes, Retries, or Confirms Once (Priority: P1)
+### User Story 3 — Parent Builds and Assigns a Safe Task (Priority: P1)
 
-As a Parent, I can inspect the observable submission, choose a kind retry or safe equivalent without
-loss, or confirm it once and send editable, action-specific praise.
+As a Parent, I can choose Salem, select a reviewed task, use bounded Guide actions, review every
+safety/reward/privacy field, and explicitly assign the task.
 
-**Why this priority**: Human confirmation—not AI judgment—unlocks recognition and any symbolic
-progress while retry remains nonpunitive.
+**Why this priority**: Parent authorship and approval remain the first safety and reward gates.
 
-**Independent Test**: Start with a seeded submitted task, exercise kind retry and return to active
-work without changing prior progress, resubmit, edit the prepared praise, confirm, then repeat
-confirmation five times.
+**Independent Test**: From Parent Tasks, complete Task Builder Choose → Adjust → Review for the P0
+recycling task; compare original and suggested wording, keep or accept deliberately, then assign it
+with zero Seed, garden, canopy, League, or reward-plan change.
 
 **Acceptance Scenarios**:
 
-1. **Given** a submission, **When** the Parent opens check-in, **Then** completion mode, permitted
-   help, prepared evidence, optional reflection, observable facts, uncertainty, and suggested
-   praise are shown as separate information.
-2. **Given** the task needs another attempt, **When** the Parent chooses **Kind retry**, **Then** it
-   returns to `in_progress`, prior earned progress is unchanged, and no failure badge, debt, Seed
-   loss, or public mark appears.
-3. **Given** a smaller or equivalent task is appropriate, **When** it is agreed before the Child
-   accepts that replacement, **Then** the new task may show a different fixed award prospectively;
-   help after acceptance never reduces the displayed award.
-4. **Given** the valid P0 submission, **When** the Parent confirms once, **Then** action-specific praise
-   appears first and exactly one guarded 12-Seed recognition result is produced.
-5. **Given** the same confirmed submission, **When** confirmation is attempted repeatedly, **Then**
-   every repeat is a neutral no-op labeled already confirmed and all counters remain unchanged.
+1. **Given** Task Builder Choose, **When** Salem and Green Impact are selected, **Then** the eight
+   categories, five landscape mappings, reviewed templates, 15–30-minute effort, adult-help
+   requirement, fixed 12 Seeds, Mangrove mapping, and Challenge Leaf eligibility are visible.
+2. **Given** Adjust, **When** the Guide is used, **Then** only Make clearer, Make smaller, Check
+   safety, and Adapt age intents are available; AI may be wrong; the Parent remains the decision
+   maker; and original text is unchanged until accepted.
+3. **Given** Review, **When** the Parent inspects the task, **Then** the definition of done, purpose,
+   no-more-than-four steps, adult role, safety exclusions, schedule, optional evidence, privacy,
+   12-Seed award, Mangrove mapping, Challenge Leaf meaning, and visibility are complete.
+4. **Given** explicit assignment, **When** the action succeeds, **Then** Salem can see the task on
+   Today and no recognition consequence has occurred.
 
 ---
 
-### User Story 4 - Confirmed Action Grows the Right Shared Surfaces (Priority: P1)
+### User Story 4 — Child Chooses and Completes with Bounded Support (Priority: P1)
 
-As a family, we can see the confirmed Green Impact action add permanent symbolic growth to the
-Mangrove landscape, one combined-canopy leaf, and one coarse cooperative circle action without
-exposing Salem's task record or calling the result measured environmental impact.
+As Salem, I can choose the Parent-approved task, ask for a smaller task or help, use the bounded
+Coach, complete with an adult, and submit without receiving an early reward.
 
-**Why this priority**: The UAE living garden is Ghaf's emotional payoff, and privacy filtering is
-part of the product behavior rather than a later cleanup.
+**Why this priority**: The Child remains an active participant and help is not treated as lesser
+achievement.
 
-**Independent Test**: Start at the exact reset counters, confirm the P0 event once, verify all four
-post-confirmation values and static/reduced-motion outcomes, then attempt private and non-Green
-projections and observe that they are rejected before any shared update.
+**Independent Test**: On Today, select the recycling task, open the Coach, use one structured intent
+and the simulated push-to-talk state, delete one prepared transcript before sending, choose Ask an
+adult, complete with permitted help, and submit.
 
 **Acceptance Scenarios**:
 
-1. **Given** reset Mangrove progress of 48/60 at Shoot, **When** the one confirmed 12-Seed award is
-   recognized, **Then** Salem reaches 60 Seeds and the Mangrove reaches 60/60 Sapling.
-2. **Given** the task is acquisition-phase, household-visible, and Green Impact, **When** privacy
-   filtering succeeds, **Then** the household canopy changes from 19/25 to 20/25 and the circle
-   changes from 11/12 to 12/12 using one action—not 12 Seeds.
-3. **Given** reduced motion or unavailable animation, **When** recognition completes, **Then** the
-   same final counters, stage, cause, and symbolic-growth disclosure appear immediately.
-4. **Given** a private, non-Green, sensitive, invalid, or duplicate event, **When** a shared update is
-   attempted, **Then** the event is rejected before the canopy/circle visual or counter changes.
-5. **Given** the garden celebration, **When** the family reads its meaning, **Then** it names careful
-   recycling as a practical sustainability action and does not claim liters, kilograms, carbon,
-   habitat restoration, environmental impact, or a planted tree.
+1. **Given** Today, **When** Salem views approved choices, **Then** no more than three tasks show
+   title, meaning, effort, adult cue, landscape, fixed award or recognition-only label, and a
+   Challenge Leaf marker only when eligible.
+2. **Given** the P0 task, **When** Salem opens it, **Then** one unchanged definition of done, no more
+   than four steps, the adult boundary, 12 Seeds after Parent confirmation, and one Challenge Leaf
+   are visible.
+3. **Given** Coach support, **When** Salem chooses help, **Then** the Coach remains bound to the
+   current task, says it is AI and may be wrong, and keeps **Ask an adult — اسأل شخصًا كبيرًا**
+   prominent.
+4. **Given** the simulated voice state, **When** Salem uses it, **Then** a visible timer, prepared
+   transcript, delete-before-send, replay, captions, and slower playback are available while the
+   task remains visible; no real microphone or background listening occurs.
+5. **Given** completion with permitted help or an approved accessibility adaptation, **When** the
+   task is submitted, **Then** full displayed credit remains prospective but zero Seeds, garden,
+   canopy, Challenge Leaves, score, or Family Reward progress is applied yet.
 
 ---
 
-### User Story 5 - Parent Sees Cooperative Progress, Not Surveillance (Priority: P2)
+### User Story 5 — Parent Confirms Once and the Full Consequence Unfolds (Priority: P1)
 
-As a Parent, I can see the combined family canopy, each synthetic Child's next action and requested
-support, and a strengths-first summary over a stated time window without raw sibling comparison,
-diagnosis, or hidden private content.
+As a Parent, I can review observable facts, give specific praise, choose a kind retry/smaller/
+equivalent path, or confirm once and cause the exact private and shared outcomes in a safe order.
 
-**Why this priority**: The overview must help a family adjust routines without becoming a public
-behavior chart or assessment system.
+**Why this priority**: Human recognition, idempotency, and presentation order protect the Child and
+keep money secondary to praise and growth.
 
-**Independent Test**: Open the Parent overview from reset, inspect the combined canopy and prepared
-summary, verify its facts/uncertainty/question/adjustment structure, and scan all household and
-circle fields for prohibited comparison or sensitive content.
+**Independent Test**: From the submitted P0 task, exercise kind retry without loss, resubmit,
+confirm, observe the exact ordered consequence, and attempt duplicate confirmation five times.
 
 **Acceptance Scenarios**:
 
-1. **Given** Salem and Alya's synthetic records, **When** the Parent overview opens, **Then** it shows
-   one combined canopy and useful next actions without side-by-side raw Seed totals, pace, rank, or
-   age-unequal contribution trails.
-2. **Given** the prepared Parent summary, **When** it is shown, **Then** it names a time window, leads
-   with strengths and observable facts, marks uncertainty, proposes one open question and one
-   adjustment, and remains correctable by the Parent.
-3. **Given** any prohibited diagnostic, character, emotion, truthfulness, religiosity, or parenting-
-   quality language, **When** the summary is validated, **Then** it is rejected and the reviewed
-   prepared summary is used instead.
+1. **Given** the submission, **When** Check-in opens, **Then** task definition, completion mode
+   “with adult help,” prepared photo/voice/reflection items, observable facts, and suggested praise
+   are separated.
+2. **Given** Kind retry, Make smaller, or Accept equivalent, **When** the Parent chooses one, **Then**
+   no earned progress is removed and any new award is agreed before the Child accepts the
+   replacement.
+3. **Given** the valid P0 confirmation, **When** the Parent confirms, **Then** specific praise appears
+   first; exactly 12 Seeds are then applied; Mangrove changes 48/60 Shoot → 60/60 Sapling; the
+   family canopy changes 19/25 → 20/25; Salem's fifth Challenge Leaf becomes confirmed and score
+   changes 80 → 100; reward progress changes 108/120 → 120/120; and only after praise and garden
+   growth does the private Family Reward state change Promised → Unlocked.
+4. **Given** any duplicate confirmation, **When** it is attempted, **Then** “Already confirmed” is
+   shown and every Seed, landscape, canopy, Leaf, score, reward, and celebration value remains
+   unchanged.
 
 ---
 
-### User Story 6 - Operator Resets and Demonstrates Offline in Both Languages (Priority: P1)
+### User Story 6 — Child Sees a Fair Friendly League (Priority: P1)
 
-As a demo operator, I can restore the exact Arabic-first baseline from every meaningful state and
-complete the same ten-route Parent-to-Child-to-growth journey with external services denied.
+As a Child, I can compare weekly completion opportunities with invited siblings and cousins while
+seeing a cooperative family goal and none of their private task details.
 
-**Why this priority**: Competition reliability and honest fallback are required even when native,
-network, or optional live-AI conditions are unavailable.
+**Why this priority**: A normalized, bounded League can feel exciting without rewarding age,
+difficulty, speed, money, or unlimited extra work.
 
-**Independent Test**: Reset separately from task drafting, assistant result, active task, submitted,
-retry, confirmed, garden, and circle states; deny external services; complete the Arabic journey,
-reset, switch to English, and complete it again.
+**Independent Test**: Open the post-confirmation League, verify the exact tied standings and
+allowlisted fields, complete an extra non-Challenge task, reset the week, and confirm permanent
+Seeds/garden values do not reset.
 
 **Acceptance Scenarios**:
 
-1. **Given** any meaningful journey state, **When** the Parent confirms **Reset synthetic demo**,
-   **Then** the exact canonical state is restored at `/` with Arabic RTL and no stale Back history.
-2. **Given** all external services are denied, **When** the judge flow runs, **Then** the reviewed
-   prepared Parent Guide, Child Coach, media fallbacks, Parent summary, reward, garden, circle, and
-   reset all remain usable.
-3. **Given** an optional live Parent refinement timeout, malformed result, safety rejection, or
-   failure, **When** the attempt resolves, **Then** the same-attempt prepared result appears with
-   retained Parent input and an honest prepared/fallback label.
-4. **Given** Arabic or English is selected, **When** the whole flow is completed, **Then** equivalent
-   decisions, safety, privacy, reward, disclosures, and final counters are available in the
-   corresponding direction.
+1. **Given** an active League week, **When** score is calculated, **Then** `confirmed Challenge
+Leaves ÷ 5 × 100` produces only 0, 20, 40, 60, 80, or 100 and never exceeds 100.
+2. **Given** Salem and Mariam both have 5/5, **When** standings are ranked, **Then** both show
+   position 1, Alya at 3/5 shows position 3, and Rashid at 2/5 shows position 4; speed and timestamps
+   do not break the tie.
+3. **Given** permitted help, accessibility adaptation, a smaller agreed equivalent, or different
+   task difficulty, **When** a Challenge Leaf is confirmed, **Then** it earns the same 20-point
+   credit.
+4. **Given** an extra non-Challenge task, **When** it is confirmed, **Then** eligible Seeds and
+   garden growth MAY occur but League score and position do not change.
+5. **Given** another Child's League row, **When** Salem views it, **Then** only nickname, tree avatar,
+   position, score, and completed Leaves appear; tasks, evidence, age, accommodations, praise,
+   money, and missed-task reasons remain absent.
+6. **Given** an encouragement action, **When** Salem responds, **Then** only prepared bilingual
+   reactions such as “Great growing!” are available and no free-text message is accepted.
+7. **Given** weekly rollover, **When** a new week begins, **Then** rankings and five Challenge Leaf
+   slots reset while earned Seeds, trees, unlocked rewards, and prior garden stages remain.
+
+---
+
+### User Story 7 — Parent Manages League and Private Family Rewards (Priority: P1)
+
+As a Parent, I can configure five fair weekly opportunities, manage synthetic invite-only members,
+and privately promise affordable milestone rewards independent of rank.
+
+**Why this priority**: Competition and money require explicit guardian control, privacy, and
+anti-overcommitment safeguards.
+
+**Independent Test**: In Family, assign exactly five eligible Challenge Leaves to Salem and Alya,
+inspect the sharing explanation, then create an AED 25 Seed-milestone plan after synthetic
+reauthentication and verify the monthly maximum promised.
+
+**Acceptance Scenarios**:
+
+1. **Given** weekly setup, **When** the Parent saves it, **Then** each participating Child has exactly
+   five age/ability-appropriate Challenge Leaves selected before the week and no private category
+   is eligible.
+2. **Given** League membership, **When** the Parent adds/removes a prepared cousin fixture or changes
+   participation, **Then** reauthentication is required and no real invitation/network claim is
+   made.
+3. **Given** Family Rewards, **When** a plan is created, **Then** the Parent selects one Child, a new-
+   eligible-Seed, landscape-stage, or multiple-landscape milestone, and a money, experience,
+   privilege, or gift promise.
+4. **Given** a monetary plan, **When** it is saved, **Then** the amount is visible only to that Child
+   and guardians, reauthentication is required, the maximum amount promised for the month is
+   recalculated, and no wallet, transfer, custody, or Seed-to-AED rate appears.
+5. **Given** an agreed plan, **When** the Parent wants a different future promise, **Then** a new
+   prospective plan/version is created; the existing milestone is not retroactively changed.
+6. **Given** an Unlocked plan, **When** punishment or deletion is attempted, **Then** it cannot return
+   to Promised or be removed; only the Parent-recorded transition to Given is allowed.
+7. **Given** prayer, affection, emotional disclosure, eating, or proof of love, **When** a Family
+   Reward or Challenge Leaf is attached, **Then** validation rejects it before saving.
+
+---
+
+### User Story 8 — Operator Resets and Demonstrates Both Experiences Offline (Priority: P1)
+
+As a demo operator, I can restore one exact Arabic-first baseline, demonstrate Parent and Child
+experiences without exposing a product role switch, and repeat the full flow with external services
+denied.
+
+**Why this priority**: Revision 2 must remain honest and repeatable while production authentication,
+pairing, payments, networking, and real voice do not exist.
+
+**Independent Test**: Reset from access, pairing, task draft, Coach voice, submitted, confirmation,
+celebration, League, reward-unlock, permissions, and reauthentication states; complete Arabic and
+English flows with network, camera, microphone, payment, and live AI unavailable.
+
+**Acceptance Scenarios**:
+
+1. **Given** any named state, **When** the Parent authorizes reset, **Then** the full canonical reset
+   fixture is restored at the welcome/access family in Arabic RTL with no stale protected history.
+2. **Given** every external capability is denied, **When** the flow runs, **Then** synthetic access,
+   prepared pairing, task/Coach/Guide fixtures, Parent confirmation, League, Family Reward, garden,
+   settings, and reset remain usable.
+3. **Given** English is selected, **When** the same flow runs, **Then** decisions, safety, privacy,
+   score, reward, disclosures, and final values remain equivalent in true LTR.
+4. **Given** a Revision 1 automated or web pass, **When** Revision 2 evidence is reported, **Then**
+   that prior result is labeled historical and cannot change a Revision 2 `NOT RUN` or `BLOCKED`
+   gate.
 
 ### Edge Cases
 
-- The Parent leaves a required definition, adult-supervision, safety, privacy, reward, or
-  recognition field incomplete; review/assignment remains blocked without discarding valid input.
-- The Parent rejects the Guide suggestion; the original task remains intact and assignable only
-  after its own complete review.
-- The Child opens an assignment not intended for the active synthetic profile; selection is
-  rejected and no private content is revealed.
-- The Child chooses a task but does not start it; the state remains `chosen`, with no inferred work
-  or reward.
-- The Child completes with help, uses no media, skips reflection, asks for a smaller step, pauses,
-  or retries later; each is dignified and no earned progress is removed.
-- Prepared image or audio is missing; descriptive synthetic placeholder/transcript remains
-  available and completion is never blocked.
-- A task contains glass, sharps, batteries, chemicals, medicine, spoiled, leaking, or unknown
-  waste, electrical repair, road crossing, a vehicle path, unsafe heat/traffic, a compactor, chute,
-  or bin-room machinery; the Child is told to stop and involve an adult, and the unsafe action is
-  not assigned.
-- Parent confirmation is interrupted, repeated, or resumed after navigation; at most one award,
-  growth update, canopy leaf, and circle action exists for that submission.
-- A recognition/phase combination is invalid, `standard` is recurrent, or a recurrent rewarded
-  task is not `fade_first`; the task is rejected before assignment.
-- `circleEligible = true` is paired with a non-Green category or `child_guardian`; the object is
-  rejected before any shared projection.
-- Maintenance Green Impact is confirmed; it may add one eligible coarse activity after filtering,
-  but adds no Seeds or persistent landscape/canopy growth.
-- A third recurrent `fade_first` acquisition confirmation occurs; the current completion is
-  unchanged and the Parent sees an unselected future-phase choice rather than an automatic switch.
-- A language switch occurs during a safe in-progress state; task identity and lifecycle remain
-  unchanged while copy and direction update.
-- Large Arabic copy, mixed scripts, 12-Seed values, diacritics, font scaling, reduced motion,
-  keyboard, or Back navigation must not hide safety or the dominant action.
-- Reload loses in-memory rehearsal state; the prototype discloses this and reset restores the exact
-  baseline rather than implying persistent accounts.
-- The circle fixture is unavailable; a local privacy explanation and household goal appear without
-  exposing an individual record.
+- Parent verification, Child PIN, picture sequence, pairing code, or reauthentication is wrong,
+  expired, denied, offline, interrupted, or revoked; no protected content is exposed.
+- A Child attempts to access Parent mode, change a reward, invite a member, or read a report; the
+  action is denied without revealing the protected surface.
+- A Parent creates fewer or more than five Challenge Leaves, attaches a private/sensitive task, or
+  tries to edit the active week after a Leaf is confirmed; invalid changes are blocked or deferred
+  prospectively.
+- Two or more Children share a score; every tie uses the same position and no timestamp, speed,
+  age, task difficulty, raw Seeds, or money breaks it.
+- A Child completes with help, an accessibility adaptation, or an agreed smaller equivalent; the
+  Challenge Leaf receives full credit.
+- A Child completes extra tasks; garden progress may grow but League score remains capped at 100.
+- Weekly reset is interrupted or repeated; exactly five new slots exist and permanent progress is
+  unchanged.
+- A Family Reward amount is zero, negative, malformed, visible to another Child, attached to a
+  prohibited category, rank-based, or described as a conversion; validation rejects it.
+- A reward reaches its milestone twice; only one unlock exists. Once Unlocked, it cannot be revoked.
+- A reward is marked Given twice; the second attempt is a neutral no-op.
+- The Parent changes future plans; no prior target, amount, state transition, or unlocked promise is
+  altered.
+- Prepared voice is missing; transcript, captions, and task steps remain available and completion
+  is not blocked.
+- A simulated voice transcript is deleted before send; it leaves no evidence in Parent check-in.
+- Arabic contains mixed `AED 25`, `١٢٠ بذرة`, names, or dates; direction and reading order remain
+  correct without artificial letter spacing.
+- Font scaling, long Arabic labels, diacritics, reduced motion, keyboard, or Back navigation must
+  not hide safety, score meaning, reward privacy, or the dominant action.
 
-## P0 Demonstration Contract
+## Exact Revision 2 Demonstration Contract
 
-### Exact Task Fixture
+### Canonical Reset Fixture
 
-| Field                | Required value                                                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Child                | Salem, synthetic, age 9                                                                                            |
-| Category / landscape | Green Impact — أثر أخضر / Mangrove coast                                                                           |
-| English title        | Sort clean recyclables and go with an adult to the guardian-approved safe recycling bin                            |
-| Arabic title         | فرز المواد النظيفة القابلة لإعادة التدوير ومرافقة شخص بالغ إلى حاوية إعادة تدوير آمنة يحددها وليّ الأمر            |
-| Estimated effort     | 15–30 minutes                                                                                                      |
-| `recognitionMode`    | `standard`                                                                                                         |
-| `routinePhase`       | `acquisition`                                                                                                      |
-| Recurrence           | `once`                                                                                                             |
-| Displayed award      | 12 Seeds after one Parent confirmation                                                                             |
-| `visibilityScope`    | `household`                                                                                                        |
-| `circleEligible`     | `true`                                                                                                             |
-| Evidence/reflection  | Optional prepared synthetic fixtures; neither is required to complete                                              |
-| Meaning              | Responsible handling of locally accepted recyclable material; no quantified or verified environmental-impact claim |
+| Field                               | Reset value                                                                              |
+| ----------------------------------- | ---------------------------------------------------------------------------------------- |
+| Locale/direction                    | Arabic / RTL                                                                             |
+| Access                              | Signed out at welcome/access; no Parent or Child protected history                       |
+| Household                           | Synthetic Al Noor family                                                                 |
+| Profiles                            | Salem 9, Alya 11; synthetic; Parent-created tree avatars                                 |
+| League members                      | Salem, Alya, Mariam, Rashid; synthetic invite-only siblings/cousins                      |
+| Week                                | Active deterministic week with exactly five Challenge Leaf slots per participating Child |
+| Salem weekly state                  | 4/5 confirmed; score 80; fifth slot is the P0 recycling task                             |
+| Other standings before confirmation | Mariam 5/5 = 100; Alya 3/5 = 60; Rashid 2/5 = 40                                         |
+| Mangrove                            | Salem 48/60, Shoot                                                                       |
+| Family canopy                       | 19/25 cooperative leaves                                                                 |
+| Family Reward                       | Salem; 108/120 new eligible Seeds; AED 25; `promised`; private                           |
+| Active task                         | None until Parent assigns the P0 fixture                                                 |
+| Prepared Parent Guide               | `guide_recycling_refine_v1`                                                              |
+| Prepared Child Coach                | `coach_recycling_steps_v1`                                                               |
+| Prepared image/audio                | `fixture_recycling_clean_v1`; `fixture_salem_plan_ar_v1`                                 |
+| Access/pairing fixtures             | Deterministic Parent verification, Salem PIN, and six-digit family pairing flow          |
+| Permissions                         | Real camera/microphone off; prepared/simulated voice enabled; captions on                |
+| Celebration                         | Not available; not consumed                                                              |
 
-**Definition of done**: After an adult pre-check, Salem sorts intact, non-sharp clean paper and
-plastic accepted by the local stream into the correct household recycling container. If needed,
-Salem helps only after the adult's second check to close one lightweight recycling bag, then
-accompanies the adult on a guardian-approved safe route. The adult assesses heat and traffic,
-carries the bag, and handles disposal. The route requires no road crossing, and Salem stays out of
-vehicle paths, compactors, waste chutes, and bin-room machinery. If heat or traffic is unsafe, the
-family postpones the route or uses an indoor sorting alternative. General household waste is not
-part of this task.
+### P0 Task and Confirmation Oracle
 
-The Arabic definition of done and safety text MUST use the canonical Modern Standard Arabic in
-`DEMO_RUNBOOK.md` unchanged until a named fluent/cultural review records a correction. Agents MUST
-NOT improvise alternative safety-critical Arabic.
+The P0 task remains the reviewed 15–30-minute Green Impact recycling task with adult pre-check,
+safe intact paper/plastic only, no glass/sharps/batteries/chemicals/medicine/unknown waste, no road
+crossing, adult-carried disposal, unsafe-heat/traffic alternative, and handwashing. It uses
+`standard + acquisition`, `recurrence = once`, fixed 12 Seeds, Mangrove mapping, household
+visibility, explicit Family Reward contribution eligibility, and Salem's fifth Challenge Leaf.
 
-**Required safety boundary**:
+One valid confirmation creates one immutable result and the following presentation order:
 
-- an adult pre-checks every item and approves the local recycling stream;
-- Salem handles only intact, non-sharp, clean paper and plastic approved by the adult;
-- Salem never touches glass, sharps, batteries, chemicals, medicine, spoiled material, leaking
-  bags, or unknown waste;
-- Salem never repairs a bin, appliance, light, or electrical item and asks an adult whenever
-  unsure;
-- the adult performs a second check before bag closing, assesses heat and traffic, carries the
-  bag, chooses and owns the route, and handles disposal;
-- the route has no road crossing and keeps Salem out of vehicle paths, compactors, chutes, and
-  bin-room machinery; unsafe heat or traffic causes postponement or an indoor alternative; and
-- Salem washes hands afterward.
+1. Parent-specific praise naming safe sorting and appropriate help-seeking.
+2. Exactly 12 Seeds.
+3. Mangrove 48/60 Shoot → 60/60 Sapling.
+4. One cooperative family-canopy leaf, 19/25 → 20/25.
+5. Salem Challenge Leaves 4/5 → 5/5 and Weekly Growth Score 80 → 100.
+6. Private reward progress 108/120 → 120/120 and `promised → unlocked`.
+7. Only after praise and garden growth, the private reward-unlock message.
 
-The starter-catalog task `GI01` remains an 8-Seed, single-step `fade_first + acquisition` sorting
-routine. The P0 task is a separate 12-Seed, multi-step, recurrence-once `standard + acquisition`
-variant; the higher fixed amount reflects the approved 15–30-minute scope and MUST NOT silently
-change `GI01`. General household-waste disposal remains Home Responsibility and never receives
-Green/circle credit.
+Post-confirmation League standings are:
 
-### Category and Landscape Visibility
+| Position | Nickname | Score | Leaves |
+| -------: | -------- | ----: | -----: |
+|        1 | Salem    |   100 |    5/5 |
+|        1 | Mariam   |   100 |    5/5 |
+|        3 | Alya     |    60 |    3/5 |
+|        4 | Rashid   |    40 |    2/5 |
 
-| Task category        | Arabic            | Landscape track       | Default sharing boundary                                          |
-| -------------------- | ----------------- | --------------------- | ----------------------------------------------------------------- |
-| Faith & Gratitude    | الإيمان والامتنان | Sidr reflection grove | Child/guardian; recognition-only by default                       |
-| Roots & Kinship      | جذورنا            | Ghaf desert grove     | Child/guardian or household; never circle                         |
-| Home Responsibility  | مسؤوليتي          | Samar desert grove    | Household; never circle unless a separate valid Green task exists |
-| Green Impact         | أثر أخضر          | Mangrove coast        | Household may be circle-eligible after filtering                  |
-| Food & Hospitality   | النعمة والضيافة   | Date-palm oasis       | Household; never circle                                           |
-| Heritage & Etiquette | تراثنا وآدابنا    | Ghaf desert grove     | Private/household; never circle                                   |
-| Kindness & Community | اللطف والمجتمع    | Samar desert grove    | Recognition-only or fade-first preparation; never circle          |
-| Learning & Wellbeing | التعلّم والتوازن  | Sidr reflection grove | Child/guardian; never circle                                      |
+A duplicate confirmation changes nothing. League, Family Reward, and garden consequences are
+separate domain results even when one confirmation unlocks them together.
 
-### Exact Reset and Confirmation Values
+## Functional Requirements _(mandatory)_
 
-The Parent-only reset requires a small confirmation and MUST restore all values atomically without
-network access.
+### Revision, Scope, and Design Intake
 
-| Field                        | Canonical reset value                                          |
-| ---------------------------- | -------------------------------------------------------------- |
-| Locale/direction             | Arabic / RTL                                                   |
-| Route/history                | `/`; no stale Back history                                     |
-| Demo mode                    | Parent; role switch labeled not authentication                 |
-| Household                    | Synthetic Al Noor family                                       |
-| Children                     | Salem, age 9; Alya, age 11; both visibly synthetic             |
-| Active Child                 | Salem                                                          |
-| Salem personal earned Seeds  | 48                                                             |
-| Alya personal earned Seeds   | 36                                                             |
-| Salem Mangrove track         | 48/60, Shoot                                                   |
-| Household Ghaf canopy        | 19/25 contribution leaves                                      |
-| Circle Green Impact goal     | 11/12 eligible actions; synthetic/local                        |
-| Active assignment/submission | None                                                           |
-| Prepared Parent Guide result | `guide_recycling_refine_v1`                                    |
-| Prepared Child Coach result  | `coach_recycling_steps_v1`                                     |
-| Prepared image               | `fixture_recycling_clean_v1`; synthetic/prepared label visible |
-| Prepared audio               | `fixture_salem_plan_ar_v1`; synthetic/prepared label visible   |
-| Assistant mode               | Deterministic prepared; no remote dependency                   |
-| Celebration state            | `available = false`; `consumed = false`                        |
+- **R2-FR-001**: Revision 1 artifacts and evidence MUST remain historical and MUST NOT satisfy any
+  Revision 2 implementation, design, Android, accessibility, or human-review criterion.
+- **R2-FR-002**: Revision 2 MUST remain one application with separate Parent and Child experiences;
+  a second application is prohibited.
+- **R2-FR-003**: Application implementation MUST remain blocked except within an explicit Stitch
+  release that names its approved screens, foundations, routes, states, gaps, and integration-owner
+  boundary. Ghaf R001 releases only Batch 1 as recorded in `design-intake/release-gate.md`.
+- **R2-FR-004**: Outside that exact partial boundary, no route, source, test, asset, dependency,
+  font, or runtime evidence MAY be changed or claimed for Revision 2.
+- **R2-FR-005**: Exact route paths, frame geometry, visual tokens, illustration composition, and
+  state allocation MUST be derived from approved Stitch output rather than guessed from this spec;
+  missing variants must be recorded without fabricating design evidence.
+- **R2-FR-006**: Capability labels MUST distinguish real prototype interaction, synthetic,
+  prepared, simulated, self-reported, blocked, not run, and future behavior wherever confusion is
+  plausible.
 
-One valid confirmation changes only these counters:
+### Access, Roles, and Navigation
 
-| Counter                     |        Before |                                After |
-| --------------------------- | ------------: | -----------------------------------: |
-| Salem personal earned Seeds |            48 |                                   60 |
-| Salem Mangrove progress     |  48/60, Shoot |                       60/60, Sapling |
-| Household canopy            |  19/25 leaves |                         20/25 leaves |
-| Circle Green Impact goal    | 11/12 actions | 12/12 actions, cooperative milestone |
+- **R2-FR-007**: Welcome MUST combine product promise, language, Parent access, Child access, and a
+  concise synthetic-demo disclosure.
+- **R2-FR-008**: Parent access MUST support deterministic synthetic phone/email verification plus a
+  Parent PIN, passkey, or biometric-gate simulation and MUST NOT claim production security.
+- **R2-FR-009**: First-time Parent setup MUST collect only synthetic family name, Child nickname,
+  tree avatar, age band, language, and basic accessibility defaults.
+- **R2-FR-010**: Child access MUST require no Child email or phone number.
+- **R2-FR-011**: Shared-device Child access MUST use a Parent-created profile plus PIN or picture
+  sequence; errors MUST be neutral and recoverable through Parent help.
+- **R2-FR-012**: Separate-device access MUST simulate a prepared QR or short pairing code plus
+  Parent approval; P0 MUST NOT request a real camera or network service.
+- **R2-FR-013**: Pairing MUST represent awaiting approval, approved, denied, expired, offline, and
+  revoked-device states.
+- **R2-FR-014**: Parent reauthentication MUST precede changes to monetary rewards, family members,
+  trusted devices, League membership, or photo/voice permissions.
+- **R2-FR-015**: Child navigation MUST never expose Parent mode, reports, reward editing,
+  invitations, permission management, or contact details.
+- **R2-FR-016**: Parent navigation MUST contain Home, Tasks, Garden, and Family; Child navigation
+  MUST contain Today, Garden, and League.
+- **R2-FR-017**: Task Builder, Check-in, Family Rewards, pairing, permissions, settings, device
+  management, reauthentication, assistant, and celebration MUST remain contextual.
+- **R2-FR-018**: Normal navigation MUST contain no role toggle or forced repeated role switching.
 
-A duplicate confirmation changes nothing.
+### Task, Recognition, and Garden
 
-### Prepared Assistant and Recognition Fixture Contract
+- **R2-FR-019**: The eight curated task categories and five UAE landscape tracks MUST remain
+  available from local fixtures.
+- **R2-FR-020**: Every task MUST define a positive observable action, purpose, definition of done,
+  age/ability fit, effort, help, supervision, safety, optional evidence, recognition mode, fixed
+  award or recognition-only status, phase, recurrence, landscape, visibility, Challenge Leaf
+  eligibility, fail-closed Family Reward contribution eligibility, and localized copy.
+- **R2-FR-021**: Parent approval MUST be required before assignment and before any recognition
+  consequence.
+- **R2-FR-022**: Assignment, choice, start, Coach use, and submission MUST create zero Seeds,
+  persistent growth, canopy leaves, Challenge Leaves, League score, or Family Reward progress.
+- **R2-FR-023**: A Child MAY choose among approved tasks, request help, request a smaller task,
+  accept a safe equivalent, complete with help, retry, or return later without shame or loss.
+- **R2-FR-024**: Completing an accepted task with permitted help or accessibility adaptation MUST
+  preserve its displayed award and full Challenge Leaf credit.
+- **R2-FR-025**: Suggested praise MUST name an action, strategy, improvement, or appropriate
+  help-seeking and MUST remain Parent-editable.
+- **R2-FR-026**: Kind retry MUST preserve all earned Seeds, stages, canopy progress, weekly credit,
+  and unlocked rewards.
+- **R2-FR-027**: Confirmation MUST be idempotent and MUST apply the exact P0 oracle at most once.
+- **R2-FR-028**: Praise and garden growth MUST be presented before a Family Reward unlock message.
+- **R2-FR-029**: Seeds and garden stages MUST remain permanent; no debt, deduction, punitive streak,
+  dying tree, random reward, or scarcity mechanic is permitted.
+- **R2-FR-030**: Garden growth MUST be labeled symbolic and MUST NOT imply real planting, measured
+  impact, carbon, water, waste, or habitat restoration without an approved method.
 
-The prepared Parent Guide interaction uses `guide_recycling_refine_v1` with the Parent input
-“Take the recycling out.” Its reviewed response MUST turn that wording into the Exact Task
-Fixture without omitting any adult check, item exclusion, route, heat/traffic, disposal, or
-ask-an-adult boundary. The Parent sees **Accept suggestion**, **Keep mine**, and **Make smaller**.
-The point-of-use disclosure is “Prepared AI example. AI can be wrong; the Parent decides.” The
-Arabic controls and disclosure use the canonical `DEMO_RUNBOOK.md` wording until named review.
+### Ghaf Family League
 
-The prepared Child Coach interaction uses `coach_recycling_steps_v1` and exactly these task-bounded
-steps:
+- **R2-FR-031**: Each participating Child MUST receive exactly five Parent-approved Challenge Leaf
+  opportunities before an active week begins.
+- **R2-FR-032**: Weekly Growth Score MUST equal `(confirmed Challenge Leaves / 5) × 100`, use
+  20-point increments, and never exceed 100.
+- **R2-FR-033**: Extra tasks MAY produce otherwise eligible private Seeds/growth but MUST NOT raise
+  Weekly Growth Score or position.
+- **R2-FR-034**: Help, accessibility adaptations, and agreed smaller/equivalent tasks MUST earn full
+  Challenge Leaf credit.
+- **R2-FR-035**: Equal scores MUST share position; speed, timestamp, age, task difficulty, raw Seeds,
+  money, and evidence quality MUST NOT break ties.
+- **R2-FR-036**: Weekly rankings and Leaf slots MUST reset at rollover; Seeds, landscapes, canopy
+  history, and Family Reward states MUST not reset.
+- **R2-FR-037**: Prayer, affection, emotional disclosure, private wellbeing, food consumption,
+  hygiene, disability-related routines, proof of love, and other sensitive private activity MUST
+  NOT become Challenge Leaves.
+- **R2-FR-038**: A Child League row MUST expose only nickname, tree avatar, position, score, and
+  confirmed Leaves.
+- **R2-FR-039**: League projection MUST exclude task title/content, evidence, age, accommodations,
+  praise, raw Seeds, monetary amount, missed-task reasons, Parent notes, assistant content, and
+  exact timestamps before any shared visual is created.
+- **R2-FR-040**: League membership MUST be invite-only and guardian-managed; P0 membership and
+  invitations MUST remain visibly synthetic/local.
+- **R2-FR-041**: Prepared bilingual encouragement reactions MAY be sent; free text, direct chat,
+  comments, public discovery, and contact exchange are prohibited.
+- **R2-FR-042**: Every confirmed Challenge Leaf MUST contribute exactly one cooperative family-
+  canopy leaf or equivalent goal unit, without duplicating the same confirmation.
+- **R2-FR-043**: Revision 1 `circleEligible` MUST NOT be reused as League eligibility. Revision 2
+  MUST use a distinct Challenge Leaf policy. Any retained coarse Green Impact projection MUST
+  continue to enforce its Green-only household rule and MUST NOT create a Circle screen, League
+  field, task disclosure, or ranking consequence.
 
-1. Ask an adult to pre-check the clean items and choose the household recycling bin.
-2. Sort only the intact, non-sharp paper and plastic the adult approved.
-3. Stop and ask an adult if anything is sharp, leaking, dirty, or unknown.
-4. After the adult checks again, help close the light recycling bag if needed, go with the adult on
-   the safe route while the adult carries/disposes, then wash your hands.
+### Family Reward
 
-Its prepared if–then cue is “After the adult checks the items, I sort the clean recyclables.” It
-shows **I need an adult** and the disclosure “Prepared AI-assistant example; this response is
-prewritten and may be wrong.” The canonical Arabic steps, cue, exit, and disclosure in
-`DEMO_RUNBOOK.md` MUST remain unchanged until named review. There is no live Child Coach in P0.
+- **R2-FR-044**: The feature MUST be called **Family Reward — المكافأة العائلية** and MUST NOT be
+  called a wallet, cash store, balance, exchange, or payout service.
+- **R2-FR-045**: A plan MUST belong to one Child and use one immutable agreed milestone snapshot:
+  new eligible Seeds, one eligible-provenance landscape stage, or a count of eligible-provenance
+  landscapes reaching Sapling. Every contributing confirmation MUST carry a fail-closed eligibility
+  decision tied to its immutable task version; unknown or prohibited activity contributes zero.
+  Seed milestones MUST sum only eligible transactions, and landscape milestones MUST use eligible
+  contribution provenance rather than the displayed aggregate stage alone.
+- **R2-FR-046**: Reward type MUST be money, family experience, privilege, or gift, selected and
+  funded by the Parent outside Ghaf.
+- **R2-FR-047**: Money and reward details MUST be visible only to the relevant Child and guardians
+  and MUST never appear in League standings, comparison, encouragement, or shared projection.
+- **R2-FR-048**: A Family Reward MUST depend on personal progress and MUST NOT depend on position,
+  winning, another Child's result, or a universal Seed-to-AED rate.
+- **R2-FR-049**: Ghaf MUST NOT transfer, store, custody, settle, redeem, or convert money or Seeds.
+- **R2-FR-050**: Reward states MUST transition only `promised → unlocked → given`; duplicate
+  transitions MUST be neutral no-ops.
+- **R2-FR-051**: Once unlocked, a plan MUST NOT be revoked, reduced, deleted as punishment, or
+  returned to promised.
+- **R2-FR-052**: Changes to future rewards MUST create a prospective plan/version and MUST NOT
+  alter an agreed target, amount, progress baseline, unlock, or given record retroactively.
+- **R2-FR-053**: A Parent MUST see the maximum monetary amount promised for the selected month,
+  calculated before saving as the sum of each agreed monetary plan assigned to that month across
+  Promised, Unlocked, and Given states; draft and nonmonetary plans MUST contribute zero.
+- **R2-FR-054**: Monetary reward plans MUST NOT attach to prayer, affection, emotional disclosure,
+  eating, body/weight outcomes, private wellbeing or disability-related activity, or proof of love
+  for relatives. Food, water, clothing, safe shelter, sleep, healthcare, education, transport,
+  ordinary family contact, affection, safety, dignity, and ordinary religious participation MUST
+  never be conditioned on a Family Reward.
+- **R2-FR-055**: A monetary plan save or edit MUST require Parent reauthentication.
+- **R2-FR-056**: The P0 Salem plan MUST progress 108/120 → 120/120 exactly once and unlock AED 25
+  only from the approved recycling task's explicitly eligible 12-Seed transaction and only after
+  the praise-and-garden presentation order.
 
-The prepared editable praise is: “You sorted the clean recyclables and asked before going to the
-bin—that kept the job safe and helped our household.” Its Arabic pair is «لقد فرزت المواد النظيفة
-القابلة لإعادة التدوير وسألت قبل الذهاب إلى الحاوية؛ وهذا جعل المهمة أكثر أماناً وساعد أسرتنا.»
+### AI, Voice, Language, and Safety
 
-The prepared Parent summary MUST cover the current synthetic seven-day window, lead with Salem's
-two Green Impact steps and one appropriate request for adult help, state that the record is
-synthetic and cannot explain a postponed task, and suggest asking which step felt easiest and
-whether the next task should stay the same size. It MUST NOT infer a motive, trait, diagnosis,
-emotion, truthfulness, religiosity, or parenting quality.
+- **R2-FR-057**: The Child Coach MUST remain limited to the active Parent-approved task and MUST
+  identify itself as AI that may be wrong.
+- **R2-FR-058**: Ages 6–8 MUST receive slower prepared voice, one short instruction at a time,
+  curated choices only, and an early Ask an adult option.
+- **R2-FR-059**: Ages 9–11 MUST receive two or three steps, a friendly explanation, structured
+  intents/template input, and quick-choice responses.
+- **R2-FR-060**: Ages 12–14 MAY receive concise mature guardian-enabled bounded text or template
+  input. Every age band MAY use the prepared simulated push-to-talk presentation when its
+  age-specific intent policy allows it; no age band may receive unrestricted chat or real P0 voice
+  processing.
+- **R2-FR-061**: Safety, task requirements, and sensitive content MUST use clear Modern Standard
+  Arabic.
+- **R2-FR-062**: Greetings and encouragement MAY use a light Parent-approved Emirati/Gulf register
+  only after named review; exaggerated dialect, invented phrases, and religious rulings are
+  prohibited. Emirati parents, children, and language specialists MUST review the final phrase and
+  voice library before public use.
+- **R2-FR-063**: P0 code-switch handling MUST use reviewed prepared Arabic-English variants and
+  MUST NOT be described as unrestricted natural-language or speech understanding.
+- **R2-FR-064**: Voice MUST be push-to-talk in product meaning, with visible recording state,
+  transcript, delete-before-send, replay, captions, and slower playback while the task remains
+  visible.
+- **R2-FR-065**: P0 MUST simulate that voice flow with prepared synthetic fixtures, request no real
+  microphone/camera permission, and provide transcript fallback.
+- **R2-FR-066**: Ask an adult MUST remain prominent throughout Coach/voice interaction.
+- **R2-FR-067**: The Coach MUST NOT request secrets, exclusivity, affection, dependence, continued
+  conversation, emotional disclosure, or act as friend, therapist, confidant, religious authority,
+  or replacement Parent.
+- **R2-FR-068**: Neither Coach nor Guide MAY diagnose, infer emotion/personality, recognize a face
+  or voice, judge truthfulness/religiosity, decide food/hazard safety, or score parenting quality.
+- **R2-FR-069**: Parent Guide actions MUST remain bounded to task suggestions, clearer/smaller
+  steps, safety checks, descriptive praise, questions, and neutral time-bounded summaries.
+- **R2-FR-070**: Prepared image/audio/assistant fixtures MUST disclose origin at point of use and
+  remain optional, removable, synthetic, and private.
 
-### Lifecycle and Transition Guards
+### Typography, RTL, Accessibility, and Visual Direction
 
-The machine values for recognition are exactly `standard | fade_first | recognition_only`. The
-machine values for routine phase are exactly `acquisition | maintenance | not_applicable`.
-The machine values for `visibilityScope` are exactly `child_guardian | household`, and
-`circleEligible` is a Boolean. User-facing labels MAY use “fade-first” and “recognition-only,” but
-stored or exchanged domain values MUST use underscores.
+- **R2-FR-071**: Alexandria MUST be used for titles, garden names, and milestone display; Readex Pro
+  MUST be used for body, controls, tasks, AI dialogue, and League/reward data in both locales.
+- **R2-FR-072**: Child hero type MUST target 32/44 Alexandria 800 and Parent hero type 30/42
+  Alexandria 700; screen titles MUST target Child 26/38 and Parent 24/36 Alexandria 700.
+- **R2-FR-073**: Arabic body MUST target Child 18/30 and Parent 17/28 Readex 400–500; buttons MUST
+  target Child 17/26 and Parent 16/24 Readex 600; captions MUST be at least 14/22.
+- **R2-FR-074**: Arabic pages MUST use true page-level RTL, logical layout, generous line height, no
+  artificial letter spacing, and no thin Arabic weights.
+- **R2-FR-075**: Mixed `AED 25`, `١٢٠ بذرة`, names, dates, ranks, and scores MUST have correct
+  bidirectional reading order and tabular numerals where alignment matters.
+- **R2-FR-076**: Ordinary screens MUST show one locale at a time; Arabic and English MUST be fully
+  localized equivalents rather than simultaneous duplicate controls.
+- **R2-FR-077**: Font scaling MUST not clip labels, buttons, safety, scores, or reward privacy text;
+  controls MUST provide at least 48dp targets and accessible contrast.
+- **R2-FR-078**: Parent mode MUST feel calm, premium, organized, and concise; Child mode MAY be
+  brighter and more expressive but MUST remain polished rather than cartoonish.
+- **R2-FR-079**: Both modes MUST share a modern UAE botanical identity, strong bilingual
+  typography, clean surfaces with limited card stacking, purposeful illustration, restrained
+  meaningful animation, and one dominant action per screen.
+- **R2-FR-080**: R001 color tokens, radii, spacing, access illustration geometry, transactional
+  navigation, and motion values are canonical only for Batch 1. Equivalent decisions for every
+  later screen family MUST remain blocked until its approved Stitch design intake.
+- **R2-FR-081**: Reduced motion MUST present the same final praise, Seed, landscape, canopy, League,
+  and Family Reward states without animation dependence.
 
-The task lifecycle is:
+### Privacy, Reset, and Evidence Truth
 
-`draft → reviewed → assigned → chosen → in_progress → submitted → retry | confirmed → recognized`
+- **R2-FR-082**: Shared projections MUST apply allowlists before rendering or counter mutation;
+  hiding private fields only in the final component is insufficient.
+- **R2-FR-083**: Prayer, kinship details, affection, food consumption, wellbeing, hygiene,
+  disability-related routines, media, reflection, assistant content, Parent notes, and Family
+  Reward amounts MUST remain private to their approved audience.
+- **R2-FR-084**: P0 MUST use only synthetic identities, household data, pairing/member records,
+  reward plans, media, assistant results, and League data.
+- **R2-FR-085**: Reset MUST atomically restore the complete Canonical Reset Fixture without network,
+  camera, microphone, payment, or live AI access.
+- **R2-FR-086**: Reset MUST work from welcome, access, pairing, task, assistant voice, submitted,
+  retry, confirmation, celebration, Garden, League, Family Reward, permission, device, and
+  reauthentication states.
+- **R2-FR-087**: Reset MUST return to Arabic RTL welcome/access with no stale protected Back history.
+- **R2-FR-088**: Physical Android, native RTL, keyboard, Back, media, permissions, reduced motion,
+  screen reader, 200% font scale, and touch evidence MUST start `NOT RUN` or `BLOCKED` for Revision 2
+  and cannot pass through source or web inspection.
+- **R2-FR-089**: Named Arabic/UAE language, child-safeguarding, reward ethics, accessibility,
+  sustainability, and family-comprehension reviews MUST start fresh for Revision 2.
+- **R2-FR-090**: Parent settings MUST expose synthetic account protection, Child profiles, paired
+  devices, language, League participation, age-band communication, prepared photo/voice/AI
+  permissions, family visibility, device removal, and forgotten Child-code reset.
+- **R2-FR-091**: Child settings MUST expose only language, Parent-approved voice, playback speed,
+  captions, reduced motion, text size, and tree avatar; Parent permissions, reward configuration,
+  reports, and invitations MUST remain absent.
+- **R2-FR-092**: Permission and device controls MUST represent off, requested, denied, approved,
+  revoked, offline, and successful-update states without implying real P0 media capture.
 
-- `draft → reviewed` requires complete positive action, definition, safety, privacy, reward, and
-  bilingual fields.
-- `reviewed → assigned` requires explicit Parent approval.
-- `assigned → chosen` requires the assigned Child's deliberate choice.
-- `chosen → in_progress` requires an explicit start/open action and MUST remain a separate guarded
-  transition.
-- `in_progress → submitted` requires the approved definition of done to be acknowledged; prepared
-  media and reflection remain optional.
-- `submitted → retry → in_progress` changes no reward or persistent/shared progress.
-- `submitted → confirmed` requires one Parent confirmation.
-- `confirmed → recognized` presents Parent praise and applies any valid result once. Award
-  application is a guarded idempotent consequence, not a universal lifecycle state.
+## Key Entities
 
-No other transition may issue Seeds, persistent garden/canopy growth, or circle activity.
-
-### Reward and Projection Matrix
-
-Only these recognition/phase combinations are valid:
-
-| `recognitionMode` + `routinePhase`  | Seeds after confirmation | Persistent landscape/canopy                          | Circle                                                                  |
-| ----------------------------------- | ------------------------ | ---------------------------------------------------- | ----------------------------------------------------------------------- |
-| `standard + acquisition`            | Fixed displayed award    | Mapped landscape; canopy only when household-visible | One coarse event only for eligible household Green Impact               |
-| `fade_first + acquisition`          | Fixed displayed award    | Same                                                 | Same; third recurrent confirmation prompts a Parent future-phase review |
-| `standard + maintenance`            | None                     | None                                                 | One coarse eligible Green Impact activity may be recorded               |
-| `fade_first + maintenance`          | None                     | None                                                 | One coarse eligible Green Impact activity may be recorded               |
-| `recognition_only + not_applicable` | None                     | None                                                 | Never                                                                   |
-
-Every other pairing is invalid. `standard` MUST be finite or have `recurrence = once`. A recurrent
-reward-eligible task MUST use `fade_first`. A third confirmed recurrent `fade_first` acquisition
-completion prompts **Keep acquisition** or **Move future completions to maintenance** with neither
-preselected. Only the Parent may make or reverse that prospective choice. The current completion
-and all prior Seeds/growth remain unchanged, and Ghaf never declares that a habit formed.
-
-Allowed fixed awards are 4, 6, 8, 12, or 15 Seeds. Completing an accepted task with permitted help
-earns the displayed amount. Only a smaller replacement agreed before acceptance may display a
-smaller amount. Seeds are symbolic, nonfinancial, nontransferable, nonpurchasable, permanent, and
-never randomized or deducted.
-
-### Five-Stage Growth Thresholds
-
-Landscape stages use these deterministic cumulative Seed thresholds:
-
-| Stage       | Cumulative threshold |
-| ----------- | -------------------: |
-| Seed        |                    0 |
-| Shoot       |                   20 |
-| Sapling     |                   60 |
-| Shade       |                  120 |
-| Flourishing |                  200 |
-
-The P0 begins at 48/60 Shoot. The single valid 12-Seed confirmation reaches the threshold and MUST
-present 60/60 Sapling. No progress may reverse or wither. A static, text-equivalent final state is
-required when motion is reduced or unavailable.
-
-## Requirements _(mandatory)_
-
-### Functional Requirements
-
-#### Scope, Routes, and Capability Truth
-
-- **FR-001**: Feature 003 MUST preserve Feature 002 artifacts and evidence as historical records and
-  MUST NOT use any Feature 002 pass to satisfy a Feature 003 criterion.
-- **FR-002**: The product MUST expose exactly the ten authored routes in the Authored Route Contract
-  and no additional authored product route.
-- **FR-003**: Loading, assistant, empty, timeout, fallback, retry, awaiting-confirmation, phase-
-  review, and celebration behavior MUST remain states within the ten routes.
-- **FR-004**: Replaced Feature 002 product routes MUST be retired only after the Feature 003 route
-  set is integrated and verified; historical Feature 002 artifacts MUST remain intact.
-- **FR-005**: Every judge-facing capability MUST be labeled as real interaction, synthetic,
-  prepared/prewritten, simulated, estimated/self-reported, live, blocked/not run, or future wherever
-  misunderstanding is reasonably possible.
-- **FR-006**: The role selector MUST state that it is a shared-device demo shortcut and not
-  authentication.
-- **FR-007**: P0 MUST use only synthetic household, Child, media, assistant, summary, and circle data.
-- **FR-008**: The complete deterministic journey MUST remain usable with every external service
-  denied.
-- **FR-009**: Optional live Parent AI MUST remain unavailable and labeled `BLOCKED`/`NOT RUN` unless
-  an approved secure server boundary and direct validation evidence exist; it MUST NOT block P0.
-- **FR-010**: The Child Coach MUST be prepared-only in P0, with no live or unrestricted-chat mode.
-
-#### Entry, Role, and Family Overview
-
-- **FR-011**: `/` MUST begin in Arabic RTL and show the Ghaf identity, one landscape cue, language
-  choice, synthetic/prepared prototype disclosure, and one dominant enter action.
-- **FR-012**: `/role` MUST offer Parent mode and the synthetic Salem/Alya Child choices without
-  accounts, passwords, identity verification, or production privacy claims.
-- **FR-013**: Salem MUST be shown as synthetic and age 9; Alya MUST be shown as synthetic and age 11.
-- **FR-014**: `/parent` MUST show one combined family canopy, the next cooperative milestone, each
-  Child's next task/requested support, a bounded strengths-first Guide summary, one dominant create-
-  task action, and secondary garden/circle actions.
-- **FR-015**: The Parent and sibling-facing overview MUST NOT place Salem and Alya's raw Seeds, pace,
-  ranks, or age-unequal contributions side by side.
-- **FR-016**: The Parent summary MUST state its time window, lead with strengths, report observable
-  facts, separate uncertainty, offer one open question and one adjustment, and remain Parent-
-  correctable through a bounded local edit of the synthetic observable facts followed by the same
-  prohibited-language validation; correction MUST NOT open free-form Child analysis or a remote
-  conversation.
-- **FR-017**: The Parent summary MUST reject normal/abnormal, lazy/defiant, good/bad Child, diagnosis,
-  ADHD or condition names as conclusions, emotion/personality/risk scores, deception/truthfulness,
-  religiosity, parenting quality, and family-quality judgments.
-
-#### Task Catalog, Drafting, and Approval
-
-- **FR-018**: The eight named task categories and five mapped landscape tracks in the P0 contract
-  MUST be visible from local curated fixtures.
-- **FR-019**: Every task MUST declare a positive observable action, why it matters, definition of
-  done, age band, estimated effort, permitted help, supervision, safety exclusions, optional
-  evidence, `recognitionMode`, displayed award or recognition-only status, `routinePhase`,
-  recurrence, landscape, `visibilityScope`, `circleEligible`, privacy, and Arabic/English copy.
-- **FR-020**: The P0 executable task MUST match the Exact Task Fixture, including Salem, 15–30-minute
-  scope, adult checks, accompanied route, `standard + acquisition`, `once`, 12 Seeds, Mangrove,
-  `household`, and `circleEligible = true`.
-- **FR-021**: The P0 task MUST remain distinct from 8-Seed catalog task `GI01`; general household-
-  waste disposal MUST remain Home Responsibility and MUST NOT receive circle credit.
-- **FR-022**: `/parent/task/new` MUST require a Child and curated category/template before custom
-  wording can proceed to review.
-- **FR-023**: The Parent Guide MUST expose explicit bounded actions such as make clearer, make
-  smaller, check safety, or adapt age rather than an open chat.
-- **FR-024**: Parent-authored text MUST remain unchanged until the Parent explicitly accepts a Guide
-  suggestion; **Keep mine** MUST preserve the original.
-- **FR-025**: Custom wording MUST pass the same task, safety, reward, privacy, and category rules as a
-  curated template.
-- **FR-026**: `/parent/task/review` MUST present Arabic first and English second with equivalent
-  action, definition, meaning, effort, supervision, exclusions, evidence, recognition, award,
-  phase, recurrence, landscape, visibility, and circle eligibility.
-- **FR-027**: Safety-critical text MUST appear before assignment approval and MUST NOT be hidden or
-  collapsible.
-- **FR-028**: Only explicit Parent approval after complete review MAY move a task from `reviewed` to
-  `assigned`.
-- **FR-029**: Assignment approval MUST create no Seeds, persistent growth, canopy leaf, activity
-  record, or circle progress.
-
-#### Child Choice, Task, Help, and Submission
-
-- **FR-030**: `/child` MUST show two or three Parent-approved choices and MUST display each
-  choice's purpose, effort, permitted help, recognition, fixed award if any, and landscape.
-- **FR-031**: The Child MUST be able to choose, ask for help, ask to make a task smaller, accept a
-  safe equivalent, complete with permitted help, retry, or return later without shame or loss.
-- **FR-032**: `assigned → chosen` and `chosen → in_progress` MUST be separate, guarded lifecycle
-  transitions; choosing MUST NOT imply that work started.
-- **FR-033**: `/child/task` MUST show one unchanged Parent-approved definition of done followed by no
-  more than four short steps.
-- **FR-034**: The Child Coach MUST remain bound to the active Parent-approved task and MUST NOT alter
-  its completion criterion.
-- **FR-035**: Child Coach intents MUST be limited to simplify, show steps, create an if–then cue,
-  rehearse one reviewed phrase, respond to one prepared fixture, offer one optional skippable task-
-  focused reflection, or request an adult.
-- **FR-036**: Ages 6–8 MUST use curated intents without free text; ages 9–11 MUST use structured
-  intents/template input; ages 12–14 MAY use guardian-enabled bounded text or push-to-talk with
-  stronger controls; no band MAY receive unrestricted chat.
-- **FR-037**: The Child Coach MUST say it is AI and may be wrong, stay on task, and provide a visible
-  trusted-adult exit for hazards or uncertainty.
-- **FR-038**: Photo, audio, and reflection MUST be optional and skippable; their omission MUST NOT
-  prevent task completion or reduce the displayed reward.
-- **FR-039**: Before optional prepared media or reflection is submitted, the Child MUST be told what
-  the Parent can see and that no cross-household sharing occurs.
-- **FR-040**: Submission MUST provide a neutral acknowledgement and move to `submitted` with zero
-  Seeds, landscape growth, canopy change, activity record, or circle progress.
-
-#### Parent Check-In, Recognition, and Reward
-
-- **FR-041**: `/parent/check-in` MUST show completion mode, permitted help, optional prepared
-  evidence, optional reflection, and observable facts separately. It MUST remain safely reachable
-  for the matching pending-confirmation or recognized journey so the Parent can complete the
-  praise-first continuation or receive the neutral duplicate-confirmation result.
-- **FR-042**: The Parent MUST be able to confirm, choose kind retry, make a future task smaller, or
-  agree a safe equivalent without a reject/shame state.
-- **FR-043**: Kind retry MUST return the current task to `in_progress` and MUST NOT change prior Seeds,
-  growth, canopy, or circle totals.
-- **FR-044**: Suggested praise MUST describe the action, strategy, improvement, or appropriate help-
-  seeking and MUST remain editable before sending.
-- **FR-045**: A valid P0 confirmation MUST render the final praise in an observable intermediate
-  state, then require a distinct Parent continuation before applying exactly one 12-Seed result;
-  one event handler MUST NOT mark praise presented and apply recognition in the same turn.
-- **FR-046**: Parent confirmation MUST be idempotent; duplicate attempts MUST be neutral no-ops that
-  duplicate no transaction, growth, leaf, activity, milestone, or celebration.
-- **FR-047**: Completing an accepted task with permitted help MUST earn the displayed award; only a
-  smaller replacement agreed before acceptance MAY display a lower award.
-- **FR-048**: Fixed numeric awards MUST be limited to 4, 6, 8, 12, or 15 Seeds and MUST never use
-  randomness, multipliers, purchase, transfer, cash value, debt, deduction, or scarcity.
-- **FR-049**: Earned Seeds and persistent growth MUST be permanent; no missed day, illness, travel,
-  disability, access need, rest, or retry may create a punitive streak, public failure, or dying
-  vegetation.
-- **FR-050**: Only the five recognition/phase combinations in the Reward and Projection Matrix MAY
-  be accepted; every other combination MUST be rejected before assignment.
-- **FR-051**: `standard` MUST be finite or `recurrence = once`; every recurrent reward-eligible
-  routine MUST use `fade_first`.
-- **FR-052**: `recognition_only` MUST use `not_applicable` and MUST create no Seed transaction,
-  persistent landscape/canopy growth, or circle event.
-- **FR-053**: `standard` or `fade_first` maintenance MUST create no Seeds or persistent landscape/
-  canopy growth; an eligible Green Impact completion MAY still create one coarse activity event.
-- **FR-054**: The third confirmed recurrent `fade_first` acquisition completion MUST prompt an
-  unselected Parent choice for future completions; it MUST NOT change phase automatically or alter
-  the current or prior completions.
-- **FR-055**: A Parent phase decision MUST be prospective, visible, reversible, and MUST NOT imply
-  that a habit has formed.
-
-#### Garden Growth and Shared Projection
-
-- **FR-056**: Landscape progression MUST use cumulative thresholds Seed 0, Shoot 20, Sapling 60,
-  Shade 120, and Flourishing 200.
-- **FR-057**: The P0 MUST start at Mangrove 48/60 Shoot and one valid confirmation MUST present
-  60/60 Sapling after adding exactly 12 Seeds.
-- **FR-058**: `/garden` MUST show praise/cause before or with the final symbolic consequence, add one
-  household canopy leaf, show all five connected tracks, visually emphasize Mangrove, and offer the
-  circle as the next dominant action.
-- **FR-059**: Growth MUST remain understandable from its static stage, label, and changed detail and
-  MUST NOT depend on color, motion, or sound alone.
-- **FR-060**: Reduced motion or motion failure MUST render the same final values and a textual cause-
-  and-effect explanation immediately.
-- **FR-061**: Garden growth MUST be labeled symbolic and MUST NOT claim real planting, habitat
-  restoration, liters, kilograms, carbon, or measured environmental impact.
-- **FR-062**: A Parent-confirmed observable quantity MAY be labeled self-reported or estimated
-  activity; it MUST NOT be called environmental impact without an approved conversion method.
-- **FR-063**: Privacy filtering MUST run before every household/circle visual or counter update.
-- **FR-064**: `visibilityScope = child_guardian` MUST remain visible only to the Child and guardians
-  and MUST add no household-canopy contribution.
-- **FR-065**: A household-visible acquisition rewarded task MAY add one combined-canopy leaf without
-  exposing an individual raw total.
-- **FR-066**: `circleEligible = true` MUST be accepted only for Green Impact with
-  `visibilityScope = household`; every other pairing MUST be rejected before projection.
-- **FR-067**: A valid circle projection MUST contain only one coarse family-level eligible Green
-  action and MUST exclude the task record, Child identity, and Seeds.
-- **FR-068**: `/circle` MUST show seeded family-level cooperative progress and a common goal, offer
-  finish or Parent reset, and contain no podiums, first/last rank, Child profile grids, messages,
-  comments, reactions, discovery, or real invitations.
-- **FR-069**: `/circle` MUST state that its data is synthetic/local and real sharing is not
-  implemented.
-- **FR-070**: Prayer, kinship, affection, food consumption, hygiene, wellbeing, disability-related
-  routines, Parent observations, exact task history, photo/voice, reflections, assistant content,
-  and Parent notes MUST never be projected across households.
-
-#### Assistant and Prepared Media Safety
-
-- **FR-071**: The reset MUST provide the exact prepared fixture identifiers in the canonical reset
-  table and each fixture MUST carry its origin label beside the relevant control or result.
-- **FR-072**: The prepared Child Coach result MUST be `coach_recycling_steps_v1`; no live Child Coach
-  call MAY exist in P0.
-- **FR-073**: The prepared Parent refinement MUST be `guide_recycling_refine_v1` and MUST retain the
-  Parent's input when fallback occurs.
-- **FR-074**: The Parent Guide MAY suggest reviewed tasks, clearer/smaller steps, safety checks,
-  descriptive praise, questions, and neutral time-bounded summaries only.
-- **FR-075**: The Child Coach MUST NOT ask for secrets, exclusivity, affection, dependence, continued
-  conversation, or emotional disclosure and MUST NOT act as friend, therapist, confidant,
-  religious authority, or replacement Parent.
-- **FR-076**: Neither assistant MAY diagnose, infer emotion/personality, recognize a face or voice,
-  judge truthfulness/religiosity, or issue medical, food-safety, religious, or hazardous-action
-  decisions.
-- **FR-077**: The prototype MUST NOT process real Child photo/voice, listen continuously or in the
-  background, or request camera/microphone permission for the deterministic path.
-- **FR-078**: Prepared image and voice fixtures MUST contain no Child, face, hand, personal data,
-  brand, address, school, readable private text, or watermark and MUST be visibly synthetic.
-- **FR-079**: Missing prepared media MUST fall back to descriptive text or transcript and MUST NOT
-  block completion.
-- **FR-080**: Any optional live Parent refinement MUST use synthetic input, bounded structured
-  fields, age/safety validation, a short timeout, and same-attempt deterministic fallback; no live
-  result may be labeled without direct verification.
-- **FR-081**: No provider secret MAY appear in the client-facing prototype, fixture, documentation,
-  log, or source history.
-
-#### Safety, Arabic, Culture, Accessibility, and Reset
-
-- **FR-082**: The Exact Task Fixture's adult pre-check, second check, route ownership, carrying,
-  disposal, heat/traffic assessment, no-road-crossing rule, hazard exclusions, indoor alternative,
-  ask-an-adult instruction, and handwashing MUST all remain visible and testable.
-- **FR-083**: Children MUST NOT be assigned hot gahwa, glass, sharps, chemicals, batteries, unknown
-  waste, electrical repair, unsafe outdoor routes, or unsupervised disposal.
-- **FR-084**: Food tasks MUST NOT score weight, calories, amount eaten, dieting, or a clean plate;
-  Parents retain all food-safety decisions.
-- **FR-085**: Faith content MUST be Parent-enabled, private, nonpunitive, `recognition_only` by
-  default, excluded from comparison, and free from AI judgment of validity, sincerity, or
-  religiosity.
-- **FR-086**: Affection, emotion disclosure, and relationship closeness MUST default to
-  `recognition_only`; kinship/kindness MUST use recognition-only or fade-first preparation without
-  paying for affection or disclosure.
-- **FR-087**: Modern Standard Arabic MUST be the P0 default; Emirati dialect, transliteration,
-  gendered forms, wedding/majlis/hospitality copy, species metaphors, and all faith copy MUST remain
-  marked for named human review.
-- **FR-088**: Cultural phrase tasks MUST offer multiple Parent-approved options and MUST NOT present
-  one family expression as universally correct.
-- **FR-089**: Arabic MUST be the starting locale, use RTL-aware order and directional controls, and
-  preserve equivalent decisions, safety, privacy, reward, and disclosure with English LTR.
-- **FR-090**: Language switching during a safe current state MUST preserve task identity,
-  lifecycle, and valid user input.
-- **FR-091**: All dominant controls MUST provide at least a 48×48dp target; adjacent small targets
-  MUST have at least 8dp separation.
-- **FR-092**: Required content MUST remain operable at 200% font scale without truncating safety or
-  actions; text and essential UI contrast MUST meet WCAG 2.2 AA targets; and state MUST not rely on
-  color, motion, or sound alone.
-- **FR-093**: Controls and changed states MUST have meaningful names, roles, selected/disabled
-  states, and once-only announcements for submission, confirmation, reward, stage, and circle
-  milestone.
-- **FR-094**: Prepared audio MUST have equivalent visible text; prepared images MUST have concise
-  descriptions and origin labels.
-- **FR-095**: The Parent-only reset MUST require a small confirmation and atomically restore every
-  canonical reset value from draft, assistant result/fallback, prepared-media selected/removed/
-  unavailable, reviewed, assigned, chosen, in-progress, submitted, retry, confirmed/recognized,
-  celebration available/consumed, garden, and circle states.
-- **FR-096**: Reset MUST land at `/` in Arabic RTL with no stale Back history and MUST require no
-  network access.
-- **FR-097**: Exactly one valid P0 confirmation MUST change only the four counters in the canonical
-  pre/post table; a duplicate MUST change none.
-- **FR-098**: A reload MAY clear rehearsal state only when that limitation is disclosed; reset MUST
-  still restore the exact baseline.
-
-### Key Entities
-
-- **Synthetic Household**: Al Noor family; contains the synthetic Parent context, Salem, Alya, one
-  combined canopy, and no real identity or account.
-- **Synthetic Child Profile**: Salem (9) or Alya (11), with age-band interaction defaults and
-  private own-progress; never a public profile.
-- **Task Category**: One of the eight bilingual curated categories, mapped to one landscape and a
-  default privacy/safety posture.
-- **Task Template**: Reviewed bilingual starting content with purpose, definition, age/ability,
-  effort, help, supervision, hazards, recognition, phase, recurrence, landscape, visibility, and
-  circle eligibility.
-- **Task**: A Parent-owned reviewed action created from a template or validated custom wording;
-  carries the exact machine values and lifecycle state.
-- **Assignment**: One explicit Parent approval connecting a reviewed Task to one synthetic Child;
-  creates no reward or progress.
-- **Submission**: The Child's completion mode, permitted help, optional prepared media, optional
-  reflection, and awaiting-Parent state; creates no reward by itself.
-- **Parent Check-In**: The idempotent confirm, kind-retry, smaller, or equivalent decision plus
-  editable descriptive praise and neutral observations.
-- **Seed Transaction**: One permanent, symbolic, fixed award tied to one valid confirmed
-  acquisition completion; never money or an impact unit.
-- **Landscape Progress**: Cumulative Seeds and one of five deterministic stages for each mapped
-  landscape.
-- **Canopy Contribution**: One privacy-filtered household leaf from an eligible household-visible
-  acquisition reward; not an individual leaderboard entry.
-- **Green Circle Event**: One coarse, family-level eligible Green Impact action after confirmation
-  and filtering; contains no Child identity, task record, Seeds, media, or reflection.
-- **Assistant Intent/Result**: One allowlisted Parent Guide or Child Coach purpose, structured
-  bounded input/output, origin/status, disclosure, and fallback result.
-- **Prepared Media Fixture**: Optional synthetic image/audio plus identifier, origin, accessible
-  description/transcript, Parent visibility statement, and remove path.
-- **Prototype Session**: Locale, demo mode, active Child, task lifecycle, counters, prepared fixture
-  identifiers, celebration state, and one exact reset baseline.
+- **Synthetic Access Session**: Role-bound Parent or Child prototype access state with explicit
+  synthetic origin and no production identity claim.
+- **Parent Reauthentication Gate**: Short-lived synthetic authorization required for reward,
+  member, trusted-device, and permission changes.
+- **Child Device Pairing**: Prepared QR/code request progressing through awaiting approval,
+  approved, denied, expired, or revoked.
+- **Synthetic Household and Child Profile**: Al Noor family; Salem and Alya; nickname, tree avatar,
+  age band, locale, accessibility defaults, and no real contact/identity record.
+- **Task / Assignment / Submission / Check-in**: Parent-owned reviewed task, explicit assignment,
+  Child completion record, and idempotent Parent decision.
+- **Seed Transaction and Landscape Progress**: Permanent symbolic private progress and the five
+  deterministic UAE landscape stages.
+- **League Week**: Weekly interval, membership, exactly five Challenge Leaf slots per Child,
+  derived score, tied positions, and cooperative canopy goal.
+- **Challenge Leaf**: One preselected age/ability-appropriate opportunity with full credit after
+  Parent confirmation; not a currency and not a task disclosure.
+- **League Projection**: Allowlisted nickname/avatar/position/score/Leaves view with no private
+  source data.
+- **Family Reward Plan**: Private immutable agreed milestone and promise with states Promised,
+  Unlocked, and Given; no custody or exchange.
+- **Monthly Promise Summary**: Private derived maximum monetary commitment for one month.
+- **Prepared Assistant/Voice Fixture**: Task-bound structured result, origin label, transcript,
+  captions, playback controls, delete state, and adult exit.
+- **Revision 2 Prototype Session**: Locale, access, profiles, navigation role, task lifecycle,
+  garden, week, rewards, permissions, pairing, fixtures, idempotency records, and exact reset.
 
 ## Success Criteria _(mandatory)_
 
-### Measurable Outcomes
-
-- **SC-001**: A route inventory contains exactly the ten authored Feature 003 routes and zero
-  replaced Feature 002 product routes after integration.
-- **SC-002**: Five consecutive external-service-denied journeys complete from reset through circle
-  without a blocked action or prepared/live mislabel.
-- **SC-003**: Five consecutive resets from each named FR-095 source state restore every canonical
-  value, Arabic RTL `/`, and empty history exactly.
-- **SC-004**: One confirmation changes Salem 48→60 Seeds, Mangrove 48/60 Shoot→60/60 Sapling,
-  canopy 19/25→20/25, and circle 11/12→12/12; five duplicate confirmation attempts change nothing.
-- **SC-005**: Assignment, choosing, starting, and submission each create zero Seeds, persistent
-  landscape/canopy growth, and circle progress in all automated and manual checks.
-- **SC-006**: All tested valid and invalid recognition/phase rows match the Reward and Projection
-  Matrix, including future-only third-confirmation review and no automatic phase change.
-- **SC-007**: All eight categories map to the specified five landscapes, and all five cumulative
-  growth thresholds return the expected stage at boundary and near-boundary values.
-- **SC-008**: Every tested private, sensitive, non-Green, identity-bearing, Seed-bearing, or
-  `child_guardian + circleEligible` event is rejected before a shared visual or counter changes.
-- **SC-009**: The prepared Parent Guide, prepared Child Coach, image, audio, and summary display
-  point-of-use origin/disclosure labels in both languages; zero prepared results are labeled live.
-- **SC-010**: The pure Child-interaction policy accepts or rejects all age bands and intents exactly
-  as specified; P0 service requests remain limited to the synthetic `9_11` profiles and every
-  request remains bound to the active Parent-approved task.
-- **SC-011**: A prohibited-language review of Parent summaries finds zero diagnostic, normality,
-  character, emotion/personality/risk, deception, religiosity, or parenting-quality judgments.
-- **SC-012**: Arabic RTL and English LTR each complete the same ten-route decisions with equivalent
-  safety, privacy, reward, and capability meaning on a named physical Android build.
-- **SC-013**: Required task/safety copy, actions, and disclosures remain usable at 200% font scale,
-  with 48dp targets, logical reading order, once-only announcements, and reduced-motion static
-  outcomes on the named target build.
-- **SC-014**: Five uninterrupted human rehearsals complete at or below the internal 150-second
-  target with exact reset and no hidden setup; median, maximum, and fallback use are recorded.
-- **SC-015**: Three people unfamiliar with the detailed design can each explain what Salem did,
-  what the bounded assistant did, who approved the reward, and that other families see only one
-  coarse eligible Green action.
-- **SC-016**: A content review finds zero unsupported environmental conversions, real-tree claims,
-  food-safety verdicts, public Child rankings, punishment, random rewards, or real Child data.
-- **SC-017**: Named fluent Arabic/cultural, faith, child-safeguarding, sustainability, and
-  accessibility reviews are recorded before Feature 003 is described as demo-accepted; any missing
-  review remains explicitly `NOT RUN` or causes sensitive content to be removed/labeled.
-- **SC-018**: Optional live Parent refinement is described as live only after direct evidence of an
-  approved secure boundary, validated synthetic-input result, timeout/fallback, and secret
-  isolation; otherwise it remains `BLOCKED`/`NOT RUN` without impairing P0.
+- **R2-SC-001**: Before complete Revision 2 implementation is released, an approved Stitch
+  inventory maps every required screen family, Parent/Child tab, contextual state, Arabic frame,
+  English variant, and accessibility state with zero unresolved P0 product contradiction. A
+  user-approved partial release MUST name its exact boundary and retain every unmapped family as
+  blocked.
+- **R2-SC-002**: Five synthetic Parent access trials and five Child access/pairing trials complete
+  without exposing the other role or implying production authentication.
+- **R2-SC-003**: Parent Home, Tasks, Garden, and Family and Child Today, Garden, and League are the
+  only persistent role tabs in every tested frame and implementation surface.
+- **R2-SC-004**: Assignment, start, Coach use, and submission produce zero early recognition in all
+  focused tests.
+- **R2-SC-005**: One P0 confirmation produces the exact ordered oracle once; five duplicates change
+  zero values.
+- **R2-SC-006**: Every League participant has exactly five slots; all score results equal the
+  formula and remain within 0–100.
+- **R2-SC-007**: The exact 1/1/3/4 tied standings appear without a speed/timestamp tiebreaker.
+- **R2-SC-008**: Help, accessibility adaptation, and agreed equivalent cases each receive the same
+  20-point Leaf credit.
+- **R2-SC-009**: Ten extra-task confirmations leave League score unchanged while permitted private
+  garden effects remain correct.
+- **R2-SC-010**: A shared-projection test corpus containing task, evidence, age, accommodation,
+  praise, raw Seeds, money, note, assistant, and timestamp fields is rejected before rendering.
+- **R2-SC-011**: Weekly reset restores five new slots and score state while changing no earned Seed,
+  landscape, unlocked reward, or prior garden stage.
+- **R2-SC-012**: Every Family Reward plan follows Promised → Unlocked → Given; duplicate or reverse
+  attempts produce no mutation.
+- **R2-SC-013**: Money appears in zero League rows/screens and zero universal conversion labels; the
+  P0 AED 25 plan is visible only to Salem and guardians.
+- **R2-SC-014**: Monthly maximum promised equals the sum of each agreed monetary plan assigned to
+  the month across Promised, Unlocked, and Given states; drafts and nonmonetary plans add zero.
+- **R2-SC-015**: Every prohibited sensitive-category Challenge Leaf or Family Reward attachment is
+  rejected before save.
+- **R2-SC-016**: Coach tests accept only the approved age-band intents, keep Ask an adult visible,
+  and find zero unrestricted chat, dependency, secret, diagnostic, or religious-authority output.
+- **R2-SC-017**: Prepared voice provides timer/state, transcript, delete, replay, captions, slower
+  playback, and fallback with zero microphone/camera request.
+- **R2-SC-018**: Arabic RTL and English LTR complete equivalent Parent and Child journeys on a named
+  Android build with Alexandria/Readex, correct mixed-direction data, 200% text scale, 48dp targets,
+  and reduced-motion parity.
+- **R2-SC-019**: Five external-service-denied end-to-end journeys and resets complete without stale
+  protected history, live-service dependency, or prepared/live mislabel.
+- **R2-SC-020**: Named Arabic/UAE, child-safeguarding, reward-ethics, accessibility,
+  sustainability, and three-person comprehension reviews are recorded before Revision 2 is called
+  demo-accepted.
+- **R2-SC-021**: Every Parent/Child settings and permission-state test exposes only the controls
+  allowed for that role, and zero Child path reveals a Parent permission, reward, report, or invite.
 
 ## Dependencies and Assumptions
 
-- The existing Feature 002 application is a reusable local foundation, not acceptance evidence for
-  Feature 003.
-- Arabic is the default locale and the canonical P0 Arabic safety copy remains unchanged until a
-  named fluent/cultural reviewer approves revisions.
-- The competition prototype uses one shared device, synthetic profiles, local prepared fixtures,
-  and no production authentication or persistence guarantee.
-- The deterministic prepared assistant path is sufficient for P0 completion and offline
-  acceptance. Optional live Parent refinement is nonblocking and currently lacks an approved
-  secure boundary.
-- The P0 circle is a local seeded aggregate and implements no real invitation, account, discovery,
-  access-control, or sharing behavior.
-- Seeds and garden growth are symbolic progression. One eligible circle action is a coarse
-  self-reported activity, not an environmental-impact conversion.
-- Parents/guardians determine task appropriateness, local recycling acceptance, heat/traffic,
-  routes, food safety, cultural phrasing, and when adult help is required.
-- Feature 003 implementation may proceed after the complete Spec Kit artifacts and cross-artifact
-  quality analysis pass; no additional product-choice approval is required unless a genuine
-  unresolved conflict or scope expansion appears.
-- Physical Android, Arabic/RTL, reduced-motion, media, Back/keyboard, timing, comprehension,
-  cultural, faith, safeguarding, and accessibility evidence starts fresh for Feature 003.
+- The user supplied and approved Ghaf R001 Batch 1 on 2026-09-02. Exact foundations and Parent-
+  onboarding routes are resolved only within that partial release; all later routes, components,
+  geometry, assets, and motion remain blocked on later frames.
+- The existing Expo application may be adapted only inside a released design boundary; it remains
+  a technical baseline, not inherited Revision 2 acceptance evidence.
+- The prototype uses synthetic sign-in, pairing, membership, rewards, media, and assistant data.
+- Family Reward promises are voluntarily selected and fulfilled by Parents outside Ghaf. The app
+  does not know whether money or a gift was physically delivered beyond the Parent's synthetic
+  Given record.
+- Parents determine task appropriateness, local recycling rules, routes, heat/traffic, food safety,
+  cultural phrasing, and when adult help is required.
+- Alexandria and Readex Pro are approved. R001 chooses local Expo-compatible packages and explicit
+  weights for Batch 1; native shaping/loading and license verification still require evidence.
+- Modern Standard Arabic is authoritative for safety. Emirati/Gulf greetings, voice, code-switch
+  examples, gendered copy, and religious content require named human review.
 
 ## External Review and Evidence Gates
 
-| Gate                                                                | Status at specification creation | Requirement to change status                                             |
-| ------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------ |
-| Feature 003 plan/tasks/cross-artifact quality                       | `NOT RUN`                        | Complete approved artifacts with no unresolved P0 conflict               |
-| Automated implementation checks                                     | `NOT RUN`                        | Exact command, worktree state, and result                                |
-| Physical Android Arabic/English journey                             | `BLOCKED`                        | Named build, device/OS, locales, observer, and results                   |
-| Reduced motion, media, Back, keyboard, screen reader, and 200% font | `NOT RUN`                        | Direct named-build observations                                          |
-| Five timed rehearsals and three-person comprehension                | `NOT RUN`                        | Recorded operators/observers, durations, answers, and date               |
-| Fluent Arabic and UAE cultural review                               | `NOT RUN`                        | Named reviewer and reviewed content version                              |
-| Faith-content review                                                | `NOT RUN`                        | Named qualified local reviewer and scope                                 |
-| Child-safeguarding review                                           | `NOT RUN`                        | Named reviewer, findings, and disposition                                |
-| Sustainability task/claim review                                    | `NOT RUN`                        | Named reviewer, reviewed task/claim version, and disposition             |
-| Accessibility review                                                | `NOT RUN`                        | Named reviewer, named build/surface, settings, findings, and disposition |
-| Optional live Parent refinement                                     | `BLOCKED` / validation `NOT RUN` | Approved secure boundary plus direct structured-result/fallback evidence |
+| Gate                                   | Status at Revision 2 approval | Requirement to change status                                                         |
+| -------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------ |
+| Product contract documentation         | `PASSED`                      | Reopen for any product, safety, or evidence-boundary change                          |
+| Approved Stitch frames                 | `PARTIAL`                     | R001 Batch 1 approved; complete Arabic/English families/states remain blocked        |
+| Revision 2 implementation plan/tasks   | `PARTIAL`                     | Only `design-intake/release-gate.md` boundary is released; full T120 remains blocked |
+| Automated Revision 2 behavior          | `NOT RUN`                     | New tests against the implemented Revision 2 contracts                               |
+| Arabic/English web proxy               | `NOT RUN`                     | Fresh Revision 2 walkthrough; Revision 1 walkthrough is historical                   |
+| Physical Android                       | `BLOCKED`                     | Named Revision 2 build, device/OS, locales, observer, and results                    |
+| Native accessibility/permissions/voice | `NOT RUN`                     | Direct named-build observations                                                      |
+| Five rehearsals and comprehension      | `NOT RUN`                     | Recorded operators/observers, timings, answers, date                                 |
+| Arabic/UAE language and culture        | `NOT RUN`                     | Named reviewers and reviewed content/frame version                                   |
+| Child safeguarding and reward ethics   | `NOT RUN`                     | Named reviewers, findings, and disposition                                           |
+| Sustainability and accessibility       | `NOT RUN`                     | Named reviewers, scope, findings, and disposition                                    |
 
-No source inspection, web preview, Feature 002 pass, or artifact completion may change a native or
-human gate to `PASSED`.
-
-An evidence exercise remains `NOT RUN` until someone attempts it. If an attempt is made but a named
-build, device, reviewer, secure boundary, or other required dependency is unavailable, record
-`BLOCKED` with that dependency. Do not use `NOT RUN` to conceal an attempted blocked check.
+No source inspection, Revision 1 test, or prior web frame may upgrade a Revision 2 runtime/native/
+human gate.
 
 ## Out of Scope
 
-- Any authored product route beyond the ten-route contract or a second application.
-- Production accounts, authentication, guardian-consent systems, age assurance, multi-family
-  tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment.
-- Real Child names, profiles, photos, voice, free text, location, school, biometrics, or family
-  stories; camera capture, ambient/background listening, or real media analysis.
-- Unrestricted Child chat, AI companionship, therapy, diagnosis, developmental screening, emotion
-  or personality inference, face/voice recognition, deception detection, religious rulings, or
-  automated welfare decisions.
-- Real social discovery, invitations, public profiles, public rankings, messages, comments,
-  reactions, direct Child contact, or cross-household task/media/reflection sharing.
-- Money, purchases, banking, gift cards, redeemable currency, ads, random rewards, loot boxes,
-  scarcity, debt, deductions, punitive streaks, or dying vegetation.
-- Real-tree planting, verified carbon/water/waste/food claims, unsupported impact conversions, or
-  AI food-safety decisions.
-- Production legal-compliance claims, a broad backend, a 3D/VR garden, or architecture work that
-  delays the deterministic competition path.
+- Production authentication, identity verification, secure account recovery, guardian consent
+  systems, age assurance, biometrics, real device binding, or multi-family tenancy.
+- Payment transfer, stored value, wallet balances, custody, payout, redemption, universal
+  Seed-to-AED exchange, banking, cards, purchases, ads, paid boosts, wagering, or winner-take-all
+  prizes.
+- Real Child names, contact details, location, school, photos, voice, unrestricted free text,
+  background listening, biometric recognition, emotion inference, or media upload/analysis.
+- Real invitations, public discovery, global leaderboards, public profiles, direct messages,
+  comments, unrestricted reactions, location sharing, or cross-household task/evidence sharing.
+- Rewards or comparison for prayer, affection, emotional disclosure, eating, body/weight outcomes,
+  wellbeing disclosure, or proof of family love.
+- AI companionship, therapy, diagnosis, developmental screening, religious rulings, deception
+  detection, automated welfare decisions, or unrestricted chat for any age band.
+- Real-tree planting or unsupported carbon, water, waste, food, or environmental-impact conversion.
+- Implementation of inferred screen designs outside an explicit approved Stitch release; production
+  backend, notifications, analytics, monitoring, compliance claims, deployment, or a second app.

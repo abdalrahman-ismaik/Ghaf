@@ -144,3 +144,8 @@ Salem 60 Seeds, Mangrove 60/60 Sapling, canopy 20/25, and circle 12/12. The Engl
 proved that unsafe shorthand fails without mutation, explains the necessary recovery, and can then
 continue through a bounded Guide decision. Final reset restored Arabic RTL `/` and survived six
 Back actions. Android/native and named-human evidence remains unchanged and open.
+
+# Revision 1 Historical Evidence
+
+> These story results belong to the superseded 2026-08-28 ten-route implementation. Revision 2
+> separate access, League, Family Reward, typography, and revised screen journeys remain `NOT RUN`.

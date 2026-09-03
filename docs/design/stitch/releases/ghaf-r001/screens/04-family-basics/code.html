@@ -1,0 +1,209 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ghaf - Family Basics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&amp;family=Alexandria:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#f9faf5",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#87d6b6",
+                        "background": "#f9faf5",
+                        "pearl-ground": "#F7F8F3",
+                        "surface-bright": "#f9faf5",
+                        "surface-container-low": "#f3f4ef",
+                        "secondary": "#006a64",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#00504b",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#5e4100",
+                        "on-surface": "#1a1c19",
+                        "mangrove-teal": "#188B83",
+                        "primary": "#00503b",
+                        "tertiary-fixed-dim": "#f7bd4f",
+                        "outline-variant": "#bec9c2",
+                        "on-primary-fixed-variant": "#00513c",
+                        "secondary-container": "#8ef1e7",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e2e3de",
+                        "on-background": "#1a1c19",
+                        "surface-container-highest": "#e2e3de",
+                        "surface-container-high": "#e7e9e4",
+                        "tertiary-container": "#7c5700",
+                        "on-secondary-container": "#006f68",
+                        "solar-amber": "#F2B84B",
+                        "inverse-on-surface": "#f0f1ec",
+                        "surface-dim": "#d9dad6",
+                        "surface-tint": "#146b51",
+                        "secondary-fixed": "#91f3e9",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#6f7973",
+                        "on-tertiary-container": "#ffd182",
+                        "surface-container": "#edeee9",
+                        "on-primary-fixed": "#002116",
+                        "primary-container": "#126a50",
+                        "tertiary-fixed": "#ffdeaa",
+                        "inverse-surface": "#2e312e",
+                        "secondary-fixed-dim": "#74d7cd",
+                        "primary-fixed": "#a3f3d1",
+                        "ink": "#14221D",
+                        "ghaf-emerald": "#126A50",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#271900",
+                        "surface-container-lowest": "#ffffff",
+                        "deep-forest": "#0D3128",
+                        "on-surface-variant": "#3f4944",
+                        "primary-fixed-dim": "#87d6b6",
+                        "on-secondary-fixed": "#00201e",
+                        "on-primary-container": "#98e7c6"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "unit": "4px",
+                        "touch-target": "48px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Readex Pro"],
+                        "headline-lg": ["Alexandria"],
+                        "body-lg": ["Readex Pro"],
+                        "label-md": ["Readex Pro"],
+                        "display-lg": ["Alexandria"],
+                        "display-lg-mobile": ["Alexandria"],
+                        "label-sm": ["Readex Pro"],
+                        "headline-md": ["Alexandria"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "headline-lg": ["32px", { lineHeight: "1.3", fontWeight: "700" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "1.2", fontWeight: "500" }],
+                        "display-lg": ["48px", { lineHeight: "1.2", fontWeight: "800" }],
+                        "display-lg-mobile": ["36px", { lineHeight: "1.2", fontWeight: "800" }],
+                        "label-sm": ["12px", { lineHeight: "1.2", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "1.4", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Soft Organic Radial Dot Pattern */
+        .bg-dot-pattern {
+            background-image: radial-gradient(circle at 12px 12px, rgba(20, 107, 81, 0.05) 2px, transparent 0);
+            background-size: 24px 24px;
+        }
+        
+        /* Safe areas for mobile */
+        .pt-safe { padding-top: env(safe-area-inset-top); }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-pearl-ground bg-dot-pattern min-h-screen text-on-surface font-body-md antialiased flex flex-col pt-safe pb-safe md:items-center md:justify-center">
+<!-- Mobile Container (Max width for desktop viewing to simulate mobile app) -->
+<main class="w-full max-w-md mx-auto flex flex-col min-h-[884px] md:min-h-[800px] md:h-auto md:shadow-sm md:rounded-[2rem] md:border md:border-surface-variant bg-pearl-ground relative overflow-hidden">
+<!-- Organic Background Shapes -->
+<svg class="absolute top-0 right-0 w-full h-64 text-surface-container-low opacity-80 -z-10 pointer-events-none" fill="currentColor" preserveAspectRatio="none" viewBox="0 0 400 200">
+<path d="M0,0 L400,0 L400,100 C300,150 150,50 0,180 Z"></path>
+</svg>
+<!-- TopAppBar (Transactional - Hidden Navigation Shell) -->
+<header class="flex flex-row-reverse justify-between items-center w-full px-margin-mobile py-4 bg-transparent flat no shadows docked full-width top-0"><!-- Progress Indicator (Top-left in RTL) -->
+<div class="w-[touch-target] flex items-center justify-start">
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-low/50 px-3 py-1.5 rounded-full backdrop-blur-sm">
+        1 من 3
+    </span>
+</div>
+<!-- Logo (Center) -->
+<div class="text-headline-md font-headline-md text-ghaf-emerald">
+    غاف
+</div>
+<!-- Back Arrow (Top-right in RTL) -->
+<button class="w-[touch-target] h-[touch-target] flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-ghaf-emerald transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</button></header>
+<!-- Content Canvas -->
+<div class="flex-1 flex flex-col px-margin-mobile pt-8 pb-32 z-10 relative">
+<!-- Heading Section -->
+<div class="mb-10 text-right -mt-4 md:-mt-0">
+<h1 class="text-headline-lg font-headline-lg text-ink mb-3 leading-tight">
+                    لنبدأ بعائلتك
+                </h1>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed opacity-90 max-w-[90%]">
+                    أدخل اسمًا يظهر داخل تطبيق غاف فقط.
+                </p>
+</div>
+<!-- Form Container (Bento/Card Style) -->
+<div class="space-y-6">
+<!-- Family Name Input -->
+<div class="flex flex-col space-y-2">
+<label class="text-label-md font-label-md text-ink pr-1" for="family-name">
+                        اسم العائلة داخل التطبيق
+                    </label>
+<div class="relative group">
+<input class="w-full h-14 bg-surface rounded-[16px] border-outline-variant text-body-md font-body-md text-ink placeholder-on-surface-variant/40 focus:ring-2 focus:ring-ghaf-emerald/20 focus:border-ghaf-emerald transition-all px-4 shadow-sm" id="family-name" placeholder="مثال: عائلة النخلة" type="text" value="عائلة النخلة">
+</div>
+<div class="flex items-center gap-2 mt-2 px-1 text-on-surface-variant/70">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+<p class="text-[14px] font-body-md text-sm">
+                            لن يظهر هذا الاسم خارج دوائركم الخاصة.
+                        </p>
+</div>
+</div>
+<!-- Spacer -->
+<div class="h-4"></div>
+<!-- Language Selector -->
+<div class="flex flex-col space-y-3">
+<label class="text-label-md font-label-md text-ink pr-1">
+                        لغة التطبيق الأساسية
+                    </label>
+<div class="grid grid-cols-2 gap-3"><!-- Selected Option: Arabic -->
+<button class="h-[touch-target] relative overflow-hidden rounded-[16px] bg-ghaf-emerald/10 border-2 border-ghaf-emerald flex items-center justify-center transition-all group">
+<span class="text-label-md font-label-md text-ghaf-emerald font-semibold z-10">
+        العربية
+    </span>
+<div class="absolute inset-0 bg-ghaf-emerald/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<!-- Unselected Option: English -->
+<button class="h-[touch-target] relative overflow-hidden rounded-[16px] bg-surface border border-outline-variant flex items-center justify-center transition-all hover:bg-surface-container-low group">
+<span class="text-label-md font-label-md text-on-surface-variant z-10">
+        English
+    </span>
+</button></div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Action Area -->
+<div class="fixed md:absolute bottom-0 left-0 right-0 w-full px-margin-mobile py-6 bg-gradient-to-t from-pearl-ground via-pearl-ground to-transparent z-40 pb-[calc(env(safe-area-inset-bottom)+24px)] md:pb-6">
+<button class="w-full h-[56px] bg-ghaf-emerald hover:bg-primary-container text-on-primary rounded-[16px] text-label-md font-headline-md font-bold transition-all shadow-sm hover:shadow-md active:scale-[0.98] flex items-center justify-center">
+                متابعة
+            </button>
+<!-- Prototype Note -->
+<div class="mt-4 text-center">
+<span class="text-label-sm font-label-sm text-outline px-3 py-1 rounded-full bg-surface-container-low/30 backdrop-blur-sm inline-block">
+                    نسخة تجريبية ببيانات اصطناعية
+                </span>
+</div>
+</div>
+</main>
+</body></html>

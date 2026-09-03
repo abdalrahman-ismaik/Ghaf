@@ -1,9 +1,94 @@
 # Ghaf Feature 003 Demo Runbook
 
-**Target:** Family Growth Garden deterministic P0
-**Status date:** 2026-08-28
+**Current target:** Feature 003 Revision 2 — approved Ghaf R001 Batch 1 foundations, Welcome, and
+first-time Parent onboarding
+**Status date:** 2026-09-03
+**Implementation status:** **PARTIALLY IMPLEMENTED — R001 Batch 1 only; later Revision 2 screens
+remain blocked on approved designs**
 **Primary target:** physical Android device, Arabic RTL first; English LTR second
-**Internal presentation target:** 120–150 seconds; this is not a published SMAC judging rule
+
+## Revision 2 Evidence Truth
+
+The seven user-approved R001 Batch 1 routes are implemented and freshly validated below. This does
+not release or validate Child access, persistent role navigation, pairing, reauthentication,
+Challenge Leaves, League ranking, Family Rewards, later screens, or the complete Revision 2 judge
+journey. The 2026-08-28 ten-route results remain Revision 1 evidence only.
+
+| Revision 2 evidence item                                                                   | Status                                 | Requirement to change status                                           |
+| ------------------------------------------------------------------------------------------ | -------------------------------------- | ---------------------------------------------------------------------- |
+| Product/specification alignment                                                            | PASSED for Batch 1; full gate BLOCKED  | R001 partial release is recorded; excluded full contracts remain stale |
+| Approved Google Stitch frames                                                              | PASSED for seven Arabic Batch 1 frames | English/state and later route frames remain missing                    |
+| Runtime implementation                                                                     | PASSED for Batch 1 only                | Seven native routes plus shared access foundations                     |
+| Automated and web validation                                                               | PASSED for Batch 1 web proxy           | Fresh checks and viewport journey recorded below                       |
+| Physical Android Arabic/English journey                                                    | BUILD/INSTALL PASSED; JOURNEY NOT RUN  | Named OS/observer and direct Arabic/English results                     |
+| Production/live AI                                                                         | BLOCKED                                | Approved secure server boundary and direct evidence                    |
+| Synthetic access/League/Reward comprehension                                               | NOT RUN                                | Named observers complete the revised questions                         |
+| Arabic/UAE culture, League fairness, reward, safeguarding, voice, and accessibility review | NOT RUN                                | Named reviewers, reviewed version, findings, and disposition           |
+
+### R001 Batch 1 evidence — 2026-09-02
+
+- `npm run format`, `npm run typecheck`, `npm run lint`, `npm run format:check`: `PASSED`.
+- `npm test`: `PASSED`, 20 files / 332 tests.
+- `npm run build:web` and `npx expo config --type public`: `PASSED`; all seven approved routes were
+  statically exported and exactly seven requested font files were bundled.
+- `npx expo-doctor@latest --verbose`: `PASSED`, 21/21 checks after aligning the SDK 57 patch
+  packages and removing unused audio/form dependencies and the resulting Android audio permission.
+- Clean Android Hermes export: `PASSED`, 1,936 modules, 5 MB JavaScript bundle, approximately 9 MB
+  total export. No route, native-module, font, or asset resolution error was found.
+- Firefox web proxy: `PASSED` for the complete Arabic route journey at 390×844, all seven reference
+  comparisons, validation/loading/offline/success states, English LTR mirroring, signed-out route
+  guards, 320×568 scrolling, a 320×420 keyboard-height proxy, 430×932 layout, and 130% text-scale
+  proxy. Browser console/page errors: zero.
+- Windows native release: `PASSED` for build and installation on the connected SM_T835 using
+  `npx expo run:android --variant release --device`; Gradle reported `BUILD SUCCESSFUL` and Expo
+  installed the APK and issued the development-client open command. The user has not yet confirmed
+  rendered screens, so this is not an Arabic/English journey, visual, keyboard, Back, or offline
+  acceptance pass.
+- TalkBack, native keyboard/Back, native 200% font scale, and reduced-motion observation: `NOT RUN`.
+  Web evidence does not pass those gates.
+
+### Full Revision 2 reset baseline
+
+The complete revised reset contract remains a later design/implementation target:
+
+- signed out at the combined Arabic RTL welcome/language/access screen with no stale Back history;
+- one synthetic household with Salem and Alya; no production account, token, credential, or
+  security claim;
+- deterministic Parent fixture access, Child PIN/picture-sequence fixtures, and no pending or
+  approved pairing session;
+- Salem Mangrove at 48/60 Shoot and Family Reward plan at `promised`, 108/120 eligible Seeds;
+- Salem at four of five weekly Challenge Leaves; seeded invite-only standings and a cooperative
+  family-canopy target;
+- no active assignment/submission, consumed celebration, reward unlock, prepared recording, or
+  reauthentication state; and
+- deterministic prepared Parent Guide, Child Coach, summary, image, and voice fixtures available
+  without a network.
+
+One valid planned confirmation must present Parent praise first, then exactly 12 Seeds, Mangrove
+60/60 Sapling, one household-canopy leaf, Salem's fifth Challenge Leaf and weekly score 100, and only
+then the private Family Reward unlock at 120/120. A duplicate changes nothing. Weekly rollover resets
+only Leaves, score, and rank; it never resets Seeds, landscapes, canopy history, or unlocked/given
+rewards.
+
+### Required new evidence after design approval
+
+- Parent/Child route isolation and denial of Child access to Parent controls.
+- Wrong/forgotten Child PIN, pairing waiting/expiry/revocation, and protected-change
+  reauthentication states.
+- Exactly five nominated Leaves, full help/accessibility credit, 100-point cap, tied ranks, no speed
+  tiebreaker, no extra-task rank advantage, rest week, and prepared-reaction privacy.
+- Private Reward amount, monthly promised maximum, rank independence, prospective-only edits,
+  immutable unlock, and `promised → unlocked → given` transitions.
+- Praise and garden growth before the Family Reward message.
+- Arabic RTL/English LTR parity, Alexandria/Readex loading/fallback, mixed `AED 25` and Arabic
+  numerals, tabular ranking values, long labels, 200% font scale, captions, and reduced motion.
+- Honest prepared/simulated push-to-talk, transcript, replay, slower-playback, delete, denied-
+  permission, and AI-unavailable states without real Child recording.
+
+## Historical Revision 1 Evidence — 2026-08-28
+
+**Historical target:** ten-route Family Growth Garden deterministic P0
+**Internal presentation target:** 120–150 seconds; this was not a published SMAC judging rule
 
 ## Evidence Truth
 
@@ -401,7 +486,7 @@ Ask three people unfamiliar with the detailed design: “What did the Child do, 
 who approved the reward, and what can other families see?” Record answers verbatim enough to show
 whether they understood the action, bounded AI, Parent gate, and aggregate-only sharing.
 
-## Demo-Acceptance Gate
+## Historical Revision 1 Demo-Acceptance Gate
 
 Do not describe Feature 003 as demo-accepted until:
 

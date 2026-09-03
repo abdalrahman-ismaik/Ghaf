@@ -195,15 +195,15 @@ available in full behind a four-line disclosure rather than dominating the initi
 
 Final exact evidence:
 
-| Check | Result |
-| --- | --- |
-| Full suite | **PASSED** — 17 files / 305 tests |
-| TypeScript, Expo lint, Prettier, diff hygiene | **PASSED** |
-| Expo static export | **PASSED** — 12 routes; `entry-09e5b5d373078942395b4f713ab42137.js` |
-| Impeccable source detector | **PASSED** — JSON `[]` |
-| Arabic RTL + English LTR at 390×844 | **PASSED web proxy** — zero errors/overflow, one visible H1, zero measured controls under 44 CSS px |
-| Consequence/reset | **PASSED web proxy** — 60/60 Sapling, circle continuation, Arabic RTL `/` after reset and six Back actions |
-| Console | 0 errors; one generated Expo unreachable-code warning remains recorded |
+| Check                                         | Result                                                                                                     |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Full suite                                    | **PASSED** — 17 files / 305 tests                                                                          |
+| TypeScript, Expo lint, Prettier, diff hygiene | **PASSED**                                                                                                 |
+| Expo static export                            | **PASSED** — 12 routes; `entry-09e5b5d373078942395b4f713ab42137.js`                                        |
+| Impeccable source detector                    | **PASSED** — JSON `[]`                                                                                     |
+| Arabic RTL + English LTR at 390×844           | **PASSED web proxy** — zero errors/overflow, one visible H1, zero measured controls under 44 CSS px        |
+| Consequence/reset                             | **PASSED web proxy** — 60/60 Sapling, circle continuation, Arabic RTL `/` after reset and six Back actions |
+| Console                                       | 0 errors; one generated Expo unreachable-code warning remains recorded                                     |
 
 Confirm-round visual evidence:
 
@@ -214,3 +214,9 @@ Confirm-round visual evidence:
 Physical Android, TalkBack, native Back/IME/media/reduced-motion/200% text, device performance, and
 named Arabic/cultural/faith/safeguarding/sustainability/accessibility reviews remain
 **BLOCKED**/**NOT RUN**. This confirm round does not upgrade those gates.
+
+# Revision 1 Historical Evidence
+
+> This audit validates the superseded 2026-08-28 ten-route implementation only. It does not validate
+> Feature 003 Revision 2 access, navigation, League, Family Reward, typography, voice, or Stitch
+> designs. Revision 2 evidence starts `NOT RUN`.

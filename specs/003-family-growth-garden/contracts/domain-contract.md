@@ -1,5 +1,11 @@
 # Deterministic Domain Service Contract
 
+> **Historical Revision 1 contract — 2026-08-28.** This file describes the mounted ten-route
+> implementation and is retained for code archaeology and later migration planning. It does not
+> authorize Revision 2 access, League, Family Reward, navigation, or screen behavior. Use
+> `acceptance-contract.md`, the active `spec.md`, `data-model.md`, and the post-Stitch task plan for
+> Revision 2; reconcile this service contract only after the user supplies approved Stitch frames.
+
 ## Contract Goal
 
 The Expo routes depend on one local service registry and one resettable store. Services validate and

@@ -4,334 +4,368 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-08-28                                                                                                                   |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Product                   | Ghaf — غاف                                                                                                                               |
-| Competition               | Khalifa University SMAC 2026                                                                                                             |
-| Official theme            | AI Adventures in Sustainability                                                                                                          |
-| Target feature            | Feature 003 — Family Growth Garden                                                                                                       |
-| Decision                  | Deterministic P0 implemented; automated and bilingual web-proxy validation passed                                                        |
-| Latest validated baseline | Feature 003: 17 files / 305 tests plus Arabic RTL and English LTR web-proxy journeys; physical Android and named human gates remain open |
-| Primary platform          | Android; Arabic-first with equivalent English support                                                                                    |
-| Prototype data            | Synthetic only                                                                                                                           |
+| Item                    | Truth as of 2026-09-01                                                                                                                                      |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product                 | Ghaf — غاف                                                                                                                                                  |
+| Competition             | Khalifa University SMAC 2026                                                                                                                                |
+| Official theme          | AI Adventures in Sustainability                                                                                                                             |
+| Active product decision | Feature 003 Revision 2 — separately accessed Parent and Child experiences, Friendly League, and optional Family Rewards                                     |
+| Current phase           | Revision 2 product and Spec Kit documents aligned; screen design and implementation are on hold until the approved Google Stitch frames arrive              |
+| Implementation evidence | `NOT RUN` for Revision 2; no 2026-08-28 result carries forward to the revised screen, access, League, reward, voice, font, native, or human-review criteria |
+| Primary platform        | Android-first; Arabic-first RTL with an equivalent English LTR experience                                                                                   |
+| Prototype data          | Synthetic only                                                                                                                                              |
 
-Feature 003 supersedes the single food-rescue mission as the implemented product direction. Food
-rescue remains one useful task family. Feature 002 evidence remains historical and must not be used
-to pass any Feature 003 Android or human-review criterion.
+## Superseded Baseline
+
+The deterministic ten-route Feature 003 implementation validated on 2026-08-28 remains an
+explicitly superseded historical baseline. Its automated checks and Arabic/English web-proxy
+journeys describe only that mounted build: `/role`, forced Parent–Child switching, the cooperative
+`/circle` screen, no Family Reward, and the previous typography.
+
+Revision 2 does not inherit those passes. It replaces the product architecture and adds new
+acceptance surfaces. The old implementation must not be presented as evidence for separate access,
+pairing, reauthentication, Friendly League fairness/privacy, Family Reward states, voice controls,
+Alexandria/Readex rendering, the revised navigation, physical Android, or named human review. Do
+not backport the redesign into Feature 002 or rewrite historical evidence.
+
+No Revision 2 UI implementation should begin until the approved Stitch frames and their exported
+design rules are available and the active Feature 003 specification, plan, and tasks are updated.
 
 ## Product Promise
 
-Ghaf helps UAE families turn age-appropriate daily responsibilities into positive routines. A
-Parent creates or approves a clear task; a Child chooses, plans, completes, and may reflect; the Parent
-recognizes the observable effort; and symbolic **Seeds — بذور** grow a shared UAE living landscape.
+> Ghaf helps children build positive routines through parent-approved tasks, child-safe AI
+> support, Seeds, growing UAE landscapes, friendly family competition, and optional parent-funded
+> rewards.
 
-The product is not an obedience tracker. It is an autonomy-supportive family tool that makes
-responsibility, sustainability, kinship, gratitude, hospitality, and heritage easier to practise
-together.
+Ghaf is an autonomy-supportive family routine tool, not an obedience, surveillance, diagnosis,
+banking, or public social system. The Child chooses among approved tasks, may ask for help or a
+smaller equivalent, and can succeed with permitted support. The Parent remains responsible for
+assignment, confirmation, permissions, family membership, and any real-world reward promise.
 
-## Users
+## Four Separate Product Meanings
 
-- **Child, ages 6–14:** completes Parent-approved tasks, receives task coaching, and grows a private
-  garden without public ranking.
-- **Parent or guardian:** chooses tasks, adjusts difficulty, confirms completion, gives specific
-  praise, and sees neutral summaries of observable patterns.
-- **Family circle:** P0 previews a future invite-only cousin/family circle using synthetic local
-  aggregates; no real invitations or cross-family connection exists.
-- **SMAC judge:** should understand the AI value, reward logic, UAE grounding, sustainability
-  contribution, and safety boundaries in one short live demo.
+| Mechanism                             | Meaning                                                             | Persistence and visibility                                                                  |
+| ------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Seeds — بذور**                      | Permanent symbolic personal growth earned after Parent confirmation | Never lost, transferred, bought, cashed out, or used to rank another Child                  |
+| **Weekly Growth Score**               | Friendly League score from five confirmed Challenge Leaves          | Resets weekly; maximum 100; does not change permanent Seeds or trees                        |
+| **Family canopy — مظلة العائلة**      | Cooperative growth from confirmed eligible participation            | Shared goal without exposing another Child's task, evidence, accommodations, or money       |
+| **Family Reward — المكافأة العائلية** | Optional private milestone promise selected and funded by a Parent  | Visible only to that Child and guardians; fulfilled outside Ghaf; never tied to League rank |
 
-Age bands guide defaults rather than define ability:
+These meanings must never collapse into one currency. A Child cannot buy rank, convert a Seed to a
+fixed AED amount, or lose garden progress when the weekly League resets.
 
-| Band  | Default interaction                                                                                   |
-| ----- | ----------------------------------------------------------------------------------------------------- |
-| 6–8   | One to three short tasks, visual steps, immediate feedback, Parent co-use                             |
-| 9–11  | Task ladders, if–then plans, choice of order, optional short reflection, structured AI coach          |
-| 12–14 | Co-authored goals, longer horizons, more maintenance/recognition-only tasks, stronger privacy control |
+## Users and Access
 
-Accessibility needs, neurodivergence, disability, family context, and Parent knowledge override an
-age default. Completing a task with allowed help still counts.
+- **Child, ages 6–14:** enters a protected Child experience without an email or phone number,
+  chooses Parent-approved tasks, uses bounded task help, sees personal growth and a fair weekly
+  League, and may receive a private Family Reward promise.
+- **Parent or guardian:** enters a separately protected Parent experience, manages the household,
+  approves tasks twice, confirms work, chooses private rewards, manages League membership, and
+  controls Child AI/media permissions.
+- **Invite-only family participants:** synthetic siblings and cousins appear in P0 through
+  nicknames and tree avatars only. There is no public discovery or unrestricted communication.
+- **Demo operator:** uses deterministic synthetic access, pairing, reauthentication, data, media,
+  and reset states without claiming production security.
+- **SMAC judge:** should understand the Parent → Child → confirmation → praise → permanent growth,
+  weekly League, and optional private reward separation in one reliable journey.
+
+### Separate access experiences
+
+Parent and Child are not visual modes behind a role toggle.
+
+- **Parent access target:** email or phone sign-in, followed by a Parent PIN, passkey, or biometric
+  gate. Reauthentication appears before changing monetary rewards, trusted family membership,
+  paired devices, or Child media permissions.
+- **Child access target on a shared device:** select a Parent-created nickname and tree avatar, then
+  enter a Child PIN or picture sequence.
+- **Child access target on a separate device:** scan a family QR code or enter a short pairing code;
+  the Parent must approve the device before Child access succeeds.
+- Children never need an email address or phone number and cannot reveal Parent controls through a
+  bottom tab or simple mode switch.
+
+Every P0 credential, account, biometric prompt, QR image, pairing code, approval, revocation, and
+reauthentication event is a deterministic synthetic simulation. It demonstrates product boundaries,
+not identity verification, encryption, tenancy, or production access control.
+
+## Revised Screen Architecture
+
+Revision 2 uses approximately fourteen screen families. Each authenticated role sees only the
+surfaces needed for that role.
+
+|   # | Screen family                               | Role and purpose                                                                                            |
+| --: | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+|   1 | Welcome and access                          | Language choice, product promise, Parent entry, Child entry, and synthetic-demo disclosure                  |
+|   2 | Parent access and household setup           | Parent sign-in, verification, protected return, family creation, and first Child setup                      |
+|   3 | Child access and device pairing             | Avatar/PIN or picture access, QR/code pairing, Parent approval, and safe recovery states                    |
+|   4 | Parent Home                                 | Family canopy, prioritized check-ins, next approved tasks, and bounded weekly Guide summary                 |
+|   5 | Parent Tasks and guided Task Builder        | Task hub plus one three-stage Choose → Adjust → Review family; no separate review route is required         |
+|   6 | Parent Check-in                             | Evidence review, specific praise, confirm, kind retry, smaller task, or safe equivalent                     |
+|   7 | Parent Garden                               | Household and private Child landscape views without winner/loser sibling comparison                         |
+|   8 | Parent Family and League management         | Household profiles, five weekly Challenge Leaves per Child, invitations, privacy, and cooperative goal      |
+|   9 | Parent Family Rewards                       | Private plans, monthly maximum promised amount, reauthentication, and Promised/Unlocked/Given states        |
+|  10 | Child Today                                 | Two or three approved choices, current Challenge Leaves, private growth, and dignified smaller-task request |
+|  11 | Child Task and Ghaf Coach                   | Definition of done, safe steps, bounded AI actions, simulated push-to-talk, and submission                  |
+|  12 | Child Garden                                | Permanent landscapes plus temporary praise-first growth and private reward-unlock states                    |
+|  13 | Child Friendly League                       | Invite-only standings, tied ranks, prepared encouragement, and shared family-canopy goal                    |
+|  14 | Profile, settings, permissions, and devices | Role-appropriate settings behind the avatar; Parent controls remain unavailable to the Child                |
+
+Parent primary navigation is **Home, Tasks, Garden, Family**. Child primary navigation is **Today,
+Garden, League**. Task Builder, Check-in, Family Reward, pairing, permissions, device management,
+and settings are contextual. Ghaf Coach stays inside the current task; it is never a chat tab.
 
 ## Core Family Loop
 
-1. The Parent selects a child, a task category, and one specific positive behavior.
-2. The Parent may ask Ghaf Guide to make the task clearer, safer, or age-appropriate.
-3. The Child chooses from Parent-approved tasks and may create an if–then cue.
-4. The Child opens the bounded Ghaf Coach for steps, phrase practice, or an ask-an-adult reminder.
-5. The Child checks the definition of done, receives a neutral acknowledgement, and may add an
-   optional reflection or optional prepared evidence.
-6. The Parent confirms, returns it kindly for another try, or adjusts an unrealistic task.
-7. For a reward-eligible task, prompt Parent approval produces descriptive praise and the fixed,
-   previously displayed Seed award.
-8. For an acquisition-phase rewarded task, the mapped landscape grows. The household canopy changes
-   only when `visibilityScope` is `household`; the circle changes only for `circleEligible` Green
-   Impact events after privacy filtering.
+1. The Parent enters the protected Parent experience and approves or creates a safe task.
+2. The Parent may ask Ghaf Guide to clarify, shorten, or safety-check wording, but accepts the exact
+   result before assignment.
+3. The Child enters the separate Child experience, chooses an approved task, and may request help,
+   a smaller task, or a safe equivalent.
+4. The Child may use the bounded Ghaf Coach for steps, an if–then cue, a curated phrase, or the
+   prominent **Ask an adult — اسأل شخصًا كبيرًا** path.
+5. Submission changes no Seed, landscape, canopy, League, or Family Reward state.
+6. The Parent reviews the observable submission and confirms once, requests a kind retry, accepts
+   an agreed equivalent, or makes future work smaller.
+7. Confirmation shows specific Parent praise first, then the displayed Seed award and permanent
+   eligible garden/canopy growth.
+8. If the task was one of that Child's five nominated Challenge Leaves, it also adds one confirmed
+   Leaf and 20 weekly Growth Score points. If an independent private Family Reward milestone is
+   reached, the Child sees its unlock only after praise and garden growth.
 
-No in-app credit, recorded sustainability activity, or symbolic growth is recorded before Parent
-confirmation. Confirmation does not establish environmental impact.
+Parent confirmation does not prove environmental impact. Duplicate confirmation is idempotent and
+changes nothing.
 
-## Behavioral Design Contract
+## Seeds and Permanent Garden Growth
 
-| Principle              | Product rule                                                                                                                                   |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Positive reinforcement | Recognize the requested observable action promptly after confirmation.                                                                         |
-| Descriptive praise     | Name the action, strategy, help-seeking, or improvement; never label the Child's character.                                                    |
-| Autonomy               | Let the Child choose among Parent-approved tasks, order, cue, and a cosmetic garden detail.                                                    |
-| Competence             | Keep the definition of done achievable; allow help, smaller steps, retry, or substitution.                                                     |
-| Relatedness            | Connect the action to a real person, family value, household need, or shared goal.                                                             |
-| Predictability         | Use fixed, visible rewards. No loot boxes, random jackpots, scarcity, or variable-ratio mechanics.                                             |
-| Internalization        | Let the Parent move future reward-eligible completions from acquisition to zero-Seed maintenance while preserving praise, choice, and meaning. |
-| Repair without shame   | A miss never removes earned Seeds, kills a tree, creates debt, or publicly marks failure.                                                      |
-| Self-comparison        | Show progress against the Child's own goal. Family and circle views default to cooperation.                                                    |
+Seeds remain symbolic, nonfinancial, nontransferable personal progress. They cannot be bought,
+cashed out, traded, deducted, or shown as another Child's rank.
 
-See `RESEARCH_BASIS.md` for the evidence, caveats, age adaptations, and prohibited uses.
+| Task shape                                       | Suggested Seed award |
+| ------------------------------------------------ | -------------------: |
+| Tiny Parent-agreed task, roughly 1–3 minutes     |                    4 |
+| Short routine, roughly 5 minutes                 |                    6 |
+| Standard task, roughly 5–15 minutes              |                    8 |
+| Multi-step responsibility, roughly 15–30 minutes |                   12 |
+| Parent-approved family project                   |           15 maximum |
 
-## Reward Economy
+An accepted task completed with permitted help earns the displayed award. Only a smaller task
+agreed before acceptance may display a smaller award. No bonus is awarded for speed, perfection,
+obedience, food consumption, affection, prayer validity, emotional disclosure, or keeping a secret.
 
-**Seeds — بذور** are symbolic, nonfinancial, nontransferable progress units. They cannot be bought,
-cashed out, traded, lost, or deducted.
+Each task still declares `standard`, `fade-first`, or `recognition-only`:
 
-| Task shape                                       |  Suggested award |
-| ------------------------------------------------ | ---------------: |
-| Tiny Parent-agreed task, roughly 1–3 minutes     |          4 Seeds |
-| Short routine, roughly 5 minutes                 |          6 Seeds |
-| Standard task, roughly 5–15 minutes              |          8 Seeds |
-| Multi-step responsibility, roughly 15–30 minutes |         12 Seeds |
-| Parent-approved family project                   | 15 Seeds maximum |
+- **standard:** finite acquisition work may earn the displayed Seeds after confirmation;
+- **fade-first:** a recurrent acquisition routine may earn the displayed Seeds, then prompts a
+  Parent review after three confirmed completions; no phase changes automatically; and
+- **recognition-only:** specific Parent acknowledgement only, with no Seed transaction, persistent
+  landscape/canopy growth, League Leaf, or circle event.
 
-Effort, age, access, and required supervision matter more than speed. Parents may lower a task,
-split it, or agree to an equivalent before acceptance. Once a task is accepted, completion with
-permitted help earns the displayed award; help never causes an after-the-fact reduction. The app
-does not award bonus points for perfection, obedience, food consumption, affection, prayer
-validity, emotion disclosure, or keeping a secret.
+Maintenance earns no new Seed or persistent garden/canopy growth. Earned Seeds and tree stages are
+permanent. A missed day, rest week, retry, access need, illness, travel, or League reset never creates
+debt, breaks a punitive streak, or makes a tree die.
 
-Each task declares one recognition mode:
+## Ghaf Family League
 
-- **standard:** a finite or one-time practical acquisition task earns its displayed Seeds; it does
-  not create an automatic recurrence or indefinite reward;
-- **fade-first:** acquisition uses a small displayed award while a recurrent skill is being learned;
-  after three confirmed completions, the app asks the Parent whether future completions should move
-  to maintenance; and
-- **recognition-only:** descriptive Parent acknowledgement and meaning only, with no Seed
-  transaction, persistent landscape growth, canopy contribution, or circle event.
+The Friendly League introduces visible competition while normalizing opportunity across age,
+ability, task difficulty, and available support.
 
-Faith, affection, emotion disclosure, and relationship closeness default to recognition-only.
-Kinship and kindness default to recognition-only or fade-first preparation skills; the app never
-pays for affection, disclosure, spiritual worth, or how close a relationship appears.
+### Weekly score
 
-`standard` must be finite or `recurrence = once`. A recurrent reward-eligible routine must use
-`fade-first` so its third confirmation prompts a Parent phase review.
+Each participating Child receives exactly five Parent-approved, age-appropriate **Challenge Leaves
+— أوراق التحدي** at the beginning of the week.
 
-`routinePhase` applies only to `standard` and `fade-first`; recognition-only uses `not_applicable`.
-The valid payout matrix is:
+`Weekly Growth Score = confirmed Challenge Leaves ÷ 5 × 100`
 
-| Recognition/phase                          | Seeds                                    | Persistent landscape/canopy                        | Circle                                                                                |
-| ------------------------------------------ | ---------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `standard` + `acquisition`                 | Displayed fixed award after confirmation | Mapped landscape; canopy only if household-visible | One coarse action only if eligible Green Impact                                       |
-| `fade-first` + `acquisition`               | Displayed fixed award after confirmation | Same as standard acquisition                       | Same eligibility; Parent review prompt after third confirmed completion               |
-| `standard` or `fade-first` + `maintenance` | None                                     | None                                               | An eligible Green Impact action may still be logged as activity, not reward or impact |
-| `recognition-only` + `not_applicable`      | None                                     | None                                               | Never                                                                                 |
+Each confirmed Leaf is therefore worth 20 points and the maximum is 100. Extra tasks may earn Seeds
+and grow a landscape, but cannot improve rank. Challenge Leaves are opportunities, not another
+currency.
 
-Every confirmed task receives natural, behavior-specific Parent acknowledgement and one brief
-meaning connection. Only acquisition-phase rewarded tasks show a Seed animation and persistent
-garden growth. A Parent alone changes future `routinePhase`; the change is prospective, visible,
-reversible, and never removes prior Seeds or growth. Ghaf never declares that a habit has formed.
+### Fairness, dignity, and privacy rules
+
+- League membership is guardian-managed and invite-only for siblings and cousins. Child
+  participation must support assent, pause, opt-out, and a no-penalty rest week.
+- The Parent nominates five eligible tasks for each Child before the week begins. Tasks may differ
+  by age, ability, schedule, and permitted help.
+- Completing with help or an accessibility adaptation earns full Leaf credit. A different-sized
+  equivalent agreed before acceptance also earns its nominated Leaf.
+- Ties share the same position. Speed, evidence quantity, raw Seeds, task difficulty, money, age,
+  and extra tasks are never tiebreakers.
+- Rankings reset weekly; earned Seeds and landscape stages do not reset.
+- Prayer, affection, emotional disclosure, relationship closeness, eating, private wellbeing,
+  hygiene, disability-related routines, and `recognition-only` tasks cannot become Challenge
+  Leaves.
+- A participant sees only nickname, safe tree avatar, shared position, score, and completed Leaves.
+  Another Child's task, evidence, age, schedule, accommodations, praise, private notes, Seed total,
+  and Family Reward are never shown.
+- Prepared bilingual encouragement such as **Great growing!** may be sent without free text. There
+  are no reaction counts, pile-ons, public comments, direct messages, or engagement pressure.
+- Every confirmed Challenge Leaf also advances a cooperative family-canopy goal so ranking is
+  balanced with a shared result.
+
+`leagueEligible` is separate from `visibilityScope` and `circleEligible`. The existing
+`circleEligible` invariant still permits only a household-visible Green Impact event to enter a
+coarse cross-household environmental activity projection. League participants never receive the
+underlying event or task record.
+
+## Family Reward — المكافأة العائلية
+
+A Family Reward is an optional, private promise made and funded by a Parent. It may be money, a
+family experience, a privilege, or a gift. Ghaf records the promise and milestone; it does not
+transfer, store, custody, redeem, settle, or guarantee the real-world reward.
+
+Supported personal milestones include:
+
+- earning a Parent-selected number of **new eligible Seeds** after the plan begins;
+- growing one named landscape from one stage to a later stage; or
+- growing a Parent-selected number of different landscapes to a named stage.
+
+Every contribution is evaluated from the immutable Parent-approved task version before
+confirmation. Unknown, recognition-only, sensitive/private, and basic-needs activity contributes
+zero Family Reward progress even when it may still receive appropriate praise or symbolic garden
+growth. Seed milestones sum only explicitly eligible Seed transactions. Landscape milestones use
+an eligible-provenance stage derived from eligible confirmations, never the displayed landscape
+stage alone.
+
+Example: **Earn 120 new eligible Seeds → AED 25**. There is no universal Seed-to-AED exchange rate.
+The Parent chooses a reward within their circumstances and sees the maximum amount promised for the
+current month before saving another monetary plan.
+
+### Family Reward rules
+
+- States are `Promised → Unlocked → Given`.
+- The amount and plan are visible only to the selected Child and guardians; money never appears in
+  League standings, another Child's view, or shared family reactions.
+- A Child can unlock their own plan regardless of League position. Finishing first never unlocks
+  money.
+- A Parent reauthenticates before creating or changing a monetary promise.
+- The target, reward, and eligibility terms are explicit when promised. A Parent may change or end
+  a future plan prospectively, but cannot retroactively move an agreed milestone or remove an
+  unlocked reward as punishment.
+- Specific praise and garden growth appear before any reward-progress or unlock message.
+- Basic needs and essential access—including food, water, clothing, safe shelter, sleep,
+  healthcare, education, transport, family contact, affection, and ordinary religious
+  participation—can never be made conditional on a Family Reward.
+- Prayer, affection, emotional disclosure, eating, body measures, demonstrating love, and private
+  wellbeing or disability-related activity cannot be monetized.
+- Families may disable monetary rewards, choose a nonmonetary plan, pause future plans, or use Seeds
+  and garden growth without any Family Reward.
 
 ## UAE Living Landscape
 
-The digital garden is an imaginative map of UAE landscapes, not a claim that every species grows
-in one physical garden. Ghaf, Samar, and Sidr are documented native trees; app-specific category
-meanings are product metaphors and require cultural review.
+The garden is an imaginative map of UAE landscapes, not a claim that every species shares one
+physical habitat or that a real tree was planted.
 
-| Landscape             | Task categories                           | Product meaning                                 | Sharing                                    |
-| --------------------- | ----------------------------------------- | ----------------------------------------------- | ------------------------------------------ |
-| Ghaf desert grove     | Roots & Kinship; Heritage & Etiquette     | connection, family memory, welcome              | Private or household only                  |
-| Samar desert grove    | Home Responsibility; Kindness & Community | dependable contribution                         | Household                                  |
-| Sidr reflection grove | Learning & Wellbeing; Faith & Gratitude   | daily growth and reflection                     | Child and guardians only for private items |
-| Date-palm oasis       | Food & Hospitality                        | cherishing food, welcoming guests, shared meals | Household                                  |
-| Mangrove coast        | Green Impact                              | waste, water, energy, reuse, local stewardship  | Eligible aggregate Green action count      |
+| Landscape             | Task categories                           | Product meaning                              |
+| --------------------- | ----------------------------------------- | -------------------------------------------- |
+| Ghaf desert grove     | Roots & Kinship; Heritage & Etiquette     | connection, family memory, and welcome       |
+| Samar desert grove    | Home Responsibility; Kindness & Community | dependable contribution                      |
+| Sidr reflection grove | Learning & Wellbeing; Faith & Gratitude   | daily growth and private reflection          |
+| Date-palm oasis       | Food & Hospitality                        | food care, welcome, and shared meals         |
+| Mangrove coast        | Green Impact                              | waste, water, energy, reuse, and stewardship |
 
-Growth stages are **Seed → Shoot → Sapling → Shade → Flourishing**. The flagship Ghaf remains the brand
-hero and overall household canopy. A reward-eligible completion grows its mapped landscape. A
-household-eligible task may add one canopy leaf. Private tasks remain in the Child-and-guardian
-view, and only eligible Green Impact events may update the circle. Growth never implies a real tree
-was planted.
-
-## Task Categories
-
-1. **Faith & Gratitude — الإيمان والامتنان:** Parent-enabled routines such as preparing a clean prayer
-   space, learning a Parent-approved phrase, or using water thoughtfully during wudu. Recognition-
-   only by default, private only, and never ranked, diagnosed, or judged by AI.
-2. **Roots & Kinship — جذورنا:** calling or visiting a grandparent, checking on an aunt or uncle,
-   asking for a family story, or spending a short phone-free family moment.
-3. **Home Responsibility — مسؤوليتي:** putting belongings away, preparing a school bag, setting the
-   table, sorting laundry, or helping while an adult carries/disposes of a sealed lightweight waste
-   bag on a guardian-approved safe route.
-4. **Green Impact — أثر أخضر:** refillable bottles, correct-bin sorting, closing taps, switching off
-   unused lights, reporting leaks/unsafe items, and adult-vetted reuse/sorting of clean safe items;
-   unsafe items are report-only and no-touch.
-5. **Food & Hospitality — النعمة والضيافة:** helping place a guardian-approved amount in a shared
-   serving dish, helping store safe
-   leftovers, checking food before shopping, and setting out dates, water, or napkins. Never reward
-   what or how much the Child eats.
-6. **Heritage & Etiquette — تراثنا وآدابنا:** greetings, listening in a majlis, thanking a host,
-   learning about Al-Ayyala, and practising a Parent-approved wedding congratulations phrase.
-7. **Kindness & Community — اللطف والمجتمع:** helping a sibling, thanking someone, donating a clean
-   item with a Parent, or sharing a sustainability tip.
-8. **Learning & Wellbeing — التعلّم والتوازن:** reading, planning school materials, movement, sleep
-   preparation, or choosing a helpful strategy. Feeling disclosure is optional, private, and
-   unscored.
-
-Tasks must state: positive observable action, why it matters, definition of done, age band,
-estimated effort, supervision, safety exclusions, optional evidence, recognition mode, displayed
-Seeds or recognition-only, valid routine phase, tree mapping, recurrence, `visibilityScope`,
-`circleEligible`, privacy, and Arabic/English copy. `RESEARCH_BASIS.md` contains the curated starter
-catalog.
-
-Canonical sharing behavior is:
-
-- `visibilityScope = child_guardian`: visible to the Child and guardians; no household canopy;
-- `visibilityScope = household`: may add one combined-canopy leaf for an acquisition-phase rewarded
-  task without sibling raw totals; and
-- `circleEligible = true`: permitted only for Green Impact and projects one coarse family-level
-  action count after confirmation. It never projects the task record, Child identity, or Seeds.
-
-Reject `circleEligible = true` unless the category is Green Impact and `visibilityScope` is
-`household`. A future production circle also requires guardian management and Child assent.
-
-## Family and Circle Dashboard
-
-The dashboard remains central, but it is a garden-shaped cooperative overview rather than a public
-leaderboard.
-
-- **Child view:** own choices, own progress, today/this-week rhythm, and shared family goal.
-- **Parent view:** each Child's assignments, observable strengths, supports that helped, requested
-  adjustments, chosen activity mix, and private notes.
-- **Sibling view:** one combined household canopy; each Child sees only their own goal and no raw
-  Seed, pace, or age-unequal comparison.
-- **Cousin or other-family circle:** future invite-only and Parent-managed; P0 shows seeded family-
-  level eligible Green action counts and cooperative milestones only.
-
-Never share prayer, kinship, affection, food consumption, hygiene, disability-related routines,
-wellbeing, Parent observations, exact task history, photos, voice, free-text reflections, or Child
-chat across households. The MVP uses seeded local aggregates and does not implement real accounts,
-discovery, messaging, comments, or invitations.
+Growth stages remain **Seed → Shoot → Sapling → Shade → Flourishing**. The flagship Ghaf is the brand
+hero and household-canopy silhouette. Growth is permanent and symbolic; only a Parent-confirmed,
+approved method may support a separately labeled self-reported activity metric.
 
 ## AI Experiences
 
 ### Ghaf Coach for the Child
 
-The Coach is a bounded task helper, not a friend, therapist, confidant, religious authority, or
-replacement Parent. Its approved intents are:
+The Coach is embedded in the current Parent-approved task. It may simplify the task, show steps,
+create an if–then cue, rehearse a curated phrase, respond to a prepared synthetic fixture, offer one
+optional skippable task-focused reflection, or direct the Child to an adult. It identifies itself as
+AI and says it may be wrong.
 
-- explain this task in simpler Arabic or English;
-- break the task into short steps;
-- create an if–then plan;
-- rehearse one curated cultural phrase;
-- respond to a prepared task photo or push-to-talk fixture;
-- offer one optional, skippable, task-focused reflection question; and
-- identify when an adult must help.
+| Age band | Default communication and input                                                                                     |
+| -------- | ------------------------------------------------------------------------------------------------------------------- |
+| 6–8      | Slower prepared voice, one very short instruction at a time, curated intents only, and an early Ask an adult action |
+| 9–11     | Two or three steps, a friendly explanation, quick-choice responses, and structured/template input                   |
+| 12–14    | Respectful concise language, guardian-enabled bounded text or voice controls, and no babyish tone                   |
 
-It says it is AI and may be wrong, never asks for secrets, never uses attachment language, and never
-extends conversation to maximize engagement. Ages 6–8 use curated intents and no free text; ages
-9–11 use structured intents and template input; ages 12–14 may use guardian-enabled bounded text or
-push-to-talk with stronger privacy controls. No age band receives unrestricted chat.
+No band receives unrestricted chat. The Coach never asks for secrets or exclusivity, encourages
+dependence, diagnoses, infers emotion/personality, recognizes faces, judges truthfulness or faith,
+acts as a therapist/friend/religious authority, or continues listening in the background.
+
+P0 push-to-talk is a prepared simulation using synthetic audio/transcript fixtures. The target UI
+shows a deliberate press action, visible recording state, transcript, delete-before-send, replay,
+captions, slower playback, and clear Parent visibility while keeping the task and **Ask an adult**
+action present. It does not capture or process a real Child's voice.
 
 ### Ghaf Guide for the Parent
 
-The Guide may:
+The Guide may suggest curated tasks, clearer positive wording, smaller steps, safety questions,
+specific praise, and neutral time-bounded summaries. The Parent sees original and suggested wording
+and must accept a change explicitly.
 
-- suggest age-appropriate tasks from the curated catalog;
-- rewrite a task as a clear positive action;
-- propose a smaller step or safe equivalent;
-- draft descriptive praise;
-- summarize observable strengths and changes over a stated time window; and
-- suggest questions a Parent can ask the Child.
+It must never output normal/abnormal, lazy/defiant, a diagnosis, ADHD or another condition, an
+emotion/risk/personality score, a parenting-quality judgment, or a religious judgment. It does not
+decide assignment, completion, League eligibility, or Family Reward entitlement.
 
-It must not output “normal/abnormal,” diagnose, infer ADHD or another condition, score personality
-or emotion, judge faith or parenting quality, or replace a pediatrician, teacher, counselor, or
-qualified religious adviser. A safe summary leads with strengths, separates fact from uncertainty,
-and lets the Parent correct the record.
+## Arabic, English, Voice, and Typography
 
-## Privacy and Safeguarding Posture
+- Arabic is the starting locale and uses true page-level RTL. English is a matched LTR localization;
+  ordinary screens do not display both languages on every control.
+- Use clear Modern Standard Arabic for requirements, safety, privacy, money terms, and sensitive
+  content. A light Parent-approved Emirati/Gulf conversational register may be used for greetings
+  and encouragement only after named local review.
+- The bounded Coach may recognize prepared Arabic-English code-switch examples, but P0 does not
+  claim general speech understanding.
+- Do not use exaggerated dialect, invented cultural phrases, or AI religious rulings. Emirati
+  parents, children, Arabic specialists, and relevant cultural/religious reviewers must approve the
+  final phrase and voice library.
+- Use **Alexandria** for display headings, garden names, and milestone moments, and **Readex Pro** for
+  body copy, controls, tasks, AI dialogue, settings, rewards, and League data in both languages.
+- Arabic requires generous line height, readable weights, no artificial letter spacing, and no
+  clipped diacritics. Mixed content such as `AED 25`, `١٢٠ بذرة`, dates, and names needs explicit
+  bidirectional handling.
+- Rankings, Seeds, and reward amounts use tabular numerals. Font scaling must preserve labels,
+  buttons, touch targets, and reading order.
 
-The competition prototype uses synthetic children, prepared media, and an always-available
-deterministic assistant path; a separately labeled live call may use synthetic task input only.
-If real child-facing AI is later enabled, it requires a separately approved production design with:
+| Element      |                Child mode |           Parent mode |
+| ------------ | ------------------------: | --------------------: |
+| Hero heading |     Alexandria 800, 32/44 | Alexandria 700, 30/42 |
+| Screen title |     Alexandria 700, 26/38 | Alexandria 700, 24/36 |
+| Arabic body  | Readex Pro 400–500, 18/30 | Readex Pro 400, 17/28 |
+| Button       |     Readex Pro 600, 17/26 | Readex Pro 600, 16/24 |
+| Caption      |             Minimum 14/22 |         Minimum 14/22 |
 
-- verified guardian consent and age-appropriate Child assent;
-- privacy by default, no ads, sale, tracking, or commercial profiling;
-- clear disclosure of exactly what a Parent can see before a Child sends content;
-- separate opt-in for photo and voice, visible capture, metadata removal, task-scoped deletion,
-  short retention, and no provider training or secondary use;
-- no biometric template, face/voice identification, facial analysis, or emotion inference;
-- push-to-talk only, never ambient or background listening;
-- age-appropriate filters, monitoring, reporting, and reviewed high-risk escalation;
-- an alternative trusted-adult path because a Parent is not always the safe recipient; and
-- applicable UAE child-digital-safety, data-protection, and provider requirements reviewed by
-  qualified counsel before release.
+## Revision 2 P0 Design Contract
 
-Do not claim legal compliance from prototype safeguards.
+The next approved designs must preserve one deterministic vertical slice with:
 
-## Competition MVP — P0
+- one synthetic household, Salem and Alya, and seeded invite-only cousin League participants;
+- separate synthetic Parent and Child entry, one shared-device Child PIN path, one separate-device
+  pairing path, and one Parent reauthentication state;
+- Parent navigation Home/Tasks/Garden/Family and Child navigation Today/Garden/League;
+- eight curated task categories and five UAE landscape tracks from local fixtures;
+- one executable Parent-approved Green Impact task with bounded Guide and Coach states;
+- Parent check-in, specific praise, an idempotent fixed 12-Seed award, landscape growth, one canopy
+  leaf, one Challenge Leaf, and independent private Family Reward progress/unlock;
+- a seeded five-Leaf Friendly League week with a tie, shared canopy target, privacy explanation,
+  rest/opt-out state, and prepared bilingual encouragement;
+- one private Parent-funded plan showing Promised, Unlocked, and Given, plus the monthly maximum
+  promised amount and non-custodial disclosure;
+- prepared synthetic media and simulated push-to-talk with visible origin labels;
+- Arabic-first RTL and matched English LTR using Alexandria and Readex Pro; and
+- one Parent-only deterministic reset that restores access, task, League, garden, and reward state
+  without a remote service.
 
-P0 demonstrates breadth with curated content and one complete, deterministic vertical slice:
-
-- one synthetic household, two synthetic siblings, and one seeded aggregate cousin circle;
-- the eight task categories and five landscape tracks visible in local data;
-- one fully executable, recurrence-once, standard-acquisition Green Impact task;
-- one Parent task-drafting exchange, one Child coaching exchange, and one Parent summary through
-  typed schemas and reviewed safety filters;
-- prepared synthetic image and voice fixtures, visibly labeled;
-- Parent confirmation, specific praise, a 12-Seed award, landscape growth, one household leaf, and
-  one eligible Green Impact action added to the family-circle goal;
-- Arabic-first RTL and equivalent English LTR; and
-- one-action reset with no network dependency.
-
-For the competition, the architecture should support one real model transformation using synthetic
-input through an approved secure server-side provider, with structured output, validation, short
-timeout, and same-attempt deterministic fallback. If that boundary is not available, keep the
-prepared path honest and mark live AI `BLOCKED` or `NOT RUN`; never place a provider secret in the
-mobile bundle or describe a prepared response as live.
-
-The authored screen contract for Feature 003 is:
-
-| Route                 | Purpose                                                            |
-| --------------------- | ------------------------------------------------------------------ |
-| `/`                   | Entry, language, prototype disclosure                              |
-| `/role`               | Demo role and synthetic Child selection; not authentication        |
-| `/parent`             | Parent family overview and bounded Guide summary                   |
-| `/parent/task/new`    | Task template/custom task and AI refinement                        |
-| `/parent/task/review` | Bilingual, safety-aware Parent approval                            |
-| `/child`              | Child choices, Seeds, and garden preview                           |
-| `/child/task`         | Steps, bounded Coach, optional evidence fixture/reflection, submit |
-| `/parent/check-in`    | Parent confirmation, praise, retry, observation                    |
-| `/garden`             | Landscape growth and family canopy celebration                     |
-| `/circle`             | Cooperative sibling/cousin/family overview                         |
-
-Loading, fallback, error, retry, celebration, and assistant panels are states of these screens, not
-extra routes.
-
-## Success Criteria
-
-- A judge can explain the Parent → Child → recognition → garden loop after one demonstration.
-- The demo visibly uses AI to improve a task, coach a Child, and summarize for a Parent while
-  disclosing simulated or live status accurately.
-- At least one action has a defensible sustainability connection; symbolic growth is not presented
-  as measured environmental impact.
-- A Child can succeed with help, retry without shame, and never lose earned progress.
-- Prayer and sensitive categories remain private and absent from circle comparison.
-- All Child media and identities in the MVP are synthetic.
-- Arabic/RTL and English/LTR complete the same deterministic flow on the target Android device.
-- The full resettable journey is understandable and reliable with the remote provider denied; any
-  live synthetic-input transformation is separately labeled and validated.
+The Stitch frames must be reviewed before routes, component inventory, transitions, or exact layout
+are frozen. Until then, design, implementation, Android, accessibility, and human-review statuses
+remain `NOT RUN` or `BLOCKED` as their evidence warrants.
 
 ## Explicit Non-Goals for P0
 
-- production authentication, real child accounts, or real multi-family tenancy;
-- open social discovery, public leaderboards, messaging, comments, or direct Child contact;
-- real child photo/voice processing, continuous listening, emotion recognition, or facial analysis;
-- diagnosis, developmental screening, religious rulings, or automated welfare decisions;
-- money, banking, purchases, gift cards, redeemable coins, advertising, or loot boxes;
-- real-tree-planting claims or fabricated carbon, water, waste, or food-impact numbers;
-- production notifications, analytics, monitoring, compliance claims, or store release; and
-- a second app, 3D world, or backend that can delay the deterministic competition path.
+- production authentication, identity verification, passkeys, biometrics, QR scanning, secure
+  pairing, encrypted tenancy, or real family accounts;
+- networking, real invitations, public discovery, global leaderboards, open profiles, comments,
+  free-text messaging, direct Child contact, or reaction counts;
+- wallet balances, payments, money custody, transfers, withdrawal, universal Seed conversion,
+  gift-card fulfillment, paid boosts, wagers, or winner-take-all prizes;
+- real Child photo/voice capture or processing, continuous listening, face/voice identification,
+  emotion recognition, or unrestricted Child AI;
+- diagnosis, developmental screening, religious rulings, or automated safety/completion/reward
+  decisions;
+- real-tree planting or fabricated carbon, water, waste, food, or environmental-impact numbers;
+- production notifications, analytics, moderation, monitoring, compliance claims, or store release;
+  and
+- a second app, 3D world, or backend that can delay the deterministic offline competition path.

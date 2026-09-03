@@ -1,5 +1,11 @@
 # Feature 003 Implementation Baseline
 
+> **Historical Revision 1 evidence.** This 2026-08-26 baseline predates Feature 003 Revision 2.
+> It remains accurate for the environment and source state it names, but it does not validate or
+> authorize the revised access, League, Family Reward, navigation, voice, typography, or screen
+> architecture. All Revision 2 implementation and evidence gates begin `NOT RUN` or `BLOCKED` as
+> recorded in the active acceptance contract.
+
 **Recorded**: 2026-08-26 before Feature 003 source implementation
 **Branch**: `feature/003-family-growth-garden`
 **Checkpoint**: `0db6d76`

@@ -152,3 +152,8 @@ The optional local React Native DevTools process could not start because this ho
 install, compilation, static output, and launch hygiene only. It did not replay the complete
 ten-route browser journey and does not supersede the professional-audit interaction evidence or
 change any Android/human status.
+
+# Revision 1 Historical Evidence
+
+> This web-proxy evidence covers the superseded 2026-08-28 ten-route implementation only. It must
+> not be cited for Feature 003 Revision 2 behavior or design acceptance.

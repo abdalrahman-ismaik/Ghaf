@@ -1,5 +1,12 @@
 # P0 Implementation Readiness Checklist: Family Growth Garden
 
+> **Historical Revision 1 checklist — superseded for implementation.** The 40/40 result below
+> assessed the former ten-route, role-switch, cooperative-circle contract on 2026-08-26. It is
+> preserved as requirements-writing evidence for that revision only. It does not release Revision
+> 2 implementation or satisfy any access, League, Family Reward, voice, Alexandria/Readex, screen,
+> Android, or human-review gate. Follow the unchecked Revision 2 tasks after approved Stitch frames
+> arrive.
+
 **Purpose**: Reviewer-owned assessment of whether Feature 003 requirements, design artifacts, and
 implementation tasks are complete, clear, consistent, measurable, and traceable enough to begin the
 deterministic P0 implementation.

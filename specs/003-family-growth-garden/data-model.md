@@ -1,238 +1,131 @@
-# Feature 003 Data Model
+# Feature 003 Data Model — Revision 2
+
+**Revision 2 approved**: 2026-09-01
 
 ## Purpose and Boundary
 
-This model replaces the Feature 002 food-rescue domain for the judge-facing Feature 003 journey
-without rewriting Feature 002 history. It is an in-memory, deterministic prototype model. Every
-profile, task choice, assistant result, media item, summary, and circle value is synthetic or
-prepared local data.
+This is the approved conceptual model for Feature 003 Revision 2. It supersedes the Revision 1
+linear-route/Circle model for future implementation while preserving that implementation as
+history. No Revision 2 runtime type or migration is implemented yet; the work remains **BLOCKED**
+until approved Stitch designs are reconciled.
 
-The model has one aggregate root, `PrototypeSession`. Screens read the aggregate through services;
-they do not calculate rewards, garden stages, or shared projections. The deterministic provider is
-the complete P0 path. No account, remote persistence, unrestricted assistant conversation, or live
-Child media enters this model.
+Every access record, household, Child, device, League member, reward, assistant result, media item,
+and voice state in P0 is deterministic and synthetic/prepared. The model does not represent
+production authentication, payment, custody, networking, or real Child media.
 
-## Canonical Scalar Types
+## Canonical Scalars
 
 ```ts
 type LocaleCode = 'ar' | 'en';
 type TextDirection = 'rtl' | 'ltr';
-type DemoRole = 'parent' | 'child';
-type CapabilityOrigin = 'synthetic' | 'prepared' | 'simulated' | 'live';
-type AuthoredRoute =
-  | '/'
-  | '/role'
-  | '/parent'
-  | '/parent/task/new'
-  | '/parent/task/review'
-  | '/child'
-  | '/child/task'
-  | '/parent/check-in'
-  | '/garden'
-  | '/circle';
+type ExperienceRole = 'parent' | 'child';
+type AgeBand = '6_8' | '9_11' | '12_14';
+type CapabilityOrigin = 'synthetic' | 'prepared' | 'simulated';
+type FixedSeedAward = 4 | 6 | 8 | 12 | 15;
+type LandscapeId = 'ghaf' | 'samar' | 'sidr' | 'date_palm' | 'mangrove';
+type GardenStage = 'seed' | 'shoot' | 'sapling' | 'shade' | 'flourishing';
 
 interface LocalizedText {
   readonly ar: string;
   readonly en: string;
 }
-
-type AgeBand = '6_8' | '9_11' | '12_14';
-type FixedSeedAward = 4 | 6 | 8 | 12 | 15;
-type RecognitionMode = 'standard' | 'fade_first' | 'recognition_only';
-type RoutinePhase = 'acquisition' | 'maintenance' | 'not_applicable';
-type Recurrence = 'once' | 'recurrent';
-type VisibilityScope = 'child_guardian' | 'household';
-type LandscapeId = 'ghaf' | 'samar' | 'sidr' | 'date_palm' | 'mangrove';
-type GardenStage = 'seed' | 'shoot' | 'sapling' | 'shade' | 'flourishing';
 ```
 
-Machine values use underscores. User-facing English may display “fade-first” and
-“recognition-only.”
+Exact route identifiers are intentionally absent until Stitch intake. Persistent navigation sets
+are fixed as Parent `home | tasks | garden | family` and Child `today | garden | league`.
 
-## Synthetic Household
+## Synthetic Access and Protection State
 
 ```ts
-interface SyntheticHousehold {
-  readonly id: 'household_al_noor';
-  readonly displayName: LocalizedText;
+type AccessState = 'signed_out' | 'verifying' | 'authenticated_parent' | 'authenticated_child';
+
+interface ParentAccessFixture {
   readonly origin: 'synthetic';
-  readonly childIds: readonly ['child_salem', 'child_alya'];
-  readonly combinedCanopy: HouseholdCanopy;
+  readonly identifierKind: 'email' | 'phone';
+  readonly verificationState: 'idle' | 'code_sent' | 'invalid' | 'verified';
+  readonly returnGate: 'pin' | 'passkey_simulation' | 'biometric_simulation';
+  readonly productionAuthentication: false;
 }
+
+interface ChildAccessFixture {
+  readonly origin: 'synthetic';
+  readonly childId: ChildId;
+  readonly sharedDeviceGate: 'pin' | 'picture_sequence';
+  readonly pairingId: string | null;
+  readonly productionAuthentication: false;
+}
+
+type PairingState =
+  'created' | 'awaiting_parent' | 'approved' | 'denied' | 'expired' | 'offline' | 'revoked';
+
+interface DevicePairing {
+  readonly id: string;
+  readonly childId: ChildId;
+  readonly method: 'prepared_qr' | 'short_code';
+  readonly state: PairingState;
+  readonly origin: 'simulated';
+  readonly cameraUsed: false;
+  readonly networkUsed: false;
+}
+
+interface ParentReauthentication {
+  readonly state: 'required' | 'verified' | 'expired';
+  readonly scope:
+    | 'monetary_reward'
+    | 'family_member'
+    | 'league_membership'
+    | 'trusted_device'
+    | 'media_permission';
+  readonly origin: 'simulated';
+}
+```
+
+Child access never contains Parent reports, permissions, member controls, or reward-edit authority.
+A reauthentication receipt is short-lived, scope-bound, and synthetic.
+
+## Household, Profiles, and Permissions
+
+```ts
+type ChildId = 'child_salem' | 'child_alya';
 
 interface SyntheticChildProfile {
-  readonly id: 'child_salem' | 'child_alya';
-  readonly displayName: LocalizedText;
+  readonly id: ChildId;
+  readonly nickname: LocalizedText;
   readonly age: 9 | 11;
   readonly ageBand: '9_11';
+  readonly treeAvatarId: string;
+  readonly preferredLocale: LocaleCode;
+  readonly accessibilityDefaults: readonly string[];
   readonly origin: 'synthetic';
-  readonly earnedSeeds: number;
+}
+
+interface ChildPermissions {
+  readonly childId: ChildId;
+  readonly preparedVoiceEnabled: boolean;
+  readonly captionsEnabled: boolean;
+  readonly slowerPlaybackEnabled: boolean;
+  readonly reducedMotion: boolean;
+  readonly textScale: number;
+  readonly realMicrophone: false;
+  readonly realCamera: false;
+}
+
+interface SyntheticHousehold {
+  readonly id: 'household_al_noor';
+  readonly childIds: readonly ['child_salem', 'child_alya'];
+  readonly trustedDevices: readonly DevicePairing[];
+  readonly canopy: FamilyCanopy;
+  readonly origin: 'synthetic';
 }
 ```
 
-The reset fixtures are Salem, age 9, with 48 personal earned Seeds and Alya, age 11, with 36.
-Individual totals are available only in the active Child/guardian context. A sibling-facing or
-circle projection never contains both raw totals.
+## Task and Recognition Spine
 
-## Categories and Landscape Mapping
-
-```ts
-type TaskCategoryId =
-  | 'faith_gratitude'
-  | 'roots_kinship'
-  | 'home_responsibility'
-  | 'green_impact'
-  | 'food_hospitality'
-  | 'heritage_etiquette'
-  | 'kindness_community'
-  | 'learning_wellbeing';
-
-interface TaskCategory {
-  readonly id: TaskCategoryId;
-  readonly label: LocalizedText;
-  readonly landscapeId: LandscapeId;
-  readonly defaultVisibilityScope: VisibilityScope;
-  readonly circleMayBeEligible: boolean;
-  readonly contentReviewStatus: 'reviewed_p0' | 'named_human_review_required';
-}
-```
-
-| Category machine value | English / Arabic                        | Landscape   | Default sharing rule                                                      |
-| ---------------------- | --------------------------------------- | ----------- | ------------------------------------------------------------------------- |
-| `faith_gratitude`      | Faith & Gratitude / الإيمان والامتنان   | `sidr`      | `child_guardian`; recognition-only by default; never circle               |
-| `roots_kinship`        | Roots & Kinship / جذورنا                | `ghaf`      | Private or household; never circle                                        |
-| `home_responsibility`  | Home Responsibility / مسؤوليتي          | `samar`     | Household; never circle unless represented by a separate valid Green task |
-| `green_impact`         | Green Impact / أثر أخضر                 | `mangrove`  | Household may be circle-eligible after filtering                          |
-| `food_hospitality`     | Food & Hospitality / النعمة والضيافة    | `date_palm` | Household; never circle                                                   |
-| `heritage_etiquette`   | Heritage & Etiquette / تراثنا وآدابنا   | `ghaf`      | Private or household; never circle                                        |
-| `kindness_community`   | Kindness & Community / اللطف والمجتمع   | `samar`     | Recognition-only or fade-first preparation; never circle                  |
-| `learning_wellbeing`   | Learning & Wellbeing / التعلّم والتوازن | `sidr`      | `child_guardian`; never circle                                            |
-
-Only `green_impact` can set `circleEligible = true`, and only with
-`visibilityScope = 'household'`.
-
-## Task Template and Reviewed Task
+The eight categories and five landscape mappings remain inherited product data. Revision 2 adds a
+distinct `challengeLeafEligible` decision; it MUST NOT reuse Revision 1 `circleEligible`.
 
 ```ts
-interface TaskSafetyBoundary {
-  readonly adultPreCheck: LocalizedText;
-  readonly adultSecondCheck: LocalizedText;
-  readonly adultOwnedActions: readonly LocalizedText[];
-  readonly childAllowedActions: readonly LocalizedText[];
-  readonly excludedHazards: readonly LocalizedText[];
-  readonly stopAndAskAdult: LocalizedText;
-  readonly routeConstraint: LocalizedText | null;
-  readonly indoorAlternative: LocalizedText | null;
-  readonly aftercare: LocalizedText | null;
-}
-
-interface TaskTemplate {
-  readonly id: string;
-  readonly categoryId: TaskCategoryId;
-  readonly landscapeId: LandscapeId;
-  readonly title: LocalizedText;
-  readonly positiveAction: LocalizedText;
-  readonly whyItMatters: LocalizedText;
-  readonly definitionOfDone: LocalizedText;
-  readonly childAgeBands: readonly AgeBand[];
-  readonly estimatedEffort: LocalizedText;
-  readonly permittedHelp: LocalizedText;
-  readonly supervision: LocalizedText;
-  readonly safety: TaskSafetyBoundary;
-  readonly evidencePolicy: 'optional_prepared_only' | 'none';
-  readonly reflectionPolicy: 'optional_task_focused' | 'none';
-  readonly recognitionMode: RecognitionMode;
-  readonly routinePhase: RoutinePhase;
-  readonly recurrence: Recurrence;
-  readonly displayedSeedAward: FixedSeedAward | null;
-  readonly visibilityScope: VisibilityScope;
-  readonly circleEligible: boolean;
-  readonly privacyNotice: LocalizedText;
-  readonly origin: 'prepared';
-}
-
-interface Task {
-  readonly id: string;
-  readonly version: number;
-  readonly templateId: string;
-  readonly targetChildId: SyntheticChildProfile['id'];
-  readonly parentOriginalText: LocalizedText;
-  readonly acceptedGuideFixtureId: string | null;
-  readonly content: TaskTemplate;
-  readonly origin: 'prepared' | 'synthetic';
-}
-```
-
-`TaskTemplate` is the immutable reviewed catalog shape. A Parent-created `Task` preserves the
-original wording even when a Guide result exists. `TaskJourney.lifecycle` is the only draft/review
-source of truth, and the existence of `Assignment` is the only assignment-approval source of truth.
-The suggested copy replaces task content only after **Accept suggestion**. **Keep mine** leaves
-`parentOriginalText` and content unchanged.
-
-The P0 task is `task_recycling_p0_v1`, a separate 12-Seed multi-step variant of catalog item
-`GI01`. `GI01` remains an 8-Seed, single-step `fade_first + acquisition` fixture. General household
-waste is a Home Responsibility item and cannot inherit Green or circle eligibility.
-
-### Canonical P0 Task Values
-
-| Field                            | Required value                                                                                          |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Task / source template           | `task_recycling_p0_v1` / separate variant based on `GI01`                                               |
-| Child                            | `child_salem`, synthetic, age 9                                                                         |
-| Category / landscape             | `green_impact` / `mangrove`                                                                             |
-| English title                    | Sort clean recyclables and go with an adult to the guardian-approved safe recycling bin                 |
-| Arabic title                     | فرز المواد النظيفة القابلة لإعادة التدوير ومرافقة شخص بالغ إلى حاوية إعادة تدوير آمنة يحددها وليّ الأمر |
-| Effort                           | 15–30 minutes                                                                                           |
-| Recognition / phase / recurrence | `standard` / `acquisition` / `once`                                                                     |
-| Award                            | 12 Seeds after one Parent confirmation                                                                  |
-| Visibility / circle              | `household` / `true`                                                                                    |
-| Evidence / reflection            | Optional prepared fixtures; neither blocks completion                                                   |
-| Meaning                          | Practical responsible recycling; no quantified impact or real-tree claim                                |
-
-The bilingual definition of done and all safety fields are the canonical P0 strings in
-`DEMO_RUNBOOK.md`. Implementations must consume those reviewed fixture values without rewriting the
-Arabic safety-critical text.
-
-## Child-Home Choice Pool
-
-Reset and active assignment are intentionally separate concepts:
-
-```ts
-interface ApprovedChoiceFixture {
-  readonly id: 'choice_preview_hr02_v1' | 'choice_preview_lw01_v1' | 'choice_recycling_p0_v1';
-  readonly childId: SyntheticChildProfile['id'];
-  readonly taskTemplateId: string;
-  readonly approvalState: 'parent_approved_fixture';
-  readonly demoAvailability: 'display_only' | 'p0_executable';
-  readonly origin: 'prepared';
-}
-
-interface ChildChoicePool {
-  readonly seededPreviewChoices: readonly [ApprovedChoiceFixture, ApprovedChoiceFixture];
-  readonly p0AssignmentChoice: ApprovedChoiceFixture | null;
-}
-```
-
-- Reset contains two local Parent-approved `display_only` preview choices so `/child` can show the
-  required breadth. They are visibly prepared catalog previews, create no `Assignment`, and cannot
-  enter the P0 lifecycle or issue recognition.
-- The two reset fixtures are exactly `choice_preview_hr02_v1` → `HR02` (prepare tomorrow's school
-  bag) and `choice_preview_lw01_v1` → `LW01` (read or listen to a book for ten minutes).
-- Reset has `p0AssignmentChoice = null` and `activeAssignmentId = null`; therefore it has no active,
-  selected, chosen, or in-progress assignment.
-- Explicit Parent approval of `task_recycling_p0_v1` creates the sole `p0_executable` choice and
-  its `Assignment` as `choice_recycling_p0_v1`. Child home then shows two previews plus the
-  executable recycling choice.
-- Selecting a display-only fixture is a neutral guard result explaining that the deterministic
-  slice demonstrates the Parent-approved recycling task. It never widens P0 into a second task.
-
-## Journey Aggregate and Lifecycle
-
-There is one lifecycle source of truth on `TaskJourney`; `Task`, `Assignment`, and `Submission` do
-not keep competing copies of it.
-
-```ts
-type TaskLifecycleStatus =
+type TaskLifecycle =
   | 'draft'
   | 'reviewed'
   | 'assigned'
@@ -243,366 +136,344 @@ type TaskLifecycleStatus =
   | 'confirmed'
   | 'recognized';
 
-interface Assignment {
-  readonly id: string;
-  readonly taskId: string;
-  readonly taskVersion: number;
-  readonly childId: SyntheticChildProfile['id'];
-  readonly approvedByParent: true;
-  readonly approvalSequence: number;
-  readonly createdAt: string;
-}
+type FamilyRewardEligibilityDecision =
+  | {
+      readonly eligible: true;
+      readonly sourceTaskId: string;
+      readonly sourceTaskVersion: number;
+      readonly reason: 'eligible';
+      readonly failClosed: true;
+    }
+  | {
+      readonly eligible: false;
+      readonly sourceTaskId: string;
+      readonly sourceTaskVersion: number;
+      readonly reason:
+        | 'recognition_only'
+        | 'sensitive_or_private'
+        | 'basic_need_or_essential_access'
+        | 'unknown_or_unreviewed';
+      readonly failClosed: true;
+    };
 
-type CompletionMode = 'independent' | 'permitted_help';
+interface ReviewedTask {
+  readonly id: string;
+  readonly version: number;
+  readonly childId: ChildId;
+  readonly categoryId: string;
+  readonly landscapeId: LandscapeId;
+  readonly title: LocalizedText;
+  readonly definitionOfDone: LocalizedText;
+  readonly whyItMatters: LocalizedText;
+  readonly steps: readonly LocalizedText[];
+  readonly ageBands: readonly AgeBand[];
+  readonly estimatedEffort: LocalizedText;
+  readonly permittedHelp: LocalizedText;
+  readonly supervision: 'none' | 'nearby_adult' | 'direct_adult';
+  readonly adultBoundary: LocalizedText;
+  readonly safetyExclusions: readonly LocalizedText[];
+  readonly optionalEvidence: boolean;
+  readonly recognitionMode: 'standard' | 'fade_first' | 'recognition_only';
+  readonly routinePhase: 'acquisition' | 'maintenance' | 'not_applicable';
+  readonly recurrent: boolean;
+  readonly displayedSeedAward: FixedSeedAward | null;
+  readonly familyRewardEligibility: FamilyRewardEligibilityDecision;
+  readonly challengeLeafEligible: boolean;
+  readonly circleEligible: boolean;
+  readonly visibilityScope: 'child_guardian' | 'household';
+  readonly lifecycle: TaskLifecycle;
+}
 
 interface Submission {
   readonly id: string;
-  readonly assignmentId: string;
+  readonly taskId: string;
   readonly taskVersion: number;
-  readonly attempt: number;
-  readonly definitionAcknowledged: true;
-  readonly completionMode: CompletionMode;
-  readonly helpUsed: LocalizedText | null;
-  readonly preparedMediaFixtureId: string | null;
+  readonly completionMode: 'independent' | 'permitted_help' | 'accessibility_adapted';
+  readonly preparedMediaIds: readonly string[];
   readonly reflection: LocalizedText | null;
   readonly observableFacts: readonly LocalizedText[];
-  readonly submittedAt: string;
 }
+```
 
-type ParentCheckInDecision =
-  'kind_retry' | 'confirm' | 'propose_smaller_future_task' | 'propose_safe_equivalent';
+Assignment, choice, start, Coach use, and submission create no Seed, garden, canopy, League, or
+Family Reward effect. A retry creates no loss. A smaller/equivalent task receives a new prospective
+reviewed version before Child acceptance. `circleEligible = true` is valid only for Green Impact
+with `visibilityScope = 'household'`; it remains independent of `challengeLeafEligible` and never
+enters a League row. Recognition-only and maintenance work creates no Seed, persistent
+landscape/canopy growth, or coarse Circle event.
 
-interface ParentCheckIn {
+## Ghaf Family League
+
+```ts
+type LeagueMemberId = 'child_salem' | 'child_alya' | 'cousin_mariam' | 'cousin_rashid';
+type ChallengeLeafState = 'planned' | 'confirmed';
+
+interface ChallengeLeaf {
   readonly id: string;
-  readonly submissionId: string;
-  readonly decision: ParentCheckInDecision;
-  readonly praise: LocalizedText | null;
-  readonly neutralObservation: LocalizedText | null;
-  readonly uncertainty: LocalizedText | null;
-  readonly replacementTaskId: string | null;
-  readonly recognitionKey: string | null;
-  readonly confirmationPresentation:
-    'editing_praise' | 'praise_presented' | 'recognition_applied' | null;
-  readonly praisePresentedAt: string | null;
-  readonly createdAt: string;
+  readonly weekId: string;
+  readonly memberId: LeagueMemberId;
+  readonly slot: 1 | 2 | 3 | 4 | 5;
+  readonly approvedTaskRef: string;
+  readonly state: ChallengeLeafState;
+  readonly confirmedByParent: boolean;
+  readonly fullCredit: true;
 }
 
-interface TaskJourney {
-  readonly lifecycle: TaskLifecycleStatus;
-  readonly task: Task;
-  readonly assignment: Assignment | null;
-  readonly submission: Submission | null;
-  readonly checkIn: ParentCheckIn | null;
-}
-```
-
-The canonical path is:
-
-`draft → reviewed → assigned → chosen → in_progress → submitted → confirmed → recognized`
-
-Kind retry is `submitted → retry → in_progress`. The `retry` state is retained as an auditable
-transition result before resuming work. It removes nothing and creates no public failure mark.
-A smaller or safe-equivalent proposal at check-in creates a new draft for prospective Parent review;
-it never edits the accepted assignment or changes its award retroactively.
-
-### Transition Guards and Effects
-
-| Transition                | Required guard                                                                                                                                                                           | Persistent/reward/shared effect                                          |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `draft → reviewed`        | Complete bilingual positive action, purpose, definition, effort, permitted help, supervision, safety, privacy, reward/recognition, phase, recurrence, landscape, and category validation | None                                                                     |
-| `reviewed → assigned`     | Explicit Parent approval; task still matches approved version; valid recognition/phase/privacy combination                                                                               | Create one `Assignment`; no counter change                               |
-| `assigned ↺ assigned`     | Exact repeated Parent approval for the same task/version, Child, assignment, and executable choice                                                                                       | Return the existing journey; no mutation or counter change               |
-| `assigned → chosen`       | Active synthetic Child matches `assignment.childId`; deliberate Child choice                                                                                                             | None                                                                     |
-| `chosen → in_progress`    | Explicit start/open action; assignment and task versions still match                                                                                                                     | None                                                                     |
-| `in_progress → submitted` | Approved definition acknowledged; completion mode is valid; media/reflection may be absent                                                                                               | Create `Submission`; no counter change                                   |
-| `submitted → retry`       | Parent chooses kind retry                                                                                                                                                                | Create check-in; no counter change or loss                               |
-| `retry → in_progress`     | Same assignment/task version; optional Parent note is nonpunitive                                                                                                                        | None                                                                     |
-| `submitted → confirmed`   | Parent chooses confirm; editable action-specific praise is valid                                                                                                                         | Create one check-in and pending recognition plan; no counter changes yet |
-| `confirmed → recognized`  | Praise has been presented; recognition key is not in the ledger; all projection filters have run                                                                                         | Apply one atomic recognition consequence                                 |
-
-The `assigned ↺ assigned` row is an application-command idempotency guard rather than a second
-lifecycle transition; nonmatching approval repeats and all other transitions return
-`INVALID_TRANSITION`. Assignment, choice, start, submission, and retry must keep all Seed, garden,
-canopy, and circle counters byte-for-byte unchanged.
-
-## Recognition, Reward, and Idempotency
-
-```ts
-interface SeedTransaction {
+interface LeagueWeek {
   readonly id: string;
-  readonly recognitionKey: string;
-  readonly childId: SyntheticChildProfile['id'];
-  readonly amount: FixedSeedAward;
-  readonly balanceBefore: number;
-  readonly balanceAfter: number;
-  readonly meaning: 'symbolic_nonfinancial';
+  readonly state: 'setup' | 'active' | 'completed' | 'rest';
+  readonly memberIds: readonly LeagueMemberId[];
+  readonly leavesByMember: Readonly<Record<LeagueMemberId, readonly ChallengeLeaf[]>>;
+  readonly cooperativeCanopyGoal: FamilyCanopy;
+  readonly origin: 'synthetic';
 }
 
-interface RecognitionReceipt {
-  readonly recognitionKey: string;
-  readonly checkInId: string;
-  readonly seedTransaction: SeedTransaction | null;
-  readonly landscapeGrowth: LandscapeGrowth | null;
-  readonly canopyContribution: CanopyContributionDTO | null;
-  readonly circleEvent: GreenCircleEventDTO | null;
-  readonly phaseReview: PhaseReviewPrompt | null;
-}
-
-type RecognitionApplication =
-  | {
-      readonly status: 'applied';
-      readonly receipt: RecognitionReceipt;
-    }
-  | {
-      readonly status: 'already_confirmed';
-      readonly receipt: RecognitionReceipt;
-      readonly message: LocalizedText;
-    };
-```
-
-The deterministic idempotency key is `recognition:<submission.id>`. The first valid application
-stores one immutable receipt in a recognition ledger. Every later call returns that receipt inside
-an `already_confirmed` attempt result and performs no write, animation trigger, milestone, or
-celebration. Attempt disposition never mutates or masquerades as a field on the receipt.
-
-Only a replacement task agreed before Child acceptance can have a different displayed award.
-Completing with `permitted_help` applies the same displayed award as independent completion.
-
-### Valid Reward Matrix
-
-| Recognition and phase               | Task validity                    | Seed transaction      | Landscape/canopy                                     | Circle                                                         |
-| ----------------------------------- | -------------------------------- | --------------------- | ---------------------------------------------------- | -------------------------------------------------------------- |
-| `standard + acquisition`            | Valid only when finite or `once` | Fixed displayed award | Mapped landscape; canopy only when household-visible | One event only for eligible household Green Impact             |
-| `fade_first + acquisition`          | Valid; recurrent is allowed      | Fixed displayed award | Same                                                 | Same; third recurrent confirmation creates future-phase prompt |
-| `standard + maintenance`            | Valid only when finite or `once` | None                  | None                                                 | One eligible coarse Green action may be recorded               |
-| `fade_first + maintenance`          | Valid                            | None                  | None                                                 | One eligible coarse Green action may be recorded               |
-| `recognition_only + not_applicable` | Valid                            | None                  | None                                                 | Never                                                          |
-
-Every other pairing is invalid before assignment. `displayedSeedAward` is required only for
-acquisition `standard`/`fade_first`; it must be null for maintenance and recognition-only. A
-recurrent reward-eligible task must use `fade_first`. `standard` is finite or `once`.
-
-```ts
-interface PhaseReviewPrompt {
-  readonly taskId: string;
-  readonly confirmedAcquisitionCount: 3;
-  readonly options: readonly ['keep_acquisition', 'move_future_to_maintenance'];
-  readonly selected: null;
-  readonly appliesTo: 'future_completions_only';
-  readonly reversibleByParent: true;
+interface LeagueProjectionRow {
+  readonly nickname: LocalizedText;
+  readonly treeAvatarId: string;
+  readonly position: number;
+  readonly weeklyGrowthScore: 0 | 20 | 40 | 60 | 80 | 100;
+  readonly confirmedLeaves: 0 | 1 | 2 | 3 | 4 | 5;
 }
 ```
 
-No service changes routine phase automatically or claims that a habit has formed.
+Validation and derivation rules:
 
-## Garden Progress
+1. An active non-rest week has exactly five distinct slots per participating member.
+2. `weeklyGrowthScore = confirmedLeaves / 5 * 100`; extra tasks are ignored.
+3. Sort by score descending. Equal scores share the same competition position; the next position is
+   the one-based row index, producing `1, 1, 3, 4`. No timestamp or speed enters the algorithm.
+4. Permitted help, accessibility adaptations, and agreed equivalents keep `fullCredit = true`.
+5. Prayer, affection, emotional disclosure, food consumption, private wellbeing, hygiene,
+   disability-related routines, and proof of love are never eligible source tasks.
+6. Projection is constructed only after private-source validation. Unknown/private fields cause
+   rejection before a row or shared counter exists.
 
-```ts
-interface LandscapeProgress {
-  readonly landscapeId: LandscapeId;
-  readonly cumulativeSeeds: number;
-  readonly stage: GardenStage;
-  readonly nextThreshold: 20 | 60 | 120 | 200 | null;
-}
+Every newly confirmed Challenge Leaf produces at most one cooperative canopy contribution. Weekly
+rollover replaces League slots/scores but not Seeds, gardens, canopy history, or rewards.
 
-interface LandscapeGrowth {
-  readonly landscapeId: LandscapeId;
-  readonly seedsBefore: number;
-  readonly seedsAfter: number;
-  readonly stageBefore: GardenStage;
-  readonly stageAfter: GardenStage;
-  readonly crossedThreshold: 20 | 60 | 120 | 200 | null;
-  readonly symbolicOnly: true;
-}
-```
-
-The pure stage function is:
-
-| Cumulative Seeds | Stage         |
-| ---------------: | ------------- |
-|             0–19 | `seed`        |
-|            20–59 | `shoot`       |
-|           60–119 | `sapling`     |
-|          120–199 | `shade`       |
-|             200+ | `flourishing` |
-
-The P0 display begins as 48/60 Shoot. After one award it presents the just-crossed threshold as
-60/60 Sapling and records cumulative Mangrove Seeds as 60. Growth is monotonic; no transaction may
-decrease a balance or stage.
-
-## Privacy-First Shared Projections
-
-Shared DTOs are constructed from an internal recognition candidate after validation. Raw domain
-objects are never passed to household or circle views.
+## Family Canopy
 
 ```ts
-interface HouseholdCanopy {
+interface FamilyCanopy {
   readonly contributionLeaves: number;
   readonly goalLeaves: 25;
 }
 
-interface CanopyContributionDTO {
-  readonly actionKind: 'eligible_household_acquisition';
+interface CanopyContribution {
+  readonly confirmationKey: string;
   readonly leafDelta: 1;
-  readonly origin: 'synthetic';
+  readonly reason: 'confirmed_challenge_leaf';
 }
-
-interface GreenCircleEventDTO {
-  readonly actionKind: 'eligible_green_action';
-  readonly actionDelta: 1;
-  readonly sourceScope: 'household';
-  readonly origin: 'synthetic_local';
-}
-
-interface CircleGoal {
-  readonly eligibleGreenActions: number;
-  readonly goal: 12;
-  readonly origin: 'synthetic_local';
-}
-
-interface ProjectionEligibilityContext {
-  readonly schemaVersion: '1.0';
-  readonly categoryId: TaskCategoryId;
-  readonly recognitionMode: RecognitionMode;
-  readonly routinePhase: RoutinePhase;
-  readonly visibilityScope: VisibilityScope;
-  readonly circleEligible: boolean;
-  readonly consequenceKind: 'rewarded_acquisition' | 'maintenance_activity' | 'recognition_only';
-  readonly confirmed: true;
-  readonly prohibitedSharedFieldsPresent: false;
-}
-
-type ProjectionRejectionReason =
-  | 'private_scope'
-  | 'non_green_category'
-  | 'circle_not_eligible'
-  | 'recognition_only'
-  | 'sensitive_content'
-  | 'invalid_pairing';
 ```
 
-`GreenCircleEventDTO` has no Child ID, household name, task ID/title/history, Seed amount, exact
-date/time, media, reflection, assistant content, Parent note, prayer/kinship/affection, food
-consumption, hygiene, wellbeing, or disability-related field. The recognition ledger performs
-deduplication before construction, so no internal correlation key enters a shared DTO.
+The P0 event changes 19/25 → 20/25 once. The confirmation key prevents the garden and League paths
+from adding two leaves for the same action.
 
-The private recognition boundary validates the full `Task` and `Submission`, then derives only the
-strict `ProjectionEligibilityContext`. `FamilyProjectionService` never accepts the raw private
-objects. Its context schema rejects unknown fields, so an attempted shared candidate containing a
-Child/household identity, task record, Seed amount, media, reflection, assistant content, note, or
-timestamp fails before DTO construction or counter mutation.
-
-Privacy filtering happens before a canopy or circle counter is calculated or changed:
-
-1. Check the recognition ledger; a duplicate returns the stored receipt before reward or
-   projection work.
-2. Validate the task and recognition/phase combination.
-3. Reject an invalid `circleEligible` pairing before assignment.
-4. Derive the private reward plan.
-5. Construct a canopy DTO only for household-visible rewarded acquisition.
-6. Construct a circle DTO only for household-visible, circle-eligible Green Impact confirmation;
-   maintenance may create this event without reward/growth.
-7. Scan candidate shared data for prohibited fields/content; reject the affected projection.
-8. Atomically commit only allowed consequences and store the receipt.
-
-A private or non-Green acquisition can still receive its valid private Seed/landscape consequence,
-but its shared DTOs are null and shared counters do not change. Recognition-only never produces a
-shared DTO.
-
-## Prepared Media Fixtures
+## Family Reward
 
 ```ts
-type PreparedMediaKind = 'image' | 'audio';
+type RewardState = 'promised' | 'unlocked' | 'given';
+type RewardKind = 'money' | 'family_experience' | 'privilege' | 'gift';
 
-interface PreparedMediaFixture {
-  readonly id: 'fixture_recycling_clean_v1' | 'fixture_salem_plan_ar_v1';
-  readonly kind: PreparedMediaKind;
+type RewardMilestone =
+  | {
+      readonly type: 'new_eligible_seeds';
+      readonly target: number;
+      readonly baseline: number;
+      readonly progressSource: 'eligible_confirmations_only';
+    }
+  | {
+      readonly type: 'landscape_stage';
+      readonly landscapeId: LandscapeId;
+      readonly target: GardenStage;
+      readonly eligibleStageBaseline: GardenStage;
+      readonly progressSource: 'eligible_confirmations_only';
+    }
+  | {
+      readonly type: 'landscapes_at_sapling';
+      readonly targetCount: number;
+      readonly progressSource: 'eligible_confirmations_only';
+    };
+
+interface FamilyRewardPlan {
+  readonly id: string;
+  readonly version: number;
+  readonly childId: ChildId;
+  readonly milestone: RewardMilestone;
+  readonly rewardKind: RewardKind;
+  readonly description: LocalizedText;
+  readonly currency: 'AED' | null;
+  readonly amount: number | null;
+  readonly monthKey: string;
+  readonly progress: number;
+  readonly state: RewardState;
+  readonly agreedSnapshotImmutable: true;
+  readonly deliveredOutsideApp: true;
+  readonly rankIndependent: true;
+  readonly custody: false;
+  readonly exchangeRate: null;
+}
+
+interface MonthlyPromiseSummary {
+  readonly monthKey: string;
+  readonly currency: 'AED';
+  readonly maximumPromised: number;
+  readonly privateToGuardians: true;
+}
+```
+
+Only `promised → unlocked → given` is valid. Unlocked cannot reverse or be deleted as punishment.
+Changing a future promise creates a new plan/version and leaves the agreed snapshot intact. The
+monthly maximum is the deterministic sum of each agreed monetary plan assigned to the month,
+whether Promised, Unlocked, or Given. Draft and nonmonetary plans add zero. Money never enters a
+League projection. Validation rejects prayer, affection, emotional disclosure, eating or body
+outcomes, private wellbeing or disability-related activity, and proof of love as monetary
+milestones. A Family Reward cannot condition food, water, clothing, safe shelter, sleep,
+healthcare, education, transport, ordinary family contact, affection, safety, dignity, or ordinary
+religious participation.
+
+All plan progress consumes eligibility from the immutable confirmation receipt. A false or missing
+decision adds zero. Seed milestones sum only eligible Seed transactions. Landscape and
+multi-landscape milestones evaluate `familyRewardEligibleStage`; displayed aggregate growth can
+never unlock a plan by itself.
+
+The P0 plan is Salem, `new_eligible_seeds`, target 120, progress 108, AED 25, `promised`. The one
+valid recycling confirmation carries `eligible: true`; its 12-Seed result changes progress to 120
+and state to `unlocked`.
+
+## Garden and Seed Progress
+
+```ts
+interface SeedTransaction {
+  readonly confirmationKey: string;
+  readonly childId: ChildId;
+  readonly amount: FixedSeedAward;
+  readonly familyRewardEligibility: FamilyRewardEligibilityDecision;
+  readonly permanent: true;
+  readonly financialValue: null;
+}
+
+interface FamilyRewardContribution {
+  readonly confirmationKey: string;
+  readonly taskId: string;
+  readonly taskVersion: number;
+  readonly childId: ChildId;
+  readonly landscapeId: LandscapeId;
+  readonly eligibleSeedDelta: FixedSeedAward | 0;
+  readonly decision: FamilyRewardEligibilityDecision;
+}
+
+interface LandscapeProgress {
+  readonly landscapeId: LandscapeId;
+  readonly cumulativeSeeds: number;
+  readonly stage: GardenStage;
+  readonly familyRewardEligibleSeeds: number;
+  readonly familyRewardEligibleStage: GardenStage;
+  readonly symbolicOnly: true;
+}
+```
+
+Stages remain Seed 0, Shoot 20, Sapling 60, Shade 120, Flourishing 200. The P0 Mangrove starts at
+48/60 Shoot and becomes 60/60 Sapling after exactly 12 Seeds.
+
+## Confirmation Receipt and Ordering
+
+```ts
+interface RecognitionReceipt {
+  readonly confirmationKey: string;
+  readonly submissionId: string;
+  readonly praise: LocalizedText;
+  readonly seedTransaction: SeedTransaction;
+  readonly familyRewardContribution: FamilyRewardContribution;
+  readonly landscapeBefore: LandscapeProgress;
+  readonly landscapeAfter: LandscapeProgress;
+  readonly canopyContribution: CanopyContribution;
+  readonly challengeLeafId: string;
+  readonly leagueScoreBefore: 80;
+  readonly leagueScoreAfter: 100;
+  readonly familyRewardPlanId: string;
+  readonly rewardStateBefore: 'promised';
+  readonly rewardStateAfter: 'unlocked';
+  readonly presentationOrder: readonly [
+    'praise',
+    'seeds',
+    'garden',
+    'canopy',
+    'challenge_leaf',
+    'family_reward',
+  ];
+}
+```
+
+The first valid confirmation stores one immutable receipt and commits all valid state atomically.
+Repeated confirmation returns the stored receipt with `already_confirmed` and performs no mutation
+or second celebration. Presentation may be animated, but state correctness does not depend on
+animation callbacks. The reward message appears only after praise and garden growth.
+
+## Prepared Coach and Voice State
+
+```ts
+type CoachIntent = 'show_steps' | 'help_plan' | 'simplify' | 'ask_adult' | 'prepared_push_to_talk';
+
+interface PreparedVoiceInteraction {
+  readonly fixtureId: 'fixture_salem_plan_ar_v1';
   readonly origin: 'prepared';
-  readonly synthetic: true;
-  readonly optional: true;
-  readonly uri: string | null;
-  readonly accessibleDescription: LocalizedText;
+  readonly taskId: string;
+  readonly visibleState: 'idle' | 'recording_simulated' | 'transcript_ready' | 'deleted' | 'sent';
   readonly transcript: LocalizedText | null;
-  readonly parentVisibilityNotice: LocalizedText;
-  readonly crossHouseholdSharing: false;
-  readonly removeAllowed: true;
-  readonly fallbackText: LocalizedText;
+  readonly replayAvailable: boolean;
+  readonly slowerPlaybackAvailable: boolean;
+  readonly captionsAvailable: true;
+  readonly deleteBeforeSend: true;
+  readonly microphoneUsed: false;
+  readonly backgroundListening: false;
 }
 ```
 
-The prepared image contains only safe clean recyclable objects and no Child, face, hand, personal
-data, brand, address, school, readable private text, or watermark. The prepared audio is a
-synthetic/prepared fixture, never a real Child recording. Missing media returns its description or
-transcript and never blocks submission.
+Age-band policies determine step count, tone, available intents, and speed. P0 uses prepared MSA
+safety/task copy and reviewed prepared conversational variants; it does not claim unrestricted
+speech or code-switch understanding.
 
-The application store also owns one resettable, route-independent Child task draft so prepared
-media and reflection state cannot survive navigation or reset accidentally:
+## Revision 2 Prototype Session and Reset
 
 ```ts
-interface ChildTaskDraftState {
-  readonly selectedMediaFixtureId: PreparedMediaFixture['id'] | null;
-  readonly removedMediaFixtureIds: readonly PreparedMediaFixture['id'][];
-  readonly unavailableMediaFixtureIds: readonly PreparedMediaFixture['id'][];
-  readonly reflection: LocalizedText | null;
-}
-```
-
-This draft is local transient interaction state, not an account record and not a cross-household
-projection. Successful new-task creation and `resetPrototype()` replace it with the empty value.
-
-## Prototype Session and Exact Reset
-
-```ts
-interface PrototypeSession {
-  readonly schemaVersion: 3;
+interface Revision2PrototypeSession {
+  readonly schemaVersion: 4;
+  readonly implementationStatus: 'design_blocked' | 'implemented';
   readonly locale: LocaleCode;
   readonly direction: TextDirection;
-  readonly role: DemoRole;
+  readonly accessState: AccessState;
+  readonly activeRole: ExperienceRole | null;
+  readonly parentAccess: ParentAccessFixture;
+  readonly childAccess: ChildAccessFixture | null;
+  readonly pairings: readonly DevicePairing[];
   readonly household: SyntheticHousehold;
-  readonly children: Readonly<Record<SyntheticChildProfile['id'], SyntheticChildProfile>>;
-  readonly activeChildId: SyntheticChildProfile['id'];
-  readonly choicePool: ChildChoicePool;
-  readonly activeAssignmentId: string | null;
-  readonly journey: TaskJourney | null;
-  readonly landscapeProgress: Readonly<Record<LandscapeId, LandscapeProgress>>;
-  readonly circleGoal: CircleGoal;
+  readonly children: Readonly<Record<ChildId, SyntheticChildProfile>>;
+  readonly permissions: Readonly<Record<ChildId, ChildPermissions>>;
+  readonly task: ReviewedTask | null;
+  readonly submission: Submission | null;
+  readonly landscapes: Readonly<Record<LandscapeId, LandscapeProgress>>;
+  readonly leagueWeek: LeagueWeek;
+  readonly rewardPlans: readonly FamilyRewardPlan[];
   readonly recognitionLedger: Readonly<Record<string, RecognitionReceipt>>;
-  readonly preparedParentGuideFixtureId: 'guide_recycling_refine_v1';
-  readonly preparedChildCoachFixtureId: 'coach_recycling_steps_v1';
-  readonly preparedImageFixtureId: 'fixture_recycling_clean_v1';
-  readonly preparedAudioFixtureId: 'fixture_salem_plan_ar_v1';
-  readonly assistantMode: 'deterministic_prepared';
-  readonly celebration: { readonly available: boolean; readonly consumed: boolean };
+  readonly preparedGuideFixtureId: 'guide_recycling_refine_v1';
+  readonly preparedCoachFixtureId: 'coach_recycling_steps_v1';
+  readonly preparedVoiceFixtureId: 'fixture_salem_plan_ar_v1';
 }
 ```
 
-`resetPrototype()` constructs a new aggregate in one operation; it does not patch the prior state.
-The router then replaces history with `/`.
+Canonical reset restores:
 
-| Reset field                            | Canonical value                                                 |
-| -------------------------------------- | --------------------------------------------------------------- |
-| Schema version                         | `3`                                                             |
-| Locale / direction                     | `ar` / `rtl`                                                    |
-| Reset navigation result                | `navigateTo = '/'`; `replaceHistory = true` outside the session |
-| Role / active Child                    | `parent` / `child_salem`                                        |
-| Profiles                               | Synthetic Al Noor household; Salem 9; Alya 11                   |
-| Personal Seeds                         | Salem 48; Alya 36                                               |
-| Mangrove                               | 48/60, `shoot`                                                  |
-| Household canopy                       | 19/25 leaves                                                    |
-| Circle                                 | 11/12 eligible Green actions, synthetic/local                   |
-| Choice pool                            | Two approved display-only fixtures; no executable P0 choice yet |
-| Active assignment / journey submission | `null` / none                                                   |
-| Prepared fixture IDs                   | The four exact IDs in `PrototypeSession` above                  |
-| Assistant mode                         | `deterministic_prepared`; no remote dependency                  |
-| Recognition ledger                     | Empty                                                           |
-| Celebration                            | `available = false`, `consumed = false`                         |
+- Arabic RTL welcome/access, signed out, with no protected Back history;
+- synthetic Al Noor, Salem 9, Alya 11, and prepared access/pairing fixtures;
+- real camera/microphone disabled, prepared voice enabled, captions on;
+- Salem 4/5 = 80, Mariam 5/5 = 100, Alya 3/5 = 60, Rashid 2/5 = 40;
+- Mangrove 48/60 Shoot and family canopy 19/25;
+- Salem reward progress 108/120, AED 25, `promised`;
+- no active task/submission/recognition or celebration; and
+- the exact prepared Guide, Coach, image, and voice identifiers.
 
-After the P0 task is approved, completed, and validly recognized once, only these counters differ:
-
-- Salem personal earned Seeds: 48 → 60;
-- Mangrove: 48/60 Shoot → 60/60 Sapling;
-- combined household canopy: 19/25 → 20/25; and
-- circle eligible Green actions: 11/12 → 12/12.
-
-Repeated recognition changes no value. Reset from every lifecycle, assistant, media, garden,
-circle, or celebration state reconstructs the exact table above without network access.
+`resetPrototype()` replaces the complete aggregate; it does not patch counters individually. The
+navigation adapter then returns to welcome/access and clears protected history. Reset requires no
+network, camera, microphone, auth, payment, invitation, or AI service.

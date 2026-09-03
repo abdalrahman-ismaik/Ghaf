@@ -102,3 +102,8 @@ inventory also remained `_layout.tsx` plus the exact ten authored product routes
   behavior, or store-binary contents.
 - Named fluent/cultural, faith, safeguarding, sustainability, accessibility, and legal reviews are
   not replaced by lexical scans.
+
+# Revision 1 Historical Evidence
+
+> This source scan covers the superseded 2026-08-28 implementation. Feature 003 Revision 2 source
+> validation has not run because implementation is on hold pending approved Stitch designs.

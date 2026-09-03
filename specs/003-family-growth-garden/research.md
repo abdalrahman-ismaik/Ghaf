@@ -1,290 +1,170 @@
-# Phase 0 Research: Family Growth Garden
+# Phase 0 Research: Family Growth Garden — Revision 2
 
 **Feature**: `003-family-growth-garden`
 
-**Date**: 2026-08-26
+**Revision 2 date**: 2026-09-01
 
-**Scope**: Repository-grounded implementation decisions for the deterministic P0
+**Status**: Product decisions resolved; visual implementation research is blocked until approved
+Google Stitch frames are supplied.
 
-All technical unknowns are resolved. Sources are the approved Feature 003 specification and root
-product/design/research documents, the current Expo repository, and preserved Feature 002
-architecture artifacts. External production integrations are not required.
+Revision 1 research described the historical linear ten-route implementation. It remains useful as
+repository history but is not the Revision 2 decision baseline or acceptance evidence.
 
-## Decision 1 — Evolve the Existing Single Expo Application
+## Decision 1 — Keep One App, Separate the Experiences
 
-**Decision**: Migrate Feature 002 in place using the installed Expo SDK 57/React Native 0.86 stack,
-strict TypeScript, Expo Router, Zustand, Zod, React Hook Form, i18n, StyleSheet, SVG, Reanimated, and
-prepared audio. Add no package and no backend.
+**Decision**: Ghaf remains one application with separately gated Parent and Child experiences.
+Parent navigation is Home/Tasks/Garden/Family; Child navigation is Today/Garden/League. Normal
+navigation contains no role toggle.
 
-**Rationale**: The repository already has the necessary mobile, localization, validation, state,
-animation, media-playback, and test capabilities. P0 is ten local routes over one synthetic
-session. Adding a second app, server, UI kit, state library, database, or media library increases
-demo risk without enabling an acceptance requirement.
+**Rationale**: Protected role experiences reduce daily friction and prevent a Child from reaching
+guardian controls while preserving one maintainable app.
 
-**Alternatives considered**:
+**Alternatives considered**: Keep `/role` switching (rejected as the superseded demo pattern); build
+two apps (rejected as unnecessary scope).
 
-- Add a server/live model adapter now: rejected because no approved secure deployable boundary
-  exists and prepared fallback is the acceptance baseline.
-- Add a component/theme framework: rejected because the current StyleSheet/token system has low
-  drift and the design contract explicitly favors small local components.
-- Preserve Feature 002 as a parallel route tree: rejected because Feature 003 defines the sole
-  judge-facing product direction and exactly ten routes.
+## Decision 2 — Demonstrate Access Honestly with Synthetic State
 
-## Decision 2 — Reuse Architectural Seams, Retire Food-Rescue Semantics
+**Decision**: P0 simulates Parent phone/email verification, PIN/passkey/biometric return access,
+Child PIN/picture sequence, QR/short-code pairing, approval, revocation, and sensitive-action
+reauthentication through deterministic fixtures. It makes no production authentication claim.
 
-**Decision**: Reuse `LocalizedText`, `ServiceResult`, error metadata, the central registry, strict
-Zod validation, deterministic fixture factories, pure transition functions, stale asynchronous
-attempt guards, Zustand application commands, atomic reset, and Vitest seams. Replace mission/
-quantity/impact/streak/six-stage-tree types with explicit task, recognition, five-landscape,
-privacy projection, assistant, media, and schema-versioned session types.
+**Rationale**: The screen behavior and role boundary can be demonstrated without collecting real
+identity data or building security infrastructure.
 
-**Rationale**: Feature 002's seams are sound, but its entities encode food rescue, estimated
-quantities, one Child, a seven-state mission lifecycle, streaks, and an impact record. Aliasing those
-concepts into Family Growth Garden would blur symbolic Seeds with environmental impact and leave
-unsafe projection rules implicit.
+**Alternatives considered**: Real auth/tenancy (outside P0); a visual role switch (insufficient
+boundary); Child email/phone (unnecessary and prohibited).
 
-**Alternatives considered**:
+## Decision 3 — Separate Seeds, League Score, and Family Reward
 
-- Keep both model families indefinitely: rejected because screens and services could read the
-  wrong source of truth and reset would become ambiguous.
-- Rename legacy fields mechanically: rejected because Feature 003 adds materially different
-  lifecycle, reward, privacy, assistant, sibling, landscape, and circle invariants.
-- Rewrite the application foundation: rejected because route shells, locale helpers, registry,
-  tokens, SVG mechanics, and tests remain valuable.
+**Decision**:
 
-## Decision 3 — Migrate to Exactly Ten Authored Routes
+- Seeds and landscapes are permanent personal growth.
+- Weekly Growth Score is `confirmed Challenge Leaves / 5 × 100`.
+- Family Reward is a private Parent-funded milestone promise delivered outside Ghaf.
 
-**Decision**: Rewrite `/`, `/role`, `/parent`, and `/child`; add `/parent/task/new`,
-`/parent/task/review`, `/child/task`, `/parent/check-in`, `/garden`, and `/circle`; then remove
-`/parent/create`, `/parent/generating`, `/parent/review`, `/child/mission`,
-`/parent/confirmation`, and `/celebration` after the replacement flow passes.
+**Rationale**: The separation prevents wealth, unlimited task volume, or raw Seed totals from buying
+League position and keeps permanent progress independent of weekly competition.
 
-**Rationale**: Expo Router derives authored routes from files, so leaving legacy files would violate
-the exact route inventory even if the UI stopped linking to them. Assistant, loading, fallback,
-retry, phase-review, and celebration are state variants, not route files.
+**Alternatives considered**: Rank by Seeds (unfair across age/ability and task volume); reward the
+winner with money (coercive and wealth-linked); convert Seeds to AED (creates an exchange/wallet
+meaning that Ghaf does not support).
 
-**Alternatives considered**:
+## Decision 4 — Normalize Competition with Five Challenge Leaves
 
-- Redirect legacy routes: rejected because they would still be authored routes.
-- Delete legacy routes before replacements work: rejected because it breaks the deterministic
-  path during integration.
-- Add assistant or celebration routes: rejected by the route contract.
+**Decision**: Each participating Child receives exactly five age/ability-appropriate opportunities
+before the week. Each confirmed Leaf is 20 points; maximum score is 100. Help, accessibility
+adaptations, and agreed equivalents earn full credit. Ties share position and speed never breaks a
+tie. Extra tasks may grow the garden but cannot improve rank.
 
-## Decision 4 — Distinguish Available Choices from Current Work
+**Rationale**: Equal opportunity count is more comparable than raw task difficulty or output. The
+visible ranking is balanced by personal gardens and a cooperative family canopy. Research on
+competitive gamification is mixed, so Ghaf does not make competition the only outcome.
 
-**Decision**: Interpret reset's “active assignment/submission: none” as no selected/current P0
-work. Seed `/child` with two or three local Parent-approved preview choices, but make only the newly
-Parent-approved P0 recycling assignment executable in the judge journey.
+**Source supplied with the approved direction**: [Peer competition and collaboration
+meta-analysis](https://link.springer.com/article/10.1007/s10639-021-10770-2).
 
-**Rationale**: The Child screen contract requires bounded choice, while the reset contract requires
-no active assignment. Separating an approved-choice fixture from current lifecycle state satisfies
-both without inventing extra completed journeys or routes.
+## Decision 5 — Project League Data Through a Strict Allowlist
 
-**Alternatives considered**:
+**Decision**: A League row contains only nickname, tree avatar, position, score, and completed
+Leaves. Tasks, evidence, age, accommodations, praise, raw Seeds, money, missed-task reasons, notes,
+assistant content, and timestamps are rejected before shared rendering. Prepared bilingual
+encouragement is allowed; free text is not.
 
-- Show an empty Child home at reset: rejected because it does not demonstrate autonomy or meet the
-  two-to-three-choice requirement.
-- Treat seeded choices as active work: rejected because reset would no longer be exact.
-- Implement all catalog tasks: rejected as P0 breadth and demo risk.
+**Rationale**: UI hiding after projection is too late. A minimized projection prevents private
+routine and disability/family context from entering the shared surface.
 
-## Decision 5 — Use Explicit Pure Lifecycle Transitions
+**Alternatives considered**: Reuse Revision 1 `circleEligible` (rejected because League eligibility
+is broader and separately private); show task titles (rejected as unnecessary disclosure); public
+discovery/chat (outside P0 and unsafe).
 
-**Decision**: Implement `draft → reviewed → assigned → chosen → in_progress → submitted → retry |
-confirmed → recognized` as guarded pure transitions. `retry` returns to `in_progress` without loss;
-award application is a guarded side effect after confirmation, not another generic state.
+## Decision 6 — Make Family Reward a Noncustodial Promise
 
-**Rationale**: The current Feature 002 store moves assigned directly to Child-in-progress and ties
-submission shape to three food steps. Explicit transitions make Child choice visible, prevent early
-reward, and are easy to test without rendering routes.
+**Decision**: A plan belongs to one Child, uses an immutable personal milestone, and transitions
+Promised → Unlocked → Given. It may describe money, an experience, a privilege, or a gift. Money is
+private, rank-independent, set by the Parent, and fulfilled outside the app. The Parent sees a
+monthly maximum promised and reauthenticates before monetary changes.
 
-**Alternatives considered**:
+Every contribution uses a fail-closed eligibility decision tied to the immutable approved task
+version. Unknown or prohibited activity adds zero plan progress; landscape milestones use eligible
+contribution provenance rather than displayed aggregate growth alone.
 
-- Infer status from screen location: rejected because Back/reload/reset can desynchronize reward
-  and navigation.
-- Store independent booleans: rejected because invalid combinations multiply.
-- Award on submission: rejected because Parent confirmation is mandatory.
-
-## Decision 6 — Centralize Reward and Growth Policy
-
-**Decision**: Validate the five allowed recognition/phase rows, fixed award allowlist
-`4 | 6 | 8 | 12 | 15`, recurrence rules, third-confirmation future-phase prompt, and cumulative
-growth thresholds `0 | 20 | 60 | 120 | 200` in pure policies. `planConfirmation` prepares editable
-praise with zero counter changes. Only after praise is presented may ledger-first
-`applyRecognition` atomically produce the P0 result, at most once per submission.
-
-**Rationale**: A single policy prevents routes from interpreting maintenance, recognition-only,
-help, smaller equivalents, or recurrent fade-first tasks inconsistently. The separate planning
-state enforces praise before reward without making mutation depend on animation. The reset-to-
-recognition transition is exactly Salem 48→60, Mangrove 48/60 Shoot→60/60 Sapling, canopy 19→20,
-and circle 11→12; a duplicate returns the recorded result before recomputing any projection.
-
-**Alternatives considered**:
-
-- Let task fixtures encode arbitrary numeric deltas: rejected because invalid combinations could
-  bypass no-loss and maintenance rules.
-- Use random or multiplicative rewards: prohibited and contrary to predictability.
-- Automatically change phase after three completions: prohibited; Parent choice is prospective,
-  reversible, and initially unselected.
-
-## Decision 7 — Filter Privacy Before Shared Projection
-
-**Decision**: Build deny-by-default pure projectors. Household projection accepts only a valid
-household-visible acquisition result and returns one coarse canopy contribution. Circle projection
-accepts only confirmed household-visible Green Impact activity with `circleEligible = true` and
-returns one coarse family action containing no Child ID, task record, Seeds, media, reflection,
-assistant content, or sensitive fields. Mutate no shared counter until projection succeeds.
+**Rationale**: Clear agreed goals and positive recognition can support routines, but Ghaf must not
+become a wallet, universal exchange, punishment mechanism, or winner-take-all prize. An unlocked
+promise cannot be removed. Future changes require a new prospective plan/version.
 
-**Rationale**: Post-render filtering or UI-only hiding can leak fields or increment counters before
-rejection. A minimized return type makes excluded data unrepresentable at the shared boundary.
+**Sources supplied with the approved direction**:
+[AAP reward guidance](https://www.healthychildren.org/English/family-life/family-dynamics/Pages/Positive-Reinforcement-Through-Rewards.aspx)
+and [CDC praise/reward guidance](https://www.cdc.gov/parenting-toddlers/responding-to-behavior/using-rewards.html).
 
-**Alternatives considered**:
+## Decision 7 — Preserve Praise-First, Idempotent Recognition
 
-- Filter only on `/circle`: rejected because household/circle counters and visuals may already
-  have changed.
-- Pass the complete task and hide fields in components: rejected because identity and sensitive
-  data remain available to the shared surface.
-- Use Seeds as the circle unit: rejected; the circle counts one eligible action.
+**Decision**: One immutable confirmation receipt applies the P0 consequence at most once. The
+presentation order is Parent praise → 12 Seeds → Mangrove/canopy growth → fifth Challenge Leaf →
+private reward unlock message. Submission itself changes nothing.
 
-## Decision 8 — Keep Assistants Structured, Prepared, and Provider-Neutral
+**Rationale**: Praise and real action remain primary, money remains secondary, and ledger-first
+idempotency prevents double Seeds, score, growth, or unlocks.
 
-**Decision**: Define typed Parent Guide and Child Coach requests/results with allowlisted intents,
-active-task binding, origin/status/disclosure, validation, and deterministic same-attempt fallback.
-P0 registers reviewed prepared results for both. The Child Coach has no live mode. Live Parent
-refinement remains unimplemented and labeled `BLOCKED`/`NOT RUN` until a separately approved secure
-server boundary exists.
+**Alternatives considered**: Unlock money first (rejected because it displaces recognition); apply
+effects independently (rejected because partial failure becomes ambiguous); reward on submission
+(rejected because Parent confirmation is required).
 
-**Rationale**: Repository inspection found no remote adapter, network client, server function, or
-secure deployment boundary. A client key would violate the project safeguards. The prepared
-fixtures still demonstrate the intended transformation and safety rules reliably.
+## Decision 8 — Keep Voice Prepared and Task-Bounded in P0
 
-**Alternatives considered**:
+**Decision**: P0 simulates push-to-talk with a visible state, prepared transcript,
+delete-before-send, replay, captions, slower playback, and transcript fallback. It requests no real
+microphone/camera permission. Coach behavior remains bound to the current task and age band.
 
-- Call a model directly from Expo: rejected because it exposes a provider secret and has no
-  approved minor-data boundary.
-- Add unrestricted chat and filter afterward: prohibited for all Child age bands.
-- Present prepared text as live AI: rejected as dishonest capability labeling.
-- Remove provider contracts: rejected because structured replacement and timeout/fallback remain
-  useful, small seams.
+**Rationale**: The interaction design can be evaluated without processing real Child voice. It also
+preserves the deterministic offline path and avoids implying speech recognition or ambient
+listening.
 
-## Decision 9 — Treat Prepared Media as Optional Fixture Data
+**Alternatives considered**: Real recording or live Child AI (outside P0); open chat (prohibited);
+voice-only instructions (inaccessible and nondeterministic).
 
-**Decision**: Add the exact image/audio fixture IDs with visible synthetic/prepared origin,
-description/transcript, Parent-visibility statement, remove action, and provenance metadata. Ship
-the prepared recycling image; the audio fixture may deliberately exercise its visible transcript
-fallback when no reviewed binary is available. Do not request camera or microphone permission.
-Missing files never block submission.
+## Decision 9 — Use MSA for Safety and Review Conversational Arabic
 
-**Rationale**: Existing Feature 002 bread and family-wisdom assets do not represent the approved
-recycling task. The app already supports bundled asset playback, and `app.config.ts` disables
-microphone permission, recording, and background audio. P0 needs a new safe recycling object image
-and prepared plan audio, not capture infrastructure.
+**Decision**: Task requirements, safety, and sensitive content use clear Modern Standard Arabic.
+Light Emirati/Gulf greetings and encouragement and prepared Arabic-English code-switch variants
+require named Parent/child/language review. P0 does not claim unrestricted natural speech
+understanding.
 
-**Alternatives considered**:
+**Rationale**: MSA is the safer shared baseline. Conversational warmth is valuable but must not
+invent dialect or imply one family phrase is universal.
 
-- Reuse mismatched food-rescue media: rejected because it weakens task coherence and origin truth.
-- Enable image picker/recording: rejected because P0 uses no real Child media and completion cannot
-  depend on evidence.
-- Block when media is missing: rejected by the fallback contract.
+## Decision 10 — Approve Font Families, Defer Visual Geometry
 
-## Decision 10 — Extend the Existing Design System
+**Decision**: Alexandria is the display family and Readex Pro is the body/control/dialogue/numeric
+family in both locales. The sizes in `spec.md` are fixed product requirements. Exact font loading,
+tokens, layout, radii, illustration, navigation appearance, and motion remain blocked on Stitch.
 
-**Decision**: Keep `src/design/tokens.ts` as the single runtime theme. Add semantic mangrove, water,
-water-light, and coral roles; align type, 120/220/650 ms motion, and 20 px phone padding to
-`DESIGN.md`; build needed shared primitives with StyleSheet and code-native SVG; add no theme/UI
-library.
+**Rationale**: Typography is approved product direction, while implementing visual details from
+text alone would conflict with the user's pending screen designs.
 
-**Rationale**: The repository audit found 8,309 TS/TSX lines, 13 hardcoded hex hits all inside
-`GhafTree.tsx`, token references rather than raw font-size drift, only two deliberate zero-spacing
-values, token-backed radii except zero, no legacy shadow/elevation, and one theme entry. The
-existing botanical system needs semantic expansion and route-specific components, not replacement.
+**Alternatives considered**: Retain system typography (superseded); guess the Stitch outcome
+(rejected); install fonts now (premature dependency/asset change).
 
-**Alternatives considered**:
+## Decision 11 — Preserve One Deterministic Aggregate and Fresh Evidence
 
-- Install a broad design system: rejected due overlap, bundle/learning cost, and avoidable visual
-  genericness.
-- Rebuild styling screen by screen: rejected because it recreates drift.
-- Preserve Feature 002's compact tree dashboard unchanged: rejected because Feature 003 requires
-  an interconnected five-track landscape and combined canopy, not a score grid.
+**Decision**: Reset atomically restores access, pairing, permissions, tasks, Mangrove/canopy,
+five-Leaf week, standings, reward plan, prepared fixtures, and Arabic RTL welcome history. Every
+Revision 2 automated, web, Android, accessibility, and human-review result starts fresh.
 
-## Decision 11 — Author Arabic Direction and Accessibility in Shared Primitives
+**Rationale**: The broader product state must remain repeatable offline, and Revision 1 checks do
+not exercise the new access, League, rewards, typography, or navigation.
 
-**Decision**: Keep typed paired resources, Arabic default, logical start/end helpers, locale-aware
-text alignment, directional icon handling, generous Arabic line heights, 48 dp controls, 8 dp
-adjacent spacing, accessible control states, once-only announcements, visible audio transcript/
-image descriptions, 200% font-scale resilience, and reduced-motion static outcomes in reusable
-components.
+## Decision 12 — Do Not Freeze Routes Before Stitch Intake
 
-**Rationale**: Applying these rules at the primitive/component boundary prevents ten route files
-from implementing inconsistent RTL, disclosures, focus states, or target sizes. Native direction
-and navigation chrome may differ from the immediate logical layout and require device evidence.
+**Decision**: The approximately fourteen screen families are product requirements; exact route
+paths, frame/state allocation, component geometry, and assets are not selected until the approved
+Stitch export is inventoried and reconciled.
 
-**Alternatives considered**:
-
-- Depend only on global native mirroring: rejected because mixed scripts and directional icons
-  require explicit logic.
-- Treat English as the source and mirror later: rejected by the Arabic-first contract.
-- Verify accessibility only on web: rejected because native Back, screen reader, font scale,
-  keyboard, and reduced motion require physical evidence.
-
-## Decision 12 — Separate Atomic Session Reset from Navigation Reset
-
-**Decision**: The session service returns the exact canonical Arabic Parent/Salem state and fixture
-IDs atomically. A root navigation adapter then clears the current stack and lands on `/`. Exercise
-reset from every meaningful state and assert no Back path restores stale work.
-
-**Rationale**: Keeping router objects out of the store preserves pure state tests while still
-meeting the no-stale-history requirement. The current Feature 002 reset goes to `/parent`; that
-behavior must be migrated rather than reused silently.
-
-**Alternatives considered**:
-
-- Reset counters individually: rejected because interrupted reset could mix journeys.
-- Call only `replace('/')` without testing history: rejected because stale navigation may remain.
-- Reset on reload only: rejected because the judge flow requires a visible Parent-only action.
-
-## Decision 13 — Verify Web and Android as Different Evidence Classes
-
-**Decision**: Use Vitest, typecheck, lint, format, Expo dependency/config checks, route inventory,
-static web export, console inspection, and optional browser screenshots for source/web evidence.
-Use a named physical Android build for Arabic/English direction, Back, keyboard, media playback,
-font scale, accessibility, reduced motion, touch targets, offline behavior, timing, and rehearsal.
-
-**Rationale**: Web is useful for fast visual and deterministic-flow inspection, but it cannot prove
-native configuration or physical behavior. Feature 002 passes do not transfer to the redesigned
-routes.
-
-**Alternatives considered**:
-
-- Infer Android acceptance from Expo web: rejected by the specification and runbook.
-- Inherit Feature 002 RTL/offline evidence: rejected because Feature 003 has new screens, state,
-  copy, media, and navigation.
-- Block implementation until a device exists: rejected because automated/web work can proceed;
-  only the physical gate remains `BLOCKED`.
-
-## Decision 14 — Keep Human and Capability Gates Explicit
-
-**Decision**: Automated artifact/source checks may pass independently, but physical Android remains
-`BLOCKED` until a named build/device exists. Timed rehearsals, three-person comprehension, fluent
-Arabic/UAE culture, faith, child safeguarding, sustainability, and accessibility remain `NOT RUN`
-until named reviewers perform them. Prepared assistants never become “live” through code
-inspection.
-
-**Rationale**: These criteria depend on observation, expertise, or external infrastructure.
-Reporting them separately prevents a polished web build from becoming a false demo-acceptance
-claim.
-
-**Alternatives considered**:
-
-- Mark review gates passed from canonical copy: rejected because canonical draft is not named human
-  approval.
-- Remove all sensitive catalog breadth: rejected because local fixtures must show eight categories;
-  keep them nonexecuting and flagged for review.
-- Claim the deterministic provider is live AI: rejected by capability-truth requirements.
+**Rationale**: Screen prompts communicate intent but are not final design evidence. A route tree
+chosen now could force the later design into an obsolete architecture.
 
 ## Research Resolution
 
-No `NEEDS CLARIFICATION` item remains. The implementation can proceed after the generated Feature
-003 data model, contracts, quickstart, tasks, checklist, and cross-artifact analysis confirm these
-decisions. Any later request for a backend, live Child media/AI, real accounts/circle sharing,
-production persistence, impact conversion, or additional route is a scope change and must return to
-the specification.
+No product `NEEDS CLARIFICATION` item remains. The only open dependency is an intentional design
+input: approved Stitch frames. It is recorded as `BLOCKED`, not as permission to infer a design.
+After the frames arrive, perform a focused design/route/component/font-loading analysis and update
+the plan, contracts, quickstart, and T111+ tasks before implementation.

@@ -278,3 +278,8 @@ Expo web export       12 routes PASSED
 The persisted Impeccable critique moved from 25/40 to 35/40 with zero P0/P1 findings remaining in
 the inspected web/source boundary. This evidence does not fill the historical pre-implementation
 story RED gaps and does not substitute for Android or named-human review.
+
+# Revision 1 Historical Evidence
+
+> These RED/GREEN records belong to the superseded 2026-08-28 ten-route implementation. They do not
+> satisfy any Feature 003 Revision 2 implementation or validation task.

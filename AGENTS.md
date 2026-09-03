@@ -1,4 +1,5 @@
 <!-- SPECKIT START -->
+
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
 at specs/003-family-growth-garden/plan.md
@@ -8,10 +9,16 @@ at specs/003-family-growth-garden/plan.md
 
 ## Current Feature
 
-Ghaf — غاف now implements the approved Feature 003 product direction: an Arabic-first
-Parent–Child task, reward, bounded AI-coaching, and UAE living-garden prototype for SMAC 2026.
-The deterministic implementation and bilingual web-proxy journey are validated in the current
-Feature 003 evidence; authoritative physical Android and named human-review gates remain open.
+Ghaf — غاف Feature 003 Revision 2 is the approved Arabic-first product direction: one application
+with separately authenticated-looking Parent and Child prototype experiences, Parent-approved
+tasks, bounded AI coaching, permanent Seeds and UAE landscapes, an invite-only Ghaf Family League,
+and optional private Parent-funded Family Rewards.
+
+The 2026-08-28 ten-route deterministic build remains a preserved Revision 1 implementation
+baseline. Its automated and bilingual web-proxy evidence does **not** validate Revision 2 access,
+navigation, League, Family Reward, voice, typography, or screen design. The user-approved R001
+Batch 1 implements only Welcome and first-time Parent onboarding. Every later Revision 2 screen is
+**ON HOLD** until the user supplies and approves its Google Stitch design.
 
 Feature 002's physical Android and human-rehearsal gates remained blocked/not run; “validated” does
 not mean fully demo-accepted.
@@ -41,30 +48,38 @@ canonical repository files rather than introducing duplicate suffixed files.
 Resolve implementation tradeoffs in this order:
 
 1. Child safety, dignity, privacy, and truthful capability labels
-2. Complete deterministic Parent → Child → confirmation → growth journey
+2. Strict Parent/Child access separation and a complete deterministic task-to-growth journey
 3. Clear AI value tied to a real sustainability action
 4. Arabic-first RTL and equivalent English LTR
-5. Polished garden growth and understandable family overview
-6. Reliable Android demo, reset, and offline fallback
-7. Ease of change for a three-member team
-8. Optional breadth
+5. Fair League scoring, private Family Rewards, and permanent personal growth
+6. Polished garden growth and understandable family overview
+7. Reliable Android demo, reset, and offline fallback
+8. Ease of change for a three-member team
+9. Optional breadth
 
 ## P0 Boundary
 
-Maintain one polished vertical slice with:
+Prepare one polished vertical slice with:
 
-- one synthetic household, two synthetic siblings, and one seeded aggregate cousin circle;
-- eight curated task categories and five UAE landscape tracks visible from local fixtures;
-- one executable Green Impact task;
-- one bounded Parent Guide exchange, one bounded Child Coach exchange, and one Parent summary;
-- prepared synthetic image/voice fixtures with visible origin labels;
-- Parent confirmation, specific praise, a fixed 12-Seed award, garden growth, one household leaf,
-  and one eligible Green Impact action added to cooperative circle progress;
-- ten authored routes defined in `PRODUCT.md`; and
-- a deterministic Arabic-first reset that works without a remote service.
+- one synthetic household, Salem and Alya, and seeded invite-only sibling/cousin League members;
+- a combined welcome/language/access entry, separate deterministic Parent sign-in/setup and Child
+  PIN/picture-sequence or approved pairing paths, and no in-app role toggle;
+- Parent navigation for Home, Tasks, Garden, and Family; Child navigation for Today, Garden, and
+  League; contextual Task Builder, check-in, Reward Plan, pairing, profile, permissions, settings,
+  and reauthentication states;
+- eight curated task categories and five UAE landscape tracks from local fixtures;
+- one executable 12-Seed Green Impact task, one bounded Parent Guide exchange, one bounded Child
+  Coach exchange, one Parent summary, and prepared synthetic image/voice fixtures;
+- five weekly Challenge Leaves per Child, normalized score `(confirmed / 5) × 100`, shared tie
+  positions, no speed tiebreak, and one cooperative family-canopy contribution per confirmed Leaf;
+- one private synthetic Family Reward plan at 108/120 eligible Seeds that moves from `Promised` to
+  `Unlocked` only after praise, Seeds, and garden growth; and
+- a deterministic signed-out Arabic-first reset that works without a remote service.
 
-Breadth beyond that list is seeded content or a later feature. Do not build real accounts,
-networking, notifications, analytics, production storage, or a second app in P0.
+Breadth beyond that list is seeded content or later work. Do not build production accounts,
+networking, real invitations, payment/custody, notifications, analytics, production storage, live
+Child media processing, or a second app in P0. Do not implement Revision 2 screens before the
+approved Stitch frames are supplied.
 
 ## Product Invariants
 
@@ -80,12 +95,30 @@ networking, notifications, analytics, production storage, or a second app in P0.
   failure, dying tree, randomized reward, loot box, or artificial scarcity.
 - Praise describes an action, strategy, improvement, or help-seeking; it never labels the Child's
   character.
-- Prayer, kinship, affection, food consumption, wellbeing, hygiene, disability-related routines,
-  reflections, media, Child-assistant content, and Parent notes are never shared across households.
-- Apply `visibilityScope` and `circleEligible` before shared visuals or counters: private tasks remain
-  Child/guardian only, household views use one combined canopy, and the circle accepts only coarse
-  eligible Green Impact events—not Seeds or task records.
+- Prayer, affection, emotional disclosure, private wellbeing, hygiene, disability-related routines,
+  reflections, media, Child-assistant content, Parent notes, task titles, evidence, accommodations,
+  age, missed-task reasons, and Family Reward amounts are never shared across households.
+- League projection is separate from Green Impact projection. A League row may expose only the
+  approved nickname, tree avatar, weekly rank, normalized score, and confirmed Challenge Leaves.
+  It must never expose tasks, Seeds, media, money, age, or private/sensitive categories.
+- Apply `visibilityScope`, `challengeLeafEligible`, and `circleEligible` before any shared visual or
+  counter. `challengeLeafEligible` never reuses or weakens the Green-only `circleEligible` rule.
 - Reject `circleEligible = true` unless category is Green Impact and `visibilityScope = household`.
+- Each Child receives exactly five age-appropriate Challenge Leaves per week. Confirmed Leaves are
+  worth 20 score points each, score caps at 100, help/accessibility adaptations retain full credit,
+  extra tasks cannot improve rank, ties share position, and speed is never a tiebreaker.
+- Weekly League score/rank resets; earned Seeds, landscapes, canopy history, and unlocked or given
+  Family Rewards never reset.
+- Family Reward is a private Parent promise, not a wallet. It may be money, an experience, a
+  privilege, or a gift; has no universal Seed-to-AED rate; never depends on League rank; is fulfilled
+  outside the app; and uses `promised → unlocked → given`. An unlocked promise cannot be removed or
+  retroactively weakened. Future plans may change only after Parent reauthentication.
+- A Family Reward may never monetize prayer, affection, emotional disclosure, eating, basic needs,
+  caregiving, safety, education, dignity, or proof of love.
+- Family Reward progress is fail-closed before confirmation: every contributing task/version must
+  have an explicit eligible decision. Unknown or prohibited activity contributes zero, and a
+  landscape milestone must use eligible contribution provenance rather than its displayed stage
+  alone.
 - Symbolic garden growth does not imply real trees planted or measured environmental impact.
 - A Parent-confirmed observable quantity may be labeled a self-reported activity metric. Call it
   environmental impact only when an approved method supports the conversion.
@@ -113,6 +146,12 @@ It must:
 - use only synthetic prepared media in P0; and
 - never listen continuously or in the background.
 
+Any P0 push-to-talk, transcript, replay, slower-playback, delete-before-send, QR, biometric,
+passkey, or pairing experience is a visibly synthetic deterministic simulation unless a later
+approved specification and direct native evidence say otherwise. Real Child recording or analysis
+is not authorized. Safety and task requirements use Modern Standard Arabic; Gulf/Emirati greetings
+and encouragement require Parent approval and named human review.
+
 The Parent Guide may suggest tasks, smaller steps, praise, questions, and neutral time-bounded
 summaries. It must never output normal/abnormal, lazy/defiant, a diagnosis, ADHD or other condition,
 an emotion/risk/personality score, parenting-quality judgment, or religious judgment.
@@ -132,11 +171,14 @@ or `NOT RUN` and label prepared responses honestly.
 - Keep routes thin. Put reusable UI in `src/components/` and bounded behavior in `src/features/`.
 - Adapt the existing store and service registry rather than importing concrete providers into
   screens.
-- Introduce the smallest useful contracts for task, reward, garden, family circle, assistant,
-  media, and prototype session behavior. Reuse existing mission/AI/media contracts where doing so
-  remains clear.
+- Introduce the smallest useful contracts for access/session, task, Seed recognition, Family Reward
+  plans, garden, League, privacy projection, assistant, media, devices/permissions, and prototype
+  reset behavior. Keep the Green Impact projection separate from League eligibility.
 - Keep one deterministic local provider for every required path and one one-action reset.
 - Use code-native SVG and existing motion tools before adding illustration or UI frameworks.
+- Alexandria and Readex Pro are approved typography requirements. Their R001 roles and local assets
+  are released only for the approved Batch 1 implementation; later token or typography changes
+  require measured reconciliation with the applicable Stitch handoff.
 - Do not install overlapping state, form, localization, icon, media, or animation libraries without
   a measured gap and explicit owner approval.
 - Android is authoritative for the physical demo. Web is a secondary visual/test surface.
@@ -145,6 +187,9 @@ or `NOT RUN` and label prepared responses honestly.
 
 - Arabic is the starting locale; use logical start/end layout, locale-aware alignment, RTL-aware
   directional icons, readable mixed scripts, and long-label resilience.
+- Use Alexandria for approved display roles and Readex Pro for approved body/control/data roles
+  after the final Stitch handoff; use tabular numerals for rankings, Seeds, and rewards, no
+  artificial Arabic letter spacing, no thin Arabic weights, and generous Arabic line height.
 - User-facing strings belong in the bilingual resources; do not hard-code a second source of truth.
 - Modern Standard Arabic is the safe prototype default. Emirati dialect, transliteration,
   gendered forms, wedding copy, and all religious content require named human review.
@@ -197,11 +242,18 @@ For product behavior, add focused tests for:
 - allowed-help and retry transitions;
 - idempotent Parent approval;
 - task/category/tree mapping;
-- private-category exclusion from circle data;
-- privacy filtering before every shared visual/counter update and circle acceptance of eligible
-  Green Impact events only;
+- Parent/Child route isolation, reauthentication, pairing expiry/revocation, and exact synthetic
+  reset;
+- five-Leaf nomination, score cap, ties, no-speed rule, help-equivalent credit, rest week, weekly
+  reset, and extra-task exclusion;
+- League privacy projection and private/sensitive category exclusion;
+- private Family Reward visibility, monthly promised maximum, prospective-only edits, immutable
+  unlock, rank independence, and `promised → unlocked → given` transitions;
+- privacy filtering before every shared visual/counter update and Green Impact projection acceptance
+  of eligible household events only;
 - assistant intent allowlists and prohibited parent-summary language;
-- Arabic/English resource parity;
+- Arabic/English resource parity, Alexandria/Readex loading/fallback, tabular numerals, mixed bidi,
+  and long-label resilience;
 - reset after every meaningful state; and
 - remote-provider timeout/failure returning to the same deterministic path.
 
@@ -227,9 +279,13 @@ search. Preserve unrelated work and avoid destructive Git commands.
 ## Delivery Rules
 
 - Update Spec Kit artifacts before implementing behavior outside the active specification.
+- Treat the Google Stitch prompt pack as design input, not implementation authority. Do not edit
+  runtime UI, navigation, dependencies, fonts, models, services, state, or tests for an unreleased
+  Revision 2 screen until the user supplies and approves its final Stitch frames.
 - Keep the deterministic competition path complete after every integrated slice.
-- Do not claim live AI, real media analysis, authentication, child-data protection, legal
-  compliance, measured sustainability impact, or production readiness without direct evidence.
+- Do not claim live AI, real media analysis, production authentication/security, payment or money
+  custody, child-data protection, legal compliance, measured sustainability impact, or production
+  readiness without direct evidence.
 - Do not commit secrets, real child information, local build artifacts, or unreviewed sensitive
   cultural/religious copy.
 - Do not push, merge, force-push, deploy, or rewrite shared history without explicit authorization.

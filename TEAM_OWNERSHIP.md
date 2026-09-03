@@ -6,25 +6,121 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-02 Expo Go Android Reliability Window
+
+**Owner**: `/root` acting as integration owner
+**Purpose**: Diagnose the physical-phone Expo Go startup failure and make the smallest SDK 57
+compatibility and startup corrections required for the R001 Batch 1 MVP.
+**Exclusive write scope**: `package.json`, `package-lock.json`, `app.config.ts`, `app/_layout.tsx`,
+`DEMO_RUNBOOK.md`, `TEAM_OWNERSHIP.md`, and focused configuration/startup tests if required.
+**Preservation rule**: Do not alter approved screen composition, later Revision 2 routes, or
+unrelated uncommitted work. Dependency changes are limited to Expo Doctor-compatible SDK 57 patch
+alignment and required direct native peers.
+**Handoff condition**: Expo Doctor, Android export, repository checks, and a fresh Expo Go startup
+attempt are reported with device/network limitations stated separately from app defects.
+
+**Handoff and release**: SDK 57 core patches are aligned; unused `expo-audio`, React Hook Form, and
+resolver dependencies are removed; Android has no unnecessary audio permission; and the WSL-safe
+`start:tunnel` script is available. Expo Doctor passed 21/21 checks, the clean 1,936-module Android
+Hermes export passed at approximately 9 MB total, and all 332 tests passed. A Windows release APK
+subsequently built, installed, and received an open command on SM_T835. The rendered journey was
+not directly observed, so native visual and interaction gates remain open. This boundary is
+released.
+
+## 2026-09-02 Approved Ghaf R001 Batch 1 Implementation Window
+
+**Work period**: 2026-09-02 approved Stitch Parent-onboarding batch
+**Integration owner**: `/root` acting for Member 1
+**Feature/task IDs**: T111–T120 scoped intake; approved Batch 1 slices of T121, T126, T128,
+T131–T136, and T167–T171
+**Inputs**: user-approved `ghaf-r001` PNG/HTML export, Revision 2 product contracts, and the
+explicit limitation to Welcome plus Parent sign-in and first-family setup
+**Preservation rule**: all pre-existing dirty documentation and the Revision 1 runtime remain
+preserved unless a reserved file below requires a narrow integration change.
+
+| Exclusive writer      | Exact reserved boundary                                                                                                                                                                                                                                             | Expected handoff                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/root/design_intake` | `docs/design/stitch/releases/ghaf-r001/{STITCH_DESIGN.md,SCREEN_INDEX.md}`, `specs/003-family-growth-garden/design-intake/**`, root `DESIGN.md`, `DESIGN_DIRECTION.md`, and scoped status/task text in `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`  | Record the user's batch approval, supplied/missing artifacts, routes, conflicts, audits, and a partial gate that releases only this batch               |
+| `/root/ui_foundation` | `src/design/tokens.ts`, `src/components/primitives.tsx`, `src/components/LanguageSwitcher.tsx`, and `src/components/access/**`                                                                                                                                      | Canonical native tokens, font-role primitives, RTL-safe controls, setup shell, responsive OTP, and success-sheet presentation components                |
+| `/root/access_domain` | `src/models/familyGrowth.ts`, `src/features/access/**`, `src/services/interfaces/index.ts`, `src/services/mock/index.ts`, `src/services/index.ts`, `src/state/usePrototypeStore.ts`, and `tests/revision2-access.test.ts`                                           | Deterministic synthetic Parent access/setup contract, mock service, store commands/reset, and focused tests without changing Revision 1 outcomes        |
+| `/root`               | `package.json`, `package-lock.json`, `app.config.ts`, `app/**`, `src/i18n/**`, `src/components/PrototypeStatusBar.tsx`, `src/utils/navigation.ts`, affected existing tests, font asset/license files, final evidence, and integration fixes after released handoffs | Integrate native routes and guards, bilingual copy, Alexandria/Readex loading, full validation, responsive screenshot comparison, and truthful evidence |
+
+No writer may widen its boundary or overwrite another writer's changes. The missing screen-spec and
+English/state frames are recorded as assumptions and remaining release gaps, not silently invented
+as approved Stitch evidence. Child entry remains an honest unavailable state until its own frames
+are approved; it must not open the legacy role-toggle route.
+
+**Handoff and release:** The reserved boundaries are released. The seven native routes, shared
+access foundation, deterministic Parent onboarding, local font bundle, protected Parent
+destination, and legacy role/Child route denial are integrated. Formatter, typecheck, lint,
+20-file / 332-test suite, static export, Expo config, Firefox 390×844 journey, responsive/scroll/
+keyboard-height/text-scale proxies, English LTR, and offline fallback passed. Physical Android
+release build and installation later passed on SM_T835, but the rendered journey was not directly
+observed. Complete Revision 2 navigation and later screens remain outside this release. The work is
+ready for the user-authorized checkpoint commits.
+
+## 2026-09-02 Stitch Release Scaffold Window
+
+**Work period**: 2026-09-02 design-intake scaffold
+**Owner**: `/root`
+**Feature/task IDs**: F003-R2-B / T111 preparation only
+**Write scope**: `docs/design/stitch/releases/ghaf-r001/**` and this reservation record
+**Inputs**: Feature 003 Revision 2 documentation plus the user-requested release tree
+**Expected handoff**: The exact intake scaffold exists without treating placeholders as approved
+Stitch output or changing runtime UI, tests, dependencies, fonts, assets, or evidence status.
+
+**Handoff and release**: The requested seven-screen Parent-onboarding scaffold exists. The Welcome
+reference image and HTML are explicitly marked placeholders; no Stitch approval or runtime gate
+changed. `find`, PNG type inspection, and `git diff --check` passed. Empty asset and later-screen
+directories remain filesystem-only until real exports add content. This write boundary is released
+to the integration owner.
+
+## 2026-09-01 Approved Product-Contract Revision Window
+
+**Integration owner**: `/root` acting for Member 3's documentation boundary
+**Purpose**: Record the approved separately authenticated Parent/Child experiences, Ghaf Family
+League, private Family Reward, voice/language, typography, and Stitch handoff before any new screen
+implementation.
+**Implementation status**: **ON HOLD** until the user supplies and approves the Google Stitch screen
+designs. This window authorizes documentation only.
+
+| Owner                    | Exact reserved boundary                                                                                                                                                                                                                                                                                                                   | Excluded boundary                                                                                                           | Handoff condition                                                                                                                                                  |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/root`                  | `.specify/memory/constitution.md`, `AGENTS.md`, `README.md`, `PRODUCT.md`, `RESEARCH_BASIS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `CODEX_IMPLEMENTATION_PROMPT.md`, `DEMO_RUNBOOK.md`, `TEAM_OWNERSHIP.md`, `GHAF_GOOGLE_STITCH_PROMPT_PACK.md`, and `specs/003-family-growth-garden/**` documentation only | `app/**`, `src/**`, `tests/**`, assets, dependencies, generated builds, Feature 001/002 artifacts, and all runtime evidence | Current product truth is internally consistent; the prior ten-route build is labeled historical; new implementation tasks remain blocked on approved Stitch frames |
+| `spec_conflict_audit`    | Read-only review of `spec.md`, `plan.md`, and `tasks.md`                                                                                                                                                                                                                                                                                  | All writes                                                                                                                  | Conflict report returned                                                                                                                                           |
+| `handoff_conflict_audit` | Read-only review of root product/research/limitations/ownership/runbook documents                                                                                                                                                                                                                                                         | All writes                                                                                                                  | Conflict report returned                                                                                                                                           |
+| `design_conflict_audit`  | Read-only review of design documents and current route/theme structure                                                                                                                                                                                                                                                                    | All writes                                                                                                                  | Conflict report returned                                                                                                                                           |
+
+No agent may translate the prompt pack into Expo screens, change routes, add fonts or packages,
+alter state/models, rewrite tests, or upgrade any validation result in this window. The existing
+2026-08-28 implementation remains a preserved prior baseline; it is not evidence for the revised
+authentication, League, Family Reward, navigation, or typography contract.
+
+**Documentation handoff:** The Revision 2 contract files and Google Stitch prompt pack were aligned
+on 2026-09-01. No runtime, test, asset, dependency, generated-build, or Revision 1 evidence file was
+changed. The documentation reservation is released after final consistency checks; the next
+authorized activity is user-supplied Stitch design intake under T111–T120, not implementation.
+
 ## Decision Record
 
 | Item                         | Decision                                                                                                                                                           |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Product direction            | APPROVED — Family Growth Garden                                                                                                                                    |
-| Implementation authorization | USER-AUTHORIZED deterministic P0; implementation begins only after the Feature 003 checklist and cross-artifact gates pass                                         |
-| Technical baseline           | Preserve and adapt the locally/web-validated Feature 002 Expo/TypeScript foundation; Android/human gates did not pass                                              |
+| Product direction            | APPROVED — Feature 003 Revision 2: separate Parent/Child access, Family League, private Family Reward, and revised bilingual design                                |
+| Implementation authorization | **ON HOLD** until the user supplies and approves the Google Stitch screens; documentation/design-intake work only                                                  |
+| Technical baseline           | Preserve the 2026-08-28 Revision 1 ten-route app as historical reusable code; none of its evidence transfers to Revision 2                                         |
 | Required path                | Deterministic local P0 with prepared synthetic media and assistant fixtures                                                                                        |
 | Competition AI path          | One real synthetic-input model transformation when an approved secure server boundary exists; deterministic fallback always remains                                |
 | Demo household               | Synthetic Parent plus Salem (9) and Alya (11)                                                                                                                      |
-| Social surface               | Seeded, aggregate, cooperative cousin/family circle only                                                                                                           |
-| Reward                       | Fixed, symbolic Seeds; never purchased, transferred, removed, or randomized                                                                                        |
+| Access                       | Deterministic synthetic Parent sign-in/reauth and Child PIN/picture/pairing experiences; no production security claim                                              |
+| Social surface               | Seeded invite-only Ghaf Family League with five normalized Challenge Leaves, tied ranks, prepared reactions, and cooperative canopy                                |
+| Reward                       | Permanent symbolic Seeds plus optional private non-custodial Family Reward plans; no exchange rate, payment, transfer, or rank dependency                          |
 | Garden                       | Ghaf, Samar, Sidr, date-palm, and mangrove landscape tracks; Ghaf remains brand hero                                                                               |
 | Main demo task               | 12-Seed multi-step Green Impact recycling variant; general waste remains a separate Home Responsibility task with no circle credit                                 |
 | Sensitive content            | Prayer, kinship, affection, food consumption, wellbeing, hygiene, disability-related routines, media, reflections, and Parent notes stay out of cross-family views |
-| Validation status            | Feature 003 checks begin `NOT RUN`; Feature 002 passes do not transfer                                                                                             |
+| Validation status            | Revision 2 checks begin `NOT RUN`; Revision 1 and Feature 002 passes do not transfer                                                                               |
 
-The product-direction decision authorizes specification work. It does not authorize implementation
-outside an approved Spec Kit plan or permit a claim that Feature 003 is complete.
+The product-direction decision authorizes documentation and Stitch design preparation only. It
+does not authorize Revision 2 implementation or permit a claim that the revised experience exists.
 
 ## Integration Owner
 
@@ -37,11 +133,11 @@ change must identify the need, affected files, fallback, and validation cost bef
 
 ## Human Ownership
 
-| Member                                        | Primary responsibility                                                                                                                 | Default write scope                                                                                                                                 | Cross-cutting duty                                                      |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Member 1 — Mobile and visual experience       | Expo routes, navigation, design tokens, Arabic/RTL integration, garden/tree visuals, motion, accessibility, Android build, integration | `app/**`, `src/components/**`, `src/design/**`, `src/i18n/**`, UI feature folders, visual assets; shared config only in reserved integration window | Verify child/parent visual modes and physical Android demo              |
-| Member 2 — AI and application logic           | Task/reward schemas, state machine, deterministic assistant providers, garden/circle calculations, reset, focused automated tests      | `src/models/**`, `src/services/**`, `src/state/**`, `src/utils/**`, task/reward/assistant/garden logic and tests                                    | Enforce fixed reward, idempotency, privacy filtering, provider fallback |
-| Member 3 — Product, content, QA, presentation | Spec Kit product artifacts, bilingual task catalog, behavioral rules, cultural review coordination, manual QA, runbook, pitch          | `specs/003-family-growth-garden/**` product artifacts, named root documents, demo fixtures/copy through handoff                                     | Own evidence ledger; obtain Arabic/cultural/faith review status         |
+| Member                                        | Primary responsibility                                                                                                                                                      | Default write scope                                                                                                                                        | Cross-cutting duty                                                                       |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Member 1 — Mobile and visual experience       | Separate Parent/Child navigation and access UI, Stitch intake, fonts, Arabic/RTL, pairing/permissions UI, garden/League visuals, motion, accessibility, Android integration | `app/**`, `src/components/**`, `src/design/**`, `src/i18n/**`, UI feature folders, visual/font assets; shared config only in a reserved integration window | Verify access isolation, role-specific modes, typography, and Android demo               |
+| Member 2 — AI and application logic           | Access/session contracts, tasks/Seeds, Family Reward plans, League scoring/privacy/rollover, deterministic assistants, reset, focused tests                                 | `src/models/**`, `src/services/**`, `src/state/**`, `src/utils/**`, feature policy and tests                                                               | Enforce reauthentication, fixed awards, idempotency, League/Reward privacy, and fallback |
+| Member 3 — Product, content, QA, presentation | Revised Spec Kit artifacts, Stitch prompt/handoff, bilingual task/League/reward copy, behavioral rules, cultural/voice review, manual QA, runbook                           | `specs/003-family-growth-garden/**` product artifacts and named root documents; implementation copy only through handoff                                   | Own Revision 2 evidence ledger and named product/content reviews                         |
 
 Implementation copy in `src/i18n/**` remains inside Member 1's file boundary. Member 3 prepares
 reviewed bilingual copy and hands it off rather than editing concurrently.
@@ -53,15 +149,19 @@ runbook. Reassign explicitly if the work period changes.
 
 Before Feature 003 is called demo-accepted, record named status for:
 
-| Review                               | Owner                                  | Required evidence                                                      |
-| ------------------------------------ | -------------------------------------- | ---------------------------------------------------------------------- |
-| Arabic and RTL                       | Member 1 + named fluent reviewer       | Arabic/English walkthrough on target Android build                     |
-| Emirati culture and phrase pack      | Member 3 + named UAE cultural reviewer | Reviewed task/phrase IDs and corrections                               |
-| Faith content                        | Member 3 + qualified local reviewer    | Scope and wording review; private/nonpunitive confirmation             |
-| Child safeguarding and AI boundaries | Member 2 + Member 3                    | Intent allowlist, prohibited-output tests, synthetic-only media review |
-| Accessibility                        | Member 1                               | Font scale, touch, contrast, screen-reader labels, reduced motion      |
-| Sustainability claims                | Member 3                               | Source for task wording; no unsupported impact conversion              |
-| Demo and reset                       | Integration owner                      | Named Android build, exact reset, timed human rehearsals               |
+| Review                                | Owner                                  | Required evidence                                                                   |
+| ------------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------- |
+| Arabic and RTL                        | Member 1 + named fluent reviewer       | Arabic/English walkthrough on target Android build                                  |
+| Emirati culture and phrase pack       | Member 3 + named UAE cultural reviewer | Reviewed task/phrase IDs and corrections                                            |
+| Faith content                         | Member 3 + qualified local reviewer    | Scope and wording review; private/nonpunitive confirmation                          |
+| Child safeguarding and AI boundaries  | Member 2 + Member 3                    | Intent allowlist, prohibited-output tests, synthetic-only media review              |
+| Accessibility                         | Member 1                               | Font scale, touch, contrast, screen-reader labels, reduced motion                   |
+| Sustainability claims                 | Member 3                               | Source for task wording; no unsupported impact conversion                           |
+| Demo and reset                        | Integration owner                      | Named Android build, exact reset, timed human rehearsals                            |
+| Synthetic access and reauthentication | Member 1 + Member 2                    | Route isolation, fixture truth labels, pairing/revocation, threat-boundary review   |
+| League fairness and privacy           | Member 2 + Member 3                    | Five-Leaf normalization, ties, help credit, opt-out/rest, projection review         |
+| Family Reward psychology and privacy  | Member 2 + Member 3                    | Non-custodial states, private amounts, immutable unlock, prohibited-category review |
+| Voice and Gulf/Emirati register       | Member 1 + Member 3 + named reviewers  | Prepared/simulated media truth, MSA safety, dialect/voice phrase review             |
 
 If a reviewer is not available before the competition build, remove or visibly label the unreviewed
 sensitive content rather than guessing.
@@ -82,7 +182,21 @@ Run no more than four agents concurrently. Independent read-only research and re
 writes to the same file, dependency set, routes, shared configuration, task schema, or bilingual
 resource may not.
 
-## Recommended Feature 003 Work Packages
+## Revision 2 Work Packages — Pending Stitch Approval
+
+| Package                        | Owner                        | Outcome                                                                                          | Gate                                              |
+| ------------------------------ | ---------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| F003-R2-A Product contract     | Member 3                     | Revision 2 spec, research, limitations, evidence reset                                           | Documentation consistency                         |
+| F003-R2-B Stitch design intake | Member 1 + Member 3          | Approved Arabic-first frames, English variants, exported design rules, component/state inventory | User supplies and approves Stitch output          |
+| F003-R2-C Access and session   | Member 2, then Member 1      | Deterministic Parent/Child access, pairing, reauth, devices, and protected navigation            | F003-R2-B plus exact route contract               |
+| F003-R2-D League               | Member 2, then Member 1      | Five-Leaf scoring, weekly rollover, privacy projection, ties, reactions, cooperative canopy      | Access/session contracts released                 |
+| F003-R2-E Family Reward        | Member 2, then Member 1      | Private milestone plans, monthly maximum, immutable unlock, given state, no custody              | Access/reauth and confirmation contracts released |
+| F003-R2-F Typography and UI    | Member 1                     | Alexandria/Readex assets, tokens, role navigation, contextual screens, RTL/accessibility         | Approved Stitch design and dependency review      |
+| F003-R2-G Acceptance           | Integration owner + Member 3 | Fresh automated, bilingual web, physical Android, and named human evidence                       | Integrated Revision 2 build                       |
+
+No package after F003-R2-A may begin during the current documentation hold.
+
+## Historical Revision 1 Work Packages
 
 | Package                    | Owner                        | Outcome                                                                                                                                           | Dependency                    |
 | -------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
@@ -237,12 +351,13 @@ or human statuses.
 
 ## Handoff Record
 
-| Effective time | Previous owner  | New owner | Work period                                 | Reason                                             |
-| -------------- | --------------- | --------- | ------------------------------------------- | -------------------------------------------------- |
-| 2026-08-22     | —               | Member 1  | Feature 001 foundation                      | Initial provisional integration assignment         |
-| 2026-08-22     | Member 1        | Member 1  | Feature 002 deterministic food-rescue slice | Plan approved; ownership continued                 |
-| 2026-08-26     | Member 1        | Member 1  | Feature 003 planning and implementation     | Family Growth Garden direction approved            |
-| 2026-08-27     | evidence ledger | `/root`   | Feature 003 final integration               | Final evidence recorded; all reservations released |
+| Effective time | Previous owner  | New owner | Work period                                 | Reason                                                                  |
+| -------------- | --------------- | --------- | ------------------------------------------- | ----------------------------------------------------------------------- |
+| 2026-08-22     | —               | Member 1  | Feature 001 foundation                      | Initial provisional integration assignment                              |
+| 2026-08-22     | Member 1        | Member 1  | Feature 002 deterministic food-rescue slice | Plan approved; ownership continued                                      |
+| 2026-08-26     | Member 1        | Member 1  | Feature 003 planning and implementation     | Family Growth Garden direction approved                                 |
+| 2026-08-27     | evidence ledger | `/root`   | Feature 003 final integration               | Final evidence recorded; all reservations released                      |
+| 2026-09-01     | Member 1        | `/root`   | Feature 003 Revision 2 documentation intake | Record approved product changes; runtime implementation remains on hold |
 
 If there is no newer row, Member 1 remains integration owner.
 

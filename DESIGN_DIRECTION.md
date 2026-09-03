@@ -1,216 +1,235 @@
-# Ghaf Design Direction
+# Ghaf Design Direction — Revision 2
 
-**Direction:** APPROVED for Feature 003 specification
-**Date:** 2026-08-26
-**Creative north star:** **The Living Family Garden — الحديقة العائلية الحية**
-**Primary platform:** Android physical demo
-**Language posture:** Arabic-first, bilingual
+**Product/UX direction:** APPROVED on 2026-09-01
+
+**Visual direction:** R001 Batch 1 approved; later screen families pending
+
+**Implementation:** PARTIALLY RELEASED for foundations and Parent onboarding
+
+**Primary platform:** Android, Arabic RTL first with matched English LTR
+
+## Status and Authority
+
+This document records the durable design brief for Feature 003 Revision 2. It supersedes the
+Revision 1 ten-route, role-switch, cooperative-circle design as an implementation target. The
+2026-08-28 design and web evidence remain historical only.
+
+The canonical generation workflow is
+[`GHAF_GOOGLE_STITCH_PROMPT_PACK.md`](GHAF_GOOGLE_STITCH_PROMPT_PACK.md). Generated screens become
+design authority only after the user supplies and explicitly approves them. The user approved
+`docs/design/stitch/releases/ghaf-r001/` on 2026-09-02 for the foundations, Welcome, and first-time
+Parent onboarding only. Its PNGs now govern that composition; its HTML is a non-runtime hint.
+Runtime work outside the partial release remains blocked.
+
+The partial release and unresolved evidence are recorded in
+`specs/003-family-growth-garden/design-intake/release-gate.md`.
 
 ## Creative Idea
 
-Ghaf turns a family's small daily actions into an interconnected UAE landscape. The flagship Ghaf
-tree holds the household canopy; native desert groves, an oasis, and a coast show that family,
-culture, and environmental stewardship belong to one living system.
+Ghaf helps children build positive routines through Parent-approved tasks, child-safe AI support,
+permanent Seeds, growing UAE landscapes, friendly family competition, and optional private
+Parent-funded rewards.
 
-The experience should feel warm, rooted, optimistic, and active. It should not look like a banking
-rewards app, a school behavior chart, a generic analytics dashboard, a desert-themed skin, or a
-mobile game designed to maximize screen time.
+One modern UAE botanical world supports two distinct experiences:
 
-The garden is a memory of real action. The Child should want to leave the app to complete the task
-and return briefly to see growth.
+- Parent mode is calm, premium, highly organized, and focused on stewardship.
+- Child mode is brighter and more expressive, with larger controls and stronger landscape moments,
+  while remaining capable, polished, and never cartoonish.
 
-## Parent and Child Modes
+The garden is the memory of real action. The app should send the Child back into the world, then
+briefly explain what grew after Parent confirmation.
 
-One design system supports two emotional modes.
+## Experience Architecture
 
-### Parent mode: calm stewardship
+Parent persistent navigation:
 
-- Clear task status, child choice, safety, privacy, and definition of done.
-- Compact evidence and neutral summaries rather than surveillance charts.
-- A calm “Ghaf Guide” presence that improves decisions without pretending certainty.
-- Specific wins before friction or suggested adjustments.
-- No clinical language, alarming risk colors, or “normal/abnormal” scores.
+1. Home
+2. Tasks
+3. Garden
+4. Family
 
-### Child mode: capable explorer
+Child persistent navigation:
 
-- One obvious task choice, short steps, large targets, and an inviting garden horizon.
-- Seeds visible as growth material, never money.
-- A bounded “Ghaf Coach” that helps the Child act in the real world.
-- Quiet but unmistakable growth after Parent confirmation.
-- Language that is respectful and energetic, never babyish, commanding, or manipulative.
+1. Today
+2. Garden
+3. League
 
-The Child mode may use more illustration and motion; the Parent mode may use more structured
-records. Both share the same palette, typography, tree grammar, and Arabic-first composition.
+Contextual families appear only when needed: welcome/access, Parent sign-in/setup, Child access and
+pairing, three-stage Task Builder, Parent Check-in, Family Reward Plan, League setup/member
+management, profiles, permissions, devices, settings, and Parent reauthentication.
 
-## UAE Living Landscape
+R001 freezes `/`, six `/access/parent/**` onboarding destinations, and the success transparent
+modal. It does not freeze or release either persistent tab shell. The success action targets the
+preserved `/parent` integration route without authorizing a Parent Home redesign.
 
-Represent five connected landscape tracks:
+The old `/role` screen and forced Parent/Child switching are removed. Parent and Child are separate
+access sessions inside one app. Celebration is a temporary Garden state. AI is embedded inside the
+relevant task or decision, not exposed as a chat tab.
 
-| Track | Visual cue | Task world |
-| --- | --- | --- |
-| Ghaf desert grove | broad canopy, roots, family gathering shade | kinship and family heritage |
-| Samar desert grove | resilient branching and shared work markers | home responsibility and kindness |
-| Sidr reflection grove | calm leaves, small reading/reflection place | learning, wellbeing, private faith/gratitude |
-| Date-palm oasis | vertical palms, water channel, dates/table details | food care and hospitality |
-| Mangrove coast | roots, shallow water, birds/fish silhouettes used sparingly | waste, water, energy, reuse, stewardship |
+## Product Mechanisms Must Stay Distinct
 
-EAD documents Ghaf, Samar, and Sidr as native trees. The product meanings above are original design
-metaphors, not official symbolism. The interface should say “inspired by UAE landscapes” rather
-than imply that every species shares one literal habitat.
+| Mechanism                         | Design meaning                                                                     |
+| --------------------------------- | ---------------------------------------------------------------------------------- |
+| Seeds — بذور                      | Permanent personal growth after Parent confirmation                                |
+| Challenge Leaves — أوراق التحدي   | Five normalized weekly opportunities; confirmed Leaves determine League score      |
+| Family canopy — مظلة العائلة      | Cooperative result that grows with confirmed Challenge Leaves                      |
+| Family Reward — المكافأة العائلية | Optional private Parent promise unlocked by personal Seeds or landscape milestones |
 
-Ghaf remains the strongest brand silhouette. The other tracks enrich the garden; they do not dilute
-the Ghaf identity.
+Never represent Seeds as money, Challenge Leaves as another currency, the canopy as an individual
+score, or Family Reward as a wallet.
 
-## Growth and Reward Feel
+## Friendly League Direction
 
-Growth stages are **Seed → Shoot → Sapling → Shade → Flourishing**.
+The Ghaf Family League combines a visible weekly ranking with personal permanent growth and one
+shared family result.
 
-Every confirmed, acquisition-phase rewarded task produces one cause-and-effect sequence:
+- Each Child has five Parent-nominated, age-appropriate Challenge Leaves.
+- `Weekly Growth Score = confirmed Challenge Leaves ÷ 5 × 100`, capped at 100.
+- Help and accessibility adaptations earn full credit.
+- Extra tasks can grow the garden but cannot improve rank.
+- Ties share position; speed is never a tiebreaker.
+- Weekly rank/score resets; Seeds and landscapes do not.
+- League rows show only nickname, tree avatar, rank, score, and completed Leaves.
+- Prepared bilingual encouragement is allowed; free text and direct chat are not.
+- Prayer, affection, emotional disclosure, private wellbeing, evidence, accommodations, money, and
+  task details never appear.
 
-1. Parent recognition appears in plain language.
-2. A small Seed travels from the task record toward the mapped landscape.
-3. One visible biological detail changes: root, shoot, branch, leaf, fruit, shade, bird, or water
-   ripple.
-4. The household Ghaf canopy receives one subtle shared leaf only when `visibilityScope` is
-   `household`.
-5. The screen returns to the real-world meaning of the action.
+Competition should feel energetic but not adversarial. Leaders may receive stronger emphasis, but
+there are no loser treatments, downward-shame alerts, podium spectacle, or pressure countdowns.
 
-Use predictable animation, never a slot-machine reveal. No coin showers, jackpot sounds, mystery
-boxes, confetti storms, daily-loss countdowns, or dying vegetation.
+## Family Reward Direction
 
-Celebrate help-seeking and improvement as valid growth. A retry state should feel like adjusting a
-path, not failing a test. Recognition-only and maintenance tasks use Parent acknowledgement and
-meaning without a Seed animation or persistent landscape/canopy change. Only a recurrent fade-first
-acquisition task prompts a Parent phase review after three confirmed completions; the app never
-announces that a habit has formed or changes phase automatically.
+Family Reward is warm, private, and family-controlled. It is not fintech.
+
+- A plan may promise money, an experience, a privilege, or a gift.
+- It unlocks through personal eligible Seeds or eligible-provenance landscape milestones, never
+  displayed aggregate growth alone or League rank.
+- States are `Promised → Unlocked → Given`.
+- Praise and garden growth appear before an unlock message.
+- Amounts are visible only to that Child and guardians.
+- The Parent sees the maximum amount promised for the month.
+- There is no balance, wallet, Seed-to-AED rate, transfer, paid boost, wagering, cash imagery, or
+  jackpot treatment.
+- An unlocked promise cannot be removed or retroactively weakened.
+- Prayer, affection, emotional disclosure, eating, love, basic needs, safety, caregiving, education,
+  and dignity cannot be monetized.
+
+## Access and Trust
+
+The prototype should look and behave like separate protected experiences while disclosing that its
+security is synthetic.
+
+- Parent: phone/email fixture, verification state, PIN/passkey/biometric return, household setup,
+  full controls, and reauthentication before sensitive changes.
+- Child shared device: Parent-created avatar plus PIN or picture sequence.
+- Child separate device: QR or short pairing code, Parent approval, expiry, waiting, approval, and
+  revoked-device states.
+- A Child never receives a Parent tab, reports, reward editing, invitation control, or a simple
+  switch into Parent mode.
+
+Avoid banking aesthetics, security theater, blame-oriented lockout copy, and production-security
+claims.
+
+## AI, Voice, and Language
+
+Ghaf Coach remains a bounded task helper.
+
+- Ages 6–8: slower voice, one short instruction, early Ask an adult action.
+- Ages 9–11: two or three steps, friendly explanation, quick-choice responses.
+- Ages 12–14: respectful, concise, mature language.
+- Safety and task requirements use clear Modern Standard Arabic.
+- Greetings and encouragement may use a light Parent-approved Gulf/Emirati register only after
+  named review.
+- Arabic-English code-switching may be represented through reviewed deterministic fixtures.
+- Push-to-talk is visible and deliberate, with timer, transcript, delete-before-send, replay,
+  captions, and slower playback. The task remains visible and Ask an adult remains prominent.
+
+P0 recording, voice understanding, QR, pairing, biometric, and passkey states are synthetic
+simulations unless separately approved and directly validated. Never show ambient listening, a
+human AI avatar, companion language, or open chat.
+
+## Typography
+
+Use the same bilingual families in both locales:
+
+- Alexandria for display headings, garden names, and milestones.
+- Readex Pro for body copy, controls, tasks, AI dialogue, and League/reward data.
+
+| Element      | Child mode            | Parent mode           |
+| ------------ | --------------------- | --------------------- |
+| Hero heading | 32/44, Alexandria 800 | 30/42, Alexandria 700 |
+| Screen title | 26/38, Alexandria 700 | 24/36, Alexandria 700 |
+| Arabic body  | 18/30, Readex 400–500 | 17/28, Readex 400     |
+| Button       | 17/26, Readex 600     | 16/24, Readex 600     |
+| Caption      | minimum 14/22         | minimum 14/22         |
+
+Requirements: true page-level RTL, generous Arabic line height, no artificial Arabic tracking, no
+thin Arabic weights, tabular numerals for rank/Seeds/rewards, correct mixed-direction `AED 25` and
+`١٢٠ بذرة`, font scaling without clipped actions, and one localized language per ordinary screen.
+
+R001 uses local Expo-compatible Alexandria 400/700/800 and Readex Pro 400/500/600/700 packages with
+explicit weight-specific runtime names, deterministic loading/error fallback, and no remote font
+request. Native Arabic shaping, fallback behavior, and package license evidence remain validation
+items rather than assumptions.
 
 ## Visual Character
 
-Keep the existing warm field-paper and botanical-ink identity, but open it into a landscape:
+Shared character:
 
-- warm ivory and sand as the ground;
-- Ghaf green and deep forest as identity and action;
-- mangrove teal and sky wash for environmental depth;
-- date gold as a scarce milestone accent;
-- earth brown for roots, trunks, paths, and task grounding;
-- gentle coral only for a safety boundary or required correction.
+- modern UAE botanical identity;
+- strong bilingual typography;
+- clean surfaces with limited card stacking;
+- purposeful, code-friendly landscape illustration;
+- restrained causal motion;
+- one dominant action per screen;
+- no generic UAE ornament.
 
-Use low-radius, tactile controls and flat tonal grouping in Parent mode. Child mode may use slightly
-softer task chips and seed vessels, while avoiding bubbly card stacks. Shadows are rare; depth comes
-from layered landscape planes, overlap, and motion.
+R001 approves pearl `#F7F8F3`, primary `#00503B`, Ghaf emerald `#126A50`, deep forest `#0D3128`,
+mangrove teal `#188B83`, solar amber `#F2B84B`, ink `#14221D`, and the supplied semantic
+surface/outline/error roles for this batch. Tonal surfaces and code-native organic SVG create
+depth; generated CSS blur is not a native dependency requirement.
 
-Botanical illustration should be code-native SVG or team-created artwork. Avoid stock desert
-silhouettes, generic camel/falcon ornament, copied heritage motifs, emoji, glassmorphism, neon game
-colors, and decorative AI avatars.
+## Selected Batch Direction
 
-## Garden-Shaped Dashboard
+R001 selects **Soft Organic Modernism** for onboarding: premium bilingual typography, a quiet pearl
+dot field, restrained organic horizon layers, decisive emerald actions, soft geometric radii, and
+minimal transactional chrome. The direction is calm and capable for Parent operation without
+banking aesthetics or generic heritage ornament.
 
-The dashboard should answer three questions without becoming a grid of scores:
-
-1. **What needs care today?** Parent-approved tasks and clear next actions.
-2. **What grew because of us?** Trees, the chosen activity mix, and the family canopy.
-3. **How are we contributing together?** A cooperative family or circle milestone.
-
-For siblings, show one combined household canopy; each Child's own goal remains private to that
-Child and guardians. Do not place raw Seed totals, pace, or age-unequal contributions side by side.
-For cousins or other families, show coarse garden silhouettes or family-level Green Impact progress
-bands, not ranked Child tiles.
-
-Prayer, kinship, affection, food consumption, wellbeing, hygiene, disability-related routines,
-media, reflections, and Parent observations never appear in a cross-family surface.
-
-## Assistant Presence
-
-AI is a quiet tool embedded in the task, not a decorative chat destination.
-
-- **Ghaf Guide:** a small leaf-and-compass mark beside “Make this clearer,” “Make it smaller,”
-  “Check safety,” or “Summarize this week.”
-- **Ghaf Coach:** a bounded bottom sheet with large intent choices such as “Show me the steps,”
-  “Help me plan,” “Practise the phrase,” or “I need an adult.”
-- Always show whether the response is prepared/simulated or live.
-- Show one short disclosure that AI may be wrong.
-- Do not give the assistant a human face, emotional eyes, streak, pet-like dependence, typing lure,
-  or open-ended companion personality.
-
-Photo and voice controls are task actions, not persistent chat affordances. P0 uses prepared
-synthetic media with visible labels.
-
-## Arabic and RTL
-
-Arabic is composed first, not mirrored after English.
-
-- Use logical start/end layout, locale-aware alignment, and RTL-aware navigation/progress.
-- Mirror only directional icons; do not mirror trees, checkmarks, cultural objects, or nondirectional
-  symbols.
-- Test Arabic-only, English-only, mixed scripts, Arabic numerals, Latin units, long task names, Seed
-  counts, age bands, and cultural phrases.
-- Keep Arabic line height generous and never clip diacritics.
-- Bilingual Parent review preserves each language's own direction.
-- Modern Standard Arabic is the prototype default; dialect and transliteration require human review.
+No conclusion about the brighter Child mode, persistent navigation, task/garden hierarchy, League,
+Family Reward, or growth celebration may be inferred from these onboarding frames.
 
 ## Motion
 
-Motion explains cause and effect and then stops.
+Motion explains a cause and then stops: access success, selection, bounded assistant result,
+Parent praise, Seed movement, landscape stage change, canopy leaf, Challenge Leaf confirmation, and
+private reward unlock. Reduced motion presents the same ordered final result immediately with text.
 
-- route change: short fade/slide following logical direction;
-- task selection: immediate pressed and selected state;
-- assistant: one contained leaf/ink reveal, no fake “thinking” theater longer than needed;
-- Seed award: short arc to the mapped landscape;
-- growth: restrained root/branch/leaf reveal with a meaningful static final frame;
-- cooperative milestone: a brief canopy/water/ambient response, then stillness;
-- reset: fast and noncelebratory.
-
-Honor reduced motion with an immediate final state and clear text. State changes must never depend
-on animation completion.
-
-## Cultural and Safety Details
-
-- Use family, landscape, hospitality, and heritage references as functional content, not ornament.
-- Majlis scenes prioritize listening, greeting, host cues, and permission before photography.
-- Wedding tasks offer Parent-approved phrase choices and follow event/family cues.
-- Children may set out dates, water, or napkins; they do not handle hot gahwa in P0.
-- Waste illustrations show clean, identifiable recyclables and a sealed light bag—never sharps,
-  batteries, chemicals, glass, unknown waste, or dramatic garbage.
-- Food visuals never claim safety or pressure the Child to eat.
-- Prayer content uses a calm private treatment and never appears in competitive celebration.
-
-## Prepared Media Direction
-
-Reuse existing synthetic media only when it fits the new task and the origin remains documented.
-Create any new P0 fixture with:
-
-- no child, face, hand, personal data, brand, address, school, readable private text, or watermark;
-- a clear task-object focus rather than surveillance evidence;
-- consistent warm UAE home lighting and landscape palette;
-- metadata removal and a recorded prompt/source/transformation trail; and
-- a visible prepared/synthetic label in the interface.
-
-The recycling demo fixture should show only intact, non-sharp, clean paper/plastic items accepted by
-the local stream on a
-neutral household surface. Do not show glass, batteries, medicine, chemicals, sharp edges, spoiled
-food, or a Child.
-
-## Design Review Questions
-
-- Does the screen send the Child toward a real action rather than more screen time?
-- Is one next action obvious without explanation?
-- Can the Child succeed with help or ask to make the task smaller?
-- Does recognition describe an action or strategy rather than worth?
-- Is the reward fixed, nonfinancial, and free of loss pressure?
-- Is sensitive content private and absent from circle comparison?
-- Is the assistant visibly AI, bounded, and subordinate to a Parent-approved task?
-- Is symbolic growth separated from measured sustainability impact?
-- Does Arabic feel authored rather than mirrored?
-- Is UAE identity specific, respectful, and free from generic decoration?
-- Does reduced motion preserve the complete meaning?
-- Is every prepared, simulated, estimated, or future capability labeled honestly?
+No confetti storm, slot-machine reveal, cash-register sound, streak flame, alarm, failure sound,
+looping lure, or animation-dependent state commit.
 
 ## Anti-Patterns
 
-Do not introduce public Child leaderboards, rank podiums, streak flames, coin stores, trophies for
-prayer, “good/bad child” copy, normality scores, emotion faces, surveillance timelines, chat-first
-navigation, AI friend language, confetti, neon gamification, generic desert décor, excessive cards,
-or ecological impact numbers without a defensible method.
+Do not introduce a public/global leaderboard, public Child profile, free-text messaging, public
+task/evidence sharing, wallet, store, Seed cash-out, paid boost, cash shower, role toggle, chat tab,
+AI friend, diagnostic summary, surveillance timeline, generic Material template, glassmorphism,
+neon gaming UI, faux luxury gold, beige heritage brochure, camel/falcon/mosque ornament, cartoon
+mascot, excessive cards, dying vegetation, shame, or unsupported environmental-impact numbers.
 
-This direction becomes implementation truth only after it is captured in an approved Feature 003
-specification and verified in the actual Android build.
+## Design Intake Exit Gate
+
+The complete direction is ready for implementation only when later approved Stitch frames and the
+team record:
+
+- Arabic-first and matched English frames for every required screen family;
+- selected palette, typography assets, component/radius/icon/illustration system;
+- exact route-versus-state map and Back behavior;
+- default, loading, empty, offline, error, denied, expired, duplicate, rest-week, tied, unlocked,
+  given, and reduced-motion states;
+- long-copy, 200% font-scale, screen-reader, mixed-bidi, and 48dp evidence targets; and
+- a component inventory that can be reconciled with the existing Expo code without silently
+  broadening scope.
+
+The same requirements remain open for every screen outside R001 Batch 1. Within the partial batch,
+the exact route/component map, design audits, state assumptions, and local font decision are frozen
+under `specs/003-family-growth-garden/design-intake/`.

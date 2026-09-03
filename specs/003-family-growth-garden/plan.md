@@ -1,227 +1,159 @@
-# Implementation Plan: Family Growth Garden
+# Design-Intake and Implementation-Readiness Plan: Family Growth Garden — Revision 2
 
-**Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
+**Branch**: `feature/003-family-growth-garden` | **Date**: 2026-09-01 | **Spec**:
 [spec.md](./spec.md)
 
-**Status**: Deterministic P0 implementation is authorized after Feature 003 tasks, checklist, and
-cross-artifact analysis pass. Physical Android and named human-review acceptance remain open.
-
-**Input**: Feature specification from `specs/003-family-growth-garden/spec.md`
+**Status**: Ghaf R001 Batch 1 is **PARTIALLY RELEASED** for foundations, Welcome, and first-time
+Parent onboarding. Full Revision 2 implementation remains **BLOCKED**.
 
 ## Summary
 
-Replace the judge-facing Feature 002 food-rescue journey inside the existing Expo application with
-one ten-route Family Growth Garden journey. The implementation will evolve the current strict
-TypeScript models, Zustand session, service registry, bilingual resources, StyleSheet design
-tokens, SVG, Reanimated, and prepared-media seams rather than create a parallel architecture.
+Revision 2 replaces Revision 1's linear ten-route demonstration with one application containing
+separately gated deterministic synthetic Parent and Child experiences. Parent navigation is Home,
+Tasks, Garden, and Family. Child navigation is Today, Garden, and League. Contextual families cover
+access/setup, pairing, Task Builder, Check-in, Family Rewards, settings, permissions, devices, and
+reauthentication.
 
-The deterministic spine is Parent task drafting and bounded prepared refinement → bilingual
-review and assignment → Child choice, start, bounded prepared coaching, and submission → Parent
-retry or idempotent confirmation → exactly one fixed 12-Seed recognition transaction → symbolic
-Mangrove, household-canopy, and privacy-filtered circle changes. Every required path works with
-external services denied. The Child Coach remains prepared-only. No approved secure server boundary
-exists in this repository, so live Parent AI is `BLOCKED` for implementation and `NOT RUN` for
-validation; it is not a P0 dependency.
+The product adds two distinct systems without merging their meaning:
 
-## Prototype Capability Decision
+- five weekly Challenge Leaves derive a normalized 0–100 Ghaf Family League score; and
+- a private Parent-funded Family Reward is promised and delivered outside Ghaf.
 
-| Classification             | Feature 003 implementation decision                                                                                                                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Real prototype interaction | Ten-route navigation, Arabic/English direction, synthetic role/Child choice, Parent review/approval, Child lifecycle actions, kind retry, praise editing, idempotent confirmation, symbolic counters/growth, privacy filtering, reset |
-| Seeded local content       | Al Noor household, Salem and Alya, two or three approved preview-choice fixtures, eight categories, five landscape tracks, cousin-circle aggregate, initial counters                                                                  |
-| Prepared content           | Parent Guide, Child Coach, Parent summary, recycling image/audio, disclosures, deterministic fallback; every result labeled at point of use                                                                                           |
-| Blocked/nonblocking        | Optional live Parent refinement: no approved deployable server boundary or direct evidence; keep `BLOCKED`/`NOT RUN`                                                                                                                  |
-| Future/out of scope        | Live Child AI, real media capture/processing, real accounts or family sharing, persistence guarantees, analytics, notifications, production backend, impact conversion, deployment                                                    |
+Seeds and gardens remain permanent personal progress. One valid P0 confirmation presents praise,
+then 12 Seeds and Mangrove/canopy growth, then the fifth Challenge Leaf, and finally the private
+Family Reward unlock. P0 access, pairing, voice, membership, rewards, and assistant behavior remain
+deterministic and synthetic.
+
+## Revision and Evidence Boundary
+
+Revision 1's implementation, tasks T001–T110, automated tests, web walkthroughs, screen geometry,
+and evidence remain historical. They MAY inform repository feasibility after design approval but
+MUST NOT satisfy a Revision 2 requirement or gate. Only the exact R001 Batch 1 boundary in
+`design-intake/release-gate.md` is authorized; every other Revision 2 route, source, test,
+dependency, asset, font, or evidence change remains blocked.
+
+## Current Capability Decision
+
+| Classification            | Revision 2 decision                                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Approved product behavior | Separate synthetic access; role navigation; Task Builder/Check-in; fair League; private Family Rewards; bounded Coach/Guide; UAE gardens |
+| Approved typography       | Alexandria display and Readex Pro body/control/data, with the spec's Parent/Child sizes                                                  |
+| Deterministic P0          | Synthetic sign-in, PIN/picture sequence, pairing/reauth, League/member data, reward plans, prepared voice/media/AI, exact reset          |
+| Design-dependent          | R001 resolves foundations and Parent onboarding; later routes, tabs, illustrations, and motion remain unresolved                         |
+| Partially released        | Canonical tokens/fonts/RTL primitives/shared controls, seven access routes, minimal local onboarding state, focused tests                |
+| Blocked                   | Every later application/test/asset/dependency change outside the exact partial release                                                   |
+| Future/out of scope       | Production auth, payment/custody, real invitations, networking, persistence, real Child media/voice, open chat, production deployment    |
 
 ## Technical Context
 
-**Language/Version**: TypeScript 6.0 in strict mode (`noUncheckedIndexedAccess`) on Node.js
-22.13+; React 19.2 and React Native 0.86 through Expo SDK 57
+**Existing baseline**: One Expo/React Native application using strict TypeScript, Expo Router,
+Zustand, Zod, React Hook Form, i18n, StyleSheet, SVG, Reanimated, and local deterministic services.
+This is a candidate implementation baseline, not Revision 2 evidence.
 
-**Primary Dependencies**: Existing Expo Router 57, React Native `StyleSheet`, Zustand 5, Zod 4,
-React Hook Form, `i18next`/`react-i18next`, `expo-localization`, `react-native-svg`, Reanimated 4,
-Gesture Handler, Safe Area Context, Screens, and `expo-audio` prepared playback. No new library is
-introduced. The integration owner applied Expo-compatible patch alignment within the existing SDK
-57 stack: Expo `57.0.15 → 57.0.17`, Expo Linking `57.0.7 → 57.0.8`, Expo Router
-`57.0.15 → 57.0.17`, React Native `0.86.2 → 0.86.3`, and ESLint Config Expo
-`57.0.1 → 57.0.2`; `package-lock.json` records the corresponding transitive patch resolution.
+**Expected architecture constraint**: Preserve one app, thin routes, shared tokens/components,
+bounded feature policies, one session aggregate, a service registry, and one deterministic local
+provider for every required path.
 
-**Storage**: In-memory, schema-versioned Zustand prototype session plus deterministic local typed
-fixtures. Reload persistence is deliberately not promised; the Parent-only reset is authoritative.
+**Storage**: Deterministic in-memory prototype state remains the default. Production persistence,
+accounts, and secure device binding are outside P0.
 
-**Testing**: Vitest pure-policy, contract, state, reset, and end-to-end store-flow tests; TypeScript,
-Expo ESLint, Prettier, Expo dependency/config checks, static web export, route inventory, secret/
-network scan, and manual web/native journey evidence
+**External services**: None may be required for the acceptance path. No provider secret, payment
+service, auth service, invitation backend, or live Child-media service is authorized.
 
-**Target Platform**: Android physical device is authoritative; iOS is convenient compatibility;
-web is a secondary development, screenshot, and flow-inspection surface
+**Typography**: Alexandria and Readex Pro are approved. R001 uses local Expo-compatible packages,
+Alexandria 400/700/800, Readex Pro 400/500/600/700, explicit family names, and deterministic loading/
+fallback with no remote font request. Native shaping, license, and bundle evidence remain open.
 
-**Project Type**: One Expo/React Native mobile application with file-based routing; no backend,
-second application, monorepo, or production service
+**Target**: Physical Android is authoritative. Web remains a secondary visual/test proxy and cannot
+pass native gates.
 
-**Performance Goals**: Press feedback is immediate; prepared results do not simulate extended
-thinking; the Seed/growth explanation settles in at most the approved 650 ms motion window or is
-immediate with reduced motion; five uninterrupted human journeys target at most 150 seconds each
+**Unresolved by design**: The Stitch frames must resolve exact screen/route inventory, component
+geometry, navigation appearance, safe-area behavior, scrolling/sticky actions, sheet/dialog use,
+responsive rules, visual tokens, and illustration/motion specifications.
 
-**Constraints**: Exact ten-route inventory; Arabic-first reset at `/` with no stale history;
-external-service-denied completion; synthetic data only; no media permission on the deterministic
-path; Parent gates before assignment and recognition; privacy filtering before shared mutation;
-exact pre/post counters; 48 dp controls; 200% font-scale resilience; no unsupported impact claim
+## Constitution Check — Documentation and Design Intake
 
-**Scale/Scope**: One synthetic household, two synthetic siblings, one seeded aggregate circle,
-eight curated categories, five landscape tracks, five stages, one executable 12-Seed task, two
-prepared assistant interactions, one prepared summary, four prepared fixture identifiers, and ten
-authored routes
+| Principle                | Plan evidence                                                                          | Result |
+| ------------------------ | -------------------------------------------------------------------------------------- | ------ |
+| MVP Prototype First      | Synthetic access/League/rewards demonstrate the idea without production infrastructure | PASS   |
+| One Complete Journey     | Parent and Child remain separate while one confirmation joins the outcome              | PASS   |
+| Design Is a Core Feature | R001 is reconciled narrowly; every later visual boundary remains blocked               | PASS   |
+| Arabic-First             | Arabic R001 frames are canonical; equivalent English runtime remains required          | PASS   |
+| Mock-First               | Every P0 external-looking capability has a deterministic synthetic path                | PASS   |
+| Keep Architecture Small  | One app and approximately fourteen screen families                                     | PASS   |
+| Visible AI Value         | Coach/Guide remain task-bounded and honestly prepared in P0                            | PASS   |
+| Honest Boundaries        | Synthetic auth and off-app rewards cannot be called production security/payment        | PASS   |
+| Fast Collaboration       | Exact partial documentation/runtime boundaries are reserved                            | PASS   |
+| Demo Reliability         | Exact access/week/reward/garden reset remains required                                 | PASS   |
 
-**Clarifications**: None. The approved spec resolves machine enums, lifecycle separation,
-recognition/phase validity, growth thresholds, reset values, fixture IDs, safety copy, capability
-labels, and evidence gates.
+**Implementation gate result**: **PARTIALLY RELEASED**. The constitution's design condition is met
+for the user-approved R001 Batch 1 only. Full AC-00/T120 remains blocked.
 
-## Constitution Check — Before Design
+## Design Intake Gate
 
-_GATE: Passed before Phase 0 research. No unresolved scope or architecture exception remains._
+The complete Revision 2 implementation may be released only when all of the following are
+recorded:
 
-| Principle                           | Plan evidence                                                                                                                                                               | Result |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| I. MVP Prototype First              | One deterministic competition slice; no production infrastructure or optional breadth on the critical path                                                                  | PASS   |
-| II. One Complete Journey            | Parent → Child → confirmation → garden → circle is the only executable spine                                                                                                | PASS   |
-| III. Design Is a Core Feature       | The approved Living Family Garden direction, token sync, static growth states, Arabic typography, and restrained cause/effect motion are implementation work                | PASS   |
-| IV. Arabic-First, Bilingual         | Arabic is the reset locale; typed bilingual content and logical direction are tested across the same ten decisions                                                          | PASS   |
-| V. Mock-First, Replaceable Services | Screens consume registry contracts; deterministic prepared providers complete every required path offline                                                                   | PASS   |
-| VI. Keep Architecture Small         | One app, one bounded store, existing libraries, pure policies, and no backend/dependency addition                                                                           | PASS   |
-| VII. Visible AI Value               | A visibly prepared Guide transforms a Parent recycling brief into a safer structured task; a bounded Coach and time-bounded Parent summary show the other approved AI roles | PASS   |
-| VIII. Honest Prototype Boundaries   | Synthetic, seeded, prepared, fallback, symbolic, blocked, and future capabilities are labeled at point of use                                                               | PASS   |
-| IX. Fast Team Collaboration         | Domain/state, UI/i18n, tests, and QA/runbook use disjoint reservations with one integration owner                                                                           | PASS   |
-| X. Demo Reliability                 | Exact atomic reset, prepared media/transcripts, same-attempt fallback, idempotency, static outcomes, and offline path protect the demo                                      | PASS   |
+1. The user supplies the selected Stitch project/export and identifies the approved visual
+   direction.
+2. Arabic RTL frames cover every required screen family and meaningful state.
+3. Matched English LTR frames preserve the same hierarchy and meaning.
+4. Parent four-tab and Child three-tab navigation are explicit and cross-role access is absent.
+5. Task Builder, Check-in, League, Family Reward, pairing, permissions, settings,
+   reauthentication, pending, duplicate, offline, and reduced-motion states are represented.
+6. Alexandria/Readex hierarchy, long Arabic labels, mixed-direction numbers, 48dp targets, font
+   scaling, contrast, and screen-reader order can be derived without guesswork.
+7. The selected design rules are captured in root `DESIGN.md` and `DESIGN_DIRECTION.md`.
+8. `spec.md`, this plan, `data-model.md`, `acceptance-contract.md`, `quickstart.md`, and `tasks.md`
+   are reconciled to the approved frame/state inventory.
+9. An integration owner explicitly records that the implementation block is released.
 
-Constitution v2.0.0 now states the active durable rule directly: visible AI value is a bounded,
-structured, honestly labeled transformation or coaching action under Parent review, and the demo
-must meet the active feature's documented internal rehearsal target. Feature 003 satisfies those
-rules without carrying Feature 002 evidence forward.
+Missing or contradictory frames return to design refinement; they do not authorize inferred UI.
 
-The minimum safeguards remain product behavior, not a new security/compliance workstream. The plan
-adds no provider secret, continuous recording, real Child data, production authentication,
-financial feature, diagnostic surface, religious judgment, or public Child comparison.
+### R001 Batch 1 Partial Exit
 
-## Architecture
+The user supplied and approved seven Arabic Parent-onboarding compositions on 2026-09-02. The
+inventory, state map, product-safety audit, accessibility audit, visual audit, decisions,
+route/component map, and partial gate are recorded under `design-intake/`. The release deliberately
+records that `screen-spec.md`, English/state frames, font binaries, and exported assets are missing.
 
-```text
-10 thin Expo Router route files
-              ↓
-shared bilingual UI primitives + bounded feature components
-              ↓
-intentional Zustand application commands
-              ↓
-pure lifecycle / recognition / projection / growth / assistant policies
-              ↓
-central service registry interfaces
-              ↓
-deterministic prepared providers + local fixtures
-```
+This narrow exit authorizes only:
 
-### Responsibilities and data ownership
+- canonical tokens, local Alexandria/Readex integration, RTL primitives, shared controls, and the
+  transactional access shell;
+- `/`, `/access/parent/sign-in`, `/access/parent/verification`,
+  `/access/parent/family-basics`, `/access/parent/add-first-child`,
+  `/access/parent/review-create`, and `/access/parent/family-created-success` as a transparent
+  modal;
+- minimal deterministic local Parent verification/onboarding draft, route guards, bilingual copy,
+  and focused tests; and
+- success replacement navigation to the preserved `/parent` integration destination without
+  redesigning it.
 
-- `app/` owns route composition, navigation, and route-local visual state only. Routes do not
-  import concrete providers or mutate counters independently.
-- `src/models/` owns strict, schema-versioned task, lifecycle, reward, garden, circle, assistant,
-  media, and session values. Food-rescue quantities and `ImpactRecord` do not masquerade as Seeds
-  or environmental results.
-- `src/features/tasks/` owns validation and explicit lifecycle transitions. `chosen` and
-  `in_progress` remain separate states.
-- `src/features/rewards/` owns the valid recognition/phase matrix, fixed award allowlist,
-  recurrence/phase review rules, and one idempotency key per submission.
-- `src/features/garden/` owns deterministic thresholds and symbolic landscape/canopy projections.
-- `src/features/circle/` owns a deny-by-default projection function. The private recognition
-  boundary derives a minimal eligibility context with no Child identity, task record, Seed amount,
-  media, reflection, or note; strict projectors validate that context before returning allowlisted
-  canopy/circle DTOs and reject unknown shared-candidate fields.
-- `src/features/assistants/` owns allowlisted Parent/Child intents, request/result validation,
-  prohibited-language checks, origin metadata, deterministic same-attempt fallback, all-band
-  interaction-policy tests, and bounded local correction/revalidation of the prepared Parent
-  summary's synthetic facts.
-- `src/state/` owns one bounded prototype session and application commands. `planConfirmation`
-  validates the submission and prepares editable praise without changing a counter. A distinct
-  Parent action moves the route into an observable `praise_presented` state; only a second visible
-  continuation may call `applyRecognition`. That command checks the ledger first, runs reward and
-  privacy policy, then commits the transaction, landscape, canopy, circle, celebration, and phase-
-  review payload atomically. A duplicate returns the immutable existing receipt without mutation.
-- `src/services/interfaces/` owns provider-neutral task, reward, garden, circle, assistant, media,
-  and session contracts. `src/services/mock/` is the required provider. Screens depend only on the
-  central registry.
-- `src/i18n/` owns interface copy and canonical Arabic/English pairs. Typed fixtures own their
-  bilingual domain content; safety-critical Arabic is copied unchanged from `DEMO_RUNBOOK.md`.
+English/runtime system states remain required, but the missing frames are not claimed as visual
+evidence. All later screen families and full Revision 2 contracts remain blocked.
 
-### Reset and seeded-choice semantics
+## Target Domain and Architecture Boundaries
 
-The reset has no **active assignment** or submission: no task is selected as current work and no
-P0 assignment exists. `/child` may still show two or three local Parent-approved choice fixtures to
-satisfy the choice design; these are preview-only catalog assignments at reset. Only the
-Parent-created P0 recycling assignment becomes executable in the judge journey. Selecting it moves
-`assigned → chosen`, and opening/starting it separately moves `chosen → in_progress`.
+The detailed contracts are in [data-model.md](./data-model.md). Future implementation must keep:
 
-`resetPrototype()` replaces the entire session atomically with the canonical schema-versioned
-fixture. The route shell then clears/dismisses the current stack and lands on `/` in Arabic RTL;
-navigation recovery is not embedded inside the store. Tests exercise state reset separately from
-the router history-reset adapter.
+- access/pairing/reauthentication as synthetic capability states, separate from role navigation;
+- Challenge Leaves and League score separate from permanent Seeds and Family Rewards;
+- a privacy-first League projection containing only nickname, tree avatar, position, score, and
+  completed Leaves;
+- fail-closed Family Reward contribution eligibility/provenance plus milestones/versioning/state
+  transitions separate from any payment or wallet model;
+- one confirmation receipt that is idempotent and presents the required effects in order;
+- Parent/Child AI intent allowlists and prepared simulated push-to-talk with no real capture; and
+- an atomic reset spanning access, pairing, permissions, task, garden, League week, rewards,
+  assistant fixtures, and protected navigation history.
 
-### Confirmation transaction ordering
-
-```text
-submitted task + Parent decision
-  → planConfirmation validates lifecycle and prepares editable praise (zero counter changes)
-  → a Parent action renders the final action-specific praise in a praise_presented state
-  → a separate visible Parent continuation calls applyRecognition
-  → applyRecognition checks the idempotency ledger first and returns immutable stored receipts
-  → validate recognition mode / phase / recurrence / fixed award
-  → filter household projection before canopy mutation
-  → filter circle projection before circle mutation
-  → atomically commit allowed Seed, landscape, canopy, and circle deltas
-  → expose static final values and optional one-time celebration
-```
-
-Recognition cannot be applied from the same event that marks praise presented. Rejected, invalid,
-private,
-sensitive, non-Green, identity-bearing, Seed-bearing, or duplicate events never reach a shared
-visual or shared counter. Duplicate application returns the existing ledger result before reward or
-projection work. The circle receives one coarse eligible action, not 12 Seeds and not a task record.
-
-### Route migration
-
-| Keep or add                       | Replaces/retire after integration      | Implementation note                                                                                    |
-| --------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `/`, `/role`, `/parent`, `/child` | Existing files are rewritten in place  | Preserve reusable shells, language control, and synthetic disclosure while replacing food-rescue state |
-| `/parent/task/new`                | `/parent/create`, `/parent/generating` | Generation becomes an in-route bounded assistant state                                                 |
-| `/parent/task/review`             | `/parent/review`                       | Full bilingual safety/privacy/recognition approval                                                     |
-| `/child/task`                     | `/child/mission`                       | Explicit choose/start, bounded Coach, optional prepared media/reflection                               |
-| `/parent/check-in`                | `/parent/confirmation`                 | Retry, equivalent/smaller future choice, praise, idempotent confirm, phase-review state                |
-| `/garden`                         | `/celebration`                         | Celebration is a state; garden owns static and animated consequence                                    |
-| `/circle`                         | No legacy route                        | Local cooperative aggregate only                                                                       |
-
-The six replaced route files are removed only after all ten new routes resolve and the deterministic
-flow passes the route/store smoke test. Historical Feature 002 specifications, screenshots,
-runbooks, and evidence remain untouched and attributed to Feature 002.
-
-### Design-system implementation
-
-Use the existing `src/design/tokens.ts` as the single theme entry and extend the established warm
-field-paper/botanical-ink system. Synchronize it to `DESIGN.md`: add mangrove, water, water-light,
-and coral roles; align the type ramp, 120/220/650 ms motion values, and 20 px phone screen padding.
-The audit found 8,309 TS/TSX lines, 13 hardcoded hex values confined to the code-native Ghaf
-illustration, token-backed font sizes, only two deliberate zero-spacing values, token-backed radii,
-and no legacy native shadow/elevation drift. Keep illustration-local SVG colors documented or move
-them to semantic tokens while touching the component; do not add a second theme or UI library.
-
-Build flat tonal Parent surfaces and a more illustrated but non-gamey Child mode. Add only the
-shared primitives demanded by the ten routes: explicit button states, origin disclosure, task/
-safety/recognition panels, prepared media, bounded assistant sheet, garden tracks, combined canopy,
-and circle progress. Verify WCAG 2.2 AA text/essential-UI contrast, enable Android predictive Back
-in `app.config.ts`, and retain the router as the only navigation/history authority. Code-native SVG
-provides the five static landscape stages; Reanimated only explains confirmation cause/effect,
-never controls whether state commits.
+Screens MUST consume service/store commands and MUST NOT calculate ranks, rewards, privacy
+projection, reward unlocks, or recognition deltas independently.
 
 ## Project Structure
 
-### Documentation (this feature)
+### Design-intake records
 
 ```text
 specs/003-family-growth-garden/
@@ -230,182 +162,132 @@ specs/003-family-growth-garden/
 ├── research.md
 ├── data-model.md
 ├── quickstart.md
-├── contracts/
-├── checklists/
+├── design-intake/
+│   ├── stitch-inventory.md
+│   ├── screen-state-map.md
+│   ├── product-safety-audit.md
+│   ├── accessibility-audit.md
+│   ├── visual-audit.md
+│   ├── decision-log.md
+│   ├── route-component-map.md
+│   └── release-gate.md
+├── contracts/acceptance-contract.md
+├── checklists/requirements.md
 └── tasks.md
 ```
 
-### Source code (single existing Expo app)
+### Released R001 Batch 1 application boundary
 
 ```text
 app/
 ├── _layout.tsx
 ├── index.tsx
-├── role.tsx
-├── parent/
-│   ├── index.tsx
-│   ├── check-in.tsx
-│   └── task/
-│       ├── new.tsx
-│       └── review.tsx
-├── child/
-│   ├── index.tsx
-│   └── task.tsx
-├── garden.tsx
-└── circle.tsx
+├── access/parent/
+│   ├── sign-in.tsx
+│   ├── verification.tsx
+│   ├── family-basics.tsx
+│   ├── add-first-child.tsx
+│   ├── review-create.tsx
+│   └── family-created-success.tsx
+└── parent/_layout.tsx
+
 src/
-├── components/
-├── design/
-├── features/
-│   ├── assistants/
-│   ├── circle/
-│   ├── garden/
-│   ├── rewards/
-│   └── tasks/
-├── i18n/
-├── models/
-├── services/
-│   ├── interfaces/
-│   └── mock/
-├── state/
-└── utils/
-tests/
-├── assistant-safety.test.ts
-├── garden-progression.test.ts
-├── privacy-projection.test.ts
-├── prototype-state.test.ts
-├── reward-matrix.test.ts
-└── task-lifecycle.test.ts
-assets/images/
-├── fixture-recycling-clean-v1.png
-└── fixture-recycling-clean-v1.md
+├── design/tokens.ts
+├── components/primitives.tsx
+├── components/LanguageSwitcher.tsx
+├── components/access/**
+├── features/access/**
+├── i18n/**
+├── models/familyGrowth.ts
+├── services/**
+└── state/usePrototypeStore.ts
 ```
 
-**Structure Decision**: Migrate the existing Expo project in place. Reuse `LocalizedText`, service
-result/error shapes, registry construction, deterministic fixture factories, stale asynchronous
-attempt guards, Zustand reset pattern, locale utilities, route shells, design tokens, primitives,
-SVG mechanics, and Vitest seams. Retire Feature 002 food quantities, impact summaries, mission
-generation theater, streaks, and food-specific route components once the Feature 003 replacements
-are proven; do not maintain two domain models or two journeys.
+The integration owner may touch only the smallest existing seams needed for the route guards,
+deterministic local draft, fonts, resources, and checks. See `design-intake/route-component-map.md`
+for prerequisites and Back behavior. Exact later route/component paths remain unfrozen.
 
-## Implementation Sequence and Exclusive Boundaries
+## Work Phases
 
-1. **Foundation and tests first**: establish Feature 003 model/contract names, fixture IDs, reward
-   matrix, privacy schema, growth thresholds, and failing focused tests. One logic owner controls
-   `src/models/**`, then releases types to test/UI owners.
-2. **Pure domain policies**: implement task validation/transitions, fixed awards, no-loss retry,
-   privacy-before-projection, stages, assistant allowlists/prohibited summary language, and provider
-   fallback. Keep these independent of React Native.
-3. **Session and registry integration**: adapt the existing store and registry; implement exact
-   reset without storing the current route, no-counter `planConfirmation`, a separately rendered
-   praise-presented continuation, and ledger-first atomic idempotent `applyRecognition`. Do not
-   expose partial counter setters.
-4. **Visual foundation**: synchronize tokens and build shared bilingual components, five static
-   landscape states, combined canopy, prepared-media disclosure, bounded assistant sheet, reduced-
-   motion alternatives, and accessibility states.
-5. **Parent path**: integrate `/`, `/role`, `/parent`, `/parent/task/new`, and
-   `/parent/task/review` against the released domain/store contracts.
-6. **Child and check-in path**: integrate `/child`, `/child/task`, and `/parent/check-in`, including
-   explicit choose/start, adult exit, optional media/reflection, kind retry, editable praise,
-   duplicate confirmation, and future-only phase-review state.
-7. **Growth and sharing path**: integrate `/garden` and `/circle`; render exact pre/post values,
-   one symbolic Mangrove transition, one canopy leaf, one coarse circle event, and complete static
-   outcomes.
-8. **Route retirement**: verify the new inventory and smoke journey, then remove the six replaced
-   Feature 002 route files and orphaned food-rescue UI imports. Preserve all historical evidence.
-9. **Polish and acceptance**: complete bilingual parity, long-copy/font-scale, offline/fallback,
-   Back/reset, reduced-motion, route, secret/network, web-export, and automated checks. Record only
-   directly observed evidence; physical Android and human reviews cannot pass by source inspection.
+### Phase A — Record Revision 2 contract
 
-Shared configuration and dependencies remain unchanged except for the integration owner's measured
-Expo SDK 57 compatibility patch alignment documented above. No new library was added. No two agents
-edit the same route, store, registry, token, i18n, test, or runbook file concurrently.
+- Align governance, product, research, design, limitations, runbook, ownership, and Feature 003
+  Spec Kit artifacts.
+- Preserve Revision 1 history and reset all Revision 2 runtime evidence to `NOT RUN`/`BLOCKED`.
+- Do not change application files.
+
+### Phase B — Receive and audit Stitch designs
+
+- Inventory every frame, variant, state, locale, navigation path, component, and asset.
+- Map frames to the required screen families and user stories.
+- Run child-safety, reward/competition, privacy, Arabic/RTL, typography, accessibility, and
+  capability-truth audits.
+- Return concrete frame-level conflicts for user resolution.
+
+### Phase C — Reconcile design and implementation artifacts
+
+- Update `DESIGN.md`/`DESIGN_DIRECTION.md` from the selected design.
+- Freeze the exact route/state/component map and font/asset loading decision.
+- Reconcile the data model, acceptance contract, historical domain/assistant contracts, root
+  implementation handoff, validation guide, and dependency-ordered tasks.
+- Re-run cross-artifact consistency and explicitly release or retain the block.
+
+### Phase D — Partial implementation and later full implementation
+
+Within R001 Batch 1, implement foundations, failing focused access/localization tests, deterministic
+local Parent onboarding state, shared access components, the seven routes/states, and fresh
+responsive evidence. Outside that boundary, the future order remains:
+
+1. failing access, League, Family Reward, confirmation, privacy, voice, typography, and reset tests;
+2. shared domain contracts and deterministic fixtures;
+3. synthetic access/pairing/reauth and role navigation;
+4. Parent task/check-in/garden/family/reward surfaces;
+5. Child Today/task/Coach/garden/League surfaces;
+6. ordered recognition consequence and reset integration; and
+7. Arabic/English, offline, accessibility, Android, rehearsal, and named-human validation.
+
+No item outside the R001 partial boundary is authorized until the complete Phase C/T120 gate records
+release.
 
 ## Validation Strategy
 
-### Automated and source-verifiable gates
+### Current documentation checks
 
-Run from the repository root and record the exact worktree/commit state:
+- no unresolved requirement ambiguity or `NEEDS CLARIFICATION` marker;
+- explicit Revision 1 historical boundary in every Feature 003 artifact;
+- no claim that synthetic access is production authentication;
+- no wallet, custody, exchange, payment, or League-money coupling;
+- exact five-Leaf formula, tie semantics, privacy projection, and weekly/permanent reset boundary;
+- exact Family Reward state machine and nonretroactive rule;
+- exact praise → Seeds/garden/canopy/Leaf → private unlock order;
+- Alexandria/Readex and token decisions released only for R001 Batch 1; and
+- `git diff --check` plus focused Markdown/link/term scans.
 
-```bash
-npm ci
-npm run typecheck
-npm run lint
-npm run format:check
-npm test
-npx expo install --check
-npx expo config --type public
-npx expo export --platform web --output-dir dist
-git diff --check
-git diff --stat
-git status --short
-```
+### Future implementation evidence
 
-In addition:
-
-- enumerate `app/**/*.tsx` and prove exactly the ten authored product routes;
-- scan `app/`, `src/`, config, and fixtures for secrets, network calls, real Child data, camera/
-  microphone capture, prohibited claims, hard-coded user copy, and legacy route imports;
-- run focused tests for every lifecycle edge, recognition/phase row, threshold boundary, projection
-  rejection, assistant allowlist, timeout/failure fallback, reset source state, bilingual resource
-  parity, sensitive-category fixture rule, summary correction, and duplicate confirmation;
-- execute five automated store-flow cycles from reset with all optional providers denied;
-- use the static web export only for secondary responsive, visual, keyboard, and console inspection.
-
-### Manual evidence gates
-
-- Walk every route and meaningful state in Arabic RTL and English LTR.
-- Verify exact reset from draft, prepared assistant result/fallback, prepared-media selected/
-  removed/unavailable, reviewed, assigned, chosen, in-progress, submitted, retry, confirmed/
-  recognized, celebration available/consumed, garden, and circle; check Back cannot recover stale
-  state.
-- Verify no award at assignment, choice, start, or submission; one confirmation changes only
-  48→60, 48/60 Shoot→60/60 Sapling, 19→20, and 11→12; five duplicates change nothing.
-- Verify prepared image/audio removal and missing-file transcript/description fallbacks.
-- Check WCAG 2.2 AA text/essential-UI contrast, 200% font scale, screen reader order/announcements,
-  48 dp targets, keyboard avoidance, reduced motion, direction, mixed scripts, diacritics,
-  predictive/native Back, and `app.config.ts` on a named Android build.
-- Run five timed rehearsals and three comprehension observations with named people.
-
-Web evidence may support implementation debugging but cannot pass Android RTL, native media,
-keyboard, Back, reduced-motion, permission, screen-reader, or physical-device criteria. Until a
-named installable build/device is available, physical Android remains `BLOCKED`; timing,
-comprehension, cultural, faith, safeguarding, accessibility, and sustainability reviews remain
-`NOT RUN` until performed by the named owners.
+For the partial batch, run typecheck, lint, formatting, focused/full tests, Expo config/dependency
+checks, launch smoke, route inventory, static web export, source/network scans, and responsive
+Arabic/English comparisons. Verify 390×844 plus small/large viewports, scroll, keyboard proxy,
+font-scale proxy, validation/loading/offline/success, and the native modal state. Physical Android
+and named human reviews remain separate evidence classes.
 
 ## Main Risks and Bounded Mitigations
 
-| Risk                                                             | MVP mitigation                                                                                                                                                                      |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Feature 002 and Feature 003 models coexist ambiguously           | Introduce released Feature 003 types/policies first, migrate every consumer, then remove legacy UI/domain code only after the new smoke flow passes                                 |
-| Confirmation rewards before praise or partially updates counters | `planConfirmation` changes no counter; a separate rendered praise continuation precedes ledger-first `applyRecognition`; projection returns allowed values before one atomic commit |
-| Reset says no assignment while Child needs choices               | Distinguish selected/current assignment from local approved choice fixtures; only the new P0 assignment is executable                                                               |
-| Long safety-critical Arabic overwhelms actions                   | Arabic-first content hierarchy, 20 px screen padding, uncollapsed safety block, generous line height, keyboard/200% tests, sticky action only when unobscured                       |
-| Garden polish consumes the schedule                              | Five clear static SVG stages first; one 650 ms optional cause/effect reveal; no 3D, illustration framework, or animation-dependent state                                            |
-| Prepared media is absent or mismatched                           | Add the synthetic recycling image with provenance plus prepared audio fixture metadata/transcript; always provide description/transcript and allow omission/removal                 |
-| Optional live AI tempts client-side secrets or scope             | No remote adapter in P0; show prepared origin; keep live status `BLOCKED`/`NOT RUN` until a separately approved secure boundary exists                                              |
-| Dynamic RTL or Back differs on native                            | Logical styles, predictive Back enabled in `app.config.ts`, and a route-level history adapter; retain `BLOCKED`/`NOT RUN` until observed on named Android                           |
-| Cultural or faith fixture breadth implies approval               | Keep sensitive catalog entries seeded/nonexecuting, preserve canonical MSA, visibly flag named reviews, and never infer review completion                                           |
+| Risk                                               | Mitigation                                                                           |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Missing later frames are mistaken for full release | Keep every route outside the exact R001 partial gate blocked                         |
+| Synthetic sign-in is mistaken for security         | Point-of-use synthetic labels and no production capability claim                     |
+| Competition becomes age/speed/wealth comparison    | Exactly five normalized Leaves, 100 cap, ties, full help credit, no money/raw Seeds  |
+| Private task data leaks into League                | Derive an allowlisted projection before rendering/counter updates                    |
+| Family Reward looks like a wallet                  | Private off-app promise, no custody/exchange, rank independence, reauthentication    |
+| Reward overshadows recognition                     | Fixed presentation order with praise and garden before private unlock message        |
+| Voice implies real recording                       | Prepared simulated push-to-talk, visible origin, no permissions, transcript fallback |
+| Fonts cause Arabic clipping or dependency drift    | Use the recorded local packages; test Arabic first, 200% scale, mixed direction      |
+| Revision 1 passes are reused                       | Fresh Revision 2 evidence ledger and explicit historical labels                      |
 
-## Constitution Check — After Design
+## Constitution Check — After Preliminary Design
 
-_GATE: Passed after research and Phase 1 design. Cross-artifact analysis still must confirm the
-generated data model, contracts, quickstart, and tasks before implementation begins._
+**R001 Batch 1:** **PARTIALLY RELEASED** after the user-approved frames and scoped reconciliation.
 
-- The data design separates symbolic Seeds/growth from sustainability activity and rejects invalid
-  recognition, recurrence, visibility, and circle pairings before persistence.
-- The contract design keeps routes provider-neutral, the Child Coach prepared-only, the Parent
-  Guide bounded, and the deterministic fallback mandatory.
-- The journey design contains exactly ten routes and makes assistant, retry, phase-review,
-  celebration, failure, and fallback into in-route states.
-- The validation design starts Feature 003 evidence fresh and cannot convert web/source evidence
-  into native or human passes.
-- No backend, dependency addition, production account, real Child data/media, open chat, public
-  rank, financial system, compliance claim, second app, or unsupported impact conversion is needed.
-
-All ten constitutional principles therefore remain satisfied under the approved Feature 003
-transition. No complexity exception is required.
-
-## Complexity Tracking
-
-No constitution violation or architectural exception requires justification.
+**Complete Revision 2:** **BLOCKED** until the remaining approved frames and full reconciled
+artifacts exist. The partial gate introduces no production infrastructure or complexity exception.

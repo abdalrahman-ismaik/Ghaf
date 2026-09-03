@@ -1,0 +1,260 @@
+<!DOCTYPE html><html class="light" dir="rtl" lang="ar"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ghaf - أضف أول طفل</title>
+<!-- Google Fonts: Alexandria & Readex Pro -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;700;800&amp;family=Readex+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f9faf5",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#5f4100",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#87d6b6",
+                      "background": "#f9faf5",
+                      "pearl-ground": "#F7F8F3",
+                      "surface-bright": "#f9faf5",
+                      "surface-container-low": "#f3f4ef",
+                      "secondary": "#006a64",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#00504b",
+                      "on-primary": "#ffffff",
+                      "tertiary": "#5e4100",
+                      "on-surface": "#1a1c19",
+                      "mangrove-teal": "#188B83",
+                      "primary": "#00503b",
+                      "tertiary-fixed-dim": "#f7bd4f",
+                      "outline-variant": "#bec9c2",
+                      "on-primary-fixed-variant": "#00513c",
+                      "secondary-container": "#8ef1e7",
+                      "on-error": "#ffffff",
+                      "surface-variant": "#e2e3de",
+                      "on-background": "#1a1c19",
+                      "surface-container-highest": "#e2e3de",
+                      "surface-container-high": "#e7e9e4",
+                      "tertiary-container": "#7c5700",
+                      "on-secondary-container": "#006f68",
+                      "solar-amber": "#F2B84B",
+                      "inverse-on-surface": "#f0f1ec",
+                      "surface-dim": "#d9dad6",
+                      "surface-tint": "#146b51",
+                      "secondary-fixed": "#91f3e9",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#6f7973",
+                      "on-tertiary-container": "#ffd182",
+                      "surface-container": "#edeee9",
+                      "on-primary-fixed": "#002116",
+                      "primary-container": "#126a50",
+                      "tertiary-fixed": "#ffdeaa",
+                      "inverse-surface": "#2e312e",
+                      "secondary-fixed-dim": "#74d7cd",
+                      "primary-fixed": "#a3f3d1",
+                      "ink": "#14221D",
+                      "ghaf-emerald": "#126A50",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#271900",
+                      "surface-container-lowest": "#ffffff",
+                      "deep-forest": "#0D3128",
+                      "on-surface-variant": "#3f4944",
+                      "primary-fixed-dim": "#87d6b6",
+                      "on-secondary-fixed": "#00201e",
+                      "on-primary-container": "#98e7c6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "touch-target": "48px",
+                      "margin-desktop": "64px",
+                      "margin-mobile": "20px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["Readex Pro"],
+                      "headline-lg": ["Alexandria"],
+                      "body-lg": ["Readex Pro"],
+                      "label-md": ["Readex Pro"],
+                      "display-lg": ["Alexandria"],
+                      "display-lg-mobile": ["Alexandria"],
+                      "label-sm": ["Readex Pro"],
+                      "headline-md": ["Alexandria"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                      "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Biophilic Background Masking */
+        .organic-bg-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .organic-shape {
+            position: absolute;
+            fill: theme('colors.surface-container-low');
+            opacity: 0.6;
+        }
+        
+        /* Subtle Dot Pattern */
+        .dot-pattern {
+            background-image: radial-gradient(theme('colors.ghaf-emerald') 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.03;
+        }
+
+        /* Custom Scrollbar for horizontal lists */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-pearl-ground text-on-surface font-body-md min-h-screen flex flex-col relative overflow-x-hidden selection:bg-ghaf-emerald selection:text-on-primary">
+<!-- Atmospheric Layer -->
+<div class="absolute inset-0 dot-pattern pointer-events-none z-0"></div>
+<!-- Top Navigation (Transactional/Setup style) -->
+<header class="relative z-10 w-full px-margin-mobile py-4 flex items-center justify-between mx-auto max-w-2xl mt-2"><!-- Back Action (Now on the physical right edge in RTL) -->
+<div class="w-12 flex justify-start">
+<button aria-label="العودة" class="w-[48px] h-[48px] flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface" type="button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+</div>
+<!-- Wordmark (Centered) -->
+<div class="flex-1 flex justify-center">
+<span class="font-headline-md text-headline-md text-ghaf-emerald tracking-tight">غاف</span>
+</div>
+<!-- Progress Indicator (Now on the physical left edge in RTL) -->
+<div class="w-12 text-right">
+<span class="font-label-md text-label-md text-outline">2 من 3</span>
+</div></header>
+<!-- Main Canvas -->
+<main class="relative z-10 flex-1 w-full max-w-2xl mx-auto px-margin-mobile pt-6 pb-[140px] flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-col gap-3">
+<h1 class="font-headline-lg text-headline-lg text-primary">أضف أول طفل</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">استخدم اسمًا مختصرًا أو لقبًا يحبه الطفل.</p>
+</div>
+<!-- Form Elements -->
+<form class="flex flex-col gap-8">
+<!-- Child Name Input -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface" for="child-name">اسم الطفل داخل التطبيق</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl p-4 font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-ghaf-emerald focus:border-transparent transition-all shadow-sm" id="child-name" placeholder="مثال: سالم" type="text" value="سالم">
+</div>
+<!-- Avatar Selector (Botanical theme) -->
+<div class="flex flex-col gap-3">
+<label class="font-label-md text-label-md text-on-surface">اختر رمزًا</label>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2"><button class="flex-shrink-0 w-[48px] h-[48px] rounded-full bg-ghaf-emerald text-on-primary flex items-center justify-center shadow-sm ring-2 ring-ghaf-emerald ring-offset-2 ring-offset-pearl-ground transition-all transform hover:scale-105" type="button"><span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">park</span></button><button class="flex-shrink-0 w-[48px] h-[48px] rounded-full bg-surface-container-highest text-primary flex items-center justify-center border border-outline-variant hover:bg-surface-container transition-all transform hover:scale-105" type="button"><span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">eco</span></button><button class="flex-shrink-0 w-[48px] h-[48px] rounded-full bg-surface-container-highest text-primary flex items-center justify-center border border-outline-variant hover:bg-surface-container transition-all transform hover:scale-105" type="button"><span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">spa</span></button><button class="flex-shrink-0 w-[48px] h-[48px] rounded-full bg-surface-container-highest text-primary flex items-center justify-center border border-outline-variant hover:bg-surface-container transition-all transform hover:scale-105" type="button"><span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">energy_savings_leaf</span></button><button class="flex-shrink-0 w-[48px] h-[48px] rounded-full bg-surface-container-highest text-primary flex items-center justify-center border border-outline-variant hover:bg-surface-container transition-all transform hover:scale-105" type="button"><span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 0;">water_drop</span></button></div>
+</div>
+<!-- Age Selection (Segmented Pills) -->
+<div class="flex flex-col gap-3">
+<label class="font-label-md text-label-md text-on-surface">الفئة العمرية</label>
+<div class="flex flex-wrap gap-3"><button class="px-6 py-3 rounded-full bg-surface-container-lowest text-on-surface border border-outline-variant font-label-md text-label-md transition-colors hover:bg-surface-container-low" type="button">6–8</button><button class="px-6 py-3 rounded-full bg-ghaf-emerald/10 text-ghaf-emerald border border-ghaf-emerald font-label-md text-label-md transition-colors hover:bg-ghaf-emerald/20" type="button">9–11</button><button class="px-6 py-3 rounded-full bg-surface-container-lowest text-on-surface border border-outline-variant font-label-md text-label-md transition-colors hover:bg-surface-container-low" type="button">12–14</button></div>
+</div>
+<!-- Language Preference -->
+<div class="flex flex-col gap-3">
+<label class="font-label-md text-label-md text-on-surface">اللغة المفضلة</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-3 rounded-full bg-ghaf-emerald/10 text-ghaf-emerald border border-ghaf-emerald font-label-md text-label-md transition-colors hover:bg-ghaf-emerald/20" type="button">العربية</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-lowest text-on-surface border border-outline-variant font-label-md text-label-md transition-colors hover:bg-surface-container-low" type="button">English</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-lowest text-on-surface border border-outline-variant font-label-md text-label-md transition-colors hover:bg-surface-container-low" type="button">كلاهما</button>
+</div>
+</div>
+<!-- Accessibility Needs (Multi-select Chips) -->
+<div class="flex flex-col gap-3">
+<label class="font-label-md text-label-md text-on-surface">ما الذي يساعده؟ (اختياري)</label>
+<div class="flex flex-wrap gap-2"><button class="px-4 py-2 rounded-xl bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">text_increase</span>نص أكبر</button><button class="px-4 py-2 rounded-xl bg-secondary-container text-on-secondary-container border-secondary-container font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">psychology_alt</span>تعليمات أبسط</button><button class="px-4 py-2 rounded-xl bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">contrast</span>تباين أعلى</button><button class="px-4 py-2 rounded-xl bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">animation</span>تقليل الحركة</button><button class="px-4 py-2 rounded-xl bg-surface-container-lowest text-outline border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors" type="button">ليس الآن</button></div>
+</div>
+</form>
+</main>
+<!-- Fixed Bottom Action Area (Glassmorphism) -->
+<div class="fixed bottom-0 left-0 w-full z-20">
+<!-- Gradient fade for smooth scroll transition -->
+<div class="h-8 w-full bg-gradient-to-t from-pearl-ground to-transparent"></div>
+<div class="bg-pearl-ground/80 backdrop-blur-md px-margin-mobile pb-8 pt-4 w-full border-t border-surface-container-low/50">
+<div class="max-w-2xl mx-auto flex flex-col gap-4">
+<!-- Privacy Note -->
+<div class="flex items-start gap-2 text-on-surface-variant px-2">
+<span class="material-symbols-outlined text-[18px] mt-0.5 text-ghaf-emerald" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+<p class="font-label-md text-label-md">لا نطلب بريد الطفل أو رقم هاتفه.</p>
+</div>
+<!-- Primary Action -->
+<button class="w-full h-[56px] rounded-xl bg-ghaf-emerald text-on-primary font-label-md text-label-md shadow-sm hover:bg-primary hover:shadow-md transition-all active:scale-[0.98] flex items-center justify-center" type="button">
+                    متابعة
+                </button>
+<!-- Prototype Note -->
+<p class="text-center font-label-sm text-label-sm text-outline/60 mt-1">نسخة تجريبية ببيانات اصطناعية</p>
+</div>
+</div>
+</div>
+<!-- Script for simple interactive prototyping feel -->
+<script>
+        // Simple logic to toggle active states on buttons for prototype feel
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[type="button"]');
+                if (!btn) return;
+
+                // Handle single-select pill groups (Age, Language)
+                const groupContainer = btn.parentElement;
+                if (groupContainer.classList.contains('flex-wrap') && !btn.querySelector('.material-symbols-outlined')) {
+                    // Reset others in group
+                    Array.from(groupContainer.children).forEach(sibling => {
+                        sibling.className = "px-6 py-3 rounded-full bg-surface-container-lowest text-on-surface border border-outline-variant font-label-md text-label-md transition-colors hover:bg-surface-container-low";
+                    });
+                    // Set active
+                    btn.className = "px-6 py-3 rounded-full bg-ghaf-emerald/10 text-ghaf-emerald border border-ghaf-emerald font-label-md text-label-md transition-colors hover:bg-ghaf-emerald/20";
+                }
+
+                // Handle multi-select chips (Accessibility)
+                if (groupContainer.classList.contains('flex-wrap') && btn.querySelector('.material-symbols-outlined') || btn.innerText === 'ليس الآن') {
+                    if (btn.classList.contains('bg-surface-container-lowest')) {
+                        btn.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant', 'border-outline-variant');
+                        btn.classList.add('bg-secondary-container', 'text-on-secondary-container', 'border-secondary-container');
+                    } else {
+                        btn.classList.add('bg-surface-container-lowest', 'text-on-surface-variant', 'border-outline-variant');
+                        btn.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'border-secondary-container');
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>

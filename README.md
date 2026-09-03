@@ -1,24 +1,25 @@
 # Ghaf — غاف
 
-Ghaf is an Arabic-first Parent–Child family routine prototype for SMAC 2026. A Parent prepares a
-safe, age-appropriate task; a Child completes it with permitted help; the Parent confirms it and
-gives specific praise; eligible acquisition work earns fixed symbolic Seeds and grows a shared UAE
-living garden.
+Ghaf is an Arabic-first Parent–Child family routine prototype for SMAC 2026. The approved Revision 2
+direction combines Parent-approved tasks, bounded AI support, permanent Seeds and UAE landscapes,
+an invite-only weekly Family League, and optional private Parent-funded Family Rewards inside one
+app with separate Parent and Child access experiences.
 
-> This is a competition MVP, not a production child-data service. It uses one synthetic household,
-> deterministic local providers, and visibly prepared assistant/media fixtures. It requires no API
-> key, account, backend, camera, microphone, or real Child information.
+> Revision 2 is partially implemented. The approved R001 Batch 1 delivers Welcome and first-time
+> Parent onboarding; all later screens remain on hold until their Google Stitch designs are
+> supplied and approved. The older ten-route journey remains a preserved Revision 1 baseline.
 
 ## Current status
 
-| Area                 | Current evidence                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | Feature 003 — Family Growth Garden is implemented as one ten-route deterministic P0 journey                                                 |
-| Automated checks     | 17 test files / 305 tests, TypeScript, Expo ESLint, Prettier, and Expo dependency alignment passed at the latest recorded checkpoint        |
-| Web preview          | Arabic RTL and English LTR journeys passed at a 390×844 browser proxy with no runtime errors or horizontal overflow                         |
-| Android              | Authoritative physical-device validation is **BLOCKED** on this host because the Android SDK, ADB, Java, and a named device are unavailable |
-| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers     |
-| Production readiness | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                   |
+| Area                 | Current evidence                                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product contract     | Feature 003 Revision 2 approved; separate access, role navigation, League, Family Reward, voice, and typography documented                        |
+| Runtime              | R001 Batch 1 implemented; all later Revision 2 screens remain **ON HOLD** pending their approved Stitch designs                                   |
+| Historical checks    | Revision 1: 17 test files / 305 tests plus TypeScript, lint, format, Expo checks, and bilingual web-proxy journey passed                          |
+| Revision 2 evidence  | Batch 1: 20 test files / 332 tests and bilingual web-proxy checks passed; full Revision 2 evidence remains incomplete                             |
+| Android              | Windows release APK build/install passed on SM_T835; the observed Arabic/English physical journey and native interaction gates remain **NOT RUN** |
+| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers           |
+| Production readiness | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                         |
 
 The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
 does not count as native-device or human-review evidence.
@@ -86,9 +87,10 @@ Useful individual commands:
 
 These automated tests do not replace Android, accessibility, media, or human acceptance checks.
 
-## Demonstrate the P0 loop
+## Current runnable baseline
 
-The canonical judge flow is:
+The runnable app starts with the R001 Welcome and Parent onboarding slice, then hands off to the
+preserved Revision 1 Parent surface. That historical surface still demonstrates this older flow:
 
 ```text
 Parent creates and reviews a Green Impact task
@@ -98,7 +100,7 @@ Parent creates and reviews a Green Impact task
   → Mangrove reaches 60/60, canopy reaches 20/25, circle reaches 12/12
 ```
 
-Use [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md) for the exact bilingual route sequence and expected values.
+Use [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md) for the evidence separation and historical route sequence.
 To reset manually, enter Parent mode, open a Parent route, choose **Reset demo** in the top prototype
 bar, and confirm. The app returns to `/` in Arabic RTL with the canonical synthetic baseline.
 
@@ -137,6 +139,8 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
 - [Product contract](PRODUCT.md) — users, behavior, reward/garden rules, AI jobs, and P0 scope.
 - [Design contract](DESIGN.md) and [design direction](DESIGN_DIRECTION.md) — system rules and visual
   north star.
+- [Google Stitch prompt pack](GHAF_GOOGLE_STITCH_PROMPT_PACK.md) — approved design-generation input;
+  generated screens are not implementation authority until the user approves them.
 - [Research basis](RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale.
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
 - [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
@@ -149,8 +153,11 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
 - Seeds are fixed, nonfinancial, permanent, and never deducted.
 - The Child Coach is bounded to the approved task; no age band receives unrestricted chat.
 - Prepared assistants disclose that they may be wrong and direct hazards to a trusted adult.
-- Cross-household views receive only coarse eligible Green Impact events—never Child identity,
-  Seeds, task records, notes, reflection, or media.
+- The invite-only League may show only approved nickname, tree avatar, weekly rank, normalized
+  score, and completed Challenge Leaves; never task details, evidence, age, accommodations, money,
+  private categories, or unrestricted messages.
+- Family Rewards are private Parent promises fulfilled outside the app, with no wallet, payment,
+  custody, cash-out, or universal Seed-to-AED exchange rate.
 - Symbolic garden growth is not a claim that real trees were planted or environmental impact was
   measured.
 - Live AI, production authentication/storage, real Child data/media, public ranking, payments,
