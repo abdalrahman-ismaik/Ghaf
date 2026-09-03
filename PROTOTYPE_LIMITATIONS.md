@@ -2,16 +2,18 @@
 
 ## Capability Truth
 
-Ghaf — غاف is an MVP prototype for Khalifa University SMAC 2026. Feature 003 Revision 2 records a
-new product target: separately accessed Parent and Child experiences, a fair invite-only Family
-League, optional private Family Rewards, age-adapted bounded coaching, and a new bilingual
-typography system. It is not production-ready and must not be presented as an authenticated child
-service, secure family network, banking product, diagnostic system, religious authority, verified
-impact platform, or legally compliant deployment.
+Ghaf — غاف is an MVP prototype for Khalifa University SMAC 2026. Feature 003 Revision 3 planning
+inherits Revision 2's separately accessed Parent and Child experiences, fair invite-only Family
+League, optional private Family Rewards, age-adapted bounded coaching, and bilingual typography,
+then proposes a private Growth Journey with an Impact Path, badges, and sourced learning. It is not
+production-ready and must not be presented as an authenticated child service, secure family
+network, banking product, diagnostic system, religious authority, verified impact platform, or
+legally compliant deployment.
 
-As of 2026-09-01, Revision 2 is documented but not designed or implemented. Implementation and
-design validation are on hold until the approved Google Stitch frames arrive and the active Feature
-003 specification, plan, and tasks are revised.
+As of 2026-09-03, R001 Welcome and first-time Parent onboarding are implemented with scoped
+automated/web evidence and Android build/install evidence. Every later Revision 2 surface and all
+Growth Journey runtime/design validation remain on hold until their approved Google Stitch frames
+arrive and the active Feature 003 artifacts are reconciled.
 
 ## Superseded Historical Baseline
 
@@ -25,7 +27,7 @@ passkey presentation, Parent reauthentication, League score/privacy, reward-plan
 controls, Alexandria/Readex rendering, revised navigation, physical Android, or named human review.
 Feature 002 evidence remains historical as well and must not be rewritten or inherited.
 
-## Revision 2 Capability Matrix
+## Inherited Revision 2 and Proposed Revision 3 Capability Matrix
 
 | Classification                 | Revision 2 treatment                                                                                                                                                                                  |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -43,16 +45,52 @@ or simulated result is labeled at the point of use and never described as live.
 
 ## Current Evidence Status
 
-| Revision 2 gate                                                                      | Status                                               |
-| ------------------------------------------------------------------------------------ | ---------------------------------------------------- |
-| Product decision recorded in canonical documents                                     | `PASSED` — Revision 2 contract aligned on 2026-09-01 |
-| Approved Stitch screen frames and exported design rules                              | `NOT RUN` — frames not yet supplied                  |
-| Revised Spec Kit requirements, plan, tasks, and acceptance contract                  | Recorded; implementation release remains `BLOCKED`   |
-| Revision 2 code, tests, and deterministic replay                                     | `NOT RUN`                                            |
-| Arabic RTL and English LTR frame/browser validation                                  | `NOT RUN`                                            |
-| Alexandria and Readex Pro native rendering                                           | `NOT RUN`                                            |
-| Physical Android access, Back, keyboard, permissions, voice, RTL, and reduced motion | `NOT RUN`/environment-dependent `BLOCKED`            |
-| Emirati Arabic, child-safety, accessibility, League, reward, and rehearsal review    | `NOT RUN`                                            |
+| Scope/gate                                                                                         | Status                                                                                                           |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Revision 2 product decision                                                                        | `PASSED` — canonical contract aligned on 2026-09-01                                                              |
+| R001 Welcome/Parent-onboarding Stitch frames and release rules                                     | `PASSED` for the seven-screen partial release only                                                               |
+| R001 source, focused tests, Arabic RTL/English LTR web proxy                                       | `PASSED` within the recorded Batch 1 boundary                                                                    |
+| R001 Android build and install on SM_T835                                                          | `PASSED`; rendered physical journey, Back, keyboard, TalkBack, scale, and reduced motion remain `NOT RUN`        |
+| R001 Alexandria/Readex integration                                                                 | `PASSED` for local loading/configuration and scoped automation; direct native visual rendering remains `NOT RUN` |
+| Later Revision 2 and Growth Stitch frames/specs/assets                                             | `NOT RUN` — not supplied                                                                                         |
+| Revision 3 Growth product/domain planning                                                          | Recorded; implementation release remains `BLOCKED`                                                               |
+| Growth evaluator, source, tests, routes, persistence, and replay                                   | `BLOCKED` / `NOT RUN`                                                                                            |
+| Growth web and physical Android evidence                                                           | `NOT RUN`                                                                                                        |
+| Emirati Arabic, factual, child-safety, accessibility, League, reward, rights, and rehearsal review | `NOT RUN`                                                                                                        |
+
+Growth Journey prompt documents have been received and reconciled for planning only. No Growth
+Journey PNG, screen specification, approved asset, route, evaluator, implemented badge, reviewed
+Child-facing story, migration, web walk, or Android observation exists yet; all such evidence is
+`BLOCKED` or `NOT RUN`. The badge definitions and learning contract are planning records only.
+
+## Growth Journey, Badge, and Learning Limits
+
+- Impact Path is a synthetic local projection of confirmed lifetime Seeds, not measured impact,
+  money, XP, a paid pass, or a production account history.
+- The exact 16 proposed badges are private Ghaf product definitions. They are not government,
+  tourism, UNESCO, school, venue, or environmental accreditations and do not prove character,
+  mastery beyond their stated criteria, a visit, or real-world impact.
+- Badge and path persistence across an app restart is a planned local prototype behavior, not yet
+  implemented. There is no cloud sync, backup, account recovery, cross-device consistency, or
+  production migration.
+- Historical badge migration may use only provable immutable synthetic evidence. It cannot infer
+  missing learning, action, Seed, visit, or maintenance history.
+- Learning and activity completion are planned deterministic local events with zero Seeds and zero
+  garden growth. The story-disabled/Parent-guided route is equal-credit, not a lesser option.
+- The source ledger is research input. Links may change; factual, Arabic/UAE cultural,
+  safeguarding, accessibility, and rights review are `NOT RUN`. Access dates are not Ghaf approval.
+- Place-inspired stories require no GPS, location/venue check-in, Child photo, Child audio, map, or
+  external web access. They cannot imply a physical visit, partnership, certification, official
+  endorsement, or current venue availability.
+- Badge art must be original. The prototype may not copy game-pass layouts, chests, crowns, rarity
+  treatments, government seals, tourism branding, official logos, flags, or attraction imagery.
+- The proposed Opening Moment and first-run introduction are presentation only. They cannot create
+  a profile, mutate progress, request permissions, or delay a ready route for marketing.
+- Manual introduction replay preserves all domain state. The Parent-authorized demo reset remains
+  an explicit fixture reset and is distinct from ordinary restart/replay.
+- `RevealBundle` is a planned single result surface, not a new source of truth. It must display the
+  immutable receipt and preserve praise, Seed, garden, canopy, League, path/badge, and private
+  Family Reward ordering.
 
 No old pass may be copied into this table.
 
@@ -100,7 +138,7 @@ family conflict, unsafe extra work, sleep loss, inaccessible opportunities, pres
 or rank displacing task meaning. The prototype does not infer these conditions from activity,
 voice, or facial data.
 
-`leagueEligible` is not `circleEligible`. The latter remains restricted to a coarse,
+`challengeLeafEligible` is not `circleEligible`. The latter remains restricted to a coarse,
 household-visible Green Impact activity event; neither field may expose the underlying task record.
 
 ## Family Reward and Money Limits
@@ -198,7 +236,8 @@ qualified religious adviser, or financial adviser.
 Revision 2 requires Alexandria for display type and Readex Pro for body/UI type in both languages,
 true Arabic RTL, matched English LTR, generous Arabic line height, no artificial Arabic tracking,
 tabular numerals, mixed-direction handling, scaling, and unclipped labels. These requirements are
-design targets until the fonts are integrated and tested.
+implemented locally for the released R001 slice with scoped automated/web evidence. Direct native
+visual rendering and every later screen remain unvalidated design targets.
 
 - Font selection alone does not validate Arabic shaping, diacritics, mixed `AED 25`/`١٢٠ بذرة`,
   Android fallback, weight availability, screen-reader order, dynamic type, or long labels.
@@ -252,26 +291,35 @@ habitat, offsets carbon, saves verified litres, or proves environmental change.
 
 ## Technical Limits
 
-- Current source code implements the superseded ten-route baseline, not Revision 2.
-- Revised routes, navigation guards, access state, League, reward plans, fonts, and voice controls
-  must not be inferred from documentation alone.
-- P0 state may remain local/in memory and reset on reload. Every new account, credential, pairing,
-  task, reward, League row, reaction, media item, and assistant response is synthetic.
+- Current source preserves the superseded ten-route Revision 1 baseline and implements only the
+  bounded R001 Welcome/first-time Parent-onboarding slice of Revision 2. It does not implement the
+  remaining role shells or Growth Journey.
+- Unreleased routes, navigation guards, Child access, League, reward plans, voice controls, Growth
+  projections, and screen designs must not be inferred from documentation alone.
+- Current prototype domain state is local/in memory. Revision 3 proposes a small versioned local
+  persistence adapter for permanent path/badge restart behavior, but no dependency, migration, or
+  implementation is approved. Production persistence, backup, sync, and recovery remain out of
+  scope.
+- Every new account, credential, pairing, task, reward, League row, reaction, badge, learning
+  event, media item, and assistant response is synthetic or prepared as labelled.
 - No native camera capture, QR scan, biometric verification, microphone recording, upload,
   background audio, payment API, or remote social service is promised.
 - Web/source evidence cannot pass Android RTL, font, keyboard, Back, biometric, media, permission,
   reduced-motion, screen-reader, or physical-device requirements.
-- Old Feature 002/003 tests and screenshots do not pass Revision 2 acceptance.
+- Old Feature 002/003 tests and screenshots do not pass later Revision 2 or Revision 3 acceptance.
 
 ## Public Demo Disclosure
 
-Use this language only after Revision 2 is implemented and validated for the demo:
+Use this expanded language only after the complete applicable revision is implemented and
+validated for the demo:
 
-> Ghaf's family journey, League rules, private reward-plan states, bilingual interface, and local
-> reset are prototype interactions. Parent and Child access, pairing, reauthentication, children,
-> family members, rewards, media, voice, and assistant conversations are synthetic simulations.
-> Ghaf does not authenticate real families, listen to children, transfer money, provide open social
-> communication, or claim verified environmental impact.
+> Ghaf's family journey, private Impact Path and badges, League rules, private reward-plan states,
+> bilingual interface, and local reset are prototype interactions. Parent and Child access,
+> pairing, reauthentication, children, family members, rewards, learning, media, voice, and
+> assistant conversations are synthetic or prepared simulations. Ghaf does not authenticate real
+> families, listen to children, verify visits, transfer money, provide open social communication,
+> represent an official partner, or claim verified environmental impact.
 
-Until then, describe Revision 2 as the approved product/design target and the 2026-08-28 build as a
-superseded historical baseline—not as the current implemented demo.
+Until then, describe R001 as the only implemented partial release, Revision 3 as planning blocked
+on Stitch, and the 2026-08-28 build as a preserved historical baseline—not as the complete current
+product.

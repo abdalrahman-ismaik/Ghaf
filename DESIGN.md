@@ -1,6 +1,6 @@
 ---
-name: 'Ghaf — غاف Revision 2 · R001 Batch 1'
-description: 'Canonical Arabic-first foundations and Parent-onboarding design contract; later Revision 2 screens remain blocked.'
+name: 'Ghaf — غاف Revision 3 Planning · R001 Batch 1'
+description: 'Canonical R001 foundations and Parent-onboarding design; later Revision 2 and all Growth Journey screens remain blocked.'
 colors:
   pearl-ground: '#F7F8F3'
   surface: '#F9FAF5'
@@ -35,17 +35,22 @@ typography:
   caption-minimum: '14/22'
 ---
 
-# Ghaf Revision 2 Design Contract
+# Ghaf Feature 003 Design Contract — Revision 3 Planning
 
-**Status:** **PARTIALLY APPROVED — GHAF R001 BATCH 1**
+**Status:** **R001 PARTIALLY APPROVED; GROWTH JOURNEY DESIGN BLOCKED**
 
-**Approved product/UX:** 2026-09-01
+**Revision 2 product/UX approved:** 2026-09-01
+
+**Revision 3 Growth Journey:** accepted for planning on 2026-09-03; visual design not approved
 
 **Approved screen design:** Welcome and first-time Parent onboarding, 2026-09-02
 
 **Implementation:** RELEASED for the named Batch 1 routes/foundations; ON HOLD elsewhere
 
 **Generation input:** [`GHAF_GOOGLE_STITCH_PROMPT_PACK.md`](GHAF_GOOGLE_STITCH_PROMPT_PACK.md)
+
+**Growth Journey input:**
+[`docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/`](docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/)
 
 **Creative brief:** [`DESIGN_DIRECTION.md`](DESIGN_DIRECTION.md)
 
@@ -57,9 +62,11 @@ composition reference. The generated HTML is a measurement/structure hint and ne
 authority. The exact partial release is recorded in
 `specs/003-family-growth-garden/design-intake/release-gate.md`.
 
-Every later Revision 2 family remains a durable design requirement but not an executable visual
-contract. Do not infer or implement its exact composition, assets, navigation appearance, or
-motion until an approved Stitch release expands the gate.
+Every later Revision 2 family and every Revision 3 Growth Journey family remains a durable design
+requirement but not an executable visual contract. The new prompt pack's route names, interfaces,
+timings, fixed viewport language, and instructions to refine an existing Child shell are proposals.
+Do not infer or implement exact composition, assets, navigation appearance, or motion until an
+approved Stitch release expands the gate.
 
 The 2026-08-28 ten-route design remains historical evidence only. Its system font, role switch,
 cooperative-only circle, and route composition are not Revision 2 targets.
@@ -99,6 +106,7 @@ Parent approves a useful task
   → Parent confirms and gives specific praise
   → permanent Seeds and UAE landscape growth appear
   → an eligible weekly Challenge Leaf and family canopy update
+  → private Impact Path stations and badges explain what changed
   → an optional private Family Reward may unlock last
 ```
 
@@ -141,6 +149,9 @@ Persistent destinations: Today, Garden, League.
 13. Child Garden, celebration, and private reward unlock
 14. Child Friendly League
 15. Role-appropriate profile, settings, permissions, devices, and reauthentication
+16. First-run Opening Moment and three role-neutral introduction panels
+17. Nested Child Impact Path, Badge Gallery, Badge Detail, and finite Learning Package
+18. Parent selected-Child Progress & Achievements view
 
 “Approximately 14 screen families” describes information architecture, not a hard route count.
 The approved Stitch handoff must identify which steps are routes, nested routes, sheets, or states.
@@ -148,6 +159,11 @@ The approved Stitch handoff must identify which steps are routes, nested routes,
 For R001 Batch 1, the exact access routes above are frozen. The persistent Parent and Child shells
 remain blocked because no tab frame was supplied. The final success action may enter the preserved
 `/parent` integration destination but does not authorize its redesign.
+
+Growth Journey adds no persistent destination. **مسار الأثر** and **شاراتي** are nested under Child
+Garden, with one compact Today entry. Parent progress begins from the existing selected-Child
+Family/profile context. The proposed introduction finishes or skips into R001 `/`; it must not
+create an account, infer a role, or return to `/role`.
 
 The removed `/role` screen must not return. Parent and Child are separate access sessions; ordinary
 navigation cannot cross the boundary.
@@ -200,7 +216,38 @@ must not imply production security.
 - `SeedIndicator`: permanent symbolic growth, never money.
 - `LandscapeTrack`: Ghaf, Samar, Sidr, date-palm oasis, or mangrove; stage and next milestone.
 - `FamilyCanopy`: cooperative household growth.
-- `GrowthCelebration`: praise → Seeds → mapped landscape → canopy → optional later unlock.
+- `RevealBundle`: one prospective replacement for standalone Growth Celebration, containing praise
+  → any self-reported activity result → Seeds → mapped landscape → canopy/Challenge Leaf/League →
+  Path/badges/recognition → private Family Reward last. Exact composition remains Stitch-blocked.
+
+### Growth Journey — pending Stitch
+
+Related planning contracts: [Growth preflight](specs/003-family-growth-garden/design-intake/growth-journey-preflight.md),
+[badge catalog](docs/content/BADGE_CATALOG.md),
+[learning stories](docs/content/LEARNING_STORIES.md), and
+[projection ADR](docs/architecture/adr/0002-impact-path-projection.md).
+
+- `OpeningMoment`: brief, interruptible branded state after native launch; never a fake system
+  splash or forced marketing delay.
+- `FirstRunIntroduction`: exactly three role-neutral, skippable/replayable panels with an isolated
+  demo that cannot mutate profile progress.
+- `ImpactPathCard`, `ImpactPathChapter`, `PathStation`, `ArchivedLandscape`: one free cumulative
+  path derived from confirmed lifetime Seeds; no fourth tab or second currency.
+- `BadgeTile`, `BadgeGallery`, `BadgeDetail`: earned, in-progress, next-recommended, locked, and
+  awaiting-review states with exact component criteria, permanence, privacy, and source status.
+- `LearningPackage`: finite sourced story and equal-credit story-disabled/Parent-guided route; zero
+  Seeds and garden growth.
+- `ParentChildProgress`: selected profile only, recent earned criteria and structured in-progress
+  components; no sibling comparison, ranking, behavior score, or inferred interests.
+
+The P0 chapter is Water & Coast, 120–180 lifetime Seeds, with stations at 120, 132, 144, 156, 168,
+and 180. Mangrove 60/60 remains a completed landscape record while the path displays 120/180.
+Station 132 unlocks the learning package and badge progress, not the Mangrove Care badge itself.
+Station 180 cannot advance a landscape unless the independent landscape rule also qualifies.
+
+Badge art uses original botanical/geometric imagery and the mastery terms **برعم · غصن · ظل**.
+Avoid metallic rails, tier plates, chests, crowns, rarity beams, glowing claim buttons, dual paid
+rows, copied game layouts, tourism branding, seals, flags, and certification motifs.
 
 ### League
 
@@ -330,6 +377,11 @@ Use short logical route transitions, immediate press response, one contained ass
 one causal growth sequence. League confirmation may settle one Leaf; reward unlock appears only
 after growth. State commits do not depend on animation callbacks.
 
+Opening Moment and RevealBundle must be immediately understandable without motion, interruptible,
+and finite. Standard transitions may be brief; exact timing comes from approved motion frames, not
+the prompt pack. Reduced motion uses state/opacity changes without travelling Seeds, bursts, or
+parallax and preserves every consequence and focus transition.
+
 No cash-register, casino, failure, alarm, streak, ranking-loss, or engagement-lure sound. Sound is
 optional and never needed for comprehension.
 
@@ -345,18 +397,24 @@ For R001 Batch 1, focused, disabled, loading, validation-error, offline-fallback
 are released through shared semantic components even though no separate state PNG was supplied.
 Permission, pairing, PIN, AI, confirmation, reward, League, and circle states remain blocked.
 
+Growth Journey additionally requires first/returning/bootstrap-recovery, introduction step/skip/
+replay, current/next/reached/archive, earned/in-progress/next/locked/awaiting-review, composite
+criterion, source-review, story-disabled, wrong-answer retry, duplicate/seen/recovered reveal,
+profile-empty/isolation, and Parent-progress offline/error states. None is visually approved yet.
+
 ## Explicit Exclusions
 
 No public/global leaderboard, discovery, direct messaging, free text, comments, task/evidence
 sharing, location, school, public profile, winner-take-all prize, money in League, wallet, shop,
 Seed exchange rate, payment/custody, randomized reward, punitive streak, countdown pressure, dying
-tree, role toggle, chat tab, AI companion, diagnosis, emotion/truth/religiosity score, surveillance
-timeline, environmental-impact conversion, generic UAE ornament, cartoon mascot, neon, glass,
-confetti storm, or cash shower.
+tree, paid path, premium tier, purchasable/tradable badge, rarity, public badge sharing, autoplay
+reward queue, GPS/visit/photo/audio proof, role toggle, chat tab, AI companion, diagnosis,
+emotion/truth/religiosity score, surveillance timeline, environmental-impact conversion, generic
+UAE ornament, cartoon mascot, neon, glass, confetti storm, or cash shower.
 
 ## Stitch Intake Checklist
 
-Before releasing the complete Revision 2 design:
+Before releasing the complete Revision 3 design:
 
 - [x] User supplied and approved `ghaf-r001` Batch 1 and its Soft Organic Modernism direction.
 - [x] Exact Batch 1 route, Back, success-modal, token, and font decisions are recorded.
@@ -370,6 +428,13 @@ Before releasing the complete Revision 2 design:
       have design-level acceptance targets.
 - [ ] Product, safety, League privacy, Family Reward, and capability labels pass review.
 - [ ] Feature plan/tasks name exact runtime files and new evidence gates.
+- [x] Growth Journey preflight records product/data conflicts and the exact required future frame
+      inventory.
+- [ ] Growth Journey supplies canonical Arabic and matched English full-screen frames, mandatory
+      `screen-spec.md`, material states, original asset provenance, and prerequisite Child/Parent
+      shell frames.
+- [ ] Badge/source/content and equal-credit learning routes pass named factual, cultural,
+      safeguarding, accessibility, and rights review.
 
 Until every remaining item is resolved, implementation outside the explicit R001 Batch 1 release
 remains blocked.

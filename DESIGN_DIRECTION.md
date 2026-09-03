@@ -1,8 +1,10 @@
-# Ghaf Design Direction — Revision 2
+# Ghaf Design Direction — Revision 3 Planning
 
-**Product/UX direction:** APPROVED on 2026-09-01
+**Revision 2 product/UX direction:** APPROVED on 2026-09-01
 
-**Visual direction:** R001 Batch 1 approved; later screen families pending
+**Revision 3 Growth Journey:** accepted for planning on 2026-09-03; visual direction pending
+
+**Visual direction:** R001 Batch 1 approved; later Revision 2 and Growth Journey families pending
 
 **Implementation:** PARTIALLY RELEASED for foundations and Parent onboarding
 
@@ -10,8 +12,9 @@
 
 ## Status and Authority
 
-This document records the durable design brief for Feature 003 Revision 2. It supersedes the
-Revision 1 ten-route, role-switch, cooperative-circle design as an implementation target. The
+This document records the durable design brief for Feature 003 Revision 3 planning. It inherits the
+approved Revision 2 role, League, reward, and safety contract and supersedes the Revision 1
+ten-route, role-switch, cooperative-circle design as an implementation target. The
 2026-08-28 design and web evidence remain historical only.
 
 The canonical generation workflow is
@@ -20,6 +23,17 @@ design authority only after the user supplies and explicitly approves them. The 
 `docs/design/stitch/releases/ghaf-r001/` on 2026-09-02 for the foundations, Welcome, and first-time
 Parent onboarding only. Its PNGs now govern that composition; its HTML is a non-runtime hint.
 Runtime work outside the partial release remains blocked.
+
+The user-supplied
+[`GHAF_GROWTH_JOURNEY_PROMPT_PACK`](docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/) is additional creative
+and product input. It does not prove that Child Today/Garden, Parent progress, entry, or reveal
+screens have been designed. Its route suggestions, interfaces, timings, and 390×844 language are
+non-executable until a new approved Stitch release is reconciled in
+[`growth-journey-preflight.md`](specs/003-family-growth-garden/design-intake/growth-journey-preflight.md).
+
+Related planning contracts are the [badge catalog](docs/content/BADGE_CATALOG.md),
+[learning stories](docs/content/LEARNING_STORIES.md), and
+[Impact Path projection ADR](docs/architecture/adr/0002-impact-path-projection.md).
 
 The partial release and unresolved evidence are recorded in
 `specs/003-family-growth-garden/design-intake/release-gate.md`.
@@ -77,6 +91,40 @@ relevant task or decision, not exposed as a chat tab.
 
 Never represent Seeds as money, Challenge Leaves as another currency, the canopy as an individual
 score, or Family Reward as a wallet.
+
+Impact Path is not another mechanism or currency. It is the Child's private map of confirmed
+lifetime Seeds plus separately proven action/learning evidence. It never affects League rank,
+spends progress, or exposes another Child.
+
+## Growth Journey Direction — Pending Stitch
+
+The creative idea is an original botanical trail through UAE habitats and living heritage. It may
+borrow the clarity of a visible milestone road—current position, a few next stations, transparent
+criteria, and a permanent collection—without borrowing a battle pass's economy, urgency, visual
+grammar, or social status.
+
+- Keep the existing three Child tabs. Today gets one compact path card; Garden owns prominent
+  **مسار الأثر** and **شاراتي** entries; League remains the approved private invite-only League.
+- Keep the Ghaf tree and family canopy visually dominant across the product. Mangrove is the first
+  chapter, not a replacement identity.
+- Show the completed Mangrove 60/60 as preserved history and the cumulative path as 120/180. Never
+  reuse one progress denominator for the other.
+- Present a small number of reachable stations and explicit composite criteria. Locked content is
+  understandable, not mysterious, priced, timed, glowing, or labelled rare.
+- Use **برعم · غصن · ظل** as noncompetitive mastery language and original botanical/geometric badge
+  art. No crown, chest, metallic rail, rarity beam, dual premium row, seal, flag, or copied game
+  composition.
+- One combined RevealBundle explains all outcomes and then stops. Praise leads; private Family
+  Reward remains last. Never stack a Garden modal, badge modal, and reward modal.
+- One finite sourced Mangrove story and a visible equal-credit alternative end cleanly. Source rows
+  are readable; named places never imply a visit, partnership, certification, or official badge.
+- A brief first-install Opening Moment and exactly three role-neutral introduction panels may layer
+  before R001 access only after approval. Skip and replay are quiet, progress-neutral choices.
+- Parent progress is a calm selected-Child summary, never a sibling comparison, diagnostic insight,
+  morality score, or inferred interest profile.
+
+There is no paid path, shop, boost, loot box, random drop, streak loss, countdown, expiring progress,
+autoplay, public badge profile, public sharing, GPS, location/venue check-in, or photo/audio proof.
 
 ## Friendly League Direction
 
@@ -203,7 +251,9 @@ Family Reward, or growth celebration may be inferred from these onboarding frame
 
 Motion explains a cause and then stops: access success, selection, bounded assistant result,
 Parent praise, Seed movement, landscape stage change, canopy leaf, Challenge Leaf confirmation, and
-private reward unlock. Reduced motion presents the same ordered final result immediately with text.
+private reward unlock. Growth Journey adds only a brief interruptible opening and one finite
+combined result. Reduced motion presents the same ordered final result immediately with text; exact
+timings require approved motion references.
 
 No confetti storm, slot-machine reveal, cash-register sound, streak flame, alarm, failure sound,
 looping lure, or animation-dependent state commit.
@@ -213,8 +263,9 @@ looping lure, or animation-dependent state commit.
 Do not introduce a public/global leaderboard, public Child profile, free-text messaging, public
 task/evidence sharing, wallet, store, Seed cash-out, paid boost, cash shower, role toggle, chat tab,
 AI friend, diagnostic summary, surveillance timeline, generic Material template, glassmorphism,
-neon gaming UI, faux luxury gold, beige heritage brochure, camel/falcon/mosque ornament, cartoon
-mascot, excessive cards, dying vegetation, shame, or unsupported environmental-impact numbers.
+neon gaming UI, premium path, rarity tier, glowing claim loop, public badge sharing, GPS/visit
+proof, faux luxury gold, beige heritage brochure, camel/falcon/mosque ornament, cartoon mascot,
+excessive cards, dying vegetation, shame, or unsupported environmental-impact numbers.
 
 ## Design Intake Exit Gate
 
@@ -233,3 +284,8 @@ team record:
 The same requirements remain open for every screen outside R001 Batch 1. Within the partial batch,
 the exact route/component map, design audits, state assumptions, and local font decision are frozen
 under `specs/003-family-growth-garden/design-intake/`.
+
+The Growth Journey release must additionally supply full Arabic/English frames and mandatory
+screen specifications for the entry layer, complete Child Today/Garden/League shell, Path, Gallery,
+Detail, combined RevealBundle, learning/equivalent routes, Parent Check-in/result handoff, and Parent
+selected-Child origin. Nested feature frames without those prerequisites do not pass the gate.

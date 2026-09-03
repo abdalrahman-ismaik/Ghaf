@@ -4,16 +4,22 @@
 
 ## Status
 
-| Item                    | Truth as of 2026-09-01                                                                                                                                      |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product                 | Ghaf — غاف                                                                                                                                                  |
-| Competition             | Khalifa University SMAC 2026                                                                                                                                |
-| Official theme          | AI Adventures in Sustainability                                                                                                                             |
-| Active product decision | Feature 003 Revision 2 — separately accessed Parent and Child experiences, Friendly League, and optional Family Rewards                                     |
-| Current phase           | Revision 2 product and Spec Kit documents aligned; screen design and implementation are on hold until the approved Google Stitch frames arrive              |
-| Implementation evidence | `NOT RUN` for Revision 2; no 2026-08-28 result carries forward to the revised screen, access, League, reward, voice, font, native, or human-review criteria |
-| Primary platform        | Android-first; Arabic-first RTL with an equivalent English LTR experience                                                                                   |
-| Prototype data          | Synthetic only                                                                                                                                              |
+| Item                    | Truth as of 2026-09-03                                                                                                                                   |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product                 | Ghaf — غاف                                                                                                                                               |
+| Competition             | Khalifa University SMAC 2026                                                                                                                             |
+| Official theme          | AI Adventures in Sustainability                                                                                                                          |
+| Active product decision | Feature 003 Revision 3 planning target — Revision 2 plus the private Growth Journey, Impact Path, badges, and sourced learning                           |
+| Current phase           | R001 Welcome/Parent setup is implemented; Growth Journey product/domain planning is recorded and all new runtime remains blocked pending approved Stitch |
+| Implementation evidence | R001 Batch 1 has scoped automated/web evidence and Android build/install evidence; Growth Journey runtime, native, and human evidence is `NOT RUN`       |
+| Primary platform        | Android-first; Arabic-first RTL with an equivalent English LTR experience                                                                                |
+| Prototype data          | Synthetic only                                                                                                                                           |
+
+## Platform
+
+Ghaf is one responsive Expo/React Native application. Physical Android is the authoritative demo
+surface; web is a secondary visual and test proxy. The 390×844 Stitch viewport is a composition
+reference, never a fixed runtime canvas.
 
 ## Superseded Baseline
 
@@ -22,14 +28,15 @@ explicitly superseded historical baseline. Its automated checks and Arabic/Engli
 journeys describe only that mounted build: `/role`, forced Parent–Child switching, the cooperative
 `/circle` screen, no Family Reward, and the previous typography.
 
-Revision 2 does not inherit those passes. It replaces the product architecture and adds new
+Revision 2 did not inherit those passes. It replaced the product architecture and added new
 acceptance surfaces. The old implementation must not be presented as evidence for separate access,
 pairing, reauthentication, Friendly League fairness/privacy, Family Reward states, voice controls,
 Alexandria/Readex rendering, the revised navigation, physical Android, or named human review. Do
 not backport the redesign into Feature 002 or rewrite historical evidence.
 
-No Revision 2 UI implementation should begin until the approved Stitch frames and their exported
-design rules are available and the active Feature 003 specification, plan, and tasks are updated.
+R001 now implements only the approved Welcome and first-time Parent setup slice. Every later
+Revision 2 surface and every Revision 3 Growth Journey surface remains behind its own Stitch gate.
+The supplied Growth Journey prompt pack is planning input, not a visual release.
 
 ## Product Promise
 
@@ -54,6 +61,10 @@ assignment, confirmation, permissions, family membership, and any real-world rew
 These meanings must never collapse into one currency. A Child cannot buy rank, convert a Seed to a
 fixed AED amount, or lose garden progress when the weekly League resets.
 
+Impact Path is not a fifth economic meaning. It is a private, derived view of permanent confirmed
+Seeds and separately proven learning/action evidence; it cannot spend, mint, transfer, rank, or
+monetize anything.
+
 ## Users and Access
 
 - **Child, ages 6–14:** enters a protected Child experience without an email or phone number,
@@ -67,7 +78,8 @@ fixed AED amount, or lose garden progress when the weekly League resets.
 - **Demo operator:** uses deterministic synthetic access, pairing, reauthentication, data, media,
   and reset states without claiming production security.
 - **SMAC judge:** should understand the Parent → Child → confirmation → praise → permanent growth,
-  weekly League, and optional private reward separation in one reliable journey.
+  private Impact Path/badges, weekly League, and optional private reward separation in one reliable
+  journey.
 
 ### Separate access experiences
 
@@ -89,8 +101,9 @@ not identity verification, encryption, tenancy, or production access control.
 
 ## Revised Screen Architecture
 
-Revision 2 uses approximately fourteen screen families. Each authenticated role sees only the
-surfaces needed for that role.
+Revision 3 inherits Revision 2's role architecture. Each authenticated role sees only the surfaces
+needed for that role; Growth Journey adds nested/contextual surfaces without adding a fourth Child
+tab.
 
 |   # | Screen family                               | Role and purpose                                                                                            |
 | --: | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
@@ -113,6 +126,13 @@ Parent primary navigation is **Home, Tasks, Garden, Family**. Child primary navi
 Garden, League**. Task Builder, Check-in, Family Reward, pairing, permissions, device management,
 and settings are contextual. Ghaf Coach stays inside the current task; it is never a chat tab.
 
+After a future approved Stitch release, the Child Garden may contain nested **Impact Path — مسار
+الأثر**, **My Badges — شاراتي**, Badge Detail, and finite Learning Package surfaces. Today may show
+one compact path entry. A Parent may inspect the selected Child's private progress from the existing
+Family/profile context. Opening Moment and three first-run introduction panels may precede the
+released R001 access handoff; they are not Parent household onboarding and cannot create an account
+or profile.
+
 ## Core Family Loop
 
 1. The Parent enters the protected Parent experience and approves or creates a safe task.
@@ -122,14 +142,17 @@ and settings are contextual. Ghaf Coach stays inside the current task; it is nev
    a smaller task, or a safe equivalent.
 4. The Child may use the bounded Ghaf Coach for steps, an if–then cue, a curated phrase, or the
    prominent **Ask an adult — اسأل شخصًا كبيرًا** path.
-5. Submission changes no Seed, landscape, canopy, League, or Family Reward state.
+5. Submission changes no Seed, landscape, canopy, League, Path, mastery, badge, RevealBundle, or
+   Family Reward state.
 6. The Parent reviews the observable submission and confirms once, requests a kind retry, accepts
    an agreed equivalent, or makes future work smaller.
-7. Confirmation shows specific Parent praise first, then the displayed Seed award and permanent
-   eligible garden/canopy growth.
-8. If the task was one of that Child's five nominated Challenge Leaves, it also adds one confirmed
-   Leaf and 20 weekly Growth Score points. If an independent private Family Reward milestone is
-   reached, the Child sees its unlock only after praise and garden growth.
+7. Confirmation commits one immutable receipt and one recoverable result bundle. It presents
+   specific Parent praise first, an honestly labelled self-reported activity result when one
+   exists, then the displayed Seed award and eligible mapped garden growth.
+8. If the task was one of that Child's five nominated Challenge Leaves, the same bundle presents
+   one canopy contribution, one confirmed Leaf, and 20 weekly Growth Score points.
+9. It then presents any deterministic Impact Path station, badge, or one-time safe-help recognition;
+   an independent private Family Reward progress/unlock remains last.
 
 Parent confirmation does not prove environmental impact. Duplicate confirmation is idempotent and
 changes nothing.
@@ -162,6 +185,43 @@ Each task still declares `standard`, `fade-first`, or `recognition-only`:
 Maintenance earns no new Seed or persistent garden/canopy growth. Earned Seeds and tree stages are
 permanent. A missed day, rest week, retry, access need, illness, travel, or League reset never creates
 debt, breaks a punitive streak, or makes a tree die.
+
+## Impact Path and Private Badges — مسار الأثر وشاراتي
+
+Impact Path turns the existing lifetime total of Parent-approved Seeds into a clear, evergreen
+journey through UAE plants, habitats, and living heritage. It borrows the legibility of a milestone
+road while rejecting paid tracks, random rewards, scarcity, public status, and engagement pressure.
+
+- There is one free cumulative path. No XP, stars, gems, tickets, energy, premium tier, boost,
+  purchase, paid skip, or reward claim loop is added.
+- A chapter contains deterministic Seed-threshold stations. The P0 Water & Coast chapter spans
+  120–180 lifetime Seeds at 120, 132, 144, 156, 168, and 180.
+- The canonical approval changes lifetime Seeds 108→120 and independently changes Mangrove growth
+  48/60→60/60. The completed Mangrove stage remains archived; the path displays 120/180 and the
+  next station at 132. These values never replace one another.
+- Station 132 opens `learning.mangrove_roots.v1` and its equal-credit accessible route; it exposes
+  progress toward Mangrove Care but does not award that composite badge automatically.
+- The P0 registry contains exactly 16 permanent private badge definitions. Criteria may use Seed
+  thresholds, acquisition mastery evidence, reached stations, learning completion, activity
+  completion, or prerequisite badges. Every unmet component stays visible.
+- Mastery stages **برعم · غصن · ظل** / **Bud · Branch · Shade** describe repeated practice, not
+  rarity. There are no mystery odds, loot boxes, spins, expiring progress, streak loss, countdowns,
+  autoplay, public profiles, public badge sharing, or opponent comparison.
+- Learning/activity completion is idempotent and awards zero Seeds and zero garden growth. One
+  sourced story and one story-disabled or Parent-guided equivalent satisfy the same reviewed
+  objective and badge credit.
+- `recognition.safe_help_once.v1` is descriptive praise only. It has no gallery tile, progress bar,
+  Seed value, or mastery value.
+- Factual screens name their source and review status. Place-inspired content requires no GPS,
+  visit proof, photo, or audio and never implies endorsement, certification, partnership, or
+  measured environmental impact.
+- Path, badges, and Parent progress are profile-private. They never feed League rank, reveal another
+  Child's task/evidence, or compare siblings.
+
+The exact catalog lives in [`docs/content/BADGE_CATALOG.md`](docs/content/BADGE_CATALOG.md), and the
+P0 learning contract lives in
+[`docs/content/LEARNING_STORIES.md`](docs/content/LEARNING_STORIES.md). Both remain pre-Stitch and
+unimplemented.
 
 ## Ghaf Family League
 
@@ -201,7 +261,7 @@ currency.
 - Every confirmed Challenge Leaf also advances a cooperative family-canopy goal so ranking is
   balanced with a shared result.
 
-`leagueEligible` is separate from `visibilityScope` and `circleEligible`. The existing
+`challengeLeafEligible` is separate from `visibilityScope` and `circleEligible`. The existing
 `circleEligible` invariant still permits only a household-visible Green Impact event to enter a
 coarse cross-household environmental activity projection. League participants never receive the
 underlying event or task record.
@@ -328,7 +388,7 @@ decide assignment, completion, League eligibility, or Family Reward entitlement.
 | Button       |     Readex Pro 600, 17/26 | Readex Pro 600, 16/24 |
 | Caption      |             Minimum 14/22 |         Minimum 14/22 |
 
-## Revision 2 P0 Design Contract
+## Revision 3 P0 Design Contract
 
 The next approved designs must preserve one deterministic vertical slice with:
 
@@ -339,19 +399,29 @@ The next approved designs must preserve one deterministic vertical slice with:
 - eight curated task categories and five UAE landscape tracks from local fixtures;
 - one executable Parent-approved Green Impact task with bounded Guide and Coach states;
 - Parent check-in, specific praise, an idempotent fixed 12-Seed award, landscape growth, one canopy
-  leaf, one Challenge Leaf, and independent private Family Reward progress/unlock;
+  leaf, one Challenge Leaf, deterministic path/badge evaluation, and independent private Family
+  Reward progress/unlock;
 - a seeded five-Leaf Friendly League week with a tie, shared canopy target, privacy explanation,
   rest/opt-out state, and prepared bilingual encouragement;
 - one private Parent-funded plan showing Promised, Unlocked, and Given, plus the monthly maximum
   promised amount and non-custodial disclosure;
 - prepared synthetic media and simulated push-to-talk with visible origin labels;
+- one free 120–180 Impact Path chapter, exactly 16 configured badges, Today/Garden entry points,
+  Gallery/Detail, one combined reveal, and one finite Mangrove learning package with an equal-credit
+  accessible alternative;
+- a brief first-install introduction that is skippable/replayable and hands off to R001 access
+  without mutating profile progress;
+- one Parent read-only selected-Child progress view with no sibling comparison or behavior score;
 - Arabic-first RTL and matched English LTR using Alexandria and Readex Pro; and
-- one Parent-only deterministic reset that restores access, task, League, garden, and reward state
-  without a remote service.
+- one Parent-only deterministic reset that restores access, task, League, garden, Path, badges,
+  reveals, and reward state without a remote service; first-run presentation preferences use a
+  separate operator-only reset.
 
-The Stitch frames must be reviewed before routes, component inventory, transitions, or exact layout
-are frozen. Until then, design, implementation, Android, accessibility, and human-review statuses
-remain `NOT RUN` or `BLOCKED` as their evidence warrants.
+The Growth Journey Stitch frames and their missing Child/Parent shell prerequisites must be reviewed
+before new routes, component inventory, transitions, or exact layout are frozen. Until then, R001
+remains the only released runtime slice and every new design, implementation, Android,
+accessibility, content-review, and human-review status remains `NOT RUN` or `BLOCKED` as its evidence
+warrants.
 
 ## Explicit Non-Goals for P0
 
@@ -360,12 +430,16 @@ remain `NOT RUN` or `BLOCKED` as their evidence warrants.
 - networking, real invitations, public discovery, global leaderboards, open profiles, comments,
   free-text messaging, direct Child contact, or reaction counts;
 - wallet balances, payments, money custody, transfers, withdrawal, universal Seed conversion,
-  gift-card fulfillment, paid boosts, wagers, or winner-take-all prizes;
+  gift-card fulfillment, paid paths, premium tiers, paid boosts, wagers, or winner-take-all prizes;
 - real Child photo/voice capture or processing, continuous listening, face/voice identification,
   emotion recognition, or unrestricted Child AI;
 - diagnosis, developmental screening, religious rulings, or automated safety/completion/reward
   decisions;
 - real-tree planting or fabricated carbon, water, waste, food, or environmental-impact numbers;
+- public badge profiles/sharing, purchasable or tradable badges, loot boxes, random drops, rarity
+  odds, countdowns, punitive streaks, expiring earned progress, or autoplay reward queues;
+- GPS/location badges, attraction check-ins, visit proof, photo/audio proof, copied government or
+  tourism art, or official endorsement/certification claims;
 - production notifications, analytics, moderation, monitoring, compliance claims, or store release;
   and
 - a second app, 3D world, or backend that can delay the deterministic offline competition path.

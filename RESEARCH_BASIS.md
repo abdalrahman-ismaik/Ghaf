@@ -1,8 +1,8 @@
 # Ghaf Research and Content Basis
 
-**Reviewed:** 2026-09-01
+**Documentation reconciled:** 2026-09-03
 
-**Purpose:** Evidence and culturally grounded content for Feature 003 Revision 2
+**Purpose:** Evidence and culturally grounded content for Feature 003 Revision 3 planning
 
 **Product status:** Research basis and design guardrails; not implementation evidence, medical,
 legal, psychological, financial, or religious advice
@@ -18,15 +18,22 @@ only a biological parent.
 
 ## Revision and Evidence Boundary
 
-Revision 2 approves separately accessed Parent and Child experiences, a normalized invite-only
+Revision 2 approved separately accessed Parent and Child experiences, a normalized invite-only
 Friendly League, optional private Family Rewards, age-adapted bounded Coach presentation, and the
 Alexandria/Readex typography system. This changes the 2026-08-28 ten-route product baseline.
 
+Revision 3 proposes an additional private Growth Journey: one cumulative Impact Path derived from
+confirmed lifetime Seeds, exactly 16 deterministic P0 badges, and sourced finite learning. The
+supplied source ledger is research input, not factual, cultural, legal, accessibility, or rights
+approval. R001 remains the only released Revision 2 runtime slice; all Growth Journey screens and
+behavior remain blocked pending approved Stitch frames.
+
 The earlier automated and web-proxy results remain historical evidence for the superseded build
-only. They do not validate the revised access model, pairing, reauthentication, Leaderboard,
+only. They do not validate the revised access model, pairing, reauthentication, League,
 Family Reward, simulated voice controls, typography, navigation, Android behavior, accessibility,
-or human comprehension. Revision 2 design and implementation validation are on hold until approved
-Stitch frames arrive and the active Spec Kit artifacts are updated.
+or human comprehension. Later Revision 2 and all Revision 3 design/implementation validation remain
+on hold until the corresponding approved Stitch frames arrive and the active Spec Kit artifacts are
+reconciled.
 
 ## Research Conclusions
 
@@ -46,14 +53,22 @@ Stitch frames arrive and the active Spec Kit artifacts are updated.
    a wallet, a universal Seed exchange, or a prize for defeating another Child.
 8. Never remove earned progress, shame a miss, condition an essential need, or make a virtual tree
    die.
-9. Apply `visibilityScope`, `leagueEligible`, and `circleEligible` before every shared visual or
-   counter. These are separate decisions with different disclosures.
+9. Apply `visibilityScope`, `challengeLeafEligible`, and `circleEligible` before every shared visual
+   or counter. These are separate decisions with different disclosures.
 10. Use bounded AI only for the current Parent-approved task. Do not create a companion, therapist,
     religious authority, emotion detector, truth judge, or diagnostic system.
 11. Treat the UAE living landscape as a product metaphor and separate symbolic growth from measured
     environmental impact.
 12. Use synthetic access, profiles, League data, rewards, media, and voice simulation for SMAC;
     real child data or money requires separately approved production work.
+13. Badges may organize transparent, achievable goals, but they do not prove lasting motivation or
+    behavior change; autonomy, attainable steps, meaning, and family connection remain primary.
+14. Use one free deterministic path and sparse finite reveals. Reject paid tiers, random drops,
+    rarity, countdowns, streak loss, autoplay, public badge status, and compulsive return prompts.
+15. A badge records only its explicit evidence. Lifetime Seeds cannot prove a particular skill,
+    learning outcome, physical visit, or environmental impact.
+16. Learning and accessible-equivalent completion may satisfy a named criterion but must add zero
+    Seeds and zero garden growth.
 
 ## Evidence to Product Rules
 
@@ -104,6 +119,46 @@ deleting earned progress.
   growth, a Challenge Leaf, or a circle event. No phase transition is automatic.
 - No purchasable currency, loot box, ad, scarcity countdown, loss mechanic, or
   engagement-maximizing nudge is allowed.
+
+## Growth Journey Research Interpretation and Guardrails
+
+The supplied Growth Journey ledger reviews game-pass comprehension patterns, gamification and
+motivation research, child-centered design guidance, platform policies, and UAE environmental and
+cultural sources. It supports a cautious design hypothesis, not a claim that badges cause healthy
+habits or environmental outcomes. See the preserved
+[`report-source.md`](docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/report-source.md) for individual sources,
+limitations, and access notes.
+
+- Borrow only clarity: a visible current position, a few previewed deterministic next milestones,
+  finite chapters, transparent criteria, and a permanent private collection.
+- Reject monetization and pressure: no paid path, premium track, boost, random reward, rarity,
+  countdown, loss-framed streak, expiring badge, autoplay, public status, or notification pressure.
+- Pair every collectible outcome with what the Child did or learned and with descriptive Parent
+  praise. Do not make collecting the sole reason for a family activity.
+- Use structured composite criteria so action, learning, and station components remain visible.
+  Seed totals never substitute for mastery evidence.
+- Keep League research and Growth Journey research separate. The approved private Family League may
+  retain normalized sibling/cousin positions, while Impact Path and badges remain personal and
+  never enter ranking or another household's projection.
+- Keep the Ghaf tree and family canopy as the brand-wide living-growth metaphor. Mangrove is the P0
+  chapter theme, not a replacement brand or universal growth authority.
+- A named UAE place may inspire a finite learning story, but P0 requires no visit, GPS,
+  location/venue check-in, image, audio, or proof. Do not imply a government, tourism, UNESCO, or
+  venue partnership.
+- Store factual claims and original creative lore separately. Revalidate mutable links/facts, record
+  the source's own date or an accurately labelled access date, and never call source access a Ghaf
+  review approval.
+- The equal-credit story-disabled or Parent-guided route must cover the same reviewed objective and
+  remain available offline. Opening or timing a story is never completion; wrong answers cause no
+  loss.
+- A sparse combined result surface should stop after explaining cause and effect. It must preserve
+  the existing praise, Seed, garden, canopy, League, and private Family Reward ordering rather than
+  hiding those outcomes behind badges.
+
+The exact P0 badge registry is a product configuration decision, not independent evidence. Its
+factual and cultural families remain `NOT RUN` for named review; see
+[`BADGE_CATALOG.md`](docs/content/BADGE_CATALOG.md) and
+[`LEARNING_STORIES.md`](docs/content/LEARNING_STORIES.md).
 
 ## Friendly League Research Interpretation and Guardrails
 
@@ -215,11 +270,11 @@ or participating; `G` means guardian approval/check. `visibilityScope` is `child
 `visibilityScope = household`. A circle projection contains one coarse family Green Impact action
 and never the task record, Child identity, or Seeds.
 
-`leagueEligible` is a third, independent weekly nomination. The catalog does not make a task a
-Challenge Leaf automatically. Before each week, the Parent selects exactly five suitable tasks per
-participating Child. Recognition-only tasks and the prohibited prayer, affection, emotional
-disclosure, eating, private wellbeing, hygiene, and disability-related categories are never
-eligible. A confirmed League Leaf exposes only one completed opportunity; it never changes
+`challengeLeafEligible` is a third, independent weekly nomination. The catalog does not make a
+task a Challenge Leaf automatically. Before each week, the Parent selects exactly five suitable
+tasks per participating Child. Recognition-only tasks and the prohibited prayer, affection,
+emotional disclosure, eating, private wellbeing, hygiene, and disability-related categories are
+never eligible. A confirmed League Leaf exposes only one completed opportunity; it never changes
 `visibilityScope`, publishes the catalog row, or makes a non-Green task `circleEligible`.
 
 Catalog phase defaults are explicit: every row with a numeric Seed award starts in `acquisition`;
@@ -433,6 +488,10 @@ data handling.
 - Inclusivity for Muslim and non-Muslim UAE resident families.
 - Safety levels for cooking, electrical items, waste, outdoors, transport, and cleaning.
 - Any environmental-impact number or conversion.
+- Every Growth Journey factual claim, source/date label, named-place story, badge name/criterion,
+  cultural reference, original illustration, and rights/endorsement treatment.
+- Child comprehension and motivation review for the path/reveal cadence, private gallery, finite
+  stopping point, and equal-credit learning alternative.
 - League fairness, Child assent, rest/opt-out, fixed reactions, sibling/cousin dynamics, and privacy.
 - Family Reward affordability, basic-needs protection, crowd-out, agreement, and dispute handling.
 - Alexandria/Readex Arabic rendering, bilingual mixed-direction strings, captions, voice pacing,
