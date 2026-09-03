@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   colors,
   layout,
+  opacity,
   radii,
   shadows,
   spacing,
@@ -29,7 +30,19 @@ import {
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-export type TextVariant = 'display' | 'title' | 'heading' | 'body' | 'label' | 'caption';
+export type TextVariant =
+  | 'display'
+  | 'wordmark'
+  | 'hero'
+  | 'title'
+  | 'screenTitle'
+  | 'heading'
+  | 'bodyLarge'
+  | 'body'
+  | 'compactBody'
+  | 'control'
+  | 'label'
+  | 'caption';
 export type TextAlign = 'start' | 'center' | 'end';
 
 export interface ScreenProps extends PropsWithChildren {
@@ -91,7 +104,7 @@ export function Screen({
   );
 }
 
-interface AppTextProps extends React.ComponentProps<typeof NativeText> {
+export interface AppTextProps extends React.ComponentProps<typeof NativeText> {
   align?: TextAlign;
   color?: AppColor;
   direction?: TextDirection | 'auto';
@@ -150,6 +163,7 @@ export function Text({
 }
 
 export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'ghost';
+export type ButtonSize = 'compact' | 'regular';
 
 export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> {
   busy?: boolean;
@@ -157,6 +171,7 @@ export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> 
   children: ReactNode;
   fullWidth?: boolean;
   icon?: ReactNode;
+  size?: ButtonSize;
   style?: StyleProp<ViewStyle>;
   variant?: ButtonVariant;
 }
@@ -171,6 +186,7 @@ export function Button({
   icon,
   onBlur,
   onFocus,
+  size = 'regular',
   style,
   variant = 'primary',
   ...props
@@ -199,6 +215,7 @@ export function Button({
       }}
       style={({ pressed }) => [
         styles.button,
+        size === 'compact' ? styles.buttonCompact : styles.buttonRegular,
         buttonVariants[resolvedVariant],
         fullWidth ? styles.fullWidth : null,
         direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
@@ -269,10 +286,11 @@ export function Card({
 }
 
 interface InputProps extends TextInputProps {
-  direction?: TextDirection;
+  direction?: TextDirection | 'auto';
   errorText?: string;
   helperText?: string;
   label?: string;
+  successText?: string;
 }
 
 export function Input({
@@ -284,6 +302,7 @@ export function Input({
   onBlur,
   onFocus,
   style,
+  successText,
   ...props
 }: InputProps) {
   const [focused, setFocused] = useState(false);
@@ -307,26 +326,57 @@ export function Input({
           onFocus?.(event);
         }}
         placeholderTextColor={colors.inkMuted}
+        selectionColor={colors.ghafEmerald}
         style={[
           styles.input,
           multiline ? styles.inputMultiline : null,
-          direction === 'rtl' ? styles.inputRtl : styles.inputLtr,
+          direction === 'rtl'
+            ? styles.inputRtl
+            : direction === 'ltr'
+              ? styles.inputLtr
+              : styles.inputAuto,
           focused ? styles.focusedControl : null,
           errorText ? styles.inputError : null,
+          successText && !errorText ? styles.inputSuccess : null,
+          props.editable === false ? styles.disabled : null,
           style,
         ]}
       />
-      {errorText || helperText ? (
+      {errorText || successText || helperText ? (
         <Text
           accessibilityLiveRegion={errorText ? 'polite' : undefined}
-          color={errorText ? 'danger' : 'inkMuted'}
+          color={errorText ? 'danger' : successText ? 'success' : 'inkMuted'}
           variant="caption"
         >
-          {errorText ?? helperText}
+          {errorText ?? successText ?? helperText}
         </Text>
       ) : null}
     </View>
   );
+}
+
+export interface RowProps extends PropsWithChildren {
+  align?: 'center' | 'flex-start' | 'flex-end' | 'stretch';
+  direction?: TextDirection;
+  gap?: number;
+  reverse?: boolean;
+  style?: StyleProp<ViewStyle>;
+}
+
+export function Row({
+  align = 'center',
+  children,
+  direction: directionOverride,
+  gap = spacing.sm,
+  reverse = false,
+  style,
+}: RowProps) {
+  const storeDirection = usePrototypeStore((state) => state.direction);
+  const direction = directionOverride ?? storeDirection;
+  const localDirectionDiffers = direction !== storeDirection;
+  const flexDirection = localDirectionDiffers !== reverse ? 'row-reverse' : 'row';
+
+  return <View style={[{ alignItems: align, flexDirection, gap }, style]}>{children}</View>;
 }
 
 interface IconButtonProps extends Omit<PressableProps, 'children' | 'style'> {
@@ -378,36 +428,40 @@ export function IconButton({
 
 const textVariants = StyleSheet.create({
   display: {
-    fontSize: typography.sizes.display,
-    lineHeight: typography.lineHeights.display,
-    fontWeight: typography.weights.heavy,
-    letterSpacing: -0.8,
+    ...typography.roles.display,
+  },
+  wordmark: {
+    ...typography.roles.wordmark,
+  },
+  hero: {
+    ...typography.roles.hero,
   },
   title: {
-    fontSize: typography.sizes.title,
-    lineHeight: typography.lineHeights.title,
-    fontWeight: typography.weights.bold,
-    letterSpacing: -0.4,
+    ...typography.roles.parentHero,
+  },
+  screenTitle: {
+    ...typography.roles.screenTitle,
   },
   heading: {
-    fontSize: typography.sizes.heading,
-    lineHeight: typography.lineHeights.heading,
-    fontWeight: typography.weights.bold,
+    ...typography.roles.screenTitle,
+  },
+  bodyLarge: {
+    ...typography.roles.bodyLarge,
   },
   body: {
-    fontSize: typography.sizes.body,
-    lineHeight: typography.lineHeights.body,
-    fontWeight: typography.weights.regular,
+    ...typography.roles.body,
+  },
+  compactBody: {
+    ...typography.roles.compactBody,
+  },
+  control: {
+    ...typography.roles.control,
   },
   label: {
-    fontSize: typography.sizes.label,
-    lineHeight: typography.lineHeights.label,
-    fontWeight: typography.weights.semibold,
+    ...typography.roles.label,
   },
   caption: {
-    fontSize: typography.sizes.caption,
-    lineHeight: typography.lineHeights.caption,
-    fontWeight: typography.weights.medium,
+    ...typography.roles.caption,
   },
 });
 
@@ -417,12 +471,12 @@ const buttonVariants = StyleSheet.create({
     borderColor: colors.ghaf,
   },
   secondary: {
-    backgroundColor: colors.leafLight,
-    borderColor: colors.leaf,
+    backgroundColor: colors.leafMist,
+    borderColor: colors.transparent,
   },
   quiet: {
     backgroundColor: colors.transparent,
-    borderColor: colors.line,
+    borderColor: colors.transparent,
   },
 });
 
@@ -503,13 +557,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gold,
   },
   rowRtl: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
   },
   rowLtr: {
     flexDirection: 'row',
   },
   textBase: {
-    fontFamily: typography.family,
+    fontFamily: typography.families.readexRegular,
     includeFontPadding: true,
   },
   writingRtl: {
@@ -532,8 +586,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   button: {
-    minHeight: layout.touchTarget,
-    borderRadius: radii.md,
+    borderRadius: radii.lg,
     borderCurve: 'continuous',
     borderWidth: 1,
     paddingHorizontal: spacing.lg,
@@ -542,11 +595,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing.xs,
   },
+  buttonCompact: {
+    minHeight: layout.touchTarget,
+  },
+  buttonRegular: {
+    minHeight: layout.controlHeight,
+  },
   fullWidth: {
     width: '100%',
   },
   buttonLabel: {
     flexShrink: 1,
+    ...typography.roles.control,
   },
   buttonIcon: {
     alignItems: 'center',
@@ -562,10 +622,10 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.985 }],
   },
   disabled: {
-    opacity: 0.46,
+    opacity: opacity.disabled,
   },
   focusedControl: {
-    borderColor: colors.gold,
+    borderColor: colors.ghafEmerald,
     borderWidth: 2,
   },
   card: {
@@ -583,14 +643,14 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   input: {
-    minHeight: layout.touchTarget,
+    minHeight: layout.controlHeight,
     borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radii.md,
+    borderColor: colors.transparent,
+    borderRadius: radii.lg,
     borderCurve: 'continuous',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceContainerLow,
     color: colors.ink,
-    fontFamily: typography.family,
+    fontFamily: typography.families.readexRegular,
     fontSize: typography.sizes.body,
     lineHeight: typography.lineHeights.body,
     paddingHorizontal: spacing.md,
@@ -601,8 +661,11 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   inputError: {
-    borderColor: colors.coral,
-    backgroundColor: colors.coralLight,
+    borderColor: colors.error,
+    backgroundColor: colors.errorContainer,
+  },
+  inputSuccess: {
+    borderColor: colors.success,
   },
   inputRtl: {
     textAlign: 'right',
@@ -611,6 +674,10 @@ const styles = StyleSheet.create({
   inputLtr: {
     textAlign: 'left',
     writingDirection: 'ltr',
+  },
+  inputAuto: {
+    textAlign: 'auto',
+    writingDirection: 'auto',
   },
   iconButton: {
     width: layout.touchTarget,

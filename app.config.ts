@@ -27,12 +27,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-router',
     [
-      'expo-audio',
+      'expo-font',
       {
-        microphonePermission: false,
-        recordAudioAndroid: false,
-        enableBackgroundRecording: false,
-        enableBackgroundPlayback: false,
+        fonts: [
+          '@expo-google-fonts/alexandria/400Regular/Alexandria_400Regular.ttf',
+          '@expo-google-fonts/alexandria/700Bold/Alexandria_700Bold.ttf',
+          '@expo-google-fonts/alexandria/800ExtraBold/Alexandria_800ExtraBold.ttf',
+          '@expo-google-fonts/readex-pro/400Regular/ReadexPro_400Regular.ttf',
+          '@expo-google-fonts/readex-pro/500Medium/ReadexPro_500Medium.ttf',
+          '@expo-google-fonts/readex-pro/600SemiBold/ReadexPro_600SemiBold.ttf',
+          '@expo-google-fonts/readex-pro/700Bold/ReadexPro_700Bold.ttf',
+        ],
       },
     ],
     [
