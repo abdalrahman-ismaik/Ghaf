@@ -19,6 +19,7 @@ behavioral regression baseline; the six local-only commits remain unapplied prov
 | Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                |
 | Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                        |
 | Check the only released screen batch                   | [R001 release gate](../specs/003-family-growth-garden/design-intake/release-gate.md) |
+| Inspect the approved R001 composition references       | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md)                     |
 
 ## Active Feature 003 contracts
 

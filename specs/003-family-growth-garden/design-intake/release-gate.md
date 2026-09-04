@@ -3,7 +3,8 @@
 **Recorded:** 2026-09-04
 **Release decision:** `PARTIALLY RELEASED`
 **Source provenance:** original commit
-`f63e39fc702bb1797791f7543c6316e3b06f3ba9`; not yet ported into this integration worktree
+`f63e39fc702bb1797791f7543c6316e3b06f3ba9`; its 17-file R001 subtree is preserved byte-for-byte in
+this integration branch. See [the artifact manifest](r001-artifact-manifest.md).
 
 > **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
 
@@ -46,14 +47,14 @@ an ordinary role toggle.
 
 ## Evidence gaps
 
-| Evidence                                                       | Status                                                                     | Consequence                                                                             |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Seven Arabic PNG/HTML pairs                                    | `APPROVED IN ORIGINAL R001`; bytes/checksums must be preserved when ported | May guide this batch only                                                               |
-| `screen-spec.md`                                               | `MISSING`                                                                  | Native interaction contract above is conservative; no fabricated Stitch state approval  |
-| Matched English LTR frames                                     | `MISSING`                                                                  | English functionality/parity required; visual match cannot be claimed                   |
-| Focus/loading/error/offline/keyboard/font-scale frames         | `MISSING`                                                                  | Implement semantic variants consistently; keep visual evidence `NOT RUN` until compared |
-| Physical Android RTL/LTR, Back, keyboard, TalkBack, 200% scale | `NOT RUN` for this integration branch                                      | Source/web evidence cannot pass these gates                                             |
-| R002 asset provenance, variants, Growth frames, and approval   | `BLOCKED`                                                                  | No post-R001 runtime work                                                               |
+| Evidence                                                       | Status                                             | Consequence                                                                             |
+| -------------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Seven Arabic PNG/HTML pairs                                    | `PRESERVED`; source tree and SHA-256 checks passed | May guide this batch only                                                               |
+| `screen-spec.md`                                               | `MISSING`                                          | Native interaction contract above is conservative; no fabricated Stitch state approval  |
+| Matched English LTR frames                                     | `MISSING`                                          | English functionality/parity required; visual match cannot be claimed                   |
+| Focus/loading/error/offline/keyboard/font-scale frames         | `MISSING`                                          | Implement semantic variants consistently; keep visual evidence `NOT RUN` until compared |
+| Physical Android RTL/LTR, Back, keyboard, TalkBack, 200% scale | `NOT RUN` for this integration branch              | Source/web evidence cannot pass these gates                                             |
+| R002 asset provenance, variants, Growth frames, and approval   | `BLOCKED`                                          | No post-R001 runtime work                                                               |
 
 ## Exit rules
 

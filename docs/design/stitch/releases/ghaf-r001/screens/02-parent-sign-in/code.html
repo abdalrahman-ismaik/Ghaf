@@ -1,0 +1,177 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ghaf - Parent Sign-in</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&amp;family=Alexandria:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#98e7c6",
+                        "primary": "#00503b",
+                        "secondary-fixed-dim": "#74d7cd",
+                        "inverse-on-surface": "#f0f1ec",
+                        "tertiary-fixed-dim": "#f7bd4f",
+                        "on-secondary-fixed-variant": "#00504b",
+                        "surface-container": "#edeee9",
+                        "on-primary-fixed-variant": "#00513c",
+                        "surface": "#f9faf5",
+                        "secondary-container": "#8ef1e7",
+                        "on-background": "#1a1c19",
+                        "outline": "#6f7973",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#87d6b6",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#bec9c2",
+                        "surface-container-low": "#f3f4ef",
+                        "on-tertiary-container": "#ffd182",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#00201e",
+                        "on-surface": "#1a1c19",
+                        "pearl-ground": "#F7F8F3",
+                        "surface-container-high": "#e7e9e4",
+                        "secondary": "#006a64",
+                        "surface-container-highest": "#e2e3de",
+                        "surface-dim": "#d9dad6",
+                        "tertiary-fixed": "#ffdeaa",
+                        "tertiary-container": "#7c5700",
+                        "on-surface-variant": "#3f4944",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#5e4100",
+                        "ink": "#14221D",
+                        "mangrove-teal": "#188B83",
+                        "deep-forest": "#0D3128",
+                        "on-tertiary-fixed": "#271900",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#91f3e9",
+                        "background": "#f9faf5",
+                        "on-secondary-container": "#006f68",
+                        "on-primary-fixed": "#002116",
+                        "surface-bright": "#f9faf5",
+                        "primary-container": "#126a50",
+                        "ghaf-emerald": "#126A50",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "solar-amber": "#F2B84B",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#a3f3d1",
+                        "surface-variant": "#e2e3de",
+                        "inverse-primary": "#87d6b6",
+                        "inverse-surface": "#2e312e",
+                        "surface-tint": "#146b51"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "touch-target": "48px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Readex Pro"],
+                        "headline-md": ["Alexandria"],
+                        "body-md": ["Readex Pro"],
+                        "label-md": ["Readex Pro"],
+                        "display-lg-mobile": ["Alexandria"],
+                        "label-sm": ["Readex Pro"],
+                        "display-lg": ["Alexandria"],
+                        "headline-lg": ["Alexandria"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .dot-pattern {
+            background-image: radial-gradient(circle, #6f7973 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.05;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-pearl-ground dark:bg-background text-on-surface h-screen w-full overflow-hidden flex flex-col items-center justify-center relative font-body-md text-body-md">
+<!-- Texture Layer -->
+<div class="absolute inset-0 dot-pattern pointer-events-none z-0"></div>
+<!-- Atmospheric SVG Mask / Organic Shapes (Subtle) -->
+<svg class="absolute inset-0 w-full h-full text-surface-container-low z-0 opacity-50" preserveAspectRatio="none" viewBox="0 0 100 100">
+<path d="M0,0 Q50,20 100,0 L100,100 L0,100 Z" fill="currentColor"></path>
+</svg>
+<!-- Mobile Container constraint for previewing Android-first 390x844 layout -->
+<main class="relative z-10 w-full max-w-[390px] h-full max-h-[844px] bg-pearl-ground shadow-2xl flex flex-col md:rounded-3xl overflow-hidden mx-auto">
+<!-- TopAppBar (from JSON specification + Contextual Hiding Navigation logic applied since this is a Linear/Transactional page, ONLY the TopAppBar is shown, BottomNav is suppressed) -->
+<header class="flex items-center justify-between px-margin-mobile w-full h-16 dir-rtl bg-transparent z-20 shrink-0"><div class="w-10 h-10 flex items-center justify-center"><button aria-label="Back" class="w-touch-target h-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low/50 active:scale-95 duration-150 rounded-full transition-colors"><span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span></button></div><div class="flex-1 flex justify-center"><span class="font-headline-lg text-primary dark:text-primary-fixed-dim tracking-tight">غاف</span></div><div class="w-10 h-10"></div></header>
+<!-- Main Content Canvas (The "Organic Lift") -->
+<div class="flex-1 flex flex-col px-margin-mobile pt-8 pb-6 overflow-y-auto relative z-10">
+<div class="flex flex-col gap-unit-2 mb-10 -mt-[44px]">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">مرحبًا بوليّ الأمر</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">سجّل الدخول لإدارة مهام العائلة وخصوصيتها.</p>
+</div>
+<!-- Focused Input Form -->
+<form class="flex flex-col gap-6 w-full max-w-sm mx-auto" onsubmit="event.preventDefault();">
+<div class="flex flex-col gap-2 relative">
+<label class="font-label-md text-label-md text-on-surface" for="login-id">رقم الهاتف أو البريد الإلكتروني</label>
+<div class="relative group">
+<input class="w-full h-[56px] px-4 py-3 rounded-xl bg-surface-container-low border-none shadow-sm focus:ring-2 focus:ring-ghaf-emerald focus:bg-surface text-on-surface placeholder:text-outline transition-all font-body-md text-body-md" id="login-id" name="login-id" placeholder="أدخل رقم الهاتف أو البريد الإلكتروني" type="text">
+<!-- Biometric quick action inside input (optional alternative placement, moving to secondary actions below) -->
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant px-1">مثال: +971 50 123 4567</span>
+</div>
+<!-- Primary Action -->
+<button class="w-full h-[56px] bg-ghaf-emerald hover:bg-primary-container active:scale-[0.98] text-on-primary font-label-md text-label-md rounded-2xl shadow-sm transition-all flex items-center justify-center mt-2" type="submit">
+                    متابعة
+                </button>
+<!-- Divider -->
+<div class="flex items-center gap-4 my-2 opacity-60">
+<div class="h-px bg-outline-variant flex-1"></div>
+<span class="font-label-sm text-label-sm text-outline">أو</span>
+<div class="h-px bg-outline-variant flex-1"></div>
+</div>
+<!-- Secondary Actions -->
+<button class="w-full h-[56px] bg-surface-container-low hover:bg-surface-container-high active:scale-[0.98] text-on-surface font-label-md text-label-md rounded-2xl shadow-sm transition-all flex items-center justify-center gap-3" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="fingerprint" data-weight="fill" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+                    الدخول بالبصمة
+                </button>
+<div class="flex justify-center mt-4">
+<a class="font-label-md text-ghaf-emerald hover:text-primary-container transition-colors p-2 flex items-center h-touch-target rounded-full hover:bg-ghaf-emerald/5 text-body-md" href="#">
+                        إنشاء عائلة جديدة
+                    </a>
+</div>
+</form>
+<div class="mt-auto pt-8"></div>
+</div>
+<!-- Safe Area Footer -->
+<footer class="w-full pb-8 pt-4 px-margin-mobile flex justify-center bg-transparent shrink-0 z-10 backdrop-blur-sm bg-pearl-ground/80">
+<div class="px-4 py-1.5 rounded-full bg-surface-container-low border border-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface">نسخة تجريبية ببيانات اصطناعية</span>
+</div>
+</footer>
+</main>
+</body></html>

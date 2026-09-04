@@ -618,10 +618,10 @@ contract, and release only the already approved R001 Welcome/Parent-onboarding b
 - [x] T140 Reconcile `AGENTS.md`, `PRODUCT.md`, `spec.md`, `plan.md`, this task ledger, the R001
       release gate, design authority, limitations, and documentation map without rewriting remote
       implementation evidence or applying any of the six local-only commits.
-- [ ] T141 [P] Preserve the approved R001 release files from original commit
+- [x] T141 [P] Preserve the approved R001 release files from original commit
       `f63e39fc702bb1797791f7543c6316e3b06f3ba9` with their original bytes/checksums; do not import any
       generated web runtime or the untracked R002 directory.
-- [ ] T142 Validate Markdown, links, stable IDs, exact counts, R001 checksums, authority language,
+- [x] T142 Validate Markdown, links, stable IDs, exact counts, R001 checksums, authority language,
       `git diff --check`, and changed paths; record that R002 remains unchanged and blocked.
 
 **Checkpoint**: Canonical documents agree that the remote access/League/Family Reward/voice/privacy/
