@@ -3,15 +3,61 @@
 **Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
 [spec.md](./spec.md)
 
-**Status**: Deterministic P0 implementation is authorized after Feature 003 tasks, checklist, and
-cross-artifact analysis pass. Physical Android and named human-review acceptance remain open.
+**Status**: Remote behavior is preserved. R001 Batch 1 is released for native foundations, Welcome,
+and first-time Parent onboarding only. All post-R001 UI remains design-blocked.
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
 
 **Input**: Feature specification from `specs/003-family-growth-garden/spec.md`
 
 ## Summary
 
-Replace the judge-facing Feature 002 food-rescue journey inside the existing Expo application with
-one ten-route Family Growth Garden journey. The implementation will evolve the current strict
+### Revision 3 reconciliation addendum — 2026-09-04
+
+Implementation continues from remote behavioral baseline `a6ca21a6`; it does not cherry-pick the
+six divergent local commits. The approved product target preserves private five-Leaf League,
+`task_recycling_p0_v1`, independent progression authorities, one superset result with private Family
+Reward last, capability-scoped access, deterministic voice/`expo-audio`, Parent reset, and profile
+isolation. It adds one private 120–180 Seed-derived Impact Path, exactly 16 permanent deterministic
+badges, one equal-credit Mangrove learning package, and Parent selected-Child progress. Growth
+runtime remains blocked.
+
+The next executable slice is R001 only:
+
+```text
+remote access/League/Reward/voice/privacy/reset baseline
+  → focused RED tests for Parent onboarding integration
+  → adapt the existing session/service registry without weakening capability guards
+  → reconcile Alexandria/Readex tokens and reusable native RTL access components
+  → Welcome → sign-in → verification → family basics → add Child → review
+  → native success sheet → replace history to preserved /parent
+  → focused checks → full repository checks → web/device evidence with truthful status
+```
+
+R001 PNGs control composition; generated web exports are read-only measurement hints. No DOM,
+Tailwind/CSS, generated JavaScript, remote font, or web dependency enters Expo. Responsive safe-area
+layouts, natural scroll, keyboard avoidance, 48dp targets, locale-aware bidi, reduced-motion parity,
+and state variants are native responsibilities.
+
+After R001 passes, the plan returns to design intake. No later route, state, model, test, dependency,
+asset, or configuration change begins until a bounded Stitch release closes the applicable gate.
+
+### R001 implementation boundaries
+
+| Batch  | Scope                                                                                                                   | Required checks                                                           | Commit boundary              |
+| ------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------- |
+| R001-A | Access/onboarding policy adapter over remote capability sessions; no reset or voice regression                          | Focused access, profile-isolation, reset, League, Reward, and voice tests | One domain/test commit       |
+| R001-B | Tokens, locally bundled Alexandria/Readex roles, RTL primitives, controls, access shell, native success sheet           | Typecheck, localization/type tests, 48dp/bidi source checks               | One design-foundation commit |
+| R001-C | Seven approved routes/states and protected `/parent` handoff                                                            | Focused route/reset tests, formatter, typecheck, lint, full tests, export | One route-flow commit        |
+| R001-D | 390×844 comparison plus small/large/tablet, scroll, keyboard, font scale, reduced motion, and physical Android evidence | Record each result as `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN`         | Evidence-only commit         |
+
+Shared files (`app/_layout.tsx`, store, service registry, i18n, package/config, and tokens) are
+serialized by the integration owner. Every batch preserves `expo-audio` and the remote deterministic
+competition path.
+
+The preserved remote baseline is one ten-route Family Growth Garden journey inside the existing
+Expo application. R001 recomposes `/` in place and adds six approved Parent-access route files for
+an exact post-R001 inventory of 16 without removing the historical routes. The implementation will evolve the current strict
 TypeScript models, Zustand session, service registry, bilingual resources, StyleSheet design
 tokens, SVG, Reanimated, and prepared-media seams rather than create a parallel architecture.
 
@@ -63,15 +109,16 @@ second application, monorepo, or production service
 thinking; the Seed/growth explanation settles in at most the approved 650 ms motion window or is
 immediate with reduced motion; five uninterrupted human journeys target at most 150 seconds each
 
-**Constraints**: Exact ten-route inventory; Arabic-first reset at `/` with no stale history;
+**Constraints**: Preserve the remote ten-route inventory and allow only the six released R001
+access-route additions (exactly 16 authored files after R001); Arabic-first reset at `/` with no stale history;
 external-service-denied completion; synthetic data only; no media permission on the deterministic
 path; Parent gates before assignment and recognition; privacy filtering before shared mutation;
 exact pre/post counters; 48 dp controls; 200% font-scale resilience; no unsupported impact claim
 
 **Scale/Scope**: One synthetic household, two synthetic siblings, one seeded aggregate circle,
 eight curated categories, five landscape tracks, five stages, one executable 12-Seed task, two
-prepared assistant interactions, one prepared summary, four prepared fixture identifiers, and ten
-authored routes
+prepared assistant interactions, one prepared summary, four prepared fixture identifiers, ten
+preserved remote routes, and six released R001 Parent-access route additions
 
 **Clarifications**: None. The approved spec resolves machine enums, lifecycle separation,
 recognition/phase validity, growth thresholds, reset values, fixture IDs, safety copy, capability
@@ -343,7 +390,9 @@ git status --short
 
 In addition:
 
-- enumerate `app/**/*.tsx` and prove exactly the ten authored product routes;
+- before R001, prove the preserved remote inventory has exactly ten authored routes; after R001,
+  prove those ten files remain and only six approved Parent-access route files were added, for an
+  exact inventory of 16;
 - scan `app/`, `src/`, config, and fixtures for secrets, network calls, real Child data, camera/
   microphone capture, prohibited claims, hard-coded user copy, and legacy route imports;
 - run focused tests for every lifecycle edge, recognition/phase row, threshold boundary, projection
@@ -352,7 +401,11 @@ In addition:
 - execute five automated store-flow cycles from reset with all optional providers denied;
 - use the static web export only for secondary responsive, visual, keyboard, and console inspection.
 
-### Manual evidence gates
+### Preserved remote schema-3 manual evidence gates
+
+The 48→60 personal-Seed and `/circle` assertions in this subsection remain regression evidence for
+the remote ten-route build. Revision 3 uses the separate target oracle in the reconciliation
+addendum; Mangrove still changes 48/60→60/60.
 
 - Walk every route and meaningful state in Arabic RTL and English LTR.
 - Verify exact reset from draft, prepared assistant result/fallback, prepared-media selected/
@@ -396,8 +449,9 @@ generated data model, contracts, quickstart, and tasks before implementation beg
   recognition, recurrence, visibility, and circle pairings before persistence.
 - The contract design keeps routes provider-neutral, the Child Coach prepared-only, the Parent
   Guide bounded, and the deterministic fallback mandatory.
-- The journey design contains exactly ten routes and makes assistant, retry, phase-review,
-  celebration, failure, and fallback into in-route states.
+- The preserved remote journey contains exactly ten routes and keeps assistant, retry,
+  phase-review, celebration, failure, and fallback as in-route states. The R001 amendment adds only
+  its six approved Parent-access route files and does not promote those states into extra routes.
 - The validation design starts Feature 003 evidence fresh and cannot convert web/source evidence
   into native or human passes.
 - No backend, dependency addition, production account, real Child data/media, open chat, public
@@ -429,14 +483,14 @@ the frontend redesign receives its own approved integration window.
 
 ### Phased implementation
 
-| Phase | Domain outcome | Reserved files | Independent evidence |
-| --- | --- | --- | --- |
-| A — authority and contracts | Gap matrix, requirements, entities, service contracts, and executable tasks | Feature 003 Spec Kit artifacts and bounded root product-limit documents | Artifact review finds the current P0 and production boundaries explicit |
-| B — synthetic access | Separate local Parent/Child sessions, least-privilege views, expiring one-use pairing, scoped reauthentication, and Parent-owned grants | `src/models/access.ts`, `src/features/access/**`, `tests/access-control.test.ts` | Wrong actor, purpose, expiry, replay, revocation, and capability cases fail closed |
-| C — private Family Reward | Versioned personal milestone promises, `promised → unlocked → given`, protected-category exclusion, privacy, and monthly commitments | `src/models/familyReward.ts`, `src/features/family-rewards/**`, `tests/family-reward.test.ts` | No League input, payment operation, Seed conversion, retroactive edit, or unlocked withdrawal is accepted |
-| D — weekly Family League | Five-leaf week, idempotent credit, normalized capped score, shared ties, rollover, strict projection, prepared encouragement, and cooperative goal | `src/models/familyLeague.ts`, `src/features/league/**`, `tests/family-league.test.ts` | Score, tie, accessibility, protected-category, privacy, rollover, and allowlist cases pass |
-| E — age-adaptive Coach and synthetic voice | Output constraints for all age bands and explicit task-bound transcript lifecycle | `src/models/assistantVoice.ts`, `src/features/assistants/{ageAdaptation.ts,voiceSession.ts}`, focused tests | No microphone/provider access; all permission, task, transcript, replay, caption, pace, and reset transitions pass |
-| F — registry and convergence | Deterministic services exposed through `serviceRegistry`; complete static and behavioral validation | Existing service facade plus full suite | Typecheck, lint, formatting, tests, diff checks, and route inventory pass |
+| Phase                                      | Domain outcome                                                                                                                                     | Reserved files                                                                                              | Independent evidence                                                                                               |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| A — authority and contracts                | Gap matrix, requirements, entities, service contracts, and executable tasks                                                                        | Feature 003 Spec Kit artifacts and bounded root product-limit documents                                     | Artifact review finds the current P0 and production boundaries explicit                                            |
+| B — synthetic access                       | Separate local Parent/Child sessions, least-privilege views, expiring one-use pairing, scoped reauthentication, and Parent-owned grants            | `src/models/access.ts`, `src/features/access/**`, `tests/access-control.test.ts`                            | Wrong actor, purpose, expiry, replay, revocation, and capability cases fail closed                                 |
+| C — private Family Reward                  | Versioned personal milestone promises, `promised → unlocked → given`, protected-category exclusion, privacy, and monthly commitments               | `src/models/familyReward.ts`, `src/features/family-rewards/**`, `tests/family-reward.test.ts`               | No League input, payment operation, Seed conversion, retroactive edit, or unlocked withdrawal is accepted          |
+| D — weekly Family League                   | Five-leaf week, idempotent credit, normalized capped score, shared ties, rollover, strict projection, prepared encouragement, and cooperative goal | `src/models/familyLeague.ts`, `src/features/league/**`, `tests/family-league.test.ts`                       | Score, tie, accessibility, protected-category, privacy, rollover, and allowlist cases pass                         |
+| E — age-adaptive Coach and synthetic voice | Output constraints for all age bands and explicit task-bound transcript lifecycle                                                                  | `src/models/assistantVoice.ts`, `src/features/assistants/{ageAdaptation.ts,voiceSession.ts}`, focused tests | No microphone/provider access; all permission, task, transcript, replay, caption, pace, and reset transitions pass |
+| F — registry and convergence               | Deterministic services exposed through `serviceRegistry`; complete static and behavioral validation                                                | Existing service facade plus full suite                                                                     | Typecheck, lint, formatting, tests, diff checks, and route inventory pass                                          |
 
 Phases B, C, and D may be developed in parallel because their write boundaries are disjoint. Shared
 registry changes and Phase E remain serialized under the integration owner. Each completed phase is
@@ -497,13 +551,13 @@ asset, loading path, second theme, or type library is introduced.
 
 ### Implementation phases
 
-| Phase | Outcome | Main boundary | Evidence |
-| --- | --- | --- | --- |
-| G — authority update | New story, requirements, reset oracle, design rules, and executable tasks authorize the in-route slice without rewriting Phase E | Feature 003 spec, plan, tasks, acceptance contract, design and limitations | Cross-artifact review finds no route, capability-truth, or reset conflict |
-| H — bilingual type | Locale-resolved complete typography roles and scalable Text/Input use, plus large-label resilience | `src/design/tokens.ts`, `src/components/primitives.tsx`, bounded text-bearing components | RED/GREEN role-resolution and source-boundary tests |
-| I — presentation adapter | Private service authority, explicit Parent grants, age-adapted Coach projection, voice commands, and reset integration | `src/features/assistants/childVoiceController.ts`, `src/state/usePrototypeStore.ts` | Grant-off, grant-on, role, binding, lifecycle, locale-preservation, and reset tests |
-| J — in-route UI | Parent permission panel and Child Coach/voice panel with bilingual copy and accessibility state | Existing review/task routes, reusable family-growth components, resources | Arabic/English web proxy plus source and accessibility checks |
-| K — convergence | Focused/full checks, detector, route/counter preservation, capability scan, and truthful evidence update | Reserved evidence documents only | Typecheck, lint, format, tests, export, detector, and diff review |
+| Phase                    | Outcome                                                                                                                          | Main boundary                                                                            | Evidence                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| G — authority update     | New story, requirements, reset oracle, design rules, and executable tasks authorize the in-route slice without rewriting Phase E | Feature 003 spec, plan, tasks, acceptance contract, design and limitations               | Cross-artifact review finds no route, capability-truth, or reset conflict           |
+| H — bilingual type       | Locale-resolved complete typography roles and scalable Text/Input use, plus large-label resilience                               | `src/design/tokens.ts`, `src/components/primitives.tsx`, bounded text-bearing components | RED/GREEN role-resolution and source-boundary tests                                 |
+| I — presentation adapter | Private service authority, explicit Parent grants, age-adapted Coach projection, voice commands, and reset integration           | `src/features/assistants/childVoiceController.ts`, `src/state/usePrototypeStore.ts`      | Grant-off, grant-on, role, binding, lifecycle, locale-preservation, and reset tests |
+| J — in-route UI          | Parent permission panel and Child Coach/voice panel with bilingual copy and accessibility state                                  | Existing review/task routes, reusable family-growth components, resources                | Arabic/English web proxy plus source and accessibility checks                       |
+| K — convergence          | Focused/full checks, detector, route/counter preservation, capability scan, and truthful evidence update                         | Reserved evidence documents only                                                         | Typecheck, lint, format, tests, export, detector, and diff review                   |
 
 Tests for Phases H and I are written and observed failing before their implementation. Shared route
 and store files remain serialized under `/root`; the three audit agents are read-only. Each coherent

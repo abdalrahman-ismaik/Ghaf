@@ -1,5 +1,33 @@
 # Acceptance Contract: Family Growth Garden
 
+## AC-00 — Revision 3 Design-Intake Authority
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+R001 Batch 1 is the only released visual/runtime slice. Acceptance currently permits native
+foundations and these routes only: `/`, `/access/parent/sign-in`,
+`/access/parent/verification`, `/access/parent/family-basics`,
+`/access/parent/add-first-child`, `/access/parent/review-create`, and modal
+`/access/parent/family-created-success`, followed by history replacement into the preserved
+`/parent` destination.
+
+R001 acceptance requires deterministic local access labels, route prerequisites, draft preservation,
+idempotent local creation, Back/dismiss restoration, Arabic/English parity, 48dp targets, responsive
+safe-area/scroll/keyboard behavior, state variants, reset/profile isolation, and no regression to
+remote League, Family Reward, voice, privacy, or Parent-authorized reset behavior. PNGs govern
+composition; exported web code never enters runtime.
+
+The Revision 3 product oracle preserves private five-Leaf League, `task_recycling_p0_v1`, separate
+progress authorities, capability-scoped access, `expo-audio` synthetic voice, and one result ordered
+praise → optional self-reported activity → Seeds → garden → canopy/Leaf/League → Path/badges/
+safe-help → private Family Reward. It targets lifetime Seeds 108→120, Mangrove 48/60→60/60,
+Family Reward 108/120→120/120, one 120–180 Impact Path, exactly 16 badges, and zero-Seed equal-credit
+Mangrove learning. None of those Growth screens can pass until its approved Stitch evidence exists.
+
+The remote acceptance oracles below remain regression evidence for the behavioral baseline. Where
+their ten-route, 48→60 personal-Seed, or `/circle` assumptions conflict with this amendment, they are
+historical compatibility tests and not the future target.
+
 **Status**: PROPOSED — executable Feature 003 validation contract. No check is passed by this
 document alone.
 
@@ -33,11 +61,13 @@ dependency-blocked exercise as `NOT RUN` or pre-label an unattempted exercise `B
 A source inspection, unit test, web preview, or Feature 002 result MUST NOT pass a physical-device,
 native RTL, media, Back, accessibility, timing, comprehension, or named-human-review criterion.
 
-## Authored Route and Guard Contract
+## Preserved Remote Authored Route and Guard Contract
 
-The integrated application MUST contain exactly these ten product routes. Framework files such as
-`app/_layout.tsx` are not product routes. Loading, assistant, fallback, retry, awaiting-confirmation,
-phase-review, and celebration are states of these routes.
+Before R001, the remote application contains exactly these ten product routes. R001 preserves all
+ten route files, replaces the `/` composition in place, and adds exactly six approved
+`/access/parent/**` route files, so its post-integration inventory is exactly 16. Framework files
+such as `app/_layout.tsx` are not product routes. Loading, assistant, fallback, retry,
+awaiting-confirmation, phase-review, and celebration remain states of their owning routes.
 
 |   # | Route                 | Required entry or safe behavior                                                                                                                                                                              | State mutation allowed on entry                                        |
 | --: | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
@@ -45,9 +75,9 @@ phase-review, and celebration are states of these routes.
 |   2 | `/role`               | Always reachable as a shared-device demo selector; visibly not authentication                                                                                                                                | Demo mode and active synthetic Child only after an explicit choice     |
 |   3 | `/parent`             | Parent mode; a Child-mode deep link returns to `/role` without exposing Parent-only detail                                                                                                                   | None on entry                                                          |
 |   4 | `/parent/task/new`    | Parent mode; otherwise return to `/role`                                                                                                                                                                     | Draft edits only                                                       |
-|   5 | `/parent/task/review` | Parent mode plus a complete review candidate; otherwise return to `/parent/task/new` without losing valid draft input; prepared voice remains off unless the Parent uses its distinct enable action             | Optional stored synthetic voice/AI grant; assignment stays separate    |
+|   5 | `/parent/task/review` | Parent mode plus a complete review candidate; otherwise return to `/parent/task/new` without losing valid draft input; prepared voice remains off unless the Parent uses its distinct enable action          | Optional stored synthetic voice/AI grant; assignment stays separate    |
 |   6 | `/child`              | Child mode plus an active synthetic profile; otherwise return to `/role`                                                                                                                                     | `assigned → chosen` only after the assigned Child deliberately chooses |
-|   7 | `/child/task`         | Child mode plus an assignment for the active Child; a missing or wrong-profile assignment returns to `/child` without revealing private task detail; Coach and voice remain task/version-bound                 | Explicit task start and synthetic voice-state commands only            |
+|   7 | `/child/task`         | Child mode plus an assignment for the active Child; a missing or wrong-profile assignment returns to `/child` without revealing private task detail; Coach and voice remain task/version-bound               | Explicit task start and synthetic voice-state commands only            |
 |   8 | `/parent/check-in`    | Parent mode plus the matching journey in `submitted`, `retry`, `confirmed` with pending praise, or `recognized` with its matching ledger receipt; otherwise return to `/parent` without creating recognition | None on entry; available actions depend on the admitted state          |
 |   9 | `/garden`             | Safe read-only family landscape before confirmation and the recognized consequence afterward; available from the authored family flow                                                                        | None on entry                                                          |
 |  10 | `/circle`             | Safe synthetic/local aggregate before and after the milestone; no individual record is exposed                                                                                                               | None on entry                                                          |
@@ -96,7 +126,12 @@ Historical Feature 002 specifications, documentation, screenshots, and evidence 
    pre-reset history after reset. Record the config output, build, device, and OS with the native
    observation.
 
-## Canonical Reset Oracle
+## Preserved Remote Schema-3 Reset Oracle
+
+The 48-Seed personal reset below is the verified remote compatibility oracle. It is not the Revision
+3 target lifetime-Seed reset. Mangrove independently remains 48/60→60/60 in both stories; Phase 22
+must introduce lifetime Seeds 108→120 only through the approved product contract plus a validated,
+versioned runtime migration.
 
 The Parent-only **Reset synthetic demo** action requires confirmation and MUST restore all values in
 one action without a remote dependency.
@@ -134,7 +169,11 @@ without manually changing counters, then invoke reset. Acceptance requires five 
 resets from every named source state; one mismatch is `FAILED` and must not be repaired by manually
 editing counters.
 
-## Lifecycle and No-Early-Reward Oracle
+## Preserved Remote Schema-3 Lifecycle and No-Early-Reward Oracle
+
+The 48-Seed value in this section is historical remote behavior. Its no-early-reward and
+idempotency invariants remain current; its personal-Seed fixture is superseded only after the
+versioned 108→120 Revision 3 migration is implemented and validated.
 
 The valid main lifecycle is:
 
@@ -159,7 +198,7 @@ the task to `in_progress`. A safe equivalent or smaller replacement may change a
 award only when agreed before Child acceptance; permitted help after acceptance never reduces the
 displayed award.
 
-## Confirmation and Idempotency Oracle
+## Preserved Remote Schema-3 Confirmation and Idempotency Oracle
 
 The P0 submission is one 12-Seed, recurrence-once `standard + acquisition` Green Impact task with
 `visibilityScope = household` and `circleEligible = true`. Its first valid recognition MUST use two
@@ -234,8 +273,8 @@ The deterministic acceptance path makes no external request.
 | Prepared Parent Guide opens                                                            | Uses `guide_recycling_refine_v1`; labels the result prepared; says AI may be wrong and the Parent decides.                                         |
 | Optional live Parent call times out, fails schema/safety validation, or is unavailable | On the same route and attempt, retain Parent input and show the reviewed prepared result with a fallback/prepared label.                           |
 | Child Coach opens                                                                      | Uses only `coach_recycling_steps_v1`; stays bound to the active approved task; shows **I need an adult** and the prepared/may-be-wrong disclosure. |
-| Child voice opens without Parent grant                                                  | Shows the disabled Parent-required state and creates no voice session.                                                                              |
-| Parent enables prepared Child voice                                                     | Uses stored synthetic Parent authority to enable voice and AI separately; assignment approval does not grant either permission.                   |
+| Child voice opens without Parent grant                                                 | Shows the disabled Parent-required state and creates no voice session.                                                                             |
+| Parent enables prepared Child voice                                                    | Uses stored synthetic Parent authority to enable voice and AI separately; assignment approval does not grant either permission.                    |
 | Synthetic voice rehearsal runs                                                         | Shows explicit start/stop/review/delete/send/caption/0.75×/1×/replay/reset controls and says no microphone or Child audio is captured.             |
 | Synthetic voice transcript is sent                                                     | Marks the prepared review rehearsal complete; does not claim live AI processing, attach evidence, or change task/reward state.                     |
 | Prepared image is absent                                                               | Show an accessible descriptive synthetic placeholder; completion remains available.                                                                |

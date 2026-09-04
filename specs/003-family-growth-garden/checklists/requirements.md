@@ -1,5 +1,26 @@
 # Specification Quality Checklist: Family Growth Garden
 
+## Revision 3 / R001 Reconciliation — 2026-09-04
+
+- [x] Remote access, private League, private Family Reward, synthetic voice, privacy/profile
+      isolation, Parent reset, and earlier journey are identified as behavioral evidence rather than
+      visual approval.
+- [x] Private five-Leaf League, `task_recycling_p0_v1`, independent progress authorities, and the
+      praise-first superset result with private Family Reward last are explicit.
+- [x] One private 120–180 Impact Path, exactly 16 deterministic permanent badges, zero-Seed
+      equal-credit Mangrove learning, and Parent selected-Child progress are explicit product rules.
+- [x] R001 releases only native foundations, Welcome, first-time Parent onboarding, and protected
+      `/parent` handoff.
+- [x] The six local-only commits remain unapplied provenance and are not treated as remote behavior.
+- [x] R002 counts, invalid/missing evidence, and missing Growth surfaces are recorded without
+      fabricating approval, specs, English frames, or provenance.
+- [ ] Original R001 bytes/checksums are preserved on the integration branch.
+- [ ] R001 implementation and fresh focused/full validation complete.
+- [ ] R002 supplies complete mobile references, screen specs, states, parity, provenance, and
+      explicit release.
+
+**Active gate:** **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-08-26
 **Feature**: [Feature 003 specification](../spec.md)

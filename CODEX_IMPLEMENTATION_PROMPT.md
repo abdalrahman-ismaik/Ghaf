@@ -1,5 +1,27 @@
 # Codex Implementation Prompt — Ghaf Feature 003
 
+## Current execution override — 2026-09-04
+
+The remote head remains the behavioral regression baseline. Do not follow later ten-route or
+`/circle` implementation instructions in this historical handoff when they conflict with the
+current Feature 003 specification.
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+Only R001 Batch 1 may be implemented now: canonical native foundations, `/` Welcome, the six
+`/access/parent/**` setup routes, native success sheet, and guarded handoff to the preserved
+`/parent`. Preserve private five-Leaf League, `task_recycling_p0_v1`, Family Reward, capability-
+scoped access, `expo-audio` synthetic voice, privacy/profile isolation, and Parent reset.
+
+Do not cherry-pick the six divergent commits wholesale. Reconstruct approved R001 slices over the
+remote baseline with tests first. PNGs control composition; Stitch HTML/CSS/JS is non-runtime
+measurement evidence. No post-R001 screen, Growth model, test, asset, dependency, font change
+outside the released R001 roles, or navigation redesign is authorized.
+
+The authoritative execution order is [the active plan](specs/003-family-growth-garden/plan.md),
+[task ledger](specs/003-family-growth-garden/tasks.md), and
+[R001 release gate](specs/003-family-growth-garden/design-intake/release-gate.md).
+
 Paste the prompt below into Codex from the actual Ghaf repository root.
 
 ---
@@ -121,18 +143,18 @@ sustainability/circle credit.
 
 Export exactly these ten product routes, aside from framework built-ins:
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Entry, language, and prototype disclosure |
-| `/role` | Demo role and synthetic Child selection; not authentication |
-| `/parent` | Parent family overview and bounded Guide summary |
-| `/parent/task/new` | Curated task/customization and bounded AI refinement |
-| `/parent/task/review` | Bilingual safety, privacy, reward, and assignment approval |
-| `/child` | Approved choices, personal Seeds, and garden preview |
-| `/child/task` | Steps, bounded Coach, optional prepared media/reflection, and submission |
-| `/parent/check-in` | Confirmation, editable praise, retry, neutral observation, and future-phase review state |
-| `/garden` | Landscape growth and household-canopy consequence |
-| `/circle` | Cooperative aggregate sibling/cousin/family overview |
+| Route                 | Purpose                                                                                  |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `/`                   | Entry, language, and prototype disclosure                                                |
+| `/role`               | Demo role and synthetic Child selection; not authentication                              |
+| `/parent`             | Parent family overview and bounded Guide summary                                         |
+| `/parent/task/new`    | Curated task/customization and bounded AI refinement                                     |
+| `/parent/task/review` | Bilingual safety, privacy, reward, and assignment approval                               |
+| `/child`              | Approved choices, personal Seeds, and garden preview                                     |
+| `/child/task`         | Steps, bounded Coach, optional prepared media/reflection, and submission                 |
+| `/parent/check-in`    | Confirmation, editable praise, retry, neutral observation, and future-phase review state |
+| `/garden`             | Landscape growth and household-canopy consequence                                        |
+| `/circle`             | Cooperative aggregate sibling/cousin/family overview                                     |
 
 Loading, assistant, empty, error, timeout, fallback, retry, awaiting-confirmation, and celebration
 are states of these routes, not additional routes. Retire replaced Feature 002 product routes after
@@ -160,12 +182,12 @@ it is not a universal lifecycle state.
 
 Enforce this matrix:
 
-| Recognition/phase | Seeds | Persistent landscape/canopy | Circle |
-| --- | --- | --- | --- |
-| Standard + acquisition | Displayed fixed award | Eligible mapped growth; household canopy only when visible | One event only for eligible Green Impact |
-| Fade-first + acquisition | Same | Same | Same; after third recurrent confirmation, prompt Parent phase review |
-| Standard/fade-first + maintenance | None | None | Eligible Green activity may still record one coarse action |
-| Recognition-only + not-applicable | None | None | Never |
+| Recognition/phase                 | Seeds                 | Persistent landscape/canopy                                | Circle                                                               |
+| --------------------------------- | --------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------- |
+| Standard + acquisition            | Displayed fixed award | Eligible mapped growth; household canopy only when visible | One event only for eligible Green Impact                             |
+| Fade-first + acquisition          | Same                  | Same                                                       | Same; after third recurrent confirmation, prompt Parent phase review |
+| Standard/fade-first + maintenance | None                  | None                                                       | Eligible Green activity may still record one coarse action           |
+| Recognition-only + not-applicable | None                  | None                                                       | Never                                                                |
 
 Reject every other combination. Parent phase changes apply prospectively, never automatically, and
 never remove prior progress. The app never claims a habit formed.
@@ -207,7 +229,7 @@ Apply privacy filtering before any shared visual or counter update.
   contribution; do not show sibling raw Seeds, pace, or
   age-unequal totals side by side.
 - `circleEligible = true`: allowed only when category is Green Impact and `visibilityScope =
-  household`; projects one coarse family-level action count after confirmation. It never projects a
+household`; projects one coarse family-level action count after confirmation. It never projects a
   task record, identity, or Seeds. Reject `child_guardian + circleEligible` at schema validation.
 
 Never project prayer, kinship, affection, food consumption, hygiene, wellbeing, disability-related
@@ -293,7 +315,11 @@ rejection returns the reviewed fixture without losing user state.
   pressed/focus/disabled states, and long-Arabic resilience.
 - Keep the deterministic journey working after every integrated work package.
 
-## Exact reset
+## Historical remote schema-3 exact reset
+
+Do not implement this 48-Seed personal reset as the Revision 3 target. Preserve it as a regression
+oracle until the product-approved 108→120 lifetime-Seed migration is separately tested and released;
+Mangrove remains independently 48/60→60/60.
 
 Implement the full reset table from `DEMO_RUNBOOK.md`, including:
 

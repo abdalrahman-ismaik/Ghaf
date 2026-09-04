@@ -122,14 +122,41 @@ components:
 
 # Ghaf Design System
 
-**Authority:** Feature 003 executable design contract
+**Authority:** Feature 003 Revision 3 design contract with a bounded R001 release
 
-**Status:** Implemented for deterministic P0; automated and bilingual web-proxy validation passed;
-physical Android and named human reviews remain open
+**Status:** R001 foundations, Welcome, and first-time Parent onboarding are released. The existing
+remote UI remains regression evidence. Every post-R001 Revision 2 and Revision 3 Growth screen is
+blocked pending an approved Stitch batch.
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
 
 **Creative direction:** `DESIGN_DIRECTION.md`
 
 **Product behavior:** `PRODUCT.md`
+
+## Current Design Authority
+
+- R001 PNGs are canonical composition references for `/` and the six Parent-onboarding steps only.
+  Exported HTML/CSS/JS is read-only measurement/structure evidence and never runtime code.
+- Alexandria owns R001 display/headline roles. Readex Pro owns R001 body, control, task, dialogue,
+  and data roles. Use local assets, generous Arabic leading, zero artificial Arabic tracking,
+  tabular numerals, and deterministic fallback. Later typography/geometry changes require their
+  own measured Stitch release.
+- R001 uses responsive safe-area layouts and natural scrolling. A 390×844 frame is a comparison
+  viewport, not a fixed canvas. Only explicitly specified header/action/sheet regions may remain
+  fixed while central content scrolls and avoids the keyboard.
+- All interactive controls retain at least 48dp targets and visible focus, pressed, disabled, busy,
+  validation-error, offline, and success meaning. The success moment is one native modal sheet with
+  focus restoration and reduced-motion parity.
+- Parent/Child role authority comes from the access/session boundary, never visual tab state. R001
+  may hand off to the preserved `/parent` route but may not redesign it.
+- The remote design system below documents the preserved ten-route baseline. Values that conflict
+  with R001 are migrated only inside the released component boundary; they do not release later UI.
+
+The private five-Leaf League, separate Family Reward, 120–180 Impact Path, 16-badge registry,
+equal-credit learning, Parent selected-Child progress, and one superset result are product rules.
+Their screen composition, hierarchy, illustration direction, radii, and motion remain unresolved
+until the appropriate Stitch frames are supplied and approved.
 
 ## Design Promise
 

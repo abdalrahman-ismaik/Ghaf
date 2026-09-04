@@ -288,13 +288,25 @@ traceability obligation; it does not satisfy the underlying native or human outc
 | FR-056–FR-070 — five-stage garden, symbolic claims, privacy-first canopy/circle projection                             | T010–T012, T014–T016, T018–T024, T027–T029, T035, T057–T062, T070–T071, T077–T084, T089–T090              |
 | FR-071–FR-081 — exact assistant/media fixtures, prepared-only Coach, safety/fallback/secret boundary                   | T003, T005–T006, T013, T015–T016, T018–T020, T025–T030, T034, T037–T050, T063, T068, T079–T085, T089–T090 |
 | FR-082–FR-098 — task safety, culture, bilingual RTL, accessibility, exact reset/duplicate behavior                     | T004–T006, T009–T016, T018–T035, T037–T071, T079–T090                                                     |
-| SC-001 — exact ten routes and legacy retirement                                                                        | T063–T071, T081–T084, T088–T090                                                                           |
+| FR-099–FR-105 — preserved baseline, least-privilege access, pairing, reauthentication, and Child grants                | T111–T116, T130–T131                                                                                      |
+| FR-106–FR-110 — private Family Reward lifecycle, eligibility, privacy, and prospective changes                         | T111–T112, T117–T120, T130–T131                                                                           |
+| FR-111–FR-115 — private five-Leaf League, capped scoring, rollover, projection, and encouragement                      | T111–T112, T121–T124, T130–T131                                                                           |
+| FR-116–FR-118 — age adaptation, synthetic voice lifecycle, and shared service facade                                   | T112, T125–T131                                                                                           |
+| FR-119–FR-127 — capability-authorized voice presentation and locale-aware typography                                   | T132–T139                                                                                                 |
+| Revision 3 amendment and R001 release — preserved remote ten plus six approved access routes                           | T140–T149                                                                                                 |
+| R002 and Growth design/schema gates — no runtime authority until approval                                              | T150–T158                                                                                                 |
+| SC-001 — preserved remote ten routes, exact R001 inventory of 16, and legacy retirement                                | T063–T071, T081–T084, T088–T090, T140–T149                                                                |
 | SC-002–SC-005 — five offline cycles/resets, exact one-time consequence, no early reward                                | T009–T010, T014, T016–T017, T021–T029, T036–T071, T083–T090                                               |
 | SC-006–SC-008 — reward matrix, stages/category mapping, projection rejection                                           | T010–T012, T017–T024, T027–T029, T036, T051–T062, T077, T082–T090                                         |
 | SC-009–SC-011 — point-of-use origins, bounded Coach, safe Parent summary                                               | T005–T006, T013, T015–T020, T025–T030, T034, T036–T050, T068, T072–T084, T089–T090                        |
 | SC-012–SC-013 — bilingual physical journey and native accessibility                                                    | T004, T015, T030–T035, T044, T050, T056, T062, T065–T071, T078–T080, T083–T085, T089–T090                 |
 | SC-014–SC-017 — rehearsals, comprehension, prohibited claims, named reviews                                            | T002, T004–T006, T071, T077–T086, T089–T090                                                               |
 | SC-018 — optional live Parent AI truth and secure-boundary gate                                                        | T003, T008, T013, T016, T025–T029, T068, T082–T086, T089–T090                                             |
+| SC-019 — access capability, pairing, reauthentication, and revocation                                                  | T112–T116, T130–T131                                                                                      |
+| SC-020 — Family Reward transitions, exclusions, privacy, and rank independence                                         | T112, T117–T120, T130–T131                                                                                |
+| SC-021–SC-022 — League scoring, ties, privacy projection, rollover, and allowlists                                     | T112, T121–T124, T130–T131                                                                                |
+| SC-023–SC-024 — age/voice domain behavior and complete static/behavioral convergence                                   | T112, T125–T131                                                                                           |
+| SC-025–SC-028 — Parent voice grant, bilingual presentation, typography, reset, and proxy evidence                      | T132–T139                                                                                                 |
 
 The traceability ranges above are complemented by each story's independent-test statement and by
 the executable assertions in `contracts/acceptance-contract.md`.
@@ -567,29 +579,118 @@ switching, denial, and reset pass without a new route, dependency, microphone, s
 network request, or reward mutation.
 
 - [x] T132 [US11] Authorize the later presentation slice, exact reset values, type rules, and
-  capability boundaries in `spec.md`, `plan.md`, `contracts/acceptance-contract.md`, `DESIGN.md`,
-  `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
+      capability boundaries in `spec.md`, `plan.md`, `contracts/acceptance-contract.md`, `DESIGN.md`,
+      `PROTOTYPE_LIMITATIONS.md`, and `TEAM_OWNERSHIP.md`
 - [x] T133 [P] [US11] Add and observe RED locale-role, source-boundary, scaling, and mixed-script
-  tests in `tests/bilingual-typography.test.ts`
+      tests in `tests/bilingual-typography.test.ts`
 - [x] T134 [P] [US11] Add and observe RED Parent-grant, age-derived Coach, voice lifecycle,
-  locale-preservation, reset, copy-parity, route, and forbidden-import tests in
-  `tests/child-ai-presentation.test.ts`
+      locale-preservation, reset, copy-parity, route, and forbidden-import tests in
+      `tests/child-ai-presentation.test.ts`
 - [x] T135 [US11] Implement complete Arabic/English typography roles in `src/design/tokens.ts`,
-  consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
-  clipping in `src/components/family-growth/TaskPanels.tsx`
+      consume the resolver from `src/components/primitives.tsx`, and remove fixed text-bearing badge
+      clipping in `src/components/family-growth/TaskPanels.tsx`
 - [x] T136 [US11] Implement the private service-authorized application adapter in
-  `src/features/assistants/childVoiceController.ts` and expose only safe Coach/voice projections and
-  commands through `src/state/usePrototypeStore.ts`
+      `src/features/assistants/childVoiceController.ts` and expose only safe Coach/voice projections and
+      commands through `src/state/usePrototypeStore.ts`
 - [x] T137 [US11] Add reusable Parent permission and Child synthetic voice panels, mount them on the
-  existing review/task routes, expose the existing language switch, and add paired resources in
-  `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
-  `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
+      existing review/task routes, expose the existing language switch, and add paired resources in
+      `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
+      `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
 - [ ] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
-  export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
-  defects within the reserved window
+      export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
+      defects within the reserved window
 - [ ] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
-  reservation, and commit the validated convergence checkpoint
+      reservation, and commit the validated convergence checkpoint
 
 **Checkpoint**: User Story 11 is demonstrable as prepared/synthetic UI only. Parent enablement is
 explicit, locale changes do not alter the task or voice state, reset is exact, and Android/human
 acceptance remains evidence-dependent.
+
+---
+
+## Phase 19: Revision 3 Authority Reconciliation and R001 Release
+
+**Gate**: **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+**Goal**: Preserve the remote behavioral baseline, encode the user-authoritative Revision 3 product
+contract, and release only the already approved R001 Welcome/Parent-onboarding batch.
+
+- [x] T140 Reconcile `AGENTS.md`, `PRODUCT.md`, `spec.md`, `plan.md`, this task ledger, the R001
+      release gate, design authority, limitations, and documentation map without rewriting remote
+      implementation evidence or applying any of the six local-only commits.
+- [ ] T141 [P] Preserve the approved R001 release files from original commit
+      `f63e39fc702bb1797791f7543c6316e3b06f3ba9` with their original bytes/checksums; do not import any
+      generated web runtime or the untracked R002 directory.
+- [ ] T142 Validate Markdown, links, stable IDs, exact counts, R001 checksums, authority language,
+      `git diff --check`, and changed paths; record that R002 remains unchanged and blocked.
+
+**Checkpoint**: Canonical documents agree that the remote access/League/Family Reward/voice/privacy/
+reset implementation is the regression baseline, Revision 3 product rules are approved planning
+authority, and only R001 may enter runtime.
+
+## Phase 20: R001 Batch 1 — Native Foundations and Parent Onboarding
+
+**Released routes**: `/`, `/access/parent/sign-in`, `/access/parent/verification`,
+`/access/parent/family-basics`, `/access/parent/add-first-child`,
+`/access/parent/review-create`, and modal `/access/parent/family-created-success`.
+
+- [ ] T143 [P] Write focused RED tests for deterministic Parent identifier/code validation,
+      onboarding-draft guards, idempotent local family receipt, capability-scoped `/parent` handoff,
+      profile isolation, and exact reset while retaining the existing access tests.
+- [ ] T144 Implement the smallest R001 onboarding adapter in `src/features/access/**`, the existing
+      models/service registry, and store. Preserve remote Parent/Child capabilities, League, Family
+      Reward, voice, privacy, reset, `task_recycling_p0_v1`, and all unrelated fixture behavior.
+- [ ] T145 [P] Write RED localization/structure tests for Arabic/English parity, Alexandria/Readex
+      roles, bidi-safe OTP/data, 48dp targets, route guards, modal ownership, and prohibited web/runtime
+      imports.
+- [ ] T146 Reconcile the existing design tokens and primitives; add only reusable R001 access
+      controls, locally bundled Alexandria/Readex weights, responsive safe-area/scroll/keyboard shell,
+      and native success sheet. Do not remove `expo-audio` or add an overlapping UI library.
+- [ ] T147 Implement the seven R001 route compositions and interactions from the approved PNGs,
+      treating HTML/CSS/JS only as read-only measurement hints. Child entry stays honestly unavailable
+      until a Child-access batch is released; `/parent` is a handoff destination, not a redesign.
+- [ ] T148 Run focused access/localization/route/reset suites after each slice, then `npm run
+format:check`, `npm run typecheck`, `npm run lint`, `npm test`, Expo dependency/config checks,
+      static export, route inventory, forbidden-import scan, and `git diff --check`.
+- [ ] T149 Compare all seven screens at 390×844 and test 320×568, 430×932, the target tablet,
+      natural scrolling, keyboard visibility, Arabic RTL, English LTR, 100/130/200% font scale,
+      reduced motion, TalkBack order, native Back, offline/reset, and success-sheet focus restoration.
+      Record unavailable native/human checks as `BLOCKED` or `NOT RUN`, never inferred `PASSED`.
+
+**Checkpoint**: R001 is a coherent deterministic native Parent-onboarding slice over the remote
+behavioral baseline. It does not release any later screen.
+
+## Phase 21: R002 Design Intake — Runtime Blocked
+
+- [ ] T150 Select one canonical mobile variant for every required post-R001 screen; replace invalid,
+      black, blank, one-pixel, desktop-wrapper, HTML-only, and duplicate/superseded references.
+- [ ] T151 Supply matched Arabic RTL and English LTR frames, mandatory `screen-spec.md`, material
+      loading/error/empty/interrupted/reduced-motion states, motion ownership, and responsive behavior.
+- [ ] T152 Supply local original assets plus provenance, permission, and review metadata; remove
+      remote font/image dependencies and invalid live copy such as `EN:S`.
+- [ ] T153 Reconcile the complete route/state/component map with the private five-Leaf League,
+      canonical task ID, independent progress authorities, superset result, access guards, reset, and
+      profile isolation; obtain explicit user and integration-owner release.
+
+No Phase 21 task authorizes application, test, dependency, configuration, or asset changes.
+
+## Phase 22: Revision 3 Growth Journey — Runtime Blocked
+
+- [ ] T154 Supply and approve the missing Child Impact Path, Badge Gallery, Badge Detail, Mangrove
+      Learning, equal-credit accessible Learning, Parent selected-Child Progress, and combined
+      RevealBundle references and specifications.
+- [ ] T155 Specify, test, and integration-release the product-approved 108→120 lifetime-Seed/reset
+      migration with rollback, idempotency, profile-isolation, and schema-3 compatibility evidence;
+      runtime migration execution remains blocked, and Mangrove 48/60 or Family Reward 108/120 must
+      not change by inference.
+- [ ] T156 Write RED tests for one 120–180 derived Impact Path, exact 16-badge registry, zero-Seed
+      equal-credit learning, immutable profile-scoped awards, and one recoverable result per
+      `profileId + triggerEventId`.
+- [ ] T157 Implement Growth domain/projections only after T154–T156 and a new bounded release gate;
+      screens never calculate rewards/unlocks or create a second currency.
+- [ ] T158 Implement only the approved Growth screens, then complete full automated, bilingual,
+      responsive, accessibility, offline, reset, physical Android, content, cultural, safeguarding,
+      and rights evidence.
+
+Phase 22 remains blocked even when product rules are documented. A prompt, export filename, remote
+implementation, or this task list is not visual implementation authority.

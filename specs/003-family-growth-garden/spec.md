@@ -4,15 +4,78 @@
 
 **Created**: 2026-08-26
 
-**Status**: Product scope approved. The user's implementation instruction authorizes the
-deterministic P0 after the Feature 003 specification, plan, tasks, and cross-artifact quality gates
-pass. Native-device and human-review acceptance remain open and cannot be inferred from artifact
-approval.
+**Status**: Revision 3 product baseline approved for specification. R001 Batch 1 is the only
+released visual/runtime slice. Post-R001 Revision 2 and every Revision 3 Growth screen remain
+blocked pending a complete user-approved Stitch release. Native-device and human-review acceptance
+remain evidence-dependent.
 
 **Input**: Create an Arabic-first Parent–Child task, recognition, bounded AI-coaching, and UAE
 living-garden prototype that preserves the Feature 002 historical record while replacing its
 judge-facing product journey with one deterministic, safe, offline-capable ten-route vertical
 slice.
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+## Revision 3 Authority Amendment — 2026-09-04
+
+This amendment is canonical when an older section below conflicts with it. The remote head
+`a6ca21a6` remains the behavioral and regression baseline; the six local-only commits remain
+unapplied provenance and must be reconstructed only in approved slices.
+
+### Approved product baseline
+
+- Preserve the private invite-only five-Leaf League: exactly five age-appropriate Challenge Leaves,
+  20 points per confirmed Leaf, score cap 100, shared ties, no speed tiebreak, full help/adaptation
+  credit, and no extra-task rank benefit.
+- Preserve `task_recycling_p0_v1` as the canonical executable 12-Seed Green Impact task.
+- Keep lifetime Seeds, mapped landscape growth, canopy, League, and Family Reward eligible progress
+  as separate authorities. The Revision 3 P0 oracle is lifetime Seeds 108→120; Mangrove independently
+  48/60→60/60; canopy 19/25→20/25; Salem League 4/5 and 80→5/5 and 100; and private Family Reward
+  108/120 `promised`→120/120 `unlocked`.
+- Present one recoverable result per `profileId + triggerEventId`: praise first; optional honestly
+  labeled self-reported activity result; committed Seeds; mapped garden; canopy/Challenge
+  Leaf/League; Impact Path, badges, and safe-help recognition; private Family Reward last.
+- Preserve capability-scoped Parent/Child access, profile isolation, deterministic synthetic voice
+  with `expo-audio`, and Parent-authorized signed-out Arabic-first reset.
+- Add one free private Impact Path derived from confirmed lifetime Seeds. The P0 Water & Coast
+  chapter spans 120–180; the badge registry has exactly 16 deterministic permanent definitions;
+  Mangrove learning has one finite equal-credit accessible alternative; and Parent progress is a
+  read-only selected-Child projection.
+- Learning and explicit activity completion are idempotent and create zero Seeds and zero garden
+  growth. Growth never creates a second currency or feeds League rank.
+
+### R001 Batch 1 release
+
+Only the following may be implemented before the R002 gate exits:
+
+1. canonical design tokens, Alexandria display roles, Readex Pro UI/data roles, RTL primitives,
+   shared access controls, and the navigation/modal shell required by this batch;
+2. `/` Welcome;
+3. `/access/parent/sign-in`;
+4. `/access/parent/verification`;
+5. `/access/parent/family-basics`;
+6. `/access/parent/add-first-child`;
+7. `/access/parent/review-create`; and
+8. `/access/parent/family-created-success`, then replace history into the preserved `/parent`
+   destination without redesigning it.
+
+The R001 PNG files are canonical composition references. Exported HTML/CSS/JS is measurement and
+structure evidence only and must not enter runtime. English, focus, disabled, loading, validation,
+offline, success, keyboard, safe-area, scroll, Back, reduced-motion, and increased-font states must
+use the same native system without claiming missing Stitch visual approval.
+
+R001 changes the authored-route inventory from the preserved remote ten to exactly 16 files: the
+existing `/` file receives the approved Welcome composition, the other nine historical route files
+remain available for regression, and the six `/access/parent/**` files above are added. It does not
+duplicate `/` or remove a remote route. Older exact-ten requirements and success criteria below are
+therefore remote-baseline evidence, not the post-R001 inventory target.
+
+### Preserved remote evidence versus future target
+
+The ten-route journey, 48→60 personal-Seed fixture, and `/circle` presentation documented below
+remain verified historical behavior and regression evidence. They do not override the Revision 3
+target or approve a new screen. Existing remote access, League, Family Reward, voice, privacy, and
+reset tests must continue to pass while R001 is reconstructed over that baseline.
 
 ## Feature Context and Historical Boundary
 
@@ -42,7 +105,11 @@ approved, or a verified environmental-impact platform.
 The deterministic prepared journey is the acceptance baseline and MUST complete with every external
 service denied. Prepared output MUST never be described as live.
 
-## P0 Scope
+## Preserved Remote Ten-Route P0 Scope
+
+This section records the implemented remote scope for regression and compatibility. The Revision 3
+authority amendment above defines the current product target, and R001 Batch 1 defines the only
+currently released visual/runtime slice.
 
 P0 contains exactly:
 
@@ -93,7 +160,11 @@ these routes, not additional routes.
 | `/garden`             | Confirmed landscape growth and one household-canopy consequence                                                                      |
 | `/circle`             | Cooperative aggregate household/cousin/family view with privacy and synthetic/local disclosure                                       |
 
-## User Scenarios & Testing _(mandatory)_
+## Preserved Remote User Scenarios & Testing _(mandatory)_
+
+These scenarios remain regression evidence for the remote implementation. Where a counter,
+projection, route, or visual surface conflicts with the Revision 3 authority amendment, the older
+scenario is historical and MUST NOT be used as the target implementation contract.
 
 ### User Story 1 - Parent Approves a Safe, Useful Task (Priority: P1)
 
@@ -504,7 +575,12 @@ Green/circle credit.
 | Kindness & Community | اللطف والمجتمع    | Samar desert grove    | Recognition-only or fade-first preparation; never circle          |
 | Learning & Wellbeing | التعلّم والتوازن  | Sidr reflection grove | Child/guardian; never circle                                      |
 
-### Exact Reset and Confirmation Values
+### Preserved Remote Schema-3 Reset and Confirmation Values
+
+This 48→60 personal-Seed oracle describes the verified remote ten-route behavior only. Revision 3
+keeps Mangrove 48/60→60/60 but changes the target lifetime-Seed story to 108→120 through the
+separately approved, versioned runtime migration in Phase 22. Until that migration is implemented,
+tests for this section remain compatibility/regression tests rather than the Revision 3 target.
 
 The Parent-only reset requires a small confirmation and MUST restore all values atomically without
 network access.
@@ -528,8 +604,8 @@ network access.
 | Prepared image               | `fixture_recycling_clean_v1`; synthetic/prepared label visible |
 | Prepared audio               | `fixture_salem_plan_ar_v1`; synthetic/prepared label visible   |
 | Assistant mode               | Deterministic prepared; no remote dependency                   |
-| Child voice grants           | Voice and AI off; Parent enablement required                    |
-| Synthetic voice view         | Idle; no transcript; captions on; 1×; replay 0; not active      |
+| Child voice grants           | Voice and AI off; Parent enablement required                   |
+| Synthetic voice view         | Idle; no transcript; captions on; 1×; replay 0; not active     |
 | Celebration state            | `available = false`; `consumed = false`                        |
 
 One valid confirmation changes only these counters:
@@ -650,10 +726,12 @@ required when motion is reduced or unavailable.
 
 - **FR-001**: Feature 003 MUST preserve Feature 002 artifacts and evidence as historical records and
   MUST NOT use any Feature 002 pass to satisfy a Feature 003 criterion.
-- **FR-002**: The product MUST expose exactly the ten authored routes in the Authored Route Contract
-  and no additional authored product route.
+- **FR-002**: The preserved remote baseline MUST retain its ten authored routes. R001 MUST replace
+  the `/` composition in place and add only its six approved `/access/parent/**` routes, producing
+  exactly 16 authored route files without deleting or duplicating a historical route.
 - **FR-003**: Loading, assistant, empty, timeout, fallback, retry, awaiting-confirmation, phase-
-  review, and celebration behavior MUST remain states within the ten routes.
+  review, and celebration behavior MUST remain states within their owning routes; R001 adds no
+  route beyond its six approved access-route files.
 - **FR-004**: Replaced Feature 002 product routes MUST be retired only after the Feature 003 route
   set is integrated and verified; historical Feature 002 artifacts MUST remain intact.
 - **FR-005**: Every judge-facing capability MUST be labeled as real interaction, synthetic,
@@ -1052,13 +1130,15 @@ the historical domain-only result recorded by FR-118.
 
 ### Measurable Outcomes
 
-- **SC-001**: A route inventory contains exactly the ten authored Feature 003 routes and zero
-  replaced Feature 002 product routes after integration.
+- **SC-001**: The preserved remote baseline contains exactly ten authored Feature 003 routes. The
+  integrated R001 inventory contains exactly 16 authored route files—the same ten files, with `/`
+  recomposed in place, plus six approved Parent-access files—and zero replaced Feature 002 routes.
 - **SC-002**: Five consecutive external-service-denied journeys complete from reset through circle
   without a blocked action or prepared/live mislabel.
 - **SC-003**: Five consecutive resets from each named FR-095 source state restore every canonical
   value, Arabic RTL `/`, and empty history exactly.
-- **SC-004**: One confirmation changes Salem 48→60 Seeds, Mangrove 48/60 Shoot→60/60 Sapling,
+- **SC-004**: As a preserved remote schema-3 regression oracle, one confirmation changes Salem
+  48→60 Seeds, Mangrove 48/60 Shoot→60/60 Sapling,
   canopy 19/25→20/25, and circle 11/12→12/12; five duplicate confirmation attempts change nothing.
 - **SC-005**: Assignment, choosing, starting, and submission each create zero Seeds, persistent
   landscape/canopy growth, and circle progress in all automated and manual checks.
@@ -1075,8 +1155,9 @@ the historical domain-only result recorded by FR-118.
   request remains bound to the active Parent-approved task.
 - **SC-011**: A prohibited-language review of Parent summaries finds zero diagnostic, normality,
   character, emotion/personality/risk, deception, religiosity, or parenting-quality judgments.
-- **SC-012**: Arabic RTL and English LTR each complete the same ten-route decisions with equivalent
-  safety, privacy, reward, and capability meaning on a named physical Android build.
+- **SC-012**: Arabic RTL and English LTR each complete the approved seven-surface R001 Parent
+  onboarding flow and preserve the historical journey's equivalent safety, privacy, reward, and
+  capability meaning on a named physical Android build.
 - **SC-013**: Required task/safety copy, actions, and disclosures remain usable at 200% font scale,
   with 48dp targets, logical reading order, once-only announcements, and reduced-motion static
   outcomes on the named target build.
@@ -1109,8 +1190,8 @@ the historical domain-only result recorded by FR-118.
   voice-session tests cover permission, task binding, explicit start/stop, transcript deletion,
   send, captions, replay, slower playback, and reset without microphone access.
 - **SC-024**: `npm run typecheck`, `npm run lint`, `npm run format:check`, and `npm test` pass with the
-  existing ten-route P0 behavior unchanged; frontend, Android, and named-human gates remain at their
-  prior evidence status.
+  historical ten route files preserved and the six approved R001 access routes integrated;
+  Android and named-human gates remain at their directly observed evidence status.
 - **SC-025**: Source and behavioral tests prove Parent grant-off denial, service-authorized grant-on
   access, age-derived `9_11` Coach presentation, every legal synthetic voice transition, every
   illegal skipped transition, and exact reset from idle, active-rehearsal, review, and sent states.
@@ -1120,9 +1201,10 @@ the historical domain-only result recorded by FR-118.
 - **SC-027**: Typography tests resolve all six roles for both locales, find zero Arabic negative
   tracking, confirm Arabic body leading of at least 1.55, and find no font-size/family/line-height
   escape outside the token and primitive boundary.
-- **SC-028**: The unchanged ten-route web proxy demonstrates Parent enablement and the Child's
-  prepared voice states in Arabic RTL and English LTR with no dynamic service request. Android 200%
-  font scale and TalkBack stay `NOT RUN` unless a named native device becomes available.
+- **SC-028**: The web proxy preserves the historical journey and demonstrates the R001 Parent
+  onboarding plus the Child's prepared voice states in Arabic RTL and English LTR with no dynamic
+  service request. Android 200% font scale and TalkBack stay `NOT RUN` unless a named native device
+  becomes available.
 
 ## Dependencies and Assumptions
 
@@ -1179,7 +1261,8 @@ build, device, reviewer, secure boundary, or other required dependency is unavai
 
 ## Out of Scope
 
-- Any authored product route beyond the ten-route contract or a second application.
+- Any authored product route beyond the preserved ten plus the six approved R001 access routes, or
+  a second application, until a later bounded Stitch release explicitly changes the inventory.
 - Production accounts, authentication, guardian-consent systems, age assurance, multi-family
   tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment;
   deterministic synthetic access fixtures do not remove this boundary.

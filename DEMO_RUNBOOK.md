@@ -1,5 +1,27 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Revision 3 / R001 Evidence Boundary — 2026-09-04
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+- Remote head `a6ca21a6` is the preserved behavioral/test baseline. Its ten-route, 48→60 Seed, and
+  `/circle` journey below remains regression evidence, not the Revision 3 target or screen approval.
+- R001 Batch 1 alone is released: native foundations plus Welcome, Parent sign-in, verification,
+  family basics, first Child, review/create, and native success sheet. Fresh R001 evidence must be
+  recorded before calling that reconstructed slice passed on this branch.
+- Post-R001 access/navigation, League, Family Reward, voice, Growth Journey, and screen design remain
+  `BLOCKED` or `NOT RUN` even where remote domain tests pass.
+- Revision 3's future confirmation oracle is lifetime Seeds 108→120; Mangrove independently
+  48/60→60/60; canopy 19/25→20/25; Salem 4/5 and 80→5/5 and 100; private Family Reward
+  108/120→120/120; then Impact Path 120/180. It must appear in one recoverable result with praise
+  first and the private Family Reward last. This oracle is not runnable until the migration and
+  complete Stitch release are approved and implemented.
+- The six local-only commits remain unapplied. R002 exports, missing Growth frames, English parity,
+  state specifications, asset provenance, and named content/accessibility reviews remain evidence
+  gaps.
+
+Do not use the historical journey below to pass an R001 or Revision 3 visual, native, or human gate.
+
 **Target:** Family Growth Garden deterministic P0
 **Status date:** 2026-08-28
 **Primary target:** physical Android device, Arabic RTL first; English LTR second
@@ -35,7 +57,7 @@ Earlier Feature 002 results prove only the reusable food-rescue baseline and are
 Do not replace `BLOCKED` or `NOT RUN` with `PASSED` because a screen exists, a simulator opens, or a
 Feature 002 test still passes.
 
-## Canonical Reset State
+## Preserved Remote Canonical Reset State
 
 Feature 003 implementation must expose one Parent-only `resetPrototype()` action that produces the
 following exact state without network access.
@@ -271,7 +293,7 @@ score, truthfulness score, religiosity, or parenting quality.
 | Duplicate confirm                         | Show “Already confirmed”; leave all counters unchanged              | Award again                                       |
 | Physical-device unavailable               | Mark Android evidence `BLOCKED`; use web only as a fallback preview | Call the Android criterion passed                 |
 
-## Reset Procedure
+## Preserved Remote Reset Procedure
 
 1. Open the Parent-only demo controls.
 2. Choose **Reset synthetic demo** and confirm.

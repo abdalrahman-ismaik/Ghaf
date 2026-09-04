@@ -4,20 +4,27 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-08-28                                                                                                                   |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Product                   | Ghaf — غاف                                                                                                                               |
-| Competition               | Khalifa University SMAC 2026                                                                                                             |
-| Official theme            | AI Adventures in Sustainability                                                                                                          |
-| Target feature            | Feature 003 — Family Growth Garden                                                                                                       |
-| Decision                  | Deterministic P0 implemented; automated and bilingual web-proxy validation passed                                                        |
-| Latest validated baseline | Feature 003: 17 files / 305 tests plus Arabic RTL and English LTR web-proxy journeys; physical Android and named human gates remain open |
-| Primary platform          | Android; Arabic-first with equivalent English support                                                                                    |
-| Prototype data            | Synthetic only                                                                                                                           |
+| Item                          | Truth as of 2026-09-04                                                                                                                             |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product                       | Ghaf — غاف                                                                                                                                         |
+| Competition                   | Khalifa University SMAC 2026                                                                                                                       |
+| Official theme                | AI Adventures in Sustainability                                                                                                                    |
+| Active product direction      | Feature 003 Revision 3 — Revision 2 plus one private Growth Journey                                                                                |
+| Behavioral baseline           | Remote head `a6ca21a6`: ten-route journey plus tested access, private League, private Family Reward, synthetic voice, privacy, and Parent reset    |
+| Approved visual/runtime batch | R001 only: native foundations, Welcome, and first-time Parent onboarding                                                                           |
+| Design-intake gate            | **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**                                                                         |
+| Evidence boundary             | Remote automated/web evidence and R001 evidence retain their exact scope; post-R001 Revision 2 and every Revision 3 Growth screen remain `BLOCKED` |
+| Primary platform              | Android; Arabic-first RTL with equivalent English LTR                                                                                              |
+| Prototype data                | Synthetic only                                                                                                                                     |
 
-Feature 003 supersedes the single food-rescue mission as the implemented product direction. Food
-rescue remains one useful task family. Feature 002 evidence remains historical and must not be used
-to pass any Feature 003 Android or human-review criterion.
+Feature 003 supersedes the single food-rescue mission as the product direction. Food rescue remains
+one useful future task family, but the only executable P0 task is the canonical 12-Seed Green
+Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
+be used to pass any Feature 003 Android, design, or human-review criterion.
+
+The remote implementation is preserved behavior, not permission to choose an unapproved R002
+composition. The six local-only commits remain unapplied candidate provenance; their approved
+slices must be reconstructed over the remote baseline.
 
 ## Product Promise
 
@@ -35,8 +42,8 @@ together.
   garden without public ranking.
 - **Parent or guardian:** chooses tasks, adjusts difficulty, confirms completion, gives specific
   praise, and sees neutral summaries of observable patterns.
-- **Family circle:** P0 previews a future invite-only cousin/family circle using synthetic local
-  aggregates; no real invitations or cross-family connection exists.
+- **Invite-only League participant:** P0 uses synthetic siblings/cousins, private allowlisted rows,
+  exactly five Challenge Leaves, and no real invitations or cross-family connection.
 - **SMAC judge:** should understand the AI value, reward logic, UAE grounding, sustainability
   contribution, and safety boundaries in one short live demo.
 
@@ -62,26 +69,41 @@ age default. Completing a task with allowed help still counts.
 6. The Parent confirms, returns it kindly for another try, or adjusts an unrealistic task.
 7. For a reward-eligible task, prompt Parent approval produces descriptive praise and the fixed,
    previously displayed Seed award.
-8. For an acquisition-phase rewarded task, the mapped landscape grows. The household canopy changes
-   only when `visibilityScope` is `household`; the circle changes only for `circleEligible` Green
-   Impact events after privacy filtering.
+8. For an acquisition-phase rewarded task, the mapped landscape grows. A household-visible event
+   may add one canopy consequence; a separately nominated Challenge Leaf may add 20 League points.
+9. The same idempotent result may reveal an Impact Path station or permanent badge; independent
+   private Family Reward progress appears last.
 
 No in-app credit, recorded sustainability activity, or symbolic growth is recorded before Parent
 confirmation. Confirmation does not establish environmental impact.
 
 ## Behavioral Design Contract
 
-| Principle              | Product rule                                                                                                                                   |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Positive reinforcement | Recognize the requested observable action promptly after confirmation.                                                                         |
-| Descriptive praise     | Name the action, strategy, help-seeking, or improvement; never label the Child's character.                                                    |
-| Autonomy               | Let the Child choose among Parent-approved tasks, order, cue, and a cosmetic garden detail.                                                    |
-| Competence             | Keep the definition of done achievable; allow help, smaller steps, retry, or substitution.                                                     |
-| Relatedness            | Connect the action to a real person, family value, household need, or shared goal.                                                             |
-| Predictability         | Use fixed, visible rewards. No loot boxes, random jackpots, scarcity, or variable-ratio mechanics.                                             |
-| Internalization        | Let the Parent move future reward-eligible completions from acquisition to zero-Seed maintenance while preserving praise, choice, and meaning. |
-| Repair without shame   | A miss never removes earned Seeds, kills a tree, creates debt, or publicly marks failure.                                                      |
-| Self-comparison        | Show progress against the Child's own goal. Family and circle views default to cooperation.                                                    |
+| Principle              | Product rule                                                                                                                                             |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Positive reinforcement | Recognize the requested observable action promptly after confirmation.                                                                                   |
+| Descriptive praise     | Name the action, strategy, help-seeking, or improvement; never label the Child's character.                                                              |
+| Autonomy               | Let the Child choose among Parent-approved tasks, order, cue, and a cosmetic garden detail.                                                              |
+| Competence             | Keep the definition of done achievable; allow help, smaller steps, retry, or substitution.                                                               |
+| Relatedness            | Connect the action to a real person, family value, household need, or shared goal.                                                                       |
+| Predictability         | Use fixed, visible rewards. No loot boxes, random jackpots, scarcity, or variable-ratio mechanics.                                                       |
+| Internalization        | Let the Parent move future reward-eligible completions from acquisition to zero-Seed maintenance while preserving praise, choice, and meaning.           |
+| Repair without shame   | A miss never removes earned Seeds, kills a tree, creates debt, or publicly marks failure.                                                                |
+| Self-comparison        | Show permanent progress against the Child's own goal. Weekly League opportunity is normalized and every valid Leaf also supports the cooperative canopy. |
+
+## Separate Progress Authorities
+
+| Authority                         | Meaning and persistence                                                                                                                                   |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lifetime Seeds                    | Permanent private symbolic progress created only by an eligible Parent-confirmed acquisition receipt                                                      |
+| Mapped landscape                  | Permanent category-specific growth derived from eligible Seed provenance; Mangrove is independently 48/60 → 60/60 in the P0 event                         |
+| Challenge Leaves and League score | Five weekly opportunities, 20 points each, capped at 100; rank resets weekly while permanent progress does not                                            |
+| Family canopy                     | Cooperative household consequence without another Child's task, evidence, accommodation, money, or raw Seed total                                         |
+| Family Reward eligible progress   | Private Parent-promise eligibility; independently 108/120 → 120/120 and never derived from rank                                                           |
+| Impact Path                       | Read-only private projection of confirmed lifetime Seeds plus separately proven learning/action criteria; one 120–180 P0 chapter, never a second currency |
+
+Numerical equality does not merge authorities. A screen, migration, or design export may not copy
+one value into another ledger.
 
 See `RESEARCH_BASIS.md` for the evidence, caveats, age adaptations, and prohibited uses.
 
@@ -198,9 +220,10 @@ Canonical sharing behavior is:
 Reject `circleEligible = true` unless the category is Green Impact and `visibilityScope` is
 `household`. A future production circle also requires guardian management and Child assent.
 
-## Family and Circle Dashboard
+## Family, League, and Privacy Projection
 
-The dashboard remains central, but it is a garden-shaped cooperative overview rather than a public
+The family dashboard remains garden-shaped and cooperative. Revision 3 also preserves the private,
+invite-only five-Leaf League implemented in the remote domain baseline; it is not a public or global
 leaderboard.
 
 - **Child view:** own choices, own progress, today/this-week rhythm, and shared family goal.
@@ -208,13 +231,39 @@ leaderboard.
   adjustments, chosen activity mix, and private notes.
 - **Sibling view:** one combined household canopy; each Child sees only their own goal and no raw
   Seed, pace, or age-unequal comparison.
-- **Cousin or other-family circle:** future invite-only and Parent-managed; P0 shows seeded family-
-  level eligible Green action counts and cooperative milestones only.
+- **League view:** shows only approved nickname, tree avatar, weekly rank, normalized score, and
+  confirmed Challenge Leaves. Ties share position; speed and extra tasks never break ties.
+- **Green Impact projection:** remains a separate coarse household-visible Green action projection;
+  `circleEligible` never doubles as League eligibility.
 
-Never share prayer, kinship, affection, food consumption, hygiene, disability-related routines,
-wellbeing, Parent observations, exact task history, photos, voice, free-text reflections, or Child
-chat across households. The MVP uses seeded local aggregates and does not implement real accounts,
-discovery, messaging, comments, or invitations.
+Never share prayer, affection, emotional disclosure, private wellbeing, hygiene, disability-related
+routines, Parent observations, exact task history, media, free-text reflections, assistant content,
+age, accommodations, missed-task reasons, Seeds, or Family Reward amounts across households. The
+MVP uses seeded local participants and does not implement real accounts, discovery, messaging,
+comments, or invitations.
+
+## Private Family Reward
+
+Family Reward is an optional private Parent promise, not a wallet. It may be money, an experience,
+a privilege, or a gift fulfilled outside Ghaf. It has no Seed-to-AED rate, never depends on League
+rank, and follows `promised → unlocked → given`. A monetary plan requires synthetic scoped Parent
+reauthentication. An unlocked promise cannot be removed or retroactively weakened.
+
+The P0 Salem fixture is 108/120 new eligible Seeds and AED 25. The canonical confirmation advances
+it to 120/120 only after praise, the 12 committed Seeds, and mapped garden growth. Unknown,
+recognition-only, protected, or prohibited activity contributes zero.
+
+## Private Growth Journey
+
+Impact Path is one free private projection, not a spendable balance. The P0 Water & Coast chapter
+spans lifetime Seed stations 120, 132, 144, 156, 168, and 180. The product includes exactly 16
+deterministic permanent badge definitions and one finite Mangrove learning package with an
+equal-credit accessible route. Learning/activity completion is idempotent and creates zero Seeds or
+garden growth. A Parent may view a selected Child's progress read-only; siblings are never compared.
+
+The exact badge criteria and learning package live in [the badge catalog](docs/content/BADGE_CATALOG.md)
+and [learning contract](docs/content/LEARNING_STORIES.md). Their product rules are approved planning
+authority; their runtime screens remain blocked until a complete Stitch batch is released.
 
 ## AI Experiences
 
@@ -272,7 +321,35 @@ If real child-facing AI is later enabled, it requires a separately approved prod
 
 Do not claim legal compliance from prototype safeguards.
 
-## Competition MVP — P0
+## Revision 3 P0 Target
+
+The target remains one application and one deterministic journey:
+
+- separate capability-scoped Parent and Child access with no ordinary in-app role toggle;
+- Parent Home, Tasks, Garden, and Family navigation; Child Today, Garden, and League navigation;
+- eight curated task categories, five UAE landscape tracks, and one executable 12-Seed Green
+  Impact recycling task;
+- five Challenge Leaves per Child, private normalized League results, and cooperative canopy;
+- Salem's private 108/120 Family Reward plan and one 120–180 Impact Path chapter;
+- exactly 16 badges, one finite Mangrove learning package with equal-credit alternative, one Parent
+  selected-Child progress view, and one combined recoverable result;
+- deterministic prepared Guide, Coach, media, and voice behavior with `expo-audio` preserved; and
+- Parent-authorized signed-out Arabic-first reset, profile isolation, offline operation, and
+  equivalent English.
+
+The combined result order is praise → any honestly labeled self-reported activity result → committed
+Seeds → mapped garden → canopy/Challenge Leaf/League → Impact Path/badges/safe-help recognition →
+private Family Reward last. Duplicate confirmation repeats no consequence.
+
+R001 releases only foundations and Welcome → Parent sign-in → verification → family basics → add
+first Child → review/create → native success sheet → preserved `/parent` destination. Every later
+route or state remains blocked by the active R002 gate.
+
+## Preserved Remote Demonstration Baseline
+
+The section below records the earlier ten-route implementation and may be used only as regression
+evidence while Revision 3 is integrated. It is not the target route inventory and does not release
+post-R001 UI.
 
 P0 demonstrates breadth with curated content and one complete, deterministic vertical slice:
 
@@ -336,12 +413,12 @@ extra routes.
 - production notifications, analytics, monitoring, compliance claims, or store release; and
 - a second app, 3D world, or backend that can delay the deterministic competition path.
 
-## Post-P0 Product Experience Redesign Domain Foundation
+## Implemented Product Experience Redesign Domain Foundation
 
-The September 2026 redesign is implemented first as deterministic domain services, not as a change
-to the current ten-route P0. The later experience may use separate Parent and Child entry, a private
-weekly Family League, optional Family Reward promises, and richer voice/permission controls only
-after their UI, native, human-review, and production boundaries receive separate approval.
+The remote behavioral baseline already implements deterministic services for separate access,
+private Family Reward, private weekly Family League, age-adapted Coach output, and synthetic voice.
+These services remain regression authority. Their post-R001 UI still requires a released design
+batch and fresh native/human evidence.
 
 - **Synthetic access** demonstrates least-privilege Parent/Child sessions, expiring pairing,
   revocation, action-scoped Parent reauthentication, and per-Child grants. It is not production
@@ -357,5 +434,6 @@ after their UI, native, human-review, and production boundaries receive separate
   lifecycle. Real recording, transcription, code-switch understanding, dialect output, and provider
   integration remain unavailable.
 
-The current cooperative P0 circle, fixed nonfinancial Seeds, Arabic-first reset, and exact judge
-journey remain authoritative until the later frontend phase is specified and validated.
+The prior cooperative circle, 48→60 personal Seed presentation, and ten-route shell remain historical
+behavioral evidence. Revision 3 preserves their safety/idempotency/privacy rules while adopting the
+separate authorities and P0 target above through explicit versioned migration and released screens.

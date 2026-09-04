@@ -11,14 +11,28 @@ living garden.
 
 ## Current status
 
-| Area                 | Current evidence                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | Feature 003 — Family Growth Garden is implemented as one ten-route deterministic P0 journey                                                 |
-| Automated checks     | 17 test files / 305 tests, TypeScript, Expo ESLint, Prettier, and Expo dependency alignment passed at the latest recorded checkpoint        |
-| Web preview          | Arabic RTL and English LTR journeys passed at a 390×844 browser proxy with no runtime errors or horizontal overflow                         |
-| Android              | Authoritative physical-device validation is **BLOCKED** on this host because the Android SDK, ADB, Java, and a named device are unavailable |
-| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers     |
-| Production readiness | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                   |
+Feature 003 Revision 3 is the active product direction. Remote head `a6ca21a6` remains the preserved
+behavioral baseline for access, private five-Leaf League, private Family Reward, synthetic voice,
+privacy/profile isolation, Parent reset, and the earlier ten-route journey. The six divergent local
+commits remain unapplied provenance.
+
+R001 Batch 1 is the only approved design/runtime slice: native foundations, Welcome, and first-time
+Parent onboarding. Its success state hands off to the preserved `/parent` destination without
+redesigning it.
+
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+No post-R001 Revision 2 screen or Revision 3 Growth screen may be implemented until its complete
+mobile Stitch references, states, specifications, provenance, and explicit release are recorded.
+
+| Area                 | Current evidence                                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product              | Revision 3 planning baseline is active; R001 is the only released design/runtime batch                                                            |
+| Automated checks     | Remote ten-route/access/League/Reward/voice checks are preserved behavioral evidence; fresh R001 and Growth checks are not inherited              |
+| Web preview          | Remote Arabic RTL and English LTR journeys passed at a 390×844 browser proxy; this does not validate R001 reconstruction or R002/Growth screens   |
+| Android              | Authoritative R001/Revision 3 physical-device interaction evidence remains **NOT RUN** or **BLOCKED** until recorded against a named build/device |
+| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers           |
+| Production readiness | **No** — data, assistants, media, access, League, rewards, and growth remain intentionally local/synthetic/prepared or design-blocked             |
 
 The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
 does not count as native-device or human-review evidence.
@@ -141,6 +155,10 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
 - [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
   requirements and acceptance criteria.
+- [R001 release gate](specs/003-family-growth-garden/design-intake/release-gate.md) — exact approved
+  Parent-onboarding boundary and post-R001 hold.
+- [Revision 3 reconciliation package](specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
+  — non-canonical provenance and unresolved R002 design evidence.
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.
 
 ## Safety and scope boundaries

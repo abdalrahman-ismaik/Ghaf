@@ -4,15 +4,21 @@ This directory contains current engineering guidance and preserved Feature 002 r
 Feature 003 product contracts intentionally remain in the repository root because the approved
 handoff, `AGENTS.md`, and Spec Kit workflow reference those canonical paths.
 
+> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+
+R001 Batch 1 is the only released visual/runtime boundary. The remote implementation remains the
+behavioral regression baseline; the six local-only commits remain unapplied provenance.
+
 ## Start here
 
-| Need                                                   | Document                                                      |
-| ------------------------------------------------------ | ------------------------------------------------------------- |
-| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                     |
-| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                  |
-| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                         |
-| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                         |
-| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md) |
+| Need                                                   | Document                                                                             |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                                            |
+| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                                         |
+| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                |
+| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                |
+| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                        |
+| Check the only released screen batch                   | [R001 release gate](../specs/003-family-growth-garden/design-intake/release-gate.md) |
 
 ## Active Feature 003 contracts
 
@@ -33,6 +39,12 @@ The active Spec Kit package is
 [`specs/003-family-growth-garden/`](../specs/003-family-growth-garden/). Its `spec.md`, `plan.md`, and
 `tasks.md` are normative for implementation. Contracts and checklists beneath that directory hold
 domain acceptance and exact evidence.
+
+The [Revision 3 proposal package](../specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
+is retained as non-canonical reconciliation evidence. Current user authority now fixes the private
+five-Leaf League, canonical task ID, independent progression authorities, superset result, access,
+voice, reset, profile isolation, 120–180 Impact Path, exact 16-badge registry, and equal-credit
+Mangrove learning. It does not approve an R002 visual variant or missing Growth screen.
 
 ## Preserved Feature 002 history
 
