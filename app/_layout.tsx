@@ -1,17 +1,13 @@
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
-import {
-  Alexandria_400Regular,
-  Alexandria_700Bold,
-  Alexandria_800ExtraBold,
-} from '@expo-google-fonts/alexandria';
-import {
-  ReadexPro_400Regular,
-  ReadexPro_500Medium,
-  ReadexPro_600SemiBold,
-  ReadexPro_700Bold,
-} from '@expo-google-fonts/readex-pro';
+import { Alexandria_400Regular } from '@expo-google-fonts/alexandria/400Regular';
+import { Alexandria_700Bold } from '@expo-google-fonts/alexandria/700Bold';
+import { Alexandria_800ExtraBold } from '@expo-google-fonts/alexandria/800ExtraBold';
+import { ReadexPro_400Regular } from '@expo-google-fonts/readex-pro/400Regular';
+import { ReadexPro_500Medium } from '@expo-google-fonts/readex-pro/500Medium';
+import { ReadexPro_600SemiBold } from '@expo-google-fonts/readex-pro/600SemiBold';
+import { ReadexPro_700Bold } from '@expo-google-fonts/readex-pro/700Bold';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import { Stack, usePathname } from 'expo-router';

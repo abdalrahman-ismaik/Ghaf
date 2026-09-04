@@ -235,8 +235,19 @@ describe('R001 native design foundation', () => {
     expect(appConfig).toContain("'expo-font'");
     expect(appConfig).toContain('Alexandria_800ExtraBold.ttf');
     expect(appConfig).toContain('ReadexPro_600SemiBold.ttf');
-    expect(rootLayout).toContain("from '@expo-google-fonts/alexandria'");
-    expect(rootLayout).toContain("from '@expo-google-fonts/readex-pro'");
+    expect(rootLayout).not.toContain("from '@expo-google-fonts/alexandria'");
+    expect(rootLayout).not.toContain("from '@expo-google-fonts/readex-pro'");
+    for (const fontModule of [
+      '@expo-google-fonts/alexandria/400Regular',
+      '@expo-google-fonts/alexandria/700Bold',
+      '@expo-google-fonts/alexandria/800ExtraBold',
+      '@expo-google-fonts/readex-pro/400Regular',
+      '@expo-google-fonts/readex-pro/500Medium',
+      '@expo-google-fonts/readex-pro/600SemiBold',
+      '@expo-google-fonts/readex-pro/700Bold',
+    ]) {
+      expect(rootLayout).toContain(`from '${fontModule}'`);
+    }
     expect(rootLayout).toContain('<GhafFontProvider loaded={fontsLoaded}>');
   });
 });
