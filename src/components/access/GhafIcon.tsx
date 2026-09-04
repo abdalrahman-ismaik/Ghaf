@@ -18,6 +18,8 @@ export type GhafIconName =
   | 'fingerprint'
   | 'flower'
   | 'ghaf-tree'
+  | 'home'
+  | 'help'
   | 'info'
   | 'language'
   | 'large-text'
@@ -26,9 +28,11 @@ export type GhafIconName =
   | 'lock'
   | 'media-off'
   | 'motion'
+  | 'plus'
   | 'person'
   | 'person-add'
   | 'science'
+  | 'settings'
   | 'shield'
   | 'simple'
   | 'sparkle'
@@ -156,6 +160,33 @@ export function GhafIcon({
           <G fill={color}>
             <Path d="M12 2.8L6.8 9h3L5 15h5v4h4v-4h5l-4.8-6h3L12 2.8z" />
             <Rect height="2" rx="1" width="7" x="8.5" y="19" />
+          </G>
+        );
+      case 'home':
+        return (
+          <G {...common}>
+            <Path d="M3.8 10.5L12 3.8l8.2 6.7V20H15v-5.5H9V20H3.8z" />
+          </G>
+        );
+      case 'settings':
+        return (
+          <G {...common}>
+            <Circle cx="12" cy="12" r="3" />
+            <Path d="M12 3.2v2.1M12 18.7v2.1M3.2 12h2.1M18.7 12h2.1M5.8 5.8l1.5 1.5M16.7 16.7l1.5 1.5M18.2 5.8l-1.5 1.5M7.3 16.7l-1.5 1.5" />
+            <Circle cx="12" cy="12" r="7" />
+          </G>
+        );
+      case 'help':
+        return (
+          <G {...common}>
+            <Circle cx="12" cy="12" r="8.5" />
+            <Path d="M9.5 9.1a2.8 2.8 0 015.3 1.3c0 2-2.8 2.3-2.8 4M12 18h.01" />
+          </G>
+        );
+      case 'plus':
+        return (
+          <G {...common}>
+            <Path d="M12 5v14M5 12h14" />
           </G>
         );
       case 'leaf':

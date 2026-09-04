@@ -35,6 +35,8 @@ export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
   const isR001Route = pathname === '/' || pathname.startsWith('/access/parent/');
+  const isR002aParentHome = pathname === '/parent';
+  const usesLightSystemChrome = isR001Route || isR002aParentHome;
   const [fontsLoaded, fontError] = useFonts({
     Alexandria_400Regular,
     Alexandria_700Bold,
@@ -64,9 +66,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GhafFontProvider loaded={fontsLoaded}>
-        <StatusBar style={isR001Route ? 'dark' : 'light'} />
+        <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
         <View style={styles.root}>
-          {isR001Route ? null : <PrototypeStatusBar />}
+          {usesLightSystemChrome ? null : <PrototypeStatusBar />}
           <Stack
             screenOptions={{
               animation: 'fade',

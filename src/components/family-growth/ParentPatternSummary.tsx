@@ -3,18 +3,23 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, Text } from '@/components/primitives';
-import { colors, spacing } from '@/design/tokens';
+import { colors, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import type { ParentPatternSummary as ParentPatternSummaryModel } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface ParentPatternSummaryProps {
+  readonly appearance?: 'legacy' | 'r002a';
   readonly summary: ParentPatternSummaryModel;
   readonly testID?: string;
 }
 
-export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryProps) {
+export function ParentPatternSummary({
+  appearance = 'legacy',
+  summary,
+  testID,
+}: ParentPatternSummaryProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -23,6 +28,7 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
   const [draftAr, setDraftAr] = useState(summary.observableFacts[0].ar);
   const [draftEn, setDraftEn] = useState(summary.observableFacts[0].en);
   const [correctionStatus, setCorrectionStatus] = useState<'idle' | 'applied' | 'rejected'>('idle');
+  const branded = appearance === 'r002a';
 
   const beginCorrection = () => {
     const fact = current.observableFacts[0];
@@ -59,40 +65,44 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
   };
 
   return (
-    <View style={styles.summary} testID={testID}>
+    <View style={[styles.summary, branded ? styles.summaryR002a : null]} testID={testID}>
       <View style={[styles.heading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={styles.guideMark} />
         <View style={styles.grow}>
-          <Text color="forest" variant="heading">
+          <Text brand={branded} color={branded ? 'deepForest' : 'forest'} variant="heading">
             {t('parentHome.summaryTitle')}
           </Text>
-          <Text color="earth" variant="caption">
+          <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'earth'} variant="caption">
             {localize(current.timeWindow, locale)} · {t('origin.prepared')}
           </Text>
         </View>
       </View>
 
       <SummaryField
+        branded={branded}
         label={t('parentHome.strengths')}
         value={localize(current.strengthsFirst, locale)}
       />
       <View style={styles.field}>
-        <Text color="earth" variant="caption">
+        <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'earth'} variant="caption">
           {t('parentHome.facts')}
         </Text>
         {current.observableFacts.map((fact) => (
-          <Text key={fact.en}>{localize(fact, locale)}</Text>
+          <Text brand={branded} key={fact.en}>
+            {localize(fact, locale)}
+          </Text>
         ))}
       </View>
-      <Button aria-expanded={isEditing} onPress={beginCorrection} variant="ghost">
+      <Button brand={branded} aria-expanded={isEditing} onPress={beginCorrection} variant="ghost">
         {t('parentHome.correctSummary')}
       </Button>
       {isEditing ? (
         <View style={styles.editor}>
-          <Text color="forest" variant="label">
+          <Text brand={branded} color={branded ? 'deepForest' : 'forest'} variant="label">
             {t('parentHome.correctSummary')}
           </Text>
           <Input
+            brand={branded}
             direction="rtl"
             label={t('language.arabic')}
             language="ar"
@@ -106,6 +116,7 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
             value={draftAr}
           />
           <Input
+            brand={branded}
             direction="ltr"
             label={t('language.english')}
             language="en"
@@ -120,43 +131,48 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
           />
           <View style={styles.editorActions}>
             <Button
+              brand={branded}
               onPress={correctSyntheticFact}
               testID="parent-summary-apply-correction"
               variant="secondary"
             >
               {t('parentHome.correctSummary')}
             </Button>
-            <Button onPress={cancelCorrection} variant="ghost">
+            <Button brand={branded} onPress={cancelCorrection} variant="ghost">
               {t('common.cancel')}
             </Button>
           </View>
         </View>
       ) : null}
       <SummaryField
+        branded={branded}
         label={t('parentHome.uncertainty')}
         value={localize(current.uncertainty, locale)}
       />
       <SummaryField
+        branded={branded}
         label={t('parentHome.question')}
         value={localize(current.questionForChild, locale)}
       />
       <SummaryField
+        branded={branded}
         label={t('parentHome.adjustment')}
         value={localize(current.possibleAdjustment, locale)}
       />
 
       <View style={styles.disclosure}>
-        <Text color="inkMuted" variant="caption">
+        <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'inkMuted'} variant="caption">
           {t('parentHome.summaryDisclosure')}
         </Text>
-        <Text color="inkMuted" variant="caption">
+        <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'inkMuted'} variant="caption">
           {localize(current.meta.disclosure.text, locale)}
         </Text>
       </View>
       {correctionStatus === 'applied' ? (
         <Text
           accessibilityLiveRegion="polite"
-          color="success"
+          brand={branded}
+          color={branded ? 'primary' : 'success'}
           testID="parent-summary-correction-status"
           variant="caption"
         >
@@ -165,7 +181,8 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
       ) : correctionStatus === 'rejected' ? (
         <Text
           accessibilityLiveRegion="polite"
-          color="danger"
+          brand={branded}
+          color={branded ? 'error' : 'danger'}
           testID="parent-summary-correction-status"
           variant="caption"
         >
@@ -176,13 +193,21 @@ export function ParentPatternSummary({ summary, testID }: ParentPatternSummaryPr
   );
 }
 
-function SummaryField({ label, value }: { readonly label: string; readonly value: string }) {
+function SummaryField({
+  branded,
+  label,
+  value,
+}: {
+  readonly branded: boolean;
+  readonly label: string;
+  readonly value: string;
+}) {
   return (
     <View style={styles.field}>
-      <Text color="earth" variant="caption">
+      <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'earth'} variant="caption">
         {label}
       </Text>
-      <Text>{value}</Text>
+      <Text brand={branded}>{value}</Text>
     </View>
   );
 }
@@ -196,6 +221,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.waterLight,
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.md,
+  },
+  summaryR002a: {
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.surfaceContainerHigh,
+    backgroundColor: colors.primaryFixedTint,
+    padding: spacing.lg,
+    ...r001Shadows.soft,
   },
   rowRtl: { flexDirection: 'row-reverse' },
   rowLtr: { flexDirection: 'row' },
