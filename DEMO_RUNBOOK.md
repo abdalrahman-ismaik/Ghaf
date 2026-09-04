@@ -7,8 +7,8 @@
 - Remote head `a6ca21a6` is the preserved behavioral/test baseline. Its ten-route, 48→60 Seed, and
   `/circle` journey below remains regression evidence, not the Revision 3 target or screen approval.
 - R001 Batch 1 alone is released: native foundations plus Welcome, Parent sign-in, verification,
-  family basics, first Child, review/create, and native success sheet. Fresh R001 evidence must be
-  recorded before calling that reconstructed slice passed on this branch.
+  family basics, first Child, review/create, and native success sheet. Fresh R001 evidence is
+  recorded in the [R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
 - Post-R001 access/navigation, League, Family Reward, voice, Growth Journey, and screen design remain
   `BLOCKED` or `NOT RUN` even where remote domain tests pass.
 - Revision 3's future confirmation oracle is lifetime Seeds 108→120; Mangrove independently
@@ -21,6 +21,26 @@
   gaps.
 
 Do not use the historical journey below to pass an R001 or Revision 3 visual, native, or human gate.
+
+## R001 Batch 1 Fresh Evidence — 2026-09-05
+
+Runtime head `f4451c1` on `integration/r3-r001-implementation-20260904` passed the focused R001
+suite at 79/79 tests and the complete repository suite at 29 files / 482 tests. `npm run verify`,
+Expo Doctor 21/21, public Expo config, web production export, Android JavaScript export, exact
+16-product-route inventory, and Git whitespace validation passed. The Android export proves bundle
+construction only; it is not a physical-device result.
+
+All seven Arabic surfaces were compared with their canonical PNGs at 390×844 and passed the scoped
+composition review. Full browser-proxy journeys also passed at 320×568 Arabic, 430×932 English LTR,
+and 800×1280 Arabic tablet dimensions. Natural scroll, reduced motion, deterministic offline
+presentation, both Success exits, post-exit browser Back, and Success accessibility containment
+passed on the web proxy with zero console errors.
+
+Physical Android launch, system/predictive Back behavior, native keyboard/IME, TalkBack, safe-area
+rendering, actual connectivity loss, and 130%/200% OS font scaling remain `NOT RUN` on this exact
+checkpoint. State-specific Stitch frames, matched English reference PNGs, and named human reviews
+also remain open. Exact commands, screenshots, deviations, and evidence boundaries are in the
+[detailed R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
 
 **Target:** Family Growth Garden deterministic P0
 **Status date:** 2026-08-28

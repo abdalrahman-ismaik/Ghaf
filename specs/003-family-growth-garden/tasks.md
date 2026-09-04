@@ -634,25 +634,25 @@ authority, and only R001 may enter runtime.
 `/access/parent/family-basics`, `/access/parent/add-first-child`,
 `/access/parent/review-create`, and modal `/access/parent/family-created-success`.
 
-- [ ] T143 [P] Write focused RED tests for deterministic Parent identifier/code validation,
+- [x] T143 [P] Write focused RED tests for deterministic Parent identifier/code validation,
       onboarding-draft guards, idempotent local family receipt, capability-scoped `/parent` handoff,
       profile isolation, and exact reset while retaining the existing access tests.
-- [ ] T144 Implement the smallest R001 onboarding adapter in `src/features/access/**`, the existing
+- [x] T144 Implement the smallest R001 onboarding adapter in `src/features/access/**`, the existing
       models/service registry, and store. Preserve remote Parent/Child capabilities, League, Family
       Reward, voice, privacy, reset, `task_recycling_p0_v1`, and all unrelated fixture behavior.
-- [ ] T145 [P] Write RED localization/structure tests for Arabic/English parity, Alexandria/Readex
+- [x] T145 [P] Write RED localization/structure tests for Arabic/English parity, Alexandria/Readex
       roles, bidi-safe OTP/data, 48dp targets, route guards, modal ownership, and prohibited web/runtime
       imports.
-- [ ] T146 Reconcile the existing design tokens and primitives; add only reusable R001 access
+- [x] T146 Reconcile the existing design tokens and primitives; add only reusable R001 access
       controls, locally bundled Alexandria/Readex weights, responsive safe-area/scroll/keyboard shell,
       and native success sheet. Do not remove `expo-audio` or add an overlapping UI library.
-- [ ] T147 Implement the seven R001 route compositions and interactions from the approved PNGs,
+- [x] T147 Implement the seven R001 route compositions and interactions from the approved PNGs,
       treating HTML/CSS/JS only as read-only measurement hints. Child entry stays honestly unavailable
       until a Child-access batch is released; `/parent` is a handoff destination, not a redesign.
-- [ ] T148 Run focused access/localization/route/reset suites after each slice, then `npm run
+- [x] T148 Run focused access/localization/route/reset suites after each slice, then `npm run
 format:check`, `npm run typecheck`, `npm run lint`, `npm test`, Expo dependency/config checks,
       static export, route inventory, forbidden-import scan, and `git diff --check`.
-- [ ] T149 Compare all seven screens at 390×844 and test 320×568, 430×932, the target tablet,
+- [x] T149 Compare all seven screens at 390×844 and test 320×568, 430×932, the target tablet,
       natural scrolling, keyboard visibility, Arabic RTL, English LTR, 100/130/200% font scale,
       reduced motion, TalkBack order, native Back, offline/reset, and success-sheet focus restoration.
       Record unavailable native/human checks as `BLOCKED` or `NOT RUN`, never inferred `PASSED`.

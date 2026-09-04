@@ -117,6 +117,47 @@ integration owner completes R001 routes. The integration owner retains exclusive
 Expo-compatible font packages/configuration, root font loader, transparent success route, Android
 Back behavior, and focus restoration.
 
+### R001-C route integration reservation and handoff
+
+`/root` reserved the shared navigation and route-test boundary. Two disjoint route writers owned
+Welcome through verification and family setup through success, while `/root/r001_routes` performed
+read-only integration QA. The writers preserved the remote behavioral baseline and did not touch
+R002, later Revision 2/Growth screens, the shared store, services, dependencies, or canonical
+product authority.
+
+The route writers released all seven R001 route files to `/root` after TypeScript, targeted ESLint,
+targeted Prettier, Git whitespace validation, and 88 focused onboarding, access, and operator-flow
+tests passed. `/root` now owns their integration, reference comparison, responsive and
+accessibility checks, complete repository validation, and final cohesive commits. Physical Android,
+TalkBack, native keyboard/IME, and native font-scale evidence remain separate gates and may not be
+inferred from browser or source checks.
+
+#### R001 final validation and evidence handoff — 2026-09-05
+
+The integration owner completed R001-C in `4b47394` and reduced the direct font bundle to the
+approved weights in `f4451c1`. The final focused audit passed 79/79 tests, and the complete suite
+passed 29 files / 482 tests. Typecheck, lint, maintained-file formatting, Expo dependency checks,
+Expo Doctor 21/21, public Expo config, web and Android JavaScript exports, the exact 16-product-route
+inventory, and Git whitespace validation passed.
+
+All seven Arabic R001 surfaces passed scoped composition comparison against their canonical PNGs at
+390×844. Full web-proxy journeys passed at 320×568 Arabic, 430×932 English LTR, and 800×1280 Arabic,
+including natural scrolling, reduced motion, deterministic offline presentation, modal
+accessibility containment, both Success exits, and post-exit browser Back. Physical Android,
+TalkBack, native keyboard/IME, native safe areas, real connectivity loss, and 130%/200% OS font
+scaling remain `NOT RUN`; browser/source evidence did not upgrade them.
+
+The evidence owner added the bounded R001 validation record, linked it from the root runbook and
+documentation map, and updated only T143–T149. The selected ten screenshots under
+`output/playwright/r001-batch-1/` are the seven `release-*` 390×844 captures plus one 320×568, one
+430×932 English, and one 800×1280 capture; duplicate and generated comparison boards remain
+untracked. This documentation boundary is released to `/root` for the evidence commit after final
+Markdown, link, staged-path, and whitespace review.
+
+No R002 or Growth runtime work occurred. The original worktree and its untracked R002 intake remain
+unchanged, and the exact gate remains **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN —
+IMPLEMENTATION BLOCKED**.
+
 ## Decision Record
 
 | Item                         | Decision                                                                                                                                                           |
