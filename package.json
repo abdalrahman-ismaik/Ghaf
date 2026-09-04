@@ -23,6 +23,7 @@
     "@expo-google-fonts/readex-pro": "^0.4.1",
     "@hookform/resolvers": "^5.9.1",
     "expo": "~57.0.20",
+    "expo-asset": "~57.0.16",
     "expo-audio": "~57.0.4",
     "expo-constants": "~57.0.17",
     "expo-font": "~57.0.3",
