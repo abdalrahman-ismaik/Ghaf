@@ -142,29 +142,50 @@ describe('R001 native design foundation', () => {
     const shell = source('src/components/access/AccessShell.tsx');
     const controls = source('src/components/access/AccessControls.tsx');
     const avatar = source('src/components/access/BotanicalAvatar.tsx');
+    const icon = source('src/components/access/GhafIcon.tsx');
 
     expect(shell).toContain('SafeAreaView');
     expect(shell).toContain('KeyboardAvoidingView');
     expect(shell).toContain('automaticallyAdjustKeyboardInsets');
     expect(shell).toContain('contentInsetAdjustmentBehavior="automatic"');
     expect(shell).toContain('maxWidth: contentMaxWidth');
+    expect(shell).toContain("{ dir: 'ltr' }");
+    expect(shell).toContain("direction: 'ltr'");
+    expect(shell).toContain('accessibilityElementsHidden={accessibilityHidden}');
     expect(controls).toContain('export function AccessTextField');
     expect(controls).toContain('export function OtpInput');
     expect(controls).toContain('export function SegmentedControl');
     expect(controls).toContain('export function ReviewRow');
+    expect(controls).toContain('logicalRowDirection(direction, true)');
+    expect(controls).toContain('importantForAccessibility="no-hide-descendants"');
+    expect(controls).toContain('aria-hidden');
+    expect(controls).toContain(
+      '<Text\n                accessibilityElementsHidden\n                aria-hidden',
+    );
+    expect(controls).toContain('accessibilityRole="none"');
+    expect(controls).toContain('selectedStyle={styles.choiceChipSelected}');
+    expect(controls.match(/aria-checked=\{selected\}/gu)).toHaveLength(2);
     expect(controls).toContain("fontVariant: ['tabular-nums']");
     expect(avatar).toContain('export function BotanicalAvatarPicker');
     expect(avatar).toContain('ChildTreeAvatarId');
     expect(avatar).toContain("'ghaf_tree'");
     expect(avatar).toContain("ghaf_tree: 'ghaf-tree'");
     expect(avatar).toContain('accessibilityRole="radio"');
+    expect(avatar).toContain('aria-checked={selected}');
     expect(avatar).toContain('setInternalFocusedValue(id)');
+    expect(icon).toContain('accessible={accessibilityLabel ? true : undefined}');
+    expect(icon).not.toContain('accessible={Boolean(accessibilityLabel)}');
+    expect(icon).not.toContain('pointerEvents="none"');
+    expect(icon).toContain("pointerEvents: 'none'");
   });
 
   it('uses one reduced-motion-safe GPU-only success reveal', () => {
     const success = source('src/components/access/SuccessSheet.tsx');
 
     expect(success).toContain('useReducedMotion');
+    expect(success).toContain('AccessibilityInfo.setAccessibilityFocus');
+    expect(success).toContain("Platform.OS === 'web'");
+    expect(success).not.toContain('accessibilityRole="header"');
     expect(success).toContain('opacity:');
     expect(success).toContain('translateY');
     expect(success).toContain('progress.get()');
@@ -191,9 +212,12 @@ describe('R001 native design foundation', () => {
     }
 
     expect(primitives).toContain('export function GhafFontProvider');
+    expect(primitives).toContain("iconPosition?: 'start' | 'end'");
+    expect(primitives).toContain("'neutral'");
     expect(primitives).toContain('pressRetentionOffset');
     expect(primitives).toContain('backgroundColor: colors.ghafEmerald');
     expect(primitives).toContain('backgroundColor: colors.ghafEmeraldTint');
+    expect(primitives).toContain('backgroundColor: colors.surfaceContainerLow');
     expect(primitives).not.toContain('allowFontScaling={false}');
     expect(primitives).not.toContain('adjustsFontSizeToFit');
   });

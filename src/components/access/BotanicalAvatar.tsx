@@ -124,6 +124,7 @@ export function BotanicalAvatarPicker({
               accessibilityLabel={labels[id]}
               accessibilityRole="radio"
               accessibilityState={{ checked: selected, disabled }}
+              aria-checked={selected}
               disabled={disabled}
               focusable={!disabled}
               key={id}

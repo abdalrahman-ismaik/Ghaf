@@ -287,10 +287,9 @@ export function GhafIcon({
     <Svg
       accessibilityLabel={accessibilityLabel}
       accessibilityRole={accessibilityLabel ? 'image' : undefined}
-      accessible={Boolean(accessibilityLabel)}
+      accessible={accessibilityLabel ? true : undefined}
       aria-hidden={accessibilityLabel ? undefined : true}
       height={Math.max(1, size)}
-      pointerEvents="none"
       style={styles.icon}
       testID={testID}
       viewBox="0 0 24 24"
@@ -304,5 +303,6 @@ export function GhafIcon({
 const styles = StyleSheet.create({
   icon: {
     flexShrink: 0,
+    pointerEvents: 'none',
   },
 });

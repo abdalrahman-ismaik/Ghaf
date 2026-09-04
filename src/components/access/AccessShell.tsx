@@ -28,6 +28,7 @@ import { GhafIcon } from './GhafIcon';
 export type AccessBackground = 'dotted' | 'organic' | 'plain' | 'welcome';
 
 export interface AccessScreenProps extends PropsWithChildren {
+  accessibilityHidden?: boolean;
   background?: AccessBackground;
   contentContainerStyle?: StyleProp<ViewStyle>;
   contentMaxWidth?: number;
@@ -43,6 +44,7 @@ export interface AccessScreenProps extends PropsWithChildren {
 }
 
 export function AccessScreen({
+  accessibilityHidden = false,
   background = 'organic',
   children,
   contentContainerStyle,
@@ -57,6 +59,10 @@ export function AccessScreen({
   scrollProps,
   testID,
 }: AccessScreenProps) {
+  // R001 rows apply locale direction explicitly so language changes do not require a restart.
+  const nativePhysicalDirection: ViewStyle | undefined =
+    Platform.OS === 'web' ? undefined : { direction: 'ltr' };
+  const webPhysicalDirection = Platform.OS === 'web' ? ({ dir: 'ltr' } as const) : {};
   const content = (
     <View style={[styles.contentColumn, { maxWidth: contentMaxWidth }, contentStyle]}>
       {children}
@@ -64,7 +70,15 @@ export function AccessScreen({
   );
 
   return (
-    <SafeAreaView edges={['top', 'right', 'bottom', 'left']} style={styles.screen} testID={testID}>
+    <SafeAreaView
+      {...webPhysicalDirection}
+      accessibilityElementsHidden={accessibilityHidden}
+      aria-hidden={accessibilityHidden || undefined}
+      edges={['top', 'right', 'bottom', 'left']}
+      importantForAccessibility={accessibilityHidden ? 'no-hide-descendants' : 'auto'}
+      style={[styles.screen, nativePhysicalDirection]}
+      testID={testID}
+    >
       <OrganicBackdrop variant={background} />
       {header ? <View style={styles.headerFrame}>{header}</View> : null}
       <KeyboardAvoidingView

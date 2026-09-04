@@ -8,7 +8,7 @@ import { JourneyHeader } from '@/components/journey';
 import { Screen, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
 import type { DemoRole, SyntheticChildId, TaskLifecycleStatus } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 const CHILD_HANDOFF_ROUTES: Partial<
   Record<TaskLifecycleStatus, '/child' | '/child/task' | '/garden'>
@@ -29,6 +29,8 @@ export default function RoleScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
+  const canEnterParentExperience = usePrototypeStore(selectCanEnterParentExperience);
+  const authorizeParentExperience = usePrototypeStore((state) => state.authorizeParentExperience);
   const setRole = usePrototypeStore((state) => state.setRole);
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
   const salemHandoffLabel =
@@ -47,6 +49,11 @@ export default function RoleScreen() {
       : null;
 
   const openParent = () => {
+    if (!canEnterParentExperience || !authorizeParentExperience().ok) {
+      router.replace('/access/parent/sign-in');
+      return;
+    }
+
     setRole('parent');
     setActiveChild('child_salem');
     requestAnimationFrame(() => {

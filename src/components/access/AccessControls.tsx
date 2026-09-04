@@ -129,7 +129,7 @@ export function StatusBanner({
 
   return (
     <View
-      accessibilityLiveRegion={tone === 'error' || tone === 'offline' ? 'polite' : undefined}
+      accessibilityLiveRegion="polite"
       style={[styles.banner, { backgroundColor: palette.background }, style]}
     >
       <Row align="flex-start" direction={direction} gap={spacing.sm}>
@@ -262,7 +262,9 @@ export function OtpInput({
           const active = focused && index === Math.min(normalizedValue.length, length - 1);
           return (
             <View
-              importantForAccessibility="no"
+              accessibilityElementsHidden
+              aria-hidden
+              importantForAccessibility="no-hide-descendants"
               key={index}
               style={[
                 styles.otpCell,
@@ -273,6 +275,9 @@ export function OtpInput({
               ]}
             >
               <Text
+                accessibilityElementsHidden
+                aria-hidden
+                accessibilityRole="none"
                 align="center"
                 brand
                 direction="ltr"
@@ -374,6 +379,7 @@ export function SegmentedControl<Value extends string>({
               accessibilityLabel={option.label}
               accessibilityRole="radio"
               accessibilityState={{ checked: selected, disabled }}
+              aria-checked={selected}
               disabled={disabled}
               key={option.value}
               onPress={() => onChange(option.value)}
@@ -429,9 +435,11 @@ export function ChoiceChip({
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected, disabled }}
+      aria-checked={selected}
       disabled={disabled}
       onPress={onPress}
       selected={selected}
+      selectedStyle={styles.choiceChipSelected}
       style={[styles.choiceChip, style]}
       testID={testID}
     >
@@ -493,12 +501,12 @@ export function ReviewRow({
 }: ReviewRowProps) {
   return (
     <View
-      style={[styles.reviewRow, { flexDirection: logicalRowDirection(direction) }]}
+      style={[styles.reviewRow, { flexDirection: logicalRowDirection(direction, true) }]}
       testID={testID}
     >
       {icon ? (
         <View style={styles.reviewIcon}>
-          <GhafIcon color={colors.ghafEmerald} direction={direction} name={icon} size={20} />
+          <GhafIcon color={colors.ghafEmerald} direction={direction} name={icon} size={24} />
         </View>
       ) : null}
       <View style={styles.reviewCopy}>
@@ -575,6 +583,7 @@ export function LabeledDivider({ direction, label, language }: LabeledDividerPro
 
 interface FocusablePressableProps extends React.ComponentProps<typeof Pressable> {
   selected?: boolean;
+  selectedStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -583,6 +592,7 @@ function FocusablePressable({
   onBlur,
   onFocus,
   selected = false,
+  selectedStyle,
   style,
   ...props
 }: FocusablePressableProps) {
@@ -604,6 +614,7 @@ function FocusablePressable({
       style={({ pressed }) => [
         style,
         selected ? styles.selectionSelected : null,
+        selected ? selectedStyle : null,
         focused ? styles.selectionFocused : null,
         pressed && !disabled ? styles.pressed : null,
         disabled ? styles.disabled : null,
@@ -737,6 +748,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
   },
+  choiceChipSelected: {
+    borderColor: colors.secondaryContainer,
+    backgroundColor: colors.secondaryContainer,
+  },
   summaryCard: {
     width: '100%',
     gap: spacing.md,
@@ -755,8 +770,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
   },
   reviewIcon: {
-    width: spacing.xxl,
-    minHeight: spacing.xxl,
+    width: layout.touchTarget,
+    minHeight: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: r001Radii.pill,

@@ -1,5 +1,13 @@
-import { useLayoutEffect, type ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
+import {
+  AccessibilityInfo,
+  findNodeHandle,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Animated, {
   Easing,
   cancelAnimation,
@@ -62,6 +70,7 @@ export function SuccessSheet({
 }: SuccessSheetProps) {
   const reducedMotion = useReducedMotion();
   const progress = useSharedValue(visible && reducedMotion ? 1 : 0);
+  const announcementRef = useRef<View>(null);
 
   useLayoutEffect(() => {
     cancelAnimation(progress);
@@ -86,6 +95,17 @@ export function SuccessSheet({
 
     return () => cancelAnimation(progress);
   }, [progress, reducedMotion, visible]);
+
+  useEffect(() => {
+    if (!visible || Platform.OS === 'web') return undefined;
+
+    const frame = requestAnimationFrame(() => {
+      const reactTag = findNodeHandle(announcementRef.current);
+      if (reactTag) AccessibilityInfo.setAccessibilityFocus(reactTag);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [visible]);
 
   const scrimStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.get(), [0, 1], [0, opacityTokens.scrim]),
@@ -121,7 +141,12 @@ export function SuccessSheet({
   if (!visible) return null;
 
   return (
-    <View accessibilityViewIsModal style={styles.modalSurface} testID={testID}>
+    <View
+      accessibilityViewIsModal
+      importantForAccessibility="yes"
+      style={styles.modalSurface}
+      testID={testID}
+    >
       <Animated.View style={[styles.scrim, scrimStyle]}>
         <Pressable
           accessibilityLabel={onDismiss ? dismissLabel : undefined}
@@ -142,37 +167,51 @@ export function SuccessSheet({
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <View aria-hidden style={styles.successMark}>
-              <GhafIcon
-                color={colors.ghafEmerald}
-                direction={direction}
-                name="check-filled"
-                size={38}
-                strokeWidth={2.2}
-              />
+            <View
+              accessibilityLabel={`${title}. ${message}`}
+              accessibilityLiveRegion="polite"
+              accessible
+              ref={announcementRef}
+              style={styles.announcement}
+            >
+              <View
+                accessibilityElementsHidden
+                aria-hidden
+                importantForAccessibility="no-hide-descendants"
+                style={styles.visualAnnouncement}
+              >
+                <View style={styles.successMark}>
+                  <GhafIcon
+                    color={colors.ghafEmerald}
+                    direction={direction}
+                    name="check-filled"
+                    size={38}
+                    strokeWidth={2.2}
+                  />
+                </View>
+                <Text
+                  align="center"
+                  brand
+                  color="onSurface"
+                  direction={direction}
+                  language={language}
+                  variant="screenTitle"
+                >
+                  {title}
+                </Text>
+                <Text
+                  align="center"
+                  brand
+                  color="onSurfaceVariant"
+                  direction={direction}
+                  language={language}
+                  style={styles.message}
+                  variant="body"
+                >
+                  {message}
+                </Text>
+              </View>
             </View>
-            <Text
-              accessibilityRole="header"
-              align="center"
-              brand
-              color="onSurface"
-              direction={direction}
-              language={language}
-              variant="screenTitle"
-            >
-              {title}
-            </Text>
-            <Text
-              align="center"
-              brand
-              color="onSurfaceVariant"
-              direction={direction}
-              language={language}
-              style={styles.message}
-              variant="body"
-            >
-              {message}
-            </Text>
             {children}
             <PrimaryButton
               brand
@@ -249,8 +288,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
     paddingHorizontal: spacing.xl,
-    paddingTop: spacing.massive,
-    paddingBottom: spacing.xxl,
+    paddingTop: spacing.huge,
+    paddingBottom: spacing.xl,
+  },
+  announcement: {
+    width: '100%',
+  },
+  visualAnnouncement: {
+    alignItems: 'center',
+    gap: spacing.md,
   },
   successMark: {
     width: 64,
@@ -263,6 +309,6 @@ const styles = StyleSheet.create({
   },
   message: {
     maxWidth: layout.readableContentWidth,
-    marginBottom: spacing.md,
+    marginBottom: spacing.xs,
   },
 });

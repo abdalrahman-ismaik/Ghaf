@@ -207,7 +207,7 @@ export function Text({
   );
 }
 
-export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'neutral' | 'quiet' | 'ghost';
 export type ButtonSize = 'compact' | 'regular';
 
 export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> {
@@ -218,6 +218,7 @@ export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> 
   direction?: TextDirection;
   fullWidth?: boolean;
   icon?: ReactNode;
+  iconPosition?: 'start' | 'end';
   language?: LocaleCode;
   size?: ButtonSize;
   style?: StyleProp<ViewStyle>;
@@ -234,6 +235,7 @@ export function Button({
   disabled = false,
   fullWidth = true,
   icon,
+  iconPosition = 'start',
   language,
   onBlur,
   onFocus,
@@ -250,7 +252,9 @@ export function Button({
   const labelColor: AppColor = brand
     ? resolvedVariant === 'primary'
       ? 'white'
-      : 'ghafEmerald'
+      : resolvedVariant === 'neutral'
+        ? 'onSurface'
+        : 'ghafEmerald'
     : resolvedVariant === 'primary'
       ? 'white'
       : 'forest';
@@ -297,7 +301,9 @@ export function Button({
       ]}
     >
       {busy ? <ActivityIndicator color={colors[labelColor]} size="small" /> : null}
-      {!busy && icon ? <View style={styles.buttonIcon}>{icon}</View> : null}
+      {!busy && icon && iconPosition === 'start' ? (
+        <View style={styles.buttonIcon}>{icon}</View>
+      ) : null}
       {typeof renderedLabel === 'string' ? (
         <Text
           align="center"
@@ -313,6 +319,9 @@ export function Button({
       ) : busy && !busyLabel ? null : (
         renderedLabel
       )}
+      {!busy && icon && iconPosition === 'end' ? (
+        <View style={styles.buttonIcon}>{icon}</View>
+      ) : null}
     </Pressable>
   );
 }
@@ -568,6 +577,10 @@ const buttonVariants = StyleSheet.create({
     backgroundColor: colors.leafLight,
     borderColor: colors.leaf,
   },
+  neutral: {
+    backgroundColor: colors.surfaceContainerLow,
+    borderColor: colors.transparent,
+  },
   quiet: {
     backgroundColor: colors.transparent,
     borderColor: colors.line,
@@ -582,6 +595,10 @@ const brandButtonVariants = StyleSheet.create({
   secondary: {
     backgroundColor: colors.ghafEmeraldTint,
     borderColor: colors.ghafEmeraldTint,
+  },
+  neutral: {
+    backgroundColor: colors.surfaceContainerLow,
+    borderColor: colors.transparent,
   },
   quiet: {
     backgroundColor: colors.transparent,

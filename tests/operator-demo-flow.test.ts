@@ -17,6 +17,12 @@ import { usePrototypeStore } from '../src/state/usePrototypeStore';
 
 const EXPECTED_ROUTES = [
   '/',
+  '/access/parent/add-first-child',
+  '/access/parent/family-basics',
+  '/access/parent/family-created-success',
+  '/access/parent/review-create',
+  '/access/parent/sign-in',
+  '/access/parent/verification',
   '/role',
   '/parent',
   '/parent/task/new',
@@ -114,7 +120,7 @@ function authoredRoutes(): string[] {
   const appRoot = resolve(import.meta.dirname, '../app');
   return listTsxFiles(appRoot)
     .map((file) => relative(appRoot, file).split(sep).join('/'))
-    .filter((file) => file !== '_layout.tsx' && file !== '+html.tsx')
+    .filter((file) => !file.endsWith('_layout.tsx') && file !== '+html.tsx')
     .map((file) => {
       const withoutExtension = file.replace(/\.tsx$/u, '');
       const withoutIndex = withoutExtension.replace(/(?:^|\/)index$/u, '');
@@ -233,7 +239,7 @@ describe('US6 bilingual offline operator and reset flow', () => {
     vi.unstubAllGlobals();
   });
 
-  it('contains exactly the ten authored Feature 003 routes and no replaced Feature 002 route', () => {
+  it('preserves the remote ten routes and adds only the six released R001 access routes', () => {
     const actual = authoredRoutes();
     expect(actual).toEqual([...EXPECTED_ROUTES].sort());
     for (const legacyRoute of LEGACY_ROUTES) {

@@ -128,6 +128,7 @@ export const resources = {
         success: {
           title: 'عائلتكم جاهزة',
           body: 'تم إعداد ملف {{child}} محليًا دون إنشاء حساب حقيقي. يمكنك إضافة أطفال آخرين لاحقًا.',
+          loading: 'جارٍ فتح تجربة الوالد بأمان…',
           action: 'الانتقال إلى الرئيسية',
           origin: 'إعداد اصطناعي محلي؛ لم يُنشأ حساب حقيقي.',
         },
@@ -632,6 +633,7 @@ export const resources = {
         success: {
           title: 'Your family is ready',
           body: '{{child}}’s profile is prepared locally without creating a real account. You can add more Children later.',
+          loading: 'Opening the Parent experience safely…',
           action: 'Go to Home',
           origin: 'Local synthetic setup; no real account was created.',
         },

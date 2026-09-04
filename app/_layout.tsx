@@ -38,6 +38,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
+  const isR001Route = pathname === '/' || pathname.startsWith('/access/parent/');
   const [fontsLoaded, fontError] = useFonts({
     Alexandria_400Regular,
     Alexandria_700Bold,
@@ -67,16 +68,26 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GhafFontProvider loaded={fontsLoaded}>
-        <StatusBar style="light" />
+        <StatusBar style={isR001Route ? 'dark' : 'light'} />
         <View style={styles.root}>
-          <PrototypeStatusBar />
+          {isR001Route ? null : <PrototypeStatusBar />}
           <Stack
             screenOptions={{
               animation: 'fade',
               contentStyle: { backgroundColor: colors.ivory },
               headerShown: false,
             }}
-          />
+          >
+            <Stack.Screen
+              name="access/parent/family-created-success"
+              options={{
+                animation: 'fade',
+                contentStyle: { backgroundColor: colors.transparent },
+                gestureEnabled: false,
+                presentation: 'transparentModal',
+              }}
+            />
+          </Stack>
         </View>
       </GhafFontProvider>
     </SafeAreaProvider>
