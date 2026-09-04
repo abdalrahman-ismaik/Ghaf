@@ -7,10 +7,10 @@
 > **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 The original pack proposed Impact Path, badges, learning, first-run presentation, and a combined
-result. The current user-authoritative product baseline keeps one free private 120–180 Impact Path,
-exactly 16 deterministic permanent badges, one finite Mangrove learning package with an equal-credit
-accessible route, Parent selected-Child progress, and one praise-first result with private Family
-Reward last.
+result. The R002b proposal retains one free private 120–180 Impact Path, exactly 16 deterministic
+permanent badges, one finite Mangrove learning package with an equal-credit accessible route, Parent
+selected-Child progress, and one praise-first result with private Family Reward last. These remain
+proposal evidence until R002b decisions are approved.
 
 The prompt pack does not prove that a Stitch frame, asset, route, content review, or runtime behavior
 exists. Do not execute or copy its implementation instructions over the remote baseline. Do not

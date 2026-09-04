@@ -15,7 +15,7 @@ Feature 003 Revision 3 is the active product direction. Verified remote head `76
 implementation baseline for the preserved behavior and completed R001 onboarding. The six
 divergent local commits remain unapplied provenance.
 
-R001 Batch 1 remains a frozen regression baseline. R002a releases a compatibility-first visual
+R001 Batch 1 remains a frozen regression baseline. R002a authorizes a compatibility-first visual
 refresh for selected Parent, task, review, Child, and existing Garden surfaces without changing
 canonical task, reward, access, privacy, voice, reset, or progression behavior.
 

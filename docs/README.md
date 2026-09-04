@@ -9,8 +9,8 @@ handoff, `AGENTS.md`, and Spec Kit workflow reference those canonical paths.
 > **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 Verified head `76fa682` is the implementation baseline. R001 remains frozen; selected R002a
-compatibility surfaces are released in bounded, tested slices. The six local-only commits remain
-unapplied provenance, and R002b Growth mechanics remain blocked.
+compatibility surfaces are authorized for bounded, independently tested slices. The six local-only
+commits remain unapplied provenance, and R002b Growth mechanics remain blocked.
 
 ## Start here
 
@@ -47,10 +47,10 @@ domain acceptance and exact evidence.
 
 The [Revision 3 proposal package](../specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
 is retained as non-canonical reconciliation evidence. Current user authority now fixes the private
-five-Leaf League, canonical task ID, independent progression authorities, superset result, access,
-voice, reset, and profile isolation. Its Growth recommendations remain planning evidence under the
-R002b gate; selected compatibility-safe R002a visuals are governed by the new R002a intake record,
-not by the proposal package.
+five-Leaf League, canonical task ID, independent progression authorities, complete existing
+approval consequences, access, voice, reset, and profile isolation. Its Growth recommendations
+remain planning evidence under the R002b gate; selected compatibility-safe R002a visuals are
+governed by the new R002a intake record, not by the proposal package.
 
 ## Preserved Feature 002 history
 

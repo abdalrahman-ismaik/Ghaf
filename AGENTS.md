@@ -20,7 +20,8 @@ Verified remote head `76fa682` is the R002a implementation baseline. It contains
 access, League, Family Reward, voice, privacy, profile-isolation, reset, and ten-route behavior plus
 the completed R001 native foundation, Welcome, and first-time Parent onboarding. R001 remains a
 frozen regression baseline. The compatibility-safe R002a Parent, task, review, Child, and Garden
-presentation is released in bounded slices; all R002b Growth Journey mechanics remain on hold.
+presentation is authorized for implementation in bounded slices; all R002b Growth Journey mechanics
+remain on hold.
 
 **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 

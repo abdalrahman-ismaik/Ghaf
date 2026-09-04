@@ -180,7 +180,8 @@ Passing a phase's tests is necessary but not sufficient to start the next phase.
 
 ## Earliest executable boundary
 
-No runtime work is currently executable. The smallest sequence that can unlock specification work is:
+No R002b runtime work is currently executable. The smallest sequence that can unlock R002b
+specification work is:
 
 1. Approve the material Product conflict decisions.
 2. Complete and approve the missing mobile design intake, parity, states, copy, and provenance.

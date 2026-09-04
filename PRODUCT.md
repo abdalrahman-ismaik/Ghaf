@@ -34,7 +34,7 @@ behavior. It does not authorize a new reward ledger, task identifier, access mod
 or route-local business logic. R001 Welcome and Parent onboarding are frozen regression baselines;
 their handoff into `/parent` must continue to work without an incidental redesign.
 
-R002a is implemented and validated in this order:
+R002a must be implemented and validated in this order:
 
 1. Parent Home at `/parent`, using `ghaf_parent_home` as the primary candidate composition;
 2. Parent Tasks and Task Builder, including choose, edit, review, created, and added states;
@@ -472,7 +472,7 @@ extra routes.
 The remote behavioral baseline already implements deterministic services for separate access,
 private Family Reward, private weekly Family League, age-adapted Coach output, and synthetic voice.
 These services remain regression authority. R002a may present already wired behavior through its
-released compatibility surfaces, but every surface still requires fresh native and human evidence.
+authorized compatibility surfaces, but every surface still requires fresh native and human evidence.
 
 - **Synthetic access** demonstrates least-privilege Parent/Child sessions, expiring pairing,
   revocation, action-scoped Parent reauthentication, and per-Child grants. It is not production
