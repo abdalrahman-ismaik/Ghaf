@@ -35,8 +35,8 @@ export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
   const isR001Route = pathname === '/' || pathname.startsWith('/access/parent/');
-  const isR002aParentHome = pathname === '/parent';
-  const usesLightSystemChrome = isR001Route || isR002aParentHome;
+  const isR002aParentSurface = pathname === '/parent' || pathname.startsWith('/parent/task/');
+  const usesLightSystemChrome = isR001Route || isR002aParentSurface;
   const [fontsLoaded, fontError] = useFonts({
     Alexandria_400Regular,
     Alexandria_700Bold,

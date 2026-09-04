@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { Screen, Text } from '@/components/primitives';
+import { Button, Screen, Text } from '@/components/primitives';
+import { GhafIcon } from '@/components/access';
 import {
   ParentAdjustmentReview,
   ParentCanopySummaryCard,
@@ -14,20 +15,52 @@ import {
   ParentHomeNavigation,
   ParentHomeUtilities,
   ParentLifecycleCard,
+  ParentTasksView,
   R002aScreen,
   type ParentChildSummaryItem,
 } from '@/components/r002a';
-import { colors, r001Radii, spacing } from '@/design/tokens';
+import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
 import { PARENT_NEXT_ACTIONS } from '@/features/family/overview';
 import { P0_SAFE_EQUIVALENT_TEMPLATE } from '@/features/tasks/demoContent';
 import { localize } from '@/i18n';
-import type { ProspectiveTaskAdjustmentKind, SyntheticChildId } from '@/models/familyGrowth';
+import type {
+  ProspectiveTaskAdjustmentKind,
+  SyntheticChildId,
+  TaskLifecycleStatus,
+} from '@/models/familyGrowth';
 import { PARENT_SUMMARY_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { replaceHistoryWithEntry } from '@/utils/navigation';
 
+type ParentSection = 'home' | 'tasks';
+type TaskListFilter = 'assigned' | 'pending' | 'completed';
+
+function taskFilterForLifecycle(lifecycle: TaskLifecycleStatus): TaskListFilter {
+  if (lifecycle === 'submitted' || lifecycle === 'retry' || lifecycle === 'confirmed') {
+    return 'pending';
+  }
+  if (lifecycle === 'recognized') return 'completed';
+  return 'assigned';
+}
+
+function taskStatusKey(lifecycle: TaskLifecycleStatus) {
+  const keys: Record<TaskLifecycleStatus, string> = {
+    draft: 'r002aTasks.statusDraft',
+    reviewed: 'r002aTasks.statusReviewed',
+    assigned: 'r002aTasks.statusAssigned',
+    chosen: 'r002aTasks.statusChosen',
+    in_progress: 'r002aTasks.statusInProgress',
+    retry: 'r002aTasks.statusRetry',
+    submitted: 'r002aTasks.statusSubmitted',
+    confirmed: 'r002aTasks.statusConfirmed',
+    recognized: 'r002aTasks.statusRecognized',
+  };
+  return keys[lifecycle];
+}
+
 export default function ParentHomeScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ added?: string; section?: string }>();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -48,6 +81,16 @@ export default function ParentHomeScreen() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [confirmingReset, setConfirmingReset] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
+  const [taskFilter, setTaskFilter] = useState<TaskListFilter>('assigned');
+  const [dismissedTaskAddedToken, setDismissedTaskAddedToken] = useState<string | null>(null);
+
+  const rawSection = Array.isArray(params.section) ? params.section[0] : params.section;
+  const section: ParentSection = rawSection === 'tasks' ? 'tasks' : 'home';
+  const taskAddedToken = Array.isArray(params.added) ? params.added[0] : params.added;
+  const taskAddedVisible = Boolean(taskAddedToken && taskAddedToken !== dismissedTaskAddedToken);
+  const dismissTaskAdded = () => {
+    if (taskAddedToken) setDismissedTaskAddedToken(taskAddedToken);
+  };
 
   useEffect(() => {
     if (role !== 'parent') router.replace('/role');
@@ -132,6 +175,7 @@ export default function ParentHomeScreen() {
   };
 
   const chooseChild = (childId: SyntheticChildId) => {
+    dismissTaskAdded();
     setActiveChild(childId);
   };
 
@@ -146,6 +190,274 @@ export default function ParentHomeScreen() {
     replaceHistoryWithEntry(router);
   };
 
+  const selectedJourney = journey?.task.targetChildId === activeChildId ? journey : null;
+  const visibleJourney =
+    selectedJourney && taskFilterForLifecycle(selectedJourney.lifecycle) === taskFilter
+      ? selectedJourney
+      : null;
+  const emptyCopy = {
+    assigned: {
+      body: t('r002aTasks.emptyAssignedBody'),
+      title: t('r002aTasks.emptyAssignedTitle'),
+    },
+    pending: {
+      body: t('r002aTasks.emptyPendingBody'),
+      title: t('r002aTasks.emptyPendingTitle'),
+    },
+    completed: {
+      body: t('r002aTasks.emptyCompletedBody'),
+      title: t('r002aTasks.emptyCompletedTitle'),
+    },
+  }[taskFilter];
+  const openTaskAction = () => {
+    dismissTaskAdded();
+    if (!journey) {
+      router.push('/parent/task/new');
+      return;
+    }
+    if (!visibleJourney) {
+      setActiveChild(journey.task.targetChildId);
+      setTaskFilter(taskFilterForLifecycle(journey.lifecycle));
+      return;
+    }
+    if (visibleJourney.lifecycle === 'draft') {
+      router.push('/parent/task/new');
+      return;
+    }
+    if (visibleJourney.lifecycle === 'reviewed') {
+      router.push('/parent/task/review');
+      return;
+    }
+    if (
+      visibleJourney.lifecycle === 'assigned' ||
+      visibleJourney.lifecycle === 'chosen' ||
+      visibleJourney.lifecycle === 'in_progress'
+    ) {
+      router.push('/role');
+      return;
+    }
+    if (
+      visibleJourney.lifecycle === 'submitted' ||
+      visibleJourney.lifecycle === 'retry' ||
+      visibleJourney.lifecycle === 'confirmed'
+    ) {
+      router.push('/parent/check-in');
+      return;
+    }
+    router.push('/garden');
+  };
+  const taskActionLabel = !journey
+    ? t('r002aTasks.createTask')
+    : !visibleJourney
+      ? t('r002aTasks.viewCurrentTask')
+      : visibleJourney.lifecycle === 'draft'
+        ? t('r002aTasks.openBuilder')
+        : visibleJourney.lifecycle === 'reviewed'
+          ? t('r002aTasks.openReview')
+          : visibleJourney.lifecycle === 'recognized'
+            ? t('r002aTasks.openGarden')
+            : visibleJourney.lifecycle === 'retry'
+              ? t('r002aTasks.resumeSupport')
+              : visibleJourney.lifecycle === 'confirmed'
+                ? t('r002aTasks.continueRecognition')
+                : visibleJourney.lifecycle === 'submitted'
+                  ? t('parentHome.reviewTask')
+                  : t('r002aTasks.openChild');
+
+  if (section === 'tasks') {
+    return (
+      <R002aScreen
+        footer={
+          <ParentHomeNavigation
+            activeKey="tasks"
+            circleLabel={t('navigation.circle')}
+            direction={direction}
+            gardenLabel={t('navigation.garden')}
+            homeLabel={t('parentHome.homeLabel')}
+            onCircle={() => router.push('/circle')}
+            onGarden={() => router.push('/garden')}
+            onHome={() => router.replace('/parent')}
+            onTasks={() => undefined}
+            tasksLabel={t('parentHome.tasksLabel')}
+          />
+        }
+        header={
+          <ParentHomeHeader
+            direction={direction}
+            onToggleSettings={() => {
+              setResetError(null);
+              setSettingsOpen((current) => !current);
+            }}
+            profileLabel={t('parentHome.selectedChild', {
+              child: localize(activeChild.displayName, locale),
+            })}
+            settingsLabel={t('parentHome.settingsLabel')}
+            settingsOpen={settingsOpen}
+            title={t('common.brand')}
+          />
+        }
+        testID="parent-tasks-screen"
+      >
+        <ParentHomeUtilities
+          cancelLabel={t('common.cancel')}
+          confirmingReset={confirmingReset}
+          description={t('parentHome.settingsBody')}
+          error={resetError}
+          languageControl={<LanguageSwitcher compact showGuidance={false} />}
+          onCancelReset={() => setConfirmingReset(false)}
+          onConfirmReset={confirmReset}
+          onRequestReset={() => setConfirmingReset(true)}
+          onSwitchRole={() => router.replace('/role')}
+          open={settingsOpen}
+          resetActionLabel={t('reset.action')}
+          resetConfirmLabel={t('reset.confirm')}
+          resetTitle={t('reset.title')}
+          switchRoleLabel={t('navigation.switchToChild')}
+          title={t('parentHome.settingsTitle')}
+        />
+
+        <View style={styles.greeting}>
+          <View
+            style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
+          >
+            <View aria-hidden style={styles.prototypeDot} />
+            <Text brand color="onSurfaceVariant" variant="caption">
+              {t('common.prototype')} · {t('origin.synthetic')}
+            </Text>
+          </View>
+          <Text brand color="deepForest" variant="parentHero">
+            {t('r002aTasks.title')}
+          </Text>
+          <Text brand color="onSurfaceVariant" variant="bodyLarge">
+            {t('r002aTasks.body')}
+          </Text>
+        </View>
+
+        {!journey ? (
+          <Button
+            brand
+            direction={direction}
+            icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
+            onPress={openTaskAction}
+            size="regular"
+            testID="parent-tasks-create-task"
+          >
+            {t('r002aTasks.createTask')}
+          </Button>
+        ) : null}
+
+        <View
+          accessibilityRole="radiogroup"
+          style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {Object.values(children).map((child) => {
+            const selected = child.id === activeChildId;
+            return (
+              <Pressable
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selected }}
+                aria-checked={selected}
+                key={child.id}
+                onPress={() => chooseChild(child.id)}
+                style={({ pressed }) => [
+                  styles.childFilterItem,
+                  selected ? styles.childFilterItemActive : null,
+                  pressed ? styles.pressed : null,
+                ]}
+                testID={`parent-tasks-child-${child.id}`}
+              >
+                <Text
+                  align="center"
+                  brand
+                  color={selected ? 'onPrimary' : 'onSurfaceVariant'}
+                  variant="label"
+                >
+                  {localize(child.displayName, locale)}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <View
+          accessibilityRole="tablist"
+          style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {(
+            [
+              ['assigned', t('r002aTasks.assignedTab')],
+              ['pending', t('r002aTasks.pendingTab')],
+              ['completed', t('r002aTasks.completedTab')],
+            ] as const
+          ).map(([key, label]) => {
+            const selected = taskFilter === key;
+            return (
+              <Pressable
+                accessibilityRole="tab"
+                accessibilityState={{ selected }}
+                aria-selected={selected}
+                key={key}
+                onPress={() => {
+                  dismissTaskAdded();
+                  setTaskFilter(key);
+                }}
+                style={({ pressed }) => [
+                  styles.taskTab,
+                  selected ? styles.taskTabActive : null,
+                  pressed ? styles.pressed : null,
+                ]}
+                testID={`parent-tasks-tab-${key}`}
+              >
+                <Text
+                  align="center"
+                  brand
+                  color={selected ? 'primary' : 'onSurfaceVariant'}
+                  variant="label"
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <View accessibilityLiveRegion="polite">
+          <ParentTasksView
+            actionLabel={taskActionLabel}
+            actionTestID="parent-tasks-primary-action"
+            current={
+              visibleJourney
+                ? {
+                    childLabel: localize(
+                      children[visibleJourney.task.targetChildId].displayName,
+                      locale,
+                    ),
+                    metaLabel: visibleJourney.task.content.displayedSeedAward
+                      ? t('childHome.awardAfterConfirmation', {
+                          count: visibleJourney.task.content.displayedSeedAward,
+                        })
+                      : undefined,
+                    statusLabel: t(taskStatusKey(visibleJourney.lifecycle)),
+                    supportLabel: localize(visibleJourney.task.content.permittedHelp, locale),
+                    title: localize(visibleJourney.task.content.title, locale),
+                  }
+                : null
+            }
+            direction={direction}
+            emptyMessage={emptyCopy.body}
+            emptyTitle={emptyCopy.title}
+            heading={t('r002aTasks.currentTask')}
+            onAction={openTaskAction}
+            showAction={Boolean(journey)}
+            state={visibleJourney ? (taskAddedVisible ? 'task_added' : 'current') : 'empty'}
+            taskAddedMessage={t('r002aTasks.taskAdded')}
+            testID="parent-tasks-list"
+          />
+        </View>
+      </R002aScreen>
+    );
+  }
+
   return (
     <R002aScreen
       footer={
@@ -158,7 +470,7 @@ export default function ParentHomeScreen() {
           onCircle={() => router.push('/circle')}
           onGarden={() => router.push('/garden')}
           onHome={() => router.replace('/parent')}
-          onTasks={() => router.push('/parent/task/new')}
+          onTasks={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
           tasksLabel={t('parentHome.tasksLabel')}
         />
       }
@@ -199,7 +511,10 @@ export default function ParentHomeScreen() {
       />
 
       <View style={styles.greeting}>
-        <View style={styles.prototypeIdentity} testID="prototype-status-bar">
+        <View
+          style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
+          testID="prototype-status-bar"
+        >
           <View aria-hidden style={styles.prototypeDot} />
           <Text brand color="onSurfaceVariant" variant="caption">
             {t('common.prototype')} · {t('origin.synthetic')}
@@ -356,5 +671,48 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     backgroundColor: colors.ghafEmeraldTint,
     padding: spacing.md,
+  },
+  childFilter: {
+    minHeight: layout.touchTarget,
+    width: '100%',
+    alignSelf: 'stretch',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLow,
+    padding: spacing.xxs,
+  },
+  childFilterItem: {
+    minWidth: 88,
+    minHeight: layout.touchTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    paddingHorizontal: spacing.md,
+  },
+  childFilterItemActive: {
+    backgroundColor: colors.ghafEmerald,
+  },
+  taskTabs: {
+    minHeight: layout.touchTarget,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.xxs,
+  },
+  taskTab: {
+    minHeight: layout.touchTarget,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.md,
+    paddingHorizontal: spacing.xxs,
+    paddingVertical: spacing.xs,
+  },
+  taskTabActive: {
+    backgroundColor: colors.ghafEmeraldTint,
+  },
+  pressed: {
+    opacity: opacity.pressed,
   },
 });

@@ -37,6 +37,7 @@ import { GhafIcon } from './GhafIcon';
 
 export interface SuccessSheetProps {
   actionLabel: string;
+  announcementMessage?: string;
   children?: ReactNode;
   direction: LayoutDirection;
   dismissLabel?: string;
@@ -55,6 +56,7 @@ export interface SuccessSheetProps {
 // so Back handling and focus restoration remain explicit at the route boundary.
 export function SuccessSheet({
   actionLabel,
+  announcementMessage,
   children,
   direction,
   dismissLabel,
@@ -69,6 +71,7 @@ export function SuccessSheet({
   visible,
 }: SuccessSheetProps) {
   const reducedMotion = useReducedMotion();
+  const resolvedAnnouncementMessage = announcementMessage ?? message;
   const progress = useSharedValue(visible && reducedMotion ? 1 : 0);
   const announcementRef = useRef<View>(null);
 
@@ -168,7 +171,7 @@ export function SuccessSheet({
             showsVerticalScrollIndicator={false}
           >
             <View
-              accessibilityLabel={`${title}. ${message}`}
+              accessibilityLabel={`${title}. ${resolvedAnnouncementMessage}`}
               accessibilityLiveRegion="polite"
               accessible
               ref={announcementRef}

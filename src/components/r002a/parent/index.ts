@@ -5,3 +5,7 @@ export * from './ParentHomeHeader';
 export * from './ParentHomeNavigation';
 export * from './ParentHomeUtilities';
 export * from './ParentLifecycleCard';
+export * from './ParentTasksView';
+export * from './TaskBuilderFooter';
+export * from './TaskCreatedSuccessSheet';
+export * from './TaskStepIndicator';

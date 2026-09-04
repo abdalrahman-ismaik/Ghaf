@@ -83,14 +83,15 @@ describe('US1 Parent task approval flow', () => {
     expect(source).toContain("t('taskNew.reviewNeedsSafety')");
   });
 
-  it('keeps assignment approval navigation ahead of the invalid-review deep-link guard', () => {
+  it('keeps assignment approval in the success flow ahead of the invalid-review deep-link guard', () => {
     const source = readFileSync(new URL('../app/parent/task/review.tsx', import.meta.url), 'utf8');
     expect(source).toContain('const approvalNavigationPending = useRef(false)');
     expect(source).toMatch(
       /approvalNavigationPending\.current = true;[\s\S]{0,120}approveAssignment\(\)/,
     );
     expect(source).toContain('!reviewable && !approvalNavigationPending.current');
-    expect(source).toContain("router.replace('/role')");
+    expect(source).toContain('setSuccessVisible(true)');
+    expect(source).toContain('onSecondary={continueToChild}');
   });
 
   it('exposes Salem, all eight categories, all five landscape tracks, and the distinct P0 task', () => {

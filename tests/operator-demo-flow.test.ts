@@ -253,7 +253,7 @@ describe('US6 bilingual offline operator and reset flow', () => {
         source: readFileSync(new URL('../app/parent/task/review.tsx', import.meta.url), 'utf8'),
         destination: '/parent/task/new',
         retiredGuard: 'parent-task-review-guard',
-        nullGuard: 'if (!content || !reviewable) return null;',
+        nullGuard: 'if (!content || (!reviewable && !successVisible)) return null;',
       },
       {
         source: readFileSync(new URL('../app/child/task.tsx', import.meta.url), 'utf8'),

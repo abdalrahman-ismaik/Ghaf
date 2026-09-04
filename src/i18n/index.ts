@@ -53,10 +53,13 @@ export function localize(value: LocalizedText, locale: LocaleCode): string {
 }
 
 // Build stored Arabic and English fixture text from the shared translation resources.
-export function bilingualResource(key: string): LocalizedText {
+export function bilingualResource(
+  key: string,
+  values: Record<string, string | number> = {},
+): LocalizedText {
   return {
-    ar: String(i18n.getFixedT('ar')(key)),
-    en: String(i18n.getFixedT('en')(key)),
+    ar: String(i18n.getFixedT('ar')(key, values)),
+    en: String(i18n.getFixedT('en')(key, values)),
   };
 }
 
