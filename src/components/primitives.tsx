@@ -1,4 +1,4 @@
-import { useState, type PropsWithChildren, type ReactNode } from 'react';
+import { createContext, useContext, useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -15,23 +15,43 @@ import {
   type TextInputProps,
   type ViewStyle,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
 import {
   colors,
   layout,
+  logicalRowDirection,
+  logicalTextAlign,
+  opacity,
   radii,
+  r001Radii,
+  resolveR001TypographyRole,
   resolveTypographyRole,
   shadows,
   spacing,
   type AppColor,
+  type R001TypographyRole,
   type TypographyRole,
 } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-export type TextVariant = TypographyRole;
+type BrandTextVariant = Exclude<R001TypographyRole, TypographyRole>;
+
+export type TextVariant = TypographyRole | BrandTextVariant;
 export type TextAlign = 'start' | 'center' | 'end';
+
+const GhafFontContext = createContext(false);
+
+export interface GhafFontProviderProps extends PropsWithChildren {
+  loaded: boolean;
+}
+
+// The application root owns font loading. Until it reports success, every primitive uses a
+// platform fallback so a missing asset can never leave onboarding unreadable.
+export function GhafFontProvider({ children, loaded }: GhafFontProviderProps) {
+  return <GhafFontContext.Provider value={loaded}>{children}</GhafFontContext.Provider>;
+}
 
 export interface ScreenProps extends PropsWithChildren {
   // Styles the scrolling or static viewport. Put screen centering here.
@@ -40,6 +60,7 @@ export interface ScreenProps extends PropsWithChildren {
   contentStyle?: StyleProp<ViewStyle>;
   keyboardAware?: boolean;
   keyboardVerticalOffset?: number;
+  safeAreaEdges?: Edge[];
   scroll?: boolean;
   scrollProps?: Omit<ScrollViewProps, 'contentContainerStyle'>;
   testID?: string;
@@ -51,6 +72,7 @@ export function Screen({
   contentStyle,
   keyboardAware = false,
   keyboardVerticalOffset = 0,
+  safeAreaEdges = ['left', 'right', 'bottom'],
   scroll = true,
   scrollProps,
   testID,
@@ -59,7 +81,7 @@ export function Screen({
   const content = <View style={[styles.contentWidth, contentStyle]}>{children}</View>;
 
   return (
-    <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen} testID={testID}>
+    <SafeAreaView edges={safeAreaEdges} style={styles.screen} testID={testID}>
       <View
         style={[styles.fieldRule, direction === 'rtl' ? styles.fieldRuleRtl : styles.fieldRuleLtr]}
       >
@@ -92,39 +114,65 @@ export function Screen({
   );
 }
 
-interface AppTextProps extends React.ComponentProps<typeof NativeText> {
+export interface AppTextProps extends React.ComponentProps<typeof NativeText> {
   align?: TextAlign;
+  brand?: boolean;
   color?: AppColor;
   direction?: TextDirection | 'auto';
   language?: LocaleCode;
+  tabular?: boolean;
   variant?: TextVariant;
 }
 
+const baselineRoleNames: Record<TypographyRole, true> = {
+  display: true,
+  title: true,
+  heading: true,
+  body: true,
+  label: true,
+  caption: true,
+};
+
+function isBaselineTypographyRole(variant: TextVariant): variant is TypographyRole {
+  return variant in baselineRoleNames;
+}
+
+const brandRoleForBaseline: Record<TypographyRole, R001TypographyRole> = {
+  display: 'display',
+  title: 'parentHero',
+  heading: 'screenTitle',
+  body: 'body',
+  label: 'label',
+  caption: 'caption',
+};
+
 export function Text({
   align = 'start',
-  color = 'ink',
+  brand = false,
+  color,
   direction: directionOverride,
   language,
+  tabular = false,
   variant = 'body',
   style,
   ...props
 }: AppTextProps) {
   const locale = usePrototypeStore((state) => state.locale);
   const storeDirection = usePrototypeStore((state) => state.direction);
+  const fontsLoaded = useContext(GhafFontContext);
   const resolvedLanguage = language ?? locale;
-  const typographyStyle = resolveTypographyRole(variant, resolvedLanguage);
+  const baselineRole = isBaselineTypographyRole(variant);
+  const resolvedColor = color ?? (brand ? 'r001Ink' : 'ink');
+  const typographyStyle =
+    baselineRole && !brand
+      ? resolveTypographyRole(variant, resolvedLanguage)
+      : resolveR001TypographyRole(
+          baselineRole ? brandRoleForBaseline[variant] : variant,
+          resolvedLanguage,
+          fontsLoaded,
+        );
   const direction = directionOverride ?? storeDirection;
   const alignmentDirection = direction === 'auto' ? storeDirection : direction;
-  const directionStyle =
-    align === 'center'
-      ? styles.textCenter
-      : align === 'end'
-        ? alignmentDirection === 'rtl'
-          ? styles.textLeft
-          : styles.textRight
-        : alignmentDirection === 'rtl'
-          ? styles.textRight
-          : styles.textLeft;
 
   return (
     <NativeText
@@ -134,18 +182,25 @@ export function Text({
       }
       accessibilityRole={
         props.accessibilityRole ??
-        (variant === 'display' || variant === 'title' ? 'header' : undefined)
+        (variant === 'display' ||
+        variant === 'title' ||
+        variant === 'hero' ||
+        variant === 'parentHero' ||
+        variant === 'screenTitle'
+          ? 'header'
+          : undefined)
       }
       style={[
         styles.textBase,
         typographyStyle,
-        { color: colors[color] },
+        { color: colors[resolvedColor] },
         direction === 'rtl'
           ? styles.writingRtl
           : direction === 'ltr'
             ? styles.writingLtr
             : styles.writingAuto,
-        directionStyle,
+        { textAlign: logicalTextAlign(align, alignmentDirection) },
+        tabular ? styles.tabularNumbers : null,
         style,
       ]}
     />
@@ -153,35 +208,52 @@ export function Text({
 }
 
 export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'ghost';
+export type ButtonSize = 'compact' | 'regular';
 
 export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> {
+  brand?: boolean;
   busy?: boolean;
   busyLabel?: string;
   children: ReactNode;
+  direction?: TextDirection;
   fullWidth?: boolean;
   icon?: ReactNode;
+  language?: LocaleCode;
+  size?: ButtonSize;
   style?: StyleProp<ViewStyle>;
   variant?: ButtonVariant;
 }
 
 export function Button({
   accessibilityState,
+  brand = false,
   busy = false,
   busyLabel,
   children,
+  direction: directionOverride,
   disabled = false,
   fullWidth = true,
   icon,
+  language,
   onBlur,
   onFocus,
+  pressRetentionOffset,
+  size = 'compact',
   style,
   variant = 'primary',
   ...props
 }: ButtonProps) {
   const [focused, setFocused] = useState(false);
-  const direction = usePrototypeStore((state) => state.direction);
+  const storeDirection = usePrototypeStore((state) => state.direction);
+  const direction = directionOverride ?? storeDirection;
   const resolvedVariant = variant === 'ghost' ? 'quiet' : variant;
-  const labelColor = resolvedVariant === 'primary' ? 'white' : 'forest';
+  const labelColor: AppColor = brand
+    ? resolvedVariant === 'primary'
+      ? 'white'
+      : 'ghafEmerald'
+    : resolvedVariant === 'primary'
+      ? 'white'
+      : 'forest';
   const isDisabled = disabled === true || busy;
   const renderedLabel = busy && busyLabel ? busyLabel : children;
 
@@ -200,25 +272,42 @@ export function Button({
         setFocused(true);
         onFocus?.(event);
       }}
+      pressRetentionOffset={pressRetentionOffset ?? spacing.sm}
       style={({ pressed }) => [
         styles.button,
+        brand ? styles.buttonBrand : null,
+        size === 'regular' ? styles.buttonRegular : styles.buttonCompact,
         buttonVariants[resolvedVariant],
+        brand ? brandButtonVariants[resolvedVariant] : null,
         fullWidth ? styles.fullWidth : null,
-        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-        focused ? styles.focusedControl : null,
+        { flexDirection: logicalRowDirection(direction) },
+        brand ? style : null,
+        focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
         pressed && !isDisabled
           ? resolvedVariant === 'primary'
-            ? styles.primaryPressed
-            : styles.pressed
+            ? brand
+              ? styles.brandPrimaryPressed
+              : styles.primaryPressed
+            : brand
+              ? styles.brandPressed
+              : styles.pressed
           : null,
-        isDisabled ? styles.disabled : null,
-        style,
+        isDisabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
+        brand ? null : style,
       ]}
     >
       {busy ? <ActivityIndicator color={colors[labelColor]} size="small" /> : null}
       {!busy && icon ? <View style={styles.buttonIcon}>{icon}</View> : null}
       {typeof renderedLabel === 'string' ? (
-        <Text align="center" color={labelColor} style={styles.buttonLabel} variant="label">
+        <Text
+          align="center"
+          brand={brand}
+          color={labelColor}
+          direction={direction}
+          language={language}
+          style={styles.buttonLabel}
+          variant={brand ? 'control' : 'label'}
+        >
           {renderedLabel}
         </Text>
       ) : busy && !busyLabel ? null : (
@@ -244,7 +333,7 @@ export function QuietButton(props: IntentButtonProps) {
 
 export type CardVariant = 'paper' | 'tonal' | 'water' | 'coral';
 
-interface CardProps extends PropsWithChildren {
+export interface CardProps extends PropsWithChildren {
   accessibilityLabel?: string;
   elevated?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -271,16 +360,20 @@ export function Card({
   );
 }
 
-interface InputProps extends TextInputProps {
-  direction?: TextDirection;
+export interface InputProps extends TextInputProps {
+  brand?: boolean;
+  direction?: TextDirection | 'auto';
   errorText?: string;
   helperText?: string;
   label?: string;
   language?: LocaleCode;
+  successText?: string;
 }
 
 export function Input({
+  brand = false,
   direction: directionOverride,
+  editable = true,
   errorText,
   label,
   helperText,
@@ -289,25 +382,47 @@ export function Input({
   onBlur,
   onFocus,
   style,
+  successText,
   ...props
 }: InputProps) {
   const [focused, setFocused] = useState(false);
+  const fontsLoaded = useContext(GhafFontContext);
   const storeDirection = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const resolvedLanguage = language ?? locale;
-  const inputTypography = resolveTypographyRole('body', resolvedLanguage);
+  const inputTypography = brand
+    ? resolveR001TypographyRole('body', resolvedLanguage, fontsLoaded)
+    : resolveTypographyRole('body', resolvedLanguage);
   const direction = directionOverride ?? storeDirection;
+  const statusText = errorText ?? successText ?? helperText;
+  const statusColor: AppColor = errorText
+    ? brand
+      ? 'error'
+      : 'danger'
+    : successText
+      ? brand
+        ? 'ghafEmerald'
+        : 'success'
+      : brand
+        ? 'onSurfaceVariant'
+        : 'inkMuted';
 
   return (
     <View style={styles.inputGroup}>
-      {label ? <Text variant="label">{label}</Text> : null}
+      {label ? (
+        <Text brand={brand} direction={direction} language={language} variant="label">
+          {label}
+        </Text>
+      ) : null}
       <NativeTextInput
         {...props}
+        aria-invalid={Boolean(errorText)}
         accessibilityLabel={props.accessibilityLabel ?? label}
         accessibilityLanguage={
           props.accessibilityLanguage ?? (resolvedLanguage === 'ar' ? 'ar-AE' : 'en-AE')
         }
-        accessibilityState={{ ...props.accessibilityState, disabled: props.editable === false }}
+        accessibilityState={{ ...props.accessibilityState, disabled: !editable }}
+        editable={editable}
         multiline={multiline}
         onBlur={(event) => {
           setFocused(false);
@@ -317,31 +432,44 @@ export function Input({
           setFocused(true);
           onFocus?.(event);
         }}
-        placeholderTextColor={colors.inkMuted}
+        placeholderTextColor={brand ? colors.onSurfaceVariant : colors.inkMuted}
+        selectionColor={brand ? colors.primaryContainer : props.selectionColor}
         style={[
           styles.input,
+          brand ? styles.inputBrand : null,
           inputTypography,
           multiline ? styles.inputMultiline : null,
-          direction === 'rtl' ? styles.inputRtl : styles.inputLtr,
-          focused ? styles.focusedControl : null,
-          errorText ? styles.inputError : null,
-          style,
+          direction === 'rtl'
+            ? styles.inputRtl
+            : direction === 'ltr'
+              ? styles.inputLtr
+              : styles.inputAuto,
+          brand ? style : null,
+          focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
+          successText && !errorText ? styles.inputSuccess : null,
+          errorText ? (brand ? styles.brandInputError : styles.inputError) : null,
+          !editable && brand ? styles.brandDisabled : null,
+          brand ? null : style,
         ]}
       />
-      {errorText || helperText ? (
+      {statusText ? (
         <Text
-          accessibilityLiveRegion={errorText ? 'polite' : undefined}
-          color={errorText ? 'danger' : 'inkMuted'}
+          accessibilityLiveRegion={errorText || successText ? 'polite' : undefined}
+          brand={brand}
+          color={statusColor}
+          direction={direction}
+          language={language}
           variant="caption"
         >
-          {errorText ?? helperText}
+          {statusText}
         </Text>
       ) : null}
     </View>
   );
 }
 
-interface IconButtonProps extends Omit<PressableProps, 'children' | 'style'> {
+export interface IconButtonProps extends Omit<PressableProps, 'children' | 'style'> {
+  brand?: boolean;
   icon: ReactNode;
   label: string;
   style?: StyleProp<ViewStyle>;
@@ -349,11 +477,13 @@ interface IconButtonProps extends Omit<PressableProps, 'children' | 'style'> {
 
 export function IconButton({
   accessibilityState,
+  brand = false,
   disabled,
   icon,
   label,
   onBlur,
   onFocus,
+  pressRetentionOffset,
   style,
   ...props
 }: IconButtonProps) {
@@ -375,16 +505,57 @@ export function IconButton({
         setFocused(true);
         onFocus?.(event);
       }}
+      pressRetentionOffset={pressRetentionOffset ?? spacing.sm}
       style={({ pressed }) => [
         styles.iconButton,
-        focused ? styles.focusedControl : null,
-        pressed && !disabled ? styles.pressed : null,
-        disabled ? styles.disabled : null,
+        brand ? styles.brandIconButton : null,
         style,
+        focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
+        pressed && !disabled ? (brand ? styles.brandPressed : styles.pressed) : null,
+        disabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
       ]}
     >
       {icon}
     </Pressable>
+  );
+}
+
+export interface RowProps extends PropsWithChildren {
+  align?: ViewStyle['alignItems'];
+  direction?: TextDirection;
+  gap?: number;
+  reverse?: boolean;
+  style?: StyleProp<ViewStyle>;
+  wrap?: boolean;
+}
+
+export function Row({
+  align = 'center',
+  children,
+  direction: directionOverride,
+  gap = spacing.sm,
+  reverse = false,
+  style,
+  wrap = false,
+}: RowProps) {
+  const storeDirection = usePrototypeStore((state) => state.direction);
+  const direction = directionOverride ?? storeDirection;
+
+  return (
+    <View
+      style={[
+        styles.row,
+        {
+          alignItems: align,
+          flexDirection: logicalRowDirection(direction, reverse),
+          flexWrap: wrap ? 'wrap' : 'nowrap',
+          gap,
+        },
+        style,
+      ]}
+    >
+      {children}
+    </View>
   );
 }
 
@@ -400,6 +571,21 @@ const buttonVariants = StyleSheet.create({
   quiet: {
     backgroundColor: colors.transparent,
     borderColor: colors.line,
+  },
+});
+
+const brandButtonVariants = StyleSheet.create({
+  primary: {
+    backgroundColor: colors.ghafEmerald,
+    borderColor: colors.ghafEmerald,
+  },
+  secondary: {
+    backgroundColor: colors.ghafEmeraldTint,
+    borderColor: colors.ghafEmeraldTint,
+  },
+  quiet: {
+    backgroundColor: colors.transparent,
+    borderColor: colors.transparent,
   },
 });
 
@@ -479,11 +665,8 @@ const styles = StyleSheet.create({
     marginStart: -2,
     backgroundColor: colors.gold,
   },
-  rowRtl: {
-    flexDirection: 'row-reverse',
-  },
-  rowLtr: {
-    flexDirection: 'row',
+  row: {
+    minWidth: 0,
   },
   textBase: {
     includeFontPadding: true,
@@ -497,14 +680,8 @@ const styles = StyleSheet.create({
   writingAuto: {
     writingDirection: 'auto',
   },
-  textCenter: {
-    textAlign: 'center',
-  },
-  textRight: {
-    textAlign: 'right',
-  },
-  textLeft: {
-    textAlign: 'left',
+  tabularNumbers: {
+    fontVariant: ['tabular-nums'],
   },
   button: {
     minHeight: layout.touchTarget,
@@ -512,10 +689,19 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderWidth: 1,
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xs,
+  },
+  buttonBrand: {
+    borderRadius: r001Radii.lg,
+  },
+  buttonCompact: {
+    paddingVertical: spacing.sm,
+  },
+  buttonRegular: {
+    minHeight: layout.controlHeight,
+    paddingVertical: spacing.md,
   },
   fullWidth: {
     width: '100%',
@@ -532,15 +718,32 @@ const styles = StyleSheet.create({
     borderColor: colors.ghafPressed,
     transform: [{ scale: 0.985 }],
   },
+  brandPrimaryPressed: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+    opacity: opacity.pressed,
+    transform: [{ scale: 0.985 }],
+  },
   pressed: {
     opacity: 0.76,
+    transform: [{ scale: 0.985 }],
+  },
+  brandPressed: {
+    opacity: opacity.pressed,
     transform: [{ scale: 0.985 }],
   },
   disabled: {
     opacity: 0.46,
   },
+  brandDisabled: {
+    opacity: opacity.disabled,
+  },
   focusedControl: {
     borderColor: colors.gold,
+    borderWidth: 2,
+  },
+  brandFocusedControl: {
+    borderColor: colors.solarAmber,
     borderWidth: 2,
   },
   card: {
@@ -568,6 +771,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
+  inputBrand: {
+    minHeight: layout.controlHeight,
+    borderColor: colors.outlineVariant,
+    borderRadius: r001Radii.lg,
+    backgroundColor: colors.surfaceContainerLowest,
+    color: colors.r001Ink,
+  },
   inputMultiline: {
     minHeight: spacing.huge * 2,
     textAlignVertical: 'top',
@@ -576,6 +786,13 @@ const styles = StyleSheet.create({
     borderColor: colors.coral,
     backgroundColor: colors.coralLight,
   },
+  brandInputError: {
+    borderColor: colors.error,
+    backgroundColor: colors.errorContainer,
+  },
+  inputSuccess: {
+    borderColor: colors.success,
+  },
   inputRtl: {
     textAlign: 'right',
     writingDirection: 'rtl',
@@ -583,6 +800,10 @@ const styles = StyleSheet.create({
   inputLtr: {
     textAlign: 'left',
     writingDirection: 'ltr',
+  },
+  inputAuto: {
+    textAlign: 'auto',
+    writingDirection: 'auto',
   },
   iconButton: {
     width: layout.touchTarget,
@@ -594,5 +815,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.transparent,
     borderWidth: 1,
     borderColor: colors.line,
+  },
+  brandIconButton: {
+    borderRadius: r001Radii.lg,
   },
 });

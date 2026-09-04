@@ -27,6 +27,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-router',
     [
+      'expo-font',
+      {
+        fonts: [
+          './node_modules/@expo-google-fonts/alexandria/400Regular/Alexandria_400Regular.ttf',
+          './node_modules/@expo-google-fonts/alexandria/700Bold/Alexandria_700Bold.ttf',
+          './node_modules/@expo-google-fonts/alexandria/800ExtraBold/Alexandria_800ExtraBold.ttf',
+          './node_modules/@expo-google-fonts/readex-pro/400Regular/ReadexPro_400Regular.ttf',
+          './node_modules/@expo-google-fonts/readex-pro/500Medium/ReadexPro_500Medium.ttf',
+          './node_modules/@expo-google-fonts/readex-pro/600SemiBold/ReadexPro_600SemiBold.ttf',
+          './node_modules/@expo-google-fonts/readex-pro/700Bold/ReadexPro_700Bold.ttf',
+        ],
+      },
+    ],
+    [
       'expo-audio',
       {
         microphonePermission: false,

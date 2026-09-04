@@ -25,12 +25,13 @@ that must be preserved rather than overwritten by the six divergent local commit
 does not approve an R002 export or release a post-R001 route, component, asset, dependency, test, or
 runtime change.
 
-| Exclusive writer                                                                   | Exact reserved boundary                                                                                                                                                                                                                                                                                                                                                                                         | Handoff condition                                                                                                                                                                                                                                                                                          |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/root/r3_preflight` — orchestration and ownership record                          | `TEAM_OWNERSHIP.md` only                                                                                                                                                                                                                                                                                                                                                                                        | Record this window, coordinate disjoint ownership, and release the file after documentation validation                                                                                                                                                                                                     |
-| `/root/r3_preflight/r3_product_reconcile` — product/specification reconciliation   | `AGENTS.md`, `PRODUCT.md`, `RESEARCH_BASIS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `README.md`, `CODEX_IMPLEMENTATION_PROMPT.md`, `DEMO_RUNBOOK.md`, `docs/README.md`, `docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/**`, `docs/content/**`, `docs/architecture/adr/0002-impact-path-projection.md`, and `specs/003-family-growth-garden/**` except `design-intake/revision-3-proposal/**` | Reconcile with targeted patches against the remote baseline; preserve implementation/test facts; keep R001 narrow and later runtime blocked; return exact changed files and validation evidence without committing                                                                                         |
-| `/root/r3_preflight/r001_access_domain` — tests-first Parent-onboarding controller | `src/models/parentOnboarding.ts`, `src/features/access/parentOnboarding/**`, the smallest additive Parent-session termination method in `src/features/access/index.ts`, and new focused test file `tests/parent-onboarding-controller.test.ts` only                                                                                                                                                             | RED then GREEN evidence for input/draft policy, controller delegation to the existing shared access authority, capability authorization, idempotency, cancellation/session termination, and remote access/voice/League/Reward regressions; no store, route, UI, registry, config, documentation, or commit |
-| `/root` — final integration                                                        | Staged-file review, cross-document validation, and the single documentation commit after the product/specification handoff                                                                                                                                                                                                                                                                                      | Confirm that only documentation changed, all references and identifiers resolve, gate language is truthful, and no R002/runtime file is staged; integrate the access/domain slice separately after its own handoff                                                                                         |
+| Exclusive writer                                                                                                 | Exact reserved boundary                                                                                                                                                                                                                                                                                                                                                                                         | Handoff condition                                                                                                                                                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/root/r3_preflight` — orchestration and ownership record — **released**                                         | `TEAM_OWNERSHIP.md` only                                                                                                                                                                                                                                                                                                                                                                                        | Recorded the documentation, domain, store, and UI-foundation handoffs; released the file to the integration owner before font/configuration and route integration                                                                                                                               |
+| `/root/r3_preflight/r3_product_reconcile` — product/specification reconciliation                                 | `AGENTS.md`, `PRODUCT.md`, `RESEARCH_BASIS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `README.md`, `CODEX_IMPLEMENTATION_PROMPT.md`, `DEMO_RUNBOOK.md`, `docs/README.md`, `docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/**`, `docs/content/**`, `docs/architecture/adr/0002-impact-path-projection.md`, and `specs/003-family-growth-garden/**` except `design-intake/revision-3-proposal/**` | Reconcile with targeted patches against the remote baseline; preserve implementation/test facts; keep R001 narrow and later runtime blocked; return exact changed files and validation evidence without committing                                                                              |
+| `/root/r3_preflight/r001_access_domain` — tests-first Parent-onboarding controller — **released after QA fixes** | `src/features/access/index.ts`, `src/features/access/parentOnboarding/**`, and new focused test file `tests/parent-onboarding-controller.test.ts`; preserve the integration owner's required service-contract/model layering edits                                                                                                                                                                              | Prove an old session generation and its reauthentication proofs remain invalid after terminate-and-reuse; preserve unrelated sessions/proofs and rerun access/voice/League/Reward/reset regressions; no store, route, UI, registry, config, documentation, or commit                            |
+| `/root/r3_preflight/r001_ui_foundation` — R001 native design foundation — **released after integration review**  | `src/design/tokens.ts`, `src/components/primitives.tsx`, `src/components/access/**`, and new focused test file `tests/r001-design-foundation.test.ts` only                                                                                                                                                                                                                                                      | Reconcile reusable R001 tokens, Alexandria/Readex role names, native RTL/LTR primitives and controls, responsive access shell, botanical/icon components, and reduced-motion-aware success sheet; no routes, state, services, registry, i18n resources, package/config, assets, docs, or commit |
+| `/root` — R001 integration, routes, and commits                                                                  | `package.json`, `package-lock.json`, `app.config.ts`, `app/_layout.tsx`, `app/index.tsx`, `app/role.tsx`, `app/access/parent/**`, `app/parent/_layout.tsx`, `src/i18n/**`, the service registry, `src/state/usePrototypeStore.ts`, `tests/operator-demo-flow.test.ts`, `tests/r001-onboarding-flow.test.ts`, `tests/parent-onboarding-store.test.ts`, staged-file review, and final commits                     | Install/load the approved fonts, integrate guarded onboarding authority and the seven R001 compositions, preserve the ten remote routes and later-screen gate, run the complete R001 validation, and create only cohesive commits after each GREEN boundary                                     |
 
 No product/specification writer in this window may edit `app/**`, `src/**`, `tests/**`, `assets/**`,
 `package.json`, `package-lock.json`, `app.config.ts`, generated output, the untracked R002 directory
@@ -48,7 +49,73 @@ content artifacts. Its validation passed Markdown formatting, internal relative-
 unique task IDs `T001`–`T158`, the exact 16-badge registry, R001 seven-screen inventory and authority
 markers, `git diff --check`, preservation of the Revision 3 proposal package, and confirmation that
 all six divergent local commits remain unapplied. The access/domain worker above remains separately
-reserved and its source/test changes must not enter the documentation commit.
+reserved, and the UI foundation worker begins only after this documentation commit. Their disjoint
+source/test changes must enter separate implementation commits after integration review.
+
+### R001 implementation integration boundary
+
+`/root` exclusively owns `package.json`, `package-lock.json`, `app.config.ts`, `app/**`,
+`src/i18n/**`, the service registry, store integration, route guards, and final commits. The UI
+foundation worker may define the approved font-family roles but must not install or load font
+packages; the integration owner performs that serialized dependency/configuration step while
+preserving `expo-audio`. Neither implementation worker may touch R001/R002 design exports or begin a
+post-R001 route.
+
+#### R001 access/domain handoff
+
+The access/domain boundary was released to `/root` after adding a private
+`ParentOnboardingController`, safe onboarding model/policy projections, and the narrow
+identity-validated `terminateParentSession` operation. The focused access/onboarding suite passed 43
+tests; the broader access, voice, League, Family Reward, prototype-state, and reset batch passed 149
+tests. Typecheck and lint passed before the concurrent UI RED test was added; lint, targeted
+formatting, and `git diff --check` passed after the final expired-session cleanup. The full suite's
+only four failures were the integration owner's intentionally RED R001 route/resource/layout tests,
+not domain regressions. No file was staged or committed by the worker.
+
+The boundary was re-opened after independent read-only QA found two commit-blocking lifecycle gaps:
+deterministic ID reuse could make an old session object match a new stored generation, and
+unconsumed reauthentication proofs could survive termination into that reused generation. The
+worker owns tests-first generation binding and proof cleanup while preserving the integration
+owner's required `SyntheticAccessService` termination contract change.
+
+The re-opened boundary was released after the three lifecycle tests went RED then GREEN. Session
+resolution now binds to the immutable issued/expiry generation, termination removes only proofs
+belonging to that exact Parent session identity, unrelated sessions/proofs remain valid, and
+controller cleanup surfaces a termination failure. The final focused eight-file regression batch
+passed 152 tests; targeted ESLint, Prettier, and `git diff --check` passed. Global type/lint checks
+were deferred only while the concurrent UI worker's import graph was incomplete.
+
+#### R001 store integration checkpoint
+
+The integration owner added the safe onboarding projection/actions to
+`src/state/usePrototypeStore.ts` with focused coverage in
+`tests/parent-onboarding-store.test.ts`. The test was RED 4/4 before the integration and GREEN 4/4
+afterward. The store owns one controller backed by the existing shared access registry, never
+exposes the raw Parent session, changes locale and legacy role only after successful capability
+completion, preserves household/Child fixtures, and invalidates onboarding authority during the
+existing Parent-gated reset. Final R001-A validation and commit were held until the re-opened
+session-generation/proof fixes passed the 152-test regression batch recorded in the access/domain
+handoff. This store boundary is now ready for the integration owner's final R001-A validation.
+
+#### R001 design-foundation handoff
+
+The UI boundary was released after adding scoped R001 palette, typography, radii, shadow, motion,
+logical RTL/bidi helpers, controlled native access controls, a responsive safe-area/scroll/keyboard
+shell, code-native icons and botanical avatars, and the reduced-motion-aware success surface. The
+integration review restored every legacy palette, radius, shadow, motion, Card, and unbranded
+primitive value so the preserved ten-route UI is not redesigned by this release; a focused
+regression test now locks that boundary. The botanical picker uses the authoritative underscore
+`ChildTreeAvatarId` values and maps them internally to icon names.
+
+The final five-file focused batch passed 43 tests across the R001 foundation, existing bilingual
+typography, localization, accessibility, and access suites. Global typecheck, repository lint and
+format checks, targeted no-cache ESLint, and `git diff --check` passed after mechanically formatting
+the final avatar focus-state fix. Independent read-only QA found no remaining functional commit
+blocker. No file was staged or committed by either worker. Route composition screenshots, physical
+Android, TalkBack, 200% font scale, and success-sheet focus restoration remain `NOT RUN` until the
+integration owner completes R001 routes. The integration owner retains exclusive ownership of the
+Expo-compatible font packages/configuration, root font loader, transparent success route, Android
+Back behavior, and focus restoration.
 
 ## Decision Record
 

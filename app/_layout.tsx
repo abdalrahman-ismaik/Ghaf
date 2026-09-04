@@ -1,6 +1,18 @@
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
+import {
+  Alexandria_400Regular,
+  Alexandria_700Bold,
+  Alexandria_800ExtraBold,
+} from '@expo-google-fonts/alexandria';
+import {
+  ReadexPro_400Regular,
+  ReadexPro_500Medium,
+  ReadexPro_600SemiBold,
+  ReadexPro_700Bold,
+} from '@expo-google-fonts/readex-pro';
+import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -8,6 +20,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
+import { GhafFontProvider } from '@/components/primitives';
 import { colors } from '@/design/tokens';
 import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -25,6 +38,15 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
+  const [fontsLoaded, fontError] = useFonts({
+    Alexandria_400Regular,
+    Alexandria_700Bold,
+    Alexandria_800ExtraBold,
+    ReadexPro_400Regular,
+    ReadexPro_500Medium,
+    ReadexPro_600SemiBold,
+    ReadexPro_700Bold,
+  });
 
   useEffect(() => {
     configureNativeDirection(locale);
@@ -38,19 +60,25 @@ export default function RootLayout() {
     }
   }, [pathname]);
 
+  useEffect(() => {
+    if (fontError) console.warn('Ghaf brand fonts could not be loaded; using system fallbacks.');
+  }, [fontError]);
+
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
-      <View style={styles.root}>
-        <PrototypeStatusBar />
-        <Stack
-          screenOptions={{
-            animation: 'fade',
-            contentStyle: { backgroundColor: colors.ivory },
-            headerShown: false,
-          }}
-        />
-      </View>
+      <GhafFontProvider loaded={fontsLoaded}>
+        <StatusBar style="light" />
+        <View style={styles.root}>
+          <PrototypeStatusBar />
+          <Stack
+            screenOptions={{
+              animation: 'fade',
+              contentStyle: { backgroundColor: colors.ivory },
+              headerShown: false,
+            }}
+          />
+        </View>
+      </GhafFontProvider>
     </SafeAreaProvider>
   );
 }
