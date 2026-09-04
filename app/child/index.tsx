@@ -3,15 +3,27 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { GhafIcon } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { JourneyHeader } from '@/components/journey';
-import { Button, Screen, Text } from '@/components/primitives';
-import { colors, radii, spacing } from '@/design/tokens';
-import { P0_RECYCLING_TEMPLATE, TASK_TEMPLATES } from '@/features/tasks/demoContent';
+import { PrimaryButton, QuietButton, SecondaryButton, Text } from '@/components/primitives';
+import {
+  ChildBottomNavigation,
+  ChildGardenProgressCard,
+  ChildHomeHeader,
+  ChildTodayTaskCard,
+  R002aScreen,
+} from '@/components/r002a';
+import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import {
+  P0_RECYCLING_TEMPLATE,
+  TASK_CATEGORIES,
+  TASK_TEMPLATES,
+} from '@/features/tasks/demoContent';
 import { localize } from '@/i18n';
 import type {
   ApprovedChoiceFixture,
   LandscapeId,
+  RecognitionMode,
   TaskLifecycleStatus,
   TaskTemplate,
 } from '@/models/familyGrowth';
@@ -25,6 +37,12 @@ const LANDSCAPE_LABEL_KEYS: Readonly<Record<LandscapeId, string>> = {
   mangrove: 'garden.mangrove',
 };
 
+const RECOGNITION_LABEL_KEYS: Readonly<Record<RecognitionMode, string>> = {
+  standard: 'taskReview.standardRecognition',
+  fade_first: 'taskReview.fadeFirstRecognition',
+  recognition_only: 'taskReview.recognitionOnly',
+};
+
 type CurrentWorkMode = 'choose' | 'start' | 'resume' | 'waiting' | 'paused' | 'garden';
 
 const CURRENT_WORK_MODE_BY_LIFECYCLE: Partial<Record<TaskLifecycleStatus, CurrentWorkMode>> = {
@@ -35,6 +53,16 @@ const CURRENT_WORK_MODE_BY_LIFECYCLE: Partial<Record<TaskLifecycleStatus, Curren
   retry: 'paused',
   confirmed: 'waiting',
   recognized: 'garden',
+};
+
+const STATUS_KEY_BY_LIFECYCLE: Partial<Record<TaskLifecycleStatus, string>> = {
+  assigned: 'childHome.statusAvailable',
+  chosen: 'childHome.statusReady',
+  in_progress: 'childHome.statusActive',
+  submitted: 'childHome.statusSubmitted',
+  retry: 'childHome.statusRetry',
+  confirmed: 'childHome.statusConfirmed',
+  recognized: 'childHome.statusRecognized',
 };
 
 function templateFor(choice: ApprovedChoiceFixture): TaskTemplate | null {
@@ -54,13 +82,13 @@ export default function ChildHomeScreen() {
   const journey = usePrototypeStore((state) => state.journey);
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
   const chooseAssignment = usePrototypeStore((state) => state.chooseAssignment);
-  const startAssignment = usePrototypeStore((state) => state.startAssignment);
-  const [error, setError] = useState<string | null>(null);
   const preAcceptanceAdjustment = usePrototypeStore((state) => state.preAcceptanceAdjustment);
   const requestSmallerTask = usePrototypeStore((state) => state.requestSmallerTask);
   const respondToPreAcceptanceAdjustment = usePrototypeStore(
     (state) => state.respondToPreAcceptanceAdjustment,
   );
+  const [error, setError] = useState<string | null>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   useEffect(() => {
     if (role !== 'child') router.replace('/role');
@@ -68,7 +96,7 @@ export default function ChildHomeScreen() {
 
   const previewChoices = useMemo(
     () => choicePool.seededPreviewChoices.filter((choice) => choice.childId === activeChildId),
-    [activeChildId, choicePool],
+    [activeChildId, choicePool.seededPreviewChoices],
   );
   const currentAssignmentChoice =
     choicePool.p0AssignmentChoice?.childId === activeChildId &&
@@ -81,32 +109,21 @@ export default function ChildHomeScreen() {
       : currentAssignmentChoice
         ? templateFor(currentAssignmentChoice)
         : null;
+  const currentCategory = currentTemplate
+    ? TASK_CATEGORIES.find((category) => category.id === currentTemplate.categoryId)
+    : null;
   const currentWorkMode = journey
     ? (CURRENT_WORK_MODE_BY_LIFECYCLE[journey.lifecycle] ?? null)
     : null;
   const choices = currentAssignmentChoice
     ? [currentAssignmentChoice, ...previewChoices]
     : previewChoices;
-
-  const choose = (choice: ApprovedChoiceFixture) => {
-    setError(null);
-    const result = chooseAssignment(choice.id);
-    if (!result.ok) setError(t('origin.future'));
-  };
-
-  const openTask = () => {
-    setError(null);
-    if (journey?.lifecycle === 'chosen') {
-      const started = startAssignment();
-      if (!started.ok) {
-        setError(t('errors.safeRetry'));
-        return;
-      }
-    }
-    router.push('/child/task');
-  };
-
   const child = children[activeChildId];
+  const gardenTarget = 60;
+  const gardenCurrent = Math.min(child.earnedSeeds, gardenTarget);
+  const gardenRemaining = Math.max(0, gardenTarget - gardenCurrent);
+  const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
+
   const activeAdjustment =
     preAcceptanceAdjustment?.childId === activeChildId &&
     preAcceptanceAdjustment.sourceAssignmentId === journey?.assignment?.id
@@ -115,6 +132,17 @@ export default function ChildHomeScreen() {
   const smallerRequestPending = activeAdjustment?.status === 'parent_review_required';
   const childDecisionRequired = activeAdjustment?.status === 'child_decision_required';
   const adjustmentBlocksChoice = smallerRequestPending || childDecisionRequired;
+
+  const choose = (choice: ApprovedChoiceFixture) => {
+    setError(null);
+    const result = chooseAssignment(choice.id);
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const openTask = () => {
+    setError(null);
+    router.push('/child/task');
+  };
 
   const requestSmaller = () => {
     setError(null);
@@ -128,67 +156,112 @@ export default function ChildHomeScreen() {
     if (!result.ok) setError(t('errors.safeRetry'));
   };
 
-  if (role !== 'child') {
-    return (
-      <Screen testID="child-home-role-guard">
-        <JourneyHeader eyebrow={t('origin.synthetic')} title={t('errors.wrongRole')} />
-      </Screen>
-    );
-  }
+  if (role !== 'child') return null;
+
+  const taskAction = (() => {
+    switch (currentWorkMode) {
+      case 'choose':
+        return {
+          label: t('childHome.choose'),
+          onPress: () => currentAssignmentChoice && choose(currentAssignmentChoice),
+          testID: 'choose-recycling-task-button',
+        };
+      case 'start':
+        return {
+          label: t('childHome.viewTask'),
+          onPress: openTask,
+          testID: 'start-chosen-task-button',
+        };
+      case 'resume':
+        return {
+          label: t('childHome.resumeTask'),
+          onPress: openTask,
+          testID: 'resume-current-task-button',
+        };
+      case 'waiting':
+        return journey?.lifecycle === 'submitted'
+          ? {
+              label: t('childHome.viewSubmission'),
+              onPress: openTask,
+              testID: 'view-submitted-task-button',
+            }
+          : null;
+      case 'garden':
+        return {
+          label: t('parentHome.openGarden'),
+          onPress: () => router.push('/garden'),
+          testID: 'open-recognized-garden-button',
+        };
+      default:
+        return null;
+    }
+  })();
+
+  const footer = (
+    <ChildBottomNavigation
+      activeKey="today"
+      direction={direction}
+      gardenLabel={t('navigation.garden')}
+      leagueLabel={t('navigation.league')}
+      leagueUnavailableHint={t('navigation.leagueUnavailable')}
+      onGarden={() => router.push('/garden')}
+      onToday={() => undefined}
+      todayLabel={t('navigation.today')}
+    />
+  );
 
   return (
-    <Screen contentContainerStyle={styles.screenContent} testID="child-home-screen">
-      <JourneyHeader
-        action={<LanguageSwitcher compact showGuidance={false} />}
-        eyebrow={t('origin.synthetic')}
-        subtitle={t('childHome.body')}
-        title={t('childHome.title')}
-      />
-
-      <View style={styles.progressBand}>
-        <View style={styles.progressItem}>
-          <Text color="earth" variant="caption">
-            {localize(child.displayName, locale)}
-          </Text>
-          <Text color="forest" variant="heading">
-            {t('common.seeds', { count: child.earnedSeeds })}
-          </Text>
-          <Text color="inkMuted" variant="caption">
-            {t('origin.symbolic')}
-          </Text>
-          <Text color="forest" variant="caption">
-            {t('childHome.ownGoal')}
-          </Text>
-          <View
-            accessibilityLabel={t('accessibility.progress', {
-              current: child.earnedSeeds,
-              goal: 60,
-            })}
-            accessibilityRole="progressbar"
-            accessibilityValue={{ min: 0, max: 60, now: Math.min(child.earnedSeeds, 60) }}
-            style={styles.ownGoalTrack}
-          >
-            <View
-              style={[
-                styles.ownGoalFill,
-                { width: `${Math.min(100, (child.earnedSeeds / 60) * 100)}%` },
-              ]}
-            />
-          </View>
-        </View>
-        <View style={styles.progressRule} />
-        <View style={styles.progressItem}>
-          <Text color="earth" variant="caption">
-            {t('parentHome.canopyTitle')}
-          </Text>
-          <Text color="forest" variant="heading">
-            {t('common.leaves', { count: canopy.contributionLeaves })}
-          </Text>
-          <Text color="inkMuted" variant="caption">
-            {t('parentHome.canopyMeaning')}
-          </Text>
-        </View>
+    <R002aScreen
+      contentContainerStyle={styles.screenContent}
+      footer={footer}
+      header={
+        <ChildHomeHeader
+          avatarLabel={localize(child.displayName, locale)}
+          direction={direction}
+          helpLabel={t('common.help')}
+          helpOpen={helpOpen}
+          onToggleHelp={() => setHelpOpen((value) => !value)}
+          title={t('childHome.todayTitle')}
+        />
+      }
+      testID="child-home-screen"
+    >
+      <View style={styles.welcome}>
+        <Text brand color="r001Ink" direction={direction} variant="hero">
+          {t('childHome.welcome', { child: localize(child.displayName, locale) })}
+        </Text>
+        <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
+          {t('childHome.todaySummary')}
+        </Text>
       </View>
+
+      {helpOpen ? (
+        <View accessibilityLiveRegion="polite" style={styles.helpPanel} testID="child-help-panel">
+          <View style={[styles.panelHeading, { flexDirection: logicalRowDirection(direction) }]}>
+            <View style={styles.iconBubble}>
+              <GhafIcon color={colors.ghafEmerald} name="help" size={24} />
+            </View>
+            <View style={styles.grow}>
+              <Text brand color="deepForest" direction={direction} variant="label">
+                {t('childHome.helpTitle')}
+              </Text>
+              <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                {t('childHome.helpBody')}
+              </Text>
+            </View>
+          </View>
+          <LanguageSwitcher compact showGuidance={false} />
+          <QuietButton
+            brand
+            direction={direction}
+            onPress={() => router.replace('/role')}
+            size="compact"
+            testID="child-return-to-access-button"
+          >
+            {t('navigation.switchToParent')}
+          </QuietButton>
+        </View>
+      ) : null}
 
       {childDecisionRequired && activeAdjustment.proposal ? (
         <View
@@ -196,171 +269,207 @@ export default function ChildHomeScreen() {
           style={styles.adjustmentPanel}
           testID="pre-acceptance-adjustment-panel"
         >
-          <View style={styles.adjustmentHeader}>
-            <Text color="earth" variant="caption">
-              {t('origin.prepared')}
-            </Text>
-            <Text color="forest" variant="heading">
-              {t('childHome.adjustmentTitle')}
-            </Text>
-            <Text color="inkMuted">{t('childHome.adjustmentBody')}</Text>
+          <View style={[styles.panelHeading, { flexDirection: logicalRowDirection(direction) }]}>
+            <View style={styles.iconBubble}>
+              <GhafIcon color={colors.mangroveTeal} name="info" size={23} />
+            </View>
+            <View style={styles.grow}>
+              <Text brand color="deepForest" direction={direction} variant="screenTitle">
+                {t('childHome.adjustmentTitle')}
+              </Text>
+              <Text brand color="onSurfaceVariant" direction={direction}>
+                {t('childHome.adjustmentBody')}
+              </Text>
+            </View>
           </View>
-          <Text color="mangrove" variant="label">
+          <Text brand color="mangroveTeal" direction={direction} variant="label">
             {t(
               activeAdjustment.resolvedKind === 'safe_equivalent'
                 ? 'childHome.safeEquivalentAlternative'
                 : 'childHome.smallerAlternative',
             )}
           </Text>
-          <Text color="forest" variant="label">
+          <Text brand color="deepForest" direction={direction} variant="bodyLarge">
             {localize(activeAdjustment.proposal.content.title, locale)}
           </Text>
           <View style={styles.proposalDetail}>
-            <Text color="earth" variant="caption">
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
               {t('taskReview.definition')}
             </Text>
-            <Text>{localize(activeAdjustment.proposal.content.definitionOfDone, locale)}</Text>
-          </View>
-          <View style={styles.proposalDetail}>
-            <Text color="earth" variant="caption">
-              {t('taskReview.help')}
+            <Text brand direction={direction}>
+              {localize(activeAdjustment.proposal.content.definitionOfDone, locale)}
             </Text>
-            <Text>{localize(activeAdjustment.proposal.content.permittedHelp, locale)}</Text>
           </View>
           <View style={styles.proposalDetail}>
-            <Text color="earth" variant="caption">
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
               {t('taskReview.safety')}
             </Text>
-            <Text>{localize(activeAdjustment.proposal.content.safety.adultPreCheck, locale)}</Text>
-            <Text>
+            <Text brand direction={direction}>
+              {localize(activeAdjustment.proposal.content.safety.adultPreCheck, locale)}
+            </Text>
+            <Text brand color="tertiary" direction={direction} variant="label">
               {localize(activeAdjustment.proposal.content.safety.stopAndAskAdult, locale)}
             </Text>
           </View>
-          <Text color="forest" variant="label">
-            {t('childHome.awardAfterConfirmation', {
-              count: activeAdjustment.proposal.content.displayedSeedAward ?? 0,
-            })}
+          <View style={styles.proposalDetail}>
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+              {t('taskReview.help')}
+            </Text>
+            <Text brand direction={direction}>
+              {localize(activeAdjustment.proposal.content.permittedHelp, locale)}
+            </Text>
+          </View>
+          <Text brand color="deepForest" direction={direction} variant="label">
+            {activeAdjustment.proposal.content.displayedSeedAward
+              ? t('childHome.awardAfterConfirmation', {
+                  count: activeAdjustment.proposal.content.displayedSeedAward,
+                })
+              : t('taskReview.noSeedRecognition')}
           </Text>
-          <Text color="inkMuted" variant="caption">
+          <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
             {t('childHome.adjustmentNoLoss')}
           </Text>
           <View style={styles.adjustmentActions}>
-            <Button
+            <PrimaryButton
+              brand
+              direction={direction}
               onPress={() => respondToAdjustment('accept')}
               testID="pre-acceptance-accept-button"
             >
               {t('childHome.acceptAlternative')}
-            </Button>
-            <Button
+            </PrimaryButton>
+            <SecondaryButton
+              brand
+              direction={direction}
               onPress={() => respondToAdjustment('keep_current')}
               testID="pre-acceptance-keep-button"
-              variant="ghost"
             >
               {t('childHome.keepCurrent')}
-            </Button>
+            </SecondaryButton>
           </View>
         </View>
       ) : null}
 
-      {currentAssignmentChoice && currentTemplate && currentWorkMode ? (
+      {currentAssignmentChoice && currentTemplate && currentWorkMode && journey ? (
         <View style={styles.currentWork} testID="current-assignment">
-          <Text color="mangrove" variant="caption">
-            {t('childHome.currentWork')}
-          </Text>
-          <View style={[styles.choiceHeader, direction === 'rtl' ? styles.rowRtl : null]}>
-            <View style={styles.grow}>
-              <Text color="forest" variant="heading">
-                {currentTemplate.id === P0_RECYCLING_TEMPLATE.id
-                  ? t('childTask.title')
-                  : localize(currentTemplate.title, locale)}
-              </Text>
-              <Text color="inkMuted">{localize(currentTemplate.whyItMatters, locale)}</Text>
-            </View>
+          <View style={[styles.sectionHeading, { flexDirection: logicalRowDirection(direction) }]}>
+            <Text brand color="ghafEmerald" direction={direction} variant="screenTitle">
+              {t('childHome.currentWork')}
+            </Text>
+            <Text brand color="onSurfaceVariant" direction={direction} tabular variant="caption">
+              {formatter.format(child.earnedSeeds)} {t('common.seedUnit')}
+            </Text>
           </View>
-          <View style={styles.taskMeta}>
-            <Text color="earth" variant="caption">
-              {localize(currentTemplate.estimatedEffort, locale)} ·{' '}
-              {t(LANDSCAPE_LABEL_KEYS[currentTemplate.landscapeId])}
-            </Text>
-            <Text color="earth" variant="caption">
-              {localize(currentTemplate.permittedHelp, locale)}
-            </Text>
-            <Text color="forest" variant="caption">
-              {currentTemplate.displayedSeedAward
+          <ChildTodayTaskCard
+            actionDisabled={currentWorkMode === 'choose' && adjustmentBlocksChoice}
+            actionLabel={taskAction?.label}
+            actionTestID={taskAction?.testID}
+            awardLabel={
+              currentTemplate.displayedSeedAward
                 ? t('childHome.awardAfterConfirmation', {
                     count: currentTemplate.displayedSeedAward,
                   })
-                : t('origin.future')}{' '}
-              · {localize(currentTemplate.supervision, locale)}
+                : t('taskReview.noSeedRecognition')
+            }
+            categoryLabel={
+              currentCategory ? localize(currentCategory.label, locale) : t('origin.prepared')
+            }
+            direction={direction}
+            effortLabel={localize(currentTemplate.estimatedEffort, locale)}
+            helpLabel={localize(currentTemplate.permittedHelp, locale)}
+            recognitionLabel={t('taskReview.recognition')}
+            recognitionValue={t(RECOGNITION_LABEL_KEYS[currentTemplate.recognitionMode])}
+            onAction={taskAction?.onPress}
+            onSecondaryAction={
+              currentWorkMode === 'choose' && !activeAdjustment ? requestSmaller : undefined
+            }
+            secondaryActionLabel={
+              currentWorkMode === 'choose' && !activeAdjustment
+                ? t('childHome.requestSmaller')
+                : undefined
+            }
+            secondaryActionTestID="request-smaller-task-button"
+            statusLabel={t(STATUS_KEY_BY_LIFECYCLE[journey.lifecycle] ?? 'origin.prepared')}
+            supervisionLabel={t('taskReview.supervision')}
+            supervisionValue={localize(currentTemplate.supervision, locale)}
+            title={
+              currentTemplate.id === P0_RECYCLING_TEMPLATE.id
+                ? t('childTask.title')
+                : localize(currentTemplate.title, locale)
+            }
+            whyItMatters={localize(currentTemplate.whyItMatters, locale)}
+            whyLabel={t('taskReview.why')}
+          />
+          {adjustmentBlocksChoice && currentWorkMode === 'choose' ? (
+            <Text accessibilityLiveRegion="polite" brand color="tertiary" direction={direction}>
+              {smallerRequestPending
+                ? t('childHome.smallerRequested')
+                : t('childHome.adjustmentBody')}
             </Text>
-            <Text color="forest" variant="caption">
-              {t(
-                currentTemplate.recognitionMode === 'standard'
-                  ? 'taskReview.standardRecognition'
-                  : currentTemplate.recognitionMode === 'fade_first'
-                    ? 'taskReview.fadeFirstRecognition'
-                    : 'taskReview.recognitionOnly',
-              )}
-            </Text>
-          </View>
-
-          {currentWorkMode === 'choose' ? (
-            <View style={styles.choiceActions}>
-              <Button
-                disabled={adjustmentBlocksChoice}
-                onPress={() => choose(currentAssignmentChoice)}
-                testID="choose-recycling-task-button"
-              >
-                {t('childHome.choose')}
-              </Button>
-              {!activeAdjustment ? (
-                <Button
-                  onPress={requestSmaller}
-                  testID="request-smaller-task-button"
-                  variant="ghost"
-                >
-                  {t('childHome.requestSmaller')}
-                </Button>
-              ) : null}
-            </View>
-          ) : currentWorkMode === 'start' ? (
-            <Button onPress={openTask} testID="start-chosen-task-button">
-              {t('childHome.openTask')}
-            </Button>
-          ) : currentWorkMode === 'resume' ? (
-            <Button onPress={openTask} testID="resume-current-task-button">
-              {t('childHome.resumeTask')}
-            </Button>
-          ) : currentWorkMode === 'garden' ? (
-            <Button
-              onPress={() => router.replace('/garden')}
-              testID="open-recognized-garden-button"
-            >
-              {t('parentHome.openGarden')}
-            </Button>
-          ) : (
+          ) : null}
+          {currentWorkMode === 'waiting' ? (
             <View
               accessibilityLiveRegion="polite"
-              style={styles.waiting}
+              style={styles.statusNotice}
               testID="current-task-waiting"
             >
-              <Text color="forest" variant="label">
-                {currentWorkMode === 'paused'
-                  ? t('childHome.returnLater')
-                  : t('childHome.waitingForParent')}
+              <GhafIcon color={colors.ghafEmerald} name="info" size={20} />
+              <Text
+                brand
+                color="deepForest"
+                direction={direction}
+                style={styles.grow}
+                variant="caption"
+              >
+                {journey.lifecycle === 'submitted'
+                  ? t('childHome.waitingForParent')
+                  : t('childHome.waitingForRecognition')}
               </Text>
             </View>
-          )}
+          ) : null}
+          {currentWorkMode === 'paused' ? (
+            <View accessibilityLiveRegion="polite" style={styles.statusNotice}>
+              <GhafIcon color={colors.tertiary} name="info" size={20} />
+              <Text
+                brand
+                color="tertiary"
+                direction={direction}
+                style={styles.grow}
+                variant="caption"
+              >
+                {t('childHome.returnLater')}
+              </Text>
+            </View>
+          ) : null}
         </View>
       ) : null}
+
+      <ChildGardenProgressCard
+        actionLabel={t('childHome.visitGarden')}
+        canopyLabel={t('childHome.sharedCanopyDynamic', {
+          current: formatter.format(canopy.contributionLeaves),
+          goal: formatter.format(canopy.goalLeaves),
+        })}
+        current={gardenCurrent}
+        direction={direction}
+        onAction={() => router.push('/garden')}
+        progressLabel={t('childHome.personalGardenProgress')}
+        remainingLabel={t(
+          gardenRemaining > 0 ? 'childHome.gardenRemaining' : 'childHome.gardenMilestoneComplete',
+          { count: formatter.format(gardenRemaining) },
+        )}
+        symbolicLabel={t('origin.symbolic')}
+        target={gardenTarget}
+        title={t('childHome.howGardenHelps')}
+      />
 
       {previewChoices.length > 0 ? (
         <View style={styles.previewSection} testID="preview-only-choices">
           <View style={styles.previewHeading}>
-            <Text color="forest" variant="heading">
+            <Text brand color="deepForest" direction={direction} variant="screenTitle">
               {t('childHome.preparedChoices')}
             </Text>
-            <Text color="inkMuted" variant="caption">
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
               {t('childHome.previewOnlyBody')}
             </Text>
           </View>
@@ -371,17 +480,20 @@ export default function ChildHomeScreen() {
               return (
                 <View
                   key={choice.id}
-                  style={[styles.previewChoice, direction === 'rtl' ? styles.rowRtl : null]}
+                  style={[styles.previewChoice, { flexDirection: logicalRowDirection(direction) }]}
                 >
+                  <View style={styles.previewIcon}>
+                    <GhafIcon color={colors.mangroveTeal} name="leaf" size={20} />
+                  </View>
                   <View style={styles.grow}>
-                    <Text color="forest" variant="label">
+                    <Text brand color="deepForest" direction={direction} variant="label">
                       {localize(template.title, locale)}
                     </Text>
-                    <Text color="earth" variant="caption">
+                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
                       {t(LANDSCAPE_LABEL_KEYS[template.landscapeId])}
                     </Text>
                   </View>
-                  <Text color="inkMuted" variant="caption">
+                  <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
                     {t('origin.future')}
                   </Text>
                 </View>
@@ -393,116 +505,154 @@ export default function ChildHomeScreen() {
 
       {choices.length === 0 ? (
         <View style={styles.emptyNotice}>
-          <Text color="forest" variant="label">
-            {t('errors.missingTask')}
-          </Text>
-          <Text color="inkMuted" variant="caption">
-            {t('childHome.helpWelcome')}
-          </Text>
+          <GhafIcon color={colors.ghafEmerald} name="leaf" size={25} />
+          <View style={styles.grow}>
+            <Text brand color="deepForest" direction={direction} variant="label">
+              {t('errors.missingTask')}
+            </Text>
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+              {t('childHome.helpWelcome')}
+            </Text>
+          </View>
         </View>
       ) : null}
+
       {error ? (
-        <Text accessibilityLiveRegion="polite" color="danger">
+        <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
           {error}
         </Text>
       ) : null}
       {smallerRequestPending ? (
-        <View accessibilityLiveRegion="polite" style={styles.notice}>
-          <Text color="forest" variant="label">
+        <View accessibilityLiveRegion="polite" style={styles.statusNotice}>
+          <GhafIcon color={colors.mangroveTeal} name="info" size={20} />
+          <Text brand color="deepForest" direction={direction} style={styles.grow}>
             {t('childHome.smallerRequested')}
-          </Text>
-          <Text color="inkMuted" variant="caption">
-            {t('childHome.helpWelcome')}
           </Text>
         </View>
       ) : null}
       {activeAdjustment?.status === 'accepted' ? (
-        <View accessibilityLiveRegion="polite" style={styles.notice}>
-          <Text color="forest" variant="label">
-            {t('childHome.adjustmentAccepted')}
-          </Text>
-        </View>
+        <Text accessibilityLiveRegion="polite" brand color="deepForest" direction={direction}>
+          {t('childHome.adjustmentAccepted')}
+        </Text>
       ) : null}
       {activeAdjustment?.status === 'kept_current' ? (
-        <View accessibilityLiveRegion="polite" style={styles.notice}>
-          <Text color="forest" variant="label">
-            {t('childHome.adjustmentKeptCurrent')}
-          </Text>
-        </View>
+        <Text accessibilityLiveRegion="polite" brand color="deepForest" direction={direction}>
+          {t('childHome.adjustmentKeptCurrent')}
+        </Text>
       ) : null}
-      <Button onPress={() => router.replace('/role')} variant="ghost">
-        {t('navigation.switchToParent')}
-      </Button>
-    </Screen>
+    </R002aScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContent: { paddingBottom: spacing.huge },
-  progressBand: {
+  screenContent: {
+    paddingBottom: spacing.xxl,
+  },
+  welcome: {
+    gap: spacing.xs,
+  },
+  helpPanel: {
     gap: spacing.md,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.line,
-    paddingVertical: spacing.lg,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.lg,
+    ...r001Shadows.soft,
   },
-  progressItem: { gap: spacing.xxs },
-  progressRule: { width: 48, height: 1, backgroundColor: colors.gold },
-  ownGoalTrack: {
-    height: spacing.xs,
-    overflow: 'hidden',
-    borderRadius: radii.pill,
-    backgroundColor: colors.leafLight,
+  panelHeading: {
+    alignItems: 'flex-start',
+    gap: spacing.sm,
   },
-  ownGoalFill: { height: '100%', borderRadius: radii.pill, backgroundColor: colors.ghaf },
+  iconBubble: {
+    width: 48,
+    height: 48,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.primaryFixedTint,
+  },
+  grow: {
+    flex: 1,
+    minWidth: 0,
+    gap: spacing.xxs,
+  },
   adjustmentPanel: {
     gap: spacing.md,
-    borderStartWidth: 1,
-    borderStartColor: colors.mangrove,
-    backgroundColor: colors.waterLight,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.mangroveTeal,
+    backgroundColor: colors.mangroveTealTint,
     padding: spacing.lg,
+    ...r001Shadows.soft,
   },
-  adjustmentHeader: { gap: spacing.xs },
-  proposalDetail: { gap: spacing.xxs },
-  adjustmentActions: { gap: spacing.xs },
+  proposalDetail: {
+    gap: spacing.xxs,
+    borderStartWidth: 2,
+    borderStartColor: colors.mangroveTeal,
+    paddingStart: spacing.sm,
+  },
+  adjustmentActions: {
+    gap: spacing.xs,
+  },
   currentWork: {
     gap: spacing.md,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.mangrove,
-    backgroundColor: colors.waterLight,
-    padding: spacing.lg,
   },
-  choiceHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
-  rowRtl: { flexDirection: 'row-reverse' },
-  grow: { flex: 1, minWidth: 0, gap: spacing.xs },
-  taskMeta: { gap: spacing.xxs },
-  choiceActions: { gap: spacing.xs },
-  waiting: { borderTopWidth: 1, borderColor: colors.water, paddingTop: spacing.md },
-  previewSection: { gap: spacing.md },
-  previewHeading: { gap: spacing.xxs },
-  previewList: { gap: spacing.sm },
-  previewChoice: {
-    flexDirection: 'row',
+  sectionHeading: {
     alignItems: 'center',
-    gap: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
-    paddingVertical: spacing.md,
+    justifyContent: 'space-between',
+    gap: spacing.sm,
   },
-  emptyNotice: {
+  statusNotice: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: spacing.xs,
-    borderStartWidth: 1,
-    borderStartColor: colors.gold,
-    backgroundColor: colors.goldGlow,
+    borderRadius: r001Radii.md,
+    backgroundColor: colors.primaryFixedTint,
+    padding: spacing.sm,
+  },
+  previewSection: {
+    gap: spacing.md,
+  },
+  previewHeading: {
+    gap: spacing.xxs,
+  },
+  previewList: {
+    overflow: 'hidden',
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.surfaceContainerLowest,
+  },
+  previewChoice: {
+    minHeight: 72,
+    alignItems: 'center',
+    gap: spacing.sm,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.surfaceContainerHigh,
     padding: spacing.md,
   },
-  notice: {
-    gap: spacing.xs,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.water,
-    backgroundColor: colors.waterLight,
-    paddingVertical: spacing.md,
+  previewIcon: {
+    width: 40,
+    height: 40,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.mangroveTealTint,
+  },
+  emptyNotice: {
+    minHeight: 72,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.sm,
+    borderRadius: r001Radii.xl,
+    backgroundColor: colors.primaryFixedTint,
+    padding: spacing.lg,
   },
 });

@@ -9,7 +9,7 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import Svg, { Circle, Defs, Pattern, Rect } from 'react-native-svg';
 
 import { colors, layout, spacing } from '@/design/tokens';
@@ -19,6 +19,7 @@ interface R002aScreenProps extends PropsWithChildren {
   footer?: ReactNode;
   header: ReactNode;
   keyboardAware?: boolean;
+  safeAreaEdges?: readonly Edge[];
   scrollProps?: Omit<ScrollViewProps, 'contentContainerStyle'>;
   testID?: string;
 }
@@ -29,6 +30,7 @@ export function R002aScreen({
   footer,
   header,
   keyboardAware = false,
+  safeAreaEdges = ['top', 'left', 'right'],
   scrollProps,
   testID,
 }: R002aScreenProps) {
@@ -40,7 +42,7 @@ export function R002aScreen({
   return (
     <SafeAreaView
       {...webPhysicalDirection}
-      edges={['top', 'left', 'right']}
+      edges={safeAreaEdges}
       style={[styles.safeArea, nativePhysicalDirection]}
       testID={testID}
     >

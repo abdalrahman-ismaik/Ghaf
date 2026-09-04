@@ -142,9 +142,9 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(childHomeSource.indexOf('testID="current-assignment"')).toBeLessThan(
       childHomeSource.indexOf('testID="preview-only-choices"'),
     );
-    expect(childHomeSource).toContain('testID="resume-current-task-button"');
+    expect(childHomeSource).toContain("testID: 'resume-current-task-button'");
     expect(childHomeSource).toContain('testID="current-task-waiting"');
-    expect(childHomeSource).toContain('testID="open-recognized-garden-button"');
+    expect(childHomeSource).toContain("testID: 'open-recognized-garden-button'");
     expect(childHomeSource).not.toContain(
       "const chosen = executable && journey?.lifecycle === 'chosen';",
     );
@@ -443,11 +443,18 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(childTaskSource).toContain('accessibilityState={{ expanded: showOptionalMedia }}');
     expect(childTaskSource).toContain('testID="toggle-optional-media-button"');
     expect(childTaskSource).toContain('showOptionalMedia ? (');
-    expect(childTaskSource).toContain('accessibilityState={{ checked: acknowledged }}');
-    expect(childTaskSource.indexOf('testID="child-definition-of-done"')).toBeLessThan(
-      childTaskSource.indexOf('testID="child-task-steps"'),
+    expect(childTaskSource).toContain('<ChildTaskChecklist');
+    expect(childTaskSource).toContain('completedStepIds={completedStepIds}');
+    expect(childTaskSource).toContain('definitionAcknowledged,');
+    expect(childTaskSource).toContain('testID="child-active-definition-of-done"');
+    expect(childTaskSource).toContain("acknowledgeLabel={t('childTask.acknowledge')}");
+    expect(childTaskSource.indexOf('<ChildTaskPlanCard')).toBeLessThan(
+      childTaskSource.indexOf('testID="toggle-definition-details-button"'),
     );
-    expect(childTaskSource.indexOf('testID="child-task-steps"')).toBeLessThan(
+    expect(childTaskSource.indexOf('<ChildTaskChecklist')).toBeLessThan(
+      childTaskSource.indexOf('testID="child-active-definition-of-done"'),
+    );
+    expect(childTaskSource.indexOf('testID="child-active-definition-of-done"')).toBeLessThan(
       childTaskSource.indexOf('testID="toggle-optional-media-button"'),
     );
     expect(childTaskSource).toContain("t('childTask.stepFour')");
