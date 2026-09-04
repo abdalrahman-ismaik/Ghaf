@@ -267,6 +267,12 @@ export interface ProjectAccessSessionInput {
   readonly now: string;
 }
 
+export interface ParentSessionTermination {
+  readonly sessionId: string;
+  readonly terminated: true;
+  readonly origin: 'synthetic';
+}
+
 export interface CapabilityAuthorizationInput extends ProjectAccessSessionInput {
   readonly capability: AccessCapability;
 }

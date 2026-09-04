@@ -24,6 +24,7 @@ import type {
   PairingRequestInput,
   PairingRevocationInput,
   ParentAccessSession,
+  ParentSessionTermination,
   PermissionUpdateInput,
   ProjectAccessSessionInput,
   ReauthenticationInput,
@@ -274,6 +275,7 @@ export interface SyntheticVoiceService {
 
 export interface SyntheticAccessService {
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
+  terminateParentSession(input: ProjectAccessSessionInput): ServiceResult<ParentSessionTermination>;
   signInChild(input: SyntheticChildSignIn): ServiceResult<ChildAccessSession>;
   projectSession(input: ProjectAccessSessionInput): ServiceResult<AccessView>;
   authorizeCapability(input: CapabilityAuthorizationInput): ServiceResult<CapabilityAuthorization>;

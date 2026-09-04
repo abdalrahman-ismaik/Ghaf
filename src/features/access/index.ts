@@ -15,6 +15,7 @@ import type {
   PairingRequestInput,
   PairingRevocationInput,
   ParentAccessSession,
+  ParentSessionTermination,
   PermissionUpdateInput,
   ProjectAccessSessionInput,
   ReauthenticationInput,
@@ -110,15 +111,32 @@ function sameSessionIdentity(left: AccessSession, right: AccessSession): boolean
     left.sessionKind !== right.sessionKind ||
     left.id !== right.id ||
     left.deviceId !== right.deviceId ||
-    left.householdId !== right.householdId
+    left.householdId !== right.householdId ||
+    left.issuedAt !== right.issuedAt ||
+    left.expiresAt !== right.expiresAt ||
+    left.origin !== right.origin ||
+    left.capabilityTruth !== right.capabilityTruth
   ) {
     return false;
   }
   if (left.sessionKind === 'parent' && right.sessionKind === 'parent') {
-    return left.principal.parentId === right.principal.parentId;
+    return (
+      left.principal.role === right.principal.role &&
+      left.principal.parentId === right.principal.parentId &&
+      left.principal.householdId === right.principal.householdId &&
+      left.principal.fixtureId === right.principal.fixtureId &&
+      left.principal.origin === right.principal.origin
+    );
   }
   if (left.sessionKind === 'child' && right.sessionKind === 'child') {
-    return left.principal.childId === right.principal.childId;
+    return (
+      left.principal.role === right.principal.role &&
+      left.principal.childId === right.principal.childId &&
+      left.principal.householdId === right.principal.householdId &&
+      left.principal.avatarId === right.principal.avatarId &&
+      left.principal.credentialFixtureId === right.principal.credentialFixtureId &&
+      left.principal.origin === right.principal.origin
+    );
   }
   return false;
 }
@@ -287,6 +305,52 @@ export class DeterministicSyntheticAccessService {
       sessionId: resolved.data.id,
       capability: input.capability,
       authorized: true,
+      origin: 'synthetic',
+    });
+  }
+
+  terminateParentSession(
+    input: ProjectAccessSessionInput,
+  ): ServiceResult<ParentSessionTermination> {
+    if (parsedTime(input.now) === null) {
+      return failure('INVALID_INPUT', 'A valid deterministic time is required');
+    }
+    const stored = this.sessions.get(input.session.id);
+    if (
+      !stored ||
+      stored.sessionKind !== 'parent' ||
+      input.session.sessionKind !== 'parent' ||
+      !sameSessionIdentity(stored, input.session) ||
+      stored.issuedAt !== input.session.issuedAt ||
+      stored.expiresAt !== input.session.expiresAt ||
+      stored.origin !== 'synthetic' ||
+      input.session.origin !== 'synthetic' ||
+      stored.capabilityTruth !== CAPABILITY_TRUTH ||
+      input.session.capabilityTruth !== CAPABILITY_TRUTH ||
+      stored.principal.role !== 'parent' ||
+      input.session.principal.role !== 'parent' ||
+      stored.principal.fixtureId !== SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId ||
+      input.session.principal.fixtureId !== stored.principal.fixtureId ||
+      stored.principal.origin !== 'synthetic' ||
+      input.session.principal.origin !== 'synthetic'
+    ) {
+      return failure('INVALID_TRANSITION', 'The synthetic Parent session cannot be terminated');
+    }
+
+    for (const [proofId, proof] of this.proofs) {
+      if (
+        proof.parentSessionId === stored.id &&
+        proof.parentId === stored.principal.parentId &&
+        proof.householdId === stored.householdId &&
+        proof.deviceId === stored.deviceId
+      ) {
+        this.proofs.delete(proofId);
+      }
+    }
+    this.sessions.delete(stored.id);
+    return success({
+      sessionId: stored.id,
+      terminated: true,
       origin: 'synthetic',
     });
   }
@@ -685,3 +749,5 @@ export class DeterministicSyntheticAccessService {
 export function createDeterministicSyntheticAccessService(): DeterministicSyntheticAccessService {
   return new DeterministicSyntheticAccessService();
 }
+
+export * from './parentOnboarding';

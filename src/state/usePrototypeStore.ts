@@ -7,6 +7,13 @@ import {
   type ChildVoiceView,
 } from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
+import {
+  createParentOnboardingController,
+  type ParentOnboardingCompletionReceipt,
+  type ParentOnboardingDraftPatch,
+  type ParentOnboardingHandoff,
+  type ParentOnboardingView,
+} from '../features/access/parentOnboarding';
 import { P0_EXECUTABLE_CHOICE, P0_SAFE_EQUIVALENT_TEMPLATE } from '../features/tasks/demoContent';
 import {
   matchesCanonicalP0TaskContent,
@@ -53,8 +60,11 @@ type ActiveChildAssignmentJourney = PrototypeJourney & {
 };
 
 const childVoiceController = createChildVoiceController(serviceRegistry);
+const parentOnboardingController = createParentOnboardingController(serviceRegistry.access);
+const R001_ONBOARDING_TIME = '2026-09-04T10:00:00.000Z';
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly parentOnboarding: ParentOnboardingView;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
   readonly ageAdaptedCoachResult: AgeAdaptedCoachResult | null;
@@ -67,6 +77,19 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly childTaskDraft: ChildTaskDraftState;
   readonly taskDraftRevision: number;
 
+  readonly requestParentVerification: (
+    input: Parameters<typeof parentOnboardingController.requestVerification>[0],
+  ) => ServiceResult<ParentOnboardingView>;
+  readonly verifyParentCode: (code: unknown) => Promise<ServiceResult<ParentOnboardingView>>;
+  readonly resendParentVerification: (input: {
+    readonly networkAvailable?: boolean;
+  }) => ServiceResult<ParentOnboardingView>;
+  readonly cancelParentVerification: () => ServiceResult<ParentOnboardingView>;
+  readonly updateParentOnboardingDraft: (
+    patch: ParentOnboardingDraftPatch,
+  ) => ServiceResult<ParentOnboardingView>;
+  readonly completeParentOnboarding: () => ServiceResult<ParentOnboardingCompletionReceipt>;
+  readonly authorizeParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
   readonly setLocale: (value: unknown) => void;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
@@ -162,6 +185,12 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => ServiceResult<RoutineProgressState>;
   readonly reverseRoutinePhaseDecision: (taskId: string) => ServiceResult<RoutineProgressState>;
   readonly consumeCelebration: () => void;
+}
+
+export function selectCanEnterParentExperience(
+  state: Pick<PrototypeStoreState, 'parentOnboarding'>,
+): boolean {
+  return state.parentOnboarding.canEnterParentExperience;
 }
 
 function failure(
@@ -357,6 +386,7 @@ function validateGuideSuggestion(
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...serviceRegistry.prototypeSession.getInitialSession(),
+  parentOnboarding: parentOnboardingController.getView(),
   parentGuideSuggestion: null,
   childCoachResult: null,
   ageAdaptedCoachResult: null,
@@ -369,6 +399,57 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     serviceRegistry.prototypeSession.getInitialSession().routineProgressByTask ?? {},
   childTaskDraft: createEmptyChildTaskDraft(),
   taskDraftRevision: 0,
+
+  requestParentVerification: (input) => {
+    const result = parentOnboardingController.requestVerification(input);
+    set({ parentOnboarding: parentOnboardingController.getView() });
+    return result;
+  },
+
+  verifyParentCode: async (code) => {
+    const pending = parentOnboardingController.verifyCode(code);
+    set({ parentOnboarding: parentOnboardingController.getView() });
+    const result = await pending;
+    set({ parentOnboarding: parentOnboardingController.getView() });
+    return result;
+  },
+
+  resendParentVerification: (input) => {
+    const result = parentOnboardingController.resendVerification(input);
+    set({ parentOnboarding: parentOnboardingController.getView() });
+    return result;
+  },
+
+  cancelParentVerification: () => {
+    const result = parentOnboardingController.cancelVerification();
+    set({ parentOnboarding: parentOnboardingController.getView() });
+    return result;
+  },
+
+  updateParentOnboardingDraft: (patch) => {
+    const result = parentOnboardingController.updateDraft(patch);
+    set({ parentOnboarding: parentOnboardingController.getView() });
+    return result;
+  },
+
+  completeParentOnboarding: () => {
+    const result = parentOnboardingController.complete(R001_ONBOARDING_TIME);
+    if (result.ok) {
+      const locale = result.data.appLanguage;
+      set({
+        parentOnboarding: parentOnboardingController.getView(),
+        locale,
+        direction: getLocaleDirection(locale),
+        role: 'parent',
+      });
+    } else {
+      set({ parentOnboarding: parentOnboardingController.getView() });
+    }
+    return result;
+  },
+
+  authorizeParentExperience: () =>
+    parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME),
 
   setLocale: (value) => {
     const locale = coerceLocale(value);
@@ -395,11 +476,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (get().role !== 'parent') {
       return failure('INVALID_TRANSITION', 'Switch to the Parent demo role before reset');
     }
+    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+    if (!onboardingReset.ok) return onboardingReset;
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     set((state) => ({
       ...reset.session,
+      parentOnboarding: onboardingReset.data,
       parentGuideSuggestion: null,
       childCoachResult: null,
       ageAdaptedCoachResult: null,
