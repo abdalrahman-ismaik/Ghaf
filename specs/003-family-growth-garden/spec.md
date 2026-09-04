@@ -4,25 +4,107 @@
 
 **Created**: 2026-08-26
 
-**Status**: Revision 3 product baseline approved for specification. R001 Batch 1 is the only
-released visual/runtime slice. Post-R001 Revision 2 and every Revision 3 Growth screen remain
-blocked pending a complete user-approved Stitch release. Native-device and human-review acceptance
-remain evidence-dependent.
+**Status**: R001 Welcome and first-time Parent onboarding are frozen regression baselines. R002a
+compatibility presentation is approved for implementation over verified head `76fa682`. R002b
+product expansion remains decision-blocked. Native-device and human-review acceptance remain
+evidence-dependent.
 
 **Input**: Create an Arabic-first Parent–Child task, recognition, bounded AI-coaching, and UAE
 living-garden prototype that preserves the Feature 002 historical record while replacing its
 judge-facing product journey with one deterministic, safe, offline-capable ten-route vertical
 slice.
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
-## Revision 3 Authority Amendment — 2026-09-04
+## R002a Compatibility Authority Amendment — 2026-09-05
 
-This amendment is canonical when an older section below conflicts with it. The remote head
-`a6ca21a6` remains the behavioral and regression baseline; the six local-only commits remain
-unapplied provenance and must be reconstructed only in approved slices.
+This amendment supersedes the earlier release-wide R002 gate and governs implementation when an
+older section below conflicts with it. Verified commit `76fa682`—`docs(r001): record onboarding
+validation evidence`—is the implementation baseline. The six conflicting local-only commits remain
+unapplied and must not be cherry-picked.
 
-### Approved product baseline
+### Frozen and authorized boundaries
+
+- R001 Welcome and Parent onboarding remain unchanged except for a separately justified regression
+  fix. Their success handoff must continue to replace history into `/parent`.
+- R002a authorizes presentation changes only. Existing routes, selectors, actions, services, task
+  lifecycle, reward transactions, access capabilities, reset, privacy, and profile isolation remain
+  behavioral authority.
+- The implementation order is Parent Home; Parent Tasks and Task Builder; Child Today and task
+  execution; Parent review; the Child support/resubmission loop; and the compatible existing Garden.
+- Raw Stitch PNGs are composition candidates and raw HTML/CSS/JS is measurement evidence only.
+  Neither is runtime code, data, or an automatic source of product authority.
+
+### R002a behavior-preservation oracle
+
+- The executable task identifier remains `task_recycling_p0_v1`. The R002 design label
+  `task.recycling_sort.v1` is a documentation alias only and MUST NOT enter stored state or trigger a
+  migration.
+- Schema-3 48→60 remains the current presentation and regression oracle. R002a MUST display current
+  selector values and MUST NOT hard-code 108, 120, 180, `4/5`, or any other exported counter.
+- Assignment, choice, start, Child submission, help, retry, and confirmation planning award zero.
+  Only the existing separate Parent recognition continuation commits the fixed award.
+- Parent approval remains atomic and idempotent and preserves all existing applicable consequences:
+  specific praise, committed Seeds, mapped plant growth, canopy, Challenge Leaf/private League, and
+  private Family Reward. A screenshot omission does not authorize dropping a consequence.
+- Capability-scoped Parent/Child access, reauthentication, guards, selected-Child isolation,
+  deterministic synthetic voice, `expo-audio`, Parent-authorized reset, and privacy filtering remain
+  unchanged.
+
+### Parent Home first-visible result
+
+`/parent` MUST be refreshed first using `ghaf_parent_home` as its primary candidate composition. The
+screen must retain every currently reachable navigation route, task action, voice action, reset
+control, access/reauthentication boundary, selected-Child behavior, and privacy guard even when the
+candidate image omits it.
+
+Private League and Family Reward services exist in the domain baseline, but the current
+`PrototypeSession` and Parent dashboard selectors do not expose them; their service maps initialize
+empty, and the onboarding handoff does not establish the `ParentAccessSession` they require. R002a
+therefore MUST NOT fabricate a League or Family Reward card or counter, and MUST NOT relabel
+`/circle` as private League. The unavailable screenshot fragments are supporting references only.
+This bounded presentation omission does not weaken either preserved domain contract.
+
+### R002a independently demonstrable stories
+
+#### User Story 12 — Parent recognizes the refreshed home (Priority: P1)
+
+As a Parent completing the frozen onboarding journey, I arrive at a professional Arabic-first Ghaf
+Home that matches the R002 visual language while preserving every live task, garden, access, voice,
+reset, and Child-selection action.
+
+**Independent acceptance**: Complete R001 onboarding, enter `/parent`, exercise every pre-existing
+action, switch Arabic/English, and verify that every displayed value comes from a live selector. No
+League/Reward placeholder or relabeled `/circle` entry appears.
+
+#### User Story 13 — Family completes the existing task loop in the R002 shell (Priority: P1)
+
+As a Parent and Child sharing the prototype, we can create and approve the canonical task, choose and
+complete its steps, request and receive support, submit with zero reward, review, and recognize it
+once without changing the underlying lifecycle or reward rules.
+
+**Independent acceptance**: From reset, complete the Parent Builder → Child Today/task → Parent
+review/support → resubmission/recognition sequence and verify `task_recycling_p0_v1`, zero reward at
+submission, one complete recognition transaction, and a neutral duplicate approval.
+
+#### User Story 14 — Child sees compatible Garden growth (Priority: P1)
+
+As the active Child, I see the existing Garden in the R002 visual language and can understand the
+confirmed action that caused growth without seeing a cumulative Next Stage, Impact Path, badge, or
+other blocked R002b mechanic.
+
+**Independent acceptance**: Compare Garden before and after one recognized task, verify live
+Schema-3 values, bilingual meaning, static reduced-motion equivalence, and no R002b navigation.
+
+## Earlier Revision 3 Product-Expansion Record — 2026-09-04
+
+This earlier record remains product-planning evidence. The R002a amendment above is canonical for
+current implementation; any conflicting migration or Growth item below belongs to blocked R002b.
+The six local-only commits remain unapplied provenance.
+
+### R002b proposal retained for decision
 
 - Preserve the private invite-only five-Leaf League: exactly five age-appropriate Challenge Leaves,
   20 points per confirmed Leaf, score cap 100, shared ties, no speed tiebreak, full help/adaptation
@@ -44,9 +126,9 @@ unapplied provenance and must be reconstructed only in approved slices.
 - Learning and explicit activity completion are idempotent and create zero Seeds and zero garden
   growth. Growth never creates a second currency or feeds League rank.
 
-### R001 Batch 1 release
+### Frozen R001 Batch 1 release
 
-Only the following may be implemented before the R002 gate exits:
+R001 originally released only the following, which now form a frozen regression boundary:
 
 1. canonical design tokens, Alexandria display roles, Readex Pro UI/data roles, RTL primitives,
    shared access controls, and the navigation/modal shell required by this batch;
@@ -57,7 +139,7 @@ Only the following may be implemented before the R002 gate exits:
 6. `/access/parent/add-first-child`;
 7. `/access/parent/review-create`; and
 8. `/access/parent/family-created-success`, then replace history into the preserved `/parent`
-   destination without redesigning it.
+   destination. R002a now separately authorizes the `/parent` presentation refresh.
 
 The R001 PNG files are canonical composition references. Exported HTML/CSS/JS is measurement and
 structure evidence only and must not enter runtime. English, focus, disabled, loading, validation,
@@ -70,12 +152,12 @@ remain available for regression, and the six `/access/parent/**` files above are
 duplicate `/` or remove a remote route. Older exact-ten requirements and success criteria below are
 therefore remote-baseline evidence, not the post-R001 inventory target.
 
-### Preserved remote evidence versus future target
+### Preserved behavior versus blocked expansion
 
-The ten-route journey, 48→60 personal-Seed fixture, and `/circle` presentation documented below
-remain verified historical behavior and regression evidence. They do not override the Revision 3
-target or approve a new screen. Existing remote access, League, Family Reward, voice, privacy, and
-reset tests must continue to pass while R001 is reconstructed over that baseline.
+The ten-route journey, Schema-3 48→60 personal-Seed fixture, and `/circle` presentation documented
+below remain the R002a behavioral and regression oracle. They do not approve a Growth screen or
+migration. Existing access, League, Family Reward, voice, privacy, and reset tests must continue to
+pass while the authorized presentation is reconstructed over `76fa682`.
 
 ## Feature Context and Historical Boundary
 
@@ -107,9 +189,9 @@ service denied. Prepared output MUST never be described as live.
 
 ## Preserved Remote Ten-Route P0 Scope
 
-This section records the implemented remote scope for regression and compatibility. The Revision 3
-authority amendment above defines the current product target, and R001 Batch 1 defines the only
-currently released visual/runtime slice.
+This section records the implemented remote scope for regression and compatibility. The R002a
+authority amendment above defines the current implementation boundary; R001 is frozen, and R002a is
+the only additional authorized visual/runtime scope.
 
 P0 contains exactly:
 
@@ -1062,10 +1144,10 @@ the historical domain-only result recorded by FR-118.
   captions, playback rate, replay count, and transcript while updating visible copy, direction, and
   accessibility language from the canonical bilingual resources and typed fixtures.
 - **FR-124**: The existing single typography system MUST define complete `display`, `title`,
-  `heading`, `body`, `label`, and `caption` role tokens for Arabic and English. Both scripts MUST use
-  the established platform system-family policy; Arabic tracking MUST be zero, Arabic body leading
-  MUST be at least 1.55 times its size, and `Text` plus `Input` MUST resolve metrics from explicit
-  language or the active locale.
+  `heading`, `body`, `label`, and `caption` role tokens for Arabic and English. It MUST preserve the
+  released Alexandria display roles and Readex Pro body/control/data roles; Arabic tracking MUST be
+  zero, Arabic body leading MUST be at least 1.55 times its size, and `Text` plus `Input` MUST resolve
+  metrics from explicit language or the active locale.
 - **FR-125**: Parent reset MUST revoke or clear the presentation grants and restore the exact
   synthetic voice view to idle, transcript `null`, captions `true`, playback rate `1`, replay count
   `0`, active indicator `false`, and sent time `null` without changing the PrototypeSession schema.
@@ -1077,6 +1159,64 @@ the historical domain-only result recorded by FR-118.
   audio recording, speech recognition, network, biometric, or model-provider API. Physical Android
   font-scale, TalkBack, playback, permission, and touch evidence remains `NOT RUN` until observed on
   a named build and device.
+
+#### R002a Compatibility Presentation
+
+- **FR-128**: R001 Welcome and first-time Parent onboarding MUST remain frozen regression baselines;
+  R002a MUST preserve their prerequisites, Back/dismiss behavior, draft state, idempotent creation,
+  and history-replacing handoff into `/parent`.
+- **FR-129**: R002a MUST be delivered in this order: Parent Home; Parent Tasks/Builder; Child Today
+  and task execution; Parent review; Child support/resubmission; and compatible Garden. A blocked
+  surface MUST NOT block an independent earlier or later slice.
+- **FR-130**: `/parent` MUST use `ghaf_parent_home` as its primary composition candidate while
+  preserving all currently reachable navigation, tasks, selected-Child state, voice, reset, access,
+  reauthentication, privacy, and profile-isolation capabilities.
+- **FR-131**: Parent Home MUST render only values exposed by a current canonical selector. Because
+  Parent dashboard state currently exposes neither private League nor Family Reward data, it MUST
+  omit those candidate fragments, MUST NOT invent counters such as `4/5`, `108/120`, or `120/180`,
+  and MUST NOT relabel `/circle` as private League.
+- **FR-132**: Every R002a route and route state MUST reuse the existing actions, selectors, and task
+  lifecycle. Presentation components MUST NOT calculate an award, rebuild state transitions, or
+  manufacture access authority.
+- **FR-133**: `task_recycling_p0_v1` MUST remain the stored and executable task identifier.
+  `task.recycling_sort.v1` MAY appear only in non-runtime design documentation as an alias.
+- **FR-134**: The Schema-3 48→60 oracle remains authoritative in R002a. All Seed, garden, canopy,
+  circle, League, and Family Reward values MUST be live data; exported screenshot values MUST NOT be
+  copied into presentation logic.
+- **FR-135**: Assignment, choice, start, help, retry, Child submission, confirmation planning, and
+  praise presentation MUST award zero. R002a MUST preserve the distinct Parent recognition action
+  and its atomic, idempotent transaction.
+- **FR-136**: A valid recognition MUST preserve every consequence produced by the existing domain
+  transaction, including applicable praise, Seeds, mapped plant growth, canopy, Challenge Leaf and
+  private League state, and private Family Reward state. A selected visual reference MAY omit a
+  presentation fragment but MUST NOT suppress or recalculate its domain consequence.
+- **FR-137**: The support loop MUST preserve accepted steps, Parent note, adult-help context, fixed
+  displayed award, completion, resubmission, and return to Parent review without loss, duplication,
+  shame, or an unapproved business outcome.
+- **FR-138**: R002a MUST retain capability-scoped Parent/Child access, route guards,
+  reauthentication, per-profile state, deterministic synthetic voice, `expo-audio`, and
+  Parent-authorized reset. A visual omission MUST NOT weaken any boundary.
+- **FR-139**: Every R002a user string MUST live in the central Arabic/English resources. Arabic is
+  canonical; English preserves meaning and supports LTR wrapping. Placeholders including `EN:S`
+  MUST NOT appear in live UI, and newly drafted privacy or safety wording MUST be marked for human
+  copy review.
+- **FR-140**: Every R002a surface MUST define loading, empty, validation-error, recoverable-error,
+  submitting, success, interrupted-recovery, and reduced-motion behavior without inventing a new
+  product outcome. It MUST remain usable at widths 320, 360, 390, and 430, one wider viewport, and
+  200% text with safe areas, scrolling, keyboard avoidance, no horizontal overflow, 48×48dp minimum
+  targets, 56dp primary Child actions where specified, non-color-only status, semantic controls, and
+  fixed-action clearance.
+- **FR-141**: In Arabic, Help MUST be physically left, avatar physically right, a root title
+  mathematically centered, Child navigation physically left-to-right as
+  `الدوري | حديقتي | اليوم`, nested Back physically right, forward arrow physically left, and task
+  checkboxes physically right. English MUST provide the equivalent LTR reading and interaction order.
+- **FR-142**: R002a MAY use only repository-owned/provenanced assets, approved icons, code-native
+  vectors, and recorded-provenance exports. It MUST NOT import raw HTML, CSS, JavaScript, WebViews,
+  remote URLs, unknown fonts, rasterized interface text, or Windows `Zone.Identifier` metadata.
+- **FR-143**: R002a MUST NOT expose the cumulative 108→120→180 migration, Impact Path, Badge Gallery,
+  Badge Detail, Learning Story, accessible Learning Alternative, Parent Progress and Achievements,
+  revised combined RevealBundle, Shared Growth changes, Parent Shared Garden participation controls,
+  or cumulative Garden Next Stage. Each remains R002b until separately approved.
 
 ### Key Entities
 
@@ -1205,6 +1345,28 @@ the historical domain-only result recorded by FR-118.
   onboarding plus the Child's prepared voice states in Arabic RTL and English LTR with no dynamic
   service request. Android 200% font scale and TalkBack stay `NOT RUN` unless a named native device
   becomes available.
+- **SC-029**: The complete R001 Welcome and Parent onboarding regression suite passes unchanged, and
+  its success action reaches the refreshed `/parent` with no stale onboarding history.
+- **SC-030**: Parent Home is compared with `ghaf_parent_home` at 390×844, every pre-existing live
+  action remains reachable, every displayed counter traces to a selector, and inspection finds zero
+  fabricated League/Family Reward values or `/circle`-as-League labels.
+- **SC-031**: Focused tests prove that the R002a task presentation stores only
+  `task_recycling_p0_v1`, awards zero through Child submission and praise presentation, applies the
+  complete existing recognition consequences once, treats five duplicate attempts as neutral
+  no-ops, and loses or duplicates nothing across retry, support, interruption, and resubmission.
+- **SC-032**: Each selected R002a route/state has Arabic and English coverage with no empty key or
+  `EN:S` placeholder; privacy/safety copy drafted in this release remains visibly flagged for human
+  review until that review is recorded.
+- **SC-033**: At 320, 360, 390, and 430 widths plus one wider viewport, both locales complete every
+  R002a slice with no horizontal overflow or obscured fixed action; 200% text, keyboard, safe area,
+  scroll, reduced motion, semantic state, and minimum target checks meet FR-140 and FR-141.
+- **SC-034**: Source and route inspection finds no raw Stitch web import, WebView, remote asset URL,
+  unknown font, `Zone.Identifier`, hard-coded screenshot progression, duplicate state route, or
+  exposed R002b navigation/mechanic.
+- **SC-035**: After each slice, relevant behavior, route, RTL, accessibility, and visual checks plus
+  typecheck, lint, format, tests, Expo configuration, production export/build, and
+  `git diff --check` receive an explicit `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` result. Android
+  passes only from a named usable build/device.
 
 ## Dependencies and Assumptions
 
@@ -1230,9 +1392,9 @@ the historical domain-only result recorded by FR-118.
   self-reported activity, not an environmental-impact conversion.
 - Parents/guardians determine task appropriateness, local recycling acceptance, heat/traffic,
   routes, food safety, cultural phrasing, and when adult help is required.
-- Feature 003 implementation may proceed after the complete Spec Kit artifacts and cross-artifact
-  quality analysis pass; no additional product-choice approval is required unless a genuine
-  unresolved conflict or scope expansion appears.
+- R002a implementation may proceed under the amendment above. Any behavior, reward, privacy,
+  identity, migration, or canonical product-meaning change remains a product decision and MUST NOT
+  be inferred from a design export or conflict resolution.
 - Physical Android, Arabic/RTL, reduced-motion, media, Back/keyboard, timing, comprehension,
   cultural, faith, safeguarding, and accessibility evidence starts fresh for Feature 003.
 
@@ -1261,8 +1423,9 @@ build, device, reviewer, secure boundary, or other required dependency is unavai
 
 ## Out of Scope
 
-- Any authored product route beyond the preserved ten plus the six approved R001 access routes, or
-  a second application, until a later bounded Stitch release explicitly changes the inventory.
+- Any authored product route beyond the preserved ten plus the six frozen R001 access routes, or a
+  second application. R002a uses existing routes and route states; R002b can change the inventory
+  only after separate product and design approval.
 - Production accounts, authentication, guardian-consent systems, age assurance, multi-family
   tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment;
   deterministic synthetic access fixtures do not remove this boundary.

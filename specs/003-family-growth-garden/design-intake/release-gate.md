@@ -1,68 +1,73 @@
-# Design-Intake Release Gate — R001 Batch 1
+# Design-Intake Release Gate — R001 Frozen / R002a Authorized
 
-**Recorded:** 2026-09-04
-**Release decision:** `PARTIALLY RELEASED`
-**Source provenance:** original commit
-`f63e39fc702bb1797791f7543c6316e3b06f3ba9`; its 17-file R001 subtree is preserved byte-for-byte in
-this integration branch. See [the artifact manifest](r001-artifact-manifest.md).
+**Recorded:** 2026-09-05
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+**Verified baseline:** `76fa682` — `docs(r001): record onboarding validation evidence`
+
+**R001 provenance:** original commit `f63e39fc702bb1797791f7543c6316e3b06f3ba9`;
+see [the artifact manifest](r001-artifact-manifest.md).
+
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 ## Authority
 
-The user approved only Ghaf R001 native foundations, Welcome, and first-time Parent onboarding. The
-PNG files in that release are canonical composition references. Stitch HTML/CSS/JS is non-runtime
-measurement and structure evidence only.
+R001 native foundations, Welcome, and first-time Parent onboarding are frozen regression baselines.
+R002a is a compatibility-first native presentation release over existing behavior. Raw Stitch PNGs
+are composition candidates; HTML/CSS/JS is measurement evidence only and never runtime code. The six
+conflicting local-only commits remain unapplied, and the raw R002 directory must not be modified or
+bulk-staged. `final`, `fixed`, `refined`, and `corrected` record lineage rather than approval;
+`Zone.Identifier` files are metadata noise.
 
-This narrow release does not approve R002, a later Parent/Child screen, a Growth Journey screen, or
-a replacement for remote access, League, Family Reward, voice, privacy, profile-isolation, or reset
-behavior.
+## Authorized R002a boundary
 
-## Released boundary
+Implement and validate in this order:
 
-| Area          | Released work                                                                                                                                                                               |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation    | Canonical R001 tokens; Alexandria display and Readex Pro UI/data roles; true RTL/LTR primitives; shared native controls; responsive safe-area, scroll, keyboard, and navigation/modal shell |
-| Welcome       | `/` with language, Parent entry, honest unavailable Child entry, and synthetic-prototype disclosure                                                                                         |
-| Parent access | `/access/parent/sign-in` and `/access/parent/verification` using deterministic local fixtures; no SMS, email, biometric, or production-auth claim                                           |
-| Parent setup  | `/access/parent/family-basics`, `/access/parent/add-first-child`, and `/access/parent/review-create` with draft preservation and validation                                                 |
-| Success       | Native transparent modal `/access/parent/family-created-success`; Back/dismiss restores Review; primary action replaces onboarding history with preserved `/parent`                         |
-| Behavior      | Focused, disabled, loading, validation-error, offline, success, Back, reset, and idempotent local-create states within this route family                                                    |
-| Evidence      | Fresh focused tests, full repository checks, web proxy, visual comparison, and physical-device results reported only for what was actually observed                                         |
+1. Parent Home using `ghaf_parent_home` as the primary candidate;
+2. Parent Tasks/Builder, including choose, edit, review, created, and added states;
+3. Child Today/task execution from ready through 0/2, 1/2, 2/2, confirmation, and waiting;
+4. Parent pending review, support states, and approved success;
+5. Child support, accepted steps, Parent note, adult help, completion, and resubmission; and
+6. the existing Garden using `ghaf_child_growth_garden_final_corrected` as a visual candidate.
 
-`/parent` is an integration destination only. This release does not redesign Parent Home or expose
-an ordinary role toggle.
+Each selected surface requires a complete mobile pair, focused `screen-spec.md`, live bilingual
+copy, correct physical RTL, accessible responsive behavior, conservative missing states, and
+recorded asset provenance. R001 routes and their history, draft, Back, access-label, and idempotency
+behavior must not regress.
 
-## Required preservation
+## Required behavior preservation
 
-- Adapt the existing capability-scoped access service/store; never replace it with screen-local
-  role authority.
-- Keep Child data profile-scoped and Parent-only controls inaccessible to Child sessions.
-- Preserve the private five-Leaf League, private Family Reward, deterministic synthetic voice,
-  `expo-audio`, Parent-authorized reset, and `task_recycling_p0_v1`.
-- Keep the screen-local family/Child onboarding draft separate from the canonical Salem/Alya demo
-  fixture until an approved migration joins them.
-- Use local assets and code-native SVG. Do not import a generated web project, DOM, CSS/Tailwind,
-  Material Symbols font, remote fonts/images, or generated interaction JavaScript.
+- Keep `task_recycling_p0_v1`; `task.recycling_sort.v1` is a visual-document alias only.
+- Keep Schema-3 48→60 and current selector values; never hard-code screenshot progression.
+- Child submission and praise presentation award zero. The existing separate Parent recognition
+  transaction remains atomic/idempotent and retains every applicable praise, Seed, plant, canopy,
+  Challenge Leaf/private League, and private Family Reward consequence.
+- Reuse existing actions/selectors; presentation code must not calculate rewards or rebuild the
+  lifecycle.
+- Preserve capability-scoped access, reauthentication, guards, profile isolation, privacy,
+  deterministic synthetic voice, `expo-audio`, and Parent-authorized reset.
 
-## Evidence gaps
+## Parent Home constraint
 
-| Evidence                                                       | Status                                             | Consequence                                                                             |
-| -------------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Seven Arabic PNG/HTML pairs                                    | `PRESERVED`; source tree and SHA-256 checks passed | May guide this batch only                                                               |
-| `screen-spec.md`                                               | `MISSING`                                          | Native interaction contract above is conservative; no fabricated Stitch state approval  |
-| Matched English LTR frames                                     | `MISSING`                                          | English functionality/parity required; visual match cannot be claimed                   |
-| Focus/loading/error/offline/keyboard/font-scale frames         | `MISSING`                                          | Implement semantic variants consistently; keep visual evidence `NOT RUN` until compared |
-| Physical Android RTL/LTR, Back, keyboard, TalkBack, 200% scale | `NOT RUN` for this integration branch              | Source/web evidence cannot pass these gates                                             |
-| R002 asset provenance, variants, Growth frames, and approval   | `BLOCKED`                                          | No post-R001 runtime work                                                               |
+The `/parent` refresh must retain every currently reachable live capability. Private League and
+Family Reward exist as protected domain services, but are not wired into `PrototypeSession`/Parent
+dashboard selectors; their maps initialize empty, and onboarding lacks the required
+`ParentAccessSession`. Slice 1 must not invent `4/5`, `108/120`, `120/180`, or any other counter and
+must not relabel `/circle` as private League. Omit those candidate fragments until an approved live
+adapter exists; this does not weaken either domain contract.
 
-## Exit rules
+## R002b remains blocked
 
-R001 may be marked implemented only after the original release bytes are preserved, focused and full
-checks pass, all seven routes are compared with their PNGs, and evidence status is truthful.
+R002a does not authorize the cumulative 108→120→180 migration, Impact Path, Badge Gallery/Detail,
+Learning Story or accessible alternative, Parent Progress and Achievements, revised combined
+RevealBundle, Shared Growth changes, Parent Shared Garden participation controls, or cumulative
+Garden Next Stage. None may enter release navigation or be inferred from an export.
 
-The full design gate remains blocked until R002 has selected mobile references, Arabic/English
-parity, mandatory screen specifications, material states, asset provenance/permissions, product
-conflict dispositions, and explicit user/integration-owner approval.
+## Evidence and exit rules
 
-This document does not itself authorize R002 or Growth implementation.
+After each slice, record focused behavior tests, typecheck, lint, formatting, full tests, Expo
+configuration, production export/build, route/RTL/accessibility assertions, 390×844 visual
+comparison, responsive/font-scale checks, and `git diff --check` as `PASSED`, `FAILED`, `BLOCKED`, or
+`NOT RUN`. Android may pass only on a named usable build/device. R002a authorization does not itself
+pass implementation or acceptance; R002b remains blocked until a separate explicit decision.

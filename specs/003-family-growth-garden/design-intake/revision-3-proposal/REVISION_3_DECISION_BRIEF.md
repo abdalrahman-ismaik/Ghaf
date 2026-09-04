@@ -2,7 +2,9 @@
 
 > **STATUS: PROPOSED — NOT APPROVED — NOT IMPLEMENTATION AUTHORITY**
 >
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 **Prepared:** 2026-09-04
 
@@ -133,6 +135,7 @@ These are recommendations, not approvals. All corresponding register entries rem
 
 ## Active gate
 
-This proposal approves nothing. The gate remains exactly:
+This historical proposal approves no product-expansion decision. Its blanket gate was superseded;
+the remaining product-expansion gate is:
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**

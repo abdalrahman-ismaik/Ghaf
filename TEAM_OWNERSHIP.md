@@ -6,6 +6,41 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-05 R002a Compatibility Implementation Window
+
+**Integration owner**: `/root`
+
+**Worktree and branch**:
+`/home/smyk/projects/Ghaf-r002-reconciliation-20260904` on
+`integration/r3-r002a-implementation-20260904`, based on verified R001 evidence head `76fa682` from
+`origin/integration/r3-r001-implementation-20260904`.
+
+**Gates**:
+
+- **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+- **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+
+**Purpose**: Refresh the R002 design inventory, freeze the verified behavioral baseline, and apply
+the approved Soft Geometric presentation to compatibility-safe Parent, task, review, Child, and
+Garden surfaces. R001 Welcome and Parent onboarding remain frozen regression baselines. The six
+divergent historical commits remain unapplied, and the original worktree's untracked R002 exports
+remain read-only evidence.
+
+| Exclusive writer                                                          | Exact reserved boundary                                                                                                                                                                                                                                               | Handoff condition                                                                                                                                                                           |
+| ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/root/r002a_orchestrator` and delegated documentation writers            | `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `DESIGN.md`, `DEMO_RUNBOOK.md`, `specs/003-family-growth-garden/{spec.md,contracts/acceptance-contract.md,design-intake/release-gate.md}`, and newly tracked R002a intake metadata/specifications only                      | Record the split gates and compatibility authority without changing product semantics or importing raw exports; return files for integration review                                         |
+| `/root/r002a_orchestrator/r002_inventory` — read-only intake audit        | Original untracked `docs/design/stitch/releases/ghaf-r002/**` only                                                                                                                                                                                                    | Return objective counts, dimensions, hashes, titles, viewport metadata, and candidate classifications; make no file changes                                                                 |
+| `/root/r002a_orchestrator/parent_architecture` — read-only behavior audit | `app/parent/**`, relevant components, state, services, and tests                                                                                                                                                                                                      | Identify every existing Parent Home capability and selector without changing files                                                                                                          |
+| `/root` — specification integration and commits                           | `AGENTS.md`, `README.md`, `CODEX_IMPLEMENTATION_PROMPT.md`, `docs/README.md`, Growth-only prompt/content records, `TEAM_OWNERSHIP.md`, Feature 003 `plan.md`, `tasks.md`, readiness checklists, historical gate notices, exact staging, validation, and local commits | Keep R002a and R002b gates independent, serialize shared files, validate each slice, and never push without separate authorization                                                          |
+| Future R002a characterization writer                                      | New `tests/r002a-behavior-characterization.test.ts` only                                                                                                                                                                                                              | Freeze task ID, zero-reward submission, approval consequences/idempotency, retry, League, canopy, Family Reward, access, voice, reset, and profile-isolation behavior before visual changes |
+| Future Parent Home UI writer                                              | `app/parent/index.tsx`, new `src/components/r002a/parent/**`, and new `tests/r002a-parent-home.test.ts` only                                                                                                                                                          | Recompose `/parent` from live selectors, preserve every reachable behavior, and omit unsupported screenshot-only values rather than hard-code them                                          |
+
+Shared runtime files such as `app/_layout.tsx`, `src/i18n/resources.ts`, and
+`src/design/tokens.ts` remain reserved to `/root`. No worker may edit R001 routes, dependencies,
+fixtures, services, models, state, raw exports, or another worker's boundary. R002b Impact Path,
+badges, learning, Parent Progress, Shared Growth changes, combined RevealBundle changes, and
+cumulative progression remain blocked.
+
 ## 2026-09-04 Revision 3 and R001 Documentation Reconciliation Window
 
 **Integration owner**: `/root`
@@ -21,9 +56,9 @@ runtime work. The remote access, private five-Leaf League, Family Reward, synthe
 privacy/profile isolation, and Parent-authorized reset implementation remains behavioral evidence
 that must be preserved rather than overwritten by the six divergent local commits.
 
-**Gate**: **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**. This window
-does not approve an R002 export or release a post-R001 route, component, asset, dependency, test, or
-runtime change.
+**Historical gate, superseded on 2026-09-05**: this window blocked all R002 runtime work and did not
+approve an export, post-R001 route, component, asset, dependency, test, or runtime change. The
+current independent gates are recorded in the R002a window above.
 
 | Exclusive writer                                                                                                 | Exact reserved boundary                                                                                                                                                                                                                                                                                                                                                                                         | Handoff condition                                                                                                                                                                                                                                                                               |
 | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -154,9 +189,9 @@ documentation map, and updated only T143–T149. The selected ten screenshots un
 untracked. This documentation boundary is released to `/root` for the evidence commit after final
 Markdown, link, staged-path, and whitespace review.
 
-No R002 or Growth runtime work occurred. The original worktree and its untracked R002 intake remain
-unchanged, and the exact gate remains **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN —
-IMPLEMENTATION BLOCKED**.
+No R002 or Growth runtime work occurred during that historical window. The original worktree and
+its untracked R002 intake remained unchanged. Its blanket gate was later superseded by the
+independent R002a compatibility and R002b product-expansion gates recorded above.
 
 ## Decision Record
 

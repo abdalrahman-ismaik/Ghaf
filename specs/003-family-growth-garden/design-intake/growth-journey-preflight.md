@@ -4,7 +4,7 @@
 **Product contract:** approved planning baseline
 **Visual/runtime status:** `BLOCKED`
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 ## Settled product authority
 

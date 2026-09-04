@@ -11,25 +11,26 @@ living garden.
 
 ## Current status
 
-Feature 003 Revision 3 is the active product direction. Remote head `a6ca21a6` remains the preserved
-behavioral baseline for access, private five-Leaf League, private Family Reward, synthetic voice,
-privacy/profile isolation, Parent reset, and the earlier ten-route journey. The six divergent local
-commits remain unapplied provenance.
+Feature 003 Revision 3 is the active product direction. Verified remote head `76fa682` is the R002a
+implementation baseline for the preserved behavior and completed R001 onboarding. The six
+divergent local commits remain unapplied provenance.
 
-R001 Batch 1 is the only approved design/runtime slice: native foundations, Welcome, and first-time
-Parent onboarding. Its success state hands off to the preserved `/parent` destination without
-redesigning it.
+R001 Batch 1 remains a frozen regression baseline. R002a releases a compatibility-first visual
+refresh for selected Parent, task, review, Child, and existing Garden surfaces without changing
+canonical task, reward, access, privacy, voice, reset, or progression behavior.
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
-No post-R001 Revision 2 screen or Revision 3 Growth screen may be implemented until its complete
-mobile Stitch references, states, specifications, provenance, and explicit release are recorded.
+R002b Impact Path, badges, learning, Parent Progress, Shared Growth changes, combined RevealBundle
+changes, and cumulative progression remain blocked pending separate product and design approval.
 
 | Area                 | Current evidence                                                                                                                                  |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | Revision 3 planning baseline is active; R001 is the only released design/runtime batch                                                            |
+| Product              | Revision 3 is active; R001 is frozen and selected compatibility-safe R002a presentation is authorized                                             |
 | Automated checks     | Remote ten-route/access/League/Reward/voice checks are preserved behavioral evidence; fresh R001 and Growth checks are not inherited              |
-| Web preview          | Remote Arabic RTL and English LTR journeys passed at a 390×844 browser proxy; this does not validate R001 reconstruction or R002/Growth screens   |
+| Web preview          | Remote and R001 evidence retains its recorded scope; each R002a slice requires fresh Arabic RTL, English LTR, responsive, and visual validation   |
 | Android              | Authoritative R001/Revision 3 physical-device interaction evidence remains **NOT RUN** or **BLOCKED** until recorded against a named build/device |
 | Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers           |
 | Production readiness | **No** — data, assistants, media, access, League, rewards, and growth remain intentionally local/synthetic/prepared or design-blocked             |
@@ -155,8 +156,8 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
 - [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
   requirements and acceptance criteria.
-- [R001 release gate](specs/003-family-growth-garden/design-intake/release-gate.md) — exact approved
-  Parent-onboarding boundary and post-R001 hold.
+- [Feature 003 release gates](specs/003-family-growth-garden/design-intake/release-gate.md) — frozen
+  R001 boundary, authorized R002a compatibility scope, and blocked R002b expansion.
 - [Revision 3 reconciliation package](specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
   — non-canonical provenance and unresolved R002 design evidence.
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.

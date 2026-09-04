@@ -122,13 +122,17 @@ components:
 
 # Ghaf Design System
 
-**Authority:** Feature 003 Revision 3 design contract with a bounded R001 release
+**Authority:** Feature 003 Revision 3 design contract with frozen R001 and bounded R002a releases
 
-**Status:** R001 foundations, Welcome, and first-time Parent onboarding are released. The existing
-remote UI remains regression evidence. Every post-R001 Revision 2 and Revision 3 Growth screen is
-blocked pending an approved Stitch batch.
+**Verified implementation baseline:** `76fa682` — `docs(r001): record onboarding validation evidence`
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+
+**Status:** R001 foundations, Welcome, and first-time Parent onboarding are frozen regression
+baselines. R002a authorizes the compatible native presentation sequence beginning with `/parent`.
+R002b Growth Journey, migration, and product-expansion surfaces remain blocked.
 
 **Creative direction:** `DESIGN_DIRECTION.md`
 
@@ -138,25 +142,40 @@ blocked pending an approved Stitch batch.
 
 - R001 PNGs are canonical composition references for `/` and the six Parent-onboarding steps only.
   Exported HTML/CSS/JS is read-only measurement/structure evidence and never runtime code.
+- Selected R002a PNGs are candidate composition references for the existing Parent Home, Parent
+  Tasks/Builder, Child Today/task, Parent review/support, Child follow-up, and Garden surfaces. The
+  tracked R002a index and per-surface specifications record the exact selection and required
+  corrections; filenames such as `final` or `corrected` do not establish authority by themselves.
+- Implement R002a in this order: Parent Home, Parent Tasks/Builder, Child Today/task execution,
+  Parent review, Child support/resubmission, then the compatible existing Garden. R001 remains
+  unchanged while `/parent` becomes the first visible Soft Geometric result after onboarding.
 - Alexandria owns R001 display/headline roles. Readex Pro owns R001 body, control, task, dialogue,
-  and data roles. Use local assets, generous Arabic leading, zero artificial Arabic tracking,
-  tabular numerals, and deterministic fallback. Later typography/geometry changes require their
-  own measured Stitch release.
+  and data roles. The same roles extend to selected R002a surfaces using the approved Ghaf palette,
+  Soft Geometric radii, local assets, generous Arabic leading, zero artificial Arabic tracking,
+  tabular numerals, and deterministic fallback. R002b typography or geometry changes still require
+  their own measured release.
 - R001 uses responsive safe-area layouts and natural scrolling. A 390×844 frame is a comparison
   viewport, not a fixed canvas. Only explicitly specified header/action/sheet regions may remain
   fixed while central content scrolls and avoids the keyboard.
 - All interactive controls retain at least 48dp targets and visible focus, pressed, disabled, busy,
   validation-error, offline, and success meaning. The success moment is one native modal sheet with
   focus restoration and reduced-motion parity.
-- Parent/Child role authority comes from the access/session boundary, never visual tab state. R001
-  may hand off to the preserved `/parent` route but may not redesign it.
-- The remote design system below documents the preserved ten-route baseline. Values that conflict
-  with R001 are migrated only inside the released component boundary; they do not release later UI.
+- Parent/Child role authority comes from the access/session boundary, never visual tab state. R002a
+  may restyle an existing route but may not weaken its guards, actions, privacy, reset, voice, or
+  profile isolation.
+- The remote behavior at `76fa682` remains authoritative. R002a displays live selector values and
+  never copies screenshot counters, renames `task_recycling_p0_v1`, rebuilds task transitions in a
+  view, or drops an existing approval consequence for visual similarity.
+- Raw R002 HTML/CSS/JS, remote imagery, rasterized interface text, and `Zone.Identifier` files stay
+  outside runtime and commits. Unknown-provenance illustrations are replaced with approved local or
+  code-native equivalents.
 
-The private five-Leaf League, separate Family Reward, 120–180 Impact Path, 16-badge registry,
-equal-credit learning, Parent selected-Child progress, and one superset result are product rules.
-Their screen composition, hierarchy, illustration direction, radii, and motion remain unresolved
-until the appropriate Stitch frames are supplied and approved.
+The private five-Leaf League and separate Family Reward remain preserved behavior. Their candidate
+Parent Home counters are not renderable until a live authorized dashboard selector exists; R002a
+must omit those unsupported numbers rather than fabricate them or relabel `/circle`. The
+108→120→180 migration, Impact Path, badges, learning, Parent Progress, revised RevealBundle, Shared
+Growth changes, shared-garden controls, and cumulative Garden Next Stage are R002b and remain
+blocked.
 
 ## Design Promise
 

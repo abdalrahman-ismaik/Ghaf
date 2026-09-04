@@ -1,26 +1,31 @@
 # Ghaf Feature 003 Demo Runbook
 
-## Revision 3 / R001 Evidence Boundary — 2026-09-04
+## Revision 3 / R002a Evidence Boundary — 2026-09-05
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
-- Remote head `a6ca21a6` is the preserved behavioral/test baseline. Its ten-route, 48→60 Seed, and
-  `/circle` journey below remains regression evidence, not the Revision 3 target or screen approval.
-- R001 Batch 1 alone is released: native foundations plus Welcome, Parent sign-in, verification,
-  family basics, first Child, review/create, and native success sheet. Fresh R001 evidence is
-  recorded in the [R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
-- Post-R001 access/navigation, League, Family Reward, voice, Growth Journey, and screen design remain
-  `BLOCKED` or `NOT RUN` even where remote domain tests pass.
-- Revision 3's future confirmation oracle is lifetime Seeds 108→120; Mangrove independently
-  48/60→60/60; canopy 19/25→20/25; Salem 4/5 and 80→5/5 and 100; private Family Reward
-  108/120→120/120; then Impact Path 120/180. It must appear in one recoverable result with praise
-  first and the private Family Reward last. This oracle is not runnable until the migration and
-  complete Stitch release are approved and implemented.
-- The six local-only commits remain unapplied. R002 exports, missing Growth frames, English parity,
-  state specifications, asset provenance, and named content/accessibility reviews remain evidence
-  gaps.
+- Verified head `76fa682` on `integration/r3-r001-implementation-20260904` is the behavioral and
+  regression baseline. The six conflicting local-only commits remain unapplied.
+- R001 native foundations plus Welcome and first-time Parent onboarding are frozen. Fresh evidence
+  remains in the [R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
+- R002a authorizes a presentation-only Soft Geometric refresh of existing routes in this order:
+  Parent Home; Parent Tasks/Builder; Child Today/task execution; Parent review; Child
+  support/resubmission; and the compatible existing Garden. Every slice requires fresh evidence.
+- The R002a behavior oracle remains `task_recycling_p0_v1`, zero reward through Child submission,
+  the existing atomic/idempotent Parent approval, Schema-3 48→60 Garden behavior, and all current
+  canopy, private League, Challenge Leaf, private Family Reward, access, voice, reset, privacy, and
+  profile-isolation consequences.
+- Exported counters are not runtime data. The Parent Home must omit League/Family Reward counters
+  until an authorized selector exists, and it must not relabel cooperative `/circle` as the private
+  League.
+- R002b remains blocked: 108→120→180 migration, Impact Path, badges, learning, Parent Progress,
+  revised RevealBundle, Shared Growth changes, Parent shared-garden controls, and cumulative Garden
+  Next Stage. Their screenshots and documents are evidence, not runnable authority.
 
-Do not use the historical journey below to pass an R001 or Revision 3 visual, native, or human gate.
+Do not use the historical journey below to pass an R002a visual, native, or human gate. Record each
+new result as `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` with exact evidence.
 
 ## R001 Batch 1 Fresh Evidence — 2026-09-05
 

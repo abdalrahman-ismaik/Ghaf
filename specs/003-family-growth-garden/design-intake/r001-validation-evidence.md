@@ -5,7 +5,8 @@ EVIDENCE REMAINS OPEN
 
 **Evidence date:** 2026-09-05
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **Historical R001 evidence:** the blanket R002 gate active during this validation was superseded
+> on 2026-09-05. These results remain R001-only evidence.
 
 ## Authority and scope
 
@@ -175,6 +176,8 @@ pass any native or human gate.
   remains untracked and outside this integration worktree.
 - No R002 or Growth screen was implemented, imported, staged, or released.
 
-The implementation gate remains exactly:
+The gate recorded during this validation was later superseded. Current independent gates are:
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**

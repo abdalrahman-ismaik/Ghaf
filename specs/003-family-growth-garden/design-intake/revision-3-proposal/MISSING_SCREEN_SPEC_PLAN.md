@@ -2,7 +2,7 @@
 
 **STATUS: PROPOSED — NOT APPROVED — NOT IMPLEMENTATION AUTHORITY**
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 ## Purpose and authority boundary
 
@@ -212,4 +212,4 @@ The gate cannot change until the approval record answers, at minimum:
 
 Until all applicable evidence is supplied and explicitly approved:
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**

@@ -1,15 +1,15 @@
 # Acceptance Contract: Family Growth Garden
 
-## AC-00 — Revision 3 Design-Intake Authority
+## AC-00 — Split R002 Design-Intake Authority
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
-R001 Batch 1 is the only released visual/runtime slice. Acceptance currently permits native
-foundations and these routes only: `/`, `/access/parent/sign-in`,
+R001 Batch 1 remains a frozen regression baseline: `/`, `/access/parent/sign-in`,
 `/access/parent/verification`, `/access/parent/family-basics`,
 `/access/parent/add-first-child`, `/access/parent/review-create`, and modal
-`/access/parent/family-created-success`, followed by history replacement into the preserved
-`/parent` destination.
+`/access/parent/family-created-success`, followed by history replacement into `/parent`.
 
 R001 acceptance requires deterministic local access labels, route prerequisites, draft preservation,
 idempotent local creation, Back/dismiss restoration, Arabic/English parity, 48dp targets, responsive
@@ -17,19 +17,27 @@ safe-area/scroll/keyboard behavior, state variants, reset/profile isolation, and
 remote League, Family Reward, voice, privacy, or Parent-authorized reset behavior. PNGs govern
 composition; exported web code never enters runtime.
 
-The Revision 3 product oracle preserves private five-Leaf League, `task_recycling_p0_v1`, separate
-progress authorities, capability-scoped access, `expo-audio` synthetic voice, and one result ordered
-praise → optional self-reported activity → Seeds → garden → canopy/Leaf/League → Path/badges/
-safe-help → private Family Reward. It targets lifetime Seeds 108→120, Mangrove 48/60→60/60,
-Family Reward 108/120→120/120, one 120–180 Impact Path, exactly 16 badges, and zero-Seed equal-credit
-Mangrove learning. None of those Growth screens can pass until its approved Stitch evidence exists.
+R002a may now refresh Parent Home, Parent Tasks/Builder, Child Today/task execution, Parent review,
+the Child support loop, and the existing Garden. Its oracle is verified head `76fa682`,
+`task_recycling_p0_v1`, Schema-3 48→60, zero reward through Child submission and praise
+presentation, and the existing separate atomic/idempotent recognition transaction with all its
+applicable consequences. It preserves private five-Leaf League, Challenge Leaves, private Family
+Reward, capability-scoped access, deterministic `expo-audio` voice, reset, guards, privacy, and
+profile isolation.
 
-The remote acceptance oracles below remain regression evidence for the behavioral baseline. Where
-their ten-route, 48→60 personal-Seed, or `/circle` assumptions conflict with this amendment, they are
-historical compatibility tests and not the future target.
+`task.recycling_sort.v1` is accepted only as a non-runtime design alias. No R002a screen may store
+it, migrate to it, calculate rewards, hard-code screenshot progression, or omit an existing domain
+consequence.
 
-**Status**: PROPOSED — executable Feature 003 validation contract. No check is passed by this
-document alone.
+The cumulative 108→120→180 migration, Impact Path, Badge Gallery/Detail, Learning surfaces, Parent
+Progress, revised combined RevealBundle, Shared Growth changes, Parent participation controls, and
+cumulative Garden Next Stage remain R002b and cannot pass or appear in release navigation.
+
+The remote acceptance oracles below remain current R002a behavior and regression evidence. They are
+not authority for a blocked R002b expansion.
+
+**Status**: ACTIVE for the authorized R002a compatibility scope. No check is passed by this document
+alone.
 
 **Primary acceptance surface**: named physical Android build, Arabic RTL first and English LTR
 second.
@@ -60,6 +68,23 @@ dependency-blocked exercise as `NOT RUN` or pre-label an unattempted exercise `B
 
 A source inspection, unit test, web preview, or Feature 002 result MUST NOT pass a physical-device,
 native RTL, media, Back, accessibility, timing, comprehension, or named-human-review criterion.
+
+## AC-00A — R002a Slice Acceptance
+
+| Order | Surface                        | Presentation acceptance                                                                 | Behavior acceptance                                                                                 |
+| ----: | ------------------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+|     1 | Parent Home `/parent`          | `ghaf_parent_home` is the primary candidate; Soft Geometric, bilingual, responsive      | Every existing live action remains; no fabricated League/Reward counter and `/circle` is not League |
+|     2 | Parent Tasks and Builder       | Selected complete mobile pairs cover choose, edit, review, created, and added states    | Existing task actions/payloads remain authoritative; stored ID is `task_recycling_p0_v1`            |
+|     3 | Child Today and task execution | Ready, 0/2, 1/2, 2/2, confirmation, and waiting are states rather than duplicate routes | Existing selectors/transitions are reused; submission awards zero                                   |
+|     4 | Parent review                  | Pending, support, submitting, and approved-success states are coherent and accessible   | Approval calls the existing transaction and calculates no reward in the screen                      |
+|     5 | Child support loop             | Accepted steps, Parent note, adult help, completion, and resubmission remain visible    | Fixed award and progress survive; return to existing Parent review loses and duplicates nothing     |
+|     6 | Compatible existing Garden     | `ghaf_child_growth_garden_final_corrected` is a visual candidate using live values      | No cumulative Next Stage, Impact Path, badge, or other R002b mechanic                               |
+
+Every slice requires centralized Arabic/English copy; loading, empty, validation, recoverable-error,
+submitting, success, interruption recovery, and reduced-motion states; 320/360/390/430 and one wider
+viewport; 200% text, safe area, keyboard, scroll, no horizontal overflow, semantic state, 48dp
+targets, and fixed-action clearance. Arabic physical placement follows the specification. Android
+passes only through a named build/device observation.
 
 ## Preserved Remote Authored Route and Guard Contract
 
@@ -128,10 +153,9 @@ Historical Feature 002 specifications, documentation, screenshots, and evidence 
 
 ## Preserved Remote Schema-3 Reset Oracle
 
-The 48-Seed personal reset below is the verified remote compatibility oracle. It is not the Revision
-3 target lifetime-Seed reset. Mangrove independently remains 48/60→60/60 in both stories; Phase 22
-must introduce lifetime Seeds 108→120 only through the approved product contract plus a validated,
-versioned runtime migration.
+The 48-Seed personal reset below is the verified remote and current R002a compatibility oracle.
+Mangrove remains 48/60→60/60. Any cumulative 108→120→180 change belongs to R002b and requires a
+separately approved, validated, versioned runtime migration.
 
 The Parent-only **Reset synthetic demo** action requires confirmation and MUST restore all values in
 one action without a remote dependency.
@@ -171,9 +195,9 @@ editing counters.
 
 ## Preserved Remote Schema-3 Lifecycle and No-Early-Reward Oracle
 
-The 48-Seed value in this section is historical remote behavior. Its no-early-reward and
-idempotency invariants remain current; its personal-Seed fixture is superseded only after the
-versioned 108→120 Revision 3 migration is implemented and validated.
+The 48-Seed value in this section is the current R002a behavior oracle. Its no-early-reward and
+idempotency invariants remain current; it may be superseded only after a separately approved R002b
+migration is implemented and validated.
 
 The valid main lifecycle is:
 
@@ -419,10 +443,9 @@ exercise. Each native subcheck remains `NOT RUN` until it is attempted.
 
 ## Release Boundary
 
-This contract is ready for implementation when it is consistent with the approved Feature 003
-specification, plan, data model, service contracts, and tasks. Feature 003 is ready for integration
-only after automated checks and deterministic route/reset/idempotency evidence pass from a named
-worktree state.
+R002a is authorized only within AC-00A and is ready for integration after automated checks and
+deterministic route/reset/idempotency evidence pass from a named worktree state. R002b remains
+blocked regardless of R002a results.
 
 Feature 003 MUST NOT be called **Android-accepted** or **demo-accepted** until the physical bilingual
 journey, offline fallback, predictive/native Back, WCAG contrast, reset/media/accessibility checks,

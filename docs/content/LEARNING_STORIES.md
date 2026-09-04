@@ -3,7 +3,7 @@
 **Product status:** approved planning authority
 **Design/runtime/content-review status:** `BLOCKED` / `NOT RUN`
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 ## P0 package
 

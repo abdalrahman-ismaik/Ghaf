@@ -2,18 +2,34 @@
 
 ## Capability Truth
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
-The remote head is the behavioral baseline for tested synthetic access, private five-Leaf League,
-private Family Reward, synthetic voice, privacy/profile isolation, Parent reset, and the earlier
-ten-route journey. R001 releases only native foundations, Welcome, and first-time Parent onboarding.
-No later Revision 2 or Revision 3 Growth screen is implemented or visually approved.
+Verified head `76fa682` is the behavioral baseline for tested synthetic access, private five-Leaf
+League, private Family Reward, synthetic voice, privacy/profile isolation, Parent reset, and the
+earlier ten-route journey. R001 native foundations, Welcome, and first-time Parent onboarding are
+frozen regression baselines. R002a now authorizes a presentation-only refresh of Parent Home,
+Parent Tasks/Builder, Child Today/task execution, Parent review, the Child support loop, and the
+existing Garden. Authorization does not mean those surfaces have passed implementation, Android,
+accessibility, visual, or human-review acceptance.
 
-Revision 3 product planning includes one private 120–180 Seed-derived Impact Path, exactly 16
+R002b product planning includes one private 120–180 Seed-derived Impact Path, exactly 16
 deterministic permanent badges, one finite Mangrove learning package with an equal-credit accessible
 route, one Parent read-only selected-Child progress view, and one recoverable combined result. These
-are not current runtime capabilities. The six local-only commits remain unapplied and R002 remains
-candidate design evidence.
+are not current runtime capabilities. The cumulative 108→120→180 migration, those Growth surfaces,
+Shared Growth changes, Parent participation controls, cumulative Next Stage, and a revised combined
+RevealBundle remain blocked. The six local-only commits remain unapplied candidate provenance; R002
+exports are candidate design evidence, not proof of implementation or approval.
+
+R002a preserves `task_recycling_p0_v1`, the Schema-3 48→60 behavior, zero reward at Child
+submission, and the complete atomic/idempotent Parent-approval consequences. The design label
+`task.recycling_sort.v1` is an alias only. Screens must use live selectors and actions; they must not
+hard-code screenshot counters. In particular, private League and Family Reward exist as protected
+domain services but are not currently wired into the Parent dashboard session, and their maps start
+empty. Parent Home therefore must not invent `4/5`, `108/120`, or `120/180`, and it must not relabel
+the cooperative `/circle` route as private League. This bounded visual omission does not weaken the
+preserved League or Family Reward behavior.
 
 The prototype does not claim production authentication/security, real pairing or biometrics, real
 Child voice capture/analysis, payment/custody, environmental measurement, rights clearance, named
@@ -33,14 +49,14 @@ earlier Feature 002 food-rescue evidence and do not pass current native or human
 
 ## P0 Capability Matrix
 
-| Classification                 | Feature 003 treatment                                                                                                                                                                                                                                           |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Target real interaction        | Ten-screen navigation; Arabic/English direction; synthetic role/Child selection; task composition; Parent approval; Child steps with optional reflection/evidence; Parent confirmation/retry; deterministic Seeds; privacy-filtered garden/circle update; reset |
-| Prepared and synthetic         | Two Child profiles, one household, cousin-circle aggregates, task catalog, image/voice fixtures, assistant conversations, Parent observations, cultural phrase options                                                                                          |
-| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                                            |
-| Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`                                |
-| Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                                                     |
-| Future production work         | Accounts, consent, age assurance, privacy controls, real media, persistence, real family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release                                                            |
+| Classification                 | Feature 003 treatment                                                                                                                                                                                                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Target real interaction        | Preserved routes and behavior plus the authorized R002a presentation sequence; Arabic/English direction; task creation/execution/support; Parent approval/retry; deterministic Seeds; privacy-filtered garden/circle update; reset |
+| Prepared and synthetic         | Two Child profiles, one household, cousin-circle aggregates, task catalog, image/voice fixtures, assistant conversations, Parent observations, cultural phrase options                                                             |
+| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                               |
+| Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`   |
+| Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                        |
+| Future production work         | Accounts, consent, age assurance, privacy controls, real media, persistence, real family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release                               |
 
 The required judge journey must complete with every external request denied. Prepared or simulated
 AI is labeled as such and never presented as live inference.
@@ -230,9 +246,10 @@ The post-P0 redesign code currently proves rules and state transitions only:
 - Arabic-English code-switch understanding and Emirati/Gulf conversational output remain
   unimplemented; any later phrase or voice library requires named human review.
 
-No new domain service or presentation changes the existing P0 route count, reward counters,
-native/human evidence, or public-demo claim. The voice and typography frontend has its own later
-specification and verification phase; web evidence cannot upgrade Android or named-human results.
+R002a presentation does not itself change route authority, counters, native/human evidence, or the
+public-demo claim. It must preserve capability-scoped access, deterministic voice and `expo-audio`,
+Parent-authorized reset, route guards, and profile isolation. Web evidence cannot upgrade Android or
+named-human results, and an R002b domain or navigation addition requires separate approval.
 
 ## Public Demo Disclosure
 

@@ -2,7 +2,9 @@
 
 > **STATUS: PROPOSED — NOT APPROVED — NOT IMPLEMENTATION AUTHORITY**
 >
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 This is a reconstruction plan, not a cherry-pick plan. It does not apply any local commit or
 authorize any slice. Remote head `a6ca21a607068d0a74e0e4e6394e502c1fb0b9e2` is the behavioral

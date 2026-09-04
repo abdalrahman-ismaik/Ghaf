@@ -3,14 +3,59 @@
 **Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
 [spec.md](./spec.md)
 
-**Status**: Remote behavior is preserved. R001 Batch 1 is released for native foundations, Welcome,
-and first-time Parent onboarding only. All post-R001 UI remains design-blocked.
+**Status**: Verified remote head `76fa682` preserves the behavioral baseline and completed R001
+onboarding. R001 is frozen. Selected compatibility-safe R002a presentation is authorized; R002b
+product expansion remains blocked.
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 **Input**: Feature specification from `specs/003-family-growth-garden/spec.md`
 
 ## Summary
+
+### R002a compatibility implementation addendum — 2026-09-05
+
+Implement R002a on `integration/r3-r002a-implementation-20260904`, created directly from verified
+remote evidence head `76fa682`. Do not use the divergent original branch and do not cherry-pick its
+six historical commits. The remote implementation remains behavioral authority; the R002 exports
+provide presentation evidence only.
+
+R002a preserves `task_recycling_p0_v1`, schema-3 values and 48→60 approval behavior, zero reward at
+Child submission, atomic idempotent Parent approval, plant/canopy/Challenge Leaf/private League and
+private Family Reward consequences, capability-scoped access, deterministic voice with
+`expo-audio`, Parent-authorized reset, route guards, and profile isolation. Screens consume existing
+actions and selectors and never calculate rewards. Screenshot-only `108`, `120`, and `180` values
+must not enter runtime.
+
+The implementation sequence and independent commit boundaries are:
+
+1. refresh the objective R002 inventory, select compatibility candidates, write state/copy/asset
+   metadata and bounded screen specifications, and record the independent gates;
+2. freeze all preserved behavior with an integration-level characterization suite;
+3. recompose `/parent` first using `ghaf_parent_home`, live dashboard state, and the Soft Geometric
+   system while preserving every reachable control;
+4. recompose Parent Tasks and Task Builder without changing task payloads or actions;
+5. recompose Child Today, Task Detail, Active Task states, completion, and waiting-for-approval;
+6. recompose Parent review, support-request states, approval, and the Child support/resubmission
+   loop over the existing state machine;
+7. visually refresh the existing Garden using live current values only; and
+8. complete RTL, accessibility, responsive, visual, export, Android, and release evidence.
+
+Each slice begins with focused RED or characterization coverage, ends with focused and repository
+checks, and is committed independently. R001 routes are regression-only. Raw Stitch PNG/HTML files
+remain unmodified, and `Zone.Identifier` files never become evidence or source.
+
+The Parent Home reference is a genuine mobile, naturally scrolling `402×1600` composition rather
+than a fixed `390×844` canvas. Its hard-coded League and Family Reward summaries have no current
+dashboard selector, so those fragments remain supporting references until a behavior-preserving
+presentation adapter is separately specified. That affected fragment does not block the remainder
+of the Parent Home visual refresh.
+
+R002b remains independently blocked: no 108→120→180 migration, Impact Path, badges, learning,
+Parent Progress, combined RevealBundle revision, Shared Growth change, Parent Shared Garden
+participation control, or cumulative Garden Next Stage may enter runtime or navigation.
 
 ### Revision 3 reconciliation addendum — 2026-09-04
 
@@ -22,7 +67,7 @@ isolation. It adds one private 120–180 Seed-derived Impact Path, exactly 16 pe
 badges, one equal-credit Mangrove learning package, and Parent selected-Child progress. Growth
 runtime remains blocked.
 
-The next executable slice is R001 only:
+At the 2026-09-04 checkpoint, the next executable slice was R001 only:
 
 ```text
 remote access/League/Reward/voice/privacy/reset baseline
@@ -39,8 +84,9 @@ Tailwind/CSS, generated JavaScript, remote font, or web dependency enters Expo. 
 layouts, natural scroll, keyboard avoidance, 48dp targets, locale-aware bidi, reduced-motion parity,
 and state variants are native responsibilities.
 
-After R001 passes, the plan returns to design intake. No later route, state, model, test, dependency,
-asset, or configuration change begins until a bounded Stitch release closes the applicable gate.
+After R001 passes, only the bounded R002a compatibility slices above may proceed. Any R002b route,
+state, model, service, dependency, asset, or configuration change remains behind its independent
+product and design gate.
 
 ### R001 implementation boundaries
 

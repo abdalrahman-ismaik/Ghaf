@@ -2,7 +2,7 @@
 
 > **STATUS: PROPOSED — NOT APPROVED — NOT IMPLEMENTATION AUTHORITY**
 >
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 This paper compares three decision paths. It does not select a path, change a fixture, authorize a
 schema, or permit implementation. Remote head

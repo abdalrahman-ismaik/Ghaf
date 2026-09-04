@@ -1,26 +1,29 @@
 # Codex Implementation Prompt — Ghaf Feature 003
 
-## Current execution override — 2026-09-04
+## Current execution override — 2026-09-05
 
-The remote head remains the behavioral regression baseline. Do not follow later ten-route or
-`/circle` implementation instructions in this historical handoff when they conflict with the
-current Feature 003 specification.
+Verified remote head `76fa682` is the implementation and regression baseline. Do not follow later
+ten-route or `/circle` instructions in this historical handoff when they conflict with the current
+Feature 003 specification and R002a compatibility plan.
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
-Only R001 Batch 1 may be implemented now: canonical native foundations, `/` Welcome, the six
-`/access/parent/**` setup routes, native success sheet, and guarded handoff to the preserved
-`/parent`. Preserve private five-Leaf League, `task_recycling_p0_v1`, Family Reward, capability-
-scoped access, `expo-audio` synthetic voice, privacy/profile isolation, and Parent reset.
+R001 Batch 1 is frozen. Implement only the selected compatibility-safe R002a Parent Home, Parent
+Tasks/Builder, Child task journey, Parent review/support loop, and existing Garden presentation.
+Preserve private five-Leaf League, `task_recycling_p0_v1`, schema-3 behavior, every approval
+consequence, Family Reward, capability-scoped access, `expo-audio` synthetic voice,
+privacy/profile isolation, and Parent reset.
 
-Do not cherry-pick the six divergent commits wholesale. Reconstruct approved R001 slices over the
-remote baseline with tests first. PNGs control composition; Stitch HTML/CSS/JS is non-runtime
-measurement evidence. No post-R001 screen, Growth model, test, asset, dependency, font change
-outside the released R001 roles, or navigation redesign is authorized.
+Do not cherry-pick the six divergent commits. Reconstruct approved R002a slices over the verified
+baseline with tests first. PNGs control composition; Stitch HTML/CSS/JS is non-runtime measurement
+evidence. Do not implement R002b progression migration, Impact Path, badges, learning, Parent
+Progress, combined RevealBundle changes, Shared Growth changes, or cumulative Garden Next Stage.
 
 The authoritative execution order is [the active plan](specs/003-family-growth-garden/plan.md),
 [task ledger](specs/003-family-growth-garden/tasks.md), and
-[R001 release gate](specs/003-family-growth-garden/design-intake/release-gate.md).
+[R002a intake record](docs/design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md).
 
 Paste the prompt below into Codex from the actual Ghaf repository root.
 

@@ -4,7 +4,7 @@
 `96cad3b917f43adad32c491153be54d3ab24f899`; full source pack remains unapplied
 **Use:** research and design-generation evidence only
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 The original pack proposed Impact Path, badges, learning, first-run presentation, and a combined
 result. The current user-authoritative product baseline keeps one free private 120–180 Impact Path,
@@ -25,4 +25,5 @@ Canonical reconciled records:
 - [Revision 3 decision evidence](../../specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
 
 The complete original research/prompt sources can be inspected by commit hash until an approved,
-reviewed subset is reconstructed. Their existence does not release R002 or Growth runtime.
+reviewed subset is reconstructed. R002a presentation authorization does not release this R002b
+Growth runtime.

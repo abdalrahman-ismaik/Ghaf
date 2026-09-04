@@ -14,12 +14,17 @@
 - [x] The six local-only commits remain unapplied provenance and are not treated as remote behavior.
 - [x] R002 counts, invalid/missing evidence, and missing Growth surfaces are recorded without
       fabricating approval, specs, English frames, or provenance.
-- [ ] Original R001 bytes/checksums are preserved on the integration branch.
-- [ ] R001 implementation and fresh focused/full validation complete.
-- [ ] R002 supplies complete mobile references, screen specs, states, parity, provenance, and
-      explicit release.
+- [x] Original R001 bytes/checksums are preserved on verified integration head `76fa682`.
+- [x] R001 implementation and fresh focused/full validation are recorded at `76fa682`.
+- [ ] R002a selected compatibility surfaces have complete inventory, screen specs, states, parity,
+      provenance disposition, and per-slice validation evidence.
+- [ ] R002b Growth and product-expansion surfaces have complete product decisions, mobile
+      references, screen specs, states, parity, provenance, and explicit release.
 
-**Active gate:** **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+**Active gates:**
+
+- **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+- **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-08-26

@@ -2,7 +2,9 @@
 
 > **STATUS: PROPOSED — NOT APPROVED — NOT IMPLEMENTATION AUTHORITY**
 >
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 This document proposes a gated order of work after the Revision 3 decisions are explicitly approved. Its existence does not authorize any phase, specification change, migration, screen implementation, dependency change, or release action. Every phase begins only after its named approval gate is recorded.
 
@@ -184,6 +186,7 @@ No runtime work is currently executable. The smallest sequence that can unlock s
 2. Complete and approve the missing mobile design intake, parity, states, copy, and provenance.
 3. Approve one coherent canonical Revision 3 specification update.
 
-Implementation remains blocked until all applicable phase gates above are satisfied.
+R002b implementation remains blocked until all applicable product-expansion phase gates above are
+satisfied. R002a compatibility work follows the separate authorized plan and task ledger.
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**

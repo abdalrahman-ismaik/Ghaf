@@ -16,14 +16,15 @@ landscapes, an invite-only Ghaf Family League, and optional private Parent-funde
 then adds a private Growth Journey with one Seed-derived Impact Path, permanent deterministic
 badges, and sourced finite learning.
 
-The remote-head implementation at `a6ca21a6` is the preserved behavioral baseline for access,
-League, Family Reward, voice, privacy, profile isolation, reset, and the earlier ten-route journey.
-Its tests and bilingual web evidence do **not** approve later screen design. The user-approved R001
-Batch 1 releases only native foundations, Welcome, and first-time Parent onboarding. Every later
-Revision 2 screen and every Revision 3 Growth Journey screen is **ON HOLD** until the user supplies
-and approves its Google Stitch design.
+Verified remote head `76fa682` is the R002a implementation baseline. It contains the preserved
+access, League, Family Reward, voice, privacy, profile-isolation, reset, and ten-route behavior plus
+the completed R001 native foundation, Welcome, and first-time Parent onboarding. R001 remains a
+frozen regression baseline. The compatibility-safe R002a Parent, task, review, Child, and Garden
+presentation is released in bounded slices; all R002b Growth Journey mechanics remain on hold.
 
-**R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+**R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+
+**R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 Feature 002's physical Android and human-rehearsal gates remained blocked/not run; “validated” does
 not mean fully demo-accepted.
@@ -88,8 +89,9 @@ Prepare one polished vertical slice with:
 
 Breadth beyond that list is seeded content or later work. Do not build production accounts,
 networking, real invitations, payment/custody, notifications, analytics, production storage, live
-Child media processing, or a second app in P0. Do not implement an unreleased Revision 2 or
-Revision 3 Growth screen before its approved Stitch frames are supplied.
+Child media processing, or a second app in P0. Implement only selected, documented R002a
+compatibility surfaces. Do not implement an R002b Growth screen or mechanic before its product
+decisions and complete Stitch evidence are explicitly approved.
 
 ## Product Invariants
 
@@ -302,10 +304,11 @@ search. Preserve unrelated work and avoid destructive Git commands.
 ## Delivery Rules
 
 - Update Spec Kit artifacts before implementing behavior outside the active specification.
-- Treat the Google Stitch prompt pack as design input, not implementation authority. Do not edit
-  runtime UI, navigation, dependencies, fonts, models, services, state, or tests for an unreleased
-  Revision 2 or Revision 3 Growth screen until the user supplies and approves its final Stitch
-  frames.
+- Treat the Google Stitch prompt pack as design input, not implementation authority. R002a runtime
+  work is limited to the selected compatibility surfaces and must preserve the remote behavior.
+  Do not edit runtime UI, navigation, dependencies, fonts, models, services, state, or tests for an
+  R002b Growth screen until the user separately approves its product decisions and complete Stitch
+  evidence.
 - Keep the deterministic competition path complete after every integrated slice.
 - Do not claim live AI, real media analysis, production authentication/security, payment or money
   custody, child-data protection, legal compliance, measured sustainability impact, or production

@@ -6,7 +6,8 @@
 
 **Source and integrated Git tree:** `de09152af8cdf859f98f3e1c5a41cc3f553255e6`
 
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **Historical R001 evidence:** the blanket R002 gate active when this manifest was recorded was
+> superseded on 2026-09-05. R001 remains frozen under the current independent R002a/R002b gates.
 
 The 17 files under `docs/design/stitch/releases/ghaf-r001/` were added from the source Git subtree
 without content changes. The integrated subtree object matches the source tree exactly. It contains

@@ -4,27 +4,73 @@
 
 ## Status
 
-| Item                          | Truth as of 2026-09-04                                                                                                                             |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product                       | Ghaf — غاف                                                                                                                                         |
-| Competition                   | Khalifa University SMAC 2026                                                                                                                       |
-| Official theme                | AI Adventures in Sustainability                                                                                                                    |
-| Active product direction      | Feature 003 Revision 3 — Revision 2 plus one private Growth Journey                                                                                |
-| Behavioral baseline           | Remote head `a6ca21a6`: ten-route journey plus tested access, private League, private Family Reward, synthetic voice, privacy, and Parent reset    |
-| Approved visual/runtime batch | R001 only: native foundations, Welcome, and first-time Parent onboarding                                                                           |
-| Design-intake gate            | **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**                                                                         |
-| Evidence boundary             | Remote automated/web evidence and R001 evidence retain their exact scope; post-R001 Revision 2 and every Revision 3 Growth screen remain `BLOCKED` |
-| Primary platform              | Android; Arabic-first RTL with equivalent English LTR                                                                                              |
-| Prototype data                | Synthetic only                                                                                                                                     |
+| Item                      | Truth as of 2026-09-05                                                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product                   | Ghaf — غاف                                                                                                                                               |
+| Competition               | Khalifa University SMAC 2026                                                                                                                             |
+| Official theme            | AI Adventures in Sustainability                                                                                                                          |
+| Active product direction  | Feature 003 Revision 3, delivered first as a compatibility-only R002a presentation release                                                               |
+| Behavioral baseline       | Verified head `76fa682`: preserved remote behavior plus completed R001 onboarding evidence                                                               |
+| Frozen regression batch   | R001 native foundations, Welcome, and first-time Parent onboarding                                                                                       |
+| R002a implementation gate | **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**                                                                                       |
+| R002b implementation gate | **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**                                                                                    |
+| Evidence boundary         | Existing behavior remains authoritative; R002a requires fresh evidence, while R002b Growth Journey and migration proposals remain non-runtime candidates |
+| Primary platform          | Android; Arabic-first RTL with equivalent English LTR                                                                                                    |
+| Prototype data            | Synthetic only                                                                                                                                           |
 
 Feature 003 supersedes the single food-rescue mission as the product direction. Food rescue remains
 one useful future task family, but the only executable P0 task is the canonical 12-Seed Green
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
-The remote implementation is preserved behavior, not permission to choose an unapproved R002
-composition. The six local-only commits remain unapplied candidate provenance; their approved
-slices must be reconstructed over the remote baseline.
+The remote implementation is preserved behavior, not permission to change product outcomes. The
+six local-only commits remain unapplied candidate provenance; any compatible presentation must be
+reconstructed over `76fa682` rather than cherry-picked from the conflicting history.
+
+## R002a Compatibility Release
+
+R002a authorizes a native Soft Geometric presentation layer over the existing deterministic
+behavior. It does not authorize a new reward ledger, task identifier, access model, privacy model,
+or route-local business logic. R001 Welcome and Parent onboarding are frozen regression baselines;
+their handoff into `/parent` must continue to work without an incidental redesign.
+
+R002a is implemented and validated in this order:
+
+1. Parent Home at `/parent`, using `ghaf_parent_home` as the primary candidate composition;
+2. Parent Tasks and Task Builder, including choose, edit, review, created, and added states;
+3. Child Today and the existing task execution states from ready through 0/2, 1/2, 2/2,
+   confirmation, and waiting for Parent approval;
+4. Parent review, support-request states, and approved success presentation;
+5. the Child support, accepted-step, Parent-note, completion, and resubmission loop; and
+6. the existing Garden with a compatible `ghaf_child_growth_garden_final_corrected` presentation.
+
+Every surface must call existing actions and consume existing selectors. The canonical executable
+task remains `task_recycling_p0_v1`; `task.recycling_sort.v1` is a design-document alias only and
+must never be stored or migrated. Child submission awards nothing. Only the existing atomic,
+idempotent Parent approval may commit its complete consequences: praise, 12 Seeds, mapped plant
+growth, canopy, eligible Challenge Leaf/private League effects, and eligible private Family Reward
+effects. Retry, interruption, and support must not lose or duplicate progress.
+
+The `/parent` refresh is presentation-only. It must retain all currently reachable routes,
+navigation, task actions, voice behavior, reset controls, selected-Child state, access and
+reauthentication boundaries, guards, privacy, and profile isolation. Private League and Family
+Reward remain protected domain behavior, but the current Parent dashboard session has no live
+League or Family Reward selector and their service maps initialize empty. Therefore the screen must
+not invent `4/5`, `108/120`, `120/180`, or any other screenshot counter, and it must not relabel the
+cooperative `/circle` route as the private League. A screenshot fragment without a live authority is
+omitted or treated as supporting reference until an approved adapter exists; that omission does not
+weaken the preserved domain contract.
+
+R002a copy is Arabic-first and centrally paired with equivalent English. It includes conservative
+loading, empty, validation-error, recoverable-error, submitting, success, interrupted-recovery, and
+reduced-motion states without inventing new business outcomes. Raw Stitch HTML and PNG exports
+remain reference evidence, never runtime UI or data.
+
+R002b remains blocked. It includes the cumulative `108→120→180` migration, Impact Path, Badge
+Gallery, Badge Detail, Learning Story and accessible alternative, Parent Progress and Achievements,
+a revised combined RevealBundle, any Shared Growth change or replacement of the private League,
+Parent Shared Garden participation controls, and cumulative Garden Next Stage. Their existence in a
+document or export is not implementation authority.
 
 ## Product Promise
 
@@ -93,14 +139,14 @@ confirmation. Confirmation does not establish environmental impact.
 
 ## Separate Progress Authorities
 
-| Authority                         | Meaning and persistence                                                                                                                                   |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Lifetime Seeds                    | Permanent private symbolic progress created only by an eligible Parent-confirmed acquisition receipt                                                      |
-| Mapped landscape                  | Permanent category-specific growth derived from eligible Seed provenance; Mangrove is independently 48/60 → 60/60 in the P0 event                         |
-| Challenge Leaves and League score | Five weekly opportunities, 20 points each, capped at 100; rank resets weekly while permanent progress does not                                            |
-| Family canopy                     | Cooperative household consequence without another Child's task, evidence, accommodation, money, or raw Seed total                                         |
-| Family Reward eligible progress   | Private Parent-promise eligibility; independently 108/120 → 120/120 and never derived from rank                                                           |
-| Impact Path                       | Read-only private projection of confirmed lifetime Seeds plus separately proven learning/action criteria; one 120–180 P0 chapter, never a second currency |
+| Authority                         | Meaning and persistence                                                                                                                        |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lifetime Seeds                    | Permanent private symbolic progress created only by an eligible Parent-confirmed acquisition receipt                                           |
+| Mapped landscape                  | Permanent category-specific growth derived from eligible Seed provenance; Mangrove is independently 48/60 → 60/60 in the P0 event              |
+| Challenge Leaves and League score | Five weekly opportunities, 20 points each, capped at 100; rank resets weekly while permanent progress does not                                 |
+| Family canopy                     | Cooperative household consequence without another Child's task, evidence, accommodation, money, or raw Seed total                              |
+| Family Reward eligible progress   | Private Parent-promise eligibility, separate from the personal Seed and League ledgers; existing live values only, never a screenshot constant |
+| Impact Path                       | Proposed R002b read-only projection of confirmed lifetime Seeds and separate criteria; blocked from runtime and never a second currency        |
 
 Numerical equality does not merge authorities. A screen, migration, or design export may not copy
 one value into another ledger.
@@ -249,21 +295,26 @@ a privilege, or a gift fulfilled outside Ghaf. It has no Seed-to-AED rate, never
 rank, and follows `promised → unlocked → given`. A monetary plan requires synthetic scoped Parent
 reauthentication. An unlocked promise cannot be removed or retroactively weakened.
 
-The P0 Salem fixture is 108/120 new eligible Seeds and AED 25. The canonical confirmation advances
-it to 120/120 only after praise, the 12 committed Seeds, and mapped garden growth. Unknown,
+The domain fixture may represent Salem's private plan at 108/120 eligible Seeds and AED 25, with an
+eligible confirmation advancing it to 120/120 only after praise, committed Seeds, and mapped garden
+growth. Those values are service data, not Parent Home display constants. Until a live authorized
+selector exposes a plan, R002a must omit the dashboard counter rather than manufacture one. Unknown,
 recognition-only, protected, or prohibited activity contributes zero.
 
 ## Private Growth Journey
 
-Impact Path is one free private projection, not a spendable balance. The P0 Water & Coast chapter
-spans lifetime Seed stations 120, 132, 144, 156, 168, and 180. The product includes exactly 16
-deterministic permanent badge definitions and one finite Mangrove learning package with an
-equal-credit accessible route. Learning/activity completion is idempotent and creates zero Seeds or
-garden growth. A Parent may view a selected Child's progress read-only; siblings are never compared.
+The R002b proposal defines Impact Path as one free private projection, not a spendable balance, and
+proposes a Water & Coast chapter spanning lifetime Seed stations 120, 132, 144, 156, 168, and 180.
+It also proposes exactly 16 deterministic permanent badge definitions, one finite Mangrove learning
+package with an equal-credit accessible route, and a Parent read-only selected-Child view. These
+mechanics remain blocked and cannot be exposed through R002a navigation. If later approved,
+learning/activity completion remains idempotent, creates zero Seeds or garden growth, and never
+compares siblings.
 
 The exact badge criteria and learning package live in [the badge catalog](docs/content/BADGE_CATALOG.md)
-and [learning contract](docs/content/LEARNING_STORIES.md). Their product rules are approved planning
-authority; their runtime screens remain blocked until a complete Stitch batch is released.
+and [learning contract](docs/content/LEARNING_STORIES.md). They are R002b proposal evidence, not
+current implementation authority; their runtime screens remain blocked until the product decisions,
+design intake, and release gate are explicitly approved.
 
 ## AI Experiences
 
@@ -321,9 +372,10 @@ If real child-facing AI is later enabled, it requires a separately approved prod
 
 Do not claim legal compliance from prototype safeguards.
 
-## Revision 3 P0 Target
+## Revision 3 Product-Expansion Proposal
 
-The target remains one application and one deterministic journey:
+The longer-horizon R002b proposal remains one application and one deterministic journey. Its
+expansion mechanics are not released by R002a:
 
 - separate capability-scoped Parent and Child access with no ordinary in-app role toggle;
 - Parent Home, Tasks, Garden, and Family navigation; Child Today, Garden, and League navigation;
@@ -337,13 +389,15 @@ The target remains one application and one deterministic journey:
 - Parent-authorized signed-out Arabic-first reset, profile isolation, offline operation, and
   equivalent English.
 
-The combined result order is praise → any honestly labeled self-reported activity result → committed
-Seeds → mapped garden → canopy/Challenge Leaf/League → Impact Path/badges/safe-help recognition →
-private Family Reward last. Duplicate confirmation repeats no consequence.
+The proposed R002b combined-result order is praise → any honestly labeled self-reported activity
+result → committed Seeds → mapped garden → canopy/Challenge Leaf/League → Impact Path/badges/
+safe-help recognition → private Family Reward last. It is not the R002a presentation contract.
+Duplicate confirmation remains a no-op in both scopes.
 
-R001 releases only foundations and Welcome → Parent sign-in → verification → family basics → add
-first Child → review/create → native success sheet → preserved `/parent` destination. Every later
-route or state remains blocked by the active R002 gate.
+R001 freezes foundations and Welcome → Parent sign-in → verification → family basics → add first
+Child → review/create → native success sheet → preserved `/parent` destination. R002a may now refresh
+only the compatibility surfaces and states listed above. R002b expansion routes and mechanics remain
+blocked by their independent gate.
 
 ## Preserved Remote Demonstration Baseline
 
@@ -417,8 +471,8 @@ extra routes.
 
 The remote behavioral baseline already implements deterministic services for separate access,
 private Family Reward, private weekly Family League, age-adapted Coach output, and synthetic voice.
-These services remain regression authority. Their post-R001 UI still requires a released design
-batch and fresh native/human evidence.
+These services remain regression authority. R002a may present already wired behavior through its
+released compatibility surfaces, but every surface still requires fresh native and human evidence.
 
 - **Synthetic access** demonstrates least-privilege Parent/Child sessions, expiring pairing,
   revocation, action-scoped Parent reauthentication, and per-Child grants. It is not production
@@ -434,6 +488,6 @@ batch and fresh native/human evidence.
   lifecycle. Real recording, transcription, code-switch understanding, dialect output, and provider
   integration remain unavailable.
 
-The prior cooperative circle, 48→60 personal Seed presentation, and ten-route shell remain historical
-behavioral evidence. Revision 3 preserves their safety/idempotency/privacy rules while adopting the
-separate authorities and P0 target above through explicit versioned migration and released screens.
+The cooperative circle, Schema-3 48→60 personal Seed presentation, and ten-route shell remain the
+R002a behavioral oracle. R002b may supersede values or add projections only through a separately
+approved versioned migration and released screens.

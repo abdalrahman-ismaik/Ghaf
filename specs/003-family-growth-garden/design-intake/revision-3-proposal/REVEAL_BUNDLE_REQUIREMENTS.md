@@ -2,7 +2,7 @@
 
 > **STATUS: PROPOSED — NOT APPROVED — NOT IMPLEMENTATION AUTHORITY**
 >
-> **R002 INTAKE RECEIVED — PRODUCT CONFLICTS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 This document proposes a decision-ready superset contract. It does not approve a bundle field,
 ordering, route, schema, animation, or implementation. Remote head
