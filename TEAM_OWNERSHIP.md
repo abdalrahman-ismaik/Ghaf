@@ -72,6 +72,14 @@ filter restoration use known tokens with safe Child/Parent fallbacks. The focuse
 suite and 45-file / 681-test repository suite excluding only the concurrently unfinished RevealBundle
 test passed; the complete suite is required again after that isolated writer releases its files.
 
+**Growth-presentation checkpoint — 2026-09-05**: One immutable, profile-scoped projection now joins
+the canonical Seed ledger, Water and Coast Path station states, actual Mangrove archives, the exact
+16-badge Gallery, approved learning unlocks, and existing assigned-task opportunities. It exposes no
+writable Impact Path balance, never invents a configured next Garden stage, and fails closed on
+cross-profile evidence. The focused 5-test suite, repository typecheck, exact lint/format checks, and
+Git whitespace validation passed before route integration; every consuming surface remains behind
+its independent default-off flag.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
