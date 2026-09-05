@@ -798,7 +798,7 @@ and Android evidence with truthful limitations. This phase never releases R002b.
       submission reward, complete approval consequences, and duplicate/concurrent approval.
 - [ ] T183 Define the eight independent default-off flags and prove that disabled flags preserve the
       exact R002a routes, presentation, task lifecycle, counters, voice, access, privacy, and reset.
-- [ ] T184 Validate and commit the contract and characterization boundaries separately; stage exact
+- [x] T184 Validate and commit the contract and characterization boundaries separately; stage exact
       paths and retain all raw exports and six held commits unchanged.
 
 ## Phase 25: Lifetime Seed Projection and Versioned Migration
