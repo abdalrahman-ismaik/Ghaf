@@ -44,7 +44,6 @@ export function ParentHomeHeader({
             brand
             color="ghafEmerald"
             direction={direction}
-            numberOfLines={1}
             variant="screenTitle"
           >
             {title}

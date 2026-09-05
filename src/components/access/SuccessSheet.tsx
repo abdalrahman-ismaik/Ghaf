@@ -18,7 +18,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { scheduleOnRN } from 'react-native-worklets';
 
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
 import {
@@ -120,25 +119,8 @@ export function SuccessSheet({
 
   const requestDismiss = () => {
     if (!onDismiss) return;
-
-    if (reducedMotion) {
-      onDismiss();
-      return;
-    }
-
     cancelAnimation(progress);
-    progress.set(
-      withTiming(
-        0,
-        {
-          duration: r001Motion.duration.standard,
-          easing: Easing.out(Easing.cubic),
-        },
-        (finished) => {
-          if (finished) scheduleOnRN(onDismiss);
-        },
-      ),
-    );
+    onDismiss();
   };
 
   if (!visible) return null;

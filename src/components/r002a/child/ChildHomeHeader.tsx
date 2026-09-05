@@ -38,11 +38,11 @@ export function ChildHomeHeader({
   const titleControl = (
     <View style={styles.titleSlot}>
       <Text
+        accessibilityRole="header"
         align="center"
         brand
         color="ghafEmerald"
         direction={direction}
-        numberOfLines={1}
         variant="screenTitle"
       >
         {title}
