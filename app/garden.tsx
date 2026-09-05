@@ -1,228 +1,589 @@
 import { useMemo, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { GhafIcon } from '@/components/access';
 import { FamilyCanopy } from '@/components/family-growth/FamilyCanopy';
 import {
   GardenLandscape,
   type LandscapeTrackContent,
 } from '@/components/family-growth/GardenLandscape';
-import { JourneyHeader } from '@/components/journey';
-import { Button, Screen, Text } from '@/components/primitives';
-import { colors, spacing } from '@/design/tokens';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
+import {
+  ChildBottomNavigation,
+  ChildHomeHeader,
+  ParentHomeHeader,
+  ParentHomeNavigation,
+  ParentHomeUtilities,
+  R002aScreen,
+} from '@/components/r002a';
+import {
+  colors,
+  layout,
+  logicalRowDirection,
+  r001Radii,
+  r001Shadows,
+  spacing,
+} from '@/design/tokens';
 import { buildRecognitionAnnouncement } from '@/features/garden/announcements';
+import {
+  deriveLandscapeDisplayTarget,
+  resolveActiveGardenRecognition,
+} from '@/features/garden/presentation';
 import { localize } from '@/i18n';
-import type { LandscapeId } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import type { LandscapeId, TextDirection } from '@/models/familyGrowth';
+import { selectCanEnterParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceHistoryWithEntry } from '@/utils/navigation';
 
 const LANDSCAPE_IDS: readonly LandscapeId[] = ['mangrove', 'ghaf', 'samar', 'sidr', 'date_palm'];
+
+const LANDSCAPE_LABEL_KEYS: Readonly<Record<LandscapeId, string>> = {
+  mangrove: 'garden.mangrove',
+  ghaf: 'garden.ghaf',
+  samar: 'garden.samar',
+  sidr: 'garden.sidr',
+  date_palm: 'garden.datePalm',
+};
+
+type LandscapeTrackEntry = readonly [LandscapeId, LandscapeTrackContent];
 
 export default function GardenScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
+  const role = usePrototypeStore((state) => state.role);
+  const children = usePrototypeStore((state) => state.children);
+  const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
   const landscapeProgress = usePrototypeStore((state) => state.landscapeProgress);
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
   const celebration = usePrototypeStore((state) => state.celebration);
   const circleGoal = usePrototypeStore((state) => state.circleGoal);
   const recognitionLedger = usePrototypeStore((state) => state.recognitionLedger);
+  const canEnterParentExperience = usePrototypeStore(selectCanEnterParentExperience);
+  const authorizeParentExperience = usePrototypeStore((state) => state.authorizeParentExperience);
+  const resetPrototype = usePrototypeStore((state) => state.resetPrototype);
   const consumeCelebration = usePrototypeStore((state) => state.consumeCelebration);
-  const recognized = journey?.lifecycle === 'recognized';
-  const [revealOnMount] = useState(
-    () => recognized && celebration.available && !celebration.consumed,
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [confirmingReset, setConfirmingReset] = useState(false);
+  const [resetError, setResetError] = useState<string | null>(null);
+  const formatter = useMemo(
+    () => new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE', { useGrouping: false }),
+    [locale],
   );
+  const activeChild = children[activeChildId];
+  const activeRecognition = resolveActiveGardenRecognition({
+    activeChildId,
+    journey,
+    recognitionLedger,
+  });
+  const matchingGrowth = activeRecognition?.growth ?? null;
+  const [revealOnMount] = useState(
+    () =>
+      matchingGrowth !== null && celebration.available === true && celebration.consumed === false,
+  );
+  const parentAuthorization =
+    role === 'parent' && canEnterParentExperience ? authorizeParentExperience() : null;
 
-  const openCircle = () => {
-    if (revealOnMount) consumeCelebration();
-    router.push('/circle');
-  };
-
-  const recognitionReceipt = Object.values(recognitionLedger)[0] ?? null;
-  const recognitionAnnouncement = recognitionReceipt
+  const recognitionAnnouncement = activeRecognition
     ? buildRecognitionAnnouncement({
-        award: recognitionReceipt.seedTransaction
-          ? t('common.seeds', { count: recognitionReceipt.seedTransaction.amount })
+        award: activeRecognition.receipt.seedTransaction
+          ? t('common.seeds', {
+              count: formatter.format(activeRecognition.receipt.seedTransaction.amount),
+            })
           : null,
-        landscape: recognitionReceipt.landscapeGrowth
-          ? `${t('garden.mangrove')} · ${t(`garden.${recognitionReceipt.landscapeGrowth.stageAfter}`)}`
+        landscape: matchingGrowth
+          ? t('garden.stageChange', {
+              landscape: t(LANDSCAPE_LABEL_KEYS[matchingGrowth.landscapeId]),
+              stage: t(`garden.${matchingGrowth.stageAfter}`),
+            })
           : null,
-        canopy: recognitionReceipt.canopyContribution ? t('garden.canopy') : null,
-        circle: recognitionReceipt.circleEvent
+        canopy: activeRecognition.receipt.canopyContribution ? t('garden.canopy') : null,
+        circle: activeRecognition.receipt.circleEvent
           ? circleGoal.eligibleGreenActions >= circleGoal.goal
-            ? `${t('circle.milestone')} · ${t('circle.progress', {
-                current: circleGoal.eligibleGreenActions,
-                goal: circleGoal.goal,
+            ? `${t('circle.milestone')}. ${t('circle.progress', {
+                current: formatter.format(circleGoal.eligibleGreenActions),
+                goal: formatter.format(circleGoal.goal),
               })}`
             : t('circle.contribution')
           : null,
       })
     : '';
 
-  const tracks = useMemo(
-    () =>
-      Object.fromEntries(
-        LANDSCAPE_IDS.map((id) => {
-          const progress = landscapeProgress[id];
-          const target =
-            id === 'mangrove' && progress.cumulativeSeeds >= 60
-              ? 60
-              : (progress.nextThreshold ?? 200);
-          const nameKey = id === 'date_palm' ? 'datePalm' : id;
-          const label = `${progress.cumulativeSeeds} / ${target}`;
-          const content: LandscapeTrackContent = {
-            accessibilityLabel: `${t(`garden.${nameKey}`)}. ${t(`garden.${progress.stage}`)}. ${label}`,
-            categoryLabel:
-              id === 'mangrove' ? t('garden.greenCategory') : t('garden.otherCategory'),
-            cumulativeSeeds: progress.cumulativeSeeds,
-            name: t(`garden.${nameKey}`),
-            originNote: t('origin.symbolic'),
-            progressLabel:
-              id === 'mangrove' ? t(recognized ? 'garden.after' : 'garden.before') : label,
-            stage: progress.stage,
-            stageLabel: t(`garden.${progress.stage}`),
-            targetSeeds: target,
-          };
-          return [id, content];
-        }),
-      ) as Record<LandscapeId, LandscapeTrackContent>,
-    [landscapeProgress, recognized, t],
+  const trackEntries = LANDSCAPE_IDS.map((id): LandscapeTrackEntry | null => {
+    const progress = landscapeProgress[id];
+    const exactGrowth = matchingGrowth?.landscapeId === id ? matchingGrowth : null;
+    const target =
+      progress?.landscapeId === id ? deriveLandscapeDisplayTarget(progress, exactGrowth) : null;
+    if (target === null) return null;
+
+    const currentLabel = formatter.format(progress.cumulativeSeeds);
+    const targetLabel = formatter.format(target);
+    const reachedNow =
+      exactGrowth?.seedsAfter === progress.cumulativeSeeds &&
+      exactGrowth.crossedThreshold === progress.cumulativeSeeds;
+    const progressLabel = reachedNow
+      ? t('garden.progressReached', { current: currentLabel, target: targetLabel })
+      : t('garden.progressToward', { current: currentLabel, target: targetLabel });
+    const content: LandscapeTrackContent = {
+      accessibilityLabel: `${t(LANDSCAPE_LABEL_KEYS[id])}. ${t(
+        `garden.${progress.stage}`,
+      )}. ${progressLabel}`,
+      categoryLabel: id === 'mangrove' ? t('garden.greenCategory') : t('garden.otherCategory'),
+      cumulativeSeeds: progress.cumulativeSeeds,
+      name: t(LANDSCAPE_LABEL_KEYS[id]),
+      originNote: t('origin.symbolic'),
+      progressLabel,
+      stage: progress.stage,
+      stageLabel: t(`garden.${progress.stage}`),
+      targetSeeds: target,
+    };
+    return [id, content];
+  });
+  const validTrackEntries = trackEntries.filter(
+    (entry): entry is LandscapeTrackEntry => entry !== null,
   );
+  const tracks =
+    validTrackEntries.length === LANDSCAPE_IDS.length
+      ? (Object.fromEntries(validTrackEntries) as Record<LandscapeId, LandscapeTrackContent>)
+      : null;
+
+  const openCircle = () => {
+    if (revealOnMount) consumeCelebration();
+    router.push('/circle');
+  };
+
+  const confirmReset = () => {
+    setResetError(null);
+    const result = resetPrototype();
+    setConfirmingReset(false);
+    if (!result.ok) {
+      setResetError(t('errors.safeRetry'));
+      return;
+    }
+    replaceHistoryWithEntry(router);
+  };
+
+  if (role === 'parent' && !parentAuthorization?.ok) {
+    return <Redirect href="/access/parent/sign-in" />;
+  }
+  if ((role !== 'parent' && role !== 'child') || !activeChild) {
+    return <Redirect href="/role" />;
+  }
+
+  const header =
+    role === 'parent' ? (
+      <ParentHomeHeader
+        direction={direction}
+        onToggleSettings={() => {
+          setResetError(null);
+          setSettingsOpen((current) => !current);
+        }}
+        profileLabel={t('parentHome.selectedChild', {
+          child: localize(activeChild.displayName, locale),
+        })}
+        settingsLabel={t('parentHome.settingsLabel')}
+        settingsOpen={settingsOpen}
+        title={t('garden.screenTitle')}
+      />
+    ) : (
+      <ChildHomeHeader
+        avatarLabel={localize(activeChild.displayName, locale)}
+        direction={direction}
+        helpLabel={t('common.help')}
+        helpOpen={helpOpen}
+        onToggleHelp={() => setHelpOpen((value) => !value)}
+        title={t('garden.screenTitle')}
+      />
+    );
+
+  const footer =
+    role === 'parent' ? (
+      <ParentHomeNavigation
+        activeKey="garden"
+        circleLabel={t('navigation.circle')}
+        direction={direction}
+        gardenLabel={t('navigation.garden')}
+        homeLabel={t('parentHome.homeLabel')}
+        onCircle={openCircle}
+        onGarden={() => undefined}
+        onHome={() => router.replace('/parent')}
+        onTasks={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
+        tasksLabel={t('parentHome.tasksLabel')}
+      />
+    ) : (
+      <ChildBottomNavigation
+        activeKey="garden"
+        direction={direction}
+        gardenLabel={t('navigation.garden')}
+        leagueLabel={t('navigation.league')}
+        leagueUnavailableHint={t('navigation.leagueUnavailable')}
+        onGarden={() => undefined}
+        onToday={() => router.replace('/child')}
+        todayLabel={t('navigation.today')}
+      />
+    );
 
   return (
-    <Screen contentContainerStyle={styles.screenContent} testID="garden-screen">
-      <JourneyHeader
-        eyebrow={t('origin.symbolic')}
-        subtitle={t('garden.body')}
-        title={t('garden.title')}
-      />
+    <R002aScreen
+      contentContainerStyle={styles.screenContent}
+      footer={footer}
+      header={header}
+      testID="garden-screen"
+    >
+      {role === 'parent' ? (
+        <ParentHomeUtilities
+          cancelLabel={t('common.cancel')}
+          confirmingReset={confirmingReset}
+          description={t('parentHome.settingsBody')}
+          error={resetError}
+          languageControl={<LanguageSwitcher compact showGuidance={false} />}
+          onCancelReset={() => setConfirmingReset(false)}
+          onConfirmReset={confirmReset}
+          onRequestReset={() => setConfirmingReset(true)}
+          onSwitchRole={() => router.replace('/role')}
+          open={settingsOpen}
+          resetActionLabel={t('reset.action')}
+          resetConfirmLabel={t('reset.confirm')}
+          resetTitle={t('reset.title')}
+          switchRoleLabel={t('navigation.switchToChild')}
+          title={t('parentHome.settingsTitle')}
+        />
+      ) : helpOpen ? (
+        <ChildGardenHelp direction={direction} onLeave={() => router.replace('/role')} />
+      ) : null}
 
-      {recognized ? (
-        <View style={styles.causeRecord} testID="garden-cause-record">
-          <View
-            style={[
-              styles.inlineAccent,
-              direction === 'rtl' ? styles.inlineAccentRtl : styles.inlineAccentLtr,
-            ]}
-          >
-            <View style={[styles.inlineAccentLine, styles.causeAccentLine]} />
-            <Text color="earth" style={styles.inlineAccentText} variant="caption">
-              {t('checkIn.praiseLabel')}
+      <View style={styles.intro}>
+        <View style={[styles.contextRow, { flexDirection: logicalRowDirection(direction) }]}>
+          <View style={styles.contextIcon}>
+            <GhafIcon color={colors.ghafEmerald} name="flower" size={24} />
+          </View>
+          <View style={styles.contextCopy}>
+            <Text brand color="primary" direction={direction} variant="label">
+              {t('garden.profileContext', { child: localize(activeChild.displayName, locale) })}
+            </Text>
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+              {t('origin.symbolic')}
             </Text>
           </View>
-          <Text color="forest" variant="heading">
-            {journey.checkIn?.praise ? localize(journey.checkIn.praise, locale) : t('garden.cause')}
+        </View>
+        <Text brand color="deepForest" direction={direction} variant="parentHero">
+          {t('garden.title')}
+        </Text>
+        <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
+          {t('garden.body')}
+        </Text>
+      </View>
+
+      {matchingGrowth && activeRecognition ? (
+        <View
+          accessibilityLiveRegion="polite"
+          style={styles.causeRecord}
+          testID="garden-cause-record"
+        >
+          <View style={[styles.causeHeading, { flexDirection: logicalRowDirection(direction) }]}>
+            <View style={styles.causeIcon}>
+              <GhafIcon color={colors.tertiary} name="sparkle" size={24} />
+            </View>
+            <Text brand color="tertiary" direction={direction} style={styles.flex} variant="label">
+              {t('checkIn.praiseLabel')}
+            </Text>
+            <View style={styles.growthPill}>
+              <Text brand color="primary" direction={direction} tabular variant="caption">
+                {t('garden.progressReached', {
+                  current: formatter.format(matchingGrowth.seedsAfter),
+                  target: formatter.format(
+                    matchingGrowth.crossedThreshold ?? matchingGrowth.seedsAfter,
+                  ),
+                })}
+              </Text>
+            </View>
+          </View>
+          <Text brand color="deepForest" direction={direction} variant="screenTitle">
+            {activeRecognition.journey.checkIn?.praise
+              ? localize(activeRecognition.journey.checkIn.praise, locale)
+              : t('garden.causeDefault', {
+                  landscape: t(LANDSCAPE_LABEL_KEYS[matchingGrowth.landscapeId]),
+                })}
           </Text>
-          <Text color="forest" variant="label">
-            {t('garden.cause')}
+          <Text brand color="onSurfaceVariant" direction={direction} variant="body">
+            {t('garden.causeDefault', {
+              landscape: t(LANDSCAPE_LABEL_KEYS[matchingGrowth.landscapeId]),
+            })}
           </Text>
         </View>
       ) : null}
 
-      <GardenLandscape
-        accessibilityLabel={`${t('garden.title')}. ${t(
-          recognized ? 'garden.after' : 'garden.before',
-        )}`}
-        activeLandscapeId="mangrove"
-        labels={{
-          activeTrack: t(recognized ? 'garden.activeTrack' : 'garden.focusTrack'),
-          inspiredBy: t('garden.inspiredBy'),
-          symbolicDisclosure: t('garden.symbolicDisclosure'),
-        }}
-        recognitionReveal={
-          recognized
-            ? {
-                play: revealOnMount,
-                sequenceKey: Object.keys(recognitionLedger)[0] ?? 'recognized-p0',
-                accessibilityAnnouncement: recognitionAnnouncement,
-              }
-            : undefined
-        }
-        testID="uae-landscape-tracks"
-        tracks={tracks}
-      />
+      {tracks ? (
+        <GardenLandscape
+          accessibilityLabel={`${t('garden.title')}. ${tracks.mangrove.accessibilityLabel}`}
+          activeLandscapeId="mangrove"
+          labels={{
+            activeTrack: t(matchingGrowth ? 'garden.activeTrack' : 'garden.focusTrack'),
+            inspiredBy: t('garden.inspiredBy'),
+            symbolicDisclosure: t('garden.symbolicDisclosure'),
+          }}
+          recognitionReveal={
+            matchingGrowth && activeRecognition
+              ? {
+                  accessibilityAnnouncement: recognitionAnnouncement,
+                  play: revealOnMount,
+                  sequenceKey: activeRecognition.recognitionKey,
+                }
+              : undefined
+          }
+          testID="uae-landscape-tracks"
+          tracks={tracks}
+        />
+      ) : (
+        <GardenDataUnavailable
+          direction={direction}
+          onReturn={() => router.replace(role === 'parent' ? '/parent' : '/child')}
+        />
+      )}
 
       <FamilyCanopy
-        accessibilityLabel={`${t('parentHome.canopyTitle')}. ${canopy.contributionLeaves} / ${canopy.goalLeaves}`}
+        accessibilityLabel={`${t('parentHome.canopyTitle')}. ${t('accessibility.progress', {
+          current: formatter.format(canopy.contributionLeaves),
+          goal: formatter.format(canopy.goalLeaves),
+        })}`}
         contributionLeaves={canopy.contributionLeaves}
         goalLeaves={canopy.goalLeaves}
-        highlightLatestContribution={recognized}
-        latestContributionLabel={recognized ? t('garden.canopy') : undefined}
+        highlightLatestContribution={Boolean(activeRecognition?.receipt.canopyContribution)}
+        latestContributionLabel={
+          activeRecognition?.receipt.canopyContribution ? t('garden.canopy') : undefined
+        }
         meaning={t('parentHome.canopyMeaning')}
         progressAccessibilityLabel={t('accessibility.progress', {
-          current: canopy.contributionLeaves,
-          goal: canopy.goalLeaves,
+          current: formatter.format(canopy.contributionLeaves),
+          goal: formatter.format(canopy.goalLeaves),
         })}
-        progressLabel={t('common.leaves', { count: canopy.contributionLeaves })}
+        progressLabel={t('parentHome.canopyProgressLive', {
+          current: formatter.format(canopy.contributionLeaves),
+          goal: formatter.format(canopy.goalLeaves),
+        })}
         testID="recognized-family-canopy"
         title={t('parentHome.canopyTitle')}
       />
 
       <View style={styles.symbolicBoundary}>
-        <View
-          style={[
-            styles.inlineAccent,
-            direction === 'rtl' ? styles.inlineAccentRtl : styles.inlineAccentLtr,
-          ]}
-        >
-          <View style={[styles.inlineAccentLine, styles.disclosureAccentLine]} />
-          <Text color="forest" style={styles.inlineAccentText} variant="label">
+        <View style={[styles.disclosureHeading, { flexDirection: logicalRowDirection(direction) }]}>
+          <GhafIcon color={colors.ghafEmerald} name="info" size={22} />
+          <Text brand color="primary" direction={direction} style={styles.flex} variant="label">
             {t('garden.symbolicDisclosure')}
           </Text>
         </View>
-        <Text color="inkMuted" variant="caption">
+        <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
           {t('origin.synthetic')}
         </Text>
       </View>
-      <Button onPress={openCircle} testID="open-circle-button">
-        {t('navigation.circle')}
-      </Button>
-    </Screen>
+
+      <PrimaryButton
+        brand
+        direction={direction}
+        icon={
+          <GhafIcon
+            color={colors.onPrimary}
+            direction={direction === 'rtl' ? 'ltr' : 'rtl'}
+            name="arrow-back"
+            size={24}
+          />
+        }
+        iconPosition="end"
+        onPress={openCircle}
+        size="regular"
+        testID="open-circle-button"
+      >
+        {t('garden.circleAction')}
+      </PrimaryButton>
+    </R002aScreen>
+  );
+}
+
+function ChildGardenHelp({
+  direction,
+  onLeave,
+}: {
+  direction: TextDirection;
+  onLeave: () => void;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <View accessibilityLiveRegion="polite" style={styles.helpPanel} testID="garden-help-panel">
+      <View style={[styles.helpHeading, { flexDirection: logicalRowDirection(direction) }]}>
+        <View style={styles.contextIcon}>
+          <GhafIcon color={colors.ghafEmerald} name="help" size={24} />
+        </View>
+        <View style={styles.contextCopy}>
+          <Text brand color="deepForest" direction={direction} variant="label">
+            {t('garden.helpTitle')}
+          </Text>
+          <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+            {t('garden.helpBody')}
+          </Text>
+        </View>
+      </View>
+      <LanguageSwitcher compact showGuidance={false} />
+      <QuietButton
+        brand
+        direction={direction}
+        onPress={onLeave}
+        size="compact"
+        testID="garden-return-to-access-button"
+      >
+        {t('navigation.switchToParent')}
+      </QuietButton>
+    </View>
+  );
+}
+
+function GardenDataUnavailable({
+  direction,
+  onReturn,
+}: {
+  direction: TextDirection;
+  onReturn: () => void;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <View
+      accessibilityLiveRegion="polite"
+      style={styles.unavailablePanel}
+      testID="garden-data-unavailable"
+    >
+      <View style={[styles.disclosureHeading, { flexDirection: logicalRowDirection(direction) }]}>
+        <GhafIcon color={colors.error} name="info" size={22} />
+        <Text brand color="error" direction={direction} style={styles.flex} variant="label">
+          {t('garden.unavailableTitle')}
+        </Text>
+      </View>
+      <Text brand color="onSurfaceVariant" direction={direction} variant="body">
+        {t('garden.unavailableBody')}
+      </Text>
+      <QuietButton
+        brand
+        direction={direction}
+        onPress={onReturn}
+        size="compact"
+        testID="garden-unavailable-return-button"
+      >
+        {t('garden.unavailableAction')}
+      </QuietButton>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContent: { paddingBottom: spacing.huge },
-  causeRecord: {
-    gap: spacing.sm,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.gold,
-    paddingVertical: spacing.xl,
+  screenContent: {
+    paddingBottom: spacing.xxl,
   },
-  inlineAccent: {
+  intro: {
+    minWidth: 0,
+    gap: spacing.xs,
+  },
+  contextRow: {
+    minWidth: 0,
     alignItems: 'center',
     gap: spacing.sm,
   },
-  inlineAccentLtr: {
-    flexDirection: 'row',
+  contextIcon: {
+    width: layout.touchTarget,
+    height: layout.touchTarget,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.primaryFixedTint,
   },
-  inlineAccentRtl: {
-    // Yoga follows the document direction, so the first item stays at the logical start.
-    flexDirection: 'row',
-  },
-  inlineAccentLine: {
-    width: spacing.xl,
-    height: 1,
-  },
-  inlineAccentText: {
+  contextCopy: {
     minWidth: 0,
     flex: 1,
+    gap: spacing.xxs,
   },
-  causeAccentLine: {
-    backgroundColor: colors.gold,
+  helpPanel: {
+    minWidth: 0,
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.lg,
+    ...r001Shadows.soft,
   },
-  disclosureAccentLine: {
-    backgroundColor: colors.mangrove,
+  helpHeading: {
+    minWidth: 0,
+    alignItems: 'flex-start',
+    gap: spacing.sm,
+  },
+  causeRecord: {
+    minWidth: 0,
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.solarAmberBorder,
+    backgroundColor: colors.solarAmberTint,
+    padding: spacing.lg,
+    ...r001Shadows.soft,
+  },
+  causeHeading: {
+    minWidth: 0,
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  causeIcon: {
+    width: 40,
+    height: 40,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLowest,
+  },
+  growthPill: {
+    minHeight: 32,
+    maxWidth: '100%',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLowest,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
   },
   symbolicBoundary: {
+    minWidth: 0,
     gap: spacing.xs,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.water,
-    backgroundColor: colors.waterLight,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.secondaryFixedDim,
+    backgroundColor: colors.secondaryTint,
     padding: spacing.md,
+  },
+  unavailablePanel: {
+    minWidth: 0,
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.error,
+    backgroundColor: colors.errorContainer,
+    padding: spacing.lg,
+  },
+  disclosureHeading: {
+    minWidth: 0,
+    alignItems: 'flex-start',
+    gap: spacing.xs,
+  },
+  flex: {
+    minWidth: 0,
+    flex: 1,
   },
 });

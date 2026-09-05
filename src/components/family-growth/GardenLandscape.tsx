@@ -14,7 +14,7 @@ import Animated, {
 import Svg, { Circle, Ellipse, G, Line, Path, Rect } from 'react-native-svg';
 
 import { Text } from '@/components/primitives';
-import { colors, motion, radii, spacing } from '@/design/tokens';
+import { colors, motion, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import type { GardenStage, LandscapeId } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -96,7 +96,7 @@ export function GardenLandscape({
     <View accessibilityLabel={accessibilityLabel} style={styles.landscape} testID={testID}>
       <View style={[styles.landscapeHeading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <LandscapeMark />
-        <Text color="forest" style={styles.landscapeHeadingText} variant="label">
+        <Text brand color="deepForest" style={styles.landscapeHeadingText} variant="label">
           {labels.inspiredBy}
         </Text>
       </View>
@@ -129,7 +129,7 @@ export function GardenLandscape({
 
       <View style={[styles.symbolicNote, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <SymbolicMark />
-        <Text color="inkMuted" style={styles.noteText} variant="caption">
+        <Text brand color="onSurfaceVariant" style={styles.noteText} variant="caption">
           {labels.symbolicDisclosure}
         </Text>
       </View>
@@ -184,23 +184,23 @@ export function LandscapeTrack({
       <View style={styles.trackCopy}>
         <View style={[styles.trackHeader, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
           <View style={styles.trackNames}>
-            <Text color="forest" variant="heading">
+            <Text brand color="deepForest" variant="screenTitle">
               {content.name}
             </Text>
-            <Text color="mangrove" variant="caption">
+            <Text brand color="primary" variant="caption">
               {content.categoryLabel}
             </Text>
           </View>
           <View style={[styles.activeFlag, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
             <View style={styles.activeFlagLine} />
-            <Text color="forest" variant="caption">
+            <Text brand color="primary" variant="caption">
               {activeLabel}
             </Text>
           </View>
         </View>
 
         <View style={styles.stageRow}>
-          <Text color="forest" variant="label">
+          <Text brand color="deepForest" variant="label">
             {content.stageLabel}
           </Text>
           <StageRuler currentStage={content.stage} />
@@ -211,11 +211,11 @@ export function LandscapeTrack({
           direction={direction}
           progress={progress}
         />
-        <Text color="inkMuted" variant="caption">
+        <Text brand color="onSurfaceVariant" tabular variant="caption">
           {content.progressLabel}
         </Text>
         {content.originNote ? (
-          <Text color="earth" variant="caption">
+          <Text brand color="tertiary" variant="caption">
             {content.originNote}
           </Text>
         ) : null}
@@ -250,15 +250,15 @@ function CompactHorizonTrack({ content, id, isLast }: CompactHorizonTrackProps) 
           <LandscapeSpecimen active={false} id={id} stage={content.stage} />
         </View>
         <View style={styles.compactTrackCopy}>
-          <Text color="forest" variant="label">
+          <Text brand color="deepForest" variant="label">
             {content.name}
           </Text>
           <View style={[styles.compactMeta, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-            <Text color="forest" variant="caption">
+            <Text brand color="primary" variant="caption">
               {content.stageLabel}
             </Text>
             <View style={styles.compactMetaDot} />
-            <Text color="inkMuted" direction="ltr" variant="caption">
+            <Text brand color="onSurfaceVariant" direction={direction} tabular variant="caption">
               {content.progressLabel}
             </Text>
           </View>
@@ -913,30 +913,32 @@ const styles = StyleSheet.create({
   trackLedger: {
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radii.xl,
+    borderColor: colors.outlineVariant,
+    borderRadius: r001Radii.xl,
     borderCurve: 'continuous',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceContainerLowest,
+    ...r001Shadows.soft,
   },
   trackHero: {
     gap: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.water,
-    backgroundColor: colors.waterLight,
+    borderBottomColor: colors.secondaryFixedDim,
+    backgroundColor: colors.mangroveTealTint,
     padding: spacing.lg,
   },
   heroSpecimenFrame: {
     position: 'relative',
     width: '100%',
-    height: 176,
+    maxHeight: 220,
+    aspectRatio: 176 / 104,
     overflow: 'hidden',
-    borderRadius: radii.md,
+    borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
     backgroundColor: colors.waterLight,
   },
   supportingLedger: {
     position: 'relative',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceContainerLowest,
   },
   connectionLine: {
     position: 'absolute',
@@ -961,8 +963,8 @@ const styles = StyleSheet.create({
     height: 9,
     borderWidth: 2,
     borderColor: colors.earth,
-    borderRadius: radii.pill,
-    backgroundColor: colors.surface,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLowest,
   },
   connectionNodeLtr: {
     left: spacing.md,
@@ -974,7 +976,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     minHeight: 72,
     borderBottomWidth: 1,
-    borderBottomColor: colors.line,
+    borderBottomColor: colors.surfaceContainerHigh,
     paddingStart: spacing.xxl,
     paddingEnd: spacing.md,
     paddingVertical: spacing.sm,
@@ -992,7 +994,7 @@ const styles = StyleSheet.create({
     height: 48,
     flexShrink: 0,
     overflow: 'hidden',
-    borderRadius: radii.sm,
+    borderRadius: r001Radii.md,
     borderCurve: 'continuous',
   },
   compactTrackCopy: {
@@ -1008,8 +1010,8 @@ const styles = StyleSheet.create({
   compactMetaDot: {
     width: spacing.xxs,
     height: spacing.xxs,
-    borderRadius: radii.pill,
-    backgroundColor: colors.gold,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.solarAmber,
   },
   recognitionSeedCue: {
     position: 'absolute',
@@ -1050,20 +1052,24 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   trackNames: {
-    flex: 1,
+    minWidth: 0,
+    flexGrow: 1,
+    flexBasis: 180,
     gap: spacing.xxs,
   },
   activeFlag: {
     minHeight: 32,
+    minWidth: 0,
     maxWidth: 160,
-    flexShrink: 1,
+    flexBasis: 128,
+    flexShrink: 0,
     alignItems: 'center',
     gap: spacing.xs,
   },
   activeFlagLine: {
     width: 13,
     height: 2,
-    backgroundColor: colors.mangrove,
+    backgroundColor: colors.mangroveTeal,
   },
   stageRow: {
     gap: spacing.xs,
@@ -1076,8 +1082,8 @@ const styles = StyleSheet.create({
   stageMark: {
     width: 14,
     height: 3,
-    borderRadius: radii.pill,
-    backgroundColor: colors.line,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerHighest,
   },
   stageMarkPast: {
     backgroundColor: colors.leaf,
@@ -1085,20 +1091,20 @@ const styles = StyleSheet.create({
   stageMarkCurrent: {
     width: 22,
     height: 5,
-    backgroundColor: colors.ghaf,
+    backgroundColor: colors.ghafEmerald,
   },
   progressTrack: {
     position: 'relative',
     height: 8,
     overflow: 'hidden',
-    borderRadius: radii.pill,
-    backgroundColor: colors.leafLight,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerHigh,
   },
   progressFill: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    backgroundColor: colors.mangrove,
+    backgroundColor: colors.mangroveTeal,
   },
   progressFillLtr: {
     left: 0,
@@ -1114,7 +1120,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: colors.line,
+    borderTopColor: colors.surfaceContainerHigh,
   },
   noteText: {
     flex: 1,

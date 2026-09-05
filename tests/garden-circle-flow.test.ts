@@ -277,20 +277,20 @@ describe('US4 symbolic garden and privacy-safe circle consequence', () => {
     expect(landscapeSource).toContain('testID={`compact-landscape-${id}`}');
     expect(landscapeSource).toContain('{content.stageLabel}');
     expect(landscapeSource).toContain('{content.progressLabel}');
-    expect(landscapeSource).toMatch(/direction="ltr"[\s\S]{0,180}\{content\.progressLabel\}/);
+    expect(landscapeSource).toMatch(
+      /direction=\{direction\}[\s\S]{0,180}\{content\.progressLabel\}/,
+    );
+    expect(landscapeSource).not.toMatch(/direction="ltr"[\s\S]{0,180}\{content\.progressLabel\}/);
     expect(landscapeSource).not.toMatch(/LANDSCAPE_ORDER\.map\([\s\S]{0,600}<LandscapeTrack/);
   });
 
-  it('uses direction-aware inline accents on the Arabic garden instead of a physical-left side tab', () => {
+  it('uses logical direction-aware Garden rows instead of a physical-left side tab', () => {
     const routeSource = readFileSync(new URL('../app/garden.tsx', import.meta.url), 'utf8');
 
     expect(routeSource).toContain(
       'const direction = usePrototypeStore((state) => state.direction)',
     );
-    expect(routeSource).toContain(
-      "direction === 'rtl' ? styles.inlineAccentRtl : styles.inlineAccentLtr",
-    );
-    expect(routeSource).toMatch(/inlineAccentRtl:\s*\{[\s\S]{0,160}flexDirection:\s*'row'/);
+    expect(routeSource).toContain('logicalRowDirection(direction)');
     expect(routeSource).not.toMatch(/\bstart:\s*0/);
     expect(routeSource).not.toContain('borderStartWidth');
   });

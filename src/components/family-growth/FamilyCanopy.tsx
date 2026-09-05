@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Ellipse, G, Path, Rect } from 'react-native-svg';
 
 import { Text } from '@/components/primitives';
-import { colors, radii, spacing } from '@/design/tokens';
+import { colors, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 const CANOPY_LEAVES = [
@@ -179,7 +179,7 @@ export function FamilyCanopy({
                 direction === 'rtl' ? styles.titleRuleRtl : styles.titleRuleLtr,
               ]}
             />
-            <Text color="forest" variant="heading">
+            <Text brand color="deepForest" variant="screenTitle">
               {title}
             </Text>
           </View>
@@ -234,10 +234,10 @@ export function HouseholdContribution({
           ]}
         />
       </View>
-      <Text color="forest" variant="label">
+      <Text brand color="deepForest" tabular variant="label">
         {progressLabel}
       </Text>
-      <Text color="inkMuted" variant="caption">
+      <Text brand color="onSurfaceVariant" variant="caption">
         {meaning}
       </Text>
       {latestContributionLabel ? (
@@ -245,7 +245,7 @@ export function HouseholdContribution({
           style={[styles.latestContribution, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
         >
           <NewLeafMark />
-          <Text color="earth" style={styles.latestContributionText} variant="caption">
+          <Text brand color="tertiary" style={styles.latestContributionText} variant="caption">
             {latestContributionLabel}
           </Text>
         </View>
@@ -287,32 +287,38 @@ const styles = StyleSheet.create({
   canopy: {
     width: '100%',
     overflow: 'hidden',
-    borderRadius: radii.xl,
+    borderRadius: r001Radii.xl,
     borderCurve: 'continuous',
-    backgroundColor: colors.leafMist,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.surfaceContainerLowest,
+    ...r001Shadows.soft,
   },
   canopyLayout: {
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: spacing.xl,
-    padding: spacing.xl,
+    gap: spacing.lg,
+    padding: spacing.md,
   },
   canopyVisual: {
     flexGrow: 1,
-    flexBasis: 280,
+    flexShrink: 1,
+    flexBasis: 220,
     width: '100%',
-    minWidth: 238,
+    minWidth: 0,
     maxWidth: 360,
-    height: 238,
+    aspectRatio: 288 / 208,
     overflow: 'hidden',
-    borderRadius: radii.lg,
+    borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
   },
   canopyCopy: {
     flexGrow: 1,
-    flexBasis: 238,
-    minWidth: 220,
-    gap: spacing.lg,
+    flexShrink: 1,
+    flexBasis: 200,
+    width: '100%',
+    minWidth: 0,
+    gap: spacing.md,
   },
   titleGroup: {
     gap: spacing.sm,
@@ -335,14 +341,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 14,
     overflow: 'hidden',
-    borderRadius: radii.pill,
-    backgroundColor: colors.surface,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerHigh,
   },
   progressFill: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    backgroundColor: colors.ghaf,
+    backgroundColor: colors.ghafEmerald,
   },
   progressFillLtr: {
     left: 0,
@@ -356,8 +362,8 @@ const styles = StyleSheet.create({
     top: 2,
     bottom: 2,
     width: 3,
-    borderRadius: radii.pill,
-    backgroundColor: colors.gold,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.solarAmber,
   },
   progressRootLtr: {
     left: spacing.xs,
@@ -372,7 +378,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderTopWidth: 1,
-    borderTopColor: colors.sand,
+    borderTopColor: colors.surfaceContainerHigh,
   },
   latestContributionText: {
     flex: 1,
