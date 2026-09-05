@@ -50,6 +50,28 @@ describe('R002b combined RevealBundle route integration', () => {
     );
   });
 
+  it('distinguishes a normal first start from a recovered already-presenting mount', () => {
+    const route = source(routePath);
+
+    expect(route).toContain(
+      "const [enteredAsPresenting] = useState(() => bundle?.lifecycle === 'presenting')",
+    );
+    expect(route).toContain("recoveryState: enteredAsPresenting ? 'recovered' : 'stable'");
+    expect(route).not.toContain("recoveryState: started ? 'stable' : 'interrupted'");
+    expect(route).toContain('<RevealBundleScreen initialFocus');
+  });
+
+  it('recovers an acknowledged interruption and applies the same lifecycle policy to every Back', () => {
+    const route = source(routePath);
+
+    expect(route).toContain("bundle.lifecycle !== 'acknowledged'");
+    expect(route).toContain("bundle?.lifecycle !== 'acknowledged'");
+    expect(route).toContain('archiveRevealPresentation(bundle.id)');
+    expect(route).toContain('onBack={dismissPresentation}');
+    expect(route).toContain('onAcknowledge: dismissPresentation');
+    expect(route).not.toContain('onBack={onBack}');
+  });
+
   it('keeps the R002a fallback and exposes a pending handoff only behind the default-off flag', () => {
     const child = source('app/child/index.tsx');
 
@@ -59,6 +81,15 @@ describe('R002b combined RevealBundle route integration', () => {
     expect(child).toContain("pathname: '/child/reveal/[bundleId]'");
     expect(child).toContain("testID: 'open-r002b-reveal-button'");
     expect(child).toContain("testID: 'open-recognized-garden-button'");
+  });
+
+  it('returns to a stable Child Today region after the Reveal action disappears', () => {
+    const child = source('app/child/index.tsx');
+
+    expect(child).toContain("params.restoreFocusTarget === 'open-r002b-reveal-button'");
+    expect(child).toContain('focusAccessibilityTarget(revealReturnFocusRef.current)');
+    expect(child).toContain('nativeID="open-r002b-reveal-button"');
+    expect(child).toContain("bundle.lifecycle === 'acknowledged'");
   });
 
   it('shows the Growth destination only when its independent Impact Path flag is enabled', () => {

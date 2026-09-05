@@ -68,6 +68,44 @@ describe('R002b validated Back navigation', () => {
     });
   });
 
+  it('reconstructs the stable Child Today reveal origin after acknowledgment removes its CTA', () => {
+    const goBack = vi.fn();
+    const replace = vi.fn();
+    const onBack = createValidatedBackHandler({
+      back: {
+        restored: true,
+        origin: {
+          version: 1,
+          id: 'child_today_reveal_handoff',
+          profileId: 'child_salem',
+          entityId: 'reveal:child_salem:learning:completion-1',
+          scrollOffset: 288,
+        },
+        href: '/child',
+        focusTarget: 'open-r002b-reveal-button',
+        scrollOffset: 288,
+        filter: null,
+      },
+      profileId: 'child_salem',
+      safeRoot: '/child',
+      canGoBack: () => false,
+      goBack,
+      replace,
+    });
+
+    onBack();
+
+    expect(goBack).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledWith({
+      pathname: '/child',
+      params: {
+        restoreFocusTarget: 'open-r002b-reveal-button',
+        restoreProfileId: 'child_salem',
+        restoreScrollOffset: '288',
+      },
+    });
+  });
+
   it('restores the validated Garden entry when Shared Growth was opened there', () => {
     const replace = vi.fn();
     const onBack = createValidatedBackHandler({

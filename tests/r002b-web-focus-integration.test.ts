@@ -25,4 +25,16 @@ describe('R002b web-safe focus integration', () => {
     expect(parent).toContain('focusAccessibilityTarget(progressEntryRef.current)');
     expect(parent).not.toContain('findNodeHandle');
   });
+
+  it('routes Reveal initial and Child Today return focus through the cross-platform helper', () => {
+    const reveal = source('src/components/r002b/RevealBundleScreen.tsx');
+    const child = source('app/child/index.tsx');
+
+    expect(reveal).toContain("from '@/utils/accessibilityFocus'");
+    expect(reveal).toContain('focusAccessibilityTarget(initialFocusRef.current)');
+    expect(child).toContain("from '@/utils/accessibilityFocus'");
+    expect(child).toContain('focusAccessibilityTarget(revealReturnFocusRef.current)');
+    expect(reveal).not.toContain('findNodeHandle');
+    expect(child).not.toContain('findNodeHandle');
+  });
 });

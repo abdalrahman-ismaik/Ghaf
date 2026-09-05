@@ -179,6 +179,25 @@ describe('R002b Growth Journey presentation components', () => {
     expect(source).toContain('focusAccessibilityTarget(');
   });
 
+  it('places Impact Path station restoration focus on the accessible station node itself', () => {
+    const source = componentSource();
+    const stationSource = source.slice(
+      source.indexOf('function ImpactPathStation'),
+      source.indexOf('function BadgeGalleryCard'),
+    );
+    const accessibleStation = stationSource.slice(
+      stationSource.indexOf('<View\n          accessible'),
+    );
+
+    expect(accessibleStation).toContain('nativeID={station.focusTargetId}');
+    expect(accessibleStation).toContain('onLayout={focusAfterLayout}');
+    expect(accessibleStation).toContain('ref={stationRef}');
+    expect(accessibleStation).toContain('testID={station.focusTargetId}');
+    expect(
+      stationSource.slice(0, stationSource.indexOf('<View\n          accessible')),
+    ).not.toContain('ref={stationRef}');
+  });
+
   it('never calls native focus lookup from a restored Growth surface on web', () => {
     const source = componentSource();
 

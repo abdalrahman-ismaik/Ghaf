@@ -88,6 +88,19 @@ describe('R002b combined RevealBundle presentation', () => {
     expect(source).toContain("edges={['bottom']}");
   });
 
+  it('focuses one accessible heading deterministically when the route requests initial focus', () => {
+    const source = componentSource();
+
+    expect(source).toContain("from '@/utils/accessibilityFocus'");
+    expect(source).toContain('readonly initialFocus?: boolean;');
+    expect(source).toContain('focusAccessibilityTarget(initialFocusRef.current)');
+    expect(source).toMatch(
+      /<View\s+accessible[\s\S]*?accessibilityRole="header"[\s\S]*?onLayout=\{focusInitialHeadingAfterLayout\}[\s\S]*?ref=\{initialFocusRef\}/u,
+    );
+    expect(source).not.toContain('findNodeHandle');
+    expect(source).not.toContain('AccessibilityInfo.setAccessibilityFocus');
+  });
+
   it('uses state-specific status treatment and AA text colors for recovery surfaces', () => {
     const source = componentSource();
 

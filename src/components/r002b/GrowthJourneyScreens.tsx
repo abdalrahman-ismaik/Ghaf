@@ -962,13 +962,7 @@ function ImpactPathStation({
     restored.current = focusAccessibilityTarget(stationRef.current);
   };
   return (
-    <View
-      nativeID={station.focusTargetId}
-      onLayout={focusAfterLayout}
-      ref={stationRef}
-      style={[styles.stationRow, { flexDirection: logicalRowDirection(direction) }]}
-      testID={station.focusTargetId}
-    >
+    <View style={[styles.stationRow, { flexDirection: logicalRowDirection(direction) }]}>
       <View aria-hidden style={styles.stationRail}>
         <View style={[styles.stationMarker, stationMarkerStyle[station.state]]}>
           <GhafIcon
@@ -984,7 +978,11 @@ function ImpactPathStation({
           accessible
           accessibilityLabel={station.accessibilityLabel}
           accessibilityLanguage={language === 'ar' ? 'ar-AE' : 'en-AE'}
+          nativeID={station.focusTargetId}
+          onLayout={focusAfterLayout}
+          ref={stationRef}
           style={styles.stationCopy}
+          testID={station.focusTargetId}
         >
           <Text
             brand

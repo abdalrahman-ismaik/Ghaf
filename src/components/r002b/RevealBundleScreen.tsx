@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,6 +15,7 @@ import {
 } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 import type { RevealConsequence } from '@/models/revealBundle';
+import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
 
 export type RevealContentState =
   | 'ready'
@@ -52,6 +54,7 @@ export interface RevealBundleScreenProps {
   readonly direction: TextDirection;
   readonly groupLabel: string;
   readonly illustrationLabel: string;
+  readonly initialFocus?: boolean;
   readonly introduction: string;
   readonly items: readonly RevealConsequencePresentation[];
   readonly language: LocaleCode;
@@ -83,6 +86,7 @@ export function RevealBundleScreen({
   direction,
   groupLabel,
   illustrationLabel,
+  initialFocus = false,
   introduction,
   items,
   language,
@@ -94,6 +98,12 @@ export function RevealBundleScreen({
 }: RevealBundleScreenProps) {
   const { compact, expanded } = useResponsiveRevealLayout();
   const status = statusPresentation[contentState];
+  const initialFocusRef = useRef<View>(null);
+  const initialFocusApplied = useRef(false);
+  const focusInitialHeadingAfterLayout = () => {
+    if (!initialFocus || initialFocusApplied.current) return;
+    initialFocusApplied.current = focusAccessibilityTarget(initialFocusRef.current);
+  };
 
   return (
     <View
@@ -115,18 +125,26 @@ export function RevealBundleScreen({
           direction={direction}
         />
         <View style={styles.heroCopy}>
-          <Text
-            accessibilityLabel={groupLabel}
+          <View
+            accessible
+            accessibilityLabel={`${groupLabel}. ${title}. ${statusLabel}`}
+            accessibilityLanguage={language === 'ar' ? 'ar-AE' : 'en-AE'}
             accessibilityRole="header"
-            align={expanded ? 'start' : 'center'}
-            brand
-            color="deepForest"
-            direction={direction}
-            language={language}
-            variant="hero"
+            onLayout={focusInitialHeadingAfterLayout}
+            ref={initialFocusRef}
+            testID="r002b-reveal-initial-focus"
           >
-            {title}
-          </Text>
+            <Text
+              align={expanded ? 'start' : 'center'}
+              brand
+              color="deepForest"
+              direction={direction}
+              language={language}
+              variant="hero"
+            >
+              {title}
+            </Text>
+          </View>
           <Text
             align={expanded ? 'start' : 'center'}
             brand

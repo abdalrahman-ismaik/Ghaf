@@ -34,6 +34,7 @@ import type {
   TaskTemplate,
 } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
 
 const LANDSCAPE_LABEL_KEYS: Readonly<Record<LandscapeId, string>> = {
   ghaf: 'garden.ghaf',
@@ -80,7 +81,7 @@ interface ChildHomeParams extends Record<string, R002bRouteParam> {
 function restoredChildHomePosition(
   params: ChildHomeParams,
   activeChildId: SyntheticChildId,
-  enabled: boolean,
+  enabled: { readonly impactPath: boolean; readonly reveal: boolean },
 ) {
   const profileMatches = params.restoreProfileId === activeChildId;
   const rawOffset = params.restoreScrollOffset;
@@ -91,10 +92,13 @@ function restoredChildHomePosition(
     Number(rawOffset) <= 100_000
       ? Number(rawOffset)
       : 0;
+  const pathTarget = enabled.impactPath && params.restoreFocusTarget === 'r002b-today-path-action';
+  const revealTarget =
+    enabled.reveal &&
+    (params.restoreFocusTarget === 'open-r002b-reveal-button' ||
+      params.restoreFocusTarget === 'r002b-child-reveal-growth-action');
   const focusTarget =
-    enabled && profileMatches && params.restoreFocusTarget === 'r002b-today-path-action'
-      ? params.restoreFocusTarget
-      : undefined;
+    profileMatches && (pathTarget || revealTarget) ? params.restoreFocusTarget : undefined;
   return { focusTarget, scrollOffset } as const;
 }
 
@@ -128,12 +132,24 @@ export default function ChildHomeScreen() {
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const r002bGrowthEnabled = role === 'child' && r002bFeatureFlags.r002b_impact_path_ui;
-  const restored = restoredChildHomePosition(params, activeChildId, r002bGrowthEnabled);
+  const r002bRevealEnabled = role === 'child' && r002bFeatureFlags.r002b_reveal_bundle_v2;
+  const restored = restoredChildHomePosition(params, activeChildId, {
+    impactPath: r002bGrowthEnabled,
+    reveal: r002bRevealEnabled,
+  });
   const restoredFocusTarget = restored.focusTarget;
   const restoredScrollOffset = restored.scrollOffset;
   const childScrollOffsetRef = useRef(restoredScrollOffset);
-  const pendingReveal = r002bFeatureFlags.r002b_reveal_bundle_v2
+  const revealReturnFocusRef = useRef<View>(null);
+  const revealReturnFocusApplied = useRef(false);
+  const pendingReveal = r002bRevealEnabled
     ? (revealBundleQueue.bundles.find(
+        (bundle) =>
+          bundle.lifecycle === 'acknowledged' &&
+          bundle.profileId === activeChildId &&
+          bundle.profileEpochId === profileEpochId,
+      ) ??
+      revealBundleQueue.bundles.find(
         (bundle) =>
           bundle.lifecycle === 'presenting' &&
           bundle.profileId === activeChildId &&
@@ -193,6 +209,17 @@ export default function ChildHomeScreen() {
   useEffect(() => {
     childScrollOffsetRef.current = restoredScrollOffset;
   }, [activeChildId, restoredScrollOffset]);
+
+  const focusRevealReturnAfterLayout = () => {
+    if (
+      (restoredFocusTarget !== 'open-r002b-reveal-button' &&
+        restoredFocusTarget !== 'r002b-child-reveal-growth-action') ||
+      revealReturnFocusApplied.current
+    ) {
+      return;
+    }
+    revealReturnFocusApplied.current = focusAccessibilityTarget(revealReturnFocusRef.current);
+  };
 
   const previewChoices = useMemo(
     () => choicePool.seededPreviewChoices.filter((choice) => choice.childId === activeChildId),
@@ -468,7 +495,16 @@ export default function ChildHomeScreen() {
 
       {currentAssignmentChoice && currentTemplate && currentWorkMode && journey ? (
         <View style={styles.currentWork} testID="current-assignment">
-          <View style={[styles.sectionHeading, { flexDirection: logicalRowDirection(direction) }]}>
+          <View
+            accessible
+            accessibilityLabel={`${t('childHome.currentWork')}. ${formatter.format(child.earnedSeeds)} ${t('common.seedUnit')}`}
+            accessibilityRole="header"
+            nativeID="open-r002b-reveal-button"
+            onLayout={focusRevealReturnAfterLayout}
+            ref={revealReturnFocusRef}
+            style={[styles.sectionHeading, { flexDirection: logicalRowDirection(direction) }]}
+            testID="child-today-reveal-return-region"
+          >
             <Text brand color="ghafEmerald" direction={direction} variant="screenTitle">
               {t('childHome.currentWork')}
             </Text>
@@ -563,7 +599,9 @@ export default function ChildHomeScreen() {
       {r002bGrowth.ok ? (
         <TodayImpactPathCard
           {...r002bGrowth.data.today}
-          initialFocusTargetId={restoredFocusTarget}
+          initialFocusTargetId={
+            restoredFocusTarget === 'r002b-today-path-action' ? restoredFocusTarget : undefined
+          }
           testID="r002b-today-path-card"
         />
       ) : null}

@@ -40,10 +40,19 @@ function isCanonicalPendingBundle(
     !bundle ||
     bundle.profileId !== profileId ||
     bundle.profileEpochId !== profileEpochId ||
-    (bundle.lifecycle !== 'ready' && bundle.lifecycle !== 'presenting')
+    (bundle.lifecycle !== 'ready' &&
+      bundle.lifecycle !== 'presenting' &&
+      bundle.lifecycle !== 'acknowledged')
   ) {
     return false;
   }
+  const acknowledged = queue.find(
+    (candidate) =>
+      candidate.lifecycle === 'acknowledged' &&
+      candidate.profileId === profileId &&
+      candidate.profileEpochId === profileEpochId,
+  );
+  if (acknowledged) return acknowledged.id === bundle.id;
   const presenting = queue.find((candidate) => candidate.lifecycle === 'presenting');
   if (presenting) return presenting.id === bundle.id;
   return (
@@ -118,41 +127,37 @@ function AuthorizedChildReveal({
   const reducedMotion = Boolean(useReducedMotion());
   const [busy, setBusy] = useState(false);
   const announcedBundleRef = useRef<string | null>(null);
+  const [enteredAsPresenting] = useState(() => bundle?.lifecycle === 'presenting');
   const started = bundle?.lifecycle === 'presenting';
 
-  const onBack = useMemo(
+  const restoreToday = useMemo(
     () =>
       createValidatedBackHandler({
         back: access.back,
         profileId,
         safeRoot: '/child',
-        canGoBack: () => router.canGoBack(),
+        canGoBack: () => false,
         goBack: () => router.back(),
         replace: (target) => router.replace(target as Href),
       }),
     [access.back, profileId, router],
   );
 
-  useEffect(() => {
-    if (bundle?.lifecycle !== 'ready') return;
-    const result = startRevealPresentation(bundle.id);
-    if (!result.ok || !result.data.bundle || result.data.bundle.id !== bundle.id) {
-      router.replace('/child');
-    }
-  }, [bundle, router, startRevealPresentation]);
-
-  useEffect(() => {
-    if (!bundle || !started || announcedBundleRef.current === bundle.id) return;
-    announcedBundleRef.current = bundle.id;
-    AccessibilityInfo.announceForAccessibility(
-      `${String(t('r002bReveal.title'))}. ${String(t('r002bReveal.state.presenting'))}`,
-    );
-  }, [bundle, started, t]);
-
   const finishPresentation = useCallback(
     (destination: 'back' | 'growth') => {
       if (!bundle || busy) return;
       setBusy(true);
+      if (bundle.lifecycle === 'ready') {
+        const startedResult = startRevealPresentation(bundle.id);
+        if (
+          !startedResult.ok ||
+          !startedResult.data.bundle ||
+          startedResult.data.bundle.id !== bundle.id
+        ) {
+          router.replace('/child');
+          return;
+        }
+      }
       const acknowledged = acknowledgeRevealPresentation(bundle.id);
       if (!acknowledged.ok) {
         router.replace('/child');
@@ -164,7 +169,7 @@ function AuthorizedChildReveal({
         return;
       }
       if (destination === 'back') {
-        onBack();
+        restoreToday();
         return;
       }
       const origin = createR002bOrigin({
@@ -187,13 +192,44 @@ function AuthorizedChildReveal({
       archiveRevealPresentation,
       bundle,
       busy,
-      onBack,
       profileId,
+      restoreToday,
       router,
+      startRevealPresentation,
     ],
   );
 
+  const dismissPresentation = useCallback(() => finishPresentation('back'), [finishPresentation]);
+
+  useEffect(() => {
+    if (bundle?.lifecycle !== 'ready') return;
+    const result = startRevealPresentation(bundle.id);
+    if (!result.ok || !result.data.bundle || result.data.bundle.id !== bundle.id) {
+      router.replace('/child');
+    }
+  }, [bundle, router, startRevealPresentation]);
+
+  useEffect(() => {
+    if (bundle?.lifecycle !== 'acknowledged') return;
+    const archived = archiveRevealPresentation(bundle.id);
+    if (!archived.ok) {
+      router.replace('/child');
+      return;
+    }
+    restoreToday();
+  }, [archiveRevealPresentation, bundle, restoreToday, router]);
+
+  useEffect(() => {
+    if (!bundle || !started || announcedBundleRef.current === bundle.id) return;
+    announcedBundleRef.current = bundle.id;
+    const state = enteredAsPresenting ? 'recovered' : 'presenting';
+    AccessibilityInfo.announceForAccessibility(
+      `${String(t('r002bReveal.title'))}. ${String(t(`r002bReveal.state.${state}`))}`,
+    );
+  }, [bundle, enteredAsPresenting, started, t]);
+
   if (!bundle || bundle.profileEpochId !== profileEpochId) return <Redirect href="/child" />;
+  if (bundle.lifecycle === 'acknowledged') return null;
   const presentation = createRevealBundlePresentation({
     bundle,
     profileId,
@@ -201,14 +237,14 @@ function AuthorizedChildReveal({
     language,
     direction,
     reducedMotion,
-    recoveryState: started ? 'stable' : 'interrupted',
+    recoveryState: enteredAsPresenting ? 'recovered' : 'stable',
     submitting: busy || !started,
     translate: (key, values) => String(t(key, values)),
-    onAcknowledge: () => finishPresentation('back'),
+    onAcknowledge: dismissPresentation,
     onOpenGrowth: r002bFeatureFlags.r002b_impact_path_ui
       ? () => finishPresentation('growth')
       : undefined,
-    onRecover: onBack,
+    onRecover: dismissPresentation,
   });
   if (!presentation.ok) return <Redirect href="/child" />;
 
@@ -219,12 +255,12 @@ function AuthorizedChildReveal({
       direction={direction}
       footer={<RevealBundleActionBar {...presentation.data.actions} />}
       language={language}
-      onBack={onBack}
+      onBack={dismissPresentation}
       reducedMotion={reducedMotion}
       testID="r002b-child-reveal-route"
       title={t('r002bReveal.title')}
     >
-      <RevealBundleScreen {...presentation.data.screen} />
+      <RevealBundleScreen initialFocus {...presentation.data.screen} />
     </R002bNestedScreen>
   );
 }
