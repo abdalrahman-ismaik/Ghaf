@@ -38,12 +38,14 @@ export default function RootLayout() {
   const isR002aParentSurface =
     pathname === '/parent' ||
     pathname === '/parent/check-in' ||
-    pathname.startsWith('/parent/task/');
+    pathname.startsWith('/parent/task/') ||
+    pathname.startsWith('/parent/family/');
   const usesLightSystemChrome =
     isR001Route ||
     isR002aParentSurface ||
     pathname === '/garden' ||
-    pathname.startsWith('/garden/');
+    pathname.startsWith('/garden/') ||
+    pathname === '/circle/shared-growth';
   const [fontsLoaded, fontError] = useFonts({
     Alexandria_400Regular,
     Alexandria_700Bold,

@@ -32,7 +32,8 @@ export interface R002bOrigin {
 
 interface OriginDefinition {
   readonly role: DemoRole;
-  readonly href: 'child' | 'garden' | 'impact_path' | 'badge_gallery' | 'badge_detail' | 'parent';
+  readonly href:
+    'child' | 'garden' | 'circle' | 'impact_path' | 'badge_gallery' | 'badge_detail' | 'parent';
   readonly focusTarget: string;
   readonly entity: 'none' | 'badge' | 'reveal';
   readonly acceptsFilter?: true;
@@ -102,7 +103,7 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
   },
   child_league_shared_growth_card: {
     role: 'child',
-    href: 'child',
+    href: 'circle',
     focusTarget: 'r002b-child-league-shared-growth-card',
     entity: 'none',
   },
@@ -274,6 +275,8 @@ function hrefFor(origin: R002bOrigin, definition: OriginDefinition): string {
       return '/child';
     case 'garden':
       return '/garden';
+    case 'circle':
+      return '/circle';
     case 'impact_path':
       return '/garden/impact-path';
     case 'badge_gallery':

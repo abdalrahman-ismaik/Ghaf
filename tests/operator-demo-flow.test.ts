@@ -38,6 +38,8 @@ const EXPECTED_ROUTES = [
   '/garden/learn/[learningId]/story',
   '/garden/learn/[learningId]/accessible',
   '/circle',
+  '/circle/shared-growth',
+  '/parent/family/shared-garden',
 ] as const;
 
 const LEGACY_ROUTES = [

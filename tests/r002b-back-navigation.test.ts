@@ -57,6 +57,35 @@ describe('R002b validated Back navigation', () => {
     });
   });
 
+  it('restores the preserved Circle entry when Shared Growth was opened there', () => {
+    const replace = vi.fn();
+    const onBack = createValidatedBackHandler({
+      back: {
+        restored: true,
+        href: '/circle',
+        focusTarget: 'r002b-child-league-shared-growth-card',
+        scrollOffset: 0,
+        filter: null,
+      },
+      profileId: 'child_salem',
+      safeRoot: '/child',
+      canGoBack: () => false,
+      goBack: vi.fn(),
+      replace,
+    });
+
+    onBack();
+
+    expect(replace).toHaveBeenCalledWith({
+      pathname: '/circle',
+      params: {
+        restoreFocusTarget: 'r002b-child-league-shared-growth-card',
+        restoreProfileId: 'child_salem',
+        restoreScrollOffset: '0',
+      },
+    });
+  });
+
   it('falls back to the safe role root when a nested origin cannot be reconstructed', () => {
     const replace = vi.fn();
     const onBack = createValidatedBackHandler({

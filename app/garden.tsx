@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Redirect, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { GhafIcon } from '@/components/access';
 import { FamilyCanopy } from '@/components/family-growth/FamilyCanopy';
@@ -20,6 +21,7 @@ import {
   R002aScreen,
 } from '@/components/r002a';
 import { GardenChapterModule } from '@/components/r002b/GrowthJourneyScreens';
+import { SharedGrowthEntryCard } from '@/components/r002b/SharedGrowthScreens';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import {
   colors,
@@ -58,6 +60,7 @@ export default function GardenScreen() {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
+  const reducedMotion = Boolean(useReducedMotion());
   const role = usePrototypeStore((state) => state.role);
   const children = usePrototypeStore((state) => state.children);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
@@ -78,6 +81,7 @@ export default function GardenScreen() {
   const r002bGrowthEnabled =
     role === 'child' &&
     (r002bFeatureFlags.r002b_impact_path_ui || r002bFeatureFlags.r002b_badges_ui);
+  const r002bSharedGrowthEnabled = r002bFeatureFlags.r002b_shared_growth_view;
   const openImpactPath = () => {
     const origin = createR002bOrigin({
       id: 'child_garden_path_card',
@@ -99,6 +103,30 @@ export default function GardenScreen() {
     if (!origin.ok) return;
     router.push({
       pathname: '/garden/badges',
+      params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
+  const openSharedGrowth = () => {
+    const origin = createR002bOrigin({
+      id: 'child_garden_shared_growth_card',
+      profileId: activeChildId,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/circle/shared-growth',
+      params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
+  const openParentSharedGarden = () => {
+    const origin = createR002bOrigin({
+      id: 'parent_garden_shared_settings_card',
+      profileId: activeChildId,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/parent/family/shared-garden',
       params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
     } as unknown as Href);
   };
@@ -388,6 +416,36 @@ export default function GardenScreen() {
 
       {role === 'child' && r002bGrowthEnabled && r002bGrowth.ok ? (
         <GardenChapterModule {...r002bGrowth.data.garden} testID="r002b-garden-chapter" />
+      ) : null}
+
+      {role === 'child' && r002bSharedGrowthEnabled ? (
+        <SharedGrowthEntryCard
+          actionLabel={t('r002bGrowth.chapter.sharedGrowthAction')}
+          body={t('r002bGrowth.chapter.sharedGrowthEntryDescription')}
+          direction={direction}
+          language={locale}
+          onPress={openSharedGrowth}
+          reducedMotion={reducedMotion}
+          statusLabel={t('r002bGrowth.chapter.sharedGrowthStatus')}
+          testID="r002b-garden-shared-growth-card"
+          title={t('r002bGrowth.chapter.sharedGrowthEntryTitle')}
+          tone="child"
+        />
+      ) : null}
+
+      {role === 'parent' && r002bSharedGrowthEnabled ? (
+        <SharedGrowthEntryCard
+          actionLabel={t('r002bSharedGrowth.parent.entryAction')}
+          body={t('r002bSharedGrowth.parent.entryBody')}
+          direction={direction}
+          language={locale}
+          onPress={openParentSharedGarden}
+          reducedMotion={reducedMotion}
+          statusLabel={t('r002bSharedGrowth.parent.entryStatus')}
+          testID="r002b-parent-garden-shared-settings-card"
+          title={t('r002bSharedGrowth.parent.entryTitle')}
+          tone="parent"
+        />
       ) : null}
 
       <FamilyCanopy

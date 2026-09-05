@@ -3,7 +3,7 @@ import type { ResolveR002bOriginResult } from './r002bOrigin';
 type RestoredOrigin = Extract<ResolveR002bOriginResult, { restored: true }>;
 
 export interface R002bBackNavigationTarget {
-  readonly pathname: '/child' | '/garden' | '/parent';
+  readonly pathname: '/child' | '/garden' | '/circle' | '/parent';
   readonly params: {
     readonly restoreFocusTarget: string;
     readonly restoreProfileId: string;
@@ -13,7 +13,9 @@ export interface R002bBackNavigationTarget {
 }
 
 function directRoot(href: string): R002bBackNavigationTarget['pathname'] | null {
-  if (href === '/child' || href === '/garden' || href === '/parent') return href;
+  if (href === '/child' || href === '/garden' || href === '/circle' || href === '/parent') {
+    return href;
+  }
   return null;
 }
 

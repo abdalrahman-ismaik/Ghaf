@@ -916,6 +916,131 @@ export const resources = {
           },
         },
       },
+      r002bSharedGrowth: {
+        common: {
+          back: 'رجوع',
+          state: {
+            ready: 'جاهز من العرض المحلي الاصطناعي.',
+            loading: 'جارٍ تجهيز عرض النمو المشترك المحلي…',
+            offline: 'لا يوجد اتصال. يبقى العرض الاصطناعي المُعدّ متاحًا.',
+            unavailable: 'النمو المشترك غير متاح الآن. لم يتغير تقدمك الخاص.',
+            error: 'تعذّر فتح هذا العرض. ارجع وحاول مرة أخرى.',
+            interrupted: 'توقف العرض مؤقتًا. لم يتغير تقدمك الخاص.',
+            recovered: 'أصبح عرض النمو المشترك جاهزًا من جديد.',
+            artUnavailable: 'الرسم الزخرفي غير متاح، والملاحظات النصية نفسها ظاهرة أدناه.',
+            submitting: 'جارٍ حفظ خيار المشاركة المستقبلية…',
+            saved: 'حُفظ خيار المشاركة المستقبلية.',
+            duplicate: 'كان هذا الخيار محفوظًا من قبل، ولم يُطبق مرتين.',
+          },
+        },
+        child: {
+          groupLabel: 'عرض النمو المشترك المجهول',
+          title: 'النمو المشترك',
+          subtitle:
+            'مشهد تعليمي هادئ ومجهول الهوية يوضح كيف تعتني أسر اصطناعية بالمياه والسواحل والظل المحلي.',
+          sceneAccessibilityLabel:
+            'مظلة نباتية ساحلية رمزية فوق ماء هادئ. تمثل عناية مجتمعية مجهولة الهوية وليست أثرًا بيئيًا مقاسًا.',
+          artUnavailableText:
+            'تعذّر عرض المشهد الزخرفي، لكن الملاحظات التعليمية والخصوصية بقيت متاحة.',
+          observationHeading: 'ما الذي تلاحظه الحديقة المشتركة؟',
+          emptyObservationText:
+            'لا توجد ملاحظة نوعية متاحة الآن. لا تتم مشاركة أي جزء من تقدمك الخاص.',
+          privacyHeading: 'ما الذي يبقى خاصًا؟',
+          privacyBody:
+            'لا تظهر هنا أسماء أو ملفات أو ترتيب أو نسب أو أعداد مشاركين أو تفاصيل مهام أو بذور أو شارات أو أحداث يمكن التعرف عليها.',
+          syntheticLabel: 'عرض مجتمعي اصطناعي مُعدّ مسبقًا',
+          viewOnlyHeading: 'المشاهدة لا تسهم في السجل',
+          viewOnlyBody:
+            'فتح هذه الشاشة لا يغيّر مهمة أو مكافأة أو حديقة أو دوريًا خاصًا أو إعدادًا عائليًا.',
+          participationHeading: 'الإشارات المجهولة المستقبلية',
+          participation: {
+            continued: 'يسمح وليّ الأمر حاليًا بإشارات مجهولة مستقبلية.',
+            paused: 'الإشارات الجديدة متوقفة مؤقتًا، ويمكنك مشاهدة هذا المشهد التعليمي.',
+            ended: 'انتهت المشاركة، ويمكنك مشاهدة هذا المشهد التعليمي.',
+          },
+          observationAccessibilityLabel: '{{theme}}. {{outlook}}.',
+          theme: {
+            coastalHabitatCare: 'العناية بالموائل الساحلية',
+            waterStewardship: 'ترشيد المياه',
+            nativeCanopyCare: 'العناية بالظل المحلي',
+          },
+          outlook: {
+            continuing: 'العناية مستمرة',
+            takingRoot: 'عناية جديدة تبدأ بالنمو',
+            growingGently: 'الرعاية تنمو بهدوء',
+          },
+        },
+        parent: {
+          groupLabel: 'إعدادات النمو المشترك لوليّ الأمر',
+          title: 'إعدادات الحديقة المشتركة',
+          subtitle:
+            'تحكم في الإشارات المجهولة المستقبلية فقط. تبقى سجلات الأطفال الخاصة منفصلة وغير متأثرة.',
+          entryTitle: 'إعدادات الحديقة المشتركة',
+          entryBody: 'راجع مشاركة الإشارات المجهولة المستقبلية من دون تغيير أي تقدم خاص.',
+          entryStatus: 'إعداد خاص بوليّ الأمر · العرض الاصطناعي منفصل',
+          entryAction: 'إدارة المشاركة المستقبلية',
+          currentHeading: 'حالة المشاركة الحالية',
+          status: {
+            continued: 'المشاركة مستمرة',
+            paused: 'المساهمات الجديدة متوقفة مؤقتًا',
+            ended: 'المشاركة منتهية',
+          },
+          statusDescription: {
+            continued: 'يمكن تسجيل إشارات اصطناعية مجهولة جديدة عند توفرها.',
+            paused: 'لن تُقبل إشارات جديدة، مع بقاء الموافقة الحالية قابلة للاستئناف.',
+            ended: 'لن تُقبل إشارات جديدة، وتتطلب العودة موافقة جديدة وصريحة من وليّ الأمر.',
+          },
+          privacyHeading: 'حدود الخصوصية',
+          privacyBody:
+            'لا يخرج اسم أو ملف أو ترتيب أو نسبة أو عدد مشاركين أو تفاصيل مهمة أو بذور أو شارة أو حدث يمكن التعرف عليه.',
+          futureOnlyHeading: 'ينطبق على المستقبل فقط',
+          futureOnlyBody:
+            'المتابعة أو الإيقاف المؤقت أو الإنهاء يغيّر قبول الإشارات المجهولة الجديدة فقط.',
+          noEffectHeading: 'لا تأثير في التقدم الخاص',
+          noEffectBody:
+            'لا تتغير المهام أو البذور أو الشارات أو الحديقة أو الدوري الخاص أو أوراق التحدي أو مكافآت العائلة أو السجل السابق.',
+          settingsHeading: 'اختيار المشاركة',
+          readOnlyHeading: 'العرض متاح للقراءة فقط',
+          readOnlyBody:
+            'يمكن مشاهدة الحالة الآن، لكن تغيير المشاركة يظل متوقفًا حتى تفعيل إذن المساهمة المستقل.',
+          freshConsentMessage:
+            'تتطلب العودة بعد الإنهاء موافقة جديدة وصريحة من وليّ الأمر قبل قبول أي إشارة مستقبلية.',
+          existingConsentMessage:
+            'يمكن استئناف المشاركة بعد الإيقاف المؤقت باستخدام الموافقة الحالية.',
+          pendingMessage: 'جارٍ تطبيق: {{action}}',
+          action: {
+            continue: {
+              label: 'متابعة المشاركة',
+              descriptionPaused: 'استئناف قبول الإشارات المجهولة الجديدة بالموافقة الحالية.',
+              descriptionEnded: 'العودة بموافقة جديدة وصريحة من وليّ الأمر.',
+              accessibilityLabel: 'متابعة المشاركة في الإشارات المجهولة المستقبلية',
+            },
+            pause: {
+              label: 'إيقاف المساهمات الجديدة مؤقتًا',
+              description: 'إيقاف الإشارات الجديدة مع إبقاء خيار الاستئناف بالموافقة الحالية.',
+              accessibilityLabel: 'إيقاف المساهمات المجهولة الجديدة مؤقتًا',
+            },
+            end: {
+              label: 'إنهاء المشاركة',
+              description: 'إنهاء قبول الإشارات الجديدة؛ تتطلب العودة موافقة جديدة.',
+              accessibilityLabel: 'إنهاء المشاركة في الإشارات المجهولة المستقبلية',
+            },
+          },
+          confirmation: {
+            groupLabel: 'تأكيد إعداد المشاركة المستقبلية',
+            end: {
+              title: 'إنهاء المشاركة؟',
+              body: 'سيتوقف قبول الإشارات الجديدة. لن يتغير أي سجل خاص أو تقدم سابق.',
+            },
+            rejoin: {
+              title: 'متابعة المشاركة بموافقة جديدة؟',
+              body: 'ستُسجل موافقة صريحة جديدة قبل قبول أي إشارة مجهولة مستقبلية.',
+            },
+            confirmLabel: 'تأكيد الاختيار',
+            cancelLabel: 'إلغاء',
+          },
+        },
+      },
       learning: {
         mangroveRoots: {
           title: 'بين جذور القرم',
@@ -1965,6 +2090,135 @@ export const resources = {
             path: 'View the related station',
             learning: 'Open available learning',
             assignedTask: 'Open the Parent-approved task',
+          },
+        },
+      },
+      r002bSharedGrowth: {
+        common: {
+          back: 'Back',
+          state: {
+            ready: 'Ready from the local synthetic view.',
+            loading: 'Preparing the local Shared Growth view…',
+            offline: 'You are offline. The prepared synthetic view remains available.',
+            unavailable:
+              'Shared Growth is unavailable right now. Your private progress is unchanged.',
+            error: 'This view could not be opened. Go back and try again.',
+            interrupted: 'The view was interrupted. Your private progress is unchanged.',
+            recovered: 'Shared Growth is ready again.',
+            artUnavailable:
+              'The decorative scene is unavailable; the same observations appear below.',
+            submitting: 'Saving the future-participation choice…',
+            saved: 'The future-participation choice was saved.',
+            duplicate: 'This choice was already saved. It was not applied twice.',
+          },
+        },
+        child: {
+          groupLabel: 'Anonymous Shared Growth view',
+          title: 'Shared Growth',
+          subtitle:
+            'A calm, anonymous learning scene showing how synthetic families care for water, coasts, and native shade.',
+          sceneAccessibilityLabel:
+            'A symbolic coastal canopy above calm water. It represents anonymous community care, not measured environmental impact.',
+          artUnavailableText:
+            'The decorative scene could not be shown, but the learning observations and privacy information remain available.',
+          observationHeading: 'What is the shared garden noticing?',
+          emptyObservationText:
+            'No qualitative observation is available right now. None of your private progress is shared.',
+          privacyHeading: 'What stays private?',
+          privacyBody:
+            'Names, profiles, ranks, percentages, participant counts, task details, Seeds, badges, and identifiable events never appear here.',
+          syntheticLabel: 'Prepared synthetic community view',
+          viewOnlyHeading: 'Viewing does not contribute',
+          viewOnlyBody:
+            'Opening this screen changes no task, reward, Garden, private League, or family setting.',
+          participationHeading: 'Future anonymous signals',
+          participation: {
+            continued: 'A Parent currently allows future anonymous signals.',
+            paused: 'New signals are paused. You can still view this learning scene.',
+            ended: 'Participation has ended. You can still view this learning scene.',
+          },
+          observationAccessibilityLabel: '{{theme}}. {{outlook}}.',
+          theme: {
+            coastalHabitatCare: 'Coastal habitat care',
+            waterStewardship: 'Water stewardship',
+            nativeCanopyCare: 'Native canopy care',
+          },
+          outlook: {
+            continuing: 'Care is continuing',
+            takingRoot: 'New care is taking root',
+            growingGently: 'Stewardship is growing gently',
+          },
+        },
+        parent: {
+          groupLabel: 'Parent Shared Growth settings',
+          title: 'Shared Garden settings',
+          subtitle:
+            'Control future anonymous signals only. Each Child’s private records remain separate and unchanged.',
+          entryTitle: 'Shared Garden settings',
+          entryBody:
+            'Review future anonymous-signal participation without changing private progress.',
+          entryStatus: 'Parent setting · separate synthetic view',
+          entryAction: 'Manage future participation',
+          currentHeading: 'Current participation status',
+          status: {
+            continued: 'Participation continuing',
+            paused: 'New contributions paused',
+            ended: 'Participation ended',
+          },
+          statusDescription: {
+            continued: 'New anonymous synthetic signals may be recorded when available.',
+            paused: 'No new signals are accepted; the current consent can still be used to resume.',
+            ended: 'No new signals are accepted. Returning requires fresh explicit Parent consent.',
+          },
+          privacyHeading: 'Privacy boundary',
+          privacyBody:
+            'No name, profile, rank, percentage, participant count, task detail, Seed, badge, or identifiable event leaves the private record.',
+          futureOnlyHeading: 'Future signals only',
+          futureOnlyBody:
+            'Continue, Pause, and End change only whether new anonymous signals may be accepted.',
+          noEffectHeading: 'Private progress is unaffected',
+          noEffectBody:
+            'Tasks, Seeds, badges, Garden, private League, Challenge Leaves, Family Rewards, and prior history do not change.',
+          settingsHeading: 'Participation choice',
+          readOnlyHeading: 'View-only settings',
+          readOnlyBody:
+            'You can review the current status, but participation changes remain disabled until the separate contribution flag is enabled.',
+          freshConsentMessage:
+            'Returning after End requires fresh explicit Parent consent before any future signal is accepted.',
+          existingConsentMessage: 'You can resume after Pause using the current consent.',
+          pendingMessage: 'Applying: {{action}}',
+          action: {
+            continue: {
+              label: 'Continue Participation',
+              descriptionPaused:
+                'Resume accepting new anonymous signals under the current consent.',
+              descriptionEnded: 'Return with fresh explicit Parent consent.',
+              accessibilityLabel: 'Continue participation in future anonymous signals',
+            },
+            pause: {
+              label: 'Pause New Contributions',
+              description:
+                'Stop new signals while retaining the option to resume under current consent.',
+              accessibilityLabel: 'Pause new anonymous contributions',
+            },
+            end: {
+              label: 'End Participation',
+              description: 'End new-signal acceptance; returning later requires fresh consent.',
+              accessibilityLabel: 'End participation in future anonymous signals',
+            },
+          },
+          confirmation: {
+            groupLabel: 'Future participation confirmation',
+            end: {
+              title: 'End participation?',
+              body: 'New signals will stop. No private record or prior progress will change.',
+            },
+            rejoin: {
+              title: 'Continue with fresh consent?',
+              body: 'A new explicit Parent consent receipt will be recorded before future anonymous signals are accepted.',
+            },
+            confirmLabel: 'Confirm choice',
+            cancelLabel: 'Cancel',
           },
         },
       },

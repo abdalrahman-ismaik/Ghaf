@@ -1,20 +1,41 @@
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { CircleProgress } from '@/components/family-growth/CircleProgress';
 import { JourneyHeader } from '@/components/journey';
 import { Button, Screen, Text } from '@/components/primitives';
+import { SharedGrowthEntryCard } from '@/components/r002b/SharedGrowthScreens';
+import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { colors, radii, spacing } from '@/design/tokens';
 import { resolveCircleFixture } from '@/features/circle/projection';
+import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function CircleScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
+  const language = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
+  const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const circle = usePrototypeStore((state) => state.circleGoal);
+  const reducedMotion = Boolean(useReducedMotion());
   const circleState = resolveCircleFixture(circle);
+
+  const openSharedGrowth = () => {
+    const origin = createR002bOrigin({
+      id: 'child_league_shared_growth_card',
+      profileId: activeChildId,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/circle/shared-growth',
+      params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
 
   const gardens = [
     {
@@ -95,6 +116,20 @@ export default function CircleScreen() {
           {t('origin.synthetic')}
         </Text>
       </View>
+      {role === 'child' && r002bFeatureFlags.r002b_shared_growth_view ? (
+        <SharedGrowthEntryCard
+          actionLabel={t('r002bGrowth.chapter.sharedGrowthAction')}
+          body={t('r002bGrowth.chapter.sharedGrowthEntryDescription')}
+          direction={direction}
+          language={language}
+          onPress={openSharedGrowth}
+          reducedMotion={reducedMotion}
+          statusLabel={t('r002bGrowth.chapter.sharedGrowthStatus')}
+          testID="r002b-child-league-shared-growth-card"
+          title={t('r002bGrowth.chapter.sharedGrowthEntryTitle')}
+          tone="child"
+        />
+      ) : null}
       <Button
         onPress={() => router.replace(role === 'parent' ? '/parent' : '/role')}
         testID="finish-demo-button"
