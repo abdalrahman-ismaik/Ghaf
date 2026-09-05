@@ -38,8 +38,11 @@ invalid projection hides the card and records no state.
 The card is one named group; progress and requirement are announced as text, and the decorative
 mark is hidden. The action is at least 48×48 and has destination context. Arabic order and alignment
 are RTL while the surrounding physical Child navigation remains unchanged. All strings belong in
-the bilingual resource. Canonical 390×844, English LTR, reduced-motion, content, accessibility, and
-physical Android review are pending; no external asset is authorized.
+the bilingual resource. Local browser-proxy review now covers Arabic RTL and English LTR at
+320×844, 360×844, 390×844, 430×932, and 768×1024; a synthetic 200%-text pass reflows without
+document horizontal overflow, and the 390×844 reduced-motion pass settles with zero running
+animations. Content, named accessibility review, and physical Android validation remain pending;
+no external asset is authorized.
 
 ## Acceptance
 

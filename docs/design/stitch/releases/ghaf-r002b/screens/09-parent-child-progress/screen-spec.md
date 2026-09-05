@@ -49,5 +49,8 @@ review. Child/avatar/badge/landscape marks are existing owned or code-native ass
 Prove Parent-only access/reauthentication, household/profile isolation, selector recomputation and
 context clearing, no sibling comparison, no manual reward mutation, safe Task Builder prefill,
 existing privacy visibility, deterministic offline/reset behavior, flag-off fallback, bilingual
-layout, and large-text containment. Canonical 390×844 and physical Android/TalkBack/Back evidence
-remain pending.
+layout, and large-text containment. Local browser-proxy review now covers Arabic RTL and English
+LTR at 320×844, 360×844, 390×844, 430×932, and 768×1024; an English 320-wide synthetic
+200%-text pass has no document horizontal overflow, and the 390×844 reduced-motion pass settles
+with zero running animations. Physical Android/TalkBack/Back and named privacy/copy review remain
+pending.

@@ -45,5 +45,7 @@ order in RTL and LTR, while data order stays deterministic. Use 48×48 targets, 
 Names/IDs/criteria come from the locked registry; descriptions, why-it-matters copy, and art remain
 human-review/provenance pending. Prove exact 16 IDs, stable ordering, profile/reset isolation,
 permanent earned state, no public data, transparent locked criteria, Detail origin restoration,
-bilingual parity, flag-off route rejection, and missing-art resilience. Canonical 390×844 and native
-review remain pending.
+bilingual parity, flag-off route rejection, and missing-art resilience. Local browser-proxy review
+now covers Arabic RTL and English LTR at 320×844, 360×844, 390×844, 430×932, and 768×1024;
+a synthetic 200%-text pass has no document horizontal overflow, and the 390×844 reduced-motion
+pass settles with zero running animations. Native and named human review remain pending.

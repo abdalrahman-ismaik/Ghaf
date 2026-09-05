@@ -45,4 +45,7 @@ Prove Parent-only access and reauthentication, view/contribution flag separation
 consent semantics, prospective-only anonymous effect, complete independence from every existing
 reward/progress authority, idempotency/recovery, household/profile isolation, offline/error truth,
 safe origin handling, flag-off R002a fallback, bilingual/large-text containment, and focus
-restoration. Canonical 390×844 and physical Android/TalkBack/Back evidence remain pending.
+restoration. Local browser-proxy review now covers Arabic RTL and English LTR at 320×844, 360×844,
+390×844, 430×932, and 768×1024; synthetic 200%-text passes have no document horizontal overflow,
+and the English 390×844 reduced-motion pass settles with zero running animations. Physical
+Android/TalkBack/Back and named guardian-governance/privacy review remain pending.

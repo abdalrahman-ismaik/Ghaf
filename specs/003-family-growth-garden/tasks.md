@@ -836,16 +836,17 @@ and Android evidence with truthful limitations. This phase never releases R002b.
       `/garden/badges/:badgeId` with typed same-role origin restoration and safe deep-link fallback.
 - [x] T198 Implement earned/in-progress/next/locked/archived gallery states and Badge Detail identity,
       exact criteria/progress/meaning/provenance/one contextual action without Child task creation.
-- [ ] T199 Add bilingual/RTL/LTR, responsive, accessibility, reduced-motion, route-guard, and visual
+- [x] T199 Add bilingual/RTL/LTR, responsive, accessibility, reduced-motion, route-guard, and visual
       coverage; capture each canonical code-native candidate at 390×844 after implementation.
 - [x] T200 Validate and commit achievements/Impact Path in independent domain and presentation
       boundaries, with every related flag still off by default.
 
 **Evidence note:** T196–T198 and T200 are implemented and committed through `5c06cef`, with later
-route/origin/accessibility corrections through `895af72`. T199 stays open because the retained
-browser-proxy set does not yet include every specified width, locale, large-text state, or physical
-Android result, even though the five named Path/Badge candidate surfaces have local 390×844
-captures.
+route/origin/accessibility corrections through `895af72` and `680f91b`. T199 is complete at the
+bounded web/source evidence level: all five named surfaces have Arabic and English
+320/360/390/430/768 samples, synthetic 200%-text containment, zero document horizontal overflow,
+and settled reduced-motion samples. Physical Android and named human review remain separate release
+blockers under T220/T221.
 
 ## Phase 27: Equal-Credit Learning and Superset RevealBundle
 
@@ -874,10 +875,12 @@ captures.
       commit Learning and RevealBundle as separate slices.
 
 **Evidence note:** Learning and the receipt-only Reveal lifecycle are implemented, tested, and
-committed. T206, T208, and T209 remain open because the normal approval flow does not yet expose all
-authoritative private League, Challenge Leaf, and Family Reward receipts required for a complete
-live v2 approval bundle, and no valid 390×844 Reveal capture exists. Learning remains default-off
-pending named content/provenance review and a truthful station-132 live capture.
+committed. `680f91b` additionally hardens initial/return focus, truthful recovered presentation,
+acknowledged interruption recovery, and Back handling without changing reward authority. T206,
+T208, and T209 remain open because the normal approval flow does not yet expose all authoritative
+private League, Challenge Leaf, and Family Reward receipts required for a complete live v2 approval
+bundle, and no valid 390×844 Reveal capture exists. Learning remains default-off pending named
+content/provenance review and a truthful station-132 live capture.
 
 ## Phase 28: Parent Progress and Additive Shared Growth
 
@@ -897,15 +900,17 @@ pending named content/provenance review and a truthful station-132 live capture.
 - [x] T215 Keep view and contribution behind separate default-off flags and prove view-without-
       contribution, participation-state independence, profile isolation, reset, privacy, and
       feature-flag rollback.
-- [ ] T216 Add bilingual, accessibility, responsive, route/deep-link, 200%-text, reduced-motion, and
+- [x] T216 Add bilingual, accessibility, responsive, route/deep-link, 200%-text, reduced-motion, and
       canonical 390×844 captures; validate and commit Parent Progress and Shared Growth separately.
 
 **Evidence note:** T211–T215 are implemented and committed through `6730dc1`, with independent-flag,
-Garden-entry, focus, and origin corrections through `895af72`. T216 remains open: valid Arabic
-390×844 Parent Progress, Shared Growth, and Shared Garden captures exist locally, but full English,
-320/360/430/768, 200% text, and physical Android/TalkBack evidence is incomplete. The separately
-gated `/league` compatibility root also restores private League identity and strict projection; it
-does not change Shared Growth into a League replacement.
+Garden-entry, focus, origin, and recoverable-error corrections through `38ff275`. T216 is complete
+at the bounded web/source evidence level: Parent Progress, Shared Growth, and Shared Garden settings
+have Arabic and English 320/360/390/430/768 samples, 200%-text evidence, zero document horizontal
+overflow, and settled reduced-motion samples. Physical Android/TalkBack and named privacy/copy
+review remain separate T220/T221 blockers. The separately gated `/league` compatibility root
+restores private League identity and strict projection; it does not change Shared Growth into a
+League replacement.
 
 ## Phase 29: R002b Convergence and Release-Blocked Evidence
 
@@ -923,11 +928,13 @@ does not change Shared Growth into a League replacement.
 - [x] T222 Review exact staged paths, prove raw exports/metadata and six held commits remain untouched,
       and commit final R002b test/evidence boundaries without push, merge, deploy, rebase, or amend.
 
-**Checkpoint:** The core checkpoint `895af72` passed 76 files / 967 tests. Final implementation
-checkpoint `2e09419` passes 78 files / 979 tests; typecheck, lint, formatting, Expo
+**Checkpoint:** The core checkpoint `895af72` passed 76 files / 967 tests. Final hardened
+runtime/test checkpoint `4adcb73` passes 78 files / 989 tests; typecheck, lint, formatting, Expo
 dependency/configuration checks, production web and Android JavaScript exports, route/reset scans,
 and Git whitespace validation also pass. The physical Android attempt is recorded as `BLOCKED`
 because no ADB device is available in this environment; TalkBack, native Back/IME, safe areas,
 reduced motion, and OS font scaling therefore remain unobserved. All eight flags remain off by
-default. T218 stays open pending the complete per-surface responsive/large-text/native evidence
-matrix. Passing tests or browser-proxy captures do not activate a release flag.
+default. T218 stays open because Learning Story and Accessible Learning remain truthfully locked,
+approval Reveal remains fail-closed and uncaptured, and the private League bilingual width matrix is
+partial. Passing tests or browser-proxy captures do not activate a release flag or pass native and
+human-review gates.

@@ -45,4 +45,7 @@ human-review/provenance pending.
 Prove all 16 valid IDs, invalid-ID fallback, exact visible composite criteria, permanent/private
 state, no mutation on view, contextual-action allowlist, no Child task creation, profile isolation,
 origin restoration, bilingual/RTL behavior, flag-off inaccessibility, and large-text containment.
-Canonical 390×844 and physical Android/TalkBack evidence remain pending.
+Local browser-proxy review now covers Arabic RTL and English LTR at 320×844, 360×844, 390×844,
+430×932, and 768×1024; a synthetic 200%-text pass has no document horizontal overflow, and the
+390×844 reduced-motion pass settles with zero running animations. These remain review candidates;
+physical Android/TalkBack and named human review remain pending.

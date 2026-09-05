@@ -37,8 +37,11 @@ Garden byte-for-behavior fallback; no stored progression is reversed.
 ## Accessibility and review
 
 Use heading levels, textual progress, non-color state labels, 48×48 actions, tabular numerals, and
-logical RTL/LTR card content. Botanical art is decorative code-native output. Required screen-reader,
-390×844, English LTR, 320–768 width, 200% text, reduced-motion, and Android reviews remain pending.
+logical RTL/LTR card content. Botanical art is decorative code-native output. Local browser-proxy
+review now covers Arabic RTL and English LTR at 320×844, 360×844, 390×844, 430×932, and
+768×1024; a synthetic 200%-text pass reflows without document horizontal overflow, and the
+390×844 reduced-motion pass settles with zero running animations. Named screen-reader review and
+physical Android/TalkBack evidence remain pending.
 
 ## Acceptance
 

@@ -54,4 +54,7 @@ Arabic/English strings are centralized. New safety/privacy/factual wording remai
 review. Art is code-native until provenance approval. Prove threshold boundaries, permanent archive,
 no Seed mutation, profile/epoch isolation, locked-route rejection, origin restoration, deep-link
 fallback, offline/reset determinism, both directions, large-text reflow, and flag-off inaccessibility.
-Canonical 390×844 and physical Android/TalkBack evidence remain pending.
+Local browser-proxy review now covers Arabic RTL and English LTR at 320×844, 360×844, 390×844,
+430×932, and 768×1024; synthetic 200%-text passes have no document horizontal overflow, and
+390×844 reduced-motion passes settle with zero running animations. These remain review candidates;
+named accessibility and physical Android/TalkBack evidence remain pending.

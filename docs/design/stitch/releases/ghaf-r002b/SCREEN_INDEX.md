@@ -6,10 +6,10 @@ Status: default-off implementation candidates exist for all indexed surfaces. Th
 the current implementation are not visual, bilingual, accessibility, content, provenance, or
 release approval. R001 and R002a remain the exact fallback when the applicable flag is disabled.
 
-Final implementation checkpoint: `2e09419` on
-`integration/r3-r002b-implementation-20260905`; 78 test files and 979/979 tests passed. The earlier
+Final hardened runtime/test checkpoint: `4adcb73` on
+`integration/r3-r002b-implementation-20260905`; 78 test files and 989/989 tests passed. The earlier
 core checkpoint `895af72` passed 76 files and 967/967 tests before the private League compatibility
-slice. See the
+and recovery-hardening slices. See the
 [bounded validation record](../../../../../specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md).
 
 ## Authority and evidence
@@ -46,10 +46,13 @@ then a review candidate, not automatic authority. Equivalent English LTR, 320/36
 
 The named captures live under untracked `output/playwright/r002b/` and are deliberately excluded
 from the implementation/documentation commit. They are bounded local review evidence, not durable
-or approved design assets. Responsive samples additionally cover English Child Today at 320 and
-390 widths and Arabic Impact Path at 320 and 768 widths. Private League has Arabic 320, 360, 390,
-and 200%-text captures plus English 390, 430, and 768 captures. These samples do not constitute a
-complete width, state, or locale matrix for every surface.
+or approved design assets. R2B-01 through R2B-05 and R2B-09 through R2B-11 now have Arabic and
+English samples at 320×844, 360×844, 390×844, 430×932, and 768×1024. Each group also has at
+least one synthetic 200%-text exercise, reports zero document horizontal overflow, and has a
+390×844 reduced-motion exercise with zero settled running animations. Private League has Arabic
+320, 360, 390, and 200%-text captures plus English 390, 430, and 768 captures. Learning Story,
+Accessible Learning, and approval Reveal remain truthfully uncaptured, so the release-wide width,
+state, and locale matrix is still incomplete.
 
 ## Shared native composition contract
 
@@ -71,6 +74,8 @@ complete width, state, or locale matrix for every surface.
 
 Product contract: **APPROVED**. Default-off engineering candidates: **IMPLEMENTED**, except the live
 approval RevealBundle remains fail-closed until all legacy consequence receipts are authoritative.
+Commits `38ff275` and `680f91b` add non-mutating Shared Garden error recovery plus truthful
+Reveal/Impact Path focus and interruption recovery without changing product authority.
 The private League candidate restores the canonical `الدوري / League` root without renaming the
 separate Green Circle or Shared Growth experience. Its bounded local capture and compact/large-text
 samples do not pass physical Android or human review.

@@ -16,16 +16,16 @@ or assets, release a screen, or replace the frozen R001/R002a fallback. The
 remain the governing sources.
 
 The product behavior baseline is `0501cf3` — `docs(r002): record validation and deferred scope`.
-The final implementation checkpoint inspected for this record is `2e09419` —
-`feat(league): add private five-leaf child experience`, 40 local commits after that baseline. The
-earlier core checkpoint `895af72` passed 76 files and 967 tests; the final League-integrated
-checkpoint passes 78 files and 979 tests. The six divergent historical commits remain non-ancestors
+The final hardened runtime/test checkpoint inspected for this record is `4adcb73` —
+`test(r002b): align Growth focus characterization`, 44 local commits after that baseline. The
+earlier core checkpoint `895af72` passed 76 files and 967 tests; the final recovery-hardened
+checkpoint passes 78 files and 989 tests. The six divergent historical commits remain non-ancestors
 and unapplied. The original worktree remains at `ecbfb3a` with only
 `docs/design/stitch/releases/ghaf-r002/` untracked.
 
-Thirty-eight of the 44 R002b tasks are evidence-complete. The six open tasks are intentionally
-limited to the incomplete cross-surface visual/native matrix and the approval RevealBundle path
-that remains fail-closed until every legacy consequence has an authoritative receipt.
+Forty of the 44 R002b tasks are evidence-complete. The four open tasks are intentionally limited to
+the still-incomplete release-wide visual/native matrix and the approval RevealBundle path that
+remains fail-closed until every legacy consequence has an authoritative receipt.
 
 ## Checkpoint summary
 
@@ -33,11 +33,11 @@ that remains fail-closed until every legacy consequence has an authoritative rec
 | ---------------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Eight feature flags                            | `PASSED` automated/source          | `src/config/r002bFeatureFlags.ts` defines the eight independent flags and resolves every absent value to `false`                                                                                                            |
 | R002a fallback                                 | `PASSED` automated/source          | Flag-off and route-request tests preserve the existing R002a presentation and behavior                                                                                                                                      |
-| Full automated suite                           | `PASSED`                           | Core: 76 files and 967/967 tests at `895af72`; final: 78 files and 979/979 tests at `2e09419`                                                                                                                               |
+| Full automated suite                           | `PASSED`                           | Core: 76 files and 967/967 tests at `895af72`; final: 78 files and 989/989 tests at `4adcb73`                                                                                                                               |
 | Authored route inventory                       | `PASSED` source                    | 26 product route files: the 16 R001/R002a routes plus nine guarded nested R002b routes and the gated private League root                                                                                                    |
 | Screen specifications                          | `PASSED` source                    | Twelve `screen-spec.md` records exist, including the compatibility presentation for the already-approved private League                                                                                                     |
 | Code-native presentation                       | `PASSED` implementation            | All twelve indexed surfaces have native route or route-owned component integration; raw Stitch HTML/PNG is not runtime UI                                                                                                   |
-| Browser-proxy review                           | `PARTIAL`                          | Nine R002b/League surfaces plus one R002a regression surface have retained local 390×844 captures; representative English, 320/360/430-wide, 200%-text, and 768-wide captures also exist                                    |
+| Browser-proxy review                           | `PARTIAL`                          | Eight nonblocked surfaces have Arabic/English 320/360/390/430/768 matrices plus 200%-text and reduced-motion evidence; League remains partial, and Learning/approval Reveal remain truthfully uncaptured                    |
 | Learning live capture                          | `BLOCKED` by fixture state         | The normal Salem fixture reaches lifetime 120; the learning package correctly remains locked until station 132                                                                                                              |
 | Approval RevealBundle v2                       | `BLOCKED` by consequence authority | The route and receipt-only bundle are implemented, but the live approval path intentionally stays on the R002a result until authoritative private League, Challenge Leaf, and Family Reward receipts are available together |
 | Physical Android and native assistive behavior | `BLOCKED / NOT RUN`                | No named configured device result exists for install, TalkBack, native Back/IME, safe areas, reduced motion, or OS font scaling                                                                                             |
@@ -60,7 +60,7 @@ physical Android behavior or human acceptance.
 | Shared Garden settings                 | `/parent/family/shared-garden` and the existing access/reauthentication adapter                                                       | Continue/Pause/End affect only future anonymous signals; returning after End requires fresh Parent consent                                                                                                                                                                          | Default off; guardian-governance/privacy/native gates open |
 | Private five-Leaf League               | `src/features/league/presentation.ts`, `src/components/r002b/PrivateLeagueScreen.tsx`, `/league`                                      | Restores the canonical Child League root through the strict privacy projector; the provenance-tagged synthetic reset summary contains only approved participant/count/score fields, and 4/5→5/5 requires the exact committed task, Seed, Mangrove, canopy, and Green-event evidence | Compatibility-gated; visual/native review open             |
 | Closed origin recovery                 | `src/features/navigation/r002bOrigin.ts`, `src/features/navigation/r002bBack.ts`, and `895af72`                                       | Same-role route/profile/filter/scroll/focus restoration uses allowlisted tokens and falls back safely on invalid input                                                                                                                                                              | Implemented; native Back remains unobserved                |
-| Accessibility hardening                | `f5e0142`, `f8e203a`, and `895af72`                                                                                                   | System reduced motion disables route fades, safe-area ownership is explicit, busy-state contrast is preserved, and focus restoration is safe on web and native                                                                                                                      | Source/automated pass; TalkBack remains unobserved         |
+| Accessibility and recovery hardening   | `f5e0142`, `f8e203a`, `895af72`, `38ff275`, and `680f91b`                                                                             | System reduced motion disables route fades, safe-area ownership is explicit, busy-state contrast is preserved, Shared Garden errors recover without replaying a choice, and Reveal/Impact focus restoration uses the existing lifecycle safely                                      | Source/automated pass; TalkBack remains unobserved         |
 
 ## Preserved transaction behavior
 
@@ -80,20 +80,21 @@ result remains the only live approval experience; no incomplete or fabricated v2
 
 ## Automated evidence
 
-The core suite was run from the implementation worktree at `895af72`, then rerun at `2e09419` after
-the private League compatibility slice:
+The core suite was run from the implementation worktree at `895af72`, then rerun at `4adcb73` after
+the private League compatibility and recovery-hardening slices:
 
 ```bash
 npm test
 ```
 
-Core result: **PASSED** — exit 0, 76 test files, 967/967 tests. League-integrated result:
-**PASSED** — exit 0, 78 test files, 979/979 tests. The suite includes Schema-3
+Core result: **PASSED** — exit 0, 76 test files, 967/967 tests. Final hardened result:
+**PASSED** — exit 0, 78 test files, 989/989 tests. The suite includes Schema-3
 characterization, migration eligibility/atomicity/idempotency, threshold and badge evaluation,
 equal-credit learning, zero-reward invariants, RevealBundle construction/lifecycle/fail-closed
-integration, Parent Progress access/isolation, Shared Growth privacy/participation, independent
-flags, guarded routes, origin restoration, bilingual resources, accessibility source contracts,
-private League projection/privacy/provenance, and the complete R001/R002a regression set.
+integration, Parent Progress access/isolation, Shared Growth privacy/participation and recovery,
+independent flags, guarded routes, origin restoration, bilingual resources, accessibility source
+contracts, Reveal/Impact focus and interruption recovery, private League projection/privacy/
+provenance, and the complete R001/R002a regression set.
 
 Static checks and export results belong in the final repository gate below only when rerun against
 the documentation checkpoint. A test pass does not change any default-off flag.
@@ -123,31 +124,43 @@ intentionally excluded from the source commit and therefore are not durable desi
 canopy RTL correction, not an R002b surface. The two `debug-*.png` crops only confirmed physical
 Back-target visibility and are not canonical screen evidence.
 
+Child Today, Garden chapter, Impact Path, Badge Gallery, Badge Detail, Parent Progress, Shared
+Growth, and Parent Shared Garden settings now retain Arabic and English browser-proxy samples at
+320×844, 360×844, 390×844, 430×932, and 768×1024. Each group includes at least one synthetic
+200%-text exercise; every measured base and large-text page reported zero document horizontal
+overflow. Each also has a 390×844 reduced-motion exercise whose settled animation count was zero.
+These bounded matrices complete T199 and T216 at the web/source evidence level only.
+
+The 200%-text exercise is a browser-synthetic approximation, not Android OS font scaling. The
+320-wide Arabic Impact Path sample isolates one final letter, and the 320-wide English Parent
+Progress sample breaks “comparison” across lines. Both remain contained with no horizontal
+overflow, but they are recorded visual deviations and require native font-scale and human
+accessibility review before release activation.
+
 No retained live implementation capture exists for Learning Story, Accessible Learning, or the
 combined Child Reveal. Learning and task-approval Reveal are blocked for the truthful
 fixture/authority reasons above. The private League slice additionally retains Arabic 320, 360,
-390, and 200%-text samples plus English 390, 430, and 768 samples. That does not complete those
-width/locale/state combinations for every R002b surface. No complete console or network ledger was
-retained with the screenshot set, so its overall status is `NOT RECORDED`; the corrected Parent
-Progress capture stayed on its guarded route, reported zero horizontal overflow, and produced zero
-console errors. The private League samples also reported no horizontal overflow at their named
-sizes.
+390, and 200%-text samples plus English 390, 430, and 768 samples; its ten-cell bilingual base
+matrix is 5/10 complete. No complete console or network ledger was retained with the full screenshot
+set, so that evidence remains `NOT RECORDED`. The corrected Parent Progress capture stayed on its
+guarded route, reported zero horizontal overflow, and produced zero console errors. These gaps keep
+the release-wide T218 matrix open and do not pass native or human review.
 
 ## Final repository gate
 
-| Command or exercise                                                   | Result at this record              | Boundary                                                                                             |
-| --------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `npm test`                                                            | `PASSED` — 78 files, 979/979 tests | Fresh at `2e09419`                                                                                   |
-| `npm run typecheck`                                                   | `PASSED`                           | Fresh after the private League compatibility slice                                                   |
-| `npm run lint`                                                        | `PASSED`                           | Fresh after the private League compatibility slice                                                   |
-| `npm run format:check`                                                | `PASSED`                           | Fresh after the private League compatibility slice; explicit proposal Markdown is checked separately |
-| Expo dependency/configuration checks                                  | `PASSED`                           | `expo install --check`, public config, and Expo Doctor 21/21 passed                                  |
-| Production web export                                                 | `PASSED`                           | Fresh Expo export generated 28 static routes; web remains secondary evidence                         |
-| Android JavaScript export                                             | `PASSED`                           | Fresh Expo export bundled 2,024 modules and 35 assets; this is not a native build/device pass        |
-| Route/reset scan                                                      | `PASSED` automated/source          | 26 product route files; guarded/reset tests are included in the automated suite                      |
-| `git diff --check`                                                    | `PASSED`                           | Fresh with the final documentation diff                                                              |
-| Physical Android install/journey                                      | `BLOCKED`                          | Requires a named configured device/build                                                             |
-| TalkBack, native Back/IME, safe area, reduced motion, OS font scaling | `NOT RUN`                          | Must be exercised physically; web/source evidence cannot pass these gates                            |
+| Command or exercise                                                   | Result at this record              | Boundary                                                                                      |
+| --------------------------------------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------- |
+| `npm test`                                                            | `PASSED` — 78 files, 989/989 tests | Fresh at `4adcb73`                                                                            |
+| `npm run typecheck`                                                   | `PASSED`                           | Fresh after the recovery-hardening slices                                                     |
+| `npm run lint`                                                        | `PASSED`                           | Fresh after the recovery-hardening slices                                                     |
+| `npm run format:check`                                                | `PASSED`                           | Fresh after the recovery-hardening slices; explicit proposal Markdown is checked separately   |
+| Expo dependency/configuration checks                                  | `PASSED`                           | `expo install --check`, public config, and Expo Doctor 21/21 passed                           |
+| Production web export                                                 | `PASSED`                           | Fresh Expo export generated 28 static routes; web remains secondary evidence                  |
+| Android JavaScript export                                             | `PASSED`                           | Fresh Expo export bundled 2,024 modules and 35 assets; this is not a native build/device pass |
+| Route/reset scan                                                      | `PASSED` automated/source          | 26 product route files; guarded/reset tests are included in the automated suite               |
+| `git diff --check`                                                    | `PASSED`                           | Fresh with the final documentation diff                                                       |
+| Physical Android install/journey                                      | `BLOCKED`                          | Requires a named configured device/build                                                      |
+| TalkBack, native Back/IME, safe area, reduced motion, OS font scaling | `NOT RUN`                          | Must be exercised physically; web/source evidence cannot pass these gates                     |
 
 ## Release blockers and required next evidence
 
@@ -157,9 +170,8 @@ sizes.
    second reward transaction.
 3. Reach learning station 132 through a reviewed deterministic fixture or approved event history,
    then capture both equal-credit routes without bypassing the unlock.
-4. Retain the missing Learning and Reveal 390×844 candidate captures and complete
-   320/360/390/430/768, Arabic/English,
-   200% text, reduced-motion, overflow, keyboard/focus, and state review.
+4. Retain the missing Learning and Reveal 390×844 candidate captures, finish the private League
+   bilingual width matrix, and complete release-wide keyboard/focus and state review.
 5. Complete named Arabic/English factual, cultural/safeguarding, privacy/consent, visual,
    accessibility-equivalence, comprehension, and asset-provenance reviews.
 6. Install and exercise the exact branch on a named Android build/device with TalkBack, native Back,

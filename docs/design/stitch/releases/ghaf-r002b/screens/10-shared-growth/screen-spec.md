@@ -44,5 +44,7 @@ copy require human review; art remains code-native until provenance approval.
 Prove no prohibited fields enter the projection, view/contribution flag independence, no state
 mutation on view, private League and `/circle` preservation, contribution-state-independent access,
 safe origins, profile/privacy boundaries, offline/reset determinism, flag-off fallback, RTL/LTR,
-and reduced-motion/large-text equivalence. Canonical 390×844 and physical Android/TalkBack evidence
-remain pending.
+and reduced-motion/large-text equivalence. Local browser-proxy review now covers Arabic RTL and
+English LTR at 320×844, 360×844, 390×844, 430×932, and 768×1024; synthetic 200%-text passes
+have no document horizontal overflow, and the English 390×844 reduced-motion pass settles with zero
+running animations. Physical Android/TalkBack and named privacy/copy review remain pending.

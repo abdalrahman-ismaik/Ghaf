@@ -38,10 +38,10 @@ remain blockers until performed on a named build and device.
 
 ### R002b default-off implementation checkpoint
 
-The final implementation checkpoint is `2e09419` on
+The final hardened runtime/test checkpoint is `4adcb73` on
 `integration/r3-r002b-implementation-20260905`, based on frozen R002a head `0501cf3`; it passes 78
-files / 979 tests. The earlier core checkpoint `895af72` passed 76 files / 967 tests before the
-private five-Leaf League compatibility slice. All eleven expansion surfaces have native
+files / 989 tests. The earlier core checkpoint `895af72` passed 76 files / 967 tests before the
+private five-Leaf League compatibility and recovery-hardening slices. All eleven expansion surfaces have native
 implementations, and the League compatibility surface restores its canonical Child root. The nine
 new nested route files and gated `/league` route are guarded, and all eight feature flags remain off
 by default. See the
@@ -49,10 +49,10 @@ by default. See the
 
 | Gate                                      | Result                             | Current evidence                                                                                                                                                                                          |
 | ----------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain and route implementation           | `PASSED` automated/source          | Ledger projection, 16-badge registry, equal-credit learning, Reveal lifecycle, Parent Progress, Shared Growth, private League, flags, access, reset, and typed origins are included in the 979-test suite |
+| Domain and route implementation           | `PASSED` automated/source          | Ledger projection, 16-badge registry, equal-credit learning, Reveal lifecycle, Parent Progress, Shared Growth, private League, flags, access, reset, and typed origins are included in the 989-test suite |
 | R001/R002a fallback                       | `PASSED` automated/source          | Flag-off tests preserve the existing onboarding, task, Child, Garden, access, voice, privacy, reset, and recognition flow                                                                                 |
 | Code-native screen set                    | `PASSED` implementation            | Twelve indexed surfaces, including the restored private League root, use native components/routes; no raw Stitch web runtime is imported                                                                  |
-| Local 390×844 browser-proxy set           | `PARTIAL`                          | Valid captures exist for Child Today, Garden chapter, Impact Path, Badge Gallery, Badge Detail, Parent Progress, Shared Growth, Parent Shared Garden settings, and private League                         |
+| Local browser-proxy matrix                | `PARTIAL`                          | Eight nonblocked surfaces have Arabic/English 320/360/390/430/768 evidence plus large-text/reduced-motion samples; private League is partial, while Learning and approval Reveal remain blocked           |
 | Learning live route                       | `BLOCKED` by normal fixture state  | Salem reaches 120 after the canonical approval; station 132 is required before learning can open                                                                                                          |
 | Child Reveal v2 approval route            | `BLOCKED` by consequence authority | The bundle implementation is receipt-only, but the live approval projection remains on R002a until private League, Challenge Leaf, and Family Reward receipts are all authoritative                       |
 | Physical Android and native accessibility | `BLOCKED / NOT RUN`                | No named build/device result exists for install, TalkBack, Back/IME, safe areas, reduced motion, offline interruption, or OS font scaling                                                                 |
@@ -83,10 +83,12 @@ nested route; direct reload without that session must fall back safely.
    and describe R002b as a default-off candidate.
 
 The retained browser-proxy files are untracked local evidence under `output/playwright/r002b/` and
-must not be presented as approved mobile references. The League samples cover Arabic 320/360/390
-and 200%-text exercises plus English 390/430/768, but this is not a complete cross-surface matrix.
-Browser evidence does not pass Android, TalkBack, native Back/IME, system font scaling, or
-human-review gates.
+must not be presented as approved mobile references. Child Today, Garden chapter, Impact Path,
+Badge Gallery, Badge Detail, Parent Progress, Shared Growth, and Parent Shared Garden settings cover
+Arabic and English at 320/360/390/430/768 widths, synthetic 200%-text reflow, and representative
+reduced-motion outcomes with zero document horizontal overflow. The League matrix remains partial,
+and Learning/approval Reveal remain truthfully blocked. Browser evidence does not pass Android,
+TalkBack, native Back/IME, system font scaling, or human-review gates.
 
 ## R002a Final Validation Evidence — 2026-09-05
 
