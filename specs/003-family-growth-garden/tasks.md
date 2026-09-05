@@ -803,12 +803,12 @@ and Android evidence with truthful limitations. This phase never releases R002b.
 
 ## Phase 25: Lifetime Seed Projection and Versioned Migration
 
-- [ ] T185 Implement a pure shadow-mode Seed-ledger audit and `lifetimeSeeds` selector whose only
+- [x] T185 Implement a pure shadow-mode Seed-ledger audit and `lifetimeSeeds` selector whose only
       authority is unique committed entries within the active profile epoch.
-- [ ] T186 Add one immutable versioned synthetic migration receipt with explicit fixture provenance:
+- [x] T186 Add one immutable versioned synthetic migration receipt with explicit fixture provenance:
       Salem 108 from approved carry-forward-60 assumption plus verified current 48; Alya retains her own
       verified 36 scalar with no Salem carry-forward; unsupported cousin profiles remain ineligible.
-- [ ] T187 Reject ambiguous, real/non-synthetic, cross-profile, wrong-epoch, duplicate, malformed,
+- [x] T187 Reject ambiguous, real/non-synthetic, cross-profile, wrong-epoch, duplicate, malformed,
       partial, and non-atomic migration inputs without changing current state.
 - [ ] T188 Integrate the existing `+12` recognition entry once so Mangrove remains 48→60 while
       lifetime Seeds project 108→120; preserve canopy, League, Challenge, Family Reward, praise,
