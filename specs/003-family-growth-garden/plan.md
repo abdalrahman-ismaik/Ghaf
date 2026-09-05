@@ -1,5 +1,36 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Complete-Screen Implementation Addendum — 2026-09-05
+
+Begin at validated R002b checkpoint `45b18bc` on
+`integration/r3-complete-screens-20260905`. Preserve the existing domain, R001/R002a visual
+regressions, R002b Growth screens, official brand assets, and user-owned untracked Stitch/source
+packs.
+
+Implementation order is contract first, then RED route/access tests, then the access/session
+adapter and missing screens, then navigation replacement, then local-demo Growth activation and
+approval reveal parity, followed by bilingual browser convergence and full validation. The route
+manifest and per-screen entry/exit/privacy rules are in
+`design-intake/r003-complete-screen-journey.md`.
+
+Use existing tokens, primitives, SVG/icon system, Alexandria/Readex roles, R002a screen shells, and
+R002b selectors. Add no UI, state, icon, localization, media, animation, form, or navigation
+dependency. Routes remain thin; reusable composition goes under `src/components/r003/`, Child
+access orchestration under `src/features/access/`, and Family/Reward projections under
+`src/features/family-hub/`. Screens must not calculate reward, rank, badge, Seed, Garden, or
+permission authority.
+
+The Parent journey becomes Welcome → Parent access/setup → Home/Tasks/Garden/Family, with settings,
+permissions, paired devices, reauthentication, private Reward, Child progress, and Shared Garden as
+contextual routes. The Child journey becomes Welcome → profile → credential/pairing → Today → task
+→ waiting → committed reveal → Garden/League, with Impact Path, badges, learning, Shared Growth,
+and own read-only permissions as contextual routes. Changing experience signs out to Welcome;
+there is no normal role toggle.
+
+The complete local demo may enable the eight R002b presentation flags by default after focused
+tests; explicit environment `false` remains a rollback. This activation is local prototype
+availability, not a claim that Android/native or named-human release gates passed.
+
 **Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
 [spec.md](./spec.md)
 

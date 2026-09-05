@@ -6,6 +6,32 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-05 Complete Screen Journey Window
+
+**Integration owner and only writer**: `/root`
+
+**Branch**: `integration/r3-complete-screens-20260905`, created from the validated R002b
+implementation checkpoint `45b18bc`.
+
+**User authority**: Complete every missing P0 screen and make the Parent and Child sequences
+coherent. A missing Google Stitch frame is no longer an implementation blocker for this local
+prototype; new surfaces inherit the approved Soft Geometric Ghaf system in `DESIGN.md` and
+`DESIGN_DIRECTION.md`.
+
+**Reserved boundary**: Feature 003 `spec.md`, `plan.md`, `tasks.md`, new completion design-intake
+records, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`app/**`, `src/components/r002a/**`, new `src/components/r003/**`, `src/config/**`,
+`src/features/access/**`, new `src/features/family-hub/**`, `src/i18n/**`,
+`src/state/usePrototypeStore.ts`, and new/focused completion tests in `tests/**`.
+
+The writer must preserve `.codex/config.toml`,
+`docs/Ghaf_Official_Logo_and_App_Icon_Pack_v1.0/`, and
+`docs/design/stitch/releases/ghaf-r002/` as user-owned input. Those paths must not be edited,
+staged, or committed. No package/dependency, production account, network, payment, real media,
+push, merge, deployment, or shared-history rewrite is authorized. The reservation ends after the
+implemented route manifest, focused/full validation, browser walkthrough, truthful limitations,
+and cohesive local commits are handed off.
+
 ## 2026-09-05 Local Run Guide Simplification Window
 
 **Owner**: `/root`

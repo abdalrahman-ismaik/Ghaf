@@ -1,5 +1,13 @@
 # Ghaf Design Direction
 
+## 2026-09-05 screen-completion clarification
+
+Missing P0 screens are now approved for professional code-native design in this established Living
+Family Garden world. Use the existing warm botanical field, deep forest structure, Ghaf emerald,
+mangrove teal, restrained date gold, Alexandria/Readex hierarchy, logical RTL/LTR flow, and calm
+Parent/capable-Child modes. The absence of a Google Stitch frame is not a reason to leave a route
+missing and is not permission to import raw web exports or create a new visual style.
+
 **Direction:** APPROVED for Feature 003 specification
 **Date:** 2026-08-26
 **Creative north star:** **The Living Family Garden — الحديقة العائلية الحية**

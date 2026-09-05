@@ -18,6 +18,36 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Complete-Screen Authority Amendment — 2026-09-05
+
+This amendment supersedes older screen-count, role-toggle, missing-Stitch, and default-off
+presentation requirements where they conflict. The user explicitly authorizes completion of every
+missing P0 screen on `integration/r3-complete-screens-20260905`. A missing Google Stitch frame is
+not a blocker for this local prototype: the screen must be specified first and professionally
+designed with the existing Soft Geometric Ghaf theme and tokens. Raw Stitch web exports remain
+read-only design evidence.
+
+- The canonical Parent navigation is Home, Tasks, Garden, Family. The canonical Child navigation
+  is Today, Garden, League. Contextual routes do not become bottom tabs.
+- Replace the shared-device role picker with separate access journeys. Parent uses the existing
+  sign-in/setup path; Child uses profile selection followed by PIN/picture-sequence or synthetic
+  pairing. `/role` becomes a safe compatibility redirect to `/`.
+- Add the route/state manifest in
+  `design-intake/r003-complete-screen-journey.md`, including Parent Family, private Family Reward,
+  Parent settings, permissions, devices, reauthentication, and Child settings.
+- The already-implemented R002b screens are enabled for the complete local demo after focused
+  compatibility checks. Environment overrides may still disable any independently gated surface;
+  disabling a presentation never reverses committed state.
+- Complete screen availability does not release production authentication, real pairing,
+  persistence, payment, networking, live Child media/AI, or remote invitations. It also does not
+  upgrade physical Android or named human-review evidence.
+- The normal recognition journey may use the v2 Child reveal only after its inputs are committed
+  receipts from the relevant authorities. Until complete consequence parity is proven, the existing
+  recognition result stays fail-closed.
+
+Implementation evidence begins from validated R002b checkpoint `45b18bc`, whose source/static
+baseline contains 78 test files and 989 passing tests.
+
 ## R002b Feature-Flagged Authority Amendment — 2026-09-05
 
 This amendment supersedes the former R002b implementation block wherever an older section below

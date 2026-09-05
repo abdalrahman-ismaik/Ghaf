@@ -122,6 +122,20 @@ components:
 
 # Ghaf Design System
 
+## R003 complete-screen extension
+
+The 2026-09-05 user-authorized completion pass extends this same visual world to missing access,
+Family, Reward, settings, permissions, devices, reauthentication, and Child-settings surfaces. A
+missing Stitch frame is no longer an implementation blocker for the local prototype. New screens
+must reuse the Soft Geometric palette, typography, spacing, iconography, native shells, and
+botanical grammar already present; they do not introduce a second dashboard or generic settings
+theme. Exact routes, entries, exits, and privacy boundaries are defined in
+`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`.
+
+This extension changes neither business authority nor evidence truth. Screens read live selectors,
+protected actions remain protected, role changes sign out, and physical Android and named human
+review stay unpassed until directly observed.
+
 **Authority:** Feature 003 Revision 3 design contract with frozen R001/R002a and default-off R002b candidates
 
 **Verified implementation baseline:** `0501cf3` — `docs(r002): record validation and deferred scope`
