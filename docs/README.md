@@ -73,13 +73,15 @@ prepared media remains under `assets/demo/`; and the committed `*-mobile-final.p
 
 ## Current evidence locations
 
-| Evidence                      | Location                                                                                                |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Feature 003 acceptance ledger | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                                   |
-| R001 Batch 1 validation       | [R001 validation evidence](../specs/003-family-growth-garden/design-intake/r001-validation-evidence.md) |
-| Automated/story evidence      | [`specs/003-family-growth-garden/checklists/`](../specs/003-family-growth-garden/checklists/)           |
-| Professional UI critique      | [`.impeccable/critique/`](../.impeccable/critique/)                                                     |
-| Curated browser screenshots   | [`output/playwright/feature003-audit/`](../output/playwright/feature003-audit/)                         |
+| Evidence                       | Location                                                                                                  |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Feature 003 acceptance ledger  | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                                     |
+| R001 Batch 1 validation        | [R001 validation evidence](../specs/003-family-growth-garden/design-intake/r001-validation-evidence.md)   |
+| R002a compatibility validation | [R002a validation evidence](../specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md) |
+| Automated/story evidence       | [`specs/003-family-growth-garden/checklists/`](../specs/003-family-growth-garden/checklists/)             |
+| Professional UI critique       | [`.impeccable/critique/`](../.impeccable/critique/)                                                       |
+| Curated browser screenshots    | [`output/playwright/feature003-audit/`](../output/playwright/feature003-audit/)                           |
+| R002a browser screenshots      | [`output/playwright/r002a/`](../output/playwright/r002a/)                                                 |
 
 Generated Expo exports (`dist/`, `output/web-*`) and raw Playwright CLI session directories are
 reproducible build/tool output and are not versioned evidence. Preserve the command and result in

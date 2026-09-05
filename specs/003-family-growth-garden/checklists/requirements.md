@@ -16,7 +16,7 @@
       fabricating approval, specs, English frames, or provenance.
 - [x] Original R001 bytes/checksums are preserved on verified integration head `76fa682`.
 - [x] R001 implementation and fresh focused/full validation are recorded at `76fa682`.
-- [ ] R002a selected compatibility surfaces have complete inventory, screen specs, states, parity,
+- [x] R002a selected compatibility surfaces have complete inventory, screen specs, states, parity,
       provenance disposition, and per-slice validation evidence.
 - [ ] R002b Growth and product-expansion surfaces have complete product decisions, mobile
       references, screen specs, states, parity, provenance, and explicit release.
@@ -67,3 +67,8 @@
   evidenced; the prepared deterministic P0 is not blocked.
 - Physical Android and all named human reviews remain `BLOCKED` or `NOT RUN` as stated in the
   specification and must not inherit Feature 002 evidence.
+- R002a intake completeness, implementation, automated checks, bilingual browser inspection, and
+  responsive visual evidence are recorded in
+  [`r002a-validation-evidence.md`](../design-intake/r002a-validation-evidence.md). Checking the
+  R002a item does not convert the unavailable physical Android smoke test or named human reviews
+  into passes; they remain `BLOCKED` and `NOT RUN`, respectively.

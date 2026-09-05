@@ -27,6 +27,36 @@
 Do not use the historical journey below to pass an R002a visual, native, or human gate. Record each
 new result as `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` with exact evidence.
 
+## R002a Final Validation Evidence — 2026-09-05
+
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+
+Validation was recorded on branch `integration/r3-r002a-implementation-20260904` with
+implementation and test evidence through `a0539e9`. The automated/source, export, browser-proxy,
+native, and human gates remain separate; a pass in one gate does not transfer to another.
+
+| Gate                              | Result                         | Exact evidence                                                                                                                                                     |
+| --------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Focused automated/source          | `PASSED`                       | 16 files, 141/141 tests                                                                                                                                            |
+| Complete repository               | `PASSED`                       | 38 files, 541/541 tests; typecheck, lint, and format passed                                                                                                        |
+| Expo and export                   | `PASSED`                       | Expo install check passed; Expo Doctor passed 21/21 checks; public configuration passed; web static export passed with 18 routes; Android JavaScript export passed |
+| Product-route source inventory    | `PASSED`                       | Exactly 16 product routes                                                                                                                                          |
+| Browser proxy                     | `PASSED` secondary evidence    | 24 retained captures and no app errors; warning ledger includes font preloads plus the frozen R001 `pointerEvents` web deprecation                                 |
+| Browser large-text approximation  | `PASSED` secondary evidence    | Parent Home at 390 and 320 widths had no visible text overflow after `a0539e9`; this is not native OS font-scale evidence                                          |
+| Raw R002 intake preservation      | `PASSED`                       | 74 immediate directories, 71 PNG files, 70 HTML files, 69 complete PNG/HTML pairs, 148 `Zone.Identifier` files, and 141/141 registered digest matches              |
+| Divergent historical commits      | `PASSED` preservation boundary | All six historical commits remain unapplied                                                                                                                        |
+| Physical Android                  | `BLOCKED`                      | `adb` lists no device and `ANDROID_HOME` is unset                                                                                                                  |
+| Native exercises and human review | `NOT RUN`                      | No physical-device, native accessibility, native keyboard/Back, or named human-review result was inferred                                                          |
+| R002b product expansion           | `BLOCKED`                      | R002a evidence does not release any R002b behavior or screen                                                                                                       |
+
+Browser-proxy and export evidence do not prove native rendering, safe areas, keyboard/IME behavior,
+system or predictive Back, TalkBack, physical touch targets, OS font scaling, reduced motion,
+permissions, playback, offline behavior, or physical-device reliability. See the
+[detailed R002a validation record](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md)
+for commands, retained artifacts, deviations, and the complete evidence boundary.
+
 ## R001 Batch 1 Fresh Evidence — 2026-09-05
 
 Runtime head `f4451c1` on `integration/r3-r001-implementation-20260904` passed the focused R001

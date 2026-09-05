@@ -718,56 +718,58 @@ implementation, or this task list is not visual implementation authority.
 - [x] T159 Create `integration/r3-r002a-implementation-20260904` directly from verified remote R001
       evidence head `76fa682`; confirm the original divergent worktree remains untouched and all
       482 baseline tests pass before R002a changes.
-- [ ] T160 Write an integration-level characterization suite that freezes task-ID stability, zero
+- [x] T160 Write an integration-level characterization suite that freezes task-ID stability, zero
       reward at submission, retry/interruption, atomic and idempotent approval, schema-3 Seed and
       Garden results, canopy, Challenge Leaf/private League, private Family Reward, access and
       reauthentication, deterministic voice, reset, and profile isolation.
-- [ ] T161 [US5] Write focused Parent Home presentation tests for live selector usage, preserved
+- [x] T161 [US5] Write focused Parent Home presentation tests for live selector usage, preserved
       action/route/test-ID reachability, Parent guard/reset/language controls, physical RTL/LTR,
       accessibility, scroll, and the absence of hard-coded `108`, `120`, or `180` progression.
-- [ ] T162 [US5] Recompose `/parent` from `ghaf_parent_home` using the existing tokens, Alexandria
+- [x] T162 [US5] Recompose `/parent` from `ghaf_parent_home` using the existing tokens, Alexandria
       and Readex roles, reusable native Soft Geometric components, and live canopy/journey/Child
       state. Keep unavailable League/Family Reward numeric fragments out of runtime until a real
       selector adapter is specified.
-- [ ] T163 Run focused Parent overview/access/reset tests and the complete static/behavioral gate;
+- [x] T163 Run focused Parent overview/access/reset tests and the complete static/behavioral gate;
       compare Arabic and English at 320, 360, 390, and 430 widths plus one wide viewport, then commit
       the validated Parent Home slice.
-- [ ] T164 [US1] Write focused Parent Tasks/Builder presentation tests covering Choose, Edit,
+- [x] T164 [US1] Write focused Parent Tasks/Builder presentation tests covering Choose, Edit,
       Review, task-created, and task-added states without changing actions or payloads.
-- [ ] T165 [US1] Recompose Parent Tasks and Builder from the selected compatible variants; preserve
+- [x] T165 [US1] Recompose Parent Tasks and Builder from the selected compatible variants; preserve
       the existing task composer, bounded Guide, safety review, assignment authority, and route
       guards.
-- [ ] T166 Validate and commit the Parent Tasks/Builder slice with focused flow, locale, RTL,
+- [x] T166 Validate and commit the Parent Tasks/Builder slice with focused flow, locale, RTL,
       accessibility, responsive, export, and full regression checks.
-- [ ] T167 [US2] Write focused Child Today/Task presentation tests for Ready, Active 0/2–2/2,
+- [x] T167 [US2] Write focused Child Today/Task presentation tests for Ready, Active 0/2–2/2,
       completion confirmation, submission, waiting, interruption recovery, and zero pre-approval
       rewards.
-- [ ] T168 [US2] Recompose Child Today, Task Detail, Active Task states, completion, and waiting on
+- [x] T168 [US2] Recompose Child Today, Task Detail, Active Task states, completion, and waiting on
       the existing task state machine and selectors; do not duplicate lifecycle logic in views.
-- [ ] T169 Validate and commit the Child task slice with focused flow, profile guard, voice, locale,
+- [x] T169 Validate and commit the Child task slice with focused flow, profile guard, voice, locale,
       RTL, accessibility, responsive, export, and full regression checks.
-- [ ] T170 [US3] Write focused Parent review and support-loop presentation tests covering pending
+- [x] T170 [US3] Write focused Parent review and support-loop presentation tests covering pending
       review, support default/selected/sent, approve/retry, approval success, Child follow-up, and
       idempotent resubmission.
-- [ ] T171 [US3] Recompose Parent review and Child support/follow-up presentation while calling only
+- [x] T171 [US3] Recompose Parent review and Child support/follow-up presentation while calling only
       the existing approval/retry transactions and preserving every current reward consequence.
-- [ ] T172 Validate and commit the review/support slice with focused lifecycle, reward, privacy,
+- [x] T172 Validate and commit the review/support slice with focused lifecycle, reward, privacy,
       access, RTL, accessibility, responsive, export, and full regression checks.
-- [ ] T173 [US4] Write focused Garden presentation tests proving all displayed values derive from
+- [x] T173 [US4] Write focused Garden presentation tests proving all displayed values derive from
       the current selectors and no cumulative Next Stage or second-currency mechanic appears.
-- [ ] T174 [US4] Recompose the existing Garden from `ghaf_child_growth_garden_final_corrected` as a
+- [x] T174 [US4] Recompose the existing Garden from `ghaf_child_growth_garden_final_corrected` as a
       visual candidate while preserving current schema-3 progression, routes, announcements, and
       reset behavior.
-- [ ] T175 Validate and commit the Garden slice with focused Garden/canopy/privacy, locale, RTL,
+- [x] T175 Validate and commit the Garden slice with focused Garden/canopy/privacy, locale, RTL,
       accessibility, responsive, export, and full regression checks.
-- [ ] T176 Add cross-slice RTL, accessibility, reduced-motion, overflow, fixed-action clearance,
+- [x] T176 Add cross-slice RTL, accessibility, reduced-motion, overflow, fixed-action clearance,
       keyboard, route-state, and 390×844 visual regression coverage without importing web runtime.
-- [ ] T177 Run the complete repository gate, Expo configuration and production exports, route/reset
+- [x] T177 Run the complete repository gate, Expo configuration and production exports, route/reset
       checks, and physical Android smoke test. Record an unavailable device or SDK as `BLOCKED`, not
-      inferred success.
-- [ ] T178 Record final R002a evidence, remaining visual deviations, human-copy/provenance review,
+      inferred success. Automated, Expo, web, and export gates passed; the physical Android smoke
+      test is `BLOCKED` because this environment has no listed ADB device or configured Android SDK.
+- [x] T178 Record final R002a evidence, remaining visual deviations, human-copy/provenance review,
       and every deferred R002b surface; verify raw exports and six historical commits remain
-      untouched and unapplied.
+      untouched and unapplied in
+      `specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md`.
 
 **Checkpoint**: R002a is complete only when every implemented compatibility slice preserves the
 characterized behavior and has fresh bilingual, responsive, accessibility, visual, export, reset,

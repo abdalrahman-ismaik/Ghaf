@@ -26,17 +26,18 @@ canonical task, reward, access, privacy, voice, reset, or progression behavior.
 R002b Impact Path, badges, learning, Parent Progress, Shared Growth changes, combined RevealBundle
 changes, and cumulative progression remain blocked pending separate product and design approval.
 
-| Area                 | Current evidence                                                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | Revision 3 is active; R001 is frozen and selected compatibility-safe R002a presentation is authorized                                             |
-| Automated checks     | Remote ten-route/access/League/Reward/voice checks are preserved behavioral evidence; fresh R001 and Growth checks are not inherited              |
-| Web preview          | Remote and R001 evidence retains its recorded scope; each R002a slice requires fresh Arabic RTL, English LTR, responsive, and visual validation   |
-| Android              | Authoritative R001/Revision 3 physical-device interaction evidence remains **NOT RUN** or **BLOCKED** until recorded against a named build/device |
-| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers           |
-| Production readiness | **No** — data, assistants, media, access, League, rewards, and growth remain intentionally local/synthetic/prepared or design-blocked             |
+| Area                 | Current evidence                                                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product              | Revision 3 is active; R001 is frozen and the selected compatibility-safe R002a presentation is implemented                                           |
+| Automated checks     | R002a focused tests pass 141/141 and the full suite passes 541/541; behavior remains characterized against the remote baseline                       |
+| Web preview          | Fresh Arabic/English journey, responsive-width, RTL/LTR, overflow, console, and curated visual evidence is recorded for R002a                        |
+| Android              | JavaScript export passes; the authoritative physical-device smoke test is **BLOCKED** because this environment has no ADB device or configured SDK   |
+| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers              |
+| Production readiness | **No** — data, assistants, media, access, League, rewards, and growth remain intentionally local/synthetic/prepared or blocked behind the R002b gate |
 
-The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
-does not count as native-device or human-review evidence.
+The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md), with the bounded R002a
+results in the [R002a validation evidence](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md).
+A browser or source pass does not count as native-device or human-review evidence.
 
 ## Run it in five minutes
 

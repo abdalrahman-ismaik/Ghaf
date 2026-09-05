@@ -26,6 +26,18 @@ Garden surfaces. R001 Welcome and Parent onboarding remain frozen regression bas
 divergent historical commits remain unapplied, and the original worktree's untracked R002 exports
 remain read-only evidence.
 
+**Completion record — 2026-09-05**: The implementation reservations below were completed and
+returned through `a0539e9`. The isolated branch contains separate characterization, Parent Home,
+Parent Tasks/Builder, Child task, Parent review/support, Child follow-up, compatible Garden, and
+cross-slice quality/visual commits, followed by a bounded Parent large-text containment fix.
+Focused tests passed 141/141 and the full suite passed 541/541;
+typecheck, lint, formatting, Expo configuration, web export, Android JavaScript export, route/reset
+checks, and Git whitespace validation passed. Browser evidence covers Arabic and English plus
+320, 360, 390, 430, and 768 widths. Physical Android is `BLOCKED` because no ADB device is listed
+and no Android SDK is configured in this environment; named human reviews remain `NOT RUN`. All
+temporary reservations are released by the release-documentation commit; the historical table is
+kept as an audit of the completed file boundaries.
+
 | Exclusive writer                                                          | Exact reserved boundary                                                                                                                                                                                                                                               | Handoff condition                                                                                                                                                                           |
 | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/root/r002a_orchestrator` and delegated documentation writers            | `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `DESIGN.md`, `DEMO_RUNBOOK.md`, `specs/003-family-growth-garden/{spec.md,contracts/acceptance-contract.md,design-intake/release-gate.md}`, and newly tracked R002a intake metadata/specifications only                      | Record the split gates and compatibility authority without changing product semantics or importing raw exports; return files for integration review                                         |
