@@ -26,5 +26,6 @@ export type {
   ParentOnboardingStatus,
   ParentOnboardingView,
   ParentReportHandoff,
+  ParentSharedGrowthAccessHandoff,
 } from '../../../models/parentOnboarding';
 export type { ParentSessionTermination } from '../../../models/access';

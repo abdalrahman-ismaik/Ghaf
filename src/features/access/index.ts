@@ -164,6 +164,8 @@ function purposeCapability(purpose: SensitiveActionPurpose): AccessCapability {
       return 'manage_family_rewards';
     case 'change_league_membership':
       return 'manage_league_membership';
+    case 'change_shared_growth_participation':
+      return 'manage_shared_growth_contribution';
     case 'change_voice_permission':
     case 'change_media_permission':
     case 'change_ai_permission':

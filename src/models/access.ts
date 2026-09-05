@@ -16,6 +16,7 @@ export type ParentCapability =
   | 'confirm_tasks'
   | 'manage_family_rewards'
   | 'manage_league_membership'
+  | 'manage_shared_growth_contribution'
   | 'manage_child_permissions'
   | 'manage_child_devices';
 
@@ -38,6 +39,7 @@ export const PARENT_CAPABILITIES: readonly ParentCapability[] = Object.freeze([
   'confirm_tasks',
   'manage_family_rewards',
   'manage_league_membership',
+  'manage_shared_growth_contribution',
   'manage_child_permissions',
   'manage_child_devices',
 ]);
@@ -208,6 +210,7 @@ export type SensitiveActionPurpose =
   | 'create_monetary_family_reward'
   | 'change_monetary_family_reward'
   | 'change_league_membership'
+  | 'change_shared_growth_participation'
   | 'change_voice_permission'
   | 'change_media_permission'
   | 'change_ai_permission';

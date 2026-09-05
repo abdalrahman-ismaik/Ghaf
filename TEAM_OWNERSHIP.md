@@ -148,6 +148,16 @@ presentation-role forgery and unknown profiles, and loses report authority on th
 reset. Ten focused projection/access tests and repository typecheck passed. The route and visual
 surface remain pending behind the default-off `r002b_parent_progress_ui` flag.
 
+**Shared Growth access/store checkpoint — 2026-09-05**: The established access service now owns a
+dedicated `manage_shared_growth_contribution` capability and single-use
+`change_shared_growth_participation` reauthentication purpose. The Parent onboarding controller
+keeps its private session hidden while producing a bounded, verified handoff; the store applies
+Continue, Pause, and End only to the separate Shared Growth preference, requires fresh explicit
+synthetic consent after End, reuses consent after Pause, and creates a new participation epoch on
+Parent reset. The qualitative Child view remains available while paused or ended and contains no
+identity, task, ranking, numeric, Seed, badge, or reward fields. Fifty-two focused domain/access
+tests and repository typecheck passed. Both Shared Growth flags remain default-off.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`

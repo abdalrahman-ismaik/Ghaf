@@ -95,3 +95,24 @@ export interface ParentReportHandoff {
   readonly origin: 'synthetic';
   readonly capabilityTruth: AccessCapabilityTruth;
 }
+
+export interface ParentSharedGrowthAccessHandoff {
+  readonly authorized: true;
+  readonly role: 'parent';
+  readonly capability: 'manage_shared_growth_contribution';
+  readonly parentId: SyntheticParentId;
+  readonly householdId: SyntheticHouseholdId;
+  readonly participationEpochId: string;
+  readonly reauthentication: {
+    readonly id: string;
+    readonly purpose: 'change_shared_growth_participation';
+    readonly status: 'verified';
+    readonly issuedAt: string;
+    readonly expiresAt: string;
+    readonly consumedByAccessService: true;
+    readonly origin: 'synthetic';
+    readonly capabilityTruth: AccessCapabilityTruth;
+  };
+  readonly origin: 'synthetic';
+  readonly capabilityTruth: AccessCapabilityTruth;
+}

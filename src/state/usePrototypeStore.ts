@@ -40,6 +40,12 @@ import {
   startMangroveLearningRoute as startMangroveLearningRouteDomain,
   submitMangroveLearningCheck as submitMangroveLearningCheckDomain,
 } from '../features/learning/mangroveLearning';
+import {
+  applySharedGrowthParticipationAction as applySharedGrowthParticipationActionDomain,
+  createSharedGrowthState,
+  projectSharedGrowthView,
+  SHARED_GROWTH_QUALITATIVE_FIXTURE,
+} from '../features/shared-growth/sharedGrowth';
 import { coerceLocale, getLocaleDirection } from '../models/prototype';
 import type {
   ChildCoachIntent,
@@ -82,6 +88,14 @@ import type {
 } from '../models/learning';
 import type { LearningCompletionEvidence } from '../models/achievements';
 import type { ImpactPathThreshold } from '../models/growthJourney';
+import type {
+  ParentSharedGrowthConsentReceipt,
+  SharedGrowthChildView,
+  SharedGrowthErrorCode,
+  SharedGrowthParticipationAction,
+  SharedGrowthParticipationActionResult,
+  SharedGrowthState,
+} from '../models/sharedGrowth';
 import { serviceRegistry, type ParentGuideService, type ServiceResult } from '../services';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
@@ -119,9 +133,37 @@ function createLearningByProfile(runtime: GrowthJourneyRuntimeState): MangroveLe
 
 const initialMangroveLearning = createLearningByProfile(initialGrowthJourney.data);
 
+function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
+  const participationEpochId = `shared-growth-epoch-${resetSequence}`;
+  const initialConsent: ParentSharedGrowthConsentReceipt = {
+    id: `shared-growth-consent-${resetSequence}-1`,
+    version: 1,
+    parentId: 'parent_al_noor',
+    householdId: 'household_al_noor',
+    participationEpochId,
+    status: 'explicit_parent_consent',
+    grantedAt: '2026-09-04T10:00:00.000Z',
+    supersedesEndActionId: null,
+    origin: 'synthetic',
+    capabilityTruth: 'local_prototype_not_authentication',
+  };
+  const result = createSharedGrowthState({
+    householdId: 'household_al_noor',
+    participationEpochId,
+    initialConsent,
+  });
+  if (!result.ok) {
+    throw new Error(`R002b Shared Growth bootstrap failed: ${result.error.message}`);
+  }
+  return result.data;
+}
+
+const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
+
 export interface PrototypeStoreState extends PrototypeSession {
   readonly growthJourney: GrowthJourneyRuntimeState;
   readonly mangroveLearningByProfile: MangroveLearningByProfile;
+  readonly sharedGrowth: SharedGrowthState;
   readonly parentOnboarding: ParentOnboardingView;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
@@ -151,6 +193,14 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly getParentChildProgress: (
     profileId: SyntheticChildId,
   ) => ServiceResult<ParentChildProgressProjection>;
+  readonly getSharedGrowthChildView: () => ServiceResult<SharedGrowthChildView>;
+  readonly changeSharedGrowthParticipation: (input: {
+    readonly actionId: string;
+    readonly action: SharedGrowthParticipationAction;
+    readonly actedAt: string;
+    readonly proofId: string;
+    readonly freshConsentConfirmed: boolean;
+  }) => ServiceResult<SharedGrowthParticipationActionResult>;
   readonly setLocale: (value: unknown) => void;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
@@ -408,6 +458,29 @@ function parentProgressFailure(
   }
 }
 
+function sharedGrowthFailure(code: SharedGrowthErrorCode, message: string): ServiceResult<never> {
+  switch (code) {
+    case 'PARENT_AUTHORITY_REQUIRED':
+    case 'REAUTHENTICATION_REQUIRED':
+    case 'INVALID_TRANSITION':
+    case 'ACTION_CONFLICT':
+    case 'AUTHORITY_CONFLICT':
+    case 'CONSENT_REQUIRED':
+    case 'CONSENT_CONFLICT':
+      return failure('INVALID_TRANSITION', message);
+    case 'PRIVACY_VIOLATION':
+    case 'SCOPE_MISMATCH':
+    case 'PROFILE_SCOPE_MISMATCH':
+      return failure('PRIVACY_REJECTED', message);
+    case 'EPOCH_SCOPE_MISMATCH':
+    case 'INVALID_STATE':
+      return failure('INVALID_RESPONSE', message);
+    case 'INVALID_INPUT':
+    case 'SIGNAL_CONFLICT':
+      return failure('INVALID_INPUT', message);
+  }
+}
+
 function completionEvidenceFor(
   state: PrototypeStoreState,
   profileId: SyntheticChildId,
@@ -530,6 +603,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
   growthJourney: initialGrowthJourney.data,
   mangroveLearningByProfile: initialMangroveLearning,
+  sharedGrowth: initialSharedGrowth,
   parentOnboarding: parentOnboardingController.getView(),
   parentGuideSuggestion: null,
   childCoachResult: null,
@@ -634,6 +708,108 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       : parentProgressFailure(projected.error.code, projected.error.message);
   },
 
+  getSharedGrowthChildView: () => {
+    const state = get();
+    if (state.role !== 'child') {
+      return failure('INVALID_TRANSITION', 'Only the Child role can view Shared Growth');
+    }
+    const projected = projectSharedGrowthView({
+      aggregate: SHARED_GROWTH_QUALITATIVE_FIXTURE,
+      preference: state.sharedGrowth.preference,
+    });
+    return projected.ok
+      ? success(projected.data)
+      : sharedGrowthFailure(projected.error.code, projected.error.message);
+  },
+
+  changeSharedGrowthParticipation: (input) => {
+    const state = get();
+    if (state.role !== 'parent') {
+      return failure(
+        'INVALID_TRANSITION',
+        'Only the Parent role can change Shared Growth participation',
+      );
+    }
+    const existing = state.sharedGrowth.preference.actionHistory.find(
+      (receipt) => receipt.id === input.actionId,
+    );
+    if (existing) {
+      const expectedFreshConsent =
+        existing.fromStatus === 'ended' && existing.action === 'continue';
+      return existing.action === input.action &&
+        existing.actedAt === input.actedAt &&
+        existing.reauthenticationId === input.proofId &&
+        expectedFreshConsent === input.freshConsentConfirmed
+        ? success({ disposition: 'already_applied', state: state.sharedGrowth })
+        : failure('INVALID_TRANSITION', 'Participation action identity has conflicting input');
+    }
+    const preference = state.sharedGrowth.preference;
+    const requiresFreshConsent = preference.status === 'ended' && input.action === 'continue';
+    if (requiresFreshConsent !== input.freshConsentConfirmed) {
+      return failure(
+        'INVALID_TRANSITION',
+        requiresFreshConsent
+          ? 'Fresh explicit Parent consent is required after End'
+          : 'Fresh consent is accepted only when returning after End',
+      );
+    }
+    const handoff = parentOnboardingController.authorizeSharedGrowthParticipation({
+      proofId: input.proofId,
+      participationEpochId: preference.participationEpochId,
+      now: input.actedAt,
+    });
+    if (!handoff.ok) return handoff;
+    const lastEndAction = [...preference.actionHistory]
+      .reverse()
+      .find((receipt) => receipt.action === 'end_participation');
+    const freshConsent: ParentSharedGrowthConsentReceipt | null = requiresFreshConsent
+      ? {
+          id: `shared-growth-consent-${preference.participationEpochId}-${preference.consentReceipts.length + 1}`,
+          version: preference.consentReceipts.length + 1,
+          parentId: handoff.data.parentId,
+          householdId: handoff.data.householdId,
+          participationEpochId: preference.participationEpochId,
+          status: 'explicit_parent_consent',
+          grantedAt: input.actedAt,
+          supersedesEndActionId: lastEndAction?.id ?? null,
+          origin: 'synthetic',
+          capabilityTruth: handoff.data.capabilityTruth,
+        }
+      : null;
+    const applied = applySharedGrowthParticipationActionDomain({
+      state: state.sharedGrowth,
+      actionId: input.actionId,
+      action: input.action,
+      actedAt: input.actedAt,
+      authority: {
+        role: 'parent',
+        parentId: handoff.data.parentId,
+        householdId: handoff.data.householdId,
+        participationEpochId: preference.participationEpochId,
+        capability: 'manage_shared_growth_contribution',
+        reauthentication: {
+          id: handoff.data.reauthentication.id,
+          purpose: 'change_shared_growth_participation',
+          status: 'verified',
+          parentId: handoff.data.parentId,
+          householdId: handoff.data.householdId,
+          participationEpochId: preference.participationEpochId,
+          issuedAt: handoff.data.reauthentication.issuedAt,
+          expiresAt: handoff.data.reauthentication.expiresAt,
+          consumed: false,
+          origin: 'synthetic',
+          capabilityTruth: handoff.data.capabilityTruth,
+        },
+        origin: 'synthetic',
+        capabilityTruth: handoff.data.capabilityTruth,
+      },
+      freshConsent,
+    });
+    if (!applied.ok) return sharedGrowthFailure(applied.error.code, applied.error.message);
+    set({ sharedGrowth: applied.data.state });
+    return success(applied.data);
+  },
+
   setLocale: (value) => {
     const locale = coerceLocale(value);
     set({ locale, direction: getLocaleDirection(locale) });
@@ -668,6 +844,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
     }
     const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
+    const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
     const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
     if (!onboardingReset.ok) return onboardingReset;
     const voiceReset = childVoiceController.resetPrototype('parent');
@@ -676,6 +853,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       ...reset.session,
       growthJourney: nextGrowthJourney.data,
       mangroveLearningByProfile: nextMangroveLearning,
+      sharedGrowth: nextSharedGrowth,
       parentOnboarding: onboardingReset.data,
       parentGuideSuggestion: null,
       childCoachResult: null,

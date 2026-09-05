@@ -1,4 +1,8 @@
-import { SYNTHETIC_PARENT_ACCESS_FIXTURE, type ParentAccessSession } from '../../../models/access';
+import {
+  SYNTHETIC_PARENT_ACCESS_FIXTURE,
+  SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+  type ParentAccessSession,
+} from '../../../models/access';
 import type { DomainErrorCode } from '../../../models/familyGrowth';
 import type {
   ParentOnboardingCompletionReceipt,
@@ -8,6 +12,7 @@ import type {
   ParentOnboardingStatus,
   ParentOnboardingView,
   ParentReportHandoff,
+  ParentSharedGrowthAccessHandoff,
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
 import {
@@ -30,7 +35,8 @@ export interface ParentOnboardingControllerConfig {
 export type ParentOnboardingAccessAuthority = Pick<
   SyntheticAccessService,
   'signInParent' | 'authorizeCapability' | 'terminateParentSession'
->;
+> &
+  Partial<Pick<SyntheticAccessService, 'issueReauthentication' | 'authorizeSensitiveAction'>>;
 
 const DEFAULT_CONFIG: ParentOnboardingControllerConfig = Object.freeze({
   sessionId: 'parent-onboarding-r001-session-v1',
@@ -308,6 +314,64 @@ export class ParentOnboardingController {
       authorizedProfileIds: Object.freeze([profileId]),
       origin: 'synthetic',
       capabilityTruth: this.parentSession.capabilityTruth,
+    });
+  }
+
+  authorizeSharedGrowthParticipation(input: {
+    readonly proofId: string;
+    readonly participationEpochId: string;
+    readonly now: string;
+  }): ServiceResult<ParentSharedGrowthAccessHandoff> {
+    if (!this.parentSession || !this.completionReceipt || this.status !== 'authenticated_parent') {
+      return failure('INVALID_TRANSITION', 'A completed Parent onboarding session is required');
+    }
+    if (
+      !/^[A-Za-z0-9][A-Za-z0-9._:-]*$/u.test(input.participationEpochId) ||
+      !this.access.issueReauthentication ||
+      !this.access.authorizeSensitiveAction
+    ) {
+      return failure('INVALID_INPUT', 'Shared Growth access evidence is unavailable');
+    }
+    const capability = this.access.authorizeCapability({
+      session: this.parentSession,
+      capability: 'manage_shared_growth_contribution',
+      now: input.now,
+    });
+    if (!capability.ok) return capability;
+    const issued = this.access.issueReauthentication({
+      proofId: input.proofId,
+      parentSession: this.parentSession,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose: 'change_shared_growth_participation',
+      now: input.now,
+    });
+    if (!issued.ok) return issued;
+    const verified = this.access.authorizeSensitiveAction({
+      proofId: issued.data.id,
+      parentSession: this.parentSession,
+      purpose: issued.data.purpose,
+      now: input.now,
+    });
+    if (!verified.ok) return verified;
+    return success({
+      authorized: true,
+      role: 'parent',
+      capability: 'manage_shared_growth_contribution',
+      parentId: verified.data.parentId,
+      householdId: verified.data.householdId,
+      participationEpochId: input.participationEpochId,
+      reauthentication: {
+        id: verified.data.id,
+        purpose: 'change_shared_growth_participation',
+        status: 'verified',
+        issuedAt: verified.data.issuedAt,
+        expiresAt: verified.data.expiresAt,
+        consumedByAccessService: true,
+        origin: 'synthetic',
+        capabilityTruth: verified.data.capabilityTruth,
+      },
+      origin: 'synthetic',
+      capabilityTruth: verified.data.capabilityTruth,
     });
   }
 
