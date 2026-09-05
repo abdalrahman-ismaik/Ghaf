@@ -24,6 +24,7 @@ interface ImpactPathParams extends Record<string, R002bRouteParam> {
   readonly originFilter?: R002bRouteParam;
   readonly originEntityId?: R002bRouteParam;
   readonly restoreFocusTarget?: R002bRouteParam;
+  readonly restoreProfileId?: R002bRouteParam;
   readonly restoreScrollOffset?: R002bRouteParam;
 }
 
@@ -35,14 +36,21 @@ const ALLOWED_ORIGINS = [
   'impact_path_learning_action',
 ] as const;
 
-function restoredPosition(params: ImpactPathParams) {
+function restoredPosition(params: ImpactPathParams, activeChildId: SyntheticChildId) {
+  const profileMatches = params.restoreProfileId === activeChildId;
   const focusTarget =
-    params.restoreFocusTarget === 'impact-path-learning-station-132'
+    profileMatches &&
+    (params.restoreFocusTarget === 'impact-path-learning-station-132' ||
+      (params.restoreFocusTarget === 'r002b-impact-path-badges-action' &&
+        r002bFeatureFlags.r002b_badges_ui))
       ? params.restoreFocusTarget
       : undefined;
   const rawOffset = params.restoreScrollOffset;
   const scrollOffset =
-    typeof rawOffset === 'string' && /^\d+$/u.test(rawOffset) && Number(rawOffset) <= 100_000
+    profileMatches &&
+    typeof rawOffset === 'string' &&
+    /^\d+$/u.test(rawOffset) &&
+    Number(rawOffset) <= 100_000
       ? Number(rawOffset)
       : 0;
   return { focusTarget, scrollOffset } as const;
@@ -66,10 +74,7 @@ export default function ImpactPathRoute() {
 
   if (!access.allowed) return <Redirect href={access.fallback} />;
 
-  const restored =
-    access.origin.id === 'impact_path_learning_action'
-      ? restoredPosition(params)
-      : { focusTarget: undefined, scrollOffset: 0 };
+  const restored = restoredPosition(params, activeChildId);
   return <AuthorizedImpactPath access={access} profileId={activeChildId} restored={restored} />;
 }
 
@@ -81,7 +86,8 @@ function AuthorizedImpactPath({
   readonly access: Extract<ReturnType<typeof resolveR002bRouteRequest>, { allowed: true }>;
   readonly profileId: SyntheticChildId;
   readonly restored: {
-    readonly focusTarget: 'impact-path-learning-station-132' | undefined;
+    readonly focusTarget:
+      'impact-path-learning-station-132' | 'r002b-impact-path-badges-action' | undefined;
     readonly scrollOffset: number;
   };
 }) {

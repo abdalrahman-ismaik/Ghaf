@@ -80,6 +80,30 @@ describe('R002b guarded Growth route integration', () => {
     );
   });
 
+  it('retains bounded scroll, filter, and focus state across interrupted Growth navigation', () => {
+    const today = source('app/child/index.tsx');
+    const impactPath = source(routeFiles[0]);
+    const gallery = source(routeFiles[1]);
+    const detail = source(routeFiles[2]);
+
+    expect(today).toContain('scrollOffset: childScrollOffsetRef.current');
+    expect(today).toContain('contentOffset: { x: 0, y: restoredScrollOffset }');
+    expect(today).toContain('initialFocusTargetId={restoredFocusTarget}');
+
+    expect(impactPath).toContain("'r002b-impact-path-badges-action'");
+    expect(impactPath).toContain('params.restoreProfileId === activeChildId');
+    expect(impactPath).toContain('contentOffset: { x: 0, y: restored.scrollOffset }');
+
+    expect(gallery).toContain('scrollOffset: galleryScrollOffsetRef.current');
+    expect(gallery).toContain('filter: galleryFilterRef.current');
+    expect(gallery).toContain('contentOffset: { x: 0, y: restored.scrollOffset }');
+    expect(gallery).toContain('initialFocusTargetId={restored.focusTarget}');
+
+    expect(detail).toContain('scrollOffset: scrollOffsetRef.current');
+    expect(detail).toContain("'r002b-badge-detail-path-action'");
+    expect(detail).toContain('params.restoreProfileId === activeChildId');
+  });
+
   it('derives every Growth value from the profile projection and never writes rewards in UI', () => {
     const integrated = [
       source('app/child/index.tsx'),

@@ -26,6 +26,7 @@ export interface R002bOrigin {
   readonly id: R002bOriginId;
   readonly profileId: string;
   readonly scrollOffset?: number;
+  readonly galleryScrollOffset?: number;
   readonly filter?: R002bBadgeFilter;
   readonly entityId?: string;
 }
@@ -37,6 +38,7 @@ interface OriginDefinition {
   readonly focusTarget: string;
   readonly entity: 'none' | 'badge' | 'reveal';
   readonly acceptsFilter?: true;
+  readonly acceptsGalleryScroll?: true;
 }
 
 const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
@@ -82,12 +84,16 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
     href: 'badge_detail',
     focusTarget: 'r002b-badge-detail-path-action',
     entity: 'badge',
+    acceptsFilter: true,
+    acceptsGalleryScroll: true,
   },
   badge_detail_learning_action: {
     role: 'child',
     href: 'badge_detail',
     focusTarget: 'r002b-badge-detail-learning-action',
     entity: 'badge',
+    acceptsFilter: true,
+    acceptsGalleryScroll: true,
   },
   child_today_reveal_handoff: {
     role: 'child',
@@ -135,6 +141,10 @@ const BADGE_FILTERS = new Set<R002bBadgeFilter>([
   'archived',
 ]);
 
+export function isR002bBadgeFilter(value: unknown): value is R002bBadgeFilter {
+  return typeof value === 'string' && BADGE_FILTERS.has(value as R002bBadgeFilter);
+}
+
 export type CreateR002bOriginResult =
   | { readonly ok: true; readonly data: R002bOrigin }
   | {
@@ -151,6 +161,7 @@ export type R002bOriginRouteParams = Readonly<{
   originId: string;
   originProfileId: string;
   originScrollOffset?: string;
+  originGalleryScrollOffset?: string;
   originFilter?: string;
   originEntityId?: string;
 }>;
@@ -177,6 +188,7 @@ export function createR002bOrigin(input: {
   readonly id: R002bOriginId;
   readonly profileId: string;
   readonly scrollOffset?: number;
+  readonly galleryScrollOffset?: number;
   readonly filter?: R002bBadgeFilter;
   readonly entityId?: string;
 }): CreateR002bOriginResult {
@@ -193,8 +205,17 @@ export function createR002bOrigin(input: {
     return { ok: false, error: 'invalid_scroll' };
   }
   if (
+    input.galleryScrollOffset !== undefined &&
+    (!definition.acceptsGalleryScroll ||
+      !Number.isSafeInteger(input.galleryScrollOffset) ||
+      input.galleryScrollOffset < 0 ||
+      input.galleryScrollOffset > 100_000)
+  ) {
+    return { ok: false, error: 'invalid_scroll' };
+  }
+  if (
     input.filter !== undefined &&
-    (!definition.acceptsFilter || !BADGE_FILTERS.has(input.filter))
+    (!definition.acceptsFilter || !isR002bBadgeFilter(input.filter))
   ) {
     return { ok: false, error: 'invalid_filter' };
   }
@@ -220,6 +241,9 @@ export function createR002bOrigin(input: {
     id: input.id,
     profileId: input.profileId,
     ...(input.scrollOffset === undefined ? {} : { scrollOffset: input.scrollOffset }),
+    ...(input.galleryScrollOffset === undefined
+      ? {}
+      : { galleryScrollOffset: input.galleryScrollOffset }),
     ...(input.filter === undefined ? {} : { filter: input.filter }),
     ...(input.entityId === undefined ? {} : { entityId: input.entityId }),
   };
@@ -238,6 +262,9 @@ export function serializeR002bOrigin(origin: R002bOrigin): R002bOriginRouteParam
     ...(normalized.data.scrollOffset === undefined
       ? {}
       : { originScrollOffset: String(normalized.data.scrollOffset) }),
+    ...(normalized.data.galleryScrollOffset === undefined
+      ? {}
+      : { originGalleryScrollOffset: String(normalized.data.galleryScrollOffset) }),
     ...(normalized.data.filter === undefined ? {} : { originFilter: normalized.data.filter }),
     ...(normalized.data.entityId === undefined ? {} : { originEntityId: normalized.data.entityId }),
   });
@@ -253,11 +280,19 @@ export function parseR002bOriginParams(
       : typeof rawScrollOffset === 'string' && /^\d+$/.test(rawScrollOffset)
         ? Number(rawScrollOffset)
         : Number.NaN;
+  const rawGalleryScrollOffset = params?.originGalleryScrollOffset;
+  const galleryScrollOffset =
+    rawGalleryScrollOffset === undefined
+      ? undefined
+      : typeof rawGalleryScrollOffset === 'string' && /^\d+$/.test(rawGalleryScrollOffset)
+        ? Number(rawGalleryScrollOffset)
+        : Number.NaN;
 
   return createR002bOrigin({
     id: params?.originId as R002bOriginId,
     profileId: params?.originProfileId as string,
     ...(scrollOffset === undefined ? {} : { scrollOffset }),
+    ...(galleryScrollOffset === undefined ? {} : { galleryScrollOffset }),
     ...(params?.originFilter === undefined
       ? {}
       : { filter: params.originFilter as R002bBadgeFilter }),
@@ -297,9 +332,11 @@ function focusTargetFor(origin: R002bOrigin, definition: OriginDefinition): stri
 export type ResolveR002bOriginResult =
   | {
       readonly restored: true;
+      readonly origin: R002bOrigin;
       readonly href: string;
       readonly focusTarget: string;
       readonly scrollOffset: number;
+      readonly galleryScrollOffset?: number;
       readonly filter: R002bBadgeFilter | null;
     }
   | {
@@ -332,9 +369,13 @@ export function resolveR002bOrigin(input: {
 
   return {
     restored: true,
+    origin: normalized.data,
     href: hrefFor(normalized.data, definition),
     focusTarget: focusTargetFor(normalized.data, definition),
     scrollOffset: normalized.data.scrollOffset ?? 0,
+    ...(normalized.data.galleryScrollOffset === undefined
+      ? {}
+      : { galleryScrollOffset: normalized.data.galleryScrollOffset }),
     filter: normalized.data.filter ?? null,
   };
 }

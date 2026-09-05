@@ -25,6 +25,7 @@ interface BadgeDetailParams extends Record<string, R002bRouteParam> {
   readonly originFilter?: R002bRouteParam;
   readonly originEntityId?: R002bRouteParam;
   readonly restoreFocusTarget?: R002bRouteParam;
+  readonly restoreProfileId?: R002bRouteParam;
   readonly restoreScrollOffset?: R002bRouteParam;
 }
 
@@ -48,23 +49,30 @@ export default function BadgeDetailRoute() {
 
   if (!access.allowed) return <Redirect href={access.fallback} />;
 
+  const restoreProfileMatches = params.restoreProfileId === activeChildId;
+  const restoreFocusTarget =
+    restoreProfileMatches &&
+    ((params.restoreFocusTarget === 'r002b-badge-detail-path-action' &&
+      r002bFeatureFlags.r002b_impact_path_ui) ||
+      (params.restoreFocusTarget === 'r002b-badge-detail-learning-action' &&
+        r002bFeatureFlags.r002b_learning_ui))
+      ? params.restoreFocusTarget
+      : undefined;
+
   return (
     <AuthorizedBadgeDetail
       access={access}
       badgeId={access.entityId as BadgeId}
       profileId={activeChildId}
       restoredScrollOffset={
+        restoreProfileMatches &&
         typeof params.restoreScrollOffset === 'string' &&
         /^\d+$/u.test(params.restoreScrollOffset) &&
         Number(params.restoreScrollOffset) <= 100_000
           ? Number(params.restoreScrollOffset)
           : 0
       }
-      restoreFocusTarget={
-        params.restoreFocusTarget === 'r002b-badge-detail-learning-action'
-          ? params.restoreFocusTarget
-          : undefined
-      }
+      restoreFocusTarget={restoreFocusTarget}
     />
   );
 }
@@ -80,7 +88,8 @@ function AuthorizedBadgeDetail({
   readonly badgeId: BadgeId;
   readonly profileId: SyntheticChildId;
   readonly restoredScrollOffset: number;
-  readonly restoreFocusTarget: 'r002b-badge-detail-learning-action' | undefined;
+  readonly restoreFocusTarget:
+    'r002b-badge-detail-path-action' | 'r002b-badge-detail-learning-action' | undefined;
 }) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -93,7 +102,9 @@ function AuthorizedBadgeDetail({
       id: 'badge_detail_path_action',
       profileId,
       entityId: badgeId,
-      scrollOffset: 0,
+      filter: access.origin.filter ?? 'all',
+      galleryScrollOffset: access.origin.scrollOffset ?? 0,
+      scrollOffset: scrollOffsetRef.current,
     });
     if (!origin.ok) return;
     router.push({
@@ -120,7 +131,9 @@ function AuthorizedBadgeDetail({
       id: 'badge_detail_learning_action',
       profileId,
       entityId: badgeId,
-      scrollOffset: 0,
+      filter: access.origin.filter ?? 'all',
+      galleryScrollOffset: access.origin.scrollOffset ?? 0,
+      scrollOffset: scrollOffsetRef.current,
     });
     if (!routeOrigin.ok) return;
     const started = usePrototypeStore.getState().startMangroveLearning('story', {

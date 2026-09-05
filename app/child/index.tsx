@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useRouter, type Href } from 'expo-router';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -23,11 +23,13 @@ import {
 } from '@/features/tasks/demoContent';
 import { useR002bGrowthPresentation } from '@/features/growth/useR002bGrowthPresentation';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
+import type { R002bRouteParam } from '@/features/navigation/r002bRouteRequest';
 import { localize } from '@/i18n';
 import type {
   ApprovedChoiceFixture,
   LandscapeId,
   RecognitionMode,
+  SyntheticChildId,
   TaskLifecycleStatus,
   TaskTemplate,
 } from '@/models/familyGrowth';
@@ -69,12 +71,40 @@ const STATUS_KEY_BY_LIFECYCLE: Partial<Record<TaskLifecycleStatus, string>> = {
   recognized: 'childHome.statusRecognized',
 };
 
+interface ChildHomeParams extends Record<string, R002bRouteParam> {
+  readonly restoreFocusTarget?: R002bRouteParam;
+  readonly restoreProfileId?: R002bRouteParam;
+  readonly restoreScrollOffset?: R002bRouteParam;
+}
+
+function restoredChildHomePosition(
+  params: ChildHomeParams,
+  activeChildId: SyntheticChildId,
+  enabled: boolean,
+) {
+  const profileMatches = params.restoreProfileId === activeChildId;
+  const rawOffset = params.restoreScrollOffset;
+  const scrollOffset =
+    profileMatches &&
+    typeof rawOffset === 'string' &&
+    /^\d+$/u.test(rawOffset) &&
+    Number(rawOffset) <= 100_000
+      ? Number(rawOffset)
+      : 0;
+  const focusTarget =
+    enabled && profileMatches && params.restoreFocusTarget === 'r002b-today-path-action'
+      ? params.restoreFocusTarget
+      : undefined;
+  return { focusTarget, scrollOffset } as const;
+}
+
 function templateFor(choice: ApprovedChoiceFixture): TaskTemplate | null {
   if (choice.taskTemplateId === P0_RECYCLING_TEMPLATE.id) return P0_RECYCLING_TEMPLATE;
   return TASK_TEMPLATES.find((template) => template.id === choice.taskTemplateId) ?? null;
 }
 
 export default function ChildHomeScreen() {
+  const params = useLocalSearchParams() as unknown as ChildHomeParams;
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
@@ -98,6 +128,10 @@ export default function ChildHomeScreen() {
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const r002bGrowthEnabled = role === 'child' && r002bFeatureFlags.r002b_impact_path_ui;
+  const restored = restoredChildHomePosition(params, activeChildId, r002bGrowthEnabled);
+  const restoredFocusTarget = restored.focusTarget;
+  const restoredScrollOffset = restored.scrollOffset;
+  const childScrollOffsetRef = useRef(restoredScrollOffset);
   const pendingReveal = r002bFeatureFlags.r002b_reveal_bundle_v2
     ? (revealBundleQueue.bundles.find(
         (bundle) =>
@@ -117,7 +151,7 @@ export default function ChildHomeScreen() {
     const origin = createR002bOrigin({
       id: 'child_today_path_card',
       profileId: activeChildId,
-      scrollOffset: 0,
+      scrollOffset: childScrollOffsetRef.current,
     });
     if (!origin.ok) return;
     router.push({
@@ -155,6 +189,10 @@ export default function ChildHomeScreen() {
   useEffect(() => {
     if (role !== 'child') router.replace('/role');
   }, [role, router]);
+
+  useEffect(() => {
+    childScrollOffsetRef.current = restoredScrollOffset;
+  }, [activeChildId, restoredScrollOffset]);
 
   const previewChoices = useMemo(
     () => choicePool.seededPreviewChoices.filter((choice) => choice.childId === activeChildId),
@@ -292,6 +330,13 @@ export default function ChildHomeScreen() {
           title={t('childHome.todayTitle')}
         />
       }
+      scrollProps={{
+        contentOffset: { x: 0, y: restoredScrollOffset },
+        onScroll: (event) => {
+          childScrollOffsetRef.current = Math.max(0, Math.round(event.nativeEvent.contentOffset.y));
+        },
+        scrollEventThrottle: 16,
+      }}
       testID="child-home-screen"
     >
       <View style={styles.welcome}>
@@ -513,7 +558,11 @@ export default function ChildHomeScreen() {
       ) : null}
 
       {r002bGrowth.ok ? (
-        <TodayImpactPathCard {...r002bGrowth.data.today} testID="r002b-today-path-card" />
+        <TodayImpactPathCard
+          {...r002bGrowth.data.today}
+          initialFocusTargetId={restoredFocusTarget}
+          testID="r002b-today-path-card"
+        />
       ) : null}
 
       <ChildGardenProgressCard

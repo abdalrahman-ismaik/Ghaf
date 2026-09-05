@@ -129,7 +129,7 @@ describe('R002b Growth Journey presentation components', () => {
     expect(source).toContain('currentStageValue');
     expect(source).toContain('lifetimeValue');
     expect(source).toContain('initialFocusTargetId?: string');
-    expect(source).toContain('restoreFocus={initialFocusTargetId === entry.action?.testID}');
+    expect(source).toContain('initialFocusTargetId === entry.action?.testID');
   });
 
   it('features a recommended badge from the same ordered collection without duplicate focus', () => {
@@ -158,6 +158,33 @@ describe('R002b Growth Journey presentation components', () => {
     );
     expect(gallerySource).toMatch(/const gridItems = showRecommended[\s\S]*?: items;/u);
     expect(gallerySource).toContain('{showRecommended && recommendedItem && recommendedLabel ? (');
+  });
+
+  it('restores focus to the exact Today action or Badge Gallery item after recovery', () => {
+    const source = componentSource();
+    const todaySource = source.slice(
+      source.indexOf('export function TodayImpactPathCard'),
+      source.indexOf('export function GardenChapterModule'),
+    );
+    const gallerySource = source.slice(
+      source.indexOf('export function BadgeGallery'),
+      source.indexOf('export function BadgeDetail'),
+    );
+
+    expect(source).toContain('initialFocusTargetId?: string');
+    expect(todaySource).toContain('initialFocusTargetId === action.testID');
+    expect(gallerySource).toContain('initialFocusTargetId === recommendedItem.testID');
+    expect(gallerySource).toContain('initialFocusTargetId === item.testID');
+    expect(source).toContain('initialFocusTargetId !== undefined');
+    expect(source).toContain('focusAccessibilityTarget(');
+  });
+
+  it('never calls native focus lookup from a restored Growth surface on web', () => {
+    const source = componentSource();
+
+    expect(source).toContain("from '@/utils/accessibilityFocus'");
+    expect(source).not.toContain('findNodeHandle');
+    expect(source).not.toContain('AccessibilityInfo.setAccessibilityFocus');
   });
 
   it('keeps the Today heading discoverable instead of flattening it into an accessible wrapper', () => {

@@ -59,6 +59,7 @@ describe('R002b typed origins', () => {
       }),
     ).toEqual({
       restored: true,
+      origin: created.data,
       href: '/garden',
       focusTarget: 'r002b-garden-badges-action',
       scrollOffset: 420,
@@ -84,12 +85,44 @@ describe('R002b typed origins', () => {
       }),
     ).toEqual({
       restored: true,
+      origin: created.data,
       href: '/garden/badges/badge.skill.sorting.bud.v1',
       focusTarget: 'r002b-badge-detail-path-action',
       scrollOffset: 24,
       filter: null,
     });
     expect('path' in created.data).toBe(false);
+  });
+
+  it('carries validated gallery filter context through a Badge Detail action origin', () => {
+    const created = createR002bOrigin({
+      id: 'badge_detail_path_action',
+      profileId: CHILD_ID,
+      entityId: 'badge.skill.sorting.bud.v1',
+      filter: 'in_progress',
+      galleryScrollOffset: 384,
+      scrollOffset: 248,
+    });
+    if (!created.ok) throw new Error('expected origin');
+
+    expect(
+      resolveR002bOrigin({
+        origin: created.data,
+        activeRole: 'child',
+        activeProfileId: CHILD_ID,
+      }),
+    ).toMatchObject({
+      filter: 'in_progress',
+      focusTarget: 'r002b-badge-detail-path-action',
+      galleryScrollOffset: 384,
+      scrollOffset: 248,
+    });
+    expect(serializeR002bOrigin(created.data)).toMatchObject({
+      originFilter: 'in_progress',
+      originGalleryScrollOffset: '384',
+      originScrollOffset: '248',
+    });
+    expect(parseR002bOriginParams(serializeR002bOrigin(created.data))).toEqual(created);
   });
 
   it('rejects arbitrary IDs, invalid entities, malformed filters, and unbounded scroll', () => {
@@ -117,6 +150,21 @@ describe('R002b typed origins', () => {
         id: 'child_today_path_card',
         profileId: CHILD_ID,
         scrollOffset: Number.POSITIVE_INFINITY,
+      }),
+    ).toEqual({ ok: false, error: 'invalid_scroll' });
+    expect(
+      createR002bOrigin({
+        id: 'child_today_path_card',
+        profileId: CHILD_ID,
+        galleryScrollOffset: 384,
+      }),
+    ).toEqual({ ok: false, error: 'invalid_scroll' });
+    expect(
+      createR002bOrigin({
+        id: 'badge_detail_path_action',
+        profileId: CHILD_ID,
+        entityId: 'badge.skill.sorting.bud.v1',
+        galleryScrollOffset: 100_001,
       }),
     ).toEqual({ ok: false, error: 'invalid_scroll' });
   });
@@ -228,7 +276,14 @@ describe('R002b typed origins', () => {
 
     expect(
       resolveR002bOrigin({ origin: created.data, activeRole: role, activeProfileId: CHILD_ID }),
-    ).toEqual({ restored: true, href, focusTarget, scrollOffset: 216, filter: null });
+    ).toEqual({
+      restored: true,
+      origin: created.data,
+      href,
+      focusTarget,
+      scrollOffset: 216,
+      filter: null,
+    });
   });
 
   it('rejects arrays, partial values, unknown fields, and malformed route params', () => {
@@ -257,6 +312,14 @@ describe('R002b typed origins', () => {
         originFilter: 'mystery',
       }),
     ).toEqual({ ok: false, error: 'invalid_filter' });
+    expect(
+      parseR002bOriginParams({
+        originId: 'badge_detail_path_action',
+        originProfileId: CHILD_ID,
+        originEntityId: 'badge.skill.sorting.bud.v1',
+        originGalleryScrollOffset: ['384'],
+      }),
+    ).toEqual({ ok: false, error: 'invalid_scroll' });
   });
 });
 

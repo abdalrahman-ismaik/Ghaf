@@ -1,12 +1,5 @@
 import { useRef } from 'react';
-import {
-  AccessibilityInfo,
-  Pressable,
-  StyleSheet,
-  View,
-  findNodeHandle,
-  useWindowDimensions,
-} from 'react-native';
+import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Text } from '@/components/primitives';
@@ -20,6 +13,7 @@ import {
   type AppColor,
 } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
+import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
 
 export interface GrowthJourneyPresentationProps {
   direction: TextDirection;
@@ -50,6 +44,7 @@ export interface TodayImpactPathCardProps extends GrowthJourneyPresentationProps
   chapterTitle: string;
   contentState: GrowthContentState;
   groupLabel: string;
+  initialFocusTargetId?: string;
   lifetimeLabel: string;
   lifetimeValue: string;
   nearestStationLabel: string;
@@ -141,6 +136,7 @@ export interface BadgeGalleryProps extends GrowthJourneyPresentationProps {
   contentState: GrowthContentState;
   description: string;
   groupLabel: string;
+  initialFocusTargetId?: string;
   items: readonly BadgeGalleryItemPresentation[];
   privacyNote: string;
   recommendedItemId?: string;
@@ -201,6 +197,7 @@ export function TodayImpactPathCard({
   contentState,
   direction,
   groupLabel,
+  initialFocusTargetId,
   language,
   lifetimeLabel,
   lifetimeValue,
@@ -277,6 +274,9 @@ export function TodayImpactPathCard({
           direction={direction}
           language={language}
           reducedMotion={reducedMotion}
+          restoreFocus={
+            initialFocusTargetId !== undefined && initialFocusTargetId === action.testID
+          }
           tone="water"
         />
       ) : null}
@@ -384,7 +384,9 @@ export function GardenChapterModule({
             key={entry.id}
             language={language}
             reducedMotion={reducedMotion}
-            restoreFocus={initialFocusTargetId === entry.action?.testID}
+            restoreFocus={
+              initialFocusTargetId !== undefined && initialFocusTargetId === entry.action?.testID
+            }
           />
         ))}
       </View>
@@ -487,7 +489,9 @@ export function ImpactPathScreen({
             key={station.id}
             language={language}
             reducedMotion={reducedMotion}
-            restoreFocus={initialFocusTargetId === station.focusTargetId}
+            restoreFocus={
+              initialFocusTargetId !== undefined && initialFocusTargetId === station.focusTargetId
+            }
             station={station}
           />
         ))}
@@ -516,6 +520,9 @@ export function ImpactPathScreen({
               key={action.testID ?? action.accessibilityLabel}
               language={language}
               reducedMotion={reducedMotion}
+              restoreFocus={
+                initialFocusTargetId !== undefined && initialFocusTargetId === action.testID
+              }
               tone="neutral"
             />
           ))}
@@ -531,6 +538,7 @@ export function BadgeGallery({
   description,
   direction,
   groupLabel,
+  initialFocusTargetId,
   items,
   language,
   privacyNote,
@@ -602,6 +610,9 @@ export function BadgeGallery({
             item={recommendedItem}
             language={language}
             reducedMotion={reducedMotion}
+            restoreFocus={
+              initialFocusTargetId !== undefined && initialFocusTargetId === recommendedItem.testID
+            }
             wide
           />
         </View>
@@ -618,6 +629,9 @@ export function BadgeGallery({
             key={item.id}
             language={language}
             reducedMotion={reducedMotion}
+            restoreFocus={
+              initialFocusTargetId !== undefined && initialFocusTargetId === item.testID
+            }
             wide={compact}
           />
         ))}
@@ -789,7 +803,9 @@ export function BadgeDetail({
           direction={direction}
           language={language}
           reducedMotion={reducedMotion}
-          restoreFocus={initialFocusTargetId === action.testID}
+          restoreFocus={
+            initialFocusTargetId !== undefined && initialFocusTargetId === action.testID
+          }
           tone="primary"
         />
       ) : null}
@@ -943,10 +959,7 @@ function ImpactPathStation({
   const restored = useRef(false);
   const focusAfterLayout = () => {
     if (!restoreFocus || restored.current) return;
-    const handle = findNodeHandle(stationRef.current);
-    if (handle === null) return;
-    restored.current = true;
-    AccessibilityInfo.setAccessibilityFocus(handle);
+    restored.current = focusAccessibilityTarget(stationRef.current);
   };
   return (
     <View
@@ -1030,17 +1043,29 @@ function BadgeGalleryCard({
   item,
   language,
   reducedMotion,
+  restoreFocus,
   wide,
 }: GrowthJourneyPresentationProps & {
   item: BadgeGalleryItemPresentation;
+  restoreFocus: boolean;
   wide: boolean;
 }) {
+  const cardRef = useRef<View>(null);
+  const restored = useRef(false);
+  const focusAfterLayout = () => {
+    if (!restoreFocus || restored.current) return;
+    restored.current = focusAccessibilityTarget(cardRef.current);
+  };
+
   return (
     <Pressable
       accessibilityLabel={item.accessibilityLabel}
       accessibilityLanguage={language === 'ar' ? 'ar-AE' : 'en-AE'}
       accessibilityRole="button"
+      nativeID={item.testID}
+      onLayout={focusAfterLayout}
       onPress={item.onPress}
+      ref={cardRef}
       style={({ pressed }) => [
         styles.badgeCard,
         wide ? styles.badgeCardWide : null,
@@ -1185,10 +1210,7 @@ function GrowthActionButton({
   const restored = useRef(false);
   const focusAfterLayout = () => {
     if (!restoreFocus || restored.current) return;
-    const handle = findNodeHandle(actionRef.current);
-    if (handle === null) return;
-    restored.current = true;
-    AccessibilityInfo.setAccessibilityFocus(handle);
+    restored.current = focusAccessibilityTarget(actionRef.current);
   };
 
   return (
