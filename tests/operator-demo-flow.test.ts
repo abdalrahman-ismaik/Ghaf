@@ -34,6 +34,8 @@ const EXPECTED_ROUTES = [
   '/garden/impact-path',
   '/garden/badges',
   '/garden/badges/[badgeId]',
+  '/garden/learn/[learningId]/story',
+  '/garden/learn/[learningId]/accessible',
   '/circle',
 ] as const;
 

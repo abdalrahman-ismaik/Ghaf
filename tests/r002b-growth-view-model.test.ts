@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   createGrowthJourneyPresentation,
@@ -67,6 +67,7 @@ describe('R002b Growth Journey view model', () => {
       'impact-path-station-168',
       'impact-path-station-180',
     ]);
+    expect(model.impactPath.stations[1]?.focusTargetId).toBe('impact-path-learning-station-132');
   });
 
   it('renders only independently supplied Garden and Path entry actions', () => {
@@ -85,6 +86,36 @@ describe('R002b Growth Journey view model', () => {
     expect(model.garden.entries.map((entry) => entry.id)).toEqual(['impact-path']);
     expect(model.impactPath.relatedActions).toEqual([]);
     expect(model.today.reducedMotion).toBe(true);
+  });
+
+  it('offers direct equal-credit learning entries only after station 132 is reached', () => {
+    const openLearning = vi.fn();
+    const openAccessibleLearning = vi.fn();
+    const model = createGrowthJourneyPresentation({
+      projection: {
+        ...projection(),
+        lifetimeSeeds: 132,
+        unlockedLearningIds: ['learning.mangrove_roots.v1'],
+        stations: projection().stations.map((station) => ({
+          ...station,
+          state: station.threshold <= 132 ? ('reached' as const) : station.state,
+        })),
+      },
+      currentMangroveStage: { currentSeeds: 60, targetSeeds: 60 },
+      language: 'en',
+      direction: 'ltr',
+      reducedMotion: true,
+      translate: translate('en'),
+      actions: actions({ openLearning, openAccessibleLearning }),
+    });
+    const station = model.impactPath.stations.find(
+      (candidate) => candidate.id === 'impact-path-station-132',
+    );
+
+    station?.action?.onPress();
+    station?.secondaryAction?.onPress();
+    expect(openLearning).toHaveBeenCalledWith('learning.mangrove_roots.v1');
+    expect(openAccessibleLearning).toHaveBeenCalledWith('learning.mangrove_roots.v1');
   });
 
   it('maps the exact 16-item registry without duplicate recommendation or mutation', () => {

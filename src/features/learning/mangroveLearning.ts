@@ -1,4 +1,5 @@
 import type { SyntheticChildId } from '../../models/familyGrowth';
+import type { BadgeId } from '../../models/achievements';
 import { IMPACT_PATH_STATIONS, type ImpactPathThreshold } from '../../models/growthJourney';
 import type {
   AdvanceLearningStepResult,
@@ -10,6 +11,7 @@ import type {
   LearningCompletionConsequences,
   LearningCompletionEvent,
   LearningContentStepId,
+  LearningBadgeFilter,
   LearningErrorCode,
   LearningOrigin,
   LearningResult,
@@ -24,6 +26,7 @@ import type {
   StartLearningRouteResult,
   SubmitLearningCheckResult,
 } from '../../models/learning';
+import { BADGE_IDS } from '../growth/badgeRegistry';
 
 const LEARNING_ID = 'learning.mangrove_roots.v1' as const;
 const OBJECTIVE_ID = 'objective.mangrove_habitat_stewardship.v1' as const;
@@ -195,6 +198,20 @@ function isGardenFocusTarget(value: unknown): value is GardenLearningFocusTarget
   return value === 'garden-impact-path-card';
 }
 
+function isBadgeId(value: unknown): value is BadgeId {
+  return typeof value === 'string' && (BADGE_IDS as readonly string[]).includes(value);
+}
+
+function isLearningBadgeFilter(value: unknown): value is LearningBadgeFilter {
+  return (
+    value === 'all' ||
+    value === 'earned' ||
+    value === 'in_progress' ||
+    value === 'locked' ||
+    value === 'archived'
+  );
+}
+
 function validateOrigin(value: unknown): LearningResult<LearningOrigin> {
   if (!isRecord(value) || !isSupportedProfile(value.profileId)) {
     return failure('INVALID_ORIGIN', 'A supported Child origin is required');
@@ -234,6 +251,29 @@ function validateOrigin(value: unknown): LearningResult<LearningOrigin> {
     };
   }
   if (
+    value.kind === 'badge_detail' &&
+    value.route === '/garden/badges/[badgeId]' &&
+    isBadgeId(value.badgeId) &&
+    isLearningBadgeFilter(value.filter) &&
+    value.focusTargetId === 'r002b-badge-detail-learning-action' &&
+    isSafeScrollOffset(value.galleryScrollOffset) &&
+    isSafeScrollOffset(value.scrollOffset)
+  ) {
+    return {
+      ok: true,
+      data: {
+        kind: 'badge_detail',
+        route: '/garden/badges/[badgeId]',
+        profileId: value.profileId,
+        badgeId: value.badgeId,
+        filter: value.filter,
+        focusTargetId: 'r002b-badge-detail-learning-action',
+        galleryScrollOffset: value.galleryScrollOffset,
+        scrollOffset: value.scrollOffset,
+      },
+    };
+  }
+  if (
     value.kind === 'today_complete' &&
     value.route === '/child' &&
     value.focusTargetId === 'today-complete-heading' &&
@@ -254,12 +294,18 @@ function validateOrigin(value: unknown): LearningResult<LearningOrigin> {
 }
 
 function sameOrigin(left: LearningOrigin, right: LearningOrigin): boolean {
-  return (
+  const shared =
     left.kind === right.kind &&
     left.route === right.route &&
     left.profileId === right.profileId &&
     left.focusTargetId === right.focusTargetId &&
-    left.scrollOffset === right.scrollOffset
+    left.scrollOffset === right.scrollOffset;
+  if (!shared) return false;
+  if (left.kind !== 'badge_detail' || right.kind !== 'badge_detail') return true;
+  return (
+    left.badgeId === right.badgeId &&
+    left.filter === right.filter &&
+    left.galleryScrollOffset === right.galleryScrollOffset
   );
 }
 
@@ -993,6 +1039,23 @@ export function createMangroveReturnIntent(
         profileId: origin.profileId,
         focusTargetId: 'today-complete-heading',
         scrollOffset: 0,
+        replaceHistory: true,
+        autoplayLearningId: null,
+      }),
+    };
+  }
+  if (origin.kind === 'badge_detail') {
+    return {
+      ok: true,
+      data: Object.freeze({
+        kind: 'badge_detail',
+        route: '/garden/badges/[badgeId]',
+        profileId: origin.profileId,
+        badgeId: origin.badgeId,
+        filter: origin.filter,
+        focusTargetId: origin.focusTargetId,
+        galleryScrollOffset: origin.galleryScrollOffset,
+        scrollOffset: origin.scrollOffset,
         replaceHistory: true,
         autoplayLearningId: null,
       }),

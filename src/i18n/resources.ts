@@ -908,6 +908,52 @@ export const resources = {
             continue: 'متابعة',
             complete: 'إكمال التعلّم',
           },
+          presentation: {
+            groupLabel: 'تعلّم جذور القرم المتكافئ',
+            packageIdentity: 'حزمة تعلّم واحدة · رصيد إكمال واحد',
+            equivalence: 'القصة والنسخة النصية تحققان الهدف نفسه وتمنحان الرصيد نفسه مرة واحدة.',
+            mode: {
+              story: 'قصة قصيرة مصوّرة',
+              accessible: 'نسخة نصية مختصرة',
+            },
+            switchMode: {
+              story: 'استخدام نسخة القصة',
+              accessible: 'استخدام النسخة النصية',
+            },
+            status: {
+              ready: 'جاهز للتعلّم محليًا',
+              resumed: 'تمت المتابعة من آخر خطوة محفوظة',
+              check: 'جاهز لسؤال الفهم',
+              readyToComplete: 'تم التحقق من الفهم؛ التعلّم جاهز للإكمال',
+              retry: 'يمكن المحاولة مرة أخرى من دون خسارة',
+              complete: 'اكتمل التعلّم مرة واحدة',
+              alreadyComplete: 'اكتمل هذا التعلّم مسبقًا بالطريقة المتكافئة',
+              error: 'تعذّر حفظ الخطوة. لم يتغير رصيدك ويمكنك المحاولة مرة أخرى.',
+            },
+            progress: {
+              label: 'تقدم التعلّم',
+              value: '{{current}} من {{total}}',
+              accessibility: 'اكتملت {{current}} من {{total}} خطوات تعلّم',
+            },
+            sectionStatus: {
+              complete: 'مكتمل',
+              current: 'الخطوة الحالية',
+              upcoming: 'التالي',
+            },
+            check: {
+              heading: 'تحقق بسيط من الفهم',
+              noFail: 'لا يوجد رسوب أو وقت محدد',
+              accessibility: 'سؤال فهم بلا رسوب',
+            },
+            sourceHeading: 'المصدر وحالة المراجعة',
+            completion:
+              'سُجّل إكمال واحد لهذه الحزمة. لم تُمنح بذور أو مكافآت أو نمو بسبب التعلّم.',
+            parentGuideHeading: 'خيار دعم من وليّ الأمر',
+            parentGuide:
+              'يمكن لوليّ الأمر قراءة الفقرتين أو مناقشة الفكرة. هذا الدعم اختياري ويمنح رصيد الإكمال نفسه.',
+            illustration: 'رسم توضيحي رمزي لموطن القرم الساحلي وجذوره والماء والطيور',
+            accessibleEntry: 'فتح النسخة النصية المختصرة',
+          },
         },
       },
     },
@@ -1852,6 +1898,54 @@ export const resources = {
           action: {
             continue: 'Continue',
             complete: 'Complete learning',
+          },
+          presentation: {
+            groupLabel: 'Equal-credit Mangrove Roots learning',
+            packageIdentity: 'One learning package · one completion credit',
+            equivalence:
+              'The Story and concise text routes meet the same objective and grant the same one-time credit.',
+            mode: {
+              story: 'Short illustrated story',
+              accessible: 'Concise text version',
+            },
+            switchMode: {
+              story: 'Use Story version',
+              accessible: 'Use concise text version',
+            },
+            status: {
+              ready: 'Ready for local learning',
+              resumed: 'Resumed from the last saved step',
+              check: 'Ready for the understanding check',
+              readyToComplete: 'Understanding confirmed; learning is ready to complete',
+              retry: 'Try again without losing progress',
+              complete: 'Learning completed once',
+              alreadyComplete: 'This learning was already completed through the equal route',
+              error: 'The step could not be saved. Your balance is unchanged; try again.',
+            },
+            progress: {
+              label: 'Learning progress',
+              value: '{{current}} of {{total}}',
+              accessibility: '{{current}} of {{total}} learning steps complete',
+            },
+            sectionStatus: {
+              complete: 'Complete',
+              current: 'Current step',
+              upcoming: 'Up next',
+            },
+            check: {
+              heading: 'A simple understanding check',
+              noFail: 'No failure and no time limit',
+              accessibility: 'No-fail understanding check',
+            },
+            sourceHeading: 'Source and review status',
+            completion:
+              'One completion was recorded for this package. Learning awarded no Seeds, rewards, or growth.',
+            parentGuideHeading: 'Parent support option',
+            parentGuide:
+              'A Parent may read the two sections or discuss the idea. This support is optional and receives the same completion credit.',
+            illustration:
+              'Symbolic diagram of a coastal mangrove habitat with roots, water, and birds',
+            accessibleEntry: 'Open the concise text version',
           },
         },
       },

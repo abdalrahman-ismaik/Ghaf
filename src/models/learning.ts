@@ -1,3 +1,4 @@
+import type { BadgeId } from './achievements';
 import type { LocalizedText, SyntheticChildId } from './familyGrowth';
 import type { ImpactPathThreshold } from './growthJourney';
 
@@ -91,6 +92,8 @@ export type ImpactPathLearningFocusTarget =
   'impact-path-learning-station-132' | 'impact-path-learning-card';
 export type GardenLearningFocusTarget = 'garden-impact-path-card';
 export type TodayCompleteLearningFocusTarget = 'today-complete-heading';
+export type BadgeDetailLearningFocusTarget = 'r002b-badge-detail-learning-action';
+export type LearningBadgeFilter = 'all' | 'earned' | 'in_progress' | 'locked' | 'archived';
 
 export type LearningOrigin =
   | {
@@ -108,6 +111,16 @@ export type LearningOrigin =
       readonly scrollOffset: number;
     }
   | {
+      readonly kind: 'badge_detail';
+      readonly route: '/garden/badges/[badgeId]';
+      readonly profileId: SyntheticChildId;
+      readonly badgeId: BadgeId;
+      readonly filter: LearningBadgeFilter;
+      readonly focusTargetId: BadgeDetailLearningFocusTarget;
+      readonly galleryScrollOffset: number;
+      readonly scrollOffset: number;
+    }
+  | {
       readonly kind: 'today_complete';
       readonly route: '/child';
       readonly profileId: SyntheticChildId;
@@ -121,6 +134,18 @@ export type MangroveLearningReturnIntent =
       readonly route: '/garden/impact-path' | '/garden';
       readonly profileId: SyntheticChildId;
       readonly focusTargetId: ImpactPathLearningFocusTarget | GardenLearningFocusTarget;
+      readonly scrollOffset: number;
+      readonly replaceHistory: true;
+      readonly autoplayLearningId: null;
+    }
+  | {
+      readonly kind: 'badge_detail';
+      readonly route: '/garden/badges/[badgeId]';
+      readonly profileId: SyntheticChildId;
+      readonly badgeId: BadgeId;
+      readonly filter: LearningBadgeFilter;
+      readonly focusTargetId: BadgeDetailLearningFocusTarget;
+      readonly galleryScrollOffset: number;
       readonly scrollOffset: number;
       readonly replaceHistory: true;
       readonly autoplayLearningId: null;

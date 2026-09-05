@@ -4,7 +4,9 @@ import { resolveR002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import { resolveR002bRouteRequest } from '@/features/navigation/r002bRouteRequest';
 
-function origin(id: 'child_today_path_card' | 'badge_gallery_badge_card') {
+function origin(
+  id: 'child_today_path_card' | 'badge_gallery_badge_card' | 'impact_path_learning_action',
+) {
   const result = createR002bOrigin({
     id,
     profileId: 'child_salem',
@@ -114,5 +116,38 @@ describe('R002b untrusted route request resolver', () => {
       fallback: '/child',
       reason: 'invalid_route_param',
     });
+  });
+
+  it('accepts only the exact learning package and Impact Path learning origin', () => {
+    const base = {
+      routeId: 'learning_story' as const,
+      role: 'child' as const,
+      activeProfileId: 'child_salem',
+      authorizedProfileIds: ['child_salem'] as const,
+      flags: resolveR002bFeatureFlags({ r002b_learning_ui: true }),
+      requestedProfileParam: 'child_salem',
+      entityParam: 'learning.mangrove_roots.v1',
+      originParams: origin('impact_path_learning_action'),
+      allowedOriginIds: ['impact_path_learning_action'] as const,
+    };
+
+    expect(resolveR002bRouteRequest(base)).toMatchObject({
+      allowed: true,
+      entityId: 'learning.mangrove_roots.v1',
+      back: { href: '/garden/impact-path' },
+    });
+    expect(resolveR002bRouteRequest({ ...base, routeId: 'learning_accessible' })).toMatchObject({
+      allowed: true,
+    });
+    expect(resolveR002bRouteRequest({ ...base, entityParam: 'learning.unknown.v1' })).toMatchObject(
+      {
+        allowed: false,
+        fallback: '/child',
+        reason: 'invalid_entity',
+      },
+    );
+    expect(
+      resolveR002bRouteRequest({ ...base, originParams: origin('child_today_path_card') }),
+    ).toMatchObject({ allowed: false, fallback: '/child', reason: 'invalid_origin' });
   });
 });

@@ -36,6 +36,7 @@ export interface GrowthJourneyPresentationActions {
   readonly openBadges?: () => void;
   readonly openBadge: (badgeId: BadgeId) => void;
   readonly openLearning?: (learningId: 'learning.mangrove_roots.v1') => void;
+  readonly openAccessibleLearning?: (learningId: 'learning.mangrove_roots.v1') => void;
   readonly openAssignedTask?: (assignmentId: string, taskId: string) => void;
   readonly openImpactStation?: (threshold: ImpactPathThreshold) => void;
   readonly openSharedGrowth?: () => void;
@@ -518,8 +519,18 @@ export function createGrowthJourneyPresentation(
             testID: 'r002b-impact-path-learning-action',
           }
         : undefined;
+      const accessibleAction =
+        learningAvailable && actions.openAccessibleLearning
+          ? {
+              accessibilityLabel: translate('learning.mangroveRoots.presentation.accessibleEntry'),
+              label: translate('learning.mangroveRoots.presentation.accessibleEntry'),
+              onPress: () => actions.openAccessibleLearning?.('learning.mangrove_roots.v1'),
+              testID: 'r002b-impact-path-accessible-learning-action',
+            }
+          : undefined;
       return Object.freeze({
         id: `impact-path-station-${station.threshold}`,
+        ...(station.threshold === 132 ? { focusTargetId: 'impact-path-learning-station-132' } : {}),
         state,
         thresholdLabel: translate('r002bGrowth.chapter.stationThreshold', {
           count: format.format(station.threshold),
@@ -528,6 +539,7 @@ export function createGrowthJourneyPresentation(
         criterionText,
         statusLabel,
         action,
+        secondaryAction: accessibleAction,
         accessibilityLabel: `${format.format(station.threshold)}. ${title}. ${statusLabel}. ${criterionText}`,
       });
     }),

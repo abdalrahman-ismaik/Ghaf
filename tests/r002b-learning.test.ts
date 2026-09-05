@@ -34,6 +34,17 @@ const TODAY_COMPLETE_ORIGIN: LearningOrigin = {
   scrollOffset: 0,
 };
 
+const BADGE_DETAIL_ORIGIN: LearningOrigin = {
+  kind: 'badge_detail',
+  route: '/garden/badges/[badgeId]',
+  profileId: PROFILE_ID,
+  badgeId: 'badge.habitat.mangrove_care.v1',
+  filter: 'in_progress',
+  focusTargetId: 'r002b-badge-detail-learning-action',
+  galleryScrollOffset: 188,
+  scrollOffset: 312,
+};
+
 const UNLOCK_EVIDENCE = {
   profileId: PROFILE_ID,
   profileEpochId: EPOCH_ID,
@@ -728,6 +739,57 @@ describe('R002b safe learning recovery and return intent', () => {
         profileEpochId: EPOCH_ID,
         route: 'accessible',
         origin: TODAY_COMPLETE_ORIGIN,
+        unlockEvidence: UNLOCK_EVIDENCE,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'ORIGIN_CONFLICT' } });
+  });
+
+  it('validates Badge Detail origins and preserves badge identity, filter, focus, and scroll', () => {
+    const started = startMangroveLearningRoute({
+      state: emptyState(),
+      profileId: PROFILE_ID,
+      profileEpochId: EPOCH_ID,
+      route: 'story',
+      origin: BADGE_DETAIL_ORIGIN,
+      unlockEvidence: UNLOCK_EVIDENCE,
+    });
+    expectOk(started);
+
+    expect(createMangroveReturnIntent({ state: started.data.state })).toEqual({
+      ok: true,
+      data: {
+        kind: 'badge_detail',
+        route: '/garden/badges/[badgeId]',
+        profileId: PROFILE_ID,
+        badgeId: 'badge.habitat.mangrove_care.v1',
+        filter: 'in_progress',
+        focusTargetId: 'r002b-badge-detail-learning-action',
+        galleryScrollOffset: 188,
+        scrollOffset: 312,
+        replaceHistory: true,
+        autoplayLearningId: null,
+      },
+    });
+    expect(
+      startMangroveLearningRoute({
+        state: emptyState(),
+        profileId: PROFILE_ID,
+        profileEpochId: EPOCH_ID,
+        route: 'story',
+        origin: {
+          ...BADGE_DETAIL_ORIGIN,
+          badgeId: 'badge.unknown.v1',
+        } as unknown as LearningOrigin,
+        unlockEvidence: UNLOCK_EVIDENCE,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_ORIGIN' } });
+    expect(
+      startMangroveLearningRoute({
+        state: started.data.state,
+        profileId: PROFILE_ID,
+        profileEpochId: EPOCH_ID,
+        route: 'accessible',
+        origin: { ...BADGE_DETAIL_ORIGIN, filter: 'earned' },
         unlockEvidence: UNLOCK_EVIDENCE,
       }),
     ).toMatchObject({ ok: false, error: { code: 'ORIGIN_CONFLICT' } });

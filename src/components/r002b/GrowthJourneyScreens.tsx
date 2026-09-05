@@ -1,4 +1,12 @@
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { useRef } from 'react';
+import {
+  AccessibilityInfo,
+  Pressable,
+  StyleSheet,
+  View,
+  findNodeHandle,
+  useWindowDimensions,
+} from 'react-native';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Text } from '@/components/primitives';
@@ -83,7 +91,9 @@ export type ImpactPathStationState =
 export interface ImpactPathStationPresentation {
   accessibilityLabel: string;
   action?: GrowthActionPresentation;
+  secondaryAction?: GrowthActionPresentation;
   criterionText: string;
+  focusTargetId?: string;
   id: string;
   state: ImpactPathStationState;
   statusLabel: string;
@@ -98,6 +108,7 @@ export interface ImpactPathScreenProps extends GrowthJourneyPresentationProps {
   contentState: GrowthContentState;
   currentChapterLabel: string;
   currentChapterValue: string;
+  initialFocusTargetId?: string;
   disclosureText: string;
   groupLabel: string;
   lifetimeLabel: string;
@@ -157,6 +168,7 @@ export interface BadgeDetailProps extends GrowthJourneyPresentationProps {
   criteriaHeading: string;
   earnedDateText?: string;
   groupLabel: string;
+  initialFocusTargetId?: string;
   historicalDateText?: string;
   privacyNote: string;
   progressLabel: string;
@@ -387,6 +399,7 @@ export function ImpactPathScreen({
   direction,
   disclosureText,
   groupLabel,
+  initialFocusTargetId,
   language,
   lifetimeLabel,
   lifetimeValue,
@@ -471,6 +484,7 @@ export function ImpactPathScreen({
             key={station.id}
             language={language}
             reducedMotion={reducedMotion}
+            restoreFocus={initialFocusTargetId === station.focusTargetId}
             station={station}
           />
         ))}
@@ -621,6 +635,7 @@ export function BadgeDetail({
   earnedDateText,
   groupLabel,
   historicalDateText,
+  initialFocusTargetId,
   language,
   privacyNote,
   progressLabel,
@@ -771,6 +786,7 @@ export function BadgeDetail({
           direction={direction}
           language={language}
           reducedMotion={reducedMotion}
+          restoreFocus={initialFocusTargetId === action.testID}
           tone="primary"
         />
       ) : null}
@@ -911,10 +927,29 @@ function ImpactPathStation({
   direction,
   language,
   reducedMotion,
+  restoreFocus,
   station,
-}: GrowthJourneyPresentationProps & { station: ImpactPathStationPresentation }) {
+}: GrowthJourneyPresentationProps & {
+  restoreFocus: boolean;
+  station: ImpactPathStationPresentation;
+}) {
+  const stationRef = useRef<View>(null);
+  const restored = useRef(false);
+  const focusAfterLayout = () => {
+    if (!restoreFocus || restored.current) return;
+    const handle = findNodeHandle(stationRef.current);
+    if (handle === null) return;
+    restored.current = true;
+    AccessibilityInfo.setAccessibilityFocus(handle);
+  };
   return (
-    <View style={[styles.stationRow, { flexDirection: logicalRowDirection(direction) }]}>
+    <View
+      nativeID={station.focusTargetId}
+      onLayout={focusAfterLayout}
+      ref={stationRef}
+      style={[styles.stationRow, { flexDirection: logicalRowDirection(direction) }]}
+      testID={station.focusTargetId}
+    >
       <View aria-hidden style={styles.stationRail}>
         <View style={[styles.stationMarker, stationMarkerStyle[station.state]]}>
           <GhafIcon
@@ -968,6 +1003,15 @@ function ImpactPathStation({
             language={language}
             reducedMotion={reducedMotion}
             tone="water"
+          />
+        ) : null}
+        {station.secondaryAction ? (
+          <GrowthActionButton
+            action={station.secondaryAction}
+            direction={direction}
+            language={language}
+            reducedMotion={reducedMotion}
+            tone="neutral"
           />
         ) : null}
       </View>
@@ -1123,12 +1167,23 @@ function GrowthActionButton({
   direction,
   language,
   reducedMotion,
+  restoreFocus = false,
   tone,
 }: GrowthJourneyPresentationProps & {
   action: GrowthActionPresentation;
+  restoreFocus?: boolean;
   tone: 'primary' | 'water' | 'leaf' | 'neutral';
 }) {
   const { accessibilityLabel, disabled = false, label, testID } = action;
+  const actionRef = useRef<View>(null);
+  const restored = useRef(false);
+  const focusAfterLayout = () => {
+    if (!restoreFocus || restored.current) return;
+    const handle = findNodeHandle(actionRef.current);
+    if (handle === null) return;
+    restored.current = true;
+    AccessibilityInfo.setAccessibilityFocus(handle);
+  };
 
   return (
     <Pressable
@@ -1137,7 +1192,10 @@ function GrowthActionButton({
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       disabled={disabled}
+      nativeID={testID}
+      onLayout={focusAfterLayout}
       onPress={action.onPress}
+      ref={actionRef}
       style={({ pressed }) => [
         styles.actionButton,
         actionButtonStyle[tone],
