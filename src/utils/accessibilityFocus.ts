@@ -1,7 +1,7 @@
 import { AccessibilityInfo, findNodeHandle, Platform } from 'react-native';
 
 interface WebFocusTarget {
-  focus?: () => void;
+  focus?: (options?: { readonly preventScroll?: boolean }) => void;
 }
 
 export function focusAccessibilityTarget(target: unknown): boolean {
@@ -11,7 +11,7 @@ export function focusAccessibilityTarget(target: unknown): boolean {
     const webTarget = target as WebFocusTarget;
     if (typeof webTarget.focus !== 'function') return false;
     try {
-      webTarget.focus();
+      webTarget.focus({ preventScroll: true });
       return true;
     } catch {
       return false;

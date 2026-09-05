@@ -82,6 +82,7 @@ export const SYNTHETIC_PARENT_ACCESS_FIXTURE: SyntheticParentAccessFixture = Obj
 
 export const SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID =
   'parent_reauthentication_al_noor_v1' as const;
+export const SYNTHETIC_PARENT_REAUTHENTICATION_CODE = '4242' as const;
 
 export const SYNTHETIC_CHILD_CREDENTIAL_FIXTURES: Readonly<
   Record<SyntheticChildId, SyntheticChildCredentialFixture>
@@ -270,11 +271,14 @@ export interface ProjectAccessSessionInput {
   readonly now: string;
 }
 
-export interface ParentSessionTermination {
+export interface AccessSessionTermination {
   readonly sessionId: string;
   readonly terminated: true;
   readonly origin: 'synthetic';
 }
+
+export type ParentSessionTermination = AccessSessionTermination;
+export type ChildSessionTermination = AccessSessionTermination;
 
 export interface CapabilityAuthorizationInput extends ProjectAccessSessionInput {
   readonly capability: AccessCapability;

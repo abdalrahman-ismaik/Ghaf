@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -159,6 +159,7 @@ export default function ParentTaskReviewScreen() {
   const approveAssignment = usePrototypeStore((state) => state.approveAssignment);
   const setChildVoicePermission = usePrototypeStore((state) => state.setChildVoicePermission);
   const returnReviewedTaskToDraft = usePrototypeStore((state) => state.returnReviewedTaskToDraft);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const [error, setError] = useState<string | null>(null);
   const [successVisible, setSuccessVisible] = useState(false);
   const approvalNavigationPending = useRef(false);
@@ -178,7 +179,7 @@ export default function ParentTaskReviewScreen() {
 
   useEffect(() => {
     if (role !== 'parent') {
-      router.replace('/role');
+      router.replace('/');
       return;
     }
     if (!content || (!reviewable && !approvalNavigationPending.current)) {
@@ -253,8 +254,14 @@ export default function ParentTaskReviewScreen() {
     });
 
   const continueToChild = () => {
+    setError(null);
+    const result = signOutExperience();
+    if (!result.ok) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     router.dismissAll();
-    router.replace('/role');
+    router.replace('/access/child' as Href);
   };
 
   return (

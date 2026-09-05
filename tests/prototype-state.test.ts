@@ -7,6 +7,7 @@ import {
   createSubmittedP0Session,
 } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const RESET_SOURCE_STATES = [
   'draft',
@@ -169,8 +170,7 @@ function expectCanonicalResetState(): void {
 
 describe('schema-3 Prototype Session reset', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
+    expect(resetPrototypeForTest()).toMatchObject({ ok: true });
   });
 
   it('starts from the exact Arabic Parent/Salem canonical fixture', () => {
@@ -214,6 +214,7 @@ describe('schema-3 Prototype Session reset', () => {
         usePrototypeStore.getState().setRole('parent');
         expect(counters()).toEqual(beforeRoleSwitch);
       }
+      usePrototypeStore.setState({ activeExperience: 'parent' });
 
       const emissions: PrototypeSession[] = [];
       const unsubscribe = usePrototypeStore.subscribe((state) =>
@@ -250,10 +251,10 @@ describe('schema-3 Prototype Session reset', () => {
 });
 
 describe('atomic praise-first recognition', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
+  beforeEach(async () => {
+    expect(resetPrototypeForTest()).toMatchObject({ ok: true });
     usePrototypeStore.setState(createSubmittedP0Session());
+    await enterParentExperienceForTest();
   });
 
   it('keeps all counters unchanged through confirmation planning and praise presentation', () => {

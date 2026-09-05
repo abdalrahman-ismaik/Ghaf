@@ -19,7 +19,7 @@ import {
 } from '@/features/navigation/r002bRouteRequest';
 import type { BadgeId } from '@/models/achievements';
 import type { SyntheticChildId } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface BadgeGalleryParams extends Record<string, R002bRouteParam> {
   readonly profileId?: R002bRouteParam;
@@ -73,7 +73,14 @@ function restoredBadgeGalleryPosition(params: BadgeGalleryParams, activeChildId:
 export default function BadgeGalleryRoute() {
   const params = useLocalSearchParams() as unknown as BadgeGalleryParams;
   const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+
+  if (activeExperience === 'parent') return <Redirect href={'/parent' as Href} />;
+  if (activeExperience !== 'child' || !canEnterChildExperience) {
+    return <Redirect href={'/' as Href} />;
+  }
   const access = resolveR002bRouteRequest({
     routeId: 'badge_gallery',
     role,
@@ -140,8 +147,6 @@ function AuthorizedBadgeGallery({
     back: access.back,
     profileId,
     safeRoot: '/child',
-    canGoBack: () => router.canGoBack(),
-    goBack: () => router.back(),
     replace: (target) => router.replace(target as Href),
   });
 

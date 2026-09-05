@@ -27,6 +27,19 @@ const R001_ACCESS_ROUTES = [
   '/access/parent/family-created-success',
 ] as const;
 
+const R003_COMPLETE_JOURNEY_ROUTES = [
+  '/access/child',
+  '/access/child/pin',
+  '/access/child/pair',
+  '/child/settings',
+  '/parent/family',
+  '/parent/family/reward',
+  '/parent/settings',
+  '/parent/settings/permissions',
+  '/parent/settings/devices',
+  '/parent/reauthenticate',
+] as const;
+
 const DEFAULT_OFF_R002B_ROUTES = [
   '/garden/impact-path',
   '/garden/badges',
@@ -79,7 +92,12 @@ function flattenStrings(value: unknown, key = ''): Map<string, string> {
 describe('approved R001 Parent onboarding integration', () => {
   it('preserves the R001 routes while keeping authorized R002b routes additive', () => {
     expect(authoredRoutes()).toEqual(
-      [...PRESERVED_REMOTE_ROUTES, ...R001_ACCESS_ROUTES, ...DEFAULT_OFF_R002B_ROUTES].sort(),
+      [
+        ...PRESERVED_REMOTE_ROUTES,
+        ...R001_ACCESS_ROUTES,
+        ...DEFAULT_OFF_R002B_ROUTES,
+        ...R003_COMPLETE_JOURNEY_ROUTES,
+      ].sort(),
     );
     for (const route of R001_ACCESS_ROUTES) expect(authoredRoutes()).toContain(route);
   });
@@ -111,14 +129,18 @@ describe('approved R001 Parent onboarding integration', () => {
       readFileSync(resolve(import.meta.dirname, `../app${route}.tsx`), 'utf8'),
     ).join('\n');
     const rootLayout = readFileSync(new URL('../app/_layout.tsx', import.meta.url), 'utf8');
+    const parentAccessLayout = readFileSync(
+      new URL('../app/access/parent/_layout.tsx', import.meta.url),
+      'utf8',
+    );
 
     expect(routeSources).toContain("from 'react-native'");
     expect(routeSources).not.toMatch(/code\.html|screen\.png|source\.html|react-native-web/u);
     expect(routeSources).not.toMatch(/<(?:div|button|input|form|section|main)\b|className=/u);
-    expect(rootLayout).toContain('name="access/parent/family-created-success"');
-    expect(rootLayout).toContain("presentation: 'transparentModal'");
-    expect(rootLayout).toContain("pathname.startsWith('/access/parent/')");
-    expect(rootLayout).not.toContain("pathname.startsWith('/child')");
+    expect(parentAccessLayout).toContain('name="family-created-success"');
+    expect(parentAccessLayout).toContain("presentation: 'transparentModal'");
+    expect(rootLayout).toContain("pathname.startsWith('/access/')");
+    expect(rootLayout).toContain("pathname.startsWith('/child')");
   });
 
   it('wires every approved interaction to the bounded onboarding authority', () => {
@@ -144,7 +166,8 @@ describe('approved R001 Parent onboarding integration', () => {
     const success = routeSource('/access/parent/family-created-success');
     expect(success).toContain('authorizeParentExperience');
     expect(success).toContain('router.dismissAll()');
-    expect(success).toContain("router.replace('/parent')");
+    expect(success).toContain("'/parent'");
+    expect(success).toContain('router.replace(destination as Href)');
   });
 
   it('keeps entry truthful and protects transactional navigation from stale or repeated actions', () => {
@@ -170,7 +193,8 @@ describe('approved R001 Parent onboarding integration', () => {
     const success = routeSource('/access/parent/family-created-success');
     expect(success).toContain("router.dismissTo('/access/parent/review-create')");
     expect(success).toContain('router.dismissAll()');
-    expect(success).toContain("router.replace('/parent')");
+    expect(success).toContain("'/parent'");
+    expect(success).toContain('router.replace(destination as Href)');
     expect(success).toContain('authorizeParentExperience');
   });
 
@@ -222,7 +246,7 @@ describe('approved R001 Parent onboarding integration', () => {
       '/access/parent/add-first-child',
     ] as const) {
       const contents = routeSource(route);
-      expect(contents, route).toMatch(/(?:href=|replace\()["']\/parent["']/u);
+      expect(contents, route).toContain("'/parent'");
       expect(contents, route).not.toContain(
         "authenticated_parent') {\n      router.replace('/access/parent/family-created-success",
       );
@@ -237,8 +261,11 @@ describe('approved R001 Parent onboarding integration', () => {
       "if (parentOnboarding.status === 'authenticated_parent') {\n      router.push('/access/parent/family-created-success')",
     );
 
-    const rootLayout = readFileSync(new URL('../app/_layout.tsx', import.meta.url), 'utf8');
-    expect(rootLayout).toContain('gestureEnabled: false');
+    const parentAccessLayout = readFileSync(
+      new URL('../app/access/parent/_layout.tsx', import.meta.url),
+      'utf8',
+    );
+    expect(parentAccessLayout).toContain('gestureEnabled: false');
   });
 
   it('locks controls during setup transitions and announces every status change', () => {
@@ -270,15 +297,15 @@ describe('approved R001 Parent onboarding integration', () => {
     );
     const roleRoute = readFileSync(new URL('../app/role.tsx', import.meta.url), 'utf8');
 
-    expect(parentLayout).toContain('selectCanEnterParentExperience');
+    expect(parentLayout).toContain('selectHasActiveParentExperience');
     expect(parentLayout).toContain('authorizeParentExperience');
     expect(parentLayout).toContain('<Redirect');
-    expect(parentLayout).toContain('href="/access/parent/sign-in"');
+    expect(parentLayout).toContain('href="/child"');
+    expect(parentLayout).toContain('href="/"');
     expect(parentLayout).not.toMatch(/state\.role\s*===\s*['"]parent['"]/u);
 
-    expect(roleRoute).toContain('selectCanEnterParentExperience');
-    expect(roleRoute).toContain('authorizeParentExperience');
-    expect(roleRoute).toContain("router.replace('/access/parent/sign-in')");
+    expect(roleRoute).toContain('<Redirect href="/" />');
+    expect(roleRoute).not.toContain('setRole');
   });
 
   it('maps Android hardware Back to the same safe transitions as the visible setup controls', () => {

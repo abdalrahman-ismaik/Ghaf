@@ -49,7 +49,7 @@ const STAGE_LABEL_KEYS: Readonly<Record<GardenStage, string>> = {
 interface ParentCheckInProps {
   onBack: () => void;
   onOpenGarden: () => void;
-  onResumeChild: () => void;
+  onResumeChild: () => boolean;
   onReturnToTasks: () => void;
 }
 
@@ -160,7 +160,7 @@ export function ParentCheckIn({
       setError(t('errors.safeRetry'));
       return;
     }
-    onResumeChild();
+    if (!onResumeChild()) setError(t('errors.safeRetry'));
   };
 
   const sendSupport = (stepIds: readonly string[]) => {

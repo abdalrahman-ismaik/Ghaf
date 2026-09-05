@@ -35,16 +35,12 @@ export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
-  const isR001Route = pathname === '/' || pathname.startsWith('/access/parent/');
-  const isR002aParentSurface =
-    pathname === '/parent' ||
-    pathname === '/parent/check-in' ||
-    pathname.startsWith('/parent/task/') ||
-    pathname.startsWith('/parent/family/');
+  const isR001Route = pathname === '/' || pathname.startsWith('/access/');
+  const isR002aParentSurface = pathname.startsWith('/parent');
   const usesLightSystemChrome =
     isR001Route ||
     isR002aParentSurface ||
-    pathname.startsWith('/child/reveal/') ||
+    pathname.startsWith('/child') ||
     pathname === '/garden' ||
     pathname.startsWith('/garden/') ||
     pathname === '/league' ||
@@ -87,25 +83,7 @@ export default function RootLayout() {
               contentStyle: { backgroundColor: colors.ivory },
               headerShown: false,
             }}
-          >
-            <Stack.Screen
-              name="access/parent/family-created-success"
-              options={{
-                animation: reducedMotion ? 'none' : 'fade',
-                contentStyle: { backgroundColor: colors.transparent },
-                gestureEnabled: false,
-                presentation: 'transparentModal',
-              }}
-            />
-            <Stack.Screen
-              name="child/reveal/[bundleId]"
-              options={{
-                animation: reducedMotion ? 'none' : 'fade',
-                gestureEnabled: false,
-                presentation: 'modal',
-              }}
-            />
-          </Stack>
+          />
         </View>
       </GhafFontProvider>
     </SafeAreaProvider>

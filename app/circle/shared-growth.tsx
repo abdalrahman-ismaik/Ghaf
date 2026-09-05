@@ -12,7 +12,7 @@ import {
 } from '@/features/navigation/r002bRouteRequest';
 import { createR002bSharedGrowthChildPresentation } from '@/features/shared-growth/r002bSharedGrowthViewModel';
 import type { SyntheticChildId } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface SharedGrowthParams extends Record<string, R002bRouteParam> {
   readonly profileId?: R002bRouteParam;
@@ -26,7 +26,14 @@ const ALLOWED_ORIGINS = ['child_garden_shared_growth_card'] as const;
 export default function SharedGrowthRoute() {
   const params = useLocalSearchParams() as unknown as SharedGrowthParams;
   const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+
+  if (activeExperience === 'parent') return <Redirect href={'/parent' as Href} />;
+  if (activeExperience !== 'child' || !canEnterChildExperience) {
+    return <Redirect href={'/' as Href} />;
+  }
   const access = resolveR002bRouteRequest({
     routeId: 'shared_growth',
     role,
@@ -62,8 +69,6 @@ function AuthorizedSharedGrowth({
     back: access.back,
     profileId,
     safeRoot: '/child',
-    canGoBack: () => router.canGoBack(),
-    goBack: () => router.back(),
     replace: (target) => router.replace(target as Href),
   });
   // The revision subscription refreshes this read-only projection after a Parent preference change.

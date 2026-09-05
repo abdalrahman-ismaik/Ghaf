@@ -8,6 +8,11 @@ import { serviceRegistry, type ParentGuideService } from '../src/services';
 import { createResetSourceSession, createSubmittedP0Session } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const PREPARED_PRAISE = {
   ar: 'لقد فرزت المواد النظيفة القابلة لإعادة التدوير وسألت قبل الذهاب إلى الحاوية؛ وهذا جعل المهمة أكثر أماناً وساعد أسرتنا.',
@@ -56,11 +61,10 @@ function planAndPresentPraise(): void {
 }
 
 describe('US3 Parent check-in, retry, and praise-first recognition', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
     usePrototypeStore.setState(createSubmittedP0Session());
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
   });
 
   it('has the authored Parent check-in route', () => {
@@ -213,9 +217,9 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expect(source).toContain('testID="kind-retry-state"');
   });
 
-  it('negotiates a bounded smaller or safe-equivalent task before Child acceptance', () => {
+  it('negotiates a bounded smaller or safe-equivalent task before Child acceptance', async () => {
     usePrototypeStore.setState(createResetSourceSession('assigned'));
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     const baseline = structuredClone(usePrototypeStore.getState().journey);
     const baselineCounters = counters();
 
@@ -229,7 +233,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
       childDecision: null,
     });
 
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     const resolved = usePrototypeStore
       .getState()
       .resolvePreAcceptanceAdjustment({ decision: 'smaller' });
@@ -250,7 +254,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expect(usePrototypeStore.getState().journey).toEqual(baseline);
     expect(counters()).toEqual(baselineCounters);
 
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().respondToPreAcceptanceAdjustment('keep_current'));
     expect(usePrototypeStore.getState().preAcceptanceAdjustment).toMatchObject({
       status: 'kept_current',
@@ -260,11 +264,11 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expect(counters()).toEqual(baselineCounters);
   });
 
-  it('applies an accepted pre-acceptance proposal prospectively while retaining the assignment identity', () => {
+  it('applies an accepted pre-acceptance proposal prospectively while retaining the assignment identity', async () => {
     usePrototypeStore.setState(createResetSourceSession('assigned'));
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().requestSmallerTask());
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     const resolved = usePrototypeStore
       .getState()
       .resolvePreAcceptanceAdjustment({ decision: 'safe_equivalent' });
@@ -281,7 +285,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expect(resolved.data.proposal?.content.safety.routeConstraint?.en).toContain('indoors');
     const baselineCounters = counters();
 
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().respondToPreAcceptanceAdjustment('accept'));
     expect(usePrototypeStore.getState()).toMatchObject({
       activeAssignmentId: 'assignment_recycling_p0_v1',
@@ -323,14 +327,14 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     },
   ])(
     'keeps the $decision replacement coherent through one full recognized journey',
-    ({ decision, replacementTemplateId, seedAward, expectedSeeds, expectedStage }) => {
+    async ({ decision, replacementTemplateId, seedAward, expectedSeeds, expectedStage }) => {
       usePrototypeStore.setState(createResetSourceSession('assigned'));
       const sourceTask = structuredClone(usePrototypeStore.getState().journey?.task);
-      usePrototypeStore.getState().setRole('child');
+      await enterChildExperienceForTest('child_salem');
       expectOk(usePrototypeStore.getState().requestSmallerTask());
-      usePrototypeStore.getState().setRole('parent');
+      await enterParentExperienceForTest();
       expectOk(usePrototypeStore.getState().resolvePreAcceptanceAdjustment({ decision }));
-      usePrototypeStore.getState().setRole('child');
+      await enterChildExperienceForTest('child_salem');
       expectOk(usePrototypeStore.getState().respondToPreAcceptanceAdjustment('accept'));
 
       const adjusted = usePrototypeStore.getState();
@@ -393,7 +397,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
         taskVersion: 2,
       });
 
-      usePrototypeStore.getState().setRole('parent');
+      await enterParentExperienceForTest();
       expectOk(
         usePrototypeStore.getState().planConfirmation({
           submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -545,15 +549,15 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expect(counters()).toEqual(baselineCounters);
   });
 
-  it('clears the transient future plan on reset and when a new draft starts', () => {
+  it('clears the transient future plan on reset and when a new draft starts', async () => {
     expectOk(usePrototypeStore.getState().planFutureTaskAdjustment('smaller'));
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).not.toBeNull();
 
-    expectOk(usePrototypeStore.getState().resetPrototype());
+    expectOk(resetPrototypeForTest());
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
     usePrototypeStore.setState(createSubmittedP0Session());
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     expectOk(usePrototypeStore.getState().planFutureTaskAdjustment('safe_equivalent'));
     expectOk(
       usePrototypeStore.getState().createTaskDraft({
@@ -851,7 +855,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expect(counters()).toEqual(baseline);
   });
 
-  it('fails closed on every stale recognition link and a caller-forged idempotency key', () => {
+  it('fails closed on every stale recognition link and a caller-forged idempotency key', async () => {
     const corruptions = [
       'active_assignment',
       'assignment_task',
@@ -864,10 +868,9 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     ] as const;
 
     for (const corruption of corruptions) {
-      usePrototypeStore.getState().setRole('parent');
-      expectOk(usePrototypeStore.getState().resetPrototype());
+      expectOk(resetPrototypeForTest());
       usePrototypeStore.setState(createSubmittedP0Session());
-      usePrototypeStore.getState().setRole('parent');
+      await enterParentExperienceForTest();
       planAndPresentPraise();
       const baseline = counters();
       const state = usePrototypeStore.getState();

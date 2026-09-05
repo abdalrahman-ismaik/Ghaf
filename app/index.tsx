@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AccessScreen, GhafIcon, PrototypePill, StatusBanner } from '@/components/access';
+import { AccessScreen, GhafIcon, PrototypePill } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, r001Radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -15,16 +14,25 @@ export default function WelcomeScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
-  const [showChildUnavailable, setShowChildUnavailable] = useState(false);
+  const childAccess = usePrototypeStore((state) => state.childAccess);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
 
   const switchLocale = () => {
-    setShowChildUnavailable(false);
     setLocale(locale === 'ar' ? 'en' : 'ar');
   };
 
-  if (parentOnboarding.status === 'authenticated_parent') {
+  if (activeExperience === 'parent' && parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href="/parent" />;
   }
+  if (activeExperience === 'child' && childAccess.canEnterChildExperience) {
+    return <Redirect href="/child" />;
+  }
+
+  const openParent = () => {
+    const existing = enterParentExperience();
+    router.push((existing.ok ? '/parent' : '/access/parent/sign-in') as Href);
+  };
 
   return (
     <AccessScreen
@@ -95,32 +103,23 @@ export default function WelcomeScreen() {
       </View>
 
       <View style={styles.actions}>
-        {showChildUnavailable ? (
-          <StatusBanner
-            direction={direction}
-            language={locale}
-            message={t('access.welcome.childUnavailable')}
-            tone="origin"
-          />
-        ) : null}
         <Button
           brand
           direction={direction}
           icon={<GhafIcon color={colors.onPrimary} direction={direction} name="family" size={20} />}
           language={locale}
-          onPress={() => router.push('/access/parent/sign-in')}
+          onPress={openParent}
           size="regular"
           testID="welcome-parent-button"
         >
           {t('access.welcome.parentAction')}
         </Button>
         <Button
-          accessibilityHint={t('access.welcome.childUnavailable')}
           brand
           direction={direction}
           icon={<GhafIcon direction={direction} name="child" size={20} />}
           language={locale}
-          onPress={() => setShowChildUnavailable(true)}
+          onPress={() => router.push('/access/child' as Href)}
           size="regular"
           testID="welcome-child-button"
           variant="secondary"

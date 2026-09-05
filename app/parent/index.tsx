@@ -4,7 +4,6 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button, Screen, Text } from '@/components/primitives';
 import { GhafIcon } from '@/components/access';
 import {
@@ -13,7 +12,6 @@ import {
   ParentChildrenSection,
   ParentHomeHeader,
   ParentHomeNavigation,
-  ParentHomeUtilities,
   ParentLifecycleCard,
   ParentTasksView,
   R002aScreen,
@@ -38,7 +36,6 @@ import type {
 import { PARENT_SUMMARY_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
-import { replaceHistoryWithEntry } from '@/utils/navigation';
 
 type ParentSection = 'home' | 'tasks';
 type TaskListFilter = 'assigned' | 'pending' | 'completed';
@@ -90,15 +87,11 @@ export default function ParentHomeScreen() {
   const resolvePreAcceptanceAdjustment = usePrototypeStore(
     (state) => state.resolvePreAcceptanceAdjustment,
   );
-  const resetPrototype = usePrototypeStore((state) => state.resetPrototype);
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
-  const setRole = usePrototypeStore((state) => state.setRole);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const progressEntryRef = useRef<View | null>(null);
   const homeScrollOffsetRef = useRef(0);
   const [adjustmentError, setAdjustmentError] = useState<string | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [confirmingReset, setConfirmingReset] = useState(false);
-  const [resetError, setResetError] = useState<string | null>(null);
   const [taskFilter, setTaskFilter] = useState<TaskListFilter>('assigned');
   const [dismissedTaskAddedToken, setDismissedTaskAddedToken] = useState<string | null>(null);
 
@@ -122,7 +115,7 @@ export default function ParentHomeScreen() {
   };
 
   useEffect(() => {
-    if (role !== 'parent') router.replace('/role');
+    if (role !== 'parent') router.replace('/');
   }, [role, router]);
 
   useEffect(() => {
@@ -155,6 +148,17 @@ export default function ParentHomeScreen() {
     .listTemplates('green_impact')
     .find((template) => template.id === 'GI01');
 
+  const handoffToChildAccess = () => {
+    setAdjustmentError(null);
+    const result = signOutExperience();
+    if (!result.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return false;
+    }
+    requestAnimationFrame(() => router.replace('/access/child' as Href));
+    return true;
+  };
+
   const resolveAdjustment = (decision: ProspectiveTaskAdjustmentKind) => {
     setAdjustmentError(null);
     const result = resolvePreAcceptanceAdjustment({ decision });
@@ -162,8 +166,7 @@ export default function ParentHomeScreen() {
       setAdjustmentError(t('errors.safeRetry'));
       return;
     }
-    setRole('child');
-    requestAnimationFrame(() => router.replace('/child'));
+    handoffToChildAccess();
   };
 
   const nextRoute =
@@ -209,13 +212,34 @@ export default function ParentHomeScreen() {
     support: t(action.supportKey),
   }));
 
+  const openSalemTaskBuilder = () => {
+    dismissTaskAdded();
+    setAdjustmentError(null);
+    const result = setActiveChild('child_salem');
+    if (!result.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return;
+    }
+    router.push('/parent/task/new');
+  };
+
   const openPrimaryAction = () => {
-    router.push(nextRoute === '/child' ? '/role' : nextRoute);
+    if (nextRoute === '/child') {
+      handoffToChildAccess();
+      return;
+    }
+    if (nextRoute === '/parent/task/new') {
+      openSalemTaskBuilder();
+      return;
+    }
+    router.push(nextRoute);
   };
 
   const chooseChild = (childId: SyntheticChildId) => {
     dismissTaskAdded();
-    setActiveChild(childId);
+    setAdjustmentError(null);
+    const result = setActiveChild(childId);
+    if (!result.ok) setAdjustmentError(t('errors.safeRetry'));
   };
 
   const openParentProgress = () => {
@@ -232,17 +256,6 @@ export default function ParentHomeScreen() {
         ...serializeR002bOrigin(origin.data),
       },
     } as unknown as Href);
-  };
-
-  const confirmReset = () => {
-    setResetError(null);
-    const result = resetPrototype();
-    setConfirmingReset(false);
-    if (!result.ok) {
-      setResetError(t('errors.safeRetry'));
-      return;
-    }
-    replaceHistoryWithEntry(router);
   };
 
   const selectedJourney = journey?.task.targetChildId === activeChildId ? journey : null;
@@ -267,11 +280,15 @@ export default function ParentHomeScreen() {
   const openTaskAction = () => {
     dismissTaskAdded();
     if (!journey) {
-      router.push('/parent/task/new');
+      openSalemTaskBuilder();
       return;
     }
     if (!visibleJourney) {
-      setActiveChild(journey.task.targetChildId);
+      const selected = setActiveChild(journey.task.targetChildId);
+      if (!selected.ok) {
+        setAdjustmentError(t('errors.safeRetry'));
+        return;
+      }
       setTaskFilter(taskFilterForLifecycle(journey.lifecycle));
       return;
     }
@@ -288,7 +305,7 @@ export default function ParentHomeScreen() {
       visibleJourney.lifecycle === 'chosen' ||
       visibleJourney.lifecycle === 'in_progress'
     ) {
-      router.push('/role');
+      handoffToChildAccess();
       return;
     }
     if (
@@ -325,11 +342,11 @@ export default function ParentHomeScreen() {
         footer={
           <ParentHomeNavigation
             activeKey="tasks"
-            circleLabel={t('navigation.circle')}
             direction={direction}
+            familyLabel={t('navigation.family')}
             gardenLabel={t('navigation.garden')}
             homeLabel={t('parentHome.homeLabel')}
-            onCircle={() => router.push('/circle')}
+            onFamily={() => router.push('/parent/family' as Href)}
             onGarden={() => router.push('/garden')}
             onHome={() => router.replace('/parent')}
             onTasks={() => undefined}
@@ -339,38 +356,17 @@ export default function ParentHomeScreen() {
         header={
           <ParentHomeHeader
             direction={direction}
-            onToggleSettings={() => {
-              setResetError(null);
-              setSettingsOpen((current) => !current);
-            }}
+            onToggleSettings={() => router.push('/parent/settings' as Href)}
             profileLabel={t('parentHome.selectedChild', {
               child: localize(activeChild.displayName, locale),
             })}
             settingsLabel={t('parentHome.settingsLabel')}
-            settingsOpen={settingsOpen}
+            settingsOpen={false}
             title={t('common.brand')}
           />
         }
         testID="parent-tasks-screen"
       >
-        <ParentHomeUtilities
-          cancelLabel={t('common.cancel')}
-          confirmingReset={confirmingReset}
-          description={t('parentHome.settingsBody')}
-          error={resetError}
-          languageControl={<LanguageSwitcher compact showGuidance={false} />}
-          onCancelReset={() => setConfirmingReset(false)}
-          onConfirmReset={confirmReset}
-          onRequestReset={() => setConfirmingReset(true)}
-          onSwitchRole={() => router.replace('/role')}
-          open={settingsOpen}
-          resetActionLabel={t('reset.action')}
-          resetConfirmLabel={t('reset.confirm')}
-          resetTitle={t('reset.title')}
-          switchRoleLabel={t('navigation.switchToChild')}
-          title={t('parentHome.settingsTitle')}
-        />
-
         <View style={styles.greeting}>
           <View
             style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
@@ -399,6 +395,12 @@ export default function ParentHomeScreen() {
           >
             {t('r002aTasks.createTask')}
           </Button>
+        ) : null}
+
+        {adjustmentError ? (
+          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+            {adjustmentError}
+          </Text>
         ) : null}
 
         <View
@@ -518,11 +520,11 @@ export default function ParentHomeScreen() {
       footer={
         <ParentHomeNavigation
           activeKey="home"
-          circleLabel={t('navigation.circle')}
           direction={direction}
+          familyLabel={t('navigation.family')}
           gardenLabel={t('navigation.garden')}
           homeLabel={t('parentHome.homeLabel')}
-          onCircle={() => router.push('/circle')}
+          onFamily={() => router.push('/parent/family' as Href)}
           onGarden={() => router.push('/garden')}
           onHome={() => router.replace('/parent')}
           onTasks={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
@@ -532,15 +534,12 @@ export default function ParentHomeScreen() {
       header={
         <ParentHomeHeader
           direction={direction}
-          onToggleSettings={() => {
-            setResetError(null);
-            setSettingsOpen((current) => !current);
-          }}
+          onToggleSettings={() => router.push('/parent/settings' as Href)}
           profileLabel={t('parentHome.selectedChild', {
             child: localize(activeChild.displayName, locale),
           })}
           settingsLabel={t('parentHome.settingsLabel')}
-          settingsOpen={settingsOpen}
+          settingsOpen={false}
           title={t('common.brand')}
         />
       }
@@ -561,24 +560,6 @@ export default function ParentHomeScreen() {
       }
       testID="parent-home-screen"
     >
-      <ParentHomeUtilities
-        cancelLabel={t('common.cancel')}
-        confirmingReset={confirmingReset}
-        description={t('parentHome.settingsBody')}
-        error={resetError}
-        languageControl={<LanguageSwitcher compact showGuidance={false} />}
-        onCancelReset={() => setConfirmingReset(false)}
-        onConfirmReset={confirmReset}
-        onRequestReset={() => setConfirmingReset(true)}
-        onSwitchRole={() => router.replace('/role')}
-        open={settingsOpen}
-        resetActionLabel={t('reset.action')}
-        resetConfirmLabel={t('reset.confirm')}
-        resetTitle={t('reset.title')}
-        switchRoleLabel={t('navigation.switchToChild')}
-        title={t('parentHome.settingsTitle')}
-      />
-
       <View style={styles.greeting}>
         <View
           style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
@@ -612,6 +593,12 @@ export default function ParentHomeScreen() {
         remainingLabel={t('parentHome.remainingLeaves', { count: remainingLeaves })}
         title={t('parentHome.canopyTitle')}
       />
+
+      {adjustmentError && !adjustmentUnderReview ? (
+        <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+          {adjustmentError}
+        </Text>
+      ) : null}
 
       {!adjustmentUnderReview ? (
         <ParentLifecycleCard
@@ -694,7 +681,7 @@ export default function ParentHomeScreen() {
         createTaskLabel={t('parentHome.createTask')}
         direction={direction}
         items={childItems}
-        onCreateTask={() => router.push('/parent/task/new')}
+        onCreateTask={openSalemTaskBuilder}
         onSelectChild={chooseChild}
         selectedLabel={t('parentHome.selectedLabel')}
         title={t('parentHome.todayWithChildren')}

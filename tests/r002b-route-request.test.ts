@@ -11,7 +11,9 @@ function origin(
     | 'impact_path_learning_action'
     | 'child_today_reveal_handoff'
     | 'child_garden_shared_growth_card'
-    | 'parent_garden_shared_settings_card',
+    | 'parent_garden_shared_settings_card'
+    | 'parent_family_overview_progress_row'
+    | 'parent_family_overview_shared_garden_row',
 ) {
   const result = createR002bOrigin({
     id,
@@ -236,5 +238,41 @@ describe('R002b untrusted route request resolver', () => {
         allowedOriginIds: ['parent_garden_shared_settings_card'],
       }),
     ).toEqual({ allowed: false, fallback: '/parent', reason: 'invalid_origin' });
+  });
+
+  it('accepts typed Parent Family origins and restores the Family overview', () => {
+    const progressOrigin = origin('parent_family_overview_progress_row');
+    const sharedOrigin = origin('parent_family_overview_shared_garden_row');
+    const flags = resolveR002bFeatureFlags({
+      r002b_parent_progress_ui: true,
+      r002b_shared_growth_view: true,
+    });
+
+    expect(
+      resolveR002bRouteRequest({
+        routeId: 'parent_progress',
+        role: 'parent',
+        activeProfileId: 'child_salem',
+        authorizedProfileIds: ['child_salem', 'child_alya'],
+        flags,
+        requestedProfileParam: 'child_salem',
+        entityParam: undefined,
+        originParams: progressOrigin,
+        allowedOriginIds: ['parent_family_overview_progress_row'],
+      }),
+    ).toMatchObject({ allowed: true, back: { href: '/parent/family' } });
+    expect(
+      resolveR002bRouteRequest({
+        routeId: 'parent_shared_garden',
+        role: 'parent',
+        activeProfileId: 'child_salem',
+        authorizedProfileIds: ['child_salem', 'child_alya'],
+        flags,
+        requestedProfileParam: 'child_salem',
+        entityParam: undefined,
+        originParams: sharedOrigin,
+        allowedOriginIds: ['parent_family_overview_shared_garden_row'],
+      }),
+    ).toMatchObject({ allowed: true, back: { href: '/parent/family' } });
   });
 });

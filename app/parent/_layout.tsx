@@ -1,15 +1,15 @@
 import { Redirect, Slot } from 'expo-router';
 
-import { selectCanEnterParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectHasActiveParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentLayout() {
-  const hasParentReceipt = usePrototypeStore(selectCanEnterParentExperience);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const hasParentReceipt = usePrototypeStore(selectHasActiveParentExperience);
   const authorizeParentExperience = usePrototypeStore((state) => state.authorizeParentExperience);
   const authorization = hasParentReceipt ? authorizeParentExperience() : null;
 
-  if (!authorization?.ok) {
-    return <Redirect href="/access/parent/sign-in" />;
-  }
+  if (activeExperience === 'child') return <Redirect href="/child" />;
+  if (!authorization?.ok) return <Redirect href="/" />;
 
   return <Slot />;
 }

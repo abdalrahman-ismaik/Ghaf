@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import { useEffect, useRef, type PropsWithChildren, type ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -38,6 +38,27 @@ export function R002aScreen({
   const nativePhysicalDirection: ViewStyle | undefined =
     Platform.OS === 'web' ? undefined : { direction: 'ltr' };
   const webPhysicalDirection = Platform.OS === 'web' ? ({ dir: 'ltr' } as const) : {};
+  const scrollViewRef = useRef<ScrollView | null>(null);
+  const restoredScrollX = scrollProps?.contentOffset?.x ?? 0;
+  const restoredScrollY = scrollProps?.contentOffset?.y ?? 0;
+
+  useEffect(() => {
+    if (restoredScrollX === 0 && restoredScrollY === 0) return;
+    let settleFrame: number | undefined;
+    const layoutFrame = requestAnimationFrame(() => {
+      settleFrame = requestAnimationFrame(() => {
+        scrollViewRef.current?.scrollTo({
+          animated: false,
+          x: restoredScrollX,
+          y: restoredScrollY,
+        });
+      });
+    });
+    return () => {
+      cancelAnimationFrame(layoutFrame);
+      if (settleFrame !== undefined) cancelAnimationFrame(settleFrame);
+    };
+  }, [restoredScrollX, restoredScrollY]);
 
   return (
     <SafeAreaView
@@ -60,6 +81,7 @@ export function R002aScreen({
           contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
+          ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.content}>{children}</View>

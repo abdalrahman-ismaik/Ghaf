@@ -37,7 +37,7 @@ import { bilingualResource, localize } from '@/i18n';
 import type { AgeAdaptedCoachResult } from '@/models/assistantVoice';
 import type { ChildCoachIntent, ChildCoachResult, LocalizedText } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 const COACH_INTENTS: readonly { intent: ChildCoachIntent; key: string }[] = [
   { intent: 'show_steps', key: 'showSteps' },
@@ -72,6 +72,8 @@ export default function ChildTaskScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
   const coach = usePrototypeStore((state) => state.childCoachResult);
@@ -117,12 +119,12 @@ export default function ChildTaskScreen() {
   );
 
   useEffect(() => {
-    if (role !== 'child') {
-      router.replace('/role');
+    if (role !== 'child' || !canEnterChildExperience) {
+      router.replace('/');
       return;
     }
     if (!hasTaskPrerequisite) router.replace('/child');
-  }, [hasTaskPrerequisite, role, router]);
+  }, [canEnterChildExperience, hasTaskPrerequisite, role, router]);
 
   useEffect(() => {
     if (role === 'child' && journey?.lifecycle === 'in_progress') {
@@ -374,12 +376,25 @@ export default function ChildTaskScreen() {
           body={t('childTask.waitingBody')}
           direction={direction}
           noEarlyRewardLabel={t('taskReview.noEarlyReward')}
-          onAction={() => router.replace('/role')}
+          onAction={() => {
+            setError(null);
+            const result = signOutExperience();
+            if (!result.ok) {
+              setError(t('errors.safeRetry'));
+              return;
+            }
+            router.replace('/');
+          }}
           statusLabel={t('childTask.waitingStatus')}
           taskLabel={childFacingTitle}
           title={t('childTask.waitingTitle')}
         />
         <LanguageSwitcher compact showGuidance={false} />
+        {error ? (
+          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+            {error}
+          </Text>
+        ) : null}
       </R002aScreen>
     );
   }

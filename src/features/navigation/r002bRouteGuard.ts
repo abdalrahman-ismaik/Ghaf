@@ -3,7 +3,6 @@ import { getBadgeDefinition } from '@/features/growth/badgeRegistry';
 import type { DemoRole } from '@/models/familyGrowth';
 
 export const R002B_ROUTE_IDS = [
-  'private_league',
   'impact_path',
   'badge_gallery',
   'badge_detail',
@@ -24,7 +23,6 @@ interface RouteDefinition {
 }
 
 const ROUTE_DEFINITIONS: Readonly<Record<R002bRouteId, RouteDefinition>> = {
-  private_league: { role: 'child', flag: 'r002b_progression_engine', entity: 'none' },
   impact_path: { role: 'child', flag: 'r002b_impact_path_ui', entity: 'none' },
   badge_gallery: { role: 'child', flag: 'r002b_badges_ui', entity: 'none' },
   badge_detail: { role: 'child', flag: 'r002b_badges_ui', entity: 'badge' },

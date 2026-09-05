@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -10,19 +10,18 @@ import {
   PrivateLeagueScreen,
   type PrivateLeagueParticipantItem,
 } from '@/components/r002b/PrivateLeagueScreen';
-import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import { buildPrivateLeaguePresentation } from '@/features/league/presentation';
-import { guardR002bRoute } from '@/features/navigation/r002bRouteGuard';
 import { localize } from '@/i18n';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function PrivateLeagueRoute() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
-  const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const activeChild = usePrototypeStore((state) => state.children[state.activeChildId]);
   const journey = usePrototypeStore((state) => state.journey);
@@ -32,14 +31,6 @@ export default function PrivateLeagueRoute() {
     () => new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE', { useGrouping: false }),
     [locale],
   );
-  const access = guardR002bRoute({
-    routeId: 'private_league',
-    role,
-    activeProfileId: activeChildId,
-    requestedProfileId: activeChildId,
-    authorizedProfileIds: [activeChildId],
-    flags: r002bFeatureFlags,
-  });
   const presentation = useMemo(
     () =>
       buildPrivateLeaguePresentation({
@@ -87,10 +78,8 @@ export default function PrivateLeagueRoute() {
     : [];
   const activeParticipant = participants.find((participant) => participant.isActiveProfile);
 
-  if (!access.allowed) {
-    if (access.fallback === '/parent') return <Redirect href="/parent" />;
-    return <Redirect href="/child" />;
-  }
+  if (activeExperience === 'parent') return <Redirect href="/parent" />;
+  if (activeExperience !== 'child' || !canEnterChildExperience) return <Redirect href="/" />;
 
   const footer = (
     <ChildBottomNavigation
@@ -116,6 +105,7 @@ export default function PrivateLeagueRoute() {
           direction={direction}
           helpLabel={t('common.help')}
           helpOpen={helpOpen}
+          onAvatarPress={() => router.push('/child/settings' as Href)}
           onToggleHelp={() => setHelpOpen((current) => !current)}
           title={t('r002bLeague.screenTitle')}
         />

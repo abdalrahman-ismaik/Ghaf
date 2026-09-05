@@ -13,7 +13,7 @@ import {
 } from '@/features/navigation/r002bRouteRequest';
 import type { SyntheticChildId } from '@/models/familyGrowth';
 import type { LearningRoute } from '@/models/learning';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface LearningStoryParams extends Record<string, R002bRouteParam> {
   readonly learningId?: R002bRouteParam;
@@ -30,7 +30,14 @@ const ALLOWED_ORIGINS = ['impact_path_learning_action', 'badge_detail_learning_a
 export default function LearningStoryRoute() {
   const params = useLocalSearchParams() as unknown as LearningStoryParams;
   const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+
+  if (activeExperience === 'parent') return <Redirect href={'/parent' as Href} />;
+  if (activeExperience !== 'child' || !canEnterChildExperience) {
+    return <Redirect href={'/' as Href} />;
+  }
   const access = resolveR002bRouteRequest({
     routeId: 'learning_story',
     role,

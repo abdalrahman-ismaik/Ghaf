@@ -1,8 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { PARENT_VERIFICATION_CODE } from '@/features/access/parentOnboarding';
 import { PARENT_CAPABILITIES } from '@/models/access';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   if (!result.ok || result.data === undefined) {
@@ -11,21 +15,9 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   return result.data;
 }
 
-async function completeParentOnboarding(): Promise<void> {
-  expectOk(
-    usePrototypeStore.getState().requestParentVerification({
-      identifier: 'parent@example.com',
-      networkAvailable: false,
-    }),
-  );
-  expectOk(await usePrototypeStore.getState().verifyParentCode(PARENT_VERIFICATION_CODE));
-  expectOk(usePrototypeStore.getState().completeParentOnboarding());
-}
-
 describe('R002b Shared Growth access and store integration', () => {
   beforeEach(() => {
-    usePrototypeStore.setState({ role: 'parent' });
-    expectOk(usePrototypeStore.getState().resetPrototype());
+    expectOk(resetPrototypeForTest());
   });
 
   it('registers a dedicated Parent capability without changing Child capabilities', () => {
@@ -34,7 +26,7 @@ describe('R002b Shared Growth access and store integration', () => {
   });
 
   it('keeps the anonymous qualitative view available when future contribution is paused', async () => {
-    await completeParentOnboarding();
+    await enterParentExperienceForTest();
     const before = usePrototypeStore.getState();
     const immutableAuthorities = {
       children: structuredClone(before.children),
@@ -59,7 +51,7 @@ describe('R002b Shared Growth access and store integration', () => {
       activeConsentReceiptId: expect.any(String),
       acceptingSignalsSince: null,
     });
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest();
     const childView = expectOk(usePrototypeStore.getState().getSharedGrowthChildView());
     expect(childView).toMatchObject({
       availability: 'ready',
@@ -83,7 +75,7 @@ describe('R002b Shared Growth access and store integration', () => {
   });
 
   it('reuses consent after Pause but requires explicit fresh consent after End', async () => {
-    await completeParentOnboarding();
+    await enterParentExperienceForTest();
     const initialConsentId =
       usePrototypeStore.getState().sharedGrowth.preference.activeConsentReceiptId;
 
@@ -156,7 +148,7 @@ describe('R002b Shared Growth access and store integration', () => {
       error: { code: 'INVALID_TRANSITION' },
     });
 
-    await completeParentOnboarding();
+    await enterParentExperienceForTest();
     usePrototypeStore.getState().setRole('child');
     expect(usePrototypeStore.getState().changeSharedGrowthParticipation(input)).toMatchObject({
       ok: false,
@@ -165,7 +157,7 @@ describe('R002b Shared Growth access and store integration', () => {
   });
 
   it('is idempotent for an identical action and creates a fresh epoch on Parent reset', async () => {
-    await completeParentOnboarding();
+    await enterParentExperienceForTest();
     const input = {
       actionId: 'shared-growth-pause-idempotent',
       action: 'pause_new_contributions' as const,
@@ -179,7 +171,6 @@ describe('R002b Shared Growth access and store integration', () => {
     expect(retry.disposition).toBe('already_applied');
 
     const firstEpoch = usePrototypeStore.getState().sharedGrowth.preference.participationEpochId;
-    usePrototypeStore.getState().setRole('parent');
     expectOk(usePrototypeStore.getState().resetPrototype());
     const reset = usePrototypeStore.getState().sharedGrowth;
     expect(reset.preference.status).toBe('continued');

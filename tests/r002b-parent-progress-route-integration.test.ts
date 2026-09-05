@@ -11,6 +11,7 @@ import {
 } from '@/features/navigation/parentHomeParams';
 import { guardR002bRoute } from '@/features/navigation/r002bRouteGuard';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { resetPrototypeForTest } from './helpers/prototypeStore';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const routePath = 'app/parent/family/[profileId]/progress.tsx';
@@ -113,13 +114,17 @@ describe('R002b Parent Progress route integration', () => {
     const route = source(routePath);
 
     expect(route).toContain('setActiveChild');
-    expect(route).toContain("id: 'parent_family_progress_card'");
+    expect(route).toContain("access.origin.id === 'parent_family_overview_progress_row'");
+    expect(route).toContain("? 'parent_family_overview_progress_row'");
+    expect(route).toContain(": 'parent_family_progress_card'");
+    expect(route).toContain('scrollOffset: access.origin.scrollOffset');
+    expect(route).not.toContain('scrollOffset: 0');
     expect(route).toContain("pathname: '/parent/family/[profileId]/progress'");
     expect(route).toMatch(/router\.replace/u);
   });
 
   it('keeps task suggestions prefill-only and does not mutate task or reward state on view', async () => {
-    expectOk(usePrototypeStore.getState().resetPrototype());
+    expectOk(resetPrototypeForTest());
     await completeParentOnboarding();
     const beforeState = usePrototypeStore.getState();
     const before = structuredClone({

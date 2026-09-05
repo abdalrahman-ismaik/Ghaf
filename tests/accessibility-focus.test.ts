@@ -27,7 +27,7 @@ describe('cross-platform accessibility focus', () => {
     const focus = vi.fn();
 
     expect(focusAccessibilityTarget({ focus })).toBe(true);
-    expect(focus).toHaveBeenCalledOnce();
+    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
     expect(reactNative.findNodeHandle).not.toHaveBeenCalled();
     expect(reactNative.setAccessibilityFocus).not.toHaveBeenCalled();
   });

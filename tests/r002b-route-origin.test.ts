@@ -28,6 +28,8 @@ describe('R002b typed origins', () => {
       'child_reveal_growth_action',
       'child_garden_shared_growth_card',
       'parent_family_progress_card',
+      'parent_family_overview_progress_row',
+      'parent_family_overview_shared_garden_row',
       'parent_progress_task_action',
       'parent_garden_shared_settings_card',
     ]);
@@ -286,6 +288,27 @@ describe('R002b typed origins', () => {
     });
   });
 
+  it.each([
+    ['parent_family_overview_progress_row', 'r003-family-progress-row'],
+    ['parent_family_overview_shared_garden_row', 'r003-family-shared-garden-row'],
+  ] as const)('restores the exact Parent Family origin %s', (id, focusTarget) => {
+    const created = createR002bOrigin({ id, profileId: CHILD_ID, scrollOffset: 144 });
+    if (!created.ok) throw new Error('expected Parent Family origin');
+
+    expect(
+      resolveR002bOrigin({
+        origin: created.data,
+        activeRole: 'parent',
+        activeProfileId: CHILD_ID,
+      }),
+    ).toMatchObject({
+      restored: true,
+      href: '/parent/family',
+      focusTarget,
+      scrollOffset: 144,
+    });
+  });
+
   it('rejects arrays, partial values, unknown fields, and malformed route params', () => {
     expect(
       parseR002bOriginParams({
@@ -326,7 +349,6 @@ describe('R002b typed origins', () => {
 describe('R002b route guard', () => {
   it('defines only the authorized nested routes', () => {
     expect(R002B_ROUTE_IDS).toEqual([
-      'private_league',
       'impact_path',
       'badge_gallery',
       'badge_detail',

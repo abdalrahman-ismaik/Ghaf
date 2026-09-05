@@ -17,9 +17,9 @@ import {
   ChildHomeHeader,
   ParentHomeHeader,
   ParentHomeNavigation,
-  ParentHomeUtilities,
   R002aScreen,
 } from '@/components/r002a';
+import { R003Status } from '@/components/r003';
 import { GardenChapterModule } from '@/components/r002b/GrowthJourneyScreens';
 import { SharedGrowthEntryCard } from '@/components/r002b/SharedGrowthScreens';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
@@ -41,8 +41,11 @@ import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r
 import type { R002bRouteParam } from '@/features/navigation/r002bRouteRequest';
 import { localize } from '@/i18n';
 import type { LandscapeId, TextDirection } from '@/models/familyGrowth';
-import { selectCanEnterParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
-import { replaceHistoryWithEntry } from '@/utils/navigation';
+import {
+  selectCanEnterChildExperience,
+  selectHasActiveParentExperience,
+  usePrototypeStore,
+} from '@/state/usePrototypeStore';
 
 const LANDSCAPE_IDS: readonly LandscapeId[] = ['mangrove', 'ghaf', 'samar', 'sidr', 'date_palm'];
 
@@ -76,6 +79,7 @@ export default function GardenScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const reducedMotion = Boolean(useReducedMotion());
   const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const children = usePrototypeStore((state) => state.children);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
@@ -84,14 +88,12 @@ export default function GardenScreen() {
   const celebration = usePrototypeStore((state) => state.celebration);
   const circleGoal = usePrototypeStore((state) => state.circleGoal);
   const recognitionLedger = usePrototypeStore((state) => state.recognitionLedger);
-  const canEnterParentExperience = usePrototypeStore(selectCanEnterParentExperience);
-  const authorizeParentExperience = usePrototypeStore((state) => state.authorizeParentExperience);
-  const resetPrototype = usePrototypeStore((state) => state.resetPrototype);
+  const hasActiveParentExperience = usePrototypeStore(selectHasActiveParentExperience);
+  const hasActiveChildExperience = usePrototypeStore(selectCanEnterChildExperience);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const consumeCelebration = usePrototypeStore((state) => state.consumeCelebration);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [confirmingReset, setConfirmingReset] = useState(false);
-  const [resetError, setResetError] = useState<string | null>(null);
+  const [transitionError, setTransitionError] = useState<string | null>(null);
   const r002bGrowthEnabled =
     role === 'child' &&
     (r002bFeatureFlags.r002b_impact_path_ui || r002bFeatureFlags.r002b_badges_ui);
@@ -200,8 +202,6 @@ export default function GardenScreen() {
     () =>
       matchingGrowth !== null && celebration.available === true && celebration.consumed === false,
   );
-  const parentAuthorization =
-    role === 'parent' && canEnterParentExperience ? authorizeParentExperience() : null;
 
   const recognitionAnnouncement = activeRecognition
     ? buildRecognitionAnnouncement({
@@ -267,41 +267,33 @@ export default function GardenScreen() {
       : null;
 
   const openCircle = () => {
-    if (revealOnMount) consumeCelebration();
+    if (revealOnMount) {
+      const result = consumeCelebration();
+      if (!result.ok) {
+        setTransitionError(t('errors.safeRetry'));
+        return;
+      }
+    }
     router.push('/circle');
   };
 
-  const confirmReset = () => {
-    setResetError(null);
-    const result = resetPrototype();
-    setConfirmingReset(false);
-    if (!result.ok) {
-      setResetError(t('errors.safeRetry'));
-      return;
-    }
-    replaceHistoryWithEntry(router);
-  };
-
-  if (role === 'parent' && !parentAuthorization?.ok) {
-    return <Redirect href="/access/parent/sign-in" />;
-  }
+  if (activeExperience === 'signed_out') return <Redirect href="/" />;
+  if (activeExperience === 'parent' && !hasActiveParentExperience) return <Redirect href="/" />;
+  if (activeExperience === 'child' && !hasActiveChildExperience) return <Redirect href="/" />;
   if ((role !== 'parent' && role !== 'child') || !activeChild) {
-    return <Redirect href="/role" />;
+    return <Redirect href="/" />;
   }
 
   const header =
     role === 'parent' ? (
       <ParentHomeHeader
         direction={direction}
-        onToggleSettings={() => {
-          setResetError(null);
-          setSettingsOpen((current) => !current);
-        }}
+        onToggleSettings={() => router.push('/parent/settings' as Href)}
         profileLabel={t('parentHome.selectedChild', {
           child: localize(activeChild.displayName, locale),
         })}
         settingsLabel={t('parentHome.settingsLabel')}
-        settingsOpen={settingsOpen}
+        settingsOpen={false}
         title={t('garden.screenTitle')}
       />
     ) : (
@@ -310,6 +302,7 @@ export default function GardenScreen() {
         direction={direction}
         helpLabel={t('common.help')}
         helpOpen={helpOpen}
+        onAvatarPress={() => router.push('/child/settings' as Href)}
         onToggleHelp={() => setHelpOpen((value) => !value)}
         title={t('garden.screenTitle')}
       />
@@ -319,11 +312,11 @@ export default function GardenScreen() {
     role === 'parent' ? (
       <ParentHomeNavigation
         activeKey="garden"
-        circleLabel={t('navigation.circle')}
         direction={direction}
+        familyLabel={t('navigation.family')}
         gardenLabel={t('navigation.garden')}
         homeLabel={t('parentHome.homeLabel')}
-        onCircle={openCircle}
+        onFamily={() => router.push('/parent/family' as Href)}
         onGarden={() => undefined}
         onHome={() => router.replace('/parent')}
         onTasks={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
@@ -337,9 +330,7 @@ export default function GardenScreen() {
         leagueLabel={t('navigation.league')}
         leagueUnavailableHint={t('navigation.leagueUnavailable')}
         onGarden={() => undefined}
-        onLeague={
-          r002bFeatureFlags.r002b_progression_engine ? () => router.replace('/league') : undefined
-        }
+        onLeague={() => router.replace('/league' as Href)}
         onToday={() => router.replace('/child')}
         todayLabel={t('navigation.today')}
       />
@@ -362,26 +353,28 @@ export default function GardenScreen() {
       }}
       testID="garden-screen"
     >
-      {role === 'parent' ? (
-        <ParentHomeUtilities
-          cancelLabel={t('common.cancel')}
-          confirmingReset={confirmingReset}
-          description={t('parentHome.settingsBody')}
-          error={resetError}
-          languageControl={<LanguageSwitcher compact showGuidance={false} />}
-          onCancelReset={() => setConfirmingReset(false)}
-          onConfirmReset={confirmReset}
-          onRequestReset={() => setConfirmingReset(true)}
-          onSwitchRole={() => router.replace('/role')}
-          open={settingsOpen}
-          resetActionLabel={t('reset.action')}
-          resetConfirmLabel={t('reset.confirm')}
-          resetTitle={t('reset.title')}
-          switchRoleLabel={t('navigation.switchToChild')}
-          title={t('parentHome.settingsTitle')}
+      {role === 'child' && helpOpen ? (
+        <ChildGardenHelp
+          direction={direction}
+          onLeave={() => {
+            setTransitionError(null);
+            const result = signOutExperience();
+            if (!result.ok) {
+              setTransitionError(t('errors.safeRetry'));
+              return;
+            }
+            router.replace('/');
+          }}
         />
-      ) : helpOpen ? (
-        <ChildGardenHelp direction={direction} onLeave={() => router.replace('/role')} />
+      ) : null}
+
+      {transitionError ? (
+        <R003Status
+          direction={direction}
+          language={locale}
+          message={transitionError}
+          tone="warning"
+        />
       ) : null}
 
       <View style={styles.intro}>

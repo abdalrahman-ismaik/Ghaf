@@ -5,6 +5,11 @@ import { serviceRegistry } from '../src/services';
 import { PREPARED_PRAISE } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const RESET_COUNTERS = {
   salemSeeds: 48,
@@ -54,14 +59,14 @@ function counters(state: PrototypeStoreState = usePrototypeStore.getState()) {
 }
 
 describe('R002a preserved behavioral oracle', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    const reset = usePrototypeStore.getState().resetPrototype();
+  beforeEach(async () => {
+    const reset = resetPrototypeForTest();
     expectOk(reset);
     expect(reset.data).toMatchObject({ navigateTo: '/', replaceHistory: true });
+    await enterParentExperienceForTest();
   });
 
-  it('keeps one canonical task rewardless until the existing idempotent recognition transaction', () => {
+  it('keeps one canonical task rewardless until the existing idempotent recognition transaction', async () => {
     const initialAlya = structuredClone(usePrototypeStore.getState().children.child_alya);
 
     expect(usePrototypeStore.getState().schemaVersion).toBe(3);
@@ -92,8 +97,7 @@ describe('R002a preserved behavioral oracle', () => {
     });
     expect(counters()).toEqual(RESET_COUNTERS);
 
-    usePrototypeStore.getState().setRole('child');
-    expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
     expect(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1')).toMatchObject({
       ok: false,
       error: { code: 'NOT_ASSIGNED_CHILD' },
@@ -101,7 +105,7 @@ describe('R002a preserved behavioral oracle', () => {
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('assigned');
     expect(counters()).toEqual(RESET_COUNTERS);
 
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('chosen');
     expect(counters()).toEqual(RESET_COUNTERS);
@@ -117,7 +121,7 @@ describe('R002a preserved behavioral oracle', () => {
     expect(usePrototypeStore.getState().recognitionLedger).toEqual({});
     expect(counters()).toEqual(RESET_COUNTERS);
 
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     expectOk(
       usePrototypeStore.getState().requestKindRetry({
         ar: 'لنراجع الخطوة مرة أخرى بأمان.',
@@ -130,7 +134,7 @@ describe('R002a preserved behavioral oracle', () => {
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('in_progress');
     expect(counters()).toEqual(RESET_COUNTERS);
 
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().submitTask(SUBMISSION));
     expect(usePrototypeStore.getState().journey).toMatchObject({
       lifecycle: 'submitted',
@@ -138,7 +142,7 @@ describe('R002a preserved behavioral oracle', () => {
     });
     expect(counters()).toEqual(RESET_COUNTERS);
 
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     const planned = usePrototypeStore.getState().planConfirmation({
       submissionId: 'submission_recycling_p0_v1_attempt_2',
       praise: PREPARED_PRAISE,

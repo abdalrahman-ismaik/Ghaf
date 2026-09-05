@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/primitives';
 import { colors, layout, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectHasActiveParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 import { replaceHistoryWithEntry } from '@/utils/navigation';
 
 export function PrototypeStatusBar() {
@@ -14,11 +14,11 @@ export function PrototypeStatusBar() {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
-  const role = usePrototypeStore((state) => state.role);
+  const hasActiveParentExperience = usePrototypeStore(selectHasActiveParentExperience);
   const direction = usePrototypeStore((state) => state.direction);
   const resetPrototype = usePrototypeStore((state) => state.resetPrototype);
   const [confirming, setConfirming] = useState(false);
-  const canReset = role === 'parent' && pathname !== '/' && pathname !== '/role';
+  const canReset = hasActiveParentExperience && pathname !== '/';
 
   const reset = () => {
     const result = resetPrototype();

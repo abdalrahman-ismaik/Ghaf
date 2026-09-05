@@ -7,19 +7,21 @@ const ROOT = process.cwd();
 const source = (relativePath: string) => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
 
 describe('R002b private League route integration', () => {
-  it('mounts one guarded Child root that consumes the League presentation adapter', () => {
+  it('mounts one session-guarded canonical Child root that consumes the League adapter', () => {
     const route = source('app/league.tsx');
 
-    expect(route).toContain("routeId: 'private_league'");
-    expect(route).toContain('r002bFeatureFlags');
     expect(route).toContain('buildPrivateLeaguePresentation');
     expect(route).toContain('<PrivateLeagueScreen');
     expect(route).toContain('recognitionLedger');
-    expect(route).toContain('<Redirect href="/child"');
+    expect(route).toContain("activeExperience === 'parent'");
+    expect(route).toContain("activeExperience !== 'child'");
+    expect(route).toContain('selectCanEnterChildExperience');
+    expect(route).not.toContain('guardR002bRoute');
+    expect(route).not.toContain('r002bFeatureFlags');
     expect(route).not.toMatch(/confirmChallengeLeaf|createFamilyLeagueWeek|calculateWeeklyGrowth/u);
   });
 
-  it('enables the League tab only through an explicit handler and preserves R002a fallback', () => {
+  it('keeps the canonical League tab reachable without enabling optional R002b flags', () => {
     const navigation = source('src/components/r002a/child/ChildBottomNavigation.tsx');
     const today = source('app/child/index.tsx');
     const garden = source('app/garden.tsx');
@@ -27,10 +29,10 @@ describe('R002b private League route integration', () => {
     expect(navigation).toContain('onLeague?: () => void');
     expect(navigation).toContain("id: 'league'");
     expect(navigation).toContain('disabled: !onLeague');
-    expect(today).toContain('r002bFeatureFlags.r002b_progression_engine');
-    expect(today).toContain("router.replace('/league')");
-    expect(garden).toContain('r002bFeatureFlags.r002b_progression_engine');
-    expect(garden).toContain("router.replace('/league')");
+    expect(today).not.toContain('r002bFeatureFlags.r002b_progression_engine');
+    expect(today).toMatch(/router\.replace\('\/league'(?: as Href)?\)/u);
+    expect(garden).not.toContain('r002bFeatureFlags.r002b_progression_engine');
+    expect(garden).toMatch(/router\.replace\('\/league'(?: as Href)?\)/u);
   });
 
   it('uses the approved physical Arabic labels and keeps Green Circle separate', () => {
@@ -50,7 +52,8 @@ describe('R002b private League route integration', () => {
     );
     const component = source('src/components/r002b/PrivateLeagueScreen.tsx');
 
-    expect(specification).toContain('RELEASE ACTIVATION BLOCKED');
+    expect(specification).toContain('R003 CANONICAL PROTOTYPE ROUTE AUTHORIZED');
+    expect(specification).toContain('Optional R002b Growth candidates remain independently');
     expect(specification).toContain('`/league`');
     expect(component).not.toMatch(/WebView|iframe|<div|<img|className|dangerouslySetInnerHTML/u);
     expect(component).toContain('flexDirection: logicalRowDirection(direction)');

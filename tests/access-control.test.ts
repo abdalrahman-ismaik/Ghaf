@@ -378,6 +378,97 @@ describe('synthetic Parent and Child access', () => {
     expect(service.projectSession({ session: childSession, now: BASE_TIME })).toMatchObject({
       ok: false,
     });
+
+    expectOk(
+      service.requestPairing({
+        requestId: 'pairing_after_device_revoke',
+        pairingCode: 'synthetic-code-pairing-after-device-revoke',
+        childId: 'child_salem',
+        requestingDeviceId: childSession.deviceId,
+        now: BASE_TIME,
+      }),
+    );
+  });
+
+  it('terminates a Child session without revoking the paired device', () => {
+    const childSession = pairSalem({
+      requestId: 'pairing_child_sign_out',
+      deviceId: 'device_child_sign_out',
+    });
+
+    expectOk(service.terminateChildSession({ session: childSession, now: BASE_TIME }));
+    expect(service.terminateChildSession({ session: childSession, now: BASE_TIME })).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(service.projectSession({ session: childSession, now: BASE_TIME })).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(
+      service.signInChild({
+        sessionId: 'child_session_after_sign_out',
+        childId: 'child_salem',
+        childCredentialFixtureId: SYNTHETIC_CHILD_CREDENTIAL_FIXTURES.child_salem.fixtureId,
+        deviceId: childSession.deviceId,
+        now: BASE_TIME,
+      }),
+    ).toMatchObject({ ok: true, data: { sessionKind: 'child' } });
+  });
+
+  it('clears sessions, devices, proofs, and permission changes on prototype reset', () => {
+    const childSession = pairSalem({ requestId: 'pairing_reset', deviceId: 'device_reset' });
+    const proof = expectOk(
+      service.issueReauthentication({
+        proofId: 'proof_reset',
+        parentSession,
+        reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+        purpose: 'change_voice_permission',
+        now: BASE_TIME,
+      }),
+    );
+    expectOk(
+      service.updateChildPermissions({
+        parentSession,
+        childId: 'child_salem',
+        expectedVersion: 1,
+        change: { kind: 'voice', granted: true, proofId: proof.id },
+        now: BASE_TIME,
+      }),
+    );
+
+    expectOk(service.resetPrototype());
+    expect(service.projectSession({ session: parentSession, now: BASE_TIME })).toMatchObject({
+      ok: false,
+    });
+    expect(service.projectSession({ session: childSession, now: BASE_TIME })).toMatchObject({
+      ok: false,
+    });
+
+    parentSession = expectOk(
+      service.signInParent({
+        sessionId: 'parent_session_after_reset',
+        parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+        deviceId: 'parent_device_after_reset',
+        now: BASE_TIME,
+      }),
+    );
+    expectOk(
+      service.requestPairing({
+        requestId: 'pairing_after_reset',
+        pairingCode: 'synthetic-code-after-reset',
+        childId: 'child_salem',
+        requestingDeviceId: 'device_reset',
+        now: BASE_TIME,
+      }),
+    );
+    expect(
+      service.getChildPermissions({
+        session: parentSession,
+        childId: 'child_salem',
+        now: BASE_TIME,
+      }),
+    ).toMatchObject({ data: { version: 1, voiceGranted: false } });
   });
 
   it('enforces every Parent and Child capability by stored session kind', () => {

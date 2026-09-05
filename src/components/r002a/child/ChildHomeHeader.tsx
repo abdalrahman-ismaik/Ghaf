@@ -11,6 +11,7 @@ interface ChildHomeHeaderProps {
   helpLabel: string;
   helpOpen: boolean;
   onToggleHelp: () => void;
+  onAvatarPress?: () => void;
   title: string;
 }
 
@@ -20,6 +21,7 @@ export function ChildHomeHeader({
   helpLabel,
   helpOpen,
   onToggleHelp,
+  onAvatarPress,
   title,
 }: ChildHomeHeaderProps) {
   const helpControl = (
@@ -49,7 +51,19 @@ export function ChildHomeHeader({
       </Text>
     </View>
   );
-  const avatarControl = (
+  const avatarControl = onAvatarPress ? (
+    <Pressable
+      accessibilityLabel={avatarLabel}
+      accessibilityRole="button"
+      onPress={onAvatarPress}
+      style={({ pressed }) => [styles.sideSlot, pressed ? styles.pressed : null]}
+      testID="child-settings-button"
+    >
+      <View style={styles.avatar}>
+        <GhafIcon color={colors.ghafEmerald} name="ghaf-tree" size={26} />
+      </View>
+    </Pressable>
+  ) : (
     <View accessibilityLabel={avatarLabel} accessible style={styles.sideSlot}>
       <View style={styles.avatar}>
         <GhafIcon color={colors.ghafEmerald} name="ghaf-tree" size={26} />

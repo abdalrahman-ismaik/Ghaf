@@ -14,6 +14,7 @@ import type {
   CapabilityAuthorization,
   CapabilityAuthorizationInput,
   ChildAccessSession,
+  ChildSessionTermination,
   ChildPermissionGrant,
   ChildPermissionQueryInput,
   DeviceAccessState,
@@ -277,6 +278,7 @@ export interface SyntheticAccessService {
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
   terminateParentSession(input: ProjectAccessSessionInput): ServiceResult<ParentSessionTermination>;
   signInChild(input: SyntheticChildSignIn): ServiceResult<ChildAccessSession>;
+  terminateChildSession(input: ProjectAccessSessionInput): ServiceResult<ChildSessionTermination>;
   projectSession(input: ProjectAccessSessionInput): ServiceResult<AccessView>;
   authorizeCapability(input: CapabilityAuthorizationInput): ServiceResult<CapabilityAuthorization>;
   requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest>;
@@ -288,6 +290,7 @@ export interface SyntheticAccessService {
   authorizeSensitiveAction(input: SensitiveActionInput): ServiceResult<ReauthenticationProof>;
   getChildPermissions(input: ChildPermissionQueryInput): ServiceResult<ChildPermissionGrant>;
   updateChildPermissions(input: PermissionUpdateInput): ServiceResult<ChildPermissionGrant>;
+  resetPrototype(): ServiceResult<true>;
 }
 
 export interface FamilyRewardService {

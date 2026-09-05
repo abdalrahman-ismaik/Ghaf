@@ -3,8 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createValidatedBackHandler } from '@/features/navigation/r002bBack';
 
 describe('R002b validated Back navigation', () => {
-  it('uses the live guarded stack so nested route state, scroll, and focus remain mounted', () => {
-    const goBack = vi.fn();
+  it('reconstructs the validated root even when a live stack exists so restoration is deterministic', () => {
     const replace = vi.fn();
     const onBack = createValidatedBackHandler({
       back: {
@@ -22,15 +21,19 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => true,
-      goBack,
       replace,
     });
 
     onBack();
 
-    expect(goBack).toHaveBeenCalledOnce();
-    expect(replace).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledWith({
+      pathname: '/garden',
+      params: {
+        restoreFocusTarget: 'r002b-garden-path-action',
+        restoreProfileId: 'child_salem',
+        restoreScrollOffset: '420',
+      },
+    });
   });
 
   it('reconstructs only a validated root origin when no stack exists', () => {
@@ -51,8 +54,6 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack: vi.fn(),
       replace,
     });
 
@@ -69,7 +70,6 @@ describe('R002b validated Back navigation', () => {
   });
 
   it('reconstructs the stable Child Today reveal origin after acknowledgment removes its CTA', () => {
-    const goBack = vi.fn();
     const replace = vi.fn();
     const onBack = createValidatedBackHandler({
       back: {
@@ -88,14 +88,11 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack,
       replace,
     });
 
     onBack();
 
-    expect(goBack).not.toHaveBeenCalled();
     expect(replace).toHaveBeenCalledWith({
       pathname: '/child',
       params: {
@@ -124,8 +121,6 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack: vi.fn(),
       replace,
     });
 
@@ -159,8 +154,6 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack: vi.fn(),
       replace,
     });
 
@@ -200,8 +193,6 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack: vi.fn(),
       replace,
     });
 
@@ -244,8 +235,6 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack: vi.fn(),
       replace,
     });
 
@@ -288,8 +277,6 @@ describe('R002b validated Back navigation', () => {
       },
       profileId: 'child_salem',
       safeRoot: '/child',
-      canGoBack: () => false,
-      goBack: vi.fn(),
       replace,
     });
 

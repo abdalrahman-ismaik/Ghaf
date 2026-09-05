@@ -76,7 +76,8 @@ describe('R002a Parent Tasks and Builder presentation', () => {
     expect(review).toContain('router.dismissTo({');
     expect(review).toContain('added: journey!.task.id');
     expect(review).toContain('router.dismissAll();');
-    expect(review).toContain("router.replace('/role');");
+    expect(review).toContain('signOutExperience();');
+    expect(review).toContain("router.replace('/access/child' as Href);");
   });
 
   it('keeps established automation hooks and adds truthful success/list states', () => {
@@ -106,7 +107,8 @@ describe('R002a Parent Tasks and Builder presentation', () => {
     expect(composer).toContain('testID={`category-${category.id}`}');
     expect(composer).toContain('testID={`template-${template.id}`}');
     expect(footer).toContain('iconPosition="end"');
-    expect(footer).toContain("direction={direction === 'rtl' ? 'ltr' : 'rtl'}");
+    expect(footer).toContain('direction={direction}');
+    expect(footer).not.toContain("direction={direction === 'rtl' ? 'ltr' : 'rtl'}");
     expect(steps).toContain('styles.connectorRail');
     expect(steps).toContain('color={colors.ghafEmerald}');
     expect(success).toContain('accessibilityViewIsModal');

@@ -11,6 +11,7 @@ import type { SeedLedgerState } from '../src/models/growthJourney';
 import { serviceRegistry } from '../src/services';
 import { PREPARED_PRAISE, createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const PRAISE_ACTION = {
   actionId: 'r002b-parent-praise',
@@ -77,9 +78,9 @@ function profile(profileId: 'child_salem' | 'child_alya') {
 }
 
 describe('R002b progression store integration', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   it('normalizes only synthetic profile evidence while preserving Schema-3 display scalars', () => {

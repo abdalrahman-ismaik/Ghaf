@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { PARENT_VERIFICATION_CODE } from '../src/features/access/parentOnboarding';
 import { selectCanEnterParentExperience, usePrototypeStore } from '../src/state/usePrototypeStore';
+import { resetPrototypeForTest } from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   expect(result.ok).toBe(true);
@@ -22,8 +23,7 @@ async function completeOnboarding() {
 
 describe('R001 Parent onboarding store integration', () => {
   beforeEach(() => {
-    usePrototypeStore.setState({ role: 'parent' });
-    const reset = usePrototypeStore.getState().resetPrototype();
+    const reset = resetPrototypeForTest();
     expect(reset.ok).toBe(true);
   });
 

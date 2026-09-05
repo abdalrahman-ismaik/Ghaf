@@ -7,6 +7,7 @@ import { serviceRegistry, type ParentGuideService } from '../src/services';
 import { PARENT_GUIDE_FIXTURE } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const PARENT_WORDING = {
   ar: 'أخرج مواد إعادة التدوير.',
@@ -57,9 +58,9 @@ function createReviewableP0Draft() {
 }
 
 describe('US1 Parent task approval flow', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   it('has both authored Parent task routes for composing and reviewing the assignment', () => {

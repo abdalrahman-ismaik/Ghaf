@@ -7,6 +7,7 @@ import {
 import { TASK_TEMPLATES } from '../src/features/tasks/demoContent';
 import { createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const baseInput = {
   submissionId: 'submission_recycling_p0_1',
@@ -176,7 +177,7 @@ describe('Feature 003 recognition and reward policy', () => {
     );
   });
 
-  it('persists the third recurrent fade-first count and a reversible future-only phase decision', () => {
+  it('persists the third recurrent fade-first count and a reversible future-only phase decision', async () => {
     const submitted = createSubmittedP0Session();
     if (!submitted.journey) throw new Error('Expected submitted journey');
     const recurrentTemplate = TASK_TEMPLATES.find((template) => template.id === 'GI01');
@@ -197,8 +198,8 @@ describe('Feature 003 recognition and reward policy', () => {
         ? { ...submitted.journey.submission, taskVersion: 2 }
         : null,
     };
-    usePrototypeStore.getState().setRole('parent');
-    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
+    expect(resetPrototypeForTest()).toMatchObject({ ok: true });
+    await enterParentExperienceForTest();
     usePrototypeStore.setState({
       ...submitted,
       role: 'parent',

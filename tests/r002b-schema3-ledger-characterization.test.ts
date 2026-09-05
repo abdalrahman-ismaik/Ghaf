@@ -12,6 +12,7 @@ import {
   createSubmittedP0Session,
 } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const SAFE_PARENT_ACTION = {
   ar: 'افرز الورق والبلاستيك النظيفين اللذين وافق عليهما شخص بالغ، وتوقف واسأل عند الشك.',
@@ -59,11 +60,11 @@ function storeRewardState() {
 }
 
 describe('R002b Schema-3 ledger characterization', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    const reset = usePrototypeStore.getState().resetPrototype();
+  beforeEach(async () => {
+    const reset = resetPrototypeForTest();
     expectOk(reset);
     expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
+    await enterParentExperienceForTest();
   });
 
   it('keeps the opening 48 outside the receipt ledger and records only the recognized +12', () => {
@@ -216,7 +217,7 @@ describe('R002b Schema-3 ledger characterization', () => {
     expect(state.children.child_alya).toEqual(initialAlya);
   });
 
-  it('reconstructs the exact profile-isolated synthetic opening on every Parent reset', () => {
+  it('reconstructs the exact profile-isolated synthetic opening on every Parent reset', async () => {
     const expected = createInitialPrototypeSession();
 
     usePrototypeStore.setState(createResetSourceSession('recognized'));
@@ -245,6 +246,7 @@ describe('R002b Schema-3 ledger characterization', () => {
     });
     expect(rewardState(firstReset)).toEqual(rewardState(expected));
 
+    await enterParentExperienceForTest();
     expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
     const secondResetResult = usePrototypeStore.getState().resetPrototype();
     expectOk(secondResetResult);

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { ParentCheckIn } from '@/components/family-growth/ParentCheckIn';
@@ -16,6 +16,7 @@ export default function ParentCheckInScreen() {
   const journey = usePrototypeStore((state) => state.journey);
   const confirmationPlan = usePrototypeStore((state) => state.confirmationPlan);
   const restoreCheckInState = usePrototypeStore((state) => state.restoreCheckInState);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const intentionalExitRef = useRef(false);
 
   const submissionId = journey?.submission?.id;
@@ -26,7 +27,7 @@ export default function ParentCheckInScreen() {
 
   useEffect(() => {
     if (role !== 'parent') {
-      router.replace('/role');
+      router.replace('/');
       return;
     }
     if (!admission?.ok && !intentionalExitRef.current) router.replace('/parent');
@@ -75,8 +76,11 @@ export default function ParentCheckInScreen() {
       onBack={() => router.replace('/parent')}
       onOpenGarden={() => router.replace('/garden')}
       onResumeChild={() => {
+        const result = signOutExperience();
+        if (!result.ok) return false;
         intentionalExitRef.current = true;
-        router.replace('/role');
+        router.replace('/access/child' as Href);
+        return true;
       }}
       onReturnToTasks={() => router.replace('/parent')}
     />

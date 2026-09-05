@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveR002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { buildPrivateLeaguePresentation } from '@/features/league/presentation';
-import { guardR002bRoute } from '@/features/navigation/r002bRouteGuard';
 import { createInitialPrototypeSession, createResetSourceSession } from '@/services/mock/fixtures';
 
 describe('R002b private League presentation', () => {
@@ -163,34 +161,17 @@ describe('R002b private League presentation', () => {
     }
   });
 
-  it('keeps the route default-off, Child-only, and profile-scoped', () => {
-    const disabled = resolveR002bFeatureFlags({});
-    const enabled = resolveR002bFeatureFlags({ r002b_progression_engine: true });
-    const base = {
-      routeId: 'private_league' as const,
-      activeProfileId: 'child_salem',
-      requestedProfileId: 'child_salem',
-      authorizedProfileIds: ['child_salem', 'child_alya'],
-    };
+  it('fails closed when the active Child is outside the private League fixture', () => {
+    const session = createInitialPrototypeSession();
+    const result = buildPrivateLeaguePresentation({
+      activeProfileId: 'child_unknown' as never,
+      journey: session.journey,
+      recognitionLedger: session.recognitionLedger,
+    });
 
-    expect(guardR002bRoute({ ...base, role: 'child', flags: disabled })).toEqual({
-      allowed: false,
-      fallback: '/child',
-      reason: 'feature_disabled',
+    expect(result).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_INPUT', fallbackAvailable: true },
     });
-    expect(guardR002bRoute({ ...base, role: 'child', flags: enabled })).toEqual({ allowed: true });
-    expect(guardR002bRoute({ ...base, role: 'parent', flags: enabled })).toEqual({
-      allowed: false,
-      fallback: '/parent',
-      reason: 'role_mismatch',
-    });
-    expect(
-      guardR002bRoute({
-        ...base,
-        requestedProfileId: 'child_alya',
-        role: 'child',
-        flags: enabled,
-      }),
-    ).toMatchObject({ allowed: false, reason: 'profile_mismatch' });
   });
 });

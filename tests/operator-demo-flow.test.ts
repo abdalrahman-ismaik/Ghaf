@@ -14,6 +14,11 @@ import {
 } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const EXPECTED_ROUTES = [
   '/',
@@ -23,6 +28,9 @@ const EXPECTED_ROUTES = [
   '/access/parent/review-create',
   '/access/parent/sign-in',
   '/access/parent/verification',
+  '/access/child',
+  '/access/child/pin',
+  '/access/child/pair',
   '/role',
   '/parent',
   '/parent/task/new',
@@ -31,6 +39,7 @@ const EXPECTED_ROUTES = [
   '/child',
   '/child/reveal/[bundleId]',
   '/child/task',
+  '/child/settings',
   '/parent/check-in',
   '/garden',
   '/garden/impact-path',
@@ -42,6 +51,12 @@ const EXPECTED_ROUTES = [
   '/circle',
   '/circle/shared-growth',
   '/parent/family/shared-garden',
+  '/parent/family',
+  '/parent/family/reward',
+  '/parent/settings',
+  '/parent/settings/permissions',
+  '/parent/settings/devices',
+  '/parent/reauthenticate',
 ] as const;
 
 const LEGACY_ROUTES = [
@@ -155,10 +170,10 @@ function unavailableParentGuide(
 }
 
 async function completeOfflineCycle(cycle: number): Promise<void> {
-  usePrototypeStore.getState().setRole('parent');
-  const reset = usePrototypeStore.getState().resetPrototype();
+  const reset = resetPrototypeForTest();
   expectOk(reset);
   expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
+  await enterParentExperienceForTest();
 
   expectOk(
     usePrototypeStore.getState().createTaskDraft({
@@ -177,8 +192,7 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
   expectOk(usePrototypeStore.getState().reviewTask());
   expectOk(usePrototypeStore.getState().approveAssignment());
 
-  usePrototypeStore.getState().setRole('child');
-  expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+  await enterChildExperienceForTest('child_salem');
   expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
   expectOk(usePrototypeStore.getState().startAssignment());
   expectOk(
@@ -206,7 +220,7 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
     }),
   );
 
-  usePrototypeStore.getState().setRole('parent');
+  await enterParentExperienceForTest();
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -240,9 +254,9 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
 }
 
 describe('US6 bilingual offline operator and reset flow', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   afterEach(() => {
@@ -443,26 +457,26 @@ describe('US6 bilingual offline operator and reset flow', () => {
     expect(counters()).toEqual(before.counters);
   });
 
-  it('hands the shared device back to the exact Salem lifecycle without duplicate role copy', () => {
-    const source = readFileSync(new URL('../app/role.tsx', import.meta.url), 'utf8');
+  it('hands the shared device back through separate Parent and Child access paths', () => {
+    const role = readFileSync(new URL('../app/role.tsx', import.meta.url), 'utf8');
+    const parent = readFileSync(new URL('../app/parent/index.tsx', import.meta.url), 'utf8');
+    const childAccess = readFileSync(
+      new URL('../app/access/child/index.tsx', import.meta.url),
+      'utf8',
+    );
 
-    expect(source).toContain("chosen: '/child/task'");
-    expect(source).toContain("in_progress: '/child/task'");
-    expect(source).toContain("submitted: '/child/task'");
-    expect(source).toContain("recognized: '/garden'");
-    expect(source).toContain("['submitted', 'retry', 'confirmed', 'recognized']");
-    expect(source).toContain('status={salemHandoffLabel}');
-    expect(source).toContain('statusTestID="salem-handoff-status"');
-    expect(source).not.toContain("{t('role.body')} {t('origin.synthetic')}");
-    expect(source).not.toContain("{t('origin.synthetic')}");
+    expect(role).toContain('<Redirect href="/" />');
+    expect(role).not.toContain('setRole');
+    expect(parent).toContain('signOutExperience()');
+    expect(parent).toContain("router.replace('/access/child' as Href)");
+    expect(childAccess).toContain("router.push('/access/child/pin' as Href)");
   });
 
   it.each(RESET_SOURCE_STATES)(
     'atomically resets the %s source state to Arabic / with replacement',
     (source) => {
       usePrototypeStore.setState(createResetSourceSession(source));
-      usePrototypeStore.getState().setRole('parent');
-      const reset = usePrototypeStore.getState().resetPrototype();
+      const reset = resetPrototypeForTest();
 
       expectOk(reset);
       expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
@@ -492,7 +506,7 @@ describe('US6 bilingual offline operator and reset flow', () => {
     ]) {
       expect(state[key], key).toBeUndefined();
     }
-    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({
+    expect(resetPrototypeForTest()).toMatchObject({
       ok: true,
       data: { navigateTo: '/', replaceHistory: true },
     });

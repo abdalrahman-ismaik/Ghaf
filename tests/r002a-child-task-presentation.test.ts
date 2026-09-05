@@ -38,12 +38,12 @@ const childPresentationFiles = [
 ] as const;
 
 describe('R002a Child Today and task presentation', () => {
-  it('keeps Today and the complete task lifecycle on the two existing authored routes', () => {
+  it('keeps Today and the task lifecycle behind the Child access layout', () => {
     expect(
       readdirSync(`${root}app/child`)
         .filter((file) => file.endsWith('.tsx'))
         .sort(),
-    ).toEqual(['index.tsx', 'task.tsx']);
+    ).toEqual(['_layout.tsx', 'index.tsx', 'settings.tsx', 'task.tsx']);
 
     expect(
       readdirSync(`${root}src/components/r002a/child`)
@@ -351,14 +351,15 @@ describe('R002a Child Today and task presentation', () => {
     expect(combined).not.toContain('task.recycling_sort.v1');
     expect(combined).not.toMatch(/\b(?:108|120|180)\b/u);
     expect(todayRoute).toContain("role !== 'child'");
-    expect(todayRoute).toContain("router.replace('/role')");
+    expect(todayRoute).toContain('selectCanEnterChildExperience');
+    expect(todayRoute).toContain("router.replace('/')");
     expect(taskRoute).toContain('journey.assignment.childId === activeChildId');
     expect(taskRoute).toContain('requestChildCoach');
     expect(taskRoute).toContain('<TrustedAdultExit');
     expect(taskRoute).toContain('<SyntheticVoicePanel');
     expect(taskRoute).toContain('prepareChildVoice');
     expect(store).toContain(
-      "failure('INVALID_TRANSITION', 'Switch to the Parent demo role before reset')",
+      "failure('INVALID_TRANSITION', 'An active Parent experience is required before reset')",
     );
     expect(store).toContain("childVoiceController.resetPrototype('parent')");
   });

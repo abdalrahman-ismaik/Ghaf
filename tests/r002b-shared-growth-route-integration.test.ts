@@ -79,7 +79,7 @@ describe('R002b Shared Growth route integration', () => {
     expect(`${child}\n${parent}`).not.toMatch(
       /<(?:ChildHomeHeader|ParentHomeHeader|JourneyHeader|ChildBottomNavigation|ParentHomeNavigation)\b/u,
     );
-    expect(rootLayout).toContain("pathname.startsWith('/parent/family/')");
+    expect(rootLayout).toContain("pathname.startsWith('/parent')");
     expect(rootLayout).toContain("pathname === '/circle/shared-growth'");
 
     for (const [route, projection, authorized] of [
@@ -138,7 +138,7 @@ describe('R002b Shared Growth route integration', () => {
       /const ALLOWED_ORIGINS = \[\s*'child_garden_shared_growth_card',?\s*\] as const/u,
     );
     expect(parent).toMatch(
-      /const ALLOWED_ORIGINS = \[\s*'parent_garden_shared_settings_card',?\s*\] as const/u,
+      /const ALLOWED_ORIGINS = \[\s*'parent_garden_shared_settings_card',\s*'parent_family_overview_shared_garden_row',?\s*\] as const/u,
     );
     expect(garden).toContain('r002bFeatureFlags.r002b_shared_growth_view');
     expect(garden).toContain("id: 'child_garden_shared_growth_card'");

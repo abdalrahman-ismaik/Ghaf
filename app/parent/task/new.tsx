@@ -24,7 +24,7 @@ export default function ParentTaskNewScreen() {
 
   useEffect(() => {
     if (role !== 'parent') {
-      router.replace('/role');
+      router.replace('/');
       return;
     }
     if (journey && journey.lifecycle !== 'draft' && journey.lifecycle !== 'reviewed') {

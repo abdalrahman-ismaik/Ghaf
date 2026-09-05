@@ -14,7 +14,7 @@ import {
   type R002bRouteParam,
 } from '@/features/navigation/r002bRouteRequest';
 import type { SyntheticChildId } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface ImpactPathParams extends Record<string, R002bRouteParam> {
   readonly profileId?: R002bRouteParam;
@@ -59,7 +59,14 @@ function restoredPosition(params: ImpactPathParams, activeChildId: SyntheticChil
 export default function ImpactPathRoute() {
   const params = useLocalSearchParams() as unknown as ImpactPathParams;
   const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+
+  if (activeExperience === 'parent') return <Redirect href={'/parent' as Href} />;
+  if (activeExperience !== 'child' || !canEnterChildExperience) {
+    return <Redirect href={'/' as Href} />;
+  }
   const access = resolveR002bRouteRequest({
     routeId: 'impact_path',
     role,
@@ -160,8 +167,6 @@ function AuthorizedImpactPath({
     back: access.back,
     profileId,
     safeRoot: '/child',
-    canGoBack: () => router.canGoBack(),
-    goBack: () => router.back(),
     replace: (target) => router.replace(target as Href),
   });
 

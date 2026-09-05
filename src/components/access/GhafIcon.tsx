@@ -89,7 +89,7 @@ export function GhafIcon({
           </G>
         );
       case 'chevron':
-        return <Path {...common} d={isRtl ? 'M9 6l6 6-6 6' : 'M15 6l-6 6 6 6'} />;
+        return <Path {...common} d={isRtl ? 'M15 6l-6 6 6 6' : 'M9 6l6 6-6 6'} />;
       case 'language':
         return (
           <G {...common}>

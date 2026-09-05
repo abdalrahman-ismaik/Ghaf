@@ -36,12 +36,7 @@ export function TaskBuilderFooter({
           direction={direction}
           disabled={disabled}
           icon={
-            <GhafIcon
-              color={colors.onPrimary}
-              direction={direction === 'rtl' ? 'ltr' : 'rtl'}
-              name="chevron"
-              size={22}
-            />
+            <GhafIcon color={colors.onPrimary} direction={direction} name="chevron" size={22} />
           }
           iconPosition="end"
           onPress={onPress}

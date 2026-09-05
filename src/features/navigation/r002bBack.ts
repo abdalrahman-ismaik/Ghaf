@@ -13,6 +13,7 @@ export interface R002bBackNavigationTarget {
     | '/garden'
     | '/circle'
     | '/parent'
+    | '/parent/family'
     | '/garden/impact-path'
     | '/garden/badges'
     | '/garden/badges/[badgeId]';
@@ -104,7 +105,13 @@ function nestedTarget(back: RestoredOrigin, profileId: string): R002bBackNavigat
 }
 
 function directRoot(href: string): R002bBackNavigationTarget['pathname'] | null {
-  if (href === '/child' || href === '/garden' || href === '/circle' || href === '/parent') {
+  if (
+    href === '/child' ||
+    href === '/garden' ||
+    href === '/circle' ||
+    href === '/parent' ||
+    href === '/parent/family'
+  ) {
     return href;
   }
   return null;
@@ -112,18 +119,11 @@ function directRoot(href: string): R002bBackNavigationTarget['pathname'] | null 
 
 export function createValidatedBackHandler(input: {
   readonly back: RestoredOrigin;
-  readonly canGoBack: () => boolean;
-  readonly goBack: () => void;
   readonly profileId: string;
   readonly replace: (target: R002bBackNavigationTarget | '/child' | '/parent') => void;
   readonly safeRoot: '/child' | '/parent';
 }): () => void {
   return () => {
-    if (input.canGoBack()) {
-      input.goBack();
-      return;
-    }
-
     const back = resolveR002bOrigin({
       origin: input.back.origin,
       activeRole: input.safeRoot === '/child' ? 'child' : 'parent',

@@ -26,7 +26,10 @@ interface ParentSharedGardenParams extends Record<string, R002bRouteParam> {
   readonly originScrollOffset?: R002bRouteParam;
 }
 
-const ALLOWED_ORIGINS = ['parent_garden_shared_settings_card'] as const;
+const ALLOWED_ORIGINS = [
+  'parent_garden_shared_settings_card',
+  'parent_family_overview_shared_garden_row',
+] as const;
 
 function deterministicActionTime(revision: number): string {
   const baseMinute = 3 * 24 * 60 + 10 * 60;
@@ -93,8 +96,6 @@ function AuthorizedParentSharedGarden({
     back: access.back,
     profileId,
     safeRoot: '/parent',
-    canGoBack: () => router.canGoBack(),
-    goBack: () => router.back(),
     replace: (target) => router.replace(target as Href),
   });
 

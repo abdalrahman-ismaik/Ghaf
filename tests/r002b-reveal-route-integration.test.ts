@@ -14,7 +14,7 @@ const routePath = 'app/child/reveal/[bundleId].tsx';
 describe('R002b combined RevealBundle route integration', () => {
   it('mounts a route-owned modal candidate with one scroll owner and fixed-safe actions', () => {
     const route = source(routePath);
-    const layout = source('app/_layout.tsx');
+    const layout = source('app/child/_layout.tsx');
 
     expect(existsSync(`${root}${routePath}`)).toBe(true);
     expect(route).toContain('<R002bNestedScreen');
@@ -22,7 +22,7 @@ describe('R002b combined RevealBundle route integration', () => {
     expect(route).toContain('<RevealBundleActionBar');
     expect(route).toContain('footer={');
     expect(route).not.toContain('ChildBottomNavigation');
-    expect(layout).toContain('name="child/reveal/[bundleId]"');
+    expect(layout).toContain('name="reveal/[bundleId]"');
     expect(layout).toContain("presentation: 'modal'");
   });
 
@@ -48,6 +48,22 @@ describe('R002b combined RevealBundle route integration', () => {
     expect(route).not.toMatch(
       /(?:constructRevealBundle|applyRecognition|awardBadge|seedDelta\s*:|landscapeGrowth\s*:)/u,
     );
+  });
+
+  it('retires the matching legacy Garden celebration once an authoritative approval reveal is acknowledged', () => {
+    const route = source(routePath);
+
+    expect(route).toContain('isLegacyGardenCelebrationReplacement');
+    expect(route).toContain("bundle.triggerKind !== 'task_approval'");
+    expect(route).toContain("receipt.consequence.kind === 'seed'");
+    expect(route).toContain("receipt.consequence.kind === 'plant_stage'");
+    expect(route).toContain('consumeCelebration');
+    expect(route).toContain('return consumeCelebration().ok');
+    expect(route).toContain('consumeReplacedLegacyCelebration(acknowledged.data.bundle)');
+    expect(route).toContain('consumeReplacedLegacyCelebration(bundle)');
+    expect(
+      route.indexOf('consumeReplacedLegacyCelebration(acknowledged.data.bundle)'),
+    ).toBeLessThan(route.indexOf('const archived = archiveRevealPresentation(bundle.id)'));
   });
 
   it('distinguishes a normal first start from a recovered already-presenting mount', () => {

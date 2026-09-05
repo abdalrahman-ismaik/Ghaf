@@ -340,6 +340,55 @@ describe('R001 Parent onboarding controller', () => {
     });
   });
 
+  it('terminates Parent authority on sign-out and restores it only after returning verification', async () => {
+    await verifyController(controller);
+    const firstReceipt = expectOk(controller.complete(BASE_TIME));
+    const firstSession = tracked.capturedParentSession();
+    expect(firstSession).not.toBeNull();
+
+    const signedOut = expectOk(controller.signOut(BASE_TIME));
+    expect(signedOut).toMatchObject({
+      status: 'signed_out',
+      canEnterParentExperience: false,
+      completionReceipt: firstReceipt,
+    });
+    expect(
+      tracked.service.authorizeCapability({
+        session: firstSession!,
+        capability: 'enter_parent_experience',
+        now: BASE_TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(controller.authorizeParentExperience(BASE_TIME)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+
+    await verifyController(controller);
+    expect(expectOk(controller.complete(BASE_TIME))).toEqual(firstReceipt);
+    expect(tracked.parentSignInCount()).toBe(2);
+    expect(controller.authorizeParentExperience(BASE_TIME)).toMatchObject({ ok: true });
+    expect(
+      tracked.service.authorizeCapability({
+        session: firstSession!,
+        capability: 'enter_parent_experience',
+        now: BASE_TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('keeps the completed household draft immutable while the Parent is signed out', async () => {
+    await verifyController(controller);
+    expectOk(controller.complete(BASE_TIME));
+    expectOk(controller.signOut(BASE_TIME));
+
+    expect(controller.updateDraft({ familyName: 'Changed after sign-out' })).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(controller.getView().draft.familyName).toBe('عائلة النخلة');
+  });
+
   it('integrates with the existing shared registry access facade', async () => {
     const registryController = createParentOnboardingController(
       createFeature003ServiceRegistry().access,

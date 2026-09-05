@@ -5,6 +5,7 @@ import type {
   CapabilityAuthorization,
   CapabilityAuthorizationInput,
   ChildAccessSession,
+  ChildSessionTermination,
   ChildPermissionGrant,
   ChildPermissionQueryInput,
   DeviceAccessState,
@@ -98,6 +99,36 @@ function nonEmpty(...values: readonly string[]): boolean {
 
 function deviceKey(childId: SyntheticChildId, deviceId: string): string {
   return `${childId}:${deviceId}`;
+}
+
+function permitsRevokedDeviceReplacement(
+  device: DeviceAccessState,
+  requestId: string,
+  childId: SyntheticChildId,
+  deviceId: string,
+  requestedAt: string,
+  approvedByParentId?: PairingRequest['approvedByParentId'],
+): boolean {
+  const pairedAt = parsedTime(device.pairedAt);
+  const revokedAt = device.revokedAt ? parsedTime(device.revokedAt) : null;
+  const replacementRequestedAt = parsedTime(requestedAt);
+  return (
+    device.status === 'revoked' &&
+    device.householdId === SYNTHETIC_HOUSEHOLD_ID &&
+    device.childId === childId &&
+    device.deviceId === deviceId &&
+    nonEmpty(device.pairingRequestId) &&
+    device.pairingRequestId !== requestId &&
+    pairedAt !== null &&
+    revokedAt !== null &&
+    replacementRequestedAt !== null &&
+    pairedAt <= revokedAt &&
+    revokedAt <= replacementRequestedAt &&
+    device.revokedByParentId !== null &&
+    (approvedByParentId === undefined || device.revokedByParentId === approvedByParentId) &&
+    device.origin === 'synthetic' &&
+    device.capabilityTruth === CAPABILITY_TRUTH
+  );
 }
 
 function childFixture(childId: unknown) {
@@ -357,16 +388,55 @@ export class DeterministicSyntheticAccessService {
     });
   }
 
+  terminateChildSession(input: ProjectAccessSessionInput): ServiceResult<ChildSessionTermination> {
+    if (parsedTime(input.now) === null) {
+      return failure('INVALID_INPUT', 'A valid deterministic time is required');
+    }
+    const stored = this.sessions.get(input.session.id);
+    if (
+      !stored ||
+      stored.sessionKind !== 'child' ||
+      input.session.sessionKind !== 'child' ||
+      !sameSessionIdentity(stored, input.session) ||
+      stored.origin !== 'synthetic' ||
+      input.session.origin !== 'synthetic' ||
+      stored.capabilityTruth !== CAPABILITY_TRUTH ||
+      input.session.capabilityTruth !== CAPABILITY_TRUTH ||
+      stored.principal.role !== 'child' ||
+      input.session.principal.role !== 'child' ||
+      stored.principal.origin !== 'synthetic' ||
+      input.session.principal.origin !== 'synthetic'
+    ) {
+      return failure('INVALID_TRANSITION', 'The synthetic Child session cannot be terminated');
+    }
+
+    this.sessions.delete(stored.id);
+    return success({
+      sessionId: stored.id,
+      terminated: true,
+      origin: 'synthetic',
+    });
+  }
+
   requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest> {
     const expiry = expiresAt(input.now, PAIRING_TTL_MS);
     const existingDevice = this.devices.get(deviceKey(input.childId, input.requestingDeviceId));
+    const existingDeviceBlocksPairing =
+      existingDevice !== undefined &&
+      !permitsRevokedDeviceReplacement(
+        existingDevice,
+        input.requestId,
+        input.childId,
+        input.requestingDeviceId,
+        input.now,
+      );
     if (
       !expiry ||
       !nonEmpty(input.requestId, input.pairingCode, input.requestingDeviceId) ||
       !input.pairingCode.startsWith('synthetic-code-') ||
       !childFixture(input.childId) ||
       this.pairingRequests.has(input.requestId) ||
-      existingDevice
+      existingDeviceBlocksPairing
     ) {
       return failure(
         'INVALID_INPUT',
@@ -467,6 +537,16 @@ export class DeterministicSyntheticAccessService {
     }
     const fixture = childFixture(input.childId);
     const existingDevice = this.devices.get(deviceKey(input.childId, input.deviceId));
+    const existingDeviceBlocksPairing =
+      existingDevice !== undefined &&
+      !permitsRevokedDeviceReplacement(
+        existingDevice,
+        request.id,
+        input.childId,
+        input.deviceId,
+        request.requestedAt,
+        request.approvedByParentId,
+      );
     if (
       request.status !== 'approved' ||
       request.pairingCode !== input.pairingCode ||
@@ -476,7 +556,7 @@ export class DeterministicSyntheticAccessService {
       !fixture ||
       fixture.fixtureId !== input.childCredentialFixtureId ||
       !isWithinWindow(request.requestedAt, request.expiresAt, input.now) ||
-      existingDevice ||
+      existingDeviceBlocksPairing ||
       this.sessions.has(input.sessionId)
     ) {
       return failure(
@@ -682,6 +762,16 @@ export class DeterministicSyntheticAccessService {
     return success({ ...next });
   }
 
+  resetPrototype(): ServiceResult<true> {
+    this.sessions.clear();
+    this.pairingRequests.clear();
+    this.devices.clear();
+    this.proofs.clear();
+    this.permissionGrants.set('child_salem', initialPermissionGrant('child_salem'));
+    this.permissionGrants.set('child_alya', initialPermissionGrant('child_alya'));
+    return success(true);
+  }
+
   private createChildSession(
     input: SyntheticChildSignIn,
     avatarId: ChildAccessSession['principal']['avatarId'],
@@ -752,4 +842,5 @@ export function createDeterministicSyntheticAccessService(): DeterministicSynthe
   return new DeterministicSyntheticAccessService();
 }
 
+export * from './childAccess';
 export * from './parentOnboarding';

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
+import { Redirect, type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { BackHandler, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -25,7 +25,9 @@ export default function ParentVerificationScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const childAccess = usePrototypeStore((state) => state.childAccess);
   const verifyParentCode = usePrototypeStore((state) => state.verifyParentCode);
+  const completeParentOnboarding = usePrototypeStore((state) => state.completeParentOnboarding);
   const resendParentVerification = usePrototypeStore((state) => state.resendParentVerification);
   const cancelParentVerification = usePrototypeStore((state) => state.cancelParentVerification);
   const [code, setCode] = useState('');
@@ -75,6 +77,18 @@ export default function ParentVerificationScreen() {
       setBusy(false);
       return;
     }
+    if (parentOnboarding.completionReceipt) {
+      const completed = completeParentOnboarding();
+      if (!completed.ok) {
+        setError(t('access.states.interrupted'));
+        setBusy(false);
+        return;
+      }
+      const destination =
+        childAccess.status === 'pairing_pending' ? '/parent/settings/devices' : '/parent';
+      router.replace(destination as Href);
+      return;
+    }
     router.replace('/access/parent/family-basics');
   };
 
@@ -93,7 +107,7 @@ export default function ParentVerificationScreen() {
   if (parentOnboarding.status === 'signed_out') {
     return <Redirect href="/access/parent/sign-in" />;
   }
-  if (parentOnboarding.status === 'verified') {
+  if (parentOnboarding.status === 'verified' && !parentOnboarding.completionReceipt) {
     return <Redirect href="/access/parent/family-basics" />;
   }
   if (parentOnboarding.status === 'authenticated_parent') {

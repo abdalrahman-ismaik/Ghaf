@@ -14,6 +14,7 @@ import { MANGROVE_ROOTS_LEARNING_PACKAGE } from '@/features/learning/mangroveLea
 import type { AchievementState } from '@/models/achievements';
 import { SCHEMA3_R002A_FIXTURE_VERSION } from '@/models/growthJourney';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { enterChildExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const ORIGIN = {
   kind: 'impact_path' as const,
@@ -176,17 +177,17 @@ function completeStory(completedAt: string) {
 
 describe('R002b learning outcome RevealBundle integration', () => {
   beforeEach(() => {
-    usePrototypeStore.setState(usePrototypeStore.getInitialState(), true);
+    expectOk(resetPrototypeForTest());
   });
 
-  it('queues one zero-Seed reveal only when learning newly earns a badge', () => {
+  it('queues one zero-Seed reveal only when learning newly earns a badge', async () => {
+    await enterChildExperienceForTest();
     const runtime = runtimeAt132();
     const achievements = synchronizeLiveCreditBadges(
       runtime,
       addThreeCoastCredits(runtime.achievementsByProfile.child_salem),
     );
     usePrototypeStore.setState({
-      role: 'child',
       growthJourney: {
         ...runtime,
         achievementsByProfile: {
@@ -222,8 +223,9 @@ describe('R002b learning outcome RevealBundle integration', () => {
     expect(usePrototypeStore.getState().revealBundleQueue.bundles).toHaveLength(1);
   });
 
-  it('does not queue a reveal when learning creates no new eligible outcome', () => {
-    usePrototypeStore.setState({ role: 'child', growthJourney: runtimeAt132() });
+  it('does not queue a reveal when learning creates no new eligible outcome', async () => {
+    await enterChildExperienceForTest();
+    usePrototypeStore.setState({ growthJourney: runtimeAt132() });
     expectOk(completeStory('2026-09-05T12:35:00.000Z'));
     expect(usePrototypeStore.getState().revealBundleQueue.bundles).toEqual([]);
   });

@@ -69,25 +69,26 @@ describe('R002a Parent Home presentation', () => {
     const rootLayout = source('app/_layout.tsx');
     const summary = source('src/components/family-growth/ParentPatternSummary.tsx');
 
-    expect(parentLayout).toContain('selectCanEnterParentExperience');
+    expect(parentLayout).toContain('selectHasActiveParentExperience');
     expect(parentLayout).toContain('authorizeParentExperience');
-    expect(parentLayout).toContain('<Redirect href="/access/parent/sign-in" />');
+    expect(parentLayout).toContain('<Redirect href="/child" />');
+    expect(parentLayout).toContain('<Redirect href="/" />');
     expect(route).toContain('state.household.combinedCanopy');
     expect(route).toContain('state.children');
     expect(route).toContain('state.activeChildId');
     expect(route).toContain('state.journey');
     expect(route).toContain('state.preAcceptanceAdjustment');
     expect(route).toContain('state.resolvePreAcceptanceAdjustment');
-    expect(route).toContain('state.resetPrototype');
+    expect(route).toContain('state.signOutExperience');
     expect(summary).toContain('serviceRegistry.parentSummary.applyLocalCorrection');
-    expect(route).toContain("setRole('child')");
-    expect(route).toContain("router.replace('/child')");
+    expect(route).toContain('signOutExperience()');
+    expect(route).toContain("router.replace('/access/child' as Href)");
     expect(route).toContain("router.push('/garden')");
-    expect(route).toContain("router.push('/circle')");
-    expect(route).toContain("circleLabel={t('navigation.circle')}");
+    expect(route).toContain("router.push('/parent/family' as Href)");
+    expect(route).toContain("familyLabel={t('navigation.family')}");
     expect(route).toContain('keyboardAware');
-    expect(route).toContain("router.replace('/role')");
-    expect(rootLayout).toContain("pathname === '/parent'");
+    expect(route).toContain("router.push('/parent/settings' as Href)");
+    expect(rootLayout).toContain("pathname.startsWith('/parent')");
   });
 
   it('anchors Parent canopy progress to the reading start edge', () => {

@@ -29,6 +29,13 @@ interface RevealRouteParams extends Record<string, R002bRouteParam> {
 
 const ALLOWED_ORIGINS = ['child_today_reveal_handoff'] as const;
 
+function isLegacyGardenCelebrationReplacement(bundle: RevealBundle): boolean {
+  if (bundle.triggerKind !== 'task_approval') return false;
+  const hasSeed = bundle.items.some((receipt) => receipt.consequence.kind === 'seed');
+  const hasPlantStage = bundle.items.some((receipt) => receipt.consequence.kind === 'plant_stage');
+  return hasSeed && hasPlantStage;
+}
+
 function isCanonicalPendingBundle(
   queue: readonly RevealBundle[],
   bundleId: string,
@@ -124,6 +131,7 @@ function AuthorizedChildReveal({
     (state) => state.acknowledgeRevealPresentation,
   );
   const archiveRevealPresentation = usePrototypeStore((state) => state.archiveRevealPresentation);
+  const consumeCelebration = usePrototypeStore((state) => state.consumeCelebration);
   const reducedMotion = Boolean(useReducedMotion());
   const [busy, setBusy] = useState(false);
   const announcedBundleRef = useRef<string | null>(null);
@@ -136,11 +144,17 @@ function AuthorizedChildReveal({
         back: access.back,
         profileId,
         safeRoot: '/child',
-        canGoBack: () => false,
-        goBack: () => router.back(),
         replace: (target) => router.replace(target as Href),
       }),
     [access.back, profileId, router],
+  );
+
+  const consumeReplacedLegacyCelebration = useCallback(
+    (candidate: RevealBundle) => {
+      if (!isLegacyGardenCelebrationReplacement(candidate)) return true;
+      return consumeCelebration().ok;
+    },
+    [consumeCelebration],
   );
 
   const finishPresentation = useCallback(
@@ -160,6 +174,10 @@ function AuthorizedChildReveal({
       }
       const acknowledged = acknowledgeRevealPresentation(bundle.id);
       if (!acknowledged.ok) {
+        router.replace('/child');
+        return;
+      }
+      if (!consumeReplacedLegacyCelebration(acknowledged.data.bundle)) {
         router.replace('/child');
         return;
       }
@@ -192,6 +210,7 @@ function AuthorizedChildReveal({
       archiveRevealPresentation,
       bundle,
       busy,
+      consumeReplacedLegacyCelebration,
       profileId,
       restoreToday,
       router,
@@ -211,13 +230,17 @@ function AuthorizedChildReveal({
 
   useEffect(() => {
     if (bundle?.lifecycle !== 'acknowledged') return;
+    if (!consumeReplacedLegacyCelebration(bundle)) {
+      router.replace('/child');
+      return;
+    }
     const archived = archiveRevealPresentation(bundle.id);
     if (!archived.ok) {
       router.replace('/child');
       return;
     }
     restoreToday();
-  }, [archiveRevealPresentation, bundle, restoreToday, router]);
+  }, [archiveRevealPresentation, bundle, consumeReplacedLegacyCelebration, restoreToday, router]);
 
   useEffect(() => {
     if (!bundle || !started || announcedBundleRef.current === bundle.id) return;

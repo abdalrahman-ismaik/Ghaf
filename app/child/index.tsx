@@ -33,7 +33,7 @@ import type {
   TaskLifecycleStatus,
   TaskTemplate,
 } from '@/models/familyGrowth';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
 
 const LANDSCAPE_LABEL_KEYS: Readonly<Record<LandscapeId, string>> = {
@@ -114,6 +114,8 @@ export default function ChildHomeScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
+  const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const children = usePrototypeStore((state) => state.children);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const choicePool = usePrototypeStore((state) => state.choicePool);
@@ -203,8 +205,8 @@ export default function ChildHomeScreen() {
   });
 
   useEffect(() => {
-    if (role !== 'child') router.replace('/role');
-  }, [role, router]);
+    if (role !== 'child' || !canEnterChildExperience) router.replace('/');
+  }, [canEnterChildExperience, role, router]);
 
   useEffect(() => {
     childScrollOffsetRef.current = restoredScrollOffset;
@@ -242,6 +244,9 @@ export default function ChildHomeScreen() {
   const currentWorkMode = journey
     ? (CURRENT_WORK_MODE_BY_LIFECYCLE[journey.lifecycle] ?? null)
     : null;
+  const hasCurrentWork = Boolean(
+    currentAssignmentChoice && currentTemplate && currentWorkMode && journey,
+  );
   const choices = currentAssignmentChoice
     ? [currentAssignmentChoice, ...previewChoices]
     : previewChoices;
@@ -283,7 +288,7 @@ export default function ChildHomeScreen() {
     if (!result.ok) setError(t('errors.safeRetry'));
   };
 
-  if (role !== 'child') return null;
+  if (role !== 'child' || !canEnterChildExperience) return null;
 
   const taskAction = (() => {
     switch (currentWorkMode) {
@@ -338,9 +343,7 @@ export default function ChildHomeScreen() {
       leagueLabel={t('navigation.league')}
       leagueUnavailableHint={t('navigation.leagueUnavailable')}
       onGarden={() => router.push('/garden')}
-      onLeague={
-        r002bFeatureFlags.r002b_progression_engine ? () => router.replace('/league') : undefined
-      }
+      onLeague={() => router.replace('/league' as Href)}
       onToday={() => undefined}
       todayLabel={t('navigation.today')}
     />
@@ -356,6 +359,7 @@ export default function ChildHomeScreen() {
           direction={direction}
           helpLabel={t('common.help')}
           helpOpen={helpOpen}
+          onAvatarPress={() => router.push('/child/settings' as Href)}
           onToggleHelp={() => setHelpOpen((value) => !value)}
           title={t('childHome.todayTitle')}
         />
@@ -374,7 +378,7 @@ export default function ChildHomeScreen() {
           {t('childHome.welcome', { child: localize(child.displayName, locale) })}
         </Text>
         <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
-          {t('childHome.todaySummary')}
+          {t(hasCurrentWork ? 'childHome.todaySummary' : 'childHome.noCurrentTaskSummary')}
         </Text>
       </View>
 
@@ -397,7 +401,15 @@ export default function ChildHomeScreen() {
           <QuietButton
             brand
             direction={direction}
-            onPress={() => router.replace('/role')}
+            onPress={() => {
+              setError(null);
+              const result = signOutExperience();
+              if (!result.ok) {
+                setError(t('errors.safeRetry'));
+                return;
+              }
+              router.replace('/');
+            }}
             size="compact"
             testID="child-return-to-access-button"
           >

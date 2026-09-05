@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { PARENT_VERIFICATION_CODE } from '@/features/access/parentOnboarding';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { resetPrototypeForTest } from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   if (!result.ok || result.data === undefined) {
@@ -23,8 +24,7 @@ async function completeParentOnboarding(): Promise<void> {
 
 describe('R002b Parent Progress store authority', () => {
   beforeEach(() => {
-    usePrototypeStore.setState({ role: 'parent' });
-    expectOk(usePrototypeStore.getState().resetPrototype());
+    expectOk(resetPrototypeForTest());
   });
 
   it('fails closed until the synthetic Parent session has report capability', () => {

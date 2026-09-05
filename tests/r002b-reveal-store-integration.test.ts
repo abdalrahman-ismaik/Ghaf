@@ -7,6 +7,11 @@ import {
 import type { CommittedRevealSourceReceipt, RevealBundleQueue } from '../src/models/revealBundle';
 import { PREPARED_PRAISE, createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const PRAISE_ACTION = {
   actionId: 'r002b-reveal-parent-praise',
@@ -82,8 +87,9 @@ function createRouteFixtureQueue(): RevealBundleQueue {
 }
 
 describe('R002b RevealBundle store integration', () => {
-  beforeEach(() => {
-    usePrototypeStore.setState(usePrototypeStore.getInitialState(), true);
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   it('starts empty and creates no result bundle for zero-reward submission', () => {
@@ -104,11 +110,12 @@ describe('R002b RevealBundle store integration', () => {
     expect(state.revealBundleQueue.bundles).toEqual([]);
   });
 
-  it('runs an authoritative queued fixture through the exact lifecycle idempotently', () => {
+  it('runs an authoritative queued fixture through the exact lifecycle idempotently', async () => {
     const queue = createRouteFixtureQueue();
     const bundle = queue.bundles[0];
     if (!bundle) throw new Error('Expected route fixture bundle');
-    usePrototypeStore.setState({ revealBundleQueue: queue, role: 'child' });
+    await enterChildExperienceForTest();
+    usePrototypeStore.setState({ revealBundleQueue: queue });
 
     expectOk(usePrototypeStore.getState().startRevealPresentation(bundle.id));
     expect(usePrototypeStore.getState().revealBundleQueue.bundles[0]?.lifecycle).toBe('presenting');
@@ -120,20 +127,21 @@ describe('R002b RevealBundle store integration', () => {
     expect(usePrototypeStore.getState().revealBundleQueue.bundles[0]?.lifecycle).toBe('archived');
   });
 
-  it('fails closed across profile boundaries and clears all queued presentation on Parent reset', () => {
+  it('fails closed across profile boundaries and clears all queued presentation on Parent reset', async () => {
     const queue = createRouteFixtureQueue();
     const bundle = queue.bundles[0];
     if (!bundle) throw new Error('Expected route fixture bundle');
-    usePrototypeStore.setState({ revealBundleQueue: queue, role: 'child' });
 
     expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
+    usePrototypeStore.setState({ revealBundleQueue: queue });
     expect(usePrototypeStore.getState().startRevealPresentation(bundle.id)).toMatchObject({
       ok: false,
       error: { code: 'PRIVACY_REJECTED' },
     });
     expect(usePrototypeStore.getState().revealBundleQueue.bundles[0]?.lifecycle).toBe('ready');
 
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     expectOk(usePrototypeStore.getState().resetPrototype());
     expect(usePrototypeStore.getState().revealBundleQueue.bundles).toEqual([]);
   });

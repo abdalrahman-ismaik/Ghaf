@@ -1,9 +1,14 @@
 import {
   SYNTHETIC_PARENT_ACCESS_FIXTURE,
+  SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
   SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+  type ChildPermissionChange,
+  type ChildPermissionGrant,
+  type DeviceAccessState,
+  type PairingRequest,
   type ParentAccessSession,
 } from '../../../models/access';
-import type { DomainErrorCode } from '../../../models/familyGrowth';
+import type { DomainErrorCode, SyntheticChildId } from '../../../models/familyGrowth';
 import type {
   ParentOnboardingCompletionReceipt,
   ParentOnboardingDraft,
@@ -36,7 +41,17 @@ export type ParentOnboardingAccessAuthority = Pick<
   SyntheticAccessService,
   'signInParent' | 'authorizeCapability' | 'terminateParentSession'
 > &
-  Partial<Pick<SyntheticAccessService, 'issueReauthentication' | 'authorizeSensitiveAction'>>;
+  Partial<
+    Pick<
+      SyntheticAccessService,
+      | 'issueReauthentication'
+      | 'authorizeSensitiveAction'
+      | 'approvePairing'
+      | 'getChildPermissions'
+      | 'updateChildPermissions'
+      | 'revokeDevice'
+    >
+  >;
 
 const DEFAULT_CONFIG: ParentOnboardingControllerConfig = Object.freeze({
   sessionId: 'parent-onboarding-r001-session-v1',
@@ -97,6 +112,7 @@ export class ParentOnboardingController {
   private parentSession: ParentAccessSession | null = null;
   private completionReceipt: ParentOnboardingCompletionReceipt | null = null;
   private verificationAttempt = 0;
+  private sessionGeneration = 0;
 
   constructor(
     private readonly access: ParentOnboardingAccessAuthority,
@@ -196,7 +212,7 @@ export class ParentOnboardingController {
   }
 
   updateDraft(patch: ParentOnboardingDraftPatch): ServiceResult<ParentOnboardingView> {
-    if (this.status === 'authenticated_parent') {
+    if (this.completionReceipt) {
       return failure('INVALID_TRANSITION', 'The completed onboarding receipt cannot be rewritten');
     }
     const updated = updateParentOnboardingDraft(this.draft, patch);
@@ -223,7 +239,7 @@ export class ParentOnboardingController {
     const validatedDraft = validateCompleteParentOnboardingDraft(this.draft);
     if (!validatedDraft.ok) return { ok: false, error: validatedDraft.error };
     const signedIn = this.access.signInParent({
-      sessionId: this.config.sessionId,
+      sessionId: this.nextSessionId(),
       parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
       deviceId: this.config.deviceId,
       now,
@@ -248,7 +264,7 @@ export class ParentOnboardingController {
 
     this.draft = validatedDraft.data;
     this.parentSession = signedIn.data;
-    this.completionReceipt = {
+    this.completionReceipt ??= {
       receiptId: COMPLETION_RECEIPT_ID,
       completedAt: now,
       destination: '/parent',
@@ -290,6 +306,127 @@ export class ParentOnboardingController {
       receiptId: this.completionReceipt.receiptId,
       origin: 'synthetic',
     });
+  }
+
+  approveChildPairing(input: {
+    readonly requestId: string;
+    readonly childId: SyntheticChildId;
+    readonly requestingDeviceId: string;
+    readonly now: string;
+  }): ServiceResult<PairingRequest> {
+    if (
+      !this.parentSession ||
+      !this.completionReceipt ||
+      this.status !== 'authenticated_parent' ||
+      !this.access.approvePairing
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'A completed Parent session is required to approve Child pairing',
+      );
+    }
+    return this.access.approvePairing({
+      ...input,
+      parentSession: this.parentSession,
+    });
+  }
+
+  getChildPermissions(childId: SyntheticChildId, now: string): ServiceResult<ChildPermissionGrant> {
+    if (
+      !this.parentSession ||
+      !this.completionReceipt ||
+      this.status !== 'authenticated_parent' ||
+      !this.access.getChildPermissions
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'A completed Parent session is required to view Child permissions',
+      );
+    }
+    return this.access.getChildPermissions({ session: this.parentSession, childId, now });
+  }
+
+  updateChildPermission(input: {
+    readonly childId: SyntheticChildId;
+    readonly change: Omit<Exclude<ChildPermissionChange, { kind: 'language' }>, 'proofId'>;
+    readonly proofId: string;
+    readonly reauthenticationCode: unknown;
+    readonly now: string;
+  }): ServiceResult<ChildPermissionGrant> {
+    if (
+      !this.parentSession ||
+      !this.completionReceipt ||
+      this.status !== 'authenticated_parent' ||
+      !this.access.getChildPermissions ||
+      !this.access.updateChildPermissions ||
+      !this.access.issueReauthentication
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'A completed Parent session is required to change Child permissions',
+      );
+    }
+    if (input.reauthenticationCode !== SYNTHETIC_PARENT_REAUTHENTICATION_CODE) {
+      return failure('INVALID_INPUT', 'The synthetic Parent reauthentication code is not correct');
+    }
+    const purpose =
+      input.change.kind === 'voice'
+        ? 'change_voice_permission'
+        : input.change.kind === 'media'
+          ? 'change_media_permission'
+          : 'change_ai_permission';
+    const current = this.access.getChildPermissions({
+      session: this.parentSession,
+      childId: input.childId,
+      now: input.now,
+    });
+    if (!current.ok) return current;
+    const proof = this.access.issueReauthentication({
+      proofId: input.proofId,
+      parentSession: this.parentSession,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose,
+      now: input.now,
+    });
+    if (!proof.ok) return proof;
+    return this.access.updateChildPermissions({
+      parentSession: this.parentSession,
+      childId: input.childId,
+      expectedVersion: current.data.version,
+      change: { ...input.change, proofId: proof.data.id } as ChildPermissionChange,
+      now: input.now,
+    });
+  }
+
+  signOut(now: string): ServiceResult<ParentOnboardingView> {
+    this.verificationAttempt += 1;
+    if (this.parentSession) {
+      const terminated = this.access.terminateParentSession({ session: this.parentSession, now });
+      if (!terminated.ok) return terminated;
+    }
+
+    this.parentSession = null;
+    this.clearVerification();
+    return success(this.getView());
+  }
+
+  revokeChildDevice(input: {
+    readonly childId: SyntheticChildId;
+    readonly deviceId: string;
+    readonly now: string;
+  }): ServiceResult<DeviceAccessState> {
+    if (
+      !this.parentSession ||
+      !this.completionReceipt ||
+      this.status !== 'authenticated_parent' ||
+      !this.access.revokeDevice
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'A completed Parent session is required to revoke a Child device',
+      );
+    }
+    return this.access.revokeDevice({ ...input, parentSession: this.parentSession });
   }
 
   authorizeParentReport(profileId: unknown, now: string): ServiceResult<ParentReportHandoff> {
@@ -396,6 +533,13 @@ export class ParentOnboardingController {
     this.maskedDestination = null;
     this.delivery = null;
     this.offlineFallbackUsed = false;
+  }
+
+  private nextSessionId(): string {
+    this.sessionGeneration += 1;
+    return this.sessionGeneration === 1
+      ? this.config.sessionId
+      : `${this.config.sessionId}-${this.sessionGeneration}`;
   }
 }
 

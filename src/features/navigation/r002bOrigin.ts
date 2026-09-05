@@ -14,6 +14,8 @@ export const R002B_ORIGIN_IDS = [
   'child_reveal_growth_action',
   'child_garden_shared_growth_card',
   'parent_family_progress_card',
+  'parent_family_overview_progress_row',
+  'parent_family_overview_shared_garden_row',
   'parent_progress_task_action',
   'parent_garden_shared_settings_card',
 ] as const;
@@ -34,7 +36,14 @@ export interface R002bOrigin {
 interface OriginDefinition {
   readonly role: DemoRole;
   readonly href:
-    'child' | 'garden' | 'circle' | 'impact_path' | 'badge_gallery' | 'badge_detail' | 'parent';
+    | 'child'
+    | 'garden'
+    | 'circle'
+    | 'impact_path'
+    | 'badge_gallery'
+    | 'badge_detail'
+    | 'parent'
+    | 'parent_family';
   readonly focusTarget: string;
   readonly entity: 'none' | 'badge' | 'reveal';
   readonly acceptsFilter?: true;
@@ -117,6 +126,18 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
     role: 'parent',
     href: 'parent',
     focusTarget: 'r002b-parent-family-progress-card',
+    entity: 'none',
+  },
+  parent_family_overview_progress_row: {
+    role: 'parent',
+    href: 'parent_family',
+    focusTarget: 'r003-family-progress-row',
+    entity: 'none',
+  },
+  parent_family_overview_shared_garden_row: {
+    role: 'parent',
+    href: 'parent_family',
+    focusTarget: 'r003-family-shared-garden-row',
     entity: 'none',
   },
   parent_progress_task_action: {
@@ -320,6 +341,8 @@ function hrefFor(origin: R002bOrigin, definition: OriginDefinition): string {
       return `/garden/badges/${encodeURIComponent(origin.entityId ?? '')}`;
     case 'parent':
       return '/parent';
+    case 'parent_family':
+      return '/parent/family';
   }
 }
 

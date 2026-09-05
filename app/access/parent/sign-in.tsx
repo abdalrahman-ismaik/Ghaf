@@ -26,6 +26,7 @@ export default function ParentSignInScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const requestParentVerification = usePrototypeStore((state) => state.requestParentVerification);
   const [identifier, setIdentifier] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -69,10 +70,18 @@ export default function ParentSignInScreen() {
     return <Redirect href="/access/parent/verification" />;
   }
   if (parentOnboarding.status === 'verified') {
-    return <Redirect href="/access/parent/family-basics" />;
+    return (
+      <Redirect
+        href={
+          parentOnboarding.completionReceipt
+            ? '/access/parent/verification'
+            : '/access/parent/family-basics'
+        }
+      />
+    );
   }
   if (parentOnboarding.status === 'authenticated_parent') {
-    return <Redirect href="/parent" />;
+    return <Redirect href={activeExperience === 'parent' ? '/parent' : '/'} />;
   }
 
   return (

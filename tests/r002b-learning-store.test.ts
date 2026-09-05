@@ -11,6 +11,11 @@ import type { AchievementState } from '@/models/achievements';
 import type { GrowthJourneyRuntimeState } from '@/features/growth/bootstrap';
 import { SCHEMA3_R002A_FIXTURE_VERSION } from '@/models/growthJourney';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const ORIGIN = {
   kind: 'impact_path' as const,
@@ -100,10 +105,10 @@ function legacyRewardSnapshot() {
 
 describe('R002b learning store integration', () => {
   beforeEach(() => {
-    usePrototypeStore.setState(usePrototypeStore.getInitialState(), true);
+    expectOk(resetPrototypeForTest());
   });
 
-  it('creates isolated empty learning state for each active profile epoch and recreates it on reset', () => {
+  it('creates isolated empty learning state for each active profile epoch and recreates it on reset', async () => {
     const before = usePrototypeStore.getState();
     expect(before.mangroveLearningByProfile.child_salem).toMatchObject({
       profileId: 'child_salem',
@@ -118,7 +123,7 @@ describe('R002b learning store integration', () => {
       completion: null,
     });
 
-    before.setRole('parent');
+    await enterParentExperienceForTest();
     expectOk(usePrototypeStore.getState().resetPrototype());
     const after = usePrototypeStore.getState();
     expect(after.mangroveLearningByProfile.child_salem.revision).toBe(0);
@@ -142,8 +147,9 @@ describe('R002b learning store integration', () => {
     expect(legacyRewardSnapshot()).toEqual(rewardsBefore);
   });
 
-  it('resumes a finite no-fail route and commits one zero-reward completion', () => {
-    usePrototypeStore.setState({ growthJourney: runtimeAt132(), role: 'child' });
+  it('resumes a finite no-fail route and commits one zero-reward completion', async () => {
+    await enterChildExperienceForTest();
+    usePrototypeStore.setState({ growthJourney: runtimeAt132() });
     const rewardsBefore = legacyRewardSnapshot();
     const started = usePrototypeStore.getState().startMangroveLearning('story', ORIGIN);
     expectOk(started);
@@ -190,8 +196,9 @@ describe('R002b learning store integration', () => {
     expect(legacyRewardSnapshot()).toEqual(rewardsBefore);
   });
 
-  it('does not award Mangrove Care at 132 without all criteria', () => {
-    usePrototypeStore.setState({ growthJourney: runtimeAt132(), role: 'child' });
+  it('does not award Mangrove Care at 132 without all criteria', async () => {
+    await enterChildExperienceForTest();
+    usePrototypeStore.setState({ growthJourney: runtimeAt132() });
     expectOk(usePrototypeStore.getState().startMangroveLearning('accessible', ORIGIN));
     for (const stepId of MANGROVE_ROOTS_LEARNING_PACKAGE.routes.accessible.contentStepIds) {
       expectOk(usePrototypeStore.getState().advanceMangroveLearning('accessible', stepId));
@@ -219,8 +226,9 @@ describe('R002b learning store integration', () => {
     ).toBe(false);
   });
 
-  it('awards Mangrove Care only when learning joins station 132 and three coast credits', () => {
-    usePrototypeStore.setState({ growthJourney: runtimeAt132(), role: 'child' });
+  it('awards Mangrove Care only when learning joins station 132 and three coast credits', async () => {
+    await enterChildExperienceForTest();
+    usePrototypeStore.setState({ growthJourney: runtimeAt132() });
     expectOk(usePrototypeStore.getState().startMangroveLearning('story', ORIGIN));
     for (const stepId of MANGROVE_ROOTS_LEARNING_PACKAGE.routes.story.contentStepIds) {
       expectOk(usePrototypeStore.getState().advanceMangroveLearning('story', stepId));

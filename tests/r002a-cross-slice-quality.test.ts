@@ -134,7 +134,8 @@ describe('R002a cross-slice quality contracts', () => {
     expect(childNavigation).toMatch(/rowRtl:\s*\{[\s\S]*?flexDirection:\s*'row-reverse'/u);
     expect(parentNavigation).toContain('flexDirection: logicalRowDirection(direction)');
     expect(checklist).toContain("direction === 'rtl' ? styles.rowRtl : styles.rowLtr");
-    expect(parentFooter).toContain("direction={direction === 'rtl' ? 'ltr' : 'rtl'}");
+    expect(parentFooter).toContain('direction={direction}');
+    expect(parentFooter).not.toContain("direction={direction === 'rtl' ? 'ltr' : 'rtl'}");
     expect(childFooter).toContain("direction={direction === 'rtl' ? 'ltr' : 'rtl'}");
   });
 

@@ -30,7 +30,10 @@ interface ParentProgressParams extends Record<string, R002bRouteParam> {
   readonly originEntityId?: R002bRouteParam;
 }
 
-const ALLOWED_ORIGINS = ['parent_family_progress_card'] as const;
+const ALLOWED_ORIGINS = [
+  'parent_family_progress_card',
+  'parent_family_overview_progress_row',
+] as const;
 
 export default function ParentProgressRoute() {
   const params = useLocalSearchParams() as unknown as ParentProgressParams;
@@ -110,9 +113,12 @@ function AuthorizedParentProgress({
     const selected = setActiveChild(nextProfileId);
     if (!selected.ok) return;
     const origin = createR002bOrigin({
-      id: 'parent_family_progress_card',
+      id:
+        access.origin.id === 'parent_family_overview_progress_row'
+          ? 'parent_family_overview_progress_row'
+          : 'parent_family_progress_card',
       profileId: nextProfileId,
-      scrollOffset: 0,
+      scrollOffset: access.origin.scrollOffset,
     });
     if (!origin.ok) return;
     router.replace({
@@ -151,8 +157,6 @@ function AuthorizedParentProgress({
     back: access.back,
     profileId,
     safeRoot: '/parent',
-    canGoBack: () => router.canGoBack(),
-    goBack: () => router.back(),
     replace: (target) => router.replace(target as Href),
   });
 

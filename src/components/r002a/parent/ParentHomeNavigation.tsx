@@ -14,7 +14,7 @@ import {
 } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
-type ParentNavigationKey = 'circle' | 'garden' | 'home' | 'tasks';
+type ParentNavigationKey = 'family' | 'garden' | 'home' | 'tasks';
 
 interface ParentNavigationItem {
   icon: GhafIconName;
@@ -25,12 +25,12 @@ interface ParentNavigationItem {
 
 interface ParentHomeNavigationProps {
   activeKey: ParentNavigationKey;
-  circleLabel: string;
+  familyLabel: string;
   direction: TextDirection;
   gardenLabel: string;
   homeLabel: string;
   tasksLabel: string;
-  onCircle: () => void;
+  onFamily: () => void;
   onGarden: () => void;
   onHome: () => void;
   onTasks: () => void;
@@ -38,12 +38,12 @@ interface ParentHomeNavigationProps {
 
 export function ParentHomeNavigation({
   activeKey,
-  circleLabel,
+  familyLabel,
   direction,
   gardenLabel,
   homeLabel,
   tasksLabel,
-  onCircle,
+  onFamily,
   onGarden,
   onHome,
   onTasks,
@@ -53,7 +53,7 @@ export function ParentHomeNavigation({
     { icon: 'home', key: 'home', label: homeLabel, onPress: onHome },
     { icon: 'check', key: 'tasks', label: tasksLabel, onPress: onTasks },
     { icon: 'flower', key: 'garden', label: gardenLabel, onPress: onGarden },
-    { icon: 'family', key: 'circle', label: circleLabel, onPress: onCircle },
+    { icon: 'family', key: 'family', label: familyLabel, onPress: onFamily },
   ];
 
   return (

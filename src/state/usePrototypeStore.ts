@@ -7,6 +7,7 @@ import {
   type ChildVoiceView,
 } from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
+import { createChildAccessController, type ChildAccessView } from '../features/access/childAccess';
 import {
   createParentOnboardingController,
   type ParentOnboardingCompletionReceipt,
@@ -33,6 +34,14 @@ import {
   type ParentChildProgressProjection,
   type ParentProgressErrorCode,
 } from '../features/growth/parentProgress';
+import {
+  applyRecognitionToFamilyReward,
+  createFamilyRewardRuntime,
+  markFamilyRewardRuntimeGiven,
+  projectFamilyRewardRuntime,
+  type FamilyRewardPresentation,
+  type FamilyRewardRuntime,
+} from '../features/family-hub';
 import {
   acknowledgeRevealBundle,
   archiveRevealBundle,
@@ -81,6 +90,7 @@ import type {
   RoutineProgressState,
   SyntheticChildId,
 } from '../models/familyGrowth';
+import type { ChildPermissionGrant } from '../models/access';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import type {
   AdvanceLearningStepResult,
@@ -122,6 +132,10 @@ type MangroveLearningByProfile = Readonly<Record<SyntheticChildId, MangroveLearn
 
 const childVoiceController = createChildVoiceController(serviceRegistry);
 const parentOnboardingController = createParentOnboardingController(serviceRegistry.access);
+const childAccessController = createChildAccessController(
+  serviceRegistry.access,
+  parentOnboardingController,
+);
 const R001_ONBOARDING_TIME = '2026-09-04T10:00:00.000Z';
 const initialPrototypeSession = serviceRegistry.prototypeSession.getInitialSession();
 const initialGrowthJourney = createGrowthJourneyRuntime(initialPrototypeSession, 0);
@@ -175,6 +189,9 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly activeExperience: 'signed_out' | 'parent' | 'child';
+  readonly childAccess: ChildAccessView;
+  readonly familyReward: FamilyRewardRuntime;
   readonly growthJourney: GrowthJourneyRuntimeState;
   readonly mangroveLearningByProfile: MangroveLearningByProfile;
   readonly sharedGrowth: SharedGrowthState;
@@ -191,6 +208,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly routineProgressByTask: Readonly<Record<string, RoutineProgressState>>;
   readonly childTaskDraft: ChildTaskDraftState;
   readonly taskDraftRevision: number;
+  readonly permissionProofSequence: number;
 
   readonly requestParentVerification: (
     input: Parameters<typeof parentOnboardingController.requestVerification>[0],
@@ -205,6 +223,28 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => ServiceResult<ParentOnboardingView>;
   readonly completeParentOnboarding: () => ServiceResult<ParentOnboardingCompletionReceipt>;
   readonly authorizeParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
+  readonly enterParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
+  readonly selectChildAccessProfile: (childId: SyntheticChildId) => ServiceResult<ChildAccessView>;
+  readonly verifyChildCredential: (value: unknown) => ServiceResult<ChildAccessView>;
+  readonly requestChildPairing: () => ServiceResult<ChildAccessView>;
+  readonly approveChildPairing: () => ServiceResult<ChildAccessView>;
+  readonly handoffApprovedChildPairing: () => ServiceResult<ChildAccessView>;
+  readonly completeChildPairing: () => ServiceResult<ChildAccessView>;
+  readonly authorizeChildExperience: () => ServiceResult<ChildAccessView>;
+  readonly signOutExperience: () => ServiceResult<true>;
+  readonly getFamilyReward: () => ServiceResult<FamilyRewardPresentation>;
+  readonly markFamilyRewardGiven: () => ServiceResult<FamilyRewardPresentation>;
+  readonly getChildPermissionGrant: (
+    childId: SyntheticChildId,
+  ) => ServiceResult<ChildPermissionGrant>;
+  readonly getOwnChildPermissionGrant: () => ServiceResult<ChildPermissionGrant>;
+  readonly updateChildPermissionGrant: (input: {
+    readonly childId: SyntheticChildId;
+    readonly kind: 'voice' | 'media' | 'ai';
+    readonly granted: boolean;
+    readonly reauthenticationCode: unknown;
+  }) => ServiceResult<ChildPermissionGrant>;
+  readonly revokeChildDevice: (childId: SyntheticChildId) => ServiceResult<ChildAccessView>;
   readonly getParentChildProgress: (
     profileId: SyntheticChildId,
   ) => ServiceResult<ParentChildProgressProjection>;
@@ -331,13 +371,34 @@ export interface PrototypeStoreState extends PrototypeSession {
     option: RoutinePhaseReviewOption,
   ) => ServiceResult<RoutineProgressState>;
   readonly reverseRoutinePhaseDecision: (taskId: string) => ServiceResult<RoutineProgressState>;
-  readonly consumeCelebration: () => void;
+  readonly consumeCelebration: () => ServiceResult<PrototypeSession['celebration']>;
 }
 
 export function selectCanEnterParentExperience(
   state: Pick<PrototypeStoreState, 'parentOnboarding'>,
 ): boolean {
   return state.parentOnboarding.canEnterParentExperience;
+}
+
+export function selectHasActiveParentExperience(
+  state: Pick<PrototypeStoreState, 'activeExperience' | 'parentOnboarding' | 'role'>,
+): boolean {
+  return (
+    state.role === 'parent' &&
+    state.activeExperience === 'parent' &&
+    state.parentOnboarding.canEnterParentExperience
+  );
+}
+
+export function selectCanEnterChildExperience(
+  state: Pick<PrototypeStoreState, 'activeChildId' | 'activeExperience' | 'childAccess' | 'role'>,
+): boolean {
+  return (
+    state.role === 'child' &&
+    state.activeExperience === 'child' &&
+    state.childAccess.canEnterChildExperience &&
+    state.childAccess.selectedChildId === state.activeChildId
+  );
 }
 
 function failure(
@@ -355,6 +416,28 @@ function success<T>(data: T): ServiceResult<T> {
   return { ok: true, data, meta: { origin: 'synthetic', fallbackUsed: false } };
 }
 
+function requireActiveParentExperience(state: PrototypeStoreState): ServiceResult<true> {
+  if (
+    state.role !== 'parent' ||
+    !selectHasActiveParentExperience(state) ||
+    !parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME).ok
+  ) {
+    return failure('INVALID_TRANSITION', 'An active synthetic Parent session is required');
+  }
+  return success(true);
+}
+
+function requireActiveChildExperience(state: PrototypeStoreState): ServiceResult<true> {
+  if (
+    state.role !== 'child' ||
+    !selectCanEnterChildExperience(state) ||
+    !childAccessController.authorizeChildExperience(R001_ONBOARDING_TIME).ok
+  ) {
+    return failure('INVALID_TRANSITION', 'An active synthetic Child session is required');
+  }
+  return success(true);
+}
+
 function createEmptyChildTaskDraft(): ChildTaskDraftState {
   return {
     selectedMediaFixtureId: null,
@@ -368,10 +451,9 @@ function validateActiveChildAssignment(
   state: PrototypeStoreState,
   includeChosen: boolean,
 ): ServiceResult<ActiveChildAssignmentJourney> {
+  const authority = requireActiveChildExperience(state);
+  if (!authority.ok) return authority;
   const journey = state.journey;
-  if (state.role !== 'child') {
-    return failure('INVALID_TRANSITION', 'Only the Child demo role can edit task-scoped input');
-  }
   const lifecycleAllowed =
     journey?.lifecycle === 'in_progress' || (includeChosen && journey?.lifecycle === 'chosen');
   if (!journey?.assignment || !lifecycleAllowed) {
@@ -437,9 +519,8 @@ function selectActiveLearningContext(state: PrototypeStoreState): ServiceResult<
   readonly learning: MangroveLearningState;
   readonly reachedThresholds: readonly ImpactPathThreshold[];
 }> {
-  if (state.role !== 'child') {
-    return failure('INVALID_TRANSITION', 'Only the Child demo role can use learning');
-  }
+  const authority = requireActiveChildExperience(state);
+  if (!authority.ok) return authority;
   const profile = selectGrowthJourneyProfile(state.growthJourney, state.activeChildId);
   if (!profile.ok) return failure('INVALID_RESPONSE', profile.error.message);
   const learning = state.mangroveLearningByProfile[state.activeChildId];
@@ -486,9 +567,8 @@ function activeRevealScope(state: PrototypeStoreState): ServiceResult<{
   readonly profileId: SyntheticChildId;
   readonly profileEpochId: string;
 }> {
-  if (state.role !== 'child') {
-    return failure('INVALID_TRANSITION', 'Only the Child role can present a Child RevealBundle');
-  }
+  const authority = requireActiveChildExperience(state);
+  if (!authority.ok) return authority;
   const profile = selectGrowthJourneyProfile(state.growthJourney, state.activeChildId);
   if (!profile.ok) return failure('INVALID_RESPONSE', profile.error.message);
   return success({
@@ -657,6 +737,9 @@ function validateGuideSuggestion(
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
+  activeExperience: 'signed_out',
+  childAccess: childAccessController.getView(),
+  familyReward: createFamilyRewardRuntime(),
   growthJourney: initialGrowthJourney.data,
   mangroveLearningByProfile: initialMangroveLearning,
   sharedGrowth: initialSharedGrowth,
@@ -673,14 +756,21 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   routineProgressByTask: initialPrototypeSession.routineProgressByTask ?? {},
   childTaskDraft: createEmptyChildTaskDraft(),
   taskDraftRevision: 0,
+  permissionProofSequence: 0,
 
   requestParentVerification: (input) => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before starting Parent verification');
+    }
     const result = parentOnboardingController.requestVerification(input);
     set({ parentOnboarding: parentOnboardingController.getView() });
     return result;
   },
 
   verifyParentCode: async (code) => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before verifying Parent access');
+    }
     const pending = parentOnboardingController.verifyCode(code);
     set({ parentOnboarding: parentOnboardingController.getView() });
     const result = await pending;
@@ -689,28 +779,41 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resendParentVerification: (input) => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before resending Parent verification');
+    }
     const result = parentOnboardingController.resendVerification(input);
     set({ parentOnboarding: parentOnboardingController.getView() });
     return result;
   },
 
   cancelParentVerification: () => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before cancelling Parent verification');
+    }
     const result = parentOnboardingController.cancelVerification();
     set({ parentOnboarding: parentOnboardingController.getView() });
     return result;
   },
 
   updateParentOnboardingDraft: (patch) => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before changing Parent setup');
+    }
     const result = parentOnboardingController.updateDraft(patch);
     set({ parentOnboarding: parentOnboardingController.getView() });
     return result;
   },
 
   completeParentOnboarding: () => {
+    if (get().activeExperience === 'child') {
+      return failure('INVALID_TRANSITION', 'Sign out before completing Parent access');
+    }
     const result = parentOnboardingController.complete(R001_ONBOARDING_TIME);
     if (result.ok) {
       const locale = result.data.appLanguage;
       set({
+        activeExperience: 'parent',
         parentOnboarding: parentOnboardingController.getView(),
         locale,
         direction: getLocaleDirection(locale),
@@ -722,14 +825,218 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return result;
   },
 
-  authorizeParentExperience: () =>
-    parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME),
+  authorizeParentExperience: () => {
+    const state = get();
+    if (state.activeExperience !== 'parent' || state.role !== 'parent') {
+      return failure('INVALID_TRANSITION', 'An active Parent experience is required');
+    }
+    return parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME);
+  },
+
+  enterParentExperience: () => {
+    if (get().activeExperience === 'child') {
+      return failure('INVALID_TRANSITION', 'Sign out of the Child experience before Parent access');
+    }
+    const result = parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME);
+    if (result.ok) set({ activeExperience: 'parent', role: 'parent' });
+    return result;
+  },
+
+  selectChildAccessProfile: (childId) => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before choosing a Child profile');
+    }
+    const result = childAccessController.selectProfile(childId);
+    set({ childAccess: childAccessController.getView() });
+    return result;
+  },
+
+  verifyChildCredential: (value) => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before verifying a Child credential');
+    }
+    const result = childAccessController.verifyCredential(value, R001_ONBOARDING_TIME);
+    set({ childAccess: childAccessController.getView() });
+    if (result.ok && result.data.canEnterChildExperience && result.data.selectedChildId) {
+      set({
+        activeChildId: result.data.selectedChildId,
+        activeExperience: 'child',
+        role: 'child',
+      });
+    }
+    return result;
+  },
+
+  requestChildPairing: () => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before requesting Child pairing');
+    }
+    const result = childAccessController.requestPairing(R001_ONBOARDING_TIME);
+    set({ childAccess: childAccessController.getView() });
+    return result;
+  },
+
+  approveChildPairing: () => {
+    const state = get();
+    if (state.activeExperience !== 'parent' || state.role !== 'parent') {
+      return failure('INVALID_TRANSITION', 'Only the active Parent can approve Child pairing');
+    }
+    const result = childAccessController.approvePairing(R001_ONBOARDING_TIME);
+    set({ childAccess: childAccessController.getView() });
+    return result;
+  },
+
+  handoffApprovedChildPairing: () => {
+    const state = get();
+    if (
+      state.activeExperience !== 'parent' ||
+      state.role !== 'parent' ||
+      state.childAccess.status !== 'pairing_approved'
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'An active Parent and approved Child pairing are required for handoff',
+      );
+    }
+    const signedOut = parentOnboardingController.signOut(R001_ONBOARDING_TIME);
+    if (!signedOut.ok) return signedOut;
+    set({
+      activeExperience: 'signed_out',
+      parentOnboarding: parentOnboardingController.getView(),
+      role: 'child',
+    });
+    return success(childAccessController.getView());
+  },
+
+  completeChildPairing: () => {
+    if (get().activeExperience !== 'signed_out') {
+      return failure(
+        'INVALID_TRANSITION',
+        'Parent approval must hand back before pairing completes',
+      );
+    }
+    const result = childAccessController.completePairing(R001_ONBOARDING_TIME);
+    const childAccess = childAccessController.getView();
+    set({ childAccess });
+    if (result.ok && childAccess.selectedChildId) {
+      set({
+        activeChildId: childAccess.selectedChildId,
+        activeExperience: 'child',
+        role: 'child',
+      });
+    }
+    return result;
+  },
+
+  authorizeChildExperience: () => {
+    const state = get();
+    if (
+      state.activeExperience !== 'child' ||
+      state.role !== 'child' ||
+      state.childAccess.selectedChildId !== state.activeChildId
+    ) {
+      return failure('INVALID_TRANSITION', 'An active Child experience is required');
+    }
+    return childAccessController.authorizeChildExperience(R001_ONBOARDING_TIME);
+  },
+
+  signOutExperience: () => {
+    const state = get();
+    if (state.activeExperience === 'parent') {
+      const result = parentOnboardingController.signOut(R001_ONBOARDING_TIME);
+      if (!result.ok) return result;
+    } else if (state.activeExperience === 'child') {
+      const result = childAccessController.signOut(R001_ONBOARDING_TIME);
+      if (!result.ok) return result;
+    }
+    set({
+      activeExperience: 'signed_out',
+      childAccess: childAccessController.getView(),
+      parentOnboarding: parentOnboardingController.getView(),
+    });
+    return success(true);
+  },
+
+  getFamilyReward: () => {
+    const state = get();
+    if (!requireActiveParentExperience(state).ok) {
+      return failure('PRIVACY_REJECTED', 'Family Reward is available only to the active Parent');
+    }
+    const projected = projectFamilyRewardRuntime(state.familyReward, {
+      kind: 'guardian',
+      guardianId: 'parent_al_noor',
+    });
+    return projected.ok
+      ? success(projected.data)
+      : failure('PRIVACY_REJECTED', projected.error.message);
+  },
+
+  markFamilyRewardGiven: () => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) {
+      return failure('INVALID_TRANSITION', 'Only the active Parent can mark a promise as given');
+    }
+    const marked = markFamilyRewardRuntimeGiven(state.familyReward, '2026-09-05T10:10:00.000Z');
+    if (!marked.ok) return failure('INVALID_TRANSITION', marked.error.message);
+    set({ familyReward: marked.data });
+    const projected = projectFamilyRewardRuntime(marked.data, {
+      kind: 'guardian',
+      guardianId: 'parent_al_noor',
+    });
+    return projected.ok
+      ? success(projected.data)
+      : failure('INVALID_RESPONSE', projected.error.message);
+  },
+
+  getChildPermissionGrant: (childId) => {
+    const state = get();
+    if (!requireActiveParentExperience(state).ok) {
+      return failure('PRIVACY_REJECTED', 'Only the active Parent can view Child permissions');
+    }
+    return parentOnboardingController.getChildPermissions(childId, R001_ONBOARDING_TIME);
+  },
+
+  getOwnChildPermissionGrant: () => {
+    const state = get();
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
+    return childAccessController.getOwnPermissions(R001_ONBOARDING_TIME);
+  },
+
+  updateChildPermissionGrant: (input) => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) {
+      return failure('INVALID_TRANSITION', 'Only the active Parent can change Child permissions');
+    }
+    const permissionProofSequence = get().permissionProofSequence + 1;
+    const result = parentOnboardingController.updateChildPermission({
+      childId: input.childId,
+      change: { kind: input.kind, granted: input.granted },
+      proofId: `r003-permission-${input.childId}-${input.kind}-${permissionProofSequence}`,
+      reauthenticationCode: input.reauthenticationCode,
+      now: R001_ONBOARDING_TIME,
+    });
+    if (result.ok) set({ permissionProofSequence });
+    return result;
+  },
+
+  revokeChildDevice: (childId) => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) {
+      return failure('INVALID_TRANSITION', 'Only the active Parent can revoke a Child device');
+    }
+    const result = childAccessController.revokeDevice(childId, R001_ONBOARDING_TIME);
+    set({ childAccess: childAccessController.getView() });
+    return result;
+  },
 
   getParentChildProgress: (profileId) => {
     const state = get();
-    if (state.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent role can view Child progress');
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     if (!state.children[profileId]) {
       return failure('NOT_FOUND', 'The selected synthetic Child profile was not found');
     }
@@ -767,9 +1074,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   getSharedGrowthChildView: () => {
     const state = get();
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child role can view Shared Growth');
-    }
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
     const projected = projectSharedGrowthView({
       aggregate: SHARED_GROWTH_QUALITATIVE_FIXTURE,
       preference: state.sharedGrowth.preference,
@@ -781,12 +1087,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   changeSharedGrowthParticipation: (input) => {
     const state = get();
-    if (state.role !== 'parent') {
-      return failure(
-        'INVALID_TRANSITION',
-        'Only the Parent role can change Shared Growth participation',
-      );
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     const existing = state.sharedGrowth.preference.actionHistory.find(
       (receipt) => receipt.id === input.actionId,
     );
@@ -877,7 +1179,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   switchRole: () => set((state) => ({ role: state.role === 'parent' ? 'child' : 'parent' })),
 
   setActiveChild: (childId) => {
-    if (!get().children[childId]) {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    if (!state.children[childId]) {
       return failure('NOT_FOUND', 'Synthetic Child was not found');
     }
     set({ activeChildId: childId });
@@ -889,8 +1194,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resetPrototype: () => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Switch to the Parent demo role before reset');
+    const state = get();
+    if (state.role !== 'parent' || state.activeExperience !== 'parent') {
+      return failure('INVALID_TRANSITION', 'An active Parent experience is required before reset');
     }
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     const nextGrowthJourney = createGrowthJourneyRuntime(
@@ -902,12 +1208,18 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     }
     const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
     const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
-    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
-    if (!onboardingReset.ok) return onboardingReset;
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
+    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+    if (!onboardingReset.ok) return onboardingReset;
+    const accessReset = serviceRegistry.access.resetPrototype();
+    if (!accessReset.ok) return accessReset;
+    const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
     set((state) => ({
       ...reset.session,
+      activeExperience: 'signed_out',
+      childAccess: childAccessController.reset(),
+      familyReward: createFamilyRewardRuntime(),
       growthJourney: nextGrowthJourney.data,
       mangroveLearningByProfile: nextMangroveLearning,
       sharedGrowth: nextSharedGrowth,
@@ -916,7 +1228,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       parentGuideSuggestion: null,
       childCoachResult: null,
       ageAdaptedCoachResult: null,
-      childVoiceView: voiceReset.data,
+      childVoiceView: releasedVoiceView,
       confirmationPlan: null,
       lastRecognitionAttempt: null,
       prospectiveTaskAdjustment: null,
@@ -924,6 +1236,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       routineProgressByTask: reset.session.routineProgressByTask ?? {},
       childTaskDraft: createEmptyChildTaskDraft(),
       taskDraftRevision: state.taskDraftRevision + 1,
+      permissionProofSequence: 0,
     }));
     return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
   },
@@ -1109,9 +1422,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   createTaskDraft: (input) => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can create a task draft');
-    }
+    const authority = requireActiveParentExperience(get());
+    if (!authority.ok) return authority;
     const result = serviceRegistry.task.createDraft(input);
     if (result.ok) {
       const clearedVoice = childVoiceController.clearTaskBinding('parent');
@@ -1136,10 +1448,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   updateTaskDraftParentText: (parentText) => {
-    const { journey, parentGuideSuggestion, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can edit a task draft');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey, parentGuideSuggestion } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A draft is required');
     if (parentGuideSuggestion) {
       return failure(
@@ -1167,9 +1479,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   requestParentGuide: async (input, primaryService = serviceRegistry.parentGuide) => {
     const before = get();
-    if (before.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can request Parent guidance');
-    }
+    const authority = requireActiveParentExperience(before);
+    if (!authority.ok) return authority;
     if (before.parentGuideSuggestion) {
       return failure(
         'INVALID_TRANSITION',
@@ -1184,6 +1495,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const requestIsCurrent = () => {
       const state = get();
       return (
+        requireActiveParentExperience(state).ok &&
         state.journey?.lifecycle === 'draft' &&
         state.journey.task.id === expectedTaskId &&
         state.journey.task.version === expectedVersion &&
@@ -1228,10 +1540,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   acceptGuideSuggestion: () => {
-    const { journey, parentGuideSuggestion, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can accept Parent guidance');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey, parentGuideSuggestion } = state;
     if (!journey || !parentGuideSuggestion) {
       return failure('INVALID_TRANSITION', 'A displayed Guide suggestion is required');
     }
@@ -1250,10 +1562,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   keepParentText: () => {
-    const { journey, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can retain Parent wording');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A draft is required');
     const result = serviceRegistry.task.keepParentText(journey);
     if (result.ok) {
@@ -1267,10 +1579,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   reviewTask: () => {
-    const { journey, parentGuideSuggestion, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can review a task');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey, parentGuideSuggestion } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A draft is required');
     if (parentGuideSuggestion) {
       return failure(
@@ -1286,10 +1598,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   returnReviewedTaskToDraft: () => {
-    const { journey, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can return a task to draft');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey } = state;
     if (!journey || journey.lifecycle !== 'reviewed') {
       return failure('INVALID_TRANSITION', 'A reviewed task is required');
     }
@@ -1311,9 +1623,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   approveAssignment: () => {
     const state = get();
     const { journey } = state;
-    if (state.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can approve an assignment');
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     if (!journey) return failure('INVALID_TRANSITION', 'A reviewed task is required');
     if (journey.lifecycle === 'assigned') {
       const assignment = journey.assignment;
@@ -1363,9 +1674,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   chooseAssignment: (choiceId) => {
     const state = get();
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child demo role can choose an assignment');
-    }
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
     if (
       !state.journey ||
       !state.choicePool.p0AssignmentChoice ||
@@ -1387,10 +1697,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   startAssignment: () => {
-    const { activeChildId, journey, role } = get();
-    if (role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child demo role can start an assignment');
-    }
+    const state = get();
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
+    const { activeChildId, journey } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A chosen assignment is required');
     const result = serviceRegistry.task.startAssignment(journey, activeChildId);
     if (result.ok) set({ journey: result.data });
@@ -1400,9 +1710,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   requestSmallerTask: () => {
     const state = get();
     const journey = state.journey;
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child demo role can request a smaller task');
-    }
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
     if (!journey?.assignment || journey.lifecycle !== 'assigned') {
       return failure(
         'INVALID_TRANSITION',
@@ -1457,9 +1766,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const state = get();
     const journey = state.journey;
     const negotiation = state.preAcceptanceAdjustment;
-    if (state.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent can resolve a task adjustment');
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     if (decision !== 'smaller' && decision !== 'safe_equivalent') {
       return failure('INVALID_INPUT', 'Choose a smaller task or a safe equivalent');
     }
@@ -1509,9 +1817,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const state = get();
     const journey = state.journey;
     const negotiation = state.preAcceptanceAdjustment;
-    if (state.role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the assigned Child can answer the proposal');
-    }
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
     if (decision !== 'accept' && decision !== 'keep_current') {
       return failure('INVALID_INPUT', 'Choose the proposal or keep the current task');
     }
@@ -1659,9 +1966,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   setChildVoicePermission: (enabled) => {
     const state = get();
-    if (state.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent can change prepared voice permission');
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     if (
       !state.journey ||
       (state.journey.lifecycle !== 'reviewed' && state.journey.lifecycle !== 'assigned')
@@ -1762,10 +2068,21 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       templateSelection: input.templateSelection ?? input.intent,
     };
     const result = await serviceRegistry.childCoach.respond(request);
+    const currentState = get();
+    const currentAssignment = validateActiveChildAssignment(currentState, true);
+    if (
+      !currentAssignment.ok ||
+      currentState.activeChildId !== request.child.id ||
+      currentAssignment.data.assignment.id !== request.assignmentId ||
+      currentAssignment.data.task.id !== request.taskId ||
+      currentAssignment.data.task.version !== request.approvedTaskVersion
+    ) {
+      return failure('INVALID_TRANSITION', 'The Child Coach request is stale');
+    }
     if (
       result.ok &&
-      get().journey?.task.id === request.taskId &&
-      get().journey?.task.version === request.approvedTaskVersion
+      currentAssignment.data.task.id === request.taskId &&
+      currentAssignment.data.task.version === request.approvedTaskVersion
     ) {
       const adapted = childVoiceController.adaptCoach({
         actorRole: 'child',
@@ -1783,10 +2100,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   submitTask: (input) => {
-    const { activeChildId, journey, role } = get();
-    if (role !== 'child') {
-      return failure('INVALID_TRANSITION', 'Only the Child demo role can submit the task');
-    }
+    const state = get();
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
+    const { activeChildId, journey } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'An in-progress task is required');
     const result = serviceRegistry.task.submit(journey, activeChildId, input);
     if (result.ok) {
@@ -1796,10 +2113,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   requestKindRetry: (neutralObservation) => {
-    const { journey, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can request a kind retry');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A submitted task is required');
     const result = serviceRegistry.task.requestKindRetry(journey, neutralObservation);
     if (result.ok) set({ journey: result.data, confirmationPlan: null });
@@ -1807,10 +2124,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resumeRetry: () => {
-    const { journey, role } = get();
-    if (role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can resume a kind retry');
-    }
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const { journey } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A retry state is required');
     const result = serviceRegistry.task.resumeRetry(journey);
     if (result.ok) set({ journey: result.data });
@@ -1820,12 +2137,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   planFutureTaskAdjustment: (kind) => {
     const state = get();
     const journey = state.journey;
-    if (state.role !== 'parent') {
-      return failure(
-        'INVALID_TRANSITION',
-        'Only the Parent demo role can record a future task adjustment',
-      );
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     if (kind !== 'smaller' && kind !== 'safe_equivalent') {
       return failure('INVALID_INPUT', 'Choose a smaller task or a safe equivalent');
     }
@@ -1869,9 +2182,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   restoreCheckInState: (submissionId) => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can restore a check-in');
-    }
+    const authority = requireActiveParentExperience(get());
+    if (!authority.ok) return authority;
     const result = serviceRegistry.recognition.resolveCheckInState(
       sessionSnapshot(get()),
       submissionId,
@@ -1894,9 +2206,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   planConfirmation: (input) => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can plan confirmation');
-    }
+    const authority = requireActiveParentExperience(get());
+    if (!authority.ok) return authority;
     const result = serviceRegistry.recognition.planConfirmation(sessionSnapshot(get()), input);
     if (result.ok && result.data.disposition === 'pending_praise') {
       set({ journey: result.data.plan.journey, confirmationPlan: result.data.plan });
@@ -1907,9 +2218,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   markPraisePresented: (action) => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can present praise');
-    }
+    const authority = requireActiveParentExperience(get());
+    if (!authority.ok) return authority;
     const plan = get().confirmationPlan;
     if (!plan || plan.renderState !== 'confirmation_pending') {
       return failure('INVALID_TRANSITION', 'Confirmation praise is not awaiting presentation');
@@ -1922,9 +2232,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   confirmAndPresentPraise: (input, action) => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can confirm task praise');
-    }
+    const authority = requireActiveParentExperience(get());
+    if (!authority.ok) return authority;
     const planned = serviceRegistry.recognition.planConfirmation(sessionSnapshot(get()), input);
     if (!planned.ok) return planned;
     if (planned.data.disposition === 'already_confirmed') {
@@ -1946,32 +2255,42 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   applyRecognition: (action) => {
-    if (get().role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent demo role can apply recognition');
-    }
+    const authority = requireActiveParentExperience(get());
+    if (!authority.ok) return authority;
     const plan = get().confirmationPlan;
     if (!plan || plan.renderState !== 'praise_presented') {
       return failure('INVALID_TRANSITION', 'Praise must be visibly presented before recognition');
     }
-    const previousSession = sessionSnapshot(get());
+    const before = get();
+    const previousSession = sessionSnapshot(before);
     const result = serviceRegistry.recognition.applyRecognition(previousSession, plan, action);
     if (!result.ok) return result;
     const growthProjection = projectRecognitionIntoGrowthJourney({
-      runtime: get().growthJourney,
+      runtime: before.growthJourney,
       previousSession,
       nextSession: result.data.session,
       receipt: result.data.receipt,
       committedAt: plan.checkIn.praisePresentedAt,
-      learningCompletions: completionEvidenceFor(get(), plan.journey.task.targetChildId),
+      learningCompletions: completionEvidenceFor(before, plan.journey.task.targetChildId),
     });
     if (!growthProjection.ok) {
       return failure('INVALID_RESPONSE', growthProjection.error.message);
     }
     if (result.data.disposition === 'already_confirmed') {
-      if (growthProjection.data.runtime !== get().growthJourney) {
+      if (growthProjection.data.runtime !== before.growthJourney) {
         set({ growthJourney: growthProjection.data.runtime });
       }
       return result;
+    }
+
+    const familyReward = applyRecognitionToFamilyReward({
+      runtime: before.familyReward,
+      journey: plan.journey,
+      receipt: result.data.receipt,
+      committedAt: plan.checkIn.praisePresentedAt,
+    });
+    if (!familyReward.ok) {
+      return failure('INVALID_RESPONSE', familyReward.error.message);
     }
 
     set({
@@ -1979,15 +2298,15 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       growthJourney: growthProjection.data.runtime,
       confirmationPlan: plan,
       lastRecognitionAttempt: result.data,
+      familyReward: familyReward.data,
     });
     return result;
   },
 
   applyRoutinePhaseDecision: (taskId, option) => {
     const state = get();
-    if (state.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent can choose a future routine phase');
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     if (option !== 'keep_acquisition' && option !== 'move_future_to_maintenance') {
       return failure('INVALID_INPUT', 'Choose one reviewed future-phase option');
     }
@@ -2012,9 +2331,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   reverseRoutinePhaseDecision: (taskId) => {
     const state = get();
-    if (state.role !== 'parent') {
-      return failure('INVALID_TRANSITION', 'Only the Parent can reverse a future phase decision');
-    }
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
     const progress = state.routineProgressByTask[taskId];
     if (!progress?.phaseReview || !progress.decision) {
       return failure('INVALID_TRANSITION', 'A reversible future phase decision is required');
@@ -2029,8 +2347,20 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   consumeCelebration: () => {
-    if (!get().celebration.available) return;
-    set({ celebration: { available: true, consumed: true } });
+    const state = get();
+    const authority =
+      state.role === 'parent'
+        ? requireActiveParentExperience(state)
+        : state.role === 'child'
+          ? requireActiveChildExperience(state)
+          : failure('INVALID_TRANSITION', 'An active synthetic experience is required');
+    if (!authority.ok) return authority;
+    if (!state.celebration.available || state.celebration.consumed) {
+      return success(state.celebration);
+    }
+    const celebration = { available: true, consumed: true } as const;
+    set({ celebration });
+    return success(celebration);
   },
 }));
 

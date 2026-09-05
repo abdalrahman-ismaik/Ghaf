@@ -26,13 +26,13 @@ describe('R002a compatible Garden presentation', () => {
   it('guards the shared route and keeps Parent-only controls behind Parent authorization', () => {
     expect(route).toContain('state.role');
     expect(route).toContain('state.activeChildId');
-    expect(route).toContain('selectCanEnterParentExperience');
-    expect(route).toContain('state.authorizeParentExperience');
-    expect(route).toContain('<Redirect href="/access/parent/sign-in"');
-    expect(route).toContain('<Redirect href="/role"');
-    expect(route).toContain('<ParentHomeUtilities');
-    expect(route).toContain('state.resetPrototype');
-    expect(route).toContain("router.replace('/role')");
+    expect(route).toContain('selectHasActiveParentExperience');
+    expect(route).toContain('selectCanEnterChildExperience');
+    expect(route).toContain("activeExperience === 'signed_out'");
+    expect(route).not.toContain('<Redirect href="/access/parent/sign-in"');
+    expect(route).toContain('<Redirect href="/"');
+    expect(route).toContain("router.push('/parent/settings' as Href)");
+    expect(route).toContain('signOutExperience');
   });
 
   it('derives the active profile receipt and every landscape target from canonical state', () => {

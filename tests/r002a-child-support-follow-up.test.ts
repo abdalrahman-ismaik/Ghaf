@@ -6,6 +6,11 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { resources } from '../src/i18n/resources';
 import { createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 
@@ -33,12 +38,13 @@ function recognitionCounters() {
 }
 
 describe('R002a Child support follow-up presentation', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
     usePrototypeStore.setState(createSubmittedP0Session());
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
   });
 
-  it('preserves the prior submission through Parent resume and awards nothing on resubmission', () => {
+  it('preserves the prior submission through Parent resume and awards nothing on resubmission', async () => {
     const priorSubmission = structuredClone(usePrototypeStore.getState().journey?.submission);
     const baseline = recognitionCounters();
 
@@ -56,7 +62,7 @@ describe('R002a Child support follow-up presentation', () => {
     });
     expect(recognitionCounters()).toEqual(baseline);
 
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(
       usePrototypeStore.getState().submitTask({
         completionMode: 'permitted_help',
