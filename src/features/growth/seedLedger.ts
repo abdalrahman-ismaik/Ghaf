@@ -29,6 +29,7 @@ const VALID_PROVENANCE_SOURCES = new Set<string>([
   'approved_synthetic_stage_assumption',
   'recognition_receipt',
 ]);
+const VALID_FIXED_SEED_AWARDS = new Set<number>([4, 6, 8, 12, 15]);
 
 function failure<T>(code: ProgressionErrorCode, message: string): ProgressionResult<T> {
   return { ok: false, error: { code, message } };
@@ -277,7 +278,7 @@ function validateKindProvenance(entry: SeedLedgerEntry): ProgressionResult<true>
     return failure('INVALID_INPUT', 'Carry-forward provenance has an invalid evidence shape');
   }
   if (
-    entry.amount !== 12 ||
+    !VALID_FIXED_SEED_AWARDS.has(entry.amount) ||
     entry.provenance.source !== 'recognition_receipt' ||
     entry.provenance.sourceIds.length !== 2 ||
     entry.provenance.sourceIds[0] === entry.provenance.sourceIds[1] ||
@@ -1002,7 +1003,7 @@ export function projectRecognitionSeedEntry(
     !isNonEmptySingleLine(input.recognitionKey) ||
     !isNonEmptySingleLine(input.seedTransactionId) ||
     input.recognitionKey === input.seedTransactionId ||
-    input.amount !== 12 ||
+    !VALID_FIXED_SEED_AWARDS.has(input.amount) ||
     !isIsoTimestamp(input.committedAt) ||
     input.fixtureVersion !== SCHEMA3_R002A_FIXTURE_VERSION ||
     !Object.prototype.hasOwnProperty.call(input, 'mangroveTransition') ||
@@ -1072,7 +1073,7 @@ export function projectRecognitionSeedEntry(
     profileEpochId: input.profileEpochId,
     triggerEventId: input.triggerEventId,
     kind: 'task_recognition',
-    amount: 12,
+    amount: input.amount,
     status: 'committed',
     committedAt: input.committedAt,
     silentBackfill: false,

@@ -1,4 +1,4 @@
-import type { GardenStage, SyntheticChildId } from './familyGrowth';
+import type { FixedSeedAward, GardenStage, SyntheticChildId } from './familyGrowth';
 
 export const SCHEMA3_R002A_FIXTURE_VERSION = 'schema3.r002a.al-noor.v1' as const;
 export const SEED_LEDGER_MIGRATION_VERSION = 'r002b.seed-ledger.v1' as const;
@@ -150,7 +150,7 @@ export interface RecognitionSeedProjectionInput {
   readonly triggerEventId: string;
   readonly recognitionKey: string;
   readonly seedTransactionId: string;
-  readonly amount: number;
+  readonly amount: FixedSeedAward;
   readonly committedAt: string;
   readonly fixtureVersion: string;
   readonly mangroveTransition: MangroveRecognitionTransition | null;

@@ -21,6 +21,11 @@ import {
   validateTaskForReview,
   validateTaskTemplate,
 } from '../features/tasks/validation';
+import {
+  createGrowthJourneyRuntime,
+  projectRecognitionIntoGrowthJourney,
+  type GrowthJourneyRuntimeState,
+} from '../features/growth/bootstrap';
 import { coerceLocale, getLocaleDirection } from '../models/prototype';
 import type {
   ChildCoachIntent,
@@ -62,8 +67,15 @@ type ActiveChildAssignmentJourney = PrototypeJourney & {
 const childVoiceController = createChildVoiceController(serviceRegistry);
 const parentOnboardingController = createParentOnboardingController(serviceRegistry.access);
 const R001_ONBOARDING_TIME = '2026-09-04T10:00:00.000Z';
+const initialPrototypeSession = serviceRegistry.prototypeSession.getInitialSession();
+const initialGrowthJourney = createGrowthJourneyRuntime(initialPrototypeSession, 0);
+
+if (!initialGrowthJourney.ok) {
+  throw new Error(`R002b progression bootstrap failed: ${initialGrowthJourney.error.message}`);
+}
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly growthJourney: GrowthJourneyRuntimeState;
   readonly parentOnboarding: ParentOnboardingView;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
@@ -385,7 +397,8 @@ function validateGuideSuggestion(
 }
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
-  ...serviceRegistry.prototypeSession.getInitialSession(),
+  ...initialPrototypeSession,
+  growthJourney: initialGrowthJourney.data,
   parentOnboarding: parentOnboardingController.getView(),
   parentGuideSuggestion: null,
   childCoachResult: null,
@@ -395,8 +408,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   lastRecognitionAttempt: null,
   prospectiveTaskAdjustment: null,
   preAcceptanceAdjustment: null,
-  routineProgressByTask:
-    serviceRegistry.prototypeSession.getInitialSession().routineProgressByTask ?? {},
+  routineProgressByTask: initialPrototypeSession.routineProgressByTask ?? {},
   childTaskDraft: createEmptyChildTaskDraft(),
   taskDraftRevision: 0,
 
@@ -476,13 +488,21 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (get().role !== 'parent') {
       return failure('INVALID_TRANSITION', 'Switch to the Parent demo role before reset');
     }
+    const reset = serviceRegistry.prototypeSession.resetPrototype();
+    const nextGrowthJourney = createGrowthJourneyRuntime(
+      reset.session,
+      get().growthJourney.resetSequence + 1,
+    );
+    if (!nextGrowthJourney.ok) {
+      return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
+    }
     const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
     if (!onboardingReset.ok) return onboardingReset;
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
-    const reset = serviceRegistry.prototypeSession.resetPrototype();
     set((state) => ({
       ...reset.session,
+      growthJourney: nextGrowthJourney.data,
       parentOnboarding: onboardingReset.data,
       parentGuideSuggestion: null,
       childCoachResult: null,
@@ -1349,15 +1369,29 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!plan || plan.renderState !== 'praise_presented') {
       return failure('INVALID_TRANSITION', 'Praise must be visibly presented before recognition');
     }
-    const result = serviceRegistry.recognition.applyRecognition(
-      sessionSnapshot(get()),
-      plan,
-      action,
-    );
-    if (!result.ok || result.data.disposition === 'already_confirmed') return result;
+    const previousSession = sessionSnapshot(get());
+    const result = serviceRegistry.recognition.applyRecognition(previousSession, plan, action);
+    if (!result.ok) return result;
+    const growthProjection = projectRecognitionIntoGrowthJourney({
+      runtime: get().growthJourney,
+      previousSession,
+      nextSession: result.data.session,
+      receipt: result.data.receipt,
+      committedAt: plan.checkIn.praisePresentedAt,
+    });
+    if (!growthProjection.ok) {
+      return failure('INVALID_RESPONSE', growthProjection.error.message);
+    }
+    if (result.data.disposition === 'already_confirmed') {
+      if (growthProjection.data.runtime !== get().growthJourney) {
+        set({ growthJourney: growthProjection.data.runtime });
+      }
+      return result;
+    }
 
     set({
       ...result.data.session,
+      growthJourney: growthProjection.data.runtime,
       confirmationPlan: plan,
       lastRecognitionAttempt: result.data,
     });

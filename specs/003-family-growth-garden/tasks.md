@@ -796,7 +796,7 @@ and Android evidence with truthful limitations. This phase never releases R002b.
 - [x] T182 [P] Write characterization tests for ledger reconstruction, synthetic eligibility,
       ambiguous/non-synthetic rejection, profile/epoch isolation, reset, task-ID stability, zero
       submission reward, complete approval consequences, and duplicate/concurrent approval.
-- [ ] T183 Define the eight independent default-off flags and prove that disabled flags preserve the
+- [x] T183 Define the eight independent default-off flags and prove that disabled flags preserve the
       exact R002a routes, presentation, task lifecycle, counters, voice, access, privacy, and reset.
 - [x] T184 Validate and commit the contract and characterization boundaries separately; stage exact
       paths and retain all raw exports and six held commits unchanged.
@@ -810,14 +810,14 @@ and Android evidence with truthful limitations. This phase never releases R002b.
       verified 36 scalar with no Salem carry-forward; unsupported cousin profiles remain ineligible.
 - [x] T187 Reject ambiguous, real/non-synthetic, cross-profile, wrong-epoch, duplicate, malformed,
       partial, and non-atomic migration inputs without changing current state.
-- [ ] T188 Integrate the existing `+12` recognition entry once so Mangrove remains 48→60 while
+- [x] T188 Integrate the existing `+12` recognition entry once so Mangrove remains 48→60 while
       lifetime Seeds project 108→120; preserve canopy, League, Challenge, Family Reward, praise,
       task identity, and zero reward before recognition.
-- [ ] T189 Record a completed Mangrove 60/60 archive and derive reached Water & Coast stations without
+- [x] T189 Record a completed Mangrove 60/60 archive and derive reached Water & Coast stations without
       a writable Impact Path balance, backfill celebration, or fabricated task/mastery/learning data.
-- [ ] T190 Cover thresholds 107, 108, 119, 120, 131, 132, 179, and 180; no spending/decrease; retry,
+- [x] T190 Cover thresholds 107, 108, 119, 120, 131, 132, 179, and 180; no spending/decrease; retry,
       concurrency, restart at transaction boundaries, reset epoch, and profile isolation.
-- [ ] T191 Run focused progression/reward/reset tests, full suite, static checks, Expo configuration,
+- [x] T191 Run focused progression/reward/reset tests, full suite, static checks, Expo configuration,
       production export, route scan, and `git diff --check`; commit the validated migration slice.
 
 ## Phase 26: Impact Path, Badge Registry, and Candidate Screens
