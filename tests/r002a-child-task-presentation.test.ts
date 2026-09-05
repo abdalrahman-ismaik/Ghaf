@@ -28,6 +28,7 @@ const childPresentationFiles = [
   'src/components/r002a/child/ChildDefinitionCard.tsx',
   'src/components/r002a/child/ChildGardenProgressCard.tsx',
   'src/components/r002a/child/ChildHomeHeader.tsx',
+  'src/components/r002a/child/ChildTaskFollowUpContext.tsx',
   'src/components/r002a/child/ChildTaskActionFooter.tsx',
   'src/components/r002a/child/ChildTaskChecklist.tsx',
   'src/components/r002a/child/ChildTaskHero.tsx',
@@ -330,7 +331,9 @@ describe('R002a Child Today and task presentation', () => {
   it('recovers an interrupted active route conservatively without changing task authority', () => {
     const taskRoute = source('app/child/task.tsx');
 
-    expect(taskRoute).toContain("useState(() => journey?.lifecycle === 'in_progress')");
+    expect(taskRoute).toContain(
+      "journey?.lifecycle === 'in_progress' && journey.submission === null",
+    );
     expect(taskRoute).toContain('testID="child-task-interrupted-recovery"');
     expect(taskRoute).toContain("t('childTask.interruptedRecovery')");
     expect(resources.ar.translation.childTask.interruptedRecovery).toContain('لم يتغير');

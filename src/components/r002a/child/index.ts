@@ -5,6 +5,7 @@ export * from './ChildGardenProgressCard';
 export * from './ChildHomeHeader';
 export * from './ChildTaskActionFooter';
 export * from './ChildTaskChecklist';
+export * from './ChildTaskFollowUpContext';
 export * from './ChildTaskHero';
 export * from './ChildTaskPlanCard';
 export * from './ChildTodayTaskCard';

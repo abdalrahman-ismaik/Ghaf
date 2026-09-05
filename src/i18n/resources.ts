@@ -506,6 +506,21 @@ export const resources = {
         waitingBody: 'وصلت المهمة إلى مساحة وليّ الأمر للمراجعة.',
         waitingStatus: 'بانتظار مراجعة وليّ الأمر',
       },
+      r002aFollowUp: {
+        headerTitle: 'متابعة المهمة',
+        status: 'متابعة لطيفة',
+        title: 'لنجرّب المهمة مرة أخرى معًا',
+        body: 'طلب وليّ أمرك محاولة أخرى بخطوات واضحة ومساعدة مناسبة.',
+        parentNote: 'ملاحظة دعم قياسية من وليّ الأمر',
+        priorAttempt: 'المحاولة السابقة {{count}}',
+        factsLabel: 'ما سُجّل في المحاولة السابقة',
+        noFactsRecorded: 'لا توجد ملاحظات إضافية مسجّلة.',
+        noHelpRecorded: 'لم تُسجّل مساعدة في المحاولة السابقة.',
+        freshStepsTitle: 'ابدأ الخطوات المعتمدة من جديد',
+        freshStepsBody:
+          'تبدأ كل خطوة معتمدة حالية غير محددة. لم تُحفظ علامات الخطوات من المحاولة السابقة، وبقيت المهمة وكل التقدّم المكتسب كما هما.',
+        noLoss: 'لم يُخصم أي تقدّم. تُضاف البذور والنمو فقط بعد مراجعة وليّ الأمر واعتماده.',
+      },
       childVoice: {
         title: 'التدرّب الصوتي الاصطناعي',
         disclosure:
@@ -1204,6 +1219,22 @@ export const resources = {
         waitingTitle: 'Your task was sent',
         waitingBody: 'The task is now in the Parent space for review.',
         waitingStatus: 'Waiting for Parent review',
+      },
+      r002aFollowUp: {
+        headerTitle: 'Task follow-up',
+        status: 'Kind follow-up',
+        title: 'Let’s try the task again together',
+        body: 'Your Parent asked for another attempt with clear steps and appropriate help.',
+        parentNote: 'Standard Parent support note',
+        priorAttempt: 'Previous attempt {{count}}',
+        factsLabel: 'What was recorded in the previous attempt',
+        noFactsRecorded: 'No additional observations were recorded.',
+        noHelpRecorded: 'No help was recorded in the previous attempt.',
+        freshStepsTitle: 'Start the approved steps again',
+        freshStepsBody:
+          'Every current approved step starts unchecked. Step checks were not saved from the previous attempt, and the task and all earned progress remain unchanged.',
+        noLoss:
+          'No progress was deducted. Seeds and growth are added only after Parent review and approval.',
       },
       childVoice: {
         title: 'Synthetic voice rehearsal',

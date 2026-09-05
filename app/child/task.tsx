@@ -14,6 +14,7 @@ import {
   ChildDefinitionCard,
   ChildTaskActionFooter,
   ChildTaskChecklist,
+  ChildTaskFollowUpContext,
   ChildTaskHero,
   ChildTaskPlanCard,
   ChildWaitingForReview,
@@ -99,7 +100,10 @@ export default function ChildTaskScreen() {
   const [showCompletionConfirmation, setShowCompletionConfirmation] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isInterruptedRecovery] = useState(() => journey?.lifecycle === 'in_progress');
+  const isRetryFollowUp = journey?.lifecycle === 'in_progress' && journey.submission !== null;
+  const [isInterruptedRecovery] = useState(
+    () => journey?.lifecycle === 'in_progress' && journey.submission === null,
+  );
   const completionActionRef = useRef<View>(null);
   const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const submitGuardRef = useRef(false);
@@ -176,6 +180,7 @@ export default function ChildTaskScreen() {
   if (!journey?.assignment) return null;
 
   const content = journey.task.content;
+  const priorSubmission = isRetryFollowUp ? journey.submission : null;
   const childFacingTitle =
     content.id === P0_RECYCLING_TEMPLATE.id
       ? t('childTask.title')
@@ -277,12 +282,18 @@ export default function ChildTaskScreen() {
     }, 240);
   };
 
+  const headerTitleKey =
+    journey.lifecycle === 'chosen'
+      ? 'childTask.detailsTitle'
+      : isRetryFollowUp
+        ? 'r002aFollowUp.headerTitle'
+        : 'childTask.activeTitle';
   const header = (
     <R002aFlowHeader
       backLabel={t('common.back')}
       direction={direction}
       onBack={physicalBack}
-      title={t(journey.lifecycle === 'chosen' ? 'childTask.detailsTitle' : 'childTask.activeTitle')}
+      title={t(headerTitleKey)}
     />
   );
 
@@ -403,6 +414,41 @@ export default function ChildTaskScreen() {
           title={childFacingTitle}
           variant="active"
         />
+
+        {priorSubmission ? (
+          <ChildTaskFollowUpContext
+            body={t('r002aFollowUp.body')}
+            completionModeLabel={t('checkIn.completionMode')}
+            completionModeValue={t(
+              priorSubmission.completionMode === 'independent'
+                ? 'checkIn.independentCompletion'
+                : 'checkIn.permittedHelpCompletion',
+            )}
+            direction={direction}
+            factValues={
+              priorSubmission.observableFacts.length > 0
+                ? priorSubmission.observableFacts.map((fact) => localize(fact, locale))
+                : [t('r002aFollowUp.noFactsRecorded')]
+            }
+            factsLabel={t('r002aFollowUp.factsLabel')}
+            freshStepsBody={t('r002aFollowUp.freshStepsBody')}
+            freshStepsTitle={t('r002aFollowUp.freshStepsTitle')}
+            helpLabel={t('checkIn.help')}
+            helpValue={
+              priorSubmission.helpUsed
+                ? localize(priorSubmission.helpUsed, locale)
+                : t('r002aFollowUp.noHelpRecorded')
+            }
+            noLossLabel={t('r002aFollowUp.noLoss')}
+            parentNote={t('checkIn.retryObservation')}
+            parentNoteLabel={t('r002aFollowUp.parentNote')}
+            priorAttemptLabel={t('r002aFollowUp.priorAttempt', {
+              count: stepFormatter.format(priorSubmission.attempt),
+            })}
+            statusLabel={t('r002aFollowUp.status')}
+            title={t('r002aFollowUp.title')}
+          />
+        ) : null}
 
         {isInterruptedRecovery ? (
           <View
