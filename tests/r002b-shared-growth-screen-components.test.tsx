@@ -114,12 +114,13 @@ describe('R002b Shared Growth presentation components', () => {
     expect(source).toContain('<Modal');
     expect(source).toContain('accessibilityViewIsModal');
     expect(source).toContain('onShow={focusHeading}');
-    expect(source).toContain('AccessibilityInfo.setAccessibilityFocus');
+    expect(source).toContain('focusAccessibilityTarget');
     expect(source).toContain('onRequestClose={cancelAndRestoreFocus}');
     expect(source).toContain('InteractionManager.runAfterInteractions');
     expect(source).toContain('requestAnimationFrame');
     expect(source).toContain('onRestoreFocus(confirmation.focusReturnTargetTestID)');
-    expect(source).toContain('AccessibilityInfo.setAccessibilityFocus(handle)');
+    expect(source.match(/focusAccessibilityTarget\(/gu)).toHaveLength(3);
+    expect(source).not.toContain('findNodeHandle');
     expect(source).toContain('actionRefs.current[targetTestID] ?? statusRef.current');
     expect(source).toContain('confirmation.confirmAction.onPress()');
     expect(source).toContain('confirmation.cancelAction.onPress()');

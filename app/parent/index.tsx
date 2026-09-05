@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
-import { AccessibilityInfo, findNodeHandle, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
@@ -37,6 +37,7 @@ import type {
 } from '@/models/familyGrowth';
 import { PARENT_SUMMARY_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
 import { replaceHistoryWithEntry } from '@/utils/navigation';
 
 type ParentSection = 'home' | 'tasks';
@@ -129,8 +130,7 @@ export default function ParentHomeScreen() {
       return;
     }
     const frame = requestAnimationFrame(() => {
-      const handle = findNodeHandle(progressEntryRef.current);
-      if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
+      focusAccessibilityTarget(progressEntryRef.current);
     });
     return () => cancelAnimationFrame(frame);
   }, [hasValidProgressRestore, role, section]);

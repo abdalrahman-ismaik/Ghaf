@@ -1,11 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  AccessibilityInfo,
-  findNodeHandle,
   InteractionManager,
   Modal,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -25,6 +22,7 @@ import {
   spacing,
   type AppColor,
 } from '@/design/tokens';
+import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
 
 export type SharedGrowthLanguage = 'ar' | 'en';
 export type SharedGrowthDirection = 'ltr' | 'rtl';
@@ -204,10 +202,7 @@ export function SharedGrowthEntryCard({
   const restored = useRef(false);
   const focusAfterLayout = () => {
     if (!restoreFocus || restored.current) return;
-    const handle = findNodeHandle(actionRef.current);
-    if (handle === null) return;
-    restored.current = true;
-    AccessibilityInfo.setAccessibilityFocus(handle);
+    restored.current = focusAccessibilityTarget(actionRef.current);
   };
 
   return (
@@ -442,10 +437,7 @@ export function ParentSharedGardenScreen({
 
   const restoreParticipationFocus = (targetTestID: string) => {
     const target = actionRefs.current[targetTestID] ?? statusRef.current;
-    if (Platform.OS !== 'web') {
-      const handle = findNodeHandle(target);
-      if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
-    }
+    focusAccessibilityTarget(target);
     confirmation?.onRequestFocusRestore(targetTestID);
   };
 
@@ -973,9 +965,7 @@ function ParentParticipationConfirmation({
     useRef<ReturnType<typeof InteractionManager.runAfterInteractions>>(undefined);
 
   const focusHeading = () => {
-    if (Platform.OS === 'web') return;
-    const handle = findNodeHandle(headingRef.current);
-    if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
+    focusAccessibilityTarget(headingRef.current);
   };
 
   const restoreFocusAfterDismissal = () => {
