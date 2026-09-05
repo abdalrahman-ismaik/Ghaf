@@ -1,0 +1,48 @@
+# R002b Shared Growth specification
+
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+Status: additive code-native implementation candidate. Flag: `r002b_shared_growth_view`, default
+off. Owner route: `/circle/shared-growth`, nested from a secondary Garden or private League card.
+
+## Purpose and composition
+
+Offer a quiet educational view of synthetic, anonymous community stewardship while preserving the
+private five-Leaf League as the `الدوري / League` root. Use a qualitative coastal canopy scene,
+two or three plain-language stewardship observations, a clear synthetic/private explanation, and a
+return action. Do not show names, profiles, ranks, percentages, participant counts, task details,
+Seeds, badge totals, identifiable events, competition, or contribution pressure.
+
+## Data and behavior
+
+The view consumes only a bounded anonymous qualitative projection. A Child may view it regardless
+of contribution state. Viewing does not contribute, change consent, award progress, or alter tasks,
+Garden, League, Challenge Leaves, Family Rewards, badges, or history. The contribution flag is not
+required for viewing and no Child setting controls it. The existing `/circle` Green Circle route is
+not renamed or repurposed.
+
+## Navigation and states
+
+Allow Child capability, active profile shell, view flag on, and a closed Garden or private-League
+origin. Arabic Back is physically right and restores the exact validated origin/focus. Bottom
+navigation is omitted. Invalid or cross-role origins return to the Child safe root.
+
+Required states: ready qualitative projection, viewing while participation is continued/paused/
+ended, loading, offline-ready synthetic fixture, unavailable aggregate, recoverable error,
+interrupted/recovered, missing decorative art, and reduced-motion static canopy. Paused/ended state
+may be explained but never blocks viewing.
+
+## Accessibility, copy, and review
+
+Every visual observation has a text equivalent; decorative anonymous marks are hidden. Use one
+heading order, 48×48 actions, 4.5:1 text contrast, non-color state, no animated count-up, natural
+scroll, and no horizontal overflow at 320–768 or 200% text. Arabic/English stewardship and privacy
+copy require human review; art remains code-native until provenance approval.
+
+## Acceptance
+
+Prove no prohibited fields enter the projection, view/contribution flag independence, no state
+mutation on view, private League and `/circle` preservation, contribution-state-independent access,
+safe origins, profile/privacy boundaries, offline/reset determinism, flag-off fallback, RTL/LTR,
+and reduced-motion/large-text equivalence. Canonical 390×844 and physical Android/TalkBack evidence
+remain pending.

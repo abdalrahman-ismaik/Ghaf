@@ -822,7 +822,7 @@ and Android evidence with truthful limitations. This phase never releases R002b.
 
 ## Phase 26: Impact Path, Badge Registry, and Candidate Screens
 
-- [ ] T192 Write grouped `screen-spec.md` files for the compact Today card, Garden chapter module,
+- [x] T192 Write grouped `screen-spec.md` files for the compact Today card, Garden chapter module,
       Impact Path, Badge Gallery, and Badge Detail before implementing their routes/components.
 - [x] T193 Encode exactly 16 stable bilingual badge definitions and deterministic criteria in one
       typed registry; reject duplicate/unknown IDs and preserve permanent private awards.
@@ -843,7 +843,7 @@ and Android evidence with truthful limitations. This phase never releases R002b.
 
 ## Phase 27: Equal-Credit Learning and Superset RevealBundle
 
-- [ ] T201 Write `screen-spec.md` files for Story, accessible alternative, and combined Child reveal
+- [x] T201 Write `screen-spec.md` files for Story, accessible alternative, and combined Child reveal
       before their route/component implementation.
 - [ ] T202 Implement the finite bilingual `learning.mangrove_roots.v1` package, sourced content
       metadata, resumable progress, neutral no-fail check, and equal-credit Story/accessible routes.
@@ -869,7 +869,7 @@ and Android evidence with truthful limitations. This phase never releases R002b.
 
 ## Phase 28: Parent Progress and Additive Shared Growth
 
-- [ ] T210 Write `screen-spec.md` files for Parent selected-Child Progress, Child Shared Growth, and
+- [x] T210 Write `screen-spec.md` files for Parent selected-Child Progress, Child Shared Growth, and
       Parent Shared Garden settings before route implementation.
 - [ ] T211 Implement Parent-only `/parent/family/:profileId/progress` from profile-scoped selectors:
       lifetime/current/archive, earned/in-progress badges, unlocked learning, and transparent task

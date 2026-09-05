@@ -32,7 +32,7 @@ renamed, edited, or imported.
 | `/root/r002b_orchestrator/achievement_engine_writer`       | New `src/models/achievements.ts`, `src/features/growth/badgeRegistry.ts`, `src/features/growth/achievements.ts`, and `tests/r002b-achievements.test.ts` only                                                                                                                                                                                                                                                                              | Encode and evaluate the exact locked 16-badge registry test-first; edit no existing progression file, store, fixture, service, route, resource, configuration, documentation, or other test file |
 | `/root/r002b_orchestrator/learning_engine_writer`          | New `src/models/learning.ts`, `src/features/learning/mangroveLearning.ts`, and `tests/r002b-learning.test.ts` only                                                                                                                                                                                                                                                                                                                        | Implement the finite equal-credit package and idempotent completion test-first; edit no store, route, resource, shared model, fixture, service registry, or documentation                        |
 | `/root/r002b_orchestrator/reveal_bundle_writer`            | New `src/models/revealBundle.ts`, `src/features/rewards/revealBundle.ts`, and `tests/r002b-reveal-bundle.test.ts` only                                                                                                                                                                                                                                                                                                                    | Build the receipt-only superset bundle and lifecycle test-first; never calculate or mutate a reward, and edit no store, route, resource, fixture, service registry, or documentation             |
-| Future R002b UI writer                                     | New R002b components/routes and their screen specifications only, assigned after domain interfaces stabilize                                                                                                                                                                                                                                                                                                                              | Code-native Soft Geometric surfaces behind independent default-off flags; no business logic or R001/R002a redesign                                                                               |
+| `/root` — R002b screen specifications and UI integration   | New `docs/design/stitch/releases/ghaf-r002b/**`, future `src/components/r002b/**`, future nested R002b route files, and serialized integration into existing routes after the applicable domain interface is stable                                                                                                                                                                                                                       | Define every code-native candidate before implementation, keep each surface behind its independent default-off flag, and preserve the exact R002a fallback and all existing behavior             |
 
 No writer may change the same file concurrently. Shared files remain reserved to `/root`; delegated
 workers must treat the rest of the repository as read-only and accommodate concurrent changes.
@@ -56,6 +56,14 @@ now adds the canonical sorting/coast-care credits and evaluates badge awards in 
 Journey store projection. Initial Seed-threshold awards remain silent; the new 120 and Sorting Bud
 outcomes remain private and resumable. Typecheck, lint, formatting, 43 files / 651 tests, and Git
 whitespace validation passed with every R002b presentation flag still default-off.
+
+**Code-native screen-specification checkpoint — 2026-09-05**: The eleven authorized R002b
+route surfaces and route-owned modules now have implementation-candidate specifications under
+`docs/design/stitch/releases/ghaf-r002b/`. Each specification records its independent default-off
+flag, R002a fallback, data/action authority, route/origin guard, responsive/RTL/accessibility states,
+and unresolved review evidence before any route implementation. No raw R002 export, runtime file,
+or release flag changed; canonical 390×844 implementation captures remain pending until each
+surface exists.
 
 ## 2026-09-05 R002a Compatibility Implementation Window
 
