@@ -65,6 +65,13 @@ and unresolved review evidence before any route implementation. No raw R002 expo
 or release flag changed; canonical 390×844 implementation captures remain pending until each
 surface exists.
 
+**Route-safety checkpoint — 2026-09-05**: A closed R002b route/origin policy now rejects raw return
+paths, arbitrary entity IDs, wrong-role or wrong-profile restoration, unauthorized Parent profiles,
+and independently disabled features before any new route mounts. Focus, bounded scroll, and Gallery
+filter restoration use known tokens with safe Child/Parent fallbacks. The focused 11-test route
+suite and 45-file / 681-test repository suite excluding only the concurrently unfinished RevealBundle
+test passed; the complete suite is required again after that isolated writer releases its files.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
