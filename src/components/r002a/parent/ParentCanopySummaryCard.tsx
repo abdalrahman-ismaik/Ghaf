@@ -47,7 +47,10 @@ export function ParentCanopySummaryCard({
           accessibilityLabel={progressLabel}
           accessibilityRole="progressbar"
           accessibilityValue={{ max: goal, min: 0, now: current, text: progressLabel }}
-          style={styles.progressTrack}
+          style={[
+            styles.progressTrack,
+            { alignItems: direction === 'rtl' ? 'flex-end' : 'flex-start' },
+          ]}
         >
           <View style={[styles.progressFill, { width: progressWidth }]} />
         </View>

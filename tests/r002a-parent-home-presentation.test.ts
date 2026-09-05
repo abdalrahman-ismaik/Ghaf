@@ -90,6 +90,13 @@ describe('R002a Parent Home presentation', () => {
     expect(rootLayout).toContain("pathname === '/parent'");
   });
 
+  it('anchors Parent canopy progress to the reading start edge', () => {
+    const canopy = source('src/components/r002a/parent/ParentCanopySummaryCard.tsx');
+
+    expect(canopy).toContain("direction === 'rtl' ? 'flex-end' : 'flex-start'");
+    expect(canopy).toMatch(/style=\{\[\s*styles\.progressTrack,[\s\S]*?alignItems:/u);
+  });
+
   it('preserves established automation IDs and lifecycle destinations', () => {
     const route = source('app/parent/index.tsx');
     const summary = source('src/components/family-growth/ParentPatternSummary.tsx');
