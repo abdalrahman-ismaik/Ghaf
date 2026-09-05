@@ -148,7 +148,7 @@ function AuthorizedBadgeDetail({
     profileId,
     actions: {
       openBadge: () => undefined,
-      openImpactStation,
+      ...(r002bFeatureFlags.r002b_impact_path_ui ? { openImpactStation } : {}),
       openAssignedTask,
       ...(r002bFeatureFlags.r002b_learning_ui ? { openLearning } : {}),
     },

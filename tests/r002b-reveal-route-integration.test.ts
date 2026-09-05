@@ -60,4 +60,12 @@ describe('R002b combined RevealBundle route integration', () => {
     expect(child).toContain("testID: 'open-r002b-reveal-button'");
     expect(child).toContain("testID: 'open-recognized-garden-button'");
   });
+
+  it('shows the Growth destination only when its independent Impact Path flag is enabled', () => {
+    const route = source(routePath);
+
+    expect(route).toMatch(
+      /onOpenGrowth:\s*r002bFeatureFlags\.r002b_impact_path_ui\s*\?[\s\S]*?finishPresentation\('growth'\)[\s\S]*?:\s*undefined/u,
+    );
+  });
 });

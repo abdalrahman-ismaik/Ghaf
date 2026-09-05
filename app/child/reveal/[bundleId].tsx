@@ -205,7 +205,9 @@ function AuthorizedChildReveal({
     submitting: busy || !started,
     translate: (key, values) => String(t(key, values)),
     onAcknowledge: () => finishPresentation('back'),
-    onOpenGrowth: () => finishPresentation('growth'),
+    onOpenGrowth: r002bFeatureFlags.r002b_impact_path_ui
+      ? () => finishPresentation('growth')
+      : undefined,
     onRecover: onBack,
   });
   if (!presentation.ok) return <Redirect href="/child" />;

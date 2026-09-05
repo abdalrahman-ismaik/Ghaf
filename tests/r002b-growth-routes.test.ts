@@ -73,6 +73,11 @@ describe('R002b guarded Growth route integration', () => {
     expect(garden).toContain('restoreProfileId === activeChildId');
     expect(garden).toContain('contentOffset: { x: 0, y: restoredScrollOffset }');
     expect(garden).toContain('initialFocusTargetId={restoredFocusTarget}');
+
+    const detail = source('app/garden/badges/[badgeId].tsx');
+    expect(detail).toMatch(
+      /r002bFeatureFlags\.r002b_impact_path_ui\s*\?\s*\{ openImpactStation \}\s*:\s*\{\}/u,
+    );
   });
 
   it('derives every Growth value from the profile projection and never writes rewards in UI', () => {
