@@ -3,6 +3,11 @@ import type {
   RecognitionReceipt,
   SyntheticChildId,
 } from '../../models/familyGrowth';
+import type {
+  AchievementEvaluationEvidence,
+  AchievementState,
+  BadgeId,
+} from '../../models/achievements';
 import {
   SCHEMA3_R002A_FIXTURE_VERSION,
   type ProgressionResult,
@@ -17,6 +22,11 @@ import {
   projectWaterAndCoastPath,
   selectLifetimeSeeds,
 } from './seedLedger';
+import {
+  createEmptyAchievementState,
+  evaluateBadgeAwards,
+  recordParentApprovedAcquisition,
+} from './achievements';
 
 const PROFILE_IDS = ['child_salem', 'child_alya'] as const;
 const SYNTHETIC_MIGRATION_TIME = '2026-09-05T08:00:00.000Z';
@@ -25,6 +35,7 @@ const VALID_FIXED_SEED_AWARDS = new Set<number>([4, 6, 8, 12, 15]);
 export interface GrowthJourneyRuntimeState {
   readonly resetSequence: number;
   readonly ledgersByProfile: Readonly<Record<SyntheticChildId, SeedLedgerState>>;
+  readonly achievementsByProfile: Readonly<Record<SyntheticChildId, AchievementState>>;
 }
 
 export interface GrowthJourneyProfileProjection {
@@ -33,11 +44,15 @@ export interface GrowthJourneyProfileProjection {
   readonly lifetimeSeeds: number;
   readonly path: WaterAndCoastPathProjection;
   readonly ledger: SeedLedgerState;
+  readonly achievements: AchievementState;
 }
 
 export interface GrowthJourneyRecognitionProjection {
   readonly disposition: 'projected' | 'already_projected' | 'not_applicable';
   readonly runtime: GrowthJourneyRuntimeState;
+  readonly addedCreditIds: readonly string[];
+  readonly newlyEarnedBadgeIds: readonly BadgeId[];
+  readonly newlyReachedThresholds: readonly number[];
 }
 
 function failure<T>(
@@ -58,11 +73,62 @@ function epochId(profileId: SyntheticChildId, resetSequence: number): string {
 function freezeRuntime(input: {
   readonly resetSequence: number;
   readonly ledgersByProfile: Record<SyntheticChildId, SeedLedgerState>;
+  readonly achievementsByProfile: Record<SyntheticChildId, AchievementState>;
 }): GrowthJourneyRuntimeState {
   return Object.freeze({
     resetSequence: input.resetSequence,
     ledgersByProfile: Object.freeze({ ...input.ledgersByProfile }),
+    achievementsByProfile: Object.freeze({ ...input.achievementsByProfile }),
   });
+}
+
+function achievementEvidence(
+  ledger: SeedLedgerState,
+): ProgressionResult<AchievementEvaluationEvidence> {
+  const lifetime = selectLifetimeSeeds(ledger, ledger.profileId, ledger.profileEpochId);
+  if (!lifetime.ok) return lifetime;
+  const path = projectWaterAndCoastPath(lifetime.data);
+  if (!path.ok) return path;
+  return {
+    ok: true,
+    data: Object.freeze({
+      lifetimeSeeds: Object.freeze({
+        profileId: ledger.profileId,
+        profileEpochId: ledger.profileEpochId,
+        source: 'committed_seed_ledger' as const,
+        exact: true,
+        amount: lifetime.data,
+        entryIds: Object.freeze(ledger.entries.map((entry) => entry.id)),
+      }),
+      stationProjection: Object.freeze({
+        profileId: ledger.profileId,
+        profileEpochId: ledger.profileEpochId,
+        source: 'canonical_impact_path_projection' as const,
+        reachedThresholds: path.data.reachedThresholds,
+      }),
+      learningCompletions: Object.freeze([]),
+      semanticCriterionEvidence: Object.freeze([]),
+    }),
+  };
+}
+
+function createBackfilledAchievementState(
+  ledger: SeedLedgerState,
+): ProgressionResult<AchievementState> {
+  const empty = createEmptyAchievementState({
+    profileId: ledger.profileId,
+    profileEpochId: ledger.profileEpochId,
+  });
+  if (!empty.ok) return failure(empty.error.message);
+  const evidence = achievementEvidence(ledger);
+  if (!evidence.ok) return evidence;
+  const backfill = evaluateBadgeAwards({
+    state: empty.data,
+    evidence: evidence.data,
+    mode: 'historical_seed_backfill',
+    triggerEventId: `schema3-achievement-backfill:${ledger.profileId}:${ledger.profileEpochId}`,
+  });
+  return backfill.ok ? { ok: true, data: backfill.data.state } : failure(backfill.error.message);
 }
 
 function sameReceipt(left: RecognitionReceipt, right: RecognitionReceipt): boolean {
@@ -102,6 +168,7 @@ export function createGrowthJourneyRuntime(
   }
 
   const ledgers = {} as Record<SyntheticChildId, SeedLedgerState>;
+  const achievements = {} as Record<SyntheticChildId, AchievementState>;
   for (const profileId of PROFILE_IDS) {
     const child = session.children[profileId];
     if (!child) return failure(`Synthetic profile ${profileId} is missing`);
@@ -139,11 +206,18 @@ export function createGrowthJourneyRuntime(
     });
     if (!normalized.ok) return normalized;
     ledgers[profileId] = normalized.data.ledger;
+    const achievementState = createBackfilledAchievementState(normalized.data.ledger);
+    if (!achievementState.ok) return achievementState;
+    achievements[profileId] = achievementState.data;
   }
 
   return {
     ok: true,
-    data: freezeRuntime({ resetSequence, ledgersByProfile: ledgers }),
+    data: freezeRuntime({
+      resetSequence,
+      ledgersByProfile: ledgers,
+      achievementsByProfile: achievements,
+    }),
   };
 }
 
@@ -155,18 +229,26 @@ export function selectGrowthJourneyProfile(
     !isRecord(runtime) ||
     !Number.isSafeInteger(runtime.resetSequence) ||
     runtime.resetSequence < 0 ||
-    !isRecord(runtime.ledgersByProfile)
+    !isRecord(runtime.ledgersByProfile) ||
+    !isRecord(runtime.achievementsByProfile)
   ) {
     return failure('Growth Journey runtime state is incomplete', 'INVALID_INPUT');
   }
   const ledger = runtime.ledgersByProfile[profileId];
-  if (!ledger) {
+  const achievements = runtime.achievementsByProfile[profileId];
+  if (!ledger || !achievements) {
     return { ok: false, error: { code: 'UNSUPPORTED_PROFILE', message: 'Profile is missing' } };
   }
   const lifetime = selectLifetimeSeeds(ledger, profileId, ledger.profileEpochId);
   if (!lifetime.ok) return lifetime;
   const path = projectWaterAndCoastPath(lifetime.data);
   if (!path.ok) return path;
+  if (
+    achievements.profileId !== profileId ||
+    achievements.profileEpochId !== ledger.profileEpochId
+  ) {
+    return failure('Achievement state does not match the active profile epoch');
+  }
   return {
     ok: true,
     data: Object.freeze({
@@ -175,6 +257,7 @@ export function selectGrowthJourneyProfile(
       lifetimeSeeds: lifetime.data,
       path: path.data,
       ledger,
+      achievements,
     }),
   };
 }
@@ -200,18 +283,26 @@ export function projectRecognitionIntoGrowthJourney(input: {
   if (transaction === null) {
     return {
       ok: true,
-      data: Object.freeze({ disposition: 'not_applicable', runtime: input.runtime }),
+      data: Object.freeze({
+        disposition: 'not_applicable',
+        runtime: input.runtime,
+        addedCreditIds: Object.freeze([]),
+        newlyEarnedBadgeIds: Object.freeze([]),
+        newlyReachedThresholds: Object.freeze([]),
+      }),
     };
   }
 
   const profileId = transaction.childId;
   const ledger = input.runtime.ledgersByProfile[profileId];
+  const achievementState = input.runtime.achievementsByProfile[profileId];
   const previousChild = input.previousSession.children[profileId];
   const nextChild = input.nextSession.children[profileId];
   const previouslyCommitted = input.previousSession.recognitionLedger[input.receipt.recognitionKey];
   const nextCommitted = input.nextSession.recognitionLedger[input.receipt.recognitionKey];
   if (
     !ledger ||
+    !achievementState ||
     !previousChild ||
     !nextChild ||
     transaction.recognitionKey !== input.receipt.recognitionKey ||
@@ -279,8 +370,61 @@ export function projectRecognitionIntoGrowthJourney(input: {
   });
   if (!projected.ok) return projected;
 
+  let nextAchievementState = achievementState;
+  let addedCreditIds: readonly string[] = Object.freeze([]);
+  const journey = input.nextSession.journey;
+  if (journey?.task.id === 'task_recycling_p0_v1') {
+    if (
+      journey.lifecycle !== 'recognized' ||
+      !journey.submission ||
+      input.receipt.recognitionKey !== `recognition:${journey.submission.id}`
+    ) {
+      return failure('Canonical mastery credit requires its recognized task occurrence');
+    }
+    const recorded = recordParentApprovedAcquisition({
+      state: nextAchievementState,
+      event: {
+        eventId: input.receipt.recognitionKey,
+        occurrenceId: journey.submission.id,
+        profileId,
+        profileEpochId: ledger.profileEpochId,
+        taskId: journey.task.id,
+        status: 'committed',
+        recognitionMode: journey.task.content.recognitionMode,
+        routinePhase: 'acquisition',
+      },
+    });
+    if (!recorded.ok) return failure(recorded.error.message);
+    nextAchievementState = recorded.data.state;
+    addedCreditIds = recorded.data.addedCreditIds;
+  }
+
+  const nextEvidence = achievementEvidence(projected.data.ledger);
+  if (!nextEvidence.ok) return nextEvidence;
+  const evaluated = evaluateBadgeAwards({
+    state: nextAchievementState,
+    evidence: nextEvidence.data,
+    mode: 'live',
+    triggerEventId: input.receipt.recognitionKey,
+    occurredAt: input.committedAt,
+  });
+  if (!evaluated.ok) return failure(evaluated.error.message);
+  nextAchievementState = evaluated.data.state;
+
+  const beforeLifetime = selectLifetimeSeeds(ledger, profileId, ledger.profileEpochId);
+  if (!beforeLifetime.ok) return beforeLifetime;
+  const beforePath = projectWaterAndCoastPath(beforeLifetime.data);
+  const afterPath = projectWaterAndCoastPath(nextEvidence.data.lifetimeSeeds.amount);
+  if (!beforePath.ok || !afterPath.ok) {
+    return failure('Impact Path station delta could not be derived');
+  }
+  const previouslyReached = new Set(beforePath.data.reachedThresholds);
+  const newlyReachedThresholds = Object.freeze(
+    afterPath.data.reachedThresholds.filter((threshold) => !previouslyReached.has(threshold)),
+  );
+
   const nextRuntime =
-    projected.data.ledger === ledger
+    projected.data.ledger === ledger && nextAchievementState === achievementState
       ? input.runtime
       : freezeRuntime({
           resetSequence: input.runtime.resetSequence,
@@ -288,12 +432,19 @@ export function projectRecognitionIntoGrowthJourney(input: {
             ...input.runtime.ledgersByProfile,
             [profileId]: projected.data.ledger,
           },
+          achievementsByProfile: {
+            ...input.runtime.achievementsByProfile,
+            [profileId]: nextAchievementState,
+          },
         });
   return {
     ok: true,
     data: Object.freeze({
       disposition: projected.data.disposition,
       runtime: nextRuntime,
+      addedCreditIds,
+      newlyEarnedBadgeIds: evaluated.data.newlyEarnedBadgeIds,
+      newlyReachedThresholds,
     }),
   };
 }
@@ -360,24 +511,15 @@ export function rehydrateGrowthJourneyRuntime(input: {
   }
   const receipts = Object.values(input.session.recognitionLedger);
   if (receipts.length === 0) {
-    if (input.savedRuntime === null) {
-      return createGrowthJourneyRuntime(input.session, input.resetSequence);
-    }
-    const salem = selectGrowthJourneyProfile(input.savedRuntime, 'child_salem');
-    const alya = selectGrowthJourneyProfile(input.savedRuntime, 'child_alya');
+    const canonical = createGrowthJourneyRuntime(input.session, input.resetSequence);
+    if (!canonical.ok) return canonical;
     if (
-      !salem.ok ||
-      !alya.ok ||
-      salem.data.lifetimeSeeds !== 108 ||
-      alya.data.lifetimeSeeds !== 36 ||
-      salem.data.ledger.entries.some((entry) => entry.kind === 'task_recognition') ||
-      salem.data.ledger.plantStageArchives.length !== 0 ||
-      input.session.children.child_salem.earnedSeeds !== 48 ||
-      input.session.landscapeProgress.mangrove.cumulativeSeeds !== 48
+      input.savedRuntime !== null &&
+      JSON.stringify(input.savedRuntime) !== JSON.stringify(canonical.data)
     ) {
       return failure('Saved opening state does not reconcile with the Schema-3 session');
     }
-    return { ok: true, data: input.savedRuntime };
+    return { ok: true, data: input.savedRuntime ?? canonical.data };
   }
   if (receipts.length !== 1) {
     return failure('This synthetic restoration boundary supports one canonical approval receipt');
@@ -395,23 +537,32 @@ export function rehydrateGrowthJourneyRuntime(input: {
   }
   const resetSession = resetSessionFromRecognized(input.session, receipt);
   if (!resetSession.ok) return resetSession;
-  if (input.savedRuntime !== null) {
-    const alya = selectGrowthJourneyProfile(input.savedRuntime, 'child_alya');
-    if (!alya.ok || alya.data.lifetimeSeeds !== 36) {
-      return failure('Saved recognition state does not preserve Alya profile isolation');
-    }
-  }
-  const baseRuntime =
-    input.savedRuntime === null
-      ? createGrowthJourneyRuntime(resetSession.data, input.resetSequence)
-      : ({ ok: true, data: input.savedRuntime } as const);
-  if (!baseRuntime.ok) return baseRuntime;
-  const projected = projectRecognitionIntoGrowthJourney({
-    runtime: baseRuntime.data,
+  const canonicalBase = createGrowthJourneyRuntime(resetSession.data, input.resetSequence);
+  if (!canonicalBase.ok) return canonicalBase;
+  const canonicalProjection = projectRecognitionIntoGrowthJourney({
+    runtime: canonicalBase.data,
     previousSession: resetSession.data,
     nextSession: input.session,
     receipt,
     committedAt,
   });
-  return projected.ok ? { ok: true, data: projected.data.runtime } : projected;
+  if (!canonicalProjection.ok) return canonicalProjection;
+  if (input.savedRuntime === null) {
+    return { ok: true, data: canonicalProjection.data.runtime };
+  }
+  const restoredProjection = projectRecognitionIntoGrowthJourney({
+    runtime: input.savedRuntime,
+    previousSession: resetSession.data,
+    nextSession: input.session,
+    receipt,
+    committedAt,
+  });
+  if (!restoredProjection.ok) return restoredProjection;
+  if (
+    JSON.stringify(restoredProjection.data.runtime) !==
+    JSON.stringify(canonicalProjection.data.runtime)
+  ) {
+    return failure('Saved recognition state does not match canonical reconstructed evidence');
+  }
+  return { ok: true, data: restoredProjection.data.runtime };
 }

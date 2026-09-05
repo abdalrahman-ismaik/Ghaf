@@ -96,6 +96,21 @@ describe('R002b progression store integration', () => {
         migrationReceipts: [{ silentBackfill: true, syntheticOnly: true }],
         plantStageArchives: [],
       },
+      achievements: {
+        acquisitionCredits: [],
+        awards: [
+          {
+            badgeId: 'badge.journey.seed_start.v1',
+            silentBackfill: true,
+            celebrationEligible: false,
+          },
+          {
+            badgeId: 'badge.journey.growing_branch.v1',
+            silentBackfill: true,
+            celebrationEligible: false,
+          },
+        ],
+      },
     });
     expect(profile('child_alya')).toMatchObject({
       profileId: 'child_alya',
@@ -105,6 +120,16 @@ describe('R002b progression store integration', () => {
         entries: [{ amount: 36 }],
         migrationReceipts: [],
         plantStageArchives: [],
+      },
+      achievements: {
+        acquisitionCredits: [],
+        awards: [
+          {
+            badgeId: 'badge.journey.seed_start.v1',
+            silentBackfill: true,
+            celebrationEligible: false,
+          },
+        ],
       },
     });
     expect(profile('child_salem').profileEpochId).not.toBe(profile('child_alya').profileEpochId);
@@ -141,6 +166,26 @@ describe('R002b progression store integration', () => {
             seedsBefore: 48,
             seedsAfter: 60,
             symbolicOnly: true,
+          },
+        ],
+      },
+      achievements: {
+        acquisitionCredits: [
+          { skillId: 'skill.sorting', taskId: 'task_recycling_p0_v1' },
+          { skillId: 'skill.coast_care', taskId: 'task_recycling_p0_v1' },
+        ],
+        awards: [
+          { badgeId: 'badge.journey.seed_start.v1', silentBackfill: true },
+          { badgeId: 'badge.journey.growing_branch.v1', silentBackfill: true },
+          {
+            badgeId: 'badge.journey.expanding_shade.v1',
+            silentBackfill: false,
+            celebrationEligible: true,
+          },
+          {
+            badgeId: 'badge.skill.sorting.bud.v1',
+            silentBackfill: false,
+            celebrationEligible: true,
           },
         ],
       },
@@ -341,5 +386,34 @@ describe('R002b progression store integration', () => {
     expect(usePrototypeStore.getState().recognitionLedger).toEqual({});
     expect(usePrototypeStore.getState().children.child_salem.earnedSeeds).toBe(48);
     expect(usePrototypeStore.getState().landscapeProgress.mangrove.cumulativeSeeds).toBe(48);
+  });
+
+  it('fails the whole approval when achievement evidence is corrupt', () => {
+    prepareConfirmation();
+    const state = usePrototypeStore.getState();
+    const beforeSession = structuredClone(sessionSnapshot());
+    const salemAchievements = state.growthJourney.achievementsByProfile.child_salem;
+    const firstAward = salemAchievements.awards[0];
+    if (!firstAward) throw new Error('Expected a silent baseline badge');
+    usePrototypeStore.setState({
+      growthJourney: {
+        ...state.growthJourney,
+        achievementsByProfile: {
+          ...state.growthJourney.achievementsByProfile,
+          child_salem: {
+            ...salemAchievements,
+            awards: [{ ...firstAward, private: false }, ...salemAchievements.awards.slice(1)],
+          } as unknown as typeof salemAchievements,
+        },
+      },
+    });
+
+    expect(usePrototypeStore.getState().applyRecognition(RECOGNITION_ACTION)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_RESPONSE' },
+    });
+    expect(sessionSnapshot()).toEqual(beforeSession);
+    expect(usePrototypeStore.getState().recognitionLedger).toEqual({});
+    expect(usePrototypeStore.getState().children.child_salem.earnedSeeds).toBe(48);
   });
 });
