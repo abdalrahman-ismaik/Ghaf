@@ -36,6 +36,7 @@ import {
 import {
   acknowledgeRevealBundle,
   archiveRevealBundle,
+  constructRevealBundle,
   createEmptyRevealBundleQueue,
   startOrResumeRevealById,
 } from '../features/rewards/revealBundle';
@@ -95,6 +96,7 @@ import type {
 import type { LearningCompletionEvidence } from '../models/achievements';
 import type { ImpactPathThreshold } from '../models/growthJourney';
 import type {
+  CommittedRevealSourceReceipt,
   RevealBundleErrorCode,
   RevealBundleQueue,
   RevealLifecycleResult,
@@ -1013,17 +1015,65 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       completedAt,
     });
     if (!completed.ok) return learningFailure(completed.error.message);
+    const currentState = get();
     const projected = projectLearningCompletionIntoGrowthJourney({
-      runtime: get().growthJourney,
+      runtime: currentState.growthJourney,
       learningState: completed.data.state,
     });
     if (!projected.ok) return failure('INVALID_RESPONSE', projected.error.message);
+
+    const receipts: CommittedRevealSourceReceipt[] = [];
+    const achievements = projected.data.runtime.achievementsByProfile[context.data.profileId];
+    for (const badgeId of projected.data.newlyEarnedBadgeIds) {
+      const award = achievements.awards.find(
+        (candidate) =>
+          candidate.badgeId === badgeId &&
+          candidate.sourceEventId === completed.data.event.triggerEventId,
+      );
+      if (!award || award.earnedAt === null || !award.celebrationEligible) {
+        return failure(
+          'INVALID_RESPONSE',
+          'A newly earned learning badge must have committed live award evidence',
+        );
+      }
+      receipts.push({
+        id: `reveal-receipt:${award.id}:${completed.data.event.triggerEventId}`,
+        authority: 'achievements',
+        profileId: context.data.profileId,
+        profileEpochId: context.data.profileEpochId,
+        triggerEventId: completed.data.event.triggerEventId,
+        triggerKind: 'learning_completion',
+        status: 'committed',
+        committedAt: award.earnedAt,
+        consequence: {
+          kind: 'earned_badge',
+          awardId: award.id,
+          badgeId: award.badgeId,
+          newlyEarned: true,
+          earnedAt: award.earnedAt,
+          private: true,
+          permanent: true,
+        },
+      });
+    }
+    const reveal = constructRevealBundle({
+      queue: currentState.revealBundleQueue,
+      profileId: context.data.profileId,
+      profileEpochId: context.data.profileEpochId,
+      triggerEventId: completed.data.event.triggerEventId,
+      triggerKind: 'learning_completion',
+      triggeredAt: completed.data.event.completedAt,
+      receipts,
+    });
+    if (!reveal.ok) return revealFailure(reveal.error.code, reveal.error.message);
+
     set((state) => ({
       mangroveLearningByProfile: Object.freeze({
         ...state.mangroveLearningByProfile,
         [context.data.profileId]: completed.data.state,
       }),
       growthJourney: projected.data.runtime,
+      revealBundleQueue: reveal.data.queue,
     }));
     return success(completed.data);
   },
