@@ -1,21 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { ParentCheckIn } from '@/components/family-growth/ParentCheckIn';
-import { JourneyHeader } from '@/components/journey';
-import { Screen, Text } from '@/components/primitives';
-import { spacing } from '@/design/tokens';
+import { Text } from '@/components/primitives';
+import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentCheckInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const journey = usePrototypeStore((state) => state.journey);
   const confirmationPlan = usePrototypeStore((state) => state.confirmationPlan);
   const restoreCheckInState = usePrototypeStore((state) => state.restoreCheckInState);
+  const intentionalExitRef = useRef(false);
 
   const submissionId = journey?.submission?.id;
   const admission =
@@ -28,7 +29,7 @@ export default function ParentCheckInScreen() {
       router.replace('/role');
       return;
     }
-    if (!admission?.ok) router.replace('/parent');
+    if (!admission?.ok && !intentionalExitRef.current) router.replace('/parent');
   }, [admission?.ok, role, router]);
 
   const resumablePlan =
@@ -50,31 +51,34 @@ export default function ParentCheckInScreen() {
 
   if (needsRestore) {
     return (
-      <Screen testID="parent-check-in-restore-state">
-        <JourneyHeader eyebrow={t('origin.synthetic')} title={t('checkIn.title')} />
-        <Text accessibilityLiveRegion="polite" color="inkMuted">
+      <R002aScreen
+        header={
+          <R002aFlowHeader
+            backLabel={t('common.back')}
+            direction={direction}
+            onBack={() => router.replace('/parent')}
+            title={t('r002aReview.reviewTitle')}
+          />
+        }
+        safeAreaEdges={['top', 'left', 'right', 'bottom']}
+        testID="parent-check-in-restore-state"
+      >
+        <Text accessibilityLiveRegion="polite" brand color="onSurfaceVariant" direction={direction}>
           {t('assistant.loading')}
         </Text>
-      </Screen>
+      </R002aScreen>
     );
   }
 
   return (
-    <Screen
-      contentContainerStyle={{ paddingBottom: spacing.huge }}
-      keyboardAware
-      testID="parent-check-in-screen"
-    >
-      <JourneyHeader
-        eyebrow={t('origin.synthetic')}
-        onBack={() => router.replace('/parent')}
-        subtitle={t('parentHome.summaryDisclosure')}
-        title={t('checkIn.title')}
-      />
-      <ParentCheckIn
-        onRecognized={() => router.replace('/garden')}
-        onResumeChild={() => router.replace('/role')}
-      />
-    </Screen>
+    <ParentCheckIn
+      onBack={() => router.replace('/parent')}
+      onOpenGarden={() => router.replace('/garden')}
+      onResumeChild={() => {
+        intentionalExitRef.current = true;
+        router.replace('/role');
+      }}
+      onReturnToTasks={() => router.replace('/parent')}
+    />
   );
 }
