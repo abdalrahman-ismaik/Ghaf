@@ -79,6 +79,7 @@ export interface GardenChapterModuleProps extends GrowthJourneyPresentationProps
   description: string;
   entries: readonly GardenChapterEntryPresentation[];
   groupLabel: string;
+  initialFocusTargetId?: string;
   lifetimeLabel: string;
   lifetimeValue: string;
   statusLabel: string;
@@ -293,6 +294,7 @@ export function GardenChapterModule({
   direction,
   entries,
   groupLabel,
+  initialFocusTargetId,
   language,
   lifetimeLabel,
   lifetimeValue,
@@ -382,6 +384,7 @@ export function GardenChapterModule({
             key={entry.id}
             language={language}
             reducedMotion={reducedMotion}
+            restoreFocus={initialFocusTargetId === entry.action?.testID}
           />
         ))}
       </View>
@@ -879,9 +882,11 @@ function GardenChapterEntry({
   expanded,
   language,
   reducedMotion,
+  restoreFocus,
 }: GrowthJourneyPresentationProps & {
   entry: GardenChapterEntryPresentation;
   expanded: boolean;
+  restoreFocus: boolean;
 }) {
   return (
     <View style={[styles.entryCard, expanded ? styles.entryCardExpanded : null]}>
@@ -916,6 +921,7 @@ function GardenChapterEntry({
           direction={direction}
           language={language}
           reducedMotion={reducedMotion}
+          restoreFocus={restoreFocus}
           tone={entry.tone === 'amber' ? 'neutral' : entry.tone}
         />
       ) : null}

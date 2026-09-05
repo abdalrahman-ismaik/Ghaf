@@ -11,7 +11,6 @@ function origin(
     | 'impact_path_learning_action'
     | 'child_today_reveal_handoff'
     | 'child_garden_shared_growth_card'
-    | 'child_league_shared_growth_card'
     | 'parent_garden_shared_settings_card',
 ) {
   const result = createR002bOrigin({
@@ -190,24 +189,21 @@ describe('R002b untrusted route request resolver', () => {
     ).toMatchObject({ allowed: false, reason: 'invalid_origin' });
   });
 
-  it.each(['child_garden_shared_growth_card', 'child_league_shared_growth_card'] as const)(
-    'accepts only the documented Child Shared Growth origin %s',
-    (originId) => {
-      const result = resolveR002bRouteRequest({
-        routeId: 'shared_growth',
-        role: 'child',
-        activeProfileId: 'child_salem',
-        authorizedProfileIds: ['child_salem'],
-        flags: resolveR002bFeatureFlags({ r002b_shared_growth_view: true }),
-        requestedProfileParam: 'child_salem',
-        entityParam: undefined,
-        originParams: origin(originId),
-        allowedOriginIds: ['child_garden_shared_growth_card', 'child_league_shared_growth_card'],
-      });
+  it('accepts only the implemented Child Garden origin for Shared Growth', () => {
+    const result = resolveR002bRouteRequest({
+      routeId: 'shared_growth',
+      role: 'child',
+      activeProfileId: 'child_salem',
+      authorizedProfileIds: ['child_salem'],
+      flags: resolveR002bFeatureFlags({ r002b_shared_growth_view: true }),
+      requestedProfileParam: 'child_salem',
+      entityParam: undefined,
+      originParams: origin('child_garden_shared_growth_card'),
+      allowedOriginIds: ['child_garden_shared_growth_card'],
+    });
 
-      expect(result).toMatchObject({ allowed: true, requestedProfileId: 'child_salem' });
-    },
-  );
+    expect(result).toMatchObject({ allowed: true, requestedProfileId: 'child_salem' });
+  });
 
   it('accepts only the Parent Garden origin for Shared Garden settings', () => {
     const accepted = resolveR002bRouteRequest({

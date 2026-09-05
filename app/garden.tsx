@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Redirect, useRouter, type Href } from 'expo-router';
+import { useMemo, useRef, useState } from 'react';
+import { Redirect, useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -38,6 +38,7 @@ import {
 } from '@/features/garden/presentation';
 import { useR002bGrowthPresentation } from '@/features/growth/useR002bGrowthPresentation';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
+import type { R002bRouteParam } from '@/features/navigation/r002bRouteRequest';
 import { localize } from '@/i18n';
 import type { LandscapeId, TextDirection } from '@/models/familyGrowth';
 import { selectCanEnterParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
@@ -55,8 +56,21 @@ const LANDSCAPE_LABEL_KEYS: Readonly<Record<LandscapeId, string>> = {
 
 type LandscapeTrackEntry = readonly [LandscapeId, LandscapeTrackContent];
 
+type GardenRestoreFocusTarget =
+  | 'r002b-garden-path-action'
+  | 'r002b-garden-badges-action'
+  | 'r002b-garden-shared-growth-card'
+  | 'r002b-parent-garden-shared-settings-card';
+
+interface GardenRouteParams extends Record<string, R002bRouteParam> {
+  readonly restoreFocusTarget?: R002bRouteParam;
+  readonly restoreProfileId?: R002bRouteParam;
+  readonly restoreScrollOffset?: R002bRouteParam;
+}
+
 export default function GardenScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams() as unknown as GardenRouteParams;
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -82,11 +96,43 @@ export default function GardenScreen() {
     role === 'child' &&
     (r002bFeatureFlags.r002b_impact_path_ui || r002bFeatureFlags.r002b_badges_ui);
   const r002bSharedGrowthEnabled = r002bFeatureFlags.r002b_shared_growth_view;
+  const restoreProfileId =
+    typeof params.restoreProfileId === 'string' ? params.restoreProfileId : undefined;
+  const requestedRestoreFocus =
+    typeof params.restoreFocusTarget === 'string' ? params.restoreFocusTarget : undefined;
+  const allowedRestoreFocus: GardenRestoreFocusTarget | undefined =
+    role === 'child' &&
+    r002bFeatureFlags.r002b_impact_path_ui &&
+    requestedRestoreFocus === 'r002b-garden-path-action'
+      ? requestedRestoreFocus
+      : role === 'child' &&
+          r002bFeatureFlags.r002b_badges_ui &&
+          requestedRestoreFocus === 'r002b-garden-badges-action'
+        ? requestedRestoreFocus
+        : role === 'child' &&
+            r002bSharedGrowthEnabled &&
+            requestedRestoreFocus === 'r002b-garden-shared-growth-card'
+          ? requestedRestoreFocus
+          : role === 'parent' &&
+              r002bSharedGrowthEnabled &&
+              requestedRestoreFocus === 'r002b-parent-garden-shared-settings-card'
+            ? requestedRestoreFocus
+            : undefined;
+  const restoredFocusTarget = restoreProfileId === activeChildId ? allowedRestoreFocus : undefined;
+  const rawRestoreScrollOffset = params.restoreScrollOffset;
+  const restoredScrollOffset =
+    restoredFocusTarget &&
+    typeof rawRestoreScrollOffset === 'string' &&
+    /^\d+$/u.test(rawRestoreScrollOffset) &&
+    Number(rawRestoreScrollOffset) <= 100_000
+      ? Number(rawRestoreScrollOffset)
+      : 0;
+  const gardenScrollOffsetRef = useRef(restoredScrollOffset);
   const openImpactPath = () => {
     const origin = createR002bOrigin({
       id: 'child_garden_path_card',
       profileId: activeChildId,
-      scrollOffset: 0,
+      scrollOffset: gardenScrollOffsetRef.current,
     });
     if (!origin.ok) return;
     router.push({
@@ -98,7 +144,7 @@ export default function GardenScreen() {
     const origin = createR002bOrigin({
       id: 'child_garden_badges_card',
       profileId: activeChildId,
-      scrollOffset: 0,
+      scrollOffset: gardenScrollOffsetRef.current,
     });
     if (!origin.ok) return;
     router.push({
@@ -110,7 +156,7 @@ export default function GardenScreen() {
     const origin = createR002bOrigin({
       id: 'child_garden_shared_growth_card',
       profileId: activeChildId,
-      scrollOffset: 0,
+      scrollOffset: gardenScrollOffsetRef.current,
     });
     if (!origin.ok) return;
     router.push({
@@ -122,7 +168,7 @@ export default function GardenScreen() {
     const origin = createR002bOrigin({
       id: 'parent_garden_shared_settings_card',
       profileId: activeChildId,
-      scrollOffset: 0,
+      scrollOffset: gardenScrollOffsetRef.current,
     });
     if (!origin.ok) return;
     router.push({
@@ -301,6 +347,16 @@ export default function GardenScreen() {
       contentContainerStyle={styles.screenContent}
       footer={footer}
       header={header}
+      scrollProps={{
+        contentOffset: { x: 0, y: restoredScrollOffset },
+        onScroll: (event) => {
+          gardenScrollOffsetRef.current = Math.max(
+            0,
+            Math.round(event.nativeEvent.contentOffset.y),
+          );
+        },
+        scrollEventThrottle: 16,
+      }}
       testID="garden-screen"
     >
       {role === 'parent' ? (
@@ -415,7 +471,11 @@ export default function GardenScreen() {
       )}
 
       {role === 'child' && r002bGrowthEnabled && r002bGrowth.ok ? (
-        <GardenChapterModule {...r002bGrowth.data.garden} testID="r002b-garden-chapter" />
+        <GardenChapterModule
+          {...r002bGrowth.data.garden}
+          initialFocusTargetId={restoredFocusTarget}
+          testID="r002b-garden-chapter"
+        />
       ) : null}
 
       {role === 'child' && r002bSharedGrowthEnabled ? (
@@ -426,6 +486,7 @@ export default function GardenScreen() {
           language={locale}
           onPress={openSharedGrowth}
           reducedMotion={reducedMotion}
+          restoreFocus={restoredFocusTarget === 'r002b-garden-shared-growth-card'}
           statusLabel={t('r002bGrowth.chapter.sharedGrowthStatus')}
           testID="r002b-garden-shared-growth-card"
           title={t('r002bGrowth.chapter.sharedGrowthEntryTitle')}
@@ -441,6 +502,7 @@ export default function GardenScreen() {
           language={locale}
           onPress={openParentSharedGarden}
           reducedMotion={reducedMotion}
+          restoreFocus={restoredFocusTarget === 'r002b-parent-garden-shared-settings-card'}
           statusLabel={t('r002bSharedGrowth.parent.entryStatus')}
           testID="r002b-parent-garden-shared-settings-card"
           title={t('r002bSharedGrowth.parent.entryTitle')}

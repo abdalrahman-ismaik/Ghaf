@@ -27,7 +27,6 @@ describe('R002b typed origins', () => {
       'child_today_reveal_handoff',
       'child_reveal_growth_action',
       'child_garden_shared_growth_card',
-      'child_league_shared_growth_card',
       'parent_family_progress_card',
       'parent_progress_task_action',
       'parent_garden_shared_settings_card',
@@ -217,12 +216,6 @@ describe('R002b typed origins', () => {
 
   it.each([
     ['child_garden_shared_growth_card', 'child', '/garden', 'r002b-garden-shared-growth-card'],
-    [
-      'child_league_shared_growth_card',
-      'child',
-      '/circle',
-      'r002b-child-league-shared-growth-card',
-    ],
     [
       'parent_garden_shared_settings_card',
       'parent',

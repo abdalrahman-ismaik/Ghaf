@@ -57,14 +57,14 @@ describe('R002b validated Back navigation', () => {
     });
   });
 
-  it('restores the preserved Circle entry when Shared Growth was opened there', () => {
+  it('restores the validated Garden entry when Shared Growth was opened there', () => {
     const replace = vi.fn();
     const onBack = createValidatedBackHandler({
       back: {
         restored: true,
-        href: '/circle',
-        focusTarget: 'r002b-child-league-shared-growth-card',
-        scrollOffset: 0,
+        href: '/garden',
+        focusTarget: 'r002b-garden-shared-growth-card',
+        scrollOffset: 612,
         filter: null,
       },
       profileId: 'child_salem',
@@ -77,11 +77,11 @@ describe('R002b validated Back navigation', () => {
     onBack();
 
     expect(replace).toHaveBeenCalledWith({
-      pathname: '/circle',
+      pathname: '/garden',
       params: {
-        restoreFocusTarget: 'r002b-child-league-shared-growth-card',
+        restoreFocusTarget: 'r002b-garden-shared-growth-card',
         restoreProfileId: 'child_salem',
-        restoreScrollOffset: '0',
+        restoreScrollOffset: '612',
       },
     });
   });

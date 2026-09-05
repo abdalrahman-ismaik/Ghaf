@@ -81,6 +81,7 @@ export interface SharedGrowthEntryCardProps {
   readonly language: SharedGrowthLanguage;
   readonly onPress: () => void;
   readonly reducedMotion: boolean;
+  readonly restoreFocus?: boolean;
   readonly statusLabel: string;
   readonly testID: string;
   readonly title: string;
@@ -193,17 +194,30 @@ export function SharedGrowthEntryCard({
   language,
   onPress,
   reducedMotion,
+  restoreFocus = false,
   statusLabel,
   testID,
   title,
   tone,
 }: SharedGrowthEntryCardProps) {
+  const actionRef = useRef<View>(null);
+  const restored = useRef(false);
+  const focusAfterLayout = () => {
+    if (!restoreFocus || restored.current) return;
+    const handle = findNodeHandle(actionRef.current);
+    if (handle === null) return;
+    restored.current = true;
+    AccessibilityInfo.setAccessibilityFocus(handle);
+  };
+
   return (
     <Pressable
       accessibilityHint={body}
       accessibilityLabel={`${title}. ${statusLabel}. ${body}. ${actionLabel}`}
       accessibilityRole="button"
+      onLayout={focusAfterLayout}
       onPress={onPress}
+      ref={actionRef}
       style={({ pressed }) => [
         styles.entryCard,
         tone === 'parent' ? styles.entryCardParent : styles.entryCardChild,

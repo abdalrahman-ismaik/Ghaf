@@ -21,10 +21,7 @@ interface SharedGrowthParams extends Record<string, R002bRouteParam> {
   readonly originScrollOffset?: R002bRouteParam;
 }
 
-const ALLOWED_ORIGINS = [
-  'child_garden_shared_growth_card',
-  'child_league_shared_growth_card',
-] as const;
+const ALLOWED_ORIGINS = ['child_garden_shared_growth_card'] as const;
 
 export default function SharedGrowthRoute() {
   const params = useLocalSearchParams() as unknown as SharedGrowthParams;

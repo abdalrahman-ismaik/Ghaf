@@ -128,6 +128,8 @@ describe('R002b Growth Journey presentation components', () => {
     }
     expect(source).toContain('currentStageValue');
     expect(source).toContain('lifetimeValue');
+    expect(source).toContain('initialFocusTargetId?: string');
+    expect(source).toContain('restoreFocus={initialFocusTargetId === entry.action?.testID}');
   });
 
   it('features a recommended badge from the same ordered collection without duplicate focus', () => {

@@ -13,7 +13,6 @@ export const R002B_ORIGIN_IDS = [
   'child_today_reveal_handoff',
   'child_reveal_growth_action',
   'child_garden_shared_growth_card',
-  'child_league_shared_growth_card',
   'parent_family_progress_card',
   'parent_progress_task_action',
   'parent_garden_shared_settings_card',
@@ -106,12 +105,6 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
     role: 'child',
     href: 'garden',
     focusTarget: 'r002b-garden-shared-growth-card',
-    entity: 'none',
-  },
-  child_league_shared_growth_card: {
-    role: 'child',
-    href: 'circle',
-    focusTarget: 'r002b-child-league-shared-growth-card',
     entity: 'none',
   },
   parent_family_progress_card: {

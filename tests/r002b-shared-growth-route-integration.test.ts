@@ -135,7 +135,7 @@ describe('R002b Shared Growth route integration', () => {
     const circle = source('app/circle.tsx');
 
     expect(child).toMatch(
-      /const ALLOWED_ORIGINS = \[\s*'child_garden_shared_growth_card',\s*'child_league_shared_growth_card',?\s*\] as const/u,
+      /const ALLOWED_ORIGINS = \[\s*'child_garden_shared_growth_card',?\s*\] as const/u,
     );
     expect(parent).toMatch(
       /const ALLOWED_ORIGINS = \[\s*'parent_garden_shared_settings_card',?\s*\] as const/u,
@@ -147,7 +147,13 @@ describe('R002b Shared Growth route integration', () => {
     expect(garden).toContain("pathname: '/parent/family/shared-garden'");
     expect(circle).toContain('function CircleScreen');
     expect(circle).toContain('testID="circle-screen"');
-    expect(circle).not.toContain("router.replace('/circle/shared-growth')");
+    expect(circle).not.toContain("'/circle/shared-growth'");
+    expect(circle).not.toContain('child_league_shared_growth_card');
+    expect(garden).toContain('restoreFocusTarget');
+    expect(garden).toContain('restoreScrollOffset');
+    expect(garden).toContain('contentOffset');
+    expect(garden).toContain('initialFocusTargetId={restoredFocusTarget}');
+    expect(garden).toContain('restoreFocus={restoredFocusTarget ===');
   });
 
   it('uses confirmation state and deterministic command evidence at the existing store boundary', () => {
