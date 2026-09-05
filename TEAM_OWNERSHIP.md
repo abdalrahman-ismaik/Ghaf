@@ -99,6 +99,13 @@ evidence suite, typecheck, exact lint/format checks, and Git whitespace validati
 Arabic/English, UAE cultural, safeguarding, accessibility-equivalence, and illustration-rights human
 reviews remain NOT RUN, so `r002b_learning_ui` remains default-off and release activation blocked.
 
+**Mangrove-learning resource checkpoint — 2026-09-05**: Every candidate message is now centralized
+under the existing Arabic/English i18next resources and mechanically checked against the sourced
+evidence pack. The focused resource and repository localization suites passed 8 tests together with
+typecheck, exact lint/format checks, and Git whitespace validation. Runtime availability does not
+upgrade content approval: the feature flag remains default-off and all six human review gates remain
+release-blocking.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`

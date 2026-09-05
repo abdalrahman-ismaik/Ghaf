@@ -4,7 +4,8 @@
 
 **Reviewed by automation:** 2026-09-05
 
-**Runtime status:** absent from live copy; `r002b_learning_ui` remains default-off
+**Runtime status:** candidate copy is centralized in `src/i18n/resources.ts`; the
+`r002b_learning_ui` flag remains default-off
 
 **Release status:** blocked until every named human review below is complete
 
@@ -15,10 +16,10 @@ approved in `docs/content/LEARNING_STORIES.md` and the Feature 003 contract. The
 wording in this file is a candidate for human review. Its presence does not authorize release or
 make it canonical runtime copy.
 
-This document is the only source of the candidate wording. The message IDs in the JSON block are
-recommended keys for later, integration-owner-controlled insertion into `src/i18n/resources.ts`.
-No route or feature module should copy these strings directly. A later adapter must deep-freeze its
-structured projection and must not fetch this document or any cited page at runtime.
+This document is the provenance source for the candidate wording. The message IDs in the JSON block
+are mirrored under `src/i18n/resources.ts`, and an automated parity test prevents the localized
+runtime copy from drifting from this evidence. No route or feature module should copy these strings
+directly. Runtime adapters must not fetch this document or any cited page.
 
 ## Evidence classification
 

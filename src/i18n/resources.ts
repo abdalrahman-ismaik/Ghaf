@@ -710,6 +710,58 @@ export const resources = {
         symbolic: 'تقدم رمزي غير مالي',
         future: 'خيار مستقبلي غير مُفعّل',
       },
+      learning: {
+        mangroveRoots: {
+          title: 'بين جذور القرم',
+          objective:
+            'نتعلّم كيف توفر موائل القرم الساحلية مأوى للكائنات، وكيف نعتني بها من دون إيذاء أو تلويث.',
+          story: {
+            frame1: {
+              title: 'موطن عند الساحل',
+              body: 'على سواحل أبوظبي، تنمو غابات القرم قرب المياه الدافئة. وهي موطن محمي للطيور وكائنات بحرية.',
+            },
+            frame2: {
+              title: 'مأوى يحتاج إلى عناية',
+              body: 'العناية بموطن القرم تعني ألا نؤذي الكائنات أو النباتات، وألا نلوّث الماء أو التربة. يمكننا تعلّم ذلك من دون زيارة المكان.',
+            },
+          },
+          accessible: {
+            section1: {
+              heading: 'الفكرة الأساسية',
+              body: 'غابات القرم موائل ساحلية. في أبوظبي تنمو قرب المياه الدافئة، وتوفر مأوى للطيور وكائنات بحرية.',
+            },
+            section2: {
+              heading: 'كيف نعتني بالموطن؟',
+              body: 'لا نؤذي الكائنات أو النباتات، ولا نلوّث الماء أو التربة. لا تحتاج إلى زيارة المكان لتتعلّم هذه الفكرة.',
+            },
+          },
+          check: {
+            prompt: 'أي اختيار يجمع بين وظيفة موطن القرم وطريقة العناية به؟',
+            option: {
+              habitatSupportAndCare:
+                'موائل القرم توفر مأوى للكائنات الساحلية، ونعتني بها من دون إيذاء أو تلويث.',
+              visitOrTaskReward: 'الزيارة أو مكافأة التطبيق وحدهما.',
+            },
+            retry:
+              'ليس بعد. لا تحتاج إلى زيارة، ولا يمنح الدرس مكافأة. اختر الإجابة التي تجمع بين المأوى والعناية، ثم حاول مجددًا.',
+            success:
+              'صحيح. موائل القرم توفر مأوى للكائنات الساحلية، والعناية بها تعني تجنب الإيذاء والتلويث.',
+          },
+          disclosure:
+            'هذا درس محلي بلا مكافآت: لا يمنح بذورًا أو نموًا، ولا يثبت زيارة أو أثرًا بيئيًا.',
+          sources: {
+            note: 'معلومات هذا الدرس مرشحة من صفحات رسمية لهيئة البيئة – أبوظبي وبلدية دبي، وتنتظر مراجعة بشرية قبل الإصدار.',
+          },
+          route: {
+            accessibleLabel: 'نسخة نصية مختصرة',
+            storyLabel: 'نسخة القصة',
+          },
+          action: {
+            continue: 'متابعة',
+            complete: 'إكمال التعلّم',
+          },
+        },
+      },
     },
   },
   en: {
@@ -1443,6 +1495,58 @@ export const resources = {
         prepared: 'Prepared',
         symbolic: 'Symbolic nonfinancial progress',
         future: 'Future option, not enabled',
+      },
+      learning: {
+        mangroveRoots: {
+          title: 'Among the Mangrove Roots',
+          objective:
+            'We learn how coastal mangrove habitats shelter living things and how to care for them without harm or pollution.',
+          story: {
+            frame1: {
+              title: 'A home by the coast',
+              body: "Along Abu Dhabi's coast, mangrove forests grow by warm waters. They provide sheltered habitat for birds and marine life.",
+            },
+            frame2: {
+              title: 'Shelter that needs care',
+              body: 'Caring for a mangrove habitat means not harming wildlife or plants and not polluting water or soil. We can learn this without visiting the place.',
+            },
+          },
+          accessible: {
+            section1: {
+              heading: 'Main idea',
+              body: 'Mangrove forests are coastal habitats. In Abu Dhabi, they grow by warm waters and shelter birds and marine life.',
+            },
+            section2: {
+              heading: 'How do we care for the habitat?',
+              body: 'We do not harm wildlife or plants, and we do not pollute water or soil. You do not need to visit the place to learn this idea.',
+            },
+          },
+          check: {
+            prompt: 'Which choice connects what mangrove habitat does with how we care for it?',
+            option: {
+              habitatSupportAndCare:
+                'Mangrove habitats shelter coastal life, and we care for them without harming or polluting.',
+              visitOrTaskReward: 'A visit or an app reward on its own.',
+            },
+            retry:
+              'Not yet. You do not need to visit, and the lesson gives no reward. Choose the answer that connects shelter with care, then try again.',
+            success:
+              'Correct. Mangrove habitats shelter coastal life, and care means avoiding harm and pollution.',
+          },
+          disclosure:
+            'This is local learning with no rewards: it awards no Seeds or growth and does not prove a visit or environmental impact.',
+          sources: {
+            note: 'Candidate lesson facts come from official Environment Agency – Abu Dhabi and Dubai Municipality pages and await human review before release.',
+          },
+          route: {
+            accessibleLabel: 'Concise text version',
+            storyLabel: 'Story version',
+          },
+          action: {
+            continue: 'Continue',
+            complete: 'Complete learning',
+          },
+        },
       },
     },
   },
