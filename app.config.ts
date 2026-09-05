@@ -10,19 +10,28 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'ghaf-mvp',
   version: '0.1.0',
   orientation: 'portrait',
+  icon: './assets/brand/ghaf/app-icon/icon.png',
   scheme: 'ghaf',
   userInterfaceStyle: 'light',
   ios: {
     supportsTablet: true,
     bundleIdentifier: PROVISIONAL_IOS_BUNDLE_IDENTIFIER,
+    icon: './assets/brand/ghaf/app-icon/ios-icon-1024.png',
   },
   android: {
     package: PROVISIONAL_ANDROID_PACKAGE,
     predictiveBackGestureEnabled: true,
+    icon: './assets/brand/ghaf/app-icon/android-legacy-icon-1024.png',
+    adaptiveIcon: {
+      foregroundImage: './assets/brand/ghaf/app-icon/android-adaptive-foreground-1024.png',
+      monochromeImage: './assets/brand/ghaf/app-icon/android-adaptive-monochrome-1024.png',
+      backgroundColor: '#F7F8F3',
+    },
   },
   web: {
     bundler: 'metro',
     output: 'static',
+    favicon: './assets/brand/ghaf/app-icon/favicon-48.png',
   },
   plugins: [
     'expo-router',
@@ -56,6 +65,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           android: ['ar', 'en'],
           ios: ['ar', 'en'],
         },
+      },
+    ],
+    [
+      'expo-splash-screen',
+      {
+        image: './assets/brand/ghaf/app-icon/splash-icon-1024.png',
+        imageWidth: 240,
+        resizeMode: 'contain',
+        backgroundColor: '#F7F8F3',
       },
     ],
   ],
