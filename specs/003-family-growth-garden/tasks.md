@@ -946,24 +946,24 @@ existing Soft Geometric design system; Android and named human gates remain sepa
 
 - [x] T223 Record the R003 completion authority, reserve exact writer boundaries, and define the
       canonical route/state, navigation, access, privacy, and evidence manifest before runtime work.
-- [ ] T224 Write RED route-flow and presentation tests for separate Parent/Child access, removal of
+- [x] T224 Write RED route-flow and presentation tests for separate Parent/Child access, removal of
       the role toggle, exact bottom navigation, Family/Reward/settings destinations, typed
       reauthentication returns, and safe deep-link fallback.
-- [ ] T225 Implement Child profile selection, PIN/picture-sequence, synthetic pairing
+- [x] T225 Implement Child profile selection, PIN/picture-sequence, synthetic pairing
       pending/approval/success, active Child-session projection, and signed-out reset using the
       existing access service boundary.
-- [ ] T226 Replace all normal `/role` handoffs with sign-out/access-safe routes; make `/role` a
+- [x] T226 Replace all normal `/role` handoffs with sign-out/access-safe routes; make `/role` a
       compatibility redirect and expose settings without weakening Parent/Child route guards.
-- [ ] T227 Implement Parent Family overview, selected-Child progress entry, private Family Reward
+- [x] T227 Implement Parent Family overview, selected-Child progress entry, private Family Reward
       plan, Shared Garden entry, and the exact Home/Tasks/Garden/Family bottom navigation.
-- [ ] T228 Implement Parent settings, Child read-only settings, permission grants, paired-device
+- [x] T228 Implement Parent settings, Child read-only settings, permission grants, paired-device
       management, language, deterministic reset, and typed one-use reauthentication screens.
-- [ ] T229 Enable the completed R002b presentations for the local demo with explicit environment
-      rollback, then complete the receipt-only approval Reveal projection or preserve its
-      fail-closed R002a result when any authority is absent.
-- [ ] T230 Run focused and full type/lint/format/unit/export gates; walk both Arabic RTL and English
+- [x] T229 Preserve every completed R002b presentation behind its independent default-off flag,
+      prove explicit environment opt-in and R002a fallback, then complete the receipt-only approval
+      Reveal projection or preserve its fail-closed R002a result when any authority is absent.
+- [x] T230 Run focused and full type/lint/format/unit/export gates; walk both Arabic RTL and English
       LTR journeys at representative phone widths, verify no horizontal overflow or browser errors,
       replay reset/Back/deep links, and record Android/human limitations truthfully.
-- [ ] T231 Perform the final design/craft review, reconcile `DESIGN.md`, limitations, runbook,
+- [x] T231 Perform the final design/craft review, reconcile `DESIGN.md`, limitations, runbook,
       evidence, and task states, inspect exact staged paths, and create cohesive local commits
       without pushing or merging.

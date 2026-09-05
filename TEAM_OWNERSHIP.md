@@ -16,7 +16,8 @@ implementation checkpoint `45b18bc`.
 **User authority**: Complete every missing P0 screen and make the Parent and Child sequences
 coherent. A missing Google Stitch frame is no longer an implementation blocker for this local
 prototype; new surfaces inherit the approved Soft Geometric Ghaf system in `DESIGN.md` and
-`DESIGN_DIRECTION.md`.
+`DESIGN_DIRECTION.md`. Existing R002b presentations remain independently default-off; explicit
+opt-in is for targeted validation only and does not activate release.
 
 **Reserved boundary**: Feature 003 `spec.md`, `plan.md`, `tasks.md`, new completion design-intake
 records, `DESIGN.md`, `DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
@@ -31,6 +32,37 @@ staged, or committed. No package/dependency, production account, network, paymen
 push, merge, deployment, or shared-history rewrite is authorized. The reservation ends after the
 implemented route manifest, focused/full validation, browser walkthrough, truthful limitations,
 and cohesive local commits are handed off.
+
+**Completion and release — 2026-09-06**: Runtime and tests were committed locally as `40fc5fc`;
+the documentation/evidence closeout is the commit containing this paragraph. Final gates passed
+typecheck, lint, formatting, 84 files / 1,044 tests, dependency/configuration checks, Git whitespace,
+and a 38-route web export. Firefox 390×844 passed the scoped Arabic/English journey, revoke/re-pair,
+League, reset/Back, and signed-origin focus/scroll probes with zero console errors. Physical Android
+remains `BLOCKED` because ADB has no attached device and the SDK/Java toolchain is unavailable;
+native and named-human subchecks remain `NOT RUN`. The final design disposition is `recapture`, not
+ship, until an authoritative Android capture exists. The protected user-owned paths remained
+unstaged, no push or merge occurred, and the complete-screen reservation is released to the team.
+
+**Authority-hardening test migration delegation — 2026-09-06**: `/root` retains runtime and
+integration ownership. `/root/session_tests_core` exclusively owns the existing core-flow test
+files `mock-core-flow.test.ts`, `parent-task-flow.test.ts`, `child-task-flow.test.ts`,
+`garden-circle-flow.test.ts`, `child-ai-presentation.test.ts`, `parent-check-in-flow.test.ts`,
+`operator-demo-flow.test.ts`, `prototype-state.test.ts`, `r002a-behavior-characterization.test.ts`,
+and `r002a-child-support-follow-up.test.ts`. `/root/session_tests_growth` exclusively owns the
+existing Growth test files `r002b-progression-store.test.ts`,
+`r002b-reveal-store-integration.test.ts`, `r002b-learning-store.test.ts`,
+`r002b-schema3-ledger-characterization.test.ts`, `r002b-shared-growth-store.test.ts`,
+`r002b-learning-reveal-integration.test.ts`, and `reward-matrix.test.ts`. Both delegations may use
+the shared `tests/helpers/prototypeStore.ts` access helpers but must not edit it, runtime files, or
+each other's files; they return focused green evidence without committing.
+
+`/root/r003_flow_docs` exclusively owns `DEMO_RUNBOOK.md`, `PROTOTYPE_LIMITATIONS.md`,
+`specs/003-family-growth-garden/quickstart.md`, and
+`specs/003-family-growth-garden/contracts/acceptance-contract.md` for the current R003 handoff. It
+must replace operational `/role`/role-selector instructions with the implemented Welcome →
+role-specific synthetic access → experience sequence, preserve clearly marked historical R001 and
+R002a evidence, keep all native/human validation claims truthful, and make no runtime or task-file
+edits. It returns documentation checks without committing.
 
 ## 2026-09-05 Local Run Guide Simplification Window
 

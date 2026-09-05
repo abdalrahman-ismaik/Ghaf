@@ -26,8 +26,22 @@ submission, and the complete atomic/idempotent Parent-approval consequences. The
 hard-code screenshot counters. In particular, private League and Family Reward exist as protected
 domain services but are not currently wired into the Parent dashboard session, and their maps start
 empty. Parent Home therefore must not invent `4/5`, `108/120`, or `120/180`, and it must not relabel
-the cooperative `/circle` route as private League. This bounded visual omission does not weaken the
-preserved League or Family Reward behavior.
+the cooperative `/circle` route as private League. This is preserved R002a history; the R003 Family
+screen now reads a protected local Family Reward projection and the Child `/league` route reads the
+separate private League projection without merging either authority with `/circle`.
+
+R003 completes the local screen journey with distinct synthetic Parent and Child access paths,
+Parent Home/Tasks/Garden/Family navigation, Child Today/Garden/League navigation, Family Reward,
+settings, permissions, devices, reauthentication, and Child read-only settings. `/role` is now a
+compatibility redirect to Welcome, not a selectable authority. A Parent/Child change signs out the
+current experience and requires the receiving access path. These screens are local prototype
+interactions; they do not prove identity, protect a production account, or persist authorization.
+
+The R003-only screens without approved Stitch frames are documented code-native Soft Geometric
+candidates built from the existing theme and tokens. Their existence is not Google Stitch approval,
+asset approval, physical Android acceptance, or release activation. Final focused/full validation
+and bilingual browser-proxy evidence are recorded against runtime checkpoint `40fc5fc`; the frozen
+R001/R002a evidence below was not reused as R003 acceptance.
 
 The prototype does not claim production authentication/security, real pairing or biometrics, real
 Child voice capture/analysis, payment/custody, environmental measurement, rights clearance, named
@@ -40,21 +54,23 @@ grounding, and sustainability storytelling. It is not production-ready and must 
 an authenticated child service, social network, diagnostic product, religious authority, verified
 impact platform, or legally compliant deployment.
 
-As of 2026-08-28, Feature 003 is implemented as a deterministic local P0. Automated checks and
-Arabic/English web-proxy journeys have passed; physical Android and named human reviews remain
-`BLOCKED` or `NOT RUN` as recorded in `DEMO_RUNBOOK.md`. The documents under `docs/` preserve the
-earlier Feature 002 food-rescue evidence and do not pass current native or human criteria.
+As of 2026-09-06, the R003 complete-screen source is a locally validated integration candidate.
+Typecheck, lint, formatting, 84 files / 1,044 tests, a 38-route web export, and the scoped Arabic/
+English Firefox proxy journeys passed. Physical Android is `BLOCKED` because no device or configured
+SDK/toolchain is available; native subchecks and named human reviews remain `NOT RUN`. The documents
+under `docs/` preserve earlier Feature 002 food-rescue evidence and do not pass current native or
+human criteria.
 
 ## P0 Capability Matrix
 
-| Classification                 | Feature 003 treatment                                                                                                                                                                                                              |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Target real interaction        | Preserved routes and behavior plus the authorized R002a presentation sequence; Arabic/English direction; task creation/execution/support; Parent approval/retry; deterministic Seeds; privacy-filtered garden/circle update; reset |
-| Prepared and synthetic         | Two Child profiles, one household, cousin-circle aggregates, task catalog, image/voice fixtures, assistant conversations, Parent observations, cultural phrase options                                                             |
-| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                               |
-| Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`   |
-| Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                        |
-| Future production work         | Accounts, consent, age assurance, privacy controls, real media, persistence, real family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release                               |
+| Classification                 | Feature 003 treatment                                                                                                                                                                                                               |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Target real interaction        | Separate local Parent/Child access screens; Arabic/English direction; task creation/execution/support; Parent approval/retry; deterministic Seeds; private League/Reward views; privacy-filtered garden/circle update; Parent reset |
+| Prepared and synthetic         | Parent verification, Child PIN/picture credentials, pairing/devices/permissions, two Child profiles, one household, League/circle aggregates, Family Reward promise, task catalog, media/assistant fixtures, Parent observations    |
+| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                |
+| Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`    |
+| Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                         |
+| Future production work         | Accounts, secure authentication/recovery, consent, age assurance, persistent privacy controls, real media, family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release       |
 
 The required judge journey must complete with every external request denied. Prepared or simulated
 AI is labeled as such and never presented as live inference.
@@ -108,7 +124,7 @@ trusted-adult path, minimum data, and current provider/UAE requirements.
 
 The later in-route voice presentation remains a rehearsal over one canonical bilingual transcript.
 It starts disabled, requires a distinct stored synthetic Parent voice and AI grant, and never treats
-assignment approval or the shared-device role selector as permission. Its active indicator does not
+assignment approval, a presentation role value, or Child credential entry as permission. Its active indicator does not
 mean a microphone is open. Stop loads prepared text, simulated replay changes a counter only, and
 send closes the rehearsal without model processing or evidence attachment.
 
@@ -129,8 +145,12 @@ general suggestion rather than an AI conclusion.
 
 ## Shared-Device and Social Limits
 
-The role selector is a demo shortcut, not authentication. Therefore every profile, Parent note,
-message, and circle record in P0 is synthetic.
+R003 no longer offers a normal Parent/Child role selector. Welcome opens separate deterministic
+Parent verification/setup or Child profile/credential/pairing paths, and `/role` redirects to
+Welcome. The local sessions improve flow isolation for the prototype but are still synthetic and
+in-memory; they are not production authentication, secure device trust, or proof of guardian/Child
+identity. Therefore every profile, pairing, permission, Parent note, message, League row, Reward
+plan, and circle record in P0 is synthetic.
 
 The circle screen is a local simulation of a cooperative dashboard. It does not implement:
 
@@ -177,6 +197,9 @@ environmental change.
 - Do not apply impact numbers to prayer, kinship, kindness, hospitality, heritage, wellbeing, or
   ordinary household tasks.
 - Food safety remains a Parent decision; AI does not decide whether food is edible.
+- The current executable P0 action is recycling and does not calculate a food-rescue quantity. Any
+  later food-rescue demonstration must use a Parent-confirmed observable quantity, label it
+  self-reported/estimated, and cite an approved conversion method before making an outcome claim.
 - Children report leaks, electrical issues, chemicals, glass, sharps, batteries, unknown waste, and
   unsafe litter to an adult rather than touching or repairing them.
 
@@ -210,6 +233,8 @@ and applicable terms at implementation time. Do not rely on a copied summary as 
 The implemented Feature 003 technical limits are:
 
 - state may remain in memory and reset on reload;
+- Parent verification, Child credentials, pairing, devices, permission grants, and reauthentication
+  use visible fixed local fixtures and provide no production security;
 - all new profiles, tasks, awards, growth, circle data, and assistant responses are local fixtures;
 - no native photo capture, recording, background audio, or real upload exists;
 - native direction changes may require reopen/reload;
@@ -221,16 +246,19 @@ The implemented Feature 003 technical limits are:
 
 ## Product Experience Redesign Domain Limits
 
-The post-P0 redesign code currently proves rules and state transitions only:
+The post-P0 redesign code proves local rules/state transitions and now presents the R003 access,
+Family, Reward, settings, permissions, devices, reauthentication, Child settings, and League
+surfaces. It still does not establish any production capability:
 
 - Parent/Child sessions, pairing codes, reauthentication proofs, devices, and permissions are fixed
   synthetic values. They do not authenticate a person, protect secrets, survive reinstall, recover
   an account, establish consent, or provide a production security boundary.
-- Family Reward values are private promise metadata. Ghaf does not hold money, transfer value,
-  purchase anything, guarantee fulfillment, resolve disputes, or convert Seeds to currency. The
-  current evaluator consumes strict Parent-authorized candidate fixtures; authoritative
-  confirmation/Garden-store event wiring is deferred with the frontend integration.
-- League members are synthetic fixtures. There is no real invitation, family relationship check,
+- Family Reward values are private synthetic promise metadata shown only through the Parent
+  projection. Ghaf does not hold money, transfer value, purchase anything, guarantee fulfillment,
+  resolve disputes, or convert Seeds to currency. Eligibility remains fail-closed for unknown or
+  prohibited task/version provenance.
+- League members and the Child League screen are synthetic fixtures. There is no real invitation,
+  family relationship check,
   contact, moderation, report, block, retention, deletion, notification, or cross-household service.
 - The League projection is a separate allowlisted model and does not weaken the existing
   identity-free Green Circle. Its rank is a synthetic weekly calculation, not a judgment of effort,
@@ -254,7 +282,8 @@ results, and no default-off flag may be activated for release without its applic
 Use this language during the pitch:
 
 > Ghaf's interaction, reward logic, bilingual experience, and deterministic family journey are the
-> prototype. The children, media, family-circle data, and assistant conversations are synthetic.
+> prototype. Parent/Child access, credentials, pairing, devices, permissions, the children, media,
+> League/circle data, Family Reward promise, and assistant conversations are synthetic.
 > Prepared AI responses keep the live demo reliable; any enabled remote AI is separately labeled
 > and falls back safely. The garden is symbolic and no diagnosis, religious judgment, real social
 > sharing, or verified environmental-impact claim is made.

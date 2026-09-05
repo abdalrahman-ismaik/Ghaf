@@ -38,8 +38,14 @@ remain excluded from release navigation until their applicable validation and re
 The remote acceptance oracles below remain current R002a behavior and regression evidence. The
 approved R002b amendment adds only the default-off acceptance boundaries in AC-00B.
 
-**Status**: ACTIVE for frozen R002a regression and authorized default-off R002b implementation. No
-check is passed by this document alone.
+The R003 complete-screen amendment supersedes the old operational ten-route count and shared role
+selector wherever they conflict with the current journey. It adds separate synthetic Parent and
+Child access, the exact Parent/Child navigation, Family/Reward/settings surfaces, and documented
+code-native candidates without changing the preserved task, recognition, reward, privacy, or
+Growth authorities. `/role` remains in source only as a compatibility redirect to `/`.
+
+**Status**: ACTIVE for R003 screen-completion acceptance, frozen R001/R002a regression, and
+authorized default-off R002b implementation. No check is passed by this document alone.
 
 **Primary acceptance surface**: named physical Android build, Arabic RTL first and English LTR
 second.
@@ -114,10 +120,58 @@ equal-credit learning; RevealBundle parity/recovery; Shared Growth privacy/parti
 and feature-flag rollback. Physical Android, TalkBack, native Back/IME, and OS font scaling remain
 release blockers until directly observed.
 
-## Preserved Remote Authored Route and Guard Contract
+## AC-00C — R003 Complete-Screen and Access Acceptance
 
-Before R001, the remote application contains exactly these ten product routes. R001 preserves all
-ten route files, replaces the `/` composition in place, and adds exactly six approved
+R003 changes the operational route journey, not the underlying task/reward authority. The current
+source inventory contains 36 product route files. `/role` is counted only as a compatibility route;
+nine R002b route files remain independently default-off candidates rather than released
+destinations.
+
+| Group             | Required routes and acceptance                                                                                                                                                                                                                                                                                                      |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Entry             | `/` offers distinct Parent and Child actions in Arabic first; `/role` redirects to `/` and cannot create a session or mutate state                                                                                                                                                                                                  |
+| Parent access     | `/access/parent/sign-in`, `/access/parent/verification`, `/access/parent/family-basics`, `/access/parent/add-first-child`, `/access/parent/review-create`, and modal `/access/parent/family-created-success`; first-family setup is idempotent and a returning verified Parent reaches Parent Home                                  |
+| Child access      | `/access/child`, `/access/child/pin`, and `/access/child/pair`; synthetic Salem PIN and Alya picture sequence are profile-bound, pairing is Parent-approved/one-use, and every surface says it is not production authentication                                                                                                     |
+| Parent experience | `/parent`, `/parent/task/new`, `/parent/task/review`, `/parent/check-in`, `/parent/family`, `/parent/family/reward`, `/parent/settings`, `/parent/settings/permissions`, `/parent/settings/devices`, and `/parent/reauthenticate` require an active Parent experience                                                               |
+| Child experience  | `/child`, `/child/task`, `/child/settings`, and `/league` require the matching active Child experience; settings expose only the Child's own read-only permissions                                                                                                                                                                  |
+| Shared role-aware | `/garden` and `/circle` render only safe data for the active experience and never infer a completion on entry                                                                                                                                                                                                                       |
+| R002b candidates  | `/child/reveal/:bundleId`, `/garden/impact-path`, `/garden/badges`, `/garden/badges/:badgeId`, both `/garden/learn/:learningId/**` routes, `/circle/shared-growth`, `/parent/family/:profileId/progress`, and `/parent/family/shared-garden` stay hidden or safely unavailable unless their individual flags and prerequisites pass |
+
+### R003 navigation, guard, and handoff assertions
+
+1. Parent bottom navigation is exactly **Home, Tasks, Garden, Family**. Child bottom navigation is
+   exactly **Today, Garden, League**. Rewards, settings, permissions, devices, reauthentication,
+   Impact Path, Badges, Learning, Shared Growth, and Reveal are contextual destinations only.
+2. There is no normal role toggle. Every Parent/Child change terminates the active synthetic
+   session and returns through Welcome or an explicit access handoff. If termination fails, the
+   route does not navigate and shows a recoverable error.
+3. A signed-out private-route deep link falls back to `/`. An active Child entering any Parent or
+   Parent-access route returns to `/child`; an active Parent entering any Child or Child-access
+   route returns to `/parent`. No rejected deep link mutates task, reward, or access state.
+4. A new Child device follows credential verification → pairing request → Parent sign-in and
+   verification → `/parent/settings/devices` approval → signed-out handoff back to
+   `/access/child/pair` → one completion → `/child`. Wrong-actor, expired, replayed, revoked,
+   mismatched, or stale-session inputs fail closed.
+5. Parent permission changes originate at `/parent/settings/permissions`, pass only the allowlisted
+   profile/kind/value and return target into `/parent/reauthenticate`, accept local demo code `4242`
+   once for that action, and change nothing for an invalid code. Child settings cannot invoke the
+   mutation.
+6. Parent Family exposes the private Family Reward and only flag-available Parent Progress/Shared
+   Garden entries. The Reward plan is read from its authority, remains private, and follows
+   `promised → unlocked → given`; a screen cannot calculate or force an unlock.
+7. Parent-authorized reset is available only in an active Parent experience and atomically returns
+   to signed-out Arabic RTL `/`, invalidates both session types and transient pairing/grant proofs,
+   restores the deterministic fixture, and leaves no stale Back destination.
+8. The normal default-off approval path retains the R002a result whenever complete RevealBundle
+   consequence parity is unavailable. A route file or explicit local test flag is not release
+   activation.
+
+## Historical R001/R002a Authored Route and Guard Contract
+
+The table below preserves the pre-R003 remote oracle and completed R001/R002a regression history; it
+is not the current operator route inventory. Before R001, the remote application contained exactly
+these ten product routes. R001 preserved all ten route files, replaced the `/` composition in
+place, and added exactly six approved
 `/access/parent/**` route files, so its post-integration inventory is exactly 16. Framework files
 such as `app/_layout.tsx` are not product routes. Loading, assistant, fallback, retry,
 awaiting-confirmation, phase-review, and celebration remain states of their owning routes.
@@ -179,11 +233,13 @@ Historical Feature 002 specifications, documentation, screenshots, and evidence 
    pre-reset history after reset. Record the config output, build, device, and OS with the native
    observation.
 
-## Preserved Remote Schema-3 Reset Oracle
+## Historical R002a Schema-3 Reset Value Oracle
 
-The 48-Seed personal reset below is the verified remote and current R002a compatibility oracle.
-Mangrove remains 48/60→60/60. Any cumulative 108→120→180 change belongs to R002b and requires a
-separately approved, validated, versioned runtime migration.
+The 48-Seed personal reset below is the verified remote R002a compatibility-value oracle. R003
+retains the listed household/task/reward values but AC-00C supersedes its access row: reset now
+lands signed out on Arabic `/`, with no active session, pairing request/device, or transient proof.
+Mangrove remains 48/60→60/60 in the default-off presentation. Any cumulative 108→120→180 display
+belongs to the independently flagged R002b projection.
 
 The Parent-only **Reset synthetic demo** action requires confirmation and MUST restore all values in
 one action without a remote dependency.
@@ -192,7 +248,7 @@ one action without a remote dependency.
 | ------------------------------ | -------------------------------------------------------------- |
 | Locale / direction             | Arabic / RTL                                                   |
 | Route / history                | `/`; no stale Back history                                     |
-| Demo mode                      | Parent; role switch labeled not authentication                 |
+| Historical R002a demo mode     | Parent; role switch labeled not authentication                 |
 | Household                      | Synthetic Al Noor family                                       |
 | Children                       | Salem, age 9; Alya, age 11; both visibly synthetic             |
 | Active Child                   | Salem                                                          |
@@ -216,10 +272,11 @@ Reset MUST be exercised from draft, prepared-assistant result, prepared fallback
 selected, prepared-media removed, image/audio unavailable fallback, reviewed, assigned, chosen,
 `in_progress`, submitted, retry, confirmed/recognized, celebration available, celebration
 consumed, garden, circle, voice active-rehearsal, voice transcript-review, and voice sent states.
-From a Child-only state, first switch to Parent demo mode
-without manually changing counters, then invoke reset. Acceptance requires five consecutive exact
-resets from every named source state; one mismatch is `FAILED` and must not be repaired by manually
-editing counters.
+In the historical R002a flow, a Child-only state first switched to Parent demo mode. R003 must
+instead terminate the Child session, complete Parent access, then invoke reset from the active
+Parent experience; changing a mutable presentation role alone cannot authorize reset. Acceptance
+requires five consecutive exact resets from every named source state; one mismatch is `FAILED` and
+must not be repaired by manually editing counters.
 
 ## Preserved Remote Schema-3 Lifecycle and No-Early-Reward Oracle
 
@@ -434,12 +491,18 @@ attempt, a missing named dependency makes it `BLOCKED`, while an executed check 
 
 From a fresh reset, complete the route sequence below without hidden setup:
 
-`/ → /role → /parent → /parent/task/new → /parent/task/review → /role → /child → /child/task → /role → /parent/check-in → /garden → /circle`
+`/ → Parent access/verification → first-family setup when required → /parent → /parent/task/new → /parent/task/review → Child access/credential → pairing when required → /child → /child/task → / → Parent access/verification → /parent → /parent/check-in → /garden → /circle → Child access/credential → /child → /garden → /league`
 
-Although several routes recur in navigation, the inventory remains exactly ten authored routes.
-The current internal target is 120–150 seconds; it is not a published SMAC judging rule. Run five
-uninterrupted rehearsals and record operator, duration, reset result, fallback use, and failure note.
-All five must complete at or below 150 seconds for the rehearsal criterion to pass.
+No step uses `/role`; each Parent/Child handoff ends the current synthetic session and requires the
+receiving access path. For a fresh device, include the Parent-approved pairing return through
+`/parent/settings/devices`. The frozen R002a journey previously traversed ten authored routes, but
+that count is historical and does not constrain the current 36-file R003 inventory.
+
+The 120–150 second figure was the internal target for the shorter R002a path and is not a published
+SMAC judging rule. Time the complete R003 path afresh before setting a new target. Run five
+uninterrupted rehearsals and record operator, duration, reset result, access/pairing branch,
+fallback use, and failure note; do not mark the rehearsal criterion passed until the team approves
+and meets one recorded R003 target.
 
 Ask three people unfamiliar with the detailed design what Salem did, what the assistant did, who
 approved the reward, and what another family can see. Record enough of each answer to verify they
@@ -453,21 +516,21 @@ appropriate. It does not validate Android RTL layout, native Back, keyboard/IME,
 targets, screen reader, reduced-motion setting, prepared native media, permissions, performance, or
 an installable build.
 
-At planning time, preserve these truthful initial statuses:
+The current R003 closeout preserves these truthful statuses:
 
 The physical Android row is `BLOCKED` because the recorded baseline availability attempt already
 identified the missing named build/device; `BLOCKED` is not the default for an unattempted
 exercise. Each native subcheck remains `NOT RUN` until it is attempted.
 
-| Gate                                                                                                 | Initial Feature 003 status                     |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Automated implementation commands                                                                    | `NOT RUN`                                      |
-| Ten-route deterministic journey                                                                      | `NOT RUN`                                      |
-| Arabic RTL and English LTR physical journey                                                          | `BLOCKED` pending named build/device           |
-| Predictive/native Back, WCAG contrast, keyboard, media, reduced motion, screen reader, and 200% font | `NOT RUN`                                      |
-| Five timed rehearsals and three-person comprehension                                                 | `NOT RUN`                                      |
-| Arabic/UAE cultural, faith, safeguarding, sustainability, and accessibility reviews                  | `NOT RUN`                                      |
-| Optional live Parent refinement                                                                      | implementation `BLOCKED`; validation `NOT RUN` |
+| Gate                                                                                                 | Current Feature 003 status                      |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Automated implementation commands                                                                    | `PASSED` — runtime checkpoint `40fc5fc`         |
+| R003 role-separated deterministic journey                                                            | `PASSED (web proxy)` — Arabic/English 390×844   |
+| Arabic RTL and English LTR physical journey                                                          | `BLOCKED` — no attached device or SDK/toolchain |
+| Predictive/native Back, WCAG contrast, keyboard, media, reduced motion, screen reader, and 200% font | `NOT RUN`                                       |
+| Five timed rehearsals and three-person comprehension                                                 | `NOT RUN`                                       |
+| Arabic/UAE cultural, faith, safeguarding, sustainability, and accessibility reviews                  | `NOT RUN`                                       |
+| Optional live Parent refinement                                                                      | implementation `BLOCKED`; validation `NOT RUN`  |
 
 ## Release Boundary
 
@@ -475,6 +538,10 @@ R002a is complete within AC-00A and remains the fallback. R002b implementation i
 within AC-00B and remains default-off for release. No local implementation or automated pass may
 activate a release flag without the separately recorded applicable native, content, provenance,
 accessibility, and human-review evidence.
+
+R003 screen completion is accepted only within AC-00C. Route/source presence, synthetic access
+tests, and browser proxy evidence may establish a local implementation candidate, but they do not
+prove production authentication, Android behavior, cultural/content approval, or release readiness.
 
 Feature 003 MUST NOT be called **Android-accepted** or **demo-accepted** until the physical bilingual
 journey, offline fallback, predictive/native Back, WCAG contrast, reset/media/accessibility checks,

@@ -1,6 +1,89 @@
 # Ghaf Feature 003 Demo Runbook
 
-## Revision 3 / R002b Evidence Boundary — 2026-09-05
+## R003 Complete-Screen Integration Record — 2026-09-06
+
+**Current classification:** local implementation candidate; not Android-accepted, human-reviewed,
+or demo-accepted.
+
+The current integration worktree is `integration/r3-complete-screens-20260905`. Runtime and tests
+are checkpointed locally at `40fc5fc`; this evidence record is committed separately in the local
+closeout commit. Neither commit was pushed or merged during this window.
+
+R003 replaces the normal shared `/role` selector with separate synthetic access journeys. `/role`
+remains only as a compatibility redirect to `/`; it grants no role, session, Child selection, or
+private capability. Every Parent/Child change signs out the current experience and requires the
+receiving access path. The fixed identifier, codes, Child credentials, pairing, devices,
+permissions, and reauthentication are visible local simulations—not production authentication or
+security.
+
+### Current route and navigation contract
+
+- Parent tabs: **Home, Tasks, Garden, Family**.
+- Child tabs: **Today, Garden, League**.
+- Family Reward, settings, permissions, devices, reauthentication, Impact Path, Badges, Learning,
+  Reveal, Parent Progress, Shared Growth, and Shared Garden are contextual routes, never extra tabs.
+- Source inspection finds 36 product route files, excluding `_layout.tsx` and `+html.tsx`. One is
+  the `/role` compatibility redirect and nine are independently default-off R002b candidates.
+- The new Parent Family/Reward/settings and Child access/settings screens without an approved
+  Stitch frame are documented code-native Soft Geometric candidates. They use the existing Ghaf
+  theme; their presence is not Stitch approval or release evidence.
+
+### Current Arabic-first judge spine
+
+```text
+/
+→ /access/parent/sign-in → /access/parent/verification
+→ first-family setup when required → /parent
+→ /parent/task/new → /parent/task/review
+→ /access/child → /access/child/pin → /access/child/pair when required
+→ Parent access/verification → /parent/settings/devices → /access/child/pair
+→ /child → /child/task → /
+→ Parent access/verification → /parent → /parent/check-in
+→ /garden → /circle
+→ / → Child access/credential → /child → /garden → /league
+```
+
+Use Parent verification code `424242`, Salem PIN `2468`, Alya's Leaf → Water → Tree picture
+sequence, and action-scoped Parent reauthentication code `4242` only where the UI visibly labels
+them as local demo fixtures. A previously paired Child skips only the pairing approval branch, not
+profile credential entry. After recognition, the normal default-off path keeps the R002a result;
+do not fabricate or force the combined RevealBundle.
+
+### Complete-screen sweep after the core spine
+
+1. Parent Family → private Family Reward → Family.
+2. Parent settings → permissions → typed reauthentication → permissions.
+3. Parent settings → paired devices; verify revoke and the required re-pair path.
+4. Child settings; verify own permission state is read-only and sign-out returns to Welcome.
+5. With all R002b flags off, verify that Impact Path, Badges, Learning, Reveal, Parent Progress,
+   Shared Growth, and Shared Garden entries are absent or safely unavailable. Explicit local flag
+   overrides inspect candidates only and do not activate a release.
+
+### R003 evidence status at closeout
+
+| Gate                                                                                         | Status                           | Direct evidence / next requirement                                                                                                                                                |
+| -------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 36-file route/source manifest and `/role` redirect                                           | `PASSED` source inspection       | Runtime checkpoint `40fc5fc`; nine optional candidate routes remain guarded and `/league` remains canonical                                                                       |
+| Exact Parent/Child tab labels and contextual-route separation                                | `PASSED` source inspection       | `tests/r003-screen-flow.test.ts` and the final full suite                                                                                                                         |
+| Focused access/navigation/reveal/localization suites                                         | `PASSED`                         | 15 files / 135 tests on 2026-09-06                                                                                                                                                |
+| Complete repository suite and static/export gate                                             | `PASSED`                         | Typecheck, lint, format, 84 files / 1,044 tests, dependency alignment, public Expo config, `git diff --check`, and 38-route web export                                            |
+| Fresh Arabic/English complete-screen browser walk                                            | `PASSED (web proxy)`             | Firefox 390×844; role-specific access, Parent approval, revoke/re-pair, Today, Family/Reward, League, reset, Back, signed origins, RTL/LTR, and width checks; zero console errors |
+| Optional Parent Progress and Shared Garden origin restoration                                | `PASSED (flagged web proxy)`     | Explicit local opt-in only: Progress restored `280 → 280` with action focus; Shared Garden restored `498 → 498` with action focus; flags remain default-off                       |
+| Final design/craft review                                                                    | `PASSED` source/web; `recapture` | The code-native screens match the Ghaf system, but no authoritative native Android capture exists; disposition is recapture, not ship                                             |
+| Physical Android Arabic/English journey                                                      | `BLOCKED`                        | `/usr/bin/adb` reports no attached device; `emulator`, `sdkmanager`, and `java` are missing; `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and `JAVA_HOME` are unset                        |
+| TalkBack, native Back/IME, safe areas, reduced motion, permissions, and 200% OS text         | `NOT RUN`                        | Must be observed on the named physical Android build                                                                                                                              |
+| Arabic/UAE cultural, safeguarding, privacy, sustainability, accessibility, and visual review | `NOT RUN`                        | Requires named reviewers and reviewed content/build versions                                                                                                                      |
+| Five rehearsals and three-person comprehension                                               | `NOT RUN`                        | Time the longer R003 access/pairing path before approving a rehearsal target                                                                                                      |
+| Live Parent AI, real Child media, real auth/pairing, invitations, and payment                | `BLOCKED` or out of P0           | Demonstrate only the honestly labeled deterministic local fixtures                                                                                                                |
+
+The Firefox warning ledger contained generated-bundle unreachable-code and font-preload timing
+warnings. It contained zero application console errors; those warnings do not constitute native
+Android evidence.
+
+The sections below preserve named R001, R002a, and R002b checkpoints. They are regression history,
+not fresh R003 acceptance evidence.
+
+## Preserved Revision 3 / R002b Evidence Boundary — 2026-09-05
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
@@ -90,11 +173,15 @@ reduced-motion outcomes with zero document horizontal overflow. The League matri
 and Learning/approval Reveal remain truthfully blocked. Browser evidence does not pass Android,
 TalkBack, native Back/IME, system font scaling, or human-review gates.
 
-## R002a Final Validation Evidence — 2026-09-05
+## Preserved R002a Final Validation Evidence — 2026-09-05
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
 > **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+
+The quoted R002b gate above is retained as the status at the time of this R002a record. It was
+superseded by the approved default-off R002b contract and does not describe the current R003
+implementation authority.
 
 Validation was recorded on branch `integration/r3-r002a-implementation-20260904` with
 implementation and test evidence through `a0539e9`. The automated/source, export, browser-proxy,
@@ -140,17 +227,22 @@ checkpoint. State-specific Stitch frames, matched English reference PNGs, and na
 also remain open. Exact commands, screenshots, deviations, and evidence boundaries are in the
 [detailed R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
 
+## Preserved 2026-08-28 R002a Evidence Record
+
 **Target:** Family Growth Garden deterministic P0
 **Status date:** 2026-08-28
 **Primary target:** physical Android device, Arabic RTL first; English LTR second
-**Internal presentation target:** 120–150 seconds; this is not a published SMAC judging rule
+**Historical internal presentation target:** 120–150 seconds for the shorter R002a path; this is
+not a published SMAC judging rule and is not yet an approved R003 timing target
 
-## Evidence Truth
+### Historical evidence truth
 
-Feature 003 has a deterministic post-convergence implementation, a final 17-file / 305-test pass,
+The 2026-08-28 R002a checkpoint has a deterministic post-convergence implementation, a final
+17-file / 305-test pass,
 and complete Arabic RTL and English LTR ten-route Firefox journeys. The mounted reset fix passed
 document locale/direction and six consecutive real Back actions. It is **not demo-accepted**: physical Android
 is blocked, live AI is unavailable, and every named human-review gate remains open.
+These results remain valid regression evidence but do not pass the current R003 route/access flow.
 Earlier Feature 002 results prove only the reusable food-rescue baseline and are not used below.
 
 | Feature 003 evidence item                               | Status                                  | Evidence required to change status                                                                                       |
@@ -177,14 +269,20 @@ Feature 002 test still passes.
 
 ## Preserved Remote Canonical Reset State
 
-Feature 003 implementation must expose one Parent-only `resetPrototype()` action that produces the
-following exact state without network access.
+The table below preserves the R002a domain-value oracle. R003 retains every listed household,
+task, counter, fixture, and assistant value but changes the access reset overlay: reset is available
+only from an active Parent experience and lands on signed-out Arabic RTL `/` with no active
+Parent/Child session, no paired device or pending pairing, and no transient permission proof.
+`/role` redirects to Welcome and is not a reset value.
+
+The Parent-only `resetPrototype()` action produces the following preserved domain values without a
+network dependency.
 
 | Field                        | Reset value                                                    |
 | ---------------------------- | -------------------------------------------------------------- |
 | Locale/direction             | Arabic / RTL                                                   |
 | Route/history                | `/`; no stale Back history                                     |
-| Demo mode                    | Parent; role switch visibly labeled “not authentication”       |
+| Historical presentation role | Parent in the R002a oracle; R003 access state is signed out    |
 | Household                    | Synthetic Al Noor family                                       |
 | Children                     | Salem, age 9; Alya, age 11; both visibly synthetic             |
 | Active Child                 | Salem                                                          |
@@ -282,21 +380,27 @@ Reset immediately before presenting. Use the verified secure live Parent refinem
 same build/provider passed preflight; otherwise use the prepared deterministic fallback and state
 that it is prepared. Never gamble the core journey on network access.
 
-|     Time | Route/state                  | Operator action                                                                                         | What the judge must understand                                                                                    |
-| -------: | ---------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-|    0–10s | `/`                          | Point out Arabic-first RTL and the synthetic/prepared disclosure; enter                                 | Ghaf is a transparent prototype for real family action                                                            |
-|   10–20s | `/role`                      | Choose Parent and Salem                                                                                 | Two synthetic siblings exist; the role switch is not authentication                                               |
-|   20–32s | `/parent`                    | Show one household canopy and strengths-first Guide summary; tap create                                 | The dashboard is cooperative, not a Child leaderboard                                                             |
-|   32–48s | `/parent/task/new`           | Choose Green Impact and the P0 task; ask Guide to make it clear/safe; point out live or prepared status | A bounded, structured assistant refines a Parent-owned task                                                       |
-|   48–60s | `/parent/task/review`        | Show definition, safety, optional evidence, 12 Seeds, Mangrove; approve                                 | Parent approval precedes assignment and reward                                                                    |
-|   60–70s | `/role` → `/child`           | Switch to Child/Salem and choose the new task                                                           | The Child chooses among approved actions and sees the fixed reward                                                |
-|   70–90s | `/child/task`                | Open Coach steps, play prepared audio or show prepared photo, then submit                               | The intended AI role is bounded task coaching; this response is visibly prepared and media/reflection is optional |
-|  90–108s | `/role` → `/parent/check-in` | Return as Parent; show facts, edit/accept praise, confirm once                                          | Parent recognition—not AI judgment—unlocks the reward                                                             |
-| 108–126s | `/garden`                    | Let 12 Seeds move to Mangrove; show Shoot → Sapling and canopy 19 → 20                                  | Symbolic growth is predictable, permanent, and tied to the action                                                 |
-| 126–145s | `/circle`                    | Show eligible Green actions 11 → 12 and privacy disclosure                                              | Families cooperate through coarse sustainability activity only                                                    |
+Do not reuse the historical 120–150 second allocation for this longer R003 path. Record fresh
+durations during rehearsal, including whether first-family setup and first-device pairing were
+required.
+
+| Phase | Route/state                                                    | Operator action                                                                                                                                                                            | What the judge must understand                                                                                              |
+| ----: | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+|     1 | `/`                                                            | Point out Arabic-first RTL, the synthetic/prepared disclosure, and separate Parent/Child entry actions; choose Parent                                                                      | Ghaf is a transparent prototype for real family action; access is simulated but role-separated                              |
+|     2 | Parent sign-in → verification                                  | Use the visible local fixture and demo code `424242`                                                                                                                                       | Parent verification is deterministic and offline-capable, not production authentication                                     |
+|     3 | First-family setup, when reset requires it                     | Complete family basics, Salem profile, review, and success; returning Parents skip this branch                                                                                             | Setup is synthetic, idempotent, and hands off into the Parent experience                                                    |
+|     4 | `/parent` → `/parent/family` → Reward → Home/Tasks             | Show the combined canopy, private Family Reward promise, and exact Home/Tasks/Garden/Family tabs                                                                                           | Parent Family and Reward data are private; Reward is a promise, not money custody or a Seed exchange rate                   |
+|     5 | `/parent/task/new`                                             | Choose Green Impact and `task_recycling_p0_v1`; ask the prepared Guide to make it clear/safe                                                                                               | A bounded, structured, visibly prepared assistant proposes a change to a Parent-owned task                                  |
+|     6 | `/parent/task/review`                                          | Show definition, adult safety, optional evidence, 12 Seeds, Mangrove, then approve and continue                                                                                            | Parent approval precedes assignment; the handoff signs the Parent out and awards nothing                                    |
+|     7 | Child profile → credential → pairing branch                    | Select Salem, enter `2468`; if unpaired, request pairing, return through Parent verification to Devices, approve, and finish on the Child side                                             | Child access and device pairing are local simulations; Parent approval is explicit and one-use                              |
+|     8 | `/child` → `/child/task`                                       | Choose, separately start, open prepared Coach steps, show optional prepared media, and submit                                                                                              | The Child chooses among approved actions; Coach is task-bound; help/media/reflection are optional; submission awards zero   |
+|     9 | `/` → Parent access → `/parent` → `/parent/check-in`           | Reach Home, open the pending review, edit/accept action-specific praise, confirm, visibly present praise, then use the separate recognition continuation                                   | Parent recognition—not AI judgment—commits the fixed reward exactly once                                                    |
+|    10 | `/garden` → `/circle`                                          | Show Mangrove Shoot → Sapling, canopy 19 → 20, and one coarse Green action 11 → 12                                                                                                         | Symbolic Garden growth is predictable/permanent; Circle is privacy-filtered activity, not measured impact or private League |
+|    11 | Sign out → Child credential → `/child` → `/garden` → `/league` | Re-enter the paired Child, show Today/Garden/League tabs and the private five-Leaf League                                                                                                  | League is private, capped, and separate from Circle, Seeds, and Family Reward                                               |
+|    12 | Settings and final reset sweep                                 | Re-enter Parent for settings, permission change through reauthentication `4242`, and paired devices; sign out and re-enter Child for read-only settings; finally re-enter Parent and reset | Sensitive changes stay Parent-controlled; Child sees only own permission state; reset returns signed out to Arabic Welcome  |
 
 Suggested spoken close: “Ghaf helps families turn safe, useful actions into routines through choice,
-specific Parent recognition, live or visibly prepared assistant support, and a shared UAE living
+specific Parent recognition, visibly prepared assistant support, and a shared UAE living
 landscape—without public ranking, punishment, or pretending that a digital tree is a real
 environmental measurement.”
 
@@ -385,7 +489,16 @@ score, truthfulness score, religiosity, or parenting quality.
 
 ## Expected Screen Evidence
 
-- All ten routes are reachable through the authored flow; assistant/loading/celebration are states.
+- All 36 product route files match the R003 manifest; `/role` redirects to `/`, and every disabled
+  R002b route fails safely without becoming released navigation.
+- Welcome reaches distinct Parent and Child access paths; every Parent/Child handoff signs out the
+  current experience and cannot continue if session termination fails.
+- Parent tabs are exactly Home/Tasks/Garden/Family; Child tabs are exactly Today/Garden/League;
+  contextual routes never appear as extra tabs.
+- First-device pairing reaches Parent verification and `/parent/settings/devices`, then returns to
+  the still-pending Child pairing state without replay or authority leakage.
+- Parent Family, private Reward, settings, permissions, devices, reauthentication, and Child
+  read-only settings are reachable only with the appropriate active experience.
 - Arabic and English contain equivalent decisions, safety, privacy, fixed reward, and disclosure.
 - The Parent task remains unchanged until the Parent accepts the prepared refinement.
 - Child submission produces acknowledgement but zero Seeds, growth, canopy, or circle change.
@@ -394,36 +507,45 @@ score, truthfulness score, religiosity, or parenting quality.
 - A duplicate confirm is a neutral no-op.
 - The garden reaches Mangrove Sapling and the canopy reaches 20/25.
 - The circle reaches 12/12 using one eligible coarse Green Impact action, not 12 Seeds.
-- Reset from task, assistant, submitted, check-in, garden, and circle returns the canonical state.
+- The private `/league` stays separate from Circle and exposes only the allowlisted weekly row.
+- Reset from every meaningful Parent-authorized state returns to signed-out Arabic `/`, clears
+  sessions/pairing/transient proofs, and restores the canonical domain state.
 
 ## Fallback Matrix
 
-| Failure                                   | Required operator/app response                                      | Forbidden response                                |
-| ----------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------- |
-| Network denied                            | Continue on prepared providers                                      | Stop the core journey or claim live AI            |
-| Optional live AI timeout/malformed output | Same-attempt prepared result; retain Parent/Child state             | Blank screen, unsafe raw output, or second reward |
-| Prepared image unavailable                | Show descriptive synthetic placeholder; continue without evidence   | Block completion                                  |
-| Prepared audio unavailable                | Show the transcript and Coach steps                                 | Request microphone permission                     |
-| Motion/Reanimated failure                 | Render confirmed counters and final static SVG stage                | Leave progress between states                     |
-| Reduced motion enabled                    | Skip the arc/reveal; announce text changes once                     | Hide cause and effect                             |
-| Back/history anomaly                      | Use Parent-only reset and restart; record defect                    | Improvise through stale state                     |
-| Circle fixture unavailable                | Show local privacy explanation and household goal                   | Expose individual/sensitive records               |
-| Duplicate confirm                         | Show “Already confirmed”; leave all counters unchanged              | Award again                                       |
-| Physical-device unavailable               | Mark Android evidence `BLOCKED`; use web only as a fallback preview | Call the Android criterion passed                 |
+| Failure                                   | Required operator/app response                                          | Forbidden response                                |
+| ----------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| Network denied                            | Continue on prepared providers                                          | Stop the core journey or claim live AI            |
+| Optional live AI timeout/malformed output | Same-attempt prepared result; retain Parent/Child state                 | Blank screen, unsafe raw output, or second reward |
+| Prepared image unavailable                | Show descriptive synthetic placeholder; continue without evidence       | Block completion                                  |
+| Prepared audio unavailable                | Show the transcript and Coach steps                                     | Request microphone permission                     |
+| Motion/Reanimated failure                 | Render confirmed counters and final static SVG stage                    | Leave progress between states                     |
+| Reduced motion enabled                    | Skip the arc/reveal; announce text changes once                         | Hide cause and effect                             |
+| Back/history anomaly                      | Use Parent-only reset and restart; record defect                        | Improvise through stale state                     |
+| Parent/Child session termination fails    | Stay on the current route; show the recoverable retry state             | Navigate and expose the receiving experience      |
+| Child pairing expires or mismatches       | Return to credential/pairing recovery and require fresh Parent approval | Reuse the stale request or enter Child Today      |
+| Parent reauthentication code is wrong     | Change nothing and retain the scoped settings return                    | Apply a permission or broaden the return target   |
+| Circle fixture unavailable                | Show local privacy explanation and household goal                       | Expose individual/sensitive records               |
+| Duplicate confirm                         | Show “Already confirmed”; leave all counters unchanged                  | Award again                                       |
+| Physical-device unavailable               | Mark Android evidence `BLOCKED`; use web only as a fallback preview     | Call the Android criterion passed                 |
 
-## Preserved Remote Reset Procedure
+## R003 Reset Procedure
 
 1. Open the Parent-only demo controls.
 2. Choose **Reset synthetic demo** and confirm.
-3. Verify `/`, Arabic RTL, 48 Salem Seeds, no active assignment, Mangrove 48/60, canopy 19/25,
-   circle 11/12 eligible Green Impact actions, and no consumed celebration.
+3. Verify signed-out `/`, Arabic RTL, no active Parent or Child session, no paired device/pending
+   pairing/transient permission proof, 48 Salem Seeds, no active assignment, Mangrove 48/60,
+   canopy 19/25, circle 11/12 eligible Green Impact actions, and no consumed celebration.
 4. Deny or disable network access when exercising the deterministic acceptance path.
-5. If any value differs, stop and record a reset defect; do not manually patch counters during a
+5. Confirm `/role` redirects to `/`, and native Back cannot reveal either pre-reset experience.
+6. If any value differs, stop and record a reset defect; do not manually patch counters during a
    judged run.
 
-## Fresh Validation Record
+## Preserved R002a Validation Record
 
-Record one row per build/device/locale. Do not infer a pass from web/source evidence.
+The rows and command table below preserve the 2026-08-27/28 R002a record. They are not fresh R003
+evidence. For the current journey, add a separate dated row to the R003 table near the top and do
+not infer a pass from web/source evidence.
 
 | Date       | Commit/build   | Device/OS                      | Locale      | Journey         | Offline | Reduced motion | Result  | Observer/notes                                                                                                     |
 | ---------- | -------------- | ------------------------------ | ----------- | --------------- | ------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -433,7 +555,7 @@ Record one row per build/device/locale. Do not infer a pass from web/source evid
 Secondary web-proxy observations are recorded separately in
 `specs/003-family-growth-garden/checklists/web-proxy.md`.
 
-### Automated checks
+### Historical R002a automated checks
 
 | Command                                                                    | Date/worktree                          | Result                 | Notes                                                                                                                                     |
 | -------------------------------------------------------------------------- | -------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -463,7 +585,7 @@ The final Impeccable detector returned JSON `[]`. Bundle
 warning, “unreachable code after return statement” at line 673. It did not block an observed
 transition and remains recorded as a framework/bundle follow-up.
 
-### Deterministic behavior evidence
+### Historical R002a deterministic behavior evidence
 
 | Check                                              | Status                           | Direct checkpoint evidence                                                                                                                                   |
 | -------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -481,7 +603,7 @@ transition and remains recorded as a framework/bundle follow-up.
 | Arabic resource parity/canonical fixture stability | PASSED automated                 | `tests/localization-parity.test.ts`; named fluent review remains `NOT RUN`                                                                                   |
 | Current story-level RED history                    | NOT RUN                          | T038/T046/T052/T058/T064/T073 were not recorded before implementation and cannot be reconstructed truthfully                                                 |
 
-### Final web-proxy pass
+### Historical R002a final web-proxy pass
 
 - Firefox at 390×844 completed final-bundle Arabic RTL and English LTR journeys through all ten
   authored routes.
@@ -503,7 +625,7 @@ Web proxy details and artifact names are in
 `specs/003-family-growth-garden/checklists/web-proxy.md`. Web cannot pass Android media, keyboard,
 Back, reduced-motion, TalkBack, font-scale, permission, or physical-touch requirements.
 
-### Current implementation blockers and gaps
+### R002a checkpoint blockers and gaps
 
 - Convergence and later adversarial/reset/audit fixes are **PASSED automated**: final full suite 305/305,
   independent runtime replay 23/23, and no remaining source-verifiable HIGH/MEDIUM P0 finding.
@@ -526,16 +648,18 @@ Back, reduced-motion, TalkBack, font-scale, permission, or physical-touch requir
 
 ### Human rehearsal
 
-Run five uninterrupted rehearsals from reset and record every duration; report median and maximum.
-The internal target is five of five complete journeys at or below 150 seconds with no hidden setup.
+Run five uninterrupted rehearsals of the complete R003 flow from reset and record every duration,
+including first-family setup, pairing branch, and any fallback; report median and maximum. The old
+150-second target applied to the shorter R002a route sequence. Record and approve a new R003 target
+before using timing as a pass criterion.
 
-| Run | Operator | Duration | Reset exact | Error/fallback used | Result  |
-| --: | -------- | -------: | ----------- | ------------------- | ------- |
-|   1 | —        |        — | —           | —                   | NOT RUN |
-|   2 | —        |        — | —           | —                   | NOT RUN |
-|   3 | —        |        — | —           | —                   | NOT RUN |
-|   4 | —        |        — | —           | —                   | NOT RUN |
-|   5 | —        |        — | —           | —                   | NOT RUN |
+| Run | Operator | Duration | Setup/pairing branch | Reset exact | Error/fallback used | Result  |
+| --: | -------- | -------: | -------------------- | ----------- | ------------------- | ------- |
+|   1 | —        |        — | —                    | —           | —                   | NOT RUN |
+|   2 | —        |        — | —                    | —           | —                   | NOT RUN |
+|   3 | —        |        — | —                    | —           | —                   | NOT RUN |
+|   4 | —        |        — | —                    | —           | —                   | NOT RUN |
+|   5 | —        |        — | —                    | —           | —                   | NOT RUN |
 
 Ask three people unfamiliar with the detailed design: “What did the Child do, what did the AI do,
 who approved the reward, and what can other families see?” Record answers verbatim enough to show
@@ -547,9 +671,11 @@ Do not describe Feature 003 as demo-accepted until:
 
 - the active Spec Kit artifacts are approved;
 - all automated checks pass from a named worktree state;
-- the exact journey passes on a named Android build in Arabic and English;
+- the exact R003 role-separated journey and complete-screen sweep pass on a named Android build in
+  Arabic and English;
 - offline, duplicate-confirm, reset, Back, reduced-motion, and prepared-media fallbacks pass;
-- five timed rehearsals meet the internal target;
+- five timed rehearsals meet a recorded R003 target approved after measuring the longer
+  access/pairing path;
 - three comprehension checks identify the core loop and privacy boundary; and
 - remaining cultural, faith, safeguarding, or accessibility review gaps are disclosed by name.
 

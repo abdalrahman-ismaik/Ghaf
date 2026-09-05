@@ -430,7 +430,7 @@ timeout, and same-attempt deterministic fallback. If that boundary is not availa
 prepared path honest and mark live AI `BLOCKED` or `NOT RUN`; never place a provider secret in the
 mobile bundle or describe a prepared response as live.
 
-The authored screen contract for Feature 003 is:
+The historical authored screen contract for the preserved R001/R002a baseline was:
 
 | Route                 | Purpose                                                            |
 | --------------------- | ------------------------------------------------------------------ |
@@ -446,7 +446,9 @@ The authored screen contract for Feature 003 is:
 | `/circle`             | Cooperative sibling/cousin/family overview                         |
 
 Loading, fallback, error, retry, celebration, and assistant panels are states of these screens, not
-extra routes.
+extra routes. The active R003 completion route and state manifest is maintained in
+`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`; `/role` is now a
+compatibility redirect only.
 
 ## Success Criteria
 

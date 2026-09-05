@@ -20,8 +20,8 @@ slice.
 
 ## R003 Complete-Screen Authority Amendment — 2026-09-05
 
-This amendment supersedes older screen-count, role-toggle, missing-Stitch, and default-off
-presentation requirements where they conflict. The user explicitly authorizes completion of every
+This amendment supersedes older screen-count, role-toggle, and missing-Stitch presentation
+requirements where they conflict. The user explicitly authorizes completion of every
 missing P0 screen on `integration/r3-complete-screens-20260905`. A missing Google Stitch frame is
 not a blocker for this local prototype: the screen must be specified first and professionally
 designed with the existing Soft Geometric Ghaf theme and tokens. Raw Stitch web exports remain
@@ -35,9 +35,9 @@ read-only design evidence.
 - Add the route/state manifest in
   `design-intake/r003-complete-screen-journey.md`, including Parent Family, private Family Reward,
   Parent settings, permissions, devices, reauthentication, and Child settings.
-- The already-implemented R002b screens are enabled for the complete local demo after focused
-  compatibility checks. Environment overrides may still disable any independently gated surface;
-  disabling a presentation never reverses committed state.
+- The already-implemented R002b screens remain behind independent default-off flags. An explicit
+  environment `true` may enable a surface for targeted local validation; disabling a presentation
+  never reverses committed state, and release activation remains blocked.
 - Complete screen availability does not release production authentication, real pairing,
   persistence, payment, networking, live Child media/AI, or remote invitations. It also does not
   upgrade physical Android or named human-review evidence.

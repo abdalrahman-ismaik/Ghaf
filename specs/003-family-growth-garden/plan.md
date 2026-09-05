@@ -8,7 +8,7 @@ regressions, R002b Growth screens, official brand assets, and user-owned untrack
 packs.
 
 Implementation order is contract first, then RED route/access tests, then the access/session
-adapter and missing screens, then navigation replacement, then local-demo Growth activation and
+adapter and missing screens, then navigation replacement, then default-off Growth compatibility and
 approval reveal parity, followed by bilingual browser convergence and full validation. The route
 manifest and per-screen entry/exit/privacy rules are in
 `design-intake/r003-complete-screen-journey.md`.
@@ -27,9 +27,10 @@ contextual routes. The Child journey becomes Welcome → profile → credential/
 and own read-only permissions as contextual routes. Changing experience signs out to Welcome;
 there is no normal role toggle.
 
-The complete local demo may enable the eight R002b presentation flags by default after focused
-tests; explicit environment `false` remains a rollback. This activation is local prototype
-availability, not a claim that Android/native or named-human release gates passed.
+All eight R002b presentation flags remain independently default-off. Targeted local validation may
+opt into a surface with an explicit environment `true`, but the R001/R002a fallback remains the
+default and release activation stays blocked. Screen completion is not a claim that Android/native
+or named-human release gates passed.
 
 **Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
 [spec.md](./spec.md)

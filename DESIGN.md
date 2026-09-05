@@ -247,10 +247,13 @@ Both modes use the same palette, typography, growth grammar, logical spacing, an
 - Parent review may use a two-column web layout, but the Android contract is one vertical stream.
 - No horizontal carousel may hide a required step or safety note.
 
-## Screen Contract
+## Preserved R001/R002a Screen Contract
 
-Feature 003 has exactly ten authored routes. Loading, fallback, retry, assistant, confirmation, and
-celebration are states within them.
+The historical R001/R002a baseline below has ten authored routes. Loading, fallback, retry,
+assistant, confirmation, and celebration are states within them. The active R003 completion route
+and state manifest is maintained in
+`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`; `/role` is now a
+compatibility redirect only.
 
 ### `/` — entry and disclosure
 

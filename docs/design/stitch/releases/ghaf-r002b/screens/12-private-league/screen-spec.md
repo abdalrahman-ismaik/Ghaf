@@ -1,10 +1,11 @@
 # R002b Private Family League specification
 
-> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+> **R003 CANONICAL PROTOTYPE ROUTE AUTHORIZED — PHYSICAL AND HUMAN REVIEW GATES REMAIN OPEN**
 
-Status: code-native compatibility candidate for the already-approved private League. Visibility
-gate: `r002b_progression_engine`, default off, so the R002a disabled-tab fallback remains unchanged.
-Owner route: `/league`, the `الدوري / League` root in Child navigation.
+Status: code-native implementation of the already-approved private League, promoted by the R003
+complete-screen amendment to the canonical Child journey. Owner route: `/league`, the
+`الدوري / League` root in Child navigation. Optional R002b Growth candidates remain independently
+default-off; they do not disable this preserved League route.
 
 ## Purpose and composition
 
@@ -37,10 +38,11 @@ renamed to League.
 
 ## Navigation and states
 
-Allow only Child capability, the active profile, and the default-off visibility gate. Today and
-Garden pass the active profile through current store authority; invalid direct entry returns to
-`/child`. The League tab is enabled only while the gate is on. Tab changes use no custom sliding
-animation. The surface keeps the fixed Child bottom navigation and natural central scrolling.
+Allow only an active Child experience bound to the active profile. Today and Garden use current
+store authority; signed-out direct entry returns to `/`, and an active Parent returns to `/parent`.
+The League tab remains available throughout a valid Child experience. Tab changes use no custom
+sliding animation. The surface keeps the fixed Child bottom navigation and natural central
+scrolling.
 
 Required states: reset fixture (4/5 for Salem), recognized fixture (5/5 for Salem), another active
 Child, shared ties, loading, deterministic offline-ready, projection error with a safe return to
@@ -59,7 +61,7 @@ remain subject to named human review.
 
 Prove the exact 4/5→5/5 and 80→100 projection from one valid recognition receipt; no change for an
 unrelated, malformed, duplicate, or cross-profile receipt; five-Leaf cap; shared ties; no speed
-tiebreak; full help/adaptation credit; strict allowlisted row fields; default-off fallback; role and
-profile guards; reset determinism; Arabic physical tab order; English LTR reflow; reduced motion;
-and zero mutations from viewing. Arabic and English 390×844 web captures now exist; physical
-Android and TalkBack evidence remain pending.
+tiebreak; full help/adaptation credit; strict allowlisted row fields; active-experience and profile
+guards; reset determinism; Arabic physical tab order; English LTR reflow; reduced motion; and zero
+mutations from viewing. Browser evidence cannot pass physical Android or TalkBack; those gates
+remain pending.
