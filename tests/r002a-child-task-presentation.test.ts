@@ -125,7 +125,7 @@ describe('R002a Child Today and task presentation', () => {
       'accessibilityState={{ disabled: item.disabled, selected: active }}',
     );
     expect(navigation).toContain('layout.touchTarget');
-    expect(navigation).toContain('disabled: true');
+    expect(navigation).toContain('disabled: !onLeague');
     expect(navigation).not.toContain("router.push('/circle')");
     expect(taskRoute).toContain("const physicalBack = () => router.replace('/child');");
     expect(taskRoute).toContain('onBack={physicalBack}');

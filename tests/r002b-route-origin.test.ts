@@ -326,6 +326,7 @@ describe('R002b typed origins', () => {
 describe('R002b route guard', () => {
   it('defines only the authorized nested routes', () => {
     expect(R002B_ROUTE_IDS).toEqual([
+      'private_league',
       'impact_path',
       'badge_gallery',
       'badge_detail',

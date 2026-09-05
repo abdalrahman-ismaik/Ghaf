@@ -38,6 +38,7 @@ const EXPECTED_ROUTES = [
   '/garden/badges/[badgeId]',
   '/garden/learn/[learningId]/story',
   '/garden/learn/[learningId]/accessible',
+  '/league',
   '/circle',
   '/circle/shared-growth',
   '/parent/family/shared-garden',

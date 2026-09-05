@@ -164,6 +164,7 @@ export const resources = {
         childHome: 'مهام سالم',
         today: 'اليوم',
         garden: 'الحديقة',
+        childGarden: 'حديقتي',
         league: 'الدوري',
         leagueUnavailable: 'الدوري العائلي الخاص غير متاح من هذا الشريط في هذه النسخة.',
         circle: 'الدائرة الخضراء',
@@ -710,6 +711,39 @@ export const resources = {
         symbolic: 'تقدم رمزي غير مالي',
         future: 'خيار مستقبلي غير مُفعّل',
       },
+      r002bLeague: {
+        screenTitle: 'الدوري',
+        helpBody:
+          'يعرض هذا الدوري العائلي الخاص خمس أوراق تحدٍّ لهذا الأسبوع. المساعدة المسموح بها تحافظ على الرصيد كاملًا، ولا تُستخدم سرعة الإنجاز في الترتيب.',
+        heroTitle: 'دوري العائلة الخاص',
+        heroBody:
+          'خمس أوراق تحدٍّ أسبوعية لكل طفل، بنقاط متساوية للمساعدة والتكييفات المسموح بها ومن دون مفاضلة بالسرعة.',
+        privateLabel: 'خاص بالعائلة',
+        syntheticLabel: 'بيانات محلية اصطناعية',
+        activeChildLabel: 'ملخصك هذا الأسبوع',
+        leavesGroup: '{{completed}} من أصل {{total}} أوراق تحدٍّ مكتملة',
+        leafCompleted: 'تمت',
+        leafPending: 'قادمة',
+        leafProgress: '{{completed}} من أصل {{total}} أوراق',
+        score: '{{score}} نقطة',
+        position: 'المركز {{position}}',
+        sharedPosition: 'المركز {{position}} بالتساوي',
+        participantAccessibility:
+          '{{name}}، {{positionLabel}}، {{completed}} من أصل {{total}} أوراق، {{score}} نقطة.',
+        standingsTitle: 'ترتيب هذا الأسبوع',
+        standingsBody:
+          'تتقاسم النتائج المتساوية المركز نفسه، ولا تزيد المهام الإضافية النتيجة عن خمس أوراق.',
+        privacyTitle: 'مساحة خاصة ومحدودة',
+        privacyBody:
+          'لا يظهر هنا سوى الاسم المستعار ورمز الشجرة والمركز والنتيجة وعدد أوراق التحدّي. لا تُعرض المهام أو البذور أو الوسائط أو ملاحظات وليّ الأمر.',
+        state: {
+          loading: 'جارٍ تجهيز الدوري الخاص من السجل المحلي…',
+          empty: 'لا توجد نتائج دوري لهذا الملف في الأسبوع الحالي.',
+          error: 'تعذّر تجهيز الدوري الخاص. لم تتغير أي مهمة أو نتيجة.',
+          offline: 'أنت دون اتصال. يبقى الدوري الاصطناعي المحلي متاحًا.',
+        },
+        stateAction: 'العودة إلى اليوم',
+      },
       r002bParentProgress: {
         groupLabel: 'ملخص خاص لتقدم الطفل المحدد',
         title: 'تقدم الطفل',
@@ -864,7 +898,7 @@ export const resources = {
           privacy: 'هذه الشارات خاصة بهذا الملف ودائمة، ولا تظهر في ترتيب عام.',
           privateStatus: 'خاصة ودائمة',
           recommended: 'الخطوة المقترحة التالية',
-          requirementProgress: '{{current}} من {{required}} شروط مكتملة',
+          requirementProgress: 'تم استيفاء {{current}} من أصل {{required}}',
           numericProgress: '{{current}} من {{required}}',
           criteriaHeading: 'المعايير الدقيقة',
           whyHeading: 'لماذا تهم هذه الخطوة؟',
@@ -1438,6 +1472,7 @@ export const resources = {
         childHome: 'Salem’s tasks',
         today: 'Today',
         garden: 'Garden',
+        childGarden: 'Garden',
         league: 'League',
         leagueUnavailable:
           'The private Family League is not available from this bar in this build.',
@@ -2004,6 +2039,39 @@ export const resources = {
         prepared: 'Prepared',
         symbolic: 'Symbolic nonfinancial progress',
         future: 'Future option, not enabled',
+      },
+      r002bLeague: {
+        screenTitle: 'League',
+        helpBody:
+          'This private Family League shows five Challenge Leaves for the week. Permitted help keeps full credit, and completion speed never affects position.',
+        heroTitle: 'Private Family League',
+        heroBody:
+          'Five weekly Challenge Leaves per Child, with equal credit for permitted help and accessibility adaptations and no speed tiebreak.',
+        privateLabel: 'Private to the family',
+        syntheticLabel: 'Synthetic local data',
+        activeChildLabel: 'Your week',
+        leavesGroup: '{{completed}} of {{total}} Challenge Leaves complete',
+        leafCompleted: 'Done',
+        leafPending: 'Open',
+        leafProgress: '{{completed}} of {{total}} Leaves',
+        score: '{{score}} points',
+        position: 'Position {{position}}',
+        sharedPosition: 'Shared position {{position}}',
+        participantAccessibility:
+          '{{name}}, {{positionLabel}}, {{completed}} of {{total}} Leaves, {{score}} points.',
+        standingsTitle: 'This week’s positions',
+        standingsBody:
+          'Equal scores share the same position, and extra tasks cannot raise the result beyond five Leaves.',
+        privacyTitle: 'Private and deliberately limited',
+        privacyBody:
+          'Only an approved nickname, tree token, position, score, and Challenge Leaf count appear. Tasks, Seeds, media, and Parent notes stay private.',
+        state: {
+          loading: 'Preparing the private League from the local record…',
+          empty: 'This profile has no League result for the current week.',
+          error: 'The private League could not be prepared. No task or result changed.',
+          offline: 'You are offline. The synthetic local League remains available.',
+        },
+        stateAction: 'Back to Today',
       },
       r002bParentProgress: {
         groupLabel: 'Private selected-Child progress summary',

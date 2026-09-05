@@ -47,6 +47,7 @@ export default function RootLayout() {
     pathname.startsWith('/child/reveal/') ||
     pathname === '/garden' ||
     pathname.startsWith('/garden/') ||
+    pathname === '/league' ||
     pathname === '/circle/shared-growth';
   const [fontsLoaded, fontError] = useFonts({
     Alexandria_400Regular,

@@ -35,6 +35,7 @@ const DEFAULT_OFF_R002B_ROUTES = [
   '/garden/learn/[learningId]/accessible',
   '/child/reveal/[bundleId]',
   '/parent/family/[profileId]/progress',
+  '/league',
   '/circle/shared-growth',
   '/parent/family/shared-garden',
 ] as const;

@@ -333,10 +333,13 @@ export default function GardenScreen() {
       <ChildBottomNavigation
         activeKey="garden"
         direction={direction}
-        gardenLabel={t('navigation.garden')}
+        gardenLabel={t('navigation.childGarden')}
         leagueLabel={t('navigation.league')}
         leagueUnavailableHint={t('navigation.leagueUnavailable')}
         onGarden={() => undefined}
+        onLeague={
+          r002bFeatureFlags.r002b_progression_engine ? () => router.replace('/league') : undefined
+        }
         onToday={() => router.replace('/child')}
         todayLabel={t('navigation.today')}
       />

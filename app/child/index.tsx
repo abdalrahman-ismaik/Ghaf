@@ -307,10 +307,13 @@ export default function ChildHomeScreen() {
     <ChildBottomNavigation
       activeKey="today"
       direction={direction}
-      gardenLabel={t('navigation.garden')}
+      gardenLabel={t('navigation.childGarden')}
       leagueLabel={t('navigation.league')}
       leagueUnavailableHint={t('navigation.leagueUnavailable')}
       onGarden={() => router.push('/garden')}
+      onLeague={
+        r002bFeatureFlags.r002b_progression_engine ? () => router.replace('/league') : undefined
+      }
       onToday={() => undefined}
       todayLabel={t('navigation.today')}
     />

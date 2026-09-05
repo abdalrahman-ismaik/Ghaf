@@ -15,6 +15,7 @@ interface ChildBottomNavigationProps {
   leagueLabel: string;
   leagueUnavailableHint: string;
   onGarden: () => void;
+  onLeague?: () => void;
   onToday: () => void;
   todayLabel: string;
 }
@@ -34,6 +35,7 @@ export function ChildBottomNavigation({
   leagueLabel,
   leagueUnavailableHint,
   onGarden,
+  onLeague,
   onToday,
   todayLabel,
 }: ChildBottomNavigationProps) {
@@ -41,7 +43,13 @@ export function ChildBottomNavigation({
   const items: readonly NavigationItem[] = [
     { disabled: false, icon: 'calendar', id: 'today', label: todayLabel, onPress: onToday },
     { disabled: false, icon: 'flower', id: 'garden', label: gardenLabel, onPress: onGarden },
-    { disabled: true, icon: 'league', id: 'league', label: leagueLabel },
+    {
+      disabled: !onLeague,
+      icon: 'league',
+      id: 'league',
+      label: leagueLabel,
+      onPress: onLeague,
+    },
   ];
 
   return (
