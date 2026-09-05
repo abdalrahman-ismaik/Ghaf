@@ -36,6 +36,58 @@ Shared Growth contribution requires guardian-governance/privacy review; RevealBu
 complete legacy-consequence parity. Physical Android, TalkBack, native Back/IME, and OS font scaling
 remain blockers until performed on a named build and device.
 
+### R002b default-off implementation checkpoint
+
+The final implementation checkpoint is `2e09419` on
+`integration/r3-r002b-implementation-20260905`, based on frozen R002a head `0501cf3`; it passes 78
+files / 979 tests. The earlier core checkpoint `895af72` passed 76 files / 967 tests before the
+private five-Leaf League compatibility slice. All eleven expansion surfaces have native
+implementations, and the League compatibility surface restores its canonical Child root. The nine
+new nested route files and gated `/league` route are guarded, and all eight feature flags remain off
+by default. See the
+[detailed R002b validation record](specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md).
+
+| Gate                                      | Result                             | Current evidence                                                                                                                                                                                          |
+| ----------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain and route implementation           | `PASSED` automated/source          | Ledger projection, 16-badge registry, equal-credit learning, Reveal lifecycle, Parent Progress, Shared Growth, private League, flags, access, reset, and typed origins are included in the 979-test suite |
+| R001/R002a fallback                       | `PASSED` automated/source          | Flag-off tests preserve the existing onboarding, task, Child, Garden, access, voice, privacy, reset, and recognition flow                                                                                 |
+| Code-native screen set                    | `PASSED` implementation            | Twelve indexed surfaces, including the restored private League root, use native components/routes; no raw Stitch web runtime is imported                                                                  |
+| Local 390×844 browser-proxy set           | `PARTIAL`                          | Valid captures exist for Child Today, Garden chapter, Impact Path, Badge Gallery, Badge Detail, Parent Progress, Shared Growth, Parent Shared Garden settings, and private League                         |
+| Learning live route                       | `BLOCKED` by normal fixture state  | Salem reaches 120 after the canonical approval; station 132 is required before learning can open                                                                                                          |
+| Child Reveal v2 approval route            | `BLOCKED` by consequence authority | The bundle implementation is receipt-only, but the live approval projection remains on R002a until private League, Challenge Leaf, and Family Reward receipts are all authoritative                       |
+| Physical Android and native accessibility | `BLOCKED / NOT RUN`                | No named build/device result exists for install, TalkBack, Back/IME, safe areas, reduced motion, offline interruption, or OS font scaling                                                                 |
+| Named human review                        | `NOT RUN`                          | Learning facts/copy, Arabic/English, culture/safeguarding, privacy/consent, visual design, comprehension, and asset provenance remain open                                                                |
+
+### R002b candidate review flow — not the released judge path
+
+Keep every R002b flag off for the ordinary R002a judge journey. For an engineering/design review
+with explicit local flag overrides, establish the correct Parent or Child session before opening a
+nested route; direct reload without that session must fall back safely.
+
+1. As Salem, open Child Today and inspect the compact nearest-station card.
+2. Open `الدوري / League` and confirm the private five-Leaf projection shows only the allowlisted
+   nickname, tree avatar, weekly position, normalized score, and confirmed Leaves. Do not confuse
+   it with Green Circle or Shared Growth.
+3. Open Garden, then Impact Path. Confirm current Mangrove progress stays separate from lifetime
+   Seeds and the 120→180 Water & Coast chapter.
+4. Open Badge Gallery, choose a badge, inspect its exact criteria, and return to the same Gallery
+   filter/scroll/focus origin.
+5. Open Shared Growth only from its approved nested entry. Confirm the view remains qualitative,
+   synthetic, anonymous, and independent from contribution state.
+6. As an authorized Parent, open Salem's Progress. Confirm it is read-only; **Create suitable task**
+   may prefill the existing Builder but still requires normal Parent review and save.
+7. Open Shared Garden settings. Confirm Continue/Pause/End affects only future anonymous signals and
+   returning after End requires fresh Parent consent.
+8. Do not bypass station 132 to demonstrate Learning. Do not fabricate a task-approval RevealBundle.
+   Until those fixture/receipt gates are satisfied, demonstrate the unchanged R002a approval result
+   and describe R002b as a default-off candidate.
+
+The retained browser-proxy files are untracked local evidence under `output/playwright/r002b/` and
+must not be presented as approved mobile references. The League samples cover Arabic 320/360/390
+and 200%-text exercises plus English 390/430/768, but this is not a complete cross-surface matrix.
+Browser evidence does not pass Android, TalkBack, native Back/IME, system font scaling, or
+human-review gates.
+
 ## R002a Final Validation Evidence — 2026-09-05
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**

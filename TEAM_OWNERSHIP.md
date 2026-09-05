@@ -37,6 +37,7 @@ renamed, edited, or imported.
 | `/root/r002b_orchestrator/learning_content_writer` (reused for Growth UI after releasing its prior files) | New `src/components/r002b/GrowthJourneyScreens.tsx` and `tests/r002b-growth-screen-components.test.tsx` only                                                                                                                                                                                                                                                                                                                              | Build reusable code-native Today/Garden/Impact Path/Badge Gallery/Badge Detail presentation components from the approved screen specs and existing tokens; accept copy/actions/data as props and edit no route, store, resource, token, fixture, configuration, or documentation |
 | `/root/r002b_orchestrator/learning_screens_writer`                                                        | New `src/components/r002b/LearningScreens.tsx` and `tests/r002b-learning-screen-components.test.tsx` only                                                                                                                                                                                                                                                                                                                                 | Build prop-driven code-native Story and accessible-equivalent Learning surfaces with finite, no-fail, equal-credit, resumable presentation; edit no route, store, i18n, configuration, documentation, or domain file                                                             |
 | `/root` — R002b screen specifications and UI integration                                                  | New `docs/design/stitch/releases/ghaf-r002b/**`, future `src/components/r002b/**` except the reserved `GrowthJourneyScreens.tsx`, future nested R002b route files, and serialized integration into existing routes after the applicable domain interface is stable                                                                                                                                                                        | Define every code-native candidate before implementation, keep each surface behind its independent default-off flag, and preserve the exact R002a fallback and all existing behavior                                                                                             |
+| `/root/r002b_evidence_docs` — closeout evidence                                                           | `specs/003-family-growth-garden/tasks.md`, new `specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md`, `docs/design/stitch/releases/ghaf-r002b/SCREEN_INDEX.md`, `TEAM_OWNERSHIP.md`, and `DEMO_RUNBOOK.md` only                                                                                                                                                                                                     | Reconcile only evidence-proven task states, preserve every release/native/human gate, validate the Markdown diff, and return files unstaged to `/root`                                                                                                                           |
 
 No writer may change the same file concurrently. Shared files remain reserved to `/root`; delegated
 workers must treat the rest of the repository as read-only and accommodate concurrent changes.
@@ -180,6 +181,31 @@ already-assigned-task callbacks supplied by the guarded route. Candidate Arabic 
 centralized and honestly marks pending human review/provenance. Eleven focused view-model and
 resource-parity tests, typecheck, lint, formatting, and Git whitespace validation passed; no route
 or feature flag was activated.
+
+**R002b default-off implementation checkpoint — 2026-09-05**: The branch contains all eleven
+expansion surfaces plus the private five-Leaf League compatibility surface, nine guarded nested
+route files, and the gated `/league` Child root. The core checkpoint `895af72` passed 76 files / 967
+tests; final implementation checkpoint `2e09419` passes 78 files / 979 tests. Local untracked browser-proxy
+evidence includes valid
+390×844 captures for Child Today, Garden chapter, Impact Path, Badge Gallery, Badge Detail, Parent
+Progress, Shared Growth, and Parent Shared Garden settings, plus one R002a Parent Home regression
+capture and a private League capture. Representative samples include 320/360/430/768, English, and
+League 200%-text exercises. Learning Story and Accessible Learning do not have live captures because
+the normal fixture truthfully stops before station 132; the combined Child Reveal has no live capture
+because the task-approval path remains fail-closed until all private League, Challenge Leaf, and
+Family Reward source receipts are authoritative. All eight flags remain off. Physical
+Android/TalkBack/Back/IME/OS font scaling and every named content, privacy, provenance, and human
+review remain open, so release activation stays blocked.
+
+**Private League compatibility checkpoint — 2026-09-05**: The new presentation consumes only a
+provenance-tagged `approved_synthetic_reset_summary` and sends it through the strict League privacy
+projector. It invents no task history. Salem's 4/5→5/5 projection requires the exact canonical task,
+Seed receipt, Mangrove receipt, canopy action/origin, and Green-event action/scope/origin. The native
+screen preserves RTL Leaf order, compact/large-text reflow, safe error/empty return, the physical
+`الدوري | حديقتي | اليوم` order, and the separate identities of private League, Green Circle, and
+Shared Growth. Focused League/navigation coverage passes 46 tests; final implementation commit
+`2e09419` passes the complete 78-file / 979-test suite. A 390×844 Arabic capture plus Arabic
+320/360/200%-text and English 390/430/768 samples are retained as local untracked evidence.
 
 ## 2026-09-05 R002a Compatibility Implementation Window
 

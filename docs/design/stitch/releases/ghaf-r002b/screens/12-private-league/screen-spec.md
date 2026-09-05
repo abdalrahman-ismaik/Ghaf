@@ -61,5 +61,5 @@ Prove the exact 4/5→5/5 and 80→100 projection from one valid recognition rec
 unrelated, malformed, duplicate, or cross-profile receipt; five-Leaf cap; shared ties; no speed
 tiebreak; full help/adaptation credit; strict allowlisted row fields; default-off fallback; role and
 profile guards; reset determinism; Arabic physical tab order; English LTR reflow; reduced motion;
-and zero mutations from viewing. Canonical 390×844 and physical Android/TalkBack evidence remain
-pending until captured.
+and zero mutations from viewing. Arabic and English 390×844 web captures now exist; physical
+Android and TalkBack evidence remain pending.

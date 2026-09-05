@@ -830,35 +830,41 @@ and Android evidence with truthful limitations. This phase never releases R002b.
       `skill.coast_care` acquisition credit; never backfill unproved mastery.
 - [x] T195 Implement deterministic badge evaluation/backfill, including 1/3/7 sorting, 2/5/10 water
       with station-156 Bud gate, two-credit Energy Bud, and the full Mangrove Care composite.
-- [ ] T196 Implement Water & Coast stations 120/132/144/156/168/180 as read-only projections and a
+- [x] T196 Implement Water & Coast stations 120/132/144/156/168/180 as read-only projections and a
       configured-next-stage fallback without implying a visit or inventing content.
-- [ ] T197 Add gated Today/Garden entry components plus `/garden/impact-path`, `/garden/badges`, and
+- [x] T197 Add gated Today/Garden entry components plus `/garden/impact-path`, `/garden/badges`, and
       `/garden/badges/:badgeId` with typed same-role origin restoration and safe deep-link fallback.
-- [ ] T198 Implement earned/in-progress/next/locked/archived gallery states and Badge Detail identity,
+- [x] T198 Implement earned/in-progress/next/locked/archived gallery states and Badge Detail identity,
       exact criteria/progress/meaning/provenance/one contextual action without Child task creation.
 - [ ] T199 Add bilingual/RTL/LTR, responsive, accessibility, reduced-motion, route-guard, and visual
       coverage; capture each canonical code-native candidate at 390×844 after implementation.
-- [ ] T200 Validate and commit achievements/Impact Path in independent domain and presentation
+- [x] T200 Validate and commit achievements/Impact Path in independent domain and presentation
       boundaries, with every related flag still off by default.
+
+**Evidence note:** T196–T198 and T200 are implemented and committed through `5c06cef`, with later
+route/origin/accessibility corrections through `895af72`. T199 stays open because the retained
+browser-proxy set does not yet include every specified width, locale, large-text state, or physical
+Android result, even though the five named Path/Badge candidate surfaces have local 390×844
+captures.
 
 ## Phase 27: Equal-Credit Learning and Superset RevealBundle
 
 - [x] T201 Write `screen-spec.md` files for Story, accessible alternative, and combined Child reveal
       before their route/component implementation.
-- [ ] T202 Implement the finite bilingual `learning.mangrove_roots.v1` package, sourced content
+- [x] T202 Implement the finite bilingual `learning.mangrove_roots.v1` package, sourced content
       metadata, resumable progress, neutral no-fail check, and equal-credit Story/accessible routes.
-- [ ] T203 Record exactly one profile/epoch/package completion from either route; the other becomes a
+- [x] T203 Record exactly one profile/epoch/package completion from either route; the other becomes a
       duplicate no-op, and both award zero Seeds/Garden/canopy/League/Challenge/Family Reward.
-- [ ] T204 Implement typed origin resume/recovery and prevent lesson autoplay; keep Learning release
+- [x] T204 Implement typed origin resume/recovery and prevent lesson autoplay; keep Learning release
       off pending source provenance and named human content review.
-- [ ] T205 Define `reveal:<profileId>:<triggerEventId>` and lifecycle
+- [x] T205 Define `reveal:<profileId>:<triggerEventId>` and lifecycle
       `ready → presenting → acknowledged → archived` with deterministic event-order queueing,
       exactly-once construction, one visible bundle, interruption resume, and no rebuild after seen.
 - [ ] T206 Construct the approval bundle as a role-specific projection of existing committed
       authorities with complete praise/Seed/stage/canopy/eligible Green Circle/private League/
       Challenge/Family Reward/badge/station/learning/safe-help consequence parity and no screen-side
       reward calculation.
-- [ ] T207 Permit a separate zero-Seed learning bundle only when its unique completion causes a new
+- [x] T207 Permit a separate zero-Seed learning bundle only when its unique completion causes a new
       eligible outcome; dismissal never reverses committed state and flags never show R002a and v2
       reveals together.
 - [ ] T208 Add the gated Child reveal route/sheet, static reduced-motion outcome, focus containment,
@@ -867,39 +873,61 @@ and Android evidence with truthful limitations. This phase never releases R002b.
       triggers, role projection, consequence parity, and default-off R002a fallback; validate and
       commit Learning and RevealBundle as separate slices.
 
+**Evidence note:** Learning and the receipt-only Reveal lifecycle are implemented, tested, and
+committed. T206, T208, and T209 remain open because the normal approval flow does not yet expose all
+authoritative private League, Challenge Leaf, and Family Reward receipts required for a complete
+live v2 approval bundle, and no valid 390×844 Reveal capture exists. Learning remains default-off
+pending named content/provenance review and a truthful station-132 live capture.
+
 ## Phase 28: Parent Progress and Additive Shared Growth
 
 - [x] T210 Write `screen-spec.md` files for Parent selected-Child Progress, Child Shared Growth, and
       Parent Shared Garden settings before route implementation.
-- [ ] T211 Implement Parent-only `/parent/family/:profileId/progress` from profile-scoped selectors:
+- [x] T211 Implement Parent-only `/parent/family/:profileId/progress` from profile-scoped selectors:
       lifetime/current/archive, earned/in-progress badges, unlocked learning, and transparent task
       suggestions with no manual grant/revoke/edit operation.
-- [ ] T212 Let Create Suitable Task prefill the existing builder while preserving ordinary Parent
+- [x] T212 Let Create Suitable Task prefill the existing builder while preserving ordinary Parent
       review/save; switching Child clears Salem-specific origin/filter/selection state.
-- [ ] T213 Implement `/circle/shared-growth` as a secondary qualitative synthetic anonymous view with
+- [x] T213 Implement `/circle/shared-growth` as a secondary qualitative synthetic anonymous view with
       no names, profiles, ranks, percentages, participant counts, task detail, Seeds, badges, or
       identifiable events. Keep private five-Leaf League root and identity unchanged.
-- [ ] T214 Implement Parent-only `/parent/family/shared-garden` with Continue/Pause/End future-signal
+- [x] T214 Implement Parent-only `/parent/family/shared-garden` with Continue/Pause/End future-signal
       controls; Pause/End never alter existing private or task state, and returning after End
       requires fresh Parent consent.
-- [ ] T215 Keep view and contribution behind separate default-off flags and prove view-without-
+- [x] T215 Keep view and contribution behind separate default-off flags and prove view-without-
       contribution, participation-state independence, profile isolation, reset, privacy, and
       feature-flag rollback.
 - [ ] T216 Add bilingual, accessibility, responsive, route/deep-link, 200%-text, reduced-motion, and
       canonical 390×844 captures; validate and commit Parent Progress and Shared Growth separately.
 
+**Evidence note:** T211–T215 are implemented and committed through `6730dc1`, with independent-flag,
+Garden-entry, focus, and origin corrections through `895af72`. T216 remains open: valid Arabic
+390×844 Parent Progress, Shared Growth, and Shared Garden captures exist locally, but full English,
+320/360/430/768, 200% text, and physical Android/TalkBack evidence is incomplete. The separately
+gated `/league` compatibility root also restores private League identity and strict projection; it
+does not change Shared Growth into a League replacement.
+
 ## Phase 29: R002b Convergence and Release-Blocked Evidence
 
-- [ ] T217 Add cross-feature migration, restart, feature-flag, route-origin, RTL/LTR, accessibility,
+- [x] T217 Add cross-feature migration, restart, feature-flag, route-origin, RTL/LTR, accessibility,
       overflow, focus, keyboard, safe-area, and consequence-parity coverage while retaining all 541
       R002a tests.
 - [ ] T218 Validate widths 320/360/390/430/768, Arabic RTL, English LTR, 200% text, reduced motion,
       no horizontal overflow, fixed-action clearance, semantic roles/states, and 48dp controls.
-- [ ] T219 Run formatting, lint, typecheck, full unit/integration suite, Expo dependency/configuration
+- [x] T219 Run formatting, lint, typecheck, full unit/integration suite, Expo dependency/configuration
       checks, production web and Android JavaScript exports, route/reset scans, and `git diff --check`.
-- [ ] T220 Attempt physical Android, TalkBack, native Back/IME, OS font scaling, and release-build
+- [x] T220 Attempt physical Android, TalkBack, native Back/IME, OS font scaling, and release-build
       smoke checks; record unavailable device/SDK as `BLOCKED`, never infer a pass from web.
-- [ ] T221 Record content/provenance/human-review gates and keep each applicable flag default-off;
+- [x] T221 Record content/provenance/human-review gates and keep each applicable flag default-off;
       update the runbook and R002b validation evidence without rewriting R001/R002a history.
-- [ ] T222 Review exact staged paths, prove raw exports/metadata and six held commits remain untouched,
+- [x] T222 Review exact staged paths, prove raw exports/metadata and six held commits remain untouched,
       and commit final R002b test/evidence boundaries without push, merge, deploy, rebase, or amend.
+
+**Checkpoint:** The core checkpoint `895af72` passed 76 files / 967 tests. Final implementation
+checkpoint `2e09419` passes 78 files / 979 tests; typecheck, lint, formatting, Expo
+dependency/configuration checks, production web and Android JavaScript exports, route/reset scans,
+and Git whitespace validation also pass. The physical Android attempt is recorded as `BLOCKED`
+because no ADB device is available in this environment; TalkBack, native Back/IME, safe areas,
+reduced motion, and OS font scaling therefore remain unobserved. All eight flags remain off by
+default. T218 stays open pending the complete per-surface responsive/large-text/native evidence
+matrix. Passing tests or browser-proxy captures do not activate a release flag.
