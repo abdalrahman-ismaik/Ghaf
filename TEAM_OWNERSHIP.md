@@ -6,6 +6,29 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-05 Official Ghaf Brand Migration Window
+
+**Integration owner**: `/root`
+
+**Worktree and branch**:
+`/home/smyk/projects/Ghaf-r002-reconciliation-20260904` on
+`integration/r3-r002b-implementation-20260905` at preflight head `ca80f9f`.
+
+**Scope**: Integrate the product-owner-designated official Ghaf mark, launcher/adaptive/themed
+icons, native splash asset, favicon, and PWA derivatives without changing R001/R002a layouts,
+R002b feature-flag defaults, or any product behavior. The source pack in the original worktree is
+read-only; `Zone.Identifier` files and raw R002 exports remain excluded.
+
+| Exclusive writer                                                | Exact reserved boundary                                                                                                                          | Handoff condition                                                                                                                                                 |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/root` — brand integration and documentation                   | `TEAM_OWNERSHIP.md`, new `docs/design/brand/**`, final integration review, exact staging, validation, and commits                                | Preserve all behavior and protected content art; record source hashes, replacement decisions, external Stitch status, native blockers, and rollback               |
+| `/root/official_brand_orchestrator/brand_asset_inventory`       | New `assets/brand/ghaf/**`, new `src/components/brand/**`, and new `tests/official-brand-mark.test.ts` only                                      | Copy checksum-verified assets without modifying geometry; add one typed mark component using the existing SVG stack; test variants, accessibility, and SVG safety |
+| `/root/official_brand_orchestrator/brand_validation_capability` | `app.config.ts`, `package.json`, `package-lock.json`, new `app/+html.tsx`, new `public/**`, and new `tests/official-brand-platform.test.ts` only | Configure platform/web branding against Expo SDK 57, keep existing plugins/config intact, and validate exact dimensions, opacity, safe areas, and resolved paths  |
+
+No writer may edit an existing route, profile avatar, botanical illustration, Garden/League art,
+badge, task/navigation icon, feature flag, fixture, service, state, or product specification during
+this migration. Delegated writers must accommodate concurrent changes and return work uncommitted.
+
 ## 2026-09-05 R002b Feature-Flagged Implementation Window
 
 **Integration owner**: `/root`

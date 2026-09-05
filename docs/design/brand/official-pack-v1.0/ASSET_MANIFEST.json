@@ -1,0 +1,56 @@
+{
+  "name": "Ghaf Official Logo and App-Icon Pack",
+  "version": "1.0.0",
+  "approvedOn": "2026-09-05",
+  "status": "product-owner-designated-official-pending-public-trademark-review",
+  "canonicalMark": "svg/ghaf-mark-full-color.svg",
+  "primaryAppIcon": "app-icon/icon.png",
+  "source": {
+    "path": "source/ghaf-original-user-supplied.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "72816b6ad7703a5afd32022134ce08ddad4a15b3e9521edcb7cdfae1992ed76d"
+  },
+  "palette": {
+    "deepForest": "#0D3128",
+    "ghafEmerald": "#126A50",
+    "mangroveTeal": "#188B83",
+    "darkMangrove": "#28736C",
+    "brightPearl": "#F7F8F3"
+  },
+  "vectorVariants": {
+    "fullColor": "svg/ghaf-mark-full-color.svg",
+    "deepForest": "svg/ghaf-mark-deep-forest.svg",
+    "reverse": "svg/ghaf-mark-reverse.svg",
+    "monochromeMask": "svg/ghaf-mark-monochrome-mask.svg",
+    "adaptiveForeground": "svg/ghaf-adaptive-foreground.svg",
+    "adaptiveMonochrome": "svg/ghaf-adaptive-monochrome.svg",
+    "splash": "svg/ghaf-splash-mark.svg",
+    "favicon": "svg/ghaf-favicon.svg"
+  },
+  "platformAssets": {
+    "expoTopLevel": "app-icon/icon.png",
+    "ios": "app-icon/ios-icon-1024.png",
+    "androidLegacy": "app-icon/android-legacy-icon-1024.png",
+    "androidAdaptiveForeground": "app-icon/android-adaptive-foreground-1024.png",
+    "androidAdaptiveMonochrome": "app-icon/android-adaptive-monochrome-1024.png",
+    "androidAdaptiveBackgroundColor": "#F7F8F3",
+    "splash": "app-icon/splash-icon-1024.png",
+    "favicon48": "app-icon/favicon-48.png",
+    "favicon32": "app-icon/favicon-32.png",
+    "pwa192": "app-icon/pwa-icon-192.png",
+    "pwa512": "app-icon/pwa-icon-512.png",
+    "pwaMaskable512": "app-icon/pwa-maskable-512.png",
+    "appleTouch180": "app-icon/apple-touch-icon-180.png",
+    "playStore512": "app-icon/play-store-icon-512.png",
+    "optionalAndroidNotification96": "app-icon/notification-icon-96.png"
+  },
+  "validation": {
+    "shapeIntersectionOverUnion": 0.99590785,
+    "alphaThreshold": 32,
+    "embeddedRaster": false,
+    "externalReferences": false,
+    "gradients": false,
+    "filters": false
+  }
+}
