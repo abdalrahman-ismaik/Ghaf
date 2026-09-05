@@ -13,6 +13,7 @@ import {
   constructRevealBundle,
   createEmptyRevealBundleQueue,
   selectVisibleRevealBundle,
+  startOrResumeRevealById,
   startOrResumeNextReveal,
 } from '../src/features/rewards/revealBundle';
 
@@ -997,6 +998,40 @@ describe('R002b RevealBundle lifecycle and deterministic queue', () => {
     const visible = selectVisibleRevealBundle(resumed.data.queue, PRESENTATION_SCOPE);
     expectOk(visible);
     expect(visible.data?.id).toBe(started.data.bundle?.id);
+  });
+
+  it('starts only the exact canonical next bundle requested by a guarded route', () => {
+    let queue = enqueueAt(
+      createEmptyRevealBundleQueue(),
+      'recognition:first',
+      '2026-09-05T09:00:00.000Z',
+    );
+    queue = enqueueAt(queue, 'recognition:second', '2026-09-05T10:00:00.000Z');
+    const first = queue.bundles[0];
+    const second = queue.bundles[1];
+    if (!first || !second) throw new Error('Expected two queued bundles');
+
+    expect(startOrResumeRevealById(queue, second.id, PRESENTATION_SCOPE)).toMatchObject({
+      ok: false,
+      error: { code: 'QUEUE_CONFLICT' },
+    });
+    expect(queue.bundles.every((bundle) => bundle.lifecycle === 'ready')).toBe(true);
+
+    const started = startOrResumeRevealById(queue, first.id, PRESENTATION_SCOPE);
+    expectOk(started);
+    expect(started.data.bundle?.id).toBe(first.id);
+    expect(started.data.bundle?.lifecycle).toBe('presenting');
+
+    expect(
+      startOrResumeRevealById(started.data.queue, second.id, PRESENTATION_SCOPE),
+    ).toMatchObject({
+      ok: false,
+      error: { code: 'QUEUE_CONFLICT' },
+    });
+    const resumed = startOrResumeRevealById(started.data.queue, first.id, PRESENTATION_SCOPE);
+    expectOk(resumed);
+    expect(resumed.data.disposition).toBe('resumed');
+    expect(resumed.data.bundle?.id).toBe(first.id);
   });
 
   it('selects only the active profile and never exposes or acknowledges another profile bundle', () => {

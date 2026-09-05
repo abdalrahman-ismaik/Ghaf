@@ -33,6 +33,7 @@ const DEFAULT_OFF_R002B_ROUTES = [
   '/garden/badges/[badgeId]',
   '/garden/learn/[learningId]/story',
   '/garden/learn/[learningId]/accessible',
+  '/child/reveal/[bundleId]',
   '/parent/family/[profileId]/progress',
   '/circle/shared-growth',
   '/parent/family/shared-garden',

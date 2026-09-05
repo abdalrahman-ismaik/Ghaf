@@ -916,6 +916,138 @@ export const resources = {
           },
         },
       },
+      r002bReveal: {
+        title: 'حصيلة نموك',
+        groupLabel: 'كل النتائج الموثّقة في حصيلة واحدة',
+        illustrationLabel: 'شجرة غاف رمزية فوق تموجات ماء هادئة',
+        introduction: {
+          taskApproval:
+            'اعتمد وليّ أمرك المهمة. تظهر هنا النتائج التي سُجّلت بالفعل لهذا الاعتماد مرة واحدة.',
+          learningCompletion:
+            'اكتمل التعلّم. تظهر هنا النتيجة الجديدة المؤهلة فقط، من دون بذور أو مكافآت مهمة.',
+        },
+        privateNote: 'هذه الحصيلة خاصة بالطفل ووليّ أمره ولا تظهر في ترتيب عام.',
+        symbolicNote: 'النمو والبذور رمزية، ولا توثّق زراعة فعلية أو أثرًا بيئيًا مقاسًا.',
+        state: {
+          ready: 'الحصيلة جاهزة',
+          presenting: 'الحصيلة محفوظة وتُعرض الآن',
+          interrupted: 'توقف العرض مؤقتًا، وبقيت الحصيلة محفوظة',
+          recovered: 'استُعيدت الحصيلة المحفوظة',
+          offline: 'لا يوجد اتصال، وتبقى الحصيلة المحلية متاحة',
+          error: 'تعذّر إكمال العرض، ويمكنك العودة بأمان',
+          archived: 'تمت مشاهدة الحصيلة',
+          unavailable: 'الحصيلة غير متاحة الآن',
+        },
+        landscape: {
+          ghaf: 'الغاف',
+          samar: 'السمر',
+          sidr: 'السدر',
+          date_palm: 'النخيل',
+          mangrove: 'القرم',
+        },
+        stage: {
+          seed: 'بذرة',
+          shoot: 'برعم',
+          sapling: 'شتلة',
+          shade: 'ظل',
+          flourishing: 'مزدهرة',
+        },
+        item: {
+          praise: {
+            title: 'تشجيع من وليّ الأمر',
+            status: 'رسالة خاصة مرتبطة بهذا الفعل',
+          },
+          seed: {
+            title: 'البذور المؤكدة',
+            delta: '+{{delta}} بذرة',
+            detail: 'ارتفع الرصيد المؤكد من {{before}} إلى {{after}}.',
+            status: 'سجل دائم غير قابل للإنفاق',
+          },
+          plant: {
+            title: 'نمو الحديقة',
+            range: '{{before}} ← {{after}}',
+            detail: 'انتقل {{landscape}} من مرحلة {{before}} إلى {{after}}.',
+            threshold: 'اكتملت عتبة {{threshold}} بذرة',
+            progress: 'تقدم رمزي محفوظ',
+          },
+          canopy: {
+            title: 'مظلة العائلة',
+            delta: '+{{delta}} ورقة',
+            detail: 'أصبحت المظلة {{current}} من {{goal}} ورقة.',
+          },
+          circle: {
+            title: 'السجل الأخضر العائلي',
+            delta: '+{{delta}} فعل',
+            detail: 'أصبح السجل {{current}} من {{goal}} فعلًا منزليًا مؤهلًا.',
+          },
+          league: {
+            title: 'دوري العائلة الخاص',
+            delta: '+{{delta}} ورقة',
+            detail: 'أصبحت أوراق الأسبوع {{current}} من {{goal}}.',
+            private: 'خاص بالعائلة المدعوة فقط',
+          },
+          challenge: {
+            title: 'ورقة تحدٍ مؤكدة',
+            detail: 'سُجلت ورقة التحدي المرتبطة بهذه المهمة مرة واحدة.',
+            private: 'لا تظهر تفاصيل المهمة في الدوري',
+          },
+          familyReward: {
+            title: 'مكافأة العائلة الخاصة',
+            detail: 'انتقلت خطة وليّ الأمر المؤهلة من موعودة إلى متاحة.',
+            private: 'وعد عائلي خاص، وليست نقودًا داخل التطبيق',
+          },
+          badge: {
+            fallback: 'شارة نمو',
+            title: 'حصلت على {{badge}}',
+            detail: 'تحققت المعايير الموثّقة لهذه الشارة مرة واحدة.',
+            permanent: 'شارة خاصة ودائمة',
+          },
+          station: {
+            title: 'محطة جديدة في مسار الأثر',
+            value: '{{threshold}} بذرة مدى الحياة',
+            status: 'مسار خاص مشتق من سجل البذور',
+            result: {
+              archive_mangrove_and_earn_expanding_shade:
+                'اكتملت مرحلة القرم وحُفظت، وأصبحت شارة الظل المتسع مؤهلة.',
+              unlock_mangrove_roots_learning: 'أصبح تعلّم جذور القرم متاحًا.',
+              unlock_coastal_ripple_cosmetic: 'أصبح تموج الساحل الرمزي متاحًا.',
+              evaluate_water_care_bud:
+                'أصبحت عتبة تقييم برعم العناية بالمياه متاحة؛ ولا تكفي العتبة وحدها للشارة.',
+              unlock_jubail_learning_story:
+                'أصبحت قصة الجبيل التعليمية متاحة، من دون الادعاء بزيارة حقيقية.',
+              earn_coastal_care_and_reveal_configured_next_stage:
+                'أصبحت نتيجة العناية بالساحل والمرحلة التالية المهيأة متاحتين عند اكتمال المعايير.',
+            },
+          },
+          learning: {
+            title: 'تعلّم جديد متاح',
+            detail: 'أصبح محتوى جذور القرم المحدود ومساره النصي المكافئ متاحين.',
+            status: 'لا يمنح بذورًا أو مكافآت مهمة',
+          },
+          safeHelp: {
+            title: 'طلب المساعدة بأمان',
+            permitted_help: 'أكملت المهمة مع المساعدة المسموح بها وحافظت على كامل التقدير.',
+            asked_adult: 'توقفت وطلبت مساعدة شخص بالغ في الوقت المناسب.',
+            status: 'المساعدة لا تنقص التقدير',
+          },
+        },
+        action: {
+          open: { label: 'عرض حصيلة النمو' },
+          continue: {
+            label: 'متابعة',
+            accessibility: 'تأكيد مشاهدة الحصيلة والمتابعة',
+            busy: 'جارٍ حفظ المشاهدة…',
+          },
+          recover: {
+            label: 'عودة آمنة',
+            accessibility: 'العودة بأمان مع إبقاء الحصيلة محفوظة',
+          },
+          growth: {
+            label: 'فتح مسار النمو',
+            accessibility: 'تأكيد المشاهدة وفتح مسار النمو الخاص',
+          },
+        },
+      },
       r002bSharedGrowth: {
         common: {
           back: 'رجوع',
@@ -2090,6 +2222,140 @@ export const resources = {
             path: 'View the related station',
             learning: 'Open available learning',
             assignedTask: 'Open the Parent-approved task',
+          },
+        },
+      },
+      r002bReveal: {
+        title: 'Your growth result',
+        groupLabel: 'Every committed result in one bundle',
+        illustrationLabel: 'A symbolic Ghaf tree above calm water ripples',
+        introduction: {
+          taskApproval:
+            'Your Parent approved the task. These are the results already committed for that approval, shown once.',
+          learningCompletion:
+            'Learning is complete. Only a genuinely new eligible outcome appears here, with no task Seeds or rewards.',
+        },
+        privateNote: 'This result is private to the Child and Parent and never appears publicly.',
+        symbolicNote:
+          'Seeds and growth are symbolic. They do not document physical planting or measured environmental impact.',
+        state: {
+          ready: 'Result ready',
+          presenting: 'Result saved and now showing',
+          interrupted: 'Presentation paused; the result remains saved',
+          recovered: 'Saved result recovered',
+          offline: 'Offline; the local saved result remains available',
+          error: 'Presentation could not finish; you can return safely',
+          archived: 'Result viewed',
+          unavailable: 'Result unavailable right now',
+        },
+        landscape: {
+          ghaf: 'Ghaf',
+          samar: 'Samar',
+          sidr: 'Sidr',
+          date_palm: 'Date Palm',
+          mangrove: 'Mangrove',
+        },
+        stage: {
+          seed: 'Seed',
+          shoot: 'Shoot',
+          sapling: 'Sapling',
+          shade: 'Shade',
+          flourishing: 'Flourishing',
+        },
+        item: {
+          praise: {
+            title: 'A note from your Parent',
+            status: 'A private message tied to this action',
+          },
+          seed: {
+            title: 'Confirmed Seeds',
+            delta: '+{{delta}} Seeds',
+            detail: 'Confirmed lifetime Seeds moved from {{before}} to {{after}}.',
+            status: 'Permanent, non-spendable record',
+          },
+          plant: {
+            title: 'Garden growth',
+            range: '{{before}} → {{after}}',
+            detail: '{{landscape}} moved from {{before}} to {{after}}.',
+            threshold: '{{threshold}}-Seed threshold completed',
+            progress: 'Saved symbolic progress',
+          },
+          canopy: {
+            title: 'Family canopy',
+            delta: '+{{delta}} Leaf',
+            detail: 'The canopy now has {{current}} of {{goal}} Leaves.',
+          },
+          circle: {
+            title: 'Household Green record',
+            delta: '+{{delta}} action',
+            detail: 'The record now has {{current}} of {{goal}} eligible household actions.',
+          },
+          league: {
+            title: 'Private Family League',
+            delta: '+{{delta}} Leaf',
+            detail: 'This week now has {{current}} of {{goal}} confirmed Leaves.',
+            private: 'Visible only inside the invite-only family League',
+          },
+          challenge: {
+            title: 'Challenge Leaf confirmed',
+            detail: 'The Challenge Leaf tied to this task was recorded once.',
+            private: 'Task details never appear in the League',
+          },
+          familyReward: {
+            title: 'Private Family Reward',
+            detail: 'The eligible Parent plan moved from Promised to Unlocked.',
+            private: 'A private family promise, not in-app money',
+          },
+          badge: {
+            fallback: 'Growth badge',
+            title: '{{badge}} earned',
+            detail: 'The documented criteria for this badge were met once.',
+            permanent: 'Private and permanent badge',
+          },
+          station: {
+            title: 'New Impact Path station',
+            value: '{{threshold}} lifetime Seeds',
+            status: 'A private projection of the Seed ledger',
+            result: {
+              archive_mangrove_and_earn_expanding_shade:
+                'The Mangrove stage was completed and archived, and Expanding Shade became eligible.',
+              unlock_mangrove_roots_learning: 'Mangrove Roots learning is now available.',
+              unlock_coastal_ripple_cosmetic: 'The symbolic coastal ripple is now available.',
+              evaluate_water_care_bud:
+                'Water Care — Bud may now be evaluated; the threshold alone does not earn it.',
+              unlock_jubail_learning_story:
+                'The Jubail learning story is now available without implying a real visit.',
+              earn_coastal_care_and_reveal_configured_next_stage:
+                'Coastal Care and the configured next stage can appear when all criteria are met.',
+            },
+          },
+          learning: {
+            title: 'New learning available',
+            detail:
+              'The finite Mangrove Roots story and equal-credit text route are now available.',
+            status: 'Awards no task Seeds or rewards',
+          },
+          safeHelp: {
+            title: 'Safe help-seeking',
+            permitted_help: 'You completed the task with allowed help and kept full credit.',
+            asked_adult: 'You stopped and asked an adult for help at the right time.',
+            status: 'Using help never reduces credit',
+          },
+        },
+        action: {
+          open: { label: 'View growth result' },
+          continue: {
+            label: 'Continue',
+            accessibility: 'Acknowledge this result and continue',
+            busy: 'Saving that you viewed this…',
+          },
+          recover: {
+            label: 'Return safely',
+            accessibility: 'Return safely while keeping this result saved',
+          },
+          growth: {
+            label: 'Open Growth Journey',
+            accessibility: 'Acknowledge this result and open the private Growth Journey',
           },
         },
       },

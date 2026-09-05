@@ -34,6 +34,12 @@ import {
   type ParentProgressErrorCode,
 } from '../features/growth/parentProgress';
 import {
+  acknowledgeRevealBundle,
+  archiveRevealBundle,
+  createEmptyRevealBundleQueue,
+  startOrResumeRevealById,
+} from '../features/rewards/revealBundle';
+import {
   advanceMangroveLearningStep as advanceMangroveLearningStepDomain,
   completeMangroveLearning as completeMangroveLearningDomain,
   createMangroveLearningState,
@@ -88,6 +94,12 @@ import type {
 } from '../models/learning';
 import type { LearningCompletionEvidence } from '../models/achievements';
 import type { ImpactPathThreshold } from '../models/growthJourney';
+import type {
+  RevealBundleErrorCode,
+  RevealBundleQueue,
+  RevealLifecycleResult,
+  RevealPresentationResult,
+} from '../models/revealBundle';
 import type {
   ParentSharedGrowthConsentReceipt,
   SharedGrowthChildView,
@@ -164,6 +176,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly growthJourney: GrowthJourneyRuntimeState;
   readonly mangroveLearningByProfile: MangroveLearningByProfile;
   readonly sharedGrowth: SharedGrowthState;
+  readonly revealBundleQueue: RevealBundleQueue;
   readonly parentOnboarding: ParentOnboardingView;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
@@ -224,6 +237,11 @@ export interface PrototypeStoreState extends PrototypeSession {
     route: LearningRoute,
     completedAt: string,
   ) => ServiceResult<CompleteLearningResult>;
+  readonly startRevealPresentation: (bundleId: string) => ServiceResult<RevealPresentationResult>;
+  readonly acknowledgeRevealPresentation: (
+    bundleId: string,
+  ) => ServiceResult<RevealLifecycleResult>;
+  readonly archiveRevealPresentation: (bundleId: string) => ServiceResult<RevealLifecycleResult>;
 
   readonly createTaskDraft: (input: {
     readonly childId: SyntheticChildId;
@@ -441,6 +459,42 @@ function learningFailure(message: string): ServiceResult<never> {
   return failure('INVALID_TRANSITION', message);
 }
 
+function revealFailure(code: RevealBundleErrorCode, message: string): ServiceResult<never> {
+  switch (code) {
+    case 'PROFILE_SCOPE_MISMATCH':
+    case 'EPOCH_SCOPE_MISMATCH':
+      return failure('PRIVACY_REJECTED', message);
+    case 'BUNDLE_NOT_FOUND':
+      return failure('NOT_FOUND', message);
+    case 'INVALID_INPUT':
+      return failure('INVALID_INPUT', message);
+    case 'QUEUE_CONFLICT':
+    case 'BUNDLE_CONFLICT':
+    case 'RECEIPT_CONFLICT':
+    case 'TRIGGER_SCOPE_MISMATCH':
+    case 'UNCOMMITTED_RECEIPT':
+      return failure('INVALID_RESPONSE', message);
+    case 'INELIGIBLE_TRIGGER':
+    case 'INVALID_TRANSITION':
+      return failure('INVALID_TRANSITION', message);
+  }
+}
+
+function activeRevealScope(state: PrototypeStoreState): ServiceResult<{
+  readonly profileId: SyntheticChildId;
+  readonly profileEpochId: string;
+}> {
+  if (state.role !== 'child') {
+    return failure('INVALID_TRANSITION', 'Only the Child role can present a Child RevealBundle');
+  }
+  const profile = selectGrowthJourneyProfile(state.growthJourney, state.activeChildId);
+  if (!profile.ok) return failure('INVALID_RESPONSE', profile.error.message);
+  return success({
+    profileId: profile.data.profileId,
+    profileEpochId: profile.data.profileEpochId,
+  });
+}
+
 function parentProgressFailure(
   code: ParentProgressErrorCode,
   message: string,
@@ -604,6 +658,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   growthJourney: initialGrowthJourney.data,
   mangroveLearningByProfile: initialMangroveLearning,
   sharedGrowth: initialSharedGrowth,
+  revealBundleQueue: createEmptyRevealBundleQueue(),
   parentOnboarding: parentOnboardingController.getView(),
   parentGuideSuggestion: null,
   childCoachResult: null,
@@ -854,6 +909,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       growthJourney: nextGrowthJourney.data,
       mangroveLearningByProfile: nextMangroveLearning,
       sharedGrowth: nextSharedGrowth,
+      revealBundleQueue: createEmptyRevealBundleQueue(),
       parentOnboarding: onboardingReset.data,
       parentGuideSuggestion: null,
       childCoachResult: null,
@@ -970,6 +1026,36 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       growthJourney: projected.data.runtime,
     }));
     return success(completed.data);
+  },
+
+  startRevealPresentation: (bundleId) => {
+    const state = get();
+    const scope = activeRevealScope(state);
+    if (!scope.ok) return scope;
+    const result = startOrResumeRevealById(state.revealBundleQueue, bundleId, scope.data);
+    if (!result.ok) return revealFailure(result.error.code, result.error.message);
+    set({ revealBundleQueue: result.data.queue });
+    return success(result.data);
+  },
+
+  acknowledgeRevealPresentation: (bundleId) => {
+    const state = get();
+    const scope = activeRevealScope(state);
+    if (!scope.ok) return scope;
+    const result = acknowledgeRevealBundle(state.revealBundleQueue, bundleId, scope.data);
+    if (!result.ok) return revealFailure(result.error.code, result.error.message);
+    set({ revealBundleQueue: result.data.queue });
+    return success(result.data);
+  },
+
+  archiveRevealPresentation: (bundleId) => {
+    const state = get();
+    const scope = activeRevealScope(state);
+    if (!scope.ok) return scope;
+    const result = archiveRevealBundle(state.revealBundleQueue, bundleId, scope.data);
+    if (!result.ok) return revealFailure(result.error.code, result.error.message);
+    set({ revealBundleQueue: result.data.queue });
+    return success(result.data);
   },
 
   createTaskDraft: (input) => {

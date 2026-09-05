@@ -1,4 +1,4 @@
-import { useEffect, type PropsWithChildren } from 'react';
+import { useEffect, type PropsWithChildren, type ReactNode } from 'react';
 import {
   BackHandler,
   Pressable,
@@ -16,9 +16,11 @@ import { colors, layout, opacity, r001Radii, spacing } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 
 export interface R002bNestedScreenProps extends PropsWithChildren {
+  readonly accessibilityViewIsModal?: boolean;
   readonly backLabel: string;
   readonly contentContainerStyle?: StyleProp<ViewStyle>;
   readonly direction: TextDirection;
+  readonly footer?: ReactNode;
   readonly language: LocaleCode;
   readonly onBack: () => void;
   readonly reducedMotion: boolean;
@@ -28,10 +30,12 @@ export interface R002bNestedScreenProps extends PropsWithChildren {
 }
 
 export function R002bNestedScreen({
+  accessibilityViewIsModal = false,
   backLabel,
   children,
   contentContainerStyle,
   direction,
+  footer,
   language,
   onBack,
   reducedMotion,
@@ -67,9 +71,10 @@ export function R002bNestedScreen({
     <View importantForAccessibility="no-hide-descendants" style={styles.sideSlot} />
   );
 
-  return (
+  const screen = (
     <R002aScreen
       contentContainerStyle={contentContainerStyle}
+      footer={footer}
       header={
         <View style={styles.headerRoot}>
           <View style={styles.physicalRow}>
@@ -96,6 +101,14 @@ export function R002bNestedScreen({
     >
       {children}
     </R002aScreen>
+  );
+
+  return accessibilityViewIsModal ? (
+    <View accessibilityViewIsModal style={styles.modalBoundary}>
+      {screen}
+    </View>
+  ) : (
+    screen
   );
 }
 
@@ -150,6 +163,9 @@ export function R002bUnavailableState({
 }
 
 const styles = StyleSheet.create({
+  modalBoundary: {
+    flex: 1,
+  },
   headerRoot: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.surfaceContainerHigh,

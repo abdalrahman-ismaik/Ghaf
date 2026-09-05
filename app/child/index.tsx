@@ -84,6 +84,10 @@ export default function ChildHomeScreen() {
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const choicePool = usePrototypeStore((state) => state.choicePool);
   const journey = usePrototypeStore((state) => state.journey);
+  const revealBundleQueue = usePrototypeStore((state) => state.revealBundleQueue);
+  const profileEpochId = usePrototypeStore(
+    (state) => state.growthJourney.ledgersByProfile[state.activeChildId].profileEpochId,
+  );
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
   const chooseAssignment = usePrototypeStore((state) => state.chooseAssignment);
   const preAcceptanceAdjustment = usePrototypeStore((state) => state.preAcceptanceAdjustment);
@@ -94,6 +98,20 @@ export default function ChildHomeScreen() {
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const r002bGrowthEnabled = role === 'child' && r002bFeatureFlags.r002b_impact_path_ui;
+  const pendingReveal = r002bFeatureFlags.r002b_reveal_bundle_v2
+    ? (revealBundleQueue.bundles.find(
+        (bundle) =>
+          bundle.lifecycle === 'presenting' &&
+          bundle.profileId === activeChildId &&
+          bundle.profileEpochId === profileEpochId,
+      ) ??
+      revealBundleQueue.bundles.find(
+        (bundle) =>
+          bundle.lifecycle === 'ready' &&
+          bundle.profileId === activeChildId &&
+          bundle.profileEpochId === profileEpochId,
+      ))
+    : undefined;
 
   const openImpactPath = () => {
     const origin = createR002bOrigin({
@@ -105,6 +123,24 @@ export default function ChildHomeScreen() {
     router.push({
       pathname: '/garden/impact-path',
       params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
+  const openReveal = () => {
+    if (!pendingReveal) return;
+    const origin = createR002bOrigin({
+      id: 'child_today_reveal_handoff',
+      profileId: activeChildId,
+      entityId: pendingReveal.id,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/child/reveal/[bundleId]',
+      params: {
+        bundleId: pendingReveal.id,
+        profileId: activeChildId,
+        ...serializeR002bOrigin(origin.data),
+      },
     } as unknown as Href);
   };
   const r002bGrowth = useR002bGrowthPresentation({
@@ -213,11 +249,17 @@ export default function ChildHomeScreen() {
             }
           : null;
       case 'garden':
-        return {
-          label: t('parentHome.openGarden'),
-          onPress: () => router.push('/garden'),
-          testID: 'open-recognized-garden-button',
-        };
+        return pendingReveal
+          ? {
+              label: t('r002bReveal.action.open.label'),
+              onPress: openReveal,
+              testID: 'open-r002b-reveal-button',
+            }
+          : {
+              label: t('parentHome.openGarden'),
+              onPress: () => router.push('/garden'),
+              testID: 'open-recognized-garden-button',
+            };
       default:
         return null;
     }

@@ -925,6 +925,54 @@ export function startOrResumeNextReveal(
   });
 }
 
+export function startOrResumeRevealById(
+  queueInput: unknown,
+  bundleId: unknown,
+  scopeInput: unknown,
+): RevealBundleResult<RevealPresentationResult> {
+  if (!isNonEmptyString(bundleId)) {
+    return failure('INVALID_INPUT', 'RevealBundle ID is required');
+  }
+  const queue = validateQueue(queueInput);
+  if (!queue.ok) return queue;
+  const scope = validatePresentationScope(scopeInput);
+  if (!scope.ok) return scope;
+  const requested = queue.data.bundles.find((bundle) => bundle.id === bundleId);
+  if (!requested) return failure('BUNDLE_NOT_FOUND', 'RevealBundle does not exist');
+  if (requested.profileId !== scope.data.profileId) {
+    return failure('PROFILE_SCOPE_MISMATCH', 'RevealBundle belongs to another profile');
+  }
+  if (requested.profileEpochId !== scope.data.profileEpochId) {
+    return failure('EPOCH_SCOPE_MISMATCH', 'RevealBundle belongs to another profile epoch');
+  }
+
+  const presenting = queue.data.bundles.find((bundle) => bundle.lifecycle === 'presenting');
+  if (presenting) {
+    if (presenting.id !== requested.id) {
+      return failure('QUEUE_CONFLICT', 'Another RevealBundle is already presenting');
+    }
+    return success({ disposition: 'resumed', queue: queue.data, bundle: presenting });
+  }
+  if (requested.lifecycle !== 'ready') {
+    return failure('INVALID_TRANSITION', 'Only a ready RevealBundle may begin presentation');
+  }
+  const next = queue.data.bundles.find(
+    (bundle) =>
+      bundle.lifecycle === 'ready' &&
+      bundle.profileId === scope.data.profileId &&
+      bundle.profileEpochId === scope.data.profileEpochId,
+  );
+  if (next?.id !== requested.id) {
+    return failure('QUEUE_CONFLICT', 'Requested RevealBundle is not next in canonical order');
+  }
+  const started = immutableCopy({ ...requested, lifecycle: 'presenting' as const });
+  return success({
+    disposition: 'started',
+    queue: replaceBundle(queue.data, started),
+    bundle: started,
+  });
+}
+
 function transitionBundle(
   queueInput: unknown,
   bundleId: unknown,

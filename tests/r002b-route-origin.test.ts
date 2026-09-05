@@ -24,6 +24,7 @@ describe('R002b typed origins', () => {
       'badge_gallery_badge_card',
       'badge_detail_path_action',
       'badge_detail_learning_action',
+      'child_today_reveal_handoff',
       'child_reveal_growth_action',
       'child_garden_shared_growth_card',
       'child_league_shared_growth_card',
@@ -177,6 +178,64 @@ describe('R002b typed origins', () => {
     ).toMatchObject({
       focusTarget: 'r002b-badge-badge.skill.sorting.bud.v1',
     });
+  });
+
+  it('binds a Reveal handoff to the active profile and canonical bundle identity', () => {
+    const bundleId = 'reveal:child_salem:recognition:submission_1';
+    const created = createR002bOrigin({
+      id: 'child_today_reveal_handoff',
+      profileId: CHILD_ID,
+      entityId: bundleId,
+      scrollOffset: 0,
+    });
+    if (!created.ok) throw new Error('expected Reveal origin');
+
+    expect(serializeR002bOrigin(created.data)).toMatchObject({
+      originId: 'child_today_reveal_handoff',
+      originProfileId: CHILD_ID,
+      originEntityId: bundleId,
+    });
+    expect(
+      resolveR002bOrigin({
+        origin: created.data,
+        activeRole: 'child',
+        activeProfileId: CHILD_ID,
+      }),
+    ).toMatchObject({
+      restored: true,
+      href: '/child',
+      focusTarget: 'open-r002b-reveal-button',
+    });
+    expect(
+      createR002bOrigin({
+        id: 'child_today_reveal_handoff',
+        profileId: OTHER_CHILD_ID,
+        entityId: bundleId,
+      }),
+    ).toEqual({ ok: false, error: 'invalid_entity' });
+  });
+
+  it.each([
+    ['child_garden_shared_growth_card', 'child', '/garden', 'r002b-garden-shared-growth-card'],
+    [
+      'child_league_shared_growth_card',
+      'child',
+      '/circle',
+      'r002b-child-league-shared-growth-card',
+    ],
+    [
+      'parent_garden_shared_settings_card',
+      'parent',
+      '/garden',
+      'r002b-parent-garden-shared-settings-card',
+    ],
+  ] as const)('restores the exact Shared Growth origin %s', (id, role, href, focusTarget) => {
+    const created = createR002bOrigin({ id, profileId: CHILD_ID, scrollOffset: 216 });
+    if (!created.ok) throw new Error('expected origin');
+
+    expect(
+      resolveR002bOrigin({ origin: created.data, activeRole: role, activeProfileId: CHILD_ID }),
+    ).toEqual({ restored: true, href, focusTarget, scrollOffset: 216, filter: null });
   });
 
   it('rejects arrays, partial values, unknown fields, and malformed route params', () => {

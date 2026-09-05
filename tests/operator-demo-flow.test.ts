@@ -29,6 +29,7 @@ const EXPECTED_ROUTES = [
   '/parent/task/review',
   '/parent/family/[profileId]/progress',
   '/child',
+  '/child/reveal/[bundleId]',
   '/child/task',
   '/parent/check-in',
   '/garden',

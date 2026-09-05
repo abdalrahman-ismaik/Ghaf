@@ -10,6 +10,7 @@ export const R002B_ORIGIN_IDS = [
   'badge_gallery_badge_card',
   'badge_detail_path_action',
   'badge_detail_learning_action',
+  'child_today_reveal_handoff',
   'child_reveal_growth_action',
   'child_garden_shared_growth_card',
   'child_league_shared_growth_card',
@@ -88,6 +89,12 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
     href: 'badge_detail',
     focusTarget: 'r002b-badge-detail-learning-action',
     entity: 'badge',
+  },
+  child_today_reveal_handoff: {
+    role: 'child',
+    href: 'child',
+    focusTarget: 'open-r002b-reveal-button',
+    entity: 'reveal',
   },
   child_reveal_growth_action: {
     role: 'child',

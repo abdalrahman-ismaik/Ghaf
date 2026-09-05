@@ -43,6 +43,7 @@ export default function RootLayout() {
   const usesLightSystemChrome =
     isR001Route ||
     isR002aParentSurface ||
+    pathname.startsWith('/child/reveal/') ||
     pathname === '/garden' ||
     pathname.startsWith('/garden/') ||
     pathname === '/circle/shared-growth';
@@ -92,6 +93,14 @@ export default function RootLayout() {
                 contentStyle: { backgroundColor: colors.transparent },
                 gestureEnabled: false,
                 presentation: 'transparentModal',
+              }}
+            />
+            <Stack.Screen
+              name="child/reveal/[bundleId]"
+              options={{
+                animation: 'fade',
+                gestureEnabled: false,
+                presentation: 'modal',
               }}
             />
           </Stack>
