@@ -89,6 +89,14 @@ constructor validates every supplied receipt but cannot prove an applicable auth
 the authority-derived parity adapter remains required before RevealBundle v2 can be integrated or
 its default-off flag considered for activation.
 
+**Mangrove-learning evidence checkpoint — 2026-09-05**: A non-authoritative bilingual candidate
+pack now traces three bounded lesson claims to directly opened official EAD Arabic/English and Dubai
+Municipality pages. It specifies equivalent Story and concise routes, one no-fail check, stable
+resource keys, zero reward consequences, offline delivery, and no autoplay. The focused 6-test
+evidence suite, typecheck, exact lint/format checks, and Git whitespace validation passed. Factual,
+Arabic/English, UAE cultural, safeguarding, accessibility-equivalence, and illustration-rights human
+reviews remain NOT RUN, so `r002b_learning_ui` remains default-off and release activation blocked.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
