@@ -793,7 +793,7 @@ and Android evidence with truthful limitations. This phase never releases R002b.
       and synthetic-only provenance. Record that 48 is both a personal scalar and current Mangrove
       scalar, no archived 60 or reconciling baseline ledger exists, and any 60 carry-forward is an
       explicit approved Salem-only synthetic fixture assumption rather than verified history.
-- [ ] T182 [P] Write characterization tests for ledger reconstruction, synthetic eligibility,
+- [x] T182 [P] Write characterization tests for ledger reconstruction, synthetic eligibility,
       ambiguous/non-synthetic rejection, profile/epoch isolation, reset, task-ID stability, zero
       submission reward, complete approval consequences, and duplicate/concurrent approval.
 - [ ] T183 Define the eight independent default-off flags and prove that disabled flags preserve the
