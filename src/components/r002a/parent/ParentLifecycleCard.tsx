@@ -32,7 +32,7 @@ export function ParentLifecycleCard({
     <View style={[styles.card, direction === 'rtl' ? styles.accentRight : styles.accentLeft]}>
       <View style={[styles.statusRow, { flexDirection: logicalRowDirection(direction) }]}>
         <GhafIcon color={colors.solarAmber} name="info" size={18} />
-        <Text brand color="tertiary" variant="label">
+        <Text brand color="tertiary" style={styles.statusLabel} variant="label">
           {statusLabel}
         </Text>
       </View>
@@ -80,6 +80,7 @@ function MetaChip({ label, tone }: { label: string; tone: 'amber' | 'green' | 'n
       <Text
         brand
         color={tone === 'green' ? 'primary' : tone === 'amber' ? 'tertiary' : 'onSurfaceVariant'}
+        style={styles.chipLabel}
         variant="caption"
       >
         {label}
@@ -108,19 +109,31 @@ const styles = StyleSheet.create({
     borderLeftColor: colors.solarAmber,
   },
   statusRow: {
+    minWidth: 0,
     alignItems: 'center',
     gap: spacing.xs,
   },
+  statusLabel: {
+    minWidth: 0,
+    flex: 1,
+  },
   chips: {
+    minWidth: 0,
     flexWrap: 'wrap',
     gap: spacing.xs,
   },
   chip: {
+    minWidth: 0,
     minHeight: 30,
+    maxWidth: '100%',
+    flexShrink: 1,
     justifyContent: 'center',
     borderRadius: r001Radii.sm,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
+  },
+  chipLabel: {
+    flexShrink: 1,
   },
   neutralChip: {
     backgroundColor: colors.surfaceContainerLow,

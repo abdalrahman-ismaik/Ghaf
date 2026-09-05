@@ -321,7 +321,7 @@ export default function ParentHomeScreen() {
             style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
           >
             <View aria-hidden style={styles.prototypeDot} />
-            <Text brand color="onSurfaceVariant" variant="caption">
+            <Text brand color="onSurfaceVariant" style={styles.prototypeLabel} variant="caption">
               {t('common.prototype')} · {t('origin.synthetic')}
             </Text>
           </View>
@@ -516,7 +516,7 @@ export default function ParentHomeScreen() {
           testID="prototype-status-bar"
         >
           <View aria-hidden style={styles.prototypeDot} />
-          <Text brand color="onSurfaceVariant" variant="caption">
+          <Text brand color="onSurfaceVariant" style={styles.prototypeLabel} variant="caption">
             {t('common.prototype')} · {t('origin.synthetic')}
           </Text>
         </View>
@@ -654,6 +654,7 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   prototypeIdentity: {
+    minWidth: 0,
     minHeight: 32,
     flexDirection: 'row',
     alignItems: 'center',
@@ -662,8 +663,13 @@ const styles = StyleSheet.create({
   prototypeDot: {
     width: 8,
     height: 8,
+    flexShrink: 0,
     borderRadius: 4,
     backgroundColor: colors.mangroveTeal,
+  },
+  prototypeLabel: {
+    minWidth: 0,
+    flex: 1,
   },
   privacyNote: {
     gap: spacing.xs,

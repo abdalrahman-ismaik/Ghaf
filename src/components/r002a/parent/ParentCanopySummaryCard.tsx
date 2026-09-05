@@ -36,10 +36,10 @@ export function ParentCanopySummaryCard({
       <View aria-hidden style={styles.botanicalWashTwo} />
       <View style={styles.content}>
         <View style={[styles.headingRow, { flexDirection: logicalRowDirection(direction) }]}>
-          <Text brand color="ghafEmerald" variant="screenTitle">
+          <Text brand color="ghafEmerald" style={styles.headingText} variant="screenTitle">
             {title}
           </Text>
-          <Text brand color="ghafEmerald" tabular variant="label">
+          <Text brand color="ghafEmerald" style={styles.headingText} tabular variant="label">
             {progressLabel}
           </Text>
         </View>
@@ -76,13 +76,19 @@ const styles = StyleSheet.create({
   },
   content: {
     zIndex: 1,
+    minWidth: 0,
     gap: spacing.sm,
   },
   headingRow: {
+    minWidth: 0,
     alignItems: 'flex-end',
     justifyContent: 'space-between',
     gap: spacing.md,
     flexWrap: 'wrap',
+  },
+  headingText: {
+    maxWidth: '100%',
+    flexShrink: 1,
   },
   progressTrack: {
     height: spacing.xs,

@@ -183,6 +183,21 @@ describe('R002a cross-slice quality contracts', () => {
     ]) {
       expect(source(path), path).toMatch(/titleSlot:\s*\{[\s\S]*?minWidth:\s*0/u);
     }
+
+    const parentHome = source('app/parent/index.tsx');
+    const canopy = source('src/components/r002a/parent/ParentCanopySummaryCard.tsx');
+    const lifecycle = source('src/components/r002a/parent/ParentLifecycleCard.tsx');
+    const children = source('src/components/r002a/parent/ParentChildrenSection.tsx');
+    const parentNavigation = source('src/components/r002a/parent/ParentHomeNavigation.tsx');
+
+    expect(parentHome).toMatch(/prototypeLabel:\s*\{[\s\S]*?minWidth:\s*0[\s\S]*?flex:\s*1/u);
+    expect(canopy).toMatch(/headingText:\s*\{[\s\S]*?maxWidth:\s*'100%'[\s\S]*?flexShrink:\s*1/u);
+    expect(lifecycle).toMatch(/chip:\s*\{[\s\S]*?maxWidth:\s*'100%'[\s\S]*?flexShrink:\s*1/u);
+    expect(children).toMatch(
+      /selectedChip:\s*\{[\s\S]*?maxWidth:\s*'100%'[\s\S]*?flexShrink:\s*1/u,
+    );
+    expect(parentNavigation).toMatch(/item:\s*\{[\s\S]*?minWidth:\s*layout\.touchTarget/u);
+    expect(parentNavigation).toMatch(/label:\s*\{[\s\S]*?width:\s*'100%'[\s\S]*?flexShrink:\s*1/u);
   });
 
   it('keeps fixed actions structurally clear, safe-area aware, and at least 48 or 56 dp', () => {

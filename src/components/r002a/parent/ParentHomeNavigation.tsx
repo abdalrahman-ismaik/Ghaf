@@ -85,6 +85,7 @@ export function ParentHomeNavigation({
                 align="center"
                 brand
                 color={active ? 'onPrimary' : 'onSurfaceVariant'}
+                style={styles.label}
                 variant="caption"
               >
                 {item.label}
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
     ...r001Shadows.sheet,
   },
   items: {
+    minWidth: 0,
     width: '100%',
     maxWidth: layout.compactContentWidth,
     alignSelf: 'center',
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   item: {
-    minWidth: 64,
+    minWidth: layout.touchTarget,
     minHeight: layout.touchTarget,
     flex: 1,
     alignItems: 'center',
@@ -126,6 +128,11 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xxs,
+  },
+  label: {
+    width: '100%',
+    minWidth: 0,
+    flexShrink: 1,
   },
   activeItem: {
     backgroundColor: colors.ghafEmerald,

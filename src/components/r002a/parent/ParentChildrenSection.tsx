@@ -63,12 +63,12 @@ export function ParentChildrenSection({
             </View>
             <View style={styles.content}>
               <View style={[styles.nameRow, { flexDirection: logicalRowDirection(direction) }]}>
-                <Text brand color="onSurface" variant="bodyLarge">
+                <Text brand color="onSurface" style={styles.nameLabel} variant="bodyLarge">
                   {item.name}
                 </Text>
                 {item.selected ? (
                   <View style={styles.selectedChip}>
-                    <Text brand color="primary" variant="caption">
+                    <Text brand color="primary" style={styles.selectedLabel} variant="caption">
                       {selectedLabel}
                     </Text>
                   </View>
@@ -146,16 +146,28 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   nameRow: {
+    minWidth: 0,
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     gap: spacing.xs,
   },
+  nameLabel: {
+    minWidth: 0,
+    flexShrink: 1,
+  },
   selectedChip: {
+    minWidth: 0,
     minHeight: 28,
+    maxWidth: '100%',
+    flexShrink: 1,
     justifyContent: 'center',
     borderRadius: r001Radii.pill,
     backgroundColor: colors.ghafEmeraldTint,
     paddingHorizontal: spacing.sm,
+  },
+  selectedLabel: {
+    flexShrink: 1,
   },
   support: {
     alignItems: 'flex-start',
