@@ -15,8 +15,8 @@
     "test:watch": "vitest",
     "build:web": "expo export --platform web --output-dir dist",
     "verify": "npm run typecheck && npm run lint && npm run format:check && npm test && expo install --check && npm run build:web",
-    "format": "prettier --write \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.ts\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\"",
-    "format:check": "prettier --check \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.ts\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\""
+    "format": "prettier --write \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\"",
+    "format:check": "prettier --check \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\""
   },
   "dependencies": {
     "@expo-google-fonts/alexandria": "^0.4.2",

@@ -158,6 +158,17 @@ Parent reset. The qualitative Child view remains available while paused or ended
 identity, task, ranking, numeric, Seed, badge, or reward fields. Fifty-two focused domain/access
 tests and repository typecheck passed. Both Shared Growth flags remain default-off.
 
+**Growth Journey presentation checkpoint — 2026-09-05**: Reusable native Today path-card, Garden
+chapter, Impact Path, Badge Gallery, and Badge Detail components now accept only typed presentation
+data, copy, actions, locale direction, and reduced-motion state. They keep navigation, flags,
+translation lookup, state mutation, and reward calculations outside the component boundary; adapt
+from compact large-text layouts through wider viewports; and preserve named 48dp controls, live
+status text, logical RTL rows, and tabular progress values. An incomplete recommended-badge hint now
+falls back to the complete registry instead of hiding an item. The repository test and formatting
+globs now collect TSX tests, and the complete suite passed 55 files / 792 tests with typecheck,
+lint, formatting, and Git whitespace validation. Route mounting and implementation screenshots
+remain pending; all consuming flags remain default-off.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
