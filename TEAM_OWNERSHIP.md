@@ -118,6 +118,18 @@ formatting, and Git whitespace validation while the separately reserved Shared G
 also green. The learning-engine boundary is released to `/root`; `r002b_learning_ui` remains
 default-off and all content-review gates remain release-blocking.
 
+**Shared Growth domain checkpoint — 2026-09-05**: A separate household-scoped authority now models
+continued, paused, and ended participation for future anonymous signals only. Parent actions require
+a supplied bounded reauthentication reference; Pause can reuse consent, while return after End
+requires a distinct next-version consent recorded strictly after the matching End. State restoration
+replays the consent/action lifecycle and rejects signals recorded outside an active contribution
+window. The Child projection strips identity, timestamps, counts, rankings, tasks, Seeds, badges,
+League, Challenge, and reward data and remains viewable in every participation state. The focused
+27-test suite and complete 51-file / 764-test suite passed with typecheck, lint, formatting, and Git
+whitespace validation. The domain writer's three-file boundary is released to `/root`. UI mutation
+remains blocked until the existing access service supplies the required capability and
+reauthentication adapter; both Shared Growth flags remain default-off.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
