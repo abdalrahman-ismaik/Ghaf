@@ -88,7 +88,9 @@ describe('R002b guarded Growth route integration', () => {
 
     expect(today).toContain('scrollOffset: childScrollOffsetRef.current');
     expect(today).toContain('contentOffset: { x: 0, y: restoredScrollOffset }');
-    expect(today).toContain('initialFocusTargetId={restoredFocusTarget}');
+    expect(today).toMatch(
+      /initialFocusTargetId=\{\s*restoredFocusTarget === 'r002b-today-path-action'\s*\? restoredFocusTarget\s*: undefined\s*\}/u,
+    );
 
     expect(impactPath).toContain("'r002b-impact-path-badges-action'");
     expect(impactPath).toContain('params.restoreProfileId === activeChildId');
