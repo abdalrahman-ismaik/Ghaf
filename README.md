@@ -11,20 +11,21 @@ living garden.
 
 ## Current status
 
-Feature 003 Revision 3 is the active product direction. Verified remote head `76fa682` is the R002a
-implementation baseline for the preserved behavior and completed R001 onboarding. The six
-divergent local commits remain unapplied provenance.
+Feature 003 Revision 3 is the active product direction. Clean R002a head `0501cf3` is the R002b
+implementation baseline for completed R001/R002a behavior and presentation. The six divergent local
+commits remain unapplied provenance.
 
-R001 Batch 1 remains a frozen regression baseline. R002a authorizes a compatibility-first visual
-refresh for selected Parent, task, review, Child, and existing Garden surfaces without changing
-canonical task, reward, access, privacy, voice, reset, or progression behavior.
+R001 and R002a remain frozen regression baselines and the fallback when an R002b flag is off. R002b
+may now be implemented locally as independent default-off Growth, learning, reveal, Parent Progress,
+and additive Shared Growth slices without changing canonical task or existing reward behavior.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-R002b Impact Path, badges, learning, Parent Progress, Shared Growth changes, combined RevealBundle
-changes, and cumulative progression remain blocked pending separate product and design approval.
+R002b release activation remains blocked until the applicable native, bilingual, accessibility,
+content, provenance, privacy, and named-human gates pass. Code-native candidate screens and passing
+local tests do not activate release flags.
 
 | Area                 | Current evidence                                                                                                                                     |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |

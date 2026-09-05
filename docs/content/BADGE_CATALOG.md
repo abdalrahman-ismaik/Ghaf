@@ -1,9 +1,9 @@
 # Feature 003 Revision 3 Badge Registry
 
-**Product status:** approved planning authority
-**Design/runtime/content-review status:** `BLOCKED` / `NOT RUN`
+**Product status:** approved implementation authority
+**Implementation status:** feature-flagged `AUTHORIZED`; release/content/design review `BLOCKED` / `NOT RUN`
 
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 This is the exact 16-definition P0 registry. Badges are private, deterministic, permanent, free,
 and nonfinancial. They are not rank, rarity, visit proof, environmental certification, or public
@@ -39,9 +39,9 @@ status. A later screen may not invent a seventeenth badge.
 - Earned status never expires, downgrades, transfers, becomes public, or gains monetary value.
 - Backfilled awards require provable immutable evidence. Unknown historical dates remain explicitly
   unknown; migration time is not an earned date and migration queues no celebration.
-- Badge art must be original, text-independent, readable without color, and covered by an approved
-  provenance/rights manifest before implementation.
+- Badge art must be original, text-independent, readable without color, and code-native or covered
+  by an approved provenance/rights manifest before release activation.
 
-The names, criteria, bilingual copy, factual source rows, and art remain subject to named content,
-Arabic/English, UAE cultural, safeguarding, accessibility, and rights review. Those reviews do not
-become passed merely because this registry is canonical product planning.
+The IDs, names, and criteria are approved product authority for default-off implementation. Copy,
+factual source rows, and art remain subject to named Arabic/English, UAE cultural, safeguarding,
+accessibility, content, and rights review. Those reviews do not pass merely because code exists.

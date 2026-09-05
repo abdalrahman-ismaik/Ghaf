@@ -278,35 +278,37 @@ Every Feature 003 requirement and success criterion has at least one implementat
 integration, or evidence task. A task that records `BLOCKED` or `NOT RUN` still satisfies the
 traceability obligation; it does not satisfy the underlying native or human outcome.
 
-| Requirement / outcome range                                                                                            | Primary task coverage                                                                                     |
-| ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| FR-001–FR-010 — historical boundary, exact scope, capability truth, synthetic/offline/prepared AI                      | T002–T003, T008, T013, T016, T018–T020, T025, T027–T029, T063–T071, T082–T090                             |
-| FR-011–FR-017 — entry, role, household overview, non-surveillant summary                                               | T015, T030–T035, T041, T065–T067, T072–T080, T083–T089                                                    |
-| FR-018–FR-029 — category catalog, P0 task, bounded drafting/review/assignment, zero early reward                       | T009–T013, T018–T029, T030–T034, T037–T044, T079, T082–T084                                               |
-| FR-030–FR-040 — Child choices, separate choose/start, bounded Coach, optional media/reflection, zero-reward submission | T009, T013–T016, T018–T021, T025–T030, T033–T035, T045–T050, T063–T071, T079–T084                         |
-| FR-041–FR-055 — check-in, retry/equivalent, praise-first idempotent recognition, reward/phase matrix                   | T009–T010, T014, T018, T021–T029, T033, T051–T056, T063, T070, T079–T084, T089–T090                       |
-| FR-056–FR-070 — five-stage garden, symbolic claims, privacy-first canopy/circle projection                             | T010–T012, T014–T016, T018–T024, T027–T029, T035, T057–T062, T070–T071, T077–T084, T089–T090              |
-| FR-071–FR-081 — exact assistant/media fixtures, prepared-only Coach, safety/fallback/secret boundary                   | T003, T005–T006, T013, T015–T016, T018–T020, T025–T030, T034, T037–T050, T063, T068, T079–T085, T089–T090 |
-| FR-082–FR-098 — task safety, culture, bilingual RTL, accessibility, exact reset/duplicate behavior                     | T004–T006, T009–T016, T018–T035, T037–T071, T079–T090                                                     |
-| FR-099–FR-105 — preserved baseline, least-privilege access, pairing, reauthentication, and Child grants                | T111–T116, T130–T131                                                                                      |
-| FR-106–FR-110 — private Family Reward lifecycle, eligibility, privacy, and prospective changes                         | T111–T112, T117–T120, T130–T131                                                                           |
-| FR-111–FR-115 — private five-Leaf League, capped scoring, rollover, projection, and encouragement                      | T111–T112, T121–T124, T130–T131                                                                           |
-| FR-116–FR-118 — age adaptation, synthetic voice lifecycle, and shared service facade                                   | T112, T125–T131                                                                                           |
-| FR-119–FR-127 — capability-authorized voice presentation and locale-aware typography                                   | T132–T139                                                                                                 |
-| Revision 3 amendment and R001 release — preserved remote ten plus six approved access routes                           | T140–T149                                                                                                 |
-| R002a compatibility intake and implementation; independent R002b Growth/schema gate                                    | T150–T178                                                                                                 |
-| SC-001 — preserved remote ten routes, exact R001 inventory of 16, and legacy retirement                                | T063–T071, T081–T084, T088–T090, T140–T149                                                                |
-| SC-002–SC-005 — five offline cycles/resets, exact one-time consequence, no early reward                                | T009–T010, T014, T016–T017, T021–T029, T036–T071, T083–T090                                               |
-| SC-006–SC-008 — reward matrix, stages/category mapping, projection rejection                                           | T010–T012, T017–T024, T027–T029, T036, T051–T062, T077, T082–T090                                         |
-| SC-009–SC-011 — point-of-use origins, bounded Coach, safe Parent summary                                               | T005–T006, T013, T015–T020, T025–T030, T034, T036–T050, T068, T072–T084, T089–T090                        |
-| SC-012–SC-013 — bilingual physical journey and native accessibility                                                    | T004, T015, T030–T035, T044, T050, T056, T062, T065–T071, T078–T080, T083–T085, T089–T090                 |
-| SC-014–SC-017 — rehearsals, comprehension, prohibited claims, named reviews                                            | T002, T004–T006, T071, T077–T086, T089–T090                                                               |
-| SC-018 — optional live Parent AI truth and secure-boundary gate                                                        | T003, T008, T013, T016, T025–T029, T068, T082–T086, T089–T090                                             |
-| SC-019 — access capability, pairing, reauthentication, and revocation                                                  | T112–T116, T130–T131                                                                                      |
-| SC-020 — Family Reward transitions, exclusions, privacy, and rank independence                                         | T112, T117–T120, T130–T131                                                                                |
-| SC-021–SC-022 — League scoring, ties, privacy projection, rollover, and allowlists                                     | T112, T121–T124, T130–T131                                                                                |
-| SC-023–SC-024 — age/voice domain behavior and complete static/behavioral convergence                                   | T112, T125–T131                                                                                           |
-| SC-025–SC-028 — Parent voice grant, bilingual presentation, typography, reset, and proxy evidence                      | T132–T139                                                                                                 |
+| Requirement / outcome range                                                                                             | Primary task coverage                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| FR-001–FR-010 — historical boundary, exact scope, capability truth, synthetic/offline/prepared AI                       | T002–T003, T008, T013, T016, T018–T020, T025, T027–T029, T063–T071, T082–T090                             |
+| FR-011–FR-017 — entry, role, household overview, non-surveillant summary                                                | T015, T030–T035, T041, T065–T067, T072–T080, T083–T089                                                    |
+| FR-018–FR-029 — category catalog, P0 task, bounded drafting/review/assignment, zero early reward                        | T009–T013, T018–T029, T030–T034, T037–T044, T079, T082–T084                                               |
+| FR-030–FR-040 — Child choices, separate choose/start, bounded Coach, optional media/reflection, zero-reward submission  | T009, T013–T016, T018–T021, T025–T030, T033–T035, T045–T050, T063–T071, T079–T084                         |
+| FR-041–FR-055 — check-in, retry/equivalent, praise-first idempotent recognition, reward/phase matrix                    | T009–T010, T014, T018, T021–T029, T033, T051–T056, T063, T070, T079–T084, T089–T090                       |
+| FR-056–FR-070 — five-stage garden, symbolic claims, privacy-first canopy/circle projection                              | T010–T012, T014–T016, T018–T024, T027–T029, T035, T057–T062, T070–T071, T077–T084, T089–T090              |
+| FR-071–FR-081 — exact assistant/media fixtures, prepared-only Coach, safety/fallback/secret boundary                    | T003, T005–T006, T013, T015–T016, T018–T020, T025–T030, T034, T037–T050, T063, T068, T079–T085, T089–T090 |
+| FR-082–FR-098 — task safety, culture, bilingual RTL, accessibility, exact reset/duplicate behavior                      | T004–T006, T009–T016, T018–T035, T037–T071, T079–T090                                                     |
+| FR-099–FR-105 — preserved baseline, least-privilege access, pairing, reauthentication, and Child grants                 | T111–T116, T130–T131                                                                                      |
+| FR-106–FR-110 — private Family Reward lifecycle, eligibility, privacy, and prospective changes                          | T111–T112, T117–T120, T130–T131                                                                           |
+| FR-111–FR-115 — private five-Leaf League, capped scoring, rollover, projection, and encouragement                       | T111–T112, T121–T124, T130–T131                                                                           |
+| FR-116–FR-118 — age adaptation, synthetic voice lifecycle, and shared service facade                                    | T112, T125–T131                                                                                           |
+| FR-119–FR-127 — capability-authorized voice presentation and locale-aware typography                                    | T132–T139                                                                                                 |
+| Revision 3 amendment and R001 release — preserved remote ten plus six approved access routes                            | T140–T149                                                                                                 |
+| R002a compatibility intake and implementation; independent R002b Growth/schema gate                                     | T150–T178                                                                                                 |
+| FR-144–FR-159 — R002b flags, ledger/migration, Growth Journey, learning, reveal, Parent Progress, Shared Growth, routes | T179–T222                                                                                                 |
+| SC-001 — preserved remote ten routes, exact R001 inventory of 16, and legacy retirement                                 | T063–T071, T081–T084, T088–T090, T140–T149                                                                |
+| SC-002–SC-005 — five offline cycles/resets, exact one-time consequence, no early reward                                 | T009–T010, T014, T016–T017, T021–T029, T036–T071, T083–T090                                               |
+| SC-006–SC-008 — reward matrix, stages/category mapping, projection rejection                                            | T010–T012, T017–T024, T027–T029, T036, T051–T062, T077, T082–T090                                         |
+| SC-009–SC-011 — point-of-use origins, bounded Coach, safe Parent summary                                                | T005–T006, T013, T015–T020, T025–T030, T034, T036–T050, T068, T072–T084, T089–T090                        |
+| SC-012–SC-013 — bilingual physical journey and native accessibility                                                     | T004, T015, T030–T035, T044, T050, T056, T062, T065–T071, T078–T080, T083–T085, T089–T090                 |
+| SC-014–SC-017 — rehearsals, comprehension, prohibited claims, named reviews                                             | T002, T004–T006, T071, T077–T086, T089–T090                                                               |
+| SC-018 — optional live Parent AI truth and secure-boundary gate                                                         | T003, T008, T013, T016, T025–T029, T068, T082–T086, T089–T090                                             |
+| SC-019 — access capability, pairing, reauthentication, and revocation                                                   | T112–T116, T130–T131                                                                                      |
+| SC-020 — Family Reward transitions, exclusions, privacy, and rank independence                                          | T112, T117–T120, T130–T131                                                                                |
+| SC-021–SC-022 — League scoring, ties, privacy projection, rollover, and allowlists                                      | T112, T121–T124, T130–T131                                                                                |
+| SC-023–SC-024 — age/voice domain behavior and complete static/behavioral convergence                                    | T112, T125–T131                                                                                           |
+| SC-025–SC-028 — Parent voice grant, bilingual presentation, typography, reset, and proxy evidence                       | T132–T139                                                                                                 |
+| SC-036–SC-043 — R002b audit, migration, achievements, learning, reveal, privacy, flags, native/release evidence         | T179–T222                                                                                                 |
 
 The traceability ranges above are complemented by each story's independent-test statement and by
 the executable assertions in `contracts/acceptance-contract.md`.
@@ -688,9 +690,10 @@ behavioral baseline. It does not release any later screen.
 
 No Phase 21 task authorizes application, test, dependency, configuration, or asset changes.
 
-## Phase 22: R002b Product Expansion — Runtime Blocked
+## Phase 22: R002b Product Expansion — Historical Decision Gate
 
-**Gate**: **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+**Historical gate, superseded on 2026-09-05**:
+**R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
 
 - [ ] T154 Supply and approve the missing Child Impact Path, Badge Gallery, Badge Detail, Mangrove
       Learning, equal-credit accessible Learning, Parent selected-Child Progress, and combined
@@ -708,8 +711,9 @@ No Phase 21 task authorizes application, test, dependency, configuration, or ass
       responsive, accessibility, offline, reset, physical Android, content, cultural, safeguarding,
       and rights evidence.
 
-Phase 22 remains blocked even when product rules are documented. A prompt, export filename, remote
-implementation, or this task list is not visual implementation authority.
+Phase 22 records the prerequisites that were open before the user approved the bounded product
+contract and code-native missing-screen authority. Current implementation is governed by Phase 24
+and later. A prompt or export filename still does not create product authority by itself.
 
 ## Phase 23: R002a Compatibility Implementation — Authorized
 
@@ -774,3 +778,128 @@ implementation, or this task list is not visual implementation authority.
 **Checkpoint**: R002a is complete only when every implemented compatibility slice preserves the
 characterized behavior and has fresh bilingual, responsive, accessibility, visual, export, reset,
 and Android evidence with truthful limitations. This phase never releases R002b.
+
+## Phase 24: R002b Product Contract, Audit, and Characterization
+
+**Gate**:
+**R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+- [x] T179 Reconcile the approved R002b contract across `AGENTS.md`, `PRODUCT.md`, Feature 003
+      specification/plan/tasks/data model/contracts, design/gate/limitations/runbook records, and
+      `TEAM_OWNERSHIP.md`; keep R001/R002a frozen, flags default-off, and release activation blocked.
+- [x] T180 Verify clean R002a head `0501cf3`, ancestors `a0539e9` and `76fa682`, the isolated new
+      branch, untouched original worktree, and 38 files / 541 tests before R002b changes.
+- [x] T181 Audit Schema 3 source, fixtures, reset, recognition ledger, persistence, epoch/event IDs,
+      and synthetic-only provenance. Record that 48 is both a personal scalar and current Mangrove
+      scalar, no archived 60 or reconciling baseline ledger exists, and any 60 carry-forward is an
+      explicit approved Salem-only synthetic fixture assumption rather than verified history.
+- [ ] T182 [P] Write characterization tests for ledger reconstruction, synthetic eligibility,
+      ambiguous/non-synthetic rejection, profile/epoch isolation, reset, task-ID stability, zero
+      submission reward, complete approval consequences, and duplicate/concurrent approval.
+- [ ] T183 Define the eight independent default-off flags and prove that disabled flags preserve the
+      exact R002a routes, presentation, task lifecycle, counters, voice, access, privacy, and reset.
+- [ ] T184 Validate and commit the contract and characterization boundaries separately; stage exact
+      paths and retain all raw exports and six held commits unchanged.
+
+## Phase 25: Lifetime Seed Projection and Versioned Migration
+
+- [ ] T185 Implement a pure shadow-mode Seed-ledger audit and `lifetimeSeeds` selector whose only
+      authority is unique committed entries within the active profile epoch.
+- [ ] T186 Add one immutable versioned synthetic migration receipt with explicit fixture provenance:
+      Salem 108 from approved carry-forward-60 assumption plus verified current 48; Alya retains her own
+      verified 36 scalar with no Salem carry-forward; unsupported cousin profiles remain ineligible.
+- [ ] T187 Reject ambiguous, real/non-synthetic, cross-profile, wrong-epoch, duplicate, malformed,
+      partial, and non-atomic migration inputs without changing current state.
+- [ ] T188 Integrate the existing `+12` recognition entry once so Mangrove remains 48→60 while
+      lifetime Seeds project 108→120; preserve canopy, League, Challenge, Family Reward, praise,
+      task identity, and zero reward before recognition.
+- [ ] T189 Record a completed Mangrove 60/60 archive and derive reached Water & Coast stations without
+      a writable Impact Path balance, backfill celebration, or fabricated task/mastery/learning data.
+- [ ] T190 Cover thresholds 107, 108, 119, 120, 131, 132, 179, and 180; no spending/decrease; retry,
+      concurrency, restart at transaction boundaries, reset epoch, and profile isolation.
+- [ ] T191 Run focused progression/reward/reset tests, full suite, static checks, Expo configuration,
+      production export, route scan, and `git diff --check`; commit the validated migration slice.
+
+## Phase 26: Impact Path, Badge Registry, and Candidate Screens
+
+- [ ] T192 Write grouped `screen-spec.md` files for the compact Today card, Garden chapter module,
+      Impact Path, Badge Gallery, and Badge Detail before implementing their routes/components.
+- [ ] T193 Encode exactly 16 stable bilingual badge definitions and deterministic criteria in one
+      typed registry; reject duplicate/unknown IDs and preserve permanent private awards.
+- [ ] T194 Map each unique `task_recycling_p0_v1` approval to one `skill.sorting` and one separate
+      `skill.coast_care` acquisition credit; never backfill unproved mastery.
+- [ ] T195 Implement deterministic badge evaluation/backfill, including 1/3/7 sorting, 2/5/10 water
+      with station-156 Bud gate, two-credit Energy Bud, and the full Mangrove Care composite.
+- [ ] T196 Implement Water & Coast stations 120/132/144/156/168/180 as read-only projections and a
+      configured-next-stage fallback without implying a visit or inventing content.
+- [ ] T197 Add gated Today/Garden entry components plus `/garden/impact-path`, `/garden/badges`, and
+      `/garden/badges/:badgeId` with typed same-role origin restoration and safe deep-link fallback.
+- [ ] T198 Implement earned/in-progress/next/locked/archived gallery states and Badge Detail identity,
+      exact criteria/progress/meaning/provenance/one contextual action without Child task creation.
+- [ ] T199 Add bilingual/RTL/LTR, responsive, accessibility, reduced-motion, route-guard, and visual
+      coverage; capture each canonical code-native candidate at 390×844 after implementation.
+- [ ] T200 Validate and commit achievements/Impact Path in independent domain and presentation
+      boundaries, with every related flag still off by default.
+
+## Phase 27: Equal-Credit Learning and Superset RevealBundle
+
+- [ ] T201 Write `screen-spec.md` files for Story, accessible alternative, and combined Child reveal
+      before their route/component implementation.
+- [ ] T202 Implement the finite bilingual `learning.mangrove_roots.v1` package, sourced content
+      metadata, resumable progress, neutral no-fail check, and equal-credit Story/accessible routes.
+- [ ] T203 Record exactly one profile/epoch/package completion from either route; the other becomes a
+      duplicate no-op, and both award zero Seeds/Garden/canopy/League/Challenge/Family Reward.
+- [ ] T204 Implement typed origin resume/recovery and prevent lesson autoplay; keep Learning release
+      off pending source provenance and named human content review.
+- [ ] T205 Define `reveal:<profileId>:<triggerEventId>` and lifecycle
+      `ready → presenting → acknowledged → archived` with deterministic event-order queueing,
+      exactly-once construction, one visible bundle, interruption resume, and no rebuild after seen.
+- [ ] T206 Construct the approval bundle as a role-specific projection of existing committed
+      authorities with complete praise/Seed/stage/canopy/eligible Green Circle/private League/
+      Challenge/Family Reward/badge/station/learning/safe-help consequence parity and no screen-side
+      reward calculation.
+- [ ] T207 Permit a separate zero-Seed learning bundle only when its unique completion causes a new
+      eligible outcome; dismissal never reverses committed state and flags never show R002a and v2
+      reveals together.
+- [ ] T208 Add the gated Child reveal route/sheet, static reduced-motion outcome, focus containment,
+      restoration, and 390×844 code-native capture.
+- [ ] T209 Test retry, interruption at every lifecycle boundary, queue order, duplicate/concurrent
+      triggers, role projection, consequence parity, and default-off R002a fallback; validate and
+      commit Learning and RevealBundle as separate slices.
+
+## Phase 28: Parent Progress and Additive Shared Growth
+
+- [ ] T210 Write `screen-spec.md` files for Parent selected-Child Progress, Child Shared Growth, and
+      Parent Shared Garden settings before route implementation.
+- [ ] T211 Implement Parent-only `/parent/family/:profileId/progress` from profile-scoped selectors:
+      lifetime/current/archive, earned/in-progress badges, unlocked learning, and transparent task
+      suggestions with no manual grant/revoke/edit operation.
+- [ ] T212 Let Create Suitable Task prefill the existing builder while preserving ordinary Parent
+      review/save; switching Child clears Salem-specific origin/filter/selection state.
+- [ ] T213 Implement `/circle/shared-growth` as a secondary qualitative synthetic anonymous view with
+      no names, profiles, ranks, percentages, participant counts, task detail, Seeds, badges, or
+      identifiable events. Keep private five-Leaf League root and identity unchanged.
+- [ ] T214 Implement Parent-only `/parent/family/shared-garden` with Continue/Pause/End future-signal
+      controls; Pause/End never alter existing private or task state, and returning after End
+      requires fresh Parent consent.
+- [ ] T215 Keep view and contribution behind separate default-off flags and prove view-without-
+      contribution, participation-state independence, profile isolation, reset, privacy, and
+      feature-flag rollback.
+- [ ] T216 Add bilingual, accessibility, responsive, route/deep-link, 200%-text, reduced-motion, and
+      canonical 390×844 captures; validate and commit Parent Progress and Shared Growth separately.
+
+## Phase 29: R002b Convergence and Release-Blocked Evidence
+
+- [ ] T217 Add cross-feature migration, restart, feature-flag, route-origin, RTL/LTR, accessibility,
+      overflow, focus, keyboard, safe-area, and consequence-parity coverage while retaining all 541
+      R002a tests.
+- [ ] T218 Validate widths 320/360/390/430/768, Arabic RTL, English LTR, 200% text, reduced motion,
+      no horizontal overflow, fixed-action clearance, semantic roles/states, and 48dp controls.
+- [ ] T219 Run formatting, lint, typecheck, full unit/integration suite, Expo dependency/configuration
+      checks, production web and Android JavaScript exports, route/reset scans, and `git diff --check`.
+- [ ] T220 Attempt physical Android, TalkBack, native Back/IME, OS font scaling, and release-build
+      smoke checks; record unavailable device/SDK as `BLOCKED`, never infer a pass from web.
+- [ ] T221 Record content/provenance/human-review gates and keep each applicable flag default-off;
+      update the runbook and R002b validation evidence without rewriting R001/R002a history.
+- [ ] T222 Review exact staged paths, prove raw exports/metadata and six held commits remain untouched,
+      and commit final R002b test/evidence boundaries without push, merge, deploy, rebase, or amend.

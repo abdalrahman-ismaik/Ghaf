@@ -18,13 +18,15 @@
 - [x] R001 implementation and fresh focused/full validation are recorded at `76fa682`.
 - [x] R002a selected compatibility surfaces have complete inventory, screen specs, states, parity,
       provenance disposition, and per-slice validation evidence.
-- [ ] R002b Growth and product-expansion surfaces have complete product decisions, mobile
-      references, screen specs, states, parity, provenance, and explicit release.
+- [x] R002b Growth and product-expansion behavior has an explicit approved compatibility contract,
+      migration policy, flags, routes, requirements, outcomes, and ordered task plan.
+- [ ] R002b candidate surfaces have completed screen specs, bilingual captures, state coverage,
+      provenance, native evidence, named review, and explicit release activation.
 
 **Active gates:**
 
 - **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
-- **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+- **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-08-26
@@ -72,3 +74,6 @@
   [`r002a-validation-evidence.md`](../design-intake/r002a-validation-evidence.md). Checking the
   R002a item does not convert the unavailable physical Android smoke test or named human reviews
   into passes; they remain `BLOCKED` and `NOT RUN`, respectively.
+- R002b product decisions and default-off implementation authority were added on 2026-09-05.
+  Runtime, capture, native, provenance, and human-review items remain evidence-dependent; this
+  checklist does not activate a release flag.

@@ -6,24 +6,25 @@ handoff, `AGENTS.md`, and Spec Kit workflow reference those canonical paths.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-Verified head `76fa682` is the implementation baseline. R001 remains frozen; selected R002a
-compatibility surfaces are authorized for bounded, independently tested slices. The six local-only
-commits remain unapplied provenance, and R002b Growth mechanics remain blocked.
+Clean R002a head `0501cf3` is the implementation baseline. R001/R002a remain frozen fallbacks; R002b
+Growth mechanics may be implemented behind independent default-off flags. The six local-only
+commits remain unapplied, and release activation remains blocked.
 
 ## Start here
 
-| Need                                                   | Document                                                                                     |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                                                    |
-| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                                                 |
-| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                        |
-| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                        |
-| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                                |
-| Check current independent release gates                | [Feature 003 release gates](../specs/003-family-growth-garden/design-intake/release-gate.md) |
-| Inspect frozen R001 composition references             | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md)                             |
-| Inspect selected R002a compatibility references        | [R002a selections](design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md)                   |
+| Need                                                   | Document                                                                                           |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                                                          |
+| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                                                       |
+| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                              |
+| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                              |
+| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                                      |
+| Check current independent release gates                | [Feature 003 release gates](../specs/003-family-growth-garden/design-intake/release-gate.md)       |
+| Inspect frozen R001 composition references             | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md)                                   |
+| Inspect selected R002a compatibility references        | [R002a selections](design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md)                         |
+| Inspect the R002b implementation contract              | [R002b contract](../specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md) |
 
 ## Active Feature 003 contracts
 
@@ -49,8 +50,8 @@ The [Revision 3 proposal package](../specs/003-family-growth-garden/design-intak
 is retained as non-canonical reconciliation evidence. Current user authority now fixes the private
 five-Leaf League, canonical task ID, independent progression authorities, complete existing
 approval consequences, access, voice, reset, and profile isolation. Its Growth recommendations
-remain planning evidence under the R002b gate; selected compatibility-safe R002a visuals are
-governed by the new R002a intake record, not by the proposal package.
+are now approved product inputs for feature-flagged implementation, while the proposal package
+remains non-canonical history. Selected R002a visuals remain governed by their intake record.
 
 ## Preserved Feature 002 history
 

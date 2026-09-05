@@ -1,6 +1,6 @@
 # Growth Journey Readiness Checklist — Revision 3
 
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 ## Product authority
 
@@ -15,9 +15,9 @@
 
 ## Design release
 
-- [ ] Canonical mobile variants selected for all post-R001 screens.
-- [ ] Seven missing Growth surfaces supplied.
-- [ ] Arabic RTL and matched English LTR references supplied.
+- [ ] Canonical reference or documented code-native candidate selected for every R002b surface.
+- [ ] Seven missing Growth surfaces implemented as reviewed default-off code-native candidates.
+- [ ] Arabic RTL and equivalent English LTR implementation captures supplied.
 - [ ] Mandatory `screen-spec.md` supplied for every runtime surface.
 - [ ] Loading, empty, error, offline, interruption, recovery, duplicate, and reduced-motion states
       specified.
@@ -29,9 +29,9 @@
 
 ## Migration and implementation
 
-- [ ] 108→120 lifetime-Seed fixture provenance and schema migration approved.
-- [ ] Schema-3 compatibility, rollback, reset, idempotency, and cross-profile tests specified.
-- [ ] Focused RED tests cover Path, exact badge registry, learning parity, result recovery, and
+- [x] 108→120 synthetic fixture provenance and migration policy approved, with release still off.
+- [x] Schema-3 compatibility, rollback, reset, idempotency, and cross-profile tests specified.
+- [ ] Focused tests cover Path, exact badge registry, learning parity, result recovery, and
       profile isolation.
 - [ ] Runtime changes remain inside the released boundary.
 - [ ] Formatter, typecheck, lint, full tests, Expo checks, export, route/reset, and whitespace pass.
@@ -43,5 +43,6 @@
 
 ## Current result
 
-Product planning is coherent. Design and implementation readiness remain `BLOCKED`; no unchecked
-item is satisfied by a prompt, export filename, web source, or existing remote behavior alone.
+Product authority and feature-flagged implementation readiness are established. Release activation
+remains `BLOCKED`; no unchecked item is satisfied by a prompt, export filename, browser-only result,
+or existing remote behavior alone.

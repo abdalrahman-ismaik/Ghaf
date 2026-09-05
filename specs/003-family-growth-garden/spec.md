@@ -4,10 +4,10 @@
 
 **Created**: 2026-08-26
 
-**Status**: R001 Welcome and first-time Parent onboarding are frozen regression baselines. R002a
-compatibility presentation is approved for implementation over verified head `76fa682`. R002b
-product expansion remains decision-blocked. Native-device and human-review acceptance remain
-evidence-dependent.
+**Status**: R001 Welcome/Parent onboarding and the completed R002a compatibility presentation are
+frozen regression baselines at clean head `0501cf3`. R002b product expansion is authorized for
+implementation behind independent default-off flags. Release activation, physical-device evidence,
+and named human review remain blocked or evidence-dependent.
 
 **Input**: Create an Arabic-first Parent–Child task, recognition, bounded AI-coaching, and UAE
 living-garden prototype that preserves the Feature 002 historical record while replacing its
@@ -16,7 +16,100 @@ slice.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+## R002b Feature-Flagged Authority Amendment — 2026-09-05
+
+This amendment supersedes the former R002b implementation block wherever an older section below
+conflicts. Implementation begins from clean R002a head `0501cf3` on
+`integration/r3-r002b-implementation-20260905`. The R001/R002a runtime remains the fallback when an
+R002b flag is disabled. The six divergent historical commits remain unapplied.
+
+### Preserved transaction and identity boundaries
+
+- Keep `task_recycling_p0_v1`, Parent-controlled assignment/review/recognition, zero reward at Child
+  submission, and the existing atomic/idempotent `+12` Parent recognition transaction.
+- Keep current Mangrove 48/60→60/60 growth, canopy, eligible Green Circle projection, private
+  five-Leaf League, Challenge Leaf, private Family Reward, Parent praise, access/reauthentication,
+  synthetic voice/`expo-audio`, Parent-authorized reset, privacy, and profile isolation.
+- Opening, retrying, requesting support, viewing a badge, or completing learning MUST create zero
+  task reward and MUST NOT change the existing task, Garden, canopy, League, Challenge, or Family
+  Reward consequences.
+
+### Lifetime projection and migration
+
+- `lifetimeSeeds` MUST equal the sum of unique committed Seed ledger entries in the active profile
+  epoch. Impact Path reads this projection and MUST NOT store a writable duplicate balance.
+- The same approved `+12` event maps current Mangrove 48/60→60/60 and lifetime Seeds 108→120. The
+  completed Mangrove stage is archived while the private Water & Coast chapter opens at 120→180.
+- An eligible synthetic-only legacy baseline MAY use one immutable, versioned, idempotent migration
+  receipt with explicit profile, fixture, epoch, and source-field provenance. It MUST NOT invent a
+  task, mastery credit, learning completion, celebration, or League/canopy/Challenge/Family Reward
+  history, and Salem’s carry-forward MUST NOT be copied to another Child.
+- Ambiguous or non-synthetic persisted profiles retain their verified lifetime total and block only
+  that profile’s carry-forward migration.
+
+### Private Growth Journey
+
+The Water & Coast chapter is read-only and uses these canonical lifetime stations:
+
+| Lifetime Seeds | Result                                                                               |
+| -------------: | ------------------------------------------------------------------------------------ |
+|            120 | Archive Mangrove 60/60 and earn `badge.journey.expanding_shade.v1`                   |
+|            132 | Unlock `learning.mangrove_roots.v1`; show Mangrove Care progress without awarding it |
+|            144 | Unlock the approved coastal-ripple cosmetic only                                     |
+|            156 | Evaluate Water Care — Bud; the threshold alone is insufficient                       |
+|            168 | Unlock the Jubail learning story without implying a real visit                       |
+|            180 | Earn `badge.journey.coastal_care.v1` and reveal only a configured next stage         |
+
+Completed stages remain archived. Lifetime Seeds never reset within an epoch, decrease, become
+spendable, or feed League rank. The exact 16 stable badge IDs and bilingual labels in
+`docs/content/BADGE_CATALOG.md` are locked. Seed-threshold badges may be silently backfilled from
+provable ledger evidence; mastery evidence MUST NOT be fabricated.
+
+The canonical recycling approval adds one `skill.sorting` and one separate `skill.coast_care`
+acquisition credit per unique approved occurrence. Sorting thresholds are 1/3/7; Water thresholds
+are 2/5/10 with the 156 station gate for Water Bud; Energy Bud requires two eligible credits; and
+Mangrove Care requires station 132, completed `learning.mangrove_roots.v1`, and three coast-care
+credits. Earned badges are permanent, private, deterministic, and idempotent.
+
+### Learning, reveal, Parent progress, and Shared Growth
+
+- Story and accessible learning routes share `learning.mangrove_roots.v1`, provide equal credit,
+  are finite/no-fail/resumable, and record one idempotent zero-Seed completion event. Neither route
+  autoplays another lesson.
+- One RevealBundle identity is `reveal:<profileId>:<triggerEventId>`. It presents, but never
+  calculates, the full applicable consequence superset in deterministic order: praise; Seed delta
+  and before/after; plant/stage; canopy; eligible Green Circle; private League Leaf; Challenge Leaf;
+  private Family Reward; badges; stations; learning unlocks; optional safe-help recognition. Its lifecycle is
+  `ready → presenting → acknowledged → archived`, retry-safe and resumable, with one visible bundle.
+- Parent Progress is Parent-only, selected-Child scoped, read-only, and may prefill—but never assign—
+  a suitable task through the normal Task Builder review/save flow.
+- Shared Growth is additive and nested; it never replaces or renames private League. Its view is
+  qualitative, synthetic, and anonymous, with no names, profiles, ranks, percentages, participant
+  counts, task details, Seeds, badges, or identifiable events. Continue/Pause/End affects only
+  future anonymous aggregate signals; returning after End requires fresh Parent consent.
+
+### Flags, routes, and release boundary
+
+The independent flags `r002b_progression_engine`, `r002b_impact_path_ui`, `r002b_badges_ui`,
+`r002b_learning_ui`, `r002b_reveal_bundle_v2`, `r002b_parent_progress_ui`,
+`r002b_shared_growth_view`, and `r002b_shared_growth_contribution` default to off. Flags control
+visibility/presentation; disabling them never reverses committed state.
+
+Authorized nested owners are `/garden/impact-path`, `/garden/badges`,
+`/garden/badges/:badgeId`, `/garden/learn/:learningId/story`,
+`/garden/learn/:learningId/accessible`, `/child/reveal/:bundleId` or an equivalent route-owned
+sheet, `/parent/family/:profileId/progress`, `/circle/shared-growth`, and
+`/parent/family/shared-garden`. Impact Path and Badges are not bottom-navigation items. Nested
+routes accept only typed same-role origins and fall back to the active role’s safe root on invalid
+deep links.
+
+Code-native candidate screens are authorized where no approved PNG exists, using the released Soft
+Geometric system and a `screen-spec.md` written before implementation. Each surface stays flagged
+off until its applicable bilingual, visual, accessibility, content/provenance, native, and human
+review gates pass. Physical Android, TalkBack, native Back/IME, and OS font scaling remain release
+blockers until directly observed.
 
 ## R002a Compatibility Authority Amendment — 2026-09-05
 
@@ -1213,10 +1306,65 @@ the historical domain-only result recorded by FR-118.
 - **FR-142**: R002a MAY use only repository-owned/provenanced assets, approved icons, code-native
   vectors, and recorded-provenance exports. It MUST NOT import raw HTML, CSS, JavaScript, WebViews,
   remote URLs, unknown fonts, rasterized interface text, or Windows `Zone.Identifier` metadata.
-- **FR-143**: R002a MUST NOT expose the cumulative 108→120→180 migration, Impact Path, Badge Gallery,
-  Badge Detail, Learning Story, accessible Learning Alternative, Parent Progress and Achievements,
-  revised combined RevealBundle, Shared Growth changes, Parent Shared Garden participation controls,
-  or cumulative Garden Next Stage. Each remains R002b until separately approved.
+- **FR-143**: When an applicable R002b flag is disabled, the R002a fallback MUST NOT expose the
+  cumulative 108→120→180 projection, Impact Path, Badge Gallery, Badge Detail, Learning Story,
+  accessible Learning Alternative, Parent Progress, RevealBundle v2, Shared Growth, Parent Shared
+  Garden controls, or cumulative Garden Next Stage.
+- **FR-144**: The eight named R002b flags MUST be typed, independent, and off by default. A flag MUST
+  affect only visibility or presentation and MUST NOT reverse, delete, downgrade, or duplicate
+  committed domain state.
+- **FR-145**: `lifetimeSeeds` MUST equal the sum of unique valid committed Seed ledger entries for
+  one profile and active reset epoch. It MUST NOT be writable, spendable, negative, copied between
+  profiles, or reset within that epoch.
+- **FR-146**: Synthetic Schema-3 normalization MUST fail closed for ambiguous, non-synthetic,
+  malformed, wrong-profile, wrong-epoch, or changed-fingerprint input. Salem MAY receive exactly one
+  immutable, versioned, idempotent `60` carry-forward receipt identified as an approved synthetic
+  fixture assumption; Alya and League-only profiles MUST NOT inherit it.
+- **FR-147**: One canonical `+12` approval MUST independently change current Mangrove progress from
+  48/60 to 60/60 and confirmed lifetime Seeds from 108 to 120 exactly once, archive the completed
+  Mangrove stage, and preserve every existing praise, canopy, eligible Green Circle, private League,
+  Challenge Leaf, and private Family Reward consequence.
+- **FR-148**: The Water & Coast Impact Path MUST derive stations 120, 132, 144, 156, 168, and 180
+  from the canonical ledger and named criteria. It MUST remain private, read-only, symbolic, and
+  separate from current landscape, League, canopy, and Family Reward authorities.
+- **FR-149**: The badge registry MUST contain exactly the 16 approved stable IDs and bilingual
+  labels. Earned badges MUST be private, permanent, deterministic, idempotent, and backed by exact
+  Seed, station, mastery, learning, or activity evidence; migration MUST NOT fabricate mastery.
+- **FR-150**: Each unique eligible `task_recycling_p0_v1` approval MUST create at most one
+  `skill.sorting` and one separate `skill.coast_care` acquisition credit. Sorting, Water, Energy,
+  and Mangrove Care badges MUST apply the approved thresholds and composite gates exactly.
+- **FR-151**: Story and accessible routes for `learning.mangrove_roots.v1` MUST share one finite,
+  resumable, no-fail, equal-credit package and one idempotent completion per profile/epoch. Either
+  route MUST award zero Seeds and zero existing Garden, canopy, Circle, League, Challenge Leaf, or
+  Family Reward progress.
+- **FR-152**: RevealBundle v2 MUST use `reveal:<profileId>:<triggerEventId>`, present the complete
+  ordered consequence superset already committed by authoritative services, and follow
+  `ready → presenting → acknowledged → archived` with exactly-once construction, deterministic
+  queueing, one visible bundle, interruption recovery, and no reward calculation or reversal.
+- **FR-153**: Parent Progress MUST be Parent-only, selected-Child scoped, and read-only. It MAY
+  prefill a suitable existing task in Task Builder but MUST NOT grant, revoke, edit, or assign
+  Seeds, badges, criteria, learning, or tasks outside the normal Parent review/save flow.
+- **FR-154**: Shared Growth MUST remain a nested additive experience and MUST NOT replace or rename
+  private five-Leaf League. Its Child projection MUST be qualitative, synthetic, anonymous, and
+  free of names, profiles, ranks, percentages, participant counts, task details, Seeds, badges, and
+  identifiable event data.
+- **FR-155**: Shared Growth view and contribution MUST use separate flags. Continue, Pause, and End
+  affect only future anonymous signals; view without contribution remains possible, Pause preserves
+  existing consent, and returning after End requires fresh Parent consent.
+- **FR-156**: R002b nested navigation MUST preserve the physical Child tab order, omit bottom
+  navigation where specified, place Arabic Back physically right, allow only same-role typed origin
+  state, restore route/profile/filter/scroll/focus, reject cross-role or arbitrary origins, and fall
+  back to the active role's safe root for invalid deep links.
+- **FR-157**: Every missing R002b surface MUST receive a `screen-spec.md` before implementation and a
+  canonical 390×844 capture afterward. Candidate UI MUST use the released native Soft Geometric
+  system, central Arabic/English resources, safe responsive scrolling, reduced motion, semantic
+  controls, and no raw Stitch runtime, remote asset, or unprovenanced dependency.
+- **FR-158**: Opening a screen, viewing a badge, retrying, requesting help, submitting, resuming,
+  and completing learning MUST NOT mint the canonical task award. A learning completion MAY create
+  a zero-Seed reveal only when that completion causes a genuinely new eligible outcome.
+- **FR-159**: R002b release flags MUST remain off until their applicable automated, visual, native,
+  bilingual, content, provenance, privacy, accessibility, and named-human gates are recorded. A
+  local implementation, web capture, or passing unit test MUST NOT activate release navigation.
 
 ### Key Entities
 
@@ -1265,6 +1413,22 @@ the historical domain-only result recorded by FR-118.
   evidence, Seed, or protected-category data.
 - **Synthetic Voice Session**: Task-bound local interaction state from explicit start through
   transcript review/delete/send/replay; it never represents captured Child audio.
+- **Profile Epoch / Seed Ledger Entry**: One reset-scoped private authority and immutable committed
+  Seed delta used to derive lifetime progress without a second balance.
+- **Progression Migration Receipt**: One versioned, profile/epoch/fingerprint-scoped record of an
+  eligible synthetic normalization; it is idempotent and never invents behavior evidence.
+- **Plant Stage Archive / Impact Station**: Immutable completed-stage context and a read-only
+  threshold/criteria projection from canonical ledger evidence.
+- **Mastery Credit / Badge Award**: Unique Parent-approved acquisition evidence and a permanent
+  private deterministic result from the locked registry.
+- **Learning Completion**: One zero-Seed profile/epoch/package event shared by the story and
+  accessible routes.
+- **RevealBundle**: One recoverable ordered role projection of consequences already committed for a
+  trigger event; it never calculates or reverses them.
+- **Shared Growth Projection / Participation Preference**: Anonymous qualitative synthetic content
+  plus Parent-owned future-signal consent state, independent from every private reward authority.
+- **Navigation Origin**: An allowlisted same-role route, profile, filter, scroll, and focus snapshot
+  used only for safe restoration.
 
 ## Success Criteria _(mandatory)_
 
@@ -1367,6 +1531,33 @@ the historical domain-only result recorded by FR-118.
   typecheck, lint, format, tests, Expo configuration, production export/build, and
   `git diff --check` receive an explicit `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` result. Android
   passes only from a named usable build/device.
+- **SC-036**: Characterization proves that Schema 3 duplicates Salem's opening 48 in independent
+  personal and Mangrove scalars, has no archived 60/profile epoch/reconciling opening ledger, and
+  uses only deterministic in-memory synthetic data before any migration value is introduced.
+- **SC-037**: Migration tests prove Salem alone derives 108 from opening 48 plus one explicitly
+  labeled synthetic carry-forward 60 and reaches 120 once from the existing +12 approval; Alya
+  remains 36, unsupported profiles reject, and partial, duplicate, concurrent, wrong-epoch, reset,
+  and changed-input cases preserve atomicity and isolation.
+- **SC-038**: Threshold tests cover 107, 108, 119, 120, 131, 132, 179, and 180; registry tests find
+  exactly 16 stable badges; and badge evaluation proves permanent/idempotent awards, exact mastery
+  criteria, no automatic Mangrove Care at 132, and no fabricated backfill.
+- **SC-039**: Story and accessible learning can each resume and complete the same package exactly
+  once with equal credit, while every Seed, Garden, canopy, Circle, League, Challenge Leaf, and
+  Family Reward value remains unchanged.
+- **SC-040**: Duplicate, concurrent, interrupted, resumed, acknowledged, and archived reveal tests
+  produce at most one ordered bundle per profile/event with complete legacy and R002b consequence
+  parity, one visible presentation, and no repeated transaction.
+- **SC-041**: Parent Progress access/profile-switch tests expose no mutation path, and Shared Growth
+  tests expose no prohibited identity/quantity field while proving view/contribution separation and
+  Continue/Pause/End independence from all private state.
+- **SC-042**: With every R002b UI flag off, route and screenshot assertions retain the R002a
+  fallback. With local test overrides, all authorized nested routes enforce same-role origin and
+  deep-link recovery and remain usable in Arabic RTL and English LTR at 320/360/390/430/768 widths,
+  200% text, reduced motion, safe areas, keyboard/focus, and screen-reader semantics.
+- **SC-043**: Every R002b implementation commit passes its focused tests, typecheck, lint, format,
+  full regression suite, Expo configuration, production export, route/reset scans, and whitespace
+  validation. Physical Android, TalkBack, native Back/IME, and OS font scaling stay explicitly
+  `BLOCKED` until observed on a named configured device.
 
 ## Dependencies and Assumptions
 

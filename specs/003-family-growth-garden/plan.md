@@ -3,17 +3,101 @@
 **Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
 [spec.md](./spec.md)
 
-**Status**: Verified remote head `76fa682` preserves the behavioral baseline and completed R001
-onboarding. R001 is frozen. Selected compatibility-safe R002a presentation is authorized; R002b
-product expansion remains blocked.
+**Status**: Clean R002a head `0501cf3` preserves completed R001/R002a behavior and 541 passing tests.
+R001/R002a are frozen fallbacks. R002b is authorized behind independent default-off flags; release
+activation remains blocked pending applicable validation and review.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 **Input**: Feature specification from `specs/003-family-growth-garden/spec.md`
 
 ## Summary
+
+### R002b feature-flagged implementation addendum — 2026-09-05
+
+Implement R002b on `integration/r3-r002b-implementation-20260905`, created from clean R002a head
+`0501cf3`. Do not cherry-pick the six divergent historical commits. Preserve R001/R002a behavior and
+presentation as the fallback for every disabled R002b flag.
+
+The delivery spine is:
+
+```text
+Schema-3 evidence audit + characterization RED tests
+  → shadow lifetime projection
+  → versioned synthetic provenance receipt + migration verification
+  → default-off Impact Path and locked badge registry
+  → equal-credit finite learning
+  → one superset RevealBundle coordinated from existing committed consequence authorities
+  → Parent selected-Child read-only progress
+  → additive anonymous Shared Growth and Parent future-participation controls
+  → route/origin/accessibility/RTL/recovery/visual evidence
+```
+
+The current `+12` recognition remains the sole reward transaction. It continues to commit existing
+Mangrove, canopy, League/Challenge, Family Reward, and praise consequences. R002b extends the
+authoritative receipt with deterministic derived projections; route components never calculate or
+mint rewards.
+
+#### Data integration
+
+- Add an append-only, profile/epoch-scoped Seed ledger and one versioned migration-receipt registry.
+  `lifetimeSeeds` is a selector sum of unique committed ledger entries, never writable state.
+- Keep current landscape progress separate. The P0 event changes Mangrove 48→60 while the same Seed
+  entry changes lifetime 108→120. Archive the completed 60 stage without copying its denominator
+  into the 120→180 Path.
+- Run migration first as a pure shadow projection. Persist only a deterministic synthetic receipt
+  when fixture provenance is eligible; reject ambiguous, non-synthetic, cross-profile, wrong-epoch,
+  duplicate, and partial inputs atomically.
+- Keep achievements, mastery credits, learning completions, station receipts, reveal bundles, and
+  participation preferences profile-scoped and idempotent. No projection writes another currency.
+
+#### New bounded feature modules
+
+| Boundary                        | Responsibility                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `src/features/progression/**`   | Seed ledger validation, migration receipt, lifetime selector, archive/station projection               |
+| `src/features/achievements/**`  | Exact 16-definition registry, mastery evidence, deterministic permanent awards                         |
+| `src/features/learning/**`      | Finite bilingual package, equal-credit completion, resume/recovery                                     |
+| `src/features/reveal/**`        | Superset RevealBundle construction/lifecycle from committed receipts and existing consequence services |
+| `src/features/shared-growth/**` | Anonymous qualitative view and independent future-participation preference                             |
+| `src/features/navigation/**`    | Typed same-role origin validation and safe-root recovery                                               |
+| `src/components/r002b/**`       | Reusable native Soft Geometric presentation only                                                       |
+
+Shared models, deterministic fixtures, service interfaces/registry, Zustand aggregate, resources,
+and Expo Router integration remain serialized through the integration owner. No new state,
+navigation, styling, animation, localization, icon, or media dependency is planned.
+
+#### Route and presentation integration
+
+Child Today receives a compact gated nearest-station card and `/garden` receives gated chapter,
+Impact Path, Badge, and Shared Growth entries. New nested route owners follow the specification;
+they omit root Child navigation, preserve physical Arabic placement, validate access and typed
+origins, and restore route/profile/filter/scroll/focus context. Invalid deep links return to
+`/child`, `/garden`, or `/parent` according to the active role without exposing cross-role state.
+
+Each missing surface gets a tracked `screen-spec.md` before its route component. Code-native
+candidate screens use the existing tokens, Alexandria/Readex roles, logical layout helpers,
+code-native SVG, natural scrolling, safe areas, 48dp controls, and static reduced-motion outcomes.
+The 390×844 capture is a comparison artifact, not a fixed canvas.
+
+#### Flag and rollout order
+
+All eight approved flags default off. First validate shadow projection and migration, then permit
+persisted domain state with all UI hidden. Enable read-only Path/Gallery locally, followed by
+Learning/Parent Progress, RevealBundle v2 after consequence parity, Shared Growth view, and finally
+contribution after guardian-governance/privacy tests. Disabling a flag hides the R002b presentation
+but never reverses committed state.
+
+#### Commit and validation boundaries
+
+Use one independently verifiable commit for contract docs, characterization tests, progression,
+achievements/Path, learning, RevealBundle, Parent Progress, Shared Growth, cross-cutting tests, and
+final evidence. Before every commit, run the relevant focused tests, typecheck, lint, format check,
+and `git diff --check`; run the complete suite and Expo/export/route checks at each integrated UI
+boundary. Android/native and named-human results remain `BLOCKED` or `NOT RUN` without direct
+evidence.
 
 ### R002a compatibility implementation addendum — 2026-09-05
 
@@ -53,9 +137,8 @@ dashboard selector, so those fragments remain supporting references until a beha
 presentation adapter is separately specified. That affected fragment does not block the remainder
 of the Parent Home visual refresh.
 
-R002b remains independently blocked: no 108→120→180 migration, Impact Path, badges, learning,
-Parent Progress, combined RevealBundle revision, Shared Growth change, Parent Shared Garden
-participation control, or cumulative Garden Next Stage may enter runtime or navigation.
+R002b was independently blocked during R002a. The R002b amendment above now authorizes these
+surfaces only behind independent default-off flags while preserving the complete R002a fallback.
 
 ### Revision 3 reconciliation addendum — 2026-09-04
 

@@ -4,7 +4,7 @@
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 R001 Batch 1 remains a frozen regression baseline: `/`, `/access/parent/sign-in`,
 `/access/parent/verification`, `/access/parent/family-basics`,
@@ -17,8 +17,9 @@ safe-area/scroll/keyboard behavior, state variants, reset/profile isolation, and
 remote League, Family Reward, voice, privacy, or Parent-authorized reset behavior. PNGs govern
 composition; exported web code never enters runtime.
 
-R002a may now refresh Parent Home, Parent Tasks/Builder, Child Today/task execution, Parent review,
-the Child support loop, and the existing Garden. Its oracle is verified head `76fa682`,
+R002a refreshed Parent Home, Parent Tasks/Builder, Child Today/task execution, Parent review,
+the Child support loop, and the existing Garden. Its completed oracle is verified head `0501cf3`
+(with R001 evidence ancestor `76fa682`),
 `task_recycling_p0_v1`, Schema-3 48→60, zero reward through Child submission and praise
 presentation, and the existing separate atomic/idempotent recognition transaction with all its
 applicable consequences. It preserves private five-Leaf League, Challenge Leaves, private Family
@@ -29,15 +30,16 @@ profile isolation.
 it, migrate to it, calculate rewards, hard-code screenshot progression, or omit an existing domain
 consequence.
 
-The cumulative 108→120→180 migration, Impact Path, Badge Gallery/Detail, Learning surfaces, Parent
-Progress, revised combined RevealBundle, Shared Growth changes, Parent participation controls, and
-cumulative Garden Next Stage remain R002b and cannot pass or appear in release navigation.
+The cumulative 108→120→180 projection, Impact Path, Badge Gallery/Detail, Learning surfaces, Parent
+Progress, revised combined RevealBundle, additive Shared Growth, Parent participation controls, and
+cumulative Garden chapter are now authorized for default-off implementation under AC-00B. They
+remain excluded from release navigation until their applicable validation and review gates pass.
 
-The remote acceptance oracles below remain current R002a behavior and regression evidence. They are
-not authority for a blocked R002b expansion.
+The remote acceptance oracles below remain current R002a behavior and regression evidence. The
+approved R002b amendment adds only the default-off acceptance boundaries in AC-00B.
 
-**Status**: ACTIVE for the authorized R002a compatibility scope. No check is passed by this document
-alone.
+**Status**: ACTIVE for frozen R002a regression and authorized default-off R002b implementation. No
+check is passed by this document alone.
 
 **Primary acceptance surface**: named physical Android build, Arabic RTL first and English LTR
 second.
@@ -85,6 +87,32 @@ submitting, success, interruption recovery, and reduced-motion states; 320/360/3
 viewport; 200% text, safe area, keyboard, scroll, no horizontal overflow, semantic state, 48dp
 targets, and fixed-action clearance. Arabic physical placement follows the specification. Android
 passes only through a named build/device observation.
+
+## AC-00B — R002b Feature-Flagged Acceptance
+
+R001/R002a remains the visible and behavioral fallback whenever an R002b flag is disabled. All
+eight R002b flags default off. Passing automated or browser checks permits local inspection only;
+it does not activate a release flag or satisfy native/content/human evidence.
+
+| Boundary            | Required acceptance                                                                                                                                                                                                                                                         |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lifetime projection | `lifetimeSeeds` equals unique committed active-profile/epoch ledger entries; no writable duplicate balance, spend, decrease, or reset within an epoch                                                                                                                       |
+| Synthetic migration | One immutable versioned receipt with explicit per-profile provenance; Salem-only 60 carry-forward assumption; ambiguity/non-synthetic/wrong-profile/wrong-epoch/duplicate/partial inputs reject atomically                                                                  |
+| One approval        | Existing recognition remains the sole transaction; Mangrove 48→60 and lifetime 108→120 occur once while every existing consequence remains identical                                                                                                                        |
+| Impact Path         | Stations 120/132/144/156/168/180 derive from the ledger; archive/current chapter remain separate and navigation creates no reward                                                                                                                                           |
+| Badges              | Exactly 16 stable definitions; permanent/private/idempotent; threshold backfill requires evidence; no fabricated mastery                                                                                                                                                    |
+| Learning            | Story and accessible alternative share one package/completion; finite, resumable, no-fail, equal-credit, zero existing reward or progress                                                                                                                                   |
+| RevealBundle        | One `reveal:<profileId>:<triggerEventId>`; complete praise/Seed/stage/canopy/eligible-Green-Circle/private-League/Challenge/Family-Reward/badge/station/learning/safe-help superset; resumable lifecycle; one visible bundle; no re-commit or rebuild after acknowledgement |
+| Parent Progress     | Parent-only, selected-Child scoped and read-only; suggestions may prefill but never assign without normal review/save                                                                                                                                                       |
+| Shared Growth       | Additive to private League; anonymous qualitative projection only; view and contribution flags separate; Pause/End affect future signals only                                                                                                                               |
+| Routes/origins      | Same-role allowlisted origins restore route/profile/filter/scroll/focus; arbitrary/cross-role origins reject and invalid deep links reach a safe role root                                                                                                                  |
+| Presentation        | `screen-spec.md` precedes each missing surface; code-native Soft Geometric UI; Arabic/English; 320–768 widths; 200% text; safe area; keyboard; focus; reduced motion; 48dp targets; no overflow                                                                             |
+
+Required focused coverage includes Schema-3 audit; thresholds 107/108/119/120/131/132/179/180;
+duplicate/concurrent recognition and restart boundaries; profile/reset-epoch isolation; exact registry;
+equal-credit learning; RevealBundle parity/recovery; Shared Growth privacy/participation independence;
+and feature-flag rollback. Physical Android, TalkBack, native Back/IME, and OS font scaling remain
+release blockers until directly observed.
 
 ## Preserved Remote Authored Route and Guard Contract
 
@@ -443,9 +471,10 @@ exercise. Each native subcheck remains `NOT RUN` until it is attempted.
 
 ## Release Boundary
 
-R002a is authorized only within AC-00A and is ready for integration after automated checks and
-deterministic route/reset/idempotency evidence pass from a named worktree state. R002b remains
-blocked regardless of R002a results.
+R002a is complete within AC-00A and remains the fallback. R002b implementation is authorized only
+within AC-00B and remains default-off for release. No local implementation or automated pass may
+activate a release flag without the separately recorded applicable native, content, provenance,
+accessibility, and human-review evidence.
 
 Feature 003 MUST NOT be called **Android-accepted** or **demo-accepted** until the physical bilingual
 journey, offline fallback, predictive/native Back, WCAG contrast, reset/media/accessibility checks,

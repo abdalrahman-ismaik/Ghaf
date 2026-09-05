@@ -1,10 +1,10 @@
 # Growth Journey Preflight — Feature 003 Revision 3
 
 **Recorded:** 2026-09-04
-**Product contract:** approved planning baseline
-**Visual/runtime status:** `BLOCKED`
+**Product contract:** approved implementation authority
+**Visual/runtime status:** feature-flagged implementation `AUTHORIZED`; release activation `BLOCKED`
 
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 ## Settled product authority
 
@@ -46,9 +46,10 @@ become canonical mobile authority.
 
 ## Required release evidence
 
-Every runtime surface needs:
+Every surface needs the following evidence before release activation:
 
-- one selected Arabic RTL mobile PNG and matched English LTR frame;
+- one approved Arabic RTL mobile reference or documented code-native candidate, plus a canonical
+  390×844 implementation capture and verified equivalent English LTR composition;
 - non-runtime HTML only as optional measurement evidence;
 - mandatory `screen-spec.md` with purpose, role, route/state ownership, entry/exit, validation,
   Back/deep-link, focus, scroll/fixed regions, keyboard, reset, interruption, and recovery;
@@ -57,18 +58,22 @@ Every runtime surface needs:
   version, and offline fallback;
 - exact relationship to remote access, League, Family Reward, voice, reset, privacy, and profile
   guards; and
-- explicit product, design, engineering, accessibility, and content approval metadata.
+- explicit product, engineering, accessibility, and applicable design/content approval metadata.
 
 Desktop wrappers never count as phone references. A filename containing `Final` never proves
-approval. Missing screens/specifications, provenance, English parity, or material states must be
-supplied, not inferred.
+approval. The approved R002b contract permits a missing visual to be authored as a code-native
+candidate from the released Soft Geometric system, but that candidate must still receive its
+applicable review before release activation. Provenance, English parity, and material states remain
+mandatory evidence rather than inferred passes.
 
-## Gate exit
+## Implementation and release split
 
-Growth runtime may begin only after the seven missing surfaces and their prerequisite Parent/Child
-shells are reachable through one complete approved screen batch, a versioned 108→120 migration and
-rollback oracle is approved, focused RED tests exist, and the integration owner records the exact
-released boundary.
+Growth runtime may now be built behind independent default-off flags. The Schema-3 audit and RED
+characterization tests precede migration changes. Missing surfaces use code-native Soft Geometric
+candidates only after a `screen-spec.md` records purpose, route/state, copy, behavior, states,
+accessibility, reduced motion, provenance, data, tests, and approval metadata.
 
-Until then, do not edit runtime routes, components, models, services, state, tests, dependencies,
-fonts, configuration, or assets for Growth Journey.
+Release activation remains blocked until the applicable migration, bilingual, route/recovery,
+visual, native Android, TalkBack, Back/IME, font scaling, content, cultural, safeguarding,
+accessibility, and asset-provenance evidence is directly recorded. Learning specifically remains
+off for release until its sources and Arabic/English content receive named human review.

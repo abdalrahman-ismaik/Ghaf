@@ -1,9 +1,9 @@
 # Feature 003 Revision 3 Learning Contract
 
-**Product status:** approved planning authority
-**Design/runtime/content-review status:** `BLOCKED` / `NOT RUN`
+**Product status:** approved implementation authority; copy remains pending named human review
+**Implementation status:** feature-flagged `AUTHORIZED`; release/content review `BLOCKED` / `NOT RUN`
 
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 ## P0 package
 
@@ -24,7 +24,8 @@ Opening, scrolling, elapsed time, or a wrong answer is not completion. A wrong a
 neutral explanation and retry with no loss. Both routes remain free, visible, and equal in badge
 credit. If the illustrated story is unavailable, the accessible route must still work offline.
 
-Before implementation, the package requires revalidated sources, Arabic/English factual
-equivalence, UAE cultural/place review, safeguarding/age-comprehension review, objective-equivalent
-accessibility review, original-art provenance, and rights clearance. Stitch can approve composition;
-it cannot approve facts or permissions.
+Default-off candidate implementation is authorized with explicit source metadata and code-native or
+provenanced art. Release activation still requires revalidated sources, Arabic/English factual
+equivalence, UAE cultural/place review, safeguarding/age-comprehension review,
+objective-equivalent accessibility review, art provenance, and rights clearance. Stitch can approve
+composition; it cannot approve facts or permissions.

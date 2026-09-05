@@ -6,6 +6,33 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-05 R002b Feature-Flagged Implementation Window
+
+**Integration owner**: `/root`
+
+**Worktree and branch**:
+`/home/smyk/projects/Ghaf-r002-reconciliation-20260904` on
+`integration/r3-r002b-implementation-20260905`, created from clean R002a head `0501cf3`.
+
+**Gate**:
+
+- **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+**Preservation boundary**: R001 and R002a remain regression baselines and the default presentation
+whenever an R002b flag is disabled. The six divergent historical commits remain unapplied. The
+original worktree and its untracked raw R002 exports remain read-only and must not be staged,
+renamed, edited, or imported.
+
+| Exclusive writer                                   | Exact reserved boundary                                                                                                                                                                                                                                                                                                 | Handoff condition                                                                                                  |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `/root/r002b_orchestrator` and read-only delegates | Repository-wide R002b authority, Schema-3, badge, route, flag, and architecture audits only                                                                                                                                                                                                                             | Return exact evidence and non-overlapping implementation boundaries; no edits                                      |
+| `/root` — contract and integration                 | `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `DESIGN.md`, `DEMO_RUNBOOK.md`, `TEAM_OWNERSHIP.md`, Feature 003 `spec.md`, `plan.md`, `tasks.md`, `data-model.md`, contracts, design-intake gates/specifications, shared models/store/services/i18n/configuration, route integration, exact staging, validation, and commits | Serialize shared files, keep flags default-off, preserve all R002a behavior, and record every gate truthfully      |
+| Future progression/achievement writer              | New bounded R002b domain modules and new focused test files only, assigned after the Schema-3 audit                                                                                                                                                                                                                     | RED/GREEN handoff with no route, store, fixture, resource, or configuration edit                                   |
+| Future R002b UI writer                             | New R002b components/routes and their screen specifications only, assigned after domain interfaces stabilize                                                                                                                                                                                                            | Code-native Soft Geometric surfaces behind independent default-off flags; no business logic or R001/R002a redesign |
+
+No writer may change the same file concurrently. Shared files remain reserved to `/root`; delegated
+workers must treat the rest of the repository as read-only and accommodate concurrent changes.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`

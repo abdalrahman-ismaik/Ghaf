@@ -1,18 +1,17 @@
 # Ghaf Feature 003 Demo Runbook
 
-## Revision 3 / R002a Evidence Boundary — 2026-09-05
+## Revision 3 / R002b Evidence Boundary — 2026-09-05
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-- Verified head `76fa682` on `integration/r3-r001-implementation-20260904` is the behavioral and
-  regression baseline. The six conflicting local-only commits remain unapplied.
+- Clean head `0501cf3` on `integration/r3-r002a-implementation-20260904` is the R002b behavioral and
+  presentation baseline. It contains `a0539e9`, all completed R001/R002a surfaces, and 541 passing
+  tests. The six conflicting local-only commits remain unapplied.
 - R001 native foundations plus Welcome and first-time Parent onboarding are frozen. Fresh evidence
   remains in the [R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
-- R002a authorizes a presentation-only Soft Geometric refresh of existing routes in this order:
-  Parent Home; Parent Tasks/Builder; Child Today/task execution; Parent review; Child
-  support/resubmission; and the compatible existing Garden. Every slice requires fresh evidence.
+- R001 and R002a are frozen regressions and remain the fallback whenever an R002b flag is off.
 - The R002a behavior oracle remains `task_recycling_p0_v1`, zero reward through Child submission,
   the existing atomic/idempotent Parent approval, Schema-3 48→60 Garden behavior, and all current
   canopy, private League, Challenge Leaf, private Family Reward, access, voice, reset, privacy, and
@@ -20,12 +19,22 @@
 - Exported counters are not runtime data. The Parent Home must omit League/Family Reward counters
   until an authorized selector exists, and it must not relabel cooperative `/circle` as the private
   League.
-- R002b remains blocked: 108→120→180 migration, Impact Path, badges, learning, Parent Progress,
-  revised RevealBundle, Shared Growth changes, Parent shared-garden controls, and cumulative Garden
-  Next Stage. Their screenshots and documents are evidence, not runnable authority.
+- R002b may implement the ledger-derived 108→120→180 projection, Impact Path, locked badges,
+  equal-credit learning, Parent Progress, superset RevealBundle, additive Shared Growth, Parent
+  shared-garden controls, and cumulative Garden chapter behind independent default-off flags.
+  Release activation stays blocked pending applicable technical, native, bilingual, accessibility,
+  content, provenance, privacy, and human-review evidence.
 
-Do not use the historical journey below to pass an R002a visual, native, or human gate. Record each
-new result as `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` with exact evidence.
+Do not use historical R001/R002a evidence to pass an R002b visual, native, or human gate. Record
+each new result as `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` with exact evidence.
+
+### R002b activation rule
+
+All eight R002b flags default off. A local implementation, unit test, web capture, or JavaScript
+export never activates a release flag. Learning additionally requires named source/content review;
+Shared Growth contribution requires guardian-governance/privacy review; RevealBundle v2 requires
+complete legacy-consequence parity. Physical Android, TalkBack, native Back/IME, and OS font scaling
+remain blockers until performed on a named build and device.
 
 ## R002a Final Validation Evidence — 2026-09-05
 

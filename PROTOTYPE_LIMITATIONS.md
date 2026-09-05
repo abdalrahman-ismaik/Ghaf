@@ -4,23 +4,21 @@
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-Verified head `76fa682` is the behavioral baseline for tested synthetic access, private five-Leaf
-League, private Family Reward, synthetic voice, privacy/profile isolation, Parent reset, and the
-earlier ten-route journey. R001 native foundations, Welcome, and first-time Parent onboarding are
-frozen regression baselines. R002a now authorizes a presentation-only refresh of Parent Home,
-Parent Tasks/Builder, Child Today/task execution, Parent review, the Child support loop, and the
-existing Garden. Authorization does not mean those surfaces have passed implementation, Android,
-accessibility, visual, or human-review acceptance.
+Verified clean head `0501cf3` is the R002b behavioral and presentation baseline. It contains the
+tested synthetic access, private five-Leaf League, private Family Reward, synthetic voice,
+privacy/profile isolation, Parent reset, R001 onboarding, and completed R002a Parent/task/Child/
+Garden surfaces with 541 passing tests. R001 and R002a remain frozen regression fallbacks. Their
+automated evidence does not satisfy R002b Android, accessibility, content, visual, or human-review
+acceptance.
 
-R002b product planning includes one private 120–180 Seed-derived Impact Path, exactly 16
+R002b authorizes local implementation of one private 120–180 Seed-derived Impact Path, exactly 16
 deterministic permanent badges, one finite Mangrove learning package with an equal-credit accessible
-route, one Parent read-only selected-Child progress view, and one recoverable combined result. These
-are not current runtime capabilities. The cumulative 108→120→180 migration, those Growth surfaces,
-Shared Growth changes, Parent participation controls, cumulative Next Stage, and a revised combined
-RevealBundle remain blocked. The six local-only commits remain unapplied candidate provenance; R002
-exports are candidate design evidence, not proof of implementation or approval.
+route, one Parent read-only selected-Child progress view, one recoverable superset result, and
+additive anonymous Shared Growth. Every surface remains behind an independent default-off flag and
+is not a released capability. The six local-only commits remain unapplied candidate provenance; raw
+R002 exports remain design evidence, not runtime code or proof of release acceptance.
 
 R002a preserves `task_recycling_p0_v1`, the Schema-3 48→60 behavior, zero reward at Child
 submission, and the complete atomic/idempotent Parent-approval consequences. The design label
@@ -246,10 +244,10 @@ The post-P0 redesign code currently proves rules and state transitions only:
 - Arabic-English code-switch understanding and Emirati/Gulf conversational output remain
   unimplemented; any later phrase or voice library requires named human review.
 
-R002a presentation does not itself change route authority, counters, native/human evidence, or the
-public-demo claim. It must preserve capability-scoped access, deterministic voice and `expo-audio`,
-Parent-authorized reset, route guards, and profile isolation. Web evidence cannot upgrade Android or
-named-human results, and an R002b domain or navigation addition requires separate approval.
+R002b implementation does not itself change the public-demo claim or pass native/human evidence.
+It must preserve capability-scoped access, deterministic voice and `expo-audio`, Parent-authorized
+reset, route guards, and profile isolation. Web evidence cannot upgrade Android or named-human
+results, and no default-off flag may be activated for release without its applicable evidence.
 
 ## Public Demo Disclosure
 

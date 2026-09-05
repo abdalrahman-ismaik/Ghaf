@@ -2,28 +2,27 @@
 
 ## Current execution override — 2026-09-05
 
-Verified remote head `76fa682` is the implementation and regression baseline. Do not follow later
+Clean R002a head `0501cf3` is the implementation and regression baseline. Do not follow later
 ten-route or `/circle` instructions in this historical handoff when they conflict with the current
-Feature 003 specification and R002a compatibility plan.
+Feature 003 R002b amendment and feature-flag plan.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-R001 Batch 1 is frozen. Implement only the selected compatibility-safe R002a Parent Home, Parent
-Tasks/Builder, Child task journey, Parent review/support loop, and existing Garden presentation.
-Preserve private five-Leaf League, `task_recycling_p0_v1`, schema-3 behavior, every approval
-consequence, Family Reward, capability-scoped access, `expo-audio` synthetic voice,
-privacy/profile isolation, and Parent reset.
+R001 and R002a are frozen and remain the fallback. Implement only the approved R002b contract behind
+independent default-off flags. Preserve private five-Leaf League, `task_recycling_p0_v1`, current
+Mangrove behavior, every existing approval consequence, Family Reward, capability-scoped access,
+`expo-audio` synthetic voice, privacy/profile isolation, and Parent reset.
 
-Do not cherry-pick the six divergent commits. Reconstruct approved R002a slices over the verified
-baseline with tests first. PNGs control composition; Stitch HTML/CSS/JS is non-runtime measurement
-evidence. Do not implement R002b progression migration, Impact Path, badges, learning, Parent
-Progress, combined RevealBundle changes, Shared Growth changes, or cumulative Garden Next Stage.
+Do not cherry-pick the six divergent commits. Build R002b from the verified R002a head with tests
+first. PNGs remain composition evidence; Stitch HTML/CSS/JS is non-runtime measurement evidence.
+Missing R002b frames may use documented code-native Soft Geometric candidates, but no implementation
+may activate a release flag or invent product behavior.
 
 The authoritative execution order is [the active plan](specs/003-family-growth-garden/plan.md),
 [task ledger](specs/003-family-growth-garden/tasks.md), and
-[R002a intake record](docs/design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md).
+[R002b implementation contract](specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md).
 
 Paste the prompt below into Codex from the actual Ghaf repository root.
 

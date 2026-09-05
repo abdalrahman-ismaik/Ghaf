@@ -122,17 +122,18 @@ components:
 
 # Ghaf Design System
 
-**Authority:** Feature 003 Revision 3 design contract with frozen R001 and bounded R002a releases
+**Authority:** Feature 003 Revision 3 design contract with frozen R001/R002a and default-off R002b candidates
 
-**Verified implementation baseline:** `76fa682` — `docs(r001): record onboarding validation evidence`
+**Verified implementation baseline:** `0501cf3` — `docs(r002): record validation and deferred scope`
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-**Status:** R001 foundations, Welcome, and first-time Parent onboarding are frozen regression
-baselines. R002a authorizes the compatible native presentation sequence beginning with `/parent`.
-R002b Growth Journey, migration, and product-expansion surfaces remain blocked.
+**Status:** R001 foundations/onboarding and R002a Parent/task/Child/Garden presentation are frozen
+regression baselines. R002b code-native Growth candidates may be implemented behind independent
+default-off flags. Release activation remains blocked until the applicable visual, bilingual,
+accessibility, native, provenance, content, and human-review gates pass.
 
 **Creative direction:** `DESIGN_DIRECTION.md`
 
@@ -149,11 +150,10 @@ R002b Growth Journey, migration, and product-expansion surfaces remain blocked.
 - Implement R002a in this order: Parent Home, Parent Tasks/Builder, Child Today/task execution,
   Parent review, Child support/resubmission, then the compatible existing Garden. R001 remains
   unchanged while `/parent` becomes the first visible Soft Geometric result after onboarding.
-- Alexandria owns R001 display/headline roles. Readex Pro owns R001 body, control, task, dialogue,
-  and data roles. The same roles extend to selected R002a surfaces using the approved Ghaf palette,
-  Soft Geometric radii, local assets, generous Arabic leading, zero artificial Arabic tracking,
-  tabular numerals, and deterministic fallback. R002b typography or geometry changes still require
-  their own measured release.
+- Alexandria owns display/headline roles. Readex Pro owns body, control, task, dialogue, and data
+  roles. R002b extends the same released palette, Soft Geometric radii, local assets, generous
+  Arabic leading, zero artificial Arabic tracking, tabular numerals, and deterministic fallback;
+  it does not create a parallel visual system.
 - R001 uses responsive safe-area layouts and natural scrolling. A 390×844 frame is a comparison
   viewport, not a fixed canvas. Only explicitly specified header/action/sheet regions may remain
   fixed while central content scrolls and avoids the keyboard.
@@ -173,9 +173,10 @@ R002b Growth Journey, migration, and product-expansion surfaces remain blocked.
 The private five-Leaf League and separate Family Reward remain preserved behavior. Their candidate
 Parent Home counters are not renderable until a live authorized dashboard selector exists; R002a
 must omit those unsupported numbers rather than fabricate them or relabel `/circle`. The
-108→120→180 migration, Impact Path, badges, learning, Parent Progress, revised RevealBundle, Shared
-Growth changes, shared-garden controls, and cumulative Garden Next Stage are R002b and remain
-blocked.
+108→120→180 projection, Impact Path, badges, learning, Parent Progress, revised RevealBundle,
+additive Shared Growth, shared-garden controls, and cumulative Garden chapter are authorized only as
+default-off R002b candidates. Their product behavior comes from the current specification, not a
+screenshot, and their release remains blocked.
 
 ## Design Promise
 

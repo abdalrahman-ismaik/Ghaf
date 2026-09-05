@@ -1,20 +1,22 @@
-# Design-Intake Release Gate — R001 Frozen / R002a Authorized
+# Design-Intake Release Gate — R001/R002a Frozen / R002b Feature-Flagged
 
 **Recorded:** 2026-09-05
 
-**Verified baseline:** `76fa682` — `docs(r001): record onboarding validation evidence`
+**Verified R002b baseline:** `0501cf3` — `docs(r002): record validation and deferred scope`
+
+**Required R002a predecessor:** `a0539e9` — `fix(r002): contain large text in Parent surfaces`
 
 **R001 provenance:** original commit `f63e39fc702bb1797791f7543c6316e3b06f3ba9`;
 see [the artifact manifest](r001-artifact-manifest.md).
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
-> **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 ## Authority
 
 R001 native foundations, Welcome, and first-time Parent onboarding are frozen regression baselines.
-R002a is a compatibility-first native presentation release over existing behavior. Raw Stitch PNGs
+R002a is the completed compatibility-first native presentation release over existing behavior. Raw Stitch PNGs
 are composition candidates; HTML/CSS/JS is measurement evidence only and never runtime code. The six
 conflicting local-only commits remain unapplied, and the raw R002 directory must not be modified or
 bulk-staged. `final`, `fixed`, `refined`, and `corrected` record lineage rather than approval;
@@ -42,7 +44,7 @@ behavior must not regress.
 - Keep Schema-3 48→60 and current selector values; never hard-code screenshot progression.
 - Child submission and praise presentation award zero. The existing separate Parent recognition
   transaction remains atomic/idempotent and retains every applicable praise, Seed, plant, canopy,
-  Challenge Leaf/private League, and private Family Reward consequence.
+  eligible Green Circle, Challenge Leaf/private League, and private Family Reward consequence.
 - Reuse existing actions/selectors; presentation code must not calculate rewards or rebuild the
   lifecycle.
 - Preserve capability-scoped access, reauthentication, guards, profile isolation, privacy,
@@ -57,17 +59,19 @@ dashboard selectors; their maps initialize empty, and onboarding lacks the requi
 must not relabel `/circle` as private League. Omit those candidate fragments until an approved live
 adapter exists; this does not weaken either domain contract.
 
-## R002b remains blocked
+## R002b implementation and activation split
 
-R002a does not authorize the cumulative 108→120→180 migration, Impact Path, Badge Gallery/Detail,
-Learning Story or accessible alternative, Parent Progress and Achievements, revised combined
-RevealBundle, Shared Growth changes, Parent Shared Garden participation controls, or cumulative
-Garden Next Stage. None may enter release navigation or be inferred from an export.
+R002b may implement the cumulative ledger-derived 108→120→180 projection, Impact Path, locked
+Badge Gallery/Detail, equal-credit Learning, Parent Progress, superset RevealBundle, additive Shared
+Growth, Parent Shared Garden controls, and cumulative Garden chapter behind independent default-off
+flags. Code-native candidate screens are permitted when documented by `screen-spec.md`; exports do
+not define product behavior. Release navigation remains blocked until each applicable native,
+bilingual, accessibility, content, provenance, privacy, and human-review gate passes.
 
 ## Evidence and exit rules
 
 After each slice, record focused behavior tests, typecheck, lint, formatting, full tests, Expo
 configuration, production export/build, route/RTL/accessibility assertions, 390×844 visual
 comparison, responsive/font-scale checks, and `git diff --check` as `PASSED`, `FAILED`, `BLOCKED`, or
-`NOT RUN`. Android may pass only on a named usable build/device. R002a authorization does not itself
-pass implementation or acceptance; R002b remains blocked until a separate explicit decision.
+`NOT RUN`. Android may pass only on a named usable build/device. R002b implementation authorization
+does not itself pass acceptance or activate a release flag.
