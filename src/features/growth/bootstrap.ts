@@ -7,13 +7,18 @@ import type {
   AchievementEvaluationEvidence,
   AchievementState,
   BadgeId,
+  LearningCompletionEvidence,
+  SemanticCriterionEvidence,
 } from '../../models/achievements';
+import type { MangroveLearningState } from '../../models/learning';
 import {
   SCHEMA3_R002A_FIXTURE_VERSION,
+  type ProgressionErrorCode,
   type ProgressionResult,
   type SeedLedgerState,
   type WaterAndCoastPathProjection,
 } from '../../models/growthJourney';
+import { restoreMangroveLearningState } from '../learning/mangroveLearning';
 import {
   auditSchema3SeedState,
   createEmptySeedLedger,
@@ -55,9 +60,15 @@ export interface GrowthJourneyRecognitionProjection {
   readonly newlyReachedThresholds: readonly number[];
 }
 
+export interface GrowthJourneyLearningProjection {
+  readonly disposition: 'evaluated' | 'already_evaluated';
+  readonly runtime: GrowthJourneyRuntimeState;
+  readonly newlyEarnedBadgeIds: readonly BadgeId[];
+}
+
 function failure<T>(
   message: string,
-  code: 'INVALID_INPUT' | 'FIXTURE_EVIDENCE_MISMATCH' = 'FIXTURE_EVIDENCE_MISMATCH',
+  code: ProgressionErrorCode = 'FIXTURE_EVIDENCE_MISMATCH',
 ): ProgressionResult<T> {
   return { ok: false, error: { code, message } };
 }
@@ -84,6 +95,8 @@ function freezeRuntime(input: {
 
 function achievementEvidence(
   ledger: SeedLedgerState,
+  learningCompletions: readonly LearningCompletionEvidence[] = Object.freeze([]),
+  semanticCriterionEvidence: readonly SemanticCriterionEvidence[] = Object.freeze([]),
 ): ProgressionResult<AchievementEvaluationEvidence> {
   const lifetime = selectLifetimeSeeds(ledger, ledger.profileId, ledger.profileEpochId);
   if (!lifetime.ok) return lifetime;
@@ -106,8 +119,8 @@ function achievementEvidence(
         source: 'canonical_impact_path_projection' as const,
         reachedThresholds: path.data.reachedThresholds,
       }),
-      learningCompletions: Object.freeze([]),
-      semanticCriterionEvidence: Object.freeze([]),
+      learningCompletions: Object.freeze([...learningCompletions]),
+      semanticCriterionEvidence: Object.freeze([...semanticCriterionEvidence]),
     }),
   };
 }
@@ -262,12 +275,89 @@ export function selectGrowthJourneyProfile(
   };
 }
 
+export function projectLearningCompletionIntoGrowthJourney(input: {
+  readonly runtime: GrowthJourneyRuntimeState;
+  readonly learningState: MangroveLearningState;
+}): ProgressionResult<GrowthJourneyLearningProjection> {
+  if (!isRecord(input) || !isRecord(input.runtime) || !isRecord(input.learningState)) {
+    return failure('Complete learning projection evidence is required', 'INVALID_INPUT');
+  }
+  const learning = restoreMangroveLearningState(input.learningState);
+  if (!learning.ok || learning.data.completion === null || learning.data.unlockEvidence === null) {
+    return failure(
+      learning.ok
+        ? 'Only one committed learning completion can be projected'
+        : learning.error.message,
+      'INVALID_INPUT',
+    );
+  }
+  const completion = learning.data.completion;
+  const profile = selectGrowthJourneyProfile(input.runtime, completion.profileId);
+  if (!profile.ok) return profile;
+  if (profile.data.profileEpochId !== completion.profileEpochId) {
+    return failure('Learning completion belongs to another reset epoch', 'EPOCH_SCOPE_MISMATCH');
+  }
+  if (
+    learning.data.unlockEvidence.profileId !== profile.data.profileId ||
+    !learning.data.unlockEvidence.reachedThresholds.every((threshold) =>
+      profile.data.path.reachedThresholds.includes(threshold),
+    ) ||
+    !profile.data.path.reachedThresholds.includes(132)
+  ) {
+    return failure(
+      'Learning completion does not reconcile with the current Impact Path',
+      'FIXTURE_EVIDENCE_MISMATCH',
+    );
+  }
+
+  const evidence = achievementEvidence(profile.data.ledger, [
+    {
+      id: completion.id,
+      profileId: completion.profileId,
+      profileEpochId: completion.profileEpochId,
+      learningId: completion.learningId,
+      status: 'committed',
+    },
+  ]);
+  if (!evidence.ok) return evidence;
+  const evaluated = evaluateBadgeAwards({
+    state: profile.data.achievements,
+    evidence: evidence.data,
+    mode: 'live',
+    triggerEventId: completion.triggerEventId,
+    occurredAt: completion.completedAt,
+  });
+  if (!evaluated.ok) return failure(evaluated.error.message);
+  const runtime =
+    evaluated.data.state === profile.data.achievements
+      ? input.runtime
+      : freezeRuntime({
+          resetSequence: input.runtime.resetSequence,
+          ledgersByProfile: { ...input.runtime.ledgersByProfile },
+          achievementsByProfile: {
+            ...input.runtime.achievementsByProfile,
+            [completion.profileId]: evaluated.data.state,
+          },
+        });
+  return {
+    ok: true,
+    data: Object.freeze({
+      disposition:
+        evaluated.data.newlyEarnedBadgeIds.length > 0 ? 'evaluated' : 'already_evaluated',
+      runtime,
+      newlyEarnedBadgeIds: evaluated.data.newlyEarnedBadgeIds,
+    }),
+  };
+}
+
 export function projectRecognitionIntoGrowthJourney(input: {
   readonly runtime: GrowthJourneyRuntimeState;
   readonly previousSession: PrototypeSession;
   readonly nextSession: PrototypeSession;
   readonly receipt: RecognitionReceipt;
   readonly committedAt: string;
+  readonly learningCompletions?: readonly LearningCompletionEvidence[];
+  readonly semanticCriterionEvidence?: readonly SemanticCriterionEvidence[];
 }): ProgressionResult<GrowthJourneyRecognitionProjection> {
   if (
     !isRecord(input) ||
@@ -399,7 +489,11 @@ export function projectRecognitionIntoGrowthJourney(input: {
     addedCreditIds = recorded.data.addedCreditIds;
   }
 
-  const nextEvidence = achievementEvidence(projected.data.ledger);
+  const nextEvidence = achievementEvidence(
+    projected.data.ledger,
+    input.learningCompletions ?? Object.freeze([]),
+    input.semanticCriterionEvidence ?? Object.freeze([]),
+  );
   if (!nextEvidence.ok) return nextEvidence;
   const evaluated = evaluateBadgeAwards({
     state: nextAchievementState,

@@ -23,9 +23,18 @@ import {
 } from '../features/tasks/validation';
 import {
   createGrowthJourneyRuntime,
+  projectLearningCompletionIntoGrowthJourney,
   projectRecognitionIntoGrowthJourney,
+  selectGrowthJourneyProfile,
   type GrowthJourneyRuntimeState,
 } from '../features/growth/bootstrap';
+import {
+  advanceMangroveLearningStep as advanceMangroveLearningStepDomain,
+  completeMangroveLearning as completeMangroveLearningDomain,
+  createMangroveLearningState,
+  startMangroveLearningRoute as startMangroveLearningRouteDomain,
+  submitMangroveLearningCheck as submitMangroveLearningCheckDomain,
+} from '../features/learning/mangroveLearning';
 import { coerceLocale, getLocaleDirection } from '../models/prototype';
 import type {
   ChildCoachIntent,
@@ -55,6 +64,19 @@ import type {
   SyntheticChildId,
 } from '../models/familyGrowth';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
+import type {
+  AdvanceLearningStepResult,
+  CompleteLearningResult,
+  LearningCheckOptionId,
+  LearningContentStepId,
+  LearningOrigin,
+  LearningRoute,
+  MangroveLearningState,
+  StartLearningRouteResult,
+  SubmitLearningCheckResult,
+} from '../models/learning';
+import type { LearningCompletionEvidence } from '../models/achievements';
+import type { ImpactPathThreshold } from '../models/growthJourney';
 import { serviceRegistry, type ParentGuideService, type ServiceResult } from '../services';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
@@ -63,6 +85,7 @@ type ActiveChildAssignmentJourney = PrototypeJourney & {
   readonly lifecycle: 'chosen' | 'in_progress';
   readonly assignment: NonNullable<PrototypeJourney['assignment']>;
 };
+type MangroveLearningByProfile = Readonly<Record<SyntheticChildId, MangroveLearningState>>;
 
 const childVoiceController = createChildVoiceController(serviceRegistry);
 const parentOnboardingController = createParentOnboardingController(serviceRegistry.access);
@@ -74,8 +97,26 @@ if (!initialGrowthJourney.ok) {
   throw new Error(`R002b progression bootstrap failed: ${initialGrowthJourney.error.message}`);
 }
 
+function createLearningByProfile(runtime: GrowthJourneyRuntimeState): MangroveLearningByProfile {
+  const salem = createMangroveLearningState({
+    profileId: 'child_salem',
+    profileEpochId: runtime.ledgersByProfile.child_salem.profileEpochId,
+  });
+  const alya = createMangroveLearningState({
+    profileId: 'child_alya',
+    profileEpochId: runtime.ledgersByProfile.child_alya.profileEpochId,
+  });
+  if (!salem.ok || !alya.ok) {
+    throw new Error('R002b learning bootstrap failed for the canonical synthetic profiles');
+  }
+  return Object.freeze({ child_salem: salem.data, child_alya: alya.data });
+}
+
+const initialMangroveLearning = createLearningByProfile(initialGrowthJourney.data);
+
 export interface PrototypeStoreState extends PrototypeSession {
   readonly growthJourney: GrowthJourneyRuntimeState;
+  readonly mangroveLearningByProfile: MangroveLearningByProfile;
   readonly parentOnboarding: ParentOnboardingView;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
@@ -109,6 +150,22 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly resetPrototype: () => ServiceResult<Omit<ResetResult, 'session'>>;
   // Route shell still uses this alias; resetPrototype owns the reset behavior.
   readonly resetDemo: () => ServiceResult<'/'>;
+  readonly startMangroveLearning: (
+    route: LearningRoute,
+    origin: LearningOrigin,
+  ) => ServiceResult<StartLearningRouteResult>;
+  readonly advanceMangroveLearning: (
+    route: LearningRoute,
+    stepId: LearningContentStepId,
+  ) => ServiceResult<AdvanceLearningStepResult>;
+  readonly answerMangroveLearningCheck: (
+    route: LearningRoute,
+    optionId: LearningCheckOptionId,
+  ) => ServiceResult<SubmitLearningCheckResult>;
+  readonly completeMangroveLearning: (
+    route: LearningRoute,
+    completedAt: string,
+  ) => ServiceResult<CompleteLearningResult>;
 
   readonly createTaskDraft: (input: {
     readonly childId: SyntheticChildId;
@@ -296,6 +353,54 @@ function sessionSnapshot(state: PrototypeStoreState): PrototypeSession {
   };
 }
 
+function selectActiveLearningContext(state: PrototypeStoreState): ServiceResult<{
+  readonly profileId: SyntheticChildId;
+  readonly profileEpochId: string;
+  readonly learning: MangroveLearningState;
+  readonly reachedThresholds: readonly ImpactPathThreshold[];
+}> {
+  if (state.role !== 'child') {
+    return failure('INVALID_TRANSITION', 'Only the Child demo role can use learning');
+  }
+  const profile = selectGrowthJourneyProfile(state.growthJourney, state.activeChildId);
+  if (!profile.ok) return failure('INVALID_RESPONSE', profile.error.message);
+  const learning = state.mangroveLearningByProfile[state.activeChildId];
+  if (
+    learning.profileId !== profile.data.profileId ||
+    learning.profileEpochId !== profile.data.profileEpochId
+  ) {
+    return failure('INVALID_RESPONSE', 'Learning state does not match the active Child epoch');
+  }
+  return success({
+    profileId: profile.data.profileId,
+    profileEpochId: profile.data.profileEpochId,
+    learning,
+    reachedThresholds: profile.data.path.reachedThresholds,
+  });
+}
+
+function learningFailure(message: string): ServiceResult<never> {
+  return failure('INVALID_TRANSITION', message);
+}
+
+function completionEvidenceFor(
+  state: PrototypeStoreState,
+  profileId: SyntheticChildId,
+): readonly LearningCompletionEvidence[] {
+  const completion = state.mangroveLearningByProfile[profileId].completion;
+  return completion === null
+    ? Object.freeze([])
+    : Object.freeze([
+        Object.freeze({
+          id: completion.id,
+          profileId: completion.profileId,
+          profileEpochId: completion.profileEpochId,
+          learningId: completion.learningId,
+          status: 'committed' as const,
+        }),
+      ]);
+}
+
 function guideRequestFromState(
   state: PrototypeStoreState,
   input: { readonly requestId: string; readonly intent: ParentGuideIntent },
@@ -399,6 +504,7 @@ function validateGuideSuggestion(
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
   growthJourney: initialGrowthJourney.data,
+  mangroveLearningByProfile: initialMangroveLearning,
   parentOnboarding: parentOnboardingController.getView(),
   parentGuideSuggestion: null,
   childCoachResult: null,
@@ -496,6 +602,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!nextGrowthJourney.ok) {
       return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
     }
+    const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
     const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
     if (!onboardingReset.ok) return onboardingReset;
     const voiceReset = childVoiceController.resetPrototype('parent');
@@ -503,6 +610,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     set((state) => ({
       ...reset.session,
       growthJourney: nextGrowthJourney.data,
+      mangroveLearningByProfile: nextMangroveLearning,
       parentOnboarding: onboardingReset.data,
       parentGuideSuggestion: null,
       childCoachResult: null,
@@ -522,6 +630,103 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   resetDemo: () => {
     const result = get().resetPrototype();
     return result.ok ? success(result.data.navigateTo) : result;
+  },
+
+  startMangroveLearning: (route, origin) => {
+    const context = selectActiveLearningContext(get());
+    if (!context.ok) return context;
+    const unlocked = context.data.reachedThresholds.includes(132);
+    const result = startMangroveLearningRouteDomain({
+      state: context.data.learning,
+      profileId: context.data.profileId,
+      profileEpochId: context.data.profileEpochId,
+      route,
+      origin,
+      ...(unlocked
+        ? {
+            unlockEvidence: {
+              profileId: context.data.profileId,
+              profileEpochId: context.data.profileEpochId,
+              source: 'canonical_impact_path_projection',
+              reachedThresholds: context.data.reachedThresholds,
+            },
+          }
+        : {}),
+    });
+    if (!result.ok) return learningFailure(result.error.message);
+    set((state) => ({
+      mangroveLearningByProfile: Object.freeze({
+        ...state.mangroveLearningByProfile,
+        [context.data.profileId]: result.data.state,
+      }),
+    }));
+    return success(result.data);
+  },
+
+  advanceMangroveLearning: (route, stepId) => {
+    const context = selectActiveLearningContext(get());
+    if (!context.ok) return context;
+    const result = advanceMangroveLearningStepDomain({
+      state: context.data.learning,
+      profileId: context.data.profileId,
+      profileEpochId: context.data.profileEpochId,
+      route,
+      stepId,
+    });
+    if (!result.ok) return learningFailure(result.error.message);
+    set((state) => ({
+      mangroveLearningByProfile: Object.freeze({
+        ...state.mangroveLearningByProfile,
+        [context.data.profileId]: result.data.state,
+      }),
+    }));
+    return success(result.data);
+  },
+
+  answerMangroveLearningCheck: (route, optionId) => {
+    const context = selectActiveLearningContext(get());
+    if (!context.ok) return context;
+    const result = submitMangroveLearningCheckDomain({
+      state: context.data.learning,
+      profileId: context.data.profileId,
+      profileEpochId: context.data.profileEpochId,
+      route,
+      optionId,
+    });
+    if (!result.ok) return learningFailure(result.error.message);
+    set((state) => ({
+      mangroveLearningByProfile: Object.freeze({
+        ...state.mangroveLearningByProfile,
+        [context.data.profileId]: result.data.state,
+      }),
+    }));
+    return success(result.data);
+  },
+
+  completeMangroveLearning: (route, completedAt) => {
+    const context = selectActiveLearningContext(get());
+    if (!context.ok) return context;
+    const completed = completeMangroveLearningDomain({
+      state: context.data.learning,
+      profileId: context.data.profileId,
+      profileEpochId: context.data.profileEpochId,
+      route,
+      completedAt,
+    });
+    if (!completed.ok) return learningFailure(completed.error.message);
+    const projected = projectLearningCompletionIntoGrowthJourney({
+      runtime: get().growthJourney,
+      learningState: completed.data.state,
+    });
+    if (!projected.ok) return failure('INVALID_RESPONSE', projected.error.message);
+    set((state) => ({
+      mangroveLearningByProfile: Object.freeze({
+        ...state.mangroveLearningByProfile,
+        [context.data.profileId]: completed.data.state,
+      }),
+      growthJourney: projected.data.runtime,
+    }));
+    return success(completed.data);
   },
 
   createTaskDraft: (input) => {
@@ -1378,6 +1583,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       nextSession: result.data.session,
       receipt: result.data.receipt,
       committedAt: plan.checkIn.praisePresentedAt,
+      learningCompletions: completionEvidenceFor(get(), plan.journey.task.targetChildId),
     });
     if (!growthProjection.ok) {
       return failure('INVALID_RESPONSE', growthProjection.error.message);

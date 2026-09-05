@@ -159,7 +159,7 @@ function isSafeIdentifier(value: unknown): value is string {
     typeof value === 'string' &&
     value.length > 0 &&
     value.length <= 128 &&
-    /^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(value)
+    /^[A-Za-z0-9][A-Za-z0-9._:-]*$/u.test(value)
   );
 }
 
