@@ -171,6 +171,16 @@ globs now collect TSX tests, and the TypeScript project includes those files. Th
 lint, formatting, and Git whitespace validation. Route mounting and implementation screenshots
 remain pending; all consuming flags remain default-off.
 
+**Growth Journey view-model checkpoint — 2026-09-05**: One pure bilingual adapter now converts the
+active profile's immutable Growth projection into Today, Garden, Impact Path, exact 16-badge
+Gallery, and Badge Detail presentation contracts. It keeps current Mangrove 48/60 visibly separate
+from lifetime 108 and next station 120, derives every visible number from the supplied selectors,
+preserves exact composite criteria, and exposes only contextual Path, unlocked-learning, or
+already-assigned-task callbacks supplied by the guarded route. Candidate Arabic and English copy is
+centralized and honestly marks pending human review/provenance. Eleven focused view-model and
+resource-parity tests, typecheck, lint, formatting, and Git whitespace validation passed; no route
+or feature flag was activated.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`

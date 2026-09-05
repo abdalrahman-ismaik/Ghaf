@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   projectImpactPathStations,
   projectR002bGrowthExperience,
+  projectR002bGrowthExperienceWithLearning,
 } from '@/features/growth/presentation';
 import { projectRecognitionSeedEntry } from '@/features/growth/seedLedger';
 import { IMPACT_PATH_STATIONS, SCHEMA3_R002A_FIXTURE_VERSION } from '@/models/growthJourney';
@@ -164,5 +165,27 @@ describe('R002b Growth presentation projection', () => {
     const second = projectR002bGrowthExperience(input);
     expect(first).toEqual(second);
     expect(state.growthJourney).toEqual(before);
+  });
+
+  it('derives learning evidence only from the active profile and reset epoch', () => {
+    const state = usePrototypeStore.getState();
+    const result = projectR002bGrowthExperienceWithLearning({
+      runtime: state.growthJourney,
+      profileId: 'child_salem',
+      journey: state.journey,
+      learningState: state.mangroveLearningByProfile.child_salem,
+    });
+    expect(result.ok).toBe(true);
+
+    const crossProfile = projectR002bGrowthExperienceWithLearning({
+      runtime: state.growthJourney,
+      profileId: 'child_salem',
+      journey: state.journey,
+      learningState: state.mangroveLearningByProfile.child_alya,
+    });
+    expect(crossProfile).toMatchObject({
+      ok: false,
+      error: { code: 'PROFILE_SCOPE_MISMATCH' },
+    });
   });
 });

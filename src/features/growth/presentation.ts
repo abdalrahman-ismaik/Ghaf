@@ -8,6 +8,7 @@ import type {
   SemanticCriterionEvidence,
 } from '../../models/achievements';
 import type { SyntheticChildId, TaskJourney } from '../../models/familyGrowth';
+import type { MangroveLearningState } from '../../models/learning';
 import {
   IMPACT_PATH_STATIONS,
   type ImpactPathStation,
@@ -158,4 +159,54 @@ export function projectR002bGrowthExperience(input: {
       configuredNextGardenStage: null,
     }),
   };
+}
+
+export function projectR002bGrowthExperienceWithLearning(input: {
+  readonly runtime: GrowthJourneyRuntimeState;
+  readonly profileId: SyntheticChildId;
+  readonly journey: TaskJourney | null;
+  readonly learningState: MangroveLearningState;
+  readonly semanticCriterionEvidence?: readonly SemanticCriterionEvidence[];
+}): R002bGrowthPresentationResult {
+  const profile = selectGrowthJourneyProfile(input.runtime, input.profileId);
+  if (!profile.ok) return profile;
+  if (input.learningState.profileId !== input.profileId) {
+    return {
+      ok: false,
+      error: {
+        code: 'PROFILE_SCOPE_MISMATCH',
+        message: 'Learning evidence belongs to another profile',
+      },
+    };
+  }
+  if (input.learningState.profileEpochId !== profile.data.profileEpochId) {
+    return {
+      ok: false,
+      error: {
+        code: 'EPOCH_SCOPE_MISMATCH',
+        message: 'Learning evidence belongs to another reset epoch',
+      },
+    };
+  }
+
+  const completion = input.learningState.completion;
+  const learningCompletions: readonly LearningCompletionEvidence[] = completion
+    ? Object.freeze([
+        Object.freeze({
+          id: completion.id,
+          profileId: completion.profileId,
+          profileEpochId: completion.profileEpochId,
+          learningId: completion.learningId,
+          status: 'committed' as const,
+        }),
+      ])
+    : Object.freeze([]);
+
+  return projectR002bGrowthExperience({
+    runtime: input.runtime,
+    profileId: input.profileId,
+    journey: input.journey,
+    learningCompletions,
+    semanticCriterionEvidence: input.semanticCriterionEvidence ?? Object.freeze([]),
+  });
 }

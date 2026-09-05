@@ -710,6 +710,154 @@ export const resources = {
         symbolic: 'تقدم رمزي غير مالي',
         future: 'خيار مستقبلي غير مُفعّل',
       },
+      r002bGrowth: {
+        surfaceStatus: {
+          ready: 'جاهز للعرض من السجل المحلي',
+          notEntered: 'لم يبدأ الفصل بعد',
+          loading: 'جارٍ تجهيز المسار…',
+          offline: 'المسار المحلي متاح دون شبكة',
+          interrupted: 'عاد المسار إلى آخر حالة محفوظة',
+          error: 'تعذّر تجهيز هذا الجزء. لم يتغير التقدم.',
+          complete: 'اكتمل هذا الفصل',
+          unavailable: 'هذا الجزء غير متاح الآن',
+        },
+        chapter: {
+          title: 'العناية بالمياه والسواحل',
+          shortTitle: 'مسار العناية بالمياه والسواحل',
+          description:
+            'مسار خاص يوضح ما تأكد من بذور مدى الحياة، وما اكتمل من نمو القرم، والخطوة الواضحة التالية.',
+          status: {
+            notEntered: 'لم يبدأ الفصل بعد',
+            active: 'الفصل الحالي',
+            completed: 'اكتمل الفصل',
+          },
+          lifetime: 'بذور مدى الحياة',
+          currentStage: 'مرحلة القرم الحالية',
+          currentChapter: 'نطاق الفصل الحالي',
+          range: '{{start}} إلى {{end}} بذرة',
+          numericRange: '{{current}} من {{target}}',
+          currentStageUnavailable: 'لا يوجد سجل مرحلة قرم لهذا الملف',
+          archiveComplete: 'مرحلة قرم مكتملة ومحفوظة',
+          archivePending: 'مرحلة القرم لم تكتمل بعد',
+          archiveValue: 'القرم {{current}} من {{target}}',
+          archivePendingValue: 'لا توجد مرحلة مكتملة لعرضها',
+          nearestStation: 'المحطة الأقرب · {{threshold}}',
+          allStationsComplete: 'اكتملت كل محطات الفصل',
+          remaining: 'تبقّت {{count}} بذرة مؤكدة للوصول إلى هذه المحطة.',
+          chapterComplete: 'اكتملت المحطات الحالية، ولا توجد مرحلة تالية مهيأة بعد.',
+          stationThreshold: '{{count}} بذرة',
+          todaySupporting: 'يعرض هذا المسار سجلك الخاص فقط، ولا يغيّر رصيد البذور.',
+          todayGroupLabel: 'ملخص مسار الأثر الخاص',
+          gardenGroupLabel: 'ملخص فصل العناية بالمياه والسواحل',
+          pathGroupLabel: 'مسار الأثر الخاص بالعناية بالمياه والسواحل',
+          pathSummary: 'محطات واضحة مشتقة من البذور المؤكدة في هذا الملف فقط.',
+          disclosure:
+            'هذا نمو رمزي خاص مشتق من السجل المحلي المؤكد. لا يعني زرع شجرة حقيقية أو قياس أثر بيئي.',
+          pathEntryTitle: 'مسار الأثر',
+          pathEntryDescription: 'اعرض المحطات المكتملة والقادمة من دون إنشاء رصيد جديد.',
+          badgesEntryTitle: 'الشارات الخاصة',
+          badgesEntryDescription: 'اعرض 16 شارة بمعايير واضحة ودائمة، بلا ندرة أو مقارنة.',
+          sharedGrowthEntryTitle: 'النمو المشترك',
+          sharedGrowthEntryDescription: 'عرض تعليمي نوعي ومجهول الهوية، منفصل عن الدوري الخاص.',
+          sharedGrowthStatus: 'عرض مجهول بلا ترتيب أو أرقام عامة',
+          pathAction: 'عرض مسار الأثر',
+          badgesAction: 'عرض الشارات',
+          learningAction: 'فتح تعلّم جذور القرم',
+          sharedGrowthAction: 'عرض النمو المشترك',
+        },
+        stationStatus: {
+          reached: 'تم الوصول',
+          current: 'المحطة التالية',
+          locked: 'مقفلة حتى يكتمل الشرط',
+        },
+        stations: {
+          station120: {
+            title: 'ظلّ يتّسع',
+            criterion: 'عند 120 بذرة مؤكدة تُحفظ مرحلة القرم 60 من 60 وتُمنح شارة ظلّ يتّسع.',
+          },
+          station132: {
+            title: 'جذور القرم',
+            criterion: 'عند 132 بذرة يُفتح تعلّم جذور القرم؛ ولا تُمنح شارة رعاية القرم تلقائيًا.',
+          },
+          station144: {
+            title: 'تموّج الساحل',
+            criterion: 'عند 144 بذرة يُفتح مظهر تموّج ساحلي رمزي فقط.',
+          },
+          station156: {
+            title: 'مراجعة ترشيد المياه — برعم',
+            criterion: 'عند 156 بذرة يُفحص شرط الشارة؛ الوصول إلى المحطة وحده غير كافٍ.',
+          },
+          station168: {
+            title: 'قصة الجبيل التعليمية',
+            criterion: 'عند 168 بذرة تُفتح قصة تعليمية عن الجبيل، من دون الادعاء بزيارة حقيقية.',
+          },
+          station180: {
+            title: 'رعاية الساحل',
+            criterion:
+              'عند 180 بذرة تُمنح رعاية الساحل، ولا تظهر إلا مرحلة الحديقة المهيأة فعليًا.',
+          },
+        },
+        badges: {
+          title: 'شاراتي',
+          chapter: 'شارات رحلة النمو',
+          description: '16 شارة خاصة ودائمة بمعايير محددة، بلا حظ أو شراء أو مقارنة.',
+          groupLabel: 'معرض الشارات الخاصة',
+          detailGroupLabel: 'تفاصيل شارة {{badge}}',
+          privacy: 'هذه الشارات خاصة بهذا الملف ودائمة، ولا تظهر في ترتيب عام.',
+          privateStatus: 'خاصة ودائمة',
+          recommended: 'الخطوة المقترحة التالية',
+          requirementProgress: '{{current}} من {{required}} شروط مكتملة',
+          numericProgress: '{{current}} من {{required}}',
+          criteriaHeading: 'المعايير الدقيقة',
+          whyHeading: 'لماذا تهم هذه الخطوة؟',
+          whyText:
+            'توضح الشارة مهارة أو تعلّمًا اكتمل بسجل مؤكد. وهي لا تقارن الطفل بغيره ولا تمنح مكافأة عشوائية.',
+          sourceHeading: 'المصدر وحالة المراجعة',
+          sourceNote:
+            'تتبع المعايير سجل الشارات المحلي المعتمد. ما زالت صياغة الشرح ومصدر الرسم بحاجة إلى مراجعة بشرية قبل تفعيل الإصدار.',
+          earnedDate: 'اكتسبت في {{date}}',
+          historicalDate: 'مكتسبة من سجل سابق موثّق؛ لا يتوفر تاريخ عرض دقيق.',
+          state: {
+            earned: 'مكتسبة',
+            inProgress: 'قيد التقدم',
+            awaitingReview: 'تنتظر مراجعة محددة',
+            locked: 'مقفلة',
+            recommended: 'مقترحة تاليًا',
+          },
+          criterionState: {
+            satisfied: 'اكتمل الشرط',
+            awaitingReview: 'ينتظر مراجعة',
+            remaining: 'لم يكتمل بعد',
+          },
+          skills: {
+            sorting: 'الفرز',
+            coastCare: 'العناية بالساحل',
+            water: 'ترشيد المياه',
+            energy: 'ترشيد الطاقة',
+            nature: 'العناية بالطبيعة',
+          },
+          criteria: {
+            lifetimeSeeds: '{{current}} من {{required}} بذرة مؤكدة مدى الحياة',
+            stationReached: 'الوصول إلى محطة {{threshold}} بذرة',
+            acquisitionCredits: '{{current}} من {{required}} خبرات مكتسبة في {{skill}}',
+            prerequisiteBadge: 'اكتساب شارة {{badge}} أولًا',
+            learningCompleted: 'إكمال تعلّم جذور القرم بإحدى النسختين المتكافئتين',
+            semantic: {
+              wetlandLearning: 'إكمال تعلّم الأراضي الرطبة المحدد',
+              observationActivity: 'إكمال نشاط الملاحظة المحدد',
+              datePalmLearning: 'إكمال تعلّم نخيل التمر المحدد',
+              parentReuseActivity: 'إكمال نشاط إعادة الاستخدام بقيادة وليّ الأمر',
+              saduLearning: 'إكمال تعلّم السدو المحدد',
+              originalPatternActivity: 'إكمال نشاط نمط أصلي محدد',
+            },
+          },
+          action: {
+            path: 'عرض المحطة ذات الصلة',
+            learning: 'فتح التعلّم المتاح',
+            assignedTask: 'فتح المهمة التي اعتمدها وليّ الأمر',
+          },
+        },
+      },
       learning: {
         mangroveRoots: {
           title: 'بين جذور القرم',
@@ -1495,6 +1643,165 @@ export const resources = {
         prepared: 'Prepared',
         symbolic: 'Symbolic nonfinancial progress',
         future: 'Future option, not enabled',
+      },
+      r002bGrowth: {
+        surfaceStatus: {
+          ready: 'Ready from the local record',
+          notEntered: 'Chapter not entered yet',
+          loading: 'Preparing the path…',
+          offline: 'The local path remains available offline',
+          interrupted: 'The path resumed from its last saved state',
+          error: 'This section could not be prepared. Progress is unchanged.',
+          complete: 'This chapter is complete',
+          unavailable: 'This section is unavailable right now',
+        },
+        chapter: {
+          title: 'Water & Coast Care',
+          shortTitle: 'Water & Coast Care path',
+          description:
+            'A private path showing confirmed lifetime Seeds, completed Mangrove growth, and the next clear step.',
+          status: {
+            notEntered: 'Chapter not entered yet',
+            active: 'Current chapter',
+            completed: 'Chapter complete',
+          },
+          lifetime: 'Lifetime Seeds',
+          currentStage: 'Current Mangrove stage',
+          currentChapter: 'Current chapter range',
+          range: '{{start}} to {{end}} Seeds',
+          numericRange: '{{current}} of {{target}}',
+          currentStageUnavailable: 'No Mangrove stage record exists for this profile',
+          archiveComplete: 'Completed Mangrove stage, kept permanently',
+          archivePending: 'The Mangrove stage is not complete yet',
+          archiveValue: 'Mangrove {{current}} of {{target}}',
+          archivePendingValue: 'No completed stage to show yet',
+          nearestStation: 'Nearest station · {{threshold}}',
+          allStationsComplete: 'All chapter stations are complete',
+          remaining: '{{count}} confirmed Seeds remain before this station.',
+          chapterComplete: 'The current stations are complete. No next stage is configured yet.',
+          stationThreshold: '{{count}} Seeds',
+          todaySupporting:
+            'This path shows only your private record and never changes Seed balance.',
+          todayGroupLabel: 'Private Impact Path summary',
+          gardenGroupLabel: 'Water & Coast Care chapter summary',
+          pathGroupLabel: 'Private Water & Coast Care Impact Path',
+          pathSummary: 'Clear stations derived only from confirmed Seeds in this profile.',
+          disclosure:
+            'This is private symbolic growth derived from the confirmed local record. It is not a claim about physical planting or measured environmental impact.',
+          pathEntryTitle: 'Impact Path',
+          pathEntryDescription:
+            'See completed and upcoming stations without creating another balance.',
+          badgesEntryTitle: 'Private badges',
+          badgesEntryDescription:
+            'See 16 permanent badges with clear criteria, no rarity or comparison.',
+          sharedGrowthEntryTitle: 'Shared Growth',
+          sharedGrowthEntryDescription:
+            'A qualitative anonymous learning view, separate from the private League.',
+          sharedGrowthStatus: 'Anonymous view with no public rank or totals',
+          pathAction: 'View Impact Path',
+          badgesAction: 'View badges',
+          learningAction: 'Open Mangrove Roots learning',
+          sharedGrowthAction: 'View Shared Growth',
+        },
+        stationStatus: {
+          reached: 'Reached',
+          current: 'Next station',
+          locked: 'Locked until the requirement is met',
+        },
+        stations: {
+          station120: {
+            title: 'Expanding Shade',
+            criterion:
+              'At 120 confirmed Seeds, archive Mangrove 60 of 60 and earn Expanding Shade.',
+          },
+          station132: {
+            title: 'Mangrove Roots',
+            criterion:
+              'At 132 Seeds, unlock Mangrove Roots learning; Mangrove Care is not awarded automatically.',
+          },
+          station144: {
+            title: 'Coastal ripple',
+            criterion: 'At 144 Seeds, unlock only the symbolic coastal-ripple cosmetic.',
+          },
+          station156: {
+            title: 'Water Care — Bud review',
+            criterion:
+              'At 156 Seeds, evaluate the badge criteria; reaching the station alone is insufficient.',
+          },
+          station168: {
+            title: 'Jubail learning story',
+            criterion:
+              'At 168 Seeds, unlock a Jubail learning story without implying a real visit.',
+          },
+          station180: {
+            title: 'Coastal Care',
+            criterion:
+              'At 180 Seeds, earn Coastal Care and reveal only a Garden stage that is actually configured.',
+          },
+        },
+        badges: {
+          title: 'My badges',
+          chapter: 'Growth Journey badges',
+          description:
+            'Sixteen private permanent badges with explicit criteria—no luck, payment, or comparison.',
+          groupLabel: 'Private Badge Gallery',
+          detailGroupLabel: '{{badge}} badge detail',
+          privacy:
+            'These badges are private to this profile, permanent, and never part of a public rank.',
+          privateStatus: 'Private and permanent',
+          recommended: 'Recommended next step',
+          requirementProgress: '{{current}} of {{required}} requirements complete',
+          numericProgress: '{{current}} of {{required}}',
+          criteriaHeading: 'Exact criteria',
+          whyHeading: 'Why does this matter?',
+          whyText:
+            'A badge makes a confirmed skill or learning step understandable. It never compares the Child with others or grants a random reward.',
+          sourceHeading: 'Source and review status',
+          sourceNote:
+            'Criteria follow the approved local badge registry. Explanatory copy and illustration provenance still require human review before release activation.',
+          earnedDate: 'Earned on {{date}}',
+          historicalDate:
+            'Earned from a verified prior record; an exact display date is unavailable.',
+          state: {
+            earned: 'Earned',
+            inProgress: 'In progress',
+            awaitingReview: 'Awaiting a defined review',
+            locked: 'Locked',
+            recommended: 'Recommended next',
+          },
+          criterionState: {
+            satisfied: 'Requirement complete',
+            awaitingReview: 'Awaiting review',
+            remaining: 'Not complete yet',
+          },
+          skills: {
+            sorting: 'sorting',
+            coastCare: 'coastal care',
+            water: 'water care',
+            energy: 'energy care',
+            nature: 'nature care',
+          },
+          criteria: {
+            lifetimeSeeds: '{{current}} of {{required}} confirmed lifetime Seeds',
+            stationReached: 'Reach the {{threshold}}-Seed station',
+            acquisitionCredits: '{{current}} of {{required}} acquired {{skill}} credits',
+            prerequisiteBadge: 'Earn {{badge}} first',
+            learningCompleted: 'Complete either equal-credit Mangrove Roots learning route',
+            semantic: {
+              wetlandLearning: 'Complete the defined wetland learning',
+              observationActivity: 'Complete the defined observation activity',
+              datePalmLearning: 'Complete the defined date-palm learning',
+              parentReuseActivity: 'Complete the Parent-led reuse activity',
+              saduLearning: 'Complete the defined Al-Sadu learning',
+              originalPatternActivity: 'Complete the defined original-pattern activity',
+            },
+          },
+          action: {
+            path: 'View the related station',
+            learning: 'Open available learning',
+            assignedTask: 'Open the Parent-approved task',
+          },
+        },
       },
       learning: {
         mangroveRoots: {
