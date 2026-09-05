@@ -42,6 +42,7 @@ export interface R002bParentSharedGardenPresentationInput {
   readonly onBack?: () => void;
   readonly onCancelConfirmation?: () => void;
   readonly onRequestConfirmation?: (action: SharedGrowthParticipationAction) => void;
+  readonly onRecover?: () => void;
   readonly onRestoreConfirmationFocus?: (targetTestID: string) => void;
   readonly pendingAction?: SharedGrowthParticipationAction;
   readonly preference: CommunityParticipationPreference;
@@ -128,6 +129,11 @@ const COPY_KEYS = {
     freshConsentMessage: 'r002bSharedGrowth.parent.freshConsentMessage',
     existingConsentMessage: 'r002bSharedGrowth.parent.existingConsentMessage',
     pendingMessage: 'r002bSharedGrowth.parent.pendingMessage',
+    recovery: {
+      accessibilityLabel: 'r002bSharedGrowth.parent.recovery.accessibilityLabel',
+      failureMessage: 'r002bSharedGrowth.parent.recovery.failureMessage',
+      label: 'r002bSharedGrowth.parent.recovery.label',
+    },
     action: {
       continue: {
         label: 'r002bSharedGrowth.parent.action.continue.label',
@@ -204,6 +210,9 @@ export const R002B_SHARED_GROWTH_TRANSLATION_KEYS = Object.freeze([
   COPY_KEYS.parent.freshConsentMessage,
   COPY_KEYS.parent.existingConsentMessage,
   COPY_KEYS.parent.pendingMessage,
+  COPY_KEYS.parent.recovery.accessibilityLabel,
+  COPY_KEYS.parent.recovery.failureMessage,
+  COPY_KEYS.parent.recovery.label,
   COPY_KEYS.parent.action.continue.label,
   COPY_KEYS.parent.action.continue.descriptionPaused,
   COPY_KEYS.parent.action.continue.descriptionEnded,
@@ -239,7 +248,7 @@ const PARENT_STATE_COPY: Readonly<Record<ParentSharedGardenContentState, string>
   loading: COPY_KEYS.common.state.loading,
   offline: COPY_KEYS.common.state.offline,
   unavailable: COPY_KEYS.common.state.unavailable,
-  error: COPY_KEYS.common.state.error,
+  error: COPY_KEYS.parent.recovery.failureMessage,
   interrupted: COPY_KEYS.common.state.interrupted,
   recovered: COPY_KEYS.common.state.recovered,
   submitting: COPY_KEYS.common.state.submitting,
@@ -499,6 +508,19 @@ export function createR002bParentSharedGardenPresentation(
   const pendingActionLabel = participationActions.find(
     (action) => action.action === input.pendingAction,
   )?.label;
+  const recoveryAction =
+    contentState === 'error' && input.contributionEnabled && input.onRecover
+      ? Object.freeze({
+          accessibilityLabel: translate(COPY_KEYS.parent.recovery.accessibilityLabel),
+          disabled: false,
+          label: translate(COPY_KEYS.parent.recovery.label),
+          onPress: () => {
+            if (contentState !== 'error') return;
+            input.onRecover?.();
+          },
+          testID: 'shared-parent-recover',
+        })
+      : undefined;
   return Object.freeze({
     backAction: backAction(translate, onBack),
     confirmation,
@@ -529,6 +551,7 @@ export function createR002bParentSharedGardenPresentation(
     privacyHeading: translate(COPY_KEYS.parent.privacyHeading),
     readOnlyBody: translate(COPY_KEYS.parent.readOnlyBody),
     readOnlyHeading: translate(COPY_KEYS.parent.readOnlyHeading),
+    recoveryAction,
     reducedMotion,
     settingsHeading: translate(COPY_KEYS.parent.settingsHeading),
     stateMessage: translate(PARENT_STATE_COPY[contentState]),

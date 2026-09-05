@@ -140,6 +140,23 @@ describe('R002b Shared Growth presentation components', () => {
     expect(source).toContain('aria-hidden');
   });
 
+  it('renders the failed-save recovery as one accessible touch-sized presentation action', () => {
+    const source = componentSource();
+    const recoverySource = source.slice(
+      source.indexOf('function SharedGrowthRecoveryAction'),
+      source.indexOf('function SharedGrowthStatus'),
+    );
+
+    expect(source).toContain('recoveryAction?: SharedGrowthActionPresentation');
+    expect(source).toContain('{recoveryAction ? (');
+    expect(recoverySource).toContain('accessibilityLabel={action.accessibilityLabel}');
+    expect(recoverySource).toContain('accessibilityRole="button"');
+    expect(recoverySource).toContain('accessibilityState={{ busy, disabled }}');
+    expect(recoverySource).toContain('onPress={action.onPress}');
+    expect(recoverySource).toContain('testID={action.testID}');
+    expect(source).toMatch(/recoveryAction:\s*\{[\s\S]*?minHeight:\s*layout\.touchTarget/u);
+  });
+
   it('reflows at compact, wide, and 200-percent-text breakpoints without a fixed canvas', () => {
     const source = componentSource();
 

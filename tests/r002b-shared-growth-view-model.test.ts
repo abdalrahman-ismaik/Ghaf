@@ -76,6 +76,9 @@ const EXPECTED_TRANSLATION_KEYS = [
   'r002bSharedGrowth.parent.freshConsentMessage',
   'r002bSharedGrowth.parent.existingConsentMessage',
   'r002bSharedGrowth.parent.pendingMessage',
+  'r002bSharedGrowth.parent.recovery.accessibilityLabel',
+  'r002bSharedGrowth.parent.recovery.failureMessage',
+  'r002bSharedGrowth.parent.recovery.label',
   'r002bSharedGrowth.parent.action.continue.label',
   'r002bSharedGrowth.parent.action.continue.descriptionPaused',
   'r002bSharedGrowth.parent.action.continue.descriptionEnded',
@@ -463,6 +466,54 @@ describe('R002b Shared Growth presentation adapters', () => {
     expect(onAction).not.toHaveBeenCalled();
     expect(onRequestConfirmation).not.toHaveBeenCalled();
     expect(unavailable.confirmation).toBeUndefined();
+  });
+
+  it('offers an accessible local recovery action after failure without retrying the mutation', () => {
+    const onAction = vi.fn<(value: SharedGrowthParticipationAction) => void>();
+    const onRecover = vi.fn();
+    const source = preference('continued');
+    const before = structuredClone(source);
+    const failed = createR002bParentSharedGardenPresentation({
+      preference: source,
+      language: 'en',
+      direction: 'ltr',
+      reducedMotion: false,
+      translate: translate('en'),
+      contributionEnabled: true,
+      contentState: 'error',
+      onAction,
+      onRecover,
+    });
+
+    expect(failed.participationActions.every((action) => action.disabled)).toBe(true);
+    expect(failed.recoveryAction).toMatchObject({
+      accessibilityLabel: 'en:r002bSharedGrowth.parent.recovery.accessibilityLabel',
+      disabled: false,
+      label: 'en:r002bSharedGrowth.parent.recovery.label',
+      testID: 'shared-parent-recover',
+    });
+    failed.recoveryAction?.onPress();
+    expect(onRecover).toHaveBeenCalledOnce();
+    expect(onAction).not.toHaveBeenCalled();
+    expect(source).toEqual(before);
+
+    const ready = createR002bParentSharedGardenPresentation({
+      preference: source,
+      language: 'en',
+      direction: 'ltr',
+      reducedMotion: false,
+      translate: translate('en'),
+      contributionEnabled: true,
+      contentState: 'ready',
+      onAction,
+      onRecover,
+    });
+    expect(ready.recoveryAction).toBeUndefined();
+    expect(ready.participationActions.some((action) => !action.disabled)).toBe(true);
+    ready.participationActions
+      .find((action) => action.action === 'pause_new_contributions')
+      ?.onPress();
+    expect(onAction).toHaveBeenCalledExactlyOnceWith('pause_new_contributions');
   });
 
   it('marks only a valid pending action busy and disables the bounded action area', () => {

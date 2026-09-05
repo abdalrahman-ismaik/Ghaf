@@ -1174,6 +1174,11 @@ export const resources = {
           existingConsentMessage:
             'يمكن استئناف المشاركة بعد الإيقاف المؤقت باستخدام الموافقة الحالية.',
           pendingMessage: 'جارٍ تطبيق: {{action}}',
+          recovery: {
+            failureMessage: 'تعذّر حفظ خيار المشاركة. لم تتغير الحالة الحالية.',
+            label: 'المحاولة من جديد',
+            accessibilityLabel: 'إعادة تفعيل خيارات المشاركة للمحاولة من جديد',
+          },
           action: {
             continue: {
               label: 'متابعة المشاركة',
@@ -2521,6 +2526,12 @@ export const resources = {
             'Returning after End requires fresh explicit Parent consent before any future signal is accepted.',
           existingConsentMessage: 'You can resume after Pause using the current consent.',
           pendingMessage: 'Applying: {{action}}',
+          recovery: {
+            failureMessage:
+              'The participation choice could not be saved. The current status did not change.',
+            label: 'Try again',
+            accessibilityLabel: 'Reset the participation controls to try again',
+          },
           action: {
             continue: {
               label: 'Continue Participation',

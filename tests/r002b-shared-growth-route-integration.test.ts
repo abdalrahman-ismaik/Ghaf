@@ -169,6 +169,21 @@ describe('R002b Shared Growth route integration', () => {
     expect(parent).not.toMatch(/Date\.now|new Date|Math\.random|randomUUID/u);
   });
 
+  it('recovers a failed participation presentation locally before the normal action flow resumes', () => {
+    const parent = source(parentRoutePath);
+    const recoveryMatch = parent.match(
+      /const recoverFromError = \(\) => \{(?<body>[\s\S]*?)\n  \};/u,
+    );
+    const recoveryBody = recoveryMatch?.groups?.body ?? '';
+
+    expect(parent).toContain('onRecover: recoverFromError');
+    expect(recoveryBody).toContain('setConfirmationAction(undefined)');
+    expect(recoveryBody).toContain('setPendingAction(undefined)');
+    expect(recoveryBody).toContain("setContentState('ready')");
+    expect(recoveryBody).not.toContain('changeSharedGrowthParticipation');
+    expect(recoveryBody).not.toMatch(/preference|actionId|proofId|actedAt/u);
+  });
+
   it('keeps every private authority unchanged through Pause, Continue, End, and fresh-consent return', async () => {
     await completeParentOnboarding();
     const baseline = privateStateSnapshot();

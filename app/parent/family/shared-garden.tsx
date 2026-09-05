@@ -121,6 +121,11 @@ function AuthorizedParentSharedGarden({
       result.ok ? (result.data.disposition === 'already_applied' ? 'duplicate' : 'saved') : 'error',
     );
   };
+  const recoverFromError = () => {
+    setConfirmationAction(undefined);
+    setPendingAction(undefined);
+    setContentState('ready');
+  };
   const presentation = createR002bParentSharedGardenPresentation({
     preference,
     language,
@@ -133,6 +138,7 @@ function AuthorizedParentSharedGarden({
     translate: (key, values) => String(t(key, values)),
     onAction: applyAction,
     onCancelConfirmation: () => setConfirmationAction(undefined),
+    onRecover: recoverFromError,
     onRequestConfirmation: setConfirmationAction,
   });
 

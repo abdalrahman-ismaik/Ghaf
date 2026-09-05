@@ -156,6 +156,7 @@ export interface ParentSharedGardenScreenProps {
   privacyHeading: string;
   readOnlyBody: string;
   readOnlyHeading: string;
+  recoveryAction?: SharedGrowthActionPresentation;
   reducedMotion: boolean;
   settingsHeading: string;
   stateMessage: string;
@@ -424,6 +425,7 @@ export function ParentSharedGardenScreen({
   privacyHeading,
   readOnlyBody,
   readOnlyHeading,
+  recoveryAction,
   reducedMotion,
   settingsHeading,
   stateMessage,
@@ -458,6 +460,15 @@ export function ParentSharedGardenScreen({
         stateMessage={stateMessage}
         statusLabel={statusLabel}
       />
+
+      {recoveryAction ? (
+        <SharedGrowthRecoveryAction
+          action={recoveryAction}
+          direction={direction}
+          language={language}
+          reducedMotion={reducedMotion}
+        />
+      ) : null}
 
       <ParentCurrentStatus
         description={currentStatusDescription}
@@ -576,6 +587,53 @@ export function ParentSharedGardenScreen({
         />
       ) : null}
     </View>
+  );
+}
+
+function SharedGrowthRecoveryAction({
+  action,
+  direction,
+  language,
+  reducedMotion,
+}: {
+  action: SharedGrowthActionPresentation;
+  direction: SharedGrowthDirection;
+  language: SharedGrowthLanguage;
+  reducedMotion: boolean;
+}) {
+  const { busy = false, disabled = false } = action;
+
+  return (
+    <Pressable
+      accessibilityLabel={action.accessibilityLabel}
+      accessibilityRole="button"
+      accessibilityState={{ busy, disabled }}
+      disabled={busy || disabled}
+      onPress={action.onPress}
+      style={({ pressed }) => [
+        styles.recoveryAction,
+        { flexDirection: logicalRowDirection(direction) },
+        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
+        busy || disabled ? styles.disabled : null,
+      ]}
+      testID={action.testID}
+    >
+      {busy ? (
+        <ActivityIndicator color={colors.error} size="small" />
+      ) : (
+        <GhafIcon color={colors.error} name="info" size={22} />
+      )}
+      <Text
+        brand
+        color="error"
+        direction={direction}
+        language={language}
+        style={styles.flexCopy}
+        variant="control"
+      >
+        {action.label}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -1572,6 +1630,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  recoveryAction: {
+    width: '100%',
+    minWidth: 0,
+    minHeight: layout.touchTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.error,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
