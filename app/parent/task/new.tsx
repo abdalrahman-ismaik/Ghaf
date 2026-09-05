@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { ParentTaskComposer } from '@/components/family-growth/ParentTaskComposer';
 import { JourneyHeader } from '@/components/journey';
 import { Screen } from '@/components/primitives';
+import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
+import { resolveParentProgressTaskPrefill } from '@/features/growth/parentProgress';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentTaskNewScreen() {
@@ -12,6 +14,13 @@ export default function ParentTaskNewScreen() {
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
   const journey = usePrototypeStore((state) => state.journey);
+  const activeChildId = usePrototypeStore((state) => state.activeChildId);
+  const params = useLocalSearchParams();
+  const initialPrefill = resolveParentProgressTaskPrefill({
+    enabled: r002bFeatureFlags.r002b_parent_progress_ui,
+    activeChildId,
+    params,
+  });
 
   useEffect(() => {
     if (role !== 'parent') {
@@ -35,6 +44,7 @@ export default function ParentTaskNewScreen() {
 
   return (
     <ParentTaskComposer
+      initialPrefill={initialPrefill ?? undefined}
       onBack={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
       onReadyForReview={() => router.push('/parent/task/review')}
     />

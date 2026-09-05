@@ -63,6 +63,12 @@ export interface ParentProgressTaskPrefill {
   readonly requiresParentReviewAndSave: true;
 }
 
+export interface ParentProgressTaskPrefillRequest {
+  readonly enabled: boolean;
+  readonly activeChildId: SyntheticChildId;
+  readonly params: Readonly<Record<string, unknown>>;
+}
+
 export interface ParentProgressSuitableTaskSuggestion {
   readonly id: string;
   readonly profileId: SyntheticChildId;
@@ -116,6 +122,28 @@ function failure(code: ParentProgressErrorCode, message: string): ParentProgress
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+export function resolveParentProgressTaskPrefill(
+  input: ParentProgressTaskPrefillRequest,
+): ParentProgressTaskPrefill | null {
+  if (
+    input.enabled !== true ||
+    input.activeChildId !== 'child_salem' ||
+    input.params.prefillIntent !== 'prefill_only' ||
+    input.params.prefillChildId !== input.activeChildId ||
+    input.params.prefillTemplateId !== 'task_recycling_p0_v1'
+  ) {
+    return null;
+  }
+
+  return Object.freeze({
+    route: '/parent/task/new' as const,
+    childId: input.activeChildId,
+    templateId: 'task_recycling_p0_v1' as const,
+    intent: 'prefill_only' as const,
+    requiresParentReviewAndSave: true as const,
+  });
 }
 
 function isSupportedProfile(value: unknown): value is SyntheticChildId {

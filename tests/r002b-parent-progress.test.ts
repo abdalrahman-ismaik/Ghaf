@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import {
   projectParentChildProgress,
+  resolveParentProgressTaskPrefill,
   type ParentProgressAuthority,
 } from '@/features/growth/parentProgress';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -93,6 +94,49 @@ describe('R002b Parent Child Progress projection', () => {
     ]);
     const serialized = JSON.stringify(result.data.suitableTaskSuggestions);
     expect(serialized).not.toMatch(/assignmentId|assignedAt|seedDelta|award/u);
+  });
+
+  it('accepts only the default-off, profile-bound Task Builder prefill contract', () => {
+    const params = {
+      prefillIntent: 'prefill_only',
+      prefillChildId: 'child_salem',
+      prefillTemplateId: 'task_recycling_p0_v1',
+    };
+
+    expect(
+      resolveParentProgressTaskPrefill({
+        enabled: true,
+        activeChildId: 'child_salem',
+        params,
+      }),
+    ).toEqual({
+      route: '/parent/task/new',
+      childId: 'child_salem',
+      templateId: 'task_recycling_p0_v1',
+      intent: 'prefill_only',
+      requiresParentReviewAndSave: true,
+    });
+    expect(
+      resolveParentProgressTaskPrefill({
+        enabled: false,
+        activeChildId: 'child_salem',
+        params,
+      }),
+    ).toBeNull();
+    expect(
+      resolveParentProgressTaskPrefill({
+        enabled: true,
+        activeChildId: 'child_alya',
+        params,
+      }),
+    ).toBeNull();
+    expect(
+      resolveParentProgressTaskPrefill({
+        enabled: true,
+        activeChildId: 'child_salem',
+        params: { ...params, prefillIntent: ['prefill_only'] },
+      }),
+    ).toBeNull();
   });
 
   it('recomputes Alya without borrowing Salem stage, learning, origin, or task suggestion', () => {

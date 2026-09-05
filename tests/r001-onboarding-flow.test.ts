@@ -33,6 +33,7 @@ const DEFAULT_OFF_R002B_ROUTES = [
   '/garden/badges/[badgeId]',
   '/garden/learn/[learningId]/story',
   '/garden/learn/[learningId]/accessible',
+  '/parent/family/[profileId]/progress',
 ] as const;
 
 function listTsxFiles(directory: string): string[] {

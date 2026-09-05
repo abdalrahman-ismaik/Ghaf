@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { AccessibilityInfo, findNodeHandle, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
@@ -19,8 +19,15 @@ import {
   R002aScreen,
   type ParentChildSummaryItem,
 } from '@/components/r002a';
+import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
 import { PARENT_NEXT_ACTIONS } from '@/features/family/overview';
+import {
+  readLegacyParentHomeParam,
+  readStrictParentHomeParam,
+  type ParentHomeRouteParam,
+} from '@/features/navigation/parentHomeParams';
+import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import { P0_SAFE_EQUIVALENT_TEMPLATE } from '@/features/tasks/demoContent';
 import { localize } from '@/i18n';
 import type {
@@ -34,6 +41,14 @@ import { replaceHistoryWithEntry } from '@/utils/navigation';
 
 type ParentSection = 'home' | 'tasks';
 type TaskListFilter = 'assigned' | 'pending' | 'completed';
+
+interface ParentHomeParams {
+  readonly added?: ParentHomeRouteParam;
+  readonly section?: ParentHomeRouteParam;
+  readonly restoreFocusTarget?: ParentHomeRouteParam;
+  readonly restoreProfileId?: ParentHomeRouteParam;
+  readonly restoreScrollOffset?: ParentHomeRouteParam;
+}
 
 function taskFilterForLifecycle(lifecycle: TaskLifecycleStatus): TaskListFilter {
   if (lifecycle === 'submitted' || lifecycle === 'retry' || lifecycle === 'confirmed') {
@@ -60,7 +75,7 @@ function taskStatusKey(lifecycle: TaskLifecycleStatus) {
 
 export default function ParentHomeScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ added?: string; section?: string }>();
+  const params = useLocalSearchParams() as unknown as ParentHomeParams;
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -77,6 +92,8 @@ export default function ParentHomeScreen() {
   const resetPrototype = usePrototypeStore((state) => state.resetPrototype);
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
   const setRole = usePrototypeStore((state) => state.setRole);
+  const progressEntryRef = useRef<View | null>(null);
+  const homeScrollOffsetRef = useRef(0);
   const [adjustmentError, setAdjustmentError] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [confirmingReset, setConfirmingReset] = useState(false);
@@ -84,9 +101,20 @@ export default function ParentHomeScreen() {
   const [taskFilter, setTaskFilter] = useState<TaskListFilter>('assigned');
   const [dismissedTaskAddedToken, setDismissedTaskAddedToken] = useState<string | null>(null);
 
-  const rawSection = Array.isArray(params.section) ? params.section[0] : params.section;
+  const rawSection = readLegacyParentHomeParam(params.section);
   const section: ParentSection = rawSection === 'tasks' ? 'tasks' : 'home';
-  const taskAddedToken = Array.isArray(params.added) ? params.added[0] : params.added;
+  const taskAddedToken = readLegacyParentHomeParam(params.added);
+  const restoreProfileId = readStrictParentHomeParam(params.restoreProfileId);
+  const restoreFocusTarget = readStrictParentHomeParam(params.restoreFocusTarget);
+  const rawRestoreScrollOffset = readStrictParentHomeParam(params.restoreScrollOffset);
+  const restoreScrollOffset =
+    rawRestoreScrollOffset && /^\d+$/u.test(rawRestoreScrollOffset)
+      ? Math.min(100_000, Number(rawRestoreScrollOffset))
+      : 0;
+  const hasValidProgressRestore =
+    r002bFeatureFlags.r002b_parent_progress_ui &&
+    restoreFocusTarget === 'r002b-parent-family-progress-card' &&
+    restoreProfileId === activeChildId;
   const taskAddedVisible = Boolean(taskAddedToken && taskAddedToken !== dismissedTaskAddedToken);
   const dismissTaskAdded = () => {
     if (taskAddedToken) setDismissedTaskAddedToken(taskAddedToken);
@@ -95,6 +123,17 @@ export default function ParentHomeScreen() {
   useEffect(() => {
     if (role !== 'parent') router.replace('/role');
   }, [role, router]);
+
+  useEffect(() => {
+    if (role !== 'parent' || section !== 'home' || !hasValidProgressRestore) {
+      return;
+    }
+    const frame = requestAnimationFrame(() => {
+      const handle = findNodeHandle(progressEntryRef.current);
+      if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hasValidProgressRestore, role, section]);
 
   if (role !== 'parent') {
     return (
@@ -177,6 +216,22 @@ export default function ParentHomeScreen() {
   const chooseChild = (childId: SyntheticChildId) => {
     dismissTaskAdded();
     setActiveChild(childId);
+  };
+
+  const openParentProgress = () => {
+    const origin = createR002bOrigin({
+      id: 'parent_family_progress_card',
+      profileId: activeChildId,
+      scrollOffset: homeScrollOffsetRef.current,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/parent/family/[profileId]/progress',
+      params: {
+        profileId: activeChildId,
+        ...serializeR002bOrigin(origin.data),
+      },
+    } as unknown as Href);
   };
 
   const confirmReset = () => {
@@ -490,6 +545,20 @@ export default function ParentHomeScreen() {
         />
       }
       keyboardAware
+      scrollProps={
+        r002bFeatureFlags.r002b_parent_progress_ui
+          ? {
+              contentOffset: { x: 0, y: hasValidProgressRestore ? restoreScrollOffset : 0 },
+              onScroll: (event) => {
+                homeScrollOffsetRef.current = Math.max(
+                  0,
+                  Math.round(event.nativeEvent.contentOffset.y),
+                );
+              },
+              scrollEventThrottle: 16,
+            }
+          : undefined
+      }
       testID="parent-home-screen"
     >
       <ParentHomeUtilities
@@ -631,6 +700,39 @@ export default function ParentHomeScreen() {
         title={t('parentHome.todayWithChildren')}
       />
 
+      {r002bFeatureFlags.r002b_parent_progress_ui ? (
+        <Pressable
+          accessibilityHint={t('r002bParentProgress.entryHint')}
+          accessibilityLabel={t('r002bParentProgress.entryAccessibility', {
+            child: localize(activeChild.displayName, locale),
+          })}
+          accessibilityRole="button"
+          onPress={openParentProgress}
+          ref={progressEntryRef}
+          style={({ pressed }) => [
+            styles.progressEntry,
+            { flexDirection: logicalRowDirection(direction) },
+            pressed ? styles.pressed : null,
+          ]}
+          testID="r002b-parent-family-progress-card"
+        >
+          <View style={styles.progressEntryIcon}>
+            <GhafIcon color={colors.ghafEmerald} name="sparkle" size={26} />
+          </View>
+          <View style={styles.progressEntryCopy}>
+            <Text brand color="deepForest" direction={direction} variant="bodyLarge">
+              {t('r002bParentProgress.entryTitle', {
+                child: localize(activeChild.displayName, locale),
+              })}
+            </Text>
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+              {t('r002bParentProgress.entryBody')}
+            </Text>
+          </View>
+          <GhafIcon color={colors.ghafEmerald} direction={direction} name="chevron" size={22} />
+        </Pressable>
+      ) : null}
+
       <ParentPatternSummary
         appearance="r002a"
         summary={PARENT_SUMMARY_FIXTURE}
@@ -677,6 +779,31 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     backgroundColor: colors.ghafEmeraldTint,
     padding: spacing.md,
+  },
+  progressEntry: {
+    minHeight: layout.touchTarget,
+    alignItems: 'center',
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.surfaceContainerHigh,
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.md,
+  },
+  progressEntryIcon: {
+    width: 48,
+    height: 48,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.ghafEmeraldTint,
+  },
+  progressEntryCopy: {
+    minWidth: 0,
+    flex: 1,
+    gap: spacing.xxs,
   },
   childFilter: {
     minHeight: layout.touchTarget,

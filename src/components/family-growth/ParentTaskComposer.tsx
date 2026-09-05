@@ -23,6 +23,7 @@ import {
   TASK_CATEGORIES,
   TASK_TEMPLATES,
 } from '@/features/tasks/demoContent';
+import type { ParentProgressTaskPrefill } from '@/features/growth/parentProgress';
 import { localize } from '@/i18n';
 import type {
   LocalizedText,
@@ -35,6 +36,7 @@ import { PARENT_GUIDE_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface ParentTaskComposerProps {
+  initialPrefill?: ParentProgressTaskPrefill;
   onBack: () => void;
   onReadyForReview: () => void;
 }
@@ -59,7 +61,11 @@ const CATEGORY_ICONS: Record<TaskCategoryId, GhafIconName> = {
   learning_wellbeing: 'science',
 };
 
-export function ParentTaskComposer({ onBack, onReadyForReview }: ParentTaskComposerProps) {
+export function ParentTaskComposer({
+  initialPrefill,
+  onBack,
+  onReadyForReview,
+}: ParentTaskComposerProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -73,16 +79,28 @@ export function ParentTaskComposer({ onBack, onReadyForReview }: ParentTaskCompo
   const keepParentText = usePrototypeStore((state) => state.keepParentText);
   const reviewTask = usePrototypeStore((state) => state.reviewTask);
   const returnReviewedTaskToDraft = usePrototypeStore((state) => state.returnReviewedTaskToDraft);
+  const acceptedInitialPrefill =
+    initialPrefill?.intent === 'prefill_only' &&
+    initialPrefill.requiresParentReviewAndSave === true &&
+    initialPrefill.route === '/parent/task/new' &&
+    initialPrefill.childId === activeChildId &&
+    initialPrefill.childId === 'child_salem' &&
+    initialPrefill.templateId === P0_RECYCLING_TEMPLATE.id
+      ? initialPrefill
+      : null;
 
   const [stage, setStage] = useState<BuilderStage>(journey ? 'edit' : 'choose');
   const [categoryId, setCategoryId] = useState<TaskCategoryId | null>(
-    journey?.task.content.categoryId ?? (activeChildId === 'child_salem' ? 'green_impact' : null),
+    journey?.task.content.categoryId ??
+      (acceptedInitialPrefill || activeChildId === 'child_salem' ? 'green_impact' : null),
   );
   const [selectedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
-    journey?.task.targetChildId ?? activeChildId,
+    journey?.task.targetChildId ?? acceptedInitialPrefill?.childId ?? activeChildId,
   );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
-    journey?.task.templateId ?? (activeChildId === 'child_salem' ? P0_RECYCLING_TEMPLATE.id : null),
+    journey?.task.templateId ??
+      acceptedInitialPrefill?.templateId ??
+      (activeChildId === 'child_salem' ? P0_RECYCLING_TEMPLATE.id : null),
   );
   const [parentText, setParentText] = useState<LocalizedText>({
     ...(journey?.task.parentOriginalText ?? PARENT_GUIDE_FIXTURE.originalParentText),
