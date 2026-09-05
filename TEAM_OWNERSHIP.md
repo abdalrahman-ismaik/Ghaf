@@ -80,6 +80,15 @@ cross-profile evidence. The focused 5-test suite, repository typecheck, exact li
 Git whitespace validation passed before route integration; every consuming surface remains behind
 its independent default-off flag.
 
+**RevealBundle-domain checkpoint — 2026-09-05**: A receipt-only, immutable Child presentation queue
+now preserves and orders all 12 supported consequence kinds under the stable
+`reveal:<profileId>:<triggerEventId>` identity, with replay protection, profile/reset isolation,
+single-visible-bundle recovery, and the `ready → presenting → acknowledged → archived` lifecycle.
+The focused 38-test suite, typecheck, lint, formatting, and Git whitespace validation passed. This
+constructor validates every supplied receipt but cannot prove an applicable authority was omitted;
+the authority-derived parity adapter remains required before RevealBundle v2 can be integrated or
+its default-off flag considered for activation.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
