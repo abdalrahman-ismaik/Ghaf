@@ -140,6 +140,14 @@ required; it cannot create or assign. The focused 5-test suite, typecheck, exact
 and Git whitespace validation passed. Route/store authorization wiring and visual/device review
 remain pending behind the default-off `r002b_parent_progress_ui` flag.
 
+**Parent Progress access checkpoint — 2026-09-05**: The Parent onboarding controller now issues a
+least-privilege `view_parent_reports` handoff for exactly one recognized synthetic Child only after
+the existing completed Parent session authorizes that capability. The store converts that handoff
+into the read-only projection without changing selected-Child, task, Garden, or Growth state, rejects
+presentation-role forgery and unknown profiles, and loses report authority on the existing Parent
+reset. Ten focused projection/access tests and repository typecheck passed. The route and visual
+surface remain pending behind the default-off `r002b_parent_progress_ui` flag.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`

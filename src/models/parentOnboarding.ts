@@ -1,5 +1,10 @@
-import type { LanguagePreference } from './access';
-import type { AgeBand, LocaleCode } from './familyGrowth';
+import type {
+  AccessCapabilityTruth,
+  LanguagePreference,
+  SyntheticHouseholdId,
+  SyntheticParentId,
+} from './access';
+import type { AgeBand, LocaleCode, SyntheticChildId } from './familyGrowth';
 
 export type ParentIdentifierKind = 'phone' | 'email';
 
@@ -78,4 +83,15 @@ export interface ParentOnboardingHandoff {
   readonly destination: '/parent';
   readonly receiptId: ParentOnboardingCompletionReceipt['receiptId'];
   readonly origin: 'synthetic';
+}
+
+export interface ParentReportHandoff {
+  readonly authorized: true;
+  readonly role: 'parent';
+  readonly capability: 'view_parent_reports';
+  readonly parentId: SyntheticParentId;
+  readonly householdId: SyntheticHouseholdId;
+  readonly authorizedProfileIds: readonly SyntheticChildId[];
+  readonly origin: 'synthetic';
+  readonly capabilityTruth: AccessCapabilityTruth;
 }

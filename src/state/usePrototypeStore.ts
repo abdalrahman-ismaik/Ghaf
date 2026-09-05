@@ -29,6 +29,11 @@ import {
   type GrowthJourneyRuntimeState,
 } from '../features/growth/bootstrap';
 import {
+  projectParentChildProgress,
+  type ParentChildProgressProjection,
+  type ParentProgressErrorCode,
+} from '../features/growth/parentProgress';
+import {
   advanceMangroveLearningStep as advanceMangroveLearningStepDomain,
   completeMangroveLearning as completeMangroveLearningDomain,
   createMangroveLearningState,
@@ -143,6 +148,9 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => ServiceResult<ParentOnboardingView>;
   readonly completeParentOnboarding: () => ServiceResult<ParentOnboardingCompletionReceipt>;
   readonly authorizeParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
+  readonly getParentChildProgress: (
+    profileId: SyntheticChildId,
+  ) => ServiceResult<ParentChildProgressProjection>;
   readonly setLocale: (value: unknown) => void;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
@@ -383,6 +391,23 @@ function learningFailure(message: string): ServiceResult<never> {
   return failure('INVALID_TRANSITION', message);
 }
 
+function parentProgressFailure(
+  code: ParentProgressErrorCode,
+  message: string,
+): ServiceResult<never> {
+  switch (code) {
+    case 'PARENT_AUTHORITY_REQUIRED':
+      return failure('INVALID_TRANSITION', message);
+    case 'PROFILE_SCOPE_MISMATCH':
+      return failure('PRIVACY_REJECTED', message);
+    case 'INVALID_INPUT':
+      return failure('INVALID_INPUT', message);
+    case 'EPOCH_SCOPE_MISMATCH':
+    case 'PROJECTION_ERROR':
+      return failure('INVALID_RESPONSE', message);
+  }
+}
+
 function completionEvidenceFor(
   state: PrototypeStoreState,
   profileId: SyntheticChildId,
@@ -568,6 +593,46 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   authorizeParentExperience: () =>
     parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME),
+
+  getParentChildProgress: (profileId) => {
+    const state = get();
+    if (state.role !== 'parent') {
+      return failure('INVALID_TRANSITION', 'Only the Parent role can view Child progress');
+    }
+    if (!state.children[profileId]) {
+      return failure('NOT_FOUND', 'The selected synthetic Child profile was not found');
+    }
+    const handoff = parentOnboardingController.authorizeParentReport(
+      profileId,
+      R001_ONBOARDING_TIME,
+    );
+    if (!handoff.ok) return handoff;
+    const ledger = state.growthJourney.ledgersByProfile[profileId];
+    const currentStageEvidence =
+      profileId === 'child_salem'
+        ? {
+            profileId,
+            profileEpochId: ledger.profileEpochId,
+            landscapeId: 'mangrove' as const,
+            cumulativeSeeds: state.landscapeProgress.mangrove.cumulativeSeeds,
+            stage: state.landscapeProgress.mangrove.stage,
+            nextThreshold: state.landscapeProgress.mangrove.nextThreshold,
+            symbolicOnly: true as const,
+          }
+        : null;
+    const journey = state.journey?.task.targetChildId === profileId ? state.journey : null;
+    const projected = projectParentChildProgress({
+      authority: handoff.data,
+      runtime: state.growthJourney,
+      profileId,
+      currentStageEvidence,
+      journey,
+      learningState: state.mangroveLearningByProfile[profileId],
+    });
+    return projected.ok
+      ? success(projected.data)
+      : parentProgressFailure(projected.error.code, projected.error.message);
+  },
 
   setLocale: (value) => {
     const locale = coerceLocale(value);

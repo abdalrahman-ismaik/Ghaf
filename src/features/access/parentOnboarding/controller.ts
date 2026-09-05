@@ -7,6 +7,7 @@ import type {
   ParentOnboardingHandoff,
   ParentOnboardingStatus,
   ParentOnboardingView,
+  ParentReportHandoff,
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
 import {
@@ -282,6 +283,31 @@ export class ParentOnboardingController {
       destination: '/parent',
       receiptId: this.completionReceipt.receiptId,
       origin: 'synthetic',
+    });
+  }
+
+  authorizeParentReport(profileId: unknown, now: string): ServiceResult<ParentReportHandoff> {
+    if (!this.parentSession || !this.completionReceipt || this.status !== 'authenticated_parent') {
+      return failure('INVALID_TRANSITION', 'A completed Parent onboarding session is required');
+    }
+    if (profileId !== 'child_salem' && profileId !== 'child_alya') {
+      return failure('NOT_FOUND', 'The selected synthetic Child profile was not found');
+    }
+    const authorized = this.access.authorizeCapability({
+      session: this.parentSession,
+      capability: 'view_parent_reports',
+      now,
+    });
+    if (!authorized.ok) return authorized;
+    return success({
+      authorized: true,
+      role: 'parent',
+      capability: 'view_parent_reports',
+      parentId: this.parentSession.principal.parentId,
+      householdId: this.parentSession.householdId,
+      authorizedProfileIds: Object.freeze([profileId]),
+      origin: 'synthetic',
+      capabilityTruth: this.parentSession.capabilityTruth,
     });
   }
 
