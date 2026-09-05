@@ -33,9 +33,11 @@ The application needs no API key, backend, Expo account, camera permission, micr
 or real Child data. `EXPO_PUBLIC_GHAF_SERVICE_MODE=mock` is the optional explicit form of the built-in
 default. No live-provider URL or client-side provider secret is supported.
 
-## Choose a runtime
+## Run the app
 
-### Web preview — easiest
+Use only one of these two supported local workflows.
+
+### Offline web testing
 
 ```bash
 npm run web -- --offline
@@ -45,40 +47,26 @@ Open the URL printed by Expo, normally `http://localhost:8081`. Web is suitable 
 copy, deterministic-flow, and screenshot review. It cannot pass native Android, TalkBack, physical
 touch, IME, media, permission, predictive Back, or device-performance gates.
 
-### Physical phone through Expo
+### Android Studio and a USB device on Windows
 
-Install an Expo Go version or development build compatible with this repository's Expo SDK, place
-the development machine and phone on a reachable network, then run:
+1. In Android Studio's SDK Manager, install Android SDK Platform 36, Build-Tools, Platform-Tools,
+   NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the first native build.
+2. Enable Developer options and USB debugging on the Android device, connect it, and accept the
+   authorization prompt.
+3. Open PowerShell in the Windows checkout and run:
 
-```bash
-npm start -- --offline
-```
-
-Scan the printed QR code or select the connected target from Expo. The `--offline` flag prevents
-Expo CLI dependency discovery; `npm ci` may still need registry access when packages are not cached.
-
-### Android SDK, emulator, or USB device
-
-Install a compatible Java runtime, Android Studio/SDK, platform tools (`adb`), and either an emulator
-or an authorized USB device. Configure the SDK environment for your operating system, then verify:
-
-```bash
+```powershell
+$env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
+$env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
 adb devices
-npm run android -- --offline
+adb reverse tcp:8081 tcp:8081
+npx expo run:android --device
 ```
 
-If `adb`, Java, the SDK environment, or a named device is missing, Android validation is `BLOCKED`;
-do not substitute a web pass.
-
-### iOS
-
-On macOS with Xcode and a configured simulator/device:
-
-```bash
-npm run ios
-```
-
-iOS is a compatibility surface. Android remains the competition authority.
+Select the connected device when prompted. The first build downloads and compiles native Android
+tooling, so it can take several minutes; later builds reuse Gradle's cache. If `adb`, Java, the SDK,
+or the authorized device is unavailable, Android validation is `BLOCKED`; do not substitute a web
+pass.
 
 ## Reset to the canonical baseline
 
@@ -146,10 +134,10 @@ install.
 ### Stale Metro or web bundle
 
 ```bash
-npx expo start --clear
+npm run web -- --offline --clear
 ```
 
-Then choose the target again. `dist/` and `.expo/` are ignored and can be regenerated.
+Then reopen the printed local URL. `dist/` and `.expo/` are ignored and can be regenerated.
 
 ### Port already in use
 
@@ -159,8 +147,9 @@ npm run web -- --offline --port 8082
 
 ### Android target does not open
 
-Check `adb devices`, SDK environment variables, emulator state, USB authorization, and Java before
-retrying. Expo starting successfully does not prove that a physical Android build ran.
+Check `adb devices`, SDK environment variables, the USB cable and authorization, available disk
+space, and Java before retrying. Expo starting successfully does not prove that a physical Android
+build ran.
 
 ### Tool-specific browser or DevTools warning
 

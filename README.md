@@ -31,7 +31,7 @@ local tests do not activate release flags.
 | Area                 | Current evidence                                                                                                                                                                   |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Product              | R001/R002a are frozen fallbacks; all 12 indexed R002b code-native surfaces exist behind default-off flags                                                                          |
-| Automated checks     | TypeScript, lint, formatting, Expo configuration/export, and 989/989 tests pass                                                                                                    |
+| Automated checks     | TypeScript, lint, formatting, Expo configuration/export, and 1,002/1,002 tests pass                                                                                                |
 | Web preview          | Eight nonblocked R002b surfaces have Arabic/English responsive evidence from 320 to 768 pixels; private League is implemented with partial responsive evidence                     |
 | Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks still require a connected configured device                      |
 | Remaining work       | Approval Reveal lacks authoritative League/Challenge/Family Reward receipts; Learning remains locked at the truthful 120-Seed fixture; final native and named-human reviews remain |

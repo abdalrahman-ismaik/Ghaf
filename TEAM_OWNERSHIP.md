@@ -6,6 +6,17 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-05 Local Run Guide Simplification Window
+
+**Owner**: `/root`
+
+**Reserved boundary**: `README.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Keep the detailed developer guide consistent with the README by documenting exactly two
+supported app-running workflows: offline web testing and a Windows Android Studio/ADB USB device.
+Remove QR/Expo Go, LAN/tunnel, emulator, and iOS launch instructions without changing repository
+scripts or runtime behavior.
+
 ## 2026-09-05 Official Ghaf Brand Migration Window
 
 **Integration owner**: `/root`
