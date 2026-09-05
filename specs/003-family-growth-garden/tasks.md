@@ -824,11 +824,11 @@ and Android evidence with truthful limitations. This phase never releases R002b.
 
 - [ ] T192 Write grouped `screen-spec.md` files for the compact Today card, Garden chapter module,
       Impact Path, Badge Gallery, and Badge Detail before implementing their routes/components.
-- [ ] T193 Encode exactly 16 stable bilingual badge definitions and deterministic criteria in one
+- [x] T193 Encode exactly 16 stable bilingual badge definitions and deterministic criteria in one
       typed registry; reject duplicate/unknown IDs and preserve permanent private awards.
-- [ ] T194 Map each unique `task_recycling_p0_v1` approval to one `skill.sorting` and one separate
+- [x] T194 Map each unique `task_recycling_p0_v1` approval to one `skill.sorting` and one separate
       `skill.coast_care` acquisition credit; never backfill unproved mastery.
-- [ ] T195 Implement deterministic badge evaluation/backfill, including 1/3/7 sorting, 2/5/10 water
+- [x] T195 Implement deterministic badge evaluation/backfill, including 1/3/7 sorting, 2/5/10 water
       with station-156 Bud gate, two-credit Energy Bud, and the full Mangrove Care composite.
 - [ ] T196 Implement Water & Coast stations 120/132/144/156/168/180 as read-only projections and a
       configured-next-stage fallback without implying a visit or inventing content.

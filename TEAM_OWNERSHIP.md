@@ -43,6 +43,12 @@ praise-presented, and one recognized synthetic boundary when a session/runtime s
 available; durable device storage and physical restart evidence remain release-blocked and must not
 be inferred from these tests.
 
+**Achievement-domain checkpoint — 2026-09-05**: The exact 16-ID registry, deterministic mastery
+credits, permanent private awards, silent Seed-threshold backfill, and gallery/detail projections
+passed 49 focused tests and the 43-file / 650-test full suite. Missing criterion translation,
+why-it-matters copy, content review, and provenance remain explicit pending fields; this checkpoint
+does not authorize the default-off badge UI for release.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
