@@ -42,19 +42,19 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
   child_today_path_card: {
     role: 'child',
     href: 'child',
-    focusTarget: 'r002b-today-path-card',
+    focusTarget: 'r002b-today-path-action',
     entity: 'none',
   },
   child_garden_path_card: {
     role: 'child',
     href: 'garden',
-    focusTarget: 'r002b-garden-path-card',
+    focusTarget: 'r002b-garden-path-action',
     entity: 'none',
   },
   child_garden_badges_card: {
     role: 'child',
     href: 'garden',
-    focusTarget: 'r002b-garden-badges-card',
+    focusTarget: 'r002b-garden-badges-action',
     entity: 'none',
   },
   impact_path_badges_action: {
@@ -73,7 +73,7 @@ const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
     role: 'child',
     href: 'badge_gallery',
     focusTarget: 'r002b-badge-gallery-list',
-    entity: 'none',
+    entity: 'badge',
     acceptsFilter: true,
   },
   badge_detail_path_action: {
@@ -285,6 +285,12 @@ function hrefFor(origin: R002bOrigin, definition: OriginDefinition): string {
   }
 }
 
+function focusTargetFor(origin: R002bOrigin, definition: OriginDefinition): string {
+  return origin.id === 'badge_gallery_badge_card' && origin.entityId
+    ? `r002b-badge-${origin.entityId}`
+    : definition.focusTarget;
+}
+
 export type ResolveR002bOriginResult =
   | {
       readonly restored: true;
@@ -324,7 +330,7 @@ export function resolveR002bOrigin(input: {
   return {
     restored: true,
     href: hrefFor(normalized.data, definition),
-    focusTarget: definition.focusTarget,
+    focusTarget: focusTargetFor(normalized.data, definition),
     scrollOffset: normalized.data.scrollOffset ?? 0,
     filter: normalized.data.filter ?? null,
   };

@@ -31,6 +31,9 @@ const EXPECTED_ROUTES = [
   '/child/task',
   '/parent/check-in',
   '/garden',
+  '/garden/impact-path',
+  '/garden/badges',
+  '/garden/badges/[badgeId]',
   '/circle',
 ] as const;
 
@@ -239,7 +242,7 @@ describe('US6 bilingual offline operator and reset flow', () => {
     vi.unstubAllGlobals();
   });
 
-  it('preserves the remote ten routes and adds only the six released R001 access routes', () => {
+  it('preserves the established routes while adding only authorized default-off R002b routes', () => {
     const actual = authoredRoutes();
     expect(actual).toEqual([...EXPECTED_ROUTES].sort());
     for (const legacyRoute of LEGACY_ROUTES) {

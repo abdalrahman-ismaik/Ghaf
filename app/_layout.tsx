@@ -39,7 +39,11 @@ export default function RootLayout() {
     pathname === '/parent' ||
     pathname === '/parent/check-in' ||
     pathname.startsWith('/parent/task/');
-  const usesLightSystemChrome = isR001Route || isR002aParentSurface || pathname === '/garden';
+  const usesLightSystemChrome =
+    isR001Route ||
+    isR002aParentSurface ||
+    pathname === '/garden' ||
+    pathname.startsWith('/garden/');
   const [fontsLoaded, fontError] = useFonts({
     Alexandria_400Regular,
     Alexandria_700Bold,

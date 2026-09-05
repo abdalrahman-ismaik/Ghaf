@@ -27,6 +27,12 @@ const R001_ACCESS_ROUTES = [
   '/access/parent/family-created-success',
 ] as const;
 
+const DEFAULT_OFF_R002B_ROUTES = [
+  '/garden/impact-path',
+  '/garden/badges',
+  '/garden/badges/[badgeId]',
+] as const;
+
 function listTsxFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const child = resolve(directory, entry.name);
@@ -64,8 +70,11 @@ function flattenStrings(value: unknown, key = ''): Map<string, string> {
 }
 
 describe('approved R001 Parent onboarding integration', () => {
-  it('preserves the remote ten routes and adds exactly the six approved access routes', () => {
-    expect(authoredRoutes()).toEqual([...PRESERVED_REMOTE_ROUTES, ...R001_ACCESS_ROUTES].sort());
+  it('preserves the R001 routes while keeping authorized R002b routes additive', () => {
+    expect(authoredRoutes()).toEqual(
+      [...PRESERVED_REMOTE_ROUTES, ...R001_ACCESS_ROUTES, ...DEFAULT_OFF_R002B_ROUTES].sort(),
+    );
+    for (const route of R001_ACCESS_ROUTES) expect(authoredRoutes()).toContain(route);
   });
 
   it('keeps complete, non-empty Arabic and English access resources in parity', () => {

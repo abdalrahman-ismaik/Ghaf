@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -13,12 +13,16 @@ import {
   ChildTodayTaskCard,
   R002aScreen,
 } from '@/components/r002a';
+import { TodayImpactPathCard } from '@/components/r002b/GrowthJourneyScreens';
+import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import {
   P0_RECYCLING_TEMPLATE,
   TASK_CATEGORIES,
   TASK_TEMPLATES,
 } from '@/features/tasks/demoContent';
+import { useR002bGrowthPresentation } from '@/features/growth/useR002bGrowthPresentation';
+import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import { localize } from '@/i18n';
 import type {
   ApprovedChoiceFixture,
@@ -89,6 +93,28 @@ export default function ChildHomeScreen() {
   );
   const [error, setError] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
+  const r002bGrowthEnabled = role === 'child' && r002bFeatureFlags.r002b_impact_path_ui;
+
+  const openImpactPath = () => {
+    const origin = createR002bOrigin({
+      id: 'child_today_path_card',
+      profileId: activeChildId,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/garden/impact-path',
+      params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
+  const r002bGrowth = useR002bGrowthPresentation({
+    enabled: r002bGrowthEnabled,
+    profileId: activeChildId,
+    actions: {
+      openBadge: () => undefined,
+      openImpactPath,
+    },
+  });
 
   useEffect(() => {
     if (role !== 'child') router.replace('/role');
@@ -442,6 +468,10 @@ export default function ChildHomeScreen() {
             </View>
           ) : null}
         </View>
+      ) : null}
+
+      {r002bGrowth.ok ? (
+        <TodayImpactPathCard {...r002bGrowth.data.today} testID="r002b-today-path-card" />
       ) : null}
 
       <ChildGardenProgressCard

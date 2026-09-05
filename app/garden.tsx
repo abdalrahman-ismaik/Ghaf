@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -19,6 +19,8 @@ import {
   ParentHomeUtilities,
   R002aScreen,
 } from '@/components/r002a';
+import { GardenChapterModule } from '@/components/r002b/GrowthJourneyScreens';
+import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import {
   colors,
   layout,
@@ -32,6 +34,8 @@ import {
   deriveLandscapeDisplayTarget,
   resolveActiveGardenRecognition,
 } from '@/features/garden/presentation';
+import { useR002bGrowthPresentation } from '@/features/growth/useR002bGrowthPresentation';
+import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import { localize } from '@/i18n';
 import type { LandscapeId, TextDirection } from '@/models/familyGrowth';
 import { selectCanEnterParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
@@ -71,6 +75,42 @@ export default function GardenScreen() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [confirmingReset, setConfirmingReset] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
+  const r002bGrowthEnabled =
+    role === 'child' &&
+    (r002bFeatureFlags.r002b_impact_path_ui || r002bFeatureFlags.r002b_badges_ui);
+  const openImpactPath = () => {
+    const origin = createR002bOrigin({
+      id: 'child_garden_path_card',
+      profileId: activeChildId,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/garden/impact-path',
+      params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
+  const openBadges = () => {
+    const origin = createR002bOrigin({
+      id: 'child_garden_badges_card',
+      profileId: activeChildId,
+      scrollOffset: 0,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/garden/badges',
+      params: { profileId: activeChildId, ...serializeR002bOrigin(origin.data) },
+    } as unknown as Href);
+  };
+  const r002bGrowth = useR002bGrowthPresentation({
+    enabled: r002bGrowthEnabled,
+    profileId: activeChildId,
+    actions: {
+      openBadge: () => undefined,
+      ...(r002bFeatureFlags.r002b_impact_path_ui ? { openImpactPath } : {}),
+      ...(r002bFeatureFlags.r002b_badges_ui ? { openBadges } : {}),
+    },
+  });
   const formatter = useMemo(
     () => new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE', { useGrouping: false }),
     [locale],
@@ -345,6 +385,10 @@ export default function GardenScreen() {
           onReturn={() => router.replace(role === 'parent' ? '/parent' : '/child')}
         />
       )}
+
+      {role === 'child' && r002bGrowthEnabled && r002bGrowth.ok ? (
+        <GardenChapterModule {...r002bGrowth.data.garden} testID="r002b-garden-chapter" />
+      ) : null}
 
       <FamilyCanopy
         accessibilityLabel={`${t('parentHome.canopyTitle')}. ${t('accessibility.progress', {

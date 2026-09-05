@@ -8,7 +8,9 @@ function origin(id: 'child_today_path_card' | 'badge_gallery_badge_card') {
   const result = createR002bOrigin({
     id,
     profileId: 'child_salem',
-    ...(id === 'badge_gallery_badge_card' ? { filter: 'all' as const } : {}),
+    ...(id === 'badge_gallery_badge_card'
+      ? { filter: 'all' as const, entityId: 'badge.skill.sorting.bud.v1' }
+      : {}),
   });
   if (!result.ok) throw new Error(result.error);
   return serializeR002bOrigin(result.data);
