@@ -3,8 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { DEFAULT_R002B_FEATURE_FLAGS, resolveR002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import {
   createR002bOrigin,
+  parseR002bOriginParams,
   resolveR002bOrigin,
   R002B_ORIGIN_IDS,
+  serializeR002bOrigin,
 } from '@/features/navigation/r002bOrigin';
 import { guardR002bRoute, R002B_ROUTE_IDS } from '@/features/navigation/r002bRouteGuard';
 
@@ -143,6 +145,53 @@ describe('R002b typed origins', () => {
         activeProfileId: CHILD_ID,
       }),
     ).toEqual({ restored: false, href: '/child', reason: 'invalid_origin' });
+  });
+
+  it('round-trips a validated origin through closed scalar route params', () => {
+    const created = createR002bOrigin({
+      id: 'badge_gallery_badge_card',
+      profileId: CHILD_ID,
+      filter: 'in_progress',
+      scrollOffset: 384,
+    });
+    if (!created.ok) throw new Error('expected origin');
+
+    const serialized = serializeR002bOrigin(created.data);
+    expect(serialized).toEqual({
+      originId: 'badge_gallery_badge_card',
+      originProfileId: CHILD_ID,
+      originFilter: 'in_progress',
+      originScrollOffset: '384',
+    });
+    expect(parseR002bOriginParams(serialized)).toEqual(created);
+    expect(Object.isFrozen(serialized)).toBe(true);
+  });
+
+  it('rejects arrays, partial values, unknown fields, and malformed route params', () => {
+    expect(
+      parseR002bOriginParams({
+        originId: ['child_today_path_card'],
+        originProfileId: CHILD_ID,
+      }),
+    ).toEqual({ ok: false, error: 'invalid_origin' });
+    expect(parseR002bOriginParams({ originId: 'child_today_path_card' })).toEqual({
+      ok: false,
+      error: 'invalid_profile',
+    });
+    expect(
+      parseR002bOriginParams({
+        originId: 'child_today_path_card',
+        originProfileId: CHILD_ID,
+        originScrollOffset: '384.5',
+      }),
+    ).toEqual({ ok: false, error: 'invalid_scroll' });
+    expect(
+      parseR002bOriginParams({
+        originId: 'badge_gallery_badge_card',
+        originProfileId: CHILD_ID,
+        originFilter: 'mystery',
+      }),
+    ).toEqual({ ok: false, error: 'invalid_filter' });
   });
 });
 

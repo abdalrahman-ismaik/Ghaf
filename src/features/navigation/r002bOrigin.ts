@@ -146,6 +146,14 @@ export type CreateR002bOriginResult =
         | 'invalid_scroll';
     };
 
+export type R002bOriginRouteParams = Readonly<{
+  originId: string;
+  originProfileId: string;
+  originScrollOffset?: string;
+  originFilter?: string;
+  originEntityId?: string;
+}>;
+
 function isOriginId(value: unknown): value is R002bOriginId {
   return typeof value === 'string' && (R002B_ORIGIN_IDS as readonly string[]).includes(value);
 }
@@ -215,6 +223,45 @@ export function createR002bOrigin(input: {
     ...(input.entityId === undefined ? {} : { entityId: input.entityId }),
   };
   return { ok: true, data: Object.freeze(data) };
+}
+
+export function serializeR002bOrigin(origin: R002bOrigin): R002bOriginRouteParams {
+  const normalized = createR002bOrigin(origin);
+  if (!normalized.ok) {
+    throw new Error(`Cannot serialize invalid R002b origin: ${normalized.error}`);
+  }
+
+  return Object.freeze({
+    originId: normalized.data.id,
+    originProfileId: normalized.data.profileId,
+    ...(normalized.data.scrollOffset === undefined
+      ? {}
+      : { originScrollOffset: String(normalized.data.scrollOffset) }),
+    ...(normalized.data.filter === undefined ? {} : { originFilter: normalized.data.filter }),
+    ...(normalized.data.entityId === undefined ? {} : { originEntityId: normalized.data.entityId }),
+  });
+}
+
+export function parseR002bOriginParams(
+  params: Readonly<Record<string, unknown>>,
+): CreateR002bOriginResult {
+  const rawScrollOffset = params?.originScrollOffset;
+  const scrollOffset =
+    rawScrollOffset === undefined
+      ? undefined
+      : typeof rawScrollOffset === 'string' && /^\d+$/.test(rawScrollOffset)
+        ? Number(rawScrollOffset)
+        : Number.NaN;
+
+  return createR002bOrigin({
+    id: params?.originId as R002bOriginId,
+    profileId: params?.originProfileId as string,
+    ...(scrollOffset === undefined ? {} : { scrollOffset }),
+    ...(params?.originFilter === undefined
+      ? {}
+      : { filter: params.originFilter as R002bBadgeFilter }),
+    ...(params?.originEntityId === undefined ? {} : { entityId: params.originEntityId as string }),
+  });
 }
 
 function safeRoot(role: DemoRole): '/child' | '/parent' {
