@@ -213,6 +213,8 @@ describe('approved R001 Parent onboarding integration', () => {
     const signIn = routeSource('/access/parent/sign-in');
     expect(signIn).not.toContain('disabled={identifier.trim().length === 0}');
     expect(signIn).toContain('variant="neutral"');
+    const createFamilyStyle = signIn.slice(signIn.indexOf('createFamilyButton:'));
+    expect(createFamilyStyle).toContain('borderColor: colors.ghafEmerald');
 
     const verification = routeSource('/access/parent/verification');
     expect(verification).toContain('iconPosition="end"');

@@ -6,6 +6,25 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Parent Sign-in CTA Clarity Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `app/access/parent/sign-in.tsx`,
+`tests/r001-onboarding-flow.test.ts`, and this ownership record only.
+
+**Scope**: Give the existing Parent sign-in “Create a new family” secondary action a clearly
+visible outer frame using the approved Ghaf design tokens and shared Button behavior. Preserve its
+copy, route action, hierarchy, bilingual layout, and all unrelated access behavior. The delegated
+screen audit is read-only; protected user-owned paths remain untouched and no push or merge is
+authorized.
+
+**Completion — 2026-09-06**: The CTA now renders the existing shared 1 px Button border in Ghaf
+emerald while retaining its quiet variant, 48 px touch target, pill geometry, focus behavior, and
+Arabic/English copy. The focused regression, full 84-file/1,044-test suite, typecheck, lint, and
+format checks passed. Firefox at 390×844 confirmed the border in Arabic RTL and English LTR with
+zero console errors. The reservation is released after the cohesive local commit.
+
 ## 2026-09-05 Complete Screen Journey Window
 
 **Integration owner and only writer**: `/root`

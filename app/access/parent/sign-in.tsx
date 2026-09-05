@@ -233,6 +233,7 @@ const styles = StyleSheet.create({
   },
   createFamilyButton: {
     alignSelf: 'center',
+    borderColor: colors.ghafEmerald,
     borderRadius: r001Radii.pill,
     paddingHorizontal: spacing.lg,
   },
