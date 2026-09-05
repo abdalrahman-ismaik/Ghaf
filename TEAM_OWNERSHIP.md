@@ -130,6 +130,16 @@ whitespace validation. The domain writer's three-file boundary is released to `/
 remains blocked until the existing access service supplies the required capability and
 reauthentication adapter; both Shared Growth flags remain default-off.
 
+**Parent Progress projection checkpoint — 2026-09-05**: A pure Parent-report projection now keeps
+the selected Child's canonical lifetime ledger, current Mangrove stage, completed-stage archive,
+16-badge state, exact criteria, and unlocked learning separate and read-only. It requires an
+explicit `view_parent_reports` authority and profile allowlist, rejects profile/reset mismatches,
+and recomputes Alya without retaining Salem's stage, learning, or task context. Its only task action
+is a typed `prefill_only` intent into the existing Task Builder with normal Parent review/save still
+required; it cannot create or assign. The focused 5-test suite, typecheck, exact lint/format checks,
+and Git whitespace validation passed. Route/store authorization wiring and visual/device review
+remain pending behind the default-off `r002b_parent_progress_ui` flag.
+
 ## 2026-09-05 R002a Compatibility Implementation Window
 
 **Integration owner**: `/root`
