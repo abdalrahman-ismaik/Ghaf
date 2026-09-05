@@ -358,6 +358,7 @@ export function RevealBundleActionBar({
           brand
           busy={primary.busy}
           busyLabel={primary.busyLabel}
+          dimWhenDisabled={false}
           direction={direction}
           disabled={primary.disabled}
           fullWidth={!horizontal}

@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-import 'react-native-reanimated';
 
 import { Alexandria_400Regular } from '@expo-google-fonts/alexandria/400Regular';
 import { Alexandria_700Bold } from '@expo-google-fonts/alexandria/700Bold';
@@ -14,6 +13,7 @@ import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
 import { GhafFontProvider } from '@/components/primitives';
@@ -34,6 +34,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
+  const reducedMotion = Boolean(useReducedMotion());
   const isR001Route = pathname === '/' || pathname.startsWith('/access/parent/');
   const isR002aParentSurface =
     pathname === '/parent' ||
@@ -81,7 +82,7 @@ export default function RootLayout() {
           {usesLightSystemChrome ? null : <PrototypeStatusBar />}
           <Stack
             screenOptions={{
-              animation: 'fade',
+              animation: reducedMotion ? 'none' : 'fade',
               contentStyle: { backgroundColor: colors.ivory },
               headerShown: false,
             }}
@@ -89,7 +90,7 @@ export default function RootLayout() {
             <Stack.Screen
               name="access/parent/family-created-success"
               options={{
-                animation: 'fade',
+                animation: reducedMotion ? 'none' : 'fade',
                 contentStyle: { backgroundColor: colors.transparent },
                 gestureEnabled: false,
                 presentation: 'transparentModal',
@@ -98,7 +99,7 @@ export default function RootLayout() {
             <Stack.Screen
               name="child/reveal/[bundleId]"
               options={{
-                animation: 'fade',
+                animation: reducedMotion ? 'none' : 'fade',
                 gestureEnabled: false,
                 presentation: 'modal',
               }}

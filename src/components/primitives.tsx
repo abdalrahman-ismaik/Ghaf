@@ -215,6 +215,7 @@ export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> 
   busy?: boolean;
   busyLabel?: string;
   children: ReactNode;
+  dimWhenDisabled?: boolean;
   direction?: TextDirection;
   fullWidth?: boolean;
   icon?: ReactNode;
@@ -231,6 +232,7 @@ export function Button({
   busy = false,
   busyLabel,
   children,
+  dimWhenDisabled = true,
   direction: directionOverride,
   disabled = false,
   fullWidth = true,
@@ -296,7 +298,7 @@ export function Button({
               ? styles.brandPressed
               : styles.pressed
           : null,
-        isDisabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
+        isDisabled && dimWhenDisabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
         brand ? null : style,
       ]}
     >

@@ -51,6 +51,10 @@ export function R002bNestedScreen({
     return () => subscription.remove();
   }, [onBack]);
 
+  const safeAreaEdges = footer
+    ? (['top', 'left', 'right'] as const)
+    : (['top', 'left', 'right', 'bottom'] as const);
+
   const backControl = (
     <Pressable
       accessibilityLabel={backLabel}
@@ -96,6 +100,7 @@ export function R002bNestedScreen({
           </View>
         </View>
       }
+      safeAreaEdges={safeAreaEdges}
       scrollProps={scrollProps}
       testID={testID}
     >
