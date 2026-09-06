@@ -986,3 +986,39 @@ the current operational route inventory may add exactly one code-native sign-up 
       record native and named-human checks without inference.
 - [x] T236 Reconcile the quickstart, acceptance contract, runbook, ownership release, and exact
       evidence before one cohesive local commit; do not push or merge.
+
+## Phase 32: Natural Botanical Artwork Refresh
+
+**Gate**: User-authorized presentation-only replacement of poor vector-like scenic drawings. The
+official Ghaf brand and functional vector controls remain protected; no behavior or release flag
+changes.
+
+- [x] T237 Audit every tracked runtime visual, classify official brand, functional icon/progress,
+      scenic/decorative drawing, existing prepared media, and evidence-only artifact; reserve exact
+      writers and record the 41-asset prompt/usage manifest before runtime work.
+- [x] T238 Write RED artwork coverage for exact local static mappings, twenty-five distinct Garden
+      states, provenance/checksums/dimensions, accessibility/fallback behavior, unchanged official
+      brand, no remote sources, and removal of replaced scenic vector functions.
+- [x] T239 Generate, inspect, normalize, compress, metadata-clean, prompt-embed, and checksum the
+      complete Quiet UAE Botanical Editorial library with no people, text, logos, hazards, fantasy,
+      misleading ecology, or crop-direction dependency.
+- [x] T240 Add the approved Expo image dependency plus the typed local registry and reusable
+      decorative/informative image wrapper; migrate existing runtime raster presentation without
+      adding networking, capture, analysis, route, flag, or product-state authority.
+- [x] T241 Replace the access backdrop, Welcome hero, botanical profile choices, and Child task hero
+      while preserving all copy, selection semantics, 48dp targets, Arabic/English layout, and
+      deterministic access/task behavior.
+- [x] T242 Replace Garden stages, family-canopy states, and Circle garden scenes while keeping live
+      progress, contribution, privacy, recognition announcements, reduced motion, and data authority
+      outside the pixels.
+- [x] T243 Replace gated Learning, Reveal, and Shared Growth scenes, remove the decorative League
+      watermark, and preserve each unavailable state, accessible learning route, and default-off
+      feature flag.
+- [x] T244 Run focused tests, typecheck, lint, formatting, full tests, Expo dependency/configuration
+      checks, route/reset scans, production exports, asset/provenance audit, and `git diff --check`.
+- [ ] T245 Inspect Arabic RTL and English LTR at 320/390 widths for Welcome, profile selection, task,
+      Garden, Circle, and explicitly enabled gated art surfaces; record crop, overflow, console,
+      Android/TalkBack, named-human, and rights evidence truthfully before cohesive local commits.
+
+      Default-on Arabic/English web-proxy inspection is complete. Explicitly enabled default-off
+      art routes, physical Android/TalkBack, named-human, and image-rights evidence remain open.

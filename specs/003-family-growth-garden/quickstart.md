@@ -429,7 +429,7 @@ remain `NOT RUN`.
 
 | Gate                                                                                                  | Current R003 evidence                               |
 | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| Automated commands and focused tests                                                                  | `PASSED` — 84 files / 1,044 tests plus static gates |
+| Automated commands and focused tests                                                                  | `PASSED` — 85 files / 1,048 tests plus static gates |
 | R003 role-separated fresh journey                                                                     | `PASSED (web proxy)` — Arabic/English 390×844       |
 | Physical Android Arabic/English journey                                                               | `BLOCKED` — no attached device or SDK/toolchain     |
 | Predictive/native Back, WCAG contrast, RTL, keyboard, media, reduced motion, screen reader, 200% font | `NOT RUN`                                           |
@@ -493,3 +493,49 @@ The preserved task, recognition, reward, privacy, and Garden oracles must remain
 the R003 route/access manifest replaces the old operational ten-route inventory. Frontend craft,
 Android, Arabic dialect, real identity, real media, security, payment, and named-human evidence
 retain their separately recorded status.
+
+## 14. Verify the Natural Botanical Artwork Refresh
+
+The artwork gate is presentation-only. Start from the exact reset and prove the same task, Seed,
+Garden, canopy, Circle, League, reward, route, privacy, and feature-flag values before evaluating
+the pixels.
+
+Run the asset integrity and affected presentation checks:
+
+```bash
+npx vitest run tests/r003-illustration-assets.test.ts
+npx vitest run tests/r001-design-foundation.test.ts tests/r002a-parent-home-presentation.test.ts tests/r002a-child-task-presentation.test.ts tests/r002a-garden-presentation.test.ts tests/garden-circle-flow.test.ts tests/r002b-learning-screen-components.test.tsx tests/r002b-reveal-screen-components.test.tsx tests/r002b-shared-growth-screen-components.test.tsx tests/r002b-private-league-route-integration.test.ts tests/r002b-private-league-presentation.test.ts tests/official-brand-platform.test.ts
+node .agents/skills/impeccable/scripts/embed-prompt.mjs --scan assets/images/illustrations/r003/final
+```
+
+Verify exactly 41 local JPEGs and 41 literal static mappings, including 25 distinct
+landscape-and-stage files. Every manifest checksum, byte count, dimension, and embedded prompt must
+match. No runtime registry may contain a remote URL or official-brand path. The official Ghaf mark,
+wordmark, and platform icon checksums must remain unchanged.
+
+Search the replaced runtime files for the retired scenic functions and large SVG scenes. Preserve
+only the official brand plus small functional navigation, status, safety, selection, and progress
+geometry. Confirm that the Private League has no decorative watermark and that its allowlisted
+tree-avatar tokens reuse local botanical profile photographs without changing the privacy
+projection.
+
+In a clean web preview, inspect Arabic RTL and English LTR at 320×720 and 390×844:
+
+- Welcome habitat and low-contrast field texture;
+- Parent first-Child and Child profile choices, including selection/focus state;
+- Child task hero;
+- every active and compact Garden stage, the 19/25 and 20/25 canopy pair, and Circle gardens;
+- explicitly enabled Reveal, Learning Story, Shared Growth, and Private League candidates without
+  changing their default-off configuration; and
+- local image failure fallbacks, reduced motion, browser console, network requests, crop, text
+  overlap, horizontal overflow, and Back/reset behavior.
+
+Record physical Android decode, memory, TalkBack, and reduced-motion observations separately. A web
+preview or passing manifest cannot pass those native checks. Named botanical, Arabic/UAE cultural,
+safeguarding, accessibility, and image-rights review also remain separate human gates.
+
+Current artwork-refresh evidence: the 15-file focused run passed 151/151 tests; the full suite
+passed 85 files / 1,048 tests; the prompt scan found 41 rasters with 0 missing prompts; web and
+Android JavaScript exports bundled all 41 local images. Default-on Arabic/English browser proxies
+passed at 320/390 widths. Default-off gated visual routes, physical Android/TalkBack, and named-human
+or image-rights review remain `NOT RUN` or `BLOCKED` exactly as recorded in `DEMO_RUNBOOK.md`.

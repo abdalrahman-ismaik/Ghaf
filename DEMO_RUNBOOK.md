@@ -1,5 +1,38 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Natural Artwork Refresh Record — 2026-09-06
+
+**Current classification:** local implementation candidate; not Android-accepted, human-reviewed,
+rights-cleared, release-activated, or demo-accepted.
+
+The authorized refresh replaces scenic/decorative vector-like drawings with 41 provenance-recorded
+local Quiet UAE Botanical Editorial images. The official Ghaf logo/wordmark and platform assets,
+small functional icons, route count, task/reward logic, privacy, reset, and all default-off flags
+must remain unchanged. Browser/source evidence may verify exact asset loading, copy separation,
+crop, and overflow; it cannot establish botanical/cultural accuracy, public image rights, TalkBack,
+physical Android decode/memory behavior, or native visual quality.
+
+The final local library contains 41 JPEGs and 41 literal static imports, including 25 distinct
+landscape-stage images. All prompts, dimensions, byte counts, transformations, routes, and SHA-256
+checksums are recorded in `assets/images/illustrations/r003/ASSET_MANIFEST.json`; the prompt scan
+reported `41 rasters, 0 missing`.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Artwork, route, and reset focus | `PASSED` | 15 files / 151 tests, including the 4/4 artwork contract and reset/state oracles |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 85 files / 1,048 tests |
+| Expo dependency/config | `PASSED` | dependency check current; `expo-image` registered; Android predictive Back enabled |
+| Production exports | `PASSED` | web: 39 static routes, 116 files; Android JS: 2,096 modules, 85 files; both include all 41 images |
+| Default-on visual proxy | `PASSED (web proxy)` | Arabic/English at 320/390 widths on Welcome, profile choice, task, Garden, Circle, and League; zero broken images, no horizontal overflow, and zero final-flow console errors |
+| Default-off gated visual proxy | `NOT RUN` | Learning, Reveal, and Shared Growth implementations remain independently default-off; focused component/source checks passed |
+| Physical Android artwork pass | `BLOCKED` | `adb devices -l` returned no attached device or emulator; the JS export is not native evidence |
+| Named-human and image-rights review | `NOT RUN` | Botanical, Arabic/UAE cultural, safeguarding, accessibility, and rights review remain open |
+
+Protected user-owned Stitch/logo source packs were not altered. Browser/source evidence verifies
+local loading, copy separation, crop, and overflow only; it does not establish botanical/cultural
+accuracy, public image rights, TalkBack, physical Android decode/memory behavior, or native visual
+quality.
+
 ## R003 Complete-Screen Integration Record — 2026-09-06
 
 **Current classification:** local implementation candidate; not Android-accepted, human-reviewed,

@@ -6,6 +6,65 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Natural Botanical Artwork Refresh Window
+
+**Integration owner and only runtime/documentation writer**: `/root`
+
+**Asset-generation contributors**: up to three `/root/illustration_*` workers, each restricted to
+its separately assigned subdirectory under `assets/images/illustrations/r003/`. They are not
+authorized to edit runtime, tests, shared manifests, configuration, evidence, or this ownership
+record.
+
+**Exact generation allocation**: `batch-access-ghaf/**` holds the field, Welcome, profile, task,
+Ghaf-stage, and first Circle sources; `batch-groves-canopy/**` holds Samar and Sidr stage sources;
+`batch-oasis-coast/**` holds Date Palm, Mangrove, reveal, learning, and shared-coastal sources; and
+`batch-canopy-circle/**` holds only the two family-canopy and remaining two Circle sources. Root
+alone curates those non-overlapping inputs into the shipping `final/**` directory and shared
+manifest.
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`, `docs/design/brand/GHAF_OFFICIAL_LOGO_MIGRATION.md`,
+`docs/design/stitch/releases/ghaf-r002a/ASSET_PROVENANCE.md`,
+`docs/design/stitch/releases/ghaf-r002b/{SCREEN_INDEX.md,screens/02-garden-chapter/screen-spec.md,screens/06-learning-story/screen-spec.md,screens/08-child-reveal/screen-spec.md,screens/10-shared-growth/screen-spec.md,screens/12-private-league/screen-spec.md}`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,quickstart.md}`,
+`specs/003-family-growth-garden/checklists/requirements.md`,
+`specs/003-family-growth-garden/contracts/acceptance-contract.md`,
+`specs/003-family-growth-garden/design-intake/{r003-complete-screen-journey.md,r003-natural-artwork-refresh.md}`,
+`package.json`, `package-lock.json`, `app.config.ts`, `app/index.tsx`, `assets/images/illustrations/r003/**`,
+`src/components/illustrations/**`, `src/components/access/{AccessShell.tsx,BotanicalAvatar.tsx}`,
+`src/components/r002a/{R002aScreen.tsx,child/ChildTaskHero.tsx}`,
+`src/components/family-growth/{GardenLandscape.tsx,FamilyCanopy.tsx,CircleProgress.tsx,PreparedMedia.tsx}`,
+`src/components/r002b/{LearningScreens.tsx,RevealBundleScreen.tsx,SharedGrowthScreens.tsx,PrivateLeagueScreen.tsx}`,
+`src/i18n/resources.ts`, and
+`tests/{r001-design-foundation,official-brand-platform,r002a-child-task-presentation,r002a-garden-presentation,r002a-parent-home-presentation,r002a-cross-slice-quality,r002b-learning-screen-components,r002b-reveal-screen-components,r002b-shared-growth-screen-components,r003-illustration-assets}.test.{ts,tsx}` only.
+
+**Scope**: Replace vector-like scenic, decorative, botanical-state, task, learning, reveal,
+cooperative-growth, and profile-choice drawings with an offline, provenance-recorded local raster
+library in the **Quiet UAE Botanical Editorial** direction. The exact library contains one subtle
+field texture, one welcome habitat hero, five botanical profile images, one recycling task hero,
+twenty-five species-and-stage Garden scenes, two 19/25 and 20/25 family-canopy scenes, three
+anonymous cooperative-garden scenes, one recognition reveal, one Mangrove habitat study, and one
+shared coastal canopy. Preserve the official Ghaf mark and wordmark, app/platform icons, small
+functional navigation/status/safety controls, live progress geometry, accessibility semantics,
+Arabic/English copy, routes, state, reward authority, privacy filtering, deterministic reset, and
+all default-off R002b flags. Generated images contain no people, faces, hands, readable text,
+logos, brands, hazards, fantasy claims, or rasterized UI. Raw Stitch exports and protected
+user-owned paths remain untouched. One Expo-native image dependency is authorized only for local
+decode, crop, caching, transition, and memory behavior; it adds no media capture or remote service.
+No push, merge, deployment, release activation, or shared-history rewrite is authorized.
+
+**Completion — 2026-09-06**: Root curated and integrated 41 local photographic artwork files with
+exact prompt, source/final dimension, transformation, route, accessibility, checksum, and review
+records. Scenic runtime drawings and the decorative League watermark are removed; the official
+Ghaf brand and small functional vectors remain protected. Focused artwork/route/reset coverage
+passed 15 files / 151 tests; the full suite passed 85 files / 1,048 tests; typecheck, lint,
+formatting, Expo dependency/configuration checks, prompt scan, web export, Android JavaScript
+export, and `git diff --check` passed. Default-on Arabic/English Firefox proxy inspection passed at
+320/390 widths. Explicitly enabled default-off art routes and named-human/rights checks remain
+`NOT RUN`; physical Android is `BLOCKED` because no device or emulator was attached. All reserved
+boundaries are released to the integration owner at this local checkpoint. No push, merge,
+deployment, or release activation was performed.
+
 ## 2026-09-06 Parent Sign-up Flow and Sign-in Hierarchy Window
 
 **Owner and only writer**: `/root`
