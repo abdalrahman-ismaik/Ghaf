@@ -7,6 +7,7 @@ import {
   projectFamilyRewardUnlock,
   projectFamilyRewardRuntime,
 } from '../src/features/family-hub';
+import { TASK_TEMPLATES } from '../src/features/tasks/demoContent';
 import { PREPARED_PRAISE, createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { serviceRegistry } from '../src/services';
 import { isExactPlainDataEqual } from '../src/utils/exactPlainData';
@@ -278,6 +279,50 @@ describe('R003 Family hub reward runtime', () => {
       plan: { lifecycle: 'promised' },
       progress: { eligibleSeedDelta: 0, recognitionKeys: [] },
     });
+
+    const alyaJourney = {
+      ...recognition.journey,
+      task: { ...recognition.journey.task, targetChildId: 'child_alya' as const },
+      assignment: recognition.journey.assignment
+        ? { ...recognition.journey.assignment, childId: 'child_alya' as const }
+        : null,
+    };
+    const ignoredAlya = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime,
+        journey: alyaJourney,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    expect(ignoredAlya).toBe(runtime);
+    expect(runtime.progress.recognitionKeys).toEqual([]);
+  });
+
+  it('ignores canonical task keys carrying different reviewed content', () => {
+    const recognition = canonicalRecognition();
+    const runtime = createFamilyRewardRuntime();
+    const otherContent = TASK_TEMPLATES.find((template) => template.id === 'GI01');
+    if (!otherContent) throw new Error('Expected reviewed GI01 content');
+    const forgedJourney = {
+      ...recognition.journey,
+      task: {
+        ...recognition.journey.task,
+        parentOriginalText: otherContent.positiveAction,
+        content: otherContent,
+      },
+    };
+
+    const ignored = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime,
+        journey: forgedJourney,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    expect(ignored).toBe(runtime);
+    expect(runtime.progress.recognitionKeys).toEqual([]);
   });
 
   it('rejects a current recognition key without its reconciled unlock', () => {
@@ -318,6 +363,35 @@ describe('R003 Family hub reward runtime', () => {
     expect(
       applyRecognitionToFamilyReward({
         runtime: malformed,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('rejects a non-ISO given timestamp on a reconciled reward duplicate', () => {
+    const recognition = canonicalRecognition();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: createFamilyRewardRuntime(),
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    const malformedGiven = {
+      ...unlocked,
+      plan: {
+        ...unlocked.plan,
+        lifecycle: 'given' as const,
+        givenAt: 'September 6, 2026',
+      },
+    };
+
+    expect(
+      applyRecognitionToFamilyReward({
+        runtime: malformedGiven,
         journey: recognition.journey,
         receipt: recognition.receipt,
         committedAt: TIME,

@@ -14,12 +14,28 @@ import type {
 } from '../../models/familyReward';
 import type { RecognitionReceipt, SyntheticChildId, TaskJourney } from '../../models/familyGrowth';
 import { isExactPlainDataEqual as sameValue } from '../../utils/exactPlainData';
+import { matchesCanonicalP0TaskContent, validateTaskForReview } from '../tasks/validation';
 
 export const FAMILY_REWARD_BASELINE = 108;
 export const FAMILY_REWARD_TARGET = 120;
 export const FAMILY_REWARD_ELIGIBILITY_DECISIONS = Object.freeze({
   'task_recycling_p0_v1@1': true,
 } as const);
+
+export function isFamilyRewardRecognitionEligible(journey: TaskJourney): boolean {
+  const taskVersionKey = `${journey.task.id}@${journey.task.version}`;
+  return (
+    (FAMILY_REWARD_ELIGIBILITY_DECISIONS as Readonly<Record<string, boolean>>)[taskVersionKey] ===
+      true &&
+    journey.task.targetChildId === 'child_salem' &&
+    journey.task.templateId === 'task_recycling_p0_v1' &&
+    validateTaskForReview(journey.task).ok &&
+    matchesCanonicalP0TaskContent(
+      journey.task.content,
+      journey.task.acceptedGuideFixtureId === null ? 'retained_parent_action' : 'exact_guide',
+    )
+  );
+}
 
 export interface FamilyRewardRuntime {
   readonly plan: FamilyRewardPlan;
@@ -80,12 +96,19 @@ export function createFamilyRewardRuntime(): FamilyRewardRuntime {
   };
 }
 
-function isValidGivenTimestamp(givenAt: string | null, unlockedAt: string): boolean {
+function isFamilyRewardTimestamp(value: unknown): value is string {
   return (
-    givenAt !== null &&
-    givenAt.trim() === givenAt &&
-    !Number.isNaN(Date.parse(givenAt)) &&
-    !Number.isNaN(Date.parse(unlockedAt)) &&
+    typeof value === 'string' &&
+    value.trim() === value &&
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/u.test(value) &&
+    Number.isFinite(Date.parse(value))
+  );
+}
+
+function isValidGivenTimestamp(givenAt: unknown, unlockedAt: unknown): givenAt is string {
+  return (
+    isFamilyRewardTimestamp(givenAt) &&
+    isFamilyRewardTimestamp(unlockedAt) &&
     Date.parse(givenAt) >= Date.parse(unlockedAt)
   );
 }
@@ -164,11 +187,7 @@ export function applyRecognitionToFamilyReward(input: {
   readonly committedAt: string;
 }): FamilyRewardResult<FamilyRewardRuntime> {
   const { runtime, journey, receipt, committedAt } = input;
-  const taskVersionKey = `${journey.task.id}@${journey.task.version}`;
-  const eligibilityDecision = (
-    FAMILY_REWARD_ELIGIBILITY_DECISIONS as Readonly<Record<string, boolean>>
-  )[taskVersionKey];
-  if (eligibilityDecision !== true) {
+  if (!isFamilyRewardRecognitionEligible(journey)) {
     return { ok: true, data: runtime };
   }
   if (runtime.progress.recognitionKeys.includes(receipt.recognitionKey)) {
