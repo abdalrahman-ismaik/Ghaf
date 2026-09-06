@@ -1021,4 +1021,35 @@ changes.
       Android/TalkBack, named-human, and rights evidence truthfully before cohesive local commits.
 
       Default-on Arabic/English web-proxy inspection is complete. Explicitly enabled default-off
-      art routes, physical Android/TalkBack, named-human, and image-rights evidence remain open.
+          art routes, physical Android/TalkBack, named-human, and image-rights evidence remain open.
+
+## Phase 33: First-run Onboarding and Context Transitions
+
+**Gate**: User-authorized presentation refinement inside the existing route and authority model.
+
+- [x] T246 Read the active product/design/safety contract, reserve exact writer boundaries, and
+      document the three-state onboarding, native/app splash handoff, bounded transition groups,
+      raster-only artwork, accessibility, and evidence truth before runtime work.
+- [x] T247 Write RED source/flow tests for ordered onboarding, skip/back/next/start, active-session
+      bypass, 37-route preservation, bounded context transitions, raster logo, exact 45-asset local
+      registry/provenance, bilingual parity, and reduced-motion behavior.
+- [x] T248 Generate, inspect, normalize, prompt-embed, checksum, and register four Quiet UAE
+      Botanical Editorial raster assets with no people, hands, text, logos, UI, vectors, hazards,
+      fantasy, runtime URL, or impact claim.
+- [x] T249 Build reusable first-run, raster-logo, branded-splash, and context-transition components
+      with existing tokens, Expo Image, Alexandria/Readex, 48 dp controls, localized alternatives,
+      fallback, polite announcements, and reduced-motion equivalence.
+- [x] T250 Integrate the three moments into `/`, preserve active-session redirects and the existing
+      Parent/Child Welcome actions, then classify only major access/experience handoffs for the
+      root transition buffer.
+- [x] T251 Run focused and full tests, typecheck, lint, formatting, dependency/configuration checks,
+      route/reset scans, exports, asset/provenance audit, and `git diff --check`; inspect Arabic and
+      English at 320/390 widths and record Android, TalkBack, font-scale, human-review, and rights
+      gaps truthfully before cohesive local commits.
+
+      Completed locally on 2026-09-06: focused flow/route/reset coverage passed 7 files / 76 tests;
+      the full suite passed 86 files / 1,052 tests; typecheck, lint, format, dependency check, web
+      and Android JS exports, asset provenance, and diff checks passed. Firefox proxy inspection
+      passed at 320×720 and 390×844 in Arabic RTL and English LTR. Physical Android/TalkBack/OS
+      font-scale is `BLOCKED / NOT RUN` with no attached ADB device; named-human and rights review
+      remains `NOT RUN`.

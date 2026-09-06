@@ -6,6 +6,45 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 First-run Onboarding and Context Transition Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`,
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `app/_layout.tsx`,
+`app/index.tsx`, `assets/images/illustrations/r003/{ASSET_MANIFEST.json,PROVENANCE.md,final/**}`,
+`src/components/illustrations/illustrationSources.ts`, `src/components/onboarding/**`,
+`src/i18n/resources.ts`, and
+`tests/{r003-first-run-experience,r003-illustration-assets}.test.ts` only.
+
+**Scope**: Add a three-moment, optional Arabic-first onboarding presentation inside the existing
+Welcome route, retain visible Parent and Child access choices after onboarding, and bridge the
+native raster splash into one branded local loading presentation. Add one professional transition
+buffer only when the app crosses between Welcome, role-specific access, and an authenticated
+Parent or Child experience; routine tabs and contextual routes within the same experience never
+show the buffer. Use the immutable official raster logo and four new locally generated raster
+photographs in the Quiet UAE Botanical Editorial direction. No new product route, vector scene,
+account authority, persistence claim, network request, artificial delay, reward/state change,
+remote loading claim, dependency, release activation, push, merge, or deployment is authorized.
+Existing functional vectors outside this boundary remain protected. Completion is session-local,
+skippable, reduced-motion aware, offline deterministic, and equivalent in Arabic RTL and English
+LTR. Protected user-owned paths remain untouched.
+
+**Completion — 2026-09-06**: Root implemented the three-moment bilingual onboarding, official
+raster-logo treatment, local branded startup handoff, and bounded experience-transition overlay
+without adding a route, dependency, network request, or durable authority. Four generated JPEGs
+were inspected, normalized, prompt-embedded, checksummed, registered, and verified in both web and
+Android production exports. Focused onboarding/route/reset coverage passed 7 files / 76 tests; the
+full suite passed 86 files / 1,052 tests; typecheck, lint, formatting, Expo dependency checks, and
+`git diff --check` passed. Firefox proxy inspection passed Arabic RTL and English LTR at 320×720
+and 390×844 with no horizontal overflow or console errors, including Back/Skip/Start, same-section
+transition suppression, and reduced-motion equivalence. Physical Android, TalkBack, OS font-scale,
+named-human, and image-rights review remain `BLOCKED` or `NOT RUN` because no device or reviewer was
+available. All reserved boundaries are released to the integration owner at the local checkpoints;
+no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Natural Botanical Artwork Refresh Window
 
 **Integration owner and only runtime/documentation writer**: `/root`

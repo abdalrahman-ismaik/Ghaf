@@ -39,6 +39,41 @@ export const resources = {
           'قد يؤدي تحديث التطبيق إلى فقدان تقدم هذه الرحلة المؤقتة؛ استخدم إعادة النموذج من وضع وليّ الأمر للعودة إلى البداية الآمنة.',
         enter: 'دخول الحديقة',
       },
+      firstRun: {
+        skip: 'تخطّي',
+        next: 'التالي',
+        back: 'رجوع',
+        start: 'ابدأ مع غاف',
+        progress: '{{current}} من {{total}}',
+        progressAlt: 'الخطوة {{current}} من {{total}}',
+        imageFallback: 'الصورة غير متاحة الآن؛ يمكنك المتابعة.',
+        steps: [
+          {
+            title: 'اختر فعلاً صغيرًا يناسب يومكم',
+            body: 'يختار الطفل من مهام آمنة اعتمدها وليّ الأمر، مع تعريف واضح لما يعنيه الإكمال قبل البدء.',
+            imageAlt: 'مواد منزلية نظيفة وآمنة جاهزة لمهمة فرز معتمدة من وليّ الأمر',
+          },
+          {
+            title: 'المساعدة جزء من التعلّم',
+            body: 'يمكن طلب المساعدة أو تجربة خطوة أسهل متفق عليها. المساعدة المسموحة تحتفظ بالتقدير كاملًا، ثم يؤكد وليّ الأمر الإكمال.',
+            imageAlt: 'شتلة غاف صغيرة قائمة في ظل شجرة وبجوارها حاجز طبيعي بسيط',
+          },
+          {
+            title: 'حديقتكم تحتفظ بكل نمو',
+            body: 'بعد تأكيد وليّ الأمر، يبقى التقدير والبذور والنمو الرمزي في حديقة عائلية خاصة. النمو رمزي ولا يعني أثرًا بيئيًا مقاسًا.',
+            imageAlt: 'دراسة طبيعية لبذور الغاف وبرعم صغير وغصن مورق فوق ورق دافئ',
+          },
+        ],
+        loading: {
+          splashTitle: 'تنمو الأفعال الصغيرة مع غاف',
+          splashBody: 'نهيّئ الحديقة المحلية…',
+          opening: 'نفتح المساحة المناسبة…',
+          parentAccess: 'مساحة دخول وليّ الأمر',
+          childAccess: 'مساحة دخول الطفل',
+          parentExperience: 'مساحة العائلة',
+          childExperience: 'مساحة الطفل',
+        },
+      },
       access: {
         welcome: {
           title: 'نزرع العادات\nالجميلة معًا',
@@ -1497,6 +1532,43 @@ export const resources = {
         reloadWarning:
           'Reloading may clear this in-memory journey. Use Parent reset to return to the safe starting state.',
         enter: 'Enter the garden',
+      },
+      firstRun: {
+        skip: 'Skip',
+        next: 'Next',
+        back: 'Back',
+        start: 'Start with Ghaf',
+        progress: '{{current}} of {{total}}',
+        progressAlt: 'Step {{current}} of {{total}}',
+        imageFallback: 'The image is unavailable; you can still continue.',
+        steps: [
+          {
+            title: 'Choose one small action for today',
+            body: 'A Child chooses from safe tasks approved by a Parent, with a clear definition of completion before they begin.',
+            imageAlt: 'Clean safe household materials ready for a Parent-approved sorting task',
+          },
+          {
+            title: 'Help is part of learning',
+            body: 'Ask for help or agree on a smaller step. Permitted help keeps full recognition, then a Parent confirms completion.',
+            imageAlt:
+              'A small Ghaf seedling standing in tree shade beside a simple natural windbreak',
+          },
+          {
+            title: 'Your garden remembers every growth step',
+            body: 'After Parent confirmation, recognition, Seeds, and symbolic growth stay in a private family garden. Growth is symbolic, not measured environmental impact.',
+            imageAlt:
+              'Natural study of Ghaf seeds, a small sprout, and a leafy branch on warm paper',
+          },
+        ],
+        loading: {
+          splashTitle: 'Small actions grow with Ghaf',
+          splashBody: 'Preparing the local garden…',
+          opening: 'Opening the right space…',
+          parentAccess: 'Parent access',
+          childAccess: 'Child access',
+          parentExperience: 'Family space',
+          childExperience: 'Child space',
+        },
       },
       access: {
         welcome: {

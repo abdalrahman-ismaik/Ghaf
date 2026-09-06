@@ -8,7 +8,8 @@ import { ReadexPro_500Medium } from '@expo-google-fonts/readex-pro/500Medium';
 import { ReadexPro_600SemiBold } from '@expo-google-fonts/readex-pro/600SemiBold';
 import { ReadexPro_700Bold } from '@expo-google-fonts/readex-pro/700Bold';
 import { useFonts } from 'expo-font';
-import { useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from 'react';
 import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -16,10 +17,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useReducedMotion } from 'react-native-reanimated';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
+import {
+  BrandedSplash,
+  FirstRunExperienceProvider,
+  SectionTransitionOverlay,
+} from '@/components/onboarding';
 import { GhafFontProvider } from '@/components/primitives';
 import { colors } from '@/design/tokens';
 import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+
+void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 // THESIS: Family action becomes a clear living record. Avoid centered card piles,
 // pastel wellness styling, and generic achievement chrome.
@@ -35,6 +43,7 @@ export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
+  const [showBrandedSplash, setShowBrandedSplash] = useState(true);
   const isR001Route = pathname === '/' || pathname.startsWith('/access/');
   const isR002aParentSurface = pathname.startsWith('/parent');
   const usesLightSystemChrome =
@@ -71,20 +80,41 @@ export default function RootLayout() {
     if (fontError) console.warn('Ghaf brand fonts could not be loaded; using system fallbacks.');
   }, [fontError]);
 
+  useEffect(() => {
+    let mounted = true;
+    let frame: number | undefined;
+    void SplashScreen.hideAsync()
+      .catch(() => undefined)
+      .finally(() => {
+        if (!mounted || (!fontsLoaded && !fontError)) return;
+        frame = requestAnimationFrame(() => {
+          if (mounted) setShowBrandedSplash(false);
+        });
+      });
+    return () => {
+      mounted = false;
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [fontError, fontsLoaded]);
+
   return (
     <SafeAreaProvider>
       <GhafFontProvider loaded={fontsLoaded}>
-        <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
-        <View style={styles.root}>
-          {usesLightSystemChrome ? null : <PrototypeStatusBar />}
-          <Stack
-            screenOptions={{
-              animation: reducedMotion ? 'none' : 'fade',
-              contentStyle: { backgroundColor: colors.ivory },
-              headerShown: false,
-            }}
-          />
-        </View>
+        <FirstRunExperienceProvider>
+          <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
+          <View style={styles.root}>
+            {usesLightSystemChrome ? null : <PrototypeStatusBar />}
+            <Stack
+              screenOptions={{
+                animation: reducedMotion ? 'none' : 'fade',
+                contentStyle: { backgroundColor: colors.ivory },
+                headerShown: false,
+              }}
+            />
+            <SectionTransitionOverlay />
+            <BrandedSplash visible={showBrandedSplash} />
+          </View>
+        </FirstRunExperienceProvider>
       </GhafFontProvider>
     </SafeAreaProvider>
   );

@@ -1,5 +1,38 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 First-run Experience Record — 2026-09-06
+
+**Current classification:** local implementation candidate; not Android-accepted, human-reviewed,
+rights-cleared, release-activated, or demo-accepted.
+
+On a fresh runtime, allow the native raster splash to hand off to the branded local screen, then
+show the three Arabic onboarding moments. Demonstrate Back on moment two, continue to moment three,
+and select **Start Ghaf** to reveal the existing Parent/Child Welcome actions. For a shorter judge
+run, **Skip** reaches the same Welcome state and grants no role. Changing language should preserve
+the current moment. The context buffer may appear when entering Parent or Child access and when
+that access produces its authenticated-looking local experience; it must not appear between Home,
+Tasks, Garden, Family, Today, or League tabs.
+
+Describe the imagery and growth as local, generated, and symbolic. Do not describe startup or
+transition as server loading, verification, model work, sync, or production authentication. A
+reload may restore onboarding because completion is session-local.
+
+The implementation preserves exactly 37 product routes because onboarding is state inside `/`.
+All four presentation photographs and the official logo are local raster files; these screens add
+no remote fetch, vector artwork, product authority, task/reward change, or artificial delay.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| First-run, artwork, route, and reset focus | `PASSED` | 7 files / 76 tests, including ordered navigation, transition classification, exact route count, local assets, access flow, and reset navigation |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,052 tests |
+| Expo dependency/configuration | `PASSED` | `npx expo install --check`; native Expo splash still uses the official local raster mark |
+| Production exports | `PASSED` | web: 121 files; Android JS: 90 files; byte-identical copies of all four first-run JPEGs found in each export |
+| Arabic/English visual proxy | `PASSED (web proxy)` | Firefox at 320×720 and 390×844; Back/Skip/Start and both directions inspected, zero horizontal overflow, zero console errors |
+| Context-transition behavior | `PASSED (web proxy)` | major Welcome/access/experience handoff captured; same-section Parent sign-in to sign-up produced no overlay |
+| Reduced-motion behavior | `PASSED (web proxy/source)` | reduced motion retained the complete state change without positional travel; native setting remains unobserved |
+| Physical Android, TalkBack, Back/IME, safe areas, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator; exports and browser inspection are not native evidence |
+| Named Arabic/UAE, safeguarding, accessibility, botanical, and image-rights review | `NOT RUN` | Requires named reviewers and the exact reviewed build/assets |
+
 ## R003 Natural Artwork Refresh Record — 2026-09-06
 
 **Current classification:** local implementation candidate; not Android-accepted, human-reviewed,
@@ -17,16 +50,16 @@ landscape-stage images. All prompts, dimensions, byte counts, transformations, r
 checksums are recorded in `assets/images/illustrations/r003/ASSET_MANIFEST.json`; the prompt scan
 reported `41 rasters, 0 missing`.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| Artwork, route, and reset focus | `PASSED` | 15 files / 151 tests, including the 4/4 artwork contract and reset/state oracles |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 85 files / 1,048 tests |
-| Expo dependency/config | `PASSED` | dependency check current; `expo-image` registered; Android predictive Back enabled |
-| Production exports | `PASSED` | web: 39 static routes, 116 files; Android JS: 2,096 modules, 85 files; both include all 41 images |
-| Default-on visual proxy | `PASSED (web proxy)` | Arabic/English at 320/390 widths on Welcome, profile choice, task, Garden, Circle, and League; zero broken images, no horizontal overflow, and zero final-flow console errors |
-| Default-off gated visual proxy | `NOT RUN` | Learning, Reveal, and Shared Growth implementations remain independently default-off; focused component/source checks passed |
-| Physical Android artwork pass | `BLOCKED` | `adb devices -l` returned no attached device or emulator; the JS export is not native evidence |
-| Named-human and image-rights review | `NOT RUN` | Botanical, Arabic/UAE cultural, safeguarding, accessibility, and rights review remain open |
+| Gate                                | Result               | Evidence                                                                                                                                                                      |
+| ----------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Artwork, route, and reset focus     | `PASSED`             | 15 files / 151 tests, including the 4/4 artwork contract and reset/state oracles                                                                                              |
+| Full automated suite                | `PASSED`             | typecheck, lint, format, and 85 files / 1,048 tests                                                                                                                           |
+| Expo dependency/config              | `PASSED`             | dependency check current; `expo-image` registered; Android predictive Back enabled                                                                                            |
+| Production exports                  | `PASSED`             | web: 39 static routes, 116 files; Android JS: 2,096 modules, 85 files; both include all 41 images                                                                             |
+| Default-on visual proxy             | `PASSED (web proxy)` | Arabic/English at 320/390 widths on Welcome, profile choice, task, Garden, Circle, and League; zero broken images, no horizontal overflow, and zero final-flow console errors |
+| Default-off gated visual proxy      | `NOT RUN`            | Learning, Reveal, and Shared Growth implementations remain independently default-off; focused component/source checks passed                                                  |
+| Physical Android artwork pass       | `BLOCKED`            | `adb devices -l` returned no attached device or emulator; the JS export is not native evidence                                                                                |
+| Named-human and image-rights review | `NOT RUN`            | Botanical, Arabic/UAE cultural, safeguarding, accessibility, and rights review remain open                                                                                    |
 
 Protected user-owned Stitch/logo source packs were not altered. Browser/source evidence verifies
 local loading, copy separation, crop, and overflow only; it does not establish botanical/cultural
@@ -94,20 +127,20 @@ do not fabricate or force the combined RevealBundle.
 
 ### R003 evidence status at closeout
 
-| Gate                                                                                         | Status                           | Direct evidence / next requirement                                                                                                                                                |
-| -------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 37-file route/source manifest and `/role` redirect                                           | `PASSED` source inspection       | Current validated worktree; nine optional candidate routes remain guarded and `/league` remains canonical                                                                         |
-| Exact Parent/Child tab labels and contextual-route separation                                | `PASSED` source inspection       | `tests/r003-screen-flow.test.ts` and the final full suite                                                                                                                         |
-| Focused access/navigation/reveal/localization suites                                         | `PASSED`                         | Parent sign-up slice: 3 files / 57 tests; prior complete-screen sweep: 15 files / 135 tests on 2026-09-06                                                                         |
-| Complete repository suite and static/export gate                                             | `PASSED`                         | Typecheck, lint, format, 84 files / 1,044 tests, dependency alignment, public Expo config, `git diff --check`, and 39-route web export                                            |
+| Gate                                                                                         | Status                           | Direct evidence / next requirement                                                                                                                                                      |
+| -------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 37-file route/source manifest and `/role` redirect                                           | `PASSED` source inspection       | Current validated worktree; nine optional candidate routes remain guarded and `/league` remains canonical                                                                               |
+| Exact Parent/Child tab labels and contextual-route separation                                | `PASSED` source inspection       | `tests/r003-screen-flow.test.ts` and the final full suite                                                                                                                               |
+| Focused access/navigation/reveal/localization suites                                         | `PASSED`                         | Parent sign-up slice: 3 files / 57 tests; prior complete-screen sweep: 15 files / 135 tests on 2026-09-06                                                                               |
+| Complete repository suite and static/export gate                                             | `PASSED`                         | Typecheck, lint, format, 84 files / 1,044 tests, dependency alignment, public Expo config, `git diff --check`, and 39-route web export                                                  |
 | Fresh Arabic/English complete-screen browser walk                                            | `PASSED (web proxy)`             | Existing complete-screen journey plus Parent sign-in/sign-up at 320×720 and 390×844; centered/logical alignment, sign-up origin/Back/offline flow, no overflow, and zero console errors |
-| Optional Parent Progress and Shared Garden origin restoration                                | `PASSED (flagged web proxy)`     | Explicit local opt-in only: Progress restored `280 → 280` with action focus; Shared Garden restored `498 → 498` with action focus; flags remain default-off                       |
-| Final design/craft review                                                                    | `PASSED` source/web; `recapture` | The code-native screens match the Ghaf system, but no authoritative native Android capture exists; disposition is recapture, not ship                                             |
-| Physical Android Arabic/English journey                                                      | `BLOCKED`                        | `/usr/bin/adb` reports no attached device; `emulator`, `sdkmanager`, and `java` are missing; `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and `JAVA_HOME` are unset                        |
-| TalkBack, native Back/IME, safe areas, reduced motion, permissions, and 200% OS text         | `NOT RUN`                        | Must be observed on the named physical Android build                                                                                                                              |
-| Arabic/UAE cultural, safeguarding, privacy, sustainability, accessibility, and visual review | `NOT RUN`                        | Requires named reviewers and reviewed content/build versions                                                                                                                      |
-| Five rehearsals and three-person comprehension                                               | `NOT RUN`                        | Time the longer R003 access/pairing path before approving a rehearsal target                                                                                                      |
-| Live Parent AI, real Child media, real auth/pairing, invitations, and payment                | `BLOCKED` or out of P0           | Demonstrate only the honestly labeled deterministic local fixtures                                                                                                                |
+| Optional Parent Progress and Shared Garden origin restoration                                | `PASSED (flagged web proxy)`     | Explicit local opt-in only: Progress restored `280 → 280` with action focus; Shared Garden restored `498 → 498` with action focus; flags remain default-off                             |
+| Final design/craft review                                                                    | `PASSED` source/web; `recapture` | The code-native screens match the Ghaf system, but no authoritative native Android capture exists; disposition is recapture, not ship                                                   |
+| Physical Android Arabic/English journey                                                      | `BLOCKED`                        | `/usr/bin/adb` reports no attached device; `emulator`, `sdkmanager`, and `java` are missing; `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and `JAVA_HOME` are unset                              |
+| TalkBack, native Back/IME, safe areas, reduced motion, permissions, and 200% OS text         | `NOT RUN`                        | Must be observed on the named physical Android build                                                                                                                                    |
+| Arabic/UAE cultural, safeguarding, privacy, sustainability, accessibility, and visual review | `NOT RUN`                        | Requires named reviewers and reviewed content/build versions                                                                                                                            |
+| Five rehearsals and three-person comprehension                                               | `NOT RUN`                        | Time the longer R003 access/pairing path before approving a rehearsal target                                                                                                            |
+| Live Parent AI, real Child media, real auth/pairing, invitations, and payment                | `BLOCKED` or out of P0           | Demonstrate only the honestly labeled deterministic local fixtures                                                                                                                      |
 
 The Firefox warning ledger contained generated-bundle unreachable-code and font-preload timing
 warnings. It contained zero application console errors; those warnings do not constitute native

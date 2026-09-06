@@ -1,7 +1,7 @@
 # R003 First-run Experience Contract
 
-**Authority:** user-authorized presentation refinement, 2026-09-06  
-**Owner:** `/root`  
+**Authority:** user-authorized presentation refinement, 2026-09-06
+**Owner:** `/root`
 **Route impact:** none; all onboarding states remain inside `/`
 
 ## Product promise

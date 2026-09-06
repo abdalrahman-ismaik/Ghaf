@@ -1,5 +1,15 @@
 # Prototype Limitations
 
+## First-run and transition presentation — 2026-09-06
+
+The onboarding completion marker exists only for the current in-memory app session; it is not an
+account preference or persistence guarantee and a reload may show onboarding again. The branded
+splash waits only for local fonts/assets, and the section transition is an orientation buffer for
+major access/role changes—not evidence of a server request, authentication, AI processing, data
+sync, or completed security check. Generated first-run photographs remain symbolic presentation
+assets subject to the same rights, botanical, cultural, safeguarding, accessibility, and physical
+Android review limits as the existing natural artwork library.
+
 ## Generated natural artwork — 2026-09-06
 
 The current integration replaces vector-like product drawings with locally generated natural

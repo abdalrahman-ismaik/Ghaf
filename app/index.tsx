@@ -2,8 +2,9 @@ import { Redirect, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AccessScreen, GhafIcon, PrototypePill } from '@/components/access';
+import { AccessScreen, PrototypePill } from '@/components/access';
 import { LocalIllustration } from '@/components/illustrations';
+import { FirstRunOnboarding, GhafRasterLogo, useFirstRunExperience } from '@/components/onboarding';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, r001Radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -18,6 +19,7 @@ export default function WelcomeScreen() {
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
+  const { state: firstRunState } = useFirstRunExperience();
 
   const switchLocale = () => {
     setLocale(locale === 'ar' ? 'en' : 'ar');
@@ -29,6 +31,7 @@ export default function WelcomeScreen() {
   if (activeExperience === 'child' && childAccess.canEnterChildExperience) {
     return <Redirect href="/child" />;
   }
+  if (!firstRunState.completed) return <FirstRunOnboarding />;
 
   const openParent = () => {
     const existing = enterParentExperience();
@@ -53,7 +56,6 @@ export default function WelcomeScreen() {
             brand
             direction="ltr"
             fullWidth={false}
-            icon={<GhafIcon direction="ltr" name="language" size={20} />}
             language={locale}
             onPress={switchLocale}
             style={styles.languageButton}
@@ -67,6 +69,11 @@ export default function WelcomeScreen() {
       testID="welcome-screen"
     >
       <View style={styles.hero}>
+        <GhafRasterLogo
+          accessibilityLabel={t('common.brand')}
+          size={76}
+          testID="welcome-raster-logo"
+        />
         <Text
           align="center"
           brand
@@ -116,7 +123,6 @@ export default function WelcomeScreen() {
         <Button
           brand
           direction={direction}
-          icon={<GhafIcon color={colors.onPrimary} direction={direction} name="family" size={20} />}
           language={locale}
           onPress={openParent}
           size="regular"
@@ -127,7 +133,6 @@ export default function WelcomeScreen() {
         <Button
           brand
           direction={direction}
-          icon={<GhafIcon direction={direction} name="child" size={20} />}
           language={locale}
           onPress={() => router.push('/access/child' as Href)}
           size="regular"
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: spacing.lg,
-    minHeight: 470,
+    minHeight: 500,
     paddingTop: spacing.xl,
   },
   heroImage: {
