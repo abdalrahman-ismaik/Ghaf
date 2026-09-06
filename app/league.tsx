@@ -24,8 +24,7 @@ export default function PrivateLeagueRoute() {
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const activeChild = usePrototypeStore((state) => state.children[state.activeChildId]);
-  const journey = usePrototypeStore((state) => state.journey);
-  const recognitionLedger = usePrototypeStore((state) => state.recognitionLedger);
+  const privateLeague = usePrototypeStore((state) => state.privateLeague);
   const [helpOpen, setHelpOpen] = useState(false);
   const formatter = useMemo(
     () => new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE', { useGrouping: false }),
@@ -35,10 +34,9 @@ export default function PrivateLeagueRoute() {
     () =>
       buildPrivateLeaguePresentation({
         activeProfileId: activeChildId,
-        journey,
-        recognitionLedger,
+        privateLeague,
       }),
-    [activeChildId, journey, recognitionLedger],
+    [activeChildId, privateLeague],
   );
   const leavesPerWeek = presentation.ok ? presentation.data.leavesPerWeek : 5;
   const participants: readonly PrivateLeagueParticipantItem[] = presentation.ok

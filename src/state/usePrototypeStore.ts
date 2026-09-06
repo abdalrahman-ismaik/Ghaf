@@ -43,6 +43,11 @@ import {
   type FamilyRewardRuntime,
 } from '../features/family-hub';
 import {
+  applyRecognitionToPrivateLeague,
+  createPrivateLeagueRecognitionRuntime,
+  type PrivateLeagueRecognitionRuntime,
+} from '../features/league/recognitionRuntime';
+import {
   acknowledgeRevealBundle,
   archiveRevealBundle,
   constructRevealBundle,
@@ -160,6 +165,9 @@ function createLearningByProfile(runtime: GrowthJourneyRuntimeState): MangroveLe
 }
 
 const initialMangroveLearning = createLearningByProfile(initialGrowthJourney.data);
+const initialPrivateLeague = createPrivateLeagueRecognitionRuntime({
+  profileEpochId: initialGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+});
 
 function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
   const participationEpochId = `shared-growth-epoch-${resetSequence}`;
@@ -193,6 +201,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly childAccess: ChildAccessView;
   readonly familyReward: FamilyRewardRuntime;
   readonly growthJourney: GrowthJourneyRuntimeState;
+  readonly privateLeague: PrivateLeagueRecognitionRuntime;
   readonly mangroveLearningByProfile: MangroveLearningByProfile;
   readonly sharedGrowth: SharedGrowthState;
   readonly revealBundleQueue: RevealBundleQueue;
@@ -741,6 +750,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   childAccess: childAccessController.getView(),
   familyReward: createFamilyRewardRuntime(),
   growthJourney: initialGrowthJourney.data,
+  privateLeague: initialPrivateLeague,
   mangroveLearningByProfile: initialMangroveLearning,
   sharedGrowth: initialSharedGrowth,
   revealBundleQueue: createEmptyRevealBundleQueue(),
@@ -1207,6 +1217,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
     }
     const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
+    const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
+      profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+    });
     const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
@@ -1221,6 +1234,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       childAccess: childAccessController.reset(),
       familyReward: createFamilyRewardRuntime(),
       growthJourney: nextGrowthJourney.data,
+      privateLeague: nextPrivateLeague,
       mangroveLearningByProfile: nextMangroveLearning,
       sharedGrowth: nextSharedGrowth,
       revealBundleQueue: createEmptyRevealBundleQueue(),
@@ -2293,12 +2307,33 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_RESPONSE', familyReward.error.message);
     }
 
+    const projectsPrivateLeague =
+      result.data.journey.task.id === 'task_recycling_p0_v1' &&
+      result.data.journey.task.version === 1 &&
+      result.data.receipt.seedTransaction !== null;
+    const privateLeague = projectsPrivateLeague
+      ? applyRecognitionToPrivateLeague({
+          runtime: before.privateLeague,
+          profileId: result.data.journey.task.targetChildId,
+          profileEpochId:
+            growthProjection.data.runtime.ledgersByProfile[result.data.journey.task.targetChildId]
+              .profileEpochId,
+          journey: result.data.journey,
+          receipt: result.data.receipt,
+          recognitionLedger: result.data.session.recognitionLedger,
+        })
+      : null;
+    if (privateLeague && !privateLeague.ok) {
+      return failure('INVALID_RESPONSE', privateLeague.error.message);
+    }
+
     set({
       ...result.data.session,
       growthJourney: growthProjection.data.runtime,
       confirmationPlan: plan,
       lastRecognitionAttempt: result.data,
       familyReward: familyReward.data,
+      privateLeague: privateLeague?.ok ? privateLeague.data.runtime : before.privateLeague,
     });
     return result;
   },

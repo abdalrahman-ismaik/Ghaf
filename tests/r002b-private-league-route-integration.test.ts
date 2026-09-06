@@ -12,7 +12,7 @@ describe('R002b private League route integration', () => {
 
     expect(route).toContain('buildPrivateLeaguePresentation');
     expect(route).toContain('<PrivateLeagueScreen');
-    expect(route).toContain('recognitionLedger');
+    expect(route).toContain('state.privateLeague');
     expect(route).toContain("activeExperience === 'parent'");
     expect(route).toContain("activeExperience !== 'child'");
     expect(route).toContain('selectCanEnterChildExperience');
@@ -62,10 +62,14 @@ describe('R002b private League route integration', () => {
 
   it('uses a provenance-tagged summary without manufacturing hidden task history', () => {
     const presentation = source('src/features/league/presentation.ts');
+    const authority = source('src/features/league/recognitionRuntime.ts');
 
     expect(presentation).toContain("provenance: 'approved_synthetic_reset_summary'");
     expect(presentation).not.toContain('fixture-private-league-task');
-    expect(presentation).toContain("actionKind !== 'eligible_household_acquisition'");
-    expect(presentation).toContain("sourceScope !== 'household'");
+    expect(authority).toContain('evaluateChallengeLeafEligibility');
+    expect(authority).toContain("value.visibilityScope !== 'household'");
+    expect(authority).toContain("value.categoryId !== 'green_impact'");
+    expect(authority).not.toContain('createFamilyLeagueWeek');
+    expect(authority).not.toContain('recognition:league-reset:');
   });
 });
