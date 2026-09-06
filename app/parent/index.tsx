@@ -7,6 +7,10 @@ import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSu
 import { Button, Screen, Text } from '@/components/primitives';
 import { GhafIcon } from '@/components/access';
 import {
+  ReturningWelcomeDialog,
+  type ReturningWelcomeUpdate,
+} from '@/components/session/ReturningWelcomeDialog';
+import {
   ParentAdjustmentReview,
   ParentCanopySummaryCard,
   ParentChildrenSection,
@@ -89,6 +93,10 @@ export default function ParentHomeScreen() {
   );
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
   const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const returningUserWelcome = usePrototypeStore((state) => state.returningUserWelcome);
+  const dismissReturningUserWelcome = usePrototypeStore(
+    (state) => state.dismissReturningUserWelcome,
+  );
   const progressEntryRef = useRef<View | null>(null);
   const homeScrollOffsetRef = useRef(0);
   const [adjustmentError, setAdjustmentError] = useState<string | null>(null);
@@ -204,6 +212,7 @@ export default function ParentHomeScreen() {
     : t('parentHome.readyStatus');
   const activeChild = children[activeChildId];
   const remainingLeaves = Math.max(0, canopy.goalLeaves - canopy.contributionLeaves);
+  const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
   const childItems: readonly ParentChildSummaryItem[] = PARENT_NEXT_ACTIONS.map((action) => ({
     id: action.childId,
     name: localize(children[action.childId].displayName, locale),
@@ -335,6 +344,34 @@ export default function ParentHomeScreen() {
                 : visibleJourney.lifecycle === 'submitted'
                   ? t('parentHome.reviewTask')
                   : t('r002aTasks.openChild');
+  const parentWelcomeUpdates: readonly ReturningWelcomeUpdate[] = [
+    {
+      body: journey
+        ? t('r003.welcomeBack.parentTaskBody', {
+            status: lifecycleStatus,
+            task: localize(journey.task.content.title, locale),
+          })
+        : t('r003.welcomeBack.parentReadyBody'),
+      icon: 'leaf',
+      id: 'task',
+      title: journey
+        ? t('r003.welcomeBack.parentTaskTitle')
+        : t('r003.welcomeBack.parentReadyTitle'),
+    },
+    {
+      body: t('r003.welcomeBack.familyProgressBody', {
+        current: formatter.format(canopy.contributionLeaves),
+        goal: formatter.format(canopy.goalLeaves),
+      }),
+      icon: 'ghaf-tree',
+      id: 'family',
+      onPress: () => {
+        dismissReturningUserWelcome();
+        router.push('/parent/family' as Href);
+      },
+      title: t('r003.welcomeBack.familyProgressTitle'),
+    },
+  ];
 
   if (section === 'tasks') {
     return (
@@ -734,6 +771,20 @@ export default function ParentHomeScreen() {
           {t('parentHome.syntheticPrivacyBoundary')}
         </Text>
       </View>
+      <ReturningWelcomeDialog
+        actionLabel={t('r003.welcomeBack.continue')}
+        direction={direction}
+        language={locale}
+        message={t('r003.welcomeBack.parentMessage', {
+          family: localize(householdName, locale),
+        })}
+        onDismiss={dismissReturningUserWelcome}
+        summaryLabel={t('r003.welcomeBack.privateSummary')}
+        testID="parent-returning-welcome"
+        title={t('r003.welcomeBack.parentTitle')}
+        updates={parentWelcomeUpdates}
+        visible={returningUserWelcome?.kind === 'returning_parent'}
+      />
     </R002aScreen>
   );
 }

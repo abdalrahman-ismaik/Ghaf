@@ -55,6 +55,19 @@ export default function ParentVerificationScreen() {
     router.replace(entryHref);
   }, [cancelParentVerification, entryHref, router, t]);
 
+  const enterExistingFamily = useCallback(() => {
+    const completed = completeParentOnboarding();
+    if (!completed.ok) {
+      setError(t('access.states.interrupted'));
+      setBusy(false);
+      return false;
+    }
+    const destination =
+      childAccess.status === 'pairing_pending' ? '/parent/settings/devices' : '/parent';
+    router.replace(destination as Href);
+    return true;
+  }, [childAccess.status, completeParentOnboarding, router, t]);
+
   useEffect(() => {
     if (parentOnboarding.status !== 'code_sent' || resendSeconds <= 0) return;
     const timeout = setTimeout(() => {
@@ -71,6 +84,12 @@ export default function ParentVerificationScreen() {
     return () => subscription.remove();
   }, [returnToEntry]);
 
+  useEffect(() => {
+    if (parentOnboarding.status !== 'verified' || !parentOnboarding.completionReceipt) return;
+    const frame = requestAnimationFrame(enterExistingFamily);
+    return () => cancelAnimationFrame(frame);
+  }, [enterExistingFamily, parentOnboarding.completionReceipt, parentOnboarding.status]);
+
   const verify = async () => {
     if (isVerifying || code.length !== 6) return;
     setBusy(true);
@@ -86,15 +105,7 @@ export default function ParentVerificationScreen() {
       return;
     }
     if (parentOnboarding.completionReceipt) {
-      const completed = completeParentOnboarding();
-      if (!completed.ok) {
-        setError(t('access.states.interrupted'));
-        setBusy(false);
-        return;
-      }
-      const destination =
-        childAccess.status === 'pairing_pending' ? '/parent/settings/devices' : '/parent';
-      router.replace(destination as Href);
+      enterExistingFamily();
       return;
     }
     router.replace('/access/parent/family-basics');

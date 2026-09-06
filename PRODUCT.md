@@ -43,6 +43,14 @@ three-leaf loop with no visible technical loading copy; the background warm-up h
 status. Every access/setup screen uses the shared raster brand lockup and leaf-shadow background
 without changing its authentication-looking logic.
 
+An established synthetic family never repeats first-family creation after returning Parent
+verification. The existing immutable local completion receipt is reused and Parent Home opens
+directly. A Child using an already paired local fixture likewise opens that Child's Today
+dashboard. Each qualifying return may show one dismissible role-specific welcome dialog over the
+dashboard with up to two current, already-authorized in-app updates. This is a private local
+orientation summary—not push delivery, remote sync, a durable inbox, or a new access/data
+authority. Fresh family creation and first Child pairing do not show it.
+
 The remote implementation is preserved behavior, not permission to change product outcomes. The
 six local-only commits remain unapplied candidate provenance; any compatible presentation must be
 reconstructed over `76fa682` rather than cherry-picked from the conflicting history.

@@ -130,6 +130,16 @@ type ActiveChildAssignmentJourney = PrototypeJourney & {
 };
 type MangroveLearningByProfile = Readonly<Record<SyntheticChildId, MangroveLearningState>>;
 
+export type ReturningUserWelcome =
+  | {
+      readonly kind: 'returning_parent';
+      readonly householdId: 'household_al_noor';
+    }
+  | {
+      readonly kind: 'returning_child';
+      readonly childId: SyntheticChildId;
+    };
+
 const childVoiceController = createChildVoiceController(serviceRegistry);
 const parentOnboardingController = createParentOnboardingController(serviceRegistry.access);
 const childAccessController = createChildAccessController(
@@ -197,6 +207,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly sharedGrowth: SharedGrowthState;
   readonly revealBundleQueue: RevealBundleQueue;
   readonly parentOnboarding: ParentOnboardingView;
+  readonly returningUserWelcome: ReturningUserWelcome | null;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
   readonly ageAdaptedCoachResult: AgeAdaptedCoachResult | null;
@@ -231,6 +242,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly handoffApprovedChildPairing: () => ServiceResult<ChildAccessView>;
   readonly completeChildPairing: () => ServiceResult<ChildAccessView>;
   readonly authorizeChildExperience: () => ServiceResult<ChildAccessView>;
+  readonly dismissReturningUserWelcome: () => void;
   readonly signOutExperience: () => ServiceResult<true>;
   readonly getFamilyReward: () => ServiceResult<FamilyRewardPresentation>;
   readonly markFamilyRewardGiven: () => ServiceResult<FamilyRewardPresentation>;
@@ -745,6 +757,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   sharedGrowth: initialSharedGrowth,
   revealBundleQueue: createEmptyRevealBundleQueue(),
   parentOnboarding: parentOnboardingController.getView(),
+  returningUserWelcome: null,
   parentGuideSuggestion: null,
   childCoachResult: null,
   ageAdaptedCoachResult: null,
@@ -763,7 +776,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_TRANSITION', 'Sign out before starting Parent verification');
     }
     const result = parentOnboardingController.requestVerification(input);
-    set({ parentOnboarding: parentOnboardingController.getView() });
+    set({ parentOnboarding: parentOnboardingController.getView(), returningUserWelcome: null });
     return result;
   },
 
@@ -806,9 +819,16 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   completeParentOnboarding: () => {
-    if (get().activeExperience === 'child') {
+    const state = get();
+    if (state.activeExperience === 'child') {
       return failure('INVALID_TRANSITION', 'Sign out before completing Parent access');
     }
+    const returningHouseholdId =
+      state.activeExperience === 'signed_out' &&
+      state.parentOnboarding.status === 'verified' &&
+      state.parentOnboarding.completionReceipt
+        ? state.parentOnboarding.completionReceipt.householdId
+        : null;
     const result = parentOnboardingController.complete(R001_ONBOARDING_TIME);
     if (result.ok) {
       const locale = result.data.appLanguage;
@@ -818,6 +838,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         locale,
         direction: getLocaleDirection(locale),
         role: 'parent',
+        returningUserWelcome: returningHouseholdId
+          ? { kind: 'returning_parent', householdId: returningHouseholdId }
+          : null,
       });
     } else {
       set({ parentOnboarding: parentOnboardingController.getView() });
@@ -847,21 +870,32 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_TRANSITION', 'Sign out before choosing a Child profile');
     }
     const result = childAccessController.selectProfile(childId);
-    set({ childAccess: childAccessController.getView() });
+    set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
     return result;
   },
 
   verifyChildCredential: (value) => {
-    if (get().activeExperience !== 'signed_out') {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before verifying a Child credential');
     }
+    const selectedChildId = state.childAccess.selectedChildId;
+    const hasActivePairing = Boolean(
+      selectedChildId &&
+      state.childAccess.pairedDevices.some(
+        (device) => device.childId === selectedChildId && device.status === 'paired',
+      ),
+    );
     const result = childAccessController.verifyCredential(value, R001_ONBOARDING_TIME);
-    set({ childAccess: childAccessController.getView() });
+    set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
     if (result.ok && result.data.canEnterChildExperience && result.data.selectedChildId) {
       set({
         activeChildId: result.data.selectedChildId,
         activeExperience: 'child',
         role: 'child',
+        returningUserWelcome: hasActivePairing
+          ? { kind: 'returning_child', childId: result.data.selectedChildId }
+          : null,
       });
     }
     return result;
@@ -904,6 +938,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       activeExperience: 'signed_out',
       parentOnboarding: parentOnboardingController.getView(),
       role: 'child',
+      returningUserWelcome: null,
     });
     return success(childAccessController.getView());
   },
@@ -923,6 +958,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         activeChildId: childAccess.selectedChildId,
         activeExperience: 'child',
         role: 'child',
+        returningUserWelcome: null,
       });
     }
     return result;
@@ -940,6 +976,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return childAccessController.authorizeChildExperience(R001_ONBOARDING_TIME);
   },
 
+  dismissReturningUserWelcome: () => set({ returningUserWelcome: null }),
+
   signOutExperience: () => {
     const state = get();
     if (state.activeExperience === 'parent') {
@@ -953,6 +991,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       activeExperience: 'signed_out',
       childAccess: childAccessController.getView(),
       parentOnboarding: parentOnboardingController.getView(),
+      returningUserWelcome: null,
     });
     return success(true);
   },
@@ -1225,6 +1264,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       sharedGrowth: nextSharedGrowth,
       revealBundleQueue: createEmptyRevealBundleQueue(),
       parentOnboarding: onboardingReset.data,
+      returningUserWelcome: null,
       parentGuideSuggestion: null,
       childCoachResult: null,
       ageAdaptedCoachResult: null,

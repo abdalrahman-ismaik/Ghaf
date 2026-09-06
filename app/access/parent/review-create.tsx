@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'expo-router';
+import { Redirect, usePathname, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -92,6 +92,9 @@ export default function ReviewCreateScreen() {
     return () => subscription.remove();
   }, [goBack, parentOnboarding.status]);
 
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
+  }
   if (!canReview) return null;
 
   const ageLabel = {

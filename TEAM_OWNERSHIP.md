@@ -6,6 +6,42 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Returning-family Entry and Welcome Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, `app/access/parent/**`,
+`app/{parent,child}/index.tsx`, new `src/components/session/**`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, and
+`tests/{r003-returning-family-entry,r003-screen-flow}.test.ts` only.
+
+**Scope**: Keep first-family creation available only when the immutable local household receipt is
+absent. A verified returning Parent with that receipt must reuse the existing family and land on
+Parent Home; a returning Child on an active paired-device fixture must land on Today. Record a
+one-use, role-bound presentation signal only after those returning sign-ins, then show an
+Arabic-first private local update dialog over the corresponding dashboard. The dialog may read
+only data already visible to that role, must be dismissible, and must not claim push delivery,
+remote sync, production persistence, or a second household. First-family success, new Child
+pairing, access separation, reset, default-off flags, route count, existing authorities, theme,
+and protected user work remain unchanged. No dependency, asset, URL, push, merge, deployment, or
+release activation is authorized.
+
+**Completion — 2026-09-06**: Root added one transient, role-bound returning-user presentation
+signal derived only from the established Parent receipt or active Child paired-device fixture.
+Returning Parent verification now reuses the existing household and enters Parent Home; returning
+Child credentials enter that Child's Today screen. Fresh Parent setup and first Child pairing do not
+set the signal. One shared bilingual Soft Geometric modal presents at most two current, private,
+role-authorized updates and clears on dismiss, navigation, sign-out, handoff, or reset. RED recorded
+5 expected failures; final focused coverage passed 5 tests, the integrated batch passed 4 files /
+35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint, formatting, dependency
+alignment, Git whitespace, detector, and the 39-route web export passed. Firefox verified fresh and
+returning Parent/Child journeys plus Arabic/English 320×720 and 390×844 dialog layouts with no
+horizontal overflow or page errors. Physical Android and assistive-technology checks remain
+`BLOCKED / NOT RUN` because ADB found no target. The reservation is released at this local
+checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Ordered Splash-to-loading Startup Window
 
 **Owner and only writer**: `/root`

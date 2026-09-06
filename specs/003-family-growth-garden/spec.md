@@ -18,6 +18,48 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Returning-family Entry and Welcome Amendment — 2026-09-06
+
+The immutable local Parent completion receipt remains the sole authority that this synthetic
+prototype family already exists. After successful returning-Parent verification, the application
+must reuse that receipt, enter the existing Parent experience, and navigate to Parent Home without
+rendering Family Basics, Add First Child, Review Family, or Family Created. Direct or stale entry
+into a first-family route while verified with an existing receipt must fail closed back through
+the returning verification handoff and must never mutate or replace the household.
+
+Successful sign-in to an already paired Child fixture must likewise enter that Child's Today
+dashboard without exposing Parent setup or another Child profile. First-family completion and the
+first completion of a new Child pairing are not returning entries.
+
+Each qualifying returning sign-in creates one disposable, role-bound dashboard-presentation
+signal. Parent Home or Child Today consumes it through a dismissible Arabic-first/English-
+equivalent welcome dialog that identifies the correct role/user and summarizes at most two current
+local updates already authorized on that dashboard. Parent content remains Parent-only; Child
+content is limited to that Child's own task and permanent personal Garden progress. The dialog is
+an in-app local summary, not a push notification, remote sync, persistence guarantee, or new data
+authority. Dismissal, sign-out, handoff, or deterministic reset clears the signal; opening an
+update clears it before following the existing route/action.
+
+- **FR-180**: A verified Parent with an existing completion receipt MUST bypass every first-family
+  creation screen, reuse the receipt idempotently, and land on the existing Parent dashboard.
+- **FR-181**: A Child credential accepted through an existing active paired-device fixture MUST
+  land on that Child's Today dashboard; new pairing completion MUST NOT be classified as returning.
+- **FR-182**: Returning Parent and Child entries MUST set exactly one transient role/profile-bound
+  welcome signal; first-family creation, sign-out, role handoff, dismissal, and reset MUST leave it
+  absent.
+- **FR-183**: Parent Home and Child Today MUST show the signal as one accessible, reduced-motion-
+  aware, dismissible Soft Geometric dialog containing no more than two role-authorized local
+  updates and one dominant continuation action.
+- **FR-184**: Returning summaries MUST use bilingual resources, 48dp targets, logical RTL/LTR
+  layout, tabular locale-aware values, and explicit local/private wording; they MUST NOT imply push
+  delivery, remote sync, production authentication, or durable notification history.
+- **SC-048**: Focused state and route tests prove fresh creation receives no welcome, returning
+  Parent/Child sign-ins receive the correct one-use signal, every clear boundary removes it, and a
+  completed family can never render or mutate first-family setup.
+- **SC-049**: Arabic RTL and English LTR proxy inspection at 320×720 and 390×844 shows the dialog
+  over each correct dashboard with readable long copy, no overflow, correct Back/dismiss behavior,
+  and no role-private leakage; physical Android/TalkBack remains separately evidenced.
+
 ## R003 Ordered Splash-to-loading Startup Amendment — 2026-09-06
 
 This amendment supersedes every earlier combined app-owned splash/loading duration where it

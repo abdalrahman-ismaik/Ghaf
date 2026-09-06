@@ -1,5 +1,19 @@
 # Prototype Limitations
 
+## Returning-family local summary — 2026-09-06
+
+The returning-family decision relies on the prototype's in-memory immutable completion receipt or
+synthetic paired-device fixture. It is not durable account storage, production authentication,
+household discovery, recovery, or migration. A runtime reload or deterministic reset may remove
+that local state and therefore can return to first-run behavior.
+
+The Parent/Child welcome is a one-use in-app dashboard summary assembled from current local state
+already visible to that role. It is not a push notification, inbox, server timestamp, background
+sync, or proof that anything changed while the user was away. It stores no notification history
+and introduces no cross-household or cross-profile data. Browser/source checks cannot establish
+native modal focus, Android Back, TalkBack reading order, OS font-scale behavior, or physical-device
+motion quality.
+
 ## First-run and transition presentation — 2026-09-06
 
 The onboarding completion marker exists only for the current in-memory app session; it is not an

@@ -1,5 +1,28 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Returning-family Entry and Welcome Addendum — 2026-09-06
+
+Extend the existing Zustand access orchestration with a presentation-only discriminated signal for
+`returning_parent` or `returning_child`. Set it only when Parent completion begins from a verified
+state that already owns the immutable completion receipt, or when Child credential verification
+enters through an active paired-device fixture. Clear it on first-family completion, first pairing,
+dismissal, sign-out, Parent-to-Child handoff, and reset. Keep authorization in the existing Parent
+and Child controllers; no route or dialog calculates access.
+
+Harden Family Basics, Add First Child, and Review Family so `verified + completionReceipt` redirects
+to the existing verification handoff, which idempotently enters Parent Home. Keep Family Created
+available only for the just-created path, and redirect a returning presentation signal away from
+it. Add one reusable `ReturningWelcomeDialog` under `src/components/session/`, rendered as a native
+modal over Parent Home and Child Today. Compose at most two rows from each dashboard's already-
+authorized task/canopy or task/personal-Garden state, clear the signal before using an existing
+action, and reuse Alexandria/Readex, Soft Geometric tokens, logical layout, safe areas, native
+focus, 48dp controls, and a reduced-motion-aware fade.
+
+Drive the change with focused RED store/route/presentation tests, then run typecheck, lint, format,
+the full regression suite, route/reset/claim scans, the Impeccable detector, bilingual compact web
+inspection, and available Android evidence. Do not add persistence, a notification service, a
+dependency, a route, a remote call, or a new product authority.
+
 ## R003 Ordered Splash-to-loading Startup Addendum — 2026-09-06
 
 Model root startup as `splash | loading | complete` rather than one boolean overlay. Keep the

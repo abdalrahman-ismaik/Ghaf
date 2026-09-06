@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { BackHandler, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -173,6 +173,9 @@ export default function AddFirstChildScreen() {
     return () => subscription.remove();
   }, [goBack, parentOnboarding.status]);
 
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
+  }
   if (parentOnboarding.status !== 'verified' || !familyIsValid) return null;
 
   const toggleAccessibility = (option: BasicAccessibilityDefault) => {

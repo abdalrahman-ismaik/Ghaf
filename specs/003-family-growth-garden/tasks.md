@@ -1215,3 +1215,36 @@ distinct loading state before onboarding.
       produced zero page errors. Web total splash time included development bundling and critical
       pre-handoff preparation; the post-handoff code token is exactly 2,000 ms. Physical Android
       first-frame timing and motion remain `BLOCKED / NOT RUN` because ADB returned no target.
+
+---
+
+## Phase 39: Returning-family Entry and Dashboard Welcome
+
+**Purpose**: Keep established families out of first-family setup and orient each returning role
+with a concise private summary over its own dashboard.
+
+- [x] T279 Re-read the active access/design/safety contract, inspect existing Parent receipts and
+      Child pairing authority, reserve exact writer boundaries, and amend spec/plan/tasks before
+      runtime work.
+- [x] T280 Write focused RED state and source tests proving fresh setup/pairing receives no welcome,
+      returning Parent/Child entry receives exactly one role-bound signal, clear boundaries remove
+      it, and completed families cannot render the first-family routes.
+- [x] T281 Implement the transient store signal and hardened returning-Parent route handoff without
+      changing controller authority, receipt semantics, route count, reset, or first-family success.
+- [x] T282 Build and integrate one bilingual, accessible, reduced-motion-aware Soft Geometric
+      welcome dialog over Parent Home and Child Today using only role-authorized current state and
+      existing actions.
+- [x] T283 Run focused/full tests, typecheck, lint, format, route/reset/claim checks, detector,
+      bilingual compact browser inspection, and available Android evidence; reconcile product,
+      design, limitations, runbook, ownership release, and the cohesive checkpoint.
+
+      Completed locally on 2026-09-06: RED recorded 5 expected failures in the new focused file;
+      final returning-entry coverage passed 5 tests, the integrated access/localization batch
+      passed 4 files / 35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint,
+      format, Expo dependency alignment, Git whitespace, the Impeccable detector, and the 39-route
+      web export passed. Fresh Parent setup retained Family Basics and first Child pairing showed no
+      return dialog. Existing Parent verification went directly to `/parent`; an already paired
+      Salem PIN went directly to `/child`. Arabic and English Parent/Child dialogs were inspected at
+      320×720 and 390×844 with contained copy, usable actions, no horizontal overflow, and zero page
+      errors. Physical Android, TalkBack, native Back/modal behavior, and OS font scale remain
+      `BLOCKED / NOT RUN` because `adb devices -l` returned no attached target.

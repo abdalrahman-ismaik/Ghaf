@@ -1,5 +1,34 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Returning-family Entry and Dashboard Welcome Record — 2026-09-06
+
+**Current classification:** locally validated implementation candidate; synthetic session-local
+entry and update presentation only, with physical Android modal behavior unobserved.
+
+Use a fresh local runtime to demonstrate that the first Parent family still reaches
+**لنبدأ بعائلتك** and that first Child pairing enters Today without a return dialog. After signing
+out without resetting, repeat Parent verification: the established household receipt bypasses all
+family-creation screens and opens Parent Home with one private welcome dialog. Repeat Salem's paired
+PIN entry: it opens Salem's Today screen with the Child-specific dialog. Each dialog presents at
+most two updates already authorized on that role's dashboard, can be dismissed by its action,
+backdrop, or native Back request, and does not reappear during ordinary dashboard navigation.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| RED/focused returning behavior | `PASSED` | RED: 5 expected failures; final focused file: 5 tests; integrated access/localization batch: 4 files / 35 tests |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 87 files / 1,063 tests |
+| Dependency/detector/whitespace | `PASSED` | Expo dependencies current; Impeccable detector returned `[]`; `git diff --check` clean |
+| Production web export | `PASSED` | 39 static routes; no route or dependency added |
+| Fresh Parent and Child boundary | `PASSED (Firefox web proxy)` | fresh Parent retained Family Basics and no welcome; first Child pairing entered Today without a welcome |
+| Returning role routing | `PASSED (Firefox web proxy)` | established Parent verification opened `/parent`; paired Salem PIN opened `/child`; neither traversed family creation |
+| Bilingual compact dialog | `PASSED (Firefox web proxy)` | Parent and Child inspected in Arabic and English at 320×720 and 390×844; all copy/actions contained, zero horizontal overflow |
+| Browser console | `PASSED` | zero page errors in final returning Parent and Child flows |
+| Physical Android modal, Back, TalkBack, safe area, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+
+Describe the dialog as a private local summary of current prototype state. Do not call it push
+notifications, remote sync, durable account history, production authentication, or cross-household
+data. Reset deliberately removes the household receipt and therefore restores first-family setup.
+
 ## R003 Ordered Splash-to-loading Startup Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; physical Android

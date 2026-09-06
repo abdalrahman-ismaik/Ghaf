@@ -7,6 +7,10 @@ import { GhafIcon } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { PrimaryButton, QuietButton, SecondaryButton, Text } from '@/components/primitives';
 import {
+  ReturningWelcomeDialog,
+  type ReturningWelcomeUpdate,
+} from '@/components/session/ReturningWelcomeDialog';
+import {
   ChildBottomNavigation,
   ChildGardenProgressCard,
   ChildHomeHeader,
@@ -116,6 +120,10 @@ export default function ChildHomeScreen() {
   const role = usePrototypeStore((state) => state.role);
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const returningUserWelcome = usePrototypeStore((state) => state.returningUserWelcome);
+  const dismissReturningUserWelcome = usePrototypeStore(
+    (state) => state.dismissReturningUserWelcome,
+  );
   const children = usePrototypeStore((state) => state.children);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const choicePool = usePrototypeStore((state) => state.choicePool);
@@ -334,6 +342,44 @@ export default function ChildHomeScreen() {
         return null;
     }
   })();
+  const showReturningWelcome =
+    returningUserWelcome?.kind === 'returning_child' &&
+    returningUserWelcome.childId === activeChildId;
+  const childTaskStatus = journey
+    ? t(STATUS_KEY_BY_LIFECYCLE[journey.lifecycle] ?? 'origin.prepared')
+    : null;
+  const childWelcomeUpdates: readonly ReturningWelcomeUpdate[] = [
+    {
+      body:
+        journey && currentTemplate && childTaskStatus
+          ? t('r003.welcomeBack.childTaskBody', {
+              status: childTaskStatus,
+              task:
+                currentTemplate.id === P0_RECYCLING_TEMPLATE.id
+                  ? t('childTask.title')
+                  : localize(currentTemplate.title, locale),
+            })
+          : t('r003.welcomeBack.childReadyBody'),
+      icon: 'leaf',
+      id: 'task',
+      title:
+        journey && currentTemplate
+          ? t('r003.welcomeBack.childTaskTitle')
+          : t('r003.welcomeBack.childReadyTitle'),
+    },
+    {
+      body: t('r003.welcomeBack.gardenBody', {
+        count: formatter.format(child.earnedSeeds),
+      }),
+      icon: 'ghaf-tree',
+      id: 'garden',
+      onPress: () => {
+        dismissReturningUserWelcome();
+        router.push('/garden');
+      },
+      title: t('r003.welcomeBack.gardenTitle'),
+    },
+  ];
 
   const footer = (
     <ChildBottomNavigation
@@ -720,6 +766,20 @@ export default function ChildHomeScreen() {
           {t('childHome.adjustmentKeptCurrent')}
         </Text>
       ) : null}
+      <ReturningWelcomeDialog
+        actionLabel={t('r003.welcomeBack.continue')}
+        direction={direction}
+        language={locale}
+        message={t('r003.welcomeBack.childMessage')}
+        onDismiss={dismissReturningUserWelcome}
+        summaryLabel={t('r003.welcomeBack.privateSummary')}
+        testID="child-returning-welcome"
+        title={t('r003.welcomeBack.childTitle', {
+          name: localize(child.displayName, locale),
+        })}
+        updates={childWelcomeUpdates}
+        visible={showReturningWelcome}
+      />
     </R002aScreen>
   );
 }

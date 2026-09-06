@@ -122,6 +122,28 @@ components:
 
 # Ghaf Design System
 
+## R003 returning-family welcome extension
+
+Returning users enter value immediately: an established Parent never sees Family Basics or Add
+First Child again, and an already paired Child never crosses Parent setup. Parent Home and Child
+Today may present one role-bound welcome dialog after successful return. It is a focused modal over
+the fully rendered dashboard, not another onboarding sequence or full-screen destination.
+
+The dialog uses the current Soft Geometric system: ivory scrim context, one bright surface,
+Alexandria heading, Readex body/control copy, emerald and mangrove functional accents, restrained
+continuous radii, and the existing small Ghaf icons. It contains a compact welcome block, an
+explicit private-local summary label, no more than two divider-separated update rows, and one
+dominant full-width continuation. Rows may invoke only existing authorized dashboard actions.
+There is no gradient, glass, decorative illustration, nested-card stack, badge count, notification
+bell, urgency color, streak pressure, or new navigation.
+
+Arabic is first and uses logical start/end alignment; mixed numbers are locale-formatted and
+tabular. The dialog scrolls within safe areas, remains usable at 320dp and 200% text, uses 48dp
+targets, exposes modal semantics and a polite focus announcement, and treats Android Back as
+dismissal. Standard motion is a native opacity fade; reduced motion presents the final state
+without animation. Dismissal is permanent for that local sign-in, while a later qualifying return
+creates a fresh summary from current authorized state.
+
 ## R003 first-run experience extension
 
 The first-run surface is an optional four-moment editorial sequence inside `/`, followed by the

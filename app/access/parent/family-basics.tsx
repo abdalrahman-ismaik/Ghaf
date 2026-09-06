@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -65,6 +65,9 @@ export default function FamilyBasicsScreen() {
     return () => subscription.remove();
   }, [goBack, parentOnboarding.status]);
 
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
+  }
   if (parentOnboarding.status !== 'verified') return null;
 
   const validateName = () => {
