@@ -7,11 +7,14 @@ import type {
   LocalChildHobby,
   LocalChildInterest,
   LocalSupportPreference,
+  NormalizedParentIdentifier,
   ParentOnboardingChildCount,
+  ParentIdentifierKind,
 } from './parentOnboarding';
 
-export const LOCAL_FAMILY_SCHEMA_VERSION = 1 as const;
-export const LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v1' as const;
+export const LOCAL_FAMILY_SCHEMA_VERSION = 2 as const;
+export const LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v2' as const;
+export const LEGACY_LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v1' as const;
 
 export interface LocalChildProfile {
   readonly id: SyntheticChildId;
@@ -36,6 +39,8 @@ export interface LocalFamilyRecord {
   readonly parent: {
     readonly id: 'parent_al_noor';
     readonly role: 'parent';
+    readonly normalizedIdentifier: string;
+    readonly identifierKind: ParentIdentifierKind;
   };
   readonly children: readonly LocalChildProfile[];
   readonly pairedChildIds: readonly SyntheticChildId[];
@@ -46,6 +51,7 @@ export interface LocalFamilyRecord {
 }
 
 export interface CreateLocalFamilyRecordInput {
+  readonly parentIdentifier: NormalizedParentIdentifier;
   readonly familyName: string;
   readonly appLanguage: LocaleCode;
   readonly children: readonly LocalChildProfile[];

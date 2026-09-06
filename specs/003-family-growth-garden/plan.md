@@ -1,5 +1,30 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Returning Parent Identifier Lookup Addendum — 2026-09-07
+
+Extend the existing device-local family record from schema 1 to schema 2 with one normalized
+synthetic Parent identifier and identifier kind. Keep the current platform repository boundary:
+SQLite-backed key/value storage on native, guarded localStorage on web, and memory in tests. Add a
+bounded repository migration from the prior valid schema-1 fixture to the canonical prepared
+`parent@example.com` identifier, write the migrated schema-2 record before removing the legacy
+key, and clear both keys during Parent reset. Continue rejecting corrupt and unknown records.
+
+Separate store intent for explicit first-family verification from returning sign-in verification.
+The returning command normalizes the candidate, compares it with the restored directory, and only
+then invokes the existing deterministic code controller. `NOT_FOUND` leaves the controller and
+access state unchanged. The create-family command fails when a directory/receipt already exists,
+and completion saves the controller's normalized identifier with the new family. Verification uses
+the closed `create-family` marker as the only path to Family Basics; every ordinary matching return
+reuses the receipt and enters Parent Home or the existing pending-pairing destination.
+
+Remove the fake fingerprint action and the Parent auth footer pills. Rewrite only bilingual Parent
+sign-in/sign-up/verification strings in neutral product language: do not claim code delivery or
+remote identity proof, and do not expose demo/synthetic/simulated/not-real labels on those screens.
+Keep the deterministic code, capability-truth fields, limitations, and runbook explicit in source
+and documentation. Drive the change with RED schema/store/source tests, then run focused tests,
+typecheck, lint, formatting, full tests, dependency/config checks, exports, compact bilingual web
+inspection, and available Android evidence.
+
 ## R003 Compact Audio Onboarding Addendum — 2026-09-07
 
 Refine only the existing `FirstRunOnboarding` composition: reveal each approved 1200×800 raster in
@@ -33,9 +58,9 @@ Add the smallest durable demo boundary: one versioned JSON family-directory reco
 a `LocalFamilyRepository` contract. Android/iOS use `expo-sqlite/kv-store`, which is backed by
 SQLite and persists across app restarts; web preview uses guarded `localStorage`; Vitest uses an
 in-memory adapter. Keep the adapter behind the service registry, validate all data on read and
-write, use one namespaced key, and make synchronous reads/writes intentionally small so the access
-decision and Parent reset cannot race. Do not add an ORM, SQLCipher claim, server, account table,
-or second application state library.
+write, use one current namespaced key plus the bounded legacy key during schema migration, and make
+synchronous reads/writes intentionally small so the access decision and Parent reset cannot race.
+Do not add an ORM, SQLCipher claim, server, account table, or second application state library.
 
 Extend the Parent onboarding draft with a bounded Child count and two canonical profile slots while
 retaining the established synthetic identifiers under the surface. Reuse the existing Child route

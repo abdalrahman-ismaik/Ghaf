@@ -292,14 +292,19 @@ provenance, content, and human-review gates pass.
 - R001 PNGs are canonical composition references for `/` and the six historical Parent-onboarding
   steps except `/access/parent/sign-in`. For that route, the user-authorized 2026-09-06 usability
   layout centers screen-level orientation/supporting copy, retains logical-start mixed-identifier
-  fields, and keeps the filled credential, neutral biometric, and full-width outlined Create Family
-  hierarchy. Create Family now navigates without requesting verification.
+  fields, and keeps the filled credential plus full-width outlined Create Family hierarchy. The
+  simulated biometric action is removed. Sign-in checks the normalized identifier against the
+  schema-2 local family record before verification; a matching Parent bypasses setup after the
+  deterministic code, while an unknown identifier stays on sign-in. Create Family navigates
+  without requesting verification.
 - `/access/parent/sign-up` is an R003 code-native Soft Geometric candidate because no approved
   Stitch frame exists. It uses the organic access shell, a tonal 64dp family icon plate, centered
   Alexandria heading and Readex orientation, one mixed phone/email field, one filled full-width
   continuation, a concise returning-family prompt, and one full-width emerald outlined sign-in
-  action. It reuses the existing deterministic verification authority and never implies a real
-  account or second household.
+  action. It reuses the existing deterministic verification authority and binds the normalized
+  identifier only when the complete family is saved. Sign-in, sign-up, and verification use neutral
+  copy with no demo/not-real footer and no claim that a message was sent or identity was remotely
+  proven. The internal product boundary remains one local synthetic household.
   Exported HTML/CSS/JS remains read-only measurement/structure evidence and never runtime code.
 - Selected R002a PNGs are candidate composition references for the existing Parent Home, Parent
   Tasks/Builder, Child Today/task, Parent review/support, Child follow-up, and Garden surfaces. The

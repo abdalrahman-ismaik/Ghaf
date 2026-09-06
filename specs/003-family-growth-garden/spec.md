@@ -689,6 +689,49 @@ household can be created or overwrite the completed household. Screen-level orie
 supporting copy are centered, while mixed phone/email labels, values, helpers, and errors retain
 logical-start alignment and automatic bidi handling.
 
+### R003 returning Parent identifier lookup addendum — 2026-09-07
+
+The single device-local family directory MUST persist the normalized synthetic Parent identifier
+and its email/phone kind, but MUST NOT persist the deterministic verification code, an authenticated
+session, a password, biometric input, or a provider token. Explicit sign-up MAY create the one
+family only when no completed directory exists. Atomic family creation MUST bind that directory to
+the same normalized identifier that passed the existing deterministic code step.
+
+Returning Parent sign-in MUST normalize the submitted identifier and compare it with the saved
+directory before opening verification. A missing family, unavailable directory, or non-matching
+identifier MUST fail closed on sign-in and MUST NOT request a code, authenticate a Parent, or enter
+Family Basics, Child setup, review, or success. Matching is case-insensitive for email and uses the
+existing canonical phone normalization. After the matching identifier and deterministic code pass,
+the immutable completion receipt MUST be reused and Parent Home MUST open directly, except that the
+existing pending Child-pairing destination remains authoritative.
+
+The prior schema-1 fixture MAY migrate once to schema 2 by binding only the canonical prepared
+`parent@example.com` Parent identifier; corrupt and unknown versions remain rejected. Parent reset
+MUST clear both current and legacy keys. Parent access-screen copy MUST be concise and neutral: it
+MUST NOT display demo, synthetic, simulated, fake, or “not real” authentication disclaimers, and it
+MUST NOT claim that a code was sent or that remote identity verification occurred. The simulated
+biometric shortcut MUST be removed. Product documentation, tests, and runbook evidence MUST retain
+the truthful deterministic local-prototype boundary; this addendum does not authorize production
+authentication or storage of real credentials.
+
+- **FR-202**: Family creation MUST save the normalized Parent identifier and kind in the validated
+  schema-2 local directory only after the complete family record is ready to save.
+- **FR-203**: Returning Parent verification MUST be requestable only after an exact normalized
+  identifier match against the available local family record; missing or mismatched records return
+  `NOT_FOUND` without changing verification or access state.
+- **FR-204**: A matching returning Parent who passes the deterministic code MUST reuse the existing
+  receipt and bypass every create-family route; verification without the closed `create-family`
+  marker MUST never fall forward into Family Basics.
+- **FR-205**: Parent sign-in/sign-up/verification MUST omit prototype-authentication disclaimers and
+  the simulated biometric action while avoiding any claim of message delivery or remote identity
+  proof. Internal capability truth and deterministic test fixtures remain unchanged.
+- **SC-054**: Focused tests prove schema-2 round-trip, schema-1 canonical migration, reset clearing,
+  normalized email/phone matching, mismatch denial without state mutation, explicit-sign-up-only
+  creation, and direct returning-Parent handoff.
+- **SC-055**: Bilingual source/resource tests prove no Parent access screen renders demo,
+  synthetic, simulated, “not real,” fake-biometric, or message-sent copy and that missing-origin
+  verification cannot enter first-family setup.
+
 ### Preserved behavior versus blocked expansion
 
 The ten-route journey, Schema-3 48→60 personal-Seed fixture, and `/circle` presentation documented

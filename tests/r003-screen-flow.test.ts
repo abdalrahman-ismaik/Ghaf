@@ -60,8 +60,13 @@ describe('R003 complete screen journey', () => {
     expect(parentDevices).toContain('approveChildPairing');
     expect(parentDevices).toContain('handoffApprovedChildPairing');
     expect(parentSignIn).toContain("activeExperience === 'parent' ? '/parent' : '/'");
+    expect(parentSignIn).toContain('requestExistingParentVerification');
+    expect(parentSignIn).not.toContain('requestParentVerification');
+    expect(parentSignIn).not.toContain('simulated-biometric-button');
+    expect(parentSignIn).not.toContain('<PrototypePill');
     expect(parentSignIn).toContain('router.push(signUpHref)');
     expect(parentSignUp).toContain('requestParentVerification');
+    expect(parentSignUp).not.toContain('<PrototypePill');
     expect(parentSignUp).toContain('flow=create-family');
     expect(parentSignUp).toContain('parentOnboarding.completionReceipt');
     expect(parentSignUp).toContain('<Redirect href="/access/parent/sign-in" />');
@@ -70,6 +75,7 @@ describe('R003 complete screen journey', () => {
     expect(parentVerification).toContain("'/access/parent/sign-in'");
     expect(parentVerification).toContain('parentOnboarding.completionReceipt');
     expect(parentVerification).toContain('completeParentOnboarding()');
+    expect(parentVerification).not.toContain('<PrototypePill');
     expect(parentVerification).toContain("'/parent'");
     expect(parentVerification).toContain('router.replace(destination as Href)');
     expect(parentVerification).toContain("childAccess.status === 'pairing_pending'");

@@ -13,12 +13,14 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   return result.data;
 }
 
-async function verifyAndEnterParent() {
+async function verifyAndEnterParent(returning = false) {
   expectOk(
-    usePrototypeStore.getState().requestParentVerification({
-      identifier: 'parent@example.com',
-      networkAvailable: false,
-    }),
+    usePrototypeStore
+      .getState()
+      [returning ? 'requestExistingParentVerification' : 'requestParentVerification']({
+        identifier: 'parent@example.com',
+        networkAvailable: false,
+      }),
   );
   expectOk(await usePrototypeStore.getState().verifyParentCode(PARENT_VERIFICATION_CODE));
   expectOk(usePrototypeStore.getState().completeParentOnboarding());
@@ -34,7 +36,7 @@ async function pairSalemForTheFirstTime() {
   expectOk(usePrototypeStore.getState().selectChildAccessProfile('child_salem'));
   expectOk(usePrototypeStore.getState().verifyChildCredential('2468'));
   expectOk(usePrototypeStore.getState().requestChildPairing());
-  await verifyAndEnterParent();
+  await verifyAndEnterParent(true);
   expectOk(usePrototypeStore.getState().approveChildPairing());
   expectOk(usePrototypeStore.getState().handoffApprovedChildPairing());
   expectOk(usePrototypeStore.getState().completeChildPairing());
@@ -49,7 +51,7 @@ describe('R003 returning-family session entry', () => {
     await createFreshFamily();
     expectOk(usePrototypeStore.getState().signOutExperience());
 
-    await verifyAndEnterParent();
+    await verifyAndEnterParent(true);
 
     expect(usePrototypeStore.getState().returningUserWelcome).toEqual({
       kind: 'returning_parent',
@@ -82,13 +84,13 @@ describe('R003 returning-family session entry', () => {
   it('clears a returning signal on sign-out, Parent handoff, and deterministic reset', async () => {
     await createFreshFamily();
     expectOk(usePrototypeStore.getState().signOutExperience());
-    await verifyAndEnterParent();
+    await verifyAndEnterParent(true);
     expect(usePrototypeStore.getState().returningUserWelcome).not.toBeNull();
 
     expectOk(usePrototypeStore.getState().signOutExperience());
     expect(usePrototypeStore.getState().returningUserWelcome).toBeNull();
 
-    await verifyAndEnterParent();
+    await verifyAndEnterParent(true);
     expect(usePrototypeStore.getState().returningUserWelcome).not.toBeNull();
     expectOk(usePrototypeStore.getState().resetPrototype());
     expect(usePrototypeStore.getState().returningUserWelcome).toBeNull();
@@ -110,10 +112,16 @@ describe('R003 returning-family route and presentation contract', () => {
     }
 
     const verification = source('app/access/parent/verification.tsx');
-    expect(verification).toContain(
-      "parentOnboarding.status !== 'verified' || !parentOnboarding.completionReceipt",
-    );
+    expect(verification).toContain("parentOnboarding.status !== 'verified'");
+    expect(verification).toContain('!parentOnboarding.completionReceipt');
     expect(verification).toContain('completeParentOnboarding()');
+    expect(verification).toContain(
+      'if (!isCreateFamilyFlow && parentOnboarding.completionReceipt)',
+    );
+    expect(verification).toContain('return <Redirect href={entryHref} />');
+    expect(verification).not.toContain(
+      'parentOnboarding.status === \'verified\' && !parentOnboarding.completionReceipt) {\n    return <Redirect href="/access/parent/family-basics" />',
+    );
 
     const success = source('app/access/parent/family-created-success.tsx');
     expect(success).toContain("returningUserWelcome?.kind === 'returning_parent'");

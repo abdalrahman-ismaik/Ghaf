@@ -1424,3 +1424,37 @@ and voice control, and making narration replay reliable through prepared local a
       final console errors; first-screen web autoplay remains platform-limited. Physical Android,
       TalkBack, audio focus, font scale, and named Arabic/voice/rights review remain
       `BLOCKED / NOT RUN`; ADB returned no target.
+
+---
+
+## Phase 45: Returning Parent Identifier Lookup
+
+**Purpose**: Bind the one local family to its Parent identifier so returning sign-in can verify
+membership and always bypass first-family creation.
+
+- [x] T311 Re-read the active access/privacy/storage contract, inspect the current local record and
+      verification routes, reserve exact writer boundaries, and amend spec/plan/tasks before
+      behavior work.
+- [x] T312 Write RED schema, repository, store, route, and bilingual-copy tests for normalized
+      identifier persistence, schema-1 canonical migration, mismatch denial without state change,
+      explicit-sign-up-only creation, direct returning handoff, neutral copy, and removal of the
+      simulated biometric control.
+- [x] T313 Implement schema-2 local Parent identifier storage/migration and separate create-family
+      versus returning-sign-in store commands without persisting the deterministic code or session.
+- [x] T314 Harden sign-in/verification routing and rewrite the Parent access UI so a matched Parent
+      enters the existing family directly, an unknown identifier stays out of setup, and the three
+      auth screens show no demo/synthetic/not-real messaging or fake biometric action.
+- [x] T315 Run focused/full tests, typecheck, lint, format, dependency/config/route/privacy checks,
+      web/Android exports, compact bilingual browser inspection, and available physical Android
+      evidence; reconcile docs, release ownership, and one cohesive local commit without push,
+      merge, deployment, or release activation.
+
+      Completed locally on 2026-09-07: RED recorded 15 expected failures / 40 passes; the final
+      focused batch passed 6 files / 84 tests and the full suite passed 90 files / 1,090 tests.
+      Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git
+      whitespace, schema/privacy scans, 39-route web export (134 files), and Android JavaScript
+      export (103 files) passed. Firefox created the schema-2 family, inspected the normalized
+      Parent identifier, denied an unknown email without leaving sign-in, matched a differently
+      cased/space-padded email, and entered `/parent` after `424242` without setup. Arabic 390×844
+      and English 320×720 had no horizontal overflow or console errors. Physical Android and named
+      review remain `BLOCKED / NOT RUN`; `adb devices -l` returned no target.

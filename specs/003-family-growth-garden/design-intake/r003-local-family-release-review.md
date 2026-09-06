@@ -2,6 +2,8 @@
 
 **Prepared:** 2026-09-06
 
+**Revised:** 2026-09-07 — schema-2 Parent identifier lookup correction
+
 **Implementation status:** COMPLETE LOCAL DEMO CANDIDATE
 
 **Release status:** BLOCKED pending the physical Android and named-human gates below
@@ -14,18 +16,23 @@ live model, legal compliance, or release approval.
 
 ## Implementation checklist
 
-- [x] One strict schema-version-1 household record stores one synthetic Parent role and one or two
-      ordered configured Child roles.
+- [x] One strict schema-version-2 household record stores one normalized synthetic Parent lookup
+      identifier/kind and one or two ordered configured Child roles; a valid schema-1 fixture has
+      one bounded canonical migration.
 - [x] Native storage uses Expo SQLite key-value storage, web uses guarded localStorage, and tests
       use a deterministic memory adapter through one repository contract.
-- [x] The stored record excludes credentials, verification codes, task/Seed/Garden/League/Reward
-      ledgers, media, transcripts, notification history, and free-text Child notes.
+- [x] The stored record excludes passwords, verification codes, authenticated sessions,
+      task/Seed/Garden/League/Reward ledgers, media, transcripts, notification history, and
+      free-text Child notes.
 - [x] A complete record is validated and saved before first Parent authentication completes; an
       invalid, partial, unknown-version, or failed write cannot create an authenticated family.
 - [x] App initialization restores the validated family receipt and approved paired-Child markers
       without restoring a Parent or Child session.
 - [x] Returning Parent verification reuses the family, bypasses every first-family screen, opens
       Parent Home, and may show one Parent-authorized welcome summary.
+- [x] Returning Parent verification begins only after the submitted email/phone normalizes to the
+      saved record; a missing, mismatched, or unavailable record changes no verification/access
+      state.
 - [x] Returning paired Child verification opens only that Child's Today dashboard and may show one
       Child-authorized welcome summary.
 - [x] Fresh setup and first pairing do not show a returning-user welcome summary.
@@ -47,17 +54,25 @@ live model, legal compliance, or release approval.
       decision with the Parent.
 - [x] Arabic and English strings share the central resource, setup uses logical direction, and the
       current Soft Geometric botanical theme is reused without another UI library.
+- [x] Parent sign-in, sign-up, and verification omit the simulated biometric shortcut and visible
+      demo/not-real footer copy while making no code-delivery or remote-identity claim.
 
 ## Automated and source evidence
 
 | Check                                | Status   | Evidence                                                                                                                                                                            |
 | ------------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Local schema/repository              | `PASSED` | strict shape/version, corruption, invalid time, idempotent paired marker, failed-write preservation, and clear coverage                                                             |
+| Local schema/repository              | `PASSED` | schema-2 normalized Parent identifier/kind, schema-1 canonical migration, strict corruption/version rejection, idempotent paired marker, failed-write preservation, and two-key clear coverage |
 | Multi-child onboarding               | `PASSED` | indexed drafts, selected-count validation, immutable completion receipt restoration, and configured-profile authorization coverage                                                  |
 | Bounded personalization              | `PASSED` | deterministic output, opt-out, exact allowlist, and rejection of gender/identity/free-text/sensitive inputs                                                                         |
-| Store/access integration             | `PASSED` | configured-role filtering, paired-marker lifecycle, returning-role boundaries, role isolation, and reset clearing                                                                   |
-| Localization and presentation source | `PASSED` | Arabic/English key parity, shared design primitives, 48dp controls, keyboard-aware scroll, and labeled sparkle helper                                                               |
-| Final repository checks and exports  | `PASSED` | typecheck, zero-warning lint, format check, 90 files / 1,085 tests, Expo dependency/public config, 37 product routes, 121-file web and 90-file Android JS exports, clean whitespace |
+| Store/access integration             | `PASSED` | missing/mismatched identifier denial without state mutation, normalized email/phone match, explicit-sign-up-only creation, direct returning handoff, configured-role filtering, paired-marker lifecycle, and reset clearing |
+| Localization and presentation source | `PASSED` | Arabic/English key parity, neutral Parent auth copy, no simulated biometric/footer, shared design primitives, 48dp controls, keyboard-aware scroll, and labeled sparkle helper |
+| Final repository checks and exports  | `PASSED` | 2026-09-07 correction: typecheck, zero-warning lint, format check, 90 files / 1,090 tests, Expo dependency/public config, 39 static routes, 134-file web and 103-file Android JS exports, clean whitespace |
+
+The 2026-09-07 browser proxy created one family, inspected the schema-2 stored value, denied an
+unknown email on sign-in, matched a differently cased/space-padded saved email, and entered
+`/parent` after code verification without any setup route. Arabic 390×844 and English 320×720 had
+no horizontal overflow or console errors. The manual checklist below remains unchecked until the
+named physical-device and human-review runs occur.
 
 ## Manual demo checklist
 
@@ -95,6 +110,9 @@ compact browser proxy, then repeat the native-only section on the named Android 
 
 - [ ] Reload the application after family creation; verify the local family remains available but
       no Parent or Child session is silently restored.
+- [ ] Submit an unknown Parent email and confirm sign-in shows a concise error without opening
+      verification or any create-family screen; then submit the saved identifier with different
+      email case/whitespace or equivalent phone formatting and confirm it matches.
 - [ ] Complete returning Parent verification and confirm the app opens `/parent` directly without
       showing **لنبدأ بعائلتك**, Add Child, Review, or Success.
 - [ ] Confirm the Parent welcome dialog is over the fully rendered Parent dashboard, contains no
@@ -110,9 +128,10 @@ compact browser proxy, then repeat the native-only section on the named Android 
 
 - [ ] Exercise empty/too-short names, storage-unavailable copy, interruption/Back, offline mode,
       repeated Continue/Create taps, and a corrupted/unknown local record without partial access.
-- [ ] Inspect the device-local value and confirm it contains only the documented family/profile and
-      paired-marker fields—never credentials, task/reward/garden history, media, transcripts, or
-      free-text sensitive notes.
+- [ ] Inspect the device-local value and confirm it contains only the documented normalized Parent
+      lookup identifier/kind, family/profile, and paired-marker fields—never a verification code,
+      password, session, task/reward/garden history, media, transcripts, or free-text sensitive
+      notes.
 - [ ] Confirm every AI sparkle is attached to a real bounded assistant/helper action or disclosure,
       with no decorative implication of live inference, open chat, companionship, or autonomous
       approval.

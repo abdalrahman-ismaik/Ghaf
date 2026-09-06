@@ -45,6 +45,7 @@ export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from '.
 export {
   createLocalFamilyRepository,
   createMemoryLocalKeyValueStorage,
+  LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
   type LocalFamilyRepository,
   type LocalKeyValueStorage,

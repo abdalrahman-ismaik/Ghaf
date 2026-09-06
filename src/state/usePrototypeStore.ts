@@ -11,6 +11,7 @@ import { createChildAccessController, type ChildAccessView } from '../features/a
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
   createParentOnboardingController,
+  normalizeParentIdentifier,
   type ParentOnboardingCompletionReceipt,
   type ParentOnboardingDraftPatch,
   type ParentOnboardingHandoff,
@@ -262,6 +263,9 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly permissionProofSequence: number;
 
   readonly requestParentVerification: (
+    input: Parameters<typeof parentOnboardingController.requestVerification>[0],
+  ) => ServiceResult<ParentOnboardingView>;
+  readonly requestExistingParentVerification: (
     input: Parameters<typeof parentOnboardingController.requestVerification>[0],
   ) => ServiceResult<ParentOnboardingView>;
   readonly verifyParentCode: (code: unknown) => Promise<ServiceResult<ParentOnboardingView>>;
@@ -813,10 +817,43 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   permissionProofSequence: 0,
 
   requestParentVerification: (input) => {
-    if (get().activeExperience !== 'signed_out') {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before starting Parent verification');
     }
+    if (state.localFamily.status !== 'ready') {
+      return failure('INVALID_TRANSITION', 'The local family directory is unavailable');
+    }
+    if (state.localFamily.record || state.parentOnboarding.completionReceipt) {
+      return failure('INVALID_TRANSITION', 'Use returning Parent sign-in for this family');
+    }
     const result = parentOnboardingController.requestVerification(input);
+    set({ parentOnboarding: parentOnboardingController.getView(), returningUserWelcome: null });
+    return result;
+  },
+
+  requestExistingParentVerification: (input) => {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Sign out before starting Parent verification');
+    }
+    const normalized = normalizeParentIdentifier(input.identifier);
+    if (!normalized.ok) return { ok: false, error: normalized.error };
+    if (state.localFamily.status !== 'ready') {
+      return failure('INVALID_TRANSITION', 'The local family directory is unavailable');
+    }
+    const record = state.localFamily.record;
+    if (
+      !record ||
+      record.parent.normalizedIdentifier !== normalized.data.normalizedIdentifier ||
+      record.parent.identifierKind !== normalized.data.identifierKind
+    ) {
+      return failure('NOT_FOUND', 'The Parent identifier is not linked to this family');
+    }
+    const result = parentOnboardingController.requestVerification({
+      ...input,
+      identifier: normalized.data.normalizedIdentifier,
+    });
     set({ parentOnboarding: parentOnboardingController.getView(), returningUserWelcome: null });
     return result;
   },
@@ -864,6 +901,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (state.activeExperience === 'child') {
       return failure('INVALID_TRANSITION', 'Sign out before completing Parent access');
     }
+    if (state.activeExperience === 'parent') {
+      return parentOnboardingController.complete(R001_ONBOARDING_TIME);
+    }
     const returningHouseholdId =
       state.activeExperience === 'signed_out' &&
       state.parentOnboarding.status === 'verified' &&
@@ -872,9 +912,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         : null;
     let newlySavedFamily: LocalFamilyRecord | null = null;
     if (!returningHouseholdId) {
+      const parentIdentifier = parentOnboardingController.getPendingIdentifier();
+      if (!parentIdentifier) {
+        return failure('INVALID_TRANSITION', 'Complete Parent verification before family setup');
+      }
       const validated = validateCompleteParentOnboardingDraft(state.parentOnboarding.draft);
       if (!validated.ok) return { ok: false, error: validated.error };
       const created = createLocalFamilyRecord({
+        parentIdentifier,
         familyName: validated.data.familyName,
         appLanguage: validated.data.appLanguage,
         children: validated.data.children.slice(0, validated.data.childCount).map((child) => ({

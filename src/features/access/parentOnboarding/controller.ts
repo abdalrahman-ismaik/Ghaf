@@ -18,6 +18,7 @@ import type {
   ParentOnboardingView,
   ParentReportHandoff,
   ParentSharedGrowthAccessHandoff,
+  NormalizedParentIdentifier,
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
 import {
@@ -111,6 +112,7 @@ function cloneReceipt(
 export class ParentOnboardingController {
   private status: ParentOnboardingStatus = 'signed_out';
   private identifierKind: ParentOnboardingView['identifierKind'] = null;
+  private normalizedIdentifier: string | null = null;
   private maskedDestination: string | null = null;
   private delivery: ParentOnboardingView['delivery'] = null;
   private offlineFallbackUsed = false;
@@ -142,6 +144,15 @@ export class ParentOnboardingController {
     };
   }
 
+  getPendingIdentifier(): NormalizedParentIdentifier | null {
+    if (!this.normalizedIdentifier || !this.identifierKind || !this.maskedDestination) return null;
+    return {
+      normalizedIdentifier: this.normalizedIdentifier,
+      identifierKind: this.identifierKind,
+      maskedDestination: this.maskedDestination,
+    };
+  }
+
   requestVerification(input: {
     readonly identifier: unknown;
     readonly networkAvailable?: boolean;
@@ -154,6 +165,7 @@ export class ParentOnboardingController {
 
     this.verificationAttempt += 1;
     this.status = 'code_sent';
+    this.normalizedIdentifier = normalized.data.normalizedIdentifier;
     this.identifierKind = normalized.data.identifierKind;
     this.maskedDestination = normalized.data.maskedDestination;
     this.delivery = 'local_fixture';
@@ -607,6 +619,7 @@ export class ParentOnboardingController {
 
   private clearVerification(): void {
     this.status = 'signed_out';
+    this.normalizedIdentifier = null;
     this.identifierKind = null;
     this.maskedDestination = null;
     this.delivery = null;

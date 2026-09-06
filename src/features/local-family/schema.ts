@@ -6,7 +6,7 @@ import {
   type LocalFamilyRecord,
 } from '../../models/localFamily';
 import type { ParentOnboardingCompletionReceipt } from '../../models/parentOnboarding';
-import { toAccessLanguagePreference } from '../access/parentOnboarding';
+import { normalizeParentIdentifier, toAccessLanguagePreference } from '../access/parentOnboarding';
 
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001f\u007f-\u009f]/u;
 const CHILD_IDS = ['child_salem', 'child_alya'] as const;
@@ -44,6 +44,8 @@ const RECORD_KEYS = [
   'origin',
   'capabilityTruth',
 ] as const;
+const LEGACY_SCHEMA_VERSION = 1 as const;
+const LEGACY_PARENT_IDENTIFIER = 'parent@example.com' as const;
 const CHILD_KEYS = [
   'id',
   'role',
@@ -128,6 +130,23 @@ function validChild(value: unknown, expectedId: SyntheticChildId): value is Loca
   );
 }
 
+function validParent(value: unknown): value is LocalFamilyRecord['parent'] {
+  if (
+    !isRecord(value) ||
+    !hasOnlyKeys(value, ['id', 'role', 'normalizedIdentifier', 'identifierKind'])
+  ) {
+    return false;
+  }
+  const normalized = normalizeParentIdentifier(value.normalizedIdentifier);
+  return (
+    value.id === 'parent_al_noor' &&
+    value.role === 'parent' &&
+    normalized.ok &&
+    normalized.data.normalizedIdentifier === value.normalizedIdentifier &&
+    normalized.data.identifierKind === value.identifierKind
+  );
+}
+
 function cloneRecord(record: LocalFamilyRecord): LocalFamilyRecord {
   return {
     ...record,
@@ -158,10 +177,7 @@ export function parseLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRec
     value.householdId !== 'household_al_noor' ||
     !isText(value.familyName, 2, 60) ||
     !isEnum(value.appLanguage, LOCALES) ||
-    !isRecord(value.parent) ||
-    !hasOnlyKeys(value.parent, ['id', 'role']) ||
-    value.parent.id !== 'parent_al_noor' ||
-    value.parent.role !== 'parent' ||
+    !validParent(value.parent) ||
     !Array.isArray(value.children) ||
     value.children.length < 1 ||
     value.children.length > 2 ||
@@ -184,6 +200,38 @@ export function parseLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRec
   return { ok: true, data: cloneRecord(value as unknown as LocalFamilyRecord) };
 }
 
+export function migrateLegacyLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRecord> {
+  let value: unknown;
+  try {
+    value = JSON.parse(raw) as unknown;
+  } catch {
+    return failure('The legacy device-local family directory is not valid JSON');
+  }
+  if (
+    !isRecord(value) ||
+    !hasOnlyKeys(value, RECORD_KEYS) ||
+    value.schemaVersion !== LEGACY_SCHEMA_VERSION ||
+    !isRecord(value.parent) ||
+    !hasOnlyKeys(value.parent, ['id', 'role']) ||
+    value.parent.id !== 'parent_al_noor' ||
+    value.parent.role !== 'parent'
+  ) {
+    return failure('The legacy device-local family directory shape is invalid');
+  }
+  return parseLocalFamilyRecord(
+    JSON.stringify({
+      ...value,
+      schemaVersion: LOCAL_FAMILY_SCHEMA_VERSION,
+      parent: {
+        id: 'parent_al_noor',
+        role: 'parent',
+        normalizedIdentifier: LEGACY_PARENT_IDENTIFIER,
+        identifierKind: 'email',
+      },
+    }),
+  );
+}
+
 export function createLocalFamilyRecord(
   input: CreateLocalFamilyRecordInput,
 ): DomainResult<LocalFamilyRecord> {
@@ -192,7 +240,12 @@ export function createLocalFamilyRecord(
     householdId: 'household_al_noor',
     familyName: input.familyName.trim(),
     appLanguage: input.appLanguage,
-    parent: { id: 'parent_al_noor', role: 'parent' },
+    parent: {
+      id: 'parent_al_noor',
+      role: 'parent',
+      normalizedIdentifier: input.parentIdentifier.normalizedIdentifier,
+      identifierKind: input.parentIdentifier.identifierKind,
+    },
     children: input.children.map((child) => ({
       ...child,
       nickname: child.nickname.trim(),
@@ -240,4 +293,7 @@ export function localFamilyRecordToReceipt(
   };
 }
 
-export { LOCAL_FAMILY_STORAGE_KEY } from '../../models/localFamily';
+export {
+  LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+  LOCAL_FAMILY_STORAGE_KEY,
+} from '../../models/localFamily';

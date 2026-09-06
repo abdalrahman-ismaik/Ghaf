@@ -66,8 +66,9 @@ orientation summary—not push delivery, remote sync, a durable inbox, or a new 
 authority. Fresh family creation and first Child pairing do not show it.
 
 The R003 device-local family directory now remembers one configured demo household across process
-restarts. It persists one synthetic Parent role, one or two ordered Child profiles, their bounded
-setup preferences, and only an approved paired-Child marker. It does not persist credentials,
+restarts. Its schema-2 record persists one normalized synthetic Parent phone/email lookup
+identifier and kind, one or two ordered Child profiles, their bounded setup preferences, and only
+an approved paired-Child marker. It does not persist verification codes, passwords, authenticated
 sessions, tasks, Seeds, Garden/League/Reward ledgers, media, transcripts, or a notification inbox.
 Family setup asks for the Child count first, presents one indexed form per Child, then one
 whole-family review. The optional sparkle-marked profile helper consumes only age band and curated
@@ -89,9 +90,13 @@ their handoff into `/parent` must continue to work without an incidental redesig
 
 R003 separately adds a dedicated `/access/parent/sign-up` usability route. On the returning-Parent
 sign-in screen, **Create a new family** opens sign-up before any verification request. Sign-up asks
-only for the existing synthetic Parent phone/email identifier, then reuses the same deterministic
-verification and first-family setup authority. The current prototype still supports exactly one
-synthetic household and creates no production account or identity.
+only for the Parent phone/email identifier, then reuses the same deterministic verification and
+first-family setup authority. Successful creation binds the normalized identifier to the one local
+family. Returning sign-in compares the normalized value with that record before the code screen;
+unknown values stay on sign-in, and a matching verified Parent enters the existing family without
+setup. Parent access copy is neutral and makes no message-delivery or remote-verification claim;
+the deterministic prototype boundary remains explicit in documentation. The current prototype
+still supports exactly one synthetic household and creates no production account or identity.
 
 R002a must be implemented and validated in this order:
 

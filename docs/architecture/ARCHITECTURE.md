@@ -4,8 +4,9 @@
 
 Ghaf P0 is one Expo/React Native application that demonstrates a deterministic Parent → Child →
 confirmation → living-garden journey. Its behavioral session remains in memory and works with
-external services denied. One narrow device-local family directory remembers configured roles,
-profile preferences, and synthetic paired-device markers across restarts. It does not contain a
+external services denied. One narrow device-local family directory remembers a normalized
+synthetic Parent lookup identifier, configured roles, profile preferences, and synthetic
+paired-device markers across restarts. It does not contain a
 production backend, authentication system, cross-household network, analytics pipeline, or live
 child-media/AI processor.
 
@@ -45,16 +46,16 @@ flowchart TB
 
 ## Runtime containers
 
-| Container              | Location                                            | Responsibility                                                                                                   | Must not own                                                                                      |
-| ---------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Routes                 | `app/`                                              | Route composition, role guards, navigation, and route-local presentation state                                   | Reward arithmetic, privacy projection, concrete remote providers, or independent counter mutation |
-| Presentation           | `src/components/`, `src/design/`, `src/i18n/`       | Reusable bilingual UI, logical RTL/LTR behavior, tokens, accessibility, and prepared-origin labels               | Domain lifecycle or recognition authority                                                         |
-| Application session    | `src/state/usePrototypeStore.ts`                    | One schema-versioned session and intentional commands that orchestrate policies/services                         | Current route, provider secrets, or production persistence claims                                 |
-| Local family directory | `src/features/local-family/`, `src/services/local/` | Validate and persist one configured demo household plus paired markers; restore access-facing profile projection | Task/reward/Garden ledgers, credentials, media, cloud sync, or production security claims         |
-| Domain policy          | `src/features/`                                     | Pure validation, lifecycle, recognition, growth, projection, and assistant safety rules                          | UI or network transport                                                                           |
-| Contracts              | `src/models/`, `src/services/interfaces/`           | Typed domain/session values and provider-neutral service interfaces                                              | Concrete fixture selection                                                                        |
-| Local providers        | `src/services/mock/`                                | Required deterministic providers, reset factories, synthetic fixtures, and prepared fallback                     | Unbounded chat, real Child data, or remote secrets                                                |
-| Prepared assets        | `assets/images/`, `assets/audio/`                   | Reviewed synthetic fixture plus provenance/transcript sidecars                                                   | Capture, ambient recording, or real media                                                         |
+| Container              | Location                                            | Responsibility                                                                                                                                        | Must not own                                                                                                          |
+| ---------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Routes                 | `app/`                                              | Route composition, role guards, navigation, and route-local presentation state                                                                        | Reward arithmetic, privacy projection, concrete remote providers, or independent counter mutation                     |
+| Presentation           | `src/components/`, `src/design/`, `src/i18n/`       | Reusable bilingual UI, logical RTL/LTR behavior, tokens, accessibility, and prepared-origin labels                                                    | Domain lifecycle or recognition authority                                                                             |
+| Application session    | `src/state/usePrototypeStore.ts`                    | One schema-versioned session and intentional commands that orchestrate policies/services                                                              | Current route, provider secrets, or production persistence claims                                                     |
+| Local family directory | `src/features/local-family/`, `src/services/local/` | Validate and persist one configured demo household, normalized Parent lookup identifier, and paired markers; restore access-facing profile projection | Verification codes, passwords, sessions, task/reward/Garden ledgers, media, cloud sync, or production security claims |
+| Domain policy          | `src/features/`                                     | Pure validation, lifecycle, recognition, growth, projection, and assistant safety rules                                                               | UI or network transport                                                                                               |
+| Contracts              | `src/models/`, `src/services/interfaces/`           | Typed domain/session values and provider-neutral service interfaces                                                                                   | Concrete fixture selection                                                                                            |
+| Local providers        | `src/services/mock/`                                | Required deterministic providers, reset factories, synthetic fixtures, and prepared fallback                                                          | Unbounded chat, real Child data, or remote secrets                                                                    |
+| Prepared assets        | `assets/images/`, `assets/audio/`                   | Reviewed synthetic fixture plus provenance/transcript sidecars                                                                                        | Capture, ambient recording, or real media                                                                             |
 
 ## Dependency direction
 
@@ -73,16 +74,16 @@ fixtures remain typed fixture data. `src/design/tokens.ts` is the single visual-
 
 ## Data ownership and privacy
 
-| Data                                                      | Owner                                   | Sharing rule                                                                                                 |
-| --------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Configured family/profile directory and paired markers    | Local family repository                 | Device-local, one household, minimum curated fields; Parent reset clears it                                  |
-| Synthetic household, Children, active journey, and ledger | Prototype session                       | Local to the running demo; only display profile fields project from the directory                            |
-| Task lifecycle and recognition eligibility                | Task/reward policies                    | Parent-gated; no direct route mutation                                                                       |
-| Seeds and landscape state                                 | Recognition transaction + garden policy | Symbolic, permanent, and local                                                                               |
-| Combined canopy                                           | Household projection                    | Only after privacy filtering                                                                                 |
-| Circle progress                                           | Circle projection                       | Coarse eligible household Green Impact action only; no Child, task, Seed, note, reflection, or media details |
-| Assistant requests/results                                | Assistant policy and prepared providers | Bounded to an approved task or neutral synthetic summary; no unrestricted Child chat                         |
-| Prepared media                                            | Media service + local assets            | Synthetic, optional, labeled, and never treated as live analysis                                             |
+| Data                                                              | Owner                                   | Sharing rule                                                                                                 |
+| ----------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Parent lookup identifier, configured profiles, and paired markers | Local family repository                 | Device-local, one household, normalized exact match before returning verification; Parent reset clears it    |
+| Synthetic household, Children, active journey, and ledger         | Prototype session                       | Local to the running demo; only display profile fields project from the directory                            |
+| Task lifecycle and recognition eligibility                        | Task/reward policies                    | Parent-gated; no direct route mutation                                                                       |
+| Seeds and landscape state                                         | Recognition transaction + garden policy | Symbolic, permanent, and local                                                                               |
+| Combined canopy                                                   | Household projection                    | Only after privacy filtering                                                                                 |
+| Circle progress                                                   | Circle projection                       | Coarse eligible household Green Impact action only; no Child, task, Seed, note, reflection, or media details |
+| Assistant requests/results                                        | Assistant policy and prepared providers | Bounded to an approved task or neutral synthetic summary; no unrestricted Child chat                         |
+| Prepared media                                                    | Media service + local assets            | Synthetic, optional, labeled, and never treated as live analysis                                             |
 
 `visibilityScope` and `circleEligible` are evaluated before shared counters or visuals change.
 Circle eligibility is rejected unless the task is household-visible Green Impact work.
@@ -107,7 +108,7 @@ fallback remains available.
 
 ## Reset and recovery
 
-`resetPrototype()` first clears the local family record, then replaces the complete session with
+`resetPrototype()` first clears the current and legacy local family records, then replaces the complete session with
 the canonical schema-versioned fixture. The
 navigation adapter separately replaces browser/native history and returns to `/` in Arabic RTL.
 This separation keeps domain reset testable without storing navigation state.

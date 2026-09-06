@@ -35,8 +35,8 @@ async function requestSalemPairing() {
 
 async function signInReturningParent() {
   expectOk(
-    usePrototypeStore.getState().requestParentVerification({
-      identifier: 'parent@example.com',
+    usePrototypeStore.getState().requestExistingParentVerification({
+      identifier: ' Parent@Example.COM ',
       networkAvailable: false,
     }),
   );
@@ -139,6 +139,71 @@ describe('R003 access and role-separated store flow', () => {
       activeExperience: 'parent',
       returningUserWelcome: { kind: 'returning_parent' },
     });
+  });
+
+  it('checks the normalized Parent identifier before starting returning verification', async () => {
+    await completeParentOnboarding();
+    expect(usePrototypeStore.getState().localFamily.record?.parent).toMatchObject({
+      normalizedIdentifier: 'parent@example.com',
+      identifierKind: 'email',
+    });
+    expectOk(usePrototypeStore.getState().signOutExperience());
+
+    const before = usePrototypeStore.getState().parentOnboarding;
+    expect(
+      usePrototypeStore.getState().requestExistingParentVerification({
+        identifier: 'someone-else@example.com',
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'NOT_FOUND' } });
+    expect(usePrototypeStore.getState().parentOnboarding).toEqual(before);
+    expect(usePrototypeStore.getState().activeExperience).toBe('signed_out');
+
+    expectOk(
+      usePrototypeStore.getState().requestExistingParentVerification({
+        identifier: ' Parent@Example.COM ',
+      }),
+    );
+    expect(usePrototypeStore.getState().parentOnboarding.status).toBe('code_sent');
+  });
+
+  it('fails closed when no local family exists and matches a normalized stored phone', async () => {
+    expect(
+      usePrototypeStore.getState().requestExistingParentVerification({
+        identifier: 'parent@example.com',
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'NOT_FOUND' } });
+    expect(usePrototypeStore.getState().parentOnboarding.status).toBe('signed_out');
+
+    expectOk(
+      usePrototypeStore.getState().requestParentVerification({
+        identifier: '+971 50 123 4242',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().verifyParentCode(PARENT_VERIFICATION_CODE));
+    expectOk(usePrototypeStore.getState().completeParentOnboarding());
+    expectOk(usePrototypeStore.getState().signOutExperience());
+
+    expectOk(
+      usePrototypeStore.getState().requestExistingParentVerification({
+        identifier: '00971 (50) 123-4242',
+      }),
+    );
+    expect(usePrototypeStore.getState().parentOnboarding).toMatchObject({
+      status: 'code_sent',
+      identifierKind: 'phone',
+    });
+  });
+
+  it('reserves the create-family verification command for a missing local family', async () => {
+    await completeParentOnboarding();
+    expectOk(usePrototypeStore.getState().signOutExperience());
+
+    expect(
+      usePrototypeStore.getState().requestParentVerification({
+        identifier: 'another@example.com',
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(usePrototypeStore.getState().parentOnboarding.status).toBe('signed_out');
   });
 
   it('does not let the legacy visual role mutate Parent state after sign-out', async () => {

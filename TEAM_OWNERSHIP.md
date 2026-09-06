@@ -6,6 +6,51 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-07 Returning Parent Identifier Lookup Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,quickstart.md,data-model.md}`,
+`specs/003-family-growth-garden/design-intake/r003-local-family-release-review.md`,
+`docs/architecture/{ARCHITECTURE.md,adr/0002-device-local-family-directory.md}`,
+`app/access/parent/{sign-in,sign-up,verification}.tsx`,
+`src/models/{localFamily,parentOnboarding}.ts`,
+`src/features/access/parentOnboarding/{controller,policy}.ts`,
+`src/features/local-family/schema.ts`, `src/services/local/{index,repository}.ts`,
+`src/services/index.ts`, `src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, and focused
+Parent access/local-family/localization/route tests only.
+
+**Scope**: Persist the normalized synthetic Parent phone/email identifier with the single
+device-local family directory, migrate the previous schema-1 fixture to the canonical prepared
+Parent identifier, and require an exact normalized local-record match before returning sign-in may
+request the existing deterministic code. An unknown identifier stays on sign-in and cannot enter
+first-family setup; only explicit sign-up may create a family. A verified matching returning Parent
+must enter Parent Home (or the established pending-pairing destination) without Family Basics,
+Child setup, review, or success. Remove the simulated biometric shortcut and user-facing
+demo/synthetic/not-real wording from Parent sign-in, sign-up, and verification while making no
+claim that a message was sent or identity was remotely proven. Documentation and test evidence
+retain the truthful local-prototype boundary. Preserve the one-household limit, reset, role
+separation, offline deterministic code, routes, default-off flags, and protected user work. No
+production authentication, account service, network, real OTP, credential persistence, dependency,
+push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` added a strict schema-2 normalized Parent identifier/kind,
+bounded schema-1 canonical migration, separate explicit-sign-up and returning-sign-in commands,
+and fail-closed `NOT_FOUND` matching before deterministic code entry. Matching returning Parents
+reuse the receipt and enter Parent Home or the pending-pairing destination; verification without
+the create-family marker cannot fall into setup. The fake biometric path and Parent auth
+demo/not-real footers were removed, and bilingual copy makes no send/remote-verification claim.
+RED recorded 15 expected failures / 40 passes; focused tests passed 6 files / 84 tests and the full
+suite passed 90 files / 1,090 tests. Typecheck, zero-warning lint, formatting, Expo dependency and
+public-config checks, Git whitespace, web export (134 files / 39 routes), and Android JavaScript
+export (103 files) passed. Firefox covered Arabic 390×844 and English 320×720 creation, storage
+inspection, mismatch denial, normalized match, and direct `/parent` entry with no overflow or
+console errors. Physical Android and named-human review remain `BLOCKED / NOT RUN`. The reservation
+is released at this local checkpoint; no push, merge, deployment, or release activation was
+performed.
+
 ## 2026-09-07 Compact Audio Onboarding Correction Window
 
 **Owner and only writer**: `/root`

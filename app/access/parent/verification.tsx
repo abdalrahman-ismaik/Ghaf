@@ -9,7 +9,6 @@ import {
   AccessScreen,
   GhafIcon,
   OtpInput,
-  PrototypePill,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
@@ -85,10 +84,21 @@ export default function ParentVerificationScreen() {
   }, [returnToEntry]);
 
   useEffect(() => {
-    if (parentOnboarding.status !== 'verified' || !parentOnboarding.completionReceipt) return;
+    if (
+      isCreateFamilyFlow ||
+      parentOnboarding.status !== 'verified' ||
+      !parentOnboarding.completionReceipt
+    ) {
+      return;
+    }
     const frame = requestAnimationFrame(enterExistingFamily);
     return () => cancelAnimationFrame(frame);
-  }, [enterExistingFamily, parentOnboarding.completionReceipt, parentOnboarding.status]);
+  }, [
+    enterExistingFamily,
+    isCreateFamilyFlow,
+    parentOnboarding.completionReceipt,
+    parentOnboarding.status,
+  ]);
 
   const verify = async () => {
     if (isVerifying || code.length !== 6) return;
@@ -104,8 +114,12 @@ export default function ParentVerificationScreen() {
       setBusy(false);
       return;
     }
-    if (parentOnboarding.completionReceipt) {
+    if (!isCreateFamilyFlow && parentOnboarding.completionReceipt) {
       enterExistingFamily();
+      return;
+    }
+    if (!isCreateFamilyFlow || parentOnboarding.completionReceipt) {
+      router.replace(entryHref);
       return;
     }
     router.replace('/access/parent/family-basics');
@@ -126,8 +140,19 @@ export default function ParentVerificationScreen() {
   if (parentOnboarding.status === 'signed_out') {
     return <Redirect href={entryHref} />;
   }
-  if (parentOnboarding.status === 'verified' && !parentOnboarding.completionReceipt) {
+  if (
+    parentOnboarding.status === 'verified' &&
+    isCreateFamilyFlow &&
+    !parentOnboarding.completionReceipt
+  ) {
     return <Redirect href="/access/parent/family-basics" />;
+  }
+  if (
+    parentOnboarding.status === 'verified' &&
+    ((isCreateFamilyFlow && parentOnboarding.completionReceipt) ||
+      (!isCreateFamilyFlow && !parentOnboarding.completionReceipt))
+  ) {
+    return <Redirect href={entryHref} />;
   }
   if (parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href="/parent" />;
@@ -161,11 +186,6 @@ export default function ParentVerificationScreen() {
           >
             {t('access.verification.action')}
           </Button>
-          <PrototypePill
-            direction={direction}
-            language={locale}
-            message={t('access.verification.origin')}
-          />
         </AccessActionRegion>
       }
       header={

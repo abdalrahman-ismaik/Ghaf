@@ -1,5 +1,35 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Returning Parent Identifier Lookup Record — 2026-09-07
+
+**Current classification:** complete local implementation candidate; physical Android and named
+human review remain unobserved.
+
+Create the one family through explicit sign-up with `parent@example.com`, then sign out or reload.
+On Parent sign-in, first enter a different valid email and confirm the route stays on sign-in with
+a concise account-not-found error. Enter the saved email with different case/outer whitespace,
+then use operator-known code `424242`; verification must open `/parent` (or the established pending
+pairing destination) without Family Basics, Child setup, Review, or Success. Sign-in, sign-up, and
+verification show no fake biometric action, demo/not-real footer, code disclosure, delivery claim,
+or remote-identity claim. The runbook—not the auth UI—retains the deterministic capability truth.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| RED/focused behavior | `PASSED` | RED recorded 15 expected failures / 40 passes; final focused access/schema/source batch passed 6 files / 84 tests |
+| Full repository verification | `PASSED` | typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and 90 files / 1,090 tests |
+| Schema-2 storage and migration | `PASSED automated + Firefox web proxy` | strict normalized identifier/kind validation; schema-1 canonical migration; current-before-legacy write order; reset clears both keys; browser storage contained only `ghaf.local-family.v2` with `parent@example.com` and no verification code/session |
+| Unknown identifier denial | `PASSED automated + Firefox web proxy` | missing and mismatched email returned `NOT_FOUND`, kept verification signed out, and remained at `/access/parent/sign-in` |
+| Normalized returning entry | `PASSED automated + Firefox web proxy` | case/whitespace-normalized email and equivalent phone formats matched; `424242` then opened `/parent` with the returning dialog and no setup route |
+| Neutral bilingual auth presentation | `PASSED source + Firefox web proxy` | Arabic 390×844 and English 320×720 showed concise copy, masked destination, no prototype-auth footer or biometric control, no horizontal overflow, and zero console errors |
+| Production exports | `PASSED` | web export produced 134 files / 39 static routes; Android JavaScript export produced 103 files |
+| Physical Android SQLite/process death, Back/IME, TalkBack, and font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached target |
+| Named Arabic/UAE, privacy, accessibility, and product review | `NOT RUN` | no named reviewer was available in this implementation session |
+
+This lookup authenticates only against the one deterministic device-local family fixture. It is not
+a production account, delivered OTP, recovery, encrypted identity store, or remote authentication
+service. Those limits remain documentation and test truth without appearing as negative messaging
+on the three Parent auth screens.
+
 ## R003 Compact Audio Onboarding Record — 2026-09-07
 
 **Current classification:** locally validated presentation candidate; physical Android playback,
@@ -52,7 +82,7 @@ family disappear.
 | Strict persistence boundary                                                               | `PASSED automated/source`    | schema version, exact keys, invalid/corrupt data, save preservation, paired marker, configured-profile filtering, and reset coverage                        |
 | Multi-child sequence and AI boundary                                                      | `PASSED automated/source`    | one/two indexed drafts, receipt restore, exact personalization allowlist, opt-out, and prohibited gender/free-text rejection                                |
 | Bilingual compact persistence journey                                                     | `PASSED (Firefox web proxy)` | Arabic 390×844 and English 320×720; one/two-Child progress, review, reload, returning Parent/Child, configured-only chooser, and zero horizontal overflow   |
-| Browser storage inspection                                                                | `PASSED (Firefox web proxy)` | one namespaced schema-1 record; no credentials, task/reward/garden ledger, media, transcript, notification history, or free-text notes                      |
+| Browser storage inspection                                                                | `PASSED (Firefox web proxy)` | superseded baseline: one namespaced schema-1 record without a Parent lookup identifier; the 2026-09-07 correction migrates it to schema 2                   |
 | Browser console                                                                           | `PASSED`                     | zero application errors; only known React Native web development warnings                                                                                   |
 | Final repository checks and exports                                                       | `PASSED`                     | typecheck, zero-warning lint, format check, 90 files / 1,085 tests, Expo dependency/public config, 37 product routes, web/Android exports, clean whitespace |
 | Physical Android SQLite/process-death, Back/IME, TalkBack, font scale, and reduced motion | `BLOCKED / NOT RUN`          | no attached Android target                                                                                                                                  |
@@ -360,11 +390,12 @@ security.
 → / → Child access/credential → /child → /garden → /league
 ```
 
-Use Parent verification code `424242`, Salem PIN `2468`, Alya's Leaf → Water → Tree picture
-sequence, and action-scoped Parent reauthentication code `4242` only where the UI visibly labels
-them as local demo fixtures. A previously paired Child skips only the pairing approval branch, not
-profile credential entry. After recognition, the normal default-off path keeps the R002a result;
-do not fabricate or force the combined RevealBundle.
+Use saved Parent identifier `parent@example.com`, Parent verification code `424242`, Salem PIN
+`2468`, Alya's Leaf → Water → Tree picture sequence, and action-scoped Parent reauthentication code
+`4242`. The Parent sign-in/code UI is intentionally neutral and does not expose the operator fixture
+or claim code delivery; this runbook retains the deterministic prototype truth. A previously paired
+Child skips only the pairing approval branch, not profile credential entry. After recognition, the
+normal default-off path keeps the R002a result; do not fabricate or force the combined RevealBundle.
 
 ### Complete-screen sweep after the core spine
 
@@ -704,7 +735,7 @@ required.
 | Phase | Route/state                                                    | Operator action                                                                                                                                                                            | What the judge must understand                                                                                              |
 | ----: | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 |     1 | `/`                                                            | Point out Arabic-first RTL, the synthetic/prepared disclosure, and separate Parent/Child entry actions; choose Parent                                                                      | Ghaf is a transparent prototype for real family action; access is simulated but role-separated                              |
-|     2 | Parent sign-in → verification                                  | Use the visible local fixture and demo code `424242`                                                                                                                                       | Parent verification is deterministic and offline-capable, not production authentication                                     |
+|     2 | Parent sign-in → verification                                  | Use saved fixture `parent@example.com` and operator-known code `424242`; first try an unknown email and confirm it stays on sign-in                                                                                         | Matching is local and deterministic; only the saved identifier reaches verification, and no setup screen opens on return    |
 |     3 | First-family setup, when reset requires it                     | Complete family basics, Salem profile, review, and success; returning Parents skip this branch                                                                                             | Setup is synthetic, idempotent, and hands off into the Parent experience                                                    |
 |     4 | `/parent` → `/parent/family` → Reward → Home/Tasks             | Show the combined canopy, private Family Reward promise, and exact Home/Tasks/Garden/Family tabs                                                                                           | Parent Family and Reward data are private; Reward is a promise, not money custody or a Seed exchange rate                   |
 |     5 | `/parent/task/new`                                             | Choose Green Impact and `task_recycling_p0_v1`; ask the prepared Guide to make it clear/safe                                                                                               | A bounded, structured, visibly prepared assistant proposes a change to a Parent-owned task                                  |

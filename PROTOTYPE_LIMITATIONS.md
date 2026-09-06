@@ -22,14 +22,17 @@ TalkBack coexistence, audio focus, silent-mode behavior, or named Arabic review.
 
 The returning-family decision now relies on one validated device-local demo directory. Native uses
 Expo SQLite key-value storage and web uses browser localStorage; it stores one synthetic Parent
-role, one or two Child profiles, bounded curated setup preferences, and approved paired-Child
-markers. This is durable enough for a local demo restart, but it is not encrypted production
+normalized phone/email lookup identifier and kind, one or two Child profiles, bounded curated setup
+preferences, and approved paired-Child markers. The current schema is 2; a prior valid schema-1
+fixture migrates only to the canonical prepared `parent@example.com` identifier. This is durable
+enough for a local demo restart, but it is not encrypted production
 account storage, identity assurance, cloud backup, household discovery, recovery, migration, or
 cross-device sync. No Parent or Child session is restored silently. Parent reset deliberately
 removes the directory and returns the app to first-family behavior.
 
-Credentials, verification codes, task/Seed/Garden/League/Reward ledgers, media, transcripts,
-notification history, and free-text Child notes are not part of the local record. Optional gender
+Passwords, verification codes, authenticated sessions, task/Seed/Garden/League/Reward ledgers,
+media, transcripts, notification history, and free-text Child notes are not part of the local
+record. Optional gender
 is stored only as an explicit profile value and is excluded from prepared personalization. The
 curated profile helper is deterministic and local-only; it does not prove that a live model ran and
 must not be used to infer identity, emotion, diagnosis, personality, ability, or risk.
@@ -123,7 +126,10 @@ interactions; they do not prove identity, protect a production account, or persi
 The R003 Parent sign-up screen is a route and form simulation only. It reuses the local Parent
 identifier/code fixture before first-family setup; it does not create a real account, send a
 message, verify an identity, store a password, or add a second household. A completed synthetic
-family receipt remains immutable, and direct sign-up entry cannot overwrite it.
+family receipt remains immutable, and direct sign-up entry cannot overwrite it. Returning sign-in
+must match the saved normalized identifier before code entry and then skips all create-family
+screens. The three Parent access screens intentionally use neutral user-facing copy without a
+demo/not-real footer, while this document and the runbook retain the capability boundary.
 
 The R003-only screens without approved Stitch frames are documented code-native Soft Geometric
 candidates built from the existing theme and tokens. Their existence is not Google Stitch approval,

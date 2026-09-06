@@ -26,13 +26,15 @@ type LocalSupportPreference =
   'short_steps' | 'visual_examples' | 'extra_time' | 'adult_alongside' | 'quiet_reminders';
 
 interface LocalFamilyRecord {
-  readonly schemaVersion: 1;
+  readonly schemaVersion: 2;
   readonly householdId: 'household_al_noor';
   readonly familyName: string;
   readonly appLanguage: 'ar' | 'en';
   readonly parent: {
     readonly id: 'parent_al_noor';
     readonly role: 'parent';
+    readonly normalizedIdentifier: string;
+    readonly identifierKind: 'email' | 'phone';
   };
   readonly children: readonly LocalChildProfile[];
   readonly pairedChildIds: readonly LocalChildSlotId[];
@@ -58,11 +60,15 @@ interface LocalChildProfile {
 }
 ```
 
-One namespaced JSON value is stored by the repository. On Android/iOS the key-value implementation
-is backed by Expo SQLite; web preview uses browser local storage; tests inject memory storage. Every
-read is parsed through the same strict schema and unknown versions fail closed. The record stores
-no identifier, verification code, PIN/picture sequence, media, task text/history, reward/Seed value,
-assistant transcript, location, school, birthday, diagnosis, emotional disclosure, or open notes.
+One current namespaced JSON value is stored by the repository. On Android/iOS the key-value
+implementation is backed by Expo SQLite; web preview uses browser local storage; tests inject
+memory storage. Every read is parsed through the same strict schema and unknown versions fail
+closed. A valid schema-1 value under the legacy key migrates once to schema 2 with only the
+canonical prepared `parent@example.com` identifier, then the legacy key is removed. The record
+stores the normalized synthetic Parent identifier for local membership lookup, but no verification
+code, password, authenticated session, PIN/picture sequence, media, task text/history,
+reward/Seed value, assistant transcript, location, school, birthday, diagnosis, emotional
+disclosure, or open notes.
 
 The `children` order maps Child 1 to `child_salem` and Child 2 to `child_alya`; these are stable
 synthetic implementation slots, not real identities. The behavioral `PrototypeSession` retains

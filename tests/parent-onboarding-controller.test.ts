@@ -246,9 +246,15 @@ describe('R001 Parent onboarding controller', () => {
     });
     expect(resent).not.toHaveProperty('normalizedIdentifier');
     expect(JSON.stringify(resent)).not.toContain('parent@example.com');
+    expect(controller.getPendingIdentifier()).toEqual({
+      normalizedIdentifier: 'parent@example.com',
+      identifierKind: 'email',
+      maskedDestination: 'p***@example.com',
+    });
     expect(controller.resendVerification({})).toMatchObject({ ok: true });
 
     expectOk(controller.cancelVerification());
+    expect(controller.getPendingIdentifier()).toBeNull();
     expect(controller.resendVerification({})).toMatchObject({
       ok: false,
       error: { code: 'INVALID_TRANSITION' },

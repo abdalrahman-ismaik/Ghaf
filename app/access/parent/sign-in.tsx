@@ -3,21 +3,10 @@ import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import {
-  AccessFooter,
-  AccessHeader,
-  AccessScreen,
-  AccessTextField,
-  GhafIcon,
-  LabeledDivider,
-  PrototypePill,
-  StatusBanner,
-} from '@/components/access';
+import { AccessHeader, AccessScreen, AccessTextField, StatusBanner } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-
-const SYNTHETIC_PARENT_IDENTIFIER = '+971501234567';
 
 export default function ParentSignInScreen() {
   const router = useRouter();
@@ -27,7 +16,9 @@ export default function ParentSignInScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
-  const requestParentVerification = usePrototypeStore((state) => state.requestParentVerification);
+  const requestExistingParentVerification = usePrototypeStore(
+    (state) => state.requestExistingParentVerification,
+  );
   const [identifier, setIdentifier] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -52,7 +43,7 @@ export default function ParentSignInScreen() {
     setBusy(true);
     setError(null);
     await Promise.resolve();
-    const result = requestParentVerification({
+    const result = requestExistingParentVerification({
       identifier: candidate,
       networkAvailable,
     });
@@ -60,7 +51,9 @@ export default function ParentSignInScreen() {
       setError(
         result.error.code === 'INVALID_INPUT'
           ? t('access.signIn.invalidIdentifier')
-          : t('access.states.interrupted'),
+          : result.error.code === 'NOT_FOUND'
+            ? t('access.signIn.accountNotFound')
+            : t('access.states.interrupted'),
       );
       setBusy(false);
       return;
@@ -71,16 +64,8 @@ export default function ParentSignInScreen() {
   if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
     return <Redirect href="/access/parent/verification" />;
   }
-  if (parentOnboarding.status === 'verified') {
-    return (
-      <Redirect
-        href={
-          parentOnboarding.completionReceipt
-            ? '/access/parent/verification'
-            : '/access/parent/family-basics'
-        }
-      />
-    );
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
   }
   if (parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href={activeExperience === 'parent' ? '/parent' : '/'} />;
@@ -92,15 +77,6 @@ export default function ParentSignInScreen() {
       contentContainerStyle={styles.viewport}
       contentMaxWidth={layout.readableContentWidth}
       contentStyle={styles.content}
-      footer={
-        <AccessFooter>
-          <PrototypePill
-            direction={direction}
-            language={locale}
-            message={t('access.signIn.origin')}
-          />
-        </AccessFooter>
-      }
       header={
         <AccessHeader
           backLabel={t('common.back')}
@@ -185,46 +161,6 @@ export default function ParentSignInScreen() {
           </Button>
         </View>
 
-        <LabeledDivider
-          direction={direction}
-          label={t('access.signIn.divider')}
-          language={locale}
-        />
-
-        <View style={styles.biometricGroup}>
-          <Button
-            accessibilityHint={t('access.signIn.biometricHint')}
-            brand
-            direction={direction}
-            disabled={busy}
-            icon={
-              <GhafIcon
-                color={colors.onSurfaceVariant}
-                direction={direction}
-                name="fingerprint"
-                size={22}
-              />
-            }
-            language={locale}
-            onPress={() => void requestCode(identifier.trim() || SYNTHETIC_PARENT_IDENTIFIER)}
-            size="regular"
-            testID="simulated-biometric-button"
-            variant="neutral"
-          >
-            {t('access.signIn.biometric')}
-          </Button>
-          <Text
-            align="center"
-            brand
-            color="onSurfaceVariant"
-            direction={direction}
-            language={locale}
-            variant="caption"
-          >
-            {t('access.signIn.biometricHint')}
-          </Text>
-        </View>
-
         {parentOnboarding.completionReceipt ? null : (
           <View style={styles.createFamilyGroup}>
             <Button
@@ -260,7 +196,6 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   credentials: { gap: spacing.sm },
-  biometricGroup: { gap: spacing.xxs },
   createFamilyGroup: { paddingTop: spacing.xs },
   createFamilyButton: {
     borderColor: colors.ghafEmerald,

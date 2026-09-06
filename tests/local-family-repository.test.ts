@@ -7,6 +7,7 @@ import {
 import {
   createLocalFamilyRepository,
   createMemoryLocalKeyValueStorage,
+  LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
 } from '../src/services/local';
 
@@ -27,6 +28,11 @@ const child = {
 
 function validRecord() {
   const result = createLocalFamilyRecord({
+    parentIdentifier: {
+      normalizedIdentifier: 'parent@example.com',
+      identifierKind: 'email',
+      maskedDestination: 'p***@example.com',
+    },
     familyName: 'Palm Family',
     appLanguage: 'en',
     children: [child],
@@ -39,26 +45,31 @@ function validRecord() {
 }
 
 describe('device-local family schema', () => {
-  it('round-trips the minimum versioned directory without credentials or domain ledgers', () => {
+  it('round-trips the schema-2 directory with one normalized Parent lookup identifier', () => {
     const record = validRecord();
     const parsed = parseLocalFamilyRecord(JSON.stringify(record));
 
     expect(parsed).toEqual({ ok: true, data: record });
     expect(record).toMatchObject({
-      schemaVersion: 1,
+      schemaVersion: 2,
       householdId: 'household_al_noor',
-      parent: { id: 'parent_al_noor', role: 'parent' },
+      parent: {
+        id: 'parent_al_noor',
+        role: 'parent',
+        normalizedIdentifier: 'parent@example.com',
+        identifierKind: 'email',
+      },
       origin: 'local_demo',
       capabilityTruth: 'local_prototype_not_authentication',
     });
     expect(JSON.stringify(record)).not.toMatch(
-      /verification|password|pin|pictureSequence|taskHistory|reward|seed|transcript|media/iu,
+      /424242|verification|password|pin|pictureSequence|taskHistory|reward|seed|transcript|media/iu,
     );
   });
 
   it.each([
     'not-json',
-    JSON.stringify({ schemaVersion: 2 }),
+    JSON.stringify({ schemaVersion: 3 }),
     JSON.stringify({ ...validRecord(), children: [] }),
     JSON.stringify({ ...validRecord(), children: [child, child] }),
     JSON.stringify({ ...validRecord(), pairedChildIds: ['child_alya'] }),
@@ -73,6 +84,31 @@ describe('device-local family schema', () => {
 });
 
 describe('device-local family repository', () => {
+  it('migrates the previous schema-1 fixture to the canonical prepared Parent email', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createLocalFamilyRepository(storage);
+    const current = validRecord();
+    const legacy = {
+      ...current,
+      schemaVersion: 1,
+      parent: { id: current.parent.id, role: current.parent.role },
+    };
+    storage.setItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(legacy));
+
+    expect(repository.read()).toMatchObject({
+      ok: true,
+      data: {
+        schemaVersion: 2,
+        parent: {
+          normalizedIdentifier: 'parent@example.com',
+          identifierKind: 'email',
+        },
+      },
+    });
+    expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+  });
+
   it('saves, reads, updates pairing idempotently, and clears one namespaced value', () => {
     const storage = createMemoryLocalKeyValueStorage();
     const repository = createLocalFamilyRepository(storage);
@@ -91,9 +127,11 @@ describe('device-local family repository', () => {
       paired,
     );
     expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    storage.setItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY, '{}');
 
     expect(repository.clear()).toEqual({ ok: true, data: true });
     expect(repository.read()).toEqual({ ok: true, data: null });
+    expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
   });
 
   it('does not overwrite the prior complete record when validation or storage fails', () => {
