@@ -14,14 +14,28 @@ import type {
   RevealBundleResult,
   RevealConstructionResult,
 } from '../../models/revealBundle';
-import { projectFamilyRewardUnlock, type FamilyRewardRuntime } from '../family-hub';
+import { isExactPlainDataEqual as sameValue } from '../../utils/exactPlainData';
+import {
+  createFamilyRewardRuntime,
+  isFamilyRewardRecognitionEligible,
+  projectFamilyRewardUnlock,
+  type FamilyRewardRuntime,
+} from '../family-hub';
+import { planAfterConfirmation } from '../circle/projection';
+import { nextThresholdForSeeds } from '../garden/progression';
 import type {
   GrowthJourneyRecognitionProjection,
   GrowthJourneyRuntimeState,
 } from '../growth/bootstrap';
 import { selectLifetimeSeeds } from '../growth/seedLedger';
-import type { PrivateLeagueRecognitionApplication } from '../league/recognitionRuntime';
+import {
+  selectCommittedPrivateLeagueReceipt,
+  selectPrivateLeagueRecognitionEligibility,
+  type PrivateLeagueRecognitionApplication,
+} from '../league/recognitionRuntime';
+import { evaluateRecognitionPolicy } from './policy';
 import { constructRevealBundle } from './revealBundle';
+import { hasValidRoutineProgressAuthority } from '../tasks/recognitionSession';
 
 export interface ApprovalRevealProjectionInput {
   readonly queue: RevealBundleQueue;
@@ -32,15 +46,20 @@ export interface ApprovalRevealProjectionInput {
   readonly growthProjection: GrowthJourneyRecognitionProjection;
   readonly familyRewardBefore: FamilyRewardRuntime;
   readonly familyRewardAfter: FamilyRewardRuntime;
-  readonly privateLeague: PrivateLeagueRecognitionApplication;
+  readonly privateLeague: PrivateLeagueRecognitionApplication | null;
+}
+
+export interface CommittedApprovalRevealReconciliationInput {
+  readonly queue: RevealBundleQueue;
+  readonly plan: PraisePresentedPlan;
+  readonly recognition: RecognitionAttemptResult;
+  readonly growthRuntime: GrowthJourneyRuntimeState;
+  readonly familyReward: FamilyRewardRuntime;
+  readonly privateLeague: PrivateLeagueRecognitionApplication | null;
 }
 
 function failure<T>(code: RevealBundleErrorCode, message: string): RevealBundleResult<T> {
   return { ok: false, error: { code, message } };
-}
-
-function sameValue(left: unknown, right: unknown): boolean {
-  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 function receiptScope(input: {
@@ -110,21 +129,31 @@ function validateRecognitionEnvelope(input: ApprovalRevealProjectionInput): Reve
   const receipt = recognition.receipt;
   const transaction = receipt.seedTransaction;
   const journey = recognition.journey;
+  const expectedRecognizedCheckIn = {
+    ...plan.checkIn,
+    confirmationPresentation: 'recognition_applied' as const,
+  };
   if (
     recognition.disposition !== 'applied' ||
     plan.renderState !== 'praise_presented' ||
+    plan.journey.lifecycle !== 'confirmed' ||
+    plan.presentationActionId.trim().length === 0 ||
+    plan.continuation.action !== 'apply_recognition' ||
+    plan.continuation.source !== 'visible_parent_control' ||
     plan.checkIn.praisePresentedAt.trim().length === 0 ||
     plan.recognitionKey !== receipt.recognitionKey ||
     plan.checkIn.id !== receipt.checkInId ||
+    !sameValue(plan.journey.checkIn, plan.checkIn) ||
+    !sameValue(previousSession.journey, plan.journey) ||
     journey.lifecycle !== 'recognized' ||
     !journey.submission ||
     !journey.checkIn ||
-    journey.submission.id !== plan.journey.submission?.id ||
-    journey.checkIn.id !== plan.checkIn.id ||
-    journey.checkIn.recognitionKey !== receipt.recognitionKey ||
-    journey.checkIn.praisePresentedAt !== plan.checkIn.praisePresentedAt ||
-    journey.checkIn.confirmationPresentation !== 'recognition_applied' ||
-    !sameValue(journey.checkIn.praise, plan.praise) ||
+    !sameValue(journey.task, plan.journey.task) ||
+    !sameValue(journey.assignment, plan.journey.assignment) ||
+    !sameValue(journey.submission, plan.journey.submission) ||
+    !sameValue(journey.checkIn, expectedRecognizedCheckIn) ||
+    !sameValue(recognition.session.journey, journey) ||
+    !sameValue(plan.checkIn.praise, plan.praise) ||
     !transaction ||
     transaction.recognitionKey !== receipt.recognitionKey ||
     transaction.childId !== journey.task.targetChildId ||
@@ -175,6 +204,61 @@ export function constructApprovalReveal(
     afterLifetime.data !== beforeLifetime.data + seedTransaction.amount
   ) {
     return failure('RECEIPT_CONFLICT', 'Lifetime Seed totals do not reconcile with the approval');
+  }
+
+  const task = input.recognition.journey.task;
+  const submission = input.recognition.journey.submission;
+  const existingRoutineProgress = input.previousSession.routineProgressByTask?.[task.id] ?? null;
+  const recurringFadeFirst =
+    task.content.recognitionMode === 'fade_first' && task.content.recurrence === 'recurrent';
+  const effectiveRoutinePhase = recurringFadeFirst
+    ? (existingRoutineProgress?.futurePhase ?? task.content.routinePhase)
+    : task.content.routinePhase;
+  const confirmedAcquisitionCount =
+    recurringFadeFirst && effectiveRoutinePhase === 'acquisition'
+      ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0) + 1
+      : (existingRoutineProgress?.confirmedAcquisitionCount ?? 0);
+  const policy = submission
+    ? evaluateRecognitionPolicy({
+        submissionId: submission.id,
+        recognitionMode: task.content.recognitionMode,
+        routinePhase: effectiveRoutinePhase,
+        recurrence: task.content.recurrence,
+        displayedSeedAward:
+          effectiveRoutinePhase === 'maintenance' ? null : task.content.displayedSeedAward,
+        completionMode: submission.completionMode,
+        confirmedAcquisitionCount,
+        existingReceipt: null,
+      })
+    : null;
+  if (
+    !policy?.ok ||
+    policy.data.disposition !== 'new' ||
+    policy.data.seedAmount !== seedTransaction.amount ||
+    !sameValue(
+      receipt.phaseReview,
+      policy.data.phaseReview ? { taskId: task.id, ...policy.data.phaseReview } : null,
+    )
+  ) {
+    return failure('RECEIPT_CONFLICT', 'Approval reward policy does not match its Seed receipt');
+  }
+  const sharedProjection = planAfterConfirmation({
+    schemaVersion: '1.0',
+    categoryId: task.content.categoryId,
+    recognitionMode: task.content.recognitionMode,
+    routinePhase: effectiveRoutinePhase,
+    visibilityScope: task.content.visibilityScope,
+    circleEligible: task.content.circleEligible,
+    consequenceKind: policy.data.consequenceKind,
+    confirmed: true,
+    prohibitedSharedFieldsPresent: false,
+  });
+  if (
+    !sharedProjection.ok ||
+    !sameValue(canopyContribution, sharedProjection.data.canopyContribution) ||
+    !sameValue(circleEvent, sharedProjection.data.circleEvent)
+  ) {
+    return failure('RECEIPT_CONFLICT', 'Shared consequences do not match the approved task policy');
   }
 
   const priorEntryIds = new Set(beforeLedger.entries.map((entry) => entry.id));
@@ -235,47 +319,77 @@ export function constructApprovalReveal(
   const newArchives = afterLedger.plantStageArchives.filter(
     (archive) => !priorArchiveIds.has(archive.id),
   );
-  if (landscapeGrowth) {
-    const archive = newArchives.find(
-      (candidate) =>
-        candidate.profileId === profileId &&
-        candidate.profileEpochId === profileEpochId &&
-        candidate.triggerEventId === recognitionKey &&
-        candidate.landscapeId === landscapeGrowth.landscapeId &&
-        candidate.seedsBefore === landscapeGrowth.seedsBefore &&
-        candidate.seedsAfter === landscapeGrowth.seedsAfter &&
-        candidate.stageBefore === landscapeGrowth.stageBefore &&
-        candidate.stageAfter === landscapeGrowth.stageAfter &&
-        candidate.threshold === landscapeGrowth.crossedThreshold &&
-        candidate.symbolicOnly === landscapeGrowth.symbolicOnly,
-    );
-    if (newArchives.length !== 1 || !archive) {
-      return failure('RECEIPT_CONFLICT', 'Plant-stage archive does not match the approval');
-    }
-    receipts.push(
-      receiptScope({
-        id: `reveal-receipt:${archive.id}`,
-        authority: 'garden',
-        profileId,
-        profileEpochId,
-        triggerEventId: recognitionKey,
-        committedAt,
-        consequence: {
-          kind: 'plant_stage',
-          growthId: archive.id,
-          landscapeId: landscapeGrowth.landscapeId,
-          seedsBefore: landscapeGrowth.seedsBefore,
-          seedsAfter: landscapeGrowth.seedsAfter,
-          stageBefore: landscapeGrowth.stageBefore,
-          stageAfter: landscapeGrowth.stageAfter,
-          crossedThreshold: landscapeGrowth.crossedThreshold,
-          symbolicOnly: true,
-        },
-      }),
-    );
-  } else if (newArchives.length > 0) {
-    return failure('RECEIPT_CONFLICT', 'Plant-stage archive exists without a Garden consequence');
+  if (!landscapeGrowth) {
+    return failure('RECEIPT_CONFLICT', 'Seed approval is missing its Garden growth consequence');
   }
+  const beforeLandscape = input.previousSession.landscapeProgress[landscapeGrowth.landscapeId];
+  const afterLandscape = input.recognition.session.landscapeProgress[landscapeGrowth.landscapeId];
+  const expectedLandscapeProgress = {
+    ...input.previousSession.landscapeProgress,
+    [landscapeGrowth.landscapeId]: {
+      landscapeId: landscapeGrowth.landscapeId,
+      cumulativeSeeds: landscapeGrowth.seedsAfter,
+      stage: landscapeGrowth.stageAfter,
+      nextThreshold: nextThresholdForSeeds(landscapeGrowth.seedsAfter),
+    },
+  };
+  if (
+    !beforeLandscape ||
+    !afterLandscape ||
+    beforeLandscape.cumulativeSeeds !== landscapeGrowth.seedsBefore ||
+    beforeLandscape.stage !== landscapeGrowth.stageBefore ||
+    afterLandscape.cumulativeSeeds !== landscapeGrowth.seedsAfter ||
+    afterLandscape.stage !== landscapeGrowth.stageAfter ||
+    landscapeGrowth.seedsAfter !== landscapeGrowth.seedsBefore + seedTransaction.amount ||
+    landscapeGrowth.symbolicOnly !== true ||
+    !sameValue(input.recognition.session.landscapeProgress, expectedLandscapeProgress)
+  ) {
+    return failure('RECEIPT_CONFLICT', 'Garden growth does not match the approval sessions');
+  }
+  const archive = newArchives.find(
+    (candidate) =>
+      candidate.profileId === profileId &&
+      candidate.profileEpochId === profileEpochId &&
+      candidate.triggerEventId === recognitionKey &&
+      candidate.landscapeId === landscapeGrowth.landscapeId &&
+      candidate.seedsBefore === landscapeGrowth.seedsBefore &&
+      candidate.seedsAfter === landscapeGrowth.seedsAfter &&
+      candidate.stageBefore === landscapeGrowth.stageBefore &&
+      candidate.stageAfter === landscapeGrowth.stageAfter &&
+      candidate.threshold === landscapeGrowth.crossedThreshold &&
+      candidate.symbolicOnly === landscapeGrowth.symbolicOnly,
+  );
+  const requiresStageArchive =
+    landscapeGrowth.stageBefore !== landscapeGrowth.stageAfter ||
+    landscapeGrowth.crossedThreshold !== null;
+  if (newArchives.length > 1 || (newArchives.length === 1 && !archive)) {
+    return failure('RECEIPT_CONFLICT', 'Plant-stage archive does not match the approval');
+  }
+  if ((requiresStageArchive && !archive) || (!requiresStageArchive && newArchives.length > 0)) {
+    return failure('RECEIPT_CONFLICT', 'Garden stage change does not match its archive evidence');
+  }
+  const growthId = archive?.id ?? `landscape-growth:${profileEpochId}:${recognitionKey}`;
+  receipts.push(
+    receiptScope({
+      id: `reveal-receipt:${growthId}`,
+      authority: 'garden',
+      profileId,
+      profileEpochId,
+      triggerEventId: recognitionKey,
+      committedAt,
+      consequence: {
+        kind: 'plant_stage',
+        growthId,
+        landscapeId: landscapeGrowth.landscapeId,
+        seedsBefore: landscapeGrowth.seedsBefore,
+        seedsAfter: landscapeGrowth.seedsAfter,
+        stageBefore: landscapeGrowth.stageBefore,
+        stageAfter: landscapeGrowth.stageAfter,
+        crossedThreshold: landscapeGrowth.crossedThreshold,
+        symbolicOnly: true,
+      },
+    }),
+  );
 
   if (canopyContribution) {
     const before = input.previousSession.household.combinedCanopy;
@@ -358,73 +472,106 @@ export function constructApprovalReveal(
     return failure('RECEIPT_CONFLICT', 'Green Circle changed without a committed event');
   }
 
-  const league = input.privateLeague.receipt;
-  if (
-    input.privateLeague.disposition !== 'applied' ||
-    league.profileId !== profileId ||
-    league.profileEpochId !== profileEpochId ||
-    league.recognitionKey !== recognitionKey ||
-    league.committedAt !== committedAt ||
-    league.completionMode !== input.recognition.journey.submission?.completionMode ||
-    league.accessibilityAdapted !== false ||
-    league.confirmedLeavesBefore !== 4 ||
-    league.confirmedLeavesAfter !== 5 ||
-    league.leafDelta !== 1 ||
-    league.status !== 'committed' ||
-    league.privacy !== 'private_family_league' ||
-    league.leagueReceiptId.trim().length === 0 ||
-    league.leafId.trim().length === 0 ||
-    input.privateLeague.runtime.profileId !== profileId ||
-    input.privateLeague.runtime.profileEpochId !== profileEpochId ||
-    !sameValue(input.privateLeague.runtime.receiptsByRecognitionKey[recognitionKey], league)
-  ) {
-    return failure('RECEIPT_CONFLICT', 'Private League receipt does not match this approval');
+  const leagueEligibility = selectPrivateLeagueRecognitionEligibility(input.recognition.journey);
+  if ((leagueEligibility === null) !== (input.privateLeague === null)) {
+    return failure('RECEIPT_CONFLICT', 'Private League eligibility does not match its application');
   }
-  receipts.push(
-    receiptScope({
-      id: `reveal-receipt:${league.leagueReceiptId}`,
-      authority: 'private_league',
-      profileId,
-      profileEpochId,
-      triggerEventId: recognitionKey,
-      committedAt,
-      consequence: {
-        kind: 'private_league_leaf',
-        weekKey: league.weekKey,
-        leagueReceiptId: league.leagueReceiptId,
-        leafId: league.leafId,
-        confirmedLeavesBefore: league.confirmedLeavesBefore,
-        confirmedLeavesAfter: league.confirmedLeavesAfter,
-        leafDelta: 1,
-        privacy: 'private_family_league',
-      },
-    }),
-    receiptScope({
-      id: `reveal-receipt:challenge:${profileEpochId}:${league.weekKey}:${league.leafId}`,
-      authority: 'challenge_leaf',
-      profileId,
-      profileEpochId,
-      triggerEventId: recognitionKey,
-      committedAt,
-      consequence: {
-        kind: 'challenge_leaf',
-        weekKey: league.weekKey,
-        leafId: league.leafId,
-        recognitionKey,
-        state: 'confirmed',
-        privacy: 'private_family_league',
-      },
-    }),
-  );
+  if (input.privateLeague) {
+    const league = input.privateLeague.receipt;
+    const committedLeague = selectCommittedPrivateLeagueReceipt(input.privateLeague.runtime);
+    if (
+      !committedLeague.ok ||
+      committedLeague.data === null ||
+      !sameValue(committedLeague.data, league) ||
+      input.privateLeague.disposition !== 'applied' ||
+      leagueEligibility?.leafId !== league.leafId ||
+      leagueEligibility.profileId !== profileId ||
+      league.profileId !== profileId ||
+      league.profileEpochId !== profileEpochId ||
+      league.recognitionKey !== recognitionKey ||
+      league.committedAt !== committedAt ||
+      league.completionMode !== input.recognition.journey.submission?.completionMode ||
+      league.accessibilityAdapted !== false ||
+      league.confirmedLeavesBefore !== 4 ||
+      league.confirmedLeavesAfter !== 5 ||
+      league.leafDelta !== 1 ||
+      league.status !== 'committed' ||
+      league.privacy !== 'private_family_league' ||
+      league.leagueReceiptId.trim().length === 0 ||
+      league.leafId.trim().length === 0 ||
+      input.privateLeague.runtime.profileId !== profileId ||
+      input.privateLeague.runtime.profileEpochId !== profileEpochId ||
+      input.privateLeague.runtime.challengeLeaf.state !== 'confirmed' ||
+      input.privateLeague.runtime.challengeLeaf.recognitionKey !== recognitionKey ||
+      !sameValue(input.privateLeague.runtime.receiptsByRecognitionKey[recognitionKey], league)
+    ) {
+      return failure('RECEIPT_CONFLICT', 'Private League receipt does not match this approval');
+    }
+    receipts.push(
+      receiptScope({
+        id: `reveal-receipt:${league.leagueReceiptId}`,
+        authority: 'private_league',
+        profileId,
+        profileEpochId,
+        triggerEventId: recognitionKey,
+        committedAt,
+        consequence: {
+          kind: 'private_league_leaf',
+          weekKey: league.weekKey,
+          leagueReceiptId: league.leagueReceiptId,
+          leafId: league.leafId,
+          confirmedLeavesBefore: league.confirmedLeavesBefore,
+          confirmedLeavesAfter: league.confirmedLeavesAfter,
+          leafDelta: 1,
+          privacy: 'private_family_league',
+        },
+      }),
+      receiptScope({
+        id: `reveal-receipt:challenge:${profileEpochId}:${league.weekKey}:${league.leafId}`,
+        authority: 'challenge_leaf',
+        profileId,
+        profileEpochId,
+        triggerEventId: recognitionKey,
+        committedAt,
+        consequence: {
+          kind: 'challenge_leaf',
+          weekKey: league.weekKey,
+          leafId: league.leafId,
+          recognitionKey,
+          state: 'confirmed',
+          privacy: 'private_family_league',
+        },
+      }),
+    );
+  }
 
-  const familyReward = projectFamilyRewardUnlock({
-    before: input.familyRewardBefore,
-    after: input.familyRewardAfter,
-    recognitionKey,
-    committedAt,
-  });
+  const familyRewardEligible = isFamilyRewardRecognitionEligible(input.recognition.journey);
+  const familyReward = familyRewardEligible
+    ? projectFamilyRewardUnlock({
+        before: input.familyRewardBefore,
+        after: input.familyRewardAfter,
+        expectedProfileId: profileId,
+        expectedLandscapeTransition: landscapeGrowth
+          ? {
+              landscapeId: landscapeGrowth.landscapeId,
+              stageBefore: landscapeGrowth.stageBefore,
+              stageAfter: landscapeGrowth.stageAfter,
+            }
+          : null,
+        recognitionKey,
+        committedAt,
+      })
+    : sameValue(input.familyRewardBefore, input.familyRewardAfter)
+      ? { ok: true as const, data: null }
+      : failure<null>(
+          'RECEIPT_CONFLICT',
+          'Ineligible approval changed the private Family Reward authority',
+        );
   if (!familyReward.ok) return failure('RECEIPT_CONFLICT', familyReward.error.message);
-  if (familyReward.data) {
+  if (familyRewardEligible && familyReward.data === null) {
+    return failure('RECEIPT_CONFLICT', 'Eligible approval is missing its Family Reward unlock');
+  }
+  if (familyReward.data !== null) {
     receipts.push(
       receiptScope({
         id: `reveal-receipt:family-reward:${familyReward.data.planId}:${familyReward.data.planVersion}:${recognitionKey}`,
@@ -462,7 +609,15 @@ export function constructApprovalReveal(
     );
   }
 
-  for (const threshold of input.growthProjection.newlyReachedThresholds) {
+  const expectedReachedThresholds = IMPACT_PATH_STATIONS.flatMap((station) =>
+    station.threshold > beforeLifetime.data && station.threshold <= afterLifetime.data
+      ? [station.threshold]
+      : [],
+  );
+  if (!sameValue(input.growthProjection.newlyReachedThresholds, expectedReachedThresholds)) {
+    return failure('RECEIPT_CONFLICT', 'Impact Path stations do not match the lifetime Seed delta');
+  }
+  for (const threshold of expectedReachedThresholds) {
     const station = IMPACT_PATH_STATIONS.find((candidate) => candidate.threshold === threshold);
     if (!station) {
       return failure('RECEIPT_CONFLICT', 'Impact Path projection contains an unknown station');
@@ -503,7 +658,6 @@ export function constructApprovalReveal(
     }
   }
 
-  const submission = input.recognition.journey.submission;
   if (submission?.completionMode === 'permitted_help') {
     if (!submission.helpUsed) {
       return failure('RECEIPT_CONFLICT', 'Permitted-help approval is missing its help evidence');
@@ -535,5 +689,172 @@ export function constructApprovalReveal(
     triggerKind: 'task_approval',
     triggeredAt: committedAt,
     receipts,
+  });
+}
+
+export function reconcileCommittedApprovalReveal(
+  input: CommittedApprovalRevealReconciliationInput,
+): RevealBundleResult<RevealConstructionResult> {
+  const { recognition, plan } = input;
+  const { receipt, session } = recognition;
+  const transaction = receipt.seedTransaction;
+  const profileId = transaction?.childId;
+  if (
+    recognition.disposition !== 'already_confirmed' ||
+    !transaction ||
+    !profileId ||
+    !session.journey ||
+    !hasValidRoutineProgressAuthority(session.routineProgressByTask, session.journey) ||
+    !session.children[profileId] ||
+    session.children[profileId].earnedSeeds !== transaction.balanceAfter
+  ) {
+    return failure('RECEIPT_CONFLICT', 'Repeated approval is missing its committed Seed authority');
+  }
+
+  const currentLedger = input.growthRuntime.ledgersByProfile[profileId];
+  const currentAchievements = input.growthRuntime.achievementsByProfile[profileId];
+  if (!currentLedger || !currentAchievements) {
+    return failure('PROFILE_SCOPE_MISMATCH', 'Repeated approval has no matching Growth profile');
+  }
+  const priorEntries = currentLedger.entries.filter(
+    (entry) => entry.triggerEventId !== receipt.recognitionKey,
+  );
+  const priorArchives = currentLedger.plantStageArchives.filter(
+    (archive) => archive.triggerEventId !== receipt.recognitionKey,
+  );
+  const currentAwards = currentAchievements.awards.filter(
+    (award) => award.sourceEventId === receipt.recognitionKey,
+  );
+  const priorAwards = currentAchievements.awards.filter(
+    (award) => award.sourceEventId !== receipt.recognitionKey,
+  );
+  const growthBefore: GrowthJourneyRuntimeState = {
+    ...input.growthRuntime,
+    ledgersByProfile: {
+      ...input.growthRuntime.ledgersByProfile,
+      [profileId]: {
+        ...currentLedger,
+        entries: priorEntries,
+        plantStageArchives: priorArchives,
+      },
+    },
+    achievementsByProfile: {
+      ...input.growthRuntime.achievementsByProfile,
+      [profileId]: { ...currentAchievements, awards: priorAwards },
+    },
+  };
+  const beforeLifetime = selectLifetimeSeeds(
+    growthBefore.ledgersByProfile[profileId],
+    profileId,
+    currentLedger.profileEpochId,
+  );
+  const afterLifetime = selectLifetimeSeeds(currentLedger, profileId, currentLedger.profileEpochId);
+  if (!beforeLifetime.ok || !afterLifetime.ok) {
+    return failure('RECEIPT_CONFLICT', 'Repeated approval Seed totals are not reproducible');
+  }
+
+  const task = session.journey.task;
+  const recurringFadeFirst =
+    task.content.recognitionMode === 'fade_first' && task.content.recurrence === 'recurrent';
+  let previousRoutineProgressByTask = session.routineProgressByTask;
+  if (recurringFadeFirst) {
+    const currentProgress = session.routineProgressByTask?.[task.id];
+    if (
+      !currentProgress ||
+      currentProgress.taskId !== task.id ||
+      currentProgress.confirmedAcquisitionCount < 1
+    ) {
+      return failure(
+        'RECEIPT_CONFLICT',
+        'Repeated approval has no valid routine progress authority',
+      );
+    }
+    const approvalCreatedPhaseReview = currentProgress.confirmedAcquisitionCount === 3;
+    previousRoutineProgressByTask = {
+      ...session.routineProgressByTask,
+      [task.id]: {
+        ...currentProgress,
+        confirmedAcquisitionCount: currentProgress.confirmedAcquisitionCount - 1,
+        futurePhase: 'acquisition',
+        phaseReview: approvalCreatedPhaseReview ? null : currentProgress.phaseReview,
+        decision: approvalCreatedPhaseReview ? null : currentProgress.decision,
+      },
+    };
+  }
+
+  const currentChild = session.children[profileId];
+  const previousSession: PrototypeSession = {
+    ...session,
+    household: receipt.canopyContribution
+      ? {
+          ...session.household,
+          combinedCanopy: {
+            ...session.household.combinedCanopy,
+            contributionLeaves:
+              session.household.combinedCanopy.contributionLeaves -
+              receipt.canopyContribution.leafDelta,
+          },
+        }
+      : session.household,
+    children: {
+      ...session.children,
+      [profileId]: { ...currentChild, earnedSeeds: transaction.balanceBefore },
+    },
+    journey: plan.journey,
+    landscapeProgress: receipt.landscapeGrowth
+      ? {
+          ...session.landscapeProgress,
+          [receipt.landscapeGrowth.landscapeId]: {
+            landscapeId: receipt.landscapeGrowth.landscapeId,
+            cumulativeSeeds: receipt.landscapeGrowth.seedsBefore,
+            stage: receipt.landscapeGrowth.stageBefore,
+            nextThreshold: nextThresholdForSeeds(receipt.landscapeGrowth.seedsBefore),
+          },
+        }
+      : session.landscapeProgress,
+    circleGoal: receipt.circleEvent
+      ? {
+          ...session.circleGoal,
+          eligibleGreenActions:
+            session.circleGoal.eligibleGreenActions - receipt.circleEvent.actionDelta,
+        }
+      : session.circleGoal,
+    recognitionLedger: Object.fromEntries(
+      Object.entries(session.recognitionLedger).filter(([key]) => key !== receipt.recognitionKey),
+    ),
+    routineProgressByTask: previousRoutineProgressByTask,
+    celebration: { available: false, consumed: false },
+  };
+  const familyRewardAfter: FamilyRewardRuntime =
+    input.familyReward.plan.lifecycle === 'given'
+      ? {
+          ...input.familyReward,
+          plan: { ...input.familyReward.plan, lifecycle: 'unlocked', givenAt: null },
+        }
+      : input.familyReward;
+  const familyRewardEligible = isFamilyRewardRecognitionEligible(recognition.journey);
+  const normalizedLeague = input.privateLeague
+    ? { ...input.privateLeague, disposition: 'applied' as const }
+    : null;
+  return constructApprovalReveal({
+    queue: input.queue,
+    plan,
+    recognition: { ...recognition, disposition: 'applied', message: null },
+    previousSession,
+    growthBefore,
+    growthProjection: {
+      disposition: 'projected',
+      runtime: input.growthRuntime,
+      addedCreditIds: [],
+      newlyEarnedBadgeIds: currentAwards.map((award) => award.badgeId),
+      newlyReachedThresholds: IMPACT_PATH_STATIONS.flatMap((station) =>
+        station.threshold > beforeLifetime.data && station.threshold <= afterLifetime.data
+          ? [station.threshold]
+          : [],
+      ),
+    },
+    familyRewardBefore: familyRewardEligible ? createFamilyRewardRuntime() : input.familyReward,
+    familyRewardAfter: familyRewardEligible ? familyRewardAfter : input.familyReward,
+    privateLeague: normalizedLeague,
   });
 }

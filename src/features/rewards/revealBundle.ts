@@ -272,7 +272,6 @@ function isCanopy(value: UnknownRecord): boolean {
     value.leafDelta === 1 &&
     value.leavesAfter === value.leavesBefore + value.leafDelta &&
     value.goalLeaves === 25 &&
-    value.leavesAfter <= value.goalLeaves &&
     value.origin === 'synthetic'
   );
 }
@@ -296,7 +295,6 @@ function isGreenCircle(value: UnknownRecord): boolean {
     value.actionDelta === 1 &&
     value.actionsAfter === value.actionsBefore + value.actionDelta &&
     value.goal === 12 &&
-    value.actionsAfter <= value.goal &&
     value.sourceScope === 'household' &&
     value.origin === 'synthetic_local'
   );
@@ -671,6 +669,10 @@ function validateQueue(value: unknown): RevealBundleResult<RevealBundleQueue> {
     return failure('QUEUE_CONFLICT', 'RevealBundle queue order is not canonical');
   }
   return success(immutableCopy({ schemaVersion: REVEAL_BUNDLE_SCHEMA_VERSION, bundles: sorted }));
+}
+
+export function validateRevealBundleQueue(value: unknown): RevealBundleResult<RevealBundleQueue> {
+  return validateQueue(value);
 }
 
 export function createEmptyRevealBundleQueue(): RevealBundleQueue {

@@ -13,7 +13,12 @@ import type {
   PrivateFamilyRewardView,
 } from '../../models/familyReward';
 import type { RecognitionReceipt, SyntheticChildId, TaskJourney } from '../../models/familyGrowth';
-import { isExactPlainDataEqual as sameValue } from '../../utils/exactPlainData';
+import {
+  hasDensePlainArrayShape,
+  hasExactPlainDataKeys,
+  isExactPlainDataEqual as sameValue,
+  isPlainDataRecord,
+} from '../../utils/exactPlainData';
 import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
 import { matchesCanonicalP0TaskContent, validateTaskForReview } from '../tasks/validation';
 
@@ -172,6 +177,46 @@ function isReconciledRecordedRecognition(input: {
         stageAfter: growth.stageAfter,
       },
       recognitionKey: receipt.recognitionKey,
+      committedAt,
+    })
+  );
+}
+
+export function isValidFamilyRewardRuntimeAuthority(value: unknown): value is FamilyRewardRuntime {
+  const baseline = createFamilyRewardRuntime();
+  if (sameValue(value, baseline)) return true;
+  if (
+    !isPlainDataRecord(value) ||
+    !hasExactPlainDataKeys(value, [
+      'plan',
+      'progress',
+      'baselineEligibleSeeds',
+      'targetEligibleSeeds',
+    ]) ||
+    !isPlainDataRecord(value.plan) ||
+    !isPlainDataRecord(value.progress) ||
+    !Array.isArray(value.progress.recognitionKeys) ||
+    !hasDensePlainArrayShape(value.progress.recognitionKeys) ||
+    value.progress.recognitionKeys.length !== 1 ||
+    !Array.isArray(value.progress.eligibleLandscapeTransitions) ||
+    !hasDensePlainArrayShape(value.progress.eligibleLandscapeTransitions) ||
+    value.progress.eligibleLandscapeTransitions.length !== 1
+  ) {
+    return false;
+  }
+  const runtime = value as unknown as FamilyRewardRuntime;
+  const recognitionKey = runtime.progress.recognitionKeys[0];
+  const landscapeTransition = runtime.progress.eligibleLandscapeTransitions[0];
+  const committedAt = runtime.plan.unlockedAt;
+  return (
+    typeof recognitionKey === 'string' &&
+    landscapeTransition !== undefined &&
+    isFamilyRewardTimestamp(committedAt) &&
+    isReconciledRewardOutcome({
+      runtime,
+      expectedProfileId: 'child_salem',
+      expectedLandscapeTransition: landscapeTransition,
+      recognitionKey,
       committedAt,
     })
   );

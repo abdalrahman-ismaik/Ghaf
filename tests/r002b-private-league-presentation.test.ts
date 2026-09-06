@@ -180,7 +180,7 @@ describe('R002b private League recognition runtime', () => {
     });
   });
 
-  it('allows a service-valid third-acquisition phase review without changing League credit', () => {
+  it('rejects a phase review on the one-time canonical League task', () => {
     const input = recognizedInput();
     const receipt = {
       ...input.receipt,
@@ -199,13 +199,7 @@ describe('R002b private League recognition runtime', () => {
       recognitionLedger: { [receipt.recognitionKey]: receipt },
     });
 
-    expect(result).toMatchObject({
-      ok: true,
-      data: {
-        disposition: 'applied',
-        receipt: { confirmedLeavesBefore: 4, confirmedLeavesAfter: 5, leafDelta: 1 },
-      },
-    });
+    expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
   });
 
   it('returns the same committed runtime and receipt for an exact retry', () => {
@@ -225,6 +219,26 @@ describe('R002b private League recognition runtime', () => {
     expect(retry.data.receipt).toBe(first.data.receipt);
     expect(Object.keys(retry.data.runtime.receiptsByRecognitionKey)).toHaveLength(1);
   });
+
+  it.each(['not-a-date', '2026-09-31T09:40:00.000Z'])(
+    'rejects a committed League receipt carrying invalid time %s',
+    (committedAt) => {
+      const input = recognizedInput();
+      const first = applyRecognitionToPrivateLeague(input);
+      if (!first.ok) throw new Error(first.error.message);
+      const recognitionKey = first.data.receipt.recognitionKey;
+      const forgedReceipt = { ...first.data.receipt, committedAt };
+      const forgedRuntime = {
+        ...first.data.runtime,
+        receiptsByRecognitionKey: { [recognitionKey]: forgedReceipt },
+      } as typeof first.data.runtime;
+
+      expect(applyRecognitionToPrivateLeague({ ...input, runtime: forgedRuntime })).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_INPUT' },
+      });
+    },
+  );
 
   it.each(['receipt', 'receipt_map'] as const)(
     'rejects hidden authority on a committed %s',

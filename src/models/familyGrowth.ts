@@ -343,9 +343,26 @@ export interface ProjectionPlan {
   readonly circleRejection: ProjectionRejectionReason | null;
 }
 
+export interface RecognitionReceiptProvenance {
+  readonly schemaVersion: 'r003.recognition-provenance.v1';
+  readonly taskId: string;
+  readonly taskVersion: number;
+  readonly submissionId: string;
+  readonly profileId: SyntheticChildId;
+  readonly landscapeId: LandscapeId;
+  readonly completionMode: CompletionMode;
+  readonly projection: ProjectionEligibilityContext;
+  readonly recurrence: Recurrence;
+  readonly routineCompletionCountBefore: number;
+  readonly routineCompletionCountAfter: number;
+  readonly familyRewardEligible: boolean;
+  readonly challengeLeafEligible: boolean;
+}
+
 export interface RecognitionReceipt {
   readonly recognitionKey: string;
   readonly checkInId: string;
+  readonly provenance: RecognitionReceiptProvenance;
   readonly seedTransaction: SeedTransaction | null;
   readonly landscapeGrowth: LandscapeGrowth | null;
   readonly canopyContribution: CanopyContributionDTO | null;

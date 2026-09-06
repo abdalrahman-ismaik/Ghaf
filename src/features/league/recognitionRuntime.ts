@@ -12,6 +12,11 @@ import {
   isExactPlainDataEqual as sameValue,
   isPlainDataRecord as isRecord,
 } from '../../utils/exactPlainData';
+import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
+import {
+  hasCanonicalRecognitionProvenance,
+  hasExactRecognitionTimeline,
+} from '../tasks/recognitionSession';
 import { matchesCanonicalP0TaskContent, validateTaskForReview } from '../tasks/validation';
 
 import { evaluateChallengeLeafEligibility, SYNTHETIC_LEAGUE_PARTICIPANTS } from './index';
@@ -327,6 +332,7 @@ function isCanonicalCoreRecognitionReceipt(
     !hasExactKeys(value, [
       'recognitionKey',
       'checkInId',
+      'provenance',
       'seedTransaction',
       'landscapeGrowth',
       'canopyContribution',
@@ -343,9 +349,19 @@ function isCanonicalCoreRecognitionReceipt(
   const growth = value.landscapeGrowth;
   const canopy = value.canopyContribution;
   const circle = value.circleEvent;
+  const provenance = value.provenance;
   return (
     value.recognitionKey === recognitionKey &&
     value.checkInId === journey.checkIn.id &&
+    hasCanonicalRecognitionProvenance(value as unknown as RecognitionReceipt, recognitionKey) &&
+    isRecord(provenance) &&
+    provenance.taskId === journey.task.id &&
+    provenance.taskVersion === journey.task.version &&
+    provenance.submissionId === journey.submission.id &&
+    provenance.profileId === journey.task.targetChildId &&
+    provenance.landscapeId === journey.task.content.landscapeId &&
+    provenance.completionMode === journey.submission.completionMode &&
+    provenance.challengeLeafEligible === true &&
     isValidPhaseReview(value.phaseReview, journey) &&
     isRecord(seed) &&
     hasExactKeys(seed, [
@@ -404,6 +420,7 @@ function isCanonicalRecognizedJourney(input: ApplyRecognitionToPrivateLeagueInpu
     eligibility?.challengeLeafEligible === true &&
     eligibility?.leafId === input.runtime.challengeLeaf.id &&
     eligibility.profileId === profileId &&
+    hasExactRecognitionTimeline(journey) &&
     profileId === 'child_salem' &&
     journey.lifecycle === 'recognized' &&
     task.id === 'task_recycling_p0_v1' &&
@@ -433,6 +450,7 @@ function isCanonicalRecognizedJourney(input: ApplyRecognitionToPrivateLeagueInpu
     checkIn.decision === 'confirm' &&
     checkIn.praise !== null &&
     checkIn.praisePresentedAt !== null &&
+    isExactIsoTimestamp(checkIn.praisePresentedAt) &&
     checkIn.confirmationPresentation === 'recognition_applied' &&
     checkIn.recognitionKey === `recognition:${submission.id}`
   );
@@ -470,6 +488,7 @@ function isCommittedPrivateLeagueReceipt(
     value.weekKey === runtime.weekKey &&
     value.leafId === SALEM_RECYCLING_CHALLENGE_LEAF_ID &&
     value.recognitionKey === recognitionKey &&
+    isExactIsoTimestamp(committedAt) &&
     value.committedAt === committedAt &&
     value.completionMode === completionMode &&
     value.accessibilityAdapted === false &&
@@ -507,8 +526,7 @@ export function selectCommittedPrivateLeagueReceipt(
     runtime.challengeLeaf.recognitionKey !== recognitionKey ||
     !isRecord(receipt) ||
     typeof receipt.committedAt !== 'string' ||
-    receipt.committedAt.length === 0 ||
-    receipt.committedAt.trim() !== receipt.committedAt ||
+    !isExactIsoTimestamp(receipt.committedAt) ||
     (receipt.completionMode !== 'independent' && receipt.completionMode !== 'permitted_help') ||
     !isCommittedPrivateLeagueReceipt(
       receipt,
