@@ -1,5 +1,32 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Approval-authority Reconciliation Record — 2026-09-06
+
+**Current classification:** locally validated, default-off implementation candidate; physical
+Android and named-human gates remain unchanged.
+
+Commits `44f185f`, `c7ee6d6`, and `f546ad9` close the remaining approval-consequence integrity
+work. A recognition attempt now validates the active task, Child, submission, praise, timestamp,
+provider envelope, permanent Seed/Growth/badge evidence, private League Leaf, eligible Family
+Reward progress, and receipt-only RevealBundle before one store update. Exact retries remain
+no-ops. Learning completion requires dense canonical progress, and a learning-dependent badge is
+accepted only when one exact replay can earn it at its recorded source. The candidate stays hidden
+while `r002b_reveal_bundle_v2` is off.
+
+| Gate                                                                              | Result    | Evidence                                                                                   |
+| --------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------ |
+| Focused recognition/reveal/learning matrix                                        | `PASSED`  | 8 files / 209 tests; Reveal store integration 96/96                                        |
+| Complete automated suite                                                          | `PASSED`  | typecheck, lint, format, and 89 files / 1,221 tests                                        |
+| Dependency alignment                                                              | `PASSED`  | `npx expo install --check`: dependencies are up to date                                    |
+| Production web export                                                             | `PASSED`  | 39 static HTML pages / 119 files in the ignored `dist` output                              |
+| Independent final diff review                                                     | `PASSED`  | no remaining actionable P0, P1, or P2 finding after the final fixes                        |
+| Physical Android, TalkBack, native Back/IME, and OS font scale                    | `NOT RUN` | No device attempt in this checkpoint; the previously recorded Android blocker remains open |
+| Named Arabic/UAE, safeguarding, privacy, sustainability, and accessibility review | `NOT RUN` | Requires named reviewers and the exact reviewed build/content                              |
+
+The deterministic commitment fingerprint detects accidental authority drift; it is not a
+signature, production authorization boundary, or proof against coordinated in-memory tampering.
+The export and source/test evidence do not activate any R002b flag or upgrade native/human gates.
+
 ## R003 Ordered Splash-to-loading Startup Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; physical Android
@@ -232,8 +259,9 @@ security.
 Use Parent verification code `424242`, Salem PIN `2468`, Alya's Leaf → Water → Tree picture
 sequence, and action-scoped Parent reauthentication code `4242` only where the UI visibly labels
 them as local demo fixtures. A previously paired Child skips only the pairing approval branch, not
-profile credential entry. After recognition, the normal default-off path keeps the R002a result;
-do not fabricate or force the combined RevealBundle.
+profile credential entry. Recognition now commits the receipt-backed RevealBundle candidate, but
+the normal default-off path still presents the R002a result. Do not force-enable the candidate in
+the released judge path.
 
 ### Complete-screen sweep after the core spine
 

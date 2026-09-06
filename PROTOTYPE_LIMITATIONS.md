@@ -59,13 +59,19 @@ R002 exports remain design evidence, not runtime code or proof of release accept
 
 R002a preserves `task_recycling_p0_v1`, the Schema-3 48→60 behavior, zero reward at Child
 submission, and the complete atomic/idempotent Parent-approval consequences. The design label
-`task.recycling_sort.v1` is an alias only. Screens must use live selectors and actions; they must not
-hard-code screenshot counters. In particular, private League and Family Reward exist as protected
-domain services but are not currently wired into the Parent dashboard session, and their maps start
-empty. Parent Home therefore must not invent `4/5`, `108/120`, or `120/180`, and it must not relabel
-the cooperative `/circle` route as private League. This is preserved R002a history; the R003 Family
-screen now reads a protected local Family Reward projection and the Child `/league` route reads the
-separate private League projection without merging either authority with `/circle`.
+`task.recycling_sort.v1` is an alias only. Screens use live selectors and actions rather than copied
+screenshot counters. The R003 Family screen reads a protected local Family Reward projection and
+the Child `/league` route reads an epoch-scoped private League projection without merging either
+authority with `/circle`. Parent Home still has no direct detail selector and must not invent `4/5`,
+`108/120`, or `120/180`.
+
+The normal synthetic P0 approval now derives a ready RevealBundle only after its praise, lifetime
+Seed, Garden archive, canopy, eligible Green Circle, private League/Challenge Leaf, Family Reward,
+badge, station, and safe-help authorities reconcile. The League boundary preserves the approved
+aggregate summary as a presentation fixture, while its runtime persists only one nominated Salem
+Leaf and the real epoch-scoped confirmation; it does not fabricate baseline task history. This
+local bundle remains hidden while `r002b_reveal_bundle_v2` is off, and its implementation is not
+release, Android, or human-review evidence.
 
 R003 completes the local screen journey with distinct synthetic Parent and Child access paths,
 Parent Home/Tasks/Garden/Family navigation, Child Today/Garden/League navigation, Family Reward,
@@ -281,6 +287,13 @@ The implemented Feature 003 technical limits are:
 - no native photo capture, recording, background audio, or real upload exists;
 - native direction changes may require reopen/reload;
 - garden species/stages are generated symbolic images, not biological models or measured growth;
+- approval commitments use a deterministic local consistency fingerprint, not a signature,
+  durable audit log, authentication mechanism, or protection from coordinated in-memory changes;
+- task recognitions have a stable local commit order, while the single learning completion lives in
+  a separate authority without one durable global sequence; validation therefore requires an exact
+  valid insertion replay and exact badge source, but does not prove real-world event chronology;
+- routine history and permanent local reward authorities remain prototype state rather than
+  cryptographically verifiable records;
 - Android identifiers, builds, and physical-device behavior remain whatever the actual repository
   and runbook verify;
 - old Feature 002 tests and screenshots do not pass Feature 003 acceptance; and

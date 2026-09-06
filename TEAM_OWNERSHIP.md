@@ -6,6 +6,48 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Approval Reveal Consequence-parity Window
+
+**Owner and only writer**: `/root`
+
+**Branch**: `integration/r3-complete-screens-20260905` at reviewed baseline `3ad8357`.
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/tasks.md`, `src/state/usePrototypeStore.ts`,
+new `src/features/tasks/recognitionSession.ts`,
+new `src/features/tasks/recognitionProviderBoundary.ts`,
+new `src/utils/exactPlainData.ts`,
+new `src/utils/isoTimestamp.ts`,
+`src/services/mock/index.ts`,
+`src/features/growth/achievements.ts`,
+`src/features/growth/seedLedger.ts`,
+`src/features/league/presentation.ts`, new `src/features/league/recognitionRuntime.ts`,
+`src/features/family-hub/index.ts`, `src/features/family-rewards/index.ts`,
+new `src/features/rewards/approvalReveal.ts`,
+`src/features/rewards/revealBundle.ts`, `app/league.tsx`,
+`output/playwright/r003-reveal-evidence/`,
+and focused `tests/{r002b-private-league-presentation,r002b-private-league-route-integration,r002b-reveal-bundle,r002b-reveal-store-integration,r002b-reveal-route-integration,r003-family-hub}.test.*`
+plus `tests/{family-reward,reward-matrix}.test.ts`
+and
+`tests/{r002b-lifetime-seed-projection,recognition-provider-boundary,recognition-provider-store-boundary}.test.ts`
+only.
+
+**Scope**: Complete T206 by projecting the normal idempotent Parent approval into one ordered
+receipt-only RevealBundle from already committed praise, lifetime Seed, landscape, canopy, eligible
+Green Circle, private League/Challenge Leaf, private Family Reward, badge, Impact Path, applicable
+learning, and safe-help authorities. Keep the existing `+12` recognition as the only reward
+transaction, commit every derived authority and the bundle in one store update, preserve the R002a
+celebration, and fail closed before mutation when any applicable receipt cannot be reconciled. The
+existing Reveal route remains behind `r002b_reveal_bundle_v2`, every R002b flag stays independent
+and off by default, and no screen calculates a consequence. Validate retry, queue, reset,
+role/profile, and default-off behavior without claiming Android, named-human, provenance, or
+release activation evidence. No dependency, network, production account, real media, push, merge,
+deployment, or shared-history rewrite is authorized.
+
+**Closed:** `44f185f`, `c7ee6d6`, and `f546ad9`; final local validation passed 89 files / 1,221
+tests, dependency alignment, and a 39-page web export. Physical Android and named-human gates were
+not run in this checkpoint.
+
 ## 2026-09-06 Ordered Splash-to-loading Startup Window
 
 **Owner and only writer**: `/root`

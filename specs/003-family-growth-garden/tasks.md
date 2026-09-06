@@ -861,26 +861,31 @@ blockers under T220/T221.
 - [x] T205 Define `reveal:<profileId>:<triggerEventId>` and lifecycle
       `ready → presenting → acknowledged → archived` with deterministic event-order queueing,
       exactly-once construction, one visible bundle, interruption resume, and no rebuild after seen.
-- [ ] T206 Construct the approval bundle as a role-specific projection of existing committed
+- [x] T206 Construct the approval bundle as a role-specific projection of existing committed
       authorities with complete praise/Seed/stage/canopy/eligible Green Circle/private League/
-      Challenge/Family Reward/badge/station/learning/safe-help consequence parity and no screen-side
-      reward calculation.
+      Challenge/Family Reward/badge/station/applicable learning/safe-help consequence parity and no
+      screen-side reward calculation.
 - [x] T207 Permit a separate zero-Seed learning bundle only when its unique completion causes a new
       eligible outcome; dismissal never reverses committed state and flags never show R002a and v2
       reveals together.
 - [ ] T208 Add the gated Child reveal route/sheet, static reduced-motion outcome, focus containment,
       restoration, and 390×844 code-native capture.
-- [ ] T209 Test retry, interruption at every lifecycle boundary, queue order, duplicate/concurrent
+- [x] T209 Test retry, interruption at every lifecycle boundary, queue order, duplicate/concurrent
       triggers, role projection, consequence parity, and default-off R002a fallback; validate and
       commit Learning and RevealBundle as separate slices.
 
-**Evidence note:** Learning and the receipt-only Reveal lifecycle are implemented, tested, and
-committed. `680f91b` additionally hardens initial/return focus, truthful recovered presentation,
-acknowledged interruption recovery, and Back handling without changing reward authority. T206,
-T208, and T209 remain open because the normal approval flow does not yet expose all authoritative
-private League, Challenge Leaf, and Family Reward receipts required for a complete live v2 approval
-bundle, and no valid 390×844 Reveal capture exists. Learning remains default-off pending named
-content/provenance review and a truthful station-132 live capture.
+**Evidence note:** Learning and the receipt-only Reveal lifecycle are implemented and committed.
+`680f91b` hardens focus, recovery, and Back handling. T206 and T209 are completed by `84d9317`,
+`57ed790`, `95eb3ab`, `44f185f`, `c7ee6d6`, and `f546ad9`: the normal approval commits an
+epoch-scoped private League/Challenge Leaf receipt, verifies the private Family Reward unlock, and
+constructs one complete ordered bundle before the atomic store update. Exact retry preserves the
+same queue and authorities; malformed provider, task, praise, timestamp, learning, achievement,
+profile, or epoch evidence fails before mutation. The final focused matrix passed 8 files / 209
+tests, followed by typecheck, lint, format, the full 89-file / 1,221-test suite, dependency
+alignment, and a 39-page / 119-file web export. T208 remains open because no valid 390×844 Reveal
+capture has been recorded. All R002b flags remain independent and off; Learning still awaits named
+content/provenance review and a truthful station-132 live capture, while physical Android and
+named-human gates remain open.
 
 ## Phase 28: Parent Progress and Additive Shared Growth
 
