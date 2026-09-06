@@ -125,6 +125,7 @@ export default function ChildHomeScreen() {
     (state) => state.dismissReturningUserWelcome,
   );
   const children = usePrototypeStore((state) => state.children);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const choicePool = usePrototypeStore((state) => state.choicePool);
   const journey = usePrototypeStore((state) => state.journey);
@@ -259,6 +260,9 @@ export default function ChildHomeScreen() {
     ? [currentAssignmentChoice, ...previewChoices]
     : previewChoices;
   const child = children[activeChildId];
+  const childName =
+    localFamily.record?.children.find((profile) => profile.id === activeChildId)?.nickname ??
+    localize(child.displayName, locale);
   const gardenTarget = 60;
   const gardenCurrent = Math.min(child.earnedSeeds, gardenTarget);
   const gardenRemaining = Math.max(0, gardenTarget - gardenCurrent);
@@ -401,7 +405,10 @@ export default function ChildHomeScreen() {
       footer={footer}
       header={
         <ChildHomeHeader
-          avatarLabel={localize(child.displayName, locale)}
+          avatarId={
+            localFamily.record?.children.find((profile) => profile.id === activeChildId)?.avatarId
+          }
+          avatarLabel={childName}
           direction={direction}
           helpLabel={t('common.help')}
           helpOpen={helpOpen}
@@ -421,7 +428,7 @@ export default function ChildHomeScreen() {
     >
       <View style={styles.welcome}>
         <Text brand color="r001Ink" direction={direction} variant="hero">
-          {t('childHome.welcome', { child: localize(child.displayName, locale) })}
+          {t('childHome.welcome', { child: childName })}
         </Text>
         <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
           {t(hasCurrentWork ? 'childHome.todaySummary' : 'childHome.noCurrentTaskSummary')}
@@ -775,7 +782,7 @@ export default function ChildHomeScreen() {
         summaryLabel={t('r003.welcomeBack.privateSummary')}
         testID="child-returning-welcome"
         title={t('r003.welcomeBack.childTitle', {
-          name: localize(child.displayName, locale),
+          name: childName,
         })}
         updates={childWelcomeUpdates}
         visible={showReturningWelcome}

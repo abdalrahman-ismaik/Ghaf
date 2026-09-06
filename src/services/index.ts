@@ -1,5 +1,6 @@
 import { createFeature003ServiceRegistry } from './mock';
 import type { Feature003ServiceRegistry } from './interfaces';
+import { createLocalFamilyRepository, deviceLocalStorage } from './local';
 
 export type {
   ChildCoachService,
@@ -41,6 +42,18 @@ export {
   DeterministicSyntheticAccessService,
 } from './mock';
 export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
+export {
+  createLocalFamilyRepository,
+  createMemoryLocalKeyValueStorage,
+  LOCAL_FAMILY_STORAGE_KEY,
+  type LocalFamilyRepository,
+  type LocalKeyValueStorage,
+} from './local';
 
 // Competition uses only deterministic Feature 003 services from this registry.
-export const serviceRegistry: Feature003ServiceRegistry = createFeature003ServiceRegistry();
+export const serviceRegistry: Feature003ServiceRegistry & {
+  readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
+} = {
+  ...createFeature003ServiceRegistry(),
+  localFamily: createLocalFamilyRepository(deviceLocalStorage),
+};

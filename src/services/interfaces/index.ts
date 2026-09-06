@@ -285,6 +285,11 @@ export interface SyntheticAccessService {
   approvePairing(input: PairingApprovalInput): ServiceResult<PairingRequest>;
   revokePairing(input: PairingRevocationInput): ServiceResult<PairingRequest>;
   consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession>;
+  restorePairedDevice(input: {
+    readonly childId: SyntheticChildId;
+    readonly deviceId: string;
+    readonly pairedAt: string;
+  }): ServiceResult<DeviceAccessState>;
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState>;
   issueReauthentication(input: ReauthenticationInput): ServiceResult<ReauthenticationProof>;
   authorizeSensitiveAction(input: SensitiveActionInput): ServiceResult<ReauthenticationProof>;

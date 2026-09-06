@@ -21,13 +21,16 @@ export default function ChildSettingsScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const canEnter = usePrototypeStore(selectCanEnterChildExperience);
   const child = usePrototypeStore((state) => state.children[state.activeChildId]);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const getGrant = usePrototypeStore((state) => state.getOwnChildPermissionGrant);
   const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
   const [error, setError] = useState<string | null>(null);
   const grant = getGrant();
 
   if (!canEnter) return <Redirect href="/" />;
-  const name = localize(child.displayName, locale);
+  const name =
+    localFamily.record?.children.find((profile) => profile.id === child.id)?.nickname ??
+    localize(child.displayName, locale);
 
   const signOut = () => {
     setError(null);

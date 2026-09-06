@@ -594,6 +594,41 @@ export class DeterministicSyntheticAccessService {
     );
   }
 
+  restorePairedDevice(input: {
+    readonly childId: SyntheticChildId;
+    readonly deviceId: string;
+    readonly pairedAt: string;
+  }): ServiceResult<DeviceAccessState> {
+    if (
+      !childFixture(input.childId) ||
+      !nonEmpty(input.deviceId) ||
+      parsedTime(input.pairedAt) === null
+    ) {
+      return failure('INVALID_INPUT', 'A valid device-local Child pairing marker is required');
+    }
+    const key = deviceKey(input.childId, input.deviceId);
+    const existing = this.devices.get(key);
+    if (existing) {
+      return existing.status === 'paired' && existing.pairedAt === input.pairedAt
+        ? success({ ...existing }, existing.pairingRequestId)
+        : failure('INVALID_TRANSITION', 'The device-local Child pairing marker conflicts');
+    }
+    const device: DeviceAccessState = {
+      householdId: SYNTHETIC_HOUSEHOLD_ID,
+      childId: input.childId,
+      deviceId: input.deviceId,
+      pairingRequestId: `restored-${input.childId}`,
+      status: 'paired',
+      pairedAt: input.pairedAt,
+      revokedAt: null,
+      revokedByParentId: null,
+      origin: 'synthetic',
+      capabilityTruth: CAPABILITY_TRUTH,
+    };
+    this.devices.set(key, { ...device });
+    return success({ ...device }, device.pairingRequestId);
+  }
+
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState> {
     const parent = this.resolveParent(input.parentSession, input.now, 'manage_child_devices');
     if (!parent.ok) return parent;

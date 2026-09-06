@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { PARENT_VERIFICATION_CODE } from '../src/features/access';
+import { deviceLocalStorage } from '../src/services/local/storage';
 import {
   selectCanEnterChildExperience,
   selectHasActiveParentExperience,
@@ -54,6 +55,89 @@ describe('R003 access and role-separated store flow', () => {
     expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({
       ok: false,
       error: { code: 'INVALID_TRANSITION' },
+    });
+  });
+
+  it('persists only configured local roles and excludes an unconfigured Child everywhere', async () => {
+    expectOk(
+      usePrototypeStore.getState().requestParentVerification({
+        identifier: 'parent@example.com',
+        networkAvailable: false,
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().verifyParentCode(PARENT_VERIFICATION_CODE));
+    expectOk(
+      usePrototypeStore.getState().updateParentOnboardingDraft({
+        familyName: 'Palm Family',
+        childCount: 1,
+        childIndex: 0,
+        child: { nickname: 'Salem Demo' },
+      }),
+    );
+    expectOk(usePrototypeStore.getState().completeParentOnboarding());
+
+    expect(usePrototypeStore.getState().localFamily).toMatchObject({
+      status: 'ready',
+      configuredChildIds: ['child_salem'],
+      record: {
+        familyName: 'Palm Family',
+        parent: { id: 'parent_al_noor', role: 'parent' },
+        children: [{ id: 'child_salem', role: 'child', nickname: 'Salem Demo' }],
+      },
+    });
+    expect(usePrototypeStore.getState().getChildPermissionGrant('child_alya')).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expectOk(usePrototypeStore.getState().signOutExperience());
+    expect(usePrototypeStore.getState().selectChildAccessProfile('child_alya')).toMatchObject({
+      ok: false,
+      error: { code: 'NOT_FOUND' },
+    });
+    expectOk(usePrototypeStore.getState().selectChildAccessProfile('child_salem'));
+  });
+
+  it('keeps review unauthenticated when the complete local-family write fails', async () => {
+    expectOk(
+      usePrototypeStore.getState().requestParentVerification({
+        identifier: 'parent@example.com',
+        networkAvailable: false,
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().verifyParentCode(PARENT_VERIFICATION_CODE));
+    deviceLocalStorage.failNextWrite();
+
+    expect(usePrototypeStore.getState().completeParentOnboarding()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'signed_out',
+      parentOnboarding: {
+        status: 'verified',
+        completionReceipt: null,
+        canEnterParentExperience: false,
+      },
+      localFamily: { record: null, configuredChildIds: [] },
+    });
+  });
+
+  it('persists a changed app language and reuses it on returning Parent entry', async () => {
+    await completeParentOnboarding();
+    usePrototypeStore.getState().setLocale('en');
+
+    expect(usePrototypeStore.getState()).toMatchObject({
+      locale: 'en',
+      direction: 'ltr',
+      localFamily: { record: { appLanguage: 'en' } },
+    });
+    expectOk(usePrototypeStore.getState().signOutExperience());
+    await signInReturningParent();
+    expect(usePrototypeStore.getState()).toMatchObject({
+      locale: 'en',
+      direction: 'ltr',
+      activeExperience: 'parent',
+      returningUserWelcome: { kind: 'returning_parent' },
     });
   });
 
@@ -135,6 +219,9 @@ describe('R003 access and role-separated store flow', () => {
       activeExperience: 'child',
       role: 'child',
       activeChildId: 'child_salem',
+      localFamily: {
+        record: { pairedChildIds: ['child_salem'] },
+      },
     });
     expectOk(usePrototypeStore.getState().getOwnChildPermissionGrant());
     expect(usePrototypeStore.getState().setActiveChild('child_alya')).toMatchObject({
@@ -242,6 +329,7 @@ describe('R003 access and role-separated store flow', () => {
       permissionProofSequence: 0,
       childAccess: { status: 'signed_out', pairedDevices: [] },
       familyReward: { plan: { lifecycle: 'promised' } },
+      localFamily: { status: 'ready', record: null, configuredChildIds: [] },
     });
     expect(selectHasActiveParentExperience(reset)).toBe(false);
     expect(selectCanEnterChildExperience(reset)).toBe(false);

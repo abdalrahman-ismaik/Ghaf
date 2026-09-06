@@ -85,6 +85,28 @@ export class ChildAccessController {
     };
   }
 
+  restorePairedDevices(input: {
+    readonly childIds: readonly SyntheticChildId[];
+    readonly pairedAt: string;
+  }): ServiceResult<ChildAccessView> {
+    if (this.session || this.status !== 'signed_out' || this.devices.size > 0) {
+      return failure('INVALID_TRANSITION', 'Reset before restoring device-local pairing markers');
+    }
+    for (const childId of input.childIds) {
+      const restored = this.access.restorePairedDevice({
+        childId,
+        deviceId: this.deviceId(childId),
+        pairedAt: input.pairedAt,
+      });
+      if (!restored.ok) {
+        this.devices.clear();
+        return restored;
+      }
+      this.devices.set(childId, restored.data);
+    }
+    return success(this.getView());
+  }
+
   selectProfile(childId: unknown): ServiceResult<ChildAccessView> {
     if (this.session || this.status === 'authenticated_child') {
       return failure('INVALID_TRANSITION', 'Sign out before choosing another Child profile');

@@ -28,13 +28,18 @@ export async function enterParentExperienceForTest() {
 }
 
 export async function enterChildExperienceForTest(childId: SyntheticChildId = 'child_salem') {
-  const current = usePrototypeStore.getState();
+  let current = usePrototypeStore.getState();
   if (
     current.activeExperience === 'child' &&
     current.activeChildId === childId &&
     current.authorizeChildExperience().ok
   ) {
     return;
+  }
+  if (!current.localFamily.configuredChildIds.includes(childId)) {
+    await enterParentExperienceForTest();
+    assertOk(usePrototypeStore.getState().signOutExperience());
+    current = usePrototypeStore.getState();
   }
   if (current.activeExperience !== 'signed_out') {
     assertOk(current.signOutExperience());

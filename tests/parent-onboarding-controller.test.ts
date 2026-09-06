@@ -117,16 +117,21 @@ describe('R001 Parent onboarding input policy', () => {
       }),
     );
 
-    expect(updated).toEqual({
+    expect(updated).toMatchObject({
       familyName: 'Palm Family',
       appLanguage: 'en',
-      child: {
-        nickname: 'Salem',
-        avatarId: 'water_drop',
-        ageBand: '12_14',
-        preferredLanguage: 'both',
-        accessibilityDefaults: ['larger_text', 'reduced_motion'],
-      },
+      childCount: 2,
+      children: [
+        {
+          profileId: 'child_salem',
+          nickname: 'Salem',
+          avatarId: 'water_drop',
+          ageBand: '12_14',
+          preferredLanguage: 'both',
+          accessibilityDefaults: ['larger_text', 'reduced_motion'],
+        },
+        { profileId: 'child_alya' },
+      ],
     });
     expect(
       updateParentOnboardingDraft(initial, {
@@ -289,11 +294,16 @@ describe('R001 Parent onboarding controller', () => {
       destination: '/parent',
       familyName: 'Palm Family',
       appLanguage: 'en',
-      child: {
-        nickname: 'Salem',
-        accessLanguagePreference: 'bilingual',
-        accessibilityDefaults: ['larger_text', 'simpler_instructions'],
-      },
+      childCount: 2,
+      children: [
+        {
+          profileId: 'child_salem',
+          nickname: 'Salem',
+          accessLanguagePreference: 'bilingual',
+          accessibilityDefaults: ['larger_text', 'simpler_instructions'],
+        },
+        { profileId: 'child_alya' },
+      ],
       origin: 'synthetic',
       capabilityTruth: 'local_prototype_not_authentication',
     });

@@ -8,12 +8,14 @@ import {
 } from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
 import { createChildAccessController, type ChildAccessView } from '../features/access/childAccess';
+import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
   createParentOnboardingController,
   type ParentOnboardingCompletionReceipt,
   type ParentOnboardingDraftPatch,
   type ParentOnboardingHandoff,
   type ParentOnboardingView,
+  validateCompleteParentOnboardingDraft,
 } from '../features/access/parentOnboarding';
 import { P0_EXECUTABLE_CHOICE, P0_SAFE_EQUIVALENT_TEMPLATE } from '../features/tasks/demoContent';
 import {
@@ -91,6 +93,7 @@ import type {
   SyntheticChildId,
 } from '../models/familyGrowth';
 import type { ChildPermissionGrant } from '../models/access';
+import type { LocalFamilyRecord, LocalFamilyView } from '../models/localFamily';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import type {
   AdvanceLearningStepResult,
@@ -147,6 +150,42 @@ const childAccessController = createChildAccessController(
   parentOnboardingController,
 );
 const R001_ONBOARDING_TIME = '2026-09-04T10:00:00.000Z';
+const R003_LOCAL_FAMILY_TIME = '2026-09-06T14:00:00.000Z';
+
+function localFamilyView(
+  record: LocalFamilyRecord | null,
+  status: LocalFamilyView['status'] = 'ready',
+): LocalFamilyView {
+  return {
+    status,
+    record,
+    configuredChildIds: record ? record.children.map((child) => child.id) : [],
+    errorCode: status === 'unavailable' ? 'invalid_or_unavailable_local_data' : null,
+    storageTruth: 'device_local_demo_only',
+  };
+}
+
+function restoreInitialLocalFamily(): LocalFamilyView {
+  const read = serviceRegistry.localFamily.read();
+  if (!read.ok) return localFamilyView(null, 'unavailable');
+  if (!read.data) return localFamilyView(null);
+  const restoredReceipt = parentOnboardingController.restoreCompletionReceipt(
+    localFamilyRecordToReceipt(read.data),
+  );
+  const restoredDevices = childAccessController.restorePairedDevices({
+    childIds: read.data.pairedChildIds,
+    pairedAt: read.data.updatedAt,
+  });
+  if (!restoredReceipt.ok || !restoredDevices.ok) {
+    parentOnboardingController.reset(R001_ONBOARDING_TIME);
+    childAccessController.reset();
+    serviceRegistry.access.resetPrototype();
+    return localFamilyView(null, 'unavailable');
+  }
+  return localFamilyView(read.data);
+}
+
+const initialLocalFamily = restoreInitialLocalFamily();
 const initialPrototypeSession = serviceRegistry.prototypeSession.getInitialSession();
 const initialGrowthJourney = createGrowthJourneyRuntime(initialPrototypeSession, 0);
 
@@ -207,6 +246,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly sharedGrowth: SharedGrowthState;
   readonly revealBundleQueue: RevealBundleQueue;
   readonly parentOnboarding: ParentOnboardingView;
+  readonly localFamily: LocalFamilyView;
   readonly returningUserWelcome: ReturningUserWelcome | null;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly childCoachResult: ChildCoachResult | null;
@@ -757,6 +797,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   sharedGrowth: initialSharedGrowth,
   revealBundleQueue: createEmptyRevealBundleQueue(),
   parentOnboarding: parentOnboardingController.getView(),
+  localFamily: initialLocalFamily,
   returningUserWelcome: null,
   parentGuideSuggestion: null,
   childCoachResult: null,
@@ -829,20 +870,51 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       state.parentOnboarding.completionReceipt
         ? state.parentOnboarding.completionReceipt.householdId
         : null;
+    let newlySavedFamily: LocalFamilyRecord | null = null;
+    if (!returningHouseholdId) {
+      const validated = validateCompleteParentOnboardingDraft(state.parentOnboarding.draft);
+      if (!validated.ok) return { ok: false, error: validated.error };
+      const created = createLocalFamilyRecord({
+        familyName: validated.data.familyName,
+        appLanguage: validated.data.appLanguage,
+        children: validated.data.children.slice(0, validated.data.childCount).map((child) => ({
+          id: child.profileId,
+          role: 'child' as const,
+          nickname: child.nickname,
+          avatarId: child.avatarId,
+          ageBand: child.ageBand,
+          preferredLanguage: child.preferredLanguage,
+          gender: child.gender,
+          interests: [...child.interests],
+          hobbies: [...child.hobbies],
+          accessibilityDefaults: [...child.accessibilityDefaults],
+          supportPreferences: [...child.supportPreferences],
+          personalizationEnabled: child.personalizationEnabled,
+        })),
+        pairedChildIds: [],
+        now: R003_LOCAL_FAMILY_TIME,
+      });
+      if (!created.ok) return { ok: false, error: created.error };
+      const saved = serviceRegistry.localFamily.save(created.data);
+      if (!saved.ok) return { ok: false, error: saved.error };
+      newlySavedFamily = saved.data;
+    }
     const result = parentOnboardingController.complete(R001_ONBOARDING_TIME);
     if (result.ok) {
-      const locale = result.data.appLanguage;
+      const locale = state.localFamily.record?.appLanguage ?? result.data.appLanguage;
       set({
         activeExperience: 'parent',
         parentOnboarding: parentOnboardingController.getView(),
         locale,
         direction: getLocaleDirection(locale),
         role: 'parent',
+        localFamily: newlySavedFamily ? localFamilyView(newlySavedFamily) : state.localFamily,
         returningUserWelcome: returningHouseholdId
           ? { kind: 'returning_parent', householdId: returningHouseholdId }
           : null,
       });
     } else {
+      if (newlySavedFamily) serviceRegistry.localFamily.clear();
       set({ parentOnboarding: parentOnboardingController.getView() });
     }
     return result;
@@ -866,8 +938,12 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   selectChildAccessProfile: (childId) => {
-    if (get().activeExperience !== 'signed_out') {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before choosing a Child profile');
+    }
+    if (!state.localFamily.configuredChildIds.includes(childId)) {
+      return failure('NOT_FOUND', 'Choose a configured Child profile');
     }
     const result = childAccessController.selectProfile(childId);
     set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
@@ -952,14 +1028,28 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     }
     const result = childAccessController.completePairing(R001_ONBOARDING_TIME);
     const childAccess = childAccessController.getView();
-    set({ childAccess });
     if (result.ok && childAccess.selectedChildId) {
+      const persisted = serviceRegistry.localFamily.setPairedChild(
+        childAccess.selectedChildId,
+        true,
+        R003_LOCAL_FAMILY_TIME,
+      );
+      if (!persisted.ok) {
+        childAccessController.signOut(R001_ONBOARDING_TIME);
+        childAccessController.revokeDevice(childAccess.selectedChildId, R001_ONBOARDING_TIME);
+        set({ childAccess: childAccessController.getView() });
+        return { ok: false, error: persisted.error };
+      }
       set({
+        childAccess,
         activeChildId: childAccess.selectedChildId,
         activeExperience: 'child',
         role: 'child',
+        localFamily: localFamilyView(persisted.data),
         returningUserWelcome: null,
       });
+    } else {
+      set({ childAccess });
     }
     return result;
   },
@@ -1067,8 +1157,15 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!authority.ok) {
       return failure('INVALID_TRANSITION', 'Only the active Parent can revoke a Child device');
     }
+    const persisted = serviceRegistry.localFamily.setPairedChild(
+      childId,
+      false,
+      R003_LOCAL_FAMILY_TIME,
+    );
+    if (!persisted.ok) return { ok: false, error: persisted.error };
     const result = childAccessController.revokeDevice(childId, R001_ONBOARDING_TIME);
     set({ childAccess: childAccessController.getView() });
+    if (result.ok) set({ localFamily: localFamilyView(persisted.data) });
     return result;
   },
 
@@ -1076,7 +1173,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const state = get();
     const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    if (!state.children[profileId]) {
+    if (!state.localFamily.configuredChildIds.includes(profileId)) {
       return failure('NOT_FOUND', 'The selected synthetic Child profile was not found');
     }
     const handoff = parentOnboardingController.authorizeParentReport(
@@ -1210,7 +1307,22 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   setLocale: (value) => {
     const locale = coerceLocale(value);
-    set({ locale, direction: getLocaleDirection(locale) });
+    const state = get();
+    const record = state.localFamily.record;
+    if (!record || record.appLanguage === locale) {
+      set({ locale, direction: getLocaleDirection(locale) });
+      return;
+    }
+    const saved = serviceRegistry.localFamily.save({
+      ...record,
+      appLanguage: locale,
+      updatedAt: R003_LOCAL_FAMILY_TIME,
+    });
+    set({
+      locale,
+      direction: getLocaleDirection(locale),
+      localFamily: saved.ok ? localFamilyView(saved.data) : state.localFamily,
+    });
   },
 
   setRole: (role) => set({ role }),
@@ -1221,7 +1333,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const state = get();
     const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    if (!state.children[childId]) {
+    if (!state.localFamily.configuredChildIds.includes(childId)) {
       return failure('NOT_FOUND', 'Synthetic Child was not found');
     }
     set({ activeChildId: childId });
@@ -1237,6 +1349,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (state.role !== 'parent' || state.activeExperience !== 'parent') {
       return failure('INVALID_TRANSITION', 'An active Parent experience is required before reset');
     }
+    const localReset = serviceRegistry.localFamily.clear();
+    if (!localReset.ok) return { ok: false, error: localReset.error };
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     const nextGrowthJourney = createGrowthJourneyRuntime(
       reset.session,
@@ -1264,6 +1378,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       sharedGrowth: nextSharedGrowth,
       revealBundleQueue: createEmptyRevealBundleQueue(),
       parentOnboarding: onboardingReset.data,
+      localFamily: localFamilyView(null),
       returningUserWelcome: null,
       parentGuideSuggestion: null,
       childCoachResult: null,
