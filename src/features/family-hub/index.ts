@@ -14,6 +14,7 @@ import type {
 } from '../../models/familyReward';
 import type { RecognitionReceipt, SyntheticChildId, TaskJourney } from '../../models/familyGrowth';
 import { isExactPlainDataEqual as sameValue } from '../../utils/exactPlainData';
+import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
 import { matchesCanonicalP0TaskContent, validateTaskForReview } from '../tasks/validation';
 
 export const FAMILY_REWARD_BASELINE = 108;
@@ -97,12 +98,7 @@ export function createFamilyRewardRuntime(): FamilyRewardRuntime {
 }
 
 function isFamilyRewardTimestamp(value: unknown): value is string {
-  return (
-    typeof value === 'string' &&
-    value.trim() === value &&
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/u.test(value) &&
-    Number.isFinite(Date.parse(value))
-  );
+  return isExactIsoTimestamp(value);
 }
 
 function isValidGivenTimestamp(givenAt: unknown, unlockedAt: unknown): givenAt is string {

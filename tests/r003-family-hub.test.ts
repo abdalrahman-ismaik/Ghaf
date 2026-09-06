@@ -399,6 +399,35 @@ describe('R003 Family hub reward runtime', () => {
     ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
   });
 
+  it('rejects an impossible calendar timestamp on a reconciled reward duplicate', () => {
+    const recognition = canonicalRecognition();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: createFamilyRewardRuntime(),
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    const malformedGiven = {
+      ...unlocked,
+      plan: {
+        ...unlocked.plan,
+        lifecycle: 'given' as const,
+        givenAt: '2026-09-31T10:00:00.000Z',
+      },
+    };
+
+    expect(
+      applyRecognitionToFamilyReward({
+        runtime: malformedGiven,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
   it('rejects a non-ISO unlock timestamp on a reconciled reward duplicate', () => {
     const recognition = canonicalRecognition();
     const unlocked = expectOk(
