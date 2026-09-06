@@ -1050,7 +1050,7 @@ export class DeterministicRecognitionService implements RecognitionService {
     const confirmedAcquisitionCount =
       recurringFadeFirst && effectiveRoutinePhase === 'acquisition'
         ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0) + 1
-        : (existingRoutineProgress?.confirmedAcquisitionCount ?? 1);
+        : (existingRoutineProgress?.confirmedAcquisitionCount ?? 0);
     const policy = evaluateRecognitionPolicy({
       submissionId: journey.submission.id,
       recognitionMode: journey.task.content.recognitionMode,
@@ -1124,7 +1124,9 @@ export class DeterministicRecognitionService implements RecognitionService {
       ? {
           taskId: journey.task.id,
           confirmedAcquisitionCount,
-          futurePhase: existingRoutineProgress?.futurePhase ?? 'acquisition',
+          futurePhase:
+            existingRoutineProgress?.futurePhase ??
+            (effectiveRoutinePhase === 'maintenance' ? 'maintenance' : 'acquisition'),
           phaseReview: phaseReview ?? existingRoutineProgress?.phaseReview ?? null,
           decision: existingRoutineProgress?.decision ?? null,
         }
