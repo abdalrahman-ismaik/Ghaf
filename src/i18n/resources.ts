@@ -65,6 +65,15 @@ export const resources = {
           invalidIdentifier: 'أدخل رقم هاتف إماراتيًا أو بريدًا إلكترونيًا صالحًا للمتابعة.',
           origin: 'محاكاة دخول محلية ببيانات اصطناعية؛ لا يوجد حساب أو تحقق حقيقي.',
         },
+        signUp: {
+          title: 'إعداد عائلة جديدة',
+          body: 'أدخل رقم هاتف أو بريدًا إلكترونيًا تجريبيًا، ثم أكمل إعداد العائلة.',
+          action: 'متابعة إعداد العائلة',
+          loading: 'جارٍ تجهيز رمز العرض…',
+          returningPrompt: 'لديك عائلة بالفعل؟',
+          returnToSignIn: 'العودة إلى تسجيل دخول وليّ الأمر',
+          origin: 'إعداد عائلة محلي ببيانات اصطناعية؛ لا يُنشأ حساب حقيقي.',
+        },
         verification: {
           title: 'أدخل رمز التحقق',
           body: 'جهّزنا محليًا رمزًا من 6 أرقام للحساب المنتهي بـ {{ending}}.',
@@ -1514,6 +1523,15 @@ export const resources = {
           createFamily: 'Create a new family',
           invalidIdentifier: 'Enter a valid UAE phone number or email to continue.',
           origin: 'Local synthetic sign-in simulation; there is no real account or verification.',
+        },
+        signUp: {
+          title: 'New family setup',
+          body: 'Enter a demo phone number or email, then complete your family setup.',
+          action: 'Continue family setup',
+          loading: 'Preparing the demo code…',
+          returningPrompt: 'Already have a family?',
+          returnToSignIn: 'Return to Parent sign in',
+          origin: 'Local family setup with synthetic data; no real account is created.',
         },
         verification: {
           title: 'Enter the verification code',

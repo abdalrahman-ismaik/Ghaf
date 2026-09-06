@@ -125,7 +125,8 @@ components:
 ## R003 complete-screen extension
 
 The 2026-09-05 user-authorized completion pass extends this same visual world to missing access,
-Family, Reward, settings, permissions, devices, reauthentication, and Child-settings surfaces. A
+Family, Reward, settings, permissions, devices, reauthentication, and Child-settings surfaces. The
+2026-09-06 usability correction additionally authorizes a dedicated Parent sign-up surface. A
 missing Stitch frame is no longer an implementation blocker for the local prototype. New screens
 must reuse the Soft Geometric palette, typography, spacing, iconography, native shells, and
 botanical grammar already present; they do not introduce a second dashboard or generic settings
@@ -145,7 +146,7 @@ review stay unpassed until directly observed.
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 **Status:** R001 foundations/onboarding and R002a Parent/task/Child/Garden presentation are frozen
-regression baselines except for the user-authorized Parent sign-in usability layout recorded below.
+regression baselines except for the user-authorized Parent sign-in/sign-up usability flow recorded below.
 R002b code-native Growth candidates may be implemented behind independent default-off flags.
 Release activation remains blocked until the applicable visual, bilingual, accessibility, native,
 provenance, content, and human-review gates pass.
@@ -156,10 +157,17 @@ provenance, content, and human-review gates pass.
 
 ## Current Design Authority
 
-- R001 PNGs are canonical composition references for `/` and the six Parent-onboarding steps except
-  `/access/parent/sign-in`. For that route, the user-authorized 2026-09-06 usability layout keeps
-  the R001 copy, behavior, palette, and shared controls while replacing the flat action stack with
-  grouped credentials, biometric disclosure, and a separated full-width Create Family action.
+- R001 PNGs are canonical composition references for `/` and the six historical Parent-onboarding
+  steps except `/access/parent/sign-in`. For that route, the user-authorized 2026-09-06 usability
+  layout centers screen-level orientation/supporting copy, retains logical-start mixed-identifier
+  fields, and keeps the filled credential, neutral biometric, and full-width outlined Create Family
+  hierarchy. Create Family now navigates without requesting verification.
+- `/access/parent/sign-up` is an R003 code-native Soft Geometric candidate because no approved
+  Stitch frame exists. It uses the organic access shell, a tonal 64dp family icon plate, centered
+  Alexandria heading and Readex orientation, one mixed phone/email field, one filled full-width
+  continuation, a concise returning-family prompt, and one full-width emerald outlined sign-in
+  action. It reuses the existing deterministic verification authority and never implies a real
+  account or second household.
   Exported HTML/CSS/JS remains read-only measurement/structure evidence and never runtime code.
 - Selected R002a PNGs are candidate composition references for the existing Parent Home, Parent
   Tasks/Builder, Child Today/task, Parent review/support, Child follow-up, and Garden surfaces. The

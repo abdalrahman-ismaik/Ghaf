@@ -37,11 +37,16 @@ compatibility redirect to Welcome, not a selectable authority. A Parent/Child ch
 current experience and requires the receiving access path. These screens are local prototype
 interactions; they do not prove identity, protect a production account, or persist authorization.
 
+The R003 Parent sign-up screen is a route and form simulation only. It reuses the local Parent
+identifier/code fixture before first-family setup; it does not create a real account, send a
+message, verify an identity, store a password, or add a second household. A completed synthetic
+family receipt remains immutable, and direct sign-up entry cannot overwrite it.
+
 The R003-only screens without approved Stitch frames are documented code-native Soft Geometric
 candidates built from the existing theme and tokens. Their existence is not Google Stitch approval,
 asset approval, physical Android acceptance, or release activation. Final focused/full validation
-and bilingual browser-proxy evidence are recorded against runtime checkpoint `40fc5fc`; the frozen
-R001/R002a evidence below was not reused as R003 acceptance.
+and bilingual browser-proxy evidence are recorded against the current worktree extending runtime
+checkpoint `40fc5fc`; the frozen R001/R002a evidence below was not reused as R003 acceptance.
 
 The prototype does not claim production authentication/security, real pairing or biometrics, real
 Child voice capture/analysis, payment/custody, environmental measurement, rights clearance, named
@@ -55,7 +60,7 @@ an authenticated child service, social network, diagnostic product, religious au
 impact platform, or legally compliant deployment.
 
 As of 2026-09-06, the R003 complete-screen source is a locally validated integration candidate.
-Typecheck, lint, formatting, 84 files / 1,044 tests, a 38-route web export, and the scoped Arabic/
+Typecheck, lint, formatting, 84 files / 1,044 tests, a 39-route web export, and the scoped Arabic/
 English Firefox proxy journeys passed. Physical Android is `BLOCKED` because no device or configured
 SDK/toolchain is available; native subchecks and named human reviews remain `NOT RUN`. The documents
 under `docs/` preserve earlier Feature 002 food-rescue evidence and do not pass current native or

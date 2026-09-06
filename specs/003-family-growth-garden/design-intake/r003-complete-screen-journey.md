@@ -5,6 +5,10 @@
 **Status**: Approved for local prototype implementation. Physical Android and named human review
 remain evidence gates.
 
+The 2026-09-06 Parent sign-up correction extends the current source manifest from 36 to 37 product
+routes. It is an R003 code-native usability addition, not a rewrite of the frozen R001 route count
+or approval for production accounts or a second household.
+
 ## Visual inheritance
 
 New screens use the existing Ghaf Soft Geometric system: warm ivory surfaces, deep forest and Ghaf
@@ -19,7 +23,8 @@ inputs.
 | Sequence | Surface                                    | Route/state owner                                            | Entry                                   | Required exit                                                           |
 | -------: | ------------------------------------------ | ------------------------------------------------------------ | --------------------------------------- | ----------------------------------------------------------------------- |
 |        1 | Welcome, language, capability disclosure   | `/`                                                          | cold start or sign-out                  | Parent sign-in or Child profile access                                  |
-|       2P | Parent sign-in and verification            | `/access/parent/sign-in`, `/access/parent/verification`      | Welcome                                 | family setup or Parent Home                                             |
+|       2P | Returning Parent sign-in and verification  | `/access/parent/sign-in`, `/access/parent/verification`      | Welcome                                 | Parent Home, or first-family setup when no completion receipt exists     |
+|       2N | New-family sign-up and verification        | `/access/parent/sign-up`, `/access/parent/verification`      | Create Family on Parent sign-in          | verified first-family fixture                                           |
 |       3P | First-family setup and success             | existing four `/access/parent/**` setup routes               | verified new Parent fixture             | Parent Home with replaced history                                       |
 |       2C | Choose Child profile                       | `/access/child`                                              | Welcome                                 | selected profile credential                                             |
 |       3C | PIN or accessible picture sequence         | `/access/child/pin`                                          | selected profile                        | Child Today or Pair Device                                              |
@@ -48,6 +53,10 @@ inputs.
   reauthentication are contextual destinations, never additional bottom tabs.
 - There is no normal in-app Parent/Child role toggle. A role change signs the current experience
   out to `/`, then requires its own deterministic access path.
+- Parent sign-in presents returning access first. **Create a new family** navigates to
+  `/access/parent/sign-up` without requesting a code; sign-up requests the existing deterministic
+  code only from its primary action. Verification Back/cancel restores sign-up only for the closed
+  `create-family` marker and never follows an arbitrary return path.
 - `/role` is compatibility-only and redirects to `/`; it does not grant a role or expose private
   content.
 - `/league` is a preserved canonical Child destination and remains reachable without enabling any
@@ -61,6 +70,8 @@ inputs.
   and never claim production authentication.
 - Parent-only screens never render from a Child role. Child permissions are read-only in the Child
   experience. Family Reward amounts and lifecycle are private to the relevant Child and guardians.
+- P0 contains one synthetic household. A completed onboarding receipt cannot be rewritten, and the
+  sign-up route must not imply that a second household or production account can be created.
 - Family Reward, League, lifetime Seeds, current landscape growth, and canopy remain separate
   authorities even when the fixture advances them during one recognition.
 - A screen reads selectors and invokes domain/store actions; it never calculates an unlock, Seed
@@ -78,3 +89,14 @@ cultural, safeguarding, privacy, sustainability, accessibility, and visual revie
 All R002b presentation flags remain independently default-off. A browser walkthrough may use
 explicit environment `true` values to inspect those candidates, but that evidence does not activate
 them by default or release them.
+
+## Code-native Parent sign-up candidate
+
+`/access/parent/sign-up` inherits the approved Soft Geometric access composition: organic pearl
+ground, a 64dp tonal family icon plate, centered Alexandria Parent heading, centered concise Readex
+orientation copy, one logical-start phone/email field, one full-width filled emerald continuation,
+one compact centered returning-family prompt, and one full-width emerald outlined sign-in action.
+The field retains automatic bidi handling; both actions retain the shared regular control height
+and radius. The content remains keyboard-aware and naturally scrollable at compact height and high
+font scale. A fixed disclosure may identify the local synthetic origin, but no copy may claim that
+a real message, account, identity verification, or additional household was created.

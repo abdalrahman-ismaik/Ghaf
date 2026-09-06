@@ -275,6 +275,23 @@ remain available for regression, and the six `/access/parent/**` files above are
 duplicate `/` or remove a remote route. Older exact-ten requirements and success criteria below are
 therefore remote-baseline evidence, not the post-R001 inventory target.
 
+### R003 Parent sign-up usability addendum — 2026-09-06
+
+The user-authorized R003 journey adds `/access/parent/sign-up` as the 37th current product route.
+This addition does not rewrite the frozen R001 inventory or introduce a new account, household,
+session, or verification authority. On Parent sign-in, **Create a new family** MUST open the
+dedicated sign-up screen without requesting a code. The sign-up screen MUST collect the same
+Parent phone/email identifier, preserve the local synthetic disclosure, and request the existing
+deterministic verification code only after the Parent chooses its primary continuation.
+
+Verification MUST accept only the closed `create-family` flow marker. Back or **Change phone number
+or email** returns to sign-up for that marker and otherwise returns to sign-in; arbitrary return
+paths are never accepted. Successful first-family verification continues to Family Basics. If the
+immutable local completion receipt already exists, the interface MUST NOT imply that a second
+household can be created or overwrite the completed household. Screen-level orientation and
+supporting copy are centered, while mixed phone/email labels, values, helpers, and errors retain
+logical-start alignment and automatic bidi handling.
+
 ### Preserved behavior versus blocked expansion
 
 The ten-route journey, Schema-3 48→60 personal-Seed fixture, and `/circle` presentation documented
@@ -1395,6 +1412,20 @@ the historical domain-only result recorded by FR-118.
 - **FR-159**: R002b release flags MUST remain off until their applicable automated, visual, native,
   bilingual, content, provenance, privacy, accessibility, and named-human gates are recorded. A
   local implementation, web capture, or passing unit test MUST NOT activate release navigation.
+- **FR-160**: The current R003 route manifest MUST contain exactly 37 product routes, including one
+  code-native `/access/parent/sign-up` route. **Create a new family** MUST enter that route without
+  requesting verification; only its primary continuation MAY invoke the existing deterministic
+  Parent verification authority. Verification Back/cancel MUST restore sign-up only for the closed
+  `create-family` marker, successful first-family verification MUST continue to Family Basics, and
+  an existing completion receipt MUST never create or overwrite a second household.
+- **FR-161**: Parent sign-up MUST be a signed-out, Parent-only, Arabic-first synthetic setup
+  surface. It MUST request only the existing Parent phone/email identifier and MUST NOT request a
+  password, Child contact information, real biometric input, or imply production account or
+  identity creation.
+- **FR-162**: The `create-family` marker MUST remain presentation context only and MUST grant no
+  capability. Verification Back, Android Back, and **Change phone number or email** MUST cancel the
+  pending verification and return to sign-up only for that exact marker while preserving offline
+  preview; missing or unknown values MUST return safely to sign-in.
 
 ### Key Entities
 
@@ -1588,6 +1619,11 @@ the historical domain-only result recorded by FR-118.
   full regression suite, Expo configuration, production export, route/reset scans, and whitespace
   validation. Physical Android, TalkBack, native Back/IME, and OS font scaling stay explicitly
   `BLOCKED` until observed on a named configured device.
+- **SC-044**: In Arabic RTL and English LTR at 320 and 390 widths, the Parent sign-in title, body,
+  and supporting biometric copy are centered without changing mixed-identifier alignment; all
+  actions retain at least 48dp targets; **Create a new family** opens sign-up before verification;
+  sign-up verification Back/cancel returns to sign-up; and a successful fresh flow reaches Family
+  Basics with no second-family or production-account claim.
 
 ## Dependencies and Assumptions
 
@@ -1644,9 +1680,10 @@ build, device, reviewer, secure boundary, or other required dependency is unavai
 
 ## Out of Scope
 
-- Any authored product route beyond the preserved ten plus the six frozen R001 access routes, or a
-  second application. R002a uses existing routes and route states; R002b can change the inventory
-  only after separate product and design approval.
+- Any authored product route beyond the current 37-route R003 manifest, or a second application.
+  The historical R001 inventory remains the preserved ten plus six frozen access routes; the one
+  later `/access/parent/sign-up` usability route is separately authorized above and does not alter
+  that historical evidence.
 - Production accounts, authentication, guardian-consent systems, age assurance, multi-family
   tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment;
   deterministic synthetic access fixtures do not remove this boundary.

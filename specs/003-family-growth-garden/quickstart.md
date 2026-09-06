@@ -1,11 +1,11 @@
 # Quickstart and Verification Guide: Family Growth Garden
 
-**Status**: R003 COMPLETE-SCREEN IMPLEMENTATION CANDIDATE — runtime checkpoint `40fc5fc` contains
-the separate Parent/Child access and complete screen journey. Typecheck, lint, formatting, 84 files /
-1,044 tests, dependency/configuration checks, a 38-route web export, and scoped Arabic/English
-Firefox proxy journeys passed on 2026-09-06. R001/R002a and R002b checkpoint results cited below
-remain historical evidence only; physical Android and named human-review acceptance remain
-`BLOCKED` or `NOT RUN`.
+**Status**: R003 COMPLETE-SCREEN IMPLEMENTATION CANDIDATE — the validated current worktree extends
+runtime checkpoint `40fc5fc` with the dedicated Parent sign-up correction. Typecheck, lint,
+formatting, 84 files / 1,044 tests, dependency/configuration checks, a 39-route web export, and
+scoped Arabic/English Firefox proxy journeys passed on 2026-09-06. R001/R002a and R002b checkpoint
+results cited below remain historical evidence only; physical Android and named human-review
+acceptance remain `BLOCKED` or `NOT RUN`.
 
 Use this guide from the repository root. The normative behavior oracle is
 `contracts/acceptance-contract.md`; canonical Arabic, fixture content, timing records, build/device
@@ -75,7 +75,7 @@ rg --files app | sort
 rg -n "router\.(push|replace)|<Redirect|href=" app src
 ```
 
-The current R003 inventory contains 36 route files, excluding framework `_layout.tsx` and
+The current R003 inventory contains 37 route files, excluding framework `_layout.tsx` and
 `+html.tsx` files. Confirm the following ownership groups rather than applying the frozen R002a
 ten-route count to R003:
 
@@ -86,6 +86,7 @@ Entry and compatibility
 
 Parent access and first-family setup
   /access/parent/sign-in
+  /access/parent/sign-up              code-native new-family entry before verification
   /access/parent/verification
   /access/parent/family-basics
   /access/parent/add-first-child

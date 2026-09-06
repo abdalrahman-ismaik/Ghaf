@@ -2,6 +2,22 @@
 
 ## R003 Complete-Screen Implementation Addendum — 2026-09-05
 
+### Parent sign-up usability slice — 2026-09-06
+
+Extend the current R003 manifest from 36 to 37 product routes with one code-native
+`/access/parent/sign-up` surface. First update the active specification, route manifest, acceptance
+contract, and RED source/flow coverage. Then center screen-level Parent sign-in copy, make **Create
+a new family** navigate without mutating verification state, and build the sign-up route from the
+existing access shell, tokens, typography, controls, bilingual resources, and synthetic
+disclosures. Sign-up reuses `requestParentVerification`; Verification accepts only a closed
+`create-family` marker for Back/cancel restoration and otherwise keeps the returning-Parent flow
+unchanged. No controller, store, model, service, dependency, second household, or production
+account is added.
+
+Validate the focused access/route tests first, then typecheck, lint, formatting, the full suite,
+route inventory, web export, and bounded Arabic RTL/English LTR browser evidence at compact and
+reference phone sizes. Physical Android and named human-review gates remain truthful and separate.
+
 Begin at validated R002b checkpoint `45b18bc` on
 `integration/r3-complete-screens-20260905`. Preserve the existing domain, R001/R002a visual
 regressions, R002b Growth screens, official brand assets, and user-owned untracked Stitch/source
@@ -20,7 +36,8 @@ access orchestration under `src/features/access/`, and Family/Reward projections
 `src/features/family-hub/`. Screens must not calculate reward, rank, badge, Seed, Garden, or
 permission authority.
 
-The Parent journey becomes Welcome → Parent access/setup → Home/Tasks/Garden/Family, with settings,
+The Parent journey becomes Welcome → sign-in or new-family sign-up → verification/setup →
+Home/Tasks/Garden/Family, with settings,
 permissions, paired devices, reauthentication, private Reward, Child progress, and Shared Garden as
 contextual routes. The Child journey becomes Welcome → profile → credential/pairing → Today → task
 → waiting → committed reveal → Garden/League, with Impact Path, badges, learning, Shared Growth,

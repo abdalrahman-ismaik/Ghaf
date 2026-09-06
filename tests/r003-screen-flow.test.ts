@@ -13,6 +13,7 @@ const requiredRoutes = [
   'app/access/child/pin.tsx',
   'app/access/child/pair.tsx',
   'app/access/parent/_layout.tsx',
+  'app/access/parent/sign-up.tsx',
   'app/parent/family/index.tsx',
   'app/parent/family/reward.tsx',
   'app/parent/settings/index.tsx',
@@ -39,6 +40,7 @@ describe('R003 complete screen journey', () => {
     const compatibilityRole = source('app/role.tsx');
     const childPairing = source('app/access/child/pair.tsx');
     const parentSignIn = source('app/access/parent/sign-in.tsx');
+    const parentSignUp = source('app/access/parent/sign-up.tsx');
     const parentVerification = source('app/access/parent/verification.tsx');
     const parentAccessLayout = source('app/access/parent/_layout.tsx');
     const parentSuccess = source('app/access/parent/family-created-success.tsx');
@@ -58,6 +60,14 @@ describe('R003 complete screen journey', () => {
     expect(parentDevices).toContain('approveChildPairing');
     expect(parentDevices).toContain('handoffApprovedChildPairing');
     expect(parentSignIn).toContain("activeExperience === 'parent' ? '/parent' : '/'");
+    expect(parentSignIn).toContain('router.push(signUpHref)');
+    expect(parentSignUp).toContain('requestParentVerification');
+    expect(parentSignUp).toContain('flow=create-family');
+    expect(parentSignUp).toContain('parentOnboarding.completionReceipt');
+    expect(parentSignUp).toContain('<Redirect href="/access/parent/sign-in" />');
+    expect(parentVerification).toContain("flow === 'create-family'");
+    expect(parentVerification).toContain("'/access/parent/sign-up'");
+    expect(parentVerification).toContain("'/access/parent/sign-in'");
     expect(parentVerification).toContain('parentOnboarding.completionReceipt');
     expect(parentVerification).toContain('completeParentOnboarding()');
     expect(parentVerification).toContain("'/parent'");

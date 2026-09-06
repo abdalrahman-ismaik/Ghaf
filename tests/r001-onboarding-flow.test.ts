@@ -31,6 +31,7 @@ const R003_COMPLETE_JOURNEY_ROUTES = [
   '/access/child',
   '/access/child/pin',
   '/access/child/pair',
+  '/access/parent/sign-up',
   '/child/settings',
   '/parent/family',
   '/parent/family/reward',
@@ -149,6 +150,13 @@ describe('approved R001 Parent onboarding integration', () => {
 
     expect(routeSource('/access/parent/sign-in')).toContain('requestParentVerification');
 
+    const signUp = readFileSync(
+      new URL('../app/access/parent/sign-up.tsx', import.meta.url),
+      'utf8',
+    );
+    expect(signUp).toContain('requestParentVerification');
+    expect(signUp).toContain('flow=create-family');
+
     const verification = routeSource('/access/parent/verification');
     expect(verification).toContain('verifyParentCode');
     expect(verification).toContain('resendParentVerification');
@@ -218,7 +226,7 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(signIn).toContain('<View style={styles.biometricGroup}>');
     expect(signIn).toContain('<View style={styles.createFamilyGroup}>');
     expect(signIn).toContain('viewport: { paddingTop: spacing.xs }');
-    expect(signIn).toContain("intro: { width: '100%', gap: spacing.xxs }");
+    expect(signIn).toContain("intro: { width: '100%', alignItems: 'center', gap: spacing.xxs }");
     expect(signIn).toContain('credentials: { gap: spacing.sm }');
     expect(signIn).toContain('biometricGroup: { gap: spacing.xxs }');
     expect(signIn).toContain('createFamilyGroup: { paddingTop: spacing.xs }');
@@ -234,12 +242,12 @@ describe('approved R001 Parent onboarding integration', () => {
     const introStart = signIn.indexOf('<View style={styles.intro}>');
     const introEnd = signIn.indexOf('</View>', introStart);
     const intro = signIn.slice(introStart, introEnd);
-    expect(intro.match(/align="start"/gu)).toHaveLength(2);
+    expect(intro.match(/align="center"/gu)).toHaveLength(2);
 
     const biometricGroupStart = signIn.indexOf('<View style={styles.biometricGroup}>');
     const biometricGroupEnd = signIn.indexOf('</View>', biometricGroupStart);
     const biometricGroup = signIn.slice(biometricGroupStart, biometricGroupEnd);
-    expect(biometricGroup).toContain('align="start"');
+    expect(biometricGroup).toContain('align="center"');
 
     const primaryActionIndex = signIn.indexOf('testID="request-parent-code-button"');
     const dividerIndex = signIn.indexOf('<LabeledDivider');
@@ -261,6 +269,8 @@ describe('approved R001 Parent onboarding integration', () => {
     const createFamilyActionEnd = signIn.indexOf('</Button>', createFamilyActionIndex);
     const createFamilyAction = signIn.slice(createFamilyActionStart, createFamilyActionEnd);
     expect(createFamilyAction).toContain('variant="quiet"');
+    expect(createFamilyAction).toContain('router.push(signUpHref)');
+    expect(createFamilyAction).not.toContain('requestCode(');
 
     const createFamilyStyleStart = signIn.indexOf('createFamilyButton:');
     const createFamilyStyleEnd = signIn.indexOf('  },', createFamilyStyleStart);
@@ -283,6 +293,18 @@ describe('approved R001 Parent onboarding integration', () => {
     );
 
     expect(routeSource('/access/parent/family-basics')).toContain('icon="lock"');
+
+    const signUp = readFileSync(
+      new URL('../app/access/parent/sign-up.tsx', import.meta.url),
+      'utf8',
+    );
+    expect(signUp).toContain('testID="parent-sign-up-screen"');
+    expect(signUp).toContain('testID="request-parent-sign-up-code-button"');
+    expect(signUp).toContain('testID="return-to-parent-sign-in-button"');
+    expect(signUp).toContain('name="family"');
+    expect(signUp).toContain('variant="quiet"');
+    expect(signUp).toContain('borderColor: colors.ghafEmerald');
+    expect(signUp).toContain('direction="auto"');
 
     const success = routeSource('/access/parent/family-created-success');
     expect(success).not.toContain('<PrototypePill');
@@ -379,6 +401,13 @@ describe('approved R001 Parent onboarding integration', () => {
     }
 
     expect(routeSource('/access/parent/sign-in')).toContain("router.replace('/')");
+    const signUp = readFileSync(
+      new URL('../app/access/parent/sign-up.tsx', import.meta.url),
+      'utf8',
+    );
+    expect(signUp).toContain("BackHandler.addEventListener('hardwareBackPress'");
+    expect(signUp).toContain("Platform.OS !== 'android'");
+    expect(signUp).toContain("router.replace('/access/parent/sign-in')");
     expect(routeSource('/access/parent/add-first-child')).toContain('aria-checked={selected}');
   });
 });

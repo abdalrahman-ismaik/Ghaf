@@ -34,6 +34,12 @@ behavior. It does not authorize a new reward ledger, task identifier, access mod
 or route-local business logic. R001 Welcome and Parent onboarding are frozen regression baselines;
 their handoff into `/parent` must continue to work without an incidental redesign.
 
+R003 separately adds a dedicated `/access/parent/sign-up` usability route. On the returning-Parent
+sign-in screen, **Create a new family** opens sign-up before any verification request. Sign-up asks
+only for the existing synthetic Parent phone/email identifier, then reuses the same deterministic
+verification and first-family setup authority. The current prototype still supports exactly one
+synthetic household and creates no production account or identity.
+
 R002a must be implemented and validated in this order:
 
 1. Parent Home at `/parent`, using `ghaf_parent_home` as the primary candidate composition;

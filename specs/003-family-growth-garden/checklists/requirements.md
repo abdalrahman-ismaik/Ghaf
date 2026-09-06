@@ -23,6 +23,17 @@
 - [ ] R002b candidate surfaces have completed screen specs, bilingual captures, state coverage,
       provenance, native evidence, named review, and explicit release activation.
 
+## R003 Parent Sign-up Usability Addendum — 2026-09-06
+
+- [x] The frozen R001 16-route count remains historical and unchanged.
+- [x] The active R003 manifest explicitly adds `/access/parent/sign-up` as product route 37.
+- [x] Create Family navigation, verification timing, closed origin restoration, successful
+      first-family continuation, and the one-household boundary are testable and unambiguous.
+- [x] The code-native visual candidate defines hierarchy, bilingual direction, compact-height,
+      touch-target, typography, palette, and truthful capability requirements.
+- [x] No `[NEEDS CLARIFICATION]` marker is required; the existing deterministic verification and
+      first-family authority provide a reasonable bounded implementation.
+
 **Active gates:**
 
 - **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
@@ -60,6 +71,9 @@
 ## Notes
 
 - Validation iteration 1: **16/16 items passed**.
+- The 2026-09-06 Parent sign-up addendum was rechecked against the same 16 quality items: all pass,
+  with no clarification marker, production-account claim, second-household behavior, or change to
+  historical R001 evidence.
 - The exact ten-route contract, deterministic reset/pre-post values, P0 task and safety boundary,
   separate `chosen` and `in_progress` states, enum values, reward/phase matrix, five-stage
   thresholds, privacy-before-projection rules, prepared assistant/media status, Arabic/cultural

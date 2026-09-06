@@ -5,9 +5,9 @@
 **Current classification:** local implementation candidate; not Android-accepted, human-reviewed,
 or demo-accepted.
 
-The current integration worktree is `integration/r3-complete-screens-20260905`. Runtime and tests
-are checkpointed locally at `40fc5fc`; this evidence record is committed separately in the local
-closeout commit. Neither commit was pushed or merged during this window.
+The current integration worktree is `integration/r3-complete-screens-20260905`. The complete-screen
+runtime began at local checkpoint `40fc5fc`; the current validated worktree adds the dedicated
+Parent sign-up correction. No commit in this window was pushed or merged.
 
 R003 replaces the normal shared `/role` selector with separate synthetic access journeys. `/role`
 remains only as a compatibility redirect to `/`; it grants no role, session, Child selection, or
@@ -22,17 +22,17 @@ security.
 - Child tabs: **Today, Garden, League**.
 - Family Reward, settings, permissions, devices, reauthentication, Impact Path, Badges, Learning,
   Reveal, Parent Progress, Shared Growth, and Shared Garden are contextual routes, never extra tabs.
-- Source inspection finds 36 product route files, excluding `_layout.tsx` and `+html.tsx`. One is
+- Source inspection finds 37 product route files, excluding `_layout.tsx` and `+html.tsx`. One is
   the `/role` compatibility redirect and nine are independently default-off R002b candidates.
-- The new Parent Family/Reward/settings and Child access/settings screens without an approved
-  Stitch frame are documented code-native Soft Geometric candidates. They use the existing Ghaf
-  theme; their presence is not Stitch approval or release evidence.
+- The new Parent sign-up, Parent Family/Reward/settings, and Child access/settings screens without
+  an approved Stitch frame are documented code-native Soft Geometric candidates. They use the
+  existing Ghaf theme; their presence is not Stitch approval or release evidence.
 
 ### Current Arabic-first judge spine
 
 ```text
 /
-→ /access/parent/sign-in → /access/parent/verification
+→ /access/parent/sign-in → /access/parent/sign-up → /access/parent/verification
 → first-family setup when required → /parent
 → /parent/task/new → /parent/task/review
 → /access/child → /access/child/pin → /access/child/pair when required
@@ -63,11 +63,11 @@ do not fabricate or force the combined RevealBundle.
 
 | Gate                                                                                         | Status                           | Direct evidence / next requirement                                                                                                                                                |
 | -------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 36-file route/source manifest and `/role` redirect                                           | `PASSED` source inspection       | Runtime checkpoint `40fc5fc`; nine optional candidate routes remain guarded and `/league` remains canonical                                                                       |
+| 37-file route/source manifest and `/role` redirect                                           | `PASSED` source inspection       | Current validated worktree; nine optional candidate routes remain guarded and `/league` remains canonical                                                                         |
 | Exact Parent/Child tab labels and contextual-route separation                                | `PASSED` source inspection       | `tests/r003-screen-flow.test.ts` and the final full suite                                                                                                                         |
-| Focused access/navigation/reveal/localization suites                                         | `PASSED`                         | 15 files / 135 tests on 2026-09-06                                                                                                                                                |
-| Complete repository suite and static/export gate                                             | `PASSED`                         | Typecheck, lint, format, 84 files / 1,044 tests, dependency alignment, public Expo config, `git diff --check`, and 38-route web export                                            |
-| Fresh Arabic/English complete-screen browser walk                                            | `PASSED (web proxy)`             | Firefox 390×844; role-specific access, Parent approval, revoke/re-pair, Today, Family/Reward, League, reset, Back, signed origins, RTL/LTR, and width checks; zero console errors |
+| Focused access/navigation/reveal/localization suites                                         | `PASSED`                         | Parent sign-up slice: 3 files / 57 tests; prior complete-screen sweep: 15 files / 135 tests on 2026-09-06                                                                         |
+| Complete repository suite and static/export gate                                             | `PASSED`                         | Typecheck, lint, format, 84 files / 1,044 tests, dependency alignment, public Expo config, `git diff --check`, and 39-route web export                                            |
+| Fresh Arabic/English complete-screen browser walk                                            | `PASSED (web proxy)`             | Existing complete-screen journey plus Parent sign-in/sign-up at 320×720 and 390×844; centered/logical alignment, sign-up origin/Back/offline flow, no overflow, and zero console errors |
 | Optional Parent Progress and Shared Garden origin restoration                                | `PASSED (flagged web proxy)`     | Explicit local opt-in only: Progress restored `280 → 280` with action focus; Shared Garden restored `498 → 498` with action focus; flags remain default-off                       |
 | Final design/craft review                                                                    | `PASSED` source/web; `recapture` | The code-native screens match the Ghaf system, but no authoritative native Android capture exists; disposition is recapture, not ship                                             |
 | Physical Android Arabic/English journey                                                      | `BLOCKED`                        | `/usr/bin/adb` reports no attached device; `emulator`, `sdkmanager`, and `java` are missing; `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and `JAVA_HOME` are unset                        |
@@ -489,10 +489,12 @@ score, truthfulness score, religiosity, or parenting quality.
 
 ## Expected Screen Evidence
 
-- All 36 product route files match the R003 manifest; `/role` redirects to `/`, and every disabled
+- All 37 product route files match the R003 manifest; `/role` redirects to `/`, and every disabled
   R002b route fails safely without becoming released navigation.
 - Welcome reaches distinct Parent and Child access paths; every Parent/Child handoff signs out the
   current experience and cannot continue if session termination fails.
+- Parent **Create a new family** opens sign-up without requesting a code; only sign-up continuation
+  reaches verification, whose closed origin restores sign-up on visible or system Back.
 - Parent tabs are exactly Home/Tasks/Garden/Family; Child tabs are exactly Today/Garden/League;
   contextual routes never appear as extra tabs.
 - First-device pairing reaches Parent verification and `/parent/settings/devices`, then returns to

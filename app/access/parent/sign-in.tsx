@@ -32,6 +32,8 @@ export default function ParentSignInScreen() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const networkAvailable = preview !== 'offline';
+  const signUpHref =
+    preview === 'offline' ? '/access/parent/sign-up?preview=offline' : '/access/parent/sign-up';
 
   const goBack = useCallback(() => router.replace('/'), [router]);
 
@@ -113,7 +115,7 @@ export default function ParentSignInScreen() {
     >
       <View style={styles.intro}>
         <Text
-          align="start"
+          align="center"
           brand
           color="deepForest"
           direction={direction}
@@ -123,7 +125,7 @@ export default function ParentSignInScreen() {
           {t('access.signIn.title')}
         </Text>
         <Text
-          align="start"
+          align="center"
           brand
           color="onSurfaceVariant"
           direction={direction}
@@ -212,7 +214,7 @@ export default function ParentSignInScreen() {
             {t('access.signIn.biometric')}
           </Button>
           <Text
-            align="start"
+            align="center"
             brand
             color="onSurfaceVariant"
             direction={direction}
@@ -223,21 +225,23 @@ export default function ParentSignInScreen() {
           </Text>
         </View>
 
-        <View style={styles.createFamilyGroup}>
-          <Button
-            brand
-            direction={direction}
-            disabled={busy}
-            language={locale}
-            onPress={() => void requestCode(identifier.trim() || SYNTHETIC_PARENT_IDENTIFIER)}
-            size="regular"
-            style={styles.createFamilyButton}
-            testID="create-family-button"
-            variant="quiet"
-          >
-            {t('access.signIn.createFamily')}
-          </Button>
-        </View>
+        {parentOnboarding.completionReceipt ? null : (
+          <View style={styles.createFamilyGroup}>
+            <Button
+              brand
+              direction={direction}
+              disabled={busy}
+              language={locale}
+              onPress={() => router.push(signUpHref)}
+              size="regular"
+              style={styles.createFamilyButton}
+              testID="create-family-button"
+              variant="quiet"
+            >
+              {t('access.signIn.createFamily')}
+            </Button>
+          </View>
+        )}
       </View>
     </AccessScreen>
   );
@@ -250,7 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing.lg,
   },
-  intro: { width: '100%', gap: spacing.xxs },
+  intro: { width: '100%', alignItems: 'center', gap: spacing.xxs },
   signInPanel: {
     width: '100%',
     gap: spacing.md,

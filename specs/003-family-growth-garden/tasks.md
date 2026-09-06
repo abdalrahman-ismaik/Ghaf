@@ -967,3 +967,22 @@ existing Soft Geometric design system; Android and named human gates remain sepa
 - [x] T231 Perform the final design/craft review, reconcile `DESIGN.md`, limitations, runbook,
       evidence, and task states, inspect exact staged paths, and create cohesive local commits
       without pushing or merging.
+
+## Phase 31: Parent Sign-up Route and Sign-in Hierarchy
+
+**Gate**: User-authorized R003 access usability correction. Frozen R001 evidence stays historical;
+the current operational route inventory may add exactly one code-native sign-up route.
+
+- [x] T232 Record the 37-route sign-up contract, one-household boundary, closed verification-origin
+      behavior, code-native visual inheritance, and exact writer reservation in the active spec,
+      plan, requirements checklist, R003 journey manifest, `DESIGN.md`, and `TEAM_OWNERSHIP.md`.
+- [x] T233 Write RED access/route tests proving centered screen-level sign-in copy, logical-start
+      identifier safeguards, navigation-only Create Family behavior, native sign-up presence,
+      verification origin restoration, bilingual parity, and the exact 37-route inventory.
+- [x] T234 Implement `/access/parent/sign-up` and the bounded sign-in/verification route changes
+      using existing access components, tokens, resources, and Parent verification authority only.
+- [x] T235 Run focused tests, typecheck, lint, format, full tests, route inventory, web export,
+      `git diff --check`, and scoped Arabic/English browser inspection at 320×720 and 390×844;
+      record native and named-human checks without inference.
+- [x] T236 Reconcile the quickstart, acceptance contract, runbook, ownership release, and exact
+      evidence before one cohesive local commit; do not push or merge.

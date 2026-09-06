@@ -123,14 +123,14 @@ release blockers until directly observed.
 ## AC-00C — R003 Complete-Screen and Access Acceptance
 
 R003 changes the operational route journey, not the underlying task/reward authority. The current
-source inventory contains 36 product route files. `/role` is counted only as a compatibility route;
+source inventory contains 37 product route files. `/role` is counted only as a compatibility route;
 nine R002b route files remain independently default-off candidates rather than released
 destinations.
 
 | Group             | Required routes and acceptance                                                                                                                                                                                                                                                                                                      |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Entry             | `/` offers distinct Parent and Child actions in Arabic first; `/role` redirects to `/` and cannot create a session or mutate state                                                                                                                                                                                                  |
-| Parent access     | `/access/parent/sign-in`, `/access/parent/verification`, `/access/parent/family-basics`, `/access/parent/add-first-child`, `/access/parent/review-create`, and modal `/access/parent/family-created-success`; first-family setup is idempotent and a returning verified Parent reaches Parent Home                                  |
+| Parent access     | `/access/parent/sign-in`, code-native `/access/parent/sign-up`, `/access/parent/verification`, `/access/parent/family-basics`, `/access/parent/add-first-child`, `/access/parent/review-create`, and modal `/access/parent/family-created-success`; Create Family opens sign-up before code request, its closed origin restores correctly, first-family setup is idempotent, and a returning verified Parent reaches Parent Home |
 | Child access      | `/access/child`, `/access/child/pin`, and `/access/child/pair`; synthetic Salem PIN and Alya picture sequence are profile-bound, pairing is Parent-approved/one-use, and every surface says it is not production authentication                                                                                                     |
 | Parent experience | `/parent`, `/parent/task/new`, `/parent/task/review`, `/parent/check-in`, `/parent/family`, `/parent/family/reward`, `/parent/settings`, `/parent/settings/permissions`, `/parent/settings/devices`, and `/parent/reauthenticate` require an active Parent experience                                                               |
 | Child experience  | `/child`, `/child/task`, `/child/settings`, and `/league` require the matching active Child experience; settings expose only the Child's own read-only permissions                                                                                                                                                                  |
@@ -491,12 +491,12 @@ attempt, a missing named dependency makes it `BLOCKED`, while an executed check 
 
 From a fresh reset, complete the route sequence below without hidden setup:
 
-`/ → Parent access/verification → first-family setup when required → /parent → /parent/task/new → /parent/task/review → Child access/credential → pairing when required → /child → /child/task → / → Parent access/verification → /parent → /parent/check-in → /garden → /circle → Child access/credential → /child → /garden → /league`
+`/ → Parent sign-in → new-family sign-up → verification → first-family setup when required → /parent → /parent/task/new → /parent/task/review → Child access/credential → pairing when required → /child → /child/task → / → Parent sign-in/verification → /parent → /parent/check-in → /garden → /circle → Child access/credential → /child → /garden → /league`
 
 No step uses `/role`; each Parent/Child handoff ends the current synthetic session and requires the
 receiving access path. For a fresh device, include the Parent-approved pairing return through
 `/parent/settings/devices`. The frozen R002a journey previously traversed ten authored routes, but
-that count is historical and does not constrain the current 36-file R003 inventory.
+that count is historical and does not constrain the current 37-file R003 inventory.
 
 The 120–150 second figure was the internal target for the shorter R002a path and is not a published
 SMAC judging rule. Time the complete R003 path afresh before setting a new target. Run five

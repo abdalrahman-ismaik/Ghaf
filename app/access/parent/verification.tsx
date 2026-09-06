@@ -20,7 +20,7 @@ const RESEND_SECONDS = 30;
 
 export default function ParentVerificationScreen() {
   const router = useRouter();
-  const { preview } = useLocalSearchParams<{ preview?: string }>();
+  const { flow, preview } = useLocalSearchParams<{ flow?: string; preview?: string }>();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -36,16 +36,24 @@ export default function ParentVerificationScreen() {
   const [resendSeconds, setResendSeconds] = useState(RESEND_SECONDS);
   const isOffline = preview === 'offline' || parentOnboarding.offlineFallbackUsed;
   const isVerifying = busy || parentOnboarding.status === 'verifying';
+  const isCreateFamilyFlow = flow === 'create-family';
+  const entryHref: Href = isCreateFamilyFlow
+    ? isOffline
+      ? '/access/parent/sign-up?preview=offline'
+      : '/access/parent/sign-up'
+    : isOffline
+      ? '/access/parent/sign-in?preview=offline'
+      : '/access/parent/sign-in';
 
-  const returnToSignIn = useCallback(() => {
+  const returnToEntry = useCallback(() => {
     const result = cancelParentVerification();
     if (!result.ok) {
       setError(t('access.states.interrupted'));
       return;
     }
     setCode('');
-    router.replace(isOffline ? '/access/parent/sign-in?preview=offline' : '/access/parent/sign-in');
-  }, [cancelParentVerification, isOffline, router, t]);
+    router.replace(entryHref);
+  }, [cancelParentVerification, entryHref, router, t]);
 
   useEffect(() => {
     if (parentOnboarding.status !== 'code_sent' || resendSeconds <= 0) return;
@@ -57,11 +65,11 @@ export default function ParentVerificationScreen() {
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      returnToSignIn();
+      returnToEntry();
       return true;
     });
     return () => subscription.remove();
-  }, [returnToSignIn]);
+  }, [returnToEntry]);
 
   const verify = async () => {
     if (isVerifying || code.length !== 6) return;
@@ -105,7 +113,7 @@ export default function ParentVerificationScreen() {
   };
 
   if (parentOnboarding.status === 'signed_out') {
-    return <Redirect href="/access/parent/sign-in" />;
+    return <Redirect href={entryHref} />;
   }
   if (parentOnboarding.status === 'verified' && !parentOnboarding.completionReceipt) {
     return <Redirect href="/access/parent/family-basics" />;
@@ -155,7 +163,7 @@ export default function ParentVerificationScreen() {
           brand={t('common.brand')}
           direction={direction}
           language={locale}
-          onBack={returnToSignIn}
+          onBack={returnToEntry}
         />
       }
       keyboardAware
@@ -236,7 +244,7 @@ export default function ParentVerificationScreen() {
           disabled={isVerifying}
           fullWidth={false}
           language={locale}
-          onPress={returnToSignIn}
+          onPress={returnToEntry}
           style={styles.changeButton}
           testID="change-parent-identifier-button"
           variant="quiet"

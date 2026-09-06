@@ -6,6 +6,42 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Parent Sign-up Flow and Sign-in Hierarchy Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,quickstart.md}`,
+`specs/003-family-growth-garden/checklists/requirements.md`,
+`specs/003-family-growth-garden/contracts/acceptance-contract.md`,
+`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`,
+`app/access/parent/{sign-in.tsx,sign-up.tsx,verification.tsx}`,
+`src/i18n/resources.ts`, and
+`tests/{r001-onboarding-flow,r003-screen-flow,operator-demo-flow}.test.ts` only.
+
+**Scope**: Center the Parent sign-in orientation and supporting copy while retaining logical-start
+alignment for mixed phone/email data entry, preserve the filled/neutral/outlined action hierarchy,
+and route **Create a new family** to a dedicated code-native Soft Geometric sign-up screen. The
+sign-up screen reuses the existing deterministic Parent verification authority and continues to
+first-family setup; a closed `create-family` flow marker may restore Verification Back/cancel only
+to sign-up. No second household, production account, new access authority, dependency, or live
+service is authorized. Delegated audits are read-only; protected user-owned paths remain untouched
+and no push or merge is authorized.
+
+**Completion — 2026-09-06**: Parent sign-in now centers its screen-level orientation and support
+copy while keeping identifier labels and helper text on the logical form axis. **Create a new
+family** navigates without requesting a code to the dedicated bilingual sign-up screen; its
+allowlisted verification origin restores sign-up on visible Back, Android Back, and identifier
+change, including offline preview. Focused access/navigation coverage passed 3 files / 57 tests;
+the full suite passed 84 files / 1,044 tests; typecheck, lint, formatting, dependency/configuration
+checks, `git diff --check`, the exact 37-product-route inventory, and the 39-route web export passed.
+Firefox proxy inspection passed Arabic and English at 320×720 and 390×844 with equal action
+geometry, zero horizontal overflow, and zero application console errors. Physical Android remains
+blocked by the recorded unavailable device/toolchain, and named human review remains `NOT RUN`.
+All reserved boundaries are released to the integration owner at this checkpoint; no push or merge
+was performed.
+
 ## 2026-09-06 Parent Sign-in Spacing Refinement Window
 
 **Owner and only writer**: `/root`

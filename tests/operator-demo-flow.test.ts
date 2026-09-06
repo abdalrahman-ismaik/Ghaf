@@ -27,6 +27,7 @@ const EXPECTED_ROUTES = [
   '/access/parent/family-created-success',
   '/access/parent/review-create',
   '/access/parent/sign-in',
+  '/access/parent/sign-up',
   '/access/parent/verification',
   '/access/child',
   '/access/child/pin',
