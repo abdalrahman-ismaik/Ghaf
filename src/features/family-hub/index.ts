@@ -125,9 +125,10 @@ function isReconciledRewardOutcome(input: {
   if (!expectedLandscapeTransition) return false;
   const baseline = createFamilyRewardRuntime();
   const lifecycleIsValid =
-    (runtime.plan.lifecycle === 'unlocked' && runtime.plan.givenAt === null) ||
-    (runtime.plan.lifecycle === 'given' &&
-      isValidGivenTimestamp(runtime.plan.givenAt, committedAt));
+    isFamilyRewardTimestamp(committedAt) &&
+    ((runtime.plan.lifecycle === 'unlocked' && runtime.plan.givenAt === null) ||
+      (runtime.plan.lifecycle === 'given' &&
+        isValidGivenTimestamp(runtime.plan.givenAt, committedAt)));
   const expectedProgress: FamilyRewardProgressSnapshot = {
     childId: expectedProfileId,
     eligibleSeedDelta: FAMILY_REWARD_TARGET - FAMILY_REWARD_BASELINE,
