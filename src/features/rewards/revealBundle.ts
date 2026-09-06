@@ -1,4 +1,9 @@
 import { IMPACT_PATH_STATIONS } from '../../models/growthJourney';
+import {
+  hasDensePlainArrayShape,
+  hasExactPlainDataKeys as hasExactKeys,
+  isPlainDataRecord as isRecord,
+} from '../../utils/exactPlainData';
 import { BADGE_IDS } from '../growth/badgeRegistry';
 import {
   REVEAL_BUNDLE_SCHEMA_VERSION,
@@ -117,15 +122,6 @@ function success<T>(data: T): RevealBundleResult<T> {
 
 function failure<T>(code: RevealBundleErrorCode, message: string): RevealBundleResult<T> {
   return immutableCopy({ ok: false as const, error: { code, message } });
-}
-
-function isRecord(value: unknown): value is UnknownRecord {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function hasExactKeys(value: UnknownRecord, allowed: readonly string[]): boolean {
-  const keys = Object.keys(value);
-  return keys.length === allowed.length && keys.every((key) => allowed.includes(key));
 }
 
 function isNonEmptyString(value: unknown): value is string {
@@ -586,6 +582,7 @@ function validateBundle(value: unknown): RevealBundleResult<RevealBundle> {
     !REVEAL_LIFECYCLES.has(value.lifecycle as RevealBundleLifecycle) ||
     value.audience !== 'child' ||
     !Array.isArray(value.items) ||
+    !hasDensePlainArrayShape(value.items) ||
     value.items.length === 0 ||
     !isNonEmptyString(value.sourceFingerprint)
   ) {
@@ -632,7 +629,8 @@ function validateQueue(value: unknown): RevealBundleResult<RevealBundleQueue> {
     !isRecord(value) ||
     !hasExactKeys(value, ['schemaVersion', 'bundles']) ||
     value.schemaVersion !== REVEAL_BUNDLE_SCHEMA_VERSION ||
-    !Array.isArray(value.bundles)
+    !Array.isArray(value.bundles) ||
+    !hasDensePlainArrayShape(value.bundles)
   ) {
     return failure('INVALID_INPUT', 'RevealBundle queue has an invalid shape');
   }
@@ -759,6 +757,7 @@ export function constructRevealBundle(
     !isNonEmptyString(input.triggerEventId) ||
     !isIsoInstant(input.triggeredAt) ||
     !Array.isArray(input.receipts) ||
+    !hasDensePlainArrayShape(input.receipts) ||
     !['task_approval', 'learning_completion', 'task_submission'].includes(
       input.triggerKind as string,
     )

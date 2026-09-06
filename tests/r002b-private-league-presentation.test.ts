@@ -226,6 +226,40 @@ describe('R002b private League recognition runtime', () => {
     expect(Object.keys(retry.data.runtime.receiptsByRecognitionKey)).toHaveLength(1);
   });
 
+  it.each(['receipt', 'receipt_map'] as const)(
+    'rejects hidden authority on a committed %s',
+    (target) => {
+      const input = recognizedInput();
+      const first = applyRecognitionToPrivateLeague(input);
+      if (!first.ok) throw new Error(first.error.message);
+      const recognitionKey = first.data.receipt.recognitionKey;
+      const receipt = { ...first.data.receipt };
+      const receiptsByRecognitionKey = { [recognitionKey]: receipt };
+      if (target === 'receipt') {
+        Object.defineProperty(receipt, 'hiddenAuthority', {
+          value: true,
+          enumerable: false,
+          configurable: true,
+        });
+      } else {
+        Object.defineProperty(receiptsByRecognitionKey, 'recognition:hidden-authority', {
+          value: receipt,
+          enumerable: false,
+          configurable: true,
+        });
+      }
+      const runtime = {
+        ...first.data.runtime,
+        receiptsByRecognitionKey,
+      } as typeof first.data.runtime;
+
+      expect(applyRecognitionToPrivateLeague({ ...input, runtime })).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_INPUT' },
+      });
+    },
+  );
+
   it('rejects a forged retry runtime and leaves the valid committed runtime unchanged', () => {
     const input = recognizedInput();
     const first = applyRecognitionToPrivateLeague(input);

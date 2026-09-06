@@ -382,6 +382,36 @@ describe('R002b receipt-only RevealBundle construction', () => {
     ).toMatchObject({ ok: false, error: { code: 'BUNDLE_CONFLICT' } });
   });
 
+  it('rejects hidden authority on a stored queue, bundle, or source receipt', () => {
+    const first = createdBundle();
+    const hiddenQueue = { ...first.queue };
+    Object.defineProperty(hiddenQueue, 'hiddenAuthority', { value: true, enumerable: false });
+
+    const hiddenBundle = { ...first.bundle };
+    Object.defineProperty(hiddenBundle, 'hiddenAuthority', { value: true, enumerable: false });
+
+    const source = first.bundle.items[0];
+    if (!source) throw new Error('Expected one stored source receipt');
+    const hiddenSource = { ...source };
+    Object.defineProperty(hiddenSource, 'hiddenAuthority', { value: true, enumerable: false });
+
+    const malformedQueues: RevealBundleQueue[] = [
+      hiddenQueue,
+      { ...first.queue, bundles: [hiddenBundle] },
+      {
+        ...first.queue,
+        bundles: [{ ...first.bundle, items: [hiddenSource, ...first.bundle.items.slice(1)] }],
+      },
+    ];
+
+    for (const queue of malformedQueues) {
+      expect(constructRevealBundle(approvalInput({ queue }))).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_INPUT' },
+      });
+    }
+  });
+
   it('fails closed for a conflicting source ID or multiple singleton consequences', () => {
     const receipts = approvalReceipts();
     const praise = receipts.find(receiptIs('parent_praise'));

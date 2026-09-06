@@ -6,6 +6,12 @@ import type {
   TaskJourney,
 } from '../../models/familyGrowth';
 import type { ChallengeLeaf, ChallengeLeafCandidate } from '../../models/familyLeague';
+import {
+  hasExactPlainDataKeys as hasExactKeys,
+  hasOnlyPlainDataProperties,
+  isExactPlainDataEqual as sameValue,
+  isPlainDataRecord as isRecord,
+} from '../../utils/exactPlainData';
 import { matchesCanonicalP0TaskContent, validateTaskForReview } from '../tasks/validation';
 
 import { evaluateChallengeLeafEligibility, SYNTHETIC_LEAGUE_PARTICIPANTS } from './index';
@@ -107,20 +113,6 @@ function immutable<T>(value: T): T {
   if (typeof value !== 'object' || value === null || Object.isFrozen(value)) return value;
   for (const nested of Object.values(value)) immutable(nested);
   return Object.freeze(value);
-}
-
-function sameValue(left: unknown, right: unknown): boolean {
-  return JSON.stringify(left) === JSON.stringify(right);
-}
-
-function hasExactKeys(value: object, keys: readonly string[]): boolean {
-  const actual = Object.keys(value).sort();
-  const expected = [...keys].sort();
-  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
-}
-
-function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function validProfileEpochId(value: unknown): value is string {
@@ -301,7 +293,8 @@ function isRuntimeEnvelope(value: unknown): value is PrivateLeagueRecognitionRun
     validProfileEpochId(value.profileEpochId) &&
     value.weekKey === PRIVATE_LEAGUE_WEEK_KEY &&
     isCanonicalChallengeLeaf(value.challengeLeaf) &&
-    isRecord(value.receiptsByRecognitionKey)
+    isRecord(value.receiptsByRecognitionKey) &&
+    hasOnlyPlainDataProperties(value.receiptsByRecognitionKey)
   );
 }
 
