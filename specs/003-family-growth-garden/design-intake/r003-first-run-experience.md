@@ -4,6 +4,25 @@
 **Owner:** `/root`
 **Route impact:** none; all onboarding states remain inside `/`
 
+## 2026-09-07 square story and narrator refinement
+
+The six-state and three-pillar contracts below remain authoritative. Each existing photograph now
+renders in a responsive 1:1 `cover` frame, and the visible `1/6` state moves with six equal story
+segments to a dark high-contrast region directly above the lower navigation actions. The rail is
+direction-aware, explicitly controlled, and never timed.
+
+All six paired scripts are rewritten as a direct first-person welcome from the Ghaf Guide. The
+exact visible title/body is also the optional on-device TTS transcript. A compact Guide row exposes
+speaker identity, device-synthesized origin, stop/enable, replay, and unavailable fallback states.
+Native autoplay waits for screen-reader detection and remains suppressed whenever assistive speech
+is active. The web preview starts narration disabled because its accessibility layer cannot
+reliably detect a screen reader, then allows an explicit enable action. Speech stops on step,
+locale, and onboarding exit; it never changes reducer state.
+
+`expo-speech` is the measured minimum TTS capability because existing `expo-audio` only plays files
+and no reviewed bilingual onboarding binaries exist. It adds no config plugin, microphone,
+recording, model/network request, background listening, provider state, or product authority.
+
 ## Product promise
 
 The first launch should make Ghaf and its three competition pillars understandable before asking
@@ -15,15 +34,15 @@ or behaviorist.
 
 ## State and navigation contract
 
-| State            | Purpose                                                                         | Primary action               | Secondary action      | Exit                           |
-| ---------------- | ------------------------------------------------------------------------------- | ---------------------------- | --------------------- | ------------------------------ |
+| State            | Purpose                                                                        | Primary action               | Secondary action      | Exit                           |
+| ---------------- | ------------------------------------------------------------------------------ | ---------------------------- | --------------------- | ------------------------------ |
 | `intro`          | Introduce Ghaf as one private family story of action, safe AI, and growth      | Next                         | Pillars / Skip        | `family` or Welcome            |
 | `family`         | Show that the family chooses, helps, and celebrates together                   | Next                         | Pillars / Back / Skip | `sustainability` or Welcome    |
 | `sustainability` | Show one small safe Parent-approved household action at a time                 | Next                         | Pillars / Back / Skip | `ai` or Welcome                |
-| `ai`             | Explain bounded approved-task help, fallibility, and the adult-help exit        | Next                         | Pillars / Back / Skip | `support` or Welcome           |
+| `ai`             | Explain bounded approved-task help, fallibility, and the adult-help exit       | Next                         | Pillars / Back / Skip | `support` or Welcome           |
 | `support`        | Show that permitted help keeps full credit and Parent confirmation is required | Next                         | Back / Skip           | `growth` or Welcome            |
-| `growth`         | Show permanent private symbolic Garden growth without an impact claim           | Start Ghaf                   | Back                  | Existing Welcome access choice |
-| `welcome`        | Preserve separate Parent and Child access                                       | Parent access / Child access | Language              | Existing access routes         |
+| `growth`         | Show permanent private symbolic Garden growth without an impact claim          | Start Ghaf                   | Back                  | Existing Welcome access choice |
+| `welcome`        | Preserve separate Parent and Child access                                      | Parent access / Child access | Language              | Existing access routes         |
 
 The three pillar controls are accessible direct links to `family`, `sustainability`, and `ai`.
 They do not mark onboarding complete and never select a role, approve a task, grant permission, or
@@ -84,7 +103,8 @@ The images are never mirrored for RTL and load through the existing local illust
 - Arabic is first; English is equivalent, not a shortened alternate.
 - Alexandria owns display text; Readex Pro owns body, status, and controls.
 - One dominant action per onboarding moment, minimum 48 dp targets, visible progress (`1/6` plus
-  dots), resilient wrapping at 320 and 390 widths, and no horizontal swipe dependency.
+  six segmented bars) directly above the navigation actions, resilient wrapping at 320 and 390
+  widths, and no horizontal swipe dependency.
 - Every meaningful photograph has localized alternative text. Decorative transition texture is
   hidden from accessibility. Step changes use a polite live-region announcement.
 - The final Welcome retains the visible local/synthetic prototype disclosure and distinct Parent

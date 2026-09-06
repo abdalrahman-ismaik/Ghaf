@@ -4,7 +4,7 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-09-06                                                                                                                                      |
+| Item                      | Truth as of 2026-09-07                                                                                                                                      |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Product                   | Ghaf — غاف                                                                                                                                                  |
 | Competition               | Khalifa University SMAC 2026                                                                                                                                |
@@ -34,6 +34,13 @@ with equivalent plain English. The experience uses the official raster Ghaf logo
 local nature photographs, then returns to the existing separate Parent and Child access choices.
 The first-run story itself adds no route, account, reward, persistence, environmental-impact, AI,
 or access authority.
+The same six moments now read as a first-person introduction from the bounded Ghaf Guide. Their
+existing local photographs use responsive square crops and their explicit progress sits in a
+high-contrast lower six-segment story rail directly above the navigation actions. Optional
+on-device speech reads the visible Arabic or English
+script, can be stopped or replayed, stays silent when a screen reader is active, and never advances
+the story. This device-synthesized voice is presentation only—not a live model response, recording,
+voice recognition, companion, permission grant, or background listener.
 Startup is visibly ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms
 after handoff, a distinct leaf-loading screen for at least 1,000 ms and until the four used font
 files plus the exact nine-raster signed-out set settle, then onboarding. The splash itself has no

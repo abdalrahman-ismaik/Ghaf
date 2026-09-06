@@ -139,6 +139,23 @@ describe('R003 first-run experience', () => {
     expect(onboarding).toContain('withDelay');
     expect(onboarding).toContain('testID="first-run-visual-story"');
     expect(onboarding).toContain('scale:');
+    expect(onboarding).toContain('aspectRatio: 1');
+    expect(onboarding).not.toContain('heroHeight');
+    expect(onboarding).toContain('testID="first-run-story-progress"');
+    expect(onboarding).toContain('first-run-progress-segment-');
+    expect(onboarding.indexOf('testID="first-run-story-progress"')).toBeGreaterThan(
+      onboarding.indexOf('testID="first-run-visual-story"'),
+    );
+    expect(onboarding).toContain('testID="first-run-navigation-actions"');
+    expect(onboarding.indexOf('testID="first-run-story-progress"')).toBeLessThan(
+      onboarding.indexOf('testID="first-run-navigation-actions"'),
+    );
+    expect(onboarding).toContain('styles.progressSegmentReached');
+    expect(onboarding).toContain('backgroundColor: colors.deepForest');
+    expect(onboarding).toContain('backgroundColor: colors.solarAmber');
+    expect(onboarding).toContain('borderColor: colors.outlineVariant');
+    expect(onboarding).not.toContain('styles.dots');
+    expect(onboarding).toContain('useOnboardingNarrator');
     expect(onboarding).not.toMatch(
       /(?:height|width|margin|padding)\s*:\s*[^,\n]*Progress\.get\(\)/u,
     );
@@ -355,8 +372,22 @@ describe('R003 first-run experience', () => {
     expect(english.steps[3]?.body).toMatch(/may be wrong/iu);
     expect(english.steps[3]?.body).toMatch(/adult/iu);
     expect(arabic.steps[3]?.body).toMatch(/وافق|معتمدة/u);
-    expect(arabic.steps[3]?.body).toContain('قد يخطئ');
+    expect(arabic.steps[3]?.body).toMatch(/قد (?:يخطئ|أخطئ)/u);
     expect(arabic.steps[3]?.body).toMatch(/بالغ|وليّ الأمر/u);
+    expect(english.steps[0]?.title).toMatch(/I[’']m the Ghaf Guide/iu);
+    expect(arabic.steps[0]?.title).toContain('دليل غاف');
+    expect(english.narrator.name).toContain('Ghaf Guide');
+    expect(arabic.narrator.name).toContain('دليل غاف');
+    expect(english.narrator.origin).toMatch(/device/iu);
+    expect(arabic.narrator.origin).toContain('الجهاز');
+    expect(english.narrator).toEqual(
+      expect.objectContaining({
+        disable: expect.any(String),
+        enable: expect.any(String),
+        replay: expect.any(String),
+        unavailable: expect.any(String),
+      }),
+    );
     for (const locale of [arabic, english]) {
       expect(locale.skip.length).toBeGreaterThan(0);
       expect(locale.next.length).toBeGreaterThan(0);
@@ -366,10 +397,37 @@ describe('R003 first-run experience', () => {
         expect(step.title.length).toBeGreaterThan(0);
         expect(step.body.length).toBeGreaterThan(0);
         expect(step.imageAlt.length).toBeGreaterThan(0);
-        expect(step.title.trim().split(/\s+/u).length).toBeLessThanOrEqual(9);
-        expect(step.body.trim().split(/\s+/u).length).toBeLessThanOrEqual(28);
+        expect(step.title.trim().split(/\s+/u).length).toBeLessThanOrEqual(7);
+        expect(step.body.trim().split(/\s+/u).length).toBeLessThanOrEqual(22);
       }
     }
+  });
+
+  it('keeps onboarding narration optional, foreground-only, and screen-reader aware', () => {
+    const narration = source('src/components/onboarding/useOnboardingNarrator.ts');
+    const onboarding = source('src/components/onboarding/FirstRunOnboarding.tsx');
+    const packageJson = JSON.parse(source('package.json')) as {
+      readonly dependencies: Readonly<Record<string, string>>;
+    };
+
+    expect(packageJson.dependencies['expo-speech']).toMatch(/^~57\./u);
+    expect(narration).toContain("from 'expo-speech'");
+    expect(narration).toContain("useState(Platform.OS !== 'web')");
+    expect(narration).toContain("Platform.OS === 'web' ? false : null");
+    expect(narration).toContain("if (Platform.OS === 'web') return");
+    expect(narration).toContain('AccessibilityInfo.isScreenReaderEnabled()');
+    expect(narration).toMatch(/addEventListener\(\s*'screenReaderChanged'/u);
+    expect(narration).toContain('Speech.speak(');
+    expect(narration).toContain('Speech.stop()');
+    expect(narration).toContain('onError:');
+    expect(narration).toContain('screenReaderEnabled !== false');
+    expect(narration).not.toMatch(
+      /AudioRecorder|requestRecordingPermissions|microphone|SpeechRecognition|fetch\(|https?:\/\//u,
+    );
+    expect(onboarding).toContain('first-run-narrator');
+    expect(onboarding).toContain('first-run-narration-toggle');
+    expect(onboarding).toContain('first-run-narration-replay');
+    expect(onboarding).toContain('accessibilityState={{ selected: narration.enabled }}');
   });
 
   it('inherits one shared raster brand shell across every access route', () => {

@@ -6,6 +6,45 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-07 AI-narrated Square Onboarding Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `package.json`,
+`package-lock.json`, `src/components/onboarding/FirstRunOnboarding.tsx`, new
+`src/components/onboarding/useOnboardingNarrator.ts`, `src/i18n/resources.ts`, and
+`tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Refine the existing six-moment first-run presentation with 1:1 local artwork, a
+high-contrast lower segmented story indicator directly above the navigation actions, shorter
+energetic first-person Ghaf Guide copy, and optional automatic device text-to-speech narration.
+Narration must stop between moments and on exit, expose
+an on-screen replay/stop control, remain silent when a screen reader is active, retain complete
+visible text, and fail without blocking onboarding. The voice is device-synthesized presentation,
+not a live model call, recording, companion, or proof that AI ran. Preserve the six-state order,
+three-pillar navigation, ordered startup/deferred image boundaries, route count, access/session,
+task/reward/privacy/reset authorities, default-off flags, official logo, and protected user work.
+One Expo-compatible `expo-speech` dependency is authorized as the measured minimum because
+`expo-audio` can play prepared files but cannot synthesize the bilingual slide copy and no reviewed
+onboarding audio binaries exist. No microphone, recording, background listening/playback, runtime
+URL, new image, provider call, push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` shipped the six square local crops, concise bilingual
+first-person Ghaf Guide scripts, a high-contrast lower story rail directly above navigation, and
+bounded `expo-speech` device narration with native screen-reader suppression, web opt-in, replay,
+cleanup, and nonblocking fallback. The focused file passed 13 tests and the full suite passed 90
+files / 1,086 tests. Typecheck, zero-warning lint, formatting, Expo dependency/public-config,
+39-route web export, 90-file Android JavaScript export, Git whitespace, and the final Impeccable
+detector passed. Firefox inspected Arabic 390×844 and English 320×720, measured a square
+275.8×275.8 px crop, found no horizontal overflow, confirmed `1/6 → 2/6`, and exercised the web
+voice-unavailable fallback with zero page errors. Physical Android TTS/audio focus, TalkBack, OS
+font scale, motion feel, and named-human review remain `BLOCKED / NOT RUN` because no Android
+target or reviewer was available. The reservation is released at this local checkpoint; no push,
+merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Device-local Family and AI-guided Setup Window
 
 **Owner and only writer**: `/root`

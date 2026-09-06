@@ -1,5 +1,19 @@
 # Ghaf Design Direction
 
+## 2026-09-07 AI-narrated square onboarding clarification
+
+The six-moment first-run experience is introduced directly by the Ghaf Guide. Use short
+first-person headlines and one concrete sentence per moment: welcoming and energetic, never
+chatty, companion-like, or inflated. Every existing local photograph sits in a responsive square
+editorial crop. Put a six-segment story rail directly above the navigation buttons in a dark,
+high-contrast band with a compact current/total label; progress follows explicit navigation and
+is never timed.
+
+On-device narration reads the exact visible script and has clear stop/enable/replay controls beside
+a small Ghaf Guide identity and device-voice disclosure. Suppress autoplay when a screen reader is
+active and keep navigation independent of speech. Do not add a waveform, human avatar, robot,
+listening pulse, microphone, background audio, or model-processing theater.
+
 ## 2026-09-06 first-run experience clarification
 
 The first-run story should feel like opening a vivid family field journal: begin by introducing

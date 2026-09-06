@@ -1,5 +1,21 @@
 # Prototype Limitations
 
+## Onboarding device narration — 2026-09-07
+
+The Ghaf Guide introduction may use the device's installed text-to-speech engine to read the exact
+visible Arabic or English slide script. This does not prove that a live AI model ran, and it is not
+a prepared human performance, cloned voice, recording, speech recognition, microphone session,
+continuous listening, or background audio service. Voice availability, pronunciation, expressivity,
+and offline behavior depend on the installed device engine and language packs; a missing or failed
+voice leaves the full transcript and navigation available.
+
+Automatic native narration is disabled while a screen reader is active to avoid duplicate speech.
+Because React Native Web does not expose a reliable screen-reader signal, the web preview starts
+with narration off and requires an explicit enable action. Web speech and source inspection cannot
+pass physical Android Arabic voice quality, TalkBack coexistence, audio focus, silent-mode
+behavior, or named Arabic review. Those remain `BLOCKED` or `NOT RUN` until directly observed on
+the current build.
+
 ## Returning-family local summary — 2026-09-06
 
 The returning-family decision now relies on one validated device-local demo directory. Native uses

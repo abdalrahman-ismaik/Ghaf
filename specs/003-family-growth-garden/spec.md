@@ -18,6 +18,55 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 AI-narrated Square Onboarding Amendment — 2026-09-07
+
+This amendment refines the existing six-moment in-route first-run story without changing its
+order, three-pillar navigation, completion semantics, or any product authority. Each moment uses
+the existing local photograph in a responsive 1:1 frame. A direction-aware segmented story
+indicator sits in a high-contrast lower navigation region directly above the actions, keeps the
+current/total value visible, and changes only when the family explicitly uses Next, Back, or a
+pillar target; narration never advances a moment automatically.
+
+The first-run copy now speaks in the first-person voice of the Ghaf Guide, the app's bounded AI
+assistant. Arabic and English titles and bodies stay short, direct, concrete, energetic, and
+equivalent while preserving Parent approval, permitted-help full recognition, permanent private
+symbolic growth, AI fallibility/adult help, and the no-measured-impact boundary.
+
+Each newly shown moment may be read automatically by optional on-device text-to-speech. The
+interface must identify the speaker and device-synthesized origin, keep the complete spoken text
+visible, and expose controls to stop, enable, and replay narration. Narration is presentation only:
+it does not call a model or network service, capture or recognize a voice, request microphone
+permission, listen in the background, enable AI, grant access, or imply companionship. It stops on
+step/locale change and onboarding exit, stays off after the family disables it until they enable it
+again, and fails without blocking navigation. Autoplay is suppressed whenever a screen reader is
+active so assistive speech is not duplicated.
+The web preview MUST start narration disabled because its React Native accessibility layer does
+not provide a trustworthy active-screen-reader signal; the family may explicitly enable it.
+
+- **FR-202**: Every first-run photograph MUST render in a responsive 1:1 frame using the existing
+  local raster and crop/fallback path; no new raster, runtime URL, or mirrored RTL asset is allowed.
+- **FR-203**: One six-segment, direction-aware story indicator MUST appear directly above the
+  lower navigation actions on a visually distinct high-contrast surface, with a visible
+  current/total label and programmatic progress semantics; it MUST NOT use a timer, autoplay
+  navigation, urgency, or completion pressure.
+- **FR-204**: All six Arabic/English titles and bodies MUST be short, direct, enthusiastic
+  first-person Ghaf Guide narration while preserving every existing approval, safety, privacy,
+  permanence, fallibility, adult-help, and symbolic-impact truth.
+- **FR-205**: Optional onboarding narration MUST use on-device speech synthesis, keep the exact
+  transcript visible, expose stop/enable/replay controls, stop across step/locale/exit boundaries,
+  suppress native autoplay with an active screen reader, start disabled on web, and remain
+  nonblocking on unavailable speech.
+- **FR-206**: Onboarding narration MUST be labeled device-synthesized presentation and MUST NOT be
+  described as a live model response, recording, voice recognition, companion, continuous or
+  background listening, or a new AI/access permission.
+- **SC-057**: Focused tests prove the square frame, lower high-contrast segmented indicator, six concise bilingual
+  scripts, optional narration lifecycle, screen-reader suppression, failure fallback, unchanged
+  six-state reducer, route count, startup/deferred image sets, and no microphone/network API.
+- **SC-058**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the story bars,
+  square crops, copy, narrator controls, scrolling, and standard/reduced-motion states remain
+  readable with no horizontal overflow; physical Android speech quality, installed Arabic voice,
+  TalkBack interaction, and named Arabic review remain separately evidenced.
+
 ## R003 Device-local Family Directory and Guided Setup Amendment — 2026-09-06
 
 This amendment authorizes one small device-local database for the demonstration. It supersedes

@@ -1,5 +1,37 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 AI-narrated Square Onboarding Record — 2026-09-07
+
+**Current classification:** locally validated presentation candidate; physical Android speech,
+TalkBack, and named-human review remain unobserved.
+
+On a fresh launch, confirm that each of the six local photographs fills a square frame. The Ghaf
+Guide introduces every moment in short first-person Arabic or English copy. The dark six-segment
+story rail appears in the lower navigation region directly above Next/Back, with an amber
+completed/current state, outlined future states, a taller current segment, and visible `1/6`
+status. On native, narration starts only after screen-reader detection; on web it begins only after
+the family explicitly enables it. Move to another moment and switch language to confirm speech is
+stopped before the new visible transcript is requested. Speech failure must leave every action and
+the complete transcript available.
+
+| Gate                                                               | Result                              | Evidence                                                                                                                                                                        |
+| ------------------------------------------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused behavior                                               | `PASSED`                            | initial RED: 3 failures / 10 passes; lower-indicator correction RED: 1 failure / 12 passes; web voice guard RED: 1 failure / 12 passes; final focused file: 13 tests              |
+| Full repository verification                                       | `PASSED`                            | typecheck, zero-warning lint, format check, 90 files / 1,086 tests, Expo dependency alignment, and production web export                                                        |
+| Square image and compact overflow                                  | `PASSED (Firefox web proxy)`        | English 320×720 measured the current image at 275.8×275.8 px; document/body width equaled the 320 px viewport; Arabic 390×844 remained contained                                |
+| Lower indicator position and contrast                              | `PASSED source + Firefox web proxy` | rail rendered directly above the primary action; deep-forest surface with white label, amber reached state, and outlined future state measured 14.12:1, 7.89:1, and 8.29:1      |
+| Copy, direction, and explicit navigation                           | `PASSED automated + Firefox proxy`  | six concise paired scripts; Arabic RTL and English LTR; explicit Next changed `1/6` to `2/6`; narration never advanced the reducer                                               |
+| Narration controls and failure fallback                            | `PASSED source + Firefox web proxy` | web began opt-in; enable/replay controls were available; headless Firefox exposed the localized nonblocking unavailable state with zero page errors                            |
+| Speech/privacy boundary                                            | `PASSED automated/source`           | device TTS only; exact visible transcript; stop on step/locale/exit; no microphone, recording, recognition, background listening, runtime URL, network, provider, route, or store |
+| Detector, public config, and production exports                    | `PASSED`                            | Impeccable detector `[]`; Expo public config resolved; web exported 39 static routes; Android JavaScript export produced 90 files                                               |
+| Physical Android voice, audio focus, TalkBack, and font scale      | `BLOCKED / NOT RUN`                | `adb devices -l` returned no attached target                                                                                                                                    |
+| Named Arabic/UAE, safeguarding, accessibility, and voice review    | `NOT RUN`                          | no named reviewer was available in this implementation session                                                                                                                 |
+
+The voice is the Ghaf Guide's device-synthesized presentation, not proof that a live AI model ran
+and not a recording or companion. Headless Firefox had no usable speech voice, so the visible
+failure state—not pronunciation or expressivity—was the only browser speech evidence. Android
+voice quality and TalkBack coexistence require the current physical competition device.
+
 ## R003 Device-local Family and AI-guided Setup Record — 2026-09-06
 
 **Current classification:** complete local demo implementation candidate; physical Android and

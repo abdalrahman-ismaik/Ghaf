@@ -1345,3 +1345,41 @@ through a clear setup sequence, and make bounded AI personalization visibly usef
       8 files / 83 tests and the full suite passed 90 files / 1,085 tests. The existing family
       record now persists a valid changed app language and returning Parent entry prefers it without
       mutating the immutable completion receipt or restoring a session.
+
+---
+
+## Phase 43: AI-narrated Square Onboarding
+
+**Purpose**: Present the existing six-moment Ghaf Guide introduction as a compact story with square
+artwork, high-contrast lower progress, clearer energy, and optional accessible on-device narration.
+
+- [x] T299 Inspect the active onboarding, voice, accessibility, dependency, and ownership
+      boundaries; reserve exact files; measure the `expo-audio`/missing-binary TTS gap; and amend
+      spec, plan, tasks, product, design, limitations, and first-run intake before behavior work.
+- [x] T300 Write focused RED source/resource tests for a 1:1 image frame, lower high-contrast
+      six-segment story progress, concise first-person bilingual scripts, visible narrator
+      identity/origin, optional stop/enable/replay controls, step/locale/exit cleanup, screen-reader
+      suppression, and nonblocking speech failure.
+- [x] T301 Install the Expo-compatible `expo-speech` package and implement one bounded onboarding
+      narration hook with no microphone, recording, background listening, provider, route, store,
+      or product authority.
+- [x] T302 Recompose `FirstRunOnboarding` with the lower high-contrast story rail, square local
+      artwork, narrator control, and rewritten resources while preserving six-state/pillar
+      navigation, reduced motion, startup/deferred sets, and all access/product behavior.
+- [x] T303 Run focused/full tests, typecheck, lint, format, Expo dependency/route/startup checks,
+      the one final Impeccable detector pass, web export, compact bilingual browser inspection,
+      and available Android/TalkBack/TTS evidence.
+- [x] T304 Reconcile product/design/limitations/runbook/ownership with exact results, retain native
+      and named-human gaps truthfully, and create one cohesive local commit without push, merge,
+      deployment, or release activation.
+
+      Completed locally on 2026-09-07: the initial RED state recorded 3 failures / 10 passes; the
+      requested lower-indicator correction and web opt-in voice guard each recorded 1 expected
+      failure / 12 passes. The final focused file passed 13 tests and the full suite passed 90 files
+      / 1,086 tests. Typecheck, zero-warning lint, format, Expo dependency/public-config, Git
+      whitespace, the final Impeccable detector, 39-route web export, and 90-file Android
+      JavaScript export passed. Firefox inspected Arabic RTL at 390×844 and English LTR at 320×720,
+      measured a 275.8×275.8 px crop, found no horizontal overflow, confirmed the lower rail above
+      the action and `1/6 → 2/6`, and exercised the localized web speech fallback with zero page
+      errors. Physical Android speech/audio focus, TalkBack, OS font scale, motion feel, and named
+      review remain `BLOCKED / NOT RUN`; ADB returned no target.

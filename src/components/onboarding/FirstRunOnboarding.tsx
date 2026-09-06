@@ -29,6 +29,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { ONBOARDING_PILLARS, ONBOARDING_STEPS, type OnboardingPillar } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
+import { useOnboardingNarrator } from './useOnboardingNarrator';
 
 interface FirstRunStepCopy {
   readonly body: string;
@@ -69,10 +70,15 @@ export function FirstRunOnboarding() {
   const steps = t('firstRun.steps', { returnObjects: true }) as unknown as FirstRunStepCopy[];
   const step = steps[stepIndex] ?? steps[0];
   const artworkId = onboardingArtworkIds[stepIndex] ?? onboardingArtworkIds[0];
-  const heroHeight = Math.min(208, Math.max(144, height * (isCompactHeight ? 0.2 : 0.22)));
   const isLast = stepIndex === ONBOARDING_STEPS.length - 1;
   const showPillarNavigator = stepIndex <= 3;
   const storyAccent = storyAccents[stepIndex] ?? colors.ghafEmerald;
+  const narration = useOnboardingNarrator({
+    body: step?.body ?? '',
+    locale,
+    step: state.step,
+    title: step?.title ?? '',
+  });
   const visualStyle = useAnimatedStyle(() => ({
     opacity: visualProgress.get(),
     transform: [
@@ -92,6 +98,11 @@ export function FirstRunOnboarding() {
     current: stepNumber,
     total: ONBOARDING_STEPS.length,
   });
+  const narrationStatus = narration.screenReaderActive
+    ? t('firstRun.narrator.screenReader')
+    : narration.status === 'unavailable'
+      ? t('firstRun.narrator.unavailable')
+      : null;
 
   useLayoutEffect(() => {
     cancelAnimation(visualProgress);
@@ -185,7 +196,7 @@ export function FirstRunOnboarding() {
               fallbackLabel={t('firstRun.imageFallback')}
               language={locale}
               priority="high"
-              style={[styles.heroImage, { height: heroHeight }]}
+              style={styles.heroImage}
               testID={`first-run-image-${state.step}`}
             />
             <View style={[styles.heroAccent, { backgroundColor: storyAccent }]} />
@@ -235,6 +246,81 @@ export function FirstRunOnboarding() {
           ) : null}
         </Animated.View>
         <Animated.View accessibilityLiveRegion="polite" style={[styles.copy, copyStyle]}>
+          <View
+            accessibilityLabel={`${t('firstRun.narrator.name')}. ${t('firstRun.narrator.origin')}`}
+            style={styles.narrator}
+            testID="first-run-narrator"
+          >
+            <View
+              style={[styles.narratorIdentity, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              <View style={styles.narratorCopy}>
+                <Text
+                  brand
+                  color="deepForest"
+                  direction={direction}
+                  language={locale}
+                  variant="label"
+                >
+                  {t('firstRun.narrator.name')}
+                </Text>
+                <Text
+                  brand
+                  color="onSurfaceVariant"
+                  direction={direction}
+                  language={locale}
+                  variant="caption"
+                >
+                  {t('firstRun.narrator.origin')}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={[styles.narratorActions, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              <Button
+                accessibilityState={{ selected: narration.enabled }}
+                brand
+                direction={direction}
+                disabled={narration.screenReaderActive}
+                fullWidth={false}
+                language={locale}
+                onPress={narration.toggle}
+                size="compact"
+                style={styles.narratorAction}
+                testID="first-run-narration-toggle"
+                variant="secondary"
+              >
+                {t(narration.enabled ? 'firstRun.narrator.disable' : 'firstRun.narrator.enable')}
+              </Button>
+              <Button
+                brand
+                direction={direction}
+                disabled={!narration.enabled || narration.screenReaderActive}
+                fullWidth={false}
+                language={locale}
+                onPress={narration.replay}
+                size="compact"
+                style={styles.narratorAction}
+                testID="first-run-narration-replay"
+                variant="quiet"
+              >
+                {t('firstRun.narrator.replay')}
+              </Button>
+            </View>
+            {narrationStatus ? (
+              <Text
+                accessibilityLiveRegion="polite"
+                brand
+                color="onSurfaceVariant"
+                direction={direction}
+                language={locale}
+                variant="caption"
+              >
+                {narrationStatus}
+              </Text>
+            ) : null}
+          </View>
           <Text
             align="start"
             brand
@@ -259,7 +345,7 @@ export function FirstRunOnboarding() {
         </Animated.View>
       </View>
 
-      <View style={styles.navigation}>
+      <View style={styles.navigation} testID="first-run-navigation">
         <View
           accessibilityLabel={progressAlt}
           accessibilityRole="progressbar"
@@ -269,11 +355,12 @@ export function FirstRunOnboarding() {
             now: stepNumber,
             text: progressLabel,
           }}
-          style={[styles.progressRow, { flexDirection: logicalRowDirection(direction) }]}
+          style={styles.storyProgress}
+          testID="first-run-story-progress"
         >
           <Text
             brand
-            color="onSurfaceVariant"
+            color="white"
             direction={direction}
             language={locale}
             tabular
@@ -281,20 +368,33 @@ export function FirstRunOnboarding() {
           >
             {progressLabel}
           </Text>
-          <View style={[styles.dots, { flexDirection: logicalRowDirection(direction) }]}>
-            {ONBOARDING_STEPS.map((item, index) => (
-              <View
-                key={item}
-                style={[
-                  styles.dot,
-                  index === stepIndex ? [styles.dotActive, { backgroundColor: storyAccent }] : null,
-                ]}
-              />
-            ))}
+          <View
+            accessibilityElementsHidden
+            aria-hidden
+            style={[styles.progressSegments, { flexDirection: logicalRowDirection(direction) }]}
+          >
+            {ONBOARDING_STEPS.map((item, index) => {
+              const isCurrent = index === stepIndex;
+              const isReached = index <= stepIndex;
+
+              return (
+                <View
+                  key={item}
+                  style={[
+                    styles.progressSegment,
+                    isReached ? styles.progressSegmentReached : null,
+                    isCurrent ? styles.progressSegmentCurrent : null,
+                  ]}
+                  testID={`first-run-progress-segment-${item}`}
+                />
+              );
+            })}
           </View>
         </View>
-
-        <View style={[styles.navigationActions, { flexDirection: logicalRowDirection(direction) }]}>
+        <View
+          style={[styles.navigationActions, { flexDirection: logicalRowDirection(direction) }]}
+          testID="first-run-navigation-actions"
+        >
           <Button
             brand
             direction={direction}
@@ -330,12 +430,42 @@ export function FirstRunOnboarding() {
 
 const styles = StyleSheet.create({
   viewport: {
-    paddingTop: spacing.sm,
+    paddingTop: spacing.xs,
     paddingBottom: spacing.lg,
   },
   content: {
     flex: 1,
     gap: spacing.md,
+  },
+  storyProgress: {
+    width: '100%',
+    gap: spacing.xs,
+    padding: spacing.sm,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.deepForest,
+  },
+  progressSegments: {
+    width: '100%',
+    minHeight: spacing.xs,
+    alignItems: 'center',
+    gap: spacing.xxs,
+  },
+  progressSegment: {
+    flex: 1,
+    height: spacing.xxs,
+    borderRadius: r001Radii.pill,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.forestSoft,
+  },
+  progressSegmentReached: {
+    borderColor: colors.solarAmber,
+    backgroundColor: colors.solarAmber,
+  },
+  progressSegmentCurrent: {
+    height: spacing.xs,
   },
   topBar: {
     width: '100%',
@@ -365,6 +495,7 @@ const styles = StyleSheet.create({
   },
   heroFrame: {
     width: '100%',
+    aspectRatio: 1,
     overflow: 'hidden',
     borderRadius: r001Radii.sheet,
     borderCurve: 'continuous',
@@ -372,8 +503,7 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     width: '100%',
-    minHeight: 170,
-    maxHeight: 244,
+    height: '100%',
     overflow: 'hidden',
     borderRadius: r001Radii.xl,
     borderCurve: 'continuous',
@@ -403,6 +533,33 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: spacing.xs,
   },
+  narrator: {
+    width: '100%',
+    gap: spacing.xs,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.secondaryTint,
+    padding: spacing.sm,
+  },
+  narratorIdentity: {
+    width: '100%',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  narratorCopy: {
+    flex: 1,
+    minWidth: 0,
+    gap: spacing.xxs,
+  },
+  narratorActions: {
+    width: '100%',
+    gap: spacing.xs,
+  },
+  narratorAction: {
+    flex: 1,
+    minWidth: 0,
+    paddingHorizontal: spacing.xs,
+  },
   navigation: {
     width: '100%',
     marginTop: 'auto',
@@ -414,25 +571,5 @@ const styles = StyleSheet.create({
   },
   navigationAction: {
     flex: 1,
-  },
-  progressRow: {
-    minHeight: spacing.xl,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing.md,
-  },
-  dots: {
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  dot: {
-    width: spacing.xs,
-    height: spacing.xs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
-  },
-  dotActive: {
-    width: spacing.xl,
-    backgroundColor: colors.ghafEmerald,
   },
 });
