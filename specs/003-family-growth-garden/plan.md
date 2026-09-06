@@ -1,5 +1,30 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 First-run Experience Addendum — 2026-09-06
+
+Implement the user-authorized first-run refinement as presentation state within the existing `/`
+route so the 37-route manifest and access authority remain unchanged. Contract and ownership land
+first, followed by RED source/flow tests, four provenance-recorded local raster images, shared
+onboarding/splash/transition components, bilingual integration, bounded web inspection, and full
+validation. The exact state, motion, and asset contract lives in
+`design-intake/r003-first-run-experience.md`.
+
+Expo's configured native raster splash remains the earliest frame. Once the React root mounts, it
+yields to an app-owned branded splash that remains only while local fonts settle, then closes on
+the next render frame without an artificial timer or remote-work claim. Three skippable onboarding
+moments explain the smallest honest value chain—approved choice,
+permitted support and Parent confirmation, then permanent private symbolic Garden growth—before
+the existing role-separated Welcome actions. Completion is React-session state only; active
+sessions bypass it and reset/access behavior is preserved.
+
+Add a root transition observer that classifies paths into Welcome, Parent access, Child access,
+Parent experience, or Child experience. It may show the branded buffer only for the approved
+Welcome-to-access, Welcome-to-active-experience, and matching access-to-experience handoffs; stable
+Parent-to-Parent and Child-to-Child navigation, including tabs, stays immediate.
+Standard motion uses only opacity and a small transform for orientation/delight; reduced motion is
+a direct opacity handoff. All illustrations are local Expo Image static sources and generated copy,
+controls, progress, and official logo remain outside their pixels.
+
 ## R003 Natural Botanical Artwork Refresh Addendum — 2026-09-06
 
 Replace the runtime's scenic and decorative vector-like drawings with a forty-one-asset local

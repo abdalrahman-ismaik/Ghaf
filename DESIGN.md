@@ -122,6 +122,30 @@ components:
 
 # Ghaf Design System
 
+## R003 first-run experience extension
+
+The first-run surface is an optional three-moment editorial sequence inside `/`, followed by the
+existing Parent/Child Welcome decision. Each moment uses the official raster logo, one generous
+local photograph, one short title, one supporting paragraph, visible step progress,
+and one dominant action. Skip remains visible; Back is quiet; changing locale keeps the current
+step. Enthusiasm comes from warm photography, concise active copy, and a restrained vertical
+settle—not confetti, streak pressure, mascots, or competing cards.
+
+The native Expo splash remains the earliest frame and uses the official raster icon. The app-owned
+handoff screen uses the same mark and local field texture while local fonts settle. A context
+transition overlay is permitted only across Welcome, Parent access, Child access, Parent
+experience, and Child experience groups. Paths within a stable Parent or Child group, including
+bottom tabs and nested screens, do not trigger it. Neither presentation claims remote loading,
+identity verification, AI work, sync, or persistence.
+
+All new scenic presentation is raster. Live text, buttons, progress dots, focus state, and loading
+status remain semantic native UI; existing functional vectors elsewhere are unchanged. Standard
+motion uses opacity plus at most 8 dp of vertical travel over the quick/standard token durations.
+Reduced motion removes translation and scaling. At 320 and 390 widths the photograph may shorten,
+but the primary action and step status remain visible or reachable by vertical scrolling. Exact
+copy, asset, state, and evidence rules live in
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`.
+
 ## R003 complete-screen extension
 
 The 2026-09-05 user-authorized completion pass extends this same visual world to missing access,

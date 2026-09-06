@@ -1,5 +1,18 @@
 # Ghaf Design Direction
 
+## 2026-09-06 first-run experience clarification
+
+The first-run story should feel like opening a small field journal: a confident raster Ghaf mark,
+one generous natural photograph, short active copy, and one unmistakable next action at a time.
+Enthusiasm comes from warm light, pace, capability, and the promise of visible permanent growth—not
+confetti, neon, mascots, streak pressure, or game currency. Use three skippable moments for action,
+support, and symbolic growth; preserve the existing role-separated Welcome actions afterward.
+
+Startup and major role/context handoffs may use the same quiet photographic field and raster mark
+as a brief orientation buffer. Do not interrupt bottom tabs or nested navigation. Standard motion
+is a restrained opacity/vertical-settle sequence; reduced motion is a short static fade. No newly
+authored vector image appears in onboarding, splash, or transition presentation.
+
 ## 2026-09-06 natural-artwork clarification
 
 The product-owner-requested artwork refresh replaces vector-like scenic and decorative drawings
@@ -70,13 +83,13 @@ composition.
 
 Represent five connected landscape tracks:
 
-| Track | Visual cue | Task world |
-| --- | --- | --- |
-| Ghaf desert grove | broad canopy, roots, family gathering shade | kinship and family heritage |
-| Samar desert grove | resilient branching and shared work markers | home responsibility and kindness |
-| Sidr reflection grove | calm leaves, small reading/reflection place | learning, wellbeing, private faith/gratitude |
-| Date-palm oasis | vertical palms, water channel, dates/table details | food care and hospitality |
-| Mangrove coast | roots, shallow water, birds/fish silhouettes used sparingly | waste, water, energy, reuse, stewardship |
+| Track                 | Visual cue                                                  | Task world                                   |
+| --------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| Ghaf desert grove     | broad canopy, roots, family gathering shade                 | kinship and family heritage                  |
+| Samar desert grove    | resilient branching and shared work markers                 | home responsibility and kindness             |
+| Sidr reflection grove | calm leaves, small reading/reflection place                 | learning, wellbeing, private faith/gratitude |
+| Date-palm oasis       | vertical palms, water channel, dates/table details          | food care and hospitality                    |
+| Mangrove coast        | roots, shallow water, birds/fish silhouettes used sparingly | waste, water, energy, reuse, stewardship     |
 
 EAD documents Ghaf, Samar, and Sidr as native trees. The product meanings above are original design
 metaphors, not official symbolism. The interface should say “inspired by UAE landscapes” rather

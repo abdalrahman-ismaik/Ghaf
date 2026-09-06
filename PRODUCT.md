@@ -23,6 +23,14 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+The R003 first-run presentation now introduces the product in three optional in-route moments:
+choose a Parent-approved action, use permitted help before Parent confirmation, and remember the
+confirmed action as permanent private symbolic Garden growth. It uses the official raster Ghaf
+logo and local nature photography, then returns to the existing separate Parent and Child access
+choices. It adds no route, account, reward, persistence, environmental-impact, or access authority.
+A branded loader is limited to local startup and major Welcome/access/role handoffs; ordinary tabs
+remain immediate.
+
 The remote implementation is preserved behavior, not permission to change product outcomes. The
 six local-only commits remain unapplied candidate provenance; any compatible presentation must be
 reconstructed over `76fa682` rather than cherry-picked from the conflicting history.
