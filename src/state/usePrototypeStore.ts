@@ -47,6 +47,7 @@ import {
   createPrivateLeagueRecognitionRuntime,
   type PrivateLeagueRecognitionRuntime,
 } from '../features/league/recognitionRuntime';
+import { constructApprovalReveal } from '../features/rewards/approvalReveal';
 import {
   acknowledgeRevealBundle,
   archiveRevealBundle,
@@ -2327,6 +2328,24 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_RESPONSE', privateLeague.error.message);
     }
 
+    const reveal =
+      privateLeague?.ok && privateLeague.data.disposition === 'applied'
+        ? constructApprovalReveal({
+            queue: before.revealBundleQueue,
+            plan,
+            recognition: result.data,
+            previousSession,
+            growthBefore: before.growthJourney,
+            growthProjection: growthProjection.data,
+            familyRewardBefore: before.familyReward,
+            familyRewardAfter: familyReward.data,
+            privateLeague: privateLeague.data,
+          })
+        : null;
+    if (reveal && !reveal.ok) {
+      return failure('INVALID_RESPONSE', reveal.error.message);
+    }
+
     set({
       ...result.data.session,
       growthJourney: growthProjection.data.runtime,
@@ -2334,6 +2353,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       lastRecognitionAttempt: result.data,
       familyReward: familyReward.data,
       privateLeague: privateLeague?.ok ? privateLeague.data.runtime : before.privateLeague,
+      revealBundleQueue: reveal?.ok ? reveal.data.queue : before.revealBundleQueue,
     });
     return result;
   },
