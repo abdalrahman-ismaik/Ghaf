@@ -1283,3 +1283,65 @@ without weakening Ghaf's safety, privacy, approval, symbolic-growth, or truthful
       TalkBack, OS font scale, and motion feel remain `BLOCKED / NOT RUN` because ADB returned no
       target; named Arabic/UAE, safeguarding, botanical, accessibility, and rights review remains
       `NOT RUN`.
+
+---
+
+## Phase 41: Device-local Family Directory, Multi-child Setup, and AI Profile Helper
+
+**Purpose**: Remember one configured demo family across restarts, guide one or two Child profiles
+through a clear setup sequence, and make bounded AI personalization visibly useful and safe.
+
+- [x] T289 Re-read the active product/design/safety/architecture contract, inspect current
+      onboarding/session/access boundaries, reserve exact files, verify the official Expo SQLite
+      path, and amend spec/plan/tasks before behavior work.
+- [x] T290 Write RED tests for the strict versioned local-family schema, platform repository
+      contract, corrupted/unknown data, minimum collection, configured profile filtering, restore,
+      pairing-marker lifecycle, and reset clearing.
+- [x] T291 Extend the Parent onboarding model/controller with one-or-two Child drafts, indexed
+      updates, full-directory validation, immutable multi-child receipt restoration, and atomic
+      persist-before-authentication semantics.
+- [x] T292 Add the service-registry local repository with SQLite-backed native, localStorage web,
+      and deterministic memory test adapters; hydrate family/profile/pairing state and clear it on
+      Parent reset without persisting task/reward/garden authorities.
+- [x] T293 Write RED assistant-policy and presentation tests, then implement deterministic
+      allowlisted profile personalization that excludes gender/free text and uses the labeled
+      sparkle mark with local/prepared/fallible/Parent-decides disclosure.
+- [x] T294 Redesign Family Basics, sequential Child forms, whole-family review, and success copy in
+      the current Soft Geometric Arabic-first system with clear ordering, optional selections,
+      preserved Back state, keyboard scrolling, 48dp controls, and compact-width resilience.
+- [x] T295 Filter Parent/Child profile selectors and summaries to configured users, persist only an
+      approved synthetic paired marker, restore returning Parent/Child entry and existing role
+      welcome behavior after reload, and reject direct unconfigured-profile access.
+- [x] T296 Complete the open source-verifiable R002b readiness audit, add canonical release-review
+      and physical-device/human-review packets, update only directly supported checklist markers,
+      and retain external gates as `NOT RUN` or `BLOCKED`.
+- [x] T297 Run focused/full tests, typecheck, lint, format, dependency/route/reset/privacy/asset
+      checks, one final detector pass, bilingual 320×720 and 390×844 persistence/onboarding
+      browser journeys, web/Android production exports, and available Android evidence; reconcile
+      all docs, release ownership, and cohesive local checkpoints without push/merge/deployment or
+      release activation.
+
+      Completed locally on 2026-09-06: the focused local-family/access/AI batch passed 8 files / 83
+      tests and the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, format,
+      Expo dependency/public-config checks, 37-file product-route inventory, Git whitespace, and
+      the one permitted final Impeccable detector pass succeeded. Web exported 121 files / 39
+      static routes; Android JavaScript exported 90 files with `expo-sqlite@57.0.2` resolved.
+      Firefox completed the one- and two-Child setup/review, direct storage inspection, reset, and
+      returning Parent/Child paths across Arabic RTL and English LTR at 320×720 and 390×844 with
+      zero horizontal overflow and zero console errors. Physical Android SQLite/process-death,
+      Back/IME, TalkBack, OS font scale, and reduced-motion evidence remains `BLOCKED / NOT RUN`
+      because `adb devices -l` returned no attached device; all named-human review rows remain
+      `NOT RUN` and every R002b flag stays default off.
+
+---
+
+## Phase 42: Convergence
+
+- [x] T298 Persist an established family's changed application language and prefer that current
+      local value on returning Parent handoff per FR-191 and FR-197 (partial).
+
+      Completed locally on 2026-09-06: focused RED reproduced the stored-`ar`/active-`en`
+      mismatch, then the corrected store test passed 12/12. The complete local-family batch passed
+      8 files / 83 tests and the full suite passed 90 files / 1,085 tests. The existing family
+      record now persists a valid changed app language and returning Parent entry prefers it without
+      mutating the immutable completion receipt or restoring a session.

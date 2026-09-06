@@ -122,6 +122,30 @@ components:
 
 # Ghaf Design System
 
+## R003 device-local family setup extension
+
+First-family setup is one visible sequence: Family Basics asks for family name, application
+language, and one-or-two Child count; the next route renders Child 1 and, when selected, Child 2 as
+separate indexed steps; Review shows the complete family before the one-time create action. Back
+retains each draft. Required identity-light fields come first—nickname, botanical avatar, age band,
+and preferred language—followed by optional gender, curated interests, hobbies, support,
+accessibility, and prepared-personalization choice. There is no unbounded “important information”
+box because the local demo does not need a sensitive Child narrative.
+
+The screens reuse the current Soft Geometric botanical system: organic ivory background, strong
+Alexandria headings, Readex controls/body, emerald primary action, outlined semantic chips, generous
+vertical rhythm, one fixed-safe action region, natural keyboard-aware scrolling, and 48dp targets.
+Optional choices are visibly skippable. Step totals adapt to the selected count (`1/3` through
+`3/3`, or `1/4` through `4/4`), and the review remains an editable summary rather than another
+form.
+
+The AI profile preview is the only new profile-level sparkle surface. The star labels a bounded
+prepared helper, not decoration or a claim that a live model ran. It previews a coaching style and
+at most two reviewed categories from an exhaustive allowlist, remains visible when opted out, says
+AI may be wrong, and says the Parent decides. Gender, nickname, family name, contact data, free
+text, diagnosis, emotion, media, and task history never enter the helper. Existing sparkle marks
+remain on the Parent Guide and Child Coach where AI functionality is actually available.
+
 ## R003 returning-family welcome extension
 
 Returning users enter value immediately: an established Parent never sees Family Basics or Add
@@ -623,7 +647,9 @@ Photo and voice controls must explain:
 - An assistant timeout falls back to the reviewed fixture on the same route and retains Parent text.
 - A missing prepared image uses descriptive placeholder copy and never blocks task completion.
 - A duplicate confirmation is a no-op with a neutral “Already confirmed” message.
-- A reload may reset in-memory P0 data; the app must disclose this rather than imply persistence.
+- A reload restores only the validated device-local family directory and approved paired-Child
+  markers. Sessions and task/Seed/Garden/League/Reward state remain deterministic prototype state;
+  the app must not imply broader persistence.
 - Reset is one Parent-only demo action, requires a small confirmation, and restores the exact seeded
   state documented in `DEMO_RUNBOOK.md`.
 

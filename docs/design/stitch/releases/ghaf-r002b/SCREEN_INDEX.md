@@ -11,6 +11,8 @@ Final hardened runtime/test checkpoint: `4adcb73` on
 core checkpoint `895af72` passed 76 files and 967/967 tests before the private League compatibility
 and recovery-hardening slices. See the
 [bounded validation record](../../../../../specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md).
+The current open-gate checklist and sign-off tables are in the
+[release review packet](../../../../../specs/003-family-growth-garden/design-intake/r002b-release-review-packet.md).
 
 ## Authority and evidence
 

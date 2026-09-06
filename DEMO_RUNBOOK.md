@@ -1,5 +1,35 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Device-local Family and AI-guided Setup Record — 2026-09-06
+
+**Current classification:** complete local demo implementation candidate; physical Android and
+named-human review remain unobserved.
+
+On a fresh reset, create either one or two Children. Family Basics is step 1, each Child receives
+one separate indexed form, and Review is last. Required fields precede optional curated choices.
+The sparkle profile preview is prepared, local-only, fallible, opt-out capable, and excludes gender
+and free text. After creation, reload and verify that Parent authentication bypasses every
+first-family screen. Pair one Child, sign out/reload, and verify that only that Child can return and
+receives Child-authorized updates. Revoke, then reset, and verify both paired access and the local
+family disappear.
+
+| Gate                                                                                      | Result                       | Evidence                                                                                                                                                    |
+| ----------------------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Focused local family/access/AI behavior                                                   | `PASSED`                     | 8 focused files / 83 tests                                                                                                                                  |
+| Strict persistence boundary                                                               | `PASSED automated/source`    | schema version, exact keys, invalid/corrupt data, save preservation, paired marker, configured-profile filtering, and reset coverage                        |
+| Multi-child sequence and AI boundary                                                      | `PASSED automated/source`    | one/two indexed drafts, receipt restore, exact personalization allowlist, opt-out, and prohibited gender/free-text rejection                                |
+| Bilingual compact persistence journey                                                     | `PASSED (Firefox web proxy)` | Arabic 390×844 and English 320×720; one/two-Child progress, review, reload, returning Parent/Child, configured-only chooser, and zero horizontal overflow   |
+| Browser storage inspection                                                                | `PASSED (Firefox web proxy)` | one namespaced schema-1 record; no credentials, task/reward/garden ledger, media, transcript, notification history, or free-text notes                      |
+| Browser console                                                                           | `PASSED`                     | zero application errors; only known React Native web development warnings                                                                                   |
+| Final repository checks and exports                                                       | `PASSED`                     | typecheck, zero-warning lint, format check, 90 files / 1,085 tests, Expo dependency/public config, 37 product routes, web/Android exports, clean whitespace |
+| Physical Android SQLite/process-death, Back/IME, TalkBack, font scale, and reduced motion | `BLOCKED / NOT RUN`          | no attached Android target                                                                                                                                  |
+| Named Arabic/UAE, safeguarding/privacy, accessibility, visual, and rights review          | `NOT RUN`                    | no named reviewer was available in this implementation session                                                                                              |
+
+The complete repeatable operator and reviewer checklist is
+[`r003-local-family-release-review.md`](specs/003-family-growth-garden/design-intake/r003-local-family-release-review.md).
+Do not describe the local directory as a production account database, the welcome summary as push
+notifications, or the prepared helper as live AI.
+
 ## R003 SMAC Family–Sustainability–AI Onboarding Record — 2026-09-06
 
 **Current classification:** locally validated presentation candidate; physical Android and named
@@ -12,18 +42,18 @@ use the live Family/Sustainability/AI controls to jump between pillar stories an
 controls never choose a role, approve a task, enable AI, or exit onboarding. Read the AI boundary:
 Ghaf simplifies only a Parent-approved task, may be wrong, and points the Child to an adult.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| RED/focused behavior | `PASSED` | first RED: 6 expected failures / 9 passes; motion RED: 1 expected failure / 11 passes; final focused batch: 3 files / 26 tests |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 87 files / 1,065 tests |
-| Startup/deferred boundary | `PASSED automated/source` | exact nine-raster/four-font signed-out gate; 41-image deferred queue preserved after onboarding paint |
-| Asset provenance | `PASSED` | 48 local JPEGs, 48 literal imports, unique checksums, exact dimensions/bytes, and 0 missing embedded prompts |
-| Production exports | `PASSED` | web: 121 files / 39 static routes; Android JS: 90 files; both new JPEGs found byte-identically in both exports |
-| Bilingual compact layout | `PASSED (Firefox web proxy)` | six-step journey and pillar jumps inspected across Arabic RTL/English LTR at 320×720 and 390×844; three 60px targets; body/root width exactly matched 320px; no horizontal overflow |
-| Standard/reduced motion | `PASSED (source + Firefox web proxy)` | 220 ms UI-thread image settle plus 45 ms staged copy; transform/opacity only; emulated reduced motion presented the settled state |
-| Browser console | `PASSED` | zero page errors during the final pillar, locale, size, and reduced-motion journeys |
-| Physical Android, TalkBack, font scale, and motion feel | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
-| Named Arabic/UAE, safeguarding, botanical, accessibility, and image-rights review | `NOT RUN` | no named reviewer was available in this implementation session |
+| Gate                                                                              | Result                                | Evidence                                                                                                                                                                            |
+| --------------------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused behavior                                                              | `PASSED`                              | first RED: 6 expected failures / 9 passes; motion RED: 1 expected failure / 11 passes; final focused batch: 3 files / 26 tests                                                      |
+| Full automated suite                                                              | `PASSED`                              | typecheck, lint, format, and 87 files / 1,065 tests                                                                                                                                 |
+| Startup/deferred boundary                                                         | `PASSED automated/source`             | exact nine-raster/four-font signed-out gate; 41-image deferred queue preserved after onboarding paint                                                                               |
+| Asset provenance                                                                  | `PASSED`                              | 48 local JPEGs, 48 literal imports, unique checksums, exact dimensions/bytes, and 0 missing embedded prompts                                                                        |
+| Production exports                                                                | `PASSED`                              | web: 121 files / 39 static routes; Android JS: 90 files; both new JPEGs found byte-identically in both exports                                                                      |
+| Bilingual compact layout                                                          | `PASSED (Firefox web proxy)`          | six-step journey and pillar jumps inspected across Arabic RTL/English LTR at 320×720 and 390×844; three 60px targets; body/root width exactly matched 320px; no horizontal overflow |
+| Standard/reduced motion                                                           | `PASSED (source + Firefox web proxy)` | 220 ms UI-thread image settle plus 45 ms staged copy; transform/opacity only; emulated reduced motion presented the settled state                                                   |
+| Browser console                                                                   | `PASSED`                              | zero page errors during the final pillar, locale, size, and reduced-motion journeys                                                                                                 |
+| Physical Android, TalkBack, font scale, and motion feel                           | `BLOCKED / NOT RUN`                   | `adb devices -l` returned no attached device or emulator                                                                                                                            |
+| Named Arabic/UAE, safeguarding, botanical, accessibility, and image-rights review | `NOT RUN`                             | no named reviewer was available in this implementation session                                                                                                                      |
 
 Describe Family, Sustainability, and AI as Ghaf's product pillars, not as new authorities. The
 photographs are generated local metaphors, symbolic Garden growth is not measured environmental
@@ -42,17 +72,17 @@ PIN entry: it opens Salem's Today screen with the Child-specific dialog. Each di
 most two updates already authorized on that role's dashboard, can be dismissed by its action,
 backdrop, or native Back request, and does not reappear during ordinary dashboard navigation.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| RED/focused returning behavior | `PASSED` | RED: 5 expected failures; final focused file: 5 tests; integrated access/localization batch: 4 files / 35 tests |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 87 files / 1,063 tests |
-| Dependency/detector/whitespace | `PASSED` | Expo dependencies current; Impeccable detector returned `[]`; `git diff --check` clean |
-| Production web export | `PASSED` | 39 static routes; no route or dependency added |
-| Fresh Parent and Child boundary | `PASSED (Firefox web proxy)` | fresh Parent retained Family Basics and no welcome; first Child pairing entered Today without a welcome |
-| Returning role routing | `PASSED (Firefox web proxy)` | established Parent verification opened `/parent`; paired Salem PIN opened `/child`; neither traversed family creation |
-| Bilingual compact dialog | `PASSED (Firefox web proxy)` | Parent and Child inspected in Arabic and English at 320×720 and 390×844; all copy/actions contained, zero horizontal overflow |
-| Browser console | `PASSED` | zero page errors in final returning Parent and Child flows |
-| Physical Android modal, Back, TalkBack, safe area, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+| Gate                                                                 | Result                       | Evidence                                                                                                                      |
+| -------------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused returning behavior                                       | `PASSED`                     | RED: 5 expected failures; final focused file: 5 tests; integrated access/localization batch: 4 files / 35 tests               |
+| Full automated suite                                                 | `PASSED`                     | typecheck, lint, format, and 87 files / 1,063 tests                                                                           |
+| Dependency/detector/whitespace                                       | `PASSED`                     | Expo dependencies current; Impeccable detector returned `[]`; `git diff --check` clean                                        |
+| Production web export                                                | `PASSED`                     | 39 static routes; no route or dependency added                                                                                |
+| Fresh Parent and Child boundary                                      | `PASSED (Firefox web proxy)` | fresh Parent retained Family Basics and no welcome; first Child pairing entered Today without a welcome                       |
+| Returning role routing                                               | `PASSED (Firefox web proxy)` | established Parent verification opened `/parent`; paired Salem PIN opened `/child`; neither traversed family creation         |
+| Bilingual compact dialog                                             | `PASSED (Firefox web proxy)` | Parent and Child inspected in Arabic and English at 320×720 and 390×844; all copy/actions contained, zero horizontal overflow |
+| Browser console                                                      | `PASSED`                     | zero page errors in final returning Parent and Child flows                                                                    |
+| Physical Android modal, Back, TalkBack, safe area, and OS font scale | `BLOCKED / NOT RUN`          | `adb devices -l` returned no attached device or emulator                                                                      |
 
 Describe the dialog as a private local summary of current prototype state. Do not call it push
 notifications, remote sync, durable account history, production authentication, or cross-household
@@ -70,17 +100,17 @@ state for at least 1,000 ms and until the bounded seven-raster/four-font readine
 Only then does onboarding become visible; deferred warming begins after two onboarding paint
 frames.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| RED/focused ordering | `PASSED` | RED: 2 failed / 8 passed; final focused file: 10 tests |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,058 tests |
-| Dependency/detector | `PASSED` | Expo dependencies current; Impeccable detector returned `[]` |
-| Production exports | `PASSED` | web: 119 files; Android JS: 88 files |
-| Cached sequence | `PASSED (Firefox web proxy)` | first visible stage splash; splash remained topmost with no loader; loading followed for 1,013 ms; onboarding followed |
-| Delayed readiness | `PASSED (Firefox web proxy)` | first visible stage splash; delayed onboarding raster extended loading to 3,214 ms |
-| Deferred boundary | `PASSED (Firefox web proxy)` | all 41 deferred requests observed only in the onboarding stage |
-| Compact visual/console | `PASSED (Firefox web proxy)` | settled splash and loading inspected at 390×844; zero page errors |
-| Physical Android first-frame/timing/motion | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+| Gate                                       | Result                       | Evidence                                                                                                               |
+| ------------------------------------------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| RED/focused ordering                       | `PASSED`                     | RED: 2 failed / 8 passed; final focused file: 10 tests                                                                 |
+| Full automated suite                       | `PASSED`                     | typecheck, lint, format, and 86 files / 1,058 tests                                                                    |
+| Dependency/detector                        | `PASSED`                     | Expo dependencies current; Impeccable detector returned `[]`                                                           |
+| Production exports                         | `PASSED`                     | web: 119 files; Android JS: 88 files                                                                                   |
+| Cached sequence                            | `PASSED (Firefox web proxy)` | first visible stage splash; splash remained topmost with no loader; loading followed for 1,013 ms; onboarding followed |
+| Delayed readiness                          | `PASSED (Firefox web proxy)` | first visible stage splash; delayed onboarding raster extended loading to 3,214 ms                                     |
+| Deferred boundary                          | `PASSED (Firefox web proxy)` | all 41 deferred requests observed only in the onboarding stage                                                         |
+| Compact visual/console                     | `PASSED (Firefox web proxy)` | settled splash and loading inspected at 390×844; zero page errors                                                      |
+| Physical Android first-frame/timing/motion | `BLOCKED / NOT RUN`          | `adb devices -l` returned no attached device or emulator                                                               |
 
 The cached web timeline included development bundling and the pre-handoff critical pair, so total
 visible splash time was longer than 2,000 ms; the app-owned post-handoff timer is exactly 2,000 ms.
@@ -98,17 +128,17 @@ five botanical avatars plus the access field; the task image follows at the star
 The remaining artwork follows, with the 2.3 MB prepared recycling fixture last. Section preparation
 uses the same per-source promise cache and therefore does not duplicate an in-flight warm-up.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| RED/focused behavior | `PASSED` | RED failed on the absent batch helper; final focused file: 9 tests |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,057 tests |
-| Expo dependency/configuration | `PASSED` | dependency check current; no dependency, font, asset, or config change |
-| Production exports | `PASSED` | web: 119 files; Android JS: 88 files |
-| Blocking boundary | `PASSED (Firefox web proxy)` | delayed onboarding image kept the splash visible; zero deferred requests at 1,700 ms |
-| Deferred order/concurrency | `PASSED (Firefox web proxy/source)` | 41 unique deferred requests; first six started within 1 ms, task began in batch two, prepared fixture was last |
-| Failure and duplicate handling | `PASSED automated/source` | all-settled batches continue after failure; startup, section, and background work share one source-promise cache |
-| Browser console | `PASSED` | zero page errors in the delayed request flow |
-| Physical Android decode/cache/memory | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+| Gate                                 | Result                              | Evidence                                                                                                         |
+| ------------------------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| RED/focused behavior                 | `PASSED`                            | RED failed on the absent batch helper; final focused file: 9 tests                                               |
+| Full automated suite                 | `PASSED`                            | typecheck, lint, format, and 86 files / 1,057 tests                                                              |
+| Expo dependency/configuration        | `PASSED`                            | dependency check current; no dependency, font, asset, or config change                                           |
+| Production exports                   | `PASSED`                            | web: 119 files; Android JS: 88 files                                                                             |
+| Blocking boundary                    | `PASSED (Firefox web proxy)`        | delayed onboarding image kept the splash visible; zero deferred requests at 1,700 ms                             |
+| Deferred order/concurrency           | `PASSED (Firefox web proxy/source)` | 41 unique deferred requests; first six started within 1 ms, task began in batch two, prepared fixture was last   |
+| Failure and duplicate handling       | `PASSED automated/source`           | all-settled batches continue after failure; startup, section, and background work share one source-promise cache |
+| Browser console                      | `PASSED`                            | zero page errors in the delayed request flow                                                                     |
+| Physical Android decode/cache/memory | `BLOCKED / NOT RUN`                 | `adb devices -l` returned no attached device or emulator                                                         |
 
 Do not describe the background warm-up as startup readiness, screen data loading, remote sync, or
 proof that every image has decoded on Android. It is a local asset-cache optimization only.
@@ -131,18 +161,18 @@ The explicit readiness set fell from 48 rasters plus seven fonts (10,638,873 byt
 signed-out rasters plus four used fonts (2,196,726 bytes), a 79.4% reduction. All application assets
 remain packaged for offline use; packaging is intentionally separate from runtime preloading.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| Focused readiness/motion tests | `PASSED` | RED: 3 failed / 5 passed; final: 2 files / 15 tests |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,056 tests |
-| Expo dependency/configuration | `PASSED` | dependency check current; exactly four configured brand font files |
-| Production exports | `PASSED` | web: 119 files; Android JS: 88 files; both contain the four intended brand font assets |
-| Startup request boundary | `PASSED (Firefox web proxy)` | exactly seven Ghaf startup rasters and four brand fonts; no later-section or prepared-media raster |
-| Cached/delayed timing | `PASSED (Firefox web proxy)` | cached loader visible 1,318 ms including exit; delayed onboarding raster kept it visible until settlement |
-| Dynamic section loading | `PASSED (Firefox web proxy/source)` | five botanical avatar requests began only after access handoff; destination overlay remained bounded to the access section |
-| Loading motion | `PASSED (Firefox web proxy/source)` | rotation matrices changed over 300 ms; reduced motion stayed at `matrix(1, 0, 0, 1, 0, 0)` |
-| Compact layout and console | `PASSED (Firefox web proxy)` | 320×720 and 390×844 had zero horizontal overflow; zero page errors |
-| Physical Android, TalkBack, decode/memory, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+| Gate                                                         | Result                              | Evidence                                                                                                                   |
+| ------------------------------------------------------------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Focused readiness/motion tests                               | `PASSED`                            | RED: 3 failed / 5 passed; final: 2 files / 15 tests                                                                        |
+| Full automated suite                                         | `PASSED`                            | typecheck, lint, format, and 86 files / 1,056 tests                                                                        |
+| Expo dependency/configuration                                | `PASSED`                            | dependency check current; exactly four configured brand font files                                                         |
+| Production exports                                           | `PASSED`                            | web: 119 files; Android JS: 88 files; both contain the four intended brand font assets                                     |
+| Startup request boundary                                     | `PASSED (Firefox web proxy)`        | exactly seven Ghaf startup rasters and four brand fonts; no later-section or prepared-media raster                         |
+| Cached/delayed timing                                        | `PASSED (Firefox web proxy)`        | cached loader visible 1,318 ms including exit; delayed onboarding raster kept it visible until settlement                  |
+| Dynamic section loading                                      | `PASSED (Firefox web proxy/source)` | five botanical avatar requests began only after access handoff; destination overlay remained bounded to the access section |
+| Loading motion                                               | `PASSED (Firefox web proxy/source)` | rotation matrices changed over 300 ms; reduced motion stayed at `matrix(1, 0, 0, 1, 0, 0)`                                 |
+| Compact layout and console                                   | `PASSED (Firefox web proxy)`        | 320×720 and 390×844 had zero horizontal overflow; zero page errors                                                         |
+| Physical Android, TalkBack, decode/memory, and OS font scale | `BLOCKED / NOT RUN`                 | `adb devices -l` returned no attached device or emulator                                                                   |
 
 Do not describe packaged later-section files as preloaded, or either buffer as network sync, AI
 processing, authentication, or measured impact. Browser timing is secondary readiness evidence,
@@ -208,18 +238,18 @@ splash has a declared 1,200 ms minimum and major-section buffers have a declared
 add no remote fetch, vector artwork, product authority, task/reward change, fake percentage, or
 server-work claim.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| First-run, artwork, route, and brand focus | `PASSED` | 3 files / 16 tests, including four-state navigation, exact 46-asset provenance, official brand preservation, and shared access inheritance |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,053 tests |
-| Expo dependency/configuration | `PASSED` | `npx expo install --check`; native Expo splash still uses the official local raster mark |
-| Production exports | `PASSED` | web: 122 files; Android JS: 91 files; byte-identical copies of all five first-run JPEGs found in each export |
-| Arabic/English visual proxy | `PASSED (web proxy)` | Firefox at 320×720 and 390×844; all four moments, Back/Skip/Start, both directions, and eight reachable access states inspected with zero final-flow console errors; state-gated pairing inherited the source-audited shell |
-| Loading duration | `PASSED (web proxy/source)` | startup remained visible about 1.48 s after mount; a major-section overlay remained visible about 1.37 s including fade-out; source tokens are 1,200/900 ms |
-| Context-transition behavior | `PASSED (web proxy)` | major Welcome → Parent access handoff captured; ordinary/same-section route suppression remains covered by source tests |
-| Reduced-motion behavior | `PASSED (web proxy/source)` | reduced motion retained the complete state change without positional travel; native setting remains unobserved |
-| Physical Android, TalkBack, Back/IME, safe areas, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator; exports and browser inspection are not native evidence |
-| Named Arabic/UAE, safeguarding, accessibility, botanical, and image-rights review | `NOT RUN` | Requires named reviewers and the exact reviewed build/assets |
+| Gate                                                                              | Result                      | Evidence                                                                                                                                                                                                                    |
+| --------------------------------------------------------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| First-run, artwork, route, and brand focus                                        | `PASSED`                    | 3 files / 16 tests, including four-state navigation, exact 46-asset provenance, official brand preservation, and shared access inheritance                                                                                  |
+| Full automated suite                                                              | `PASSED`                    | typecheck, lint, format, and 86 files / 1,053 tests                                                                                                                                                                         |
+| Expo dependency/configuration                                                     | `PASSED`                    | `npx expo install --check`; native Expo splash still uses the official local raster mark                                                                                                                                    |
+| Production exports                                                                | `PASSED`                    | web: 122 files; Android JS: 91 files; byte-identical copies of all five first-run JPEGs found in each export                                                                                                                |
+| Arabic/English visual proxy                                                       | `PASSED (web proxy)`        | Firefox at 320×720 and 390×844; all four moments, Back/Skip/Start, both directions, and eight reachable access states inspected with zero final-flow console errors; state-gated pairing inherited the source-audited shell |
+| Loading duration                                                                  | `PASSED (web proxy/source)` | startup remained visible about 1.48 s after mount; a major-section overlay remained visible about 1.37 s including fade-out; source tokens are 1,200/900 ms                                                                 |
+| Context-transition behavior                                                       | `PASSED (web proxy)`        | major Welcome → Parent access handoff captured; ordinary/same-section route suppression remains covered by source tests                                                                                                     |
+| Reduced-motion behavior                                                           | `PASSED (web proxy/source)` | reduced motion retained the complete state change without positional travel; native setting remains unobserved                                                                                                              |
+| Physical Android, TalkBack, Back/IME, safe areas, and OS font scale               | `BLOCKED / NOT RUN`         | `adb devices -l` returned no attached device or emulator; exports and browser inspection are not native evidence                                                                                                            |
+| Named Arabic/UAE, safeguarding, accessibility, botanical, and image-rights review | `NOT RUN`                   | Requires named reviewers and the exact reviewed build/assets                                                                                                                                                                |
 
 ## R003 Natural Artwork Refresh Record — 2026-09-06
 

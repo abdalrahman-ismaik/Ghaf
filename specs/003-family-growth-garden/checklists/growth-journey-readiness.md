@@ -15,26 +15,26 @@
 
 ## Design release
 
-- [ ] Canonical reference or documented code-native candidate selected for every R002b surface.
-- [ ] Seven missing Growth surfaces implemented as reviewed default-off code-native candidates.
+- [x] Canonical reference or documented code-native candidate selected for every R002b surface.
+- [x] Seven missing Growth surfaces implemented as reviewed default-off code-native candidates.
 - [ ] Arabic RTL and equivalent English LTR implementation captures supplied.
-- [ ] Mandatory `screen-spec.md` supplied for every runtime surface.
-- [ ] Loading, empty, error, offline, interruption, recovery, duplicate, and reduced-motion states
+- [x] Mandatory `screen-spec.md` supplied for every runtime surface.
+- [x] Loading, empty, error, offline, interruption, recovery, duplicate, and reduced-motion states
       specified.
-- [ ] Complete Parent/Child shell and origin/return routes supplied.
-- [ ] Invalid, desktop-wrapper, HTML-only, and ambiguous duplicate exports replaced or retired.
+- [x] Complete Parent/Child shell and origin/return routes supplied.
+- [x] Invalid, desktop-wrapper, HTML-only, and ambiguous duplicate exports replaced or retired.
 - [ ] Local asset provenance, permission, modification, and review manifest approved.
 - [ ] Product, design, engineering, accessibility, and content approvals recorded.
-- [ ] Integration owner records a bounded release gate.
+- [x] Integration owner records a bounded release gate.
 
 ## Migration and implementation
 
 - [x] 108→120 synthetic fixture provenance and migration policy approved, with release still off.
 - [x] Schema-3 compatibility, rollback, reset, idempotency, and cross-profile tests specified.
-- [ ] Focused tests cover Path, exact badge registry, learning parity, result recovery, and
+- [x] Focused tests cover Path, exact badge registry, learning parity, result recovery, and
       profile isolation.
-- [ ] Runtime changes remain inside the released boundary.
-- [ ] Formatter, typecheck, lint, full tests, Expo checks, export, route/reset, and whitespace pass.
+- [x] Runtime changes remain inside the released boundary.
+- [x] Formatter, typecheck, lint, full tests, Expo checks, export, route/reset, and whitespace pass.
 - [ ] 390×844 plus small/large/tablet, scrolling, keyboard, font scale, RTL/LTR, and reduced-motion
       comparisons pass.
 - [ ] Physical Android Back, TalkBack, offline, and cold/warm/hot launch evidence is recorded.
@@ -46,3 +46,10 @@
 Product authority and feature-flagged implementation readiness are established. Release activation
 remains `BLOCKED`; no unchecked item is satisfied by a prompt, export filename, browser-only result,
 or existing remote behavior alone.
+
+The 2026-09-06 source audit and open-gate tables are recorded in
+[`r002b-release-review-packet.md`](../design-intake/r002b-release-review-packet.md). It confirms the
+code-native inventory, twelve screen specifications, shared state/recovery contract, closed routes,
+raw-export retirement, focused coverage, bounded runtime, and integration hold. Bilingual capture,
+asset-rights approval, named reviews, complete responsive/native evidence, and physical Android
+remain unchecked until their direct evidence exists.

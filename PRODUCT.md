@@ -32,7 +32,8 @@ role, enabling AI, or changing product state. AI copy says that it may be wrong 
 adult; Sustainability copy never claims measured impact. Modern Standard Arabic remains first
 with equivalent plain English. The experience uses the official raster Ghaf logo and six vivid
 local nature photographs, then returns to the existing separate Parent and Child access choices.
-It adds no route, account, reward, persistence, environmental-impact, AI, or access authority.
+The first-run story itself adds no route, account, reward, persistence, environmental-impact, AI,
+or access authority.
 Startup is visibly ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms
 after handoff, a distinct leaf-loading screen for at least 1,000 ms and until the four used font
 files plus the exact nine-raster signed-out set settle, then onboarding. The splash itself has no
@@ -54,6 +55,17 @@ dashboard. Each qualifying return may show one dismissible role-specific welcome
 dashboard with up to two current, already-authorized in-app updates. This is a private local
 orientation summary—not push delivery, remote sync, a durable inbox, or a new access/data
 authority. Fresh family creation and first Child pairing do not show it.
+
+The R003 device-local family directory now remembers one configured demo household across process
+restarts. It persists one synthetic Parent role, one or two ordered Child profiles, their bounded
+setup preferences, and only an approved paired-Child marker. It does not persist credentials,
+sessions, tasks, Seeds, Garden/League/Reward ledgers, media, transcripts, or a notification inbox.
+Family setup asks for the Child count first, presents one indexed form per Child, then one
+whole-family review. The optional sparkle-marked profile helper consumes only age band and curated
+interests, hobbies, accessibility, and support preferences; it is deterministic, prepared,
+local-only, may be wrong, can be disabled, and never receives gender or free text. Parent approval
+remains required for every task. This improves demo continuity but is not production account
+storage, encrypted custody, backup, identity verification, or cross-device sync.
 
 The remote implementation is preserved behavior, not permission to change product outcomes. The
 six local-only commits remain unapplied candidate provenance; any compatible presentation must be

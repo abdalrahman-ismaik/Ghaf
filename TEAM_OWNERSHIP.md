@@ -6,6 +6,47 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Device-local Family and AI-guided Setup Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`, `docs/architecture/**`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,data-model.md,quickstart.md}`, new
+`specs/003-family-growth-garden/checklists/local-family-onboarding.md`, current R002b readiness
+checklists and design-intake review records, `package.json`, `package-lock.json`, `app.config.ts`,
+`app/_layout.tsx`,
+`app/access/{parent,child}/**`, `app/{parent,child}/index.tsx`, `app/parent/family/index.tsx`, new
+`src/components/access/{ChildProfileForm,AIProfilePreview}.tsx`, existing bounded assistant trigger
+components, `src/features/access/**`, new `src/features/local-family/**`, new
+`src/features/assistants/profilePersonalization.ts`, `src/models/{access,parentOnboarding}.ts`, new
+`src/models/localFamily.ts`, `src/services/{index.ts,interfaces/**,local/**}`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, and focused tests for local family,
+onboarding, access, assistant policy, routes, reset, localization, and architecture only.
+
+**Scope**: Add one validated, versioned device-local family directory backed by Expo SQLite on
+native, guarded localStorage on web, and memory in tests. Persist only one synthetic Parent, one or
+two configured Child profiles, minimum curated preferences, and approved synthetic paired-device
+markers. Redesign setup as Family Basics plus one indexed Child form per selected count and one
+review. Add deterministic prepared AI profile suggestions using age/interests/hobbies/support
+preferences only; exclude gender and sensitive/free-text inputs and retain Parent approval. Restore
+returning-role routing before first-family decisions, filter unconfigured slots, and clear local
+data on Parent reset. Preserve every task, reward, Seed, Garden, League, privacy, route, offline,
+and default-off R002b authority. No production account/security/compliance claim, cloud, sync,
+notification service, analytics, real Child media/data, remote model, provider secret, push, merge,
+deployment, or release activation is authorized.
+
+**Completion — 2026-09-06**: Root implemented the strict schema-1 repository with SQLite native,
+localStorage web, and memory test adapters; one/two-Child indexed setup and whole-family review;
+configured-role projection; paired-marker restoration/revocation/reset; and deterministic
+allowlisted sparkle-marked profile personalization. The focused batch passed 8 files / 83 tests and
+the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, formatting, Expo
+dependency/public-config checks, route inventory, Git whitespace, the one final detector pass, and
+web/Android JavaScript exports passed. Firefox covered Arabic/English at 320×720 and 390×844,
+storage inspection, reset, and returning-role paths with no horizontal overflow or console errors.
+Physical Android and named-human gates remain `BLOCKED / NOT RUN`. The reservation is released at
+this local checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 SMAC Pillar Onboarding Window
 
 **Owner and only writer**: `/root`

@@ -2,10 +2,19 @@
 
 ## Returning-family local summary — 2026-09-06
 
-The returning-family decision relies on the prototype's in-memory immutable completion receipt or
-synthetic paired-device fixture. It is not durable account storage, production authentication,
-household discovery, recovery, or migration. A runtime reload or deterministic reset may remove
-that local state and therefore can return to first-run behavior.
+The returning-family decision now relies on one validated device-local demo directory. Native uses
+Expo SQLite key-value storage and web uses browser localStorage; it stores one synthetic Parent
+role, one or two Child profiles, bounded curated setup preferences, and approved paired-Child
+markers. This is durable enough for a local demo restart, but it is not encrypted production
+account storage, identity assurance, cloud backup, household discovery, recovery, migration, or
+cross-device sync. No Parent or Child session is restored silently. Parent reset deliberately
+removes the directory and returns the app to first-family behavior.
+
+Credentials, verification codes, task/Seed/Garden/League/Reward ledgers, media, transcripts,
+notification history, and free-text Child notes are not part of the local record. Optional gender
+is stored only as an explicit profile value and is excluded from prepared personalization. The
+curated profile helper is deterministic and local-only; it does not prove that a live model ran and
+must not be used to infer identity, emotion, diagnosis, personality, ability, or risk.
 
 The Parent/Child welcome is a one-use in-app dashboard summary assembled from current local state
 already visible to that role. It is not a push notification, inbox, server timestamp, background
@@ -16,8 +25,9 @@ motion quality.
 
 ## First-run and transition presentation — 2026-09-06
 
-The onboarding completion marker exists only for the current in-memory app session; it is not an
-account preference or persistence guarantee and a reload may show onboarding again. The configured
+The six-moment presentation-onboarding marker remains session-local, so a reload may show that
+introductory story again. The separate validated family directory may still bypass first-family
+creation after Parent verification. The configured
 native splash hands off to a fully opaque 2,000 ms app-owned splash and then a separate loading
 state that remains for at least 1,000 ms and until the four current branded font files plus the
 bounded nine-raster signed-out set settle. These requested presentation holds add intentional startup time; they
