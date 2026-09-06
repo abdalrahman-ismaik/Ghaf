@@ -133,11 +133,13 @@ locale keeps the current step. Delight comes from warm light, bold crops, rich e
 accents, concise active copy, and a restrained vertical settle—not confetti, streak pressure,
 mascots, fantasy effects, or competing cards.
 
-The native Expo splash remains the earliest frame and uses the official raster icon. The app-owned
-handoff screen uses the same mark and local leaf-shadow texture while the four font files used by
-current branded roles and the signed-out onboarding/Welcome images settle, with a 1,200 ms minimum
-visible window beginning after native handoff. The logo and leaf-shadow background settle before
-that handoff. Garden, League, reveal, learning, Shared Growth, canopy, Circle, and prepared-media
+The native Expo splash remains the earliest frame and uses the official raster icon. After its
+handoff, the fully opaque app-owned splash uses the same mark and local leaf-shadow texture for
+2,000 ms with no loader or transparent entrance. It then changes in place to the leaf-loading
+state for at least 1,000 ms and until the four current font files and signed-out
+onboarding/Welcome images settle. Only then is the overlay removed and onboarding exposed. The
+logo and leaf-shadow background settle before native handoff. Garden, League, reveal, learning,
+Shared Growth, canopy, Circle, and prepared-media
 images remain outside the blocking gate. Once the loader exits and onboarding can paint, the 41
 remaining local rasters warm without visible UI in sequential batches of six parallel requests:
 access/experience sources first, remaining artwork next, and prepared media last. Section demand
@@ -151,10 +153,11 @@ it concurrently settles only the immediate destination asset set. Its fade still
 motion tokens. Neither presentation claims remote loading, identity verification, AI work, sync,
 or persistence.
 
-Loading motion has one authored job: make the short handoff calm and recognizable. The official
-Ghaf mark/name sits above three small leaves whose container turns with linear transform-only
-UI-thread motion. No resource sentence, count, percentage, or remote-work claim is visible.
-Reduced motion keeps the same leaves static, and the progress label remains accessibility-only.
+Loading motion has one authored job: make the short loading state calm and recognizable. The
+official Ghaf mark/name sits above three small leaves whose container turns with linear
+transform-only UI-thread motion. The preceding splash remains still. No resource sentence, count,
+percentage, or remote-work claim is visible. Reduced motion keeps the same leaves static, and the
+progress label remains accessibility-only.
 
 All Parent and Child access/setup routes inherit one shared branded shell: a compact official
 raster Ghaf mark beside the Ghaf name, calm leaf-shadow raster background, clear route title or

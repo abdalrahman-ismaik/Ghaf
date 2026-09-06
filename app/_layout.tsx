@@ -18,6 +18,7 @@ import {
   BrandedSplash,
   FirstRunExperienceProvider,
   SectionTransitionOverlay,
+  type StartupPresentationPhase,
 } from '@/components/onboarding';
 import { GhafFontProvider } from '@/components/primitives';
 import { colors, firstRunMotion } from '@/design/tokens';
@@ -54,8 +55,9 @@ export default function RootLayout() {
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
   const splashStartedAt = useRef<number | null>(null);
+  const loadingStartedAt = useRef<number | null>(null);
   const [nativeSplashHidden, setNativeSplashHidden] = useState(false);
-  const [showBrandedSplash, setShowBrandedSplash] = useState(true);
+  const [startupPhase, setStartupPhase] = useState<StartupPresentationPhase>('splash');
   const [imageProgress, setImageProgress] = useState<StartupImageProgress>({
     failed: 0,
     presentationReady: false,
@@ -133,15 +135,20 @@ export default function RootLayout() {
   }, [imageProgress.presentationReady, nativeSplashHidden]);
 
   useEffect(() => {
-    if (!startupReady || !nativeSplashHidden || splashStartedAt.current === null) return;
+    if (startupPhase !== 'splash' || !nativeSplashHidden || splashStartedAt.current === null) {
+      return;
+    }
     let mounted = true;
     let frame: number | undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     const elapsed = Date.now() - splashStartedAt.current;
-    const remaining = Math.max(0, firstRunMotion.startupHold - elapsed);
+    const remaining = Math.max(0, firstRunMotion.splashHold - elapsed);
     timeout = setTimeout(() => {
       frame = requestAnimationFrame(() => {
-        if (mounted) setShowBrandedSplash(false);
+        if (mounted) {
+          loadingStartedAt.current = Date.now();
+          setStartupPhase('loading');
+        }
       });
     }, remaining);
     return () => {
@@ -149,10 +156,31 @@ export default function RootLayout() {
       if (timeout !== undefined) clearTimeout(timeout);
       if (frame !== undefined) cancelAnimationFrame(frame);
     };
-  }, [nativeSplashHidden, startupReady]);
+  }, [nativeSplashHidden, startupPhase]);
 
   useEffect(() => {
-    if (showBrandedSplash) return;
+    if (startupPhase !== 'loading' || !startupReady || loadingStartedAt.current === null) {
+      return;
+    }
+    let mounted = true;
+    let frame: number | undefined;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const elapsed = Date.now() - loadingStartedAt.current;
+    const remaining = Math.max(0, firstRunMotion.loadingHold - elapsed);
+    timeout = setTimeout(() => {
+      frame = requestAnimationFrame(() => {
+        if (mounted) setStartupPhase('complete');
+      });
+    }, remaining);
+    return () => {
+      mounted = false;
+      if (timeout !== undefined) clearTimeout(timeout);
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [startupPhase, startupReady]);
+
+  useEffect(() => {
+    if (startupPhase !== 'complete') return;
     let mounted = true;
     let firstFrame: number | undefined;
     let secondFrame: number | undefined;
@@ -174,7 +202,7 @@ export default function RootLayout() {
       if (firstFrame !== undefined) cancelAnimationFrame(firstFrame);
       if (secondFrame !== undefined) cancelAnimationFrame(secondFrame);
     };
-  }, [showBrandedSplash]);
+  }, [startupPhase]);
 
   return (
     <SafeAreaProvider>
@@ -191,7 +219,7 @@ export default function RootLayout() {
               }}
             />
             <SectionTransitionOverlay />
-            <BrandedSplash visible={showBrandedSplash} />
+            <BrandedSplash phase={startupPhase} />
           </View>
         </FirstRunExperienceProvider>
       </GhafFontProvider>

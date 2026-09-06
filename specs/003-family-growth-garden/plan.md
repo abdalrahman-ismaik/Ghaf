@@ -1,5 +1,21 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Ordered Splash-to-loading Startup Addendum — 2026-09-06
+
+Model root startup as `splash | loading | complete` rather than one boolean overlay. Keep the
+configured native splash until the existing critical logo/field pair settles, then start the
+2,000 ms app-owned splash clock. Render the overlay fully opaque on its first React frame without
+an entering fade; show only the official mark/name during `splash`. After that hold, switch the
+same overlay to `loading`, reveal the existing leaf loop, and keep it for at least 1,000 ms and
+until the existing `startupReady` condition is true. Dismiss on the next frame, then start deferred
+warming after the existing two-frame paint yield.
+
+Use separate timing tokens so presentation and readiness cannot collapse back into one ambiguous
+duration. Preserve transform-only Reanimated motion, static reduced motion, exact critical/deferred
+asset sets, failure settlement, routes, and all product authorities. Add RED source/ordering
+coverage, verify cached and delayed paths in a fresh browser session, and run the full native/web
+proxy gates without adding a dependency or image.
+
 ## R003 Deferred Post-onboarding Image Warm-up Addendum — 2026-09-06
 
 Keep the existing startup and section contracts intact, but extract their source-level

@@ -405,8 +405,9 @@ export const motion = {
 } as const;
 
 export const firstRunMotion = {
+  loadingHold: 1000,
   orientationHold: 900,
-  startupHold: 1200,
+  splashHold: 2000,
 } as const;
 
 export const r001Motion = {

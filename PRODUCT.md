@@ -29,9 +29,11 @@ permitted help before Parent confirmation, and keeping confirmed action as perma
 symbolic Garden growth. Child-facing sentences use short, concrete Modern Standard Arabic and
 equivalent plain English. The experience uses the official raster Ghaf logo and vivid local nature
 photography, then returns to the existing separate Parent and Child access choices. It adds no
-route, account, reward, persistence, environmental-impact, or access authority. The branded
-startup holds for at least 1,200 ms after native handoff and waits only for the four used font
-files plus the bounded signed-out image set. It never blocks on Garden or prepared-media imagery.
+route, account, reward, persistence, environmental-impact, or access authority. Startup is visibly
+ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms after handoff, a
+distinct leaf-loading screen for at least 1,000 ms and until the four used font files plus bounded
+signed-out image set settle, then onboarding. The splash itself has no loader and cannot fade in
+over onboarding. Startup never blocks on Garden or prepared-media imagery.
 Major Welcome/access/role handoffs hold for 900 ms and settle only their immediate destination
 assets. After the loader exits and onboarding can paint, all 41 remaining packaged rasters warm
 asynchronously in bounded batches of six: immediate access/experience imagery first and the large

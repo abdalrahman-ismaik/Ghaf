@@ -105,7 +105,8 @@ describe('R003 first-run experience', () => {
     expect(rootLayout).toContain('SplashScreen.preventAutoHideAsync');
     expect(rootLayout).toContain('SplashScreen.hideAsync');
     expect(rootLayout).toContain('<SectionTransitionOverlay');
-    expect(rootLayout).toContain('firstRunMotion.startupHold');
+    expect(rootLayout).toContain('firstRunMotion.splashHold');
+    expect(rootLayout).toContain('firstRunMotion.loadingHold');
     expect(rootLayout).toContain('preloadStartupImages');
     expect(rootLayout).toContain('preloadDeferredImages');
     expect(rootLayout).toContain('fontsSettled && imagesSettled');
@@ -132,17 +133,39 @@ describe('R003 first-run experience', () => {
     expect(deferredImages.indexOf('...remainingArtworkImageSources')).toBeLessThan(
       deferredImages.indexOf('...preparedMediaImageSources'),
     );
-    expect(rootLayout).toContain('if (showBrandedSplash) return');
+    expect(rootLayout).toContain("startupPhase !== 'complete'");
     expect(rootLayout.match(/requestAnimationFrame/g)?.length).toBeGreaterThanOrEqual(3);
     expect(rootLayout).not.toContain('startupReady = fontsSettled && imagesSettled &&');
     expect(transition).toContain('firstRunMotion.orientationHold');
-    expect(tokens).toContain('startupHold: 1200');
+    expect(tokens).toContain('splashHold: 2000');
+    expect(tokens).toContain('loadingHold: 1000');
     expect(tokens).toContain('orientationHold: 900');
     expect(accessShell).toContain('<GhafBrandLockup');
     expect(accessShell).toContain('assetId="section-transition"');
     expect(welcome).toContain('<FirstRunOnboarding');
     expect(welcome).toContain("activeExperience === 'parent'");
     expect(welcome).toContain("activeExperience === 'child'");
+  });
+
+  it('shows an opaque two-second splash, then loading, then onboarding', () => {
+    const rootLayout = source('app/_layout.tsx');
+    const splash = source('src/components/onboarding/BrandedSplash.tsx');
+
+    expect(rootLayout).toContain("useState<StartupPresentationPhase>('splash')");
+    expect(rootLayout).toContain("setStartupPhase('loading')");
+    expect(rootLayout).toContain("setStartupPhase('complete')");
+    expect(rootLayout.indexOf("setStartupPhase('loading')")).toBeLessThan(
+      rootLayout.indexOf("setStartupPhase('complete')"),
+    );
+    expect(rootLayout).toContain("startupPhase !== 'loading' || !startupReady");
+    expect(rootLayout).toContain("startupPhase !== 'complete'");
+    expect(rootLayout).toContain('<BrandedSplash phase={startupPhase}');
+    expect(splash).toContain("phase === 'loading'");
+    expect(splash).toContain("phase === 'complete'");
+    expect(splash).toContain("'startup-splash-stage'");
+    expect(splash).toContain("'startup-loading-stage'");
+    expect(splash).not.toContain('entering={FadeIn');
+    expect(splash).not.toContain('FadeOut');
   });
 
   it('settles deferred images in bounded parallel batches without rejecting the queue', async () => {

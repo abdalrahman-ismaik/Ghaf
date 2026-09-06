@@ -1185,3 +1185,33 @@ paint, using controlled parallelism and one request cache.
       and the 2.3 MB prepared fixture was last. The flow produced zero browser errors. Physical
       Android decode/cache/memory remains `BLOCKED / NOT RUN` because `adb devices -l` returned no
       attached target.
+
+---
+
+## Phase 38: Ordered Splash-to-loading Startup
+
+**Purpose**: Guarantee that the Ghaf splash is the first visible app-owned frame, then show a
+distinct loading state before onboarding.
+
+- [x] T274 Inspect the native/app-owned startup handoff, identify the onboarding exposure, reserve
+      exact writer boundaries, and amend the active spec/plan/tasks before runtime work.
+- [x] T275 Write RED coverage for the explicit `splash → loading → complete` order, 2,000/1,000 ms
+      timing tokens, no loader or entering transparency on splash, asset-gated loading, and deferred
+      warming only after completion.
+- [x] T276 Implement the ordered root state and distinct splash/loading contents while preserving
+      the existing native handoff, asset readiness, fallback, accessibility, and reduced motion.
+- [x] T277 Verify fresh cached and delayed launches show no onboarding before splash/loading,
+      preserve the exact seven blocking and 41 deferred raster boundaries, and produce no errors.
+- [x] T278 Run focused/full tests, typecheck, lint, format, dependency/route/asset checks,
+      production exports, detector, available Android evidence, and record the cohesive checkpoint.
+
+      Completed locally on 2026-09-06: RED recorded 2 failing / 8 passing focused tests; the final
+      file passed 10 tests and the full suite passed 86 files / 1,058 tests. Typecheck, lint,
+      formatting, dependency alignment, detector, Git whitespace, 119-file web export, and 88-file
+      Android JS export passed. Fresh Firefox timelines began with a fully covering splash without
+      the leaf loader, changed to loading, then exposed onboarding. Cached loading remained 1,013
+      ms; a 5,200 ms delayed onboarding raster extended loading to 3,214 ms. All 41 deferred
+      requests occurred only during onboarding, and the compact 390×844 splash/loading inspection
+      produced zero page errors. Web total splash time included development bundling and critical
+      pre-handoff preparation; the post-handoff code token is exactly 2,000 ms. Physical Android
+      first-frame timing and motion remain `BLOCKED / NOT RUN` because ADB returned no target.

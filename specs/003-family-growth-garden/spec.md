@@ -18,6 +18,21 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Ordered Splash-to-loading Startup Amendment — 2026-09-06
+
+This amendment supersedes every earlier combined app-owned splash/loading duration where it
+conflicts. The configured native raster splash remains the first native frame. After its handoff,
+one fully opaque app-owned Ghaf splash must remain first for 2,000 ms; it shows the official raster
+mark/name and botanical field but no loader. It must not use an initial transparent entrance that
+can reveal the already-mounted onboarding route.
+
+The app then changes in place to the loading state, which adds the existing accessible three-leaf
+loop and remains visible for at least 1,000 ms and until the bounded seven-raster/four-font
+signed-out set has settled. Only after both stages complete may onboarding become visible. The
+41-image deferred queue begins after this loading handoff, never during either startup stage.
+Reduced motion keeps the loading leaves static; failures keep the existing deterministic fallback;
+no visible technical copy, percentage, remote-work claim, route, or product authority is added.
+
 ## R003 Deferred Post-onboarding Image Warm-up Amendment — 2026-09-06
 
 This amendment preserves the bounded seven-raster/four-font startup gate and supersedes only the
@@ -1658,6 +1673,12 @@ the historical domain-only result recorded by FR-118.
   Immediate access/experience sources MUST come first, the prepared-media fixture MUST come last,
   source-level requests MUST share one promise cache with section preparation, and failures MUST
   settle into the existing deterministic fallback path.
+- **FR-184**: Startup MUST present the configured native splash, then a fully opaque app-owned Ghaf
+  splash for 2,000 ms after native handoff, then the Ghaf leaf-loading state for at least 1,000 ms
+  and until bounded signed-out assets/fonts settle, and only then onboarding. The app-owned splash
+  MUST have no loader and no transparent initial entrance; the loading stage MUST retain the
+  accessible UI-thread leaf loop and reduced-motion equivalent; deferred image warming MUST start
+  only after loading completes.
 
 ### Key Entities
 

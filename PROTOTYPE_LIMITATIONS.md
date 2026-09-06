@@ -3,11 +3,13 @@
 ## First-run and transition presentation — 2026-09-06
 
 The onboarding completion marker exists only for the current in-memory app session; it is not an
-account preference or persistence guarantee and a reload may show onboarding again. The branded
-splash waits for the four currently used branded font files and bounded signed-out raster set and
-uses a declared 1,200 ms minimum presentation window after native handoff. It intentionally does
-not include later Garden, League, learning, reveal, canopy, Circle, Shared Growth, or prepared-media
-images in blocking readiness. After the loader exits, those 41 remaining packaged rasters warm in
+account preference or persistence guarantee and a reload may show onboarding again. The configured
+native splash hands off to a fully opaque 2,000 ms app-owned splash and then a separate loading
+state that remains for at least 1,000 ms and until the four current branded font files plus bounded
+signed-out raster set settle. These requested presentation holds add intentional startup time; they
+do not represent remote work. Startup intentionally excludes later Garden, League, learning,
+reveal, canopy, Circle, Shared Growth, and prepared-media images from blocking readiness. After the
+loading overlay exits, those 41 remaining packaged rasters warm in
 failure-tolerant batches of six; this may use bandwidth, cache, and memory while onboarding is
 visible, but never delays first paint or navigation. A failed raster resolves through its existing
 local fallback and warning path; warm-up completion does not prove that every image decoded

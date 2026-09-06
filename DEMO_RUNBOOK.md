@@ -1,5 +1,33 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Ordered Splash-to-loading Startup Record — 2026-09-06
+
+**Current classification:** locally validated implementation candidate; physical Android
+first-frame timing and motion feel remain unobserved.
+
+Launch now has three explicit app-visible states. The configured native raster splash yields only
+after the logo/field pair settles. A fully opaque app-owned Ghaf splash then remains for 2,000 ms
+without a loader or entering fade. The same overlay switches to the accessible three-leaf loading
+state for at least 1,000 ms and until the bounded seven-raster/four-font readiness set settles.
+Only then does onboarding become visible; deferred warming begins after two onboarding paint
+frames.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| RED/focused ordering | `PASSED` | RED: 2 failed / 8 passed; final focused file: 10 tests |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,058 tests |
+| Dependency/detector | `PASSED` | Expo dependencies current; Impeccable detector returned `[]` |
+| Production exports | `PASSED` | web: 119 files; Android JS: 88 files |
+| Cached sequence | `PASSED (Firefox web proxy)` | first visible stage splash; splash remained topmost with no loader; loading followed for 1,013 ms; onboarding followed |
+| Delayed readiness | `PASSED (Firefox web proxy)` | first visible stage splash; delayed onboarding raster extended loading to 3,214 ms |
+| Deferred boundary | `PASSED (Firefox web proxy)` | all 41 deferred requests observed only in the onboarding stage |
+| Compact visual/console | `PASSED (Firefox web proxy)` | settled splash and loading inspected at 390×844; zero page errors |
+| Physical Android first-frame/timing/motion | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+
+The cached web timeline included development bundling and the pre-handoff critical pair, so total
+visible splash time was longer than 2,000 ms; the app-owned post-handoff timer is exactly 2,000 ms.
+Do not describe either hold as networking, authentication, AI processing, or sync.
+
 ## R003 Deferred Post-onboarding Image Warm-up Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; physical Android

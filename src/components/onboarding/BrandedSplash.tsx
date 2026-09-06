@@ -1,31 +1,33 @@
 import { StyleSheet, View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, motion, spacing } from '@/design/tokens';
+import { colors, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { GhafLeafLoader } from './GhafLeafLoader';
 
+export type StartupPresentationPhase = 'splash' | 'loading' | 'complete';
+
 interface BrandedSplashProps {
-  readonly visible: boolean;
+  readonly phase: StartupPresentationPhase;
 }
 
-export function BrandedSplash({ visible }: BrandedSplashProps) {
+export function BrandedSplash({ phase }: BrandedSplashProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
+  const isLoading = phase === 'loading';
 
-  if (!visible) return null;
+  if (phase === 'complete') return null;
 
   return (
-    <Animated.View
+    <View
+      accessibilityLabel={isLoading ? t('firstRun.loading.progressA11y') : t('common.brand')}
+      accessibilityLiveRegion={isLoading ? 'polite' : 'none'}
       accessibilityViewIsModal
-      entering={FadeIn.duration(motion.duration.quick)}
-      exiting={FadeOut.duration(motion.duration.standard)}
       style={styles.overlay}
       testID="branded-splash"
     >
@@ -36,7 +38,10 @@ export function BrandedSplash({ visible }: BrandedSplashProps) {
         style={StyleSheet.absoluteFill}
         testID="branded-splash-background"
       />
-      <View style={styles.content}>
+      <View
+        style={styles.content}
+        testID={isLoading ? 'startup-loading-stage' : 'startup-splash-stage'}
+      >
         <GhafRasterLogo decorative size={120} testID="branded-splash-logo" />
         <Text
           align="center"
@@ -48,12 +53,14 @@ export function BrandedSplash({ visible }: BrandedSplashProps) {
         >
           {t('common.brand')}
         </Text>
-        <GhafLeafLoader
-          accessibilityLabel={t('firstRun.loading.progressA11y')}
-          testID="branded-splash-leaf-loader"
-        />
+        {isLoading ? (
+          <GhafLeafLoader
+            accessibilityLabel={t('firstRun.loading.progressA11y')}
+            testID="branded-splash-leaf-loader"
+          />
+        ) : null}
       </View>
-    </Animated.View>
+    </View>
   );
 }
 

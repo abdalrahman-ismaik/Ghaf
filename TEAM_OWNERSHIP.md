@@ -6,6 +6,38 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Ordered Splash-to-loading Startup Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, `app/_layout.tsx`,
+`src/components/onboarding/BrandedSplash.tsx`, `src/design/tokens.ts`, and
+`tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Replace the combined startup overlay with an explicit ordered presentation: configured
+native splash, fully opaque app-owned Ghaf splash for 2,000 ms after native handoff, simple
+three-leaf loading state for at least 1,000 ms and until bounded signed-out readiness settles, then
+onboarding. The initial app-owned splash may not enter from transparent or expose the mounted
+onboarding surface. Deferred 41-image warming begins only after the loading stage completes.
+Preserve the current logo, raster field, leaf loader, reduced-motion behavior, route/access/product
+authorities, local asset sets, fallback, flags, and protected user work. No new asset, dependency,
+URL, product claim, push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-06**: Root replaced the combined boolean overlay with explicit
+`splash → loading → complete` state, removed initial and final overlay transparency, separated
+2,000 ms splash and 1,000 ms loading tokens, kept readiness attached only to loading, and deferred
+the 41-image queue until two onboarding paint frames. RED recorded 2 failures / 8 passes; final
+focused coverage passed 10 tests and the full suite passed 86 files / 1,058 tests. Typecheck, lint,
+format, dependency alignment, detector, Git whitespace, web export (119 files), and Android JS
+export (88 files) passed. Fresh cached and delayed Firefox timelines both began with the topmost
+loader-free splash, then loading, then onboarding; cached loading measured 1,013 ms, delayed
+readiness extended it to 3,214 ms, all deferred requests occurred in onboarding, and compact visual
+inspection produced zero errors. Physical Android first-frame timing/motion remains
+`BLOCKED / NOT RUN` because ADB found no device. The reservation is released at the cohesive local
+checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Deferred Post-onboarding Image Warm-up Window
 
 **Owner and only writer**: `/root`
