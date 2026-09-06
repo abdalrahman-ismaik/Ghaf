@@ -112,10 +112,24 @@ export default function ParentSignInScreen() {
       testID="parent-sign-in-screen"
     >
       <View style={styles.intro}>
-        <Text brand color="deepForest" direction={direction} language={locale} variant="parentHero">
+        <Text
+          align="start"
+          brand
+          color="deepForest"
+          direction={direction}
+          language={locale}
+          variant="parentHero"
+        >
           {t('access.signIn.title')}
         </Text>
-        <Text brand color="onSurfaceVariant" direction={direction} language={locale} variant="body">
+        <Text
+          align="start"
+          brand
+          color="onSurfaceVariant"
+          direction={direction}
+          language={locale}
+          variant="body"
+        >
           {t('access.signIn.body')}
         </Text>
       </View>
@@ -198,7 +212,7 @@ export default function ParentSignInScreen() {
             {t('access.signIn.biometric')}
           </Button>
           <Text
-            align="center"
+            align="start"
             brand
             color="onSurfaceVariant"
             direction={direction}
@@ -210,7 +224,6 @@ export default function ParentSignInScreen() {
         </View>
 
         <View style={styles.createFamilyGroup}>
-          <View style={styles.sectionDivider} />
           <Button
             brand
             direction={direction}
@@ -231,21 +244,20 @@ export default function ParentSignInScreen() {
 }
 
 const styles = StyleSheet.create({
-  viewport: { paddingTop: spacing.sm },
-  content: { gap: spacing.xl },
-  intro: { gap: spacing.xs },
+  viewport: { paddingTop: spacing.xs },
+  content: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    gap: spacing.lg,
+  },
+  intro: { width: '100%', gap: spacing.xxs },
   signInPanel: {
     width: '100%',
     gap: spacing.md,
   },
-  credentials: { gap: spacing.md },
-  biometricGroup: { gap: spacing.xs },
-  createFamilyGroup: { gap: spacing.md },
-  sectionDivider: {
-    height: StyleSheet.hairlineWidth,
-    marginTop: spacing.xs,
-    backgroundColor: colors.outlineVariant,
-  },
+  credentials: { gap: spacing.sm },
+  biometricGroup: { gap: spacing.xxs },
+  createFamilyGroup: { paddingTop: spacing.xs },
   createFamilyButton: {
     borderColor: colors.ghafEmerald,
   },

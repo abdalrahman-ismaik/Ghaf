@@ -217,6 +217,29 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(signIn).toContain('<View style={styles.credentials}>');
     expect(signIn).toContain('<View style={styles.biometricGroup}>');
     expect(signIn).toContain('<View style={styles.createFamilyGroup}>');
+    expect(signIn).toContain('viewport: { paddingTop: spacing.xs }');
+    expect(signIn).toContain("intro: { width: '100%', gap: spacing.xxs }");
+    expect(signIn).toContain('credentials: { gap: spacing.sm }');
+    expect(signIn).toContain('biometricGroup: { gap: spacing.xxs }');
+    expect(signIn).toContain('createFamilyGroup: { paddingTop: spacing.xs }');
+    expect(signIn).not.toContain('styles.sectionDivider');
+
+    const contentStyleStart = signIn.indexOf('content: {');
+    const contentStyleEnd = signIn.indexOf('  },', contentStyleStart);
+    const contentStyle = signIn.slice(contentStyleStart, contentStyleEnd);
+    expect(contentStyle).toContain('flexGrow: 1');
+    expect(contentStyle).toContain("justifyContent: 'center'");
+    expect(contentStyle).toContain('gap: spacing.lg');
+
+    const introStart = signIn.indexOf('<View style={styles.intro}>');
+    const introEnd = signIn.indexOf('</View>', introStart);
+    const intro = signIn.slice(introStart, introEnd);
+    expect(intro.match(/align="start"/gu)).toHaveLength(2);
+
+    const biometricGroupStart = signIn.indexOf('<View style={styles.biometricGroup}>');
+    const biometricGroupEnd = signIn.indexOf('</View>', biometricGroupStart);
+    const biometricGroup = signIn.slice(biometricGroupStart, biometricGroupEnd);
+    expect(biometricGroup).toContain('align="start"');
 
     const primaryActionIndex = signIn.indexOf('testID="request-parent-code-button"');
     const dividerIndex = signIn.indexOf('<LabeledDivider');

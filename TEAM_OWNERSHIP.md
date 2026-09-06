@@ -6,6 +6,27 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Parent Sign-in Spacing Refinement Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `app/access/parent/sign-in.tsx`,
+`tests/r001-onboarding-flow.test.ts`, and this ownership record only.
+
+**Scope**: Refine the user-approved Parent sign-in layout with an explicit logical text axis and a
+token-only 4/12/16/20 dp vertical rhythm. Preserve the existing group order, equal button sizing,
+copy, behavior, access boundaries, and design authority. Delegated audits are read-only; protected
+user-owned paths remain untouched and no push or merge is authorized.
+
+**Completion — 2026-09-06**: Intro and supporting copy now use explicit logical-start alignment;
+related text/action gaps use the approved 4/12/16/20 dp cadence; the redundant second divider was
+removed; and the content column centers only when spare height exists while remaining naturally
+scrollable on compact or keyboard-constrained layouts. Firefox verified Arabic RTL and English LTR
+at 320×720 plus the balanced English tall layout at 390×844 with zero console errors. The focused
+regression, full 84-file/1,044-test suite, typecheck, lint, formatting, and scoped layout detector
+passed. Physical Android remains blocked by the recorded unavailable device/toolchain. The
+reservation is released after the cohesive local commit.
+
 ## 2026-09-06 Parent Sign-in Layout Redesign Window
 
 **Owner and only writer**: `/root`
