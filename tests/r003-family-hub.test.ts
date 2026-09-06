@@ -9,6 +9,7 @@ import {
 } from '../src/features/family-hub';
 import { PREPARED_PRAISE, createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { serviceRegistry } from '../src/services';
+import { isExactPlainDataEqual } from '../src/utils/exactPlainData';
 
 const TIME = '2026-09-05T10:00:00.000Z';
 
@@ -48,6 +49,16 @@ function canonicalRecognition() {
       },
     ),
   );
+}
+
+function recognitionLandscapeTransition(recognition: ReturnType<typeof canonicalRecognition>) {
+  const growth = recognition.receipt.landscapeGrowth;
+  if (!growth) throw new Error('Expected canonical landscape growth');
+  return {
+    landscapeId: growth.landscapeId,
+    stageBefore: growth.stageBefore,
+    stageAfter: growth.stageAfter,
+  };
 }
 
 describe('R003 Family hub reward runtime', () => {
@@ -99,6 +110,8 @@ describe('R003 Family hub reward runtime', () => {
       projectFamilyRewardUnlock({
         before,
         after: unlocked,
+        expectedProfileId: 'child_salem',
+        expectedLandscapeTransition: recognitionLandscapeTransition(recognition),
         recognitionKey: recognition.receipt.recognitionKey,
         committedAt: TIME,
       }),
@@ -126,6 +139,8 @@ describe('R003 Family hub reward runtime', () => {
       projectFamilyRewardUnlock({
         before: unlocked,
         after: repeated,
+        expectedProfileId: 'child_salem',
+        expectedLandscapeTransition: recognitionLandscapeTransition(recognition),
         recognitionKey: recognition.receipt.recognitionKey,
         committedAt: TIME,
       }),
@@ -148,10 +163,98 @@ describe('R003 Family hub reward runtime', () => {
       projectFamilyRewardUnlock({
         before,
         after: unlocked,
+        expectedProfileId: 'child_salem',
+        expectedLandscapeTransition: recognitionLandscapeTransition(recognition),
         recognitionKey: 'recognition:another-submission',
         committedAt: TIME,
       }),
     ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('rejects an unlock that erases earlier private provenance', () => {
+    const recognition = canonicalRecognition();
+    const baseline = createFamilyRewardRuntime();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: baseline,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    const before = {
+      ...baseline,
+      progress: {
+        ...baseline.progress,
+        recognitionKeys: ['recognition:stale-unrelated-event'],
+      },
+    };
+
+    expect(
+      projectFamilyRewardUnlock({
+        before,
+        after: unlocked,
+        expectedProfileId: 'child_salem',
+        expectedLandscapeTransition: recognitionLandscapeTransition(recognition),
+        recognitionKey: recognition.receipt.recognitionKey,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('rejects promised-to-unlocked evidence carrying a given timestamp', () => {
+    const recognition = canonicalRecognition();
+    const baseline = createFamilyRewardRuntime();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: baseline,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    const before = { ...baseline, plan: { ...baseline.plan, givenAt: TIME } };
+    const after = { ...unlocked, plan: { ...unlocked.plan, givenAt: TIME } };
+
+    expect(
+      projectFamilyRewardUnlock({
+        before,
+        after,
+        expectedProfileId: 'child_salem',
+        expectedLandscapeTransition: recognitionLandscapeTransition(recognition),
+        recognitionKey: recognition.receipt.recognitionKey,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('rejects an unlock whose private plan and progress belong to another Child', () => {
+    const recognition = canonicalRecognition();
+    const before = createFamilyRewardRuntime();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: before,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    const forAlya = (runtime: typeof before): typeof before => ({
+      ...runtime,
+      plan: { ...runtime.plan, childId: 'child_alya' },
+      progress: { ...runtime.progress, childId: 'child_alya' },
+    });
+
+    expect(
+      projectFamilyRewardUnlock({
+        before: forAlya(before),
+        after: forAlya(unlocked),
+        expectedProfileId: 'child_salem',
+        expectedLandscapeTransition: recognitionLandscapeTransition(recognition),
+        recognitionKey: recognition.receipt.recognitionKey,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
   });
 
   it('fails closed when a task version has no explicit eligibility decision', () => {
@@ -175,6 +278,68 @@ describe('R003 Family hub reward runtime', () => {
       plan: { lifecycle: 'promised' },
       progress: { eligibleSeedDelta: 0, recognitionKeys: [] },
     });
+  });
+
+  it('rejects a current recognition key without its reconciled unlock', () => {
+    const recognition = canonicalRecognition();
+    const runtime = createFamilyRewardRuntime();
+    const forged = {
+      ...runtime,
+      progress: {
+        ...runtime.progress,
+        recognitionKeys: [recognition.receipt.recognitionKey],
+      },
+    };
+
+    expect(
+      applyRecognitionToFamilyReward({
+        runtime: forged,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(forged.plan.lifecycle).toBe('promised');
+    expect(forged.progress.eligibleSeedDelta).toBe(0);
+  });
+
+  it('rejects hidden root authority on a reconciled reward duplicate', () => {
+    const recognition = canonicalRecognition();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: createFamilyRewardRuntime(),
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+    const malformed = { ...unlocked, hiddenAuthority: undefined } as typeof unlocked;
+
+    expect(
+      applyRecognitionToFamilyReward({
+        runtime: malformed,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+  });
+
+  it('rejects malformed same-reference plain-data comparisons', () => {
+    const hidden = {};
+    Object.defineProperty(hidden, 'hiddenAuthority', { value: true, enumerable: false });
+    const accessor = {};
+    Object.defineProperty(accessor, 'authority', { get: () => true, enumerable: true });
+    const symbolKeyed = { [Symbol('authority')]: true };
+    class ForgedArray extends Array<string> {}
+    const forgedArray = new ForgedArray('expected');
+
+    expect(isExactPlainDataEqual(hidden, hidden)).toBe(false);
+    expect(isExactPlainDataEqual(accessor, accessor)).toBe(false);
+    expect(isExactPlainDataEqual(symbolKeyed, symbolKeyed)).toBe(false);
+    expect(isExactPlainDataEqual(forgedArray, ['expected'])).toBe(false);
+    expect(isExactPlainDataEqual(Number.NaN, Number.NaN)).toBe(false);
+    expect(isExactPlainDataEqual(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY)).toBe(false);
   });
 
   it('cannot be given before unlock and remains given idempotently', () => {

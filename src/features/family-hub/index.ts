@@ -5,6 +5,7 @@ import {
   projectFamilyRewardPlan,
 } from '../family-rewards';
 import type {
+  EligibleLandscapeTransition,
   FamilyRewardEligibilityEvent,
   FamilyRewardPlan,
   FamilyRewardProgressSnapshot,
@@ -12,6 +13,7 @@ import type {
   PrivateFamilyRewardView,
 } from '../../models/familyReward';
 import type { RecognitionReceipt, SyntheticChildId, TaskJourney } from '../../models/familyGrowth';
+import { isExactPlainDataEqual as sameValue } from '../../utils/exactPlainData';
 
 export const FAMILY_REWARD_BASELINE = 108;
 export const FAMILY_REWARD_TARGET = 120;
@@ -78,6 +80,83 @@ export function createFamilyRewardRuntime(): FamilyRewardRuntime {
   };
 }
 
+function isValidGivenTimestamp(givenAt: string | null, unlockedAt: string): boolean {
+  return (
+    givenAt !== null &&
+    givenAt.trim() === givenAt &&
+    !Number.isNaN(Date.parse(givenAt)) &&
+    !Number.isNaN(Date.parse(unlockedAt)) &&
+    Date.parse(givenAt) >= Date.parse(unlockedAt)
+  );
+}
+
+function isReconciledRewardOutcome(input: {
+  readonly runtime: FamilyRewardRuntime;
+  readonly expectedProfileId: SyntheticChildId;
+  readonly expectedLandscapeTransition: EligibleLandscapeTransition | null;
+  readonly recognitionKey: string;
+  readonly committedAt: string;
+}): boolean {
+  const { runtime, expectedProfileId, expectedLandscapeTransition, recognitionKey, committedAt } =
+    input;
+  if (!expectedLandscapeTransition) return false;
+  const baseline = createFamilyRewardRuntime();
+  const lifecycleIsValid =
+    (runtime.plan.lifecycle === 'unlocked' && runtime.plan.givenAt === null) ||
+    (runtime.plan.lifecycle === 'given' &&
+      isValidGivenTimestamp(runtime.plan.givenAt, committedAt));
+  const expectedProgress: FamilyRewardProgressSnapshot = {
+    childId: expectedProfileId,
+    eligibleSeedDelta: FAMILY_REWARD_TARGET - FAMILY_REWARD_BASELINE,
+    recognitionKeys: [recognitionKey],
+    eligibleLandscapeTransitions: [expectedLandscapeTransition],
+    landscapesCrossingTarget: [],
+  };
+  const expectedRuntime: FamilyRewardRuntime = {
+    ...baseline,
+    plan: {
+      ...baseline.plan,
+      lifecycle: runtime.plan.lifecycle,
+      unlockedAt: committedAt,
+      givenAt: runtime.plan.lifecycle === 'given' ? runtime.plan.givenAt : null,
+    },
+    progress: expectedProgress,
+  };
+  return (
+    expectedProfileId === baseline.plan.childId &&
+    lifecycleIsValid &&
+    sameValue(runtime, expectedRuntime)
+  );
+}
+
+function isReconciledRecordedRecognition(input: {
+  readonly runtime: FamilyRewardRuntime;
+  readonly receipt: RecognitionReceipt;
+  readonly committedAt: string;
+}): boolean {
+  const { runtime, receipt, committedAt } = input;
+  const seed = receipt.seedTransaction;
+  const growth = receipt.landscapeGrowth;
+  return (
+    seed !== null &&
+    growth !== null &&
+    seed.recognitionKey === receipt.recognitionKey &&
+    seed.childId === runtime.plan.childId &&
+    seed.amount === FAMILY_REWARD_TARGET - FAMILY_REWARD_BASELINE &&
+    isReconciledRewardOutcome({
+      runtime,
+      expectedProfileId: seed.childId,
+      expectedLandscapeTransition: {
+        landscapeId: growth.landscapeId,
+        stageBefore: growth.stageBefore,
+        stageAfter: growth.stageAfter,
+      },
+      recognitionKey: receipt.recognitionKey,
+      committedAt,
+    })
+  );
+}
+
 export function applyRecognitionToFamilyReward(input: {
   readonly runtime: FamilyRewardRuntime;
   readonly journey: TaskJourney;
@@ -89,12 +168,37 @@ export function applyRecognitionToFamilyReward(input: {
   const eligibilityDecision = (
     FAMILY_REWARD_ELIGIBILITY_DECISIONS as Readonly<Record<string, boolean>>
   )[taskVersionKey];
-  if (
-    eligibilityDecision !== true ||
-    runtime.progress.recognitionKeys.includes(receipt.recognitionKey) ||
-    runtime.plan.lifecycle !== 'promised'
-  ) {
+  if (eligibilityDecision !== true) {
     return { ok: true, data: runtime };
+  }
+  if (runtime.progress.recognitionKeys.includes(receipt.recognitionKey)) {
+    return isReconciledRecordedRecognition({ runtime, receipt, committedAt })
+      ? { ok: true, data: runtime }
+      : {
+          ok: false,
+          error: {
+            code: 'INVALID_TRANSITION',
+            message: 'Family Reward recognition exists without its reconciled private outcome',
+          },
+        };
+  }
+  if (runtime.plan.lifecycle !== 'promised') {
+    return {
+      ok: false,
+      error: {
+        code: 'INVALID_TRANSITION',
+        message: 'Family Reward lifecycle has no reconciled recognition authority',
+      },
+    };
+  }
+  if (!sameValue(runtime, createFamilyRewardRuntime())) {
+    return {
+      ok: false,
+      error: {
+        code: 'INVALID_TRANSITION',
+        message: 'Family Reward promise does not match its private eligibility baseline',
+      },
+    };
   }
   if (receipt.seedTransaction === null || receipt.landscapeGrowth === null) {
     return { ok: true, data: runtime };
@@ -137,16 +241,29 @@ export function applyRecognitionToFamilyReward(input: {
 export function projectFamilyRewardUnlock(input: {
   readonly before: FamilyRewardRuntime;
   readonly after: FamilyRewardRuntime;
+  readonly expectedProfileId: SyntheticChildId;
+  readonly expectedLandscapeTransition: EligibleLandscapeTransition | null;
   readonly recognitionKey: string;
   readonly committedAt: string;
 }): FamilyRewardResult<FamilyRewardUnlockProjection | null> {
-  const { before, after, recognitionKey, committedAt } = input;
+  const {
+    before,
+    after,
+    expectedProfileId,
+    expectedLandscapeTransition,
+    recognitionKey,
+    committedAt,
+  } = input;
   if (
+    (expectedProfileId !== 'child_salem' && expectedProfileId !== 'child_alya') ||
     recognitionKey.trim().length === 0 ||
     committedAt.trim().length === 0 ||
     before.plan.id !== after.plan.id ||
     before.plan.version !== after.plan.version ||
     before.plan.childId !== after.plan.childId ||
+    before.plan.childId !== expectedProfileId ||
+    before.progress.childId !== expectedProfileId ||
+    after.progress.childId !== expectedProfileId ||
     before.plan.previousVersion !== after.plan.previousVersion ||
     before.plan.versionState !== after.plan.versionState ||
     before.plan.supersededAt !== after.plan.supersededAt ||
@@ -172,23 +289,56 @@ export function projectFamilyRewardUnlock(input: {
     };
   }
 
+  const baseline = createFamilyRewardRuntime();
   if (before.plan.lifecycle === after.plan.lifecycle) {
-    return { ok: true, data: null };
+    const isValidUnchangedAuthority =
+      sameValue(before, after) &&
+      (before.plan.lifecycle === 'promised'
+        ? sameValue(before, baseline)
+        : isReconciledRewardOutcome({
+            runtime: before,
+            expectedProfileId,
+            expectedLandscapeTransition,
+            recognitionKey,
+            committedAt,
+          }));
+    return isValidUnchangedAuthority
+      ? { ok: true, data: null }
+      : {
+          ok: false,
+          error: {
+            code: 'INVALID_TRANSITION',
+            message: 'Family Reward unchanged state has no reconciled private authority',
+          },
+        };
   }
-  const priorRecognitionKeys = new Set(before.progress.recognitionKeys);
-  const addedRecognitionKeys = after.progress.recognitionKeys.filter(
-    (key) => !priorRecognitionKeys.has(key),
-  );
+  const expectedAfterPlan: FamilyRewardPlan = {
+    ...baseline.plan,
+    lifecycle: 'unlocked',
+    unlockedAt: committedAt,
+  };
+  const expectedAfterProgress: FamilyRewardProgressSnapshot | null = expectedLandscapeTransition
+    ? {
+        childId: expectedProfileId,
+        eligibleSeedDelta: FAMILY_REWARD_TARGET - FAMILY_REWARD_BASELINE,
+        recognitionKeys: [recognitionKey],
+        eligibleLandscapeTransitions: [expectedLandscapeTransition],
+        landscapesCrossingTarget: [],
+      }
+    : null;
+  const expectedAfterRuntime: FamilyRewardRuntime | null = expectedAfterProgress
+    ? { ...baseline, plan: expectedAfterPlan, progress: expectedAfterProgress }
+    : null;
   if (
     before.plan.lifecycle !== 'promised' ||
     after.plan.lifecycle !== 'unlocked' ||
     before.plan.unlockedAt !== null ||
     after.plan.unlockedAt !== committedAt ||
-    before.plan.givenAt !== after.plan.givenAt ||
-    addedRecognitionKeys.length !== 1 ||
-    addedRecognitionKeys[0] !== recognitionKey ||
-    before.progress.eligibleSeedDelta !== 0 ||
-    after.progress.eligibleSeedDelta !== FAMILY_REWARD_TARGET - FAMILY_REWARD_BASELINE
+    before.plan.givenAt !== null ||
+    after.plan.givenAt !== null ||
+    expectedAfterRuntime === null ||
+    !sameValue(before, baseline) ||
+    !sameValue(after, expectedAfterRuntime)
   ) {
     return {
       ok: false,
