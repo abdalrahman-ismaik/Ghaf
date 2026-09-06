@@ -6,6 +6,28 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Parent Sign-in Layout Redesign Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `app/access/parent/sign-in.tsx`,
+`tests/r001-onboarding-flow.test.ts`, `DESIGN.md`, and this ownership record only.
+
+**Scope**: Recompose the existing Parent sign-in screen into clear credential, biometric, and
+new-family groups using only the approved Ghaf tokens and shared controls. All three actions must
+share the full content width, regular minimum height, and corner geometry while preserving their
+filled, neutral, and outlined hierarchy. Copy, handlers, route order, synthetic disclosures,
+offline/error states, and Parent/Child access separation remain unchanged. Delegated audits are
+read-only; protected user-owned paths remain untouched and no push or merge is authorized.
+
+**Completion — 2026-09-06**: The screen now uses a compact intro and deliberate credential,
+biometric, and new-family groups instead of one uniform action stack. At the 320×720 Firefox proxy,
+all three actions measured 280×60 with 16 px corners; Arabic RTL and English LTR kept the full
+Create Family control above the disclosure footer with zero console errors. The focused regression,
+full 84-file/1,044-test suite, typecheck, lint, formatting, and scoped layout detector passed.
+Physical Android remains blocked by the previously recorded unavailable device/toolchain, so no
+native visual claim is added. The reservation is released after the cohesive local commit.
+
 ## 2026-09-06 Parent Sign-in CTA Clarity Window
 
 **Owner and only writer**: `/root`

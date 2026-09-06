@@ -145,9 +145,10 @@ review stay unpassed until directly observed.
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 **Status:** R001 foundations/onboarding and R002a Parent/task/Child/Garden presentation are frozen
-regression baselines. R002b code-native Growth candidates may be implemented behind independent
-default-off flags. Release activation remains blocked until the applicable visual, bilingual,
-accessibility, native, provenance, content, and human-review gates pass.
+regression baselines except for the user-authorized Parent sign-in usability layout recorded below.
+R002b code-native Growth candidates may be implemented behind independent default-off flags.
+Release activation remains blocked until the applicable visual, bilingual, accessibility, native,
+provenance, content, and human-review gates pass.
 
 **Creative direction:** `DESIGN_DIRECTION.md`
 
@@ -155,8 +156,11 @@ accessibility, native, provenance, content, and human-review gates pass.
 
 ## Current Design Authority
 
-- R001 PNGs are canonical composition references for `/` and the six Parent-onboarding steps only.
-  Exported HTML/CSS/JS is read-only measurement/structure evidence and never runtime code.
+- R001 PNGs are canonical composition references for `/` and the six Parent-onboarding steps except
+  `/access/parent/sign-in`. For that route, the user-authorized 2026-09-06 usability layout keeps
+  the R001 copy, behavior, palette, and shared controls while replacing the flat action stack with
+  grouped credentials, biometric disclosure, and a separated full-width Create Family action.
+  Exported HTML/CSS/JS remains read-only measurement/structure evidence and never runtime code.
 - Selected R002a PNGs are candidate composition references for the existing Parent Home, Parent
   Tasks/Builder, Child Today/task, Parent review/support, Child follow-up, and Garden surfaces. The
   tracked R002a index and per-surface specifications record the exact selection and required

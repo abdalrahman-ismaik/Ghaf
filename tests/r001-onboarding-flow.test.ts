@@ -198,7 +198,7 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(success).toContain('authorizeParentExperience');
   });
 
-  it('preserves the approved default composition while keeping actions functional', () => {
+  it('uses the approved Parent access hierarchy while keeping actions functional', () => {
     const welcome = readFileSync(new URL('../app/index.tsx', import.meta.url), 'utf8');
     const routeSource = (route: (typeof R001_ACCESS_ROUTES)[number]) =>
       readFileSync(resolve(import.meta.dirname, `../app${route}.tsx`), 'utf8');
@@ -213,8 +213,38 @@ describe('approved R001 Parent onboarding integration', () => {
     const signIn = routeSource('/access/parent/sign-in');
     expect(signIn).not.toContain('disabled={identifier.trim().length === 0}');
     expect(signIn).toContain('variant="neutral"');
-    const createFamilyStyle = signIn.slice(signIn.indexOf('createFamilyButton:'));
+    expect(signIn).toContain('<View style={styles.signInPanel}>');
+    expect(signIn).toContain('<View style={styles.credentials}>');
+    expect(signIn).toContain('<View style={styles.biometricGroup}>');
+    expect(signIn).toContain('<View style={styles.createFamilyGroup}>');
+
+    const primaryActionIndex = signIn.indexOf('testID="request-parent-code-button"');
+    const dividerIndex = signIn.indexOf('<LabeledDivider');
+    const biometricActionIndex = signIn.indexOf('testID="simulated-biometric-button"');
+    const createFamilyActionIndex = signIn.indexOf('testID="create-family-button"');
+    expect(primaryActionIndex).toBeLessThan(dividerIndex);
+    expect(dividerIndex).toBeLessThan(biometricActionIndex);
+    expect(biometricActionIndex).toBeLessThan(createFamilyActionIndex);
+
+    for (const actionIndex of [primaryActionIndex, biometricActionIndex, createFamilyActionIndex]) {
+      const actionStart = signIn.lastIndexOf('<Button', actionIndex);
+      const actionEnd = signIn.indexOf('</Button>', actionIndex);
+      const action = signIn.slice(actionStart, actionEnd);
+      expect(action).toContain('size="regular"');
+      expect(action).not.toContain('fullWidth={false}');
+    }
+
+    const createFamilyActionStart = signIn.lastIndexOf('<Button', createFamilyActionIndex);
+    const createFamilyActionEnd = signIn.indexOf('</Button>', createFamilyActionIndex);
+    const createFamilyAction = signIn.slice(createFamilyActionStart, createFamilyActionEnd);
+    expect(createFamilyAction).toContain('variant="quiet"');
+
+    const createFamilyStyleStart = signIn.indexOf('createFamilyButton:');
+    const createFamilyStyleEnd = signIn.indexOf('  },', createFamilyStyleStart);
+    const createFamilyStyle = signIn.slice(createFamilyStyleStart, createFamilyStyleEnd);
     expect(createFamilyStyle).toContain('borderColor: colors.ghafEmerald');
+    expect(createFamilyStyle).not.toContain('borderRadius');
+    expect(createFamilyStyle).not.toContain('paddingHorizontal');
 
     const verification = routeSource('/access/parent/verification');
     expect(verification).toContain('iconPosition="end"');

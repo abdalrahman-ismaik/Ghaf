@@ -14,7 +14,7 @@ import {
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { colors, layout, r001Radii, spacing } from '@/design/tokens';
+import { colors, layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 const SYNTHETIC_PARENT_IDENTIFIER = '+971501234567';
@@ -112,7 +112,7 @@ export default function ParentSignInScreen() {
       testID="parent-sign-in-screen"
     >
       <View style={styles.intro}>
-        <Text brand color="onSurface" direction={direction} language={locale} variant="parentHero">
+        <Text brand color="deepForest" direction={direction} language={locale} variant="parentHero">
           {t('access.signIn.title')}
         </Text>
         <Text brand color="onSurfaceVariant" direction={direction} language={locale} variant="body">
@@ -130,42 +130,44 @@ export default function ParentSignInScreen() {
         />
       ) : null}
 
-      <View style={styles.form}>
-        <AccessTextField
-          accessibilityHint={t('access.signIn.identifierExample')}
-          autoCapitalize="none"
-          autoComplete="username"
-          autoCorrect={false}
-          direction="auto"
-          editable={!busy}
-          errorText={error ?? undefined}
-          helperText={t('access.signIn.identifierExample')}
-          label={t('access.signIn.identifierLabel')}
-          language={locale}
-          onChangeText={(value) => {
-            setIdentifier(value);
-            setError(null);
-          }}
-          onSubmitEditing={() => void requestCode(identifier)}
-          placeholder={t('access.signIn.identifierPlaceholder')}
-          returnKeyType="go"
-          testID="parent-identifier-input"
-          textContentType="username"
-          value={identifier}
-        />
+      <View style={styles.signInPanel}>
+        <View style={styles.credentials}>
+          <AccessTextField
+            accessibilityHint={t('access.signIn.identifierExample')}
+            autoCapitalize="none"
+            autoComplete="username"
+            autoCorrect={false}
+            direction="auto"
+            editable={!busy}
+            errorText={error ?? undefined}
+            helperText={t('access.signIn.identifierExample')}
+            label={t('access.signIn.identifierLabel')}
+            language={locale}
+            onChangeText={(value) => {
+              setIdentifier(value);
+              setError(null);
+            }}
+            onSubmitEditing={() => void requestCode(identifier)}
+            placeholder={t('access.signIn.identifierPlaceholder')}
+            returnKeyType="go"
+            testID="parent-identifier-input"
+            textContentType="username"
+            value={identifier}
+          />
 
-        <Button
-          brand
-          busy={busy}
-          busyLabel={t('access.signIn.loading')}
-          direction={direction}
-          language={locale}
-          onPress={() => void requestCode(identifier)}
-          size="regular"
-          testID="request-parent-code-button"
-        >
-          {t('access.signIn.continue')}
-        </Button>
+          <Button
+            brand
+            busy={busy}
+            busyLabel={t('access.signIn.loading')}
+            direction={direction}
+            language={locale}
+            onPress={() => void requestCode(identifier)}
+            size="regular"
+            testID="request-parent-code-button"
+          >
+            {t('access.signIn.continue')}
+          </Button>
+        </View>
 
         <LabeledDivider
           direction={direction}
@@ -173,68 +175,78 @@ export default function ParentSignInScreen() {
           language={locale}
         />
 
-        <Button
-          accessibilityHint={t('access.signIn.biometricHint')}
-          brand
-          direction={direction}
-          disabled={busy}
-          icon={
-            <GhafIcon
-              color={colors.onSurfaceVariant}
-              direction={direction}
-              name="fingerprint"
-              size={22}
-            />
-          }
-          language={locale}
-          onPress={() => void requestCode(identifier.trim() || SYNTHETIC_PARENT_IDENTIFIER)}
-          size="regular"
-          testID="simulated-biometric-button"
-          variant="neutral"
-        >
-          {t('access.signIn.biometric')}
-        </Button>
-        <Text
-          align="center"
-          brand
-          color="onSurfaceVariant"
-          direction={direction}
-          language={locale}
-          variant="caption"
-        >
-          {t('access.signIn.biometricHint')}
-        </Text>
+        <View style={styles.biometricGroup}>
+          <Button
+            accessibilityHint={t('access.signIn.biometricHint')}
+            brand
+            direction={direction}
+            disabled={busy}
+            icon={
+              <GhafIcon
+                color={colors.onSurfaceVariant}
+                direction={direction}
+                name="fingerprint"
+                size={22}
+              />
+            }
+            language={locale}
+            onPress={() => void requestCode(identifier.trim() || SYNTHETIC_PARENT_IDENTIFIER)}
+            size="regular"
+            testID="simulated-biometric-button"
+            variant="neutral"
+          >
+            {t('access.signIn.biometric')}
+          </Button>
+          <Text
+            align="center"
+            brand
+            color="onSurfaceVariant"
+            direction={direction}
+            language={locale}
+            variant="caption"
+          >
+            {t('access.signIn.biometricHint')}
+          </Text>
+        </View>
 
-        <Button
-          brand
-          direction={direction}
-          disabled={busy}
-          fullWidth={false}
-          language={locale}
-          onPress={() => void requestCode(identifier.trim() || SYNTHETIC_PARENT_IDENTIFIER)}
-          style={styles.createFamilyButton}
-          testID="create-family-button"
-          variant="quiet"
-        >
-          {t('access.signIn.createFamily')}
-        </Button>
+        <View style={styles.createFamilyGroup}>
+          <View style={styles.sectionDivider} />
+          <Button
+            brand
+            direction={direction}
+            disabled={busy}
+            language={locale}
+            onPress={() => void requestCode(identifier.trim() || SYNTHETIC_PARENT_IDENTIFIER)}
+            size="regular"
+            style={styles.createFamilyButton}
+            testID="create-family-button"
+            variant="quiet"
+          >
+            {t('access.signIn.createFamily')}
+          </Button>
+        </View>
       </View>
     </AccessScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  viewport: { paddingTop: spacing.xs },
-  content: { gap: spacing.xxl },
+  viewport: { paddingTop: spacing.sm },
+  content: { gap: spacing.xl },
   intro: { gap: spacing.xs },
-  form: {
+  signInPanel: {
     width: '100%',
-    gap: spacing.xl,
+    gap: spacing.md,
+  },
+  credentials: { gap: spacing.md },
+  biometricGroup: { gap: spacing.xs },
+  createFamilyGroup: { gap: spacing.md },
+  sectionDivider: {
+    height: StyleSheet.hairlineWidth,
+    marginTop: spacing.xs,
+    backgroundColor: colors.outlineVariant,
   },
   createFamilyButton: {
-    alignSelf: 'center',
     borderColor: colors.ghafEmerald,
-    borderRadius: r001Radii.pill,
-    paddingHorizontal: spacing.lg,
   },
 });
