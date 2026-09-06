@@ -651,8 +651,13 @@ interface ProgressionMigrationReceipt {
 interface PlantStageArchive {
   readonly id: string;
   readonly profileId: SyntheticChildProfile['id'];
-  readonly landscapeId: 'mangrove';
-  readonly threshold: 60;
+  readonly profileEpochId: string;
+  readonly landscapeId: LandscapeId;
+  readonly threshold: 20 | 60 | 120 | 200;
+  readonly seedsBefore: number;
+  readonly seedsAfter: number;
+  readonly stageBefore: GardenStage;
+  readonly stageAfter: GardenStage;
   readonly triggerEventId: string;
   readonly symbolicOnly: true;
 }
@@ -678,6 +683,11 @@ The next unique canonical recognition contributes one 12-Seed `task_recognition`
 so lifetime Seeds derive as 120 while the existing current Mangrove authority independently changes
 48→60 and creates one archive. Migration never changes canopy, private League, Challenge Leaf,
 Family Reward, or recognition records and never queues a celebration.
+
+A plant-stage archive is derived only from an exact deterministic `LandscapeGrowth` stage crossing.
+Each landscape threshold can be archived at most once per profile epoch, and recognition that does
+not cross a stage creates no archive. The canonical Schema-3 Mangrove 48→60 migration behavior stays
+unchanged while later task recognition can archive the same approved thresholds on any landscape.
 
 Achievements use separate profile/epoch-scoped evidence:
 

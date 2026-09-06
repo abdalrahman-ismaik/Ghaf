@@ -1,4 +1,10 @@
-import type { FixedSeedAward, GardenStage, SyntheticChildId } from './familyGrowth';
+import type {
+  FixedSeedAward,
+  GardenStage,
+  LandscapeGrowth,
+  LandscapeId,
+  SyntheticChildId,
+} from './familyGrowth';
 
 export const SCHEMA3_R002A_FIXTURE_VERSION = 'schema3.r002a.al-noor.v1' as const;
 export const SEED_LEDGER_MIGRATION_VERSION = 'r002b.seed-ledger.v1' as const;
@@ -109,12 +115,12 @@ export interface PlantStageArchive {
   readonly id: string;
   readonly profileId: SyntheticChildId;
   readonly profileEpochId: string;
-  readonly landscapeId: 'mangrove';
-  readonly threshold: 60;
-  readonly seedsBefore: 48;
-  readonly seedsAfter: 60;
-  readonly stageBefore: 'shoot';
-  readonly stageAfter: 'sapling';
+  readonly landscapeId: LandscapeId;
+  readonly threshold: 20 | 60 | 120 | 200;
+  readonly seedsBefore: number;
+  readonly seedsAfter: number;
+  readonly stageBefore: GardenStage;
+  readonly stageAfter: GardenStage;
   readonly triggerEventId: string;
   readonly symbolicOnly: true;
 }
@@ -133,17 +139,10 @@ export interface SeedLedgerNormalization {
   readonly receipt: ProgressionMigrationReceipt | null;
 }
 
-export interface MangroveRecognitionTransition {
-  readonly landscapeId: 'mangrove';
-  readonly seedsBefore: number;
-  readonly seedsAfter: number;
-  readonly stageBefore: GardenStage;
-  readonly stageAfter: GardenStage;
-  readonly crossedThreshold: 20 | 60 | 120 | 200 | null;
-  readonly symbolicOnly: true;
-}
+export type LandscapeRecognitionTransition = LandscapeGrowth;
+export type MangroveRecognitionTransition = LandscapeRecognitionTransition;
 
-export interface RecognitionSeedProjectionInput {
+interface RecognitionSeedProjectionBaseInput {
   readonly ledger: SeedLedgerState;
   readonly profileId: string;
   readonly profileEpochId: string;
@@ -153,8 +152,19 @@ export interface RecognitionSeedProjectionInput {
   readonly amount: FixedSeedAward;
   readonly committedAt: string;
   readonly fixtureVersion: string;
-  readonly mangroveTransition: MangroveRecognitionTransition | null;
 }
+
+export type RecognitionSeedProjectionInput = RecognitionSeedProjectionBaseInput &
+  (
+    | {
+        readonly landscapeTransition: LandscapeRecognitionTransition | null;
+        readonly mangroveTransition?: never;
+      }
+    | {
+        readonly landscapeTransition?: never;
+        readonly mangroveTransition: LandscapeRecognitionTransition | null;
+      }
+  );
 
 export interface RecognitionSeedProjection {
   readonly disposition: 'projected' | 'already_projected';

@@ -130,11 +130,16 @@ export function projectR002bGrowthExperience(input: {
     semanticCriterionEvidence: Object.freeze([...input.semanticCriterionEvidence]),
   });
   const archives = Object.freeze(ledger.plantStageArchives.map(freezeArchive));
+  const archivedBadgeThresholds = Object.freeze(
+    archives.flatMap((archive) =>
+      archive.threshold === 60 || archive.threshold === 120 ? [archive.threshold] : [],
+    ),
+  );
   const badges = projectBadgeGallery({
     state: achievements,
     evidence,
     context: Object.freeze({
-      archivedSeedThresholds: Object.freeze(archives.map((archive) => archive.threshold)),
+      archivedSeedThresholds: archivedBadgeThresholds,
       unlockedLearningIds,
       assignedTasks: assignedAchievementTasks({
         journey: input.journey,

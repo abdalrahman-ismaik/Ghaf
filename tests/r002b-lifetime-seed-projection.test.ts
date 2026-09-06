@@ -104,7 +104,7 @@ const SALEM_RECOGNITION = {
   amount: 12,
   committedAt: RECOGNIZED_AT,
   fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
-  mangroveTransition: {
+  landscapeTransition: {
     landscapeId: 'mangrove',
     seedsBefore: 48,
     seedsAfter: 60,
@@ -169,6 +169,19 @@ describe('R002b Schema-3 Seed authority audit', () => {
 });
 
 describe('R002b lifetime Seed normalization', () => {
+  it.each(['2026-02-30T08:00:00.000Z', '2026-09-05T08:00:00Z', '2026-09-05T12:00:00.000+04:00'])(
+    'rejects the non-canonical or impossible migration time %s',
+    (appliedAt) => {
+      expect(
+        normalizeSchema3SeedLedger({
+          audit: audited(SALEM_AUDIT_INPUT),
+          ledger: emptyLedger('child_salem'),
+          appliedAt,
+        }),
+      ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+    },
+  );
+
   it('creates one Salem-only versioned receipt for explicit 48 + synthetic carry-forward 60', () => {
     const base = emptyLedger('child_salem');
     const result = normalizeSchema3SeedLedger({
@@ -534,6 +547,19 @@ describe('R002b recognition and Impact Path projection', () => {
     });
   });
 
+  it.each(['2026-02-30T08:05:00.000Z', '2026-09-05T08:05:00Z'])(
+    'rejects the non-canonical or impossible recognition time %s',
+    (committedAt) => {
+      expect(
+        projectRecognitionSeedEntry({
+          ledger: normalizedSalem(),
+          ...SALEM_RECOGNITION,
+          committedAt,
+        }),
+      ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+    },
+  );
+
   it('projects the canonical +12 once, independently archives Mangrove 60/60, and reaches 120', () => {
     const before = normalizedSalem();
     const result = projectRecognitionSeedEntry({ ledger: before, ...SALEM_RECOGNITION });
@@ -569,6 +595,96 @@ describe('R002b recognition and Impact Path projection', () => {
     expect(result.data.ledger.plantStageArchives).toHaveLength(1);
   });
 
+  it('archives a Samar seed-to-shoot crossing from 16 to 24 and leaves later growth archive-free', () => {
+    const crossing = projectRecognitionSeedEntry({
+      ledger: normalizedAlya(),
+      profileId: 'child_alya',
+      profileEpochId: EPOCH_ONE,
+      triggerEventId: 'recognition:submission_samar_threshold_attempt_1',
+      recognitionKey: 'recognition:submission_samar_threshold_attempt_1',
+      seedTransactionId: 'seed_transaction_samar_threshold_attempt_1',
+      amount: 8,
+      committedAt: RECOGNIZED_AT,
+      fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
+      landscapeTransition: {
+        landscapeId: 'samar',
+        seedsBefore: 16,
+        seedsAfter: 24,
+        stageBefore: 'seed',
+        stageAfter: 'shoot',
+        crossedThreshold: 20,
+        symbolicOnly: true,
+      },
+    });
+    expectOk(crossing);
+    expect(crossing.data.archive).toMatchObject({
+      id: `archive:samar:20:child_alya:${EPOCH_ONE}:recognition%3Asubmission_samar_threshold_attempt_1`,
+      profileId: 'child_alya',
+      landscapeId: 'samar',
+      threshold: 20,
+      seedsBefore: 16,
+      seedsAfter: 24,
+      stageBefore: 'seed',
+      stageAfter: 'shoot',
+    });
+
+    const nonCrossing = projectRecognitionSeedEntry({
+      ledger: crossing.data.ledger,
+      profileId: 'child_alya',
+      profileEpochId: EPOCH_ONE,
+      triggerEventId: 'recognition:submission_samar_followup_attempt_1',
+      recognitionKey: 'recognition:submission_samar_followup_attempt_1',
+      seedTransactionId: 'seed_transaction_samar_followup_attempt_1',
+      amount: 12,
+      committedAt: '2026-09-05T08:10:00.000Z',
+      fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
+      landscapeTransition: {
+        landscapeId: 'samar',
+        seedsBefore: 24,
+        seedsAfter: 36,
+        stageBefore: 'shoot',
+        stageAfter: 'shoot',
+        crossedThreshold: null,
+        symbolicOnly: true,
+      },
+    });
+    expectOk(nonCrossing);
+    expect(nonCrossing.data.archive).toBeNull();
+    expect(nonCrossing.data.ledger.plantStageArchives).toHaveLength(1);
+  });
+
+  it.each([
+    ['wrong stage', { stageAfter: 'sapling' }],
+    ['missing crossing', { crossedThreshold: null }],
+    ['wrong balance', { seedsAfter: 25 }],
+  ] as const)('rejects a Samar transition with %s', (_label, change) => {
+    const transition = {
+      landscapeId: 'samar',
+      seedsBefore: 16,
+      seedsAfter: 24,
+      stageBefore: 'seed',
+      stageAfter: 'shoot',
+      crossedThreshold: 20,
+      symbolicOnly: true,
+      ...change,
+    } as const;
+
+    expect(
+      projectRecognitionSeedEntry({
+        ledger: normalizedAlya(),
+        profileId: 'child_alya',
+        profileEpochId: EPOCH_ONE,
+        triggerEventId: 'recognition:invalid-samar-transition',
+        recognitionKey: 'recognition:invalid-samar-transition',
+        seedTransactionId: 'seed_transaction_invalid_samar_transition',
+        amount: 8,
+        committedAt: RECOGNIZED_AT,
+        fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
+        landscapeTransition: transition,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+  });
+
   it('rejects recognition projection until the profile baseline is normalized', () => {
     const empty = emptyLedger('child_salem');
     expect(projectRecognitionSeedEntry({ ledger: empty, ...SALEM_RECOGNITION })).toMatchObject({
@@ -579,7 +695,7 @@ describe('R002b recognition and Impact Path projection', () => {
     expect(empty.plantStageArchives).toEqual([]);
   });
 
-  it('rejects a forged Salem-only Mangrove archive on Alya evidence', () => {
+  it('rejects a forged plant archive with an impossible threshold', () => {
     const triggerEventId = 'recognition:alya-later-task';
     const alyaProjection = projectRecognitionSeedEntry({
       ledger: normalizedAlya(),
@@ -591,18 +707,18 @@ describe('R002b recognition and Impact Path projection', () => {
       amount: 12,
       committedAt: RECOGNIZED_AT,
       fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
-      mangroveTransition: null,
+      landscapeTransition: null,
     });
     expectOk(alyaProjection);
     const forged = {
       ...alyaProjection.data.ledger,
       plantStageArchives: [
         {
-          id: `archive:mangrove:60:child_alya:${EPOCH_ONE}:recognition%3Aalya-later-task`,
+          id: `archive:mangrove:120:child_alya:${EPOCH_ONE}:recognition%3Aalya-later-task`,
           profileId: 'child_alya',
           profileEpochId: EPOCH_ONE,
           landscapeId: 'mangrove',
-          threshold: 60,
+          threshold: 120,
           seedsBefore: 48,
           seedsAfter: 60,
           stageBefore: 'shoot',
@@ -615,7 +731,7 @@ describe('R002b recognition and Impact Path projection', () => {
 
     expect(selectLifetimeSeeds(forged, 'child_alya', EPOCH_ONE)).toMatchObject({
       ok: false,
-      error: { code: 'FIXTURE_EVIDENCE_MISMATCH' },
+      error: { code: 'INVALID_INPUT' },
     });
   });
 
@@ -642,7 +758,7 @@ describe('R002b recognition and Impact Path projection', () => {
     const laterWithoutArchive = projectRecognitionSeedEntry({
       ledger: first.data.ledger,
       ...secondEvent,
-      mangroveTransition: null,
+      landscapeTransition: null,
     });
     expectOk(laterWithoutArchive);
     expect(selectLifetimeSeeds(laterWithoutArchive.data.ledger, 'child_salem', EPOCH_ONE)).toEqual({
@@ -710,7 +826,7 @@ describe('R002b recognition and Impact Path projection', () => {
       ledger,
       ...SALEM_RECOGNITION,
       triggerEventId: 'recognition:forged-alternate-trigger',
-      mangroveTransition: null,
+      landscapeTransition: null,
     });
     expect(duplicateSource).toMatchObject({ ok: false, error: { code: 'EVENT_CONFLICT' } });
     expect(ledger.entries).toHaveLength(3);
