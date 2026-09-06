@@ -1,5 +1,42 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Device-local Family Directory and Guided Setup Addendum — 2026-09-06
+
+Add the smallest durable demo boundary: one versioned JSON family-directory record stored through
+a `LocalFamilyRepository` contract. Android/iOS use `expo-sqlite/kv-store`, which is backed by
+SQLite and persists across app restarts; web preview uses guarded `localStorage`; Vitest uses an
+in-memory adapter. Keep the adapter behind the service registry, validate all data on read and
+write, use one namespaced key, and make synchronous reads/writes intentionally small so the access
+decision and Parent reset cannot race. Do not add an ORM, SQLCipher claim, server, account table,
+or second application state library.
+
+Extend the Parent onboarding draft with a bounded Child count and two canonical profile slots while
+retaining the established synthetic identifiers under the surface. Reuse the existing Child route
+with an index parameter to render Child 1 then Child 2, keeping routes thin and extracting one
+reusable profile form plus one prepared-AI preview. Persist only the complete validated directory
+after review. At store initialization, restore the completion receipt and project configured
+family/Child display values into the existing prototype session before any access decision. Filter
+Parent and Child selectors by configured ids; keep the unconfigured canonical slot solely as an
+internal fixture required by current deterministic domain types.
+
+Add one pure `profilePersonalization` policy that accepts age band, curated interests/hobbies,
+accessibility defaults, and support preferences and returns a deterministic prepared summary plus
+allowlisted task-category ids. Do not pass gender, nickname, family name, free text, media, task
+history, or a provider request. Reuse the current `sparkle` Ghaf icon only beside labeled Guide,
+Coach, and profile-helper surfaces. Parent review remains the authority for every suggestion.
+
+Persist paired markers only after the existing approved pairing transaction and restore them by a
+narrow deterministic access-service command. Revocation updates the record; Parent reset clears it
+in the same synchronous command before returning to `/`. Storage parse/save failures remain local,
+recoverable, and visibly disclosed without granting a role. Drive the work through RED schema,
+repository, controller, store, AI-policy, and source/flow tests, then run compact bilingual browser
+journeys, reload persistence checks, offline checks, full static/native exports, detector, and all
+repository gates. Physical Android and named-human review remain honest external gates.
+
+Document this supersession in ADR 0002 and update the system context, data model, product/design
+truth, limitations, runbook, review packet, and active readiness checklists without rewriting
+historical Feature 002 evidence or activating default-off R002b flags.
+
 ## R003 SMAC Pillar Onboarding Addendum — 2026-09-06
 
 Expand the presentation-only first-run reducer and localized story from four to six ordered steps:

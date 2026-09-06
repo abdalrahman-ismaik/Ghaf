@@ -18,6 +18,92 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Device-local Family Directory and Guided Setup Amendment — 2026-09-06
+
+This amendment authorizes one small device-local database for the demonstration. It supersedes
+earlier statements that the first-family completion receipt, configured profile directory, and
+synthetic paired-device markers always disappear on reload. It does not authorize production
+accounts, remote identity, cross-device synchronization, cloud backup, analytics, notifications,
+or persistence of the task/reward/garden ledgers. The database represents one synthetic household
+on one device and is cleared by the existing Parent-only prototype reset.
+
+The local directory contains exactly one Parent role and one or two configured Child profile slots.
+The Parent setup asks for the family name, app language, and Child count before presenting one
+ordered form for each Child. Every Child form asks for a nickname, botanical avatar, age band,
+preferred language, optional gender selection (`boy`, `girl`, or `prefer not to say`), curated
+interests, curated hobbies, accessibility defaults, and practical support preferences. Gender is
+never inferred and never changes recommendations, rewards, access, or Arabic grammar. No open
+"important information" field, diagnosis, school, address, location, legal name, birthday, photo,
+voice, contact detail, secret, or emotional disclosure is collected.
+
+The form includes a visibly labeled Ghaf AI profile helper. It may turn only the chosen age band,
+interests, hobbies, accessibility defaults, and support preferences into a deterministic prepared
+coaching-style summary and a small allowlisted set of task-category suggestions. The Parent may
+exclude a Child profile from this personalization. The helper must state that it is prepared AI,
+may be wrong, stays on the device, and does not independently assign or approve tasks. Gender is
+explicitly excluded from its inputs. The shared sparkle/star mark appears only beside a real
+bounded Guide, Coach, or prepared-personalization affordance and always has nearby explanatory
+text; it must not become decorative proof that a live model ran.
+
+After successful creation, the application atomically saves the validated directory and restores
+the immutable completion receipt before access routes can make a first-family decision. A verified
+returning Parent therefore reaches Parent Home without Family Basics, Child forms, Review Family,
+or Family Created. Configured Child names and avatars replace the corresponding Salem/Alya display
+fixtures, and an unconfigured second slot is absent from Parent and Child profile selectors. A
+stored paired-device marker may restore only the existing synthetic Child credential path; it is
+not authentication. Corrupt, unknown-version, or unavailable local data fails closed to a fresh
+setup with an honest recoverable local-storage message and never creates partial profiles.
+
+- **FR-190**: The app MUST persist one versioned, validated local family directory through an
+  `expo-sqlite`-backed device adapter and a deterministic test adapter; web preview MAY use
+  `localStorage`, and none of these adapters may claim production security or cloud persistence.
+- **FR-191**: The persisted record MUST contain one synthetic Parent role, one or two configured
+  Child roles, family/app-language metadata, the approved minimum Child profile fields, and
+  synthetic paired-device markers only; it MUST NOT contain verification/PIN values, free-form
+  sensitive notes, media, assistant transcripts, task history, reward balances, or provider data.
+- **FR-192**: Family Basics MUST ask Child count before profile entry, and the setup MUST present
+  exactly one sequential, resumable-in-memory form per selected Child followed by one whole-family
+  review; Back MUST preserve validated draft values without skipping or duplicating a Child.
+- **FR-193**: Child profile validation MUST require only nickname, age band, avatar, and preferred
+  language; gender, interests, hobbies, accessibility defaults, support preferences, and prepared
+  personalization MUST remain optional and independently changeable before family creation.
+- **FR-194**: Gender MUST be limited to `boy`, `girl`, or `prefer not to say`, MUST never be
+  inferred, and MUST be excluded from AI personalization, reward, access, rank, task suitability,
+  and gendered-copy decisions.
+- **FR-195**: Prepared AI personalization MUST consume only allowlisted non-sensitive profile
+  selections, return a deterministic bounded coaching summary plus curated category suggestions,
+  disclose its prepared/local/fallible status, and leave assignment and approval to the Parent.
+- **FR-196**: Family creation MUST validate every configured Child, persist the complete directory
+  as one record, then expose the completion receipt; a save failure MUST keep the Parent in review
+  with no authenticated Parent experience and a retry path.
+- **FR-197**: Startup MUST restore a valid saved directory before access routing decisions, rebuild
+  the existing immutable Parent completion receipt, project configured names/avatars into the
+  prototype session, and never flash or enter first-family setup for a returning household.
+- **FR-198**: Parent and Child selectors MUST expose only configured profile slots, and direct
+  attempts to select an unconfigured Child MUST fail closed without changing the active profile.
+- **FR-199**: A completed synthetic Child pairing MUST persist only its allowlisted Child/device
+  marker; reload MAY restore that marker so the same fixture credential reaches Today and triggers
+  the existing one-use returning-Child welcome, while revoked or reset markers MUST not restore.
+- **FR-200**: Parent reset MUST synchronously clear the local family directory and paired markers,
+  restore the exact canonical synthetic session, return to Arabic-first signed-out entry, and make
+  first-family setup available again without touching packaged fixtures.
+- **FR-201**: The shared AI sparkle/star mark MUST be used at the setup helper and existing bounded
+  Guide/Coach entry points only with readable labels and accessibility names; it MUST NOT imply
+  unrestricted chat, live inference, or autonomous decision-making.
+- **SC-052**: Focused tests prove schema parsing, unknown-version/corruption rejection, atomic save,
+  reload restoration, configured-profile filtering, paired-marker restoration/revocation, and
+  synchronous Parent reset clearing without changing task/reward/privacy authorities.
+- **SC-053**: Controller/store tests prove one- and two-Child sequence order, Back preservation,
+  validation, idempotent family creation, returning-Parent bypass, and unconfigured-slot denial.
+- **SC-054**: Assistant tests prove deterministic output, optional opt-out, input allowlisting,
+  gender exclusion, prohibited-language rejection, and no provider/network dependency.
+- **SC-055**: Arabic RTL and English LTR browser inspection at 320×720 and 390×844 proves the
+  family-count, each Child form, AI helper, review, creation, reload, and return-welcome flows remain
+  readable, keyboard-scrollable, and free of horizontal overflow.
+- **SC-056**: Typecheck, lint, formatting, full tests, dependency alignment, exact route/reset
+  checks, web and Android exports, detector, and Git whitespace checks pass on the integrated slice;
+  physical Android/TalkBack/Back/IME/font-scale results remain separately evidenced.
+
 ## R003 SMAC Family–Sustainability–AI Onboarding Amendment — 2026-09-06
 
 This amendment supersedes the four-moment first-run story wherever it conflicts. The optional
@@ -1978,7 +2064,7 @@ the historical domain-only result recorded by FR-118.
   live UI without horizontal overflow; physical Android, TalkBack, botanical/cultural review, and
   final illustration-rights review remain separately recorded rather than inferred.
 - **SC-046**: Automated source and flow checks find exactly four ordered in-route onboarding
-moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
+  moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
   exactly 46 local raster manifest/registry entries, and no new authority or runtime image URL.
 - **SC-047**: Arabic RTL and English LTR web-proxy inspection at 320×720 and 390×844 shows the full
   first-run and Welcome journey with no clipped copy, hidden action, broken image, horizontal
