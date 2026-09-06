@@ -33,9 +33,12 @@ route, account, reward, persistence, environmental-impact, or access authority. 
 startup holds for at least 1,200 ms after native handoff and waits only for the four used font
 files plus the bounded signed-out image set. It never blocks on Garden or prepared-media imagery.
 Major Welcome/access/role handoffs hold for 900 ms and settle only their immediate destination
-assets, while deeper images load through Expo Image when their screen renders and ordinary tabs
-remain immediate. Both loaders use one simple three-leaf loop with no visible technical loading
-copy. Every access/setup screen uses the shared raster brand lockup and leaf-shadow background
+assets. After the loader exits and onboarding can paint, all 41 remaining packaged rasters warm
+asynchronously in bounded batches of six: immediate access/experience imagery first and the large
+prepared-media fixture last. Fast navigation reuses the same in-flight request, deeper consumers
+retain Expo Image caching, and ordinary tabs remain immediate. Both visible loaders use one simple
+three-leaf loop with no visible technical loading copy; the background warm-up has no visible
+status. Every access/setup screen uses the shared raster brand lockup and leaf-shadow background
 without changing its authentication-looking logic.
 
 The remote implementation is preserved behavior, not permission to change product outcomes. The

@@ -18,6 +18,22 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Deferred Post-onboarding Image Warm-up Amendment — 2026-09-06
+
+This amendment preserves the bounded seven-raster/four-font startup gate and supersedes only the
+strictly lazy deeper-image wording below. After the app-owned splash exits and the already-loaded
+onboarding surface receives a paint opportunity, the remaining packaged local rasters warm in the
+background through small bounded parallel batches. That background work is never part of startup
+or onboarding readiness and may not delay first paint, input, navigation, a section transition,
+fallback, or reset.
+
+The queue prioritizes immediate Parent/Child access and experience imagery, then the remaining
+artwork, with the large prepared-media fixture last. A destination transition that needs an image
+sooner shares the same source-level promise cache and may await that exact request without creating
+a duplicate load. Individual failures count as settled for the queue and retain the existing local
+fallback. The warm-up has no visible status, percentage, remote-work claim, runtime URL, product
+state, or new authority; all assets remain packaged for deterministic offline use.
+
 ## R003 Section-scoped Startup Readiness Amendment — 2026-09-06
 
 This amendment supersedes the earlier all-runtime-raster and seven-font startup gate wherever they
@@ -1636,6 +1652,12 @@ the historical domain-only result recorded by FR-118.
 - **FR-182**: Each permitted major-section buffer MUST dynamically settle only its bounded immediate
   destination images and the 900 ms dwell concurrently. Deeper images MUST load only when their
   existing Expo Image consumer renders, retain deterministic fallback, and use memory/disk caching.
+- **FR-183**: After the app-owned splash exits and the onboarding surface receives a paint
+  opportunity, every remaining packaged local raster MUST warm asynchronously in bounded parallel
+  batches without joining the startup/onboarding readiness calculation or delaying navigation.
+  Immediate access/experience sources MUST come first, the prepared-media fixture MUST come last,
+  source-level requests MUST share one promise cache with section preparation, and failures MUST
+  settle into the existing deterministic fallback path.
 
 ### Key Entities
 

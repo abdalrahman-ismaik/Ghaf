@@ -1,4 +1,10 @@
 export {
+  deferredImageSources,
+  deferredImageTotal,
+  preloadDeferredImages,
+  type DeferredImageLoadResult,
+} from './preloadDeferredImages';
+export {
   preloadSectionImages,
   preloadStartupImages,
   sectionImageSources,

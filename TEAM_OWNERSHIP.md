@@ -6,6 +6,38 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Deferred Post-onboarding Image Warm-up Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, `app/_layout.tsx`,
+`src/features/startup/**`, and `tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Preserve the seven-raster/four-font blocking startup gate, then begin a non-blocking
+warm-up only after the app-owned splash exits and the onboarding surface has received a paint
+opportunity. Load the remaining local rasters asynchronously in bounded parallel batches, share
+the existing source-level promise cache with demand-driven section preparation, prioritize the
+immediate access/experience set, and leave the large prepared-media fixture until the final batch.
+The background queue may never delay first paint, navigation, section transitions, fallback, or
+reset and exposes no visible progress or remote-work claim. Preserve routes, access/session and
+product authorities, offline packaging, feature flags, current images, fonts, UI, and protected
+user work. No new asset, dependency, URL, vector image, push, merge, deployment, or release
+activation is authorized.
+
+**Completion — 2026-09-06**: Root extracted one per-source `expo-asset` promise cache, retained the
+seven-raster/four-font startup calculation, and added a singleton 41-raster background queue that
+starts after two post-splash frames. Batches load six sources concurrently, prioritize access and
+experience art, tolerate individual failures, and leave the 2.3 MB prepared fixture last. RED
+failed on the absent helper; final focused coverage passed 9 tests and the full suite passed 86
+files / 1,057 tests. Typecheck, lint, format, dependency alignment, Git whitespace, web export (119
+files), and Android JS export (88 files) passed. A delayed Firefox flow recorded zero deferred
+requests while the splash was pending, then exactly 41 after handoff with six simultaneous priority
+starts and prepared media last; it had zero page errors. Physical Android decode/cache/memory
+remains `BLOCKED / NOT RUN` because ADB found no device. The reservation is released at the
+cohesive local checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Section-scoped Asset Loading and Simple Leaf-loop Window
 
 **Owner and only writer**: `/root`

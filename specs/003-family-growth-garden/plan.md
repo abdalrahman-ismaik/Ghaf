@@ -1,5 +1,21 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Deferred Post-onboarding Image Warm-up Addendum — 2026-09-06
+
+Keep the existing startup and section contracts intact, but extract their source-level
+`expo-asset` promise cache into one shared startup utility. Compose a deduplicated deferred queue
+from the existing section priority sets, the remainder of the typed artwork registry, and the
+prepared-media registry in that order. Exclude every startup source and place prepared media last.
+Settle batches of six sequentially while loading each batch with `Promise.allSettled`, so the queue
+is meaningfully parallel without launching all 41 decodes at once or rejecting on one bad file.
+
+Root starts the singleton queue only after the app-owned splash leaves and two animation frames
+give the already-ready onboarding surface a paint opportunity. The effect is fire-and-forget and
+does not enter `startupReady`, expose progress, alter routing, or cancel the intentional cache
+warm-up on a normal rerender. A fast destination handoff calls the existing section preparation,
+which reuses any in-flight source promise. Add RED contract coverage, focused behavioral coverage,
+full validation, production exports, a delayed-request web proxy, and available Android evidence.
+
 ## R003 Section-scoped Startup Optimization Addendum — 2026-09-06
 
 Replace the all-app preload with two bounded levels. Root startup settles the official logo and

@@ -1,5 +1,3 @@
-import { Asset } from 'expo-asset';
-
 import { officialGhafRasterLogoSource } from '@/components/brand/GhafRasterLogo';
 import {
   accessFieldArtworkSource,
@@ -11,9 +9,8 @@ import {
   welcomeArtworkSource,
 } from '@/components/illustrations/illustrationSources';
 
+import { loadLocalImage, type AssetModule } from './loadLocalImage';
 import { settleStartupImageSources, type StartupImageProgress } from './settleStartupImageSources';
-
-type AssetModule = Parameters<typeof Asset.fromModule>[0];
 
 function uniqueImageSources(sources: readonly AssetModule[]): AssetModule[] {
   return Array.from(new Set(sources));
@@ -39,19 +36,6 @@ export const startupImageTotal = startupImageSources.length;
 const remainingImageSources = startupImageSources.filter(
   (source) => !startupCriticalImageSources.includes(source),
 );
-
-const localImageLoads = new Map<AssetModule, Promise<void>>();
-
-function loadLocalImage(source: AssetModule): Promise<void> {
-  const existing = localImageLoads.get(source);
-  if (existing) return existing;
-
-  const pending = Asset.fromModule(source)
-    .downloadAsync()
-    .then(() => undefined);
-  localImageLoads.set(source, pending);
-  return pending;
-}
 
 export function preloadStartupImages(
   onProgress: (progress: StartupImageProgress) => void,

@@ -10,6 +10,7 @@ import {
   reduceFirstRunState,
   shouldShowSectionTransition,
 } from '../src/components/onboarding/experienceModel';
+import { settleImageSourcesInBatches } from '../src/features/startup/settleImageSourcesInBatches';
 import { settleStartupImageSources } from '../src/features/startup/settleStartupImageSources';
 import { resources } from '../src/i18n/resources';
 
@@ -85,6 +86,8 @@ describe('R003 first-run experience', () => {
     const splash = source('src/components/onboarding/BrandedSplash.tsx');
     const transition = source('src/components/onboarding/SectionTransitionOverlay.tsx');
     const rootLayout = source('app/_layout.tsx');
+    const deferredImages = source('src/features/startup/preloadDeferredImages.ts');
+    const localImageLoader = source('src/features/startup/loadLocalImage.ts');
     const startupImages = source('src/features/startup/preloadStartupImages.ts');
     const tokens = source('src/design/tokens.ts');
     const welcome = source('app/index.tsx');
@@ -104,6 +107,7 @@ describe('R003 first-run experience', () => {
     expect(rootLayout).toContain('<SectionTransitionOverlay');
     expect(rootLayout).toContain('firstRunMotion.startupHold');
     expect(rootLayout).toContain('preloadStartupImages');
+    expect(rootLayout).toContain('preloadDeferredImages');
     expect(rootLayout).toContain('fontsSettled && imagesSettled');
     expect(rootLayout).toContain('presentationReady');
     expect(rootLayout).toContain('nativeSplashHidden');
@@ -117,9 +121,20 @@ describe('R003 first-run experience', () => {
     expect(startupImages).toContain("'child-experience'");
     expect(startupImages).not.toContain('landscapeArtworkSources');
     expect(startupImages).not.toContain('familyCanopyArtworkSources');
-    expect(startupImages).toContain('Asset.fromModule(source)');
-    expect(startupImages).toContain('.downloadAsync()');
-    expect(startupImages).toContain('localImageLoads');
+    expect(startupImages).toContain("from './loadLocalImage'");
+    expect(localImageLoader).toContain('Asset.fromModule(source)');
+    expect(localImageLoader).toContain('.downloadAsync()');
+    expect(localImageLoader).toContain('localImageLoads');
+    expect(deferredImages).toContain('Object.values(sectionImageSources)');
+    expect(deferredImages).toContain('Object.values(artworkSources)');
+    expect(deferredImages).toContain('preparedMediaImageSources');
+    expect(deferredImages).toContain('DEFERRED_IMAGE_BATCH_SIZE = 6');
+    expect(deferredImages.indexOf('...remainingArtworkImageSources')).toBeLessThan(
+      deferredImages.indexOf('...preparedMediaImageSources'),
+    );
+    expect(rootLayout).toContain('if (showBrandedSplash) return');
+    expect(rootLayout.match(/requestAnimationFrame/g)?.length).toBeGreaterThanOrEqual(3);
+    expect(rootLayout).not.toContain('startupReady = fontsSettled && imagesSettled &&');
     expect(transition).toContain('firstRunMotion.orientationHold');
     expect(tokens).toContain('startupHold: 1200');
     expect(tokens).toContain('orientationHold: 900');
@@ -128,6 +143,29 @@ describe('R003 first-run experience', () => {
     expect(welcome).toContain('<FirstRunOnboarding');
     expect(welcome).toContain("activeExperience === 'parent'");
     expect(welcome).toContain("activeExperience === 'child'");
+  });
+
+  it('settles deferred images in bounded parallel batches without rejecting the queue', async () => {
+    const calls: number[] = [];
+    let active = 0;
+    let maxActive = 0;
+
+    const result = await settleImageSourcesInBatches({
+      batchSize: 2,
+      loadImage: async (source) => {
+        active += 1;
+        maxActive = Math.max(maxActive, active);
+        calls.push(source);
+        await Promise.resolve();
+        active -= 1;
+        if (source === 4) throw new Error('local fallback');
+      },
+      sources: [1, 2, 3, 4, 5],
+    });
+
+    expect(calls).toEqual([1, 2, 3, 4, 5]);
+    expect(maxActive).toBe(2);
+    expect(result).toEqual({ failed: 1, settled: 5, total: 5 });
   });
 
   it('settles the bounded signed-out images and reports fallback failures', async () => {

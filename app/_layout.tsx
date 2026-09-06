@@ -22,6 +22,7 @@ import {
 import { GhafFontProvider } from '@/components/primitives';
 import { colors, firstRunMotion } from '@/design/tokens';
 import {
+  preloadDeferredImages,
   preloadStartupImages,
   startupImageTotal,
   type StartupImageProgress,
@@ -149,6 +150,31 @@ export default function RootLayout() {
       if (frame !== undefined) cancelAnimationFrame(frame);
     };
   }, [nativeSplashHidden, startupReady]);
+
+  useEffect(() => {
+    if (showBrandedSplash) return;
+    let mounted = true;
+    let firstFrame: number | undefined;
+    let secondFrame: number | undefined;
+
+    firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => {
+        void preloadDeferredImages().then((result) => {
+          if (mounted && result.failed > 0) {
+            console.warn(
+              `${result.failed} deferred Ghaf image asset(s) could not be warmed; using local fallbacks.`,
+            );
+          }
+        });
+      });
+    });
+
+    return () => {
+      mounted = false;
+      if (firstFrame !== undefined) cancelAnimationFrame(firstFrame);
+      if (secondFrame !== undefined) cancelAnimationFrame(secondFrame);
+    };
+  }, [showBrandedSplash]);
 
   return (
     <SafeAreaProvider>

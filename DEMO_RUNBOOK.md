@@ -1,5 +1,32 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Deferred Post-onboarding Image Warm-up Record — 2026-09-06
+
+**Current classification:** locally validated implementation candidate; physical Android
+decode/cache/memory behavior remains unobserved.
+
+Launch readiness remains exactly seven signed-out rasters and four current brand-font files. After
+the app-owned splash exits and two paint frames have been yielded, the other 41 packaged rasters
+warm without visible progress in batches of six parallel requests. The first group contains the
+five botanical avatars plus the access field; the task image follows at the start of batch two.
+The remaining artwork follows, with the 2.3 MB prepared recycling fixture last. Section preparation
+uses the same per-source promise cache and therefore does not duplicate an in-flight warm-up.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| RED/focused behavior | `PASSED` | RED failed on the absent batch helper; final focused file: 9 tests |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,057 tests |
+| Expo dependency/configuration | `PASSED` | dependency check current; no dependency, font, asset, or config change |
+| Production exports | `PASSED` | web: 119 files; Android JS: 88 files |
+| Blocking boundary | `PASSED (Firefox web proxy)` | delayed onboarding image kept the splash visible; zero deferred requests at 1,700 ms |
+| Deferred order/concurrency | `PASSED (Firefox web proxy/source)` | 41 unique deferred requests; first six started within 1 ms, task began in batch two, prepared fixture was last |
+| Failure and duplicate handling | `PASSED automated/source` | all-settled batches continue after failure; startup, section, and background work share one source-promise cache |
+| Browser console | `PASSED` | zero page errors in the delayed request flow |
+| Physical Android decode/cache/memory | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+
+Do not describe the background warm-up as startup readiness, screen data loading, remote sync, or
+proof that every image has decoded on Android. It is a local asset-cache optimization only.
+
 ## R003 Section-scoped Loading Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; native animation feel,

@@ -1154,3 +1154,34 @@ product behavior, and the 46-artwork registry remain unchanged.
       matrix, produced zero page errors, and had zero horizontal overflow at 320/390 widths.
       Physical Android, TalkBack, native decode/memory, and OS font scale remain `BLOCKED / NOT RUN`
       because `adb devices -l` returned no attached target.
+
+---
+
+## Phase 37: Deferred Post-onboarding Image Warm-up
+
+**Purpose**: Keep first entry bounded while warming every later local raster after onboarding can
+paint, using controlled parallelism and one request cache.
+
+- [x] T269 Re-read the active contract, inspect startup/section source registries and current
+      request measurements, reserve exact writer boundaries, and amend spec/plan/tasks before
+      runtime work.
+- [x] T270 Write RED coverage proving deferred work is excluded from startup readiness, begins only
+      after the app-owned splash exits and a paint opportunity, uses bounded parallel batches,
+      prioritizes access/experience imagery, shares one source cache, and places prepared media last.
+- [x] T271 Extract the cached local-image loader, implement the singleton failure-tolerant deferred
+      queue, and preserve the existing startup and section result contracts.
+- [x] T272 Trigger the queue from root as non-blocking post-splash work without visible progress,
+      route/state authority, duplicate downloads, or a new dependency.
+- [x] T273 Run focused/full tests, typecheck, lint, format, dependency/asset/route checks,
+      production exports, delayed browser request-order inspection, available Android evidence, and
+      record truthful documentation plus the cohesive local checkpoint.
+
+      Completed locally on 2026-09-06: RED failed on the absent batch helper; the focused file then
+      passed 9 tests and the full suite passed 86 files / 1,057 tests. Typecheck, lint, format,
+      dependency alignment, Git whitespace, 119-file web export, and 88-file Android JS export
+      passed. In Firefox, a 2,600 ms delayed onboarding raster kept the branded splash present with
+      zero deferred requests at 1,700 ms. After handoff, all 41 remaining rasters were requested:
+      the five avatars and field image began together within 1 ms, the task image opened batch two,
+      and the 2.3 MB prepared fixture was last. The flow produced zero browser errors. Physical
+      Android decode/cache/memory remains `BLOCKED / NOT RUN` because `adb devices -l` returned no
+      attached target.

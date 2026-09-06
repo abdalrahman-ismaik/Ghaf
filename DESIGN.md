@@ -138,8 +138,12 @@ handoff screen uses the same mark and local leaf-shadow texture while the four f
 current branded roles and the signed-out onboarding/Welcome images settle, with a 1,200 ms minimum
 visible window beginning after native handoff. The logo and leaf-shadow background settle before
 that handoff. Garden, League, reveal, learning, Shared Growth, canopy, Circle, and prepared-media
-images remain lazy. A failed raster advances only into its existing deterministic fallback and
-records one warning, so readiness never becomes a dead end. A context
+images remain outside the blocking gate. Once the loader exits and onboarding can paint, the 41
+remaining local rasters warm without visible UI in sequential batches of six parallel requests:
+access/experience sources first, remaining artwork next, and prepared media last. Section demand
+shares the same source promise cache, so it can reuse an in-flight request. A failed raster
+advances only into its existing deterministic fallback and records one warning, so readiness never
+becomes a dead end. A context
 transition overlay is permitted only across Welcome, Parent access, Child access, Parent
 experience, and Child experience groups. Paths within a stable Parent or Child group, including
 bottom tabs and nested screens, do not trigger it. A major-section buffer stays legible for 900 ms;
