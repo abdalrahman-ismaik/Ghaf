@@ -22,10 +22,10 @@ function sourceFiles(directory: string): string[] {
 describe('Android runtime readiness', () => {
   it('uses the Expo SDK 57 compatible package patches without unused audio or form libraries', () => {
     expect(packageJson.dependencies).toMatchObject({
-      expo: '~57.0.19',
+      expo: '~57.0.20',
       'expo-constants': '~57.0.17',
       'expo-linking': '~57.0.9',
-      'expo-router': '~57.0.18',
+      'expo-router': '~57.0.19',
     });
 
     for (const dependency of ['expo-audio', 'react-hook-form', '@hookform/resolvers']) {
