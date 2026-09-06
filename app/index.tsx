@@ -3,8 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AccessScreen, PrototypePill } from '@/components/access';
+import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
 import { LocalIllustration } from '@/components/illustrations';
-import { FirstRunOnboarding, GhafRasterLogo, useFirstRunExperience } from '@/components/onboarding';
+import { FirstRunOnboarding, useFirstRunExperience } from '@/components/onboarding';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, r001Radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';

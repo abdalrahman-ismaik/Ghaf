@@ -18,6 +18,28 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Child-clear First-run and Branded Access Amendment — 2026-09-06
+
+The user explicitly supersedes the three-moment first-run presentation with four optional moments.
+Moment one introduces Ghaf and its family value before the existing choice, support, and private
+symbolic-growth moments. All four use short concrete language suitable for younger readers in
+Modern Standard Arabic and equivalent English, while retaining Parent approval, permitted-help
+full credit, private permanent growth, and the no-measured-impact boundary.
+
+The three feature photographs may be replaced in place with more vivid, child-welcoming local
+raster photography, and one new Ghaf-introduction photograph extends the registered library from
+45 to exactly 46 images. The screens may use stronger emerald, teal, and amber framing and live
+geometric accents, but no generated or authored vector scene, mascot, fantasy ecology, person,
+hand, text-in-image, hazard, random reward, or pressure mechanic.
+
+The branded startup presentation now has a 1,200 ms minimum visible window and each permitted major
+section orientation buffer has a 900 ms dwell. These are intentional presentation holds requested
+by the user, not claims of remote work; no fake percentage or artificial server/model explanation
+is permitted. Every existing Parent and Child access, verification, pairing, and first-family
+setup screen must inherit a compact official raster Ghaf logo/name and the loading screen's local
+leaf-shadow visual theme through shared components. Routes, access/session authority, form logic,
+offline fallback, reset, and all other product behavior remain unchanged.
+
 ## R003 First-run Experience Authority Amendment — 2026-09-06
 
 The user explicitly authorizes a more engaging splash, onboarding, and major-section transition
@@ -26,7 +48,7 @@ supersedes the frozen Welcome presentation only where needed to add optional fir
 does not change the existing Welcome access behavior, the exact 37 product routes, or any access,
 task, reward, privacy, Garden, League, reset, or R002b flag authority.
 
-Three Arabic-first onboarding moments live inside `/`: choose a Parent-approved action, use
+Four Arabic-first onboarding moments live inside `/`: introduce Ghaf, choose a Parent-approved action, use
 permitted support before Parent confirmation, and remember confirmed work as permanent private
 symbolic Garden growth. Every moment is skippable, bilingual, offline deterministic, and explicit
 that Ghaf's landscapes are symbolic rather than measured environmental impact. Completion is
@@ -36,8 +58,8 @@ grants a role.
 The native raster splash may hand off to a short branded local-readiness screen. A professional
 transition buffer may run only across Welcome/access/authenticated role boundaries, never during
 ordinary tabs or nested navigation and never as a false remote/model loading claim. The official
-raster logo and four additional provenance-recorded local raster photographs extend the existing
-41-asset library to 45. No new scenic vector, runtime URL, dependency, artificial delay, or product
+raster logo and five additional provenance-recorded local raster photographs extend the existing
+41-asset library to 46. No new scenic vector, runtime URL, dependency, untruthful delay, or product
 behavior is authorized. Exact screen, motion, and asset rules live in
 `design-intake/r003-first-run-experience.md`.
 
@@ -47,7 +69,7 @@ As a new Parent or Child, I quickly understand that Ghaf connects chosen real-wo
 permitted support, Parent confirmation, and permanent private symbolic growth, then I can start or
 skip without losing access to the existing Parent and Child paths.
 
-**Independent acceptance**: On a fresh Arabic launch, traverse all three moments, go back once,
+**Independent acceptance**: On a fresh Arabic launch, traverse all four moments, go back once,
 change language, skip and replay by reload, then reach both existing access paths. Repeat at compact
 width and reduced motion. No new route/session authority, remote request, vector scene, misleading
 impact claim, or routine-tab loader appears.
@@ -1525,22 +1547,23 @@ the historical domain-only result recorded by FR-118.
 - **FR-168**: The natural-artwork refresh MUST preserve the exact 37-product-route manifest, all
   existing store/service/domain authorities, deterministic offline reset, Arabic-first RTL and
   English LTR behavior, privacy projection, and eight independent default-off R002b flags.
-- **FR-169**: `/` MUST present exactly three optional first-run onboarding moments before the
-  existing Welcome access choice, with visible Next, Back where applicable, Skip, Start, and `1/3`
+- **FR-169**: `/` MUST present exactly four optional first-run onboarding moments before the
+  existing Welcome access choice, with visible Next, Back where applicable, Skip, Start, and `1/4`
   progress semantics; onboarding MUST NOT add a product route or grant a role.
-- **FR-170**: The three moments MUST explain Parent-approved choice, permitted help with full
+- **FR-170**: The four moments MUST introduce Ghaf and explain Parent-approved choice, permitted help with full
   credit, Parent confirmation, and permanent private symbolic growth without implying measured
   impact, obedience scoring, scarcity, punishment, or guaranteed outcomes.
 - **FR-171**: Active Parent/Child sessions MUST bypass onboarding. First-run completion MUST remain
   session-local and reload-safe without claiming persistence; signed-out reset and existing access
   isolation MUST remain deterministic.
-- **FR-172**: The native splash and app-owned splash MUST use the immutable local raster Ghaf logo,
-  wait only for local readiness, expose no fake percentage or remote-loading claim, and resolve to
-  a usable route when local artwork falls back.
+- **FR-172**: The native splash and app-owned splash MUST use the immutable local raster Ghaf logo.
+  The app-owned splash MUST wait for local readiness and the user-requested 1,200 ms minimum,
+  expose no fake percentage or remote-loading claim, and resolve to a usable route when local
+  artwork falls back.
 - **FR-173**: A transition buffer MAY appear only when crossing Welcome, Parent access, Child
   access, Parent experience, or Child experience boundaries. It MUST NOT appear between tabs or
   contextual routes within the same active experience.
-- **FR-174**: The first-run experience MUST extend the local artwork registry from 41 to exactly 45
+- **FR-174**: The first-run experience MUST extend the local artwork registry from 41 to exactly 46
   provenance-recorded raster assets with no people, hands, text, logo, UI, vector scene, hazard,
   fantasy effect, runtime URL, or misleading environmental claim inside generated pixels.
 - **FR-175**: Onboarding, splash, and transition states MUST provide Arabic RTL/English LTR parity,
@@ -1549,6 +1572,15 @@ the historical domain-only result recorded by FR-118.
 - **FR-176**: Onboarding and transition presentation MUST remain offline deterministic, use no new
   provider or dependency, and leave all access, task, Seed, Garden, League, Family Reward, privacy,
   assistant, reset, and default-off feature-flag authorities unchanged.
+- **FR-177**: The first onboarding moment MUST explain what Ghaf is before feature teaching; every
+  onboarding title/body MUST use short, concrete, child-clear Modern Standard Arabic and equivalent
+  plain English without weakening safety, Parent confirmation, privacy, or symbolic-impact truth.
+- **FR-178**: Every route under `/access/parent/**` and `/access/child/**` MUST inherit the shared
+  official raster logo/name header and local leaf-shadow background while preserving Back,
+  progress, keyboard, safe-area, loading/error, synthetic-origin, and 48 dp control behavior.
+- **FR-179**: Each permitted major-section transition MUST dwell for 900 ms. Startup and transition
+  holds MUST remain determinate local presentation with no fake percentage, remote-work claim, or
+  effect on navigation authority.
 
 ### Key Entities
 
@@ -1753,9 +1785,9 @@ the historical domain-only result recorded by FR-118.
   function. Arabic/English proxy inspection at 320/390 widths shows crop-safe artwork and readable
   live UI without horizontal overflow; physical Android, TalkBack, botanical/cultural review, and
   final illustration-rights review remain separately recorded rather than inferred.
-- **SC-046**: Automated source and flow checks find exactly three ordered in-route onboarding
-  moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
-  exactly 45 local raster manifest/registry entries, and no new authority or runtime image URL.
+- **SC-046**: Automated source and flow checks find exactly four ordered in-route onboarding
+moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
+  exactly 46 local raster manifest/registry entries, and no new authority or runtime image URL.
 - **SC-047**: Arabic RTL and English LTR web-proxy inspection at 320×720 and 390×844 shows the full
   first-run and Welcome journey with no clipped copy, hidden action, broken image, horizontal
   overflow, or application console error; reduced motion uses no travel/scale animation.

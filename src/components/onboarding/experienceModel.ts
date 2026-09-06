@@ -1,4 +1,4 @@
-export const ONBOARDING_STEPS = ['choose', 'support', 'growth'] as const;
+export const ONBOARDING_STEPS = ['intro', 'choose', 'support', 'growth'] as const;
 
 export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
 export type ActiveExperience = 'signed_out' | 'parent' | 'child' | null;
@@ -23,7 +23,7 @@ export type FirstRunAction =
 
 export const initialFirstRunState: FirstRunState = {
   completed: false,
-  step: 'choose',
+  step: 'intro',
 };
 
 export function reduceFirstRunState(state: FirstRunState, action: FirstRunAction): FirstRunState {
@@ -34,7 +34,7 @@ export function reduceFirstRunState(state: FirstRunState, action: FirstRunAction
     return state.step === 'growth' ? { ...state, completed: true } : state;
   }
   if (action.type === 'back') {
-    return { ...state, step: ONBOARDING_STEPS[Math.max(0, index - 1)] ?? 'choose' };
+    return { ...state, step: ONBOARDING_STEPS[Math.max(0, index - 1)] ?? 'intro' };
   }
   return {
     ...state,

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration } from '@/components/illustrations';
 import { IconButton, Text } from '@/components/primitives';
 import {
@@ -123,7 +124,7 @@ export function OrganicBackdrop({ variant = 'organic' }: OrganicBackdropProps) {
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}>
       <LocalIllustration
-        assetId="field-paper"
+        assetId="section-transition"
         decorative
         priority="high"
         style={[
@@ -134,7 +135,7 @@ export function OrganicBackdrop({ variant = 'organic' }: OrganicBackdropProps) {
               ? styles.fieldTextureDotted
               : styles.fieldTextureOrganic,
         ]}
-        testID="access-field-texture"
+        testID="access-leaf-shadow-backdrop"
       />
     </View>
   );
@@ -175,17 +176,13 @@ export function AccessHeader({
     <View style={[styles.header, { flexDirection: logicalRowDirection(direction) }]}>
       <View style={styles.headerSlot}>{leading}</View>
       <View style={styles.headerCenter}>
-        <Text
-          align="center"
-          brand
-          color="ghafEmerald"
+        <GhafBrandLockup
+          brand={brand}
           direction={direction}
           language={language}
-          style={styles.headerBrand}
-          variant="screenTitle"
-        >
-          {brand}
-        </Text>
+          logoSize={36}
+          testID="access-brand-lockup"
+        />
         {title ? (
           <Text
             align="center"
@@ -333,10 +330,10 @@ const styles = StyleSheet.create({
     opacity: 0.34,
   },
   fieldTextureDotted: {
-    opacity: 0.14,
+    opacity: 0.18,
   },
   fieldTextureOrganic: {
-    opacity: 0.22,
+    opacity: 0.24,
   },
   keyboardRoot: {
     flex: 1,
@@ -378,8 +375,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    minHeight: 72,
+    minHeight: 84,
     alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.surfaceContainerLow,
+    backgroundColor: colors.pearlGround,
     paddingHorizontal: layout.screenPadding,
     paddingVertical: spacing.xs,
   },
@@ -399,9 +399,6 @@ const styles = StyleSheet.create({
   headerButton: {
     borderColor: colors.transparent,
     borderRadius: r001Radii.pill,
-  },
-  headerBrand: {
-    width: '100%',
   },
   progressLabel: {
     minWidth: layout.touchTarget,

@@ -950,10 +950,37 @@
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 106341,
+        "bytes": 287061,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-ghaf-intro.jpg",
+        "sha256": "c1923c96e6cf923fee12c16fa06eb2725eb26e780d894fdb50093719af1c3251",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "OpenAI imagegen",
+      "id": "onboarding-ghaf-intro",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: introduce Ghaf with a magnificent mature Ghaf tree in a real UAE desert landscape at golden sunrise, welcoming and full of life without showing any person\nScene/backdrop: warm sand, small native grasses and scattered Ghaf seed pods, clear turquoise-to-gold morning sky\nSubject: one botanically plausible mature Ghaf tree with a broad emerald canopy and richly textured trunk\nStyle/medium: premium natural-history editorial photography, photorealistic, real bark and leaf texture, natural asymmetry\nComposition/framing: dynamic child-height low viewpoint, a gentle sandy path leads toward the tree, landscape 3:2, central crop-safe subject with breathing room\nLighting/mood: luminous amber rim light, hopeful, adventurous, calm and safe\nConstraints: nondirectional composition; no readable text; no logo; no UI; no building; no vehicle; no environmental-impact claim\nAvoid: illustration, vector art, 3D render, CGI, fantasy glow, magical particles, people, person, faces, hands, mascots, animals, brands, watermarks, hazards",
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
+        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 252918,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-action.jpg",
-        "sha256": "384e8ef870219bddc716cdde528efa4a63ed9aa7454575bf387e9adc1e5966ac",
+        "sha256": "114dcf74c11068528cf02fd316e2c7ab4534a0698b7796657ff29feacc8955f8",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
@@ -964,7 +991,7 @@
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Create one new opaque raster photograph for the Ghaf Arabic-first family sustainability app in the established Quiet UAE Botanical Editorial direction.\n\nUse case: first onboarding moment, communicating that a Child can choose one safe Parent-approved household sustainability action. This is an inviting editorial still life, not evidence of task completion or environmental impact.\nPrimary subject: a small, beautifully arranged but naturally imperfect selection of clean, safe, empty household recycling objects on a warm limestone surface: one plain unbranded kraft-paper carton, one rinsed clear plastic bottle with cap removed and placed beside it, one clean aluminum can with fully smooth intact edges, and one folded piece of plain paper. Include a small living Ghaf leaf sprig resting nearby only as a quiet botanical brand-world cue. Everything must look clean, dry, empty, lightweight, and safe for a supervised family sorting activity.\nScene/backdrop: calm UAE home terrace or bright interior threshold suggested only by warm plaster, limestone, and softly blurred desert daylight; no identifiable home, person, appliance, bin labels, or location.\nStyle/medium: premium photorealistic editorial lifestyle photography with credible natural materials, tactile detail, restrained warmth, real asymmetry, and an honest natural-history sensibility. No illustration, no vector art, no drawing, no painting, no CGI, no 3D render.\nComposition/framing: horizontal 3:2 landscape, low tabletop angle, subjects distributed within the crop-safe middle 70 percent, generous breathing room around all edges, visually balanced and nondirectional for identical Arabic RTL and English LTR use, no arrow-like layout or left-to-right sequence.\nLighting/mood: soft optimistic early-morning UAE daylight, warm Pearl and Ivory highlights, Sand and Earth neutrals, restrained Ghaf Emerald from the leaf, subtle realistic shadows, energetic but calm and capable.\nMaterials/textures: matte kraft paper, clean transparent PET, brushed aluminum, warm limestone, delicate real leaves; believable minor imperfections, no plastic-looking CGI surfaces.\nText: none.\nConstraints: exactly the safe objects described; no people, children, faces, hands, arms, bodies, silhouettes, animals, readable text, letters, numbers, symbols, recycling mark, logo, brand, watermark, UI, icon, badge, score, reward, coin, trophy, confetti, measurement, before-and-after comparison, quantity claim, or impact claim. No glass, sharps, broken edges, batteries, chemicals, food residue, liquid, dirty waste, medical waste, electrical items, tools, flames, hot objects, or road/outdoor hazard.\nAvoid: illustration, vector aesthetic, watercolor, poster styling, flat design, studio-perfect symmetry, cloned objects, repeated leaves, fantasy glow, magical particles, oversaturated green, teal-orange grading, dramatic spotlight, fake bokeh, staged advertising gloss, visible labels, distorted containers, fused materials, impossible reflections, or malformed foliage. Keep the image fully photographic, warm, safe, credible, and crop-resilient.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: make a safe everyday sustainability action feel colorful, energetic, and inviting\nScene/backdrop: sunlit warm paper surface with soft teal and amber shadows\nSubject: only clean safe recyclable household objects—smooth paper, flattened cardboard, intact aluminum cans, and capped plastic bottles—arranged in playful flowing color groups ready to sort\nStyle/medium: premium editorial still-life photography, photorealistic, tactile paper grain, real material texture and small natural imperfections\nComposition/framing: bold close crop, curved rhythm moving toward an open central area, landscape 3:2, crop-safe and nondirectional\nLighting/mood: bright warm window light, lively emerald, teal, amber and coral accents, curious and capable rather than childish\nConstraints: all objects clean and intact; no glass, sharps, batteries, chemicals, food, medicine, unknown waste, readable text, logo, UI, person, face, or hand\nAvoid: illustration, vector art, cartoon, 3D render, CGI, fantasy effects, people, mascots, brands, watermarks, clutter, unsafe objects",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
@@ -977,10 +1004,10 @@
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 197375,
+        "bytes": 329063,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-support.jpg",
-        "sha256": "66cf1e9c9aaee5004d6eef265c0d790824ee55d0077e8a45bd82582d7cea693e",
+        "sha256": "096f37a4d79ceea5d8d62c39edebbda59d4d373c8f06b49fd0576036be6c3bc2",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
@@ -991,7 +1018,7 @@
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Create one new opaque raster photograph for the Ghaf Arabic-first family sustainability app in the established Quiet UAE Botanical Editorial direction.\n\nUse case: second onboarding moment, a respectful visual metaphor for permitted help and family support. It must not depict surveillance, obedience, grading, proof, or a Parent doing the task for a Child.\nPrimary subject: one young Ghaf seedling, Prosopis cineraria, growing naturally from warm sandy soil beneath the dappled edge-shadow of a mature Ghaf canopy that remains mostly outside the frame. The seedling has a slender believable stem and several small, paired, feathery bipinnate leaflets characteristic of Ghaf. A modest curved windbreak made only from a few naturally fallen, smooth twigs and a low crescent of sand sits nearby without touching or enclosing the seedling, suggesting support while leaving the plant upright and independent.\nScene/backdrop: quiet undisturbed UAE desert margin with fine sand, tiny mineral grains, one or two small dry leaf fragments, and a softly hazed neutral distance; no identifiable site or infrastructure.\nStyle/medium: premium photorealistic natural-history editorial photography, tactile, credible, understated, intimate, and emotionally warm. No illustration, no vector art, no drawing, no painting, no CGI, no 3D render.\nComposition/framing: horizontal 3:2 landscape, ground-level close environmental portrait; seedling in the crop-safe middle 55 percent; canopy shadow and twigs form soft irregular shelter without arrows, circles, hands, fences, or left-to-right direction; generous breathing room for identical RTL and LTR crops.\nLighting/mood: gentle early-morning UAE sunlight crossing real leaf shadow, calm capable optimism, warm Pearl/Ivory sky reflections, Sand and Earth soil, restrained Ghaf Emerald leaves and Deep Forest shadow. No dramatic sunset or spotlight.\nMaterials/textures: fine wind-shaped sand, matte twig bark, tiny varied leaflets, naturally imperfect stem, soft irregular shadow edges; physically plausible scale, focus, and light.\nText: none.\nConstraints: exactly one seedling and only subtle out-of-frame canopy shadow; no people, children, adults, faces, hands, arms, bodies, silhouettes, footprints, animals, readable text, letters, numbers, logo, brand, watermark, UI, icons, badges, scores, rewards, ribbons, measuring sticks, plant labels, pots, nursery bags, tools, irrigation pipe, glass, sharps, chemicals, litter, roads, buildings, vehicles, planted rows, or environmental-impact claim. The twigs must be rounded, inert, clearly fallen natural material and not sharp or tool-like.\nAvoid: illustration, vector aesthetic, watercolor, poster, flat design, CGI foliage, fantasy glow, magical particles, halo, perfect symmetry, heart shape, enclosing circle, cloned leaflets, fused branches, malformed leaves, giant leaves, generic broad houseplant leaves, tropical density, oversaturated green, teal-orange grading, artificial studio staging, harsh contrast, fake bokeh, or visual implication that growth is guaranteed. Keep it photographic, botanically plausible, quiet, independent, and crop-resilient.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: show that asking for help supports growth through a real sheltered Ghaf seedling\nScene/backdrop: a small UAE desert grove after gentle morning watering, warm sand, mature canopy shade, soft turquoise sky glimpsed through leaves\nSubject: one healthy young Ghaf seedling protected by a simple low ring of natural twigs and palm fiber, with the broad shadow of a mature Ghaf tree sheltering it\nStyle/medium: premium natural-history editorial photography, photorealistic, botanically plausible leaves, real sand and fiber texture\nComposition/framing: close child-height viewpoint, seedling large and vivid in the foreground, sweeping dappled leaf shadows create movement, landscape 3:2, crop-safe and nondirectional\nLighting/mood: crisp sunlit leaves, emerald and teal with warm amber highlights, reassuring, energetic and safe\nConstraints: no person, face, hand, readable text, logo, UI, building, tool, hazard, or claim that growth happened automatically\nAvoid: illustration, vector art, cartoon, 3D render, CGI, fantasy glow, magical particles, people, mascots, brands, watermarks",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
@@ -1004,10 +1031,10 @@
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 203935,
+        "bytes": 314467,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-growth.jpg",
-        "sha256": "89c33b579f3b9625001a28d6498bc355d218a127344a48bbf37c816276ea9a9f",
+        "sha256": "bcef0b89c08075162699e0a7751a256ba570b44b5896a0fe36cdd5fe69607059",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
@@ -1018,7 +1045,7 @@
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Create one new opaque raster photograph for the Ghaf Arabic-first family sustainability app in the established Quiet UAE Botanical Editorial direction.\n\nUse case: third onboarding moment, communicating that Parent-confirmed family actions are remembered as permanent private symbolic Garden growth. It is explicitly a poetic botanical metaphor, not a literal time sequence, planting record, achievement badge, or environmental-impact proof.\nPrimary subject: a refined natural-history tabletop study of Ghaf growth materials on warm sand-colored handmade paper: one authentic curved Ghaf seed pod, several naturally scattered small brown Ghaf seeds, one tiny germinated seed with a short pale root, and one delicate living Ghaf sprig with small paired feathery bipinnate leaflets. Arrange them loosely as collected botanical specimens with imperfect spacing, never as numbered stages or a strict directional sequence. Add a narrow irregular line of real UAE sand and one soft leaf shadow crossing the paper.\nScene/backdrop: warm matte handmade paper resting on pale limestone, with soft desert daylight and a gently blurred deep-green Ghaf canopy tone at the far edge; no notebook binding, museum label, handwriting, or identifiable location.\nStyle/medium: premium photorealistic natural-history editorial still-life photography, tactile, credible, poetic but physically real, with restrained color and natural asymmetry. No illustration, no vector art, no drawing, no painting, no CGI, no 3D render.\nComposition/framing: horizontal 3:2 landscape viewed at a shallow overhead angle; all botanical material contained in the crop-safe middle 68 percent; generous clean breathing room; nondirectional balance suitable for identical Arabic RTL and English LTR crops; no arrows, timeline, line chart, circular badge, or left-to-right progression.\nLighting/mood: warm optimistic early-morning UAE window light, gentle irregular shadows, Pearl/Ivory paper, Sand and Earth details, restrained Ghaf Emerald leaves, subtle Sun Gold warmth. Quiet sense of discovery and continuity, never spectacle.\nMaterials/textures: fibrous paper, mineral limestone, fine natural sand, dry matte pod, small varied seeds, moist germinated root, delicate realistic compound leaves; believable scale, depth, and contact shadows.\nText: none.\nConstraints: botanical specimens only; no people, children, adults, faces, hands, arms, bodies, silhouettes, animals, readable text, handwriting, letters, numbers, logo, brand, watermark, UI, icons, progress bar, badges, scores, rewards, coins, trophies, ribbons, confetti, measurement tools, labels, pins, jars, glass, sharps, chemicals, gardening tools, pots, nursery packaging, buildings, vehicles, planted landscape, quantity statement, carbon/water/waste claim, or real-tree-planting implication.\nAvoid: illustration, vector aesthetic, watercolor, poster, flat design, CGI foliage, fantasy glow, magical particles, halo, perfect symmetry, strict evenly spaced sequence, cloned seeds, repeated leaflets, fused pod, malformed germination, broad generic houseplant leaves, oversaturated green, teal-orange grading, dramatic spotlight, artificial museum display, fake bokeh, or staged trophy photography. Keep it unmistakably photographic, symbolic, intimate, premium, and crop-resilient.",
+      "prompt": "Edit this existing onboarding photograph while preserving its landscape 3:2 crop, camera position, bright UAE morning light, blue sky, sprout, young sapling, mature tree, surrounding grove, realistic sand, overall color balance, and premium natural-history editorial photographic style. Change only the foreground botanical material: remove every large round green split husk, nut-like shell, and round nut. Replace them with several botanically plausible Ghaf (Prosopis cineraria) seed pods: long, slender, gently curved, dry tan-to-brown segmented pods lying naturally on the sand, plus a few small flattened brown seeds at believable scale. The pods must read as modest real desert-tree pods, not giant fruit, dates, acacia balls, or fantasy objects. Keep the result fully photorealistic and naturally imperfect. No illustration, vector art, cartoon, CGI look, 3D render, instant-growth effect, fantasy glow, magical particles, people, person, faces, hands, text, logo, UI, tools, buildings, hazards, labels, measurements, or environmental-impact claims.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [

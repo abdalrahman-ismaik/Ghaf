@@ -4,11 +4,14 @@
 
 The onboarding completion marker exists only for the current in-memory app session; it is not an
 account preference or persistence guarantee and a reload may show onboarding again. The branded
-splash waits only for local fonts/assets, and the section transition is an orientation buffer for
-major access/role changes—not evidence of a server request, authentication, AI processing, data
-sync, or completed security check. Generated first-run photographs remain symbolic presentation
-assets subject to the same rights, botanical, cultural, safeguarding, accessibility, and physical
-Android review limits as the existing natural artwork library.
+splash waits only for local fonts/assets and uses a declared 1,200 ms minimum presentation window;
+the section transition is a 900 ms orientation buffer for major access/role changes. Neither is
+evidence of a server request, authentication, AI processing, data sync, or completed security
+check. Every Parent/Child access route inherits the official raster logo/name and the same local
+leaf-shadow backdrop from one shared shell; this presentation does not upgrade the synthetic
+access path into production authentication. Generated first-run photographs remain symbolic
+presentation assets subject to the same rights, botanical, cultural, safeguarding, accessibility,
+and physical Android review limits as the existing natural artwork library.
 
 ## Generated natural artwork — 2026-09-06
 

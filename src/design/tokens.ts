@@ -404,6 +404,11 @@ export const motion = {
   easing: [0.2, 0.8, 0.2, 1] as const,
 } as const;
 
+export const firstRunMotion = {
+  orientationHold: 900,
+  startupHold: 1200,
+} as const;
+
 export const r001Motion = {
   duration: {
     quick: 120,

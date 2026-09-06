@@ -2,14 +2,17 @@
 
 ## 2026-09-06 first-run experience clarification
 
-The first-run story should feel like opening a small field journal: a confident raster Ghaf mark,
-one generous natural photograph, short active copy, and one unmistakable next action at a time.
+The first-run story should feel like opening a vivid family field journal: begin by introducing
+Ghaf itself, then show choice, help, and growth through one confident raster mark, one generous
+natural photograph, short child-clear copy, and one unmistakable next action at a time.
 Enthusiasm comes from warm light, pace, capability, and the promise of visible permanent growth—not
 confetti, neon, mascots, streak pressure, or game currency. Use three skippable moments for action,
-support, and symbolic growth; preserve the existing role-separated Welcome actions afterward.
+support, and symbolic growth after the Ghaf introduction; preserve the existing role-separated
+Welcome actions afterward.
 
-Startup and major role/context handoffs may use the same quiet photographic field and raster mark
-as a brief orientation buffer. Do not interrupt bottom tabs or nested navigation. Standard motion
+Startup, every access/setup route, and major role/context handoffs use the same quiet leaf-shadow
+photographic field and raster mark as one coherent brand world. The startup hold is 1,200 ms and a
+major-section buffer is 900 ms; do not interrupt bottom tabs or nested navigation. Standard motion
 is a restrained opacity/vertical-settle sequence; reduced motion is a short static fade. No newly
 authored vector image appears in onboarding, splash, or transition presentation.
 

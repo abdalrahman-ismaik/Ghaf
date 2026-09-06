@@ -49,19 +49,24 @@ export const resources = {
         imageFallback: 'الصورة غير متاحة الآن؛ يمكنك المتابعة.',
         steps: [
           {
-            title: 'اختر فعلاً صغيرًا يناسب يومكم',
-            body: 'يختار الطفل من مهام آمنة اعتمدها وليّ الأمر، مع تعريف واضح لما يعنيه الإكمال قبل البدء.',
-            imageAlt: 'مواد منزلية نظيفة وآمنة جاهزة لمهمة فرز معتمدة من وليّ الأمر',
+            title: 'مرحبًا بكم في غاف',
+            body: 'غاف يساعد عائلتكم على إنجاز أفعال صغيرة وتنمية حديقة رمزية خاصة، خطوة بعد خطوة.',
+            imageAlt: 'شجرة غاف كبيرة في ضوء الصباح فوق كثبان هادئة',
+          },
+          {
+            title: 'اختر خطوتك اليوم',
+            body: 'اختر مهمة آمنة وافق عليها وليّ الأمر. ستعرف المطلوب قبل أن تبدأ.',
+            imageAlt: 'مواد منزلية نظيفة وملونة جاهزة لمهمة فرز آمنة',
           },
           {
             title: 'المساعدة جزء من التعلّم',
-            body: 'يمكن طلب المساعدة أو تجربة خطوة أسهل متفق عليها. المساعدة المسموحة تحتفظ بالتقدير كاملًا، ثم يؤكد وليّ الأمر الإكمال.',
-            imageAlt: 'شتلة غاف صغيرة قائمة في ظل شجرة وبجوارها حاجز طبيعي بسيط',
+            body: 'يمكنك طلب المساعدة أو خطوة أسهل. ستحصل على التقدير كاملًا بعد تأكيد وليّ الأمر.',
+            imageAlt: 'شتلة غاف صغيرة محمية بحاجز طبيعي تحت ظل شجرة',
           },
           {
-            title: 'حديقتكم تحتفظ بكل نمو',
-            body: 'بعد تأكيد وليّ الأمر، يبقى التقدير والبذور والنمو الرمزي في حديقة عائلية خاصة. النمو رمزي ولا يعني أثرًا بيئيًا مقاسًا.',
-            imageAlt: 'دراسة طبيعية لبذور الغاف وبرعم صغير وغصن مورق فوق ورق دافئ',
+            title: 'شاهد حديقتكم تكبر',
+            body: 'بعد تأكيد وليّ الأمر، تبقى البذور والنمو في حديقتكم الخاصة. هذا نمو رمزي، وليس قياسًا للأثر البيئي.',
+            imageAlt: 'بذور غاف وبرعم وشتلة وشجرة تظهر مراحل النمو الرمزي',
           },
         ],
         loading: {
@@ -1543,21 +1548,24 @@ export const resources = {
         imageFallback: 'The image is unavailable; you can still continue.',
         steps: [
           {
-            title: 'Choose one small action for today',
-            body: 'A Child chooses from safe tasks approved by a Parent, with a clear definition of completion before they begin.',
-            imageAlt: 'Clean safe household materials ready for a Parent-approved sorting task',
+            title: 'Welcome to Ghaf',
+            body: 'Ghaf helps your family finish small actions and grow a private symbolic garden, one step at a time.',
+            imageAlt: 'A grand Ghaf tree in morning light above quiet dunes',
+          },
+          {
+            title: 'Pick your action for today',
+            body: 'Choose a safe task approved by your Parent. You will know what to do before you start.',
+            imageAlt: 'Clean colorful household materials ready for a safe sorting task',
           },
           {
             title: 'Help is part of learning',
-            body: 'Ask for help or agree on a smaller step. Permitted help keeps full recognition, then a Parent confirms completion.',
-            imageAlt:
-              'A small Ghaf seedling standing in tree shade beside a simple natural windbreak',
+            body: 'You can ask for help or a smaller step. You keep full recognition after your Parent confirms it.',
+            imageAlt: 'A small Ghaf seedling protected by a natural ring under tree shade',
           },
           {
-            title: 'Your garden remembers every growth step',
-            body: 'After Parent confirmation, recognition, Seeds, and symbolic growth stay in a private family garden. Growth is symbolic, not measured environmental impact.',
-            imageAlt:
-              'Natural study of Ghaf seeds, a small sprout, and a leafy branch on warm paper',
+            title: 'Watch your garden grow',
+            body: 'After Parent confirmation, Seeds and growth stay in your private garden. This is symbolic growth, not measured environmental impact.',
+            imageAlt: 'Ghaf seeds, a sprout, a sapling, and a tree showing symbolic growth',
           },
         ],
         loading: {

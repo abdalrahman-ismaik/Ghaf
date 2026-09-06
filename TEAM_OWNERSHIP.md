@@ -6,6 +6,47 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Child-clear Onboarding and Branded Access Refinement Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `app/_layout.tsx`,
+`app/access/**`,
+`assets/images/illustrations/r003/{ASSET_MANIFEST.json,PROVENANCE.md,final/onboarding-*.jpg}`,
+`src/design/tokens.ts`, `src/components/access/AccessShell.tsx`, `src/components/brand/**`,
+`src/components/onboarding/**`, `src/components/illustrations/illustrationSources.ts`,
+`src/i18n/resources.ts`, and
+`tests/{r003-first-run-experience,r003-illustration-assets,r001-onboarding-flow,r003-screen-flow}.test.ts`
+only.
+
+**Scope**: Supersede the three-moment first-run sequence with four moments beginning with a clear
+introduction to Ghaf, rewrite all onboarding copy for younger readers without weakening product
+truth, replace the three feature photographs with more vivid child-welcoming raster photography,
+and add one new Ghaf-introduction raster. Give startup a measured 1,200 ms minimum presentation
+window and major-section orientation buffers a 900 ms dwell, without fake progress or remote-work
+claims. Refactor the shared access shell so every Parent/Child sign-in, verification, pairing, and
+first-family setup surface carries the official raster Ghaf logo/name and the loader's leaf-shadow
+visual world. Preserve exact routes, state, access separation, reset, task/reward authorities,
+default-off flags, offline behavior, and protected user work. No vector scene, new dependency,
+remote image, production authentication claim, push, merge, deployment, or release activation is
+authorized.
+
+**Completion — 2026-09-06**: Root implemented and validated the four-moment child-clear bilingual
+onboarding, four vivid onboarding photographs, declared 1,200/900 ms presentation holds, and one
+shared raster-logo/leaf-shadow access shell across all Parent/Child access routes. The focused
+suite passed 3 files / 16 tests and the complete suite passed 86 files / 1,053 tests; typecheck,
+lint, formatting, Expo dependency alignment, the Impeccable detector, 122-file web export,
+91-file Android JS export, five-image checksum matching, and Git whitespace checks passed. Firefox
+proxy evidence covered four onboarding moments and eight reachable access states at compact
+Arabic/English widths with zero final-flow console errors. Physical Android/TalkBack/OS font scale
+remains `BLOCKED / NOT RUN` with no attached ADB device; named Arabic/UAE, safeguarding,
+accessibility, botanical, and image-rights review remains `NOT RUN`. All reserved boundaries are
+released to the integration owner; no push, merge, deployment, or release activation was
+performed.
+
 ## 2026-09-06 First-run Onboarding and Context Transition Window
 
 **Owner and only writer**: `/root`

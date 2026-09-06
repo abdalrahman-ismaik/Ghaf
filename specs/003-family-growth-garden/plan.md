@@ -1,5 +1,27 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Child-clear First-run and Branded Access Addendum — 2026-09-06
+
+Update the first-run model from three to four in-route moments by inserting `intro` before
+`choose`, then rewrite every title/body as short child-clear Arabic-first copy with equivalent
+English. Generate one new Ghaf introduction photograph and replace the existing action, support,
+and growth photographs in place; normalize, inspect, prompt-embed, checksum, and update the exact
+46-asset static registry before UI integration.
+
+Promote the official raster-logo component from the onboarding folder into a shared brand
+boundary, then compose it with the Ghaf name inside the existing access header. Refine the shared
+access backdrop to use the same local leaf-shadow raster as the loading screen, so all Parent and
+Child access/setup routes inherit one visual treatment while their route logic stays untouched.
+Use the existing tokens, primitives, Expo Image, and AccessScreen structure; do not add a dependency
+or a second theme.
+
+Add `startupHold = 1200` and `orientationHold = 900` to the existing motion duration authority.
+Startup begins its measured window when the React root first renders and remains visible until both
+the local fonts are ready and the minimum has elapsed. Major-section overlays use the 900 ms dwell;
+their visual fades remain short and reduced motion removes travel rather than hiding state. Verify
+four-state reducer behavior, 46 assets, bilingual parity, every access route's shared brand shell,
+exact route/reset preservation, compact-width layout, reduced motion, and production exports.
+
 ## R003 First-run Experience Addendum — 2026-09-06
 
 Implement the user-authorized first-run refinement as presentation state within the existing `/`

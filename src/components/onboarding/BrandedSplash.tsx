@@ -2,12 +2,11 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, useReducedMotion } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
+import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import { colors, motion, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-
-import { GhafRasterLogo } from './GhafRasterLogo';
 
 interface BrandedSplashProps {
   readonly visible: boolean;

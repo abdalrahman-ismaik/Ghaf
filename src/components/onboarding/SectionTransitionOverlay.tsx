@@ -4,9 +4,10 @@ import { usePathname } from 'expo-router';
 import Animated, { FadeIn, FadeOut, useReducedMotion } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
+import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, motion, spacing } from '@/design/tokens';
+import { colors, firstRunMotion, motion, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import {
@@ -14,8 +15,6 @@ import {
   shouldShowSectionTransition,
   type ExperienceSection,
 } from './experienceModel';
-import { GhafRasterLogo } from './GhafRasterLogo';
-
 const destinationKeys: Partial<Record<ExperienceSection, string>> = {
   'parent-access': 'firstRun.loading.parentAccess',
   'child-access': 'firstRun.loading.childAccess',
@@ -42,10 +41,7 @@ export function SectionTransitionOverlay() {
 
     setDestination(section);
     setVisible(true);
-    const timeout = setTimeout(
-      () => setVisible(false),
-      reducedMotion ? motion.duration.quick : motion.duration.growth,
-    );
+    const timeout = setTimeout(() => setVisible(false), firstRunMotion.orientationHold);
     return () => clearTimeout(timeout);
   }, [reducedMotion, section]);
 

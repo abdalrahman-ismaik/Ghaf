@@ -12,6 +12,7 @@ import { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AccessScreen } from '@/components/access';
+import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration, onboardingArtworkIds } from '@/components/illustrations';
 import { Button, Text } from '@/components/primitives';
 import {
@@ -27,13 +28,19 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { ONBOARDING_STEPS } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
-import { GhafRasterLogo } from './GhafRasterLogo';
 
 interface FirstRunStepCopy {
   readonly body: string;
   readonly imageAlt: string;
   readonly title: string;
 }
+
+const storySurfaces = [
+  colors.solarAmberTint,
+  colors.secondaryTint,
+  colors.primaryFixedTint,
+  colors.solarAmberTint,
+] as const;
 
 export function FirstRunOnboarding() {
   const { height } = useWindowDimensions();
@@ -49,7 +56,7 @@ export function FirstRunOnboarding() {
   const steps = t('firstRun.steps', { returnObjects: true }) as unknown as FirstRunStepCopy[];
   const step = steps[stepIndex] ?? steps[0];
   const artworkId = onboardingArtworkIds[stepIndex] ?? onboardingArtworkIds[0];
-  const heroHeight = Math.min(252, Math.max(190, height * 0.28));
+  const heroHeight = Math.min(244, Math.max(170, height * 0.25));
   const isLast = stepIndex === ONBOARDING_STEPS.length - 1;
   const storyStyle = useAnimatedStyle(() => ({
     opacity: storyProgress.get(),
@@ -85,72 +92,72 @@ export function FirstRunOnboarding() {
 
   return (
     <AccessScreen
-      background="plain"
+      background="welcome"
       contentContainerStyle={styles.viewport}
       contentMaxWidth={layout.readableContentWidth}
       contentStyle={styles.content}
+      header={
+        <View style={[styles.topBar, { flexDirection: logicalRowDirection(direction) }]}>
+          <GhafBrandLockup
+            brand={t('common.brand')}
+            direction={direction}
+            language={locale}
+            logoSize={44}
+            testID="first-run-brand-lockup"
+          />
+          <View style={[styles.topActions, { flexDirection: logicalRowDirection(direction) }]}>
+            <Button
+              accessibilityLabel={t('access.welcome.switchLanguage')}
+              brand
+              direction="ltr"
+              fullWidth={false}
+              language={locale}
+              onPress={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
+              style={styles.topAction}
+              testID="first-run-language-button"
+              variant="quiet"
+            >
+              {t('access.welcome.switchLanguage')}
+            </Button>
+            <Button
+              brand
+              direction={direction}
+              fullWidth={false}
+              language={locale}
+              onPress={() => dispatch({ type: 'skip' })}
+              style={styles.topAction}
+              testID="first-run-skip-button"
+              variant="quiet"
+            >
+              {t('firstRun.skip')}
+            </Button>
+          </View>
+        </View>
+      }
       scrollProps={{ contentInsetAdjustmentBehavior: 'automatic' }}
       testID="first-run-onboarding"
     >
-      <View style={[styles.topBar, { flexDirection: logicalRowDirection(direction) }]}>
-        <View style={[styles.brandLockup, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafRasterLogo
-            accessibilityLabel={t('common.brand')}
-            size={46}
-            testID="first-run-logo"
-          />
-          <Text
-            brand
-            color="ghafEmerald"
-            direction={direction}
-            language={locale}
-            variant="screenTitle"
-          >
-            {t('common.brand')}
-          </Text>
-        </View>
-        <View style={[styles.topActions, { flexDirection: logicalRowDirection(direction) }]}>
-          <Button
-            accessibilityLabel={t('access.welcome.switchLanguage')}
-            brand
-            direction="ltr"
-            fullWidth={false}
-            language={locale}
-            onPress={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
-            style={styles.topAction}
-            testID="first-run-language-button"
-            variant="quiet"
-          >
-            {t('access.welcome.switchLanguage')}
-          </Button>
-          <Button
-            brand
-            direction={direction}
-            fullWidth={false}
-            language={locale}
-            onPress={() => dispatch({ type: 'skip' })}
-            style={styles.topAction}
-            testID="first-run-skip-button"
-            variant="quiet"
-          >
-            {t('firstRun.skip')}
-          </Button>
-        </View>
-      </View>
-
       <Animated.View style={[styles.story, storyStyle]}>
-        <LocalIllustration
-          accessibilityLabel={step.imageAlt}
-          assetId={artworkId}
-          direction={direction}
-          fallbackLabel={t('firstRun.imageFallback')}
-          language={locale}
-          priority="high"
-          style={[styles.heroImage, { height: heroHeight }]}
-          testID={`first-run-image-${state.step}`}
-        />
+        <View
+          style={[
+            styles.heroFrame,
+            { backgroundColor: storySurfaces[stepIndex] ?? colors.primaryFixedTint },
+          ]}
+        >
+          <LocalIllustration
+            accessibilityLabel={step.imageAlt}
+            assetId={artworkId}
+            direction={direction}
+            fallbackLabel={t('firstRun.imageFallback')}
+            language={locale}
+            priority="high"
+            style={[styles.heroImage, { height: heroHeight }]}
+            testID={`first-run-image-${state.step}`}
+          />
+        </View>
         <View accessibilityLiveRegion="polite" style={styles.copy}>
           <Text
+            align="center"
             brand
             color="deepForest"
             direction={direction}
@@ -161,6 +168,7 @@ export function FirstRunOnboarding() {
             {step.title}
           </Text>
           <Text
+            align="center"
             brand
             color="onSurfaceVariant"
             direction={direction}
@@ -204,29 +212,35 @@ export function FirstRunOnboarding() {
           </View>
         </View>
 
-        <Button
-          brand
-          direction={direction}
-          language={locale}
-          onPress={() => dispatch({ type: isLast ? 'start' : 'next' })}
-          size="regular"
-          testID={isLast ? 'first-run-start-button' : 'first-run-next-button'}
-        >
-          {t(isLast ? 'firstRun.start' : 'firstRun.next')}
-        </Button>
-        {stepIndex > 0 ? (
+        <View style={[styles.navigationActions, { flexDirection: logicalRowDirection(direction) }]}>
           <Button
             brand
             direction={direction}
+            fullWidth={false}
             language={locale}
-            onPress={() => dispatch({ type: 'back' })}
+            onPress={() => dispatch({ type: isLast ? 'start' : 'next' })}
             size="regular"
-            testID="first-run-back-button"
-            variant="quiet"
+            style={styles.navigationAction}
+            testID={isLast ? 'first-run-start-button' : 'first-run-next-button'}
           >
-            {t('firstRun.back')}
+            {t(isLast ? 'firstRun.start' : 'firstRun.next')}
           </Button>
-        ) : null}
+          {stepIndex > 0 ? (
+            <Button
+              brand
+              direction={direction}
+              fullWidth={false}
+              language={locale}
+              onPress={() => dispatch({ type: 'back' })}
+              size="regular"
+              style={styles.navigationAction}
+              testID="first-run-back-button"
+              variant="secondary"
+            >
+              {t('firstRun.back')}
+            </Button>
+          ) : null}
+        </View>
       </View>
     </AccessScreen>
   );
@@ -239,19 +253,16 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    gap: spacing.xl,
+    gap: spacing.lg,
   },
   topBar: {
     width: '100%',
-    minHeight: layout.touchTarget,
+    minHeight: 60,
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing.xs,
-  },
-  brandLockup: {
-    minWidth: 0,
-    alignItems: 'center',
-    gap: spacing.xs,
+    paddingHorizontal: layout.screenPadding,
+    paddingVertical: spacing.xxs,
   },
   topActions: {
     flexShrink: 0,
@@ -264,16 +275,23 @@ const styles = StyleSheet.create({
   },
   story: {
     width: '100%',
-    gap: spacing.xl,
+    gap: spacing.lg,
+  },
+  heroFrame: {
+    width: '100%',
+    padding: spacing.xxs,
+    borderRadius: r001Radii.sheet,
+    borderCurve: 'continuous',
+    ...r001Shadows.lifted,
   },
   heroImage: {
     width: '100%',
-    minHeight: 190,
-    maxHeight: 252,
+    minHeight: 170,
+    maxHeight: 244,
+    overflow: 'hidden',
     borderRadius: r001Radii.xl,
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceContainerLow,
-    ...r001Shadows.lifted,
   },
   copy: {
     width: '100%',
@@ -283,6 +301,13 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 'auto',
     gap: spacing.sm,
+  },
+  navigationActions: {
+    width: '100%',
+    gap: spacing.sm,
+  },
+  navigationAction: {
+    flex: 1,
   },
   progressRow: {
     minHeight: spacing.xl,

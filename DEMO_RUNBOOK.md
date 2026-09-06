@@ -6,29 +6,33 @@
 rights-cleared, release-activated, or demo-accepted.
 
 On a fresh runtime, allow the native raster splash to hand off to the branded local screen, then
-show the three Arabic onboarding moments. Demonstrate Back on moment two, continue to moment three,
-and select **Start Ghaf** to reveal the existing Parent/Child Welcome actions. For a shorter judge
-run, **Skip** reaches the same Welcome state and grants no role. Changing language should preserve
-the current moment. The context buffer may appear when entering Parent or Child access and when
-that access produces its authenticated-looking local experience; it must not appear between Home,
-Tasks, Garden, Family, Today, or League tabs.
+show the four Arabic onboarding moments: meet Ghaf, choose, ask for help, and see symbolic growth.
+Demonstrate Back on moment two, continue through the final moment, and select **Start with Ghaf**
+to reveal the existing Parent/Child Welcome actions. For a shorter judge run, **Skip** reaches the
+same Welcome state and grants no role. Changing language should preserve the current moment. The
+context buffer may appear when entering Parent or Child access and when that access produces its
+authenticated-looking local experience; it must not appear between Home, Tasks, Garden, Family,
+Today, or League tabs.
 
 Describe the imagery and growth as local, generated, and symbolic. Do not describe startup or
 transition as server loading, verification, model work, sync, or production authentication. A
 reload may restore onboarding because completion is session-local.
 
 The implementation preserves exactly 37 product routes because onboarding is state inside `/`.
-All four presentation photographs and the official logo are local raster files; these screens add
-no remote fetch, vector artwork, product authority, task/reward change, or artificial delay.
+All five presentation photographs and the official logo are local raster files. The app-owned
+splash has a declared 1,200 ms minimum and major-section buffers have a declared 900 ms dwell; they
+add no remote fetch, vector artwork, product authority, task/reward change, fake percentage, or
+server-work claim.
 
 | Gate | Result | Evidence |
 | --- | --- | --- |
-| First-run, artwork, route, and reset focus | `PASSED` | 7 files / 76 tests, including ordered navigation, transition classification, exact route count, local assets, access flow, and reset navigation |
-| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,052 tests |
+| First-run, artwork, route, and brand focus | `PASSED` | 3 files / 16 tests, including four-state navigation, exact 46-asset provenance, official brand preservation, and shared access inheritance |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,053 tests |
 | Expo dependency/configuration | `PASSED` | `npx expo install --check`; native Expo splash still uses the official local raster mark |
-| Production exports | `PASSED` | web: 121 files; Android JS: 90 files; byte-identical copies of all four first-run JPEGs found in each export |
-| Arabic/English visual proxy | `PASSED (web proxy)` | Firefox at 320×720 and 390×844; Back/Skip/Start and both directions inspected, zero horizontal overflow, zero console errors |
-| Context-transition behavior | `PASSED (web proxy)` | major Welcome/access/experience handoff captured; same-section Parent sign-in to sign-up produced no overlay |
+| Production exports | `PASSED` | web: 122 files; Android JS: 91 files; byte-identical copies of all five first-run JPEGs found in each export |
+| Arabic/English visual proxy | `PASSED (web proxy)` | Firefox at 320×720 and 390×844; all four moments, Back/Skip/Start, both directions, and eight reachable access states inspected with zero final-flow console errors; state-gated pairing inherited the source-audited shell |
+| Loading duration | `PASSED (web proxy/source)` | startup remained visible about 1.48 s after mount; a major-section overlay remained visible about 1.37 s including fade-out; source tokens are 1,200/900 ms |
+| Context-transition behavior | `PASSED (web proxy)` | major Welcome → Parent access handoff captured; ordinary/same-section route suppression remains covered by source tests |
 | Reduced-motion behavior | `PASSED (web proxy/source)` | reduced motion retained the complete state change without positional travel; native setting remains unobserved |
 | Physical Android, TalkBack, Back/IME, safe areas, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator; exports and browser inspection are not native evidence |
 | Named Arabic/UAE, safeguarding, accessibility, botanical, and image-rights review | `NOT RUN` | Requires named reviewers and the exact reviewed build/assets |

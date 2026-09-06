@@ -5,6 +5,7 @@ import type { ChildTreeAvatarId } from '@/models/parentOnboarding';
 export const artworkSources = {
   'field-paper': require('../../../assets/images/illustrations/r003/final/field-paper.jpg'),
   'welcome-ghaf-habitat': require('../../../assets/images/illustrations/r003/final/welcome-ghaf-habitat.jpg'),
+  'onboarding-ghaf-intro': require('../../../assets/images/illustrations/r003/final/onboarding-ghaf-intro.jpg'),
   'onboarding-action': require('../../../assets/images/illustrations/r003/final/onboarding-action.jpg'),
   'onboarding-support': require('../../../assets/images/illustrations/r003/final/onboarding-support.jpg'),
   'onboarding-growth': require('../../../assets/images/illustrations/r003/final/onboarding-growth.jpg'),
@@ -56,6 +57,7 @@ export type ArtworkSource = (typeof artworkSources)[ArtworkId];
 export const accessFieldArtworkSource = artworkSources['field-paper'];
 export const welcomeArtworkSource = artworkSources['welcome-ghaf-habitat'];
 export const onboardingArtworkIds = [
+  'onboarding-ghaf-intro',
   'onboarding-action',
   'onboarding-support',
   'onboarding-growth',

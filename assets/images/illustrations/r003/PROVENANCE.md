@@ -3,14 +3,17 @@
 ## Shipping boundary
 
 This directory contains the user-authorized **Quiet UAE Botanical Editorial** artwork refresh for
-Ghaf. The shipping files are the 45 JPEGs in `final/` plus `ASSET_MANIFEST.json`. Every runtime
+Ghaf. The shipping files are the 46 JPEGs in `final/` plus `ASSET_MANIFEST.json`. Every runtime
 mapping is a literal local import; no image is fetched remotely and no Google Stitch export is
 included.
 
-The 2026-09-06 first-run extension adds four separately generated and inspected local photographs:
-`onboarding-action`, `onboarding-support`, `onboarding-growth`, and `section-transition`. The
-current shipping boundary is therefore **45 JPEGs** and 45 literal registry imports. The official
-raster logo remains outside this generated-artwork registry and keeps its existing checksum.
+The 2026-09-06 first-run extension now contains five separately generated and inspected local
+photographs: `onboarding-ghaf-intro`, `onboarding-action`, `onboarding-support`,
+`onboarding-growth`, and `section-transition`. The child-clear refinement added the introduction,
+replaced the three feature photographs, and corrected the growth scene's foreground pods through
+one focused image edit. The current shipping boundary is therefore **46 JPEGs** and 46 literal
+registry imports. The official raster logo remains outside this generated-artwork registry and
+keeps its existing checksum.
 
 The images are presentation only. They do not calculate or prove a Seed, Garden stage, canopy
 contribution, Circle action, League score, learning result, badge, reward, or environmental impact.
@@ -41,11 +44,11 @@ JPEG integrity, embedded-prompt, and visual-crop checks pass.
 
 | Gate | Status |
 | --- | --- |
-| Root visual curation, prohibited-content scan, stage continuity, and crop review | `PASSED` — all 41 earlier crops plus the four first-run additions were inspected; two earlier sources were regenerated before shipping |
-| Exact manifest, local mapping, dimensions, size, checksum, and embedded-prompt tests | `PASSED` — 4/4 asset-contract tests; 45 rasters scanned with 0 missing prompts |
-| Default-on Arabic RTL and English LTR browser-proxy crop/overflow/console review | `PASSED (web proxy)` — Welcome, profile choice, task, Garden, Circle, and League at 320/390 widths; no broken images or final-flow console errors |
+| Root visual curation, prohibited-content scan, stage continuity, and crop review | `PASSED` — all 41 earlier crops plus the five first-run images were inspected; the growth foreground was corrected before shipping |
+| Exact manifest, local mapping, dimensions, size, checksum, and embedded-prompt tests | `PASSED` — 4/4 asset-contract tests; 46 rasters scanned with 0 missing prompts |
+| Default-on Arabic RTL and English LTR browser-proxy crop/overflow/console review | `PASSED (web proxy)` — all four onboarding moments and representative Parent/Child access screens at 320/390 widths; no broken images or final-flow console errors |
 | Explicitly enabled default-off Learning, Reveal, and Shared Growth browser review | `NOT RUN` — implementation remains default-off and is covered by focused component/source tests only |
-| Web and Android JavaScript production exports | `PASSED` — web produced 121 files and Android JS produced 90 files; byte-identical copies of each of the four first-run additions were found in both exports |
+| Web and Android JavaScript production exports | `PASSED` — web produced 122 files and Android JS produced 91 files; byte-identical copies of all five first-run images were found in both exports |
 | Physical Android rendering, decode, memory, TalkBack, and reduced-motion review | `BLOCKED` — `adb devices -l` found no attached device or emulator |
 | Named botanical, Arabic/UAE cultural, safeguarding, accessibility, and image-rights review | `NOT RUN` |
 

@@ -1053,3 +1053,42 @@ changes.
       passed at 320×720 and 390×844 in Arabic RTL and English LTR. Physical Android/TalkBack/OS
       font-scale is `BLOCKED / NOT RUN` with no attached ADB device; named-human and rights review
       remains `NOT RUN`.
+
+## Phase 34: Child-clear First-run and Branded Access Refinement
+
+**Gate**: User-authorized refinement of the completed first-run/access presentation; product and
+route authorities remain unchanged.
+
+- [x] T252 Re-read the active product/design/safety contract, inspect all Parent/Child access
+      screens and shared components, reserve exact writer boundaries, and record the superseding
+      four-moment, child-copy, raster, loader-timing, and shared-brand contract before runtime work.
+- [x] T253 Update RED tests for `intro → choose → support → growth`, `1/4` semantics, child-clear
+      bilingual fields, exact 46-asset provenance, 1,200/900 ms timing tokens, shared raster brand
+      imports, and brand/backdrop inheritance across all existing access routes.
+- [x] T254 Generate and inspect one new vivid Ghaf-introduction photograph and three replacement
+      feature photographs; normalize, prompt-embed, checksum, and register them without people,
+      hands, text, logos, vectors, UI, hazards, fantasy, or impact claims.
+- [x] T255 Refactor the shared raster logo into `src/components/brand/`, add one reusable compact
+      brand lockup, and apply it plus the leaf-shadow background through `AccessHeader` and
+      `AccessScreen` without duplicating route code.
+- [x] T256 Implement the four child-clear onboarding moments, richer raster framing, simple copy,
+      bilingual alternatives, accessible progress, and reduced-motion-equivalent transitions.
+- [x] T257 Implement the 1,200 ms startup minimum and 900 ms major-section dwell using existing
+      motion tokens, real local-readiness state, clean timer cancellation, and no fake progress.
+- [x] T258 Run focused and full tests, typecheck, lint, format, detector, route/reset scans,
+      production exports, asset/provenance audit, and `git diff --check`; inspect Arabic/English
+      onboarding and representative Parent/Child access screens at 320/390 widths, then record
+      physical Android, TalkBack, OS font-scale, named-human, and rights gaps truthfully.
+
+      Completed locally on 2026-09-06: the required RED state recorded 2 files with 5 failing and
+      4 passing tests before implementation. The final focused brand/onboarding/artwork batch
+      passed 3 files / 16 tests, and the complete suite passed 86 files / 1,053 tests. Typecheck,
+      lint, formatting, Expo dependency alignment, the Impeccable detector, manifest integrity,
+      web export (122 files), Android JS export (91 files), five-image export checksum matching,
+      and `git diff --check` passed. Firefox proxy inspection covered four onboarding moments and
+      eight reachable Parent/Child access states at 320×720 and 390×844 in Arabic RTL and English
+      LTR with zero final-flow console errors. Startup remained visible about 1.48 seconds after
+      mount and the major-section overlay about 1.37 seconds including fade-out. The state-gated
+      pairing screen was source-audited through the same shared shell. Physical Android, TalkBack,
+      OS font scale, named-human review, and public image-rights review remain `BLOCKED` or
+      `NOT RUN`; `adb devices -l` returned no attached device or emulator.

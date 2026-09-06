@@ -124,19 +124,28 @@ components:
 
 ## R003 first-run experience extension
 
-The first-run surface is an optional three-moment editorial sequence inside `/`, followed by the
-existing Parent/Child Welcome decision. Each moment uses the official raster logo, one generous
-local photograph, one short title, one supporting paragraph, visible step progress,
-and one dominant action. Skip remains visible; Back is quiet; changing locale keeps the current
-step. Enthusiasm comes from warm photography, concise active copy, and a restrained vertical
-settle—not confetti, streak pressure, mascots, or competing cards.
+The first-run surface is an optional four-moment editorial sequence inside `/`, followed by the
+existing Parent/Child Welcome decision. The first moment answers “What is Ghaf?” before the next
+three show choice, support, and private symbolic growth. Each moment uses the official raster logo,
+one generous vivid photograph, a short child-clear title, one concrete supporting sentence,
+visible `1/4` progress, and one dominant action. Skip remains visible; Back is quiet; changing
+locale keeps the current step. Delight comes from warm light, bold crops, rich emerald/amber
+accents, concise active copy, and a restrained vertical settle—not confetti, streak pressure,
+mascots, fantasy effects, or competing cards.
 
 The native Expo splash remains the earliest frame and uses the official raster icon. The app-owned
-handoff screen uses the same mark and local field texture while local fonts settle. A context
+handoff screen uses the same mark and local leaf-shadow texture while local fonts settle, with a
+1,200 ms minimum visible window. A context
 transition overlay is permitted only across Welcome, Parent access, Child access, Parent
 experience, and Child experience groups. Paths within a stable Parent or Child group, including
-bottom tabs and nested screens, do not trigger it. Neither presentation claims remote loading,
+bottom tabs and nested screens, do not trigger it. A major-section buffer stays legible for 900 ms;
+its fade still uses the existing motion tokens. Neither presentation claims remote loading,
 identity verification, AI work, sync, or persistence.
+
+All Parent and Child access/setup routes inherit one shared branded shell: a compact official
+raster Ghaf mark beside the Ghaf name, calm leaf-shadow raster background, clear route title or
+progress, and the existing semantic forms and actions. The brand header never displaces Back,
+progress, keyboard access, safe areas, or 48 dp targets, and route files do not duplicate it.
 
 All new scenic presentation is raster. Live text, buttons, progress dots, focus state, and loading
 status remain semantic native UI; existing functional vectors elsewhere are unchanged. Standard
