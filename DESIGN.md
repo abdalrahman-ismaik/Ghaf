@@ -148,6 +148,15 @@ review stay unpassed until directly observed.
 **Status:** R001 foundations/onboarding and R002a Parent/task/Child/Garden presentation are frozen
 regression baselines except for the user-authorized Parent sign-in/sign-up usability flow recorded below.
 R002b code-native Growth candidates may be implemented behind independent default-off flags.
+
+The user-authorized 2026-09-06 natural-artwork refresh replaces the runtime's large scenic,
+decorative, profile-choice, task, Garden, canopy, Circle, Learning, Reveal, and Shared Growth
+drawings with a provenance-recorded local **Quiet UAE Botanical Editorial** raster library. This is
+an asset-layer change only: official Ghaf brand files, small functional vectors, live copy,
+semantic progress/selection, routes, state, privacy, rewards, reset, and default-off flags remain
+unchanged. The decorative Private League watermark is removed. Generated imagery is
+nondirectional, contains no people/text/logos/hazards/fantasy or environmental claims, and never
+becomes the authority for a product state.
 Release activation remains blocked until the applicable visual, bilingual, accessibility, native,
 provenance, content, and human-review gates pass.
 

@@ -17,7 +17,11 @@ and a short privacy explanation. The Arabic physical tab order remains
 
 The visual system extends the approved Ghaf Soft Geometric language: warm pearl ground, forest and
 mangrove surfaces, saffron only for weekly progress, Alexandria headings, Readex Pro controls and
-body copy, code-native icons, restrained depth, and no podium or public-leaderboard treatment.
+body copy, code-native functional icons, restrained depth, and no podium or public-leaderboard
+treatment. The former decorative tree watermark is removed; no photograph competes with the weekly
+summary or implies extra League state. Each allowlisted tree-avatar token reuses a small local
+botanical profile photograph inside the existing semantic row; it exposes no added identity or
+private data.
 
 ## Data and behavior
 

@@ -20,8 +20,9 @@ and recovery-hardening slices. See the
 - Visual system: existing R001/R002a Soft Geometric tokens and native components.
 - Raw R002 exports: supporting evidence only. No complete approved PNG exists for these surfaces;
   no HTML, CSS, JavaScript, remote asset, or screenshot value may enter runtime code.
-- Candidate art: repository-owned code-native vector/botanical primitives only until a provenance
-  manifest explicitly approves another asset.
+- Candidate art: the 2026-09-06 R003 manifest authorizes only its provenance-recorded local Quiet
+  UAE Botanical Editorial assets. Small functional vectors remain code-native; raw Stitch and
+  remote imagery stay prohibited.
 
 Every surface must be captured from the implementation at 390×844 after it exists. That capture is
 then a review candidate, not automatic authority. Equivalent English LTR, 320/360/430/768 layouts,

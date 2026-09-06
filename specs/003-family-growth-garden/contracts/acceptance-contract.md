@@ -166,6 +166,29 @@ destinations.
    consequence parity is unavailable. A route file or explicit local test flag is not release
    activation.
 
+## AC-00D — R003 Natural Botanical Artwork Acceptance
+
+This refresh changes the asset layer only. The official Ghaf mark/wordmark, platform icons, small
+functional navigation/status/safety icons, semantic controls, progress authority, exact 37 routes,
+store/services, deterministic reset, privacy projection, and default-off flags remain unchanged.
+
+| Boundary | Required acceptance |
+| --- | --- |
+| Exact library | The tracked manifest contains 41 unique local assets, including all 25 species/stage Garden combinations and exact family-canopy 19/25 and 20/25 states |
+| Provenance | Every shipping file has its exact prompt, generator/date, source and final dimensions, transformation record, SHA-256, route/state use, accessibility mode, and review status |
+| Content safety | No person, face, hand, readable text, UI, logo, brand, watermark, hazard, fantasy effect, malformed botanical detail, or ecological quantity/claim appears in generated pixels |
+| Runtime | Literal static sources only; no constructed path, remote URL, remote fallback, upload, analysis, media capture, or image-selected product authority |
+| Accessibility | Informative art has bilingual labels and a localized deterministic fallback; decorative art is hidden; selection, focus, status, value, and progress remain native semantics |
+| RTL/responsive | Art is nondirectional and never mirrored; live Arabic/English UI remains readable and crop-safe at 320/390 widths, increased text, and reduced motion |
+| Brand integrity | Official source and platform derivative checksums remain byte-identical; removing product drawings never substitutes or mutates the product mark |
+| Feature integrity | Scenic SVG implementations and the League watermark are gone, while task/Garden/canopy/Circle/learning/reveal/shared behavior and all eight default-off flags are unchanged |
+
+Automated/source and bounded web evidence may pass the exact-library, runtime, checksum,
+accessibility-structure, crop, and overflow portions. Physical Android decode/memory/rendering,
+TalkBack order, and named botanical, UAE cultural, child-safeguarding, accessibility, visual, and
+rights reviews remain `BLOCKED` or `NOT RUN` until directly performed; generated provenance is not
+itself a public-rights clearance.
+
 ## Historical R001/R002a Authored Route and Guard Contract
 
 The table below preserves the pre-R003 remote oracle and completed R001/R002a regression history; it

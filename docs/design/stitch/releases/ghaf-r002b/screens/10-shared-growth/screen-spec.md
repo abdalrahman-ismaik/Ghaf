@@ -34,10 +34,12 @@ may be explained but never blocks viewing.
 
 ## Accessibility, copy, and review
 
-Every visual observation has a text equivalent; decorative anonymous marks are hidden. Use one
-heading order, 48×48 actions, 4.5:1 text contrast, non-color state, no animated count-up, natural
-scroll, and no horizontal overflow at 320–768 or 200% text. Arabic/English stewardship and privacy
-copy require human review; art remains code-native until provenance approval.
+Every visual observation has a text equivalent; the R003 provenanced local coastal scene is
+nondirectional, anonymous, qualitative, and hidden when decorative. Use one heading order, 48×48
+actions, 4.5:1 text contrast, non-color state, no animated count-up, natural scroll, and no
+horizontal overflow at 320–768 or 200% text. Arabic/English stewardship and privacy copy require
+human review; the generated asset remains release-blocked until its provenance and named reviews
+pass.
 
 ## Acceptance
 

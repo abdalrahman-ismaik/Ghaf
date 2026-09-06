@@ -9,7 +9,7 @@ Status: code-native implementation candidate; release content remains blocked. F
 
 Provide the finite, no-fail illustrated route for `learning.mangrove_roots.v1`, titled
 “بين جذور القرم / Among the Mangrove Roots.” Use a calm header, source disclosure, short ordered
-story cards with local code-native habitat art, visible finite progress, one understanding check,
+story cards with the R003 provenanced local Mangrove habitat study, visible finite progress, one understanding check,
 neutral retry explanation, completion state, and an equally prominent switch to the accessible
 route. It recognizes that mangrove habitat supports coastal life and needs careful stewardship; it
 never claims a real visit or measured impact.
@@ -39,7 +39,9 @@ No timed response, autoplay, real media capture, GPS, browser, or live AI is per
 
 ## Accessibility, motion, copy, and provenance
 
-Semantic sections and text alternatives preserve the learning objective without imagery. Controls
+Semantic sections and text alternatives preserve the learning objective without imagery. The
+supporting habitat image has bilingual alternative text and a localized deterministic fallback; it
+contains no teaching label, diagram arrow, or completion authority. Controls
 are 48×48, progress is textual, focus follows content order, and 200% text scrolls naturally with no
 horizontal overflow. No essential parallax or animation; reduced motion uses direct page changes.
 Any future audio is optional, user-started, transcribed, and separately approved. Arabic/English

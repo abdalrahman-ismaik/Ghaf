@@ -18,6 +18,46 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Natural Botanical Artwork Authority Amendment — 2026-09-06
+
+The user explicitly authorizes replacement of the app's poor vector-like drawings with
+professionally generated local imagery. This is a presentation-only refinement of the established
+Living Family Garden; it does not authorize a route, state, reward, privacy, access, learning, or
+release change. The replacement direction is **Quiet UAE Botanical Editorial**: calm,
+natural-history editorial photography with botanically plausible texture, restrained warm UAE
+light, real asymmetry, and nondirectional crop-safe compositions.
+
+The complete local library contains one low-contrast field texture, one Welcome Ghaf habitat hero,
+five botanical profile-choice images, one recycling task hero, all twenty-five deterministic
+species-and-stage Garden scenes, two exact family-canopy states, three anonymous cooperative-garden
+scenes, one recognition reveal image, one Mangrove habitat study, and one shared coastal canopy.
+Every state keeps its live text and data outside the pixels. Generated imagery contains no people,
+faces, hands, readable text, UI, logos, brands, watermarks, unsafe objects, fantasy effects, or
+environmental-quantity claims.
+
+The official Ghaf logo/wordmark and platform icons remain immutable. Small functional
+navigation/status/safety icons, control symbols, focus/selection geometry, and live progress
+visualizations remain code-native because they are semantic, tintable, and must stay crisp at small
+sizes. The decorative League watermark is removed rather than replaced. Raw Stitch imagery,
+historical captures, and user-owned source packs remain read-only evidence and never enter runtime.
+
+One Expo-native image package is permitted as the measured minimum for local asset decode, crop,
+cache, transition, and memory behavior. It may not fetch a remote URL or add capture, upload,
+analysis, account, or provider behavior. Images ship locally with static source mappings,
+deterministic fallbacks, bilingual accessibility labels where informative, and recorded prompts,
+generation tool/date, transformations, dimensions, checksums, review status, and usage.
+
+### User Story 25 — Family sees credible natural artwork (Priority: P1)
+
+As a Parent or Child, I see calm, coherent natural botanical imagery instead of synthetic-looking
+vector drawings, while every task, Garden, League, learning, reveal, and access flow works exactly
+as before.
+
+**Independent acceptance**: Traverse Welcome, Child access, active task, Garden, Circle, and every
+locally enabled R002b art surface in Arabic and English. No replaced scenic drawing remains; every
+intended state resolves to an owned local asset or accessible fallback; no network image request,
+rasterized copy, product-meaning change, or official-brand mutation occurs.
+
 ## R003 Complete-Screen Authority Amendment — 2026-09-05
 
 This amendment supersedes older screen-count, role-toggle, and missing-Stitch presentation
@@ -1426,6 +1466,31 @@ the historical domain-only result recorded by FR-118.
   capability. Verification Back, Android Back, and **Change phone number or email** MUST cancel the
   pending verification and return to sign-up only for that exact marker while preserving offline
   preview; missing or unknown values MUST return safely to sign-in.
+- **FR-163**: Runtime scenic/decorative drawings in the access shell, Welcome hero, profile-choice
+  imagery, Child task hero, Garden stages, family canopy, Circle gardens, learning story, reveal,
+  Shared Growth, and League hero MUST be replaced or removed according to the tracked R003 artwork
+  manifest. The official Ghaf mark/wordmark, platform icons, and functional control/status/safety
+  vectors MUST remain unchanged.
+- **FR-164**: The artwork registry MUST map every named use and all five stages of all five Garden
+  species to a distinct static local source. Runtime code MUST NOT construct asset paths, fetch
+  remote images, mirror artwork for RTL, embed interface text in pixels, or use one generic Garden
+  image to imply multiple deterministic states.
+- **FR-165**: Every shipped generated raster MUST have recorded provenance containing its exact
+  prompt, tool and generation date, source and shipping dimensions, allowed crop, transformations,
+  SHA-256 checksum, intended routes/states, and review status. Assets with people, faces, hands,
+  text, logos, watermarks, unsafe objects, fantasy effects, visible generation artifacts, or
+  misleading ecological content MUST fail closed and not ship.
+- **FR-166**: Informative imagery MUST expose concise locale-aware accessibility text and a
+  deterministic localized unavailable fallback; decorative imagery MUST be hidden from assistive
+  technology. Live labels, values, progress, selection, and state MUST remain semantic native UI
+  outside the raster.
+- **FR-167**: The image presentation layer MAY use only the approved Expo-native image package for
+  local decode, crop, caching, transition, and memory behavior. It MUST add no remote URL, media
+  capture/upload, analysis, provider, or new source of product state, and it MUST preserve reduced
+  motion by disabling decorative transitions when reduction is requested.
+- **FR-168**: The natural-artwork refresh MUST preserve the exact 37-product-route manifest, all
+  existing store/service/domain authorities, deterministic offline reset, Arabic-first RTL and
+  English LTR behavior, privacy projection, and eight independent default-off R002b flags.
 
 ### Key Entities
 
@@ -1624,6 +1689,12 @@ the historical domain-only result recorded by FR-118.
   actions retain at least 48dp targets; **Create a new family** opens sign-up before verification;
   sign-up verification Back/cancel returns to sign-up; and a successful fresh flow reaches Family
   Basics with no second-family or production-account claim.
+- **SC-045**: An automated artwork audit finds every required manifest ID and local file, all
+  twenty-five unique Garden state mappings, matching dimensions/checksums/provenance, zero remote
+  image URLs or rasterized copy, unchanged official-brand checksums, and no replaced scenic SVG
+  function. Arabic/English proxy inspection at 320/390 widths shows crop-safe artwork and readable
+  live UI without horizontal overflow; physical Android, TalkBack, botanical/cultural review, and
+  final illustration-rights review remain separately recorded rather than inferred.
 
 ## Dependencies and Assumptions
 

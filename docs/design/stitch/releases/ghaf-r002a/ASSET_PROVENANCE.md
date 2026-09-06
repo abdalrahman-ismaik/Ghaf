@@ -7,7 +7,7 @@ Status: intake risk register, not shipping permission. Raw exports at `docs/desi
 
 ## Runtime policy
 
-Only repository-owned assets, already approved icons, code-native SVG/vector illustrations, or exported assets with recorded provenance may ship. Remote URLs, Google-hosted fonts, external scripts, Tailwind CDN, Material Symbols web font, rasterized interface text, whole PNG screens, HTML, CSS, JavaScript, DOM elements, and WebViews are prohibited. Alexandria and Readex Pro must load from the existing local app assets. Unknown illustrations are recreated with approved code-native primitives or omitted without blocking the rest of a screen.
+Only repository-owned assets, already approved icons, code-native functional vectors, or exported/generated assets with recorded provenance may ship. The 2026-09-06 R003 artwork refresh specifically authorizes its manifest-listed local botanical photographs after prompt, transformation, checksum, crop, accessibility, and visual review. Remote URLs, Google-hosted fonts, external scripts, Tailwind CDN, Material Symbols web font, rasterized interface text, whole PNG screens, HTML, CSS, JavaScript, DOM elements, and WebViews are prohibited. Alexandria and Readex Pro remain live UI type. Unknown illustrations are omitted without blocking a screen.
 
 ## Objective findings
 
@@ -30,9 +30,11 @@ Remote-image directories: ghaf_child_garden_next_stage; ghaf_child_growth_garden
 | Parent Home        | canopy/tree, avatars, icons              | Existing owned GhafTree/canopy primitives, local initials or owned avatar component, approved vector icons |
 | Parent Tasks       | child/profile imagery and task icons     | Code-native initials/category glyphs; no remote profile images                                             |
 | Task Builder       | category/Child icons, success leaf       | Existing icon primitives and code-native botanical marks                                                   |
-| Child Today / Task | task illustration, checkboxes, help icon | Existing category illustration or code-native SVG; native controls with semantic state                     |
+| Child Today / Task | task illustration, checkboxes, help icon | R003 provenanced local task photograph; native controls retain semantic state                             |
 | Parent Review      | avatar, leaf/reward marks                | Replace :EN:S/token output with selected profile data and owned vectors                                    |
 | Follow-up          | task/checklist symbols                   | Existing native controls                                                                                   |
-| Garden             | mangrove illustration                    | Existing repository-owned garden/tree component; raw remote imagery is composition evidence only           |
+| Garden             | mangrove illustration                    | R003 provenanced local species/stage photograph; raw remote imagery remains evidence only                  |
 
-Provenance status remains UNVERIFIED for every remote image and both standalone illustration PNGs. Their absence blocks only the illustration, never the R002a route.
+Provenance status remains UNVERIFIED for every remote image and both standalone illustration PNGs;
+none is imported. The separately generated R003 library has its own tracked manifest and review
+record. Its absence or load failure blocks only the image, never the R002a route or live state.

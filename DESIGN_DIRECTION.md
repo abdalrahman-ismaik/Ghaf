@@ -1,5 +1,20 @@
 # Ghaf Design Direction
 
+## 2026-09-06 natural-artwork clarification
+
+The product-owner-requested artwork refresh replaces vector-like scenic and decorative drawings
+with **Quiet UAE Botanical Editorial** imagery: calm local nature photography, tactile botanical
+detail, soft warm light, natural asymmetry, restrained Ghaf colors, and crop-safe nondirectional
+composition. Keep all explanatory copy, values, state, progress, and controls as live interface
+elements. Do not generate people, faces, hands, text, logos, brands, fantasy glow, generic UAE
+ornament, hazards, or visual impact claims.
+
+This is not a logo change. Preserve the official Ghaf mark and wordmark, app/platform icons, and
+small semantic navigation/status/safety/control vectors. Replace scenic Garden, canopy, task,
+learning, reveal, Shared Growth, access texture, and botanical profile-choice art; remove the
+decorative League watermark. Every shipping raster is local, offline, provenance-recorded, and
+never mirrored for RTL.
+
 ## 2026-09-05 screen-completion clarification
 
 Missing P0 screens are now approved for professional code-native design in this established Living
@@ -47,8 +62,9 @@ One design system supports two emotional modes.
 - Quiet but unmistakable growth after Parent confirmation.
 - Language that is respectful and energetic, never babyish, commanding, or manipulative.
 
-The Child mode may use more illustration and motion; the Parent mode may use more structured
-records. Both share the same palette, typography, tree grammar, and Arabic-first composition.
+The Child mode may use more natural botanical imagery and motion; the Parent mode may use more
+structured records. Both share the same palette, typography, tree grammar, and Arabic-first
+composition.
 
 ## UAE Living Landscape
 
@@ -107,9 +123,11 @@ Use low-radius, tactile controls and flat tonal grouping in Parent mode. Child m
 softer task chips and seed vessels, while avoiding bubbly card stacks. Shadows are rare; depth comes
 from layered landscape planes, overlap, and motion.
 
-Botanical illustration should be code-native SVG or team-created artwork. Avoid stock desert
-silhouettes, generic camel/falcon ornament, copied heritage motifs, emoji, glassmorphism, neon game
-colors, and decorative AI avatars.
+Large botanical and habitat artwork should use the approved local Quiet UAE Botanical Editorial
+raster library. Code-native vectors remain only for small functional controls, semantic progress,
+and the official mark. Avoid stock desert silhouettes, generic camel/falcon ornament, copied
+heritage motifs, emoji, glassmorphism, neon game colors, decorative AI avatars, flat vector scenes,
+plastic 3D rendering, and text baked into imagery.
 
 ## Garden-Shaped Dashboard
 

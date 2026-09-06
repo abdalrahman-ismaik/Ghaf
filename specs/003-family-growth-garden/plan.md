@@ -1,5 +1,37 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Natural Botanical Artwork Refresh Addendum — 2026-09-06
+
+Replace the runtime's scenic and decorative vector-like drawings with a forty-one-asset local
+**Quiet UAE Botanical Editorial** library while preserving official brand geometry, functional
+icons, all routes, behavior, privacy, reward authorities, reset, and default-off flags. The asset
+contract and prompt matrix live in
+`design-intake/r003-natural-artwork-refresh.md`; contract documentation and RED artwork audits land
+before runtime integration.
+
+Use the official Expo image component as the single measured image dependency for local decode,
+crop, caching, transitions, and memory behavior across the new raster layer. A typed static-source
+registry owns every literal asset import. A small reusable presentation wrapper owns
+cover/contain behavior, reduced-motion-aware transitions, decorative versus informative
+accessibility, error handling, and a localized unavailable state; it owns no route, flag, state,
+reward, or privacy decision. No image URL, runtime path construction, media capture, upload, or
+analysis is introduced.
+
+Generate each distinct asset through the approved image tool with no people, faces, hands,
+readable text, logos, brands, watermarks, hazards, fantasy effects, or false impact claims. Garden
+families use one locked visual grammar and five separate state images per species. Inspect every
+result for botanical plausibility, repeated or malformed details, crop safety, nondirectionality,
+and 320/390-width legibility; then normalize dimensions and compression, strip nonessential
+metadata, embed prompt provenance, and record SHA-256 checksums. Historical Stitch/source packs,
+official brand files, and existing prepared-media fixtures stay untouched.
+
+Integration order is: contract and ownership → RED asset/registry/accessibility tests → generated
+and curated asset library → image dependency and shared registry/wrapper → access/avatar/task art →
+Garden/canopy/Circle art → default-off learning/reveal/shared art → removal of the League watermark
+→ focused and full checks → bounded bilingual web proxy → truthful evidence and cohesive commits.
+Physical Android/TalkBack and named botanical, cultural, safeguarding, accessibility, and rights
+review remain blocked or not run until directly observed.
+
 ## R003 Complete-Screen Implementation Addendum — 2026-09-05
 
 ### Parent sign-up usability slice — 2026-09-06

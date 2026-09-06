@@ -1,5 +1,19 @@
 # Prototype Limitations
 
+## Generated natural artwork — 2026-09-06
+
+The current integration replaces vector-like product drawings with locally generated natural
+botanical imagery. These files are presentation assets, not documentary evidence, a botanical
+model, a site record, a real habitat measurement, a real Child submission, or proof of
+environmental impact. Garden stages and family/circle scenes remain deterministic symbolic UI
+states selected by live app data.
+
+Prompts, generator/date, transformations, dimensions, checksums, intended use, and review status
+are recorded locally. That provenance does not by itself establish public-release rights,
+botanical accuracy, UAE cultural approval, child-safeguarding approval, accessibility acceptance,
+or Android rendering/performance. Those reviews remain `NOT RUN` or `BLOCKED` until a named reviewer
+or physical device directly evaluates the current build.
+
 ## Capability Truth
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
@@ -243,7 +257,7 @@ The implemented Feature 003 technical limits are:
 - all new profiles, tasks, awards, growth, circle data, and assistant responses are local fixtures;
 - no native photo capture, recording, background audio, or real upload exists;
 - native direction changes may require reopen/reload;
-- garden species/stages are deterministic illustrations, not biological models or 3D simulation;
+- garden species/stages are generated symbolic images, not biological models or measured growth;
 - Android identifiers, builds, and physical-device behavior remain whatever the actual repository
   and runbook verify;
 - old Feature 002 tests and screenshots do not pass Feature 003 acceptance; and

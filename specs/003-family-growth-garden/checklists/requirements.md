@@ -34,6 +34,22 @@
 - [x] No `[NEEDS CLARIFICATION]` marker is required; the existing deterministic verification and
       first-family authority provide a reasonable bounded implementation.
 
+## R003 Natural Botanical Artwork Addendum — 2026-09-06
+
+- [x] The replacement boundary distinguishes scenic/decorative product art from the immutable
+      official Ghaf mark, platform icons, and functional control/status/safety vectors.
+- [x] The exact 41-asset family, every five-species/five-stage Garden state, intended crop, and
+      presentation use are named before generation or runtime integration.
+- [x] Generated-art exclusions cover people, faces, hands, text, UI, logos, brands, watermarks,
+      hazards, fantasy effects, malformed botanical detail, and misleading environmental meaning.
+- [x] Static local mapping, offline failure, decorative/informative accessibility, reduced motion,
+      Arabic/English nondirectional composition, checksums, prompt provenance, and review gates are
+      testable and unambiguous.
+- [x] The one dependency exception is narrowly measured to local image decode/crop/cache/transition
+      and memory behavior; it authorizes no remote image, capture, upload, analysis, or provider.
+- [x] No `[NEEDS CLARIFICATION]` marker is required; the user selected generated natural imagery and
+      the established Ghaf design/product contracts bound its subject, style, safety, and behavior.
+
 **Active gates:**
 
 - **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
@@ -74,6 +90,10 @@
 - The 2026-09-06 Parent sign-up addendum was rechecked against the same 16 quality items: all pass,
   with no clarification marker, production-account claim, second-household behavior, or change to
   historical R001 evidence.
+- The 2026-09-06 natural-artwork addendum is presentation-only and preserves all product behavior.
+  Automated/local web checks can validate mapping, provenance, crop, and UI separation, while
+  physical Android, TalkBack, botanical/cultural/accessibility, safeguarding, and rights reviews
+  remain separate evidence gates.
 - The exact ten-route contract, deterministic reset/pre-post values, P0 task and safety boundary,
   separate `chosen` and `in_progress` states, enum values, reward/phase matrix, five-stage
   thresholds, privacy-before-projection rules, prepared assistant/media status, Arabic/cultural

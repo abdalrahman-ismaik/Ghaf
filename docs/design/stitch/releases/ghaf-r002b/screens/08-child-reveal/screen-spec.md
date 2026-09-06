@@ -45,8 +45,9 @@ restore focus, and provide text alternatives/non-color distinctions at 200% text
 
 ## Copy, provenance, and acceptance
 
-All copy is bilingual and action-specific; symbolic growth is not measured impact. Art/sound are
-local code-native or explicitly provenanced, with sound optional and never autoplayed. Prove one
+All copy is bilingual and action-specific; symbolic growth is not measured impact. Artwork uses
+the R003 provenanced local recognition image and remains decorative/supporting; sound is optional
+and never autoplayed. Prove one
 bundle per profile/event, complete consequence parity/order, exactly-once presentation transitions,
 queue recovery, profile isolation, zero-reward submission/learning semantics, flag exclusivity,
 origin safety, large-text scrolling, and reduced-motion parity. Canonical 390×844 and native modal,
