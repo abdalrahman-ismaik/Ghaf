@@ -1,28 +1,46 @@
-import { createMockServiceRegistry } from './mock';
+import { createFeature003ServiceRegistry } from './mock';
+import type { Feature003ServiceRegistry } from './interfaces';
 
 export type {
-  AIService,
-  ApproveCompletionRequest,
-  CompletionAward,
-  ImpactService,
+  ChildCoachService,
+  CoachAdaptationService,
+  FamilyLeagueService,
+  FamilyRewardService,
+  FamilyProjectionService,
+  Feature003ServiceRegistry,
+  GardenService,
   MediaService,
-  MissionGenerationRequest,
-  MissionService,
+  ParentGuideService,
+  ParentSummaryPolicy,
+  PreparedChildCoachProvider,
+  PreparedParentGuideProvider,
   PrototypeSessionService,
-  ResetResult,
-  ServiceError,
+  RecognitionService,
   ServiceMeta,
-  ServiceRegistry,
   ServiceResult,
+  SessionAuthorityInput,
+  SyntheticVoiceService,
+  SyntheticAccessService,
+  TaskService,
 } from './interfaces';
 export {
-  createMockServiceRegistry,
-  MockAIService,
-  MockImpactService,
-  MockMediaService,
-  MockMissionService,
-  MockPrototypeSessionService,
+  createFeature003ServiceRegistry,
+  DeterministicChildCoachProvider,
+  DeterministicCoachAdaptationService,
+  DeterministicFamilyRewardService,
+  DeterministicFamilyLeagueService,
+  DeterministicFamilyProjectionService,
+  DeterministicGardenService,
+  DeterministicMediaService,
+  DeterministicParentGuideProvider,
+  DeterministicParentSummaryPolicy,
+  DeterministicPrototypeSessionService,
+  DeterministicRecognitionService,
+  DeterministicTaskService,
+  DeterministicSyntheticVoiceService,
+  DeterministicSyntheticAccessService,
 } from './mock';
+export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 
-/** The competition build binds every replaceable boundary to deterministic local services. */
-export const serviceRegistry = createMockServiceRegistry();
+// Competition uses only deterministic Feature 003 services from this registry.
+export const serviceRegistry: Feature003ServiceRegistry = createFeature003ServiceRegistry();

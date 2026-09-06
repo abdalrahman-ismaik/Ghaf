@@ -24,8 +24,8 @@ simulated, or pregenerated behavior as a live production service.
 | Reset state and history              | PASSED  | Five browser resets plus five source-state store resets restored the exact baseline; Back did not reopen journey history     |
 | Six-stage progression contract       | PASSED  | Pure tests verified stages 0–5, the 48→60 crossing, unique milestone, and stage-5 saturation                                 |
 | Growth feedback within three seconds | PASSED  | Browser observed celebration and 60% progress 0.9 seconds after Parent approval                                              |
-| Human 75–105-second rehearsal        | NOT RUN | Automation time is not substituted for a three-person judge-path rehearsal                                                   |
-| Three-person concept check           | NOT RUN | The three members have not yet recorded the comprehension review                                                             |
+| Human 75–105-second rehearsal        | NOT RUN | No human operator has recorded the required five rehearsal timings                                                           |
+| Three-person concept check           | NOT RUN | No review with three people unfamiliar with the detailed design has been recorded                                            |
 | Primary physical Android journey     | BLOCKED | `adb`, Android SDK environment, emulator, and connected phone are absent                                                     |
 
 `PASSED` is based on recorded command or runtime evidence. Browser evidence does not make a native
@@ -148,7 +148,9 @@ On the team's named primary Android phone, run the complete journey once in Arab
 English, then five timed Arabic-first rehearsals. Check playback, long Arabic wrapping, keyboard
 avoidance, touch/focus/pressed states, back behavior, progress origin, reset after five source
 states, reduced motion, and the Ghaf transition. Record device model, Android version, build ID,
-operator, network state, and result below.
+operator, network state, and result below. Separately, have three people unfamiliar with the
+detailed design watch the prepared demonstration once and record whether each can identify the
+family input, Parent approval gate, Child action, estimated food-rescue result, and tree growth.
 
 | Date/time  | Device / Android          | Build            | Locale/path  | Network       | Result  | Notes/operator                                                   |
 | ---------- | ------------------------- | ---------------- | ------------ | ------------- | ------- | ---------------------------------------------------------------- |

@@ -1,0 +1,20 @@
+flowchart TB
+  Parent[Parent / demo operator]
+  Child[Child / demo operator]
+  App[Expo Router application]
+  UI[Shared UI · design tokens · i18n]
+  Store[Zustand prototype session + application commands]
+  Policies[Pure task · reward · garden · circle · assistant policies]
+  Registry[Provider-neutral service registry]
+  Mock[Deterministic local providers]
+  Fixtures[Synthetic bilingual fixtures + prepared media]
+
+  Parent --> App
+  Child --> App
+  App --> UI
+  App --> Store
+  Store --> Policies
+  Store --> Registry
+  Registry --> Mock
+  Mock --> Policies
+  Mock --> Fixtures

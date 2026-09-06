@@ -1,206 +1,336 @@
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { Button, Card, Screen, Text } from '@/components/primitives';
-import { colors, radii, spacing } from '@/design/tokens';
-import type { PrototypeRole } from '@/models/prototype';
+import { SyntheticAccessPanel } from '@/components/family-growth/SyntheticAccessPanel';
+import { JourneyHeader } from '@/components/journey';
+import { Screen, Text } from '@/components/primitives';
+import { colors, layout, radii, spacing } from '@/design/tokens';
+import type { DemoRole, SyntheticChildId, TaskLifecycleStatus } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { replaceStackWithRoute } from '@/utils/navigation';
 
-interface RoleChoiceProps {
+const CHILD_HANDOFF_ROUTES: Partial<
+  Record<TaskLifecycleStatus, '/child' | '/child/task' | '/garden'>
+> = {
+  assigned: '/child',
+  chosen: '/child/task',
+  in_progress: '/child/task',
+  submitted: '/child/task',
+  retry: '/child',
+  confirmed: '/child',
+  recognized: '/garden',
+};
+
+export default function RoleScreen() {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const role = usePrototypeStore((state) => state.role);
+  const activeChildId = usePrototypeStore((state) => state.activeChildId);
+  const journey = usePrototypeStore((state) => state.journey);
+  const familyExperience = usePrototypeStore((state) => state.familyExperience);
+  const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
+  const enterChildExperience = usePrototypeStore((state) => state.enterChildExperience);
+  const setSyntheticChildAccess = usePrototypeStore((state) => state.setSyntheticChildAccess);
+  const [accessError, setAccessError] = useState<string | null>(null);
+  const salemHandoffLabel =
+    journey?.assignment?.childId === 'child_salem'
+      ? journey.lifecycle === 'assigned'
+        ? t('role.salemAssigned')
+        : journey.lifecycle === 'chosen'
+          ? t('childHome.openTask')
+          : journey.lifecycle === 'in_progress'
+            ? t('childHome.resumeTask')
+            : ['submitted', 'confirmed'].includes(journey.lifecycle)
+              ? t('childHome.waitingForParent')
+              : journey.lifecycle === 'recognized'
+                ? t('parentHome.openGarden')
+                : null
+      : null;
+
+  const openParent = () => {
+    setAccessError(null);
+    const result = enterParentExperience();
+    if (!result.ok) {
+      setAccessError(t('errors.safeRetry'));
+      return;
+    }
+    requestAnimationFrame(() => {
+      const handoffRoute =
+        journey && ['submitted', 'retry', 'confirmed', 'recognized'].includes(journey.lifecycle)
+          ? '/parent/check-in'
+          : '/parent';
+      replaceStackWithRoute(router, handoffRoute);
+    });
+  };
+
+  const openChild = (childId: SyntheticChildId) => {
+    setAccessError(null);
+    const result = enterChildExperience(childId);
+    if (!result.ok) {
+      setAccessError(t('errors.safeRetry'));
+      return;
+    }
+    requestAnimationFrame(() => {
+      const handoffRoute =
+        childId === 'child_salem' && journey?.assignment?.childId === childId
+          ? (CHILD_HANDOFF_ROUTES[journey.lifecycle] ?? '/child')
+          : '/child';
+      replaceStackWithRoute(router, handoffRoute);
+    });
+  };
+
+  const changeChildAccess = (childId: SyntheticChildId, enabled: boolean) => {
+    setAccessError(null);
+    const result = setSyntheticChildAccess(childId, enabled);
+    if (!result.ok) setAccessError(t('errors.safeRetry'));
+  };
+
+  const childAccess = Object.fromEntries(
+    familyExperience.access.children.map((profile) => [profile.childId, profile.pairingStatus]),
+  ) as Readonly<Record<SyntheticChildId, 'paired' | 'revoked'>>;
+
+  return (
+    <Screen contentContainerStyle={styles.screenContent} testID="role-screen">
+      <JourneyHeader
+        action={<LanguageSwitcher compact showGuidance={false} />}
+        eyebrow={t('common.prototype')}
+        onBack={() => router.replace('/')}
+        subtitle={t('role.body')}
+        title={t('role.title')}
+      />
+
+      <RoleChoice
+        description={t('role.parentBody')}
+        label={t('role.parentTitle')}
+        onPress={openParent}
+        selected={role === 'parent'}
+        type="parent"
+      />
+
+      <View style={styles.childMode}>
+        <Text accessibilityRole="header" color="forest" variant="heading">
+          {t('role.childTitle')}
+        </Text>
+        <Text color="inkMuted">{t('role.childBody')}</Text>
+        <ProfileChoice
+          disabled={childAccess.child_salem !== 'paired'}
+          label={t('role.chooseSalem')}
+          onPress={() => openChild('child_salem')}
+          selected={role === 'child' && activeChildId === 'child_salem'}
+          status={
+            childAccess.child_salem === 'paired'
+              ? salemHandoffLabel
+              : t('familyAccess.profileRevoked')
+          }
+          statusTestID="salem-handoff-status"
+          testID="choose-salem-button"
+        />
+        <ProfileChoice
+          disabled={childAccess.child_alya !== 'paired'}
+          label={t('role.chooseAlya')}
+          onPress={() => openChild('child_alya')}
+          selected={role === 'child' && activeChildId === 'child_alya'}
+          status={childAccess.child_alya === 'paired' ? null : t('familyAccess.profileRevoked')}
+          testID="choose-alya-button"
+        />
+      </View>
+
+      <SyntheticAccessPanel
+        canManage={familyExperience.activeEntry?.role === 'parent'}
+        error={accessError}
+        onChangeAccess={changeChildAccess}
+        profiles={familyExperience.access.children.map((profile) => ({
+          childId: profile.childId,
+          label: t(profile.childId === 'child_salem' ? 'role.chooseSalem' : 'role.chooseAlya'),
+          status: profile.pairingStatus === 'paired' ? 'ready' : 'revoked',
+        }))}
+      />
+
+      <View style={styles.disclosure}>
+        <View style={styles.disclosureRule} />
+        <Text color="earth" style={styles.disclosureCopy} variant="caption">
+          {t('parentHome.syntheticPrivacyBoundary')}
+        </Text>
+      </View>
+    </Screen>
+  );
+}
+
+function RoleChoice({
+  description,
+  label,
+  onPress,
+  selected,
+  type,
+}: {
   description: string;
-  glyph: string;
   label: string;
   onPress: () => void;
   selected: boolean;
-  testID: string;
-}
-
-function RoleChoice({ description, glyph, label, onPress, selected, testID }: RoleChoiceProps) {
+  type: DemoRole;
+}) {
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
-      accessibilityRole="radio"
-      accessibilityState={{ checked: selected }}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      onBlur={() => setFocused(false)}
+      onFocus={() => setFocused(true)}
       onPress={onPress}
       style={({ pressed }) => [
         styles.roleChoice,
-        selected ? styles.roleChoiceSelected : null,
+        selected ? styles.selected : null,
+        focused ? styles.focused : null,
         pressed ? styles.pressed : null,
       ]}
-      testID={testID}
+      testID={`choose-${type}-mode`}
     >
-      <View style={[styles.roleGlyph, selected ? styles.roleGlyphSelected : null]}>
-        <Text align="center" color={selected ? 'white' : 'ghaf'} style={styles.roleGlyphText}>
-          {glyph}
-        </Text>
+      <View style={styles.roleGlyph}>
+        <View style={styles.roleStem} />
+        <View style={[styles.roleLeaf, styles.roleLeafOne]} />
+        {type === 'parent' ? <View style={[styles.roleLeaf, styles.roleLeafTwo]} /> : null}
       </View>
-      <View style={styles.roleCopy}>
-        <Text align="center" color="forest" variant="heading">
+      <View style={styles.copy}>
+        <Text color="forest" variant="heading">
           {label}
         </Text>
-        <Text align="center" color="inkMuted">
-          {description}
-        </Text>
+        <Text color="inkMuted">{description}</Text>
       </View>
     </Pressable>
   );
 }
 
-export default function RoleSelectorScreen() {
-  const router = useRouter();
-  const { t } = useTranslation();
-  const role = usePrototypeStore((state) => state.role);
-  const setRole = usePrototypeStore((state) => state.setRole);
-  const resetDemo = usePrototypeStore((state) => state.resetDemo);
-
-  const openRole = (nextRole: PrototypeRole) => {
-    setRole(nextRole);
-    router.replace(nextRole === 'parent' ? '/parent' : '/child');
-  };
-
-  const reset = () => {
-    resetDemo();
-    router.dismissAll();
-    router.replace('/parent');
-  };
-
+function ProfileChoice({
+  disabled,
+  label,
+  onPress,
+  selected,
+  status,
+  statusTestID,
+  testID,
+}: {
+  disabled: boolean;
+  label: string;
+  onPress: () => void;
+  selected: boolean;
+  status?: string | null;
+  statusTestID?: string;
+  testID: string;
+}) {
+  const [focused, setFocused] = useState(false);
   return (
-    <Screen contentContainerStyle={styles.screenContent} testID="role-screen">
-      <View style={styles.topBar}>
-        <View>
-          <Text color="forest" variant="heading">
-            Ghaf · غاف
+    <Pressable
+      accessibilityLabel={[label, status].filter(Boolean).join('. ')}
+      accessibilityRole="button"
+      accessibilityState={{ disabled, selected }}
+      disabled={disabled}
+      onBlur={() => setFocused(false)}
+      onFocus={() => setFocused(true)}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.profileChoice,
+        selected ? styles.profileSelected : null,
+        focused ? styles.focused : null,
+        disabled ? styles.disabled : null,
+        pressed ? styles.pressed : null,
+      ]}
+      testID={testID}
+    >
+      <View style={[styles.profileMark, selected ? styles.profileMarkSelected : null]} />
+      <View style={styles.copy}>
+        <Text color="forest" variant="label">
+          {label}
+        </Text>
+        {status ? (
+          <Text color="mangrove" testID={statusTestID} variant="caption">
+            {status}
           </Text>
-          <Text color="gold" variant="caption">
-            {t('common.prototype')}
-          </Text>
-        </View>
-        <LanguageSwitcher compact showGuidance={false} />
+        ) : null}
       </View>
-
-      <View style={styles.intro}>
-        <Text color="gold" variant="label">
-          {t('role.eyebrow')}
-        </Text>
-        <Text color="forest" variant="title">
-          {t('role.title')}
-        </Text>
-        <Text color="inkMuted">{t('role.subtitle')}</Text>
-      </View>
-
-      <View accessibilityRole="radiogroup" style={styles.roleGrid}>
-        <RoleChoice
-          description={t('role.parentDescription')}
-          glyph="⌂"
-          label={t('common.parent')}
-          onPress={() => openRole('parent')}
-          selected={role === 'parent'}
-          testID="choose-parent-button"
-        />
-        <RoleChoice
-          description={t('role.childDescription')}
-          glyph="✦"
-          label={t('common.child')}
-          onPress={() => openRole('child')}
-          selected={role === 'child'}
-          testID="choose-child-button"
-        />
-      </View>
-
-      <Card style={styles.disclosure}>
-        <View style={styles.disclosureDot} />
-        <Text color="inkMuted" style={styles.disclosureText} variant="caption">
-          {t('role.shortcutNote')} {t('mission.sourceNote')}
-        </Text>
-      </Card>
-
-      <Button onPress={reset} variant="ghost">
-        {t('common.reset')}
-      </Button>
-    </Screen>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContent: {
-    justifyContent: 'center',
-  },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: spacing.md,
-    marginBottom: spacing.xxl,
-  },
-  intro: {
-    gap: spacing.sm,
-    marginBottom: spacing.xl,
-  },
-  roleGrid: {
-    gap: spacing.md,
-    marginBottom: spacing.lg,
-  },
+  screenContent: { justifyContent: 'center', paddingBottom: spacing.huge },
   roleChoice: {
-    minHeight: 188,
+    flexDirection: 'row',
+    minHeight: 132,
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.md,
-    borderRadius: radii.lg,
-    borderCurve: 'continuous',
-    borderWidth: 1.5,
+    gap: spacing.lg,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: colors.line,
-    backgroundColor: colors.surface,
-    padding: spacing.xl,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.lg,
   },
-  roleChoiceSelected: {
+  selected: {
     borderColor: colors.ghaf,
-    backgroundColor: colors.leafLight,
+    backgroundColor: colors.leafMist,
   },
   roleGlyph: {
-    width: 64,
-    height: 64,
+    width: 60,
+    height: 76,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     backgroundColor: colors.ivory,
     borderWidth: 1,
     borderColor: colors.sand,
   },
-  roleGlyphSelected: {
+  roleStem: {
+    position: 'absolute',
+    bottom: 12,
+    width: 4,
+    height: 44,
+    borderRadius: radii.pill,
+    backgroundColor: colors.earth,
+  },
+  roleLeaf: {
+    position: 'absolute',
+    width: 24,
+    height: 13,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
     backgroundColor: colors.ghaf,
-    borderColor: colors.ghaf,
   },
-  roleGlyphText: {
-    fontSize: 30,
-    lineHeight: 36,
+  roleLeafOne: { top: 18, start: 9, transform: [{ rotate: '24deg' }] },
+  roleLeafTwo: { top: 34, end: 7, transform: [{ rotate: '-24deg' }] },
+  copy: { flex: 1, minWidth: 0, gap: spacing.xxs },
+  childMode: {
+    gap: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.line,
+    paddingBottom: spacing.lg,
   },
-  roleCopy: {
-    maxWidth: 320,
-    gap: spacing.xs,
-  },
-  pressed: {
-    opacity: 0.78,
-    transform: [{ scale: 0.99 }],
-  },
-  disclosure: {
+  profileChoice: {
     flexDirection: 'row',
+    minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.sm,
-    backgroundColor: colors.goldLight,
-    borderColor: colors.sand,
-    marginBottom: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radii.sm,
+    backgroundColor: colors.surface,
     padding: spacing.md,
   },
-  disclosureDot: {
-    width: 9,
-    height: 9,
-    flexShrink: 0,
-    borderRadius: radii.pill,
-    backgroundColor: colors.gold,
+  profileSelected: { borderColor: colors.mangrove, backgroundColor: colors.waterLight },
+  profileMark: {
+    width: 18,
+    height: 26,
+    borderTopLeftRadius: radii.pill,
+    borderBottomRightRadius: radii.pill,
+    borderWidth: 2,
+    borderColor: colors.inkMuted,
   },
-  disclosureText: {
-    flex: 1,
-  },
+  profileMarkSelected: { borderColor: colors.mangrove, backgroundColor: colors.mangrove },
+  disclosure: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
+  disclosureCopy: { flex: 1, minWidth: 0 },
+  disclosureRule: { width: 1, minHeight: 44, backgroundColor: colors.gold },
+  focused: { borderColor: colors.gold, borderWidth: 2 },
+  pressed: { opacity: 0.74, transform: [{ scale: 0.99 }] },
+  disabled: { opacity: 0.56 },
 });

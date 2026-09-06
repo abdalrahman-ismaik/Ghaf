@@ -392,7 +392,7 @@ the approved judging path and MUST NOT delay it.
 | FR-039      | DEFERRED       | Progress after Full Ghaf tree is outside the prepared stage-2-to-stage-3 judging path.               |
 | FR-040      | DEMO-CRITICAL  | The complete approved flow must work in Arabic and English.                                          |
 | FR-041      | DEMO-CRITICAL  | Correct Arabic RTL and English LTR are core product behavior.                                        |
-| FR-042      | POLISH         | Mixed-script and extreme-label resilience refine bilingual presentation after the core layouts work. |
+| FR-042      | DEMO-CRITICAL  | Mixed-script, long-label, number/unit, and directional behavior must be tested from first implementation. |
 | FR-043      | DEMO-CRITICAL  | A no-network mock journey is the primary reliability requirement.                                    |
 | FR-044      | DEMO-CRITICAL  | Exact reset values make repeated rehearsals deterministic.                                           |
 | FR-045      | DEMO-CRITICAL  | Synthetic data and secret exclusion are minimum safeguards.                                          |

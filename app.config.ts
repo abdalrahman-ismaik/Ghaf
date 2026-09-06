@@ -1,6 +1,6 @@
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 
-// These identifiers are intentionally provisional for the competition prototype.
+// The competition build uses temporary app identifiers.
 const PROVISIONAL_ANDROID_PACKAGE = 'ae.ac.ku.ghaf.prototype';
 const PROVISIONAL_IOS_BUNDLE_IDENTIFIER = 'ae.ac.ku.ghaf.prototype';
 
@@ -18,7 +18,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: PROVISIONAL_ANDROID_PACKAGE,
-    predictiveBackGestureEnabled: false,
+    allowBackup: false,
+    blockedPermissions: [
+      'android.permission.MODIFY_AUDIO_SETTINGS',
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.RECORD_AUDIO',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+    ],
+    predictiveBackGestureEnabled: true,
+    softwareKeyboardLayoutMode: 'resize',
   },
   web: {
     bundler: 'metro',
@@ -26,15 +34,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     'expo-router',
-    [
-      'expo-audio',
-      {
-        microphonePermission: false,
-        recordAudioAndroid: false,
-        enableBackgroundRecording: false,
-        enableBackgroundPlayback: false,
-      },
-    ],
     [
       'expo-localization',
       {
