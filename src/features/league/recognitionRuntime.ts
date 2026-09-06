@@ -5,14 +5,26 @@ import type {
   SyntheticChildId,
   TaskJourney,
 } from '../../models/familyGrowth';
-import type { ChallengeLeafCandidate } from '../../models/familyLeague';
+import type { ChallengeLeaf, ChallengeLeafCandidate } from '../../models/familyLeague';
+import { matchesCanonicalP0TaskContent, validateTaskForReview } from '../tasks/validation';
 
 import { evaluateChallengeLeafEligibility, SYNTHETIC_LEAGUE_PARTICIPANTS } from './index';
 
 export const PRIVATE_LEAGUE_WEEK_KEY = '2026-W36' as const;
 export const SALEM_RECYCLING_CHALLENGE_LEAF_ID = 'leaf_child_salem_5' as const;
 export const PRIVATE_LEAGUE_RECOGNITION_SCHEMA_VERSION =
-  'r003.private-league-recognition.v1' as const;
+  'r003.private-league-recognition.v2' as const;
+
+export const PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS = Object.freeze({
+  'task_recycling_p0_v1@1': Object.freeze({
+    challengeLeafEligible: true as const,
+    leafId: SALEM_RECYCLING_CHALLENGE_LEAF_ID,
+    profileId: 'child_salem' as const,
+  }),
+} as const);
+
+export type PrivateLeagueEligibilityDecision =
+  (typeof PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS)[keyof typeof PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS];
 
 export interface PrivateLeagueRecognitionReceipt {
   readonly leagueReceiptId: string;
@@ -36,8 +48,20 @@ export interface PrivateLeagueRecognitionRuntime {
   readonly profileId: 'child_salem';
   readonly profileEpochId: string;
   readonly weekKey: typeof PRIVATE_LEAGUE_WEEK_KEY;
-  readonly nominatedLeaf: ChallengeLeafCandidate;
+  readonly challengeLeaf: ChallengeLeaf;
   readonly receiptsByRecognitionKey: Readonly<Record<string, PrivateLeagueRecognitionReceipt>>;
+}
+
+export function selectPrivateLeagueRecognitionEligibility(
+  journey: TaskJourney,
+): PrivateLeagueEligibilityDecision | null {
+  const taskVersionKey = `${journey.task.id}@${journey.task.version}`;
+  const decision = (
+    PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS as Readonly<
+      Record<string, PrivateLeagueEligibilityDecision | undefined>
+    >
+  )[taskVersionKey];
+  return decision?.profileId === journey.task.targetChildId ? decision : null;
 }
 
 export interface PrivateLeagueRecognitionApplication {
@@ -83,6 +107,10 @@ function immutable<T>(value: T): T {
   if (typeof value !== 'object' || value === null || Object.isFrozen(value)) return value;
   for (const nested of Object.values(value)) immutable(nested);
   return Object.freeze(value);
+}
+
+function sameValue(left: unknown, right: unknown): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 function hasExactKeys(value: object, keys: readonly string[]): boolean {
@@ -186,6 +214,77 @@ function isCanonicalNomination(value: unknown): value is ChallengeLeafCandidate 
   ).eligible;
 }
 
+function createAssignedChallengeLeaf(): ChallengeLeaf {
+  const nomination = createNominatedLeaf();
+  return {
+    id: nomination.id,
+    weekKey: PRIVATE_LEAGUE_WEEK_KEY,
+    participantId: nomination.participantId,
+    ageBand: '9_11',
+    approvedTaskRef: nomination.approvedTaskRef,
+    categoryId: nomination.categoryId,
+    visibilityScope: 'household',
+    parentApproved: true,
+    accessibilityAdaptable: true,
+    protectedContent: nomination.protectedContent,
+    state: 'assigned',
+    recognitionKey: null,
+    completionMode: null,
+    accessibilityAdapted: false,
+  };
+}
+
+function isCanonicalChallengeLeaf(value: unknown): value is ChallengeLeaf {
+  if (
+    !isRecord(value) ||
+    !hasExactKeys(value, [
+      'id',
+      'weekKey',
+      'participantId',
+      'ageBand',
+      'approvedTaskRef',
+      'categoryId',
+      'visibilityScope',
+      'parentApproved',
+      'accessibilityAdaptable',
+      'protectedContent',
+      'state',
+      'recognitionKey',
+      'completionMode',
+      'accessibilityAdapted',
+    ]) ||
+    value.weekKey !== PRIVATE_LEAGUE_WEEK_KEY ||
+    value.ageBand !== '9_11' ||
+    !isCanonicalNomination({
+      id: value.id,
+      participantId: value.participantId,
+      ageBands: [value.ageBand],
+      approvedTaskRef: value.approvedTaskRef,
+      categoryId: value.categoryId,
+      visibilityScope: value.visibilityScope,
+      parentApproved: value.parentApproved,
+      accessibilityAdaptable: value.accessibilityAdaptable,
+      protectedContent: value.protectedContent,
+    })
+  ) {
+    return false;
+  }
+  if (value.state === 'assigned') {
+    return (
+      value.recognitionKey === null &&
+      value.completionMode === null &&
+      value.accessibilityAdapted === false
+    );
+  }
+  return (
+    value.state === 'confirmed' &&
+    typeof value.recognitionKey === 'string' &&
+    value.recognitionKey.startsWith('recognition:') &&
+    (value.completionMode === 'independent' || value.completionMode === 'permitted_help') &&
+    value.accessibilityAdapted === false
+  );
+}
+
 function isRuntimeEnvelope(value: unknown): value is PrivateLeagueRecognitionRuntime {
   return (
     isRecord(value) &&
@@ -194,14 +293,14 @@ function isRuntimeEnvelope(value: unknown): value is PrivateLeagueRecognitionRun
       'profileId',
       'profileEpochId',
       'weekKey',
-      'nominatedLeaf',
+      'challengeLeaf',
       'receiptsByRecognitionKey',
     ]) &&
     value.schemaVersion === PRIVATE_LEAGUE_RECOGNITION_SCHEMA_VERSION &&
     value.profileId === 'child_salem' &&
     validProfileEpochId(value.profileEpochId) &&
     value.weekKey === PRIVATE_LEAGUE_WEEK_KEY &&
-    isCanonicalNomination(value.nominatedLeaf) &&
+    isCanonicalChallengeLeaf(value.challengeLeaf) &&
     isRecord(value.receiptsByRecognitionKey)
   );
 }
@@ -212,8 +311,8 @@ export function createPrivateLeagueRecognitionRuntime(input: {
   if (!validProfileEpochId(input.profileEpochId)) {
     throw new Error('Private League reset requires a valid Salem profile epoch');
   }
-  const nominatedLeaf = createNominatedLeaf();
-  if (!isCanonicalNomination(nominatedLeaf)) {
+  const challengeLeaf = createAssignedChallengeLeaf();
+  if (!isCanonicalChallengeLeaf(challengeLeaf)) {
     throw new Error('Private League canonical nomination is not eligible');
   }
   return immutable({
@@ -221,7 +320,7 @@ export function createPrivateLeagueRecognitionRuntime(input: {
     profileId: 'child_salem',
     profileEpochId: input.profileEpochId,
     weekKey: PRIVATE_LEAGUE_WEEK_KEY,
-    nominatedLeaf,
+    challengeLeaf,
     receiptsByRecognitionKey: {},
   });
 }
@@ -307,20 +406,24 @@ function isCanonicalCoreRecognitionReceipt(
 function isCanonicalRecognizedJourney(input: ApplyRecognitionToPrivateLeagueInput): boolean {
   const { journey, profileId } = input;
   const { task, assignment, submission, checkIn } = journey;
+  const eligibility = selectPrivateLeagueRecognitionEligibility(journey);
   return (
+    eligibility?.challengeLeafEligible === true &&
+    eligibility?.leafId === input.runtime.challengeLeaf.id &&
+    eligibility.profileId === profileId &&
     profileId === 'child_salem' &&
     journey.lifecycle === 'recognized' &&
     task.id === 'task_recycling_p0_v1' &&
     task.version === 1 &&
     task.templateId === 'task_recycling_p0_v1' &&
     task.targetChildId === profileId &&
-    task.content.categoryId === 'green_impact' &&
-    task.content.landscapeId === 'mangrove' &&
-    task.content.recognitionMode === 'standard' &&
-    task.content.routinePhase === 'acquisition' &&
-    task.content.displayedSeedAward === 12 &&
-    task.content.visibilityScope === 'household' &&
-    task.content.circleEligible === true &&
+    validateTaskForReview(task).ok &&
+    matchesCanonicalP0TaskContent(
+      task.content,
+      task.acceptedGuideFixtureId === null ? 'retained_parent_action' : 'exact_guide',
+    ) &&
+    task.content.categoryId === input.runtime.challengeLeaf.categoryId &&
+    task.content.visibilityScope === input.runtime.challengeLeaf.visibilityScope &&
     assignment !== null &&
     assignment.taskId === task.id &&
     assignment.taskVersion === task.version &&
@@ -340,10 +443,6 @@ function isCanonicalRecognizedJourney(input: ApplyRecognitionToPrivateLeagueInpu
     checkIn.confirmationPresentation === 'recognition_applied' &&
     checkIn.recognitionKey === `recognition:${submission.id}`
   );
-}
-
-function sameReceipt(left: RecognitionReceipt, right: RecognitionReceipt): boolean {
-  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 function isCommittedPrivateLeagueReceipt(
@@ -396,7 +495,11 @@ export function selectCommittedPrivateLeagueReceipt(
     return failure('The private League runtime envelope is invalid');
   }
   const entries = Object.entries(runtime.receiptsByRecognitionKey);
-  if (entries.length === 0) return { ok: true, data: null };
+  if (entries.length === 0) {
+    return runtime.challengeLeaf.state === 'assigned'
+      ? { ok: true, data: null }
+      : failure('A confirmed Challenge Leaf requires its committed League receipt');
+  }
   if (entries.length !== 1) {
     return failure('The private League runtime accepts one canonical confirmation only');
   }
@@ -407,6 +510,8 @@ export function selectCommittedPrivateLeagueReceipt(
   const submissionId = recognitionKey.slice('recognition:'.length);
   if (
     submissionId.length === 0 ||
+    runtime.challengeLeaf.state !== 'confirmed' ||
+    runtime.challengeLeaf.recognitionKey !== recognitionKey ||
     !isRecord(receipt) ||
     typeof receipt.committedAt !== 'string' ||
     receipt.committedAt.length === 0 ||
@@ -419,7 +524,10 @@ export function selectCommittedPrivateLeagueReceipt(
       submissionId,
       receipt.completionMode,
       receipt.committedAt,
-    )
+    ) ||
+    runtime.challengeLeaf.id !== receipt.leafId ||
+    runtime.challengeLeaf.completionMode !== receipt.completionMode ||
+    runtime.challengeLeaf.accessibilityAdapted !== receipt.accessibilityAdapted
   ) {
     return failure('The private League committed receipt is invalid');
   }
@@ -436,6 +544,8 @@ export function applyRecognitionToPrivateLeague(
   ) {
     return failure('The private League runtime belongs to another profile or reset epoch');
   }
+  const stored = selectCommittedPrivateLeagueReceipt(input.runtime);
+  if (!stored.ok) return failure(stored.error.message);
   if (!isCanonicalRecognizedJourney(input)) {
     return failure('Only the canonical recognized Salem journey can confirm this Challenge Leaf');
   }
@@ -452,17 +562,13 @@ export function applyRecognitionToPrivateLeague(
   if (
     !committedReceipt ||
     !isCanonicalCoreRecognitionReceipt(committedReceipt, input.journey) ||
-    !sameReceipt(committedReceipt, input.receipt)
+    !sameValue(committedReceipt, input.receipt)
   ) {
     return failure('The recognition receipt is not committed in the canonical ledger');
   }
 
-  const receipts = Object.entries(input.runtime.receiptsByRecognitionKey);
-  if (receipts.length > 0) {
-    if (receipts.length !== 1 || receipts[0]![0] !== recognitionKey) {
-      return failure('The private League receipt ledger has conflicting confirmation evidence');
-    }
-    const existing = receipts[0]![1];
+  if (stored.data) {
+    const existing = stored.data;
     if (
       !isCommittedPrivateLeagueReceipt(
         existing,
@@ -485,6 +591,10 @@ export function applyRecognitionToPrivateLeague(
     };
   }
 
+  if (input.runtime.challengeLeaf.state !== 'assigned') {
+    return failure('The Challenge Leaf state conflicts with its empty receipt ledger');
+  }
+
   const receipt: PrivateLeagueRecognitionReceipt = immutable({
     leagueReceiptId: `league-confirmation:${input.profileEpochId}:${submission.id}`,
     profileId: 'child_salem',
@@ -503,6 +613,13 @@ export function applyRecognitionToPrivateLeague(
   });
   const runtime: PrivateLeagueRecognitionRuntime = immutable({
     ...input.runtime,
+    challengeLeaf: {
+      ...input.runtime.challengeLeaf,
+      state: 'confirmed',
+      recognitionKey,
+      completionMode: submission.completionMode,
+      accessibilityAdapted: false,
+    },
     receiptsByRecognitionKey: { [recognitionKey]: receipt },
   });
   return {

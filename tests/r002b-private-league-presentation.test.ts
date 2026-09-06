@@ -4,7 +4,9 @@ import { buildPrivateLeaguePresentation } from '@/features/league/presentation';
 import {
   applyRecognitionToPrivateLeague,
   createPrivateLeagueRecognitionRuntime,
+  PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS,
   SALEM_RECYCLING_CHALLENGE_LEAF_ID,
+  selectPrivateLeagueRecognitionEligibility,
 } from '@/features/league/recognitionRuntime';
 import { createResetSourceSession } from '@/services/mock/fixtures';
 
@@ -50,13 +52,14 @@ describe('R002b private League recognition runtime', () => {
     expect(result.data.participants.map((participant) => participant.score)).toEqual([80, 80, 60]);
     expect(result.data.participants.map((participant) => participant.position)).toEqual([1, 1, 3]);
     expect(runtime).toMatchObject({
-      schemaVersion: 'r003.private-league-recognition.v1',
+      schemaVersion: 'r003.private-league-recognition.v2',
       profileId: 'child_salem',
       profileEpochId: PROFILE_EPOCH_ID,
       weekKey: '2026-W36',
     });
-    expect(runtime.nominatedLeaf).toMatchObject({
+    expect(runtime.challengeLeaf).toMatchObject({
       id: SALEM_RECYCLING_CHALLENGE_LEAF_ID,
+      state: 'assigned',
       participantId: 'child_salem',
       approvedTaskRef: { taskId: 'task_recycling_p0_v1', taskVersion: 1 },
       categoryId: 'green_impact',
@@ -65,8 +68,47 @@ describe('R002b private League recognition runtime', () => {
       accessibilityAdaptable: true,
     });
     expect(Object.isFrozen(runtime)).toBe(true);
-    expect(Object.isFrozen(runtime.nominatedLeaf)).toBe(true);
+    expect(Object.isFrozen(runtime.challengeLeaf)).toBe(true);
     expect(runtime.receiptsByRecognitionKey).toEqual({});
+  });
+
+  it('keeps the task-version decision separate while rejecting changed canonical content', () => {
+    const input = recognizedInput();
+    const withoutCircle = {
+      ...input.journey,
+      task: {
+        ...input.journey.task,
+        content: { ...input.journey.task.content, circleEligible: false },
+      },
+    };
+
+    expect(PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS).toEqual({
+      'task_recycling_p0_v1@1': {
+        challengeLeafEligible: true,
+        leafId: SALEM_RECYCLING_CHALLENGE_LEAF_ID,
+        profileId: 'child_salem',
+      },
+    });
+    expect(selectPrivateLeagueRecognitionEligibility(withoutCircle)).toEqual(
+      PRIVATE_LEAGUE_ELIGIBILITY_DECISIONS['task_recycling_p0_v1@1'],
+    );
+    expect(
+      selectPrivateLeagueRecognitionEligibility({
+        ...input.journey,
+        task: { ...input.journey.task, version: 2 },
+      }),
+    ).toBeNull();
+
+    const receiptWithoutCircle = { ...input.receipt, circleEvent: null };
+    expect(
+      applyRecognitionToPrivateLeague({
+        ...input,
+        journey: withoutCircle,
+        receipt: receiptWithoutCircle,
+        recognitionLedger: { [receiptWithoutCircle.recognitionKey]: receiptWithoutCircle },
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+    expect(input.runtime.challengeLeaf.state).toBe('assigned');
   });
 
   it('commits Salem fifth Leaf once with reveal-ready authoritative receipt fields', () => {
@@ -96,9 +138,46 @@ describe('R002b private League recognition runtime', () => {
     expect(result.data.runtime.receiptsByRecognitionKey[input.receipt.recognitionKey]).toBe(
       result.data.receipt,
     );
+    expect(result.data.runtime.challengeLeaf).toMatchObject({
+      id: SALEM_RECYCLING_CHALLENGE_LEAF_ID,
+      state: 'confirmed',
+      recognitionKey: input.receipt.recognitionKey,
+      completionMode: 'permitted_help',
+      accessibilityAdapted: false,
+    });
     expect(input.runtime).toEqual(before);
     expect(Object.isFrozen(result.data.runtime)).toBe(true);
     expect(Object.isFrozen(result.data.receipt)).toBe(true);
+  });
+
+  it('keeps League credit for one validated Parent-retained action', () => {
+    const input = recognizedInput();
+    const parentAction = {
+      ar: 'افرز الورق والبلاستيك النظيفين اللذين وافق عليهما شخص بالغ.',
+      en: 'Sort clean paper and plastic that were approved by an adult.',
+    };
+    const journey = {
+      ...input.journey,
+      task: {
+        ...input.journey.task,
+        parentOriginalText: parentAction,
+        acceptedGuideFixtureId: null,
+        content: { ...input.journey.task.content, positiveAction: parentAction },
+      },
+    };
+
+    expect(
+      applyRecognitionToPrivateLeague({
+        ...input,
+        journey,
+      }),
+    ).toMatchObject({
+      ok: true,
+      data: {
+        disposition: 'applied',
+        runtime: { challengeLeaf: { state: 'confirmed' } },
+      },
+    });
   });
 
   it('allows a service-valid third-acquisition phase review without changing League credit', () => {
