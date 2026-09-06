@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import {
   classifyExperiencePath,
   initialFirstRunState,
+  ONBOARDING_PILLARS,
   ONBOARDING_STEPS,
   reduceFirstRunState,
   shouldShowSectionTransition,
@@ -36,17 +37,33 @@ function authoredRoutes(): string[] {
 }
 
 describe('R003 first-run experience', () => {
-  it('introduces Ghaf before three feature moments without granting an experience', () => {
-    expect(ONBOARDING_STEPS).toEqual(['intro', 'choose', 'support', 'growth']);
+  it('introduces Ghaf before Family, Sustainability, and bounded AI without granting an experience', () => {
+    expect(ONBOARDING_STEPS).toEqual([
+      'intro',
+      'family',
+      'sustainability',
+      'ai',
+      'support',
+      'growth',
+    ]);
+    expect(ONBOARDING_PILLARS).toEqual(['family', 'sustainability', 'ai']);
     expect(initialFirstRunState).toEqual({ completed: false, step: 'intro' });
 
-    const choose = reduceFirstRunState(initialFirstRunState, { type: 'next' });
-    expect(choose).toEqual({ completed: false, step: 'choose' });
-    expect(reduceFirstRunState(choose, { type: 'back' })).toEqual(initialFirstRunState);
+    const family = reduceFirstRunState(initialFirstRunState, { type: 'next' });
+    expect(family).toEqual({ completed: false, step: 'family' });
+    expect(reduceFirstRunState(family, { type: 'back' })).toEqual(initialFirstRunState);
 
-    const support = reduceFirstRunState(choose, { type: 'next' });
+    const sustainability = reduceFirstRunState(family, { type: 'next' });
+    expect(sustainability).toEqual({ completed: false, step: 'sustainability' });
+    expect(reduceFirstRunState(sustainability, { type: 'back' })).toEqual(family);
+
+    const ai = reduceFirstRunState(sustainability, { type: 'next' });
+    expect(ai).toEqual({ completed: false, step: 'ai' });
+    expect(reduceFirstRunState(ai, { type: 'back' })).toEqual(sustainability);
+
+    const support = reduceFirstRunState(ai, { type: 'next' });
     expect(support).toEqual({ completed: false, step: 'support' });
-    expect(reduceFirstRunState(support, { type: 'back' })).toEqual(choose);
+    expect(reduceFirstRunState(support, { type: 'back' })).toEqual(ai);
 
     const growth = reduceFirstRunState(support, { type: 'next' });
     expect(growth).toEqual({ completed: false, step: 'growth' });
@@ -58,6 +75,21 @@ describe('R003 first-run experience', () => {
       completed: true,
       step: 'intro',
     });
+  });
+
+  it('lets the family inspect only the three onboarding pillars', () => {
+    for (const pillar of ONBOARDING_PILLARS) {
+      expect(
+        reduceFirstRunState(initialFirstRunState, { type: 'goToPillar', step: pillar }),
+      ).toEqual({ completed: false, step: pillar });
+    }
+
+    expect(
+      reduceFirstRunState(initialFirstRunState, {
+        type: 'goToPillar',
+        step: 'growth' as (typeof ONBOARDING_PILLARS)[number],
+      }),
+    ).toEqual(initialFirstRunState);
   });
 
   it('buffers only directed major context handoffs and never same-role navigation', () => {
@@ -101,6 +133,15 @@ describe('R003 first-run experience', () => {
     expect(onboarding).toContain('LocalIllustration');
     expect(onboarding).toContain('accessibilityLiveRegion="polite"');
     expect(onboarding).toContain('useReducedMotion');
+    expect(onboarding).toContain('first-run-pillar-');
+    expect(onboarding).toContain('accessibilityState={{ selected:');
+    expect(onboarding).toContain("type: 'goToPillar'");
+    expect(onboarding).toContain('withDelay');
+    expect(onboarding).toContain('testID="first-run-visual-story"');
+    expect(onboarding).toContain('scale:');
+    expect(onboarding).not.toMatch(
+      /(?:height|width|margin|padding)\s*:\s*[^,\n]*Progress\.get\(\)/u,
+    );
     expect(transition).toContain('shouldShowSectionTransition');
     expect(rootLayout).toContain('SplashScreen.preventAutoHideAsync');
     expect(rootLayout).toContain('SplashScreen.hideAsync');
@@ -145,6 +186,25 @@ describe('R003 first-run experience', () => {
     expect(welcome).toContain('<FirstRunOnboarding');
     expect(welcome).toContain("activeExperience === 'parent'");
     expect(welcome).toContain("activeExperience === 'child'");
+  });
+
+  it('keeps nine startup rasters and the 41-image post-paint queue', () => {
+    const registry = source('src/components/illustrations/illustrationSources.ts');
+    const manifest = JSON.parse(source('assets/images/illustrations/r003/ASSET_MANIFEST.json')) as {
+      readonly assets: readonly { readonly id: string }[];
+    };
+    const listStart = registry.indexOf('export const onboardingArtworkIds = [');
+    const listEnd = registry.indexOf('] as const satisfies readonly ArtworkId[];', listStart);
+    const onboardingIds = registry.slice(listStart, listEnd).match(/'onboarding-[a-z-]+'/gu);
+    const signedOutArtworkIds = new Set([
+      'field-paper',
+      'welcome-ghaf-habitat',
+      ...(onboardingIds ?? []).map((id) => id.slice(1, -1)),
+    ]);
+
+    expect(onboardingIds).toHaveLength(6);
+    expect(signedOutArtworkIds.size + 1).toBe(9);
+    expect(manifest.assets.length - signedOutArtworkIds.size + 1).toBe(41);
   });
 
   it('shows an opaque two-second splash, then loading, then onboarding', () => {
@@ -279,10 +339,24 @@ describe('R003 first-run experience', () => {
     const english = resources.en.translation.firstRun;
 
     expect(Object.keys(arabic).sort()).toEqual(Object.keys(english).sort());
-    expect(arabic.steps).toHaveLength(4);
-    expect(english.steps).toHaveLength(4);
+    expect(arabic.steps).toHaveLength(6);
+    expect(english.steps).toHaveLength(6);
     expect(arabic.steps[0]?.title).toContain('غاف');
     expect(english.steps[0]?.title).toContain('Ghaf');
+    expect(arabic.pillars.family).toContain('العائلة');
+    expect(arabic.pillars.sustainability).toContain('الاستدامة');
+    expect(arabic.pillars.ai).toContain('الذكاء');
+    expect(english.pillars).toEqual({
+      ai: 'AI',
+      family: 'Family',
+      sustainability: 'Sustainability',
+    });
+    expect(english.steps[3]?.body).toMatch(/Parent-approved task/iu);
+    expect(english.steps[3]?.body).toMatch(/may be wrong/iu);
+    expect(english.steps[3]?.body).toMatch(/adult/iu);
+    expect(arabic.steps[3]?.body).toMatch(/وافق|معتمدة/u);
+    expect(arabic.steps[3]?.body).toContain('قد يخطئ');
+    expect(arabic.steps[3]?.body).toMatch(/بالغ|وليّ الأمر/u);
     for (const locale of [arabic, english]) {
       expect(locale.skip.length).toBeGreaterThan(0);
       expect(locale.next.length).toBeGreaterThan(0);

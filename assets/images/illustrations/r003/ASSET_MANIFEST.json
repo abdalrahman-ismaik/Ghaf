@@ -977,6 +977,33 @@
     {
       "accessibility": "informative",
       "final": {
+        "bytes": 387273,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-family.jpg",
+        "sha256": "502248fd9623b19e290d75a84514304172cf864e3f20f8a663c9a10f8554cb5a",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "OpenAI imagegen",
+      "id": "onboarding-family",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster hero photograph for a child-friendly Arabic-first Expo family sustainability app onboarding screen\nPrimary request: Create a vivid, joyful natural metaphor for FAMILY as a team: exactly three young Ghaf trees, Prosopis cineraria, growing close together so their separate branches meet into one shared sheltering canopy. The trees should feel related and mutually supportive without looking identical or arranged artificially.\nScene/backdrop: A clean UAE desert garden at early morning, warm sand and low native grasses, open sky, no buildings or people.\nSubject: Exactly three botanically plausible young Ghaf trees of slightly different heights, their canopies visibly overlapping around one small open sunlit patch of earth in the center. Natural asymmetry and real fine paired leaf texture.\nStyle/medium: Quiet UAE Botanical Editorial; premium environmental photography, highly realistic, tactile natural-history detail, not an illustration.\nComposition/framing: Landscape 3:2 hero crop, generous crop-safe edges, the trio centered in the safe middle 70 percent, strong readable silhouette at small mobile size, nondirectional composition that works unchanged in RTL and LTR.\nLighting/mood: Luminous UAE sunrise with warm amber rim light and fresh emerald leaves; energetic, welcoming, hopeful, child-friendly, never saccharine.\nColor palette: Ghaf emerald, deep forest, warm pearl sand, solar amber, a restrained clear teal sky.\nMaterials/textures: Authentic bark, feathery leaflets, granular sand, soft grasses, restrained depth of field with all three trees readable.\nConstraints: Exactly three trees and no other prominent tree. No people, child, family portrait, face, hand, body part, animal, readable text, letters, numbers, logo, brand, UI, screen, icon, vector aesthetic, illustration, watercolor, 3D render, CGI, plastic surface, fantasy glow, magical effect, heart symbol, perfect symmetry, repeated cloned foliage, building, car, litter, unsafe object, environmental quantity, watermark, or fake bokeh. The family meaning must come only from the three distinct trees sharing one canopy.",
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
+        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
         "bytes": 252918,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-action.jpg",
@@ -992,6 +1019,33 @@
         "width": 1536
       },
       "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: make a safe everyday sustainability action feel colorful, energetic, and inviting\nScene/backdrop: sunlit warm paper surface with soft teal and amber shadows\nSubject: only clean safe recyclable household objects—smooth paper, flattened cardboard, intact aluminum cans, and capped plastic bottles—arranged in playful flowing color groups ready to sort\nStyle/medium: premium editorial still-life photography, photorealistic, tactile paper grain, real material texture and small natural imperfections\nComposition/framing: bold close crop, curved rhythm moving toward an open central area, landscape 3:2, crop-safe and nondirectional\nLighting/mood: bright warm window light, lively emerald, teal, amber and coral accents, curious and capable rather than childish\nConstraints: all objects clean and intact; no glass, sharps, batteries, chemicals, food, medicine, unknown waste, readable text, logo, UI, person, face, or hand\nAvoid: illustration, vector art, cartoon, 3D render, CGI, fantasy effects, people, mascots, brands, watermarks, clutter, unsafe objects",
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
+        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 319149,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-ai.jpg",
+        "sha256": "c4fa71159a1b1de9ed262ecbba7c38c7a300af56bfd7c791a3d04d8a75c60c61",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "OpenAI imagegen",
+      "id": "onboarding-ai",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster hero photograph for a child-friendly Arabic-first Expo family sustainability app onboarding screen\nPrimary request: Create a vivid, intelligent natural still life that communicates BOUNDED AI GUIDANCE FOR ONE NEXT STEP, not magic and not a robot. Arrange one real Ghaf leaf sprig beside exactly three smooth stone stepping markers that form a short, clear path across warm UAE sand. Connect only the three markers with a subtle thin teal inlay line, like a restrained circuit path embedded in the stone, ending beside the leaf.\nScene/backdrop: Top-down natural-history editorial tabletop made from sunlit UAE sand and pale stone, with a little authentic fine earth and no built environment.\nSubject: One botanically plausible Ghaf sprig with fine paired leaflets; exactly three distinct tactile stone markers in a simple sequence; one restrained teal inlay path that visually suggests clear guided steps.\nStyle/medium: Quiet UAE Botanical Editorial; premium photorealistic still-life photography with real materials and natural imperfections, not an illustration or UI mockup.\nComposition/framing: Landscape 3:2 hero crop, bold diagonal flow contained inside the safe middle 75 percent, generous crop-safe edges, nondirectional enough for unchanged RTL and LTR use, readable at small mobile size.\nLighting/mood: Bright soft morning light with energetic teal and emerald accents, curious, reassuring, clever, child-friendly, professional.\nColor palette: Warm pearl stone and sand, Ghaf emerald, deep forest shadows, restrained mangrove teal, small solar-amber highlights.\nMaterials/textures: Real stone grain, granular sand, delicate natural leaflets, thin matte mineral inlay, crisp tactile detail with restrained depth of field.\nConstraints: The metaphor is limited guidance through three steps only. Exactly three stone markers and one leaf sprig. No robot, face, eyes, character, mascot, brain, human, child, family portrait, hand, body part, microphone, camera, phone, tablet, computer, screen, app UI, chat bubbles, readable text, letters, numbers, icon, logo, brand, glowing orb, magical energy, fantasy glow, neon, hologram, surveillance imagery, medical imagery, vector aesthetic, illustration, watercolor, 3D render, CGI, plastic surface, perfect symmetry, repeated cloned foliage, building, car, litter, unsafe object, environmental quantity, watermark, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [

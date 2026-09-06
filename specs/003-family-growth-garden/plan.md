@@ -1,5 +1,30 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 SMAC Pillar Onboarding Addendum — 2026-09-06
+
+Expand the presentation-only first-run reducer and localized story from four to six ordered steps:
+`intro`, `family`, `sustainability`, `ai`, `support`, and `growth`. Keep completion inside `/` and
+add a closed `goToPillar` event that accepts only the Family, Sustainability, or AI step. Render
+the three targets as accessible 48dp controls with live bilingual labels and a clear active state;
+they never mutate session, role, task, permission, or reward state.
+
+Generate two distinct Quiet UAE Botanical Editorial raster photographs for Family and bounded AI,
+then inspect, normalize, prompt-embed, checksum, and register them as local imports. Keep every
+word and control outside the pixels. Update startup by deriving its exact nine-raster set from the
+six-item onboarding registry; because both new files become startup assets, the existing deferred
+queue remains 41 sources and continues only after the onboarding paint handoff.
+
+Refine `FirstRunOnboarding` as one energetic editorial composition rather than a card carousel:
+vivid edge-to-edge crop, step-specific color surface and live pillar label, concise display/body
+copy, the interactive pillar navigator, visible six-step progress, and one dominant action. Use a
+single staged Reanimated UI-thread transition: a 220 ms opacity/8dp/0.015-scale image settle and
+copy 45 ms later, with direct settled content under reduced motion. Drive the work with RED
+model/source/asset tests, then validate
+focused and full suites, formatting, static local asset/provenance rules, route/startup/deferred
+boundaries, bilingual compact browser layouts, reduced motion, production exports, and available
+Android evidence. Do not add a dependency, route, network asset, AI provider behavior, or product
+authority.
+
 ## R003 Returning-family Entry and Welcome Addendum — 2026-09-06
 
 Extend the existing Zustand access orchestration with a presentation-only discriminated signal for

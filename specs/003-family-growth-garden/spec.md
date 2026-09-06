@@ -18,6 +18,58 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 SMAC Family–Sustainability–AI Onboarding Amendment — 2026-09-06
+
+This amendment supersedes the four-moment first-run story wherever it conflicts. The optional
+in-route onboarding now contains six short moments in this order: introduce Ghaf, make Family an
+explicit team, make Sustainability an explicit everyday action, explain bounded task-focused AI,
+preserve permitted help/full recognition, and close on permanent private symbolic growth. The
+three competition pillars—Family, Sustainability, and AI—must be readable within seconds and use
+child-clear Modern Standard Arabic with equivalent plain English.
+
+The Ghaf introduction and three pillar moments expose one accessible three-pillar navigator.
+Selecting a pillar moves only to its onboarding explanation; it does not complete onboarding,
+choose a role, approve a task, enable AI, or grant access. Next, Back, always-visible Skip, locale
+retention, active-session bypass, session-local completion, and deterministic reset remain
+unchanged. Standard step changes use one brief UI-thread opacity/vertical-settle transition;
+reduced motion removes travel and presents the settled state.
+
+Two new generated local raster photographs represent Family and bounded AI without people, hands,
+readable text, UI, robot/companion imagery, fantasy claims, or measured-impact claims. This grows
+the generated artwork registry from 46 to exactly 48 entries and the signed-out startup set from
+seven to nine rasters: official logo, shared leaf field, six onboarding photographs, and Welcome.
+The four branded fonts remain the only blocking font set. The post-onboarding queue still contains
+41 rasters because the two new files also move into the expanded startup set; its timing, bounded
+parallelism, cache sharing, and prepared-media-last rule remain unchanged.
+
+The AI moment must say that Ghaf can simplify only a Parent-approved task, that AI may be wrong,
+and that the Child can ask an adult. It must not imply open chat, emotional companionship,
+continuous listening, diagnosis, task approval, Parent replacement, or live-provider processing.
+The Sustainability moment describes safe household actions and Parent approval without claiming
+measured environmental impact. All six moments remain presentation only and preserve the current
+37 product routes and every access, task, Seed, Garden, League, Family Reward, privacy, reset, and
+feature-flag authority.
+
+- **FR-185**: Fresh Arabic-first onboarding MUST expose exactly six ordered, skippable moments:
+  `intro → family → sustainability → ai → support → growth`, with equivalent English resources.
+- **FR-186**: Family, Sustainability, and AI MUST each have a distinct child-clear title, body,
+  local raster photograph, and accessible navigator target; selecting a target MUST change only the
+  onboarding step.
+- **FR-187**: AI onboarding copy MUST disclose the bounded approved-task purpose, fallibility, and
+  adult-help exit and MUST NOT make a live-model, open-chat, companion, surveillance, or diagnosis
+  claim.
+- **FR-188**: Step motion MUST run on the UI thread through transform/opacity only, preserve visible
+  settled content by default, and remove spatial travel when reduced motion is enabled.
+- **FR-189**: Startup MUST settle the exact nine-raster/four-font signed-out set before onboarding;
+  the 41-image deferred queue MUST still begin only after onboarding receives its paint opportunity.
+- **SC-050**: Source and flow tests prove six-state order, pillar navigation, AI/sustainability
+  truthfulness, exact 48-artwork provenance, nine-raster startup readiness, 41-image deferred
+  boundary, unchanged 37-route inventory, and no new product authority.
+- **SC-051**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the six moments,
+  three-pillar navigator, Back/Next/Skip/Start, image crops, and standard/reduced motion remain
+  readable and operable without horizontal overflow; physical Android and named-human review stay
+  separately evidenced.
+
 ## R003 Returning-family Entry and Welcome Amendment — 2026-09-06
 
 The immutable local Parent completion receipt remains the sole authority that this synthetic

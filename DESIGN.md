@@ -146,19 +146,23 @@ creates a fresh summary from current authorized state.
 
 ## R003 first-run experience extension
 
-The first-run surface is an optional four-moment editorial sequence inside `/`, followed by the
-existing Parent/Child Welcome decision. The first moment answers “What is Ghaf?” before the next
-three show choice, support, and private symbolic growth. Each moment uses the official raster logo,
-one generous vivid photograph, a short child-clear title, one concrete supporting sentence,
-visible `1/4` progress, and one dominant action. Skip remains visible; Back is quiet; changing
-locale keeps the current step. Delight comes from warm light, bold crops, rich emerald/amber
-accents, concise active copy, and a restrained vertical settle—not confetti, streak pressure,
-mascots, fantasy effects, or competing cards.
+The first-run surface is an optional six-moment editorial sequence inside `/`, followed by the
+existing Parent/Child Welcome decision. It introduces Ghaf, then gives Family, Sustainability, and
+bounded AI one unmistakable moment each before the existing help and private symbolic-growth
+close. Each moment uses the official raster logo, one generous vivid photograph, a short
+child-clear title, one concrete supporting sentence, visible `1/6` progress, and one dominant
+action. The first four moments also expose the same live three-pillar navigator: three 48dp targets
+with a color-coded active state and bilingual labels that jump only among Family,
+Sustainability, and AI. Skip remains visible; Back is quiet; changing locale keeps the current
+step. Delight comes from warm light, bold crops, step-specific emerald/teal/amber surfaces,
+energetic but concise active copy, and one restrained two-beat settle: the photograph resolves over
+220 ms with opacity, 8dp travel, and a 0.985→1 scale while copy follows 45 ms later—not confetti,
+streak pressure, mascots, fantasy effects, robot companions, or competing card stacks.
 
 The native Expo splash remains the earliest frame and uses the official raster icon. After its
 handoff, the fully opaque app-owned splash uses the same mark and local leaf-shadow texture for
 2,000 ms with no loader or transparent entrance. It then changes in place to the leaf-loading
-state for at least 1,000 ms and until the four current font files and signed-out
+state for at least 1,000 ms and until the four current font files and nine signed-out
 onboarding/Welcome images settle. Only then is the overlay removed and onboarding exposed. The
 logo and leaf-shadow background settle before native handoff. Garden, League, reveal, learning,
 Shared Growth, canopy, Circle, and prepared-media
@@ -186,10 +190,10 @@ raster Ghaf mark beside the Ghaf name, calm leaf-shadow raster background, clear
 progress, and the existing semantic forms and actions. The brand header never displaces Back,
 progress, keyboard access, safe areas, or 48 dp targets, and route files do not duplicate it.
 
-All new scenic presentation is raster. Live text, buttons, progress dots, focus state, and loading
-status remain semantic native UI; existing functional vectors elsewhere are unchanged. Standard
-motion uses opacity plus at most 8 dp of vertical travel over the quick/standard token durations.
-Reduced motion removes translation and scaling. At 320 and 390 widths the photograph may shorten,
+All new scenic presentation is raster. Live text, buttons, pillar controls, progress dots, focus
+state, and loading status remain semantic native UI; existing functional vectors elsewhere are
+unchanged. Standard motion uses opacity plus at most 8 dp of vertical travel and 0.015 scale over
+the quick/standard token durations. Reduced motion removes translation and scaling. At 320 and 390 widths the photograph may shorten,
 but the primary action and step status remain visible or reachable by vertical scrolling. Exact
 copy, asset, state, and evidence rules live in
 `specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`.

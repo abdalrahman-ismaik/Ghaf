@@ -19,8 +19,8 @@ motion quality.
 The onboarding completion marker exists only for the current in-memory app session; it is not an
 account preference or persistence guarantee and a reload may show onboarding again. The configured
 native splash hands off to a fully opaque 2,000 ms app-owned splash and then a separate loading
-state that remains for at least 1,000 ms and until the four current branded font files plus bounded
-signed-out raster set settle. These requested presentation holds add intentional startup time; they
+state that remains for at least 1,000 ms and until the four current branded font files plus the
+bounded nine-raster signed-out set settle. These requested presentation holds add intentional startup time; they
 do not represent remote work. Startup intentionally excludes later Garden, League, learning,
 reveal, canopy, Circle, Shared Growth, and prepared-media images from blocking readiness. After the
 loading overlay exits, those 41 remaining packaged rasters warm in
@@ -33,8 +33,12 @@ immediate destination set, reusing any in-flight background request. Neither is
 evidence of a server request, authentication, AI processing, data sync, or completed security
 check. Every Parent/Child access route inherits the official raster logo/name and the same local
 leaf-shadow backdrop from one shared shell; this presentation does not upgrade the synthetic
-access path into production authentication. Generated first-run photographs remain symbolic
-presentation assets subject to the same rights, botanical, cultural, safeguarding, accessibility,
+access path into production authentication. The six-moment story and three-pillar navigator are
+presentation only. The AI moment describes a bounded Parent-approved-task helper, not unrestricted
+chat, a companion, a therapist, continuous listening, diagnosis, task approval, or proof that a
+live model ran. The Sustainability moment does not prove or measure environmental impact.
+Generated first-run photographs remain symbolic presentation assets subject to the same rights,
+botanical, cultural, safeguarding, accessibility,
 and physical Android review limits as the existing natural artwork library.
 
 ## Generated natural artwork — 2026-09-06

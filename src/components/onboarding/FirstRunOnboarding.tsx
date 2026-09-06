@@ -6,6 +6,7 @@ import Animated, {
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
+  withDelay,
   withTiming,
 } from 'react-native-reanimated';
 import { useLayoutEffect } from 'react';
@@ -26,7 +27,7 @@ import {
 } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-import { ONBOARDING_STEPS } from './experienceModel';
+import { ONBOARDING_PILLARS, ONBOARDING_STEPS, type OnboardingPillar } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
 
 interface FirstRunStepCopy {
@@ -35,12 +36,22 @@ interface FirstRunStepCopy {
   readonly title: string;
 }
 
-const storySurfaces = [
-  colors.solarAmberTint,
-  colors.secondaryTint,
-  colors.primaryFixedTint,
-  colors.solarAmberTint,
+const storyAccents = [
+  colors.deepForest,
+  colors.tertiary,
+  colors.ghafEmerald,
+  colors.mangroveTeal,
+  colors.solarAmber,
+  colors.deepForest,
 ] as const;
+
+const pillarTones: Readonly<
+  Record<OnboardingPillar, { readonly active: string; readonly idle: string }>
+> = {
+  family: { active: colors.tertiary, idle: colors.solarAmberTint },
+  sustainability: { active: colors.primary, idle: colors.primaryFixedTint },
+  ai: { active: colors.secondary, idle: colors.secondaryTint },
+};
 
 export function FirstRunOnboarding() {
   const { height } = useWindowDimensions();
@@ -50,17 +61,28 @@ export function FirstRunOnboarding() {
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
   const { dispatch, state } = useFirstRunExperience();
-  const storyProgress = useSharedValue(1);
+  const visualProgress = useSharedValue(1);
+  const copyProgress = useSharedValue(1);
   const stepIndex = ONBOARDING_STEPS.indexOf(state.step);
   const stepNumber = stepIndex + 1;
+  const isCompactHeight = height < 760;
   const steps = t('firstRun.steps', { returnObjects: true }) as unknown as FirstRunStepCopy[];
   const step = steps[stepIndex] ?? steps[0];
   const artworkId = onboardingArtworkIds[stepIndex] ?? onboardingArtworkIds[0];
-  const heroHeight = Math.min(244, Math.max(170, height * 0.25));
+  const heroHeight = Math.min(208, Math.max(144, height * (isCompactHeight ? 0.2 : 0.22)));
   const isLast = stepIndex === ONBOARDING_STEPS.length - 1;
-  const storyStyle = useAnimatedStyle(() => ({
-    opacity: storyProgress.get(),
-    transform: [{ translateY: reducedMotion ? 0 : (1 - storyProgress.get()) * 8 }],
+  const showPillarNavigator = stepIndex <= 3;
+  const storyAccent = storyAccents[stepIndex] ?? colors.ghafEmerald;
+  const visualStyle = useAnimatedStyle(() => ({
+    opacity: visualProgress.get(),
+    transform: [
+      { translateY: reducedMotion ? 0 : (1 - visualProgress.get()) * 8 },
+      { scale: reducedMotion ? 1 : 0.985 + visualProgress.get() * 0.015 },
+    ],
+  }));
+  const copyStyle = useAnimatedStyle(() => ({
+    opacity: copyProgress.get(),
+    transform: [{ translateY: reducedMotion ? 0 : (1 - copyProgress.get()) * 8 }],
   }));
   const progressLabel = t('firstRun.progress', {
     current: stepNumber,
@@ -72,21 +94,37 @@ export function FirstRunOnboarding() {
   });
 
   useLayoutEffect(() => {
-    cancelAnimation(storyProgress);
+    cancelAnimation(visualProgress);
+    cancelAnimation(copyProgress);
     if (reducedMotion) {
-      storyProgress.set(1);
+      visualProgress.set(1);
+      copyProgress.set(1);
       return;
     }
-    storyProgress.set(0);
-    storyProgress.set(
+    visualProgress.set(0);
+    copyProgress.set(0);
+    visualProgress.set(
       withTiming(1, {
         duration: motion.duration.standard,
         easing: Easing.bezier(...motion.easing),
         reduceMotion: ReduceMotion.System,
       }),
     );
-    return () => cancelAnimation(storyProgress);
-  }, [reducedMotion, state.step, storyProgress]);
+    copyProgress.set(
+      withDelay(
+        45,
+        withTiming(1, {
+          duration: motion.duration.standard,
+          easing: Easing.bezier(...motion.easing),
+          reduceMotion: ReduceMotion.System,
+        }),
+      ),
+    );
+    return () => {
+      cancelAnimation(visualProgress);
+      cancelAnimation(copyProgress);
+    };
+  }, [copyProgress, reducedMotion, state.step, visualProgress]);
 
   if (!step) return null;
 
@@ -137,48 +175,89 @@ export function FirstRunOnboarding() {
       scrollProps={{ contentInsetAdjustmentBehavior: 'automatic' }}
       testID="first-run-onboarding"
     >
-      <Animated.View style={[styles.story, storyStyle]}>
-        <View
-          style={[
-            styles.heroFrame,
-            { backgroundColor: storySurfaces[stepIndex] ?? colors.primaryFixedTint },
-          ]}
-        >
-          <LocalIllustration
-            accessibilityLabel={step.imageAlt}
-            assetId={artworkId}
-            direction={direction}
-            fallbackLabel={t('firstRun.imageFallback')}
-            language={locale}
-            priority="high"
-            style={[styles.heroImage, { height: heroHeight }]}
-            testID={`first-run-image-${state.step}`}
-          />
-        </View>
-        <View accessibilityLiveRegion="polite" style={styles.copy}>
+      <View style={styles.story}>
+        <Animated.View style={[styles.visualStory, visualStyle]} testID="first-run-visual-story">
+          <View style={styles.heroFrame}>
+            <LocalIllustration
+              accessibilityLabel={step.imageAlt}
+              assetId={artworkId}
+              direction={direction}
+              fallbackLabel={t('firstRun.imageFallback')}
+              language={locale}
+              priority="high"
+              style={[styles.heroImage, { height: heroHeight }]}
+              testID={`first-run-image-${state.step}`}
+            />
+            <View style={[styles.heroAccent, { backgroundColor: storyAccent }]} />
+          </View>
+          {showPillarNavigator ? (
+            <View
+              accessibilityLabel={t('firstRun.pillarsLabel')}
+              style={[styles.pillarRow, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              {ONBOARDING_PILLARS.map((pillar) => {
+                const label = t(`firstRun.pillars.${pillar}`);
+                const selected = pillar === state.step;
+                const tone = pillarTones[pillar];
+
+                return (
+                  <Button
+                    accessibilityHint={t('firstRun.pillarHint', { pillar: label })}
+                    accessibilityState={{ selected: selected }}
+                    brand
+                    direction={direction}
+                    fullWidth={false}
+                    key={pillar}
+                    language={locale}
+                    onPress={() => dispatch({ type: 'goToPillar', step: pillar })}
+                    size="compact"
+                    style={[
+                      styles.pillarButton,
+                      { backgroundColor: selected ? tone.active : tone.idle },
+                    ]}
+                    testID={`first-run-pillar-${pillar}`}
+                    variant={selected ? 'primary' : 'neutral'}
+                  >
+                    <Text
+                      align="center"
+                      brand
+                      color={selected ? 'white' : 'deepForest'}
+                      direction={direction}
+                      language={locale}
+                      variant="caption"
+                    >
+                      {label}
+                    </Text>
+                  </Button>
+                );
+              })}
+            </View>
+          ) : null}
+        </Animated.View>
+        <Animated.View accessibilityLiveRegion="polite" style={[styles.copy, copyStyle]}>
           <Text
-            align="center"
+            align="start"
             brand
             color="deepForest"
             direction={direction}
             language={locale}
             testID={`first-run-title-${state.step}`}
-            variant="parentHero"
+            variant={isCompactHeight ? 'screenTitle' : 'parentHero'}
           >
             {step.title}
           </Text>
           <Text
-            align="center"
+            align="start"
             brand
             color="onSurfaceVariant"
             direction={direction}
             language={locale}
-            variant="bodyLarge"
+            variant={isCompactHeight ? 'body' : 'bodyLarge'}
           >
             {step.body}
           </Text>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </View>
 
       <View style={styles.navigation}>
         <View
@@ -206,7 +285,10 @@ export function FirstRunOnboarding() {
             {ONBOARDING_STEPS.map((item, index) => (
               <View
                 key={item}
-                style={[styles.dot, index === stepIndex ? styles.dotActive : null]}
+                style={[
+                  styles.dot,
+                  index === stepIndex ? [styles.dotActive, { backgroundColor: storyAccent }] : null,
+                ]}
               />
             ))}
           </View>
@@ -253,7 +335,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    gap: spacing.lg,
+    gap: spacing.md,
   },
   topBar: {
     width: '100%',
@@ -275,11 +357,15 @@ const styles = StyleSheet.create({
   },
   story: {
     width: '100%',
-    gap: spacing.lg,
+    gap: spacing.md,
+  },
+  visualStory: {
+    width: '100%',
+    gap: spacing.md,
   },
   heroFrame: {
     width: '100%',
-    padding: spacing.xxs,
+    overflow: 'hidden',
     borderRadius: r001Radii.sheet,
     borderCurve: 'continuous',
     ...r001Shadows.lifted,
@@ -293,9 +379,29 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceContainerLow,
   },
+  heroAccent: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    right: spacing.lg,
+    bottom: 0,
+    left: spacing.lg,
+    height: spacing.xs,
+    borderRadius: r001Radii.pill,
+  },
+  pillarRow: {
+    width: '100%',
+    gap: spacing.xs,
+  },
+  pillarButton: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: layout.touchTarget,
+    paddingHorizontal: spacing.xxs,
+    paddingVertical: spacing.xs,
+  },
   copy: {
     width: '100%',
-    gap: spacing.sm,
+    gap: spacing.xs,
   },
   navigation: {
     width: '100%',

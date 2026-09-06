@@ -1,5 +1,34 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 SMAC Family–Sustainability–AI Onboarding Record — 2026-09-06
+
+**Current classification:** locally validated presentation candidate; physical Android and named
+human review remain unobserved.
+
+On a fresh launch, keep the ordered native splash → 2,000 ms app-owned Ghaf splash → minimum
+1,000 ms leaf loading → onboarding handoff. Traverse six moments in order: Meet Ghaf, Family,
+Sustainability, bounded AI, Help, and permanent private symbolic growth. On the first four moments,
+use the live Family/Sustainability/AI controls to jump between pillar stories and confirm that the
+controls never choose a role, approve a task, enable AI, or exit onboarding. Read the AI boundary:
+Ghaf simplifies only a Parent-approved task, may be wrong, and points the Child to an adult.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| RED/focused behavior | `PASSED` | first RED: 6 expected failures / 9 passes; motion RED: 1 expected failure / 11 passes; final focused batch: 3 files / 26 tests |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 87 files / 1,065 tests |
+| Startup/deferred boundary | `PASSED automated/source` | exact nine-raster/four-font signed-out gate; 41-image deferred queue preserved after onboarding paint |
+| Asset provenance | `PASSED` | 48 local JPEGs, 48 literal imports, unique checksums, exact dimensions/bytes, and 0 missing embedded prompts |
+| Production exports | `PASSED` | web: 121 files / 39 static routes; Android JS: 90 files; both new JPEGs found byte-identically in both exports |
+| Bilingual compact layout | `PASSED (Firefox web proxy)` | six-step journey and pillar jumps inspected across Arabic RTL/English LTR at 320×720 and 390×844; three 60px targets; body/root width exactly matched 320px; no horizontal overflow |
+| Standard/reduced motion | `PASSED (source + Firefox web proxy)` | 220 ms UI-thread image settle plus 45 ms staged copy; transform/opacity only; emulated reduced motion presented the settled state |
+| Browser console | `PASSED` | zero page errors during the final pillar, locale, size, and reduced-motion journeys |
+| Physical Android, TalkBack, font scale, and motion feel | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+| Named Arabic/UAE, safeguarding, botanical, accessibility, and image-rights review | `NOT RUN` | no named reviewer was available in this implementation session |
+
+Describe Family, Sustainability, and AI as Ghaf's product pillars, not as new authorities. The
+photographs are generated local metaphors, symbolic Garden growth is not measured environmental
+impact, and this onboarding does not prove a live AI provider ran.
+
 ## R003 Returning-family Entry and Dashboard Welcome Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; synthetic session-local
@@ -146,6 +175,16 @@ Do not describe the preload as network sync, AI processing, authentication, or m
 The browser delay is evidence of readiness orchestration only, not Android performance evidence.
 
 ## R003 First-run Experience Record — 2026-09-06
+
+The current SMAC pillar revision expands this presentation candidate to six moments: meet Ghaf,
+Family, Sustainability, bounded AI, help, and permanent private symbolic growth. On the first four
+moments, use the three live pillar controls to jump among Family, Sustainability, and AI; confirm
+that no selection exits onboarding or changes a role. Read the AI disclosure aloud: it simplifies
+only a Parent-approved task, may be wrong, and points the Child to an adult. The two additional
+photographs are packaged local rasters; the startup gate is now nine rasters plus four fonts, while
+the post-paint deferred queue remains 41. Treat the validation table below as the earlier four-step
+record until Phase 40 records replacement evidence; it must not be quoted as acceptance of the
+six-step revision.
 
 **Current classification:** local implementation candidate; not Android-accepted, human-reviewed,
 rights-cleared, release-activated, or demo-accepted.

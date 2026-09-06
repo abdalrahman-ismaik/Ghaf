@@ -6,6 +6,51 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 SMAC Pillar Onboarding Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`,
+`assets/images/illustrations/r003/{ASSET_MANIFEST.json,PROVENANCE.md,final/onboarding-*.jpg}`,
+`src/components/onboarding/{FirstRunOnboarding.tsx,experienceModel.ts}`,
+`src/components/illustrations/illustrationSources.ts`, `src/i18n/resources.ts`,
+`src/features/startup/preloadStartupImages.ts`, and
+`tests/{r003-first-run-experience,r003-illustration-assets,r001-onboarding-flow}.test.ts` only.
+
+**Scope**: Expand the optional first-run story from four to six child-clear moments so Family,
+Sustainability, and bounded task-focused AI are distinct, prominent pillars after the Ghaf
+introduction and before the existing help and permanent symbolic-growth close. Add two generated
+local raster photographs and an accessible three-pillar navigator, then use one purposeful
+UI-thread step transition with a reduced-motion equivalent. Startup may add only those two
+onboarding photographs to its bounded signed-out readiness set; the remaining packaged imagery
+continues warming asynchronously after onboarding paints. Preserve the ordered native splash →
+2,000 ms app-owned splash → minimum 1,000 ms loading → onboarding sequence, exact routes,
+session/access/task/reward/privacy authorities, deterministic fallback, default-off flags, official
+logo, existing assets, and protected user work. AI copy must disclose that it may be wrong and
+remain limited to Parent-approved tasks with an adult-help exit. No vector scene, person, hand,
+readable text in imagery, remote asset, dependency, networking, new AI behavior, push, merge,
+deployment, or release activation is authorized.
+
+**Completion — 2026-09-06**: Root expanded the in-route flow to six bilingual child-clear moments,
+made Family, Sustainability, and bounded AI directly selectable pillars, and kept Help and permanent
+private symbolic growth as the close. Two OpenAI imagegen JPEGs were visually curated, normalized
+to 1200×800 under 500 KB, prompt-embedded, checksummed, and added to the exact 48-entry local
+registry. Startup now derives nine blocking rasters while the deferred queue remains 41. One
+220 ms image settle and 45 ms staged copy transition uses transform/opacity on the UI thread;
+reduced motion is immediately settled. RED recorded 6 expected feature failures and one later
+motion failure; final focused coverage passed 3 files / 26 tests and the full suite passed 87 files
+/ 1,065 tests. Typecheck, lint, format, Expo dependency alignment, Git whitespace, the 48-raster
+prompt scan, and Impeccable detector passed. Web exported 121 files / 39 static routes and Android
+JS exported 90 files; both new rasters were byte-identical in both exports. Firefox traversed all
+six moments and pillar jumps across Arabic/English at 320×720 and 390×844 with 60px pillar targets,
+no horizontal overflow, reduced-motion parity, and zero page errors. Physical Android and named
+human-review gates remain `BLOCKED / NOT RUN` because ADB found no target and no reviewer was
+available. The reservation is released at this local checkpoint; no push, merge, deployment, or
+release activation was performed.
+
 ## 2026-09-06 Returning-family Entry and Welcome Window
 
 **Owner and only writer**: `/root`

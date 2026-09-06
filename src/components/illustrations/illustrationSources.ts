@@ -6,7 +6,9 @@ export const artworkSources = {
   'field-paper': require('../../../assets/images/illustrations/r003/final/field-paper.jpg'),
   'welcome-ghaf-habitat': require('../../../assets/images/illustrations/r003/final/welcome-ghaf-habitat.jpg'),
   'onboarding-ghaf-intro': require('../../../assets/images/illustrations/r003/final/onboarding-ghaf-intro.jpg'),
+  'onboarding-family': require('../../../assets/images/illustrations/r003/final/onboarding-family.jpg'),
   'onboarding-action': require('../../../assets/images/illustrations/r003/final/onboarding-action.jpg'),
+  'onboarding-ai': require('../../../assets/images/illustrations/r003/final/onboarding-ai.jpg'),
   'onboarding-support': require('../../../assets/images/illustrations/r003/final/onboarding-support.jpg'),
   'onboarding-growth': require('../../../assets/images/illustrations/r003/final/onboarding-growth.jpg'),
   'section-transition': require('../../../assets/images/illustrations/r003/final/section-transition.jpg'),
@@ -58,7 +60,9 @@ export const accessFieldArtworkSource = artworkSources['field-paper'];
 export const welcomeArtworkSource = artworkSources['welcome-ghaf-habitat'];
 export const onboardingArtworkIds = [
   'onboarding-ghaf-intro',
+  'onboarding-family',
   'onboarding-action',
+  'onboarding-ai',
   'onboarding-support',
   'onboarding-growth',
 ] as const satisfies readonly ArtworkId[];

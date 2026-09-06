@@ -1248,3 +1248,38 @@ with a concise private summary over its own dashboard.
       320×720 and 390×844 with contained copy, usable actions, no horizontal overflow, and zero page
       errors. Physical Android, TalkBack, native Back/modal behavior, and OS font scale remain
       `BLOCKED / NOT RUN` because `adb devices -l` returned no attached target.
+
+---
+
+## Phase 40: SMAC Family–Sustainability–AI Onboarding
+
+**Purpose**: Make the competition pillars immediately understandable and exciting for children
+without weakening Ghaf's safety, privacy, approval, symbolic-growth, or truthful-AI boundaries.
+
+- [x] T284 Re-read the active first-run/design/safety contract, inspect the four-step runtime and
+      startup boundary, reserve exact writer scope, and amend spec/plan/tasks before runtime work.
+- [x] T285 Write focused RED model, copy, source, startup, and provenance tests for six ordered
+      steps, closed three-pillar navigation, bounded AI wording, two new raster assets, exact 48
+      artwork entries, nine startup rasters, and the preserved 41-image deferred queue.
+- [x] T286 Generate, inspect, normalize, prompt-embed, checksum, and register the Family and bounded
+      AI Quiet UAE Botanical Editorial photographs with no people, hands, text, UI, robot, fantasy,
+      hazard, or measured-impact claim.
+- [x] T287 Implement the child-clear bilingual six-step story, accessible three-pillar navigator,
+      energetic editorial layout, and one UI-thread step transition with reduced-motion parity;
+      preserve all route, role, task, reward, privacy, reset, and feature-flag authority.
+- [x] T288 Run focused/full tests, typecheck, lint, format, route/startup/deferred/asset checks,
+      detector, bilingual 320×720 and 390×844 browser inspection, reduced-motion checks,
+      production exports, and available Android evidence; reconcile docs, release ownership, and
+      create one cohesive local checkpoint without push/merge/deployment/release activation.
+
+      Completed locally on 2026-09-06: the first RED state recorded 6 expected failures / 9 passes
+      and the motion refinement recorded 1 expected failure / 11 passes. Final focused coverage
+      passed 3 files / 26 tests; the full suite passed 87 files / 1,065 tests. Typecheck, lint,
+      formatting, Expo dependency alignment, Git whitespace, the 48-raster prompt scan, and the
+      Impeccable detector passed. Web exported 121 files / 39 static routes and Android JS exported
+      90 files; both new onboarding rasters appeared byte-identically in both. Firefox traversed
+      the six moments, pillar jumps, locale change, 320×720 and 390×844 layouts, and reduced motion
+      with 60px pillar targets, no horizontal overflow, and zero page errors. Physical Android,
+      TalkBack, OS font scale, and motion feel remain `BLOCKED / NOT RUN` because ADB returned no
+      target; named Arabic/UAE, safeguarding, botanical, accessibility, and rights review remains
+      `NOT RUN`.

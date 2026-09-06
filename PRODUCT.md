@@ -4,11 +4,11 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-09-05                                                                                                                                      |
+| Item                      | Truth as of 2026-09-06                                                                                                                                      |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Product                   | Ghaf — غاف                                                                                                                                                  |
 | Competition               | Khalifa University SMAC 2026                                                                                                                                |
-| Official theme            | AI Adventures in Sustainability                                                                                                                             |
+| Official theme            | AI for Stronger Family Bonds: Connect, Care, Innovate                                                                                                       |
 | Active product direction  | Feature 003 Revision 3: frozen R001/R002a baseline plus feature-flagged R002b expansion                                                                     |
 | Behavioral baseline       | Clean R002a head `0501cf3`: completed R001/R002a surfaces and 541 passing tests                                                                             |
 | Frozen regression batch   | R001 native foundations, Welcome, and first-time Parent onboarding                                                                                          |
@@ -23,17 +23,21 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
-The R003 first-run presentation introduces Ghaf first, then explains three features in four
-optional in-route moments: what Ghaf does for a family, choosing a Parent-approved action, using
-permitted help before Parent confirmation, and keeping confirmed action as permanent private
-symbolic Garden growth. Child-facing sentences use short, concrete Modern Standard Arabic and
-equivalent plain English. The experience uses the official raster Ghaf logo and vivid local nature
-photography, then returns to the existing separate Parent and Child access choices. It adds no
-route, account, reward, persistence, environmental-impact, or access authority. Startup is visibly
-ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms after handoff, a
-distinct leaf-loading screen for at least 1,000 ms and until the four used font files plus bounded
-signed-out image set settle, then onboarding. The splash itself has no loader and cannot fade in
-over onboarding. Startup never blocks on Garden or prepared-media imagery.
+The R003 first-run presentation introduces Ghaf first, then tells one energetic six-moment story:
+Ghaf, Family as the team, Sustainability through small safe actions, bounded AI help for an
+approved task, permitted help before Parent confirmation, and permanent private symbolic Garden
+growth. Family, Sustainability, and AI are explicit child-clear pillars rather than implied
+features. A live three-pillar navigator lets a family inspect those moments without granting a
+role, enabling AI, or changing product state. AI copy says that it may be wrong and points to an
+adult; Sustainability copy never claims measured impact. Modern Standard Arabic remains first
+with equivalent plain English. The experience uses the official raster Ghaf logo and six vivid
+local nature photographs, then returns to the existing separate Parent and Child access choices.
+It adds no route, account, reward, persistence, environmental-impact, AI, or access authority.
+Startup is visibly ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms
+after handoff, a distinct leaf-loading screen for at least 1,000 ms and until the four used font
+files plus the exact nine-raster signed-out set settle, then onboarding. The splash itself has no
+loader and cannot fade in over onboarding. Startup never blocks on Garden or prepared-media
+imagery.
 Major Welcome/access/role handoffs hold for 900 ms and settle only their immediate destination
 assets. After the loader exits and onboarding can paint, all 41 remaining packaged rasters warm
 asynchronously in bounded batches of six: immediate access/experience imagery first and the large
