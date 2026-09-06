@@ -3,6 +3,7 @@ import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { LocalIllustration } from '@/components/illustrations';
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
 import {
   colors,
@@ -119,10 +120,11 @@ export function RevealBundleScreen({
           expanded ? styles.heroExpanded : null,
         ]}
       >
-        <RevealBotanicalScene
+        <RevealNaturalArtwork
           accessibilityLabel={illustrationLabel}
           compact={compact}
           direction={direction}
+          language={language}
         />
         <View style={styles.heroCopy}>
           <View
@@ -135,6 +137,7 @@ export function RevealBundleScreen({
             testID="r002b-reveal-initial-focus"
           >
             <Text
+              accessibilityRole="none"
               align={expanded ? 'start' : 'center'}
               brand
               color="deepForest"
@@ -292,35 +295,28 @@ function RevealConsequenceCard({
   );
 }
 
-function RevealBotanicalScene({
+function RevealNaturalArtwork({
   accessibilityLabel,
   compact,
   direction,
+  language,
 }: {
   readonly accessibilityLabel: string;
   readonly compact: boolean;
   readonly direction: TextDirection;
+  readonly language: LocaleCode;
 }) {
   return (
-    <View
-      accessible
+    <LocalIllustration
       accessibilityLabel={accessibilityLabel}
-      accessibilityRole="image"
+      assetId="recognition-reveal"
+      direction={direction}
+      fallbackLabel={accessibilityLabel}
+      language={language}
+      priority="high"
       style={[styles.botanicalScene, compact ? styles.botanicalSceneCompact : null]}
-    >
-      <View aria-hidden style={styles.sunDisk} />
-      <View aria-hidden style={styles.waterRippleWide} />
-      <View aria-hidden style={styles.waterRippleNarrow} />
-      <View aria-hidden style={styles.treeHalo}>
-        <GhafIcon color={colors.ghafEmerald} direction={direction} name="ghaf-tree" size={64} />
-      </View>
-      <View aria-hidden style={styles.sparklePrimary}>
-        <GhafIcon color={colors.solarAmber} name="sparkle" size={22} />
-      </View>
-      <View aria-hidden style={styles.sparkleSecondary}>
-        <GhafIcon color={colors.mangroveTeal} name="sparkle" size={16} />
-      </View>
-    </View>
+      testID="reveal-natural-artwork"
+    />
   );
 }
 
@@ -576,55 +572,6 @@ const styles = StyleSheet.create({
   botanicalSceneCompact: {
     width: 148,
     height: 132,
-  },
-  sunDisk: {
-    position: 'absolute',
-    top: 5,
-    right: 16,
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: colors.tertiaryFixed,
-    opacity: 0.74,
-  },
-  treeHalo: {
-    width: 104,
-    height: 104,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 52,
-    backgroundColor: colors.surfaceContainerLowest,
-    ...r001Shadows.soft,
-  },
-  waterRippleWide: {
-    position: 'absolute',
-    bottom: 12,
-    width: 158,
-    height: 22,
-    borderWidth: 2,
-    borderColor: colors.secondaryFixedDim,
-    borderRadius: r001Radii.pill,
-    opacity: 0.7,
-  },
-  waterRippleNarrow: {
-    position: 'absolute',
-    bottom: 20,
-    width: 112,
-    height: 12,
-    borderWidth: 2,
-    borderColor: colors.mangroveTeal,
-    borderRadius: r001Radii.pill,
-    opacity: 0.48,
-  },
-  sparklePrimary: {
-    position: 'absolute',
-    top: 8,
-    left: 16,
-  },
-  sparkleSecondary: {
-    position: 'absolute',
-    top: 48,
-    left: 4,
   },
   consequenceList: {
     width: '100%',

@@ -324,6 +324,7 @@ describe('official Ghaf platform branding', () => {
     expect(pluginNames).toEqual(
       expect.arrayContaining([
         'expo-router',
+        'expo-image',
         'expo-font',
         'expo-audio',
         'expo-localization',

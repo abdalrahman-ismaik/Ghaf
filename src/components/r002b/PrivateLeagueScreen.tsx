@@ -1,6 +1,7 @@
 import { ActivityIndicator, StyleSheet, View, useWindowDimensions } from 'react-native';
 
-import { GhafIcon, type GhafIconName } from '@/components/access';
+import { GhafIcon } from '@/components/access';
+import { leagueAvatarArtworkIds, LocalIllustration } from '@/components/illustrations';
 import { QuietButton, Text } from '@/components/primitives';
 import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import type { LeagueTreeAvatarToken } from '@/models/familyLeague';
@@ -43,12 +44,6 @@ export interface PrivateLeagueScreenProps {
   readonly standingsTitle: string;
   readonly syntheticLabel: string;
 }
-
-const AVATAR_ICON: Readonly<Record<LeagueTreeAvatarToken, GhafIconName>> = {
-  mangrove_shoot: 'water-drop',
-  ghaf_leaf: 'leaf',
-  sidr_sapling: 'ghaf-tree',
-};
 
 export function PrivateLeagueScreen({
   activeChildLabel,
@@ -96,16 +91,6 @@ export function PrivateLeagueScreen({
   return (
     <View style={styles.root} testID="private-league-content">
       <View style={styles.hero}>
-        <View
-          aria-hidden
-          style={[
-            styles.heroBotanicalMark,
-            direction === 'rtl' ? styles.heroBotanicalMarkRtl : null,
-          ]}
-        >
-          <GhafIcon color={colors.onPrimaryContainer} name="ghaf-tree" size={104} strokeWidth={1} />
-        </View>
-
         <View
           style={[
             styles.heroMeta,
@@ -434,10 +419,11 @@ function ParticipantRow({
           </Text>
         </View>
         <View style={styles.avatarToken}>
-          <GhafIcon
-            color={participant.isActiveProfile ? colors.ghafEmerald : colors.secondary}
-            name={AVATAR_ICON[participant.treeAvatarToken]}
-            size={25}
+          <LocalIllustration
+            assetId={leagueAvatarArtworkIds[participant.treeAvatarToken]}
+            decorative
+            direction={direction}
+            style={styles.avatarArtwork}
           />
         </View>
         {compact ? null : copy}
@@ -511,18 +497,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.deepForest,
     padding: spacing.xl,
     ...r001Shadows.soft,
-  },
-  heroBotanicalMark: {
-    position: 'absolute',
-    top: -22,
-    right: spacing.sm,
-    opacity: 0.11,
-    transform: [{ rotate: '-7deg' }],
-  },
-  heroBotanicalMarkRtl: {
-    right: undefined,
-    left: spacing.sm,
-    transform: [{ rotate: '7deg' }],
   },
   heroMeta: {
     minWidth: 0,
@@ -663,7 +637,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
+    overflow: 'hidden',
     backgroundColor: colors.mangroveTealTint,
+  },
+  avatarArtwork: {
+    width: '100%',
+    height: '100%',
   },
   participantCopy: {
     minWidth: 0,

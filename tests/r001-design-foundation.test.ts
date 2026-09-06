@@ -169,7 +169,8 @@ describe('R001 native design foundation', () => {
     expect(avatar).toContain('export function BotanicalAvatarPicker');
     expect(avatar).toContain('ChildTreeAvatarId');
     expect(avatar).toContain("'ghaf_tree'");
-    expect(avatar).toContain("ghaf_tree: 'ghaf-tree'");
+    expect(avatar).toContain('botanicalAvatarArtworkIds');
+    expect(avatar).toContain('<LocalIllustration');
     expect(avatar).toContain('accessibilityRole="radio"');
     expect(avatar).toContain('aria-checked={selected}');
     expect(avatar).toContain('setInternalFocusedValue(id)');

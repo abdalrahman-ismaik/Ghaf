@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, Ellipse, G, Line, Path, Rect } from 'react-native-svg';
 
+import { GhafIcon } from '@/components/access';
+import { circleGardenArtworkIds, LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import { colors, radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -47,6 +48,7 @@ export function CircleProgress({
   title,
 }: CircleProgressProps) {
   const direction = usePrototypeStore((state) => state.direction);
+  const locale = usePrototypeStore((state) => state.locale);
   const markerCount = getMarkerCount(goal);
   const filledMarkerCount = getFilledMarkerCount(current, goal, markerCount);
   const safeGoal = Math.max(0, Number.isFinite(goal) ? goal : 0);
@@ -67,13 +69,19 @@ export function CircleProgress({
       <View style={styles.sharedGround}>
         <View style={[styles.gardenRow, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
           {gardens.map((garden, index) => (
-            <View
-              accessibilityLabel={garden.accessibilityLabel}
-              accessibilityRole="image"
-              key={garden.id}
-              style={styles.garden}
-            >
-              <GardenSilhouette variant={index % 3} />
+            <View key={garden.id} style={styles.garden}>
+              <LocalIllustration
+                accessibilityLabel={garden.accessibilityLabel}
+                assetId={
+                  circleGardenArtworkIds[index % circleGardenArtworkIds.length] ??
+                  circleGardenArtworkIds[0]
+                }
+                direction={direction}
+                fallbackLabel={garden.accessibilityLabel}
+                language={locale}
+                style={styles.gardenVisual}
+                testID={`circle-garden-artwork-${index + 1}`}
+              />
               <Text align="center" color="forest" variant="caption">
                 {garden.label}
               </Text>
@@ -121,7 +129,9 @@ export function CircleProgress({
             direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
           ]}
         >
-          <HouseholdContributionMark />
+          <View aria-hidden style={styles.contributionIcon}>
+            <GhafIcon color={colors.mangrove} name="leaf" size={28} />
+          </View>
           <Text color="forest" style={styles.contributionText} variant="caption">
             {householdContributionLabel}
           </Text>
@@ -133,7 +143,9 @@ export function CircleProgress({
           accessibilityLiveRegion={announceMilestone ? 'polite' : undefined}
           style={[styles.milestone, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
         >
-          <MilestoneMark />
+          <View aria-hidden style={styles.milestoneIcon}>
+            <GhafIcon color={colors.success} name="check-filled" size={28} />
+          </View>
           <Text color="forest" style={styles.milestoneText} variant="label">
             {milestoneLabel}
           </Text>
@@ -148,126 +160,6 @@ export function CircleProgress({
   );
 }
 
-function GardenSilhouette({ variant }: { readonly variant: number }) {
-  return (
-    <View style={styles.gardenVisual}>
-      <Svg aria-hidden height="100%" viewBox="0 0 104 82" width="100%">
-        <Rect fill={colors.waterLight} height="82" width="104" />
-        <Path
-          d="M0 61 C21 55 38 62 55 58 C73 54 88 59 104 54 L104 82 L0 82Z"
-          fill={colors.sandLight}
-        />
-        <Path
-          d="M8 70 C28 65 42 73 61 68 C77 64 90 68 98 65"
-          fill="none"
-          stroke={colors.water}
-          strokeLinecap="round"
-          strokeWidth="2.5"
-        />
-        <G
-          transform={
-            variant === 1 ? 'translate(1 2)' : variant === 2 ? 'translate(-1 0)' : undefined
-          }
-        >
-          <Path
-            d={
-              variant === 1
-                ? 'M47 61 C49 48 50 36 52 25 C55 38 58 50 61 61Z'
-                : 'M46 61 C49 47 50 34 52 21 C56 36 59 49 62 61Z'
-            }
-            fill={colors.earth}
-          />
-          <Path
-            d="M52 43 C40 37 33 31 27 24"
-            fill="none"
-            stroke={colors.earth}
-            strokeLinecap="round"
-            strokeWidth="4"
-          />
-          <Path
-            d="M55 41 C66 35 73 29 78 22"
-            fill="none"
-            stroke={colors.earth}
-            strokeLinecap="round"
-            strokeWidth="4"
-          />
-          <Ellipse
-            cx="31"
-            cy={variant === 1 ? 27 : 24}
-            fill={variant === 2 ? colors.mangrove : colors.leaf}
-            opacity="0.84"
-            rx="18"
-            ry="12"
-          />
-          <Ellipse cx="53" cy="20" fill={colors.ghaf} opacity="0.92" rx="23" ry="15" />
-          <Ellipse
-            cx="76"
-            cy={variant === 1 ? 27 : 25}
-            fill={variant === 1 ? colors.forestSoft : colors.mangrove}
-            opacity="0.82"
-            rx="17"
-            ry="12"
-          />
-          <Path
-            d="M51 59 C41 65 35 70 32 76"
-            fill="none"
-            stroke={colors.earth}
-            strokeLinecap="round"
-            strokeWidth="2.5"
-          />
-          <Path
-            d="M57 59 C67 65 73 70 77 76"
-            fill="none"
-            stroke={colors.earth}
-            strokeLinecap="round"
-            strokeWidth="2.5"
-          />
-          {variant === 2 ? <Circle cx="55" cy="15" fill={colors.goldLight} r="2.5" /> : null}
-        </G>
-      </Svg>
-    </View>
-  );
-}
-
-function HouseholdContributionMark() {
-  return (
-    <Svg aria-hidden height={36} viewBox="0 0 42 36" width={42}>
-      <Path
-        d="M4 28 C12 24 17 31 25 27 C31 24 35 26 39 24"
-        fill="none"
-        stroke={colors.water}
-        strokeLinecap="round"
-        strokeWidth="2.5"
-      />
-      <Path
-        d="M21 26 C21 18 24 12 32 7"
-        fill="none"
-        stroke={colors.earth}
-        strokeLinecap="round"
-        strokeWidth="2"
-      />
-      <Path d="M23 17 C14 18 10 14 11 8 C19 6 24 10 23 17Z" fill={colors.ghaf} />
-      <Circle cx="33" cy="7" fill={colors.gold} r="2.5" />
-    </Svg>
-  );
-}
-
-function MilestoneMark() {
-  return (
-    <Svg aria-hidden height={32} viewBox="0 0 36 32" width={36}>
-      <Circle cx="18" cy="16" fill={colors.surface} r="14" />
-      <Path
-        d="M11 17 L16 22 L26 10"
-        fill="none"
-        stroke={colors.success}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="3"
-      />
-    </Svg>
-  );
-}
-
 function DisclosureLine({
   kind,
   text,
@@ -278,50 +170,17 @@ function DisclosureLine({
   const direction = usePrototypeStore((state) => state.direction);
   return (
     <View style={[styles.disclosure, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-      <DisclosureMark kind={kind} />
+      <View aria-hidden style={styles.disclosureIcon}>
+        <GhafIcon
+          color={kind === 'privacy' ? colors.ghafEmerald : colors.mangrove}
+          name={kind === 'privacy' ? 'shield' : 'info'}
+          size={22}
+        />
+      </View>
       <Text color="inkMuted" style={styles.disclosureText} variant="caption">
         {text}
       </Text>
     </View>
-  );
-}
-
-function DisclosureMark({ kind }: { readonly kind: 'privacy' | 'synthetic' }) {
-  return (
-    <Svg aria-hidden height={26} viewBox="0 0 28 26" width={28}>
-      {kind === 'privacy' ? (
-        <G>
-          <Path
-            d="M14 3 L23 7 V13 C23 19 19 22 14 24 C9 22 5 19 5 13 V7Z"
-            fill={colors.leafMist}
-            stroke={colors.ghaf}
-            strokeWidth="1.5"
-          />
-          <Path
-            d="M10 13 L13 16 L18 10"
-            fill="none"
-            stroke={colors.ghaf}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-        </G>
-      ) : (
-        <G>
-          <Circle cx="14" cy="13" fill={colors.waterLight} r="10" stroke={colors.water} />
-          <Line
-            stroke={colors.mangrove}
-            strokeLinecap="round"
-            strokeWidth="2"
-            x1="14"
-            x2="14"
-            y1="8"
-            y2="14"
-          />
-          <Circle cx="14" cy="18" fill={colors.mangrove} r="1.5" />
-        </G>
-      )}
-    </Svg>
   );
 }
 
@@ -371,6 +230,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: radii.md,
     borderCurve: 'continuous',
+  },
+  contributionIcon: {
+    width: 42,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  milestoneIcon: {
+    width: 36,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  disclosureIcon: {
+    width: 28,
+    height: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   goalChannel: {
     position: 'relative',

@@ -77,7 +77,7 @@ describe('R002b combined RevealBundle presentation', () => {
 
     expect(source).toContain('accessibilityLiveRegion="polite"');
     expect(source).toContain('accessibilityRole="header"');
-    expect(source).toContain('accessibilityRole="image"');
+    expect(source).toContain('<LocalIllustration');
     expect(source).toContain('<PrimaryButton');
     expect(source).toContain('busy={primary.busy}');
     expect(source).toContain('disabled={primary.disabled}');
@@ -128,7 +128,7 @@ describe('R002b combined RevealBundle presentation', () => {
     expect(source).not.toMatch(disabledScaling);
   });
 
-  it('uses branded bilingual type, logical layout, tabular values, and code-native art', () => {
+  it('uses branded bilingual type, logical layout, tabular values, and local natural artwork', () => {
     const source = componentSource();
 
     expect(source).toContain('logicalRowDirection(direction)');
@@ -136,8 +136,10 @@ describe('R002b combined RevealBundle presentation', () => {
     expect(source).toContain('language={language}');
     expect(source).toContain('tabular');
     expect(source).toContain('brand');
-    expect(source).toContain('function RevealBotanicalScene');
+    expect(source).toContain('function RevealNaturalArtwork');
+    expect(source).toContain('<LocalIllustration');
+    expect(source).toContain('assetId="recognition-reveal"');
     expect(source).not.toMatch(/[\u0600-\u06ff]/u);
-    expect(source).not.toMatch(/(?:require\(|Image\s|expo-image)/u);
+    expect(source).not.toMatch(/require\(/u);
   });
 });

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import {
   colors,
@@ -351,7 +352,13 @@ export function SharedGrowthChildScreen({
       {artIsUnavailable ? (
         <SharedArtUnavailable direction={direction} language={language} text={artUnavailableText} />
       ) : (
-        <SharedCoastalCanopyScene accessibilityLabel={sceneAccessibilityLabel} compact={compact} />
+        <SharedCoastalArtwork
+          accessibilityLabel={sceneAccessibilityLabel}
+          compact={compact}
+          direction={direction}
+          fallbackLabel={artUnavailableText}
+          language={language}
+        />
       )}
 
       <View
@@ -1233,36 +1240,29 @@ function SharedArtUnavailable({
   );
 }
 
-function SharedCoastalCanopyScene({
+function SharedCoastalArtwork({
   accessibilityLabel,
   compact,
+  direction,
+  fallbackLabel,
+  language,
 }: {
   accessibilityLabel: string;
   compact: boolean;
+  direction: SharedGrowthDirection;
+  fallbackLabel: string;
+  language: SharedGrowthLanguage;
 }) {
   return (
-    <View
-      accessible
+    <LocalIllustration
       accessibilityLabel={accessibilityLabel}
-      accessibilityRole="image"
+      assetId="shared-coastal-canopy"
+      direction={direction}
+      fallbackLabel={fallbackLabel}
+      language={language}
       style={[styles.scene, compact ? styles.sceneCompact : null]}
-    >
-      <View aria-hidden style={styles.sceneSky} />
-      <View aria-hidden style={styles.sceneSun} />
-      <View aria-hidden style={styles.sceneCoast} />
-      <View aria-hidden style={styles.sceneWater} />
-      <View aria-hidden style={styles.canopyBack} />
-      <View aria-hidden style={styles.canopyLeft} />
-      <View aria-hidden style={styles.canopyRight} />
-      <View aria-hidden style={styles.canopyTrunk} />
-      <View aria-hidden style={styles.canopyRootLeft} />
-      <View aria-hidden style={styles.canopyRootRight} />
-      <View aria-hidden style={styles.anonymousPlantOne} />
-      <View aria-hidden style={styles.anonymousPlantTwo} />
-      <View aria-hidden style={styles.anonymousPlantThree} />
-      <View aria-hidden style={styles.sceneRippleOne} />
-      <View aria-hidden style={styles.sceneRippleTwo} />
-    </View>
+      testID="shared-coastal-artwork"
+    />
   );
 }
 
@@ -1674,152 +1674,6 @@ const styles = StyleSheet.create({
   },
   sceneCompact: {
     height: 184,
-  },
-  sceneSky: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 68,
-    left: 0,
-    backgroundColor: colors.secondaryTint,
-  },
-  sceneSun: {
-    position: 'absolute',
-    top: 24,
-    right: 34,
-    width: 48,
-    height: 48,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.solarAmber,
-    opacity: 0.76,
-  },
-  sceneCoast: {
-    position: 'absolute',
-    right: -20,
-    bottom: 56,
-    left: -20,
-    height: 54,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.sandLight,
-    transform: [{ rotate: '-2deg' }],
-  },
-  sceneWater: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    left: 0,
-    height: 72,
-    backgroundColor: colors.waterLight,
-  },
-  canopyBack: {
-    position: 'absolute',
-    top: 34,
-    left: '27%',
-    width: 170,
-    height: 96,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.leaf,
-  },
-  canopyLeft: {
-    position: 'absolute',
-    top: 55,
-    left: '20%',
-    width: 120,
-    height: 76,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
-    transform: [{ rotate: '-8deg' }],
-  },
-  canopyRight: {
-    position: 'absolute',
-    top: 48,
-    left: '43%',
-    width: 126,
-    height: 80,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
-    transform: [{ rotate: '7deg' }],
-  },
-  canopyTrunk: {
-    position: 'absolute',
-    left: '46%',
-    bottom: 49,
-    width: 18,
-    height: 80,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-  },
-  canopyRootLeft: {
-    position: 'absolute',
-    left: '37%',
-    bottom: 42,
-    width: 78,
-    height: 8,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-    transform: [{ rotate: '-22deg' }],
-  },
-  canopyRootRight: {
-    position: 'absolute',
-    left: '44%',
-    bottom: 38,
-    width: 82,
-    height: 8,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-    transform: [{ rotate: '20deg' }],
-  },
-  anonymousPlantOne: {
-    position: 'absolute',
-    left: 28,
-    bottom: 48,
-    width: 24,
-    height: 34,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.mangrove,
-    transform: [{ rotate: '-16deg' }],
-  },
-  anonymousPlantTwo: {
-    position: 'absolute',
-    right: 74,
-    bottom: 51,
-    width: 22,
-    height: 32,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.leaf,
-    transform: [{ rotate: '14deg' }],
-  },
-  anonymousPlantThree: {
-    position: 'absolute',
-    right: 30,
-    bottom: 47,
-    width: 25,
-    height: 36,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.mangrove,
-    transform: [{ rotate: '-8deg' }],
-  },
-  sceneRippleOne: {
-    position: 'absolute',
-    left: 24,
-    bottom: 24,
-    width: 110,
-    height: 16,
-    borderWidth: 2,
-    borderColor: colors.secondary,
-    borderRadius: r001Radii.pill,
-    opacity: opacity.subtle,
-  },
-  sceneRippleTwo: {
-    position: 'absolute',
-    right: 26,
-    bottom: 18,
-    width: 126,
-    height: 15,
-    borderWidth: 2,
-    borderColor: colors.secondary,
-    borderRadius: r001Radii.pill,
-    opacity: opacity.subtle,
   },
   flexCopy: {
     flex: 1,

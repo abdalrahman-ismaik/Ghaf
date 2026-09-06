@@ -10,8 +10,8 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
-import Svg, { Circle, Defs, Pattern, Rect } from 'react-native-svg';
 
+import { LocalIllustration } from '@/components/illustrations';
 import { colors, layout, spacing } from '@/design/tokens';
 
 interface R002aScreenProps extends PropsWithChildren {
@@ -67,7 +67,7 @@ export function R002aScreen({
       style={[styles.safeArea, nativePhysicalDirection]}
       testID={testID}
     >
-      <R002aDotField />
+      <R002aFieldTexture />
       {header}
       <KeyboardAvoidingView
         behavior={keyboardAware ? (Platform.OS === 'ios' ? 'padding' : 'height') : undefined}
@@ -92,16 +92,16 @@ export function R002aScreen({
   );
 }
 
-function R002aDotField() {
+function R002aFieldTexture() {
   return (
-    <Svg aria-hidden height="100%" style={styles.dotField} width="100%">
-      <Defs>
-        <Pattern height="24" id="r002a-dot-grid" patternUnits="userSpaceOnUse" width="24">
-          <Circle cx="1" cy="1" fill={colors.outlineVariant} opacity={0.28} r={0.75} />
-        </Pattern>
-      </Defs>
-      <Rect fill="url(#r002a-dot-grid)" height="100%" width="100%" />
-    </Svg>
+    <View pointerEvents="none" style={styles.fieldTextureFrame}>
+      <LocalIllustration
+        assetId="field-paper"
+        decorative
+        style={styles.fieldTexture}
+        testID="r002a-field-texture"
+      />
+    </View>
   );
 }
 
@@ -111,13 +111,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: colors.pearlGround,
   },
-  dotField: {
+  fieldTextureFrame: {
     position: 'absolute',
     top: 0,
     right: 0,
     bottom: 0,
     left: 0,
     pointerEvents: 'none',
+  },
+  fieldTexture: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.16,
   },
   keyboardRoot: {
     flex: 1,

@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import {
   colors,
@@ -149,9 +150,12 @@ export function MangroveStoryScreen({
             />
           ) : null
         ) : (
-          <MangroveHabitatDiagram
+          <MangroveHabitatArtwork
             accessibilityLabel={illustrationAccessibilityLabel}
             compact={compact}
+            direction={props.direction}
+            fallbackLabel={illustrationUnavailableText ?? illustrationAccessibilityLabel}
+            language={props.language}
           />
         )
       }
@@ -927,34 +931,29 @@ function IllustrationUnavailableNotice({
   );
 }
 
-function MangroveHabitatDiagram({
+function MangroveHabitatArtwork({
   accessibilityLabel,
   compact,
+  direction,
+  fallbackLabel,
+  language,
 }: {
   accessibilityLabel: string;
   compact: boolean;
+  direction: 'ltr' | 'rtl';
+  fallbackLabel: string;
+  language: 'ar' | 'en';
 }) {
   return (
-    <View
-      accessible
+    <LocalIllustration
       accessibilityLabel={accessibilityLabel}
-      accessibilityRole="image"
+      assetId="mangrove-habitat"
+      direction={direction}
+      fallbackLabel={fallbackLabel}
+      language={language}
       style={[styles.diagram, compact ? styles.diagramCompact : null]}
-    >
-      <View aria-hidden style={styles.skyWash} />
-      <View aria-hidden style={styles.sun} />
-      <View aria-hidden style={styles.distantIsland} />
-      <View aria-hidden style={styles.waterBandOne} />
-      <View aria-hidden style={styles.waterBandTwo} />
-      <View aria-hidden style={styles.treeCrownBack} />
-      <View aria-hidden style={styles.treeCrownFront} />
-      <View aria-hidden style={styles.treeTrunk} />
-      <View aria-hidden style={styles.rootOne} />
-      <View aria-hidden style={styles.rootTwo} />
-      <View aria-hidden style={styles.rootThree} />
-      <View aria-hidden style={styles.rippleOne} />
-      <View aria-hidden style={styles.rippleTwo} />
-    </View>
+      testID="mangrove-habitat-artwork"
+    />
   );
 }
 
@@ -1386,133 +1385,6 @@ const styles = StyleSheet.create({
   },
   diagramCompact: {
     height: 184,
-  },
-  skyWash: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 72,
-    left: 0,
-    backgroundColor: colors.mangroveTealTint,
-  },
-  sun: {
-    position: 'absolute',
-    top: 26,
-    right: 34,
-    width: 46,
-    height: 46,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.solarAmber,
-    opacity: 0.78,
-  },
-  distantIsland: {
-    position: 'absolute',
-    right: -24,
-    bottom: 65,
-    width: 190,
-    height: 58,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.leafLight,
-    transform: [{ rotate: '-4deg' }],
-  },
-  waterBandOne: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    left: 0,
-    height: 78,
-    backgroundColor: colors.waterLight,
-  },
-  waterBandTwo: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    left: 0,
-    height: 34,
-    backgroundColor: colors.secondaryFixedDim,
-    opacity: 0.42,
-  },
-  treeCrownBack: {
-    position: 'absolute',
-    top: 27,
-    left: 46,
-    width: 150,
-    height: 96,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.leaf,
-    transform: [{ rotate: '-8deg' }],
-  },
-  treeCrownFront: {
-    position: 'absolute',
-    top: 51,
-    left: 97,
-    width: 132,
-    height: 82,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
-    transform: [{ rotate: '9deg' }],
-  },
-  treeTrunk: {
-    position: 'absolute',
-    left: 124,
-    bottom: 45,
-    width: 20,
-    height: 86,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-    transform: [{ rotate: '5deg' }],
-  },
-  rootOne: {
-    position: 'absolute',
-    left: 90,
-    bottom: 36,
-    width: 75,
-    height: 9,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-    transform: [{ rotate: '-24deg' }],
-  },
-  rootTwo: {
-    position: 'absolute',
-    left: 118,
-    bottom: 29,
-    width: 72,
-    height: 9,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-    transform: [{ rotate: '24deg' }],
-  },
-  rootThree: {
-    position: 'absolute',
-    left: 122,
-    bottom: 49,
-    width: 68,
-    height: 8,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.earth,
-    transform: [{ rotate: '8deg' }],
-  },
-  rippleOne: {
-    position: 'absolute',
-    right: 30,
-    bottom: 45,
-    width: 90,
-    height: 18,
-    borderWidth: 2,
-    borderColor: colors.secondary,
-    borderRadius: r001Radii.pill,
-    opacity: opacity.subtle,
-  },
-  rippleTwo: {
-    position: 'absolute',
-    right: 51,
-    bottom: 18,
-    width: 112,
-    height: 16,
-    borderWidth: 2,
-    borderColor: colors.secondary,
-    borderRadius: r001Radii.pill,
-    opacity: opacity.subtle,
   },
   flexCopy: {
     flex: 1,

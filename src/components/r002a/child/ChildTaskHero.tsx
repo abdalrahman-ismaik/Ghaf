@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
+import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
@@ -27,14 +28,14 @@ export function ChildTaskHero({
   return (
     <View style={styles.root}>
       {variant === 'ready' ? (
-        <View aria-hidden style={styles.botanicalHero}>
-          <View style={styles.heroHalo} />
-          <View style={[styles.heroLeaf, styles.heroLeafOne]} />
-          <View style={[styles.heroLeaf, styles.heroLeafTwo]} />
-          <View style={styles.heroIcon}>
-            <GhafIcon color={colors.ghafEmerald} name="ghaf-tree" size={58} />
-          </View>
-        </View>
+        <LocalIllustration
+          assetId="task-recycling"
+          decorative
+          direction={direction}
+          priority="high"
+          style={styles.botanicalHero}
+          testID="child-task-natural-hero"
+        />
       ) : null}
       <View style={[styles.badges, { flexDirection: logicalRowDirection(direction) }]}>
         <View style={styles.statusBadge}>
@@ -83,43 +84,6 @@ const styles = StyleSheet.create({
     borderRadius: r001Radii.xl,
     backgroundColor: colors.primaryFixedTint,
     ...r001Shadows.soft,
-  },
-  heroHalo: {
-    position: 'absolute',
-    width: 118,
-    height: 118,
-    borderRadius: 59,
-    backgroundColor: colors.surfaceContainerLowest,
-    opacity: 0.94,
-  },
-  heroIcon: {
-    width: 88,
-    height: 88,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 44,
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
-  },
-  heroLeaf: {
-    position: 'absolute',
-    width: 54,
-    height: 30,
-    borderTopLeftRadius: 27,
-    borderBottomRightRadius: 27,
-    backgroundColor: colors.primaryFixed,
-    opacity: 0.55,
-  },
-  heroLeafOne: {
-    top: 18,
-    left: 26,
-    transform: [{ rotate: '-16deg' }],
-  },
-  heroLeafTwo: {
-    right: 28,
-    bottom: 18,
-    transform: [{ rotate: '164deg' }],
   },
   badges: {
     alignItems: 'center',

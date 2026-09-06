@@ -136,7 +136,7 @@ describe('R002b Shared Growth presentation components', () => {
     expect(source).toContain('accessibilityState={{ busy, disabled }}');
     expect(source).toContain('accessibilityHint={action.description}');
     expect(source).toContain('accessibilityLiveRegion="polite"');
-    expect(source).toContain('accessibilityRole="image"');
+    expect(source).toContain('<LocalIllustration');
     expect(source).toContain('aria-hidden');
   });
 
@@ -203,15 +203,17 @@ describe('R002b Shared Growth presentation components', () => {
     expect(source.match(/<ActivityIndicator/gu)?.length).toBeGreaterThanOrEqual(3);
   });
 
-  it('uses a static code-native canopy with a textual missing-art fallback', () => {
+  it('uses static local coastal artwork with a textual missing-art fallback', () => {
     const source = componentSource();
 
-    expect(source).toContain('function SharedCoastalCanopyScene');
+    expect(source).toContain('function SharedCoastalArtwork');
+    expect(source).toContain('<LocalIllustration');
+    expect(source).toContain('assetId="shared-coastal-canopy"');
     expect(source).toContain('artUnavailableText: string');
     expect(source).toContain("const artIsUnavailable = contentState === 'art_unavailable'");
     expect(source).toContain('artIsUnavailable ?');
     expect(source).not.toContain('artUnavailable ?');
-    expect(source).not.toMatch(/(?:require\(|Image\s|expo-image|https?:\/\/)/u);
+    expect(source).not.toMatch(/(?:require\(|https?:\/\/)/u);
   });
 
   it('stays a presentation body for one route-owned safe-area and scrolling shell', () => {

@@ -100,7 +100,7 @@ export const resources = {
           childNameLabel: 'اسم الطفل داخل التطبيق',
           childNamePlaceholder: 'مثال: سالم',
           childNameError: 'أدخل اسمًا مختصرًا من حرفين على الأقل.',
-          chooseAvatar: 'اختر رمزًا',
+          chooseAvatar: 'اختر صورة نباتية',
           avatarGhaf: 'شجرة غاف',
           avatarLeaf: 'ورقة',
           avatarFlower: 'زهرة',
@@ -1099,7 +1099,7 @@ export const resources = {
       r002bReveal: {
         title: 'حصيلة نموك',
         groupLabel: 'كل النتائج الموثّقة في حصيلة واحدة',
-        illustrationLabel: 'شجرة غاف رمزية فوق تموجات ماء هادئة',
+        illustrationLabel: 'نمو أخضر طبيعي يلتقي بضوء دافئ وتموج ماء هادئ',
         introduction: {
           taskApproval:
             'اعتمد وليّ أمرك المهمة. تظهر هنا النتائج التي سُجّلت بالفعل لهذا الاعتماد مرة واحدة.',
@@ -1239,7 +1239,7 @@ export const resources = {
             error: 'تعذّر فتح هذا العرض. ارجع وحاول مرة أخرى.',
             interrupted: 'توقف العرض مؤقتًا. لم يتغير تقدمك الخاص.',
             recovered: 'أصبح عرض النمو المشترك جاهزًا من جديد.',
-            artUnavailable: 'الرسم الزخرفي غير متاح، والملاحظات النصية نفسها ظاهرة أدناه.',
+            artUnavailable: 'المشهد الطبيعي غير متاح، والملاحظات النصية نفسها ظاهرة أدناه.',
             submitting: 'جارٍ حفظ خيار المشاركة المستقبلية…',
             saved: 'حُفظ خيار المشاركة المستقبلية.',
             duplicate: 'كان هذا الخيار محفوظًا من قبل، ولم يُطبق مرتين.',
@@ -1253,7 +1253,7 @@ export const resources = {
           sceneAccessibilityLabel:
             'مظلة نباتية ساحلية رمزية فوق ماء هادئ. تمثل عناية مجتمعية مجهولة الهوية وليست أثرًا بيئيًا مقاسًا.',
           artUnavailableText:
-            'تعذّر عرض المشهد الزخرفي، لكن الملاحظات التعليمية والخصوصية بقيت متاحة.',
+            'تعذّر عرض المشهد الطبيعي، لكن الملاحظات التعليمية والخصوصية بقيت متاحة.',
           observationHeading: 'ما الذي تلاحظه الحديقة المشتركة؟',
           emptyObservationText:
             'لا توجد ملاحظة نوعية متاحة الآن. لا تتم مشاركة أي جزء من تقدمك الخاص.',
@@ -1451,7 +1451,7 @@ export const resources = {
             parentGuideHeading: 'خيار دعم من وليّ الأمر',
             parentGuide:
               'يمكن لوليّ الأمر قراءة الفقرتين أو مناقشة الفكرة. هذا الدعم اختياري ويمنح رصيد الإكمال نفسه.',
-            illustration: 'رسم توضيحي رمزي لموطن القرم الساحلي وجذوره والماء والطيور',
+            illustration: 'مشهد طبيعي لموطن القرم الساحلي وجذوره والماء الضحل',
             accessibleEntry: 'فتح النسخة النصية المختصرة',
           },
         },
@@ -1559,7 +1559,7 @@ export const resources = {
           childNameLabel: 'Child name in the app',
           childNamePlaceholder: 'Example: Salem',
           childNameError: 'Enter a short name with at least two characters.',
-          chooseAvatar: 'Choose an icon',
+          chooseAvatar: 'Choose a botanical image',
           avatarGhaf: 'Ghaf tree',
           avatarLeaf: 'Leaf',
           avatarFlower: 'Flower',
@@ -2596,7 +2596,7 @@ export const resources = {
       r002bReveal: {
         title: 'Your growth result',
         groupLabel: 'Every committed result in one bundle',
-        illustrationLabel: 'A symbolic Ghaf tree above calm water ripples',
+        illustrationLabel: 'Natural green growth meeting warm light and a calm water ripple',
         introduction: {
           taskApproval:
             'Your Parent approved the task. These are the results already committed for that approval, shown once.',
@@ -2739,8 +2739,7 @@ export const resources = {
             error: 'This view could not be opened. Go back and try again.',
             interrupted: 'The view was interrupted. Your private progress is unchanged.',
             recovered: 'Shared Growth is ready again.',
-            artUnavailable:
-              'The decorative scene is unavailable; the same observations appear below.',
+            artUnavailable: 'The natural scene is unavailable; the same observations appear below.',
             submitting: 'Saving the future-participation choice…',
             saved: 'The future-participation choice was saved.',
             duplicate: 'This choice was already saved. It was not applied twice.',
@@ -2754,7 +2753,7 @@ export const resources = {
           sceneAccessibilityLabel:
             'A symbolic coastal canopy above calm water. It represents anonymous community care, not measured environmental impact.',
           artUnavailableText:
-            'The decorative scene could not be shown, but the learning observations and privacy information remain available.',
+            'The natural scene could not be shown, but the learning observations and privacy information remain available.',
           observationHeading: 'What is the shared garden noticing?',
           emptyObservationText:
             'No qualitative observation is available right now. None of your private progress is shared.',
@@ -2956,8 +2955,7 @@ export const resources = {
             parentGuideHeading: 'Parent support option',
             parentGuide:
               'A Parent may read the two sections or discuss the idea. This support is optional and receives the same completion credit.',
-            illustration:
-              'Symbolic diagram of a coastal mangrove habitat with roots, water, and birds',
+            illustration: 'Natural view of a coastal mangrove habitat with roots and shallow water',
             accessibleEntry: 'Open the concise text version',
           },
         },

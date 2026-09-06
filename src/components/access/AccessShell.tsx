@@ -10,8 +10,8 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Circle, Defs, Path, Pattern, Rect } from 'react-native-svg';
 
+import { LocalIllustration } from '@/components/illustrations';
 import { IconButton, Text } from '@/components/primitives';
 import {
   colors,
@@ -122,42 +122,20 @@ export function OrganicBackdrop({ variant = 'organic' }: OrganicBackdropProps) {
 
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-      <Svg height="100%" preserveAspectRatio="none" viewBox="0 0 390 844" width="100%">
-        <Defs>
-          <Pattern height="24" id="ghaf-dots" patternUnits="userSpaceOnUse" width="24">
-            <Circle cx="2" cy="2" fill={colors.ghafEmerald} opacity={0.12} r="0.75" />
-          </Pattern>
-        </Defs>
-        <Rect fill="url(#ghaf-dots)" height="844" opacity={0.42} width="390" />
-        {variant === 'welcome' ? (
-          <>
-            <Path
-              d="M0 844h390V570c-74-38-128-18-185 20-66 44-122-7-205-48v302z"
-              fill={colors.surfaceContainerLow}
-              opacity={0.72}
-            />
-            <Path
-              d="M0 844h390V704c-76-22-116 13-171 20-73 9-97-45-147-26-31 12-51 36-72 62v84z"
-              fill={colors.surfaceContainer}
-              opacity={0.5}
-            />
-          </>
-        ) : null}
-        {variant === 'organic' ? (
-          <>
-            <Path
-              d="M0 0h390v104c-79 27-136-2-207 13C108 133 55 156 0 132V0z"
-              fill={colors.surfaceContainerLow}
-              opacity={0.48}
-            />
-            <Path
-              d="M0 844h390v-78c-64-18-115 13-181 4-72-10-126-45-209-10v84z"
-              fill={colors.surfaceContainerLow}
-              opacity={0.3}
-            />
-          </>
-        ) : null}
-      </Svg>
+      <LocalIllustration
+        assetId="field-paper"
+        decorative
+        priority="high"
+        style={[
+          styles.fieldTexture,
+          variant === 'welcome'
+            ? styles.fieldTextureWelcome
+            : variant === 'dotted'
+              ? styles.fieldTextureDotted
+              : styles.fieldTextureOrganic,
+        ]}
+        testID="access-field-texture"
+      />
     </View>
   );
 }
@@ -345,6 +323,20 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     backgroundColor: colors.pearlGround,
+  },
+  fieldTexture: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.pearlGround,
+  },
+  fieldTextureWelcome: {
+    opacity: 0.34,
+  },
+  fieldTextureDotted: {
+    opacity: 0.14,
+  },
+  fieldTextureOrganic: {
+    opacity: 0.22,
   },
   keyboardRoot: {
     flex: 1,

@@ -517,7 +517,13 @@ export default function ChildHomeScreen() {
             style={[styles.sectionHeading, { flexDirection: logicalRowDirection(direction) }]}
             testID="child-today-reveal-return-region"
           >
-            <Text brand color="ghafEmerald" direction={direction} variant="screenTitle">
+            <Text
+              accessibilityRole="none"
+              brand
+              color="ghafEmerald"
+              direction={direction}
+              variant="screenTitle"
+            >
               {t('childHome.currentWork')}
             </Text>
             <Text brand color="onSurfaceVariant" direction={direction} tabular variant="caption">

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AccessScreen, GhafIcon, PrototypePill } from '@/components/access';
+import { LocalIllustration } from '@/components/illustrations';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, r001Radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -77,6 +78,15 @@ export default function WelcomeScreen() {
         >
           {t('common.brand')}
         </Text>
+        <LocalIllustration
+          assetId="welcome-ghaf-habitat"
+          decorative
+          direction={direction}
+          language={locale}
+          priority="high"
+          style={styles.heroImage}
+          testID="welcome-natural-hero"
+        />
         <Text
           align="center"
           brand
@@ -168,8 +178,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: spacing.lg,
-    minHeight: 390,
+    minHeight: 470,
     paddingTop: spacing.xl,
+  },
+  heroImage: {
+    width: '100%',
+    height: 168,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLow,
   },
   title: { maxWidth: 340 },
   body: { maxWidth: 340 },

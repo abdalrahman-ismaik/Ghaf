@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 
@@ -136,8 +137,9 @@ export function PreparedMedia({
           <Image
             accessibilityLabel={localize(fixture.accessibleDescription, locale)}
             accessibilityRole="image"
+            cachePolicy="memory-disk"
+            contentFit="cover"
             onError={handleImageLoadError}
-            resizeMode="cover"
             source={source}
             style={styles.preparedImage}
             testID={`${testID ?? 'prepared-media'}-image`}

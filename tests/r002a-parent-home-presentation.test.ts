@@ -48,7 +48,8 @@ describe('R002a Parent Home presentation', () => {
     expect(shell).toContain('ScrollView');
     expect(shell).toContain('contentInsetAdjustmentBehavior="automatic"');
     expect(shell).toContain('automaticallyAdjustKeyboardInsets');
-    expect(shell).toContain('R002aDotField');
+    expect(shell).toContain('R002aFieldTexture');
+    expect(shell).toContain('assetId="field-paper"');
     expect(shell).toContain("Platform.OS === 'web' ? ({ dir: 'ltr' } as const) : {}");
     expect(navigation).toContain('useSafeAreaInsets');
     expect(navigation).toContain('layout.touchTarget');

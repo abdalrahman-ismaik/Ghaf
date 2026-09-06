@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
+import { botanicalAvatarArtworkIds, LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 import type { ChildTreeAvatarId } from '@/models/parentOnboarding';
-
-import { GhafIcon, type GhafIconName } from './GhafIcon';
 
 export type BotanicalAvatarId = ChildTreeAvatarId;
 
@@ -17,14 +16,6 @@ export const botanicalAvatarOptions: readonly BotanicalAvatarId[] = [
   'energy_leaf',
   'water_drop',
 ];
-
-const iconByAvatarId: Readonly<Record<BotanicalAvatarId, GhafIconName>> = {
-  ghaf_tree: 'ghaf-tree',
-  leaf: 'leaf',
-  flower: 'flower',
-  energy_leaf: 'energy-leaf',
-  water_drop: 'water-drop',
-};
 
 export interface BotanicalAvatarProps {
   direction: TextDirection;
@@ -46,7 +37,6 @@ export function BotanicalAvatar({
   testID,
 }: BotanicalAvatarProps) {
   const resolvedSize = Math.max(spacing.xl, size);
-  const iconSize = Math.max(20, Math.round(resolvedSize * 0.48));
 
   return (
     <View
@@ -61,11 +51,12 @@ export function BotanicalAvatar({
       ]}
       testID={testID}
     >
-      <GhafIcon
-        color={selected ? colors.onPrimary : colors.ghafEmerald}
+      <LocalIllustration
+        assetId={botanicalAvatarArtworkIds[id]}
+        decorative
         direction={direction}
-        name={iconByAvatarId[id]}
-        size={iconSize}
+        style={styles.avatarImage}
+        testID={testID ? `${testID}-image` : undefined}
       />
     </View>
   );
@@ -151,7 +142,12 @@ export function BotanicalAvatarPicker({
               ]}
               testID={`${testID}-${id}`}
             >
-              <BotanicalAvatar direction={direction} id={id} selected={selected} />
+              <BotanicalAvatar
+                direction={direction}
+                id={id}
+                selected={selected}
+                size={layout.touchTarget - spacing.xxs}
+              />
             </Pressable>
           );
         })}
@@ -167,10 +163,11 @@ const styles = StyleSheet.create({
   },
   options: {
     alignItems: 'center',
+    columnGap: spacing.xxs,
     flexWrap: 'wrap',
-    gap: spacing.sm,
     minWidth: 0,
     padding: spacing.xxs,
+    rowGap: spacing.sm,
   },
   optionsRtl: {
     flexDirection: logicalRowDirection('rtl'),
@@ -184,9 +181,9 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderRadius: r001Radii.pill,
     borderWidth: 2,
-    height: layout.touchTarget + spacing.xs,
+    height: layout.touchTarget,
     justifyContent: 'center',
-    width: layout.touchTarget + spacing.xs,
+    width: layout.touchTarget,
   },
   optionSelected: {
     borderColor: colors.ghafEmerald,
@@ -206,6 +203,7 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderRadius: r001Radii.pill,
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   avatarIdle: {
     backgroundColor: colors.surfaceContainerHighest,
@@ -218,5 +216,9 @@ const styles = StyleSheet.create({
   },
   avatarDisabled: {
     opacity: opacity.disabled,
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   },
 });

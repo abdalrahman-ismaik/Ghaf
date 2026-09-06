@@ -148,7 +148,7 @@ describe('R002b equal-credit Learning presentation components', () => {
     expect(source).toContain('accessibilityState={{ busy: contentState ===');
     expect(source).toContain('accessibilityLiveRegion="polite"');
     expect(source).toContain('accessibilityLabel={illustrationAccessibilityLabel}');
-    expect(source).toContain('accessibilityRole="image"');
+    expect(source).toContain('<LocalIllustration');
     expect(source).toContain('aria-hidden');
   });
 
@@ -180,7 +180,7 @@ describe('R002b equal-credit Learning presentation components', () => {
     expect(source).toContain('language={language}');
     expect(source).toContain("direction === 'rtl' ? 'flex-end' : 'flex-start'");
     expect(source).toContain('accessibilityLabel={groupLabel}');
-    expect(source).toContain('accessible\n      accessibilityLabel={accessibilityLabel}');
+    expect(source).toContain('accessibilityLabel={accessibilityLabel}');
     expect(source).toContain('brand');
     expect(source).toMatch(
       /pressed\s*\?\s*\(?\s*reducedMotion\s*\?\s*styles\.pressedStatic\s*:\s*styles\.pressedMotion/u,
@@ -189,16 +189,18 @@ describe('R002b equal-credit Learning presentation components', () => {
     expect(source).not.toContain('opacity: opacity.disabled');
   });
 
-  it('keeps story art code-native and the accessible route independent from it', () => {
+  it('keeps story art local and provenanced while the accessible route stays independent', () => {
     const source = componentSource();
     const accessibleSource = source.slice(
       source.indexOf('export function AccessibleLearningScreen'),
       source.indexOf('function LearningScreenFrame'),
     );
 
-    expect(source).toContain('function MangroveHabitatDiagram');
+    expect(source).toContain('function MangroveHabitatArtwork');
+    expect(source).toContain('<LocalIllustration');
+    expect(source).toContain('assetId="mangrove-habitat"');
     expect(source).toContain('illustrationUnavailableText?: string');
-    expect(accessibleSource).not.toContain('<MangroveHabitatDiagram');
-    expect(source).not.toMatch(/(?:require\(|Image\s|expo-image|https?:\/\/)/u);
+    expect(accessibleSource).not.toContain('<MangroveHabitatArtwork');
+    expect(source).not.toMatch(/(?:require\(|https?:\/\/)/u);
   });
 });
