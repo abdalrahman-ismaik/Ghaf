@@ -1092,3 +1092,33 @@ route authorities remain unchanged.
       pairing screen was source-audited through the same shared shell. Physical Android, TalkBack,
       OS font scale, named-human review, and public image-rights review remain `BLOCKED` or
       `NOT RUN`; `adb devices -l` returned no attached device or emulator.
+
+## Phase 35: Startup Asset Readiness and Ghaf Loading Motion
+
+**Gate**: User-authorized loading refinement over the completed R003 first-run presentation; all
+product, route, access, artwork, and feature-flag authorities remain unchanged.
+
+- [x] T259 Re-read the active contract, inspect startup/font/image paths, reserve exact writer
+      boundaries, and record font-plus-raster readiness, fallback, progress, reduced-motion, and
+      native-splash handoff rules before runtime work.
+- [x] T260 Write RED coverage proving the splash waits for every local runtime raster plus fonts,
+      critical brand assets settle before native handoff, progress is resource-derived, and one
+      failed image cannot trap startup.
+- [x] T261 Implement the typed batched local raster preloader and root readiness orchestration with
+      clean cancellation, truthful warnings, the existing 1,200 ms minimum, and no remote request.
+- [x] T262 Replace the generic spinner with a Ghaf-specific Reanimated transform/opacity sequence,
+      real accessible progress, bilingual child-clear loading copy, and a calm reduced-motion state.
+- [x] T263 Run focused/full tests, typecheck, lint, format, dependency/asset/route checks, production
+      exports, detector, and bounded delayed-asset visual inspection; record physical Android and
+      named-human limitations truthfully before a cohesive local commit.
+
+      Completed locally on 2026-09-06: the focused RED state failed because the startup loader did
+      not yet exist. The final focused file passed 7 tests and the full suite passed 86 files /
+      1,055 tests. Typecheck, lint, format, dependency alignment, detector, web export (122 files),
+      Android JS export (91 files), and Git whitespace checks passed. In Firefox, delaying one local
+      raster kept the splash visible after 3.2 seconds with the real progress transform at
+      `0.927273`; it dismissed only after settlement and exposed usable onboarding with zero page
+      errors. Standard pulse values changed over time; reduced motion held the logo at exactly
+      `scale(1)`. Arabic 320×720 and 390×844 proxy layouts were contained. Physical Android,
+      TalkBack, native decode/memory, OS font scale, and named-human review remain `BLOCKED` or
+      `NOT RUN`; `adb devices -l` returned no attached target.

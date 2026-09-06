@@ -9,7 +9,7 @@ interface GhafRasterLogoProps {
   readonly testID?: string;
 }
 
-const officialGhafRasterLogo = require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png');
+export const officialGhafRasterLogoSource = require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png');
 
 export function GhafRasterLogo({
   accessibilityLabel,
@@ -27,7 +27,7 @@ export function GhafRasterLogo({
       cachePolicy="memory-disk"
       contentFit="contain"
       priority="high"
-      source={officialGhafRasterLogo}
+      source={officialGhafRasterLogoSource}
       style={[styles.logo, { height: size, width: size }, style]}
       testID={testID}
       transition={0}

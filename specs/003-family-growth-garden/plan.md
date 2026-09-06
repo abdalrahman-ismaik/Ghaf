@@ -1,5 +1,21 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Startup Asset-readiness Addendum — 2026-09-06
+
+Introduce one bounded startup preloader under `src/features/startup/`. It imports the existing
+static artwork, official raster logo, and prepared-media image sources, settles the logo and
+leaf-shadow background first, then preloads the remaining local raster modules in small batches
+through `expo-asset`. The root owns only readiness orchestration: native-splash handoff after the
+critical pair settles, real combined font/image progress, one warning for fallback-triggering
+image failures, and dismissal after fonts plus images settle and the 1,200 ms minimum elapses.
+
+Replace the generic spinner with a token-aligned Ghaf mark pulse and centered seed-line progress.
+Use Reanimated shared values with transform/opacity only, system reduced-motion handling, and
+cleanup on unmount. Keep live Arabic/English status text and accessible progress values outside
+the raster. Add focused RED source/behavior coverage before implementation, then run the full
+TypeScript, lint, format, test, asset, export, visual-proxy, and available Android gates. No
+dependency, runtime URL, image generation, route, domain, or feature-flag change is required.
+
 ## R003 Child-clear First-run and Branded Access Addendum — 2026-09-06
 
 Update the first-run model from three to four in-route moments by inserting `intro` before

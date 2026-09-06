@@ -18,6 +18,24 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Startup Asset-readiness Amendment — 2026-09-06
+
+The app-owned branded splash must remain visible until all seven local Alexandria/Readex font
+files and every registered runtime raster image have settled. The official raster logo and
+leaf-shadow loading background settle before the native splash yields, so the animated handoff
+does not expose an empty or partially branded frame. Remaining local images preload through the
+existing Expo asset/image path; a failed image counts as settled only because the existing
+deterministic localized fallback remains usable, and failures must be reported without trapping a
+family on startup.
+
+The loading presentation exposes real settled-resource progress without a numeric percentage or
+remote-work claim. Its single authored motion is a calm Ghaf growth pulse and seed-line progress
+using only transform and opacity on the UI thread. Reduced motion removes the pulse and spatial
+travel while preserving a clear static progress state. The prior 1,200 ms minimum remains; the
+splash may stay longer only while real local font/image readiness is pending. Routes, first-run
+state, access authority, feature flags, product outcomes, and the exact 46-artwork registry remain
+unchanged.
+
 ## R003 Child-clear First-run and Branded Access Amendment — 2026-09-06
 
 The user explicitly supersedes the three-moment first-run presentation with four optional moments.
@@ -1581,6 +1599,14 @@ the historical domain-only result recorded by FR-118.
 - **FR-179**: Each permitted major-section transition MUST dwell for 900 ms. Startup and transition
   holds MUST remain determinate local presentation with no fake percentage, remote-work claim, or
   effect on navigation authority.
+- **FR-180**: The app-owned splash MUST remain visible until all configured Alexandria/Readex fonts
+  and every statically registered runtime raster image have settled. Its logo/background MUST
+  settle before the native splash yields; an image failure MUST resolve through the existing
+  fallback and warning path rather than create an infinite startup wait.
+- **FR-181**: Startup progress MUST be derived from settled local resources, expose accessible
+  progress semantics, and use a Ghaf-specific transform/opacity animation on the UI thread. It MUST
+  show no fabricated percentage, remote operation, or decorative spatial loop when reduced motion
+  is requested.
 
 ### Key Entities
 

@@ -1,5 +1,31 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Startup Asset-readiness Record — 2026-09-06
+
+**Current classification:** locally validated implementation candidate; native animation feel,
+TalkBack announcements, and physical Android decode/memory behavior remain unobserved.
+
+At launch, the native raster splash now yields only after the official Ghaf mark and leaf-shadow
+background settle. The app-owned branded splash stays visible until all seven local font files and
+48 runtime raster modules settle, and for at least 1,200 ms. Its emerald seed line is real
+resource-derived progress, not a percentage or remote-work simulation. A raster failure records a
+warning and continues through the existing deterministic image fallback. Standard motion gives the
+Ghaf mark one subtle UI-thread growth pulse; reduced motion keeps the mark still.
+
+| Gate                                                         | Result                              | Evidence                                                                                                                                                           |
+| ------------------------------------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Focused readiness/motion tests                               | `PASSED`                            | 1 file / 7 tests; the RED state first failed on the absent startup loader                                                                                          |
+| Full automated suite                                         | `PASSED`                            | typecheck, lint, format, and 86 files / 1,055 tests                                                                                                                |
+| Expo dependency/configuration                                | `PASSED`                            | `npx expo install --check`; no dependency change                                                                                                                   |
+| Production exports                                           | `PASSED`                            | web: 122 files; Android JS: 91 files; local fonts and raster modules remain bundled                                                                                |
+| Delayed-raster behavior                                      | `PASSED (Firefox web proxy)`        | one local coastal raster was delayed; splash remained visible after 3.2 s with progress at `0.927273`, then dismissed after settlement with onboarding usable      |
+| Loading motion                                               | `PASSED (Firefox web proxy/source)` | standard logo scale changed during the pulse; reduced motion remained exactly `scale(1)` across two samples; Arabic 320×720 and 390×844 layouts remained contained |
+| Browser console                                              | `PASSED`                            | zero page errors in the final delayed-load flow; development-only warnings do not establish native quality                                                         |
+| Physical Android, TalkBack, decode/memory, and OS font scale | `BLOCKED / NOT RUN`                 | `adb devices -l` returned no attached device or emulator                                                                                                           |
+
+Do not describe the preload as network sync, AI processing, authentication, or measured impact.
+The browser delay is evidence of readiness orchestration only, not Android performance evidence.
+
 ## R003 First-run Experience Record — 2026-09-06
 
 **Current classification:** local implementation candidate; not Android-accepted, human-reviewed,

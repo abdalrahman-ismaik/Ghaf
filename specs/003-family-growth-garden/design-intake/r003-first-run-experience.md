@@ -31,8 +31,15 @@ continues to describe this in-memory limitation. Reset remains deterministic and
 
 - Expo's native splash continues to use the immutable official raster icon and local background.
 - Once the React root mounts, the native splash yields to a branded app-owned splash. It remains
-  until both local fonts settle and the user-requested 1,200 ms minimum has elapsed, then closes on
-  the next render frame with no fake percentage, remote request, or network claim.
+  until local fonts and every statically registered runtime raster settle and the user-requested
+  1,200 ms minimum has elapsed, then closes on the next render frame with no fake percentage,
+  remote request, or network claim.
+- The official logo and leaf-shadow background settle before the native splash yields. Remaining
+  raster modules preload in bounded batches. Failures use the existing deterministic image
+  fallback, warn once, and count as settled so startup never becomes an unusable dead end.
+- The app-owned splash shows real resource-derived progress with a subtle Ghaf growth pulse and
+  centered seed-line animation on the UI thread. Reduced motion keeps a calm static mark and
+  progress state without spatial looping.
 - A transition buffer may appear only when crossing Welcome → Parent access, Welcome → Child
   access, Welcome → an already-active Parent/Child experience, Parent access → Parent experience,
   or Child access → Child experience.

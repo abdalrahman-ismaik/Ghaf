@@ -10,6 +10,7 @@ import {
   reduceFirstRunState,
   shouldShowSectionTransition,
 } from '../src/components/onboarding/experienceModel';
+import { settleStartupImageSources } from '../src/features/startup/settleStartupImageSources';
 import { resources } from '../src/i18n/resources';
 
 const repositoryRoot = resolve(import.meta.dirname, '..');
@@ -84,6 +85,7 @@ describe('R003 first-run experience', () => {
     const splash = source('src/components/onboarding/BrandedSplash.tsx');
     const transition = source('src/components/onboarding/SectionTransitionOverlay.tsx');
     const rootLayout = source('app/_layout.tsx');
+    const startupImages = source('src/features/startup/preloadStartupImages.ts');
     const tokens = source('src/design/tokens.ts');
     const welcome = source('app/index.tsx');
     const combined = `${onboarding}\n${logo}\n${brandLockup}\n${splash}\n${transition}`;
@@ -101,6 +103,13 @@ describe('R003 first-run experience', () => {
     expect(rootLayout).toContain('SplashScreen.hideAsync');
     expect(rootLayout).toContain('<SectionTransitionOverlay');
     expect(rootLayout).toContain('firstRunMotion.startupHold');
+    expect(rootLayout).toContain('preloadStartupImages');
+    expect(rootLayout).toContain('fontsSettled && imagesSettled');
+    expect(rootLayout).toContain('presentationReady');
+    expect(startupImages).toContain('Object.values(artworkSources)');
+    expect(startupImages).toContain('officialGhafRasterLogoSource');
+    expect(startupImages).toContain('preparedMediaImageSources');
+    expect(startupImages).toContain('Asset.fromModule(source).downloadAsync()');
     expect(transition).toContain('firstRunMotion.orientationHold');
     expect(tokens).toContain('startupHold: 1200');
     expect(tokens).toContain('orientationHold: 900');
@@ -109,6 +118,55 @@ describe('R003 first-run experience', () => {
     expect(welcome).toContain('<FirstRunOnboarding');
     expect(welcome).toContain("activeExperience === 'parent'");
     expect(welcome).toContain("activeExperience === 'child'");
+  });
+
+  it('settles critical brand images before batching the rest and reports fallback failures', async () => {
+    const calls: number[] = [];
+    const updates: Array<{
+      readonly failed: number;
+      readonly presentationReady: boolean;
+      readonly settled: number;
+      readonly total: number;
+    }> = [];
+
+    const result = await settleStartupImageSources({
+      batchSize: 2,
+      criticalSources: [1, 2],
+      loadImage: async (source) => {
+        const id = source as number;
+        calls.push(id);
+        if (id === 4) throw new Error('prepared fallback');
+      },
+      onProgress: (progress) => updates.push(progress),
+      remainingSources: [3, 4, 5],
+    });
+
+    expect(calls).toEqual([1, 2, 3, 4, 5]);
+    expect(updates[0]).toEqual({
+      failed: 0,
+      presentationReady: true,
+      settled: 2,
+      total: 5,
+    });
+    expect(updates.at(-1)).toEqual({
+      failed: 1,
+      presentationReady: true,
+      settled: 5,
+      total: 5,
+    });
+    expect(result).toEqual(updates.at(-1));
+  });
+
+  it('uses actual resource progress and a reduced-motion Ghaf loading state', () => {
+    const splash = source('src/components/onboarding/BrandedSplash.tsx');
+
+    expect(splash).not.toContain('ActivityIndicator');
+    expect(splash).toContain('accessibilityRole="progressbar"');
+    expect(splash).toContain('accessibilityValue');
+    expect(splash).toContain('withRepeat');
+    expect(splash).toContain('useSharedValue');
+    expect(splash).toContain('useReducedMotion');
+    expect(splash).toContain('transform: [{ scaleX: progressScale.get() }]');
   });
 
   it('keeps equivalent Arabic and English first-run resources', () => {

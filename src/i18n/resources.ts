@@ -71,7 +71,7 @@ export const resources = {
         ],
         loading: {
           splashTitle: 'تنمو الأفعال الصغيرة مع غاف',
-          splashBody: 'نهيّئ الحديقة المحلية…',
+          splashBody: 'نجهّز كلمات غاف وصور الحديقة…',
           opening: 'نفتح المساحة المناسبة…',
           parentAccess: 'مساحة دخول وليّ الأمر',
           childAccess: 'مساحة دخول الطفل',
@@ -1570,7 +1570,7 @@ export const resources = {
         ],
         loading: {
           splashTitle: 'Small actions grow with Ghaf',
-          splashBody: 'Preparing the local garden…',
+          splashBody: 'Getting Ghaf’s words and garden pictures ready…',
           opening: 'Opening the right space…',
           parentAccess: 'Parent access',
           childAccess: 'Child access',

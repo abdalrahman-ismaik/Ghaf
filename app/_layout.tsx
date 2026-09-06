@@ -24,6 +24,11 @@ import {
 } from '@/components/onboarding';
 import { GhafFontProvider } from '@/components/primitives';
 import { colors, firstRunMotion } from '@/design/tokens';
+import {
+  preloadStartupImages,
+  startupImageTotal,
+  type StartupImageProgress,
+} from '@/features/startup';
 import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -39,12 +44,30 @@ void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 // FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review,
 // the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 
+const brandFontAssets = {
+  Alexandria_400Regular,
+  Alexandria_700Bold,
+  Alexandria_800ExtraBold,
+  ReadexPro_400Regular,
+  ReadexPro_500Medium,
+  ReadexPro_600SemiBold,
+  ReadexPro_700Bold,
+} as const;
+
+const brandFontAssetCount = Object.keys(brandFontAssets).length;
+
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
   const splashStartedAt = useRef(0);
   const [showBrandedSplash, setShowBrandedSplash] = useState(true);
+  const [imageProgress, setImageProgress] = useState<StartupImageProgress>({
+    failed: 0,
+    presentationReady: false,
+    settled: 0,
+    total: startupImageTotal,
+  });
   const isR001Route = pathname === '/' || pathname.startsWith('/access/');
   const isR002aParentSurface = pathname.startsWith('/parent');
   const usesLightSystemChrome =
@@ -55,15 +78,26 @@ export default function RootLayout() {
     pathname.startsWith('/garden/') ||
     pathname === '/league' ||
     pathname === '/circle/shared-growth';
-  const [fontsLoaded, fontError] = useFonts({
-    Alexandria_400Regular,
-    Alexandria_700Bold,
-    Alexandria_800ExtraBold,
-    ReadexPro_400Regular,
-    ReadexPro_500Medium,
-    ReadexPro_600SemiBold,
-    ReadexPro_700Bold,
-  });
+  const [fontsLoaded, fontError] = useFonts(brandFontAssets);
+  const fontsSettled = fontsLoaded || Boolean(fontError);
+  const imagesSettled = imageProgress.settled === imageProgress.total;
+  const startupReady = fontsSettled && imagesSettled;
+  const settledResources = imageProgress.settled + (fontsSettled ? brandFontAssetCount : 0);
+  const totalResources = imageProgress.total + brandFontAssetCount;
+
+  useEffect(() => {
+    splashStartedAt.current = Date.now();
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    void preloadStartupImages((progress) => {
+      if (mounted) setImageProgress(progress);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     configureNativeDirection(locale);
@@ -82,28 +116,36 @@ export default function RootLayout() {
   }, [fontError]);
 
   useEffect(() => {
+    if (imagesSettled && imageProgress.failed > 0) {
+      console.warn(
+        `${imageProgress.failed} Ghaf image asset(s) could not be preloaded; using local fallbacks.`,
+      );
+    }
+  }, [imageProgress.failed, imagesSettled]);
+
+  useEffect(() => {
+    if (!imageProgress.presentationReady) return;
+    void SplashScreen.hideAsync().catch(() => undefined);
+  }, [imageProgress.presentationReady]);
+
+  useEffect(() => {
+    if (!startupReady) return;
     let mounted = true;
     let frame: number | undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined;
-    if (splashStartedAt.current === 0) splashStartedAt.current = Date.now();
-    void SplashScreen.hideAsync()
-      .catch(() => undefined)
-      .finally(() => {
-        if (!mounted || (!fontsLoaded && !fontError)) return;
-        const elapsed = Date.now() - splashStartedAt.current;
-        const remaining = Math.max(0, firstRunMotion.startupHold - elapsed);
-        timeout = setTimeout(() => {
-          frame = requestAnimationFrame(() => {
-            if (mounted) setShowBrandedSplash(false);
-          });
-        }, remaining);
+    const elapsed = Date.now() - splashStartedAt.current;
+    const remaining = Math.max(0, firstRunMotion.startupHold - elapsed);
+    timeout = setTimeout(() => {
+      frame = requestAnimationFrame(() => {
+        if (mounted) setShowBrandedSplash(false);
       });
+    }, remaining);
     return () => {
       mounted = false;
       if (timeout !== undefined) clearTimeout(timeout);
       if (frame !== undefined) cancelAnimationFrame(frame);
     };
-  }, [fontError, fontsLoaded]);
+  }, [startupReady]);
 
   return (
     <SafeAreaProvider>
@@ -120,7 +162,11 @@ export default function RootLayout() {
               }}
             />
             <SectionTransitionOverlay />
-            <BrandedSplash visible={showBrandedSplash} />
+            <BrandedSplash
+              settledResources={settledResources}
+              totalResources={totalResources}
+              visible={showBrandedSplash}
+            />
           </View>
         </FirstRunExperienceProvider>
       </GhafFontProvider>

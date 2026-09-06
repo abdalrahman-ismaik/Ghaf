@@ -134,13 +134,21 @@ accents, concise active copy, and a restrained vertical settle—not confetti, s
 mascots, fantasy effects, or competing cards.
 
 The native Expo splash remains the earliest frame and uses the official raster icon. The app-owned
-handoff screen uses the same mark and local leaf-shadow texture while local fonts settle, with a
-1,200 ms minimum visible window. A context
+handoff screen uses the same mark and local leaf-shadow texture while all seven brand fonts and
+every registered runtime raster settle, with a 1,200 ms minimum visible window. The logo and
+leaf-shadow background settle before the native handoff; remaining images preload in bounded
+batches. A failed raster advances only into its existing deterministic fallback and records one
+warning, so readiness never becomes a dead end. A context
 transition overlay is permitted only across Welcome, Parent access, Child access, Parent
 experience, and Child experience groups. Paths within a stable Parent or Child group, including
 bottom tabs and nested screens, do not trigger it. A major-section buffer stays legible for 900 ms;
 its fade still uses the existing motion tokens. Neither presentation claims remote loading,
 identity verification, AI work, sync, or persistence.
+
+Loading motion has one authored job: show real local readiness. The official Ghaf mark breathes
+between `1` and `1.025` scale on the UI thread while a center-grown emerald line reflects actual
+settled resources. It shows no percentage and makes no remote-work claim. Reduced motion holds the
+mark at `scale(1)` and updates the progress state directly without spatial looping.
 
 All Parent and Child access/setup routes inherit one shared branded shell: a compact official
 raster Ghaf mark beside the Ghaf name, calm leaf-shadow raster background, clear route title or

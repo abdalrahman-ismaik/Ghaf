@@ -8,6 +8,8 @@ const preparedMediaSources = {
   fixture_salem_plan_ar_v1: null,
 } as const satisfies Record<PreparedMediaFixture['id'], ImageSourcePropType | null>;
 
+export const preparedMediaImageSources = [preparedMediaSources.fixture_recycling_clean_v1] as const;
+
 // Resolve the two reviewed media fixtures without breaking Metro bundling.
 export function resolvePreparedMediaSource(
   id: PreparedMediaFixture['id'],
