@@ -18,7 +18,31 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-## R003 Startup Asset-readiness Amendment — 2026-09-06
+## R003 Section-scoped Startup Readiness Amendment — 2026-09-06
+
+This amendment supersedes the earlier all-runtime-raster and seven-font startup gate wherever they
+conflict. The app-owned splash must wait only for the assets required throughout the signed-out
+first section: the official raster logo, shared leaf-shadow field, four onboarding photographs,
+Welcome photograph, and the four Alexandria/Readex files actually referenced by current branded
+roles. It must never preload Garden, League, reveal, learning, Shared Growth, canopy, Circle, or
+prepared-media imagery during startup.
+
+The native splash yields after the logo and leaf-shadow field settle. The app-owned 1,200 ms
+minimum begins only after that native handoff settles, so the branded loading state is visibly
+present even when local assets are cached. The splash may remain longer only while the bounded
+signed-out set or its font set settles. Image failures count as settled through the existing local
+fallback and warning behavior and cannot trap the family.
+
+Each permitted access/experience handoff dynamically warms only the destination's immediate local
+images and keeps its 900 ms orientation buffer visible until both that minimum and those bounded
+assets settle. Images deeper inside a stable section load only when their existing Expo Image
+consumer renders and then use the memory/disk cache. The loading presentation contains the official
+mark/name and one simple indeterminate three-leaf loop; it contains no visible resource-status
+sentence, count, percentage, or technical claim. The loop uses transform only on the UI thread;
+reduced motion shows the same three leaves without rotation, and assistive technology receives a
+short localized loading label.
+
+## R003 Startup Asset-readiness Amendment — 2026-09-06 (superseded where noted above)
 
 The app-owned branded splash must remain visible until all seven local Alexandria/Readex font
 files and every registered runtime raster image have settled. The official raster logo and
@@ -1599,14 +1623,19 @@ the historical domain-only result recorded by FR-118.
 - **FR-179**: Each permitted major-section transition MUST dwell for 900 ms. Startup and transition
   holds MUST remain determinate local presentation with no fake percentage, remote-work claim, or
   effect on navigation authority.
-- **FR-180**: The app-owned splash MUST remain visible until all configured Alexandria/Readex fonts
-  and every statically registered runtime raster image have settled. Its logo/background MUST
-  settle before the native splash yields; an image failure MUST resolve through the existing
-  fallback and warning path rather than create an infinite startup wait.
-- **FR-181**: Startup progress MUST be derived from settled local resources, expose accessible
-  progress semantics, and use a Ghaf-specific transform/opacity animation on the UI thread. It MUST
-  show no fabricated percentage, remote operation, or decorative spatial loop when reduced motion
-  is requested.
+- **FR-180**: The app-owned splash MUST remain visible until the four font files referenced by the
+  current branded roles and the bounded signed-out raster set have settled. Its logo/background
+  MUST settle before the native splash yields; its 1,200 ms window MUST begin after that handoff;
+  and an image failure MUST resolve through the existing fallback and warning path rather than
+  create an infinite startup wait. No Garden, League, reveal, learning, Shared Growth, canopy,
+  Circle, or prepared-media raster may enter the startup set.
+- **FR-181**: Startup and section buffers MUST use one accessible Ghaf-specific three-leaf
+  indeterminate loop with transform-only UI-thread motion. They MUST show no visible technical
+  resource sentence, count, fabricated percentage, or remote operation; reduced motion MUST keep
+  the leaves static.
+- **FR-182**: Each permitted major-section buffer MUST dynamically settle only its bounded immediate
+  destination images and the 900 ms dwell concurrently. Deeper images MUST load only when their
+  existing Expo Image consumer renders, retain deterministic fallback, and use memory/disk caching.
 
 ### Key Entities
 

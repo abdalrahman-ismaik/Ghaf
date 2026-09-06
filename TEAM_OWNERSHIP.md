@@ -6,6 +6,46 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-06 Section-scoped Asset Loading and Simple Leaf-loop Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`, `app.config.ts`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `app/_layout.tsx`,
+`src/features/startup/**`, `src/components/onboarding/**`, `src/i18n/resources.ts`, and
+`tests/{r001-design-foundation,r003-first-run-experience}.test.ts` only.
+
+**Scope**: Supersede the all-app startup preload with a section-scoped local-asset policy. Startup
+may block only on the official logo, shared leaf-shadow field, four onboarding photographs,
+Welcome photograph, and four font files used by the current Alexandria/Readex roles. Parent/Child
+access handoffs may warm the five small botanical avatars; Parent/Child experience handoffs may
+warm only their immediate field/task imagery. Garden, League, reveal, learning, Shared Growth,
+canopy, Circle, and prepared-media rasters remain lazy through the existing Expo Image memory/disk
+cache. Begin the 1,200 ms app-owned splash window only after the native splash hide settles, replace
+visible resource copy/progress with one reusable three-leaf transform-only loop, keep an
+accessibility-only localized loading label and static reduced-motion state, and let the 900 ms
+major-section buffer wait for its bounded destination assets. Preserve routes, access/session and
+product authorities, offline fallback, flags, image registry, and protected user work. No new
+asset, dependency, remote URL, vector image, fake progress, push, merge, deployment, or release
+activation is authorized.
+
+**Completion — 2026-09-06**: Root replaced the 48-raster/seven-font startup gate with seven
+signed-out rasters and the four font files used by current brand roles, then added cached bounded
+access/experience preparation while keeping all deeper imagery lazy in Expo Image. Combined
+startup file bytes fell from 10,638,873 to 2,196,726 (79.4%). Native handoff now starts the full
+1,200 ms app-owned presentation window. Startup and section buffers share one transform-only
+three-leaf loop, no visible technical resource copy, and a static reduced-motion state. The focused
+batch passed 2 files / 15 tests after the required RED state; the full suite passed 86 files /
+1,056 tests, with typecheck, lint, format, dependency alignment, detector, production exports, and
+Git whitespace checks passing. Firefox request/timing evidence showed only the exact seven rasters
+and four fonts at startup, a 1,318 ms cached visible handoff including exit, delayed-asset waiting,
+post-handoff avatar requests, changing standard rotation, static reduced motion, zero errors, and no
+horizontal overflow at 320/390 widths. Physical Android/TalkBack/native decode and OS font-scale
+remain `BLOCKED / NOT RUN` because ADB listed no target. The reservation is released at the
+cohesive local checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Startup Asset-readiness and Loading-motion Window
 
 **Owner and only writer**: `/root`

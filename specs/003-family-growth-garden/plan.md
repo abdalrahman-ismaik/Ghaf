@@ -1,6 +1,30 @@
 # Implementation Plan: Family Growth Garden
 
-## R003 Startup Asset-readiness Addendum — 2026-09-06
+## R003 Section-scoped Startup Optimization Addendum — 2026-09-06
+
+Replace the all-app preload with two bounded levels. Root startup settles the official logo and
+leaf-shadow field before native handoff, then waits only for the remaining signed-out onboarding
+and Welcome photographs plus the four font files used by current Alexandria/Readex roles. A small
+cached loader under `src/features/startup/` exposes per-section preparation for botanical access
+avatars and the immediate Parent/Child field/task art. All deeper Garden, League, reveal, learning,
+Shared Growth, canopy, Circle, and prepared-media images stay lazy in their existing Expo Image
+consumers.
+
+Move the 1,200 ms start point from React-root mount to completion of `SplashScreen.hideAsync()`.
+This guarantees the app-owned loader is visible after the native screen hands off without making
+cached startup slower than its declared presentation minimum. Let major-section overlays settle
+their small destination set and the existing 900 ms dwell concurrently, warning and continuing on
+asset failure.
+
+Replace the logo pulse, progress track, spinner, and visible resource-loading sentence with one
+shared three-leaf loop beside the official logo/name. Reanimated rotates only the leaf container
+with linear timing on the UI thread; reduced motion is static. Keep a localized accessibility-only
+indeterminate-progress label. Remove the three unused runtime/configured font weights without
+changing the current token roles or typography output. Add RED coverage first, then verify source,
+behavior, exports, delayed first-section and section-handoff paths, compact bilingual layout, and
+available Android evidence.
+
+## R003 Startup Asset-readiness Addendum — 2026-09-06 (superseded where noted above)
 
 Introduce one bounded startup preloader under `src/features/startup/`. It imports the existing
 static artwork, official raster logo, and prepared-media image sources, settles the logo and

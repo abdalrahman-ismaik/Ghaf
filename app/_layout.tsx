@@ -1,12 +1,9 @@
 import 'react-native-gesture-handler';
 
-import { Alexandria_400Regular } from '@expo-google-fonts/alexandria/400Regular';
 import { Alexandria_700Bold } from '@expo-google-fonts/alexandria/700Bold';
 import { Alexandria_800ExtraBold } from '@expo-google-fonts/alexandria/800ExtraBold';
 import { ReadexPro_400Regular } from '@expo-google-fonts/readex-pro/400Regular';
 import { ReadexPro_500Medium } from '@expo-google-fonts/readex-pro/500Medium';
-import { ReadexPro_600SemiBold } from '@expo-google-fonts/readex-pro/600SemiBold';
-import { ReadexPro_700Bold } from '@expo-google-fonts/readex-pro/700Bold';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useRef, useState } from 'react';
@@ -44,23 +41,19 @@ void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 // FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review,
 // the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 
-const brandFontAssets = {
-  Alexandria_400Regular,
+const startupFontAssets = {
   Alexandria_700Bold,
   Alexandria_800ExtraBold,
   ReadexPro_400Regular,
   ReadexPro_500Medium,
-  ReadexPro_600SemiBold,
-  ReadexPro_700Bold,
 } as const;
-
-const brandFontAssetCount = Object.keys(brandFontAssets).length;
 
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
-  const splashStartedAt = useRef(0);
+  const splashStartedAt = useRef<number | null>(null);
+  const [nativeSplashHidden, setNativeSplashHidden] = useState(false);
   const [showBrandedSplash, setShowBrandedSplash] = useState(true);
   const [imageProgress, setImageProgress] = useState<StartupImageProgress>({
     failed: 0,
@@ -78,16 +71,10 @@ export default function RootLayout() {
     pathname.startsWith('/garden/') ||
     pathname === '/league' ||
     pathname === '/circle/shared-growth';
-  const [fontsLoaded, fontError] = useFonts(brandFontAssets);
+  const [fontsLoaded, fontError] = useFonts(startupFontAssets);
   const fontsSettled = fontsLoaded || Boolean(fontError);
   const imagesSettled = imageProgress.settled === imageProgress.total;
   const startupReady = fontsSettled && imagesSettled;
-  const settledResources = imageProgress.settled + (fontsSettled ? brandFontAssetCount : 0);
-  const totalResources = imageProgress.total + brandFontAssetCount;
-
-  useEffect(() => {
-    splashStartedAt.current = Date.now();
-  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -124,12 +111,28 @@ export default function RootLayout() {
   }, [imageProgress.failed, imagesSettled]);
 
   useEffect(() => {
-    if (!imageProgress.presentationReady) return;
-    void SplashScreen.hideAsync().catch(() => undefined);
-  }, [imageProgress.presentationReady]);
+    if (!imageProgress.presentationReady || nativeSplashHidden) return;
+    let mounted = true;
+    const hideNativeSplash = async () => {
+      try {
+        await SplashScreen.hideAsync();
+      } catch {
+        // The app-owned loading surface remains a safe handoff if the native splash is already gone.
+      } finally {
+        if (mounted) {
+          splashStartedAt.current = Date.now();
+          setNativeSplashHidden(true);
+        }
+      }
+    };
+    void hideNativeSplash();
+    return () => {
+      mounted = false;
+    };
+  }, [imageProgress.presentationReady, nativeSplashHidden]);
 
   useEffect(() => {
-    if (!startupReady) return;
+    if (!startupReady || !nativeSplashHidden || splashStartedAt.current === null) return;
     let mounted = true;
     let frame: number | undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -145,7 +148,7 @@ export default function RootLayout() {
       if (timeout !== undefined) clearTimeout(timeout);
       if (frame !== undefined) cancelAnimationFrame(frame);
     };
-  }, [startupReady]);
+  }, [nativeSplashHidden, startupReady]);
 
   return (
     <SafeAreaProvider>
@@ -162,11 +165,7 @@ export default function RootLayout() {
               }}
             />
             <SectionTransitionOverlay />
-            <BrandedSplash
-              settledResources={settledResources}
-              totalResources={totalResources}
-              visible={showBrandedSplash}
-            />
+            <BrandedSplash visible={showBrandedSplash} />
           </View>
         </FirstRunExperienceProvider>
       </GhafFontProvider>

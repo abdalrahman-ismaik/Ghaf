@@ -70,8 +70,7 @@ export const resources = {
           },
         ],
         loading: {
-          splashTitle: 'تنمو الأفعال الصغيرة مع غاف',
-          splashBody: 'نجهّز كلمات غاف وصور الحديقة…',
+          progressA11y: 'جارٍ فتح غاف',
           opening: 'نفتح المساحة المناسبة…',
           parentAccess: 'مساحة دخول وليّ الأمر',
           childAccess: 'مساحة دخول الطفل',
@@ -1569,8 +1568,7 @@ export const resources = {
           },
         ],
         loading: {
-          splashTitle: 'Small actions grow with Ghaf',
-          splashBody: 'Getting Ghaf’s words and garden pictures ready…',
+          progressA11y: 'Opening Ghaf',
           opening: 'Opening the right space…',
           parentAccess: 'Parent access',
           childAccess: 'Child access',

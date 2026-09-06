@@ -4,11 +4,13 @@
 
 The onboarding completion marker exists only for the current in-memory app session; it is not an
 account preference or persistence guarantee and a reload may show onboarding again. The branded
-splash waits for the configured local fonts and all registered runtime rasters to settle and uses a
-declared 1,200 ms minimum presentation window. A failed raster resolves through its existing local
-fallback and warning path; readiness does not prove that every image decoded successfully on every
-physical device. The section transition is a 900 ms orientation buffer for major access/role
-changes. Neither is
+splash waits for the four currently used branded font files and bounded signed-out raster set and
+uses a declared 1,200 ms minimum presentation window after native handoff. It intentionally does
+not preload later Garden, League, learning, reveal, canopy, Circle, Shared Growth, or prepared-media
+images. A failed raster resolves through its existing local fallback and warning path; readiness
+does not prove that every image decoded successfully on every physical device. The section
+transition is a 900 ms orientation buffer for major access/role changes and waits only for a small
+immediate destination set; images deeper in each section load lazily. Neither is
 evidence of a server request, authentication, AI processing, data sync, or completed security
 check. Every Parent/Child access route inherits the official raster logo/name and the same local
 leaf-shadow backdrop from one shared shell; this presentation does not upgrade the synthetic

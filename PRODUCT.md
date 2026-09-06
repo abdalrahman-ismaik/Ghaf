@@ -30,10 +30,13 @@ symbolic Garden growth. Child-facing sentences use short, concrete Modern Standa
 equivalent plain English. The experience uses the official raster Ghaf logo and vivid local nature
 photography, then returns to the existing separate Parent and Child access choices. It adds no
 route, account, reward, persistence, environmental-impact, or access authority. The branded
-startup holds for at least 1,200 ms and remains until its local fonts and registered raster images
-settle; major Welcome/access/role handoffs hold for 900 ms so the orientation is legible, while
-ordinary tabs remain immediate. Every access/setup screen uses the shared raster brand lockup and
-leaf-shadow background without changing its authentication-looking logic.
+startup holds for at least 1,200 ms after native handoff and waits only for the four used font
+files plus the bounded signed-out image set. It never blocks on Garden or prepared-media imagery.
+Major Welcome/access/role handoffs hold for 900 ms and settle only their immediate destination
+assets, while deeper images load through Expo Image when their screen renders and ordinary tabs
+remain immediate. Both loaders use one simple three-leaf loop with no visible technical loading
+copy. Every access/setup screen uses the shared raster brand lockup and leaf-shadow background
+without changing its authentication-looking logic.
 
 The remote implementation is preserved behavior, not permission to change product outcomes. The
 six local-only commits remain unapplied candidate provenance; any compatible presentation must be

@@ -1,6 +1,41 @@
 # Ghaf Feature 003 Demo Runbook
 
-## R003 Startup Asset-readiness Record — 2026-09-06
+## R003 Section-scoped Loading Record — 2026-09-06
+
+**Current classification:** locally validated implementation candidate; native animation feel,
+TalkBack announcements, and physical Android decode/memory behavior remain unobserved.
+
+At launch, the native raster splash yields after the official Ghaf mark and leaf-shadow background
+settle. The app-owned screen then remains visibly present for at least 1,200 ms and until only its
+bounded signed-out set settles: seven rasters and the four font files used by current brand roles.
+It displays the official mark/name and one three-leaf loop with no visible resource sentence,
+count, or percentage. Garden, League, reveal, learning, Shared Growth, canopy, Circle, and
+prepared-media imagery is not requested at startup; those consumers stay lazy and retain Expo
+Image memory/disk caching. Major access/experience buffers concurrently settle their small
+destination set and the existing 900 ms dwell.
+
+The explicit readiness set fell from 48 rasters plus seven fonts (10,638,873 bytes) to seven
+signed-out rasters plus four used fonts (2,196,726 bytes), a 79.4% reduction. All application assets
+remain packaged for offline use; packaging is intentionally separate from runtime preloading.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Focused readiness/motion tests | `PASSED` | RED: 3 failed / 5 passed; final: 2 files / 15 tests |
+| Full automated suite | `PASSED` | typecheck, lint, format, and 86 files / 1,056 tests |
+| Expo dependency/configuration | `PASSED` | dependency check current; exactly four configured brand font files |
+| Production exports | `PASSED` | web: 119 files; Android JS: 88 files; both contain the four intended brand font assets |
+| Startup request boundary | `PASSED (Firefox web proxy)` | exactly seven Ghaf startup rasters and four brand fonts; no later-section or prepared-media raster |
+| Cached/delayed timing | `PASSED (Firefox web proxy)` | cached loader visible 1,318 ms including exit; delayed onboarding raster kept it visible until settlement |
+| Dynamic section loading | `PASSED (Firefox web proxy/source)` | five botanical avatar requests began only after access handoff; destination overlay remained bounded to the access section |
+| Loading motion | `PASSED (Firefox web proxy/source)` | rotation matrices changed over 300 ms; reduced motion stayed at `matrix(1, 0, 0, 1, 0, 0)` |
+| Compact layout and console | `PASSED (Firefox web proxy)` | 320×720 and 390×844 had zero horizontal overflow; zero page errors |
+| Physical Android, TalkBack, decode/memory, and OS font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached device or emulator |
+
+Do not describe packaged later-section files as preloaded, or either buffer as network sync, AI
+processing, authentication, or measured impact. Browser timing is secondary readiness evidence,
+not physical Android performance acceptance.
+
+## R003 Startup Asset-readiness Record — 2026-09-06 (superseded by the record above)
 
 **Current classification:** locally validated implementation candidate; native animation feel,
 TalkBack announcements, and physical Android decode/memory behavior remain unobserved.

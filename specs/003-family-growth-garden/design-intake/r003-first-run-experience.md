@@ -31,15 +31,17 @@ continues to describe this in-memory limitation. Reset remains deterministic and
 
 - Expo's native splash continues to use the immutable official raster icon and local background.
 - Once the React root mounts, the native splash yields to a branded app-owned splash. It remains
-  until local fonts and every statically registered runtime raster settle and the user-requested
-  1,200 ms minimum has elapsed, then closes on the next render frame with no fake percentage,
-  remote request, or network claim.
+  until the four currently used local font files and signed-out onboarding/Welcome raster set
+  settle and the user-requested 1,200 ms minimum has elapsed after native handoff, then closes on
+  the next render frame with no fake percentage, remote request, or network claim.
 - The official logo and leaf-shadow background settle before the native splash yields. Remaining
-  raster modules preload in bounded batches. Failures use the existing deterministic image
-  fallback, warn once, and count as settled so startup never becomes an unusable dead end.
-- The app-owned splash shows real resource-derived progress with a subtle Ghaf growth pulse and
-  centered seed-line animation on the UI thread. Reduced motion keeps a calm static mark and
-  progress state without spatial looping.
+  signed-out photographs preload in one bounded batch. Garden, League, reveal, learning, Shared
+  Growth, canopy, Circle, and prepared-media imagery never enters startup. Failures use the
+  existing deterministic image fallback, warn once, and count as settled so startup never becomes
+  an unusable dead end.
+- The app-owned splash shows the official mark/name and one simple three-leaf indeterminate loop on
+  the UI thread. It has no visible technical loading sentence or resource progress. Reduced motion
+  keeps the leaves static; assistive technology receives a short localized loading label.
 - A transition buffer may appear only when crossing Welcome → Parent access, Welcome → Child
   access, Welcome → an already-active Parent/Child experience, Parent access → Parent experience,
   or Child access → Child experience.
@@ -47,6 +49,9 @@ continues to describe this in-memory limitation. Reset remains deterministic and
   the transition buffer.
 - Reduced motion removes travel/scale choreography and uses a direct short opacity handoff.
 - Each approved major-section buffer dwells for 900 ms so its destination label is readable.
+- Each approved major-section buffer also waits for only its immediate destination images:
+  botanical avatars for access and field/task art for the Parent/Child experience. Deeper images
+  remain lazy in their existing Expo Image consumers and are cached after first render.
 
 ## Visual and asset contract
 

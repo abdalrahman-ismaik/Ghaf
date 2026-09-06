@@ -1122,3 +1122,35 @@ product, route, access, artwork, and feature-flag authorities remain unchanged.
       `scale(1)`. Arabic 320×720 and 390×844 proxy layouts were contained. Physical Android,
       TalkBack, native decode/memory, OS font scale, and named-human review remain `BLOCKED` or
       `NOT RUN`; `adb devices -l` returned no attached target.
+
+## Phase 36: Section-scoped Loading and Simple Ghaf Leaf Loop
+
+**Gate**: User-authorized performance correction over Phase 35; section boundaries, routes,
+product behavior, and the 46-artwork registry remain unchanged.
+
+- [x] T264 Re-read the active contract, inspect measured raster/font sizes and consumers, reserve
+      exact writer boundaries, and replace the all-app readiness requirement with a bounded
+      signed-out set plus dynamic access/experience section sets before runtime work.
+- [x] T265 Write RED coverage proving startup excludes all Garden/prepared-media imagery, uses only
+      the four referenced brand font files, starts its visible hold after native splash handoff,
+      dynamically settles bounded section images, and renders a static reduced-motion equivalent.
+- [x] T266 Implement signed-out and section-scoped local image preparation with caching, failure
+      settlement, and no runtime URL; leave deeper screen imagery lazy through Expo Image.
+- [x] T267 Replace visible technical loading copy, progress, pulse, and generic spinner with one
+      reusable accessible three-leaf transform loop across startup and major-section buffers.
+- [x] T268 Run focused/full tests, typecheck, lint, format, dependency/asset/route checks,
+      production exports, detector, bounded delayed-asset browser inspection, and the available
+      Android gate; record measured evidence and remaining limitations before a cohesive commit.
+
+      Completed locally on 2026-09-06: the focused RED state recorded 3 failing and 5 passing
+      tests. The final focused batch passed 2 files / 15 tests and the full suite passed 86 files /
+      1,056 tests. Typecheck, lint, formatting, Expo dependency alignment, detector, Git whitespace,
+      119-file web export, and 88-file Android JS export passed. Startup now requests seven
+      signed-out rasters (1,650,726 bytes) and four used branded fonts (546,000 bytes), down from
+      48 rasters plus seven fonts (10,638,873 combined bytes), a 79.4% reduction in the explicit
+      readiness set. Firefox showed the app-owned loader for 1,318 ms on a cached launch including
+      exit, retained it for a delayed onboarding raster, requested five avatar rasters only after
+      entering access, changed the standard leaf rotation, kept reduced motion at the identity
+      matrix, produced zero page errors, and had zero horizontal overflow at 320/390 widths.
+      Physical Android, TalkBack, native decode/memory, and OS font scale remain `BLOCKED / NOT RUN`
+      because `adb devices -l` returned no attached target.

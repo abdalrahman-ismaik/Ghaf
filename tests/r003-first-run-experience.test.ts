@@ -77,7 +77,7 @@ describe('R003 first-run experience', () => {
     expect(shouldShowSectionTransition('parent-access', 'welcome')).toBe(false);
   });
 
-  it('uses local raster-only first-run presentation and the official raster logo', () => {
+  it('uses local raster-only first-run presentation and section-scoped asset loading', () => {
     const onboarding = source('src/components/onboarding/FirstRunOnboarding.tsx');
     const logo = source('src/components/brand/GhafRasterLogo.tsx');
     const brandLockup = source('src/components/brand/GhafBrandLockup.tsx');
@@ -106,10 +106,20 @@ describe('R003 first-run experience', () => {
     expect(rootLayout).toContain('preloadStartupImages');
     expect(rootLayout).toContain('fontsSettled && imagesSettled');
     expect(rootLayout).toContain('presentationReady');
-    expect(startupImages).toContain('Object.values(artworkSources)');
+    expect(rootLayout).toContain('nativeSplashHidden');
+    expect(startupImages).not.toContain('Object.values(artworkSources)');
+    expect(startupImages).not.toContain('preparedMediaImageSources');
     expect(startupImages).toContain('officialGhafRasterLogoSource');
-    expect(startupImages).toContain('preparedMediaImageSources');
-    expect(startupImages).toContain('Asset.fromModule(source).downloadAsync()');
+    expect(startupImages).toContain('onboardingArtworkIds.map');
+    expect(startupImages).toContain('welcomeArtworkSource');
+    expect(startupImages).toContain('preloadSectionImages');
+    expect(startupImages).toContain("'parent-access'");
+    expect(startupImages).toContain("'child-experience'");
+    expect(startupImages).not.toContain('landscapeArtworkSources');
+    expect(startupImages).not.toContain('familyCanopyArtworkSources');
+    expect(startupImages).toContain('Asset.fromModule(source)');
+    expect(startupImages).toContain('.downloadAsync()');
+    expect(startupImages).toContain('localImageLoads');
     expect(transition).toContain('firstRunMotion.orientationHold');
     expect(tokens).toContain('startupHold: 1200');
     expect(tokens).toContain('orientationHold: 900');
@@ -120,7 +130,7 @@ describe('R003 first-run experience', () => {
     expect(welcome).toContain("activeExperience === 'child'");
   });
 
-  it('settles critical brand images before batching the rest and reports fallback failures', async () => {
+  it('settles the bounded signed-out images and reports fallback failures', async () => {
     const calls: number[] = [];
     const updates: Array<{
       readonly failed: number;
@@ -157,16 +167,50 @@ describe('R003 first-run experience', () => {
     expect(result).toEqual(updates.at(-1));
   });
 
-  it('uses actual resource progress and a reduced-motion Ghaf loading state', () => {
+  it('uses one simple accessible leaf loop with a static reduced-motion state', () => {
     const splash = source('src/components/onboarding/BrandedSplash.tsx');
+    const leafLoader = source('src/components/onboarding/GhafLeafLoader.tsx');
+    const transition = source('src/components/onboarding/SectionTransitionOverlay.tsx');
 
     expect(splash).not.toContain('ActivityIndicator');
-    expect(splash).toContain('accessibilityRole="progressbar"');
-    expect(splash).toContain('accessibilityValue');
-    expect(splash).toContain('withRepeat');
-    expect(splash).toContain('useSharedValue');
-    expect(splash).toContain('useReducedMotion');
-    expect(splash).toContain('transform: [{ scaleX: progressScale.get() }]');
+    expect(splash).not.toContain('accessibilityValue');
+    expect(splash).not.toContain('splashBody');
+    expect(splash).not.toContain('progressScale');
+    expect(splash).toContain('<GhafLeafLoader');
+    expect(transition).not.toContain('ActivityIndicator');
+    expect(transition).toContain('<GhafLeafLoader');
+    expect(transition).toContain('preloadSectionImages');
+    expect(leafLoader).toContain('accessibilityRole="progressbar"');
+    expect(leafLoader).toContain('withRepeat');
+    expect(leafLoader).toContain('useSharedValue');
+    expect(leafLoader).toContain('useReducedMotion');
+    expect(leafLoader).toContain('Easing.linear');
+    expect(leafLoader).toContain('rotate: `${rotation.get()}deg`');
+    expect(leafLoader).not.toMatch(/\b(?:height|width|margin|padding)\s*:\s*with/u);
+  });
+
+  it('loads only font files used by the current branded typography roles', () => {
+    const rootLayout = source('app/_layout.tsx');
+    const appConfig = source('app.config.ts');
+
+    for (const face of [
+      'Alexandria_700Bold',
+      'Alexandria_800ExtraBold',
+      'ReadexPro_400Regular',
+      'ReadexPro_500Medium',
+    ]) {
+      expect(rootLayout).toContain(face);
+      expect(appConfig).toContain(face);
+    }
+
+    for (const unusedFace of [
+      'Alexandria_400Regular',
+      'ReadexPro_600SemiBold',
+      'ReadexPro_700Bold',
+    ]) {
+      expect(rootLayout).not.toContain(unusedFace);
+      expect(appConfig).not.toContain(unusedFace);
+    }
   });
 
   it('keeps equivalent Arabic and English first-run resources', () => {
