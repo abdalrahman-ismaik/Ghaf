@@ -1,18 +1,21 @@
 # Ghaf Design Direction
 
-## 2026-09-07 AI-narrated square onboarding clarification
+## 2026-09-07 compact audio onboarding clarification
 
 The six-moment first-run experience is introduced directly by the Ghaf Guide. Use short
 first-person headlines and one concrete sentence per moment: welcoming and energetic, never
-chatty, companion-like, or inflated. Every existing local photograph sits in a responsive square
-editorial crop. Put a six-segment story rail directly above the navigation buttons in a dark,
-high-contrast band with a compact current/total label; progress follows explicit navigation and
-is never timed.
+chatty, companion-like, or inflated. Center the copy. Reveal every existing 1200×800 photograph in
+its responsive 3:2 editorial frame so the curated mix of astonishing wide views and close details
+is visible. Restore the original current/total plus dot row directly above the navigation buttons;
+use a wider saturated current dot and clearly visible neutral dots without enclosing the indicator
+in a heavy panel. Progress follows explicit navigation and is never timed.
 
-On-device narration reads the exact visible script and has clear stop/enable/replay controls beside
-a small Ghaf Guide identity and device-voice disclosure. Suppress autoplay when a screen reader is
-active and keep navigation independent of speech. Do not add a waveform, human avatar, robot,
-listening pulse, microphone, background audio, or model-processing theater.
+Prepared local narration reads the exact visible script after the current moment settles. Remove
+the separate Ghaf Guide panel and use one high-contrast speaker icon over the photograph to restart
+the clip. Quiet nature ambience may support the foreground onboarding atmosphere, but must duck
+beneath speech, stop on exit, and remain off for active screen-reader use. Keep navigation
+independent of audio. Do not add a waveform, human avatar, robot, listening pulse, microphone,
+background OS playback, or model-processing theater.
 
 ## 2026-09-06 first-run experience clarification
 

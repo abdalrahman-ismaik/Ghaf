@@ -55,13 +55,10 @@ export const resources = {
           ai: 'الذكاء الاصطناعي',
         },
         narrator: {
-          name: 'دليل غاف · مساعد ذكي',
-          origin: 'صوت الجهاز · بلا اتصال حي بالذكاء الاصطناعي',
-          enable: 'تشغيل الصوت',
-          disable: 'إيقاف الصوت',
           replay: 'إعادة الاستماع',
+          replayHint: 'يعيد صوت المساعد الذكي المُعدّ لهذه الشاشة من البداية.',
           unavailable: 'الصوت غير متاح الآن. تابعوا القراءة.',
-          screenReader: 'قارئ الشاشة يتولى القراءة.',
+          screenReader: 'قارئ الشاشة نشط؛ أوقفنا صوت المقدمة.',
         },
         steps: [
           {
@@ -1659,13 +1656,10 @@ export const resources = {
           ai: 'AI',
         },
         narrator: {
-          name: 'Ghaf Guide · AI assistant',
-          origin: 'Device voice · no live AI call',
-          enable: 'Turn on voice',
-          disable: 'Turn off voice',
-          replay: 'Replay',
+          replay: 'Replay narration',
+          replayHint: 'Restarts this screen’s prepared AI-assistant voice.',
           unavailable: 'Voice unavailable. Keep reading.',
-          screenReader: 'Your screen reader handles narration.',
+          screenReader: 'Screen reader active; onboarding audio is paused.',
         },
         steps: [
           {

@@ -122,28 +122,28 @@ components:
 
 # Ghaf Design System
 
-## R003 AI-narrated square first-run refinement
+## R003 compact audio first-run refinement
 
-The existing six moments become a first-person Ghaf Guide introduction. A six-segment, logically
-ordered story rail sits in the lower navigation region directly above the buttons, with a small
-tabular current/total label. Its deep-forest surface, amber completed/current segments, outlined
-future segments, and taller current segment remain clear over the botanical page; programmatic
-progress semantics ensure color is never the only signal. The rail changes only with explicit
-Back, Next, or pillar navigation.
+The existing six moments remain a first-person Ghaf Guide introduction. Restore the original
+logically ordered current/total plus six-dot row in the lower navigation region directly above the
+buttons. Neutral dots must remain visible on the botanical page and the current dot becomes both
+wider and saturated; programmatic progress semantics ensure color is never the only signal. The
+row changes only with explicit Back, Next, or pillar navigation.
 
-Each existing onboarding photograph uses a responsive 1:1 frame with `cover`, the current
-continuous radius and crop-safe local source. Copy remains one short headline and one concrete
-sentence. A compact narration row identifies the Ghaf Guide, labels the voice as device-generated,
-and exposes 48dp stop/enable and replay actions without competing with the primary Next action.
-The exact visible headline and body are the spoken transcript.
+Each existing 1200×800 onboarding photograph uses its native responsive 3:2 frame with `cover`, the
+current continuous radius, and local source. This exposes the full mix of wide and close
+compositions while reclaiming vertical room. Center one short headline and one concrete sentence.
+Remove the narration panel and place one 48dp high-contrast speaker control at the logical top-end
+of the photograph. The exact visible headline and body remain the narration transcript.
 
-Native narration begins only after the platform reports that no screen reader is active. The web
-preview starts with narration off because it cannot reliably detect assistive speech, then allows
-an explicit enable action. Speech stops before a new step or locale is spoken and on onboarding
-exit. Failure leaves the complete screen operable and exposes a short visible fallback. No
-waveform, avatar, microphone, voice capture/recognition, background playback, timer-driven story
-advance, or live-AI indicator is used. Existing 220 ms transform/opacity step motion and
-reduced-motion parity remain unchanged.
+Packaged prepared narration begins only after the local image and screen layout settle and native
+screen-reader detection reports no active assistive speech. The speaker icon always restarts the
+current clip. Quiet packaged nature ambience loops only while onboarding is mounted and ducks under
+narration. Speech and ambience stop before a new locale/step or onboarding exit. Browser autoplay
+refusal and audio failure leave the complete screen operable. No waveform, avatar, microphone,
+voice capture/recognition, runtime URL, background OS playback, timer-driven story advance, or
+live-AI indicator is used. Existing 220 ms transform/opacity motion and reduced-motion parity remain
+unchanged.
 
 ## R003 device-local family setup extension
 

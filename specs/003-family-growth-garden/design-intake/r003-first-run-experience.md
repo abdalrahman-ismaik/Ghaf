@@ -4,24 +4,27 @@
 **Owner:** `/root`
 **Route impact:** none; all onboarding states remain inside `/`
 
-## 2026-09-07 square story and narrator refinement
+## 2026-09-07 compact audio story correction
 
 The six-state and three-pillar contracts below remain authoritative. Each existing photograph now
-renders in a responsive 1:1 `cover` frame, and the visible `1/6` state moves with six equal story
-segments to a dark high-contrast region directly above the lower navigation actions. The rail is
-direction-aware, explicitly controlled, and never timed.
+renders in its intended responsive 3:2 `cover` frame, revealing the already-curated combination of
+wide establishing and close detail scenes. The original visible `1/6` plus six-dot progress row
+returns directly above the lower navigation actions. It is direction-aware, explicitly controlled,
+clear against the page, and never timed.
 
 All six paired scripts are rewritten as a direct first-person welcome from the Ghaf Guide. The
-exact visible title/body is also the optional on-device TTS transcript. A compact Guide row exposes
-speaker identity, device-synthesized origin, stop/enable, replay, and unavailable fallback states.
-Native autoplay waits for screen-reader detection and remains suppressed whenever assistive speech
-is active. The web preview starts narration disabled because its accessibility layer cannot
-reliably detect a screen reader, then allows an explicit enable action. Speech stops on step,
-locale, and onboarding exit; it never changes reducer state.
+exact centered visible title/body is also the prepared narration transcript. The Guide row is
+removed. One high-contrast 48dp speaker icon over the photograph restarts the current clip.
+Automatic playback waits for the current image and layout to settle and remains suppressed whenever
+native assistive speech is active. Speech stops on step, locale, and onboarding exit; it never
+changes reducer state. Browser refusal of pre-gesture audible autoplay is nonblocking, while the
+speaker press must still attempt the packaged clip.
 
-`expo-speech` is the measured minimum TTS capability because existing `expo-audio` only plays files
-and no reviewed bilingual onboarding binaries exist. It adds no config plugin, microphone,
-recording, model/network request, background listening, provider state, or product authority.
+Prepared synthetic narration and one locally authored low-volume nature soundscape use the existing
+`expo-audio` foreground player. Ambience loops only while onboarding is visible, ducks beneath
+narration, yields to assistive speech, and stops on exit. The clips are bundled local assets with
+recorded provenance and checksums. They add no microphone, recording, model/network request at
+runtime, background listening/OS playback, provider state, or product authority.
 
 ## Product promise
 

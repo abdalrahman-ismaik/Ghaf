@@ -6,6 +6,49 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-07 Compact Audio Onboarding Correction Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `package.json`,
+`package-lock.json`, `src/components/access/GhafIcon.tsx`,
+`src/components/onboarding/{FirstRunOnboarding.tsx,useOnboardingNarrator.ts}`, new
+`src/components/onboarding/{onboardingAudioSources.ts,useOnboardingAmbience.ts}`,
+`src/components/illustrations/LocalIllustration.tsx`,
+`src/i18n/resources.ts`, new prepared local files and provenance under
+`assets/audio/onboarding/`, and `tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Supersede only the square/segmented/Guide-panel portion of the immediately preceding
+onboarding presentation. Reveal the existing 1200×800 photographs in responsive 3:2 frames so
+their curated wide and close compositions remain intact; center the live title/body; restore the
+original current/total plus dot indicator directly above the navigation actions; and replace the
+Guide panel with one high-contrast 48dp speaker icon that replays the current narration. Start the
+prepared synthetic narration after the slide image and layout settle, stop it on slide/locale/exit,
+and add quiet looping foreground-only nature ambience that stops on exit and yields to assistive
+speech. The six visible scripts remain the transcript and navigation remains explicit. Preserve
+the six-state reducer, pillar navigation, routes, startup/deferred-image behavior, access/session,
+task/reward/privacy/reset authorities, default-off flags, official logo, and protected user work.
+No microphone, recording, background OS playback, background listening, runtime URL, live model,
+provider secret, new image, push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` restored the original current/total plus dot row, revealed all
+six approved 1200×800 photographs in 3:2 wide/close compositions, centered the concise copy, and
+replaced the Guide panel with one 48dp speaker control. Twelve prepared synthetic bilingual clips
+and one locally synthesized nature ambience now use the existing foreground-only `expo-audio`
+boundary; native playback waits for image/layout settlement, screen readers suppress both paths,
+the speaker recovers first-screen web sound, and all players stop on transition/exit. The obsolete
+`expo-speech` dependency was removed. RED recorded 2 expected failures / 11 passes; the focused file
+passed 13 tests and the full suite passed 90 files / 1,086 tests. Typecheck, zero-warning lint,
+formatting, Expo dependency/public-config, Git whitespace, web/Android exports, 13-asset checksum
+matching, and the final Impeccable detector passed. Firefox covered Arabic 390×844 and English
+320×720 with exact 3:2 measurements, centered copy, a 48dp speaker, simple lower dots, no overflow,
+local audio requests, and zero final console errors. Physical Android audio/TalkBack/font scale and
+named Arabic/voice/rights review remain `BLOCKED / NOT RUN`. The reservation is released at this
+local checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-07 AI-narrated Square Onboarding Window
 
 **Owner and only writer**: `/root`

@@ -34,13 +34,15 @@ with equivalent plain English. The experience uses the official raster Ghaf logo
 local nature photographs, then returns to the existing separate Parent and Child access choices.
 The first-run story itself adds no route, account, reward, persistence, environmental-impact, AI,
 or access authority.
-The same six moments now read as a first-person introduction from the bounded Ghaf Guide. Their
-existing local photographs use responsive square crops and their explicit progress sits in a
-high-contrast lower six-segment story rail directly above the navigation actions. Optional
-on-device speech reads the visible Arabic or English
-script, can be stopped or replayed, stays silent when a screen reader is active, and never advances
-the story. This device-synthesized voice is presentation only—not a live model response, recording,
-voice recognition, companion, permission grant, or background listener.
+The same six moments read as a first-person introduction from the bounded Ghaf Guide. Their
+existing 1200×800 local photographs use responsive 3:2 frames that reveal both the wide landscape
+and close detail compositions, while centered copy remains brief. The original current/total plus
+dot indicator sits directly above the navigation actions. Each settled moment requests its
+packaged prepared Arabic or English narration automatically; one speaker icon replays it, and quiet
+local nature ambience supports the foreground experience. Both stop on exit, remain silent with an
+active screen reader, and never advance the story. These prepared synthetic sounds are
+presentation only—not live model responses, recording, recognition, companions, permission grants,
+background listening, or operating-system background playback.
 Startup is visibly ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms
 after handoff, a distinct leaf-loading screen for at least 1,000 ms and until the four used font
 files plus the exact nine-raster signed-out set settle, then onboarding. The splash itself has no

@@ -18,54 +18,53 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-## R003 AI-narrated Square Onboarding Amendment — 2026-09-07
+## R003 Compact Audio Onboarding Amendment — 2026-09-07
 
 This amendment refines the existing six-moment in-route first-run story without changing its
-order, three-pillar navigation, completion semantics, or any product authority. Each moment uses
-the existing local photograph in a responsive 1:1 frame. A direction-aware segmented story
-indicator sits in a high-contrast lower navigation region directly above the actions, keeps the
-current/total value visible, and changes only when the family explicitly uses Next, Back, or a
-pillar target; narration never advances a moment automatically.
+order, three-pillar navigation, completion semantics, or any product authority. It supersedes the
+square crop, segmented story rail, and visible Guide panel from the immediately preceding
+presentation pass. Each moment reveals the existing 1200×800 local photograph in its intended
+responsive 3:2 frame, preserving the curated mix of wide establishing views and close details.
+The original direction-aware current/total plus dot indicator returns directly above the actions
+and changes only when the family explicitly uses Next, Back, or a pillar target.
 
 The first-run copy now speaks in the first-person voice of the Ghaf Guide, the app's bounded AI
 assistant. Arabic and English titles and bodies stay short, direct, concrete, energetic, and
-equivalent while preserving Parent approval, permitted-help full recognition, permanent private
-symbolic growth, AI fallibility/adult help, and the no-measured-impact boundary.
+equivalent, render centered, and preserve Parent approval, permitted-help full recognition,
+permanent private symbolic growth, AI fallibility/adult help, and the no-measured-impact boundary.
 
-Each newly shown moment may be read automatically by optional on-device text-to-speech. The
-interface must identify the speaker and device-synthesized origin, keep the complete spoken text
-visible, and expose controls to stop, enable, and replay narration. Narration is presentation only:
-it does not call a model or network service, capture or recognize a voice, request microphone
-permission, listen in the background, enable AI, grant access, or imply companionship. It stops on
-step/locale change and onboarding exit, stays off after the family disables it until they enable it
-again, and fails without blocking navigation. Autoplay is suppressed whenever a screen reader is
-active so assistive speech is not duplicated.
-The web preview MUST start narration disabled because its React Native accessibility layer does
-not provide a trustworthy active-screen-reader signal; the family may explicitly enable it.
+Each fully settled moment requests its packaged prepared synthetic Arabic or English narration
+automatically. The Guide panel is removed; one high-contrast 48dp speaker icon over the photograph
+replays the current clip. The exact visible title/body remains the transcript. Narration stops on
+step/locale change and onboarding exit, stays silent when a screen reader is active, and failure
+never blocks navigation. Quiet packaged nature ambience may loop only while onboarding is visible,
+at a low level that yields beneath narration and assistive speech; it stops on exit and never opts
+into operating-system background playback. Browser autoplay refusal is an external platform limit:
+the first explicit speaker press must still start the packaged clip when audio is available.
 
-- **FR-202**: Every first-run photograph MUST render in a responsive 1:1 frame using the existing
+- **FR-202**: Every first-run photograph MUST render in a responsive 3:2 frame using the existing
   local raster and crop/fallback path; no new raster, runtime URL, or mirrored RTL asset is allowed.
-- **FR-203**: One six-segment, direction-aware story indicator MUST appear directly above the
-  lower navigation actions on a visually distinct high-contrast surface, with a visible
-  current/total label and programmatic progress semantics; it MUST NOT use a timer, autoplay
-  navigation, urgency, or completion pressure.
+- **FR-203**: The original direction-aware current/total plus six-dot indicator MUST appear
+  directly above the lower navigation actions with clear inactive dots, a wider high-contrast
+  current dot, and programmatic progress semantics; it MUST NOT use a timer, autoplay navigation,
+  urgency, or completion pressure.
 - **FR-204**: All six Arabic/English titles and bodies MUST be short, direct, enthusiastic
-  first-person Ghaf Guide narration while preserving every existing approval, safety, privacy,
-  permanence, fallibility, adult-help, and symbolic-impact truth.
-- **FR-205**: Optional onboarding narration MUST use on-device speech synthesis, keep the exact
-  transcript visible, expose stop/enable/replay controls, stop across step/locale/exit boundaries,
-  suppress native autoplay with an active screen reader, start disabled on web, and remain
-  nonblocking on unavailable speech.
-- **FR-206**: Onboarding narration MUST be labeled device-synthesized presentation and MUST NOT be
-  described as a live model response, recording, voice recognition, companion, continuous or
-  background listening, or a new AI/access permission.
-- **SC-057**: Focused tests prove the square frame, lower high-contrast segmented indicator, six concise bilingual
-  scripts, optional narration lifecycle, screen-reader suppression, failure fallback, unchanged
-  six-state reducer, route count, startup/deferred image sets, and no microphone/network API.
-- **SC-058**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the story bars,
-  square crops, copy, narrator controls, scrolling, and standard/reduced-motion states remain
-  readable with no horizontal overflow; physical Android speech quality, installed Arabic voice,
-  TalkBack interaction, and named Arabic review remain separately evidenced.
+  centered first-person Ghaf Guide narration while preserving every existing approval, safety,
+  privacy, permanence, fallibility, adult-help, and symbolic-impact truth.
+- **FR-205**: Onboarding narration MUST use packaged prepared synthetic clips, keep the exact
+  transcript visible, start only after the current slide has settled, replay from one speaker icon,
+  stop across step/locale/exit boundaries, suppress playback with an active screen reader, and
+  remain nonblocking when audio is unavailable or browser autoplay is denied.
+- **FR-206**: Narration and quiet packaged nature ambience MUST remain foreground-only presentation
+  with no microphone, recording, recognition, background listening/OS playback, runtime URL, live
+  model call, companion claim, or new AI/access permission. Ambience MUST stop on onboarding exit.
+- **SC-057**: Focused tests prove the 3:2 frame, original lower dot indicator, centered six-script
+  presentation, one speaker control, packaged narration/ambience lifecycle, screen-reader
+  suppression, unchanged reducer/route/startup image sets, and no microphone/network API.
+- **SC-058**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the full wide and
+  close compositions, centered copy, simple indicator, speaker target, scrolling, and standard/
+  reduced-motion states remain readable with no horizontal overflow. Physical Android autoplay,
+  audio focus, TalkBack interaction, and named Arabic/voice review remain separately evidenced.
 
 ## R003 Device-local Family Directory and Guided Setup Amendment — 2026-09-06
 

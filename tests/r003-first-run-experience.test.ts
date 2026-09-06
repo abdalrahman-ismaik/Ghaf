@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { relative, resolve, sep } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -126,7 +126,7 @@ describe('R003 first-run experience', () => {
     const combined = `${onboarding}\n${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
     expect(authoredRoutes()).toHaveLength(37);
-    expect(combined).not.toMatch(/react-native-svg|<Svg|GhafMark|GhafIcon/u);
+    expect(combined).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
     expect(combined).not.toMatch(/https?:\/\//u);
     expect(logo).toContain("from 'expo-image'");
     expect(logo).toContain("require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png')");
@@ -139,22 +139,22 @@ describe('R003 first-run experience', () => {
     expect(onboarding).toContain('withDelay');
     expect(onboarding).toContain('testID="first-run-visual-story"');
     expect(onboarding).toContain('scale:');
-    expect(onboarding).toContain('aspectRatio: 1');
+    expect(onboarding).toContain('aspectRatio: 3 / 2');
     expect(onboarding).not.toContain('heroHeight');
-    expect(onboarding).toContain('testID="first-run-story-progress"');
-    expect(onboarding).toContain('first-run-progress-segment-');
-    expect(onboarding.indexOf('testID="first-run-story-progress"')).toBeGreaterThan(
+    expect(onboarding).toContain('testID="first-run-progress"');
+    expect(onboarding.indexOf('testID="first-run-progress"')).toBeGreaterThan(
       onboarding.indexOf('testID="first-run-visual-story"'),
     );
     expect(onboarding).toContain('testID="first-run-navigation-actions"');
-    expect(onboarding.indexOf('testID="first-run-story-progress"')).toBeLessThan(
+    expect(onboarding.indexOf('testID="first-run-progress"')).toBeLessThan(
       onboarding.indexOf('testID="first-run-navigation-actions"'),
     );
-    expect(onboarding).toContain('styles.progressSegmentReached');
-    expect(onboarding).toContain('backgroundColor: colors.deepForest');
-    expect(onboarding).toContain('backgroundColor: colors.solarAmber');
-    expect(onboarding).toContain('borderColor: colors.outlineVariant');
-    expect(onboarding).not.toContain('styles.dots');
+    expect(onboarding).toContain('styles.progressRow');
+    expect(onboarding).toContain('styles.dots');
+    expect(onboarding).toContain('styles.dotActive');
+    expect(onboarding).not.toContain('progressSegment');
+    expect(onboarding).not.toContain('styles.storyProgress');
+    expect(onboarding.match(/align="center"/gu)?.length).toBeGreaterThanOrEqual(3);
     expect(onboarding).toContain('useOnboardingNarrator');
     expect(onboarding).not.toMatch(
       /(?:height|width|margin|padding)\s*:\s*[^,\n]*Progress\.get\(\)/u,
@@ -376,14 +376,8 @@ describe('R003 first-run experience', () => {
     expect(arabic.steps[3]?.body).toMatch(/بالغ|وليّ الأمر/u);
     expect(english.steps[0]?.title).toMatch(/I[’']m the Ghaf Guide/iu);
     expect(arabic.steps[0]?.title).toContain('دليل غاف');
-    expect(english.narrator.name).toContain('Ghaf Guide');
-    expect(arabic.narrator.name).toContain('دليل غاف');
-    expect(english.narrator.origin).toMatch(/device/iu);
-    expect(arabic.narrator.origin).toContain('الجهاز');
     expect(english.narrator).toEqual(
       expect.objectContaining({
-        disable: expect.any(String),
-        enable: expect.any(String),
         replay: expect.any(String),
         unavailable: expect.any(String),
       }),
@@ -403,31 +397,67 @@ describe('R003 first-run experience', () => {
     }
   });
 
-  it('keeps onboarding narration optional, foreground-only, and screen-reader aware', () => {
+  it('uses prepared local narration and quiet foreground ambience after the slide settles', () => {
     const narration = source('src/components/onboarding/useOnboardingNarrator.ts');
+    const ambience = source('src/components/onboarding/useOnboardingAmbience.ts');
+    const audioSources = source('src/components/onboarding/onboardingAudioSources.ts');
+    const illustration = source('src/components/illustrations/LocalIllustration.tsx');
     const onboarding = source('src/components/onboarding/FirstRunOnboarding.tsx');
     const packageJson = JSON.parse(source('package.json')) as {
       readonly dependencies: Readonly<Record<string, string>>;
     };
 
-    expect(packageJson.dependencies['expo-speech']).toMatch(/^~57\./u);
-    expect(narration).toContain("from 'expo-speech'");
-    expect(narration).toContain("useState(Platform.OS !== 'web')");
+    expect(packageJson.dependencies['expo-audio']).toMatch(/^~57\./u);
+    expect(packageJson.dependencies['expo-speech']).toBeUndefined();
+    expect(narration).toContain("from 'expo-audio'");
+    expect(narration).toContain('onboardingNarrationSources[locale][step]');
+    expect(narration).toContain('readonly ready: boolean');
     expect(narration).toContain("Platform.OS === 'web' ? false : null");
     expect(narration).toContain("if (Platform.OS === 'web') return");
     expect(narration).toContain('AccessibilityInfo.isScreenReaderEnabled()');
     expect(narration).toMatch(/addEventListener\(\s*'screenReaderChanged'/u);
-    expect(narration).toContain('Speech.speak(');
-    expect(narration).toContain('Speech.stop()');
-    expect(narration).toContain('onError:');
-    expect(narration).toContain('screenReaderEnabled !== false');
-    expect(narration).not.toMatch(
-      /AudioRecorder|requestRecordingPermissions|microphone|SpeechRecognition|fetch\(|https?:\/\//u,
-    );
-    expect(onboarding).toContain('first-run-narrator');
-    expect(onboarding).toContain('first-run-narration-toggle');
+    expect(narration).toContain('player.play()');
+    expect(narration).toContain('player.pause()');
+    expect(narration).toContain('player.seekTo(0)');
+    expect(narration).toContain('!ready ||');
+    expect(narration).toContain('screenReaderEnabled !== false ||');
+    expect(narration).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
+    expect(ambience).toContain("from 'expo-audio'");
+    expect(ambience).toContain('onboardingAmbienceSource');
+    expect(ambience).toContain('player.loop = true');
+    expect(ambience).toContain('player.volume = narrationPlaying');
+    expect(ambience).toContain('player.pause()');
+    expect(ambience).toContain('shouldPlayInBackground: false');
+    expect(ambience).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
+    expect(
+      audioSources.match(/require\('\.\.\/\.\.\/\.\.\/assets\/audio\/onboarding\//gu),
+    ).toHaveLength(13);
+    expect(audioSources).not.toMatch(/https?:\/\//u);
+    expect(illustration).toContain('readonly onSettled?: () => void');
+    expect(illustration).toContain('onLoad={onSettled}');
+    expect(onboarding).toContain('onSettled={() => setImageReadyStep(state.step)}');
+    expect(onboarding).toContain('ready: slideReady');
+    expect(onboarding).not.toContain('first-run-narrator');
+    expect(onboarding).not.toContain('first-run-narration-toggle');
     expect(onboarding).toContain('first-run-narration-replay');
-    expect(onboarding).toContain('accessibilityState={{ selected: narration.enabled }}');
+    expect(onboarding).toContain('<IconButton');
+    expect(onboarding).toContain('name="speaker"');
+    expect(onboarding).toContain('size={24}');
+    expect(onboarding).not.toContain('narration.toggle');
+    expect(`${narration}\n${ambience}\n${audioSources}`).not.toMatch(
+      /AudioRecorder|requestRecordingPermissions|SpeechRecognition|fetch\(|https?:\/\//u,
+    );
+
+    const audioDirectory = resolve(repositoryRoot, 'assets/audio/onboarding');
+    for (const file of [
+      'ambience-nature-v1.mp3',
+      ...['ar', 'en'].flatMap((locale) =>
+        ONBOARDING_STEPS.map((step) => `narration-${locale}-${step}-v1.mp3`),
+      ),
+    ]) {
+      expect(statSync(resolve(audioDirectory, file)).size, file).toBeGreaterThan(1_000);
+    }
+    expect(source('assets/audio/onboarding/README.md')).toMatch(/prepared synthetic|اصطناعي/iu);
   });
 
   it('inherits one shared raster brand shell across every access route', () => {

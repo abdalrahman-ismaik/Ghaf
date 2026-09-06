@@ -9,13 +9,13 @@ import Animated, {
   withDelay,
   withTiming,
 } from 'react-native-reanimated';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AccessScreen } from '@/components/access';
+import { AccessScreen, GhafIcon } from '@/components/access';
 import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration, onboardingArtworkIds } from '@/components/illustrations';
-import { Button, Text } from '@/components/primitives';
+import { Button, IconButton, Text } from '@/components/primitives';
 import {
   colors,
   layout,
@@ -29,6 +29,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { ONBOARDING_PILLARS, ONBOARDING_STEPS, type OnboardingPillar } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
+import { useOnboardingAmbience } from './useOnboardingAmbience';
 import { useOnboardingNarrator } from './useOnboardingNarrator';
 
 interface FirstRunStepCopy {
@@ -62,6 +63,11 @@ export function FirstRunOnboarding() {
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
   const { dispatch, state } = useFirstRunExperience();
+  const [imageReadyStep, setImageReadyStep] = useState<(typeof ONBOARDING_STEPS)[number] | null>(
+    null,
+  );
+  const [settledStep, setSettledStep] = useState<(typeof ONBOARDING_STEPS)[number] | null>(null);
+  const [webPlaybackUnlocked, setWebPlaybackUnlocked] = useState(false);
   const visualProgress = useSharedValue(1);
   const copyProgress = useSharedValue(1);
   const stepIndex = ONBOARDING_STEPS.indexOf(state.step);
@@ -73,11 +79,18 @@ export function FirstRunOnboarding() {
   const isLast = stepIndex === ONBOARDING_STEPS.length - 1;
   const showPillarNavigator = stepIndex <= 3;
   const storyAccent = storyAccents[stepIndex] ?? colors.ghafEmerald;
+  const slideReady = imageReadyStep === state.step && settledStep === state.step;
   const narration = useOnboardingNarrator({
-    body: step?.body ?? '',
     locale,
+    ready: slideReady,
     step: state.step,
-    title: step?.title ?? '',
+    webPlaybackUnlocked,
+  });
+  const ambience = useOnboardingAmbience({
+    narrationPlaying: narration.status === 'speaking',
+    ready: slideReady,
+    screenReaderActive: narration.screenReaderActive,
+    webPlaybackUnlocked,
   });
   const visualStyle = useAnimatedStyle(() => ({
     opacity: visualProgress.get(),
@@ -98,11 +111,11 @@ export function FirstRunOnboarding() {
     current: stepNumber,
     total: ONBOARDING_STEPS.length,
   });
-  const narrationStatus = narration.screenReaderActive
+  const narrationHint = narration.screenReaderActive
     ? t('firstRun.narrator.screenReader')
     : narration.status === 'unavailable'
       ? t('firstRun.narrator.unavailable')
-      : null;
+      : t('firstRun.narrator.replayHint');
 
   useLayoutEffect(() => {
     cancelAnimation(visualProgress);
@@ -137,6 +150,12 @@ export function FirstRunOnboarding() {
     };
   }, [copyProgress, reducedMotion, state.step, visualProgress]);
 
+  useEffect(() => {
+    const settleDelay = reducedMotion ? 0 : motion.duration.standard + 45;
+    const timeout = setTimeout(() => setSettledStep(state.step), settleDelay);
+    return () => clearTimeout(timeout);
+  }, [reducedMotion, state.step]);
+
   if (!step) return null;
 
   return (
@@ -161,7 +180,10 @@ export function FirstRunOnboarding() {
               direction="ltr"
               fullWidth={false}
               language={locale}
-              onPress={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
+              onPress={() => {
+                setWebPlaybackUnlocked(true);
+                setLocale(locale === 'ar' ? 'en' : 'ar');
+              }}
               style={styles.topAction}
               testID="first-run-language-button"
               variant="quiet"
@@ -195,11 +217,27 @@ export function FirstRunOnboarding() {
               direction={direction}
               fallbackLabel={t('firstRun.imageFallback')}
               language={locale}
+              onSettled={() => setImageReadyStep(state.step)}
               priority="high"
               style={styles.heroImage}
               testID={`first-run-image-${state.step}`}
             />
             <View style={[styles.heroAccent, { backgroundColor: storyAccent }]} />
+            <IconButton
+              accessibilityHint={narrationHint}
+              brand
+              disabled={narration.screenReaderActive}
+              icon={
+                <GhafIcon color={colors.white} direction={direction} name="speaker" size={24} />
+              }
+              label={t('firstRun.narrator.replay')}
+              onPress={() => {
+                ambience.resume();
+                narration.replay();
+              }}
+              style={styles.speakerButton}
+              testID="first-run-narration-replay"
+            />
           </View>
           {showPillarNavigator ? (
             <View
@@ -220,7 +258,10 @@ export function FirstRunOnboarding() {
                     fullWidth={false}
                     key={pillar}
                     language={locale}
-                    onPress={() => dispatch({ type: 'goToPillar', step: pillar })}
+                    onPress={() => {
+                      setWebPlaybackUnlocked(true);
+                      dispatch({ type: 'goToPillar', step: pillar });
+                    }}
                     size="compact"
                     style={[
                       styles.pillarButton,
@@ -246,83 +287,8 @@ export function FirstRunOnboarding() {
           ) : null}
         </Animated.View>
         <Animated.View accessibilityLiveRegion="polite" style={[styles.copy, copyStyle]}>
-          <View
-            accessibilityLabel={`${t('firstRun.narrator.name')}. ${t('firstRun.narrator.origin')}`}
-            style={styles.narrator}
-            testID="first-run-narrator"
-          >
-            <View
-              style={[styles.narratorIdentity, { flexDirection: logicalRowDirection(direction) }]}
-            >
-              <View style={styles.narratorCopy}>
-                <Text
-                  brand
-                  color="deepForest"
-                  direction={direction}
-                  language={locale}
-                  variant="label"
-                >
-                  {t('firstRun.narrator.name')}
-                </Text>
-                <Text
-                  brand
-                  color="onSurfaceVariant"
-                  direction={direction}
-                  language={locale}
-                  variant="caption"
-                >
-                  {t('firstRun.narrator.origin')}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={[styles.narratorActions, { flexDirection: logicalRowDirection(direction) }]}
-            >
-              <Button
-                accessibilityState={{ selected: narration.enabled }}
-                brand
-                direction={direction}
-                disabled={narration.screenReaderActive}
-                fullWidth={false}
-                language={locale}
-                onPress={narration.toggle}
-                size="compact"
-                style={styles.narratorAction}
-                testID="first-run-narration-toggle"
-                variant="secondary"
-              >
-                {t(narration.enabled ? 'firstRun.narrator.disable' : 'firstRun.narrator.enable')}
-              </Button>
-              <Button
-                brand
-                direction={direction}
-                disabled={!narration.enabled || narration.screenReaderActive}
-                fullWidth={false}
-                language={locale}
-                onPress={narration.replay}
-                size="compact"
-                style={styles.narratorAction}
-                testID="first-run-narration-replay"
-                variant="quiet"
-              >
-                {t('firstRun.narrator.replay')}
-              </Button>
-            </View>
-            {narrationStatus ? (
-              <Text
-                accessibilityLiveRegion="polite"
-                brand
-                color="onSurfaceVariant"
-                direction={direction}
-                language={locale}
-                variant="caption"
-              >
-                {narrationStatus}
-              </Text>
-            ) : null}
-          </View>
           <Text
-            align="start"
+            align="center"
             brand
             color="deepForest"
             direction={direction}
@@ -333,7 +299,7 @@ export function FirstRunOnboarding() {
             {step.title}
           </Text>
           <Text
-            align="start"
+            align="center"
             brand
             color="onSurfaceVariant"
             direction={direction}
@@ -355,12 +321,12 @@ export function FirstRunOnboarding() {
             now: stepNumber,
             text: progressLabel,
           }}
-          style={styles.storyProgress}
-          testID="first-run-story-progress"
+          style={[styles.progressRow, { flexDirection: logicalRowDirection(direction) }]}
+          testID="first-run-progress"
         >
           <Text
             brand
-            color="white"
+            color="deepForest"
             direction={direction}
             language={locale}
             tabular
@@ -371,24 +337,17 @@ export function FirstRunOnboarding() {
           <View
             accessibilityElementsHidden
             aria-hidden
-            style={[styles.progressSegments, { flexDirection: logicalRowDirection(direction) }]}
+            style={[styles.dots, { flexDirection: logicalRowDirection(direction) }]}
           >
-            {ONBOARDING_STEPS.map((item, index) => {
-              const isCurrent = index === stepIndex;
-              const isReached = index <= stepIndex;
-
-              return (
-                <View
-                  key={item}
-                  style={[
-                    styles.progressSegment,
-                    isReached ? styles.progressSegmentReached : null,
-                    isCurrent ? styles.progressSegmentCurrent : null,
-                  ]}
-                  testID={`first-run-progress-segment-${item}`}
-                />
-              );
-            })}
+            {ONBOARDING_STEPS.map((item, index) => (
+              <View
+                key={item}
+                style={[
+                  styles.dot,
+                  index === stepIndex ? [styles.dotActive, { backgroundColor: storyAccent }] : null,
+                ]}
+              />
+            ))}
           </View>
         </View>
         <View
@@ -400,7 +359,10 @@ export function FirstRunOnboarding() {
             direction={direction}
             fullWidth={false}
             language={locale}
-            onPress={() => dispatch({ type: isLast ? 'start' : 'next' })}
+            onPress={() => {
+              setWebPlaybackUnlocked(true);
+              dispatch({ type: isLast ? 'start' : 'next' });
+            }}
             size="regular"
             style={styles.navigationAction}
             testID={isLast ? 'first-run-start-button' : 'first-run-next-button'}
@@ -413,7 +375,10 @@ export function FirstRunOnboarding() {
               direction={direction}
               fullWidth={false}
               language={locale}
-              onPress={() => dispatch({ type: 'back' })}
+              onPress={() => {
+                setWebPlaybackUnlocked(true);
+                dispatch({ type: 'back' });
+              }}
               size="regular"
               style={styles.navigationAction}
               testID="first-run-back-button"
@@ -436,36 +401,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     gap: spacing.md,
-  },
-  storyProgress: {
-    width: '100%',
-    gap: spacing.xs,
-    padding: spacing.sm,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.deepForest,
-  },
-  progressSegments: {
-    width: '100%',
-    minHeight: spacing.xs,
-    alignItems: 'center',
-    gap: spacing.xxs,
-  },
-  progressSegment: {
-    flex: 1,
-    height: spacing.xxs,
-    borderRadius: r001Radii.pill,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.forestSoft,
-  },
-  progressSegmentReached: {
-    borderColor: colors.solarAmber,
-    backgroundColor: colors.solarAmber,
-  },
-  progressSegmentCurrent: {
-    height: spacing.xs,
   },
   topBar: {
     width: '100%',
@@ -495,7 +430,7 @@ const styles = StyleSheet.create({
   },
   heroFrame: {
     width: '100%',
-    aspectRatio: 1,
+    aspectRatio: 3 / 2,
     overflow: 'hidden',
     borderRadius: r001Radii.sheet,
     borderCurve: 'continuous',
@@ -518,6 +453,14 @@ const styles = StyleSheet.create({
     height: spacing.xs,
     borderRadius: r001Radii.pill,
   },
+  speakerButton: {
+    position: 'absolute',
+    top: spacing.sm,
+    end: spacing.sm,
+    backgroundColor: colors.deepForest,
+    borderColor: colors.solarAmber,
+    ...r001Shadows.soft,
+  },
   pillarRow: {
     width: '100%',
     gap: spacing.xs,
@@ -533,33 +476,6 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: spacing.xs,
   },
-  narrator: {
-    width: '100%',
-    gap: spacing.xs,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.secondaryTint,
-    padding: spacing.sm,
-  },
-  narratorIdentity: {
-    width: '100%',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  narratorCopy: {
-    flex: 1,
-    minWidth: 0,
-    gap: spacing.xxs,
-  },
-  narratorActions: {
-    width: '100%',
-    gap: spacing.xs,
-  },
-  narratorAction: {
-    flex: 1,
-    minWidth: 0,
-    paddingHorizontal: spacing.xs,
-  },
   navigation: {
     width: '100%',
     marginTop: 'auto',
@@ -571,5 +487,25 @@ const styles = StyleSheet.create({
   },
   navigationAction: {
     flex: 1,
+  },
+  progressRow: {
+    minHeight: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
+  dots: {
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  dot: {
+    width: spacing.xs,
+    height: spacing.xs,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.forestSoft,
+  },
+  dotActive: {
+    width: spacing.xl,
+    backgroundColor: colors.ghafEmerald,
   },
 });

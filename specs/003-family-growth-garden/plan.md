@@ -1,30 +1,31 @@
 # Implementation Plan: Family Growth Garden
 
-## R003 AI-narrated Square Onboarding Addendum — 2026-09-07
+## R003 Compact Audio Onboarding Addendum — 2026-09-07
 
-Refine only the existing `FirstRunOnboarding` composition: keep its six-step progress in the lower
-navigation region directly above the actions, replace dots with equal segmented bars plus the
-visible current/total label on a high-contrast deep-forest surface, and render every existing local
-onboarding raster in a width-driven 1:1 frame. Keep the
-current explicit Next/Back/pillar reducer as the only navigation authority; neither narration nor
-time advances the story.
+Refine only the existing `FirstRunOnboarding` composition: reveal each approved 1200×800 raster in
+a width-driven 3:2 frame, center the short title/body, remove the visible Guide panel, and restore
+the original current/total plus six-dot progress row directly above the navigation actions. Add one
+high-contrast 48dp speaker icon over the visual as the only narration control. Keep the current
+explicit Next/Back/pillar reducer as the only navigation authority; neither narration, ambience,
+nor time advances the story.
 
-Rewrite the six paired resources as concise first-person Ghaf Guide scripts. Preserve the AI
-fallibility/adult exit, Parent approval, permitted-help award, private permanent symbolic Garden,
-and no-measured-impact language. Add one small narration hook beside the component. It uses
-`expo-speech` only for foreground on-device TTS, observes React Native screen-reader state, stops
-and clears queued speech across step/locale/exit changes, offers enable/stop/replay actions, and
-falls back to the visible transcript on any error. It owns no session, AI-provider, permission,
-recording, task, or navigation state.
+Keep the six concise first-person Ghaf Guide scripts and their AI fallibility/adult exit, Parent
+approval, permitted-help award, private permanent symbolic Garden, and no-measured-impact language.
+Replace device-dependent synthesis with packaged prepared synthetic clips keyed by locale and
+step. The narration hook waits until the local image and layout report ready, restarts from the
+beginning on the speaker press, stops across step/locale/exit changes, observes native screen-reader
+state, and falls back to the visible transcript on any error. A sibling ambience hook loops one
+locally authored nature soundscape quietly only while onboarding is mounted, ducks under narration,
+and stops on exit or assistive-speech activation.
 
-`expo-audio` cannot synthesize the localized slide scripts and the repository has no reviewed
-onboarding audio binaries. Install Expo-compatible `expo-speech` as the smallest non-overlapping
-capability through `npx expo install`; add no config plugin, microphone permission, audio asset,
-remote call, or second media state system. Drive the change with focused RED source/resource/
-policy tests, then run the focused suite, typecheck, lint, formatting, full tests, Expo dependency
-alignment, detector, web export, compact bilingual browser inspection, and available Android
-evidence. Physical Android TTS voice availability/quality, TalkBack, and named Arabic performance
-review remain truthful external gates.
+Reuse the installed `expo-audio` foreground player and existing config that explicitly disables
+microphone, recording, background recording, and background playback. Remove the now-unused
+`expo-speech` package. Generation is authoring-time only with public app copy; runtime sources are
+local `require()` entries with recorded provenance/checksums and no URL or provider. Drive the
+change with focused RED source/resource/lifecycle tests, then run the focused suite, typecheck,
+lint, formatting, full tests, Expo dependency alignment, detector, web/Android exports, compact
+bilingual browser inspection, and available Android evidence. Browser autoplay policy, physical
+Android playback/audio focus/TalkBack, and named Arabic performance review remain truthful gates.
 
 ## R003 Device-local Family Directory and Guided Setup Addendum — 2026-09-06
 

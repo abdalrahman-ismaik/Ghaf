@@ -1,47 +1,47 @@
-import * as Speech from 'expo-speech';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
+import { useCallback, useEffect, useState } from 'react';
 import { AccessibilityInfo, Platform } from 'react-native';
 
 import type { LocaleCode } from '@/models/familyGrowth';
 
+import type { OnboardingStep } from './experienceModel';
+import { onboardingNarrationSources } from './onboardingAudioSources';
+
 export type OnboardingNarrationStatus = 'idle' | 'speaking' | 'unavailable';
 
 interface UseOnboardingNarratorOptions {
-  readonly body: string;
   readonly locale: LocaleCode;
-  readonly step: string;
-  readonly title: string;
+  readonly ready: boolean;
+  readonly step: OnboardingStep;
+  readonly webPlaybackUnlocked: boolean;
 }
 
 interface OnboardingNarrator {
-  readonly enabled: boolean;
   readonly replay: () => void;
   readonly screenReaderActive: boolean;
   readonly status: OnboardingNarrationStatus;
-  readonly toggle: () => void;
 }
 
-const speechSettings = {
-  ar: { language: 'ar-AE', pitch: 1.04, rate: 0.92 },
-  en: { language: 'en-AE', pitch: 1.04, rate: 1.02 },
-} as const;
+function configureNarrationPlayer(player: ReturnType<typeof useAudioPlayer>) {
+  player.loop = false;
+  player.volume = 1;
+}
 
 export function useOnboardingNarrator({
-  body,
   locale,
+  ready,
   step,
-  title,
+  webPlaybackUnlocked,
 }: UseOnboardingNarratorOptions): OnboardingNarrator {
-  const [enabled, setEnabled] = useState(Platform.OS !== 'web');
-  const [replayRequest, setReplayRequest] = useState(0);
+  const player = useAudioPlayer(onboardingNarrationSources[locale][step], {
+    updateInterval: 120,
+  });
+  const playerStatus = useAudioPlayerStatus(player);
   const [screenReaderEnabled, setScreenReaderEnabled] = useState<boolean | null>(
     Platform.OS === 'web' ? false : null,
   );
-  const [status, setStatus] = useState<OnboardingNarrationStatus>('idle');
-  const utteranceId = useRef(0);
 
   useEffect(() => {
-    // React Native Web always reports a screen reader. Keep web narration opt-in instead.
     if (Platform.OS === 'web') return;
 
     let mounted = true;
@@ -64,68 +64,56 @@ export function useOnboardingNarrator({
   }, []);
 
   useEffect(() => {
-    const currentUtterance = utteranceId.current + 1;
-    utteranceId.current = currentUtterance;
-    let active = true;
-    const ownsUtterance = () => active && utteranceId.current === currentUtterance;
+    configureNarrationPlayer(player);
+  }, [player]);
 
-    if (!enabled || screenReaderEnabled !== false) {
-      void Speech.stop()
-        .catch(() => undefined)
-        .finally(() => {
-          if (ownsUtterance()) setStatus('idle');
-        });
-      return () => {
-        active = false;
-      };
+  useEffect(() => {
+    let active = true;
+    player.pause();
+
+    if (
+      !ready ||
+      screenReaderEnabled !== false ||
+      (Platform.OS === 'web' && !webPlaybackUnlocked)
+    ) {
+      return undefined;
     }
 
-    const speak = async () => {
+    const start = async () => {
       try {
-        await Speech.stop();
-        if (!ownsUtterance()) return;
-        const settings = speechSettings[locale];
-        Speech.speak(`${title}. ${body}`, {
-          ...settings,
-          onDone: () => {
-            if (ownsUtterance()) setStatus('idle');
-          },
-          onError: () => {
-            if (ownsUtterance()) setStatus('unavailable');
-          },
-          onStart: () => {
-            if (ownsUtterance()) setStatus('speaking');
-          },
-          onStopped: () => {
-            if (ownsUtterance()) setStatus('idle');
-          },
-          useApplicationAudioSession: false,
-        });
+        await player.seekTo(0);
+        if (active) player.play();
       } catch {
-        if (ownsUtterance()) setStatus('unavailable');
+        // The complete visible transcript keeps onboarding usable when playback fails.
       }
     };
 
-    void speak();
+    void start();
     return () => {
       active = false;
-      utteranceId.current += 1;
-      void Speech.stop().catch(() => undefined);
+      player.pause();
     };
-  }, [body, enabled, locale, replayRequest, screenReaderEnabled, step, title]);
+  }, [player, ready, screenReaderEnabled, webPlaybackUnlocked]);
 
-  const toggle = useCallback(() => {
-    setEnabled((current) => !current);
-  }, []);
   const replay = useCallback(() => {
-    setReplayRequest((current) => current + 1);
-  }, []);
+    if (screenReaderEnabled !== false) return;
+
+    const restart = async () => {
+      try {
+        player.pause();
+        await player.seekTo(0);
+        player.play();
+      } catch {
+        // A replay failure does not block reading or navigation.
+      }
+    };
+
+    void restart();
+  }, [player, screenReaderEnabled]);
 
   return {
-    enabled,
     replay,
     screenReaderActive: screenReaderEnabled === true,
-    status,
-    toggle,
+    status: playerStatus.error ? 'unavailable' : playerStatus.playing ? 'speaking' : 'idle',
   };
 }

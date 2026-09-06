@@ -1383,3 +1383,44 @@ artwork, high-contrast lower progress, clearer energy, and optional accessible o
       the action and `1/6 → 2/6`, and exercised the localized web speech fallback with zero page
       errors. Physical Android speech/audio focus, TalkBack, OS font scale, motion feel, and named
       review remain `BLOCKED / NOT RUN`; ADB returned no target.
+
+---
+
+## Phase 44: Compact Audio Onboarding Correction
+
+**Purpose**: Preserve the six-moment AI introduction while reclaiming height, simplifying progress
+and voice control, and making narration replay reliable through prepared local audio.
+
+- [x] T305 Re-read the active onboarding/audio/safety/asset contract, inspect all six 1200×800
+      source photographs, reserve exact files, and amend spec/plan/tasks/product/design/limitations/
+      runbook/first-run intake before behavior work.
+- [x] T306 Write focused RED source/resource tests for responsive 3:2 artwork, centered copy, the
+      original lower current/total plus dots, removal of the Guide panel/toggle, one accessible
+      speaker replay control, image/layout-gated automatic narration, quiet foreground ambience,
+      screen-reader suppression, exit cleanup, local provenance, and no microphone/runtime URL.
+- [x] T307 Prepare exact bilingual synthetic narration clips plus one locally authored nature
+      soundscape under `assets/audio/onboarding/`, record authoring provenance/checksums, register
+      static local sources, and remove the now-unused `expo-speech` dependency.
+- [x] T308 Implement the bounded narration and ambience hooks and recompose
+      `FirstRunOnboarding` with the 3:2 frame, centered copy, single speaker icon, and restored dot
+      row while preserving reducer, pillar, startup/deferred-image, route, privacy, and product
+      behavior.
+- [x] T309 Run focused/full tests, typecheck, lint, format, Expo dependency/public-config checks,
+      one final Impeccable detector pass, web/Android exports, compact bilingual browser/audio
+      inspection, and available physical Android/TalkBack/audio evidence.
+- [x] T310 Reconcile the evidence in runbook/ownership, retain browser-autoplay/native/human gates
+      truthfully, and create one cohesive local commit without push, merge, deployment, or release
+      activation.
+
+      Completed locally on 2026-09-07: RED recorded 2 expected failures / 11 passes and the final
+      focused file passed 13 tests. The full suite passed 90 files / 1,086 tests; typecheck,
+      zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and the
+      final Impeccable detector passed. Web exported 134 files / 39 static routes with 13 MP3s;
+      Android JavaScript exported 103 files and all 13 prepared-audio hashes matched. Firefox
+      measured exact 3:2 frames at Arabic 390×844 and English 320×720, a 48dp speaker, the 24px
+      original dot row directly above navigation, centered copy, and zero overflow. The speaker
+      requested narration plus ambience; subsequent explicit navigation requested the matching
+      settled-slide narration. A fresh web launch made no pre-gesture autoplay call and had zero
+      final console errors; first-screen web autoplay remains platform-limited. Physical Android,
+      TalkBack, audio focus, font scale, and named Arabic/voice/rights review remain
+      `BLOCKED / NOT RUN`; ADB returned no target.
