@@ -34,6 +34,14 @@ export interface FamilyRewardPresentation {
   readonly origin: 'synthetic';
 }
 
+export interface FamilyRewardUnlockProjection {
+  readonly planId: string;
+  readonly planVersion: number;
+  readonly lifecycleBefore: 'promised';
+  readonly lifecycleAfter: 'unlocked';
+  readonly privacy: 'child_guardians_only';
+}
+
 function emptyProgress(): FamilyRewardProgressSnapshot {
   return {
     childId: 'child_salem',
@@ -123,6 +131,83 @@ export function applyRecognitionToFamilyReward(input: {
       plan: evaluated.data.plan,
       progress: evaluated.data.progress,
     },
+  };
+}
+
+export function projectFamilyRewardUnlock(input: {
+  readonly before: FamilyRewardRuntime;
+  readonly after: FamilyRewardRuntime;
+  readonly recognitionKey: string;
+  readonly committedAt: string;
+}): FamilyRewardResult<FamilyRewardUnlockProjection | null> {
+  const { before, after, recognitionKey, committedAt } = input;
+  if (
+    recognitionKey.trim().length === 0 ||
+    committedAt.trim().length === 0 ||
+    before.plan.id !== after.plan.id ||
+    before.plan.version !== after.plan.version ||
+    before.plan.childId !== after.plan.childId ||
+    before.plan.previousVersion !== after.plan.previousVersion ||
+    before.plan.versionState !== after.plan.versionState ||
+    before.plan.supersededAt !== after.plan.supersededAt ||
+    before.plan.createdByGuardianId !== after.plan.createdByGuardianId ||
+    before.plan.month !== after.plan.month ||
+    before.plan.promisedAt !== after.plan.promisedAt ||
+    JSON.stringify(before.plan.guardianIds) !== JSON.stringify(after.plan.guardianIds) ||
+    JSON.stringify(before.plan.promise) !== JSON.stringify(after.plan.promise) ||
+    JSON.stringify(before.plan.milestone) !== JSON.stringify(after.plan.milestone) ||
+    before.plan.privacy !== 'child_guardians_only' ||
+    after.plan.privacy !== 'child_guardians_only' ||
+    before.baselineEligibleSeeds !== FAMILY_REWARD_BASELINE ||
+    after.baselineEligibleSeeds !== FAMILY_REWARD_BASELINE ||
+    before.targetEligibleSeeds !== FAMILY_REWARD_TARGET ||
+    after.targetEligibleSeeds !== FAMILY_REWARD_TARGET
+  ) {
+    return {
+      ok: false,
+      error: {
+        code: 'INVALID_INPUT',
+        message: 'Family Reward reveal evidence does not share one valid plan identity',
+      },
+    };
+  }
+
+  if (before.plan.lifecycle === after.plan.lifecycle) {
+    return { ok: true, data: null };
+  }
+  const priorRecognitionKeys = new Set(before.progress.recognitionKeys);
+  const addedRecognitionKeys = after.progress.recognitionKeys.filter(
+    (key) => !priorRecognitionKeys.has(key),
+  );
+  if (
+    before.plan.lifecycle !== 'promised' ||
+    after.plan.lifecycle !== 'unlocked' ||
+    before.plan.unlockedAt !== null ||
+    after.plan.unlockedAt !== committedAt ||
+    before.plan.givenAt !== after.plan.givenAt ||
+    addedRecognitionKeys.length !== 1 ||
+    addedRecognitionKeys[0] !== recognitionKey ||
+    before.progress.eligibleSeedDelta !== 0 ||
+    after.progress.eligibleSeedDelta !== FAMILY_REWARD_TARGET - FAMILY_REWARD_BASELINE
+  ) {
+    return {
+      ok: false,
+      error: {
+        code: 'INVALID_TRANSITION',
+        message: 'Family Reward unlock does not reconcile with this recognition event',
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    data: Object.freeze({
+      planId: after.plan.id,
+      planVersion: after.plan.version,
+      lifecycleBefore: 'promised' as const,
+      lifecycleAfter: 'unlocked' as const,
+      privacy: 'child_guardians_only' as const,
+    }),
   };
 }
 

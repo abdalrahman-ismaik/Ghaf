@@ -4,6 +4,7 @@ import {
   applyRecognitionToFamilyReward,
   createFamilyRewardRuntime,
   markFamilyRewardRuntimeGiven,
+  projectFamilyRewardUnlock,
   projectFamilyRewardRuntime,
 } from '../src/features/family-hub';
 import { PREPARED_PRAISE, createSubmittedP0Session } from '../src/services/mock/fixtures';
@@ -73,9 +74,10 @@ describe('R003 Family hub reward runtime', () => {
 
   it('unlocks only after the canonical confirmed, praised, and grown +12 event', () => {
     const recognition = canonicalRecognition();
+    const before = createFamilyRewardRuntime();
     const unlocked = expectOk(
       applyRecognitionToFamilyReward({
-        runtime: createFamilyRewardRuntime(),
+        runtime: before,
         journey: recognition.journey,
         receipt: recognition.receipt,
         committedAt: TIME,
@@ -93,6 +95,23 @@ describe('R003 Family hub reward runtime', () => {
     ).toMatchObject({
       data: { currentEligibleSeeds: 120, remainingEligibleSeeds: 0 },
     });
+    expect(
+      projectFamilyRewardUnlock({
+        before,
+        after: unlocked,
+        recognitionKey: recognition.receipt.recognitionKey,
+        committedAt: TIME,
+      }),
+    ).toEqual({
+      ok: true,
+      data: {
+        planId: 'family-reward-salem-september-v1',
+        planVersion: 1,
+        lifecycleBefore: 'promised',
+        lifecycleAfter: 'unlocked',
+        privacy: 'child_guardians_only',
+      },
+    });
 
     const repeated = expectOk(
       applyRecognitionToFamilyReward({
@@ -103,6 +122,36 @@ describe('R003 Family hub reward runtime', () => {
       }),
     );
     expect(repeated).toBe(unlocked);
+    expect(
+      projectFamilyRewardUnlock({
+        before: unlocked,
+        after: repeated,
+        recognitionKey: recognition.receipt.recognitionKey,
+        committedAt: TIME,
+      }),
+    ).toEqual({ ok: true, data: null });
+  });
+
+  it('rejects a reward unlock projected from another recognition', () => {
+    const recognition = canonicalRecognition();
+    const before = createFamilyRewardRuntime();
+    const unlocked = expectOk(
+      applyRecognitionToFamilyReward({
+        runtime: before,
+        journey: recognition.journey,
+        receipt: recognition.receipt,
+        committedAt: TIME,
+      }),
+    );
+
+    expect(
+      projectFamilyRewardUnlock({
+        before,
+        after: unlocked,
+        recognitionKey: 'recognition:another-submission',
+        committedAt: TIME,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
   });
 
   it('fails closed when a task version has no explicit eligibility decision', () => {
