@@ -89,8 +89,9 @@ reset default without any effect on task, access, AI, or progression state.
 
 ### Edge Cases
 
-- A missing, unreadable, malformed, or future-version preference record falls back to silence until
-  a valid choice is stored; it never crashes startup.
+- An unreadable, malformed, or future-version preference record falls back to silence until a valid
+  choice is stored; a cleanly absent record uses the documented default-on state, and neither case
+  crashes startup.
 - A browser that blocks automatic playback remains silent until the first user interaction and
   does not show a false playing state.
 - Rapid repeated toggles leave the stored and displayed state consistent with the last successful
@@ -121,8 +122,8 @@ reset default without any effect on task, access, AI, or progression state.
   handoff; it MUST NOT be represented as account sync or a family-wide remote setting.
 - **FR-009**: A failed preference write MUST retain the previous authoritative state and present a
   recoverable error without interrupting any other app behavior.
-- **FR-010**: Missing, corrupt, unreadable, or unsupported preference data MUST fail safely to
-  ambience off for that launch.
+- **FR-010**: Corrupt, unreadable, or unsupported preference data MUST fail safely to ambience off
+  for that launch; a successful absent-record result MUST use the documented default-on state.
 - **FR-011**: The Parent-authorized exact prototype reset MUST clear the preference record and
   restore the default-on state atomically with the existing reset.
 - **FR-012**: Ambient playback MUST use no network request, recording, microphone, speech

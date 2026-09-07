@@ -1,5 +1,28 @@
 # Prototype Limitations
 
+## Feature 006 natural ambient audio boundary — 2026-09-08
+
+Ghaf now has one locally packaged, 48-second synthesized nature soundscape owned by the app root.
+It loops across active foreground routes and replaces the earlier onboarding-only background
+soundtrack behavior. It ducks beneath prepared narration and pauses when the app is inactive or
+backgrounded, a native screen reader is active, browser playback has not been unlocked by a user
+gesture, the stored preference is invalid or unavailable, or foreground voice capture owns audio.
+It is not music streaming, continuous listening, recording, a notification, a background service,
+or a source of product feedback.
+
+The same native **Nature ambience** switch appears after language in Parent and Child Settings.
+It stores one versioned Boolean on the device with no role, account, profile, media, playback
+position, or identity data. The choice survives sign-out and role handoff; a failed write keeps the
+previous choice, and the Parent-authorized exact reset clears it and restores default-on. Missing
+data means default-on, while invalid or unreadable data fails safely to silence.
+
+The MP3 was locally synthesized from layered pink/brown noise and restrained bird-like tones. It
+contains no speech, personal data, downloaded field recording, or third-party sample. Source and
+automated evidence cannot establish whether it sounds natural, stays comfortably quiet, balances
+with narration, or loops without an audible seam on the competition device. Physical Android
+listening, audio-focus/silent-mode/TalkBack behavior, and named accessibility/audio review remain
+`NOT RUN` until directly observed.
+
 ## Emirati Parent access portrait boundary — 2026-09-08
 
 The Parent sign-in, sign-up, and verification screens now share one locally bundled portrait of a
@@ -92,21 +115,23 @@ and exposes no Child operation. The separate Feature 004 gateway and its stricte
 now cover the implementation candidates described above; they do not add a live Parent summary or
 Child photo processing and do not change the default prepared path.
 
-## Onboarding prepared narration and ambience — 2026-09-07
+## Onboarding prepared narration and app ambience — 2026-09-07
 
 The Ghaf Guide introduction uses packaged prepared synthetic audio to read the exact visible Arabic
-or English slide script. It also includes one locally authored low-volume nature soundscape while
-onboarding is visible. This does not prove that a live AI model ran, and it is not a human
+or English slide script. One separately owned app-wide player now supplies the locally authored
+low-volume nature soundscape throughout eligible foreground routes. This does not prove that a
+live AI model ran, and it is not a human
 performance, cloned personal voice, speech recognition, microphone session, continuous listening,
 or background audio service. Missing or failed audio leaves the full transcript and navigation
 available.
 
 Automatic native narration waits for the image/layout-ready signal and is disabled while a screen
-reader is active to avoid duplicate speech; ambience is also disabled for that session. Browser
+reader is active to avoid duplicate speech; app ambience is also disabled for that session. Browser
 autoplay policy may reject audible automatic playback before a user gesture, so automatic web
 sound is best-effort while the explicit speaker control remains available. The app config keeps
-recording and operating-system background playback disabled, and both local players stop when
-onboarding exits. Browser/source checks cannot pass physical Android Arabic voice performance,
+recording and operating-system background playback disabled. Narration stops when onboarding
+exits; eligible ambience follows the shared device setting and continues through the route handoff.
+Browser/source checks cannot pass physical Android Arabic voice performance,
 TalkBack coexistence, audio focus, silent-mode behavior, or named Arabic review. Those remain
 `BLOCKED` or `NOT RUN` until directly observed on the current build.
 

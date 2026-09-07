@@ -1,5 +1,38 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 006 Natural Ambient Audio Record — 2026-09-08
+
+**Current classification:** implemented local foreground ambience and shared device setting;
+physical Android listening, TalkBack/audio-focus behavior, and named-human review remain
+`NOT RUN`.
+
+Launch Ghaf and interact once if the browser requires it. Confirm that one quiet nature soundscape
+continues without restarting while moving from onboarding through Parent or Child routes and that
+prepared narration remains clearly dominant. In each role, open Settings: the Sound section must
+follow language, and **Nature ambience** must expose one native on/off switch. Turn it off, move
+between routes and roles, and confirm silence; turn it on and confirm playback resumes while the
+app is active. Sign out and re-enter the other role to confirm the device preference remains.
+
+Background and foreground the app, exercise prepared narration, and enter an eligible synthetic
+voice-capture harness if available. Ambience must pause in the background, duck during narration,
+and pause while voice owns audio focus. With a screen reader active it must remain silent. Finish
+with the Parent-authorized exact reset and confirm the stored choice is removed and the switch
+returns to default-on. Never describe the local soundscape as streaming, live environmental audio,
+recording, measured nature, or proof that Ghaf plants trees.
+
+| Gate                                                                                          | Result                    | Evidence                                                                              |
+| --------------------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------- |
+| Preference schema, persistence failure, sign-out/role handoff, and exact reset                | `PASSED automated`        | strict device-local record and focused store/reset coverage                           |
+| Foreground, browser-unlock, screen-reader, narration-ducking, and voice-focus policy          | `PASSED automated/source` | pure playback matrix and one root-player source contract                              |
+| Parent/Child hierarchy, bilingual copy, native switch semantics, and 48dp target              | `PASSED automated/source` | shared component, resource parity, and source assertions                              |
+| Mechanical UI review                                                                          | `PASSED`                  | Impeccable detector returned `[]` over the changed provider/onboarding/Settings files |
+| Asset provenance and technical identity                                                       | `PASSED local/source`     | local synthesized 48.039s mono MP3; SHA-256 recorded beside the asset                 |
+| Focused audio, reset, voice-focus, and onboarding regression                                  | `PASSED`                  | 4 files / 65 tests                                                                    |
+| Full repository and production exports                                                        | `PASSED automated`        | typecheck, zero-warning lint, formatting, 121 files / 1,335 tests, 39 web routes, and an Android JavaScript export with 95 assets |
+| Expo dependency alignment                                                                      | `PASSED local SDK map`    | dependencies match the installed Expo SDK map; online registry freshness is `NOT RUN` |
+| Physical Android naturalness, volume, seam, background/audio focus, silent mode, and TalkBack | `NOT RUN`                 | requires the competition device and a named human listener                            |
+| Named Arabic, accessibility, audio, and product review                                        | `NOT RUN`                 | no named reviewer participated in this implementation window                          |
+
 ## Emirati Parent Access Portrait Record — 2026-09-08
 
 **Current classification:** integrated local presentation candidate; physical Android and named
@@ -200,7 +233,8 @@ close composition. Centered first-person Arabic or English copy sits below the v
 icon overlays the image and replays the current packaged narration. The original `1/6` plus six-dot
 row appears directly above Next/Back. On native, narration requests playback only after the image
 and layout settle; quiet nature ambience supports the screen without covering speech. Move to
-another moment, switch language, and exit onboarding to confirm the previous voice/ambience stops.
+another moment and switch language to confirm the previous narration stops; ambience now continues
+across the onboarding exit when the shared Sound setting and foreground policy allow it.
 With a screen reader active, both automatic audio paths stay silent. Browser autoplay refusal or
 any audio failure must leave every action and complete transcript available.
 
@@ -218,7 +252,8 @@ any audio failure must leave every action and complete transcript available.
 | Named Arabic/UAE, safeguarding, accessibility, voice/rights review | `NOT RUN`                           | no named reviewer was available in this implementation session                                                                                                                                                                    |
 
 The prepared voice is presentation—not proof that a live AI model ran, a recording of a person,
-or a companion. Fresh browsers may block first-screen audible autoplay before any gesture; Ghaf
+or a companion. This onboarding evidence predates the Feature 006 app-wide ownership change above.
+Fresh browsers may block first-screen audible autoplay before any gesture; Ghaf
 avoids an error overlay, starts sound from the speaker press, and requests automatic playback on
 later settled slides after interaction. Physical Android autoplay/audio focus/TalkBack and named
 Arabic performance/asset-rights review require the current competition device and reviewers.

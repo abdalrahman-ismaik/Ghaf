@@ -122,6 +122,26 @@ components:
 
 # Ghaf Design System
 
+## Feature 006 natural ambient audio
+
+Use one root-owned, locally packaged nature soundscape as optional foreground atmosphere across
+Ghaf. It loops continuously through route changes at a quiet base level, ducks beneath prepared
+narration, and yields completely to background/inactive lifecycle, screen-reader speech, and live
+voice capture. Playback failure resolves to silence. The ambience does not own navigation,
+progress, feedback, permission, or any product state.
+
+Both Parent and Child Settings place a dedicated Sound section directly after language. The shared
+row uses a wrapping logical-start label and explanation with the platform-native switch fixed at
+logical end, a 48dp minimum target, explicit switch state/label/hint, and identical Arabic/English
+information hierarchy. The preference is device-level, not a Child media permission; either role
+may silence it without changing access authority. Persistence failure keeps the previous visible
+state and adds a polite warning.
+
+The soundscape is non-verbal and locally authored from layered noise and restrained bird-like
+tones. Do not add music controls, a volume slider, decorative waveform, animated equalizer,
+playlist, account sync, recording affordance, runtime URL, or sound-only meaning. Human Android
+review owns subjective naturalness, volume, narration balance, and loop-seam acceptance.
+
 ## R003 onboarding image perimeter progress
 
 Remove the detached filled strip from the lower portion of every onboarding photograph. Replace it
@@ -152,9 +172,10 @@ of the photograph. The exact visible headline and body remain the narration tran
 
 Packaged prepared narration begins only after the local image and screen layout settle and native
 screen-reader detection reports no active assistive speech. The speaker icon always restarts the
-current clip. Quiet packaged nature ambience loops only while onboarding is mounted and ducks under
-narration. Speech and ambience stop before a new locale/step or onboarding exit. Browser autoplay
-refusal and audio failure leave the complete screen operable. No waveform, avatar, microphone,
+current clip. Quiet packaged nature ambience comes from the app-wide foreground player and ducks
+under narration. Speech stops before a new locale/step or onboarding exit; eligible ambience
+continues across the route handoff and follows the shared Sound setting. Browser autoplay refusal
+and audio failure leave the complete screen operable. No waveform, avatar, microphone,
 voice capture/recognition, runtime URL, background OS playback, timer-driven story advance, or
 live-AI indicator is used. Existing 220 ms transform/opacity motion and reduced-motion parity remain
 unchanged.
@@ -650,8 +671,8 @@ required cultural, safety, Arabic, and safeguarding review.
 - Reading order follows the locale and remains logical when bottom sheets open.
 - Prepared audio always has visible text; prepared images have concise alt text and origin labels.
 - Reduced motion renders the same final state immediately with a textual cause-and-effect summary.
-- Let Parents turn off audio, remove evidence, shorten tasks, allow help, and select accessible
-  alternatives without decreasing the Child's dignity.
+- Let either Parent or Child turn off ambient audio. Parents may also remove evidence, shorten
+  tasks, allow help, and select accessible alternatives without decreasing the Child's dignity.
 
 ## Motion and Sound
 
@@ -666,6 +687,8 @@ required cultural, safety, Arabic, and safeguarding review.
 
 Sound is optional, quiet, and never required for comprehension. No casino, cash-register, streak,
 alarm, or failure sounds. Do not block state updates on an animation or sound callback.
+Ambient sound uses one foreground-only loop, ducks under narration, and pauses for screen readers
+or exclusive voice work. Its native switch lives in both role-specific Settings spaces.
 
 ## Media and Provenance
 

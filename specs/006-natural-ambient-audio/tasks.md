@@ -107,14 +107,14 @@ reset-stale audio.
 
 ## Phase 6: Polish, evidence, and release checks
 
-- [ ] T020 Update truthful feature behavior and limits in `PRODUCT.md`, `DESIGN.md`,
+- [x] T020 Update truthful feature behavior and limits in `PRODUCT.md`, `DESIGN.md`,
       `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`
-- [ ] T021 Run the Impeccable detector once over the changed Settings/provider UI files, inspect
+- [x] T021 Run the Impeccable detector once over the changed Settings/provider UI files, inspect
       audio metadata/checksum/silence boundaries, and record physical Android listening as direct
       evidence or `NOT RUN`
-- [ ] T022 Run focused tests, `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`,
+- [x] T022 Run focused tests, `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`,
       Expo dependency checks, and `git diff --check`
-- [ ] T023 Reconcile every requirement/task, update `tasks.md` and `TEAM_OWNERSHIP.md` with exact
+- [x] T023 Reconcile every requirement/task, update `tasks.md` and `TEAM_OWNERSHIP.md` with exact
       evidence and known gaps, and commit only the reserved feature files
 
 ## Dependencies and execution order

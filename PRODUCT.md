@@ -23,6 +23,25 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+## Feature 006 natural ambient audio — 2026-09-08
+
+Ghaf now uses one quiet, locally packaged nature soundscape across the active foreground app in
+place of the previous onboarding-only background soundtrack behavior. A single root-owned player
+loops across route changes, ducks beneath prepared onboarding narration, and pauses while Ghaf is
+inactive or backgrounded, a screen reader is active, or foreground voice capture owns audio focus.
+It never records, streams, requests a microphone, or plays through the operating-system background.
+
+Parent and Child Settings each place the same **Nature ambience** switch in a dedicated Sound
+section immediately after language. The shared device-local preference takes effect immediately,
+survives sign-out and role handoff, and defaults on only when no prior choice exists. Invalid or
+unreadable preference data fails to silence, a failed write preserves the previous choice, and the
+Parent-authorized exact prototype reset clears the choice and restores the documented default.
+
+The 48-second mono asset is locally synthesized and has no speech, personal data, or downloaded
+field recording. Automated metadata, source, policy, accessibility, and regression checks support
+the implementation, but naturalness, loudness, narration balance, and the loop seam still require
+a named human listening review on the authoritative Android build.
+
 ## Feature 005 remembered device access — 2026-09-07
 
 Ghaf now offers an unchecked **Remember me on this device** choice after successful Parent
@@ -119,8 +138,9 @@ existing 1200×800 local photographs use responsive 3:2 frames that reveal both 
 and close detail compositions, while centered copy remains brief. The original current/total plus
 dot indicator sits directly above the navigation actions. Each settled moment requests its
 packaged prepared Arabic or English narration automatically; one speaker icon replays it, and quiet
-local nature ambience supports the foreground experience. Both stop on exit, remain silent with an
-active screen reader, and never advance the story. These prepared synthetic sounds are
+local nature ambience supports the foreground experience. Narration stops on exit; eligible
+ambience continues across routes under the shared Sound setting. Both remain silent with an active
+screen reader and never advance the story. These prepared synthetic sounds are
 presentation only—not live model responses, recording, recognition, companions, permission grants,
 background listening, or operating-system background playback.
 The photographs no longer carry a detached solid accent at the bottom. A thin rounded progress

@@ -1,5 +1,44 @@
 # Team Ownership
 
+## 2026-09-07 Natural Ambient Audio Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/006-natural-ambient-audio/**`.
+
+**Runtime reservation**: `app/_layout.tsx`, `app/parent/settings/index.tsx`,
+`app/child/settings.tsx`, `src/components/audio/**`, `src/components/settings/**`,
+`src/components/onboarding/{FirstRunOnboarding.tsx,useOnboardingAmbience.ts}`,
+`assets/audio/onboarding/{README.md,ambience-nature-v1.mp3}`, `assets/audio/ambient/**`,
+`src/features/audio/**`, `src/models/audioPreferences.ts`,
+`src/services/local/{audioPreferencesRepository.ts,index.ts}`, `src/services/index.ts`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`,
+`tests/{natural-ambient-audio.test.tsx,r003-first-run-experience.test.ts,prototype-state.test.ts}`,
+and narrowly scoped truthful audio/reset updates in
+`PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Replace the onboarding-only background soundtrack behavior with one quiet, locally
+packaged nature ambience that loops while Ghaf is active, pauses when the app is backgrounded or
+a screen reader is active, remains subordinate to narration, and never records or streams. Add
+one persisted device-local on/off preference to both Parent and Child settings, apply changes
+immediately, fail safely on storage errors, and restore the documented default on the exact
+Parent-authorized prototype reset. Preserve all access, AI, media, progression, and role-separation
+contracts.
+
+**Status**: Complete and released for source integration — commits `ab1b561`, `e7aa10b`, `34268d9`,
+`37b4620`, and `81ee1b6` contain the approved specification, strict device-local preference,
+single app-wide player, shared Parent/Child Settings control, and lifecycle/reset hardening. Four
+focused audio/reset/voice/onboarding files passed 65 tests; the full repository passed strict
+TypeScript, zero-warning lint, formatting, 121 files / 1,335 tests, Git whitespace, an Expo local
+dependency-map check, a 39-route web export, and an Android JavaScript export with 95 assets. The
+Impeccable detector returned `[]`; the 48.039-second mono local asset matched its recorded SHA-256
+and contained no detected digital silence of at least 50 ms below -50 dB. Physical Android
+naturalness, loudness, loop-seam, audio-focus/silent-mode/TalkBack behavior and named Arabic,
+accessibility, audio, and product review remain `NOT RUN`. Protected configuration, source design
+inputs, and generated output artifacts stayed outside this window.
+
 ## 2026-09-07 Emirati Parent Access Portrait Window
 
 **Owner and only writer**: `/root`
