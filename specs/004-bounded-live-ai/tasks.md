@@ -23,8 +23,8 @@ default-off and synthetic/fake-provider only; activation gates are outside this 
 - [x] T001 Validate and format Feature 004 design artifacts in `specs/004-bounded-live-ai/`
 - [x] T002 Record the active planning/runtime ownership boundaries in `TEAM_OWNERSHIP.md`
 - [x] T003 Update the managed Spec Kit plan pointer through `.specify/feature.json` and `AGENTS.md`
-- [ ] T004 Add the Expo-compatible FileSystem dependency for explicit audio deletion in `package.json` and `package-lock.json`
-- [ ] T005 Record the pre-runtime typecheck/lint/format/test/dependency baseline in `specs/004-bounded-live-ai/tasks.md`
+- [x] T004 Add the Expo-compatible FileSystem dependency for explicit audio deletion in `package.json` and `package-lock.json`
+- [x] T005 Record the pre-runtime typecheck/lint/format/test/dependency baseline in `specs/004-bounded-live-ai/tasks.md`
 
 ---
 
@@ -267,3 +267,12 @@ No commit activates a flag, deploys a Worker, calls a provider, or marks externa
 
 Implementation commands and exact counts are appended here as tasks complete. `PASSED` applies only
 to the named evidence; external gates remain as defined in `quickstart.md`.
+
+- **Pre-runtime baseline — PASSED (2026-09-07)**: `npm run typecheck`, `npm run lint`,
+  `npm run format:check`, `npm test -- --run`, and `npx expo install --check` exited successfully.
+  Vitest reported 93 files and 1,116 tests passed. This is source/local evidence only; no provider,
+  deployment, real media, or physical Android gate ran.
+- **Ephemeral deletion dependency — PASSED (2026-09-07)**: Expo installed
+  `expo-file-system@57.0.6`, `npx expo install --check` reported dependencies up to date, and
+  `npm ls expo-file-system --depth=0` resolved the expected direct version. The npm audit summary
+  still reports 14 pre-existing moderate findings; no automatic or breaking audit rewrite was run.
