@@ -43,6 +43,11 @@ local nature ambience supports the foreground experience. Both stop on exit, rem
 active screen reader, and never advance the story. These prepared synthetic sounds are
 presentation only—not live model responses, recording, recognition, companions, permission grants,
 background listening, or operating-system background playback.
+The photographs no longer carry a detached solid accent at the bottom. A thin rounded progress
+stroke now begins at the image's lower center, grows around both sides as the family explicitly
+moves through the six moments, and closes around the final image. The simple lower current/total
+and dot row remains the accessible navigation indicator; the image-edge stroke is only its quiet
+visual echo and never advances with audio or time.
 Startup is visibly ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms
 after handoff, a distinct leaf-loading screen for at least 1,000 ms and until the four used font
 files plus the exact nine-raster signed-out set settle, then onboarding. The splash itself has no

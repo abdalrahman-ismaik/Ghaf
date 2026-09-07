@@ -1,5 +1,14 @@
 # Ghaf Design Direction
 
+## 2026-09-07 onboarding image-edge progress clarification
+
+The dark lower strip on the onboarding photographs feels applied after the image rather than
+integrated with it. Remove it. Let one fine rounded perimeter stroke begin as a small lower-center
+mark and grow evenly in both directions as the six explicit moments advance, completing the frame
+only on the last photograph. Keep the treatment calm, high-contrast, and close to the crop edge so
+the photography remains dominant. Retain the original lower current/total plus dots as the simple
+accessible indicator; do not add another label, timer, glow, or interaction.
+
 ## 2026-09-07 compact audio onboarding clarification
 
 The six-moment first-run experience is introduced directly by the Ghaf Guide. Use short

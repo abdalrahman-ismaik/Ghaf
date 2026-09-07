@@ -1,5 +1,29 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Onboarding Image Perimeter Progress Record — 2026-09-07
+
+**Current classification:** locally validated presentation candidate; physical Android motion,
+TalkBack rendering, and named-human review remain unobserved.
+
+On a fresh launch, the first onboarding photograph should show a short date-gold stroke centered
+on its lower edge instead of the prior detached dark strip. Use Next through all six moments: the
+stroke must grow evenly in both directions, follow the rounded image edge, and close at the top
+center on the final photograph. Back must reverse the same progression. The original lower
+current/total plus dots remains above the buttons and is the only progressbar announced by
+assistive technology. With reduced motion active, each step must show its correct complete static
+extent without a growth transition.
+
+| Gate                                                            | Result                              | Evidence                                                                                                                                                           |
+| --------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RED/focused behavior                                            | `PASSED`                            | initial source contract and two visual correction guards each recorded 1 expected failure / 12 passes; final focused file passed 13 tests                          |
+| Full repository verification                                    | `PASSED`                            | typecheck, zero-warning lint, formatting, Git whitespace, and 90 files / 1,090 tests                                                                               |
+| Integrated first-to-final edge progression                      | `PASSED source + Firefox web proxy` | old `heroAccent` absent; two equal bottom-center paths revealed 6% on moment 1, deterministic intermediate extents, and 100% on moment 6                           |
+| Reduced motion and accessibility                                | `PASSED source + Firefox web proxy` | reduced motion applied the exact static step value; image-edge SVG was noninteractive/hidden while the lower row retained sole progressbar semantics               |
+| Compact bilingual layout                                        | `PASSED Firefox web proxy`          | Arabic 390×844 and English 320×720 retained the 3:2 frame; compact frame measured 280×186.67 with document/client widths equal and zero console errors or warnings |
+| Detector and production exports                                 | `PASSED`                            | Impeccable detector returned `[]`; web exported 134 files and Android JavaScript exported 103 files                                                                |
+| Physical Android release motion, TalkBack, and device rendering | `BLOCKED / NOT RUN`                 | `adb devices -l` returned no attached target                                                                                                                       |
+| Named Arabic/UAE, accessibility, and visual review              | `NOT RUN`                           | no named reviewer was available in this implementation session                                                                                                     |
+
 ## R003 Returning Parent Identifier Lookup Record — 2026-09-07
 
 **Current classification:** complete local implementation candidate; physical Android and named

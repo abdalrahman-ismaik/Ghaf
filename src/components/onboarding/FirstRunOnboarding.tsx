@@ -4,6 +4,7 @@ import Animated, {
   Easing,
   ReduceMotion,
   useAnimatedStyle,
+  useAnimatedProps,
   useReducedMotion,
   useSharedValue,
   withDelay,
@@ -11,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Svg, { Path } from 'react-native-svg';
 
 import { AccessScreen, GhafIcon } from '@/components/access';
 import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
@@ -36,6 +38,109 @@ interface FirstRunStepCopy {
   readonly body: string;
   readonly imageAlt: string;
   readonly title: string;
+}
+
+interface ImagePerimeterProgressProps {
+  readonly reducedMotion: boolean;
+  readonly stepIndex: number;
+}
+
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+const INITIAL_PERIMETER_PROGRESS = 0.06;
+const PERIMETER_VIEWBOX_WIDTH = 300;
+const PERIMETER_VIEWBOX_HEIGHT = 200;
+const PERIMETER_INSET = 3;
+const PERIMETER_RADIUS = 22;
+const PERIMETER_BRANCH_LENGTH =
+  PERIMETER_VIEWBOX_WIDTH -
+  2 * PERIMETER_INSET -
+  2 * PERIMETER_RADIUS +
+  (PERIMETER_VIEWBOX_HEIGHT - 2 * PERIMETER_INSET - 2 * PERIMETER_RADIUS) +
+  Math.PI * PERIMETER_RADIUS;
+const PERIMETER_RIGHT_PATH = [
+  `M ${PERIMETER_VIEWBOX_WIDTH / 2} ${PERIMETER_VIEWBOX_HEIGHT - PERIMETER_INSET}`,
+  `H ${PERIMETER_VIEWBOX_WIDTH - PERIMETER_INSET - PERIMETER_RADIUS}`,
+  `A ${PERIMETER_RADIUS} ${PERIMETER_RADIUS} 0 0 0 ${PERIMETER_VIEWBOX_WIDTH - PERIMETER_INSET} ${PERIMETER_VIEWBOX_HEIGHT - PERIMETER_INSET - PERIMETER_RADIUS}`,
+  `V ${PERIMETER_INSET + PERIMETER_RADIUS}`,
+  `A ${PERIMETER_RADIUS} ${PERIMETER_RADIUS} 0 0 0 ${PERIMETER_VIEWBOX_WIDTH - PERIMETER_INSET - PERIMETER_RADIUS} ${PERIMETER_INSET}`,
+  `H ${PERIMETER_VIEWBOX_WIDTH / 2}`,
+].join(' ');
+const PERIMETER_LEFT_PATH = [
+  `M ${PERIMETER_VIEWBOX_WIDTH / 2} ${PERIMETER_VIEWBOX_HEIGHT - PERIMETER_INSET}`,
+  `H ${PERIMETER_INSET + PERIMETER_RADIUS}`,
+  `A ${PERIMETER_RADIUS} ${PERIMETER_RADIUS} 0 0 1 ${PERIMETER_INSET} ${PERIMETER_VIEWBOX_HEIGHT - PERIMETER_INSET - PERIMETER_RADIUS}`,
+  `V ${PERIMETER_INSET + PERIMETER_RADIUS}`,
+  `A ${PERIMETER_RADIUS} ${PERIMETER_RADIUS} 0 0 1 ${PERIMETER_INSET + PERIMETER_RADIUS} ${PERIMETER_INSET}`,
+  `H ${PERIMETER_VIEWBOX_WIDTH / 2}`,
+].join(' ');
+
+function ImagePerimeterProgress({ reducedMotion, stepIndex }: ImagePerimeterProgressProps) {
+  const target =
+    INITIAL_PERIMETER_PROGRESS +
+    (1 - INITIAL_PERIMETER_PROGRESS) * (stepIndex / (ONBOARDING_STEPS.length - 1));
+  const progress = useSharedValue(target);
+  const animatedPathProps = useAnimatedProps(() => ({
+    strokeDasharray: [PERIMETER_BRANCH_LENGTH * progress.get(), PERIMETER_BRANCH_LENGTH],
+  }));
+
+  useEffect(() => {
+    cancelAnimation(progress);
+    if (reducedMotion) {
+      progress.set(target);
+      return;
+    }
+    progress.set(
+      withTiming(target, {
+        duration: motion.duration.standard,
+        easing: Easing.bezier(...motion.easing),
+        reduceMotion: ReduceMotion.System,
+      }),
+    );
+    return () => cancelAnimation(progress);
+  }, [progress, reducedMotion, target]);
+
+  return (
+    <View
+      accessibilityElementsHidden
+      aria-hidden
+      importantForAccessibility="no-hide-descendants"
+      pointerEvents="none"
+      style={styles.imagePerimeterProgress}
+      testID="first-run-image-progress"
+    >
+      <Svg
+        height="100%"
+        preserveAspectRatio="none"
+        viewBox={`0 0 ${PERIMETER_VIEWBOX_WIDTH} ${PERIMETER_VIEWBOX_HEIGHT}`}
+        width="100%"
+      >
+        {[PERIMETER_LEFT_PATH, PERIMETER_RIGHT_PATH].map((path) => (
+          <Path
+            d={path}
+            fill="none"
+            key={`track-${path}`}
+            stroke={colors.white}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeOpacity={0.48}
+            strokeWidth={3}
+          />
+        ))}
+        {[PERIMETER_LEFT_PATH, PERIMETER_RIGHT_PATH].map((path) => (
+          <AnimatedPath
+            animatedProps={animatedPathProps}
+            d={path}
+            fill="none"
+            key={`progress-${path}`}
+            stroke={colors.solarAmber}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={3.5}
+          />
+        ))}
+      </Svg>
+    </View>
+  );
 }
 
 const storyAccents = [
@@ -222,7 +327,7 @@ export function FirstRunOnboarding() {
               style={styles.heroImage}
               testID={`first-run-image-${state.step}`}
             />
-            <View style={[styles.heroAccent, { backgroundColor: storyAccent }]} />
+            <ImagePerimeterProgress reducedMotion={reducedMotion} stepIndex={stepIndex} />
             <IconButton
               accessibilityHint={narrationHint}
               brand
@@ -444,14 +549,12 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceContainerLow,
   },
-  heroAccent: {
+  imagePerimeterProgress: {
     position: 'absolute',
-    pointerEvents: 'none',
-    right: spacing.lg,
+    top: 0,
+    right: 0,
     bottom: 0,
-    left: spacing.lg,
-    height: spacing.xs,
-    borderRadius: r001Radii.pill,
+    left: 0,
   },
   speakerButton: {
     position: 'absolute',

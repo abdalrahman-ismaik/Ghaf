@@ -6,6 +6,72 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-07 Welcome Hero Regeneration Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`,
+`assets/images/illustrations/r003/{ASSET_MANIFEST.json,PROVENANCE.md}`, and
+`assets/images/illustrations/r003/final/welcome-ghaf-habitat.jpg` only.
+
+**Scope**: Regenerate only the existing 3:2 Welcome hero as an eye-catching wide-angle Quiet UAE
+Botanical Editorial scene that better communicates family support, small daily actions, permanent
+growth, and UAE nature. Preserve the existing artwork ID, route, crop behavior, official brand,
+access controls, product state, and all protected user work. The image remains opaque, local,
+nondirectional, decorative, and free of people, text, logos, UI, unsafe objects, and measured-impact
+claims. No route, dependency, remote runtime asset, product behavior, push, merge, deployment, or
+release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` regenerated the existing Welcome hero through the built-in
+OpenAI image generator, retained its 3:2 source and 1200×800 shipping dimensions, embedded the exact
+prompt, and updated its local manifest/provenance without changing the runtime artwork ID or screen.
+The full-frame source and the current wide mobile center crop were inspected; both retain the mature
+Ghaf, three younger growth stages, seed-pod/leaf trail, and distant UAE landscape without people,
+text, UI, brand marks, unsafe objects, or impact claims. The focused artwork contract passed 4/4,
+all 48 shipping rasters retained embedded prompts, formatting and Git whitespace passed, and the
+Impeccable detector returned no findings. Physical Android rendering and named botanical,
+Arabic/UAE, safeguarding, accessibility, and image-rights reviews remain `NOT RUN`. The reservation
+is released at this local checkpoint; no push, merge, deployment, or release activation occurred.
+
+## 2026-09-07 Onboarding Image Perimeter Progress Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`,
+`src/components/onboarding/FirstRunOnboarding.tsx`, and
+`tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Remove the detached solid strip from the bottom of every onboarding photograph and
+replace it with a quiet, image-integrated rounded perimeter progress stroke. The stroke begins as
+a short mark at the bottom center, grows symmetrically in both directions only when explicit
+Back/Next/pillar navigation changes the moment, and closes around the full 3:2 image on the sixth
+moment. Retain the simple lower current/total plus dot row requested in the preceding correction as
+the primary semantic indicator. Reduced motion shows each step's correct static perimeter state.
+Preserve the existing photographs, crop, speaker, narration, ambience, reducer, routes, startup,
+access, privacy, reward, reset, and default-off feature behavior. No image, dependency, timer,
+autoplay navigation, gesture, product authority, push, merge, deployment, or release activation is
+authorized.
+
+**Completion — 2026-09-07**: `/root` removed `heroAccent` and integrated one inset SVG edge track
+with two date-gold progress branches that originate together at the image's bottom center. The
+first moment shows a short centered stroke, explicit navigation reveals the rounded bottom corners,
+sides, and top edges in order, Back reverses the same value, and the sixth moment closes the frame.
+The existing lower current/total plus dots retain the sole progressbar semantics; the edge stroke
+is noninteractive and hidden from assistive technology. Reanimated changes only the normalized
+dash length over the existing 220 ms UI-thread timing, while reduced motion applies the target
+directly. RED recorded one expected failure / 12 passes for the source contract and for each of two
+visual-correction guards; the final focused file passed 13 tests and the full suite passed 90 files
+/ 1,090 tests. Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks,
+Git whitespace, Impeccable detection, web export (134 files), and Android JavaScript export (103
+files) passed. Firefox covered Arabic 390×844, English 320×720, first/intermediate/final extents,
+reduced motion, exact 3:2 layout, zero horizontal overflow, and zero console errors or warnings.
+Physical Android motion/TalkBack rendering and named-human review remain `BLOCKED / NOT RUN`. The
+reservation is released at this local checkpoint; no push, merge, deployment, or release
+activation was performed.
+
 ## 2026-09-07 Returning Parent Identifier Lookup Window
 
 **Owner and only writer**: `/root`

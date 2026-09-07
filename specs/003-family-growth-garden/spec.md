@@ -18,6 +18,31 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 Onboarding Image Perimeter Progress Amendment — 2026-09-07
+
+This amendment removes the detached solid accent strip from the bottom of each onboarding
+photograph. In its place, a thin rounded progress stroke is integrated with the existing 3:2 image
+edge. On the first moment it appears as a short centered mark along the lower edge; each explicit
+Back, Next, or pillar selection grows or reverses two equal branches around the image; and the
+sixth moment completes the full perimeter. It never advances with narration, ambience, or time.
+
+The lower current/total plus six-dot row remains the primary accessible navigation indicator and
+continues to sit above the actions. The perimeter stroke is a noninteractive visual echo of that
+same state, is hidden from assistive technology to avoid duplicate announcements, and uses a
+high-contrast branded stroke plus a restrained edge track. Standard motion runs on the UI thread;
+reduced-motion mode renders the correct static extent without spatial animation.
+
+- **FR-207**: The onboarding photograph MUST NOT render a detached solid lower accent strip.
+- **FR-208**: A thin rounded image-edge progress stroke MUST start at the bottom center, grow
+  symmetrically in both directions from the explicit six-step state, and complete the photograph's
+  perimeter only on the last moment.
+- **FR-209**: The image-edge stroke MUST be noninteractive, hidden from assistive technology,
+  independent of audio/time, and reduced-motion equivalent; the existing lower current/total plus
+  dots MUST retain the sole programmatic progress semantics.
+- **SC-059**: Focused source tests and compact bilingual inspection prove the old strip is absent,
+  the first/last perimeter states are distinct and deterministic, the lower semantic indicator is
+  unchanged, and standard/reduced-motion layouts preserve the 3:2 image without overflow.
+
 ## R003 Compact Audio Onboarding Amendment — 2026-09-07
 
 This amendment refines the existing six-moment in-route first-run story without changing its

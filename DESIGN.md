@@ -122,6 +122,20 @@ components:
 
 # Ghaf Design System
 
+## R003 onboarding image perimeter progress
+
+Remove the detached filled strip from the lower portion of every onboarding photograph. Replace it
+with one inset, rounded perimeter treatment that reads as part of the image frame: a restrained
+light edge track and a narrow date-gold progress stroke. Two equal branches originate at the bottom
+center. The first moment shows only a short centered mark, intermediate moments carry the line
+around the bottom corners and side edges, and the final moment closes at the top center.
+
+The perimeter responds only to explicit step state and stays visually subordinate to the image,
+copy, and primary action. It is decorative to assistive technology because the unchanged lower
+current/total plus dot row owns progress semantics. Standard motion reveals the SVG dash on the UI
+thread using the existing 220 ms state-change timing; reduced motion jumps directly to the same
+static extent. Do not add glow, pulse, timer, gradient, thick ring, or a second text label.
+
 ## R003 compact audio first-run refinement
 
 The existing six moments remain a first-person Ghaf Guide introduction. Restore the original

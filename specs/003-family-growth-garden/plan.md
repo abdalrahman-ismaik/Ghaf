@@ -1,5 +1,23 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 Onboarding Image Perimeter Progress Addendum — 2026-09-07
+
+Refine only the decorative edge treatment inside `FirstRunOnboarding`. Remove `heroAccent` and add
+one noninteractive SVG perimeter component over the existing 3:2 photograph. Use two equal rounded
+paths that originate at the bottom center and end together at the top center. Normalize each path
+to one unit so one shared Reanimated value can reveal both branches without measuring or mutating
+layout. Derive the target from the explicit six-step index: retain a short visible starting mark,
+interpolate evenly through intermediate moments, and reach one only on the final image.
+
+Use the installed `react-native-svg` and Reanimated packages; add no dependency. Animate only the
+dash offset with the existing 220 ms on-screen easing on the UI thread, cancel interrupted
+transitions, and set the target directly under system reduced motion. Keep the existing lower
+current/total plus dots as the sole accessible progressbar, with the perimeter hidden from
+assistive technology. Preserve the current image, speaker, narration, ambience, pillar and button
+navigation, route count, startup sets, and all product authorities. Drive the change with one
+focused RED source contract, then run focused/full repository checks, the design detector,
+bilingual compact browser inspection, exports, and available physical Android evidence.
+
 ## R003 Returning Parent Identifier Lookup Addendum — 2026-09-07
 
 Extend the existing device-local family record from schema 1 to schema 2 with one normalized

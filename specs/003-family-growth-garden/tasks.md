@@ -1458,3 +1458,34 @@ membership and always bypass first-family creation.
       cased/space-padded email, and entered `/parent` after `424242` without setup. Arabic 390×844
       and English 320×720 had no horizontal overflow or console errors. Physical Android and named
       review remain `BLOCKED / NOT RUN`; `adb devices -l` returned no target.
+
+---
+
+## Phase 46: Onboarding Image Perimeter Progress
+
+**Purpose**: Replace the detached photo accent with one restrained progress treatment that belongs
+to the rounded image frame.
+
+- [x] T316 Inspect the exact rendered element and current onboarding motion/visual contract,
+      reserve the narrow writer boundary, and amend spec/plan/tasks/product/design/direction/intake
+      before behavior work.
+- [x] T317 Write one focused RED source contract for removal of `heroAccent`, symmetric bottom-
+      center SVG paths, deterministic six-step completion, UI-thread dash animation, reduced-motion
+      equivalence, hidden duplicate semantics, and retention of the lower progressbar.
+- [x] T318 Implement the integrated perimeter progress treatment with installed Reanimated and
+      `react-native-svg`, without changing image ratio, audio, copy, navigation, or product state.
+- [x] T319 Run focused/full tests, typecheck, lint, format, detector, web/Android exports, compact
+      Arabic/English browser inspection, and available Android evidence; reconcile runbook and
+      ownership, then create one cohesive local commit without push, merge, deployment, or release
+      activation.
+
+      Completed locally on 2026-09-07: RED recorded one expected failure / 12 passes for the
+      initial source contract and again for each visual correction guard; the final focused file
+      passed 13 tests and the full suite passed 90 files / 1,090 tests. Typecheck, zero-warning
+      lint, formatting, Expo dependency/public-config checks, Git whitespace, and the Impeccable
+      detector passed. Web exported 134 files and Android JavaScript exported 103 files. Firefox
+      inspected the first, intermediate, and fully closed progress extents in Arabic 390×844 and
+      English 320×720, measured the compact frame at 280×186.67, confirmed reduced motion applies
+      the exact static step value, found no horizontal overflow, and reported zero console errors
+      or warnings. Physical Android motion/TalkBack and named review remain `BLOCKED / NOT RUN`;
+      `adb devices -l` returned no target.

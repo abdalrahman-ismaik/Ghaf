@@ -123,11 +123,11 @@ describe('R003 first-run experience', () => {
     const startupImages = source('src/features/startup/preloadStartupImages.ts');
     const tokens = source('src/design/tokens.ts');
     const welcome = source('app/index.tsx');
-    const combined = `${onboarding}\n${logo}\n${brandLockup}\n${splash}\n${transition}`;
+    const rasterPresentation = `${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
     expect(authoredRoutes()).toHaveLength(37);
-    expect(combined).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
-    expect(combined).not.toMatch(/https?:\/\//u);
+    expect(rasterPresentation).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
+    expect(`${onboarding}\n${rasterPresentation}`).not.toMatch(/https?:\/\//u);
     expect(logo).toContain("from 'expo-image'");
     expect(logo).toContain("require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png')");
     expect(onboarding).toContain('LocalIllustration');
@@ -141,6 +141,19 @@ describe('R003 first-run experience', () => {
     expect(onboarding).toContain('scale:');
     expect(onboarding).toContain('aspectRatio: 3 / 2');
     expect(onboarding).not.toContain('heroHeight');
+    expect(onboarding).not.toContain('heroAccent');
+    expect(onboarding).toContain("from 'react-native-svg'");
+    expect(onboarding).toContain('ImagePerimeterProgress');
+    expect(onboarding).toContain('AnimatedPath');
+    expect(onboarding).toContain('strokeDasharray: [');
+    expect(onboarding).toContain('PERIMETER_BRANCH_LENGTH * progress.get()');
+    expect(onboarding).not.toContain('strokeDashoffset');
+    expect(onboarding).toContain('`A ${PERIMETER_RADIUS} ${PERIMETER_RADIUS}');
+    expect(onboarding).not.toContain('vectorEffect');
+    expect(onboarding).toContain('INITIAL_PERIMETER_PROGRESS');
+    expect(onboarding).toContain('ONBOARDING_STEPS.length - 1');
+    expect(onboarding).toContain('accessibilityElementsHidden');
+    expect(onboarding).toContain('testID="first-run-image-progress"');
     expect(onboarding).toContain('testID="first-run-progress"');
     expect(onboarding.indexOf('testID="first-run-progress"')).toBeGreaterThan(
       onboarding.indexOf('testID="first-run-visual-story"'),

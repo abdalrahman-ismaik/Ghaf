@@ -106,8 +106,10 @@ The images are never mirrored for RTL and load through the existing local illust
 - Arabic is first; English is equivalent, not a shortened alternate.
 - Alexandria owns display text; Readex Pro owns body, status, and controls.
 - One dominant action per onboarding moment, minimum 48 dp targets, visible progress (`1/6` plus
-  six segmented bars) directly above the navigation actions, resilient wrapping at 320 and 390
-  widths, and no horizontal swipe dependency.
+  six dots) directly above the navigation actions, resilient wrapping at 320 and 390 widths, and
+  no horizontal swipe dependency. A thin nonsemantic image-edge stroke echoes the same explicit
+  six-step state, beginning at the lower center and completing the rounded perimeter on the last
+  photograph.
 - Every meaningful photograph has localized alternative text. Decorative transition texture is
   hidden from accessibility. Step changes use a polite live-region announcement.
 - The final Welcome retains the visible local/synthetic prototype disclosure and distinct Parent
