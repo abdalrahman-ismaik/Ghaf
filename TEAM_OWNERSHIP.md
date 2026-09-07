@@ -1,5 +1,39 @@
 # Team Ownership
 
+## 2026-09-07 Feature 004 Planning and Implementation Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook only, and
+`specs/004-bounded-live-ai/{plan.md,research.md,data-model.md,quickstart.md,tasks.md,contracts/**}`.
+
+**Runtime reservation**: `package.json`, `package-lock.json`, `.env.example`, `app.config.ts`,
+`src/config/aiFeatureFlags.ts`, `src/models/boundedAi.ts`,
+`src/features/assistants/{parentTaskDrafting.ts,liveChildCoach.ts,liveVoiceCapture.ts}`,
+`src/services/interfaces/index.ts`, `src/services/index.ts`,
+`src/services/mock/{index.ts,boundedAi.ts,boundedAiFixtures.ts}`,
+`src/services/remote/{index.ts,GatewayParentTaskDraftingService.ts,GatewayChildCoachService.ts,GatewayVoiceTranscriptionService.ts}`,
+`src/services/native/{index.ts,ExpoVoiceCaptureService.ts}`, `src/features/access/index.ts`,
+`src/state/usePrototypeStore.ts`, `src/components/family-growth/{ParentTaskComposer.tsx,LiveChildCoachPanel.tsx,LiveVoiceCapturePanel.tsx}`,
+`app/child/task.tsx`, `app/parent/settings/permissions.tsx`, `src/i18n/resources.ts`, new
+`workers/ghaf-ai-gateway/**`, the Feature 004-focused tests named in
+`specs/004-bounded-live-ai/tasks.md`, and final truthful evidence edits in `PRODUCT.md`,
+`PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Plan and implement the approved F4 Parent task drafting, F5 bounded live Child Coach
+text, and F5 ages-12–14 push-to-talk voice as three independent default-off slices. Use strict
+contracts, TDD, prepared same-attempt fallback, zero AI reward/progression authority, synthetic
+inputs/media, and server-side provider boundaries. Preserve the complete Feature 003 journey.
+
+**Activation boundary**: No provider deployment/call, real Child data, live flag activation,
+production-security claim, or release approval is included. F5 text/voice activation remains
+blocked on the named authentication, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE,
+accessibility, incident, physical Android, deletion, and human-evidence gates.
+
+**Status**: Active — planning complete; the exact runtime boundaries above are reserved for
+default-off implementation and local evidence only.
+
 ## 2026-09-07 AI Features 4–5 All-Three Approval Recording Window
 
 **Owner and only writer**: `/root`

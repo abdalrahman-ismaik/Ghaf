@@ -1,0 +1,269 @@
+# Tasks: Bounded Live AI Drafting and Coach
+
+**Input**: Design documents from `specs/004-bounded-live-ai/`
+
+**Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, `contracts/bounded-ai-v1.md`
+
+**Tests**: TDD is mandatory. Each story starts with RED behavioral tests, then the smallest GREEN
+implementation, then refactoring with tests remaining green.
+
+**Organization**: Tasks are grouped by the four approved user stories. All implementation remains
+default-off and synthetic/fake-provider only; activation gates are outside this task list.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: Safe to execute concurrently only when a separate writer owns the listed file
+- **[Story]**: Maps directly to User Story 1–4 in `spec.md`
+- Every task names its file boundary
+
+## Phase 1: Setup and planning integration
+
+**Purpose**: Establish the active Feature 004 artifacts, dependency, and clean baseline.
+
+- [x] T001 Validate and format Feature 004 design artifacts in `specs/004-bounded-live-ai/`
+- [x] T002 Record the active planning/runtime ownership boundaries in `TEAM_OWNERSHIP.md`
+- [x] T003 Update the managed Spec Kit plan pointer through `.specify/feature.json` and `AGENTS.md`
+- [ ] T004 Add the Expo-compatible FileSystem dependency for explicit audio deletion in `package.json` and `package-lock.json`
+- [ ] T005 Record the pre-runtime typecheck/lint/format/test/dependency baseline in `specs/004-bounded-live-ai/tasks.md`
+
+---
+
+## Phase 2: Foundational contracts and controls
+
+**Purpose**: Build default-off selection, shared provider-neutral types, deterministic providers,
+and fake-boundary authentication before any user story UI.
+
+**Critical**: No story integration starts until this phase is green.
+
+- [ ] T006 [P] Write RED independent/default-off parsing tests in `tests/bounded-ai-feature-flags.test.ts`
+- [ ] T007 Implement exact Feature 004 flags in `src/config/aiFeatureFlags.ts` and document disabled examples in `.env.example`
+- [ ] T008 [P] Write RED shared closed-schema, correlation, grant, terminal-result, and zero-effects tests in `tests/bounded-ai-contracts.test.ts`
+- [ ] T009 Implement provider-neutral Feature 004 entities and strict shared validators in `src/models/boundedAi.ts`
+- [ ] T010 Add Parent drafting, Child text, voice transcription, token, and ephemeral-media interfaces to `src/services/interfaces/index.ts`
+- [ ] T011 Add canonical prepared Feature 004 fixtures in `src/services/mock/boundedAiFixtures.ts`
+- [ ] T012 Implement deterministic F4/F5/voice providers in `src/services/mock/boundedAi.ts`
+- [ ] T013 Extend registry construction/injection and public exports without changing defaults in `src/services/mock/index.ts` and `src/services/index.ts`
+- [ ] T014 [P] Write RED capability-claim/auth-before-parse/replay tests in `tests/bounded-ai-gateway-security.test.ts`
+- [ ] T015 Implement closed capability claims, HMAC verification, replay, rate/budget/concurrency, origin, and safe-error utilities in `workers/ghaf-ai-gateway/src/security.ts`
+- [ ] T016 Create the non-deployed Feature 004 Worker shell/configuration in `workers/ghaf-ai-gateway/src/index.ts`, `workers/ghaf-ai-gateway/wrangler.jsonc`, and `workers/ghaf-ai-gateway/README.md`
+- [ ] T017 Verify ignore coverage and run the scoped secret scan against `.gitignore`, Expo configuration, and `workers/ghaf-ai-gateway/`
+
+**Checkpoint**: All flags are false; prepared providers complete every accepted path; fake tokens
+can be verified without any mobile/deployed credential.
+
+---
+
+## Phase 3: User Story 1 — Parent drafts from a reviewed archetype (Priority: P1)
+
+**Goal**: Show a bounded bilingual wording diff while deterministic task authorities and Parent
+review/approval remain unchanged.
+
+**Independent Test**: Enable only F4 in a synthetic harness; request, compare, accept, keep, edit,
+and fail over for each reviewed archetype. Assert every non-copy authority field is retained.
+
+### RED tests
+
+- [ ] T018 [P] [US1] Write request/suggestion schema and archetype allowlist tests in `tests/parent-task-drafting.test.ts`
+- [ ] T019 [P] [US1] Write exhaustive authority-mutation and deterministic mapper tests in `tests/parent-task-drafting-authority.test.ts`
+- [ ] T020 [P] [US1] Write HTTPS/token/timeout/status/schema/correlation adapter tests in `tests/gateway-parent-task-drafting.test.ts`
+- [ ] T021 [P] [US1] Write store stale/fallback/accept/keep/edit/zero-effects tests in `tests/parent-task-drafting-store.test.ts`
+- [ ] T022 [P] [US1] Write Parent composer flag/diff/origin/RTL/accessibility source tests in `tests/parent-task-drafting-ui.test.tsx`
+
+### GREEN implementation and integration
+
+- [ ] T023 [US1] Implement F4 closed schemas, authority snapshots, prepared result, and copy-only mapper in `src/features/assistants/parentTaskDrafting.ts`
+- [ ] T024 [US1] Implement the HTTPS F4 adapter with blocked-token and bounded-timeout behavior in `src/services/remote/GatewayParentTaskDraftingService.ts` and `src/services/remote/index.ts`
+- [ ] T025 [US1] Add the F4 Worker route, strict provider prompt/output validation, and operation policy in `workers/ghaf-ai-gateway/src/index.ts`
+- [ ] T026 [US1] Add F4 request revision, immutable snapshot, same-attempt fallback, accept/keep/edit, and reset actions in `src/state/usePrototypeStore.ts`
+- [ ] T027 [US1] Integrate curated F4 controls and retained-versus-suggested diff into `src/components/family-growth/ParentTaskComposer.tsx`
+- [ ] T028 [US1] Add equivalent Arabic/English F4 disclosure, control, origin, fallback, and error strings in `src/i18n/resources.ts`
+- [ ] T029 [US1] Refactor the F4 slice while keeping focused tests green in `src/features/assistants/parentTaskDrafting.ts`, `src/state/usePrototypeStore.ts`, and `src/components/family-growth/ParentTaskComposer.tsx`
+
+**Checkpoint**: F4 is independently testable, default off, and cannot mutate task authority or
+bypass Parent review.
+
+---
+
+## Phase 4: User Story 2 — Child receives bounded live text help (Priority: P2)
+
+**Goal**: Add a one-turn, task-scoped, age-banded Coach request with local safe termination and
+prepared fallback.
+
+**Independent Test**: Enable only F5 text in a synthetic harness and exercise every band/intent,
+boundary, safety case, failure, stale state, terminal response, and zero effect.
+
+### RED tests
+
+- [ ] T030 [P] [US2] Write age-discriminated request and bounded-text policy tests in `tests/live-child-coach.test.ts`
+- [ ] T031 [P] [US2] Write bilingual safety/adversarial/terminal output corpus tests in `tests/live-child-coach-safety.test.ts`
+- [ ] T032 [P] [US2] Write HTTPS/token/timeout/status/schema/correlation adapter tests in `tests/gateway-child-coach.test.ts`
+- [ ] T033 [P] [US2] Write store task/profile/grant/stale/fallback/zero-effects tests in `tests/live-child-coach-store.test.ts`
+- [ ] T034 [P] [US2] Write Child panel band/terminal/disclosure/adult-exit/RTL/accessibility tests in `tests/live-child-coach-ui.test.tsx`
+
+### GREEN implementation and integration
+
+- [ ] T035 [US2] Implement age-banded request builders, local prefilter, terminal response validator, and prepared fallback in `src/features/assistants/liveChildCoach.ts`
+- [ ] T036 [US2] Implement the HTTPS Child text adapter with blocked-token and bounded-timeout behavior in `src/services/remote/GatewayChildCoachService.ts` and `src/services/remote/index.ts`
+- [ ] T037 [US2] Add the Child text Worker route, auth/rate/body/catalog/prompt/output safety policy in `workers/ghaf-ai-gateway/src/index.ts`
+- [ ] T038 [US2] Add Child request revision, task/profile/grant snapshots, local termination, fallback, terminal clearing, and reset actions in `src/state/usePrototypeStore.ts`
+- [ ] T039 [US2] Build the reusable terminal age-banded Coach UI in `src/components/family-growth/LiveChildCoachPanel.tsx`
+- [ ] T040 [US2] Integrate the F5 text panel into the existing support section in `app/child/task.tsx`
+- [ ] T041 [US2] Add equivalent Arabic/English Child notice, intent, disclosure, fallback, denial, and terminal strings in `src/i18n/resources.ts`
+- [ ] T042 [US2] Refactor the F5 text slice while keeping focused tests green in `src/features/assistants/liveChildCoach.ts`, `src/state/usePrototypeStore.ts`, and `src/components/family-growth/LiveChildCoachPanel.tsx`
+
+**Checkpoint**: Each accepted intent produces one terminal result or deterministic safe exit; no
+band has unrestricted chat and no remote result changes persistent authority.
+
+---
+
+## Phase 5: User Story 3 — Guardian controls live Child access and data (Priority: P2)
+
+**Goal**: Separate text and voice grants, Parent reauthentication, Child notice/decline, immediate
+revocation, and transient deletion without claiming production consent/authentication.
+
+**Independent Test**: Grant/revoke one capability for one synthetic test profile, confirm the
+other capability/profile remains off, invalidate pending calls, and inspect deletion/control state.
+
+### RED tests
+
+- [ ] T043 [P] [US3] Write separate grant/version/expiry/revoke/reauth/profile-isolation tests in `tests/live-child-ai-grants.test.ts`
+- [ ] T044 [P] [US3] Write Parent permission and Child notice/decline copy/flow tests in `tests/live-child-ai-permissions-ui.test.tsx`
+
+### GREEN implementation and integration
+
+- [ ] T045 [US3] Add synthetic implementation-only text/voice grant models and validation without changing production claims in `src/models/boundedAi.ts` and `src/features/access/index.ts`
+- [ ] T046 [US3] Add grant issuance/revocation/version checks and pending-request invalidation in `src/services/mock/boundedAi.ts` and `src/state/usePrototypeStore.ts`
+- [ ] T047 [US3] Add separate default-off text and voice permission actions behind Parent reauthentication in `app/parent/settings/permissions.tsx`
+- [ ] T048 [US3] Add equivalent Arabic/English purpose, risk, provider-blocked, notice, decline, revoke, and deletion strings in `src/i18n/resources.ts`
+- [ ] T049 [US3] Refactor the grant slice while keeping focused tests green in `src/models/boundedAi.ts`, `src/services/mock/boundedAi.ts`, and `src/state/usePrototypeStore.ts`
+
+**Checkpoint**: Synthetic fixture grants are visibly not production consent/auth; revocation and
+profile/task changes fail closed before inference and display.
+
+---
+
+## Phase 6: User Story 4 — Child reviews a push-to-talk transcript (Priority: P3)
+
+**Goal**: Implement separately gated ages-12–14 foreground held recording, transcript review,
+delete-before-send, explicit text-only Coach send, and complete transient cleanup.
+
+**Independent Test**: Use fake native media/file/transcription adapters to exercise permission,
+capture, release, background/interruption, review/delete/send, stale/reset, limits, and cleanup;
+then compile the native adapter without activating it or using real audio.
+
+### RED tests
+
+- [ ] T050 [P] [US4] Write pure voice state-machine transition and invalid-transition tests in `tests/live-voice-capture.test.ts`
+- [ ] T051 [P] [US4] Write fake recorder/file cleanup/transcriber and text-only Coach handoff tests in `tests/live-voice-services.test.ts`
+- [ ] T052 [P] [US4] Write voice Worker auth/size/type/transcript/deletion/failure tests in `tests/gateway-voice-transcription.test.ts`
+- [ ] T053 [P] [US4] Write panel age/grant/permission/held-action/review/delete/send/accessibility tests in `tests/live-voice-ui.test.tsx`
+- [ ] T054 [P] [US4] Write app background/route/task/profile/grant/sign-out/reset integration tests in `tests/live-voice-integration.test.tsx`
+
+### GREEN implementation and integration
+
+- [ ] T055 [US4] Implement the pure foreground voice state machine and bounded transcript validation in `src/features/assistants/liveVoiceCapture.ts`
+- [ ] T056 [US4] Implement cache-file inspection/deletion and Expo Audio recorder adapters in `src/services/native/ExpoVoiceCaptureService.ts` and `src/services/native/index.ts`
+- [ ] T057 [US4] Implement prepared and HTTPS transcription services with blocked-token fallback in `src/services/mock/boundedAi.ts`, `src/services/remote/GatewayVoiceTranscriptionService.ts`, and `src/services/remote/index.ts`
+- [ ] T058 [US4] Add the transcription Worker route, remeasured limits, text-only response, and deletion handling in `workers/ghaf-ai-gateway/src/index.ts`
+- [ ] T059 [US4] Configure microphone permission while keeping background recording/playback false in `app.config.ts`
+- [ ] T060 [US4] Add ephemeral voice state/actions, text-only Coach send, stop/cleanup invalidation, and reset integration in `src/state/usePrototypeStore.ts`
+- [ ] T061 [US4] Build the ages-12–14 held push-to-talk/transcript review panel in `src/components/family-growth/LiveVoiceCapturePanel.tsx`
+- [ ] T062 [US4] Integrate the voice panel into the existing Child support section without changing current P0 profiles in `app/child/task.tsx`
+- [ ] T063 [US4] Add equivalent Arabic/English permission, recording, review, delete, send, fallback, and cleanup strings in `src/i18n/resources.ts`
+- [ ] T064 [US4] Refactor the voice slice while keeping focused tests green in `src/features/assistants/liveVoiceCapture.ts`, `src/services/native/ExpoVoiceCaptureService.ts`, and `src/components/family-growth/LiveVoiceCapturePanel.tsx`
+
+**Checkpoint**: Voice code is independently default off, current profiles expose no real capture,
+raw audio never enters Coach generation, and activation remains blocked on external/native gates.
+
+---
+
+## Phase 7: Cross-cutting integration and evidence
+
+**Purpose**: Prove flags-off regression, zero effects, reset, privacy, bilingual UI, and build health
+across all stories.
+
+- [ ] T065 [P] Write combined flag independence, fallback, zero-effects, and exact reset tests in `tests/bounded-ai-integration.test.tsx`
+- [ ] T066 [P] Add Worker no-content log/error canaries and operation-isolation tests in `tests/bounded-ai-gateway.test.ts`
+- [ ] T067 Run all Feature 004 focused RED/GREEN suites and record exact evidence in `specs/004-bounded-live-ai/tasks.md`
+- [ ] T068 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, and full `npm test`; record exact evidence in `specs/004-bounded-live-ai/tasks.md`
+- [ ] T069 Run Expo dependency/config checks plus web and Android JavaScript exports; record exact evidence in `specs/004-bounded-live-ai/tasks.md`
+- [ ] T070 Run Git whitespace, tracked-state, public-bundle secret, and scoped security scans; record exact evidence in `specs/004-bounded-live-ai/tasks.md`
+- [ ] T071 Update truthful implementation/blocked evidence in `PROTOTYPE_LIMITATIONS.md`, `PRODUCT.md`, and `DEMO_RUNBOOK.md`
+- [ ] T072 Complete the implementation handoff, release ownership, and unchanged external gates in `TEAM_OWNERSHIP.md`
+
+---
+
+## Dependencies and execution order
+
+### Phase dependencies
+
+- Phase 1 has no dependency.
+- Phase 2 depends on Phase 1 and blocks every user story.
+- US1 depends on Phase 2 and is the first independently valuable slice.
+- US2 depends on Phase 2; it does not depend on F4 behavior.
+- US3 depends on Phase 2 and must complete before store/UI activation paths for US2/US4 can be
+  considered complete.
+- US4 depends on Phase 2, US2 bounded-text validation, and US3 separate voice grants.
+- Phase 7 depends on every implemented story.
+
+### User-story dependency graph
+
+```text
+Setup → Foundation → US1
+                   → US2 ─┐
+                   → US3 ─┼→ US4
+                          └→ Cross-cutting validation
+```
+
+### Within each story
+
+- RED tests must fail for missing behavior before implementation.
+- Closed schemas/models precede providers.
+- Providers precede store commands.
+- Store commands precede UI integration.
+- Local/fake provider evidence precedes any remote/native adapter claim.
+- Focused tests pass before a cohesive commit.
+
+### Parallel opportunities
+
+- T006, T008, and T014 touch separate test files.
+- Within US1, T018–T022 are independent RED files.
+- Within US2, T030–T034 are independent RED files.
+- Within US4, T050–T054 are independent RED files.
+- F4 and the pure F5 text policy can proceed independently after Phase 2 if separate writers reserve
+  non-overlapping files; store/registry/resources integration remains serialized.
+
+## Parallel example: User Story 1
+
+```text
+Task: T018 request/suggestion contract tests in tests/parent-task-drafting.test.ts
+Task: T019 authority mutation tests in tests/parent-task-drafting-authority.test.ts
+Task: T020 remote adapter tests in tests/gateway-parent-task-drafting.test.ts
+Task: T022 UI source/component tests in tests/parent-task-drafting-ui.test.tsx
+```
+
+## Implementation strategy
+
+### MVP first
+
+1. Complete Setup and Foundation.
+2. Complete US1 F4 Parent drafting.
+3. Validate and commit the independent F4 slice with all flags false.
+4. Add US2 and US3 together because live Child text requires the grant boundary.
+5. Add US4 only after the bounded-text and separate-grant contracts are green.
+
+### Incremental delivery
+
+- Commit planning/setup separately.
+- Commit foundational contracts/flags/prepared providers.
+- Commit F4 policy/service/store/UI.
+- Commit F5 text plus grants.
+- Commit voice state/native/transcription/UI.
+- Commit cross-cutting evidence/documentation.
+
+No commit activates a flag, deploys a Worker, calls a provider, or marks external evidence passed.
+
+## Evidence log
+
+Implementation commands and exact counts are appended here as tasks complete. `PASSED` applies only
+to the named evidence; external gates remain as defined in `quickstart.md`.
