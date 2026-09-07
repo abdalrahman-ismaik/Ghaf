@@ -104,6 +104,36 @@ toolchain and use it consistently:
   WSL and attach the phone to WSL with `usbipd-win`. While attached to WSL, the phone is unavailable
   to Windows Android Studio; build from the WSL terminal, or use Android Studio running on Linux.
 
+If Expo reports that `/home/<user>/Android/Sdk` is missing and finds no device, the command is
+running in WSL while the Android toolchain and phone are still owned by Windows. Do not point the
+Linux `ANDROID_HOME` at the Windows SDK under `/mnt/c`; switch to the Windows-owned workflow or
+finish the WSL-owned setup below.
+
+On the current Ghaf workstation, use the existing Windows checkout and Android Studio toolchain.
+From WSL, enter Windows PowerShell:
+
+```bash
+powershell.exe -NoProfile
+```
+
+Then build from the Windows filesystem. Change the checkout or cache paths if needed:
+
+```powershell
+$GhafWindowsRoot="D:\Ghaf-device"
+$env:JAVA_HOME="C:\Program Files\Android\Android Studio\jbr"
+$env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
+$env:GRADLE_USER_HOME="D:\Ghaf-gradle-home"
+$env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
+Set-Location $GhafWindowsRoot
+adb devices -l
+npm.cmd ci
+npx.cmd expo run:android --device SM_T835
+```
+
+The model name after `--device` is specific to the currently connected tablet. Use the model shown
+by `adb devices -l`, or omit the value and select the physical device interactively. Keep the
+Windows checkout at the same Git revision as the WSL source checkout before rebuilding native code.
+
 For the WSL-owned workflow, install `usbipd-win`, update WSL, find the phone's bus ID, and share it
 once from an **Administrator PowerShell**:
 
@@ -141,7 +171,7 @@ usbipd detach --busid $GhafUsbBusId
 
 #### 3. First build and installation from the terminal
 
-From the repository root, run:
+From the repository root in the same operating system that owns the Android SDK and phone, run:
 
 ```bash
 npm ci
@@ -190,6 +220,20 @@ adb devices -l
 adb reverse tcp:8081 tcp:8081
 npx expo start --localhost
 ```
+
+When Metro runs from this repository in WSL but Windows still owns the connected tablet, call the
+Windows ADB executable explicitly instead of Linux `adb`:
+
+```bash
+GHAF_WINDOWS_ADB="/mnt/c/Users/windows-user/AppData/Local/Android/Sdk/platform-tools/adb.exe"
+GHAF_ANDROID_SERIAL="serial-from-adb-devices"
+"$GHAF_WINDOWS_ADB" devices -l
+"$GHAF_WINDOWS_ADB" -s "$GHAF_ANDROID_SERIAL" reverse tcp:8081 tcp:8081
+npx expo start --localhost
+```
+
+Replace the Windows user and serial placeholders with Android Studio's SDK location and the first
+column from `adb devices -l`.
 
 Open Ghaf on the phone and use Fast Refresh. Run `npx expo run:android --device` again after adding
 or changing a native dependency, an Expo config plugin, Android configuration, or native code.

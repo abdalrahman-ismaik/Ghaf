@@ -1,5 +1,25 @@
 # Team Ownership
 
+## 2026-09-07 WSL/Windows Android Command Correction Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Make the physical-device guide explicit for the current workstation, where the source
+terminal is WSL but Android Studio, the Android SDK, ADB, and the USB tablet are Windows-owned.
+Document the exact Windows-native build invocation and the WSL Metro/Windows ADB daily loop without
+changing application code, dependencies, native configuration, or product behavior.
+
+**Status**: Complete and released — the guide now explains the exact missing-Linux-SDK/no-device
+failure mode, prohibits pointing Linux tooling at the Windows SDK, provides the Windows-native
+build command from a WSL session, and provides a Windows-ADB/WSL-Metro daily loop. The Windows SDK,
+JDK, connected `SM_T835`, direct Windows ADB invocation from WSL, USB reverse, Metro listener, and
+clean Windows native checkout were verified. Targeted Prettier and Git whitespace checks passed.
+No app code, dependencies, native configuration, or broader Android evidence changed; all protected
+local configuration, design inputs, generated output, and other worktree files remained outside
+this window.
+
 ## 2026-09-07 Physical Android Verification Correction Window
 
 **Owner and only writer**: `/root`
