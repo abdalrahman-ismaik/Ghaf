@@ -392,6 +392,42 @@ export class ParentOnboardingController {
     });
   }
 
+  resumeRememberedParent(now: string): ServiceResult<ParentOnboardingHandoff> {
+    if (this.parentSession || !this.completionReceipt || this.status !== 'signed_out') {
+      return failure(
+        'INVALID_TRANSITION',
+        'A signed-out Parent with a restored family receipt is required',
+      );
+    }
+    const signedIn = this.access.signInParent({
+      sessionId: this.nextSessionId(),
+      parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+      deviceId: this.config.deviceId,
+      now,
+    });
+    if (!signedIn.ok) return signedIn;
+    const authorized = this.access.authorizeCapability({
+      session: signedIn.data,
+      capability: 'enter_parent_experience',
+      now,
+    });
+    if (!authorized.ok) {
+      const terminated = this.access.terminateParentSession({ session: signedIn.data, now });
+      return terminated.ok
+        ? authorized
+        : failure('INVALID_TRANSITION', 'Remembered Parent access could not be safely restored');
+    }
+    this.parentSession = signedIn.data;
+    this.status = 'authenticated_parent';
+    return success({
+      authorized: true,
+      capability: 'enter_parent_experience',
+      destination: '/parent',
+      receiptId: this.completionReceipt.receiptId,
+      origin: 'synthetic',
+    });
+  }
+
   approveChildPairing(input: {
     readonly requestId: string;
     readonly childId: SyntheticChildId;

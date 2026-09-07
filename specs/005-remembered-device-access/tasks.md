@@ -42,14 +42,14 @@ reliably removes the preference.
 **Independent Test**: Remember Parent, run startup policy with fresh controllers, verify Parent
 authority; clear on logout and prove a second startup remains signed out.
 
-- [ ] T008 [US1] Write failing controller/bootstrap/store tests for Parent opt-in, opt-out, fresh
+- [x] T008 [US1] Write failing controller/bootstrap/store tests for Parent opt-in, opt-out, fresh
   authority, mismatch denial, write failure, and clear-before-logout failure behavior in
   `tests/device-remembered-access.test.tsx`
-- [ ] T009 [US1] Add fresh remembered-Parent resume to
+- [x] T009 [US1] Add fresh remembered-Parent resume to
   `src/features/access/parentOnboarding/controller.ts`
-- [ ] T010 [US1] Integrate affinity view, Parent preference, synchronous bootstrap, successful-entry
+- [x] T010 [US1] Integrate affinity view, Parent preference, synchronous bootstrap, successful-entry
   persistence, and explicit logout clearing in `src/state/usePrototypeStore.ts`
-- [ ] T011 [US1] Run Parent-focused tests GREEN and existing Parent/access suites for regression
+- [x] T011 [US1] Run Parent-focused tests GREEN and existing Parent/access suites for regression
 
 **Checkpoint**: Parent remembrance is optional, fresh, local, and removable.
 
@@ -63,13 +63,13 @@ same eligible Child without credential entry.
 **Independent Test**: Pair Salem, run startup policy with fresh controllers, then revoke/reset and
 prove restore is denied.
 
-- [ ] T012 [US2] Write failing controller/bootstrap/store tests for automatic Child affinity,
+- [x] T012 [US2] Write failing controller/bootstrap/store tests for automatic Child affinity,
   restart resume, Parent replacement, configured-profile binding, revocation, reset, and invalid
   marker denial in `tests/device-remembered-access.test.tsx`
-- [ ] T013 [US2] Add paired Child resume to `src/features/access/childAccess.ts`
-- [ ] T014 [US2] Integrate Child affinity on completed pairing plus matching revocation/reset
+- [x] T013 [US2] Add paired Child resume to `src/features/access/childAccess.ts`
+- [x] T014 [US2] Integrate Child affinity on completed pairing plus matching revocation/reset
   clearing in `src/state/usePrototypeStore.ts`
-- [ ] T015 [US2] Run Child-focused tests GREEN and existing Child/access/reset suites for regression
+- [x] T015 [US2] Run Child-focused tests GREEN and existing Child/access/reset suites for regression
 
 **Checkpoint**: A valid paired Child resumes; revoked/reset/mismatched Children never do.
 
@@ -83,10 +83,10 @@ eligible Child, with no simultaneous authority.
 **Independent Test**: Salem → Parent access → Parent verification → Parent logout → Salem, plus
 cancel/revoke/error branches.
 
-- [ ] T016 [US3] Write failing store and source-presentation tests for authority ordering,
+- [x] T016 [US3] Write failing store and source-presentation tests for authority ordering,
   temporary context, cancel, Parent logout return, revoke denial, and protected active-Parent Child
   entry in `tests/device-remembered-access.test.tsx`
-- [ ] T017 [US3] Implement begin/cancel/resume temporary Parent access actions and sequential
+- [x] T017 [US3] Implement begin/cancel/resume temporary Parent access actions and sequential
   authority transitions in `src/state/usePrototypeStore.ts`
 - [ ] T018 [US3] Replace Child-to-Parent generic logout calls with the dedicated handoff in
   `app/child/index.tsx`, `app/child/settings.tsx`, `app/child/task.tsx`, `app/garden.tsx`, and

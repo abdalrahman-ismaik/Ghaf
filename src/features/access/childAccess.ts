@@ -229,6 +229,30 @@ export class ChildAccessController {
     return authorized.ok ? success(this.getView()) : authorized;
   }
 
+  resumeRememberedChild(childId: SyntheticChildId, now: string): ServiceResult<ChildAccessView> {
+    const device = this.devices.get(childId);
+    if (this.session || this.status !== 'signed_out' || !device || device.status !== 'paired') {
+      return failure(
+        'INVALID_TRANSITION',
+        'A signed-out Child with an active restored pairing is required',
+      );
+    }
+    this.selectedChildId = childId;
+    const signedIn = this.signInPairedDevice(childId, now);
+    if (!signedIn.ok) {
+      this.clearLocalSession();
+      return signedIn;
+    }
+    const authorized = this.authorizeChildExperience(now);
+    if (!authorized.ok) {
+      const signedOut = this.signOut(now);
+      return signedOut.ok
+        ? authorized
+        : failure('INVALID_TRANSITION', 'Remembered Child access could not be safely restored');
+    }
+    return success(this.getView());
+  }
+
   getOwnPermissions(now: string): ServiceResult<ChildPermissionGrant> {
     if (!this.session || this.status !== 'authenticated_child' || !this.selectedChildId) {
       return failure('INVALID_TRANSITION', 'An active synthetic Child session is required');

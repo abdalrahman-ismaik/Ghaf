@@ -6,6 +6,9 @@ import {
 } from '../../models/deviceAccess';
 import type { DomainError, DomainResult, SyntheticChildId } from '../../models/familyGrowth';
 import type { LocalFamilyRecord } from '../../models/localFamily';
+import type { ServiceResult } from '../../services/interfaces';
+import type { ChildAccessController } from './childAccess';
+import type { ParentOnboardingController } from './parentOnboarding';
 
 const RECORD_KEYS = [
   'schemaVersion',
@@ -156,7 +159,48 @@ export function deviceAffinityMatchesFamily(
   }
   const childId = record.principal.childId;
   return (
-    family.children.some((child) => child.id === childId) &&
-    family.pairedChildIds.includes(childId)
+    family.children.some((child) => child.id === childId) && family.pairedChildIds.includes(childId)
   );
+}
+
+export interface RestoredRememberedExperience {
+  readonly activeExperience: 'parent' | 'child';
+  readonly activeChildId: SyntheticChildId | null;
+}
+
+export function restoreRememberedDeviceAccess(input: {
+  readonly affinity: DeviceAffinityRecord;
+  readonly family: LocalFamilyRecord;
+  readonly parent: ParentOnboardingController;
+  readonly child: ChildAccessController;
+  readonly now: string;
+}): ServiceResult<RestoredRememberedExperience> {
+  if (!deviceAffinityMatchesFamily(input.affinity, input.family)) {
+    return {
+      ok: false,
+      error: {
+        code: 'INVALID_TRANSITION',
+        message: 'Remembered device access does not match the local family and pairing state',
+        retryable: false,
+        fallbackAvailable: false,
+      },
+    };
+  }
+  if (input.affinity.principal.role === 'parent') {
+    const resumed = input.parent.resumeRememberedParent(input.now);
+    if (!resumed.ok) return resumed;
+    return successRestore({ activeExperience: 'parent', activeChildId: null });
+  }
+  const resumed = input.child.resumeRememberedChild(input.affinity.principal.childId, input.now);
+  if (!resumed.ok) return resumed;
+  return successRestore({
+    activeExperience: 'child',
+    activeChildId: input.affinity.principal.childId,
+  });
+}
+
+function successRestore(
+  data: RestoredRememberedExperience,
+): ServiceResult<RestoredRememberedExperience> {
+  return { ok: true, data, meta: { origin: 'synthetic', fallbackUsed: false } };
 }
