@@ -1,5 +1,25 @@
 # Team Ownership
 
+## 2026-09-07 AI Services 1–3 Presentation Integration Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `specs/004-bounded-live-ai/tasks.md`,
+`src/components/AssistantIdentity.tsx`, `src/components/access/AIProfilePreview.tsx`,
+`src/components/family-growth/{ParentTaskComposer.tsx,ParentPatternSummary.tsx}`,
+`app/child/task.tsx`, `src/i18n/resources.ts`, and
+`tests/ai-services-presentation-integration.test.tsx` only.
+
+**Scope**: Integrate the already implemented AI Services 1–3 into one coherent Parent/Child
+presentation hierarchy. Clarify prepared/live origin before each action, separate prepared profile
+support style from recommended starting categories, preserve Parent ownership in Task Builder,
+make the task-bound Child Coach easier to scan, and structure the Parent summary around observable
+facts and one next question. Preserve all Feature 004 flags, grants, provider boundaries, state,
+service contracts, progression authority, and default-off behavior unchanged.
+
+**Status**: Active — UI-only reservation held. TDD, bilingual parity, RTL/LTR, long-label,
+accessibility, focused regression, full repository, and bounded visual evidence are pending.
+
 ## 2026-09-07 Feature 004 Minimal MCP Adapter Window
 
 **Owner and only writer**: `/root`

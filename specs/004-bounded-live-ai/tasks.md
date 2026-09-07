@@ -216,6 +216,26 @@ only judge-facing surface and no external activation gate changes.
 
 ---
 
+## Phase 9: AI Services 1–3 presentation integration
+
+**Purpose**: Make the prepared profile helper, Parent Guide, prepared Child Coach, and Parent
+summary read as one coherent experience after Feature 004 integration, without changing any AI,
+task, consent, reward, or progression authority.
+
+- [ ] T081 Reserve the exact UI-only boundary and document the post-Feature-004 spatial thesis in `TEAM_OWNERSHIP.md`
+- [ ] T082 Write a RED hierarchy, origin, bilingual-copy, and Parent/Child authority test in `tests/ai-services-presentation-integration.test.tsx`
+- [ ] T083 Add one reusable prepared/live assistant identity header in `src/components/AssistantIdentity.tsx`
+- [ ] T084 Restructure profile recommendations and Parent Task Builder guidance in `src/components/access/AIProfilePreview.tsx` and `src/components/family-growth/ParentTaskComposer.tsx`
+- [ ] T085 Restructure the prepared Child Coach and Parent summary hierarchy in `app/child/task.tsx` and `src/components/family-growth/ParentPatternSummary.tsx`
+- [ ] T086 Add equivalent Arabic/English presentation copy in `src/i18n/resources.ts`
+- [ ] T087 Run focused tests, repository checks, one bounded visual pass, and record exact evidence here and in `TEAM_OWNERSHIP.md`
+
+**Checkpoint**: Prepared/live origin, capability purpose, bounded action, result, and human
+authority appear in that order; one primary action remains obvious; Feature 004 flags remain
+independent/default off and every deterministic fallback remains complete.
+
+---
+
 ## Dependencies and execution order
 
 ### Phase dependencies
