@@ -119,7 +119,7 @@ export default function ChildHomeScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const returningUserWelcome = usePrototypeStore((state) => state.returningUserWelcome);
   const dismissReturningUserWelcome = usePrototypeStore(
     (state) => state.dismissReturningUserWelcome,
@@ -456,7 +456,7 @@ export default function ChildHomeScreen() {
             direction={direction}
             onPress={() => {
               setError(null);
-              const result = signOutExperience();
+              const result = beginTemporaryParentAccess();
               if (!result.ok) {
                 setError(t('errors.safeRetry'));
                 return;

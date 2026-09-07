@@ -90,7 +90,7 @@ export default function GardenScreen() {
   const recognitionLedger = usePrototypeStore((state) => state.recognitionLedger);
   const hasActiveParentExperience = usePrototypeStore(selectHasActiveParentExperience);
   const hasActiveChildExperience = usePrototypeStore(selectCanEnterChildExperience);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const consumeCelebration = usePrototypeStore((state) => state.consumeCelebration);
   const [helpOpen, setHelpOpen] = useState(false);
   const [transitionError, setTransitionError] = useState<string | null>(null);
@@ -365,7 +365,7 @@ export default function GardenScreen() {
           direction={direction}
           onLeave={() => {
             setTransitionError(null);
-            const result = signOutExperience();
+            const result = beginTemporaryParentAccess();
             if (!result.ok) {
               setTransitionError(t('errors.safeRetry'));
               return;

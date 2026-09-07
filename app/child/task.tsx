@@ -81,7 +81,7 @@ export default function ChildTaskScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const activeChildAgeBand = usePrototypeStore(
     (state): AgeBand => state.children[state.activeChildId].ageBand,
@@ -411,7 +411,7 @@ export default function ChildTaskScreen() {
           noEarlyRewardLabel={t('taskReview.noEarlyReward')}
           onAction={() => {
             setError(null);
-            const result = signOutExperience();
+            const result = beginTemporaryParentAccess();
             if (!result.ok) {
               setError(t('errors.safeRetry'));
               return;

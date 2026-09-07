@@ -9,6 +9,7 @@ import {
   AccessScreen,
   GhafIcon,
   OtpInput,
+  RememberDeviceChoice,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
@@ -25,6 +26,11 @@ export default function ParentVerificationScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const childAccess = usePrototypeStore((state) => state.childAccess);
+  const rememberParentOnThisDevice = usePrototypeStore((state) => state.rememberParentOnThisDevice);
+  const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
+  const setRememberParentOnThisDevice = usePrototypeStore(
+    (state) => state.setRememberParentOnThisDevice,
+  );
   const verifyParentCode = usePrototypeStore((state) => state.verifyParentCode);
   const completeParentOnboarding = usePrototypeStore((state) => state.completeParentOnboarding);
   const resendParentVerification = usePrototypeStore((state) => state.resendParentVerification);
@@ -252,6 +258,25 @@ export default function ParentVerificationScreen() {
         testID="parent-verification-code-input"
         value={code}
       />
+
+      {temporaryParentAccess ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.verification.temporaryParentAccess')}
+          tone="origin"
+        />
+      ) : (
+        <RememberDeviceChoice
+          body={t('access.verification.rememberDeviceBody')}
+          direction={direction}
+          disabled={isVerifying}
+          language={locale}
+          onChange={setRememberParentOnThisDevice}
+          selected={rememberParentOnThisDevice}
+          title={t('access.verification.rememberDeviceTitle')}
+        />
+      )}
 
       <View style={styles.secondaryActions}>
         <Button

@@ -88,10 +88,10 @@ cancel/revoke/error branches.
   entry in `tests/device-remembered-access.test.tsx`
 - [x] T017 [US3] Implement begin/cancel/resume temporary Parent access actions and sequential
   authority transitions in `src/state/usePrototypeStore.ts`
-- [ ] T018 [US3] Replace Child-to-Parent generic logout calls with the dedicated handoff in
+- [x] T018 [US3] Replace Child-to-Parent generic logout calls with the dedicated handoff in
   `app/child/index.tsx`, `app/child/settings.tsx`, `app/child/task.tsx`, `app/garden.tsx`, and
   `app/circle.tsx`; preserve explicit Parent logout
-- [ ] T019 [US3] Run handoff tests GREEN and existing route/access tests for regression
+- [x] T019 [US3] Run handoff tests GREEN and existing route/access tests for regression
 
 **Checkpoint**: Shared-device use is asymmetric, explicit, and mutually exclusive.
 
@@ -99,15 +99,15 @@ cancel/revoke/error branches.
 
 ## Phase 6: Bilingual accessible presentation
 
-- [ ] T020 [US1] Write failing source/component tests for unchecked Parent choice, accessible
+- [x] T020 [US1] Write failing source/component tests for unchecked Parent choice, accessible
   checkbox semantics, temporary Child-device notice, and Arabic/English parity in
   `tests/device-remembered-access.test.tsx`
-- [ ] T021 [US1] Build `src/components/access/RememberDeviceChoice.tsx`, export it, and integrate it
+- [x] T021 [US1] Build `src/components/access/RememberDeviceChoice.tsx`, export it, and integrate it
   in `app/access/parent/verification.tsx`
-- [ ] T022 [US3] Make Parent sign-in cancellation return to the remembered Child in
+- [x] T022 [US3] Make Parent sign-in cancellation return to the remembered Child in
   `app/access/parent/sign-in.tsx`; update Child actions and additive bilingual copy in
   `src/i18n/resources.ts`
-- [ ] T023 Run the focused UI/source tests GREEN, then run the Impeccable detector once across only
+- [x] T023 Run the focused UI/source tests GREEN, then run the Impeccable detector once across only
   the changed UI targets
 
 ---

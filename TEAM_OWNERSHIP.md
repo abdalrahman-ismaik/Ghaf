@@ -14,7 +14,8 @@ in `AGENTS.md` through the configured agent-context hook, and
 `src/state/usePrototypeStore.ts`, `src/components/access/{index.ts,RememberDeviceChoice.tsx}`,
 `app/access/parent/{sign-in.tsx,verification.tsx}`, `app/child/{index.ts,settings.tsx,task.tsx}`,
 `app/{garden.tsx,circle.tsx}`,
-`src/i18n/resources.ts`, `tests/device-remembered-access.test.tsx`, and the narrowly scoped
+`src/i18n/resources.ts`,
+`tests/{device-remembered-access.test.tsx,r003-screen-flow.test.ts}`, and the narrowly scoped
 truthful-boundary updates in `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
 
 **Scope**: Add an explicit Parent remember-this-device choice and automatic device-local Child

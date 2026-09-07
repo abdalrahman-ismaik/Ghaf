@@ -142,6 +142,11 @@ export const resources = {
           loading: 'جارٍ التحقق…',
           invalidCode: 'تحقق من الرمز وحاول مجددًا.',
           offline: 'يمكنك متابعة هذه الخطوة دون اتصال.',
+          rememberDeviceTitle: 'تذكّرني على هذا الجهاز',
+          rememberDeviceBody:
+            'يفتح غاف مساحة وليّ الأمر تلقائيًا حتى تسجّل الخروج. لا يُحفظ رمز التحقق.',
+          temporaryParentAccess:
+            'هذا جهاز طفل مرتبط. دخول وليّ الأمر مؤقت، وعند تسجيل الخروج يعود غاف إلى مساحة الطفل تلقائيًا.',
         },
         setup: {
           progress: '{{step}} من {{total}}',
@@ -1079,6 +1084,8 @@ export const resources = {
           ownPermissions: 'ما هو متاح لي',
           askParent: 'اطلب من وليّ الأمر تغيير أي سماح.',
           signOut: 'الخروج من مساحة الطفل',
+          parentAccess: 'دخول وليّ الأمر',
+          parentAccessBody: 'انتقل مؤقتًا إلى دخول وليّ الأمر من دون إلغاء ربط هذا الجهاز.',
         },
       },
       r002bLeague: {
@@ -1826,6 +1833,11 @@ export const resources = {
           loading: 'Verifying…',
           invalidCode: 'Check the code and try again.',
           offline: 'You can continue this step while offline.',
+          rememberDeviceTitle: 'Remember me on this device',
+          rememberDeviceBody:
+            'Ghaf opens Parent space automatically until you sign out. The verification code is not saved.',
+          temporaryParentAccess:
+            'This is a paired Child device. Parent access is temporary; signing out returns to Child space automatically.',
         },
         setup: {
           progress: '{{step}} of {{total}}',
@@ -2793,6 +2805,8 @@ export const resources = {
           ownPermissions: 'What I can use',
           askParent: 'Ask a Parent to change a permission.',
           signOut: 'Leave Child space',
+          parentAccess: 'Parent access',
+          parentAccessBody: 'Temporarily open Parent sign-in without unpairing this device.',
         },
       },
       r002bLeague: {

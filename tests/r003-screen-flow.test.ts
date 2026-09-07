@@ -139,20 +139,27 @@ describe('R003 complete screen journey', () => {
     expect(reward).not.toContain('projectFamilyRewardRuntime');
   });
 
-  it('fails closed before navigating away from every session sign-out', () => {
-    const routes = [
+  it('fails closed before navigating away from every session sign-out or temporary handoff', () => {
+    const temporaryParentRoutes = [
       'app/child/index.tsx',
       'app/child/settings.tsx',
       'app/child/task.tsx',
       'app/circle.tsx',
       'app/garden.tsx',
+    ] as const;
+    const signOutRoutes = [
       'app/parent/check-in.tsx',
       'app/parent/index.tsx',
       'app/parent/settings/index.tsx',
       'app/parent/task/review.tsx',
     ] as const;
 
-    for (const route of routes) {
+    for (const route of temporaryParentRoutes) {
+      const contents = source(route);
+      expect(contents, route).toMatch(/const result = beginTemporaryParentAccess\(\)/u);
+      expect(contents, route).toMatch(/if \(!result\.ok\)/u);
+    }
+    for (const route of signOutRoutes) {
       const contents = source(route);
       expect(contents, route).not.toMatch(/^\s*signOutExperience\(\);/mu);
       expect(contents, route).toMatch(/const result = signOutExperience\(\)/u);

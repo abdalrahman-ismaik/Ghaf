@@ -16,6 +16,10 @@ export default function ParentSignInScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
+  const cancelTemporaryParentAccess = usePrototypeStore(
+    (state) => state.cancelTemporaryParentAccess,
+  );
   const requestExistingParentVerification = usePrototypeStore(
     (state) => state.requestExistingParentVerification,
   );
@@ -26,7 +30,18 @@ export default function ParentSignInScreen() {
   const signUpHref =
     preview === 'offline' ? '/access/parent/sign-up?preview=offline' : '/access/parent/sign-up';
 
-  const goBack = useCallback(() => router.replace('/'), [router]);
+  const goBack = useCallback(() => {
+    if (temporaryParentAccess) {
+      const returned = cancelTemporaryParentAccess();
+      if (!returned.ok) {
+        setError(t('access.states.interrupted'));
+        return;
+      }
+      router.replace('/child');
+      return;
+    }
+    router.replace('/');
+  }, [cancelTemporaryParentAccess, router, t, temporaryParentAccess]);
 
   useEffect(() => {
     if (Platform.OS !== 'android') return undefined;

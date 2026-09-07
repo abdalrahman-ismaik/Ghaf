@@ -17,6 +17,7 @@ import {
 } from '../src/features/access';
 import { createLocalFamilyRecord } from '../src/features/local-family';
 import { localFamilyRecordToReceipt } from '../src/features/local-family';
+import { resources } from '../src/i18n/resources';
 import type { LocalFamilyRecord } from '../src/models/localFamily';
 import {
   createDeviceAccessRepository,
@@ -484,9 +485,43 @@ describe('Feature 005 store integration', () => {
 describe('Feature 005 presentation source contract', () => {
   const source = (path: string) => readFileSync(join(process.cwd(), path), 'utf8');
 
-  it.todo('shows an accessible unchecked Parent choice or a temporary Child-device notice');
-  it.todo('uses the dedicated Child-to-Parent handoff from every Child-facing switch action');
-  it.todo('keeps Arabic and English device-access copy structurally paired');
+  it('shows an accessible unchecked Parent choice or a temporary Child-device notice', () => {
+    const choice = source('src/components/access/RememberDeviceChoice.tsx');
+    const verification = source('app/access/parent/verification.tsx');
 
-  void source;
+    expect(choice).toContain('accessibilityRole="checkbox"');
+    expect(choice).toContain('accessibilityState={{ checked: selected, disabled }}');
+    expect(choice).toContain('minHeight: layout.touchTarget');
+    expect(verification).toContain('<RememberDeviceChoice');
+    expect(verification).toContain('selected={rememberParentOnThisDevice}');
+    expect(verification).toContain("t('access.verification.temporaryParentAccess')");
+    expect(verification).toContain('temporaryParentAccess ? (');
+  });
+
+  it('uses the dedicated Child-to-Parent handoff from every Child-facing switch action', () => {
+    for (const path of [
+      'app/child/index.tsx',
+      'app/child/settings.tsx',
+      'app/child/task.tsx',
+      'app/garden.tsx',
+      'app/circle.tsx',
+    ]) {
+      expect(source(path), path).toContain('beginTemporaryParentAccess');
+    }
+  });
+
+  it('keeps Arabic and English device-access copy structurally paired', () => {
+    const arabic = resources.ar.translation.access.verification;
+    const english = resources.en.translation.access.verification;
+    for (const key of [
+      'rememberDeviceTitle',
+      'rememberDeviceBody',
+      'temporaryParentAccess',
+    ] as const) {
+      expect(arabic).toHaveProperty(key);
+      expect(english).toHaveProperty(key);
+    }
+    expect(resources.ar.translation.r003.childSettings).toHaveProperty('parentAccess');
+    expect(resources.en.translation.r003.childSettings).toHaveProperty('parentAccess');
+  });
 });
