@@ -1,11 +1,14 @@
 import { validateHostHeader } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 
+import { childCoachCapabilityMatches, childCoachRequestIsMcpEligible } from './child';
 import {
   childCoachTextRequestV1Schema,
+  MAX_VOICE_BYTES,
   parentTaskDraftRequestV1Schema,
+  voiceTranscriptionMetadataV1Schema,
   type CapabilityTokenClaims,
-  type ChildCoachTextRequestV1,
+  type VoiceTranscriptionMetadataV1,
 } from '../../../src/models/boundedAi';
 import {
   GHAF_MCP_PROTOCOL_VERSION,
@@ -23,6 +26,7 @@ import {
   BOUNDED_AI_OPERATION_POLICIES,
   MemoryReplayStore,
   reserveOperationCapacity,
+  readBoundedBytes,
   resolveAllowedOrigin,
   readBoundedJson,
   safeErrorResponse,
@@ -33,8 +37,9 @@ import {
   type RateLimitStore,
   type ReplayStore,
 } from './security';
+import { executeVoiceTranscription, type VoiceTranscriptionOperationEnv } from './voice';
 
-export interface AiGatewayWorkerEnv extends BoundedAiOperationEnv {
+export interface AiGatewayWorkerEnv extends BoundedAiOperationEnv, VoiceTranscriptionOperationEnv {
   readonly PARENT_DRAFT_RATE_LIMITER: RateLimitStore;
   readonly CHILD_TEXT_RATE_LIMITER: RateLimitStore;
   readonly CHILD_VOICE_RATE_LIMITER: RateLimitStore;
@@ -70,14 +75,14 @@ const childCoachEnvelopeSchema = z
   })
   .strict();
 
-function childGrantMatches(
+function voiceGrantMatches(
   claims: CapabilityTokenClaims,
-  request: ChildCoachTextRequestV1,
+  metadata: VoiceTranscriptionMetadataV1,
 ): boolean {
   return (
     claims.role === 'child' &&
-    claims.grantVersion === request.grantVersion &&
-    claims.noticeVersion === request.noticeVersion
+    claims.grantVersion === metadata.grantVersion &&
+    claims.noticeVersion === metadata.noticeVersion
   );
 }
 
@@ -137,7 +142,7 @@ async function handleChildCoach(
   if (!body.ok) return safeErrorResponse('INVALID_INPUT', 400, origin, true);
   const envelope = childCoachEnvelopeSchema.safeParse(body.value);
   if (!envelope.success) return safeErrorResponse('INVALID_INPUT', 400, origin, true);
-  if (!childGrantMatches(claims, envelope.data.request)) {
+  if (!childCoachCapabilityMatches(claims, envelope.data.request)) {
     return safeErrorResponse('FORBIDDEN', 403, origin, true);
   }
   return operationResponse(
@@ -145,6 +150,124 @@ async function handleChildCoach(
     'coach_approved_task_v1',
     origin,
   );
+}
+
+const voiceFormFields = new Set([
+  'operation',
+  'schemaVersion',
+  'requestId',
+  'bindingNonce',
+  'locale',
+  'taskArchetypeId',
+  'catalogVersion',
+  'approvedTaskVersion',
+  'noticeVersion',
+  'grantVersion',
+  'durationMs',
+  'declaredByteCount',
+  'mediaType',
+  'synthetic',
+  'audio',
+]);
+
+type RequestFormData = Awaited<ReturnType<Request['formData']>>;
+
+function formText(form: RequestFormData, name: string): string | null {
+  const values = form.getAll(name);
+  return values.length === 1 && typeof values[0] === 'string' ? values[0] : null;
+}
+
+async function handleVoiceTranscription(
+  request: Request,
+  env: AiGatewayWorkerEnv,
+  origin: string | null,
+  claims: CapabilityTokenClaims,
+): Promise<Response> {
+  const contentType = request.headers.get('content-type') ?? '';
+  if (!contentType.toLowerCase().startsWith('multipart/form-data;')) {
+    return safeErrorResponse('UNSUPPORTED_MEDIA_TYPE', 415, origin, true);
+  }
+  const boundedBody = await readBoundedBytes(
+    request,
+    BOUNDED_AI_OPERATION_POLICIES.transcribe_child_task_voice_v1.maxBodyBytes,
+  );
+  if (!boundedBody.ok) {
+    return safeErrorResponse('BODY_TOO_LARGE', 413, origin, true);
+  }
+
+  let form: RequestFormData;
+  try {
+    form = await new Request(request.url, {
+      method: 'POST',
+      headers: { 'content-type': contentType },
+      body: boundedBody.value.slice().buffer as ArrayBuffer,
+    }).formData();
+  } catch {
+    return safeErrorResponse('INVALID_INPUT', 400, origin, true);
+  } finally {
+    boundedBody.value.fill(0);
+  }
+  const formKeys = (form as RequestFormData & { keys(): IterableIterator<string> }).keys();
+  if ([...formKeys].some((name) => !voiceFormFields.has(name))) {
+    return safeErrorResponse('INVALID_INPUT', 400, origin, true);
+  }
+  const audioValues = form.getAll('audio');
+  const audio = audioValues.length === 1 ? audioValues[0] : null;
+  if (!(audio instanceof Blob)) {
+    return safeErrorResponse('INVALID_INPUT', 400, origin, true);
+  }
+
+  const metadata = voiceTranscriptionMetadataV1Schema.safeParse({
+    operation: formText(form, 'operation'),
+    schemaVersion: formText(form, 'schemaVersion'),
+    requestId: formText(form, 'requestId'),
+    bindingNonce: formText(form, 'bindingNonce'),
+    locale: formText(form, 'locale'),
+    taskArchetypeId: formText(form, 'taskArchetypeId'),
+    catalogVersion: Number(formText(form, 'catalogVersion')),
+    approvedTaskVersion: Number(formText(form, 'approvedTaskVersion')),
+    noticeVersion: Number(formText(form, 'noticeVersion')),
+    grantVersion: Number(formText(form, 'grantVersion')),
+    durationMs: Number(formText(form, 'durationMs')),
+    declaredByteCount: Number(formText(form, 'declaredByteCount')),
+    mediaType: formText(form, 'mediaType'),
+    synthetic: formText(form, 'synthetic') === 'true',
+  });
+  if (!metadata.success) return safeErrorResponse('INVALID_INPUT', 400, origin, true);
+  if (audio.type !== metadata.data.mediaType) {
+    return safeErrorResponse('UNSUPPORTED_MEDIA_TYPE', 415, origin, true);
+  }
+  if (audio.size > MAX_VOICE_BYTES) {
+    return safeErrorResponse('BODY_TOO_LARGE', 413, origin, true);
+  }
+  if (audio.size !== metadata.data.declaredByteCount) {
+    return safeErrorResponse('INVALID_INPUT', 400, origin, true);
+  }
+  if (!voiceGrantMatches(claims, metadata.data)) {
+    return safeErrorResponse('FORBIDDEN', 403, origin, true);
+  }
+
+  const result = await executeVoiceTranscription(
+    env,
+    metadata.data,
+    new Uint8Array(await audio.arrayBuffer()),
+  );
+  return result.ok
+    ? safeJsonResponse(
+        {
+          ok: true,
+          data: result.data,
+          meta: {
+            operation: 'transcribe_child_task_voice_v1',
+            schemaVersion: '1.0',
+            origin: 'live',
+            deletionOutcome: 'deleted',
+          },
+        },
+        200,
+        origin,
+      )
+    : safeErrorResponse(result.code, result.status, origin, true);
 }
 
 function rateLimiterFor(env: AiGatewayWorkerEnv, operation: BoundedAiOperation): RateLimitStore {
@@ -256,7 +379,7 @@ async function handleMcp(request: Request, env: AiGatewayWorkerEnv): Promise<Res
       authorizedOperation: operation,
       executeParentTaskDraft: (input) => executeParentTaskDraft(env, input),
       executeChildCoach: async (input) =>
-        childGrantMatches(claims, input)
+        childCoachRequestIsMcpEligible(input) && childCoachCapabilityMatches(claims, input)
           ? executeChildCoach(env, input)
           : { ok: false, code: 'FORBIDDEN', status: 403 },
     }).fetch(request, { parsedBody: body.value });
@@ -298,7 +421,7 @@ async function handle(request: Request, env: AiGatewayWorkerEnv): Promise<Respon
       ? await handleParentTaskDraft(request, env, origin)
       : operation === 'coach_approved_task_v1'
         ? await handleChildCoach(request, env, origin, authorization.claims)
-        : safeErrorResponse('BUDGET_BLOCKED', 503, origin, true);
+        : await handleVoiceTranscription(request, env, origin, authorization.claims);
   } finally {
     await capacity.release();
   }

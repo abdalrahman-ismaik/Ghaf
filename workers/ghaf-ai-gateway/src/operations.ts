@@ -13,6 +13,7 @@ import {
   createPreparedChildCoachResponse,
   createPreparedParentTaskDraftSuggestion,
 } from '../../../src/services/mock/boundedAiFixtures';
+import { childCoachRequestIsSafe } from './child';
 import { BOUNDED_AI_OPERATION_POLICIES, type GatewayErrorCode } from './security';
 
 export interface WorkersAiBinding {
@@ -225,25 +226,6 @@ export async function executeParentTaskDraft(
   return { ok: true, data: suggestion.data };
 }
 
-const prohibitedChildInputPatterns: readonly RegExp[] = [
-  /(?:\+?\d[\d\s().-]{7,}\d)|(?:[٠-٩۰-۹][٠-٩۰-۹\s.-]{7,}[٠-٩۰-۹])/u,
-  /\b(?:address|street|phone|mobile|contact me|call me|location)\b|(?:عنوان|شارع|موقعي|هاتف|جوال|اتصل بي)/iu,
-  /\b(?:ignore|override|forget)\b.{0,40}\b(?:instruction|prompt|policy|system)\b|(?:تجاهل|تخط|انس).{0,40}(?:التعليمات|السياسة|النظام)/iu,
-  /\b(?:do i have|diagnose me)\b.{0,30}\b(?:adhd|disorder|depression|anxiety)\b|(?:هل لدي|شخّصني).{0,30}(?:فرط الحركة|اضطراب|اكتئاب|قلق)/iu,
-  /\b(?:is my prayer|judge my prayer|religiously valid)\b|(?:هل|احكم).{0,30}(?:صلاتي|ديني|إيماني)/iu,
-  /\b(?:pick up|touch|handle)\b.{0,35}\b(?:broken glass|battery|chemical|unknown waste)\b|(?:أ?لتقط|أ?لمس|أ?تعامل).{0,35}(?:الزجاج المكسور|بطارية|مواد كيميائية|نفايات مجهولة)/iu,
-];
-
-function childInputIsSafe(request: ChildCoachTextRequestV1): boolean {
-  if (request.ageBand !== '12_14' || request.boundedText === undefined) return true;
-  const boundedText = request.boundedText;
-  if (prohibitedChildInputPatterns.some((pattern) => pattern.test(boundedText))) return false;
-  return evaluateAssistantSafety({
-    audience: 'child',
-    texts: [{ ar: boundedText, en: boundedText }],
-  }).accepted;
-}
-
 function validateChildCoachOutput(request: ChildCoachTextRequestV1, input: unknown) {
   const parsed = childCoachTextResponseV1Schema.safeParse(input);
   if (!parsed.success) return { ok: false as const, safety: false };
@@ -278,7 +260,9 @@ export async function executeChildCoach(
   const parsed = childCoachTextRequestV1Schema.safeParse(input);
   if (!parsed.success) return { ok: false, code: 'INVALID_INPUT', status: 400 };
   const request = parsed.data;
-  if (!childInputIsSafe(request)) return { ok: false, code: 'SAFETY_REJECTED', status: 422 };
+  if (!childCoachRequestIsSafe(request)) {
+    return { ok: false, code: 'SAFETY_REJECTED', status: 422 };
+  }
   const reviewed = createPreparedChildCoachResponse(request);
   const modelResult = await runJsonModel({
     env,

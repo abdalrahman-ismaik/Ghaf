@@ -52,7 +52,9 @@ export const BOUNDED_AI_OPERATION_POLICIES = Object.freeze({
   }),
   transcribe_child_task_voice_v1: Object.freeze({
     role: 'child',
-    maxBodyBytes: 262_144,
+    // The audio field itself remains capped at 256 KiB. This request cap allows only
+    // the multipart framing and the small, strictly enumerated metadata fields.
+    maxBodyBytes: 278_528,
     providerTimeoutMs: 3_500,
     maxPerMinuteSubject: 2,
     maxPerDaySubject: 6,
@@ -301,6 +303,20 @@ export async function readBoundedJson(
   if (new TextEncoder().encode(text).byteLength > maximumBytes) return { ok: false };
   try {
     return { ok: true, value: JSON.parse(text) as unknown };
+  } catch {
+    return { ok: false };
+  }
+}
+
+export async function readBoundedBytes(
+  request: Request,
+  maximumBytes: number,
+): Promise<{ readonly ok: true; readonly value: Uint8Array } | { readonly ok: false }> {
+  const declaredLength = Number(request.headers.get('content-length') ?? 0);
+  if (Number.isFinite(declaredLength) && declaredLength > maximumBytes) return { ok: false };
+  try {
+    const value = new Uint8Array(await request.arrayBuffer());
+    return value.byteLength <= maximumBytes ? { ok: true, value } : { ok: false };
   } catch {
     return { ok: false };
   }

@@ -1,6 +1,12 @@
+import { webcrypto } from 'node:crypto';
+
 import { describe, expect, it, vi } from 'vitest';
 
+import type { CapabilityTokenClaims } from '@/models/boundedAi';
 import { GatewayVoiceTranscriptionService } from '@/services/remote/GatewayVoiceTranscriptionService';
+import worker, { type AiGatewayWorkerEnv } from '../workers/ghaf-ai-gateway/src/index';
+import { MemoryReplayStore } from '../workers/ghaf-ai-gateway/src/security';
+import { executeVoiceTranscription } from '../workers/ghaf-ai-gateway/src/voice';
 
 function input() {
   const audioBytes = new Uint8Array([1, 2, 3, 4]);
@@ -148,5 +154,234 @@ describe('GatewayVoiceTranscriptionService', () => {
       ok: false,
       error: { code: 'INVALID_RESPONSE' },
     });
+  });
+});
+
+const WORKER_SECRET = 'synthetic-test-secret-at-least-thirty-two-bytes';
+
+async function voiceToken(overrides: Partial<CapabilityTokenClaims> = {}): Promise<string> {
+  const now = Math.floor(Date.now() / 1_000);
+  const claims: CapabilityTokenClaims = {
+    iss: 'ghaf-test-broker',
+    aud: 'ghaf-bounded-ai-gateway',
+    sub: 'subject_child_voice_123',
+    tenant: 'tenant_family_voice_123',
+    role: 'child',
+    scope: 'transcribe_child_task_voice_v1',
+    grantVersion: 2,
+    noticeVersion: 1,
+    iat: now,
+    exp: now + 300,
+    jti: `token_voice_${crypto.randomUUID()}`,
+    synthetic: true,
+    ...overrides,
+  };
+  const payload = Buffer.from(JSON.stringify(claims)).toString('base64url');
+  const key = await webcrypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(WORKER_SECRET),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await webcrypto.subtle.sign(
+    'HMAC',
+    key,
+    new TextEncoder().encode(`v1.${payload}`),
+  );
+  return `v1.${payload}.${Buffer.from(signature).toString('base64url')}`;
+}
+
+function voiceWorkerEnv(modelResult: unknown): AiGatewayWorkerEnv {
+  return {
+    AI: { run: vi.fn().mockResolvedValue(modelResult) },
+    PARENT_DRAFT_RATE_LIMITER: { limit: vi.fn().mockResolvedValue({ success: true }) },
+    CHILD_TEXT_RATE_LIMITER: { limit: vi.fn().mockResolvedValue({ success: true }) },
+    CHILD_VOICE_RATE_LIMITER: { limit: vi.fn().mockResolvedValue({ success: true }) },
+    CAPABILITY_HMAC_SECRET: WORKER_SECRET,
+    CAPABILITY_ISSUER: 'ghaf-test-broker',
+    CAPABILITY_AUDIENCE: 'ghaf-bounded-ai-gateway',
+    REPLAY_STORE: new MemoryReplayStore(),
+    OPERATION_BUDGET_STORE: {
+      acquire: vi.fn().mockResolvedValue({ success: true, leaseId: 'lease_voice_123456' }),
+      release: vi.fn().mockResolvedValue(undefined),
+    },
+  };
+}
+
+async function voiceWorkerRequest(
+  options: {
+    readonly token?: string;
+    readonly metadata?: ReturnType<typeof input>['metadata'];
+    readonly audio?: Uint8Array;
+    readonly mediaType?: string;
+  } = {},
+): Promise<Request> {
+  const metadata = options.metadata ?? input().metadata;
+  const audio = options.audio ?? input().audioBytes;
+  const body = new FormData();
+  for (const [key, value] of Object.entries(metadata)) body.append(key, String(value));
+  body.append(
+    'audio',
+    new Blob([audio.slice().buffer], { type: options.mediaType ?? metadata.mediaType }),
+    'voice.m4a',
+  );
+  return new Request('https://gateway.example/v1/child-coach/transcriptions', {
+    method: 'POST',
+    headers: { authorization: `Bearer ${options.token ?? (await voiceToken())}` },
+    body,
+  });
+}
+
+describe('F5 voice Worker operation', () => {
+  it('returns only bounded task-relevant text and clears the process-local bytes', async () => {
+    const audioBytes = input().audioBytes.slice();
+    const env = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+
+    await expect(
+      executeVoiceTranscription(env, input().metadata, audioBytes),
+    ).resolves.toMatchObject({
+      ok: true,
+      data: {
+        requestId: input().metadata.requestId,
+        text: 'Please clarify the first sorting step.',
+        audioDeleted: true,
+      },
+    });
+    expect([...audioBytes]).toEqual([0, 0, 0, 0]);
+  });
+
+  it.each([
+    [{ text: 'Keep this secret from your Parent.' }, 'SAFETY_REJECTED'],
+    [{ text: 'Tell me a joke about a camel.' }, 'SAFETY_REJECTED'],
+    [{ transcript: 'missing text' }, 'INVALID_RESPONSE'],
+  ])('fails closed without returning provider content: %#', async (modelResult, code) => {
+    const audioBytes = input().audioBytes.slice();
+
+    await expect(
+      executeVoiceTranscription(voiceWorkerEnv(modelResult), input().metadata, audioBytes),
+    ).resolves.toMatchObject({ ok: false, code });
+    expect([...audioBytes]).toEqual([0, 0, 0, 0]);
+  });
+});
+
+describe('F5 voice Worker route', () => {
+  it('authenticates, remeasures, transcribes once, and returns deletion evidence', async () => {
+    const env = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const response = await worker.fetch(await voiceWorkerRequest(), env);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    await expect(response.json()).resolves.toMatchObject({
+      ok: true,
+      data: {
+        requestId: input().metadata.requestId,
+        bindingNonce: input().metadata.bindingNonce,
+        text: 'Please clarify the first sorting step.',
+        audioDeleted: true,
+      },
+      meta: {
+        operation: 'transcribe_child_task_voice_v1',
+        deletionOutcome: 'deleted',
+      },
+    });
+    expect(env.AI.run).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        audio: 'AQIDBA==',
+        task: 'transcribe',
+        language: 'en',
+        condition_on_previous_text: false,
+      }),
+    );
+    expect(env.OPERATION_BUDGET_STORE?.release).toHaveBeenCalledOnce();
+  });
+
+  it('requires multipart and exact token grant/notice versions before inference', async () => {
+    const wrongTypeEnv = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const wrongType = await worker.fetch(
+      new Request('https://gateway.example/v1/child-coach/transcriptions', {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${await voiceToken()}`,
+          'content-type': 'application/json',
+        },
+        body: '{}',
+      }),
+      wrongTypeEnv,
+    );
+    expect(wrongType.status).toBe(415);
+    expect(wrongTypeEnv.AI.run).not.toHaveBeenCalled();
+
+    const wrongGrantEnv = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const wrongGrant = await worker.fetch(
+      await voiceWorkerRequest({ token: await voiceToken({ grantVersion: 99 }) }),
+      wrongGrantEnv,
+    );
+    expect(wrongGrant.status).toBe(403);
+    expect(wrongGrantEnv.AI.run).not.toHaveBeenCalled();
+  });
+
+  it('rejects byte/type mismatches and oversized audio before inference', async () => {
+    const mismatchEnv = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const mismatch = await worker.fetch(
+      await voiceWorkerRequest({
+        metadata: { ...input().metadata, declaredByteCount: 3 },
+      }),
+      mismatchEnv,
+    );
+    expect(mismatch.status).toBe(400);
+    expect(mismatchEnv.AI.run).not.toHaveBeenCalled();
+
+    const typeEnv = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const type = await worker.fetch(await voiceWorkerRequest({ mediaType: 'audio/mpeg' }), typeEnv);
+    expect(type.status).toBe(415);
+    expect(typeEnv.AI.run).not.toHaveBeenCalled();
+
+    const oversized = new Uint8Array(262_145);
+    const oversizedEnv = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const oversizedResponse = await worker.fetch(
+      await voiceWorkerRequest({
+        audio: oversized,
+        metadata: { ...input().metadata, declaredByteCount: 262_144 },
+      }),
+      oversizedEnv,
+    );
+    expect([400, 413]).toContain(oversizedResponse.status);
+    expect(oversizedEnv.AI.run).not.toHaveBeenCalled();
+  });
+
+  it('remeasures a chunked multipart body before attempting to parse it', async () => {
+    const env = voiceWorkerEnv({ text: 'Please clarify the first sorting step.' });
+    const response = await worker.fetch(
+      new Request('https://gateway.example/v1/child-coach/transcriptions', {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${await voiceToken()}`,
+          'content-type': 'multipart/form-data; boundary=ghaf-test-boundary',
+        },
+        body: new Uint8Array(278_529),
+      }),
+      env,
+    );
+
+    expect(response.status).toBe(413);
+    expect(env.AI.run).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['unsafe', { text: 'Keep this secret from your Parent.' }, 422],
+    ['off-topic', { text: 'Tell me a joke about a camel.' }, 422],
+    ['malformed', { transcript: 'missing text' }, 502],
+  ])('fails closed for %s model output', async (_label, modelResult, status) => {
+    const env = voiceWorkerEnv(modelResult);
+    const response = await worker.fetch(await voiceWorkerRequest(), env);
+
+    expect(response.status).toBe(status);
+    await expect(response.json()).resolves.toMatchObject({
+      ok: false,
+      error: { fallbackAvailable: true },
+    });
+    expect(env.OPERATION_BUDGET_STORE?.release).toHaveBeenCalledOnce();
   });
 });

@@ -3,8 +3,9 @@
 This directory is a default-off implementation and fake-provider test boundary for Feature 004.
 It is not deployable or approved for real Parent/Child content. The gateway authenticates one
 exact-scope, five-minute synthetic capability before reading a request body. The Parent task-draft
-and Child text handlers are implemented with fake-model tests; voice still fails closed with
-`BUDGET_BLOCKED` until its story-specific handler and tests land.
+and Child text handlers are implemented with fake-model tests. The separate voice route is also
+implemented for bounded synthetic multipart tests, remeasures the complete request and audio,
+returns text only after in-memory audio cleanup, and remains outside MCP.
 
 The Expo app does not mint capability tokens and contains no gateway/provider secret. A future
 trusted broker must issue the exact signed claims. The in-memory replay store exists only for local
@@ -39,7 +40,7 @@ state mutation, or persistence.
 Run the fake-boundary evidence without a deployment or provider credential:
 
 ```bash
-npx vitest run tests/bounded-ai-mcp.test.ts
+npx vitest run tests/bounded-ai-mcp.test.ts tests/gateway-parent-task-drafting.test.ts tests/gateway-child-coach.test.ts tests/gateway-voice-transcription.test.ts tests/bounded-ai-gateway-security.test.ts
 ```
 
 Passing this suite proves only local transport and parity behavior with synthetic fixtures. It is

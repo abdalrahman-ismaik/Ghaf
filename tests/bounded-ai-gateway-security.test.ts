@@ -7,6 +7,7 @@ import {
   BOUNDED_AI_OPERATION_POLICIES,
   MemoryReplayStore,
   reserveOperationCapacity,
+  readBoundedBytes,
   resolveAllowedOrigin,
   safeErrorResponse,
   verifyCapabilityRequest,
@@ -155,7 +156,7 @@ describe('Feature 004 gateway security', () => {
       }),
       transcribe_child_task_voice_v1: expect.objectContaining({
         role: 'child',
-        maxBodyBytes: 262_144,
+        maxBodyBytes: 278_528,
         maxConcurrent: 1,
       }),
     });
@@ -167,6 +168,28 @@ describe('Feature 004 gateway security', () => {
       ok: false,
       error: { code: 'INVALID_INPUT', retryable: false, fallbackAvailable: true },
     });
+  });
+
+  it('remeasures binary request bodies independently of their declared length', async () => {
+    await expect(
+      readBoundedBytes(
+        new Request('https://gateway.example/v1/child-coach/transcriptions', {
+          method: 'POST',
+          body: new Uint8Array([1, 2, 3, 4]),
+        }),
+        4,
+      ),
+    ).resolves.toMatchObject({ ok: true, value: new Uint8Array([1, 2, 3, 4]) });
+    await expect(
+      readBoundedBytes(
+        new Request('https://gateway.example/v1/child-coach/transcriptions', {
+          method: 'POST',
+          headers: { 'content-length': '2' },
+          body: new Uint8Array([1, 2, 3, 4]),
+        }),
+        3,
+      ),
+    ).resolves.toEqual({ ok: false });
   });
 
   it('rate-limits before taking a daily/concurrency lease and releases once', async () => {
