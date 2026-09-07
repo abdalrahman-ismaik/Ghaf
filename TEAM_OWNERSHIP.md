@@ -61,8 +61,18 @@ production-security claim, or release approval is included. F5 text/voice activa
 blocked on the named authentication, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE,
 accessibility, incident, physical Android, deletion, and human-evidence gates.
 
-**Status**: Active — planning complete; the exact runtime boundaries above are reserved for
-default-off implementation and local evidence only.
+**Status**: Complete and released — commits `9a35ea7`, `38994eb`, `331fbb2`, `92f59b5`,
+`cc3d0ea`, `644009c`, `e4fb1f3`, and `c4716c3`, plus the final evidence checkpoint, implement the
+approved F4 Parent drafting, F5 bounded Child Coach text, separate implementation-only grants, and
+ages-12–14 foreground push-to-talk transcript review. The Feature 004 focused suite passed 24
+files / 164 tests; the full repository passed 117 files / 1,280 tests with typecheck, zero-warning
+lint, formatting, Expo dependency/public-config checks, web and Android JavaScript exports, Git
+whitespace, public-bundle isolation, and scoped secret checks. All app flags remain false, current
+P0 profiles retain prepared voice, and the deterministic journey/reset remain complete. No
+provider call, Worker/MCP deployment, real Child data/audio, production credential, release
+activation, push, merge, unrelated file, or user-owned artifact was included. Trusted auth/shared
+stores, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE, accessibility, incident/deletion,
+physical Android, and named human-rehearsal gates remain `BLOCKED / NOT RUN`.
 
 ## 2026-09-07 AI Features 4–5 All-Three Approval Recording Window
 
