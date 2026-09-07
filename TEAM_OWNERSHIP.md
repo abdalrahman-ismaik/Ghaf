@@ -1,5 +1,31 @@
 # Team Ownership
 
+## 2026-09-07 AI Features 4–5 Phase 1 Proposal Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and new
+`specs/004-bounded-live-ai/**` proposal artifacts only.
+
+**Scope**: Perform read-only archaeology of the historical Feature 002 AI gateway and the current
+Feature 003 task, assistant, access, privacy, registry, state, localization, and test boundaries;
+then author a proposed, non-authorizing specification and approval packet for independently gated
+Parent task drafting, live Child Coach text, and later Child voice. No runtime implementation,
+feature activation, provider request, deployment, active Feature 003 artifact change, or Feature
+002 historical change is authorized in this window.
+
+**Handoff condition**: The proposal records product exclusions, age-band and data allowlists,
+consent/privacy controls, architecture and state sequences, threat model, evidence gates, test
+matrix, dependency-ordered implementation stages, and exact approval decisions. Runtime work stays
+blocked until explicit product approval; Child release activation additionally stays blocked on
+trusted authentication, legal/privacy/safeguarding review, provider retention evidence, and native
+device evidence.
+
+**Status**: Complete and released. The Phase 1 proposal package passed targeted formatting and
+whitespace checks. No runtime file, active Feature 003 artifact, feature metadata, provider,
+branch/ref, deployment, or user-owned artifact was changed; implementation and activation remain
+blocked on the explicit approval checkpoint.
+
 ## 2026-09-07 AI Services 1–3 Integration Window
 
 **Owner and only writer**: `/root`
