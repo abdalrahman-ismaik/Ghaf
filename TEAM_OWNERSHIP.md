@@ -1,5 +1,36 @@
 # Team Ownership
 
+## 2026-09-07 AI Services 1–3 Integration Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`,
+`DEMO_RUNBOOK.md`, `.env.example`, `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`,
+new `docs/CODEX_HANDOFF_AI_FEATURES_4_5.md`,
+`src/features/assistants/{liveParentGuide.ts,profilePersonalization.ts}`,
+`src/features/tasks/validation.ts`, `src/models/familyGrowth.ts`,
+`src/services/{index.ts,interfaces/index.ts,mock/index.ts,remote/**}`,
+`src/state/usePrototypeStore.ts`, `src/components/family-growth/ParentTaskComposer.tsx`,
+`src/i18n/resources.ts`, new `workers/ghaf-parent-guide/**`, and focused AI/profile/Parent-task
+tests only.
+
+**Scope**: Consolidate the currently implemented deterministic Parent Guide, Child Coach, Parent
+summary, age adaptation, synthetic voice, prepared media, and profile helper as the mandatory
+offline path; add one authenticated and rate-limited server-side live Parent Guide transformation
+for the exact synthetic P0 recycling request behind an injectable default-off service boundary;
+and use the prepared profile helper to rank and visibly identify allowlisted Task Builder
+categories without assigning a task or changing the sole executable P0 task. Provider activation,
+deployment, live evidence, production authentication, and every live Child Coach or real media path
+remain blocked. The parallel Features 4/5 handoff owns no runtime file in this window.
+
+**Handoff condition**: Contract changes land before behavior; focused RED/GREEN evidence covers
+strict schemas, secret isolation, authentication, rate limiting, timeout/error/safety fallback,
+prepared-default behavior, recommendation ordering, opt-out, and Parent authority; full repository
+checks pass; direct live-provider, deployment, Android, and named-human evidence remains honestly
+`NOT RUN` or `BLOCKED`.
+
+**Status**: Active until the recorded implementation, validation, and evidence commits land.
+
 **Work period:** Feature 003 planning and implementation beginning 2026-08-26
 **Team size:** Three members
 **Integration owner:** Member 1 — Mobile and visual experience

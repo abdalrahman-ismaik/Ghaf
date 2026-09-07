@@ -1,5 +1,37 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 AI Services 1–3 Integration Addendum — 2026-09-07
+
+Preserve the current deterministic AI stack as the non-negotiable application default. Extract a
+strict live Parent Guide request/result contract beside the existing assistant policy, then add a
+small fetch adapter under `src/services/remote/`. The Zustand command continues to own its 1,500 ms
+attempt deadline and stale-result guard; it validates either the exact prepared fixture or the
+bounded live result, then falls back through the existing prepared provider in the same attempt.
+The registry exposes the prepared provider independently from an injectable primary so fallback
+can never recurse. No Child route or service receives a remote provider.
+
+Add a reference Cloudflare Worker with one `/v1/parent-guide/refine` POST operation. It validates
+the exact synthetic P0 request before inference, authenticates against a Worker secret, rate-limits
+the authenticated demo client, allows only the configured browser origin while supporting
+originless native requests, requests canonical JSON-schema output from the Workers AI binding, and
+returns no-store JSON. The Worker owns no persistence or logging. Its tests use fake bindings and a
+synthetic token; deployment and a real model call are deliberately separate evidence gates. The
+mobile app never reads an access token from `EXPO_PUBLIC_*`; absent a future trusted token broker,
+the default registry binds the prepared provider.
+
+Extend the pure profile-personalization module with a stable category recommendation plan. It
+reuses the already validated curated profile record, ranks the at-most-two recommendations ahead of
+the remaining canonical category order, and provides a bounded preselection only when compatible
+with existing Task Builder precedence. The component renders a local/prepared recommendation label
+but still disables every non-P0 template and requires the existing Parent review and assignment
+commands. No derived recommendation state is persisted.
+
+Implementation order is contract/ownership → RED gateway/profile tests → live request policy and
+adapter → authenticated Worker → store/registry/UI integration → fallback and regression tests →
+truthful limitations/runbook/handoff evidence. No dependency, product route, schema migration,
+provider deployment, feature-flag activation, live Child AI, real media, or legacy mission behavior
+is included.
+
 ## R003 Onboarding Image Perimeter Progress Addendum — 2026-09-07
 
 Refine only the decorative edge treatment inside `FirstRunOnboarding`. Remove `heroAccent` and add

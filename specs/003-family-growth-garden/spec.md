@@ -18,6 +18,77 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 AI Services 1–3 Integration Amendment — 2026-09-07
+
+This amendment authorizes three bounded improvements without widening the Child-data or P0 product
+boundary. First, the existing prepared Parent Guide, prepared Child Coach, strengths-first Parent
+summary, age adapter, synthetic voice rehearsal, prepared media, and deterministic profile helper
+remain the complete mandatory offline AI experience. Second, one optional server-side Parent Guide
+operation may transform only the exact synthetic `task_recycling_p0_v1` make-clearer request into
+the already reviewed canonical bilingual task. Third, the existing profile helper may rank and
+mark allowlisted Task Builder categories from the persisted curated profile selections. Every task
+still requires normal Parent selection, review, save, and approval.
+
+The live Parent operation is a provider-neutral adapter plus a Cloudflare Workers AI reference
+gateway. The gateway requires a server-held access token, rejects every operation except the exact
+synthetic Parent request, applies a bound rate limiter, requests strict structured JSON, returns no
+Child Coach or media operation, and stores no request. The Expo bundle may contain the public
+endpoint but never an access token or provider credential. Because this prototype has no production
+session/token broker, the default registry remains prepared and release activation remains
+`BLOCKED`; tests may inject a synthetic credential into the adapter without claiming a deployed or
+live model result. A timeout, authentication failure, non-JSON response, schema mismatch, request
+mismatch, safety rejection, or provider error returns the same-attempt reviewed prepared result and
+retains Parent input.
+
+- **FR-210**: The deterministic Parent Guide, Child Coach, Parent summary, age-adaptation,
+  synthetic voice, prepared media, and profile-personalization services MUST remain registered,
+  offline-capable, reset-safe, and the default application behavior.
+- **FR-211**: The optional live gateway MUST expose only `refine_parent_task_v1` for the exact
+  synthetic Salem/version-one/Green-Impact/make-clearer request and MUST reject Child Coach,
+  summary, media, arbitrary task, real profile, free-text Child, and unknown operations.
+- **FR-212**: The gateway MUST require a server-side access-token secret, use constant-time token
+  comparison, apply the configured authenticated-client rate limiter before inference, bound the
+  request body, permit only configured CORS origin or originless native requests, and emit
+  no-store responses without logging prompt or profile content.
+- **FR-213**: The live Parent Guide adapter MUST use HTTPS, strict request/response schemas, a
+  bounded abort timeout, no automatic model retry, exact request-id correlation, immutable
+  category/reward/privacy/safety fields, local safety validation, and a `live` disclosure only for
+  a directly accepted gateway result.
+- **FR-214**: Gateway credentials MUST enter the adapter through an injected trusted token
+  provider and MUST NOT use an `EXPO_PUBLIC_` variable, committed file, log, error message, fixture,
+  or mobile-bundle constant. With no trusted provider, the prepared service MUST remain primary.
+- **FR-215**: Every optional-live failure MUST resolve in the same request attempt to
+  `guide_recycling_refine_v1`, retain the Parent's exact input, explain prepared fallback, and
+  leave task, assignment, Seeds, Garden, League, Reward, media, and Child Coach state unchanged.
+- **FR-216**: Profile recommendations MUST be derived only from the existing allowlisted age band,
+  interests, hobbies, accessibility defaults, support preferences, and opt-in value; gender,
+  nickname, family name, contact data, free text, media, history, and provider calls remain excluded.
+- **FR-217**: Task Builder recommendation output MUST contain every curated category exactly once,
+  move at most two prepared recommendations ahead of the stable catalog order, visibly disclose
+  prepared/local/fallible status, and return the original order when personalization is disabled or
+  invalid.
+- **FR-218**: A recommendation MAY preselect the top category only when the current Task Builder
+  state has no stronger explicit journey, origin prefill, or canonical P0 selection; it MUST NOT
+  make a future-only template executable, assign work, change an award, or bypass Parent review.
+- **FR-219**: Live Child Coach, real Child text/voice/photo processing, live profile inference,
+  legacy mission generation, provider deployment, and token-broker implementation remain outside
+  this amendment and require separate specification and evidence.
+- **SC-060**: Focused tests prove prepared-default behavior with zero fetches plus authenticated
+  live success, missing/invalid credential denial, strict request rejection, rate-limit rejection,
+  timeout, HTTP, non-JSON, malformed-schema, correlation, and safety fallback cases.
+- **SC-061**: Source/config scans find no provider secret or public access-token variable and prove
+  that the Worker exposes no Child Coach/media route, no permissive wildcard CORS, and no committed
+  local Worker state.
+- **SC-062**: Profile tests prove deterministic stable ordering, no duplicates, opt-out/original
+  order, prohibited-input rejection, visible recommendation labels, and unchanged Parent approval
+  plus sole-executable-task guards.
+- **SC-063**: Typecheck, lint, formatting, full tests, Expo public-config inspection, secret/network
+  scans, and Git whitespace pass without changing the current route manifest or default-off R002b
+  flags.
+- **SC-064**: Worker deployment, direct live-model transformation, trusted mobile token broker,
+  physical Android behavior, and named Arabic/UAE/safeguarding/privacy/accessibility review remain
+  `NOT RUN` or `BLOCKED` until directly evidenced; automated mocks cannot pass them.
+
 ## R003 Onboarding Image Perimeter Progress Amendment — 2026-09-07
 
 This amendment removes the detached solid accent strip from the bottom of each onboarding
