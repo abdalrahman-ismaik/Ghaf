@@ -1,5 +1,26 @@
 # Team Ownership
 
+## 2026-09-07 Source Publication Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and
+`specs/004-bounded-live-ai/checklists/requirements.md` only.
+
+**Scope**: Reconcile the final branch-range whitespace audit, verify the exact current revision,
+and publish `integration/r3-complete-screens-20260905` to its existing upstream without rewriting
+history. Preserve the explicitly protected `.codex/config.toml`, original logo/Stitch inputs, and
+untracked generated visual/build output locally and outside every commit.
+
+**Status**: Complete and ready for publication — the two branch-range Markdown whitespace findings
+were corrected. `npm run verify` passed typecheck, zero-warning lint, maintained-source formatting,
+119 test files / 1,310 tests, Expo dependency alignment, and a 39-route static web export with the
+known `expo-file-system` web warning. Targeted Markdown formatting, working-tree whitespace, tracked
+secret-pattern, and added-blob size checks passed; no added blob exceeds 5 MiB. The fetched upstream
+was zero commits ahead of this branch. The protected local configuration, original design inputs,
+and generated output remain unstaged and uncommitted. The reservation is released; publication is
+authorized by the product owner's explicit push request.
+
 ## 2026-09-07 Android USB Development Guide Window
 
 **Owner and only writer**: `/root`

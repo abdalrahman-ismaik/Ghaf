@@ -3,8 +3,8 @@
 **Purpose**: Validate that the approved all-three specification is complete, testable, internally
 consistent, and explicit about the boundary between implementation and activation.
 
-**Created**: 2026-09-07  
-**Feature**: [spec.md](../spec.md)  
+**Created**: 2026-09-07
+**Feature**: [spec.md](../spec.md)
 **Approval detail**: [approval-packet.md](../approval-packet.md)
 
 **Marker semantics**: `[x]` means the specification's requirements quality was reviewed and the
