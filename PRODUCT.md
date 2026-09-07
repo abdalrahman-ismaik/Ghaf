@@ -23,6 +23,44 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+## Feature 004 bounded live AI implementation — 2026-09-07
+
+The approved F4 Parent task-drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk
+voice slices are implemented behind three independent, default-off flags. The existing prepared
+Feature 003 journey remains the competition default and the same-attempt fallback for every
+accepted request. No flag, provider, gateway deployment, or real Child data is enabled by this
+implementation.
+
+F4 transforms only bilingual wording from one of four reviewed task archetypes. It presents a
+retained-versus-suggested comparison and requires an explicit Parent accept, keep, or edit decision
+before the existing review and assignment lifecycle continues. The model has no authority over
+category, Child, award, recognition mode, eligibility, privacy, approval, Seeds, Garden, League,
+Family Reward, or any other progression state.
+
+F5 text is one-turn and terminal for the current Parent-approved task and version. Ages 6–8 use
+curated intents, ages 9–11 use exact structured choices, and ages 12–14 may use one bounded
+task-focused line only with a current, profile-scoped implementation grant. Local and server
+safety checks reject private data, instruction attacks, diagnosis, religious judgment, unsafe
+instructions, crisis/sexual/medical content, dependency language, and off-task text before a
+result can be displayed. The Child retains an always-visible adult exit and may decline live help.
+
+Voice is a separate ages-12–14 capability with its own Parent reauthentication, grant, notice,
+request ID, and binding nonce. It permits one foreground held recording up to 15 seconds and
+256 KiB, never continuous or background listening. Local cache audio is deleted before any
+transcript is shown; the Child may edit, separately approve, delete, or explicitly send only the
+reviewed text to the Coach. Raw audio never enters the Coach generation request. Current P0 Child
+profiles remain ages 9–11, so the judge journey continues to show the prepared synthetic voice
+rehearsal.
+
+The reference Worker authenticates short-lived synthetic HMAC capabilities before reading bodies,
+applies replay, per-operation rate and injected budget/concurrency controls, validates strict
+schemas and correlations, and uses content-free errors. Its optional MCP projection is separately
+default off and exposes exactly the two bounded text transformations—never voice or media. This is
+local fake-binding implementation evidence, not production authentication, provider-retention,
+deletion, deployment, or live-model evidence. Activation remains blocked on the approval packet's
+trusted broker/shared stores, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE,
+accessibility, incident-response, physical Android, deletion, and human-rehearsal gates.
+
 ## R003 AI Services 1–3 Integration — 2026-09-07
 
 The complete deterministic AI experience remains the competition default: bounded Parent Guide,
@@ -42,10 +80,9 @@ structured output, and exposes no Child operation. The ordinary registry still s
 prepared provider, and this repository contains no mobile token broker or deployment evidence;
 therefore live activation remains blocked and cannot be demonstrated as live AI from this build.
 
-Broader AI mission generation and any live Child Coach are Features 4 and 5, not part of this
-amendment. Both require separate product approval. Live Child Coach additionally requires an
-approved child-safety, privacy, consent, age-band, data-governance, and evidence contract before
-runtime implementation.
+Broader task drafting and live Child Coach were not part of this earlier AI Services 1–3
+amendment. They are now governed by the separately approved Feature 004 contract above; that
+implementation approval does not satisfy or waive its release-activation gates.
 
 The R003 first-run presentation introduces Ghaf first, then tells one energetic six-moment story:
 Ghaf, Family as the team, Sustainability through small safe actions, bounded AI help for an

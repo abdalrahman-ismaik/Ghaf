@@ -1,5 +1,42 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 004 bounded live AI implementation record — 2026-09-07
+
+**Current classification:** default-off implementation and synthetic/fake-boundary validation;
+provider execution, deployment, real Child data/media, physical Android voice evidence, and every
+named activation review remain `BLOCKED / NOT RUN`.
+
+Run the ordinary judge journey with all three Feature 004 app flags off. It must remain the exact
+prepared Feature 003 flow. If an engineering harness enables one flag independently, describe the
+result as a local implementation candidate:
+
+1. F4 shows one reviewed bilingual wording proposal beside the retained task. Accept, keep, or edit
+   remains a Parent decision, followed by the unchanged review and assignment lifecycle.
+2. F5 text returns one terminal, age-bounded card for the current approved task. The Child can
+   decline or choose the adult exit; provider failure returns the prepared result in the same
+   attempt and changes no progression state.
+3. F5 voice is reachable only in an eligible synthetic ages-12–14 harness with separate text and
+   voice grants. Hold to record, release within 15 seconds, verify the local-audio-deleted notice,
+   review/edit, separately approve, then explicitly send text. Current Salem/Alya P0 profiles stay
+   on the synthetic voice rehearsal and cannot reach real capture.
+
+Never describe the reference Worker, local fake-model tests, in-memory byte clearing, or the
+prepared fallback as a deployed/live model result or provider deletion proof. Do not enable a flag,
+deploy the gateway, enter real Child data, or connect judges to MCP. The MCP endpoint is separately
+default off, server only, and advertises exactly Parent drafting and Child text—no voice/media
+tool.
+
+| Gate                                                                                                  | Result                    | Evidence                                                                      |
+| ----------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------------- |
+| F4/F5 contracts, store, UI, fallback, reset, and zero-effects                                         | `PASSED automated/source` | synthetic fixtures and injected services only                                 |
+| Child age policy, local/server safety, exact task/grant/correlation binding                           | `PASSED automated/source` | adversarial bilingual and stale-request suites; no real Child input           |
+| Voice foreground state, native adapter, cache deletion ordering, reviewed text-only handoff           | `PASSED automated/source` | fake capture/media/transcription plus source/config checks; no real recording |
+| Worker auth/replay/rate/budget/body/media/output/error boundaries                                     | `PASSED automated/source` | signed synthetic capabilities and fake Workers AI bindings only               |
+| Default-off flags and complete prepared fallback                                                      | `PASSED automated/source` | three independent flags; current P0 profiles remain on prepared voice         |
+| Provider/deployment/real network and production token broker/shared stores                            | `BLOCKED / NOT RUN`       | no external service or production credential was used                         |
+| Provider ZDR/remote deletion, privacy/legal, safeguarding, Arabic/UAE, accessibility, incident review | `BLOCKED / NOT RUN`       | named evidence is still required                                              |
+| Physical Android permission, held capture, interruption/process-death, TalkBack, font scale, deletion | `BLOCKED / NOT RUN`       | no qualifying device run in this implementation window                        |
+
 ## R003 AI Services 1–3 Integration Record — 2026-09-07
 
 **Current classification:** implemented and automatically validated as a prepared-default
@@ -19,25 +56,26 @@ bindings to exercise one exact Parent-only request plus denial/fallback cases. U
 Worker deployment and trusted mobile credential flow exist, describe this as an un-deployed
 reference boundary, not live AI evidence.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| Focused live-boundary/profile regression | `PASSED` | 10 files / 203 tests, including 26 new gateway/Worker/profile cases |
-| Full repository verification | `PASSED automated` | typecheck, zero-warning lint, formatting, Git whitespace, and 93 files / 1,116 tests |
-| Production exports and public configuration | `PASSED automated` | 134-file / 39-route web export, 94-asset Android JavaScript export, mock service mode, and no public gateway credential |
-| HTTPS adapter, schemas, stale-safe store fallback, and exact Parent review | `PASSED automated` | synthetic injected service; canonical live result accepted, malformed result returns same-attempt prepared fixture |
-| Worker auth/rate/origin/body/path/method/no-store boundary | `PASSED automated/source` | fake Workers AI and rate-limit bindings only; no external request |
-| Prepared-default and Child separation | `PASSED automated/source` | independent prepared fallback remains registry default; gateway exposes no Child operation |
-| Profile recommendation order/opt-out/authority | `PASSED automated/source` | exact-once stable catalog plan, invalid-input rejection, bilingual label, non-P0 templates still disabled |
-| Worker deployment, real model call, and trusted mobile token broker | `BLOCKED / NOT RUN` | no approved deployment/account/credential-broker evidence |
-| Browser and physical Android presentation | `NOT RUN / BLOCKED` | no Playwright/browser runtime or attached Android target was available in this session |
-| Arabic/UAE, safeguarding, privacy/security, and accessibility review | `NOT RUN` | no named reviewer was available in this session |
+| Gate                                                                       | Result                    | Evidence                                                                                                                |
+| -------------------------------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Focused live-boundary/profile regression                                   | `PASSED`                  | 10 files / 203 tests, including 26 new gateway/Worker/profile cases                                                     |
+| Full repository verification                                               | `PASSED automated`        | typecheck, zero-warning lint, formatting, Git whitespace, and 93 files / 1,116 tests                                    |
+| Production exports and public configuration                                | `PASSED automated`        | 134-file / 39-route web export, 94-asset Android JavaScript export, mock service mode, and no public gateway credential |
+| HTTPS adapter, schemas, stale-safe store fallback, and exact Parent review | `PASSED automated`        | synthetic injected service; canonical live result accepted, malformed result returns same-attempt prepared fixture      |
+| Worker auth/rate/origin/body/path/method/no-store boundary                 | `PASSED automated/source` | fake Workers AI and rate-limit bindings only; no external request                                                       |
+| Prepared-default and Child separation                                      | `PASSED automated/source` | independent prepared fallback remains registry default; gateway exposes no Child operation                              |
+| Profile recommendation order/opt-out/authority                             | `PASSED automated/source` | exact-once stable catalog plan, invalid-input rejection, bilingual label, non-P0 templates still disabled               |
+| Worker deployment, real model call, and trusted mobile token broker        | `BLOCKED / NOT RUN`       | no approved deployment/account/credential-broker evidence                                                               |
+| Browser and physical Android presentation                                  | `NOT RUN / BLOCKED`       | no Playwright/browser runtime or attached Android target was available in this session                                  |
+| Arabic/UAE, safeguarding, privacy/security, and accessibility review       | `NOT RUN`                 | no named reviewer was available in this session                                                                         |
 
 Expo's dependency checker reported the installed packages up to date using its local SDK map, but
 also warned that the result is less reliable because networking is disabled. Treat dependency
 registry freshness as `NOT RUN`; no dependency changed in this slice.
 
-The separate Features 4/5 handoff is planning input only. General AI mission drafting and live
-Child Coach remain unimplemented and unauthorized in the active P0 runtime.
+The separate Features 4/5 handoff has since become the approved Feature 004 default-off
+implementation recorded above. This earlier AI Services 1–3 evidence remains valid only for its
+original Parent Guide/profile scope and does not pass any Feature 004 activation gate.
 
 ## R003 Onboarding Image Perimeter Progress Record — 2026-09-07
 
@@ -76,17 +114,17 @@ pairing destination) without Family Basics, Child setup, Review, or Success. Sig
 verification show no fake biometric action, demo/not-real footer, code disclosure, delivery claim,
 or remote-identity claim. The runbook—not the auth UI—retains the deterministic capability truth.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| RED/focused behavior | `PASSED` | RED recorded 15 expected failures / 40 passes; final focused access/schema/source batch passed 6 files / 84 tests |
-| Full repository verification | `PASSED` | typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and 90 files / 1,090 tests |
-| Schema-2 storage and migration | `PASSED automated + Firefox web proxy` | strict normalized identifier/kind validation; schema-1 canonical migration; current-before-legacy write order; reset clears both keys; browser storage contained only `ghaf.local-family.v2` with `parent@example.com` and no verification code/session |
-| Unknown identifier denial | `PASSED automated + Firefox web proxy` | missing and mismatched email returned `NOT_FOUND`, kept verification signed out, and remained at `/access/parent/sign-in` |
-| Normalized returning entry | `PASSED automated + Firefox web proxy` | case/whitespace-normalized email and equivalent phone formats matched; `424242` then opened `/parent` with the returning dialog and no setup route |
-| Neutral bilingual auth presentation | `PASSED source + Firefox web proxy` | Arabic 390×844 and English 320×720 showed concise copy, masked destination, no prototype-auth footer or biometric control, no horizontal overflow, and zero console errors |
-| Production exports | `PASSED` | web export produced 134 files / 39 static routes; Android JavaScript export produced 103 files |
-| Physical Android SQLite/process death, Back/IME, TalkBack, and font scale | `BLOCKED / NOT RUN` | `adb devices -l` returned no attached target |
-| Named Arabic/UAE, privacy, accessibility, and product review | `NOT RUN` | no named reviewer was available in this implementation session |
+| Gate                                                                      | Result                                 | Evidence                                                                                                                                                                                                                                                |
+| ------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused behavior                                                      | `PASSED`                               | RED recorded 15 expected failures / 40 passes; final focused access/schema/source batch passed 6 files / 84 tests                                                                                                                                       |
+| Full repository verification                                              | `PASSED`                               | typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and 90 files / 1,090 tests                                                                                                                              |
+| Schema-2 storage and migration                                            | `PASSED automated + Firefox web proxy` | strict normalized identifier/kind validation; schema-1 canonical migration; current-before-legacy write order; reset clears both keys; browser storage contained only `ghaf.local-family.v2` with `parent@example.com` and no verification code/session |
+| Unknown identifier denial                                                 | `PASSED automated + Firefox web proxy` | missing and mismatched email returned `NOT_FOUND`, kept verification signed out, and remained at `/access/parent/sign-in`                                                                                                                               |
+| Normalized returning entry                                                | `PASSED automated + Firefox web proxy` | case/whitespace-normalized email and equivalent phone formats matched; `424242` then opened `/parent` with the returning dialog and no setup route                                                                                                      |
+| Neutral bilingual auth presentation                                       | `PASSED source + Firefox web proxy`    | Arabic 390×844 and English 320×720 showed concise copy, masked destination, no prototype-auth footer or biometric control, no horizontal overflow, and zero console errors                                                                              |
+| Production exports                                                        | `PASSED`                               | web export produced 134 files / 39 static routes; Android JavaScript export produced 103 files                                                                                                                                                          |
+| Physical Android SQLite/process death, Back/IME, TalkBack, and font scale | `BLOCKED / NOT RUN`                    | `adb devices -l` returned no attached target                                                                                                                                                                                                            |
+| Named Arabic/UAE, privacy, accessibility, and product review              | `NOT RUN`                              | no named reviewer was available in this implementation session                                                                                                                                                                                          |
 
 This lookup authenticates only against the one deterministic device-local family fixture. It is not
 a production account, delivered OTP, recovery, encrypted identity store, or remote authentication
@@ -107,18 +145,18 @@ another moment, switch language, and exit onboarding to confirm the previous voi
 With a screen reader active, both automatic audio paths stay silent. Browser autoplay refusal or
 any audio failure must leave every action and complete transcript available.
 
-| Gate                                                              | Result                              | Evidence                                                                                                                                                                                                                       |
-| ----------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| RED/focused behavior                                              | `PASSED`                            | RED recorded 2 expected failures / 11 passes for the old 1:1/segmented UI and absent prepared-audio boundary; final focused file passed 13 tests                                                                                |
-| Full repository verification                                      | `PASSED`                            | typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, and 90 files / 1,086 tests                                                                                                                     |
-| 3:2 wide/close imagery and compact overflow                       | `PASSED (Firefox web proxy)`        | all six existing sources remain native 1200×800; measured 350×233.33 at Arabic 390×844 and 280×186.67 at English 320×720; document/client widths matched and no scroll overflow was present                                      |
-| Centered copy, speaker, and original lower dots                   | `PASSED source + Firefox web proxy` | title/body centered; Guide panel absent; speaker measured 48×48 at the image's logical top-end; simple current/total plus six-dot row measured 24px high directly above navigation                                               |
-| Prepared narration and ambience                                   | `PASSED source + Firefox web proxy` | 12 exact bilingual narration clips plus one 48.04s local synthesized ambience; first speaker press requested ambience plus `narration-ar-intro`; Next requested `narration-ar-family`; AI pillar requested `narration-ar-ai`        |
-| Browser autoplay guard and replay recovery                        | `PASSED`                            | pre-guard fresh Firefox reproduced 2 autoplay rejections; final fresh load made no pre-gesture play call, showed no error overlay, and produced zero console errors; the explicit speaker gesture requested both packaged players |
-| Audio/privacy/background boundary                                 | `PASSED automated/source`           | static local `require()` sources, exact visible transcripts, ready-gated native autoplay, step/locale/exit pause, screen-reader suppression, no microphone/recording/runtime URL, and background playback disabled              |
-| Detector and production exports                                   | `PASSED`                            | Impeccable detector `[]`; web exported 134 files / 39 static routes including 13 MP3s; Android JavaScript export produced 103 files and all 13 audio SHA-256 values matched the sources                                          |
-| Physical Android autoplay, audio focus, TalkBack, and font scale  | `BLOCKED / NOT RUN`                 | `adb devices -l` returned no attached target                                                                                                                                                                                   |
-| Named Arabic/UAE, safeguarding, accessibility, voice/rights review | `NOT RUN`                           | no named reviewer was available in this implementation session                                                                                                                                                                |
+| Gate                                                               | Result                              | Evidence                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused behavior                                               | `PASSED`                            | RED recorded 2 expected failures / 11 passes for the old 1:1/segmented UI and absent prepared-audio boundary; final focused file passed 13 tests                                                                                  |
+| Full repository verification                                       | `PASSED`                            | typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, and 90 files / 1,086 tests                                                                                                                        |
+| 3:2 wide/close imagery and compact overflow                        | `PASSED (Firefox web proxy)`        | all six existing sources remain native 1200×800; measured 350×233.33 at Arabic 390×844 and 280×186.67 at English 320×720; document/client widths matched and no scroll overflow was present                                       |
+| Centered copy, speaker, and original lower dots                    | `PASSED source + Firefox web proxy` | title/body centered; Guide panel absent; speaker measured 48×48 at the image's logical top-end; simple current/total plus six-dot row measured 24px high directly above navigation                                                |
+| Prepared narration and ambience                                    | `PASSED source + Firefox web proxy` | 12 exact bilingual narration clips plus one 48.04s local synthesized ambience; first speaker press requested ambience plus `narration-ar-intro`; Next requested `narration-ar-family`; AI pillar requested `narration-ar-ai`      |
+| Browser autoplay guard and replay recovery                         | `PASSED`                            | pre-guard fresh Firefox reproduced 2 autoplay rejections; final fresh load made no pre-gesture play call, showed no error overlay, and produced zero console errors; the explicit speaker gesture requested both packaged players |
+| Audio/privacy/background boundary                                  | `PASSED automated/source`           | static local `require()` sources, exact visible transcripts, ready-gated native autoplay, step/locale/exit pause, screen-reader suppression, no microphone/recording/runtime URL, and background playback disabled                |
+| Detector and production exports                                    | `PASSED`                            | Impeccable detector `[]`; web exported 134 files / 39 static routes including 13 MP3s; Android JavaScript export produced 103 files and all 13 audio SHA-256 values matched the sources                                           |
+| Physical Android autoplay, audio focus, TalkBack, and font scale   | `BLOCKED / NOT RUN`                 | `adb devices -l` returned no attached target                                                                                                                                                                                      |
+| Named Arabic/UAE, safeguarding, accessibility, voice/rights review | `NOT RUN`                           | no named reviewer was available in this implementation session                                                                                                                                                                    |
 
 The prepared voice is presentation—not proof that a live AI model ran, a recording of a person,
 or a companion. Fresh browsers may block first-screen audible autoplay before any gesture; Ghaf
@@ -798,7 +836,7 @@ required.
 | Phase | Route/state                                                    | Operator action                                                                                                                                                                            | What the judge must understand                                                                                              |
 | ----: | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 |     1 | `/`                                                            | Point out Arabic-first RTL, the synthetic/prepared disclosure, and separate Parent/Child entry actions; choose Parent                                                                      | Ghaf is a transparent prototype for real family action; access is simulated but role-separated                              |
-|     2 | Parent sign-in → verification                                  | Use saved fixture `parent@example.com` and operator-known code `424242`; first try an unknown email and confirm it stays on sign-in                                                                                         | Matching is local and deterministic; only the saved identifier reaches verification, and no setup screen opens on return    |
+|     2 | Parent sign-in → verification                                  | Use saved fixture `parent@example.com` and operator-known code `424242`; first try an unknown email and confirm it stays on sign-in                                                        | Matching is local and deterministic; only the saved identifier reaches verification, and no setup screen opens on return    |
 |     3 | First-family setup, when reset requires it                     | Complete family basics, Salem profile, review, and success; returning Parents skip this branch                                                                                             | Setup is synthetic, idempotent, and hands off into the Parent experience                                                    |
 |     4 | `/parent` → `/parent/family` → Reward → Home/Tasks             | Show the combined canopy, private Family Reward promise, and exact Home/Tasks/Garden/Family tabs                                                                                           | Parent Family and Reward data are private; Reward is a promise, not money custody or a Seed exchange rate                   |
 |     5 | `/parent/task/new`                                             | Choose Green Impact and `task_recycling_p0_v1`; ask the prepared Guide to make it clear/safe                                                                                               | A bounded, structured, visibly prepared assistant proposes a change to a Parent-owned task                                  |

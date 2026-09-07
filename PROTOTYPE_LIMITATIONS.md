@@ -1,5 +1,36 @@
 # Prototype Limitations
 
+## Feature 004 bounded live AI boundary — 2026-09-07
+
+F4 Parent task drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk voice now exist
+as default-off implementation candidates with strict local contracts, prepared fallback, and a
+non-deployed reference Worker. This source can be exercised only with synthetic profiles, media,
+capabilities, and fake model bindings. It does not establish that any real model request,
+production identity, valid consent, provider account, network path, retention control, or remote
+deletion occurred.
+
+The mobile app cannot mint a capability or contain a provider secret. The reference gateway's HMAC
+test capability, process-local replay store, and injected fake budget/rate services are test seams,
+not deployable authentication or abuse controls. The three app flags remain independent and false
+by default, and the MCP projection is a fourth server-only default-off switch. MCP offers only the
+two bounded text operations and no media/voice capability.
+
+Child text is not open chat: it is one terminal task-bound request under the approved age policy,
+current task/version, current profile-scoped grant, local and server safety filters, and exact
+correlation. Voice is unavailable below age 12 and to the current ages-9–11 P0 profiles. For an
+eligible synthetic 12–14 harness it uses explicit foreground permission and held capture, caps one
+clip at 15 seconds/256 KiB, deletes local cache audio before transcript display, requires visible
+review plus a separate approve action, and sends text only. Background/continuous recording,
+biometric or speaker identification, emotion/personality/truthfulness inference, and Child photo
+processing remain absent and prohibited.
+
+In-memory byte clearing and a provider response are not proof of provider zero-data-retention or
+remote deletion. Real Child activation remains `BLOCKED`: it requires the trusted broker and
+shared replay/budget stores, provider/ZDR evidence, privacy/legal and safeguarding approval,
+Arabic/UAE and accessibility review, incident and deletion procedures, a physical Android matrix,
+and named human rehearsal. Until those gates pass, demonstrate only the prepared Feature 003 path
+and describe the live code as an implementation candidate—not an available service.
+
 ## AI Services 1–3 integration boundary — 2026-09-07
 
 The app still runs the prepared deterministic Parent Guide, Child Coach, summary, age adaptation,
@@ -17,11 +48,10 @@ call, stores no derived ranking, exposes no Child data outside the device, and c
 future-only template executable or approve a task. Invalid or opted-out inputs fail back to the
 catalog order.
 
-The reference gateway accepts only one synthetic Parent request. It is not general task or mission
-generation and exposes no live Parent summary, Child Coach, photo, voice, or media processing.
-Features 4 and 5 remain proposal-only work: general mission drafting is outside the active P0
-scope, and live Child Coach is explicitly prohibited until a separately approved safety/privacy/
-consent amendment and direct evidence exist.
+The earlier AI Services 1–3 Parent Guide gateway still accepts only one synthetic Parent request
+and exposes no Child operation. The separate Feature 004 gateway and its stricter approved contract
+now cover the implementation candidates described above; they do not add a live Parent summary or
+Child photo processing and do not change the default prepared path.
 
 ## Onboarding prepared narration and ambience — 2026-09-07
 
