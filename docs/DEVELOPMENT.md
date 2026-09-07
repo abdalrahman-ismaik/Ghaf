@@ -35,7 +35,8 @@ default. No live-provider URL or client-side provider secret is supported.
 
 ## Run the app
 
-Use only one of these two supported local workflows.
+Use the web workflow for quick browser checks or the native workflow for authoritative Android
+device checks.
 
 ### Offline web testing
 
@@ -47,26 +48,168 @@ Open the URL printed by Expo, normally `http://localhost:8081`. Web is suitable 
 copy, deterministic-flow, and screenshot review. It cannot pass native Android, TalkBack, physical
 touch, IME, media, permission, predictive Back, or device-performance gates.
 
-### Android Studio and a USB device on Windows
+### Android Studio and a physical USB device
 
-1. In Android Studio's SDK Manager, install Android SDK Platform 36, Build-Tools, Platform-Tools,
-   NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the first native build.
-2. Enable Developer options and USB debugging on the Android device, connect it, and accept the
-   authorization prompt.
-3. Open PowerShell in the Windows checkout and run:
+#### 1. Install the native prerequisites
+
+In Android Studio's SDK Manager, install Android SDK Platform 36, Android SDK Build-Tools,
+Android SDK Platform-Tools, NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the
+first native build. Android Studio's bundled JDK is suitable; `java -version` must work in the
+terminal used to run Expo.
+
+On the phone, enable **Developer options** and **USB debugging**, use a data-capable cable, unlock
+the phone, and accept its RSA authorization prompt.
+
+#### 2. Put the Android SDK tools on the terminal path
+
+Use the block for the development host. Change the SDK path if Android Studio shows a different
+location under **Settings > Languages & Frameworks > Android SDK**.
+
+Linux:
+
+```bash
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+adb devices -l
+```
+
+macOS:
+
+```bash
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+adb devices -l
+```
+
+Windows PowerShell:
 
 ```powershell
 $env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
 $env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
-adb devices
-adb reverse tcp:8081 tcp:8081
+adb devices -l
+```
+
+Continue only when the phone's state (the second column) is `device`. If it says `unauthorized`,
+unlock the phone and accept the prompt. If no row appears, fix the cable, USB mode, host
+permissions, or Windows OEM USB driver before building.
+
+#### WSL2: keep the build and ADB on one side
+
+A phone connected to Windows is not automatically available to Linux `adb` inside WSL2. Choose one
+toolchain and use it consistently:
+
+- To use Android Studio installed on Windows, keep the checkout on the Windows filesystem and run
+  `npm`, Expo, and `adb` from Windows PowerShell. Do not reuse Linux `node_modules` from WSL.
+- To build from a checkout stored under `/home/...` in WSL2, install the Linux Android SDK/JDK in
+  WSL and attach the phone to WSL with `usbipd-win`. While attached to WSL, the phone is unavailable
+  to Windows Android Studio; build from the WSL terminal, or use Android Studio running on Linux.
+
+For the WSL-owned workflow, install `usbipd-win`, update WSL, find the phone's bus ID, and share it
+once from an **Administrator PowerShell**:
+
+```powershell
+winget install --interactive --exact dorssel.usbipd-win
+wsl --update
+usbipd list
+$GhafUsbBusId="4-4"
+usbipd bind --busid $GhafUsbBusId
+```
+
+Replace `4-4` with the bus ID printed for the phone. Keep a WSL terminal open, then attach it from a
+normal PowerShell whenever the phone is reconnected:
+
+```powershell
+$GhafUsbBusId="4-4"
+usbipd attach --wsl --busid $GhafUsbBusId
+```
+
+Verify from WSL before running Expo:
+
+```bash
+lsusb
+adb kill-server
+adb start-server
+adb devices -l
+```
+
+Return the phone to Windows when finished:
+
+```powershell
+$GhafUsbBusId="4-4"
+usbipd detach --busid $GhafUsbBusId
+```
+
+#### 3. First build and installation from the terminal
+
+From the repository root, run:
+
+```bash
+npm ci
 npx expo run:android --device
 ```
 
-Select the connected device when prompted. The first build downloads and compiles native Android
-tooling, so it can take several minutes; later builds reuse Gradle's cache. If `adb`, Java, the SDK,
-or the authorized device is unavailable, Android validation is `BLOCKED`; do not substitute a web
-pass.
+Select the USB phone when prompted. Because `android/` is intentionally ignored and absent from a
+clean checkout, Expo prebuilds it automatically, compiles the debug app, installs it on the phone,
+starts Metro, and launches Ghaf. The first build can take several minutes; later builds reuse the
+Gradle cache.
+
+`npm run android` is not the first-build command in this repository. It expands to
+`expo start --android`, so it can launch an existing installation but cannot compile and install a
+missing native app.
+
+#### 4. Build and launch from Android Studio
+
+Generate the native project once if `android/` does not exist:
+
+```bash
+npx expo prebuild --platform android
+```
+
+Open the generated `android/` directory in Android Studio, wait for Gradle sync, select the
+connected phone and the `app` run configuration, then click **Run**. Keep Metro running in a second
+terminal from the repository root:
+
+```bash
+adb reverse tcp:8081 tcp:8081
+npx expo start --localhost
+```
+
+The reverse tunnel makes the phone's `localhost:8081` reach Metro over USB, so phone and computer
+do not need to share Wi-Fi. Open Ghaf on the phone if Android Studio does not bring it to the
+foreground.
+
+Do not run `npx expo prebuild --clean` as routine setup: it replaces the generated native project
+and can discard deliberate native edits.
+
+#### 5. Daily JavaScript and TypeScript loop
+
+After the debug app is installed, most changes need Metro only:
+
+```bash
+adb devices -l
+adb reverse tcp:8081 tcp:8081
+npx expo start --localhost
+```
+
+Open Ghaf on the phone and use Fast Refresh. Run `npx expo run:android --device` again after adding
+or changing a native dependency, an Expo config plugin, Android configuration, or native code.
+
+If more than one device or emulator is connected, target the phone explicitly:
+
+```bash
+GHAF_ANDROID_SERIAL="serial-from-adb-devices"
+adb -s "$GHAF_ANDROID_SERIAL" reverse tcp:8081 tcp:8081
+npx expo run:android --device "$GHAF_ANDROID_SERIAL"
+```
+
+The native build is the Android evidence. A successful Metro start or web run alone is not a
+physical-device pass.
+
+The commands above follow Expo's
+[local native build workflow](https://docs.expo.dev/guides/local-app-development/) and Android's
+[hardware-device setup](https://developer.android.com/studio/run/device). The WSL2 USB split and
+`usbipd` commands follow Microsoft's
+[WSL USB-device guide](https://learn.microsoft.com/windows/wsl/connect-usb).
 
 ## Reset to the canonical baseline
 
@@ -147,9 +290,36 @@ npm run web -- --offline --port 8082
 
 ### Android target does not open
 
-Check `adb devices`, SDK environment variables, the USB cable and authorization, available disk
-space, and Java before retrying. Expo starting successfully does not prove that a physical Android
-build ran.
+Check the device state first:
+
+```bash
+adb kill-server
+adb start-server
+adb devices -l
+```
+
+For `unauthorized`, unlock the phone, revoke **USB debugging authorizations** in Developer options,
+reconnect, and accept the new prompt. On Ubuntu/Debian, a device that is visible but inaccessible
+may require the standard udev rules and `plugdev` membership:
+
+```bash
+sudo apt-get install android-sdk-platform-tools-common
+sudo usermod -aG plugdev "$LOGNAME"
+```
+
+Log out and back in after changing group membership. On Windows, install the manufacturer's OEM
+USB driver when the standard driver does not expose the phone to ADB. Android Studio also provides
+**Tools > Troubleshoot Device Connections**.
+
+If the app installs but cannot load JavaScript, restart the USB tunnel and Metro cache:
+
+```bash
+adb reverse tcp:8081 tcp:8081
+npx expo start --localhost --clear
+```
+
+Also verify the Android SDK path, `java -version`, available disk space, and that no other process
+owns port `8081`. Expo starting successfully does not prove that a physical Android build ran.
 
 ### Tool-specific browser or DevTools warning
 

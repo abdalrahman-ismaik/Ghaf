@@ -1,5 +1,26 @@
 # Team Ownership
 
+## 2026-09-07 Android USB Development Guide Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Correct the local physical-device instructions for the repository's installed Expo CLI.
+Document Android Studio setup, USB/ADB verification on Windows and Linux/macOS, the first native
+build/install, the daily Metro-only loop, rebuild triggers, multiple-device targeting, and bounded
+troubleshooting without changing application code, dependencies, product behavior, or existing
+Android evidence.
+
+**Status**: Complete and released — `docs/DEVELOPMENT.md` now distinguishes the first Expo native
+build from the Metro-only daily loop, documents Android Studio and cross-platform USB/ADB setup,
+and records the WSL2 USB ownership split with official `usbipd-win` commands. The installed Expo
+CLI help, ADB availability, targeted Prettier, and Git whitespace checks passed. No physical device
+was attached to this WSL2 environment, so no build, installation, or Android evidence status was
+claimed or changed. No application code, dependency, provider, feature flag, generated native
+project, or other session's worktree files were modified by this window; the reservation is
+released.
+
 ## 2026-09-07 Feature 005 Remembered Device Access Window
 
 **Owner and only writer**: `/root`
