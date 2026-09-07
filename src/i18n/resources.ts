@@ -1029,8 +1029,15 @@ export const resources = {
         },
         settings: {
           title: 'الإعدادات',
-          body: 'إدارة اللغة والوصول والخصوصية لهذه النسخة المحلية.',
+          body: 'إدارة الصوت واللغة والوصول والخصوصية لهذه النسخة المحلية.',
           languageTitle: 'لغة التطبيق',
+          ambientAudio: {
+            sectionTitle: 'الصوت',
+            title: 'الأصوات الطبيعية الهادئة',
+            body: 'تتكرر أصوات طبيعية هادئة ما دام تطبيق غاف مفتوحًا. يمكنك إيقافها هنا.',
+            hint: 'يشغّل الأصوات الطبيعية المتكررة أو يوقفها على هذا الجهاز.',
+            saveError: 'تعذّر حفظ إعداد الصوت، لذلك بقي الإعداد السابق دون تغيير.',
+          },
           permissionsTitle: 'أذونات الطفل',
           permissionsBody: 'الصوت والوسائط والذكاء الاصطناعي تبدأ متوقفة.',
           devicesTitle: 'الأجهزة المرتبطة',
@@ -2760,8 +2767,15 @@ export const resources = {
         },
         settings: {
           title: 'Settings',
-          body: 'Manage language, access, and privacy for this local prototype.',
+          body: 'Manage sound, language, access, and privacy for this local prototype.',
           languageTitle: 'App language',
+          ambientAudio: {
+            sectionTitle: 'Sound',
+            title: 'Nature ambience',
+            body: 'Quiet nature sounds loop while Ghaf is open. You can silence them here.',
+            hint: 'Turns looping nature ambience on or off on this device.',
+            saveError: 'The sound setting could not be saved, so the previous choice remains.',
+          },
           permissionsTitle: 'Child permissions',
           permissionsBody: 'Voice, media, and AI start off.',
           devicesTitle: 'Paired devices',

@@ -6,6 +6,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { PrimaryButton, QuietButton } from '@/components/primitives';
 import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
 import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r003';
+import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { replaceHistoryWithEntry } from '@/utils/navigation';
 
@@ -60,6 +61,9 @@ export default function ParentSettingsScreen() {
       />
       <R003Section title={t('r003.settings.languageTitle')}>
         <LanguageSwitcher compact showGuidance={false} />
+      </R003Section>
+      <R003Section title={t('r003.settings.ambientAudio.sectionTitle')}>
+        <AmbientSoundSetting />
       </R003Section>
       <R003Section>
         <R003ActionRow

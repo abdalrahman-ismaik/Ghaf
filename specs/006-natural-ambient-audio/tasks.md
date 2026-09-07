@@ -70,14 +70,14 @@ network or product-state effects.
 **Independent Test**: Toggle from each role separately, verify immediate store response and shared
 state through restart/sign-out/handoff, and prove a failed write leaves the prior state visible.
 
-- [ ] T013 [US2] Add failing bilingual, accessibility, hierarchy, shared-state, and write-failure
+- [x] T013 [US2] Add failing bilingual, accessibility, hierarchy, shared-state, and write-failure
       tests in `tests/natural-ambient-audio.test.tsx`
-- [ ] T014 [US2] Build the native switch row in
+- [x] T014 [US2] Build the native switch row in
       `src/components/settings/AmbientSoundSetting.tsx` and add equivalent copy in
       `src/i18n/resources.ts`
-- [ ] T015 [US2] Place the Sound section after language in `app/parent/settings/index.tsx` and
+- [x] T015 [US2] Place the Sound section after language in `app/parent/settings/index.tsx` and
       `app/child/settings.tsx` without changing role or permission authority
-- [ ] T016 [US2] Run the focused Settings/store tests GREEN and commit the independently verifiable
+- [x] T016 [US2] Run the focused Settings/store tests GREEN and commit the independently verifiable
       preference-control slice
 
 **Checkpoint**: Either role can control the same device ambience with one accessible action.
