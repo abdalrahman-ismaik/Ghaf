@@ -35,18 +35,18 @@ and fake-boundary authentication before any user story UI.
 
 **Critical**: No story integration starts until this phase is green.
 
-- [ ] T006 [P] Write RED independent/default-off parsing tests in `tests/bounded-ai-feature-flags.test.ts`
-- [ ] T007 Implement exact Feature 004 flags in `src/config/aiFeatureFlags.ts` and document disabled examples in `.env.example`
-- [ ] T008 [P] Write RED shared closed-schema, correlation, grant, terminal-result, and zero-effects tests in `tests/bounded-ai-contracts.test.ts`
-- [ ] T009 Implement provider-neutral Feature 004 entities and strict shared validators in `src/models/boundedAi.ts`
-- [ ] T010 Add Parent drafting, Child text, voice transcription, token, and ephemeral-media interfaces to `src/services/interfaces/index.ts`
-- [ ] T011 Add canonical prepared Feature 004 fixtures in `src/services/mock/boundedAiFixtures.ts`
-- [ ] T012 Implement deterministic F4/F5/voice providers in `src/services/mock/boundedAi.ts`
-- [ ] T013 Extend registry construction/injection and public exports without changing defaults in `src/services/mock/index.ts` and `src/services/index.ts`
-- [ ] T014 [P] Write RED capability-claim/auth-before-parse/replay tests in `tests/bounded-ai-gateway-security.test.ts`
-- [ ] T015 Implement closed capability claims, HMAC verification, replay, rate/budget/concurrency, origin, and safe-error utilities in `workers/ghaf-ai-gateway/src/security.ts`
-- [ ] T016 Create the non-deployed Feature 004 Worker shell/configuration in `workers/ghaf-ai-gateway/src/index.ts`, `workers/ghaf-ai-gateway/wrangler.jsonc`, and `workers/ghaf-ai-gateway/README.md`
-- [ ] T017 Verify ignore coverage and run the scoped secret scan against `.gitignore`, Expo configuration, and `workers/ghaf-ai-gateway/`
+- [x] T006 [P] Write RED independent/default-off parsing tests in `tests/bounded-ai-feature-flags.test.ts`
+- [x] T007 Implement exact Feature 004 flags in `src/config/aiFeatureFlags.ts` and document disabled examples in `.env.example`
+- [x] T008 [P] Write RED shared closed-schema, correlation, grant, terminal-result, and zero-effects tests in `tests/bounded-ai-contracts.test.ts`
+- [x] T009 Implement provider-neutral Feature 004 entities and strict shared validators in `src/models/boundedAi.ts`
+- [x] T010 Add Parent drafting, Child text, voice transcription, token, and ephemeral-media interfaces to `src/services/interfaces/index.ts`
+- [x] T011 Add canonical prepared Feature 004 fixtures in `src/services/mock/boundedAiFixtures.ts`
+- [x] T012 Implement deterministic F4/F5/voice providers in `src/services/mock/boundedAi.ts`
+- [x] T013 Extend registry construction/injection and public exports without changing defaults in `src/services/mock/index.ts` and `src/services/index.ts`
+- [x] T014 [P] Write RED capability-claim/auth-before-parse/replay tests in `tests/bounded-ai-gateway-security.test.ts`
+- [x] T015 Implement closed capability claims, HMAC verification, replay, rate/budget/concurrency, origin, and safe-error utilities in `workers/ghaf-ai-gateway/src/security.ts`
+- [x] T016 Create the non-deployed Feature 004 Worker shell/configuration in `workers/ghaf-ai-gateway/src/index.ts`, `workers/ghaf-ai-gateway/wrangler.jsonc`, and `workers/ghaf-ai-gateway/README.md`
+- [x] T017 Verify ignore coverage and run the scoped secret scan against `.gitignore`, Expo configuration, and `workers/ghaf-ai-gateway/`
 
 **Checkpoint**: All flags are false; prepared providers complete every accepted path; fake tokens
 can be verified without any mobile/deployed credential.
@@ -276,3 +276,13 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   `expo-file-system@57.0.6`, `npx expo install --check` reported dependencies up to date, and
   `npm ls expo-file-system --depth=0` resolved the expected direct version. The npm audit summary
   still reports 14 pre-existing moderate findings; no automatic or breaking audit rewrite was run.
+- **Foundation RED/GREEN — PASSED (2026-09-07)**: The two initial suites failed because the new
+  flag and contract modules did not exist; the gateway security suite then failed on the missing
+  security module. After implementation, four focused files passed 24 tests. Typecheck and
+  zero-warning lint passed. The registry selects prepared providers for all three capabilities and
+  its token service fails closed unless a trusted dependency is injected.
+- **Boundary hygiene — PASSED (2026-09-07)**: `.dev.vars*`, `.wrangler/`, and `.env.*` are ignored;
+  the scoped tracked-file scan found no public token/secret/API-key variable, provider-key pattern,
+  or assigned capability secret. Worker source/config/README formatting passed. The Worker is
+  explicitly non-deployed and still returns `BUDGET_BLOCKED` after authentication/capacity checks
+  until story-specific handlers land.

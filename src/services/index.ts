@@ -4,18 +4,26 @@ import { createLocalFamilyRepository, deviceLocalStorage } from './local';
 
 export type {
   BoundedParentGuideProvider,
+  CapabilityTokenRequest,
+  CapabilityTokenService,
   ChildCoachService,
   CoachAdaptationService,
   FamilyLeagueService,
   FamilyRewardService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
+  Feature004ServiceRegistry,
   GardenService,
   MediaService,
+  LiveChildCoachTextService,
   ParentGuideService,
+  ParentTaskDraftingService,
   ParentSummaryPolicy,
   PreparedChildCoachProvider,
   PreparedParentGuideProvider,
+  PreparedLiveChildCoachTextProvider,
+  PreparedParentTaskDraftingProvider,
+  PreparedVoiceTranscriptionProvider,
   PrototypeSessionService,
   RecognitionService,
   ServiceMeta,
@@ -24,10 +32,14 @@ export type {
   SyntheticVoiceService,
   SyntheticAccessService,
   TaskService,
+  VoiceTranscriptionInput,
+  VoiceTranscriptionService,
 } from './interfaces';
 export { GatewayParentGuideService, type GatewayParentGuideServiceOptions } from './remote';
 export {
   createFeature003ServiceRegistry,
+  BlockedCapabilityTokenService,
+  createPreparedBoundedAiServices,
   DeterministicChildCoachProvider,
   DeterministicCoachAdaptationService,
   DeterministicFamilyRewardService,
@@ -35,14 +47,22 @@ export {
   DeterministicFamilyProjectionService,
   DeterministicGardenService,
   DeterministicMediaService,
+  DeterministicLiveChildCoachTextProvider,
   DeterministicParentGuideProvider,
+  DeterministicParentTaskDraftingProvider,
   DeterministicParentSummaryPolicy,
   DeterministicPrototypeSessionService,
   DeterministicRecognitionService,
   DeterministicTaskService,
   DeterministicSyntheticVoiceService,
   DeterministicSyntheticAccessService,
+  DeterministicVoiceTranscriptionProvider,
 } from './mock';
+export {
+  createPreparedChildCoachResponse,
+  createPreparedParentTaskDraftSuggestion,
+  createPreparedVoiceTranscription,
+} from './mock/boundedAiFixtures';
 export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 export {
   createLocalFamilyRepository,

@@ -97,6 +97,15 @@ import type {
   TaskReviewResult,
   TaskTemplate,
 } from '../../models/familyGrowth';
+import type {
+  CapabilityTokenClaims,
+  ChildCoachTextRequestV1,
+  ChildCoachTextResponseV1,
+  ParentTaskDraftRequestV1,
+  ParentTaskDraftSuggestionV1,
+  VoiceTranscriptionMetadataV1,
+  VoiceTranscriptionResponseV1,
+} from '../../models/boundedAi';
 
 export type { DomainError } from '../../models/familyGrowth';
 
@@ -274,6 +283,44 @@ export interface SyntheticVoiceService {
   ): ServiceResult<SyntheticVoiceSession>;
 }
 
+export interface ParentTaskDraftingService {
+  draft(request: ParentTaskDraftRequestV1): Promise<ServiceResult<ParentTaskDraftSuggestionV1>>;
+}
+
+export interface LiveChildCoachTextService {
+  respond(request: ChildCoachTextRequestV1): Promise<ServiceResult<ChildCoachTextResponseV1>>;
+}
+
+export interface VoiceTranscriptionInput {
+  readonly metadata: VoiceTranscriptionMetadataV1;
+  readonly audioBytes: Uint8Array;
+}
+
+export interface VoiceTranscriptionService {
+  transcribe(input: VoiceTranscriptionInput): Promise<ServiceResult<VoiceTranscriptionResponseV1>>;
+}
+
+export interface CapabilityTokenRequest {
+  readonly role: CapabilityTokenClaims['role'];
+  readonly scope: CapabilityTokenClaims['scope'];
+  readonly grantVersion?: number;
+  readonly noticeVersion?: number;
+}
+
+export interface CapabilityTokenService {
+  getToken(request: CapabilityTokenRequest): Promise<ServiceResult<string>>;
+}
+
+export interface EphemeralMediaFile {
+  readonly uri: string;
+  readonly byteCount: number;
+}
+
+export interface EphemeralMediaService {
+  inspect(uri: string): Promise<ServiceResult<EphemeralMediaFile>>;
+  delete(uri: string): Promise<ServiceResult<true>>;
+}
+
 export interface SyntheticAccessService {
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
   terminateParentSession(input: ProjectAccessSessionInput): ServiceResult<ParentSessionTermination>;
@@ -409,4 +456,27 @@ export interface Feature003ServiceRegistry {
   readonly familyLeague: FamilyLeagueService;
   readonly parentSummary: ParentSummaryPolicy;
   readonly prototypeSession: PrototypeSessionService;
+  readonly boundedAi: Feature004ServiceRegistry;
+}
+
+export interface PreparedParentTaskDraftingProvider extends ParentTaskDraftingService {
+  readonly mode: 'deterministic_prepared';
+}
+
+export interface PreparedLiveChildCoachTextProvider extends LiveChildCoachTextService {
+  readonly mode: 'deterministic_prepared';
+}
+
+export interface PreparedVoiceTranscriptionProvider extends VoiceTranscriptionService {
+  readonly mode: 'deterministic_prepared';
+}
+
+export interface Feature004ServiceRegistry {
+  readonly parentTaskDraftingPrepared: PreparedParentTaskDraftingProvider;
+  readonly parentTaskDraftingPrimary: ParentTaskDraftingService;
+  readonly childCoachTextPrepared: PreparedLiveChildCoachTextProvider;
+  readonly childCoachTextPrimary: LiveChildCoachTextService;
+  readonly voiceTranscriptionPrepared: PreparedVoiceTranscriptionProvider;
+  readonly voiceTranscriptionPrimary: VoiceTranscriptionService;
+  readonly capabilityToken: CapabilityTokenService;
 }
