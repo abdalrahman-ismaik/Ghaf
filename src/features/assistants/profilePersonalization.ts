@@ -30,6 +30,16 @@ const ALLOWED_KEYS = [
   'supportPreferences',
   'personalizationEnabled',
 ] as const;
+const TASK_CATEGORY_IDS = new Set<TaskCategoryId>([
+  'faith_gratitude',
+  'roots_kinship',
+  'home_responsibility',
+  'green_impact',
+  'food_hospitality',
+  'heritage_etiquette',
+  'kindness_community',
+  'learning_wellbeing',
+]);
 
 export interface ProfilePersonalizationInput {
   readonly ageBand: '6_8' | '9_11' | '12_14';
@@ -51,6 +61,14 @@ export interface PreparedProfilePersonalization {
     readonly saysAiMayBeWrong: true;
     readonly providerCalled: false;
   };
+}
+
+export interface PreparedTaskCategoryPlan {
+  readonly recommendedCategoryIds: readonly TaskCategoryId[];
+  readonly orderedCategoryIds: readonly TaskCategoryId[];
+  readonly preselectedCategoryId: TaskCategoryId | null;
+  readonly parentApprovalRequired: true;
+  readonly meta: PreparedProfilePersonalization['meta'];
 }
 
 function failure(message: string): DomainResult<never> {
@@ -145,6 +163,37 @@ export function createPreparedProfilePersonalization(
         saysAiMayBeWrong: true,
         providerCalled: false,
       },
+    },
+  };
+}
+
+export function createPreparedTaskCategoryPlan(
+  profile: unknown,
+  categoryIds: readonly TaskCategoryId[],
+): DomainResult<PreparedTaskCategoryPlan> {
+  if (
+    categoryIds.length !== TASK_CATEGORY_IDS.size ||
+    new Set(categoryIds).size !== categoryIds.length ||
+    categoryIds.some((categoryId) => !TASK_CATEGORY_IDS.has(categoryId))
+  ) {
+    return failure('Prepared task category planning requires the exact reviewed catalog');
+  }
+  const personalization = createPreparedProfilePersonalization(profile);
+  if (!personalization.ok) return personalization;
+  const recommendedCategoryIds = personalization.data.recommendedCategoryIds.filter((categoryId) =>
+    categoryIds.includes(categoryId),
+  );
+  return {
+    ok: true,
+    data: {
+      recommendedCategoryIds,
+      orderedCategoryIds: [
+        ...recommendedCategoryIds,
+        ...categoryIds.filter((categoryId) => !recommendedCategoryIds.includes(categoryId)),
+      ],
+      preselectedCategoryId: recommendedCategoryIds[0] ?? null,
+      parentApprovalRequired: true,
+      meta: personalization.data.meta,
     },
   };
 }

@@ -23,6 +23,7 @@ import {
   TASK_CATEGORIES,
   TASK_TEMPLATES,
 } from '@/features/tasks/demoContent';
+import { createPreparedTaskCategoryPlan } from '@/features/assistants/profilePersonalization';
 import type { ParentProgressTaskPrefill } from '@/features/growth/parentProgress';
 import { localize } from '@/i18n';
 import type {
@@ -70,6 +71,7 @@ export function ParentTaskComposer({
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const journey = usePrototypeStore((state) => state.journey);
   const suggestion = usePrototypeStore((state) => state.parentGuideSuggestion);
   const createTaskDraft = usePrototypeStore((state) => state.createTaskDraft);
@@ -89,13 +91,39 @@ export function ParentTaskComposer({
       ? initialPrefill
       : null;
 
+  const [selectedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
+    journey?.task.targetChildId ?? acceptedInitialPrefill?.childId ?? activeChildId,
+  );
+  const profileCategoryPlan = useMemo(() => {
+    const profile = localFamily.record?.children.find((child) => child.id === selectedChildId);
+    if (!profile) return null;
+    const result = createPreparedTaskCategoryPlan(
+      {
+        ageBand: profile.ageBand,
+        interests: profile.interests,
+        hobbies: profile.hobbies,
+        accessibilityDefaults: profile.accessibilityDefaults,
+        supportPreferences: profile.supportPreferences,
+        personalizationEnabled: profile.personalizationEnabled,
+      },
+      TASK_CATEGORIES.map((category) => category.id),
+    );
+    return result.ok ? result.data : null;
+  }, [localFamily.record, selectedChildId]);
+  const orderedCategories = useMemo(
+    () =>
+      (profileCategoryPlan?.orderedCategoryIds ?? TASK_CATEGORIES.map((category) => category.id))
+        .map((id) => TASK_CATEGORIES.find((category) => category.id === id))
+        .filter((category): category is (typeof TASK_CATEGORIES)[number] => Boolean(category)),
+    [profileCategoryPlan],
+  );
+  const recommendedCategoryIds = profileCategoryPlan?.recommendedCategoryIds ?? [];
   const [stage, setStage] = useState<BuilderStage>(journey ? 'edit' : 'choose');
   const [categoryId, setCategoryId] = useState<TaskCategoryId | null>(
     journey?.task.content.categoryId ??
-      (acceptedInitialPrefill || activeChildId === 'child_salem' ? 'green_impact' : null),
-  );
-  const [selectedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
-    journey?.task.targetChildId ?? acceptedInitialPrefill?.childId ?? activeChildId,
+      (acceptedInitialPrefill || activeChildId === 'child_salem'
+        ? (profileCategoryPlan?.preselectedCategoryId ?? 'green_impact')
+        : null),
   );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     journey?.task.templateId ??
@@ -108,7 +136,7 @@ export function ParentTaskComposer({
   const [busyIntent, setBusyIntent] = useState<ParentGuideIntent | null>(null);
   const [error, setError] = useState<string | null>(null);
   const guideDisclosure =
-    suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuide.disclosure.text;
+    suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuidePrimary.disclosure.text;
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
   const hasExecutableSelection =
     selectedChildId === 'child_salem' &&
@@ -299,6 +327,8 @@ export function ParentTaskComposer({
           }}
           selectedChildId={selectedChildId}
           selectedTemplateId={selectedTemplateId}
+          orderedCategories={orderedCategories}
+          recommendedCategoryIds={recommendedCategoryIds}
         />
       ) : (
         <EditStage
@@ -339,6 +369,8 @@ interface ChooseStageProps {
   onTemplateChange: (templateId: string) => void;
   selectedChildId: SyntheticChildId | null;
   selectedTemplateId: string | null;
+  orderedCategories: typeof TASK_CATEGORIES;
+  recommendedCategoryIds: readonly TaskCategoryId[];
 }
 
 function ChooseStage({
@@ -352,6 +384,8 @@ function ChooseStage({
   onTemplateChange,
   selectedChildId,
   selectedTemplateId,
+  orderedCategories,
+  recommendedCategoryIds,
 }: ChooseStageProps) {
   const { t } = useTranslation();
 
@@ -393,12 +427,18 @@ function ChooseStage({
           <Text brand color="deepForest" variant="heading">
             {t('r002aTasks.categoryHeading')}
           </Text>
+          {recommendedCategoryIds.length > 0 ? (
+            <Text brand color="onSurfaceVariant" variant="caption">
+              {t('taskNew.profileRecommendationDisclosure')}
+            </Text>
+          ) : null}
           <View
             accessibilityRole="radiogroup"
             style={[styles.categoryGrid, { flexDirection: logicalRowDirection(direction) }]}
           >
-            {TASK_CATEGORIES.map((category) => {
+            {orderedCategories.map((category) => {
               const selected = category.id === categoryId;
+              const recommended = recommendedCategoryIds.includes(category.id);
               return (
                 <Pressable
                   accessibilityRole="radio"
@@ -418,6 +458,13 @@ function ChooseStage({
                     name={CATEGORY_ICONS[category.id]}
                     size={27}
                   />
+                  {recommended ? (
+                    <View style={styles.recommendationBadge}>
+                      <Text brand color="primary" variant="caption">
+                        {t('taskNew.profileRecommended')}
+                      </Text>
+                    </View>
+                  ) : null}
                   <Text
                     align="center"
                     brand
@@ -675,7 +722,9 @@ function EditStage({
             </View>
             <View style={styles.comparisonColumn}>
               <Text brand color="secondary" variant="caption">
-                {t('assistant.preparedLabel')}
+                {suggestion.meta.origin === 'live'
+                  ? t('assistant.liveLabel')
+                  : t('assistant.preparedLabel')}
               </Text>
               <Text brand>{localize(suggestion.suggestedContent.positiveAction, locale)}</Text>
             </View>
@@ -846,6 +895,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.ghafEmerald,
     backgroundColor: colors.ghafEmeraldSelection,
+  },
+  recommendationBadge: {
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.primaryFixedTint,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
   },
   templateList: { gap: spacing.sm },
   templateRow: {

@@ -467,6 +467,9 @@ export const resources = {
         childLabel: 'الطفل',
         categoryLabel: 'الفئة',
         templateLabel: 'القالب',
+        profileRecommended: 'مقترحة من مساعد الملف المُعدّ',
+        profileRecommendationDisclosure:
+          'رتّب مساعد الملف المُعدّ هذه الفئات محلياً من اختياراتك المنظّمة. قد يخطئ، ووليّ الأمر يراجع ويعتمد كل مهمة.',
         greenImpact: 'أثر أخضر',
         recyclingTask: 'فرز مواد نظيفة ومرافقة شخص بالغ إلى حاوية آمنة',
         parentTextLabel: 'صياغة وليّ الأمر',
@@ -797,6 +800,7 @@ export const resources = {
       },
       assistant: {
         preparedLabel: 'مثال مُعدّ مسبقاً',
+        liveLabel: 'اقتراح مباشر بالذكاء الاصطناعي',
         aiMayBeWrong: 'هذا مساعد ذكاء اصطناعي وقد يكون غير صحيح.',
         humanDecides: 'وليّ الأمر يراجع ويقرر.',
         retainedInput: 'بقيت صياغة وليّ الأمر الأصلية كما هي.',
@@ -2076,6 +2080,9 @@ export const resources = {
         childLabel: 'Child',
         categoryLabel: 'Category',
         templateLabel: 'Template',
+        profileRecommended: 'Prepared profile suggestion',
+        profileRecommendationDisclosure:
+          'The prepared profile helper ranked these categories locally from your structured choices. It may be wrong, and the Parent reviews and approves every task.',
         greenImpact: 'Green Impact',
         recyclingTask: 'Sort clean materials and accompany an adult to an approved safe bin',
         parentTextLabel: 'Parent wording',
@@ -2413,6 +2420,7 @@ export const resources = {
       },
       assistant: {
         preparedLabel: 'Prepared example',
+        liveLabel: 'Live AI suggestion',
         aiMayBeWrong: 'This is an AI assistant and it may be wrong.',
         humanDecides: 'The Parent reviews and decides.',
         retainedInput: 'The Parent’s original wording stayed unchanged.',
