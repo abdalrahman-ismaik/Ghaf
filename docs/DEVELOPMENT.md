@@ -198,9 +198,15 @@ If more than one device or emulator is connected, target the phone explicitly:
 
 ```bash
 GHAF_ANDROID_SERIAL="serial-from-adb-devices"
+GHAF_EXPO_DEVICE_NAME="model-from-adb-devices"
 adb -s "$GHAF_ANDROID_SERIAL" reverse tcp:8081 tcp:8081
-npx expo run:android --device "$GHAF_ANDROID_SERIAL"
+npx expo run:android --device "$GHAF_EXPO_DEVICE_NAME"
 ```
+
+ADB's `-s` option expects the serial from the first column of `adb devices -l`. The repository's
+installed Expo CLI expects `--device` to receive the displayed device name or model instead; for
+example, the connected `SM_T835` tablet is selected with `--device SM_T835`. Running
+`npx expo run:android --device` without a value remains the safest way to choose interactively.
 
 The native build is the Android evidence. A successful Metro start or web run alone is not a
 physical-device pass.

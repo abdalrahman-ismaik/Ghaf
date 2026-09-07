@@ -1,5 +1,26 @@
 # Team Ownership
 
+## 2026-09-07 Physical Android Verification Correction Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Record the device-selector behavior observed while building and launching the current
+debug app on the connected Samsung tablet. Keep ADB serial targeting separate from Expo CLI device
+name targeting, without changing application code, dependencies, native configuration, or product
+behavior.
+
+**Status**: Complete and released — Windows ADB identified the connected `SM_T835` by serial, USB
+reverse for Metro was active, the Expo CLI selected the tablet by model name, and the native debug
+build installed and rendered the Arabic RTL onboarding screen on Android 10 / API 29. The Gradle
+build passed, Metro served the Android bundle, the package was debuggable and resumed, and scoped
+runtime logs contained no React Native or Android runtime errors; deprecation warnings from React
+Native core remain non-blocking. Targeted Prettier and Git whitespace checks passed. This evidence
+verifies the physical connection/build/render path only and does not promote the other Android
+human-review gates. All protected local configuration, design inputs, generated output, and other
+worktree files remained outside this window.
+
 ## 2026-09-07 Source Publication Window
 
 **Owner and only writer**: `/root`
