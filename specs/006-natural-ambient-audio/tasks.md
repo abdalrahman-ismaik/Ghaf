@@ -44,19 +44,19 @@ playback decision before any native player or Settings UI changes.
 and verify one root player uses the local soundscape, loop mode, and quiet/ducked policy without
 network or product-state effects.
 
-- [ ] T008 [US1] Extend failing source/integration coverage for one root-owned looping local player,
+- [x] T008 [US1] Extend failing source/integration coverage for one root-owned looping local player,
       narration ducking, and removal of the onboarding-only player in
       `tests/natural-ambient-audio.test.tsx` and `tests/r003-first-run-experience.test.ts`
-- [ ] T009 [US1] Move the existing ambience into `assets/audio/ambient/`, preserve provenance in
+- [x] T009 [US1] Move the existing ambience into `assets/audio/ambient/`, preserve provenance in
       `assets/audio/ambient/README.md`, and keep narration-only provenance in
       `assets/audio/onboarding/README.md`
-- [ ] T010 [US1] Build the single provider and shared playback focus contract in
+- [x] T010 [US1] Build the single provider and shared playback focus contract in
       `src/components/audio/AmbientAudioProvider.tsx` and `src/components/audio/index.ts`
-- [ ] T011 [US1] Mount the provider once in `app/_layout.tsx`, connect narration focus/browser
+- [x] T011 [US1] Mount the provider once in `app/_layout.tsx`, connect narration focus/browser
       interaction in `src/components/onboarding/FirstRunOnboarding.tsx`, remove
       `src/components/onboarding/useOnboardingAmbience.ts`, and narrow
       `src/components/onboarding/onboardingAudioSources.ts` to narration
-- [ ] T012 [US1] Run the focused playback and first-run suites GREEN and commit the independently
+- [x] T012 [US1] Run the focused playback and first-run suites GREEN and commit the independently
       verifiable app-wide ambience slice
 
 **Checkpoint**: Enabled ambience uses one local player continuously across Ghaf.

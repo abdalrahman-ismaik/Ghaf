@@ -412,7 +412,7 @@ describe('R003 first-run experience', () => {
 
   it('uses prepared local narration and quiet foreground ambience after the slide settles', () => {
     const narration = source('src/components/onboarding/useOnboardingNarrator.ts');
-    const ambience = source('src/components/onboarding/useOnboardingAmbience.ts');
+    const ambience = source('src/components/audio/AmbientAudioProvider.tsx');
     const audioSources = source('src/components/onboarding/onboardingAudioSources.ts');
     const illustration = source('src/components/illustrations/LocalIllustration.tsx');
     const onboarding = source('src/components/onboarding/FirstRunOnboarding.tsx');
@@ -436,15 +436,15 @@ describe('R003 first-run experience', () => {
     expect(narration).toContain('screenReaderEnabled !== false ||');
     expect(narration).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
     expect(ambience).toContain("from 'expo-audio'");
-    expect(ambience).toContain('onboardingAmbienceSource');
+    expect(ambience).toContain('ambientSoundscapeSource');
     expect(ambience).toContain('player.loop = true');
-    expect(ambience).toContain('player.volume = narrationPlaying');
+    expect(ambience).toContain('player.volume = volume');
     expect(ambience).toContain('player.pause()');
     expect(ambience).toContain('shouldPlayInBackground: false');
-    expect(ambience).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
+    expect(ambience).toContain('webPlaybackUnlocked');
     expect(
       audioSources.match(/require\('\.\.\/\.\.\/\.\.\/assets\/audio\/onboarding\//gu),
-    ).toHaveLength(13);
+    ).toHaveLength(12);
     expect(audioSources).not.toMatch(/https?:\/\//u);
     expect(illustration).toContain('readonly onSettled?: () => void');
     expect(illustration).toContain('onLoad={onSettled}');
@@ -463,13 +463,15 @@ describe('R003 first-run experience', () => {
 
     const audioDirectory = resolve(repositoryRoot, 'assets/audio/onboarding');
     for (const file of [
-      'ambience-nature-v1.mp3',
       ...['ar', 'en'].flatMap((locale) =>
         ONBOARDING_STEPS.map((step) => `narration-${locale}-${step}-v1.mp3`),
       ),
     ]) {
       expect(statSync(resolve(audioDirectory, file)).size, file).toBeGreaterThan(1_000);
     }
+    expect(
+      statSync(resolve(repositoryRoot, 'assets/audio/ambient/nature-soundscape-v1.mp3')).size,
+    ).toBeGreaterThan(1_000);
     expect(source('assets/audio/onboarding/README.md')).toMatch(/prepared synthetic|اصطناعي/iu);
   });
 

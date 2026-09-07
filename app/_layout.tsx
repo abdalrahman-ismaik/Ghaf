@@ -14,6 +14,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useReducedMotion } from 'react-native-reanimated';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
+import { AmbientAudioProvider } from '@/components/audio';
 import {
   BrandedSplash,
   FirstRunExperienceProvider,
@@ -207,21 +208,23 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GhafFontProvider loaded={fontsLoaded}>
-        <FirstRunExperienceProvider>
-          <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
-          <View style={styles.root}>
-            {usesLightSystemChrome ? null : <PrototypeStatusBar />}
-            <Stack
-              screenOptions={{
-                animation: reducedMotion ? 'none' : 'fade',
-                contentStyle: { backgroundColor: colors.ivory },
-                headerShown: false,
-              }}
-            />
-            <SectionTransitionOverlay />
-            <BrandedSplash phase={startupPhase} />
-          </View>
-        </FirstRunExperienceProvider>
+        <AmbientAudioProvider startupReady={startupPhase === 'complete'}>
+          <FirstRunExperienceProvider>
+            <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
+            <View style={styles.root}>
+              {usesLightSystemChrome ? null : <PrototypeStatusBar />}
+              <Stack
+                screenOptions={{
+                  animation: reducedMotion ? 'none' : 'fade',
+                  contentStyle: { backgroundColor: colors.ivory },
+                  headerShown: false,
+                }}
+              />
+              <SectionTransitionOverlay />
+              <BrandedSplash phase={startupPhase} />
+            </View>
+          </FirstRunExperienceProvider>
+        </AmbientAudioProvider>
       </GhafFontProvider>
     </SafeAreaProvider>
   );

@@ -22,5 +22,3 @@ export const onboardingNarrationSources: Readonly<
     growth: require('../../../assets/audio/onboarding/narration-en-growth-v1.mp3'),
   },
 };
-
-export const onboardingAmbienceSource = require('../../../assets/audio/onboarding/ambience-nature-v1.mp3');

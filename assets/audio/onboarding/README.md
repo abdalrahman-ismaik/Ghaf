@@ -17,18 +17,9 @@ used. Runtime playback is local and offline through static Expo asset references
 The external authoring service received only the public onboarding scripts. Release activation
 still requires the repository's named Arabic/UAE voice-quality and asset-rights review.
 
-## Nature ambience
-
-`ambience-nature-v1.mp3` is a 48-second locally synthesized, non-verbal soundscape authored with
-FFmpeg 7.1.1 from layered pink/brown noise and two quiet tonal bird-like accents. It contains no
-downloaded field recording or third-party sample. Runtime volume is deliberately low, ducks below
-narration, and playback stops when onboarding exits. App configuration keeps recording and
-operating-system background playback disabled.
-
 ## SHA-256
 
 ```text
-d597335684f17773f6ac4c258122951488468fb871af190d8fae171a45253d71  ambience-nature-v1.mp3
 fc4087bf5a5e59d0c1288512de58bcac6b0a4a87705a24cce04df9f4f67253e8  narration-ar-ai-v1.mp3
 5e02bace02cddb1319a6677c60ec0fc9c303c8e9344caf9eca67b612c6757528  narration-ar-family-v1.mp3
 fe4b87dcf80b8d3be8b2ee8270674ccbb92cfcfc54cc9c474e367e178a5f1522  narration-ar-growth-v1.mp3

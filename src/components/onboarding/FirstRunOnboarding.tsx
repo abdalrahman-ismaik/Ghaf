@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Path } from 'react-native-svg';
 
 import { AccessScreen, GhafIcon } from '@/components/access';
+import { useAmbientAudio } from '@/components/audio';
 import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration, onboardingArtworkIds } from '@/components/illustrations';
 import { Button, IconButton, Text } from '@/components/primitives';
@@ -31,7 +32,6 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { ONBOARDING_PILLARS, ONBOARDING_STEPS, type OnboardingPillar } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
-import { useOnboardingAmbience } from './useOnboardingAmbience';
 import { useOnboardingNarrator } from './useOnboardingNarrator';
 
 interface FirstRunStepCopy {
@@ -172,7 +172,7 @@ export function FirstRunOnboarding() {
     null,
   );
   const [settledStep, setSettledStep] = useState<(typeof ONBOARDING_STEPS)[number] | null>(null);
-  const [webPlaybackUnlocked, setWebPlaybackUnlocked] = useState(false);
+  const { setNarrationPlaying, unlockPlayback, webPlaybackUnlocked } = useAmbientAudio();
   const visualProgress = useSharedValue(1);
   const copyProgress = useSharedValue(1);
   const stepIndex = ONBOARDING_STEPS.indexOf(state.step);
@@ -189,12 +189,6 @@ export function FirstRunOnboarding() {
     locale,
     ready: slideReady,
     step: state.step,
-    webPlaybackUnlocked,
-  });
-  const ambience = useOnboardingAmbience({
-    narrationPlaying: narration.status === 'speaking',
-    ready: slideReady,
-    screenReaderActive: narration.screenReaderActive,
     webPlaybackUnlocked,
   });
   const visualStyle = useAnimatedStyle(() => ({
@@ -256,6 +250,11 @@ export function FirstRunOnboarding() {
   }, [copyProgress, reducedMotion, state.step, visualProgress]);
 
   useEffect(() => {
+    setNarrationPlaying(narration.status === 'speaking');
+    return () => setNarrationPlaying(false);
+  }, [narration.status, setNarrationPlaying]);
+
+  useEffect(() => {
     const settleDelay = reducedMotion ? 0 : motion.duration.standard + 45;
     const timeout = setTimeout(() => setSettledStep(state.step), settleDelay);
     return () => clearTimeout(timeout);
@@ -286,7 +285,7 @@ export function FirstRunOnboarding() {
               fullWidth={false}
               language={locale}
               onPress={() => {
-                setWebPlaybackUnlocked(true);
+                unlockPlayback();
                 setLocale(locale === 'ar' ? 'en' : 'ar');
               }}
               style={styles.topAction}
@@ -300,7 +299,10 @@ export function FirstRunOnboarding() {
               direction={direction}
               fullWidth={false}
               language={locale}
-              onPress={() => dispatch({ type: 'skip' })}
+              onPress={() => {
+                unlockPlayback();
+                dispatch({ type: 'skip' });
+              }}
               style={styles.topAction}
               testID="first-run-skip-button"
               variant="quiet"
@@ -337,7 +339,7 @@ export function FirstRunOnboarding() {
               }
               label={t('firstRun.narrator.replay')}
               onPress={() => {
-                ambience.resume();
+                unlockPlayback();
                 narration.replay();
               }}
               style={styles.speakerButton}
@@ -364,7 +366,7 @@ export function FirstRunOnboarding() {
                     key={pillar}
                     language={locale}
                     onPress={() => {
-                      setWebPlaybackUnlocked(true);
+                      unlockPlayback();
                       dispatch({ type: 'goToPillar', step: pillar });
                     }}
                     size="compact"
@@ -465,7 +467,7 @@ export function FirstRunOnboarding() {
             fullWidth={false}
             language={locale}
             onPress={() => {
-              setWebPlaybackUnlocked(true);
+              unlockPlayback();
               dispatch({ type: isLast ? 'start' : 'next' });
             }}
             size="regular"
@@ -481,7 +483,7 @@ export function FirstRunOnboarding() {
               fullWidth={false}
               language={locale}
               onPress={() => {
-                setWebPlaybackUnlocked(true);
+                unlockPlayback();
                 dispatch({ type: 'back' });
               }}
               size="regular"
