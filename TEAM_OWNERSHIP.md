@@ -1,5 +1,36 @@
 # Team Ownership
 
+## 2026-09-07 AI Features 4–5 All-Three Approval Recording Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and
+`specs/004-bounded-live-ai/{spec.md,approval-packet.md,checklists/requirements.md}` only.
+
+**Scope**: Record the product owner's explicit "all three" implementation authorization for F4
+Parent task drafting, F5 bounded live Child Coach text, and F5 real push-to-talk voice. Approval
+authorizes independently flagged, default-off implementation and synthetic/fake-provider testing;
+it does not activate a provider, permit real Child data in tests, deploy a gateway, or approve
+release. Amend the voice contract with exact age, capture, transcript review, delete-before-send,
+data, consent, fallback, native-evidence, and no-background/no-biometric boundaries. Preserve
+Feature 003 as the active deterministic fallback and do not modify runtime files in this window.
+
+**Handoff condition**: The proposal and checklist unambiguously distinguish implementation
+approval from activation gates, contain no obsolete "voice unapproved" wording, and pass targeted
+formatting and whitespace checks. Planning/runtime ownership must be reserved separately.
+
+**Completion — 2026-09-07**: `/root` recorded the product owner's explicit **all three** decision
+as default-off implementation authorization for F4, F5-TEXT, and F5-VOICE. The amended contract
+limits voice to separately granted ages 12–14, one visible held recording, transcript review,
+delete-before-send, explicit text-only Coach submission, ephemeral audio deletion, and no
+background/continuous capture or biometric/speaker/emotion/personality/truthfulness inference.
+Release activation, deployment, real provider execution, and real Child data remain blocked on
+the recorded token-broker, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE, accessibility,
+incident, physical Android, deletion, and human-rehearsal gates. Targeted formatting, whitespace,
+approval-consistency, six-threat, and no-placeholder checks passed. No runtime file, active Feature
+003 artifact, feature metadata, provider, deployment, branch/ref, or user-owned artifact changed;
+the reservation is released and planning/runtime ownership must be reserved separately.
+
 ## 2026-09-07 AI Features 4–5 Phase 1 Proposal Window
 
 **Owner and only writer**: `/root`

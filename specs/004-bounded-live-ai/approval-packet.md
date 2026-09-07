@@ -1,18 +1,25 @@
-# AI Features 4–5 Phase 1 Approval Packet
+# AI Features 4–5 Approval and Activation Packet
 
-**Date**: 2026-09-07  
-**Repository state reviewed**: `b55d584` on `integration/r3-complete-screens-20260905`  
-**Status**: PROPOSED — IMPLEMENTATION, ACTIVATION, DEPLOYMENT, AND PROVIDER CALLS NOT AUTHORIZED
+**Date**: 2026-09-07
 
-This packet is the requested approval gate. It proposes three independently controlled stages:
+**Repository state reviewed**: `b55d584` on `integration/r3-complete-screens-20260905`
+
+**Proposal commit approved**: `ffe4dd7`
+
+**Status**: ALL THREE APPROVED FOR DEFAULT-OFF IMPLEMENTATION — ACTIVATION BLOCKED
+
+The product owner answered **"all three"** on 2026-09-07. This records implementation
+authorization for three independently controlled stages:
 
 1. **F4** — Parent task drafting.
 2. **F5-TEXT** — live Child Coach text/structured interaction.
-3. **F5-VOICE** — later voice capture/transcription; not implied by F5-TEXT approval.
+3. **F5-VOICE** — visible one-shot push-to-talk and transcript review for eligible ages 12–14.
 
 The current Feature 003 deterministic journey remains authoritative and complete. The current
 `.specify/feature.json` and the Spec Kit-managed `AGENTS.md` block intentionally remain pointed at
-Feature 003 until this proposal is approved and formally activated as a feature.
+Feature 003 until Feature 004 moves through the normal planning workflow. Approval authorizes
+default-off code and synthetic/fake-provider or native-media harness tests only. It does not
+authorize deployment, a real provider call, real Child data in testing, or release activation.
 
 ## 1. Repository-grounded gap analysis
 
@@ -41,7 +48,7 @@ Feature 003 until this proposal is approved and formally activated as a feature.
 | Old Worker CORS used `Access-Control-Allow-Origin: *` and accepted one public URL                                                                       | A browser origin is not authorization, wildcard CORS broadens abuse, and originless native requests were not authenticated                                      | Exact web-origin allowlist, auth required for all requests, and explicit treatment of missing native `Origin` as neutral—not trusted                               |
 | Old Worker had no endpoint authentication and only documented future account-level rate limiting                                                        | Anyone who discovered the URL could spend quota or exercise Child operations                                                                                    | Verify issuer/audience/scope/role/grant before parsing/inference, then per-subject/tenant/operation rate, daily budget, and concurrency limits                     |
 | Old Worker body cap was 32 KB and trusted declared length before reading                                                                                | Declared length may be absent or false and the payload is larger than necessary                                                                                 | Small operation-specific limits checked both before and after the bounded read                                                                                     |
-| Historical Coach accepted up to 500 characters for every band, including `voice-transcript`, and sent `childId` plus full task text                     | This violates current 6–8 and 9–11 input policy, over-shares identifiers/content, and implies real voice authorization                                          | Per-band request schemas, server-owned reviewed task context, no free text below 12, and a separate voice amendment                                                |
+| Historical Coach accepted up to 500 characters for every band, including `voice-transcript`, and sent `childId` plus full task text                     | This violates current 6–8 and 9–11 input policy, over-shares identifiers/content, and couples recording directly to generation                                  | Per-band request schemas, server-owned reviewed task context, no free text below 12, and an independently gated 12–14 transcript-review voice path                 |
 | Historical Coach used regex checks and accepted broad free-text/code-switching                                                                          | Regex is a useful fail-closed layer but not a complete semantic, multilingual, adversarial, or crisis safeguard                                                 | Curated/structured inputs, local and server validation, provider moderation where approved, semantic output policy, red-team corpus, and deterministic termination |
 | Historical prompt allowed a light Gulf greeting                                                                                                         | Current safety copy requires Modern Standard Arabic; dialect, gendered, cultural, and religious variants need named review                                      | MSA-only safety contract until a named human review approves a specific variant                                                                                    |
 | Old output schemas echoed task/request IDs but had no consent version, access/session authorization, replay control, or stale profile binding           | A matching string does not establish the current Child/task/grant authority                                                                                     | Random nonce plus local task/profile/draft/grant snapshots, short-lived credential `jti`, replay cache, cancellation, and post-response reauthorization            |
@@ -76,10 +83,11 @@ No existing business authority is delegated to a model.
 | Task attribution | Optional accepted-draft attribution `{ origin, schemaVersion, archetypeId }`; current fixture ID remains for Parent Guide regression    | Task ID/version, Parent review, assignment, confirmation, and recognition                |
 | Child service    | New `LiveChildCoachTextService.respond(ChildCoachTextRequestV1)` plus prepared fallback adapter                                         | Existing `ChildCoachService`, age adapter, and synthetic voice                           |
 | Child result     | Ephemeral `ChildCoachTextResponseV1`; not persisted in `PrototypeSession`                                                               | Approved task/version, assignment, definition of done, and every reward/growth authority |
+| Voice service    | Separate one-clip capture/transcription boundary producing an ephemeral reviewed transcript; Coach receives text only                   | Synthetic rehearsal, prepared Coach, and all task/reward authorities                     |
 | Access/consent   | Trusted remote capability claims plus `LiveChildCoachGrant`; separate from current synthetic permission fixture                         | Local demo access truth and deterministic Coach availability                             |
 | Registry         | Prepared and primary entries for each new operation; screens import only interfaces/store                                               | Existing default registry                                                                |
 | Store            | Independent request revisions/cancellation and accept/keep/edit actions; post-response reauthorization                                  | Existing task and recognition state machines                                             |
-| Gateway          | Exact `/v1/parent-task-drafts` and `/v1/child-coach/text` routes with separate auth/rate/budget policies                                | Provider secret remains server-side                                                      |
+| Gateway          | Exact Parent-draft, Child-text, and voice-transcription routes with separate auth/rate/budget/data policies                             | Provider secrets remain server-side                                                      |
 | Localization     | Reviewed Arabic/English disclosure, consent, notice, fallback, refusal, rate, deletion, and report copy                                 | Existing resource source of truth and Arabic-first rendering                             |
 | Operations       | Non-content audit fields, kill switch, rollback, provider/model/prompt/schema/catalog pins                                              | No raw prompt/response logging                                                           |
 
@@ -164,11 +172,11 @@ forwarded to the provider.
 
 ### F5 age-band input allowlists
 
-| Band  | Additional allowed input                                                                                                                          | Fixed limits                                                                                                                                    | Prohibited                                                                                                                 |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| 6–8   | None beyond a selected intent: `show_next_step`, `make_step_shorter`, `need_adult`                                                                | One intent press; maximum three live actions per task session                                                                                   | Every text field, voice, media, URL, contact detail, history, open chat                                                    |
-| 9–11  | `templateInput.supportChoice`: `first_step`, `next_step`, `smaller_chunk`, `if_then`, `rehearse_phrase`, `need_adult`; optional `stepOrdinal` 1–4 | One structured template; maximum four live actions per task session                                                                             | Free text, voice, media, arbitrary key/value, history, open chat                                                           |
-| 12–14 | Same structured fields plus optional `boundedText` and `topic` = `clarify_step`, `plan_order`, `ask_for_help`, `reflect_on_strategy`              | At most 240 Unicode scalars and 512 UTF-8 bytes; one line; no URL/email/phone; one request/response; maximum four live actions per task session | Voice unless separately approved, media, names/contact/location/secrets, sensitive/protected topics, history, continuation |
+| Band  | Additional allowed input                                                                                                                          | Fixed limits                                                                                                                                    | Prohibited                                                                                                |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 6–8   | None beyond a selected intent: `show_next_step`, `make_step_shorter`, `need_adult`                                                                | One intent press; maximum three live actions per task session                                                                                   | Every text field, voice, media, URL, contact detail, history, open chat                                   |
+| 9–11  | `templateInput.supportChoice`: `first_step`, `next_step`, `smaller_chunk`, `if_then`, `rehearse_phrase`, `need_adult`; optional `stepOrdinal` 1–4 | One structured template; maximum four live actions per task session                                                                             | Free text, voice, media, arbitrary key/value, history, open chat                                          |
+| 12–14 | Same structured fields plus optional `boundedText` and `topic` = `clarify_step`, `plan_order`, `ask_for_help`, `reflect_on_strategy`              | At most 240 Unicode scalars and 512 UTF-8 bytes; one line; no URL/email/phone; one request/response; maximum four live actions per task session | Raw audio, other media, names/contact/location/secrets, sensitive/protected topics, history, continuation |
 
 For all bands, crisis, self-harm, sexual, abuse, unsafe/hazard, medical, food-safety, religious,
 emotional-confidant, dependency/exclusivity, contact/location, and prompt-injection patterns route
@@ -192,6 +200,24 @@ The disclosure and **Ask an adult** control are local reviewed UI, so a model ca
 them. Responses may not include quick-reply continuations; the next allowed intent is a new,
 independent user action with no prior transcript.
 
+### F5 voice capture and transcription allowlist
+
+Voice is a separate input adapter for the 12–14 bounded-text path, not a conversational mode.
+Synthetic/fake media is mandatory for development and automated tests; real Child audio cannot be
+used until activation gates pass.
+
+| Boundary                     | Allowed                                                                                                                                        | Prohibited                                                                                                                                            |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Local capture envelope       | Random request/binding IDs; locale; capture state; elapsed milliseconds; byte count; permission state; voice/notice/grant versions             | Names/IDs, background state history, location, contacts, device fingerprint, inferred speaker attributes                                              |
+| Ephemeral audio              | One visible push-to-talk clip; proposed maximum 15 seconds and 256 KiB encoded payload; encrypted transport to approved transcription endpoint | Continuous/background capture, wake word, automatic restart/send, multiple clips, analytics/crash attachment, ordinary backup, Coach-model forwarding |
+| Transcription request claims | Short-lived exact voice-transcription scope, opaque profile subject, active grant/notice version, single-use `jti`; claims stay at gateway     | Reusable/static credential, raw local IDs forwarded to provider, text-Coach scope reuse                                                               |
+| Transcript draft             | MSA Arabic or English text shown locally for review; maximum 240 Unicode scalars and 512 UTF-8 bytes after normalization                       | Confidence/voiceprint/speaker/accent/emotion/gender/age/health/truthfulness labels, history, hidden metadata                                          |
+| Explicit send                | Reviewed transcript plus the same F5 common text fields and bounded 12–14 topic                                                                | Raw audio, prior takes, automatic send, direct transcription-to-generation chaining                                                                   |
+
+Audio that is silent, corrupt, unsupported, too short to produce a useful transcript, over 15
+seconds, over 256 KiB, interrupted, stale, or policy-ineligible fails closed to delete plus bounded
+text/prepared fallback. Low-confidence output is not shown as fact and is not automatically sent.
+
 ### Retention and deletion inventory
 
 | Data                                     | Location                          | Proposed retention                                                                  | Deletion / evidence                                       |
@@ -199,6 +225,8 @@ independent user action with no prior transcript.
 | Pending request and raw F4/F5 response   | Process memory only               | Until result, cancellation, sign-out, reset, or 5-minute expiry                     | Memory cleared; automated lifecycle test                  |
 | Accepted F4 copy                         | Existing private task record      | Existing task lifecycle only                                                        | Existing task/reset behavior; origin attribution retained |
 | F5 Child input/result                    | Not persisted                     | Clear immediately after terminal display/task exit; never ordinary logs             | Store/repository tests and storage inspection             |
+| F5 voice audio                           | Ephemeral capture/transcription   | Delete after transcript delivery or immediately on delete/cancel/failure/timeout    | Device, gateway, provider deletion and storage inspection |
+| F5 transcript draft                      | Process memory only               | Until send, delete, task/route exit, revoke, sign-out, reset, or 5-minute expiry    | Lifecycle tests and storage/log inspection                |
 | Rate/concurrency counters                | Gateway control store             | Rolling window; no more than 24 hours                                               | TTL evidence                                              |
 | Non-content request outcome metadata     | Restricted operations store       | F4 max 14 days; F5 max 7 days                                                       | Scheduled deletion report                                 |
 | Guardian grant/revocation/notice version | Protected account authority store | Account lifetime plus proposed 90 days; final period requires counsel approval      | Guardian deletion workflow and audit receipt              |
@@ -216,12 +244,16 @@ complete data-processing boundary.
 - Off by default for each Child and each stage.
 - Parent sees purpose, exact input fields, provider/data region, no training/retention statement,
   Child experience, limits, risks, reporting path, and deletion/revocation behavior.
-- Parent must reauthenticate for `enable_live_child_coach_text` and choose **Enable**; no bundled
-  voice/media consent and no prechecked option.
+- Parent must reauthenticate separately for `enable_live_child_coach_text` and
+  `enable_live_child_coach_voice`; neither choice is prechecked, and voice cannot be bundled with
+  text or other media consent.
 - Grant records policy/schema/catalog/provider versions, issue time, expiry, and revocation. The
   proposed renewal period is 30 days and any material policy/provider change forces re-consent.
 - Child sees a reviewed age-appropriate notice before first use in each authenticated session and
   may decline without losing the prepared Coach or any progress.
+- Before every recording, an eligible Child sees a concise microphone/transcription notice and
+  explicitly holds push-to-talk. The Child can stop, review, delete, or decline without losing
+  bounded text, the prepared Coach, task progress, or rewards.
 - Disablement or revocation is immediate for new calls and invalidates pending/replayed calls.
 - A Parent can request deletion and receive a non-content completion record. Any exception must be
   tied to an approved legal hold and shown in the privacy record.
@@ -252,6 +284,9 @@ are not informed consent, production authentication, age assurance, or evidence 
 flowchart LR
   P[Parent UI] -->|curated F4 fields| MS[Mobile store and local policy]
   C[Child UI] -->|age-banded F5 intent| MS
+  V[Visible 12–14 push-to-talk] -->|one ephemeral clip| VC[Native capture policy]
+  VC -->|separate scoped request| TX[Approved transcription boundary]
+  TX -->|ephemeral transcript| MS
   MS -->|local auth, grant, task and stale checks| TB[Trusted token broker]
   TB -->|short-lived scoped token| MS
   MS -->|HTTPS + minimized DTO| GW[Operation-specific gateway]
@@ -265,8 +300,9 @@ flowchart LR
 ```
 
 The token broker and real authorization system do not exist in the current prototype. Until they
-are approved and evidenced, both live runtime stages remain `BLOCKED`. A browser origin and an
-originless native request are transport metadata, not identity proof.
+are approved and evidenced, every live runtime stage remains `BLOCKED` for activation. Voice adds
+a separate transcription trust boundary; its audio never enters the Coach-model request. A browser
+origin and an originless native request are transport metadata, not identity proof.
 
 ### F4 Parent drafting sequence
 
@@ -337,38 +373,72 @@ sequenceDiagram
   Note over UI,Store: No reward, completion, learning, Garden, Circle, League or Family Reward mutation
 ```
 
-### Gateway contract defaults proposed for approval
+### F5 push-to-talk voice sequence
 
-| Control                   | F4 Parent drafting                                                                   | F5 Child text                                            |
-| ------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| Route                     | `POST /v1/parent-task-drafts`                                                        | `POST /v1/child-coach/text`                              |
-| Client deadline           | 2,500 ms                                                                             | 1,800 ms                                                 |
-| Gateway/provider deadline | 2,200 ms                                                                             | 1,500 ms                                                 |
-| Automatic retry           | None                                                                                 | None                                                     |
-| Body limit                | 8 KiB after UTF-8 read                                                               | 4 KiB after UTF-8 read                                   |
-| Per-subject rate          | 6/minute                                                                             | 3/minute                                                 |
-| Daily cap                 | 30/household                                                                         | 12/Child and 30/household                                |
-| Concurrency               | 2/household                                                                          | 1/Child                                                  |
-| Credential                | max 5-minute token; audience + exact operation scope + role + tenant subject + `jti` | same plus profile subject, grant version, notice version |
-| Replay                    | `jti` and binding nonce single-use until expiry                                      | same                                                     |
-| Response caching          | `Cache-Control: no-store`; no CDN cache                                              | same                                                     |
-| Provider state            | no conversation ID, previous response, memory, retrieval, browsing, or tools         | same                                                     |
-| Output handling           | strict structured output, refusal/incomplete handling, semantic/local validation     | same plus input/output child-safety policy               |
+```mermaid
+sequenceDiagram
+  actor Child
+  participant UI as Child Task Screen
+  participant Capture as Native capture policy
+  participant Transcribe as Transcription boundary
+  participant Store
+  participant Coach as Bounded text Coach
+  participant Fallback as Prepared Child Coach
+
+  Child->>UI: Hold visible push-to-talk
+  UI->>Capture: Verify age, permission, voice grant, notice and active task
+  Capture->>Capture: Record one bounded foreground clip
+  Child->>UI: Release to stop
+  Capture->>Transcribe: One scoped encrypted request
+  Transcribe-->>UI: Ephemeral transcript or failure; delete audio
+  alt transcript available and current
+    UI-->>Child: Review transcript; Delete or Send
+    alt Child deletes or state becomes stale
+      UI->>Store: Clear audio/transcript; no Coach request
+    else Child explicitly sends
+      UI->>Store: Validate bounded 12–14 text policy again
+      Store->>Coach: Text only; no audio or prior takes
+      Coach-->>UI: One terminal card or deterministic safe exit
+    end
+  else denial, interruption, timeout or transcription failure
+    UI->>Fallback: Offer bounded text or prepared Coach without pressure
+  end
+  Note over UI,Store: Background, route exit, revoke, sign-out and reset stop capture and clear transient data
+```
+
+### Gateway contract defaults approved for implementation
+
+| Control                   | F4 Parent drafting                                                                   | F5 Child text                                            | F5 voice transcription                                              |
+| ------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------- |
+| Route                     | `POST /v1/parent-task-drafts`                                                        | `POST /v1/child-coach/text`                              | Separate `POST /v1/child-coach/transcriptions`                      |
+| Client deadline           | 2,500 ms                                                                             | 1,800 ms                                                 | Proposed 4,000 ms after capture                                     |
+| Gateway/provider deadline | 2,200 ms                                                                             | 1,500 ms                                                 | Proposed 3,500 ms                                                   |
+| Automatic retry           | None                                                                                 | None                                                     | None                                                                |
+| Body limit                | 8 KiB after UTF-8 read                                                               | 4 KiB after UTF-8 read                                   | Proposed 256 KiB encoded clip plus bounded metadata                 |
+| Per-subject rate          | 6/minute                                                                             | 3/minute                                                 | 2/minute                                                            |
+| Daily cap                 | 30/household                                                                         | 12/Child and 30/household                                | 6/Child and 12/household                                            |
+| Concurrency               | 2/household                                                                          | 1/Child                                                  | 1/Child                                                             |
+| Credential                | max 5-minute token; audience + exact operation scope + role + tenant subject + `jti` | same plus profile subject, grant version, notice version | same plus exact voice scope and separate voice grant/notice version |
+| Replay                    | `jti` and binding nonce single-use until expiry                                      | same                                                     | same; one clip per request                                          |
+| Response caching          | `Cache-Control: no-store`; no CDN cache                                              | same                                                     | same                                                                |
+| Provider state            | no conversation ID, previous response, memory, retrieval, browsing, or tools         | same                                                     | no training, voiceprint, speaker analytics, history, or reuse       |
+| Output handling           | strict structured output, refusal/incomplete handling, semantic/local validation     | same plus input/output child-safety policy               | transcript text only; delete audio; validate before display/send    |
 
 Provider errors, refusals, incomplete responses, 4xx/5xx, timeouts, rate limits, budget limits,
 malformed output, and safety rejection are never automatically sent back to the model for repair.
 
 ## 6. Threat model, controls, and risk register
 
-### Five-item threat model
+### Six-item threat model
 
-| Threat / actor                                    | Asset and trust boundary                              | Abuse path                                                                                                             | Required controls                                                                                                                                                                                          | Residual gate                                                 |
-| ------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| External attacker or modified mobile client       | Provider budget, gateway, household/profile isolation | Reuse/extract a distributed secret, forge scope, replay calls, omit `Origin`, or enumerate IDs                         | No mobile secret; trusted short-lived tokens; issuer/audience/scope/role/grant checks; random nonces; replay cache; per-subject/tenant rates and budget kill switch                                        | Auth architecture review + broker penetration test            |
-| Curious/adversarial Child or Parent input         | Child safety, task integrity, approved topic          | Prompt injection, Unicode/Arabic evasion, off-topic/crisis/sexual/medical/religious content, encoded contact/secret    | Curated/structured inputs; strict length/byte/character rules; local prefilter; server validation/moderation; server-owned task catalog; terminal deterministic routing; red-team corpus                   | Named safeguarding + Arabic review; sandbox safety target met |
-| Untrusted or compromised model/provider           | Task authority and Child-facing output                | Hallucinate unsafe steps, weaken adult help, change reward/eligibility, add links/tools, lure continued chat           | Copy-only response DTO; no authority fields/tools/links; structured output; refusal/incomplete checks; post-generation policy; immutable mapper; local revalidation; prepared fallback; model pin/rollback | Security/privacy/provider review + bilingual eval             |
-| Stale, replayed, or cross-profile response        | Private task/profile/grant state                      | Late response lands after edit/reset/sign-out/pairing or grant change; response copied to another profile/task         | Per-action nonce; local revision snapshots; credential `jti`; single-use replay store; cancellation; post-response capability check; no result persistence                                                 | Automated concurrency/reset/profile tests                     |
-| Operator, log, provider, or incident-data leakage | Child text, identity, consent and security evidence   | Raw content in logs/errors/traces, long provider retention/training, excessive operator access, unsafe incident export | Field allowlist before network; no content logs; redaction tests; least-privilege access; bounded metadata TTL; ZDR/retention evidence; deletion workflow; segregated legal holds; access audit            | Privacy/legal review + deletion/log inspection                |
+| Threat / actor                                    | Asset and trust boundary                               | Abuse path                                                                                                               | Required controls                                                                                                                                                                                          | Residual gate                                                 |
+| ------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| External attacker or modified mobile client       | Provider budget, gateway, household/profile isolation  | Reuse/extract a distributed secret, forge scope, replay calls, omit `Origin`, or enumerate IDs                           | No mobile secret; trusted short-lived tokens; issuer/audience/scope/role/grant checks; random nonces; replay cache; per-subject/tenant rates and budget kill switch                                        | Auth architecture review + broker penetration test            |
+| Curious/adversarial Child or Parent input         | Child safety, task integrity, approved topic           | Prompt injection, Unicode/Arabic evasion, off-topic/crisis/sexual/medical/religious content, encoded contact/secret      | Curated/structured inputs; strict length/byte/character rules; local prefilter; server validation/moderation; server-owned task catalog; terminal deterministic routing; red-team corpus                   | Named safeguarding + Arabic review; sandbox safety target met |
+| Untrusted or compromised model/provider           | Task authority and Child-facing output                 | Hallucinate unsafe steps, weaken adult help, change reward/eligibility, add links/tools, lure continued chat             | Copy-only response DTO; no authority fields/tools/links; structured output; refusal/incomplete checks; post-generation policy; immutable mapper; local revalidation; prepared fallback; model pin/rollback | Security/privacy/provider review + bilingual eval             |
+| Stale, replayed, or cross-profile response        | Private task/profile/grant state                       | Late response lands after edit/reset/sign-out/pairing or grant change; response copied to another profile/task           | Per-action nonce; local revision snapshots; credential `jti`; single-use replay store; cancellation; post-response capability check; no result persistence                                                 | Automated concurrency/reset/profile tests                     |
+| Operator, log, provider, or incident-data leakage | Child text, identity, consent and security evidence    | Raw content in logs/errors/traces, long provider retention/training, excessive operator access, unsafe incident export   | Field allowlist before network; no content logs; redaction tests; least-privilege access; bounded metadata TTL; ZDR/retention evidence; deletion workflow; segregated legal holds; access audit            | Privacy/legal review + deletion/log inspection                |
+| Native capture or transcription boundary          | Child voice, background speech, transcript, permission | Capture continues after release/background; audio is retained/reused; transcript auto-sends; speaker traits are inferred | One held foreground control; hard duration/size caps; stop-on-boundary lifecycle; separate grant/scope; review/delete/send; ZDR/deletion proof; no inference/analytics; physical Android evidence          | Voice privacy/safeguarding/native/provider gates              |
 
 ### Control checklist by trust boundary
 
@@ -381,6 +451,10 @@ malformed output, and safety rejection are never automatically sent back to the 
 - [ ] Provider result never writes authority fields and F5 content is not persisted.
 - [ ] Local disclosure, **Ask an adult**, decline/report, prepared fallback, and offline reset.
 - [ ] No provider SDK/key/secret or reusable gateway token in the Expo bundle.
+- [ ] Voice exists only for separately granted ages 12–14; visible held capture stops on release,
+      interruption, background, route exit, revoke, sign-out, and reset.
+- [ ] Transcript review, delete-before-send, and explicit send are distinct states; no raw audio
+      enters Coach state, analytics, logs, crash reports, backups, or generation requests.
 
 #### Trusted identity/token broker
 
@@ -400,6 +474,8 @@ malformed output, and safety rejection are never automatically sent back to the 
 - [ ] Server-owned catalog/safety prompts, provider/model/prompt/schema version pins, refusal and
       incomplete handling, and local semantic safety validation.
 - [ ] No raw input/output in logs, traces, exceptions, analytics, or response metadata.
+- [ ] Voice transcription uses a separate route, exact scope/grant, stricter rate/body/duration,
+      deletion, no-training/no-inference, and audio-to-text-only controls.
 
 #### Provider/subprocessors
 
@@ -428,10 +504,11 @@ malformed output, and safety rejection are never automatically sent back to the 
 3. Gateway configuration and tests for auth-before-inference, path/method/origin/body limits,
    rate/concurrency/budget, timeout, no retry, no-store, kill switch, and rollback.
 4. Bundle/source/configuration/secret scans plus canary-based proof that raw input, output,
-   credentials, and Child text do not enter logs, traces, analytics, screenshots, or storage.
-5. Provider/model/prompt/schema/catalog versions; sandbox eval report; refusal/incomplete behavior;
-   data-processing, region, subprocessor, training, retention/ZDR, deletion, incident, quota, and
-   change-notification evidence.
+   credentials, Child text, raw audio, and transcript drafts do not enter logs, traces, analytics,
+   screenshots, crash reports, ordinary backups, or persistent application storage.
+5. Generation and transcription provider/model/prompt/schema/catalog versions; sandbox eval
+   report; refusal/incomplete/low-confidence behavior; data-processing, region, subprocessor,
+   training, retention/ZDR, audio deletion, incident, quota, and change-notification evidence.
 6. Approved child-rights/privacy impact assessment, data inventory, guardian grant and Child notice
    copies, age-assurance decision, deletion flow, counsel disposition, and no-compliance-claim
    review.
@@ -441,7 +518,8 @@ malformed output, and safety rejection are never automatically sent back to the 
    and provider/guardian notification decision paths.
 9. Focused and full repository results, storage/profile/reset inspection, real-network outage tests,
    and proof that flags-off execution makes zero remote calls and preserves the deterministic path.
-10. Named physical Android build/device evidence, five timed rehearsals, and three independent
+10. Named physical Android build/device evidence including voice permission/capture/interruption/
+    background/process-death/deletion cases, five timed rehearsals, and three independent
     comprehension checks. Browser/source evidence is recorded separately and cannot substitute.
 
 ### Risk register
@@ -459,25 +537,26 @@ malformed output, and safety rejection are never automatically sent back to the 
 | AI relationship language creates dependence, secrecy, or continued conversation                       | High     | Possible   | One terminal card, no continuation/history, semantic policy, disclosure and adult exit                                     | Safeguarding owner                 | Child UX/content review `PASSED`                |
 | Rate/cost abuse or outage harms the deterministic demo                                                | Medium   | Likely     | Rate/concurrency/daily caps, budget kill switch, short timeout, no retry, prepared fallback                                | Backend/operations owner           | Load/outage/rehearsal `PASSED`                  |
 | Provider/model change silently weakens schema or safety                                               | High     | Possible   | Version pins, change review, held-out bilingual eval, canary, rollback and independent kill switch                         | AI/backend owner                   | Change-management evidence `PASSED`             |
-| Voice stage captures in background, retains audio/metadata, or implies biometric analysis             | Critical | Possible   | Separate unapproved amendment, native permission/capture evidence, delete-before-send, no background/biometric code        | Voice/privacy/safeguarding owners  | F5-VOICE remains `BLOCKED` until all gates pass |
+| Voice stage captures in background, retains audio/metadata, or implies biometric analysis             | Critical | Possible   | Approved default-off one-shot contract, native capture evidence, delete-before-send, no background/biometric code          | Voice/privacy/safeguarding owners  | Voice activation `BLOCKED` until all gates pass |
 | Monitoring/reporting duties conflict with no-content retention                                        | High     | Possible   | Counsel-approved event taxonomy, segregated incident path, minimum necessary holds, trained human escalation               | Legal/safeguarding/incident owners | Operational playbook exercise `PASSED`          |
 
 ## 7. Acceptance and test matrix
 
-| Layer                 | Required executable evidence                                                                                                                                                                                                                                                  |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Schema/contract       | Reject unknown/missing keys, wrong operation/schema/catalog, wrong correlation, invalid enum/count/length/UTF-8 size, oversized actual body, invalid bilingual parity, refusal, partial/incomplete, malformed JSON, and arbitrary provider metadata                           |
-| F4 authority          | For every authority field, mutate it directly and through prose; mapper must retain the reviewed template. Exercise diff, accept, keep, edit, review, approval, stale edit, and no reward/state mutation                                                                      |
-| F5 age policy         | 6–8 has no text field; 9–11 accepts only exact structured choices; 12–14 requires guardian grant and obeys scalar/byte/topic/contact/URL limits; all reject voice/open chat/history/continuation                                                                              |
-| Task/profile binding  | Wrong active Child, household, profile epoch, assignment, task ID/version, draft revision, grant/notice version, pairing/device state, request/nonce, replay and post-reset response all fail closed                                                                          |
-| Safety                | Bilingual and mixed-bidi prompt injection, confusables, unsafe/hazard, secrets, dependency/exclusivity, continued-chat lure, diagnosis, emotion/personality/truthfulness/religiosity judgment, medical/food-safety, sexual, crisis and protected-topic cases terminate safely |
-| Auth/gateway          | Missing/expired/wrong issuer/audience/scope/role/grant token, replayed `jti`, disallowed origin, originless invalid client, path/method/content type/body violations, rate/concurrency/daily budget and kill switch all stop before inference                                 |
-| Failure/fallback      | DNS/network denial, cancellation, client/gateway timeout, provider 4xx/5xx/rate/refusal/content filter/incomplete/schema/safety failure all use the exact same-attempt prepared path; no model repair retry                                                                   |
-| Logging/privacy       | Secret scan, bundle/public config scan, tracked Worker state scan, log/trace/error snapshots with canary PII, storage inspection, metadata TTL, operator access, provider storage setting, deletion and revocation evidence                                                   |
-| State effects         | Every F4 request before existing confirmation and every F5 interaction produce zero task completion, Seeds, Garden/landscape/canopy, Circle, League, Family Reward, badge and learning changes                                                                                |
-| UI/i18n/accessibility | Arabic-first RTL and English LTR, long labels, mixed bidi, 200% text, focus/live regions, screen reader, reduced motion, error/fallback, Child notice/decline/report, AI label and persistent adult exit                                                                      |
-| Native                | Named Android build/device: keyboard/IME, Back, safe area, offline interruption, app background/foreground, process death, permission truth, TalkBack, font scale, reset and stale cancellation                                                                               |
-| Regression            | All flags false by default; existing deterministic tests/export and exact reset pass with zero network calls; independent flags cannot activate each other                                                                                                                    |
+| Layer                 | Required executable evidence                                                                                                                                                                                                                                                                                                                 |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Schema/contract       | Reject unknown/missing keys, wrong operation/schema/catalog, wrong correlation, invalid enum/count/length/UTF-8 size, oversized actual body, invalid bilingual parity, refusal, partial/incomplete, malformed JSON, and arbitrary provider metadata                                                                                          |
+| F4 authority          | For every authority field, mutate it directly and through prose; mapper must retain the reviewed template. Exercise diff, accept, keep, edit, review, approval, stale edit, and no reward/state mutation                                                                                                                                     |
+| F5 age policy         | 6–8 has no text field; 9–11 accepts only exact structured choices; 12–14 requires guardian grants and obeys scalar/byte/topic/contact/URL limits; 6–11 reject real voice and all bands reject open chat/history/continuation                                                                                                                 |
+| F5 voice              | Ages 6–11 and ungranted 12–14 expose no real capture; eligible 12–14 covers permission denial/revoke, held start/release stop, duration/size/type, silence, interruption, background, process death, transcript review/edit/delete/send, no auto-send, raw-audio deletion, text-only Coach input, and no biometric/emotion/speaker inference |
+| Task/profile binding  | Wrong active Child, household, profile epoch, assignment, task ID/version, draft revision, grant/notice version, pairing/device state, request/nonce, replay and post-reset response all fail closed                                                                                                                                         |
+| Safety                | Bilingual and mixed-bidi prompt injection, confusables, unsafe/hazard, secrets, dependency/exclusivity, continued-chat lure, diagnosis, emotion/personality/truthfulness/religiosity judgment, medical/food-safety, sexual, crisis and protected-topic cases terminate safely                                                                |
+| Auth/gateway          | Missing/expired/wrong issuer/audience/scope/role/grant token, replayed `jti`, disallowed origin, originless invalid client, path/method/content type/body violations, rate/concurrency/daily budget and kill switch all stop before inference                                                                                                |
+| Failure/fallback      | DNS/network denial, cancellation, client/gateway timeout, provider 4xx/5xx/rate/refusal/content filter/incomplete/schema/safety failure all use the exact same-attempt prepared path; no model repair retry                                                                                                                                  |
+| Logging/privacy       | Secret scan, bundle/public config scan, tracked Worker state scan, log/trace/error snapshots with canary PII, storage inspection, metadata TTL, operator access, provider storage setting, deletion and revocation evidence                                                                                                                  |
+| State effects         | Every F4 request before existing confirmation and every F5 interaction produce zero task completion, Seeds, Garden/landscape/canopy, Circle, League, Family Reward, badge and learning changes                                                                                                                                               |
+| UI/i18n/accessibility | Arabic-first RTL and English LTR, long labels, mixed bidi, 200% text, focus/live regions, screen reader, reduced motion, error/fallback, Child notice/decline/report, AI label and persistent adult exit                                                                                                                                     |
+| Native                | Named Android build/device: keyboard/IME, Back, safe area, offline interruption, app background/foreground, process death, permission truth, TalkBack, font scale, reset and stale cancellation                                                                                                                                              |
+| Regression            | All flags false by default; existing deterministic tests/export and exact reset pass with zero network calls; independent flags cannot activate each other                                                                                                                                                                                   |
 
 Suggested security targets for the approved sandbox are 100% rejection of critical-policy corpus
 cases, zero unauthorized inference calls, zero authority mutations, zero raw-content log canaries,
@@ -488,7 +567,7 @@ and zero cross-profile/stale displays. These are release gates, not claims about
 | Gate                                               | Current status                     | Required evidence to pass                                                                                    |
 | -------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Repository archaeology and proposal completeness   | `PASSED` for Phase 1 source review | This packet, spec, and requirements checklist; no runtime assertion                                          |
-| Product contract approval                          | `BLOCKED`                          | Explicit selection of F4 and/or F5-TEXT plus approved decisions below                                        |
+| Product contract approval                          | `PASSED` for implementation scope  | Product owner selected all three on 2026-09-07; recommended constraints retained                             |
 | Focused repository contract/unit/integration tests | `NOT RUN`                          | Approved implementation and exact test counts/commit                                                         |
 | Local gateway/fake-provider tests                  | `NOT RUN`                          | Auth-before-inference, rate/replay/body/schema/no-log/fallback evidence                                      |
 | Trusted token broker and real authorization        | `BLOCKED`                          | Approved architecture, deployed test boundary, key rotation/revocation and penetration evidence              |
@@ -500,7 +579,8 @@ and zero cross-profile/stale displays. These are release gates, not claims about
 | Physical Android                                   | `NOT RUN`                          | Named build/device/OS and the native matrix above                                                            |
 | Real-network failure and provider outage           | `NOT RUN`                          | Controlled network/provider failures on named build without deterministic-path loss                          |
 | Human rehearsal/comprehension                      | `NOT RUN`                          | Five timed runs and three independent comprehension checks                                                   |
-| F5-VOICE                                           | `BLOCKED`                          | Separate approved amendment and all voice-native/privacy/safeguarding/provider gates                         |
+| F5-VOICE implementation                            | `APPROVED / NOT STARTED`           | Default-off code and synthetic native-media/provider harness only                                            |
+| F5-VOICE activation                                | `BLOCKED`                          | All voice-native/privacy/legal/safeguarding/provider/Arabic/accessibility/human gates                        |
 | Release activation                                 | `BLOCKED`                          | All applicable gates passed plus explicit release-owner decision                                             |
 
 Source inspection, TypeScript tests, fake provider calls, browser exports, or a configured flag can
@@ -508,11 +588,14 @@ never pass provider, legal, human, or physical Android gates.
 
 ## 9. Dependency-ordered implementation plan
 
-No task below is authorized until the corresponding product approval is explicit.
+All three stages have product implementation authorization. Each task remains subject to exact
+file ownership, TDD, the independent default-off flag, and the prerequisites named for that task;
+none authorizes activation.
 
 ### Stage 0 — shared prerequisites
 
-1. Approve this spec and the exact decisions below; name product and technical owners.
+1. Preserve the recorded all-three approval and name product and technical owners before release
+   gates can pass.
 2. Create the approved feature branch and switch Spec Kit metadata through the normal workflow.
 3. Reserve exact runtime/test/doc boundaries and confirm no overlapping writer.
 4. With test-driven development, add strict shared request/response schemas, version constants,
@@ -561,69 +644,77 @@ No task below is authorized until the corresponding product approval is explicit
    evidence matrix. Keep the flag off until every applicable release gate and a separate release
    decision pass.
 
-### Stage 3 — optional F5 voice
+### Stage 3 — F5 real push-to-talk voice
 
-1. Author a separate amendment and obtain explicit voice implementation approval; F5-TEXT approval
-   does not satisfy this step.
-2. Define native capture/transcription vendor, data region, metadata, encryption, permission,
-   background behavior, retention/deletion, transcript visibility, and incident controls.
-3. Limit initial eligibility to guardian-enabled 12–14, visible push-to-talk, one recording,
-   transcript review, delete-before-send, and the same bounded text Coach request after redaction.
-4. Prohibit continuous/background capture, wake words, speaker recognition, biometric templates,
-   voice/emotion/personality/truthfulness inference, raw-audio analytics, and automatic send.
-5. Implement only with TDD and named physical Android evidence for permission denial, interruption,
-   backgrounding, process death, accessibility, deletion, network failure, and reset.
-6. Pass separate provider, privacy/legal, safeguarding, Arabic voice, accessibility, rights, and
-   release gates before activation.
+1. Treat the 2026-09-07 **all three** decision as explicit default-off voice implementation
+   approval; do not infer activation or permission to use real Child test data.
+2. Add exact voice capture/transcript/grant state contracts and a synthetic media/transcription
+   harness with RED tests before connecting a native microphone or remote transcriber.
+3. Define and document the native capture/transcription vendor, data region, metadata, encryption,
+   permission, background behavior, retention/deletion, transcript visibility, and incident
+   controls before any real-network or real-audio test.
+4. Limit eligibility to separately guardian-enabled ages 12–14, visible held push-to-talk, one
+   bounded recording, transcript review, delete-before-send, and explicit send into the same
+   bounded text Coach request after normalization and policy checks.
+5. Prohibit continuous/background capture, wake words, speaker recognition, biometric templates,
+   voice/emotion/personality/truthfulness/health/accent inference, raw-audio analytics, automatic
+   send, Coach-model audio input, and retained prior takes.
+6. Implement with TDD and collect named physical Android evidence for permission denial,
+   interruption, backgrounding, process death, accessibility, deletion, network failure, grant
+   revocation, sign-out, and reset.
+7. Pass separate provider/ZDR, privacy/legal, safeguarding, Arabic voice, accessibility, rights,
+   incident, physical Android, and human-rehearsal gates before activation.
 
-## 10. Exact unresolved decisions requiring approval
+## 10. Recorded approval and retained decisions
 
-The recommended option is stated first; approval may accept it or replace it explicitly.
+The product owner's explicit **"all three"** response records the following scope decision:
 
-1. **Feature boundary** — Approve a new Feature 004 proposal while Feature 003 remains the active
-   deterministic release, rather than amending Feature 003 P0.
-2. **Implementation scope** — Approve F4 and F5-TEXT independently. F5-VOICE remains unapproved.
-3. **Implementation versus release** — Treat approval as permission for default-off code and
-   synthetic/fake-provider testing only; require a second explicit decision for live activation.
-4. **F4 inputs** — Use curated fields only and the four initial reviewed archetypes listed above;
-   do not send Parent free text. Non-P0 template execution remains under its existing approval.
-5. **F4 output authority** — Permit only bilingual copy/steps and advisory `supportCue`; retain all
-   task safety/reward/privacy/eligibility values from the base template.
-6. **F5 task scope** — Allow live Coach only for server-owned reviewed archetypes; custom or
-   arbitrary Parent wording uses the prepared Coach.
-7. **Age policy** — 6–8 curated buttons, 9–11 structured fields, and 12–14 guardian-enabled text up
-   to 240 Unicode scalars/512 UTF-8 bytes; no voice or open conversation.
-8. **Consent duration** — Purpose-specific per-Child guardian grant for 30 days, with fresh consent
-   on material provider/policy change, immediate revocation, and Child notice/decline each session.
-9. **Provider data** — Require no training, no application/gateway content logs, `store:false` or
-   equivalent, and approved zero-retention evidence for all F5 traffic. Confirm whether F4 also
-   requires contractual ZDR or only documented non-storage/no-training.
-10. **Abuse identifier** — Permit a gateway-derived, rotating, scoped HMAC distinct from the random
-    request correlation when the provider needs a stable safety identifier; never forward direct
-    identity.
-11. **Operational limits** — Approve the proposed deadlines, 8/4 KiB body limits, no retries,
-    rate/daily/concurrency caps, and immediate prepared fallback.
-12. **Metadata retention** — Approve F4 14-day and F5 7-day non-content operational metadata; grant
-    records account lifetime plus 90 days, subject to counsel; case-specific legal holds only.
-13. **Incident response** — Name a staffed safeguarding/incident owner and approve the no-probing
-    deterministic crisis/abuse route before any F5 release.
-14. **Provider and region** — Select the provider/model/processing region only after privacy,
-    safeguarding, security, budget, structured-output, moderation, retention, and rollback review.
-15. **Release reviewers** — Name the product, backend/security, mobile, QA, privacy/legal,
-    safeguarding, Arabic/UAE, accessibility, and incident owners required to pass gates.
+1. **Feature boundary approved** — Use Feature 004 while Feature 003 remains the active
+   deterministic release and fallback.
+2. **Implementation scope approved** — F4, F5-TEXT, and F5-VOICE may be implemented as three
+   independent default-off slices.
+3. **Implementation is not activation** — Only code and synthetic/fake-provider or native-media
+   harness testing are authorized. Deployment, real provider calls, real Child data in tests, and
+   release activation require later explicit authority and applicable passed gates.
+4. **F4 constraints retained** — Curated fields and the four reviewed archetypes only; no Parent
+   free text; copy/steps and advisory `supportCue` only; every task authority stays deterministic.
+5. **F5 task and age constraints retained** — Server-owned reviewed archetypes only; ages 6–8 use
+   buttons, ages 9–11 use structured fields, and ages 12–14 may use bounded text. No band receives
+   open conversation, history, memory, tools, or unrestricted chat.
+6. **Voice scope approved narrowly** — Only separately guardian-enabled ages 12–14, one visible
+   held push-to-talk clip, transcript review, delete-before-send, and explicit send into the same
+   bounded text policy. No continuous/background listening, automatic send, Coach-model audio,
+   biometric/speaker/emotion/personality/truthfulness/health/accent inference, or audio reuse.
+7. **Consent defaults retained** — Separate purpose-specific text and voice grants, proposed
+   30-day renewal, material-change re-consent, immediate revocation, and Child notice/decline each
+   session; the final wording and duration remain subject to privacy/legal review.
+8. **Data defaults retained** — No training or content logs; F5 requires approved zero-retention
+   evidence; voice audio is ephemeral and deleted after transcription/cancellation; F4 uses
+   documented non-storage/no-training, with contractual ZDR still an open release decision.
+9. **Operational defaults retained** — The recorded deadlines, body/duration/byte limits, no
+   retries, rate/daily/concurrency caps, rotating scoped abuse identifier if approved, metadata
+   TTLs, strict schemas, and immediate prepared fallback govern implementation unless amended.
 
-## Approval checkpoint
+The following decisions are intentionally still open and block activation, not default-off
+implementation:
 
-Choose one implementation authorization:
+- name the product, backend/security, mobile, QA, privacy/legal, safeguarding, Arabic/UAE,
+  accessibility, voice, and incident owners;
+- select the provider/model, transcription provider, processing region, and subprocessor boundary;
+- approve the child-rights/privacy impact assessment, age assurance, guardian/Child notice copy,
+  provider retention/ZDR evidence, deletion proof, and staffed incident/safeguarding playbook;
+- decide whether F4 also requires contractual ZDR; and
+- pass the exact security, provider, real-network, physical Android, accessibility, Arabic/UAE,
+  safeguarding, legal/consent, deletion, and human-rehearsal gates before a separate release-owner
+  activation decision.
 
-- **F4 only** — default-off Parent task drafting implementation; F5 remains blocked.
-- **F5-TEXT only** — default-off live Child Coach text implementation after its prerequisite
-  privacy/safety/consent decisions; F4 remains blocked.
-- **Both F4 and F5-TEXT** — two independently gated implementations; voice remains blocked.
-- **Neither** — keep the deterministic implementation and revise the proposal.
+## Approval checkpoint — satisfied for implementation
 
-No response other than an explicit choice plus disposition of the unresolved decisions authorizes
-runtime work.
+**Decision recorded**: **All three — F4 + F5-TEXT + F5-VOICE**.
+
+This is sufficient to begin separately reserved, default-off planning and implementation. It is
+not sufficient to enable a remote flag, deploy a gateway, process real Child audio/content, or
+claim live-AI/media readiness.
 
 ## Current authoritative references
 

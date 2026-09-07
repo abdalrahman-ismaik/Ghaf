@@ -4,26 +4,31 @@
 
 **Created**: 2026-09-07
 
-**Status**: PROPOSED — NOT APPROVED — NO RUNTIME AUTHORITY
+**Status**: APPROVED FOR DEFAULT-OFF IMPLEMENTATION — RELEASE ACTIVATION BLOCKED
 
 **Input**: Define independently gated Parent task drafting and optional live Child Coach
 transformations without weakening Feature 003's deterministic, private, Parent-approved journey.
 
-This is a new feature proposal rather than a Feature 003 amendment. Feature 003 FR-219 and the
-current product/limitations records deliberately put broader mission generation and live Child
-Coach outside the approved P0 contract. Keeping this proposal separate preserves Feature 003 as
-the active fallback and prevents planning work from being mistaken for activation approval.
+This is a new feature rather than a Feature 003 amendment. Feature 003 FR-219 and the current
+product/limitations records deliberately put broader mission generation and live Child Coach
+outside the approved P0 contract. The product owner approved all three stages on 2026-09-07:
+Feature 4 Parent drafting, Feature 5 bounded text, and Feature 5 real push-to-talk voice. Keeping
+this feature separate preserves Feature 003 as the active fallback and prevents implementation
+approval from being mistaken for release activation.
 
 The detailed archaeology, data inventory, architecture, threat model, test matrix, evidence gates,
 and approval decisions are in [approval-packet.md](approval-packet.md).
 
 ## Authorization Boundary
 
-- This document proposes product behavior. It does not authorize implementation, activation,
-  deployment, a provider request, real Child data, or real Child media.
+- This document authorizes independently flagged, default-off implementation and
+  synthetic/fake-provider testing for all three stages. It does not authorize activation,
+  deployment, a real provider request, or real Child data in development or test evidence.
 - Feature 4 Parent drafting, Feature 5 text Coach, and Feature 5 voice are separate stages with
   independent default-off flags and release gates.
-- Approval to implement Feature 5 text does not approve Feature 5 voice.
+- Feature 5 voice approval is limited to visible, one-shot push-to-talk and transcript review for
+  guardian-enabled ages 12–14. Its activation remains separately blocked until every voice,
+  consent/privacy, safeguarding, provider, and physical Android gate passes.
 - The deterministic Parent Guide, Child Coach, summary, media, voice rehearsal, profile helper,
   service registry, reset, and complete competition journey remain the mandatory default.
 - No provider credential may enter Expo source, an `EXPO_PUBLIC_` variable, source control, logs,
@@ -123,27 +128,45 @@ Child notice/decline, revoke, and verify gateway denial and deletion evidence.
 
 ---
 
-### User Story 4 — Optional voice stage remains separately gated (Priority: P3)
+### User Story 4 — Child reviews a push-to-talk transcript (Priority: P3)
 
-A future reviewed stage may let an eligible 12–14-year-old use visible push-to-talk, review and
-delete a transcript before sending, and receive the same terminal text Coach response. It never
-listens in the background and performs no speaker, face, emotion, personality, truthfulness, or
-biometric inference.
+With separate guardian enablement, an eligible 12–14-year-old may make one visible push-to-talk
+recording, stop it, review the transcript, delete it or explicitly send the bounded transcript,
+and receive the same terminal text Coach response. It never listens in the background and
+performs no speaker, face, emotion, personality, truthfulness, or biometric inference.
 
 **Why this priority**: Audio capture and transcription introduce native permission, retention,
 metadata, safeguarding, and provider risks that are not implied by approval of text Coach.
 
-**Independent Test**: No implementation test is authorized by this proposal. A later voice
-amendment must define and pass its own native-device, consent, deletion, provider, and human-review
-evidence gates before runtime work begins.
+**Independent Test**: With only the voice flag enabled in a synthetic native media and
+transcription harness, exercise permission denial, start/stop, interruption, backgrounding,
+transcript review, edit within bounded text rules, delete-before-send, explicit send, timeout,
+network failure, task/profile/grant change, sign-out, and reset. Verify no raw audio reaches the
+Coach model, persists after transcription/deletion, or enters logs. This is implementation
+evidence only and cannot activate real Child voice.
 
 **Acceptance Scenarios**:
 
-1. **Given** Parent drafting or Child text approval, **when** the product is built, **then** the
-   voice flag remains off and the existing synthetic voice rehearsal is unchanged.
-2. **Given** a future voice proposal, **when** microphone permission, visible capture, transcript
-   review, delete-before-send, background prohibition, retention, or native evidence is missing,
-   **then** release remains `BLOCKED`.
+1. **Given** the default state or an ineligible age band, **when** the Child opens Coach, **then**
+   the real microphone path is unavailable and the existing synthetic rehearsal remains truthful
+   and unchanged.
+2. **Given** a valid separate voice grant for a 12–14-year-old, **when** microphone permission is
+   denied, **then** Ghaf makes no capture or transcription request and offers bounded text or the
+   prepared Coach without pressure to enable the microphone.
+3. **Given** visible push-to-talk capture, **when** the Child stops recording, **then** capture
+   ends before transcription and no transcript or Coach request is sent automatically.
+4. **Given** a transcript draft, **when** the Child chooses delete, **then** audio and transcript
+   are discarded, no Coach inference occurs, and a non-content deletion event is recorded.
+5. **Given** a reviewed transcript that passes the 12–14 bounded-text policy, **when** the Child
+   explicitly sends it, **then** only the minimized transcript enters the same one-turn terminal
+   Coach path and raw audio is not forwarded to the Coach model.
+6. **Given** backgrounding, interruption, process death, permission change, grant revocation,
+   profile/task change, sign-out, reset, transcription failure, or stale correlation, **when** the
+   operation settles, **then** capture stops, transient data is cleared, no stale result displays,
+   and the prepared path remains usable.
+7. **Given** any missing voice-native, privacy/legal, safeguarding, provider-retention, Arabic,
+   accessibility, or physical Android evidence, **when** release is evaluated, **then** real Child
+   voice activation remains `BLOCKED` even if implementation tests pass.
 
 ### Edge Cases
 
@@ -162,6 +185,11 @@ evidence gates before runtime work begins.
   rate or budget limits, or arrives from an originless native client with an invalid credential.
 - Provider output passes structure but changes meaning, weakens the adult-help boundary, introduces
   unsafe actions, or tries to assign an authority field through prose.
+- Microphone permission is unavailable, restricted by the OS, revoked mid-capture, or requested by
+  a stale/ineligible profile; an audio route interruption, app background, or process death occurs.
+- A captured clip is silent, too short, oversized, over the time limit, corrupt, unsupported,
+  contains background speech or personal data, or yields an unsafe, incomplete, or low-confidence
+  transcript.
 - The network is unavailable and the app must remain fully usable, bilingual, resettable, and
   demonstrable.
 
@@ -222,7 +250,8 @@ evidence gates before runtime work begins.
   task/version for the active authorized Child and one allowlisted intent.
 - **FR-018**: Ages 6–8 MUST have curated intent controls only and no Child text, voice, or media
   input; ages 9–11 MUST have structured template fields only and no unrestricted text; ages 12–14
-  MAY have guardian-enabled bounded text only under the limits in the approval packet.
+  MAY have guardian-enabled bounded text and, under the separate requirements below, an explicitly
+  reviewed push-to-talk transcript. No age band may send raw audio to the Coach model.
 - **FR-019**: The initial live Coach allowlist MUST use server-owned reviewed task content selected
   by public archetype/catalog version. Arbitrary Parent-authored task text MUST use deterministic
   Coach fallback until separately approved minimization and PII controls exist.
@@ -268,10 +297,37 @@ evidence gates before runtime work begins.
   replay protection, and fail-closed error mapping.
 - **FR-032**: Provider/model/prompt/schema/catalog changes MUST be pinned, evaluated against the
   bilingual safety corpus, reviewed, versioned, and independently roll-backable.
-- **FR-033**: Real Child photos and video are excluded. Real voice is a separate unapproved stage
-  requiring its own amendment, native evidence, explicit guardian enablement, Child notice,
-  visible push-to-talk, delete-before-send, no background listening, retention/deletion controls,
-  and no biometric or emotion inference.
+- **FR-033**: Real Child photos and video remain excluded from this feature.
+
+#### Feature 5 — real push-to-talk voice
+
+- **FR-034**: Real voice MUST be available only to ages 12–14 with separate, unexpired guardian
+  voice and live-Coach grants, fresh age-appropriate notice, and an independent default-off flag;
+  text approval or synthetic `voiceGranted` state MUST NOT imply real-voice authorization.
+- **FR-035**: Capture MUST be a visible, user-held push-to-talk action for one clip, MUST stop on
+  release and on every interruption/background/route-exit/revocation/reset boundary, and MUST NOT
+  support continuous listening, background capture, wake words, or automatic restart.
+- **FR-036**: The Child MUST be able to review the resulting transcript, delete audio and
+  transcript before sending, or explicitly send. Recording, transcription completion, or
+  transcript display MUST NOT automatically invoke the Coach.
+- **FR-037**: A sent transcript MUST pass the same normalization, 240-Unicode-scalar,
+  512-UTF-8-byte, topic, contact, URL, secret, sensitive, crisis, and adversarial rules as bounded
+  12–14 text. Unsafe or ineligible transcripts MUST terminate locally without probing.
+- **FR-038**: Raw audio MUST go only to the approved transcription boundary, MUST NOT be forwarded
+  to the Coach model, persisted in application state, analytics, logs, crash reports, or ordinary
+  backups, and MUST be deleted after transcript delivery, explicit deletion, cancellation,
+  timeout, failure, sign-out, or reset according to the approved deletion evidence.
+- **FR-039**: Voice processing MUST NOT perform or derive speaker identity, biometric templates,
+  emotion, personality, truthfulness, religiosity, health, diagnosis, risk, accent, gender, age,
+  or household-background inference; it MUST NOT retain voiceprints or reuse audio for training.
+- **FR-040**: Permission denial, unavailable hardware, silence, duration/size violation,
+  interruption, transcription refusal/failure/low confidence, network loss, or stale state MUST
+  return to bounded text or the same prepared Coach path without loss of task state or pressure to
+  grant microphone access.
+- **FR-041**: Real voice release MUST remain blocked until the named native Android, privacy/legal,
+  safeguarding, provider/ZDR, Arabic voice, accessibility, deletion, incident, and human-rehearsal
+  gates pass on the exact candidate build; implementation approval and synthetic harness evidence
+  cannot satisfy those gates.
 
 ### Key Entities
 
@@ -285,7 +341,13 @@ evidence gates before runtime work begins.
 - **ChildCoachResponseV1**: One terminal bilingual coaching result with a safe disposition and no
   continuation state.
 - **LiveChildCoachGrant**: Versioned, purpose-specific, per-Child guardian decision with notice
-  version, reauthentication proof reference, issue/expiry/revocation times, and no provider secret.
+  version, capability (`text` or `voice`), reauthentication proof reference,
+  issue/expiry/revocation times, and no provider secret.
+- **VoiceCaptureEnvelopeV1**: Ephemeral one-clip capture state containing only random correlation,
+  timing/size bounds, locale, permission/capture state, and deletion status; no identity or
+  inference attributes.
+- **VoiceTranscriptDraftV1**: Ephemeral transcript shown for review before explicit send and
+  validated by the same bounded 12–14 text policy; never conversation history.
 - **AiControlEvent**: Non-content operational record for authorization, fallback, rate, safety,
   deletion, incident, flag, and rollback evidence.
 
@@ -315,11 +377,18 @@ evidence gates before runtime work begins.
 - **SC-008**: A reviewer can answer who authored the suggestion, who approved the task, what the AI
   changed, what data crossed the boundary, and why no reward changed in at least 3 of 3 observed
   rehearsals before release.
+- **SC-009**: In the exact Android voice release candidate, 100% of permission denial,
+  backgrounding, interruption, process-death, revoke, delete, failure, sign-out, and reset cases
+  stop capture and leave no accessible audio, transcript, stale result, or raw-content log entry.
+- **SC-010**: Across 100% of accepted voice attempts, the Child explicitly starts and stops one
+  recording, reviews the transcript before send, and the Coach receives text only after an
+  explicit send action; no audio is sent to the Coach model.
 
 ## Assumptions
 
-- Implementation approval, if granted, authorizes only default-off code and synthetic
-  provider-sandbox evidence. It does not authorize release activation or real Child data.
+- The 2026-09-07 product approval authorizes only default-off code and synthetic provider/media
+  harness evidence for all three stages. It does not authorize release activation, deployment,
+  provider execution, or real Child data in development/testing.
 - The current Expo access/session system is intentionally synthetic and cannot mint a trusted
   remote credential. A production-grade or competition-approved broker/authorization boundary is
   a prerequisite, not an implementation detail to infer.
