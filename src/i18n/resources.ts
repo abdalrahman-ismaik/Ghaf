@@ -219,6 +219,8 @@ export const resources = {
           aiDisabled: 'غير مفعّلة',
           aiPreviewTitle: 'لمحة من مساعد غاف',
           aiPreviewBody: 'أسلوب مساعدة مقترح: {{style}}. فئات مناسبة للبدء: {{categories}}.',
+          aiSupportStyleLabel: 'أسلوب الشرح المقترح',
+          aiStartingPointsLabel: 'فئات مناسبة للبدء',
           aiPreviewDisabled:
             'لن يستخدم غاف تفضيلات هذا الملف لصنع اقتراحات. يمكن لوليّ الأمر اختيار المهام يدويًا.',
           aiDisclosure:
@@ -340,6 +342,8 @@ export const resources = {
         openGarden: 'عرض الحديقة',
         openCircle: 'عرض التقدم التعاوني',
         summaryTitle: 'ملخص مُعدّ للأيام السبعة',
+        summaryPreparedWindow: 'مُعدّ محلياً · {{window}}',
+        summaryQuestionLead: 'ابدأ بما لوحظ، ثم استخدم سؤالاً مفتوحاً واحداً قبل اختيار أي تعديل.',
         summaryDisclosure: 'ملخص اصطناعي محدود؛ لا يشخّص الطفل ولا يفسّر دوافعه.',
         syntheticPrivacyBoundary:
           'هذه ملخصات اصطناعية محلية لوليّ الأمر؛ ولا تظهر للعائلات الأخرى.',
@@ -473,6 +477,7 @@ export const resources = {
         categoryLabel: 'الفئة',
         templateLabel: 'القالب',
         profileRecommended: 'مقترحة من مساعد الملف المُعدّ',
+        profileRecommendationTitle: 'بدايات مقترحة لهذا الملف',
         profileRecommendationDisclosure:
           'رتّب مساعد الملف المُعدّ هذه الفئات محلياً من اختياراتك المنظّمة. قد يخطئ، ووليّ الأمر يراجع ويعتمد كل مهمة.',
         greenImpact: 'أثر أخضر',
@@ -480,6 +485,8 @@ export const resources = {
         parentTextLabel: 'صياغة وليّ الأمر',
         parentTextPlaceholder: 'اكتب الفعل المراد توضيحه',
         guideTitle: 'دليل غاف',
+        guidePurpose: 'اختر نوع المساعدة الذي تحتاجه للصياغة. لن يتغير نصك حتى تقبل الاقتراح.',
+        guideActionsTitle: 'كيف يساعدك غاف؟',
         liveDraftTitle: 'مسودة مهمة بالذكاء الاصطناعي',
         liveDraftDisclosure:
           'قد يستخدم هذا الإجراء خدمة ذكاء اصطناعي مباشرة بمدخلات اصطناعية محدودة. قد يخطئ الذكاء الاصطناعي، وتبقى المراجعة والاعتماد لوليّ الأمر.',
@@ -620,6 +627,9 @@ export const resources = {
         openSupportTools: 'فتح أدوات الدعم',
         hideSupportTools: 'إخفاء أدوات الدعم',
         coachTitle: 'مدرّب غاف',
+        coachPreparedPurpose:
+          'اختر نوعاً واحداً من المساعدة للمهمة الحالية، ثم راجع النتيجة المُعدّة.',
+        coachActionsTitle: 'ما المساعدة التي تحتاجها الآن؟',
         adjustedCoachUnavailable:
           'المثال المُعدّ للمدرّب مرتبط بالمهمة الأصلية فقط. اتبع الخطوات المعدّلة التي وافق عليها وليّ الأمر أو اطلب مساعدة شخص بالغ.',
         showSteps: 'أرني الخطوات',
@@ -883,6 +893,7 @@ export const resources = {
         unavailable: 'الخدمة المباشرة غير متاحة؛ استُخدم المثال المُعدّ في المحاولة نفسها.',
         noChat: 'يقدم هذا المساعد خيارات محددة للمهمة فقط، وليس محادثة مفتوحة.',
         loading: 'جارٍ فتح المثال المُعدّ…',
+        liveLoading: 'جارٍ طلب الاقتراح المباشر…',
       },
       media: {
         imageLabel: 'صورة إعادة تدوير اصطناعية ومُعدّة',
@@ -1912,6 +1923,8 @@ export const resources = {
           aiPreviewTitle: 'Ghaf Assistant preview',
           aiPreviewBody:
             'Suggested coaching style: {{style}}. Helpful starting categories: {{categories}}.',
+          aiSupportStyleLabel: 'Suggested explanation style',
+          aiStartingPointsLabel: 'Helpful starting categories',
           aiPreviewDisabled:
             'Ghaf will not use this profile’s preferences for suggestions. The Parent can still choose tasks manually.',
           aiDisclosure:
@@ -2036,6 +2049,9 @@ export const resources = {
         openGarden: 'View the garden',
         openCircle: 'View cooperative progress',
         summaryTitle: 'Prepared seven-day summary',
+        summaryPreparedWindow: 'Prepared locally · {{window}}',
+        summaryQuestionLead:
+          'Start with what was observed, then use one open question before choosing an adjustment.',
         summaryDisclosure:
           'A limited synthetic summary; it does not diagnose the Child or explain motives.',
         syntheticPrivacyBoundary:
@@ -2176,6 +2192,7 @@ export const resources = {
         categoryLabel: 'Category',
         templateLabel: 'Template',
         profileRecommended: 'Prepared profile suggestion',
+        profileRecommendationTitle: 'Suggested starts for this profile',
         profileRecommendationDisclosure:
           'The prepared profile helper ranked these categories locally from your structured choices. It may be wrong, and the Parent reviews and approves every task.',
         greenImpact: 'Green Impact',
@@ -2183,6 +2200,9 @@ export const resources = {
         parentTextLabel: 'Parent wording',
         parentTextPlaceholder: 'Write the action that needs clarification',
         guideTitle: 'Ghaf Guide',
+        guidePurpose:
+          'Choose the kind of wording help you need. Your text stays unchanged until you accept a suggestion.',
+        guideActionsTitle: 'How should Ghaf help?',
         liveDraftTitle: 'AI task draft',
         liveDraftDisclosure:
           'This action may use live AI with bounded synthetic inputs. AI may be wrong; the Parent still reviews and approves the task.',
@@ -2328,6 +2348,9 @@ export const resources = {
         openSupportTools: 'Open support tools',
         hideSupportTools: 'Hide support tools',
         coachTitle: 'Ghaf Coach',
+        coachPreparedPurpose:
+          'Choose one kind of help for the current task, then review the prepared result.',
+        coachActionsTitle: 'What help do you need now?',
         adjustedCoachUnavailable:
           'The prepared Coach example is bound to the original task only. Follow the Parent-approved adjusted steps or ask an adult for help.',
         showSteps: 'Show me the steps',
@@ -2596,6 +2619,7 @@ export const resources = {
           'The live service is unavailable; the prepared result was used in the same attempt.',
         noChat: 'This assistant offers bounded task choices, not open chat.',
         loading: 'Opening the prepared example…',
+        liveLoading: 'Requesting the live suggestion…',
       },
       media: {
         imageLabel: 'Prepared synthetic recycling image',

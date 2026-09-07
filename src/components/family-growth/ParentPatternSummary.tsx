@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { AssistantIdentity } from '@/components/AssistantIdentity';
 import { Button, Input, Text } from '@/components/primitives';
 import { colors, r001Radii, r001Shadows, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
@@ -66,17 +67,18 @@ export function ParentPatternSummary({
 
   return (
     <View style={[styles.summary, branded ? styles.summaryR002a : null]} testID={testID}>
-      <View style={[styles.heading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
-        <View style={styles.guideMark} />
-        <View style={styles.grow}>
-          <Text brand={branded} color={branded ? 'deepForest' : 'forest'} variant="heading">
-            {t('parentHome.summaryTitle')}
-          </Text>
-          <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'earth'} variant="caption">
-            {localize(current.timeWindow, locale)} · {t('origin.prepared')}
-          </Text>
-        </View>
-      </View>
+      <AssistantIdentity
+        brand={branded}
+        description={t('parentHome.summaryQuestionLead')}
+        direction={direction}
+        language={locale}
+        origin="prepared"
+        originLabel={t('parentHome.summaryPreparedWindow', {
+          window: localize(current.timeWindow, locale),
+        })}
+        testID="parent-summary-identity"
+        title={t('parentHome.summaryTitle')}
+      />
 
       <SummaryField
         branded={branded}
@@ -93,6 +95,24 @@ export function ParentPatternSummary({
           </Text>
         ))}
       </View>
+      <SummaryField
+        branded={branded}
+        emphasis="question"
+        label={t('parentHome.question')}
+        testID="parent-summary-question"
+        value={localize(current.questionForChild, locale)}
+      />
+      <SummaryField
+        branded={branded}
+        label={t('parentHome.uncertainty')}
+        value={localize(current.uncertainty, locale)}
+      />
+      <SummaryField
+        branded={branded}
+        label={t('parentHome.adjustment')}
+        value={localize(current.possibleAdjustment, locale)}
+      />
+
       <Button brand={branded} aria-expanded={isEditing} onPress={beginCorrection} variant="ghost">
         {t('parentHome.correctSummary')}
       </Button>
@@ -144,21 +164,6 @@ export function ParentPatternSummary({
           </View>
         </View>
       ) : null}
-      <SummaryField
-        branded={branded}
-        label={t('parentHome.uncertainty')}
-        value={localize(current.uncertainty, locale)}
-      />
-      <SummaryField
-        branded={branded}
-        label={t('parentHome.question')}
-        value={localize(current.questionForChild, locale)}
-      />
-      <SummaryField
-        branded={branded}
-        label={t('parentHome.adjustment')}
-        value={localize(current.possibleAdjustment, locale)}
-      />
 
       <View style={styles.disclosure}>
         <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'inkMuted'} variant="caption">
@@ -195,15 +200,22 @@ export function ParentPatternSummary({
 
 function SummaryField({
   branded,
+  emphasis = 'standard',
   label,
+  testID,
   value,
 }: {
   readonly branded: boolean;
+  readonly emphasis?: 'standard' | 'question';
   readonly label: string;
+  readonly testID?: string;
   readonly value: string;
 }) {
   return (
-    <View style={styles.field}>
+    <View
+      style={[styles.field, emphasis === 'question' ? styles.questionField : null]}
+      testID={testID}
+    >
       <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'earth'} variant="caption">
         {label}
       </Text>
@@ -233,23 +245,15 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     ...r001Shadows.soft,
   },
-  rowRtl: { flexDirection: 'row-reverse' },
-  rowLtr: { flexDirection: 'row' },
-  heading: { alignItems: 'center', gap: spacing.sm },
-  grow: { flex: 1, minWidth: 0, gap: spacing.xxs },
-  guideMark: {
-    width: 18,
-    height: 28,
-    borderTopLeftRadius: 999,
-    borderBottomRightRadius: 999,
-    backgroundColor: colors.mangrove,
-    transform: [{ rotate: '22deg' }],
-  },
   field: {
     gap: spacing.xxs,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.water,
-    paddingBottom: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  questionField: {
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.md,
   },
   disclosure: { gap: spacing.xxs },
   editor: {

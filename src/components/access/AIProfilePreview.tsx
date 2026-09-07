@@ -1,18 +1,18 @@
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { createPreparedProfilePersonalization } from '@/features/assistants/profilePersonalization';
-import type { ParentOnboardingChildDraft } from '@/models/parentOnboarding';
+import { AssistantIdentity } from '@/components/AssistantIdentity';
+import { Text } from '@/components/primitives';
 import {
   colors,
+  logicalRowDirection,
   r001Radii,
   spacing,
   type LayoutDirection,
   type TypographyLanguage,
 } from '@/design/tokens';
-import { Row, Text } from '@/components/primitives';
-
-import { GhafIcon } from './GhafIcon';
+import { createPreparedProfilePersonalization } from '@/features/assistants/profilePersonalization';
+import type { ParentOnboardingChildDraft } from '@/models/parentOnboarding';
 
 export function AIProfilePreview({
   child,
@@ -47,42 +47,76 @@ export function AIProfilePreview({
       style={styles.card}
       testID="ai-profile-preview"
     >
-      <Row align="flex-start" direction={direction} gap={spacing.sm}>
-        <View style={styles.icon}>
-          <GhafIcon color={colors.ghafEmerald} direction={direction} name="sparkle" size={22} />
+      <AssistantIdentity
+        description={t('access.setup.aiDisclosure')}
+        direction={direction}
+        language={language}
+        origin="prepared"
+        originLabel={t('origin.prepared')}
+        testID="profile-assistant-identity"
+        title={t('access.setup.aiPreviewTitle')}
+      />
+      {result.data.enabled ? (
+        <View style={styles.details}>
+          <View style={styles.detail} testID="profile-support-style">
+            <Text
+              brand
+              color="onSurfaceVariant"
+              direction={direction}
+              language={language}
+              variant="caption"
+            >
+              {t('access.setup.aiSupportStyleLabel')}
+            </Text>
+            <Text
+              brand
+              color="deepForest"
+              direction={direction}
+              language={language}
+              variant="label"
+            >
+              {t(`access.setup.aiStyle.${result.data.coachingStyle}`)}
+            </Text>
+          </View>
+          <View style={styles.detail} testID="profile-starting-categories">
+            <Text
+              brand
+              color="onSurfaceVariant"
+              direction={direction}
+              language={language}
+              variant="caption"
+            >
+              {t('access.setup.aiStartingPointsLabel')}
+            </Text>
+            <View style={[styles.categories, { flexDirection: logicalRowDirection(direction) }]}>
+              {result.data.recommendedCategoryIds.map((id) => (
+                <View key={id} style={styles.categoryChip}>
+                  <Text
+                    brand
+                    color="primary"
+                    direction={direction}
+                    language={language}
+                    variant="caption"
+                  >
+                    {categoryLabels[id]}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
         </View>
-        <View style={styles.copy}>
-          <Text brand color="ghafEmerald" direction={direction} language={language} variant="label">
-            {t('access.setup.aiPreviewTitle')}
-          </Text>
-          <Text
-            brand
-            color="onSurfaceVariant"
-            direction={direction}
-            language={language}
-            variant="caption"
-          >
-            {result.data.enabled
-              ? t('access.setup.aiPreviewBody', {
-                  style: t(`access.setup.aiStyle.${result.data.coachingStyle}`),
-                  categories: result.data.recommendedCategoryIds
-                    .map((id) => categoryLabels[id])
-                    .join(language === 'ar' ? '، ' : ', '),
-                })
-              : t('access.setup.aiPreviewDisabled')}
-          </Text>
-        </View>
-      </Row>
-      <Text brand color="inkMuted" direction={direction} language={language} variant="caption">
-        {t('access.setup.aiDisclosure')}
-      </Text>
+      ) : (
+        <Text brand color="onSurfaceVariant" direction={direction} language={language}>
+          {t('access.setup.aiPreviewDisabled')}
+        </Text>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    gap: spacing.sm,
+    gap: spacing.md,
     borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
     borderWidth: 1,
@@ -90,17 +124,24 @@ const styles = StyleSheet.create({
     backgroundColor: colors.ghafEmeraldTint,
     padding: spacing.md,
   },
-  icon: {
-    width: 36,
-    height: 36,
-    alignItems: 'center',
+  details: {
+    gap: spacing.md,
+    paddingTop: spacing.xs,
+  },
+  detail: {
+    gap: spacing.xxs,
+  },
+  categories: {
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    paddingTop: spacing.xxs,
+  },
+  categoryChip: {
+    minHeight: 32,
     justifyContent: 'center',
     borderRadius: r001Radii.pill,
     backgroundColor: colors.surfaceContainerLowest,
-  },
-  copy: {
-    flex: 1,
-    minWidth: 0,
-    gap: spacing.xxs,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
   },
 });

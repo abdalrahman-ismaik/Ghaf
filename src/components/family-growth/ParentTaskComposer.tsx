@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import * as Crypto from 'expo-crypto';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { AssistantIdentity, type AssistantIdentityOrigin } from '@/components/AssistantIdentity';
 import { Button, Input, Text } from '@/components/primitives';
 import {
   R002aFlowHeader,
@@ -155,6 +156,8 @@ export function ParentTaskComposer({
   const [error, setError] = useState<string | null>(null);
   const guideDisclosure =
     suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuidePrimary.disclosure.text;
+  const guideOrigin: AssistantIdentityOrigin =
+    serviceRegistry.parentGuidePrimary.mode === 'live_optional' ? 'live' : 'prepared';
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
   const liveDraftPending =
     liveDraftView.status === 'requesting' || liveDraftView.suggestion !== null;
@@ -319,7 +322,11 @@ export function ParentTaskComposer({
           <TaskBuilderFooter
             actionLabel={t('taskNew.review')}
             busy={busyIntent !== null || liveDraftView.status === 'requesting'}
-            busyLabel={t('assistant.loading')}
+            busyLabel={t(
+              busyIntent !== null && guideOrigin === 'live'
+                ? 'assistant.liveLoading'
+                : 'assistant.loading',
+            )}
             direction={direction}
             disabled={!hasExecutableSelection || Boolean(suggestion) || liveDraftPending}
             onPress={continueToReview}
@@ -399,6 +406,7 @@ export function ParentTaskComposer({
           }
           error={error}
           guideDisclosure={guideDisclosure}
+          guideOrigin={guideOrigin}
           guideSuggestionApplied={guideSuggestionApplied}
           liveDraftView={liveDraftView}
           journeyExists={Boolean(journey)}
@@ -454,7 +462,7 @@ function ChooseStage({
   return (
     <View style={styles.stage}>
       <View style={styles.stageHeading}>
-        <Text brand color="deepForest" variant="screenTitle">
+        <Text brand color="deepForest" variant="heading">
           {t('r002aTasks.chooseHeading')}
         </Text>
         <Text brand color="onSurfaceVariant" variant="body">
@@ -486,14 +494,48 @@ function ChooseStage({
 
       {selectedChildId === 'child_salem' ? (
         <View style={styles.section}>
+          {recommendedCategoryIds.length > 0 ? (
+            <View style={styles.recommendationPanel} testID="profile-recommendation-panel">
+              <AssistantIdentity
+                description={t('taskNew.profileRecommendationDisclosure')}
+                direction={direction}
+                language={locale}
+                origin="prepared"
+                originLabel={t('origin.prepared')}
+                title={t('taskNew.profileRecommendationTitle')}
+              />
+              <View
+                style={[
+                  styles.recommendationCategories,
+                  { flexDirection: logicalRowDirection(direction) },
+                ]}
+              >
+                {orderedCategories
+                  .filter((category) => recommendedCategoryIds.includes(category.id))
+                  .map((category) => (
+                    <View
+                      key={category.id}
+                      style={[
+                        styles.recommendationChip,
+                        { flexDirection: logicalRowDirection(direction) },
+                      ]}
+                    >
+                      <GhafIcon
+                        color={colors.ghafEmerald}
+                        name={CATEGORY_ICONS[category.id]}
+                        size={18}
+                      />
+                      <Text brand color="primary" variant="caption">
+                        {localize(category.label, locale)}
+                      </Text>
+                    </View>
+                  ))}
+              </View>
+            </View>
+          ) : null}
           <Text brand color="deepForest" variant="heading">
             {t('r002aTasks.categoryHeading')}
           </Text>
-          {recommendedCategoryIds.length > 0 ? (
-            <Text brand color="onSurfaceVariant" variant="caption">
-              {t('taskNew.profileRecommendationDisclosure')}
-            </Text>
-          ) : null}
           <View
             accessibilityRole="radiogroup"
             style={[styles.categoryGrid, { flexDirection: logicalRowDirection(direction) }]}
@@ -624,6 +666,7 @@ interface EditStageProps {
   displayedSeedAward: number;
   error: string | null;
   guideDisclosure: LocalizedText;
+  guideOrigin: AssistantIdentityOrigin;
   guideSuggestionApplied: boolean;
   liveDraftView: ReturnType<typeof usePrototypeStore.getState>['parentTaskDraftingView'];
   journeyExists: boolean;
@@ -648,6 +691,7 @@ function EditStage({
   displayedSeedAward,
   error,
   guideDisclosure,
+  guideOrigin,
   guideSuggestionApplied,
   liveDraftView,
   journeyExists,
@@ -671,7 +715,7 @@ function EditStage({
   return (
     <View style={styles.stage}>
       <View style={styles.stageHeading}>
-        <Text brand color="deepForest" variant="screenTitle">
+        <Text brand color="deepForest" variant="heading">
           {t('r002aTasks.editHeading')}
         </Text>
         <Text brand color="onSurfaceVariant" variant="bodyLarge">
@@ -749,19 +793,14 @@ function EditStage({
 
       {aiFeatureFlags.ai_parent_task_drafting_live ? (
         <View style={styles.liveDraftSection} testID="parent-task-drafting-controls">
-          <View style={[styles.guideHeading, { flexDirection: logicalRowDirection(direction) }]}>
-            <View style={styles.guideMark}>
-              <GhafIcon color={colors.mangroveTeal} name="sparkle" size={25} />
-            </View>
-            <View style={styles.grow}>
-              <Text brand color="secondary" variant="heading">
-                {t('taskNew.liveDraftTitle')}
-              </Text>
-              <Text brand color="onSurfaceVariant" variant="caption">
-                {t('taskNew.liveDraftDisclosure')}
-              </Text>
-            </View>
-          </View>
+          <AssistantIdentity
+            description={t('taskNew.liveDraftDisclosure')}
+            direction={direction}
+            language={locale}
+            origin="live"
+            originLabel={t('assistant.liveLabel')}
+            title={t('taskNew.liveDraftTitle')}
+          />
 
           <View style={[styles.intentGrid, { flexDirection: logicalRowDirection(direction) }]}>
             {LIVE_DRAFT_INTENTS.map(({ intent, key }) => (
@@ -849,25 +888,35 @@ function EditStage({
       ) : null}
 
       <View style={styles.guideSection}>
-        <View style={[styles.guideHeading, { flexDirection: logicalRowDirection(direction) }]}>
-          <View style={styles.guideMark}>
-            <GhafIcon color={colors.mangroveTeal} name="sparkle" size={25} />
-          </View>
-          <View style={styles.grow}>
-            <Text brand color="secondary" variant="heading">
-              {t('taskNew.guideTitle')}
-            </Text>
-            <Text brand color="onSurfaceVariant" variant="caption">
-              {localize(guideDisclosure, locale)}
-            </Text>
-          </View>
-        </View>
+        <AssistantIdentity
+          description={t('taskNew.guidePurpose')}
+          direction={direction}
+          language={locale}
+          origin={guideOrigin}
+          originLabel={t(
+            guideOrigin === 'live' ? 'assistant.liveLabel' : 'assistant.preparedLabel',
+          )}
+          originTestID="parent-guide-origin"
+          title={t('taskNew.guideTitle')}
+        />
+        <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+          {localize(guideDisclosure, locale)}
+        </Text>
+        <Text
+          brand
+          color="deepForest"
+          direction={direction}
+          testID="guide-actions-heading"
+          variant="label"
+        >
+          {t('taskNew.guideActionsTitle')}
+        </Text>
         <View style={[styles.intentGrid, { flexDirection: logicalRowDirection(direction) }]}>
           {GUIDE_INTENTS.map(({ intent, key }) => (
             <Button
               brand
               busy={busyIntent === intent}
-              busyLabel={t('assistant.loading')}
+              busyLabel={t(guideOrigin === 'live' ? 'assistant.liveLoading' : 'assistant.loading')}
               disabled={
                 busyIntent !== null ||
                 Boolean(suggestion) ||
@@ -1058,6 +1107,26 @@ const styles = StyleSheet.create({
   },
   childMarkSelected: { backgroundColor: colors.ghafEmerald },
   categoryGrid: { flexWrap: 'wrap', gap: spacing.sm },
+  recommendationPanel: {
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    backgroundColor: colors.ghafEmeraldTint,
+    padding: spacing.md,
+  },
+  recommendationCategories: {
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  recommendationChip: {
+    minHeight: 36,
+    alignItems: 'center',
+    gap: spacing.xs,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLowest,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
+  },
   categoryCard: {
     minHeight: 112,
     flexGrow: 1,
@@ -1165,15 +1234,6 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     backgroundColor: colors.secondaryTint,
     padding: spacing.lg,
-  },
-  guideHeading: { alignItems: 'center', gap: spacing.sm },
-  guideMark: {
-    width: 48,
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: r001Radii.lg,
-    backgroundColor: colors.surfaceContainerLowest,
   },
   intentGrid: { flexWrap: 'wrap', gap: spacing.xs },
   comparison: {

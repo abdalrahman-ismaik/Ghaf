@@ -4,6 +4,7 @@ import { AccessibilityInfo, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { GhafIcon } from '@/components/access';
+import { AssistantIdentity } from '@/components/AssistantIdentity';
 import { PreparedMedia } from '@/components/family-growth/PreparedMedia';
 import { LiveChildCoachPanel } from '@/components/family-growth/LiveChildCoachPanel';
 import { LiveVoiceCapturePanel } from '@/components/family-growth/LiveVoiceCapturePanel';
@@ -560,7 +561,7 @@ export default function ChildTaskScreen() {
               <GhafIcon color={colors.ghafEmerald} name="help" size={25} />
             </View>
             <View style={styles.grow}>
-              <Text brand color="deepForest" direction={direction} variant="screenTitle">
+              <Text brand color="deepForest" direction={direction} variant="heading">
                 {t('childTask.supportToolsTitle')}
               </Text>
               <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
@@ -572,10 +573,10 @@ export default function ChildTaskScreen() {
             body={t('childTask.adultExitBody')}
             label={t('childTask.adultExit')}
             onPress={() => {
-              if (preparedCoachAvailable) {
+              setAdultSupportRequested(true);
+              if (preparedCoachAvailable && !aiFeatureFlags.ai_child_coach_text_live) {
+                setShowSupportTools(true);
                 void askCoach('need_adult');
-              } else {
-                setAdultSupportRequested(true);
               }
             }}
             testID="trusted-adult-exit"
@@ -611,10 +612,16 @@ export default function ChildTaskScreen() {
                 view={liveChildCoachView}
               />
             ) : (
-              <View style={styles.coach}>
-                <Text brand color="deepForest" direction={direction} variant="screenTitle">
-                  {t('childTask.coachTitle')}
-                </Text>
+              <View style={styles.coach} testID="prepared-child-coach">
+                <AssistantIdentity
+                  description={t('childTask.coachPreparedPurpose')}
+                  direction={direction}
+                  language={locale}
+                  origin="prepared"
+                  originLabel={t('assistant.preparedLabel')}
+                  testID="prepared-child-coach-identity"
+                  title={t('childTask.coachTitle')}
+                />
                 {preparedCoachAvailable ? (
                   <>
                     <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
@@ -622,6 +629,15 @@ export default function ChildTaskScreen() {
                     </Text>
                     <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
                       {t('assistant.noChat')}
+                    </Text>
+                    <Text
+                      brand
+                      color="deepForest"
+                      direction={direction}
+                      testID="coach-actions-heading"
+                      variant="label"
+                    >
+                      {t('childTask.coachActionsTitle')}
                     </Text>
                     <View
                       style={[
@@ -634,13 +650,14 @@ export default function ChildTaskScreen() {
                         ageAdaptedCoachResult?.policy.quickChoiceLimit ?? COACH_INTENTS.length,
                       ).map(({ intent, key }, index) => (
                         <Button
+                          brand
                           busy={busyIntent === intent}
                           busyLabel={t('assistant.loading')}
                           disabled={busyIntent !== null}
                           fullWidth={false}
                           key={intent}
                           onPress={() => void askCoach(intent)}
-                          variant="ghost"
+                          variant="secondary"
                         >
                           {ageAdaptedCoachResult?.quickChoices[index]
                             ? localize(ageAdaptedCoachResult.quickChoices[index], locale)
@@ -676,33 +693,6 @@ export default function ChildTaskScreen() {
                         {t('assistant.unavailable')}
                       </Text>
                     ) : null}
-                    <Text brand color="deepForest" direction={direction} variant="caption">
-                      {t('assistant.preparedLabel')}
-                    </Text>
-                    <View style={styles.coachPolicy} testID="child-coach-age-policy">
-                      <Text brand color="deepForest" direction={direction} variant="label">
-                        {t('coachPolicy.title')}
-                      </Text>
-                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                        {t('coachPolicy.ageAdapted', {
-                          band: ageAdaptedCoachResult.ageBand.replace('_', '–'),
-                        })}
-                      </Text>
-                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                        {t('coachPolicy.maximumSteps', {
-                          count: ageAdaptedCoachResult.policy.maximumSteps,
-                        })}
-                        {' · '}
-                        {t(
-                          ageAdaptedCoachResult.policy.pace === 'slow'
-                            ? 'coachPolicy.slowerPace'
-                            : 'coachPolicy.standardPace',
-                        )}
-                      </Text>
-                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                        {t('coachPolicy.taskBound')} {t('coachPolicy.noOpenChat')}
-                      </Text>
-                    </View>
                     {coachIntentLabel ? (
                       <Text brand color="mangroveTeal" direction={direction} variant="label">
                         {coachIntentLabel}
@@ -726,6 +716,29 @@ export default function ChildTaskScreen() {
                         {localize(coach.adultExit.label, locale)}
                       </Text>
                     ) : null}
+                    <View style={styles.coachPolicy} testID="child-coach-age-policy">
+                      <Text brand color="deepForest" direction={direction} variant="label">
+                        {t('coachPolicy.title')}
+                      </Text>
+                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                        {t('coachPolicy.ageAdapted', {
+                          band: ageAdaptedCoachResult.ageBand.replace('_', '–'),
+                        })}
+                        {' · '}
+                        {t('coachPolicy.maximumSteps', {
+                          count: ageAdaptedCoachResult.policy.maximumSteps,
+                        })}
+                        {' · '}
+                        {t(
+                          ageAdaptedCoachResult.policy.pace === 'slow'
+                            ? 'coachPolicy.slowerPace'
+                            : 'coachPolicy.standardPace',
+                        )}
+                      </Text>
+                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                        {t('coachPolicy.taskBound')} {t('coachPolicy.noOpenChat')}
+                      </Text>
+                    </View>
                   </View>
                 ) : null}
               </View>
@@ -771,7 +784,7 @@ export default function ChildTaskScreen() {
             </QuietButton>
             {showOptionalMedia ? (
               <View style={styles.mediaSection} testID="optional-media-section">
-                <Text brand color="deepForest" direction={direction} variant="screenTitle">
+                <Text brand color="deepForest" direction={direction} variant="heading">
                   {t('childTask.mediaTitle')}
                 </Text>
                 <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
@@ -928,11 +941,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryFixedTint,
   },
   supportTools: {
-    gap: spacing.lg,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
-    padding: spacing.lg,
+    gap: spacing.xl,
   },
   coach: {
     gap: spacing.md,
@@ -948,16 +957,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   coachResult: {
-    gap: spacing.sm,
+    gap: spacing.md,
     borderRadius: r001Radii.lg,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderCurve: 'continuous',
+    backgroundColor: colors.secondaryContainer,
     padding: spacing.md,
   },
   coachPolicy: {
     gap: spacing.xxs,
-    borderStartWidth: 2,
-    borderStartColor: colors.mangroveTeal,
-    paddingStart: spacing.sm,
+    borderRadius: r001Radii.md,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.sm,
   },
   mediaSection: {
     gap: spacing.md,
