@@ -1,5 +1,41 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 Combined Reveal Browser-evidence Record — 2026-09-07
+
+**Current classification:** T208 complete at the bounded browser/source level; the candidate stays
+default off and release activation, physical Android, wider visual coverage, and named-human gates
+remain open.
+
+Start a fresh local runtime with only `EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2=true`. Follow the normal
+Arabic-first journey: create the synthetic family, approve the canonical Green Impact task, pair
+Salem's local Child experience, complete both approved steps with trusted-adult help, submit, and
+perform the Parent praise-first approval. Return through normal Child access and choose **عرض حصيلة
+النمو / View growth result**. Do not inject store state or bypass access.
+
+The first Reveal must show one complete 12-item receipt-derived result, move focus to the grouped
+Reveal heading, keep Continue clear of the scroll content, and render the reduced-motion state
+without a running animation. To demonstrate recovery before acknowledging, use browser Back, open
+Help, switch language, and reopen the still-pending Reveal. The status must change to **Saved result
+recovered** while the same bundle and focus target remain. Finally choose Continue: the bundle is
+archived once, the transient Reveal action disappears, the normal Garden action returns, and focus
+moves to the persistent Current Task heading on Today.
+
+| Gate                                                                                      | Result              | Evidence                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused focus and Back coverage                                                       | `PASSED`            | Silent web-focus success, post-ref focus retry, archive return focus, and Android-only Back subscription reproduced before `7d6a6da`; final 5 files / 32 tests |
+| Full automated suite                                                                      | `PASSED`            | typecheck, lint, formatting, and 89 files / 1,225 tests                                                                                                        |
+| Expo dependency/configuration                                                             | `PASSED`            | Dependencies current; public config passed; all R002b source defaults remain off                                                                               |
+| Production exports                                                                        | `PASSED`            | Fresh web export: 39 routes; fresh Android JavaScript export: 2,119 modules / 79 assets                                                                        |
+| Arabic/English 390×844 visual proxy                                                       | `PASSED (bounded)`  | Arabic RTL first presentation and English LTR recovered state; top/bottom captures, all 12 items, zero horizontal overflow, and fixed action clearance         |
+| Focus/recovery/archive proxy                                                              | `PASSED (bounded)`  | Reveal heading and final Today return heading each became the active H1 with `tabindex="-1"`; browser Back preserved the bundle; Continue archived it once     |
+| Reduced motion, console, and network                                                      | `PASSED (bounded)`  | Zero settled running animations, zero console errors, two known development warnings, and no non-static requests                                               |
+| Physical Android, TalkBack, native Back/IME, and OS font scale                            | `BLOCKED / NOT RUN` | Browser proxy and Android JavaScript export cannot pass native gates                                                                                           |
+| Named Arabic/UAE, safeguarding, privacy, sustainability, accessibility, and visual review | `NOT RUN`           | Requires named reviewers and the exact reviewed build/content                                                                                                  |
+
+Local review screenshots are under `output/playwright/r003-reveal-evidence/` and are intentionally
+untracked. Treat them as code-native browser evidence only, not approved mobile references. Do not
+enable the flag for the ordinary judge path until the remaining release gates pass.
+
 ## R003 Approval-authority Reconciliation Record — 2026-09-06
 
 **Current classification:** locally validated, default-off implementation candidate; physical

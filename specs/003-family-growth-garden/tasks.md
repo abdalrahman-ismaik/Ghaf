@@ -868,7 +868,7 @@ blockers under T220/T221.
 - [x] T207 Permit a separate zero-Seed learning bundle only when its unique completion causes a new
       eligible outcome; dismissal never reverses committed state and flags never show R002a and v2
       reveals together.
-- [ ] T208 Add the gated Child reveal route/sheet, static reduced-motion outcome, focus containment,
+- [x] T208 Add the gated Child reveal route/sheet, static reduced-motion outcome, focus containment,
       restoration, and 390×844 code-native capture.
 - [x] T209 Test retry, interruption at every lifecycle boundary, queue order, duplicate/concurrent
       triggers, role projection, consequence parity, and default-off R002a fallback; validate and
@@ -882,10 +882,19 @@ constructs one complete ordered bundle before the atomic store update. Exact ret
 same queue and authorities; malformed provider, task, praise, timestamp, learning, achievement,
 profile, or epoch evidence fails before mutation. The final focused matrix passed 8 files / 209
 tests, followed by typecheck, lint, format, the full 89-file / 1,221-test suite, dependency
-alignment, and a 39-page / 119-file web export. T208 remains open because no valid 390×844 Reveal
-capture has been recorded. All R002b flags remain independent and off; Learning still awaits named
-content/provenance review and a truthful station-132 live capture, while physical Android and
-named-human gates remain open.
+alignment, and a 39-page / 119-file web export.
+
+T208 is complete at the bounded browser-proxy/source level as of 2026-09-07. Commit `7d6a6da`
+repairs verified web heading focus, retries focus after the route ref commits, restores focus to the
+stable Today heading after the transient Reveal action is archived, and avoids registering the
+nested hardware Back listener outside Android. A fresh normal Arabic-first Parent/Child journey,
+with only `r002b_reveal_bundle_v2` enabled locally, produced all 12 ordered approval consequences
+without state injection. Arabic RTL and recovered English LTR 390×844 top/bottom captures record
+the static reduced-motion state, fixed action clearance, zero horizontal overflow, browser-Back
+recovery, and final archive restoration. The final repository suite now passes 89 files / 1,225
+tests, plus typecheck, lint, formatting, Expo dependency/configuration checks, and fresh web and
+Android JavaScript exports. All R002b flags remain independent and off by default; T218/T245,
+Learning station-132 capture, physical Android/TalkBack, and named-human gates remain open.
 
 ## Phase 28: Parent Progress and Additive Shared Growth
 

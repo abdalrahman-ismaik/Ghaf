@@ -2,11 +2,53 @@
 
 **Status:** IMPLEMENTED AS DEFAULT-OFF CANDIDATES — RELEASE ACTIVATION BLOCKED
 
-**Evidence date:** 2026-09-05
+**Evidence date:** 2026-09-07 Reveal delta; 2026-09-05 base record retained below
 
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-## Authority and evidence boundary
+## 2026-09-07 Reveal capture and focus-recovery delta
+
+Commit `7d6a6da` on `integration/r3-complete-screens-20260905` closes the host-verifiable portion
+of T208. A fresh 390×844 Chromium run enabled only `r002b_reveal_bundle_v2`, retained every source
+default as `false`, and traversed the normal Arabic-first Parent setup, approved task, Child pairing,
+allowed-help completion, Parent praise-first confirmation, Child Reveal, interruption, recovery,
+and archive path without state injection. The resulting approval bundle contained the complete 12
+ordered receipt-derived consequences. No screen calculated a reward and no second recognition
+transaction was introduced.
+
+This delta supersedes the 2026-09-05 statements below that the approval Reveal lacked authoritative
+receipts or a live capture. Those statements are retained as historical checkpoint evidence, not as
+the current runtime status. It does not complete the release-wide T218/T245 matrix, unblock
+station-132 Learning, activate a flag, or pass physical Android, TalkBack, OS font scaling, or named
+human review.
+
+| Evidence area                         | Result                       | Exact bounded evidence                                                                                                                                                                                                                            |
+| ------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Approval consequence authority        | `PASSED` automated/live path | One normal approval produced Parent praise, +12 Seeds, Mangrove stage, canopy, eligible Green record, private League/Challenge Leaf, private Family Reward unlock, two badges, Impact Path station, and safe-help consequences in canonical order |
+| Arabic first presentation             | `PASSED` browser proxy       | RTL document, 390×844, reduced motion, 12 items, heading focused with `tabindex="-1"`, zero horizontal overflow, and fixed Continue clearance at top and final disclosure                                                                         |
+| English interrupted recovery          | `PASSED` browser proxy       | Browser Back preserved `presenting`; normal language control switched to LTR; reopening showed `Saved result recovered`, retained 12 items, and focused the same heading                                                                          |
+| Archive and Today restoration         | `PASSED` browser proxy       | Continue archived the bundle, removed the transient Reveal action, exposed the Garden action, and focused `child-today-reveal-return-region` with `tabindex="-1"`                                                                                 |
+| Motion, console, and network boundary | `PASSED` browser proxy       | `prefers-reduced-motion: reduce`; zero running animations after settlement; zero console errors; two known development warnings; no non-static request                                                                                            |
+| Focus and Back regression coverage    | `PASSED`                     | RED tests reproduced silent web focus success, missing post-ref retry, body-focus return, and the non-Android Back subscription; final focused set passed 5 files / 32 tests                                                                      |
+| Complete automated repository suite   | `PASSED`                     | 89 files / 1,225 tests; typecheck, lint, and formatting also passed                                                                                                                                                                               |
+| Expo/package/export checks            | `PASSED`                     | Dependencies current; public config passed; fresh web export produced 39 routes; fresh Android JavaScript export bundled 2,119 modules and 79 assets                                                                                              |
+| Physical Android and named review     | `BLOCKED / NOT RUN`          | No claim is inferred from Chromium or JavaScript exports; physical Android/TalkBack/native Back/IME/font-scale and named review remain open                                                                                                       |
+
+The four local, untracked review captures are:
+
+- `output/playwright/r003-reveal-evidence/reveal-ar-390x844-reduced-motion-top.png` — 156,302 bytes,
+  SHA-256 `c486fe055b8110e7723f3a3c74407555565412933634670c716a8481b25f91e5`.
+- `output/playwright/r003-reveal-evidence/reveal-ar-390x844-reduced-motion-bottom.png` — 137,051 bytes,
+  SHA-256 `2649ada6925f4800967fceba2015783f692bb024f6d861420026688f774aa304`.
+- `output/playwright/r003-reveal-evidence/reveal-en-390x844-recovered-reduced-motion-top.png` —
+  149,771 bytes, SHA-256 `c196db806ac747a2dbc76ae607b6fd15958d9e8142a256fcc4c85188c4b4e5ae`.
+- `output/playwright/r003-reveal-evidence/reveal-en-390x844-recovered-reduced-motion-bottom.png` —
+  148,436 bytes, SHA-256 `232a6e044c4d34ef53545d3118279156e730e4c82f68b41d634c234b6ae1980e`.
+
+These screenshots are review evidence only. They are not approved design assets, durable release
+artifacts, native-device evidence, or permission to enable the candidate by default.
+
+## 2026-09-05 base authority and evidence boundary
 
 This record covers the local R002b implementation on
 `integration/r3-r002b-implementation-20260905`. It does not activate a feature flag, approve copy

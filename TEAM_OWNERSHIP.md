@@ -6,6 +6,43 @@
 
 Replace `Member 1`, `Member 2`, and `Member 3` with names only when the team chooses to do so.
 
+## 2026-09-07 Reveal Browser-Evidence Window
+
+**Owner and only writer**: `/root`
+
+**Branch**: `integration/r3-complete-screens-20260905` at reviewed baseline `092cdd9`.
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/tasks.md`,
+`specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md`,
+`docs/design/stitch/releases/ghaf-r002b/SCREEN_INDEX.md`, and
+`output/playwright/r003-reveal-evidence/`, `app/child/index.tsx`,
+`app/child/reveal/[bundleId].tsx`,
+`src/components/r002b/RevealBundleScreen.tsx`, `src/components/r002b/R002bNestedScreen.tsx`,
+`src/utils/accessibilityFocus.ts`, and focused
+`tests/{accessibility-focus,r002b-nested-screen-hardening,r002b-reveal-route-integration,r002b-reveal-screen-components}.test.*`
+only. Other runtime and test files remain read-only unless this reservation is amended again.
+
+**Scope**: Complete the host-verifiable portion of T208 by locally enabling only
+`r002b_reveal_bundle_v2`, traversing the normal Parent/Child approval journey without state
+injection, and recording Arabic RTL and English LTR 390x844 browser-proxy evidence, including a
+reduced-motion static result, focus/Back/archive restoration, overflow, console, network, and
+default-off fallback observations. Keep every source default off and do not claim physical
+Android, TalkBack, OS font scaling, named-human review, or release activation evidence. The live
+English pass exposed that Reveal initial focus remains on the web document body; repair that
+reproducible focus defect through the smallest shared adapter or Reveal integration change and add
+focused regression coverage before completing the captures. The same pass also exposed an
+unsupported web BackHandler subscription and a body-focus return after Reveal archive; keep their
+repairs inside this Reveal/navigation boundary and verify the stable Today return region.
+
+**Status**: Closed. Runtime/test repairs are committed at `7d6a6da`. A fresh normal journey with
+only the Reveal flag locally enabled retained four untracked Arabic/English 390×844 captures,
+verified 12 ordered consequences, interruption recovery, zero horizontal overflow, zero console
+errors, no non-static request, and final Today focus restoration. Typecheck, lint, formatting, 89
+files / 1,225 tests, Expo dependency/public-config checks, and fresh web/Android JavaScript exports
+passed. T208 is complete only at this bounded host-evidence level; T218/T245, physical Android,
+TalkBack, native Back/IME/font scale, named-human review, and release activation remain open.
+
 ## 2026-09-06 Approval Reveal Consequence-parity Window
 
 **Owner and only writer**: `/root`
