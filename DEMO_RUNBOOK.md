@@ -1,5 +1,39 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 005 Remembered Device Access Record — 2026-09-07
+
+**Current classification:** implemented device-local prototype continuity; physical Android,
+named-human review, production identity, and real cross-device account/state sync remain
+`BLOCKED / NOT RUN` or out of P0.
+
+For the Parent-owned path, verify the Parent, leave **Remember me on this device** unchecked, and
+confirm an ordinary relaunch remains signed out. Repeat with the choice checked and confirm a
+relaunch opens Parent Home through fresh synthetic authority. Choose Parent logout and confirm the
+next launch remains signed out.
+
+For the Child-owned path, complete Parent-approved pairing for Salem and relaunch. Confirm Salem
+opens Today without repeating the credential. Choose **Parent access** from the Child surface:
+Child authority must end before Parent verification, and the pairing must remain. After the Parent
+enters, choose Parent logout and confirm Ghaf restores Salem with fresh authority. Revoke Salem or
+run the one-action reset, relaunch, and confirm Child restoration is denied. Never present one
+installation as remembering Parent and Child simultaneously.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Strict affinity schema, repository failures, and no credential/session persistence | `PASSED automated/source` | exact-key parsing, corrupt/mismatch denial, isolated cloned reads, clear ordering, and scoped source inspection |
+| Parent opt-in/out, restart, fresh authority, and logout failure safety | `PASSED automated/source` | focused controller/bootstrap/store coverage |
+| Child pairing continuity, revocation/reset denial, and single-primary replacement | `PASSED automated/source` | focused controller/bootstrap/store coverage |
+| Temporary Child → Parent → Child handoff and mutual authority exclusion | `PASSED automated/source` | focused state/route/source coverage |
+| Arabic/English copy and accessible unchecked control | `PASSED automated/source` | resource parity, checkbox semantics, 48 dp target, and Impeccable detector `[]` |
+| Full repository regression and source integrity | `PASSED` | typecheck, zero-warning lint, format check, Git whitespace, scoped credential/session inspection, and 119 files / 1,310 tests |
+| Physical Android process-death/SQLite, Back, TalkBack, and font scale | `BLOCKED / NOT RUN` | no qualifying physical-device observation in this implementation window |
+| Named Arabic/UAE, privacy, safeguarding, accessibility, and visual review | `NOT RUN` | no named reviewer was available in this implementation window |
+| Production authentication, trusted-device security, recovery, and real separate-device sync | `OUT OF P0 / NOT IMPLEMENTED` | this build contains one synthetic local family and no network account/state service |
+
+Judges do not configure an account service or MCP for this path. Describe it as reliable offline
+demo continuity and the intended one-primary-role-per-installation model, not as production login
+or proof that Parent and Child physical devices share live data.
+
 ## Feature 004 bounded live AI implementation record — 2026-09-07
 
 **Current classification:** default-off implementation and synthetic/fake-boundary validation;

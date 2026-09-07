@@ -1,5 +1,29 @@
 # Prototype Limitations
 
+## Feature 005 remembered device access boundary — 2026-09-07
+
+Remembered access is a device-local prototype convenience, not a production account or trusted
+device system. A Parent must explicitly opt in after verification. Approved Child pairing
+automatically remembers only that Child as the installation's primary profile. The separate
+affinity record contains a schema version, one role/profile reference, family/profile binding,
+and update time; it contains no password, verification code, PIN, authenticated session, token,
+task, progression ledger, media, transcript, or assistant content.
+
+Native uses the existing Expo SQLite key-value boundary and web uses browser localStorage. Each
+restart validates the marker against the local family directory and creates fresh synthetic
+controller authority; it never serializes or replays an authenticated session. One installation
+can remember one Parent or one Child, not both. This models the intended normal arrangement of
+separate Parent and Child devices, but the repository still has no production accounts, remote
+household state, cloud sync, recovery, encryption claim, or evidence that two physical devices
+share data.
+
+On a remembered Child installation, temporary Parent access ends Child authority before Parent
+verification and preserves the pairing. Parent logout then restores only the same still-eligible
+Child. Revocation, reset, mismatch, corruption, or storage failure fails closed. An active Parent
+must log out before Child access on the same installation. Physical Android process-death,
+SQLite, Back, TalkBack, and font-scale behavior plus named Arabic/UAE, privacy, safeguarding, and
+accessibility review remain `BLOCKED / NOT RUN` until directly observed.
+
 ## Feature 004 bounded live AI boundary — 2026-09-07
 
 F4 Parent task drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk voice now exist
@@ -76,12 +100,14 @@ TalkBack coexistence, audio focus, silent-mode behavior, or named Arabic review.
 The returning-family decision now relies on one validated device-local demo directory. Native uses
 Expo SQLite key-value storage and web uses browser localStorage; it stores one synthetic Parent
 normalized phone/email lookup identifier and kind, one or two Child profiles, bounded curated setup
-preferences, and approved paired-Child markers. The current schema is 2; a prior valid schema-1
-fixture migrates only to the canonical prepared `parent@example.com` identifier. This is durable
-enough for a local demo restart, but it is not encrypted production
+preferences, and approved paired-Child markers. The family-directory schema is 2; a prior valid
+schema-1 fixture migrates only to the canonical prepared `parent@example.com` identifier. This is
+durable enough for a local demo restart, but it is not encrypted production
 account storage, identity assurance, cloud backup, household discovery, recovery, migration, or
-cross-device sync. No Parent or Child session is restored silently. Parent reset deliberately
-removes the directory and returns the app to first-family behavior.
+cross-device sync. Feature 005 keeps its affinity marker separate from this family-directory
+schema, validates it at startup, and mints fresh synthetic authority without serializing or
+replaying a session. Parent reset deliberately removes both records and returns the app to
+first-family behavior.
 
 Passwords, verification codes, authenticated sessions, task/Seed/Garden/League/Reward ledgers,
 media, transcripts, notification history, and free-text Child notes are not part of the local

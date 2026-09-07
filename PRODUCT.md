@@ -23,6 +23,25 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+## Feature 005 remembered device access — 2026-09-07
+
+Ghaf now offers an unchecked **Remember me on this device** choice after successful Parent
+verification. If the Parent opts in, the app stores only a validated local Parent-affinity marker
+and creates fresh synthetic Parent authority on the next launch. Explicit Parent logout clears
+that marker before ending the session; if local clearing fails, Ghaf keeps the Parent session
+active instead of pretending that logout succeeded.
+
+Completing approved Child pairing automatically makes that Child the one remembered primary
+profile for the installation. A Child device can open temporary Parent access without deleting
+the pairing: Child authority ends first, the Parent verifies, and explicit Parent logout restores
+fresh authority for the same eligible Child. An active Parent session still blocks Child entry
+until the Parent logs out. One installation remembers at most one Parent or one Child, never both.
+
+The marker contains no password, verification code, PIN, session identifier, token, task, Seed,
+Garden, League, Reward, media, or assistant content. This is deterministic offline prototype
+continuity for one primary role/profile per installation. It is not production authentication,
+secure device trust, cloud backup, account recovery, or real Parent/Child cross-device sync.
+
 ## Feature 004 bounded live AI implementation — 2026-09-07
 
 The approved F4 Parent task-drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk

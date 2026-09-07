@@ -114,11 +114,11 @@ cancel/revoke/error branches.
 
 ## Phase 7: Truthful evidence and release checks
 
-- [ ] T024 Update `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md` with exact local
+- [x] T024 Update `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md` with exact local
   behavior, separate-device limitation, fixtures, evidence, and native/human gaps
-- [ ] T025 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`, and
+- [x] T025 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm test`, and
   `git diff --check`; inspect scoped secret/session-token absence
-- [ ] T026 Update this task list and `TEAM_OWNERSHIP.md` with exact results, changed files, known
+- [x] T026 Update this task list and `TEAM_OWNERSHIP.md` with exact results, changed files, known
   gaps, and integration readiness; commit cohesive completed slices without including protected
   unrelated worktree edits
 

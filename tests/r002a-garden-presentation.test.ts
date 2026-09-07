@@ -32,7 +32,7 @@ describe('R002a compatible Garden presentation', () => {
     expect(route).not.toContain('<Redirect href="/access/parent/sign-in"');
     expect(route).toContain('<Redirect href="/"');
     expect(route).toContain("router.push('/parent/settings' as Href)");
-    expect(route).toContain('signOutExperience');
+    expect(route).toContain('beginTemporaryParentAccess');
   });
 
   it('derives the active profile receipt and every landscape target from canonical state', () => {

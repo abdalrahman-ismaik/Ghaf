@@ -15,8 +15,9 @@ in `AGENTS.md` through the configured agent-context hook, and
 `app/access/parent/{sign-in.tsx,verification.tsx}`, `app/child/{index.ts,settings.tsx,task.tsx}`,
 `app/{garden.tsx,circle.tsx}`,
 `src/i18n/resources.ts`,
-`tests/{device-remembered-access.test.tsx,r003-screen-flow.test.ts}`, and the narrowly scoped
-truthful-boundary updates in `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+`tests/{device-remembered-access.test.tsx,r003-screen-flow.test.ts,`
+`r002a-garden-presentation.test.ts}`, and the narrowly scoped truthful-boundary updates in
+`PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
 
 **Scope**: Add an explicit Parent remember-this-device choice and automatic device-local Child
 return after approved pairing. One app installation remembers at most one primary role/profile.
@@ -27,9 +28,16 @@ session token, task, reward, media, or private assistant content. Preserve deter
 reset and label the behavior as synthetic prototype continuity, not production authentication,
 secure device trust, account sync, or multi-device account infrastructure.
 
-**Status**: Active — specification, TDD, implementation, bilingual presentation, regression, and
-truthful demo evidence are in progress. The prior AI Services presentation worktree edits remain
-protected and are not part of this window.
+**Status**: Complete and ready for source integration — commits `3274cab`, `4a2bdbb`, `fa8e6ca`,
+and `55ab2a1` contain the specification, strict affinity storage, fresh authority restoration, and
+bilingual handoff presentation; the closing evidence/test adjustment is recorded with this
+window. Focused access coverage passed 65 tests, the Impeccable UI detector returned `[]`, and the
+final typecheck, zero-warning lint, format check, Git whitespace, scoped credential/session
+inspection, and full 119-file / 1,310-test regression passed. Physical Android process-death,
+SQLite, Back, TalkBack, font-scale, and named Arabic/UAE, privacy, safeguarding, accessibility,
+and visual reviews remain `BLOCKED / NOT RUN`. Production accounts, trusted-device security, and
+real separate-device state sync remain out of P0. The prior AI Services presentation worktree
+edits remain protected and are not part of this completed window.
 
 ## 2026-09-07 AI Services 1–3 Presentation Integration Window
 
