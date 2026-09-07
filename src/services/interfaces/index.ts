@@ -363,10 +363,14 @@ export interface FamilyLeagueService {
   ): ServiceResult<LeagueRolloverResult>;
 }
 
-export interface PreparedParentGuideProvider extends ParentGuideService {
+export interface BoundedParentGuideProvider extends ParentGuideService {
+  readonly mode: 'deterministic_prepared' | 'live_optional';
+  readonly disclosure: AssistantDisclosure;
+}
+
+export interface PreparedParentGuideProvider extends BoundedParentGuideProvider {
   readonly mode: 'deterministic_prepared';
   readonly fixtureId: 'guide_recycling_refine_v1';
-  readonly disclosure: AssistantDisclosure;
 }
 
 export interface PreparedChildCoachProvider extends ChildCoachService {
@@ -396,6 +400,7 @@ export interface Feature003ServiceRegistry {
   readonly familyProjection: FamilyProjectionService;
   readonly media: MediaService;
   readonly parentGuide: PreparedParentGuideProvider;
+  readonly parentGuidePrimary: BoundedParentGuideProvider;
   readonly childCoach: PreparedChildCoachProvider;
   readonly coachAdaptation: CoachAdaptationService;
   readonly syntheticVoice: SyntheticVoiceService;

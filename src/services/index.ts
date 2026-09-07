@@ -3,6 +3,7 @@ import type { Feature003ServiceRegistry } from './interfaces';
 import { createLocalFamilyRepository, deviceLocalStorage } from './local';
 
 export type {
+  BoundedParentGuideProvider,
   ChildCoachService,
   CoachAdaptationService,
   FamilyLeagueService,
@@ -24,6 +25,7 @@ export type {
   SyntheticAccessService,
   TaskService,
 } from './interfaces';
+export { GatewayParentGuideService, type GatewayParentGuideServiceOptions } from './remote';
 export {
   createFeature003ServiceRegistry,
   DeterministicChildCoachProvider,
@@ -51,7 +53,7 @@ export {
   type LocalKeyValueStorage,
 } from './local';
 
-// Competition uses only deterministic Feature 003 services from this registry.
+// Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
 export const serviceRegistry: Feature003ServiceRegistry & {
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
 } = {

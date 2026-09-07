@@ -7,6 +7,7 @@ import {
   type ChildVoiceView,
 } from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
+import { validateLiveParentGuideSuggestion } from '../features/assistants/liveParentGuide';
 import { createChildAccessController, type ChildAccessView } from '../features/access/childAccess';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
@@ -766,11 +767,8 @@ function validateGuideSuggestion(
     suggestion.originalParentText.en !== request.parentText.en ||
     suggestion.meta.requestId !== request.requestId ||
     suggestion.meta.audience !== 'parent' ||
-    suggestion.meta.origin !== 'prepared' ||
-    suggestion.meta.fixtureId !== 'guide_recycling_refine_v1' ||
     !suggestion.meta.disclosure.saysAiMayBeWrong ||
     !suggestion.meta.disclosure.saysHumanDecides ||
-    !suggestion.meta.disclosure.preparedIsExplicit ||
     suggestion.accepted !== false ||
     suggestion.suggestedContent.id !== request.taskTemplateId ||
     suggestion.suggestedContent.categoryId !== request.allowedCategoryId ||
@@ -780,6 +778,13 @@ function validateGuideSuggestion(
   ) {
     return false;
   }
+  const validOrigin =
+    suggestion.meta.origin === 'live'
+      ? validateLiveParentGuideSuggestion(request, suggestion)
+      : suggestion.meta.origin === 'prepared' &&
+        suggestion.meta.fixtureId === 'guide_recycling_refine_v1' &&
+        suggestion.meta.disclosure.preparedIsExplicit;
+  if (!validOrigin) return false;
   const texts = [
     suggestion.suggestedContent.positiveAction,
     suggestion.suggestedContent.whyItMatters,
@@ -1677,7 +1682,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return result;
   },
 
-  requestParentGuide: async (input, primaryService = serviceRegistry.parentGuide) => {
+  requestParentGuide: async (input, primaryService = serviceRegistry.parentGuidePrimary) => {
     const before = get();
     const authority = requireActiveParentExperience(before);
     if (!authority.ok) return authority;

@@ -180,7 +180,7 @@ describe('Feature 003 bilingual resource parity', () => {
     expect(serviceRegistry.childCoach.disclosure).toEqual(CHILD_COACH_FIXTURE.meta.disclosure);
 
     expect(parentComposerSource).toContain('suggestion?.meta.disclosure.text');
-    expect(parentComposerSource).toContain('serviceRegistry.parentGuide.disclosure.text');
+    expect(parentComposerSource).toContain('serviceRegistry.parentGuidePrimary.disclosure.text');
     expect(parentComposerSource).toContain('localize(guideDisclosure, locale)');
     expect(parentComposerSource).not.toContain("t('taskNew.guideDisclosure')");
 
