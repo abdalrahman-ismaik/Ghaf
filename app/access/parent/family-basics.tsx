@@ -1,6 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Redirect, useRouter } from 'expo-router';
-import { BackHandler, Platform, StyleSheet, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  BackHandler,
+  findNodeHandle,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -12,8 +20,10 @@ import {
   SegmentedControl,
   StatusBanner,
 } from '@/components/access';
+import { FamilyPlusPreview } from '@/components/access/FamilyPlusPreview';
+import { GhafIcon } from '@/components/access/GhafIcon';
 import { PrimaryButton, Text } from '@/components/primitives';
-import { spacing } from '@/design/tokens';
+import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
 import { configureNativeDirection, setI18nLocale } from '@/i18n';
 import type { LocaleCode } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -38,6 +48,17 @@ export default function FamilyBasicsScreen() {
   );
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [plusPreviewVisible, setPlusPreviewVisible] = useState(false);
+  const plusTriggerRef = useRef<View>(null);
+
+  const closePlusPreview = useCallback(() => {
+    setPlusPreviewVisible(false);
+    if (Platform.OS === 'web') return;
+    requestAnimationFrame(() => {
+      const reactTag = findNodeHandle(plusTriggerRef.current);
+      if (reactTag) AccessibilityInfo.setAccessibilityFocus(reactTag);
+    });
+  }, []);
 
   const goBack = useCallback(() => {
     updateParentOnboardingDraft({
@@ -75,11 +96,15 @@ export default function FamilyBasicsScreen() {
     if (Platform.OS !== 'android' || parentOnboarding.status !== 'verified') return undefined;
 
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (plusPreviewVisible) {
+        closePlusPreview();
+        return true;
+      }
       goBack();
       return true;
     });
     return () => subscription.remove();
-  }, [goBack, parentOnboarding.status]);
+  }, [closePlusPreview, goBack, parentOnboarding.status, plusPreviewVisible]);
 
   if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
     return <Redirect href="/access/parent/verification" />;
@@ -237,23 +262,84 @@ export default function FamilyBasicsScreen() {
           testID="family-language"
           value={locale}
         />
-        <SegmentedControl
-          accessibilityLabel={t('access.setup.childCount')}
-          direction={direction}
-          disabled={busy}
-          label={t('access.setup.childCount')}
-          language={locale}
-          onChange={(value) => {
-            setChildCount(value);
-            updateParentOnboardingDraft({ childCount: Number(value) as 1 | 2 });
-          }}
-          options={[
-            { value: '1', label: t('access.setup.oneChild') },
-            { value: '2', label: t('access.setup.twoChildren') },
-          ]}
-          testID="family-child-count"
-          value={childCount}
-        />
+        <View style={styles.capacityGroup}>
+          <SegmentedControl
+            accessibilityLabel={t('access.setup.childCount')}
+            direction={direction}
+            disabled={busy}
+            label={t('access.setup.childCount')}
+            language={locale}
+            onChange={(value) => {
+              setChildCount(value);
+              updateParentOnboardingDraft({ childCount: Number(value) as 1 | 2 });
+            }}
+            options={[
+              { value: '1', label: t('access.setup.oneChild') },
+              { value: '2', label: t('access.setup.twoChildren') },
+            ]}
+            testID="family-child-count"
+            value={childCount}
+          />
+          <Pressable
+            accessibilityLabel={t('access.setup.plusAccessibilityLabel')}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: busy }}
+            disabled={busy}
+            onPress={() => setPlusPreviewVisible(true)}
+            ref={plusTriggerRef}
+            style={({ pressed }) => [
+              styles.plusTrigger,
+              { flexDirection: logicalRowDirection(direction) },
+              pressed ? styles.plusTriggerPressed : null,
+            ]}
+            testID="family-plus-capacity-trigger"
+          >
+            <View style={styles.plusTriggerIcon}>
+              <GhafIcon color={colors.tertiary} direction={direction} name="lock" size={22} />
+            </View>
+            <View style={styles.plusTriggerCopy}>
+              <View
+                style={[
+                  styles.plusTriggerHeading,
+                  { flexDirection: logicalRowDirection(direction) },
+                ]}
+              >
+                <Text
+                  brand
+                  color="deepForest"
+                  direction={direction}
+                  language={locale}
+                  style={styles.plusTriggerTitle}
+                  tabular
+                  variant="label"
+                >
+                  {t('access.setup.plusCapacity')}
+                </Text>
+                <View style={styles.plusPill}>
+                  <Text
+                    brand
+                    color="onTertiaryFixed"
+                    direction="ltr"
+                    language={locale}
+                    variant="caption"
+                  >
+                    {t('access.setup.plusPlanName')}
+                  </Text>
+                </View>
+              </View>
+              <Text
+                brand
+                color="onSurfaceVariant"
+                direction={direction}
+                language={locale}
+                variant="caption"
+              >
+                {t('access.setup.plusCapacitySummary')}
+              </Text>
+            </View>
+            <GhafIcon color={colors.outline} direction={direction} name="chevron" size={22} />
+          </Pressable>
+        </View>
         <InfoRow
           direction={direction}
           icon="sparkle"
@@ -262,6 +348,12 @@ export default function FamilyBasicsScreen() {
           tone="primary"
         />
       </View>
+      <FamilyPlusPreview
+        direction={direction}
+        language={locale}
+        onDismiss={closePlusPreview}
+        visible={plusPreviewVisible}
+      />
     </AccessScreen>
   );
 }
@@ -273,8 +365,56 @@ const styles = StyleSheet.create({
   form: {
     gap: spacing.xxl,
   },
+  capacityGroup: {
+    gap: spacing.sm,
+  },
   privacyCopy: {
     marginTop: -spacing.xl,
     paddingHorizontal: spacing.xxs,
+  },
+  plusTrigger: {
+    minHeight: 76,
+    alignItems: 'center',
+    gap: spacing.sm,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.solarAmberBorder,
+    backgroundColor: colors.solarAmberTint,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  plusTriggerPressed: {
+    opacity: opacity.pressed,
+    backgroundColor: colors.tertiaryFixed,
+  },
+  plusTriggerIcon: {
+    width: layout.touchTarget,
+    height: layout.touchTarget,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.md,
+    backgroundColor: colors.tertiaryFixed,
+  },
+  plusTriggerCopy: {
+    minWidth: 0,
+    flex: 1,
+    gap: spacing.xxs,
+  },
+  plusTriggerHeading: {
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  plusTriggerTitle: {
+    flexShrink: 1,
+  },
+  plusPill: {
+    minHeight: 28,
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.tertiaryFixed,
+    paddingHorizontal: spacing.sm,
   },
 });
