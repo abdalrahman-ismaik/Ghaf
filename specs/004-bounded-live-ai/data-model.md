@@ -283,6 +283,22 @@ provider contractual deletion/ZDR.
 The reference verifier rejects unknown claims, missing claims, expired/future tokens, wrong role or
 scope, non-synthetic implementation requests, and replay before parsing the operation body.
 
+## MCP projection
+
+MCP introduces no new domain entity, storage record, conversation, or authority. Its two tool
+arguments and structured results are exact transport projections of existing models:
+
+| MCP tool             | Capability scope         | Input model                | Structured result model       |
+| -------------------- | ------------------------ | -------------------------- | ----------------------------- |
+| `draft_parent_task`  | `draft_parent_task_v1`   | `ParentTaskDraftRequestV1` | `ParentTaskDraftSuggestionV1` |
+| `coach_current_task` | `coach_approved_task_v1` | `ChildCoachTextRequestV1`  | `ChildCoachTextResponseV1`    |
+
+The tool name is server routing metadata, not model input. Discovery contains descriptions and
+closed schemas only. A tool call is authorized against the mapped exact operation before its
+arguments are parsed, and its result adds only a short non-sensitive text summary beside the
+existing structured DTO. No MCP session, memory, identity, content record, resource, prompt,
+sampling request, task, or app object is retained.
+
 ## AiControlEvent
 
 Allowed non-content fields only: operation, schema version, coarse age band, outcome category,

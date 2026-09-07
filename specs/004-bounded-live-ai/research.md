@@ -240,3 +240,36 @@ Truthful evidence states are a constitutional requirement.
 - Infer native/provider behavior from source: rejected because it would overclaim readiness.
 - Use real Child recordings to validate quality: rejected; only adult/team-created synthetic voice
   fixtures may be used even after a provider sandbox is approved.
+
+## Decision 13 — Project two existing text operations through stateless MCP
+
+**Decision**: Pin the official TypeScript MCP server package in the Feature 004 Worker only and
+add one independently default-off `/mcp` endpoint. Use the current stateless Streamable HTTP
+transport with legacy handling rejected. Advertise exactly `draft_parent_task` and
+`coach_current_task`; each invokes the same operation function and strict request/response DTO as
+its HTTPS route. The Expo app and judge journey do not use MCP.
+
+**Rationale**: A small standards-based adapter makes the AI service boundary legible to technical
+reviewers while preserving one product surface and one policy implementation. The current MCP
+transport supports stateless requests and request-routing headers, which lets the Worker map a
+tool call to its exact capability scope and authorize it before parsing arguments. Using the
+official SDK avoids maintaining hand-written protocol semantics.
+
+**Alternatives considered**:
+
+- Ask judges to connect an MCP client: rejected because it adds credentials, tooling, and network
+  setup to a native demo whose reliability depends on a complete offline fallback.
+- Add MCP to Expo: rejected because the mobile app needs narrow product services, not an agent
+  protocol or another dependency surface.
+- Expose voice, resources, prompts, sampling, roots, tasks, apps, or domain mutation tools:
+  rejected because they add no P0 judge value and widen privacy, authorization, and capability
+  risk.
+- Implement a separate MCP prompt/policy stack: rejected because parity would drift from the
+  reviewed HTTPS handlers.
+- Hand-write JSON-RPC/MCP transport handling: rejected because the official SDK is smaller in
+  maintenance risk and can be pinned/tested at the Worker boundary.
+
+**Primary sources**:
+
+- [MCP Streamable HTTP transport specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http)
+- [Official TypeScript SDK server guide](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/server.md)

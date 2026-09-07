@@ -72,6 +72,36 @@ Allowed error codes:
 
 No endpoint automatically retries or asks a model to repair output.
 
+## Server-only MCP transport
+
+`POST /mcp` is an optional server-only projection behind a switch that defaults false. It uses the
+pinned official SDK's current stateless Streamable HTTP revision and rejects legacy
+initialization/session behavior. The Expo app never imports the MCP SDK or calls this route, and
+judges do not configure an MCP client.
+
+While enabled, content-free discovery exposes exactly these tools:
+
+| Tool name            | Exact operation scope    | Arguments                      | Structured result           |
+| -------------------- | ------------------------ | ------------------------------ | --------------------------- |
+| `draft_parent_task`  | `draft_parent_task_v1`   | F4 request envelope            | F4 data response            |
+| `coach_current_task` | `coach_approved_task_v1` | F5 Child text request envelope | F5 Child text data response |
+
+Both tools declare read-only, non-destructive, and closed-world hints. No voice/media tool,
+resource, prompt, sampling, root, task, app, account, Garden, League, reward, persistence, or other
+capability exists.
+
+Every tool call requires the same short-lived bearer capability as its HTTPS operation. The
+Worker maps the `Mcp-Name` routing header to an exact operation and completes origin, method,
+protocol, token, role, scope, subject/grant, replay, rate, concurrency, and budget checks before
+the SDK parses arguments or an AI binding is called. Missing/wrong routing metadata, unknown
+tools, unknown arguments, legacy requests, and scope mismatches fail closed with no echoed content.
+
+The MCP callbacks invoke the same operation functions, strict schemas, server-owned context,
+provider limits, timeout, post-validation, and safe error mapping as HTTPS. Results contain the
+existing DTO in `structuredContent` plus a short non-sensitive `text` content item. The adapter
+owns no prompt, retry, provider policy, persistent state, or business authority. Disabling it
+returns a safe not-found response and does not alter HTTPS or prepared fallback behavior.
+
 ## Capability token contract
 
 Reference implementation tokens are HMAC-signed compact claims for fake-boundary testing. They are

@@ -29,6 +29,9 @@ and approval decisions are in [approval-packet.md](approval-packet.md).
 - Feature 5 voice approval is limited to visible, one-shot push-to-talk and transcript review for
   guardian-enabled ages 12–14. Its activation remains separately blocked until every voice,
   consent/privacy, safeguarding, provider, and physical Android gate passes.
+- A server-only MCP projection is authorized for synthetic/local integration evidence only. It is
+  independently default off, reuses the Parent-drafting and Child-text boundaries, is never
+  imported by Expo, and is not a connection step for judges or families.
 - The deterministic Parent Guide, Child Coach, summary, media, voice rehearsal, profile helper,
   service registry, reset, and complete competition journey remain the mandatory default.
 - No provider credential may enter Expo source, an `EXPO_PUBLIC_` variable, source control, logs,
@@ -168,6 +171,38 @@ evidence only and cannot activate real Child voice.
    accessibility, or physical Android evidence, **when** release is evaluated, **then** real Child
    voice activation remains `BLOCKED` even if implementation tests pass.
 
+---
+
+### User Story 5 — Team verifies the bounded AI boundary through MCP (Priority: P3)
+
+The Ghaf team can inspect and invoke the same two bounded text transformations through a local,
+server-only MCP endpoint while the mobile experience remains unchanged. Judges see the polished
+Parent and Child moments in the app; they do not configure or operate an MCP client.
+
+**Why this priority**: It provides a recognizable, standards-based AI integration artifact for
+technical review without adding a second product surface, duplicating policy, or risking the
+competition journey.
+
+**Independent Test**: Enable MCP only in the local fake-binding Worker harness, list its
+capabilities, and invoke each tool with synthetic authorized inputs. Verify exactly two tools,
+strict request/response parity with HTTPS, zero persistent effects, and safe rejection when MCP is
+disabled, legacy transport is used, the tool is unknown, or authorization scope mismatches.
+
+**Acceptance Scenarios**:
+
+1. **Given** MCP is disabled, **when** any client requests `/mcp`, **then** the Worker returns a
+   safe not-found response and no body, provider call, or capability is exposed.
+2. **Given** MCP is enabled in the synthetic harness, **when** a client lists tools, **then** it
+   receives exactly `draft_parent_task` and `coach_current_task`, both described as read-only,
+   closed-schema, bounded transformations.
+3. **Given** a valid operation-scoped capability, **when** either tool is called, **then** it uses
+   the same operation handler, schema, safety validation, limits, and response DTO as HTTPS.
+4. **Given** an unknown tool, wrong protocol revision, missing required metadata, replayed token,
+   or mismatched role/scope/grant, **when** a call arrives, **then** it fails before inference and
+   exposes no request content in logs or errors.
+5. **Given** the native judge journey, **when** Parent drafting and Child coaching are demonstrated,
+   **then** no MCP terminology, setup, credential, or connection step appears in the family UI.
+
 ### Edge Cases
 
 - The provider returns valid JSON with unknown keys, a wrong schema/operation version, wrong
@@ -192,6 +227,9 @@ evidence only and cannot activate real Child voice.
   transcript.
 - The network is unavailable and the app must remain fully usable, bilingual, resettable, and
   demonstrable.
+- An MCP client sends a legacy initialization request, wrong protocol revision, missing routing
+  headers, an unknown tool, a tool/scope mismatch, unknown arguments, or requests resources,
+  prompts, sampling, roots, tasks, apps, voice, or media capabilities.
 
 ## Requirements
 
@@ -329,6 +367,31 @@ evidence only and cannot activate real Child voice.
   gates pass on the exact candidate build; implementation approval and synthetic harness evidence
   cannot satisfy those gates.
 
+#### Server-only MCP projection
+
+- **FR-042**: The Feature 004 Worker MAY expose one `/mcp` endpoint only behind a server-only
+  switch that defaults false. The Expo application MUST NOT import an MCP SDK or call that route.
+- **FR-043**: The endpoint MUST implement only the current stateless MCP Streamable HTTP revision
+  selected by the pinned server SDK and MUST reject legacy session/initialization behavior.
+- **FR-044**: MCP MUST advertise exactly two tools: `draft_parent_task` and
+  `coach_current_task`. It MUST NOT advertise voice/media, resources, prompts, sampling, roots,
+  tasks, apps, accounts, Garden, League, rewards, persistence, or any other capability.
+- **FR-045**: Each MCP tool MUST project the corresponding HTTPS operation's same closed input and
+  output schemas and MUST call the same handler, prefilter, post-validator, timeout, and safe error
+  mapping. MCP-specific prompts or duplicated policy logic are prohibited.
+- **FR-046**: Tool calls MUST verify the short-lived capability before parsing arguments or
+  inference and enforce exact operation, role, subject/grant, replay, rate, concurrency, and budget
+  controls. Content-free discovery MAY be available only while the MCP switch is enabled.
+- **FR-047**: Tool results MUST return the existing structured DTO plus a short non-sensitive text
+  summary, declare read-only/destructive-false/open-world-false hints, and create zero application
+  or business-authority state.
+- **FR-048**: Disabling MCP MUST make `/mcp` unavailable without changing HTTPS operations,
+  prepared providers, app flags, or the complete offline competition journey.
+- **FR-049**: MCP names, transport details, credentials, and setup instructions MUST remain outside
+  the Parent/Child UI and normal judge journey.
+- **FR-050**: Public discovery, OAuth, remote judge access, hosted deployment, and production MCP
+  security/readiness claims are outside this MVP and remain blocked until separately specified.
+
 ### Key Entities
 
 - **ParentTaskDraftRequestV1**: Minimized curated Parent selections plus a random request/binding
@@ -383,6 +446,12 @@ evidence only and cannot activate real Child voice.
 - **SC-010**: Across 100% of accepted voice attempts, the Child explicitly starts and stops one
   recording, reviews the transcript before send, and the Coach receives text only after an
   explicit send action; no audio is sent to the Coach model.
+- **SC-011**: In local fake-boundary tests, MCP tool discovery returns exactly two tools and 100%
+  of accepted calls match the corresponding HTTPS operation's structured success or safe error
+  contract with zero persistent effects.
+- **SC-012**: In automated MCP tests, 100% of disabled-endpoint, legacy-revision, missing-header,
+  unknown-tool, unknown-argument, replay, and operation/role/grant mismatch cases fail before
+  inference, and no MCP package is reachable from the Expo bundle.
 
 ## Assumptions
 
@@ -398,6 +467,8 @@ evidence only and cannot activate real Child voice.
   tasks remain on the deterministic Coach.
 - A single model call is attempted per user action. There is no model repair retry; fallback is
   deterministic.
+- Judges use only the native Ghaf journey. MCP is an implementation-quality proof for the team and
+  technical review, not a judge-operated integration or a voice tool.
 - Provider choice remains open. Any adapter must meet the same contract. If OpenAI is chosen,
   current official under-18, safety, storage, structured-output, and moderation guidance must be
   rechecked at implementation and release review.

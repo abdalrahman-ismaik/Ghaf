@@ -1,5 +1,28 @@
 # Team Ownership
 
+## 2026-09-07 Feature 004 Minimal MCP Adapter Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `package.json`, `package-lock.json`,
+`specs/004-bounded-live-ai/{spec.md,plan.md,research.md,data-model.md,quickstart.md,tasks.md,contracts/bounded-ai-v1.md}`,
+`workers/ghaf-ai-gateway/{README.md,src/index.ts,src/mcp.ts,src/operations.ts}`, and
+`tests/bounded-ai-mcp.test.ts`.
+
+**Scope**: Add one server-only, default-off MCP projection over the existing bounded Parent task
+drafting and Child Coach text operations. The Expo app continues to use provider-neutral HTTPS
+services; judges do not connect to MCP. The adapter exposes exactly `draft_parent_task` and
+`coach_current_task`, reuses the same strict schemas, handlers, safety checks, authorization,
+budgets, and prepared/fake evidence, and adds no voice/media tool, resource, prompt, sampling,
+account, persistence, business authority, public discovery, or deployment.
+
+**Activation boundary**: Implementation and synthetic local tests only. MCP is disabled unless a
+server-only switch is exactly `true`; no provider call, real Child data, public endpoint, judge
+setup, release activation, or production-readiness claim is authorized.
+
+**Status**: Active — exact files are reserved after the committed F4 slice; all unrelated and
+user-owned changes remain untouched.
+
 ## 2026-09-07 Feature 004 Planning and Implementation Window
 
 **Owner and only writer**: `/root`

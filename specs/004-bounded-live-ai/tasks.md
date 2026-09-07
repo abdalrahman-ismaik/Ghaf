@@ -7,13 +7,13 @@
 **Tests**: TDD is mandatory. Each story starts with RED behavioral tests, then the smallest GREEN
 implementation, then refactoring with tests remaining green.
 
-**Organization**: Tasks are grouped by the four approved user stories. All implementation remains
+**Organization**: Tasks are grouped by the five approved user stories. All implementation remains
 default-off and synthetic/fake-provider only; activation gates are outside this task list.
 
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Safe to execute concurrently only when a separate writer owns the listed file
-- **[Story]**: Maps directly to User Story 1–4 in `spec.md`
+- **[Story]**: Maps directly to User Story 1–5 in `spec.md`
 - Every task names its file boundary
 
 ## Phase 1: Setup and planning integration
@@ -193,6 +193,29 @@ across all stories.
 
 ---
 
+## Phase 8: User Story 5 — Minimal server-only MCP projection (Priority: P3)
+
+**Goal**: Expose the same two bounded text transformations through a local, independently
+default-off MCP endpoint without adding MCP to Expo or the judge journey.
+
+**Independent Test**: Enable MCP only in the fake Worker harness, discover exactly two read-only
+tools, invoke both with synthetic exact-scope credentials, and prove HTTPS parity plus fail-closed
+disabled, legacy, unknown-tool/argument, replay, and scope-mismatch behavior.
+
+- [x] T073 [US5] Amend the approved specification, plan, research, data model, contract, quickstart, tasks, and ownership boundary for the exact minimal MCP scope in `specs/004-bounded-live-ai/` and `TEAM_OWNERSHIP.md`
+- [ ] T074 [US5] Pin the official MCP server package for the Worker-only boundary in `package.json` and `package-lock.json`
+- [ ] T075 [US5] Write RED discovery, disabled/legacy/header, tool-call parity, authorization-before-arguments, unknown-capability, and no-Expo-import tests in `tests/bounded-ai-mcp.test.ts`
+- [ ] T076 [US5] Extract shared Parent and Child text operation functions without changing HTTPS behavior in `workers/ghaf-ai-gateway/src/operations.ts` and `workers/ghaf-ai-gateway/src/index.ts`
+- [ ] T077 [US5] Implement the default-off stateless MCP handler with exactly two tools in `workers/ghaf-ai-gateway/src/mcp.ts` and route it from `workers/ghaf-ai-gateway/src/index.ts`
+- [ ] T078 [US5] Complete MCP structured-result/error parity, scope/replay, unsupported-capability, and source-isolation tests in `tests/bounded-ai-mcp.test.ts`
+- [ ] T079 [US5] Document local synthetic verification and truthful non-deployment/judge boundaries in `workers/ghaf-ai-gateway/README.md`
+- [ ] T080 [US5] Run focused and repository validation, record exact evidence here, and release the MCP reservation in `TEAM_OWNERSHIP.md`
+
+**Checkpoint**: The adapter is locally testable, exact, and default off; the native app remains the
+only judge-facing surface and no external activation gate changes.
+
+---
+
 ## Dependencies and execution order
 
 ### Phase dependencies
@@ -204,6 +227,8 @@ across all stories.
 - US3 depends on Phase 2 and must complete before store/UI activation paths for US2/US4 can be
   considered complete.
 - US4 depends on Phase 2, US2 bounded-text validation, and US3 separate voice grants.
+- US5 depends on Phase 2 plus the completed F4 and F5 text operation handlers; it does not depend
+  on voice implementation or activation.
 - Phase 7 depends on every implemented story.
 
 ### User-story dependency graph
@@ -212,6 +237,7 @@ across all stories.
 Setup → Foundation → US1
                    → US2 ─┐
                    → US3 ─┼→ US4
+                   → US5  │
                           └→ Cross-cutting validation
 ```
 
@@ -258,6 +284,7 @@ Task: T022 UI source/component tests in tests/parent-task-drafting-ui.test.tsx
 - Commit foundational contracts/flags/prepared providers.
 - Commit F4 policy/service/store/UI.
 - Commit F5 text plus grants.
+- Commit the MCP adapter after both text handlers exist; do not wait for voice.
 - Commit voice state/native/transcription/UI.
 - Commit cross-cutting evidence/documentation.
 

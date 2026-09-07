@@ -8,7 +8,9 @@
 
 Add three independently default-off capabilities to the existing Expo application: copy-only
 Parent task drafting, one-turn age-banded Child Coach text, and ages-12–14 foreground
-push-to-talk/transcript review. Extend the current models, service registry, Zustand commands,
+push-to-talk/transcript review. Add a server-only, independently default-off MCP projection of the
+two text operations for local technical evidence; judges continue to use only the app. Extend the
+current models, service registry, Zustand commands,
 Parent task composer, Child task screen, permission flow, and reference Cloudflare Worker rather
 than reviving the Feature 002 mission model. Every remote seam has a deterministic same-attempt
 fallback; models cannot alter task, Seed, Garden, Circle, League, Family Reward, badge, or learning
@@ -23,7 +25,8 @@ through Expo SDK 57
 **Primary Dependencies**: Existing Expo Router, Expo Audio, React Native `StyleSheet`, Zustand 5,
 Zod 4, i18next/react-i18next, Cloudflare Workers AI binding, Vitest, ESLint, and Prettier. Add only
 Expo FileSystem for explicit cache-audio deletion and Expo Crypto for native/web random 128-bit
-request and binding identifiers, both at Expo SDK-compatible versions.
+request and binding identifiers, both at Expo SDK-compatible versions, plus the exact official MCP
+server package in the Worker boundary only.
 
 **Storage**: Existing schema-versioned in-memory Zustand prototype state and device-local family
 directory remain authoritative. F4 accepted wording may enter the existing private task draft.
@@ -55,8 +58,10 @@ unknown-key rejection; all flags false; unchanged deterministic reset and P0 jou
 
 **Scale/Scope**: One synthetic household and current reviewed task catalog. Four initial F4
 archetypes, seven bounded Coach intents, three age bands, one terminal result, one foreground voice
-clip capped at 15 seconds/256 KiB, and operation-specific request/rate/budget contracts. This is a
-competition prototype, not a multi-tenant production service.
+clip capped at 15 seconds/256 KiB, two read-only MCP tools, and operation-specific
+request/rate/budget contracts. No MCP resources, prompts, sampling, roots, tasks, apps, voice/media,
+or public judge connection is included. This is a competition prototype, not a multi-tenant
+production service.
 
 ## Constitution Check
 
@@ -136,6 +141,22 @@ daily budget, body, replay, origin, no-store, timeout, and non-content error pol
 operation-specific. Cloudflare JSON mode is treated as untrusted and every response is parsed by
 local Zod/policy validation. Transcription is a separate Workers AI call and returns text only.
 
+### Server-only MCP adapter
+
+`workers/ghaf-ai-gateway/src/mcp.ts` uses the pinned official TypeScript server SDK to expose the
+current stateless Streamable HTTP transport at `/mcp`. A strict server-only switch defaults false.
+When enabled in the synthetic harness, discovery reveals exactly `draft_parent_task` and
+`coach_current_task`; both carry read-only, non-destructive, closed-world hints and the same strict
+DTOs as their HTTPS counterparts. Tool calls map the MCP routing name to the exact existing
+operation, run capability authorization before arguments are parsed, reserve the same capacity,
+and invoke shared operation functions in `src/operations.ts`. Content-free discovery may run only
+while the switch is enabled. Legacy initialization and every unadvertised capability fail closed.
+
+The Expo app never imports the SDK or calls `/mcp`; it continues through service interfaces and
+HTTPS with prepared same-attempt fallback. The MCP adapter owns no prompt, safety policy, provider
+selection, persistence, voice/media processing, or business authority. This keeps it useful as a
+technical integration proof without making the judge journey depend on a separate client.
+
 ### Cancellation and reset
 
 Store request revisions, task/draft/profile/grant snapshots, and `AbortController` boundaries
@@ -192,12 +213,16 @@ src/
 └── i18n/resources.ts
 
 workers/ghaf-ai-gateway/
-├── src/index.ts
+├── src/
+│   ├── index.ts
+│   ├── mcp.ts
+│   └── operations.ts
 ├── wrangler.jsonc
 └── README.md
 
 tests/
 ├── bounded-ai-feature-flags.test.ts
+├── bounded-ai-mcp.test.ts
 ├── parent-task-drafting.test.ts
 ├── live-child-coach.test.ts
 ├── live-voice-capture.test.ts
@@ -221,9 +246,11 @@ the app and reference Worker.
 4. Capability-token and Worker middleware contracts with fake-binding auth-before-inference,
    replay, rate, body, strict-schema, no-log, timeout, and fallback tests.
 5. F5 age-banded text policy/provider, separate grant state, store binding, and terminal Child UI.
-6. Voice pure state machine and synthetic transcriber, followed by Expo Audio held-capture adapter
+6. Extract the Parent/Child text operation functions and add the default-off MCP projection with
+   exact discovery, parity, authorization-before-arguments, and no-Expo-import tests.
+7. Voice pure state machine and synthetic transcriber, followed by Expo Audio held-capture adapter
    and ages-12–14-only panel. No real audio/provider evidence is used.
-7. Full reset/zero-effects/profile/stale/failure/i18n/accessibility regression and repository
+8. Full reset/zero-effects/profile/stale/failure/i18n/accessibility regression and repository
    checks; record native/human/provider/deployment gates honestly.
 
 Shared files—service interfaces/registry, store, resources, Parent composer, Child task route,
@@ -244,6 +271,9 @@ owner. Each functional slice is committed only after its focused tests pass.
   text-only Coach handoff, and no inference attribute are exercised with synthetic media.
 - Gateway: auth before parse/inference, token claims, replay, rate/concurrency/budget, route/method/
   origin/content-type/body, no-store, schema, timeout, refusal, and provider failure.
+- MCP: default-off 404, current stateless revision, exactly two tools, closed input/output parity,
+  auth before arguments/inference, replay/scope failure, unsupported capability rejection, safe
+  structured errors, and no SDK import under `app/` or `src/`.
 - State: task/profile/grant/draft revision changes reject late results; all AI interactions have
   zero task/reward/growth/social effects; reset clears every transient.
 - Presentation: Arabic/English resources, RTL/LTR ordering, long labels, 200% text source
@@ -275,6 +305,7 @@ owner. Each functional slice is committed only after its focused tests pass.
 | Voice records in background or persists                | Held foreground capture, background disabled in config/runtime, stop-on-boundary, cache-only URI, explicit deletion | Physical Android/deletion evidence passes |
 | Audio or transcript leaks through logs/providers       | Separate transcriber, no content logs, synthetic canaries, ZDR/deletion gate, text-only Coach handoff               | Privacy/provider evidence passes          |
 | Remote failure harms the demo                          | No retry, bounded deadline, same-attempt prepared fallback, flags off by default                                    | Outage/rehearsal evidence passes          |
+| MCP widens the AI boundary or judge setup              | Server-only default-off adapter, exactly two shared text handlers, no app dependency or public endpoint             | Local parity/security tests pass          |
 
 ## Constitution Check — After Design
 
@@ -292,3 +323,4 @@ native, human, legal, deployment, and release evidence as blocked/not run until 
 | Microphone permission in a default-off build | Compiling the approved native capture adapter requires an explicit platform permission declaration                                                            | A prepared transcript alone would remain the existing synthetic rehearsal and would not implement the approved push-to-talk path |
 | One Expo FileSystem dependency               | Expo Audio records to cache but provides no recording-file deletion API; explicit deletion is required after transcript, cancel, failure, sign-out, and reset | Relying on eventual OS cache eviction cannot satisfy the approved deletion contract                                              |
 | One Expo Crypto dependency                   | Each remote action requires native/web random 128-bit request and binding identifiers                                                                         | Timestamps, counters, and `Math.random()` do not satisfy the approved correlation contract                                       |
+| One official MCP server dependency           | A pinned implementation avoids inventing transport semantics while keeping MCP entirely in the reference Worker                                               | A hand-written JSON-RPC/MCP transport would create more protocol and compatibility risk than the small adapter                   |

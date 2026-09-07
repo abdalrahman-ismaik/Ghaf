@@ -40,6 +40,7 @@ npx vitest run \
   tests/bounded-ai-feature-flags.test.ts \
   tests/parent-task-drafting.test.ts \
   tests/live-child-coach.test.ts \
+  tests/bounded-ai-mcp.test.ts \
   tests/live-voice-capture.test.ts \
   tests/bounded-ai-gateway.test.ts \
   tests/bounded-ai-integration.test.tsx
@@ -148,7 +149,31 @@ Expected:
 - Voice remeasures duration/bytes, returns transcript text only, and exercises deletion failure.
 - Error envelopes contain no canary input, audio, transcript, credential, URI, or stack content.
 
-## 8. Reset and zero-effects scenario
+## 8. MCP fake-boundary scenario
+
+MCP is server-only and must not be part of the app or normal judge journey.
+
+```bash
+npx vitest run tests/bounded-ai-mcp.test.ts
+```
+
+Expected:
+
+- With the server-only switch false or omitted, `/mcp` returns a safe not-found response and makes
+  no AI call.
+- With the switch true in the fake Worker harness, discovery lists exactly
+  `draft_parent_task` and `coach_current_task` with closed schemas and read-only hints.
+- Synthetic authorized calls return the same structured DTOs and safe errors as the matching HTTPS
+  operations; scope/replay failures stop before arguments or inference.
+- Legacy initialization, missing/wrong routing headers, unknown tools/arguments, and all resource,
+  prompt, sampling, root, task, app, voice, and media requests fail closed.
+- No MCP import exists under `app/` or `src/`; the native experience contains no MCP terminology or
+  setup.
+
+This is local implementation evidence only. Do not deploy the endpoint, enter real credentials or
+Child content, or ask judges to connect a client.
+
+## 9. Reset and zero-effects scenario
 
 Capture a before-snapshot of task lifecycle, Seeds, landscapes, canopy, Circle, League, Family
 Reward, badges, learning, and current profile. Exercise each F4/F5 success/fallback/error, then
@@ -162,7 +187,7 @@ Expected:
 - Audio/transcript cleanup is attempted without blocking reset.
 - Signed-out Arabic-first initial state matches the existing canonical reset.
 
-## 9. Export and static safety checks
+## 10. Export and static safety checks
 
 ```bash
 npm run typecheck
@@ -179,7 +204,7 @@ python /home/smyk/.codex/skills/security/security-compliance/scripts/secret_scan
 Record exact counts and results. Do not commit `dist`, `/tmp` output, secrets reports, Worker cache,
 `.dev.vars`, real audio, or provider artifacts.
 
-## 10. Evidence status after source implementation
+## 11. Evidence status after source implementation
 
 | Gate                                      | Expected status                                |
 | ----------------------------------------- | ---------------------------------------------- |
