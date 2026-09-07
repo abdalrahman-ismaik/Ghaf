@@ -1,6 +1,7 @@
 import {
   AMBIENT_AUDIO_PREFERENCE_SCHEMA_VERSION,
   type AmbientAudioPreferenceRecord,
+  type AmbientAudioPreferenceView,
 } from '../../models/audioPreferences';
 import type { DomainError, DomainResult } from '../../models/familyGrowth';
 
@@ -25,6 +26,13 @@ export interface AmbientPlaybackDecision {
   readonly shouldPlay: boolean;
   readonly volume: number;
 }
+
+export type AmbientAudioPreferenceRestoreInput =
+  | {
+      readonly storageAvailable: true;
+      readonly record: AmbientAudioPreferenceRecord | null;
+    }
+  | { readonly storageAvailable: false };
 
 function failure(message: string): DomainResult<never> {
   const error: DomainError = {
@@ -86,6 +94,20 @@ export function createAmbientAudioPreference(
       origin: 'device_local',
     }),
   );
+}
+
+export function restoreAmbientAudioPreference(
+  input: AmbientAudioPreferenceRestoreInput,
+): AmbientAudioPreferenceView {
+  if (!input.storageAvailable) {
+    return { enabled: false, status: 'unavailable', source: 'safe_fallback' };
+  }
+  if (!input.record) return { enabled: true, status: 'ready', source: 'default' };
+  return {
+    enabled: input.record.ambientSoundEnabled,
+    status: 'ready',
+    source: 'stored',
+  };
 }
 
 export function resolveAmbientPlaybackDecision(

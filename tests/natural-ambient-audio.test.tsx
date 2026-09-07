@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   createAmbientAudioPreference,
   parseAmbientAudioPreference,
+  restoreAmbientAudioPreference,
   resolveAmbientPlaybackDecision,
 } from '../src/features/audio/ambientAudio';
 import { resources } from '../src/i18n/resources';
@@ -20,7 +21,11 @@ import {
 } from '../src/services/local';
 import { deviceLocalStorage } from '../src/services/local/storage';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
-import { resetPrototypeForTest } from './helpers/prototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   expect(result.ok).toBe(true);
@@ -97,6 +102,26 @@ describe('Feature 006 ambient preference schema and repository', () => {
     expect(JSON.stringify(record)).not.toMatch(
       /child|parent|household|account|session|token|media|microphone|position|playing/iu,
     );
+  });
+
+  it('restores absent and stored values but falls back to silence when storage is unavailable', () => {
+    const disabled = expectOk(createAmbientAudioPreference(false));
+
+    expect(restoreAmbientAudioPreference({ storageAvailable: true, record: null })).toEqual({
+      enabled: true,
+      status: 'ready',
+      source: 'default',
+    });
+    expect(restoreAmbientAudioPreference({ storageAvailable: true, record: disabled })).toEqual({
+      enabled: false,
+      status: 'ready',
+      source: 'stored',
+    });
+    expect(restoreAmbientAudioPreference({ storageAvailable: false })).toEqual({
+      enabled: false,
+      status: 'unavailable',
+      source: 'safe_fallback',
+    });
   });
 });
 
@@ -183,6 +208,23 @@ describe('Feature 006 ambient preference store integration', () => {
     });
   });
 
+  it('keeps one preference through real Parent and Child sign-out handoffs', async () => {
+    await enterParentExperienceForTest();
+    expectOk(usePrototypeStore.getState().setAmbientSoundEnabled(false));
+    expectOk(usePrototypeStore.getState().signOutExperience());
+
+    await enterChildExperienceForTest('child_salem');
+    expect(usePrototypeStore.getState().ambientAudioPreference.enabled).toBe(false);
+    expectOk(usePrototypeStore.getState().signOutExperience());
+
+    await enterParentExperienceForTest();
+    expect(usePrototypeStore.getState().ambientAudioPreference.enabled).toBe(false);
+    expect(serviceRegistry.ambientAudioPreferences.read()).toMatchObject({
+      ok: true,
+      data: { ambientSoundEnabled: false },
+    });
+  });
+
   it('clears the stored choice and restores default-on during exact Parent reset', () => {
     expectOk(usePrototypeStore.getState().setAmbientSoundEnabled(false));
     expectOk(resetPrototypeForTest());
@@ -213,7 +255,9 @@ describe('Feature 006 presentation source contract', () => {
     expect(provider).toContain('shouldPlayInBackground: false');
     expect(provider).toContain('AccessibilityInfo.isScreenReaderEnabled()');
     expect(provider).toMatch(/AppState\.addEventListener\(\s*'change'/u);
-    expect(provider).not.toMatch(/fetch\(|https?:\/\/|requestRecordingPermissions/iu);
+    expect(provider).not.toMatch(
+      /fetch\(|https?:\/\/|requestMicrophonePermissions|requestNotificationPermissions|requestRecordingPermissions|setIsAudioActiveAsync/iu,
+    );
     expect(onboarding).toContain('setNarrationPlaying');
     expect(onboarding).not.toContain('useOnboardingAmbience');
     expect(audioSources).not.toContain('Ambience');

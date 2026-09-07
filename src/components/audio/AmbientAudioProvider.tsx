@@ -38,7 +38,11 @@ function isExclusiveAudioStatus(status: string): boolean {
 }
 
 function configureAmbientPlayer(player: ReturnType<typeof useAudioPlayer>): void {
-  player.loop = true;
+  try {
+    player.loop = true;
+  } catch {
+    pauseAmbientPlayer(player);
+  }
 }
 
 function applyAmbientPlayback(
@@ -46,17 +50,21 @@ function applyAmbientPlayback(
   shouldPlay: boolean,
   volume: number,
 ): void {
-  player.volume = volume;
   try {
+    player.volume = volume;
     if (shouldPlay) player.play();
     else player.pause();
   } catch {
-    player.pause();
+    pauseAmbientPlayer(player);
   }
 }
 
 function pauseAmbientPlayer(player: ReturnType<typeof useAudioPlayer>): void {
-  player.pause();
+  try {
+    player.pause();
+  } catch {
+    // Playback errors stay silent and never block the deterministic app path.
+  }
 }
 
 export function AmbientAudioProvider({

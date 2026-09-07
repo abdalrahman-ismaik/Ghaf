@@ -47,6 +47,7 @@ import {
   LIVE_CHILD_AI_PROVIDER_VERSION,
 } from '../features/access';
 import { restoreRememberedDeviceAccess } from '../features/access/rememberedDeviceAccess';
+import { restoreAmbientAudioPreference } from '../features/audio';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
   createParentOnboardingController,
@@ -309,13 +310,9 @@ function restoreInitialLocalFamily(): LocalFamilyView {
 const initialLocalFamily = restoreInitialLocalFamily();
 const initialAmbientAudioPreference: AmbientAudioPreferenceView = (() => {
   const read = serviceRegistry.ambientAudioPreferences.read();
-  if (!read.ok) return { enabled: false, status: 'unavailable', source: 'safe_fallback' };
-  if (!read.data) return { enabled: true, status: 'ready', source: 'default' };
-  return {
-    enabled: read.data.ambientSoundEnabled,
-    status: 'ready',
-    source: 'stored',
-  };
+  return read.ok
+    ? restoreAmbientAudioPreference({ storageAvailable: true, record: read.data })
+    : restoreAmbientAudioPreference({ storageAvailable: false });
 })();
 const initialRememberedDeviceAccess = (() => {
   const read = serviceRegistry.deviceAccess.read();

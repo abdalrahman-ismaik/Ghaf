@@ -135,6 +135,11 @@ function expectCanonicalResetState(): void {
     preparedAudioFixtureId: 'fixture_salem_plan_ar_v1',
     assistantMode: 'deterministic_prepared',
     celebration: { available: false, consumed: false },
+    ambientAudioPreference: {
+      enabled: true,
+      status: 'ready',
+      source: 'default',
+    },
     parentGuideSuggestion: null,
     childCoachResult: null,
     confirmationPlan: null,

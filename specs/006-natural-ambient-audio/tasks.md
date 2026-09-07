@@ -92,12 +92,12 @@ reset restores the default without changing other product values.
 **Independent Test**: Evaluate every policy branch, toggle off then reset as an authorized Parent,
 and verify default-on preference plus the unchanged canonical app reset state.
 
-- [ ] T017 [US3] Add failing lifecycle, safe-fallback, no-permission, and reset regression tests in
+- [x] T017 [US3] Add failing lifecycle, safe-fallback, no-permission, and reset regression tests in
       `tests/natural-ambient-audio.test.tsx` and `tests/prototype-state.test.ts`
-- [ ] T018 [US3] Complete foreground, screen-reader, browser-unlock, exclusive-audio, failure-to-
+- [x] T018 [US3] Complete foreground, screen-reader, browser-unlock, exclusive-audio, failure-to-
       silence, and reset integration in `src/components/audio/AmbientAudioProvider.tsx` and
       `src/state/usePrototypeStore.ts`
-- [ ] T019 [US3] Run the lifecycle/reset tests GREEN and commit the independently verifiable safety
+- [x] T019 [US3] Run the lifecycle/reset tests GREEN and commit the independently verifiable safety
       slice
 
 **Checkpoint**: Optional ambience never becomes background, assistive-technology-competing, or
