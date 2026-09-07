@@ -675,6 +675,13 @@ intact, non-sharp, clean paper/plastic items accepted by the local stream on a n
 Remove metadata and record source, prompt or
 creation method, transformation, license/ownership, reviewer, and date.
 
+The decorative Parent access portrait is a narrow presentation exception, not a task/media
+fixture. It may show exactly one fictional synthetic adult face in culturally appropriate local
+attire, but no Child, real user, identifying data, text, device, task evidence, or product-state
+claim. It remains outside the accessibility tree, has no access authority, and must fail without
+blocking login. Its exact prompt, transformation, checksum, routes, and unrun named-human review
+are recorded beside the local asset.
+
 Photo and voice controls must explain:
 
 - that the item is prepared/synthetic in P0;

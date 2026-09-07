@@ -1,5 +1,36 @@
 # Team Ownership
 
+## 2026-09-07 Emirati Parent Access Portrait Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`,
+`DEMO_RUNBOOK.md`, `assets/images/access/parent-emirati/**`,
+`src/components/access/{index.ts,ParentAccessPortrait.tsx,parentAccessAssets.ts}`,
+`src/features/startup/preloadStartupImages.ts`,
+`app/access/parent/{sign-in.tsx,sign-up.tsx,verification.tsx}`, and
+`tests/{parent-access-portrait.test.tsx,r001-onboarding-flow.test.ts}` only.
+
+**Scope**: Generate and integrate one fictional adult Emirati Parent portrait across the Parent
+sign-in, sign-up, and verification routes. Keep the portrait decorative, compact, locally bundled,
+free of text, children, product claims, or identity authority, and consistent with Ghaf's calm UAE
+botanical visual direction. Preserve every access action, Arabic/English layout, deterministic
+offline path, and remembered-device behavior. Record exact provenance and leave named Emirati
+cultural, image-rights, safeguarding, accessibility, and physical Android review unclaimed.
+
+**Status**: Complete and ready for source integration — commit `10ceb01` contains the 91,432-byte
+local portrait, exact embedded prompt/provenance, failure-safe Expo Image component, Parent-section
+preload, all three access-route integrations, and focused tests. Five focused access/startup files
+passed 66 tests; the portrait scope passed strict TypeScript, zero-warning ESLint, Prettier,
+dependency alignment, Git whitespace, final crop inspection, Arabic RTL/English LTR Firefox web
+checks at 320×720 and 390×844 with zero application errors, and the Impeccable detector with `[]`.
+The repository-wide gate was not claimable during this window because the separately reserved,
+concurrently in-progress Natural Ambient Audio work had already removed
+`assets/audio/onboarding/ambience-nature-v1.mp3` before completing its replacement wiring and
+resource copy. That unrelated state caused the only non-portrait typecheck, regression, and web
+export failures and was preserved. Physical Android and named Emirati cultural, image-rights,
+safeguarding, accessibility, and visual review remain `BLOCKED / NOT RUN`.
+
 ## 2026-09-07 WSL/Windows Android Command Correction Window
 
 **Owner and only writer**: `/root`

@@ -1,5 +1,30 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Emirati Parent Access Portrait Record — 2026-09-08
+
+**Current classification:** integrated local presentation candidate; physical Android and named
+Emirati cultural, image-rights, safeguarding, accessibility, and visual review remain
+`BLOCKED / NOT RUN`.
+
+From Welcome, choose Parent access in Arabic and English. Verify that the same fictional adult
+Emirati Parent portrait appears on sign-in, new-family sign-up, and verification; that the centered
+crop remains calm and undistorted; and that the login action stays visually dominant. On a compact
+320×720 viewport, confirm that sign-in and sign-up actions remain reachable and verification can
+scroll without moving its protected primary action. The portrait is decorative and should not be
+announced by a screen reader. It must never be described as a real family member, identity check,
+guardian proof, live AI output, or evidence that Ghaf plants trees.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Generated source and final crop inspection | `PASSED local visual` | one fictional adult, accurate understated attire, centered 3:2 crop, no Child, props, text, logo, UI, or product claim |
+| Exact local provenance, prompt, dimensions, byte budget, and failure-safe component | `PASSED automated/source` | embedded prompt, 1200×800 JPEG, 91,432 bytes, local literal source, Expo Image, and non-blocking decode failure |
+| Arabic RTL and English LTR compact presentation | `PASSED Firefox web proxy` | sign-in at 320×720 and 390×844 plus sign-up/verification at 320×720; primary actions reachable and no application console errors |
+| Mechanical design review | `PASSED` | Impeccable detector returned `[]` for the component and three Parent routes |
+| Focused access/startup regression and scoped source checks | `PASSED` | 5 files / 66 tests; strict TypeScript, zero-warning ESLint, Prettier, dependency alignment, and Git whitespace |
+| Whole-repository verification during this window | `BLOCKED by concurrent unrelated work` | the separately reserved Natural Ambient Audio window removed the old onboarding ambience before completing replacement wiring, causing the only typecheck, regression, and web-export failures |
+| Physical Android render/decode/memory, TalkBack, font scale, and keyboard | `BLOCKED / NOT RUN` | no qualifying native observation in this window |
+| Named Emirati cultural, image-rights, safeguarding, accessibility, and visual review | `NOT RUN` | no named reviewer was available in this implementation window |
+
 ## Feature 005 Remembered Device Access Record — 2026-09-07
 
 **Current classification:** implemented device-local prototype continuity; physical Android,

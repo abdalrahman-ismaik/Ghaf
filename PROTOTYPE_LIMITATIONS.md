@@ -1,5 +1,20 @@
 # Prototype Limitations
 
+## Emirati Parent access portrait boundary — 2026-09-08
+
+The Parent sign-in, sign-up, and verification screens now share one locally bundled portrait of a
+fictional synthetic adult Emirati father. It is decorative presentation only: it does not depict a
+real Ghaf user, authenticate an identity, prove guardianship, personalize an account, or represent
+every Emirati Parent or guardian. The image contains no Child, user data, readable text, device,
+task evidence, reward, or environmental-impact claim and is removed from the accessibility tree.
+An image decode failure removes the portrait without blocking any access action.
+
+The original generated source and final 1200×800 JPEG were visually inspected for the requested
+composition, subject count, attire, crop safety, and prohibited elements. Arabic/English Firefox
+web-proxy checks at 320×720 and 390×844 reported zero application errors. These checks do not pass
+physical Android decode/memory, TalkBack, font-scale, or named Emirati cultural, image-rights,
+safeguarding, accessibility, and visual review; those remain `BLOCKED / NOT RUN`.
+
 ## Feature 005 remembered device access boundary — 2026-09-07
 
 Remembered access is a device-local prototype convenience, not a production account or trusted
