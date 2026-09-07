@@ -159,6 +159,7 @@ import type {
 import {
   createPreparedBoundedAiServices,
   BlockedCapabilityTokenService,
+  DeterministicLiveChildAiGrantService,
   DeterministicLiveChildCoachTextProvider,
   DeterministicParentTaskDraftingProvider,
   DeterministicVoiceTranscriptionProvider,
@@ -2101,6 +2102,7 @@ export function createFeature003ServiceRegistry(options?: {
       voiceTranscriptionPrimary:
         options?.voiceTranscriptionPrimary ?? boundedAiPrepared.voiceTranscriptionPrepared,
       capabilityToken: options?.capabilityToken ?? boundedAiPrepared.capabilityToken,
+      childAiGrants: boundedAiPrepared.childAiGrants,
     },
   };
 }
@@ -2109,6 +2111,7 @@ export {
   BlockedCapabilityTokenService,
   createPreparedBoundedAiServices,
   DeterministicLiveChildCoachTextProvider,
+  DeterministicLiveChildAiGrantService,
   DeterministicParentTaskDraftingProvider,
   DeterministicVoiceTranscriptionProvider,
 };

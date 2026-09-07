@@ -101,6 +101,8 @@ import type {
   CapabilityTokenClaims,
   ChildCoachTextRequestV1,
   ChildCoachTextResponseV1,
+  LiveChildCoachCapability,
+  LiveChildCoachGrant,
   ParentTaskDraftRequestV1,
   ParentTaskDraftSuggestionV1,
   VoiceTranscriptionMetadataV1,
@@ -305,10 +307,34 @@ export interface CapabilityTokenRequest {
   readonly scope: CapabilityTokenClaims['scope'];
   readonly grantVersion?: number;
   readonly noticeVersion?: number;
+  readonly voiceGrantVersion?: number;
+  readonly voiceNoticeVersion?: number;
+  readonly voiceRequestId?: string;
+  readonly voiceBindingNonce?: string;
 }
 
 export interface CapabilityTokenService {
   getToken(request: CapabilityTokenRequest): Promise<ServiceResult<string>>;
+}
+
+export interface LiveChildAiGrantService {
+  get(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly now: string;
+  }): ServiceResult<LiveChildCoachGrant>;
+  update(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly granted: boolean;
+    readonly expectedVersion: number;
+    readonly noticeVersion: number;
+    readonly policyVersion: string;
+    readonly providerVersion: string;
+    readonly reauthenticationProofId: string;
+    readonly now: string;
+  }): ServiceResult<LiveChildCoachGrant>;
+  reset(): ServiceResult<true>;
 }
 
 export interface EphemeralMediaFile {
@@ -318,7 +344,21 @@ export interface EphemeralMediaFile {
 
 export interface EphemeralMediaService {
   inspect(uri: string): Promise<ServiceResult<EphemeralMediaFile>>;
+  read(uri: string): Promise<ServiceResult<Uint8Array>>;
   delete(uri: string): Promise<ServiceResult<true>>;
+}
+
+export interface CapturedVoiceFile {
+  readonly uri: string;
+  readonly durationMs: number;
+  readonly mediaType: 'audio/m4a';
+}
+
+export interface VoiceCaptureService {
+  requestPermission(): Promise<ServiceResult<'granted' | 'denied'>>;
+  startHeld(): Promise<ServiceResult<{ readonly startedAt: string }>>;
+  stopHeld(): Promise<ServiceResult<CapturedVoiceFile>>;
+  cancel(): Promise<ServiceResult<{ readonly uri: string | null }>>;
 }
 
 export interface SyntheticAccessService {
@@ -479,4 +519,5 @@ export interface Feature004ServiceRegistry {
   readonly voiceTranscriptionPrepared: PreparedVoiceTranscriptionProvider;
   readonly voiceTranscriptionPrimary: VoiceTranscriptionService;
   readonly capabilityToken: CapabilityTokenService;
+  readonly childAiGrants: LiveChildAiGrantService;
 }

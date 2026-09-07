@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import type { SyntheticChildId } from './familyGrowth';
+
 export const BOUNDED_AI_SCHEMA_VERSION = '1.0' as const;
 export const MAX_CORRELATION_LIFETIME_MS = 5 * 60 * 1_000;
 export const MAX_SYNTHETIC_GRANT_LIFETIME_MS = 30 * 24 * 60 * 60 * 1_000;
@@ -316,11 +318,54 @@ const childCoach12To14RequestSchema = childCoachRequestBase
       'need_adult',
     ]),
     templateInput: structuredSupportSchema.optional(),
-    topic: z.enum(['clarify_step', 'plan_order', 'ask_for_help', 'reflect_on_strategy']),
+    topic: z.enum(['clarify_step', 'plan_order', 'ask_for_help', 'reflect_on_strategy']).optional(),
     boundedText: boundedChildTextSchema.optional(),
     inputOrigin: z.enum(['typed', 'reviewed_voice_transcript']),
+    voiceGrantVersion: z.number().int().positive().optional(),
+    voiceNoticeVersion: z.number().int().positive().optional(),
+    voiceRequestId: urlSafeIdentifierSchema.optional(),
+    voiceBindingNonce: urlSafeIdentifierSchema.optional(),
   })
-  .strict();
+  .strict()
+  .superRefine((value, context) => {
+    if (value.intent === 'need_adult' && value.topic !== undefined) {
+      context.addIssue({
+        code: 'custom',
+        path: ['topic'],
+        message: 'The adult exit does not accept a generated topic',
+      });
+    }
+    if (value.intent !== 'need_adult' && value.topic !== value.intent) {
+      context.addIssue({
+        code: 'custom',
+        path: ['topic'],
+        message: 'The bounded topic must match the selected intent',
+      });
+    }
+    const voiceFields = [
+      value.voiceGrantVersion,
+      value.voiceNoticeVersion,
+      value.voiceRequestId,
+      value.voiceBindingNonce,
+    ];
+    if (
+      value.inputOrigin === 'reviewed_voice_transcript' &&
+      voiceFields.some((field) => field === undefined)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['voiceGrantVersion'],
+        message: 'Reviewed voice text requires a separate voice grant and correlation',
+      });
+    }
+    if (value.inputOrigin === 'typed' && voiceFields.some((field) => field !== undefined)) {
+      context.addIssue({
+        code: 'custom',
+        path: ['voiceGrantVersion'],
+        message: 'Typed text cannot carry voice authority',
+      });
+    }
+  });
 
 export const childCoachTextRequestV1Schema = z.discriminatedUnion('ageBand', [
   childCoach6To8RequestSchema,
@@ -418,6 +463,10 @@ export const capabilityTokenClaimsSchema = z
     ]),
     grantVersion: z.number().int().positive().nullable(),
     noticeVersion: z.number().int().positive().nullable(),
+    voiceGrantVersion: z.number().int().positive().nullable().optional(),
+    voiceNoticeVersion: z.number().int().positive().nullable().optional(),
+    voiceRequestId: urlSafeIdentifierSchema.nullable().optional(),
+    voiceBindingNonce: urlSafeIdentifierSchema.nullable().optional(),
     iat: z.number().int().nonnegative(),
     exp: z.number().int().positive(),
     jti: urlSafeIdentifierSchema,
@@ -442,12 +491,30 @@ export const capabilityTokenClaimsSchema = z
     }
     if (
       value.scope === 'draft_parent_task_v1' &&
-      (value.grantVersion !== null || value.noticeVersion !== null)
+      (value.grantVersion !== null ||
+        value.noticeVersion !== null ||
+        value.voiceGrantVersion != null ||
+        value.voiceNoticeVersion != null ||
+        value.voiceRequestId != null ||
+        value.voiceBindingNonce != null)
     ) {
       context.addIssue({
         code: 'custom',
         path: ['grantVersion'],
         message: 'Parent drafting claims do not carry Child grant versions',
+      });
+    }
+    if (
+      value.scope !== 'coach_approved_task_v1' &&
+      (value.voiceGrantVersion != null ||
+        value.voiceNoticeVersion != null ||
+        value.voiceRequestId != null ||
+        value.voiceBindingNonce != null)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['voiceGrantVersion'],
+        message: 'Voice handoff claims are valid only for the Child Coach text scope',
       });
     }
     if (value.scope === 'draft_parent_task_v1' && value.role !== 'parent') {
@@ -468,6 +535,10 @@ export const capabilityTokenClaimsSchema = z
 
 export type RequestCorrelationV1 = z.infer<typeof requestCorrelationV1Schema>;
 export type LiveChildCoachGrant = z.infer<typeof liveChildCoachGrantSchema>;
+export type LiveChildCoachCapability = LiveChildCoachGrant['capability'];
+export type LiveChildAiGrantsByProfile = Readonly<
+  Record<SyntheticChildId, Readonly<Record<LiveChildCoachCapability, LiveChildCoachGrant>>>
+>;
 export type ChildCoachTextRequestV1 = z.infer<typeof childCoachTextRequestV1Schema>;
 export type ChildCoachTextResponseV1 = z.infer<typeof childCoachTextResponseV1Schema>;
 export type ParentTaskDraftRequestV1 = z.infer<typeof parentTaskDraftRequestV1Schema>;

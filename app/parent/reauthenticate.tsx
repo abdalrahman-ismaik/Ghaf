@@ -8,7 +8,7 @@ import { R003Hero, R003Status } from '@/components/r003';
 import type { SyntheticChildId } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-type PermissionKind = 'voice' | 'media' | 'ai';
+type PermissionKind = 'voice' | 'media' | 'ai' | 'live_child_text' | 'live_child_voice';
 
 export default function ParentReauthenticationScreen() {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function ParentReauthenticationScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const updateGrant = usePrototypeStore((state) => state.updateChildPermissionGrant);
+  const updateLiveChildAiGrant = usePrototypeStore((state) => state.updateLiveChildAiGrant);
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +31,13 @@ export default function ParentReauthenticationScreen() {
       ? params.profileId
       : null;
   const kind: PermissionKind | null =
-    params.kind === 'voice' || params.kind === 'media' || params.kind === 'ai' ? params.kind : null;
+    params.kind === 'voice' ||
+    params.kind === 'media' ||
+    params.kind === 'ai' ||
+    params.kind === 'live_child_text' ||
+    params.kind === 'live_child_voice'
+      ? params.kind
+      : null;
   const granted = params.granted === 'true' ? true : params.granted === 'false' ? false : null;
   const returnTo =
     params.returnTo === '/parent/settings/permissions'
@@ -43,12 +50,20 @@ export default function ParentReauthenticationScreen() {
 
   const submit = () => {
     setError(null);
-    const result = updateGrant({
-      childId: profileId,
-      kind,
-      granted,
-      reauthenticationCode: code,
-    });
+    const result =
+      kind === 'live_child_text' || kind === 'live_child_voice'
+        ? updateLiveChildAiGrant({
+            childId: profileId,
+            capability: kind === 'live_child_text' ? 'text' : 'voice',
+            granted,
+            reauthenticationCode: code,
+          })
+        : updateGrant({
+            childId: profileId,
+            kind,
+            granted,
+            reauthenticationCode: code,
+          });
     if (!result.ok) {
       setError(
         result.error.code === 'INVALID_INPUT' ? t('r003.reauth.invalid') : t('errors.safeRetry'),

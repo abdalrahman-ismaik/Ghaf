@@ -6,6 +6,7 @@ export type {
   BoundedParentGuideProvider,
   CapabilityTokenRequest,
   CapabilityTokenService,
+  CapturedVoiceFile,
   ChildCoachService,
   CoachAdaptationService,
   FamilyLeagueService,
@@ -16,6 +17,9 @@ export type {
   GardenService,
   MediaService,
   LiveChildCoachTextService,
+  LiveChildAiGrantService,
+  EphemeralMediaFile,
+  EphemeralMediaService,
   ParentGuideService,
   ParentTaskDraftingService,
   ParentSummaryPolicy,
@@ -34,12 +38,17 @@ export type {
   TaskService,
   VoiceTranscriptionInput,
   VoiceTranscriptionService,
+  VoiceCaptureService,
 } from './interfaces';
 export {
   GatewayParentGuideService,
+  GatewayChildCoachService,
   GatewayParentTaskDraftingService,
+  GatewayVoiceTranscriptionService,
+  type GatewayChildCoachServiceOptions,
   type GatewayParentGuideServiceOptions,
   type GatewayParentTaskDraftingServiceOptions,
+  type GatewayVoiceTranscriptionServiceOptions,
 } from './remote';
 export {
   createFeature003ServiceRegistry,
@@ -52,6 +61,7 @@ export {
   DeterministicFamilyProjectionService,
   DeterministicGardenService,
   DeterministicMediaService,
+  DeterministicLiveChildAiGrantService,
   DeterministicLiveChildCoachTextProvider,
   DeterministicParentGuideProvider,
   DeterministicParentTaskDraftingProvider,

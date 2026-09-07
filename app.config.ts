@@ -51,8 +51,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-audio',
       {
-        microphonePermission: false,
-        recordAudioAndroid: false,
+        microphonePermission: 'Allow Ghaf to record one held task-help clip for transcript review.',
+        recordAudioAndroid: true,
         enableBackgroundRecording: false,
         enableBackgroundPlayback: false,
       },

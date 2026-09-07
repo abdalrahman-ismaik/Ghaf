@@ -1,4 +1,6 @@
 import {
+  liveChildCoachGrantSchema,
+  MAX_SYNTHETIC_GRANT_LIFETIME_MS,
   childCoachTextRequestV1Schema,
   childCoachTextResponseV1Schema,
   parentTaskDraftRequestV1Schema,
@@ -6,10 +8,14 @@ import {
   voiceTranscriptionMetadataV1Schema,
   voiceTranscriptionResponseV1Schema,
 } from '../../models/boundedAi';
+import type { LiveChildCoachCapability, LiveChildCoachGrant } from '../../models/boundedAi';
+import { createInitialLiveChildCoachGrant, liveChildSubjectFor } from '../../features/access';
+import type { SyntheticChildId } from '../../models/familyGrowth';
 import type {
   CapabilityTokenRequest,
   CapabilityTokenService,
   LiveChildCoachTextService,
+  LiveChildAiGrantService,
   ParentTaskDraftingService,
   PreparedLiveChildCoachTextProvider,
   PreparedParentTaskDraftingProvider,
@@ -104,6 +110,92 @@ export class BlockedCapabilityTokenService implements CapabilityTokenService {
   }
 }
 
+function grantKey(childId: SyntheticChildId, capability: LiveChildCoachCapability): string {
+  return `${childId}:${capability}`;
+}
+
+export class DeterministicLiveChildAiGrantService implements LiveChildAiGrantService {
+  private readonly grants = new Map<string, LiveChildCoachGrant>();
+
+  constructor() {
+    this.reset();
+  }
+
+  get(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly now: string;
+  }): ServiceResult<LiveChildCoachGrant> {
+    const current = this.grants.get(grantKey(input.childId, input.capability));
+    const now = Date.parse(input.now);
+    if (!current || !Number.isFinite(now)) return invalid('Bounded Child AI grant is unavailable');
+    if (current.status === 'granted' && now >= Date.parse(current.expiresAt)) {
+      const expired = liveChildCoachGrantSchema.parse({ ...current, status: 'expired' });
+      this.grants.set(grantKey(input.childId, input.capability), expired);
+      return preparedSuccess({ ...expired }, 'bounded-child-ai-grant-v1');
+    }
+    return preparedSuccess({ ...current }, 'bounded-child-ai-grant-v1');
+  }
+
+  update(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly granted: boolean;
+    readonly expectedVersion: number;
+    readonly noticeVersion: number;
+    readonly policyVersion: string;
+    readonly providerVersion: string;
+    readonly reauthenticationProofId: string;
+    readonly now: string;
+  }): ServiceResult<LiveChildCoachGrant> {
+    const key = grantKey(input.childId, input.capability);
+    const current = this.grants.get(key);
+    const now = Date.parse(input.now);
+    if (!current || !Number.isFinite(now)) return invalid('Bounded Child AI grant is unavailable');
+    if (current.grantVersion !== input.expectedVersion) {
+      return {
+        ok: false,
+        error: {
+          code: 'INVALID_TRANSITION',
+          message: 'The bounded Child AI grant version is stale',
+          retryable: false,
+          fallbackAvailable: false,
+        },
+      };
+    }
+    const next = liveChildCoachGrantSchema.safeParse({
+      capability: input.capability,
+      status: input.granted ? 'granted' : 'revoked',
+      childSubject: liveChildSubjectFor(input.childId),
+      grantVersion: current.grantVersion + 1,
+      noticeVersion: input.noticeVersion,
+      policyVersion: input.policyVersion,
+      providerVersion: input.providerVersion,
+      issuedAt: new Date(now).toISOString(),
+      expiresAt: new Date(now + MAX_SYNTHETIC_GRANT_LIFETIME_MS).toISOString(),
+      revokedAt: input.granted ? null : new Date(now).toISOString(),
+      reauthenticationProofId: input.reauthenticationProofId,
+      capabilityTruth: 'synthetic_implementation_only',
+    });
+    if (!next.success) return invalid('Bounded Child AI grant update is outside policy');
+    this.grants.set(key, next.data);
+    return preparedSuccess({ ...next.data }, 'bounded-child-ai-grant-v1');
+  }
+
+  reset(): ServiceResult<true> {
+    this.grants.clear();
+    for (const childId of ['child_salem', 'child_alya'] as const) {
+      for (const capability of ['text', 'voice'] as const) {
+        this.grants.set(
+          grantKey(childId, capability),
+          createInitialLiveChildCoachGrant(childId, capability),
+        );
+      }
+    }
+    return preparedSuccess(true, 'bounded-child-ai-grant-v1');
+  }
+}
+
 export function createPreparedBoundedAiServices() {
   const parentTaskDraftingPrepared = new DeterministicParentTaskDraftingProvider();
   const childCoachTextPrepared = new DeterministicLiveChildCoachTextProvider();
@@ -113,5 +205,6 @@ export function createPreparedBoundedAiServices() {
     childCoachTextPrepared,
     voiceTranscriptionPrepared,
     capabilityToken: new BlockedCapabilityTokenService(),
+    childAiGrants: new DeterministicLiveChildAiGrantService(),
   };
 }

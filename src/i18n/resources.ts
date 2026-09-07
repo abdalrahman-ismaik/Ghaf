@@ -623,6 +623,65 @@ export const resources = {
         phrasePractice: 'تدرّب على عبارة آمنة',
         adultExit: 'أحتاج إلى شخص بالغ',
         adultExitBody: 'توقّف عن المهمة واطلب من شخص بالغ موثوق أن يساعدك قبل المتابعة.',
+        liveCoachTitle: 'مساعدة مباشرة محدودة',
+        liveCoachNotice:
+          'تستخدم هذه المساعدة المهمة الحالية التي اعتمدها وليّ الأمر فقط. يمكنك الرفض أو طلب شخص بالغ.',
+        liveCoachAiDisclosure:
+          'هذه استجابة ذكاء اصطناعي لمرة واحدة وقد تكون غير صحيحة. لا توجد محادثة مفتوحة.',
+        liveCoachDecline: 'لا أريد استخدام المساعدة المباشرة',
+        liveCoachDeclined:
+          'حسنًا. لم يُرسل أي طلب، وما زالت المساعدة المُعدّة وطلب شخص بالغ متاحين.',
+        liveCoachGrantRequired:
+          'المساعدة المباشرة متوقفة لهذا الملف. اطلب من وليّ الأمر إذا أردت استخدامها.',
+        liveCoachDenied:
+          'توقف الطلب بأمان ولم يُعرض رد مباشر. استخدم المساعدة المُعدّة أو اطلب شخصًا بالغًا.',
+        liveCoachPreparedOrigin: 'مساعدة مُعدّة وآمنة',
+        liveCoachLiveOrigin: 'تحويل مباشر بالذكاء الاصطناعي',
+        liveCoachFallback: 'تعذر الاتصال؛ ظهرت المساعدة المُعدّة في المحاولة نفسها.',
+        liveCoachAdultExit: 'أحتاج إلى شخص بالغ',
+        liveCoachTerminal: 'انتهت هذه الاستجابة هنا. اختر بنفسك ما ستفعله بعد ذلك.',
+        liveCoachDone: 'إغلاق هذه الاستجابة',
+        liveCoachTextLabel: 'سؤال قصير عن خطوة المهمة',
+        liveCoachTextLimit:
+          'سطر واحد، حتى 240 حرفًا. لا تكتب اسمًا أو عنوانًا أو رقم هاتف أو سرًا.',
+        liveCoachTextPlaceholder: 'اكتب سؤالًا قصيرًا عن الخطوة فقط',
+        liveCoachIntentFirst: 'ما الخطوة الأولى؟',
+        liveCoachIntentNext: 'ما الخطوة التالية؟',
+        liveCoachIntentShorter: 'قسّمها إلى جزء أصغر',
+        liveCoachIntentIfThen: 'أنشئ تلميح إذا–فإن',
+        liveCoachIntentPhrase: 'ساعدني في عبارة لطلب المساعدة',
+        liveCoachIntentClarify: 'وضّح هذه الخطوة',
+        liveCoachIntentPlan: 'رتّب الخطوات',
+        liveCoachIntentAskHelp: 'ساعدني في طلب مساعدة',
+        liveCoachIntentReflect: 'سؤال اختياري عن الاستراتيجية',
+        liveVoiceTitle: 'مراجعة صوتية محدودة',
+        liveVoiceNotice:
+          'للأعمار 12–14 فقط وبعد موافقة وليّ الأمر. يُسجَّل مقطع واحد أثناء الضغط فقط، ثم تراجع النص قبل إرساله إلى مساعدة المهمة.',
+        liveVoiceNoBackground:
+          'لا تسجيل مستمر أو في الخلفية، ولا تحليل للصوت أو الهوية أو المشاعر.',
+        liveVoiceMaximum: 'الحد الأقصى 15 ثانية، ويُحذف الملف الصوتي قبل عرض النص.',
+        liveVoiceGrantRequired:
+          'المراجعة الصوتية متوقفة لهذا الملف. اطلب من وليّ الأمر إذا أردت استخدامها.',
+        liveVoicePermission: 'طلب إذن الميكروفون',
+        liveVoiceRequestingPermission: 'جارٍ طلب إذن الميكروفون…',
+        liveVoiceHold: 'اضغط باستمرار للتسجيل',
+        liveVoiceHoldHint: 'يبدأ التسجيل عند الضغط ويتوقف عند رفع الإصبع.',
+        liveVoiceRecording: 'جارٍ التسجيل — ارفع إصبعك للإيقاف',
+        liveVoiceTranscribing: 'جارٍ إعداد النص وحذف الملف الصوتي…',
+        liveVoiceTranscript: 'راجع النص قبل الإرسال',
+        liveVoiceApproveText: 'اعتماد هذا النص',
+        liveVoiceDelete: 'حذف النص وعدم الإرسال',
+        liveVoiceSendText: 'إرسال النص المعتمد فقط',
+        liveVoiceAudioDeleted:
+          'حُذف الملف الصوتي. لن يُرسل إلى مدرّب المهمة إلا هذا النص بعد اعتمادك.',
+        liveVoicePreparedTranscript: 'تعذر التحويل؛ يظهر نص مُعدّ بوضوح لهذه المحاولة.',
+        liveVoiceDenied: 'لم يُسمح باستخدام الميكروفون. لم يبدأ أي تسجيل.',
+        liveVoiceDeleting: 'جارٍ حذف البيانات المؤقتة…',
+        liveVoiceSending: 'جارٍ إرسال النص المعتمد…',
+        liveVoiceSent: 'أُرسل النص المعتمد وانتهت هذه المحاولة.',
+        liveVoiceCancel: 'إلغاء المراجعة الصوتية وحذفها',
+        liveVoiceFailure:
+          'توقفت المراجعة الصوتية بأمان. أُزيلت البيانات المتاحة؛ استخدم المساعدة المُعدّة أو اطلب شخصًا بالغًا.',
         mediaTitle: 'وسائط اختيارية',
         showOptionalDetails: 'إظهار الوسائط والتأمل الاختياريين',
         hideOptionalDetails: 'إخفاء الوسائط والتأمل الاختياريين',
@@ -976,6 +1035,18 @@ export const resources = {
           reauth: 'يتطلب هذا التغيير إعادة تحقق محلية لمرة واحدة.',
           saved: 'حُفظ الإذن المحلي.',
           unavailable: 'تعذّر تحميل الإذن؛ بقي مغلقًا بأمان.',
+          liveAiTitle: 'مساعدة الذكاء الاصطناعي المباشرة المحدودة',
+          liveAiPurpose: 'يسمح لمدرب غاف بإعادة صياغة مساعدة قصيرة للمهمة الحالية المعتمدة فقط.',
+          liveAiRisk: 'قد يخطئ الذكاء الاصطناعي. يمكن للطفل الرفض أو طلب شخص بالغ في أي وقت.',
+          liveAiProviderBlocked:
+            'الاتصال بالمزوّد متوقف حتى اكتمال بوابة الأمان والمراجعات الخارجية.',
+          liveAiText: 'السماح بالمساعدة النصية المحدودة',
+          liveAiVoice: 'السماح بالدفع للتحدث للفئة 12–14 فقط',
+          liveAiVoiceIneligible:
+            'المراجعة الصوتية المباشرة غير متاحة لهذا الملف لأنها مخصصة للأعمار 12–14 فقط.',
+          liveAiRevoke: 'إلغاء هذا السماح فورًا',
+          liveAiDeletion: 'الصوت المؤقت، إن فُعّل لاحقًا، يُحذف قبل إرسال النص إلى المدرب.',
+          syntheticImplementationOnly: 'سماح تنفيذي اصطناعي فقط؛ ليس موافقة أو تحقق هوية للإنتاج.',
         },
         devices: {
           title: 'الأجهزة المرتبطة',
@@ -2253,6 +2324,66 @@ export const resources = {
         phrasePractice: 'Rehearse a safe phrase',
         adultExit: 'I need an adult',
         adultExitBody: 'Stop the task and ask a trusted adult to help before continuing.',
+        liveCoachTitle: 'Bounded live help',
+        liveCoachNotice:
+          'This help uses only the current Parent-approved task. You can decline or ask an adult.',
+        liveCoachAiDisclosure:
+          'This is a one-turn AI response and may be wrong. There is no open-ended chat.',
+        liveCoachDecline: 'I do not want to use live help',
+        liveCoachDeclined:
+          'Okay. No request was sent, and prepared help and the adult exit remain available.',
+        liveCoachGrantRequired:
+          'Live help is off for this profile. Ask your Parent if you want to use it.',
+        liveCoachDenied:
+          'The request stopped safely and no live response was shown. Use prepared help or ask an adult.',
+        liveCoachPreparedOrigin: 'Prepared safe help',
+        liveCoachLiveOrigin: 'Live AI transformation',
+        liveCoachFallback: 'Connection failed; prepared help appeared in the same attempt.',
+        liveCoachAdultExit: 'I need an adult',
+        liveCoachTerminal: 'This response ends here. You decide what to do next.',
+        liveCoachDone: 'Close this response',
+        liveCoachTextLabel: 'Short question about the task step',
+        liveCoachTextLimit:
+          'One line, up to 240 characters. Do not enter a name, address, phone number, or secret.',
+        liveCoachTextPlaceholder: 'Write a short question about the step only',
+        liveCoachIntentFirst: 'What is the first step?',
+        liveCoachIntentNext: 'What is the next step?',
+        liveCoachIntentShorter: 'Make it a smaller chunk',
+        liveCoachIntentIfThen: 'Create an if–then cue',
+        liveCoachIntentPhrase: 'Help me ask for help',
+        liveCoachIntentClarify: 'Clarify this step',
+        liveCoachIntentPlan: 'Put the steps in order',
+        liveCoachIntentAskHelp: 'Help me ask an adult',
+        liveCoachIntentReflect: 'Optional strategy question',
+        liveVoiceTitle: 'Bounded voice review',
+        liveVoiceNotice:
+          'For ages 12–14 only, after Parent approval. One clip records only while held, then you review the text before sending it to task help.',
+        liveVoiceNoBackground:
+          'No continuous or background recording, and no voice, identity, or emotion analysis.',
+        liveVoiceMaximum: 'Maximum 15 seconds. The audio file is deleted before text appears.',
+        liveVoiceGrantRequired:
+          'Voice review is off for this profile. Ask your Parent if you want to use it.',
+        liveVoicePermission: 'Request microphone permission',
+        liveVoiceRequestingPermission: 'Requesting microphone permission…',
+        liveVoiceHold: 'Hold to record',
+        liveVoiceHoldHint: 'Recording starts while held and stops when you release.',
+        liveVoiceRecording: 'Recording — release to stop',
+        liveVoiceTranscribing: 'Preparing text and deleting the audio file…',
+        liveVoiceTranscript: 'Review the text before sending',
+        liveVoiceApproveText: 'Approve this text',
+        liveVoiceDelete: 'Delete text and do not send',
+        liveVoiceSendText: 'Send approved text only',
+        liveVoiceAudioDeleted:
+          'The audio file was deleted. Only this text can be sent to task help after you approve it.',
+        liveVoicePreparedTranscript:
+          'Transcription was unavailable; a clearly prepared transcript is shown for this attempt.',
+        liveVoiceDenied: 'Microphone access was not allowed. No recording started.',
+        liveVoiceDeleting: 'Deleting temporary data…',
+        liveVoiceSending: 'Sending approved text…',
+        liveVoiceSent: 'The approved text was sent and this attempt ended.',
+        liveVoiceCancel: 'Cancel and delete voice review',
+        liveVoiceFailure:
+          'Voice review stopped safely. Available data was removed; use prepared help or ask an adult.',
         mediaTitle: 'Optional media',
         showOptionalDetails: 'Show optional media and reflection',
         hideOptionalDetails: 'Hide optional media and reflection',
@@ -2615,6 +2746,21 @@ export const resources = {
           reauth: 'This change requires one local reauthentication.',
           saved: 'Local permission saved.',
           unavailable: 'The grant could not be loaded and remains safely closed.',
+          liveAiTitle: 'Bounded live AI help',
+          liveAiPurpose:
+            'Allows Ghaf Coach to reword brief help for only the current Parent-approved task.',
+          liveAiRisk: 'AI may be wrong. The Child can decline or ask an adult at any time.',
+          liveAiProviderBlocked:
+            'Provider access remains blocked until the safety gateway and external reviews pass.',
+          liveAiText: 'Allow bounded text help',
+          liveAiVoice: 'Allow held push-to-talk for ages 12–14 only',
+          liveAiVoiceIneligible:
+            'Live voice review is unavailable for this profile because it is limited to ages 12–14.',
+          liveAiRevoke: 'Revoke this grant now',
+          liveAiDeletion:
+            'Transient audio, if activated later, is deleted before text reaches the Coach.',
+          syntheticImplementationOnly:
+            'Synthetic implementation-only grant; this is not production consent or identity proof.',
         },
         devices: {
           title: 'Paired devices',

@@ -15,7 +15,37 @@ import {
   validateParentTaskDraftSuggestion,
   type ParentTaskDraftingView,
 } from '../features/assistants/parentTaskDrafting';
+import {
+  createLiveChildCoachRequest,
+  idleLiveChildCoachView,
+  INITIAL_LIVE_CHILD_COACH_VIEW,
+  validateLiveChildCoachResponse,
+  type LiveChildCoachIntent,
+  type LiveChildCoachView,
+} from '../features/assistants/liveChildCoach';
+import {
+  applyVoiceTranscript,
+  beginVoiceDeletion,
+  beginVoicePermissionRequest,
+  beginVoiceTranscriptSend,
+  completeVoiceDeletion,
+  completeVoiceTranscriptSend,
+  createLiveVoiceCaptureState,
+  editVoiceTranscript,
+  markVoiceTranscriptReady,
+  resolveVoicePermission,
+  restoreVoiceTranscriptAfterFailedSend,
+  startHeldVoiceCapture,
+  stopHeldVoiceCapture,
+  type LiveVoiceCaptureState,
+} from '../features/assistants/liveVoiceCapture';
 import { createChildAccessController, type ChildAccessView } from '../features/access/childAccess';
+import {
+  createInitialLiveChildCoachGrant,
+  LIVE_CHILD_AI_NOTICE_VERSION,
+  LIVE_CHILD_AI_POLICY_VERSION,
+  LIVE_CHILD_AI_PROVIDER_VERSION,
+} from '../features/access';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
   createParentOnboardingController,
@@ -104,7 +134,16 @@ import type {
 import type { ChildPermissionGrant } from '../models/access';
 import type { LocalFamilyRecord, LocalFamilyView } from '../models/localFamily';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
-import type { ParentTaskDraftRequestV1, ParentTaskDraftSuggestionV1 } from '../models/boundedAi';
+import {
+  parentTaskArchetypeSchema,
+  type ChildCoachTextResponseV1,
+  LiveChildAiGrantsByProfile,
+  LiveChildCoachCapability,
+  LiveChildCoachGrant,
+  ParentTaskDraftRequestV1,
+  ParentTaskDraftSuggestionV1,
+  VoiceTranscriptionResponseV1,
+} from '../models/boundedAi';
 import type {
   AdvanceLearningStepResult,
   CompleteLearningResult,
@@ -135,10 +174,15 @@ import type {
 } from '../models/sharedGrowth';
 import {
   serviceRegistry,
+  type EphemeralMediaService,
+  type LiveChildCoachTextService,
   type ParentGuideService,
   type ParentTaskDraftingService,
   type ServiceResult,
+  type VoiceCaptureService,
+  type VoiceTranscriptionService,
 } from '../services';
+import { ExpoEphemeralMediaService, ExpoVoiceCaptureService } from '../services/native';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
 type PrototypeJourney = NonNullable<PrototypeSession['journey']>;
@@ -158,7 +202,19 @@ export type ReturningUserWelcome =
       readonly childId: SyntheticChildId;
     };
 
+export interface BoundLiveVoiceCapture {
+  readonly state: LiveVoiceCaptureState;
+  readonly childId: SyntheticChildId;
+  readonly assignmentId: string;
+  readonly taskId: string;
+  readonly textGrantVersion: number;
+  readonly voiceGrantVersion: number;
+}
+
 const childVoiceController = createChildVoiceController(serviceRegistry);
+const liveVoiceCaptureService = new ExpoVoiceCaptureService();
+const liveVoiceMediaService = new ExpoEphemeralMediaService();
+void liveVoiceMediaService.purgeOrphanedRecordings();
 const parentOnboardingController = createParentOnboardingController(serviceRegistry.access);
 const childAccessController = createChildAccessController(
   serviceRegistry.access,
@@ -166,6 +222,35 @@ const childAccessController = createChildAccessController(
 );
 const R001_ONBOARDING_TIME = '2026-09-04T10:00:00.000Z';
 const R003_LOCAL_FAMILY_TIME = '2026-09-06T14:00:00.000Z';
+function feature004Now(): string {
+  return new Date().toISOString();
+}
+
+function releaseLiveVoiceCapture(bound: BoundLiveVoiceCapture | null): void {
+  if (!bound) return;
+  void (async () => {
+    const canceled = await liveVoiceCaptureService.cancel();
+    const uris = new Set(
+      [bound.state.envelope.cacheUri, canceled.ok ? canceled.data.uri : null].filter(
+        (uri): uri is string => Boolean(uri),
+      ),
+    );
+    await Promise.all([...uris].map((uri) => liveVoiceMediaService.delete(uri)));
+  })();
+}
+
+function createInitialLiveChildAiGrants(): LiveChildAiGrantsByProfile {
+  return Object.freeze({
+    child_salem: Object.freeze({
+      text: createInitialLiveChildCoachGrant('child_salem', 'text'),
+      voice: createInitialLiveChildCoachGrant('child_salem', 'voice'),
+    }),
+    child_alya: Object.freeze({
+      text: createInitialLiveChildCoachGrant('child_alya', 'text'),
+      voice: createInitialLiveChildCoachGrant('child_alya', 'voice'),
+    }),
+  });
+}
 
 function localFamilyView(
   record: LocalFamilyRecord | null,
@@ -265,6 +350,9 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly returningUserWelcome: ReturningUserWelcome | null;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
   readonly parentTaskDraftingView: ParentTaskDraftingView;
+  readonly liveChildAiGrants: LiveChildAiGrantsByProfile;
+  readonly liveChildCoachView: LiveChildCoachView;
+  readonly liveVoiceCapture: BoundLiveVoiceCapture | null;
   readonly childCoachResult: ChildCoachResult | null;
   readonly ageAdaptedCoachResult: AgeAdaptedCoachResult | null;
   readonly childVoiceView: ChildVoiceView;
@@ -315,6 +403,16 @@ export interface PrototypeStoreState extends PrototypeSession {
     readonly granted: boolean;
     readonly reauthenticationCode: unknown;
   }) => ServiceResult<ChildPermissionGrant>;
+  readonly getLiveChildAiGrant: (
+    childId: SyntheticChildId,
+    capability: LiveChildCoachCapability,
+  ) => ServiceResult<LiveChildCoachGrant>;
+  readonly updateLiveChildAiGrant: (input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly granted: boolean;
+    readonly reauthenticationCode: unknown;
+  }) => ServiceResult<LiveChildCoachGrant>;
   readonly revokeChildDevice: (childId: SyntheticChildId) => ServiceResult<ChildAccessView>;
   readonly getParentChildProgress: (
     profileId: SyntheticChildId,
@@ -422,6 +520,56 @@ export interface PrototypeStoreState extends PrototypeSession {
       | null;
     readonly templateSelection?: string | null;
   }) => Promise<ServiceResult<ChildCoachResult>>;
+  readonly requestLiveChildCoach: (
+    input: {
+      readonly requestId: string;
+      readonly bindingNonce: string;
+      readonly intent: LiveChildCoachIntent;
+      readonly boundedText?: string;
+      readonly inputOrigin?: 'typed' | 'reviewed_voice_transcript';
+      readonly voiceRequestId?: string;
+      readonly voiceBindingNonce?: string;
+    },
+    primaryService?: LiveChildCoachTextService,
+  ) => Promise<ServiceResult<ChildCoachTextResponseV1>>;
+  readonly declineLiveChildCoach: () => ServiceResult<true>;
+  readonly clearLiveChildCoach: () => ServiceResult<true>;
+  readonly prepareLiveVoiceCapture: (input: {
+    readonly voiceSessionId: string;
+    readonly requestId: string;
+    readonly bindingNonce: string;
+  }) => ServiceResult<BoundLiveVoiceCapture>;
+  readonly requestLiveVoicePermission: (
+    captureService?: VoiceCaptureService,
+  ) => Promise<ServiceResult<BoundLiveVoiceCapture>>;
+  readonly startLiveVoiceHold: (
+    captureService?: VoiceCaptureService,
+  ) => Promise<ServiceResult<BoundLiveVoiceCapture>>;
+  readonly stopLiveVoiceHold: (services?: {
+    readonly capture?: VoiceCaptureService;
+    readonly media?: EphemeralMediaService;
+    readonly transcription?: VoiceTranscriptionService;
+  }) => Promise<ServiceResult<BoundLiveVoiceCapture>>;
+  readonly editLiveVoiceTranscript: (text: string) => ServiceResult<BoundLiveVoiceCapture>;
+  readonly markLiveVoiceTranscriptReady: () => ServiceResult<BoundLiveVoiceCapture>;
+  readonly deleteLiveVoiceCapture: (
+    mediaService?: EphemeralMediaService,
+  ) => Promise<ServiceResult<BoundLiveVoiceCapture>>;
+  readonly sendLiveVoiceTranscript: (
+    input: {
+      readonly requestId: string;
+      readonly bindingNonce: string;
+      readonly intent: Extract<
+        LiveChildCoachIntent,
+        'clarify_step' | 'plan_order' | 'ask_for_help' | 'reflect_on_strategy'
+      >;
+    },
+    primaryService?: LiveChildCoachTextService,
+  ) => Promise<ServiceResult<ChildCoachTextResponseV1>>;
+  readonly cancelLiveVoiceCapture: (
+    captureService?: VoiceCaptureService,
+    mediaService?: EphemeralMediaService,
+  ) => Promise<ServiceResult<true>>;
   readonly submitTask: (input: {
     readonly definitionAcknowledged: boolean;
     readonly completionMode: CompletionMode;
@@ -571,6 +719,47 @@ function validateActiveChildTask(
   state: PrototypeStoreState,
 ): ServiceResult<ActiveChildAssignmentJourney> {
   return validateActiveChildAssignment(state, false);
+}
+
+function validateLiveVoiceAuthority(state: PrototypeStoreState): ServiceResult<{
+  readonly journey: ActiveChildAssignmentJourney;
+  readonly textGrant: LiveChildCoachGrant;
+  readonly voiceGrant: LiveChildCoachGrant;
+}> {
+  const active = validateActiveChildAssignment(state, true);
+  if (!active.ok) return active;
+  const ageBand: string = state.children[state.activeChildId].ageBand;
+  const grants = state.liveChildAiGrants[state.activeChildId];
+  const now = Date.now();
+  if (ageBand !== '12_14') {
+    return failure('PRIVACY_REJECTED', 'Live voice is limited to ages 12–14');
+  }
+  if (
+    grants.text.status !== 'granted' ||
+    grants.voice.status !== 'granted' ||
+    now >= Date.parse(grants.text.expiresAt) ||
+    now >= Date.parse(grants.voice.expiresAt)
+  ) {
+    return failure('PRIVACY_REJECTED', 'Separate current text and voice grants are required');
+  }
+  return success({ journey: active.data, textGrant: grants.text, voiceGrant: grants.voice });
+}
+
+function boundLiveVoiceIsCurrent(
+  state: PrototypeStoreState,
+  bound: BoundLiveVoiceCapture,
+): boolean {
+  const authority = validateLiveVoiceAuthority(state);
+  return (
+    authority.ok &&
+    state.liveVoiceCapture?.state.envelope.voiceSessionId === bound.state.envelope.voiceSessionId &&
+    state.activeChildId === bound.childId &&
+    authority.data.journey.assignment.id === bound.assignmentId &&
+    authority.data.journey.task.id === bound.taskId &&
+    authority.data.journey.task.version === bound.state.envelope.approvedTaskVersion &&
+    authority.data.textGrant.grantVersion === bound.textGrantVersion &&
+    authority.data.voiceGrant.grantVersion === bound.voiceGrantVersion
+  );
 }
 
 function sessionSnapshot(state: PrototypeStoreState): PrototypeSession {
@@ -846,6 +1035,73 @@ function idleParentTaskDraftingView(
   };
 }
 
+const LIVE_CHILD_COACH_TIMEOUT_MS = 1_500;
+
+function requestLiveChildCoachWithinDeadline(
+  service: LiveChildCoachTextService,
+  request: Parameters<LiveChildCoachTextService['respond']>[0],
+): Promise<ServiceResult<ChildCoachTextResponseV1>> {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (result: ServiceResult<ChildCoachTextResponseV1>) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      resolve(result);
+    };
+    const timeout = setTimeout(() => {
+      finish(failure('TIMEOUT', 'Child Coach provider exceeded the 1500ms deadline', true));
+    }, LIVE_CHILD_COACH_TIMEOUT_MS);
+    void Promise.resolve()
+      .then(() => service.respond(request))
+      .then(
+        (result) => finish(result),
+        () => finish(failure('REMOTE_UNAVAILABLE', 'Child Coach provider was unavailable', true)),
+      );
+  });
+}
+
+function liveChildCoachFallbackReason(
+  code: DomainErrorCode,
+): NonNullable<LiveChildCoachView['fallbackReason']> {
+  switch (code) {
+    case 'TIMEOUT':
+      return 'timeout';
+    case 'SAFETY_REJECTED':
+      return 'safety_rejected';
+    case 'INVALID_RESPONSE':
+      return 'invalid_response';
+    default:
+      return 'remote_unavailable';
+  }
+}
+
+const LIVE_VOICE_TRANSCRIPTION_TIMEOUT_MS = 4_000;
+
+function requestVoiceTranscriptionWithinDeadline(
+  service: VoiceTranscriptionService,
+  input: Parameters<VoiceTranscriptionService['transcribe']>[0],
+): Promise<ServiceResult<VoiceTranscriptionResponseV1>> {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (result: ServiceResult<VoiceTranscriptionResponseV1>) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      resolve(result);
+    };
+    const timeout = setTimeout(() => {
+      finish(failure('TIMEOUT', 'Voice transcription exceeded the 4000ms deadline', true));
+    }, LIVE_VOICE_TRANSCRIPTION_TIMEOUT_MS);
+    void Promise.resolve()
+      .then(() => service.transcribe(input))
+      .then(
+        (result) => finish(result),
+        () => finish(failure('REMOTE_UNAVAILABLE', 'Voice transcription was unavailable', true)),
+      );
+  });
+}
+
 function validateGuideSuggestion(
   request: ParentGuideRequest,
   suggestion: ParentGuideTaskSuggestion,
@@ -898,6 +1154,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   returningUserWelcome: null,
   parentGuideSuggestion: null,
   parentTaskDraftingView: { ...INITIAL_PARENT_TASK_DRAFTING_VIEW },
+  liveChildAiGrants: createInitialLiveChildAiGrants(),
+  liveChildCoachView: { ...INITIAL_LIVE_CHILD_COACH_VIEW },
+  liveVoiceCapture: null,
   childCoachResult: null,
   ageAdaptedCoachResult: null,
   childVoiceView: INITIAL_CHILD_VOICE_VIEW,
@@ -1155,6 +1414,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       role: 'child',
       returningUserWelcome: null,
       parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
     });
     return success(childAccessController.getView());
   },
@@ -1217,12 +1477,15 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       const result = childAccessController.signOut(R001_ONBOARDING_TIME);
       if (!result.ok) return result;
     }
+    releaseLiveVoiceCapture(state.liveVoiceCapture);
     set({
       activeExperience: 'signed_out',
       childAccess: childAccessController.getView(),
       parentOnboarding: parentOnboardingController.getView(),
       returningUserWelcome: null,
       parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+      liveVoiceCapture: null,
     });
     return success(true);
   },
@@ -1290,6 +1553,69 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     });
     if (result.ok) set({ permissionProofSequence });
     return result;
+  },
+
+  getLiveChildAiGrant: (childId, capability) => {
+    const state = get();
+    const parentAuthorized = requireActiveParentExperience(state).ok;
+    const childAuthorized =
+      requireActiveChildExperience(state).ok && state.activeChildId === childId;
+    if (!parentAuthorized && !childAuthorized) {
+      return failure('PRIVACY_REJECTED', 'Only the Parent or matching Child can view this grant');
+    }
+    return success({ ...state.liveChildAiGrants[childId][capability] });
+  },
+
+  updateLiveChildAiGrant: (input) => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) {
+      return failure('INVALID_TRANSITION', 'Only the active Parent can change bounded AI access');
+    }
+    if (
+      input.capability === 'voice' &&
+      input.granted &&
+      (state.children[input.childId].ageBand as string) !== '12_14'
+    ) {
+      return failure('PRIVACY_REJECTED', 'Live voice grants are limited to ages 12–14');
+    }
+    const permissionProofSequence = state.permissionProofSequence + 1;
+    const now = feature004Now();
+    const proof = parentOnboardingController.authorizeLiveChildAiGrantChange({
+      childId: input.childId,
+      capability: input.capability,
+      proofId: `f004-grant-${input.childId}-${input.capability}-${permissionProofSequence}`,
+      reauthenticationCode: input.reauthenticationCode,
+      now: R001_ONBOARDING_TIME,
+    });
+    if (!proof.ok) return proof;
+    const current = state.liveChildAiGrants[input.childId][input.capability];
+    const updated = serviceRegistry.boundedAi.childAiGrants.update({
+      childId: input.childId,
+      capability: input.capability,
+      granted: input.granted,
+      expectedVersion: current.grantVersion,
+      noticeVersion: LIVE_CHILD_AI_NOTICE_VERSION,
+      policyVersion: LIVE_CHILD_AI_POLICY_VERSION,
+      providerVersion: LIVE_CHILD_AI_PROVIDER_VERSION,
+      reauthenticationProofId: proof.data.id,
+      now,
+    });
+    if (!updated.ok) return updated;
+    releaseLiveVoiceCapture(state.liveVoiceCapture);
+    set({
+      liveChildAiGrants: Object.freeze({
+        ...state.liveChildAiGrants,
+        [input.childId]: Object.freeze({
+          ...state.liveChildAiGrants[input.childId],
+          [input.capability]: updated.data,
+        }),
+      }),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+      liveVoiceCapture: null,
+      permissionProofSequence,
+    });
+    return updated;
   },
 
   revokeChildDevice: (childId) => {
@@ -1477,9 +1803,12 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!state.localFamily.configuredChildIds.includes(childId)) {
       return failure('NOT_FOUND', 'Synthetic Child was not found');
     }
+    releaseLiveVoiceCapture(state.liveVoiceCapture);
     set({
       activeChildId: childId,
       parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+      liveVoiceCapture: null,
     });
     return {
       ok: true,
@@ -1511,7 +1840,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!onboardingReset.ok) return onboardingReset;
     const accessReset = serviceRegistry.access.resetPrototype();
     if (!accessReset.ok) return accessReset;
+    const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
+    if (!liveChildAiGrantReset.ok) return liveChildAiGrantReset;
     const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
+    releaseLiveVoiceCapture(state.liveVoiceCapture);
     set((state) => ({
       ...reset.session,
       activeExperience: 'signed_out',
@@ -1526,6 +1858,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       returningUserWelcome: null,
       parentGuideSuggestion: null,
       parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+      liveChildAiGrants: createInitialLiveChildAiGrants(),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+      liveVoiceCapture: null,
       childCoachResult: null,
       ageAdaptedCoachResult: null,
       childVoiceView: releasedVoiceView,
@@ -1722,10 +2057,12 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   createTaskDraft: (input) => {
-    const authority = requireActiveParentExperience(get());
+    const current = get();
+    const authority = requireActiveParentExperience(current);
     if (!authority.ok) return authority;
     const result = serviceRegistry.task.createDraft(input);
     if (result.ok) {
+      releaseLiveVoiceCapture(current.liveVoiceCapture);
       const clearedVoice = childVoiceController.clearTaskBinding('parent');
       if (!clearedVoice.ok) return clearedVoice;
       set((state) => ({
@@ -1737,6 +2074,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         childCoachResult: null,
         ageAdaptedCoachResult: null,
         childVoiceView: clearedVoice.data,
+        liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+        liveVoiceCapture: null,
         confirmationPlan: null,
         lastRecognitionAttempt: null,
         prospectiveTaskAdjustment: null,
@@ -2604,6 +2943,485 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return result;
   },
 
+  requestLiveChildCoach: async (
+    input,
+    primaryService = serviceRegistry.boundedAi.childCoachTextPrimary,
+  ) => {
+    const before = get();
+    const guarded = validateActiveChildAssignment(before, true);
+    if (!guarded.ok) return guarded;
+    const journey = guarded.data;
+    const grant = before.liveChildAiGrants[before.activeChildId].text;
+    const voiceGrant = before.liveChildAiGrants[before.activeChildId].voice;
+    const requestRevision = before.liveChildCoachView.requestRevision + 1;
+    if (grant.status !== 'granted') {
+      set({
+        liveChildCoachView: {
+          ...INITIAL_LIVE_CHILD_COACH_VIEW,
+          status: 'denied',
+          requestRevision,
+        },
+      });
+      return failure('PRIVACY_REJECTED', 'A current Parent text grant is required');
+    }
+    const archetype = parentTaskArchetypeSchema.safeParse(journey.task.templateId);
+    if (!archetype.success) {
+      return failure('INVALID_INPUT', 'The active task is outside the reviewed Coach catalog');
+    }
+    if (input.inputOrigin === 'reviewed_voice_transcript') {
+      const voice = before.liveVoiceCapture;
+      if (
+        !voice ||
+        !boundLiveVoiceIsCurrent(before, voice) ||
+        voice.state.envelope.requestId !== input.voiceRequestId ||
+        voice.state.envelope.bindingNonce !== input.voiceBindingNonce ||
+        !voice.state.transcript ||
+        !['ready_to_send', 'sending_text'].includes(voice.state.envelope.status)
+      ) {
+        return failure('PRIVACY_REJECTED', 'Reviewed voice text is not bound to this session');
+      }
+    }
+    const built = createLiveChildCoachRequest({
+      ageBand: before.children[before.activeChildId].ageBand,
+      childId: before.activeChildId,
+      locale: before.locale,
+      now: feature004Now(),
+      taskArchetypeId: archetype.data,
+      catalogVersion: 1,
+      approvedTaskVersion: journey.task.version,
+      requestId: input.requestId,
+      bindingNonce: input.bindingNonce,
+      grant,
+      intent: input.intent,
+      boundedText: input.boundedText,
+      inputOrigin: input.inputOrigin,
+      voiceGrant: input.inputOrigin === 'reviewed_voice_transcript' ? voiceGrant : undefined,
+      voiceRequestId: input.voiceRequestId,
+      voiceBindingNonce: input.voiceBindingNonce,
+    });
+    if (!built.ok) {
+      set({
+        liveChildCoachView: {
+          ...INITIAL_LIVE_CHILD_COACH_VIEW,
+          status: 'denied',
+          requestRevision,
+          fallbackReason: built.error.code === 'SAFETY_REJECTED' ? 'safety_rejected' : null,
+        },
+      });
+      return built;
+    }
+    const snapshot = {
+      childId: before.activeChildId,
+      assignmentId: journey.assignment.id,
+      taskId: journey.task.id,
+      approvedTaskVersion: journey.task.version,
+      grantVersion: grant.grantVersion,
+      noticeVersion: grant.noticeVersion,
+      voiceGrantVersion:
+        input.inputOrigin === 'reviewed_voice_transcript' ? voiceGrant.grantVersion : null,
+      voiceRequestId:
+        input.inputOrigin === 'reviewed_voice_transcript' ? (input.voiceRequestId ?? null) : null,
+    };
+    set({
+      liveChildCoachView: {
+        status: 'requesting',
+        origin: null,
+        response: null,
+        activeRequest: built.data,
+        snapshot,
+        requestRevision,
+        fallbackReason: null,
+      },
+    });
+    const requestIsCurrent = () => {
+      const current = get();
+      const active = validateActiveChildAssignment(current, true);
+      const currentGrant = current.liveChildAiGrants[snapshot.childId].text;
+      return (
+        active.ok &&
+        current.activeChildId === snapshot.childId &&
+        active.data.assignment.id === snapshot.assignmentId &&
+        active.data.task.id === snapshot.taskId &&
+        active.data.task.version === snapshot.approvedTaskVersion &&
+        currentGrant.status === 'granted' &&
+        currentGrant.grantVersion === snapshot.grantVersion &&
+        currentGrant.noticeVersion === snapshot.noticeVersion &&
+        (snapshot.voiceGrantVersion === null ||
+          (current.liveChildAiGrants[snapshot.childId].voice.status === 'granted' &&
+            current.liveChildAiGrants[snapshot.childId].voice.grantVersion ===
+              snapshot.voiceGrantVersion)) &&
+        current.liveChildCoachView.requestRevision === requestRevision
+      );
+    };
+
+    const primary = await requestLiveChildCoachWithinDeadline(primaryService, built.data);
+    if (!requestIsCurrent()) {
+      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+    }
+    const validated = primary.ok
+      ? validateLiveChildCoachResponse(built.data, primary.data)
+      : primary;
+    if (validated.ok && primary.ok) {
+      const origin = primary.meta.origin === 'live' ? 'live' : 'prepared';
+      set({
+        liveChildCoachView: {
+          status: 'terminal',
+          origin,
+          response: validated.data,
+          activeRequest: built.data,
+          snapshot,
+          requestRevision,
+          fallbackReason: null,
+        },
+      });
+      return { ok: true, data: validated.data, meta: { ...primary.meta, origin } };
+    }
+
+    const fallbackReason = !primary.ok
+      ? liveChildCoachFallbackReason(primary.error.code)
+      : !validated.ok
+        ? liveChildCoachFallbackReason(validated.error.code)
+        : 'invalid_response';
+    const prepared = await serviceRegistry.boundedAi.childCoachTextPrepared.respond(built.data);
+    if (!requestIsCurrent()) {
+      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+    }
+    if (!prepared.ok) return prepared;
+    const preparedValidated = validateLiveChildCoachResponse(built.data, prepared.data);
+    if (!preparedValidated.ok) return { ok: false, error: preparedValidated.error };
+    const result: ServiceResult<ChildCoachTextResponseV1> = {
+      ok: true,
+      data: preparedValidated.data,
+      meta: {
+        origin: 'prepared',
+        fallbackUsed: true,
+        fixtureId: prepared.meta.fixtureId,
+      },
+    };
+    set({
+      liveChildCoachView: {
+        status: 'fallback',
+        origin: 'prepared',
+        response: result.data,
+        activeRequest: built.data,
+        snapshot,
+        requestRevision,
+        fallbackReason,
+      },
+    });
+    return result;
+  },
+
+  declineLiveChildCoach: () => {
+    const state = get();
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
+    set({ liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView, 'declined') });
+    return success(true);
+  },
+
+  clearLiveChildCoach: () => {
+    const state = get();
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
+    set({ liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView) });
+    return success(true);
+  },
+
+  prepareLiveVoiceCapture: (input) => {
+    const state = get();
+    const authority = validateLiveVoiceAuthority(state);
+    if (!authority.ok) return authority;
+    const archetype = parentTaskArchetypeSchema.safeParse(authority.data.journey.task.templateId);
+    if (!archetype.success) {
+      return failure('INVALID_INPUT', 'The active task is outside the reviewed voice catalog');
+    }
+    let voiceState: LiveVoiceCaptureState;
+    try {
+      voiceState = createLiveVoiceCaptureState({
+        voiceSessionId: input.voiceSessionId,
+        requestId: input.requestId,
+        bindingNonce: input.bindingNonce,
+        locale: state.locale,
+        noticeVersion: authority.data.voiceGrant.noticeVersion,
+        grantVersion: authority.data.voiceGrant.grantVersion,
+        taskArchetypeId: archetype.data,
+        approvedTaskVersion: authority.data.journey.task.version,
+      });
+    } catch {
+      return failure('INVALID_INPUT', 'Voice request correlation is outside policy');
+    }
+    const bound: BoundLiveVoiceCapture = {
+      state: voiceState,
+      childId: state.activeChildId,
+      assignmentId: authority.data.journey.assignment.id,
+      taskId: authority.data.journey.task.id,
+      textGrantVersion: authority.data.textGrant.grantVersion,
+      voiceGrantVersion: authority.data.voiceGrant.grantVersion,
+    };
+    set({ liveVoiceCapture: bound });
+    return success(bound);
+  },
+
+  requestLiveVoicePermission: async (captureService = liveVoiceCaptureService) => {
+    const before = get();
+    const bound = before.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
+      return failure('INVALID_TRANSITION', 'A current eligible voice session is required');
+    }
+    const pending = beginVoicePermissionRequest(bound.state);
+    if (!pending.ok) return pending;
+    set({ liveVoiceCapture: { ...bound, state: pending.data } });
+    const permission = await captureService.requestPermission();
+    const current = get();
+    if (!boundLiveVoiceIsCurrent(current, bound)) {
+      return failure('INVALID_TRANSITION', 'Voice permission result is stale');
+    }
+    if (!permission.ok) {
+      const denied = resolveVoicePermission(pending.data, false);
+      if (denied.ok) set({ liveVoiceCapture: { ...bound, state: denied.data } });
+      return permission;
+    }
+    const resolved = resolveVoicePermission(pending.data, permission.data === 'granted');
+    if (!resolved.ok) return resolved;
+    const next = { ...bound, state: resolved.data };
+    set({ liveVoiceCapture: next });
+    return success(next);
+  },
+
+  startLiveVoiceHold: async (captureService = liveVoiceCaptureService) => {
+    const before = get();
+    const bound = before.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
+      return failure('INVALID_TRANSITION', 'A current eligible voice session is required');
+    }
+    if (bound.state.envelope.status !== 'ready') {
+      return failure('INVALID_TRANSITION', 'Microphone permission must be granted before hold');
+    }
+    const started = await captureService.startHeld();
+    if (!started.ok) return started;
+    if (!boundLiveVoiceIsCurrent(get(), bound)) {
+      await captureService.cancel();
+      return failure('INVALID_TRANSITION', 'Voice capture start is stale');
+    }
+    const transitioned = startHeldVoiceCapture(bound.state, started.data.startedAt);
+    if (!transitioned.ok) {
+      await captureService.cancel();
+      return transitioned;
+    }
+    const next = { ...bound, state: transitioned.data };
+    set({ liveVoiceCapture: next });
+    return success(next);
+  },
+
+  stopLiveVoiceHold: async (services = {}) => {
+    const capture = services.capture ?? liveVoiceCaptureService;
+    const media = services.media ?? liveVoiceMediaService;
+    const transcription =
+      services.transcription ?? serviceRegistry.boundedAi.voiceTranscriptionPrimary;
+    const before = get();
+    const bound = before.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
+      return failure('INVALID_TRANSITION', 'A current held voice session is required');
+    }
+    const discardCapturedFile = async <T>(
+      uri: string,
+      source: LiveVoiceCaptureState,
+      original: ServiceResult<T>,
+    ): Promise<ServiceResult<T>> => {
+      const deletion = await media.delete(uri);
+      if (boundLiveVoiceIsCurrent(get(), bound)) {
+        const deleting = beginVoiceDeletion(source);
+        const completed = deleting.ok
+          ? completeVoiceDeletion(deleting.data, deletion.ok)
+          : deleting;
+        if (completed.ok) set({ liveVoiceCapture: { ...bound, state: completed.data } });
+      }
+      return deletion.ok ? original : deletion;
+    };
+    const captured = await capture.stopHeld();
+    if (!captured.ok) return captured;
+    const inspected = await media.inspect(captured.data.uri);
+    if (!inspected.ok) {
+      return discardCapturedFile(captured.data.uri, bound.state, inspected);
+    }
+    const bytes = await media.read(captured.data.uri);
+    if (!bytes.ok || bytes.data.byteLength !== inspected.data.byteCount) {
+      return discardCapturedFile(
+        captured.data.uri,
+        bound.state,
+        bytes.ok ? failure('INVALID_RESPONSE', 'Voice file changed before transcription') : bytes,
+      );
+    }
+    const stopped = stopHeldVoiceCapture(bound.state, {
+      stoppedAt: new Date().toISOString(),
+      durationMs: captured.data.durationMs,
+      byteCount: inspected.data.byteCount,
+      cacheUri: inspected.data.uri,
+    });
+    if (!stopped.ok) {
+      bytes.data.fill(0);
+      return discardCapturedFile(captured.data.uri, bound.state, stopped);
+    }
+    const transcribing = { ...bound, state: stopped.data };
+    set({ liveVoiceCapture: transcribing });
+    const metadata = {
+      operation: 'transcribe_child_task_voice_v1' as const,
+      schemaVersion: '1.0' as const,
+      requestId: stopped.data.envelope.requestId,
+      bindingNonce: stopped.data.envelope.bindingNonce,
+      locale: stopped.data.envelope.locale,
+      taskArchetypeId: stopped.data.envelope.taskArchetypeId,
+      catalogVersion: 1,
+      approvedTaskVersion: stopped.data.envelope.approvedTaskVersion,
+      noticeVersion: stopped.data.envelope.noticeVersion,
+      grantVersion: stopped.data.envelope.grantVersion,
+      durationMs: stopped.data.envelope.durationMs,
+      declaredByteCount: inspected.data.byteCount,
+      mediaType: captured.data.mediaType,
+      synthetic: true as const,
+    };
+    const primary = await requestVoiceTranscriptionWithinDeadline(transcription, {
+      metadata,
+      audioBytes: bytes.data,
+    });
+    const transcript = primary.ok
+      ? primary
+      : await requestVoiceTranscriptionWithinDeadline(
+          serviceRegistry.boundedAi.voiceTranscriptionPrepared,
+          { metadata, audioBytes: bytes.data },
+        );
+    bytes.data.fill(0);
+    const deletion = await media.delete(captured.data.uri);
+    if (!boundLiveVoiceIsCurrent(get(), transcribing)) {
+      return failure('INVALID_TRANSITION', 'Voice transcription result is stale');
+    }
+    if (!deletion.ok) {
+      const deleting = beginVoiceDeletion(transcribing.state);
+      const failed = deleting.ok ? completeVoiceDeletion(deleting.data, false) : deleting;
+      if (failed.ok) set({ liveVoiceCapture: { ...bound, state: failed.data } });
+      return deletion;
+    }
+    if (!transcript.ok) {
+      const deleting = beginVoiceDeletion(transcribing.state);
+      const deleted = deleting.ok ? completeVoiceDeletion(deleting.data, true) : deleting;
+      if (deleted.ok) set({ liveVoiceCapture: { ...bound, state: deleted.data } });
+      return transcript;
+    }
+    const applied = applyVoiceTranscript(
+      transcribing.state,
+      transcript.data,
+      primary.ok && primary.meta.origin === 'live' ? 'transcribed' : 'prepared_synthetic',
+    );
+    if (!applied.ok) return applied;
+    const next = { ...bound, state: applied.data };
+    set({ liveVoiceCapture: next });
+    return success(next);
+  },
+
+  editLiveVoiceTranscript: (text) => {
+    const state = get();
+    const bound = state.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(state, bound)) {
+      return failure('INVALID_TRANSITION', 'A current voice transcript is required');
+    }
+    const edited = editVoiceTranscript(bound.state, text);
+    if (!edited.ok) return edited;
+    const next = { ...bound, state: edited.data };
+    set({ liveVoiceCapture: next });
+    return success(next);
+  },
+
+  markLiveVoiceTranscriptReady: () => {
+    const state = get();
+    const bound = state.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(state, bound)) {
+      return failure('INVALID_TRANSITION', 'A current voice transcript is required');
+    }
+    const reviewed = markVoiceTranscriptReady(bound.state);
+    if (!reviewed.ok) return reviewed;
+    const next = { ...bound, state: reviewed.data };
+    set({ liveVoiceCapture: next });
+    return success(next);
+  },
+
+  deleteLiveVoiceCapture: async (mediaService = liveVoiceMediaService) => {
+    const state = get();
+    const bound = state.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(state, bound)) {
+      return failure('INVALID_TRANSITION', 'A current voice session is required');
+    }
+    const deleting = beginVoiceDeletion(bound.state);
+    if (!deleting.ok) return deleting;
+    set({ liveVoiceCapture: { ...bound, state: deleting.data } });
+    const uri = deleting.data.envelope.cacheUri;
+    const deleted = uri ? await mediaService.delete(uri) : success(true as const);
+    if (!boundLiveVoiceIsCurrent(get(), bound)) {
+      return failure('INVALID_TRANSITION', 'Voice deletion result is stale');
+    }
+    const completed = completeVoiceDeletion(deleting.data, deleted.ok);
+    if (!completed.ok) return completed;
+    const next = { ...bound, state: completed.data };
+    set({ liveVoiceCapture: next });
+    return deleted.ok ? success(next) : deleted;
+  },
+
+  sendLiveVoiceTranscript: async (input, primaryService) => {
+    const before = get();
+    const bound = before.liveVoiceCapture;
+    if (!bound || !boundLiveVoiceIsCurrent(before, bound) || !bound.state.transcript) {
+      return failure('INVALID_TRANSITION', 'A current reviewed voice transcript is required');
+    }
+    const sending = beginVoiceTranscriptSend(bound.state);
+    if (!sending.ok) return sending;
+    set({ liveVoiceCapture: { ...bound, state: sending.data } });
+    const result = await get().requestLiveChildCoach(
+      {
+        requestId: input.requestId,
+        bindingNonce: input.bindingNonce,
+        intent: input.intent,
+        boundedText: bound.state.transcript.text,
+        inputOrigin: 'reviewed_voice_transcript',
+        voiceRequestId: bound.state.envelope.requestId,
+        voiceBindingNonce: bound.state.envelope.bindingNonce,
+      },
+      primaryService,
+    );
+    const current = get();
+    if (!boundLiveVoiceIsCurrent(current, bound)) {
+      return failure('INVALID_TRANSITION', 'Voice Coach result is stale');
+    }
+    if (!result.ok) {
+      const restored = restoreVoiceTranscriptAfterFailedSend(sending.data);
+      if (restored.ok) set({ liveVoiceCapture: { ...bound, state: restored.data } });
+      return result;
+    }
+    const completed = completeVoiceTranscriptSend(sending.data);
+    if (!completed.ok) return completed;
+    set({ liveVoiceCapture: { ...bound, state: completed.data } });
+    return result;
+  },
+
+  cancelLiveVoiceCapture: async (
+    captureService = liveVoiceCaptureService,
+    mediaService = liveVoiceMediaService,
+  ) => {
+    const bound = get().liveVoiceCapture;
+    if (!bound) return success(true);
+    const canceled = await captureService.cancel();
+    const uris = new Set(
+      [bound.state.envelope.cacheUri, canceled.ok ? canceled.data.uri : null].filter(
+        (uri): uri is string => Boolean(uri),
+      ),
+    );
+    for (const uri of uris) {
+      const deleted = await mediaService.delete(uri);
+      if (!deleted.ok) return deleted;
+    }
+    set({ liveVoiceCapture: null });
+    return success(true);
+  },
+
   submitTask: (input) => {
     const state = get();
     const authority = requireActiveChildExperience(state);
@@ -2612,7 +3430,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!journey) return failure('INVALID_TRANSITION', 'An in-progress task is required');
     const result = serviceRegistry.task.submit(journey, activeChildId, input);
     if (result.ok) {
-      set({ journey: result.data, confirmationPlan: null, lastRecognitionAttempt: null });
+      releaseLiveVoiceCapture(state.liveVoiceCapture);
+      set((state) => ({
+        journey: result.data,
+        confirmationPlan: null,
+        lastRecognitionAttempt: null,
+        liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+        liveVoiceCapture: null,
+      }));
     }
     return result;
   },

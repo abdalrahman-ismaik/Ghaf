@@ -7,6 +7,7 @@ import {
   type DeviceAccessState,
   type PairingRequest,
   type ParentAccessSession,
+  type ReauthenticationProof,
 } from '../../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../../models/familyGrowth';
 import type {
@@ -429,6 +430,49 @@ export class ParentOnboardingController {
       );
     }
     return this.access.getChildPermissions({ session: this.parentSession, childId, now });
+  }
+
+  authorizeLiveChildAiGrantChange(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: 'text' | 'voice';
+    readonly proofId: string;
+    readonly reauthenticationCode: unknown;
+    readonly now: string;
+  }): ServiceResult<ReauthenticationProof> {
+    if (
+      !this.parentSession ||
+      !this.completionReceipt ||
+      this.status !== 'authenticated_parent' ||
+      !this.isConfiguredChild(input.childId) ||
+      !this.access.issueReauthentication ||
+      !this.access.authorizeSensitiveAction
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'A completed Parent session is required to change bounded Child AI access',
+      );
+    }
+    if (input.reauthenticationCode !== SYNTHETIC_PARENT_REAUTHENTICATION_CODE) {
+      return failure('INVALID_INPUT', 'The synthetic Parent reauthentication code is not correct');
+    }
+    const purpose =
+      input.capability === 'text'
+        ? 'change_live_child_text_permission'
+        : 'change_live_child_voice_permission';
+    const issued = this.access.issueReauthentication({
+      proofId: input.proofId,
+      parentSession: this.parentSession,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose,
+      now: input.now,
+    });
+    if (!issued.ok) return issued;
+    return this.access.authorizeSensitiveAction({
+      proofId: issued.data.id,
+      parentSession: this.parentSession,
+      purpose,
+      now: input.now,
+    });
   }
 
   updateChildPermission(input: {
