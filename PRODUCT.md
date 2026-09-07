@@ -23,6 +23,27 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+## Feature 007 Family Plus capacity preview — 2026-09-08
+
+Family Basics now keeps the complete current one-or-two-Child journey as the ad-free Free plan and
+adds a distinct Parent-only **Ghaf Plus · 3–6 Children** capacity option. Selecting it opens one
+local bilingual preview that compares Free and Plus, describes one proposed household subscription
+with no per-Child fee, and shows AED 19.99 monthly or AED 159.99 annual as launch-price hypotheses.
+The deterministic annual saving is AED 79.89, displayed as 33% against twelve monthly payments.
+
+Capacity is the only proposed paid distinction. Ghaf Plus does not improve or gate a Child's task,
+help, safety, privacy, accessibility, AI protection, Seed award, Garden growth, League position, or
+Family Reward. Both plans remain ad-free, and no price, scarcity, upgrade, or purchase prompt is
+shown on a Child surface. This protects family trust while making the commercial conversion point
+specific enough for competition review.
+
+This competition build is still authoritative for exactly one or two synthetic Child profiles.
+The Plus surface is a truthful offline preview: it performs no purchase, charge, entitlement,
+account, analytics, or additional-profile creation. Dynamic 3–6-profile support and Google Play
+subscriptions remain separately gated production work. Pricing benchmarks, gross-billings
+examples, excluded costs, and the judge-ready business explanation live in
+`docs/GHAF_PLUS_COMMERCIAL_CASE.md`; they are not evidence of demand, revenue, margin, or profit.
+
 ## Feature 006 natural ambient audio — 2026-09-08
 
 Ghaf now uses one quiet, locally packaged nature soundscape across the active foreground app in

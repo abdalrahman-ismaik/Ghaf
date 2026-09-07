@@ -122,6 +122,27 @@ components:
 
 # Ghaf Design System
 
+## Feature 007 Family Plus capacity preview
+
+Keep the existing one/two-Child segmented control unchanged. Directly below it, place one
+full-width 76dp minimum Parent-only capacity row for **3–6 Children**. Use the existing gold tonal
+roles as a restrained capacity accent, a lock mark, one `Ghaf Plus` pill, a one-household summary,
+and one direction-aware chevron. The entire row is the 48dp-or-larger target; pressed state changes
+tone and opacity, while meaning remains explicit without color or icon recognition.
+
+The row opens a native modal bottom sheet, not a new route or checkout. The sheet has one compact
+family mark, one title and sentence, stacked Free/Plus plan cards, four short parity/value rows, one
+proposed-price panel, one prototype-truth panel, and one dominant return action. It scrolls within
+the modal at 320dp and large text. Arabic uses Arabic-Indic price digits and logical RTL order;
+`Ghaf Plus` is bidi-isolated. English mirrors the information hierarchy in LTR.
+
+Use only shared Alexandria/Readex roles, semantic tokens, continuous radii, safe-area insets, and
+UI-thread transform/opacity motion. Reduced motion presents the final state immediately. Opening
+focuses and announces the title/summary; scrim, visible action, and Android Back dismiss; focus then
+returns to the capacity row. Do not add a Subscribe button, fake checkout, countdown, trial,
+discount urgency, crossed-out price, celebratory commerce motion, Child-facing promotion, or any
+visual suggestion that the plan can already be purchased.
+
 ## Feature 006 natural ambient audio
 
 Use one root-owned, locally packaged nature soundscape as optional foreground atmosphere across

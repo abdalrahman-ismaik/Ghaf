@@ -1,5 +1,37 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 007 Family Plus Capacity Preview Record — 2026-09-08
+
+**Current classification:** implemented Parent-only commercial preview; real 3–6-profile support,
+purchase processing, physical Android evidence, and named-human review remain `NOT IMPLEMENTED` or
+`NOT RUN`.
+
+Create a new synthetic family and complete Parent verification. On Family Basics, confirm that One
+Child and Two Children remain the normal Free choices. Select **3–6 Children · Ghaf Plus** and read
+the one-scroll comparison: Free keeps the complete ad-free core journey for up to two Children;
+Plus proposes one household plan for up to six with no per-Child fee, AED 19.99 monthly or AED
+159.99 annual pricing, and a 33% annual saving. Confirm the blue truth panel says that this build
+activates no subscription, purchase, charge, or extra profile. Dismiss, change language, reopen,
+and verify that the family name and selected Free Child count are unchanged.
+
+Judges should describe this as an implemented conversion preview and a commercially testable
+hypothesis. Do not call it a working subscription, a live store price, proven demand, revenue,
+margin, profit, or support for a third executable profile. Use
+`docs/GHAF_PLUS_COMMERCIAL_CASE.md` for the benchmark, arithmetic, excluded-cost, and production
+gate detail.
+
+| Gate                                                                                                          | Result                        | Evidence                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Free/Plus catalog, capacity, exact integer-fils price and annual-saving arithmetic                            | `PASSED automated`            | focused model assertions returned AED 79.89 savings, 33%, and AED 159,990.00 gross annual billings for 1,000 illustrative households                                   |
+| Parent-only trigger, no draft mutation, third-profile denial, and Child commercial exclusion                  | `PASSED automated/source`     | focused Family Plus plus existing onboarding/repository source and behavior coverage; no store/service/network/billing dependency was added                            |
+| Bilingual truth, Arabic-Indic prices, modal semantics, focus, reduced motion, and 48dp targets                | `PASSED automated/source`     | exact Arabic/English resource and source contracts                                                                                                                     |
+| Compact visual presentation                                                                                   | `PASSED Firefox web proxy`    | Arabic and English at 320×720 and 390×844; plan, benefits, price, disclosure, and return action reachable in one sheet scroll; zero browser console errors or warnings |
+| Full repository verification and production export                                                            | `PASSED automated`            | `npm run verify`: strict TypeScript, zero-warning lint, formatting, 122 files / 1,342 tests, Expo dependency alignment, and 39-route web export                        |
+| Impeccable finish review                                                                                      | `RECAPTURE`                   | inline degraded review requires native captures before it can issue a ship disposition; code-led screen used no image comp or new asset                                |
+| Physical Android modal, hardware/predictive Back, TalkBack, font scale, reduced motion, and focus restoration | `BLOCKED / NOT RUN`           | `adb devices -l` returned no attached target                                                                                                                           |
+| Named Arabic/UAE, accessibility, product, pricing, legal/privacy/tax, and safeguarding review                 | `NOT RUN`                     | no named reviewer participated in this implementation window                                                                                                           |
+| Real profiles 3–6, Play Billing, purchase verification, renewal/cancellation/restore, and lapse-safe data     | `OUT OF P0 / NOT IMPLEMENTED` | the preview carries no profile, account, purchase, or entitlement authority                                                                                            |
+
 ## Feature 006 Natural Ambient Audio Record — 2026-09-08
 
 **Current classification:** implemented local foreground ambience and shared device setting;

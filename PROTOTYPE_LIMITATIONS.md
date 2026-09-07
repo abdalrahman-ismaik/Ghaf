@@ -1,5 +1,27 @@
 # Prototype Limitations
 
+## Feature 007 Family Plus boundary — 2026-09-08
+
+The Parent Family Basics screen now previews a proposed Ghaf Plus household plan for three through
+six Child profiles. This build still creates and stores only one or two profiles backed by the
+complete synthetic Salem/Alya access, task, Seed, Garden, League, Family Reward, privacy, and reset
+journeys. Selecting the Plus row does not mutate the draft or create a profile.
+
+AED 19.99 monthly, AED 159.99 annual, and the 33% annual saving are local pricing hypotheses. The
+preview performs no subscription, purchase, charge, checkout, entitlement, renewal, restoration,
+cancellation, account binding, analytics, or external request. Illustrative billings are exact
+price multiplication only; they are not validated demand, collected or recognized revenue,
+margin, valuation, or profit and exclude store fees, tax, refunds, churn, acquisition,
+infrastructure, AI, support, safeguarding, legal, and operating costs.
+
+No commercial copy or control appears on Child routes, and Plus grants no reward, progression,
+safety, privacy, accessibility, or assistance advantage. Actual larger-household activation
+requires stable dynamic identities and complete per-profile behavior plus Google Play purchase
+verification and lifecycle handling, lapse-safe data rules, legal/privacy/tax/safeguarding review,
+and physical Android evidence. Current Firefox web checks are secondary presentation evidence;
+Android Back, TalkBack, font scale, reduced motion, and native focus remain `NOT RUN` because ADB
+reported no attached device.
+
 ## Feature 006 natural ambient audio boundary — 2026-09-08
 
 Ghaf now has one locally packaged, 48-second synthesized nature soundscape owned by the app root.

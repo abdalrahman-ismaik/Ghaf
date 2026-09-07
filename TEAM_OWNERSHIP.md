@@ -21,8 +21,18 @@ per-Child fee, and an explicit no-purchase prototype disclosure. Do not add bill
 payment, analytics, new Child IDs, partial profiles, Child-facing upsell, or any Seed, task,
 Garden, League, Reward, AI, safety, accessibility, privacy, or reset advantage.
 
-**Status**: In progress — specification, commercial research, TDD implementation, bilingual UI,
-and evidence are reserved.
+**Status**: Complete and released for source integration — commits `ce0f603`, `4d7bc95`, and
+`04f4f98` contain the approved specification, plan/tasks, exact integer-fils commercial model,
+Parent-only bilingual trigger, accessible preview sheet, and focused tests. `npm run verify` passed
+strict TypeScript, zero-warning lint, formatting, 122 files / 1,342 tests, Expo dependency
+alignment, and a 39-route web export. Arabic/English Firefox web-proxy review at 320×720 and
+390×844 showed the full one-scroll offer with zero console errors or warnings. The Impeccable
+in-thread finish review remains `RECAPTURE` because `adb devices -l` reported no physical target;
+Android Back/TalkBack/font-scale/reduced-motion/focus evidence and named Arabic/UAE,
+accessibility, product, pricing, legal/privacy/tax, and safeguarding reviews remain `NOT RUN`.
+Actual profiles three through six and Play Billing remain separately blocked production work.
+Protected configuration, source design inputs, and generated output artifacts stayed outside this
+window.
 
 ## 2026-09-07 Natural Ambient Audio Window
 

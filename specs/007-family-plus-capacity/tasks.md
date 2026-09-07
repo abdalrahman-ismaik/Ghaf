@@ -26,7 +26,7 @@ inside the file reservation recorded in `TEAM_OWNERSHIP.md`.
       `specs/007-family-plus-capacity/contracts/family-plus-preview-v1.md`, and
       `specs/007-family-plus-capacity/quickstart.md`
 - [x] T002 Point the managed Spec Kit context at the Feature 007 plan in `AGENTS.md`
-- [ ] T003 Write the focused Family Plus contract, arithmetic, bilingual, Parent-only, and
+- [x] T003 Write the focused Family Plus contract, arithmetic, bilingual, Parent-only, and
       regression tests in `tests/family-plus-capacity.test.tsx`; run them and record the expected RED
       result before implementation
 
@@ -38,9 +38,9 @@ inside the file reservation recorded in `TEAM_OWNERSHIP.md`.
 
 **Purpose**: Create one immutable, non-authoritative source for capacity and price hypotheses.
 
-- [ ] T004 Implement the immutable Free/Plus catalog, fail-closed capacity decision, integer-fils
+- [x] T004 Implement the immutable Free/Plus catalog, fail-closed capacity decision, integer-fils
       saving helpers, and illustrative gross-billings arithmetic in `src/features/family-plan/index.ts`
-- [ ] T005 Run the pure plan-model assertions in `tests/family-plus-capacity.test.tsx` and verify
+- [x] T005 Run the pure plan-model assertions in `tests/family-plus-capacity.test.tsx` and verify
       exact AED 79.89 savings, 33% display savings, and AED 159,990.00 illustrative annual billings
 
 **Checkpoint**: Commercial display values are exact, deterministic, and carry no billing or
@@ -56,11 +56,11 @@ changing the working one/two-Child family draft.
 **Independent Test**: Open Family Basics, preserve the selected one/two-Child value, open and close
 the Plus preview, and confirm all draft fields remain unchanged.
 
-- [ ] T006 [P] [US1] Add equivalent Arabic and English family-capacity trigger, plan title, and
+- [x] T006 [P] [US1] Add equivalent Arabic and English family-capacity trigger, plan title, and
       dismissal resources in `src/i18n/resources.ts`
-- [ ] T007 [US1] Add the Parent-only Plus trigger and route-local open state without changing the
+- [x] T007 [US1] Add the Parent-only Plus trigger and route-local open state without changing the
       existing selector or draft update path in `app/access/parent/family-basics.tsx`
-- [ ] T008 [US1] Verify trigger visibility, Parent authority, non-mutation, and unchanged
+- [x] T008 [US1] Verify trigger visibility, Parent authority, non-mutation, and unchanged
       one/two-Child acceptance through `tests/family-plus-capacity.test.tsx` and the focused onboarding
       regression suites
 
@@ -77,14 +77,14 @@ and child-safe monetization boundary in one compact preview.
 **Independent Test**: Read the preview in both locales and verify both proposed prices, exact annual
 saving, capacity comparison, no per-Child fee, ad-free parity, and no-purchase disclosure.
 
-- [ ] T009 [US2] Build the compact, scrollable, token-based Free/Plus comparison with formatted AED
+- [x] T009 [US2] Build the compact, scrollable, token-based Free/Plus comparison with formatted AED
       values and one return action in `src/components/access/FamilyPlusPreview.tsx`
-- [ ] T010 [US2] Complete the bilingual price-hypothesis, benefit-parity, child-facing-commercial
+- [x] T010 [US2] Complete the bilingual price-hypothesis, benefit-parity, child-facing-commercial
       exclusion, and prototype-truth resources in `src/i18n/resources.ts`
-- [ ] T011 [US2] Integrate `FamilyPlusPreview` into
+- [x] T011 [US2] Integrate `FamilyPlusPreview` into
       `app/access/parent/family-basics.tsx` without store, service, networking, analytics, or billing
       imports
-- [ ] T012 [US2] Verify the UI/source contract and Arabic/English resource parity in
+- [x] T012 [US2] Verify the UI/source contract and Arabic/English resource parity in
       `tests/family-plus-capacity.test.tsx`
 
 **Checkpoint**: The commercial story is specific and credible without claiming purchase or
@@ -100,11 +100,11 @@ not weaken the deterministic family journey.
 **Independent Test**: Open/dismiss offline in Arabic and English, close with Android Back, inspect
 Child routes, and finish the unchanged one/two-Child setup.
 
-- [ ] T013 [US3] Add modal semantics, accessibility focus, scrim/return dismissal, reduced-motion
+- [x] T013 [US3] Add modal semantics, accessibility focus, scrim/return dismissal, reduced-motion
       behavior, and 320dp scrolling resilience in `src/components/access/FamilyPlusPreview.tsx`
-- [ ] T014 [US3] Make Android Back close the preview before route navigation in
+- [x] T014 [US3] Make Android Back close the preview before route navigation in
       `app/access/parent/family-basics.tsx`
-- [ ] T015 [US3] Verify zero Child-route commercial imports/copy, zero forbidden remote or billing
+- [x] T015 [US3] Verify zero Child-route commercial imports/copy, zero forbidden remote or billing
       authority, existing third-profile rejection, and reset compatibility in
       `tests/family-plus-capacity.test.tsx`
 
@@ -117,16 +117,16 @@ visible at the point of use.
 
 **Purpose**: Give judges a defensible business advantage without overstating evidence.
 
-- [ ] T016 [P] Document benchmarks, proposed pricing, exact gross-billings scenarios, excluded
+- [x] T016 [P] Document benchmarks, proposed pricing, exact gross-billings scenarios, excluded
       costs, ethical moat, production billing architecture, and judge wording in
       `docs/GHAF_PLUS_COMMERCIAL_CASE.md`
-- [ ] T017 [P] Reconcile product promise, visual contract, prototype limitations, and demo evidence
+- [x] T017 [P] Reconcile product promise, visual contract, prototype limitations, and demo evidence
       in `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`
-- [ ] T018 Inspect Arabic/English layouts at 320×720 and 390×844, including reduced motion and long
+- [x] T018 Inspect Arabic/English layouts at 320×720 and 390×844, including reduced motion and long
       content, and record the exact secondary web evidence in `DEMO_RUNBOOK.md`
-- [ ] T019 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, the focused Vitest
+- [x] T019 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, the focused Vitest
       suites, `npm test`, and `git diff --check`; record exact outcomes in `DEMO_RUNBOOK.md`
-- [ ] T020 Re-read the post-design constitution gates, confirm actual 3–6 activation and billing
+- [x] T020 Re-read the post-design constitution gates, confirm actual 3–6 activation and billing
       remain blocked, mark completed tasks in `specs/007-family-plus-capacity/tasks.md`, and release the
       reservation in `TEAM_OWNERSHIP.md`
 
