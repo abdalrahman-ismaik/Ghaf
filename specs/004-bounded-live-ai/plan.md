@@ -22,8 +22,8 @@ through Expo SDK 57
 
 **Primary Dependencies**: Existing Expo Router, Expo Audio, React Native `StyleSheet`, Zustand 5,
 Zod 4, i18next/react-i18next, Cloudflare Workers AI binding, Vitest, ESLint, and Prettier. Add only
-Expo FileSystem at the SDK-compatible version because Expo Audio writes recordings to the app cache
-but does not expose deletion; explicit deletion is a voice safety requirement.
+Expo FileSystem for explicit cache-audio deletion and Expo Crypto for native/web random 128-bit
+request and binding identifiers, both at Expo SDK-compatible versions.
 
 **Storage**: Existing schema-versioned in-memory Zustand prototype state and device-local family
 directory remain authoritative. F4 accepted wording may enter the existing private task draft.
@@ -279,8 +279,8 @@ owner. Each functional slice is committed only after its focused tests pass.
 ## Constitution Check — After Design
 
 The design still passes all ten principles. It adds no state, UI, media, localization, or provider
-framework; the one Expo FileSystem module closes the required deletion gap. It keeps the single
-Expo app, leaves Feature 003 complete, makes every remote seam
+framework; Expo FileSystem closes the deletion gap and Expo Crypto closes the correlation-entropy
+gap without inventing a random source. It keeps the single Expo app, leaves Feature 003 complete, makes every remote seam
 replaceable; exposes AI only through bounded task-centered actions; and records all provider,
 native, human, legal, deployment, and release evidence as blocked/not run until directly observed.
 
@@ -291,3 +291,4 @@ native, human, legal, deployment, and release evidence as blocked/not run until 
 | Second reference Worker directory            | Feature 004 introduces Child text/audio trust boundaries that must not silently widen the existing Parent-only P0 endpoint                                    | Extending `ghaf-parent-guide` would weaken its tested guarantee that no Child/media route exists and would obscure rollback      |
 | Microphone permission in a default-off build | Compiling the approved native capture adapter requires an explicit platform permission declaration                                                            | A prepared transcript alone would remain the existing synthetic rehearsal and would not implement the approved push-to-talk path |
 | One Expo FileSystem dependency               | Expo Audio records to cache but provides no recording-file deletion API; explicit deletion is required after transcript, cancel, failure, sign-out, and reset | Relying on eventual OS cache eviction cannot satisfy the approved deletion contract                                              |
+| One Expo Crypto dependency                   | Each remote action requires native/web random 128-bit request and binding identifiers                                                                         | Timestamps, counters, and `Math.random()` do not satisfy the approved correlation contract                                       |

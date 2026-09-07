@@ -35,7 +35,12 @@ export type {
   VoiceTranscriptionInput,
   VoiceTranscriptionService,
 } from './interfaces';
-export { GatewayParentGuideService, type GatewayParentGuideServiceOptions } from './remote';
+export {
+  GatewayParentGuideService,
+  GatewayParentTaskDraftingService,
+  type GatewayParentGuideServiceOptions,
+  type GatewayParentTaskDraftingServiceOptions,
+} from './remote';
 export {
   createFeature003ServiceRegistry,
   BlockedCapabilityTokenService,

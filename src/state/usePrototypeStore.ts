@@ -8,6 +8,13 @@ import {
 } from '../features/assistants/childVoiceController';
 import { evaluateAssistantSafety, resolveParentGuideFallback } from '../features/assistants/policy';
 import { validateLiveParentGuideSuggestion } from '../features/assistants/liveParentGuide';
+import {
+  applyParentTaskDraftSuggestion,
+  createParentTaskDraftRequest,
+  INITIAL_PARENT_TASK_DRAFTING_VIEW,
+  validateParentTaskDraftSuggestion,
+  type ParentTaskDraftingView,
+} from '../features/assistants/parentTaskDrafting';
 import { createChildAccessController, type ChildAccessView } from '../features/access/childAccess';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
@@ -97,6 +104,7 @@ import type {
 import type { ChildPermissionGrant } from '../models/access';
 import type { LocalFamilyRecord, LocalFamilyView } from '../models/localFamily';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
+import type { ParentTaskDraftRequestV1, ParentTaskDraftSuggestionV1 } from '../models/boundedAi';
 import type {
   AdvanceLearningStepResult,
   CompleteLearningResult,
@@ -125,7 +133,12 @@ import type {
   SharedGrowthParticipationActionResult,
   SharedGrowthState,
 } from '../models/sharedGrowth';
-import { serviceRegistry, type ParentGuideService, type ServiceResult } from '../services';
+import {
+  serviceRegistry,
+  type ParentGuideService,
+  type ParentTaskDraftingService,
+  type ServiceResult,
+} from '../services';
 
 type ConfirmationPlan = PendingConfirmationPlan | PraisePresentedPlan;
 type PrototypeJourney = NonNullable<PrototypeSession['journey']>;
@@ -251,6 +264,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly localFamily: LocalFamilyView;
   readonly returningUserWelcome: ReturningUserWelcome | null;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
+  readonly parentTaskDraftingView: ParentTaskDraftingView;
   readonly childCoachResult: ChildCoachResult | null;
   readonly ageAdaptedCoachResult: AgeAdaptedCoachResult | null;
   readonly childVoiceView: ChildVoiceView;
@@ -356,6 +370,20 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => Promise<ServiceResult<ParentGuideTaskSuggestion>>;
   readonly acceptGuideSuggestion: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
   readonly keepParentText: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
+  readonly requestParentTaskDraft: (
+    input: {
+      readonly requestId: string;
+      readonly bindingNonce: string;
+      readonly intent: ParentTaskDraftRequestV1['intent'];
+      readonly effortBand: ParentTaskDraftRequestV1['effortBand'];
+      readonly stepCount: number;
+      readonly supportMode: ParentTaskDraftRequestV1['supportMode'];
+    },
+    primaryService?: ParentTaskDraftingService,
+  ) => Promise<ServiceResult<ParentTaskDraftSuggestionV1>>;
+  readonly acceptParentTaskDraft: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
+  readonly keepParentTaskDraft: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
+  readonly editParentTaskDraft: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
   readonly reviewTask: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
   readonly returnReviewedTaskToDraft: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
   readonly approveAssignment: () => ServiceResult<NonNullable<PrototypeSession['journey']>>;
@@ -758,6 +786,66 @@ function requestGuideWithinDeadline(
   });
 }
 
+const PARENT_TASK_DRAFT_TIMEOUT_MS = 2_500;
+
+function requestParentTaskDraftWithinDeadline(
+  service: ParentTaskDraftingService,
+  request: ParentTaskDraftRequestV1,
+): Promise<ServiceResult<ParentTaskDraftSuggestionV1>> {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (result: ServiceResult<ParentTaskDraftSuggestionV1>) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      resolve(result);
+    };
+    const timeout = setTimeout(() => {
+      finish(
+        failure('TIMEOUT', 'Parent task drafting provider exceeded the 2500ms deadline', true),
+      );
+    }, PARENT_TASK_DRAFT_TIMEOUT_MS);
+
+    void Promise.resolve()
+      .then(() => service.draft(request))
+      .then(
+        (result) => finish(result),
+        () =>
+          finish(
+            failure('REMOTE_UNAVAILABLE', 'Parent task drafting provider was unavailable', true),
+          ),
+      );
+  });
+}
+
+function parentTaskDraftFallbackReason(
+  code: DomainErrorCode,
+): NonNullable<ParentTaskDraftingView['fallbackReason']> {
+  switch (code) {
+    case 'TIMEOUT':
+      return 'timeout';
+    case 'SAFETY_REJECTED':
+      return 'safety_rejected';
+    case 'INVALID_RESPONSE':
+      return 'invalid_response';
+    default:
+      return 'remote_unavailable';
+  }
+}
+
+function idleParentTaskDraftingView(
+  current: ParentTaskDraftingView,
+  decision: ParentTaskDraftingView['decision'] = 'none',
+  acceptedAttribution: ParentTaskDraftingView['acceptedAttribution'] = null,
+): ParentTaskDraftingView {
+  return {
+    ...INITIAL_PARENT_TASK_DRAFTING_VIEW,
+    requestRevision: current.requestRevision + 1,
+    decision,
+    acceptedAttribution,
+  };
+}
+
 function validateGuideSuggestion(
   request: ParentGuideRequest,
   suggestion: ParentGuideTaskSuggestion,
@@ -809,6 +897,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   localFamily: initialLocalFamily,
   returningUserWelcome: null,
   parentGuideSuggestion: null,
+  parentTaskDraftingView: { ...INITIAL_PARENT_TASK_DRAFTING_VIEW },
   childCoachResult: null,
   ageAdaptedCoachResult: null,
   childVoiceView: INITIAL_CHILD_VOICE_VIEW,
@@ -1065,6 +1154,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       parentOnboarding: parentOnboardingController.getView(),
       role: 'child',
       returningUserWelcome: null,
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
     });
     return success(childAccessController.getView());
   },
@@ -1132,6 +1222,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       childAccess: childAccessController.getView(),
       parentOnboarding: parentOnboardingController.getView(),
       returningUserWelcome: null,
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
     });
     return success(true);
   },
@@ -1386,7 +1477,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!state.localFamily.configuredChildIds.includes(childId)) {
       return failure('NOT_FOUND', 'Synthetic Child was not found');
     }
-    set({ activeChildId: childId });
+    set({
+      activeChildId: childId,
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+    });
     return {
       ok: true,
       data: childId,
@@ -1431,6 +1525,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       localFamily: localFamilyView(null),
       returningUserWelcome: null,
       parentGuideSuggestion: null,
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
       childCoachResult: null,
       ageAdaptedCoachResult: null,
       childVoiceView: releasedVoiceView,
@@ -1638,6 +1733,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         activeAssignmentId: null,
         journey: result.data,
         parentGuideSuggestion: null,
+        parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
         childCoachResult: null,
         ageAdaptedCoachResult: null,
         childVoiceView: clearedVoice.data,
@@ -1674,6 +1770,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           ? {
               journey: result.data,
               parentGuideSuggestion: null,
+              parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
               taskDraftRevision: state.taskDraftRevision + 1,
             }
           : { journey: result.data },
@@ -1691,6 +1788,12 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         'INVALID_TRANSITION',
         'Resolve the displayed Guide suggestion before requesting another intent',
       );
+    }
+    if (
+      before.parentTaskDraftingView.status === 'requesting' ||
+      before.parentTaskDraftingView.suggestion
+    ) {
+      return failure('INVALID_TRANSITION', 'Resolve the Parent task draft suggestion first');
     }
     const request = guideRequestFromState(before, input);
     if (!request) return failure('INVALID_TRANSITION', 'A current draft is required');
@@ -1783,16 +1886,213 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return result;
   },
 
+  requestParentTaskDraft: async (
+    input,
+    primaryService = serviceRegistry.boundedAi.parentTaskDraftingPrimary,
+  ) => {
+    const before = get();
+    const authority = requireActiveParentExperience(before);
+    if (!authority.ok) return authority;
+    if (!before.journey || before.journey.lifecycle !== 'draft') {
+      return failure('INVALID_TRANSITION', 'A current Parent task draft is required');
+    }
+    if (
+      before.parentGuideSuggestion ||
+      before.parentTaskDraftingView.status === 'requesting' ||
+      before.parentTaskDraftingView.suggestion
+    ) {
+      return failure('INVALID_TRANSITION', 'Resolve the current assistant suggestion first');
+    }
+    const child = before.children[before.journey.task.targetChildId];
+    const built = createParentTaskDraftRequest({
+      journey: before.journey,
+      ageBand: child.ageBand,
+      requestId: input.requestId,
+      bindingNonce: input.bindingNonce,
+      catalogVersion: 1,
+      intent: input.intent,
+      effortBand: input.effortBand,
+      stepCount: input.stepCount,
+      supportMode: input.supportMode,
+      draftRevision: before.taskDraftRevision,
+    });
+    if (!built.ok) return { ok: false, error: built.error };
+    const requestRevision = before.parentTaskDraftingView.requestRevision + 1;
+    set({
+      parentTaskDraftingView: {
+        status: 'requesting',
+        origin: null,
+        suggestion: null,
+        retainedCopy: built.data.snapshot.retainedCopy,
+        acceptedAttribution: null,
+        requestRevision,
+        decision: 'none',
+        fallbackReason: null,
+        activeRequest: built.data.request,
+        authoritySnapshot: built.data.snapshot,
+      },
+    });
+    const requestIsCurrent = () => {
+      const current = get();
+      return (
+        requireActiveParentExperience(current).ok &&
+        current.journey?.lifecycle === 'draft' &&
+        current.journey.task.id === built.data.snapshot.taskId &&
+        current.journey.task.version === built.data.snapshot.taskVersion &&
+        current.journey.task.targetChildId === built.data.snapshot.targetChildId &&
+        current.activeChildId === built.data.snapshot.targetChildId &&
+        current.taskDraftRevision === built.data.snapshot.draftRevision &&
+        current.parentTaskDraftingView.requestRevision === requestRevision
+      );
+    };
+
+    const primary = await requestParentTaskDraftWithinDeadline(primaryService, built.data.request);
+    if (!requestIsCurrent()) {
+      return failure('INVALID_TRANSITION', 'Parent task drafting response is stale');
+    }
+    const validated = primary.ok
+      ? validateParentTaskDraftSuggestion(built.data.request, primary.data)
+      : primary;
+    if (validated.ok && primary.ok) {
+      const origin = primary.meta.origin === 'live' ? 'live' : 'prepared';
+      set({
+        parentTaskDraftingView: {
+          status: 'ready',
+          origin,
+          suggestion: validated.data,
+          retainedCopy: built.data.snapshot.retainedCopy,
+          acceptedAttribution: null,
+          requestRevision,
+          decision: 'none',
+          fallbackReason: null,
+          activeRequest: built.data.request,
+          authoritySnapshot: built.data.snapshot,
+        },
+      });
+      return {
+        ok: true,
+        data: validated.data,
+        meta: { ...primary.meta, origin },
+      };
+    }
+
+    const fallbackReason = !primary.ok
+      ? parentTaskDraftFallbackReason(primary.error.code)
+      : !validated.ok
+        ? parentTaskDraftFallbackReason(validated.error.code)
+        : 'invalid_response';
+    const prepared = await serviceRegistry.boundedAi.parentTaskDraftingPrepared.draft(
+      built.data.request,
+    );
+    if (!requestIsCurrent()) {
+      return failure('INVALID_TRANSITION', 'Parent task drafting response is stale');
+    }
+    if (!prepared.ok) return prepared;
+    const preparedValidated = validateParentTaskDraftSuggestion(built.data.request, prepared.data);
+    if (!preparedValidated.ok) return { ok: false, error: preparedValidated.error };
+    const result: ServiceResult<ParentTaskDraftSuggestionV1> = {
+      ok: true,
+      data: preparedValidated.data,
+      meta: {
+        origin: 'prepared',
+        fallbackUsed: true,
+        fixtureId: prepared.meta.fixtureId,
+      },
+    };
+    set({
+      parentTaskDraftingView: {
+        status: 'fallback',
+        origin: 'prepared',
+        suggestion: result.data,
+        retainedCopy: built.data.snapshot.retainedCopy,
+        acceptedAttribution: null,
+        requestRevision,
+        decision: 'none',
+        fallbackReason,
+        activeRequest: built.data.request,
+        authoritySnapshot: built.data.snapshot,
+      },
+    });
+    return result;
+  },
+
+  acceptParentTaskDraft: () => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const view = state.parentTaskDraftingView;
+    if (
+      !state.journey ||
+      !view.suggestion ||
+      !view.authoritySnapshot ||
+      !view.activeRequest ||
+      !view.origin
+    ) {
+      return failure('INVALID_TRANSITION', 'A displayed Parent task draft is required');
+    }
+    const validated = validateParentTaskDraftSuggestion(view.activeRequest, view.suggestion);
+    if (!validated.ok) return { ok: false, error: validated.error };
+    const applied = applyParentTaskDraftSuggestion(
+      state.journey,
+      view.authoritySnapshot,
+      validated.data,
+      state.taskDraftRevision,
+    );
+    if (!applied.ok) return { ok: false, error: applied.error };
+    set({
+      journey: applied.data,
+      taskDraftRevision: state.taskDraftRevision + 1,
+      parentTaskDraftingView: idleParentTaskDraftingView(view, 'accepted', {
+        origin: view.origin,
+        schemaVersion: '1.0',
+        archetypeId: view.suggestion.archetypeId,
+      }),
+    });
+    return success(applied.data);
+  },
+
+  keepParentTaskDraft: () => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    if (!state.journey || !state.parentTaskDraftingView.suggestion) {
+      return failure('INVALID_TRANSITION', 'A displayed Parent task draft is required');
+    }
+    set({
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView, 'kept'),
+    });
+    return success(state.journey);
+  },
+
+  editParentTaskDraft: () => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    if (!state.journey || !state.parentTaskDraftingView.suggestion) {
+      return failure('INVALID_TRANSITION', 'A displayed Parent task draft is required');
+    }
+    set({
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView, 'edited'),
+    });
+    return success(state.journey);
+  },
+
   reviewTask: () => {
     const state = get();
     const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    const { journey, parentGuideSuggestion } = state;
+    const { journey, parentGuideSuggestion, parentTaskDraftingView } = state;
     if (!journey) return failure('INVALID_TRANSITION', 'A draft is required');
     if (parentGuideSuggestion) {
       return failure(
         'INVALID_TRANSITION',
         'Resolve the displayed Guide suggestion before reviewing the task',
+      );
+    }
+    if (parentTaskDraftingView.suggestion || parentTaskDraftingView.status === 'requesting') {
+      return failure(
+        'INVALID_TRANSITION',
+        'Resolve the displayed Parent task draft before reviewing the task',
       );
     }
     const result = serviceRegistry.task.review(journey);

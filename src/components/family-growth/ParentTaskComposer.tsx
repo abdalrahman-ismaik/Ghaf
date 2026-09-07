@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import * as Crypto from 'expo-crypto';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Button, Input, Text } from '@/components/primitives';
@@ -10,6 +11,7 @@ import {
   TaskBuilderFooter,
   TaskStepIndicator,
 } from '@/components/r002a';
+import { aiFeatureFlags } from '@/config/aiFeatureFlags';
 import {
   colors,
   logicalRowDirection,
@@ -33,6 +35,7 @@ import type {
   TaskCategoryId,
   TaskTemplate,
 } from '@/models/familyGrowth';
+import type { ParentTaskDraftRequestV1 } from '@/models/boundedAi';
 import { PARENT_GUIDE_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -48,6 +51,16 @@ const GUIDE_INTENTS: readonly { intent: ParentGuideIntent; key: string }[] = [
   { intent: 'make_clearer', key: 'makeClearer' },
   { intent: 'make_smaller', key: 'makeSmaller' },
   { intent: 'check_safety', key: 'checkSafety' },
+  { intent: 'adapt_age', key: 'adaptAge' },
+] as const;
+
+const LIVE_DRAFT_INTENTS: readonly {
+  intent: ParentTaskDraftRequestV1['intent'];
+  key: string;
+}[] = [
+  { intent: 'draft', key: 'liveDraftRequest' },
+  { intent: 'make_clearer', key: 'makeClearer' },
+  { intent: 'make_smaller', key: 'makeSmaller' },
   { intent: 'adapt_age', key: 'adaptAge' },
 ] as const;
 
@@ -74,11 +87,16 @@ export function ParentTaskComposer({
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const journey = usePrototypeStore((state) => state.journey);
   const suggestion = usePrototypeStore((state) => state.parentGuideSuggestion);
+  const liveDraftView = usePrototypeStore((state) => state.parentTaskDraftingView);
   const createTaskDraft = usePrototypeStore((state) => state.createTaskDraft);
   const updateTaskDraftParentText = usePrototypeStore((state) => state.updateTaskDraftParentText);
   const requestParentGuide = usePrototypeStore((state) => state.requestParentGuide);
   const acceptGuideSuggestion = usePrototypeStore((state) => state.acceptGuideSuggestion);
   const keepParentText = usePrototypeStore((state) => state.keepParentText);
+  const requestParentTaskDraft = usePrototypeStore((state) => state.requestParentTaskDraft);
+  const acceptParentTaskDraft = usePrototypeStore((state) => state.acceptParentTaskDraft);
+  const keepParentTaskDraft = usePrototypeStore((state) => state.keepParentTaskDraft);
+  const editParentTaskDraft = usePrototypeStore((state) => state.editParentTaskDraft);
   const reviewTask = usePrototypeStore((state) => state.reviewTask);
   const returnReviewedTaskToDraft = usePrototypeStore((state) => state.returnReviewedTaskToDraft);
   const acceptedInitialPrefill =
@@ -138,6 +156,8 @@ export function ParentTaskComposer({
   const guideDisclosure =
     suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuidePrimary.disclosure.text;
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
+  const liveDraftPending =
+    liveDraftView.status === 'requesting' || liveDraftView.suggestion !== null;
   const hasExecutableSelection =
     selectedChildId === 'child_salem' &&
     categoryId === 'green_impact' &&
@@ -201,6 +221,43 @@ export function ParentTaskComposer({
     if (!result.ok) setError(t('errors.safeRetry'));
   };
 
+  const askLiveDraft = async (intent: ParentTaskDraftRequestV1['intent']) => {
+    setError(null);
+    if (!syncParentText()) return;
+    const result = await requestParentTaskDraft({
+      requestId: Crypto.randomUUID(),
+      bindingNonce: Crypto.randomUUID(),
+      intent,
+      effortBand: 'fifteen_thirty',
+      stepCount: 2,
+      supportMode: 'adult_alongside',
+    });
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const acceptLiveDraft = () => {
+    setError(null);
+    const result = acceptParentTaskDraft();
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const keepLiveDraft = () => {
+    setError(null);
+    const result = keepParentTaskDraft();
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const editLiveDraft = () => {
+    setError(null);
+    const suggestedAction = liveDraftView.suggestion?.positiveAction;
+    const result = editParentTaskDraft();
+    if (!result.ok) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
+    if (suggestedAction) setParentText({ ...suggestedAction });
+  };
+
   const accept = () => {
     setError(null);
     const result = acceptGuideSuggestion();
@@ -261,10 +318,10 @@ export function ParentTaskComposer({
         ) : (
           <TaskBuilderFooter
             actionLabel={t('taskNew.review')}
-            busy={busyIntent !== null}
+            busy={busyIntent !== null || liveDraftView.status === 'requesting'}
             busyLabel={t('assistant.loading')}
             direction={direction}
-            disabled={!hasExecutableSelection || Boolean(suggestion)}
+            disabled={!hasExecutableSelection || Boolean(suggestion) || liveDraftPending}
             onPress={continueToReview}
             testID="review-task-button"
           />
@@ -343,12 +400,17 @@ export function ParentTaskComposer({
           error={error}
           guideDisclosure={guideDisclosure}
           guideSuggestionApplied={guideSuggestionApplied}
+          liveDraftView={liveDraftView}
           journeyExists={Boolean(journey)}
           locale={locale}
           onAccept={accept}
           onAskGuide={askGuide}
+          onAskLiveDraft={askLiveDraft}
+          onAcceptLiveDraft={acceptLiveDraft}
           onChangeSelection={() => setStage('choose')}
           onKeepMine={keepMine}
+          onKeepLiveDraft={keepLiveDraft}
+          onEditLiveDraft={editLiveDraft}
           onParentTextChange={setParentText}
           parentText={parentText}
           suggestion={suggestion}
@@ -563,12 +625,17 @@ interface EditStageProps {
   error: string | null;
   guideDisclosure: LocalizedText;
   guideSuggestionApplied: boolean;
+  liveDraftView: ReturnType<typeof usePrototypeStore.getState>['parentTaskDraftingView'];
   journeyExists: boolean;
   locale: 'ar' | 'en';
   onAccept: () => void;
   onAskGuide: (intent: ParentGuideIntent) => Promise<void>;
+  onAskLiveDraft: (intent: ParentTaskDraftRequestV1['intent']) => Promise<void>;
+  onAcceptLiveDraft: () => void;
   onChangeSelection: () => void;
   onKeepMine: () => void;
+  onKeepLiveDraft: () => void;
+  onEditLiveDraft: () => void;
   onParentTextChange: (text: LocalizedText) => void;
   parentText: LocalizedText;
   suggestion: ReturnType<typeof usePrototypeStore.getState>['parentGuideSuggestion'];
@@ -582,12 +649,17 @@ function EditStage({
   error,
   guideDisclosure,
   guideSuggestionApplied,
+  liveDraftView,
   journeyExists,
   locale,
   onAccept,
   onAskGuide,
+  onAskLiveDraft,
+  onAcceptLiveDraft,
   onChangeSelection,
   onKeepMine,
+  onKeepLiveDraft,
+  onEditLiveDraft,
   onParentTextChange,
   parentText,
   suggestion,
@@ -646,6 +718,8 @@ function EditStage({
           direction="rtl"
           editable={
             !suggestion &&
+            !liveDraftView.suggestion &&
+            liveDraftView.status !== 'requesting' &&
             (!journey || journey.lifecycle === 'draft' || journey.lifecycle === 'reviewed')
           }
           label={`${t('taskNew.parentTextLabel')} · ${t('language.arabic')}`}
@@ -660,6 +734,8 @@ function EditStage({
           direction="ltr"
           editable={
             !suggestion &&
+            !liveDraftView.suggestion &&
+            liveDraftView.status !== 'requesting' &&
             (!journey || journey.lifecycle === 'draft' || journey.lifecycle === 'reviewed')
           }
           label={`${t('taskNew.parentTextLabel')} · ${t('language.english')}`}
@@ -670,6 +746,107 @@ function EditStage({
           value={parentText.en}
         />
       </View>
+
+      {aiFeatureFlags.ai_parent_task_drafting_live ? (
+        <View style={styles.liveDraftSection} testID="parent-task-drafting-controls">
+          <View style={[styles.guideHeading, { flexDirection: logicalRowDirection(direction) }]}>
+            <View style={styles.guideMark}>
+              <GhafIcon color={colors.mangroveTeal} name="sparkle" size={25} />
+            </View>
+            <View style={styles.grow}>
+              <Text brand color="secondary" variant="heading">
+                {t('taskNew.liveDraftTitle')}
+              </Text>
+              <Text brand color="onSurfaceVariant" variant="caption">
+                {t('taskNew.liveDraftDisclosure')}
+              </Text>
+            </View>
+          </View>
+
+          <View style={[styles.intentGrid, { flexDirection: logicalRowDirection(direction) }]}>
+            {LIVE_DRAFT_INTENTS.map(({ intent, key }) => (
+              <Button
+                brand
+                busy={liveDraftView.status === 'requesting'}
+                busyLabel={t('assistant.loading')}
+                disabled={
+                  liveDraftView.status === 'requesting' ||
+                  Boolean(liveDraftView.suggestion) ||
+                  Boolean(suggestion)
+                }
+                fullWidth={false}
+                key={intent}
+                onPress={() => void onAskLiveDraft(intent)}
+                testID={`parent-task-drafting-${intent}`}
+                variant="secondary"
+              >
+                {t(`taskNew.${key}`)}
+              </Button>
+            ))}
+          </View>
+
+          {liveDraftView.suggestion && liveDraftView.retainedCopy ? (
+            <View
+              accessibilityLiveRegion="polite"
+              style={styles.comparison}
+              testID="parent-task-drafting-diff"
+            >
+              <Text brand color="secondary" testID="parent-task-drafting-origin" variant="caption">
+                {liveDraftView.origin === 'live'
+                  ? t('taskNew.liveDraftLiveOrigin')
+                  : t('taskNew.liveDraftPreparedOrigin')}
+              </Text>
+              {liveDraftView.status === 'fallback' ? (
+                <Text brand color="tertiary" variant="caption">
+                  {t('taskNew.liveDraftFallback')}
+                </Text>
+              ) : null}
+              <View style={styles.comparisonColumn} testID="parent-task-drafting-retained">
+                <Text brand color="onSurfaceVariant" variant="caption">
+                  {t('taskNew.liveDraftRetained')}
+                </Text>
+                <Text brand>{localize(liveDraftView.retainedCopy.title, locale)}</Text>
+                <Text brand>{localize(liveDraftView.retainedCopy.positiveAction, locale)}</Text>
+              </View>
+              <View style={styles.comparisonColumn} testID="parent-task-drafting-suggested">
+                <Text brand color="secondary" variant="caption">
+                  {t('taskNew.liveDraftSuggested')}
+                </Text>
+                <Text brand>{localize(liveDraftView.suggestion.title, locale)}</Text>
+                <Text brand>{localize(liveDraftView.suggestion.positiveAction, locale)}</Text>
+                <Text brand>{localize(liveDraftView.suggestion.whyItMatters, locale)}</Text>
+                {liveDraftView.suggestion.steps.map((step) => (
+                  <Text brand key={step.order}>
+                    {step.order}. {localize(step.text, locale)}
+                  </Text>
+                ))}
+                <Text brand>{localize(liveDraftView.suggestion.supportCue, locale)}</Text>
+              </View>
+              <View style={styles.comparisonActions}>
+                <Button brand onPress={onAcceptLiveDraft} testID="accept-parent-task-draft">
+                  {t('taskNew.liveDraftAccept')}
+                </Button>
+                <Button
+                  brand
+                  onPress={onKeepLiveDraft}
+                  testID="keep-parent-task-draft"
+                  variant="quiet"
+                >
+                  {t('taskNew.liveDraftKeep')}
+                </Button>
+                <Button
+                  brand
+                  onPress={onEditLiveDraft}
+                  testID="edit-parent-task-draft"
+                  variant="quiet"
+                >
+                  {t('taskNew.liveDraftEdit')}
+                </Button>
+              </View>
+            </View>
+          ) : null}
+        </View>
+      ) : null}
 
       <View style={styles.guideSection}>
         <View style={[styles.guideHeading, { flexDirection: logicalRowDirection(direction) }]}>
@@ -691,7 +868,12 @@ function EditStage({
               brand
               busy={busyIntent === intent}
               busyLabel={t('assistant.loading')}
-              disabled={busyIntent !== null || Boolean(suggestion)}
+              disabled={
+                busyIntent !== null ||
+                Boolean(suggestion) ||
+                liveDraftView.status === 'requesting' ||
+                Boolean(liveDraftView.suggestion)
+              }
               fullWidth={false}
               key={intent}
               onPress={() => void onAskGuide(intent)}
@@ -970,6 +1152,15 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     borderWidth: 1,
     borderColor: colors.secondaryFixedDim,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    backgroundColor: colors.secondaryTint,
+    padding: spacing.lg,
+  },
+  liveDraftSection: {
+    gap: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.mangroveTeal,
     borderRadius: r001Radii.xl,
     borderCurve: 'continuous',
     backgroundColor: colors.secondaryTint,

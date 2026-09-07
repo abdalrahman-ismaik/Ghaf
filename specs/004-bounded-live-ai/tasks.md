@@ -23,7 +23,7 @@ default-off and synthetic/fake-provider only; activation gates are outside this 
 - [x] T001 Validate and format Feature 004 design artifacts in `specs/004-bounded-live-ai/`
 - [x] T002 Record the active planning/runtime ownership boundaries in `TEAM_OWNERSHIP.md`
 - [x] T003 Update the managed Spec Kit plan pointer through `.specify/feature.json` and `AGENTS.md`
-- [x] T004 Add the Expo-compatible FileSystem dependency for explicit audio deletion in `package.json` and `package-lock.json`
+- [x] T004 Add Expo-compatible FileSystem for explicit audio deletion and Expo Crypto for random 128-bit request bindings in `package.json` and `package-lock.json`
 - [x] T005 Record the pre-runtime typecheck/lint/format/test/dependency baseline in `specs/004-bounded-live-ai/tasks.md`
 
 ---
@@ -63,21 +63,21 @@ and fail over for each reviewed archetype. Assert every non-copy authority field
 
 ### RED tests
 
-- [ ] T018 [P] [US1] Write request/suggestion schema and archetype allowlist tests in `tests/parent-task-drafting.test.ts`
-- [ ] T019 [P] [US1] Write exhaustive authority-mutation and deterministic mapper tests in `tests/parent-task-drafting-authority.test.ts`
-- [ ] T020 [P] [US1] Write HTTPS/token/timeout/status/schema/correlation adapter tests in `tests/gateway-parent-task-drafting.test.ts`
-- [ ] T021 [P] [US1] Write store stale/fallback/accept/keep/edit/zero-effects tests in `tests/parent-task-drafting-store.test.ts`
-- [ ] T022 [P] [US1] Write Parent composer flag/diff/origin/RTL/accessibility source tests in `tests/parent-task-drafting-ui.test.tsx`
+- [x] T018 [P] [US1] Write request/suggestion schema and archetype allowlist tests in `tests/parent-task-drafting.test.ts`
+- [x] T019 [P] [US1] Write exhaustive authority-mutation and deterministic mapper tests in `tests/parent-task-drafting-authority.test.ts`
+- [x] T020 [P] [US1] Write HTTPS/token/timeout/status/schema/correlation adapter tests in `tests/gateway-parent-task-drafting.test.ts`
+- [x] T021 [P] [US1] Write store stale/fallback/accept/keep/edit/zero-effects tests in `tests/parent-task-drafting-store.test.ts`
+- [x] T022 [P] [US1] Write Parent composer flag/diff/origin/RTL/accessibility source tests in `tests/parent-task-drafting-ui.test.tsx`
 
 ### GREEN implementation and integration
 
-- [ ] T023 [US1] Implement F4 closed schemas, authority snapshots, prepared result, and copy-only mapper in `src/features/assistants/parentTaskDrafting.ts`
-- [ ] T024 [US1] Implement the HTTPS F4 adapter with blocked-token and bounded-timeout behavior in `src/services/remote/GatewayParentTaskDraftingService.ts` and `src/services/remote/index.ts`
-- [ ] T025 [US1] Add the F4 Worker route, strict provider prompt/output validation, and operation policy in `workers/ghaf-ai-gateway/src/index.ts`
-- [ ] T026 [US1] Add F4 request revision, immutable snapshot, same-attempt fallback, accept/keep/edit, and reset actions in `src/state/usePrototypeStore.ts`
-- [ ] T027 [US1] Integrate curated F4 controls and retained-versus-suggested diff into `src/components/family-growth/ParentTaskComposer.tsx`
-- [ ] T028 [US1] Add equivalent Arabic/English F4 disclosure, control, origin, fallback, and error strings in `src/i18n/resources.ts`
-- [ ] T029 [US1] Refactor the F4 slice while keeping focused tests green in `src/features/assistants/parentTaskDrafting.ts`, `src/state/usePrototypeStore.ts`, and `src/components/family-growth/ParentTaskComposer.tsx`
+- [x] T023 [US1] Implement F4 closed schemas, authority snapshots, prepared result, and copy-only mapper in `src/features/assistants/parentTaskDrafting.ts`
+- [x] T024 [US1] Implement the HTTPS F4 adapter with blocked-token and bounded-timeout behavior in `src/services/remote/GatewayParentTaskDraftingService.ts` and `src/services/remote/index.ts`
+- [x] T025 [US1] Add the F4 Worker route, strict provider prompt/output validation, and operation policy in `workers/ghaf-ai-gateway/src/index.ts`
+- [x] T026 [US1] Add F4 request revision, immutable snapshot, same-attempt fallback, accept/keep/edit, and reset actions in `src/state/usePrototypeStore.ts`
+- [x] T027 [US1] Integrate curated F4 controls and retained-versus-suggested diff into `src/components/family-growth/ParentTaskComposer.tsx`
+- [x] T028 [US1] Add equivalent Arabic/English F4 disclosure, control, origin, fallback, and error strings in `src/i18n/resources.ts`
+- [x] T029 [US1] Refactor the F4 slice while keeping focused tests green in `src/features/assistants/parentTaskDrafting.ts`, `src/state/usePrototypeStore.ts`, and `src/components/family-growth/ParentTaskComposer.tsx`
 
 **Checkpoint**: F4 is independently testable, default off, and cannot mutate task authority or
 bypass Parent review.
@@ -276,6 +276,11 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   `expo-file-system@57.0.6`, `npx expo install --check` reported dependencies up to date, and
   `npm ls expo-file-system --depth=0` resolved the expected direct version. The npm audit summary
   still reports 14 pre-existing moderate findings; no automatic or breaking audit rewrite was run.
+- **Correlation dependency — PASSED (2026-09-07)**: The F4 UI exposed the missing secure random-ID
+  primitive before integration. Expo installed `expo-crypto@57.0.2`; `npx expo install --check`
+  reported dependencies up to date and `npm ls expo-crypto --depth=0` resolved the expected direct
+  version. Each explicit request now creates separate UUID request and binding values; no timestamp,
+  counter, or `Math.random()` is used in the app path.
 - **Foundation RED/GREEN — PASSED (2026-09-07)**: The two initial suites failed because the new
   flag and contract modules did not exist; the gateway security suite then failed on the missing
   security module. After implementation, four focused files passed 24 tests. Typecheck and
@@ -286,3 +291,15 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   or assigned capability secret. Worker source/config/README formatting passed. The Worker is
   explicitly non-deployed and still returns `BUDGET_BLOCKED` after authentication/capacity checks
   until story-specific handlers land.
+- **F4 RED/GREEN — PASSED (2026-09-07)**: Five focused suites were first RED for the missing
+  domain, adapter, store, and UI seams; the Worker route separately recorded 503/503 before its
+  handler landed. The final focused run passed five files and 25 tests with typecheck and
+  zero-warning lint. Evidence covers all four reviewed archetypes at the strict schema boundary,
+  prohibited output, whole-authority snapshot comparison and stale mutation rejection, HTTPS and
+  blocked-token behavior, 2.5-second no-retry timeout, closed live envelope, authenticated Worker
+  capacity release, same-attempt prepared fallback, accept/keep/edit, existing Parent review,
+  zero progression effects, independent default-off UI, RTL layout helpers, polite announcements,
+  truthful origin, and Arabic/English key parity. No provider or deployment ran.
+- **F4 full regression — PASSED (2026-09-07)**: Typecheck, zero-warning lint, formatting, Expo
+  dependency compatibility, Git whitespace, and the full 102-file / 1,165-test suite passed. This
+  does not change any external activation gate or constitute physical Android/provider evidence.

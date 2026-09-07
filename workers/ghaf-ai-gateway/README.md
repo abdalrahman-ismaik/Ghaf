@@ -1,9 +1,10 @@
 # Ghaf bounded AI reference gateway
 
 This directory is a default-off implementation and fake-provider test boundary for Feature 004.
-It is not deployable or approved for real Parent/Child content. The current shell authenticates
-one exact-scope, five-minute synthetic capability before reading a request body and then fails
-closed with `BUDGET_BLOCKED`; operation handlers are added only with their focused tests.
+It is not deployable or approved for real Parent/Child content. The gateway authenticates one
+exact-scope, five-minute synthetic capability before reading a request body. The Parent task-draft
+handler is implemented with fake-model tests; Child text and voice still fail closed with
+`BUDGET_BLOCKED` until their story-specific handlers and tests land.
 
 The Expo app does not mint capability tokens and contains no gateway/provider secret. A future
 trusted broker must issue the exact signed claims. The in-memory replay store exists only for local

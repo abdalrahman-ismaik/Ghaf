@@ -148,6 +148,24 @@ not deterministic deletion. Expo FileSystem is the platform-aligned module and d
 
 **Primary source**: [Expo FileSystem documentation](https://docs.expo.dev/versions/latest/sdk/filesystem/)
 
+## Decision 8A — Use Expo Crypto for correlation identifiers
+
+**Decision**: Add the Expo-SDK-compatible `expo-crypto` package and create each request ID and
+binding nonce with `Crypto.randomUUID()` at the explicit user action.
+
+**Rationale**: The approved boundary requires fresh random 128-bit URL-safe correlation values.
+The existing app had no cross-platform cryptographic random-ID dependency; timestamps, counters,
+and `Math.random()` would weaken the contract.
+
+**Alternatives considered**:
+
+- Combine a timestamp and counter: rejected because it is predictable and not 128-bit random.
+- Use `Math.random()`: rejected because it is not a cryptographic source.
+- Mint request IDs in the gateway: rejected because the app needs a local stale-request binding
+  before sending the request.
+
+**Primary source**: [Expo Crypto documentation](https://docs.expo.dev/versions/latest/sdk/crypto/)
+
 ## Decision 9 — Separate transcription from Coach generation
 
 **Decision**: A `VoiceTranscriptionService` receives one bounded ephemeral clip and returns

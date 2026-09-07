@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import type { DomainResult, LocalizedText, Task, TaskTemplate } from '../../models/familyGrowth';
+import { evaluateAssistantSafety } from '../assistants/policy';
 import { P0_RECYCLING_TEMPLATE, P0_SAFE_EQUIVALENT_TEMPLATE, TASK_TEMPLATES } from './demoContent';
 
 export const TASK_REFLECTION_MAX_LENGTH = 180;
@@ -258,6 +259,7 @@ const UNSUPERVISED_ARABIC_INSTRUCTION =
   /(?:اذهب|امش|احمل|خذ|تخلّص).{0,45}(?:وحدك|بنفسك|دون\s+شخص\s+بالغ)|اعبر\s+(?:ال)?طريق/iu;
 const P0_GUIDE_FIXTURE_ID = 'guide_recycling_refine_v1';
 const LIVE_P0_GUIDE_FIXTURE_ID = 'live_parent_guide_v1';
+const BOUNDED_PARENT_TASK_DRAFT_FIXTURE_ID = 'bounded_parent_task_draft_v1';
 const BOUNDED_P0_PARENT_ACTION_ENGLISH =
   /^sort\s+(?:only\s+)?(?:the\s+)?clean\s+(?:paper\s+and\s+plastic|recyclables?|materials?)(?:\s+(?:that\s+were\s+)?approved\s+by\s+an?\s+adult)?(?:,\s*(?:and\s+)?stop\s+(?:to\s+)?ask\s+an?\s+adult\s+when\s+unsure)?[.!]?$/iu;
 const BOUNDED_P0_PARENT_ACTION_ARABIC =
@@ -347,6 +349,39 @@ function sameStructuredValue(left: unknown, right: unknown): boolean {
   );
 }
 
+function isBoundedParentDraftCopy(template: TaskTemplate): boolean {
+  const copy = [
+    [template.title, 120],
+    [template.positiveAction, 240],
+    [template.whyItMatters, 360],
+    [template.definitionOfDone, 1_200],
+    [template.permittedHelp, 180],
+  ] as const;
+  if (
+    copy.some(([localized, maximum]) =>
+      [localized.ar, localized.en].some(
+        (value) => !value.trim() || Array.from(value).length > maximum,
+      ),
+    )
+  ) {
+    return false;
+  }
+  if (
+    !evaluateAssistantSafety({ audience: 'parent', texts: copy.map(([value]) => value) }).accepted
+  ) {
+    return false;
+  }
+  const comparable = {
+    ...template,
+    title: P0_RECYCLING_TEMPLATE.title,
+    positiveAction: P0_RECYCLING_TEMPLATE.positiveAction,
+    whyItMatters: P0_RECYCLING_TEMPLATE.whyItMatters,
+    definitionOfDone: P0_RECYCLING_TEMPLATE.definitionOfDone,
+    permittedHelp: P0_RECYCLING_TEMPLATE.permittedHelp,
+  };
+  return sameStructuredValue(comparable, P0_RECYCLING_TEMPLATE);
+}
+
 export function matchesCanonicalP0TaskContent(
   template: unknown,
   mode: 'exact_guide' | 'retained_parent_action',
@@ -412,8 +447,11 @@ export function validateTaskForReview(task: Task): DomainResult<Task> {
       task.acceptedGuideFixtureId === null
         ? !isBoundedRetainedP0Action(content.data.positiveAction) ||
           !matchesCanonicalP0TaskContent(content.data, 'retained_parent_action')
-        : ![P0_GUIDE_FIXTURE_ID, LIVE_P0_GUIDE_FIXTURE_ID].includes(task.acceptedGuideFixtureId) ||
-          !matchesCanonicalP0TaskContent(content.data, 'exact_guide')
+        : task.acceptedGuideFixtureId === BOUNDED_PARENT_TASK_DRAFT_FIXTURE_ID
+          ? !isBoundedParentDraftCopy(content.data)
+          : ![P0_GUIDE_FIXTURE_ID, LIVE_P0_GUIDE_FIXTURE_ID].includes(
+              task.acceptedGuideFixtureId,
+            ) || !matchesCanonicalP0TaskContent(content.data, 'exact_guide')
     ) {
       return unsafeTask(
         'The P0 recycling action must use the bounded Parent grammar or exact reviewed Guide action',
