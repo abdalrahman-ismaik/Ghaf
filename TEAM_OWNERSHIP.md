@@ -20,8 +20,15 @@ account, persistence, business authority, public discovery, or deployment.
 server-only switch is exactly `true`; no provider call, real Child data, public endpoint, judge
 setup, release activation, or production-readiness claim is authorized.
 
-**Status**: Active — exact files are reserved after the committed F4 slice; all unrelated and
-user-owned changes remain untouched.
+**Status**: Complete and released — commits `1704480`, `44cd73c`, `0b9535c`, `644009c`, and
+`e4fb1f3` contain the approved specification, pinned Worker-only SDK, exact two-tool adapter,
+shared bounded text operations, final Child text/voice gateway reconciliation, and cross-feature
+isolation evidence. The dedicated MCP suite passed 10 tests; the combined gateway suite passed 61
+tests; typecheck, lint, formatting, Expo dependency compatibility, Git whitespace, secret-pattern,
+export-isolation, and the full 117-file / 1,280-test regression passed. MCP remains exactly default
+off, the native app contains no MCP client/setup, judges do not connect, and no provider,
+deployment, real Child data/media, activation gate, unrelated file, or user-owned artifact was
+changed by this window.
 
 ## 2026-09-07 Feature 004 Planning and Implementation Window
 

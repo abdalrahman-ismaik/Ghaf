@@ -203,13 +203,13 @@ tools, invoke both with synthetic exact-scope credentials, and prove HTTPS parit
 disabled, legacy, unknown-tool/argument, replay, and scope-mismatch behavior.
 
 - [x] T073 [US5] Amend the approved specification, plan, research, data model, contract, quickstart, tasks, and ownership boundary for the exact minimal MCP scope in `specs/004-bounded-live-ai/` and `TEAM_OWNERSHIP.md`
-- [ ] T074 [US5] Pin the official MCP server package for the Worker-only boundary in `package.json` and `package-lock.json`
-- [ ] T075 [US5] Write RED discovery, disabled/legacy/header, tool-call parity, authorization-before-arguments, unknown-capability, and no-Expo-import tests in `tests/bounded-ai-mcp.test.ts`
-- [ ] T076 [US5] Extract shared Parent and Child text operation functions without changing HTTPS behavior in `workers/ghaf-ai-gateway/src/operations.ts` and `workers/ghaf-ai-gateway/src/index.ts`
-- [ ] T077 [US5] Implement the default-off stateless MCP handler with exactly two tools in `workers/ghaf-ai-gateway/src/mcp.ts` and route it from `workers/ghaf-ai-gateway/src/index.ts`
-- [ ] T078 [US5] Complete MCP structured-result/error parity, scope/replay, unsupported-capability, and source-isolation tests in `tests/bounded-ai-mcp.test.ts`
-- [ ] T079 [US5] Document local synthetic verification and truthful non-deployment/judge boundaries in `workers/ghaf-ai-gateway/README.md`
-- [ ] T080 [US5] Run focused and repository validation, record exact evidence here, and release the MCP reservation in `TEAM_OWNERSHIP.md`
+- [x] T074 [US5] Pin the official MCP server package for the Worker-only boundary in `package.json` and `package-lock.json`
+- [x] T075 [US5] Write RED discovery, disabled/legacy/header, tool-call parity, authorization-before-arguments, unknown-capability, and no-Expo-import tests in `tests/bounded-ai-mcp.test.ts`
+- [x] T076 [US5] Extract shared Parent and Child text operation functions without changing HTTPS behavior in `workers/ghaf-ai-gateway/src/operations.ts` and `workers/ghaf-ai-gateway/src/index.ts`
+- [x] T077 [US5] Implement the default-off stateless MCP handler with exactly two tools in `workers/ghaf-ai-gateway/src/mcp.ts` and route it from `workers/ghaf-ai-gateway/src/index.ts`
+- [x] T078 [US5] Complete MCP structured-result/error parity, scope/replay, unsupported-capability, and source-isolation tests in `tests/bounded-ai-mcp.test.ts`
+- [x] T079 [US5] Document local synthetic verification and truthful non-deployment/judge boundaries in `workers/ghaf-ai-gateway/README.md`
+- [x] T080 [US5] Run focused and repository validation, record exact evidence here, and release the MCP reservation in `TEAM_OWNERSHIP.md`
 
 **Checkpoint**: The adapter is locally testable, exact, and default off; the native app remains the
 only judge-facing surface and no external activation gate changes.
@@ -330,3 +330,30 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
 - **F4 full regression — PASSED (2026-09-07)**: Typecheck, zero-warning lint, formatting, Expo
   dependency compatibility, Git whitespace, and the full 102-file / 1,165-test suite passed. This
   does not change any external activation gate or constitute physical Android/provider evidence.
+- **Minimal MCP RED/GREEN — PASSED (2026-09-07)**: The initial test failed because the MCP module
+  did not exist; the router test then recorded the expected 404/403 mismatch before the default-off
+  guard and exact host/origin validation landed. The final dedicated MCP run passed one file and 10
+  tests. Evidence covers content-free discovery of exactly two read-only tools, strict closed
+  arguments, shared HTTPS-operation results, authorization and replay before inference, disabled
+  and exact-case switches, legacy/unknown capability rejection, safe errors, and absence of MCP
+  imports or setup wording in `app/` and `src/`.
+- **Combined gateway regression — PASSED (2026-09-07)**: The final Parent drafting, Child Coach,
+  voice transcription, gateway security, and MCP run passed five files and 61 tests. The voice
+  route stays HTTPS-only and is not advertised through MCP. It remeasures the complete multipart
+  request and audio, binds exact voice grant/notice claims, rejects off-task or unsafe transcripts,
+  zeroes transient byte buffers, and returns text-only deletion evidence.
+- **Repository validation — PASSED (2026-09-07)**: `npm run typecheck`, zero-warning
+  `npm run lint`, `npm run format:check`, `npx expo install --check`, Git whitespace checks, and the
+  full 117-file / 1,280-test suite passed. The pinned dependency resolves
+  `@modelcontextprotocol/server@2.0.0` with `@modelcontextprotocol/core@2.0.0`.
+- **Export and isolation evidence — PASSED WITH KNOWN WARNING (2026-09-07)**: Web and Android Expo
+  JavaScript exports completed with 39 static routes; Android produced its Hermes bundle and 94
+  assets. Web emitted the known `expo-file-system` unsupported-platform warning from the default-off
+  voice dependency. Scanning both exports found no MCP SDK, protocol, discovery, or tool markers,
+  and the scoped tracked-source secret-pattern scan found zero credential signatures.
+- **External gates — BLOCKED / NOT RUN (2026-09-07)**: No Worker or provider was deployed or
+  called, no real Child data or media was used, and MCP remains off unless its server switch is
+  exactly `true`. Judges use only the native app and do not connect an MCP client. Trusted
+  authentication/broker, shared replay and budget stores, provider/ZDR, privacy/legal,
+  safeguarding, Arabic/UAE human review, accessibility, incident response, deletion evidence,
+  physical Android, and judge rehearsal remain unchanged release gates.
