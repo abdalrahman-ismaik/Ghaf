@@ -10,6 +10,15 @@ function source(path: string): string {
 }
 
 describe('R002b nested screen system-inset hardening', () => {
+  it('registers the hardware Back listener only on Android', () => {
+    const shell = source('src/components/r002b/R002bNestedScreen.tsx');
+
+    expect(shell).toContain('BackHandler,');
+    expect(shell).toContain('Platform,');
+    expect(shell).toContain("if (Platform.OS !== 'android') return undefined;");
+    expect(shell).toContain("BackHandler.addEventListener('hardwareBackPress'");
+  });
+
   it('protects footerless content from the Android bottom system inset', () => {
     const shell = source('src/components/r002b/R002bNestedScreen.tsx');
 
