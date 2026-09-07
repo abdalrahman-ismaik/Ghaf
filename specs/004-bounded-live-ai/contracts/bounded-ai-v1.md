@@ -92,9 +92,11 @@ capability exists.
 
 Every tool call requires the same short-lived bearer capability as its HTTPS operation. The
 Worker maps the `Mcp-Name` routing header to an exact operation and completes origin, method,
-protocol, token, role, scope, subject/grant, replay, rate, concurrency, and budget checks before
-the SDK parses arguments or an AI binding is called. Missing/wrong routing metadata, unknown
-tools, unknown arguments, legacy requests, and scope mismatches fail closed with no echoed content.
+protocol, token, role, scope, and replay checks before the SDK parses arguments. The strict parsed
+request must then match the capability's subject/grant boundary before any AI binding is called;
+rate, concurrency, and budget controls also pass before inference. Missing/wrong routing metadata,
+unknown tools, unknown arguments, legacy requests, and scope mismatches fail closed with no echoed
+content.
 
 The MCP callbacks invoke the same operation functions, strict schemas, server-owned context,
 provider limits, timeout, post-validation, and safe error mapping as HTTPS. Results contain the

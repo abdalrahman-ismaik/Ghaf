@@ -379,9 +379,10 @@ disabled, legacy transport is used, the tool is unknown, or authorization scope 
 - **FR-045**: Each MCP tool MUST project the corresponding HTTPS operation's same closed input and
   output schemas and MUST call the same handler, prefilter, post-validator, timeout, and safe error
   mapping. MCP-specific prompts or duplicated policy logic are prohibited.
-- **FR-046**: Tool calls MUST verify the short-lived capability before parsing arguments or
-  inference and enforce exact operation, role, subject/grant, replay, rate, concurrency, and budget
-  controls. Content-free discovery MAY be available only while the MCP switch is enabled.
+- **FR-046**: Tool calls MUST verify the short-lived capability plus exact operation, role, and
+  replay status before parsing arguments; subject/grant binding, rate, concurrency, and budget
+  controls MUST all pass before inference. Content-free discovery MAY be available only while the
+  MCP switch is enabled.
 - **FR-047**: Tool results MUST return the existing structured DTO plus a short non-sensitive text
   summary, declare read-only/destructive-false/open-world-false hints, and create zero application
   or business-authority state.
