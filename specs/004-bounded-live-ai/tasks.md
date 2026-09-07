@@ -222,13 +222,13 @@ only judge-facing surface and no external activation gate changes.
 summary read as one coherent experience after Feature 004 integration, without changing any AI,
 task, consent, reward, or progression authority.
 
-- [ ] T081 Reserve the exact UI-only boundary and document the post-Feature-004 spatial thesis in `TEAM_OWNERSHIP.md`
-- [ ] T082 Write a RED hierarchy, origin, bilingual-copy, and Parent/Child authority test in `tests/ai-services-presentation-integration.test.tsx`
-- [ ] T083 Add one reusable prepared/live assistant identity header in `src/components/AssistantIdentity.tsx`
-- [ ] T084 Restructure profile recommendations and Parent Task Builder guidance in `src/components/access/AIProfilePreview.tsx` and `src/components/family-growth/ParentTaskComposer.tsx`
-- [ ] T085 Restructure the prepared Child Coach and Parent summary hierarchy in `app/child/task.tsx` and `src/components/family-growth/ParentPatternSummary.tsx`
-- [ ] T086 Add equivalent Arabic/English presentation copy in `src/i18n/resources.ts`
-- [ ] T087 Run focused tests, repository checks, one bounded visual pass, and record exact evidence here and in `TEAM_OWNERSHIP.md`
+- [x] T081 Reserve the exact UI-only boundary and document the post-Feature-004 spatial thesis in `TEAM_OWNERSHIP.md`
+- [x] T082 Write a RED hierarchy, origin, bilingual-copy, and Parent/Child authority test in `tests/ai-services-presentation-integration.test.tsx`
+- [x] T083 Add one reusable prepared/live assistant identity header in `src/components/AssistantIdentity.tsx`
+- [x] T084 Restructure profile recommendations and Parent Task Builder guidance in `src/components/access/AIProfilePreview.tsx` and `src/components/family-growth/ParentTaskComposer.tsx`
+- [x] T085 Restructure the prepared Child Coach and Parent summary hierarchy in `app/child/task.tsx` and `src/components/family-growth/ParentPatternSummary.tsx`
+- [x] T086 Add equivalent Arabic/English presentation copy in `src/i18n/resources.ts`
+- [x] T087 Run focused tests, repository checks, attempt one bounded visual pass, and record exact passed/blocked evidence here and in `TEAM_OWNERSHIP.md`
 
 **Checkpoint**: Prepared/live origin, capability purpose, bounded action, result, and human
 authority appear in that order; one primary action remains obvious; Feature 004 flags remain
@@ -409,3 +409,15 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   Android recording/TalkBack/process-death run occurred. Named privacy/legal, safeguarding,
   Arabic/UAE, accessibility, incident, provider, deletion, and human-rehearsal owners must still
   approve activation.
+- **AI Services 1–3 presentation integration — PASSED AUTOMATED / VISUAL BLOCKED (2026-09-07)**:
+  Commit `d56b896` unifies prepared/live identity and origin, separates profile support style from
+  suggested categories, restores one Task Builder title hierarchy, places the adult exit before
+  bounded Child help, reveals the prepared adult result instead of leaving it hidden, and orders
+  the Parent summary around observed facts and one next question. The six-test presentation
+  contract first failed RED, then passed; ten focused files / 81 tests and the full 119-file /
+  1,310-test suite passed. Typecheck, zero-warning lint, formatting, Git whitespace, and Expo
+  dependency checks passed. Fresh web export produced 39 routes; Android JavaScript export produced
+  one Hermes bundle and 94 assets. The Impeccable scan returned zero findings. Playwright browser
+  inspection is `BLOCKED` because Chromium lacks `libnss3` in the container and dependency
+  installation requires an unavailable sudo password; physical Android and named Arabic/
+  accessibility review remain `NOT RUN`.

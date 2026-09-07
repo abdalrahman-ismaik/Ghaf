@@ -77,8 +77,18 @@ make the task-bound Child Coach easier to scan, and structure the Parent summary
 facts and one next question. Preserve all Feature 004 flags, grants, provider boundaries, state,
 service contracts, progression authority, and default-off behavior unchanged.
 
-**Status**: Paused at the user's newer access request — existing UI-only edits remain protected
-and uncommitted. They are not owned, completed, or released by Feature 005.
+**Status**: Complete and released — commit `d56b896` adds the shared assistant identity/origin
+pattern and integrates the prepared profile helper, Parent Guide, prepared Child Coach, and Parent
+summary without changing Feature 004 flags, grants, store authority, providers, or gateway code.
+The new contract first failed all six intended hierarchy tests, then passed. Ten focused files /
+81 tests and the full 119-file / 1,310-test suite passed with typecheck, zero-warning lint,
+formatting, Git whitespace, and Expo dependency checks. Fresh web export produced 39 routes;
+Android JavaScript export produced one Hermes bundle and 94 assets. The Impeccable mechanical scan
+returned zero findings. Real-browser Arabic/English screenshot inspection is `BLOCKED`: Chromium
+could not start because this container lacks `libnss3`, and Playwright's dependency installer
+requires an unavailable sudo password. Physical Android and named human accessibility/Arabic
+review remain `NOT RUN`; source/export evidence does not substitute for them. User-owned worktree
+artifacts were preserved.
 
 ## 2026-09-07 Feature 004 Minimal MCP Adapter Window
 
