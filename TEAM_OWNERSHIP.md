@@ -29,7 +29,9 @@ prepared-default behavior, recommendation ordering, opt-out, and Parent authorit
 checks pass; direct live-provider, deployment, Android, and named-human evidence remains honestly
 `NOT RUN` or `BLOCKED`.
 
-**Status**: Active until the recorded implementation, validation, and evidence commits land.
+**Status**: Complete and released. AI Services 1–3 passed the recorded automated/source/export
+checks without activation. The Features 4/5 document is a non-authorizing prompt for a separate
+spec-first session; it owns no runtime boundary after this handoff.
 
 **Work period:** Feature 003 planning and implementation beginning 2026-08-26
 **Team size:** Three members

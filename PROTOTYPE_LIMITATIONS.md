@@ -1,5 +1,28 @@
 # Prototype Limitations
 
+## AI Services 1–3 integration boundary — 2026-09-07
+
+The app still runs the prepared deterministic Parent Guide, Child Coach, summary, age adaptation,
+media, and synthetic voice services by default. An optional HTTPS Parent Guide adapter and one
+Cloudflare Worker reference now exist in source, but no Worker deployment, real model response,
+trusted mobile token broker, production authentication, security assessment, or provider account
+configuration was performed. Worker tests use fake AI/rate-limit bindings and a synthetic token;
+they do not establish that a live service is available or safe for production. A gateway secret
+cannot be distributed in Expo, so the live primary must remain unconfigured until a separately
+approved trusted credential flow exists.
+
+The device-local profile helper now orders and labels Task Builder categories from only the saved
+curated age-band, interest, hobby, accessibility, support, and opt-in fields. It makes no provider
+call, stores no derived ranking, exposes no Child data outside the device, and cannot make a
+future-only template executable or approve a task. Invalid or opted-out inputs fail back to the
+catalog order.
+
+The reference gateway accepts only one synthetic Parent request. It is not general task or mission
+generation and exposes no live Parent summary, Child Coach, photo, voice, or media processing.
+Features 4 and 5 remain proposal-only work: general mission drafting is outside the active P0
+scope, and live Child Coach is explicitly prohibited until a separately approved safety/privacy/
+consent amendment and direct evidence exist.
+
 ## Onboarding prepared narration and ambience — 2026-09-07
 
 The Ghaf Guide introduction uses packaged prepared synthetic audio to read the exact visible Arabic

@@ -23,6 +23,30 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+## R003 AI Services 1–3 Integration — 2026-09-07
+
+The complete deterministic AI experience remains the competition default: bounded Parent Guide,
+task-scoped Child Coach, strengths-first Parent summary, age adapter, prepared image response,
+synthetic voice rehearsal, and the local prepared profile helper. The persisted curated Salem
+profile now feeds that helper into Task Builder, where at most two recommended categories move to
+the front and receive a prepared/local/fallible label. This is a convenience for the Parent; all
+non-P0 templates remain unavailable and the existing Parent review and approval lifecycle remains
+the only task authority.
+
+One optional live Parent Guide reference path is implemented for only the exact synthetic Salem
+`task_recycling_p0_v1` make-clearer request. Its injected HTTPS adapter validates the request and
+response, accepts only the canonical reviewed bilingual task fields, enforces a short timeout and
+no retry, and returns to the same prepared result on any failure. A reference Cloudflare Worker
+requires a secret, rate-limits before inference, restricts route/method/origin/body, requests strict
+structured output, and exposes no Child operation. The ordinary registry still selects the
+prepared provider, and this repository contains no mobile token broker or deployment evidence;
+therefore live activation remains blocked and cannot be demonstrated as live AI from this build.
+
+Broader AI mission generation and any live Child Coach are Features 4 and 5, not part of this
+amendment. Both require separate product approval. Live Child Coach additionally requires an
+approved child-safety, privacy, consent, age-band, data-governance, and evidence contract before
+runtime implementation.
+
 The R003 first-run presentation introduces Ghaf first, then tells one energetic six-moment story:
 Ghaf, Family as the team, Sustainability through small safe actions, bounded AI help for an
 approved task, permitted help before Parent confirmation, and permanent private symbolic Garden

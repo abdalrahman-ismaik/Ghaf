@@ -1,5 +1,44 @@
 # Ghaf Feature 003 Demo Runbook
 
+## R003 AI Services 1–3 Integration Record — 2026-09-07
+
+**Current classification:** implemented and automatically validated as a prepared-default
+integration; live deployment, browser presentation, Android, and named-human evidence remain
+blocked or unobserved.
+
+Complete the normal synthetic family setup with Salem's default curated profile, then open Parent
+Tasks and create a task. In Task Builder, Green Impact and Learning & Wellbeing should appear first
+and carry the prepared profile recommendation label. Read the adjacent disclosure: the ordering is
+local, may be wrong, and does not replace Parent review. Select another category to verify that its
+templates remain future-only, then return to the canonical Green Impact recycling task and finish
+the ordinary prepared Guide/review flow.
+
+Do not claim the optional gateway ran during this journey. The default registry uses the prepared
+provider and makes no request. Repository tests inject a synthetic credential and fake Worker
+bindings to exercise one exact Parent-only request plus denial/fallback cases. Until an approved
+Worker deployment and trusted mobile credential flow exist, describe this as an un-deployed
+reference boundary, not live AI evidence.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Focused live-boundary/profile regression | `PASSED` | 10 files / 203 tests, including 26 new gateway/Worker/profile cases |
+| Full repository verification | `PASSED automated` | typecheck, zero-warning lint, formatting, Git whitespace, and 93 files / 1,116 tests |
+| Production exports and public configuration | `PASSED automated` | 134-file / 39-route web export, 94-asset Android JavaScript export, mock service mode, and no public gateway credential |
+| HTTPS adapter, schemas, stale-safe store fallback, and exact Parent review | `PASSED automated` | synthetic injected service; canonical live result accepted, malformed result returns same-attempt prepared fixture |
+| Worker auth/rate/origin/body/path/method/no-store boundary | `PASSED automated/source` | fake Workers AI and rate-limit bindings only; no external request |
+| Prepared-default and Child separation | `PASSED automated/source` | independent prepared fallback remains registry default; gateway exposes no Child operation |
+| Profile recommendation order/opt-out/authority | `PASSED automated/source` | exact-once stable catalog plan, invalid-input rejection, bilingual label, non-P0 templates still disabled |
+| Worker deployment, real model call, and trusted mobile token broker | `BLOCKED / NOT RUN` | no approved deployment/account/credential-broker evidence |
+| Browser and physical Android presentation | `NOT RUN / BLOCKED` | no Playwright/browser runtime or attached Android target was available in this session |
+| Arabic/UAE, safeguarding, privacy/security, and accessibility review | `NOT RUN` | no named reviewer was available in this session |
+
+Expo's dependency checker reported the installed packages up to date using its local SDK map, but
+also warned that the result is less reliable because networking is disabled. Treat dependency
+registry freshness as `NOT RUN`; no dependency changed in this slice.
+
+The separate Features 4/5 handoff is planning input only. General AI mission drafting and live
+Child Coach remain unimplemented and unauthorized in the active P0 runtime.
+
 ## R003 Onboarding Image Perimeter Progress Record — 2026-09-07
 
 **Current classification:** locally validated presentation candidate; physical Android motion,

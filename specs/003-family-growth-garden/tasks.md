@@ -1489,3 +1489,44 @@ to the rounded image frame.
       the exact static step value, found no horizontal overflow, and reported zero console errors
       or warnings. Physical Android motion/TalkBack and named review remain `BLOCKED / NOT RUN`;
       `adb devices -l` returned no target.
+
+---
+
+## Phase 47: AI Services 1–3 Integration
+
+**Purpose**: Preserve and harden the complete deterministic AI path, prepare one authenticated
+default-off live Parent Guide transformation, and carry curated profile recommendations into Task
+Builder without weakening Parent authority or P0 reliability.
+
+- [x] T320 Re-read the active product/design/safety/architecture contract, audit every branch's AI
+      implementation, reserve the exact writer boundary, and amend spec/plan/tasks before behavior.
+- [x] T321 Write and observe focused RED tests for strict live Parent request/result validation,
+      HTTPS/authenticated adapter behavior, timeout/HTTP/non-JSON/schema/correlation/safety fallback,
+      prepared-default zero-fetch behavior, Worker authentication/rate/CORS/body/operation guards,
+      and no live Child operation.
+- [x] T322 Write and observe focused RED tests for deterministic profile-derived category ordering,
+      stable remainder order, exact-once categories, opt-out/invalid fallback, Task Builder labels,
+      and unchanged P0 executable/Parent-review authority.
+- [x] T323 Implement the strict live Parent Guide policy and fetch adapter with injected credential,
+      bounded abort timeout, no retry, exact canonical merge, live disclosure, and typed errors.
+- [x] T324 Implement the authenticated/rate-limited one-operation Cloudflare Worker reference,
+      strict structured output, configured CORS, bounded body, no-store response, no persistence,
+      and deterministic binding tests without deployment.
+- [x] T325 Separate registry primary/fallback authority, integrate live-result validation and
+      same-attempt prepared fallback in the existing store, and prove all deterministic Guide,
+      Coach, summary, age, voice, media, reset, and offline behavior remains the default.
+- [x] T326 Integrate the pure prepared profile recommendation plan into Parent Task Builder with
+      visible bilingual prepared/local/fallible explanation, no persisted derived state, and no
+      assignment or executable-template change.
+- [x] T327 Produce the professional Features 4/5 Codex handoff, run focused/full/static/config/
+      secret/route/Git checks, reconcile product/limitations/runbook/ownership, create cohesive
+      local commits, and leave deploy/live/native/human gates truthful without push or activation.
+
+**Evidence**: The initial focused RED run failed all three new files before the live modules and
+category-plan integration existed. Final focused validation passed 3 files / 26 tests; the wider
+assistant/profile/task batch passed 10 files / 203 tests; and full Vitest passed 93 files / 1,116
+tests. Typecheck, zero-warning Expo lint, Prettier check, Git whitespace, source secret/Child-route/
+app-route scans, Expo public config, a 134-file / 39-route web export, and an Android JavaScript
+export with 94 assets passed. Expo dependency validation used only its local SDK map and therefore
+does not prove online registry freshness. No live gateway/model/deployment/token broker, browser,
+physical Android device, or named-human review ran; those gates remain `BLOCKED` or `NOT RUN`.
