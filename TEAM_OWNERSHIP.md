@@ -1,5 +1,35 @@
 # Team Ownership
 
+## 2026-09-07 Feature 005 Remembered Device Access Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/005-remembered-device-access/**`.
+
+**Runtime reservation**: `src/models/deviceAccess.ts`,
+`src/features/access/{childAccess.ts,parentOnboarding/controller.ts,rememberedDeviceAccess.ts}`,
+`src/services/{index.ts,local/index.ts,local/deviceAccessRepository.ts}`,
+`src/state/usePrototypeStore.ts`, `src/components/access/{index.ts,RememberDeviceChoice.tsx}`,
+`app/access/parent/{sign-in.tsx,verification.tsx}`, `app/child/{index.ts,settings.tsx,task.tsx}`,
+`app/{garden.tsx,circle.tsx}`,
+`src/i18n/resources.ts`, `tests/device-remembered-access.test.tsx`, and the narrowly scoped
+truthful-boundary updates in `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Add an explicit Parent remember-this-device choice and automatic device-local Child
+return after approved pairing. One app installation remembers at most one primary role/profile.
+An active Parent must explicitly sign out before Child access on the same installation. A Child
+may start temporary Parent access without unpairing; Parent sign-out then restores the same paired
+Child. Persist only a validated local device-affinity marker, never a verification code, password,
+session token, task, reward, media, or private assistant content. Preserve deterministic offline
+reset and label the behavior as synthetic prototype continuity, not production authentication,
+secure device trust, account sync, or multi-device account infrastructure.
+
+**Status**: Active — specification, TDD, implementation, bilingual presentation, regression, and
+truthful demo evidence are in progress. The prior AI Services presentation worktree edits remain
+protected and are not part of this window.
+
 ## 2026-09-07 AI Services 1–3 Presentation Integration Window
 
 **Owner and only writer**: `/root`
@@ -17,8 +47,8 @@ make the task-bound Child Coach easier to scan, and structure the Parent summary
 facts and one next question. Preserve all Feature 004 flags, grants, provider boundaries, state,
 service contracts, progression authority, and default-off behavior unchanged.
 
-**Status**: Active — UI-only reservation held. TDD, bilingual parity, RTL/LTR, long-label,
-accessibility, focused regression, full repository, and bounded visual evidence are pending.
+**Status**: Paused at the user's newer access request — existing UI-only edits remain protected
+and uncommitted. They are not owned, completed, or released by Feature 005.
 
 ## 2026-09-07 Feature 004 Minimal MCP Adapter Window
 
