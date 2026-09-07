@@ -1,6 +1,7 @@
 import { createFeature003ServiceRegistry } from './mock';
 import type { Feature003ServiceRegistry } from './interfaces';
 import {
+  createAmbientAudioPreferencesRepository,
   createDeviceAccessRepository,
   createLocalFamilyRepository,
   deviceLocalStorage,
@@ -84,6 +85,7 @@ export {
 } from './mock/boundedAiFixtures';
 export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 export {
+  createAmbientAudioPreferencesRepository,
   createLocalFamilyRepository,
   createDeviceAccessRepository,
   createMemoryLocalKeyValueStorage,
@@ -95,10 +97,12 @@ export {
 
 // Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
 export const serviceRegistry: Feature003ServiceRegistry & {
+  readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
 } = {
   ...createFeature003ServiceRegistry(),
+  ambientAudioPreferences: createAmbientAudioPreferencesRepository(deviceLocalStorage),
   deviceAccess: createDeviceAccessRepository(deviceLocalStorage),
   localFamily: createLocalFamilyRepository(deviceLocalStorage),
 };

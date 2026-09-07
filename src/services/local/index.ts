@@ -1,10 +1,15 @@
 export {
+  createAmbientAudioPreferencesRepository,
+  type AmbientAudioPreferencesRepository,
+} from './audioPreferencesRepository';
+export {
   createDeviceAccessRepository,
   type DeviceAccessRepository,
 } from './deviceAccessRepository';
 export { createLocalFamilyRepository, type LocalFamilyRepository } from './repository';
 export { createMemoryLocalKeyValueStorage, deviceLocalStorage } from './storage';
 export { DEVICE_ACCESS_STORAGE_KEY } from '../../models/deviceAccess';
+export { AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY } from '../../models/audioPreferences';
 export {
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,

@@ -139,6 +139,7 @@ import type {
   TemporaryParentAccess,
 } from '../models/deviceAccess';
 import type { LocalFamilyRecord, LocalFamilyView } from '../models/localFamily';
+import type { AmbientAudioPreferenceView } from '../models/audioPreferences';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import {
   parentTaskArchetypeSchema,
@@ -306,6 +307,16 @@ function restoreInitialLocalFamily(): LocalFamilyView {
 }
 
 const initialLocalFamily = restoreInitialLocalFamily();
+const initialAmbientAudioPreference: AmbientAudioPreferenceView = (() => {
+  const read = serviceRegistry.ambientAudioPreferences.read();
+  if (!read.ok) return { enabled: false, status: 'unavailable', source: 'safe_fallback' };
+  if (!read.data) return { enabled: true, status: 'ready', source: 'default' };
+  return {
+    enabled: read.data.ambientSoundEnabled,
+    status: 'ready',
+    source: 'stored',
+  };
+})();
 const initialRememberedDeviceAccess = (() => {
   const read = serviceRegistry.deviceAccess.read();
   if (!read.ok) {
@@ -400,6 +411,7 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly ambientAudioPreference: AmbientAudioPreferenceView;
   readonly activeExperience: 'signed_out' | 'parent' | 'child';
   readonly childAccess: ChildAccessView;
   readonly deviceAccess: DeviceAccessView;
@@ -494,6 +506,7 @@ export interface PrototypeStoreState extends PrototypeSession {
     readonly freshConsentConfirmed: boolean;
   }) => ServiceResult<SharedGrowthParticipationActionResult>;
   readonly setLocale: (value: unknown) => void;
+  readonly setAmbientSoundEnabled: (enabled: boolean) => ServiceResult<boolean>;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
@@ -1210,6 +1223,7 @@ function validateGuideSuggestion(
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
+  ambientAudioPreference: initialAmbientAudioPreference,
   activeExperience: initialRememberedDeviceAccess.activeExperience,
   activeChildId:
     initialRememberedDeviceAccess.activeChildId ?? initialPrototypeSession.activeChildId,
@@ -2044,6 +2058,19 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     });
   },
 
+  setAmbientSoundEnabled: (enabled) => {
+    const saved = serviceRegistry.ambientAudioPreferences.save(enabled);
+    if (!saved.ok) return saved;
+    set({
+      ambientAudioPreference: {
+        enabled: saved.data.ambientSoundEnabled,
+        status: 'ready',
+        source: 'stored',
+      },
+    });
+    return success(saved.data.ambientSoundEnabled);
+  },
+
   setRole: (role) => set({ role }),
 
   switchRole: () => set((state) => ({ role: state.role === 'parent' ? 'child' : 'parent' })),
@@ -2078,6 +2105,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!deviceAccessReset.ok) return { ok: false, error: deviceAccessReset.error };
     const localReset = serviceRegistry.localFamily.clear();
     if (!localReset.ok) return { ok: false, error: localReset.error };
+    const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
+    if (!ambientAudioReset.ok) return { ok: false, error: ambientAudioReset.error };
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     const nextGrowthJourney = createGrowthJourneyRuntime(
       reset.session,
@@ -2100,6 +2129,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     releaseLiveVoiceCapture(state.liveVoiceCapture);
     set((state) => ({
       ...reset.session,
+      ambientAudioPreference: { enabled: true, status: 'ready', source: 'default' },
       activeExperience: 'signed_out',
       childAccess: childAccessController.reset(),
       deviceAccess: deviceAccessView(null),
