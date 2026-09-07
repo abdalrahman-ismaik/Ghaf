@@ -3,7 +3,13 @@ import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AccessHeader, AccessScreen, AccessTextField, StatusBanner } from '@/components/access';
+import {
+  AccessHeader,
+  AccessScreen,
+  AccessTextField,
+  ParentAccessPortrait,
+  StatusBanner,
+} from '@/components/access';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -104,6 +110,8 @@ export default function ParentSignInScreen() {
       keyboardAware
       testID="parent-sign-in-screen"
     >
+      <ParentAccessPortrait />
+
       <View style={styles.intro}>
         <Text
           align="center"

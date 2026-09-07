@@ -9,6 +9,7 @@ import {
   AccessScreen,
   GhafIcon,
   OtpInput,
+  ParentAccessPortrait,
   RememberDeviceChoice,
   StatusBanner,
 } from '@/components/access';
@@ -206,14 +207,9 @@ export default function ParentVerificationScreen() {
       keyboardAware
       testID="parent-verification-screen"
     >
+      <ParentAccessPortrait compact />
+
       <View style={styles.intro}>
-        <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={styles.iconPlate}
-        >
-          <GhafIcon direction={direction} name="dialpad" size={44} />
-        </View>
         <Text
           align="center"
           brand
@@ -322,15 +318,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     gap: spacing.md,
-  },
-  iconPlate: {
-    width: 80,
-    height: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.xs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
   },
   secondaryActions: {
     alignItems: 'center',

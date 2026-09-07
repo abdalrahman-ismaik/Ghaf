@@ -1,4 +1,5 @@
 import { officialGhafRasterLogoSource } from '@/components/brand/GhafRasterLogo';
+import { parentAccessPortraitSource } from '@/components/access/parentAccessAssets';
 import {
   accessFieldArtworkSource,
   artworkSources,
@@ -58,7 +59,7 @@ export interface SectionImageLoadResult {
 }
 
 export const sectionImageSources: Readonly<Record<DynamicImageSection, readonly AssetModule[]>> = {
-  'parent-access': botanicalAvatarImageSources,
+  'parent-access': [parentAccessPortraitSource, ...botanicalAvatarImageSources],
   'child-access': botanicalAvatarImageSources,
   'parent-experience': [accessFieldArtworkSource],
   'child-experience': [accessFieldArtworkSource, taskArtworkSource],

@@ -7,11 +7,11 @@ import {
   AccessHeader,
   AccessScreen,
   AccessTextField,
-  GhafIcon,
+  ParentAccessPortrait,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { colors, layout, r001Radii, spacing } from '@/design/tokens';
+import { colors, layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentSignUpScreen() {
@@ -99,14 +99,9 @@ export default function ParentSignUpScreen() {
       keyboardAware
       testID="parent-sign-up-screen"
     >
+      <ParentAccessPortrait compact />
+
       <View style={styles.intro}>
-        <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={styles.iconPlate}
-        >
-          <GhafIcon direction={direction} name="family" size={32} />
-        </View>
         <Text
           align="center"
           brand
@@ -217,14 +212,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     gap: spacing.xs,
-  },
-  iconPlate: {
-    width: spacing.massive,
-    height: spacing.massive,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
   },
   form: { width: '100%', gap: spacing.sm },
   returningFamilyGroup: {
