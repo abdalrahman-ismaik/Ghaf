@@ -1,5 +1,29 @@
 # Team Ownership
 
+## 2026-09-08 Feature 007 Family Plus Capacity Preview Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the optional agent-context update, and
+`specs/007-family-plus-capacity/**`.
+
+**Runtime reservation**: `app/access/parent/family-basics.tsx`,
+`src/components/access/FamilyPlusPreview.tsx`, `src/features/family-plan/**`,
+`src/i18n/resources.ts`, `tests/family-plus-capacity.test.tsx`,
+`docs/GHAF_PLUS_COMMERCIAL_CASE.md`, and narrowly scoped truthful product/design/evidence updates
+in `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Add a Parent-only Ghaf Plus household-capacity offer at the family-creation decision
+point. Keep the complete one-or-two-Child local prototype journey free and unchanged; present a
+clearly locked 3–6-Child future plan with proposed AED pricing, one-household value, no ads or
+per-Child fee, and an explicit no-purchase prototype disclosure. Do not add billing, entitlement,
+payment, analytics, new Child IDs, partial profiles, Child-facing upsell, or any Seed, task,
+Garden, League, Reward, AI, safety, accessibility, privacy, or reset advantage.
+
+**Status**: In progress — specification, commercial research, TDD implementation, bilingual UI,
+and evidence are reserved.
+
 ## 2026-09-07 Natural Ambient Audio Window
 
 **Owner and only writer**: `/root`
