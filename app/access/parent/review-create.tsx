@@ -46,11 +46,13 @@ export default function ReviewCreateScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const pendingFamilyCreation = usePrototypeStore((state) => state.pendingFamilyCreation);
   const completeParentOnboarding = usePrototypeStore((state) => state.completeParentOnboarding);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const completionPending = useRef(false);
   const successOpen = pathname === '/access/parent/family-created-success';
+  const replacingFamily = pendingFamilyCreation === 'replacement';
 
   const draft = parentOnboarding.draft;
   const configuredChildren = draft.children.slice(0, draft.childCount);
@@ -202,6 +204,15 @@ export default function ReviewCreateScreen() {
           language={locale}
           message={t('access.states.localFallback')}
           title={t('access.states.offline')}
+          tone="offline"
+        />
+      ) : null}
+      {replacingFamily ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.review.replacementReview')}
+          title={t('access.signUp.replacementTitle')}
           tone="offline"
         />
       ) : null}
@@ -375,7 +386,7 @@ export default function ReviewCreateScreen() {
           size="regular"
           testID="create-family-button"
         >
-          {t('access.review.create')}
+          {t(replacingFamily ? 'access.review.replaceFamily' : 'access.review.create')}
         </PrimaryButton>
         <SecondaryButton
           brand

@@ -115,9 +115,7 @@ describe('R003 returning-family route and presentation contract', () => {
     expect(verification).toContain("parentOnboarding.status !== 'verified'");
     expect(verification).toContain('!parentOnboarding.completionReceipt');
     expect(verification).toContain('completeParentOnboarding()');
-    expect(verification).toContain(
-      'if (!isCreateFamilyFlow && parentOnboarding.completionReceipt)',
-    );
+    expect(verification).toContain('if (!isCreateFamilyFlow && result.data.completionReceipt)');
     expect(verification).toContain('return <Redirect href={entryHref} />');
     expect(verification).not.toContain(
       'parentOnboarding.status === \'verified\' && !parentOnboarding.completionReceipt) {\n    return <Redirect href="/access/parent/family-basics" />',

@@ -21,12 +21,18 @@ export default function ParentSignUpScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const pendingFamilyCreation = usePrototypeStore((state) => state.pendingFamilyCreation);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const requestParentVerification = usePrototypeStore((state) => state.requestParentVerification);
+  const requestFamilyReplacementVerification = usePrototypeStore(
+    (state) => state.requestFamilyReplacementVerification,
+  );
   const [identifier, setIdentifier] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const networkAvailable = preview !== 'offline';
+  const isReplacingFamily = Boolean(localFamily.record && parentOnboarding.completionReceipt);
   const verificationHref =
     preview === 'offline'
       ? '/access/parent/verification?flow=create-family&preview=offline'
@@ -55,7 +61,10 @@ export default function ParentSignUpScreen() {
     setBusy(true);
     setError(null);
     await Promise.resolve();
-    const result = requestParentVerification({ identifier, networkAvailable });
+    const requestVerification = isReplacingFamily
+      ? requestFamilyReplacementVerification
+      : requestParentVerification;
+    const result = requestVerification({ identifier, networkAvailable });
     if (!result.ok) {
       setError(
         result.error.code === 'INVALID_INPUT'
@@ -71,14 +80,18 @@ export default function ParentSignUpScreen() {
   if (parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href={activeExperience === 'parent' ? '/parent' : '/'} />;
   }
-  if (parentOnboarding.completionReceipt) {
-    return <Redirect href="/access/parent/sign-in" />;
-  }
   if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
     return <Redirect href={verificationHref} />;
   }
   if (parentOnboarding.status === 'verified') {
-    return <Redirect href="/access/parent/family-basics" />;
+    if (pendingFamilyCreation === 'replacement' && parentOnboarding.completionReceipt) {
+      return <Redirect href={verificationHref} />;
+    }
+    return parentOnboarding.completionReceipt ? (
+      <Redirect href="/access/parent/sign-in" />
+    ) : (
+      <Redirect href="/access/parent/family-basics" />
+    );
   }
 
   return (
@@ -134,6 +147,16 @@ export default function ParentSignUpScreen() {
         />
       ) : null}
 
+      {isReplacingFamily ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.signUp.replacementBody')}
+          title={t('access.signUp.replacementTitle')}
+          tone="offline"
+        />
+      ) : null}
+
       <View style={styles.form}>
         <AccessTextField
           accessibilityHint={t('access.signIn.identifierExample')}
@@ -168,7 +191,7 @@ export default function ParentSignUpScreen() {
           size="regular"
           testID="request-parent-sign-up-code-button"
         >
-          {t('access.signUp.action')}
+          {t(isReplacingFamily ? 'access.signUp.replacementAction' : 'access.signUp.action')}
         </Button>
       </View>
 

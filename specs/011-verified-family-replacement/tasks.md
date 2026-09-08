@@ -24,13 +24,13 @@ runtime source, then GREEN before continuing.
 
 **Purpose**: Prove the missing entry and unsafe-transition gaps before implementation.
 
-- [ ] T003 Write RED source/store tests for always-visible entry, separate replacement intent,
+- [x] T003 Write RED source/store tests for always-visible entry, separate replacement intent,
       wrong-code/cancel preservation, verified draft staging, failed-save recovery, final reset, and
       returning sign-in isolation in `tests/family-replacement-flow.test.ts`
-- [ ] T004 Write RED controller tests for reversible receipt/draft backup, guarded staging,
+- [x] T004 Write RED controller tests for reversible receipt/draft backup, guarded staging,
       cancellation restoration, reset cleanup, and successful backup disposal in
       `tests/parent-onboarding-controller.test.ts`
-- [ ] T005 Run both Feature 011 tests alone, confirm failures correspond to missing behavior, and
+- [x] T005 Run both Feature 011 tests alone, confirm failures correspond to missing behavior, and
       record the RED command/result in `specs/011-verified-family-replacement/quickstart.md`
 
 **Checkpoint**: Missing behavior is captured without changing runtime code.
@@ -44,13 +44,13 @@ runtime source, then GREEN before continuing.
 **Independent Test**: With and without an existing local family, open Parent sign-in and reach the
 correct identifier screen without requesting verification or changing the saved family.
 
-- [ ] T006 [US1] Remove the completion-receipt visibility gate while preserving action hierarchy,
+- [x] T006 [US1] Remove the completion-receipt visibility gate while preserving action hierarchy,
       busy state, offline query, and 48dp behavior in `app/access/parent/sign-in.tsx`
-- [ ] T007 [US1] Allow existing-family entry, select the closed fresh/replacement command, and show
+- [x] T007 [US1] Allow existing-family entry, select the closed fresh/replacement command, and show
       a preservation notice with an explicit continuation label in `app/access/parent/sign-up.tsx`
-- [ ] T008 [US1] Add equivalent Arabic/English entry, preservation, and replacement-action resources
+- [x] T008 [US1] Add equivalent Arabic/English entry, preservation, and replacement-action resources
       in `src/i18n/resources.ts`
-- [ ] T009 [US1] Run the US1 source/localization cases GREEN in
+- [x] T009 [US1] Run the US1 source/localization cases GREEN in
       `tests/family-replacement-flow.test.ts` and relevant existing access tests
 
 **Checkpoint**: The requested action and identifier step work without changing the current family.
@@ -64,13 +64,13 @@ correct identifier screen without requesting verification or changing the saved 
 **Independent Test**: Wrong code and Back preserve the old family; accepted code opens Family Basics;
 cancelling from setup restores the old receipt and returning sign-in.
 
-- [ ] T010 [US2] Add guarded begin/restore transitions and transient receipt/draft backup to
+- [x] T010 [US2] Add guarded begin/restore transitions and transient receipt/draft backup to
       `src/features/access/parentOnboarding/controller.ts`
-- [ ] T011 [US2] Add closed pending-creation intent, replacement verification request, guarded begin,
+- [x] T011 [US2] Add closed pending-creation intent, replacement verification request, guarded begin,
       and cancel/reset cleanup to `src/state/usePrototypeStore.ts`
-- [ ] T012 [US2] Route accepted replacement verification into the guarded begin command and preserve
+- [x] T012 [US2] Route accepted replacement verification into the guarded begin command and preserve
       direct/deep-link fail-closed behavior in `app/access/parent/verification.tsx`
-- [ ] T013 [US2] Run the controller and reversible setup cases GREEN in
+- [x] T013 [US2] Run the controller and reversible setup cases GREEN in
       `tests/parent-onboarding-controller.test.ts` and `tests/family-replacement-flow.test.ts`
 
 **Checkpoint**: Verification precedes setup, and no pre-review exit deletes the current family.
@@ -84,12 +84,12 @@ cancelling from setup restores the old receipt and returning sign-in.
 **Independent Test**: A successful final action activates only the new family at canonical runtime
 state; an injected storage failure preserves only the old family and permits safe retry/cancel.
 
-- [ ] T014 [US3] Extend `completeParentOnboarding` with validated replacement save, best-effort
+- [x] T014 [US3] Extend `completeParentOnboarding` with validated replacement save, best-effort
       rollback, prior-household runtime reset, new Parent activation, and device-preference
       preservation in `src/state/usePrototypeStore.ts`
-- [ ] T015 [US3] Repeat the replacement consequence and use a replacement-specific primary action
+- [x] T015 [US3] Repeat the replacement consequence and use a replacement-specific primary action
       only for the staged replacement path in `app/access/parent/review-create.tsx`
-- [ ] T016 [US3] Run successful replacement, injected-save-failure, reset, pairing, permissions,
+- [x] T016 [US3] Run successful replacement, injected-save-failure, reset, pairing, permissions,
       assistant state, and returning-identifier cases GREEN in
       `tests/family-replacement-flow.test.ts`
 
@@ -101,7 +101,7 @@ state; an injected storage failure preserves only the old family and permits saf
 
 **Purpose**: Prove regressions, presentation, truthfulness, and integration readiness.
 
-- [ ] T017 Run the focused command from `specs/011-verified-family-replacement/quickstart.md`, then
+- [x] T017 Run the focused command from `specs/011-verified-family-replacement/quickstart.md`, then
       `npm run typecheck`, `npm run lint`, `npm run format:check`, and `git diff --check`
 - [ ] T018 Run `npm test`, dependency alignment, 39-route inventory, web export, and Android
       JavaScript export; distinguish pre-existing dependency drift from Feature 011 failures

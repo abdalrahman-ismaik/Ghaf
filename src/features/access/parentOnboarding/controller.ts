@@ -126,6 +126,8 @@ export class ParentOnboardingController {
   private draft = createInitialParentOnboardingDraft();
   private parentSession: ParentAccessSession | null = null;
   private completionReceipt: ParentOnboardingCompletionReceipt | null = null;
+  private replacementReceiptBackup: ParentOnboardingCompletionReceipt | null = null;
+  private replacementDraftBackup: ParentOnboardingDraft | null = null;
   private verificationAttempt = 0;
   private sessionGeneration = 0;
 
@@ -166,6 +168,9 @@ export class ParentOnboardingController {
   }): ServiceResult<ParentOnboardingView> {
     if (this.status === 'authenticated_parent') {
       return failure('INVALID_TRANSITION', 'The synthetic Parent session is already active');
+    }
+    if (this.replacementReceiptBackup || this.replacementDraftBackup) {
+      return failure('INVALID_TRANSITION', 'Cancel the staged family replacement before retrying');
     }
     const normalized = normalizeParentIdentifier(input.identifier);
     if (!normalized.ok) return { ok: false, error: normalized.error };
@@ -232,7 +237,30 @@ export class ParentOnboardingController {
       return failure('INVALID_TRANSITION', 'Reset the active synthetic Parent session instead');
     }
     this.verificationAttempt += 1;
+    this.restoreReplacementBackup();
     this.clearVerification();
+    return success(this.getView());
+  }
+
+  beginVerifiedFamilyReplacement(): ServiceResult<ParentOnboardingView> {
+    if (
+      this.status !== 'verified' ||
+      !this.completionReceipt ||
+      this.parentSession ||
+      !this.normalizedIdentifier ||
+      this.replacementReceiptBackup ||
+      this.replacementDraftBackup
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'Verified access to the current local family is required before replacement',
+      );
+    }
+
+    this.replacementReceiptBackup = cloneReceipt(this.completionReceipt);
+    this.replacementDraftBackup = cloneDraft(this.draft);
+    this.completionReceipt = null;
+    this.draft = createInitialParentOnboardingDraft();
     return success(this.getView());
   }
 
@@ -382,6 +410,8 @@ export class ParentOnboardingController {
       capabilityTruth: CAPABILITY_TRUTH,
     };
     this.status = 'authenticated_parent';
+    this.replacementReceiptBackup = null;
+    this.replacementDraftBackup = null;
     return success(cloneReceipt(this.completionReceipt), {
       fixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
     });
@@ -586,6 +616,7 @@ export class ParentOnboardingController {
     }
 
     this.parentSession = null;
+    this.restoreReplacementBackup();
     this.clearVerification();
     return success(this.getView());
   }
@@ -705,6 +736,8 @@ export class ParentOnboardingController {
 
     this.parentSession = null;
     this.completionReceipt = null;
+    this.replacementReceiptBackup = null;
+    this.replacementDraftBackup = null;
     this.draft = createInitialParentOnboardingDraft();
     this.offlineFallbackUsed = false;
     this.clearVerification();
@@ -718,6 +751,14 @@ export class ParentOnboardingController {
     this.maskedDestination = null;
     this.delivery = null;
     this.offlineFallbackUsed = false;
+  }
+
+  private restoreReplacementBackup(): void {
+    if (!this.replacementReceiptBackup || !this.replacementDraftBackup) return;
+    this.completionReceipt = cloneReceipt(this.replacementReceiptBackup);
+    this.draft = cloneDraft(this.replacementDraftBackup);
+    this.replacementReceiptBackup = null;
+    this.replacementDraftBackup = null;
   }
 
   private isConfiguredChild(childId: SyntheticChildId): boolean {

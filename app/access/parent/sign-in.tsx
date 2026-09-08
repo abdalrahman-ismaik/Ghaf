@@ -184,23 +184,21 @@ export default function ParentSignInScreen() {
           </Button>
         </View>
 
-        {parentOnboarding.completionReceipt ? null : (
-          <View style={styles.createFamilyGroup}>
-            <Button
-              brand
-              direction={direction}
-              disabled={busy}
-              language={locale}
-              onPress={() => router.push(signUpHref)}
-              size="regular"
-              style={styles.createFamilyButton}
-              testID="create-family-button"
-              variant="quiet"
-            >
-              {t('access.signIn.createFamily')}
-            </Button>
-          </View>
-        )}
+        <View style={styles.createFamilyGroup}>
+          <Button
+            brand
+            direction={direction}
+            disabled={busy}
+            language={locale}
+            onPress={() => router.push(signUpHref)}
+            size="regular"
+            style={styles.createFamilyButton}
+            testID="create-family-button"
+            variant="quiet"
+          >
+            {t('access.signIn.createFamily')}
+          </Button>
+        </View>
       </View>
     </AccessScreen>
   );

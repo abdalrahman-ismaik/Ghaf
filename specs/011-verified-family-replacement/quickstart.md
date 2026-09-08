@@ -19,6 +19,13 @@ git diff --check
 Expected result: all focused behavior and source contracts pass; no TypeScript, lint, formatting, or
 whitespace error is reported.
 
+Initial RED run on 2026-09-08:
+
+- Command: `npx vitest run tests/family-replacement-flow.test.ts tests/parent-onboarding-controller.test.ts --maxWorkers=1`
+- Result: expected RED, 2 files failed with 8 missing-feature failures and 28 surrounding controller
+  tests passing. Failures covered the hidden action, absent bilingual resources, absent closed store
+  commands, and absent reversible controller staging.
+
 ## Successful replacement journey
 
 1. Create the existing synthetic family using `parent@example.com` and operator code `424242`.

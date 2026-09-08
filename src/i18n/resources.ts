@@ -128,6 +128,10 @@ export const resources = {
           title: 'إعداد عائلة جديدة',
           body: 'أدخل بريدك الإلكتروني أو رقم هاتفك، ثم أضف أفراد عائلتك.',
           action: 'متابعة إعداد العائلة',
+          replacementTitle: 'ستبقى عائلتك الحالية حتى الخطوة الأخيرة',
+          replacementBody:
+            'يحفظ هذا الجهاز عائلة واحدة. بعد التحقق وإكمال البيانات، ستختار بوضوح إن كنت تريد استبدال العائلة الحالية ومسح تقدمها وربط أجهزتها.',
+          replacementAction: 'متابعة التحقق لعائلة جديدة',
           loading: 'جارٍ تجهيز الخطوة التالية…',
           returningPrompt: 'لديك عائلة بالفعل؟',
           returnToSignIn: 'العودة إلى تسجيل دخول وليّ الأمر',
@@ -318,6 +322,9 @@ export const resources = {
           privateLeague: 'دوري العائلة خاص وبالدعوة فقط.',
           addChildrenLater: 'راجع ملفات الأطفال المُعدّة قبل إنشاء العائلة.',
           create: 'إنشاء العائلة',
+          replacementReview:
+            'لن تتغير العائلة المحفوظة إلا عند اختيار الزر أدناه. عند النجاح، تُستبدل العائلة الحالية وتُمسح بيانات تقدمها وربطها الخاصة من هذا الجهاز.',
+          replaceFamily: 'استبدال العائلة وإنشاء الجديدة',
           creating: 'جارٍ إعداد العائلة محليًا…',
           edit: 'رجوع للتعديل',
         },
@@ -1920,6 +1927,10 @@ export const resources = {
           title: 'New family setup',
           body: 'Enter your email or phone number, then add your family members.',
           action: 'Continue family setup',
+          replacementTitle: 'Your current family stays until the final step',
+          replacementBody:
+            'This device stores one family. After verification and setup, you will explicitly choose whether to replace the current family and clear its progress and device pairings.',
+          replacementAction: 'Continue verification for a new family',
           loading: 'Preparing the next step…',
           returningPrompt: 'Already have a family?',
           returnToSignIn: 'Return to Parent sign in',
@@ -2113,6 +2124,9 @@ export const resources = {
           privateLeague: 'The Family League is private and invitation-only.',
           addChildrenLater: 'Review every configured Child before creating the family.',
           create: 'Create family',
+          replacementReview:
+            'The saved family changes only when you choose the button below. After a successful save, this family replaces the current one and its private progress and pairing state are cleared from this device.',
+          replaceFamily: 'Replace family and create new',
           creating: 'Preparing the family locally…',
           edit: 'Back to edit',
         },

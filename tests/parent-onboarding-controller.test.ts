@@ -610,6 +610,55 @@ describe('R001 Parent onboarding controller', () => {
       ok: true,
     });
   });
+
+  it('stages and cancels a verified family replacement without losing the prior receipt', async () => {
+    await verifyController(controller);
+    expectOk(controller.updateDraft({ familyName: 'Old Family' }));
+    const previousReceipt = expectOk(controller.complete(BASE_TIME));
+    expectOk(controller.signOut(BASE_TIME));
+
+    expectOk(controller.requestVerification({ identifier: 'new-parent@example.com' }));
+    expectOk(await controller.verifyCode(PARENT_VERIFICATION_CODE));
+    expectOk(controller.beginVerifiedFamilyReplacement());
+    expect(controller.getView()).toMatchObject({
+      status: 'verified',
+      completionReceipt: null,
+      draft: { familyName: 'عائلة النخلة' },
+    });
+    expectOk(controller.updateDraft({ familyName: 'Unfinished Family' }));
+
+    expectOk(controller.cancelVerification());
+    expect(controller.getView()).toMatchObject({
+      status: 'signed_out',
+      completionReceipt: previousReceipt,
+      draft: { familyName: 'Old Family' },
+    });
+  });
+
+  it('guards replacement staging and disposes the backup after successful completion', async () => {
+    expect(controller.beginVerifiedFamilyReplacement()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+
+    await verifyController(controller);
+    expectOk(controller.updateDraft({ familyName: 'Old Family' }));
+    expectOk(controller.complete(BASE_TIME));
+    expectOk(controller.signOut(BASE_TIME));
+    expectOk(controller.requestVerification({ identifier: 'new-parent@example.com' }));
+    expectOk(await controller.verifyCode(PARENT_VERIFICATION_CODE));
+    expectOk(controller.beginVerifiedFamilyReplacement());
+    expectOk(controller.updateDraft({ familyName: 'New Family' }));
+    expectOk(controller.complete('2026-09-04T10:04:00.000Z'));
+    expectOk(controller.signOut('2026-09-04T10:05:00.000Z'));
+
+    expectOk(controller.cancelVerification());
+    expect(controller.getView()).toMatchObject({
+      status: 'signed_out',
+      completionReceipt: { familyName: 'New Family' },
+      draft: { familyName: 'New Family' },
+    });
+  });
 });
 
 describe('Parent access-session termination', () => {

@@ -1,5 +1,30 @@
 # Team Ownership
 
+## 2026-09-08 Feature 012 Role Header Branding Window
+
+**Owner and only writer**: `/root` in the logo integration session
+
+**Planning reservation**: `specs/012-role-header-branding/**`. The concurrent Feature 011 session
+retains `TEAM_OWNERSHIP.md`, `.specify/feature.json`, and the Spec Kit-managed `AGENTS.md` block;
+this slice will preserve those edits and will not change the active feature pointer.
+
+**Runtime reservation**: `src/components/brand/GhafHeaderTitle.tsx`,
+`src/components/brand/index.ts`, `src/components/r002a/R002aFlowHeader.tsx`,
+`src/components/r002a/parent/ParentHomeHeader.tsx`,
+`src/components/r002a/child/ChildHomeHeader.tsx`,
+`src/components/r002b/R002bNestedScreen.tsx`, `src/components/journey.tsx`, and
+`tests/role-header-branding.test.tsx`, `tests/r002a-parent-home-presentation.test.ts`, and
+`tests/r002a-cross-slice-quality.test.ts`.
+
+**Scope**: Reuse the immutable official local Ghaf raster mark as a compact decorative companion
+to the existing screen title across shared Parent and Child dashboard, tab, flow, journey, and
+R002b nested headers. Preserve title semantics, Arabic-first RTL and English LTR, 320 dp and large
+text resilience, Back/settings/help/profile actions, route behavior, state, dependencies, and the
+existing branded access experience.
+
+**Status**: In progress. Feature 011 access/onboarding/store work and all user-owned configuration,
+source design packs, and generated output artifacts remain outside this reservation.
+
 ## 2026-09-08 Feature 011 Verified Family Replacement Window
 
 **Owner and only writer**: `/root`
@@ -11,7 +36,8 @@ in `AGENTS.md` through the configured agent-context hook, and
 **Runtime reservation**: `app/access/parent/{sign-in.tsx,sign-up.tsx,verification.tsx,`
 `review-create.tsx}`, `src/features/access/parentOnboarding/controller.ts`,
 `src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`,
-`tests/{family-replacement-flow.test.ts,parent-onboarding-controller.test.ts}`, and narrowly scoped
+`tests/{family-replacement-flow.test.ts,parent-onboarding-controller.test.ts,`
+`r003-returning-family-entry.test.ts}`, and narrowly scoped
 truth/design/evidence updates in `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and
 `DEMO_RUNBOOK.md`.
 

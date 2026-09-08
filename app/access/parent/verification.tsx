@@ -26,6 +26,7 @@ export default function ParentVerificationScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const pendingFamilyCreation = usePrototypeStore((state) => state.pendingFamilyCreation);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const rememberParentOnThisDevice = usePrototypeStore((state) => state.rememberParentOnThisDevice);
   const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
@@ -33,6 +34,9 @@ export default function ParentVerificationScreen() {
     (state) => state.setRememberParentOnThisDevice,
   );
   const verifyParentCode = usePrototypeStore((state) => state.verifyParentCode);
+  const beginVerifiedFamilyReplacement = usePrototypeStore(
+    (state) => state.beginVerifiedFamilyReplacement,
+  );
   const completeParentOnboarding = usePrototypeStore((state) => state.completeParentOnboarding);
   const resendParentVerification = usePrototypeStore((state) => state.resendParentVerification);
   const cancelParentVerification = usePrototypeStore((state) => state.cancelParentVerification);
@@ -121,11 +125,21 @@ export default function ParentVerificationScreen() {
       setBusy(false);
       return;
     }
-    if (!isCreateFamilyFlow && parentOnboarding.completionReceipt) {
+    if (!isCreateFamilyFlow && result.data.completionReceipt) {
       enterExistingFamily();
       return;
     }
-    if (!isCreateFamilyFlow || parentOnboarding.completionReceipt) {
+    if (isCreateFamilyFlow && pendingFamilyCreation === 'replacement') {
+      const staged = beginVerifiedFamilyReplacement();
+      if (!staged.ok) {
+        setError(t('access.states.interrupted'));
+        setBusy(false);
+        return;
+      }
+      router.replace('/access/parent/family-basics');
+      return;
+    }
+    if (!isCreateFamilyFlow || result.data.completionReceipt) {
       router.replace(entryHref);
       return;
     }
@@ -156,7 +170,9 @@ export default function ParentVerificationScreen() {
   }
   if (
     parentOnboarding.status === 'verified' &&
-    ((isCreateFamilyFlow && parentOnboarding.completionReceipt) ||
+    ((isCreateFamilyFlow &&
+      parentOnboarding.completionReceipt &&
+      pendingFamilyCreation !== 'replacement') ||
       (!isCreateFamilyFlow && !parentOnboarding.completionReceipt))
   ) {
     return <Redirect href={entryHref} />;
