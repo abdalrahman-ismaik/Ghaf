@@ -186,11 +186,13 @@ they do not establish that a live service is available or safe for production. A
 cannot be distributed in Expo, so the live primary must remain unconfigured until a separately
 approved trusted credential flow exists.
 
-The device-local profile helper now orders and labels Task Builder categories from only the saved
-curated age-band, interest, hobby, accessibility, support, and opt-in fields. It makes no provider
-call, stores no derived ranking, exposes no Child data outside the device, and cannot make a
-future-only template executable or approve a task. Invalid or opted-out inputs fail back to the
-catalog order.
+The device-local profile helper now orders and labels Task Builder categories from the saved
+age-band, interest, hobby, accessibility, support, custom-answer, and opt-in fields. The required
+male/female value controls only a masculine/feminine grammatical-address key and never category,
+difficulty, reward, or ability. Reviewed custom wording is reduced locally to allowlisted signals,
+is never echoed in the suggestion result, and is not sent to a provider. The helper stores no
+derived ranking, exposes no Child data outside the device, and cannot make a future-only template
+executable or approve a task. Invalid or opted-out inputs fail back to the catalog order.
 
 The earlier AI Services 1–3 Parent Guide gateway still accepts only one synthetic Parent request
 and exposes no Child operation. The separate Feature 004 gateway and its stricter approved contract
@@ -234,11 +236,21 @@ replaying a session. Parent reset deliberately removes both records and returns 
 first-family behavior.
 
 Passwords, verification codes, authenticated sessions, task/Seed/Garden/League/Reward ledgers,
-media, transcripts, notification history, and free-text Child notes are not part of the local
-record. Optional gender
-is stored only as an explicit profile value and is excluded from prepared personalization. The
-curated profile helper is deterministic and local-only; it does not prove that a live model ran and
-must not be used to infer identity, emotion, diagnosis, personality, ability, or risk.
+media, transcripts, notification history, and general free-text Child notes are not part of the
+local record. The record does contain one explicit required male/female value plus four narrowly
+labeled, bounded custom preference answers. These remain device-local and Parent-only; they are not
+encrypted production custody and never enter shared projections or live provider requests. The
+prepared helper is deterministic and local-only; it does not prove that a live model ran and must
+not be used to infer identity, emotion, diagnosis, personality, ability, risk, or stereotyped
+interests.
+
+The required-sex schema update includes a bounded compatibility repair for otherwise valid
+schema-1/2/3 families that stored the former optional value. The legacy record cannot restore a
+Parent or Child session. It exposes only a strict local repair candidate, accepts only the exact
+saved Parent identifier through deterministic verification, and requires the Parent to choose any
+missing Male/Female value before schema 4 is written. Wrong input, cancellation, or a failed write
+leaves the old record unchanged. This prevents silent inference and data loss, but it is not a
+production migration, account recovery, encrypted backup, or multi-device repair service.
 
 The Parent/Child welcome is a one-use in-app dashboard summary assembled from current local state
 already visible to that role. It is not a push notification, inbox, server timestamp, background

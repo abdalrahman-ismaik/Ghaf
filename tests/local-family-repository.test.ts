@@ -9,6 +9,7 @@ import {
   createMemoryLocalKeyValueStorage,
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  OLDEST_LOCAL_FAMILY_STORAGE_KEY,
   PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
 } from '../src/services/local';
 
@@ -19,11 +20,15 @@ const child = {
   avatarId: 'ghaf_tree' as const,
   ageBand: '9_11' as const,
   preferredLanguage: 'both' as const,
-  gender: 'prefer_not_to_say' as const,
+  sex: 'male' as const,
   interests: ['sustainability', 'nature'] as const,
   hobbies: ['gardening'] as const,
   accessibilityDefaults: ['simpler_instructions'] as const,
   supportPreferences: ['short_steps', 'adult_alongside'] as const,
+  customInterest: 'Caring for plants',
+  customHobby: 'Building paper models',
+  customSupportPreference: 'Show one example first',
+  customAccessibility: 'A quiet place',
   personalizationEnabled: true,
 };
 
@@ -57,14 +62,26 @@ function validRecord() {
   return result.data;
 }
 
+function previousChild(gender: 'boy' | 'girl' | 'prefer_not_to_say' | null = 'boy') {
+  const {
+    sex: _sex,
+    customInterest: _customInterest,
+    customHobby: _customHobby,
+    customSupportPreference: _customSupportPreference,
+    customAccessibility: _customAccessibility,
+    ...previous
+  } = child;
+  return { ...previous, gender };
+}
+
 describe('device-local family schema', () => {
-  it('round-trips the schema-3 directory with private family connection data', () => {
+  it('round-trips the schema-4 directory with private family connection data', () => {
     const record = validRecord();
     const parsed = parseLocalFamilyRecord(JSON.stringify(record));
 
     expect(parsed).toEqual({ ok: true, data: record });
     expect(record).toMatchObject({
-      schemaVersion: 3,
+      schemaVersion: 4,
       householdId: 'household_al_noor',
       familyConnections: {
         primaryGuardianName: 'Rashid',
@@ -87,10 +104,12 @@ describe('device-local family schema', () => {
 
   it.each([
     'not-json',
-    JSON.stringify({ schemaVersion: 3 }),
+    JSON.stringify({ schemaVersion: 4 }),
     JSON.stringify({ ...validRecord(), children: [] }),
     JSON.stringify({ ...validRecord(), children: [child, child] }),
     JSON.stringify({ ...validRecord(), pairedChildIds: ['child_alya'] }),
+    JSON.stringify({ ...validRecord(), children: [{ ...child, sex: null }] }),
+    JSON.stringify({ ...validRecord(), children: [{ ...child, customInterest: 'x' }] }),
     JSON.stringify({ ...validRecord(), updatedAt: 'not-a-time' }),
     JSON.stringify({ ...validRecord(), secret: 'hidden' }),
   ])('fails closed for corrupt, unknown, partial, duplicated, or expanded input', (raw) => {
@@ -142,32 +161,82 @@ describe('device-local family schema', () => {
 });
 
 describe('device-local family repository', () => {
-  it('migrates schema 2 without inventing relatives', () => {
+  it('migrates schema 3 explicit sex without inventing custom answers', () => {
     const storage = createMemoryLocalKeyValueStorage();
     const repository = createLocalFamilyRepository(storage);
     const current = validRecord();
-    const { familyConnections: _familyConnections, ...previous } = current;
     storage.setItem(
       PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
-      JSON.stringify({ ...previous, schemaVersion: 2 }),
+      JSON.stringify({ ...current, schemaVersion: 3, children: [previousChild('boy')] }),
     );
 
     expect(repository.read()).toMatchObject({
       ok: true,
       data: {
-        schemaVersion: 3,
-        familyConnections: {
-          primaryGuardianName: 'Parent',
-          secondaryGuardianName: '',
-          relatives: [],
-        },
+        schemaVersion: 4,
+        children: [
+          {
+            sex: 'male',
+            customInterest: null,
+            customHobby: null,
+            customSupportPreference: null,
+            customAccessibility: null,
+          },
+        ],
       },
     });
     expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
     expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
   });
 
-  it('migrates the previous schema-1 fixture to the canonical prepared Parent email', () => {
+  it('fails closed instead of inferring sex for a previous declined or missing value', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createLocalFamilyRepository(storage);
+    const current = validRecord();
+    storage.setItem(
+      PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+      JSON.stringify({
+        ...current,
+        schemaVersion: 3,
+        children: [previousChild('prefer_not_to_say')],
+      }),
+    );
+
+    expect(repository.read()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_RESPONSE' },
+    });
+    expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+    expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+  });
+
+  it('migrates schema 2 without inventing relatives', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createLocalFamilyRepository(storage);
+    const current = validRecord();
+    const { familyConnections: _familyConnections, ...previous } = current;
+    storage.setItem(
+      LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+      JSON.stringify({ ...previous, schemaVersion: 2, children: [previousChild('girl')] }),
+    );
+
+    expect(repository.read()).toMatchObject({
+      ok: true,
+      data: {
+        schemaVersion: 4,
+        familyConnections: {
+          primaryGuardianName: 'Parent',
+          secondaryGuardianName: '',
+          relatives: [],
+        },
+        children: [{ sex: 'female' }],
+      },
+    });
+    expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+  });
+
+  it('migrates the schema-1 fixture to the canonical prepared Parent email', () => {
     const storage = createMemoryLocalKeyValueStorage();
     const repository = createLocalFamilyRepository(storage);
     const current = validRecord();
@@ -176,13 +245,14 @@ describe('device-local family repository', () => {
       ...previous,
       schemaVersion: 1,
       parent: { id: current.parent.id, role: current.parent.role },
+      children: [previousChild('boy')],
     };
-    storage.setItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(legacy));
+    storage.setItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(legacy));
 
     expect(repository.read()).toMatchObject({
       ok: true,
       data: {
-        schemaVersion: 3,
+        schemaVersion: 4,
         familyConnections: {
           primaryGuardianName: 'Parent',
           secondaryGuardianName: '',
@@ -195,7 +265,7 @@ describe('device-local family repository', () => {
       },
     });
     expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
-    expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+    expect(storage.getItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
   });
 
   it('saves, reads, updates pairing idempotently, and clears one namespaced value', () => {
@@ -218,11 +288,13 @@ describe('device-local family repository', () => {
     expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
     storage.setItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY, '{}');
     storage.setItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY, '{}');
+    storage.setItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY, '{}');
 
     expect(repository.clear()).toEqual({ ok: true, data: true });
     expect(repository.read()).toEqual({ ok: true, data: null });
     expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
     expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+    expect(storage.getItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
   });
 
   it('does not overwrite the prior complete record when validation or storage fails', () => {

@@ -10,9 +10,9 @@ import type {
   BasicAccessibilityDefault,
   ChildPreferredLanguage,
   ChildTreeAvatarId,
-  LocalChildGender,
   LocalChildHobby,
   LocalChildInterest,
+  LocalChildSex,
   LocalSupportPreference,
   NormalizedParentIdentifier,
   ParentOnboardingChildDraft,
@@ -40,7 +40,7 @@ const ACCESSIBILITY_DEFAULTS = new Set<BasicAccessibilityDefault>([
   'high_contrast',
   'reduced_motion',
 ]);
-const GENDERS = new Set<LocalChildGender>(['boy', 'girl', 'prefer_not_to_say']);
+const SEXES = new Set<LocalChildSex>(['male', 'female']);
 const INTERESTS = new Set<LocalChildInterest>([
   'nature',
   'making',
@@ -84,6 +84,35 @@ function isSafeText(value: unknown, maximumLength: number): value is string {
     typeof value === 'string' &&
     value.length <= maximumLength &&
     !CONTROL_CHARACTER_PATTERN.test(value)
+  );
+}
+
+function isSafeCustomDraftText(value: unknown): value is string | null {
+  return value === null || isSafeText(value, 80);
+}
+
+function isCompleteCustomAnswer(value: string | null): boolean {
+  return value === null || value.trim().length >= 2;
+}
+
+function choicesFitLimit(child: ParentOnboardingChildDraft): boolean {
+  return (
+    child.interests.length + (child.customInterest === null ? 0 : 1) <= 3 &&
+    child.hobbies.length + (child.customHobby === null ? 0 : 1) <= 3 &&
+    child.supportPreferences.length + (child.customSupportPreference === null ? 0 : 1) <= 3 &&
+    child.accessibilityDefaults.length + (child.customAccessibility === null ? 0 : 1) <= 4
+  );
+}
+
+export function isChildProfileComplete(child: ParentOnboardingChildDraft): boolean {
+  return (
+    child.nickname.trim().length >= 2 &&
+    child.sex !== null &&
+    isCompleteCustomAnswer(child.customInterest) &&
+    isCompleteCustomAnswer(child.customHobby) &&
+    isCompleteCustomAnswer(child.customSupportPreference) &&
+    isCompleteCustomAnswer(child.customAccessibility) &&
+    choicesFitLimit(child)
   );
 }
 
@@ -147,11 +176,15 @@ export function createInitialParentOnboardingDraft(): ParentOnboardingDraft {
         avatarId: 'ghaf_tree',
         ageBand: '9_11',
         preferredLanguage: 'ar',
-        gender: null,
+        sex: 'male',
         interests: ['sustainability', 'nature'],
         hobbies: ['gardening'],
         accessibilityDefaults: ['simpler_instructions'],
         supportPreferences: ['short_steps', 'adult_alongside'],
+        customInterest: null,
+        customHobby: null,
+        customSupportPreference: null,
+        customAccessibility: null,
         personalizationEnabled: true,
       },
       {
@@ -160,11 +193,15 @@ export function createInitialParentOnboardingDraft(): ParentOnboardingDraft {
         avatarId: 'flower',
         ageBand: '9_11',
         preferredLanguage: 'ar',
-        gender: null,
+        sex: 'female',
         interests: ['stories', 'family_helping'],
         hobbies: ['reading'],
         accessibilityDefaults: [],
         supportPreferences: ['visual_examples'],
+        customInterest: null,
+        customHobby: null,
+        customSupportPreference: null,
+        customAccessibility: null,
         personalizationEnabled: true,
       },
     ],
@@ -220,11 +257,15 @@ function validateChildPatch(childPatch: Record<string, unknown>): DomainResult<t
       'avatarId',
       'ageBand',
       'preferredLanguage',
-      'gender',
+      'sex',
       'interests',
       'hobbies',
       'accessibilityDefaults',
       'supportPreferences',
+      'customInterest',
+      'customHobby',
+      'customSupportPreference',
+      'customAccessibility',
       'personalizationEnabled',
     ])
   ) {
@@ -246,11 +287,11 @@ function validateChildPatch(childPatch: Record<string, unknown>): DomainResult<t
     return { ok: false, error: invalidInput('Choose a supported preferred language') };
   }
   if (
-    childPatch.gender !== undefined &&
-    childPatch.gender !== null &&
-    !isAllowedString(childPatch.gender, GENDERS)
+    childPatch.sex !== undefined &&
+    childPatch.sex !== null &&
+    !isAllowedString(childPatch.sex, SEXES)
   ) {
-    return { ok: false, error: invalidInput('Choose a supported optional gender value') };
+    return { ok: false, error: invalidInput('Choose male or female for the Child profile') };
   }
   if (childPatch.interests !== undefined && !isAllowedArray(childPatch.interests, INTERESTS, 3)) {
     return { ok: false, error: invalidInput('Choose up to three supported interests') };
@@ -269,6 +310,16 @@ function validateChildPatch(childPatch: Record<string, unknown>): DomainResult<t
     !isAllowedArray(childPatch.supportPreferences, SUPPORT_PREFERENCES, 3)
   ) {
     return { ok: false, error: invalidInput('Choose up to three supported help preferences') };
+  }
+  for (const key of [
+    'customInterest',
+    'customHobby',
+    'customSupportPreference',
+    'customAccessibility',
+  ] as const) {
+    if (childPatch[key] !== undefined && !isSafeCustomDraftText(childPatch[key])) {
+      return { ok: false, error: invalidInput('Custom answers must be 80 characters or fewer') };
+    }
   }
   if (
     childPatch.personalizationEnabled !== undefined &&
@@ -391,9 +442,9 @@ export function validateCompleteParentOnboardingDraft(
   const configuredChildren = validated.data.children.slice(0, validated.data.childCount);
   if (
     configuredChildren.length !== validated.data.childCount ||
-    configuredChildren.some((child) => child.nickname.trim().length < 2)
+    configuredChildren.some((child) => !isChildProfileComplete(child))
   ) {
-    return { ok: false, error: invalidInput('Enter every configured Child nickname') };
+    return { ok: false, error: invalidInput('Complete every required Child profile field') };
   }
 
   return {
@@ -405,6 +456,10 @@ export function validateCompleteParentOnboardingDraft(
       children: validated.data.children.map((child, index) => ({
         ...cloneChild(child),
         nickname: index < validated.data.childCount ? child.nickname.trim() : child.nickname,
+        customInterest: child.customInterest?.trim() || null,
+        customHobby: child.customHobby?.trim() || null,
+        customSupportPreference: child.customSupportPreference?.trim() || null,
+        customAccessibility: child.customAccessibility?.trim() || null,
       })),
     },
   };

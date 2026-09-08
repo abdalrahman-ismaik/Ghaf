@@ -92,6 +92,7 @@ export {
   createMemoryLocalKeyValueStorage,
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  OLDEST_LOCAL_FAMILY_STORAGE_KEY,
   type LocalFamilyRepository,
   type SavedTaskTemplateRepository,
   type LocalKeyValueStorage,

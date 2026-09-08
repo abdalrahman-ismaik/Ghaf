@@ -4,10 +4,15 @@ import { createPreparedProfilePersonalization } from '../src/features/assistants
 
 const input = {
   ageBand: '9_11',
+  sex: 'male',
   interests: ['sustainability', 'nature'],
   hobbies: ['gardening'],
   accessibilityDefaults: ['simpler_instructions'],
   supportPreferences: ['short_steps', 'visual_examples'],
+  customInterest: null,
+  customHobby: null,
+  customSupportPreference: null,
+  customAccessibility: null,
   personalizationEnabled: true,
 } as const;
 
@@ -34,7 +39,7 @@ describe('bounded profile personalization', () => {
     });
   });
 
-  it('returns a bounded opt-out and rejects gender, identity, and free-text fields', () => {
+  it('returns a bounded opt-out and rejects legacy gender, identity, and general free-text fields', () => {
     expect(
       createPreparedProfilePersonalization({ ...input, personalizationEnabled: false }),
     ).toMatchObject({

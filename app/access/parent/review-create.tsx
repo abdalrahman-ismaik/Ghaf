@@ -17,9 +17,10 @@ import {
 } from '@/components/access';
 import { PrimaryButton, Row, SecondaryButton, Text } from '@/components/primitives';
 import { colors, isolateBidiText, logicalRowDirection, r001Radii, spacing } from '@/design/tokens';
+import { isChildProfileComplete } from '@/features/access/parentOnboarding';
 import { validateCompleteFamilyConnectionDirectory } from '@/features/family-connections';
 import type { DomainErrorCode } from '@/models/familyGrowth';
-import type { BasicAccessibilityDefault } from '@/models/parentOnboarding';
+import type { BasicAccessibilityDefault, LocalChildSex } from '@/models/parentOnboarding';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 function localizedCompletionError(code: DomainErrorCode, t: (key: string) => string) {
@@ -53,6 +54,7 @@ export default function ReviewCreateScreen() {
   const completionPending = useRef(false);
   const successOpen = pathname === '/access/parent/family-created-success';
   const replacingFamily = pendingFamilyCreation === 'replacement';
+  const repairingFamily = pendingFamilyCreation === 'profile_repair';
 
   const draft = parentOnboarding.draft;
   const configuredChildren = draft.children.slice(0, draft.childCount);
@@ -63,7 +65,7 @@ export default function ReviewCreateScreen() {
   const familyConnectionsAreValid = familyConnectionsResult.ok;
   const childIsValid =
     configuredChildren.length === draft.childCount &&
-    configuredChildren.every((child) => child.nickname.trim().length >= 2);
+    configuredChildren.every(isChildProfileComplete);
   const canReview =
     (parentOnboarding.status === 'verified' ||
       parentOnboarding.status === 'authenticated_parent') &&
@@ -129,6 +131,10 @@ export default function ReviewCreateScreen() {
     ar: t('language.arabic'),
     en: t('language.english'),
     both: t('access.setup.bothLanguages'),
+  };
+  const sexLabels: Readonly<Record<LocalChildSex, string>> = {
+    male: t('access.setup.sexMale'),
+    female: t('access.setup.sexFemale'),
   };
   const accessibilityLabels: Readonly<Record<BasicAccessibilityDefault, string>> = {
     larger_text: t('access.setup.largerText'),
@@ -214,6 +220,15 @@ export default function ReviewCreateScreen() {
           message={t('access.review.replacementReview')}
           title={t('access.signUp.replacementTitle')}
           tone="offline"
+        />
+      ) : null}
+      {repairingFamily ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.review.profileRepairReview')}
+          title={t('access.setup.profileRepairTitle')}
+          tone="origin"
         />
       ) : null}
       {error ? (
@@ -338,6 +353,32 @@ export default function ReviewCreateScreen() {
                 ),
               )}
             </View>
+            <ReviewRow
+              direction={direction}
+              icon="person"
+              label={t('access.setup.sexRequired')}
+              language={locale}
+              value={sexLabels[child.sex!]}
+            />
+            {(
+              [
+                [t('access.setup.customInterestLabel'), child.customInterest],
+                [t('access.setup.customHobbyLabel'), child.customHobby],
+                [t('access.setup.customSupportLabel'), child.customSupportPreference],
+                [t('access.setup.customAccessibilityLabel'), child.customAccessibility],
+              ] as const
+            ).map(([label, value]) =>
+              value ? (
+                <ReviewRow
+                  direction={direction}
+                  icon="info"
+                  key={label}
+                  label={label}
+                  language={locale}
+                  value={value}
+                />
+              ) : null,
+            )}
             <AIProfilePreview child={child} direction={direction} language={locale} />
           </View>
         ))}
@@ -386,7 +427,13 @@ export default function ReviewCreateScreen() {
           size="regular"
           testID="create-family-button"
         >
-          {t(replacingFamily ? 'access.review.replaceFamily' : 'access.review.create')}
+          {t(
+            repairingFamily
+              ? 'access.review.saveProfileRepair'
+              : replacingFamily
+                ? 'access.review.replaceFamily'
+                : 'access.review.create',
+          )}
         </PrimaryButton>
         <SecondaryButton
           brand

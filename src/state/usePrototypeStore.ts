@@ -140,7 +140,11 @@ import type {
   DeviceAffinityRecord,
   TemporaryParentAccess,
 } from '../models/deviceAccess';
-import type { LocalFamilyRecord, LocalFamilyView } from '../models/localFamily';
+import type {
+  LocalFamilyProfileRepairCandidate,
+  LocalFamilyRecord,
+  LocalFamilyView,
+} from '../models/localFamily';
 import type { FamilyConnectionPlan } from '../models/familyConnections';
 import type { AmbientAudioPreferenceView } from '../models/audioPreferences';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
@@ -212,7 +216,7 @@ export type ReturningUserWelcome =
       readonly childId: SyntheticChildId;
     };
 
-export type PendingFamilyCreationIntent = 'fresh' | 'replacement' | null;
+export type PendingFamilyCreationIntent = 'fresh' | 'replacement' | 'profile_repair' | null;
 
 export interface BoundLiveVoiceCapture {
   readonly state: LiveVoiceCaptureState;
@@ -291,10 +295,18 @@ function deviceAccessView(
   };
 }
 
-function restoreInitialLocalFamily(): LocalFamilyView {
+function restoreInitialLocalFamily(): {
+  readonly view: LocalFamilyView;
+  readonly profileRepair: LocalFamilyProfileRepairCandidate | null;
+} {
   const read = serviceRegistry.localFamily.read();
-  if (!read.ok) return localFamilyView(null, 'unavailable');
-  if (!read.data) return localFamilyView(null);
+  if (!read.ok) {
+    const repair = serviceRegistry.localFamily.readProfileRepairCandidate();
+    return repair.ok && repair.data
+      ? { view: localFamilyView(null, 'unavailable'), profileRepair: repair.data }
+      : { view: localFamilyView(null, 'unavailable'), profileRepair: null };
+  }
+  if (!read.data) return { view: localFamilyView(null), profileRepair: null };
   const restoredReceipt = parentOnboardingController.restoreCompletionReceipt(
     localFamilyRecordToReceipt(read.data),
   );
@@ -306,12 +318,14 @@ function restoreInitialLocalFamily(): LocalFamilyView {
     parentOnboardingController.reset(R001_ONBOARDING_TIME);
     childAccessController.reset();
     serviceRegistry.access.resetPrototype();
-    return localFamilyView(null, 'unavailable');
+    return { view: localFamilyView(null, 'unavailable'), profileRepair: null };
   }
-  return localFamilyView(read.data);
+  return { view: localFamilyView(read.data), profileRepair: null };
 }
 
-const initialLocalFamily = restoreInitialLocalFamily();
+const initialLocalFamilyRestore = restoreInitialLocalFamily();
+const initialLocalFamily = initialLocalFamilyRestore.view;
+const initialLocalFamilyProfileRepair = initialLocalFamilyRestore.profileRepair;
 const initialAmbientAudioPreference: AmbientAudioPreferenceView = (() => {
   const read = serviceRegistry.ambientAudioPreferences.read();
   return read.ok
@@ -425,6 +439,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly revealBundleQueue: RevealBundleQueue;
   readonly parentOnboarding: ParentOnboardingView;
   readonly localFamily: LocalFamilyView;
+  readonly localFamilyProfileRepair: LocalFamilyProfileRepairCandidate | null;
   readonly pendingFamilyCreation: PendingFamilyCreationIntent;
   readonly returningUserWelcome: ReturningUserWelcome | null;
   readonly parentGuideSuggestion: ParentGuideTaskSuggestion | null;
@@ -455,6 +470,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => ServiceResult<ParentOnboardingView>;
   readonly verifyParentCode: (code: unknown) => Promise<ServiceResult<ParentOnboardingView>>;
   readonly beginVerifiedFamilyReplacement: () => ServiceResult<ParentOnboardingView>;
+  readonly beginVerifiedFamilyProfileRepair: () => ServiceResult<ParentOnboardingView>;
   readonly resendParentVerification: (input: {
     readonly networkAvailable?: boolean;
   }) => ServiceResult<ParentOnboardingView>;
@@ -1251,6 +1267,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   revealBundleQueue: createEmptyRevealBundleQueue(),
   parentOnboarding: parentOnboardingController.getView(),
   localFamily: initialLocalFamily,
+  localFamilyProfileRepair: initialLocalFamilyProfileRepair,
   pendingFamilyCreation: null,
   returningUserWelcome: null,
   parentGuideSuggestion: null,
@@ -1319,14 +1336,16 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     }
     const normalized = normalizeParentIdentifier(input.identifier);
     if (!normalized.ok) return { ok: false, error: normalized.error };
-    if (state.localFamily.status !== 'ready') {
+    const record = state.localFamily.record;
+    const repair = state.localFamilyProfileRepair;
+    if (state.localFamily.status !== 'ready' && !repair) {
       return failure('INVALID_TRANSITION', 'The local family directory is unavailable');
     }
-    const record = state.localFamily.record;
+    const savedParent = record?.parent ?? repair?.parent;
     if (
-      !record ||
-      record.parent.normalizedIdentifier !== normalized.data.normalizedIdentifier ||
-      record.parent.identifierKind !== normalized.data.identifierKind
+      !savedParent ||
+      savedParent.normalizedIdentifier !== normalized.data.normalizedIdentifier ||
+      savedParent.identifierKind !== normalized.data.identifierKind
     ) {
       return failure('NOT_FOUND', 'The Parent identifier is not linked to this family');
     }
@@ -1336,7 +1355,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     });
     set({
       parentOnboarding: parentOnboardingController.getView(),
-      pendingFamilyCreation: result.ok ? null : state.pendingFamilyCreation,
+      pendingFamilyCreation: result.ok && repair ? 'profile_repair' : state.pendingFamilyCreation,
       rememberParentOnThisDevice: false,
       returningUserWelcome: null,
     });
@@ -1371,6 +1390,31 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     }
     const result = parentOnboardingController.beginVerifiedFamilyReplacement();
     set({ parentOnboarding: parentOnboardingController.getView() });
+    return result;
+  },
+
+  beginVerifiedFamilyProfileRepair: () => {
+    const state = get();
+    if (
+      state.activeExperience !== 'signed_out' ||
+      state.pendingFamilyCreation !== 'profile_repair' ||
+      !state.localFamilyProfileRepair ||
+      state.parentOnboarding.status !== 'verified' ||
+      state.parentOnboarding.completionReceipt
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'Complete verified access before repairing the local family profile',
+      );
+    }
+    const result = parentOnboardingController.beginVerifiedProfileRepair(
+      state.localFamilyProfileRepair,
+    );
+    set({
+      parentOnboarding: parentOnboardingController.getView(),
+      locale: state.localFamilyProfileRepair.appLanguage,
+      direction: getLocaleDirection(state.localFamilyProfileRepair.appLanguage),
+    });
     return result;
   },
 
@@ -1413,12 +1457,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return parentOnboardingController.complete(R001_ONBOARDING_TIME);
     }
     const replacingFamily = state.pendingFamilyCreation === 'replacement';
+    const repairingFamily = state.pendingFamilyCreation === 'profile_repair';
     const previousFamily = replacingFamily ? state.localFamily.record : null;
     if (replacingFamily && !previousFamily) {
       return failure(
         'INVALID_TRANSITION',
         'The current local family is unavailable for replacement',
       );
+    }
+    const repairCandidate = repairingFamily ? state.localFamilyProfileRepair : null;
+    if (repairingFamily && !repairCandidate) {
+      return failure('INVALID_TRANSITION', 'The local family profile repair is unavailable');
     }
     const returningHouseholdId =
       state.activeExperience === 'signed_out' &&
@@ -1446,20 +1495,34 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           avatarId: child.avatarId,
           ageBand: child.ageBand,
           preferredLanguage: child.preferredLanguage,
-          gender: child.gender,
+          sex: child.sex!,
           interests: [...child.interests],
           hobbies: [...child.hobbies],
           accessibilityDefaults: [...child.accessibilityDefaults],
           supportPreferences: [...child.supportPreferences],
+          customInterest: child.customInterest,
+          customHobby: child.customHobby,
+          customSupportPreference: child.customSupportPreference,
+          customAccessibility: child.customAccessibility,
           personalizationEnabled: child.personalizationEnabled,
         })),
-        pairedChildIds: [],
+        pairedChildIds: repairCandidate ? [...repairCandidate.pairedChildIds] : [],
+        createdAt: repairCandidate?.createdAt,
         now: R003_LOCAL_FAMILY_TIME,
       });
       if (!created.ok) return { ok: false, error: created.error };
-      const saved = serviceRegistry.localFamily.save(created.data);
+      const saved = repairingFamily
+        ? serviceRegistry.localFamily.saveProfileRepair(created.data)
+        : serviceRegistry.localFamily.save(created.data);
       if (!saved.ok) return { ok: false, error: saved.error };
       newlySavedFamily = saved.data;
+      if (repairingFamily && repairCandidate) {
+        const restoredDevices = childAccessController.restorePairedDevices({
+          childIds: repairCandidate.pairedChildIds,
+          pairedAt: repairCandidate.updatedAt,
+        });
+        if (!restoredDevices.ok) return restoredDevices;
+      }
     }
     let replacementReset: {
       readonly session: PrototypeSession;
@@ -1545,6 +1608,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           revealBundleQueue: createEmptyRevealBundleQueue(),
           parentOnboarding: parentOnboardingController.getView(),
           localFamily: localFamilyView(newlySavedFamily),
+          localFamilyProfileRepair: null,
           pendingFamilyCreation: null,
           rememberParentOnThisDevice: false,
           returningUserWelcome: null,
@@ -1579,6 +1643,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
             : deviceAccessView(null, 'unavailable')
           : state.deviceAccess,
         parentOnboarding: parentOnboardingController.getView(),
+        localFamilyProfileRepair: newlySavedFamily ? null : state.localFamilyProfileRepair,
         pendingFamilyCreation: null,
         rememberParentOnThisDevice: false,
         locale,
@@ -1590,7 +1655,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           : null,
       });
     } else {
-      if (newlySavedFamily) {
+      if (newlySavedFamily && !repairingFamily) {
         if (replacingFamily && previousFamily) serviceRegistry.localFamily.save(previousFamily);
         else serviceRegistry.localFamily.clear();
       }
@@ -2333,6 +2398,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       revealBundleQueue: createEmptyRevealBundleQueue(),
       parentOnboarding: onboardingReset.data,
       localFamily: localFamilyView(null),
+      localFamilyProfileRepair: null,
       pendingFamilyCreation: null,
       rememberParentOnThisDevice: false,
       returningUserWelcome: null,

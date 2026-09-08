@@ -6,9 +6,9 @@ import type {
   BasicAccessibilityDefault,
   ChildPreferredLanguage,
   ChildTreeAvatarId,
-  LocalChildGender,
   LocalChildHobby,
   LocalChildInterest,
+  LocalChildSex,
   LocalSupportPreference,
   ParentOnboardingChildDraft,
 } from '@/models/parentOnboarding';
@@ -23,8 +23,6 @@ import { Text } from '@/components/primitives';
 import { AccessTextField, ChoiceChip, SegmentedControl } from './AccessControls';
 import { AIProfilePreview } from './AIProfilePreview';
 import { BotanicalAvatarPicker } from './BotanicalAvatar';
-
-type GenderChoice = LocalChildGender | 'not_selected';
 
 interface ChildProfileFormProps {
   readonly child: ParentOnboardingChildDraft;
@@ -79,12 +77,10 @@ export function ChildProfileForm({
     { value: 'en', label: t('language.english') },
     { value: 'both', label: t('access.setup.bothLanguages') },
   ] satisfies readonly { value: ChildPreferredLanguage; label: string }[];
-  const genderOptions = [
-    { value: 'not_selected', label: t('access.setup.notNow') },
-    { value: 'boy', label: t('access.setup.genderBoy') },
-    { value: 'girl', label: t('access.setup.genderGirl') },
-    { value: 'prefer_not_to_say', label: t('access.setup.genderPreferNot') },
-  ] satisfies readonly { value: GenderChoice; label: string }[];
+  const sexOptions = [
+    { value: 'male', label: t('access.setup.sexMale') },
+    { value: 'female', label: t('access.setup.sexFemale') },
+  ] satisfies readonly { value: LocalChildSex; label: string }[];
   const interests = [
     ['nature', 'access.setup.interestNature'],
     ['making', 'access.setup.interestMaking'],
@@ -121,6 +117,10 @@ export function ChildProfileForm({
     maximum: number,
     update: (next: readonly Value[]) => void,
     testID: string,
+    customValue: string | null,
+    customLabel: string,
+    customTestID: string,
+    updateCustom: (next: string | null) => void,
   ) => (
     <View style={styles.fieldGroup}>
       <Text brand direction={direction} language={language} variant="label">
@@ -137,12 +137,57 @@ export function ChildProfileForm({
             key={value}
             label={t(key)}
             language={language}
-            onPress={() => update(toggleValue(values, value, maximum, onLimitReached))}
+            onPress={() =>
+              update(
+                toggleValue(
+                  values,
+                  value,
+                  maximum - (customValue === null ? 0 : 1),
+                  onLimitReached,
+                ),
+              )
+            }
             selected={values.includes(value)}
             testID={`${testID}-${value}`}
           />
         ))}
+        <ChoiceChip
+          direction={direction}
+          disabled={disabled}
+          label={t('access.setup.customOption')}
+          language={language}
+          onPress={() => {
+            if (customValue !== null) {
+              updateCustom(null);
+              return;
+            }
+            if (values.length >= maximum) {
+              onLimitReached();
+              return;
+            }
+            updateCustom('');
+          }}
+          selected={customValue !== null}
+          testID={`${testID}-custom`}
+        />
       </View>
+      {customValue !== null ? (
+        <AccessTextField
+          accessibilityLabel={customLabel}
+          autoCapitalize="sentences"
+          autoCorrect
+          direction="auto"
+          editable={!disabled}
+          label={customLabel}
+          language={language}
+          maxLength={80}
+          onChangeText={updateCustom}
+          placeholder={t('access.setup.customAnswerPlaceholder')}
+          returnKeyType="done"
+          testID={customTestID}
+          value={customValue}
+        />
+      ) : null}
     </View>
   );
 
@@ -198,15 +243,15 @@ export function ChildProfileForm({
       <SegmentedControl
         direction={direction}
         disabled={disabled}
-        label={t('access.setup.genderOptional')}
+        label={t('access.setup.sexRequired')}
         language={language}
-        onChange={(gender) => onPatch({ gender: gender === 'not_selected' ? null : gender })}
-        options={genderOptions}
-        testID="child-gender"
-        value={child.gender ?? 'not_selected'}
+        onChange={(sex) => onPatch({ sex })}
+        options={sexOptions}
+        testID="child-sex"
+        value={child.sex ?? ('' as LocalChildSex)}
       />
       <Text brand color="inkMuted" direction={direction} language={language} variant="caption">
-        {t('access.setup.genderBoundary')}
+        {t('access.setup.sexPersonalizationBoundary')}
       </Text>
       {multiChoice<LocalChildInterest>(
         t('access.setup.interests'),
@@ -216,6 +261,10 @@ export function ChildProfileForm({
         3,
         (values) => onPatch({ interests: values }),
         'child-interest',
+        child.customInterest,
+        t('access.setup.customInterestLabel'),
+        'child-custom-interest',
+        (customInterest) => onPatch({ customInterest }),
       )}
       {multiChoice<LocalChildHobby>(
         t('access.setup.hobbies'),
@@ -225,6 +274,10 @@ export function ChildProfileForm({
         3,
         (values) => onPatch({ hobbies: values }),
         'child-hobby',
+        child.customHobby,
+        t('access.setup.customHobbyLabel'),
+        'child-custom-hobby',
+        (customHobby) => onPatch({ customHobby }),
       )}
       {multiChoice<LocalSupportPreference>(
         t('access.setup.supportPreferences'),
@@ -234,6 +287,10 @@ export function ChildProfileForm({
         3,
         (values) => onPatch({ supportPreferences: values }),
         'child-support',
+        child.customSupportPreference,
+        t('access.setup.customSupportLabel'),
+        'child-custom-support',
+        (customSupportPreference) => onPatch({ customSupportPreference }),
       )}
       {multiChoice<BasicAccessibilityDefault>(
         t('access.setup.accessibility'),
@@ -243,7 +300,14 @@ export function ChildProfileForm({
         4,
         (values) => onPatch({ accessibilityDefaults: values }),
         'child-accessibility',
+        child.customAccessibility,
+        t('access.setup.customAccessibilityLabel'),
+        'child-custom-accessibility',
+        (customAccessibility) => onPatch({ customAccessibility }),
       )}
+      <Text brand color="inkMuted" direction={direction} language={language} variant="caption">
+        {t('access.setup.customAnswerHint')}
+      </Text>
       <SegmentedControl
         direction={direction}
         disabled={disabled}

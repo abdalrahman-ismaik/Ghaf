@@ -32,7 +32,7 @@ describe('multi-child Parent onboarding domain', () => {
         childIndex: 1,
         child: {
           nickname: 'Alya',
-          gender: 'girl',
+          sex: 'female',
           interests: ['stories'],
           hobbies: ['reading'],
           supportPreferences: ['quiet_reminders'],
@@ -44,7 +44,7 @@ describe('multi-child Parent onboarding domain', () => {
     expect(updated.children[0]).toEqual(initial.children[0]);
     expect(updated.children[1]).toMatchObject({
       nickname: 'Alya',
-      gender: 'girl',
+      sex: 'female',
       interests: ['stories'],
       hobbies: ['reading'],
       supportPreferences: ['quiet_reminders'],
@@ -53,7 +53,12 @@ describe('multi-child Parent onboarding domain', () => {
 
   it('validates exactly the selected count and keeps optional preference fields bounded', () => {
     const initial = createInitialParentOnboardingDraft();
-    const oneChild = expectOk(updateParentOnboardingDraft(initial, { childCount: 1 }));
+    const oneChild = expectOk(
+      updateParentOnboardingDraft(initial, {
+        childCount: 1,
+        child: { sex: 'male' },
+      }),
+    );
     expect(expectOk(validateCompleteParentOnboardingDraft(oneChild)).children).toHaveLength(2);
 
     expect(
@@ -64,7 +69,7 @@ describe('multi-child Parent onboarding domain', () => {
     expect(
       updateParentOnboardingDraft(initial, {
         childIndex: 1,
-        child: { gender: 'unknown' },
+        child: { sex: 'unknown' },
       } as never),
     ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
   });
@@ -74,6 +79,8 @@ describe('multi-child Parent onboarding domain', () => {
     const controller = createParentOnboardingController(access);
     expectOk(controller.requestVerification({ identifier: 'parent@example.com' }));
     expectOk(await controller.verifyCode(PARENT_VERIFICATION_CODE));
+    expectOk(controller.updateDraft({ childIndex: 0, child: { sex: 'male' } }));
+    expectOk(controller.updateDraft({ childIndex: 1, child: { sex: 'female' } }));
     const receipt = expectOk(controller.complete(NOW));
 
     expect(receipt.childCount).toBe(2);

@@ -23,7 +23,7 @@ export type BasicAccessibilityDefault =
   'larger_text' | 'simpler_instructions' | 'high_contrast' | 'reduced_motion';
 
 export type ParentOnboardingChildCount = 1 | 2;
-export type LocalChildGender = 'boy' | 'girl' | 'prefer_not_to_say';
+export type LocalChildSex = 'male' | 'female';
 export type LocalChildInterest =
   'nature' | 'making' | 'stories' | 'family_helping' | 'sustainability';
 export type LocalChildHobby = 'drawing' | 'reading' | 'sports' | 'puzzles' | 'gardening';
@@ -36,11 +36,15 @@ export interface ParentOnboardingChildDraft {
   readonly avatarId: ChildTreeAvatarId;
   readonly ageBand: AgeBand;
   readonly preferredLanguage: ChildPreferredLanguage;
-  readonly gender: LocalChildGender | null;
+  readonly sex: LocalChildSex | null;
   readonly interests: readonly LocalChildInterest[];
   readonly hobbies: readonly LocalChildHobby[];
   readonly accessibilityDefaults: readonly BasicAccessibilityDefault[];
   readonly supportPreferences: readonly LocalSupportPreference[];
+  readonly customInterest: string | null;
+  readonly customHobby: string | null;
+  readonly customSupportPreference: string | null;
+  readonly customAccessibility: string | null;
   readonly personalizationEnabled: boolean;
 }
 
@@ -80,11 +84,15 @@ export interface ParentOnboardingCompletionReceipt {
     readonly ageBand: AgeBand;
     readonly preferredLanguage: ChildPreferredLanguage;
     readonly accessLanguagePreference: LanguagePreference;
-    readonly gender: LocalChildGender | null;
+    readonly sex: LocalChildSex;
     readonly interests: readonly LocalChildInterest[];
     readonly hobbies: readonly LocalChildHobby[];
     readonly accessibilityDefaults: readonly BasicAccessibilityDefault[];
     readonly supportPreferences: readonly LocalSupportPreference[];
+    readonly customInterest: string | null;
+    readonly customHobby: string | null;
+    readonly customSupportPreference: string | null;
+    readonly customAccessibility: string | null;
     readonly personalizationEnabled: boolean;
   }[];
   readonly origin: 'synthetic';

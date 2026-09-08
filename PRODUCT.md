@@ -246,17 +246,29 @@ orientation summary—not push delivery, remote sync, a durable inbox, or a new 
 authority. Fresh family creation and first Child pairing do not show it.
 
 The R003 device-local family directory now remembers one configured demo household across process
-restarts. Its schema-3 record persists one normalized synthetic Parent phone/email lookup
+restarts. Its schema-4 record persists one normalized synthetic Parent phone/email lookup
 identifier and kind, the minimized Parent-entered family-connection directory, one or two ordered
 Child profiles, their bounded setup preferences, and only an approved paired-Child marker. It does
 not persist verification codes, passwords, authenticated sessions, tasks, Seeds,
 Garden/League/Reward ledgers, media, transcripts, or a notification inbox.
 Family setup asks for the Child count first, presents one indexed form per Child, then one
-whole-family review. The optional sparkle-marked profile helper consumes only age band and curated
-interests, hobbies, accessibility, and support preferences; it is deterministic, prepared,
-local-only, may be wrong, can be disabled, and never receives gender or free text. Parent approval
-remains required for every task. This improves demo continuity but is not production account
-storage, encrypted custody, backup, identity verification, or cross-device sync.
+whole-family review. Each new profile requires a Parent-visible male/female sex value and offers one
+bounded custom answer for interests, hobbies, help style, and “What helps?”. The sparkle-marked
+profile helper is deterministic, prepared, local-only, may be wrong, and can be disabled. It uses
+sex only for grammatical address and reduces reviewed custom wording without echoing or sending it
+to a provider; interests and support signals—not sex—drive bounded suggestion categories and
+coaching style. The reviewed synthetic Salem/Alya profiles begin with their known explicit value
+selected, which the Parent can change before saving; no value is inferred. Parent approval remains
+required for every task. This improves demo continuity but is not production account storage,
+encrypted custody, backup, identity verification, or cross-device sync.
+
+A previously completed schema-1/2/3 family with a formerly valid missing or declined sex value is
+no longer stranded at sign-in. Ghaf keeps that record non-authoritative, matches only its exact
+saved Parent identifier, runs the existing deterministic verification, and then asks the Parent to
+complete the required Male/Female selections in the existing profile/review flow. The old record
+is not changed until one complete schema-4 replacement has been validated and written; existing
+profile IDs, family details, creation time, and paired-Child identifiers are preserved. This is a
+local compatibility repair, not account recovery or identity verification.
 
 The remote implementation is preserved behavior, not permission to change product outcomes. The
 six local-only commits remain unapplied candidate provenance; any compatible presentation must be

@@ -11,10 +11,15 @@ import { TASK_CATEGORIES } from '../src/features/tasks/demoContent';
 const categoryIds = TASK_CATEGORIES.map((category) => category.id);
 const profile: ProfilePersonalizationInput = {
   ageBand: '9_11',
+  sex: 'male',
   interests: ['sustainability', 'nature'],
   hobbies: ['gardening'],
   accessibilityDefaults: ['simpler_instructions'],
   supportPreferences: ['short_steps', 'visual_examples'],
+  customInterest: null,
+  customHobby: null,
+  customSupportPreference: null,
+  customAccessibility: null,
   personalizationEnabled: true,
 };
 

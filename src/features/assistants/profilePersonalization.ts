@@ -3,10 +3,12 @@ import type {
   BasicAccessibilityDefault,
   LocalChildHobby,
   LocalChildInterest,
+  LocalChildSex,
   LocalSupportPreference,
 } from '../../models/parentOnboarding';
 
 const AGE_BANDS = new Set(['6_8', '9_11', '12_14']);
+const SEXES = new Set<LocalChildSex>(['male', 'female']);
 const INTERESTS = new Set(['nature', 'making', 'stories', 'family_helping', 'sustainability']);
 const HOBBIES = new Set(['drawing', 'reading', 'sports', 'puzzles', 'gardening']);
 const ACCESSIBILITY = new Set([
@@ -24,10 +26,15 @@ const SUPPORT = new Set([
 ]);
 const ALLOWED_KEYS = [
   'ageBand',
+  'sex',
   'interests',
   'hobbies',
   'accessibilityDefaults',
   'supportPreferences',
+  'customInterest',
+  'customHobby',
+  'customSupportPreference',
+  'customAccessibility',
   'personalizationEnabled',
 ] as const;
 const TASK_CATEGORY_IDS = new Set<TaskCategoryId>([
@@ -43,17 +50,24 @@ const TASK_CATEGORY_IDS = new Set<TaskCategoryId>([
 
 export interface ProfilePersonalizationInput {
   readonly ageBand: '6_8' | '9_11' | '12_14';
+  readonly sex: LocalChildSex;
   readonly interests: readonly LocalChildInterest[];
   readonly hobbies: readonly LocalChildHobby[];
   readonly accessibilityDefaults: readonly BasicAccessibilityDefault[];
   readonly supportPreferences: readonly LocalSupportPreference[];
+  readonly customInterest: string | null;
+  readonly customHobby: string | null;
+  readonly customSupportPreference: string | null;
+  readonly customAccessibility: string | null;
   readonly personalizationEnabled: boolean;
 }
 
 export interface PreparedProfilePersonalization {
   readonly enabled: boolean;
+  readonly addressForm: 'masculine' | 'feminine';
   readonly coachingStyle: 'short_visual_steps' | 'short_steps' | 'visual_steps' | 'guided_steps';
   readonly recommendedCategoryIds: readonly TaskCategoryId[];
+  readonly customSignalsUsed: boolean;
   readonly parentApprovalRequired: true;
   readonly meta: {
     readonly origin: 'prepared';
@@ -92,6 +106,46 @@ function validArray(value: unknown, allowed: ReadonlySet<string>, maximum: numbe
   );
 }
 
+const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001f\u007f-\u009f]/u;
+const GREEN_SIGNAL =
+  /nature|garden|plant|recycl|environment|sustain|outdoor|الطبيع|الحديق|النبات|الزراع|التدوير|البيئ|الاستدام/iu;
+const LEARNING_SIGNAL =
+  /read|book|story|puzzle|science|learn|study|قراء|كتاب|قص|ألغاز|علوم|تعل[ّ]?م|دراس/iu;
+const HOME_SIGNAL =
+  /family|home|help|tidy|organi[sz]|kitchen|عائل|أسرة|منزل|مساعدة|ترتيب|تنظيم|مطبخ/iu;
+const KINDNESS_SIGNAL = /draw|art|craft|make|creat|community|رسم|فن|حرف|صنع|ابتكار|مجتمع/iu;
+const SHORT_SIGNAL = /short|simple|brief|one step|قصير|بسيط|خطوة/iu;
+const VISUAL_SIGNAL = /visual|picture|show|demo|example|مرئي|صورة|اعرض|عرض|مثال/iu;
+
+function validCustomAnswer(value: unknown): value is string | null {
+  return (
+    value === null ||
+    (typeof value === 'string' &&
+      value.trim() === value &&
+      value.length >= 2 &&
+      value.length <= 80 &&
+      !CONTROL_CHARACTER_PATTERN.test(value))
+  );
+}
+
+function customCategorySignals(input: ProfilePersonalizationInput): readonly TaskCategoryId[] {
+  const text = [input.customInterest, input.customHobby].filter(Boolean).join(' ');
+  const categories: TaskCategoryId[] = [];
+  if (GREEN_SIGNAL.test(text)) categories.push('green_impact');
+  if (LEARNING_SIGNAL.test(text)) categories.push('learning_wellbeing');
+  if (HOME_SIGNAL.test(text)) categories.push('home_responsibility');
+  if (KINDNESS_SIGNAL.test(text)) categories.push('kindness_community');
+  return categories;
+}
+
+function customSupportSignals(input: ProfilePersonalizationInput) {
+  const text = [input.customSupportPreference, input.customAccessibility].filter(Boolean).join(' ');
+  return {
+    short: SHORT_SIGNAL.test(text),
+    visual: VISUAL_SIGNAL.test(text),
+  };
+}
+
 function recommendedCategories(input: ProfilePersonalizationInput): readonly TaskCategoryId[] {
   const categories: TaskCategoryId[] = [];
   if (
@@ -113,6 +167,7 @@ function recommendedCategories(input: ProfilePersonalizationInput): readonly Tas
   if (input.interests.includes('making') || input.hobbies.includes('drawing')) {
     categories.push('kindness_community');
   }
+  categories.push(...customCategorySignals(input));
   return categories.length > 0 ? [...new Set(categories)].slice(0, 2) : ['home_responsibility'];
 }
 
@@ -129,19 +184,35 @@ export function createPreparedProfilePersonalization(
     !Object.keys(input).every((key) => allowed.has(key as (typeof ALLOWED_KEYS)[number])) ||
     typeof input.ageBand !== 'string' ||
     !AGE_BANDS.has(input.ageBand) ||
+    typeof input.sex !== 'string' ||
+    !SEXES.has(input.sex as LocalChildSex) ||
     !validArray(input.interests, INTERESTS, 3) ||
     !validArray(input.hobbies, HOBBIES, 3) ||
     !validArray(input.accessibilityDefaults, ACCESSIBILITY, 4) ||
     !validArray(input.supportPreferences, SUPPORT, 3) ||
+    !validCustomAnswer(input.customInterest) ||
+    !validCustomAnswer(input.customHobby) ||
+    !validCustomAnswer(input.customSupportPreference) ||
+    !validCustomAnswer(input.customAccessibility) ||
+    (input.interests as readonly unknown[]).length + (input.customInterest === null ? 0 : 1) > 3 ||
+    (input.hobbies as readonly unknown[]).length + (input.customHobby === null ? 0 : 1) > 3 ||
+    (input.supportPreferences as readonly unknown[]).length +
+      (input.customSupportPreference === null ? 0 : 1) >
+      3 ||
+    (input.accessibilityDefaults as readonly unknown[]).length +
+      (input.customAccessibility === null ? 0 : 1) >
+      4 ||
     typeof input.personalizationEnabled !== 'boolean'
   ) {
     return failure('Prepared profile personalization accepts only reviewed curated fields');
   }
   const typed = input as unknown as ProfilePersonalizationInput;
+  const customSupport = customSupportSignals(typed);
   const hasShort =
     typed.supportPreferences.includes('short_steps') ||
-    typed.accessibilityDefaults.includes('simpler_instructions');
-  const hasVisual = typed.supportPreferences.includes('visual_examples');
+    typed.accessibilityDefaults.includes('simpler_instructions') ||
+    customSupport.short;
+  const hasVisual = typed.supportPreferences.includes('visual_examples') || customSupport.visual;
   const coachingStyle =
     hasShort && hasVisual
       ? 'short_visual_steps'
@@ -154,8 +225,12 @@ export function createPreparedProfilePersonalization(
     ok: true,
     data: {
       enabled: typed.personalizationEnabled,
+      addressForm: typed.sex === 'female' ? 'feminine' : 'masculine',
       coachingStyle,
       recommendedCategoryIds: typed.personalizationEnabled ? recommendedCategories(typed) : [],
+      customSignalsUsed:
+        typed.personalizationEnabled &&
+        (customCategorySignals(typed).length > 0 || customSupport.short || customSupport.visual),
       parentApprovalRequired: true,
       meta: {
         origin: 'prepared',

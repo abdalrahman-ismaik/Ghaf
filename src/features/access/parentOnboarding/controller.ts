@@ -10,6 +10,7 @@ import {
   type ReauthenticationProof,
 } from '../../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../../models/familyGrowth';
+import type { LocalFamilyProfileRepairCandidate } from '../../../models/localFamily';
 import type {
   ParentOnboardingCompletionReceipt,
   ParentOnboardingDraft,
@@ -264,6 +265,62 @@ export class ParentOnboardingController {
     return success(this.getView());
   }
 
+  beginVerifiedProfileRepair(
+    candidate: LocalFamilyProfileRepairCandidate,
+  ): ServiceResult<ParentOnboardingView> {
+    if (
+      this.status !== 'verified' ||
+      this.completionReceipt ||
+      this.parentSession ||
+      !this.normalizedIdentifier ||
+      !this.identifierKind ||
+      this.normalizedIdentifier !== candidate.parent.normalizedIdentifier ||
+      this.identifierKind !== candidate.parent.identifierKind ||
+      candidate.children.length < 1 ||
+      candidate.children.length > 2
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'Verified access to the repairable local family is required',
+      );
+    }
+
+    let staged = createInitialParentOnboardingDraft();
+    const family = updateParentOnboardingDraft(staged, {
+      familyConnections: candidate.familyConnections,
+      familyName: candidate.familyName,
+      appLanguage: candidate.appLanguage,
+      childCount: candidate.children.length as 1 | 2,
+    });
+    if (!family.ok) return { ok: false, error: family.error };
+    staged = family.data;
+    for (const [childIndex, child] of candidate.children.entries()) {
+      const childUpdate = updateParentOnboardingDraft(staged, {
+        childIndex,
+        child: {
+          nickname: child.nickname,
+          avatarId: child.avatarId,
+          ageBand: child.ageBand,
+          preferredLanguage: child.preferredLanguage,
+          sex: child.sex,
+          interests: child.interests,
+          hobbies: child.hobbies,
+          accessibilityDefaults: child.accessibilityDefaults,
+          supportPreferences: child.supportPreferences,
+          customInterest: null,
+          customHobby: null,
+          customSupportPreference: null,
+          customAccessibility: null,
+          personalizationEnabled: child.personalizationEnabled,
+        },
+      });
+      if (!childUpdate.ok) return { ok: false, error: childUpdate.error };
+      staged = childUpdate.data;
+    }
+    this.draft = staged;
+    return success(this.getView());
+  }
+
   updateDraft(patch: ParentOnboardingDraftPatch): ServiceResult<ParentOnboardingView> {
     if (this.completionReceipt) {
       return failure('INVALID_TRANSITION', 'The completed onboarding receipt cannot be rewritten');
@@ -312,11 +369,15 @@ export class ParentOnboardingController {
               avatarId: child.avatarId,
               ageBand: child.ageBand,
               preferredLanguage: child.preferredLanguage,
-              gender: child.gender,
+              sex: child.sex,
               interests: [...child.interests],
               hobbies: [...child.hobbies],
               accessibilityDefaults: [...child.accessibilityDefaults],
               supportPreferences: [...child.supportPreferences],
+              customInterest: child.customInterest,
+              customHobby: child.customHobby,
+              customSupportPreference: child.customSupportPreference,
+              customAccessibility: child.customAccessibility,
               personalizationEnabled: child.personalizationEnabled,
             }
           : fallback;
@@ -399,11 +460,15 @@ export class ParentOnboardingController {
           ageBand: child.ageBand,
           preferredLanguage: child.preferredLanguage,
           accessLanguagePreference: toAccessLanguagePreference(child.preferredLanguage),
-          gender: child.gender,
+          sex: child.sex!,
           interests: [...child.interests],
           hobbies: [...child.hobbies],
           accessibilityDefaults: [...child.accessibilityDefaults],
           supportPreferences: [...child.supportPreferences],
+          customInterest: child.customInterest,
+          customHobby: child.customHobby,
+          customSupportPreference: child.customSupportPreference,
+          customAccessibility: child.customAccessibility,
           personalizationEnabled: child.personalizationEnabled,
         })),
       origin: 'synthetic',

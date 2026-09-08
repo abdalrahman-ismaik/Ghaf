@@ -21,6 +21,7 @@ export default function ParentSignInScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamilyProfileRepair = usePrototypeStore((state) => state.localFamilyProfileRepair);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
   const cancelTemporaryParentAccess = usePrototypeStore(
@@ -142,6 +143,16 @@ export default function ParentSignInScreen() {
           message={t('access.states.localFallback')}
           title={t('access.states.offline')}
           tone="offline"
+        />
+      ) : null}
+
+      {localFamilyProfileRepair ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.setup.profileRepairBody')}
+          title={t('access.setup.profileRepairTitle')}
+          tone="origin"
         />
       ) : null}
 

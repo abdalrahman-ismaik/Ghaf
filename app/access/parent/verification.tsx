@@ -37,6 +37,9 @@ export default function ParentVerificationScreen() {
   const beginVerifiedFamilyReplacement = usePrototypeStore(
     (state) => state.beginVerifiedFamilyReplacement,
   );
+  const beginVerifiedFamilyProfileRepair = usePrototypeStore(
+    (state) => state.beginVerifiedFamilyProfileRepair,
+  );
   const completeParentOnboarding = usePrototypeStore((state) => state.completeParentOnboarding);
   const resendParentVerification = usePrototypeStore((state) => state.resendParentVerification);
   const cancelParentVerification = usePrototypeStore((state) => state.cancelParentVerification);
@@ -125,6 +128,16 @@ export default function ParentVerificationScreen() {
       setBusy(false);
       return;
     }
+    if (!isCreateFamilyFlow && pendingFamilyCreation === 'profile_repair') {
+      const staged = beginVerifiedFamilyProfileRepair();
+      if (!staged.ok) {
+        setError(t('access.states.interrupted'));
+        setBusy(false);
+        return;
+      }
+      router.replace('/access/parent/add-first-child');
+      return;
+    }
     if (!isCreateFamilyFlow && result.data.completionReceipt) {
       enterExistingFamily();
       return;
@@ -173,7 +186,9 @@ export default function ParentVerificationScreen() {
     ((isCreateFamilyFlow &&
       parentOnboarding.completionReceipt &&
       pendingFamilyCreation !== 'replacement') ||
-      (!isCreateFamilyFlow && !parentOnboarding.completionReceipt))
+      (!isCreateFamilyFlow &&
+        !parentOnboarding.completionReceipt &&
+        pendingFamilyCreation !== 'profile_repair'))
   ) {
     return <Redirect href={entryHref} />;
   }

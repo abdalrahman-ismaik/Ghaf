@@ -248,12 +248,12 @@ export const resources = {
           ageTwelveFourteen: '12–14',
           preferredLanguage: 'اللغة المفضلة',
           bothLanguages: 'العربية والإنجليزية',
-          genderOptional: 'الجنس (اختياري)',
-          genderBoy: 'ذكر',
-          genderGirl: 'أنثى',
-          genderPreferNot: 'أفضل عدم الإجابة',
-          genderBoundary:
-            'لا يستخدم غاف هذا الاختيار في اقتراحات الذكاء الاصطناعي أو المكافآت أو أسلوب المخاطبة.',
+          sexRequired: 'الجنس (مطلوب)',
+          sexMale: 'ذكر',
+          sexFemale: 'أنثى',
+          sexRequiredError: 'اختر ذكرًا أو أنثى للمتابعة.',
+          sexPersonalizationBoundary:
+            'تستخدم اقتراحات غاف هذا الاختيار لتخصيص صيغة المخاطبة فقط، ولا لتحديد الاهتمامات أو القدرات أو المكافآت.',
           interests: 'الاهتمامات',
           interestNature: 'الطبيعة',
           interestMaking: 'الصنع والابتكار',
@@ -273,12 +273,24 @@ export const resources = {
           supportAdult: 'وجود وليّ الأمر',
           supportQuiet: 'تذكير هادئ',
           chooseUpToThree: 'اختر حتى ثلاثة خيارات.',
-          accessibility: 'ما الذي يساعده؟ (اختياري)',
+          accessibility: 'ما الذي يساعد الطفل؟ (اختياري)',
           accessibilityHint: 'يمكن اختيار أي عدد مناسب من هذه التسهيلات.',
           largerText: 'نص أكبر',
           simplerInstructions: 'تعليمات أبسط',
           highContrast: 'تباين أعلى',
           reducedMotion: 'تقليل الحركة',
+          customOption: 'إجابة أخرى',
+          customInterestLabel: 'اكتب اهتمامًا آخر',
+          customHobbyLabel: 'اكتب هواية أخرى',
+          customSupportLabel: 'اكتب أسلوب مساعدة آخر',
+          customAccessibilityLabel: 'اكتب شيئًا آخر يساعد الطفل',
+          customAnswerPlaceholder: 'اكتب إجابة قصيرة',
+          customAnswerHint:
+            'من حرفين إلى 80 حرفًا. تجنّب الأسماء وبيانات التواصل والتشخيصات والمعلومات الخاصة.',
+          customAnswerRequired: 'أكمل الإجابة الأخرى المختارة بحرفين على الأقل.',
+          profileRepairTitle: 'تحديث مطلوب لملف الطفل',
+          profileRepairBody:
+            'أصبح اختيار الجنس مطلوبًا. راجع ذكر أو أنثى لكل طفل، ثم احفظ التحديث للدخول. لن يخمّن غاف الاختيار.',
           notNow: 'ليس الآن',
           noChildContact: 'لا نطلب بريد الطفل أو رقم هاتفه.',
           aiPersonalization: 'اقتراحات غاف الذكية المُعدّة',
@@ -287,11 +299,16 @@ export const resources = {
           aiPreviewTitle: 'لمحة من مساعد غاف',
           aiPreviewBody: 'أسلوب مساعدة مقترح: {{style}}. فئات مناسبة للبدء: {{categories}}.',
           aiSupportStyleLabel: 'أسلوب الشرح المقترح',
+          aiAddressingLabel: 'صيغة المخاطبة في الاقتراحات',
+          aiAddressForm: {
+            masculine: 'صيغة المذكر',
+            feminine: 'صيغة المؤنث',
+          },
           aiStartingPointsLabel: 'فئات مناسبة للبدء',
           aiPreviewDisabled:
             'لن يستخدم غاف تفضيلات هذا الملف لصنع اقتراحات. يمكن لوليّ الأمر اختيار المهام يدويًا.',
           aiDisclosure:
-            'اقتراح محلي مُعدّ من اختيارات منظّمة. يراجع وليّ الأمر كل مهمة ويعتمدها قبل أن يراها الطفل.',
+            'اقتراح محلي مُعدّ من الاختيارات المنظّمة والإجابات الأخرى المحدودة؛ لا يُرسل النص إلى مزوّد. يراجع وليّ الأمر كل مهمة ويعتمدها قبل أن يراها الطفل.',
           aiCategoryGreen: 'الأثر الأخضر',
           aiCategoryLearning: 'التعلّم والعافية',
           aiCategoryHome: 'مسؤولية المنزل',
@@ -324,6 +341,9 @@ export const resources = {
           create: 'إنشاء العائلة',
           replacementReview:
             'لن تتغير العائلة المحفوظة إلا عند اختيار الزر أدناه. عند النجاح، تُستبدل العائلة الحالية وتُمسح بيانات تقدمها وربطها الخاصة من هذا الجهاز.',
+          profileRepairReview:
+            'يبقى ملف العائلة السابق محفوظًا حتى ينجح هذا التحديث المحلي. راجع الاختيارات قبل الحفظ؛ لا يتغير التقدم أو الربط.',
+          saveProfileRepair: 'حفظ التحديث والدخول',
           replaceFamily: 'استبدال العائلة وإنشاء الجديدة',
           creating: 'جارٍ إعداد العائلة محليًا…',
           edit: 'رجوع للتعديل',
@@ -2078,12 +2098,12 @@ export const resources = {
           ageTwelveFourteen: '12–14',
           preferredLanguage: 'Preferred language',
           bothLanguages: 'Arabic and English',
-          genderOptional: 'Gender (optional)',
-          genderBoy: 'Boy',
-          genderGirl: 'Girl',
-          genderPreferNot: 'Prefer not to say',
-          genderBoundary:
-            'Ghaf does not use this choice for AI suggestions, rewards, or gendered wording.',
+          sexRequired: 'Sex (required)',
+          sexMale: 'Male',
+          sexFemale: 'Female',
+          sexRequiredError: 'Choose Male or Female to continue.',
+          sexPersonalizationBoundary:
+            'Ghaf suggestions use this choice only for the form of address—not to decide interests, ability, or rewards.',
           interests: 'Interests',
           interestNature: 'Nature',
           interestMaking: 'Making things',
@@ -2109,6 +2129,18 @@ export const resources = {
           simplerInstructions: 'Simpler instructions',
           highContrast: 'Higher contrast',
           reducedMotion: 'Reduce motion',
+          customOption: 'Other',
+          customInterestLabel: 'Write another interest',
+          customHobbyLabel: 'Write another hobby',
+          customSupportLabel: 'Write another help style',
+          customAccessibilityLabel: 'Write something else that helps',
+          customAnswerPlaceholder: 'Write a short answer',
+          customAnswerHint:
+            'Use 2–80 characters. Avoid names, contact details, diagnoses, or other private information.',
+          customAnswerRequired: 'Complete the selected Other answer with at least two characters.',
+          profileRepairTitle: 'Child profile update required',
+          profileRepairBody:
+            'Sex is now required. Review Male or Female for each Child, then save the update to sign in. Ghaf will not guess the selection.',
           notNow: 'Not now',
           noChildContact: 'We do not ask for the Child’s email or phone number.',
           aiPersonalization: 'Prepared Ghaf AI suggestions',
@@ -2118,11 +2150,16 @@ export const resources = {
           aiPreviewBody:
             'Suggested coaching style: {{style}}. Helpful starting categories: {{categories}}.',
           aiSupportStyleLabel: 'Suggested explanation style',
+          aiAddressingLabel: 'Suggestion form of address',
+          aiAddressForm: {
+            masculine: 'Masculine form',
+            feminine: 'Feminine form',
+          },
           aiStartingPointsLabel: 'Helpful starting categories',
           aiPreviewDisabled:
             'Ghaf will not use this profile’s preferences for suggestions. The Parent can still choose tasks manually.',
           aiDisclosure:
-            'This is a prepared local suggestion from structured choices. A Parent reviews and approves every task before the Child sees it.',
+            'This prepared local suggestion uses structured choices and bounded Other answers; the text is not sent to a provider. A Parent reviews and approves every task before the Child sees it.',
           aiCategoryGreen: 'Green Impact',
           aiCategoryLearning: 'Learning & Wellbeing',
           aiCategoryHome: 'Home Responsibility',
@@ -2155,6 +2192,9 @@ export const resources = {
           create: 'Create family',
           replacementReview:
             'The saved family changes only when you choose the button below. After a successful save, this family replaces the current one and its private progress and pairing state are cleared from this device.',
+          profileRepairReview:
+            'Your previous family profile remains stored until this local update succeeds. Review the choices before saving; progress and device pairings do not change.',
+          saveProfileRepair: 'Save update and sign in',
           replaceFamily: 'Replace family and create new',
           creating: 'Preparing the family locally…',
           edit: 'Back to edit',

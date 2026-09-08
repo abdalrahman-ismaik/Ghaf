@@ -249,14 +249,17 @@ directory, family name, application language, and one-or-two Child count; the ne
 Child 1 and, when selected, Child 2 as separate indexed steps; Review shows the complete family
 before the one-time create action. Back retains each complete draft entry. Required identity-light
 Child fields come first—nickname, botanical avatar, age band, and preferred language—followed by
-optional gender, curated interests, hobbies, support, accessibility, and prepared-personalization
-choice. There is no unbounded “important information” box because the local demo does not need a
-sensitive Child or family narrative.
+required male/female sex, curated interests, hobbies, support, accessibility, and
+prepared-personalization choice. Each multi-choice group ends with one Other chip that reveals one
+matching 2–80-character native text field. Other counts toward the existing selection limit and
+clears its text immediately when deselected. There is no unbounded “important information” box;
+custom entries are purpose-labeled and warn against names, contact details, diagnoses, or private
+family narratives.
 
 The screens reuse the current Soft Geometric botanical system: organic ivory background, strong
 Alexandria headings, Readex controls/body, emerald primary action, outlined semantic chips, generous
 vertical rhythm, one fixed-safe action region, natural keyboard-aware scrolling, and 48dp targets.
-Optional choices are visibly skippable. Step totals adapt to the selected count (`1/3` through
+Optional preference choices are visibly skippable. Step totals adapt to the selected count (`1/3` through
 `3/3`, or `1/4` through `4/4`), and the review remains an editable summary rather than another
 form.
 

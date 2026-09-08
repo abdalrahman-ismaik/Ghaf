@@ -122,10 +122,15 @@ export function ParentTaskComposer({
     const result = createPreparedTaskCategoryPlan(
       {
         ageBand: profile.ageBand,
+        sex: profile.sex,
         interests: profile.interests,
         hobbies: profile.hobbies,
         accessibilityDefaults: profile.accessibilityDefaults,
         supportPreferences: profile.supportPreferences,
+        customInterest: profile.customInterest,
+        customHobby: profile.customHobby,
+        customSupportPreference: profile.customSupportPreference,
+        customAccessibility: profile.customAccessibility,
         personalizationEnabled: profile.personalizationEnabled,
       },
       TASK_CATEGORIES.map((category) => category.id),

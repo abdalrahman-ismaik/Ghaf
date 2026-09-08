@@ -18,6 +18,7 @@ export { SAVED_TASK_TEMPLATE_STORAGE_KEY } from '../../models/savedTaskTemplate'
 export {
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  OLDEST_LOCAL_FAMILY_STORAGE_KEY,
   PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
 } from '../../models/localFamily';
 export type { LocalKeyValueStorage } from './storageTypes';

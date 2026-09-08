@@ -1397,3 +1397,41 @@ Do not describe Feature 003 as demo-accepted until:
 Real Child media, real accounts, and real family circles are outside this gate. A secure live Parent
 task-refinement call with synthetic input is the competition AI target; if it is unavailable, keep
 the prepared journey usable and report live AI as `BLOCKED` or `NOT RUN` rather than claiming it.
+
+## Required Child profile personalization — 2026-09-08
+
+During fresh Parent setup, confirm the Child profile shows only Male/Female and cannot reach review
+without a value. In each of Interests, Hobbies, Preferred help style, and What helps, select Other;
+confirm one matching field appears, accepts 2–80 characters, survives Back, and appears only in the
+Parent review. Deselect Other and confirm its text is immediately cleared. Confirm Other counts
+toward the existing selection limit.
+
+Use one reviewed Arabic or English custom environmental interest and one visual-help answer. The
+prepared preview may add only an existing category and coaching-style key, must show the selected
+grammatical address, and must never repeat the custom answer. Switch only Male/Female and confirm
+category order, task difficulty, reward, and approval remain identical. Disable personalization
+and confirm no suggestions remain while Parent editing still retains the profile values.
+
+| Evidence                                                                          | Status                     | Boundary                                                                                        |
+| --------------------------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------- |
+| Required-sex, custom validation, prepared reduction, migration, and privacy tests | `PASSED`                   | Focused profile/repair batch: 6 files / 68 tests; full suite: 130 files / 1,412 tests           |
+| Arabic/English 320×720 and 390×844 keyboard/long-copy review                      | `PASSED Firefox web proxy` | Four Arabic Other fields at 320×720 and complete English repair at 390×844; zero console errors |
+| Physical Android keyboard, Back, TalkBack, font scale, and reset                  | `BLOCKED`                  | Android JavaScript export passed with 96 assets; ADB reported no connected device               |
+| Arabic/UAE, safeguarding, privacy, and accessibility review                       | `NOT RUN`                  | Requires named reviewers                                                                        |
+
+### Returning-family required-profile repair
+
+Seed a valid `ghaf.local-family.v3` record whose first Child has `gender: boy` and second Child has
+`gender: null`. Reload Parent sign-in. Confirm the one-time update notice appears, an unknown
+identifier stays on sign-in, and only the saved `parent@example.com` reaches code entry. Enter one
+wrong code and confirm no profile/session authority, then use `424242`. Ghaf must open the existing
+Child profiles: the explicit boy mapping remains Male, the missing profile cannot continue until
+the Parent selects Male or Female, and Back/cancel leaves schema 3 untouched.
+
+Complete the selection and review. **Save update and sign in** must write schema 4 before removing
+the old key, preserve family/profile data and paired-Child identifiers, and enter Parent space.
+Automated failed-write injection proves the old key remains when the schema-4 write fails. The
+2026-09-09 Firefox proxy completed this path at 390×844 with `male/female`, preserved
+`child_salem` pairing, retired schema 3, reached family-created success, and produced zero console
+errors. This is deterministic local compatibility behavior, not production authentication or
+account recovery.

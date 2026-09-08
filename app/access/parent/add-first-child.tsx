@@ -13,6 +13,7 @@ import {
 } from '@/components/access';
 import { PrimaryButton, Text } from '@/components/primitives';
 import { spacing } from '@/design/tokens';
+import { isChildProfileComplete } from '@/features/access/parentOnboarding';
 import type { ParentOnboardingChildDraft } from '@/models/parentOnboarding';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -28,6 +29,8 @@ export default function AddFirstChildScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const localFamily = usePrototypeStore((state) => state.localFamily);
+  const pendingFamilyCreation = usePrototypeStore((state) => state.pendingFamilyCreation);
+  const cancelParentVerification = usePrototypeStore((state) => state.cancelParentVerification);
   const updateParentOnboardingDraft = usePrototypeStore(
     (state) => state.updateParentOnboardingDraft,
   );
@@ -48,11 +51,20 @@ export default function AddFirstChildScreen() {
 
   const goBack = useCallback(() => {
     if (childIndex === 0) {
+      if (pendingFamilyCreation === 'profile_repair') {
+        const cancelled = cancelParentVerification();
+        if (!cancelled.ok) {
+          setError(t('access.states.interrupted'));
+          return;
+        }
+        router.replace('/access/parent/sign-in');
+        return;
+      }
       router.replace('/access/parent/family-basics');
       return;
     }
     router.replace('/access/parent/add-first-child?child=0' as Href);
-  }, [childIndex, router]);
+  }, [cancelParentVerification, childIndex, pendingFamilyCreation, router, t]);
 
   const familyIsValid = parentOnboarding.draft.familyName.trim().length >= 2;
   const indexIsConfigured = childIndex < parentOnboarding.draft.childCount;
@@ -87,14 +99,20 @@ export default function AddFirstChildScreen() {
     return null;
   }
 
-  const validateName = () => {
-    const valid = child.nickname.trim().length >= 2;
-    setError(valid ? null : t('access.setup.childNameError'));
+  const validateProfile = () => {
+    const valid = isChildProfileComplete(child);
+    const message =
+      child.nickname.trim().length < 2
+        ? t('access.setup.childNameError')
+        : child.sex === null
+          ? t('access.setup.sexRequiredError')
+          : t('access.setup.customAnswerRequired');
+    setError(valid ? null : message);
     return valid;
   };
 
   const continueSetup = () => {
-    if (busy || !validateName()) return;
+    if (busy || !validateProfile()) return;
     setBusy(true);
     if (!updateChild({ nickname: child.nickname.trim() })) {
       setBusy(false);
@@ -132,7 +150,7 @@ export default function AddFirstChildScreen() {
             busy={busy}
             busyLabel={t('access.setup.continue')}
             direction={direction}
-            disabled={child.nickname.trim().length < 2}
+            disabled={!isChildProfileComplete(child)}
             language={locale}
             onPress={continueSetup}
             size="regular"
@@ -180,7 +198,16 @@ export default function AddFirstChildScreen() {
           tone="offline"
         />
       ) : null}
-      {localFamily.status === 'unavailable' ? (
+      {pendingFamilyCreation === 'profile_repair' ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.setup.profileRepairBody')}
+          title={t('access.setup.profileRepairTitle')}
+          tone="origin"
+        />
+      ) : null}
+      {localFamily.status === 'unavailable' && pendingFamilyCreation !== 'profile_repair' ? (
         <StatusBanner
           direction={direction}
           language={locale}
@@ -199,7 +226,7 @@ export default function AddFirstChildScreen() {
         language={locale}
         onLimitReached={() => setError(t('access.setup.chooseUpToThree'))}
         onPatch={updateChild}
-        onValidateName={validateName}
+        onValidateName={validateProfile}
       />
     </AccessScreen>
   );
