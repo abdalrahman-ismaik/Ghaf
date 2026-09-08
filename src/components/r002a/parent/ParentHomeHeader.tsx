@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
-import { Text } from '@/components/primitives';
+import { GhafHeaderTitle } from '@/components/brand';
 import { colors, layout, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
@@ -38,16 +38,7 @@ export function ParentHomeHeader({
         </Pressable>
 
         <View style={styles.titleSlot}>
-          <Text
-            accessibilityRole="header"
-            align="center"
-            brand
-            color="ghafEmerald"
-            direction={direction}
-            variant="screenTitle"
-          >
-            {title}
-          </Text>
+          <GhafHeaderTitle color="ghafEmerald" direction={direction} title={title} />
         </View>
 
         <View accessibilityLabel={profileLabel} accessible style={styles.sideSlot}>

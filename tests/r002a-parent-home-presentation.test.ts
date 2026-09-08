@@ -43,6 +43,7 @@ describe('R002a Parent Home presentation', () => {
     const shell = source('src/components/r002a/R002aScreen.tsx');
     const navigation = source('src/components/r002a/parent/ParentHomeNavigation.tsx');
     const header = source('src/components/r002a/parent/ParentHomeHeader.tsx');
+    const headerTitle = source('src/components/brand/GhafHeaderTitle.tsx');
 
     expect(shell).toContain('SafeAreaView');
     expect(shell).toContain('ScrollView');
@@ -60,7 +61,8 @@ describe('R002a Parent Home presentation', () => {
     expect(shell).toContain("dir: 'ltr'");
     expect(header).toContain('sideSlot');
     expect(header).toContain('titleSlot');
-    expect(header).toContain('accessibilityRole="header"');
+    expect(header).toContain('<GhafHeaderTitle');
+    expect(headerTitle).toContain('accessibilityRole="header"');
     expect(layout.touchTarget).toBeGreaterThanOrEqual(48);
   });
 

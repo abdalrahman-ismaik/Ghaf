@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { BotanicalAvatar, GhafIcon } from '@/components/access';
-import { Text } from '@/components/primitives';
+import { GhafHeaderTitle } from '@/components/brand';
 import { colors, layout, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 import type { ChildTreeAvatarId } from '@/models/parentOnboarding';
@@ -42,16 +42,7 @@ export function ChildHomeHeader({
   );
   const titleControl = (
     <View style={styles.titleSlot}>
-      <Text
-        accessibilityRole="header"
-        align="center"
-        brand
-        color="ghafEmerald"
-        direction={direction}
-        variant="screenTitle"
-      >
-        {title}
-      </Text>
+      <GhafHeaderTitle color="ghafEmerald" direction={direction} title={title} />
     </View>
   );
   const avatarControl = onAvatarPress ? (

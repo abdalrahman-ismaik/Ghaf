@@ -110,7 +110,7 @@ describe('R002a cross-slice quality contracts', () => {
     expect(flowHeader).toMatch(/physicalRow:\s*\{[\s\S]*?flexDirection:\s*'row'/u);
 
     const settings = parentHeader.indexOf('testID="parent-settings-button"');
-    const parentTitle = parentHeader.indexOf('accessibilityRole="header"');
+    const parentTitle = parentHeader.indexOf('<GhafHeaderTitle');
     const parentAvatar = parentHeader.indexOf('accessibilityLabel={profileLabel}');
     expect(settings).toBeGreaterThanOrEqual(0);
     expect(parentTitle).toBeGreaterThanOrEqual(0);

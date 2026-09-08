@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 
+import { GhafRasterLogo } from '@/components/brand';
 import { IconButton, Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -48,9 +49,17 @@ export function JourneyHeader({
         </View>
       ) : null}
       <View style={styles.headerCopy}>
-        <Text color="forest" variant="title">
-          {title}
-        </Text>
+        <View style={[styles.headerTitleRow, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
+          <GhafRasterLogo decorative size={32} testID="ghaf-header-logo" />
+          <Text
+            accessibilityRole="header"
+            color="forest"
+            style={styles.headerTitle}
+            variant="title"
+          >
+            {title}
+          </Text>
+        </View>
         {subtitle ? <Text color="inkMuted">{subtitle}</Text> : null}
         {resolvedContext ? (
           <View style={[styles.headerContext, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
@@ -161,6 +170,13 @@ const styles = StyleSheet.create({
   },
   headerSpacer: { width: layout.touchTarget, height: layout.touchTarget },
   headerCopy: { gap: spacing.sm },
+  headerTitleRow: {
+    maxWidth: '100%',
+    minWidth: 0,
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  headerTitle: { minWidth: 0, flexShrink: 1 },
   headerContext: { alignItems: 'center', gap: spacing.sm, paddingTop: spacing.xs },
   headerContextLine: { width: spacing.xxl, height: 1, backgroundColor: colors.gold },
   headerContextText: { flexShrink: 1 },

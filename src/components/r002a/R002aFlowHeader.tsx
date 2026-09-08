@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
+import { GhafHeaderTitle } from '@/components/brand';
 import { Text } from '@/components/primitives';
 import { colors, layout, opacity, spacing, type LayoutDirection } from '@/design/tokens';
 
@@ -58,9 +59,7 @@ export function R002aFlowHeader({
       <View style={styles.physicalRow}>
         {direction === 'rtl' ? actionControl : backControl}
         <View style={styles.titleSlot}>
-          <Text align="center" brand color="r001Ink" direction={direction} variant="screenTitle">
-            {title}
-          </Text>
+          <GhafHeaderTitle direction={direction} title={title} />
         </View>
         {direction === 'rtl' ? backControl : actionControl}
       </View>

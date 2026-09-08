@@ -107,7 +107,7 @@ titles remain readable, controls stay usable, and the logo follows the logical t
 - **FR-006**: Arabic RTL and English LTR MUST use logical title ordering without mirroring or
   modifying the official mark.
 - **FR-007**: Titles MUST remain scalable and readable at 320 and 390 dp widths and up to 200% text
-  size; the logo MUST shrink from layout pressure before required text or controls are lost.
+  size; the mark MUST stay compact and the title MUST wrap before required controls are lost.
 - **FR-008**: Existing Back, settings, help, profile, action, safe-area, and navigation behavior MUST
   remain unchanged.
 - **FR-009**: The feature MUST reuse the current bundled official logo source and MUST add no remote

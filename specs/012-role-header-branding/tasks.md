@@ -39,18 +39,22 @@ source and route inventory proves released role screens continue to consume thos
 
 ### Tests
 
-- [ ] T005 [US1] [US2] Add failing official-source, shared-header coverage, no-route-duplication, and
+- [x] T005 [US1] [US2] Add failing official-source, shared-header coverage, no-route-duplication, and
   sole-heading accessibility contracts in tests/role-header-branding.test.tsx
-- [ ] T006 [US1] [US2] Run the focused test before implementation and record the expected missing
+- [x] T006 [US1] [US2] Run the focused test before implementation and record the expected missing
   composition failures in this file
+
+  - RED evidence (2026-09-08): 2 tests passed and 3 failed because
+    `GhafHeaderTitle.tsx` did not exist and the compact and journey header families did not yet
+    render the official mark.
 
 ### Implementation
 
-- [ ] T007 [US1] [US2] Build the compact decorative logo/title composition in
+- [x] T007 [US1] [US2] Build the compact decorative logo/title composition in
   src/components/brand/GhafHeaderTitle.tsx and export it from src/components/brand/index.ts
-- [ ] T008 [US1] Apply the composition to ParentHomeHeader.tsx and ChildHomeHeader.tsx
-- [ ] T009 [US2] Apply the composition to R002aFlowHeader.tsx and R002bNestedScreen.tsx
-- [ ] T010 [US2] Add the same official decorative mark to the title area in
+- [x] T008 [US1] Apply the composition to ParentHomeHeader.tsx and ChildHomeHeader.tsx
+- [x] T009 [US2] Apply the composition to R002aFlowHeader.tsx and R002bNestedScreen.tsx
+- [x] T010 [US2] Add the same official decorative mark to the title area in
   src/components/journey.tsx without changing its actions or contextual copy
 
 **Checkpoint**: Primary and deeper role screens inherit one official mark through shared chrome.
@@ -61,10 +65,13 @@ source and route inventory proves released role screens continue to consume thos
 
 **Goal**: Verify Arabic-first direction, scaling, and control preservation.
 
-- [ ] T011 [US3] Extend the focused contract with logical ordering, shrink/wrap, unchanged asset
+- [x] T011 [US3] Extend the focused contract with logical ordering, shrink/wrap, unchanged asset
   checksum, and no one-line clamp assertions in tests/role-header-branding.test.tsx
-- [ ] T012 [US3] Run the Impeccable detector once against all changed UI components and resolve any
+- [x] T012 [US3] Run the Impeccable detector once against all changed UI components and resolve any
   in-scope finding
+
+  - Detector evidence (2026-09-08): the one required post-implementation pass returned zero
+    findings across the shared brand and five header-family components.
 - [ ] T013 [US3] Inspect representative Parent and Child dashboard and nested layouts in Arabic and
   English at compact widths through the real web app; record only directly observed evidence
 
