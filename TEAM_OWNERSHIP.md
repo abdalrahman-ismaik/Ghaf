@@ -1,5 +1,29 @@
 # Team Ownership
 
+## 2026-09-08 Feature 010 Calm Ambient Soundscape Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/010-calm-ambient-soundscape/**`.
+
+**Runtime reservation**: `assets/audio/ambient/**`,
+`src/components/audio/AmbientAudioProvider.tsx`, `tests/natural-ambient-audio.test.tsx`, and narrowly
+scoped truthful audio/evidence updates in `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and
+`DEMO_RUNBOOK.md`.
+
+**Scope**: Replace the current app-wide ambient source with one versioned, locally authored calm
+breeze-and-water soundscape that removes repeating synthetic bird-like tones, melody, beat,
+speech, sharp transients, downloads, and network dependency. Preserve the existing Sound toggle,
+device-local preference, app lifecycle, narration ducking, screen-reader silence, deterministic
+reset, access separation, and complete offline path. Retain the prior asset for rollback, record
+objective source/metadata/seam evidence, and leave subjective calmness plus physical Android
+listening unclaimed until a named human review occurs.
+
+**Status**: In progress. Existing user-owned configuration, source design packs, and generated
+output artifacts remain outside this reservation.
+
 ## 2026-09-08 Feature 009 Access Family Portraits Window
 
 **Owner and only writer**: `/root`

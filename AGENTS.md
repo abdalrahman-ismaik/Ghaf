@@ -1,7 +1,8 @@
 <!-- SPECKIT START -->
+
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/009-access-family-portraits/plan.md
+at specs/010-calm-ambient-soundscape/plan.md
 <!-- SPECKIT END -->
 
 # Ghaf Repository Collaboration Contract
