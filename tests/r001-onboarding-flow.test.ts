@@ -132,7 +132,7 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(en.get('success.origin')).toMatch(/device/i);
   });
 
-  it('uses native routes and a transparent modal without importing Stitch runtime code', () => {
+  it('uses native routes and a transparent modal without importing exported web runtime code', () => {
     const routeSources = R001_ACCESS_ROUTES.map((route) =>
       readFileSync(resolve(import.meta.dirname, `../app${route}.tsx`), 'utf8'),
     ).join('\n');

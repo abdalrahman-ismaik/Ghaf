@@ -27,5 +27,5 @@ credit. If the illustrated story is unavailable, the accessible route must still
 Default-off candidate implementation is authorized with explicit source metadata and code-native or
 provenanced art. Release activation still requires revalidated sources, Arabic/English factual
 equivalence, UAE cultural/place review, safeguarding/age-comprehension review,
-objective-equivalent accessibility review, art provenance, and rights clearance. Stitch can approve
+objective-equivalent accessibility review, art provenance, and rights clearance. Visual review can approve
 composition; it cannot approve facts or permissions.

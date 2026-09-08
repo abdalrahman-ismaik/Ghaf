@@ -347,7 +347,7 @@ screen contracts below define the public copy, state, and evidence rules.
 The 2026-09-05 user-authorized completion pass extends this same visual world to missing access,
 Family, Reward, settings, permissions, devices, reauthentication, and Child-settings surfaces. The
 2026-09-06 usability correction additionally authorizes a dedicated Parent sign-up surface. A
-missing Stitch frame is no longer an implementation blocker for the local prototype. New screens
+missing reference frame is no longer an implementation blocker for the local prototype. New screens
 must reuse the Soft Geometric palette, typography, spacing, iconography, native shells, and
 botanical grammar already present; they do not introduce a second dashboard or generic settings
 theme. The route contracts below define entries, exits, and privacy boundaries.
@@ -394,7 +394,7 @@ provenance, content, and human-review gates pass.
   deterministic code, while an unknown identifier stays on sign-in. Create Family navigates
   without requesting verification.
 - `/access/parent/sign-up` is an R003 code-native Soft Geometric candidate because no approved
-  Stitch frame exists. It uses the organic access shell, a tonal 64dp family icon plate, centered
+  reference frame exists. It uses the organic access shell, a tonal 64dp family icon plate, centered
   Alexandria heading and Readex orientation, one mixed phone/email field, one filled full-width
   continuation, a concise returning-family prompt, and one full-width emerald outlined sign-in
   action. It reuses the existing deterministic verification authority and binds the normalized

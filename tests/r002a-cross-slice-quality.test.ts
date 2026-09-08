@@ -84,7 +84,7 @@ describe('R002a cross-slice quality contracts', () => {
 
     const auditedFiles = [...routeStateInventory.map(({ path }) => path), ...sharedChromeFiles];
     const webRuntimePattern =
-      /(?:<\/?div\b|className=|WebView|document\.|window\.|localStorage|sessionStorage|<iframe\b|@playwright\/test|\.html["'`]|docs\/design\/stitch|output\/playwright)/u;
+      /(?:<\/?div\b|className=|WebView|document\.|window\.|localStorage|sessionStorage|<iframe\b|@playwright\/test|\.html["'`]|docs\/design\/|output\/)/u;
     const offenders = auditedFiles.filter((path) => webRuntimePattern.test(source(path)));
 
     expect(offenders).toEqual([]);

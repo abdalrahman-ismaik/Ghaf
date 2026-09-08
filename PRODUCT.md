@@ -1,7 +1,5 @@
 # Product
 
-<!-- impeccable:product-schema 1 -->
-
 ## Status
 
 | Item                      | Truth as of 2026-09-08                                                                                                                                      |
@@ -311,8 +309,8 @@ weaken the preserved domain contract.
 
 R002a copy is Arabic-first and centrally paired with equivalent English. It includes conservative
 loading, empty, validation-error, recoverable-error, submitting, success, interrupted-recovery, and
-reduced-motion states without inventing new business outcomes. Raw Stitch HTML and PNG exports
-remain reference evidence, never runtime UI or data.
+reduced-motion states without inventing new business outcomes. Prepared design exports remain
+reference evidence, never runtime UI or data.
 
 R002b is authorized for feature-flagged implementation. It reconciles current Mangrove
 48/60→60/60 growth with confirmed lifetime Seeds 108→120 and a read-only 120→180 Water & Coast

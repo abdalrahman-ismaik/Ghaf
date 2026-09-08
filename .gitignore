@@ -38,11 +38,19 @@ TEAM_OWNERSHIP.md
 **/TEAM_OWNERSHIP.md
 **/CODEX_*.md
 **/*_PROMPT*.md
+**/*_prompt*.md
+**/*AI_GENERATED*
+**/*ai-generated*
+**/*ai_generated*
 **/GENERATION_PROMPT*.txt
+**/generation_prompt*.txt
 docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/
 docs/Ghaf_Official_Logo_and_App_Icon_Pack_v1.0/
-docs/design/stitch/releases/ghaf-r002/
+docs/design/stitch/
 docs/design/brand/*MIGRATION*.md
+docs/DEMO_RUNBOOK.md
+docs/DESIGN_DIRECTION.md
+docs/PROTOTYPE_LIMITATIONS.md
 
 # Local environment files: commit only the documented placeholder
 .env

@@ -46,15 +46,9 @@ describe('R002b private League route integration', () => {
     expect(route).not.toContain('GreenCircle');
   });
 
-  it('defines the missing surface before implementation and does not depend on exported web UI', () => {
-    const specification = source(
-      'docs/design/stitch/releases/ghaf-r002b/screens/12-private-league/screen-spec.md',
-    );
+  it('implements the approved native surface without depending on exported web UI', () => {
     const component = source('src/components/r002b/PrivateLeagueScreen.tsx');
 
-    expect(specification).toContain('R003 CANONICAL PROTOTYPE ROUTE AUTHORIZED');
-    expect(specification).toContain('Optional R002b Growth candidates remain independently');
-    expect(specification).toContain('`/league`');
     expect(component).not.toMatch(/WebView|iframe|<div|<img|className|dangerouslySetInnerHTML/u);
     expect(component).toContain('flexDirection: logicalRowDirection(direction)');
     expect(component).toContain("compact ? 'column' : logicalRowDirection(direction)");

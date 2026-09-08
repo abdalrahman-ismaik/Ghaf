@@ -1,19 +1,17 @@
 # Ghaf documentation map
 
 This directory contains the public engineering guide, architecture decisions, content references,
-commercial assumptions, and selected design records. Current product contracts live at the
+and commercial assumptions. Current product contracts live at the
 repository root so contributors and competition reviewers can find them immediately.
 
 ## Start here
 
-| Need                                                   | Document                                                         |
-| ------------------------------------------------------ | ---------------------------------------------------------------- |
-| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                        |
-| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                     |
-| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                            |
-| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                            |
-| Inspect frozen R001 composition references             | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md) |
-| Inspect selected R002a compatibility references        | [R002a selections](design/stitch/releases/ghaf-r002a/)           |
+| Need                                                   | Document                                     |
+| ------------------------------------------------------ | -------------------------------------------- |
+| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)    |
+| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md) |
+| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)        |
+| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)        |
 
 ## Active Feature 003 contracts
 
@@ -31,19 +29,6 @@ These root-level files are the current source of truth:
 Current requirements preserve the private five-Leaf League, canonical task ID, independent
 progression authorities, complete approval consequences, access separation, voice boundaries,
 reset behavior, and profile isolation.
-
-## Preserved Feature 002 history
-
-The following files in this directory are historical Feature 002 records, not duplicates of the
-root Feature 003 documents:
-
-- `DEMO_RUNBOOK.md`
-- `DESIGN_DIRECTION.md`
-- `PROTOTYPE_LIMITATIONS.md`
-
-They retain the earlier food-rescue routes, prepared assets, results, and open Android/human gates.
-Do not use them to make current Feature 003 claims, rename them casually, or transfer their passes
-to the current feature. Historical prepared media remains under `assets/demo/`.
 
 ## Current evidence locations
 

@@ -334,8 +334,8 @@ must match the saved normalized identifier before code entry and then skips all 
 screens. The three Parent access screens intentionally use neutral user-facing copy without a
 demo/not-real footer, while this document and the runbook retain the capability boundary.
 
-The R003-only screens without approved Stitch frames are documented code-native Soft Geometric
-candidates built from the existing theme and tokens. Their existence is not Google Stitch approval,
+The R003-only screens without approved reference frames are documented code-native Soft Geometric
+candidates built from the existing theme and tokens. Their existence is not visual approval,
 asset approval, physical Android acceptance, or release activation. Final focused/full validation
 and bilingual browser-proxy evidence are recorded against the current worktree extending runtime
 checkpoint `40fc5fc`; the frozen R001/R002a evidence below was not reused as R003 acceptance.
