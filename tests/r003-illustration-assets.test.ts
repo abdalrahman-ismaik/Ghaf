@@ -104,7 +104,6 @@ interface ArtworkManifestAsset {
   readonly generatedAt: string;
   readonly generator: string;
   readonly id: string;
-  readonly prompt: string;
   readonly reviewStatus: string;
   readonly routes: readonly string[];
   readonly source: {
@@ -159,22 +158,18 @@ function jpegDimensions(bytes: Buffer): { readonly height: number; readonly widt
   throw new Error('JPEG dimensions were not found.');
 }
 
-function jpegEmbeddedPrompt(bytes: Buffer): string | null {
-  const prefix = 'impeccable:prompt\0';
+function jpegHasComment(bytes: Buffer): boolean {
   let offset = 2;
 
   while (offset + 4 <= bytes.length && bytes[offset] === 0xff) {
     const marker = bytes[offset + 1];
     if (marker === 0xda) break;
     const length = bytes.readUInt16BE(offset + 2);
-    if (marker === 0xfe) {
-      const comment = bytes.toString('utf8', offset + 4, offset + 2 + length);
-      if (comment.startsWith(prefix)) return comment.slice(prefix.length);
-    }
+    if (marker === 0xfe) return true;
     offset += 2 + length;
   }
 
-  return null;
+  return false;
 }
 
 describe('R003 generated natural artwork contract', () => {
@@ -191,17 +186,12 @@ describe('R003 generated natural artwork contract', () => {
     expect(new Set(manifest.assets.map(({ final }) => final.sha256)).size).toBe(48);
 
     for (const asset of manifest.assets) {
-      expect(asset.generator).toBe('OpenAI imagegen');
+      expect(asset.generator).toBe('prepared synthetic image generation');
       expect(asset.generatedAt).toBe('2026-09-06');
       expect(asset.source).toEqual({
         format: 'RGB PNG',
         ...expectedSourceDimensions[asset.id as (typeof expectedAssetIds)[number]],
       });
-      expect(asset.prompt.length).toBeGreaterThan(240);
-      expect(asset.prompt).toMatch(/(?:No|Avoid:|Constraints:)[\s\S]{0,1500}\billustration\b/iu);
-      expect(asset.prompt).toMatch(
-        /(?:No|Avoid:|Constraints:)[\s\S]{0,1500}\b(?:people|person|human)\b/iu,
-      );
       expect(asset.routes.length).toBeGreaterThan(0);
       expect(asset.transformations.length).toBeGreaterThan(0);
       expect(asset.reviewStatus).toBe('curated-local-candidate');
@@ -217,7 +207,7 @@ describe('R003 generated natural artwork contract', () => {
       const bytes = readFileSync(absolutePath);
       expect(bytes.byteLength).toBe(asset.final.bytes);
       expect(sha256(bytes)).toBe(asset.final.sha256);
-      expect(jpegEmbeddedPrompt(bytes)).toBe(asset.prompt);
+      expect(jpegHasComment(bytes)).toBe(false);
       expect(jpegDimensions(bytes)).toEqual({
         height: asset.final.height,
         width: asset.final.width,

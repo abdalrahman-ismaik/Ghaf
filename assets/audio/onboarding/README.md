@@ -7,7 +7,7 @@ used. Runtime playback is local and offline through static Expo asset references
 ## Narration
 
 - Authoring date: 2026-09-07
-- Authoring tool: `edge-tts` 7.2.3, used only during asset preparation
+- Authoring method: prepared synthetic voice generation used only during asset preparation
 - Arabic voice: `ar-AE-FatimaNeural`, rate `+7%`, pitch `+2Hz`
 - English voice: `en-US-EmmaMultilingualNeural`, rate `+8%`, pitch `+2Hz`
 - Transcript: the exact localized title followed by body in `src/i18n/resources.ts`

@@ -11,8 +11,8 @@
 - Attire: white kandura, white ghutra, and black agal; deep-emerald traditional thobe/jalabiya and
   black shayla-style hijab
 - Source: generated opaque RGB PNG, 1536×1024
-- Final: opaque JPEG, 1200×800, 161,065 bytes
-- SHA-256: `eb794abdcdb69cf629d00ad7446abb451ad4f72f9bc6d434f614dbec424aba6b`
+- Final: opaque JPEG, 1200×800, 156,874 bytes
+- SHA-256: `3576129f03ddfcc7e107df254a13bc7da34906305b9e7c2f6552dfd7a2870c91`
 - Route: `/access/child`
 - Accessibility: decorative and removed from the accessibility tree
 - Product authority: none; the portrait does not authenticate, identify, select either seeded

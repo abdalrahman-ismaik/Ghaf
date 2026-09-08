@@ -4,7 +4,7 @@
 
 This directory contains the user-authorized **Quiet UAE Botanical Editorial** artwork refresh for
 Ghaf. The shipping files are the 48 JPEGs in `final/` plus `ASSET_MANIFEST.json`. Every runtime
-mapping is a literal local import; no image is fetched remotely and no Google Stitch export is
+mapping is a literal local import; no image is fetched remotely and no external design export is
 included.
 
 The 2026-09-06 first-run extension now contains seven separately generated and inspected local
@@ -26,12 +26,12 @@ a style and palette reference. The new exact 3:2 wide-angle composition uses one
 younger growth, and a foreground seed-pod/leaf trail as a natural metaphor for family support,
 small daily actions, and permanent symbolic growth. It remains decorative and contains no people,
 text, UI, logo, reward, quantity, or measured-impact claim. The generated 1536×1024 RGB PNG was
-resized to 1200×800, encoded as JPEG, stripped of non-prompt metadata, visually inspected, and
-received a replacement embedded prompt and manifest checksum.
+resized to 1200×800, encoded as JPEG, stripped of embedded metadata, visually inspected, and
+received a replacement manifest checksum.
 
 ## Origin and transformations
 
-- Generator: OpenAI built-in imagegen, one generation call per distinct source image.
+- Generator: prepared synthetic image generation, one generation call per distinct source image.
 - Generation date: original library 2026-09-06; Welcome hero regeneration 2026-09-07.
 - Source direction: calm natural-history editorial photography with UAE botanical and habitat
   context, natural asymmetry, warm restrained light, and nondirectional crop-safe composition.
@@ -41,21 +41,20 @@ received a replacement embedded prompt and manifest checksum.
 - Curation: each source and every species-stage sequence was inspected before integration; rejected
   sources were regenerated rather than shipped.
 - Normalization: opaque RGB PNG sources were center-cropped and resized with FFmpeg Lanczos
-  scaling, encoded as JPEG within the 500,000-byte asset budget, and cleared of non-prompt metadata
-  with ExifTool.
-- Embedded intent: the exact generation prompt is embedded in each shipping JPEG's
-  `impeccable:prompt` comment and is duplicated in `ASSET_MANIFEST.json` with final dimensions,
-  bytes, SHA-256 checksum, routes, accessibility mode, and exact transformations.
+  scaling, encoded as JPEG within the 500,000-byte asset budget, and cleared of embedded metadata.
+- Generation record: detailed working composition briefs remain local and are excluded from the
+  public source. `ASSET_MANIFEST.json` retains final dimensions, checksums, source dimensions,
+  transformations, routes, accessibility roles, and review status.
 
 Generated source PNGs are review intermediates, not shipping assets. They are removed after final
-JPEG integrity, embedded-prompt, and visual-crop checks pass.
+JPEG integrity, metadata-stripping, and visual-crop checks pass.
 
 ## Evidence status
 
 | Gate                                                                                       | Status                                                                                                                                                                                                      |
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Root visual curation, prohibited-content scan, stage continuity, and crop review           | `PASSED` — all 41 earlier crops, seven first-run images, and the regenerated Welcome hero were inspected; the Welcome, Family, and AI metaphors contain no people, readable text, UI, or prohibited imagery |
-| Exact manifest, local mapping, dimensions, size, checksum, and embedded-prompt tests       | `PASSED` — 4/4 asset-contract tests; 48 rasters scanned with 0 missing prompts                                                                                                                              |
+| Exact manifest, local mapping, dimensions, size, checksum, and metadata-stripping tests    | `PASSED` — 4/4 asset-contract tests; 48 rasters scanned with 0 embedded comment segments                                                                                                                    |
 | Default-on Arabic RTL and English LTR browser-proxy crop/overflow/console review           | `PASSED (web proxy)` — six-step journey and pillars inspected across 320×720 and 390×844; no broken images, horizontal overflow, or page errors                                                             |
 | Explicitly enabled default-off Learning, Reveal, and Shared Growth browser review          | `NOT RUN` — implementation remains default-off and is covered by focused component/source tests only                                                                                                        |
 | Web and Android JavaScript production exports                                              | `PASSED` — web produced 121 files and Android JS produced 90 files; byte-identical copies of both new first-run rasters were found in each export                                                           |

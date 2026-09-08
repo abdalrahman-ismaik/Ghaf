@@ -43,20 +43,16 @@ function jpegDimensions(bytes: Buffer): { readonly height: number; readonly widt
   throw new Error('JPEG dimensions were not found.');
 }
 
-function jpegEmbeddedPrompt(bytes: Buffer): string | null {
-  const prefix = 'impeccable:prompt\0';
+function jpegHasComment(bytes: Buffer): boolean {
   let offset = 2;
   while (offset + 4 <= bytes.length && bytes[offset] === 0xff) {
     const marker = bytes[offset + 1];
     if (marker === 0xda) break;
     const length = bytes.readUInt16BE(offset + 2);
-    if (marker === 0xfe) {
-      const comment = bytes.toString('utf8', offset + 4, offset + 2 + length);
-      if (comment.startsWith(prefix)) return comment.slice(prefix.length);
-    }
+    if (marker === 0xfe) return true;
     offset += 2 + length;
   }
-  return null;
+  return false;
 }
 
 describe('Feature 009 access family portraits', () => {
@@ -72,17 +68,9 @@ describe('Feature 009 access family portraits', () => {
       expect(jpegDimensions(bytes)).toEqual({ height: 800, width: 1200 });
     }
 
-    const parentPrompt = jpegEmbeddedPrompt(readFileSync(parentFamilyPath));
-    expect(parentPrompt).toContain('fictional adult Emirati father');
-    expect(parentPrompt).toContain('fictional adult Emirati mother');
-    expect(parentPrompt).toContain('traditional black abaya');
-    expect(parentPrompt).toContain('hijab');
-
-    const childPrompt = jpegEmbeddedPrompt(readFileSync(childFamilyPath));
-    expect(childPrompt).toContain('fictional Emirati boy');
-    expect(childPrompt).toContain('fictional Emirati girl');
-    expect(childPrompt).toContain('age-appropriate traditional Emirati clothing');
-    expect(childPrompt).toContain('No adult');
+    expect(jpegHasComment(readFileSync(originalParentPath))).toBe(false);
+    expect(jpegHasComment(readFileSync(parentFamilyPath))).toBe(false);
+    expect(jpegHasComment(readFileSync(childFamilyPath))).toBe(false);
   });
 
   it('uses exact responsive 3:2 frames on Welcome and both access components', () => {

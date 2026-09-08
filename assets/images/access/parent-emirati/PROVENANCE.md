@@ -1,7 +1,7 @@
 # Emirati Parent Access Portrait Provenance
 
-Feature 009 now selects the versioned two-adult Parent composition. Its complete prompt,
-transformation, checksum, route, authority, and evidence record is in
+Feature 009 now selects the versioned two-adult Parent composition. Its transformation, checksum,
+route, authority, and evidence record is in
 [PROVENANCE_FAMILY_V2.md](PROVENANCE_FAMILY_V2.md). The record below is preserved for the original
 single-father v1 reference asset.
 
@@ -13,8 +13,8 @@ single-father v1 reference asset.
 - Generation date: 2026-09-07
 - Subject: one fictional synthetic adult Emirati father; no Child or real user data
 - Source: generated opaque RGB PNG, 1536×1024
-- Final: opaque JPEG, 1200×800, 91,432 bytes
-- SHA-256: `7e66f4bf7459196b04635793bef3c48c5eb2dd3dc6139dcb5a3fcde1a3a081f2`
+- Final: opaque JPEG, 1200×800, 88,499 bytes
+- SHA-256: `93b5b399b06cf3da6d12b40be236d25dcc32739f351c561b36b9d1f19595ff57`
 - Accessibility: decorative and removed from the accessibility tree
 - Product authority: none; the portrait does not authenticate, identify, authorize, or calculate
   any state

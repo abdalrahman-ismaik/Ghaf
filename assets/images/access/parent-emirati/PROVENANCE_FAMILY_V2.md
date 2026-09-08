@@ -12,8 +12,8 @@
 - Attire: white kandura, white ghutra, and black agal; traditional black abaya and black shayla-
   style hijab
 - Source: generated opaque RGB PNG, 1536×1024
-- Final: opaque JPEG, 1200×800, 113,758 bytes
-- SHA-256: `4e8d8e61a58840a1b3f21e5f8e4665503d9fe1d57b279491ef1e65b525e639fa`
+- Final: opaque JPEG, 1200×800, 109,686 bytes
+- SHA-256: `6a7f772110bc31b27cbeec7015ab9217ffdc532e6d97aa5d15a62dfb37bdbc6c`
 - Routes: `/access/parent/sign-in`, `/access/parent/sign-up`, and
   `/access/parent/verification`
 - Accessibility: decorative and removed from the accessibility tree
@@ -54,8 +54,8 @@ preserved below.
 - Generation date: 2026-09-07
 - Subject: one fictional synthetic adult Emirati father; no Child or real user data
 - Source: generated opaque RGB PNG, 1536×1024
-- Final: opaque JPEG, 1200×800, 91,432 bytes
-- SHA-256: `7e66f4bf7459196b04635793bef3c48c5eb2dd3dc6139dcb5a3fcde1a3a081f2`
+- Final: opaque JPEG, 1200×800, 88,499 bytes
+- SHA-256: `93b5b399b06cf3da6d12b40be236d25dcc32739f351c561b36b9d1f19595ff57`
 - Working composition brief: retained locally and excluded from the public source submission
 - Runtime status: preserved but no longer selected by the Feature 009 source registry
 

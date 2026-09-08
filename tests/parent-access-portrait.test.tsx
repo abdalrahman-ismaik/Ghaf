@@ -35,24 +35,20 @@ function jpegDimensions(bytes: Buffer): { readonly height: number; readonly widt
   throw new Error('JPEG dimensions were not found.');
 }
 
-function jpegEmbeddedPrompt(bytes: Buffer): string | null {
-  const prefix = 'impeccable:prompt\0';
+function jpegHasComment(bytes: Buffer): boolean {
   let offset = 2;
   while (offset + 4 <= bytes.length && bytes[offset] === 0xff) {
     const marker = bytes[offset + 1];
     if (marker === 0xda) break;
     const length = bytes.readUInt16BE(offset + 2);
-    if (marker === 0xfe) {
-      const comment = bytes.toString('utf8', offset + 4, offset + 2 + length);
-      if (comment.startsWith(prefix)) return comment.slice(prefix.length);
-    }
+    if (marker === 0xfe) return true;
     offset += 2 + length;
   }
-  return null;
+  return false;
 }
 
 describe('Emirati Parent access portrait', () => {
-  it('ships one bounded local synthetic family portrait with embedded provenance', () => {
+  it('ships one bounded local synthetic family portrait without embedded comments', () => {
     expect(existsSync(portraitPath)).toBe(true);
     const bytes = readFileSync(portraitPath);
 
@@ -60,14 +56,7 @@ describe('Emirati Parent access portrait', () => {
     expect(bytes.byteLength).toBeLessThanOrEqual(500_000);
     expect(jpegDimensions(bytes)).toEqual({ height: 800, width: 1200 });
 
-    const prompt = jpegEmbeddedPrompt(bytes);
-    expect(prompt).toContain('Use case: photorealistic-natural');
-    expect(prompt).toContain('fictional adult Emirati father');
-    expect(prompt).toContain('fictional adult Emirati mother');
-    expect(prompt).toContain('traditional black abaya');
-    expect(prompt).toContain('hijab');
-    expect(prompt).toContain('No child');
-    expect(prompt).toContain('readable text');
+    expect(jpegHasComment(bytes)).toBe(false);
 
     const provenance = source('assets/images/access/parent-emirati/PROVENANCE_FAMILY_V2.md');
     expect(provenance).toContain('synthetic image generation');
