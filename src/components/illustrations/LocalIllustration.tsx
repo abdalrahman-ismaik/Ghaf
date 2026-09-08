@@ -18,6 +18,7 @@ export interface LocalIllustrationProps {
   readonly fallback?: ReactNode;
   readonly fallbackLabel?: string;
   readonly language?: LocaleCode;
+  readonly onSettled?: () => void;
   readonly priority?: 'low' | 'normal' | 'high';
   readonly style?: StyleProp<ViewStyle>;
   readonly testID?: string;
@@ -32,6 +33,7 @@ export function LocalIllustration({
   fallback,
   fallbackLabel,
   language = 'en',
+  onSettled,
   priority = 'normal',
   style,
   testID,
@@ -74,7 +76,11 @@ export function LocalIllustration({
           cachePolicy="memory-disk"
           contentFit={contentFit}
           contentPosition="center"
-          onError={() => setFailedAssetId(assetId)}
+          onError={() => {
+            setFailedAssetId(assetId);
+            onSettled?.();
+          }}
+          onLoad={onSettled}
           placeholderContentFit={contentFit}
           priority={priority}
           recyclingKey={assetId}

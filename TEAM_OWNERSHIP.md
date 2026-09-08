@@ -1,5 +1,321 @@
 # Team Ownership
 
+## 2026-09-07 WSL/Windows Android Command Correction Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Make the physical-device guide explicit for the current workstation, where the source
+terminal is WSL but Android Studio, the Android SDK, ADB, and the USB tablet are Windows-owned.
+Document the exact Windows-native build invocation and the WSL Metro/Windows ADB daily loop without
+changing application code, dependencies, native configuration, or product behavior.
+
+**Status**: Complete and released — the guide now explains the exact missing-Linux-SDK/no-device
+failure mode, prohibits pointing Linux tooling at the Windows SDK, provides the Windows-native
+build command from a WSL session, and provides a Windows-ADB/WSL-Metro daily loop. The Windows SDK,
+JDK, connected `SM_T835`, direct Windows ADB invocation from WSL, USB reverse, Metro listener, and
+clean Windows native checkout were verified. Targeted Prettier and Git whitespace checks passed.
+No app code, dependencies, native configuration, or broader Android evidence changed; all protected
+local configuration, design inputs, generated output, and other worktree files remained outside
+this window.
+
+## 2026-09-07 Physical Android Verification Correction Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Record the device-selector behavior observed while building and launching the current
+debug app on the connected Samsung tablet. Keep ADB serial targeting separate from Expo CLI device
+name targeting, without changing application code, dependencies, native configuration, or product
+behavior.
+
+**Status**: Complete and released — Windows ADB identified the connected `SM_T835` by serial, USB
+reverse for Metro was active, the Expo CLI selected the tablet by model name, and the native debug
+build installed and rendered the Arabic RTL onboarding screen on Android 10 / API 29. The Gradle
+build passed, Metro served the Android bundle, the package was debuggable and resumed, and scoped
+runtime logs contained no React Native or Android runtime errors; deprecation warnings from React
+Native core remain non-blocking. Targeted Prettier and Git whitespace checks passed. This evidence
+verifies the physical connection/build/render path only and does not promote the other Android
+human-review gates. All protected local configuration, design inputs, generated output, and other
+worktree files remained outside this window.
+
+## 2026-09-07 Source Publication Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and
+`specs/004-bounded-live-ai/checklists/requirements.md` only.
+
+**Scope**: Reconcile the final branch-range whitespace audit, verify the exact current revision,
+and publish `integration/r3-complete-screens-20260905` to its existing upstream without rewriting
+history. Preserve the explicitly protected `.codex/config.toml`, original logo/Stitch inputs, and
+untracked generated visual/build output locally and outside every commit.
+
+**Status**: Complete and ready for publication — the two branch-range Markdown whitespace findings
+were corrected. `npm run verify` passed typecheck, zero-warning lint, maintained-source formatting,
+119 test files / 1,310 tests, Expo dependency alignment, and a 39-route static web export with the
+known `expo-file-system` web warning. Targeted Markdown formatting, working-tree whitespace, tracked
+secret-pattern, and added-blob size checks passed; no added blob exceeds 5 MiB. The fetched upstream
+was zero commits ahead of this branch. The protected local configuration, original design inputs,
+and generated output remain unstaged and uncommitted. The reservation is released; publication is
+authorized by the product owner's explicit push request.
+
+## 2026-09-07 Android USB Development Guide Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and `docs/DEVELOPMENT.md` only.
+
+**Scope**: Correct the local physical-device instructions for the repository's installed Expo CLI.
+Document Android Studio setup, USB/ADB verification on Windows and Linux/macOS, the first native
+build/install, the daily Metro-only loop, rebuild triggers, multiple-device targeting, and bounded
+troubleshooting without changing application code, dependencies, product behavior, or existing
+Android evidence.
+
+**Status**: Complete and released — `docs/DEVELOPMENT.md` now distinguishes the first Expo native
+build from the Metro-only daily loop, documents Android Studio and cross-platform USB/ADB setup,
+and records the WSL2 USB ownership split with official `usbipd-win` commands. The installed Expo
+CLI help, ADB availability, targeted Prettier, and Git whitespace checks passed. No physical device
+was attached to this WSL2 environment, so no build, installation, or Android evidence status was
+claimed or changed. No application code, dependency, provider, feature flag, generated native
+project, or other session's worktree files were modified by this window; the reservation is
+released.
+
+## 2026-09-07 Feature 005 Remembered Device Access Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/005-remembered-device-access/**`.
+
+**Runtime reservation**: `src/models/deviceAccess.ts`,
+`src/features/access/{childAccess.ts,parentOnboarding/controller.ts,rememberedDeviceAccess.ts}`,
+`src/services/{index.ts,local/index.ts,local/deviceAccessRepository.ts}`,
+`src/state/usePrototypeStore.ts`, `src/components/access/{index.ts,RememberDeviceChoice.tsx}`,
+`app/access/parent/{sign-in.tsx,verification.tsx}`, `app/child/{index.ts,settings.tsx,task.tsx}`,
+`app/{garden.tsx,circle.tsx}`,
+`src/i18n/resources.ts`,
+`tests/{device-remembered-access.test.tsx,r003-screen-flow.test.ts,`
+`r002a-garden-presentation.test.ts}`, and the narrowly scoped truthful-boundary updates in
+`PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Add an explicit Parent remember-this-device choice and automatic device-local Child
+return after approved pairing. One app installation remembers at most one primary role/profile.
+An active Parent must explicitly sign out before Child access on the same installation. A Child
+may start temporary Parent access without unpairing; Parent sign-out then restores the same paired
+Child. Persist only a validated local device-affinity marker, never a verification code, password,
+session token, task, reward, media, or private assistant content. Preserve deterministic offline
+reset and label the behavior as synthetic prototype continuity, not production authentication,
+secure device trust, account sync, or multi-device account infrastructure.
+
+**Status**: Complete and ready for source integration — commits `3274cab`, `4a2bdbb`, `fa8e6ca`,
+and `55ab2a1` contain the specification, strict affinity storage, fresh authority restoration, and
+bilingual handoff presentation; the closing evidence/test adjustment is recorded with this
+window. Focused access coverage passed 65 tests, the Impeccable UI detector returned `[]`, and the
+final typecheck, zero-warning lint, format check, Git whitespace, scoped credential/session
+inspection, and full 119-file / 1,310-test regression passed. Physical Android process-death,
+SQLite, Back, TalkBack, font-scale, and named Arabic/UAE, privacy, safeguarding, accessibility,
+and visual reviews remain `BLOCKED / NOT RUN`. Production accounts, trusted-device security, and
+real separate-device state sync remain out of P0. The prior AI Services presentation worktree
+edits remain protected and are not part of this completed window.
+
+## 2026-09-07 AI Services 1–3 Presentation Integration Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `specs/004-bounded-live-ai/tasks.md`,
+`src/components/AssistantIdentity.tsx`, `src/components/access/AIProfilePreview.tsx`,
+`src/components/family-growth/{ParentTaskComposer.tsx,ParentPatternSummary.tsx}`,
+`app/child/task.tsx`, `src/i18n/resources.ts`, and
+`tests/ai-services-presentation-integration.test.tsx` only.
+
+**Scope**: Integrate the already implemented AI Services 1–3 into one coherent Parent/Child
+presentation hierarchy. Clarify prepared/live origin before each action, separate prepared profile
+support style from recommended starting categories, preserve Parent ownership in Task Builder,
+make the task-bound Child Coach easier to scan, and structure the Parent summary around observable
+facts and one next question. Preserve all Feature 004 flags, grants, provider boundaries, state,
+service contracts, progression authority, and default-off behavior unchanged.
+
+**Status**: Complete and released — commit `d56b896` adds the shared assistant identity/origin
+pattern and integrates the prepared profile helper, Parent Guide, prepared Child Coach, and Parent
+summary without changing Feature 004 flags, grants, store authority, providers, or gateway code.
+The new contract first failed all six intended hierarchy tests, then passed. Ten focused files /
+81 tests and the full 119-file / 1,310-test suite passed with typecheck, zero-warning lint,
+formatting, Git whitespace, and Expo dependency checks. Fresh web export produced 39 routes;
+Android JavaScript export produced one Hermes bundle and 94 assets. The Impeccable mechanical scan
+returned zero findings. Real-browser Arabic/English screenshot inspection is `BLOCKED`: Chromium
+could not start because this container lacks `libnss3`, and Playwright's dependency installer
+requires an unavailable sudo password. Physical Android and named human accessibility/Arabic
+review remain `NOT RUN`; source/export evidence does not substitute for them. User-owned worktree
+artifacts were preserved.
+
+## 2026-09-07 Feature 004 Minimal MCP Adapter Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `package.json`, `package-lock.json`,
+`specs/004-bounded-live-ai/{spec.md,plan.md,research.md,data-model.md,quickstart.md,tasks.md,contracts/bounded-ai-v1.md}`,
+`workers/ghaf-ai-gateway/{README.md,src/index.ts,src/mcp.ts,src/operations.ts}`, and
+`tests/bounded-ai-mcp.test.ts`.
+
+**Scope**: Add one server-only, default-off MCP projection over the existing bounded Parent task
+drafting and Child Coach text operations. The Expo app continues to use provider-neutral HTTPS
+services; judges do not connect to MCP. The adapter exposes exactly `draft_parent_task` and
+`coach_current_task`, reuses the same strict schemas, handlers, safety checks, authorization,
+budgets, and prepared/fake evidence, and adds no voice/media tool, resource, prompt, sampling,
+account, persistence, business authority, public discovery, or deployment.
+
+**Activation boundary**: Implementation and synthetic local tests only. MCP is disabled unless a
+server-only switch is exactly `true`; no provider call, real Child data, public endpoint, judge
+setup, release activation, or production-readiness claim is authorized.
+
+**Status**: Complete and released — commits `1704480`, `44cd73c`, `0b9535c`, `644009c`, and
+`e4fb1f3` contain the approved specification, pinned Worker-only SDK, exact two-tool adapter,
+shared bounded text operations, final Child text/voice gateway reconciliation, and cross-feature
+isolation evidence. The dedicated MCP suite passed 10 tests; the combined gateway suite passed 61
+tests; typecheck, lint, formatting, Expo dependency compatibility, Git whitespace, secret-pattern,
+export-isolation, and the full 117-file / 1,280-test regression passed. MCP remains exactly default
+off, the native app contains no MCP client/setup, judges do not connect, and no provider,
+deployment, real Child data/media, activation gate, unrelated file, or user-owned artifact was
+changed by this window.
+
+## 2026-09-07 Feature 004 Planning and Implementation Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook only, and
+`specs/004-bounded-live-ai/{plan.md,research.md,data-model.md,quickstart.md,tasks.md,contracts/**}`.
+
+**Runtime reservation**: `package.json`, `package-lock.json`, `.env.example`, `app.config.ts`,
+`src/config/aiFeatureFlags.ts`, `src/models/boundedAi.ts`,
+`src/features/assistants/{parentTaskDrafting.ts,liveChildCoach.ts,liveVoiceCapture.ts}`,
+`src/services/interfaces/index.ts`, `src/services/index.ts`,
+`src/services/mock/{index.ts,boundedAi.ts,boundedAiFixtures.ts}`,
+`src/services/remote/{index.ts,GatewayParentTaskDraftingService.ts,GatewayChildCoachService.ts,GatewayVoiceTranscriptionService.ts}`,
+`src/services/native/{index.ts,ExpoVoiceCaptureService.ts}`, `src/features/access/index.ts`,
+`src/state/usePrototypeStore.ts`, `src/components/family-growth/{ParentTaskComposer.tsx,LiveChildCoachPanel.tsx,LiveVoiceCapturePanel.tsx}`,
+`app/child/task.tsx`, `app/parent/settings/permissions.tsx`, `src/i18n/resources.ts`, new
+`workers/ghaf-ai-gateway/**`, the Feature 004-focused tests named in
+`specs/004-bounded-live-ai/tasks.md`, and final truthful evidence edits in `PRODUCT.md`,
+`PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Plan and implement the approved F4 Parent task drafting, F5 bounded live Child Coach
+text, and F5 ages-12–14 push-to-talk voice as three independent default-off slices. Use strict
+contracts, TDD, prepared same-attempt fallback, zero AI reward/progression authority, synthetic
+inputs/media, and server-side provider boundaries. Preserve the complete Feature 003 journey.
+
+**Activation boundary**: No provider deployment/call, real Child data, live flag activation,
+production-security claim, or release approval is included. F5 text/voice activation remains
+blocked on the named authentication, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE,
+accessibility, incident, physical Android, deletion, and human-evidence gates.
+
+**Status**: Complete and released — commits `9a35ea7`, `38994eb`, `331fbb2`, `92f59b5`,
+`cc3d0ea`, `644009c`, `e4fb1f3`, and `c4716c3`, plus the final evidence checkpoint, implement the
+approved F4 Parent drafting, F5 bounded Child Coach text, separate implementation-only grants, and
+ages-12–14 foreground push-to-talk transcript review. The Feature 004 focused suite passed 24
+files / 164 tests; the full repository passed 117 files / 1,280 tests with typecheck, zero-warning
+lint, formatting, Expo dependency/public-config checks, web and Android JavaScript exports, Git
+whitespace, public-bundle isolation, and scoped secret checks. All app flags remain false, current
+P0 profiles retain prepared voice, and the deterministic journey/reset remain complete. No
+provider call, Worker/MCP deployment, real Child data/audio, production credential, release
+activation, push, merge, unrelated file, or user-owned artifact was included. Trusted auth/shared
+stores, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE, accessibility, incident/deletion,
+physical Android, and named human-rehearsal gates remain `BLOCKED / NOT RUN`.
+
+## 2026-09-07 AI Features 4–5 All-Three Approval Recording Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and
+`specs/004-bounded-live-ai/{spec.md,approval-packet.md,checklists/requirements.md}` only.
+
+**Scope**: Record the product owner's explicit "all three" implementation authorization for F4
+Parent task drafting, F5 bounded live Child Coach text, and F5 real push-to-talk voice. Approval
+authorizes independently flagged, default-off implementation and synthetic/fake-provider testing;
+it does not activate a provider, permit real Child data in tests, deploy a gateway, or approve
+release. Amend the voice contract with exact age, capture, transcript review, delete-before-send,
+data, consent, fallback, native-evidence, and no-background/no-biometric boundaries. Preserve
+Feature 003 as the active deterministic fallback and do not modify runtime files in this window.
+
+**Handoff condition**: The proposal and checklist unambiguously distinguish implementation
+approval from activation gates, contain no obsolete "voice unapproved" wording, and pass targeted
+formatting and whitespace checks. Planning/runtime ownership must be reserved separately.
+
+**Completion — 2026-09-07**: `/root` recorded the product owner's explicit **all three** decision
+as default-off implementation authorization for F4, F5-TEXT, and F5-VOICE. The amended contract
+limits voice to separately granted ages 12–14, one visible held recording, transcript review,
+delete-before-send, explicit text-only Coach submission, ephemeral audio deletion, and no
+background/continuous capture or biometric/speaker/emotion/personality/truthfulness inference.
+Release activation, deployment, real provider execution, and real Child data remain blocked on
+the recorded token-broker, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE, accessibility,
+incident, physical Android, deletion, and human-rehearsal gates. Targeted formatting, whitespace,
+approval-consistency, six-threat, and no-placeholder checks passed. No runtime file, active Feature
+003 artifact, feature metadata, provider, deployment, branch/ref, or user-owned artifact changed;
+the reservation is released and planning/runtime ownership must be reserved separately.
+
+## 2026-09-07 AI Features 4–5 Phase 1 Proposal Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and new
+`specs/004-bounded-live-ai/**` proposal artifacts only.
+
+**Scope**: Perform read-only archaeology of the historical Feature 002 AI gateway and the current
+Feature 003 task, assistant, access, privacy, registry, state, localization, and test boundaries;
+then author a proposed, non-authorizing specification and approval packet for independently gated
+Parent task drafting, live Child Coach text, and later Child voice. No runtime implementation,
+feature activation, provider request, deployment, active Feature 003 artifact change, or Feature
+002 historical change is authorized in this window.
+
+**Handoff condition**: The proposal records product exclusions, age-band and data allowlists,
+consent/privacy controls, architecture and state sequences, threat model, evidence gates, test
+matrix, dependency-ordered implementation stages, and exact approval decisions. Runtime work stays
+blocked until explicit product approval; Child release activation additionally stays blocked on
+trusted authentication, legal/privacy/safeguarding review, provider retention evidence, and native
+device evidence.
+
+**Status**: Complete and released. The Phase 1 proposal package passed targeted formatting and
+whitespace checks. No runtime file, active Feature 003 artifact, feature metadata, provider,
+branch/ref, deployment, or user-owned artifact was changed; implementation and activation remain
+blocked on the explicit approval checkpoint.
+
+## 2026-09-07 AI Services 1–3 Integration Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`,
+`DEMO_RUNBOOK.md`, `.env.example`, `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`,
+new `docs/CODEX_HANDOFF_AI_FEATURES_4_5.md`,
+`src/features/assistants/{liveParentGuide.ts,profilePersonalization.ts}`,
+`src/features/tasks/validation.ts`, `src/models/familyGrowth.ts`,
+`src/services/{index.ts,interfaces/index.ts,mock/index.ts,remote/**}`,
+`src/state/usePrototypeStore.ts`, `src/components/family-growth/ParentTaskComposer.tsx`,
+`src/i18n/resources.ts`, new `workers/ghaf-parent-guide/**`, and focused AI/profile/Parent-task
+tests only.
+
+**Scope**: Consolidate the currently implemented deterministic Parent Guide, Child Coach, Parent
+summary, age adaptation, synthetic voice, prepared media, and profile helper as the mandatory
+offline path; add one authenticated and rate-limited server-side live Parent Guide transformation
+for the exact synthetic P0 recycling request behind an injectable default-off service boundary;
+and use the prepared profile helper to rank and visibly identify allowlisted Task Builder
+categories without assigning a task or changing the sole executable P0 task. Provider activation,
+deployment, live evidence, production authentication, and every live Child Coach or real media path
+remain blocked. The parallel Features 4/5 handoff owns no runtime file in this window.
+
+**Handoff condition**: Contract changes land before behavior; focused RED/GREEN evidence covers
+strict schemas, secret isolation, authentication, rate limiting, timeout/error/safety fallback,
+prepared-default behavior, recommendation ordering, opt-out, and Parent authority; full repository
+checks pass; direct live-provider, deployment, Android, and named-human evidence remains honestly
+`NOT RUN` or `BLOCKED`.
+
+**Status**: Complete and released. AI Services 1–3 passed the recorded automated/source/export
+checks without activation. The Features 4/5 document is a non-authorizing prompt for a separate
+spec-first session; it owns no runtime boundary after this handoff.
+
 **Work period:** Feature 003 planning and implementation beginning 2026-08-26
 **Team size:** Three members
 **Integration owner:** Member 1 — Mobile and visual experience
@@ -43,6 +359,199 @@ files / 1,225 tests, Expo dependency/public-config checks, and fresh web/Android
 passed. T208 is complete only at this bounded host-evidence level; T218/T245, physical Android,
 TalkBack, native Back/IME/font scale, named-human review, and release activation remain open.
 
+## 2026-09-07 Welcome Hero Regeneration Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`,
+`assets/images/illustrations/r003/{ASSET_MANIFEST.json,PROVENANCE.md}`, and
+`assets/images/illustrations/r003/final/welcome-ghaf-habitat.jpg` only.
+
+**Scope**: Regenerate only the existing 3:2 Welcome hero as an eye-catching wide-angle Quiet UAE
+Botanical Editorial scene that better communicates family support, small daily actions, permanent
+growth, and UAE nature. Preserve the existing artwork ID, route, crop behavior, official brand,
+access controls, product state, and all protected user work. The image remains opaque, local,
+nondirectional, decorative, and free of people, text, logos, UI, unsafe objects, and measured-impact
+claims. No route, dependency, remote runtime asset, product behavior, push, merge, deployment, or
+release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` regenerated the existing Welcome hero through the built-in
+OpenAI image generator, retained its 3:2 source and 1200×800 shipping dimensions, embedded the exact
+prompt, and updated its local manifest/provenance without changing the runtime artwork ID or screen.
+The full-frame source and the current wide mobile center crop were inspected; both retain the mature
+Ghaf, three younger growth stages, seed-pod/leaf trail, and distant UAE landscape without people,
+text, UI, brand marks, unsafe objects, or impact claims. The focused artwork contract passed 4/4,
+all 48 shipping rasters retained embedded prompts, formatting and Git whitespace passed, and the
+Impeccable detector returned no findings. Physical Android rendering and named botanical,
+Arabic/UAE, safeguarding, accessibility, and image-rights reviews remain `NOT RUN`. The reservation
+is released at this local checkpoint; no push, merge, deployment, or release activation occurred.
+
+## 2026-09-07 Onboarding Image Perimeter Progress Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`,
+`src/components/onboarding/FirstRunOnboarding.tsx`, and
+`tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Remove the detached solid strip from the bottom of every onboarding photograph and
+replace it with a quiet, image-integrated rounded perimeter progress stroke. The stroke begins as
+a short mark at the bottom center, grows symmetrically in both directions only when explicit
+Back/Next/pillar navigation changes the moment, and closes around the full 3:2 image on the sixth
+moment. Retain the simple lower current/total plus dot row requested in the preceding correction as
+the primary semantic indicator. Reduced motion shows each step's correct static perimeter state.
+Preserve the existing photographs, crop, speaker, narration, ambience, reducer, routes, startup,
+access, privacy, reward, reset, and default-off feature behavior. No image, dependency, timer,
+autoplay navigation, gesture, product authority, push, merge, deployment, or release activation is
+authorized.
+
+**Completion — 2026-09-07**: `/root` removed `heroAccent` and integrated one inset SVG edge track
+with two date-gold progress branches that originate together at the image's bottom center. The
+first moment shows a short centered stroke, explicit navigation reveals the rounded bottom corners,
+sides, and top edges in order, Back reverses the same value, and the sixth moment closes the frame.
+The existing lower current/total plus dots retain the sole progressbar semantics; the edge stroke
+is noninteractive and hidden from assistive technology. Reanimated changes only the normalized
+dash length over the existing 220 ms UI-thread timing, while reduced motion applies the target
+directly. RED recorded one expected failure / 12 passes for the source contract and for each of two
+visual-correction guards; the final focused file passed 13 tests and the full suite passed 90 files
+/ 1,090 tests. Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks,
+Git whitespace, Impeccable detection, web export (134 files), and Android JavaScript export (103
+files) passed. Firefox covered Arabic 390×844, English 320×720, first/intermediate/final extents,
+reduced motion, exact 3:2 layout, zero horizontal overflow, and zero console errors or warnings.
+Physical Android motion/TalkBack rendering and named-human review remain `BLOCKED / NOT RUN`. The
+reservation is released at this local checkpoint; no push, merge, deployment, or release
+activation was performed.
+
+## 2026-09-07 Returning Parent Identifier Lookup Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,quickstart.md,data-model.md}`,
+`specs/003-family-growth-garden/design-intake/r003-local-family-release-review.md`,
+`docs/architecture/{ARCHITECTURE.md,adr/0002-device-local-family-directory.md}`,
+`app/access/parent/{sign-in,sign-up,verification}.tsx`,
+`src/models/{localFamily,parentOnboarding}.ts`,
+`src/features/access/parentOnboarding/{controller,policy}.ts`,
+`src/features/local-family/schema.ts`, `src/services/local/{index,repository}.ts`,
+`src/services/index.ts`, `src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, and focused
+Parent access/local-family/localization/route tests only.
+
+**Scope**: Persist the normalized synthetic Parent phone/email identifier with the single
+device-local family directory, migrate the previous schema-1 fixture to the canonical prepared
+Parent identifier, and require an exact normalized local-record match before returning sign-in may
+request the existing deterministic code. An unknown identifier stays on sign-in and cannot enter
+first-family setup; only explicit sign-up may create a family. A verified matching returning Parent
+must enter Parent Home (or the established pending-pairing destination) without Family Basics,
+Child setup, review, or success. Remove the simulated biometric shortcut and user-facing
+demo/synthetic/not-real wording from Parent sign-in, sign-up, and verification while making no
+claim that a message was sent or identity was remotely proven. Documentation and test evidence
+retain the truthful local-prototype boundary. Preserve the one-household limit, reset, role
+separation, offline deterministic code, routes, default-off flags, and protected user work. No
+production authentication, account service, network, real OTP, credential persistence, dependency,
+push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` added a strict schema-2 normalized Parent identifier/kind,
+bounded schema-1 canonical migration, separate explicit-sign-up and returning-sign-in commands,
+and fail-closed `NOT_FOUND` matching before deterministic code entry. Matching returning Parents
+reuse the receipt and enter Parent Home or the pending-pairing destination; verification without
+the create-family marker cannot fall into setup. The fake biometric path and Parent auth
+demo/not-real footers were removed, and bilingual copy makes no send/remote-verification claim.
+RED recorded 15 expected failures / 40 passes; focused tests passed 6 files / 84 tests and the full
+suite passed 90 files / 1,090 tests. Typecheck, zero-warning lint, formatting, Expo dependency and
+public-config checks, Git whitespace, web export (134 files / 39 routes), and Android JavaScript
+export (103 files) passed. Firefox covered Arabic 390×844 and English 320×720 creation, storage
+inspection, mismatch denial, normalized match, and direct `/parent` entry with no overflow or
+console errors. Physical Android and named-human review remain `BLOCKED / NOT RUN`. The reservation
+is released at this local checkpoint; no push, merge, deployment, or release activation was
+performed.
+
+## 2026-09-07 Compact Audio Onboarding Correction Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `package.json`,
+`package-lock.json`, `src/components/access/GhafIcon.tsx`,
+`src/components/onboarding/{FirstRunOnboarding.tsx,useOnboardingNarrator.ts}`, new
+`src/components/onboarding/{onboardingAudioSources.ts,useOnboardingAmbience.ts}`,
+`src/components/illustrations/LocalIllustration.tsx`,
+`src/i18n/resources.ts`, new prepared local files and provenance under
+`assets/audio/onboarding/`, and `tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Supersede only the square/segmented/Guide-panel portion of the immediately preceding
+onboarding presentation. Reveal the existing 1200×800 photographs in responsive 3:2 frames so
+their curated wide and close compositions remain intact; center the live title/body; restore the
+original current/total plus dot indicator directly above the navigation actions; and replace the
+Guide panel with one high-contrast 48dp speaker icon that replays the current narration. Start the
+prepared synthetic narration after the slide image and layout settle, stop it on slide/locale/exit,
+and add quiet looping foreground-only nature ambience that stops on exit and yields to assistive
+speech. The six visible scripts remain the transcript and navigation remains explicit. Preserve
+the six-state reducer, pillar navigation, routes, startup/deferred-image behavior, access/session,
+task/reward/privacy/reset authorities, default-off flags, official logo, and protected user work.
+No microphone, recording, background OS playback, background listening, runtime URL, live model,
+provider secret, new image, push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` restored the original current/total plus dot row, revealed all
+six approved 1200×800 photographs in 3:2 wide/close compositions, centered the concise copy, and
+replaced the Guide panel with one 48dp speaker control. Twelve prepared synthetic bilingual clips
+and one locally synthesized nature ambience now use the existing foreground-only `expo-audio`
+boundary; native playback waits for image/layout settlement, screen readers suppress both paths,
+the speaker recovers first-screen web sound, and all players stop on transition/exit. The obsolete
+`expo-speech` dependency was removed. RED recorded 2 expected failures / 11 passes; the focused file
+passed 13 tests and the full suite passed 90 files / 1,086 tests. Typecheck, zero-warning lint,
+formatting, Expo dependency/public-config, Git whitespace, web/Android exports, 13-asset checksum
+matching, and the final Impeccable detector passed. Firefox covered Arabic 390×844 and English
+320×720 with exact 3:2 measurements, centered copy, a 48dp speaker, simple lower dots, no overflow,
+local audio requests, and zero final console errors. Physical Android audio/TalkBack/font scale and
+named Arabic/voice/rights review remain `BLOCKED / NOT RUN`. The reservation is released at this
+local checkpoint; no push, merge, deployment, or release activation was performed.
+
+## 2026-09-07 AI-narrated Square Onboarding Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`DESIGN_DIRECTION.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`, `package.json`,
+`package-lock.json`, `src/components/onboarding/FirstRunOnboarding.tsx`, new
+`src/components/onboarding/useOnboardingNarrator.ts`, `src/i18n/resources.ts`, and
+`tests/r003-first-run-experience.test.ts` only.
+
+**Scope**: Refine the existing six-moment first-run presentation with 1:1 local artwork, a
+high-contrast lower segmented story indicator directly above the navigation actions, shorter
+energetic first-person Ghaf Guide copy, and optional automatic device text-to-speech narration.
+Narration must stop between moments and on exit, expose
+an on-screen replay/stop control, remain silent when a screen reader is active, retain complete
+visible text, and fail without blocking onboarding. The voice is device-synthesized presentation,
+not a live model call, recording, companion, or proof that AI ran. Preserve the six-state order,
+three-pillar navigation, ordered startup/deferred image boundaries, route count, access/session,
+task/reward/privacy/reset authorities, default-off flags, official logo, and protected user work.
+One Expo-compatible `expo-speech` dependency is authorized as the measured minimum because
+`expo-audio` can play prepared files but cannot synthesize the bilingual slide copy and no reviewed
+onboarding audio binaries exist. No microphone, recording, background listening/playback, runtime
+URL, new image, provider call, push, merge, deployment, or release activation is authorized.
+
+**Completion — 2026-09-07**: `/root` shipped the six square local crops, concise bilingual
+first-person Ghaf Guide scripts, a high-contrast lower story rail directly above navigation, and
+bounded `expo-speech` device narration with native screen-reader suppression, web opt-in, replay,
+cleanup, and nonblocking fallback. The focused file passed 13 tests and the full suite passed 90
+files / 1,086 tests. Typecheck, zero-warning lint, formatting, Expo dependency/public-config,
+39-route web export, 90-file Android JavaScript export, Git whitespace, and the final Impeccable
+detector passed. Firefox inspected Arabic 390×844 and English 320×720, measured a square
+275.8×275.8 px crop, found no horizontal overflow, confirmed `1/6 → 2/6`, and exercised the web
+voice-unavailable fallback with zero page errors. Physical Android TTS/audio focus, TalkBack, OS
+font scale, motion feel, and named-human review remain `BLOCKED / NOT RUN` because no Android
+target or reviewer was available. The reservation is released at this local checkpoint; no push,
+merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Approval Reveal Consequence-parity Window
 
 **Owner and only writer**: `/root`
@@ -85,6 +594,127 @@ deployment, or shared-history rewrite is authorized.
 tests, dependency alignment, and a 39-page web export. Physical Android and named-human gates were
 not run in this checkpoint.
 
+## 2026-09-06 Device-local Family and AI-guided Setup Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`, `docs/architecture/**`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,data-model.md,quickstart.md}`, new
+`specs/003-family-growth-garden/checklists/local-family-onboarding.md`, current R002b readiness
+checklists and design-intake review records, `package.json`, `package-lock.json`, `app.config.ts`,
+`app/_layout.tsx`,
+`app/access/{parent,child}/**`, `app/{parent,child}/index.tsx`, `app/parent/family/index.tsx`, new
+`src/components/access/{ChildProfileForm,AIProfilePreview}.tsx`, existing bounded assistant trigger
+components, `src/features/access/**`, new `src/features/local-family/**`, new
+`src/features/assistants/profilePersonalization.ts`, `src/models/{access,parentOnboarding}.ts`, new
+`src/models/localFamily.ts`, `src/services/{index.ts,interfaces/**,local/**}`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, and focused tests for local family,
+onboarding, access, assistant policy, routes, reset, localization, and architecture only.
+
+**Scope**: Add one validated, versioned device-local family directory backed by Expo SQLite on
+native, guarded localStorage on web, and memory in tests. Persist only one synthetic Parent, one or
+two configured Child profiles, minimum curated preferences, and approved synthetic paired-device
+markers. Redesign setup as Family Basics plus one indexed Child form per selected count and one
+review. Add deterministic prepared AI profile suggestions using age/interests/hobbies/support
+preferences only; exclude gender and sensitive/free-text inputs and retain Parent approval. Restore
+returning-role routing before first-family decisions, filter unconfigured slots, and clear local
+data on Parent reset. Preserve every task, reward, Seed, Garden, League, privacy, route, offline,
+and default-off R002b authority. No production account/security/compliance claim, cloud, sync,
+notification service, analytics, real Child media/data, remote model, provider secret, push, merge,
+deployment, or release activation is authorized.
+
+**Completion — 2026-09-06**: Root implemented the strict schema-1 repository with SQLite native,
+localStorage web, and memory test adapters; one/two-Child indexed setup and whole-family review;
+configured-role projection; paired-marker restoration/revocation/reset; and deterministic
+allowlisted sparkle-marked profile personalization. The focused batch passed 8 files / 83 tests and
+the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, formatting, Expo
+dependency/public-config checks, route inventory, Git whitespace, the one final detector pass, and
+web/Android JavaScript exports passed. Firefox covered Arabic/English at 320×720 and 390×844,
+storage inspection, reset, and returning-role paths with no horizontal overflow or console errors.
+Physical Android and named-human gates remain `BLOCKED / NOT RUN`. The reservation is released at
+this local checkpoint; no push, merge, deployment, or release activation was performed.
+
+## 2026-09-06 SMAC Pillar Onboarding Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, the existing
+`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`,
+`assets/images/illustrations/r003/{ASSET_MANIFEST.json,PROVENANCE.md,final/onboarding-*.jpg}`,
+`src/components/onboarding/{FirstRunOnboarding.tsx,experienceModel.ts}`,
+`src/components/illustrations/illustrationSources.ts`, `src/i18n/resources.ts`,
+`src/features/startup/preloadStartupImages.ts`, and
+`tests/{r003-first-run-experience,r003-illustration-assets,r001-onboarding-flow}.test.ts` only.
+
+**Scope**: Expand the optional first-run story from four to six child-clear moments so Family,
+Sustainability, and bounded task-focused AI are distinct, prominent pillars after the Ghaf
+introduction and before the existing help and permanent symbolic-growth close. Add two generated
+local raster photographs and an accessible three-pillar navigator, then use one purposeful
+UI-thread step transition with a reduced-motion equivalent. Startup may add only those two
+onboarding photographs to its bounded signed-out readiness set; the remaining packaged imagery
+continues warming asynchronously after onboarding paints. Preserve the ordered native splash →
+2,000 ms app-owned splash → minimum 1,000 ms loading → onboarding sequence, exact routes,
+session/access/task/reward/privacy authorities, deterministic fallback, default-off flags, official
+logo, existing assets, and protected user work. AI copy must disclose that it may be wrong and
+remain limited to Parent-approved tasks with an adult-help exit. No vector scene, person, hand,
+readable text in imagery, remote asset, dependency, networking, new AI behavior, push, merge,
+deployment, or release activation is authorized.
+
+**Completion — 2026-09-06**: Root expanded the in-route flow to six bilingual child-clear moments,
+made Family, Sustainability, and bounded AI directly selectable pillars, and kept Help and permanent
+private symbolic growth as the close. Two OpenAI imagegen JPEGs were visually curated, normalized
+to 1200×800 under 500 KB, prompt-embedded, checksummed, and added to the exact 48-entry local
+registry. Startup now derives nine blocking rasters while the deferred queue remains 41. One
+220 ms image settle and 45 ms staged copy transition uses transform/opacity on the UI thread;
+reduced motion is immediately settled. RED recorded 6 expected feature failures and one later
+motion failure; final focused coverage passed 3 files / 26 tests and the full suite passed 87 files
+/ 1,065 tests. Typecheck, lint, format, Expo dependency alignment, Git whitespace, the 48-raster
+prompt scan, and Impeccable detector passed. Web exported 121 files / 39 static routes and Android
+JS exported 90 files; both new rasters were byte-identical in both exports. Firefox traversed all
+six moments and pillar jumps across Arabic/English at 320×720 and 390×844 with 60px pillar targets,
+no horizontal overflow, reduced-motion parity, and zero page errors. Physical Android and named
+human-review gates remain `BLOCKED / NOT RUN` because ADB found no target and no reviewer was
+available. The reservation is released at this local checkpoint; no push, merge, deployment, or
+release activation was performed.
+
+## 2026-09-06 Returning-family Entry and Welcome Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`,
+`PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`,
+`specs/003-family-growth-garden/{spec.md,plan.md,tasks.md}`, `app/access/parent/**`,
+`app/{parent,child}/index.tsx`, new `src/components/session/**`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`, and
+`tests/{r003-returning-family-entry,r003-screen-flow}.test.ts` only.
+
+**Scope**: Keep first-family creation available only when the immutable local household receipt is
+absent. A verified returning Parent with that receipt must reuse the existing family and land on
+Parent Home; a returning Child on an active paired-device fixture must land on Today. Record a
+one-use, role-bound presentation signal only after those returning sign-ins, then show an
+Arabic-first private local update dialog over the corresponding dashboard. The dialog may read
+only data already visible to that role, must be dismissible, and must not claim push delivery,
+remote sync, production persistence, or a second household. First-family success, new Child
+pairing, access separation, reset, default-off flags, route count, existing authorities, theme,
+and protected user work remain unchanged. No dependency, asset, URL, push, merge, deployment, or
+release activation is authorized.
+
+**Completion — 2026-09-06**: Root added one transient, role-bound returning-user presentation
+signal derived only from the established Parent receipt or active Child paired-device fixture.
+Returning Parent verification now reuses the existing household and enters Parent Home; returning
+Child credentials enter that Child's Today screen. Fresh Parent setup and first Child pairing do not
+set the signal. One shared bilingual Soft Geometric modal presents at most two current, private,
+role-authorized updates and clears on dismiss, navigation, sign-out, handoff, or reset. RED recorded
+5 expected failures; final focused coverage passed 5 tests, the integrated batch passed 4 files /
+35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint, formatting, dependency
+alignment, Git whitespace, detector, and the 39-route web export passed. Firefox verified fresh and
+returning Parent/Child journeys plus Arabic/English 320×720 and 390×844 dialog layouts with no
+horizontal overflow or page errors. Physical Android and assistive-technology checks remain
+`BLOCKED / NOT RUN` because ADB found no target. The reservation is released at this local
+checkpoint; no push, merge, deployment, or release activation was performed.
 ## 2026-09-06 Ordered Splash-to-loading Startup Window
 
 **Owner and only writer**: `/root`

@@ -117,12 +117,19 @@ describe('approved R001 Parent onboarding integration', () => {
       expect(ar.get(key)?.trim(), `Arabic access resource ${key}`).not.toBe('');
       expect(en.get(key)?.trim(), `English access resource ${key}`).not.toBe('');
     }
-    expect(ar.get('verification.invalidCode')).toContain('424242');
-    expect(en.get('verification.invalidCode')).toContain('424242');
+    expect(ar.get('verification.invalidCode')).not.toContain('424242');
+    expect(en.get('verification.invalidCode')).not.toContain('424242');
+    const parentAuthCopy = [...ar, ...en]
+      .filter(([key]) => /^(?:signIn|signUp|verification)\./u.test(key))
+      .map(([, value]) => value)
+      .join(' ');
+    expect(parentAuthCopy).not.toMatch(
+      /demo|synthetic|simulation|simulated|not real|no real|تجريب|اصطناع|محاكاة|غير حقيقي|حقيقيًا/iu,
+    );
     expect(ar.get('welcome.childUnavailable')).toContain('الطفل');
     expect(en.get('welcome.childUnavailable')).toMatch(/Child access/i);
-    expect(ar.get('success.origin')).toContain('اصطناعي');
-    expect(en.get('success.origin')).toMatch(/synthetic/i);
+    expect(ar.get('success.origin')).toContain('الجهاز');
+    expect(en.get('success.origin')).toMatch(/device/i);
   });
 
   it('uses native routes and a transparent modal without importing Stitch runtime code', () => {
@@ -148,7 +155,7 @@ describe('approved R001 Parent onboarding integration', () => {
     const routeSource = (route: (typeof R001_ACCESS_ROUTES)[number]) =>
       readFileSync(resolve(import.meta.dirname, `../app${route}.tsx`), 'utf8');
 
-    expect(routeSource('/access/parent/sign-in')).toContain('requestParentVerification');
+    expect(routeSource('/access/parent/sign-in')).toContain('requestExistingParentVerification');
 
     const signUp = readFileSync(
       new URL('../app/access/parent/sign-up.tsx', import.meta.url),
@@ -220,15 +227,12 @@ describe('approved R001 Parent onboarding integration', () => {
 
     const signIn = routeSource('/access/parent/sign-in');
     expect(signIn).not.toContain('disabled={identifier.trim().length === 0}');
-    expect(signIn).toContain('variant="neutral"');
     expect(signIn).toContain('<View style={styles.signInPanel}>');
     expect(signIn).toContain('<View style={styles.credentials}>');
-    expect(signIn).toContain('<View style={styles.biometricGroup}>');
     expect(signIn).toContain('<View style={styles.createFamilyGroup}>');
     expect(signIn).toContain('viewport: { paddingTop: spacing.xs }');
     expect(signIn).toContain("intro: { width: '100%', alignItems: 'center', gap: spacing.xxs }");
     expect(signIn).toContain('credentials: { gap: spacing.sm }');
-    expect(signIn).toContain('biometricGroup: { gap: spacing.xxs }');
     expect(signIn).toContain('createFamilyGroup: { paddingTop: spacing.xs }');
     expect(signIn).not.toContain('styles.sectionDivider');
 
@@ -244,20 +248,14 @@ describe('approved R001 Parent onboarding integration', () => {
     const intro = signIn.slice(introStart, introEnd);
     expect(intro.match(/align="center"/gu)).toHaveLength(2);
 
-    const biometricGroupStart = signIn.indexOf('<View style={styles.biometricGroup}>');
-    const biometricGroupEnd = signIn.indexOf('</View>', biometricGroupStart);
-    const biometricGroup = signIn.slice(biometricGroupStart, biometricGroupEnd);
-    expect(biometricGroup).toContain('align="center"');
-
     const primaryActionIndex = signIn.indexOf('testID="request-parent-code-button"');
-    const dividerIndex = signIn.indexOf('<LabeledDivider');
-    const biometricActionIndex = signIn.indexOf('testID="simulated-biometric-button"');
     const createFamilyActionIndex = signIn.indexOf('testID="create-family-button"');
-    expect(primaryActionIndex).toBeLessThan(dividerIndex);
-    expect(dividerIndex).toBeLessThan(biometricActionIndex);
-    expect(biometricActionIndex).toBeLessThan(createFamilyActionIndex);
+    expect(primaryActionIndex).toBeLessThan(createFamilyActionIndex);
+    expect(signIn).not.toContain('<LabeledDivider');
+    expect(signIn).not.toContain('simulated-biometric-button');
+    expect(signIn).not.toContain('<PrototypePill');
 
-    for (const actionIndex of [primaryActionIndex, biometricActionIndex, createFamilyActionIndex]) {
+    for (const actionIndex of [primaryActionIndex, createFamilyActionIndex]) {
       const actionStart = signIn.lastIndexOf('<Button', actionIndex);
       const actionEnd = signIn.indexOf('</Button>', actionIndex);
       const action = signIn.slice(actionStart, actionEnd);
@@ -305,6 +303,9 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(signUp).toContain('variant="quiet"');
     expect(signUp).toContain('borderColor: colors.ghafEmerald');
     expect(signUp).toContain('direction="auto"');
+    expect(signUp).not.toContain('<PrototypePill');
+
+    expect(routeSource('/access/parent/verification')).not.toContain('<PrototypePill');
 
     const success = routeSource('/access/parent/family-created-success');
     expect(success).not.toContain('<PrototypePill');

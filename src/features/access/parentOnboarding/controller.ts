@@ -7,6 +7,7 @@ import {
   type DeviceAccessState,
   type PairingRequest,
   type ParentAccessSession,
+  type ReauthenticationProof,
 } from '../../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../../models/familyGrowth';
 import type {
@@ -18,6 +19,7 @@ import type {
   ParentOnboardingView,
   ParentReportHandoff,
   ParentSharedGrowthAccessHandoff,
+  NormalizedParentIdentifier,
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
 import {
@@ -83,10 +85,13 @@ function success<T>(
 function cloneDraft(draft: ParentOnboardingDraft): ParentOnboardingDraft {
   return {
     ...draft,
-    child: {
-      ...draft.child,
-      accessibilityDefaults: [...draft.child.accessibilityDefaults],
-    },
+    children: draft.children.map((child) => ({
+      ...child,
+      interests: [...child.interests],
+      hobbies: [...child.hobbies],
+      accessibilityDefaults: [...child.accessibilityDefaults],
+      supportPreferences: [...child.supportPreferences],
+    })),
   };
 }
 
@@ -95,16 +100,20 @@ function cloneReceipt(
 ): ParentOnboardingCompletionReceipt {
   return {
     ...receipt,
-    child: {
-      ...receipt.child,
-      accessibilityDefaults: [...receipt.child.accessibilityDefaults],
-    },
+    children: receipt.children.map((child) => ({
+      ...child,
+      interests: [...child.interests],
+      hobbies: [...child.hobbies],
+      accessibilityDefaults: [...child.accessibilityDefaults],
+      supportPreferences: [...child.supportPreferences],
+    })),
   };
 }
 
 export class ParentOnboardingController {
   private status: ParentOnboardingStatus = 'signed_out';
   private identifierKind: ParentOnboardingView['identifierKind'] = null;
+  private normalizedIdentifier: string | null = null;
   private maskedDestination: string | null = null;
   private delivery: ParentOnboardingView['delivery'] = null;
   private offlineFallbackUsed = false;
@@ -136,6 +145,15 @@ export class ParentOnboardingController {
     };
   }
 
+  getPendingIdentifier(): NormalizedParentIdentifier | null {
+    if (!this.normalizedIdentifier || !this.identifierKind || !this.maskedDestination) return null;
+    return {
+      normalizedIdentifier: this.normalizedIdentifier,
+      identifierKind: this.identifierKind,
+      maskedDestination: this.maskedDestination,
+    };
+  }
+
   requestVerification(input: {
     readonly identifier: unknown;
     readonly networkAvailable?: boolean;
@@ -148,6 +166,7 @@ export class ParentOnboardingController {
 
     this.verificationAttempt += 1;
     this.status = 'code_sent';
+    this.normalizedIdentifier = normalized.data.normalizedIdentifier;
     this.identifierKind = normalized.data.identifierKind;
     this.maskedDestination = normalized.data.maskedDestination;
     this.delivery = 'local_fixture';
@@ -221,6 +240,63 @@ export class ParentOnboardingController {
     return success(this.getView());
   }
 
+  restoreCompletionReceipt(
+    receipt: ParentOnboardingCompletionReceipt,
+  ): ServiceResult<ParentOnboardingView> {
+    if (this.completionReceipt || this.parentSession) {
+      return failure('INVALID_TRANSITION', 'Reset before restoring a local family receipt');
+    }
+    const initial = createInitialParentOnboardingDraft();
+    if (
+      receipt.receiptId !== COMPLETION_RECEIPT_ID ||
+      receipt.destination !== '/parent' ||
+      receipt.householdId !== 'household_al_noor' ||
+      receipt.origin !== 'synthetic' ||
+      receipt.capabilityTruth !== CAPABILITY_TRUTH ||
+      receipt.children.length !== receipt.childCount ||
+      !Number.isFinite(Date.parse(receipt.completedAt))
+    ) {
+      return failure('INVALID_INPUT', 'The device-local family receipt is invalid');
+    }
+    const draft: ParentOnboardingDraft = {
+      familyName: receipt.familyName,
+      appLanguage: receipt.appLanguage,
+      childCount: receipt.childCount,
+      children: initial.children.map((fallback, index) => {
+        const child = receipt.children[index];
+        return child
+          ? {
+              profileId: child.profileId,
+              nickname: child.nickname,
+              avatarId: child.avatarId,
+              ageBand: child.ageBand,
+              preferredLanguage: child.preferredLanguage,
+              gender: child.gender,
+              interests: [...child.interests],
+              hobbies: [...child.hobbies],
+              accessibilityDefaults: [...child.accessibilityDefaults],
+              supportPreferences: [...child.supportPreferences],
+              personalizationEnabled: child.personalizationEnabled,
+            }
+          : fallback;
+      }),
+    };
+    const validated = validateCompleteParentOnboardingDraft(draft);
+    if (
+      !validated.ok ||
+      receipt.children.some(
+        (child) =>
+          child.accessLanguagePreference !== toAccessLanguagePreference(child.preferredLanguage),
+      )
+    ) {
+      return failure('INVALID_INPUT', 'The device-local family receipt is invalid');
+    }
+    this.draft = validated.data;
+    this.completionReceipt = cloneReceipt(receipt);
+    this.clearVerification();
+    return success(this.getView());
+  }
+
   complete(now: string): ServiceResult<ParentOnboardingCompletionReceipt> {
     if (this.completionReceipt && this.parentSession) {
       return success(cloneReceipt(this.completionReceipt), {
@@ -271,15 +347,23 @@ export class ParentOnboardingController {
       householdId: signedIn.data.householdId,
       familyName: validatedDraft.data.familyName,
       appLanguage: validatedDraft.data.appLanguage,
-      child: {
-        nickname: validatedDraft.data.child.nickname,
-        avatarId: validatedDraft.data.child.avatarId,
-        ageBand: validatedDraft.data.child.ageBand,
-        accessLanguagePreference: toAccessLanguagePreference(
-          validatedDraft.data.child.preferredLanguage,
-        ),
-        accessibilityDefaults: [...validatedDraft.data.child.accessibilityDefaults],
-      },
+      childCount: validatedDraft.data.childCount,
+      children: validatedDraft.data.children
+        .slice(0, validatedDraft.data.childCount)
+        .map((child) => ({
+          profileId: child.profileId,
+          nickname: child.nickname,
+          avatarId: child.avatarId,
+          ageBand: child.ageBand,
+          preferredLanguage: child.preferredLanguage,
+          accessLanguagePreference: toAccessLanguagePreference(child.preferredLanguage),
+          gender: child.gender,
+          interests: [...child.interests],
+          hobbies: [...child.hobbies],
+          accessibilityDefaults: [...child.accessibilityDefaults],
+          supportPreferences: [...child.supportPreferences],
+          personalizationEnabled: child.personalizationEnabled,
+        })),
       origin: 'synthetic',
       capabilityTruth: CAPABILITY_TRUTH,
     };
@@ -308,6 +392,42 @@ export class ParentOnboardingController {
     });
   }
 
+  resumeRememberedParent(now: string): ServiceResult<ParentOnboardingHandoff> {
+    if (this.parentSession || !this.completionReceipt || this.status !== 'signed_out') {
+      return failure(
+        'INVALID_TRANSITION',
+        'A signed-out Parent with a restored family receipt is required',
+      );
+    }
+    const signedIn = this.access.signInParent({
+      sessionId: this.nextSessionId(),
+      parentFixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
+      deviceId: this.config.deviceId,
+      now,
+    });
+    if (!signedIn.ok) return signedIn;
+    const authorized = this.access.authorizeCapability({
+      session: signedIn.data,
+      capability: 'enter_parent_experience',
+      now,
+    });
+    if (!authorized.ok) {
+      const terminated = this.access.terminateParentSession({ session: signedIn.data, now });
+      return terminated.ok
+        ? authorized
+        : failure('INVALID_TRANSITION', 'Remembered Parent access could not be safely restored');
+    }
+    this.parentSession = signedIn.data;
+    this.status = 'authenticated_parent';
+    return success({
+      authorized: true,
+      capability: 'enter_parent_experience',
+      destination: '/parent',
+      receiptId: this.completionReceipt.receiptId,
+      origin: 'synthetic',
+    });
+  }
+
   approveChildPairing(input: {
     readonly requestId: string;
     readonly childId: SyntheticChildId;
@@ -318,6 +438,7 @@ export class ParentOnboardingController {
       !this.parentSession ||
       !this.completionReceipt ||
       this.status !== 'authenticated_parent' ||
+      !this.isConfiguredChild(input.childId) ||
       !this.access.approvePairing
     ) {
       return failure(
@@ -336,6 +457,7 @@ export class ParentOnboardingController {
       !this.parentSession ||
       !this.completionReceipt ||
       this.status !== 'authenticated_parent' ||
+      !this.isConfiguredChild(childId) ||
       !this.access.getChildPermissions
     ) {
       return failure(
@@ -344,6 +466,49 @@ export class ParentOnboardingController {
       );
     }
     return this.access.getChildPermissions({ session: this.parentSession, childId, now });
+  }
+
+  authorizeLiveChildAiGrantChange(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: 'text' | 'voice';
+    readonly proofId: string;
+    readonly reauthenticationCode: unknown;
+    readonly now: string;
+  }): ServiceResult<ReauthenticationProof> {
+    if (
+      !this.parentSession ||
+      !this.completionReceipt ||
+      this.status !== 'authenticated_parent' ||
+      !this.isConfiguredChild(input.childId) ||
+      !this.access.issueReauthentication ||
+      !this.access.authorizeSensitiveAction
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'A completed Parent session is required to change bounded Child AI access',
+      );
+    }
+    if (input.reauthenticationCode !== SYNTHETIC_PARENT_REAUTHENTICATION_CODE) {
+      return failure('INVALID_INPUT', 'The synthetic Parent reauthentication code is not correct');
+    }
+    const purpose =
+      input.capability === 'text'
+        ? 'change_live_child_text_permission'
+        : 'change_live_child_voice_permission';
+    const issued = this.access.issueReauthentication({
+      proofId: input.proofId,
+      parentSession: this.parentSession,
+      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+      purpose,
+      now: input.now,
+    });
+    if (!issued.ok) return issued;
+    return this.access.authorizeSensitiveAction({
+      proofId: issued.data.id,
+      parentSession: this.parentSession,
+      purpose,
+      now: input.now,
+    });
   }
 
   updateChildPermission(input: {
@@ -357,6 +522,7 @@ export class ParentOnboardingController {
       !this.parentSession ||
       !this.completionReceipt ||
       this.status !== 'authenticated_parent' ||
+      !this.isConfiguredChild(input.childId) ||
       !this.access.getChildPermissions ||
       !this.access.updateChildPermissions ||
       !this.access.issueReauthentication
@@ -419,6 +585,7 @@ export class ParentOnboardingController {
       !this.parentSession ||
       !this.completionReceipt ||
       this.status !== 'authenticated_parent' ||
+      !this.isConfiguredChild(input.childId) ||
       !this.access.revokeDevice
     ) {
       return failure(
@@ -433,7 +600,10 @@ export class ParentOnboardingController {
     if (!this.parentSession || !this.completionReceipt || this.status !== 'authenticated_parent') {
       return failure('INVALID_TRANSITION', 'A completed Parent onboarding session is required');
     }
-    if (profileId !== 'child_salem' && profileId !== 'child_alya') {
+    if (
+      (profileId !== 'child_salem' && profileId !== 'child_alya') ||
+      !this.isConfiguredChild(profileId)
+    ) {
       return failure('NOT_FOUND', 'The selected synthetic Child profile was not found');
     }
     const authorized = this.access.authorizeCapability({
@@ -529,10 +699,15 @@ export class ParentOnboardingController {
 
   private clearVerification(): void {
     this.status = 'signed_out';
+    this.normalizedIdentifier = null;
     this.identifierKind = null;
     this.maskedDestination = null;
     this.delivery = null;
     this.offlineFallbackUsed = false;
+  }
+
+  private isConfiguredChild(childId: SyntheticChildId): boolean {
+    return this.completionReceipt?.children.some((child) => child.profileId === childId) ?? false;
   }
 
   private nextSessionId(): string {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { type Href, useRouter } from 'expo-router';
+import { Redirect, type Href, useRouter } from 'expo-router';
 import { ActivityIndicator, BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -17,12 +17,17 @@ export default function FamilyCreatedSuccessScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const returningUserWelcome = usePrototypeStore((state) => state.returningUserWelcome);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const authorizeParentExperience = usePrototypeStore((state) => state.authorizeParentExperience);
   const [authorization, setAuthorization] = useState<AuthorizationState>('checking');
 
   const familyIsValid = parentOnboarding.draft.familyName.trim().length >= 2;
-  const childIsValid = parentOnboarding.draft.child.nickname.trim().length >= 2;
+  const configuredChildren = parentOnboarding.draft.children.slice(
+    0,
+    parentOnboarding.draft.childCount,
+  );
+  const childIsValid = configuredChildren.every((child) => child.nickname.trim().length >= 2);
 
   const dismiss = useCallback(() => {
     router.dismissTo('/access/parent/review-create');
@@ -77,6 +82,9 @@ export default function FamilyCreatedSuccessScreen() {
     router.replace(destination as Href);
   };
 
+  if (returningUserWelcome?.kind === 'returning_parent') {
+    return <Redirect href="/parent" />;
+  }
   if (parentOnboarding.status !== 'authenticated_parent' || !familyIsValid || !childIsValid)
     return null;
 
@@ -130,8 +138,9 @@ export default function FamilyCreatedSuccessScreen() {
     );
   }
 
-  const childName =
-    parentOnboarding.completionReceipt?.child.nickname ?? parentOnboarding.draft.child.nickname;
+  const childNames = (parentOnboarding.completionReceipt?.children ?? configuredChildren)
+    .map((child) => child.nickname)
+    .join(locale === 'ar' ? ' و' : ' and ');
 
   return (
     <SuccessSheet
@@ -143,7 +152,12 @@ export default function FamilyCreatedSuccessScreen() {
       direction={direction}
       dismissLabel={t('common.close')}
       language={locale}
-      message={t('access.success.body', { child: childName })}
+      message={t(
+        configuredChildren.length === 1 ? 'access.success.bodyOne' : 'access.success.bodyTwo',
+        {
+          children: childNames,
+        },
+      )}
       onAction={goHome}
       onDismiss={dismiss}
       testID="family-created-success-sheet"

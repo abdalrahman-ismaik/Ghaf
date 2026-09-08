@@ -1,5 +1,192 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 AI Services 1–3 Integration Addendum — 2026-09-07
+
+Preserve the current deterministic AI stack as the non-negotiable application default. Extract a
+strict live Parent Guide request/result contract beside the existing assistant policy, then add a
+small fetch adapter under `src/services/remote/`. The Zustand command continues to own its 1,500 ms
+attempt deadline and stale-result guard; it validates either the exact prepared fixture or the
+bounded live result, then falls back through the existing prepared provider in the same attempt.
+The registry exposes the prepared provider independently from an injectable primary so fallback
+can never recurse. No Child route or service receives a remote provider.
+
+Add a reference Cloudflare Worker with one `/v1/parent-guide/refine` POST operation. It validates
+the exact synthetic P0 request before inference, authenticates against a Worker secret, rate-limits
+the authenticated demo client, allows only the configured browser origin while supporting
+originless native requests, requests canonical JSON-schema output from the Workers AI binding, and
+returns no-store JSON. The Worker owns no persistence or logging. Its tests use fake bindings and a
+synthetic token; deployment and a real model call are deliberately separate evidence gates. The
+mobile app never reads an access token from `EXPO_PUBLIC_*`; absent a future trusted token broker,
+the default registry binds the prepared provider.
+
+Extend the pure profile-personalization module with a stable category recommendation plan. It
+reuses the already validated curated profile record, ranks the at-most-two recommendations ahead of
+the remaining canonical category order, and provides a bounded preselection only when compatible
+with existing Task Builder precedence. The component renders a local/prepared recommendation label
+but still disables every non-P0 template and requires the existing Parent review and assignment
+commands. No derived recommendation state is persisted.
+
+Implementation order is contract/ownership → RED gateway/profile tests → live request policy and
+adapter → authenticated Worker → store/registry/UI integration → fallback and regression tests →
+truthful limitations/runbook/handoff evidence. No dependency, product route, schema migration,
+provider deployment, feature-flag activation, live Child AI, real media, or legacy mission behavior
+is included.
+
+## R003 Onboarding Image Perimeter Progress Addendum — 2026-09-07
+
+Refine only the decorative edge treatment inside `FirstRunOnboarding`. Remove `heroAccent` and add
+one noninteractive SVG perimeter component over the existing 3:2 photograph. Use two equal rounded
+paths that originate at the bottom center and end together at the top center. Normalize each path
+to one unit so one shared Reanimated value can reveal both branches without measuring or mutating
+layout. Derive the target from the explicit six-step index: retain a short visible starting mark,
+interpolate evenly through intermediate moments, and reach one only on the final image.
+
+Use the installed `react-native-svg` and Reanimated packages; add no dependency. Animate only the
+dash offset with the existing 220 ms on-screen easing on the UI thread, cancel interrupted
+transitions, and set the target directly under system reduced motion. Keep the existing lower
+current/total plus dots as the sole accessible progressbar, with the perimeter hidden from
+assistive technology. Preserve the current image, speaker, narration, ambience, pillar and button
+navigation, route count, startup sets, and all product authorities. Drive the change with one
+focused RED source contract, then run focused/full repository checks, the design detector,
+bilingual compact browser inspection, exports, and available physical Android evidence.
+
+## R003 Returning Parent Identifier Lookup Addendum — 2026-09-07
+
+Extend the existing device-local family record from schema 1 to schema 2 with one normalized
+synthetic Parent identifier and identifier kind. Keep the current platform repository boundary:
+SQLite-backed key/value storage on native, guarded localStorage on web, and memory in tests. Add a
+bounded repository migration from the prior valid schema-1 fixture to the canonical prepared
+`parent@example.com` identifier, write the migrated schema-2 record before removing the legacy
+key, and clear both keys during Parent reset. Continue rejecting corrupt and unknown records.
+
+Separate store intent for explicit first-family verification from returning sign-in verification.
+The returning command normalizes the candidate, compares it with the restored directory, and only
+then invokes the existing deterministic code controller. `NOT_FOUND` leaves the controller and
+access state unchanged. The create-family command fails when a directory/receipt already exists,
+and completion saves the controller's normalized identifier with the new family. Verification uses
+the closed `create-family` marker as the only path to Family Basics; every ordinary matching return
+reuses the receipt and enters Parent Home or the existing pending-pairing destination.
+
+Remove the fake fingerprint action and the Parent auth footer pills. Rewrite only bilingual Parent
+sign-in/sign-up/verification strings in neutral product language: do not claim code delivery or
+remote identity proof, and do not expose demo/synthetic/simulated/not-real labels on those screens.
+Keep the deterministic code, capability-truth fields, limitations, and runbook explicit in source
+and documentation. Drive the change with RED schema/store/source tests, then run focused tests,
+typecheck, lint, formatting, full tests, dependency/config checks, exports, compact bilingual web
+inspection, and available Android evidence.
+
+## R003 Compact Audio Onboarding Addendum — 2026-09-07
+
+Refine only the existing `FirstRunOnboarding` composition: reveal each approved 1200×800 raster in
+a width-driven 3:2 frame, center the short title/body, remove the visible Guide panel, and restore
+the original current/total plus six-dot progress row directly above the navigation actions. Add one
+high-contrast 48dp speaker icon over the visual as the only narration control. Keep the current
+explicit Next/Back/pillar reducer as the only navigation authority; neither narration, ambience,
+nor time advances the story.
+
+Keep the six concise first-person Ghaf Guide scripts and their AI fallibility/adult exit, Parent
+approval, permitted-help award, private permanent symbolic Garden, and no-measured-impact language.
+Replace device-dependent synthesis with packaged prepared synthetic clips keyed by locale and
+step. The narration hook waits until the local image and layout report ready, restarts from the
+beginning on the speaker press, stops across step/locale/exit changes, observes native screen-reader
+state, and falls back to the visible transcript on any error. A sibling ambience hook loops one
+locally authored nature soundscape quietly only while onboarding is mounted, ducks under narration,
+and stops on exit or assistive-speech activation.
+
+Reuse the installed `expo-audio` foreground player and existing config that explicitly disables
+microphone, recording, background recording, and background playback. Remove the now-unused
+`expo-speech` package. Generation is authoring-time only with public app copy; runtime sources are
+local `require()` entries with recorded provenance/checksums and no URL or provider. Drive the
+change with focused RED source/resource/lifecycle tests, then run the focused suite, typecheck,
+lint, formatting, full tests, Expo dependency alignment, detector, web/Android exports, compact
+bilingual browser inspection, and available Android evidence. Browser autoplay policy, physical
+Android playback/audio focus/TalkBack, and named Arabic performance review remain truthful gates.
+
+## R003 Device-local Family Directory and Guided Setup Addendum — 2026-09-06
+
+Add the smallest durable demo boundary: one versioned JSON family-directory record stored through
+a `LocalFamilyRepository` contract. Android/iOS use `expo-sqlite/kv-store`, which is backed by
+SQLite and persists across app restarts; web preview uses guarded `localStorage`; Vitest uses an
+in-memory adapter. Keep the adapter behind the service registry, validate all data on read and
+write, use one current namespaced key plus the bounded legacy key during schema migration, and make
+synchronous reads/writes intentionally small so the access decision and Parent reset cannot race.
+Do not add an ORM, SQLCipher claim, server, account table, or second application state library.
+
+Extend the Parent onboarding draft with a bounded Child count and two canonical profile slots while
+retaining the established synthetic identifiers under the surface. Reuse the existing Child route
+with an index parameter to render Child 1 then Child 2, keeping routes thin and extracting one
+reusable profile form plus one prepared-AI preview. Persist only the complete validated directory
+after review. At store initialization, restore the completion receipt and project configured
+family/Child display values into the existing prototype session before any access decision. Filter
+Parent and Child selectors by configured ids; keep the unconfigured canonical slot solely as an
+internal fixture required by current deterministic domain types.
+
+Add one pure `profilePersonalization` policy that accepts age band, curated interests/hobbies,
+accessibility defaults, and support preferences and returns a deterministic prepared summary plus
+allowlisted task-category ids. Do not pass gender, nickname, family name, free text, media, task
+history, or a provider request. Reuse the current `sparkle` Ghaf icon only beside labeled Guide,
+Coach, and profile-helper surfaces. Parent review remains the authority for every suggestion.
+
+Persist paired markers only after the existing approved pairing transaction and restore them by a
+narrow deterministic access-service command. Revocation updates the record; Parent reset clears it
+in the same synchronous command before returning to `/`. Storage parse/save failures remain local,
+recoverable, and visibly disclosed without granting a role. Drive the work through RED schema,
+repository, controller, store, AI-policy, and source/flow tests, then run compact bilingual browser
+journeys, reload persistence checks, offline checks, full static/native exports, detector, and all
+repository gates. Physical Android and named-human review remain honest external gates.
+
+Document this supersession in ADR 0002 and update the system context, data model, product/design
+truth, limitations, runbook, review packet, and active readiness checklists without rewriting
+historical Feature 002 evidence or activating default-off R002b flags.
+
+## R003 SMAC Pillar Onboarding Addendum — 2026-09-06
+
+Expand the presentation-only first-run reducer and localized story from four to six ordered steps:
+`intro`, `family`, `sustainability`, `ai`, `support`, and `growth`. Keep completion inside `/` and
+add a closed `goToPillar` event that accepts only the Family, Sustainability, or AI step. Render
+the three targets as accessible 48dp controls with live bilingual labels and a clear active state;
+they never mutate session, role, task, permission, or reward state.
+
+Generate two distinct Quiet UAE Botanical Editorial raster photographs for Family and bounded AI,
+then inspect, normalize, prompt-embed, checksum, and register them as local imports. Keep every
+word and control outside the pixels. Update startup by deriving its exact nine-raster set from the
+six-item onboarding registry; because both new files become startup assets, the existing deferred
+queue remains 41 sources and continues only after the onboarding paint handoff.
+
+Refine `FirstRunOnboarding` as one energetic editorial composition rather than a card carousel:
+vivid edge-to-edge crop, step-specific color surface and live pillar label, concise display/body
+copy, the interactive pillar navigator, visible six-step progress, and one dominant action. Use a
+single staged Reanimated UI-thread transition: a 220 ms opacity/8dp/0.015-scale image settle and
+copy 45 ms later, with direct settled content under reduced motion. Drive the work with RED
+model/source/asset tests, then validate
+focused and full suites, formatting, static local asset/provenance rules, route/startup/deferred
+boundaries, bilingual compact browser layouts, reduced motion, production exports, and available
+Android evidence. Do not add a dependency, route, network asset, AI provider behavior, or product
+authority.
+
+## R003 Returning-family Entry and Welcome Addendum — 2026-09-06
+
+Extend the existing Zustand access orchestration with a presentation-only discriminated signal for
+`returning_parent` or `returning_child`. Set it only when Parent completion begins from a verified
+state that already owns the immutable completion receipt, or when Child credential verification
+enters through an active paired-device fixture. Clear it on first-family completion, first pairing,
+dismissal, sign-out, Parent-to-Child handoff, and reset. Keep authorization in the existing Parent
+and Child controllers; no route or dialog calculates access.
+
+Harden Family Basics, Add First Child, and Review Family so `verified + completionReceipt` redirects
+to the existing verification handoff, which idempotently enters Parent Home. Keep Family Created
+available only for the just-created path, and redirect a returning presentation signal away from
+it. Add one reusable `ReturningWelcomeDialog` under `src/components/session/`, rendered as a native
+modal over Parent Home and Child Today. Compose at most two rows from each dashboard's already-
+authorized task/canopy or task/personal-Garden state, clear the signal before using an existing
+action, and reuse Alexandria/Readex, Soft Geometric tokens, logical layout, safe areas, native
+focus, 48dp controls, and a reduced-motion-aware fade.
+
+Drive the change with focused RED store/route/presentation tests, then run typecheck, lint, format,
+the full regression suite, route/reset/claim scans, the Impeccable detector, bilingual compact web
+inspection, and available Android evidence. Do not add persistence, a notification service, a
+dependency, a route, a remote call, or a new product authority.
+
 ## R003 Ordered Splash-to-loading Startup Addendum — 2026-09-06
 
 Model root startup as `splash | loading | complete` rather than one boolean overlay. Keep the

@@ -4,12 +4,10 @@ import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
-  AccessFooter,
   AccessHeader,
   AccessScreen,
   AccessTextField,
   GhafIcon,
-  PrototypePill,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
@@ -89,15 +87,6 @@ export default function ParentSignUpScreen() {
       contentContainerStyle={styles.viewport}
       contentMaxWidth={layout.readableContentWidth}
       contentStyle={styles.content}
-      footer={
-        <AccessFooter>
-          <PrototypePill
-            direction={direction}
-            language={locale}
-            message={t('access.signUp.origin')}
-          />
-        </AccessFooter>
-      }
       header={
         <AccessHeader
           backLabel={t('common.back')}

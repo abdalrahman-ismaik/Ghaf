@@ -28,6 +28,7 @@ export default function ParentFamilyScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const children = usePrototypeStore((state) => state.children);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const familyReward = usePrototypeStore((state) => state.familyReward);
   const getFamilyReward = usePrototypeStore((state) => state.getFamilyReward);
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
@@ -43,6 +44,9 @@ export default function ParentFamilyScreen() {
     [locale],
   );
   const activeChild = children[activeChildId];
+  const activeChildName =
+    localFamily.record?.children.find((child) => child.id === activeChildId)?.nickname ??
+    localize(activeChild.displayName, locale);
   const requestedFocus =
     typeof params.restoreFocusTarget === 'string' ? params.restoreFocusTarget : undefined;
   const restoreProfileId =
@@ -137,7 +141,7 @@ export default function ParentFamilyScreen() {
           direction={direction}
           onToggleSettings={() => router.push('/parent/settings' as Href)}
           profileLabel={t('parentHome.selectedChild', {
-            child: localize(activeChild.displayName, locale),
+            child: activeChildName,
           })}
           settingsLabel={t('parentHome.settingsLabel')}
           settingsOpen={false}
@@ -165,9 +169,11 @@ export default function ParentFamilyScreen() {
       />
 
       <R003Section title={t('r003.family.childrenTitle')}>
-        {(['child_salem', 'child_alya'] as const).map((childId) => {
+        {localFamily.configuredChildIds.map((childId) => {
           const child = children[childId];
-          const name = localize(child.displayName, locale);
+          const name =
+            localFamily.record?.children.find((profile) => profile.id === childId)?.nickname ??
+            localize(child.displayName, locale);
           return (
             <R003ActionRow
               body={t(
@@ -229,7 +235,10 @@ export default function ParentFamilyScreen() {
             variant="caption"
           >
             {t('r003.family.rewardOwner', {
-              name: localize(children[reward.data.view.childId].displayName, locale),
+              name:
+                localFamily.record?.children.find(
+                  (profile) => profile.id === reward.data.view.childId,
+                )?.nickname ?? localize(children[reward.data.view.childId].displayName, locale),
             })}
           </Text>
           <Text

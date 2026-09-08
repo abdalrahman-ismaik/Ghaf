@@ -117,16 +117,21 @@ describe('R001 Parent onboarding input policy', () => {
       }),
     );
 
-    expect(updated).toEqual({
+    expect(updated).toMatchObject({
       familyName: 'Palm Family',
       appLanguage: 'en',
-      child: {
-        nickname: 'Salem',
-        avatarId: 'water_drop',
-        ageBand: '12_14',
-        preferredLanguage: 'both',
-        accessibilityDefaults: ['larger_text', 'reduced_motion'],
-      },
+      childCount: 2,
+      children: [
+        {
+          profileId: 'child_salem',
+          nickname: 'Salem',
+          avatarId: 'water_drop',
+          ageBand: '12_14',
+          preferredLanguage: 'both',
+          accessibilityDefaults: ['larger_text', 'reduced_motion'],
+        },
+        { profileId: 'child_alya' },
+      ],
     });
     expect(
       updateParentOnboardingDraft(initial, {
@@ -241,9 +246,15 @@ describe('R001 Parent onboarding controller', () => {
     });
     expect(resent).not.toHaveProperty('normalizedIdentifier');
     expect(JSON.stringify(resent)).not.toContain('parent@example.com');
+    expect(controller.getPendingIdentifier()).toEqual({
+      normalizedIdentifier: 'parent@example.com',
+      identifierKind: 'email',
+      maskedDestination: 'p***@example.com',
+    });
     expect(controller.resendVerification({})).toMatchObject({ ok: true });
 
     expectOk(controller.cancelVerification());
+    expect(controller.getPendingIdentifier()).toBeNull();
     expect(controller.resendVerification({})).toMatchObject({
       ok: false,
       error: { code: 'INVALID_TRANSITION' },
@@ -289,11 +300,16 @@ describe('R001 Parent onboarding controller', () => {
       destination: '/parent',
       familyName: 'Palm Family',
       appLanguage: 'en',
-      child: {
-        nickname: 'Salem',
-        accessLanguagePreference: 'bilingual',
-        accessibilityDefaults: ['larger_text', 'simpler_instructions'],
-      },
+      childCount: 2,
+      children: [
+        {
+          profileId: 'child_salem',
+          nickname: 'Salem',
+          accessLanguagePreference: 'bilingual',
+          accessibilityDefaults: ['larger_text', 'simpler_instructions'],
+        },
+        { profileId: 'child_alya' },
+      ],
       origin: 'synthetic',
       capabilityTruth: 'local_prototype_not_authentication',
     });

@@ -133,14 +133,18 @@ import type {
   TaskTemplate,
 } from '../../models/familyGrowth';
 import type {
+  CapabilityTokenService,
   CoachAdaptationService,
+  BoundedParentGuideProvider,
   FamilyLeagueService,
   FamilyRewardService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
+  LiveChildCoachTextService,
   GardenService,
   MediaService,
   ParentGuideService,
+  ParentTaskDraftingService,
   ParentSummaryPolicy,
   PreparedChildCoachProvider,
   PreparedParentGuideProvider,
@@ -152,8 +156,17 @@ import type {
   SyntheticVoiceService,
   SyntheticAccessService,
   TaskService,
+  VoiceTranscriptionService,
 } from '../interfaces';
 import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
+import {
+  createPreparedBoundedAiServices,
+  BlockedCapabilityTokenService,
+  DeterministicLiveChildAiGrantService,
+  DeterministicLiveChildCoachTextProvider,
+  DeterministicParentTaskDraftingProvider,
+  DeterministicVoiceTranscriptionProvider,
+} from './boundedAi';
 import {
   CHILD_COACH_FIXTURE,
   createInitialPrototypeSession,
@@ -2083,15 +2096,24 @@ export class DeterministicPrototypeSessionService implements PrototypeSessionSer
   }
 }
 
-export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
+export function createFeature003ServiceRegistry(options?: {
+  readonly parentGuidePrimary?: BoundedParentGuideProvider;
+  readonly parentTaskDraftingPrimary?: ParentTaskDraftingService;
+  readonly childCoachTextPrimary?: LiveChildCoachTextService;
+  readonly voiceTranscriptionPrimary?: VoiceTranscriptionService;
+  readonly capabilityToken?: CapabilityTokenService;
+}): Feature003ServiceRegistry {
   const access = new DeterministicSyntheticAccessService();
+  const parentGuide = new DeterministicParentGuideProvider();
+  const boundedAiPrepared = createPreparedBoundedAiServices();
   return {
     task: new DeterministicTaskService(),
     recognition: new DeterministicRecognitionService(),
     garden: new DeterministicGardenService(),
     familyProjection: new DeterministicFamilyProjectionService(),
     media: new DeterministicMediaService(),
-    parentGuide: new DeterministicParentGuideProvider(),
+    parentGuide,
+    parentGuidePrimary: options?.parentGuidePrimary ?? parentGuide,
     childCoach: new DeterministicChildCoachProvider(),
     coachAdaptation: new DeterministicCoachAdaptationService(),
     syntheticVoice: new DeterministicSyntheticVoiceService(access),
@@ -2100,5 +2122,27 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     familyLeague: new DeterministicFamilyLeagueService(access),
     parentSummary: new DeterministicParentSummaryPolicy(),
     prototypeSession: new DeterministicPrototypeSessionService(),
+    boundedAi: {
+      parentTaskDraftingPrepared: boundedAiPrepared.parentTaskDraftingPrepared,
+      parentTaskDraftingPrimary:
+        options?.parentTaskDraftingPrimary ?? boundedAiPrepared.parentTaskDraftingPrepared,
+      childCoachTextPrepared: boundedAiPrepared.childCoachTextPrepared,
+      childCoachTextPrimary:
+        options?.childCoachTextPrimary ?? boundedAiPrepared.childCoachTextPrepared,
+      voiceTranscriptionPrepared: boundedAiPrepared.voiceTranscriptionPrepared,
+      voiceTranscriptionPrimary:
+        options?.voiceTranscriptionPrimary ?? boundedAiPrepared.voiceTranscriptionPrepared,
+      capabilityToken: options?.capabilityToken ?? boundedAiPrepared.capabilityToken,
+      childAiGrants: boundedAiPrepared.childAiGrants,
+    },
   };
 }
+
+export {
+  BlockedCapabilityTokenService,
+  createPreparedBoundedAiServices,
+  DeterministicLiveChildCoachTextProvider,
+  DeterministicLiveChildAiGrantService,
+  DeterministicParentTaskDraftingProvider,
+  DeterministicVoiceTranscriptionProvider,
+};

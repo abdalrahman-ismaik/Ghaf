@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import * as Crypto from 'expo-crypto';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { AssistantIdentity, type AssistantIdentityOrigin } from '@/components/AssistantIdentity';
 import { Button, Input, Text } from '@/components/primitives';
 import {
   R002aFlowHeader,
@@ -10,6 +12,7 @@ import {
   TaskBuilderFooter,
   TaskStepIndicator,
 } from '@/components/r002a';
+import { aiFeatureFlags } from '@/config/aiFeatureFlags';
 import {
   colors,
   logicalRowDirection,
@@ -23,6 +26,7 @@ import {
   TASK_CATEGORIES,
   TASK_TEMPLATES,
 } from '@/features/tasks/demoContent';
+import { createPreparedTaskCategoryPlan } from '@/features/assistants/profilePersonalization';
 import type { ParentProgressTaskPrefill } from '@/features/growth/parentProgress';
 import { localize } from '@/i18n';
 import type {
@@ -32,6 +36,7 @@ import type {
   TaskCategoryId,
   TaskTemplate,
 } from '@/models/familyGrowth';
+import type { ParentTaskDraftRequestV1 } from '@/models/boundedAi';
 import { PARENT_GUIDE_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -47,6 +52,16 @@ const GUIDE_INTENTS: readonly { intent: ParentGuideIntent; key: string }[] = [
   { intent: 'make_clearer', key: 'makeClearer' },
   { intent: 'make_smaller', key: 'makeSmaller' },
   { intent: 'check_safety', key: 'checkSafety' },
+  { intent: 'adapt_age', key: 'adaptAge' },
+] as const;
+
+const LIVE_DRAFT_INTENTS: readonly {
+  intent: ParentTaskDraftRequestV1['intent'];
+  key: string;
+}[] = [
+  { intent: 'draft', key: 'liveDraftRequest' },
+  { intent: 'make_clearer', key: 'makeClearer' },
+  { intent: 'make_smaller', key: 'makeSmaller' },
   { intent: 'adapt_age', key: 'adaptAge' },
 ] as const;
 
@@ -70,13 +85,19 @@ export function ParentTaskComposer({
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const journey = usePrototypeStore((state) => state.journey);
   const suggestion = usePrototypeStore((state) => state.parentGuideSuggestion);
+  const liveDraftView = usePrototypeStore((state) => state.parentTaskDraftingView);
   const createTaskDraft = usePrototypeStore((state) => state.createTaskDraft);
   const updateTaskDraftParentText = usePrototypeStore((state) => state.updateTaskDraftParentText);
   const requestParentGuide = usePrototypeStore((state) => state.requestParentGuide);
   const acceptGuideSuggestion = usePrototypeStore((state) => state.acceptGuideSuggestion);
   const keepParentText = usePrototypeStore((state) => state.keepParentText);
+  const requestParentTaskDraft = usePrototypeStore((state) => state.requestParentTaskDraft);
+  const acceptParentTaskDraft = usePrototypeStore((state) => state.acceptParentTaskDraft);
+  const keepParentTaskDraft = usePrototypeStore((state) => state.keepParentTaskDraft);
+  const editParentTaskDraft = usePrototypeStore((state) => state.editParentTaskDraft);
   const reviewTask = usePrototypeStore((state) => state.reviewTask);
   const returnReviewedTaskToDraft = usePrototypeStore((state) => state.returnReviewedTaskToDraft);
   const acceptedInitialPrefill =
@@ -89,13 +110,39 @@ export function ParentTaskComposer({
       ? initialPrefill
       : null;
 
+  const [selectedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
+    journey?.task.targetChildId ?? acceptedInitialPrefill?.childId ?? activeChildId,
+  );
+  const profileCategoryPlan = useMemo(() => {
+    const profile = localFamily.record?.children.find((child) => child.id === selectedChildId);
+    if (!profile) return null;
+    const result = createPreparedTaskCategoryPlan(
+      {
+        ageBand: profile.ageBand,
+        interests: profile.interests,
+        hobbies: profile.hobbies,
+        accessibilityDefaults: profile.accessibilityDefaults,
+        supportPreferences: profile.supportPreferences,
+        personalizationEnabled: profile.personalizationEnabled,
+      },
+      TASK_CATEGORIES.map((category) => category.id),
+    );
+    return result.ok ? result.data : null;
+  }, [localFamily.record, selectedChildId]);
+  const orderedCategories = useMemo(
+    () =>
+      (profileCategoryPlan?.orderedCategoryIds ?? TASK_CATEGORIES.map((category) => category.id))
+        .map((id) => TASK_CATEGORIES.find((category) => category.id === id))
+        .filter((category): category is (typeof TASK_CATEGORIES)[number] => Boolean(category)),
+    [profileCategoryPlan],
+  );
+  const recommendedCategoryIds = profileCategoryPlan?.recommendedCategoryIds ?? [];
   const [stage, setStage] = useState<BuilderStage>(journey ? 'edit' : 'choose');
   const [categoryId, setCategoryId] = useState<TaskCategoryId | null>(
     journey?.task.content.categoryId ??
-      (acceptedInitialPrefill || activeChildId === 'child_salem' ? 'green_impact' : null),
-  );
-  const [selectedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
-    journey?.task.targetChildId ?? acceptedInitialPrefill?.childId ?? activeChildId,
+      (acceptedInitialPrefill || activeChildId === 'child_salem'
+        ? (profileCategoryPlan?.preselectedCategoryId ?? 'green_impact')
+        : null),
   );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     journey?.task.templateId ??
@@ -108,8 +155,12 @@ export function ParentTaskComposer({
   const [busyIntent, setBusyIntent] = useState<ParentGuideIntent | null>(null);
   const [error, setError] = useState<string | null>(null);
   const guideDisclosure =
-    suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuide.disclosure.text;
+    suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuidePrimary.disclosure.text;
+  const guideOrigin: AssistantIdentityOrigin =
+    serviceRegistry.parentGuidePrimary.mode === 'live_optional' ? 'live' : 'prepared';
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
+  const liveDraftPending =
+    liveDraftView.status === 'requesting' || liveDraftView.suggestion !== null;
   const hasExecutableSelection =
     selectedChildId === 'child_salem' &&
     categoryId === 'green_impact' &&
@@ -173,6 +224,43 @@ export function ParentTaskComposer({
     if (!result.ok) setError(t('errors.safeRetry'));
   };
 
+  const askLiveDraft = async (intent: ParentTaskDraftRequestV1['intent']) => {
+    setError(null);
+    if (!syncParentText()) return;
+    const result = await requestParentTaskDraft({
+      requestId: Crypto.randomUUID(),
+      bindingNonce: Crypto.randomUUID(),
+      intent,
+      effortBand: 'fifteen_thirty',
+      stepCount: 2,
+      supportMode: 'adult_alongside',
+    });
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const acceptLiveDraft = () => {
+    setError(null);
+    const result = acceptParentTaskDraft();
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const keepLiveDraft = () => {
+    setError(null);
+    const result = keepParentTaskDraft();
+    if (!result.ok) setError(t('errors.safeRetry'));
+  };
+
+  const editLiveDraft = () => {
+    setError(null);
+    const suggestedAction = liveDraftView.suggestion?.positiveAction;
+    const result = editParentTaskDraft();
+    if (!result.ok) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
+    if (suggestedAction) setParentText({ ...suggestedAction });
+  };
+
   const accept = () => {
     setError(null);
     const result = acceptGuideSuggestion();
@@ -233,10 +321,14 @@ export function ParentTaskComposer({
         ) : (
           <TaskBuilderFooter
             actionLabel={t('taskNew.review')}
-            busy={busyIntent !== null}
-            busyLabel={t('assistant.loading')}
+            busy={busyIntent !== null || liveDraftView.status === 'requesting'}
+            busyLabel={t(
+              busyIntent !== null && guideOrigin === 'live'
+                ? 'assistant.liveLoading'
+                : 'assistant.loading',
+            )}
             direction={direction}
-            disabled={!hasExecutableSelection || Boolean(suggestion)}
+            disabled={!hasExecutableSelection || Boolean(suggestion) || liveDraftPending}
             onPress={continueToReview}
             testID="review-task-button"
           />
@@ -299,6 +391,8 @@ export function ParentTaskComposer({
           }}
           selectedChildId={selectedChildId}
           selectedTemplateId={selectedTemplateId}
+          orderedCategories={orderedCategories}
+          recommendedCategoryIds={recommendedCategoryIds}
         />
       ) : (
         <EditStage
@@ -312,13 +406,19 @@ export function ParentTaskComposer({
           }
           error={error}
           guideDisclosure={guideDisclosure}
+          guideOrigin={guideOrigin}
           guideSuggestionApplied={guideSuggestionApplied}
+          liveDraftView={liveDraftView}
           journeyExists={Boolean(journey)}
           locale={locale}
           onAccept={accept}
           onAskGuide={askGuide}
+          onAskLiveDraft={askLiveDraft}
+          onAcceptLiveDraft={acceptLiveDraft}
           onChangeSelection={() => setStage('choose')}
           onKeepMine={keepMine}
+          onKeepLiveDraft={keepLiveDraft}
+          onEditLiveDraft={editLiveDraft}
           onParentTextChange={setParentText}
           parentText={parentText}
           suggestion={suggestion}
@@ -339,6 +439,8 @@ interface ChooseStageProps {
   onTemplateChange: (templateId: string) => void;
   selectedChildId: SyntheticChildId | null;
   selectedTemplateId: string | null;
+  orderedCategories: typeof TASK_CATEGORIES;
+  recommendedCategoryIds: readonly TaskCategoryId[];
 }
 
 function ChooseStage({
@@ -352,13 +454,15 @@ function ChooseStage({
   onTemplateChange,
   selectedChildId,
   selectedTemplateId,
+  orderedCategories,
+  recommendedCategoryIds,
 }: ChooseStageProps) {
   const { t } = useTranslation();
 
   return (
     <View style={styles.stage}>
       <View style={styles.stageHeading}>
-        <Text brand color="deepForest" variant="screenTitle">
+        <Text brand color="deepForest" variant="heading">
           {t('r002aTasks.chooseHeading')}
         </Text>
         <Text brand color="onSurfaceVariant" variant="body">
@@ -390,6 +494,45 @@ function ChooseStage({
 
       {selectedChildId === 'child_salem' ? (
         <View style={styles.section}>
+          {recommendedCategoryIds.length > 0 ? (
+            <View style={styles.recommendationPanel} testID="profile-recommendation-panel">
+              <AssistantIdentity
+                description={t('taskNew.profileRecommendationDisclosure')}
+                direction={direction}
+                language={locale}
+                origin="prepared"
+                originLabel={t('origin.prepared')}
+                title={t('taskNew.profileRecommendationTitle')}
+              />
+              <View
+                style={[
+                  styles.recommendationCategories,
+                  { flexDirection: logicalRowDirection(direction) },
+                ]}
+              >
+                {orderedCategories
+                  .filter((category) => recommendedCategoryIds.includes(category.id))
+                  .map((category) => (
+                    <View
+                      key={category.id}
+                      style={[
+                        styles.recommendationChip,
+                        { flexDirection: logicalRowDirection(direction) },
+                      ]}
+                    >
+                      <GhafIcon
+                        color={colors.ghafEmerald}
+                        name={CATEGORY_ICONS[category.id]}
+                        size={18}
+                      />
+                      <Text brand color="primary" variant="caption">
+                        {localize(category.label, locale)}
+                      </Text>
+                    </View>
+                  ))}
+              </View>
+            </View>
+          ) : null}
           <Text brand color="deepForest" variant="heading">
             {t('r002aTasks.categoryHeading')}
           </Text>
@@ -397,8 +540,9 @@ function ChooseStage({
             accessibilityRole="radiogroup"
             style={[styles.categoryGrid, { flexDirection: logicalRowDirection(direction) }]}
           >
-            {TASK_CATEGORIES.map((category) => {
+            {orderedCategories.map((category) => {
               const selected = category.id === categoryId;
+              const recommended = recommendedCategoryIds.includes(category.id);
               return (
                 <Pressable
                   accessibilityRole="radio"
@@ -418,6 +562,13 @@ function ChooseStage({
                     name={CATEGORY_ICONS[category.id]}
                     size={27}
                   />
+                  {recommended ? (
+                    <View style={styles.recommendationBadge}>
+                      <Text brand color="primary" variant="caption">
+                        {t('taskNew.profileRecommended')}
+                      </Text>
+                    </View>
+                  ) : null}
                   <Text
                     align="center"
                     brand
@@ -515,13 +666,19 @@ interface EditStageProps {
   displayedSeedAward: number;
   error: string | null;
   guideDisclosure: LocalizedText;
+  guideOrigin: AssistantIdentityOrigin;
   guideSuggestionApplied: boolean;
+  liveDraftView: ReturnType<typeof usePrototypeStore.getState>['parentTaskDraftingView'];
   journeyExists: boolean;
   locale: 'ar' | 'en';
   onAccept: () => void;
   onAskGuide: (intent: ParentGuideIntent) => Promise<void>;
+  onAskLiveDraft: (intent: ParentTaskDraftRequestV1['intent']) => Promise<void>;
+  onAcceptLiveDraft: () => void;
   onChangeSelection: () => void;
   onKeepMine: () => void;
+  onKeepLiveDraft: () => void;
+  onEditLiveDraft: () => void;
   onParentTextChange: (text: LocalizedText) => void;
   parentText: LocalizedText;
   suggestion: ReturnType<typeof usePrototypeStore.getState>['parentGuideSuggestion'];
@@ -534,13 +691,19 @@ function EditStage({
   displayedSeedAward,
   error,
   guideDisclosure,
+  guideOrigin,
   guideSuggestionApplied,
+  liveDraftView,
   journeyExists,
   locale,
   onAccept,
   onAskGuide,
+  onAskLiveDraft,
+  onAcceptLiveDraft,
   onChangeSelection,
   onKeepMine,
+  onKeepLiveDraft,
+  onEditLiveDraft,
   onParentTextChange,
   parentText,
   suggestion,
@@ -552,7 +715,7 @@ function EditStage({
   return (
     <View style={styles.stage}>
       <View style={styles.stageHeading}>
-        <Text brand color="deepForest" variant="screenTitle">
+        <Text brand color="deepForest" variant="heading">
           {t('r002aTasks.editHeading')}
         </Text>
         <Text brand color="onSurfaceVariant" variant="bodyLarge">
@@ -599,6 +762,8 @@ function EditStage({
           direction="rtl"
           editable={
             !suggestion &&
+            !liveDraftView.suggestion &&
+            liveDraftView.status !== 'requesting' &&
             (!journey || journey.lifecycle === 'draft' || journey.lifecycle === 'reviewed')
           }
           label={`${t('taskNew.parentTextLabel')} · ${t('language.arabic')}`}
@@ -613,6 +778,8 @@ function EditStage({
           direction="ltr"
           editable={
             !suggestion &&
+            !liveDraftView.suggestion &&
+            liveDraftView.status !== 'requesting' &&
             (!journey || journey.lifecycle === 'draft' || journey.lifecycle === 'reviewed')
           }
           label={`${t('taskNew.parentTextLabel')} · ${t('language.english')}`}
@@ -624,27 +791,138 @@ function EditStage({
         />
       </View>
 
-      <View style={styles.guideSection}>
-        <View style={[styles.guideHeading, { flexDirection: logicalRowDirection(direction) }]}>
-          <View style={styles.guideMark}>
-            <GhafIcon color={colors.mangroveTeal} name="sparkle" size={25} />
+      {aiFeatureFlags.ai_parent_task_drafting_live ? (
+        <View style={styles.liveDraftSection} testID="parent-task-drafting-controls">
+          <AssistantIdentity
+            description={t('taskNew.liveDraftDisclosure')}
+            direction={direction}
+            language={locale}
+            origin="live"
+            originLabel={t('assistant.liveLabel')}
+            title={t('taskNew.liveDraftTitle')}
+          />
+
+          <View style={[styles.intentGrid, { flexDirection: logicalRowDirection(direction) }]}>
+            {LIVE_DRAFT_INTENTS.map(({ intent, key }) => (
+              <Button
+                brand
+                busy={liveDraftView.status === 'requesting'}
+                busyLabel={t('assistant.loading')}
+                disabled={
+                  liveDraftView.status === 'requesting' ||
+                  Boolean(liveDraftView.suggestion) ||
+                  Boolean(suggestion)
+                }
+                fullWidth={false}
+                key={intent}
+                onPress={() => void onAskLiveDraft(intent)}
+                testID={`parent-task-drafting-${intent}`}
+                variant="secondary"
+              >
+                {t(`taskNew.${key}`)}
+              </Button>
+            ))}
           </View>
-          <View style={styles.grow}>
-            <Text brand color="secondary" variant="heading">
-              {t('taskNew.guideTitle')}
-            </Text>
-            <Text brand color="onSurfaceVariant" variant="caption">
-              {localize(guideDisclosure, locale)}
-            </Text>
-          </View>
+
+          {liveDraftView.suggestion && liveDraftView.retainedCopy ? (
+            <View
+              accessibilityLiveRegion="polite"
+              style={styles.comparison}
+              testID="parent-task-drafting-diff"
+            >
+              <Text brand color="secondary" testID="parent-task-drafting-origin" variant="caption">
+                {liveDraftView.origin === 'live'
+                  ? t('taskNew.liveDraftLiveOrigin')
+                  : t('taskNew.liveDraftPreparedOrigin')}
+              </Text>
+              {liveDraftView.status === 'fallback' ? (
+                <Text brand color="tertiary" variant="caption">
+                  {t('taskNew.liveDraftFallback')}
+                </Text>
+              ) : null}
+              <View style={styles.comparisonColumn} testID="parent-task-drafting-retained">
+                <Text brand color="onSurfaceVariant" variant="caption">
+                  {t('taskNew.liveDraftRetained')}
+                </Text>
+                <Text brand>{localize(liveDraftView.retainedCopy.title, locale)}</Text>
+                <Text brand>{localize(liveDraftView.retainedCopy.positiveAction, locale)}</Text>
+              </View>
+              <View style={styles.comparisonColumn} testID="parent-task-drafting-suggested">
+                <Text brand color="secondary" variant="caption">
+                  {t('taskNew.liveDraftSuggested')}
+                </Text>
+                <Text brand>{localize(liveDraftView.suggestion.title, locale)}</Text>
+                <Text brand>{localize(liveDraftView.suggestion.positiveAction, locale)}</Text>
+                <Text brand>{localize(liveDraftView.suggestion.whyItMatters, locale)}</Text>
+                {liveDraftView.suggestion.steps.map((step) => (
+                  <Text brand key={step.order}>
+                    {step.order}. {localize(step.text, locale)}
+                  </Text>
+                ))}
+                <Text brand>{localize(liveDraftView.suggestion.supportCue, locale)}</Text>
+              </View>
+              <View style={styles.comparisonActions}>
+                <Button brand onPress={onAcceptLiveDraft} testID="accept-parent-task-draft">
+                  {t('taskNew.liveDraftAccept')}
+                </Button>
+                <Button
+                  brand
+                  onPress={onKeepLiveDraft}
+                  testID="keep-parent-task-draft"
+                  variant="quiet"
+                >
+                  {t('taskNew.liveDraftKeep')}
+                </Button>
+                <Button
+                  brand
+                  onPress={onEditLiveDraft}
+                  testID="edit-parent-task-draft"
+                  variant="quiet"
+                >
+                  {t('taskNew.liveDraftEdit')}
+                </Button>
+              </View>
+            </View>
+          ) : null}
         </View>
+      ) : null}
+
+      <View style={styles.guideSection}>
+        <AssistantIdentity
+          description={t('taskNew.guidePurpose')}
+          direction={direction}
+          language={locale}
+          origin={guideOrigin}
+          originLabel={t(
+            guideOrigin === 'live' ? 'assistant.liveLabel' : 'assistant.preparedLabel',
+          )}
+          originTestID="parent-guide-origin"
+          title={t('taskNew.guideTitle')}
+        />
+        <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+          {localize(guideDisclosure, locale)}
+        </Text>
+        <Text
+          brand
+          color="deepForest"
+          direction={direction}
+          testID="guide-actions-heading"
+          variant="label"
+        >
+          {t('taskNew.guideActionsTitle')}
+        </Text>
         <View style={[styles.intentGrid, { flexDirection: logicalRowDirection(direction) }]}>
           {GUIDE_INTENTS.map(({ intent, key }) => (
             <Button
               brand
               busy={busyIntent === intent}
-              busyLabel={t('assistant.loading')}
-              disabled={busyIntent !== null || Boolean(suggestion)}
+              busyLabel={t(guideOrigin === 'live' ? 'assistant.liveLoading' : 'assistant.loading')}
+              disabled={
+                busyIntent !== null ||
+                Boolean(suggestion) ||
+                liveDraftView.status === 'requesting' ||
+                Boolean(liveDraftView.suggestion)
+              }
               fullWidth={false}
               key={intent}
               onPress={() => void onAskGuide(intent)}
@@ -675,7 +953,9 @@ function EditStage({
             </View>
             <View style={styles.comparisonColumn}>
               <Text brand color="secondary" variant="caption">
-                {t('assistant.preparedLabel')}
+                {suggestion.meta.origin === 'live'
+                  ? t('assistant.liveLabel')
+                  : t('assistant.preparedLabel')}
               </Text>
               <Text brand>{localize(suggestion.suggestedContent.positiveAction, locale)}</Text>
             </View>
@@ -827,6 +1107,26 @@ const styles = StyleSheet.create({
   },
   childMarkSelected: { backgroundColor: colors.ghafEmerald },
   categoryGrid: { flexWrap: 'wrap', gap: spacing.sm },
+  recommendationPanel: {
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    backgroundColor: colors.ghafEmeraldTint,
+    padding: spacing.md,
+  },
+  recommendationCategories: {
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  recommendationChip: {
+    minHeight: 36,
+    alignItems: 'center',
+    gap: spacing.xs,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLowest,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
+  },
   categoryCard: {
     minHeight: 112,
     flexGrow: 1,
@@ -846,6 +1146,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.ghafEmerald,
     backgroundColor: colors.ghafEmeraldSelection,
+  },
+  recommendationBadge: {
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.primaryFixedTint,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xxs,
   },
   templateList: { gap: spacing.sm },
   templateRow: {
@@ -920,14 +1226,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondaryTint,
     padding: spacing.lg,
   },
-  guideHeading: { alignItems: 'center', gap: spacing.sm },
-  guideMark: {
-    width: 48,
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: r001Radii.lg,
-    backgroundColor: colors.surfaceContainerLowest,
+  liveDraftSection: {
+    gap: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.mangroveTeal,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    backgroundColor: colors.secondaryTint,
+    padding: spacing.lg,
   },
   intentGrid: { flexWrap: 'wrap', gap: spacing.xs },
   comparison: {

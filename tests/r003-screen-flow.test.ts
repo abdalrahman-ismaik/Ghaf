@@ -60,8 +60,13 @@ describe('R003 complete screen journey', () => {
     expect(parentDevices).toContain('approveChildPairing');
     expect(parentDevices).toContain('handoffApprovedChildPairing');
     expect(parentSignIn).toContain("activeExperience === 'parent' ? '/parent' : '/'");
+    expect(parentSignIn).toContain('requestExistingParentVerification');
+    expect(parentSignIn).not.toContain('requestParentVerification');
+    expect(parentSignIn).not.toContain('simulated-biometric-button');
+    expect(parentSignIn).not.toContain('<PrototypePill');
     expect(parentSignIn).toContain('router.push(signUpHref)');
     expect(parentSignUp).toContain('requestParentVerification');
+    expect(parentSignUp).not.toContain('<PrototypePill');
     expect(parentSignUp).toContain('flow=create-family');
     expect(parentSignUp).toContain('parentOnboarding.completionReceipt');
     expect(parentSignUp).toContain('<Redirect href="/access/parent/sign-in" />');
@@ -70,6 +75,7 @@ describe('R003 complete screen journey', () => {
     expect(parentVerification).toContain("'/access/parent/sign-in'");
     expect(parentVerification).toContain('parentOnboarding.completionReceipt');
     expect(parentVerification).toContain('completeParentOnboarding()');
+    expect(parentVerification).not.toContain('<PrototypePill');
     expect(parentVerification).toContain("'/parent'");
     expect(parentVerification).toContain('router.replace(destination as Href)');
     expect(parentVerification).toContain("childAccess.status === 'pairing_pending'");
@@ -133,20 +139,27 @@ describe('R003 complete screen journey', () => {
     expect(reward).not.toContain('projectFamilyRewardRuntime');
   });
 
-  it('fails closed before navigating away from every session sign-out', () => {
-    const routes = [
+  it('fails closed before navigating away from every session sign-out or temporary handoff', () => {
+    const temporaryParentRoutes = [
       'app/child/index.tsx',
       'app/child/settings.tsx',
       'app/child/task.tsx',
       'app/circle.tsx',
       'app/garden.tsx',
+    ] as const;
+    const signOutRoutes = [
       'app/parent/check-in.tsx',
       'app/parent/index.tsx',
       'app/parent/settings/index.tsx',
       'app/parent/task/review.tsx',
     ] as const;
 
-    for (const route of routes) {
+    for (const route of temporaryParentRoutes) {
+      const contents = source(route);
+      expect(contents, route).toMatch(/const result = beginTemporaryParentAccess\(\)/u);
+      expect(contents, route).toMatch(/if \(!result\.ok\)/u);
+    }
+    for (const route of signOutRoutes) {
       const contents = source(route);
       expect(contents, route).not.toMatch(/^\s*signOutExperience\(\);/mu);
       expect(contents, route).toMatch(/const result = signOutExperience\(\)/u);

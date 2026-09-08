@@ -9,7 +9,7 @@ import {
   AccessScreen,
   GhafIcon,
   OtpInput,
-  PrototypePill,
+  RememberDeviceChoice,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
@@ -26,6 +26,11 @@ export default function ParentVerificationScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const childAccess = usePrototypeStore((state) => state.childAccess);
+  const rememberParentOnThisDevice = usePrototypeStore((state) => state.rememberParentOnThisDevice);
+  const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
+  const setRememberParentOnThisDevice = usePrototypeStore(
+    (state) => state.setRememberParentOnThisDevice,
+  );
   const verifyParentCode = usePrototypeStore((state) => state.verifyParentCode);
   const completeParentOnboarding = usePrototypeStore((state) => state.completeParentOnboarding);
   const resendParentVerification = usePrototypeStore((state) => state.resendParentVerification);
@@ -55,6 +60,19 @@ export default function ParentVerificationScreen() {
     router.replace(entryHref);
   }, [cancelParentVerification, entryHref, router, t]);
 
+  const enterExistingFamily = useCallback(() => {
+    const completed = completeParentOnboarding();
+    if (!completed.ok) {
+      setError(t('access.states.interrupted'));
+      setBusy(false);
+      return false;
+    }
+    const destination =
+      childAccess.status === 'pairing_pending' ? '/parent/settings/devices' : '/parent';
+    router.replace(destination as Href);
+    return true;
+  }, [childAccess.status, completeParentOnboarding, router, t]);
+
   useEffect(() => {
     if (parentOnboarding.status !== 'code_sent' || resendSeconds <= 0) return;
     const timeout = setTimeout(() => {
@@ -71,6 +89,23 @@ export default function ParentVerificationScreen() {
     return () => subscription.remove();
   }, [returnToEntry]);
 
+  useEffect(() => {
+    if (
+      isCreateFamilyFlow ||
+      parentOnboarding.status !== 'verified' ||
+      !parentOnboarding.completionReceipt
+    ) {
+      return;
+    }
+    const frame = requestAnimationFrame(enterExistingFamily);
+    return () => cancelAnimationFrame(frame);
+  }, [
+    enterExistingFamily,
+    isCreateFamilyFlow,
+    parentOnboarding.completionReceipt,
+    parentOnboarding.status,
+  ]);
+
   const verify = async () => {
     if (isVerifying || code.length !== 6) return;
     setBusy(true);
@@ -85,16 +120,12 @@ export default function ParentVerificationScreen() {
       setBusy(false);
       return;
     }
-    if (parentOnboarding.completionReceipt) {
-      const completed = completeParentOnboarding();
-      if (!completed.ok) {
-        setError(t('access.states.interrupted'));
-        setBusy(false);
-        return;
-      }
-      const destination =
-        childAccess.status === 'pairing_pending' ? '/parent/settings/devices' : '/parent';
-      router.replace(destination as Href);
+    if (!isCreateFamilyFlow && parentOnboarding.completionReceipt) {
+      enterExistingFamily();
+      return;
+    }
+    if (!isCreateFamilyFlow || parentOnboarding.completionReceipt) {
+      router.replace(entryHref);
       return;
     }
     router.replace('/access/parent/family-basics');
@@ -115,8 +146,19 @@ export default function ParentVerificationScreen() {
   if (parentOnboarding.status === 'signed_out') {
     return <Redirect href={entryHref} />;
   }
-  if (parentOnboarding.status === 'verified' && !parentOnboarding.completionReceipt) {
+  if (
+    parentOnboarding.status === 'verified' &&
+    isCreateFamilyFlow &&
+    !parentOnboarding.completionReceipt
+  ) {
     return <Redirect href="/access/parent/family-basics" />;
+  }
+  if (
+    parentOnboarding.status === 'verified' &&
+    ((isCreateFamilyFlow && parentOnboarding.completionReceipt) ||
+      (!isCreateFamilyFlow && !parentOnboarding.completionReceipt))
+  ) {
+    return <Redirect href={entryHref} />;
   }
   if (parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href="/parent" />;
@@ -150,11 +192,6 @@ export default function ParentVerificationScreen() {
           >
             {t('access.verification.action')}
           </Button>
-          <PrototypePill
-            direction={direction}
-            language={locale}
-            message={t('access.verification.origin')}
-          />
         </AccessActionRegion>
       }
       header={
@@ -221,6 +258,25 @@ export default function ParentVerificationScreen() {
         testID="parent-verification-code-input"
         value={code}
       />
+
+      {temporaryParentAccess ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.verification.temporaryParentAccess')}
+          tone="origin"
+        />
+      ) : (
+        <RememberDeviceChoice
+          body={t('access.verification.rememberDeviceBody')}
+          direction={direction}
+          disabled={isVerifying}
+          language={locale}
+          onChange={setRememberParentOnThisDevice}
+          selected={rememberParentOnThisDevice}
+          title={t('access.verification.rememberDeviceTitle')}
+        />
+      )}
 
       <View style={styles.secondaryActions}>
         <Button

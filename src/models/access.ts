@@ -214,7 +214,9 @@ export type SensitiveActionPurpose =
   | 'change_shared_growth_participation'
   | 'change_voice_permission'
   | 'change_media_permission'
-  | 'change_ai_permission';
+  | 'change_ai_permission'
+  | 'change_live_child_text_permission'
+  | 'change_live_child_voice_permission';
 
 export interface ReauthenticationProof {
   readonly id: string;

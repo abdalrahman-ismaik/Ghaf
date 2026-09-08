@@ -85,6 +85,28 @@ export class ChildAccessController {
     };
   }
 
+  restorePairedDevices(input: {
+    readonly childIds: readonly SyntheticChildId[];
+    readonly pairedAt: string;
+  }): ServiceResult<ChildAccessView> {
+    if (this.session || this.status !== 'signed_out' || this.devices.size > 0) {
+      return failure('INVALID_TRANSITION', 'Reset before restoring device-local pairing markers');
+    }
+    for (const childId of input.childIds) {
+      const restored = this.access.restorePairedDevice({
+        childId,
+        deviceId: this.deviceId(childId),
+        pairedAt: input.pairedAt,
+      });
+      if (!restored.ok) {
+        this.devices.clear();
+        return restored;
+      }
+      this.devices.set(childId, restored.data);
+    }
+    return success(this.getView());
+  }
+
   selectProfile(childId: unknown): ServiceResult<ChildAccessView> {
     if (this.session || this.status === 'authenticated_child') {
       return failure('INVALID_TRANSITION', 'Sign out before choosing another Child profile');
@@ -205,6 +227,30 @@ export class ChildAccessController {
       now,
     });
     return authorized.ok ? success(this.getView()) : authorized;
+  }
+
+  resumeRememberedChild(childId: SyntheticChildId, now: string): ServiceResult<ChildAccessView> {
+    const device = this.devices.get(childId);
+    if (this.session || this.status !== 'signed_out' || !device || device.status !== 'paired') {
+      return failure(
+        'INVALID_TRANSITION',
+        'A signed-out Child with an active restored pairing is required',
+      );
+    }
+    this.selectedChildId = childId;
+    const signedIn = this.signInPairedDevice(childId, now);
+    if (!signedIn.ok) {
+      this.clearLocalSession();
+      return signedIn;
+    }
+    const authorized = this.authorizeChildExperience(now);
+    if (!authorized.ok) {
+      const signedOut = this.signOut(now);
+      return signedOut.ok
+        ? authorized
+        : failure('INVALID_TRANSITION', 'Remembered Child access could not be safely restored');
+    }
+    return success(this.getView());
   }
 
   getOwnPermissions(now: string): ServiceResult<ChildPermissionGrant> {

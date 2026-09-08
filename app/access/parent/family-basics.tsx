@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -26,24 +26,40 @@ export default function FamilyBasicsScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const setLocale = usePrototypeStore((state) => state.setLocale);
   const cancelParentVerification = usePrototypeStore((state) => state.cancelParentVerification);
   const updateParentOnboardingDraft = usePrototypeStore(
     (state) => state.updateParentOnboardingDraft,
   );
   const [familyName, setFamilyName] = useState(parentOnboarding.draft.familyName);
+  const [childCount, setChildCount] = useState<'1' | '2'>(
+    String(parentOnboarding.draft.childCount) as '1' | '2',
+  );
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const goBack = useCallback(() => {
-    updateParentOnboardingDraft({ familyName, appLanguage: locale });
+    updateParentOnboardingDraft({
+      familyName,
+      appLanguage: locale,
+      childCount: Number(childCount) as 1 | 2,
+    });
     const result = cancelParentVerification();
     if (!result.ok) {
       setError(t('access.states.interrupted'));
       return;
     }
     router.replace('/access/parent/sign-in');
-  }, [cancelParentVerification, familyName, locale, router, t, updateParentOnboardingDraft]);
+  }, [
+    cancelParentVerification,
+    childCount,
+    familyName,
+    locale,
+    router,
+    t,
+    updateParentOnboardingDraft,
+  ]);
 
   useEffect(() => {
     if (parentOnboarding.status === 'signed_out') {
@@ -65,6 +81,9 @@ export default function FamilyBasicsScreen() {
     return () => subscription.remove();
   }, [goBack, parentOnboarding.status]);
 
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
+  }
   if (parentOnboarding.status !== 'verified') return null;
 
   const validateName = () => {
@@ -92,6 +111,7 @@ export default function FamilyBasicsScreen() {
     setBusy(true);
     const result = updateParentOnboardingDraft({
       appLanguage: locale,
+      childCount: Number(childCount) as 1 | 2,
       familyName: familyName.trim(),
     });
     if (!result.ok) {
@@ -139,7 +159,10 @@ export default function FamilyBasicsScreen() {
           direction={direction}
           language={locale}
           onBack={goBack}
-          progressLabel={t('access.setup.progress', { step: 1, total: 3 })}
+          progressLabel={t('access.setup.progress', {
+            step: 1,
+            total: Number(childCount) + 2,
+          })}
         />
       }
       keyboardAware
@@ -161,6 +184,14 @@ export default function FamilyBasicsScreen() {
           message={t('access.states.localFallback')}
           title={t('access.states.offline')}
           tone="offline"
+        />
+      ) : null}
+      {localFamily.status === 'unavailable' ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.states.localDataUnavailable')}
+          tone="error"
         />
       ) : null}
 
@@ -205,6 +236,30 @@ export default function FamilyBasicsScreen() {
           options={languageOptions}
           testID="family-language"
           value={locale}
+        />
+        <SegmentedControl
+          accessibilityLabel={t('access.setup.childCount')}
+          direction={direction}
+          disabled={busy}
+          label={t('access.setup.childCount')}
+          language={locale}
+          onChange={(value) => {
+            setChildCount(value);
+            updateParentOnboardingDraft({ childCount: Number(value) as 1 | 2 });
+          }}
+          options={[
+            { value: '1', label: t('access.setup.oneChild') },
+            { value: '2', label: t('access.setup.twoChildren') },
+          ]}
+          testID="family-child-count"
+          value={childCount}
+        />
+        <InfoRow
+          direction={direction}
+          icon="sparkle"
+          language={locale}
+          message={t('access.setup.setupSequence')}
+          tone="primary"
         />
       </View>
     </AccessScreen>

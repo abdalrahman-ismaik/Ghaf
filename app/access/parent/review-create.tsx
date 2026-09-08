@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'expo-router';
+import { Redirect, usePathname, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
   AccessActionRegion,
+  AIProfilePreview,
   AccessHeader,
   AccessScreen,
   BotanicalAvatar,
@@ -51,8 +52,11 @@ export default function ReviewCreateScreen() {
   const successOpen = pathname === '/access/parent/family-created-success';
 
   const draft = parentOnboarding.draft;
+  const configuredChildren = draft.children.slice(0, draft.childCount);
   const familyIsValid = draft.familyName.trim().length >= 2;
-  const childIsValid = draft.child.nickname.trim().length >= 2;
+  const childIsValid =
+    configuredChildren.length === draft.childCount &&
+    configuredChildren.every((child) => child.nickname.trim().length >= 2);
   const canReview =
     (parentOnboarding.status === 'verified' ||
       parentOnboarding.status === 'authenticated_parent') &&
@@ -61,8 +65,12 @@ export default function ReviewCreateScreen() {
 
   const goBack = useCallback(() => {
     if (parentOnboarding.status !== 'verified') return;
-    router.replace('/access/parent/add-first-child');
-  }, [parentOnboarding.status, router]);
+    router.replace(
+      draft.childCount === 2
+        ? ('/access/parent/add-first-child?child=1' as const)
+        : '/access/parent/add-first-child',
+    );
+  }, [draft.childCount, parentOnboarding.status, router]);
 
   useEffect(() => {
     if (parentOnboarding.status === 'signed_out') {
@@ -92,18 +100,21 @@ export default function ReviewCreateScreen() {
     return () => subscription.remove();
   }, [goBack, parentOnboarding.status]);
 
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
+  }
   if (!canReview) return null;
 
-  const ageLabel = {
+  const ageLabels = {
     '6_8': t('access.setup.ageSixEight'),
     '9_11': t('access.setup.ageNineEleven'),
     '12_14': t('access.setup.ageTwelveFourteen'),
-  }[draft.child.ageBand];
-  const languageLabel = {
+  };
+  const languageLabels = {
     ar: t('language.arabic'),
     en: t('language.english'),
     both: t('access.setup.bothLanguages'),
-  }[draft.child.preferredLanguage];
+  };
   const accessibilityLabels: Readonly<Record<BasicAccessibilityDefault, string>> = {
     larger_text: t('access.setup.largerText'),
     simpler_instructions: t('access.setup.simplerInstructions'),
@@ -149,7 +160,10 @@ export default function ReviewCreateScreen() {
           direction={direction}
           language={locale}
           onBack={parentOnboarding.status === 'verified' ? goBack : undefined}
-          progressLabel={t('access.setup.progress', { step: 3, total: 3 })}
+          progressLabel={t('access.setup.progress', {
+            step: draft.childCount + 2,
+            total: draft.childCount + 2,
+          })}
         />
       }
       testID="review-create-screen"
@@ -184,7 +198,7 @@ export default function ReviewCreateScreen() {
       ) : null}
 
       <SummaryCard
-        accessibilityLabel={`${t('access.review.family')}: ${draft.familyName}. ${t('access.review.childDetails')}: ${draft.child.nickname}`}
+        accessibilityLabel={`${t('access.review.family')}: ${draft.familyName}. ${t('access.review.childDetails')}: ${configuredChildren.map((child) => child.nickname).join(', ')}`}
         testID="family-review-summary"
       >
         <ReviewRow
@@ -195,55 +209,60 @@ export default function ReviewCreateScreen() {
           value={draft.familyName}
         />
         <View style={styles.divider} />
-        <Text
-          brand
-          color="onSurfaceVariant"
-          direction={direction}
-          language={locale}
-          variant="caption"
-        >
-          {t('access.review.childDetails')}
-        </Text>
-        <Row direction={direction} gap={spacing.md}>
-          <BotanicalAvatar
-            direction={direction}
-            id={draft.child.avatarId}
-            size={64}
-            style={styles.reviewAvatar}
-          />
-          <View style={styles.childCopy}>
-            <Text brand direction="auto" language={locale} variant="screenTitle">
-              {draft.child.nickname}
-            </Text>
+        {configuredChildren.map((child, index) => (
+          <View key={child.profileId} style={styles.childReview} testID={`review-child-${index}`}>
+            {index > 0 ? <View style={styles.divider} /> : null}
             <Text
               brand
               color="onSurfaceVariant"
               direction={direction}
               language={locale}
-              tabular
-              variant="label"
+              variant="caption"
             >
-              {t('access.review.ageLanguage', {
-                age: isolateBidiText(ageLabel, 'ltr'),
-                language: isolateBidiText(languageLabel, direction),
-              })}
+              {t('access.review.childNumber', { current: index + 1, total: draft.childCount })}
             </Text>
+            <Row direction={direction} gap={spacing.md}>
+              <BotanicalAvatar
+                direction={direction}
+                id={child.avatarId}
+                size={64}
+                style={styles.reviewAvatar}
+              />
+              <View style={styles.childCopy}>
+                <Text brand direction="auto" language={locale} variant="screenTitle">
+                  {child.nickname}
+                </Text>
+                <Text
+                  brand
+                  color="onSurfaceVariant"
+                  direction={direction}
+                  language={locale}
+                  tabular
+                  variant="label"
+                >
+                  {t('access.review.ageLanguage', {
+                    age: isolateBidiText(ageLabels[child.ageBand], 'ltr'),
+                    language: isolateBidiText(languageLabels[child.preferredLanguage], direction),
+                  })}
+                </Text>
+              </View>
+            </Row>
+            <View style={[styles.tagRow, { flexDirection: logicalRowDirection(direction) }]}>
+              {(child.accessibilityDefaults.length > 0 ? child.accessibilityDefaults : [null]).map(
+                (item) => (
+                  <PrototypePill
+                    direction={direction}
+                    icon="info"
+                    key={item ?? 'none'}
+                    language={locale}
+                    message={item ? accessibilityLabels[item] : t('access.setup.notNow')}
+                  />
+                ),
+              )}
+            </View>
+            <AIProfilePreview child={child} direction={direction} language={locale} />
           </View>
-        </Row>
-        <View style={[styles.tagRow, { flexDirection: logicalRowDirection(direction) }]}>
-          {(draft.child.accessibilityDefaults.length > 0
-            ? draft.child.accessibilityDefaults
-            : [null]
-          ).map((item) => (
-            <PrototypePill
-              direction={direction}
-              icon="info"
-              key={item ?? 'none'}
-              language={locale}
-              message={item ? accessibilityLabels[item] : t('access.setup.notNow')}
-            />
-          ))}
-        </View>
+        ))}
       </SummaryCard>
 
       <View style={styles.privacyList}>
@@ -319,6 +338,9 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
     gap: spacing.xxs,
+  },
+  childReview: {
+    gap: spacing.md,
   },
   reviewAvatar: {
     borderRadius: r001Radii.lg,

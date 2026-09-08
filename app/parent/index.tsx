@@ -7,6 +7,10 @@ import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSu
 import { Button, Screen, Text } from '@/components/primitives';
 import { GhafIcon } from '@/components/access';
 import {
+  ReturningWelcomeDialog,
+  type ReturningWelcomeUpdate,
+} from '@/components/session/ReturningWelcomeDialog';
+import {
   ParentAdjustmentReview,
   ParentCanopySummaryCard,
   ParentChildrenSection,
@@ -79,6 +83,7 @@ export default function ParentHomeScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const householdName = usePrototypeStore((state) => state.household.displayName);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
   const children = usePrototypeStore((state) => state.children);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
@@ -89,6 +94,10 @@ export default function ParentHomeScreen() {
   );
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
   const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const returningUserWelcome = usePrototypeStore((state) => state.returningUserWelcome);
+  const dismissReturningUserWelcome = usePrototypeStore(
+    (state) => state.dismissReturningUserWelcome,
+  );
   const progressEntryRef = useRef<View | null>(null);
   const homeScrollOffsetRef = useRef(0);
   const [adjustmentError, setAdjustmentError] = useState<string | null>(null);
@@ -181,6 +190,10 @@ export default function ParentHomeScreen() {
               journey?.lifecycle === 'in_progress'
             ? '/child'
             : '/parent/task/new';
+  const profileName = (childId: SyntheticChildId) =>
+    localFamily.record?.children.find((profile) => profile.id === childId)?.nickname ??
+    localize(children[childId].displayName, locale);
+  const familyDisplayName = localFamily.record?.familyName ?? localize(householdName, locale);
   const nextLabel =
     journey?.lifecycle === 'confirmed'
       ? t('parentHome.continueRecognition')
@@ -190,7 +203,7 @@ export default function ParentHomeScreen() {
           ? t('parentHome.openGarden')
           : nextRoute === '/child'
             ? t('navigation.childHome')
-            : t('parentHome.createTask');
+            : t('parentHome.createTask', { child: profileName('child_salem') });
   const lifecycleStatus = journey
     ? journey.lifecycle === 'submitted'
       ? t('parentHome.awaitingReview')
@@ -202,14 +215,16 @@ export default function ParentHomeScreen() {
             ? t('parentHome.recognitionComplete')
             : t('parentHome.taskInProgress')
     : t('parentHome.readyStatus');
-  const activeChild = children[activeChildId];
   const remainingLeaves = Math.max(0, canopy.goalLeaves - canopy.contributionLeaves);
-  const childItems: readonly ParentChildSummaryItem[] = PARENT_NEXT_ACTIONS.map((action) => ({
+  const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
+  const childItems: readonly ParentChildSummaryItem[] = PARENT_NEXT_ACTIONS.filter((action) =>
+    localFamily.configuredChildIds.includes(action.childId),
+  ).map((action) => ({
     id: action.childId,
-    name: localize(children[action.childId].displayName, locale),
-    next: t(action.nextKey),
+    name: profileName(action.childId),
+    next: t(action.nextKey, { child: profileName(action.childId) }),
     selected: activeChildId === action.childId,
-    support: t(action.supportKey),
+    support: t(action.supportKey, { child: profileName(action.childId) }),
   }));
 
   const openSalemTaskBuilder = () => {
@@ -335,6 +350,34 @@ export default function ParentHomeScreen() {
                 : visibleJourney.lifecycle === 'submitted'
                   ? t('parentHome.reviewTask')
                   : t('r002aTasks.openChild');
+  const parentWelcomeUpdates: readonly ReturningWelcomeUpdate[] = [
+    {
+      body: journey
+        ? t('r003.welcomeBack.parentTaskBody', {
+            status: lifecycleStatus,
+            task: localize(journey.task.content.title, locale),
+          })
+        : t('r003.welcomeBack.parentReadyBody'),
+      icon: 'leaf',
+      id: 'task',
+      title: journey
+        ? t('r003.welcomeBack.parentTaskTitle')
+        : t('r003.welcomeBack.parentReadyTitle'),
+    },
+    {
+      body: t('r003.welcomeBack.familyProgressBody', {
+        current: formatter.format(canopy.contributionLeaves),
+        goal: formatter.format(canopy.goalLeaves),
+      }),
+      icon: 'ghaf-tree',
+      id: 'family',
+      onPress: () => {
+        dismissReturningUserWelcome();
+        router.push('/parent/family' as Href);
+      },
+      title: t('r003.welcomeBack.familyProgressTitle'),
+    },
+  ];
 
   if (section === 'tasks') {
     return (
@@ -358,7 +401,7 @@ export default function ParentHomeScreen() {
             direction={direction}
             onToggleSettings={() => router.push('/parent/settings' as Href)}
             profileLabel={t('parentHome.selectedChild', {
-              child: localize(activeChild.displayName, locale),
+              child: profileName(activeChildId),
             })}
             settingsLabel={t('parentHome.settingsLabel')}
             settingsOpen={false}
@@ -407,33 +450,35 @@ export default function ParentHomeScreen() {
           accessibilityRole="radiogroup"
           style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
         >
-          {Object.values(children).map((child) => {
-            const selected = child.id === activeChildId;
-            return (
-              <Pressable
-                accessibilityRole="radio"
-                accessibilityState={{ checked: selected }}
-                aria-checked={selected}
-                key={child.id}
-                onPress={() => chooseChild(child.id)}
-                style={({ pressed }) => [
-                  styles.childFilterItem,
-                  selected ? styles.childFilterItemActive : null,
-                  pressed ? styles.pressed : null,
-                ]}
-                testID={`parent-tasks-child-${child.id}`}
-              >
-                <Text
-                  align="center"
-                  brand
-                  color={selected ? 'onPrimary' : 'onSurfaceVariant'}
-                  variant="label"
+          {Object.values(children)
+            .filter((child) => localFamily.configuredChildIds.includes(child.id))
+            .map((child) => {
+              const selected = child.id === activeChildId;
+              return (
+                <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  aria-checked={selected}
+                  key={child.id}
+                  onPress={() => chooseChild(child.id)}
+                  style={({ pressed }) => [
+                    styles.childFilterItem,
+                    selected ? styles.childFilterItemActive : null,
+                    pressed ? styles.pressed : null,
+                  ]}
+                  testID={`parent-tasks-child-${child.id}`}
                 >
-                  {localize(child.displayName, locale)}
-                </Text>
-              </Pressable>
-            );
-          })}
+                  <Text
+                    align="center"
+                    brand
+                    color={selected ? 'onPrimary' : 'onSurfaceVariant'}
+                    variant="label"
+                  >
+                    {profileName(child.id)}
+                  </Text>
+                </Pressable>
+              );
+            })}
         </View>
 
         <View
@@ -536,7 +581,7 @@ export default function ParentHomeScreen() {
           direction={direction}
           onToggleSettings={() => router.push('/parent/settings' as Href)}
           profileLabel={t('parentHome.selectedChild', {
-            child: localize(activeChild.displayName, locale),
+            child: profileName(activeChildId),
           })}
           settingsLabel={t('parentHome.settingsLabel')}
           settingsOpen={false}
@@ -571,7 +616,7 @@ export default function ParentHomeScreen() {
           </Text>
         </View>
         <Text brand color="onSurfaceVariant" variant="caption">
-          {localize(householdName, locale)}
+          {familyDisplayName}
         </Text>
         <Text brand color="deepForest" variant="parentHero">
           {t('parentHome.welcome')}
@@ -678,7 +723,7 @@ export default function ParentHomeScreen() {
       ) : null}
 
       <ParentChildrenSection
-        createTaskLabel={t('parentHome.createTask')}
+        createTaskLabel={t('parentHome.createTask', { child: profileName('child_salem') })}
         direction={direction}
         items={childItems}
         onCreateTask={openSalemTaskBuilder}
@@ -691,7 +736,7 @@ export default function ParentHomeScreen() {
         <Pressable
           accessibilityHint={t('r002bParentProgress.entryHint')}
           accessibilityLabel={t('r002bParentProgress.entryAccessibility', {
-            child: localize(activeChild.displayName, locale),
+            child: profileName(activeChildId),
           })}
           accessibilityRole="button"
           onPress={openParentProgress}
@@ -709,7 +754,7 @@ export default function ParentHomeScreen() {
           <View style={styles.progressEntryCopy}>
             <Text brand color="deepForest" direction={direction} variant="bodyLarge">
               {t('r002bParentProgress.entryTitle', {
-                child: localize(activeChild.displayName, locale),
+                child: profileName(activeChildId),
               })}
             </Text>
             <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
@@ -734,6 +779,20 @@ export default function ParentHomeScreen() {
           {t('parentHome.syntheticPrivacyBoundary')}
         </Text>
       </View>
+      <ReturningWelcomeDialog
+        actionLabel={t('r003.welcomeBack.continue')}
+        direction={direction}
+        language={locale}
+        message={t('r003.welcomeBack.parentMessage', {
+          family: familyDisplayName,
+        })}
+        onDismiss={dismissReturningUserWelcome}
+        summaryLabel={t('r003.welcomeBack.privateSummary')}
+        testID="parent-returning-welcome"
+        title={t('r003.welcomeBack.parentTitle')}
+        updates={parentWelcomeUpdates}
+        visible={returningUserWelcome?.kind === 'returning_parent'}
+      />
     </R002aScreen>
   );
 }

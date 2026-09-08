@@ -1,5 +1,31 @@
 # Ghaf Design Direction
 
+## 2026-09-07 onboarding image-edge progress clarification
+
+The dark lower strip on the onboarding photographs feels applied after the image rather than
+integrated with it. Remove it. Let one fine rounded perimeter stroke begin as a small lower-center
+mark and grow evenly in both directions as the six explicit moments advance, completing the frame
+only on the last photograph. Keep the treatment calm, high-contrast, and close to the crop edge so
+the photography remains dominant. Retain the original lower current/total plus dots as the simple
+accessible indicator; do not add another label, timer, glow, or interaction.
+
+## 2026-09-07 compact audio onboarding clarification
+
+The six-moment first-run experience is introduced directly by the Ghaf Guide. Use short
+first-person headlines and one concrete sentence per moment: welcoming and energetic, never
+chatty, companion-like, or inflated. Center the copy. Reveal every existing 1200×800 photograph in
+its responsive 3:2 editorial frame so the curated mix of astonishing wide views and close details
+is visible. Restore the original current/total plus dot row directly above the navigation buttons;
+use a wider saturated current dot and clearly visible neutral dots without enclosing the indicator
+in a heavy panel. Progress follows explicit navigation and is never timed.
+
+Prepared local narration reads the exact visible script after the current moment settles. Remove
+the separate Ghaf Guide panel and use one high-contrast speaker icon over the photograph to restart
+the clip. Quiet nature ambience may support the foreground onboarding atmosphere, but must duck
+beneath speech, stop on exit, and remain off for active screen-reader use. Keep navigation
+independent of audio. Do not add a waveform, human avatar, robot, listening pulse, microphone,
+background OS playback, or model-processing theater.
+
 ## 2026-09-06 first-run experience clarification
 
 The first-run story should feel like opening a vivid family field journal: begin by introducing

@@ -4,11 +4,11 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-09-05                                                                                                                                      |
+| Item                      | Truth as of 2026-09-07                                                                                                                                      |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Product                   | Ghaf — غاف                                                                                                                                                  |
 | Competition               | Khalifa University SMAC 2026                                                                                                                                |
-| Official theme            | AI Adventures in Sustainability                                                                                                                             |
+| Official theme            | AI for Stronger Family Bonds: Connect, Care, Innovate                                                                                                       |
 | Active product direction  | Feature 003 Revision 3: frozen R001/R002a baseline plus feature-flagged R002b expansion                                                                     |
 | Behavioral baseline       | Clean R002a head `0501cf3`: completed R001/R002a surfaces and 541 passing tests                                                                             |
 | Frozen regression batch   | R001 native foundations, Welcome, and first-time Parent onboarding                                                                                          |
@@ -23,17 +23,116 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
-The R003 first-run presentation introduces Ghaf first, then explains three features in four
-optional in-route moments: what Ghaf does for a family, choosing a Parent-approved action, using
-permitted help before Parent confirmation, and keeping confirmed action as permanent private
-symbolic Garden growth. Child-facing sentences use short, concrete Modern Standard Arabic and
-equivalent plain English. The experience uses the official raster Ghaf logo and vivid local nature
-photography, then returns to the existing separate Parent and Child access choices. It adds no
-route, account, reward, persistence, environmental-impact, or access authority. Startup is visibly
-ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms after handoff, a
-distinct leaf-loading screen for at least 1,000 ms and until the four used font files plus bounded
-signed-out image set settle, then onboarding. The splash itself has no loader and cannot fade in
-over onboarding. Startup never blocks on Garden or prepared-media imagery.
+## Feature 005 remembered device access — 2026-09-07
+
+Ghaf now offers an unchecked **Remember me on this device** choice after successful Parent
+verification. If the Parent opts in, the app stores only a validated local Parent-affinity marker
+and creates fresh synthetic Parent authority on the next launch. Explicit Parent logout clears
+that marker before ending the session; if local clearing fails, Ghaf keeps the Parent session
+active instead of pretending that logout succeeded.
+
+Completing approved Child pairing automatically makes that Child the one remembered primary
+profile for the installation. A Child device can open temporary Parent access without deleting
+the pairing: Child authority ends first, the Parent verifies, and explicit Parent logout restores
+fresh authority for the same eligible Child. An active Parent session still blocks Child entry
+until the Parent logs out. One installation remembers at most one Parent or one Child, never both.
+
+The marker contains no password, verification code, PIN, session identifier, token, task, Seed,
+Garden, League, Reward, media, or assistant content. This is deterministic offline prototype
+continuity for one primary role/profile per installation. It is not production authentication,
+secure device trust, cloud backup, account recovery, or real Parent/Child cross-device sync.
+
+## Feature 004 bounded live AI implementation — 2026-09-07
+
+The approved F4 Parent task-drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk
+voice slices are implemented behind three independent, default-off flags. The existing prepared
+Feature 003 journey remains the competition default and the same-attempt fallback for every
+accepted request. No flag, provider, gateway deployment, or real Child data is enabled by this
+implementation.
+
+F4 transforms only bilingual wording from one of four reviewed task archetypes. It presents a
+retained-versus-suggested comparison and requires an explicit Parent accept, keep, or edit decision
+before the existing review and assignment lifecycle continues. The model has no authority over
+category, Child, award, recognition mode, eligibility, privacy, approval, Seeds, Garden, League,
+Family Reward, or any other progression state.
+
+F5 text is one-turn and terminal for the current Parent-approved task and version. Ages 6–8 use
+curated intents, ages 9–11 use exact structured choices, and ages 12–14 may use one bounded
+task-focused line only with a current, profile-scoped implementation grant. Local and server
+safety checks reject private data, instruction attacks, diagnosis, religious judgment, unsafe
+instructions, crisis/sexual/medical content, dependency language, and off-task text before a
+result can be displayed. The Child retains an always-visible adult exit and may decline live help.
+
+Voice is a separate ages-12–14 capability with its own Parent reauthentication, grant, notice,
+request ID, and binding nonce. It permits one foreground held recording up to 15 seconds and
+256 KiB, never continuous or background listening. Local cache audio is deleted before any
+transcript is shown; the Child may edit, separately approve, delete, or explicitly send only the
+reviewed text to the Coach. Raw audio never enters the Coach generation request. Current P0 Child
+profiles remain ages 9–11, so the judge journey continues to show the prepared synthetic voice
+rehearsal.
+
+The reference Worker authenticates short-lived synthetic HMAC capabilities before reading bodies,
+applies replay, per-operation rate and injected budget/concurrency controls, validates strict
+schemas and correlations, and uses content-free errors. Its optional MCP projection is separately
+default off and exposes exactly the two bounded text transformations—never voice or media. This is
+local fake-binding implementation evidence, not production authentication, provider-retention,
+deletion, deployment, or live-model evidence. Activation remains blocked on the approval packet's
+trusted broker/shared stores, provider/ZDR, privacy/legal, safeguarding, Arabic/UAE,
+accessibility, incident-response, physical Android, deletion, and human-rehearsal gates.
+
+## R003 AI Services 1–3 Integration — 2026-09-07
+
+The complete deterministic AI experience remains the competition default: bounded Parent Guide,
+task-scoped Child Coach, strengths-first Parent summary, age adapter, prepared image response,
+synthetic voice rehearsal, and the local prepared profile helper. The persisted curated Salem
+profile now feeds that helper into Task Builder, where at most two recommended categories move to
+the front and receive a prepared/local/fallible label. This is a convenience for the Parent; all
+non-P0 templates remain unavailable and the existing Parent review and approval lifecycle remains
+the only task authority.
+
+One optional live Parent Guide reference path is implemented for only the exact synthetic Salem
+`task_recycling_p0_v1` make-clearer request. Its injected HTTPS adapter validates the request and
+response, accepts only the canonical reviewed bilingual task fields, enforces a short timeout and
+no retry, and returns to the same prepared result on any failure. A reference Cloudflare Worker
+requires a secret, rate-limits before inference, restricts route/method/origin/body, requests strict
+structured output, and exposes no Child operation. The ordinary registry still selects the
+prepared provider, and this repository contains no mobile token broker or deployment evidence;
+therefore live activation remains blocked and cannot be demonstrated as live AI from this build.
+
+Broader task drafting and live Child Coach were not part of this earlier AI Services 1–3
+amendment. They are now governed by the separately approved Feature 004 contract above; that
+implementation approval does not satisfy or waive its release-activation gates.
+
+The R003 first-run presentation introduces Ghaf first, then tells one energetic six-moment story:
+Ghaf, Family as the team, Sustainability through small safe actions, bounded AI help for an
+approved task, permitted help before Parent confirmation, and permanent private symbolic Garden
+growth. Family, Sustainability, and AI are explicit child-clear pillars rather than implied
+features. A live three-pillar navigator lets a family inspect those moments without granting a
+role, enabling AI, or changing product state. AI copy says that it may be wrong and points to an
+adult; Sustainability copy never claims measured impact. Modern Standard Arabic remains first
+with equivalent plain English. The experience uses the official raster Ghaf logo and six vivid
+local nature photographs, then returns to the existing separate Parent and Child access choices.
+The first-run story itself adds no route, account, reward, persistence, environmental-impact, AI,
+or access authority.
+The same six moments read as a first-person introduction from the bounded Ghaf Guide. Their
+existing 1200×800 local photographs use responsive 3:2 frames that reveal both the wide landscape
+and close detail compositions, while centered copy remains brief. The original current/total plus
+dot indicator sits directly above the navigation actions. Each settled moment requests its
+packaged prepared Arabic or English narration automatically; one speaker icon replays it, and quiet
+local nature ambience supports the foreground experience. Both stop on exit, remain silent with an
+active screen reader, and never advance the story. These prepared synthetic sounds are
+presentation only—not live model responses, recording, recognition, companions, permission grants,
+background listening, or operating-system background playback.
+The photographs no longer carry a detached solid accent at the bottom. A thin rounded progress
+stroke now begins at the image's lower center, grows around both sides as the family explicitly
+moves through the six moments, and closes around the final image. The simple lower current/total
+and dot row remains the accessible navigation indicator; the image-edge stroke is only its quiet
+visual echo and never advances with audio or time.
+Startup is visibly ordered: the configured native splash, a fully opaque Ghaf splash for 2,000 ms
+after handoff, a distinct leaf-loading screen for at least 1,000 ms and until the four used font
+files plus the exact nine-raster signed-out set settle, then onboarding. The splash itself has no
+loader and cannot fade in over onboarding. Startup never blocks on Garden or prepared-media
+imagery.
 Major Welcome/access/role handoffs hold for 900 ms and settle only their immediate destination
 assets. After the loader exits and onboarding can paint, all 41 remaining packaged rasters warm
 asynchronously in bounded batches of six: immediate access/experience imagery first and the large
@@ -42,6 +141,26 @@ retain Expo Image caching, and ordinary tabs remain immediate. Both visible load
 three-leaf loop with no visible technical loading copy; the background warm-up has no visible
 status. Every access/setup screen uses the shared raster brand lockup and leaf-shadow background
 without changing its authentication-looking logic.
+
+An established synthetic family never repeats first-family creation after returning Parent
+verification. The existing immutable local completion receipt is reused and Parent Home opens
+directly. A Child using an already paired local fixture likewise opens that Child's Today
+dashboard. Each qualifying return may show one dismissible role-specific welcome dialog over the
+dashboard with up to two current, already-authorized in-app updates. This is a private local
+orientation summary—not push delivery, remote sync, a durable inbox, or a new access/data
+authority. Fresh family creation and first Child pairing do not show it.
+
+The R003 device-local family directory now remembers one configured demo household across process
+restarts. Its schema-2 record persists one normalized synthetic Parent phone/email lookup
+identifier and kind, one or two ordered Child profiles, their bounded setup preferences, and only
+an approved paired-Child marker. It does not persist verification codes, passwords, authenticated
+sessions, tasks, Seeds, Garden/League/Reward ledgers, media, transcripts, or a notification inbox.
+Family setup asks for the Child count first, presents one indexed form per Child, then one
+whole-family review. The optional sparkle-marked profile helper consumes only age band and curated
+interests, hobbies, accessibility, and support preferences; it is deterministic, prepared,
+local-only, may be wrong, can be disabled, and never receives gender or free text. Parent approval
+remains required for every task. This improves demo continuity but is not production account
+storage, encrypted custody, backup, identity verification, or cross-device sync.
 
 The remote implementation is preserved behavior, not permission to change product outcomes. The
 six local-only commits remain unapplied candidate provenance; any compatible presentation must be
@@ -56,9 +175,13 @@ their handoff into `/parent` must continue to work without an incidental redesig
 
 R003 separately adds a dedicated `/access/parent/sign-up` usability route. On the returning-Parent
 sign-in screen, **Create a new family** opens sign-up before any verification request. Sign-up asks
-only for the existing synthetic Parent phone/email identifier, then reuses the same deterministic
-verification and first-family setup authority. The current prototype still supports exactly one
-synthetic household and creates no production account or identity.
+only for the Parent phone/email identifier, then reuses the same deterministic verification and
+first-family setup authority. Successful creation binds the normalized identifier to the one local
+family. Returning sign-in compares the normalized value with that record before the code screen;
+unknown values stay on sign-in, and a matching verified Parent enters the existing family without
+setup. Parent access copy is neutral and makes no message-delivery or remote-verification claim;
+the deterministic prototype boundary remains explicit in documentation. The current prototype
+still supports exactly one synthetic household and creates no production account or identity.
 
 R002a must be implemented and validated in this order:
 

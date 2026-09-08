@@ -162,6 +162,26 @@ state, operator, observer, and date. If no installable build or device is availa
 `BLOCKED` after that availability attempt and name the missing dependency; do not substitute a web
 pass.
 
+### Device-local family and onboarding test packet
+
+Use the canonical
+[R003 local-family release review](design-intake/r003-local-family-release-review.md) for the full
+one-Child, two-Child, persistence, returning-role, reset, failure, privacy, Android, and named-human
+checklists. The minimum operator smoke is:
+
+1. reset, create a one-Child family, and confirm only that Child appears everywhere;
+2. reset, create a two-Child family, exercise Back/edit/review, and confirm drafts stay isolated;
+3. reload, submit a different Parent email and confirm verification does not open, then submit the
+   saved normalized email, complete the code, and confirm `/parent` opens without Family Basics;
+4. pair a Child once, sign out/reload, and confirm credential entry restores only that Child's
+   access and role-specific welcome;
+5. revoke and then reset, confirming paired access and the family directory disappear; and
+6. verify the sparkle profile preview is prepared/local/fallible, uses no gender or free text, and
+   never approves a task.
+
+Browser work is a layout proxy. SQLite persistence, process death, native Back/IME, TalkBack, OS
+font scale, and reduced-motion acceptance require the named physical Android pass in that packet.
+
 ## 4. Verify the Canonical Reset First
 
 Open Parent demo controls, choose **Reset synthetic demo**, and confirm. Assert:
@@ -196,7 +216,7 @@ safety-critical Arabic.
 | Step | Route / action                                                                       | Required observation                                                                                                                                                                                                      |
 | ---: | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |    1 | `/` — show disclosure and choose Parent                                              | Arabic RTL; Parent and Child have separate entry actions; household/profiles/media are synthetic; assistant content is prepared/prewritten unless a separately verified live boundary exists                              |
-|    2 | `/access/parent/sign-in` → `/access/parent/verification`                             | Local fixture identifier and visible demo code `424242`; this is a deterministic simulation, not production authentication                                                                                                |
+|    2 | `/access/parent/sign-in` → `/access/parent/verification`                             | Use the saved `parent@example.com` fixture and operator-known code `424242`; the UI stays neutral and does not expose the prototype boundary or claim that a message was sent                                                |
 |    3 | First run only: family basics → first Child → review → success                       | Synthetic Al Noor/Salem setup remains editable before creation, creates once, and hands off with replaced history; a returning Parent skips setup after verification                                                      |
 |    4 | `/parent` — inspect Home, then the Tasks section                                     | Parent bottom navigation is exactly Home, Tasks, Garden, Family; one combined canopy, no raw sibling Seed comparison, and the bounded prepared summary remain visible                                                     |
 |    5 | `/parent/task/new` — select Green Impact and P0 recycling task                       | All eight categories and five UAE landscape tracks are local fixtures; the executable P0 task is the 12-Seed `task_recycling_p0_v1`, not catalog `GI01`                                                                   |

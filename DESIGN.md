@@ -122,21 +122,108 @@ components:
 
 # Ghaf Design System
 
+## R003 onboarding image perimeter progress
+
+Remove the detached filled strip from the lower portion of every onboarding photograph. Replace it
+with one inset, rounded perimeter treatment that reads as part of the image frame: a restrained
+light edge track and a narrow date-gold progress stroke. Two equal branches originate at the bottom
+center. The first moment shows only a short centered mark, intermediate moments carry the line
+around the bottom corners and side edges, and the final moment closes at the top center.
+
+The perimeter responds only to explicit step state and stays visually subordinate to the image,
+copy, and primary action. It is decorative to assistive technology because the unchanged lower
+current/total plus dot row owns progress semantics. Standard motion reveals the SVG dash on the UI
+thread using the existing 220 ms state-change timing; reduced motion jumps directly to the same
+static extent. Do not add glow, pulse, timer, gradient, thick ring, or a second text label.
+
+## R003 compact audio first-run refinement
+
+The existing six moments remain a first-person Ghaf Guide introduction. Restore the original
+logically ordered current/total plus six-dot row in the lower navigation region directly above the
+buttons. Neutral dots must remain visible on the botanical page and the current dot becomes both
+wider and saturated; programmatic progress semantics ensure color is never the only signal. The
+row changes only with explicit Back, Next, or pillar navigation.
+
+Each existing 1200×800 onboarding photograph uses its native responsive 3:2 frame with `cover`, the
+current continuous radius, and local source. This exposes the full mix of wide and close
+compositions while reclaiming vertical room. Center one short headline and one concrete sentence.
+Remove the narration panel and place one 48dp high-contrast speaker control at the logical top-end
+of the photograph. The exact visible headline and body remain the narration transcript.
+
+Packaged prepared narration begins only after the local image and screen layout settle and native
+screen-reader detection reports no active assistive speech. The speaker icon always restarts the
+current clip. Quiet packaged nature ambience loops only while onboarding is mounted and ducks under
+narration. Speech and ambience stop before a new locale/step or onboarding exit. Browser autoplay
+refusal and audio failure leave the complete screen operable. No waveform, avatar, microphone,
+voice capture/recognition, runtime URL, background OS playback, timer-driven story advance, or
+live-AI indicator is used. Existing 220 ms transform/opacity motion and reduced-motion parity remain
+unchanged.
+
+## R003 device-local family setup extension
+
+First-family setup is one visible sequence: Family Basics asks for family name, application
+language, and one-or-two Child count; the next route renders Child 1 and, when selected, Child 2 as
+separate indexed steps; Review shows the complete family before the one-time create action. Back
+retains each draft. Required identity-light fields come first—nickname, botanical avatar, age band,
+and preferred language—followed by optional gender, curated interests, hobbies, support,
+accessibility, and prepared-personalization choice. There is no unbounded “important information”
+box because the local demo does not need a sensitive Child narrative.
+
+The screens reuse the current Soft Geometric botanical system: organic ivory background, strong
+Alexandria headings, Readex controls/body, emerald primary action, outlined semantic chips, generous
+vertical rhythm, one fixed-safe action region, natural keyboard-aware scrolling, and 48dp targets.
+Optional choices are visibly skippable. Step totals adapt to the selected count (`1/3` through
+`3/3`, or `1/4` through `4/4`), and the review remains an editable summary rather than another
+form.
+
+The AI profile preview is the only new profile-level sparkle surface. The star labels a bounded
+prepared helper, not decoration or a claim that a live model ran. It previews a coaching style and
+at most two reviewed categories from an exhaustive allowlist, remains visible when opted out, says
+AI may be wrong, and says the Parent decides. Gender, nickname, family name, contact data, free
+text, diagnosis, emotion, media, and task history never enter the helper. Existing sparkle marks
+remain on the Parent Guide and Child Coach where AI functionality is actually available.
+
+## R003 returning-family welcome extension
+
+Returning users enter value immediately: an established Parent never sees Family Basics or Add
+First Child again, and an already paired Child never crosses Parent setup. Parent Home and Child
+Today may present one role-bound welcome dialog after successful return. It is a focused modal over
+the fully rendered dashboard, not another onboarding sequence or full-screen destination.
+
+The dialog uses the current Soft Geometric system: ivory scrim context, one bright surface,
+Alexandria heading, Readex body/control copy, emerald and mangrove functional accents, restrained
+continuous radii, and the existing small Ghaf icons. It contains a compact welcome block, an
+explicit private-local summary label, no more than two divider-separated update rows, and one
+dominant full-width continuation. Rows may invoke only existing authorized dashboard actions.
+There is no gradient, glass, decorative illustration, nested-card stack, badge count, notification
+bell, urgency color, streak pressure, or new navigation.
+
+Arabic is first and uses logical start/end alignment; mixed numbers are locale-formatted and
+tabular. The dialog scrolls within safe areas, remains usable at 320dp and 200% text, uses 48dp
+targets, exposes modal semantics and a polite focus announcement, and treats Android Back as
+dismissal. Standard motion is a native opacity fade; reduced motion presents the final state
+without animation. Dismissal is permanent for that local sign-in, while a later qualifying return
+creates a fresh summary from current authorized state.
+
 ## R003 first-run experience extension
 
-The first-run surface is an optional four-moment editorial sequence inside `/`, followed by the
-existing Parent/Child Welcome decision. The first moment answers “What is Ghaf?” before the next
-three show choice, support, and private symbolic growth. Each moment uses the official raster logo,
-one generous vivid photograph, a short child-clear title, one concrete supporting sentence,
-visible `1/4` progress, and one dominant action. Skip remains visible; Back is quiet; changing
-locale keeps the current step. Delight comes from warm light, bold crops, rich emerald/amber
-accents, concise active copy, and a restrained vertical settle—not confetti, streak pressure,
-mascots, fantasy effects, or competing cards.
+The first-run surface is an optional six-moment editorial sequence inside `/`, followed by the
+existing Parent/Child Welcome decision. It introduces Ghaf, then gives Family, Sustainability, and
+bounded AI one unmistakable moment each before the existing help and private symbolic-growth
+close. Each moment uses the official raster logo, one generous vivid photograph, a short
+child-clear title, one concrete supporting sentence, visible `1/6` progress, and one dominant
+action. The first four moments also expose the same live three-pillar navigator: three 48dp targets
+with a color-coded active state and bilingual labels that jump only among Family,
+Sustainability, and AI. Skip remains visible; Back is quiet; changing locale keeps the current
+step. Delight comes from warm light, bold crops, step-specific emerald/teal/amber surfaces,
+energetic but concise active copy, and one restrained two-beat settle: the photograph resolves over
+220 ms with opacity, 8dp travel, and a 0.985→1 scale while copy follows 45 ms later—not confetti,
+streak pressure, mascots, fantasy effects, robot companions, or competing card stacks.
 
 The native Expo splash remains the earliest frame and uses the official raster icon. After its
 handoff, the fully opaque app-owned splash uses the same mark and local leaf-shadow texture for
 2,000 ms with no loader or transparent entrance. It then changes in place to the leaf-loading
-state for at least 1,000 ms and until the four current font files and signed-out
+state for at least 1,000 ms and until the four current font files and nine signed-out
 onboarding/Welcome images settle. Only then is the overlay removed and onboarding exposed. The
 logo and leaf-shadow background settle before native handoff. Garden, League, reveal, learning,
 Shared Growth, canopy, Circle, and prepared-media
@@ -164,10 +251,10 @@ raster Ghaf mark beside the Ghaf name, calm leaf-shadow raster background, clear
 progress, and the existing semantic forms and actions. The brand header never displaces Back,
 progress, keyboard access, safe areas, or 48 dp targets, and route files do not duplicate it.
 
-All new scenic presentation is raster. Live text, buttons, progress dots, focus state, and loading
-status remain semantic native UI; existing functional vectors elsewhere are unchanged. Standard
-motion uses opacity plus at most 8 dp of vertical travel over the quick/standard token durations.
-Reduced motion removes translation and scaling. At 320 and 390 widths the photograph may shorten,
+All new scenic presentation is raster. Live text, buttons, pillar controls, progress dots, focus
+state, and loading status remain semantic native UI; existing functional vectors elsewhere are
+unchanged. Standard motion uses opacity plus at most 8 dp of vertical travel and 0.015 scale over
+the quick/standard token durations. Reduced motion removes translation and scaling. At 320 and 390 widths the photograph may shorten,
 but the primary action and step status remain visible or reachable by vertical scrolling. Exact
 copy, asset, state, and evidence rules live in
 `specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`.
@@ -219,14 +306,19 @@ provenance, content, and human-review gates pass.
 - R001 PNGs are canonical composition references for `/` and the six historical Parent-onboarding
   steps except `/access/parent/sign-in`. For that route, the user-authorized 2026-09-06 usability
   layout centers screen-level orientation/supporting copy, retains logical-start mixed-identifier
-  fields, and keeps the filled credential, neutral biometric, and full-width outlined Create Family
-  hierarchy. Create Family now navigates without requesting verification.
+  fields, and keeps the filled credential plus full-width outlined Create Family hierarchy. The
+  simulated biometric action is removed. Sign-in checks the normalized identifier against the
+  schema-2 local family record before verification; a matching Parent bypasses setup after the
+  deterministic code, while an unknown identifier stays on sign-in. Create Family navigates
+  without requesting verification.
 - `/access/parent/sign-up` is an R003 code-native Soft Geometric candidate because no approved
   Stitch frame exists. It uses the organic access shell, a tonal 64dp family icon plate, centered
   Alexandria heading and Readex orientation, one mixed phone/email field, one filled full-width
   continuation, a concise returning-family prompt, and one full-width emerald outlined sign-in
-  action. It reuses the existing deterministic verification authority and never implies a real
-  account or second household.
+  action. It reuses the existing deterministic verification authority and binds the normalized
+  identifier only when the complete family is saved. Sign-in, sign-up, and verification use neutral
+  copy with no demo/not-real footer and no claim that a message was sent or identity was remotely
+  proven. The internal product boundary remains one local synthetic household.
   Exported HTML/CSS/JS remains read-only measurement/structure evidence and never runtime code.
 - Selected R002a PNGs are candidate composition references for the existing Parent Home, Parent
   Tasks/Builder, Child Today/task, Parent review/support, Child follow-up, and Garden surfaces. The
@@ -597,7 +689,9 @@ Photo and voice controls must explain:
 - An assistant timeout falls back to the reviewed fixture on the same route and retains Parent text.
 - A missing prepared image uses descriptive placeholder copy and never blocks task completion.
 - A duplicate confirmation is a no-op with a neutral “Already confirmed” message.
-- A reload may reset in-memory P0 data; the app must disclose this rather than imply persistence.
+- A reload restores only the validated device-local family directory and approved paired-Child
+  markers. Sessions and task/Seed/Garden/League/Reward state remain deterministic prototype state;
+  the app must not imply broader persistence.
 - Reset is one Parent-only demo action, requires a small confirmation, and restores the exact seeded
   state documented in `DEMO_RUNBOOK.md`.
 

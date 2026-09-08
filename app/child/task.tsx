@@ -4,11 +4,15 @@ import { AccessibilityInfo, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { GhafIcon } from '@/components/access';
+import { AssistantIdentity } from '@/components/AssistantIdentity';
 import { PreparedMedia } from '@/components/family-growth/PreparedMedia';
+import { LiveChildCoachPanel } from '@/components/family-growth/LiveChildCoachPanel';
+import { LiveVoiceCapturePanel } from '@/components/family-growth/LiveVoiceCapturePanel';
 import { SyntheticVoicePanel } from '@/components/family-growth/SyntheticVoicePanel';
 import { TrustedAdultExit } from '@/components/family-growth/TrustedAdultExit';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button, Input, QuietButton, Text } from '@/components/primitives';
+import { aiFeatureFlags } from '@/config/aiFeatureFlags';
 import {
   ChildCompletionConfirmationSheet,
   ChildDefinitionCard,
@@ -35,7 +39,12 @@ import { P0_RECYCLING_TEMPLATE, TASK_CATEGORIES } from '@/features/tasks/demoCon
 import { TASK_REFLECTION_MAX_LENGTH } from '@/features/tasks/validation';
 import { bilingualResource, localize } from '@/i18n';
 import type { AgeAdaptedCoachResult } from '@/models/assistantVoice';
-import type { ChildCoachIntent, ChildCoachResult, LocalizedText } from '@/models/familyGrowth';
+import type {
+  AgeBand,
+  ChildCoachIntent,
+  ChildCoachResult,
+  LocalizedText,
+} from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -73,10 +82,21 @@ export default function ChildTaskScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+  const activeChildAgeBand = usePrototypeStore(
+    (state): AgeBand => state.children[state.activeChildId].ageBand,
+  );
   const journey = usePrototypeStore((state) => state.journey);
   const coach = usePrototypeStore((state) => state.childCoachResult);
+  const liveChildCoachView = usePrototypeStore((state) => state.liveChildCoachView);
+  const liveChildCoachGrant = usePrototypeStore(
+    (state) => state.liveChildAiGrants[state.activeChildId].text,
+  );
+  const liveChildVoiceGrant = usePrototypeStore(
+    (state) => state.liveChildAiGrants[state.activeChildId].voice,
+  );
+  const liveVoiceCapture = usePrototypeStore((state) => state.liveVoiceCapture);
   const ageAdaptedCoachResult = usePrototypeStore((state) => state.ageAdaptedCoachResult);
   const childVoiceView = usePrototypeStore((state) => state.childVoiceView);
   const childTaskDraft = usePrototypeStore((state) => state.childTaskDraft);
@@ -84,6 +104,20 @@ export default function ChildTaskScreen() {
   const prepareChildVoice = usePrototypeStore((state) => state.prepareChildVoice);
   const runChildVoiceCommand = usePrototypeStore((state) => state.runChildVoiceCommand);
   const requestChildCoach = usePrototypeStore((state) => state.requestChildCoach);
+  const requestLiveChildCoach = usePrototypeStore((state) => state.requestLiveChildCoach);
+  const declineLiveChildCoach = usePrototypeStore((state) => state.declineLiveChildCoach);
+  const clearLiveChildCoach = usePrototypeStore((state) => state.clearLiveChildCoach);
+  const prepareLiveVoiceCapture = usePrototypeStore((state) => state.prepareLiveVoiceCapture);
+  const requestLiveVoicePermission = usePrototypeStore((state) => state.requestLiveVoicePermission);
+  const startLiveVoiceHold = usePrototypeStore((state) => state.startLiveVoiceHold);
+  const stopLiveVoiceHold = usePrototypeStore((state) => state.stopLiveVoiceHold);
+  const editLiveVoiceTranscript = usePrototypeStore((state) => state.editLiveVoiceTranscript);
+  const markLiveVoiceTranscriptReady = usePrototypeStore(
+    (state) => state.markLiveVoiceTranscriptReady,
+  );
+  const deleteLiveVoiceCapture = usePrototypeStore((state) => state.deleteLiveVoiceCapture);
+  const sendLiveVoiceTranscript = usePrototypeStore((state) => state.sendLiveVoiceTranscript);
+  const cancelLiveVoiceCapture = usePrototypeStore((state) => state.cancelLiveVoiceCapture);
   const selectPreparedMedia = usePrototypeStore((state) => state.selectPreparedMedia);
   const removePreparedMedia = usePrototypeStore((state) => state.removePreparedMedia);
   const markPreparedMediaUnavailable = usePrototypeStore(
@@ -378,7 +412,7 @@ export default function ChildTaskScreen() {
           noEarlyRewardLabel={t('taskReview.noEarlyReward')}
           onAction={() => {
             setError(null);
-            const result = signOutExperience();
+            const result = beginTemporaryParentAccess();
             if (!result.ok) {
               setError(t('errors.safeRetry'));
               return;
@@ -527,7 +561,7 @@ export default function ChildTaskScreen() {
               <GhafIcon color={colors.ghafEmerald} name="help" size={25} />
             </View>
             <View style={styles.grow}>
-              <Text brand color="deepForest" direction={direction} variant="screenTitle">
+              <Text brand color="deepForest" direction={direction} variant="heading">
                 {t('childTask.supportToolsTitle')}
               </Text>
               <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
@@ -539,10 +573,10 @@ export default function ChildTaskScreen() {
             body={t('childTask.adultExitBody')}
             label={t('childTask.adultExit')}
             onPress={() => {
-              if (preparedCoachAvailable) {
+              setAdultSupportRequested(true);
+              if (preparedCoachAvailable && !aiFeatureFlags.ai_child_coach_text_live) {
+                setShowSupportTools(true);
                 void askCoach('need_adult');
-              } else {
-                setAdultSupportRequested(true);
               }
             }}
             testID="trusted-adult-exit"
@@ -566,128 +600,173 @@ export default function ChildTaskScreen() {
 
         {showSupportTools ? (
           <View style={styles.supportTools} testID="child-support-tools">
-            <View style={styles.coach}>
-              <Text brand color="deepForest" direction={direction} variant="screenTitle">
-                {t('childTask.coachTitle')}
-              </Text>
-              {preparedCoachAvailable ? (
-                <>
-                  <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                    {localize(coachDisclosure, locale)}
-                  </Text>
-                  <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                    {t('assistant.noChat')}
-                  </Text>
-                  <View
-                    style={[
-                      styles.intentGrid,
-                      direction === 'rtl' ? styles.intentGridRtl : styles.intentGridLtr,
-                    ]}
-                  >
-                    {COACH_INTENTS.slice(
-                      0,
-                      ageAdaptedCoachResult?.policy.quickChoiceLimit ?? COACH_INTENTS.length,
-                    ).map(({ intent, key }, index) => (
-                      <Button
-                        busy={busyIntent === intent}
-                        busyLabel={t('assistant.loading')}
-                        disabled={busyIntent !== null}
-                        fullWidth={false}
-                        key={intent}
-                        onPress={() => void askCoach(intent)}
-                        variant="ghost"
-                      >
-                        {ageAdaptedCoachResult?.quickChoices[index]
-                          ? localize(ageAdaptedCoachResult.quickChoices[index], locale)
-                          : t(`childTask.${key}`)}
-                      </Button>
-                    ))}
-                  </View>
-                </>
-              ) : (
-                <Text
-                  brand
-                  color="onSurfaceVariant"
+            {aiFeatureFlags.ai_child_coach_text_live ? (
+              <LiveChildCoachPanel
+                ageBand={activeChildAgeBand}
+                direction={direction}
+                grant={liveChildCoachGrant}
+                locale={locale}
+                onClear={clearLiveChildCoach}
+                onDecline={declineLiveChildCoach}
+                onRequest={requestLiveChildCoach}
+                view={liveChildCoachView}
+              />
+            ) : (
+              <View style={styles.coach} testID="prepared-child-coach">
+                <AssistantIdentity
+                  description={t('childTask.coachPreparedPurpose')}
                   direction={direction}
-                  testID="adjusted-task-coach-unavailable"
-                >
-                  {t('childTask.adjustedCoachUnavailable')}
-                </Text>
-              )}
-              {preparedCoachAvailable && coach && ageAdaptedCoachResult ? (
-                <View
-                  accessibilityLiveRegion="polite"
-                  style={styles.coachResult}
-                  testID="child-coach-result"
-                >
-                  {coach.meta.fallbackUsed ? (
+                  language={locale}
+                  origin="prepared"
+                  originLabel={t('assistant.preparedLabel')}
+                  testID="prepared-child-coach-identity"
+                  title={t('childTask.coachTitle')}
+                />
+                {preparedCoachAvailable ? (
+                  <>
+                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                      {localize(coachDisclosure, locale)}
+                    </Text>
+                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                      {t('assistant.noChat')}
+                    </Text>
                     <Text
-                      accessibilityLiveRegion="polite"
                       brand
-                      color="tertiary"
+                      color="deepForest"
                       direction={direction}
-                      variant="caption"
+                      testID="coach-actions-heading"
+                      variant="label"
                     >
-                      {t('assistant.unavailable')}
+                      {t('childTask.coachActionsTitle')}
                     </Text>
-                  ) : null}
-                  <Text brand color="deepForest" direction={direction} variant="caption">
-                    {t('assistant.preparedLabel')}
+                    <View
+                      style={[
+                        styles.intentGrid,
+                        direction === 'rtl' ? styles.intentGridRtl : styles.intentGridLtr,
+                      ]}
+                    >
+                      {COACH_INTENTS.slice(
+                        0,
+                        ageAdaptedCoachResult?.policy.quickChoiceLimit ?? COACH_INTENTS.length,
+                      ).map(({ intent, key }, index) => (
+                        <Button
+                          brand
+                          busy={busyIntent === intent}
+                          busyLabel={t('assistant.loading')}
+                          disabled={busyIntent !== null}
+                          fullWidth={false}
+                          key={intent}
+                          onPress={() => void askCoach(intent)}
+                          variant="secondary"
+                        >
+                          {ageAdaptedCoachResult?.quickChoices[index]
+                            ? localize(ageAdaptedCoachResult.quickChoices[index], locale)
+                            : t(`childTask.${key}`)}
+                        </Button>
+                      ))}
+                    </View>
+                  </>
+                ) : (
+                  <Text
+                    brand
+                    color="onSurfaceVariant"
+                    direction={direction}
+                    testID="adjusted-task-coach-unavailable"
+                  >
+                    {t('childTask.adjustedCoachUnavailable')}
                   </Text>
-                  <View style={styles.coachPolicy} testID="child-coach-age-policy">
-                    <Text brand color="deepForest" direction={direction} variant="label">
-                      {t('coachPolicy.title')}
-                    </Text>
-                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                      {t('coachPolicy.ageAdapted', {
-                        band: ageAdaptedCoachResult.ageBand.replace('_', '–'),
-                      })}
-                    </Text>
-                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                      {t('coachPolicy.maximumSteps', {
-                        count: ageAdaptedCoachResult.policy.maximumSteps,
-                      })}
-                      {' · '}
-                      {t(
-                        ageAdaptedCoachResult.policy.pace === 'slow'
-                          ? 'coachPolicy.slowerPace'
-                          : 'coachPolicy.standardPace',
-                      )}
-                    </Text>
-                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                      {t('coachPolicy.taskBound')} {t('coachPolicy.noOpenChat')}
-                    </Text>
+                )}
+                {preparedCoachAvailable && coach && ageAdaptedCoachResult ? (
+                  <View
+                    accessibilityLiveRegion="polite"
+                    style={styles.coachResult}
+                    testID="child-coach-result"
+                  >
+                    {coach.meta.fallbackUsed ? (
+                      <Text
+                        accessibilityLiveRegion="polite"
+                        brand
+                        color="tertiary"
+                        direction={direction}
+                        variant="caption"
+                      >
+                        {t('assistant.unavailable')}
+                      </Text>
+                    ) : null}
+                    {coachIntentLabel ? (
+                      <Text brand color="mangroveTeal" direction={direction} variant="label">
+                        {coachIntentLabel}
+                      </Text>
+                    ) : null}
+                    {displayedCoachLines.map((line, index) => (
+                      <Text brand direction={direction} key={`${displayedCoachIntent}-${line.en}`}>
+                        {displayedCoachLines.length > 1
+                          ? `${stepFormatter.format(index + 1)}. `
+                          : ''}
+                        {localize(line, locale)}
+                      </Text>
+                    ))}
+                    {displayedCoachIntent === 'show_steps' && coach.optionalReflection ? (
+                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                        {localize(coach.optionalReflection, locale)}
+                      </Text>
+                    ) : null}
+                    {displayedCoachIntent === 'need_adult' ? (
+                      <Text brand color="deepForest" direction={direction} variant="label">
+                        {localize(coach.adultExit.label, locale)}
+                      </Text>
+                    ) : null}
+                    <View style={styles.coachPolicy} testID="child-coach-age-policy">
+                      <Text brand color="deepForest" direction={direction} variant="label">
+                        {t('coachPolicy.title')}
+                      </Text>
+                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                        {t('coachPolicy.ageAdapted', {
+                          band: ageAdaptedCoachResult.ageBand.replace('_', '–'),
+                        })}
+                        {' · '}
+                        {t('coachPolicy.maximumSteps', {
+                          count: ageAdaptedCoachResult.policy.maximumSteps,
+                        })}
+                        {' · '}
+                        {t(
+                          ageAdaptedCoachResult.policy.pace === 'slow'
+                            ? 'coachPolicy.slowerPace'
+                            : 'coachPolicy.standardPace',
+                        )}
+                      </Text>
+                      <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+                        {t('coachPolicy.taskBound')} {t('coachPolicy.noOpenChat')}
+                      </Text>
+                    </View>
                   </View>
-                  {coachIntentLabel ? (
-                    <Text brand color="mangroveTeal" direction={direction} variant="label">
-                      {coachIntentLabel}
-                    </Text>
-                  ) : null}
-                  {displayedCoachLines.map((line, index) => (
-                    <Text brand direction={direction} key={`${displayedCoachIntent}-${line.en}`}>
-                      {displayedCoachLines.length > 1 ? `${stepFormatter.format(index + 1)}. ` : ''}
-                      {localize(line, locale)}
-                    </Text>
-                  ))}
-                  {displayedCoachIntent === 'show_steps' && coach.optionalReflection ? (
-                    <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                      {localize(coach.optionalReflection, locale)}
-                    </Text>
-                  ) : null}
-                  {displayedCoachIntent === 'need_adult' ? (
-                    <Text brand color="deepForest" direction={direction} variant="label">
-                      {localize(coach.adultExit.label, locale)}
-                    </Text>
-                  ) : null}
-                </View>
-              ) : null}
-            </View>
+                ) : null}
+              </View>
+            )}
 
-            <SyntheticVoicePanel
-              onCommand={runVoiceCommand}
-              taskSupported={preparedCoachAvailable}
-              view={childVoiceView}
-            />
+            {aiFeatureFlags.ai_child_coach_voice_live && activeChildAgeBand === '12_14' ? (
+              <LiveVoiceCapturePanel
+                direction={direction}
+                grant={liveChildVoiceGrant}
+                locale={locale}
+                onCancel={cancelLiveVoiceCapture}
+                onDelete={deleteLiveVoiceCapture}
+                onEditTranscript={editLiveVoiceTranscript}
+                onMarkReady={markLiveVoiceTranscriptReady}
+                onPrepare={prepareLiveVoiceCapture}
+                onRequestPermission={requestLiveVoicePermission}
+                onSend={sendLiveVoiceTranscript}
+                onStartHold={startLiveVoiceHold}
+                onStopHold={stopLiveVoiceHold}
+                state={liveVoiceCapture?.state ?? null}
+              />
+            ) : (
+              <SyntheticVoicePanel
+                onCommand={runVoiceCommand}
+                taskSupported={preparedCoachAvailable}
+                view={childVoiceView}
+              />
+            )}
             <LanguageSwitcher compact showGuidance={false} />
             <QuietButton
               accessibilityState={{ expanded: showOptionalMedia }}
@@ -705,7 +784,7 @@ export default function ChildTaskScreen() {
             </QuietButton>
             {showOptionalMedia ? (
               <View style={styles.mediaSection} testID="optional-media-section">
-                <Text brand color="deepForest" direction={direction} variant="screenTitle">
+                <Text brand color="deepForest" direction={direction} variant="heading">
                   {t('childTask.mediaTitle')}
                 </Text>
                 <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
@@ -862,11 +941,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryFixedTint,
   },
   supportTools: {
-    gap: spacing.lg,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
-    padding: spacing.lg,
+    gap: spacing.xl,
   },
   coach: {
     gap: spacing.md,
@@ -882,16 +957,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   coachResult: {
-    gap: spacing.sm,
+    gap: spacing.md,
     borderRadius: r001Radii.lg,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderCurve: 'continuous',
+    backgroundColor: colors.secondaryContainer,
     padding: spacing.md,
   },
   coachPolicy: {
     gap: spacing.xxs,
-    borderStartWidth: 2,
-    borderStartColor: colors.mangroveTeal,
-    paddingStart: spacing.sm,
+    borderRadius: r001Radii.md,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.sm,
   },
   mediaSection: {
     gap: spacing.md,

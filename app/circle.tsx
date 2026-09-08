@@ -25,7 +25,7 @@ export default function CircleScreen() {
   const hasActiveParentExperience = usePrototypeStore(selectHasActiveParentExperience);
   const hasActiveChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const circle = usePrototypeStore((state) => state.circleGoal);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const [transitionError, setTransitionError] = useState<string | null>(null);
   const circleState = resolveCircleFixture(circle);
 
@@ -120,7 +120,7 @@ export default function CircleScreen() {
             return;
           }
           setTransitionError(null);
-          const result = signOutExperience();
+          const result = beginTemporaryParentAccess();
           if (!result.ok) {
             setTransitionError(t('errors.safeRetry'));
             return;

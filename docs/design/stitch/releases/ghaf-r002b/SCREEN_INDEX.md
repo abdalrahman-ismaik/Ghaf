@@ -11,6 +11,8 @@ Current Reveal focus/recovery checkpoint: `7d6a6da` on
 R002b checkpoint `4adcb73` passed 78 files and 989/989 tests before the later approval-authority,
 complete-screen, artwork, and Reveal-evidence slices. See the
 [bounded validation record](../../../../../specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md).
+The current open-gate checklist and sign-off tables are in the
+[release review packet](../../../../../specs/003-family-growth-garden/design-intake/r002b-release-review-packet.md).
 
 ## Authority and evidence
 

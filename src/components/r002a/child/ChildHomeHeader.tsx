@@ -1,11 +1,13 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { GhafIcon } from '@/components/access';
+import { BotanicalAvatar, GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
 import { colors, layout, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
+import type { ChildTreeAvatarId } from '@/models/parentOnboarding';
 
 interface ChildHomeHeaderProps {
+  avatarId?: ChildTreeAvatarId;
   avatarLabel: string;
   direction: TextDirection;
   helpLabel: string;
@@ -16,6 +18,7 @@ interface ChildHomeHeaderProps {
 }
 
 export function ChildHomeHeader({
+  avatarId = 'ghaf_tree',
   avatarLabel,
   direction,
   helpLabel,
@@ -59,15 +62,11 @@ export function ChildHomeHeader({
       style={({ pressed }) => [styles.sideSlot, pressed ? styles.pressed : null]}
       testID="child-settings-button"
     >
-      <View style={styles.avatar}>
-        <GhafIcon color={colors.ghafEmerald} name="ghaf-tree" size={26} />
-      </View>
+      <BotanicalAvatar direction={direction} id={avatarId} size={40} style={styles.avatar} />
     </Pressable>
   ) : (
     <View accessibilityLabel={avatarLabel} accessible style={styles.sideSlot}>
-      <View style={styles.avatar}>
-        <GhafIcon color={colors.ghafEmerald} name="ghaf-tree" size={26} />
-      </View>
+      <BotanicalAvatar direction={direction} id={avatarId} size={40} style={styles.avatar} />
     </View>
   );
 

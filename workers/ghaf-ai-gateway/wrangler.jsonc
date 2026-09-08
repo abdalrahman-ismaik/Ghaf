@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "ghaf-bounded-ai-not-deployable",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-07",
+  "workers_dev": false,
+  "preview_urls": false,
+  "ai": {
+    "binding": "AI",
+  },
+  "ratelimits": [
+    {
+      "name": "PARENT_DRAFT_RATE_LIMITER",
+      "namespace_id": "1004",
+      "simple": { "limit": 6, "period": 60 },
+    },
+    {
+      "name": "CHILD_TEXT_RATE_LIMITER",
+      "namespace_id": "1005",
+      "simple": { "limit": 3, "period": 60 },
+    },
+    {
+      "name": "CHILD_VOICE_RATE_LIMITER",
+      "namespace_id": "1006",
+      "simple": { "limit": 2, "period": 60 },
+    },
+  ],
+  "vars": {
+    "CAPABILITY_ISSUER": "replace-with-approved-token-broker.invalid",
+    "CAPABILITY_AUDIENCE": "ghaf-bounded-ai-gateway",
+    "ALLOWED_ORIGIN": "https://replace-with-approved-demo-origin.invalid",
+  },
+}

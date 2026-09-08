@@ -18,23 +18,34 @@ export async function enterParentExperienceForTest() {
     assertOk(current.signOutExperience());
   }
   assertOk(
-    usePrototypeStore.getState().requestParentVerification({
-      identifier: 'parent@example.com',
-      networkAvailable: false,
-    }),
+    usePrototypeStore
+      .getState()
+      [
+        usePrototypeStore.getState().localFamily.record
+          ? 'requestExistingParentVerification'
+          : 'requestParentVerification'
+      ]({
+        identifier: 'parent@example.com',
+        networkAvailable: false,
+      }),
   );
   assertOk(await usePrototypeStore.getState().verifyParentCode(PARENT_VERIFICATION_CODE));
   assertOk(usePrototypeStore.getState().completeParentOnboarding());
 }
 
 export async function enterChildExperienceForTest(childId: SyntheticChildId = 'child_salem') {
-  const current = usePrototypeStore.getState();
+  let current = usePrototypeStore.getState();
   if (
     current.activeExperience === 'child' &&
     current.activeChildId === childId &&
     current.authorizeChildExperience().ok
   ) {
     return;
+  }
+  if (!current.localFamily.configuredChildIds.includes(childId)) {
+    await enterParentExperienceForTest();
+    assertOk(usePrototypeStore.getState().signOutExperience());
+    current = usePrototypeStore.getState();
   }
   if (current.activeExperience !== 'signed_out') {
     assertOk(current.signOutExperience());

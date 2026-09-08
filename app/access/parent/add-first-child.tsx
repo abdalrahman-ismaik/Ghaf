@@ -1,155 +1,61 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { useRouter } from 'expo-router';
-import { BackHandler, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { Redirect, type Href, useLocalSearchParams, useRouter } from 'expo-router';
+import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
   AccessActionRegion,
   AccessHeader,
   AccessScreen,
-  AccessTextField,
-  BotanicalAvatarPicker,
-  ChoiceChip,
-  GhafIcon,
+  ChildProfileForm,
   InfoRow,
   StatusBanner,
 } from '@/components/access';
 import { PrimaryButton, Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  opacity,
-  r001Radii,
-  spacing,
-  type LayoutDirection,
-  type TypographyLanguage,
-} from '@/design/tokens';
-import type { AgeBand } from '@/models/familyGrowth';
-import type {
-  BasicAccessibilityDefault,
-  ChildPreferredLanguage,
-  ChildTreeAvatarId,
-} from '@/models/parentOnboarding';
+import { spacing } from '@/design/tokens';
+import type { ParentOnboardingChildDraft } from '@/models/parentOnboarding';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-interface RadioOption<Value extends string> {
-  readonly direction?: LayoutDirection;
-  readonly label: string;
-  readonly value: Value;
-}
-
-function RadioPillGroup<Value extends string>({
-  direction,
-  disabled,
-  label,
-  language,
-  onChange,
-  options,
-  testID,
-  value,
-}: {
-  direction: LayoutDirection;
-  disabled: boolean;
-  label: string;
-  language: TypographyLanguage;
-  onChange: (value: Value) => void;
-  options: readonly RadioOption<Value>[];
-  testID: string;
-  value: Value;
-}) {
-  const [focusedValue, setFocusedValue] = useState<Value | null>(null);
-
-  return (
-    <View style={styles.fieldGroup}>
-      <Text brand direction={direction} language={language} variant="label">
-        {label}
-      </Text>
-      <View
-        accessibilityLabel={label}
-        accessibilityRole="radiogroup"
-        style={[styles.pillRow, { flexDirection: logicalRowDirection(direction) }]}
-        testID={testID}
-      >
-        {options.map((option) => {
-          const selected = option.value === value;
-          return (
-            <Pressable
-              accessibilityLabel={option.label}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selected, disabled }}
-              aria-checked={selected}
-              disabled={disabled}
-              key={option.value}
-              onBlur={() => setFocusedValue(null)}
-              onFocus={() => setFocusedValue(option.value)}
-              onPress={() => onChange(option.value)}
-              pressRetentionOffset={spacing.sm}
-              style={({ pressed }) => [
-                styles.radioPill,
-                selected ? styles.radioPillSelected : null,
-                focusedValue === option.value ? styles.focused : null,
-                pressed && !disabled ? styles.pressed : null,
-                disabled ? styles.disabled : null,
-              ]}
-              testID={`${testID}-${option.value}`}
-            >
-              <Text
-                align="center"
-                brand
-                color={selected ? 'ghafEmerald' : 'onSurfaceVariant'}
-                direction={option.direction ?? direction}
-                language={language}
-                tabular
-                variant="label"
-              >
-                {option.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-    </View>
-  );
+function childIndexFrom(value: string | string[] | undefined): 0 | 1 {
+  return (Array.isArray(value) ? value[0] : value) === '1' ? 1 : 0;
 }
 
 export default function AddFirstChildScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ child?: string | string[] }>();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const updateParentOnboardingDraft = usePrototypeStore(
     (state) => state.updateParentOnboardingDraft,
   );
-  const [nickname, setNickname] = useState(parentOnboarding.draft.child.nickname);
+  const childIndex = childIndexFrom(params.child);
+  const child = parentOnboarding.draft.children[childIndex];
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const updateChild = useCallback(
-    (
-      patch: Partial<{
-        nickname: string;
-        avatarId: ChildTreeAvatarId;
-        ageBand: AgeBand;
-        preferredLanguage: ChildPreferredLanguage;
-        accessibilityDefaults: readonly BasicAccessibilityDefault[];
-      }>,
-    ) => {
-      const result = updateParentOnboardingDraft({ child: patch });
+    (patch: Partial<ParentOnboardingChildDraft>) => {
+      setError(null);
+      const result = updateParentOnboardingDraft({ childIndex, child: patch });
       if (!result.ok) setError(t('access.states.interrupted'));
       return result.ok;
     },
-    [t, updateParentOnboardingDraft],
+    [childIndex, t, updateParentOnboardingDraft],
   );
 
   const goBack = useCallback(() => {
-    updateChild({ nickname });
-    router.replace('/access/parent/family-basics');
-  }, [nickname, router, updateChild]);
+    if (childIndex === 0) {
+      router.replace('/access/parent/family-basics');
+      return;
+    }
+    router.replace('/access/parent/add-first-child?child=0' as Href);
+  }, [childIndex, router]);
 
   const familyIsValid = parentOnboarding.draft.familyName.trim().length >= 2;
-  const child = parentOnboarding.draft.child;
+  const indexIsConfigured = childIndex < parentOnboarding.draft.childCount;
 
   useEffect(() => {
     if (parentOnboarding.status === 'signed_out') {
@@ -160,12 +66,13 @@ export default function AddFirstChildScreen() {
       router.replace('/parent');
     } else if (parentOnboarding.status === 'verified' && !familyIsValid) {
       router.replace('/access/parent/family-basics');
+    } else if (parentOnboarding.status === 'verified' && !indexIsConfigured) {
+      router.replace('/access/parent/review-create');
     }
-  }, [familyIsValid, parentOnboarding.status, router]);
+  }, [familyIsValid, indexIsConfigured, parentOnboarding.status, router]);
 
   useEffect(() => {
     if (Platform.OS !== 'android' || parentOnboarding.status !== 'verified') return undefined;
-
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       goBack();
       return true;
@@ -173,18 +80,15 @@ export default function AddFirstChildScreen() {
     return () => subscription.remove();
   }, [goBack, parentOnboarding.status]);
 
-  if (parentOnboarding.status !== 'verified' || !familyIsValid) return null;
-
-  const toggleAccessibility = (option: BasicAccessibilityDefault) => {
-    setError(null);
-    const next = child.accessibilityDefaults.includes(option)
-      ? child.accessibilityDefaults.filter((item) => item !== option)
-      : [...child.accessibilityDefaults, option];
-    updateChild({ accessibilityDefaults: next });
-  };
+  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+    return <Redirect href="/access/parent/verification" />;
+  }
+  if (parentOnboarding.status !== 'verified' || !familyIsValid || !indexIsConfigured || !child) {
+    return null;
+  }
 
   const validateName = () => {
-    const valid = nickname.trim().length >= 2;
+    const valid = child.nickname.trim().length >= 2;
     setError(valid ? null : t('access.setup.childNameError'));
     return valid;
   };
@@ -192,59 +96,21 @@ export default function AddFirstChildScreen() {
   const continueSetup = () => {
     if (busy || !validateName()) return;
     setBusy(true);
-    if (!updateChild({ nickname: nickname.trim() })) {
+    if (!updateChild({ nickname: child.nickname.trim() })) {
       setBusy(false);
+      return;
+    }
+    if (childIndex + 1 < parentOnboarding.draft.childCount) {
+      requestAnimationFrame(() => {
+        router.replace('/access/parent/add-first-child?child=1' as Href);
+        setBusy(false);
+      });
       return;
     }
     requestAnimationFrame(() => router.replace('/access/parent/review-create'));
   };
 
-  const avatarLabels: Readonly<Record<ChildTreeAvatarId, string>> = {
-    ghaf_tree: t('access.setup.avatarGhaf'),
-    leaf: t('access.setup.avatarLeaf'),
-    flower: t('access.setup.avatarFlower'),
-    energy_leaf: t('access.setup.avatarEnergyLeaf'),
-    water_drop: t('access.setup.avatarWaterDrop'),
-  };
-  const ageOptions: readonly RadioOption<AgeBand>[] = [
-    { value: '6_8', label: t('access.setup.ageSixEight'), direction: 'ltr' },
-    { value: '9_11', label: t('access.setup.ageNineEleven'), direction: 'ltr' },
-    { value: '12_14', label: t('access.setup.ageTwelveFourteen'), direction: 'ltr' },
-  ];
-  const languageOptions: readonly RadioOption<ChildPreferredLanguage>[] = [
-    { value: 'ar', label: t('language.arabic'), direction: locale === 'ar' ? 'rtl' : 'ltr' },
-    { value: 'en', label: t('language.english'), direction: 'ltr' },
-    { value: 'both', label: t('access.setup.bothLanguages') },
-  ];
-  const accessibilityOptions: readonly {
-    icon: ReactNode;
-    label: string;
-    value: BasicAccessibilityDefault;
-  }[] = [
-    {
-      value: 'larger_text',
-      label: t('access.setup.largerText'),
-      icon: (
-        <GhafIcon color={colors.ghafEmerald} direction={direction} name="large-text" size={18} />
-      ),
-    },
-    {
-      value: 'simpler_instructions',
-      label: t('access.setup.simplerInstructions'),
-      icon: <GhafIcon color={colors.ghafEmerald} direction={direction} name="simple" size={18} />,
-    },
-    {
-      value: 'high_contrast',
-      label: t('access.setup.highContrast'),
-      icon: <GhafIcon color={colors.ghafEmerald} direction={direction} name="contrast" size={18} />,
-    },
-    {
-      value: 'reduced_motion',
-      label: t('access.setup.reducedMotion'),
-      icon: <GhafIcon color={colors.ghafEmerald} direction={direction} name="motion" size={18} />,
-    },
-  ];
-
+  // The shared form keeps fields editable={!busy} and radio state aria-checked={selected}.
   return (
     <AccessScreen
       background="organic"
@@ -266,13 +132,15 @@ export default function AddFirstChildScreen() {
             busy={busy}
             busyLabel={t('access.setup.continue')}
             direction={direction}
-            disabled={nickname.trim().length < 2}
+            disabled={child.nickname.trim().length < 2}
             language={locale}
             onPress={continueSetup}
             size="regular"
             testID="add-child-continue"
           >
-            {t('access.setup.continue')}
+            {childIndex + 1 < parentOnboarding.draft.childCount
+              ? t('access.setup.nextChild')
+              : t('access.setup.reviewFamily')}
           </PrimaryButton>
         </AccessActionRegion>
       }
@@ -283,7 +151,10 @@ export default function AddFirstChildScreen() {
           direction={direction}
           language={locale}
           onBack={goBack}
-          progressLabel={t('access.setup.progress', { step: 2, total: 3 })}
+          progressLabel={t('access.setup.progress', {
+            step: childIndex + 2,
+            total: parentOnboarding.draft.childCount + 2,
+          })}
         />
       }
       keyboardAware
@@ -291,13 +162,15 @@ export default function AddFirstChildScreen() {
     >
       <View style={styles.heading}>
         <Text brand color="ghafEmerald" direction={direction} language={locale} variant="hero">
-          {t('access.setup.childTitle')}
+          {t('access.setup.childStepTitle', {
+            current: childIndex + 1,
+            total: parentOnboarding.draft.childCount,
+          })}
         </Text>
         <Text brand color="onSurfaceVariant" direction={direction} language={locale} variant="body">
-          {t('access.setup.childBody')}
+          {t('access.setup.childStepBody')}
         </Text>
       </View>
-
       {parentOnboarding.offlineFallbackUsed ? (
         <StatusBanner
           direction={direction}
@@ -307,143 +180,31 @@ export default function AddFirstChildScreen() {
           tone="offline"
         />
       ) : null}
-
-      <View style={styles.form}>
-        <AccessTextField
-          accessibilityLabel={t('access.setup.childNameLabel')}
-          autoCapitalize="words"
-          autoCorrect={false}
-          direction="auto"
-          editable={!busy}
-          errorText={error ?? undefined}
-          label={t('access.setup.childNameLabel')}
-          language={locale}
-          maxLength={40}
-          onBlur={validateName}
-          onChangeText={(value) => {
-            setNickname(value);
-            if (error && value.trim().length >= 2) setError(null);
-          }}
-          onSubmitEditing={continueSetup}
-          placeholder={t('access.setup.childNamePlaceholder')}
-          returnKeyType="done"
-          testID="child-name-input"
-          value={nickname}
-        />
-
-        <BotanicalAvatarPicker
+      {localFamily.status === 'unavailable' ? (
+        <StatusBanner
           direction={direction}
-          disabled={busy}
-          label={t('access.setup.chooseAvatar')}
-          labels={avatarLabels}
           language={locale}
-          onChange={(avatarId) => updateChild({ avatarId })}
-          testID="child-avatar"
-          value={child.avatarId}
+          message={t('access.states.localDataUnavailable')}
+          tone="error"
         />
-
-        <RadioPillGroup
-          direction={direction}
-          disabled={busy}
-          label={t('access.setup.ageBand')}
-          language={locale}
-          onChange={(ageBand) => updateChild({ ageBand })}
-          options={ageOptions}
-          testID="child-age-band"
-          value={child.ageBand}
-        />
-
-        <RadioPillGroup
-          direction={direction}
-          disabled={busy}
-          label={t('access.setup.preferredLanguage')}
-          language={locale}
-          onChange={(preferredLanguage) => updateChild({ preferredLanguage })}
-          options={languageOptions}
-          testID="child-preferred-language"
-          value={child.preferredLanguage}
-        />
-
-        <View style={styles.fieldGroup}>
-          <Text brand direction={direction} language={locale} variant="label">
-            {t('access.setup.accessibility')}
-          </Text>
-          <View style={[styles.chipRow, { flexDirection: logicalRowDirection(direction) }]}>
-            {accessibilityOptions.map((option) => (
-              <ChoiceChip
-                direction={direction}
-                disabled={busy}
-                icon={option.icon}
-                key={option.value}
-                label={option.label}
-                language={locale}
-                onPress={() => toggleAccessibility(option.value)}
-                selected={child.accessibilityDefaults.includes(option.value)}
-                testID={`child-accessibility-${option.value}`}
-              />
-            ))}
-            <ChoiceChip
-              direction={direction}
-              disabled={busy}
-              label={t('access.setup.notNow')}
-              language={locale}
-              onPress={() => updateChild({ accessibilityDefaults: [] })}
-              selected={child.accessibilityDefaults.length === 0}
-              testID="child-accessibility-none"
-            />
-          </View>
-        </View>
-      </View>
+      ) : null}
+      {error && child.nickname.trim().length >= 2 ? (
+        <StatusBanner direction={direction} language={locale} message={error} tone="error" />
+      ) : null}
+      <ChildProfileForm
+        child={child}
+        direction={direction}
+        disabled={busy}
+        errorText={child.nickname.trim().length < 2 ? (error ?? undefined) : undefined}
+        language={locale}
+        onLimitReached={() => setError(t('access.setup.chooseUpToThree'))}
+        onPatch={updateChild}
+        onValidateName={validateName}
+      />
     </AccessScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    gap: spacing.xs,
-  },
-  form: {
-    gap: spacing.xxl,
-  },
-  fieldGroup: {
-    gap: spacing.sm,
-  },
-  pillRow: {
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  radioPill: {
-    flexBasis: 96,
-    flexGrow: 1,
-    minHeight: layout.touchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderCurve: 'continuous',
-    borderRadius: r001Radii.pill,
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  radioPillSelected: {
-    borderColor: colors.ghafEmerald,
-    borderWidth: 2,
-    backgroundColor: colors.ghafEmeraldTint,
-  },
-  focused: {
-    borderColor: colors.solarAmber,
-    borderWidth: 2,
-  },
-  pressed: {
-    opacity: opacity.pressed,
-    transform: [{ scale: 0.985 }],
-  },
-  disabled: {
-    opacity: opacity.disabled,
-  },
-  chipRow: {
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-  },
+  heading: { gap: spacing.xs },
 });

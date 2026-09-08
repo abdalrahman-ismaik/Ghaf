@@ -1,6 +1,15 @@
-export const ONBOARDING_STEPS = ['intro', 'choose', 'support', 'growth'] as const;
+export const ONBOARDING_STEPS = [
+  'intro',
+  'family',
+  'sustainability',
+  'ai',
+  'support',
+  'growth',
+] as const;
+export const ONBOARDING_PILLARS = ['family', 'sustainability', 'ai'] as const;
 
 export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
+export type OnboardingPillar = (typeof ONBOARDING_PILLARS)[number];
 export type ActiveExperience = 'signed_out' | 'parent' | 'child' | null;
 export type ExperienceSection =
   | 'welcome'
@@ -18,6 +27,7 @@ export interface FirstRunState {
 export type FirstRunAction =
   | { readonly type: 'back' }
   | { readonly type: 'next' }
+  | { readonly type: 'goToPillar'; readonly step: OnboardingPillar }
   | { readonly type: 'skip' }
   | { readonly type: 'start' };
 
@@ -32,6 +42,9 @@ export function reduceFirstRunState(state: FirstRunState, action: FirstRunAction
   if (action.type === 'skip') return { ...state, completed: true };
   if (action.type === 'start') {
     return state.step === 'growth' ? { ...state, completed: true } : state;
+  }
+  if (action.type === 'goToPillar') {
+    return ONBOARDING_PILLARS.includes(action.step) ? { ...state, step: action.step } : state;
   }
   if (action.type === 'back') {
     return { ...state, step: ONBOARDING_STEPS[Math.max(0, index - 1)] ?? 'intro' };

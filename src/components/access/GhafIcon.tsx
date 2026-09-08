@@ -35,6 +35,7 @@ export type GhafIconName =
   | 'settings'
   | 'shield'
   | 'simple'
+  | 'speaker'
   | 'sparkle'
   | 'water-drop';
 
@@ -300,6 +301,13 @@ export function GhafIcon({
           <G {...common}>
             <Path d="M12 3c.7 4.6 2.4 6.3 7 7-4.6.7-6.3 2.4-7 7-.7-4.6-2.4-6.3-7-7 4.6-.7 6.3-2.4 7-7z" />
             <Path d="M19 15c.3 2.1 1.1 2.9 3 3-1.9.3-2.7 1.1-3 3-.3-1.9-1.1-2.7-3-3 1.9-.1 2.7-.9 3-3z" />
+          </G>
+        );
+      case 'speaker':
+        return (
+          <G {...common}>
+            <Path d="M4 10v4h4l5 4V6l-5 4H4z" />
+            <Path d="M16 9.2a4 4 0 010 5.6M18.5 7a7 7 0 010 10" />
           </G>
         );
       case 'calendar':

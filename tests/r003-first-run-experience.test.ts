@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { relative, resolve, sep } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import {
   classifyExperiencePath,
   initialFirstRunState,
+  ONBOARDING_PILLARS,
   ONBOARDING_STEPS,
   reduceFirstRunState,
   shouldShowSectionTransition,
@@ -36,17 +37,33 @@ function authoredRoutes(): string[] {
 }
 
 describe('R003 first-run experience', () => {
-  it('introduces Ghaf before three feature moments without granting an experience', () => {
-    expect(ONBOARDING_STEPS).toEqual(['intro', 'choose', 'support', 'growth']);
+  it('introduces Ghaf before Family, Sustainability, and bounded AI without granting an experience', () => {
+    expect(ONBOARDING_STEPS).toEqual([
+      'intro',
+      'family',
+      'sustainability',
+      'ai',
+      'support',
+      'growth',
+    ]);
+    expect(ONBOARDING_PILLARS).toEqual(['family', 'sustainability', 'ai']);
     expect(initialFirstRunState).toEqual({ completed: false, step: 'intro' });
 
-    const choose = reduceFirstRunState(initialFirstRunState, { type: 'next' });
-    expect(choose).toEqual({ completed: false, step: 'choose' });
-    expect(reduceFirstRunState(choose, { type: 'back' })).toEqual(initialFirstRunState);
+    const family = reduceFirstRunState(initialFirstRunState, { type: 'next' });
+    expect(family).toEqual({ completed: false, step: 'family' });
+    expect(reduceFirstRunState(family, { type: 'back' })).toEqual(initialFirstRunState);
 
-    const support = reduceFirstRunState(choose, { type: 'next' });
+    const sustainability = reduceFirstRunState(family, { type: 'next' });
+    expect(sustainability).toEqual({ completed: false, step: 'sustainability' });
+    expect(reduceFirstRunState(sustainability, { type: 'back' })).toEqual(family);
+
+    const ai = reduceFirstRunState(sustainability, { type: 'next' });
+    expect(ai).toEqual({ completed: false, step: 'ai' });
+    expect(reduceFirstRunState(ai, { type: 'back' })).toEqual(sustainability);
+
+    const support = reduceFirstRunState(ai, { type: 'next' });
     expect(support).toEqual({ completed: false, step: 'support' });
-    expect(reduceFirstRunState(support, { type: 'back' })).toEqual(choose);
+    expect(reduceFirstRunState(support, { type: 'back' })).toEqual(ai);
 
     const growth = reduceFirstRunState(support, { type: 'next' });
     expect(growth).toEqual({ completed: false, step: 'growth' });
@@ -58,6 +75,21 @@ describe('R003 first-run experience', () => {
       completed: true,
       step: 'intro',
     });
+  });
+
+  it('lets the family inspect only the three onboarding pillars', () => {
+    for (const pillar of ONBOARDING_PILLARS) {
+      expect(
+        reduceFirstRunState(initialFirstRunState, { type: 'goToPillar', step: pillar }),
+      ).toEqual({ completed: false, step: pillar });
+    }
+
+    expect(
+      reduceFirstRunState(initialFirstRunState, {
+        type: 'goToPillar',
+        step: 'growth' as (typeof ONBOARDING_PILLARS)[number],
+      }),
+    ).toEqual(initialFirstRunState);
   });
 
   it('buffers only directed major context handoffs and never same-role navigation', () => {
@@ -91,16 +123,55 @@ describe('R003 first-run experience', () => {
     const startupImages = source('src/features/startup/preloadStartupImages.ts');
     const tokens = source('src/design/tokens.ts');
     const welcome = source('app/index.tsx');
-    const combined = `${onboarding}\n${logo}\n${brandLockup}\n${splash}\n${transition}`;
+    const rasterPresentation = `${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
     expect(authoredRoutes()).toHaveLength(37);
-    expect(combined).not.toMatch(/react-native-svg|<Svg|GhafMark|GhafIcon/u);
-    expect(combined).not.toMatch(/https?:\/\//u);
+    expect(rasterPresentation).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
+    expect(`${onboarding}\n${rasterPresentation}`).not.toMatch(/https?:\/\//u);
     expect(logo).toContain("from 'expo-image'");
     expect(logo).toContain("require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png')");
     expect(onboarding).toContain('LocalIllustration');
     expect(onboarding).toContain('accessibilityLiveRegion="polite"');
     expect(onboarding).toContain('useReducedMotion');
+    expect(onboarding).toContain('first-run-pillar-');
+    expect(onboarding).toContain('accessibilityState={{ selected:');
+    expect(onboarding).toContain("type: 'goToPillar'");
+    expect(onboarding).toContain('withDelay');
+    expect(onboarding).toContain('testID="first-run-visual-story"');
+    expect(onboarding).toContain('scale:');
+    expect(onboarding).toContain('aspectRatio: 3 / 2');
+    expect(onboarding).not.toContain('heroHeight');
+    expect(onboarding).not.toContain('heroAccent');
+    expect(onboarding).toContain("from 'react-native-svg'");
+    expect(onboarding).toContain('ImagePerimeterProgress');
+    expect(onboarding).toContain('AnimatedPath');
+    expect(onboarding).toContain('strokeDasharray: [');
+    expect(onboarding).toContain('PERIMETER_BRANCH_LENGTH * progress.get()');
+    expect(onboarding).not.toContain('strokeDashoffset');
+    expect(onboarding).toContain('`A ${PERIMETER_RADIUS} ${PERIMETER_RADIUS}');
+    expect(onboarding).not.toContain('vectorEffect');
+    expect(onboarding).toContain('INITIAL_PERIMETER_PROGRESS');
+    expect(onboarding).toContain('ONBOARDING_STEPS.length - 1');
+    expect(onboarding).toContain('accessibilityElementsHidden');
+    expect(onboarding).toContain('testID="first-run-image-progress"');
+    expect(onboarding).toContain('testID="first-run-progress"');
+    expect(onboarding.indexOf('testID="first-run-progress"')).toBeGreaterThan(
+      onboarding.indexOf('testID="first-run-visual-story"'),
+    );
+    expect(onboarding).toContain('testID="first-run-navigation-actions"');
+    expect(onboarding.indexOf('testID="first-run-progress"')).toBeLessThan(
+      onboarding.indexOf('testID="first-run-navigation-actions"'),
+    );
+    expect(onboarding).toContain('styles.progressRow');
+    expect(onboarding).toContain('styles.dots');
+    expect(onboarding).toContain('styles.dotActive');
+    expect(onboarding).not.toContain('progressSegment');
+    expect(onboarding).not.toContain('styles.storyProgress');
+    expect(onboarding.match(/align="center"/gu)?.length).toBeGreaterThanOrEqual(3);
+    expect(onboarding).toContain('useOnboardingNarrator');
+    expect(onboarding).not.toMatch(
+      /(?:height|width|margin|padding)\s*:\s*[^,\n]*Progress\.get\(\)/u,
+    );
     expect(transition).toContain('shouldShowSectionTransition');
     expect(rootLayout).toContain('SplashScreen.preventAutoHideAsync');
     expect(rootLayout).toContain('SplashScreen.hideAsync');
@@ -145,6 +216,25 @@ describe('R003 first-run experience', () => {
     expect(welcome).toContain('<FirstRunOnboarding');
     expect(welcome).toContain("activeExperience === 'parent'");
     expect(welcome).toContain("activeExperience === 'child'");
+  });
+
+  it('keeps nine startup rasters and the 41-image post-paint queue', () => {
+    const registry = source('src/components/illustrations/illustrationSources.ts');
+    const manifest = JSON.parse(source('assets/images/illustrations/r003/ASSET_MANIFEST.json')) as {
+      readonly assets: readonly { readonly id: string }[];
+    };
+    const listStart = registry.indexOf('export const onboardingArtworkIds = [');
+    const listEnd = registry.indexOf('] as const satisfies readonly ArtworkId[];', listStart);
+    const onboardingIds = registry.slice(listStart, listEnd).match(/'onboarding-[a-z-]+'/gu);
+    const signedOutArtworkIds = new Set([
+      'field-paper',
+      'welcome-ghaf-habitat',
+      ...(onboardingIds ?? []).map((id) => id.slice(1, -1)),
+    ]);
+
+    expect(onboardingIds).toHaveLength(6);
+    expect(signedOutArtworkIds.size + 1).toBe(9);
+    expect(manifest.assets.length - signedOutArtworkIds.size + 1).toBe(41);
   });
 
   it('shows an opaque two-second splash, then loading, then onboarding', () => {
@@ -279,10 +369,32 @@ describe('R003 first-run experience', () => {
     const english = resources.en.translation.firstRun;
 
     expect(Object.keys(arabic).sort()).toEqual(Object.keys(english).sort());
-    expect(arabic.steps).toHaveLength(4);
-    expect(english.steps).toHaveLength(4);
+    expect(arabic.steps).toHaveLength(6);
+    expect(english.steps).toHaveLength(6);
     expect(arabic.steps[0]?.title).toContain('غاف');
     expect(english.steps[0]?.title).toContain('Ghaf');
+    expect(arabic.pillars.family).toContain('العائلة');
+    expect(arabic.pillars.sustainability).toContain('الاستدامة');
+    expect(arabic.pillars.ai).toContain('الذكاء');
+    expect(english.pillars).toEqual({
+      ai: 'AI',
+      family: 'Family',
+      sustainability: 'Sustainability',
+    });
+    expect(english.steps[3]?.body).toMatch(/Parent-approved task/iu);
+    expect(english.steps[3]?.body).toMatch(/may be wrong/iu);
+    expect(english.steps[3]?.body).toMatch(/adult/iu);
+    expect(arabic.steps[3]?.body).toMatch(/وافق|معتمدة/u);
+    expect(arabic.steps[3]?.body).toMatch(/قد (?:يخطئ|أخطئ)/u);
+    expect(arabic.steps[3]?.body).toMatch(/بالغ|وليّ الأمر/u);
+    expect(english.steps[0]?.title).toMatch(/I[’']m the Ghaf Guide/iu);
+    expect(arabic.steps[0]?.title).toContain('دليل غاف');
+    expect(english.narrator).toEqual(
+      expect.objectContaining({
+        replay: expect.any(String),
+        unavailable: expect.any(String),
+      }),
+    );
     for (const locale of [arabic, english]) {
       expect(locale.skip.length).toBeGreaterThan(0);
       expect(locale.next.length).toBeGreaterThan(0);
@@ -292,10 +404,73 @@ describe('R003 first-run experience', () => {
         expect(step.title.length).toBeGreaterThan(0);
         expect(step.body.length).toBeGreaterThan(0);
         expect(step.imageAlt.length).toBeGreaterThan(0);
-        expect(step.title.trim().split(/\s+/u).length).toBeLessThanOrEqual(9);
-        expect(step.body.trim().split(/\s+/u).length).toBeLessThanOrEqual(28);
+        expect(step.title.trim().split(/\s+/u).length).toBeLessThanOrEqual(7);
+        expect(step.body.trim().split(/\s+/u).length).toBeLessThanOrEqual(22);
       }
     }
+  });
+
+  it('uses prepared local narration and quiet foreground ambience after the slide settles', () => {
+    const narration = source('src/components/onboarding/useOnboardingNarrator.ts');
+    const ambience = source('src/components/onboarding/useOnboardingAmbience.ts');
+    const audioSources = source('src/components/onboarding/onboardingAudioSources.ts');
+    const illustration = source('src/components/illustrations/LocalIllustration.tsx');
+    const onboarding = source('src/components/onboarding/FirstRunOnboarding.tsx');
+    const packageJson = JSON.parse(source('package.json')) as {
+      readonly dependencies: Readonly<Record<string, string>>;
+    };
+
+    expect(packageJson.dependencies['expo-audio']).toMatch(/^~57\./u);
+    expect(packageJson.dependencies['expo-speech']).toBeUndefined();
+    expect(narration).toContain("from 'expo-audio'");
+    expect(narration).toContain('onboardingNarrationSources[locale][step]');
+    expect(narration).toContain('readonly ready: boolean');
+    expect(narration).toContain("Platform.OS === 'web' ? false : null");
+    expect(narration).toContain("if (Platform.OS === 'web') return");
+    expect(narration).toContain('AccessibilityInfo.isScreenReaderEnabled()');
+    expect(narration).toMatch(/addEventListener\(\s*'screenReaderChanged'/u);
+    expect(narration).toContain('player.play()');
+    expect(narration).toContain('player.pause()');
+    expect(narration).toContain('player.seekTo(0)');
+    expect(narration).toContain('!ready ||');
+    expect(narration).toContain('screenReaderEnabled !== false ||');
+    expect(narration).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
+    expect(ambience).toContain("from 'expo-audio'");
+    expect(ambience).toContain('onboardingAmbienceSource');
+    expect(ambience).toContain('player.loop = true');
+    expect(ambience).toContain('player.volume = narrationPlaying');
+    expect(ambience).toContain('player.pause()');
+    expect(ambience).toContain('shouldPlayInBackground: false');
+    expect(ambience).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
+    expect(
+      audioSources.match(/require\('\.\.\/\.\.\/\.\.\/assets\/audio\/onboarding\//gu),
+    ).toHaveLength(13);
+    expect(audioSources).not.toMatch(/https?:\/\//u);
+    expect(illustration).toContain('readonly onSettled?: () => void');
+    expect(illustration).toContain('onLoad={onSettled}');
+    expect(onboarding).toContain('onSettled={() => setImageReadyStep(state.step)}');
+    expect(onboarding).toContain('ready: slideReady');
+    expect(onboarding).not.toContain('first-run-narrator');
+    expect(onboarding).not.toContain('first-run-narration-toggle');
+    expect(onboarding).toContain('first-run-narration-replay');
+    expect(onboarding).toContain('<IconButton');
+    expect(onboarding).toContain('name="speaker"');
+    expect(onboarding).toContain('size={24}');
+    expect(onboarding).not.toContain('narration.toggle');
+    expect(`${narration}\n${ambience}\n${audioSources}`).not.toMatch(
+      /AudioRecorder|requestRecordingPermissions|SpeechRecognition|fetch\(|https?:\/\//u,
+    );
+
+    const audioDirectory = resolve(repositoryRoot, 'assets/audio/onboarding');
+    for (const file of [
+      'ambience-nature-v1.mp3',
+      ...['ar', 'en'].flatMap((locale) =>
+        ONBOARDING_STEPS.map((step) => `narration-${locale}-${step}-v1.mp3`),
+      ),
+    ]) {
+      expect(statSync(resolve(audioDirectory, file)).size, file).toBeGreaterThan(1_000);
+    }
+    expect(source('assets/audio/onboarding/README.md')).toMatch(/prepared synthetic|اصطناعي/iu);
   });
 
   it('inherits one shared raster brand shell across every access route', () => {

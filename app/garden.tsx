@@ -90,7 +90,7 @@ export default function GardenScreen() {
   const recognitionLedger = usePrototypeStore((state) => state.recognitionLedger);
   const hasActiveParentExperience = usePrototypeStore(selectHasActiveParentExperience);
   const hasActiveChildExperience = usePrototypeStore(selectCanEnterChildExperience);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const consumeCelebration = usePrototypeStore((state) => state.consumeCelebration);
   const [helpOpen, setHelpOpen] = useState(false);
   const [transitionError, setTransitionError] = useState<string | null>(null);
@@ -192,6 +192,10 @@ export default function GardenScreen() {
     [locale],
   );
   const activeChild = children[activeChildId];
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const activeChildName =
+    localFamily.record?.children.find((profile) => profile.id === activeChildId)?.nickname ??
+    localize(activeChild.displayName, locale);
   const activeRecognition = resolveActiveGardenRecognition({
     activeChildId,
     journey,
@@ -290,7 +294,7 @@ export default function GardenScreen() {
         direction={direction}
         onToggleSettings={() => router.push('/parent/settings' as Href)}
         profileLabel={t('parentHome.selectedChild', {
-          child: localize(activeChild.displayName, locale),
+          child: activeChildName,
         })}
         settingsLabel={t('parentHome.settingsLabel')}
         settingsOpen={false}
@@ -298,7 +302,10 @@ export default function GardenScreen() {
       />
     ) : (
       <ChildHomeHeader
-        avatarLabel={localize(activeChild.displayName, locale)}
+        avatarId={
+          localFamily.record?.children.find((profile) => profile.id === activeChildId)?.avatarId
+        }
+        avatarLabel={activeChildName}
         direction={direction}
         helpLabel={t('common.help')}
         helpOpen={helpOpen}
@@ -358,7 +365,7 @@ export default function GardenScreen() {
           direction={direction}
           onLeave={() => {
             setTransitionError(null);
-            const result = signOutExperience();
+            const result = beginTemporaryParentAccess();
             if (!result.ok) {
               setTransitionError(t('errors.safeRetry'));
               return;
@@ -384,7 +391,7 @@ export default function GardenScreen() {
           </View>
           <View style={styles.contextCopy}>
             <Text brand color="primary" direction={direction} variant="label">
-              {t('garden.profileContext', { child: localize(activeChild.displayName, locale) })}
+              {t('garden.profileContext', { child: activeChildName })}
             </Text>
             <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
               {t('origin.symbolic')}

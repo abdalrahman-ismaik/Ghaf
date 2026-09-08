@@ -15,6 +15,7 @@ import {
   spacing,
 } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import type { ChildTreeAvatarId } from '@/models/parentOnboarding';
 
 export default function ChooseChildProfileScreen() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function ChooseChildProfileScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const selectProfile = usePrototypeStore((state) => state.selectChildAccessProfile);
 
   if (activeExperience === 'parent') return <Redirect href="/parent" />;
@@ -55,28 +57,32 @@ export default function ChooseChildProfileScreen() {
         title={t('r003.access.chooseTitle')}
       />
       <View style={styles.profiles}>
-        <ProfileChoice
-          accessLabel={t('r003.access.salemAccess')}
-          avatar="ghaf_tree"
-          direction={direction}
-          label={t('r003.access.salemProfile')}
-          onPress={() => choose('child_salem')}
-          testID="choose-child-salem"
-        />
-        <ProfileChoice
-          accessLabel={t('r003.access.alyaAccess')}
-          avatar="flower"
-          direction={direction}
-          label={t('r003.access.alyaProfile')}
-          onPress={() => choose('child_alya')}
-          testID="choose-child-alya"
-        />
+        {localFamily.record?.children.map((child) => (
+          <ProfileChoice
+            accessLabel={t(
+              child.id === 'child_salem' ? 'r003.access.salemAccess' : 'r003.access.alyaAccess',
+            )}
+            avatar={child.avatarId}
+            direction={direction}
+            key={child.id}
+            label={child.nickname}
+            onPress={() => choose(child.id)}
+            testID={`choose-${child.id.replace('_', '-')}`}
+          />
+        ))}
       </View>
       <R003Status
         direction={direction}
-        icon="shield"
+        icon={localFamily.record ? 'shield' : 'family'}
         language={locale}
-        message={t('r003.access.synthetic')}
+        message={
+          localFamily.record
+            ? t('r003.access.synthetic')
+            : localFamily.status === 'unavailable'
+              ? t('access.states.localDataUnavailable')
+              : t('r003.access.parentRequired')
+        }
+        tone={localFamily.record ? 'neutral' : 'warning'}
       />
     </AccessScreen>
   );
@@ -91,7 +97,7 @@ function ProfileChoice({
   testID,
 }: {
   accessLabel: string;
-  avatar: 'ghaf_tree' | 'flower';
+  avatar: ChildTreeAvatarId;
   direction: 'rtl' | 'ltr';
   label: string;
   onPress: () => void;

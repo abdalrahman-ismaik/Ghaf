@@ -14,7 +14,9 @@ const expectedAssetIds = [
   'field-paper',
   'welcome-ghaf-habitat',
   'onboarding-ghaf-intro',
+  'onboarding-family',
   'onboarding-action',
+  'onboarding-ai',
   'onboarding-support',
   'onboarding-growth',
   'section-transition',
@@ -43,7 +45,9 @@ const expectedSourceDimensions: Readonly<
   'field-paper': { height: 1672, width: 941 },
   'welcome-ghaf-habitat': { height: 1024, width: 1536 },
   'onboarding-ghaf-intro': { height: 1024, width: 1536 },
+  'onboarding-family': { height: 1024, width: 1536 },
   'onboarding-action': { height: 1024, width: 1536 },
+  'onboarding-ai': { height: 1024, width: 1536 },
   'onboarding-support': { height: 1024, width: 1536 },
   'onboarding-growth': { height: 1024, width: 1536 },
   'section-transition': { height: 1536, width: 1024 },
@@ -174,7 +178,7 @@ function jpegEmbeddedPrompt(bytes: Buffer): string | null {
 }
 
 describe('R003 generated natural artwork contract', () => {
-  it('ships the exact 46-asset local manifest with complete provenance', () => {
+  it('ships the exact 48-asset local manifest with complete provenance', () => {
     expect(existsSync(manifestPath)).toBe(true);
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as ArtworkManifest;
 
@@ -182,9 +186,9 @@ describe('R003 generated natural artwork contract', () => {
     expect(manifest.assetRoot).toBe('assets/images/illustrations/r003/final');
     expect(manifest.direction).toBe('Quiet UAE Botanical Editorial');
     expect(manifest.generatedArtworkIsProductStateAuthority).toBe(false);
-    expect(manifest.assets).toHaveLength(46);
+    expect(manifest.assets).toHaveLength(48);
     expect(manifest.assets.map(({ id }) => id).sort()).toEqual([...expectedAssetIds].sort());
-    expect(new Set(manifest.assets.map(({ final }) => final.sha256)).size).toBe(46);
+    expect(new Set(manifest.assets.map(({ final }) => final.sha256)).size).toBe(48);
 
     for (const asset of manifest.assets) {
       expect(asset.generator).toBe('OpenAI imagegen');
@@ -196,7 +200,7 @@ describe('R003 generated natural artwork contract', () => {
       expect(asset.prompt.length).toBeGreaterThan(240);
       expect(asset.prompt).toMatch(/(?:No|Avoid:|Constraints:)[\s\S]{0,1500}\billustration\b/iu);
       expect(asset.prompt).toMatch(
-        /(?:No|Avoid:|Constraints:)[\s\S]{0,1500}\b(?:people|person)\b/iu,
+        /(?:No|Avoid:|Constraints:)[\s\S]{0,1500}\b(?:people|person|human)\b/iu,
       );
       expect(asset.routes.length).toBeGreaterThan(0);
       expect(asset.transformations.length).toBeGreaterThan(0);
@@ -226,7 +230,7 @@ describe('R003 generated natural artwork contract', () => {
     const localIllustration = source('src/components/illustrations/LocalIllustration.tsx');
 
     expect(registry).not.toMatch(/https?:\/\//u);
-    expect(registry.match(/require\(/gu)).toHaveLength(46);
+    expect(registry.match(/require\(/gu)).toHaveLength(48);
     for (const id of expectedAssetIds) expect(registry).toContain(`'${id}'`);
     expect(registry).toContain('landscapeArtworkSources');
     expect(registry).toContain('familyCanopyArtworkSources');

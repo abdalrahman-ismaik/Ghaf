@@ -97,6 +97,17 @@ import type {
   TaskReviewResult,
   TaskTemplate,
 } from '../../models/familyGrowth';
+import type {
+  CapabilityTokenClaims,
+  ChildCoachTextRequestV1,
+  ChildCoachTextResponseV1,
+  LiveChildCoachCapability,
+  LiveChildCoachGrant,
+  ParentTaskDraftRequestV1,
+  ParentTaskDraftSuggestionV1,
+  VoiceTranscriptionMetadataV1,
+  VoiceTranscriptionResponseV1,
+} from '../../models/boundedAi';
 
 export type { DomainError } from '../../models/familyGrowth';
 
@@ -274,6 +285,82 @@ export interface SyntheticVoiceService {
   ): ServiceResult<SyntheticVoiceSession>;
 }
 
+export interface ParentTaskDraftingService {
+  draft(request: ParentTaskDraftRequestV1): Promise<ServiceResult<ParentTaskDraftSuggestionV1>>;
+}
+
+export interface LiveChildCoachTextService {
+  respond(request: ChildCoachTextRequestV1): Promise<ServiceResult<ChildCoachTextResponseV1>>;
+}
+
+export interface VoiceTranscriptionInput {
+  readonly metadata: VoiceTranscriptionMetadataV1;
+  readonly audioBytes: Uint8Array;
+}
+
+export interface VoiceTranscriptionService {
+  transcribe(input: VoiceTranscriptionInput): Promise<ServiceResult<VoiceTranscriptionResponseV1>>;
+}
+
+export interface CapabilityTokenRequest {
+  readonly role: CapabilityTokenClaims['role'];
+  readonly scope: CapabilityTokenClaims['scope'];
+  readonly grantVersion?: number;
+  readonly noticeVersion?: number;
+  readonly voiceGrantVersion?: number;
+  readonly voiceNoticeVersion?: number;
+  readonly voiceRequestId?: string;
+  readonly voiceBindingNonce?: string;
+}
+
+export interface CapabilityTokenService {
+  getToken(request: CapabilityTokenRequest): Promise<ServiceResult<string>>;
+}
+
+export interface LiveChildAiGrantService {
+  get(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly now: string;
+  }): ServiceResult<LiveChildCoachGrant>;
+  update(input: {
+    readonly childId: SyntheticChildId;
+    readonly capability: LiveChildCoachCapability;
+    readonly granted: boolean;
+    readonly expectedVersion: number;
+    readonly noticeVersion: number;
+    readonly policyVersion: string;
+    readonly providerVersion: string;
+    readonly reauthenticationProofId: string;
+    readonly now: string;
+  }): ServiceResult<LiveChildCoachGrant>;
+  reset(): ServiceResult<true>;
+}
+
+export interface EphemeralMediaFile {
+  readonly uri: string;
+  readonly byteCount: number;
+}
+
+export interface EphemeralMediaService {
+  inspect(uri: string): Promise<ServiceResult<EphemeralMediaFile>>;
+  read(uri: string): Promise<ServiceResult<Uint8Array>>;
+  delete(uri: string): Promise<ServiceResult<true>>;
+}
+
+export interface CapturedVoiceFile {
+  readonly uri: string;
+  readonly durationMs: number;
+  readonly mediaType: 'audio/m4a';
+}
+
+export interface VoiceCaptureService {
+  requestPermission(): Promise<ServiceResult<'granted' | 'denied'>>;
+  startHeld(): Promise<ServiceResult<{ readonly startedAt: string }>>;
+  stopHeld(): Promise<ServiceResult<CapturedVoiceFile>>;
+  cancel(): Promise<ServiceResult<{ readonly uri: string | null }>>;
+}
+
 export interface SyntheticAccessService {
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
   terminateParentSession(input: ProjectAccessSessionInput): ServiceResult<ParentSessionTermination>;
@@ -285,6 +372,11 @@ export interface SyntheticAccessService {
   approvePairing(input: PairingApprovalInput): ServiceResult<PairingRequest>;
   revokePairing(input: PairingRevocationInput): ServiceResult<PairingRequest>;
   consumePairing(input: PairingConsumptionInput): ServiceResult<ChildAccessSession>;
+  restorePairedDevice(input: {
+    readonly childId: SyntheticChildId;
+    readonly deviceId: string;
+    readonly pairedAt: string;
+  }): ServiceResult<DeviceAccessState>;
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState>;
   issueReauthentication(input: ReauthenticationInput): ServiceResult<ReauthenticationProof>;
   authorizeSensitiveAction(input: SensitiveActionInput): ServiceResult<ReauthenticationProof>;
@@ -358,10 +450,14 @@ export interface FamilyLeagueService {
   ): ServiceResult<LeagueRolloverResult>;
 }
 
-export interface PreparedParentGuideProvider extends ParentGuideService {
+export interface BoundedParentGuideProvider extends ParentGuideService {
+  readonly mode: 'deterministic_prepared' | 'live_optional';
+  readonly disclosure: AssistantDisclosure;
+}
+
+export interface PreparedParentGuideProvider extends BoundedParentGuideProvider {
   readonly mode: 'deterministic_prepared';
   readonly fixtureId: 'guide_recycling_refine_v1';
-  readonly disclosure: AssistantDisclosure;
 }
 
 export interface PreparedChildCoachProvider extends ChildCoachService {
@@ -391,6 +487,7 @@ export interface Feature003ServiceRegistry {
   readonly familyProjection: FamilyProjectionService;
   readonly media: MediaService;
   readonly parentGuide: PreparedParentGuideProvider;
+  readonly parentGuidePrimary: BoundedParentGuideProvider;
   readonly childCoach: PreparedChildCoachProvider;
   readonly coachAdaptation: CoachAdaptationService;
   readonly syntheticVoice: SyntheticVoiceService;
@@ -399,4 +496,28 @@ export interface Feature003ServiceRegistry {
   readonly familyLeague: FamilyLeagueService;
   readonly parentSummary: ParentSummaryPolicy;
   readonly prototypeSession: PrototypeSessionService;
+  readonly boundedAi: Feature004ServiceRegistry;
+}
+
+export interface PreparedParentTaskDraftingProvider extends ParentTaskDraftingService {
+  readonly mode: 'deterministic_prepared';
+}
+
+export interface PreparedLiveChildCoachTextProvider extends LiveChildCoachTextService {
+  readonly mode: 'deterministic_prepared';
+}
+
+export interface PreparedVoiceTranscriptionProvider extends VoiceTranscriptionService {
+  readonly mode: 'deterministic_prepared';
+}
+
+export interface Feature004ServiceRegistry {
+  readonly parentTaskDraftingPrepared: PreparedParentTaskDraftingProvider;
+  readonly parentTaskDraftingPrimary: ParentTaskDraftingService;
+  readonly childCoachTextPrepared: PreparedLiveChildCoachTextProvider;
+  readonly childCoachTextPrimary: LiveChildCoachTextService;
+  readonly voiceTranscriptionPrepared: PreparedVoiceTranscriptionProvider;
+  readonly voiceTranscriptionPrimary: VoiceTranscriptionService;
+  readonly capabilityToken: CapabilityTokenService;
+  readonly childAiGrants: LiveChildAiGrantService;
 }

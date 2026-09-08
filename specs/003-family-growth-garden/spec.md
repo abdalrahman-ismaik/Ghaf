@@ -18,6 +18,330 @@ slice.
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
+## R003 AI Services 1–3 Integration Amendment — 2026-09-07
+
+This amendment authorizes three bounded improvements without widening the Child-data or P0 product
+boundary. First, the existing prepared Parent Guide, prepared Child Coach, strengths-first Parent
+summary, age adapter, synthetic voice rehearsal, prepared media, and deterministic profile helper
+remain the complete mandatory offline AI experience. Second, one optional server-side Parent Guide
+operation may transform only the exact synthetic `task_recycling_p0_v1` make-clearer request into
+the already reviewed canonical bilingual task. Third, the existing profile helper may rank and
+mark allowlisted Task Builder categories from the persisted curated profile selections. Every task
+still requires normal Parent selection, review, save, and approval.
+
+The live Parent operation is a provider-neutral adapter plus a Cloudflare Workers AI reference
+gateway. The gateway requires a server-held access token, rejects every operation except the exact
+synthetic Parent request, applies a bound rate limiter, requests strict structured JSON, returns no
+Child Coach or media operation, and stores no request. The Expo bundle may contain the public
+endpoint but never an access token or provider credential. Because this prototype has no production
+session/token broker, the default registry remains prepared and release activation remains
+`BLOCKED`; tests may inject a synthetic credential into the adapter without claiming a deployed or
+live model result. A timeout, authentication failure, non-JSON response, schema mismatch, request
+mismatch, safety rejection, or provider error returns the same-attempt reviewed prepared result and
+retains Parent input.
+
+- **FR-210**: The deterministic Parent Guide, Child Coach, Parent summary, age-adaptation,
+  synthetic voice, prepared media, and profile-personalization services MUST remain registered,
+  offline-capable, reset-safe, and the default application behavior.
+- **FR-211**: The optional live gateway MUST expose only `refine_parent_task_v1` for the exact
+  synthetic Salem/version-one/Green-Impact/make-clearer request and MUST reject Child Coach,
+  summary, media, arbitrary task, real profile, free-text Child, and unknown operations.
+- **FR-212**: The gateway MUST require a server-side access-token secret, use constant-time token
+  comparison, apply the configured authenticated-client rate limiter before inference, bound the
+  request body, permit only configured CORS origin or originless native requests, and emit
+  no-store responses without logging prompt or profile content.
+- **FR-213**: The live Parent Guide adapter MUST use HTTPS, strict request/response schemas, a
+  bounded abort timeout, no automatic model retry, exact request-id correlation, immutable
+  category/reward/privacy/safety fields, local safety validation, and a `live` disclosure only for
+  a directly accepted gateway result.
+- **FR-214**: Gateway credentials MUST enter the adapter through an injected trusted token
+  provider and MUST NOT use an `EXPO_PUBLIC_` variable, committed file, log, error message, fixture,
+  or mobile-bundle constant. With no trusted provider, the prepared service MUST remain primary.
+- **FR-215**: Every optional-live failure MUST resolve in the same request attempt to
+  `guide_recycling_refine_v1`, retain the Parent's exact input, explain prepared fallback, and
+  leave task, assignment, Seeds, Garden, League, Reward, media, and Child Coach state unchanged.
+- **FR-216**: Profile recommendations MUST be derived only from the existing allowlisted age band,
+  interests, hobbies, accessibility defaults, support preferences, and opt-in value; gender,
+  nickname, family name, contact data, free text, media, history, and provider calls remain excluded.
+- **FR-217**: Task Builder recommendation output MUST contain every curated category exactly once,
+  move at most two prepared recommendations ahead of the stable catalog order, visibly disclose
+  prepared/local/fallible status, and return the original order when personalization is disabled or
+  invalid.
+- **FR-218**: A recommendation MAY preselect the top category only when the current Task Builder
+  state has no stronger explicit journey, origin prefill, or canonical P0 selection; it MUST NOT
+  make a future-only template executable, assign work, change an award, or bypass Parent review.
+- **FR-219**: Live Child Coach, real Child text/voice/photo processing, live profile inference,
+  legacy mission generation, provider deployment, and token-broker implementation remain outside
+  this amendment and require separate specification and evidence.
+- **SC-060**: Focused tests prove prepared-default behavior with zero fetches plus authenticated
+  live success, missing/invalid credential denial, strict request rejection, rate-limit rejection,
+  timeout, HTTP, non-JSON, malformed-schema, correlation, and safety fallback cases.
+- **SC-061**: Source/config scans find no provider secret or public access-token variable and prove
+  that the Worker exposes no Child Coach/media route, no permissive wildcard CORS, and no committed
+  local Worker state.
+- **SC-062**: Profile tests prove deterministic stable ordering, no duplicates, opt-out/original
+  order, prohibited-input rejection, visible recommendation labels, and unchanged Parent approval
+  plus sole-executable-task guards.
+- **SC-063**: Typecheck, lint, formatting, full tests, Expo public-config inspection, secret/network
+  scans, and Git whitespace pass without changing the current route manifest or default-off R002b
+  flags.
+- **SC-064**: Worker deployment, direct live-model transformation, trusted mobile token broker,
+  physical Android behavior, and named Arabic/UAE/safeguarding/privacy/accessibility review remain
+  `NOT RUN` or `BLOCKED` until directly evidenced; automated mocks cannot pass them.
+
+## R003 Onboarding Image Perimeter Progress Amendment — 2026-09-07
+
+This amendment removes the detached solid accent strip from the bottom of each onboarding
+photograph. In its place, a thin rounded progress stroke is integrated with the existing 3:2 image
+edge. On the first moment it appears as a short centered mark along the lower edge; each explicit
+Back, Next, or pillar selection grows or reverses two equal branches around the image; and the
+sixth moment completes the full perimeter. It never advances with narration, ambience, or time.
+
+The lower current/total plus six-dot row remains the primary accessible navigation indicator and
+continues to sit above the actions. The perimeter stroke is a noninteractive visual echo of that
+same state, is hidden from assistive technology to avoid duplicate announcements, and uses a
+high-contrast branded stroke plus a restrained edge track. Standard motion runs on the UI thread;
+reduced-motion mode renders the correct static extent without spatial animation.
+
+- **FR-207**: The onboarding photograph MUST NOT render a detached solid lower accent strip.
+- **FR-208**: A thin rounded image-edge progress stroke MUST start at the bottom center, grow
+  symmetrically in both directions from the explicit six-step state, and complete the photograph's
+  perimeter only on the last moment.
+- **FR-209**: The image-edge stroke MUST be noninteractive, hidden from assistive technology,
+  independent of audio/time, and reduced-motion equivalent; the existing lower current/total plus
+  dots MUST retain the sole programmatic progress semantics.
+- **SC-059**: Focused source tests and compact bilingual inspection prove the old strip is absent,
+  the first/last perimeter states are distinct and deterministic, the lower semantic indicator is
+  unchanged, and standard/reduced-motion layouts preserve the 3:2 image without overflow.
+
+## R003 Compact Audio Onboarding Amendment — 2026-09-07
+
+This amendment refines the existing six-moment in-route first-run story without changing its
+order, three-pillar navigation, completion semantics, or any product authority. It supersedes the
+square crop, segmented story rail, and visible Guide panel from the immediately preceding
+presentation pass. Each moment reveals the existing 1200×800 local photograph in its intended
+responsive 3:2 frame, preserving the curated mix of wide establishing views and close details.
+The original direction-aware current/total plus dot indicator returns directly above the actions
+and changes only when the family explicitly uses Next, Back, or a pillar target.
+
+The first-run copy now speaks in the first-person voice of the Ghaf Guide, the app's bounded AI
+assistant. Arabic and English titles and bodies stay short, direct, concrete, energetic, and
+equivalent, render centered, and preserve Parent approval, permitted-help full recognition,
+permanent private symbolic growth, AI fallibility/adult help, and the no-measured-impact boundary.
+
+Each fully settled moment requests its packaged prepared synthetic Arabic or English narration
+automatically. The Guide panel is removed; one high-contrast 48dp speaker icon over the photograph
+replays the current clip. The exact visible title/body remains the transcript. Narration stops on
+step/locale change and onboarding exit, stays silent when a screen reader is active, and failure
+never blocks navigation. Quiet packaged nature ambience may loop only while onboarding is visible,
+at a low level that yields beneath narration and assistive speech; it stops on exit and never opts
+into operating-system background playback. Browser autoplay refusal is an external platform limit:
+the first explicit speaker press must still start the packaged clip when audio is available.
+
+- **FR-202**: Every first-run photograph MUST render in a responsive 3:2 frame using the existing
+  local raster and crop/fallback path; no new raster, runtime URL, or mirrored RTL asset is allowed.
+- **FR-203**: The original direction-aware current/total plus six-dot indicator MUST appear
+  directly above the lower navigation actions with clear inactive dots, a wider high-contrast
+  current dot, and programmatic progress semantics; it MUST NOT use a timer, autoplay navigation,
+  urgency, or completion pressure.
+- **FR-204**: All six Arabic/English titles and bodies MUST be short, direct, enthusiastic
+  centered first-person Ghaf Guide narration while preserving every existing approval, safety,
+  privacy, permanence, fallibility, adult-help, and symbolic-impact truth.
+- **FR-205**: Onboarding narration MUST use packaged prepared synthetic clips, keep the exact
+  transcript visible, start only after the current slide has settled, replay from one speaker icon,
+  stop across step/locale/exit boundaries, suppress playback with an active screen reader, and
+  remain nonblocking when audio is unavailable or browser autoplay is denied.
+- **FR-206**: Narration and quiet packaged nature ambience MUST remain foreground-only presentation
+  with no microphone, recording, recognition, background listening/OS playback, runtime URL, live
+  model call, companion claim, or new AI/access permission. Ambience MUST stop on onboarding exit.
+- **SC-057**: Focused tests prove the 3:2 frame, original lower dot indicator, centered six-script
+  presentation, one speaker control, packaged narration/ambience lifecycle, screen-reader
+  suppression, unchanged reducer/route/startup image sets, and no microphone/network API.
+- **SC-058**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the full wide and
+  close compositions, centered copy, simple indicator, speaker target, scrolling, and standard/
+  reduced-motion states remain readable with no horizontal overflow. Physical Android autoplay,
+  audio focus, TalkBack interaction, and named Arabic/voice review remain separately evidenced.
+
+## R003 Device-local Family Directory and Guided Setup Amendment — 2026-09-06
+
+This amendment authorizes one small device-local database for the demonstration. It supersedes
+earlier statements that the first-family completion receipt, configured profile directory, and
+synthetic paired-device markers always disappear on reload. It does not authorize production
+accounts, remote identity, cross-device synchronization, cloud backup, analytics, notifications,
+or persistence of the task/reward/garden ledgers. The database represents one synthetic household
+on one device and is cleared by the existing Parent-only prototype reset.
+
+The local directory contains exactly one Parent role and one or two configured Child profile slots.
+The Parent setup asks for the family name, app language, and Child count before presenting one
+ordered form for each Child. Every Child form asks for a nickname, botanical avatar, age band,
+preferred language, optional gender selection (`boy`, `girl`, or `prefer not to say`), curated
+interests, curated hobbies, accessibility defaults, and practical support preferences. Gender is
+never inferred and never changes recommendations, rewards, access, or Arabic grammar. No open
+"important information" field, diagnosis, school, address, location, legal name, birthday, photo,
+voice, contact detail, secret, or emotional disclosure is collected.
+
+The form includes a visibly labeled Ghaf AI profile helper. It may turn only the chosen age band,
+interests, hobbies, accessibility defaults, and support preferences into a deterministic prepared
+coaching-style summary and a small allowlisted set of task-category suggestions. The Parent may
+exclude a Child profile from this personalization. The helper must state that it is prepared AI,
+may be wrong, stays on the device, and does not independently assign or approve tasks. Gender is
+explicitly excluded from its inputs. The shared sparkle/star mark appears only beside a real
+bounded Guide, Coach, or prepared-personalization affordance and always has nearby explanatory
+text; it must not become decorative proof that a live model ran.
+
+After successful creation, the application atomically saves the validated directory and restores
+the immutable completion receipt before access routes can make a first-family decision. A verified
+returning Parent therefore reaches Parent Home without Family Basics, Child forms, Review Family,
+or Family Created. Configured Child names and avatars replace the corresponding Salem/Alya display
+fixtures, and an unconfigured second slot is absent from Parent and Child profile selectors. A
+stored paired-device marker may restore only the existing synthetic Child credential path; it is
+not authentication. Corrupt, unknown-version, or unavailable local data fails closed to a fresh
+setup with an honest recoverable local-storage message and never creates partial profiles.
+
+- **FR-190**: The app MUST persist one versioned, validated local family directory through an
+  `expo-sqlite`-backed device adapter and a deterministic test adapter; web preview MAY use
+  `localStorage`, and none of these adapters may claim production security or cloud persistence.
+- **FR-191**: The persisted record MUST contain one synthetic Parent role, one or two configured
+  Child roles, family/app-language metadata, the approved minimum Child profile fields, and
+  synthetic paired-device markers only; it MUST NOT contain verification/PIN values, free-form
+  sensitive notes, media, assistant transcripts, task history, reward balances, or provider data.
+- **FR-192**: Family Basics MUST ask Child count before profile entry, and the setup MUST present
+  exactly one sequential, resumable-in-memory form per selected Child followed by one whole-family
+  review; Back MUST preserve validated draft values without skipping or duplicating a Child.
+- **FR-193**: Child profile validation MUST require only nickname, age band, avatar, and preferred
+  language; gender, interests, hobbies, accessibility defaults, support preferences, and prepared
+  personalization MUST remain optional and independently changeable before family creation.
+- **FR-194**: Gender MUST be limited to `boy`, `girl`, or `prefer not to say`, MUST never be
+  inferred, and MUST be excluded from AI personalization, reward, access, rank, task suitability,
+  and gendered-copy decisions.
+- **FR-195**: Prepared AI personalization MUST consume only allowlisted non-sensitive profile
+  selections, return a deterministic bounded coaching summary plus curated category suggestions,
+  disclose its prepared/local/fallible status, and leave assignment and approval to the Parent.
+- **FR-196**: Family creation MUST validate every configured Child, persist the complete directory
+  as one record, then expose the completion receipt; a save failure MUST keep the Parent in review
+  with no authenticated Parent experience and a retry path.
+- **FR-197**: Startup MUST restore a valid saved directory before access routing decisions, rebuild
+  the existing immutable Parent completion receipt, project configured names/avatars into the
+  prototype session, and never flash or enter first-family setup for a returning household.
+- **FR-198**: Parent and Child selectors MUST expose only configured profile slots, and direct
+  attempts to select an unconfigured Child MUST fail closed without changing the active profile.
+- **FR-199**: A completed synthetic Child pairing MUST persist only its allowlisted Child/device
+  marker; reload MAY restore that marker so the same fixture credential reaches Today and triggers
+  the existing one-use returning-Child welcome, while revoked or reset markers MUST not restore.
+- **FR-200**: Parent reset MUST synchronously clear the local family directory and paired markers,
+  restore the exact canonical synthetic session, return to Arabic-first signed-out entry, and make
+  first-family setup available again without touching packaged fixtures.
+- **FR-201**: The shared AI sparkle/star mark MUST be used at the setup helper and existing bounded
+  Guide/Coach entry points only with readable labels and accessibility names; it MUST NOT imply
+  unrestricted chat, live inference, or autonomous decision-making.
+- **SC-052**: Focused tests prove schema parsing, unknown-version/corruption rejection, atomic save,
+  reload restoration, configured-profile filtering, paired-marker restoration/revocation, and
+  synchronous Parent reset clearing without changing task/reward/privacy authorities.
+- **SC-053**: Controller/store tests prove one- and two-Child sequence order, Back preservation,
+  validation, idempotent family creation, returning-Parent bypass, and unconfigured-slot denial.
+- **SC-054**: Assistant tests prove deterministic output, optional opt-out, input allowlisting,
+  gender exclusion, prohibited-language rejection, and no provider/network dependency.
+- **SC-055**: Arabic RTL and English LTR browser inspection at 320×720 and 390×844 proves the
+  family-count, each Child form, AI helper, review, creation, reload, and return-welcome flows remain
+  readable, keyboard-scrollable, and free of horizontal overflow.
+- **SC-056**: Typecheck, lint, formatting, full tests, dependency alignment, exact route/reset
+  checks, web and Android exports, detector, and Git whitespace checks pass on the integrated slice;
+  physical Android/TalkBack/Back/IME/font-scale results remain separately evidenced.
+
+## R003 SMAC Family–Sustainability–AI Onboarding Amendment — 2026-09-06
+
+This amendment supersedes the four-moment first-run story wherever it conflicts. The optional
+in-route onboarding now contains six short moments in this order: introduce Ghaf, make Family an
+explicit team, make Sustainability an explicit everyday action, explain bounded task-focused AI,
+preserve permitted help/full recognition, and close on permanent private symbolic growth. The
+three competition pillars—Family, Sustainability, and AI—must be readable within seconds and use
+child-clear Modern Standard Arabic with equivalent plain English.
+
+The Ghaf introduction and three pillar moments expose one accessible three-pillar navigator.
+Selecting a pillar moves only to its onboarding explanation; it does not complete onboarding,
+choose a role, approve a task, enable AI, or grant access. Next, Back, always-visible Skip, locale
+retention, active-session bypass, session-local completion, and deterministic reset remain
+unchanged. Standard step changes use one brief UI-thread opacity/vertical-settle transition;
+reduced motion removes travel and presents the settled state.
+
+Two new generated local raster photographs represent Family and bounded AI without people, hands,
+readable text, UI, robot/companion imagery, fantasy claims, or measured-impact claims. This grows
+the generated artwork registry from 46 to exactly 48 entries and the signed-out startup set from
+seven to nine rasters: official logo, shared leaf field, six onboarding photographs, and Welcome.
+The four branded fonts remain the only blocking font set. The post-onboarding queue still contains
+41 rasters because the two new files also move into the expanded startup set; its timing, bounded
+parallelism, cache sharing, and prepared-media-last rule remain unchanged.
+
+The AI moment must say that Ghaf can simplify only a Parent-approved task, that AI may be wrong,
+and that the Child can ask an adult. It must not imply open chat, emotional companionship,
+continuous listening, diagnosis, task approval, Parent replacement, or live-provider processing.
+The Sustainability moment describes safe household actions and Parent approval without claiming
+measured environmental impact. All six moments remain presentation only and preserve the current
+37 product routes and every access, task, Seed, Garden, League, Family Reward, privacy, reset, and
+feature-flag authority.
+
+- **FR-185**: Fresh Arabic-first onboarding MUST expose exactly six ordered, skippable moments:
+  `intro → family → sustainability → ai → support → growth`, with equivalent English resources.
+- **FR-186**: Family, Sustainability, and AI MUST each have a distinct child-clear title, body,
+  local raster photograph, and accessible navigator target; selecting a target MUST change only the
+  onboarding step.
+- **FR-187**: AI onboarding copy MUST disclose the bounded approved-task purpose, fallibility, and
+  adult-help exit and MUST NOT make a live-model, open-chat, companion, surveillance, or diagnosis
+  claim.
+- **FR-188**: Step motion MUST run on the UI thread through transform/opacity only, preserve visible
+  settled content by default, and remove spatial travel when reduced motion is enabled.
+- **FR-189**: Startup MUST settle the exact nine-raster/four-font signed-out set before onboarding;
+  the 41-image deferred queue MUST still begin only after onboarding receives its paint opportunity.
+- **SC-050**: Source and flow tests prove six-state order, pillar navigation, AI/sustainability
+  truthfulness, exact 48-artwork provenance, nine-raster startup readiness, 41-image deferred
+  boundary, unchanged 37-route inventory, and no new product authority.
+- **SC-051**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the six moments,
+  three-pillar navigator, Back/Next/Skip/Start, image crops, and standard/reduced motion remain
+  readable and operable without horizontal overflow; physical Android and named-human review stay
+  separately evidenced.
+
+## R003 Returning-family Entry and Welcome Amendment — 2026-09-06
+
+The immutable local Parent completion receipt remains the sole authority that this synthetic
+prototype family already exists. After successful returning-Parent verification, the application
+must reuse that receipt, enter the existing Parent experience, and navigate to Parent Home without
+rendering Family Basics, Add First Child, Review Family, or Family Created. Direct or stale entry
+into a first-family route while verified with an existing receipt must fail closed back through
+the returning verification handoff and must never mutate or replace the household.
+
+Successful sign-in to an already paired Child fixture must likewise enter that Child's Today
+dashboard without exposing Parent setup or another Child profile. First-family completion and the
+first completion of a new Child pairing are not returning entries.
+
+Each qualifying returning sign-in creates one disposable, role-bound dashboard-presentation
+signal. Parent Home or Child Today consumes it through a dismissible Arabic-first/English-
+equivalent welcome dialog that identifies the correct role/user and summarizes at most two current
+local updates already authorized on that dashboard. Parent content remains Parent-only; Child
+content is limited to that Child's own task and permanent personal Garden progress. The dialog is
+an in-app local summary, not a push notification, remote sync, persistence guarantee, or new data
+authority. Dismissal, sign-out, handoff, or deterministic reset clears the signal; opening an
+update clears it before following the existing route/action.
+
+- **FR-180**: A verified Parent with an existing completion receipt MUST bypass every first-family
+  creation screen, reuse the receipt idempotently, and land on the existing Parent dashboard.
+- **FR-181**: A Child credential accepted through an existing active paired-device fixture MUST
+  land on that Child's Today dashboard; new pairing completion MUST NOT be classified as returning.
+- **FR-182**: Returning Parent and Child entries MUST set exactly one transient role/profile-bound
+  welcome signal; first-family creation, sign-out, role handoff, dismissal, and reset MUST leave it
+  absent.
+- **FR-183**: Parent Home and Child Today MUST show the signal as one accessible, reduced-motion-
+  aware, dismissible Soft Geometric dialog containing no more than two role-authorized local
+  updates and one dominant continuation action.
+- **FR-184**: Returning summaries MUST use bilingual resources, 48dp targets, logical RTL/LTR
+  layout, tabular locale-aware values, and explicit local/private wording; they MUST NOT imply push
+  delivery, remote sync, production authentication, or durable notification history.
+- **SC-048**: Focused state and route tests prove fresh creation receives no welcome, returning
+  Parent/Child sign-ins receive the correct one-use signal, every clear boundary removes it, and a
+  completed family can never render or mutate first-family setup.
+- **SC-049**: Arabic RTL and English LTR proxy inspection at 320×720 and 390×844 shows the dialog
+  over each correct dashboard with readable long copy, no overflow, correct Back/dismiss behavior,
+  and no role-private leakage; physical Android/TalkBack remains separately evidenced.
+
 ## R003 Ordered Splash-to-loading Startup Amendment — 2026-09-06
 
 This amendment supersedes every earlier combined app-owned splash/loading duration where it
@@ -460,6 +784,49 @@ immutable local completion receipt already exists, the interface MUST NOT imply 
 household can be created or overwrite the completed household. Screen-level orientation and
 supporting copy are centered, while mixed phone/email labels, values, helpers, and errors retain
 logical-start alignment and automatic bidi handling.
+
+### R003 returning Parent identifier lookup addendum — 2026-09-07
+
+The single device-local family directory MUST persist the normalized synthetic Parent identifier
+and its email/phone kind, but MUST NOT persist the deterministic verification code, an authenticated
+session, a password, biometric input, or a provider token. Explicit sign-up MAY create the one
+family only when no completed directory exists. Atomic family creation MUST bind that directory to
+the same normalized identifier that passed the existing deterministic code step.
+
+Returning Parent sign-in MUST normalize the submitted identifier and compare it with the saved
+directory before opening verification. A missing family, unavailable directory, or non-matching
+identifier MUST fail closed on sign-in and MUST NOT request a code, authenticate a Parent, or enter
+Family Basics, Child setup, review, or success. Matching is case-insensitive for email and uses the
+existing canonical phone normalization. After the matching identifier and deterministic code pass,
+the immutable completion receipt MUST be reused and Parent Home MUST open directly, except that the
+existing pending Child-pairing destination remains authoritative.
+
+The prior schema-1 fixture MAY migrate once to schema 2 by binding only the canonical prepared
+`parent@example.com` Parent identifier; corrupt and unknown versions remain rejected. Parent reset
+MUST clear both current and legacy keys. Parent access-screen copy MUST be concise and neutral: it
+MUST NOT display demo, synthetic, simulated, fake, or “not real” authentication disclaimers, and it
+MUST NOT claim that a code was sent or that remote identity verification occurred. The simulated
+biometric shortcut MUST be removed. Product documentation, tests, and runbook evidence MUST retain
+the truthful deterministic local-prototype boundary; this addendum does not authorize production
+authentication or storage of real credentials.
+
+- **FR-202**: Family creation MUST save the normalized Parent identifier and kind in the validated
+  schema-2 local directory only after the complete family record is ready to save.
+- **FR-203**: Returning Parent verification MUST be requestable only after an exact normalized
+  identifier match against the available local family record; missing or mismatched records return
+  `NOT_FOUND` without changing verification or access state.
+- **FR-204**: A matching returning Parent who passes the deterministic code MUST reuse the existing
+  receipt and bypass every create-family route; verification without the closed `create-family`
+  marker MUST never fall forward into Family Basics.
+- **FR-205**: Parent sign-in/sign-up/verification MUST omit prototype-authentication disclaimers and
+  the simulated biometric action while avoiding any claim of message delivery or remote identity
+  proof. Internal capability truth and deterministic test fixtures remain unchanged.
+- **SC-054**: Focused tests prove schema-2 round-trip, schema-1 canonical migration, reset clearing,
+  normalized email/phone matching, mismatch denial without state mutation, explicit-sign-up-only
+  creation, and direct returning-Parent handoff.
+- **SC-055**: Bilingual source/resource tests prove no Parent access screen renders demo,
+  synthetic, simulated, “not real,” fake-biometric, or message-sent copy and that missing-origin
+  verification cannot enter first-family setup.
 
 ### Preserved behavior versus blocked expansion
 
@@ -1884,7 +2251,7 @@ the historical domain-only result recorded by FR-118.
   live UI without horizontal overflow; physical Android, TalkBack, botanical/cultural review, and
   final illustration-rights review remain separately recorded rather than inferred.
 - **SC-046**: Automated source and flow checks find exactly four ordered in-route onboarding
-moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
+  moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
   exactly 46 local raster manifest/registry entries, and no new authority or runtime image URL.
 - **SC-047**: Arabic RTL and English LTR web-proxy inspection at 320×720 and 390×844 shows the full
   first-run and Welcome journey with no clipped copy, hidden action, broken image, horizontal

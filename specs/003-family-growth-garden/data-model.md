@@ -3,14 +3,84 @@
 ## Purpose and Boundary
 
 This model replaces the Feature 002 food-rescue domain for the judge-facing Feature 003 journey
-without rewriting Feature 002 history. It is an in-memory, deterministic prototype model. Every
-profile, task choice, assistant result, media item, summary, and circle value is synthetic or
+without rewriting Feature 002 history. The task, reward, Garden, League, assistant-result, and
+circle authorities remain an in-memory deterministic prototype model. R003 additionally persists
+one validated family directory and synthetic paired-device markers locally on the current device.
+Every profile, task choice, assistant result, media item, summary, and circle value is synthetic or
 prepared local data.
 
-The model has one aggregate root, `PrototypeSession`. Screens read the aggregate through services;
+The behavioral model has one aggregate root, `PrototypeSession`; the separate `LocalFamilyRecord`
+is a startup/access directory and never becomes a reward or task ledger. Screens read through services;
 they do not calculate rewards, garden stages, or shared projections. The deterministic provider is
-the complete P0 path. No account, remote persistence, unrestricted assistant conversation, or live
-Child media enters this model.
+the complete P0 path. No production account, remote persistence, unrestricted assistant
+conversation, or live Child media enters this model.
+
+## Device-local Family Directory
+
+```ts
+type LocalChildSlotId = 'child_salem' | 'child_alya';
+type LocalChildGender = 'boy' | 'girl' | 'prefer_not_to_say';
+type LocalChildInterest = 'nature' | 'making' | 'stories' | 'family_helping' | 'sustainability';
+type LocalChildHobby = 'drawing' | 'reading' | 'sports' | 'puzzles' | 'gardening';
+type LocalSupportPreference =
+  'short_steps' | 'visual_examples' | 'extra_time' | 'adult_alongside' | 'quiet_reminders';
+
+interface LocalFamilyRecord {
+  readonly schemaVersion: 2;
+  readonly householdId: 'household_al_noor';
+  readonly familyName: string;
+  readonly appLanguage: 'ar' | 'en';
+  readonly parent: {
+    readonly id: 'parent_al_noor';
+    readonly role: 'parent';
+    readonly normalizedIdentifier: string;
+    readonly identifierKind: 'email' | 'phone';
+  };
+  readonly children: readonly LocalChildProfile[];
+  readonly pairedChildIds: readonly LocalChildSlotId[];
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly origin: 'local_demo';
+  readonly capabilityTruth: 'local_prototype_not_authentication';
+}
+
+interface LocalChildProfile {
+  readonly id: LocalChildSlotId;
+  readonly role: 'child';
+  readonly nickname: string;
+  readonly avatarId: ChildTreeAvatarId;
+  readonly ageBand: AgeBand;
+  readonly preferredLanguage: ChildPreferredLanguage;
+  readonly gender: LocalChildGender | null;
+  readonly interests: readonly LocalChildInterest[];
+  readonly hobbies: readonly LocalChildHobby[];
+  readonly accessibilityDefaults: readonly BasicAccessibilityDefault[];
+  readonly supportPreferences: readonly LocalSupportPreference[];
+  readonly personalizationEnabled: boolean;
+}
+```
+
+One current namespaced JSON value is stored by the repository. On Android/iOS the key-value
+implementation is backed by Expo SQLite; web preview uses browser local storage; tests inject
+memory storage. Every read is parsed through the same strict schema and unknown versions fail
+closed. A valid schema-1 value under the legacy key migrates once to schema 2 with only the
+canonical prepared `parent@example.com` identifier, then the legacy key is removed. The record
+stores the normalized synthetic Parent identifier for local membership lookup, but no verification
+code, password, authenticated session, PIN/picture sequence, media, task text/history,
+reward/Seed value, assistant transcript, location, school, birthday, diagnosis, emotional
+disclosure, or open notes.
+
+The `children` order maps Child 1 to `child_salem` and Child 2 to `child_alya`; these are stable
+synthetic implementation slots, not real identities. The behavioral `PrototypeSession` retains
+both internal slots for existing domain compatibility, while access and presentation selectors
+expose only ids present in this directory. Local nickname/avatar/age display projection does not
+rewrite immutable reward, task, or privacy evidence.
+
+`PreparedProfilePersonalization` is a derived view, never persisted. Its complete input is
+`ageBand`, `interests`, `hobbies`, `accessibilityDefaults`, and `supportPreferences`; gender,
+nickname, family name, and all free text are structurally absent. Its output contains one coaching
+style key, at most three allowlisted `TaskCategoryId` suggestions, prepared/local/fallible metadata,
+and `parentApprovalRequired: true`.
 
 ## Canonical Scalar Types
 

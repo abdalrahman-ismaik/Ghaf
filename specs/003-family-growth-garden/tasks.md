@@ -1229,3 +1229,318 @@ distinct loading state before onboarding.
       produced zero page errors. Web total splash time included development bundling and critical
       pre-handoff preparation; the post-handoff code token is exactly 2,000 ms. Physical Android
       first-frame timing and motion remain `BLOCKED / NOT RUN` because ADB returned no target.
+
+---
+
+## Phase 39: Returning-family Entry and Dashboard Welcome
+
+**Purpose**: Keep established families out of first-family setup and orient each returning role
+with a concise private summary over its own dashboard.
+
+- [x] T279 Re-read the active access/design/safety contract, inspect existing Parent receipts and
+      Child pairing authority, reserve exact writer boundaries, and amend spec/plan/tasks before
+      runtime work.
+- [x] T280 Write focused RED state and source tests proving fresh setup/pairing receives no welcome,
+      returning Parent/Child entry receives exactly one role-bound signal, clear boundaries remove
+      it, and completed families cannot render the first-family routes.
+- [x] T281 Implement the transient store signal and hardened returning-Parent route handoff without
+      changing controller authority, receipt semantics, route count, reset, or first-family success.
+- [x] T282 Build and integrate one bilingual, accessible, reduced-motion-aware Soft Geometric
+      welcome dialog over Parent Home and Child Today using only role-authorized current state and
+      existing actions.
+- [x] T283 Run focused/full tests, typecheck, lint, format, route/reset/claim checks, detector,
+      bilingual compact browser inspection, and available Android evidence; reconcile product,
+      design, limitations, runbook, ownership release, and the cohesive checkpoint.
+
+      Completed locally on 2026-09-06: RED recorded 5 expected failures in the new focused file;
+      final returning-entry coverage passed 5 tests, the integrated access/localization batch
+      passed 4 files / 35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint,
+      format, Expo dependency alignment, Git whitespace, the Impeccable detector, and the 39-route
+      web export passed. Fresh Parent setup retained Family Basics and first Child pairing showed no
+      return dialog. Existing Parent verification went directly to `/parent`; an already paired
+      Salem PIN went directly to `/child`. Arabic and English Parent/Child dialogs were inspected at
+      320×720 and 390×844 with contained copy, usable actions, no horizontal overflow, and zero page
+      errors. Physical Android, TalkBack, native Back/modal behavior, and OS font scale remain
+      `BLOCKED / NOT RUN` because `adb devices -l` returned no attached target.
+
+---
+
+## Phase 40: SMAC Family–Sustainability–AI Onboarding
+
+**Purpose**: Make the competition pillars immediately understandable and exciting for children
+without weakening Ghaf's safety, privacy, approval, symbolic-growth, or truthful-AI boundaries.
+
+- [x] T284 Re-read the active first-run/design/safety contract, inspect the four-step runtime and
+      startup boundary, reserve exact writer scope, and amend spec/plan/tasks before runtime work.
+- [x] T285 Write focused RED model, copy, source, startup, and provenance tests for six ordered
+      steps, closed three-pillar navigation, bounded AI wording, two new raster assets, exact 48
+      artwork entries, nine startup rasters, and the preserved 41-image deferred queue.
+- [x] T286 Generate, inspect, normalize, prompt-embed, checksum, and register the Family and bounded
+      AI Quiet UAE Botanical Editorial photographs with no people, hands, text, UI, robot, fantasy,
+      hazard, or measured-impact claim.
+- [x] T287 Implement the child-clear bilingual six-step story, accessible three-pillar navigator,
+      energetic editorial layout, and one UI-thread step transition with reduced-motion parity;
+      preserve all route, role, task, reward, privacy, reset, and feature-flag authority.
+- [x] T288 Run focused/full tests, typecheck, lint, format, route/startup/deferred/asset checks,
+      detector, bilingual 320×720 and 390×844 browser inspection, reduced-motion checks,
+      production exports, and available Android evidence; reconcile docs, release ownership, and
+      create one cohesive local checkpoint without push/merge/deployment/release activation.
+
+      Completed locally on 2026-09-06: the first RED state recorded 6 expected failures / 9 passes
+      and the motion refinement recorded 1 expected failure / 11 passes. Final focused coverage
+      passed 3 files / 26 tests; the full suite passed 87 files / 1,065 tests. Typecheck, lint,
+      formatting, Expo dependency alignment, Git whitespace, the 48-raster prompt scan, and the
+      Impeccable detector passed. Web exported 121 files / 39 static routes and Android JS exported
+      90 files; both new onboarding rasters appeared byte-identically in both. Firefox traversed
+      the six moments, pillar jumps, locale change, 320×720 and 390×844 layouts, and reduced motion
+      with 60px pillar targets, no horizontal overflow, and zero page errors. Physical Android,
+      TalkBack, OS font scale, and motion feel remain `BLOCKED / NOT RUN` because ADB returned no
+      target; named Arabic/UAE, safeguarding, botanical, accessibility, and rights review remains
+      `NOT RUN`.
+
+---
+
+## Phase 41: Device-local Family Directory, Multi-child Setup, and AI Profile Helper
+
+**Purpose**: Remember one configured demo family across restarts, guide one or two Child profiles
+through a clear setup sequence, and make bounded AI personalization visibly useful and safe.
+
+- [x] T289 Re-read the active product/design/safety/architecture contract, inspect current
+      onboarding/session/access boundaries, reserve exact files, verify the official Expo SQLite
+      path, and amend spec/plan/tasks before behavior work.
+- [x] T290 Write RED tests for the strict versioned local-family schema, platform repository
+      contract, corrupted/unknown data, minimum collection, configured profile filtering, restore,
+      pairing-marker lifecycle, and reset clearing.
+- [x] T291 Extend the Parent onboarding model/controller with one-or-two Child drafts, indexed
+      updates, full-directory validation, immutable multi-child receipt restoration, and atomic
+      persist-before-authentication semantics.
+- [x] T292 Add the service-registry local repository with SQLite-backed native, localStorage web,
+      and deterministic memory test adapters; hydrate family/profile/pairing state and clear it on
+      Parent reset without persisting task/reward/garden authorities.
+- [x] T293 Write RED assistant-policy and presentation tests, then implement deterministic
+      allowlisted profile personalization that excludes gender/free text and uses the labeled
+      sparkle mark with local/prepared/fallible/Parent-decides disclosure.
+- [x] T294 Redesign Family Basics, sequential Child forms, whole-family review, and success copy in
+      the current Soft Geometric Arabic-first system with clear ordering, optional selections,
+      preserved Back state, keyboard scrolling, 48dp controls, and compact-width resilience.
+- [x] T295 Filter Parent/Child profile selectors and summaries to configured users, persist only an
+      approved synthetic paired marker, restore returning Parent/Child entry and existing role
+      welcome behavior after reload, and reject direct unconfigured-profile access.
+- [x] T296 Complete the open source-verifiable R002b readiness audit, add canonical release-review
+      and physical-device/human-review packets, update only directly supported checklist markers,
+      and retain external gates as `NOT RUN` or `BLOCKED`.
+- [x] T297 Run focused/full tests, typecheck, lint, format, dependency/route/reset/privacy/asset
+      checks, one final detector pass, bilingual 320×720 and 390×844 persistence/onboarding
+      browser journeys, web/Android production exports, and available Android evidence; reconcile
+      all docs, release ownership, and cohesive local checkpoints without push/merge/deployment or
+      release activation.
+
+      Completed locally on 2026-09-06: the focused local-family/access/AI batch passed 8 files / 83
+      tests and the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, format,
+      Expo dependency/public-config checks, 37-file product-route inventory, Git whitespace, and
+      the one permitted final Impeccable detector pass succeeded. Web exported 121 files / 39
+      static routes; Android JavaScript exported 90 files with `expo-sqlite@57.0.2` resolved.
+      Firefox completed the one- and two-Child setup/review, direct storage inspection, reset, and
+      returning Parent/Child paths across Arabic RTL and English LTR at 320×720 and 390×844 with
+      zero horizontal overflow and zero console errors. Physical Android SQLite/process-death,
+      Back/IME, TalkBack, OS font scale, and reduced-motion evidence remains `BLOCKED / NOT RUN`
+      because `adb devices -l` returned no attached device; all named-human review rows remain
+      `NOT RUN` and every R002b flag stays default off.
+
+---
+
+## Phase 42: Convergence
+
+- [x] T298 Persist an established family's changed application language and prefer that current
+      local value on returning Parent handoff per FR-191 and FR-197 (partial).
+
+      Completed locally on 2026-09-06: focused RED reproduced the stored-`ar`/active-`en`
+      mismatch, then the corrected store test passed 12/12. The complete local-family batch passed
+      8 files / 83 tests and the full suite passed 90 files / 1,085 tests. The existing family
+      record now persists a valid changed app language and returning Parent entry prefers it without
+      mutating the immutable completion receipt or restoring a session.
+
+---
+
+## Phase 43: AI-narrated Square Onboarding
+
+**Purpose**: Present the existing six-moment Ghaf Guide introduction as a compact story with square
+artwork, high-contrast lower progress, clearer energy, and optional accessible on-device narration.
+
+- [x] T299 Inspect the active onboarding, voice, accessibility, dependency, and ownership
+      boundaries; reserve exact files; measure the `expo-audio`/missing-binary TTS gap; and amend
+      spec, plan, tasks, product, design, limitations, and first-run intake before behavior work.
+- [x] T300 Write focused RED source/resource tests for a 1:1 image frame, lower high-contrast
+      six-segment story progress, concise first-person bilingual scripts, visible narrator
+      identity/origin, optional stop/enable/replay controls, step/locale/exit cleanup, screen-reader
+      suppression, and nonblocking speech failure.
+- [x] T301 Install the Expo-compatible `expo-speech` package and implement one bounded onboarding
+      narration hook with no microphone, recording, background listening, provider, route, store,
+      or product authority.
+- [x] T302 Recompose `FirstRunOnboarding` with the lower high-contrast story rail, square local
+      artwork, narrator control, and rewritten resources while preserving six-state/pillar
+      navigation, reduced motion, startup/deferred sets, and all access/product behavior.
+- [x] T303 Run focused/full tests, typecheck, lint, format, Expo dependency/route/startup checks,
+      the one final Impeccable detector pass, web export, compact bilingual browser inspection,
+      and available Android/TalkBack/TTS evidence.
+- [x] T304 Reconcile product/design/limitations/runbook/ownership with exact results, retain native
+      and named-human gaps truthfully, and create one cohesive local commit without push, merge,
+      deployment, or release activation.
+
+      Completed locally on 2026-09-07: the initial RED state recorded 3 failures / 10 passes; the
+      requested lower-indicator correction and web opt-in voice guard each recorded 1 expected
+      failure / 12 passes. The final focused file passed 13 tests and the full suite passed 90 files
+      / 1,086 tests. Typecheck, zero-warning lint, format, Expo dependency/public-config, Git
+      whitespace, the final Impeccable detector, 39-route web export, and 90-file Android
+      JavaScript export passed. Firefox inspected Arabic RTL at 390×844 and English LTR at 320×720,
+      measured a 275.8×275.8 px crop, found no horizontal overflow, confirmed the lower rail above
+      the action and `1/6 → 2/6`, and exercised the localized web speech fallback with zero page
+      errors. Physical Android speech/audio focus, TalkBack, OS font scale, motion feel, and named
+      review remain `BLOCKED / NOT RUN`; ADB returned no target.
+
+---
+
+## Phase 44: Compact Audio Onboarding Correction
+
+**Purpose**: Preserve the six-moment AI introduction while reclaiming height, simplifying progress
+and voice control, and making narration replay reliable through prepared local audio.
+
+- [x] T305 Re-read the active onboarding/audio/safety/asset contract, inspect all six 1200×800
+      source photographs, reserve exact files, and amend spec/plan/tasks/product/design/limitations/
+      runbook/first-run intake before behavior work.
+- [x] T306 Write focused RED source/resource tests for responsive 3:2 artwork, centered copy, the
+      original lower current/total plus dots, removal of the Guide panel/toggle, one accessible
+      speaker replay control, image/layout-gated automatic narration, quiet foreground ambience,
+      screen-reader suppression, exit cleanup, local provenance, and no microphone/runtime URL.
+- [x] T307 Prepare exact bilingual synthetic narration clips plus one locally authored nature
+      soundscape under `assets/audio/onboarding/`, record authoring provenance/checksums, register
+      static local sources, and remove the now-unused `expo-speech` dependency.
+- [x] T308 Implement the bounded narration and ambience hooks and recompose
+      `FirstRunOnboarding` with the 3:2 frame, centered copy, single speaker icon, and restored dot
+      row while preserving reducer, pillar, startup/deferred-image, route, privacy, and product
+      behavior.
+- [x] T309 Run focused/full tests, typecheck, lint, format, Expo dependency/public-config checks,
+      one final Impeccable detector pass, web/Android exports, compact bilingual browser/audio
+      inspection, and available physical Android/TalkBack/audio evidence.
+- [x] T310 Reconcile the evidence in runbook/ownership, retain browser-autoplay/native/human gates
+      truthfully, and create one cohesive local commit without push, merge, deployment, or release
+      activation.
+
+      Completed locally on 2026-09-07: RED recorded 2 expected failures / 11 passes and the final
+      focused file passed 13 tests. The full suite passed 90 files / 1,086 tests; typecheck,
+      zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and the
+      final Impeccable detector passed. Web exported 134 files / 39 static routes with 13 MP3s;
+      Android JavaScript exported 103 files and all 13 prepared-audio hashes matched. Firefox
+      measured exact 3:2 frames at Arabic 390×844 and English 320×720, a 48dp speaker, the 24px
+      original dot row directly above navigation, centered copy, and zero overflow. The speaker
+      requested narration plus ambience; subsequent explicit navigation requested the matching
+      settled-slide narration. A fresh web launch made no pre-gesture autoplay call and had zero
+      final console errors; first-screen web autoplay remains platform-limited. Physical Android,
+      TalkBack, audio focus, font scale, and named Arabic/voice/rights review remain
+      `BLOCKED / NOT RUN`; ADB returned no target.
+
+---
+
+## Phase 45: Returning Parent Identifier Lookup
+
+**Purpose**: Bind the one local family to its Parent identifier so returning sign-in can verify
+membership and always bypass first-family creation.
+
+- [x] T311 Re-read the active access/privacy/storage contract, inspect the current local record and
+      verification routes, reserve exact writer boundaries, and amend spec/plan/tasks before
+      behavior work.
+- [x] T312 Write RED schema, repository, store, route, and bilingual-copy tests for normalized
+      identifier persistence, schema-1 canonical migration, mismatch denial without state change,
+      explicit-sign-up-only creation, direct returning handoff, neutral copy, and removal of the
+      simulated biometric control.
+- [x] T313 Implement schema-2 local Parent identifier storage/migration and separate create-family
+      versus returning-sign-in store commands without persisting the deterministic code or session.
+- [x] T314 Harden sign-in/verification routing and rewrite the Parent access UI so a matched Parent
+      enters the existing family directly, an unknown identifier stays out of setup, and the three
+      auth screens show no demo/synthetic/not-real messaging or fake biometric action.
+- [x] T315 Run focused/full tests, typecheck, lint, format, dependency/config/route/privacy checks,
+      web/Android exports, compact bilingual browser inspection, and available physical Android
+      evidence; reconcile docs, release ownership, and one cohesive local commit without push,
+      merge, deployment, or release activation.
+
+      Completed locally on 2026-09-07: RED recorded 15 expected failures / 40 passes; the final
+      focused batch passed 6 files / 84 tests and the full suite passed 90 files / 1,090 tests.
+      Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git
+      whitespace, schema/privacy scans, 39-route web export (134 files), and Android JavaScript
+      export (103 files) passed. Firefox created the schema-2 family, inspected the normalized
+      Parent identifier, denied an unknown email without leaving sign-in, matched a differently
+      cased/space-padded email, and entered `/parent` after `424242` without setup. Arabic 390×844
+      and English 320×720 had no horizontal overflow or console errors. Physical Android and named
+      review remain `BLOCKED / NOT RUN`; `adb devices -l` returned no target.
+
+---
+
+## Phase 46: Onboarding Image Perimeter Progress
+
+**Purpose**: Replace the detached photo accent with one restrained progress treatment that belongs
+to the rounded image frame.
+
+- [x] T316 Inspect the exact rendered element and current onboarding motion/visual contract,
+      reserve the narrow writer boundary, and amend spec/plan/tasks/product/design/direction/intake
+      before behavior work.
+- [x] T317 Write one focused RED source contract for removal of `heroAccent`, symmetric bottom-
+      center SVG paths, deterministic six-step completion, UI-thread dash animation, reduced-motion
+      equivalence, hidden duplicate semantics, and retention of the lower progressbar.
+- [x] T318 Implement the integrated perimeter progress treatment with installed Reanimated and
+      `react-native-svg`, without changing image ratio, audio, copy, navigation, or product state.
+- [x] T319 Run focused/full tests, typecheck, lint, format, detector, web/Android exports, compact
+      Arabic/English browser inspection, and available Android evidence; reconcile runbook and
+      ownership, then create one cohesive local commit without push, merge, deployment, or release
+      activation.
+
+      Completed locally on 2026-09-07: RED recorded one expected failure / 12 passes for the
+      initial source contract and again for each visual correction guard; the final focused file
+      passed 13 tests and the full suite passed 90 files / 1,090 tests. Typecheck, zero-warning
+      lint, formatting, Expo dependency/public-config checks, Git whitespace, and the Impeccable
+      detector passed. Web exported 134 files and Android JavaScript exported 103 files. Firefox
+      inspected the first, intermediate, and fully closed progress extents in Arabic 390×844 and
+      English 320×720, measured the compact frame at 280×186.67, confirmed reduced motion applies
+      the exact static step value, found no horizontal overflow, and reported zero console errors
+      or warnings. Physical Android motion/TalkBack and named review remain `BLOCKED / NOT RUN`;
+      `adb devices -l` returned no target.
+
+---
+
+## Phase 47: AI Services 1–3 Integration
+
+**Purpose**: Preserve and harden the complete deterministic AI path, prepare one authenticated
+default-off live Parent Guide transformation, and carry curated profile recommendations into Task
+Builder without weakening Parent authority or P0 reliability.
+
+- [x] T320 Re-read the active product/design/safety/architecture contract, audit every branch's AI
+      implementation, reserve the exact writer boundary, and amend spec/plan/tasks before behavior.
+- [x] T321 Write and observe focused RED tests for strict live Parent request/result validation,
+      HTTPS/authenticated adapter behavior, timeout/HTTP/non-JSON/schema/correlation/safety fallback,
+      prepared-default zero-fetch behavior, Worker authentication/rate/CORS/body/operation guards,
+      and no live Child operation.
+- [x] T322 Write and observe focused RED tests for deterministic profile-derived category ordering,
+      stable remainder order, exact-once categories, opt-out/invalid fallback, Task Builder labels,
+      and unchanged P0 executable/Parent-review authority.
+- [x] T323 Implement the strict live Parent Guide policy and fetch adapter with injected credential,
+      bounded abort timeout, no retry, exact canonical merge, live disclosure, and typed errors.
+- [x] T324 Implement the authenticated/rate-limited one-operation Cloudflare Worker reference,
+      strict structured output, configured CORS, bounded body, no-store response, no persistence,
+      and deterministic binding tests without deployment.
+- [x] T325 Separate registry primary/fallback authority, integrate live-result validation and
+      same-attempt prepared fallback in the existing store, and prove all deterministic Guide,
+      Coach, summary, age, voice, media, reset, and offline behavior remains the default.
+- [x] T326 Integrate the pure prepared profile recommendation plan into Parent Task Builder with
+      visible bilingual prepared/local/fallible explanation, no persisted derived state, and no
+      assignment or executable-template change.
+- [x] T327 Produce the professional Features 4/5 Codex handoff, run focused/full/static/config/
+      secret/route/Git checks, reconcile product/limitations/runbook/ownership, create cohesive
+      local commits, and leave deploy/live/native/human gates truthful without push or activation.
+
+**Evidence**: The initial focused RED run failed all three new files before the live modules and
+category-plan integration existed. Final focused validation passed 3 files / 26 tests; the wider
+assistant/profile/task batch passed 10 files / 203 tests; and full Vitest passed 93 files / 1,116
+tests. Typecheck, zero-warning Expo lint, Prettier check, Git whitespace, source secret/Child-route/
+app-route scans, Expo public config, a 134-file / 39-route web export, and an Android JavaScript
+export with 94 assets passed. Expo dependency validation used only its local SDK map and therefore
+does not prove online registry freshness. No live gateway/model/deployment/token broker, browser,
+physical Android device, or named-human review ran; those gates remain `BLOCKED` or `NOT RUN`.

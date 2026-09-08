@@ -1,12 +1,136 @@
 # Prototype Limitations
 
+## Feature 005 remembered device access boundary — 2026-09-07
+
+Remembered access is a device-local prototype convenience, not a production account or trusted
+device system. A Parent must explicitly opt in after verification. Approved Child pairing
+automatically remembers only that Child as the installation's primary profile. The separate
+affinity record contains a schema version, one role/profile reference, family/profile binding,
+and update time; it contains no password, verification code, PIN, authenticated session, token,
+task, progression ledger, media, transcript, or assistant content.
+
+Native uses the existing Expo SQLite key-value boundary and web uses browser localStorage. Each
+restart validates the marker against the local family directory and creates fresh synthetic
+controller authority; it never serializes or replays an authenticated session. One installation
+can remember one Parent or one Child, not both. This models the intended normal arrangement of
+separate Parent and Child devices, but the repository still has no production accounts, remote
+household state, cloud sync, recovery, encryption claim, or evidence that two physical devices
+share data.
+
+On a remembered Child installation, temporary Parent access ends Child authority before Parent
+verification and preserves the pairing. Parent logout then restores only the same still-eligible
+Child. Revocation, reset, mismatch, corruption, or storage failure fails closed. An active Parent
+must log out before Child access on the same installation. Physical Android process-death,
+SQLite, Back, TalkBack, and font-scale behavior plus named Arabic/UAE, privacy, safeguarding, and
+accessibility review remain `BLOCKED / NOT RUN` until directly observed.
+
+## Feature 004 bounded live AI boundary — 2026-09-07
+
+F4 Parent task drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk voice now exist
+as default-off implementation candidates with strict local contracts, prepared fallback, and a
+non-deployed reference Worker. This source can be exercised only with synthetic profiles, media,
+capabilities, and fake model bindings. It does not establish that any real model request,
+production identity, valid consent, provider account, network path, retention control, or remote
+deletion occurred.
+
+The mobile app cannot mint a capability or contain a provider secret. The reference gateway's HMAC
+test capability, process-local replay store, and injected fake budget/rate services are test seams,
+not deployable authentication or abuse controls. The three app flags remain independent and false
+by default, and the MCP projection is a fourth server-only default-off switch. MCP offers only the
+two bounded text operations and no media/voice capability.
+
+Child text is not open chat: it is one terminal task-bound request under the approved age policy,
+current task/version, current profile-scoped grant, local and server safety filters, and exact
+correlation. Voice is unavailable below age 12 and to the current ages-9–11 P0 profiles. For an
+eligible synthetic 12–14 harness it uses explicit foreground permission and held capture, caps one
+clip at 15 seconds/256 KiB, deletes local cache audio before transcript display, requires visible
+review plus a separate approve action, and sends text only. Background/continuous recording,
+biometric or speaker identification, emotion/personality/truthfulness inference, and Child photo
+processing remain absent and prohibited.
+
+In-memory byte clearing and a provider response are not proof of provider zero-data-retention or
+remote deletion. Real Child activation remains `BLOCKED`: it requires the trusted broker and
+shared replay/budget stores, provider/ZDR evidence, privacy/legal and safeguarding approval,
+Arabic/UAE and accessibility review, incident and deletion procedures, a physical Android matrix,
+and named human rehearsal. Until those gates pass, demonstrate only the prepared Feature 003 path
+and describe the live code as an implementation candidate—not an available service.
+
+## AI Services 1–3 integration boundary — 2026-09-07
+
+The app still runs the prepared deterministic Parent Guide, Child Coach, summary, age adaptation,
+media, and synthetic voice services by default. An optional HTTPS Parent Guide adapter and one
+Cloudflare Worker reference now exist in source, but no Worker deployment, real model response,
+trusted mobile token broker, production authentication, security assessment, or provider account
+configuration was performed. Worker tests use fake AI/rate-limit bindings and a synthetic token;
+they do not establish that a live service is available or safe for production. A gateway secret
+cannot be distributed in Expo, so the live primary must remain unconfigured until a separately
+approved trusted credential flow exists.
+
+The device-local profile helper now orders and labels Task Builder categories from only the saved
+curated age-band, interest, hobby, accessibility, support, and opt-in fields. It makes no provider
+call, stores no derived ranking, exposes no Child data outside the device, and cannot make a
+future-only template executable or approve a task. Invalid or opted-out inputs fail back to the
+catalog order.
+
+The earlier AI Services 1–3 Parent Guide gateway still accepts only one synthetic Parent request
+and exposes no Child operation. The separate Feature 004 gateway and its stricter approved contract
+now cover the implementation candidates described above; they do not add a live Parent summary or
+Child photo processing and do not change the default prepared path.
+
+## Onboarding prepared narration and ambience — 2026-09-07
+
+The Ghaf Guide introduction uses packaged prepared synthetic audio to read the exact visible Arabic
+or English slide script. It also includes one locally authored low-volume nature soundscape while
+onboarding is visible. This does not prove that a live AI model ran, and it is not a human
+performance, cloned personal voice, speech recognition, microphone session, continuous listening,
+or background audio service. Missing or failed audio leaves the full transcript and navigation
+available.
+
+Automatic native narration waits for the image/layout-ready signal and is disabled while a screen
+reader is active to avoid duplicate speech; ambience is also disabled for that session. Browser
+autoplay policy may reject audible automatic playback before a user gesture, so automatic web
+sound is best-effort while the explicit speaker control remains available. The app config keeps
+recording and operating-system background playback disabled, and both local players stop when
+onboarding exits. Browser/source checks cannot pass physical Android Arabic voice performance,
+TalkBack coexistence, audio focus, silent-mode behavior, or named Arabic review. Those remain
+`BLOCKED` or `NOT RUN` until directly observed on the current build.
+
+## Returning-family local summary — 2026-09-06
+
+The returning-family decision now relies on one validated device-local demo directory. Native uses
+Expo SQLite key-value storage and web uses browser localStorage; it stores one synthetic Parent
+normalized phone/email lookup identifier and kind, one or two Child profiles, bounded curated setup
+preferences, and approved paired-Child markers. The family-directory schema is 2; a prior valid
+schema-1 fixture migrates only to the canonical prepared `parent@example.com` identifier. This is
+durable enough for a local demo restart, but it is not encrypted production
+account storage, identity assurance, cloud backup, household discovery, recovery, migration, or
+cross-device sync. Feature 005 keeps its affinity marker separate from this family-directory
+schema, validates it at startup, and mints fresh synthetic authority without serializing or
+replaying a session. Parent reset deliberately removes both records and returns the app to
+first-family behavior.
+
+Passwords, verification codes, authenticated sessions, task/Seed/Garden/League/Reward ledgers,
+media, transcripts, notification history, and free-text Child notes are not part of the local
+record. Optional gender
+is stored only as an explicit profile value and is excluded from prepared personalization. The
+curated profile helper is deterministic and local-only; it does not prove that a live model ran and
+must not be used to infer identity, emotion, diagnosis, personality, ability, or risk.
+
+The Parent/Child welcome is a one-use in-app dashboard summary assembled from current local state
+already visible to that role. It is not a push notification, inbox, server timestamp, background
+sync, or proof that anything changed while the user was away. It stores no notification history
+and introduces no cross-household or cross-profile data. Browser/source checks cannot establish
+native modal focus, Android Back, TalkBack reading order, OS font-scale behavior, or physical-device
+motion quality.
+
 ## First-run and transition presentation — 2026-09-06
 
-The onboarding completion marker exists only for the current in-memory app session; it is not an
-account preference or persistence guarantee and a reload may show onboarding again. The configured
+The six-moment presentation-onboarding marker remains session-local, so a reload may show that
+introductory story again. The separate validated family directory may still bypass first-family
+creation after Parent verification. The configured
 native splash hands off to a fully opaque 2,000 ms app-owned splash and then a separate loading
-state that remains for at least 1,000 ms and until the four current branded font files plus bounded
-signed-out raster set settle. These requested presentation holds add intentional startup time; they
+state that remains for at least 1,000 ms and until the four current branded font files plus the
+bounded nine-raster signed-out set settle. These requested presentation holds add intentional startup time; they
 do not represent remote work. Startup intentionally excludes later Garden, League, learning,
 reveal, canopy, Circle, Shared Growth, and prepared-media images from blocking readiness. After the
 loading overlay exits, those 41 remaining packaged rasters warm in
@@ -19,8 +143,12 @@ immediate destination set, reusing any in-flight background request. Neither is
 evidence of a server request, authentication, AI processing, data sync, or completed security
 check. Every Parent/Child access route inherits the official raster logo/name and the same local
 leaf-shadow backdrop from one shared shell; this presentation does not upgrade the synthetic
-access path into production authentication. Generated first-run photographs remain symbolic
-presentation assets subject to the same rights, botanical, cultural, safeguarding, accessibility,
+access path into production authentication. The six-moment story and three-pillar navigator are
+presentation only. The AI moment describes a bounded Parent-approved-task helper, not unrestricted
+chat, a companion, a therapist, continuous listening, diagnosis, task approval, or proof that a
+live model ran. The Sustainability moment does not prove or measure environmental impact.
+Generated first-run photographs remain symbolic presentation assets subject to the same rights,
+botanical, cultural, safeguarding, accessibility,
 and physical Android review limits as the existing natural artwork library.
 
 ## Generated natural artwork — 2026-09-06
@@ -83,7 +211,10 @@ interactions; they do not prove identity, protect a production account, or persi
 The R003 Parent sign-up screen is a route and form simulation only. It reuses the local Parent
 identifier/code fixture before first-family setup; it does not create a real account, send a
 message, verify an identity, store a password, or add a second household. A completed synthetic
-family receipt remains immutable, and direct sign-up entry cannot overwrite it.
+family receipt remains immutable, and direct sign-up entry cannot overwrite it. Returning sign-in
+must match the saved normalized identifier before code entry and then skips all create-family
+screens. The three Parent access screens intentionally use neutral user-facing copy without a
+demo/not-real footer, while this document and the runbook retain the capability boundary.
 
 The R003-only screens without approved Stitch frames are documented code-native Soft Geometric
 candidates built from the existing theme and tokens. Their existence is not Google Stitch approval,

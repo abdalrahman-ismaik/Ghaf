@@ -37,11 +37,20 @@ import {
   SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
 } from '../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../models/familyGrowth';
+import {
+  liveChildCoachGrantSchema,
+  MAX_SYNTHETIC_GRANT_LIFETIME_MS,
+  type LiveChildCoachCapability,
+  type LiveChildCoachGrant,
+} from '../../models/boundedAi';
 import type { ServiceResult } from '../../services/interfaces';
 
 const CAPABILITY_TRUTH = 'local_prototype_not_authentication' as const;
 const SYNTHETIC_HOUSEHOLD_ID = 'household_al_noor' as const;
 const INITIAL_PERMISSION_TIME = '2026-09-01T00:00:00.000Z';
+export const LIVE_CHILD_AI_NOTICE_VERSION = 1 as const;
+export const LIVE_CHILD_AI_POLICY_VERSION = 'child-coach-policy-v1' as const;
+export const LIVE_CHILD_AI_PROVIDER_VERSION = 'provider-contract-v1' as const;
 
 function success<T>(data: T, fixtureId?: string): ServiceResult<T> {
   return {
@@ -200,8 +209,36 @@ function purposeCapability(purpose: SensitiveActionPurpose): AccessCapability {
     case 'change_voice_permission':
     case 'change_media_permission':
     case 'change_ai_permission':
+    case 'change_live_child_text_permission':
+    case 'change_live_child_voice_permission':
       return 'manage_child_permissions';
   }
+}
+
+export function liveChildSubjectFor(childId: SyntheticChildId): string {
+  return `synthetic_subject_${childId}`;
+}
+
+export function createInitialLiveChildCoachGrant(
+  childId: SyntheticChildId,
+  capability: LiveChildCoachCapability,
+): LiveChildCoachGrant {
+  const issuedAt = '2026-09-07T00:00:00.000Z';
+  const grant = {
+    capability,
+    status: 'revoked' as const,
+    childSubject: liveChildSubjectFor(childId),
+    grantVersion: 1,
+    noticeVersion: LIVE_CHILD_AI_NOTICE_VERSION,
+    policyVersion: LIVE_CHILD_AI_POLICY_VERSION,
+    providerVersion: LIVE_CHILD_AI_PROVIDER_VERSION,
+    issuedAt,
+    expiresAt: new Date(Date.parse(issuedAt) + MAX_SYNTHETIC_GRANT_LIFETIME_MS).toISOString(),
+    revokedAt: issuedAt,
+    reauthenticationProofId: `initial_disabled_${childId}_${capability}_v1`,
+    capabilityTruth: 'synthetic_implementation_only' as const,
+  };
+  return liveChildCoachGrantSchema.parse(grant);
 }
 
 function permissionPurpose(
@@ -592,6 +629,41 @@ export class DeterministicSyntheticAccessService {
       },
       fixture.avatarId,
     );
+  }
+
+  restorePairedDevice(input: {
+    readonly childId: SyntheticChildId;
+    readonly deviceId: string;
+    readonly pairedAt: string;
+  }): ServiceResult<DeviceAccessState> {
+    if (
+      !childFixture(input.childId) ||
+      !nonEmpty(input.deviceId) ||
+      parsedTime(input.pairedAt) === null
+    ) {
+      return failure('INVALID_INPUT', 'A valid device-local Child pairing marker is required');
+    }
+    const key = deviceKey(input.childId, input.deviceId);
+    const existing = this.devices.get(key);
+    if (existing) {
+      return existing.status === 'paired' && existing.pairedAt === input.pairedAt
+        ? success({ ...existing }, existing.pairingRequestId)
+        : failure('INVALID_TRANSITION', 'The device-local Child pairing marker conflicts');
+    }
+    const device: DeviceAccessState = {
+      householdId: SYNTHETIC_HOUSEHOLD_ID,
+      childId: input.childId,
+      deviceId: input.deviceId,
+      pairingRequestId: `restored-${input.childId}`,
+      status: 'paired',
+      pairedAt: input.pairedAt,
+      revokedAt: null,
+      revokedByParentId: null,
+      origin: 'synthetic',
+      capabilityTruth: CAPABILITY_TRUTH,
+    };
+    this.devices.set(key, { ...device });
+    return success({ ...device }, device.pairingRequestId);
   }
 
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState> {

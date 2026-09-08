@@ -21,17 +21,20 @@ export default function ChildSettingsScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const canEnter = usePrototypeStore(selectCanEnterChildExperience);
   const child = usePrototypeStore((state) => state.children[state.activeChildId]);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const getGrant = usePrototypeStore((state) => state.getOwnChildPermissionGrant);
-  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const [error, setError] = useState<string | null>(null);
   const grant = getGrant();
 
   if (!canEnter) return <Redirect href="/" />;
-  const name = localize(child.displayName, locale);
+  const name =
+    localFamily.record?.children.find((profile) => profile.id === child.id)?.nickname ??
+    localize(child.displayName, locale);
 
-  const signOut = () => {
+  const openParentAccess = () => {
     setError(null);
-    const result = signOutExperience();
+    const result = beginTemporaryParentAccess();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
@@ -94,12 +97,13 @@ export default function ChildSettingsScreen() {
         <LanguageSwitcher compact showGuidance={false} />
       </R003Section>
       <R003ActionRow
+        body={t('r003.childSettings.parentAccessBody')}
         direction={direction}
         icon="lock"
         language={locale}
-        onPress={signOut}
-        testID="child-sign-out"
-        title={t('r003.childSettings.signOut')}
+        onPress={openParentAccess}
+        testID="child-parent-access"
+        title={t('r003.childSettings.parentAccess')}
       />
       {error ? (
         <R003Status direction={direction} language={locale} message={error} tone="warning" />
