@@ -1,5 +1,31 @@
 # Team Ownership
 
+## 2026-09-08 Feature 011 Verified Family Replacement Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/011-verified-family-replacement/**`.
+
+**Runtime reservation**: `app/access/parent/{sign-in.tsx,sign-up.tsx,verification.tsx,`
+`review-create.tsx}`, `src/features/access/parentOnboarding/controller.ts`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`,
+`tests/{family-replacement-flow.test.ts,parent-onboarding-controller.test.ts}`, and narrowly scoped
+truth/design/evidence updates in `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and
+`DEMO_RUNBOOK.md`.
+
+**Scope**: Keep **Create a new family** visible on signed-out Parent access even when one local
+family exists. Route the Parent through identifier entry, the existing deterministic verification,
+Parent/guardian and family details, Child profiles, review, and an explicit final replacement
+action. Preserve the existing family and its local receipt through wrong-code, cancellation, Back,
+restart, draft editing, and failed-save paths; replace the one local household only after the final
+validated save succeeds, then clear prior household progress, pairings, permissions, drafts, and
+assistant state without adding a second household, production account, network request, or payment.
+
+**Status**: In progress. Existing user-owned configuration, source design packs, generated output
+artifacts, and all unrelated Feature 003 behavior remain outside this reservation.
+
 ## 2026-09-08 Feature 010 Calm Ambient Soundscape Window
 
 **Owner and only writer**: `/root`
