@@ -1,5 +1,49 @@
 # Team Ownership
 
+## 2026-09-08 Feature 009 Access Family Portraits Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/009-access-family-portraits/**`.
+
+**Runtime reservation**: `app/index.tsx`, `app/access/child/index.tsx`,
+`app/access/parent/{sign-up.tsx,verification.tsx}`,
+`src/components/access/{index.ts,ParentAccessPortrait.tsx,ChildAccessPortrait.tsx,`
+`parentAccessAssets.ts,childAccessAssets.ts}`,
+`src/features/startup/preloadStartupImages.ts`, `assets/images/access/parent-emirati/**`,
+`assets/images/access/child-emirati/**`, `tests/{access-family-portraits.test.tsx,`
+`parent-access-portrait.test.tsx,r001-onboarding-flow.test.ts}`, and narrowly scoped
+truth/design/evidence updates in `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and `DEMO_RUNBOOK.md`.
+
+**Scope**: Present responsive 3:2 decorative local imagery on signed-out Welcome, Parent access,
+and Child profile access. Replace the single-father Parent candidate with one fictional synthetic
+Emirati father-and-mother composition, with the mother in a traditional abaya and hijab, and add
+one fictional synthetic Emirati boy-and-girl composition in traditional clothing to Child access.
+The images carry no identity, authentication, profile-selection, Child-state, task, reward, or
+progress authority; failures never block access. Preserve Arabic/English flow, remembered-device
+behavior, local/offline operation, and every existing access action. Record exact provenance and
+leave named Emirati cultural, image-rights, safeguarding, accessibility, and physical Android
+review unclaimed.
+
+**Status**: Complete and ready for source integration. Welcome, all three shared Parent access
+steps, and Child profile access now use responsive 3:2 presentation; the Parent v2 candidate shows
+one fictional Emirati father and one fictional Emirati mother in traditional abaya/hijab, and the
+Child candidate shows one fictional Emirati boy and girl in age-appropriate traditional clothing
+above—not inside—the tree-avatar profile controls. Both prompt-embedded 1200×800 JPEGs are local,
+versioned, decorative, accessibility-hidden, destination-preloaded, and failure-safe. Thirteen
+focused files passed 143 tests; the full repository passed strict TypeScript, zero-warning lint,
+formatting, and 124 files / 1,369 tests. A 39-route web export included byte-identical assets, the
+Impeccable detector returned `[]`, and Firefox web-proxy review covered Arabic/English at 320×720
+and 390×844 plus simulated 200% text with measured 1.5 ratios and zero application errors. The
+combined `npm run verify` remains not fully green because the shared package pins trail the current
+Expo SDK map by one patch (`expo` and `expo-router`); Feature 009 adds no dependency and leaves the
+shared lockfile unchanged. Chromium was blocked by missing `libnss3.so`. Physical Android and named
+Emirati cultural, Arabic/UAE, image-rights, safeguarding, accessibility, and visual review remain
+`NOT RUN`. Existing user-owned configuration, source design packs, and generated output artifacts
+remain outside this reservation.
+
 ## 2026-09-08 Feature 008 Family Connection Planning Window
 
 **Owner and only writer**: `/root`
