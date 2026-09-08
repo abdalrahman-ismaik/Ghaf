@@ -1,5 +1,37 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 011 Verified Family Replacement Record — 2026-09-08
+
+**Current classification:** implemented deterministic one-device replacement journey; production
+authentication, multi-family tenancy, recovery, physical Android evidence, and named-human review
+remain unavailable or `NOT RUN`.
+
+Start with the synthetic `parent@example.com` family, sign out, and open Parent access. Confirm
+**Create a new family** remains visible. Choose it and read the preservation notice before entering
+`new-parent@example.com`. Enter operator code `424242`, then show that Ghaf asks for Parent/guardian
+and family details only after verification. Complete the Child profile, review the whole family,
+and point out the explicit **Replace family and create new** action. Do not activate it in a shared
+rehearsal unless replacing that device's current local demo family is intended.
+
+For the safety branch, enter a wrong code or choose Change identifier and then sign in again with
+`parent@example.com`; the original family must still open. Automated failure injection separately
+proves that a failed final record write leaves that family intact. Describe the flow as local,
+synthetic, deterministic verification—not a sent code, registered account, or recoverable cloud
+household.
+
+| Gate                                                                                                      | Result                                                          | Evidence                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Always-visible entry and identifier → verification → personal/family details ordering                     | `PASSED automated + Firefox web proxy`                          | focused source/store coverage; Arabic RTL at 390×844 and 320×720, English LTR at 320×720                   |
+| Wrong code, Change identifier, setup cancellation/restart, and failed final write preserve the old family | `PASSED automated`; wrong-code/change/reload sampled on Firefox | focused controller/store failure assertions plus live return to the original identifier                    |
+| Successful final replacement, sole new identifier, and old household-private state reset                  | `PASSED automated`                                              | repository, access, pairing, permission, growth, voice, assistant, and remembered-access assertions        |
+| Arabic/English resource parity and compact layout                                                         | `PASSED automated + Firefox web proxy`                          | matching resources; banner, identifier, continuation, and setup fields remained readable at sampled widths |
+| Mechanical UI review                                                                                      | `PASSED`                                                        | Impeccable detector returned JSON `[]` for the four changed access/review screens                          |
+| Focused regression                                                                                        | `PASSED`                                                        | 11 files / 134 tests                                                                                       |
+| Full repository test suite and production-style bundles                                                   | `PASSED`                                                        | 128 files / 1,391 tests; 39-route web export; Android JavaScript export with 96 assets                     |
+| Expo dependency alignment                                                                                 | `KNOWN PRE-EXISTING DRIFT`                                      | `expo` 57.0.20 expects 57.0.21 and `expo-router` 57.0.19 expects 57.0.20; no dependency changed here       |
+| Physical Android Back, IME, process death, TalkBack, font scale, touch, and RTL/LTR replacement           | `NOT RUN`                                                       | no qualifying connected-device observation in this implementation window                                   |
+| Named Arabic/UAE, privacy, safeguarding, accessibility, product, and visual review                        | `NOT RUN`                                                       | no named reviewer participated                                                                             |
+
 ## Feature 008 Family Connection Planning Record — 2026-09-08
 
 **Current classification:** implemented private Parent planning slice; executable kinship tasks,

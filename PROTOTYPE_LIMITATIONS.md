@@ -1,5 +1,20 @@
 # Prototype Limitations
 
+## Feature 011 verified family replacement boundary — 2026-09-08
+
+**Create a new family** now works on a device that already stores one complete synthetic family,
+but it does not add account switching or multi-family storage. In that state, “new family” means a
+deliberate replacement of the sole schema-3 local record after email/phone entry, deterministic
+code `424242`, personal and family setup, Child profiles, and explicit final review.
+
+The old record remains recoverable while verification or setup is incomplete and when the final
+local write fails. After a successful final replacement, the prototype intentionally clears the old
+household's private runtime, pairings, permissions, and progress; it provides no cloud backup,
+undo, recovery, export, remote account, identity proof, secure credential storage, or production
+transaction. The email/phone value is a synthetic local lookup identifier, not a verified contact
+channel, and no message is sent. Browser evidence cannot establish Android Back, keyboard,
+TalkBack, font-scale, process-death, secure storage, or production privacy behavior.
+
 ## Feature 008 family connection boundary — 2026-09-08
 
 The family-person directory is minimized, synthetic, Parent-entered prototype data stored only in

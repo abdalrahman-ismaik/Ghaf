@@ -23,6 +23,26 @@ one useful future task family, but the only executable P0 task is the canonical 
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
 
+## Feature 011 verified family replacement — 2026-09-08
+
+Signed-out Parent access now keeps **Create a new family** visible whether or not this device already
+contains a complete local family. The action follows one ordered journey: Parent email or phone
+identifier, the existing deterministic six-digit verification, Parent/guardian and family details,
+the selected Child profiles, whole-family review, and an explicit final replacement action. Normal
+returning sign-in remains separate and still opens the established family after verification.
+
+When a local family exists, Ghaf explains before verification that the device stores one family and
+keeps the current household intact until final review. Wrong codes, changing the identifier, Back,
+cancellation, restart, and a failed final write do not replace that record. Only a complete,
+validated save makes the new family the sole local household; Ghaf then clears the previous
+household's sessions, progress, pairings, permissions, drafts, welcome state, and assistant state.
+The device-wide ambience preference is retained because it is not household data.
+
+This is a reliable competition-prototype replacement journey, not account registration, remote
+identity proof, cloud recovery, or real multi-family tenancy. The accepted code and all household
+data remain synthetic and local. The Family Plus 3–6 Child offer remains a separate non-purchasable
+capacity preview and does not change the one-family storage boundary.
+
 ## Feature 008 family connection planning — 2026-09-08
 
 Family Basics now starts with one required primary Parent/guardian display name, one optional

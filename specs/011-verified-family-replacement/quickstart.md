@@ -71,3 +71,22 @@ npx expo export --platform android --output-dir /tmp/ghaf-feature011-android
 Record the pre-existing Expo dependency-alignment result separately if `npm run verify` stops after
 all source/tests pass. Physical Android, TalkBack, IME, Back, and font-scale evidence must remain
 `NOT RUN` unless directly observed on the connected device.
+
+## Recorded implementation evidence — 2026-09-08
+
+- Initial RED: 2 files failed with 8 expected missing-feature failures while 28 surrounding tests
+  passed.
+- Final focused access and localization coverage: 11 files / 134 tests passed.
+- Strict TypeScript, zero-warning lint, formatting, and `git diff --check`: passed.
+- Full repository suite after isolating the brand asset test from an unrelated React Native barrel:
+  128 files / 1,391 tests passed.
+- Impeccable detector over the four changed access/review screens: JSON `[]`.
+- Web export: passed with 39 static routes.
+- Android JavaScript export: passed with 96 packaged assets.
+- `npx expo install --check`: known repository patch drift remains (`expo` 57.0.20 → 57.0.21 and
+  `expo-router` 57.0.19 → 57.0.20); Feature 011 changed no dependency.
+- Firefox web proxy: sampled Arabic RTL at 390×844 and 320×720 and English LTR at 320×720; confirmed
+  the always-visible action, preservation banner, email/code/details ordering, wrong-code message,
+  original-family return, and reload fail-closed behavior.
+- Physical Android, native keyboard/Back, TalkBack, native font scale, process death, and named-human
+  review: `NOT RUN`.

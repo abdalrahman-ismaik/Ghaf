@@ -122,6 +122,22 @@ components:
 
 # Ghaf Design System
 
+## Feature 011 verified family replacement
+
+Parent sign-in always retains the full-width outlined **Create a new family** action beneath the
+returning sign-in form. When a saved family exists, the new-family identifier screen adds one calm
+status banner before the field: a short preservation heading, one plain-language explanation of the
+one-device boundary, and a replacement-specific continuation label. Verification remains visually
+and behaviorally identical to the established access step, so personal information never appears
+before the accepted code.
+
+After verification, the existing Family Basics, indexed Child profile, and whole-family review
+composition is reused without a parallel setup design. Review repeats the consequence immediately
+before an explicit **Replace family and create new** primary action. Fresh creation keeps its normal
+**Create family** label. All replacement copy is bilingual, uses logical alignment and existing
+status/banner primitives, wraps at 320dp, and introduces no destructive red styling or urgency.
+Leaving before the final action returns to signed-out access with the established family preserved.
+
 ## Feature 007 Family Plus capacity preview
 
 Keep the existing one/two-Child segmented control unchanged. Directly below it, place one

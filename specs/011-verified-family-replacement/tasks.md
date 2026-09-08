@@ -103,15 +103,15 @@ state; an injected storage failure preserves only the old family and permits saf
 
 - [x] T017 Run the focused command from `specs/011-verified-family-replacement/quickstart.md`, then
       `npm run typecheck`, `npm run lint`, `npm run format:check`, and `git diff --check`
-- [ ] T018 Run `npm test`, dependency alignment, 39-route inventory, web export, and Android
+- [x] T018 Run `npm test`, dependency alignment, 39-route inventory, web export, and Android
       JavaScript export; distinguish pre-existing dependency drift from Feature 011 failures
 - [ ] T019 Run the Impeccable detector once over the finished changed UI targets and inspect Arabic
       RTL/English LTR at 320×720 and 390×844, increased text, keyboard, Back, wrong code,
       cancellation, replacement, and save-failure states
-- [ ] T020 Record truthful product, design, limitation, and rehearsal evidence in `PRODUCT.md`,
+- [x] T020 Record truthful product, design, limitation, and rehearsal evidence in `PRODUCT.md`,
       `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, `DEMO_RUNBOOK.md`, and release the reservation in
       `TEAM_OWNERSHIP.md`
-- [ ] T021 Commit the verified runtime slice and final evidence as small cohesive commits without
+- [x] T021 Commit the verified runtime slice and final evidence as small cohesive commits without
       staging protected/unrelated files or pushing shared history
 
 ---
