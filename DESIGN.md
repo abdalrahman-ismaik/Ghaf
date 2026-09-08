@@ -201,15 +201,38 @@ voice capture/recognition, runtime URL, background OS playback, timer-driven sto
 live-AI indicator is used. Existing 220 ms transform/opacity motion and reduced-motion parity remain
 unchanged.
 
+## Feature 008 family connection planning
+
+Family Basics places the private family-person directory before the existing household fields.
+The required primary Parent/guardian and optional second guardian use the established full-width
+inputs. Optional relatives stay collapsed behind one **Add relative** action; one inline editor at
+a time exposes a display name plus relationship and rhythm radio groups. Saved entries become
+compact tonal rows with named Edit and Remove actions. An unfinished row locks Continue until the
+Parent saves or cancels it, preventing quiet loss at the fixed action boundary.
+
+The whole-family review presents guardians first, then configured relatives, then the existing
+family and Child summaries. Parent Family places a dedicated stacked connection plan directly
+below its hero. Each relative row keeps the name and rhythm compact, gives the current idea the
+strongest hierarchy, and includes an equal call/message alternative. One section-level boundary
+explains Parent review, Child choice, and zero progression/reward effects instead of repeating the
+same caveat on every row. No AI sparkle, due date, completion control, or task-assignment action is
+used.
+
+Arabic remains first, long relationship labels wrap in the existing radio control, mixed-script
+names use automatic bidi direction, and every action keeps the shared 48dp minimum. The ivory,
+emerald, pearl, and quiet teal surfaces reuse the released Soft Geometric system without a new
+illustration or dependency.
+
 ## R003 device-local family setup extension
 
-First-family setup is one visible sequence: Family Basics asks for family name, application
-language, and one-or-two Child count; the next route renders Child 1 and, when selected, Child 2 as
-separate indexed steps; Review shows the complete family before the one-time create action. Back
-retains each draft. Required identity-light fields come first—nickname, botanical avatar, age band,
-and preferred language—followed by optional gender, curated interests, hobbies, support,
-accessibility, and prepared-personalization choice. There is no unbounded “important information”
-box because the local demo does not need a sensitive Child narrative.
+First-family setup is one visible sequence: Family Basics asks for the minimized family-person
+directory, family name, application language, and one-or-two Child count; the next route renders
+Child 1 and, when selected, Child 2 as separate indexed steps; Review shows the complete family
+before the one-time create action. Back retains each complete draft entry. Required identity-light
+Child fields come first—nickname, botanical avatar, age band, and preferred language—followed by
+optional gender, curated interests, hobbies, support, accessibility, and prepared-personalization
+choice. There is no unbounded “important information” box because the local demo does not need a
+sensitive Child or family narrative.
 
 The screens reuse the current Soft Geometric botanical system: organic ivory background, strong
 Alexandria headings, Readex controls/body, emerald primary action, outlined semantic chips, generous

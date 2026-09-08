@@ -3,12 +3,13 @@
 ## Family Basics
 
 - Requires verified Parent setup authority through the existing route guard.
-- Orders content as: primary Parent/guardian name, optional second Parent/guardian, family name,
-  local privacy note, app language, optional relatives, Child capacity, existing Plus preview, and
-  setup-sequence note.
+- Orders content as: primary Parent/guardian name, optional second Parent/guardian, optional
+  relatives, family name, local privacy note, app language, Child capacity, existing Plus preview,
+  and setup-sequence note.
 - Starts with zero visible relative rows. **Add a relative** opens one inline editor until the
   six-entry limit. The editor has one display-name field, one relationship radio group, one rhythm
-  radio group, and Save/Cancel actions. Saved rows expose 48dp Edit and Remove actions.
+  radio group, and Save/Cancel actions. The add action precedes the explanatory body so it remains
+  discoverable above the compact footer. Saved rows expose 48dp Edit and Remove actions.
 - Continue remains the single dominant action. It is available only when the primary name, family
   name, and all present relative rows are valid. Optional fields may be skipped.
 - Back, locale change, and Plus preview opening preserve the full draft.
@@ -28,7 +29,8 @@
 - Each dedicated stacked row exposes display name, relationship, rhythm, current prepared idea,
   equal call/message alternative, and recognition-only/no-progress meaning.
 - One concise section note states that ideas are local/prepared, optional, and reviewed by the
-  Parent. It must not use an AI sparkle or live/provider wording.
+  Parent. The same note states that the Parent arranges contact and transport and owns hazardous
+  actions. It must not use an AI sparkle or live/provider wording.
 - If there are no relatives, the personalized plan section is absent; the ordinary Parent Family
   experience remains unchanged.
 
@@ -43,7 +45,8 @@
 
 ## Accessibility and Direction
 
-- Arabic is first; English is equivalent. Display names use automatic bidi direction.
+- Arabic is first; English is equivalent. Standalone display names use automatic bidi direction;
+  every name interpolated into another sentence is wrapped in Unicode bidi isolation marks.
 - Relationship and rhythm choices use actual single-selection radio semantics rather than checkbox
   semantics.
 - All controls are at least 48dp; rows wrap vertically at compact width; no required copy is

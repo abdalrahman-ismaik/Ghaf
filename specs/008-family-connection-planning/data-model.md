@@ -4,20 +4,20 @@
 
 The directory is created and saved atomically with the one local family.
 
-| Field | Type | Validation | Meaning |
-| --- | --- | --- | --- |
-| `primaryGuardianName` | string | trimmed, 2–40 characters, no control characters | Required display name for the current Parent/guardian; not identity authority |
-| `secondaryGuardianName` | string | empty or trimmed 2–40 characters, no control characters | Optional display name for another Parent/guardian |
-| `relatives` | list of Named Relative | 0–6 unique slot IDs | Explicitly configured relatives only |
+| Field                   | Type                   | Validation                                              | Meaning                                                                       |
+| ----------------------- | ---------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `primaryGuardianName`   | string                 | trimmed, 2–40 characters, no control characters         | Required display name for the current Parent/guardian; not identity authority |
+| `secondaryGuardianName` | string                 | empty or trimmed 2–40 characters, no control characters | Optional display name for another Parent/guardian                             |
+| `relatives`             | list of Named Relative | 0–6 unique slot IDs                                     | Explicitly configured relatives only                                          |
 
 ## Named Relative
 
-| Field | Type | Validation | Meaning |
-| --- | --- | --- | --- |
-| `id` | `relative_1` … `relative_6` | unique within directory | Stable local presentation/derivation slot |
-| `displayName` | string | trimmed, 2–40 characters, no control characters | Parent-entered display name only |
-| `relationship` | enum | `grandmother`, `grandfather`, `aunt`, `uncle` | Broad relationship selected by Parent |
-| `rhythm` | enum | `weekly`, `monthly`, `every_three_months`, `no_schedule` | Non-enforcing planning label |
+| Field          | Type                        | Validation                                               | Meaning                                   |
+| -------------- | --------------------------- | -------------------------------------------------------- | ----------------------------------------- |
+| `id`           | `relative_1` … `relative_6` | unique within directory                                  | Stable local presentation/derivation slot |
+| `displayName`  | string                      | trimmed, 2–40 characters, no control characters          | Parent-entered display name only          |
+| `relationship` | enum                        | `grandmother`, `grandfather`, `aunt`, `uncle`            | Broad relationship selected by Parent     |
+| `rhythm`       | enum                        | `weekly`, `monthly`, `every_three_months`, `no_schedule` | Non-enforcing planning label              |
 
 Duplicate display names are allowed. Removing an entry releases its slot for a later entry; no
 historical completion or due state is retained.
@@ -52,21 +52,23 @@ Migration behavior:
 
 ## Derived Connection Plan Entry
 
-Plan entries are never persisted.
+The authority-checked Parent projection returns normalized `guardianDisplayNames` plus the derived
+entries, so the route never reads the private directory directly. Neither the plan nor its entries
+are persisted.
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `relativeId` | Named Relative ID | Binds entry to one validated relative |
-| `displayName` | string | Isolated copy for private Parent presentation |
-| `relationship` | relationship enum | Drives relationship label and allowed idea set |
-| `rhythm` | rhythm enum | Display-only planning cadence |
-| `ideaId` | allowlisted enum | One deterministic current prepared idea |
-| `remoteAlternativeId` | `call_or_message` | Equal non-visit route |
-| `recognitionMode` | `recognition_only` | No numeric reward or persistent progress |
-| `requiresParentReview` | `true` | Parent decides suitability before any real-world use |
-| `childMayChooseOrSkip` | `true` | No forced interaction or penalty |
-| `effect` | `none` | No task/progress/shared authority |
-| `origin` | `prepared_local` | Truthful non-AI, offline source |
+| Field                  | Type               | Meaning                                                      |
+| ---------------------- | ------------------ | ------------------------------------------------------------ |
+| `relativeId`           | Named Relative ID  | Binds entry to one validated relative                        |
+| `displayName`          | string             | Private copied value; presentation adds bidi isolation marks |
+| `relationship`         | relationship enum  | Drives relationship label and allowed idea set               |
+| `rhythm`               | rhythm enum        | Display-only planning cadence                                |
+| `ideaId`               | allowlisted enum   | One deterministic current prepared idea                      |
+| `remoteAlternativeId`  | `call_or_message`  | Equal non-visit route                                        |
+| `recognitionMode`      | `recognition_only` | No numeric reward or persistent progress                     |
+| `requiresParentReview` | `true`             | Parent decides suitability before any real-world use         |
+| `childMayChooseOrSkip` | `true`             | No forced interaction or penalty                             |
+| `effect`               | `none`             | No task/progress/shared authority                            |
+| `origin`               | `prepared_local`   | Truthful non-AI, offline source                              |
 
 ### Deterministic derivation
 

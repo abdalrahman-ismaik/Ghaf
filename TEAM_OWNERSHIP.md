@@ -9,10 +9,10 @@ in `AGENTS.md` through the configured agent-context hook, and
 `specs/008-family-connection-planning/**`.
 
 **Runtime reservation**: `app/access/parent/{family-basics.tsx,review-create.tsx}`,
-`app/parent/family/index.tsx`, `src/components/access/FamilyPeopleEditor.tsx`,
+`app/parent/family/index.tsx`, `src/components/access/{index.ts,FamilyPeopleEditor.tsx}`,
 `src/components/family/FamilyConnectionPlan.tsx`,
 `src/features/family-connections/**`, `src/features/access/parentOnboarding/{policy.ts,controller.ts}`,
-`src/features/local-family/schema.ts`,
+`src/features/local-family/{index.ts,schema.ts}`,
 `src/models/{familyConnections.ts,localFamily.ts,parentOnboarding.ts}`,
 `src/services/local/{index.ts,repository.ts}`,
 `src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`,
@@ -32,8 +32,16 @@ no reminders or notifications, and no League, Circle, Seed, Garden, or Family Re
 the sole executable P0 recycling task unchanged and label the relationship plan honestly as a
 prepared local planning preview.
 
-**Status**: Specification and implementation in progress. Existing user-owned local configuration,
-Stitch/logo source material, and generated output artifacts remain outside this reservation.
+**Status**: Complete and ready for source integration. Commits `6dd2367` and `58739fc` contain the
+approved specification plus family setup, strict schema-3 migration, Parent-only prepared
+connection projection, bilingual UI, and reset/remembered-access regressions. `npm run verify`
+passed strict TypeScript, zero-warning lint, formatting, 123 files / 1,364 tests, dependency
+alignment, and a 39-route web export. Chromium proxy review covered
+Arabic/English at 320×720 and 390×844, six consistent relatives, mixed-script bidi isolation, and
+a simulated 200% web-text stress; the independent finish reviewer returned `ship`. Physical
+Android and named Arabic/UAE cultural, safeguarding, privacy, accessibility, product, and visual
+reviews remain `NOT RUN`. Existing user-owned local configuration, Stitch/logo source material,
+and generated output artifacts remain outside this reservation.
 
 ## 2026-09-08 Parent AI Disclosure Consolidation Window
 

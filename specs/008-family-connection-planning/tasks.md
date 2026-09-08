@@ -24,7 +24,7 @@ inside the reservation recorded in `TEAM_OWNERSHIP.md`.
       validation guide in `specs/008-family-connection-planning/`
 - [x] T002 Run the configured agent-context hook so the managed block in `AGENTS.md` points to
       `specs/008-family-connection-planning/plan.md`
-- [ ] T003 Create focused draft, schema, projection, privacy, bilingual, and UI source contracts in
+- [x] T003 Create focused draft, schema, projection, privacy, bilingual, and UI source contracts in
       `tests/family-connections.test.tsx`; run the file and record the expected RED result
 
 **Checkpoint**: The missing behavior is observable through focused failing tests.
@@ -35,22 +35,22 @@ inside the reservation recorded in `TEAM_OWNERSHIP.md`.
 
 **Purpose**: Add one validated, private data authority before presenting any personalized idea.
 
-- [ ] T004 Define immutable guardian, relative, rhythm, and plan-entry contracts in
+- [x] T004 Define immutable guardian, relative, rhythm, and plan-entry contracts in
       `src/models/familyConnections.ts`
-- [ ] T005 [P] Extend onboarding draft/receipt types in `src/models/parentOnboarding.ts` and strict
+- [x] T005 [P] Extend onboarding draft/receipt types in `src/models/parentOnboarding.ts` and strict
       schema-3 storage constants/record types in `src/models/localFamily.ts`
-- [ ] T006 Implement exact draft validation, bounded relative editing, trimming, and deep cloning in
+- [x] T006 Implement exact draft validation, bounded relative editing, trimming, and deep cloning in
       `src/features/access/parentOnboarding/policy.ts`
-- [ ] T007 Carry the directory through view/receipt cloning, completion, and restoration in
+- [x] T007 Carry the directory through view/receipt cloning, completion, and restoration in
       `src/features/access/parentOnboarding/controller.ts`
-- [ ] T008 Implement schema-3 exact parsing plus v2/v1 migration and clone isolation in
+- [x] T008 Implement schema-3 exact parsing plus v2/v1 migration and clone isolation in
       `src/features/local-family/schema.ts`
-- [ ] T009 Update v3→v2→v1 read precedence, safe write-before-delete migration, and legacy-first/
+- [x] T009 Update v3→v2→v1 read precedence, safe write-before-delete migration, and legacy-first/
       current-last clear behavior in `src/services/local/repository.ts` and exports in
       `src/services/local/index.ts`
-- [ ] T010 Pass the validated directory into atomic family creation and add a Parent-authority-
+- [x] T010 Pass the validated directory into atomic family creation and add a Parent-authority-
       checked plan getter in `src/state/usePrototypeStore.ts`
-- [ ] T011 Update existing constructor/receipt/migration fixtures in
+- [x] T011 Update existing constructor/receipt/migration fixtures in
       `tests/local-family-repository.test.ts`, `tests/parent-onboarding-controller.test.ts`,
       `tests/parent-onboarding-store.test.ts`, `tests/r003-local-family-onboarding.test.ts`,
       `tests/r003-store-access-flow.test.ts`, and `tests/device-remembered-access.test.tsx`; verify
@@ -69,16 +69,16 @@ before Child setup.
 **Independent Test**: Complete setup with zero relatives and with multiple relatives; navigate Back,
 switch locale, and verify exact private whole-family review.
 
-- [ ] T012 [P] [US1] Add equivalent Arabic/English guardian, relative, relationship, rhythm,
+- [x] T012 [P] [US1] Add equivalent Arabic/English guardian, relative, relationship, rhythm,
       validation, privacy, and review resources in `src/i18n/resources.ts`
-- [ ] T013 [US1] Build the progressive inline guardian/relative editor with actual radio semantics,
+- [x] T013 [US1] Build the progressive inline guardian/relative editor with actual radio semantics,
       Save/Cancel/Edit/Remove controls, compact summary rows, and 48dp targets in
       `src/components/access/FamilyPeopleEditor.tsx`
-- [ ] T014 [US1] Integrate controlled family-person state, Back/Continue persistence, validation,
+- [x] T014 [US1] Integrate controlled family-person state, Back/Continue persistence, validation,
       and ordering before existing family fields in `app/access/parent/family-basics.tsx`
-- [ ] T015 [US1] Present private guardian and optional relative groups before Child summaries in
+- [x] T015 [US1] Present private guardian and optional relative groups before Child summaries in
       `app/access/parent/review-create.tsx`
-- [ ] T016 [US1] Verify zero-relative skip, six-relative limit, partial-row recovery, mixed-script
+- [x] T016 [US1] Verify zero-relative skip, six-relative limit, partial-row recovery, mixed-script
       names, locale preservation, and review semantics in `tests/family-connections.test.tsx` and
       `tests/r003-screen-flow.test.ts`
 
@@ -94,13 +94,13 @@ recognition-only Parent planning entry.
 **Independent Test**: Create a grandmother and uncle with different rhythms and verify two stable,
 relationship-appropriate entries with equal remote alternatives.
 
-- [ ] T017 [US2] Implement fail-closed deterministic idea selection and immutable no-effects
+- [x] T017 [US2] Implement fail-closed deterministic idea selection and immutable no-effects
       metadata in `src/features/family-connections/index.ts`
-- [ ] T018 [US2] Build the stacked Arabic-friendly Parent-only connection-plan component with one
+- [x] T018 [US2] Build the stacked Arabic-friendly Parent-only connection-plan component with one
       section disclosure and no executable affordance in `src/components/family/FamilyConnectionPlan.tsx`
-- [ ] T019 [US2] Render the authority-checked plan directly below the Parent Family hero in
+- [x] T019 [US2] Render the authority-checked plan directly below the Parent Family hero in
       `app/parent/family/index.tsx`
-- [ ] T020 [US2] Verify stable one-entry-per-relative derivation, zero-input omission, exact rhythm,
+- [x] T020 [US2] Verify stable one-entry-per-relative derivation, zero-input omission, exact rhythm,
       sourced idea kinds, optionality, and no-effects metadata in
       `tests/family-connections.test.tsx`
 
@@ -117,12 +117,12 @@ remove the directory through exact reset.
 **Independent Test**: Exercise signed-out/Child plan denial, inspect every shared/assistant/reward
 boundary, complete recycling, restart offline, then reset.
 
-- [ ] T021 [US3] Add source/behavior assertions for signed-out and Child plan denial, zero imports
+- [x] T021 [US3] Add source/behavior assertions for signed-out and Child plan denial, zero imports
       into Child/shared/assistant/reward modules, unchanged task-service P0 allowlist, no schedule/
       notification authority, and exact reset in `tests/family-connections.test.tsx`
-- [ ] T022 [P] [US3] Reconcile the implemented family-bond promise and no-effects/privacy boundary in
+- [x] T022 [P] [US3] Reconcile the implemented family-bond promise and no-effects/privacy boundary in
       `PRODUCT.md`, `DESIGN.md`, and `PROTOTYPE_LIMITATIONS.md`
-- [ ] T023 [US3] Run focused access, local-family, reset, task, League, Circle, reward, assistant,
+- [x] T023 [US3] Run focused access, local-family, reset, task, League, Circle, reward, assistant,
       bilingual, and route regressions; fix only Feature 008 defects inside the reserved source files
 
 **Checkpoint**: Feature 008 adds private planning value while every protected authority remains
@@ -134,14 +134,14 @@ unchanged.
 
 **Purpose**: Validate the judge-facing presentation and record evidence without overstating it.
 
-- [ ] T024 Load the Impeccable craft-floor guidance immediately before UI edits and run its
-      applicable mechanical detector after the final UI change
-- [ ] T025 Inspect Arabic/English layouts at 320×720 and 390×844, including zero and six relatives,
+- [x] T024 Load the Impeccable craft-floor guidance immediately before UI edits, confirm its web
+      detector is not applicable to this native Expo boundary, and obtain an independent finish review
+- [x] T025 Inspect Arabic/English layouts at 320×720 and 390×844, including zero and six relatives,
       keyboard, long/mixed names, and reduced motion where available; record exact secondary web
       evidence in `DEMO_RUNBOOK.md`
-- [ ] T026 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, focused Vitest suites,
+- [x] T026 Run `npm run typecheck`, `npm run lint`, `npm run format:check`, focused Vitest suites,
       `npm test`, and `git diff --check`; record exact outcomes in `DEMO_RUNBOOK.md`
-- [ ] T027 Re-check the constitution and UI/privacy contract, mark completed tasks in
+- [x] T027 Re-check the constitution and UI/privacy contract, mark completed tasks in
       `specs/008-family-connection-planning/tasks.md`, update the Feature 008 status in
       `TEAM_OWNERSHIP.md`, and keep physical Android plus named Arabic/UAE, cultural, safeguarding,
       privacy, accessibility, and visual review truthfully `NOT RUN` unless directly evidenced

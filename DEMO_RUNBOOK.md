@@ -1,5 +1,42 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 008 Family Connection Planning Record — 2026-09-08
+
+**Current classification:** implemented private Parent planning slice; executable kinship tasks,
+real scheduling, cross-device sync, physical Android evidence, and named-human review remain
+outside this result or NOT RUN.
+
+Create a new synthetic family and complete Parent verification. Family Basics starts with the
+editable prepared Parent name Rashid. Add optional Maryam as the second guardian, then add
+Grandmother Fatima with the monthly rhythm and Uncle Khalid with the every-three-month rhythm.
+Confirm the inline editor uses one relationship and one rhythm at a time, unfinished data locks
+Continue, saved rows can be edited or removed, and Arabic/English switching retains every name.
+Complete Child setup and confirm Review shows the private family people before Child profiles.
+
+After creation, open Parent Family. The plan must show one deterministic entry for every explicitly
+added relative, with a visit/call, family-story, safe-help, thank-you, or phone-free idea and an
+equal call/message alternative. Read the single boundary note: the Parent reviews each idea, the
+Child may choose or skip it, the Parent owns contact, transport, and unsafe actions, and it grants
+no Seeds, Garden growth, League points, or rewards.
+Do not describe these entries as assigned or completed tasks, reminders, proof of contact, live AI,
+or a production family graph. The canonical recycling journey remains the only executable P0 task.
+
+| Gate                                                                                                                             | Result                               | Evidence                                                                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required/optional names, zero-to-six limit, trimming, duplicate-name handling, deterministic derivation, and no-effects metadata | PASSED automated                     | focused family-directory and projection assertions                                                                                                                                |
+| Schema 3 parsing, schema-2/schema-1 migration, receipt/remembered-device preservation, storage failure, and exact reset          | PASSED automated                     | focused local-family, onboarding, access, and reset regressions                                                                                                                   |
+| Parent-only selector, Child denial, no private data in Child/shared/assistant/reward code, and unchanged task allowlist          | PASSED automated/source              | focused authority and source-isolation assertions                                                                                                                                 |
+| Arabic/English resources, actual radio semantics, named Edit/Remove actions, unfinished-row lock, and mixed-script preservation  | PASSED automated/browser             | resource/source checks plus live Chromium accessibility snapshots                                                                                                                 |
+| Compact Family Basics, Review, and Parent Family presentation                                                                    | PASSED Chromium web proxy            | Arabic and English at 320×720 plus English at 390×844; `family-basics-add-visible-en-320x720-final-v4.png` shows both guardian fields and Add Relative above the footer           |
+| Six-relative density and mixed-script bidi order                                                                                 | PASSED Chromium web proxy            | `family-basics-six-relatives-consistent-en-320x720-final.png` plus snapshots show six consistent rows; Parent Family preserves two-guardian order and isolated mixed-script names |
+| Large-text stress                                                                                                                | PASSED simulated web stress          | a 200% text-only Chromium injection kept the first plan entry wrapped and vertically reachable at 390×844; this is secondary evidence and does not pass native Android font scale |
+| Browser console baseline                                                                                                         | PASSED with unrelated baseline noise | one existing ambience play/pause interruption and three known Expo/web warnings were present before and remained unchanged through the Feature 008 routes                         |
+| Independent finish review                                                                                                        | PASSED — ship                        | repository QA reviewer accepted the final bidi, safety-copy, hierarchy, compact setup, and relationship-consistent recapture fixes                                                |
+| Full repository verification and web export                                                                                      | PASSED automated                     | `npm run verify`: strict TypeScript, zero-warning lint, formatting, 123 files / 1,364 tests, Expo dependency alignment, and 39-route web export                                   |
+| Zero-relative Parent Family visual omission, keyboard, and reduced motion                                                        | NOT RUN                              | zero-relative behavior/source coverage passed, but these exact presentation states were not captured in this browser window                                                       |
+| Physical Android SQLite migration/restart, Back, keyboard, TalkBack, font scale, and layout                                      | NOT RUN                              | no qualifying physical Android observation                                                                                                                                        |
+| Named Arabic/UAE cultural, safeguarding, privacy, accessibility, product, and visual review                                      | NOT RUN                              | no named reviewer participated; Modern Standard Arabic and bounded reviewed patterns were used                                                                                    |
+
 ## Feature 007 Family Plus Capacity Preview Record — 2026-09-08
 
 **Current classification:** implemented Parent-only commercial preview; real 3–6-profile support,
@@ -52,18 +89,18 @@ with the Parent-authorized exact reset and confirm the stored choice is removed 
 returns to default-on. Never describe the local soundscape as streaming, live environmental audio,
 recording, measured nature, or proof that Ghaf plants trees.
 
-| Gate                                                                                          | Result                    | Evidence                                                                              |
-| --------------------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------- |
-| Preference schema, persistence failure, sign-out/role handoff, and exact reset                | `PASSED automated`        | strict device-local record and focused store/reset coverage                           |
-| Foreground, browser-unlock, screen-reader, narration-ducking, and voice-focus policy          | `PASSED automated/source` | pure playback matrix and one root-player source contract                              |
-| Parent/Child hierarchy, bilingual copy, native switch semantics, and 48dp target              | `PASSED automated/source` | shared component, resource parity, and source assertions                              |
-| Mechanical UI review                                                                          | `PASSED`                  | Impeccable detector returned `[]` over the changed provider/onboarding/Settings files |
-| Asset provenance and technical identity                                                       | `PASSED local/source`     | local synthesized 48.039s mono MP3; SHA-256 recorded beside the asset                 |
-| Focused audio, reset, voice-focus, and onboarding regression                                  | `PASSED`                  | 4 files / 65 tests                                                                    |
+| Gate                                                                                          | Result                    | Evidence                                                                                                                          |
+| --------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Preference schema, persistence failure, sign-out/role handoff, and exact reset                | `PASSED automated`        | strict device-local record and focused store/reset coverage                                                                       |
+| Foreground, browser-unlock, screen-reader, narration-ducking, and voice-focus policy          | `PASSED automated/source` | pure playback matrix and one root-player source contract                                                                          |
+| Parent/Child hierarchy, bilingual copy, native switch semantics, and 48dp target              | `PASSED automated/source` | shared component, resource parity, and source assertions                                                                          |
+| Mechanical UI review                                                                          | `PASSED`                  | Impeccable detector returned `[]` over the changed provider/onboarding/Settings files                                             |
+| Asset provenance and technical identity                                                       | `PASSED local/source`     | local synthesized 48.039s mono MP3; SHA-256 recorded beside the asset                                                             |
+| Focused audio, reset, voice-focus, and onboarding regression                                  | `PASSED`                  | 4 files / 65 tests                                                                                                                |
 | Full repository and production exports                                                        | `PASSED automated`        | typecheck, zero-warning lint, formatting, 121 files / 1,335 tests, 39 web routes, and an Android JavaScript export with 95 assets |
-| Expo dependency alignment                                                                      | `PASSED local SDK map`    | dependencies match the installed Expo SDK map; online registry freshness is `NOT RUN` |
-| Physical Android naturalness, volume, seam, background/audio focus, silent mode, and TalkBack | `NOT RUN`                 | requires the competition device and a named human listener                            |
-| Named Arabic, accessibility, audio, and product review                                        | `NOT RUN`                 | no named reviewer participated in this implementation window                          |
+| Expo dependency alignment                                                                     | `PASSED local SDK map`    | dependencies match the installed Expo SDK map; online registry freshness is `NOT RUN`                                             |
+| Physical Android naturalness, volume, seam, background/audio focus, silent mode, and TalkBack | `NOT RUN`                 | requires the competition device and a named human listener                                                                        |
+| Named Arabic, accessibility, audio, and product review                                        | `NOT RUN`                 | no named reviewer participated in this implementation window                                                                      |
 
 ## Emirati Parent Access Portrait Record — 2026-09-08
 
@@ -79,16 +116,16 @@ scroll without moving its protected primary action. The portrait is decorative a
 announced by a screen reader. It must never be described as a real family member, identity check,
 guardian proof, live AI output, or evidence that Ghaf plants trees.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| Generated source and final crop inspection | `PASSED local visual` | one fictional adult, accurate understated attire, centered 3:2 crop, no Child, props, text, logo, UI, or product claim |
-| Exact local provenance, prompt, dimensions, byte budget, and failure-safe component | `PASSED automated/source` | embedded prompt, 1200×800 JPEG, 91,432 bytes, local literal source, Expo Image, and non-blocking decode failure |
-| Arabic RTL and English LTR compact presentation | `PASSED Firefox web proxy` | sign-in at 320×720 and 390×844 plus sign-up/verification at 320×720; primary actions reachable and no application console errors |
-| Mechanical design review | `PASSED` | Impeccable detector returned `[]` for the component and three Parent routes |
-| Focused access/startup regression and scoped source checks | `PASSED` | 5 files / 66 tests; strict TypeScript, zero-warning ESLint, Prettier, dependency alignment, and Git whitespace |
-| Whole-repository verification during this window | `BLOCKED by concurrent unrelated work` | the separately reserved Natural Ambient Audio window removed the old onboarding ambience before completing replacement wiring, causing the only typecheck, regression, and web-export failures |
-| Physical Android render/decode/memory, TalkBack, font scale, and keyboard | `BLOCKED / NOT RUN` | no qualifying native observation in this window |
-| Named Emirati cultural, image-rights, safeguarding, accessibility, and visual review | `NOT RUN` | no named reviewer was available in this implementation window |
+| Gate                                                                                 | Result                                 | Evidence                                                                                                                                                                                       |
+| ------------------------------------------------------------------------------------ | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Generated source and final crop inspection                                           | `PASSED local visual`                  | one fictional adult, accurate understated attire, centered 3:2 crop, no Child, props, text, logo, UI, or product claim                                                                         |
+| Exact local provenance, prompt, dimensions, byte budget, and failure-safe component  | `PASSED automated/source`              | embedded prompt, 1200×800 JPEG, 91,432 bytes, local literal source, Expo Image, and non-blocking decode failure                                                                                |
+| Arabic RTL and English LTR compact presentation                                      | `PASSED Firefox web proxy`             | sign-in at 320×720 and 390×844 plus sign-up/verification at 320×720; primary actions reachable and no application console errors                                                               |
+| Mechanical design review                                                             | `PASSED`                               | Impeccable detector returned `[]` for the component and three Parent routes                                                                                                                    |
+| Focused access/startup regression and scoped source checks                           | `PASSED`                               | 5 files / 66 tests; strict TypeScript, zero-warning ESLint, Prettier, dependency alignment, and Git whitespace                                                                                 |
+| Whole-repository verification during this window                                     | `BLOCKED by concurrent unrelated work` | the separately reserved Natural Ambient Audio window removed the old onboarding ambience before completing replacement wiring, causing the only typecheck, regression, and web-export failures |
+| Physical Android render/decode/memory, TalkBack, font scale, and keyboard            | `BLOCKED / NOT RUN`                    | no qualifying native observation in this window                                                                                                                                                |
+| Named Emirati cultural, image-rights, safeguarding, accessibility, and visual review | `NOT RUN`                              | no named reviewer was available in this implementation window                                                                                                                                  |
 
 ## Feature 005 Remembered Device Access Record — 2026-09-07
 
@@ -108,17 +145,17 @@ enters, choose Parent logout and confirm Ghaf restores Salem with fresh authorit
 run the one-action reset, relaunch, and confirm Child restoration is denied. Never present one
 installation as remembering Parent and Child simultaneously.
 
-| Gate | Result | Evidence |
-| --- | --- | --- |
-| Strict affinity schema, repository failures, and no credential/session persistence | `PASSED automated/source` | exact-key parsing, corrupt/mismatch denial, isolated cloned reads, clear ordering, and scoped source inspection |
-| Parent opt-in/out, restart, fresh authority, and logout failure safety | `PASSED automated/source` | focused controller/bootstrap/store coverage |
-| Child pairing continuity, revocation/reset denial, and single-primary replacement | `PASSED automated/source` | focused controller/bootstrap/store coverage |
-| Temporary Child → Parent → Child handoff and mutual authority exclusion | `PASSED automated/source` | focused state/route/source coverage |
-| Arabic/English copy and accessible unchecked control | `PASSED automated/source` | resource parity, checkbox semantics, 48 dp target, and Impeccable detector `[]` |
-| Full repository regression and source integrity | `PASSED` | typecheck, zero-warning lint, format check, Git whitespace, scoped credential/session inspection, and 119 files / 1,310 tests |
-| Physical Android process-death/SQLite, Back, TalkBack, and font scale | `BLOCKED / NOT RUN` | no qualifying physical-device observation in this implementation window |
-| Named Arabic/UAE, privacy, safeguarding, accessibility, and visual review | `NOT RUN` | no named reviewer was available in this implementation window |
-| Production authentication, trusted-device security, recovery, and real separate-device sync | `OUT OF P0 / NOT IMPLEMENTED` | this build contains one synthetic local family and no network account/state service |
+| Gate                                                                                        | Result                        | Evidence                                                                                                                      |
+| ------------------------------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Strict affinity schema, repository failures, and no credential/session persistence          | `PASSED automated/source`     | exact-key parsing, corrupt/mismatch denial, isolated cloned reads, clear ordering, and scoped source inspection               |
+| Parent opt-in/out, restart, fresh authority, and logout failure safety                      | `PASSED automated/source`     | focused controller/bootstrap/store coverage                                                                                   |
+| Child pairing continuity, revocation/reset denial, and single-primary replacement           | `PASSED automated/source`     | focused controller/bootstrap/store coverage                                                                                   |
+| Temporary Child → Parent → Child handoff and mutual authority exclusion                     | `PASSED automated/source`     | focused state/route/source coverage                                                                                           |
+| Arabic/English copy and accessible unchecked control                                        | `PASSED automated/source`     | resource parity, checkbox semantics, 48 dp target, and Impeccable detector `[]`                                               |
+| Full repository regression and source integrity                                             | `PASSED`                      | typecheck, zero-warning lint, format check, Git whitespace, scoped credential/session inspection, and 119 files / 1,310 tests |
+| Physical Android process-death/SQLite, Back, TalkBack, and font scale                       | `BLOCKED / NOT RUN`           | no qualifying physical-device observation in this implementation window                                                       |
+| Named Arabic/UAE, privacy, safeguarding, accessibility, and visual review                   | `NOT RUN`                     | no named reviewer was available in this implementation window                                                                 |
+| Production authentication, trusted-device security, recovery, and real separate-device sync | `OUT OF P0 / NOT IMPLEMENTED` | this build contains one synthetic local family and no network account/state service                                           |
 
 Judges do not configure an account service or MCP for this path. Describe it as reliable offline
 demo continuity and the intended one-primary-role-per-installation model, not as production login

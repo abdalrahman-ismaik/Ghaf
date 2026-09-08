@@ -1,5 +1,27 @@
 # Prototype Limitations
 
+## Feature 008 family connection boundary — 2026-09-08
+
+The family-person directory is minimized, synthetic, Parent-entered prototype data stored only in
+the device-local family record. It supports one required Parent/guardian display name, one optional
+second guardian, and zero to six optional grandparents, aunts, or uncles. It is not a contact book,
+family tree, identity record, genealogy service, cloud household, or verified relationship graph;
+Ghaf does not know whether a named relative is alive, nearby, safe to visit, available, or willing.
+
+The displayed rhythms are descriptive choices, not a scheduler. This build creates no date,
+calendar item, notification, reminder, missed or overdue state, proof request, location request, or
+background work. Connection ideas are prepared local previews in Parent Family only. They are not
+Child assignments and cannot be accepted, completed, confirmed, or rewarded. They create no Seed,
+Garden, canopy, Circle, League, badge, Impact Path, or Family Reward effect, and they are never sent
+to an assistant or shared projection.
+
+Schema 3 adds the minimized directory and migrates valid schema-2/schema-1 records with a neutral
+Parent label and no inferred relatives. It does not add encryption, production authentication,
+cross-device sync, backup, recovery, household invitation, or remote account storage. Browser
+inspection is secondary evidence; physical Android SQLite migration, process restart, keyboard,
+Back, TalkBack, font scale, and named Arabic/UAE cultural, safeguarding, privacy, accessibility,
+and visual review remain NOT RUN.
+
 ## Feature 007 Family Plus boundary — 2026-09-08
 
 The Parent Family Basics screen now previews a proposed Ghaf Plus household plan for three through
@@ -161,10 +183,12 @@ TalkBack coexistence, audio focus, silent-mode behavior, or named Arabic review.
 
 The returning-family decision now relies on one validated device-local demo directory. Native uses
 Expo SQLite key-value storage and web uses browser localStorage; it stores one synthetic Parent
-normalized phone/email lookup identifier and kind, one or two Child profiles, bounded curated setup
-preferences, and approved paired-Child markers. The family-directory schema is 2; a prior valid
-schema-1 fixture migrates only to the canonical prepared `parent@example.com` identifier. This is
-durable enough for a local demo restart, but it is not encrypted production
+normalized phone/email lookup identifier and kind, the minimized family-connection directory, one
+or two Child profiles, bounded curated setup preferences, and approved paired-Child markers. The
+family-directory schema is 3; valid schema-2 and schema-1 fixtures migrate with a neutral Parent
+label and no inferred relatives, and schema 1 also migrates only to the canonical prepared
+`parent@example.com` identifier. This is durable enough for a local demo restart, but it is not
+encrypted production
 account storage, identity assurance, cloud backup, household discovery, recovery, migration, or
 cross-device sync. Feature 005 keeps its affinity marker separate from this family-directory
 schema, validates it at startup, and mints fresh synthetic authority without serializing or

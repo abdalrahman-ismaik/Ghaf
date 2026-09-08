@@ -4,7 +4,7 @@
 
 ## Status
 
-| Item                      | Truth as of 2026-09-07                                                                                                                                      |
+| Item                      | Truth as of 2026-09-08                                                                                                                                      |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Product                   | Ghaf — غاف                                                                                                                                                  |
 | Competition               | Khalifa University SMAC 2026                                                                                                                                |
@@ -22,6 +22,28 @@ Feature 003 supersedes the single food-rescue mission as the product direction. 
 one useful future task family, but the only executable P0 task is the canonical 12-Seed Green
 Impact recycling task `task_recycling_p0_v1`. Feature 002 evidence remains historical and must not
 be used to pass any Feature 003 Android, design, or human-review criterion.
+
+## Feature 008 family connection planning — 2026-09-08
+
+Family Basics now starts with one required primary Parent/guardian display name, one optional
+second Parent/guardian name, and a progressive optional directory of up to six named grandparents,
+aunts, or uncles. A relative stores only a family-recognized display name, relationship, and one
+descriptive rhythm: weekly, monthly, every three months, or no set rhythm. Ghaf does not collect
+contact details, address, location, birthday, private notes, or a family story.
+
+Each relative the Parent explicitly adds produces one deterministic private connection idea in
+Parent Family. The bounded ideas cover a visit or call, inviting an elder to share a family story,
+safe practical help chosen by the Parent, a thank-you message, or a short phone-free moment with a
+willing relative. Every visit idea has a call/message alternative. The rhythm is descriptive only:
+there is no date, reminder, overdue state, missed-task pressure, proof request, notification, or
+automatic recurrence.
+
+These are prepared local Parent planning entries, not executable Child assignments. The Parent
+reviews each idea and the Child may choose, skip, ask for help, or use the remote alternative.
+Family-connection ideas are recognition-only and create no Seeds, Garden or canopy growth, Circle
+event, League score, badge, Impact Path progress, or Family Reward contribution. Relative data
+stays out of Child, shared, assistant, reward, and analytics projections. The canonical recycling
+task remains the sole executable P0 task.
 
 ## Feature 007 Family Plus capacity preview — 2026-09-08
 
@@ -192,10 +214,11 @@ orientation summary—not push delivery, remote sync, a durable inbox, or a new 
 authority. Fresh family creation and first Child pairing do not show it.
 
 The R003 device-local family directory now remembers one configured demo household across process
-restarts. Its schema-2 record persists one normalized synthetic Parent phone/email lookup
-identifier and kind, one or two ordered Child profiles, their bounded setup preferences, and only
-an approved paired-Child marker. It does not persist verification codes, passwords, authenticated
-sessions, tasks, Seeds, Garden/League/Reward ledgers, media, transcripts, or a notification inbox.
+restarts. Its schema-3 record persists one normalized synthetic Parent phone/email lookup
+identifier and kind, the minimized Parent-entered family-connection directory, one or two ordered
+Child profiles, their bounded setup preferences, and only an approved paired-Child marker. It does
+not persist verification codes, passwords, authenticated sessions, tasks, Seeds,
+Garden/League/Reward ledgers, media, transcripts, or a notification inbox.
 Family setup asks for the Child count first, presents one indexed form per Child, then one
 whole-family review. The optional sparkle-marked profile helper consumes only age band and curated
 interests, hobbies, accessibility, and support preferences; it is deterministic, prepared,
