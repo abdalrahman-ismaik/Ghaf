@@ -4,6 +4,7 @@ import {
   createAmbientAudioPreferencesRepository,
   createDeviceAccessRepository,
   createLocalFamilyRepository,
+  createSavedTaskTemplateRepository,
   deviceLocalStorage,
 } from './local';
 
@@ -92,6 +93,7 @@ export {
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
   type LocalFamilyRepository,
+  type SavedTaskTemplateRepository,
   type LocalKeyValueStorage,
 } from './local';
 
@@ -100,9 +102,11 @@ export const serviceRegistry: Feature003ServiceRegistry & {
   readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
+  readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
 } = {
   ...createFeature003ServiceRegistry(),
   ambientAudioPreferences: createAmbientAudioPreferencesRepository(deviceLocalStorage),
   deviceAccess: createDeviceAccessRepository(deviceLocalStorage),
   localFamily: createLocalFamilyRepository(deviceLocalStorage),
+  savedTaskTemplates: createSavedTaskTemplateRepository(deviceLocalStorage),
 };

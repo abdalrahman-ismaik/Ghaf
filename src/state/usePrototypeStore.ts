@@ -1502,6 +1502,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         restorePreviousFamily();
         return liveChildAiGrantReset;
       }
+      const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
+      if (!savedTaskTemplateReset.ok) {
+        restorePreviousFamily();
+        return savedTaskTemplateReset;
+      }
       replacementReset = {
         session: reset.session,
         growthJourney: nextGrowthJourney.data,
@@ -2293,6 +2298,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!localReset.ok) return { ok: false, error: localReset.error };
     const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
     if (!ambientAudioReset.ok) return { ok: false, error: ambientAudioReset.error };
+    const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
+    if (!savedTaskTemplateReset.ok) return { ok: false, error: savedTaskTemplateReset.error };
     const reset = serviceRegistry.prototypeSession.resetPrototype();
     const nextGrowthJourney = createGrowthJourneyRuntime(
       reset.session,
