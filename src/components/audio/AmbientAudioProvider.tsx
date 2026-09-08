@@ -13,7 +13,7 @@ import { AccessibilityInfo, AppState, Platform, type AppStateStatus } from 'reac
 import { resolveAmbientPlaybackDecision, type AmbientAudioAppState } from '@/features/audio';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
-const ambientSoundscapeSource = require('../../../assets/audio/ambient/nature-soundscape-v1.mp3');
+const ambientSoundscapeSource = require('../../../assets/audio/ambient/calm-soundscape-v2.mp3');
 
 interface AmbientAudioContextValue {
   readonly setNarrationPlaying: (playing: boolean) => void;

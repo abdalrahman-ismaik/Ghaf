@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -291,5 +292,38 @@ describe('Feature 006 presentation source contract', () => {
       expect(arabic[key].length).toBeGreaterThan(0);
       expect(english[key].length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('Feature 010 calm soundscape source contract', () => {
+  const source = (path: string) => readFileSync(join(process.cwd(), path), 'utf8');
+  const v1Path = join(process.cwd(), 'assets/audio/ambient/nature-soundscape-v1.mp3');
+  const v2Path = join(process.cwd(), 'assets/audio/ambient/calm-soundscape-v2.mp3');
+
+  it('selects only the local v2 source and preserves the exact v1 rollback asset', () => {
+    const provider = source('src/components/audio/AmbientAudioProvider.tsx');
+
+    expect(provider).toContain("require('../../../assets/audio/ambient/calm-soundscape-v2.mp3')");
+    expect(provider).not.toContain('nature-soundscape-v1.mp3');
+    expect(existsSync(v1Path)).toBe(true);
+    expect(existsSync(v2Path)).toBe(true);
+    expect(createHash('sha256').update(readFileSync(v1Path)).digest('hex')).toBe(
+      'd597335684f17773f6ac4c258122951488468fb871af190d8fae171a45253d71',
+    );
+  });
+
+  it('keeps the new source compact and binds its exact identity to local provenance', () => {
+    const readme = source('assets/audio/ambient/README.md');
+    const bytes = readFileSync(v2Path);
+    const sha256 = createHash('sha256').update(bytes).digest('hex');
+
+    expect(statSync(v2Path).size).toBeGreaterThan(350_000);
+    expect(statSync(v2Path).size).toBeLessThan(800_000);
+    expect(readme).toContain('calm-soundscape-v2.mp3');
+    expect(readme).toContain(sha256);
+    expect(readme).toContain('fixed seeds');
+    expect(readme).toMatch(/no sine or tonal generator/iu);
+    expect(readme).toMatch(/no downloaded (?:field )?recording/iu);
+    expect(readme).toMatch(/human\s+listening/iu);
   });
 });
