@@ -72,17 +72,40 @@ source and route inventory proves released role screens continue to consume thos
 
   - Detector evidence (2026-09-08): the one required post-implementation pass returned zero
     findings across the shared brand and five header-family components.
-- [ ] T013 [US3] Inspect representative Parent and Child dashboard and nested layouts in Arabic and
+- [x] T013 [US3] Inspect representative Parent and Child dashboard and nested layouts in Arabic and
   English at compact widths through the real web app; record only directly observed evidence
+
+  - Visual evidence (2026-09-08): Parent Home and Settings plus Child Today and Settings were
+    inspected in the exported app at 320 × 720 and 390 × 844 across Arabic RTL and English LTR.
+    The dashboard marks, logical order, sole heading announcement, Back/settings/help/profile
+    controls, and bottom navigation remained clear. The first 320 px English Settings inspection
+    exposed a mid-word title split; commit `10b9929` added responsive lockup wrapping, and the
+    repeated inspection showed the complete title centered below the mark with no hidden control.
 
 ---
 
 ## Phase 5: Polish and Evidence
 
-- [ ] T014 Run the focused test, strict TypeScript, zero-warning lint, formatting, full tests, Git
+- [x] T014 Run the focused test, strict TypeScript, zero-warning lint, formatting, full tests, Git
   whitespace, dependency alignment, and static web/Android exports from quickstart.md
-- [ ] T015 Record RED/GREEN evidence, validation results, manual evidence, protected concurrent work,
+- [x] T015 Record RED/GREEN evidence, validation results, manual evidence, protected concurrent work,
   and final status in tasks.md and TEAM_OWNERSHIP.md
+
+  - Final evidence (2026-09-08): focused branding/presentation checks passed 3 files / 17 tests;
+    strict TypeScript, focused zero-warning ESLint, repository formatting, scoped Git whitespace,
+    and the full 128-file / 1,391-test suite passed. Web export passed with 39 routes; Android
+    export passed with 96 assets and contains the unchanged official mark. The official source
+    checksum remains `28a09269c993d4aacbc40385102f9fa70d555d63b2319f238a5fce6cd277e7dc`.
+  - The whole-tree lint command currently stops at `app/parent/index.tsx:446` in the separate,
+    in-progress Feature 013 reservation (`react/no-children-prop`); every Feature 012 source and
+    test file passes ESLint. Dependency alignment remains the documented pre-existing Expo patch
+    gap: `expo` 57.0.20 expects 57.0.21 and `expo-router` 57.0.19 expects 57.0.20.
+  - The static web proxy logged React hydration error 419 during initial document handoff but
+    recovered and completed all inspected role flows. Physical Android, native screen reader, and
+    200% system-text review remain `NOT RUN`; source contracts do not upgrade those gates.
+  - `TEAM_OWNERSHIP.md` already records Feature 012 complete and physical Android `NOT RUN`. It was
+    not edited again because the concurrent Feature 013 session owns that shared file. Its source,
+    specification, configuration, and user-owned artifacts remain untouched by this evidence update.
 
 ## Dependencies and Execution Order
 
