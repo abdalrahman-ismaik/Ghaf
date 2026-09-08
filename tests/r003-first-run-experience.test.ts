@@ -464,7 +464,9 @@ describe('R003 first-run experience', () => {
     const audioDirectory = resolve(repositoryRoot, 'assets/audio/onboarding');
     for (const file of [
       ...['ar', 'en'].flatMap((locale) =>
-        ONBOARDING_STEPS.map((step) => `narration-${locale}-${step}-v1.mp3`),
+        ONBOARDING_STEPS.map(
+          (step) => `narration-${locale}-${step === 'ai' ? 'assistant' : step}-v1.mp3`,
+        ),
       ),
     ]) {
       expect(statSync(resolve(audioDirectory, file)).size, file).toBeGreaterThan(1_000);

@@ -8,7 +8,7 @@ export const artworkSources = {
   'onboarding-ghaf-intro': require('../../../assets/images/illustrations/r003/final/onboarding-ghaf-intro.jpg'),
   'onboarding-family': require('../../../assets/images/illustrations/r003/final/onboarding-family.jpg'),
   'onboarding-action': require('../../../assets/images/illustrations/r003/final/onboarding-action.jpg'),
-  'onboarding-ai': require('../../../assets/images/illustrations/r003/final/onboarding-ai.jpg'),
+  'onboarding-ai': require('../../../assets/images/illustrations/r003/final/onboarding-assistant.jpg'),
   'onboarding-support': require('../../../assets/images/illustrations/r003/final/onboarding-support.jpg'),
   'onboarding-growth': require('../../../assets/images/illustrations/r003/final/onboarding-growth.jpg'),
   'section-transition': require('../../../assets/images/illustrations/r003/final/section-transition.jpg'),
