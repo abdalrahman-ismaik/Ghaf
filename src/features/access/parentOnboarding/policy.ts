@@ -1,5 +1,11 @@
 import type { LanguagePreference } from '../../../models/access';
 import type { DomainError, DomainResult } from '../../../models/familyGrowth';
+import {
+  cloneFamilyConnectionDirectory,
+  createInitialFamilyConnectionDirectory,
+  validateCompleteFamilyConnectionDirectory,
+  validateFamilyConnectionDraft,
+} from '../../family-connections';
 import type {
   BasicAccessibilityDefault,
   ChildPreferredLanguage,
@@ -121,11 +127,16 @@ function cloneChild(child: ParentOnboardingChildDraft): ParentOnboardingChildDra
 }
 
 function cloneDraft(draft: ParentOnboardingDraft): ParentOnboardingDraft {
-  return { ...draft, children: draft.children.map(cloneChild) };
+  return {
+    ...draft,
+    familyConnections: cloneFamilyConnectionDirectory(draft.familyConnections),
+    children: draft.children.map(cloneChild),
+  };
 }
 
 export function createInitialParentOnboardingDraft(): ParentOnboardingDraft {
   return {
+    familyConnections: createInitialFamilyConnectionDirectory(),
     familyName: 'عائلة النخلة',
     appLanguage: 'ar',
     childCount: 2,
@@ -274,12 +285,23 @@ export function updateParentOnboardingDraft(
 ): DomainResult<ParentOnboardingDraft> {
   if (
     !isRecord(patch) ||
-    !hasOnlyKeys(patch, ['familyName', 'appLanguage', 'childCount', 'childIndex', 'child'])
+    !hasOnlyKeys(patch, [
+      'familyConnections',
+      'familyName',
+      'appLanguage',
+      'childCount',
+      'childIndex',
+      'child',
+    ])
   ) {
     return { ok: false, error: invalidInput('The onboarding update is not supported') };
   }
   if (patch.familyName !== undefined && !isSafeText(patch.familyName, 60)) {
     return { ok: false, error: invalidInput('Family name must be 60 characters or fewer') };
+  }
+  if (patch.familyConnections !== undefined) {
+    const validatedDirectory = validateFamilyConnectionDraft(patch.familyConnections);
+    if (!validatedDirectory.ok) return validatedDirectory;
   }
   if (patch.appLanguage !== undefined && !isAllowedString(patch.appLanguage, LOCALES)) {
     return { ok: false, error: invalidInput('Choose a supported application language') };
@@ -325,6 +347,9 @@ export function updateParentOnboardingDraft(
   return {
     ok: true,
     data: {
+      familyConnections: typedPatch.familyConnections
+        ? cloneFamilyConnectionDirectory(typedPatch.familyConnections)
+        : cloneFamilyConnectionDirectory(current.familyConnections),
       familyName: typedPatch.familyName ?? current.familyName,
       appLanguage: typedPatch.appLanguage ?? current.appLanguage,
       childCount: typedPatch.childCount ?? current.childCount,
@@ -337,6 +362,7 @@ export function validateCompleteParentOnboardingDraft(
   draft: ParentOnboardingDraft,
 ): DomainResult<ParentOnboardingDraft> {
   let validated = updateParentOnboardingDraft(createInitialParentOnboardingDraft(), {
+    familyConnections: draft.familyConnections,
     familyName: draft.familyName,
     appLanguage: draft.appLanguage,
     childCount: draft.childCount,
@@ -358,6 +384,10 @@ export function validateCompleteParentOnboardingDraft(
   if (familyName.length < 2) {
     return { ok: false, error: invalidInput('Enter a family name') };
   }
+  const familyConnections = validateCompleteFamilyConnectionDirectory(
+    validated.data.familyConnections,
+  );
+  if (!familyConnections.ok) return familyConnections;
   const configuredChildren = validated.data.children.slice(0, validated.data.childCount);
   if (
     configuredChildren.length !== validated.data.childCount ||
@@ -370,6 +400,7 @@ export function validateCompleteParentOnboardingDraft(
     ok: true,
     data: {
       ...cloneDraft(validated.data),
+      familyConnections: familyConnections.data,
       familyName,
       children: validated.data.children.map((child, index) => ({
         ...cloneChild(child),

@@ -5,6 +5,7 @@ import type {
   SyntheticParentId,
 } from './access';
 import type { AgeBand, LocaleCode, SyntheticChildId } from './familyGrowth';
+import type { FamilyConnectionDirectory } from './familyConnections';
 
 export type ParentIdentifierKind = 'phone' | 'email';
 
@@ -44,6 +45,7 @@ export interface ParentOnboardingChildDraft {
 }
 
 export interface ParentOnboardingDraft {
+  readonly familyConnections: FamilyConnectionDirectory;
   readonly familyName: string;
   readonly appLanguage: LocaleCode;
   readonly childCount: ParentOnboardingChildCount;
@@ -51,6 +53,7 @@ export interface ParentOnboardingDraft {
 }
 
 export interface ParentOnboardingDraftPatch {
+  readonly familyConnections?: FamilyConnectionDirectory;
   readonly familyName?: string;
   readonly appLanguage?: LocaleCode;
   readonly childCount?: ParentOnboardingChildCount;
@@ -66,6 +69,7 @@ export interface ParentOnboardingCompletionReceipt {
   readonly completedAt: string;
   readonly destination: '/parent';
   readonly householdId: 'household_al_noor';
+  readonly familyConnections: FamilyConnectionDirectory;
   readonly familyName: string;
   readonly appLanguage: LocaleCode;
   readonly childCount: ParentOnboardingChildCount;

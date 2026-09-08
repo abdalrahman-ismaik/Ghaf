@@ -115,6 +115,19 @@ describe('R003 complete screen journey', () => {
     expect(parent).not.toContain("onCreateTask={() => router.push('/parent/task/new')}");
   });
 
+  it('keeps private family-connection setup and presentation inside Parent routes', () => {
+    const basics = source('app/access/parent/family-basics.tsx');
+    const review = source('app/access/parent/review-create.tsx');
+    const family = source('app/parent/family/index.tsx');
+    const plan = source('src/components/family/FamilyConnectionPlan.tsx');
+
+    expect(basics).toContain('<FamilyPeopleEditor');
+    expect(review).toContain('family-connections-review');
+    expect(family).toContain('getFamilyConnectionPlan');
+    expect(family).not.toContain('record.familyConnections');
+    expect(plan).not.toContain('onPress');
+  });
+
   it('keeps contextual routes out of bottom navigation', () => {
     const parentNavigation = source('src/components/r002a/parent/ParentHomeNavigation.tsx');
     const childNavigation = source('src/components/r002a/child/ChildBottomNavigation.tsx');

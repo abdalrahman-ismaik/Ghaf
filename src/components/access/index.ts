@@ -3,6 +3,7 @@ export * from './AIProfilePreview';
 export * from './AccessShell';
 export * from './BotanicalAvatar';
 export * from './ChildProfileForm';
+export * from './FamilyPeopleEditor';
 export * from './GhafIcon';
 export * from './ParentAccessPortrait';
 export * from './RememberDeviceChoice';

@@ -50,6 +50,11 @@ function localFamily(pairedChildIds: LocalFamilyRecord['pairedChildIds'] = []): 
         identifierKind: 'email',
         maskedDestination: 'p***@example.com',
       },
+      familyConnections: {
+        primaryGuardianName: 'Rashid',
+        secondaryGuardianName: '',
+        relatives: [],
+      },
       familyName: 'Palm Family',
       appLanguage: 'en',
       children: [

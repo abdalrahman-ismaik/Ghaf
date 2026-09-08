@@ -1,11 +1,13 @@
 import {
   migrateLegacyLocalFamilyRecord,
+  migratePreviousLocalFamilyRecord,
   parseLocalFamilyRecord,
 } from '../../features/local-family';
 import type { DomainError, DomainResult, SyntheticChildId } from '../../models/familyGrowth';
 import {
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
   type LocalFamilyRecord,
 } from '../../models/localFamily';
 import type { LocalKeyValueStorage } from './storageTypes';
@@ -47,18 +49,32 @@ export function createLocalFamilyRepository(storage: LocalKeyValueStorage): Loca
     }
     if (raw !== null) return parseLocalFamilyRecord(raw);
 
-    let legacyRaw: string | null;
+    let previousRaw: string | null;
     try {
-      legacyRaw = storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY);
+      previousRaw = storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY);
     } catch {
       return storageFailure('The previous device-local family directory could not be read');
     }
-    if (legacyRaw === null) return { ok: true, data: null };
-    const migrated = migrateLegacyLocalFamilyRecord(legacyRaw);
+    let migrated: DomainResult<LocalFamilyRecord>;
+    let migratedKey: string;
+    if (previousRaw !== null) {
+      migrated = migratePreviousLocalFamilyRecord(previousRaw);
+      migratedKey = PREVIOUS_LOCAL_FAMILY_STORAGE_KEY;
+    } else {
+      let legacyRaw: string | null;
+      try {
+        legacyRaw = storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY);
+      } catch {
+        return storageFailure('The legacy device-local family directory could not be read');
+      }
+      if (legacyRaw === null) return { ok: true, data: null };
+      migrated = migrateLegacyLocalFamilyRecord(legacyRaw);
+      migratedKey = LEGACY_LOCAL_FAMILY_STORAGE_KEY;
+    }
     if (!migrated.ok) return migrated;
     try {
       storage.setItem(LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(migrated.data));
-      storage.removeItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY);
+      storage.removeItem(migratedKey);
     } catch {
       return storageFailure('The device-local family directory could not be migrated');
     }
@@ -94,8 +110,9 @@ export function createLocalFamilyRepository(storage: LocalKeyValueStorage): Loca
     },
     clear() {
       try {
-        storage.removeItem(LOCAL_FAMILY_STORAGE_KEY);
         storage.removeItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY);
+        storage.removeItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY);
+        storage.removeItem(LOCAL_FAMILY_STORAGE_KEY);
       } catch {
         return storageFailure('The device-local family directory could not be cleared');
       }

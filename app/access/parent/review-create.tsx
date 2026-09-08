@@ -17,6 +17,7 @@ import {
 } from '@/components/access';
 import { PrimaryButton, Row, SecondaryButton, Text } from '@/components/primitives';
 import { colors, isolateBidiText, logicalRowDirection, r001Radii, spacing } from '@/design/tokens';
+import { validateCompleteFamilyConnectionDirectory } from '@/features/family-connections';
 import type { DomainErrorCode } from '@/models/familyGrowth';
 import type { BasicAccessibilityDefault } from '@/models/parentOnboarding';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -54,6 +55,10 @@ export default function ReviewCreateScreen() {
   const draft = parentOnboarding.draft;
   const configuredChildren = draft.children.slice(0, draft.childCount);
   const familyIsValid = draft.familyName.trim().length >= 2;
+  const familyConnectionsResult = validateCompleteFamilyConnectionDirectory(
+    draft.familyConnections,
+  );
+  const familyConnectionsAreValid = familyConnectionsResult.ok;
   const childIsValid =
     configuredChildren.length === draft.childCount &&
     configuredChildren.every((child) => child.nickname.trim().length >= 2);
@@ -61,6 +66,7 @@ export default function ReviewCreateScreen() {
     (parentOnboarding.status === 'verified' ||
       parentOnboarding.status === 'authenticated_parent') &&
     familyIsValid &&
+    familyConnectionsAreValid &&
     childIsValid;
 
   const goBack = useCallback(() => {
@@ -83,12 +89,19 @@ export default function ReviewCreateScreen() {
       !completionPending.current
     ) {
       router.replace('/parent');
-    } else if (!familyIsValid) {
+    } else if (!familyIsValid || !familyConnectionsAreValid) {
       router.replace('/access/parent/family-basics');
     } else if (!childIsValid) {
       router.replace('/access/parent/add-first-child');
     }
-  }, [childIsValid, familyIsValid, parentOnboarding.status, router, successOpen]);
+  }, [
+    childIsValid,
+    familyConnectionsAreValid,
+    familyIsValid,
+    parentOnboarding.status,
+    router,
+    successOpen,
+  ]);
 
   useEffect(() => {
     if (Platform.OS !== 'android' || parentOnboarding.status !== 'verified') return undefined;
@@ -121,6 +134,12 @@ export default function ReviewCreateScreen() {
     high_contrast: t('access.setup.highContrast'),
     reduced_motion: t('access.setup.reducedMotion'),
   };
+  const rhythmKey = {
+    weekly: 'weekly',
+    monthly: 'monthly',
+    every_three_months: 'everyThreeMonths',
+    no_schedule: 'noSchedule',
+  } as const;
 
   const createFamily = () => {
     if (completionPending.current || busy) return;
@@ -196,6 +215,54 @@ export default function ReviewCreateScreen() {
           tone="error"
         />
       ) : null}
+
+      <SummaryCard
+        accessibilityLabel={t('access.review.guardians')}
+        testID="family-connections-review"
+      >
+        <ReviewRow
+          direction={direction}
+          icon="person"
+          label={t('access.setup.primaryGuardianLabel')}
+          language={locale}
+          value={draft.familyConnections.primaryGuardianName}
+        />
+        {draft.familyConnections.secondaryGuardianName ? (
+          <>
+            <View style={styles.divider} />
+            <ReviewRow
+              direction={direction}
+              icon="person"
+              label={t('access.setup.secondaryGuardianLabel')}
+              language={locale}
+              value={draft.familyConnections.secondaryGuardianName}
+            />
+          </>
+        ) : null}
+        {draft.familyConnections.relatives.length > 0 ? (
+          <>
+            <View style={styles.divider} />
+            <Text brand color="deepForest" direction={direction} language={locale} variant="label">
+              {t('access.review.relatives')}
+            </Text>
+            {draft.familyConnections.relatives.map((relative) => (
+              <ReviewRow
+                direction={direction}
+                icon="family"
+                key={relative.id}
+                label={
+                  t('access.setup.relationship.' + relative.relationship) +
+                  ' · ' +
+                  t('access.setup.rhythm.' + rhythmKey[relative.rhythm])
+                }
+                language={locale}
+                testID={'review-' + relative.id}
+                value={relative.displayName}
+              />
+            ))}
+          </>
+        ) : null}
+      </SummaryCard>
 
       <SummaryCard
         accessibilityLabel={`${t('access.review.family')}: ${draft.familyName}. ${t('access.review.childDetails')}: ${configuredChildren.map((child) => child.nickname).join(', ')}`}

@@ -23,6 +23,10 @@ import type {
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
 import {
+  cloneFamilyConnectionDirectory,
+  validateCompleteFamilyConnectionDirectory,
+} from '../../family-connections';
+import {
   createInitialParentOnboardingDraft,
   normalizeParentIdentifier,
   PARENT_VERIFICATION_CODE,
@@ -85,6 +89,7 @@ function success<T>(
 function cloneDraft(draft: ParentOnboardingDraft): ParentOnboardingDraft {
   return {
     ...draft,
+    familyConnections: cloneFamilyConnectionDirectory(draft.familyConnections),
     children: draft.children.map((child) => ({
       ...child,
       interests: [...child.interests],
@@ -100,6 +105,7 @@ function cloneReceipt(
 ): ParentOnboardingCompletionReceipt {
   return {
     ...receipt,
+    familyConnections: cloneFamilyConnectionDirectory(receipt.familyConnections),
     children: receipt.children.map((child) => ({
       ...child,
       interests: [...child.interests],
@@ -258,7 +264,14 @@ export class ParentOnboardingController {
     ) {
       return failure('INVALID_INPUT', 'The device-local family receipt is invalid');
     }
+    const restoredFamilyConnections = validateCompleteFamilyConnectionDirectory(
+      receipt.familyConnections,
+    );
+    if (!restoredFamilyConnections.ok) {
+      return failure('INVALID_INPUT', 'The device-local family receipt is invalid');
+    }
     const draft: ParentOnboardingDraft = {
+      familyConnections: restoredFamilyConnections.data,
       familyName: receipt.familyName,
       appLanguage: receipt.appLanguage,
       childCount: receipt.childCount,
@@ -345,6 +358,7 @@ export class ParentOnboardingController {
       completedAt: now,
       destination: '/parent',
       householdId: signedIn.data.householdId,
+      familyConnections: cloneFamilyConnectionDirectory(validatedDraft.data.familyConnections),
       familyName: validatedDraft.data.familyName,
       appLanguage: validatedDraft.data.appLanguage,
       childCount: validatedDraft.data.childCount,

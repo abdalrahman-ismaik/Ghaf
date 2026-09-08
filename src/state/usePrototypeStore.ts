@@ -49,6 +49,7 @@ import {
 import { restoreRememberedDeviceAccess } from '../features/access/rememberedDeviceAccess';
 import { restoreAmbientAudioPreference } from '../features/audio';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
+import { createFamilyConnectionPlan } from '../features/family-connections';
 import {
   createParentOnboardingController,
   normalizeParentIdentifier,
@@ -140,6 +141,7 @@ import type {
   TemporaryParentAccess,
 } from '../models/deviceAccess';
 import type { LocalFamilyRecord, LocalFamilyView } from '../models/localFamily';
+import type { FamilyConnectionPlan } from '../models/familyConnections';
 import type { AmbientAudioPreferenceView } from '../models/audioPreferences';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import {
@@ -468,6 +470,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly cancelTemporaryParentAccess: () => ServiceResult<true>;
   readonly dismissReturningUserWelcome: () => void;
   readonly signOutExperience: () => ServiceResult<true>;
+  readonly getFamilyConnectionPlan: () => ServiceResult<FamilyConnectionPlan>;
   readonly getFamilyReward: () => ServiceResult<FamilyRewardPresentation>;
   readonly markFamilyRewardGiven: () => ServiceResult<FamilyRewardPresentation>;
   readonly getChildPermissionGrant: (
@@ -1371,6 +1374,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       if (!validated.ok) return { ok: false, error: validated.error };
       const created = createLocalFamilyRecord({
         parentIdentifier,
+        familyConnections: validated.data.familyConnections,
         familyName: validated.data.familyName,
         appLanguage: validated.data.appLanguage,
         children: validated.data.children.slice(0, validated.data.childCount).map((child) => ({
@@ -1744,6 +1748,24 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return projected.ok
       ? success(projected.data)
       : failure('PRIVACY_REJECTED', projected.error.message);
+  },
+
+  getFamilyConnectionPlan: () => {
+    const state = get();
+    if (!requireActiveParentExperience(state).ok) {
+      return failure(
+        'PRIVACY_REJECTED',
+        'Family connection planning is available only to the active Parent',
+      );
+    }
+    const directory = state.localFamily.record?.familyConnections;
+    if (!directory) {
+      return failure('NOT_FOUND', 'The local family connection directory is unavailable');
+    }
+    const plan = createFamilyConnectionPlan(directory);
+    return plan.ok
+      ? success(plan.data)
+      : failure('INVALID_RESPONSE', 'The local family connection plan is invalid');
   },
 
   markFamilyRewardGiven: () => {

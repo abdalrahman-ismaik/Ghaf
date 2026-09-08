@@ -11,9 +11,11 @@ import type {
   ParentOnboardingChildCount,
   ParentIdentifierKind,
 } from './parentOnboarding';
+import type { FamilyConnectionDirectory } from './familyConnections';
 
-export const LOCAL_FAMILY_SCHEMA_VERSION = 2 as const;
-export const LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v2' as const;
+export const LOCAL_FAMILY_SCHEMA_VERSION = 3 as const;
+export const LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v3' as const;
+export const PREVIOUS_LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v2' as const;
 export const LEGACY_LOCAL_FAMILY_STORAGE_KEY = 'ghaf.local-family.v1' as const;
 
 export interface LocalChildProfile {
@@ -34,6 +36,7 @@ export interface LocalChildProfile {
 export interface LocalFamilyRecord {
   readonly schemaVersion: typeof LOCAL_FAMILY_SCHEMA_VERSION;
   readonly householdId: 'household_al_noor';
+  readonly familyConnections: FamilyConnectionDirectory;
   readonly familyName: string;
   readonly appLanguage: LocaleCode;
   readonly parent: {
@@ -52,6 +55,7 @@ export interface LocalFamilyRecord {
 
 export interface CreateLocalFamilyRecordInput {
   readonly parentIdentifier: NormalizedParentIdentifier;
+  readonly familyConnections: FamilyConnectionDirectory;
   readonly familyName: string;
   readonly appLanguage: LocaleCode;
   readonly children: readonly LocalChildProfile[];

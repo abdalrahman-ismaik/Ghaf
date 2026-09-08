@@ -9,6 +9,7 @@ import {
   createMemoryLocalKeyValueStorage,
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
 } from '../src/services/local';
 
 const child = {
@@ -33,6 +34,18 @@ function validRecord() {
       identifierKind: 'email',
       maskedDestination: 'p***@example.com',
     },
+    familyConnections: {
+      primaryGuardianName: 'Rashid',
+      secondaryGuardianName: 'Maryam',
+      relatives: [
+        {
+          id: 'relative_1',
+          displayName: 'Grandmother Fatima',
+          relationship: 'grandmother',
+          rhythm: 'monthly',
+        },
+      ],
+    },
     familyName: 'Palm Family',
     appLanguage: 'en',
     children: [child],
@@ -45,14 +58,19 @@ function validRecord() {
 }
 
 describe('device-local family schema', () => {
-  it('round-trips the schema-2 directory with one normalized Parent lookup identifier', () => {
+  it('round-trips the schema-3 directory with private family connection data', () => {
     const record = validRecord();
     const parsed = parseLocalFamilyRecord(JSON.stringify(record));
 
     expect(parsed).toEqual({ ok: true, data: record });
     expect(record).toMatchObject({
-      schemaVersion: 2,
+      schemaVersion: 3,
       householdId: 'household_al_noor',
+      familyConnections: {
+        primaryGuardianName: 'Rashid',
+        secondaryGuardianName: 'Maryam',
+        relatives: [{ displayName: 'Grandmother Fatima', relationship: 'grandmother' }],
+      },
       parent: {
         id: 'parent_al_noor',
         role: 'parent',
@@ -81,15 +99,81 @@ describe('device-local family schema', () => {
       error: { code: 'INVALID_RESPONSE' },
     });
   });
+
+  it('returns a validation failure instead of throwing for a missing family directory', () => {
+    const record = validRecord();
+    const {
+      familyConnections: _familyConnections,
+      schemaVersion: _schemaVersion,
+      householdId: _householdId,
+      parent: _parent,
+      createdAt: _createdAt,
+      updatedAt: _updatedAt,
+      origin: _origin,
+      capabilityTruth: _capabilityTruth,
+      ...input
+    } = record;
+
+    expect(() =>
+      createLocalFamilyRecord({
+        ...input,
+        parentIdentifier: {
+          normalizedIdentifier: record.parent.normalizedIdentifier,
+          identifierKind: record.parent.identifierKind,
+          maskedDestination: 'p***@example.com',
+        },
+        familyConnections: undefined as never,
+        now: record.createdAt,
+      }),
+    ).not.toThrow();
+    expect(
+      createLocalFamilyRecord({
+        ...input,
+        parentIdentifier: {
+          normalizedIdentifier: record.parent.normalizedIdentifier,
+          identifierKind: record.parent.identifierKind,
+          maskedDestination: 'p***@example.com',
+        },
+        familyConnections: undefined as never,
+        now: record.createdAt,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_RESPONSE' } });
+  });
 });
 
 describe('device-local family repository', () => {
+  it('migrates schema 2 without inventing relatives', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createLocalFamilyRepository(storage);
+    const current = validRecord();
+    const { familyConnections: _familyConnections, ...previous } = current;
+    storage.setItem(
+      PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+      JSON.stringify({ ...previous, schemaVersion: 2 }),
+    );
+
+    expect(repository.read()).toMatchObject({
+      ok: true,
+      data: {
+        schemaVersion: 3,
+        familyConnections: {
+          primaryGuardianName: 'Parent',
+          secondaryGuardianName: '',
+          relatives: [],
+        },
+      },
+    });
+    expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+  });
+
   it('migrates the previous schema-1 fixture to the canonical prepared Parent email', () => {
     const storage = createMemoryLocalKeyValueStorage();
     const repository = createLocalFamilyRepository(storage);
     const current = validRecord();
+    const { familyConnections: _familyConnections, ...previous } = current;
     const legacy = {
-      ...current,
+      ...previous,
       schemaVersion: 1,
       parent: { id: current.parent.id, role: current.parent.role },
     };
@@ -98,7 +182,12 @@ describe('device-local family repository', () => {
     expect(repository.read()).toMatchObject({
       ok: true,
       data: {
-        schemaVersion: 2,
+        schemaVersion: 3,
+        familyConnections: {
+          primaryGuardianName: 'Parent',
+          secondaryGuardianName: '',
+          relatives: [],
+        },
         parent: {
           normalizedIdentifier: 'parent@example.com',
           identifierKind: 'email',
@@ -127,10 +216,12 @@ describe('device-local family repository', () => {
       paired,
     );
     expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    storage.setItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY, '{}');
     storage.setItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY, '{}');
 
     expect(repository.clear()).toEqual({ ok: true, data: true });
     expect(repository.read()).toEqual({ ok: true, data: null });
+    expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
     expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
   });
 

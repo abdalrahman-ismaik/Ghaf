@@ -16,6 +16,7 @@ import {
   AccessHeader,
   AccessScreen,
   AccessTextField,
+  FamilyPeopleEditor,
   InfoRow,
   SegmentedControl,
   StatusBanner,
@@ -24,6 +25,7 @@ import { FamilyPlusPreview } from '@/components/access/FamilyPlusPreview';
 import { GhafIcon } from '@/components/access/GhafIcon';
 import { PrimaryButton, Text } from '@/components/primitives';
 import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
+import { validateCompleteFamilyConnectionDirectory } from '@/features/family-connections';
 import { configureNativeDirection, setI18nLocale } from '@/i18n';
 import type { LocaleCode } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -43,11 +45,15 @@ export default function FamilyBasicsScreen() {
     (state) => state.updateParentOnboardingDraft,
   );
   const [familyName, setFamilyName] = useState(parentOnboarding.draft.familyName);
+  const [familyConnections, setFamilyConnections] = useState(
+    parentOnboarding.draft.familyConnections,
+  );
   const [childCount, setChildCount] = useState<'1' | '2'>(
     String(parentOnboarding.draft.childCount) as '1' | '2',
   );
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [relativeEditorOpen, setRelativeEditorOpen] = useState(false);
   const [plusPreviewVisible, setPlusPreviewVisible] = useState(false);
   const plusTriggerRef = useRef<View>(null);
 
@@ -62,6 +68,7 @@ export default function FamilyBasicsScreen() {
 
   const goBack = useCallback(() => {
     updateParentOnboardingDraft({
+      familyConnections,
       familyName,
       appLanguage: locale,
       childCount: Number(childCount) as 1 | 2,
@@ -75,6 +82,7 @@ export default function FamilyBasicsScreen() {
   }, [
     cancelParentVerification,
     childCount,
+    familyConnections,
     familyName,
     locale,
     router,
@@ -131,12 +139,14 @@ export default function FamilyBasicsScreen() {
   };
 
   const continueSetup = () => {
-    if (busy || !validateName()) return;
+    const validatedConnections = validateCompleteFamilyConnectionDirectory(familyConnections);
+    if (busy || relativeEditorOpen || !validateName() || !validatedConnections.ok) return;
 
     setBusy(true);
     const result = updateParentOnboardingDraft({
       appLanguage: locale,
       childCount: Number(childCount) as 1 | 2,
+      familyConnections: validatedConnections.data,
       familyName: familyName.trim(),
     });
     if (!result.ok) {
@@ -152,6 +162,7 @@ export default function FamilyBasicsScreen() {
     value,
     label: value === 'ar' ? t('language.arabic') : t('language.english'),
   }));
+  const familyConnectionsValid = validateCompleteFamilyConnectionDirectory(familyConnections).ok;
 
   return (
     <AccessScreen
@@ -167,7 +178,7 @@ export default function FamilyBasicsScreen() {
             busy={busy}
             busyLabel={t('access.setup.continue')}
             direction={direction}
-            disabled={familyName.trim().length < 2}
+            disabled={familyName.trim().length < 2 || !familyConnectionsValid || relativeEditorOpen}
             language={locale}
             onPress={continueSetup}
             size="regular"
@@ -221,6 +232,15 @@ export default function FamilyBasicsScreen() {
       ) : null}
 
       <View style={styles.form}>
+        <FamilyPeopleEditor
+          direction={direction}
+          directory={familyConnections}
+          disabled={busy}
+          language={locale}
+          onChange={setFamilyConnections}
+          onEditingChange={setRelativeEditorOpen}
+        />
+
         <AccessTextField
           accessibilityLabel={t('access.setup.familyNameLabel')}
           autoCapitalize="words"

@@ -6,6 +6,10 @@ import {
   type LocalFamilyRecord,
 } from '../../models/localFamily';
 import type { ParentOnboardingCompletionReceipt } from '../../models/parentOnboarding';
+import {
+  cloneFamilyConnectionDirectory,
+  validateCompleteFamilyConnectionDirectory,
+} from '../family-connections';
 import { normalizeParentIdentifier, toAccessLanguagePreference } from '../access/parentOnboarding';
 
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001f\u007f-\u009f]/u;
@@ -34,6 +38,7 @@ const SUPPORT = new Set([
 const RECORD_KEYS = [
   'schemaVersion',
   'householdId',
+  'familyConnections',
   'familyName',
   'appLanguage',
   'parent',
@@ -44,7 +49,9 @@ const RECORD_KEYS = [
   'origin',
   'capabilityTruth',
 ] as const;
+const PREVIOUS_RECORD_KEYS = RECORD_KEYS.filter((key) => key !== 'familyConnections');
 const LEGACY_SCHEMA_VERSION = 1 as const;
+const PREVIOUS_SCHEMA_VERSION = 2 as const;
 const LEGACY_PARENT_IDENTIFIER = 'parent@example.com' as const;
 const CHILD_KEYS = [
   'id',
@@ -150,6 +157,7 @@ function validParent(value: unknown): value is LocalFamilyRecord['parent'] {
 function cloneRecord(record: LocalFamilyRecord): LocalFamilyRecord {
   return {
     ...record,
+    familyConnections: cloneFamilyConnectionDirectory(record.familyConnections),
     parent: { ...record.parent },
     children: record.children.map((child) => ({
       ...child,
@@ -172,9 +180,12 @@ export function parseLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRec
   if (!isRecord(value) || !hasOnlyKeys(value, RECORD_KEYS)) {
     return failure('The device-local family directory shape is invalid');
   }
+  const familyConnections = validateCompleteFamilyConnectionDirectory(value.familyConnections);
   if (
     value.schemaVersion !== LOCAL_FAMILY_SCHEMA_VERSION ||
     value.householdId !== 'household_al_noor' ||
+    !familyConnections.ok ||
+    JSON.stringify(familyConnections.data) !== JSON.stringify(value.familyConnections) ||
     !isText(value.familyName, 2, 60) ||
     !isEnum(value.appLanguage, LOCALES) ||
     !validParent(value.parent) ||
@@ -200,6 +211,37 @@ export function parseLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRec
   return { ok: true, data: cloneRecord(value as unknown as LocalFamilyRecord) };
 }
 
+function legacyFamilyConnections(appLanguage: unknown) {
+  return {
+    primaryGuardianName: appLanguage === 'ar' ? 'وليّ الأمر' : 'Parent',
+    secondaryGuardianName: '',
+    relatives: [],
+  } as const;
+}
+
+export function migratePreviousLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRecord> {
+  let value: unknown;
+  try {
+    value = JSON.parse(raw) as unknown;
+  } catch {
+    return failure('The previous device-local family directory is not valid JSON');
+  }
+  if (
+    !isRecord(value) ||
+    !hasOnlyKeys(value, PREVIOUS_RECORD_KEYS) ||
+    value.schemaVersion !== PREVIOUS_SCHEMA_VERSION
+  ) {
+    return failure('The previous device-local family directory shape is invalid');
+  }
+  return parseLocalFamilyRecord(
+    JSON.stringify({
+      ...value,
+      schemaVersion: LOCAL_FAMILY_SCHEMA_VERSION,
+      familyConnections: legacyFamilyConnections(value.appLanguage),
+    }),
+  );
+}
+
 export function migrateLegacyLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRecord> {
   let value: unknown;
   try {
@@ -209,7 +251,7 @@ export function migrateLegacyLocalFamilyRecord(raw: string): DomainResult<LocalF
   }
   if (
     !isRecord(value) ||
-    !hasOnlyKeys(value, RECORD_KEYS) ||
+    !hasOnlyKeys(value, PREVIOUS_RECORD_KEYS) ||
     value.schemaVersion !== LEGACY_SCHEMA_VERSION ||
     !isRecord(value.parent) ||
     !hasOnlyKeys(value.parent, ['id', 'role']) ||
@@ -222,6 +264,7 @@ export function migrateLegacyLocalFamilyRecord(raw: string): DomainResult<LocalF
     JSON.stringify({
       ...value,
       schemaVersion: LOCAL_FAMILY_SCHEMA_VERSION,
+      familyConnections: legacyFamilyConnections(value.appLanguage),
       parent: {
         id: 'parent_al_noor',
         role: 'parent',
@@ -235,9 +278,14 @@ export function migrateLegacyLocalFamilyRecord(raw: string): DomainResult<LocalF
 export function createLocalFamilyRecord(
   input: CreateLocalFamilyRecordInput,
 ): DomainResult<LocalFamilyRecord> {
+  const familyConnections = validateCompleteFamilyConnectionDirectory(input.familyConnections);
+  if (!familyConnections.ok) {
+    return failure('The private family connection directory cannot be stored');
+  }
   const candidate: LocalFamilyRecord = {
     schemaVersion: LOCAL_FAMILY_SCHEMA_VERSION,
     householdId: 'household_al_noor',
+    familyConnections: familyConnections.data,
     familyName: input.familyName.trim(),
     appLanguage: input.appLanguage,
     parent: {
@@ -271,6 +319,7 @@ export function localFamilyRecordToReceipt(
     completedAt: record.createdAt,
     destination: '/parent',
     householdId: record.householdId,
+    familyConnections: cloneFamilyConnectionDirectory(record.familyConnections),
     familyName: record.familyName,
     appLanguage: record.appLanguage,
     childCount: record.children.length as 1 | 2,
@@ -296,4 +345,5 @@ export function localFamilyRecordToReceipt(
 export {
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
 } from '../../models/localFamily';
