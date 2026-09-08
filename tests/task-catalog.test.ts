@@ -50,6 +50,16 @@ describe('Feature 003 curated task content', () => {
     );
   });
 
+  it('provides at least three distinct prepared examples for every category', () => {
+    expect(TASK_TEMPLATES).toHaveLength(24);
+    for (const category of TASK_CATEGORIES) {
+      const templates = TASK_TEMPLATES.filter((item) => item.categoryId === category.id);
+      expect(templates, category.id).toHaveLength(3);
+      expect(new Set(templates.map((item) => item.id)).size).toBe(3);
+      expect(new Set(templates.map((item) => item.title.en)).size).toBe(3);
+    }
+  });
+
   it('keeps GI01 distinct from the 12-Seed recurrence-once P0 task', () => {
     const gi01 = TASK_TEMPLATES.find((template) => template.id === 'GI01');
 

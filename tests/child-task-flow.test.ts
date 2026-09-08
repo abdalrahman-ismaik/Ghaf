@@ -9,6 +9,11 @@ import { serviceRegistry } from '../src/services';
 import { createResetSourceSession } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asserts result is {
   readonly ok: true;
@@ -27,17 +32,15 @@ function counters(state: PrototypeStoreState = usePrototypeStore.getState()) {
   };
 }
 
-function setAssignedSalemJourney(): void {
+async function setAssignedSalemJourney(): Promise<void> {
   usePrototypeStore.setState(createResetSourceSession('assigned'));
-  usePrototypeStore.getState().setRole('child');
-  expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+  await enterChildExperienceForTest('child_salem');
 }
 
 describe('US2 Child choice, bounded help, and submission flow', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
-    setAssignedSalemJourney();
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await setAssignedSalemJourney();
   });
 
   it('has the authored Child task route rather than a Feature 002 mission route', () => {
@@ -83,7 +86,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     });
   });
 
-  it('renders every preview with its mapped landscape and keeps Alya in a bounded empty state', () => {
+  it('renders every preview with its mapped landscape and keeps Alya in a bounded empty state', async () => {
     const pool = usePrototypeStore.getState().choicePool;
     const templates = new Map(
       [...TASK_TEMPLATES, P0_RECYCLING_TEMPLATE].map((template) => [template.id, template]),
@@ -112,7 +115,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(childHomeSource).not.toContain("template.landscapeId === 'mangrove'");
     expect(childHomeSource).not.toMatch(/\brank(?:ing)?\b/i);
 
-    expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
     const alyaChoices = [
       ...pool.seededPreviewChoices,
       ...(pool.p0AssignmentChoice ? [pool.p0AssignmentChoice] : []),
@@ -142,9 +145,9 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(childHomeSource.indexOf('testID="current-assignment"')).toBeLessThan(
       childHomeSource.indexOf('testID="preview-only-choices"'),
     );
-    expect(childHomeSource).toContain('testID="resume-current-task-button"');
+    expect(childHomeSource).toContain("testID: 'resume-current-task-button'");
     expect(childHomeSource).toContain('testID="current-task-waiting"');
-    expect(childHomeSource).toContain('testID="open-recognized-garden-button"');
+    expect(childHomeSource).toContain("testID: 'open-recognized-garden-button'");
     expect(childHomeSource).not.toContain(
       "const chosen = executable && journey?.lifecycle === 'chosen';",
     );
@@ -152,14 +155,13 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
 
   it.each(['in_progress', 'submitted', 'recognized'] as const)(
     'preserves the %s Salem journey when the shared device reselects his profile',
-    (lifecycle) => {
+    async (lifecycle) => {
       usePrototypeStore.setState(createResetSourceSession(lifecycle));
-      usePrototypeStore.getState().setRole('child');
-      expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+      await enterChildExperienceForTest('child_salem');
       const before = structuredClone(usePrototypeStore.getState().journey);
 
-      expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
-      expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+      await enterChildExperienceForTest('child_alya');
+      await enterChildExperienceForTest('child_salem');
 
       expect(usePrototypeStore.getState().journey).toEqual(before);
       expect(usePrototypeStore.getState().journey).toMatchObject({
@@ -170,16 +172,16 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     },
   );
 
-  it('rejects the wrong synthetic profile and keeps choose separate from start', () => {
+  it('rejects the wrong synthetic profile and keeps choose separate from start', async () => {
     const baseline = counters();
-    expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
     expect(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1')).toMatchObject({
       ok: false,
       error: { code: 'NOT_ASSIGNED_CHILD' },
     });
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('assigned');
 
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expect(usePrototypeStore.getState().journey).toMatchObject({
       lifecycle: 'chosen',
@@ -295,11 +297,11 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(parentHomeSource).toContain('pre-acceptance-parent-review');
     expect(parentHomeSource).toContain('resolve-smaller-task-button');
     expect(parentHomeSource).toContain('resolve-safe-equivalent-button');
-    expect(parentHomeSource).toContain("enterChildExperience('child_salem')");
-    expect(parentHomeSource).toContain("router.replace('/child')");
+    expect(parentHomeSource).toContain('signOutExperience()');
+    expect(parentHomeSource).toContain("router.replace('/access/child' as Href)");
   });
 
-  it('fails closed for Parent, wrong-Child, and already-accepted smaller-task requests', () => {
+  it('fails closed for Parent, wrong-Child, and already-accepted smaller-task requests', async () => {
     const baselineCounters = counters();
 
     usePrototypeStore.getState().setRole('parent');
@@ -310,14 +312,14 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
     usePrototypeStore.getState().setRole('child');
-    expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
     expect(usePrototypeStore.getState().requestSmallerTask()).toMatchObject({
       ok: false,
       error: { code: 'NOT_ASSIGNED_CHILD' },
     });
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expect(usePrototypeStore.getState().requestSmallerTask()).toMatchObject({
       ok: false,
@@ -331,7 +333,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
   it('rejects stale start, Coach, and submit commands after the active profile changes', async () => {
     const baseline = counters();
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
-    expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
 
     expect(usePrototypeStore.getState().startAssignment()).toMatchObject({
       ok: false,
@@ -339,9 +341,9 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     });
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('chosen');
 
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().startAssignment());
-    expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
+    await enterChildExperienceForTest('child_alya');
 
     expect(
       await usePrototypeStore.getState().requestChildCoach({
@@ -443,11 +445,18 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     expect(childTaskSource).toContain('accessibilityState={{ expanded: showOptionalMedia }}');
     expect(childTaskSource).toContain('testID="toggle-optional-media-button"');
     expect(childTaskSource).toContain('showOptionalMedia ? (');
-    expect(childTaskSource).toContain('accessibilityState={{ checked: acknowledged }}');
-    expect(childTaskSource.indexOf('testID="child-definition-of-done"')).toBeLessThan(
-      childTaskSource.indexOf('testID="child-task-steps"'),
+    expect(childTaskSource).toContain('<ChildTaskChecklist');
+    expect(childTaskSource).toContain('completedStepIds={completedStepIds}');
+    expect(childTaskSource).toContain('definitionAcknowledged,');
+    expect(childTaskSource).toContain('testID="child-active-definition-of-done"');
+    expect(childTaskSource).toContain("acknowledgeLabel={t('childTask.acknowledge')}");
+    expect(childTaskSource.indexOf('<ChildTaskPlanCard')).toBeLessThan(
+      childTaskSource.indexOf('testID="toggle-definition-details-button"'),
     );
-    expect(childTaskSource.indexOf('testID="child-task-steps"')).toBeLessThan(
+    expect(childTaskSource.indexOf('<ChildTaskChecklist')).toBeLessThan(
+      childTaskSource.indexOf('testID="child-active-definition-of-done"'),
+    );
+    expect(childTaskSource.indexOf('testID="child-active-definition-of-done"')).toBeLessThan(
       childTaskSource.indexOf('testID="toggle-optional-media-button"'),
     );
     expect(childTaskSource).toContain("t('childTask.stepFour')");
@@ -455,9 +464,9 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
 
   it('fails closed instead of attaching the version-one prepared Coach to an adjusted task', async () => {
     expectOk(usePrototypeStore.getState().requestSmallerTask());
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     expectOk(usePrototypeStore.getState().resolvePreAcceptanceAdjustment({ decision: 'smaller' }));
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().respondToPreAcceptanceAdjustment('accept'));
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expectOk(usePrototypeStore.getState().startAssignment());

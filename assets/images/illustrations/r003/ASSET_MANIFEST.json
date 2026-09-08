@@ -1,0 +1,1045 @@
+{
+  "version": 1,
+  "assetRoot": "assets/images/illustrations/r003/final",
+  "direction": "Quiet UAE Botanical Editorial",
+  "generatedArtworkIsProductStateAuthority": false,
+  "assets": [
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 204485,
+        "height": 1920,
+        "path": "assets/images/illustrations/r003/final/field-paper.jpg",
+        "sha256": "5d7d1414ca124fdd7e8289f17785ca5b9148a97deb6b44dc9522755bda5bcd6b",
+        "width": 1080
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "field-paper",
+      "source": { "format": "RGB PNG", "height": 1672, "width": 941 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/", "/access/**", "/parent/**", "/child/**"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1080x1920 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 277858,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/welcome-ghaf-habitat.jpg",
+        "sha256": "b504c892ea07dde3ce5cde3a78cfa21ad0ddbac183a86fd1eb1791a2e97c7cef",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "welcome-ghaf-habitat",
+      "regeneratedAt": "2026-09-07",
+      "source": { "format": "RGB PNG", "height": 1024, "width": 1536 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the regenerated opaque RGB PNG source at original 1536x1024 resolution.",
+        "Resized the exact 3:2 source to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3 with non-prompt metadata removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 33931,
+        "height": 512,
+        "path": "assets/images/illustrations/r003/final/avatar-ghaf.jpg",
+        "sha256": "a79d6a36741319751bbc0cfaac05272d3b4c44a220dfee9eefc82740fbbfc044",
+        "width": 512
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "avatar-ghaf",
+      "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 32099,
+        "height": 512,
+        "path": "assets/images/illustrations/r003/final/avatar-leaf.jpg",
+        "sha256": "b20407d18b04695fa5eeb69155f77324ba0ab4e18f594e27bf8fab3f7564fe43",
+        "width": 512
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "avatar-leaf",
+      "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 19264,
+        "height": 512,
+        "path": "assets/images/illustrations/r003/final/avatar-flower.jpg",
+        "sha256": "faded224f84232ab64c662a6748a83509ea56f6deb8d366fc4bd5c0a4b9f0854",
+        "width": 512
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "avatar-flower",
+      "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 22161,
+        "height": 512,
+        "path": "assets/images/illustrations/r003/final/avatar-energy-leaf.jpg",
+        "sha256": "d7fe6a703145e6dbb31deb06bb0e92f06503d576f67b38db4a8678887cf7065f",
+        "width": 512
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "avatar-energy-leaf",
+      "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 35978,
+        "height": 512,
+        "path": "assets/images/illustrations/r003/final/avatar-water-drop.jpg",
+        "sha256": "940dd4a67f85ec53ddc269a7a4803981596adb64f4c7c79fab5e1ad8c35851a4",
+        "width": 512
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "avatar-water-drop",
+      "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 55902,
+        "height": 500,
+        "path": "assets/images/illustrations/r003/final/task-recycling.jpg",
+        "sha256": "751aa8d0035279911321b14cddf4eeda10a42e3cbf1b2d326caf242cca173305",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "task-recycling",
+      "source": { "format": "RGB PNG", "height": 887, "width": 1774 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/child", "/child/task"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1200x500 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 131616,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/ghaf-seed.jpg",
+        "sha256": "222030f42dc5b4693c4289a5002425757929c022e3f3af8c564afbacd3f5095a",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "ghaf-seed",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 136498,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/ghaf-shoot.jpg",
+        "sha256": "4fccb722b87fc83e71dc4b09450d66fc7e16398bea388cabc2276c880e0e6a3b",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "ghaf-shoot",
+      "source": { "format": "RGB PNG", "height": 963, "width": 1634 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 163329,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/ghaf-sapling.jpg",
+        "sha256": "b79bab9ce1ea47c1cac62ce5c213b9994add3b46d762f4f14e1321c8b564438a",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "ghaf-sapling",
+      "source": { "format": "RGB PNG", "height": 963, "width": 1634 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 171320,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/ghaf-shade.jpg",
+        "sha256": "caa1f69c5da46e67bf7873be4bc1ccf3d794be0a56cd7cbaaedf9e5c258cb239",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "ghaf-shade",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 215652,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/ghaf-flourishing.jpg",
+        "sha256": "f5885d534cb7bcd53bef62bada68123f9eaff3c35313f78ab81fd5b051757684",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "ghaf-flourishing",
+      "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 115226,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/samar-seed.jpg",
+        "sha256": "a1681d98fe595f769b0cdc3fda9cd46654d4c61cde6064bb0a86cf4f24e281fd",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "samar-seed",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 115346,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/samar-shoot.jpg",
+        "sha256": "f21c8aafe221253c2cb933df4392500e2d619ffe1b6dcba91c7397212bc2aacc",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "samar-shoot",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 125208,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/samar-sapling.jpg",
+        "sha256": "c24d763249740ca3f3e68e7d2df13dfe2918b768b8d6b7e3dea0ce2f775169ef",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "samar-sapling",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 192189,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/samar-shade.jpg",
+        "sha256": "eefc4f954834f9334ea150f3b3077e7f95dc9a592ec80e4023b37c4c58c7da3b",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "samar-shade",
+      "source": { "format": "RGB PNG", "height": 954, "width": 1648 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 213528,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/samar-flourishing.jpg",
+        "sha256": "a8e23bb87234e1671e4d1ba36b18cfc7dcc8cc618d11748de43380bd1562560d",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "samar-flourishing",
+      "source": { "format": "RGB PNG", "height": 954, "width": 1648 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 165573,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/sidr-seed.jpg",
+        "sha256": "111022c03018614cf73aa343afcc19e56aa881422ce443d9466fc1ab8cb7afaa",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "sidr-seed",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 183972,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/sidr-shoot.jpg",
+        "sha256": "9a79cb174100059675c50c08dea598362910397869da1c21d403e36e35854e9a",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "sidr-shoot",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 189975,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/sidr-sapling.jpg",
+        "sha256": "8832e148b9fee703790dcf760707a598b175dcc8a9d02d967dbdca0b9fb9020c",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "sidr-sapling",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 198558,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/sidr-shade.jpg",
+        "sha256": "d6ce0b9f25cc157ee879a08e9f6dde2b996af40d15689e9064360a0c24053030",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "sidr-shade",
+      "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 208820,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/sidr-flourishing.jpg",
+        "sha256": "f7cdf71618a707a86d3abd055e53528f3cd4bf4b7663f63ff28307b30c111fe2",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "sidr-flourishing",
+      "source": { "format": "RGB PNG", "height": 965, "width": 1629 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 95615,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/date-palm-seed.jpg",
+        "sha256": "c39b3263f5c37cace22f136aa98c5847fc106b0c3b6d291cc36e6d159810fbd1",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "date-palm-seed",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 97551,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/date-palm-shoot.jpg",
+        "sha256": "63a7c53c948c3e840188f145f7ac5155036f5980081095b9ba85e97ab7931d29",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "date-palm-shoot",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 112006,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/date-palm-sapling.jpg",
+        "sha256": "ff7643c59b7e2874f6aa3f1bf0f87364909b8b604390063614d9ff8f552c6c1a",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "date-palm-sapling",
+      "source": { "format": "RGB PNG", "height": 963, "width": 1634 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 141278,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/date-palm-shade.jpg",
+        "sha256": "0989508cb720c5380c54415c7f19317d327d78f43e271f2609542bb423b1414f",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "date-palm-shade",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 133419,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/date-palm-flourishing.jpg",
+        "sha256": "2849f2825baf70de36b4880a60c81c1b2392b58bd53d81c865950e8cef03cd7b",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "date-palm-flourishing",
+      "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 88229,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/mangrove-seed.jpg",
+        "sha256": "9c38c07a00fd3edbadb01408b38cfc4a3d9be0e35d73ec2ff1343b617b97a6a6",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "mangrove-seed",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 67229,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/mangrove-shoot.jpg",
+        "sha256": "9d65fd9c7d0bc81adffeb1fd54c24e14721bd0aa7ca0aa3541085bc807aaa6c5",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "mangrove-shoot",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 79796,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/mangrove-sapling.jpg",
+        "sha256": "97f57be59af06526c75602bdbc4fa49b9b71d894f30849750f7c8509bd04ced1",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "mangrove-sapling",
+      "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 149396,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/mangrove-shade.jpg",
+        "sha256": "b607e2fb7c09ae204e9cfa9dc4efa7ac232959544b9a20df70f00291abe1b930",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "mangrove-shade",
+      "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 162342,
+        "height": 624,
+        "path": "assets/images/illustrations/r003/final/mangrove-flourishing.jpg",
+        "sha256": "022ae0424158c569759342b94b7f8fcfc4dc948d47df814542b18a0fed40554c",
+        "width": 1056
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "mangrove-flourishing",
+      "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 220451,
+        "height": 780,
+        "path": "assets/images/illustrations/r003/final/family-canopy-19.jpg",
+        "sha256": "50bf5725dbc96c7953733fce8d99b36e84be5c6e4dd83fb7b846bc678b92950a",
+        "width": 1080
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "family-canopy-19",
+      "source": { "format": "RGB PNG", "height": 1067, "width": 1474 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1080x780 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 223924,
+        "height": 780,
+        "path": "assets/images/illustrations/r003/final/family-canopy-20.jpg",
+        "sha256": "934c909f161a80beee24fa911b29c214be17c877bf1001cf4764f667a9e2c4a2",
+        "width": 1080
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "family-canopy-20",
+      "source": { "format": "RGB PNG", "height": 1067, "width": 1474 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1080x780 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 140789,
+        "height": 656,
+        "path": "assets/images/illustrations/r003/final/circle-garden-1.jpg",
+        "sha256": "2cd447111ef94c5a636f62f0cae7c7773de06126edba9ebaa0d4066b14fb49de",
+        "width": 832
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "circle-garden-1",
+      "source": { "format": "RGB PNG", "height": 1115, "width": 1411 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/circle"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 832x656 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 171989,
+        "height": 656,
+        "path": "assets/images/illustrations/r003/final/circle-garden-2.jpg",
+        "sha256": "f2f29ffef9c076ccb433172b7cc240d3fa745bdbf28c0ecfd66446fa0c0331d7",
+        "width": 832
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "circle-garden-2",
+      "source": { "format": "RGB PNG", "height": 1114, "width": 1412 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/circle"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 832x656 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 178051,
+        "height": 656,
+        "path": "assets/images/illustrations/r003/final/circle-garden-3.jpg",
+        "sha256": "271b914e69a5d94a6954ea5b5238be21166da78af339881d3788a9530adf0b75",
+        "width": 832
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "circle-garden-3",
+      "source": { "format": "RGB PNG", "height": 1114, "width": 1411 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/circle"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 832x656 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 94957,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/recognition-reveal.jpg",
+        "sha256": "03299ec4d52b6ec1c6577ecc369dabc6913d77782200e3a29b0d1cba127c048b",
+        "width": 800
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "recognition-reveal",
+      "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/child/reveal/[bundleId]"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 800x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 285211,
+        "height": 750,
+        "path": "assets/images/illustrations/r003/final/mangrove-habitat.jpg",
+        "sha256": "c43bf8696b7d0eadf9195dcff5acff401055148c194e22180f24a09242e46752",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "mangrove-habitat",
+      "source": { "format": "RGB PNG", "height": 992, "width": 1586 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/garden/learn/[learningId]/story"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1200x750 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 327221,
+        "height": 750,
+        "path": "assets/images/illustrations/r003/final/shared-coastal-canopy.jpg",
+        "sha256": "029f608b82d026d65018a815290f6d88c129ed62168b8d1f963d24c36c33bffe",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "shared-coastal-canopy",
+      "source": { "format": "RGB PNG", "height": 992, "width": 1586 },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/circle/shared-growth", "/parent/family/shared-garden"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Center-cropped and resized to 1200x750 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 285878,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-ghaf-intro.jpg",
+        "sha256": "7c2537f94147826426e9f1ac0c84c0856ea2aa1afa0ae4c00d99c743e37de704",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "onboarding-ghaf-intro",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 382876,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-family.jpg",
+        "sha256": "396e57fde320ec21547adb93d6181fae20f710465a934a2e3fe5af8684dd1515",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "onboarding-family",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 251700,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-action.jpg",
+        "sha256": "7aacc8735f21b63c02d41dce95f80d45c6849935288ad323b3807e42c1a8c2b5",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "onboarding-action",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 314198,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-assistant.jpg",
+        "sha256": "fd62d50885a03f0ae830364523f059f1ba79baf9d85eeb93df41749bbd002ade",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "onboarding-ai",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 327824,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-support.jpg",
+        "sha256": "6d0ff28e30b56983c76d77c58719b9c91e8437dc303c26d95ec63bcd9ef71cc3",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "onboarding-support",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "informative",
+      "final": {
+        "bytes": 313370,
+        "height": 800,
+        "path": "assets/images/illustrations/r003/final/onboarding-growth.jpg",
+        "sha256": "2bbcda0f3472796e1340a79d73959a699a545cb5f85f11b2728d80d845de20ef",
+        "width": 1200
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "onboarding-growth",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1024,
+        "width": 1536
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 1200x800 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    },
+    {
+      "accessibility": "decorative",
+      "final": {
+        "bytes": 157491,
+        "height": 1350,
+        "path": "assets/images/illustrations/r003/final/section-transition.jpg",
+        "sha256": "a7194410f455abb0e544041e87136125b7b520db765ef9a7c790510c140fd6e7",
+        "width": 900
+      },
+      "generatedAt": "2026-09-06",
+      "generator": "prepared synthetic image generation",
+      "id": "section-transition",
+      "source": {
+        "format": "RGB PNG",
+        "height": 1536,
+        "width": 1024
+      },
+      "reviewStatus": "curated-local-candidate",
+      "routes": ["/", "/access/parent/sign-in", "/access/child", "/parent", "/child"],
+      "transformations": [
+        "Inspected the opaque RGB PNG source at original resolution.",
+        "Resized to 900x1350 with FFmpeg Lanczos scaling.",
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
+      ]
+    }
+  ]
+}

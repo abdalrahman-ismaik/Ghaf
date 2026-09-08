@@ -7,6 +7,7 @@ import { serviceRegistry, type ParentGuideService } from '../src/services';
 import { PARENT_GUIDE_FIXTURE } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const PARENT_WORDING = {
   ar: 'أخرج مواد إعادة التدوير.',
@@ -57,9 +58,9 @@ function createReviewableP0Draft() {
 }
 
 describe('US1 Parent task approval flow', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   it('has both authored Parent task routes for composing and reviewing the assignment', () => {
@@ -83,14 +84,15 @@ describe('US1 Parent task approval flow', () => {
     expect(source).toContain("t('taskNew.reviewNeedsSafety')");
   });
 
-  it('keeps assignment approval navigation ahead of the invalid-review deep-link guard', () => {
+  it('keeps assignment approval in the success flow ahead of the invalid-review deep-link guard', () => {
     const source = readFileSync(new URL('../app/parent/task/review.tsx', import.meta.url), 'utf8');
     expect(source).toContain('const approvalNavigationPending = useRef(false)');
     expect(source).toMatch(
       /approvalNavigationPending\.current = true;[\s\S]{0,120}approveAssignment\(\)/,
     );
     expect(source).toContain('!reviewable && !approvalNavigationPending.current');
-    expect(source).toContain('replaceStackWithRole(router)');
+    expect(source).toContain('setSuccessVisible(true)');
+    expect(source).toContain('onSecondary={continueToChild}');
   });
 
   it('exposes Salem, all eight categories, all five landscape tracks, and the distinct P0 task', () => {

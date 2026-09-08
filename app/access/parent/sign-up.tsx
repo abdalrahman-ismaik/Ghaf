@@ -1,0 +1,248 @@
+import { useCallback, useEffect, useState } from 'react';
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
+import { BackHandler, Platform, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
+import {
+  AccessHeader,
+  AccessScreen,
+  AccessTextField,
+  ParentAccessPortrait,
+  StatusBanner,
+} from '@/components/access';
+import { Button, Text } from '@/components/primitives';
+import { colors, layout, spacing } from '@/design/tokens';
+import { usePrototypeStore } from '@/state/usePrototypeStore';
+
+export default function ParentSignUpScreen() {
+  const router = useRouter();
+  const { preview } = useLocalSearchParams<{ preview?: string }>();
+  const { t } = useTranslation();
+  const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
+  const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const pendingFamilyCreation = usePrototypeStore((state) => state.pendingFamilyCreation);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const requestParentVerification = usePrototypeStore((state) => state.requestParentVerification);
+  const requestFamilyReplacementVerification = usePrototypeStore(
+    (state) => state.requestFamilyReplacementVerification,
+  );
+  const [identifier, setIdentifier] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const networkAvailable = preview !== 'offline';
+  const isReplacingFamily = Boolean(localFamily.record && parentOnboarding.completionReceipt);
+  const verificationHref =
+    preview === 'offline'
+      ? '/access/parent/verification?flow=create-family&preview=offline'
+      : '/access/parent/verification?flow=create-family';
+
+  const returnToSignIn = useCallback(() => {
+    if (preview === 'offline') {
+      router.replace('/access/parent/sign-in?preview=offline');
+      return;
+    }
+    router.replace('/access/parent/sign-in');
+  }, [preview, router]);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') return undefined;
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      returnToSignIn();
+      return true;
+    });
+    return () => subscription.remove();
+  }, [returnToSignIn]);
+
+  const requestCode = async () => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    await Promise.resolve();
+    const requestVerification = isReplacingFamily
+      ? requestFamilyReplacementVerification
+      : requestParentVerification;
+    const result = requestVerification({ identifier, networkAvailable });
+    if (!result.ok) {
+      setError(
+        result.error.code === 'INVALID_INPUT'
+          ? t('access.signIn.invalidIdentifier')
+          : t('access.states.interrupted'),
+      );
+      setBusy(false);
+      return;
+    }
+    router.replace(verificationHref);
+  };
+
+  if (parentOnboarding.status === 'authenticated_parent') {
+    return <Redirect href={activeExperience === 'parent' ? '/parent' : '/'} />;
+  }
+  if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
+    return <Redirect href={verificationHref} />;
+  }
+  if (parentOnboarding.status === 'verified') {
+    if (pendingFamilyCreation === 'replacement' && parentOnboarding.completionReceipt) {
+      return <Redirect href={verificationHref} />;
+    }
+    return parentOnboarding.completionReceipt ? (
+      <Redirect href="/access/parent/sign-in" />
+    ) : (
+      <Redirect href="/access/parent/family-basics" />
+    );
+  }
+
+  return (
+    <AccessScreen
+      background="organic"
+      contentContainerStyle={styles.viewport}
+      contentMaxWidth={layout.readableContentWidth}
+      contentStyle={styles.content}
+      header={
+        <AccessHeader
+          backLabel={t('common.back')}
+          brand={t('common.brand')}
+          direction={direction}
+          language={locale}
+          onBack={returnToSignIn}
+        />
+      }
+      keyboardAware
+      testID="parent-sign-up-screen"
+    >
+      <ParentAccessPortrait />
+
+      <View style={styles.intro}>
+        <Text
+          align="center"
+          brand
+          color="deepForest"
+          direction={direction}
+          language={locale}
+          variant="parentHero"
+        >
+          {t('access.signUp.title')}
+        </Text>
+        <Text
+          align="center"
+          brand
+          color="onSurfaceVariant"
+          direction={direction}
+          language={locale}
+          variant="body"
+        >
+          {t('access.signUp.body')}
+        </Text>
+      </View>
+
+      {preview === 'offline' ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.states.localFallback')}
+          title={t('access.states.offline')}
+          tone="offline"
+        />
+      ) : null}
+
+      {isReplacingFamily ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.signUp.replacementBody')}
+          title={t('access.signUp.replacementTitle')}
+          tone="offline"
+        />
+      ) : null}
+
+      <View style={styles.form}>
+        <AccessTextField
+          accessibilityHint={t('access.signIn.identifierExample')}
+          autoCapitalize="none"
+          autoComplete="username"
+          autoCorrect={false}
+          direction="auto"
+          editable={!busy}
+          errorText={error ?? undefined}
+          helperText={t('access.signIn.identifierExample')}
+          label={t('access.signIn.identifierLabel')}
+          language={locale}
+          onChangeText={(value) => {
+            setIdentifier(value);
+            setError(null);
+          }}
+          onSubmitEditing={() => void requestCode()}
+          placeholder={t('access.signIn.identifierPlaceholder')}
+          returnKeyType="go"
+          testID="parent-sign-up-identifier-input"
+          textContentType="username"
+          value={identifier}
+        />
+
+        <Button
+          brand
+          busy={busy}
+          busyLabel={t('access.signUp.loading')}
+          direction={direction}
+          language={locale}
+          onPress={() => void requestCode()}
+          size="regular"
+          testID="request-parent-sign-up-code-button"
+        >
+          {t(isReplacingFamily ? 'access.signUp.replacementAction' : 'access.signUp.action')}
+        </Button>
+      </View>
+
+      <View style={styles.returningFamilyGroup}>
+        <Text
+          align="center"
+          brand
+          color="onSurfaceVariant"
+          direction={direction}
+          language={locale}
+          variant="caption"
+        >
+          {t('access.signUp.returningPrompt')}
+        </Text>
+        <Button
+          brand
+          direction={direction}
+          disabled={busy}
+          language={locale}
+          onPress={returnToSignIn}
+          size="regular"
+          style={styles.returnButton}
+          testID="return-to-parent-sign-in-button"
+          variant="quiet"
+        >
+          {t('access.signUp.returnToSignIn')}
+        </Button>
+      </View>
+    </AccessScreen>
+  );
+}
+
+const styles = StyleSheet.create({
+  viewport: { paddingTop: spacing.xs },
+  content: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    gap: spacing.xl,
+  },
+  intro: {
+    width: '100%',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  form: { width: '100%', gap: spacing.sm },
+  returningFamilyGroup: {
+    width: '100%',
+    gap: spacing.xxs,
+    paddingTop: spacing.xs,
+  },
+  returnButton: {
+    borderColor: colors.ghafEmerald,
+  },
+});

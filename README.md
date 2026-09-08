@@ -11,51 +11,77 @@ living garden.
 
 ## Current status
 
-| Area                 | Current evidence                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | Feature 003 — Family Growth Garden is implemented as one ten-route deterministic P0 journey                                                 |
-| Automated checks     | 17 test files / 305 tests, TypeScript, Expo ESLint, Prettier, and Expo dependency alignment passed at the latest recorded checkpoint        |
-| Web preview          | Arabic RTL and English LTR journeys passed at a 390×844 browser proxy with no runtime errors or horizontal overflow                         |
-| Android              | Authoritative physical-device validation is **BLOCKED** on this host because the Android SDK, ADB, Java, and a named device are unavailable |
-| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers     |
-| Production readiness | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                   |
+Feature 003 Revision 3 is the current competition experience. It is delivered as one Expo app with
+separate Parent and Child journeys, deterministic offline fallbacks, bilingual Arabic/English UI,
+and guarded optional live-assistant integrations. Parent approval remains the authority for every
+task, reward, and permanent growth event.
+
+Growth Journey, badges, learning, Parent Progress, Shared Growth, private League, and Reveal are
+implemented as bounded product slices. Features that still require physical-device or human review
+remain clearly identified in the evidence ledger rather than being presented as production-ready.
+
+| Area                 | Current evidence                                                                                                                         |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Product              | Complete deterministic Parent → Child → approval → Seeds → garden journey with private family extensions                                 |
+| Automated checks     | Strict TypeScript, lint, formatting, deterministic tests, dependency alignment, and export checks are available through `npm run verify` |
+| Web preview          | Arabic RTL and English LTR responsive review is supported through Expo Web                                                               |
+| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks remain separate gates  |
+| Production readiness | **No** — this is a synthetic competition MVP, not a production child-data or payment service                                             |
 
 The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
 does not count as native-device or human-review evidence.
 
-## Run it in five minutes
+## Run and test locally
 
-Prerequisites:
+Use one of the following two paths. Install dependencies once with `npm ci` before working offline.
 
-- Node.js 22.13 or newer; `.nvmrc` pins the repository baseline;
-- npm; and
-- Git.
+### Offline web testing
 
-The easiest path is the local web preview:
+From the repository root:
 
 ```bash
-nvm use        # optional, when nvm is installed
-npm ci
 npm run web -- --offline
 ```
 
 Open the URL printed by Expo, normally `http://localhost:8081`. The app starts in Arabic RTL. Use
-the language switcher for English.
+the language switcher for English. This is the quickest visual check, but it does not validate
+native Android behavior.
 
-For a phone through Expo's QR workflow:
+### Android Studio and a USB device on Windows
 
-```bash
-npm start -- --offline
+1. In Android Studio's SDK Manager, install Android SDK Platform 36, Build-Tools, Platform-Tools,
+   NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the first native build.
+2. Enable Developer options and USB debugging on the Android device, connect it, and accept the
+   device authorization prompt.
+3. Open PowerShell in the Windows checkout, then run:
+
+```powershell
+$env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
+$env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
+adb devices
+adb reverse tcp:8081 tcp:8081
+npx expo run:android --device
 ```
 
-For an Android emulator or USB device configured with the Android SDK and ADB:
+Select the connected device when prompted. The first native build can take several minutes because
+Gradle compiles and downloads Android tooling; later builds reuse its cache. For later UI-only
+sessions, keep the device connected and rerun the same commands.
 
-```bash
-npm run android -- --offline
+To inspect the current default-off R002b screens in either path, create an ignored `.env.local`
+containing:
+
+```dotenv
+EXPO_PUBLIC_R002B_PROGRESSION_ENGINE=true
+EXPO_PUBLIC_R002B_IMPACT_PATH_UI=true
+EXPO_PUBLIC_R002B_BADGES_UI=true
+EXPO_PUBLIC_R002B_LEARNING_UI=true
+EXPO_PUBLIC_R002B_PARENT_PROGRESS_UI=true
+EXPO_PUBLIC_R002B_SHARED_GROWTH_VIEW=true
 ```
 
-Android is the competition authority; web is a convenient development and visual-review surface.
-See [Development and testing](docs/DEVELOPMENT.md) for prerequisites and troubleshooting.
+Leave `EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2` and
+`EXPO_PUBLIC_R002B_SHARED_GROWTH_CONTRIBUTION` unset. Those flows remain fail-closed while their
+release evidence is incomplete. Restart Expo after changing `.env.local`.
 
 ## Verify the repository
 
@@ -68,21 +94,17 @@ npm run verify
 It runs TypeScript, lint, formatting, all Vitest suites, Expo dependency alignment, and a static web
 export. The export is written to ignored `dist/`; it is a build artifact, not source evidence.
 
-Useful individual commands:
+Useful verification commands:
 
-| Command                | Purpose                                                        |
-| ---------------------- | -------------------------------------------------------------- |
-| `npm start`            | Start the Expo development server                              |
-| `npm run web`          | Start the web preview                                          |
-| `npm run android`      | Start and open Android; requires a configured device/toolchain |
-| `npm run ios`          | Start and open iOS; requires macOS/Xcode                       |
-| `npm test`             | Run deterministic domain, service, state, and flow tests once  |
-| `npm run test:watch`   | Run tests in watch mode                                        |
-| `npm run typecheck`    | Check strict TypeScript                                        |
-| `npm run lint`         | Run Expo ESLint                                                |
-| `npm run format:check` | Check maintained source and developer-document formatting      |
-| `npm run build:web`    | Produce the ignored static web export in `dist/`               |
-| `npm run verify`       | Run the complete repository gate                               |
+| Command                | Purpose                                                   |
+| ---------------------- | --------------------------------------------------------- |
+| `npm test`             | Run deterministic domain, service, state, and flow tests  |
+| `npm run test:watch`   | Run tests in watch mode                                   |
+| `npm run typecheck`    | Check strict TypeScript                                   |
+| `npm run lint`         | Run Expo ESLint                                           |
+| `npm run format:check` | Check maintained source and developer-document formatting |
+| `npm run build:web`    | Produce the ignored static web export in `dist/`          |
+| `npm run verify`       | Run the complete repository gate                          |
 
 These automated tests do not replace Android, accessibility, media, or human acceptance checks.
 
@@ -113,34 +135,31 @@ app/ routes
   → src/services/mock/ deterministic providers and fixtures
 ```
 
-| Path              | Responsibility                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------ |
-| `app/`            | Thin Expo Router route composition and navigation                                                |
-| `src/components/` | Shared UI primitives and Family Growth presentation components                                   |
-| `src/design/`     | Design tokens and semantic visual roles                                                          |
-| `src/features/`   | Pure bounded domain policy and lifecycle logic                                                   |
-| `src/i18n/`       | Arabic/English interface resources and direction utilities                                       |
-| `src/models/`     | Strict Feature 003 domain and session contracts                                                  |
-| `src/services/`   | Provider-neutral interfaces, registry, and deterministic local providers                         |
-| `src/state/`      | One resettable in-memory application session and guarded commands                                |
-| `tests/`          | Domain, service, state, privacy, safety, reset, and complete-flow tests                          |
-| `specs/`          | Versioned Spec Kit records for Features 001–003                                                  |
-| `docs/`           | Documentation index, architecture guidance, development guide, and preserved Feature 002 history |
+| Path              | Responsibility                                                                      |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| `app/`            | Thin Expo Router route composition and navigation                                   |
+| `src/components/` | Shared UI primitives and Family Growth presentation components                      |
+| `src/design/`     | Design tokens and semantic visual roles                                             |
+| `src/features/`   | Pure bounded domain policy and lifecycle logic                                      |
+| `src/i18n/`       | Arabic/English interface resources and direction utilities                          |
+| `src/models/`     | Strict Feature 003 domain and session contracts                                     |
+| `src/services/`   | Provider-neutral interfaces, registry, and deterministic local providers            |
+| `src/state/`      | One resettable in-memory application session and guarded commands                   |
+| `tests/`          | Domain, service, state, privacy, safety, reset, and complete-flow tests             |
+| `docs/`           | Documentation index, architecture guidance, development guide, and product evidence |
 
 For boundaries, dependency direction, data ownership, and failure behavior, read
 [Architecture](docs/architecture/ARCHITECTURE.md).
 
 ## Documentation map
 
-- [Documentation index](docs/README.md) — where active contracts, historical records, and evidence
-  belong.
+- [Documentation index](docs/README.md) — public engineering, product, and evidence guide.
 - [Product contract](PRODUCT.md) — users, behavior, reward/garden rules, AI jobs, and P0 scope.
 - [Design contract](DESIGN.md) and [design direction](DESIGN_DIRECTION.md) — system rules and visual
   north star.
 - [Research basis](RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale.
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
-- [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
-  requirements and acceptance criteria.
+- [Demo runbook](DEMO_RUNBOOK.md) — judge journey and evidence status.
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.
 
 ## Safety and scope boundaries

@@ -1,0 +1,71 @@
+{
+  "source": {
+    "path": "upload/ChatGPT Image Sep 1, 2026, 08_50_38 PM.png",
+    "width": 1254,
+    "height": 1254,
+    "alphaThreshold": 32
+  },
+  "bounds": {
+    "minX": 29,
+    "minY": 72,
+    "maxX": 1224,
+    "maxY": 1181
+  },
+  "palette": {
+    "deepForest": "#0D3128",
+    "ghafEmerald": "#126A50",
+    "mangroveTeal": "#188B83",
+    "darkMangrove": "#28736C",
+    "brightPearl": "#F7F8F3"
+  },
+  "regions": [
+    {
+      "region": 1,
+      "area": 310895,
+      "bounds": {
+        "minX": 29,
+        "minY": 342,
+        "maxX": 1009,
+        "maxY": 1181
+      },
+      "color": "#0D3128",
+      "paths": 1
+    },
+    {
+      "region": 2,
+      "area": 119151,
+      "bounds": {
+        "minX": 319,
+        "minY": 72,
+        "maxX": 934,
+        "maxY": 378
+      },
+      "color": "#126A50",
+      "paths": 1
+    },
+    {
+      "region": 3,
+      "area": 87908,
+      "bounds": {
+        "minX": 639,
+        "minY": 441,
+        "maxX": 1224,
+        "maxY": 885
+      },
+      "color": "#28736C",
+      "paths": 1
+    },
+    {
+      "region": 4,
+      "area": 86336,
+      "bounds": {
+        "minX": 542,
+        "minY": 290,
+        "maxX": 1062,
+        "maxY": 615
+      },
+      "color": "#188B83",
+      "paths": 1
+    }
+  ]
+}

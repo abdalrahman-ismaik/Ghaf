@@ -1,19 +1,32 @@
-import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Redirect, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { CircleProgress } from '@/components/family-growth/CircleProgress';
 import { JourneyHeader } from '@/components/journey';
 import { Button, Screen, Text } from '@/components/primitives';
+import { R003Status } from '@/components/r003';
 import { colors, radii, spacing } from '@/design/tokens';
 import { resolveCircleFixture } from '@/features/circle/projection';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import {
+  selectCanEnterChildExperience,
+  selectHasActiveParentExperience,
+  usePrototypeStore,
+} from '@/state/usePrototypeStore';
 
 export default function CircleScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const hasActiveParentExperience = usePrototypeStore(selectHasActiveParentExperience);
+  const hasActiveChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const circle = usePrototypeStore((state) => state.circleGoal);
+  const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
+  const [transitionError, setTransitionError] = useState<string | null>(null);
   const circleState = resolveCircleFixture(circle);
 
   const gardens = [
@@ -33,6 +46,11 @@ export default function CircleScreen() {
       accessibilityLabel: t('circle.cousinGardenTwo'),
     },
   ];
+
+  if (activeExperience === 'signed_out') return <Redirect href="/" />;
+  if (activeExperience === 'parent' && !hasActiveParentExperience) return <Redirect href="/" />;
+  if (activeExperience === 'child' && !hasActiveChildExperience) return <Redirect href="/" />;
+  if (role !== 'parent' && role !== 'child') return <Redirect href="/" />;
 
   return (
     <Screen contentContainerStyle={styles.screenContent} testID="circle-screen">
@@ -73,7 +91,7 @@ export default function CircleScreen() {
           style={styles.unavailable}
           testID="circle-unavailable"
         >
-          <Text accessibilityRole="header" color="forest" variant="heading">
+          <Text color="forest" variant="heading">
             {t('circle.unavailableTitle')}
           </Text>
           <Text color="inkMuted">{t('circle.unavailableBody')}</Text>
@@ -96,11 +114,31 @@ export default function CircleScreen() {
         </Text>
       </View>
       <Button
-        onPress={() => router.replace(role === 'parent' ? '/parent' : '/role')}
+        onPress={() => {
+          if (role === 'parent') {
+            router.replace('/parent/family' as Href);
+            return;
+          }
+          setTransitionError(null);
+          const result = beginTemporaryParentAccess();
+          if (!result.ok) {
+            setTransitionError(t('errors.safeRetry'));
+            return;
+          }
+          router.replace('/');
+        }}
         testID="finish-demo-button"
       >
         {t('circle.finish')}
       </Button>
+      {transitionError ? (
+        <R003Status
+          direction={direction}
+          language={locale}
+          message={transitionError}
+          tone="warning"
+        />
+      ) : null}
     </Screen>
   );
 }

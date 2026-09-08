@@ -4,6 +4,8 @@ flowchart TB
   App[Expo Router application]
   UI[Shared UI · design tokens · i18n]
   Store[Zustand prototype session + application commands]
+  Directory[Versioned local family directory]
+  SQLite[Expo SQLite KV on native]
   Policies[Pure task · reward · garden · circle · assistant policies]
   Registry[Provider-neutral service registry]
   Mock[Deterministic local providers]
@@ -13,6 +15,8 @@ flowchart TB
   Child --> App
   App --> UI
   App --> Store
+  Store --> Directory
+  Directory --> SQLite
   Store --> Policies
   Store --> Registry
   Registry --> Mock

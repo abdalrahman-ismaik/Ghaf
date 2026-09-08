@@ -3,16 +3,6 @@ export interface EntryReplaceRouter {
   replace: (href: '/') => void;
 }
 
-export interface RoleReplaceRouter {
-  dismissAll: () => void;
-  replace: (href: '/role') => void;
-}
-
-export interface StackReplaceRouter<Route extends string> {
-  dismissAll: () => void;
-  replace: (href: Route) => void;
-}
-
 const RESET_BOUNDARY_KEY = '__ghafResetBoundary';
 const RESET_BOUNDARY = 'boundary';
 const RESET_GUARD = 'guard';
@@ -70,20 +60,4 @@ export function replaceHistoryWithEntry(router: EntryReplaceRouter): void {
   if (typeof window !== 'undefined') {
     window.requestAnimationFrame(() => armWebResetHistoryBoundary(window));
   }
-}
-
-export function replaceStackWithRoute<Route extends string>(
-  router: StackReplaceRouter<Route>,
-  href: Route,
-): void {
-  try {
-    router.dismissAll();
-  } catch {
-    // The first route has nothing to dismiss; replace still completes the handoff.
-  }
-  router.replace(href);
-}
-
-export function replaceStackWithRole(router: RoleReplaceRouter): void {
-  replaceStackWithRoute(router, '/role');
 }

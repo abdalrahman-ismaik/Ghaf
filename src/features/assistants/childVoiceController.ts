@@ -316,6 +316,14 @@ export class ChildVoiceController {
       return success(cloneView(INITIAL_CHILD_VOICE_VIEW));
     }
 
+    const refreshedGrant = this.registry.access.getChildPermissions({
+      session: this.parentSession,
+      childId: this.grant.childId,
+      now: this.nextTime(),
+    });
+    if (!refreshedGrant.ok) return refreshedGrant;
+    this.grant = refreshedGrant.data;
+
     if (this.voiceSession) {
       const reset = this.registry.syntheticVoice.reset(this.voiceSession, this.childAuthority());
       if (!reset.ok) return reset;
@@ -339,6 +347,15 @@ export class ChildVoiceController {
     this.voiceSession = null;
     this.taskContext = null;
     return success(this.getView());
+  }
+
+  releaseAccessAuthorityAfterPrototypeReset(): ChildVoiceView {
+    this.parentSession = null;
+    this.childSession = null;
+    this.grant = null;
+    this.voiceSession = null;
+    this.taskContext = null;
+    return this.getView();
   }
 
   private ensureSyntheticAuthority(childId: SyntheticChildId): ServiceResult<true> {

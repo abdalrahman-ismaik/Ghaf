@@ -161,9 +161,13 @@ describe('Feature 003 bilingual resource parity', () => {
     }
   });
 
-  it('uses canonical validated assistant disclosure metadata at each point of use', () => {
+  it('retains validated assistant metadata while presenting one Parent notice and the Child disclosure', () => {
     const parentComposerSource = readFileSync(
       new URL('../src/components/family-growth/ParentTaskComposer.tsx', import.meta.url),
+      'utf8',
+    );
+    const parentSummarySource = readFileSync(
+      new URL('../src/components/family-growth/ParentPatternSummary.tsx', import.meta.url),
       'utf8',
     );
     const childTaskSource = readFileSync(new URL('../app/child/task.tsx', import.meta.url), 'utf8');
@@ -179,10 +183,14 @@ describe('Feature 003 bilingual resource parity', () => {
     expect(serviceRegistry.parentGuide.disclosure).toEqual(PARENT_GUIDE_FIXTURE.meta.disclosure);
     expect(serviceRegistry.childCoach.disclosure).toEqual(CHILD_COACH_FIXTURE.meta.disclosure);
 
-    expect(parentComposerSource).toContain('suggestion?.meta.disclosure.text');
-    expect(parentComposerSource).toContain('serviceRegistry.parentGuide.disclosure.text');
-    expect(parentComposerSource).toContain('localize(guideDisclosure, locale)');
+    expect(parentComposerSource).not.toContain('suggestion?.meta.disclosure.text');
+    expect(parentComposerSource).not.toContain(
+      'serviceRegistry.parentGuidePrimary.disclosure.text',
+    );
+    expect(parentComposerSource).not.toContain('localize(guideDisclosure, locale)');
     expect(parentComposerSource).not.toContain("t('taskNew.guideDisclosure')");
+    expect(parentSummarySource).toContain("t('parentHome.aiDisclosure')");
+    expect(parentSummarySource).not.toContain('current.meta.disclosure.text');
 
     expect(childTaskSource).toContain('coach?.meta.disclosure.text');
     expect(childTaskSource).toContain('serviceRegistry.childCoach.disclosure.text');
@@ -191,6 +199,8 @@ describe('Feature 003 bilingual resource parity', () => {
 
     expect(resources.ar.translation.taskNew).not.toHaveProperty('guideDisclosure');
     expect(resources.en.translation.taskNew).not.toHaveProperty('guideDisclosure');
+    expect(resources.ar.translation.parentHome).not.toHaveProperty('summaryDisclosure');
+    expect(resources.en.translation.parentHome).not.toHaveProperty('summaryDisclosure');
     expect(resources.ar.translation.childTask).not.toHaveProperty('coachDisclosure');
     expect(resources.en.translation.childTask).not.toHaveProperty('coachDisclosure');
   });

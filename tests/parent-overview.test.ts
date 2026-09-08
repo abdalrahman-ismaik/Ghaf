@@ -11,6 +11,7 @@ import {
   createInitialPrototypeSession,
 } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { resetPrototypeForTest } from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asserts result is {
   readonly ok: true;
@@ -50,8 +51,7 @@ async function requestPreparedSummary() {
 
 describe('US5 cooperative Parent overview and bounded pattern summary', () => {
   beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+    expectOk(resetPrototypeForTest());
   });
 
   it('has a dedicated bounded Parent pattern-summary component for the overview route', () => {

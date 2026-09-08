@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 
@@ -83,6 +84,7 @@ export function PreparedMedia({
   unavailable = false,
 }: PreparedMediaProps) {
   const { t } = useTranslation();
+  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const [failedImageId, setFailedImageId] = useState<PreparedMediaFixture['id'] | null>(null);
   const source = fixture.kind === 'image' ? resolvePreparedMediaSource(fixture.id) : null;
@@ -111,12 +113,12 @@ export function PreparedMedia({
       testID={testID}
     >
       {effectiveSelected ? <View style={styles.selectedRule} /> : null}
-      <View style={styles.mediaHeader}>
+      <View style={[styles.mediaHeader, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={styles.mediaIcon}>
           <MediaTypeIcon kind={fixture.kind} />
         </View>
         <View style={styles.mediaTitleCopy}>
-          <Text accessibilityRole="header" color="forest" variant="heading">
+          <Text color="forest" variant="heading">
             {label}
           </Text>
           <Text color="inkMuted" variant="caption">
@@ -135,8 +137,9 @@ export function PreparedMedia({
           <Image
             accessibilityLabel={localize(fixture.accessibleDescription, locale)}
             accessibilityRole="image"
+            cachePolicy="memory-disk"
+            contentFit="cover"
             onError={handleImageLoadError}
-            resizeMode="cover"
             source={source}
             style={styles.preparedImage}
             testID={`${testID ?? 'prepared-media'}-image`}
@@ -166,7 +169,7 @@ export function PreparedMedia({
         origin="prepared"
       />
 
-      <View style={styles.visibilityRecord}>
+      <View style={[styles.visibilityRecord, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={styles.visibilityMark} />
         <Text color="inkMuted" style={styles.visibilityText} variant="caption">
           {localize(fixture.parentVisibilityNotice, locale)}
@@ -205,6 +208,8 @@ function FallbackRecord({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  rowRtl: { flexDirection: 'row-reverse' },
+  rowLtr: { flexDirection: 'row' },
   media: {
     overflow: 'hidden',
     gap: spacing.md,
@@ -227,7 +232,7 @@ const styles = StyleSheet.create({
     height: spacing.xxs,
     backgroundColor: colors.ghaf,
   },
-  mediaHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
+  mediaHeader: { alignItems: 'flex-start', gap: spacing.sm },
   mediaIcon: {
     width: layout.touchTarget,
     height: layout.touchTarget,
@@ -293,7 +298,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.water,
   },
   visibilityRecord: {
-    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.sm,
     borderTopWidth: 1,
