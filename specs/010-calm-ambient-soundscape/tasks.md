@@ -20,8 +20,8 @@ fallback contract remain independently verifiable.
 
 **Purpose**: Establish exact ownership and preserve the prior evidence baseline.
 
-- [ ] T001 Record the Feature 010 planning, asset, source, test, and evidence reservation in TEAM_OWNERSHIP.md
-- [ ] T002 Audit v1 identity, spectrum, loudness, silence, and current source binding against assets/audio/ambient/nature-soundscape-v1.mp3 and src/components/audio/AmbientAudioProvider.tsx
+- [x] T001 Record the Feature 010 planning, asset, source, test, and evidence reservation in TEAM_OWNERSHIP.md
+- [x] T002 Audit v1 identity, spectrum, loudness, silence, and current source binding against assets/audio/ambient/nature-soundscape-v1.mp3 and src/components/audio/AmbientAudioProvider.tsx
 
 ---
 
@@ -29,8 +29,8 @@ fallback contract remain independently verifiable.
 
 **Purpose**: Lock a narrow, reversible contract before implementation.
 
-- [ ] T003 Complete the approved specification and source contract in specs/010-calm-ambient-soundscape/spec.md and specs/010-calm-ambient-soundscape/contracts/calm-soundscape-v2.md
-- [ ] T004 Confirm existing audio preferences, lifecycle policy, narration ducking, safe failure, reset, UI copy, and dependencies require no change through src/features/audio/ambientAudio.ts and tests/natural-ambient-audio.test.tsx
+- [x] T003 Complete the approved specification and source contract in specs/010-calm-ambient-soundscape/spec.md and specs/010-calm-ambient-soundscape/contracts/calm-soundscape-v2.md
+- [x] T004 Confirm existing audio preferences, lifecycle policy, narration ducking, safe failure, reset, UI copy, and dependencies require no change through src/features/audio/ambientAudio.ts and tests/natural-ambient-audio.test.tsx
 
 **Checkpoint**: One asset-only runtime seam is approved; no new control, state, package, permission,
 or service is required.
@@ -46,15 +46,18 @@ inspection passes; a later named Android reviewer can listen through one cycle a
 
 ### Tests for User Story 1
 
-- [ ] T005 [US1] Add a failing v2 source identity, v1 preservation, provenance, and active-binding contract to tests/natural-ambient-audio.test.tsx
-- [ ] T006 [US1] Run tests/natural-ambient-audio.test.tsx before implementation and record the expected missing-v2 or v1-binding failure in specs/010-calm-ambient-soundscape/tasks.md
+- [x] T005 [US1] Add a failing v2 source identity, v1 preservation, provenance, and active-binding contract to tests/natural-ambient-audio.test.tsx
+- [x] T006 [US1] Run tests/natural-ambient-audio.test.tsx before implementation and record the expected missing-v2 or v1-binding failure in specs/010-calm-ambient-soundscape/tasks.md
+
+  - RED evidence (2026-09-08): 21 passed and 2 failed because the provider still referenced
+    `nature-soundscape-v1.mp3` and `calm-soundscape-v2.mp3` did not yet exist.
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Author the deterministic tone-free circularly crossfaded source at assets/audio/ambient/calm-soundscape-v2.mp3
-- [ ] T008 [US1] Record v1/v2 provenance, content boundaries, identities, and objective measurements in assets/audio/ambient/README.md
-- [ ] T009 [US1] Select the v2 local source without changing player behavior in src/components/audio/AmbientAudioProvider.tsx
-- [ ] T010 [US1] Run the focused test plus FFprobe, loudness, silence, waveform, spectrum, and hash checks for assets/audio/ambient/calm-soundscape-v2.mp3
+- [x] T007 [US1] Author the deterministic tone-free circularly crossfaded source at assets/audio/ambient/calm-soundscape-v2.mp3
+- [x] T008 [US1] Record v1/v2 provenance, content boundaries, identities, and objective measurements in assets/audio/ambient/README.md
+- [x] T009 [US1] Select the v2 local source without changing player behavior in src/components/audio/AmbientAudioProvider.tsx
+- [x] T010 [US1] Run the focused test plus FFprobe, loudness, silence, waveform, spectrum, and hash checks for assets/audio/ambient/calm-soundscape-v2.mp3
 
 **Checkpoint**: The new source is active, reversible, objectively within the delivery envelope, and
 ready for subjective listening without claiming that gate.
@@ -71,11 +74,11 @@ source inspection shows no new UI/state/dependency path.
 
 ### Tests for User Story 2
 
-- [ ] T011 [US2] Run focused audio, onboarding narration, live-voice exclusion, remembered access, and exact-reset regressions through the existing tests
+- [x] T011 [US2] Run focused audio, onboarding narration, live-voice exclusion, remembered access, and exact-reset regressions through the existing tests
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] Update the narrow soundscape truth and manual-review guidance in PRODUCT.md, DESIGN.md, PROTOTYPE_LIMITATIONS.md, and DEMO_RUNBOOK.md
+- [x] T012 [US2] Update the narrow soundscape truth and manual-review guidance in PRODUCT.md, DESIGN.md, PROTOTYPE_LIMITATIONS.md, and DEMO_RUNBOOK.md
 
 **Checkpoint**: The existing control and safe fallback remain complete and unchanged.
 
@@ -85,8 +88,15 @@ source inspection shows no new UI/state/dependency path.
 
 **Purpose**: Validate repository integration and report the human gate honestly.
 
-- [ ] T013 Run strict TypeScript, zero-warning lint, formatting, full tests, Git whitespace, dependency alignment, and static export validation from specs/010-calm-ambient-soundscape/quickstart.md
-- [ ] T014 Record exact automated evidence, `NOT RUN` human Android listening, protected unrelated artifacts, and final integration status in TEAM_OWNERSHIP.md and specs/010-calm-ambient-soundscape/tasks.md
+- [x] T013 Run strict TypeScript, zero-warning lint, formatting, full tests, Git whitespace, dependency alignment, and static export validation from specs/010-calm-ambient-soundscape/quickstart.md
+- [x] T014 Record exact automated evidence, `NOT RUN` human Android listening, protected unrelated artifacts, and final integration status in TEAM_OWNERSHIP.md and specs/010-calm-ambient-soundscape/tasks.md
+
+  - Final evidence (2026-09-08): strict TypeScript, zero-warning lint, maintained-source and
+    Feature 010 formatting, 124 files / 1,371 tests, Git whitespace, 39-route web export, and Android
+    JavaScript export with 96 assets passed. Both exports contain byte-identical v2 audio. The
+    combined `npm run verify` stops only at the pre-existing Expo patch alignment: `expo` 57.0.20
+    expects ~57.0.21 and `expo-router` 57.0.19 expects ~57.0.20. Physical Android listening and
+    named human review remain `NOT RUN`.
 
 ---
 

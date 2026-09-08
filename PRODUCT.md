@@ -66,9 +66,25 @@ subscriptions remain separately gated production work. Pricing benchmarks, gross
 examples, excluded costs, and the judge-ready business explanation live in
 `docs/GHAF_PLUS_COMMERCIAL_CASE.md`; they are not evidence of demand, revenue, margin, or profit.
 
-## Feature 006 natural ambient audio — 2026-09-08
+## Feature 010 calm ambient soundscape — 2026-09-08
 
-Ghaf now uses one quiet, locally packaged nature soundscape across the active foreground app in
+The active app-wide ambience is now a 60-second locally authored breeze-and-distant-water texture
+with no generated tones, bird-like calls, melody, beat, speech, downloaded recording, or
+third-party sample. It uses three deterministic filtered-noise layers and a four-second circular
+crossfade so there is no short recurring motif or intentional silence at the loop boundary. The
+original v1 source remains byte-identical for rollback but is no longer selected by the app.
+
+This refinement changes only the local audio source. The existing root player, quiet and
+narration-ducked levels, shared Parent/Child Sound preference, foreground and screen-reader rules,
+voice-focus exclusion, safe silence fallback, and exact reset behavior remain authoritative.
+Automated inspection verifies the source identity, 60.029-second mono format, -36.4 LUFS integrated
+loudness, -22.2 dBFS true peak, and no interval of at least 250ms below -50 dB. Whether it feels
+calm, balances well with narration, and loops inaudibly still requires named human listening on the
+competition Android device.
+
+## Feature 006 natural ambient audio baseline — 2026-09-08
+
+Feature 006 introduced one quiet, locally packaged nature soundscape across the active foreground app in
 place of the previous onboarding-only background soundtrack behavior. A single root-owned player
 loops across route changes, ducks beneath prepared onboarding narration, and pauses while Ghaf is
 inactive or backgrounded, a screen reader is active, or foreground voice capture owns audio focus.
@@ -80,10 +96,8 @@ survives sign-out and role handoff, and defaults on only when no prior choice ex
 unreadable preference data fails to silence, a failed write preserves the previous choice, and the
 Parent-authorized exact prototype reset clears the choice and restores the documented default.
 
-The 48-second mono asset is locally synthesized and has no speech, personal data, or downloaded
-field recording. Automated metadata, source, policy, accessibility, and regression checks support
-the implementation, but naturalness, loudness, narration balance, and the loop seam still require
-a named human listening review on the authoritative Android build.
+The original Feature 006 source was a 48-second locally synthesized mono asset. Feature 010
+supersedes only that active asset identity; every player and preference rule above remains intact.
 
 ## Feature 005 remembered device access — 2026-09-07
 

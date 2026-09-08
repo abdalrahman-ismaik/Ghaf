@@ -21,7 +21,19 @@ reset, access separation, and complete offline path. Retain the prior asset for 
 objective source/metadata/seam evidence, and leave subjective calmness plus physical Android
 listening unclaimed until a named human review occurs.
 
-**Status**: In progress. Existing user-owned configuration, source design packs, and generated
+**Status**: Complete and ready for source integration. The app-root player now selects the new
+60.029-second mono v2 source, authored locally from fixed-seed filtered noise with no tonal/bird
+generator, melody, beat, speech, download, or third-party sample; v1 remains byte-identical for
+rollback and is absent from active playback. Objective checks passed the recorded SHA-256,
+44.1kHz/80kbps format, -36.4 LUFS integrated loudness, -22.2 dBFS true peak, no >=250ms interval
+below -50 dB, and even tone-free waveform/spectrum inspection. Six focused files passed 95 tests;
+the full repository passed strict TypeScript, zero-warning lint, formatting, 124 files / 1,371
+tests, Git whitespace, a 39-route web export, and an Android JavaScript export with 96 assets. Both
+exports contain byte-identical v2 audio. The combined verification command still stops at the
+pre-existing Expo patch alignment (`expo` and `expo-router` are each one patch behind the installed
+SDK map); this slice changes no dependency or lockfile. Subjective calmness, naturalness, narration
+balance, loop seam, and Sound control on physical Android plus named audio/product/accessibility
+review remain `NOT RUN`. Existing user-owned configuration, source design packs, and generated
 output artifacts remain outside this reservation.
 
 ## 2026-09-08 Feature 009 Access Family Portraits Window

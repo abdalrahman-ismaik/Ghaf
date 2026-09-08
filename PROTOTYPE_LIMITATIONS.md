@@ -44,9 +44,27 @@ and physical Android evidence. Current Firefox web checks are secondary presenta
 Android Back, TalkBack, font scale, reduced motion, and native focus remain `NOT RUN` because ADB
 reported no attached device.
 
-## Feature 006 natural ambient audio boundary — 2026-09-08
+## Feature 010 calm ambient soundscape boundary — 2026-09-08
 
-Ghaf now has one locally packaged, 48-second synthesized nature soundscape owned by the app root.
+The active app-wide source is a 60.029-second mono MP3 locally authored from three deterministic
+filtered brown/pink noise layers. It deliberately removes the original repeated bird-like tonal
+accents and contains no melody, beat, speech, alert, downloaded recording, field sample, personal
+data, or third-party audio. A four-second circular crossfade supports the loop boundary. The prior
+v1 file remains byte-identical for rollback and is not selected at runtime.
+
+Source inspection passed the recorded hash, format, duration, -36.4 LUFS integrated loudness,
+-22.2 dBFS true peak, and no detected interval of at least 250ms below -50 dB. Those measurements
+do not prove that v2 sounds calm or natural, stays comfortable on the demo speaker, balances with
+Arabic/English narration, or loops without a perceived seam. Physical Android listening and named
+audio/product review remain `NOT RUN`.
+
+Feature 010 changes no control or product behavior. Feature 006's one root player, quiet/ducked
+levels, shared device-local Parent/Child setting, foreground/screen-reader/voice-focus rules, safe
+silence fallback, and exact reset remain authoritative.
+
+## Feature 006 natural ambient audio baseline — 2026-09-08
+
+Feature 006 introduced one locally packaged, 48-second synthesized nature soundscape owned by the app root.
 It loops across active foreground routes and replaces the earlier onboarding-only background
 soundtrack behavior. It ducks beneath prepared narration and pauses when the app is inactive or
 backgrounded, a native screen reader is active, browser playback has not been unlocked by a user
@@ -60,12 +78,9 @@ position, or identity data. The choice survives sign-out and role handoff; a fai
 previous choice, and the Parent-authorized exact reset clears it and restores default-on. Missing
 data means default-on, while invalid or unreadable data fails safely to silence.
 
-The MP3 was locally synthesized from layered pink/brown noise and restrained bird-like tones. It
-contains no speech, personal data, downloaded field recording, or third-party sample. Source and
-automated evidence cannot establish whether it sounds natural, stays comfortably quiet, balances
-with narration, or loops without an audible seam on the competition device. Physical Android
-listening, audio-focus/silent-mode/TalkBack behavior, and named accessibility/audio review remain
-`NOT RUN` until directly observed.
+The original MP3 was locally synthesized from layered pink/brown noise and restrained bird-like
+tones. Feature 010 supersedes only that active asset identity; it does not inherit Feature 006's
+unrun physical Android or named-human gates.
 
 ## Emirati access family portrait boundary — 2026-09-08
 

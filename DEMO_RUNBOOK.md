@@ -102,6 +102,35 @@ recording, measured nature, or proof that Ghaf plants trees.
 | Physical Android naturalness, volume, seam, background/audio focus, silent mode, and TalkBack | `NOT RUN`                 | requires the competition device and a named human listener                                                                        |
 | Named Arabic, accessibility, audio, and product review                                        | `NOT RUN`                 | no named reviewer participated in this implementation window                                                                      |
 
+## Feature 010 Calm Ambient Soundscape Record — 2026-09-08
+
+**Current classification:** integrated local source candidate; objective identity and unchanged
+audio behavior passed focused validation, while subjective and physical Android listening remain
+`NOT RUN`.
+
+Launch Ghaf with Sound enabled and listen through one complete 60-second cycle plus two loop
+boundaries on the competition Android device. The active texture should remain soft and even with
+no perceived bird-like chirp, tune, beat, voice, alert, sharp event, harsh hiss, obvious pumping,
+hard movement, dropout, click, or abrupt level jump. Replay the prepared Arabic and English
+narration and confirm speech remains clearly dominant. Then repeat the existing Feature 006 Sound
+off/on, foreground/background, screen-reader, voice-focus, role-handoff, and reset checks.
+
+The active `calm-soundscape-v2.mp3` is locally authored from fixed-seed filtered noise and contains
+no downloaded recording or third-party sample. The preserved v1 file remains available only for
+rollback. Never describe v2 as a field recording, streaming sound, measured nature, or a human-
+validated relaxing experience until the listening gate passes.
+
+| Gate                                                                                    | Result                    | Evidence                                                                                                                                                                  |
+| --------------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Active v2 binding and exact v1 rollback preservation                                    | `PASSED automated/source` | provider selects only v2; both SHA-256 identities are asserted                                                                                                            |
+| v2 format, duration, loudness, peak, and silence envelope                               | `PASSED local/source`     | 60.029s mono 44.1kHz MP3; -36.4 LUFS; -22.2 dBFS true peak; no >=250ms interval below -50 dB                                                                              |
+| Tone-free source/provenance contract                                                    | `PASSED local/source`     | fixed-seed brown/pink filtered-noise authoring; no tonal generator, samples, speech, or remote source                                                                     |
+| Focused audio, onboarding, voice-focus, remembered-access, and reset regression         | `PASSED`                  | 6 files / 95 tests                                                                                                                                                        |
+| Full repository core and export validation                                              | `PASSED automated`        | strict TypeScript, zero-warning lint, formatting, 124 files / 1,371 tests, 39 web routes, and Android export with 96 assets; both exports contain byte-identical v2 audio |
+| Expo dependency alignment                                                               | `FAILED pre-existing`     | `expo` 57.0.20 expects ~57.0.21 and `expo-router` 57.0.19 expects ~57.0.20; Feature 010 changes no dependency or lockfile                                                 |
+| Physical Android calmness, naturalness, narration balance, loop seam, and Sound control | `NOT RUN`                 | requires the competition device and a named human listener                                                                                                                |
+| Named audio, product, Arabic, and accessibility review                                  | `NOT RUN`                 | no named reviewer participated in this implementation window                                                                                                              |
+
 ## Feature 009 Access Family Portraits Record — 2026-09-08
 
 **Current classification:** integrated local presentation candidate; source behavior and Firefox

@@ -158,10 +158,13 @@ information hierarchy. The preference is device-level, not a Child media permiss
 may silence it without changing access authority. Persistence failure keeps the previous visible
 state and adds a polite warning.
 
-The soundscape is non-verbal and locally authored from layered noise and restrained bird-like
-tones. Do not add music controls, a volume slider, decorative waveform, animated equalizer,
-playlist, account sync, recording affordance, runtime URL, or sound-only meaning. Human Android
-review owns subjective naturalness, volume, narration balance, and loop-seam acceptance.
+The active Feature 010 soundscape is non-verbal and locally authored from centered filtered-noise
+layers intended as soft breeze and distant water. It contains no tonal or bird-like generator,
+melody, beat, speech, alert, downloaded recording, or hard stereo movement; the earlier v1 source
+remains only for rollback. Do not add music controls, a volume slider, decorative waveform,
+animated equalizer, playlist, account sync, recording affordance, runtime URL, or sound-only
+meaning. Human Android review owns subjective calmness, naturalness, volume, narration balance,
+and loop-seam acceptance.
 
 ## R003 onboarding image perimeter progress
 
