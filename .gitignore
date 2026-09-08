@@ -16,10 +16,32 @@ coverage/
 __pycache__/
 *.pyc
 .playwright-cli/
-output/web-*/
+output/
 .wrangler/
 .dev.vars
 .dev.vars.*
+
+# Local planning, assistant, and review workspaces
+.agents/
+.codex/
+.specify/
+.impeccable/
+.claude/
+.cursor/
+.gemini/
+.aider*
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+TEAM_OWNERSHIP.md
+**/TEAM_OWNERSHIP.md
+**/CODEX_*.md
+**/*_PROMPT*.md
+**/GENERATION_PROMPT*.txt
+docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/
+docs/Ghaf_Official_Logo_and_App_Icon_Pack_v1.0/
+docs/design/stitch/releases/ghaf-r002/
+docs/design/brand/*MIGRATION*.md
 
 # Local environment files: commit only the documented placeholder
 .env

@@ -2,7 +2,7 @@
 
 - **Created**: 2026-08-26
 - **Purpose**: Optional synthetic recycling-task image for the Feature 003 competition prototype.
-- **Origin**: Generated with Codex's built-in image-generation tool (`gpt-image`) from synthetic input only.
+- **Origin**: Prepared synthetic image generated from synthetic input only; no user data was used.
 - **Transformation**: Exported as a 1448×1086 RGB PNG, copied into the repository, and stripped of embedded metadata with ExifTool.
 - **Runtime disclosure**: The interface must label this image **prepared / synthetic**, explain that a Parent can see it, and keep it optional and removable.
 

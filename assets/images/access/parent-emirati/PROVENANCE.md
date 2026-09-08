@@ -9,7 +9,7 @@ single-father v1 reference asset.
 
 - Path: `assets/images/access/parent-emirati/parent-access-emirati.jpg`
 - Original purpose: decorative Parent sign-in, sign-up, and verification portrait
-- Generator: OpenAI built-in imagegen
+- Generator: synthetic image generation using no real-person input
 - Generation date: 2026-09-07
 - Subject: one fictional synthetic adult Emirati father; no Child or real user data
 - Source: generated opaque RGB PNG, 1536×1024
@@ -30,12 +30,10 @@ badge, reward, task evidence, or environmental-impact claim.
 
 ## V1 transformations
 
-1. Generated once with OpenAI built-in imagegen from the exact prompt in
-   `GENERATION_PROMPT.txt`.
+1. Generated once from the approved synthetic composition brief.
 2. Visually inspected at the original 1536×1024 resolution for subject count, attire, facial and
    fabric integrity, prohibited props/text, Ghaf setting, and centered crop safety.
 3. Resized to 1200×800 with FFmpeg Lanczos scaling and encoded as an opaque JPEG at q=3.
-4. Removed source metadata during encoding and embedded the exact generation prompt in the JPEG
-   COM segment with the repository's Impeccable prompt tool.
+4. Removed source metadata during encoding.
 5. Re-inspected the final 1200×800 asset. Physical Android rendering and named-human review remain
    unobserved.

@@ -11,35 +11,25 @@ living garden.
 
 ## Current status
 
-Feature 003 Revision 3 is the active product direction. The current implementation branch is
-`integration/r3-r002b-implementation-20260905`, based on the clean R002a head `0501cf3`. The six
-divergent local commits remain unapplied provenance.
+Feature 003 Revision 3 is the current competition experience. It is delivered as one Expo app with
+separate Parent and Child journeys, deterministic offline fallbacks, bilingual Arabic/English UI,
+and guarded optional live-assistant integrations. Parent approval remains the authority for every
+task, reward, and permanent growth event.
 
-R001 and R002a remain frozen regression baselines and the fallback when an R002b flag is off. The
-R002b Growth Journey, badges, learning, Parent Progress, additive Shared Growth, private League, and
-Reveal candidates are implemented behind independent default-off flags without changing the
-canonical task or existing reward behavior.
+Growth Journey, badges, learning, Parent Progress, Shared Growth, private League, and Reveal are
+implemented as bounded product slices. Features that still require physical-device or human review
+remain clearly identified in the evidence ledger rather than being presented as production-ready.
 
-> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
->
-> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+| Area                 | Current evidence                                                                                                                         |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Product              | Complete deterministic Parent → Child → approval → Seeds → garden journey with private family extensions                                 |
+| Automated checks     | Strict TypeScript, lint, formatting, deterministic tests, dependency alignment, and export checks are available through `npm run verify` |
+| Web preview          | Arabic RTL and English LTR responsive review is supported through Expo Web                                                               |
+| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks remain separate gates  |
+| Production readiness | **No** — this is a synthetic competition MVP, not a production child-data or payment service                                             |
 
-R002b release activation remains blocked until the applicable native, bilingual, accessibility,
-content, provenance, privacy, and named-human gates pass. Code-native candidate screens and passing
-local tests do not activate release flags.
-
-| Area                 | Current evidence                                                                                                                                                                   |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | R001/R002a are frozen fallbacks; all 12 indexed R002b code-native surfaces exist behind default-off flags                                                                          |
-| Automated checks     | TypeScript, lint, formatting, Expo configuration/export, and 1,002/1,002 tests pass                                                                                                |
-| Web preview          | Eight nonblocked R002b surfaces have Arabic/English responsive evidence from 320 to 768 pixels; private League is implemented with partial responsive evidence                     |
-| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks still require a connected configured device                      |
-| Remaining work       | Approval Reveal lacks authoritative League/Challenge/Family Reward receipts; Learning remains locked at the truthful 120-Seed fixture; final native and named-human reviews remain |
-| Production readiness | **No** — the MVP remains local, synthetic, feature-flagged, and release-activation blocked                                                                                         |
-
-The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md), with the bounded R002a
-results in the [R002a validation evidence](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md).
-A browser or source pass does not count as native-device or human-review evidence.
+The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
+does not count as native-device or human-review evidence.
 
 ## Run and test locally
 
@@ -145,19 +135,19 @@ app/ routes
   → src/services/mock/ deterministic providers and fixtures
 ```
 
-| Path              | Responsibility                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------ |
-| `app/`            | Thin Expo Router route composition and navigation                                                |
-| `src/components/` | Shared UI primitives and Family Growth presentation components                                   |
-| `src/design/`     | Design tokens and semantic visual roles                                                          |
-| `src/features/`   | Pure bounded domain policy and lifecycle logic                                                   |
-| `src/i18n/`       | Arabic/English interface resources and direction utilities                                       |
-| `src/models/`     | Strict Feature 003 domain and session contracts                                                  |
-| `src/services/`   | Provider-neutral interfaces, registry, and deterministic local providers                         |
-| `src/state/`      | One resettable in-memory application session and guarded commands                                |
-| `tests/`          | Domain, service, state, privacy, safety, reset, and complete-flow tests                          |
-| `specs/`          | Versioned Spec Kit records for Features 001–003                                                  |
-| `docs/`           | Documentation index, architecture guidance, development guide, and preserved Feature 002 history |
+| Path              | Responsibility                                                                      |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| `app/`            | Thin Expo Router route composition and navigation                                   |
+| `src/components/` | Shared UI primitives and Family Growth presentation components                      |
+| `src/design/`     | Design tokens and semantic visual roles                                             |
+| `src/features/`   | Pure bounded domain policy and lifecycle logic                                      |
+| `src/i18n/`       | Arabic/English interface resources and direction utilities                          |
+| `src/models/`     | Strict Feature 003 domain and session contracts                                     |
+| `src/services/`   | Provider-neutral interfaces, registry, and deterministic local providers            |
+| `src/state/`      | One resettable in-memory application session and guarded commands                   |
+| `tests/`          | Domain, service, state, privacy, safety, reset, and complete-flow tests             |
+| `specs/`          | Versioned product requirements, contracts, plans, and acceptance records            |
+| `docs/`           | Documentation index, architecture guidance, development guide, and product evidence |
 
 For boundaries, dependency direction, data ownership, and failure behavior, read
 [Architecture](docs/architecture/ARCHITECTURE.md).
@@ -175,8 +165,6 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
   requirements and acceptance criteria.
 - [Feature 003 release gates](specs/003-family-growth-garden/design-intake/release-gate.md) — frozen
   R001 boundary, authorized R002a compatibility scope, and blocked R002b expansion.
-- [Revision 3 reconciliation package](specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
-  — non-canonical provenance and unresolved R002 design evidence.
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.
 
 ## Safety and scope boundaries

@@ -4,7 +4,7 @@
 
 - Path: `assets/images/access/child-emirati/child-access-emirati-v1.jpg`
 - Purpose: decorative Child profile-access portrait placed separately from profile controls
-- Generator: OpenAI built-in imagegen
+- Generator: synthetic image generation using no real-person input
 - Generation date: 2026-09-08
 - Subjects: exactly one fictional synthetic Emirati boy and one fictional synthetic Emirati girl,
   approximately 9–11 years old; no adult or real Child data
@@ -28,20 +28,17 @@ nationality, or claim that one appearance represents every Emirati Child. The im
 adult, text, logo, device, school/location identifier, unsafe prop, badge, reward, task evidence, or
 environmental-impact claim.
 
-## Exact generation input
+## Generation input
 
-The exact prompt is stored in `GENERATION_PROMPT.txt` and embedded in the shipping JPEG's
-`impeccable:prompt` COM segment.
+The working composition brief is retained locally and excluded from the public source submission.
 
 ## Transformations and inspection
 
-1. Generated once with OpenAI built-in imagegen from the exact prompt.
+1. Generated once from the approved synthetic composition brief.
 2. Inspected the original 1536×1024 output for exactly two children, age-appropriate presentation,
    requested attire, facial and fabric integrity, comfortable spacing, prohibited props/text,
    Ghaf setting, and centered crop safety.
 3. Resized to 1200×800 with FFmpeg Lanczos scaling and encoded as an opaque JPEG at q=3 with input
    metadata removed.
-4. Embedded the exact generation prompt in the JPEG COM segment with the repository's Impeccable
-   prompt tool.
-5. Re-inspected the final 1200×800 asset. Named-human review and physical Android rendering remain
+4. Re-inspected the final 1200×800 asset. Named-human review and physical Android rendering remain
    unobserved.

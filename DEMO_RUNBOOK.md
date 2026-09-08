@@ -881,7 +881,7 @@ nested route; direct reload without that session must fall back safely.
    Until those fixture/receipt gates are satisfied, demonstrate the unchanged R002a approval result
    and describe R002b as a default-off candidate.
 
-The retained browser-proxy files are untracked local evidence under `output/playwright/r002b/` and
+Browser-proxy files are reproducible local evidence and are excluded from version control; they
 must not be presented as approved mobile references. Child Today, Garden chapter, Impact Path,
 Badge Gallery, Badge Detail, Parent Progress, Shared Growth, and Parent Shared Garden settings cover
 Arabic and English at 320/360/390/430/768 widths, synthetic 200%-text reflow, and representative
@@ -963,7 +963,7 @@ Earlier Feature 002 results prove only the reusable food-rescue baseline and are
 
 | Feature 003 evidence item                               | Status                                  | Evidence required to change status                                                                                       |
 | ------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent     |
+| Product specification, plan, tasks, and analysis        | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent     |
 | Typecheck, lint, format, unit, and integration checks   | PASSED final                            | `npm ci`, typecheck, lint, format, 17 files / 305 tests, Expo checks/export, detector, and diff check passed             |
 | Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED    | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed     |
 | Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN             | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                     |
@@ -1199,7 +1199,8 @@ Prepared summary:
 > أخرى. اسأل أي خطوة بدت أسهل، وما إذا كان من الأفضل إبقاء المهمة التالية بالحجم نفسه.»
 
 The Arabic fixture above is the canonical P0 MSA draft and still requires the named fluent/cultural
-review recorded in the evidence table; Codex must not improvise alternate safety-critical Arabic.
+review recorded in the evidence table; implementers must not improvise alternate safety-critical
+Arabic.
 
 Do not say normal, abnormal, lazy, defiant, good child, ADHD, diagnosis, emotion score, personality
 score, truthfulness score, religiosity, or parenting quality.
@@ -1388,7 +1389,7 @@ whether they understood the action, bounded AI, Parent gate, and aggregate-only 
 
 Do not describe Feature 003 as demo-accepted until:
 
-- the active Spec Kit artifacts are approved;
+- the active product requirements are approved;
 - all automated checks pass from a named worktree state;
 - the exact R003 role-separated journey and complete-screen sweep pass on a named Android build in
   Arabic and English;

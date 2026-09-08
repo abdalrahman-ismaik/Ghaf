@@ -7,17 +7,15 @@ safety, or production readiness.
 ## Before You Start
 
 1. Run `git status --short` and preserve unrelated work.
-2. Read the repository's canonical `AGENTS.md`.
-3. Read `.specify/memory/constitution.md` and the active feature's `spec.md`, `plan.md`, and
-   `tasks.md`.
-4. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
+2. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
    user-facing change.
-5. Check `TEAM_OWNERSHIP.md` and reserve the exact file boundary.
-6. Confirm no person or agent is writing the same file or shared configuration.
+3. Read the relevant package under `specs/` when behavior or an acceptance criterion changes.
+4. Announce the exact files you intend to change and confirm that no teammate is editing the same
+   file or shared configuration.
+5. Start from an up-to-date short-lived branch.
 
-Feature 003 is the active approved Spec Kit package. Update its artifacts before changing behavior
-outside the current specification; do not silently widen Feature 002 or manually edit the Spec
-Kit-managed block in `AGENTS.md`.
+Feature 003 is the active product package. Update its requirements before changing behavior outside
+the current specification, and do not silently widen preserved historical behavior.
 
 ## Setup
 
@@ -40,25 +38,25 @@ Run the complete local gate with `npm run verify`; see
 The deterministic P0 path requires no API key, backend account, real Child data, camera, or
 microphone permission.
 
-## Work Reservation
+## Team Coordination
 
 Record this before editing:
 
 ```text
 Work period: date/time or session label
-Owner: Member or agent
-Feature/tasks: exact Spec Kit IDs
+Owner: Team member
+Feature/tasks: exact requirement or issue IDs
 Write scope: exact files/directories
 Expected handoff: outcome and validation
 Cross-cutting review: Arabic/culture/safeguarding/accessibility as applicable
 ```
 
 Only the integration owner changes shared app configuration or resolves dependency conflicts.
-At most four agents may run concurrently, with disjoint write scopes.
+Parallel work must use disjoint file scopes.
 
 ## Branch and Commit Discipline
 
-- Keep work small enough to map to one or a few Feature 003 task IDs.
+- Keep work small enough to map to one or a few requirements or issues.
 - Use a short-lived branch such as `003-garden-reward-loop`; the integration owner decides timing.
 - Do not commit across another owner's active boundary.
 - Inspect `git diff --check`, `git diff --stat`, and `git status --short` before handoff.
