@@ -43,12 +43,14 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     minWidth: 0,
     flexShrink: 1,
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xxs,
   },
   title: {
+    maxWidth: '100%',
     minWidth: 0,
-    flexShrink: 1,
+    flexShrink: 0,
   },
 });

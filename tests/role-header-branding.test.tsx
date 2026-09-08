@@ -70,7 +70,10 @@ describe('role header branding', () => {
     expect(headerTitle).toContain('accessibilityRole="header"');
     expect(headerTitle).toContain('logicalRowDirection(direction)');
     expect(headerTitle).toMatch(/root:\s*\{[\s\S]*?maxWidth:\s*'100%'/u);
-    expect(headerTitle).toMatch(/title:\s*\{[\s\S]*?minWidth:\s*0[\s\S]*?flexShrink:\s*1/u);
+    expect(headerTitle).toMatch(/root:\s*\{[\s\S]*?flexWrap:\s*'wrap'/u);
+    expect(headerTitle).toMatch(
+      /title:\s*\{[\s\S]*?maxWidth:\s*'100%'[\s\S]*?minWidth:\s*0[\s\S]*?flexShrink:\s*0/u,
+    );
     expect(headerTitle).not.toMatch(/numberOfLines|ellipsizeMode|allowFontScaling=\{false\}/u);
     expect(source('src/components/brand/index.ts')).toContain("from './GhafHeaderTitle'");
   });
