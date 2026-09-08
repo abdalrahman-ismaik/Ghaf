@@ -1,5 +1,40 @@
 # Team Ownership
 
+## 2026-09-08 Feature 008 Family Connection Planning Window
+
+**Owner and only writer**: `/root`
+
+**Planning reservation**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block
+in `AGENTS.md` through the configured agent-context hook, and
+`specs/008-family-connection-planning/**`.
+
+**Runtime reservation**: `app/access/parent/{family-basics.tsx,review-create.tsx}`,
+`app/parent/family/index.tsx`, `src/components/access/FamilyPeopleEditor.tsx`,
+`src/components/family/FamilyConnectionPlan.tsx`,
+`src/features/family-connections/**`, `src/features/access/parentOnboarding/{policy.ts,controller.ts}`,
+`src/features/local-family/schema.ts`,
+`src/models/{familyConnections.ts,localFamily.ts,parentOnboarding.ts}`,
+`src/services/local/{index.ts,repository.ts}`,
+`src/state/usePrototypeStore.ts`, `src/i18n/resources.ts`,
+`tests/{family-connections.test.tsx,local-family-repository.test.ts,parent-onboarding-controller.test.ts,`
+`parent-onboarding-store.test.ts,r003-local-family-onboarding.test.ts,r003-store-access-flow.test.ts,`
+`device-remembered-access.test.tsx,r003-screen-flow.test.ts}`, and narrowly scoped
+truth/design/evidence updates in `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`, and
+`DEMO_RUNBOOK.md`.
+
+**Scope**: Extend first-family setup with one required primary Parent/guardian display name, one
+optional additional Parent/guardian display name, and up to six optional named relatives limited
+to grandmothers, grandfathers, aunts, and uncles. Store only display name, relationship, and a
+Parent-selected connection rhythm; never collect contact details, address, location, or sensitive
+family notes. Derive private, deterministic, recognition-only Roots & Kinship ideas from the
+relatives the Parent explicitly adds, with call/message alternatives, Parent review, Child choice,
+no reminders or notifications, and no League, Circle, Seed, Garden, or Family Reward effect. Keep
+the sole executable P0 recycling task unchanged and label the relationship plan honestly as a
+prepared local planning preview.
+
+**Status**: Specification and implementation in progress. Existing user-owned local configuration,
+Stitch/logo source material, and generated output artifacts remain outside this reservation.
+
 ## 2026-09-08 Parent AI Disclosure Consolidation Window
 
 **Owner and only writer**: `/root`
