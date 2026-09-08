@@ -149,7 +149,7 @@ describe('Feature 009 access family portraits', () => {
     const childProvenance = source('assets/images/access/child-emirati/PROVENANCE.md');
 
     for (const provenance of [parentProvenance, childProvenance]) {
-      expect(provenance).toContain('OpenAI built-in imagegen');
+      expect(provenance).toContain('synthetic image generation using no real-person input');
       expect(provenance).toContain('Product authority: none');
       expect(provenance).toContain('Named Emirati cultural review: `NOT RUN`');
       expect(provenance).toContain('Physical Android rendering: `NOT RUN`');

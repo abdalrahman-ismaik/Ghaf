@@ -70,7 +70,7 @@ describe('Emirati Parent access portrait', () => {
     expect(prompt).toContain('readable text');
 
     const provenance = source('assets/images/access/parent-emirati/PROVENANCE_FAMILY_V2.md');
-    expect(provenance).toContain('OpenAI built-in imagegen');
+    expect(provenance).toContain('synthetic image generation');
     expect(provenance).toContain('synthetic adult');
     expect(provenance).toContain('Named Emirati cultural review: `NOT RUN`');
   });
