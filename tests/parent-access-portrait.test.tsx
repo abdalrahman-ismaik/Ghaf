@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 const repositoryRoot = resolve(import.meta.dirname, '..');
 const portraitPath = resolve(
   repositoryRoot,
-  'assets/images/access/parent-emirati/parent-access-emirati.jpg',
+  'assets/images/access/parent-emirati/parent-access-emirati-family-v2.jpg',
 );
 
 function source(relativePath: string): string {
@@ -52,7 +52,7 @@ function jpegEmbeddedPrompt(bytes: Buffer): string | null {
 }
 
 describe('Emirati Parent access portrait', () => {
-  it('ships one bounded local synthetic portrait with embedded provenance', () => {
+  it('ships one bounded local synthetic family portrait with embedded provenance', () => {
     expect(existsSync(portraitPath)).toBe(true);
     const bytes = readFileSync(portraitPath);
 
@@ -63,10 +63,13 @@ describe('Emirati Parent access portrait', () => {
     const prompt = jpegEmbeddedPrompt(bytes);
     expect(prompt).toContain('Use case: photorealistic-natural');
     expect(prompt).toContain('fictional adult Emirati father');
+    expect(prompt).toContain('fictional adult Emirati mother');
+    expect(prompt).toContain('traditional black abaya');
+    expect(prompt).toContain('hijab');
     expect(prompt).toContain('No child');
     expect(prompt).toContain('readable text');
 
-    const provenance = source('assets/images/access/parent-emirati/PROVENANCE.md');
+    const provenance = source('assets/images/access/parent-emirati/PROVENANCE_FAMILY_V2.md');
     expect(provenance).toContain('OpenAI built-in imagegen');
     expect(provenance).toContain('synthetic adult');
     expect(provenance).toContain('Named Emirati cultural review: `NOT RUN`');
@@ -77,6 +80,7 @@ describe('Emirati Parent access portrait', () => {
     const component = source('src/components/access/ParentAccessPortrait.tsx');
 
     expect(asset).toContain("require('../../../assets/images/access/parent-emirati/");
+    expect(asset).toContain('parent-access-emirati-family-v2.jpg');
     expect(asset).not.toMatch(/https?:\/\//u);
     expect(component).toContain("from 'expo-image'");
     expect(component).toContain('cachePolicy="memory-disk"');
@@ -85,6 +89,8 @@ describe('Emirati Parent access portrait', () => {
     expect(component).toContain('accessibilityElementsHidden');
     expect(component).toContain('onError={() => setFailed(true)}');
     expect(component).toContain('if (failed) return null');
+    expect(component).toContain('aspectRatio: 3 / 2');
+    expect(component).not.toContain('compact');
   });
 
   it('places the same portrait on all Parent entry steps without changing their actions', () => {

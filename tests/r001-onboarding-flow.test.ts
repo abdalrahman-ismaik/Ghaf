@@ -299,7 +299,7 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(signUp).toContain('testID="parent-sign-up-screen"');
     expect(signUp).toContain('testID="request-parent-sign-up-code-button"');
     expect(signUp).toContain('testID="return-to-parent-sign-in-button"');
-    expect(signUp).toContain('<ParentAccessPortrait compact />');
+    expect(signUp).toContain('<ParentAccessPortrait />');
     expect(signUp).toContain('variant="quiet"');
     expect(signUp).toContain('borderColor: colors.ghafEmerald');
     expect(signUp).toContain('direction="auto"');

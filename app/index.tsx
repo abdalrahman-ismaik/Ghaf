@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     width: '100%',
-    height: 168,
+    aspectRatio: 3 / 2,
     borderRadius: r001Radii.xl,
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceContainerLow,

@@ -99,7 +99,7 @@ export default function ParentSignUpScreen() {
       keyboardAware
       testID="parent-sign-up-screen"
     >
-      <ParentAccessPortrait compact />
+      <ParentAccessPortrait />
 
       <View style={styles.intro}>
         <Text

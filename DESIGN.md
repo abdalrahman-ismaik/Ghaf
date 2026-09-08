@@ -742,12 +742,18 @@ intact, non-sharp, clean paper/plastic items accepted by the local stream on a n
 Remove metadata and record source, prompt or
 creation method, transformation, license/ownership, reviewer, and date.
 
-The decorative Parent access portrait is a narrow presentation exception, not a task/media
-fixture. It may show exactly one fictional synthetic adult face in culturally appropriate local
-attire, but no Child, real user, identifying data, text, device, task evidence, or product-state
-claim. It remains outside the accessibility tree, has no access authority, and must fail without
-blocking login. Its exact prompt, transformation, checksum, routes, and unrun named-human review
-are recorded beside the local asset.
+The decorative access portraits are a narrow presentation exception, not task/media fixtures. The
+shared Parent composition may show exactly one fictional synthetic Emirati father and one
+fictional synthetic Emirati mother in culturally appropriate local attire, including the requested
+traditional abaya and hijab. Child profile access may show exactly one fictional synthetic Emirati
+boy and one fictional synthetic Emirati girl in age-appropriate traditional clothing, but the
+composition stays visibly separate from the actionable tree-avatar profile controls and does not
+depict the seeded profiles. Neither image may contain a real user, identifying data, text, device,
+unsafe prop, task evidence, or product-state claim. Both use centered responsive 3:2 frames, remain
+outside the accessibility tree, have no identity, access, or selection authority, and must fail
+without blocking login. Exact prompts, transformations, checksums, routes, and unrun named-human
+reviews are recorded beside the versioned local assets. The compositions do not claim to represent
+every Emirati family appearance.
 
 Photo and voice controls must explain:
 

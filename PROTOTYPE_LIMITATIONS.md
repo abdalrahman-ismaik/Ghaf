@@ -67,20 +67,28 @@ with narration, or loops without an audible seam on the competition device. Phys
 listening, audio-focus/silent-mode/TalkBack behavior, and named accessibility/audio review remain
 `NOT RUN` until directly observed.
 
-## Emirati Parent access portrait boundary — 2026-09-08
+## Emirati access family portrait boundary — 2026-09-08
 
-The Parent sign-in, sign-up, and verification screens now share one locally bundled portrait of a
-fictional synthetic adult Emirati father. It is decorative presentation only: it does not depict a
-real Ghaf user, authenticate an identity, prove guardianship, personalize an account, or represent
-every Emirati Parent or guardian. The image contains no Child, user data, readable text, device,
-task evidence, reward, or environmental-impact claim and is removed from the accessibility tree.
-An image decode failure removes the portrait without blocking any access action.
+The Parent sign-in, sign-up, and verification screens now share one versioned, locally bundled
+portrait of a fictional synthetic Emirati father and mother; the mother wears the requested
+traditional black abaya and hijab. Child profile access separately shows one locally bundled image
+of a fictional synthetic Emirati boy and girl in age-appropriate traditional clothing before the
+existing tree-avatar profile controls. The generated children do not depict Salem or Alya and are
+not selectable.
 
-The original generated source and final 1200×800 JPEG were visually inspected for the requested
-composition, subject count, attire, crop safety, and prohibited elements. Arabic/English Firefox
-web-proxy checks at 320×720 and 390×844 reported zero application errors. These checks do not pass
-physical Android decode/memory, TalkBack, font-scale, or named Emirati cultural, image-rights,
-safeguarding, accessibility, and visual review; those remain `BLOCKED / NOT RUN`.
+Both images are decorative presentation only. They do not depict real Ghaf users, authenticate an
+identity, prove nationality or guardianship, personalize an account, select a Child profile, or
+represent every Emirati Parent, Child, or family. They contain no user data, readable text, device,
+unsafe prop, task evidence, reward, or environmental-impact claim and are removed from the
+accessibility tree. Each renders from a local 1200×800 JPEG in a responsive 3:2 frame; a decode
+failure removes only that frame without blocking any access action. The original one-father asset
+remains preserved as a versioned reference rather than being overwritten.
+
+Source and final-crop inspection can establish subject count, visible requested attire, crop
+safety, dimensions, and absence of obvious prohibited elements; it cannot establish cultural
+accuracy or public image rights. Physical Android decode/memory, TalkBack, font-scale, and named
+Emirati cultural, Arabic/UAE, image-rights, safeguarding, accessibility, and visual review remain
+`NOT RUN` until directly observed.
 
 ## Feature 005 remembered device access boundary — 2026-09-07
 

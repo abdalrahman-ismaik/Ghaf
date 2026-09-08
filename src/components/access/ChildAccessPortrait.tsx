@@ -5,9 +5,9 @@ import { useReducedMotion } from 'react-native-reanimated';
 
 import { colors, motion, r001Radii } from '@/design/tokens';
 
-import { parentAccessPortraitSource } from './parentAccessAssets';
+import { childAccessPortraitSource } from './childAccessAssets';
 
-export function ParentAccessPortrait() {
+export function ChildAccessPortrait() {
   const reduceMotion = useReducedMotion();
   const [failed, setFailed] = useState(false);
 
@@ -19,7 +19,7 @@ export function ParentAccessPortrait() {
       aria-hidden
       importantForAccessibility="no-hide-descendants"
       style={styles.frame}
-      testID="parent-access-portrait"
+      testID="child-access-portrait"
     >
       <Image
         cachePolicy="memory-disk"
@@ -27,8 +27,8 @@ export function ParentAccessPortrait() {
         contentPosition="center"
         onError={() => setFailed(true)}
         priority="high"
-        recyclingKey="parent-access-emirati-family-v2"
-        source={parentAccessPortraitSource}
+        recyclingKey="child-access-emirati-v1"
+        source={childAccessPortraitSource}
         style={styles.image}
         transition={reduceMotion ? 0 : motion.duration.quick}
       />

@@ -207,7 +207,7 @@ export default function ParentVerificationScreen() {
       keyboardAware
       testID="parent-verification-screen"
     >
-      <ParentAccessPortrait compact />
+      <ParentAccessPortrait />
 
       <View style={styles.intro}>
         <Text

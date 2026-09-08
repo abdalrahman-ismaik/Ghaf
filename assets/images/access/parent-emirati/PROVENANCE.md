@@ -1,9 +1,14 @@
 # Emirati Parent Access Portrait Provenance
 
-## Shipping asset
+Feature 009 now selects the versioned two-adult Parent composition. Its complete prompt,
+transformation, checksum, route, authority, and evidence record is in
+[PROVENANCE_FAMILY_V2.md](PROVENANCE_FAMILY_V2.md). The record below is preserved for the original
+single-father v1 reference asset.
+
+## Preserved Feature 007 v1 asset
 
 - Path: `assets/images/access/parent-emirati/parent-access-emirati.jpg`
-- Purpose: decorative Parent sign-in, sign-up, and verification portrait
+- Original purpose: decorative Parent sign-in, sign-up, and verification portrait
 - Generator: OpenAI built-in imagegen
 - Generation date: 2026-09-07
 - Subject: one fictional synthetic adult Emirati father; no Child or real user data
@@ -13,15 +18,17 @@
 - Accessibility: decorative and removed from the accessibility tree
 - Product authority: none; the portrait does not authenticate, identify, authorize, or calculate
   any state
+- Runtime status: preserved rollback/image-edit reference; Feature 009 no longer selects it
 - Named Emirati cultural review: `NOT RUN`
 - Named safeguarding, accessibility, visual, and image-rights review: `NOT RUN`
+- Physical Android rendering: `NOT RUN`
 
 The user explicitly requested and authorized a generated Emirati Parent for the Parent login
 surfaces. The portrait is one respectful fictional presentation candidate, not a claim that one
 appearance represents every Emirati Parent or guardian. It contains no Child, text, logo, device,
 badge, reward, task evidence, or environmental-impact claim.
 
-## Transformations
+## V1 transformations
 
 1. Generated once with OpenAI built-in imagegen from the exact prompt in
    `GENERATION_PROMPT.txt`.

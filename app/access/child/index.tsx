@@ -2,7 +2,13 @@ import { Redirect, useRouter, type Href } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AccessHeader, AccessScreen, BotanicalAvatar, GhafIcon } from '@/components/access';
+import {
+  AccessHeader,
+  AccessScreen,
+  BotanicalAvatar,
+  ChildAccessPortrait,
+  GhafIcon,
+} from '@/components/access';
 import { Text } from '@/components/primitives';
 import { R003Hero, R003Status } from '@/components/r003';
 import {
@@ -56,6 +62,7 @@ export default function ChooseChildProfileScreen() {
         language={locale}
         title={t('r003.access.chooseTitle')}
       />
+      <ChildAccessPortrait />
       <View style={styles.profiles}>
         {localFamily.record?.children.map((child) => (
           <ProfileChoice
