@@ -5,7 +5,7 @@ import { inflateSync } from 'node:zlib';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { GhafMark, ghafMarkSizes } from '../src/components/brand';
+import { GhafMark, ghafMarkSizes } from '../src/components/brand/GhafMark';
 
 vi.mock('react-native-svg', () => ({
   default: 'Svg',
