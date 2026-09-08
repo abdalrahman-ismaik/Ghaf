@@ -17,11 +17,13 @@ import {
   ParentHomeHeader,
   ParentHomeNavigation,
   ParentLifecycleCard,
+  ParentTaskWorkspace,
   ParentTasksView,
   R002aScreen,
   type ParentChildSummaryItem,
 } from '@/components/r002a';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
+import { taskWorkspaceFeatureFlag } from '@/config/taskWorkspaceFeatureFlag';
 import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
 import { PARENT_NEXT_ACTIONS } from '@/features/family/overview';
 import {
@@ -238,6 +240,17 @@ export default function ParentHomeScreen() {
     router.push('/parent/task/new');
   };
 
+  const openTaskBuilderFor = (childId: SyntheticChildId) => {
+    dismissTaskAdded();
+    setAdjustmentError(null);
+    const result = setActiveChild(childId);
+    if (!result.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return;
+    }
+    router.push('/parent/task/new');
+  };
+
   const openPrimaryAction = () => {
     if (nextRoute === '/child') {
       handoffToChildAccess();
@@ -427,135 +440,166 @@ export default function ParentHomeScreen() {
           </Text>
         </View>
 
-        {!journey ? (
-          <Button
-            brand
-            direction={direction}
-            icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
-            onPress={openTaskAction}
-            size="regular"
-            testID="parent-tasks-create-task"
-          >
-            {t('r002aTasks.createTask')}
-          </Button>
-        ) : null}
-
-        {adjustmentError ? (
-          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
-            {adjustmentError}
-          </Text>
-        ) : null}
-
-        <View
-          accessibilityRole="radiogroup"
-          style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
-        >
-          {Object.values(children)
-            .filter((child) => localFamily.configuredChildIds.includes(child.id))
-            .map((child) => {
-              const selected = child.id === activeChildId;
-              return (
-                <Pressable
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: selected }}
-                  aria-checked={selected}
-                  key={child.id}
-                  onPress={() => chooseChild(child.id)}
-                  style={({ pressed }) => [
-                    styles.childFilterItem,
-                    selected ? styles.childFilterItemActive : null,
-                    pressed ? styles.pressed : null,
-                  ]}
-                  testID={`parent-tasks-child-${child.id}`}
-                >
-                  <Text
-                    align="center"
-                    brand
-                    color={selected ? 'onPrimary' : 'onSurfaceVariant'}
-                    variant="label"
-                  >
-                    {profileName(child.id)}
-                  </Text>
-                </Pressable>
-              );
-            })}
-        </View>
-
-        <View
-          accessibilityRole="tablist"
-          style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
-        >
-          {(
-            [
-              ['assigned', t('r002aTasks.assignedTab')],
-              ['pending', t('r002aTasks.pendingTab')],
-              ['completed', t('r002aTasks.completedTab')],
-            ] as const
-          ).map(([key, label]) => {
-            const selected = taskFilter === key;
-            return (
-              <Pressable
-                accessibilityRole="tab"
-                accessibilityState={{ selected }}
-                aria-selected={selected}
-                key={key}
-                onPress={() => {
-                  dismissTaskAdded();
-                  setTaskFilter(key);
-                }}
-                style={({ pressed }) => [
-                  styles.taskTab,
-                  selected ? styles.taskTabActive : null,
-                  pressed ? styles.pressed : null,
-                ]}
-                testID={`parent-tasks-tab-${key}`}
-              >
-                <Text
-                  align="center"
-                  brand
-                  color={selected ? 'primary' : 'onSurfaceVariant'}
-                  variant="label"
-                >
-                  {label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <View accessibilityLiveRegion="polite">
-          <ParentTasksView
-            actionLabel={taskActionLabel}
-            actionTestID="parent-tasks-primary-action"
+        {taskWorkspaceFeatureFlag ? (
+          <ParentTaskWorkspace
+            activeChildId={activeChildId}
+            childProfiles={Object.values(children)
+              .filter((child) => localFamily.configuredChildIds.includes(child.id))
+              .map((child) => ({ id: child.id, label: profileName(child.id) }))}
             current={
-              visibleJourney
+              journey
                 ? {
-                    childLabel: localize(
-                      children[visibleJourney.task.targetChildId].displayName,
-                      locale,
-                    ),
-                    metaLabel: visibleJourney.task.content.displayedSeedAward
+                    childId: journey.task.targetChildId,
+                    childLabel: profileName(journey.task.targetChildId),
+                    metaLabel: journey.task.content.displayedSeedAward
                       ? t('childHome.awardAfterConfirmation', {
-                          count: visibleJourney.task.content.displayedSeedAward,
+                          count: journey.task.content.displayedSeedAward,
                         })
                       : undefined,
-                    statusLabel: t(taskStatusKey(visibleJourney.lifecycle)),
-                    supportLabel: localize(visibleJourney.task.content.permittedHelp, locale),
-                    title: localize(visibleJourney.task.content.title, locale),
+                    statusLabel: t(taskStatusKey(journey.lifecycle)),
+                    supportLabel: localize(journey.task.content.permittedHelp, locale),
+                    title: localize(journey.task.content.title, locale),
                   }
                 : null
             }
             direction={direction}
-            emptyMessage={emptyCopy.body}
-            emptyTitle={emptyCopy.title}
-            heading={t('r002aTasks.currentTask')}
-            onAction={openTaskAction}
-            showAction={Boolean(journey)}
-            state={visibleJourney ? (taskAddedVisible ? 'task_added' : 'current') : 'empty'}
-            taskAddedMessage={t('r002aTasks.taskAdded')}
-            testID="parent-tasks-list"
+            locale={locale}
+            onCreateTask={openTaskBuilderFor}
+            onOpenCurrent={openTaskAction}
           />
-        </View>
+        ) : (
+          <>
+            {!journey ? (
+              <Button
+                brand
+                direction={direction}
+                icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
+                onPress={openTaskAction}
+                size="regular"
+                testID="parent-tasks-create-task"
+              >
+                {t('r002aTasks.createTask')}
+              </Button>
+            ) : null}
+
+            {adjustmentError ? (
+              <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+                {adjustmentError}
+              </Text>
+            ) : null}
+
+            <View
+              accessibilityRole="radiogroup"
+              style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              {Object.values(children)
+                .filter((child) => localFamily.configuredChildIds.includes(child.id))
+                .map((child) => {
+                  const selected = child.id === activeChildId;
+                  return (
+                    <Pressable
+                      accessibilityRole="radio"
+                      accessibilityState={{ checked: selected }}
+                      aria-checked={selected}
+                      key={child.id}
+                      onPress={() => chooseChild(child.id)}
+                      style={({ pressed }) => [
+                        styles.childFilterItem,
+                        selected ? styles.childFilterItemActive : null,
+                        pressed ? styles.pressed : null,
+                      ]}
+                      testID={`parent-tasks-child-${child.id}`}
+                    >
+                      <Text
+                        align="center"
+                        brand
+                        color={selected ? 'onPrimary' : 'onSurfaceVariant'}
+                        variant="label"
+                      >
+                        {profileName(child.id)}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+            </View>
+
+            <View
+              accessibilityRole="tablist"
+              style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              {(
+                [
+                  ['assigned', t('r002aTasks.assignedTab')],
+                  ['pending', t('r002aTasks.pendingTab')],
+                  ['completed', t('r002aTasks.completedTab')],
+                ] as const
+              ).map(([key, label]) => {
+                const selected = taskFilter === key;
+                return (
+                  <Pressable
+                    accessibilityRole="tab"
+                    accessibilityState={{ selected }}
+                    aria-selected={selected}
+                    key={key}
+                    onPress={() => {
+                      dismissTaskAdded();
+                      setTaskFilter(key);
+                    }}
+                    style={({ pressed }) => [
+                      styles.taskTab,
+                      selected ? styles.taskTabActive : null,
+                      pressed ? styles.pressed : null,
+                    ]}
+                    testID={`parent-tasks-tab-${key}`}
+                  >
+                    <Text
+                      align="center"
+                      brand
+                      color={selected ? 'primary' : 'onSurfaceVariant'}
+                      variant="label"
+                    >
+                      {label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            <View accessibilityLiveRegion="polite">
+              <ParentTasksView
+                actionLabel={taskActionLabel}
+                actionTestID="parent-tasks-primary-action"
+                current={
+                  visibleJourney
+                    ? {
+                        childLabel: localize(
+                          children[visibleJourney.task.targetChildId].displayName,
+                          locale,
+                        ),
+                        metaLabel: visibleJourney.task.content.displayedSeedAward
+                          ? t('childHome.awardAfterConfirmation', {
+                              count: visibleJourney.task.content.displayedSeedAward,
+                            })
+                          : undefined,
+                        statusLabel: t(taskStatusKey(visibleJourney.lifecycle)),
+                        supportLabel: localize(visibleJourney.task.content.permittedHelp, locale),
+                        title: localize(visibleJourney.task.content.title, locale),
+                      }
+                    : null
+                }
+                direction={direction}
+                emptyMessage={emptyCopy.body}
+                emptyTitle={emptyCopy.title}
+                heading={t('r002aTasks.currentTask')}
+                onAction={openTaskAction}
+                showAction={Boolean(journey)}
+                state={visibleJourney ? (taskAddedVisible ? 'task_added' : 'current') : 'empty'}
+                taskAddedMessage={t('r002aTasks.taskAdded')}
+                testID="parent-tasks-list"
+              />
+            </View>
+          </>
+        )}
       </R002aScreen>
     );
   }

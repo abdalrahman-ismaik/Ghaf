@@ -80,7 +80,12 @@ describe('prepared profile recommendations in Task Builder', () => {
     expect(source).toContain('createPreparedTaskCategoryPlan');
     expect(source).toContain('recommendedCategoryIds.includes(category.id)');
     expect(source).toContain("t('taskNew.profileRecommended')");
-    expect(source).toContain('const disabled = !isP0');
+    expect(source).toContain(
+      "const isExecutableForSelection = isP0 && selectedChildId === 'child_salem'",
+    );
+    expect(source).toContain(
+      'const disabled = !isExecutableForSelection && !taskWorkspaceFeatureFlag',
+    );
     expect(source).toContain("selectedChildId === 'child_salem'");
     expect(source).toContain("categoryId === 'green_impact'");
     expect(resources).toContain('profileRecommended:');

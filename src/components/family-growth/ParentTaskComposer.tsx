@@ -13,6 +13,7 @@ import {
   TaskStepIndicator,
 } from '@/components/r002a';
 import { aiFeatureFlags } from '@/config/aiFeatureFlags';
+import { taskWorkspaceFeatureFlag } from '@/config/taskWorkspaceFeatureFlag';
 import {
   colors,
   logicalRowDirection,
@@ -37,6 +38,7 @@ import type {
   TaskTemplate,
 } from '@/models/familyGrowth';
 import type { ParentTaskDraftRequestV1 } from '@/models/boundedAi';
+import type { SavedParentTaskTemplate } from '@/models/savedTaskTemplate';
 import { PARENT_GUIDE_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -85,6 +87,7 @@ export function ParentTaskComposer({
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
+  const children = usePrototypeStore((state) => state.children);
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const journey = usePrototypeStore((state) => state.journey);
   const suggestion = usePrototypeStore((state) => state.parentGuideSuggestion);
@@ -154,6 +157,14 @@ export function ParentTaskComposer({
   });
   const [busyIntent, setBusyIntent] = useState<ParentGuideIntent | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [savedTemplateMessage, setSavedTemplateMessage] = useState<string | null>(null);
+  const [savedTaskTemplates, setSavedTaskTemplates] = useState<readonly SavedParentTaskTemplate[]>(
+    () => {
+      if (!taskWorkspaceFeatureFlag) return [];
+      const result = serviceRegistry.savedTaskTemplates.read('household_al_noor');
+      return result.ok ? result.data : [];
+    },
+  );
   const guideOrigin: AssistantIdentityOrigin =
     serviceRegistry.parentGuidePrimary.mode === 'live_optional' ? 'live' : 'prepared';
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
@@ -163,6 +174,13 @@ export function ParentTaskComposer({
     selectedChildId === 'child_salem' &&
     categoryId === 'green_impact' &&
     selectedTemplateId === P0_RECYCLING_TEMPLATE.id;
+  const hasCompleteSelection = Boolean(selectedChildId && categoryId && selectedTemplateId);
+  const canContinueSelection = taskWorkspaceFeatureFlag
+    ? hasCompleteSelection
+    : hasExecutableSelection;
+  const selectedTemplate = [...TASK_TEMPLATES, P0_RECYCLING_TEMPLATE].find(
+    (template) => template.id === selectedTemplateId,
+  );
 
   const categoryTemplates = useMemo(
     () =>
@@ -286,6 +304,36 @@ export function ParentTaskComposer({
     onReadyForReview();
   };
 
+  const saveCurrentTemplate = () => {
+    setSavedTemplateMessage(null);
+    const result = serviceRegistry.savedTaskTemplates.save(
+      {
+        householdId: 'household_al_noor',
+        categoryId: categoryId ?? 'green_impact',
+        title: parentText,
+        positiveAction: parentText,
+        recurrence: 'once',
+      },
+      new Date().toISOString(),
+    );
+    if (!result.ok) {
+      setSavedTemplateMessage(t('errors.invalidState'));
+      return;
+    }
+    setSavedTaskTemplates((current) => [...current, result.data]);
+    setSavedTemplateMessage(t('taskWorkspace.savedSuccess'));
+  };
+
+  const deleteSavedTemplate = (id: string) => {
+    const result = serviceRegistry.savedTaskTemplates.remove(id, 'household_al_noor');
+    if (!result.ok) {
+      setSavedTemplateMessage(t('errors.safeRetry'));
+      return;
+    }
+    setSavedTaskTemplates((current) => current.filter((item) => item.id !== id));
+    setSavedTemplateMessage(null);
+  };
+
   const returnFromBuilder = () => {
     if (stage === 'edit' && !journey) {
       setError(null);
@@ -297,7 +345,7 @@ export function ParentTaskComposer({
 
   const continueToEdit = () => {
     setError(null);
-    if (!hasExecutableSelection) {
+    if (!canContinueSelection) {
       setError(t('errors.invalidState'));
       return;
     }
@@ -312,13 +360,17 @@ export function ParentTaskComposer({
           <TaskBuilderFooter
             actionLabel={t('r002aTasks.continue')}
             direction={direction}
-            disabled={!hasExecutableSelection}
+            disabled={!canContinueSelection}
             onPress={continueToEdit}
             testID="task-builder-continue"
           />
         ) : (
           <TaskBuilderFooter
-            actionLabel={t('taskNew.review')}
+            actionLabel={
+              hasExecutableSelection || !taskWorkspaceFeatureFlag
+                ? t('taskNew.review')
+                : t('taskWorkspace.saveTemplate')
+            }
             busy={busyIntent !== null || liveDraftView.status === 'requesting'}
             busyLabel={t(
               busyIntent !== null && guideOrigin === 'live'
@@ -326,8 +378,12 @@ export function ParentTaskComposer({
                 : 'assistant.loading',
             )}
             direction={direction}
-            disabled={!hasExecutableSelection || Boolean(suggestion) || liveDraftPending}
-            onPress={continueToReview}
+            disabled={!canContinueSelection || Boolean(suggestion) || liveDraftPending}
+            onPress={
+              hasExecutableSelection || !taskWorkspaceFeatureFlag
+                ? continueToReview
+                : saveCurrentTemplate
+            }
             testID="review-task-button"
           />
         )
@@ -374,17 +430,22 @@ export function ParentTaskComposer({
           }}
           onChildChange={(value) => {
             setSelectedChildId(value);
-            if (value === 'child_alya') {
-              setCategoryId(null);
-              setSelectedTemplateId(null);
-            } else {
+            if (taskWorkspaceFeatureFlag || value === 'child_salem') {
               setCategoryId('green_impact');
               setSelectedTemplateId(P0_RECYCLING_TEMPLATE.id);
+              setParentText({ ...P0_RECYCLING_TEMPLATE.positiveAction });
+            } else {
+              setCategoryId(null);
+              setSelectedTemplateId(null);
             }
             setError(null);
           }}
           onTemplateChange={(value) => {
             setSelectedTemplateId(value);
+            const template = [...TASK_TEMPLATES, P0_RECYCLING_TEMPLATE].find(
+              (item) => item.id === value,
+            );
+            if (template) setParentText({ ...template.positiveAction });
             setError(null);
           }}
           selectedChildId={selectedChildId}
@@ -398,15 +459,14 @@ export function ParentTaskComposer({
           categoryId={categoryId}
           direction={direction}
           displayedSeedAward={
-            journey?.task.content.displayedSeedAward ??
-            P0_RECYCLING_TEMPLATE.displayedSeedAward ??
-            0
+            journey?.task.content.displayedSeedAward ?? selectedTemplate?.displayedSeedAward ?? 0
           }
           error={error}
           guideOrigin={guideOrigin}
           guideSuggestionApplied={guideSuggestionApplied}
           liveDraftView={liveDraftView}
           journeyExists={Boolean(journey)}
+          executableSelection={hasExecutableSelection}
           locale={locale}
           onAccept={accept}
           onAskGuide={askGuide}
@@ -418,6 +478,21 @@ export function ParentTaskComposer({
           onEditLiveDraft={editLiveDraft}
           onParentTextChange={setParentText}
           parentText={parentText}
+          selectedChildLabel={
+            selectedChildId
+              ? (localFamily.record?.children.find((child) => child.id === selectedChildId)
+                  ?.nickname ?? localize(children[selectedChildId].displayName, locale))
+              : ''
+          }
+          selectedTemplate={selectedTemplate ?? P0_RECYCLING_TEMPLATE}
+          savedTaskTemplates={savedTaskTemplates}
+          savedTemplateMessage={savedTemplateMessage}
+          onDeleteSavedTemplate={deleteSavedTemplate}
+          onSaveCurrentTemplate={saveCurrentTemplate}
+          onUseSavedTemplate={(template) => {
+            setParentText({ ...template.positiveAction });
+            setSavedTemplateMessage(null);
+          }}
           suggestion={suggestion}
         />
       )}
@@ -483,13 +558,13 @@ function ChooseStage({
           testID="task-child-alya"
         />
       </View>
-      {selectedChildId === 'child_alya' ? (
+      {selectedChildId === 'child_alya' && !taskWorkspaceFeatureFlag ? (
         <Text brand color="onSurfaceVariant" variant="caption">
           {t('origin.future')}
         </Text>
       ) : null}
 
-      {selectedChildId === 'child_salem' ? (
+      {selectedChildId === 'child_salem' || taskWorkspaceFeatureFlag ? (
         <View style={styles.section}>
           {recommendedCategoryIds.length > 0 ? (
             <View style={styles.recommendationPanel} testID="profile-recommendation-panel">
@@ -589,8 +664,9 @@ function ChooseStage({
           <View accessibilityRole="radiogroup" style={styles.templateList}>
             {categoryTemplates.map((template) => {
               const isP0 = template.id === P0_RECYCLING_TEMPLATE.id;
+              const isExecutableForSelection = isP0 && selectedChildId === 'child_salem';
               const selected = selectedTemplateId === template.id;
-              const disabled = !isP0;
+              const disabled = !isExecutableForSelection && !taskWorkspaceFeatureFlag;
               return (
                 <Pressable
                   accessibilityRole="radio"
@@ -619,9 +695,9 @@ function ChooseStage({
                       </Text>
                       <Text brand color="onSurfaceVariant" variant="caption">
                         {localize(template.estimatedEffort, locale)} ·{' '}
-                        {template.displayedSeedAward
+                        {isExecutableForSelection || !taskWorkspaceFeatureFlag
                           ? t('common.seeds', { count: template.displayedSeedAward })
-                          : t('origin.future')}
+                          : t('taskWorkspace.previewOnly')}
                       </Text>
                     </View>
                   </View>
@@ -632,7 +708,13 @@ function ChooseStage({
                     ]}
                   >
                     <Text brand color={selected ? 'primary' : 'onSurfaceVariant'} variant="caption">
-                      {isP0 ? t('childHome.availableTask') : t('origin.future')}
+                      {isExecutableForSelection
+                        ? t('childHome.availableTask')
+                        : t(
+                            taskWorkspaceFeatureFlag
+                              ? 'taskWorkspace.previewOnly'
+                              : 'origin.future',
+                          )}
                     </Text>
                   </View>
                 </Pressable>
@@ -641,7 +723,7 @@ function ChooseStage({
           </View>
           {categoryId !== 'green_impact' ? (
             <Text brand color="onSurfaceVariant" variant="caption">
-              {t('origin.future')}
+              {t(taskWorkspaceFeatureFlag ? 'taskWorkspace.previewEditing' : 'origin.future')}
             </Text>
           ) : null}
         </View>
@@ -666,6 +748,7 @@ interface EditStageProps {
   guideSuggestionApplied: boolean;
   liveDraftView: ReturnType<typeof usePrototypeStore.getState>['parentTaskDraftingView'];
   journeyExists: boolean;
+  executableSelection: boolean;
   locale: 'ar' | 'en';
   onAccept: () => void;
   onAskGuide: (intent: ParentGuideIntent) => Promise<void>;
@@ -677,6 +760,13 @@ interface EditStageProps {
   onEditLiveDraft: () => void;
   onParentTextChange: (text: LocalizedText) => void;
   parentText: LocalizedText;
+  selectedChildLabel: string;
+  selectedTemplate: TaskTemplate;
+  savedTaskTemplates: readonly SavedParentTaskTemplate[];
+  savedTemplateMessage: string | null;
+  onDeleteSavedTemplate: (id: string) => void;
+  onSaveCurrentTemplate: () => void;
+  onUseSavedTemplate: (template: SavedParentTaskTemplate) => void;
   suggestion: ReturnType<typeof usePrototypeStore.getState>['parentGuideSuggestion'];
 }
 
@@ -690,6 +780,7 @@ function EditStage({
   guideSuggestionApplied,
   liveDraftView,
   journeyExists,
+  executableSelection,
   locale,
   onAccept,
   onAskGuide,
@@ -701,6 +792,13 @@ function EditStage({
   onEditLiveDraft,
   onParentTextChange,
   parentText,
+  selectedChildLabel,
+  selectedTemplate,
+  savedTaskTemplates,
+  savedTemplateMessage,
+  onDeleteSavedTemplate,
+  onSaveCurrentTemplate,
+  onUseSavedTemplate,
   suggestion,
 }: EditStageProps) {
   const { t } = useTranslation();
@@ -724,7 +822,7 @@ function EditStage({
         </View>
         <View style={styles.grow}>
           <Text brand color="onSurface" variant="label">
-            {t('role.chooseSalem')}
+            {selectedChildLabel}
           </Text>
           {selectedCategory ? (
             <Text brand color="secondary" variant="body">
@@ -750,7 +848,7 @@ function EditStage({
           {t('taskNew.templateLabel')}
         </Text>
         <Text brand color="onSurface" variant="bodyLarge">
-          {localize(P0_RECYCLING_TEMPLATE.title, locale)}
+          {localize(selectedTemplate.title, locale)}
         </Text>
         <Input
           brand
@@ -785,6 +883,65 @@ function EditStage({
           value={parentText.en}
         />
       </View>
+
+      {taskWorkspaceFeatureFlag ? (
+        <View style={styles.savedTemplates} testID="saved-task-templates">
+          <View style={styles.stageHeading}>
+            <Text brand color="deepForest" variant="heading">
+              {t('taskWorkspace.savedTitle')}
+            </Text>
+            <Text brand color="onSurfaceVariant" variant="body">
+              {t('taskWorkspace.savedBody')}
+            </Text>
+          </View>
+          <Button brand onPress={onSaveCurrentTemplate} variant="secondary">
+            {t('taskWorkspace.saveTemplate')}
+          </Button>
+          {savedTemplateMessage ? (
+            <Text accessibilityLiveRegion="polite" brand color="primary" variant="caption">
+              {savedTemplateMessage}
+            </Text>
+          ) : null}
+          {savedTaskTemplates.length === 0 ? (
+            <Text brand color="onSurfaceVariant" variant="body">
+              {t('taskWorkspace.emptySaved')}
+            </Text>
+          ) : (
+            savedTaskTemplates.map((template) => (
+              <View key={template.id} style={styles.savedTemplateRow}>
+                <Text brand color="deepForest" variant="bodyLarge">
+                  {localize(template.title, locale)}
+                </Text>
+                <View
+                  style={[
+                    styles.savedTemplateActions,
+                    { flexDirection: logicalRowDirection(direction) },
+                  ]}
+                >
+                  <Button
+                    brand
+                    fullWidth={false}
+                    onPress={() => onUseSavedTemplate(template)}
+                    size="compact"
+                    variant="secondary"
+                  >
+                    {t('taskWorkspace.useTemplate')}
+                  </Button>
+                  <Button
+                    brand
+                    fullWidth={false}
+                    onPress={() => onDeleteSavedTemplate(template.id)}
+                    size="compact"
+                    variant="quiet"
+                  >
+                    {t('taskWorkspace.deleteTemplate')}
+                  </Button>
+                </View>
+              </View>
+            ))
+          )}
+        </View>
+      ) : null}
 
       {aiFeatureFlags.ai_parent_task_drafting_live ? (
         <View style={styles.liveDraftSection} testID="parent-task-drafting-controls">
@@ -978,19 +1135,28 @@ function EditStage({
         ) : null}
       </View>
 
-      <View style={styles.rewardRecord}>
-        <Text brand color="tertiary" variant="caption">
-          {t('taskReview.recognition')}
-        </Text>
-        <Text brand color="deepForest" variant="heading">
-          {t('taskReview.awardWithCount', {
-            count: displayedSeedAward,
-          })}
-        </Text>
-        <Text brand color="onSurfaceVariant" variant="caption">
-          {t('taskReview.noEarlyReward')}
-        </Text>
-      </View>
+      {executableSelection ? (
+        <View style={styles.rewardRecord}>
+          <Text brand color="tertiary" variant="caption">
+            {t('taskReview.recognition')}
+          </Text>
+          <Text brand color="deepForest" variant="heading">
+            {t('taskReview.awardWithCount', {
+              count: displayedSeedAward,
+            })}
+          </Text>
+          <Text brand color="onSurfaceVariant" variant="caption">
+            {t('taskReview.noEarlyReward')}
+          </Text>
+        </View>
+      ) : (
+        <View style={[styles.previewRecord, { flexDirection: logicalRowDirection(direction) }]}>
+          <GhafIcon color={colors.mangroveTeal} name="plus" size={23} />
+          <Text brand color="onSurfaceVariant" style={styles.grow} variant="body">
+            {t('taskWorkspace.previewEditing')}
+          </Text>
+        </View>
+      )}
 
       {error ? (
         <Text accessibilityLiveRegion="polite" brand color="error" testID="task-composer-error">
@@ -1209,6 +1375,21 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     ...r001Shadows.soft,
   },
+  savedTemplates: {
+    gap: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLow,
+    padding: spacing.lg,
+  },
+  savedTemplateRow: {
+    gap: spacing.sm,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.md,
+  },
+  savedTemplateActions: { flexWrap: 'wrap', gap: spacing.xs },
   guideSection: {
     gap: spacing.md,
     borderWidth: 1,
@@ -1249,6 +1430,15 @@ const styles = StyleSheet.create({
     borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
     backgroundColor: colors.solarAmberTint,
+    padding: spacing.md,
+  },
+  previewRecord: {
+    minHeight: 64,
+    alignItems: 'center',
+    gap: spacing.sm,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.secondaryTint,
     padding: spacing.md,
   },
   pressed: { opacity: opacity.pressed, transform: [{ scale: 0.99 }] },

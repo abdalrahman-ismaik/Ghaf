@@ -494,6 +494,35 @@ export const resources = {
         continueToChild: 'فتح تجربة الطفل',
         viewCurrentTask: 'عرض المهمة الحالية',
       },
+      taskWorkspace: {
+        createTitle: 'ابدأ من فعل واضح',
+        createBody:
+          'أنشئ مهمة جديدة أو أعد استخدام صياغة حفظتها. تبقى المراجعة والاعتماد بيد وليّ الأمر.',
+        allChildren: 'كل الأطفال',
+        familyTasks: 'مهام العائلة',
+        familyTasksBody: 'نظرة عملية لكل طفل من دون مقارنة أو عرض تفاصيل خاصة بين الأطفال.',
+        oneCurrent: 'مهمة حالية واحدة',
+        noCurrent: 'لا توجد مهمة حالية',
+        preparedNext: 'فكرة مُعدّة للمراجعة',
+        categories: 'مجالات متنوعة',
+        categoriesBody:
+          'مرّر لاكتشاف المجالات الثمانية. يظهر جزء من البطاقة التالية لتوضيح وجود المزيد.',
+        quickStarts: 'بدايات سريعة',
+        quickStartsBody:
+          'أمثلة محلية قابلة للتخصيص؛ لا تصبح مهمة للطفل قبل مراجعة وليّ الأمر واعتماده.',
+        previewOnly: 'مثال للمعاينة',
+        openFullLibrary: 'فتح المكتبة والتخصيص',
+        savedTitle: 'قوالبي المحفوظة',
+        savedBody: 'صياغات محلية خاصة بوليّ الأمر، ولا تحمل اعتماداً أو بذوراً أو نمواً.',
+        saveTemplate: 'حفظ الصياغة كقالب',
+        savedSuccess: 'حُفظت الصياغة للاستخدام لاحقاً.',
+        useTemplate: 'استخدام هذه الصياغة',
+        deleteTemplate: 'حذف القالب',
+        emptySaved: 'لا توجد قوالب محفوظة بعد.',
+        unavailableSaved: 'تعذّرت قراءة القوالب المحفوظة. يمكنك متابعة المهمة الحالية بأمان.',
+        previewEditing:
+          'هذا تخطيط محلي قابل للحفظ وإعادة الاستخدام. لا يصل إلى الطفل ولا يمنح بذوراً أو نمواً حتى يُعتمد له مسار تنفيذ لاحقاً.',
+      },
       r002aReview: {
         reviewTitle: 'مراجعة المهمة',
         pendingStatus: 'بانتظار المراجعة',
@@ -2302,6 +2331,38 @@ export const resources = {
         returnToTasks: 'Return to tasks',
         continueToChild: 'Open Child experience',
         viewCurrentTask: 'View current task',
+      },
+      taskWorkspace: {
+        createTitle: 'Start with one clear action',
+        createBody:
+          'Create a new task or reuse wording you saved. Parent review and approval remain required.',
+        allChildren: 'All Children',
+        familyTasks: 'Family tasks',
+        familyTasksBody:
+          'A practical view for each Child without comparison or cross-Child private detail.',
+        oneCurrent: '1 current task',
+        noCurrent: 'No current task',
+        preparedNext: 'Prepared idea for review',
+        categories: 'Varied categories',
+        categoriesBody:
+          'Swipe through all eight categories. The next card peeks in to show there is more.',
+        quickStarts: 'Quick starts',
+        quickStartsBody:
+          'Customizable local examples; none reaches a Child before Parent review and approval.',
+        previewOnly: 'Preview example',
+        openFullLibrary: 'Open library and customize',
+        savedTitle: 'My saved templates',
+        savedBody:
+          'Private device-local Parent wording with no approval, Seeds, or growth authority.',
+        saveTemplate: 'Save wording as template',
+        savedSuccess: 'Wording saved for later reuse.',
+        useTemplate: 'Use this wording',
+        deleteTemplate: 'Delete template',
+        emptySaved: 'No saved templates yet.',
+        unavailableSaved:
+          'Saved templates could not be read. You can safely continue the current task.',
+        previewEditing:
+          'This is a reusable local planning draft. It does not reach the Child or award Seeds or growth unless an executable path is approved later.',
       },
       r002aReview: {
         reviewTitle: 'Task review',
