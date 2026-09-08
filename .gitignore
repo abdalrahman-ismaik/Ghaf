@@ -26,6 +26,7 @@ output/
 .codex/
 .specify/
 .impeccable/
+specs/
 .claude/
 .cursor/
 .gemini/

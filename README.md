@@ -146,7 +146,6 @@ app/ routes
 | `src/services/`   | Provider-neutral interfaces, registry, and deterministic local providers            |
 | `src/state/`      | One resettable in-memory application session and guarded commands                   |
 | `tests/`          | Domain, service, state, privacy, safety, reset, and complete-flow tests             |
-| `specs/`          | Versioned product requirements, contracts, plans, and acceptance records            |
 | `docs/`           | Documentation index, architecture guidance, development guide, and product evidence |
 
 For boundaries, dependency direction, data ownership, and failure behavior, read
@@ -154,17 +153,13 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
 
 ## Documentation map
 
-- [Documentation index](docs/README.md) — where active contracts, historical records, and evidence
-  belong.
+- [Documentation index](docs/README.md) — public engineering, product, and evidence guide.
 - [Product contract](PRODUCT.md) — users, behavior, reward/garden rules, AI jobs, and P0 scope.
 - [Design contract](DESIGN.md) and [design direction](DESIGN_DIRECTION.md) — system rules and visual
   north star.
 - [Research basis](RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale.
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
-- [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
-  requirements and acceptance criteria.
-- [Feature 003 release gates](specs/003-family-growth-garden/design-intake/release-gate.md) — frozen
-  R001 boundary, authorized R002a compatibility scope, and blocked R002b expansion.
+- [Demo runbook](DEMO_RUNBOOK.md) — judge journey and evidence status.
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.
 
 ## Safety and scope boundaries

@@ -339,9 +339,8 @@ All new scenic presentation is raster. Live text, buttons, pillar controls, prog
 state, and loading status remain semantic native UI; existing functional vectors elsewhere are
 unchanged. Standard motion uses opacity plus at most 8 dp of vertical travel and 0.015 scale over
 the quick/standard token durations. Reduced motion removes translation and scaling. At 320 and 390 widths the photograph may shorten,
-but the primary action and step status remain visible or reachable by vertical scrolling. Exact
-copy, asset, state, and evidence rules live in
-`specs/003-family-growth-garden/design-intake/r003-first-run-experience.md`.
+but the primary action and step status remain visible or reachable by vertical scrolling. The
+screen contracts below define the public copy, state, and evidence rules.
 
 ## R003 complete-screen extension
 
@@ -351,8 +350,7 @@ Family, Reward, settings, permissions, devices, reauthentication, and Child-sett
 missing Stitch frame is no longer an implementation blocker for the local prototype. New screens
 must reuse the Soft Geometric palette, typography, spacing, iconography, native shells, and
 botanical grammar already present; they do not introduce a second dashboard or generic settings
-theme. Exact routes, entries, exits, and privacy boundaries are defined in
-`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`.
+theme. The route contracts below define entries, exits, and privacy boundaries.
 
 This extension changes neither business authority nor evidence truth. Screens read live selectors,
 protected actions remain protected, role changes sign out, and physical Android and named human
@@ -497,10 +495,8 @@ Both modes use the same palette, typography, growth grammar, logical spacing, an
 ## Preserved R001/R002a Screen Contract
 
 The historical R001/R002a baseline below has ten authored routes. Loading, fallback, retry,
-assistant, confirmation, and celebration are states within them. The active R003 completion route
-and state manifest is maintained in
-`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`; `/role` is now a
-compatibility redirect only.
+assistant, confirmation, and celebration are states within them. The R003 completion routes are
+documented in this contract; `/role` is now a compatibility redirect only.
 
 ### `/` — entry and disclosure
 

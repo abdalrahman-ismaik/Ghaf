@@ -6,18 +6,14 @@ Status: default-off implementation candidates exist for all indexed surfaces. Th
 the current implementation are not visual, bilingual, accessibility, content, provenance, or
 release approval. R001 and R002a remain the exact fallback when the applicable flag is disabled.
 
-Final hardened runtime/test checkpoint: `4adcb73` on
-`integration/r3-r002b-implementation-20260905`; 78 test files and 989/989 tests passed. The earlier
-core checkpoint `895af72` passed 76 files and 967/967 tests before the private League compatibility
-and recovery-hardening slices. See the
-[bounded validation record](../../../../../specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md).
-The current open-gate checklist and sign-off tables are in the
-[release review packet](../../../../../specs/003-family-growth-garden/design-intake/r002b-release-review-packet.md).
+This index records the approved visual candidates and their default-off runtime boundaries. Current
+automated evidence lives with the test suite; physical Android and human-review status belongs in
+the repository [demo runbook](../../../../../DEMO_RUNBOOK.md).
 
 ## Authority and evidence
 
-- Product behavior: `specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md`.
-- Growth rules: `specs/003-family-growth-garden/spec.md`, `docs/content/BADGE_CATALOG.md`, and
+- Product behavior: `PRODUCT.md` and `PROTOTYPE_LIMITATIONS.md`.
+- Growth rules: `PRODUCT.md`, `docs/content/BADGE_CATALOG.md`, and
   `docs/content/LEARNING_STORIES.md`.
 - Visual system: existing R001/R002a Soft Geometric tokens and native components.
 - Raw R002 exports: supporting evidence only. No complete approved PNG exists for these surfaces;
@@ -47,7 +43,7 @@ then a review candidate, not automatic authority. Equivalent English LTR, 320/36
 | R2B-11 | Shared Garden settings     | `/parent/family/shared-garden`         | nested Parent route       | view and contribution flags independently     | [spec](screens/11-parent-shared-garden/screen-spec.md)  | `11-parent-shared-garden-390x844.png` — retained locally                  |
 | R2B-12 | Private five-Leaf League   | `/league`                              | Child navigation root     | `r002b_progression_engine` compatibility gate | [spec](screens/12-private-league/screen-spec.md)        | `12-private-league-390x844.png` — retained locally                        |
 
-The named captures live under untracked `output/playwright/r002b/` and are deliberately excluded
+Generated visual-validation captures remain local and are deliberately excluded
 from the implementation/documentation commit. They are bounded local review evidence, not durable
 or approved design assets. R2B-01 through R2B-05 and R2B-09 through R2B-11 now have Arabic and
 English samples at 320×844, 360×844, 390×844, 430×932, and 768×1024. Each group also has at

@@ -693,8 +693,7 @@ The historical authored screen contract for the preserved R001/R002a baseline wa
 | `/circle`             | Cooperative sibling/cousin/family overview                         |
 
 Loading, fallback, error, retry, celebration, and assistant panels are states of these screens, not
-extra routes. The active R003 completion route and state manifest is maintained in
-`specs/003-family-growth-garden/design-intake/r003-complete-screen-journey.md`; `/role` is now a
+extra routes. The current route manifest is documented in this contract; `/role` is now a
 compatibility redirect only.
 
 ## Success Criteria

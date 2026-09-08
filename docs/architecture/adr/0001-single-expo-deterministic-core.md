@@ -67,6 +67,6 @@ Implement Feature 003 inside the existing single Expo application.
 
 ## Related records
 
-- [`plan.md`](../../../specs/003-family-growth-garden/plan.md)
-- [`domain-contract.md`](../../../specs/003-family-growth-garden/contracts/domain-contract.md)
-- [`assistant-contract.md`](../../../specs/003-family-growth-garden/contracts/assistant-contract.md)
+- [Product contract](../../../PRODUCT.md)
+- [Design contract](../../../DESIGN.md)
+- [Prototype limitations](../../../PROTOTYPE_LIMITATIONS.md)

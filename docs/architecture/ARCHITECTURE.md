@@ -10,8 +10,8 @@ paired-device markers across restarts. It does not contain a
 production backend, authentication system, cross-household network, analytics pipeline, or live
 child-media/AI processor.
 
-The active implementation plan remains authoritative for Feature 003 detail:
-[`specs/003-family-growth-garden/plan.md`](../../specs/003-family-growth-garden/plan.md).
+The root [product contract](../../PRODUCT.md), [design contract](../../DESIGN.md), and
+[prototype limitations](../../PROTOTYPE_LIMITATIONS.md) define the public Feature 003 boundary.
 
 ## System context
 
@@ -156,6 +156,6 @@ considered. This is maintainability debt, not permission to add a backend to P0.
 
 - [ADR 0001 — Single Expo app with deterministic local core](adr/0001-single-expo-deterministic-core.md)
 - [ADR 0002 — Device-local family directory](adr/0002-device-local-family-directory.md)
-- [Feature 003 domain contract](../../specs/003-family-growth-garden/contracts/domain-contract.md)
-- [Feature 003 assistant contract](../../specs/003-family-growth-garden/contracts/assistant-contract.md)
-- [Feature 003 acceptance contract](../../specs/003-family-growth-garden/contracts/acceptance-contract.md)
+- [Product behavior and safety](../../PRODUCT.md)
+- [Design and accessibility](../../DESIGN.md)
+- [Judge journey and acceptance evidence](../../DEMO_RUNBOOK.md)

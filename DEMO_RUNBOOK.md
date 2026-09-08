@@ -456,8 +456,8 @@ family disappear.
 | Physical Android SQLite/process-death, Back/IME, TalkBack, font scale, and reduced motion | `BLOCKED / NOT RUN`          | no attached Android target                                                                                                                                  |
 | Named Arabic/UAE, safeguarding/privacy, accessibility, visual, and rights review          | `NOT RUN`                    | no named reviewer was available in this implementation session                                                                                              |
 
-The complete repeatable operator and reviewer checklist is
-[`r003-local-family-release-review.md`](specs/003-family-growth-garden/design-intake/r003-local-family-release-review.md).
+The table and journey steps in this section are the repeatable public operator and reviewer
+checklist.
 Do not describe the local directory as a production account database, the welcome summary as push
 notifications, or the prepared helper as live AI.
 
@@ -808,8 +808,8 @@ not fresh R003 acceptance evidence.
 - Clean head `0501cf3` on `integration/r3-r002a-implementation-20260904` is the R002b behavioral and
   presentation baseline. It contains `a0539e9`, all completed R001/R002a surfaces, and 541 passing
   tests. The six conflicting local-only commits remain unapplied.
-- R001 native foundations plus Welcome and first-time Parent onboarding are frozen. Fresh evidence
-  remains in the [R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
+- R001 native foundations plus Welcome and first-time Parent onboarding are frozen. Their retained
+  evidence is summarized in the R001 record below.
 - R001 and R002a are frozen regressions and remain the fallback whenever an R002b flag is off.
 - The R002a behavior oracle remains `task_recycling_p0_v1`, zero reward through Child submission,
   the existing atomic/idempotent Parent approval, Schema-3 48→60 Garden behavior, and all current
@@ -843,8 +843,7 @@ files / 989 tests. The earlier core checkpoint `895af72` passed 76 files / 967 t
 private five-Leaf League compatibility and recovery-hardening slices. All eleven expansion surfaces have native
 implementations, and the League compatibility surface restores its canonical Child root. The nine
 new nested route files and gated `/league` route are guarded, and all eight feature flags remain off
-by default. See the
-[detailed R002b validation record](specs/003-family-growth-garden/design-intake/r002b-validation-evidence.md).
+by default. The table below preserves the public evidence boundary.
 
 | Gate                                      | Result                             | Current evidence                                                                                                                                                                                          |
 | ----------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -919,9 +918,8 @@ native, and human gates remain separate; a pass in one gate does not transfer to
 
 Browser-proxy and export evidence do not prove native rendering, safe areas, keyboard/IME behavior,
 system or predictive Back, TalkBack, physical touch targets, OS font scaling, reduced motion,
-permissions, playback, offline behavior, or physical-device reliability. See the
-[detailed R002a validation record](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md)
-for commands, retained artifacts, deviations, and the complete evidence boundary.
+permissions, playback, offline behavior, or physical-device reliability. The preserved R002a
+record below documents its commands, deviations, and evidence boundary.
 
 ## R001 Batch 1 Fresh Evidence — 2026-09-05
 
@@ -940,8 +938,7 @@ passed on the web proxy with zero console errors.
 Physical Android launch, system/predictive Back behavior, native keyboard/IME, TalkBack, safe-area
 rendering, actual connectivity loss, and 130%/200% OS font scaling remain `NOT RUN` on this exact
 checkpoint. State-specific Stitch frames, matched English reference PNGs, and named human reviews
-also remain open. Exact commands, screenshots, deviations, and evidence boundaries are in the
-[detailed R001 validation record](specs/003-family-growth-garden/design-intake/r001-validation-evidence.md).
+also remain open. This section preserves the public evidence boundary.
 
 ## Preserved 2026-08-28 R002a Evidence Record
 
@@ -1272,8 +1269,7 @@ not infer a pass from web/source evidence.
 | 2026-08-27 | none available | none; Android toolchain absent | Arabic RTL  | Could not start | NOT RUN | NOT RUN        | BLOCKED | `adb`, `emulator`, `sdkmanager`, and `java` were `NOT_FOUND`; `ANDROID_HOME` and `ANDROID_SDK_ROOT` were `NOT_SET` |
 | 2026-08-27 | none available | none; Android toolchain absent | English LTR | Could not start | NOT RUN | NOT RUN        | BLOCKED | Same missing build/toolchain/device dependency; no native result inferred                                          |
 
-Secondary web-proxy observations are recorded separately in
-`specs/003-family-growth-garden/checklists/web-proxy.md`.
+Secondary web-proxy observations are summarized later in this record.
 
 ### Historical R002a automated checks
 
@@ -1341,9 +1337,8 @@ transition and remains recorded as a framework/bundle follow-up.
 - Duplicate already-confirmed, distinct safe-equivalent/adjusted Coach, and English kind-retry
   branches were mounted successfully. Synthetic missing-image/circle injection was not mounted.
 
-Web proxy details and artifact names are in
-`specs/003-family-growth-garden/checklists/web-proxy.md`. Web cannot pass Android media, keyboard,
-Back, reduced-motion, TalkBack, font-scale, permission, or physical-touch requirements.
+The web proxy evidence above cannot pass Android media, keyboard, Back, reduced-motion, TalkBack,
+font-scale, permission, or physical-touch requirements.
 
 ### R002a checkpoint blockers and gaps
 

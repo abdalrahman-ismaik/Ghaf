@@ -49,6 +49,5 @@ botanical/icon/illustration asset. The `assets/` subdirectories are empty. The i
 provide the requested functional states through the shared native system, but those variants do not
 gain pixel-level design approval from this release.
 
-See [SCREEN_INDEX.md](./SCREEN_INDEX.md) and the
-[design-intake release gate](../../../../../specs/003-family-growth-garden/design-intake/release-gate.md)
-for the exact scope and remaining block.
+See [SCREEN_INDEX.md](./SCREEN_INDEX.md) for the selected surface scope and
+[DEMO_RUNBOOK.md](../../../../../DEMO_RUNBOOK.md) for current validation status.

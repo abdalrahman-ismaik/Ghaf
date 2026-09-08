@@ -9,13 +9,15 @@ safety, or production readiness.
 1. Run `git status --short` and preserve unrelated work.
 2. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
    user-facing change.
-3. Read the relevant package under `specs/` when behavior or an acceptance criterion changes.
+3. Review `DESIGN.md`, the relevant architecture decision, and existing tests before changing
+   behavior or an acceptance criterion.
 4. Announce the exact files you intend to change and confirm that no teammate is editing the same
    file or shared configuration.
 5. Start from an up-to-date short-lived branch.
 
-Feature 003 is the active product package. Update its requirements before changing behavior outside
-the current specification, and do not silently widen preserved historical behavior.
+Feature 003 is the active product direction. Update the public product and design contracts before
+changing behavior outside the current scope, and do not silently widen preserved historical
+behavior.
 
 ## Setup
 
