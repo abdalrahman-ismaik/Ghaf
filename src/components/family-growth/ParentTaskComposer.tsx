@@ -154,8 +154,6 @@ export function ParentTaskComposer({
   });
   const [busyIntent, setBusyIntent] = useState<ParentGuideIntent | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const guideDisclosure =
-    suggestion?.meta.disclosure.text ?? serviceRegistry.parentGuidePrimary.disclosure.text;
   const guideOrigin: AssistantIdentityOrigin =
     serviceRegistry.parentGuidePrimary.mode === 'live_optional' ? 'live' : 'prepared';
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
@@ -405,7 +403,6 @@ export function ParentTaskComposer({
             0
           }
           error={error}
-          guideDisclosure={guideDisclosure}
           guideOrigin={guideOrigin}
           guideSuggestionApplied={guideSuggestionApplied}
           liveDraftView={liveDraftView}
@@ -665,7 +662,6 @@ interface EditStageProps {
   direction: 'rtl' | 'ltr';
   displayedSeedAward: number;
   error: string | null;
-  guideDisclosure: LocalizedText;
   guideOrigin: AssistantIdentityOrigin;
   guideSuggestionApplied: boolean;
   liveDraftView: ReturnType<typeof usePrototypeStore.getState>['parentTaskDraftingView'];
@@ -690,7 +686,6 @@ function EditStage({
   direction,
   displayedSeedAward,
   error,
-  guideDisclosure,
   guideOrigin,
   guideSuggestionApplied,
   liveDraftView,
@@ -899,9 +894,6 @@ function EditStage({
           originTestID="parent-guide-origin"
           title={t('taskNew.guideTitle')}
         />
-        <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-          {localize(guideDisclosure, locale)}
-        </Text>
         <Text
           brand
           color="deepForest"

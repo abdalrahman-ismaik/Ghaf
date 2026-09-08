@@ -277,8 +277,9 @@ disabled, legacy transport is used, the tool is unknown, or authorization scope 
   boundary, evidence/reflection policy, recognition mode, routine phase, recurrence, displayed
   award, visibility, Circle eligibility, privacy notice, origin, and all League/Family Reward
   eligibility decisions.
-- **FR-015**: The UI MUST show retained input and proposed copy, live/prepared origin, fallibility,
-  and Parent authority; it MUST support accept, keep, and edit before the existing review step.
+- **FR-015**: The UI MUST show retained input and proposed copy, live/prepared origin, and Parent
+  authority; the signed-in Parent journey MUST supply fallibility through the single shared notice
+  defined by FR-051. It MUST support accept, keep, and edit before the existing review step.
 - **FR-016**: A suggestion MUST never autonomously create, assign, approve, confirm, recognize, or
   establish activity/visit/environmental proof.
 
@@ -393,6 +394,15 @@ disabled, legacy transport is used, the tool is unknown, or authorization scope 
 - **FR-050**: Public discovery, OAuth, remote judge access, hosted deployment, and production MCP
   security/readiness claims are outside this MVP and remain blocked until separately specified.
 
+#### Parent disclosure presentation
+
+- **FR-051**: Parent Home MUST show one clear bilingual caption covering all Parent-facing AI
+  summaries and suggestions: AI may be wrong, does not diagnose the Child or explain motives, and
+  the Parent reviews each result and decides. Equivalent generic fallibility warnings MUST NOT be
+  repeated in Parent setup, Task Builder, or check-in. Prepared/live origin and task-decision copy
+  remain at each relevant action. Child-facing disclosure and adult-exit requirements are
+  unchanged.
+
 ### Key Entities
 
 - **ParentTaskDraftRequestV1**: Minimized curated Parent selections plus a random request/binding
@@ -453,6 +463,9 @@ disabled, legacy transport is used, the tool is unknown, or authorization scope 
 - **SC-012**: In automated MCP tests, 100% of disabled-endpoint, legacy-revision, missing-header,
   unknown-tool, unknown-argument, replay, and operation/role/grant mismatch cases fail before
   inference, and no MCP package is reachable from the Expo bundle.
+- **SC-013**: Source and presentation tests find exactly one generic Parent-facing AI fallibility
+  notice in the signed-in Parent journey, rendered as readable caption text on Parent Home, while
+  every Child disclosure and adult exit remains present.
 
 ## Assumptions
 

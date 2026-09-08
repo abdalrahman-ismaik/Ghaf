@@ -167,12 +167,13 @@ tool.
 integration; live deployment, browser presentation, Android, and named-human evidence remain
 blocked or unobserved.
 
-Complete the normal synthetic family setup with Salem's default curated profile, then open Parent
-Tasks and create a task. In Task Builder, Green Impact and Learning & Wellbeing should appear first
-and carry the prepared profile recommendation label. Read the adjacent disclosure: the ordering is
-local, may be wrong, and does not replace Parent review. Select another category to verify that its
-templates remain future-only, then return to the canonical Green Impact recycling task and finish
-the ordinary prepared Guide/review flow.
+Complete the normal synthetic family setup with Salem's default curated profile. On Parent Home,
+read the single small AI notice: Parent-facing summaries and suggestions may be wrong, do not
+diagnose the Child or explain motives, and remain subject to Parent review and decision. Then open
+Parent Tasks and create a task. In Task Builder, Green Impact and Learning & Wellbeing should appear
+first and carry the prepared profile recommendation label without repeating the generic warning.
+Select another category to verify that its templates remain future-only, then return to the
+canonical Green Impact recycling task and finish the ordinary prepared Guide/review flow.
 
 Do not claim the optional gateway ran during this journey. The default registry uses the prepared
 provider and makes no request. Repository tests inject a synthetic credential and fake Worker
@@ -1001,12 +1002,13 @@ heat or traffic is unsafe. Ask an adult whenever you are unsure.”
 غرف الحاويات والزجاج والأدوات الحادّة والبطاريات والمواد الكيميائية والأدوية والمواد الفاسدة أو
 المجهولة. اسأل شخصاً بالغاً عند الشك.»
 
-Visible controls: **Accept suggestion**, **Keep mine**, **Make smaller**. Visible disclosure:
-“Prepared AI example. AI can be wrong; the Parent decides.”
+Visible controls: **Accept suggestion**, **Keep mine**, **Make smaller**. The Guide keeps its
+prepared/live origin label and Parent-owned accept/keep actions. The generic Parent AI warning is
+shown once on Parent Home rather than repeated here.
 
-التحكمات العربية: **قبول الاقتراح**، **الاحتفاظ بنصي**، **تصغير المهمة**. الإفصاح العربي:
-«مثال مُعدّ مسبقاً لمساعد بالذكاء الاصطناعي. قد تكون الاستجابة غير صحيحة، ووليّ الأمر هو صاحب
-القرار.»
+التحكمات العربية: **قبول الاقتراح**، **الاحتفاظ بنصي**، **تصغير المهمة**. يبقى وصف المصدر
+المُعدّ/المباشر وقرار القبول أو الاحتفاظ واضحين هنا، بينما يظهر تنبيه الذكاء الاصطناعي العام مرة
+واحدة في الصفحة الرئيسية لوليّ الأمر.
 
 ### Child Coach — `coach_recycling_steps_v1`
 

@@ -129,7 +129,8 @@ describe('R002a Parent review presentation', () => {
     expect(JSON.stringify(arabic)).not.toContain('سالم');
     expect(JSON.stringify(english)).not.toContain('Salem');
     expect(review).toContain("t('r002aReview.returnToTasks', { child: childName })");
-    expect(review).toContain("value={t('parentHome.summaryDisclosure')}");
+    expect(review).not.toContain("t('parentHome.aiDisclosure')");
+    expect(review).not.toContain("t('parentHome.summaryDisclosure')");
     expect(arabic.pendingTitle.trim()).not.toBe('');
     expect(english.pendingTitle.trim()).not.toBe('');
   });

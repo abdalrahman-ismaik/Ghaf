@@ -164,6 +164,15 @@ reject late results. Route exit, sign-out, reset, permission revocation, task/pr
 voice background/interruption clear transient F4/F5 state. Reset never waits for cleanup and the
 deterministic session is restored even if an adapter cleanup fails.
 
+### Parent disclosure hierarchy
+
+Parent Home owns one concise bilingual caption for the generic AI fallibility, non-diagnosis, and
+Parent-decision boundary. Parent setup, Task Builder, and check-in keep only information that
+changes the immediate action—prepared/live origin, local/provider status, and required Parent
+review—without repeating the same warning. Validated provider disclosure metadata remains in the
+service boundary even when it is not rendered repeatedly. Child Coach disclosure and the visible
+adult exit remain at the Child point of use.
+
 ## Project Structure
 
 ### Documentation (this feature)

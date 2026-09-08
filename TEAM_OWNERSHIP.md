@@ -1,5 +1,32 @@
 # Team Ownership
 
+## 2026-09-08 Parent AI Disclosure Consolidation Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `specs/004-bounded-live-ai/{spec.md,plan.md,tasks.md}`,
+`DESIGN_DIRECTION.md`, `DEMO_RUNBOOK.md`,
+`src/components/family-growth/{ParentPatternSummary.tsx,ParentTaskComposer.tsx,ParentCheckIn.tsx}`,
+`src/i18n/resources.ts`, and
+`tests/{ai-services-presentation-integration.test.tsx,localization-parity.test.ts,`
+`r002a-parent-review-presentation.test.ts}` only.
+
+**Scope**: Consolidate generic Parent-facing AI fallibility and non-diagnosis copy into one clear,
+small, readable notice on Parent Home. Remove equivalent repeated warnings from Parent setup,
+Task Builder, and check-in presentation while retaining prepared/live origin labels, Parent review
+authority, validated disclosure metadata, and every Child-facing disclosure/adult exit unchanged.
+
+**Status**: Complete and ready for source integration — Parent Home now owns the one generic
+Parent-facing AI fallibility/non-diagnosis notice in a readable 12-point caption. Parent setup,
+Task Builder, permissions, and check-in no longer repeat that caveat; prepared/live origin,
+Parent-owned review/approval, validated provider disclosure metadata, and every Child disclosure
+and adult exit remain unchanged. The exact-once test failed RED before implementation, then eight
+focused files passed 114 tests. `npm run verify` passed strict TypeScript, zero-warning lint,
+formatting, 122 files / 1,343 tests, Expo dependency alignment, and a 39-route web export with the
+known `expo-file-system` web warning. The Impeccable detector returned `[]`. Physical Android and
+named Arabic/accessibility review remain `NOT RUN`; protected local configuration, source design
+inputs, and generated output artifacts stayed outside this window.
+
 ## 2026-09-08 Feature 007 Family Plus Capacity Preview Window
 
 **Owner and only writer**: `/root`

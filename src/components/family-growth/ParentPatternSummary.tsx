@@ -166,11 +166,13 @@ export function ParentPatternSummary({
       ) : null}
 
       <View style={styles.disclosure}>
-        <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'inkMuted'} variant="caption">
-          {t('parentHome.summaryDisclosure')}
-        </Text>
-        <Text brand={branded} color={branded ? 'onSurfaceVariant' : 'inkMuted'} variant="caption">
-          {localize(current.meta.disclosure.text, locale)}
+        <Text
+          brand={branded}
+          color={branded ? 'onSurfaceVariant' : 'inkMuted'}
+          testID="parent-ai-disclosure"
+          variant="caption"
+        >
+          {t('parentHome.aiDisclosure')}
         </Text>
       </View>
       {correctionStatus === 'applied' ? (

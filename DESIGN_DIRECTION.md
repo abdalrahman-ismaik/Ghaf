@@ -196,7 +196,10 @@ AI is a quiet tool embedded in the task, not a decorative chat destination.
 - **Ghaf Coach:** a bounded bottom sheet with large intent choices such as “Show me the steps,”
   “Help me plan,” “Practise the phrase,” or “I need an adult.”
 - Always show whether the response is prepared/simulated or live.
-- Show one short disclosure that AI may be wrong.
+- Show one short, clear Parent disclosure on Parent Home that AI may be wrong, does not diagnose or
+  infer motives, and leaves every decision with the Parent. Do not repeat that generic warning in
+  Parent setup, Task Builder, or check-in; keep prepared/live origin labels at the relevant action.
+- Keep the Child's age-appropriate disclosure and visible adult exit at each Child AI result.
 - Do not give the assistant a human face, emotional eyes, streak, pet-like dependence, typing lure,
   or open-ended companion personality.
 

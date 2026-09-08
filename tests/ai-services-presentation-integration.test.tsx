@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
+import { resources } from '../src/i18n/resources';
+
 function source(path: string): string {
   return readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 }
@@ -66,6 +68,45 @@ describe('AI Services 1–3 presentation integration', () => {
     );
     expect(summary.indexOf("t('parentHome.question')")).toBeLessThan(
       summary.indexOf("t('parentHome.correctSummary')"),
+    );
+  });
+
+  it('shows one clear Parent AI notice without repeating generic warnings across Parent surfaces', () => {
+    const profile = source('src/components/access/AIProfilePreview.tsx');
+    const composer = source('src/components/family-growth/ParentTaskComposer.tsx');
+    const summary = source('src/components/family-growth/ParentPatternSummary.tsx');
+    const checkIn = source('src/components/family-growth/ParentCheckIn.tsx');
+    const permissions = source('app/parent/settings/permissions.tsx');
+    const parentSources = [profile, composer, summary, checkIn, permissions].join('\n');
+
+    expect(parentSources.match(/t\('parentHome\.aiDisclosure'\)/gu)).toHaveLength(1);
+    expect(summary).toContain('testID="parent-ai-disclosure"');
+    expect(summary).toMatch(
+      /color=\{branded \? 'onSurfaceVariant' : 'inkMuted'\}[\s\S]+variant="caption"[\s\S]+t\('parentHome\.aiDisclosure'\)/u,
+    );
+    expect(composer).not.toContain('guideDisclosure');
+    expect(summary).not.toContain('current.meta.disclosure.text');
+    expect(checkIn).not.toContain("t('parentHome.summaryDisclosure')");
+
+    expect(resources.ar.translation.parentHome.aiDisclosure).toBe(
+      'قد تكون ملخصات واقتراحات الذكاء الاصطناعي غير صحيحة، وهي لا تشخّص الطفل ولا تفسّر دوافعه. يراجع وليّ الأمر كل نتيجة ويتخذ القرار.',
+    );
+    expect(resources.en.translation.parentHome.aiDisclosure).toBe(
+      'AI summaries and suggestions may be wrong. They do not diagnose the Child or explain motives; the Parent reviews each result and decides.',
+    );
+
+    const repeatedParentCopy = [
+      resources.ar.translation.access.setup.aiDisclosure,
+      resources.ar.translation.taskNew.profileRecommendationDisclosure,
+      resources.ar.translation.taskNew.liveDraftDisclosure,
+      resources.ar.translation.r003.permissions.liveAiRisk,
+      resources.en.translation.access.setup.aiDisclosure,
+      resources.en.translation.taskNew.profileRecommendationDisclosure,
+      resources.en.translation.taskNew.liveDraftDisclosure,
+      resources.en.translation.r003.permissions.liveAiRisk,
+    ].join('\n');
+    expect(repeatedParentCopy).not.toMatch(
+      /(?:قد يخطئ|قد يكون غير صحيح|قد تكون غير صحيحة|may be wrong|can be wrong|does not diagnose|لا تشخّص)/iu,
     );
   });
 

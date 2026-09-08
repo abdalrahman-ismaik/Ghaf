@@ -245,7 +245,7 @@ export const resources = {
           aiPreviewDisabled:
             'لن يستخدم غاف تفضيلات هذا الملف لصنع اقتراحات. يمكن لوليّ الأمر اختيار المهام يدويًا.',
           aiDisclosure:
-            'اقتراح محلي مُعدّ وقد يكون غير صحيح. يراجع وليّ الأمر كل مهمة ويعتمدها قبل أن يراها الطفل.',
+            'اقتراح محلي مُعدّ من اختيارات منظّمة. يراجع وليّ الأمر كل مهمة ويعتمدها قبل أن يراها الطفل.',
           aiCategoryGreen: 'الأثر الأخضر',
           aiCategoryLearning: 'التعلّم والعافية',
           aiCategoryHome: 'مسؤولية المنزل',
@@ -365,7 +365,8 @@ export const resources = {
         summaryTitle: 'ملخص مُعدّ للأيام السبعة',
         summaryPreparedWindow: 'مُعدّ محلياً · {{window}}',
         summaryQuestionLead: 'ابدأ بما لوحظ، ثم استخدم سؤالاً مفتوحاً واحداً قبل اختيار أي تعديل.',
-        summaryDisclosure: 'ملخص اصطناعي محدود؛ لا يشخّص الطفل ولا يفسّر دوافعه.',
+        aiDisclosure:
+          'قد تكون ملخصات واقتراحات الذكاء الاصطناعي غير صحيحة، وهي لا تشخّص الطفل ولا تفسّر دوافعه. يراجع وليّ الأمر كل نتيجة ويتخذ القرار.',
         syntheticPrivacyBoundary:
           'هذه ملخصات اصطناعية محلية لوليّ الأمر؛ ولا تظهر للعائلات الأخرى.',
         correctSummary: 'تصحيح حقيقة اصطناعية',
@@ -500,7 +501,7 @@ export const resources = {
         profileRecommended: 'مقترحة من مساعد الملف المُعدّ',
         profileRecommendationTitle: 'بدايات مقترحة لهذا الملف',
         profileRecommendationDisclosure:
-          'رتّب مساعد الملف المُعدّ هذه الفئات محلياً من اختياراتك المنظّمة. قد يخطئ، ووليّ الأمر يراجع ويعتمد كل مهمة.',
+          'رتّب مساعد الملف المُعدّ هذه الفئات محلياً من اختياراتك المنظّمة. يراجع وليّ الأمر كل مهمة ويعتمدها.',
         greenImpact: 'أثر أخضر',
         recyclingTask: 'فرز مواد نظيفة ومرافقة شخص بالغ إلى حاوية آمنة',
         parentTextLabel: 'صياغة وليّ الأمر',
@@ -510,7 +511,7 @@ export const resources = {
         guideActionsTitle: 'كيف يساعدك غاف؟',
         liveDraftTitle: 'مسودة مهمة بالذكاء الاصطناعي',
         liveDraftDisclosure:
-          'قد يستخدم هذا الإجراء خدمة ذكاء اصطناعي مباشرة بمدخلات اصطناعية محدودة. قد يخطئ الذكاء الاصطناعي، وتبقى المراجعة والاعتماد لوليّ الأمر.',
+          'قد يستخدم هذا الإجراء خدمة ذكاء اصطناعي مباشرة بمدخلات اصطناعية محدودة. لا تتغير المهمة قبل مراجعة وليّ الأمر واعتمادها.',
         liveDraftRequest: 'اقتراح صياغة',
         liveDraftRetained: 'الصياغة الحالية المحفوظة',
         liveDraftSuggested: 'المسودة المقترحة للمراجعة',
@@ -1081,7 +1082,7 @@ export const resources = {
           unavailable: 'تعذّر تحميل الإذن؛ بقي مغلقًا بأمان.',
           liveAiTitle: 'مساعدة الذكاء الاصطناعي المباشرة المحدودة',
           liveAiPurpose: 'يسمح لمدرب غاف بإعادة صياغة مساعدة قصيرة للمهمة الحالية المعتمدة فقط.',
-          liveAiRisk: 'قد يخطئ الذكاء الاصطناعي. يمكن للطفل الرفض أو طلب شخص بالغ في أي وقت.',
+          liveAiRisk: 'يمكن للطفل رفض هذه المساعدة أو طلب شخص بالغ في أي وقت.',
           liveAiProviderBlocked:
             'الاتصال بالمزوّد متوقف حتى اكتمال بوابة الأمان والمراجعات الخارجية.',
           liveAiText: 'السماح بالمساعدة النصية المحدودة',
@@ -1978,7 +1979,7 @@ export const resources = {
           aiPreviewDisabled:
             'Ghaf will not use this profile’s preferences for suggestions. The Parent can still choose tasks manually.',
           aiDisclosure:
-            'This is a prepared local suggestion and may be wrong. A Parent reviews and approves every task before the Child sees it.',
+            'This is a prepared local suggestion from structured choices. A Parent reviews and approves every task before the Child sees it.',
           aiCategoryGreen: 'Green Impact',
           aiCategoryLearning: 'Learning & Wellbeing',
           aiCategoryHome: 'Home Responsibility',
@@ -2102,8 +2103,8 @@ export const resources = {
         summaryPreparedWindow: 'Prepared locally · {{window}}',
         summaryQuestionLead:
           'Start with what was observed, then use one open question before choosing an adjustment.',
-        summaryDisclosure:
-          'A limited synthetic summary; it does not diagnose the Child or explain motives.',
+        aiDisclosure:
+          'AI summaries and suggestions may be wrong. They do not diagnose the Child or explain motives; the Parent reviews each result and decides.',
         syntheticPrivacyBoundary:
           'These are local synthetic Parent summaries; other households do not see them.',
         correctSummary: 'Correct a synthetic fact',
@@ -2244,7 +2245,7 @@ export const resources = {
         profileRecommended: 'Prepared profile suggestion',
         profileRecommendationTitle: 'Suggested starts for this profile',
         profileRecommendationDisclosure:
-          'The prepared profile helper ranked these categories locally from your structured choices. It may be wrong, and the Parent reviews and approves every task.',
+          'The prepared profile helper ranked these categories locally from your structured choices. The Parent reviews and approves every task.',
         greenImpact: 'Green Impact',
         recyclingTask: 'Sort clean materials and accompany an adult to an approved safe bin',
         parentTextLabel: 'Parent wording',
@@ -2255,7 +2256,7 @@ export const resources = {
         guideActionsTitle: 'How should Ghaf help?',
         liveDraftTitle: 'AI task draft',
         liveDraftDisclosure:
-          'This action may use live AI with bounded synthetic inputs. AI may be wrong; the Parent still reviews and approves the task.',
+          'This action may use live AI with bounded synthetic inputs. The task stays unchanged until the Parent reviews and approves it.',
         liveDraftRequest: 'Suggest wording',
         liveDraftRetained: 'Retained current wording',
         liveDraftSuggested: 'Suggested draft to review',
@@ -2842,7 +2843,7 @@ export const resources = {
           liveAiTitle: 'Bounded live AI help',
           liveAiPurpose:
             'Allows Ghaf Coach to reword brief help for only the current Parent-approved task.',
-          liveAiRisk: 'AI may be wrong. The Child can decline or ask an adult at any time.',
+          liveAiRisk: 'The Child can decline this help or ask an adult at any time.',
           liveAiProviderBlocked:
             'Provider access remains blocked until the safety gateway and external reviews pass.',
           liveAiText: 'Allow bounded text help',

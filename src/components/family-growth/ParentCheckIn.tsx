@@ -664,11 +664,6 @@ export function ParentCheckIn({
               submission.reflection ? localize(submission.reflection, locale) : t('common.optional')
             }
           />
-          <ReviewFact
-            direction={direction}
-            label={t('checkIn.uncertainty')}
-            value={t('parentHome.summaryDisclosure')}
-          />
         </View>
 
         <View style={styles.praiseEditor}>

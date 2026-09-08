@@ -236,6 +236,24 @@ independent/default off and every deterministic fallback remains complete.
 
 ---
 
+## Phase 10: Parent AI disclosure consolidation
+
+**Purpose**: Keep one clear Parent-facing AI fallibility/non-diagnosis notice without repeating the
+same caveat across setup, Task Builder, summary, and check-in surfaces.
+
+- [x] T088 Reserve the exact UI, resource, test, design, and evidence boundary in `TEAM_OWNERSHIP.md`
+- [x] T089 Amend the Parent disclosure contract in `specs/004-bounded-live-ai/{spec.md,plan.md,tasks.md}` before runtime changes
+- [x] T090 Write a RED exact-once Parent notice and unchanged Child disclosure test in `tests/ai-services-presentation-integration.test.tsx`
+- [x] T091 Consolidate Parent presentation in `src/components/family-growth/{ParentPatternSummary.tsx,ParentTaskComposer.tsx,ParentCheckIn.tsx}` and `src/i18n/resources.ts`
+- [x] T092 Reconcile localization and Parent review source contracts in `tests/{localization-parity.test.ts,r002a-parent-review-presentation.test.ts}`
+- [x] T093 Run focused and repository validation, the Impeccable detector, and record exact evidence in this file and `TEAM_OWNERSHIP.md`
+
+**Checkpoint**: Parent Home contains the one generic Parent AI caveat in small readable type;
+prepared/live origin and Parent review authority remain contextual, validated metadata remains
+intact, and no Child disclosure or adult exit changes.
+
+---
+
 ## Dependencies and execution order
 
 ### Phase dependencies
@@ -421,3 +439,12 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   inspection is `BLOCKED` because Chromium lacks `libnss3` in the container and dependency
   installation requires an unavailable sudo password; physical Android and named Arabic/
   accessibility review remain `NOT RUN`.
+- **Parent AI disclosure consolidation — PASSED AUTOMATED / HUMAN REVIEW NOT RUN (2026-09-08)**:
+  The exact-once presentation test first failed because the shared Parent notice did not exist,
+  then passed after Parent Home received one clear 12-point bilingual caption and equivalent
+  fallibility/non-diagnosis warnings were removed from Parent setup, Task Builder, permissions,
+  and check-in. Eight focused files passed 114 tests, including unchanged Child disclosure/adult
+  exit and retained provider metadata. `npm run verify` passed strict TypeScript, zero-warning lint,
+  formatting, 122 files / 1,343 tests, Expo dependency alignment, and a 39-route web export with
+  the known `expo-file-system` web warning. The Impeccable detector returned `[]`; physical Android
+  and named Arabic/accessibility review remain `NOT RUN`.
