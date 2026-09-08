@@ -46,7 +46,11 @@ import {
   LIVE_CHILD_AI_POLICY_VERSION,
   LIVE_CHILD_AI_PROVIDER_VERSION,
 } from '../features/access';
-import { restoreRememberedDeviceAccess } from '../features/access/rememberedDeviceAccess';
+import {
+  deviceAffinityMatchesFamily,
+  resolveRememberedAccessLocale,
+  restoreRememberedDeviceAccess,
+} from '../features/access/rememberedDeviceAccess';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import {
   createParentOnboardingController,
@@ -325,6 +329,30 @@ function deviceAccessView(
   };
 }
 
+function refreshRememberedChildContext(childId: SyntheticChildId): {
+  readonly canResume: boolean;
+  readonly deviceAccess: DeviceAccessView;
+  readonly localFamily: LocalFamilyView;
+} {
+  const currentFamily = serviceRegistry.localFamily.read();
+  const currentAffinity = serviceRegistry.deviceAccess.read();
+  const familyRecord = currentFamily.ok ? currentFamily.data : null;
+  const affinityRecord = currentAffinity.ok ? currentAffinity.data : null;
+  return {
+    canResume:
+      familyRecord !== null &&
+      affinityRecord?.principal.role === 'child' &&
+      affinityRecord.principal.childId === childId &&
+      deviceAffinityMatchesFamily(affinityRecord, familyRecord),
+    deviceAccess: currentAffinity.ok
+      ? deviceAccessView(currentAffinity.data)
+      : deviceAccessView(null, 'unavailable'),
+    localFamily: currentFamily.ok
+      ? localFamilyView(currentFamily.data)
+      : localFamilyView(null, 'unavailable'),
+  };
+}
+
 function restoreInitialLocalFamily(): LocalFamilyView {
   const read = serviceRegistry.localFamily.read();
   if (!read.ok) return localFamilyView(null, 'unavailable');
@@ -389,6 +417,11 @@ const initialRememberedDeviceAccess = (() => {
       };
 })();
 const initialPrototypeSession = serviceRegistry.prototypeSession.getInitialSession();
+const initialRememberedLocale = resolveRememberedAccessLocale({
+  activeExperience: initialRememberedDeviceAccess.activeExperience,
+  family: initialLocalFamily.record,
+  fallbackLocale: initialPrototypeSession.locale,
+});
 const initialGrowthJourney = createGrowthJourneyRuntime(initialPrototypeSession, 0);
 
 if (!initialGrowthJourney.ok) {
@@ -1339,6 +1372,8 @@ function validateGuideSuggestion(
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
+  locale: initialRememberedLocale,
+  direction: getLocaleDirection(initialRememberedLocale),
   activeExperience: initialRememberedDeviceAccess.activeExperience,
   activeChildId:
     initialRememberedDeviceAccess.activeChildId ?? initialPrototypeSession.activeChildId,
@@ -1482,7 +1517,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         ? state.parentOnboarding.completionReceipt.householdId
         : null;
     let newlySavedFamily: LocalFamilyRecord | null = null;
+    let clearedDeviceAffinity = false;
     if (!returningHouseholdId) {
+      const cleared = serviceRegistry.deviceAccess.clear();
+      if (!cleared.ok) return { ok: false, error: cleared.error };
+      clearedDeviceAffinity = true;
       const parentIdentifier = parentOnboardingController.getPendingIdentifier();
       if (!parentIdentifier) {
         return failure('INVALID_TRANSITION', 'Complete Parent verification before family setup');
@@ -1514,6 +1553,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       const saved = serviceRegistry.localFamily.save(created.data);
       if (!saved.ok) return { ok: false, error: saved.error };
       newlySavedFamily = saved.data;
+    } else if (!state.rememberParentOnThisDevice && !state.temporaryParentAccess) {
+      const cleared = serviceRegistry.deviceAccess.clear();
+      if (!cleared.ok) return { ok: false, error: cleared.error };
+      clearedDeviceAffinity = true;
     }
     const result = parentOnboardingController.complete(R001_ONBOARDING_TIME);
     if (result.ok) {
@@ -1529,7 +1572,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           ? remembered.ok
             ? deviceAccessView(remembered.data)
             : deviceAccessView(null, 'unavailable')
-          : state.deviceAccess,
+          : clearedDeviceAffinity
+            ? deviceAccessView(null)
+            : state.deviceAccess,
         parentOnboarding: parentOnboardingController.getView(),
         rememberParentOnThisDevice: false,
         locale,
@@ -1666,45 +1711,86 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   completeChildPairing: () => {
-    if (get().activeExperience !== 'signed_out') {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
       return failure(
         'INVALID_TRANSITION',
         'Parent approval must hand back before pairing completes',
       );
     }
-    const result = childAccessController.completePairing(R001_ONBOARDING_TIME);
-    const childAccess = childAccessController.getView();
-    if (result.ok && childAccess.selectedChildId) {
-      const persisted = serviceRegistry.localFamily.setPairedChild(
-        childAccess.selectedChildId,
-        true,
-        R003_LOCAL_FAMILY_TIME,
+    const childId = state.childAccess.selectedChildId;
+    if (!childId || state.childAccess.status !== 'pairing_approved' || !state.localFamily.record) {
+      return failure(
+        'INVALID_TRANSITION',
+        'An approved configured Child pairing is required before completion',
       );
-      if (!persisted.ok) {
-        childAccessController.signOut(R001_ONBOARDING_TIME);
-        childAccessController.revokeDevice(childAccess.selectedChildId, R001_ONBOARDING_TIME);
-        set({ childAccess: childAccessController.getView() });
-        return { ok: false, error: persisted.error };
-      }
-      const rememberedChild = serviceRegistry.deviceAccess.rememberChild(
-        persisted.data,
-        childAccess.selectedChildId,
+    }
+    const persisted = serviceRegistry.localFamily.setPairedChild(
+      childId,
+      true,
+      R003_LOCAL_FAMILY_TIME,
+    );
+    if (!persisted.ok) return { ok: false, error: persisted.error };
+
+    const rememberedChild = serviceRegistry.deviceAccess.rememberChild(
+      persisted.data,
+      childId,
+      R003_LOCAL_FAMILY_TIME,
+    );
+    if (!rememberedChild.ok) {
+      const rolledBack = serviceRegistry.localFamily.setPairedChild(
+        childId,
+        false,
         R003_LOCAL_FAMILY_TIME,
       );
       set({
-        childAccess,
-        activeChildId: childAccess.selectedChildId,
-        activeExperience: 'child',
-        deviceAccess: rememberedChild.ok
-          ? deviceAccessView(rememberedChild.data)
-          : deviceAccessView(null, 'unavailable'),
-        role: 'child',
-        localFamily: localFamilyView(persisted.data),
-        returningUserWelcome: null,
+        childAccess: childAccessController.getView(),
+        deviceAccess: deviceAccessView(null, 'unavailable'),
+        localFamily: rolledBack.ok
+          ? localFamilyView(rolledBack.data)
+          : localFamilyView(null, 'unavailable'),
       });
-    } else {
-      set({ childAccess });
+      return rolledBack.ok
+        ? rememberedChild
+        : failure(
+            'INVALID_TRANSITION',
+            'Child pairing persistence could not be safely rolled back',
+          );
     }
+
+    const result = childAccessController.completePairing(R001_ONBOARDING_TIME);
+    const childAccess = childAccessController.getView();
+    if (!result.ok) {
+      const familyRollback = serviceRegistry.localFamily.setPairedChild(
+        childId,
+        false,
+        R003_LOCAL_FAMILY_TIME,
+      );
+      const affinityRollback = serviceRegistry.deviceAccess.clearMatchingChild(childId);
+      set({
+        childAccess,
+        deviceAccess:
+          affinityRollback.ok && affinityRollback.data
+            ? deviceAccessView(null)
+            : deviceAccessView(null, 'unavailable'),
+        localFamily: familyRollback.ok
+          ? localFamilyView(familyRollback.data)
+          : localFamilyView(null, 'unavailable'),
+      });
+      return familyRollback.ok && affinityRollback.ok
+        ? result
+        : failure('INVALID_TRANSITION', 'Child pairing completion could not be safely rolled back');
+    }
+
+    set({
+      childAccess,
+      activeChildId: childId,
+      activeExperience: 'child',
+      deviceAccess: deviceAccessView(rememberedChild.data),
+      role: 'child',
+      localFamily: localFamilyView(persisted.data),
+      returningUserWelcome: null,
+    });
     return result;
   },
 
@@ -1769,6 +1855,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       const canceled = parentOnboardingController.cancelVerification();
       if (!canceled.ok) return canceled;
     }
+    const current = refreshRememberedChildContext(temporary.returnChildId);
+    if (!current.canResume) {
+      set({
+        childAccess: childAccessController.getView(),
+        deviceAccess: current.deviceAccess,
+        localFamily: current.localFamily,
+        parentOnboarding: parentOnboardingController.getView(),
+        temporaryParentAccess: null,
+      });
+      return failure('INVALID_TRANSITION', 'Remembered Child access is no longer available');
+    }
     const resumed = childAccessController.resumeRememberedChild(
       temporary.returnChildId,
       R001_ONBOARDING_TIME,
@@ -1776,6 +1873,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!resumed.ok) {
       set({
         childAccess: childAccessController.getView(),
+        deviceAccess: current.deviceAccess,
+        localFamily: current.localFamily,
         parentOnboarding: parentOnboardingController.getView(),
         temporaryParentAccess: null,
       });
@@ -1785,6 +1884,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       activeChildId: temporary.returnChildId,
       activeExperience: 'child',
       childAccess: childAccessController.getView(),
+      deviceAccess: current.deviceAccess,
+      localFamily: current.localFamily,
       parentOnboarding: parentOnboardingController.getView(),
       role: 'child',
       returningUserWelcome: null,
@@ -1806,12 +1907,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       if (!result.ok) return result;
       if (state.temporaryParentAccess) {
         const returnChildId = state.temporaryParentAccess.returnChildId;
-        const record = state.deviceAccess.record;
-        const canResume =
-          record?.principal.role === 'child' &&
-          record.principal.childId === returnChildId &&
-          state.localFamily.record?.pairedChildIds.includes(returnChildId);
-        const resumed = canResume
+        const current = refreshRememberedChildContext(returnChildId);
+        const resumed = current.canResume
           ? childAccessController.resumeRememberedChild(returnChildId, R001_ONBOARDING_TIME)
           : null;
         releaseLiveVoiceCapture(state.liveVoiceCapture);
@@ -1819,6 +1916,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           activeChildId: resumed?.ok ? returnChildId : state.activeChildId,
           activeExperience: resumed?.ok ? 'child' : 'signed_out',
           childAccess: childAccessController.getView(),
+          deviceAccess: current.deviceAccess,
+          localFamily: current.localFamily,
           parentOnboarding: parentOnboardingController.getView(),
           rememberParentOnThisDevice: false,
           role: resumed?.ok ? 'child' : state.role,
@@ -1993,29 +2092,22 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     );
     if (!persisted.ok) return { ok: false, error: persisted.error };
     const result = childAccessController.revokeDevice(childId, R001_ONBOARDING_TIME);
-    set({ childAccess: childAccessController.getView() });
-    if (result.ok) {
-      const cleared = serviceRegistry.deviceAccess.clearMatchingChild(childId);
-      if (!cleared.ok) {
-        set({
-          deviceAccess: deviceAccessView(null, 'unavailable'),
-          localFamily: localFamilyView(persisted.data),
-          temporaryParentAccess:
-            state.temporaryParentAccess?.returnChildId === childId
-              ? null
-              : state.temporaryParentAccess,
-        });
-        return cleared;
-      }
-      set({
-        deviceAccess: cleared.data ? deviceAccessView(null) : state.deviceAccess,
-        localFamily: localFamilyView(persisted.data),
-        temporaryParentAccess:
-          state.temporaryParentAccess?.returnChildId === childId
-            ? null
-            : state.temporaryParentAccess,
-      });
-    }
+    const childAccess = result.ok
+      ? childAccessController.getView()
+      : childAccessController.forgetDeviceAfterPersistedRevocation(childId);
+    const cleared = serviceRegistry.deviceAccess.clearMatchingChild(childId);
+    const refreshedAffinity = serviceRegistry.deviceAccess.read();
+    set({
+      childAccess,
+      deviceAccess:
+        cleared.ok && refreshedAffinity.ok
+          ? deviceAccessView(refreshedAffinity.data)
+          : deviceAccessView(null, 'unavailable'),
+      localFamily: localFamilyView(persisted.data),
+      temporaryParentAccess:
+        state.temporaryParentAccess?.returnChildId === childId ? null : state.temporaryParentAccess,
+    });
+    if (!cleared.ok) return cleared;
     return result;
   },
 

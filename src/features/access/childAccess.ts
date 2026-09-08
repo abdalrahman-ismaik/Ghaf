@@ -134,8 +134,11 @@ export class ChildAccessController {
       return failure('INVALID_INPUT', 'The local demonstration credential is not correct');
     }
 
-    const existing = this.signInPairedDevice(childId, now);
-    if (existing.ok) return existing;
+    const pairedDevice = this.devices.get(childId);
+    if (pairedDevice?.status === 'paired') {
+      const existing = this.signInPairedDevice(childId, now);
+      if (existing.ok) return existing;
+    }
     this.status = 'credential_verified';
     return success(this.getView());
   }
@@ -274,6 +277,17 @@ export class ChildAccessController {
     this.devices.set(childId, revoked.data);
     if (this.session?.principal.childId === childId) this.clearLocalSession();
     return success(this.getView());
+  }
+
+  forgetDeviceAfterPersistedRevocation(childId: SyntheticChildId): ChildAccessView {
+    this.devices.delete(childId);
+    if (
+      this.selectedChildId === childId ||
+      (this.session?.principal.role === 'child' && this.session.principal.childId === childId)
+    ) {
+      return this.clearLocalSession();
+    }
+    return this.getView();
   }
 
   signOut(now: string): ServiceResult<ChildAccessView> {

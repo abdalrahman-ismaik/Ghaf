@@ -135,3 +135,18 @@ cancel/revoke/error branches.
 
 All three P1 stories form the minimum coherent slice: Parent convenience alone would not satisfy
 the user's normal separate-device or shared-device rules. No optional breadth is included.
+
+## Post-merge audit and remediation — 2026-09-08
+
+- [x] T027 Add RED regression coverage for family-marker and Child-affinity write failures, stale
+  affinity during opt-out family entry, missing affinity during temporary Parent return/cancel,
+  controller revocation failure, repository read exceptions and clone isolation, and remembered
+  locale selection in `tests/device-remembered-access.test.tsx`
+- [x] T028 Make pairing persistence transactional before Child activation; refresh persistent
+  handoff authority; reconcile durable revocation; clear stale affinity before opt-out entry; and
+  restore the configured family language in `src/state/usePrototypeStore.ts`,
+  `src/features/access/childAccess.ts`, and `src/features/access/rememberedDeviceAccess.ts`
+- [x] T029 Re-run the configured context hook and implementation prerequisites, then validate 33
+  focused Feature 005 tests, 184 surrounding access/reset tests, and `npm run verify` at 122 files /
+  1,486 tests plus the 39-route web export; retain native process-death, SQLite, Back, TalkBack,
+  font-scale, and named human review as `NOT RUN`

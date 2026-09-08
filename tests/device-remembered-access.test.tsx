@@ -1,12 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   createChildDeviceAffinity,
   createParentDeviceAffinity,
   parseDeviceAffinityRecord,
+  resolveRememberedAccessLocale,
   restoreRememberedDeviceAccess,
 } from '../src/features/access/rememberedDeviceAccess';
 import {
@@ -203,6 +204,33 @@ describe('Feature 005 device-affinity repository', () => {
     });
     expect(repository.read()).toMatchObject({ ok: true, data: { principal: { role: 'parent' } } });
   });
+
+  it('fails closed when the storage read itself throws', () => {
+    const repository = createDeviceAccessRepository({
+      getItem() {
+        throw new Error('Prepared read failure');
+      },
+      setItem() {},
+      removeItem() {},
+    });
+
+    expect(repository.read()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+  });
+
+  it('returns isolated record clones that cannot mutate persisted affinity', () => {
+    const repository = createDeviceAccessRepository(createMemoryLocalKeyValueStorage());
+    const saved = expectOk(repository.rememberParent(localFamily(), UPDATED_AT));
+    const firstRead = expectOk(repository.read());
+    if (!firstRead) throw new Error('Expected a remembered Parent record');
+
+    (firstRead as { updatedAt: string }).updatedAt = CREATED_AT;
+    (firstRead.principal as { parentId: string }).parentId = 'tampered-parent';
+
+    expect(repository.read()).toEqual({ ok: true, data: saved });
+  });
 });
 
 describe('Feature 005 fresh authority restoration', () => {
@@ -302,6 +330,25 @@ describe('Feature 005 fresh authority restoration', () => {
     });
     expect(child.getView()).toMatchObject({ status: 'signed_out', selectedChildId: null });
   });
+
+  it('restores the configured family language only with remembered authority', () => {
+    const family = { ...localFamily(), appLanguage: 'en' as const };
+
+    expect(
+      resolveRememberedAccessLocale({
+        activeExperience: 'parent',
+        family,
+        fallbackLocale: 'ar',
+      }),
+    ).toBe('en');
+    expect(
+      resolveRememberedAccessLocale({
+        activeExperience: 'signed_out',
+        family,
+        fallbackLocale: 'ar',
+      }),
+    ).toBe('ar');
+  });
 });
 
 describe('Feature 005 store integration', () => {
@@ -323,7 +370,7 @@ describe('Feature 005 store integration', () => {
     expectOk(usePrototypeStore.getState().completeParentOnboarding());
   }
 
-  async function pairSalem() {
+  async function prepareSalemPairing() {
     await enterParent();
     expectOk(usePrototypeStore.getState().signOutExperience());
     expectOk(usePrototypeStore.getState().selectChildAccessProfile('child_salem'));
@@ -332,6 +379,10 @@ describe('Feature 005 store integration', () => {
     await enterParent();
     expectOk(usePrototypeStore.getState().approveChildPairing());
     expectOk(usePrototypeStore.getState().handoffApprovedChildPairing());
+  }
+
+  async function pairSalem() {
+    await prepareSalemPairing();
     expectOk(usePrototypeStore.getState().completeChildPairing());
   }
 
@@ -383,6 +434,20 @@ describe('Feature 005 store integration', () => {
     expect(serviceRegistry.deviceAccess.read()).toEqual({ ok: true, data: null });
   });
 
+  it('clears a stale affinity before creating a new family with Parent remembrance off', async () => {
+    expectOk(resetPrototypeForTest());
+    expectOk(serviceRegistry.deviceAccess.rememberParent(localFamily(), UPDATED_AT));
+
+    await enterParent();
+
+    expect(selectHasActiveParentExperience(usePrototypeStore.getState())).toBe(true);
+    expect(usePrototypeStore.getState()).toMatchObject({
+      rememberParentOnThisDevice: false,
+      deviceAccess: { primaryRole: 'none', primaryChildId: null },
+    });
+    expect(serviceRegistry.deviceAccess.read()).toEqual({ ok: true, data: null });
+  });
+
   it('blocks Parent logout when its remembered marker cannot be removed', async () => {
     expectOk(resetPrototypeForTest());
     await enterParent(true);
@@ -414,6 +479,74 @@ describe('Feature 005 store integration', () => {
     });
   });
 
+  it('leaves pairing approved and retryable when the family pairing marker cannot be saved', async () => {
+    expectOk(resetPrototypeForTest());
+    await prepareSalemPairing();
+    deviceLocalStorage.failNextWrite();
+
+    expect(usePrototypeStore.getState().completeChildPairing()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'signed_out',
+      childAccess: {
+        status: 'pairing_approved',
+        pairedDevices: [],
+        canEnterChildExperience: false,
+      },
+      deviceAccess: { primaryRole: 'none', primaryChildId: null },
+      localFamily: { record: { pairedChildIds: [] } },
+    });
+    expect(serviceRegistry.localFamily.read()).toMatchObject({
+      ok: true,
+      data: { pairedChildIds: [] },
+    });
+    expect(serviceRegistry.deviceAccess.read()).toEqual({ ok: true, data: null });
+
+    expectOk(usePrototypeStore.getState().completeChildPairing());
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(true);
+  });
+
+  it('rolls back the family marker and remains retryable when Child affinity cannot be saved', async () => {
+    expectOk(resetPrototypeForTest());
+    await prepareSalemPairing();
+    const persistPairing = serviceRegistry.localFamily.setPairedChild;
+    const scheduleAffinityFailure = vi
+      .spyOn(serviceRegistry.localFamily, 'setPairedChild')
+      .mockImplementationOnce((...args) => {
+        const result = persistPairing(...args);
+        if (result.ok) deviceLocalStorage.failNextWrite();
+        return result;
+      });
+
+    const result = usePrototypeStore.getState().completeChildPairing();
+    scheduleAffinityFailure.mockRestore();
+
+    expect(result).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'signed_out',
+      childAccess: {
+        status: 'pairing_approved',
+        pairedDevices: [],
+        canEnterChildExperience: false,
+      },
+      deviceAccess: { status: 'unavailable', primaryRole: 'none', primaryChildId: null },
+      localFamily: { record: { pairedChildIds: [] } },
+    });
+    expect(serviceRegistry.localFamily.read()).toMatchObject({
+      ok: true,
+      data: { pairedChildIds: [] },
+    });
+    expect(serviceRegistry.deviceAccess.read()).toEqual({ ok: true, data: null });
+
+    expectOk(usePrototypeStore.getState().completeChildPairing());
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(true);
+  });
+
   it('hands a remembered Child to temporary Parent access and returns after Parent logout', async () => {
     expectOk(resetPrototypeForTest());
     await pairSalem();
@@ -442,6 +575,23 @@ describe('Feature 005 store integration', () => {
     });
   });
 
+  it('stays signed out when remembered Child affinity disappears during temporary Parent access', async () => {
+    expectOk(resetPrototypeForTest());
+    await pairSalem();
+    expectOk(usePrototypeStore.getState().beginTemporaryParentAccess());
+    await enterParent();
+    expectOk(serviceRegistry.deviceAccess.clear());
+
+    expectOk(usePrototypeStore.getState().signOutExperience());
+
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(false);
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'signed_out',
+      temporaryParentAccess: null,
+      deviceAccess: { status: 'ready', primaryRole: 'none', primaryChildId: null },
+    });
+  });
+
   it('cancels temporary Parent entry back to Child and never bypasses active Parent separation', async () => {
     expectOk(resetPrototypeForTest());
     await pairSalem();
@@ -454,6 +604,24 @@ describe('Feature 005 store integration', () => {
     expect(usePrototypeStore.getState().selectChildAccessProfile('child_salem')).toMatchObject({
       ok: false,
       error: { code: 'INVALID_TRANSITION' },
+    });
+  });
+
+  it('fails closed when Child affinity disappears before temporary Parent entry is cancelled', async () => {
+    expectOk(resetPrototypeForTest());
+    await pairSalem();
+    expectOk(usePrototypeStore.getState().beginTemporaryParentAccess());
+    expectOk(serviceRegistry.deviceAccess.clear());
+
+    expect(usePrototypeStore.getState().cancelTemporaryParentAccess()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(false);
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'signed_out',
+      temporaryParentAccess: null,
+      deviceAccess: { status: 'ready', primaryRole: 'none', primaryChildId: null },
     });
   });
 
@@ -479,6 +647,41 @@ describe('Feature 005 store integration', () => {
       record: null,
       primaryRole: 'none',
     });
+  });
+
+  it('publishes durable unpairing and forgets cached Child access when controller revocation fails', async () => {
+    expectOk(resetPrototypeForTest());
+    await pairSalem();
+    expectOk(usePrototypeStore.getState().beginTemporaryParentAccess());
+    await enterParent();
+    const failControllerRevocation = vi
+      .spyOn(serviceRegistry.access, 'revokeDevice')
+      .mockReturnValueOnce({
+        ok: false,
+        error: {
+          code: 'INVALID_TRANSITION',
+          message: 'Prepared controller revocation failure',
+          retryable: false,
+          fallbackAvailable: false,
+        },
+      });
+
+    const result = usePrototypeStore.getState().revokeChildDevice('child_salem');
+    failControllerRevocation.mockRestore();
+
+    expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'parent',
+      childAccess: { pairedDevices: [], canEnterChildExperience: false },
+      deviceAccess: { primaryRole: 'none', primaryChildId: null },
+      localFamily: { record: { pairedChildIds: [] } },
+      temporaryParentAccess: null,
+    });
+    expect(serviceRegistry.localFamily.read()).toMatchObject({
+      ok: true,
+      data: { pairedChildIds: [] },
+    });
+    expect(serviceRegistry.deviceAccess.read()).toEqual({ ok: true, data: null });
   });
 });
 

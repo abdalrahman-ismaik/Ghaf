@@ -1,5 +1,32 @@
 # Team Ownership
 
+## 2026-09-08 Feature 005 Post-Merge Audit and Context Repair Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `.specify/feature.json`, the Spec Kit-managed block in
+`AGENTS.md` through the configured agent-context hook only, `src/state/usePrototypeStore.ts`,
+`src/features/access/{childAccess.ts,rememberedDeviceAccess.ts}`, and
+`tests/device-remembered-access.test.tsx`, and `specs/005-remembered-device-access/tasks.md`.
+
+**Scope**: Audit the newly merged Feature 005 remembered-device-access specification against its
+runtime and focused regressions; repair stale active-feature metadata; and close audited
+Child-pairing persistence, revocation, temporary-handoff, stale-affinity, and remembered-locale
+failures without weakening Parent/Child authority or changing the approved happy path. Preserve
+the user-owned untracked Reveal evidence and all unrelated worktree content.
+
+**Status**: Complete and released — upstream was merged without rewriting history at `64fc34b`;
+the local Spec Kit pointer now selects Feature 005 and the configured hook confirms the managed
+`AGENTS.md` plan path. The audit made Child pairing persistence transactional, fails closed on
+stale or missing handoff affinity, reconciles durable revocation even when controller revocation
+fails, clears stale affinity before opt-out family entry, and restores the remembered family's
+language. The focused Feature 005 suite passed 33 tests, ten surrounding access/reset files passed
+184 tests, and `npm run verify` passed typecheck, zero-warning lint, maintained-source formatting,
+122 files / 1,486 tests, Expo dependency alignment, and a 39-route static web export with the known
+`expo-file-system` web warning. Git whitespace validation passed. Physical Android process-death,
+SQLite, Back, TalkBack, font-scale, and named human reviews remain `NOT RUN`; the untracked Reveal
+evidence remained outside this window. The reservation is released.
+
 ## 2026-09-07 WSL/Windows Android Command Correction Window
 
 **Owner and only writer**: `/root`
