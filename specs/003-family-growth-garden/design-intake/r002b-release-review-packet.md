@@ -6,6 +6,11 @@
 
 **Release status:** BLOCKED
 
+**Evidence reconciliation — 2026-09-10:** The current branch includes the bounded Reveal
+completion evidence from `7d6a6da`, recorded in the 2026-09-07 validation delta. Its normal
+approval journey supplies all twelve authoritative consequences. The table below reflects that
+existing evidence; no new browser, native, or human acceptance is claimed by this reconciliation.
+
 This packet closes the source-verifiable readiness audit and gives reviewers one place to record
 the remaining evidence. It does not activate a flag or convert browser/source evidence into native
 or human approval. The detailed historical implementation evidence remains in
@@ -45,7 +50,7 @@ open release gate.
 | Private five-Leaf League                               | 320/360/390 | 390/430/768 | Partial             | Arabic only       | Not release-wide | `PARTIAL`                                                         |
 | Mangrove Learning Story                                | —           | —           | —                   | —                 | —                | `BLOCKED` until the truthful station-132 fixture is reached       |
 | Accessible Mangrove Learning                           | —           | —           | —                   | —                 | —                | `BLOCKED` until the truthful station-132 fixture is reached       |
-| Combined approval Reveal                               | —           | —           | —                   | —                 | —                | `BLOCKED` until complete authoritative consequence receipts exist |
+| Combined approval Reveal                               | 390         | 390 recovery | Partial            | Not captured      | 390 captured     | `PARTIAL`; complete normal-approval receipts and bounded recovery captured at `7d6a6da` |
 
 The retained local captures are untracked review artifacts and are not canonical design assets.
 The incomplete League/Learning/Reveal rows keep the release-wide capture and layout checklist open.

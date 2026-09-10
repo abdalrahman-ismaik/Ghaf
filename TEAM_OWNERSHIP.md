@@ -1,5 +1,48 @@
 # Team Ownership
 
+## 2026-09-10 Completion and Correctness Audit Window
+
+**Integration owner**: `/root`
+
+**Reserved boundaries**:
+
+- `/root`: this new ownership entry only, `specs/003-family-growth-garden/tasks.md`,
+  `specs/005-remembered-device-access/tasks.md`,
+  `specs/004-bounded-live-ai/approval-packet.md`,
+  `specs/003-family-growth-garden/design-intake/r002b-release-review-packet.md`,
+  `src/components/onboarding/{useOnboardingNarrator.ts,useOnboardingAmbience.ts,FirstRunOnboarding.tsx}`,
+  `src/features/onboarding/playback.ts`,
+  and `tests/{onboarding-audio-lifecycle,r003-first-run-experience,official-brand-platform}.test.ts`.
+- Access fix worker: `src/state/usePrototypeStore.ts` returning-Child credential action only and
+  `tests/device-remembered-access.test.tsx`.
+- Growth fix worker: `app/garden/impact-path.tsx`, `app/garden/badges/[badgeId].tsx`,
+  `app/garden/learn/[learningId]/{story.tsx,accessible.tsx}`,
+  `tests/r002b-learning-store.test.ts`, and `tests/r002b-learning-route-integration.test.ts`.
+  `src/state/usePrototypeStore.ts` transfers to this worker only after the access writer releases
+  it; the Growth edit is restricted to `startMangroveLearning`.
+
+**Scope**: Reconcile unfinished authorized work against current evidence, fix reproduced local
+access, learning-resume, and onboarding-audio defects, and run proportional regression checks.
+Keep Growth and optional AI flags default off. Preserve the pre-existing PDF ownership entries,
+untracked PDF and Reveal artifacts, and historical evidence. No production services, deployment,
+push, merge, or release activation is authorized by this window.
+
+**Status**: Complete and released. Local commits `b2202e2`, `1278f98`, and `8ba6f75` repair
+onboarding playback cleanup, returning Child retry after storage failure, and learning resume/Back.
+`a6db1c2` separates the platform-raster cases after the combined batch exceeded its timeout;
+the final common case type bounds compiler inference without changing any assertion.
+The full regression passed 123 files / 1,519 tests. Typecheck, zero-warning lint, maintained-source
+formatting, scoped checks, the 39-route web export, local Expo SDK compatibility, and Git
+whitespace passed. The export retains the known file-system web and color-environment warnings.
+
+T138/T139 now cite current-checkout validation; the Reveal packet cites its existing `7d6a6da`
+evidence; and the AI packet distinguishes its proposal snapshot from completed local implementation.
+CUA exposed no browser and rejected the in-app browser request. Physical Android and named review
+remain unverified, and every Growth/optional AI flag remains default off. The original two PDF
+ownership entries and untracked PDF/Reveal artifacts remain outside these commits. All workers
+released their boundaries. The source is ready for integration; no release, push, or deployment
+was performed.
+
 ## 2026-09-08 Feature 005 Post-Merge Audit and Context Repair Window
 
 **Owner and only writer**: `/root`

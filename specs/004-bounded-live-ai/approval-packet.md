@@ -8,6 +8,13 @@
 
 **Status**: ALL THREE APPROVED FOR DEFAULT-OFF IMPLEMENTATION — ACTIVATION BLOCKED
 
+**Evidence reconciliation — 2026-09-10**: All 87 implementation tasks are complete in
+[`tasks.md`](tasks.md), whose evidence log records the focused, full, and fake-provider checks.
+This packet preserves the original proposal and activation-review controls. Its proposal-time
+`NOT RUN` and `NOT STARTED` implementation rows are historical, not the current code status.
+Provider, deployment, native, named-human, and release gates remain unpassed. The active Spec Kit
+pointer now selects Feature 005 remembered device access; Feature 003 remains the product baseline.
+
 The product owner answered **"all three"** on 2026-09-07. This records implementation
 authorization for three independently controlled stages:
 
@@ -15,9 +22,9 @@ authorization for three independently controlled stages:
 2. **F5-TEXT** — live Child Coach text/structured interaction.
 3. **F5-VOICE** — visible one-shot push-to-talk and transcript review for eligible ages 12–14.
 
-The current Feature 003 deterministic journey remains authoritative and complete. The current
-`.specify/feature.json` and the Spec Kit-managed `AGENTS.md` block intentionally remain pointed at
-Feature 003 until Feature 004 moves through the normal planning workflow. Approval authorizes
+The Feature 003 deterministic journey remains authoritative and complete. At proposal time,
+`.specify/feature.json` and the Spec Kit-managed `AGENTS.md` block remained pointed at
+Feature 003 pending the Feature 004 planning workflow. Approval authorizes
 default-off code and synthetic/fake-provider or native-media harness tests only. It does not
 authorize deployment, a real provider call, real Child data in testing, or release activation.
 
@@ -440,7 +447,7 @@ malformed output, and safety rejection are never automatically sent back to the 
 | Operator, log, provider, or incident-data leakage | Child text, identity, consent and security evidence    | Raw content in logs/errors/traces, long provider retention/training, excessive operator access, unsafe incident export   | Field allowlist before network; no content logs; redaction tests; least-privilege access; bounded metadata TTL; ZDR/retention evidence; deletion workflow; segregated legal holds; access audit            | Privacy/legal review + deletion/log inspection                |
 | Native capture or transcription boundary          | Child voice, background speech, transcript, permission | Capture continues after release/background; audio is retained/reused; transcript auto-sends; speaker traits are inferred | One held foreground control; hard duration/size caps; stop-on-boundary lifecycle; separate grant/scope; review/delete/send; ZDR/deletion proof; no inference/analytics; physical Android evidence          | Voice privacy/safeguarding/native/provider gates              |
 
-### Control checklist by trust boundary
+### Preserved activation-review control checklist by trust boundary
 
 #### Mobile UI/store
 
@@ -562,9 +569,9 @@ Suggested security targets for the approved sandbox are 100% rejection of critic
 cases, zero unauthorized inference calls, zero authority mutations, zero raw-content log canaries,
 and zero cross-profile/stale displays. These are release gates, not claims about current behavior.
 
-## 8. Evidence gates
+## 8. Evidence gates — proposal-time snapshot
 
-| Gate                                               | Current status                     | Required evidence to pass                                                                                    |
+| Gate                                               | Proposal-time status               | Required evidence to pass                                                                                    |
 | -------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Repository archaeology and proposal completeness   | `PASSED` for Phase 1 source review | This packet, spec, and requirements checklist; no runtime assertion                                          |
 | Product contract approval                          | `PASSED` for implementation scope  | Product owner selected all three on 2026-09-07; recommended constraints retained                             |
@@ -586,7 +593,7 @@ and zero cross-profile/stale displays. These are release gates, not claims about
 Source inspection, TypeScript tests, fake provider calls, browser exports, or a configured flag can
 never pass provider, legal, human, or physical Android gates.
 
-## 9. Dependency-ordered implementation plan
+## 9. Original approved dependency-ordered implementation plan
 
 All three stages have product implementation authorization. Each task remains subject to exact
 file ownership, TDD, the independent default-off flag, and the prerequisites named for that task;

@@ -598,11 +598,18 @@ network request, or reward mutation.
       existing review/task routes, expose the existing language switch, and add paired resources in
       `src/components/family-growth/{ParentVoicePermissionPanel.tsx,SyntheticVoicePanel.tsx}`,
       `app/{parent/task/review.tsx,child/task.tsx}`, and `src/i18n/resources.ts`
-- [ ] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
+- [x] T138 [US11] Run focused tests, full typecheck/lint/format/test, route inventory, static web
       export, forbidden capability scan, Impeccable detector, and `git diff --check`; correct only
       defects within the reserved window
-- [ ] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
+- [x] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
       reservation, and commit the validated convergence checkpoint
+
+**Current-checkout closure — 2026-09-10**: These two stale rows are closed by the Phase 48
+verification below. The prepared-voice, bilingual, operator-route, and screen-flow set passed
+75 tests across four files. The supplemental Impeccable source/web scan returned `[]`, and the
+existing prepared-voice tests enforce its capture/provider boundary. Later default-off Feature 004
+adapters are outside that historical scan. No evidence from non-ancestor `8188a5c` is inherited.
+Fresh interactive browser and physical Android review were unavailable; neither is claimed passed.
 
 **Checkpoint**: User Story 11 is demonstrable as prepared/synthetic UI only. Parent enablement is
 explicit, locale changes do not alter the task or voice state, reset is exact, and Android/human
@@ -1544,3 +1551,48 @@ app-route scans, Expo public config, a 134-file / 39-route web export, and an An
 export with 94 assets passed. Expo dependency validation used only its local SDK map and therefore
 does not prove online registry freshness. No live gateway/model/deployment/token broker, browser,
 physical Android device, or named-human review ran; those gates remain `BLOCKED` or `NOT RUN`.
+
+---
+
+## Phase 48: Completion Audit and Recovery Corrections — 2026-09-10
+
+**Scope**: Correct approved runtime behavior and reconcile current evidence. No new product
+feature, Seed source, provider, permission, dependency, or release activation is introduced.
+
+- [x] T328 Audit unfinished Feature 003/004/005 work against current code and evidence. Feature
+      004's 87 implementation tasks and Feature 005's original 29 tasks were already complete.
+      Preserve the unrecorded historical RED rows T038/T046/T052/T058/T064/T073, superseded
+      T154–T158, and external or incomplete visual/native/human gates T080/T086/T218/T245.
+- [x] T329 Correct prepared onboarding audio cancellation, out-of-order replay, released-player
+      cleanup, and native screen-reader readiness. Seven behavioral playback regressions and
+      thirteen existing first-run contracts passed; the extracted previous playback behavior
+      reproduced four failures before correction. Both narration and ambience remain optional,
+      local, and nonblocking, with unchanged permission/audio-mode configuration.
+- [x] T330 Retain the original learning unlock snapshot after 132→144 progression, reuse its
+      validated profile/epoch origin after scroll or Path/Badge reentry, and include the profile
+      in Story/Accessible no-stack Back restoration. Five resume and four Back regressions failed
+      before correction; ten focused learning files passed 103 tests afterward. Immutable domain
+      evidence, equal-credit zero-Seed completion, and independent default-off flags remain intact.
+- [x] T331 Split the twelve-raster platform-brand assertion into individual asset cases after a
+      full run exceeded its five-second timeout. Preserve every checksum, dimension, and opacity
+      assertion and the existing timeout. The focused file passed all 17 cases.
+- [x] T332 Complete current full/static/export validation, reconcile T138/T139 and the Reveal/AI
+      review packets, record exact remaining external gates, and release the ownership window.
+
+The returning Child storage-failure correction is recorded separately as Feature 005 T030–T032.
+No historical Feature 002 result or non-ancestor commit is inherited as current evidence.
+
+**Final evidence**: The full `npm.cmd test -- --maxWorkers=2` run passed 123 files / 1,519 tests.
+Typecheck, zero-warning lint, maintained-source formatting, scoped branding formatting/lint,
+the current 39-route web export, and Git whitespace checks passed. Expo compatibility checked
+against its local SDK map; offline validation does not establish online registry freshness.
+The export retained the known `expo-file-system` web warning and Node color-environment warnings.
+The branding case input uses one explicit common type to keep TypeScript inference bounded;
+its final focused rerun retains all 17 asset/configuration cases.
+
+The active Feature 005 requirements checklist remained read-only and passed 16/16 checked items.
+No before/after-implementation extension hooks are configured. Interactive browser review is
+`BLOCKED` because CUA reported no browser surfaces and `Browser is not available: iab`.
+Android/TalkBack/Back/IME/process-death/font-scale, remaining responsive captures, content/rights,
+provider, and named-human reviews remain `BLOCKED / NOT RUN` as applicable. All R002b and optional
+AI defaults remain off. The repaired engineering boundary is ready for integration, not release.
