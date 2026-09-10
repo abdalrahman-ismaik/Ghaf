@@ -20,6 +20,14 @@ type DecodedPng = {
   data: Buffer;
 };
 
+type PlatformRaster = {
+  path: string;
+  width: number;
+  height: number;
+  sha256: string;
+  opacity: 'opaque' | 'transparent';
+};
+
 const appIconRoot = 'assets/brand/ghaf/app-icon';
 const brightPearl = '#F7F8F3';
 
@@ -109,6 +117,8 @@ const platformAssets = {
     opacity: 'opaque',
   },
 } as const;
+
+const platformAssetCases: PlatformRaster[] = Object.values(platformAssets);
 
 const protectedContentComponents = [
   'src/components/access/BotanicalAvatar.tsx',
@@ -247,7 +257,7 @@ function nestedFiles(directory: string): string[] {
 }
 
 describe('official Ghaf platform branding', () => {
-  it.each(Object.values(platformAssets))(
+  it.each(platformAssetCases)(
     'preserves approved raster $path byte-for-byte with its exact image class',
     (asset) => {
       expect(existsSync(resolve(root, asset.path)), asset.path).toBe(true);
