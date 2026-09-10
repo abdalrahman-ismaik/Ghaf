@@ -1,8 +1,9 @@
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AccessibilityInfo, Platform } from 'react-native';
 
 import type { LocaleCode } from '@/models/familyGrowth';
+import { createOnboardingPlayback, runOptionalAudio } from '@/features/onboarding/playback';
 
 import type { OnboardingStep } from './experienceModel';
 import { onboardingNarrationSources } from './onboardingAudioSources';
@@ -19,6 +20,7 @@ interface UseOnboardingNarratorOptions {
 interface OnboardingNarrator {
   readonly replay: () => void;
   readonly screenReaderActive: boolean;
+  readonly screenReaderReady: boolean;
   readonly status: OnboardingNarrationStatus;
 }
 
@@ -37,6 +39,7 @@ export function useOnboardingNarrator({
     updateInterval: 120,
   });
   const playerStatus = useAudioPlayerStatus(player);
+  const playback = useMemo(() => createOnboardingPlayback(player), [player]);
   const [screenReaderEnabled, setScreenReaderEnabled] = useState<boolean | null>(
     Platform.OS === 'web' ? false : null,
   );
@@ -45,17 +48,22 @@ export function useOnboardingNarrator({
     if (Platform.OS === 'web') return;
 
     let mounted = true;
+    let receivedChange = false;
     const updateScreenReader = (active: boolean) => {
       if (mounted) setScreenReaderEnabled(active);
     };
 
     void AccessibilityInfo.isScreenReaderEnabled()
-      .then(updateScreenReader)
-      .catch(() => updateScreenReader(true));
-    const subscription = AccessibilityInfo.addEventListener(
-      'screenReaderChanged',
-      updateScreenReader,
-    );
+      .then((active) => {
+        if (!receivedChange) updateScreenReader(active);
+      })
+      .catch(() => {
+        if (!receivedChange) updateScreenReader(true);
+      });
+    const subscription = AccessibilityInfo.addEventListener('screenReaderChanged', (active) => {
+      receivedChange = true;
+      updateScreenReader(active);
+    });
 
     return () => {
       mounted = false;
@@ -64,56 +72,32 @@ export function useOnboardingNarrator({
   }, []);
 
   useEffect(() => {
-    configureNarrationPlayer(player);
+    runOptionalAudio(() => configureNarrationPlayer(player));
   }, [player]);
 
   useEffect(() => {
-    let active = true;
-    player.pause();
+    playback.setEnabled(ready && screenReaderEnabled === false);
 
     if (
       !ready ||
       screenReaderEnabled !== false ||
       (Platform.OS === 'web' && !webPlaybackUnlocked)
     ) {
-      return undefined;
+      return () => playback.setEnabled(false);
     }
 
-    const start = async () => {
-      try {
-        await player.seekTo(0);
-        if (active) player.play();
-      } catch {
-        // The complete visible transcript keeps onboarding usable when playback fails.
-      }
-    };
-
-    void start();
-    return () => {
-      active = false;
-      player.pause();
-    };
-  }, [player, ready, screenReaderEnabled, webPlaybackUnlocked]);
+    void playback.restart();
+    return () => playback.setEnabled(false);
+  }, [locale, playback, ready, screenReaderEnabled, step, webPlaybackUnlocked]);
 
   const replay = useCallback(() => {
-    if (screenReaderEnabled !== false) return;
-
-    const restart = async () => {
-      try {
-        player.pause();
-        await player.seekTo(0);
-        player.play();
-      } catch {
-        // A replay failure does not block reading or navigation.
-      }
-    };
-
-    void restart();
-  }, [player, screenReaderEnabled]);
+    void playback.restart();
+  }, [playback]);
 
   return {
     replay,
     screenReaderActive: screenReaderEnabled === true,
+    screenReaderReady: screenReaderEnabled !== null,
     status: playerStatus.error ? 'unavailable' : playerStatus.playing ? 'speaking' : 'idle',
   };
 }

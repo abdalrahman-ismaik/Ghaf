@@ -193,7 +193,7 @@ export function FirstRunOnboarding() {
   });
   const ambience = useOnboardingAmbience({
     narrationPlaying: narration.status === 'speaking',
-    ready: slideReady,
+    ready: slideReady && narration.screenReaderReady,
     screenReaderActive: narration.screenReaderActive,
     webPlaybackUnlocked,
   });

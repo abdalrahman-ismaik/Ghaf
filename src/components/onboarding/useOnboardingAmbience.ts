@@ -2,6 +2,8 @@ import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import { useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
 
+import { runOptionalAudio } from '@/features/onboarding/playback';
+
 import { onboardingAmbienceSource } from './onboardingAudioSources';
 
 interface UseOnboardingAmbienceOptions {
@@ -43,27 +45,27 @@ export function useOnboardingAmbience({
   }, []);
 
   useEffect(() => {
-    configureAmbiencePlayer(player);
+    runOptionalAudio(() => configureAmbiencePlayer(player));
   }, [player]);
 
   useEffect(() => {
-    setAmbienceVolume(player, narrationPlaying);
+    runOptionalAudio(() => setAmbienceVolume(player, narrationPlaying));
   }, [narrationPlaying, player]);
 
   useEffect(() => {
     if (!ready || screenReaderActive || (Platform.OS === 'web' && !webPlaybackUnlocked)) {
-      player.pause();
+      runOptionalAudio(() => player.pause());
       return undefined;
     }
 
-    player.play();
+    runOptionalAudio(() => player.play());
     return () => {
-      player.pause();
+      runOptionalAudio(() => player.pause());
     };
   }, [player, ready, screenReaderActive, webPlaybackUnlocked]);
 
   const resume = useCallback(() => {
-    if (ready && !screenReaderActive) player.play();
+    if (ready && !screenReaderActive) runOptionalAudio(() => player.play());
   }, [player, ready, screenReaderActive]);
 
   return { resume };
