@@ -150,3 +150,16 @@ the user's normal separate-device or shared-device rules. No optional breadth is
   focused Feature 005 tests, 184 surrounding access/reset tests, and `npm run verify` at 122 files /
   1,486 tests plus the 39-route web export; retain native process-death, SQLite, Back, TalkBack,
   font-scale, and named human review as `NOT RUN`
+
+## Returning Child storage-failure correction — 2026-09-10
+
+- [x] T030 Reproduce returning paired-Child credential success despite failed affinity persistence
+  in `tests/device-remembered-access.test.tsx`, including the resulting unavailable Parent handoff.
+- [x] T031 Publish Child entry only after the remembered marker is saved. On write failure, end
+  the newly created synthetic session, preserve the selected paired profile, and allow PIN retry
+  without re-pairing in `src/state/usePrototypeStore.ts`.
+- [x] T032 Verify failed entry grants neither role, retains the approved pairing, and supports
+  retry followed by temporary Parent access and return to the same Child. The focused Feature 005
+  suite passed 34 tests; eight surrounding access/reset files passed 93 tests. Typecheck, scoped
+  zero-warning lint, formatting, and Git whitespace passed. Native and human evidence remains
+  `NOT RUN`; this correction adds no production access or persistence claim.

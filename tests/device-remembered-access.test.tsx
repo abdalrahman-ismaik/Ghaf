@@ -16,8 +16,7 @@ import {
   createParentOnboardingController,
   PARENT_VERIFICATION_CODE,
 } from '../src/features/access';
-import { createLocalFamilyRecord } from '../src/features/local-family';
-import { localFamilyRecordToReceipt } from '../src/features/local-family';
+import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../src/features/local-family';
 import { resources } from '../src/i18n/resources';
 import type { LocalFamilyRecord } from '../src/models/localFamily';
 import {
@@ -476,6 +475,48 @@ describe('Feature 005 store integration', () => {
     expect(serviceRegistry.deviceAccess.read()).toMatchObject({
       ok: true,
       data: { principal: { role: 'child', childId: 'child_salem' } },
+    });
+  });
+
+  it('keeps returning Child entry retryable when affinity storage fails before activation', async () => {
+    expectOk(resetPrototypeForTest());
+    await pairSalem();
+    expectOk(usePrototypeStore.getState().signOutExperience());
+    expectOk(usePrototypeStore.getState().selectChildAccessProfile('child_salem'));
+    deviceLocalStorage.failNextWrite();
+
+    expect(usePrototypeStore.getState().verifyChildCredential('2468')).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeExperience: 'signed_out',
+      childAccess: {
+        status: 'profile_selected',
+        selectedChildId: 'child_salem',
+        canEnterChildExperience: false,
+        pairedDevices: [{ childId: 'child_salem', status: 'paired' }],
+      },
+      deviceAccess: { status: 'unavailable', primaryRole: 'none', primaryChildId: null },
+      returningUserWelcome: null,
+    });
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(false);
+    expect(selectHasActiveParentExperience(usePrototypeStore.getState())).toBe(false);
+    expect(serviceRegistry.deviceAccess.read()).toEqual({ ok: true, data: null });
+    expect(serviceRegistry.localFamily.read()).toMatchObject({
+      ok: true,
+      data: { pairedChildIds: ['child_salem'] },
+    });
+
+    expectOk(usePrototypeStore.getState().verifyChildCredential('2468'));
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(true);
+    expectOk(usePrototypeStore.getState().beginTemporaryParentAccess());
+    await enterParent();
+    expectOk(usePrototypeStore.getState().signOutExperience());
+    expect(selectCanEnterChildExperience(usePrototypeStore.getState())).toBe(true);
+    expect(usePrototypeStore.getState()).toMatchObject({
+      activeChildId: 'child_salem',
+      temporaryParentAccess: null,
     });
   });
 

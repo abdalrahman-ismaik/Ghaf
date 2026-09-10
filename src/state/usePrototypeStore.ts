@@ -1635,7 +1635,6 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       ),
     );
     const result = childAccessController.verifyCredential(value, R001_ONBOARDING_TIME);
-    set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
     if (result.ok && result.data.canEnterChildExperience && result.data.selectedChildId) {
       const rememberedChild = state.localFamily.record
         ? serviceRegistry.deviceAccess.rememberChild(
@@ -1644,19 +1643,31 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
             R003_LOCAL_FAMILY_TIME,
           )
         : null;
+      if (!rememberedChild?.ok) {
+        const signedOut = childAccessController.signOut(R001_ONBOARDING_TIME);
+        if (signedOut.ok) childAccessController.selectProfile(result.data.selectedChildId);
+        set({
+          childAccess: childAccessController.getView(),
+          deviceAccess: deviceAccessView(null, 'unavailable'),
+          returningUserWelcome: null,
+        });
+        return !signedOut.ok
+          ? signedOut
+          : (rememberedChild ??
+              failure('INVALID_TRANSITION', 'A local family is required to remember Child access'));
+      }
       set({
+        childAccess: childAccessController.getView(),
         activeChildId: result.data.selectedChildId,
         activeExperience: 'child',
-        deviceAccess: rememberedChild
-          ? rememberedChild.ok
-            ? deviceAccessView(rememberedChild.data)
-            : deviceAccessView(null, 'unavailable')
-          : state.deviceAccess,
+        deviceAccess: deviceAccessView(rememberedChild.data),
         role: 'child',
         returningUserWelcome: hasActivePairing
           ? { kind: 'returning_child', childId: result.data.selectedChildId }
           : null,
       });
+    } else {
+      set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
     }
     return result;
   },
