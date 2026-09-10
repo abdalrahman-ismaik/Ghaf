@@ -196,6 +196,51 @@ describe('R002b learning store integration', () => {
     expect(legacyRewardSnapshot()).toEqual(rewardsBefore);
   });
 
+  it('retains its unlock snapshot when lifetime progress reaches the next station', async () => {
+    await enterChildExperienceForTest();
+    usePrototypeStore.setState({ growthJourney: runtimeAt132() });
+    const started = usePrototypeStore.getState().startMangroveLearning('story', ORIGIN);
+    expectOk(started);
+    expectOk(usePrototypeStore.getState().advanceMangroveLearning('story', 'story_frame_1'));
+    const learningBefore = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+    const runtime = usePrototypeStore.getState().growthJourney;
+    const ledger = runtime.ledgersByProfile.child_salem;
+    const at144 = projectRecognitionSeedEntry({
+      ledger,
+      profileId: 'child_salem',
+      profileEpochId: ledger.profileEpochId,
+      triggerEventId: 'learning-resume-144',
+      recognitionKey: 'recognition:learning-resume-144',
+      seedTransactionId: 'seed-transaction:learning-resume-144',
+      amount: 12,
+      committedAt: '2026-09-05T12:24:00.000Z',
+      fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
+      mangroveTransition: null,
+    });
+    expectOk(at144);
+    usePrototypeStore.setState({
+      growthJourney: {
+        ...runtime,
+        ledgersByProfile: { ...runtime.ledgersByProfile, child_salem: at144.data.ledger },
+      },
+    });
+    const growthBefore = usePrototypeStore.getState().growthJourney;
+    const rewardsBefore = legacyRewardSnapshot();
+
+    const resumed = usePrototypeStore.getState().startMangroveLearning('story', ORIGIN);
+
+    expectOk(resumed);
+    expect(resumed.data.disposition).toBe('resumed');
+    expect(resumed.data.state).toEqual(learningBefore);
+    expect(resumed.data.state.unlockEvidence?.reachedThresholds).toEqual([120, 132]);
+    expect(usePrototypeStore.getState().growthJourney).toBe(growthBefore);
+    expect(legacyRewardSnapshot()).toEqual(rewardsBefore);
+    expectOk(usePrototypeStore.getState().startMangroveLearning('accessible', ORIGIN));
+    expectOk(
+      usePrototypeStore.getState().advanceMangroveLearning('accessible', 'accessible_section_1'),
+    );
+  });
+
   it('does not award Mangrove Care at 132 without all criteria', async () => {
     await enterChildExperienceForTest();
     usePrototypeStore.setState({ growthJourney: runtimeAt132() });

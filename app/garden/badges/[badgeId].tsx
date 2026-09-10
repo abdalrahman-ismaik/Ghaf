@@ -6,6 +6,7 @@ import { BadgeDetail } from '@/components/r002b/GrowthJourneyScreens';
 import { R002bNestedScreen, R002bUnavailableState } from '@/components/r002b/R002bNestedScreen';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { useR002bGrowthPresentation } from '@/features/growth/useR002bGrowthPresentation';
+import { restoreMangroveLearningState } from '@/features/learning/mangroveLearning';
 import { createValidatedBackHandler } from '@/features/navigation/r002bBack';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import {
@@ -14,6 +15,7 @@ import {
 } from '@/features/navigation/r002bRouteRequest';
 import type { BadgeId } from '@/models/achievements';
 import type { SyntheticChildId } from '@/models/familyGrowth';
+import type { LearningOrigin } from '@/models/learning';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface BadgeDetailParams extends Record<string, R002bRouteParam> {
@@ -134,16 +136,17 @@ function AuthorizedBadgeDetail({
     router.push('/child/task');
   };
   const openLearning = (learningId: 'learning.mangrove_roots.v1') => {
-    const routeOrigin = createR002bOrigin({
-      id: 'badge_detail_learning_action',
-      profileId,
-      entityId: badgeId,
-      filter: access.origin.filter ?? 'all',
-      galleryScrollOffset: access.origin.scrollOffset ?? 0,
-      scrollOffset: scrollOffsetRef.current,
-    });
-    if (!routeOrigin.ok) return;
-    const started = usePrototypeStore.getState().startMangroveLearning('story', {
+    const state = usePrototypeStore.getState();
+    const learning = restoreMangroveLearningState(state.mangroveLearningByProfile[profileId]);
+    if (
+      !learning.ok ||
+      learning.data.profileId !== profileId ||
+      learning.data.profileEpochId !==
+        state.growthJourney.ledgersByProfile[profileId].profileEpochId
+    ) {
+      return;
+    }
+    const origin: LearningOrigin = learning.data.origin ?? {
       kind: 'badge_detail',
       route: '/garden/badges/[badgeId]',
       profileId,
@@ -152,7 +155,26 @@ function AuthorizedBadgeDetail({
       focusTargetId: 'r002b-badge-detail-learning-action',
       galleryScrollOffset: access.origin.scrollOffset ?? 0,
       scrollOffset: scrollOffsetRef.current,
-    });
+    };
+    if (origin.kind !== 'impact_path' && origin.kind !== 'badge_detail') return;
+    const routeOrigin = createR002bOrigin(
+      origin.kind === 'badge_detail'
+        ? {
+            id: 'badge_detail_learning_action',
+            profileId,
+            entityId: origin.badgeId,
+            filter: origin.filter,
+            galleryScrollOffset: origin.galleryScrollOffset,
+            scrollOffset: origin.scrollOffset,
+          }
+        : {
+            id: 'impact_path_learning_action',
+            profileId,
+            scrollOffset: origin.scrollOffset,
+          },
+    );
+    if (!routeOrigin.ok) return;
+    const started = state.startMangroveLearning('story', origin);
     if (!started.ok) return;
     router.push({
       pathname: '/garden/learn/[learningId]/story',

@@ -2387,7 +2387,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       profileEpochId: context.data.profileEpochId,
       route,
       origin,
-      ...(unlocked
+      ...(unlocked && context.data.learning.unlockEvidence === null
         ? {
             unlockEvidence: {
               profileId: context.data.profileId,
