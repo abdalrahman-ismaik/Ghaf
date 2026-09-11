@@ -183,7 +183,20 @@ entry route. No queued pop/replace, old route parameters, authority persistence 
 Files: `src/utils/navigation.ts`, `app/parent/settings/index.tsx`,
 `src/components/PrototypeStatusBar.tsx`, `tests/reset-navigation.test.ts`. The installed reducer
 reproduced the old failure (1 failed / 3 passed); the new focused reset/access set passes49tests,
-with typecheck and scoped lint/format passing. Full candidate typecheck/lint/format and138files/1,677tests pass; actual D retest remains pending.
+with typecheck and scoped lint/format passing. Full candidate typecheck/lint/format and138files/1,677tests pass; D verified and released three actual browser reset sequences; report93a98c0 integrated7beb61c.
 Exact three helper prompts, generated contributions and rejected shortcuts are preserved in
 [A's report](workstreams/a-contract.md#a-008--one-validated-root-reset-after-the-queued-pop-failure).
 Human exact-diff review/teach-back and physical Android validation remain pending.
+
+### Independent final QA and integration handoff
+
+D's [candidate report](workstreams/d-candidate.md) contains actual successive requests, helper
+prompts, prepared UI journeys, read-only state observations, labeled replacement command/fault
+probes and rejected evidence. Its report-only commitsadcec89/cf2f740/04ffee9/93a98c0 were integrated
+as4392184/a55621e/61810e5/7beb61c preserving configured authorship; no student contribution is
+inferred from Git identity. A excluded wrong-worktree captures and transitional splash screenshots
+from settled-UI claims, inspected the final entry capture and retained the Arabic CSS-stress crop
+and audio/native/recovery limitations. No generated screenshot was used as executed-test evidence.
+A's final report records exact source7fff0f3,138files/1,677tests, per-deviceNOT RUN, pending student
+review and the bounded next-work cursor. Human exact-diff acceptance and participant teach-back
+remain PENDING. No new feature, dependency, real account, provider, release flag or remote action.

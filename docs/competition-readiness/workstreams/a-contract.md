@@ -371,3 +371,69 @@ underlying lifetime/Reward progress from default personal balance and default-of
 Rejected: generic reset pass, treating CSS200% secondary-label clipping as native evidence, or
 claiming audio fallback rendered means playback worked. Helper no edits/tests/jobs/descendants;
 human content/teach-back review remains PENDING.
+
+## Session A local integration verdict
+
+**Local source candidate ready for exact-diff student review; competition/native acceptance is
+BLOCKED.** Runtime `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`, branch `redesign/ui-experiments`.
+Later report/coordination commits change no app source. No APK, installed build identity or
+physical device was produced. D-026 reports three successful browser reset sequences on identical
+source. Final D report93a98c0 is released and integrated as7beb61c; preceding report commits
+adcec89/cf2f740/04ffee9 integrated4392184/a55621e/61810e5 with authorship preserved.
+
+| Bounded slice            | Before → after                                                                                                                                         | Source commit / evidence                                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| A-004 Parent entry       | First-run introduction interrupted valid temporary Parent handoff → existing Parent verification route takes precedence, without authenticating Parent | ffad798;52focused tests; D actual remembered-Child reload/cancel/invalid/valid verification trace onb2208aa       |
+| B-004 family replacement | Old League/reveal commitments survived replacement → fresh family epoch clears both; cancellation/save failure preserves sampled old state             | f38f21d from B a081f642; focused tests and D source/command/fault probe, not complete replacement UI/native proof |
+| A-006 Arabic duration    | Reversible numeric range → explicit Arabic wording, same15–30minute task and+12 award                                                                  | 4d26635;44focused tests; C/D bilingual browser states                                                             |
+| C-002 Child Today        | Task actions competed with explanation → choice/help actions precede explanation, time/award/supervision remain visible                                | 1428622 from C a356998;39focused tests and sampled bilingual browser states                                       |
+| A-008 reset              | Queued dismiss/replace raced with access guards and blocked next verification → one validated public root reset clears previous routes/params          | 7fff0f3;49focused tests; D three actual sequences, both callers, Back/reload/fresh access                         |
+
+Full final-candidate checks: typecheck, lint, formatting and138files/1,677tests PASSED, exact log
+path/UTC above. Tests are automated evidence, not student understanding or physical acceptance.
+D core journey onb862eb6 demonstrates Parent approval→Child choice/help→submission→Parent praise
+→one recognition, default Seeds48→60 and Mangrove48/60→60/60. League/canopy, Green Circle,
+lifetime ledger and private Reward remain separate authorities. All eight R002b flags stay off.
+Prepared/local/fallible AI labels remain; no generalized live Coach, sync or user-facing durable
+memory timeline was introduced. A-007b2208aa is preserved as an insufficient attempted correction,
+not counted as another successful repair.
+
+Remaining gates and defects:
+
+- **BLOCKED native/APK**: missing JDK/Android build components and actual devices. Build path and
+  exact inspected inputs are in `../android-build-and-rehearsal.md`; no license acceptance, native
+  build, APK hash, installed model/OS, TalkBack, native Back/keyboard/text-scale or playback pass.
+- **NOT RUN physical rehearsals**: primary0/10; secondary installation/touch/restart/reset0.
+  The150second storyboard is a target. Two independent local installs do not demonstrate sync.
+- **OPEN recovery gap**: saved access/directory survives reload, task/progress does not.
+  Reviewed proposal014ca54e40 remains unaccepted/unimplemented; exact typed contract review and
+  authorization precede any runtime grant. The pending scope question has no answer; no inferred
+  consent. No memory, rationale expansion or agenda selected.
+- **OPEN D-R03/P3**: Arabic secondary smaller-task label clips under injected CSS200% stress;
+  primary remains usable in that capture. Native/normal-scale regression is not established.
+- **Media evidence limited**: prepared labels/image/transcript fallback observed; Firefox audio
+  sink errors prevent a playback claim. No real Child recording or analysis.
+- **PENDING human acceptance**: exact diff review, named Arabic/cultural/accessibility review,
+  actual student contributions and code teach-back. No names, understanding or approvals invented.
+- **Qualification unknown**; September8 submission deadline is past, September14 freeze and15
+  rehearsal remain the planning targets. September16 presentation depends on qualification.
+
+The next eligible engineering batch needs an exact build environment/device handoff or an actual
+014 scope decision followed by committed accepted authority. Do not expand optional features to
+fill time. All commits remain local; no push/main merge/deploy/submission/history rewrite or
+release activation performed. The canonical board records final resource/file release separately.
+
+Final independent evidence: [D candidate report](d-candidate.md), exact source identities and
+successful artifact filenames preserved. A read all three successful reset JSON results and
+inspected `final-welcome-settled.png` (Arabic entry controls visible, no error overlay). Earlier
+`reset-remembered-child.png` and `final-signed-out.png` show transitional logos and were excluded
+from settled-screen proof. Final visual evidence is only operable entry, not screen-wide artwork
+acceptance. D-027 explicitly released report/artifacts/preview/helper quota and acknowledged A-026
+status pause after Metro278873/exec66015 stopped and Firefox279164 closed. No job/helper survives.
+
+Source comparison against7fff0f3 remains empty for app/src/tests/package/config paths after D's
+report integration. The final docs checkpoint requires only scoped formatting/link/whitespace
+checks; there is no new runtime change warranting another full suite. Finished A/B/C/D source,
+report and resource boundaries are released at the final coordination checkpoint. Draft014
+proposal paths are released without acceptance; future work must obtain an exact READY grant.
+Canonical status sole-writer rules remain; a paused record does not become another lead's file.

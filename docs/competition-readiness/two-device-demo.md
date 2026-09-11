@@ -6,13 +6,14 @@ The two installations have separate local state. Live synchronization is deferre
 
 This is the current-feature operator and acceptance script, not completed rehearsal evidence.
 Runtime target: `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`; later documentation commits do not
-change that source. Full checks pass (138 files / 1,677 tests); D's narrow root-reset retest is in progress. Source-verified
+change that source. Full checks pass (138 files / 1,677 tests); D's three successive root-reset browser sequences pass. Source-verified
 b862eb6 core journeys and b2208aa access traces are separate evidence. The b2208aa dismissal guard
 failed the real reset race; no prior passing suite closes that defect. Initial mixed-worktree
 preview captures are excluded from candidate evidence.
 The current build supports the canonical task/help/Parent-confirmation/growth flow locally, but
 progress restoration, a durable private memory leaf/timeline and generalized recommendation
-presentation remain gaps. See [current QA](qa-report.md). Do not narrate proposed features as built.
+presentation remain gaps. See [current candidate QA](workstreams/d-candidate.md);
+[initial QA](qa-report.md) retains its historical source attribution. Do not narrate proposed features as built.
 
 The supplied [orientation](../SMAC%202026/SMAC2026_Orientation_Day.pdf), page 12, specifies a
 2–3 minute submission video and September 16 for qualified teams' on-campus demonstration.
@@ -82,7 +83,8 @@ instructions. A-004 now routes a valid temporary Child-to-Parent handoff directl
 Parent sign-in even with fresh introduction state; it does not authenticate the Parent. Parent
 logout returns to the eligible remembered Child through the existing flow. D verified the actual
 remembered-Child reload, handoff, cancellation and invalid/valid verification on b2208aa; Android
-Back/restart remains an independent gate. The new root-reset correction requires its own retest.
+Back/restart remains an independent gate. The root-reset correction passed separate Settings/statusbar/root-only browser sequences on7fff0f3;
+that evidence does not pass Android navigation.
 
 No durable memory or generalized recommendation surface is selected. Proposed recovery 014 is
 separate and unaccepted; the script must not promise progress survives process restart. If the
@@ -119,7 +121,7 @@ the main storyboard unless there is genuine time and all its gates pass.
 | Parent presses Confirm again                          | Existing result; no duplicate Seeds or growth                           | Automated invariants plus D duplicate command probe pass; not a pointer double-click or durable replay proof |
 | Reload/process death after acceptance or confirmation | Future accepted 014: restore validated profile-scoped task/progress     | Current process-local progress is lost; 014 DRAFT only, no recovery pass                                     |
 | Corrupt or unknown saved version                      | No new authority or awards; clear recovery route                        | Reviewed draft 014 exists; acceptance and implementation pending                                             |
-| Reset during a pending write                          | Signed-out Arabic baseline; stale work cannot resurrect family/progress | New root-reset candidate retest pending; durable-write race acceptance requires new contract/work            |
+| Reset during a pending write                          | Signed-out Arabic baseline; stale work cannot resurrect family/progress | Three browser reset sequences pass; durable-write races require new contract/work and native validation      |
 | Optional model times out                              | Same-attempt prepared fallback; truthful label                          | Do not claim live AI without direct server evidence                                                          |
 | Primary phone cannot recover                          | Switch to independently prepared spare or a clearly labeled recording   | This is a presentation fallback, not a passed interrupted-session restoration test                           |
 

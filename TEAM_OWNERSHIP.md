@@ -9,18 +9,18 @@
 local integration and honest build/rehearsal evidence. New recovery, rationale and memory behavior
 requires its committed accepted contract; this reservation does not approve those features.
 
-**Current disposition — 2026-09-11 23:26 UTC**: A-004/A-006/A-007/A-008 and B-004/C-002
-source changes are locally integrated and released. A-007 did not close the actual reset race;
-A-008 `7fff0f3c2dc0e802ba1da6a67cd2513a75824809` passes typecheck/lint/format and138files/1,677tests.
-D alone holds candidate report `docs/competition-readiness/workstreams/d-candidate.md`, ignored
-artifacts and preview lane for D-005-r17 actual A-008 reset retest. A retains master documents,
-package README (r18 evidence-pointer grant), BOARD/STATUS-A and draft014 proposal corrections.
-Draft014 `ca54e40` is unaccepted/unimplemented; no runtime grant. B/C are explicitly paused with
-source/jobs/helpers released. A's final read-only helper is complete/released and full-check
-runner276567/exec40754 completed; no A jobs/helpers remain. Earlier reservations below are history
-unless explicitly retained here or in the live board. Native/APK/student gates remain open.
+**Final disposition — 2026-09-11 23:32:44 UTC**: local source candidate
+`7fff0f3c2dc0e802ba1da6a67cd2513a75824809` passes typecheck/lint/format and138files/1,677tests.
+A-004/A-006/A-008 and B-004/C-002 repairs/refinement are integrated. A-007 was insufficient and
+is preserved as history. D's report93a98c0 integrated7beb61c closes the assigned browser reset
+subset; no native/full-matrix acceptance. A/B/C/D finished source/report/artifact paths and helper,
+heavy-job and preview allocations are RELEASED at this handoff. All jobs/helpers stopped.
+A master docs and draft014 proposal reservations below are historical after the final checkpoint;
+014ca54e40 remains unaccepted/unimplemented, not an implementation grant. Canonical status files
+retain their sole writers; A remains integration owner for future grants. No unfinished source
+path is held. Native/APK, actual devices, student review and rehearsal remain blocked/not run.
 
-**Reserved boundaries**:
+**Reserved boundaries during this completed batch**:
 
 - A: canonical `docs/competition-readiness/coordination/BOARD.md` and `STATUS-A.md`, this file,
   `docs/competition-readiness/workstreams/a-contract.md`, `requests.md` and
@@ -44,7 +44,8 @@ feature grant. Shared dependencies are linked read-only at identical lockfiles; 
 **A-002 planning reservation**: `specs/014-local-progress-recovery/**` and
 `.specify/feature.json`, A only, DRAFT with no implementation/release authority.
 
-**Status**: Running. Preserve concurrent B/C/D status writes and untracked `docs/SMAC 2026/`.
+**Status**: Paused at a completed local integration handoff, with remaining native/human/scope gates.
+Preserve canonical B/C/D status authorship and untracked `docs/SMAC 2026/`.
 Only A stages live coordination, following the status-pause/ACK protocol. No push, main merge,
 deployment, release activation or fabricated student approval is authorized.
 
