@@ -1,11 +1,19 @@
 # D candidate validation — successive browser checkpoints
 
-**Verdict: reset correction b2208aa FAILED its dismissible-stack browser retest.** Automated
-checks passed in Session A. D observed Arabic and English progression and guarded access, with
-the evidence limits below. Root-only reset passed; the development overlay remains open.
-Sections through the first checkpoint retain source b862eb6 attribution; the D-004 section records
-new source b2208aa evidence. No complete browser matrix is claimed for either candidate.
-This report does not pass physical Android, durable recovery, human review or demo readiness.
+**Verdict: D-R02 reset defect is closed for the tested browser boundary on7fff0f3.**
+A's full checks pass; D's three successive UI reset cycles, both callers, Back/reload and
+post-reset route isolation pass. Earlier source-specific core evidence is explicitly attributed
+below. P3 Arabic CSS-stress clipping remains open; the complete matrix is not passed.
+No APK, physical Android, human review or timed rehearsal acceptance is established.
+
+| Runtime source | A-run checks                    | D evidence disposition                                                                  |
+| -------------- | ------------------------------- | --------------------------------------------------------------------------------------- |
+| b862eb6        | Four checks;138files/1,669tests | AR/EN core and EN retry; B command/fault probe; reset development defect reproduced     |
+| b2208aa        | Four checks;138files/1,670tests | Complete remembered-access trace; root-only reset passes, dismissible reset still fails |
+| 7fff0f3        | Four checks;138files/1,677tests | Narrow reset correction passes both callers and all r17 assigned browser branches       |
+
+The historical checkpoint sections retain their original candidate attribution and failed evidence.
+The final D-005 section below owns the current closure and integration verdict.
 
 ## Identity, ownership and evidence classes
 
@@ -390,3 +398,87 @@ The helper returned the original prompt above and reaffirmed its bounded source-
 then released. No new source review, writes, jobs or student participation resulted. A narrow
 attempt to recover that prompt from session logs did not produce readable original call text;
 no reconstructed wording is presented as verbatim.
+
+## D-005 final reset correction and release
+
+Runtime source **`7fff0f3c2dc0e802ba1da6a67cd2513a75824809`**, granted by D-005-r17.
+QA branch `redesign/qa-reset-20260912`, execution HEAD
+`a1f18525bd11dc5d5fe7bd85275a1799f4184c33` carries that correction plus D report commits.
+`git diff --name-only 7fff0f3 -- app src tests package.json package-lock.json app.config.ts
+ tsconfig.json vitest.config.mts eslint.config.js` exited0 without paths. No product source edit
+was made by D. The only durable D write in this batch is this report.
+
+New evidence root: `output/competition-readiness/d-7fff0f3/`. `identity.json` verifies the loaded
+local `prepareEntryReset` utility, both corrected callers using the public container ref and no
+foreign application routes. Owned uncached Metro278873/exec66015 and Firefox279164 were used;
+Firefox155.0, Node24.16.0/npm11.13.0. No dependencies were installed. Ordinary desktop browser
+viewport was used for reset behavior; final Welcome was sampled at390×844, not an identified phone.
+
+D inspected A's `output/competition-readiness/integration-7fff0f3/results.json` and `tests.log`:
+
+| A-run command                | Actual UTC on2026-09-11 | Result                            |
+| ---------------------------- | ----------------------- | --------------------------------- |
+| `npm run typecheck`          | 23:23:18–23:23:30       | PASSED, exit0                     |
+| `npm run lint`               | 23:23:30–23:23:33       | PASSED, exit0                     |
+| `npm run format:check`       | 23:23:33–23:23:44       | PASSED, exit0                     |
+| `npm test -- --maxWorkers=2` | 23:23:44–23:24:11       | PASSED, exit0;138files/1,677tests |
+
+D did not duplicate these checks. Historical failed/cached evidence remains preserved.
+
+**PASSED — D-R02 assigned browser retest.** Three successive UI reset cycles with fresh setup
+between them were executed, not rapid duplicate presses or every interruption state:
+
+| Case                                          | Actual observed path                                                                                                                                                                               | Durable local artifact                                                                     |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Remembered Child/dismissible Parent Settings  | Fresh AR setup/Guide/assignment/pairing; Child accepts/starts/help; actual reload restores Child affinity; temporary Parent verification; Settings reset; Back; fresh English code verification    | `ar-setup-pair.json`, `remembered-reload-before-reset.json`, `reset-remembered-child.json` |
+| Outer status-bar caller/dismissible app stack | Complete fresh EN family setup; actual Garden→Green Circle; visible status-bar reset; Back                                                                                                         | `en-setup-garden.json`, `reset-statusbar-confirmed.json`                                   |
+| Root-only Parent Settings                     | Fresh AR setup; sign out; actual returning Parent code verification with remembering; Settings reload leaves sole Settings history; reset; Back; actual reload; direct Parent/Child route attempts | `root-only-reload.json`, `reset-root-only-final-isolation.json`                            |
+
+Each successful reset leaves the actual nested stack at `__root`→`index` with fresh keys and no
+old route params. Locale is Arabic; Parent and Child authorization are false; directory, paired
+Child markers, device affinity, temporary access and task are absent. The final reload and direct
+`/parent/settings` and `/child` attempts return to signed-out entry without resurrecting old access.
+All eight independent R002b flags remain false. Existing baseline Seed fixtures48/36 remain; no
+new recognition receipt appears. This is reset/access evidence, not durable task restoration.
+
+All three successful reset handlers captured zero console errors and zero matching visible error
+buttons. An exact raw-log search for `[ERROR]` or `POP_TO_TOP` in
+`/home/smyk/projects/Ghaf/output/playwright/177671/console-2026-09-11T23-24-29-873Z.log`
+returned no matches (rg exit1). Prepared ambient audio emitted headless media-sink warnings;
+no successful playback or native audio claim follows. `reset-statusbar.json` and
+`root-only-setup.json` preserve hidden duplicate-test-ID selector errors. Their successful
+continuations are the specifically named files above, not erased/relabelled original failures.
+
+`final-signed-out.png` was captured during the startup logo and does not pass settled entry
+presentation. `final-welcome-settled.json/png` instead records actual Skip interaction, visible
+Arabic Parent/Child entry controls and cleared authority. This capture is evidence of operable
+signed-out entry, not complete illustration or screen-wide visual acceptance.
+
+**Evidence reuse is limited and explicit.** The four A008 runtime/test paths are the navigation
+utility, two reset callers and reset tests. Task/store/Guide/Coach/card/privacy source is unchanged
+from the earlier exact candidates. The AR/EN core progression, EN retry and B replacement command
+results remain attributed to b862eb6; the stronger A004/Coach/Guide/offline and CSS-stress results
+remain attributed to b2208aa. They were not rerun as an entire7fff0f3 matrix or promoted to native.
+
+The independent helper reviewed the successful raw traces and found no critical r17 branch
+missing. It accepted narrow D-R02 closure and required the precise three-cycle wording above.
+It released its read-only allocation with no writes, tests, browser, jobs or descendants.
+Actual final-audit prompt:
+
+> Final D-005-r17 independent evidence audit, one D helper slot. You are not alone; no writes/status/BOARD/tests/browser/jobs/commits/descendants. Exact runtime source 7fff0f3c2dc0e802ba1da6a67cd2513a75824809; QA HEAD a1f18525bd11dc5d5fe7bd85275a1799f4184c33 differs only prior D report history. Read ignored QA output/competition-readiness/d-7fff0f3/identity.json, remembered-reload-before-reset.json, reset-remembered-child.json, reset-statusbar-confirmed.json, root-only-reload.json, reset-root-only-final-isolation.json. Question: do successful actual UI/reset/Back/reload/deep-link traces substantiate narrow D-R02 closure for both callers/root-only and dismissible stacks, while leaving all native/human/full-matrix gates unpassed? Flag any material overclaim or missing critical branch in boardr17. The initial reset-statusbar.json and root-only-setup.json include selector strictness errors, preserved and superseded only by the succeeding traces. A full7fff checks138files1677tests are attributed; D didn't rerun. Root edits only d-candidate report while you review artifacts read-only. Return compact verdict/release and exact prompt if needed; existing Astra/ultra launch, tier unexposed.
+
+**Integration/readiness:** evidence and the reviewed reset boundary are ready for A's integration.
+D-R01 environment attribution failure is resolved for the uncached runs; D-R02 is closed only for
+this assigned browser scope; D-R03 remains a P3 injected-CSS clipping observation, with no new UI
+fix selected. No other browser matrix row silently changes status. Baseline native/device scripts
+and student Q&A remain the handoff; no actual student answers or reviewer identities were invented.
+Primary and secondary APK/model/OS/install/RTL/touch/TalkBack/Back/IME/font-scale/background/audio/
+permissions/reduced-motion evidence remains BLOCKED/NOT RUN. Real timed rehearsals remain0,
+qualification unknown,014 unaccepted/unimplemented and memory unselected. Full demo acceptance,
+release activation, production security, live AI and measured environmental impact are not claimed.
+
+After this final report's scoped checks and commit, D releases the report and ignored evidence
+boundaries to A. The owned browser was closed and Metro stopped with Ctrl-C (exit130); no D job
+or helper remains. Source/files from other sessions and the existing ADB daemon were preserved.
+Canonical STATUS-D records the exact final commit, explicit release and A-026 status-write pause;
+A alone may stage the live coordination records. No push, merge, deployment or submission occurred.
