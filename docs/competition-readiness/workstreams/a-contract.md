@@ -213,3 +213,34 @@ initial-versus-current assistance labels, inactive paused B/C quotas and current
 A sent other-status corrections through numbered outbox messages, preserving sole writers and
 unacknowledged asks. No stale timestamp transferred ownership. Helper completed and released;
 review does not pass product, native or human evidence. Actual prompt/settings limits preserved.
+
+## D preview attribution failure — initial evidence withdrawn
+
+D-015 found that port8097 served `../Ghaf-ui-studio/app/index.tsx` without A-004 while D disk
+HEAD was b862eb6. Initial D browser journeys/screenshots/probes are therefore candidate-ineligible.
+A had viewed `ar-assigned-390.png` and `ar-growth.png` as visual observations; they do not establish
+this integrated runtime's pass. D preserves the mismatch artifact and reruns after clearing the
+owned preview cache and verifying loaded routes. This is a development-preview identity failure,
+not yet a reproduced app regression. The full automated suite ran in the canonical source checkout
+and remains separately attributable. No source fix or dependency mutation follows from inference.
+
+Read-only Expo cache/root task to the reused `/root/android_build_audit` helper:
+
+```text
+A reuses its one helper quota for READ-ONLY Expo preview identity analysis. Others edit; preserve all files. No writes, descendants, tests, server, browser, install or package edits. D owns uncached repro/retest. Exact observed failure: D worktree /home/smyk/projects/Ghaf-qa-rehearsal at b862eb6 ran port8097, but loaded Metro route ../Ghaf-ui-studio/app/index.tsx lacked A004 while store module appeared src/state/usePrototypeStore.ts. All worker node_modules are symlinks to canonical /home/smyk/projects/Ghaf/node_modules with byte-equal lockfiles. D stopped owned preview and is retrying --clear; do NOT duplicate that work. Inspect only installed Expo Router/Metro/Babel root/cache handling and local config read-only to explain plausible shared-dependency cross-worktree transform contamination and the smallest explicit launch isolation if --clear is insufficient. Distinguish inspected facts from inference. Return exact supported options/paths and which process must own any mutation; no workaround that edits shared node_modules or changes app behavior. A independently updates evidence and integration board. Effective tier remains unknown.
+```
+
+Exact follow-up:
+
+```text
+D's 22:53:11 status now confirms --clear loads its own app/index.tsx including A004; relevant retest continues. Keep your output bounded to the supported launch/cache mechanism and one prevention note for future worktree switching. No alternate config work is needed unless local inspection identifies a concrete unresolved issue. Then release.
+```
+
+Helper identified shared `_ctx.web.js` relative transform keys, differing embedded Expo route roots
+and shared temporary Metro cache as a plausible mechanism. Exact bad cached artifact was not
+inspected. A accepted a future per-worktree TMPDIR/explicit-root/clear launch note in the Android
+and preview guide; no app configuration, dependency or active D preview was changed. D's already
+successful uncached identity check stands separately. Helper completed/released, zero descendants
+or jobs. Rejected actions: changing app code for wrong-bundle symptoms, editing shared packages,
+restarting a now-correct active retest just to exercise an optional precaution, or keeping the
+initial mixed-source screenshots as candidate passes.

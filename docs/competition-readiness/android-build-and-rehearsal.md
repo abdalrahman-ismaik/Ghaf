@@ -172,3 +172,34 @@ then, record the existing lost-progress gap rather than marking restart-safe beh
 Use the [demo script](two-device-demo.md) and [QA report](qa-report.md) for the final verdict.
 The required output is a tested downloadable mobile app; a successful web preview alone cannot
 satisfy the competition's mobile requirement.
+
+## Worktree preview identity before QA
+
+D's initial port8097 preview at disk candidateb862eb6 loaded C's
+`../Ghaf-ui-studio/app/index.tsx` instead of D's route. Those browser results are candidate-ineligible.
+Stopping the owned preview and relaunching with `--clear` restored D's own route including A-004.
+A correct Git HEAD and port alone do not establish which source a development bundle executes.
+
+Read-only inspection found a plausible transform-cache collision: worker dependency symlinks
+resolve Router's `_ctx.web.js` to the same canonical file; both sibling worktrees give it the same
+relative path, while Expo Babel embeds different route roots. Installed Metro defaults to a shared
+`os.tmpdir()/metro-cache`. The offending cache entry was not inspected, so this mechanism remains
+an inference; loaded wrong/correct route identity before/after clearing is direct D evidence.
+
+For the next preview handoff, the allocated lead should create a new, owned temporary directory
+and launch from an explicit project root. Example for the recorded D candidate (future launch,
+not a command A executed and not a reason to interrupt a now-correct active preview):
+
+```bash
+mkdir -p /tmp/ghaf-preview-D-b862eb6
+CI=1 EXPO_OFFLINE=1 TMPDIR=/tmp/ghaf-preview-D-b862eb6 \
+  ./node_modules/.bin/expo start /home/smyk/projects/Ghaf-qa-rehearsal \
+  --web --localhost --port 8097 --clear --max-workers 2
+```
+
+Record the actual branch/HEAD, root PID, browser process, port and temporary directory. Before
+recording acceptance, inspect the development bundle's loaded route module/root and changed
+function (D used its browser's Metro module inspection); match it to the exact candidate's source.
+Retain that identity evidence with the captures. Do not edit shared node_modules, delete another
+lead's cache or run another preview alongside the allocated pair. An isolated temporary directory
+is a launch precaution, not a tested APK or production setting. Only the lead owns/cleans its jobs.
