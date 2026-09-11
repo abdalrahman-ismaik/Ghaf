@@ -1,5 +1,39 @@
 # Team Ownership
 
+## 2026-09-11 Specs 004 and 005 Verification and Voice Lifecycle Window
+
+**Integration owner and only writer**: `/root`
+
+**Reserved boundaries**: `TEAM_OWNERSHIP.md`, `specs/004-005-execution-prompt.md`,
+`specs/004-005-implementation-audit.md`, `src/state/usePrototypeStore.ts` (Feature 004 voice
+lifecycle only), `src/services/native/ExpoVoiceCaptureService.ts` (recorder lifecycle only),
+`src/features/assistants/parentTaskDrafting.ts`, and
+`tests/parent-task-drafting-authority.test.ts`. Root also reserves `docs/DEVELOPMENT.md`
+for the existing formatting-only validation failure.
+
+**Test writer**: `/root/voice_regression_tests` owned only `tests/live-voice-services.test.ts`
+and `tests/live-voice-integration.test.tsx`. Both files are released after 25 added cases,
+including initial and follow-up RED evidence. Root implemented all runtime corrections.
+
+**Scope**: Execute the sub-agent's implementation-audit prompt, verify both completed spec task
+lists against source, preserve authoritative permitted-help wording in Parent drafting,
+reproduce and repair voice cancellation races with synthetic adapters,
+and record current regression evidence. Three read-only agents audit each feature and prepare
+the execution prompt; they own no files. Preserve unrelated work, default-off AI/MCP flags,
+the blocked token provider, and existing release/native/human evidence gates.
+
+**Status**: Complete and released. `eb3b7a4` preserves reviewed Parent task help authority;
+`b0fd9b3` repairs recorder startup/cancellation, stale file work, matching voice-origin Coach
+invalidation, and cache deletion after recorder failure. The final regression passed 123 files /
+1,544 tests; typecheck, zero-warning lint, maintained-source formatting, scoped formatting, and
+Git whitespace passed. All 34 Feature 005 cases pass; no Feature 005 runtime change was needed.
+The original comment-style test timeout passed on recheck and in the final full run; the existing
+development-guide formatting failure was only a leading blank line and was corrected.
+
+The execution prompt and audit are saved under `specs/004-005-*.md`. Every agent released its
+boundary. Source is ready for integration; no deployment, provider call, real recording, release
+activation, push, or merge occurred. Native and named-human acceptance gates remain unchanged.
+
 ## 2026-09-10 Completion and Correctness Audit Window
 
 **Integration owner**: `/root`
@@ -825,6 +859,7 @@ returning Parent/Child journeys plus Arabic/English 320×720 and 390×844 dialog
 horizontal overflow or page errors. Physical Android and assistive-technology checks remain
 `BLOCKED / NOT RUN` because ADB found no target. The reservation is released at this local
 checkpoint; no push, merge, deployment, or release activation was performed.
+
 ## 2026-09-06 Ordered Splash-to-loading Startup Window
 
 **Owner and only writer**: `/root`

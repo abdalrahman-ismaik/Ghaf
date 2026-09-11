@@ -1,4 +1,3 @@
-
 # Development and testing
 
 This guide is the practical path for installing, running, resetting, and verifying the current
