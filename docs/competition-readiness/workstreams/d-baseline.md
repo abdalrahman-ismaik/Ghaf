@@ -292,3 +292,65 @@ runtime execution; helper allocation released after completion. No second-helper
 - Both helpers finished and released their read-only allocations. Student/human acceptance pending.
 - Ready for A's source-audit integration after the cohesive report commit; source-path release and
   exact commit are published in canonical STATUS-D. Continue to the active producer's next candidate.
+
+## A-002 / Feature 014 draft review — second checkpoint
+
+**Review date**: 2026-09-11T22:31:11+00:00. **Authority**: board revision 4 and
+A-20260911T2220Z-008 permit read-only proposal review and this report appendix. This is a review
+of an evolving draft; no runtime implementation or release authority is granted by it.
+
+Reviewed source: canonical Ghaf HEAD `233df14a21d3250e293118e06c8ef1ae1ff92980`, uncommitted
+`specs/014-local-progress-recovery/spec.md` SHA-256
+`84750776fbc37e985b477c853e7160f6bfba34323ae3029536b92ac7096bc067`, unchanged across the review.
+The plan was still the unfilled template, SHA-256
+`a828ad6206526574ab3fc99be6d0154588cb1c9774c5919d71b81ab5b2dbffa0`; no plan-completeness defect
+or full cross-artifact verdict is inferred before A finishes authoring it. Runtime references below
+are the existing baseline behavior, not recovery implementation evidence.
+
+The draft correctly selects save-before-success, no persisted session/media/private assistant
+content, durable family generations, no automatic recognition/celebration on restore, explicit
+storage failure, and separate native/human acceptance. Five clarifications should be resolved in
+the concrete proposal before it becomes the implementation contract:
+
+| ID       | Priority / exact scope                              | Clarification and reproducible future acceptance case                                                                                                                                                                                                                                              | Owner / current result                   |
+| -------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| D-014-01 | P1 acceptance wording; Story 1 and SC-001/003       | Distinguish latest committed evidence from last visible acknowledgment. Kill the process after a successful evidence write but before the success UI/store update; restore the committed receipt statically, without re-awarding or rolling back to the older visible state.                       | A proposal; OPEN, implementation NOT RUN |
+| D-014-02 | P1 missing-record semantics; Edge Cases / Story 3   | Distinguish a new generation with no saved task from a missing record referenced by an existing committed revision. The latter is invalid/retryable, not silent empty-fixture recovery. Test missing referenced payload separately from first-use absence.                                         | A proposal; OPEN, implementation NOT RUN |
+| D-014-03 | P1 minimal private evidence; FR-004/005, SC-001     | Close the allowed fact/ID list, including attempt/submission identity and bounded completion mode. Exclude IDs that restore private media/reflection/assistant choices as well as raw text. Define omitted optional-content presentation and handle Parent-authored praise without fabricating it. | A proposal; OPEN, implementation NOT RUN |
+| D-014-04 | P1 variant/eligibility oracle; FR-001/008, SC-002   | FR-008's +12/full secondary counters describe canonical @1. Smaller accepted @2 is +8; safe-equivalent @2 is +12. Restore each original variant and its own fail-closed League/Reward eligibility; do not award canonical secondary credit merely because Seed delta matches.                      | A proposal; OPEN, implementation NOT RUN |
+| D-014-05 | P1 negotiation state; Story 1 cases 1/5, FR-001/002 | Include pending `parent_review_required` and `child_decision_required` checkpoints with original/proposed versions and remaining authority. Restart must neither discard nor auto-accept a proposal; `keep_current` remains distinct from accepting the smaller version.                           | A proposal; OPEN, implementation NOT RUN |
+
+Source evidence for D-014-03: `src/models/familyGrowth.ts:162` includes help/media/reflection/
+observations/praise in journey models; `src/features/tasks/recognitionSession.ts:1448` compares
+recognition praise with its check-in. Whole-journey serialization exceeds the draft's minimum.
+Permitted help itself needs bounded completion mode, not its private explanation text
+(`src/features/tasks/lifecycle.ts:114`); reject the false positive that full credit requires that text.
+
+For D-014-04, see `tests/parent-check-in-flow.test.ts:313`,
+`src/features/family-hub/index.ts:27` and `src/features/league/recognitionRuntime.ts:30`.
+For D-014-05, see the store pre-acceptance commands around line 3374. These references establish
+why the proposed recovery cannot flatten an accepted variant or negotiation state.
+
+D lead reviewed failure/reset/migration semantics while the reused privacy helper independently
+reviewed minimal evidence and variant/negotiation behavior. The helper received this actual follow-up:
+
+> New bounded task under A-20260911T2220Z-008 / BOARD revision 4; your one D quota slot is reserved
+> again. Read-only review of the emerging canonical
+> /home/smyk/projects/Ghaf/specs/014-local-progress-recovery/spec.md, initial observed SHA-256
+> 84750776fbc37e985b477c853e7160f6bfba34323ae3029536b92ac7096bc067 at canonical HEAD
+> 233df14a21d3250e293118e06c8ef1ae1ff92980. Plan is still a template; do not report incompleteness as
+> a defect. Concrete question: does minimum evidence/privacy + idempotency wording accidentally
+> require storing Child-private input or lose allowed accepted-task/help variants? Find at most 3
+> actionable spec-level ambiguities, cite sections/FRs and current source constraints. Root
+> independently reviews reset/migration/failure outcomes and writes the assigned d-baseline.md
+> appendix. Do not duplicate those. No writes, tests, browser, descendants or jobs. You are not
+> alone; preserve all work. Source is actively drafted by A: record SHA again after reading and
+> explicitly label any changing snapshot; no claim contract accepted or implementation verified.
+> Reuse original Astra/ultra launch selection; effective tier unobserved.
+
+Helper returned three findings; D accepted them as D-014-03/04/05 and released the allocation.
+No application code, evidence serializer, runtime test, browser action, native run or human review
+was produced by this draft-review task. All five findings are proposed-contract clarifications,
+not reproduced product defects. Exact request/resolution messages are retained in canonical D
+outbox 008/009 and A's acknowledgments; unresolved entries remain open until a revised snapshot is
+reviewed. New persistence still requires the user's acceptance of A's concrete proposal.
