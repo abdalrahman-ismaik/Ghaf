@@ -157,3 +157,14 @@ Ignored artifacts: `output/competition-readiness/integration-b862eb6/results.jso
 Python runner PID229181/exec80818 completed; A heavy allocation released. Later documentation-only
 commits do not change this tested runtime. D independently retests the mounted b862eb6 journey;
 its report remains a separate evidence class. No APK, physical devices or human review passed.
+
+## Actual scope question after the concrete proposal
+
+A presented this question with the committed draft `ca54e40`; response remains PENDING:
+
+> For the reviewed recovery proposal at specs/014-local-progress-recovery/spec.md (commit ca54e40), which scope should drive the next batch? Accepting it includes save-before-success, retaining only bounded Parent-approved task wording/praise, and re-verifying or re-pairing legacy remembered devices; exact typed-contract review must still precede implementation.
+
+Options supplied: “Defer recovery implementation until the current APK/native journey is validated
+(recommended).” / “Accept the proposed recovery scope and proceed with the exact contract review
+and bounded implementation tasks.” This is a scope question required by the user's Session A
+contract, not a fabricated approval. D's current-candidate QA continues independently.

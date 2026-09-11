@@ -127,12 +127,30 @@ merely by this coordination activation.
   `a081f642`, integrated as `c9d5ef6` and `f38f21d`. Six store lines plus four regression cases;
   132 relevant tests, scoped checks and typecheck recorded by B; exact student review PENDING.
 - [C three-direction comparison](workstreams/c-design-comparison.md): worker `0351f9d`, integrated
-  `233df14`; existing card refinement is still in flight, not claimed integrated here.
+  `233df14`; C-002 worker `a356998` integrated as `1428622`. One existing card presentation
+  changed; 39 focused tests and labeled browser matrix, no native acceptance.
 - [D independent matrix/draft review](workstreams/d-baseline.md): workers `f95c57d` / `c56141b`,
   integrated `152b053` / `e57d669`; source/contract evidence, no new native or browser pass.
 - A-004 `ffad798` (4 route lines, 5 behavior tests) and A-006 `4d26635` (Arabic duration wording,
-  existing expected-copy updates) have focused checks in A's report. Full combined suite and D
-  mounted-router checks are still pending at this checkpoint.
+  existing expected-copy updates) have focused checks in A's report. The combined b862eb6
+  candidate passes typecheck, lint, format and all 138 files / 1,669 tests; D mounted-router retest
+  is independently in progress.
 
 A preserved B/C/D ownership and authorship. Paused status-write acknowledgments enabled the
 coordination checkpoint; no fabricated continuous student work or human approval is recorded.
+
+### Recovery proposal and current-feature presentation checkpoint
+
+A-002 draft `ca54e40` records the new014 proposal and actual third helper prompt/steering in
+[A's report](workstreams/a-contract.md). D final draft review242cd49 integrated217f095 addresses
+seven design findings, without accepting implementation. A generated the spec/plan/tasks, finite
+evidence/reset contract and proposed recovered-approved-task boundary; no runtime014 files.
+Rejected shortcuts include serializing Child content/raw store, inventing Parent original text,
+restoring authority or live praise continuations, and treating a draft as an implementation grant.
+User scope acceptance, exact typed mapping review, failing tests and student/native review remain
+required. No memory feature is added. The revised two-device script omits unfinished features and
+uses target timings only; actual APK/device models/OS and all ten physical runs remain unavailable.
+
+The current execution records preserve actual source changes and team-assistance prompts. No
+student review, participant contribution, qualification, Ultra/Fast runtime setting or native
+pass is inferred from these generated reports. All commits remain local.
