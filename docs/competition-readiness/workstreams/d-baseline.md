@@ -424,3 +424,28 @@ Scoped report formatting and whitespace/exact-file checks accompany the cohesive
 application suites, native evidence and human review remain NOT RUN for this draft-only appendix.
 D continues the queued integrated candidate after C releases preview; missing hardware does not
 prevent that authorized work.
+
+## Final draft disposition after A-016
+
+At 2026-09-11T22:42:12+00:00, canonical HEAD `b862eb6f85321935d297a411aaa58744cf72f18b`,
+D reviewed the further uncommitted reset contract. `contracts/recovery-v1.md` SHA-256
+`50c1c2901cc814d3867f62bea63a1cd885f97fbcd2a0a3486bd1e43814ed773e`; plan SHA-256
+`d3ae29764f83d860343f7b68f693048a10d2edc018d6dd06baeeedb196116607`. The spec and approved-task
+seam retain the hashes in the preceding checkpoint. Authority is A-016; no product source edit.
+
+**D-014-06 is now ADDRESSED in the proposal.** The contract proves absence by successfully reading
+every known family key, never treats corrupt/unread legacy data as absence, and checks only the
+finite existing auxiliary keys before entry. Orphans/read/delete failures hold cleanup_pending;
+retry rechecks absence and cannot create a family, grant a role or award. New-family creation
+stays blocked until verified cleanup. The specified crash-after-each-removal, invalid-legacy,
+stale-callback and repeated-retry cases cover D's missing restart-detection oracle.
+
+All seven D proposal findings are addressed at product/design-direction level. The packet is ready
+for A's concrete scope decision and implementation planning review. It is **not implementation-ready
+or accepted runtime**: T004 still requires the exact serializer/approved-execution/receipt mapping,
+its independent review and failing tests before the shared execution changes. Bounded accepted
+Parent final copy/praise, uniformly omitted private optional content and generation-bound cleanup
+are deliberate proposal choices for acceptance. No new memory, live provider or durable-progress
+claim is approved by this verdict. Native storage/process-death tests, devices, named students and
+human review remain BLOCKED/NOT RUN. No additional helper, application or browser run for this
+appendix; scoped formatting/whitespace checks accompany the commit.
