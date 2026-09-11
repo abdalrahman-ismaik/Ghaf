@@ -80,11 +80,12 @@ describe('F4 copy-only authority mapper', () => {
         title: suggestion.title,
         positiveAction: suggestion.positiveAction,
         whyItMatters: suggestion.whyItMatters,
-        permittedHelp: suggestion.supportCue,
+        permittedHelp: before.task.content.permittedHelp,
       },
     });
     expect(result.data.assignment).toBeNull();
     expect(result.data.lifecycle).toBe('draft');
+    expect(result.data.task.content.permittedHelp).not.toEqual(suggestion.supportCue);
   });
 
   it('rejects every stale authority mutation and draft revision change', () => {
@@ -134,6 +135,7 @@ describe('F4 copy-only authority mapper', () => {
         'estimated effort',
         contentMutation({ estimatedEffort: { ar: 'وقت آخر', en: 'Different effort' } }),
       ],
+      ['permitted help', contentMutation({ permittedHelp: suggestion.supportCue })],
       [
         'supervision',
         contentMutation({ supervision: { ar: 'إشراف آخر', en: 'Different supervision' } }),
