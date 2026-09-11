@@ -1,5 +1,14 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Botanical presentation review — 2026-09-11
+
+The current build uses the botanical Tamagui theme for shared controls, open Parent sections,
+illustrated Child Today, landscape-focused Garden, and consistent League/settings/access surfaces.
+Follow the existing deterministic journey below; task, Seed, access and reset commands are unchanged.
+Check both Arabic and English, compact widths, large text and reduced motion before rehearsal.
+See [current evidence and remaining device gates](specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
+Web captures and Android export do not establish physical-demo acceptance.
+
 ## Feature 011 Verified Family Replacement Record — 2026-09-08
 
 **Current classification:** implemented deterministic one-device replacement journey; production
@@ -581,6 +590,7 @@ backdrop, or native Back request, and does not reappear during ordinary dashboar
 Describe the dialog as a private local summary of current prototype state. Do not call it push
 notifications, remote sync, durable account history, production authentication, or cross-household
 data. Reset deliberately removes the household receipt and therefore restores first-family setup.
+
 ## R003 Ordered Splash-to-loading Startup Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; physical Android

@@ -1,5 +1,40 @@
 # Team Ownership
 
+## 2026-09-11 Tamagui Botanical Redesign Window
+
+**Integration owner**: `/root`. User authorized the proposed app-wide Tamagui and Reanimated
+redesign in this session. Preserve the pre-existing package-lock metadata removal while adding
+the intentional Tamagui dependency. No push, deployment, R002b activation, or domain changes.
+
+**Reserved boundaries**:
+
+- `/root`: package/configuration, `app/_layout.tsx`, `src/design/**`,
+  `src/components/primitives.tsx`, `src/components/botanical/**`,
+  `src/components/access/**`, `src/components/r003/**`,
+  `src/components/r002a/R002aScreen.tsx`, `src/components/r002a/R002aFlowHeader.tsx`,
+  `src/components/onboarding/**`, design/specification/evidence documents and integration tests.
+- `/root/parent_ui`: `app/parent/**`, `src/components/r002a/parent/**`,
+  `src/components/family/**`. Presentation changes only.
+- `/root/child_garden_ui`: `app/child/**`, `app/garden.tsx`, `app/league.tsx`,
+  `src/components/r002a/child/**`, `src/components/family-growth/GardenLandscape.tsx`,
+  `src/components/family-growth/FamilyCanopy.tsx`,
+  `src/components/r002b/PrivateLeagueScreen.tsx`. Presentation changes only.
+- `/root/surface_map`: read-only source/test/browser-tooling research; no write boundary.
+
+**Shared contract**: use the existing bilingual copy and product commands. New visual tokens live
+in `src/design/tokens.ts` under `botanical`; shared presentation tools live under
+`src/components/botanical/`. Root owns that contract and dependencies. Workers must preserve each
+other's changes and request boundary handoff before overlapping writes. No more than four agents
+run concurrently. Historical validation remains historical; new Android evidence is not assumed.
+
+**Status — completed 2026-09-12**: all writer boundaries released after integration checks and
+the bounded browser review. Work is saved on `redesign/tamagui-botanical`; local `main` remains at
+the starting commit `16583a3`. Nothing was pushed. Existing lockfile metadata removal remains
+outside the redesign commits. Temporary read-only browser tooling and captures remain under
+ignored `output/botanical-review/`. See the
+[redesign evidence](specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md) for
+checks, review scope and outstanding physical Android/human acceptance.
+
 ## 2026-09-11 Remote Main Reconciliation and Publication Window
 
 **Integration owner and only writer**: `/root`.

@@ -1,5 +1,14 @@
 # Prototype Limitations
 
+## Tamagui botanical presentation — 2026-09-11
+
+The shared UI and principal Parent/Child/Garden/League screens now use the approved botanical
+direction, Tamagui primitives and restrained Reanimated press feedback. Automated checks and web/
+Android exports are recorded in the [redesign evidence](specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
+Browser observations remain a proxy: physical Android, TalkBack, keyboard, font scaling, native
+motion and named-human acceptance are **NOT RUN**. Existing capability labels and release flags
+retain their previous authority.
+
 ## Feature 011 verified family replacement boundary — 2026-09-08
 
 **Create a new family** now works on a device that already stores one complete synthetic family,

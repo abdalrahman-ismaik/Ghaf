@@ -1,85 +1,90 @@
 ---
 name: 'Ghaf — غاف'
-description: 'An Arabic-first family growth garden where confirmed real-world action becomes visible UAE landscape growth.'
+description: 'An Arabic-first botanical family app connecting approved action with permanent symbolic UAE landscape growth.'
 colors:
-  ghaf: '#1D684F'
-  ghaf-pressed: '#14513E'
-  forest: '#12372D'
-  forest-soft: '#35594D'
-  leaf: '#718E6A'
-  leaf-light: '#DCE5D7'
-  leaf-mist: '#EDF1E8'
-  mangrove: '#28736C'
-  water: '#77A8A1'
-  water-light: '#D9E9E5'
-  sand: '#CBB98F'
-  sand-light: '#E9E0CC'
-  ivory: '#F3F0E7'
-  surface: '#FBFAF5'
-  earth: '#6F513D'
-  gold: '#B87524'
-  gold-light: '#E7D2A5'
-  gold-glow: '#F3E8D1'
-  sky: '#D6E2DE'
-  ink: '#172621'
-  ink-muted: '#606B65'
-  line: '#CBCDC2'
-  white: '#FFFFFF'
-  success: '#317655'
-  success-light: '#DDEBE1'
-  coral: '#A94A3F'
-  coral-light: '#F1DEDA'
+  canvas: '#F6F3EB'
+  paper: '#FFFCF5'
+  forest: '#183F35'
+  forest-raised: '#245347'
+  ink: '#203D34'
+  muted: '#5D6B5E'
+  line: '#DCDDCF'
+  sage: '#E7ECDD'
+  sage-strong: '#CAD9BB'
+  amber: '#D9AD5B'
+  amber-wash: '#F2E6CC'
+  water: '#E1ECE8'
+  on-forest: '#FFF9E9'
+  text-primary: '#14221D'
+  text-secondary: '#3F4944'
+  text-heading: '#0D3128'
+  text-neutral: '#1A1C19'
+  action-text: '#126A50'
+  on-action: '#FFFFFF'
+  neutral-control: '#F3F4EF'
+  error: '#BA1A1A'
+  error-surface: '#FFDAD6'
   transparent: 'transparent'
 typography:
   display:
-    fontFamily: 'System, sans-serif'
-    fontSize: '42px'
+    fontFamily: 'Alexandria_800ExtraBold'
+    fontSize: '48px'
     fontWeight: 800
-    lineHeight: '51px'
-    letterSpacing: '-0.8px'
-    arabicLineHeight: '58px'
-    arabicLetterSpacing: '0px'
-  title:
-    fontFamily: 'System, sans-serif'
+    lineHeight: '60px'
+    letterSpacing: '0px'
+  hero:
+    fontFamily: 'Alexandria_700Bold'
+    fontSize: '32px'
+    fontWeight: 700
+    lineHeight: '44px'
+    letterSpacing: '0px'
+  parent-hero:
+    fontFamily: 'Alexandria_700Bold'
     fontSize: '30px'
     fontWeight: 700
-    lineHeight: '39px'
-    letterSpacing: '-0.4px'
-    arabicLineHeight: '43px'
-    arabicLetterSpacing: '0px'
-  heading:
-    fontFamily: 'System, sans-serif'
-    fontSize: '21px'
+    lineHeight: '44px'
+    letterSpacing: '0px'
+  screen-title:
+    fontFamily: 'Alexandria_700Bold'
+    fontSize: '24px'
     fontWeight: 700
-    lineHeight: '30px'
-    arabicLineHeight: '34px'
-    arabicLetterSpacing: '0px'
+    lineHeight: '36px'
+    letterSpacing: '0px'
+  body-large:
+    fontFamily: 'ReadexPro_400Regular'
+    fontSize: '18px'
+    fontWeight: 400
+    lineHeight: '31px'
+    letterSpacing: '0px'
   body:
-    fontFamily: 'System, sans-serif'
+    fontFamily: 'ReadexPro_400Regular'
     fontSize: '16px'
     fontWeight: 400
     lineHeight: '26px'
-    arabicLineHeight: '28px'
-    arabicLetterSpacing: '0px'
-  label:
-    fontFamily: 'System, sans-serif'
-    fontSize: '14px'
-    fontWeight: 600
-    lineHeight: '21px'
-    arabicLineHeight: '23px'
-    arabicLetterSpacing: '0px'
-  caption:
-    fontFamily: 'System, sans-serif'
-    fontSize: '12px'
+    letterSpacing: '0px'
+  control:
+    fontFamily: 'ReadexPro_500Medium'
+    fontSize: '16px'
     fontWeight: 500
-    lineHeight: '19px'
-    arabicLineHeight: '20px'
-    arabicLetterSpacing: '0px'
+    lineHeight: '26px'
+    letterSpacing: '0px'
+  label:
+    fontFamily: 'ReadexPro_500Medium'
+    fontSize: '14px'
+    fontWeight: 500
+    lineHeight: '24px'
+    letterSpacing: '0px'
+  caption:
+    fontFamily: 'ReadexPro_400Regular'
+    fontSize: '12px'
+    fontWeight: 400
+    lineHeight: '20px'
+    letterSpacing: '0px'
 rounded:
-  sm: '6px'
-  md: '10px'
-  lg: '14px'
-  xl: '18px'
+  small: '10px'
+  control: '16px'
+  surface: '20px'
+  hero: '28px'
   pill: '999px'
 spacing:
   xxs: '4px'
@@ -88,41 +93,254 @@ spacing:
   md: '16px'
   lg: '20px'
   xl: '24px'
+  section: '28px'
   xxl: '32px'
   xxxl: '40px'
   huge: '56px'
-motion:
-  quick: '120ms'
-  standard: '220ms'
-  growth: '650ms'
-  easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)'
 components:
   button-primary:
-    backgroundColor: '{colors.ghaf}'
-    textColor: '{colors.white}'
-    typography: '{typography.label}'
-    rounded: '{rounded.md}'
+    backgroundColor: '{colors.forest}'
+    textColor: '{colors.on-action}'
+    typography: '{typography.control}'
+    rounded: '{rounded.control}'
     padding: '12px 20px'
-    minHeight: '48px'
   button-secondary:
-    backgroundColor: '{colors.leaf-light}'
-    textColor: '{colors.forest}'
-    typography: '{typography.label}'
-    rounded: '{rounded.md}'
+    backgroundColor: '{colors.sage}'
+    textColor: '{colors.action-text}'
+    typography: '{typography.control}'
+    rounded: '{rounded.control}'
     padding: '12px 20px'
-    minHeight: '48px'
+  button-neutral:
+    backgroundColor: '{colors.neutral-control}'
+    textColor: '{colors.text-neutral}'
+    typography: '{typography.control}'
+    rounded: '{rounded.control}'
+    padding: '12px 20px'
   button-quiet:
     backgroundColor: '{colors.transparent}'
-    textColor: '{colors.ghaf}'
-    typography: '{typography.label}'
-    rounded: '{rounded.sm}'
-    padding: '10px 12px'
-    minHeight: '48px'
+    textColor: '{colors.action-text}'
+    typography: '{typography.control}'
+    rounded: '{rounded.control}'
+    padding: '12px 20px'
+  input:
+    backgroundColor: '{colors.paper}'
+    textColor: '{colors.text-primary}'
+    typography: '{typography.body}'
+    rounded: '{rounded.control}'
+    padding: '12px 16px'
+  card-paper:
+    backgroundColor: '{colors.paper}'
+    rounded: '{rounded.surface}'
+    padding: '20px'
+  card-tonal:
+    backgroundColor: '{colors.sage}'
+    rounded: '{rounded.surface}'
+    padding: '20px'
 ---
 
 # Ghaf Design System
 
-## Feature 011 verified family replacement
+## Overview
+
+**Creative North Star: "The Living Family Garden — الحديقة العائلية الحية"**
+
+The active presentation is the user-approved 2026-09-11 botanical redesign: warm limestone,
+forest structure, quiet amber, and existing local UAE landscape artwork. Parent screens give
+tasks and family oversight a composed rhythm; Child screens give the task and landscape more
+visual presence. Shared typography, controls, spacing, and access boundaries connect both.
+
+This document records the built system. `src/design/tokens.ts` is the single runtime authority.
+Its additive `botanical` values define redesigned surfaces; `src/design/tamagui.ts` maps them
+into Tamagui. Existing semantic text/status colors and the branded R001 typography resolver
+remain in use. Frontmatter records Arabic-first branded metrics and shared component defaults.
+
+The eight active sections supersede older presentation instructions for migrated surfaces.
+Historical records below retain prior rationale, not current route inventories or release
+authority. Product, privacy, access, and default-off gates remain in the active specifications.
+Evidence belongs in the botanical evidence checklist and demo runbook, not this visual rulebook.
+
+**Key Characteristics:**
+
+- Local Ghaf and UAE artwork supplies identity.
+- Open sections and divided rows clarify the next action.
+- Forest, sage, and warm paper establish hierarchy with restrained elevation.
+- Arabic-first Alexandria and Readex Pro text remains scalable and script-aware.
+- Short press feedback and event-owned growth provide motion.
+
+## Colors
+
+Forest is the strongest structural tone. Sage and water group supporting content; limestone and
+warm paper keep the page calm. Amber marks progress and occasional focal details. These values
+map directly to `botanical.colors`.
+
+Text still uses the established `r001Ink`, `onSurfaceVariant`, `deepForest`, and
+`ghafEmerald` semantic colors, recorded above as text-primary, text-secondary, text-heading,
+and action-text. Error and validation colors retain their existing meaning.
+
+**The Meaning Before Color Rule.** Status, selection, award, and error need text and programmatic
+semantics. Color supports that meaning. The dark canopy panel uses on-forest text and sage-strong
+supporting copy rather than muted gray.
+
+## Typography
+
+Alexandria owns display and heading roles; Readex Pro owns body, controls, labels, and data.
+The root loads local Alexandria 700/800 and Readex 400/500 faces.
+`resolveR001TypographyRole` chooses the role's font face, script metrics, and platform fallback.
+Loaded faces carry their own weight; an additional synthetic weight is not applied.
+System fonts remain loading/failure fallbacks and the older unbranded compatibility path.
+
+Frontmatter contains Arabic metrics. English uses the same size/face with these differences:
+
+| Role         | English line height | English tracking |
+| ------------ | ------------------- | ---------------- |
+| Display      | 58                  | -0.6             |
+| Hero         | 42                  | -0.3             |
+| Parent hero  | 42                  | -0.2             |
+| Screen title | 34                  | 0                |
+| Body large   | 30                  | 0                |
+| Body         | 26                  | 0                |
+| Control      | 24                  | 0                |
+| Label        | 22                  | 0                |
+| Caption      | 18                  | 0                |
+
+Sizes use React Native logical units. Arabic tracking is zero. Essential labels wrap rather than
+shrink or truncate. Rankings, Seeds, and reward values opt into tabular numerals.
+The additional compact-body and wordmark roles remain in the same token file.
+
+`botanicalFonts` supplies Tamagui's Readex body and Alexandria heading defaults; it does not
+replace Ghaf Text's locale-aware resolver. The preserved six-role `typography` object is a
+compatibility record, not the font direction for new branded screens.
+
+**The Script Owns Its Run Rule.** Bilingual runs receive their own language, direction, and
+alignment. Web Text supplies actual `lang`, `dir`, heading, label, and live-region semantics;
+native Text keeps accessibility language and writing direction. The outer physical shell is
+not a substitute for mixed-script direction.
+
+## Layout
+
+R002a uses a safe-area shell, natural vertical scrolling, 20dp horizontal insets, a 520dp maximum
+column, 24dp top padding, and 28dp section gaps. The shared generic Screen retains a 720dp
+maximum; access layouts may use the established 600dp maximum. These are responsive bounds.
+
+Keep related headings/copy close and separate the next section more generously. Use open
+next-action sections and divided utility lists, reserving tonal panels for meaningful groups.
+Required safety, help, and completion text remains in the reading flow.
+
+Header and bottom-navigation regions remain outside the scrolling body where the existing shell
+requires it. Preserve keyboard avoidance and safe-area padding. Actions have at least 48dp
+targets; regular shared buttons and branded inputs use a 56dp minimum and grow with their labels.
+
+The physical shell stays stable while rows use `logicalRowDirection` and text uses logical
+alignment. Directional chevrons follow locale. Habitat images and nondirectional symbols do not
+mirror.
+
+## Elevation & Depth
+
+Tonal layering and artwork supply most depth. Parent task sections and Family/settings rows
+use spacing and thin separators instead of repeated shadows. Card is flat by default; its
+elevated variant uses `botanical.shadow.surface`.
+
+The shadow vocabulary is surface (`0 4px 18px rgba(24, 63, 53, 0.05)`) and floating
+(`0 6px 24px rgba(24, 63, 53, 0.10)`). Existing modal sheets may retain their R001 overlay
+shadow and scrim. The faint local field-paper texture remains behind the shell and carries no
+text or interaction.
+
+## Shapes
+
+Controls use the control radius, ordinary panels the surface radius, and focal illustrated panels
+the hero radius. Small icon plates use the small radius. Pills remain for avatars and compact
+filters; descriptive metadata does not need a capsule.
+
+Use continuous corner curves where supported and preserve clipping around artwork.
+The Ghaf silhouette comes from official brand assets and local botanical imagery.
+
+## Components
+
+### Buttons and motion
+
+Shared buttons retain their existing variants, labels, busy/disabled states, focus, and callbacks.
+Their actual interactive root is `BotanicalPressable`, a Reanimated React Native Pressable.
+Tamagui supplies theme, Text, Card, and layout composition; there is no decorative Tamagui button
+wrapper around the native control.
+
+Compact buttons use frontmatter padding and a 48dp minimum. Regular buttons use 16dp vertical
+padding and a 56dp minimum. Focus, pressed response, busy indicators, and disabled semantics
+remain explicit.
+
+Shared press feedback lasts 120ms, settles at scale 0.985, and runs on the UI thread. Reduced
+motion removes spatial press feedback. The configured 180ms state and 260ms sheet tokens do not
+mean that every surface was reanimated: existing modal sheets retain their own R001 timing.
+The confirmation-owned recognition/growth reveal remains the signature event; motion never earns
+progress or delays access.
+
+### Inputs
+
+Inputs retain React Native TextInput keyboard, editing, selection, and validation behavior.
+They use warm paper, a thin border, the control radius, and existing focus/error/success states.
+Arabic and English fields may coexist with independent direction and font metrics. Errors remain
+textual and politely announced.
+
+### Sections, cards, and utility rows
+
+Card offers paper, tonal, water, and existing coral variants. R003Section uses Tamagui YStack;
+action rows keep their icon, wrapping copy, metadata, and direction-aware chevron. Family and
+settings use divided sections rather than equal-weight dashboard cards.
+
+Tamagui 2 web composition receives flattened native styles through `nativeViewStyles` /
+`nativeTextStyles` as component props. Raw React Native style arrays must not become DOM style.
+Text accessibility aliases are explicitly mapped on web; native controls retain native props.
+
+### Navigation and overlays
+
+Parent and Child navigation retain their existing destinations and role isolation. Parent
+navigation uses a warm-paper bar with a sage selected surface; Child navigation shares the token
+language. Selection has programmatic semantics, and tabs do not gain spatial transitions.
+
+Existing sheets retain dismissal, safe-area handling, focus restoration, and reduced-motion
+behavior. A success surface never owns approval or progression.
+
+### Botanical progression
+
+Parent Home pairs local canopy artwork with cooperative progress and an open next action.
+Child Today adds profile-scoped landscape context to the task focus. Garden gives the selected
+landscape a broad frame and supporting tracks open sections. League keeps its five Leaves,
+approved identity fields, and readable ranking rows.
+
+Artwork is local and offline. Copy, counters, progress, and controls remain live UI.
+Opening a screen, waiting, or finishing an animation never earns growth.
+
+## Do's and Don'ts
+
+### Do
+
+- **Do** reuse botanical tokens and the shared typography resolver.
+- **Do** preserve translated content, task actions, accessibility IDs, and feature gates.
+- **Do** separate sections with space and reserve tonal panels for meaningful groups.
+- **Do** keep long Arabic text, mixed numbers, focus, and reduced-motion states complete.
+- **Do** reuse local Ghaf/UAE imagery and the official mark.
+
+### Don't
+
+- **Don't** repeat the same rounded card for every section or capsule for every label.
+- **Don't** add continuous decoration, excessive motion, fantasy growth, or image-baked text.
+- **Don't** turn symbolic progress into a measured-impact claim or change product authority.
+- **Don't** treat historical route inventories or browser checks as current Android acceptance.
+- **Don't** reinstate the Tamagui asChild wrapper that discarded native button style callbacks.
+
+### Historical feature and presentation records
+
+The following material preserves earlier rationale and feature-specific records. It does not
+override the active system above or current specifications. Old ten-route inventories, first-run
+timing, circle/League descriptions, and implementation ordering are historical.
+
+Frozen records remain in `src/design/tokens.ts`: `colors.ghaf` is `#1D684F`,
+`colors.forest` is `#12372D`, `colors.ghafEmerald` is `#126A50`, and
+`colors.pearlGround` is `#F7F8F3`. Legacy radii are 6/10/14/18/pill; R001 radii are
+4/8/12/16/24/28/pill. Migrated backgrounds and geometry use the additive botanical values.
+The former System-font frontmatter and stale palette aliases are superseded by the actual
+branded system recorded above.
+
+#### Feature 011 verified family replacement
 
 Parent sign-in always retains the full-width outlined **Create a new family** action beneath the
 returning sign-in form. When a saved family exists, the new-family identifier screen adds one calm
@@ -138,7 +356,7 @@ before an explicit **Replace family and create new** primary action. Fresh creat
 status/banner primitives, wraps at 320dp, and introduces no destructive red styling or urgency.
 Leaving before the final action returns to signed-out access with the established family preserved.
 
-## Feature 007 Family Plus capacity preview
+#### Feature 007 Family Plus capacity preview
 
 Keep the existing one/two-Child segmented control unchanged. Directly below it, place one
 full-width 76dp minimum Parent-only capacity row for **3–6 Children**. Use the existing gold tonal
@@ -159,7 +377,7 @@ returns to the capacity row. Do not add a Subscribe button, fake checkout, count
 discount urgency, crossed-out price, celebratory commerce motion, Child-facing promotion, or any
 visual suggestion that the plan can already be purchased.
 
-## Feature 006 natural ambient audio
+#### Feature 006 natural ambient audio
 
 Use one root-owned, locally packaged nature soundscape as optional foreground atmosphere across
 Ghaf. It loops continuously through route changes at a quiet base level, ducks beneath prepared
@@ -182,7 +400,7 @@ animated equalizer, playlist, account sync, recording affordance, runtime URL, o
 meaning. Human Android review owns subjective calmness, naturalness, volume, narration balance,
 and loop-seam acceptance.
 
-## R003 onboarding image perimeter progress
+#### R003 onboarding image perimeter progress
 
 Remove the detached filled strip from the lower portion of every onboarding photograph. Replace it
 with one inset, rounded perimeter treatment that reads as part of the image frame: a restrained
@@ -196,7 +414,7 @@ current/total plus dot row owns progress semantics. Standard motion reveals the 
 thread using the existing 220 ms state-change timing; reduced motion jumps directly to the same
 static extent. Do not add glow, pulse, timer, gradient, thick ring, or a second text label.
 
-## R003 compact audio first-run refinement
+#### R003 compact audio first-run refinement
 
 The existing six moments remain a first-person Ghaf Guide introduction. Restore the original
 logically ordered current/total plus six-dot row in the lower navigation region directly above the
@@ -220,7 +438,7 @@ voice capture/recognition, runtime URL, background OS playback, timer-driven sto
 live-AI indicator is used. Existing 220 ms transform/opacity motion and reduced-motion parity remain
 unchanged.
 
-## Feature 008 family connection planning
+#### Feature 008 family connection planning
 
 Family Basics places the private family-person directory before the existing household fields.
 The required primary Parent/guardian and optional second guardian use the established full-width
@@ -242,7 +460,7 @@ names use automatic bidi direction, and every action keeps the shared 48dp minim
 emerald, pearl, and quiet teal surfaces reuse the released Soft Geometric system without a new
 illustration or dependency.
 
-## R003 device-local family setup extension
+#### R003 device-local family setup extension
 
 First-family setup is one visible sequence: Family Basics asks for the minimized family-person
 directory, family name, application language, and one-or-two Child count; the next route renders
@@ -270,7 +488,7 @@ AI may be wrong, and says the Parent decides. Gender, nickname, family name, con
 text, diagnosis, emotion, media, and task history never enter the helper. Existing sparkle marks
 remain on the Parent Guide and Child Coach where AI functionality is actually available.
 
-## R003 returning-family welcome extension
+#### R003 returning-family welcome extension
 
 Returning users enter value immediately: an established Parent never sees Family Basics or Add
 First Child again, and an already paired Child never crosses Parent setup. Parent Home and Child
@@ -292,7 +510,7 @@ dismissal. Standard motion is a native opacity fade; reduced motion presents the
 without animation. Dismissal is permanent for that local sign-in, while a later qualifying return
 creates a fresh summary from current authorized state.
 
-## R003 first-run experience extension
+#### R003 first-run experience extension
 
 The first-run surface is an optional six-moment editorial sequence inside `/`, followed by the
 existing Parent/Child Welcome decision. It introduces Ghaf, then gives Family, Sustainability, and
@@ -345,7 +563,7 @@ the quick/standard token durations. Reduced motion removes translation and scali
 but the primary action and step status remain visible or reachable by vertical scrolling. The
 screen contracts below define the public copy, state, and evidence rules.
 
-## R003 complete-screen extension
+#### R003 complete-screen extension
 
 The 2026-09-05 user-authorized completion pass extends this same visual world to missing access,
 Family, Reward, settings, permissions, devices, reauthentication, and Child-settings surfaces. The
@@ -386,7 +604,7 @@ provenance, content, and human-review gates pass.
 
 **Product behavior:** `PRODUCT.md`
 
-## Current Design Authority
+#### Historical Design Authority
 
 - R001 PNGs are canonical composition references for `/` and the six historical Parent-onboarding
   steps except `/access/parent/sign-in`. For that route, the user-authorized 2026-09-06 usability
@@ -440,7 +658,7 @@ additive Shared Growth, shared-garden controls, and cumulative Garden chapter ar
 default-off R002b candidates. Their product behavior comes from the current specification, not a
 screenshot, and their release remains blocked.
 
-## Design Promise
+#### Design Promise
 
 Ghaf should make one relationship unmistakable: a Child completes a useful real-world action, a
 Parent recognizes it, and the family's UAE living landscape grows. The interface should be warm,
@@ -452,7 +670,7 @@ mangrove coast—give task categories a memorable home. They are interconnected 
 not a claim that every species occupies one literal habitat or that digital growth plants real
 trees.
 
-## Experience Invariants
+#### Experience Invariants
 
 1. One dominant action appears at every decision point.
 2. No reward or garden growth appears before Parent confirmation.
@@ -466,16 +684,16 @@ trees.
 9. Prepared media and synthetic identities are visibly disclosed.
 10. Motion explains cause and effect, honors reduced motion, and then stops.
 
-## Two Modes, One System
+#### Two Modes, One System
 
-### Parent mode — calm stewardship
+##### Parent mode — calm stewardship
 
 Parent screens prioritize definition of done, safety, privacy, choice, and recognition. Use compact
 rows, stable type, restrained illustration, and neutral status language. Lead summaries with
 strengths and observable facts. Never show a normality score, clinical color scale, surveillance
 timeline, or alarmist inference.
 
-### Child mode — capable explorer
+##### Child mode — capable explorer
 
 Child screens show one task, a few short steps, large controls, a visible meaning statement, and a
 garden horizon. They may use more illustration and gentle movement but never baby talk, commands,
@@ -483,7 +701,7 @@ coin-shop metaphors, streak flames, public ranks, or infinite assistant conversa
 
 Both modes use the same palette, typography, growth grammar, logical spacing, and content model.
 
-## Layout Grammar
+#### Layout Grammar
 
 - Use a safe-area `Screen` shell with 20px phone padding and a readable content maximum on web.
 - Compose with logical `start`/`end`, never hard-coded left/right for semantic alignment.
@@ -495,13 +713,13 @@ Both modes use the same palette, typography, growth grammar, logical spacing, an
 - Parent review may use a two-column web layout, but the Android contract is one vertical stream.
 - No horizontal carousel may hide a required step or safety note.
 
-## Preserved R001/R002a Screen Contract
+#### Preserved R001/R002a Screen Contract
 
 The historical R001/R002a baseline below has ten authored routes. Loading, fallback, retry,
 assistant, confirmation, and celebration are states within them. The R003 completion routes are
 documented in this contract; `/role` is now a compatibility redirect only.
 
-### `/` — entry and disclosure
+##### `/` — entry and disclosure
 
 - Show the Ghaf wordmark, one UAE landscape vignette, and Arabic/English controls.
 - State that profiles/media are synthetic. Render assistant status from the active provider:
@@ -509,14 +727,14 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - Primary action: enter the demo. Secondary action: switch language.
 - Do not begin with accounts, statistics, or a rewards balance.
 
-### `/role` — role and Child selection
+##### `/role` — role and Child selection
 
 - Show Parent and Child as demo modes, not authentication.
 - Display Salem, age 9, and Alya, age 11, as clearly synthetic profiles.
 - Parent selection may continue to `/parent`; Child selection continues to `/child`.
 - Warn that private Parent content is safe only because the prototype data is synthetic.
 
-### `/parent` — family overview
+##### `/parent` — family overview
 
 - Top: family canopy and the next cooperative milestone, without rank.
 - Middle: each Child's next task and requested support; show one combined canopy without raw
@@ -525,7 +743,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - Primary action: create a task. Secondary actions: open garden or circle.
 - Never show private notes in a sibling-comparison visualization.
 
-### `/parent/task/new` — task drafting
+##### `/parent/task/new` — task drafting
 
 - Select Child, category, and a curated template before allowing custom copy.
 - Show recognition mode and any exact Seed award before approval; recognition-only/maintenance says
@@ -536,7 +754,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
   `not_applicable`.
 - Custom free text never bypasses safety, privacy, and category rules.
 
-### `/parent/task/review` — approval
+##### `/parent/task/review` — approval
 
 - Present Arabic and English, observable definition of done, why it matters, estimated effort,
   supervision, exclusions, optional evidence, privacy, recognition mode, any Seeds, phase,
@@ -545,7 +763,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - Primary action: approve and assign. Secondary action: edit.
 - Explain that Parent confirmation is required before any eligible credit or growth.
 
-### `/child` — task choices
+##### `/child` — task choices
 
 - Greet the selected synthetic Child and show two to three Parent-approved choices at most.
 - Each `TaskChoice` shows title, short purpose, effort, help status, recognition mode, any fixed
@@ -553,7 +771,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - Show personal progress against the Child's own goal plus the shared canopy—not sibling rank.
 - Primary action: choose a task. Allow “Ask to make it smaller.”
 
-### `/child/task` — act with bounded support
+##### `/child/task` — act with bounded support
 
 - Show one definition of done followed by no more than four short steps.
 - Offer intent buttons: Show steps, Help me plan, Practise a phrase, I need an adult.
@@ -562,7 +780,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - Primary action: submit for Parent check. A short reflection is optional and never circle-shared.
 - Assistant output never hides or changes the Parent-approved completion criterion.
 
-### `/parent/check-in` — recognize or adjust
+##### `/parent/check-in` — recognize or adjust
 
 - Show the Child's completion mode, optional fixture, and reflection separately.
 - Parent options: Confirm, Kind retry, Make smaller, Equivalent task. No reject/shame state.
@@ -574,7 +792,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
   maintenance**. Neither is preselected; the current completion is unchanged. A Parent may reverse
   the future phase from the task detail sheet on `/parent`.
 
-### `/garden` — consequence and meaning
+##### `/garden` — consequence and meaning
 
 - Animate the 12 Seeds toward the Mangrove track, then show the new static growth stage.
 - Add one visible leaf to the household Ghaf canopy.
@@ -582,7 +800,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - Show all five tracks as a connected UAE landscape, with the mapped track visually strongest.
 - Primary action: see family circle. Reduced motion jumps directly to the final frame and text.
 
-### `/circle` — cooperative overview
+##### `/circle` — cooperative overview
 
 - Show household contribution and seeded family-level cousin aggregates toward one Green Impact goal.
 - Use garden silhouettes or progress bands, never a podium, first/last rank, or Child profile grid.
@@ -591,9 +809,9 @@ documented in this contract; `/role` is now a compatibility redirect only.
   routines, exact task history, photos, voice, reflections, assistant content, and Parent notes.
 - Primary action: finish or reset the demo.
 
-## Component Contract
+#### Component Contract
 
-### Foundations
+##### Foundations
 
 - `Screen`: safe area, background, logical padding, scroll/keyboard behavior.
 - `JourneyHeader`: back action, bilingual title, short step context; no gamified progress pressure.
@@ -602,7 +820,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - `OriginDisclosure`: prepared, simulated, synthetic, estimated, or live label beside the relevant
   object, not hidden in a general footer.
 
-### Task and recognition
+##### Task and recognition
 
 - `TaskChoice`: title, meaning, effort, recognition mode, any fixed Seeds, help/supervision,
   landscape cue.
@@ -614,7 +832,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - `RoutinePhaseReview`: Parent-only, future-facing phase choice with no automatic selection or loss
   of prior progress.
 
-### Garden and family
+##### Garden and family
 
 - `SeedAward`: acquisition-only deterministic quantity and destination; absent for maintenance and
   recognition-only; never animates before confirmation.
@@ -624,7 +842,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
   individual raw totals stay out of the sibling surface.
 - `CircleProgress`: family-level aggregate toward a common target, with privacy disclosure.
 
-### Assistant
+##### Assistant
 
 - `AssistantTrigger`: action label such as “Make this clearer,” not an empty sparkle icon.
 - `AssistantSheet`: bounded intent, disclosure, concise response, Accept/Dismiss, and human-help exit.
@@ -636,7 +854,7 @@ documented in this contract; `/role` is now a compatibility redirect only.
 - `ParentPatternSummary`: time window, strengths, observed facts, uncertainty, question, adjustment,
   and non-diagnostic disclosure.
 
-## Reward and Growth States
+#### Reward and Growth States
 
 Reward-eligible tasks use 4, 6, 8, 12, or 15 Seeds. Recognition-only tasks show no numeric award.
 The P0 journey awards exactly 12.
@@ -655,7 +873,7 @@ Growth stages are **Seed → Shoot → Sapling → Shade → Flourishing**. Each
 static SVG state; state recognition cannot depend on hue or animation. Earned vegetation never
 withers, reverses, or becomes sad.
 
-## Assistant State Contract
+#### Assistant State Contract
 
 Each assistant interaction has `idle`, `prepared-loading`, `result`, `fallback`, and `dismissed`
 states. The Parent Guide alone may add `live-loading`, `live-result`, and `live-error` through the
@@ -680,7 +898,7 @@ fixture remains the offline acceptance path.
 - High-risk disclosures leave ordinary coaching and use a separately reviewed safeguarding handoff;
   P0 demonstrates this only as a scripted synthetic state.
 
-## UAE Content Presentation
+#### UAE Content Presentation
 
 - Use Modern Standard Arabic and plain English as the P0 content pair.
 - Present cultural phrases as several Parent-approved options, never one universally correct line.
@@ -696,7 +914,7 @@ fixture remains the offline acceptance path.
 Curated task copy comes from `RESEARCH_BASIS.md`; it may not be improvised into code without the
 required cultural, safety, Arabic, and safeguarding review.
 
-## Arabic, RTL, and Localization
+#### Arabic, RTL, and Localization
 
 - Arabic is the default demo locale and first content field in bilingual Parent review.
 - Use `I18nManager`/locale state and logical flex/alignment helpers consistently.
@@ -708,7 +926,7 @@ required cultural, safety, Arabic, and safeguarding review.
 - Test long Arabic titles, mixed Arabic/English names, 4/6/8/12/15 counts, and screen-reader order.
 - Locale switching must preserve the current safe app state and update navigation direction.
 
-### Bilingual typography roles
+##### Bilingual typography roles
 
 - `src/design/tokens.ts` is the only type-token authority. The six roles are `display`, `title`,
   `heading`, `body`, `label`, and `caption`; screens do not invent sizes or families.
@@ -723,7 +941,7 @@ required cultural, safety, Arabic, and safeguarding review.
 - Font scaling remains enabled. Text-bearing counters use minimum dimensions and padding instead of
   fixed boxes, and required Child actions, transcripts, disclosures, and safety text are unclamped.
 
-## Accessibility
+#### Accessibility
 
 - Minimum touch target: 48×48dp; minimum spacing between adjacent small targets: 8dp.
 - Text contrast: target WCAG AA; do not encode state by color, shape, motion, or sound alone.
@@ -736,7 +954,7 @@ required cultural, safety, Arabic, and safeguarding review.
 - Let either Parent or Child turn off ambient audio. Parents may also remove evidence, shorten
   tasks, allow help, and select accessible alternatives without decreasing the Child's dignity.
 
-## Motion and Sound
+#### Motion and Sound
 
 | Event            | Standard motion                     | Reduced motion                           |
 | ---------------- | ----------------------------------- | ---------------------------------------- |
@@ -752,7 +970,7 @@ alarm, or failure sounds. Do not block state updates on an animation or sound ca
 Ambient sound uses one foreground-only loop, ducks under narration, and pauses for screen readers
 or exclusive voice work. Its native switch lives in both role-specific Settings spaces.
 
-## Media and Provenance
+#### Media and Provenance
 
 P0 uses prepared synthetic fixtures only. A fixture must contain no Child, face, hand, personal
 data, brand, address, school, readable private text, or watermark. The recycling image shows clean,
@@ -781,7 +999,7 @@ Photo and voice controls must explain:
 - how to remove it; and
 - that live capture, upload, retention, and analysis are not implemented.
 
-## Error, Offline, and Reset
+#### Error, Offline, and Reset
 
 - The deterministic flow works without network access.
 - An assistant timeout falls back to the reviewed fixture on the same route and retains Parent text.
@@ -793,7 +1011,7 @@ Photo and voice controls must explain:
 - Reset is one Parent-only demo action, requires a small confirmation, and restores the exact seeded
   state documented in `DEMO_RUNBOOK.md`.
 
-## Implementation Notes
+#### Implementation Notes
 
 - Adapt the existing Expo, React Native, strict TypeScript, Expo Router, Zustand, StyleSheet, SVG,
   Reanimated, audio, service-registry, and deterministic-fixture foundation after verifying it in
@@ -809,7 +1027,7 @@ Photo and voice controls must explain:
 - Create Feature 003 through Spec Kit before implementation; do not silently widen Feature 002 or
   manually edit the Spec Kit-managed block in `AGENTS.md`.
 
-## Review Checklist
+#### Review Checklist
 
 - One next action is obvious and all required safety text is visible.
 - The Child can ask for help, a smaller step, or an equivalent without shame.

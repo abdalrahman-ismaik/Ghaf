@@ -1,5 +1,37 @@
 # Ghaf Design Direction
 
+## 2026-09-11 implemented botanical direction
+
+The user-approved Tamagui and Reanimated redesign is the active visual direction. The built
+system is documented in `DESIGN.md`; `src/design/tokens.ts` remains the runtime authority.
+The additive botanical palette, geometry, and spacing supersede older presentation values on
+migrated surfaces. Historical R001/R002a token values remain unchanged for compatibility.
+
+The result uses limestone ground, warm paper, forest emphasis, sage supporting surfaces, water
+tones, and restrained amber. Alexandria headings and Readex body/control roles retain their
+existing Arabic/English metrics and local-font fallback. The Living Family Garden remains the
+creative north star; the redesign adds no new logo, imagery source, product behavior, or route.
+
+Parent Home now pairs local canopy artwork and cooperative progress with an open next-action
+section. Child Today adds profile-scoped landscape context; Garden gives the selected landscape
+more space. Task controls, access forms, headers, navigation, review/success states, Family, and
+settings use the shared botanical surface language. Divided rows and open sections reduce
+repeated card framing. Existing gated Growth surfaces inherit shared styling while remaining gated.
+
+Tamagui owns theme, Text, Card, and general layout composition. Native TextInput retains editing
+and keyboard behavior; Reanimated Pressable retains the actual button interaction and style
+callback. Native style adapters and explicit web direction/language/accessibility mappings keep
+the two renderers aligned. The library choice does not require replacing a working native control.
+
+Shared press feedback is 120ms at scale 0.985, with spatial feedback disabled under reduced motion.
+The state timing token is 180ms; existing modal and growth sequences keep their own event-owned
+timing. Bottom tabs do not gain a spatial transition. All progress remains independent of motion.
+
+This section and the active eight-section rulebook take precedence over older visual guidance
+below. Earlier dated notes preserve decisions from their own revisions; stale startup durations,
+route/step counts, and circle-only sharing descriptions are not current product authority.
+Current specifications own behavior, and the runbook/evidence checklist owns validation claims.
+
 ## 2026-09-07 onboarding image-edge progress clarification
 
 The dark lower strip on the onboarding photographs feels applied after the image rather than
@@ -152,18 +184,19 @@ announces that a habit has formed or changes phase automatically.
 
 ## Visual Character
 
-Keep the existing warm field-paper and botanical-ink identity, but open it into a landscape:
+The implemented botanical palette retains the field-paper and local landscape identity:
 
-- warm ivory and sand as the ground;
-- Ghaf green and deep forest as identity and action;
-- mangrove teal and sky wash for environmental depth;
-- date gold as a scarce milestone accent;
-- earth brown for roots, trunks, paths, and task grounding;
-- gentle coral only for a safety boundary or required correction.
+- limestone and warm paper as the ground;
+- forest as structural emphasis and the primary action;
+- sage and water tones for supporting surfaces;
+- restrained amber for progress and occasional focal detail;
+- existing semantic ink, green, and error colors where the shared components retain them;
+- natural local Ghaf/UAE imagery for landscape character.
 
-Use low-radius, tactile controls and flat tonal grouping in Parent mode. Child mode may use slightly
-softer task chips and seed vessels, while avoiding bubbly card stacks. Shadows are rare; depth comes
-from layered landscape planes, overlap, and motion.
+Use the implemented 16dp control, 20dp surface, and 28dp hero radii, with smaller icon plates and
+pills reserved for their existing roles. Parent sections use open composition and divided rows;
+Child screens give landscape and task context more presence. Tonal layering supplies most depth,
+with the shared surface shadow available for elevated cards and established scrims for overlays.
 
 Large botanical and habitat artwork should use the approved local Quiet UAE Botanical Editorial
 raster library. Code-native vectors remain only for small functional controls, semantic progress,
@@ -223,8 +256,8 @@ Arabic is composed first, not mirrored after English.
 
 Motion explains cause and effect and then stops.
 
-- route change: short fade/slide following logical direction;
-- task selection: immediate pressed and selected state;
+- route change: the existing short fade, disabled under reduced motion;
+- task selection: immediate selected state and shared 120ms press feedback where applied;
 - assistant: one contained leaf/ink reveal, no fake “thinking” theater longer than needed;
 - Seed award: short arc to the mapped landscape;
 - growth: restrained root/branch/leaf reveal with a meaningful static final frame;
@@ -233,6 +266,10 @@ Motion explains cause and effect and then stops.
 
 Honor reduced motion with an immediate final state and clear text. State changes must never depend
 on animation completion.
+
+The 2026-09-11 migration adds no continuous scenic animation, tab slide, or additional growth
+trigger. Existing onboarding, sheet, and recognition sequences retain their own timing; the
+botanical 180ms state and 260ms sheet tokens are not a claim that all sequences now use them.
 
 ## Cultural and Safety Details
 
@@ -285,3 +322,12 @@ or ecological impact numbers without a defensible method.
 
 This direction becomes implementation truth only after it is captured in an approved Feature 003
 specification and verified in the actual Android build.
+
+# Tamagui Botanical Redesign — 2026-09-11
+
+The user's accepted contemporary botanical direction now owns the broad UI redesign: warm
+limestone, deep forest and sage, restrained amber, approved Alexandria/Readex fonts and existing
+UAE landscape assets. Tamagui provides one themed foundation; Reanimated provides purposeful
+press feedback and the preserved event-owned growth reveal. See the active section in DESIGN.md
+and the Tamagui botanical direction record in Feature 003. Older directions below remain
+historical reference; no product, privacy or feature-flag boundary is superseded.

@@ -1,5 +1,19 @@
 # Tasks: Family Growth Garden
 
+## Tamagui Botanical Redesign — 2026-09-11
+
+- [x] TB01 Record user-authorized presentation scope, design direction, ownership and preserved boundaries.
+- [x] TB02 Integrate a version-aligned Tamagui provider/theme with existing Arabic/English font and token authority.
+- [x] TB03 Migrate shared controls, layout surfaces, form presentation and restrained Reanimated feedback.
+- [x] TB04 Redesign Parent Home, task presentation, Family and settings in the botanical system.
+- [x] TB05 Redesign Child Today/task, Garden and League presentation, retaining all event/projection authorities.
+- [x] TB06 Reconcile access, general sections, navigation and supporting states with the shared system.
+- [x] TB07 Complete automated checks, bilingual visual inspection, web/Android bundle validation and truthful handoff.
+
+Completed 2026-09-12 on `redesign/tamagui-botanical`. The
+[evidence record](checklists/tamagui-botanical-evidence.md) distinguishes passing automated/web
+checks from physical Android and named-human gates that remain **NOT RUN**.
+
 **Input**: Design documents from `specs/003-family-growth-garden/`
 
 **Prerequisites**: `spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, and
