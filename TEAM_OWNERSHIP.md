@@ -43,6 +43,46 @@ ownership entries and untracked PDF/Reveal artifacts remain outside these commit
 released their boundaries. The source is ready for integration; no release, push, or deployment
 was performed.
 
+## 2026-09-08 Competition Brief Verification-Section Removal Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md`, `output/pdf/ghaf-competition-brief.tex`, and
+`output/pdf/ghaf-competition-brief.pdf` only.
+
+**Scope**: Remove the "Details to Verify Before Submission" divider, heading, and five points;
+recompile and visually verify the existing two-page PDF. Preserve all other document content and
+the user-owned untracked Reveal evidence.
+
+**Status**: Complete and released. Removed the divider, heading, and all five verification points
+from the LaTeX source and regenerated the stable PDF. Bundled Tectonic compilation PASSED without
+LaTeX layout warnings. PDF inspection confirmed exactly two A4 pages and 1,047 extracted words;
+text extraction confirmed the removed content is absent, and visual inspection of both rendered
+pages found no clipping, overlap, unreadable glyphs, or broken page furniture. No other document
+content or application files changed.
+
+## 2026-09-08 Competition Brief LaTeX Artifact Window
+
+**Owner and only writer**: `/root`
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and new `output/pdf/**` only. Existing application
+source, project contracts, product assets, and browser/Android evidence remain read-only.
+
+**Scope**: Produce one competition-ready, exactly two-page English app idea and functionality
+brief in LaTeX, compile it to PDF, and include local Ghaf product imagery. Ground every maturity,
+technical, AI, safety, privacy, and impact statement in the current repository. Preserve the
+user-owned untracked Reveal evidence and make no product, runtime, dependency, feature-flag,
+deployment, release, push, merge, or history change.
+
+**Status**: Complete and released. Delivered `output/pdf/ghaf-competition-brief.tex` and the
+compiled `output/pdf/ghaf-competition-brief.pdf` with five local product images. Bundled Tectonic
+compilation PASSED with no LaTeX layout warnings; PDF inspection confirmed exactly two A4 pages,
+1,085 extracted words, all ten required sections, five verification points, and readable unclipped
+content on both rendered pages. `npm run typecheck` PASSED. The parallel `npm test` run passed
+1,484 tests while two test files timed out under load; the focused serial rerun of those files
+PASSED 12/12. `git diff --check` PASSED. No application source, dependency, flag, deployment,
+release, or existing Reveal evidence was changed.
+
 ## 2026-09-08 Feature 005 Post-Merge Audit and Context Repair Window
 
 **Owner and only writer**: `/root`
