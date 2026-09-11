@@ -98,3 +98,62 @@ version and authority are unchanged. Existing expected copy in `tests/parent-tas
 Scoped ESLint and Prettier on the three paths passed. No new style-mirroring tests were added.
 Fresh browser rendering and named Arabic/native review remain PENDING; historical image evidence
 is not re-labeled as this candidate's pass. No illustration, dependency or feature flag changed.
+
+## A-002 — reviewed recovery proposal, not runtime authority
+
+D's source/recovery audit and seven independent proposal findings are preserved in `d-baseline.md`,
+including final review242cd49 integrated217f095. A wrote the bounded **DRAFT**
+`specs/014-local-progress-recovery/**`: three stories, fifteen functional requirements, versioned
+family-envelope/reset contract, explicit restored-approved-task proposal, data model, research,
+quickstart, twenty-one proposed tasks, checklist and consistency analysis. No runtime file or
+new progress persistence was implemented. This draft needs actual user scope acceptance, exact
+T004 mapping/review and failing tests before a committed accepted contract and source grants.
+
+The repository Spec Kit specify/plan/tasks skills were read and used for draft structure, template
+resolution, prerequisite checks and plan setup. The local ignored `.specify/feature.json` selects014;
+Git remains `redesign/ui-experiments`. The setup helper's derived feature branch label does not
+mean a branch was created. Optional after-specify/plan context hooks were not run; managed AGENTS
+and Feature003 authority remain unchanged. No implementation/analyze automation was invoked.
+A authored the consistency analysis without claiming it is a runtime test.
+
+Third exact task to `/root/android_build_audit` (read-only, completed/released; no descendants):
+
+```text
+A allocates its one helper slot to a new bounded READ-ONLY design feasibility subtask. Others are editing; preserve all files. No writes, descendants, tests, installs or jobs. Read current draft specs/014-local-progress-recovery/{spec,plan,data-model}.md and contracts/recovery-v1.md in /home/smyk/projects/Ghaf. D independently reviews user-facing privacy/failure/variant acceptance; DO NOT repeat that review. Your exact technical question is T004: can the proposed closed minimal evidence reconstruct current task/recognition validators without storing omitted Child help/reflection/media, Parent notes, raw Parent Guide input, or fabricating historical praise? Inspect src/models/familyGrowth.ts Task/Journey/receipt, src/features/tasks/{recognitionSession,recognitionProviderBoundary,validation,lifecycle}.ts and narrow store restoration selectors. Identify the smallest necessary explicit recovery projection/type seam, mandatory receipt/timeline fields, and whether retaining actual bounded accepted Parent action/praise suffices. We must not weaken normal confirmation/access validators or pretend a restored praise-display token authorizes a new award. Return concrete alternatives/tradeoffs and exact source paths/field mapping with unresolved blockers. You are not implementing recovery. A works on integration and documentation independently. Launcher remains requested Astra/ultra; actual service tier unknown.
+```
+
+Exact follow-up steering:
+
+```text
+New coordination finding: B independently completed a generic pure-validator map (STATUS-B outbox011); avoid duplicating it. Read that short outbox and focus ONLY remaining T004 design tension: restoring redacted original Parent draft/neutral observation and Child fields while current exact Task/Journey validators require old forms. Recommend smallest honest recovered-view/type contract, and whether this is sufficiently bounded for pre-freeze or should remain blocked. D policy review remains separate. No broad validator inventory needed.
+```
+
+Accepted technical finding: recovery needs a typed approved-execution seam because normal Task
+validation requires raw original authoring input. Retain final approved copy and actual bounded
+praise; mark original/optional content not retained; pending recognition requires fresh praise,
+recognized history retains actual order but restores no live continuation or role capability.
+Rejected shortcuts: fake original text, cast a redacted object to Task, persist whole store, use
+`already_confirmed` as the only historical integrity check, or self-approve the new type boundary.
+The exact codec mapping and tests remain future work, not a passed helper implementation.
+
+## Integrated candidate — automated evidence
+
+Runtime candidate `b862eb6f85321935d297a411aaa58744cf72f18b` includes A-004 `ffad798`, A-006
+`4d26635`, B-004 `f38f21d` (worker `a081f64`) and C-002 `1428622` (worker `a356998`). A inspected
+the released diffs and paired current Arabic/English captures before integration. B's repair
+clears the prior family's private League/recognition commitments on successful replacement;
+cancelled/failed final saves retain prior state. C places task choice and help before longer
+explanations, keeps time/award/adult supervision visible and uses existing tokens/tabular metadata.
+No library, source asset or feature flag was added. Authorship was preserved by cherry-picks.
+
+Actual commands, sequential, `CI=1 EXPO_OFFLINE=1`, 2026-09-11 22:42:00–22:43:21 UTC:
+
+- `npm run typecheck`: exit0.
+- `npm run lint`: exit0.
+- `npm run format:check`: exit0.
+- `npm test -- --maxWorkers=2`: exit0, **138 files / 1,669 tests passed**.
+
+Ignored artifacts: `output/competition-readiness/integration-b862eb6/results.json` and four logs.
+Python runner PID229181/exec80818 completed; A heavy allocation released. Later documentation-only
+commits do not change this tested runtime. D independently retests the mounted b862eb6 journey;
+its report remains a separate evidence class. No APK, physical devices or human review passed.
