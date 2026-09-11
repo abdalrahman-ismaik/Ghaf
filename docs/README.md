@@ -2,7 +2,7 @@
 
 This directory contains current engineering guidance and preserved Feature 002 records. The active
 Feature 003 product contracts intentionally remain in the repository root because the approved
-handoff, `AGENTS.md`, and Spec Kit workflow reference those canonical paths.
+handoff and feature specifications reference those canonical paths.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
@@ -30,21 +30,25 @@ commits remain unapplied, and release activation remains blocked.
 
 These root-level files are the current source of truth:
 
-| Document                                                            | Owns                                                                   |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [PRODUCT.md](../PRODUCT.md)                                         | Users, behavior, reward/garden rules, assistant jobs, and P0 scope     |
-| [DESIGN.md](../DESIGN.md)                                           | Design tokens, components, responsive behavior, RTL, and accessibility |
-| [DESIGN_DIRECTION.md](../DESIGN_DIRECTION.md)                       | Living Family Garden visual and cultural north star                    |
-| [RESEARCH_BASIS.md](../RESEARCH_BASIS.md)                           | Reward, safety, content, and UAE-grounding rationale                   |
-| [PROTOTYPE_LIMITATIONS.md](../PROTOTYPE_LIMITATIONS.md)             | Current capability truth and nonclaims                                 |
-| [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                               | Exact judge journey and validation ledger                              |
-| [TEAM_OWNERSHIP.md](../TEAM_OWNERSHIP.md)                           | File reservations, handoffs, and integration ownership                 |
-| [CODEX_IMPLEMENTATION_PROMPT.md](../CODEX_IMPLEMENTATION_PROMPT.md) | Preserved Feature 003 implementation handoff record                    |
+| Document                                                | Owns                                                                   |
+| ------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [PRODUCT.md](../PRODUCT.md)                             | Users, behavior, reward/garden rules, assistant jobs, and P0 scope     |
+| [DESIGN.md](../DESIGN.md)                               | Design tokens, components, responsive behavior, RTL, and accessibility |
+| [DESIGN_DIRECTION.md](../DESIGN_DIRECTION.md)           | Living Family Garden visual and cultural north star                    |
+| [RESEARCH_BASIS.md](../RESEARCH_BASIS.md)               | Reward, safety, content, and UAE-grounding rationale                   |
+| [PROTOTYPE_LIMITATIONS.md](../PROTOTYPE_LIMITATIONS.md) | Current capability truth and nonclaims                                 |
+| [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                   | Exact judge journey and validation ledger                              |
 
 The active Spec Kit package is
 [`specs/003-family-growth-garden/`](../specs/003-family-growth-garden/). Its `spec.md`, `plan.md`, and
 `tasks.md` are normative for implementation. Contracts and checklists beneath that directory hold
 domain acceptance and exact evidence.
+
+AI-assistant instructions, agent configuration, skills, execution prompts, critiques, and
+`TEAM_OWNERSHIP.md` are local-only. They are excluded from fresh clones; historical references may
+resolve only in earlier commits or an existing local checkout. See
+[local tooling guidance](../CONTRIBUTING.md#local-ai-and-agent-tooling). Product specifications,
+the shared constitution, and approved design provenance remain versioned.
 
 The [Revision 3 proposal package](../specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
 is retained as non-canonical reconciliation evidence. Current user authority now fixes the private
@@ -80,7 +84,6 @@ prepared media remains under `assets/demo/`; and the committed `*-mobile-final.p
 | R001 Batch 1 validation        | [R001 validation evidence](../specs/003-family-growth-garden/design-intake/r001-validation-evidence.md)   |
 | R002a compatibility validation | [R002a validation evidence](../specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md) |
 | Automated/story evidence       | [`specs/003-family-growth-garden/checklists/`](../specs/003-family-growth-garden/checklists/)             |
-| Professional UI critique       | [`.impeccable/critique/`](../.impeccable/critique/)                                                       |
 | Curated browser screenshots    | [`output/playwright/feature003-audit/`](../output/playwright/feature003-audit/)                           |
 | R002a browser screenshots      | [`output/playwright/r002a/`](../output/playwright/r002a/)                                                 |
 

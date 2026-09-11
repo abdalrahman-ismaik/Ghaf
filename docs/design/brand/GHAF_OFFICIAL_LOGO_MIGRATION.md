@@ -64,9 +64,11 @@ the Android safe region.
 Windows `Zone.Identifier` sidecars are metadata noise. They are excluded from evidence, runtime
 assets, staging, and commits.
 
-`docs/design/brand/official-pack-v1.0/` is a content-faithful metadata and prompt snapshot, not a
-second complete asset pack. Terminal blank lines were normalized only where required by Git's
-whitespace check; original source hashes remain recorded above. Paths in its manifest, README,
+`docs/design/brand/official-pack-v1.0/` retains a content-faithful metadata snapshot, not a
+second complete asset pack. Its Codex and Stitch execution prompts are now local-only and are
+available in earlier commits or the original source pack. Terminal blank lines were normalized
+only where required by Git's whitespace check; original source hashes remain recorded above.
+Paths in its manifest, README,
 validation files, and `CHECKSUMS.sha256` remain relative to the complete owner-supplied source pack
 named above. Run the checksum list from that original pack layout; validate imported runtime files
 with the brand tests.
@@ -103,18 +105,18 @@ The inventory deliberately distinguishes product identity from tree-shaped produ
 | `src/components/access/AccessShell.tsx` access header                                                       | Live wordmark; frozen R001 surface                    | Retain unchanged                                                              | Reusable access header renders supplied live copy                            |
 | `app/parent/index.tsx`, `app/parent/task/review.tsx`, `src/components/family-growth/ParentTaskComposer.tsx` | Live product-title text                               | Retain unchanged                                                              | Existing header title uses localized brand text                              |
 | `src/components/access/GhafIcon.tsx`                                                                        | Generic UI icon family                                | Protect unchanged                                                             | `ghaf-tree` is a simple task/navigation/content glyph, not the official logo |
-| `src/components/access/BotanicalAvatar.tsx`                                                                 | Profile identity                                      | Independently refresh with local botanical photos; never substitute the mark | Child avatar selection remains product content, not product branding         |
+| `src/components/access/BotanicalAvatar.tsx`                                                                 | Profile identity                                      | Independently refresh with local botanical photos; never substitute the mark  | Child avatar selection remains product content, not product branding         |
 | `src/components/r002a/child/ChildHomeHeader.tsx`                                                            | Profile identity                                      | Protect unchanged                                                             | Header avatar represents the selected Child                                  |
-| `src/components/r002a/child/ChildTaskHero.tsx`                                                              | Task illustration                                     | Independently refresh with provenanced local task photography                | Task context remains product content                                         |
+| `src/components/r002a/child/ChildTaskHero.tsx`                                                              | Task illustration                                     | Independently refresh with provenanced local task photography                 | Task context remains product content                                         |
 | `src/components/r002a/child/ChildGardenProgressCard.tsx`                                                    | Garden content and navigation symbol                  | Protect unchanged                                                             | Tree/leaf/flower glyphs communicate progress                                 |
-| `src/components/family-growth/GardenLandscape.tsx`                                                          | Landscape artwork                                     | Independently refresh with 25 provenanced local state images                 | Garden stage art is product state, not a logo                                |
-| `src/components/family-growth/FamilyCanopy.tsx`                                                             | Family canopy artwork                                 | Independently refresh with exact provenanced local state images              | Canopy visual communicates earned family progress                            |
-| `src/components/family-growth/CircleProgress.tsx`                                                           | Private community progress                            | Independently refresh with provenanced anonymous habitat photos              | Garden visual remains product content                                        |
+| `src/components/family-growth/GardenLandscape.tsx`                                                          | Landscape artwork                                     | Independently refresh with 25 provenanced local state images                  | Garden stage art is product state, not a logo                                |
+| `src/components/family-growth/FamilyCanopy.tsx`                                                             | Family canopy artwork                                 | Independently refresh with exact provenanced local state images               | Canopy visual communicates earned family progress                            |
+| `src/components/family-growth/CircleProgress.tsx`                                                           | Private community progress                            | Independently refresh with provenanced anonymous habitat photos               | Garden visual remains product content                                        |
 | `src/components/r002b/GrowthJourneyScreens.tsx`                                                             | Impact Path and badge artwork                         | Protect unchanged                                                             | Feature content has separate semantic identity                               |
-| `src/components/r002b/LearningScreens.tsx`                                                                  | Educational artwork                                   | Independently refresh with a provenanced local habitat study                 | Learning art retains its supporting role                                     |
-| `src/components/r002b/RevealBundleScreen.tsx`                                                               | Reward/consequence artwork                            | Independently refresh with provenanced local natural imagery                 | Artwork represents, but never calculates, committed outcomes                 |
-| `src/components/r002b/PrivateLeagueScreen.tsx`                                                              | League decoration and tree avatars                    | Remove the watermark; reuse local botanical profile photos for avatar tokens | League identity and projection remain live text/data                         |
-| `src/components/r002b/SharedGrowthScreens.tsx`                                                              | Anonymous community artwork                           | Independently refresh with a provenanced local coastal scene                 | Shared Growth imagery remains non-brand product content                      |
+| `src/components/r002b/LearningScreens.tsx`                                                                  | Educational artwork                                   | Independently refresh with a provenanced local habitat study                  | Learning art retains its supporting role                                     |
+| `src/components/r002b/RevealBundleScreen.tsx`                                                               | Reward/consequence artwork                            | Independently refresh with provenanced local natural imagery                  | Artwork represents, but never calculates, committed outcomes                 |
+| `src/components/r002b/PrivateLeagueScreen.tsx`                                                              | League decoration and tree avatars                    | Remove the watermark; reuse local botanical profile photos for avatar tokens  | League identity and projection remain live text/data                         |
+| `src/components/r002b/SharedGrowthScreens.tsx`                                                              | Anonymous community artwork                           | Independently refresh with a provenanced local coastal scene                  | Shared Growth imagery remains non-brand product content                      |
 | Existing `assets/images/**` and `assets/demo/**` outside `illustrations/r003/`                              | Prepared product content                              | Preserve unchanged; add the independent R003 manifest directory only          | No genuine brand placeholder was found                                       |
 | `docs/design/stitch/releases/ghaf-r001/**`                                                                  | Historical approved design reference                  | Preserve unchanged                                                            | A reference is evidence, not runtime UI                                      |
 | Original untracked `docs/design/stitch/releases/ghaf-r002/**`                                               | Raw design intake                                     | Preserve unchanged                                                            | Raw PNG/HTML exports are not migrated or staged                              |
@@ -179,9 +181,10 @@ local commits. The duplicate root and nested prompt copies are byte-identical.
 
 **BLOCKED — EXTERNAL TOOL UNAVAILABLE.** This session has no Google Stitch connector, project
 handle, or mutation tool. The repository therefore does not pretend that any Stitch file was
-updated. A content-faithful owner-supplied handoff is preserved at
-`docs/design/brand/official-pack-v1.0/STITCH_BRAND_REPLACEMENT_PROMPT.md` for a teammate with Stitch
-access. Raw Stitch exports remain untouched.
+updated. The content-faithful owner-supplied handoff at
+`docs/design/brand/official-pack-v1.0/STITCH_BRAND_REPLACEMENT_PROMPT.md` is now local-only; a
+teammate with Stitch access can use an existing local copy or the original source pack.
+Raw Stitch exports remain untouched.
 
 Before accepting a future Stitch update, verify that it preserves mobile composition, Arabic RTL,
 English LTR, live Alexandria wordmarks, approved typography, interaction states, and every
