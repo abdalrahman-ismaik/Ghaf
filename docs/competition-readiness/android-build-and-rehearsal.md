@@ -6,6 +6,58 @@ and native plugins in `app.config.ts`. It has no committed `eas.json` or verifie
 inspection environment has `adb`, but no connected device, Java, `sdkmanager`, configured
 `ANDROID_HOME`, `ANDROID_SDK_ROOT` or `JAVA_HOME`. An Android JavaScript export is not an APK.
 
+## Session A prerequisite evidence — September 12, 2026
+
+Read-only audit at `02b9618` found Node 24.16.0, npm 11.13.0, Expo 57.0.20, its nested CLI
+57.0.22 and bundled bare-minimum template 57.0.22, with React Native 0.86.3. The installed
+template selects Gradle 9.3.1. RN's local `gradle/libs.versions.toml` selects Android minimum 24,
+compile/target 36, Build Tools 36.0.0, NDK 27.1.12297006 and Kotlin 2.1.20. The installed RN
+Gradle plugin declares AGP 8.12.0 and JDK 17. These are inspected inputs, not a successful build;
+the exact combined toolchain remains unverified. Do not change versions to fix an unobserved error.
+
+`/usr/lib/android-sdk` contains only licenses and platform-tools. Java/Javac, SDK manager,
+platforms, build-tools, NDK, CMake, Ninja and Gradle cache were absent in the inspected paths.
+ADB 35.0.0 returned no devices. Native work is **BLOCKED** on toolchain provisioning and then
+actual hardware. Existing license files do not establish approval for additional SDK terms.
+
+An ignored `android/` tree exists, but its main manifest is stale: it still enables backup and
+declares shared-storage permissions that current `app.config.ts` disables/blocks. Preserve it
+and generate a fresh native tree in a dedicated candidate worktree. Validate the resulting APK's
+merged permissions and `allowBackup`; source configuration alone cannot pass those checks.
+
+The generated release build currently uses the template debug keystore. It bundles JS/assets
+through `export:embed` and may be suitable for a clearly labeled standalone rehearsal build,
+but it is not a production signing identity. No key was generated or selected by this audit.
+Keep one actual reviewed identity for repeated installation; the team must select its distribution
+identity before a downloadable competition artifact is accepted.
+
+After a team build environment is provisioned, the inspected dependency inputs suggest:
+
+```bash
+sdkmanager "platform-tools" "platforms;android-36" \
+  "build-tools;36.0.0" "ndk;27.1.12297006" "cmake;3.30.5"
+sdkmanager --licenses
+```
+
+Run license review interactively; do not pipe automatic acceptance. CMake 3.30.5 is a proposed
+explicit pin matching RN's source-build default; the app otherwise leaves CMake selection implicit.
+Installed Expo accepts `-Pandroid.cmakeVersion=3.30.5`. After fresh prebuild and signing review:
+
+```bash
+./gradlew :app:assembleRelease -Pandroid.cmakeVersion=3.30.5 \
+  --no-daemon --no-parallel --max-workers=2
+"$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs \
+  app/build/outputs/apk/release/app-release.apk
+"$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions \
+  app/build/outputs/apk/release/app-release.apk
+sha256sum app/build/outputs/apk/release/app-release.apk
+```
+
+The Gradle commands run from the generated `android/` directory. Keep the default ABI set until
+both phones' supported ABIs are observed. First compilation needs network downloads and A's one
+heavy-job slot; no native-heavy job may overlap the resident Metro/browser pair. No commands in
+these proposed native-build blocks were executed during the audit.
+
 ## Preferred local path
 
 Use an Android-capable team workstation and a dedicated build worktree at the reviewed commit.

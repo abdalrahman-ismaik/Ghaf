@@ -107,3 +107,32 @@ The role-prompt writer owned only the four role prompts; independent reviewers w
 No application source, dependency, native configuration or feature flag changed. Validation covers
 document formatting, local links and independent protocol consistency; app/native tests are not
 new evidence for this documentation-only change. Student review remains NOT RUN.
+
+## Executed Session A — September 12, 2026 UAE time
+
+The user launched Session A (Request 7), activating the previously prepared A/B/C/D workflow.
+The earlier NOT STARTED descriptions above are historical. A created separate worker worktrees,
+activated exact report/helper grants, and implemented A-004's existing temporary Parent-entry
+routing correction under Feature 005. See [A's contribution and exact helper prompts](workstreams/a-contract.md)
+for red/green evidence, actual model visibility, source files, rejected approaches and review gaps.
+The Android prerequisite audit changed no native files and produced no APK. Root source/commit
+identity does not establish student authorship or understanding; exact-diff review remains PENDING.
+B/C/D report their own prompts/contributions in their reserved workstream reports; A incorporates
+those links only when an actual released handoff arrives. No memory/recovery feature is approved
+merely by this coordination activation.
+
+### Released workstream evidence incorporated by A
+
+- [B core audit and replacement repair](workstreams/b-recovery-audit.md): worker `b1fc581` and
+  `a081f642`, integrated as `c9d5ef6` and `f38f21d`. Six store lines plus four regression cases;
+  132 relevant tests, scoped checks and typecheck recorded by B; exact student review PENDING.
+- [C three-direction comparison](workstreams/c-design-comparison.md): worker `0351f9d`, integrated
+  `233df14`; existing card refinement is still in flight, not claimed integrated here.
+- [D independent matrix/draft review](workstreams/d-baseline.md): workers `f95c57d` / `c56141b`,
+  integrated `152b053` / `e57d669`; source/contract evidence, no new native or browser pass.
+- A-004 `ffad798` (4 route lines, 5 behavior tests) and A-006 `4d26635` (Arabic duration wording,
+  existing expected-copy updates) have focused checks in A's report. Full combined suite and D
+  mounted-router checks are still pending at this checkpoint.
+
+A preserved B/C/D ownership and authorship. Paused status-write acknowledgments enabled the
+coordination checkpoint; no fabricated continuous student work or human approval is recorded.

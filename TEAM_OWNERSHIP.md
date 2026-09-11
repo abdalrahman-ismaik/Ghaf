@@ -1,5 +1,42 @@
 # Team Ownership
 
+## 2026-09-12 Session A Competition Execution Window
+
+**Integration owner**: Session A instance `A-20260911T2220Z-root`, on
+`redesign/ui-experiments`, initial HEAD `02b9618631fa9fc1b29f2cda5fa68c6adb2003fd`.
+
+**Scope**: Execute the user's Session A mission through bounded audits, accepted-contract work,
+local integration and honest build/rehearsal evidence. New recovery, rationale and memory behavior
+requires its committed accepted contract; this reservation does not approve those features.
+
+**Reserved boundaries**:
+
+- A: canonical `docs/competition-readiness/coordination/BOARD.md` and `STATUS-A.md`, this file,
+  `docs/competition-readiness/workstreams/a-contract.md`, `requests.md` and
+  `ai-assistance-ledger.md` under `docs/competition-readiness/`, and that directory's
+  `android-build-and-rehearsal.md` and `two-device-demo.md`. A controls future shared source grants;
+  no application source change is assigned by this initial reservation.
+- B/C/D alone write their respective canonical status files. Their exact source/report grants,
+  assigned worktrees and task acceptance are published in the live BOARD before writes.
+- A's helper allocation is one read-only helper initially; helpers never write coordination.
+
+**Additional A-004 reservation**: `app/index.tsx` and
+`tests/temporary-parent-entry-route.test.tsx` for the existing Feature 005 temporary Parent entry
+regression; see board revision 2. No store, onboarding persistence or new feature boundary.
+
+**Revision 3 transfers**: A exclusively releases `src/state/usePrototypeStore.ts` to B for
+B-004 replacement-reset correction under Feature 011; B also owns its existing replacement test.
+C exclusively receives `src/components/r002a/child/ChildTodayTaskCard.tsx` for the selected existing
+botanical presentation refinement. Their own reports remain granted. Neither has a new recovery
+feature grant. Shared dependencies are linked read-only at identical lockfiles; C owns preview.
+
+**A-002 planning reservation**: `specs/014-local-progress-recovery/**` and
+`.specify/feature.json`, A only, DRAFT with no implementation/release authority.
+
+**Status**: Running. Preserve concurrent B/C/D status writes and untracked `docs/SMAC 2026/`.
+Only A stages live coordination, following the status-pause/ACK protocol. No push, main merge,
+deployment, release activation or fabricated student approval is authorized.
+
 ## 2026-09-12 Sustained Codex Session Coordination Window
 
 **Integration owner**: `/root` on `redesign/ui-experiments`.
