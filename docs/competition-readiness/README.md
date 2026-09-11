@@ -7,6 +7,18 @@ Four focused Codex lead sessions are recommended, each able to delegate useful s
 under one shared resource budget; the user's per-session subagent capacity of 10 is preserved. New product behavior in this package is a proposal requiring the corresponding Spec Kit
 contract before implementation.
 
+## Active execution checkpoint
+
+Session A/B/C/D execution began from `02b9618`. Current runtime candidate is `7fff0f3`:
+Parent handoff, family replacement, Arabic duration wording, one Child Today card refinement and
+root-reset repairs are locally integrated. Typecheck, lint, formatting and138files/1,677tests pass.
+Independent reset retest is active; this is not release acceptance. Follow the live
+[board](coordination/BOARD.md), [A implementation/evidence record](workstreams/a-contract.md) and
+[demo script](two-device-demo.md) for current status. The original QA report below remains
+attributed to its historical candidate. Reviewed recovery014 is committed DRAFT, unaccepted and
+unimplemented; no memory/timeline is built. APK, physical Android, named review and rehearsal
+remain blocked or not run.
+
 ## Start the four sessions
 
 Read the [launch, model, worktree and sequencing guide](orchestration/README.md). It includes

@@ -9,15 +9,16 @@
 local integration and honest build/rehearsal evidence. New recovery, rationale and memory behavior
 requires its committed accepted contract; this reservation does not approve those features.
 
-**Current disposition — September 12 execution checkpoint**: A-004/A-006 completed and released;
-B-004/C-002 source, reports, helpers and jobs explicitly released and integrated. D alone holds
-its r9 candidate report `docs/competition-readiness/workstreams/d-candidate.md`, ignored evidence,
-and preview lane at runtime `b862eb6`. A retains master documents, BOARD/STATUS-A and draft014
-proposal corrections (`specs/014-local-progress-recovery/**`, ignored `.specify/feature.json`).
-Draft014 is committed `ca54e40`, unaccepted and not implemented; no runtime grant. Current docs
-HEAD `a856b5b`; full candidate checks pass, independent D retest active. B/C are paused; their
-helper quotas are inactive until a new eligible grant. Earlier reservations below are historical
-unless explicitly retained here or by the latest live board. No A helper/job survives.
+**Current disposition — 2026-09-11 23:26 UTC**: A-004/A-006/A-007/A-008 and B-004/C-002
+source changes are locally integrated and released. A-007 did not close the actual reset race;
+A-008 `7fff0f3c2dc0e802ba1da6a67cd2513a75824809` passes typecheck/lint/format and138files/1,677tests.
+D alone holds candidate report `docs/competition-readiness/workstreams/d-candidate.md`, ignored
+artifacts and preview lane for D-005-r17 actual A-008 reset retest. A retains master documents,
+package README (r18 evidence-pointer grant), BOARD/STATUS-A and draft014 proposal corrections.
+Draft014 `ca54e40` is unaccepted/unimplemented; no runtime grant. B/C are explicitly paused with
+source/jobs/helpers released. A's final read-only helper is complete/released and full-check
+runner276567/exec40754 completed; no A jobs/helpers remain. Earlier reservations below are history
+unless explicitly retained here or in the live board. Native/APK/student gates remain open.
 
 **Reserved boundaries**:
 

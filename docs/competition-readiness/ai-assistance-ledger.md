@@ -154,3 +154,36 @@ uses target timings only; actual APK/device models/OS and all ten physical runs 
 The current execution records preserve actual source changes and team-assistance prompts. No
 student review, participant contribution, qualification, Ultra/Fast runtime setting or native
 pass is inferred from these generated reports. All commits remain local.
+
+### Additional reproduced reset repair — A-007
+
+D's source-verified browser run found an unhandled queued POP_TO_TOP after Parent reset that
+blocked the next verification click through the development error overlay. Under existing003
+FR-095/096, A generated `b2208aa`: `src/utils/navigation.ts` now checks the supported canDismiss
+before dismissing, while keeping root replacement and the web Back guard; one new behavior case
+and a type-style cleanup are in `tests/reset-navigation.test.ts`. RED1failed/2passed; GREEN42
+focused tests and scoped checks; full candidate typecheck/lint/format and138files/1,670tests pass.
+D actual retest FAILED the dismissible-history race: canDismiss was true, then queued POP_TO_TOP
+ran after route collapse. The guard did not close D-R02. No production/native effect is claimed.
+
+[A's report](workstreams/a-contract.md) preserves the exact helper prompt, source reasoning and
+remaining timing gap. Rejected actions: hiding the error toast, changing app code for the earlier
+wrong-worktree bundle, treating synchronous catch as protection against a queued error, or
+claiming unit tests establish native navigation. Human exact-diff review/teach-back PENDING.
+The cache analysis also generated a future isolated-preview launch note, not app/package changes;
+initial mixed-source D captures are explicitly candidate-ineligible. No source change followed
+just from that cache inference. No push, native build, SDK license acceptance or release activation.
+
+### Root reset correction — A-008
+
+A generated `7fff0f3` under the same existing reset contract after D reproduced the remaining
+race. Public navigation-container refs in Parent Settings and PrototypeStatusBar prepare a
+validated root payload before clearing data; one resetRoot retains only the actual wrapper and
+entry route. No queued pop/replace, old route parameters, authority persistence or package change.
+Files: `src/utils/navigation.ts`, `app/parent/settings/index.tsx`,
+`src/components/PrototypeStatusBar.tsx`, `tests/reset-navigation.test.ts`. The installed reducer
+reproduced the old failure (1 failed / 3 passed); the new focused reset/access set passes49tests,
+with typecheck and scoped lint/format passing. Full candidate typecheck/lint/format and138files/1,677tests pass; actual D retest remains pending.
+Exact three helper prompts, generated contributions and rejected shortcuts are preserved in
+[A's report](workstreams/a-contract.md#a-008--one-validated-root-reset-after-the-queued-pop-failure).
+Human exact-diff review/teach-back and physical Android validation remain pending.

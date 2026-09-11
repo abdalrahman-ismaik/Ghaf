@@ -343,3 +343,31 @@ internal runtime imports, hiding development errors, or claiming success before 
 Both helper tasks completed/released; no writes, descendants, tests or jobs by the helper. Named
 student review and physical Android remain pending. Arabic CSS200% secondary-label clipping is a
 separate P3 browser stress observation; no unrestricted large-text/native pass or UI rewrite follows.
+
+### A-008 full automated candidate evidence
+
+At exact `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`, sequential `npm run typecheck`,
+`npm run lint`, `npm run format:check`, and `npm test -- --maxWorkers=2` all exited0.
+**138 files /1,677 tests passed**. Actual UTC2026-09-11 23:23:18–23:24:11, CI1/EXPO_OFFLINE1;
+runner276567/exec40754 completed and heavy slot released. Exact command/time/status JSON and
+four logs: `/home/smyk/projects/Ghaf/output/competition-readiness/integration-7fff0f3/` (ignored).
+This is the sole full-suite run after A-008, justified by changed runtime source. D owns mounted
+reset retest; physical Android and exact-diff student review remain pending.
+
+Final read-only assistance to `/root/coordination_review`, while A updated candidate docs/status:
+
+```text
+A reuses one helper quota for a bounded READ-ONLY final evidence/candidate documentation review. Others edit; preserve all files. No writes, tests, servers, descendants or jobs. Read latest A-owned docs/competition-readiness/two-device-demo.md and android-build-and-rehearsal.md, plus D-owned current /home/smyk/projects/Ghaf-qa-rehearsal/docs/competition-readiness/workstreams/d-candidate.md (source remains failed b2208aa report, new 7fff0f3 retest active). Identify only consequential misleading capability, per-device evidence, or exact counter-order claims that must be corrected at handoff; don't duplicate D runtime/reset retest or broad prior audit. A independently updates candidate status, ledger, source checks and board. D new result pending; acknowledge superseded temporal statements separately from factual errors. Actual native/APK/student/rehearsals absent, recovery014 unaccepted, initial mixed-worktree captures invalid, 200% CSS secondarylabel clipped, audio sink errors not pass. Return exact docs changes needed and release.
+```
+
+Actual follow-up:
+
+```text
+These three now corrected in current working copy concurrently: header exact7fff with full/retest pending, counter heading afterpraise+recognition, resetrownewretestpending. Keep final review focused any other material claim; don't re-review unchanged broad docs. Full test active; native absent. Then release.
+```
+
+Accepted: distinguish praise from completed recognition, retain failed A-007 evidence, and separate
+underlying lifetime/Reward progress from default personal balance and default-off Growth UI.
+Rejected: generic reset pass, treating CSS200% secondary-label clipping as native evidence, or
+claiming audio fallback rendered means playback worked. Helper no edits/tests/jobs/descendants;
+human content/teach-back review remains PENDING.

@@ -5,8 +5,11 @@ Android independently verifies installation, touch, responsive layout, persisten
 The two installations have separate local state. Live synchronization is deferred.
 
 This is the current-feature operator and acceptance script, not completed rehearsal evidence.
-Runtime target: `b862eb6f85321935d297a411aaa58744cf72f18b`; later documentation commits do not
-change that source. Automated checks pass; independent candidate browser QA is in progress.
+Runtime target: `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`; later documentation commits do not
+change that source. Full checks pass (138 files / 1,677 tests); D's narrow root-reset retest is in progress. Source-verified
+b862eb6 core journeys and b2208aa access traces are separate evidence. The b2208aa dismissal guard
+failed the real reset race; no prior passing suite closes that defect. Initial mixed-worktree
+preview captures are excluded from candidate evidence.
 The current build supports the canonical task/help/Parent-confirmation/growth flow locally, but
 progress restoration, a durable private memory leaf/timeline and generalized recommendation
 presentation remain gaps. See [current QA](qa-report.md). Do not narrate proposed features as built.
@@ -77,8 +80,9 @@ The optional duplicate-confirmation, cancellation and reset probes belong in Q&A
 the main timed story. Use the [runbook](../../DEMO_RUNBOOK.md) for existing route-specific access
 instructions. A-004 now routes a valid temporary Child-to-Parent handoff directly to the existing
 Parent sign-in even with fresh introduction state; it does not authenticate the Parent. Parent
-logout returns to the eligible remembered Child through the existing flow. D must verify mounted
-navigation, and actual Android Back/restart remains an independent gate.
+logout returns to the eligible remembered Child through the existing flow. D verified the actual
+remembered-Child reload, handoff, cancellation and invalid/valid verification on b2208aa; Android
+Back/restart remains an independent gate. The new root-reset correction requires its own retest.
 
 No durable memory or generalized recommendation surface is selected. Proposed recovery 014 is
 separate and unaccepted; the script must not promise progress survives process restart. If the
@@ -90,33 +94,34 @@ restart recovery or establish sync. There are zero completed physical rehearsals
 
 These are separate authorities. Check the selected candidate's fixtures before each rehearsal.
 
-| Authority                     | Before          | After one canonical Parent confirmation | Replay                      |
-| ----------------------------- | --------------- | --------------------------------------- | --------------------------- |
-| Default personal Seed display | 48              | 60                                      | Remains 60                  |
-| Mangrove track                | 48 / 60, Shoot  | 60 / 60, Sapling                        | No extra growth             |
-| Cooperative canopy            | 19 / 25         | 20 / 25                                 | No extra contribution       |
-| Salem weekly Challenge Leaves | 4 / 5, score 80 | 5 / 5, score 100                        | No extra Leaf; capped score |
-| Eligible Green Circle         | 11 / 12         | 12 / 12                                 | No extra event              |
-| Alya personal Seeds           | 36              | 36                                      | Remains 36                  |
+| Authority                     | Before          | After praise and one canonical recognition | Replay                      |
+| ----------------------------- | --------------- | ------------------------------------------ | --------------------------- |
+| Default personal Seed display | 48              | 60                                         | Remains 60                  |
+| Mangrove track                | 48 / 60, Shoot  | 60 / 60, Sapling                           | No extra growth             |
+| Cooperative canopy            | 19 / 25         | 20 / 25                                    | No extra contribution       |
+| Salem weekly Challenge Leaves | 4 / 5, score 80 | 5 / 5, score 100                           | No extra Leaf; capped score |
+| Eligible Green Circle         | 11 / 12         | 12 / 12                                    | No extra event              |
+| Alya personal Seeds           | 36              | 36                                         | Remains 36                  |
 
-The independently gated lifetime 108→120 and private eligible Family Reward 108/120→120/120
-fixtures are documented in the [Growth preflight](../../specs/003-family-growth-garden/design-intake/growth-journey-preflight.md).
-They are not the default personal balance. An animation, memory replay, learning completion,
+The separate lifetime ledger 108→120 and private eligible Family Reward 108/120→120/120
+were observed with all eight R002b flags off; their authorities are documented in the [Growth preflight](../../specs/003-family-growth-garden/design-intake/growth-journey-preflight.md).
+The lifetime Growth UI remains gated. Neither is the default personal 48→60 balance. An animation,
+memory replay, learning completion,
 calendar attendance or map arrival cannot create another award. Keep the private reward outside
 the main storyboard unless there is genuine time and all its gates pass.
 
 ## Failure and restart acceptance
 
-| Situation                                             | Required result                                                         | Current evidence boundary                                                          |
-| ----------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| No internet / Metro stopped                           | Installed local prepared path launches and completes                    | Native NOT RUN                                                                     |
-| Child needs help or retries                           | Fixed accepted award remains; no shame or deduction                     | Domain tests and browser supported-completion evidence                             |
-| Parent presses Confirm again                          | Existing result; no duplicate Seeds or growth                           | Automated progression invariants pass; D actual candidate interaction pending      |
-| Reload/process death after acceptance or confirmation | Future accepted 014: restore validated profile-scoped task/progress     | Current process-local progress is lost; 014 DRAFT only, no recovery pass           |
-| Corrupt or unknown saved version                      | No new authority or awards; clear recovery route                        | Reviewed draft 014 exists; acceptance and implementation pending                   |
-| Reset during a pending write                          | Signed-out Arabic baseline; stale work cannot resurrect family/progress | Browser ordinary reset passed; durable-write race acceptance requires new work     |
-| Optional model times out                              | Same-attempt prepared fallback; truthful label                          | Do not claim live AI without direct server evidence                                |
-| Primary phone cannot recover                          | Switch to independently prepared spare or a clearly labeled recording   | This is a presentation fallback, not a passed interrupted-session restoration test |
+| Situation                                             | Required result                                                         | Current evidence boundary                                                                                    |
+| ----------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| No internet / Metro stopped                           | Installed local prepared path launches and completes                    | Native NOT RUN                                                                                               |
+| Child needs help or retries                           | Fixed accepted award remains; no shame or deduction                     | Domain tests and browser supported-completion evidence                                                       |
+| Parent presses Confirm again                          | Existing result; no duplicate Seeds or growth                           | Automated invariants plus D duplicate command probe pass; not a pointer double-click or durable replay proof |
+| Reload/process death after acceptance or confirmation | Future accepted 014: restore validated profile-scoped task/progress     | Current process-local progress is lost; 014 DRAFT only, no recovery pass                                     |
+| Corrupt or unknown saved version                      | No new authority or awards; clear recovery route                        | Reviewed draft 014 exists; acceptance and implementation pending                                             |
+| Reset during a pending write                          | Signed-out Arabic baseline; stale work cannot resurrect family/progress | New root-reset candidate retest pending; durable-write race acceptance requires new contract/work            |
+| Optional model times out                              | Same-attempt prepared fallback; truthful label                          | Do not claim live AI without direct server evidence                                                          |
+| Primary phone cannot recover                          | Switch to independently prepared spare or a clearly labeled recording   | This is a presentation fallback, not a passed interrupted-session restoration test                           |
 
 ## Physical acceptance record
 
