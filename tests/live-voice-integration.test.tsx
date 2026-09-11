@@ -27,6 +27,14 @@ function expectOk<T>(
   return result.data;
 }
 
+function deferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  const promise = new Promise<T>((complete) => {
+    resolve = complete;
+  });
+  return { promise, resolve };
+}
+
 async function prepareChild({ grants = true, eligibleAge = true } = {}) {
   if (eligibleAge) {
     const state = usePrototypeStore.getState();
@@ -219,6 +227,110 @@ describe('live voice integration', () => {
     expect(usePrototypeStore.getState().liveVoiceCapture?.state.envelope.status).toBe('terminal');
   });
 
+  it.each(['reviewed_voice_transcript', 'typed'] as const)(
+    'cancels only the matching voice Coach request while a %s request is pending',
+    async (inputOrigin) => {
+      await prepareChild();
+      const deps = dependencies();
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_coach_cancel_123',
+          requestId: 'request_coach_cancel_123',
+          bindingNonce: 'binding_coach_cancel_123',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+      expectOk(await usePrototypeStore.getState().stopLiveVoiceHold(deps));
+      expectOk(usePrototypeStore.getState().markLiveVoiceTranscriptReady());
+      const blocked = deferred<void>();
+      const entered = deferred<void>();
+      const coach: LiveChildCoachTextService = {
+        respond: vi.fn(async (request) => {
+          entered.resolve();
+          await blocked.promise;
+          return {
+            ok: true as const,
+            data: {
+              schemaVersion: '1.0' as const,
+              requestId: request.requestId,
+              taskBindingNonce: request.taskBindingNonce,
+              intent: request.intent,
+              disposition: 'coach' as const,
+              steps: [{ ar: 'ابدأ بالخطوة الأولى.', en: 'Start with the first step.' }],
+              ifThenCue: null,
+              reflectionQuestion: null,
+              reviewedPhrase: null,
+              terminal: true as const,
+            },
+            meta: { origin: 'live' as const, fallbackUsed: false },
+          };
+        }),
+      };
+      const request = {
+        requestId: 'request_pending_coach_123',
+        bindingNonce: 'binding_pending_coach_123',
+        intent: 'clarify_step' as const,
+      };
+      const pendingCoach =
+        inputOrigin === 'reviewed_voice_transcript'
+          ? usePrototypeStore.getState().sendLiveVoiceTranscript(request, coach)
+          : usePrototypeStore
+              .getState()
+              .requestLiveChildCoach(
+                { ...request, inputOrigin, boundedText: 'Please clarify the first step.' },
+                coach,
+              );
+      await entered.promise;
+      const requesting = usePrototypeStore.getState().liveChildCoachView;
+      expect(requesting.activeRequest).toMatchObject({ inputOrigin });
+      const cleanup = deferred<Awaited<ReturnType<VoiceCaptureService['cancel']>>>();
+      deps.capture.cancel = vi.fn(() => cleanup.promise);
+      const pendingCancel = usePrototypeStore
+        .getState()
+        .cancelLiveVoiceCapture(deps.capture, deps.media);
+      const immediateView = usePrototypeStore.getState().liveChildCoachView;
+      const published = vi.fn();
+      const unsubscribe = usePrototypeStore.subscribe((state) =>
+        published(state.liveChildCoachView),
+      );
+      blocked.resolve();
+      const coachResult = await pendingCoach;
+      cleanup.resolve({
+        ok: true,
+        data: { uri: null },
+        meta: { origin: 'live', fallbackUsed: false },
+      });
+      expectOk(await pendingCancel);
+      unsubscribe();
+
+      if (inputOrigin === 'reviewed_voice_transcript') {
+        expect(immediateView).toMatchObject({
+          status: 'idle',
+          activeRequest: null,
+          response: null,
+        });
+        expect(immediateView.requestRevision).toBeGreaterThan(requesting.requestRevision);
+        expect(coachResult).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+        expect(usePrototypeStore.getState().liveChildCoachView).toMatchObject({
+          status: 'idle',
+          activeRequest: null,
+          response: null,
+        });
+        expect(published.mock.calls.every(([view]) => view.response === null)).toBe(true);
+      } else {
+        expect(immediateView).toBe(requesting);
+        expectOk(coachResult);
+        expect(usePrototypeStore.getState().liveChildCoachView).toMatchObject({
+          status: 'terminal',
+          activeRequest: { inputOrigin: 'typed', requestId: request.requestId },
+          response: { requestId: request.requestId },
+        });
+      }
+      expect(usePrototypeStore.getState().liveVoiceCapture).toBeNull();
+    },
+  );
+
   it('cleans up on route/background invalidation and prototype reset', async () => {
     await prepareChild();
     const deps = dependencies();
@@ -236,6 +348,164 @@ describe('live voice integration', () => {
     expect(deps.media.delete).toHaveBeenCalledWith('file:///cache/voice.m4a');
     expect(usePrototypeStore.getState().liveVoiceCapture).toBeNull();
   });
+
+  it.each(
+    (['stop', 'inspect', 'read'] as const).flatMap((stage) =>
+      (['cancel', 'reset', 'replace'] as const).map((invalidation) => ({
+        stage,
+        invalidation,
+      })),
+    ),
+  )(
+    'discards a pending $stage after $invalidation before transcription',
+    async ({ stage, invalidation }) => {
+      await prepareChild();
+      const deps = dependencies();
+      const blocked = deferred<void>();
+      const entered = deferred<void>();
+      const bytes = new Uint8Array([1, 2, 3, 4]);
+      const stopHeld = deps.capture.stopHeld;
+      const inspect = deps.media.inspect;
+      deps.capture.stopHeld = vi.fn(async () => {
+        if (stage === 'stop') {
+          entered.resolve();
+          await blocked.promise;
+        }
+        return stopHeld();
+      });
+      deps.media.inspect = vi.fn(async (uri) => {
+        if (stage === 'inspect') {
+          entered.resolve();
+          await blocked.promise;
+        }
+        return inspect(uri);
+      });
+      deps.media.read = vi.fn(async () => {
+        if (stage === 'read') {
+          entered.resolve();
+          await blocked.promise;
+        }
+        return {
+          ok: true as const,
+          data: bytes,
+          meta: { origin: 'live' as const, fallbackUsed: false },
+        };
+      });
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_pending_123456',
+          requestId: 'request_pending_123456',
+          bindingNonce: 'binding_pending_123456',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+      const pending = usePrototypeStore.getState().stopLiveVoiceHold(deps);
+      await entered.promise;
+
+      if (invalidation === 'cancel') {
+        expectOk(
+          await usePrototypeStore.getState().cancelLiveVoiceCapture(deps.capture, deps.media),
+        );
+      } else if (invalidation === 'reset') {
+        expectOk(resetPrototypeForTest());
+      } else {
+        expectOk(
+          usePrototypeStore.getState().prepareLiveVoiceCapture({
+            voiceSessionId: 'voice_replacement_123',
+            requestId: 'request_replacement_123',
+            bindingNonce: 'binding_replacement_123',
+          }),
+        );
+      }
+      const expectedCapture = usePrototypeStore.getState().liveVoiceCapture;
+      const publish = vi.fn();
+      const unsubscribe = usePrototypeStore.subscribe((state) => publish(state.liveVoiceCapture));
+      blocked.resolve();
+      const result = await pending;
+      unsubscribe();
+
+      expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+      expect(deps.transcription.transcribe).not.toHaveBeenCalled();
+      if (stage === 'stop') expect(deps.media.inspect).not.toHaveBeenCalled();
+      if (stage !== 'read') expect(deps.media.read).not.toHaveBeenCalled();
+      if (stage === 'read') expect(Array.from(bytes)).toEqual([0, 0, 0, 0]);
+      expect(deps.media.delete).toHaveBeenCalledWith('file:///cache/voice.m4a');
+      expect(usePrototypeStore.getState().liveVoiceCapture).toBe(expectedCapture);
+      expect(publish.mock.calls.every(([capture]) => capture === expectedCapture)).toBe(true);
+    },
+  );
+
+  it('clears cancelled content immediately and preserves a replacement when cleanup settles', async () => {
+    await prepareChild();
+    const deps = dependencies();
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_cancel_slow_123',
+        requestId: 'request_cancel_slow_123',
+        bindingNonce: 'binding_cancel_slow_123',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+    expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+    const cleanup = deferred<Awaited<ReturnType<VoiceCaptureService['cancel']>>>();
+    deps.capture.cancel = vi.fn(() => cleanup.promise);
+    const pending = usePrototypeStore.getState().cancelLiveVoiceCapture(deps.capture, deps.media);
+    const immediateCapture = usePrototypeStore.getState().liveVoiceCapture;
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_cancel_fresh_123',
+        requestId: 'request_cancel_fresh_123',
+        bindingNonce: 'binding_cancel_fresh_123',
+      }),
+    );
+    const replacement = usePrototypeStore.getState().liveVoiceCapture;
+    cleanup.resolve({
+      ok: true,
+      data: { uri: 'file:///cache/voice.m4a' },
+      meta: { origin: 'live', fallbackUsed: false },
+    });
+    expectOk(await pending);
+    expect(immediateCapture).toBeNull();
+    expect(deps.media.delete).toHaveBeenCalledWith('file:///cache/voice.m4a');
+    expect(usePrototypeStore.getState().liveVoiceCapture).toBe(replacement);
+  });
+
+  it.each(['capture', 'delete'] as const)(
+    'reports a cancellation %s failure without restoring cancelled content',
+    async (failingStage) => {
+      await prepareChild();
+      const deps = dependencies();
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_cancel_failure_123',
+          requestId: 'request_cancel_failure_123',
+          bindingNonce: 'binding_cancel_failure_123',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+      const failure = {
+        ok: false as const,
+        error: {
+          code: 'REMOTE_UNAVAILABLE' as const,
+          message: 'Synthetic cleanup failed',
+          retryable: false,
+          fallbackAvailable: false,
+        },
+      };
+      if (failingStage === 'capture') deps.capture.cancel = vi.fn(async () => failure);
+      else deps.media.delete = vi.fn(async () => failure);
+
+      const pending = usePrototypeStore.getState().cancelLiveVoiceCapture(deps.capture, deps.media);
+      const immediateCapture = usePrototypeStore.getState().liveVoiceCapture;
+      const result = await pending;
+      expect(result).toMatchObject({ ok: false, error: { code: 'REMOTE_UNAVAILABLE' } });
+      expect(immediateCapture).toBeNull();
+      expect(usePrototypeStore.getState().liveVoiceCapture).toBeNull();
+      expect(deps.transcription.transcribe).not.toHaveBeenCalled();
+    },
+  );
 
   it('deletes local audio and uses a prepared transcript when transcription throws', async () => {
     await prepareChild();

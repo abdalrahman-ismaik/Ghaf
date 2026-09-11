@@ -3545,7 +3545,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         (snapshot.voiceGrantVersion === null ||
           (current.liveChildAiGrants[snapshot.childId].voice.status === 'granted' &&
             current.liveChildAiGrants[snapshot.childId].voice.grantVersion ===
-              snapshot.voiceGrantVersion)) &&
+              snapshot.voiceGrantVersion &&
+            current.liveVoiceCapture !== null &&
+            boundLiveVoiceIsCurrent(current, current.liveVoiceCapture) &&
+            current.liveVoiceCapture.state.envelope.requestId === snapshot.voiceRequestId &&
+            current.liveVoiceCapture.state.envelope.bindingNonce === input.voiceBindingNonce)) &&
         current.liveChildCoachView.requestRevision === requestRevision
       );
     };
@@ -3720,13 +3724,16 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
       return failure('INVALID_TRANSITION', 'A current held voice session is required');
     }
+    const stopIsCurrent = () =>
+      get().liveVoiceCapture === bound && boundLiveVoiceIsCurrent(get(), bound);
+    const staleStop = () => failure('INVALID_TRANSITION', 'Voice capture stop is stale');
     const discardCapturedFile = async <T>(
       uri: string,
       source: LiveVoiceCaptureState,
       original: ServiceResult<T>,
     ): Promise<ServiceResult<T>> => {
       const deletion = await media.delete(uri);
-      if (boundLiveVoiceIsCurrent(get(), bound)) {
+      if (stopIsCurrent()) {
         const deleting = beginVoiceDeletion(source);
         const completed = deleting.ok
           ? completeVoiceDeletion(deleting.data, deletion.ok)
@@ -3737,12 +3744,23 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     };
     const captured = await capture.stopHeld();
     if (!captured.ok) return captured;
+    if (!stopIsCurrent()) {
+      return discardCapturedFile(captured.data.uri, bound.state, staleStop());
+    }
     const inspected = await media.inspect(captured.data.uri);
+    if (!stopIsCurrent()) {
+      return discardCapturedFile(captured.data.uri, bound.state, staleStop());
+    }
     if (!inspected.ok) {
       return discardCapturedFile(captured.data.uri, bound.state, inspected);
     }
     const bytes = await media.read(captured.data.uri);
+    if (!stopIsCurrent()) {
+      if (bytes.ok) bytes.data.fill(0);
+      return discardCapturedFile(captured.data.uri, bound.state, staleStop());
+    }
     if (!bytes.ok || bytes.data.byteLength !== inspected.data.byteCount) {
+      if (bytes.ok) bytes.data.fill(0);
       return discardCapturedFile(
         captured.data.uri,
         bound.state,
@@ -3781,15 +3799,18 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       metadata,
       audioBytes: bytes.data,
     });
-    const transcript = primary.ok
-      ? primary
-      : await requestVoiceTranscriptionWithinDeadline(
-          serviceRegistry.boundedAi.voiceTranscriptionPrepared,
-          { metadata, audioBytes: bytes.data },
-        );
+    const transcriptionIsCurrent = () =>
+      get().liveVoiceCapture === transcribing && boundLiveVoiceIsCurrent(get(), transcribing);
+    const transcript =
+      primary.ok || !transcriptionIsCurrent()
+        ? primary
+        : await requestVoiceTranscriptionWithinDeadline(
+            serviceRegistry.boundedAi.voiceTranscriptionPrepared,
+            { metadata, audioBytes: bytes.data },
+          );
     bytes.data.fill(0);
     const deletion = await media.delete(captured.data.uri);
-    if (!boundLiveVoiceIsCurrent(get(), transcribing)) {
+    if (!transcriptionIsCurrent()) {
       return failure('INVALID_TRANSITION', 'Voice transcription result is stale');
     }
     if (!deletion.ok) {
@@ -3902,20 +3923,36 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     captureService = liveVoiceCaptureService,
     mediaService = liveVoiceMediaService,
   ) => {
-    const bound = get().liveVoiceCapture;
+    const before = get();
+    const bound = before.liveVoiceCapture;
     if (!bound) return success(true);
-    const canceled = await captureService.cancel();
+    set({
+      liveVoiceCapture: null,
+      liveChildCoachView:
+        before.liveChildCoachView.snapshot?.voiceRequestId === bound.state.envelope.requestId
+          ? idleLiveChildCoachView(before.liveChildCoachView)
+          : before.liveChildCoachView,
+    });
+    let canceled: Awaited<ReturnType<VoiceCaptureService['cancel']>>;
+    try {
+      canceled = await captureService.cancel();
+    } catch {
+      canceled = failure('REMOTE_UNAVAILABLE', 'Voice capture cancellation failed');
+    }
     const uris = new Set(
       [bound.state.envelope.cacheUri, canceled.ok ? canceled.data.uri : null].filter(
         (uri): uri is string => Boolean(uri),
       ),
     );
     for (const uri of uris) {
-      const deleted = await mediaService.delete(uri);
-      if (!deleted.ok) return deleted;
+      try {
+        const deleted = await mediaService.delete(uri);
+        if (!deleted.ok) return deleted;
+      } catch {
+        return failure('REMOTE_UNAVAILABLE', 'Voice capture deletion failed');
+      }
     }
-    set({ liveVoiceCapture: null });
-    return success(true);
+    return canceled.ok ? success(true) : canceled;
   },
 
   submitTask: (input) => {
