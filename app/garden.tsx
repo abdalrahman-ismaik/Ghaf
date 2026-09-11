@@ -23,14 +23,7 @@ import { R003Status } from '@/components/r003';
 import { GardenChapterModule } from '@/components/r002b/GrowthJourneyScreens';
 import { SharedGrowthEntryCard } from '@/components/r002b/SharedGrowthScreens';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import { buildRecognitionAnnouncement } from '@/features/garden/announcements';
 import {
   deriveLandscapeDisplayTarget,
@@ -385,9 +378,12 @@ export default function GardenScreen() {
       ) : null}
 
       <View style={styles.intro}>
+        <Text brand color="deepForest" direction={direction} variant="parentHero">
+          {t('garden.title')}
+        </Text>
         <View style={[styles.contextRow, { flexDirection: logicalRowDirection(direction) }]}>
           <View style={styles.contextIcon}>
-            <GhafIcon color={colors.ghafEmerald} name="flower" size={24} />
+            <GhafIcon color={botanical.colors.forest} name="flower" size={24} />
           </View>
           <View style={styles.contextCopy}>
             <Text brand color="primary" direction={direction} variant="label">
@@ -398,9 +394,6 @@ export default function GardenScreen() {
             </Text>
           </View>
         </View>
-        <Text brand color="deepForest" direction={direction} variant="parentHero">
-          {t('garden.title')}
-        </Text>
         <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
           {t('garden.body')}
         </Text>
@@ -539,7 +532,7 @@ export default function GardenScreen() {
 
       <View style={styles.symbolicBoundary}>
         <View style={[styles.disclosureHeading, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={colors.ghafEmerald} name="info" size={22} />
+          <GhafIcon color={botanical.colors.forest} name="info" size={22} />
           <Text brand color="primary" direction={direction} style={styles.flex} variant="label">
             {t('garden.symbolicDisclosure')}
           </Text>
@@ -584,7 +577,7 @@ function ChildGardenHelp({
     <View accessibilityLiveRegion="polite" style={styles.helpPanel} testID="garden-help-panel">
       <View style={[styles.helpHeading, { flexDirection: logicalRowDirection(direction) }]}>
         <View style={styles.contextIcon}>
-          <GhafIcon color={colors.ghafEmerald} name="help" size={24} />
+          <GhafIcon color={botanical.colors.forest} name="help" size={24} />
         </View>
         <View style={styles.contextCopy}>
           <Text brand color="deepForest" direction={direction} variant="label">
@@ -665,8 +658,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.control,
+    backgroundColor: botanical.colors.sage,
   },
   contextCopy: {
     minWidth: 0,
@@ -676,13 +669,12 @@ const styles = StyleSheet.create({
   helpPanel: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   helpHeading: {
     minWidth: 0,
@@ -692,13 +684,10 @@ const styles = StyleSheet.create({
   causeRecord: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.hero,
     borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.solarAmberBorder,
-    backgroundColor: colors.solarAmberTint,
-    padding: spacing.lg,
-    ...r001Shadows.soft,
+    backgroundColor: botanical.colors.amberWash,
+    padding: botanical.space.inset,
   },
   causeHeading: {
     minWidth: 0,
@@ -712,32 +701,29 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.paper,
   },
   growthPill: {
     minHeight: 32,
     maxWidth: '100%',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.paper,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
   },
   symbolicBoundary: {
     minWidth: 0,
     gap: spacing.xs,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.secondaryFixedDim,
-    backgroundColor: colors.secondaryTint,
-    padding: spacing.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingVertical: botanical.space.row,
   },
   unavailablePanel: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.error,

@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 import type { ChildTaskCheckpoint } from './ChildTaskChecklist';
@@ -19,7 +19,7 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
   return (
     <View style={styles.card} testID="child-task-plan">
       <View style={[styles.heading, { flexDirection: logicalRowDirection(direction) }]}>
-        <GhafIcon color={colors.ghafEmerald} name="calendar" size={24} />
+        <GhafIcon color={botanical.colors.forest} name="calendar" size={24} />
         <Text
           brand
           color="deepForest"
@@ -67,14 +67,8 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
 
 const styles = StyleSheet.create({
   card: {
-    gap: spacing.lg,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
-    padding: spacing.lg,
-    ...r001Shadows.soft,
+    gap: botanical.space.row,
+    paddingVertical: botanical.space.small,
   },
   heading: {
     alignItems: 'center',
@@ -90,6 +84,7 @@ const styles = StyleSheet.create({
   step: {
     alignItems: 'flex-start',
     gap: spacing.md,
+    paddingVertical: botanical.space.small,
   },
   number: {
     width: 48,
@@ -97,8 +92,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: botanical.radius.control,
+    backgroundColor: botanical.colors.sage,
   },
   copy: {
     flex: 1,

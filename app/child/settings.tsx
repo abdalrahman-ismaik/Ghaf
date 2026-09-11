@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Redirect, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalAvatar } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { Text } from '@/components/primitives';
 import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
-import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r003';
+import { R003ActionRow, R003Section, R003Status } from '@/components/r003';
 import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -55,13 +59,24 @@ export default function ChildSettingsScreen() {
       }
       testID="child-settings-screen"
     >
-      <R003Hero
-        body={t('r003.childSettings.body')}
-        direction={direction}
-        icon="settings"
-        language={locale}
-        title={`${t('r003.childSettings.title')} · ${name}`}
-      />
+      <View style={[styles.profile, { flexDirection: logicalRowDirection(direction) }]}>
+        <BotanicalAvatar
+          direction={direction}
+          id={
+            localFamily.record?.children.find((profile) => profile.id === child.id)?.avatarId ??
+            'ghaf_tree'
+          }
+          size={72}
+        />
+        <View style={styles.profileCopy}>
+          <Text brand direction={direction} language={locale} variant="screenTitle">
+            {name}
+          </Text>
+          <Text brand color="onSurfaceVariant" direction={direction} language={locale}>
+            {t('r003.childSettings.body')}
+          </Text>
+        </View>
+      </View>
       <R003Section title={t('r003.childSettings.ownPermissions')}>
         {grant.ok ? (
           PERMISSIONS.map((permission) => (
@@ -115,3 +130,16 @@ export default function ChildSettingsScreen() {
     </R002aScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  profile: {
+    minWidth: 0,
+    alignItems: 'center',
+    gap: botanical.space.row,
+    paddingVertical: botanical.space.small,
+    paddingBottom: botanical.space.section,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: botanical.colors.line,
+  },
+  profileCopy: { flex: 1, minWidth: 0, gap: spacing.xs },
+});

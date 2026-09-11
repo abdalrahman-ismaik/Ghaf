@@ -1,18 +1,11 @@
 import { forwardRef } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  opacity,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ChildTaskActionFooterProps {
@@ -60,6 +53,7 @@ export const ChildTaskActionFooter = forwardRef<View, ChildTaskActionFooterProps
             brand
             color={unavailable ? 'onSurfaceVariant' : 'onPrimary'}
             direction={direction}
+            style={styles.actionLabel}
             variant="control"
           >
             {busy && busyLabel ? busyLabel : label}
@@ -82,11 +76,10 @@ const styles = StyleSheet.create({
   root: {
     zIndex: 4,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.pearlGround,
+    borderTopColor: botanical.colors.line,
+    backgroundColor: botanical.colors.canvas,
     paddingTop: spacing.sm,
     paddingHorizontal: layout.screenPadding,
-    ...r001Shadows.sheet,
   },
   action: {
     width: '100%',
@@ -96,17 +89,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.sm,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forest,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
   },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.985 }],
   },
+  actionLabel: { minWidth: 0, flexShrink: 1 },
   disabled: {
-    backgroundColor: colors.surfaceContainerHighest,
+    backgroundColor: botanical.colors.line,
   },
 });

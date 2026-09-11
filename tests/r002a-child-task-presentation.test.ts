@@ -34,6 +34,7 @@ const childPresentationFiles = [
   'src/components/r002a/child/ChildTaskHero.tsx',
   'src/components/r002a/child/ChildTaskPlanCard.tsx',
   'src/components/r002a/child/ChildTodayTaskCard.tsx',
+  'src/components/r002a/child/ChildTodayLandscape.tsx',
   'src/components/r002a/child/ChildWaitingForReview.tsx',
 ] as const;
 

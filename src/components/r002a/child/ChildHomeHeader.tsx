@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { BotanicalAvatar, GhafIcon } from '@/components/access';
 import { GhafHeaderTitle } from '@/components/brand';
-import { colors, layout, opacity, spacing } from '@/design/tokens';
+import { botanical, layout, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 import type { ChildTreeAvatarId } from '@/models/parentOnboarding';
 
@@ -37,7 +38,7 @@ export function ChildHomeHeader({
       style={({ pressed }) => [styles.sideSlot, pressed ? styles.pressed : null]}
       testID="child-help-button"
     >
-      <GhafIcon color={colors.ghafEmerald} name="help" size={27} />
+      <GhafIcon color={botanical.colors.forest} name="help" size={27} />
     </Pressable>
   );
   const titleControl = (
@@ -85,9 +86,7 @@ export function ChildHomeHeader({
 const styles = StyleSheet.create({
   root: {
     zIndex: 2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.pearlGround,
+    backgroundColor: botanical.colors.canvas,
     paddingHorizontal: layout.screenPadding,
     paddingVertical: spacing.xs,
   },
@@ -117,14 +116,13 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    borderWidth: 1.5,
-    borderColor: colors.ghafEmerald,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: botanical.colors.sageStrong,
+    backgroundColor: botanical.colors.sage,
   },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.97 }],
   },
 });

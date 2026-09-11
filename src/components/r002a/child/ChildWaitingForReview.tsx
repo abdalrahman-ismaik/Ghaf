@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
 import { PrimaryButton, Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, colors, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ChildWaitingForReviewProps {
@@ -29,7 +29,7 @@ export function ChildWaitingForReview({
   return (
     <View accessibilityLiveRegion="polite" style={styles.root}>
       <View aria-hidden style={styles.botanicalMark}>
-        <GhafIcon color={colors.ghafEmerald} name="leaf" size={38} />
+        <GhafIcon color={botanical.colors.forest} name="leaf" size={38} />
       </View>
       <View style={styles.heading}>
         <Text align="center" brand color="ghafEmerald" direction={direction} variant="hero">
@@ -47,7 +47,7 @@ export function ChildWaitingForReview({
       </View>
       <View style={styles.card}>
         <View style={[styles.row, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={colors.ghafEmerald} name="check-filled" size={25} />
+          <GhafIcon color={botanical.colors.forest} name="check-filled" size={25} />
           <Text brand color="deepForest" direction={direction} style={styles.grow} variant="label">
             {taskLabel}
           </Text>
@@ -86,21 +86,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
   },
   heading: {
     gap: spacing.xs,
   },
   card: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   row: {
     alignItems: 'flex-start',
@@ -109,8 +108,8 @@ const styles = StyleSheet.create({
   notice: {
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.solarAmberTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.amberWash,
     padding: spacing.sm,
   },
   grow: {
@@ -119,6 +118,6 @@ const styles = StyleSheet.create({
   },
   rule: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.line,
   },
 });

@@ -14,15 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GhafIcon } from '@/components/access';
 import { PrimaryButton, SecondaryButton, Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  opacity,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ChildCompletionConfirmationSheetProps {
@@ -275,7 +267,7 @@ function SummaryRow({
   label: string;
   tone: 'neutral' | 'primary';
 }) {
-  const color = tone === 'primary' ? colors.ghafEmerald : colors.onSurfaceVariant;
+  const color = tone === 'primary' ? botanical.colors.forest : colors.onSurfaceVariant;
   return (
     <View style={[styles.summaryRow, { flexDirection: logicalRowDirection(direction) }]}>
       <GhafIcon color={color} name={icon} size={24} />
@@ -302,7 +294,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: colors.deepForest,
+    backgroundColor: botanical.colors.ink,
     opacity: opacity.scrim,
   },
   sheet: {
@@ -311,11 +303,10 @@ const styles = StyleSheet.create({
     maxHeight: '90%',
     alignSelf: 'center',
     overflow: 'hidden',
-    borderTopLeftRadius: r001Radii.sheet,
-    borderTopRightRadius: r001Radii.sheet,
+    borderTopLeftRadius: botanical.radius.hero,
+    borderTopRightRadius: botanical.radius.hero,
     borderCurve: 'continuous',
-    backgroundColor: colors.pearlGround,
-    ...r001Shadows.lifted,
+    backgroundColor: botanical.colors.canvas,
   },
   safeArea: {
     maxHeight: '100%',
@@ -327,8 +318,8 @@ const styles = StyleSheet.create({
     width: layout.touchTarget,
     height: 6,
     alignSelf: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.outlineVariant,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
     opacity: 0.72,
   },
   content: {
@@ -342,11 +333,11 @@ const styles = StyleSheet.create({
   },
   summaryCard: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
   summaryRow: {
@@ -358,20 +349,20 @@ const styles = StyleSheet.create({
   },
   rule: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.line,
   },
   notice: {
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.solarAmberTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.amberWash,
     padding: spacing.sm,
   },
   privacy: {
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.sm,
   },
   grow: {

@@ -15,7 +15,7 @@ import Animated, {
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { landscapeArtworkIds, LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, motion, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, colors, motion, spacing } from '@/design/tokens';
 import type { GardenStage, LandscapeId } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -129,12 +129,6 @@ export function GardenLandscape({
         />
 
         <View style={styles.supportingLedger}>
-          <View
-            style={[
-              styles.connectionLine,
-              direction === 'rtl' ? styles.connectionLineRtl : styles.connectionLineLtr,
-            ]}
-          />
           {supportingLandscapeIds.map((id, index) => (
             <CompactHorizonTrack
               content={tracks[id]}
@@ -148,7 +142,7 @@ export function GardenLandscape({
 
       <View style={[styles.symbolicNote, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View aria-hidden style={styles.symbolicIcon}>
-          <GhafIcon color={colors.ghafEmerald} name="info" size={20} />
+          <GhafIcon color={botanical.colors.forest} name="info" size={20} />
         </View>
         <Text brand color="onSurfaceVariant" style={styles.noteText} variant="caption">
           {labels.symbolicDisclosure}
@@ -204,7 +198,7 @@ export function LandscapeTrack({
             >
               <View style={styles.biologicalDetailMark}>
                 <GhafIcon
-                  color={colors.ghafEmerald}
+                  color={botanical.colors.forest}
                   name={DETAIL_ICON_BY_LANDSCAPE[id]}
                   size={24}
                 />
@@ -272,12 +266,6 @@ function CompactHorizonTrack({ content, id, isLast }: CompactHorizonTrackProps) 
       style={[styles.compactTrack, isLast ? styles.compactTrackLast : null]}
       testID={`compact-landscape-${id}`}
     >
-      <View
-        style={[
-          styles.connectionNode,
-          direction === 'rtl' ? styles.connectionNodeRtl : styles.connectionNodeLtr,
-        ]}
-      />
       <View style={[styles.compactTrackBody, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <LocalIllustration
           assetId={landscapeArtworkIds[id][content.stage]}
@@ -444,74 +432,39 @@ const styles = StyleSheet.create({
   headingIcon: { width: 38, height: 32, alignItems: 'center', justifyContent: 'center' },
   landscapeHeadingText: { flex: 1 },
   trackLedger: {
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
-    ...r001Shadows.soft,
+    gap: botanical.space.section,
   },
   trackHero: {
-    gap: spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.secondaryFixedDim,
-    backgroundColor: colors.mangroveTealTint,
-    padding: spacing.lg,
+    overflow: 'hidden',
+    borderRadius: botanical.radius.hero,
+    borderCurve: 'continuous',
+    backgroundColor: botanical.colors.paper,
   },
   heroSpecimenFrame: {
     position: 'relative',
     width: '100%',
-    maxHeight: 220,
+    maxHeight: 280,
     aspectRatio: 176 / 104,
     overflow: 'hidden',
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.waterLight,
+    backgroundColor: botanical.colors.water,
   },
   heroArtwork: { width: '100%', height: '100%' },
   heroOverlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 },
-  supportingLedger: { position: 'relative', backgroundColor: colors.surfaceContainerLowest },
-  connectionLine: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    top: 0,
-    bottom: spacing.xl,
-    width: 1,
-    backgroundColor: colors.earth,
-    opacity: 0.3,
-  },
-  connectionLineLtr: { left: spacing.lg },
-  connectionLineRtl: { right: spacing.lg },
-  connectionNode: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    top: spacing.xl,
-    width: 9,
-    height: 9,
-    borderWidth: 2,
-    borderColor: colors.earth,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
-  },
-  connectionNodeLtr: { left: spacing.md },
-  connectionNodeRtl: { right: spacing.md },
+  supportingLedger: { minWidth: 0 },
   compactTrack: {
     position: 'relative',
     minHeight: 72,
     borderBottomWidth: 1,
-    borderBottomColor: colors.surfaceContainerHigh,
-    paddingStart: spacing.xxl,
-    paddingEnd: spacing.md,
-    paddingVertical: spacing.sm,
+    borderBottomColor: botanical.colors.line,
+    paddingVertical: botanical.space.row,
   },
   compactTrackLast: { borderBottomWidth: 0 },
   compactTrackBody: { minWidth: 0, alignItems: 'center', gap: spacing.md },
   compactSpecimenFrame: {
-    width: 72,
-    height: 48,
+    width: 80,
+    height: 60,
     flexShrink: 0,
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
   },
   compactTrackCopy: { minWidth: 0, flex: 1, gap: spacing.xxs },
@@ -519,8 +472,8 @@ const styles = StyleSheet.create({
   compactMetaDot: {
     width: spacing.xxs,
     height: spacing.xxs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.solarAmber,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.amber,
   },
   recognitionSeedCue: {
     position: 'absolute',
@@ -536,7 +489,7 @@ const styles = StyleSheet.create({
   recognitionSeedMark: {
     width: 15,
     height: 10,
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     borderWidth: 2,
     borderColor: colors.goldLight,
     backgroundColor: colors.earth,
@@ -550,12 +503,16 @@ const styles = StyleSheet.create({
     height: 46,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
+    borderColor: botanical.colors.line,
   },
-  trackCopy: { width: '100%', gap: spacing.xs },
+  trackCopy: {
+    width: '100%',
+    gap: spacing.sm,
+    padding: botanical.space.inset,
+  },
   trackHeader: {
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -567,34 +524,33 @@ const styles = StyleSheet.create({
     minHeight: 32,
     minWidth: 0,
     maxWidth: 160,
-    flexBasis: 128,
-    flexShrink: 0,
+    flexShrink: 1,
     alignItems: 'center',
     gap: spacing.xs,
   },
-  activeFlagLine: { width: 13, height: 2, backgroundColor: colors.mangroveTeal },
+  activeFlagLine: { width: 13, height: 2, backgroundColor: botanical.colors.forestRaised },
   stageRow: { gap: spacing.xs },
   stageRuler: { minHeight: 12, alignItems: 'center', gap: spacing.xs },
   stageMark: {
     width: 14,
     height: 3,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHighest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
   },
   stageMarkPast: { backgroundColor: colors.leaf },
-  stageMarkCurrent: { width: 22, height: 5, backgroundColor: colors.ghafEmerald },
+  stageMarkCurrent: { width: 22, height: 5, backgroundColor: botanical.colors.forest },
   progressTrack: {
     position: 'relative',
-    height: 8,
+    height: 6,
     overflow: 'hidden',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
   },
   progressFill: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    backgroundColor: colors.mangroveTeal,
+    backgroundColor: botanical.colors.forestRaised,
   },
   progressFillLtr: { left: 0 },
   progressFillRtl: { right: 0 },
@@ -606,7 +562,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: colors.surfaceContainerHigh,
+    borderTopColor: botanical.colors.line,
   },
   symbolicIcon: { width: 24, height: 24, alignItems: 'center', justifyContent: 'center' },
   noteText: { flex: 1 },

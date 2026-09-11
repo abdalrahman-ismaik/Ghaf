@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, View, useWindowDimensions } from 'react-
 import { GhafIcon } from '@/components/access';
 import { leagueAvatarArtworkIds, LocalIllustration } from '@/components/illustrations';
 import { QuietButton, Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, colors, logicalRowDirection, spacing } from '@/design/tokens';
 import type { LeagueTreeAvatarToken } from '@/models/familyLeague';
 
 export type PrivateLeagueContentState = 'ready' | 'loading' | 'empty' | 'error' | 'offline';
@@ -91,6 +91,28 @@ export function PrivateLeagueScreen({
   return (
     <View style={styles.root} testID="private-league-content">
       <View style={styles.hero}>
+        <View style={styles.heroCopy}>
+          <Text
+            accessibilityRole="header"
+            brand
+            color="deepForest"
+            direction={direction}
+            language={language}
+            variant="hero"
+          >
+            {heroTitle}
+          </Text>
+          <Text
+            brand
+            color="onSurfaceVariant"
+            direction={direction}
+            language={language}
+            variant="body"
+          >
+            {heroBody}
+          </Text>
+        </View>
+
         <View
           style={[
             styles.heroMeta,
@@ -99,10 +121,10 @@ export function PrivateLeagueScreen({
           ]}
         >
           <View style={[styles.privateChip, { flexDirection: logicalRowDirection(direction) }]}>
-            <GhafIcon color={colors.onPrimaryContainer} name="lock" size={17} />
+            <GhafIcon color={botanical.colors.forest} name="lock" size={17} />
             <Text
               brand
-              color="onPrimaryContainer"
+              color="onSurfaceVariant"
               direction={direction}
               language={language}
               style={styles.flexText}
@@ -113,7 +135,7 @@ export function PrivateLeagueScreen({
           </View>
           <Text
             brand
-            color="onPrimaryContainer"
+            color="onSurfaceVariant"
             direction={direction}
             language={language}
             variant="caption"
@@ -122,40 +144,26 @@ export function PrivateLeagueScreen({
           </Text>
         </View>
 
-        <View style={styles.heroCopy}>
-          <Text
-            accessibilityRole="header"
-            brand
-            color="onPrimary"
-            direction={direction}
-            language={language}
-            variant="hero"
-          >
-            {heroTitle}
-          </Text>
-          <Text
-            brand
-            color="onPrimaryContainer"
-            direction={direction}
-            language={language}
-            variant="body"
-          >
-            {heroBody}
-          </Text>
-        </View>
-
         <View style={styles.activePanel}>
           <View
             style={[
               styles.activeSummary,
               compact ? styles.activeSummaryCompact : null,
-              { flexDirection: compact ? 'column' : logicalRowDirection(direction) },
+              { flexDirection: logicalRowDirection(direction) },
             ]}
           >
+            {compact ? null : (
+              <LocalIllustration
+                assetId={leagueAvatarArtworkIds[activeParticipant.treeAvatarToken]}
+                decorative
+                direction={direction}
+                style={styles.activeAvatar}
+              />
+            )}
             <View style={styles.activeCopy}>
               <Text
                 brand
-                color="onPrimaryContainer"
+                color="onPrimary"
                 direction={direction}
                 language={language}
                 variant="caption"
@@ -173,7 +181,7 @@ export function PrivateLeagueScreen({
               </Text>
               <Text
                 brand
-                color="onPrimaryContainer"
+                color="onPrimary"
                 direction={direction}
                 language={language}
                 variant="label"
@@ -321,17 +329,11 @@ function LeafProgress({
             style={[styles.leafMarker, isComplete ? styles.leafComplete : styles.leafPending]}
           >
             <GhafIcon
-              color={isComplete ? colors.onPrimary : colors.onPrimaryContainer}
+              color={botanical.colors.onForest}
               name={isComplete ? 'check-filled' : 'leaf'}
               size={22}
             />
-            <Text
-              align="center"
-              brand
-              color={isComplete ? 'onPrimary' : 'onPrimaryContainer'}
-              direction={direction}
-              variant="caption"
-            >
+            <Text align="center" brand color="onPrimary" direction={direction} variant="caption">
               {isComplete ? completedLabel : pendingLabel}
             </Text>
           </View>
@@ -463,8 +465,8 @@ function LeagueStateCard({
 }) {
   return (
     <View accessibilityLiveRegion="polite" style={styles.stateCard} testID="private-league-state">
-      {loading ? <ActivityIndicator color={colors.ghafEmerald} /> : null}
-      <GhafIcon color={colors.ghafEmerald} name={loading ? 'leaf' : 'info'} size={28} />
+      {loading ? <ActivityIndicator color={botanical.colors.forest} /> : null}
+      <GhafIcon color={botanical.colors.forest} name={loading ? 'leaf' : 'info'} size={28} />
       <Text align="center" brand color="onSurfaceVariant" direction={direction} language={language}>
         {message}
       </Text>
@@ -486,24 +488,17 @@ function LeagueStateCard({
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    gap: spacing.xl,
+    gap: botanical.space.section,
   },
   hero: {
-    position: 'relative',
-    overflow: 'hidden',
-    gap: spacing.lg,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.deepForest,
-    padding: spacing.xl,
-    ...r001Shadows.soft,
+    gap: botanical.space.row,
   },
   heroMeta: {
     minWidth: 0,
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing.sm,
-    paddingEnd: spacing.huge,
+    flexWrap: 'wrap',
   },
   heroMetaCompact: {
     alignItems: 'stretch',
@@ -514,10 +509,6 @@ const styles = StyleSheet.create({
     minWidth: 0,
     alignItems: 'center',
     gap: spacing.xs,
-    borderRadius: r001Radii.pill,
-    borderCurve: 'continuous',
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
   },
   flexText: {
@@ -527,17 +518,18 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   activePanel: {
-    gap: spacing.lg,
-    borderRadius: r001Radii.lg,
+    gap: botanical.space.inset,
+    borderRadius: botanical.radius.hero,
     borderCurve: 'continuous',
-    backgroundColor: colors.primary,
-    padding: spacing.lg,
+    backgroundColor: botanical.colors.forest,
+    padding: botanical.space.inset,
   },
   activeSummary: {
     minWidth: 0,
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing.md,
+    flexWrap: 'wrap',
   },
   activeSummaryCompact: {
     alignItems: 'stretch',
@@ -545,16 +537,23 @@ const styles = StyleSheet.create({
   activeCopy: {
     minWidth: 0,
     flex: 1,
+    flexBasis: 120,
     gap: spacing.xxs,
   },
+  activeAvatar: {
+    width: 64,
+    height: 64,
+    flexShrink: 0,
+    borderRadius: botanical.radius.control,
+  },
   scoreToken: {
-    minWidth: 88,
-    minHeight: 58,
+    minWidth: 72,
+    minHeight: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.solarAmberTint,
+    backgroundColor: botanical.colors.amberWash,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
@@ -564,35 +563,30 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   leafMarker: {
-    minWidth: 46,
+    minWidth: 40,
     minHeight: 54,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xs,
   },
   leafComplete: {
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forestRaised,
   },
   leafPending: {
     borderWidth: 1,
-    borderColor: colors.onPrimaryContainer,
-    backgroundColor: colors.deepForest,
+    borderColor: botanical.colors.forestRaised,
+    backgroundColor: botanical.colors.forest,
   },
   sectionHeading: {
     gap: spacing.xxs,
   },
   standingsCard: {
-    overflow: 'hidden',
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
-    paddingHorizontal: spacing.lg,
-    ...r001Shadows.soft,
+    minWidth: 0,
   },
   participantRow: {
     minWidth: 0,
@@ -615,30 +609,30 @@ const styles = StyleSheet.create({
   },
   participantDivider: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.outlineVariant,
+    borderBottomColor: botanical.colors.line,
   },
   positionToken: {
     minWidth: 38,
     minHeight: 38,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
-    backgroundColor: colors.primaryFixedTint,
+    backgroundColor: colors.transparent,
     paddingHorizontal: spacing.xxs,
   },
   activePosition: {
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forest,
   },
   avatarToken: {
-    width: 46,
-    height: 46,
+    width: 52,
+    height: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     overflow: 'hidden',
-    backgroundColor: colors.mangroveTealTint,
+    backgroundColor: botanical.colors.water,
   },
   avatarArtwork: {
     width: '100%',
@@ -651,24 +645,21 @@ const styles = StyleSheet.create({
   },
   progressTrack: {
     width: '100%',
-    height: 6,
+    height: 4,
     overflow: 'hidden',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
   },
   progressFill: {
     height: '100%',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.solarAmber,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.amber,
   },
   rowScore: {
     minWidth: 70,
     minHeight: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.md,
-    borderCurve: 'continuous',
-    backgroundColor: colors.solarAmberTint,
     paddingHorizontal: spacing.xs,
     paddingVertical: spacing.xxs,
   },
@@ -676,15 +667,16 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 48,
     alignSelf: 'stretch',
+    backgroundColor: botanical.colors.sage,
+    borderRadius: botanical.radius.small,
   },
   privacyCard: {
     minWidth: 0,
     alignItems: 'flex-start',
     gap: spacing.sm,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.mangroveTealTint,
-    padding: spacing.lg,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingVertical: botanical.space.inset,
   },
   privacyCardCompact: {
     alignItems: 'stretch',
@@ -694,9 +686,9 @@ const styles = StyleSheet.create({
     height: 42,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
   },
   privacyCopy: {
     minWidth: 0,
@@ -708,10 +700,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.hero,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.xl,
-    ...r001Shadows.soft,
   },
 });

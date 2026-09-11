@@ -1,16 +1,9 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  opacity,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ChildDefinitionCardProps {
@@ -38,7 +31,7 @@ export function ChildDefinitionCard({
     <View style={styles.card} testID={testID}>
       <View style={[styles.heading, { flexDirection: logicalRowDirection(direction) }]}>
         <View style={styles.icon}>
-          <GhafIcon color={colors.ghafEmerald} name="check" size={24} />
+          <GhafIcon color={botanical.colors.forest} name="check" size={24} />
         </View>
         <View style={styles.copy}>
           <Text brand color="deepForest" direction={direction} variant="label">
@@ -67,7 +60,7 @@ export function ChildDefinitionCard({
         >
           <View style={[styles.checkbox, acknowledged ? styles.checkboxChecked : null]}>
             {acknowledged ? (
-              <GhafIcon color={colors.ghafEmerald} name="check-filled" size={28} />
+              <GhafIcon color={botanical.colors.forest} name="check-filled" size={28} />
             ) : null}
           </View>
           <Text brand color="deepForest" direction={direction} style={styles.copy} variant="label">
@@ -82,13 +75,12 @@ export function ChildDefinitionCard({
 const styles = StyleSheet.create({
   card: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   heading: {
     alignItems: 'flex-start',
@@ -100,8 +92,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
   },
   copy: {
     flex: 1,
@@ -112,15 +104,15 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.sm,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLow,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.sm,
   },
   acknowledged: {
-    borderColor: colors.primaryFixedDim,
-    backgroundColor: colors.primaryFixedTint,
+    borderColor: botanical.colors.sageStrong,
+    backgroundColor: botanical.colors.sage,
   },
   checkbox: {
     width: 36,
@@ -128,16 +120,15 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     borderWidth: 2,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
   },
   checkboxChecked: {
-    borderColor: colors.ghafEmerald,
+    borderColor: botanical.colors.forest,
   },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.99 }],
   },
 });

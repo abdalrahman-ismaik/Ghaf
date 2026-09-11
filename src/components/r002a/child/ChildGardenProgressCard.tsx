@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
 import { QuietButton, Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ChildGardenProgressCardProps {
@@ -32,6 +32,7 @@ export function ChildGardenProgressCard({
 }: ChildGardenProgressCardProps) {
   const safeTarget = Math.max(1, target);
   const progress = Math.min(100, Math.max(0, (current / safeTarget) * 100));
+  const formatter = new Intl.NumberFormat(direction === 'rtl' ? 'ar-AE' : 'en-AE');
 
   return (
     <View style={styles.section}>
@@ -44,12 +45,19 @@ export function ChildGardenProgressCard({
             <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
               {progressLabel}
             </Text>
-            <Text brand color="r001Ink" direction={direction} tabular variant="bodyLarge">
-              {current} / {target}
+            <Text
+              align={direction === 'rtl' ? 'end' : 'start'}
+              brand
+              color="r001Ink"
+              direction="ltr"
+              tabular
+              variant="bodyLarge"
+            >
+              {formatter.format(current)} / {formatter.format(target)}
             </Text>
           </View>
           <View style={styles.iconCircle}>
-            <GhafIcon color={colors.ghafEmerald} name="flower" size={25} />
+            <GhafIcon color={botanical.colors.forest} name="flower" size={25} />
           </View>
         </View>
 
@@ -70,13 +78,13 @@ export function ChildGardenProgressCard({
         </View>
 
         <View style={[styles.remaining, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={colors.deepForest} name="leaf" size={17} />
+          <GhafIcon color={botanical.colors.ink} name="leaf" size={17} />
           <Text brand color="deepForest" direction={direction} style={styles.grow} variant="label">
             {remainingLabel}
           </Text>
         </View>
         <View style={[styles.canopy, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={colors.mangroveTeal} name="ghaf-tree" size={18} />
+          <GhafIcon color={botanical.colors.forestRaised} name="ghaf-tree" size={18} />
           <Text
             brand
             color="mangroveTeal"
@@ -93,7 +101,7 @@ export function ChildGardenProgressCard({
         <QuietButton
           brand
           direction={direction}
-          icon={<GhafIcon color={colors.ghafEmerald} name="ghaf-tree" size={19} />}
+          icon={<GhafIcon color={botanical.colors.forest} name="ghaf-tree" size={19} />}
           onPress={onAction}
           size="compact"
           testID="child-open-garden-button"
@@ -108,14 +116,13 @@ export function ChildGardenProgressCard({
 const styles = StyleSheet.create({
   section: {
     gap: spacing.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingTop: botanical.space.section,
   },
   card: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
-    padding: spacing.lg,
-    ...r001Shadows.soft,
+    paddingBottom: botanical.space.small,
   },
   header: {
     alignItems: 'center',
@@ -133,19 +140,19 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.paper,
   },
   track: {
-    height: 12,
+    height: 6,
     overflow: 'hidden',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHighest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
   },
   fill: {
     height: '100%',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.forest,
   },
   fillRtl: {
     alignSelf: 'flex-end',
@@ -160,9 +167,6 @@ const styles = StyleSheet.create({
   canopy: {
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.mangroveTealTint,
-    padding: spacing.sm,
   },
   grow: {
     flex: 1,

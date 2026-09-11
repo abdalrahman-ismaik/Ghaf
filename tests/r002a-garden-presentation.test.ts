@@ -64,13 +64,11 @@ describe('R002a compatible Garden presentation', () => {
     );
   });
 
-  it('uses the released typography, Soft Geometric surfaces, and fluid narrow-width canopy', () => {
+  it('retains released typography with botanical surfaces and a fluid narrow-width canopy', () => {
     expect(landscape).toContain('brand');
-    expect(landscape).toContain('r001Radii');
-    expect(landscape).toContain('r001Shadows');
+    expect(landscape).toContain('botanical.radius');
     expect(canopy).toContain('brand');
-    expect(canopy).toContain('r001Radii');
-    expect(canopy).toContain('r001Shadows');
+    expect(canopy).toContain('botanical.colors');
     expect(canopy).toContain('aspectRatio: 288 / 208');
     expect(canopy).toContain('minWidth: 0');
     expect(canopy).not.toContain('minWidth: 238');
