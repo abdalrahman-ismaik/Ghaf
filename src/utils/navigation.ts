@@ -1,4 +1,5 @@
 export interface EntryReplaceRouter {
+  canDismiss: () => boolean;
   dismissAll: () => void;
   replace: (href: '/') => void;
 }
@@ -51,7 +52,8 @@ function armWebResetHistoryBoundary(webWindow: Window): void {
 // the visible stack and replace its root.
 export function replaceHistoryWithEntry(router: EntryReplaceRouter): void {
   try {
-    router.dismissAll();
+    // An unhandled queued pop is reported later, outside this catch.
+    if (router.canDismiss()) router.dismissAll();
   } catch {
     // A stack already at root cannot be dismissed, but replace still restores `/`.
   }

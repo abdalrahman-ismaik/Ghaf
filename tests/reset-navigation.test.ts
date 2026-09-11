@@ -18,9 +18,25 @@ describe('mounted reset locale and history boundary', () => {
     expect(documentElement).toEqual({ dir: 'ltr', lang: 'en' });
   });
 
+  it('replaces a root-only stack without queuing an unhandled dismiss action', () => {
+    vi.stubGlobal('window', undefined);
+    const queuedActions: string[] = [];
+    const router = {
+      canDismiss: () => false,
+      dismissAll: () => queuedActions.push('POP_TO_TOP'),
+      replace: vi.fn(),
+    };
+
+    replaceHistoryWithEntry(router);
+
+    expect(queuedActions).toEqual([]);
+    expect(router.replace).toHaveBeenCalledOnce();
+    expect(router.replace).toHaveBeenCalledWith('/');
+  });
+
   it('replaces the visible route and traps Back at a reset root boundary', () => {
     const animationFrames: FrameRequestCallback[] = [];
-    const popstateListeners: Array<(event: PopStateEvent) => void> = [];
+    const popstateListeners: ((event: PopStateEvent) => void)[] = [];
     const historyState: { current: Record<string, unknown> } = {
       current: { expoRouterIndex: 7 },
     };
@@ -49,6 +65,7 @@ describe('mounted reset locale and history boundary', () => {
     vi.stubGlobal('window', fakeWindow);
 
     const router = {
+      canDismiss: () => true,
       dismissAll: vi.fn(),
       replace: vi.fn(),
     };

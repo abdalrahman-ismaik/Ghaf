@@ -244,3 +244,38 @@ successful uncached identity check stands separately. Helper completed/released,
 or jobs. Rejected actions: changing app code for wrong-bundle symptoms, editing shared packages,
 restarting a now-correct active retest just to exercise an optional precaution, or keeping the
 initial mixed-source screenshots as candidate passes.
+
+## A-007 — guard reset's queued stack dismissal
+
+D-017 observed an unhandled POP_TO_TOP in the correct b862eb6 development preview after the
+remembered-Child reload → temporary Parent verification → Settings reset path. Its error overlay
+intercepted the next verification click for30seconds. This is an existing Feature003 FR-095/096
+reset-usability defect; production/native effect remains NOT RUN. Source utility always called
+`dismissAll`; installed Expo enqueues the action, so a surrounding synchronous catch cannot catch
+an unhandled queued action.
+
+A reserves `src/utils/navigation.ts` and `tests/reset-navigation.test.ts` in boardr12. The narrow
+candidate requires the existing Router `canDismiss` method and enqueues dismissal only when it
+reports an available stack. Root replacement and the web Back boundary remain intact. No account,
+store, persistent data, other route or reset authority changes. One existing test type spelling
+was normalized to remove a scoped ESLint warning; no new dependency or suppression was added.
+
+RED: `npx vitest run tests/reset-navigation.test.ts --maxWorkers=1` exit1, one expected failure /
+two passes: a root-only router queued POP_TO_TOP despite reporting canDismiss=false. GREEN:
+`npx vitest run tests/reset-navigation.test.ts tests/device-remembered-access.test.tsx tests/temporary-parent-entry-route.test.tsx --maxWorkers=1`
+exit0, three files /42tests. This covers root-only replacement, ordinary dismissal, locale/history
+guard, temporary access and remembered-access behavior. Scoped ESLint/Prettier pass after the
+existing Array<T> spelling was normalized. Actual async route-guard races still require D's
+mounted retest; a fake router test alone does not pass them. Native and human review remain open.
+
+Exact read-only helper task (`/root/android_build_audit`, A quota1):
+
+```text
+A-007 narrow READ-ONLY reset review; one A helper quota, others editing preserve files. No writes, tests, server, descendants or jobs. D independently reproduced development POP_TO_TOP error blocking next verification after Parent reset; exact D017 in canonical status. A owns src/utils/navigation.ts and tests/reset-navigation.test.ts. Existing try/catch dismissAll is unconditional; installed router enqueues POP_TO_TOP asynchronously. New red case root-only canDismiss false still queues pop (1failed/2passed). A will require canDismiss and guard dismissAll, preserve replace('/') and web Back boundary; normal true case remains. Review only this proposed/current diff and supported installed router semantics for a concrete regression or evidence gap, especially delayed route guards. Do not audit unrelated dismissAll callsites or broaden native fixes; native unrun. D will retest actual reset. A implements/tests and coordinates independently. Return bounded findings, then release.
+```
+
+Independent helper found no source regression in the guard. It identified the remaining timing
+case: canDismiss reads current state, but reset's Parent route redirect can change it before the
+queued pop executes. D must test both root-only and dismissible-history resets through fresh
+verification with no unhandled action or blocking toast. This is an execution gap, not a reproduced
+patch defect. Helper completed/released, no files/tests/jobs/descendants; no alternate scope added.
