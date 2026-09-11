@@ -168,3 +168,48 @@ Options supplied: “Defer recovery implementation until the current APK/native 
 (recommended).” / “Accept the proposed recovery scope and proceed with the exact contract review
 and bounded implementation tasks.” This is a scope question required by the user's Session A
 contract, not a fabricated approval. D's current-candidate QA continues independently.
+
+## Exact-diff student review and explanation packet
+
+All rows below are **PENDING**. No reviewer, date, personal contribution or understanding is inferred
+from Git identity. Review the actual four production files and four test files in
+`git diff 02b9618 b862eb6 -- app src tests`, then record the real person's explanation and gaps.
+
+| Slice / source                                              | Student should explain and demonstrate                                                                                                                                                                   | Evidence limit                                                                                                          |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| A-004 / `app/index.tsx`                                     | Why active-role redirects retain priority; why a signed-out temporary handoff routes to verification but grants no Parent authority; how cancel/reset remove or resolve the handoff                      | Five direct-route regressions use a mocked router; D's mounted interactions are separate; Android Back remains unrun    |
+| B-004 / `src/state/usePrototypeStore.ts`                    | Why the new family's recognition epoch, private League ledger and reveal commitments must match; why only successful replacement clears them; how cancellation/save failure preserve the previous family | Four new parameterized cases, not proof of every later activation/rollback failure; no process-death guarantee          |
+| A-006 / `src/features/tasks/demoContent.ts`                 | Why explicit Arabic words preserve fifteen-to-thirty minutes without a reversible dash; why English, task version and fixed award stay unchanged                                                         | Actual browser capture supports presentation; named Arabic and native review pending                                    |
+| C-002 / `src/components/r002a/child/ChildTodayTaskCard.tsx` | Trace the same callback/guard before and after reordering; show help and choice without hiding rationale or supervision; explain compact scrolling and tabular metadata                                  | Browser state matrix includes labeled injected presentation states; it is not an Android or fully earned journey matrix |
+
+Suggested live teach-back: use the app to request permitted help, show pending completion with no
+award, then explain the Parent confirmation/praise boundary before the single +12. Identify which
+independent authority updates, why duplicate recognition changes none, and why a remembered Child
+on restart does not prove the task survived. Open the relevant existing test assertion while
+explaining it. This is an exercise to perform, not a completed student record.
+
+The root assistant's generated documentation and tests are supporting material. Students must
+review, understand and make genuine contributions; the packet does not authorize AI to generate
+the full app or manufacture a development history. Record rejected changes and unanswered
+questions as well as accepted explanations. Exact-diff human acceptance remains a release gate.
+
+## Read-only control-point review
+
+A's one helper slot was reused for `/root/coordination_review` while D performed independent
+browser QA. Exact task (no file writes, descendants, tests or jobs):
+
+```text
+Session A reuses its one helper allocation for a bounded READ-ONLY control-point review. Other leads are editing; preserve all files. No writes, descendants, tests, browsers or jobs. Read canonical /home/smyk/projects/Ghaf/docs/competition-readiness/coordination/{README,BOARD,STATUS-A,STATUS-B,STATUS-C,STATUS-D}.md and only current top TEAM_OWNERSHIP.md. Exact question: which PRESENT-TENSE stale or contradictory grants/resource/held-path/recovery-cursor statements could mislead a resumed lead, given B/C explicitly completed/released, D active b862eb6 retest, A committed unaccepted draft014ca54e40 and current docs a856b5b, full138files/1669tests passed, user scope decision pending? Distinguish clearly labeled historical revisions from live ambiguity; do not re-audit the protocol, product, recovery design or D runtime. Return a short actionable list confined to A-owned BOARD/STATUS-A/TEAM plus requests A must send to other status writers. Do not edit their files or assume stale heartbeat transfers ownership. A independently prepares exact student/review handoff and awaits D's active QA. Your earlier launcher/model settings remain unchanged; effective tier not claimed.
+```
+
+Exact follow-up:
+
+```text
+Received and applying A-owned corrections. A-021 already requests D's current checkpoint; will add explicit stale paragraph correction. Please finish bounded review with any remaining TEAM/current-grant finding, then release your allocation. No broader audit needed.
+```
+
+Accepted corrections: current commit/task/resource descriptions, explicit proposal path holding,
+initial-versus-current assistance labels, inactive paused B/C quotas and current TEAM disposition.
+A sent other-status corrections through numbered outbox messages, preserving sole writers and
+unacknowledged asks. No stale timestamp transferred ownership. Helper completed and released;
+review does not pass product, native or human evidence. Actual prompt/settings limits preserved.

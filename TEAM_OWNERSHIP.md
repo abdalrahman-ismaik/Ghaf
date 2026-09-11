@@ -9,6 +9,16 @@
 local integration and honest build/rehearsal evidence. New recovery, rationale and memory behavior
 requires its committed accepted contract; this reservation does not approve those features.
 
+**Current disposition — September 12 execution checkpoint**: A-004/A-006 completed and released;
+B-004/C-002 source, reports, helpers and jobs explicitly released and integrated. D alone holds
+its r9 candidate report `docs/competition-readiness/workstreams/d-candidate.md`, ignored evidence,
+and preview lane at runtime `b862eb6`. A retains master documents, BOARD/STATUS-A and draft014
+proposal corrections (`specs/014-local-progress-recovery/**`, ignored `.specify/feature.json`).
+Draft014 is committed `ca54e40`, unaccepted and not implemented; no runtime grant. Current docs
+HEAD `a856b5b`; full candidate checks pass, independent D retest active. B/C are paused; their
+helper quotas are inactive until a new eligible grant. Earlier reservations below are historical
+unless explicitly retained here or by the latest live board. No A helper/job survives.
+
 **Reserved boundaries**:
 
 - A: canonical `docs/competition-readiness/coordination/BOARD.md` and `STATUS-A.md`, this file,
