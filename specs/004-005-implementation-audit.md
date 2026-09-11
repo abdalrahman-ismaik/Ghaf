@@ -31,9 +31,9 @@ liveChildCoach,liveVoiceCapture}.ts`, prepared/remote/native services, the bound
 
 ## Execution and fixes
 
-Three read-only sub-agents audited the features and produced `004-005-execution-prompt.md`.
-Root executed it; a bounded test worker authored voice regressions without editing runtime source.
-The prompt is now local-only; its historical version remains in commit `b221284`.
+Three read-only sub-agents audited the features and produced the
+[execution prompt](004-005-execution-prompt.md). Root executed it; a bounded test worker authored
+voice regressions without editing runtime source.
 
 1. Parent drafting copied model `supportCue` into reviewed `permittedHelp`, contrary to FR-014
    and the immutable mapping contract. The mapper now preserves the rule and includes it in

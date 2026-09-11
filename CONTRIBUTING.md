@@ -7,28 +7,17 @@ safety, or production readiness.
 ## Before You Start
 
 1. Run `git status --short` and preserve unrelated work.
-2. Read local assistant instructions such as `AGENTS.md` when present.
+2. Read the repository's canonical `AGENTS.md`.
 3. Read `.specify/memory/constitution.md` and the active feature's `spec.md`, `plan.md`, and
    `tasks.md`.
 4. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
    user-facing change.
-5. Reserve the exact file boundary with the team; check the local `TEAM_OWNERSHIP.md` when present.
+5. Check `TEAM_OWNERSHIP.md` and reserve the exact file boundary.
 6. Confirm no person or agent is writing the same file or shared configuration.
 
 Feature 003 is the active approved Spec Kit package. Update its artifacts before changing behavior
 outside the current specification; do not silently widen Feature 002 or manually edit the Spec
 Kit-managed block in `AGENTS.md`.
-
-## Local AI and agent tooling
-
-Assistant configuration, skills, instructions, execution prompts, critique output, and the local
-ownership log are ignored by Git. Spec Kit automation is also local-only; its shared product
-constitution at `.specify/memory/constitution.md` remains versioned. These tools are optional for
-installing, building, and testing the app and are not included in a fresh clone.
-
-Keep application AI code, tests, approved `specs/`, product contracts, and design provenance
-versioned. Historical documents may refer to assistant files retained in earlier commits or a
-teammate's local checkout. Do not force-add local tooling when contributing product changes.
 
 ## Setup
 
@@ -53,8 +42,7 @@ microphone permission.
 
 ## Work Reservation
 
-Record this in the shared task or handoff before editing. A local `TEAM_OWNERSHIP.md` may mirror it,
-but its ignored contents are not shared through Git:
+Record this before editing:
 
 ```text
 Work period: date/time or session label

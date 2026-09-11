@@ -34,47 +34,6 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Local AI assistants, agents, and skills
-/.agents/
-/agents/
-/skills/
-/.codex/
-/.claude/
-/.gemini/
-/.cursor/
-/.windsurf/
-/.continue/
-/.roo/
-/.opencode/
-/.aider*
-/.impeccable/
-/.mcp.json
-/.github/agents/
-/.github/instructions/
-/.github/prompts/
-/.github/copilot-instructions.md
-AGENTS.md
-AGENTS.override.md
-CLAUDE.md
-CLAUDE.local.md
-GEMINI.md
-SKILL.md
-CODEX*.md
-/.cursorrules
-/.windsurfrules
-/.clinerules
-/TEAM_OWNERSHIP.md
-
-# Local Spec Kit automation; retain the shared product constitution
-/.specify/*
-!/.specify/memory/
-/.specify/memory/*
-!/.specify/memory/constitution.md
-
-# Development execution prompts; keep product specifications and provenance
-/specs/*-execution-prompt.md
-/docs/design/brand/official-pack-v1.0/STITCH_BRAND_REPLACEMENT_PROMPT.md
-
 # Local build credentials and EAS state
 *.jks
 *.p8
