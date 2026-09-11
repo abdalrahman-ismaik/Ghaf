@@ -231,8 +231,14 @@ Before writing, inspect `git status --short`, read `TEAM_OWNERSHIP.md`, and rese
 or directories. One person or agent owns a file boundary at a time. Read-only research may run in
 parallel; overlapping writes may not.
 
-Run no more than four agents concurrently. Use the smallest applicable project agent and honor its
-write scope. The integration owner resolves shared configuration, dependency, and final merge work.
+The user authorizes scoped subagents with a configured ceiling of ten per session. For the
+four-session competition work plan, follow the canonical shared budget and ownership protocol in
+`docs/competition-readiness/coordination/README.md` and its `BOARD.md`: start with four leads and
+four helpers total, and increase only after measured headroom and explicit coordinator allocation.
+The per-session setting does not authorize forty simultaneous local workloads. Count descendants,
+serialize heavy jobs, and keep one writer per file. Use the smallest applicable project agent;
+leads publish helper scopes and releases. The integration owner resolves shared configuration,
+dependency, and final integration work. Preserve the Spec Kit-managed context block above.
 
 ## Comment and Commit Conventions
 

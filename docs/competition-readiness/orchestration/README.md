@@ -11,14 +11,14 @@ This is a coordination choice, not a claim of measured productivity gains.
 | Session | Role                               | Paste this prompt                      | Primary result                                                                            |
 | ------- | ---------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------- |
 | A       | Product and integration owner      | [Session A](session-a-integration.md)  | Approved bounded spec, dependencies, integration checkpoints and final readiness decision |
-| B       | Core journey and recovery engineer | [Session B](session-b-demo-systems.md) | One bounded local journey, persistence, rationale or memory task with recovery evidence   |
-| C       | UI and interaction designer        | [Session C](session-c-ui-studio.md)    | One selected component improvement within the existing bilingual system                   |
+| B       | Core journey and recovery engineer | [Session B](session-b-demo-systems.md) | An ordered batch of local journey/recovery slices with tested handoffs                    |
+| C       | UI and interaction designer        | [Session C](session-c-ui-studio.md)    | An approved sequence of core UI improvements within one bilingual system                  |
 | D       | Independent QA and rehearsal owner | [Session D](session-d-qa.md)           | Reproduced failures, acceptance evidence, physical rehearsal and release verdict          |
 
 The supplied organizer orientation prohibits AI generating the full app and requires a prompts/
 contribution report for supporting AI. Use these sessions as **bounded assistance**: a named
-student selects one inspectable task, understands its behavior, and reviews the exact diff before
-accepting it. Do not launch the pack as an autonomous replacement for the team's development. The broader waves below are a roadmap,
+student owns the assigned batch, understands its behavior, and reviews exact diffs before
+acceptance. Routine execution continues across eligible preauthorized tasks while separate reviews are pending. Do not launch the pack as an autonomous replacement for the team's development. The broader waves below are a roadmap,
 not authorization to generate every proposed feature. Read the
 [assistance record](../ai-assistance-ledger.md) before using any prompt.
 
@@ -40,7 +40,8 @@ For a terminal session, use:
 codex -C /home/smyk/projects/Ghaf -m gpt-6-astra \
   -c 'model_reasoning_effort="ultra"' \
   -c 'service_tier="fast"' \
-  -c 'agents.enabled=false'
+  -c 'agents.enabled=true' \
+  --add-dir /home/smyk/projects/Ghaf/docs/competition-readiness/coordination
 ```
 
 Change only the `-C` directory for B, C and D. In the CLI, inspect `/fast status`; use `/fast on`
@@ -55,15 +56,50 @@ available. The [configuration reference](https://learn.chatgpt.com/docs/config-f
 documents project MCPs and independent service-tier configuration. Its generic reasoning enum did
 not list the locally advertised Ultra setting at inspection time; preserve that evidence distinction.
 
-The launch command disables nested agent creation to keep this plan's four independent sessions
-from spawning overlapping writers. The configured capacity remains ten; it need not be reduced.
-This pack recommends A, B, C and D only, with no nested agents.
-Tool installation alone does not change the model or speed of an already-running session.
+The launch command enables helpers and includes the canonical coordination directory as an
+additional writable location. The installed CLI exposes `--add-dir`; this is useful when B/C/D
+run in separate restricted worktrees. Desktop sessions need equivalent access to that directory.
+The configured per-session ceiling stays ten. Actual allocations come from the shared board,
+not from every session independently filling its ceiling. Tool installation does not change
+an already-running session's model or speed.
+
+## Shared progress and long work batches
+
+The live hub is **`/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`**.
+Read [the protocol](../coordination/README.md) and use [BOARD](../coordination/BOARD.md) as the
+mission index. A alone writes BOARD; each lead alone writes its `STATUS-A/B/C/D.md`, recording
+progress, findings, commits, blockers, helper IDs, messages and a precise resume cursor.
+Every session reads all five files from the same absolute directory. Worktree copies do not
+synchronize. Status files communicate published facts; they do not share chat memory, import
+another branch's code or wake an ended session.
+
+A publishes an ordered batch with exact file grants and dependencies. Each lead repeats
+**read updates → choose eligible task → delegate/execute → check → commit → publish → continue**.
+Do not end after one small fix or repeatedly ask permission for already assigned routine work.
+Use updates at task boundaries and roughly every 10–15 minutes during substantial work, with
+coherent validated checkpoints around thirty minutes. Preserve the runtime's separate user-update
+requirements. Student review and native acceptance remain truthful gates; independent eligible
+work can continue while those gates are pending.
+
+The [resource assessment](../coordination/resource-assessment.md) measured approximately 7.47 GiB
+of WSL RAM and 16 logical CPUs. Start with **four helper slots total across the four leads**, one
+each. A may reallocate idle slots and increase gradually toward eight after measuring headroom.
+Use one global heavy-job slot and one shared Metro/browser lane. Forty helpers plus four leads
+has not been load-tested and is not recommended as the starting workload. Your capacity-ten
+setting remains unchanged. Helpers need concrete independent tasks, disjoint write scopes and
+lead supervision; their descendants count toward the same allocation.
+
+The prompts can sustain multi-hour batches when useful work and runtime availability permit.
+They cannot guarantee a particular unattended duration, bypass account limits or keep a closed
+session executing. On interruption, use the protocol's resume message and actual Git/process state.
+When all eligible work is complete or genuinely externally blocked, publish the unblock condition
+and stop honestly. A may wait in bounded intervals for a verified active worker handoff, keeping
+its coordination role available; an in-flight dependency is not proof the whole mission is blocked.
 
 ## Worktrees and setup
 
-Session A stays on `redesign/ui-experiments`. The team should first select a bounded support task
-and record its prompt and intended human owner. After the inspection package and selected planning
+Session A stays on `redesign/ui-experiments`. The team records the mission, intended human owner and ordered bounded support batch.
+A activates the canonical board before delegating source writes. After the inspection package and selected planning
 contract are committed, A prepares independent worktrees from that exact checkpoint. Run each
 command once; an existing branch/path is a reason to inspect and reuse it, not delete or reset it.
 
@@ -82,15 +118,18 @@ script name or platform prerequisite changes. Never reuse one mutable `node_modu
 worktrees with different lockfiles. Tooling dependencies stay outside the mobile application's
 package manifest.
 
-Use distinct development ports: A 8081, B 8082, C 8083 and D 8084. Confirm a port is free before
-starting a server. The original reference archives stay in the main checkout's ignored assets
+Reserve potential development ports A 8081, B 8082, C 8083 and D 8084, but start only the
+currently granted preview lane. A port number is not permission to run four Metro servers.
+Confirm it is free and record its actual owner/PID before starting. The original reference archives stay in the main checkout's ignored assets
 directories; worker worktrees may read that absolute reference path. Extracted images remain
-reference-only and must not be copied into runtime without provenance approval.
+reference-only and must not be copied into runtime without provenance approval. The untracked SMAC
+PDF originals also stay in the main checkout; read `/home/smyk/projects/Ghaf/docs/SMAC 2026/` rather
+than expecting them in every worktree.
 
 ## Sequencing
 
 **Wave 0 — core gap audit and baseline.** A records the settled scope: SMAC KU Summer 2026
-family bonds; September 8 submission passed; qualification for September 16 confirmed; main live
+family bonds; September 8 submission passed; September 16 subject to qualification; main live
 target 2–3 minutes. The official video is also 2–3 minutes, with no separate live limit stated in
 the supplied orientation. A reads the rubric, AI-use rule and GitHub guide. B audits the existing
 local role-separated task journey, process-local progress, recommendation/rationale and absent
@@ -103,8 +142,9 @@ plan, tasks and acceptance contract before code. B and C receive the same commit
 existing R002b flags remain default-off. A prepared Parent Guide/category ranking is not a
 generalized live Connection Coach, and Feature 008 private recognition-only ideas create no growth.
 
-**Wave 1 — one bounded student task at a time.** A named student selects, understands and reviews
-each exact diff. B handles a selected local recovery, rationale or memory task; C handles a selected
+**Wave 1 — sustained bounded batches.** Each lead completes one cohesive task at a time and
+continues the next eligible assigned item. A named student owns the work and reviews exact diffs
+for acceptance; missing review stays pending and does not block unrelated authorized work. B handles a selected local recovery, rationale or memory task; C handles a selected
 named UI component, without an all-screen rewrite. D tests the integrated behavior independently.
 A alone edits the registry, aggregate store, root dependencies, shared routes and localization
 unless an exact file boundary has been explicitly transferred. Log actual prompts, contributions,
@@ -137,14 +177,18 @@ baseline; exact owned paths; behavior before/after; commands and exit codes; vis
 unresolved defect IDs; remaining capability gaps; and whether
 its files are released for integration. Long reports belong in artifacts, not repeated chat dumps.
 No session claims unobserved Android, human-review, live-AI, persistence or memory results.
+Publish every handoff and blocker in the canonical role status; a final chat answer alone is not
+a handoff another independent session can read.
 
 Useful control messages for A:
 
 ```text
-Contract checkpoint: <commit>. Named student: <name>; selected bounded task: <id>.
-Your exact write boundary is <paths>. Implement only that task. Read the shared contract and
-current QA defects. Preserve others' edits. Report a cohesive commit with evidence; do not push.
-Stop at the agreed interface boundary and hand it back.
+Contract checkpoint: <commit>. Human owner: <actual name or review pending>.
+Assigned ordered task batch: <IDs>; exact grants and helper quota are in the canonical BOARD.
+Execute eligible tasks in order. Preserve others' work; use bounded helpers within your allocation.
+After each verified slice, publish its commit, evidence and path release in your STATUS file,
+then continue the next eligible assigned task. Do not expand scope or push. Keep required human
+acceptance pending until an actual review; continue independent authorized work.
 ```
 
 ```text

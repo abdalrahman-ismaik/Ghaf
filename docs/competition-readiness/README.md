@@ -3,8 +3,8 @@
 Prepared September 12, 2026 on `redesign/ui-experiments`, from botanical baseline `55f9f2b`.
 The selected direction is **competition-first**: a polished 2–3 minute local journey on the
 primary Android, with independent installation and reliability checks on a secondary Android.
-Four focused Codex sessions are recommended; the user's configured subagent capacity of 10 is
-preserved. New product behavior in this package is a proposal requiring the corresponding Spec Kit
+Four focused Codex lead sessions are recommended, each able to delegate useful scoped work
+under one shared resource budget; the user's per-session subagent capacity of 10 is preserved. New product behavior in this package is a proposal requiring the corresponding Spec Kit
 contract before implementation.
 
 ## Start the four sessions
@@ -20,10 +20,18 @@ Assign each bounded task to a real student owner and keep its actual AI-use reco
 | C       | [UI and interaction](orchestration/session-c-ui-studio.md)           | Compare coherent visual directions, then implement one assigned screen/component slice |
 | D       | [Independent QA and rehearsal](orchestration/session-d-qa.md)        | Verify the exact candidate, report defects and gather Android/demo evidence            |
 
-The prompts share an [ownership and evidence contract](orchestration/shared-contract.md). Keep
-separate worktrees and one writer per file. A TOML capacity of 10 does not make ten overlapping
-writers useful. Start A first to assign exact boundaries; B/C/D can inspect independently while
-the selected behavior contract is prepared.
+The prompts share an [ownership and evidence contract](orchestration/shared-contract.md) and a
+[live coordination protocol](coordination/README.md). Start A first to activate
+[BOARD](coordination/BOARD.md), then B/C/D. Each lead publishes progress and findings in its own
+`STATUS-*.md`; all sessions read the same absolute hub in the main checkout. Their worktree copies
+and conversation memories do not synchronize automatically.
+
+The prompts now continue through ordered preauthorized batches, with checkpoints, helper/file
+reservations, messages, explicit handoffs and restart cursors. Helpers are enabled. The
+[resource assessment](coordination/resource-assessment.md) supports a conservative start of four
+helpers total plus four leads, with measured growth toward eight helpers and serialized heavy jobs.
+Forty helpers have not been load-tested on this WSL environment; the configured ceiling remains ten
+per session. No prompt can guarantee uninterrupted hours or wake a session that has ended.
 
 ## Findings and deliverables
 

@@ -168,3 +168,18 @@ Competition-first: stabilize the core journey and add only the strongest demo fe
 ```text
 so you are not giving me prompts for different codex sessions? by the way I increased the subagents numbers to 10 in the toml file
 ```
+
+## Request 5 — sustained sessions and shared progress
+
+```text
+are these prompts good enough? are they detailed and super prompts? are they professional enough? I want them to work for long hours. and also will these sessions be able to know what other sessions progress? is there a shared file that they can document their progress and findings?
+```
+
+## Request 6 — subagent capacity
+
+```text
+and also I want them to leverage the ability to use multiple subagents, I raised the limit to 10, if thats safe and the laptop can handle 40 subagents at the smae time then let each session prompt levrage that whenever needed
+```
+
+Requests 5 and 6 were copied directly from the subsequent active conversation. They extend the
+prompt package and coordination workflow; they do not claim the proposed app tasks were executed.

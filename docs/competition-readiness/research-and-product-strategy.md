@@ -25,7 +25,7 @@ stronger family cooperation is the central competition proposition.[^1]
 The orientation gives a September 8, 2026 submission deadline: a **2–3 minute video**, a **two-page
 app idea/functionality description**, and team GitHub accounts. The on-campus demo is September 16;
 details are sent to qualified teams. As of September 12, the September 8 submission deadline has
-passed and the user confirms the team is qualified for September 16. The supplied material states
+passed; September 16 attendance remains subject to qualification, which has not been confirmed in this conversation. The supplied material states
 no separate live-demo time limit. The **2–3 minute main live demo** is the user's chosen target;
 the official **2–3 minute video** requirement is a separate fact.
 
@@ -39,8 +39,9 @@ the official **2–3 minute video** requirement is a separate fact.
 Pages 10 and 17 prohibit AI generating the full app; supporting AI is allowed only with a report
 documenting prompts and contribution. Page 10 also restricts outside-team assistance and copying
 projects or complete parts from the internet. Therefore multi-session Codex work must remain
-bounded assistance to the team's existing application: a named student selects one small task,
-understands its behavior, and reviews the exact diff before accepting it. Log actual prompts,
+bounded assistance to the team's existing application: a student owns the assigned batch of small
+tasks, understands their behavior, and reviews exact diffs before acceptance. Independent authorized
+work may proceed while a human owner or review is pending; record that status honestly. Log actual prompts,
 contributions and rejected suggestions; never fabricate review, authorship or development history.
 The tool/template intake does not establish contest eligibility. Any unresolved interpretation
 of the organizer's policy remains explicit; do not conceal generated contributions.

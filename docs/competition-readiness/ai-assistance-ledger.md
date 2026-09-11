@@ -37,7 +37,7 @@ was not independently measured; the launch guide distinguishes configuration fro
 | AI-03: deep QA                                           | Restored lockfile dependencies, ran automated checks, exercised bilingual browser flows, reproduced profile mismatch and lost progress, recorded native/build gaps                                      | [QA report](qa-report.md); ignored `output/competition-readiness/qa/**`                                                                                                                                                                      | Repeat on actual Android hardware; assess remaining findings; understand what browser evidence cannot establish                                                     |
 | AI-04: fix reproduced configured-Child selector mismatch | Replaced static fixture labels with configured profiles/nicknames/age bands, invalid-selection guards and bidi-isolated numeric ranges; added six bilingual regression cases                            | `src/components/family-growth/ParentTaskComposer.tsx`, `tests/parent-task-composer-profiles.test.tsx`                                                                                                                                        | Review full diff; explain profile identity versus display name, allowed task eligibility, selection guard and numeric bidi; native verification remains unperformed |
 | AI-05: research ideas and contest priorities             | Cited evidence assessment of autonomy/help, rewards, learning, money practice, communication and location; differentiated findings from product hypotheses; read supplied competition PDFs              | [research and strategy](research-and-product-strategy.md), [team Q&A](team-qa-guide.md)                                                                                                                                                      | Read key sources and limitations; approve product hypotheses; obtain named Arabic/cultural/content review where required                                            |
-| AI-06: prepare multi-session prompts                     | Four bounded session prompts, shared contract, model/settings evidence, worktree/ownership handoffs and integration/freeze sequence                                                                     | `orchestration/*.md`                                                                                                                                                                                                                         | Assign real student owners and selected task IDs before use; retain exact future prompts and genuine reviews                                                        |
+| AI-06: prepare multi-session prompts                     | Four bounded session prompts, shared contract, model/settings evidence, worktree/ownership handoffs and integration/freeze sequence                                                                     | `orchestration/*.md`                                                                                                                                                                                                                         | Record actual task IDs and human ownership; audits/authorized work may proceed with review pending, while acceptance requires genuine student review                |
 | AI-07: scope clarification and final integration         | Replaced the initial sync-first/four-minute proposal with the user's 2–3 minute local primary-phone journey and independent secondary checks; documented APK path and proposed memory/persistence gates | [demo](two-device-demo.md), [Android guide](android-build-and-rehearsal.md), [index](README.md), `TEAM_OWNERSHIP.md`, this ledger and requests                                                                                               | Validate final candidate, rehearsal and submission/qualification circumstances; no unbuilt feature may be presented as complete                                     |
 
 ## Rejected or deferred suggestions
@@ -84,3 +84,26 @@ Remaining work / NOT RUN evidence:
 Keep synthetic-only evidence in any shared log. Do not copy secrets, real family information,
 hidden reasoning or unrelated account/session data. Preserve honest history and individual
 contributions; never fabricate reviews, meeting minutes, timestamps or authorship.
+
+## Follow-up: sustained sessions and scoped subagents
+
+The exact follow-up requests are preserved as Requests 5 and 6 in [requests.md](requests.md).
+Codex reviewed premature-stop instructions, corrected unsupported qualification claims, extended
+all four role prompts and the launch/shared contract, and created a canonical BOARD plus four
+single-writer status files with task queues, findings/outbox acknowledgments, helper/resource
+allocations, explicit path release and recovery instructions. Current task status templates are
+NOT STARTED; no future work or student review has been fabricated.
+
+A read-only helper measured WSL CPU/memory/swap/process context. The
+[resource report](coordination/resource-assessment.md) records actual observations and separates
+conservative scheduling thresholds from unperformed capacity benchmarks. It recommends four
+helpers total initially, with measured growth toward eight; the user's ten-per-session setting
+is preserved. No forty-helper stress test or Windows RAM audit occurred.
+
+Affected files: `orchestration/*.md`, `coordination/*.md`, package `README.md`, the qualification
+sentence in `research-and-product-strategy.md`, this ledger, `requests.md`, `TEAM_OWNERSHIP.md`,
+and only the concurrency paragraph in `AGENTS.md` (its managed context block is unchanged).
+The role-prompt writer owned only the four role prompts; independent reviewers were read-only.
+No application source, dependency, native configuration or feature flag changed. Validation covers
+document formatting, local links and independent protocol consistency; app/native tests are not
+new evidence for this documentation-only change. Student review remains NOT RUN.

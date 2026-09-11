@@ -1,5 +1,45 @@
 # Team Ownership
 
+## 2026-09-12 Sustained Codex Session Coordination Window
+
+**Integration owner**: `/root` on `redesign/ui-experiments`.
+
+**Scope**: User requests stronger multi-hour prompts and explicit shared progress/findings across
+independent sessions. This window edits the orchestration workflow and documentation only.
+It does not start the proposed product implementation or activate any app feature.
+
+**Reserved boundaries**:
+
+- `/root`: `docs/competition-readiness/coordination/**`, orchestration `README.md` and
+  `shared-contract.md`, package `README.md`, `requests.md`, `ai-assistance-ledger.md`, this ownership
+  record, the Collaboration and Ownership concurrency paragraph in `AGENTS.md`, and the
+  qualification-status correction in `research-and-product-strategy.md`.
+- `/root/sustained_prompts`: only the four `orchestration/session-*.md` role prompts.
+- `/root/coordination_review`: read-only review; no writes.
+- `/root/resource_audit`: read-only WSL resource assessment; no writes.
+
+Preserve all other edits, configured capacity ten, raw references and user-supplied PDFs.
+Root serializes shared protocol changes and final documentation integration. At most four agents
+run in this editing window. The future four-session protocol has one writer per coordination file. The user additionally
+authorizes scoped helpers under the configured per-session capacity of ten; the protocol must
+coordinate a measured global budget rather than assume forty helpers are safe.
+
+**Status — completed 2026-09-12**: Four role prompts now continue ordered preauthorized batches
+and use scoped helpers, canonical shared status/outbox/ACK records, explicit file release,
+resource grants and interruption recovery. The coordination hub contains one A-owned board,
+four single-writer status files and the operating/resource guides, initialized honestly as
+NOT STARTED. Independent review resolved startup, browser-process-tree and review-gate wording.
+A read-only snapshot measured 16 logical CPUs, 7.47 GiB WSL memory and 4.80 GiB available; the
+starting global allocation is four helpers plus four leads, with measured growth toward eight
+helpers, one heavy job and one Metro/browser lane. Forty helpers were not load-tested.
+
+Scoped Markdown formatting, 171 local links, Git whitespace and preserved Spec Kit-managed
+context checks passed. The remaining AGENTS change is only its concurrency paragraph. Application
+source, dependencies, `.codex/config.toml`, native configuration and feature flags are unchanged;
+no application tests were rerun for this documentation-only work. Student/native evidence remains
+pending; qualified attendance is correctly recorded as unconfirmed. All writer boundaries are
+released for local integration. No push, main merge, deployment or future-session activation occurred.
+
 ## 2026-09-12 Competition Readiness Inspection and Tooling Window
 
 **Integration owner**: `/root` on `redesign/ui-experiments`.
