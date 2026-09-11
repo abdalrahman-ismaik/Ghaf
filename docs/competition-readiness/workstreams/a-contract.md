@@ -85,3 +85,16 @@ on the user's botanical/non-generic preference and C's comparison, not named use
 A grants B reproduction and, if confirmed, repair of Feature 011 replacement-reset omissions.
 B exclusively owns the aggregate store until explicit release. New recovery remains a proposal;
 there is no memory, provider, networking, reward, feature-flag or additional UI-system grant.
+
+## A-006 — Arabic duration direction clarification
+
+C's source/historical-image review found that an RTL en-dash range could display fifteen-to-thirty
+in reverse order. A accepted C's exact proposed `من 15 إلى 30 دقيقة` wording in the single canonical
+`src/features/tasks/demoContent.ts` field, retaining English `15–30 minutes`. Duration, task award,
+version and authority are unchanged. Existing expected copy in `tests/parent-task-flow.test.ts`
+(two assertions) and `tests/child-task-flow.test.ts` (one assertion) follows that same authority.
+
+`npx vitest run tests/parent-task-flow.test.ts tests/child-task-flow.test.ts tests/parent-task-drafting-authority.test.ts --maxWorkers=1` passed 3 files / 44 tests, exit 0.
+Scoped ESLint and Prettier on the three paths passed. No new style-mirroring tests were added.
+Fresh browser rendering and named Arabic/native review remain PENDING; historical image evidence
+is not re-labeled as this candidate's pass. No illustration, dependency or feature flag changed.

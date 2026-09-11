@@ -77,7 +77,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     });
     expect(P0_RECYCLING_TEMPLATE).toMatchObject({
       whyItMatters: { ar: expect.any(String), en: expect.any(String) },
-      estimatedEffort: { ar: '15–30 دقيقة', en: '15–30 minutes' },
+      estimatedEffort: { ar: 'من 15 إلى 30 دقيقة', en: '15–30 minutes' },
       permittedHelp: { ar: expect.any(String), en: expect.any(String) },
       supervision: { ar: expect.any(String), en: expect.any(String) },
       landscapeId: 'mangrove',

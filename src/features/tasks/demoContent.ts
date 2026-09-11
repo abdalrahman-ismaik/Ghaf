@@ -206,7 +206,7 @@ export const P0_RECYCLING_TEMPLATE: TaskTemplate = {
     'After an adult pre-check, Salem sorts intact, non-sharp clean paper and plastic accepted by the local stream into the correct household recycling container. If needed, Salem helps after the adult second check to close one lightweight recycling bag, then accompanies the adult on a guardian-approved safe route. The adult assesses heat and traffic, carries the bag, and handles disposal. The route requires no road crossing, and Salem stays out of vehicle paths, compactors, waste chutes, and bin-room machinery. If heat or traffic is unsafe, the family postpones the route or uses an indoor sorting alternative. General household waste is not part of this task.',
   ),
   childAgeBands: ['6_8', '9_11', '12_14'],
-  estimatedEffort: text('15–30 دقيقة', '15–30 minutes'),
+  estimatedEffort: text('من 15 إلى 30 دقيقة', '15–30 minutes'),
   permittedHelp: text(
     'تُقبل المساعدة المسموح بها ولا تقلل المكافأة المعروضة.',
     'Permitted help counts and does not reduce the displayed award.',
