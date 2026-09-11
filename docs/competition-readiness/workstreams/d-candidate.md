@@ -254,9 +254,9 @@ An identical script copied to D's owned MCP output directory executed the succes
 These results close the B-004 bounded command oracle, not durable recovery, all privacy cases
 or a second full browser journey. No product source or dependency was modified.
 
-Bounded B-review task brief retained by the lead (summary, not verbatim):
+Actual B-review prompt, recovered verbatim by the same helper from its conversation:
 
-> D-002-r9 one read-only helper allocation. Exact candidate /home/smyk/projects/Ghaf-qa-rehearsal HEAD b862eb6f85321935d297a411aaa58744cf72f18b (branch redesign/qa-candidate-20260912). You are not alone in the codebase; preserve every other writer's work. No writes, lead status, tests, browser, jobs, descendants. Question: independently review integrated B-004 f38f21d family replacement diff/tests for correctness of privateLeague and approvalRevealCommitments reset, cancellation/failed-save preservation, and recognized→new-family recognition/duplicate flow. Return only material regression concerns with exact references and a small before/after oracle for a separately labeled browser command probe. D lead continues actual role/core/card browser verification and A already ran the full candidate suite. Actual launch selection Astra/ultra; effective tier unexposed.
+> D-002-r9 one read-only helper allocation. Exact candidate /home/smyk/projects/Ghaf-qa-rehearsal HEAD b862eb6f85321935d297a411aaa58744cf72f18b (branch redesign/qa-candidate-20260912). You are not alone; preserve all changes. No writes, lead status, tests, browser, jobs, descendants. Question: independently review integrated B-004 f38f21d family replacement diff and tests for correctness of privateLeague/approvalRevealCommitments reset, cancelled/failed replacement preservation, recognized→new-family normal recognition and duplicate no-op. Return any material uncovered regression, exact source refs and small expected before/after oracle for a separately labeled browser command probe. D lead is running actual role/core/card browser journey and writes d-candidate.md; don't duplicate those. A owns full suite. Existing Astra/ultra selection; effective tier unexposed. Actual prompt/result will be recorded in report.
 
 Contribution: source/test reasoning and the replacement oracle. The lead executed the separate
 probe and reviewed its results. Suggestions to infer full privacy, durable recovery, native or
@@ -363,3 +363,30 @@ has the explicit CSS-stress failure; D-M02/17 remain failed for dismissible rese
 matrix rows retain their previous status. A008 is actively producing a correction, so D retains
 its report/preview and continues the ordered batch after this checkpoint commit. Native/human
 acceptance remains BLOCKED/NOT RUN, physical rehearsal count0, qualification unknown.
+
+### Additional b2208aa observations before the next handoff
+
+Browser-reported version155.0, user agentFirefox155.0 on Linux x86_64; local Node24.16.0 and
+npm11.13.0. Fresh `adb devices -l` returned an empty device list, exit0. These do not identify
+phones or an installed build. No APK identity or physical run is available.
+
+The normal Parent draft reset was additionally attempted after the English Guide check. Its
+`reset-normal-parent-draft.json` ends in a harness timeout expecting the introduction; actual
+subsequent snapshot showed signed-out Arabic Welcome with cleared directory/device/task and no
+role authorized. Actual browser Back remained at root with no visible error button. Same-process
+first-run completion differs from the fresh intro state after reload; do not turn that selector
+assumption into a reset defect or claim the lost pre-reset returned values as proof.
+
+`mounted-root-shape.json` is read-only observation of the actual navigation root, for A008 review:
+outer stack route `__root`, nested app stack containing route `index`. It performs no root reset
+or proposed-code injection. A retains sole ownership of the navigation utility and both callers.
+The repeated-normal-reset acceptance still needs a successful complete trace on the next candidate.
+
+The lead's extra ledger-retrieval prompt to the existing privacy helper was:
+
+> Bounded evidence-ledger retrieval, D quota1. No filesystem writes, tests, browser/jobs, status or descendants; you are not alone, preserve all work. Please return verbatim the actual B-004 source-review task message you received earlier (candidate b862eb6, f38f21d, replacement oracle) from your conversation, plus your compact contribution/result. The lead's compacted context retained only a summarized brief and will not fabricate a verbatim prompt. If you cannot access the exact wording, say so. Release allocation on reply. This is documentation of existing work, not a new source review.
+
+The helper returned the original prompt above and reaffirmed its bounded source-only contribution,
+then released. No new source review, writes, jobs or student participation resulted. A narrow
+attempt to recover that prompt from session logs did not produce readable original call text;
+no reconstructed wording is presented as verbatim.
