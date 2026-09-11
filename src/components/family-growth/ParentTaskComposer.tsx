@@ -16,6 +16,7 @@ import { aiFeatureFlags } from '@/config/aiFeatureFlags';
 import { taskWorkspaceFeatureFlag } from '@/config/taskWorkspaceFeatureFlag';
 import {
   colors,
+  isolateBidiText,
   logicalRowDirection,
   opacity,
   r001Radii,
@@ -38,6 +39,7 @@ import type {
   TaskTemplate,
 } from '@/models/familyGrowth';
 import type { ParentTaskDraftRequestV1 } from '@/models/boundedAi';
+import type { LocalChildProfile } from '@/models/localFamily';
 import type { SavedParentTaskTemplate } from '@/models/savedTaskTemplate';
 import { PARENT_GUIDE_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -78,6 +80,12 @@ const CATEGORY_ICONS: Record<TaskCategoryId, GhafIconName> = {
   learning_wellbeing: 'science',
 };
 
+const CHILD_AGE_LABEL_KEYS: Record<LocalChildProfile['ageBand'], string> = {
+  '6_8': 'access.setup.ageSixEight',
+  '9_11': 'access.setup.ageNineEleven',
+  '12_14': 'access.setup.ageTwelveFourteen',
+};
+
 export function ParentTaskComposer({
   initialPrefill,
   onBack,
@@ -87,7 +95,6 @@ export function ParentTaskComposer({
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
-  const children = usePrototypeStore((state) => state.children);
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const journey = usePrototypeStore((state) => state.journey);
   const suggestion = usePrototypeStore((state) => state.parentGuideSuggestion);
@@ -113,9 +120,15 @@ export function ParentTaskComposer({
       ? initialPrefill
       : null;
 
-  const [selectedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
+  const configuredChildren =
+    localFamily.record?.children.filter((child) =>
+      localFamily.configuredChildIds.includes(child.id),
+    ) ?? [];
+  const [requestedChildId, setSelectedChildId] = useState<SyntheticChildId | null>(
     journey?.task.targetChildId ?? acceptedInitialPrefill?.childId ?? activeChildId,
   );
+  const selectedProfile = configuredChildren.find((child) => child.id === requestedChildId);
+  const selectedChildId = selectedProfile?.id ?? null;
   const profileCategoryPlan = useMemo(() => {
     const profile = localFamily.record?.children.find((child) => child.id === selectedChildId);
     if (!profile) return null;
@@ -196,6 +209,10 @@ export function ParentTaskComposer({
   );
 
   const ensureDraft = () => {
+    if (!selectedChildId) {
+      setError(t('errors.invalidState'));
+      return false;
+    }
     if (journey?.lifecycle === 'draft') return true;
     if (journey?.lifecycle === 'reviewed') {
       const returned = returnReviewedTaskToDraft();
@@ -425,6 +442,7 @@ export function ParentTaskComposer({
         <ChooseStage
           categoryId={categoryId}
           categoryTemplates={categoryTemplates}
+          childProfiles={configuredChildren}
           direction={direction}
           error={error}
           locale={locale}
@@ -434,6 +452,7 @@ export function ParentTaskComposer({
             setError(null);
           }}
           onChildChange={(value) => {
+            if (!configuredChildren.some((child) => child.id === value)) return;
             setSelectedChildId(value);
             if (taskWorkspaceFeatureFlag || value === 'child_salem') {
               setCategoryId('green_impact');
@@ -483,12 +502,7 @@ export function ParentTaskComposer({
           onEditLiveDraft={editLiveDraft}
           onParentTextChange={setParentText}
           parentText={parentText}
-          selectedChildLabel={
-            selectedChildId
-              ? (localFamily.record?.children.find((child) => child.id === selectedChildId)
-                  ?.nickname ?? localize(children[selectedChildId].displayName, locale))
-              : ''
-          }
+          selectedChildLabel={selectedProfile?.nickname ?? ''}
           selectedTemplate={selectedTemplate ?? P0_RECYCLING_TEMPLATE}
           savedTaskTemplates={savedTaskTemplates}
           savedTemplateMessage={savedTemplateMessage}
@@ -508,6 +522,7 @@ export function ParentTaskComposer({
 interface ChooseStageProps {
   categoryId: TaskCategoryId | null;
   categoryTemplates: readonly TaskTemplate[];
+  childProfiles: readonly LocalChildProfile[];
   direction: 'rtl' | 'ltr';
   error: string | null;
   locale: 'ar' | 'en';
@@ -523,6 +538,7 @@ interface ChooseStageProps {
 function ChooseStage({
   categoryId,
   categoryTemplates,
+  childProfiles,
   direction,
   error,
   locale,
@@ -548,20 +564,16 @@ function ChooseStage({
       </View>
 
       <View accessibilityRole="radiogroup" style={styles.childChoices}>
-        <ParentChildChoice
-          disabled={false}
-          label={t('role.chooseSalem')}
-          onPress={() => onChildChange('child_salem')}
-          selected={selectedChildId === 'child_salem'}
-          testID="task-child-salem"
-        />
-        <ParentChildChoice
-          disabled={false}
-          label={t('role.chooseAlya')}
-          onPress={() => onChildChange('child_alya')}
-          selected={selectedChildId === 'child_alya'}
-          testID="task-child-alya"
-        />
+        {childProfiles.map((child) => (
+          <ParentChildChoice
+            disabled={false}
+            key={child.id}
+            label={`${child.nickname} · ${t('access.setup.ageBand')} ${isolateBidiText(t(CHILD_AGE_LABEL_KEYS[child.ageBand]), 'ltr')}`}
+            onPress={() => onChildChange(child.id)}
+            selected={selectedChildId === child.id}
+            testID={child.id === 'child_salem' ? 'task-child-salem' : 'task-child-alya'}
+          />
+        ))}
       </View>
       {selectedChildId === 'child_alya' && !taskWorkspaceFeatureFlag ? (
         <Text brand color="onSurfaceVariant" variant="caption">
