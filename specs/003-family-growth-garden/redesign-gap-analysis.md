@@ -12,28 +12,28 @@ constitution, active specification, and child-safety/privacy rules remain contro
 - **Implemented**: direct source and focused-test evidence exists.
 - **Partial**: a reusable policy exists, but the requested behavior is incomplete.
 - **Missing**: no corresponding domain contract or deterministic implementation exists.
-- **Deferred**: native, human-review, or production infrastructure work excluded by the current
-  approved prototype boundary.
+- **Deferred**: frontend, native, human-review, or production infrastructure work excluded by this
+  domain-only assignment.
 
 ## Evidence matrix
 
-| Redesign capability                                                            | Status before this assignment | Evidence and disposition                                                                                                                                                                                                                                                             |
-| ------------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Separate Parent and Child experiences                                          | Partial                       | Role-scoped commands exist, but `PrototypeSession.role` is only a demo switch and all private data remains in one aggregate. Implement deterministic synthetic access sessions and least-privilege projections; keep production authentication excluded.                             |
-| Parent sign-in, Child credential, and pairing                                  | Missing                       | No account, credential, device, pairing, or reauthentication service exists. Implement local synthetic fixtures with expiry, one-use pairing, revocation, and truthful non-production labels.                                                                                        |
-| Parent-gated sensitive changes                                                 | Missing                       | The current role flag cannot authorize reward, membership, media, voice, or AI changes. Implement action-scoped reauthentication proofs and stored per-Child grants.                                                                                                                 |
-| Five weekly Challenge Leaves and normalized score                              | Missing                       | Tasks carry age bands, but there is no week, Challenge Leaf, score, or rank model. Implement a separate synthetic League engine without changing the existing privacy-filtered Green Circle.                                                                                         |
-| Score cap, full help credit, shared ties, and weekly rollover                  | Partial                       | Existing rewards preserve full credit with permitted help and permanent Seeds/growth. Add League-specific idempotency, 100 cap, competition ranking, accessibility/opt-out rules, and rollover isolated from permanent progress.                                                     |
-| Minimal League visibility and prepared encouragement                           | Missing                       | The current Circle deliberately excludes identity and interaction. Add a distinct League projection containing only synthetic nickname/avatar token, completed count, score, position, and allowlisted encouragement ID; never expose tasks, evidence, Seeds, or private categories. |
-| Family Reward promise lifecycle                                                | Missing                       | Existing reward logic issues symbolic Seeds only. Add a separate private `promised → unlocked → given` plan ledger; do not alter Seed transactions.                                                                                                                                  |
-| Seed/landscape milestones and monthly commitment total                         | Missing                       | Garden thresholds exist, but there is no plan baseline, milestone evaluator, promise amount, or aggregate. Implement personal milestone evaluation, prospective versions, irreversible unlocks, and monthly monetary-promise totals.                                                 |
-| No Seed-to-AED rate, payment, or League dependency                             | Implemented by absence        | Preserve the absence of wallet, transfer, custody, payment, and exchange-rate behavior. Enforce these constraints structurally in Family Reward inputs.                                                                                                                              |
-| Age-adaptive Child Coach input policy                                          | Partial                       | All age-band input modes exist, but actual requests are fixed to `9_11` and results always contain four steps. Add age-specific output constraints while retaining active-task binding and prepared-only P0 behavior.                                                                |
-| Push-to-talk review controls                                                   | Partial                       | Age policy can allow guardian-enabled push-to-talk for 12–14 and prepared audio has a transcript/removal path. Add a synthetic voice-session state machine; real microphone capture, transcription, and provider calls stay deferred.                                                |
-| Arabic code-switching and Gulf register                                        | Deferred                      | Safe bounded locale metadata can be modeled, but natural-language understanding and dialect content require provider work and named Emirati/language review.                                                                                                                         |
-| Navigation, 14 screen families, League/Reward screens, and route consolidation | Selected in-route             | The approved frontend phase keeps ten routes and represents the safe access/Reward/League concepts as states inside `/role`, `/parent`, and `/child`; new navigation breadth remains rejected.                                                                                       |
-| Typography, RTL visual implementation, illustration, and motion                | Partial                       | Voice/type presentation is implemented. The current phase corrects runtime direction, hierarchy, heading, and narrow-header source risks; physical Android evidence stays open.                                                                                                      |
-| Real accounts, real invitations, biometrics, payment handling, and real voice  | Deferred                      | These require a separate production security/privacy/legal design and are outside the MVP constitution.                                                                                                                                                                              |
+| Redesign capability | Status before this assignment | Evidence and disposition |
+| --- | --- | --- |
+| Separate Parent and Child experiences | Partial | Role-scoped commands exist, but `PrototypeSession.role` is only a demo switch and all private data remains in one aggregate. Implement deterministic synthetic access sessions and least-privilege projections; keep production authentication excluded. |
+| Parent sign-in, Child credential, and pairing | Missing | No account, credential, device, pairing, or reauthentication service exists. Implement local synthetic fixtures with expiry, one-use pairing, revocation, and truthful non-production labels. |
+| Parent-gated sensitive changes | Missing | The current role flag cannot authorize reward, membership, media, voice, or AI changes. Implement action-scoped reauthentication proofs and stored per-Child grants. |
+| Five weekly Challenge Leaves and normalized score | Missing | Tasks carry age bands, but there is no week, Challenge Leaf, score, or rank model. Implement a separate synthetic League engine without changing the existing privacy-filtered Green Circle. |
+| Score cap, full help credit, shared ties, and weekly rollover | Partial | Existing rewards preserve full credit with permitted help and permanent Seeds/growth. Add League-specific idempotency, 100 cap, competition ranking, accessibility/opt-out rules, and rollover isolated from permanent progress. |
+| Minimal League visibility and prepared encouragement | Missing | The current Circle deliberately excludes identity and interaction. Add a distinct League projection containing only synthetic nickname/avatar token, completed count, score, position, and allowlisted encouragement ID; never expose tasks, evidence, Seeds, or private categories. |
+| Family Reward promise lifecycle | Missing | Existing reward logic issues symbolic Seeds only. Add a separate private `promised → unlocked → given` plan ledger; do not alter Seed transactions. |
+| Seed/landscape milestones and monthly commitment total | Missing | Garden thresholds exist, but there is no plan baseline, milestone evaluator, promise amount, or aggregate. Implement personal milestone evaluation, prospective versions, irreversible unlocks, and monthly monetary-promise totals. |
+| No Seed-to-AED rate, payment, or League dependency | Implemented by absence | Preserve the absence of wallet, transfer, custody, payment, and exchange-rate behavior. Enforce these constraints structurally in Family Reward inputs. |
+| Age-adaptive Child Coach input policy | Partial | All age-band input modes exist, but actual requests are fixed to `9_11` and results always contain four steps. Add age-specific output constraints while retaining active-task binding and prepared-only P0 behavior. |
+| Push-to-talk review controls | Partial | Age policy can allow guardian-enabled push-to-talk for 12–14 and prepared audio has a transcript/removal path. Add a synthetic voice-session state machine; real microphone capture, transcription, and provider calls stay deferred. |
+| Arabic code-switching and Gulf register | Deferred | Safe bounded locale metadata can be modeled, but natural-language understanding and dialect content require provider work and named Emirati/language review. |
+| Navigation, 14 screen families, League/Reward screens, and route consolidation | Deferred | Frontend was explicitly excluded. The current ten-route P0 remains unchanged. |
+| Typography, RTL visual implementation, illustration, and motion | Deferred | Frontend/native design work is excluded from this assignment. Existing Arabic/RTL gates remain unchanged. |
+| Real accounts, real invitations, biometrics, payment handling, and real voice | Deferred | These require a separate production security/privacy/legal design and are outside the MVP constitution. |
 
 ## Implementation phases
 
@@ -52,34 +52,14 @@ constitution, active specification, and child-safety/privacy rules remain contro
 
 ## Outcome after this domain window
 
-| Phase                                  | Result                           | Remaining boundary                                                                                                                                            |
-| -------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Authority and contracts                | Implemented                      | Production identity, consent, persistence, and provider architecture still require a separate specification.                                                  |
-| Synthetic access                       | Implemented and focused-tested   | The fixtures demonstrate role separation, pairing, revocation, scoped proofs, and permissions; they do not authenticate real people.                          |
-| Private Family Reward                  | Implemented and focused-tested   | The application adapter derives eligibility only from the authoritative recognized journey and receipt. Payment behavior remains excluded.                    |
-| Weekly Family League                   | Implemented and focused-tested   | Fixed synthetic views and prepared encouragement render in-route. Real invitations, relationship checks, moderation, and notifications remain excluded.       |
-| Age-adaptive Coach and synthetic voice | Implemented and focused-tested   | Only the canonical prepared task/transcript path exists. Microphone capture, transcription, provider calls, and reviewed dialect content remain deferred.     |
-| Registry and convergence               | Implemented through presentation | The ten routes and P0 reset path remain intact; browser presentation and Android export passed, while native Android and named-human validation were not run. |
-
-## Frontend and Android gap decision
-
-The follow-up repository audit found no missing core P0 feature. It selected four bounded phases:
-SDK/config/navigation/accessibility hardening, synthetic access presentation, private Family Reward
-receipt wiring and views, and synthetic Family League state and views. Their evidence-first weighted
-scores and exact boundaries are recorded in `plan.md`. The wider screen inventory, production
-identity/social/payment/media capabilities, natural code-switch understanding, and named human
-evidence remain out of scope or gated.
-
-The selected frontend phases are now implemented. `/role` uses service-authorized synthetic entry
-and Parent-only Child revoke/restore; `/parent` and `/child` show strict private Reward and League
-projections; recognition receipts drive eligible Reward/League progress without changing permanent
-P0 counters. Android package/config hardening, the smaller runtime fixture, full verification, and a
-responsive bilingual browser replay passed. The configured emulator could not boot because the host
-had about 147 MiB free. A final headless retry passed host and hypervisor checks but still failed the
-emulator disk-space preflight with about 2.0 GiB free. After more generated cache space was
-reclaimed, the AVD booted and Expo Go rendered the Arabic entry screen, then the host drive filled
-and ADB went offline before English or journey interaction. This is a sampled native launch, not
-native or physical acceptance.
+| Phase | Result | Remaining boundary |
+| --- | --- | --- |
+| Authority and contracts | Implemented | Production identity, consent, persistence, and provider architecture still require a separate specification. |
+| Synthetic access | Implemented and focused-tested | The fixtures demonstrate role separation, pairing, revocation, scoped proofs, and permissions; they do not authenticate real people. |
+| Private Family Reward | Implemented and focused-tested | The local evaluator accepts strict Parent-authorized candidate fixtures. Authoritative confirmation/Garden-store wiring and all payment behavior remain deferred. |
+| Weekly Family League | Implemented and focused-tested | Only fixed synthetic participants exist. Real invitations, relationship checks, moderation, notifications, and frontend views remain deferred. |
+| Age-adaptive Coach and synthetic voice | Implemented and focused-tested | Only the canonical prepared task/transcript path exists. Microphone capture, transcription, provider calls, and reviewed dialect content remain deferred. |
+| Registry and convergence | Implemented for domain services | The existing ten routes and P0 reset path are unchanged; native Android, frontend redesign, and named-human validation were not run. |
 
 ## Safety interpretation
 

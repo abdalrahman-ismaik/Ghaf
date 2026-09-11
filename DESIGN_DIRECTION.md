@@ -1,5 +1,70 @@
 # Ghaf Design Direction
 
+## 2026-09-07 onboarding image-edge progress clarification
+
+The dark lower strip on the onboarding photographs feels applied after the image rather than
+integrated with it. Remove it. Let one fine rounded perimeter stroke begin as a small lower-center
+mark and grow evenly in both directions as the six explicit moments advance, completing the frame
+only on the last photograph. Keep the treatment calm, high-contrast, and close to the crop edge so
+the photography remains dominant. Retain the original lower current/total plus dots as the simple
+accessible indicator; do not add another label, timer, glow, or interaction.
+
+## 2026-09-07 compact audio onboarding clarification
+
+The six-moment first-run experience is introduced directly by the Ghaf Guide. Use short
+first-person headlines and one concrete sentence per moment: welcoming and energetic, never
+chatty, companion-like, or inflated. Center the copy. Reveal every existing 1200×800 photograph in
+its responsive 3:2 editorial frame so the curated mix of astonishing wide views and close details
+is visible. Restore the original current/total plus dot row directly above the navigation buttons;
+use a wider saturated current dot and clearly visible neutral dots without enclosing the indicator
+in a heavy panel. Progress follows explicit navigation and is never timed.
+
+Prepared local narration reads the exact visible script after the current moment settles. Remove
+the separate Ghaf Guide panel and use one high-contrast speaker icon over the photograph to restart
+the clip. Quiet nature ambience may support the foreground onboarding atmosphere, but must duck
+beneath speech, stop on exit, and remain off for active screen-reader use. Keep navigation
+independent of audio. Do not add a waveform, human avatar, robot, listening pulse, microphone,
+background OS playback, or model-processing theater.
+
+## 2026-09-06 first-run experience clarification
+
+The first-run story should feel like opening a vivid family field journal: begin by introducing
+Ghaf itself, then show choice, help, and growth through one confident raster mark, one generous
+natural photograph, short child-clear copy, and one unmistakable next action at a time.
+Enthusiasm comes from warm light, pace, capability, and the promise of visible permanent growth—not
+confetti, neon, mascots, streak pressure, or game currency. Use three skippable moments for action,
+support, and symbolic growth after the Ghaf introduction; preserve the existing role-separated
+Welcome actions afterward.
+
+Startup, every access/setup route, and major role/context handoffs use the same quiet leaf-shadow
+photographic field and raster mark as one coherent brand world. The startup hold is 1,200 ms and a
+major-section buffer is 900 ms; do not interrupt bottom tabs or nested navigation. Standard motion
+is a restrained opacity/vertical-settle sequence; reduced motion is a short static fade. No newly
+authored vector image appears in onboarding, splash, or transition presentation.
+
+## 2026-09-06 natural-artwork clarification
+
+The product-owner-requested artwork refresh replaces vector-like scenic and decorative drawings
+with **Quiet UAE Botanical Editorial** imagery: calm local nature photography, tactile botanical
+detail, soft warm light, natural asymmetry, restrained Ghaf colors, and crop-safe nondirectional
+composition. Keep all explanatory copy, values, state, progress, and controls as live interface
+elements. Do not generate people, faces, hands, text, logos, brands, fantasy glow, generic UAE
+ornament, hazards, or visual impact claims.
+
+This is not a logo change. Preserve the official Ghaf mark and wordmark, app/platform icons, and
+small semantic navigation/status/safety/control vectors. Replace scenic Garden, canopy, task,
+learning, reveal, Shared Growth, access texture, and botanical profile-choice art; remove the
+decorative League watermark. Every shipping raster is local, offline, provenance-recorded, and
+never mirrored for RTL.
+
+## 2026-09-05 screen-completion clarification
+
+Missing P0 screens are now approved for professional code-native design in this established Living
+Family Garden world. Use the existing warm botanical field, deep forest structure, Ghaf emerald,
+mangrove teal, restrained date gold, Alexandria/Readex hierarchy, logical RTL/LTR flow, and calm
+Parent/capable-Child modes. The absence of a Google Stitch frame is not a reason to leave a route
+missing and is not permission to import raw web exports or create a new visual style.
+
 **Direction:** APPROVED for Feature 003 specification
 **Date:** 2026-08-26
 **Creative north star:** **The Living Family Garden — الحديقة العائلية الحية**
@@ -39,20 +104,21 @@ One design system supports two emotional modes.
 - Quiet but unmistakable growth after Parent confirmation.
 - Language that is respectful and energetic, never babyish, commanding, or manipulative.
 
-The Child mode may use more illustration and motion; the Parent mode may use more structured
-records. Both share the same palette, typography, tree grammar, and Arabic-first composition.
+The Child mode may use more natural botanical imagery and motion; the Parent mode may use more
+structured records. Both share the same palette, typography, tree grammar, and Arabic-first
+composition.
 
 ## UAE Living Landscape
 
 Represent five connected landscape tracks:
 
-| Track | Visual cue | Task world |
-| --- | --- | --- |
-| Ghaf desert grove | broad canopy, roots, family gathering shade | kinship and family heritage |
-| Samar desert grove | resilient branching and shared work markers | home responsibility and kindness |
-| Sidr reflection grove | calm leaves, small reading/reflection place | learning, wellbeing, private faith/gratitude |
-| Date-palm oasis | vertical palms, water channel, dates/table details | food care and hospitality |
-| Mangrove coast | roots, shallow water, birds/fish silhouettes used sparingly | waste, water, energy, reuse, stewardship |
+| Track                 | Visual cue                                                  | Task world                                   |
+| --------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| Ghaf desert grove     | broad canopy, roots, family gathering shade                 | kinship and family heritage                  |
+| Samar desert grove    | resilient branching and shared work markers                 | home responsibility and kindness             |
+| Sidr reflection grove | calm leaves, small reading/reflection place                 | learning, wellbeing, private faith/gratitude |
+| Date-palm oasis       | vertical palms, water channel, dates/table details          | food care and hospitality                    |
+| Mangrove coast        | roots, shallow water, birds/fish silhouettes used sparingly | waste, water, energy, reuse, stewardship     |
 
 EAD documents Ghaf, Samar, and Sidr as native trees. The product meanings above are original design
 metaphors, not official symbolism. The interface should say “inspired by UAE landscapes” rather
@@ -99,9 +165,11 @@ Use low-radius, tactile controls and flat tonal grouping in Parent mode. Child m
 softer task chips and seed vessels, while avoiding bubbly card stacks. Shadows are rare; depth comes
 from layered landscape planes, overlap, and motion.
 
-Botanical illustration should be code-native SVG or team-created artwork. Avoid stock desert
-silhouettes, generic camel/falcon ornament, copied heritage motifs, emoji, glassmorphism, neon game
-colors, and decorative AI avatars.
+Large botanical and habitat artwork should use the approved local Quiet UAE Botanical Editorial
+raster library. Code-native vectors remain only for small functional controls, semantic progress,
+and the official mark. Avoid stock desert silhouettes, generic camel/falcon ornament, copied
+heritage motifs, emoji, glassmorphism, neon game colors, decorative AI avatars, flat vector scenes,
+plastic 3D rendering, and text baked into imagery.
 
 ## Garden-Shaped Dashboard
 

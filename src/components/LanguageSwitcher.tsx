@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/primitives';
 import { colors, layout, radii, spacing } from '@/design/tokens';
+import { configureNativeDirection, setI18nLocale } from '@/i18n';
 import type { LocaleCode } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -22,6 +23,7 @@ export function LanguageSwitcher({
 }: LanguageSwitcherProps) {
   const { t } = useTranslation();
   const [focusedLocale, setFocusedLocale] = useState<LocaleCode | null>(null);
+  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const setLocale = usePrototypeStore((state) => state.setLocale);
 
@@ -29,6 +31,8 @@ export function LanguageSwitcher({
     if (nextLocale === locale) return;
 
     setLocale(nextLocale);
+    void configureNativeDirection(nextLocale);
+    void setI18nLocale(nextLocale);
   };
 
   return (
@@ -36,7 +40,11 @@ export function LanguageSwitcher({
       <View
         accessibilityLabel={t('language.title')}
         accessibilityRole="radiogroup"
-        style={[styles.segment, compact ? styles.compactSegment : null]}
+        style={[
+          styles.segment,
+          compact ? styles.compactSegment : null,
+          direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
+        ]}
       >
         {localeOptions.map((option) => {
           const isSelected = option === locale;
@@ -93,7 +101,6 @@ const styles = StyleSheet.create({
     width: 'auto',
   },
   segment: {
-    flexDirection: 'row',
     width: '100%',
     overflow: 'hidden',
     borderRadius: radii.md,
@@ -105,6 +112,12 @@ const styles = StyleSheet.create({
   compactSegment: {
     width: 'auto',
     borderRadius: radii.sm,
+  },
+  rowRtl: {
+    flexDirection: 'row-reverse',
+  },
+  rowLtr: {
+    flexDirection: 'row',
   },
   option: {
     flex: 1,

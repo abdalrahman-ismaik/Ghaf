@@ -16,7 +16,9 @@ export interface SyntheticVoicePanelProps {
 export function SyntheticVoicePanel({ view, taskSupported, onCommand }: SyntheticVoicePanelProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
   const transcript = view.transcript ? localize(view.transcript, locale) : null;
+  const rowStyle = direction === 'rtl' ? styles.rowRtl : styles.rowLtr;
   const canReviewPlayback =
     taskSupported && (view.availability === 'review' || view.availability === 'sent');
   const canReset =
@@ -35,7 +37,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
 
   return (
     <Card testID="synthetic-voice-panel" variant="water">
-      <View style={styles.heading}>
+      <View style={[styles.heading, rowStyle]}>
         <View aria-hidden style={styles.voiceMark}>
           <View style={styles.voiceMarkBarShort} />
           <View style={styles.voiceMarkBarTall} />
@@ -91,11 +93,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
             <Text color="forest" variant="label">
               {t('childVoice.ready')}
             </Text>
-            <Button
-              onPress={() => onCommand({ type: 'start' })}
-              testID="child-voice-start-button"
-              variant="secondary"
-            >
+            <Button onPress={() => onCommand({ type: 'start' })} testID="child-voice-start-button">
               {t('childVoice.start')}
             </Button>
           </>
@@ -103,18 +101,14 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
 
         {taskSupported && view.availability === 'active' ? (
           <>
-            <View style={styles.activeStatus} testID="child-voice-active-indicator">
+            <View style={[styles.activeStatus, rowStyle]} testID="child-voice-active-indicator">
               {view.activeIndicatorVisible ? <View aria-hidden style={styles.activeDot} /> : null}
               <Text color="forest" variant="label">
                 {t('childVoice.active')}
               </Text>
             </View>
             <Text color="inkMuted">{t('childVoice.activeHelp')}</Text>
-            <Button
-              onPress={() => onCommand({ type: 'stop' })}
-              testID="child-voice-stop-button"
-              variant="secondary"
-            >
+            <Button onPress={() => onCommand({ type: 'stop' })} testID="child-voice-stop-button">
               {t('childVoice.stop')}
             </Button>
           </>
@@ -153,7 +147,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
             {t('childVoice.simulatedPlayback')}
           </Text>
 
-          <View style={styles.actionGrid}>
+          <View style={[styles.actionGrid, rowStyle]}>
             <Button
               accessibilityState={{ selected: view.captionsEnabled }}
               fullWidth={false}
@@ -221,7 +215,7 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
           <Text color="inkMuted" variant="caption">
             {t('childVoice.rehearsalOnly')}
           </Text>
-          <View style={styles.actionGrid}>
+          <View style={[styles.actionGrid, rowStyle]}>
             <Button
               fullWidth={false}
               onPress={() => onCommand({ type: 'delete' })}
@@ -236,7 +230,6 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
               onPress={() => onCommand({ type: 'send' })}
               style={styles.action}
               testID="child-voice-send-button"
-              variant="secondary"
             >
               {t('childVoice.send')}
             </Button>
@@ -259,9 +252,14 @@ export function SyntheticVoicePanel({ view, taskSupported, onCommand }: Syntheti
 
 const styles = StyleSheet.create({
   heading: {
-    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
+  },
+  rowRtl: {
+    flexDirection: 'row-reverse',
+  },
+  rowLtr: {
+    flexDirection: 'row',
   },
   copy: {
     minWidth: 0,
@@ -303,7 +301,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   activeStatus: {
-    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
   },
@@ -324,7 +321,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   actionGrid: {
-    flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.xs,
   },

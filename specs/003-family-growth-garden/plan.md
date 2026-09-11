@@ -1,17 +1,579 @@
 # Implementation Plan: Family Growth Garden
 
+## R003 AI Services 1–3 Integration Addendum — 2026-09-07
+
+Preserve the current deterministic AI stack as the non-negotiable application default. Extract a
+strict live Parent Guide request/result contract beside the existing assistant policy, then add a
+small fetch adapter under `src/services/remote/`. The Zustand command continues to own its 1,500 ms
+attempt deadline and stale-result guard; it validates either the exact prepared fixture or the
+bounded live result, then falls back through the existing prepared provider in the same attempt.
+The registry exposes the prepared provider independently from an injectable primary so fallback
+can never recurse. No Child route or service receives a remote provider.
+
+Add a reference Cloudflare Worker with one `/v1/parent-guide/refine` POST operation. It validates
+the exact synthetic P0 request before inference, authenticates against a Worker secret, rate-limits
+the authenticated demo client, allows only the configured browser origin while supporting
+originless native requests, requests canonical JSON-schema output from the Workers AI binding, and
+returns no-store JSON. The Worker owns no persistence or logging. Its tests use fake bindings and a
+synthetic token; deployment and a real model call are deliberately separate evidence gates. The
+mobile app never reads an access token from `EXPO_PUBLIC_*`; absent a future trusted token broker,
+the default registry binds the prepared provider.
+
+Extend the pure profile-personalization module with a stable category recommendation plan. It
+reuses the already validated curated profile record, ranks the at-most-two recommendations ahead of
+the remaining canonical category order, and provides a bounded preselection only when compatible
+with existing Task Builder precedence. The component renders a local/prepared recommendation label
+but still disables every non-P0 template and requires the existing Parent review and assignment
+commands. No derived recommendation state is persisted.
+
+Implementation order is contract/ownership → RED gateway/profile tests → live request policy and
+adapter → authenticated Worker → store/registry/UI integration → fallback and regression tests →
+truthful limitations/runbook/handoff evidence. No dependency, product route, schema migration,
+provider deployment, feature-flag activation, live Child AI, real media, or legacy mission behavior
+is included.
+
+## R003 Onboarding Image Perimeter Progress Addendum — 2026-09-07
+
+Refine only the decorative edge treatment inside `FirstRunOnboarding`. Remove `heroAccent` and add
+one noninteractive SVG perimeter component over the existing 3:2 photograph. Use two equal rounded
+paths that originate at the bottom center and end together at the top center. Normalize each path
+to one unit so one shared Reanimated value can reveal both branches without measuring or mutating
+layout. Derive the target from the explicit six-step index: retain a short visible starting mark,
+interpolate evenly through intermediate moments, and reach one only on the final image.
+
+Use the installed `react-native-svg` and Reanimated packages; add no dependency. Animate only the
+dash offset with the existing 220 ms on-screen easing on the UI thread, cancel interrupted
+transitions, and set the target directly under system reduced motion. Keep the existing lower
+current/total plus dots as the sole accessible progressbar, with the perimeter hidden from
+assistive technology. Preserve the current image, speaker, narration, ambience, pillar and button
+navigation, route count, startup sets, and all product authorities. Drive the change with one
+focused RED source contract, then run focused/full repository checks, the design detector,
+bilingual compact browser inspection, exports, and available physical Android evidence.
+
+## R003 Returning Parent Identifier Lookup Addendum — 2026-09-07
+
+Extend the existing device-local family record from schema 1 to schema 2 with one normalized
+synthetic Parent identifier and identifier kind. Keep the current platform repository boundary:
+SQLite-backed key/value storage on native, guarded localStorage on web, and memory in tests. Add a
+bounded repository migration from the prior valid schema-1 fixture to the canonical prepared
+`parent@example.com` identifier, write the migrated schema-2 record before removing the legacy
+key, and clear both keys during Parent reset. Continue rejecting corrupt and unknown records.
+
+Separate store intent for explicit first-family verification from returning sign-in verification.
+The returning command normalizes the candidate, compares it with the restored directory, and only
+then invokes the existing deterministic code controller. `NOT_FOUND` leaves the controller and
+access state unchanged. The create-family command fails when a directory/receipt already exists,
+and completion saves the controller's normalized identifier with the new family. Verification uses
+the closed `create-family` marker as the only path to Family Basics; every ordinary matching return
+reuses the receipt and enters Parent Home or the existing pending-pairing destination.
+
+Remove the fake fingerprint action and the Parent auth footer pills. Rewrite only bilingual Parent
+sign-in/sign-up/verification strings in neutral product language: do not claim code delivery or
+remote identity proof, and do not expose demo/synthetic/simulated/not-real labels on those screens.
+Keep the deterministic code, capability-truth fields, limitations, and runbook explicit in source
+and documentation. Drive the change with RED schema/store/source tests, then run focused tests,
+typecheck, lint, formatting, full tests, dependency/config checks, exports, compact bilingual web
+inspection, and available Android evidence.
+
+## R003 Compact Audio Onboarding Addendum — 2026-09-07
+
+Refine only the existing `FirstRunOnboarding` composition: reveal each approved 1200×800 raster in
+a width-driven 3:2 frame, center the short title/body, remove the visible Guide panel, and restore
+the original current/total plus six-dot progress row directly above the navigation actions. Add one
+high-contrast 48dp speaker icon over the visual as the only narration control. Keep the current
+explicit Next/Back/pillar reducer as the only navigation authority; neither narration, ambience,
+nor time advances the story.
+
+Keep the six concise first-person Ghaf Guide scripts and their AI fallibility/adult exit, Parent
+approval, permitted-help award, private permanent symbolic Garden, and no-measured-impact language.
+Replace device-dependent synthesis with packaged prepared synthetic clips keyed by locale and
+step. The narration hook waits until the local image and layout report ready, restarts from the
+beginning on the speaker press, stops across step/locale/exit changes, observes native screen-reader
+state, and falls back to the visible transcript on any error. A sibling ambience hook loops one
+locally authored nature soundscape quietly only while onboarding is mounted, ducks under narration,
+and stops on exit or assistive-speech activation.
+
+Reuse the installed `expo-audio` foreground player and existing config that explicitly disables
+microphone, recording, background recording, and background playback. Remove the now-unused
+`expo-speech` package. Generation is authoring-time only with public app copy; runtime sources are
+local `require()` entries with recorded provenance/checksums and no URL or provider. Drive the
+change with focused RED source/resource/lifecycle tests, then run the focused suite, typecheck,
+lint, formatting, full tests, Expo dependency alignment, detector, web/Android exports, compact
+bilingual browser inspection, and available Android evidence. Browser autoplay policy, physical
+Android playback/audio focus/TalkBack, and named Arabic performance review remain truthful gates.
+
+## R003 Device-local Family Directory and Guided Setup Addendum — 2026-09-06
+
+Add the smallest durable demo boundary: one versioned JSON family-directory record stored through
+a `LocalFamilyRepository` contract. Android/iOS use `expo-sqlite/kv-store`, which is backed by
+SQLite and persists across app restarts; web preview uses guarded `localStorage`; Vitest uses an
+in-memory adapter. Keep the adapter behind the service registry, validate all data on read and
+write, use one current namespaced key plus the bounded legacy key during schema migration, and make
+synchronous reads/writes intentionally small so the access decision and Parent reset cannot race.
+Do not add an ORM, SQLCipher claim, server, account table, or second application state library.
+
+Extend the Parent onboarding draft with a bounded Child count and two canonical profile slots while
+retaining the established synthetic identifiers under the surface. Reuse the existing Child route
+with an index parameter to render Child 1 then Child 2, keeping routes thin and extracting one
+reusable profile form plus one prepared-AI preview. Persist only the complete validated directory
+after review. At store initialization, restore the completion receipt and project configured
+family/Child display values into the existing prototype session before any access decision. Filter
+Parent and Child selectors by configured ids; keep the unconfigured canonical slot solely as an
+internal fixture required by current deterministic domain types.
+
+Add one pure `profilePersonalization` policy that accepts age band, curated interests/hobbies,
+accessibility defaults, and support preferences and returns a deterministic prepared summary plus
+allowlisted task-category ids. Do not pass gender, nickname, family name, free text, media, task
+history, or a provider request. Reuse the current `sparkle` Ghaf icon only beside labeled Guide,
+Coach, and profile-helper surfaces. Parent review remains the authority for every suggestion.
+
+Persist paired markers only after the existing approved pairing transaction and restore them by a
+narrow deterministic access-service command. Revocation updates the record; Parent reset clears it
+in the same synchronous command before returning to `/`. Storage parse/save failures remain local,
+recoverable, and visibly disclosed without granting a role. Drive the work through RED schema,
+repository, controller, store, AI-policy, and source/flow tests, then run compact bilingual browser
+journeys, reload persistence checks, offline checks, full static/native exports, detector, and all
+repository gates. Physical Android and named-human review remain honest external gates.
+
+Document this supersession in ADR 0002 and update the system context, data model, product/design
+truth, limitations, runbook, review packet, and active readiness checklists without rewriting
+historical Feature 002 evidence or activating default-off R002b flags.
+
+## R003 SMAC Pillar Onboarding Addendum — 2026-09-06
+
+Expand the presentation-only first-run reducer and localized story from four to six ordered steps:
+`intro`, `family`, `sustainability`, `ai`, `support`, and `growth`. Keep completion inside `/` and
+add a closed `goToPillar` event that accepts only the Family, Sustainability, or AI step. Render
+the three targets as accessible 48dp controls with live bilingual labels and a clear active state;
+they never mutate session, role, task, permission, or reward state.
+
+Generate two distinct Quiet UAE Botanical Editorial raster photographs for Family and bounded AI,
+then inspect, normalize, prompt-embed, checksum, and register them as local imports. Keep every
+word and control outside the pixels. Update startup by deriving its exact nine-raster set from the
+six-item onboarding registry; because both new files become startup assets, the existing deferred
+queue remains 41 sources and continues only after the onboarding paint handoff.
+
+Refine `FirstRunOnboarding` as one energetic editorial composition rather than a card carousel:
+vivid edge-to-edge crop, step-specific color surface and live pillar label, concise display/body
+copy, the interactive pillar navigator, visible six-step progress, and one dominant action. Use a
+single staged Reanimated UI-thread transition: a 220 ms opacity/8dp/0.015-scale image settle and
+copy 45 ms later, with direct settled content under reduced motion. Drive the work with RED
+model/source/asset tests, then validate
+focused and full suites, formatting, static local asset/provenance rules, route/startup/deferred
+boundaries, bilingual compact browser layouts, reduced motion, production exports, and available
+Android evidence. Do not add a dependency, route, network asset, AI provider behavior, or product
+authority.
+
+## R003 Returning-family Entry and Welcome Addendum — 2026-09-06
+
+Extend the existing Zustand access orchestration with a presentation-only discriminated signal for
+`returning_parent` or `returning_child`. Set it only when Parent completion begins from a verified
+state that already owns the immutable completion receipt, or when Child credential verification
+enters through an active paired-device fixture. Clear it on first-family completion, first pairing,
+dismissal, sign-out, Parent-to-Child handoff, and reset. Keep authorization in the existing Parent
+and Child controllers; no route or dialog calculates access.
+
+Harden Family Basics, Add First Child, and Review Family so `verified + completionReceipt` redirects
+to the existing verification handoff, which idempotently enters Parent Home. Keep Family Created
+available only for the just-created path, and redirect a returning presentation signal away from
+it. Add one reusable `ReturningWelcomeDialog` under `src/components/session/`, rendered as a native
+modal over Parent Home and Child Today. Compose at most two rows from each dashboard's already-
+authorized task/canopy or task/personal-Garden state, clear the signal before using an existing
+action, and reuse Alexandria/Readex, Soft Geometric tokens, logical layout, safe areas, native
+focus, 48dp controls, and a reduced-motion-aware fade.
+
+Drive the change with focused RED store/route/presentation tests, then run typecheck, lint, format,
+the full regression suite, route/reset/claim scans, the Impeccable detector, bilingual compact web
+inspection, and available Android evidence. Do not add persistence, a notification service, a
+dependency, a route, a remote call, or a new product authority.
+
+## R003 Ordered Splash-to-loading Startup Addendum — 2026-09-06
+
+Model root startup as `splash | loading | complete` rather than one boolean overlay. Keep the
+configured native splash until the existing critical logo/field pair settles, then start the
+2,000 ms app-owned splash clock. Render the overlay fully opaque on its first React frame without
+an entering fade; show only the official mark/name during `splash`. After that hold, switch the
+same overlay to `loading`, reveal the existing leaf loop, and keep it for at least 1,000 ms and
+until the existing `startupReady` condition is true. Dismiss on the next frame, then start deferred
+warming after the existing two-frame paint yield.
+
+Use separate timing tokens so presentation and readiness cannot collapse back into one ambiguous
+duration. Preserve transform-only Reanimated motion, static reduced motion, exact critical/deferred
+asset sets, failure settlement, routes, and all product authorities. Add RED source/ordering
+coverage, verify cached and delayed paths in a fresh browser session, and run the full native/web
+proxy gates without adding a dependency or image.
+
+## R003 Deferred Post-onboarding Image Warm-up Addendum — 2026-09-06
+
+Keep the existing startup and section contracts intact, but extract their source-level
+`expo-asset` promise cache into one shared startup utility. Compose a deduplicated deferred queue
+from the existing section priority sets, the remainder of the typed artwork registry, and the
+prepared-media registry in that order. Exclude every startup source and place prepared media last.
+Settle batches of six sequentially while loading each batch with `Promise.allSettled`, so the queue
+is meaningfully parallel without launching all 41 decodes at once or rejecting on one bad file.
+
+Root starts the singleton queue only after the app-owned splash leaves and two animation frames
+give the already-ready onboarding surface a paint opportunity. The effect is fire-and-forget and
+does not enter `startupReady`, expose progress, alter routing, or cancel the intentional cache
+warm-up on a normal rerender. A fast destination handoff calls the existing section preparation,
+which reuses any in-flight source promise. Add RED contract coverage, focused behavioral coverage,
+full validation, production exports, a delayed-request web proxy, and available Android evidence.
+
+## R003 Section-scoped Startup Optimization Addendum — 2026-09-06
+
+Replace the all-app preload with two bounded levels. Root startup settles the official logo and
+leaf-shadow field before native handoff, then waits only for the remaining signed-out onboarding
+and Welcome photographs plus the four font files used by current Alexandria/Readex roles. A small
+cached loader under `src/features/startup/` exposes per-section preparation for botanical access
+avatars and the immediate Parent/Child field/task art. All deeper Garden, League, reveal, learning,
+Shared Growth, canopy, Circle, and prepared-media images stay lazy in their existing Expo Image
+consumers.
+
+Move the 1,200 ms start point from React-root mount to completion of `SplashScreen.hideAsync()`.
+This guarantees the app-owned loader is visible after the native screen hands off without making
+cached startup slower than its declared presentation minimum. Let major-section overlays settle
+their small destination set and the existing 900 ms dwell concurrently, warning and continuing on
+asset failure.
+
+Replace the logo pulse, progress track, spinner, and visible resource-loading sentence with one
+shared three-leaf loop beside the official logo/name. Reanimated rotates only the leaf container
+with linear timing on the UI thread; reduced motion is static. Keep a localized accessibility-only
+indeterminate-progress label. Remove the three unused runtime/configured font weights without
+changing the current token roles or typography output. Add RED coverage first, then verify source,
+behavior, exports, delayed first-section and section-handoff paths, compact bilingual layout, and
+available Android evidence.
+
+## R003 Startup Asset-readiness Addendum — 2026-09-06 (superseded where noted above)
+
+Introduce one bounded startup preloader under `src/features/startup/`. It imports the existing
+static artwork, official raster logo, and prepared-media image sources, settles the logo and
+leaf-shadow background first, then preloads the remaining local raster modules in small batches
+through `expo-asset`. The root owns only readiness orchestration: native-splash handoff after the
+critical pair settles, real combined font/image progress, one warning for fallback-triggering
+image failures, and dismissal after fonts plus images settle and the 1,200 ms minimum elapses.
+
+Replace the generic spinner with a token-aligned Ghaf mark pulse and centered seed-line progress.
+Use Reanimated shared values with transform/opacity only, system reduced-motion handling, and
+cleanup on unmount. Keep live Arabic/English status text and accessible progress values outside
+the raster. Add focused RED source/behavior coverage before implementation, then run the full
+TypeScript, lint, format, test, asset, export, visual-proxy, and available Android gates. No
+dependency, runtime URL, image generation, route, domain, or feature-flag change is required.
+
+## R003 Child-clear First-run and Branded Access Addendum — 2026-09-06
+
+Update the first-run model from three to four in-route moments by inserting `intro` before
+`choose`, then rewrite every title/body as short child-clear Arabic-first copy with equivalent
+English. Generate one new Ghaf introduction photograph and replace the existing action, support,
+and growth photographs in place; normalize, inspect, prompt-embed, checksum, and update the exact
+46-asset static registry before UI integration.
+
+Promote the official raster-logo component from the onboarding folder into a shared brand
+boundary, then compose it with the Ghaf name inside the existing access header. Refine the shared
+access backdrop to use the same local leaf-shadow raster as the loading screen, so all Parent and
+Child access/setup routes inherit one visual treatment while their route logic stays untouched.
+Use the existing tokens, primitives, Expo Image, and AccessScreen structure; do not add a dependency
+or a second theme.
+
+Add `startupHold = 1200` and `orientationHold = 900` to the existing motion duration authority.
+Startup begins its measured window when the React root first renders and remains visible until both
+the local fonts are ready and the minimum has elapsed. Major-section overlays use the 900 ms dwell;
+their visual fades remain short and reduced motion removes travel rather than hiding state. Verify
+four-state reducer behavior, 46 assets, bilingual parity, every access route's shared brand shell,
+exact route/reset preservation, compact-width layout, reduced motion, and production exports.
+
+## R003 First-run Experience Addendum — 2026-09-06
+
+Implement the user-authorized first-run refinement as presentation state within the existing `/`
+route so the 37-route manifest and access authority remain unchanged. Contract and ownership land
+first, followed by RED source/flow tests, four provenance-recorded local raster images, shared
+onboarding/splash/transition components, bilingual integration, bounded web inspection, and full
+validation. The exact state, motion, and asset contract lives in
+`design-intake/r003-first-run-experience.md`.
+
+Expo's configured native raster splash remains the earliest frame. Once the React root mounts, it
+yields to an app-owned branded splash that remains only while local fonts settle, then closes on
+the next render frame without an artificial timer or remote-work claim. Three skippable onboarding
+moments explain the smallest honest value chain—approved choice,
+permitted support and Parent confirmation, then permanent private symbolic Garden growth—before
+the existing role-separated Welcome actions. Completion is React-session state only; active
+sessions bypass it and reset/access behavior is preserved.
+
+Add a root transition observer that classifies paths into Welcome, Parent access, Child access,
+Parent experience, or Child experience. It may show the branded buffer only for the approved
+Welcome-to-access, Welcome-to-active-experience, and matching access-to-experience handoffs; stable
+Parent-to-Parent and Child-to-Child navigation, including tabs, stays immediate.
+Standard motion uses only opacity and a small transform for orientation/delight; reduced motion is
+a direct opacity handoff. All illustrations are local Expo Image static sources and generated copy,
+controls, progress, and official logo remain outside their pixels.
+
+## R003 Natural Botanical Artwork Refresh Addendum — 2026-09-06
+
+Replace the runtime's scenic and decorative vector-like drawings with a forty-one-asset local
+**Quiet UAE Botanical Editorial** library while preserving official brand geometry, functional
+icons, all routes, behavior, privacy, reward authorities, reset, and default-off flags. The asset
+contract and prompt matrix live in
+`design-intake/r003-natural-artwork-refresh.md`; contract documentation and RED artwork audits land
+before runtime integration.
+
+Use the official Expo image component as the single measured image dependency for local decode,
+crop, caching, transitions, and memory behavior across the new raster layer. A typed static-source
+registry owns every literal asset import. A small reusable presentation wrapper owns
+cover/contain behavior, reduced-motion-aware transitions, decorative versus informative
+accessibility, error handling, and a localized unavailable state; it owns no route, flag, state,
+reward, or privacy decision. No image URL, runtime path construction, media capture, upload, or
+analysis is introduced.
+
+Generate each distinct asset through the approved image tool with no people, faces, hands,
+readable text, logos, brands, watermarks, hazards, fantasy effects, or false impact claims. Garden
+families use one locked visual grammar and five separate state images per species. Inspect every
+result for botanical plausibility, repeated or malformed details, crop safety, nondirectionality,
+and 320/390-width legibility; then normalize dimensions and compression, strip nonessential
+metadata, embed prompt provenance, and record SHA-256 checksums. Historical Stitch/source packs,
+official brand files, and existing prepared-media fixtures stay untouched.
+
+Integration order is: contract and ownership → RED asset/registry/accessibility tests → generated
+and curated asset library → image dependency and shared registry/wrapper → access/avatar/task art →
+Garden/canopy/Circle art → default-off learning/reveal/shared art → removal of the League watermark
+→ focused and full checks → bounded bilingual web proxy → truthful evidence and cohesive commits.
+Physical Android/TalkBack and named botanical, cultural, safeguarding, accessibility, and rights
+review remain blocked or not run until directly observed.
+
+## R003 Complete-Screen Implementation Addendum — 2026-09-05
+
+### Parent sign-up usability slice — 2026-09-06
+
+Extend the current R003 manifest from 36 to 37 product routes with one code-native
+`/access/parent/sign-up` surface. First update the active specification, route manifest, acceptance
+contract, and RED source/flow coverage. Then center screen-level Parent sign-in copy, make **Create
+a new family** navigate without mutating verification state, and build the sign-up route from the
+existing access shell, tokens, typography, controls, bilingual resources, and synthetic
+disclosures. Sign-up reuses `requestParentVerification`; Verification accepts only a closed
+`create-family` marker for Back/cancel restoration and otherwise keeps the returning-Parent flow
+unchanged. No controller, store, model, service, dependency, second household, or production
+account is added.
+
+Validate the focused access/route tests first, then typecheck, lint, formatting, the full suite,
+route inventory, web export, and bounded Arabic RTL/English LTR browser evidence at compact and
+reference phone sizes. Physical Android and named human-review gates remain truthful and separate.
+
+Begin at validated R002b checkpoint `45b18bc` on
+`integration/r3-complete-screens-20260905`. Preserve the existing domain, R001/R002a visual
+regressions, R002b Growth screens, official brand assets, and user-owned untracked Stitch/source
+packs.
+
+Implementation order is contract first, then RED route/access tests, then the access/session
+adapter and missing screens, then navigation replacement, then default-off Growth compatibility and
+approval reveal parity, followed by bilingual browser convergence and full validation. The route
+manifest and per-screen entry/exit/privacy rules are in
+`design-intake/r003-complete-screen-journey.md`.
+
+Use existing tokens, primitives, SVG/icon system, Alexandria/Readex roles, R002a screen shells, and
+R002b selectors. Add no UI, state, icon, localization, media, animation, form, or navigation
+dependency. Routes remain thin; reusable composition goes under `src/components/r003/`, Child
+access orchestration under `src/features/access/`, and Family/Reward projections under
+`src/features/family-hub/`. Screens must not calculate reward, rank, badge, Seed, Garden, or
+permission authority.
+
+The Parent journey becomes Welcome → sign-in or new-family sign-up → verification/setup →
+Home/Tasks/Garden/Family, with settings,
+permissions, paired devices, reauthentication, private Reward, Child progress, and Shared Garden as
+contextual routes. The Child journey becomes Welcome → profile → credential/pairing → Today → task
+→ waiting → committed reveal → Garden/League, with Impact Path, badges, learning, Shared Growth,
+and own read-only permissions as contextual routes. Changing experience signs out to Welcome;
+there is no normal role toggle.
+
+All eight R002b presentation flags remain independently default-off. Targeted local validation may
+opt into a surface with an explicit environment `true`, but the R001/R002a fallback remains the
+default and release activation stays blocked. Screen completion is not a claim that Android/native
+or named-human release gates passed.
+
 **Branch**: `feature/003-family-growth-garden` | **Date**: 2026-08-26 | **Spec**:
 [spec.md](./spec.md)
 
-**Status**: Deterministic P0 implementation is authorized after Feature 003 tasks, checklist, and
-cross-artifact analysis pass. Physical Android and named human-review acceptance remain open.
+**Status**: Clean R002a head `0501cf3` preserves completed R001/R002a behavior and 541 passing tests.
+R001/R002a are frozen fallbacks. R002b is authorized behind independent default-off flags; release
+activation remains blocked pending applicable validation and review.
+
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
 **Input**: Feature specification from `specs/003-family-growth-garden/spec.md`
 
 ## Summary
 
-Replace the judge-facing Feature 002 food-rescue journey inside the existing Expo application with
-one ten-route Family Growth Garden journey. The implementation will evolve the current strict
+### R002b feature-flagged implementation addendum — 2026-09-05
+
+Implement R002b on `integration/r3-r002b-implementation-20260905`, created from clean R002a head
+`0501cf3`. Do not cherry-pick the six divergent historical commits. Preserve R001/R002a behavior and
+presentation as the fallback for every disabled R002b flag.
+
+The delivery spine is:
+
+```text
+Schema-3 evidence audit + characterization RED tests
+  → shadow lifetime projection
+  → versioned synthetic provenance receipt + migration verification
+  → default-off Impact Path and locked badge registry
+  → equal-credit finite learning
+  → one superset RevealBundle coordinated from existing committed consequence authorities
+  → Parent selected-Child read-only progress
+  → additive anonymous Shared Growth and Parent future-participation controls
+  → route/origin/accessibility/RTL/recovery/visual evidence
+```
+
+The current `+12` recognition remains the sole reward transaction. It continues to commit existing
+Mangrove, canopy, League/Challenge, Family Reward, and praise consequences. R002b extends the
+authoritative receipt with deterministic derived projections; route components never calculate or
+mint rewards.
+
+#### Data integration
+
+- Add an append-only, profile/epoch-scoped Seed ledger and one versioned migration-receipt registry.
+  `lifetimeSeeds` is a selector sum of unique committed ledger entries, never writable state.
+- Keep current landscape progress separate. The P0 event changes Mangrove 48→60 while the same Seed
+  entry changes lifetime 108→120. Archive the completed 60 stage without copying its denominator
+  into the 120→180 Path.
+- Run migration first as a pure shadow projection. Persist only a deterministic synthetic receipt
+  when fixture provenance is eligible; reject ambiguous, non-synthetic, cross-profile, wrong-epoch,
+  duplicate, and partial inputs atomically.
+- Keep achievements, mastery credits, learning completions, station receipts, reveal bundles, and
+  participation preferences profile-scoped and idempotent. No projection writes another currency.
+
+#### New bounded feature modules
+
+| Boundary                        | Responsibility                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `src/features/progression/**`   | Seed ledger validation, migration receipt, lifetime selector, archive/station projection               |
+| `src/features/achievements/**`  | Exact 16-definition registry, mastery evidence, deterministic permanent awards                         |
+| `src/features/learning/**`      | Finite bilingual package, equal-credit completion, resume/recovery                                     |
+| `src/features/reveal/**`        | Superset RevealBundle construction/lifecycle from committed receipts and existing consequence services |
+| `src/features/shared-growth/**` | Anonymous qualitative view and independent future-participation preference                             |
+| `src/features/navigation/**`    | Typed same-role origin validation and safe-root recovery                                               |
+| `src/components/r002b/**`       | Reusable native Soft Geometric presentation only                                                       |
+
+Shared models, deterministic fixtures, service interfaces/registry, Zustand aggregate, resources,
+and Expo Router integration remain serialized through the integration owner. No new state,
+navigation, styling, animation, localization, icon, or media dependency is planned.
+
+#### Route and presentation integration
+
+Child Today receives a compact gated nearest-station card and `/garden` receives gated chapter,
+Impact Path, Badge, and Shared Growth entries. New nested route owners follow the specification;
+they omit root Child navigation, preserve physical Arabic placement, validate access and typed
+origins, and restore route/profile/filter/scroll/focus context. Invalid deep links return to
+`/child`, `/garden`, or `/parent` according to the active role without exposing cross-role state.
+
+Each missing surface gets a tracked `screen-spec.md` before its route component. Code-native
+candidate screens use the existing tokens, Alexandria/Readex roles, logical layout helpers,
+code-native SVG, natural scrolling, safe areas, 48dp controls, and static reduced-motion outcomes.
+The 390×844 capture is a comparison artifact, not a fixed canvas.
+
+#### Flag and rollout order
+
+All eight approved flags default off. First validate shadow projection and migration, then permit
+persisted domain state with all UI hidden. Enable read-only Path/Gallery locally, followed by
+Learning/Parent Progress, RevealBundle v2 after consequence parity, Shared Growth view, and finally
+contribution after guardian-governance/privacy tests. Disabling a flag hides the R002b presentation
+but never reverses committed state.
+
+#### Commit and validation boundaries
+
+Use one independently verifiable commit for contract docs, characterization tests, progression,
+achievements/Path, learning, RevealBundle, Parent Progress, Shared Growth, cross-cutting tests, and
+final evidence. Before every commit, run the relevant focused tests, typecheck, lint, format check,
+and `git diff --check`; run the complete suite and Expo/export/route checks at each integrated UI
+boundary. Android/native and named-human results remain `BLOCKED` or `NOT RUN` without direct
+evidence.
+
+### R002a compatibility implementation addendum — 2026-09-05
+
+Implement R002a on `integration/r3-r002a-implementation-20260904`, created directly from verified
+remote evidence head `76fa682`. Do not use the divergent original branch and do not cherry-pick its
+six historical commits. The remote implementation remains behavioral authority; the R002 exports
+provide presentation evidence only.
+
+R002a preserves `task_recycling_p0_v1`, schema-3 values and 48→60 approval behavior, zero reward at
+Child submission, atomic idempotent Parent approval, plant/canopy/Challenge Leaf/private League and
+private Family Reward consequences, capability-scoped access, deterministic voice with
+`expo-audio`, Parent-authorized reset, route guards, and profile isolation. Screens consume existing
+actions and selectors and never calculate rewards. Screenshot-only `108`, `120`, and `180` values
+must not enter runtime.
+
+The implementation sequence and independent commit boundaries are:
+
+1. refresh the objective R002 inventory, select compatibility candidates, write state/copy/asset
+   metadata and bounded screen specifications, and record the independent gates;
+2. freeze all preserved behavior with an integration-level characterization suite;
+3. recompose `/parent` first using `ghaf_parent_home`, live dashboard state, and the Soft Geometric
+   system while preserving every reachable control;
+4. recompose Parent Tasks and Task Builder without changing task payloads or actions;
+5. recompose Child Today, Task Detail, Active Task states, completion, and waiting-for-approval;
+6. recompose Parent review, support-request states, approval, and the Child support/resubmission
+   loop over the existing state machine;
+7. visually refresh the existing Garden using live current values only; and
+8. complete RTL, accessibility, responsive, visual, export, Android, and release evidence.
+
+Each slice begins with focused RED or characterization coverage, ends with focused and repository
+checks, and is committed independently. R001 routes are regression-only. Raw Stitch PNG/HTML files
+remain unmodified, and `Zone.Identifier` files never become evidence or source.
+
+The Parent Home reference is a genuine mobile, naturally scrolling `402×1600` composition rather
+than a fixed `390×844` canvas. Its hard-coded League and Family Reward summaries have no current
+dashboard selector, so those fragments remain supporting references until a behavior-preserving
+presentation adapter is separately specified. That affected fragment does not block the remainder
+of the Parent Home visual refresh.
+
+R002b was independently blocked during R002a. The R002b amendment above now authorizes these
+surfaces only behind independent default-off flags while preserving the complete R002a fallback.
+
+### Revision 3 reconciliation addendum — 2026-09-04
+
+Implementation continues from remote behavioral baseline `a6ca21a6`; it does not cherry-pick the
+six divergent local commits. The approved product target preserves private five-Leaf League,
+`task_recycling_p0_v1`, independent progression authorities, one superset result with private Family
+Reward last, capability-scoped access, deterministic voice/`expo-audio`, Parent reset, and profile
+isolation. It adds one private 120–180 Seed-derived Impact Path, exactly 16 permanent deterministic
+badges, one equal-credit Mangrove learning package, and Parent selected-Child progress. Growth
+runtime remains blocked.
+
+At the 2026-09-04 checkpoint, the next executable slice was R001 only:
+
+```text
+remote access/League/Reward/voice/privacy/reset baseline
+  → focused RED tests for Parent onboarding integration
+  → adapt the existing session/service registry without weakening capability guards
+  → reconcile Alexandria/Readex tokens and reusable native RTL access components
+  → Welcome → sign-in → verification → family basics → add Child → review
+  → native success sheet → replace history to preserved /parent
+  → focused checks → full repository checks → web/device evidence with truthful status
+```
+
+R001 PNGs control composition; generated web exports are read-only measurement hints. No DOM,
+Tailwind/CSS, generated JavaScript, remote font, or web dependency enters Expo. Responsive safe-area
+layouts, natural scroll, keyboard avoidance, 48dp targets, locale-aware bidi, reduced-motion parity,
+and state variants are native responsibilities.
+
+After R001 passes, only the bounded R002a compatibility slices above may proceed. Any R002b route,
+state, model, service, dependency, asset, or configuration change remains behind its independent
+product and design gate.
+
+### R001 implementation boundaries
+
+| Batch  | Scope                                                                                                                   | Required checks                                                           | Commit boundary              |
+| ------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------- |
+| R001-A | Access/onboarding policy adapter over remote capability sessions; no reset or voice regression                          | Focused access, profile-isolation, reset, League, Reward, and voice tests | One domain/test commit       |
+| R001-B | Tokens, locally bundled Alexandria/Readex roles, RTL primitives, controls, access shell, native success sheet           | Typecheck, localization/type tests, 48dp/bidi source checks               | One design-foundation commit |
+| R001-C | Seven approved routes/states and protected `/parent` handoff                                                            | Focused route/reset tests, formatter, typecheck, lint, full tests, export | One route-flow commit        |
+| R001-D | 390×844 comparison plus small/large/tablet, scroll, keyboard, font scale, reduced motion, and physical Android evidence | Record each result as `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN`         | Evidence-only commit         |
+
+Shared files (`app/_layout.tsx`, store, service registry, i18n, package/config, and tokens) are
+serialized by the integration owner. Every batch preserves `expo-audio` and the remote deterministic
+competition path.
+
+The preserved remote baseline is one ten-route Family Growth Garden journey inside the existing
+Expo application. R001 recomposes `/` in place and adds six approved Parent-access route files for
+an exact post-R001 inventory of 16 without removing the historical routes. The implementation will evolve the current strict
 TypeScript models, Zustand session, service registry, bilingual resources, StyleSheet design
 tokens, SVG, Reanimated, and prepared-media seams rather than create a parallel architecture.
 
@@ -38,12 +600,13 @@ validation; it is not a P0 dependency.
 **Language/Version**: TypeScript 6.0 in strict mode (`noUncheckedIndexedAccess`) on Node.js
 22.13+; React 19.2 and React Native 0.86 through Expo SDK 57
 
-**Primary Dependencies**: Expo Router 57, React Native `StyleSheet`, Zustand 5, Zod 4,
-`i18next`/`react-i18next`, `expo-localization`, `react-native-svg`, Reanimated 4, Gesture Handler,
-Safe Area Context, and Screens. The prepared voice path needs no audio/form package. The integration
-owner aligned the existing SDK 57 stack to Expo `57.0.19`, Expo Linking `57.0.9`, Expo Router
-`57.0.18`, React Native `0.86.3`, and ESLint Config Expo `57.0.2`; `package-lock.json` records the
-corresponding transitive patch resolution.
+**Primary Dependencies**: Existing Expo Router 57, React Native `StyleSheet`, Zustand 5, Zod 4,
+React Hook Form, `i18next`/`react-i18next`, `expo-localization`, `react-native-svg`, Reanimated 4,
+Gesture Handler, Safe Area Context, Screens, and `expo-audio` prepared playback. No new library is
+introduced. The integration owner applied Expo-compatible patch alignment within the existing SDK
+57 stack: Expo `57.0.15 → 57.0.17`, Expo Linking `57.0.7 → 57.0.8`, Expo Router
+`57.0.15 → 57.0.17`, React Native `0.86.2 → 0.86.3`, and ESLint Config Expo
+`57.0.1 → 57.0.2`; `package-lock.json` records the corresponding transitive patch resolution.
 
 **Storage**: In-memory, schema-versioned Zustand prototype session plus deterministic local typed
 fixtures. Reload persistence is deliberately not promised; the Parent-only reset is authoritative.
@@ -62,15 +625,16 @@ second application, monorepo, or production service
 thinking; the Seed/growth explanation settles in at most the approved 650 ms motion window or is
 immediate with reduced motion; five uninterrupted human journeys target at most 150 seconds each
 
-**Constraints**: Exact ten-route inventory; Arabic-first reset at `/` with no stale history;
+**Constraints**: Preserve the remote ten-route inventory and allow only the six released R001
+access-route additions (exactly 16 authored files after R001); Arabic-first reset at `/` with no stale history;
 external-service-denied completion; synthetic data only; no media permission on the deterministic
 path; Parent gates before assignment and recognition; privacy filtering before shared mutation;
 exact pre/post counters; 48 dp controls; 200% font-scale resilience; no unsupported impact claim
 
 **Scale/Scope**: One synthetic household, two synthetic siblings, one seeded aggregate circle,
 eight curated categories, five landscape tracks, five stages, one executable 12-Seed task, two
-prepared assistant interactions, one prepared summary, four prepared fixture identifiers, and ten
-authored routes
+prepared assistant interactions, one prepared summary, four prepared fixture identifiers, ten
+preserved remote routes, and six released R001 Parent-access route additions
 
 **Clarifications**: None. The approved spec resolves machine enums, lifecycle separation,
 recognition/phase validity, growth thresholds, reset values, fixture IDs, safety copy, capability
@@ -342,7 +906,9 @@ git status --short
 
 In addition:
 
-- enumerate `app/**/*.tsx` and prove exactly the ten authored product routes;
+- before R001, prove the preserved remote inventory has exactly ten authored routes; after R001,
+  prove those ten files remain and only six approved Parent-access route files were added, for an
+  exact inventory of 16;
 - scan `app/`, `src/`, config, and fixtures for secrets, network calls, real Child data, camera/
   microphone capture, prohibited claims, hard-coded user copy, and legacy route imports;
 - run focused tests for every lifecycle edge, recognition/phase row, threshold boundary, projection
@@ -351,7 +917,11 @@ In addition:
 - execute five automated store-flow cycles from reset with all optional providers denied;
 - use the static web export only for secondary responsive, visual, keyboard, and console inspection.
 
-### Manual evidence gates
+### Preserved remote schema-3 manual evidence gates
+
+The 48→60 personal-Seed and `/circle` assertions in this subsection remain regression evidence for
+the remote ten-route build. Revision 3 uses the separate target oracle in the reconciliation
+addendum; Mangrove still changes 48/60→60/60.
 
 - Walk every route and meaningful state in Arabic RTL and English LTR.
 - Verify exact reset from draft, prepared assistant result/fallback, prepared-media selected/
@@ -395,8 +965,9 @@ generated data model, contracts, quickstart, and tasks before implementation beg
   recognition, recurrence, visibility, and circle pairings before persistence.
 - The contract design keeps routes provider-neutral, the Child Coach prepared-only, the Parent
   Guide bounded, and the deterministic fallback mandatory.
-- The journey design contains exactly ten routes and makes assistant, retry, phase-review,
-  celebration, failure, and fallback into in-route states.
+- The preserved remote journey contains exactly ten routes and keeps assistant, retry,
+  phase-review, celebration, failure, and fallback as in-route states. The R001 amendment adds only
+  its six approved Parent-access route files and does not promote those states into extra routes.
 - The validation design starts Feature 003 evidence fresh and cannot convert web/source evidence
   into native or human passes.
 - No backend, dependency addition, production account, real Child data/media, open chat, public
@@ -522,88 +1093,3 @@ This addendum advances the existing complete journey instead of adding breadth. 
 mock-first service registry, preserves Arabic-first bilingual behavior, labels every prepared and
 synthetic state at the point of use, requires Parent authority, and introduces neither live Child AI
 nor real media processing. It therefore needs no constitution amendment or complexity exception.
-
-## Family Experience Frontend and Android Addendum (2026-09-02)
-
-### Scope decision
-
-The repository Markdown and source were reconciled after the domain and voice presentation phases.
-The ten-route P0 is complete. The remaining code-sized gaps are the general synthetic-access
-presentation, authoritative Family Reward receipt adapter and private views, synthetic Family
-League state and views, and source-verifiable Android/frontend hardening. The redesign document's
-fourteen conceptual screen families are implemented only as states within `/role`, `/parent`, and
-`/child`; no route is added and the existing judge path remains dominant.
-
-Production accounts, real invitations, payment, durable storage, real voice, live Child AI,
-dialect/code-switch understanding, and named human approval remain excluded. Physical-device and
-human evidence are validation work, not code completion, and keep their current open status.
-
-### Evidence-first priority rubric
-
-Each feasible slice was scored from 1–5 against objective repository evidence. The weighted score
-uses safety/capability truth (30%), contract and service readiness (25%), judge-visible product value
-(20%), Android/mobile value (15%), and delivery risk (10%, where 5 is lowest risk).
-
-| Candidate                                                   | Safety | Ready | Product | Android | Risk | Weighted score | Decision                    |
-| ----------------------------------------------------------- | -----: | ----: | ------: | ------: | ---: | -------------: | --------------------------- |
-| Expo alignment, permissions, direction, Back, accessibility |      5 |     5 |       4 |       5 |    4 |             94 | Phase L                     |
-| Synthetic access entry/revoke/restore                       |      5 |     5 |       4 |       4 |    4 |             91 | Phase M                     |
-| Private Family Reward receipt wiring and views              |      5 |     5 |       5 |       3 |    3 |             91 | Phase N                     |
-| Synthetic Family League state and views                     |      4 |     5 |       4 |       3 |    3 |             80 | Phase O                     |
-| Four new route families                                     |      3 |     1 |       2 |       2 |    1 |             38 | Reject; use in-route states |
-| Production identity, social, payment, or real voice         |      1 |     1 |       1 |       1 |    1 |             20 | Out of scope                |
-
-### Implementation phases
-
-| Phase                                          | Outcome                                                                                                                                                                                         | Main boundary                                                                        | Independent evidence                                                                                |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| L — specification and Android baseline         | Authorize the in-route design, align SDK 57 patches, remove unused native/form packages, minimize Android permissions, settle one direction model, and correct navigation/accessibility defects | Active Spec Kit artifacts, `app.config.ts`, package manifests, bounded shared UI     | Config/source tests, Expo install check, public/prebuild config inspection, static route scan       |
-| M — application authority                      | Private controller creates the reviewed synthetic Parent and paired Child sessions; `/role` enters through projected authority and allows Parent-only revoke/restore                            | `src/features/family/familyExperienceController.ts`, store, role route, access panel | Focused service-backed entry, revocation, restore, privacy, and reset tests                         |
-| N — private Family Reward                      | Prepared non-monetary promise is created by the Parent, evaluated only from authoritative session receipts, projected only to Parent/Salem, and marked given only by Parent                     | Controller, store, Reward panel, Parent/Child home                                   | Create-before/after recognition, idempotency, privacy, Parent-only transition, no League input      |
-| O — synthetic Family League                    | Parent starts the fixed week; recognition may credit one matching Salem Leaf; Child sees direct minimal rankings/cooperative progress and may send one prepared encouragement                   | Controller, store, League panel, Parent/Child home                                   | Membership proof, receipt binding, strict projection, no P0-counter mutation, reset                 |
-| P — convergence and available Android evidence | Re-run automated, browser, production-mode, and local emulator checks; correct review defects; update exact evidence and release reservations                                                   | Evidence documents and reserved implementation files                                 | Full checks, route inventory, config manifests, web proxy, emulator observation, independent review |
-
-Phases M, N, and O share one controller because access authority and reset must be atomic. Their
-tests and commits remain separately reviewable. Routes import only presentation components and
-store commands; screens never construct credentials, reward events, raw League weeks, or service
-requests. The controller owns a replaceable deterministic registry so reset removes every local
-session and ledger without extending `PrototypeSession` schema version `3`.
-
-### Android and frontend strategy
-
-- Keep the current managed Expo/CNG workflow. Align supported patch releases and document a local
-  emulator route; do not add a production store-release claim.
-- Remove the unused real-audio plugin because the approved voice path is transcript simulation.
-  Block microphone recording and legacy external-storage permissions in the merged manifest and
-  disable Android backup for the sensitive shared-device prototype.
-- Set the inherited root layout direction from the locale already held in Zustand, then use plain
-  rows and logical start/end below it. This preserves an immediate state-stable language switch
-  without persisted `I18nManager` direction or a second row reversal; named native evidence remains
-  required.
-- Use safe `back()` only for true backward navigation and replacement for role handoffs so Android
-  Back cannot reveal a stale protected state. Preserve predictive Back configuration.
-- Keep the task submission as the sole dominant Child-task action. Optional voice controls are
-  secondary, real section headings expose heading semantics, and compact header actions may wrap at
-  narrow widths and high font scaling.
-- Keep the reviewed PNG fixture as the archival source and use its visually checked 1448×1086 WebP
-  derivative at runtime. The 124,028-byte derivative reduces this packaged image by 94.5% without
-  adding an image pipeline or changing the synthetic provenance label.
-
-### Phase result
-
-Phases L–O are implemented and pass the full repository verification at 30 files / 464 tests. The
-production web export preserved 12 static pages (ten authored routes plus sitemap/not-found), and a
-headed 412×915 plus 320×700 Arabic/English replay verified access, Reward, League, locale direction,
-narrow-width containment, and protected handoff history. Android config introspection and a
-5,082,731-byte Hermes export passed. The configured API 35 AVD could not boot with only about 147 MiB
-free on `C:`. A final headless retry still failed the emulator disk-space preflight with about 2.0
-GiB free. After more generated cache space was reclaimed, the AVD booted and Expo Go 57.0.9 rendered
-the Arabic entry screen from local Metro. The host drive then filled and ADB went offline before
-English or journey interaction, so full native observations remain `BLOCKED` or `NOT RUN`.
-
-### Constitution check
-
-The work makes already-approved deterministic rules visible without adding breadth. Parent
-authority, Child privacy, praise-first recognition, no-loss progress, strict projections,
-Arabic-first equivalence, truthful synthetic labels, offline reset, and the ten-route slice remain
-intact. No constitution exception is required.

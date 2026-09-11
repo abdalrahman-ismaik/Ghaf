@@ -60,6 +60,8 @@ describe('Android prepared image payload', () => {
   it('does not carry private image metadata into the runtime asset', () => {
     const chunkIds = readWebpChunkIds(readFileSync(runtimeAssetPath));
 
-    expect(chunkIds).not.toEqual(expect.arrayContaining(['EXIF', 'ICCP', 'XMP ']));
+    for (const chunk of ['EXIF', 'ICCP', 'XMP ']) {
+      expect(chunkIds).not.toContain(chunk);
+    }
   });
 });

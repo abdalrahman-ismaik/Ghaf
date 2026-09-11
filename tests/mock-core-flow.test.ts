@@ -4,6 +4,11 @@ import type { ParentGuideService } from '../src/services';
 import { serviceRegistry } from '../src/services';
 import { PREPARED_PRAISE } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 function expectOk(result: { readonly ok: boolean }): void {
   expect(result).toMatchObject({ ok: true });
@@ -22,12 +27,12 @@ function currentCounters() {
 }
 
 async function completeOfflineCycle(cycle: number): Promise<void> {
-  usePrototypeStore.getState().setRole('parent');
-  const reset = usePrototypeStore.getState().resetPrototype();
+  const reset = resetPrototypeForTest();
   expect(reset).toMatchObject({
     ok: true,
     data: { navigateTo: '/', replaceHistory: true },
   });
+  await enterParentExperienceForTest();
   expect(currentCounters()).toEqual({
     salemSeeds: 48,
     mangroveSeeds: 48,
@@ -86,8 +91,7 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
     },
   });
 
-  usePrototypeStore.getState().setRole('child');
-  usePrototypeStore.getState().setActiveChild('child_salem');
+  await enterChildExperienceForTest('child_salem');
   expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
   expect(usePrototypeStore.getState().journey?.lifecycle).toBe('chosen');
   expectOk(usePrototypeStore.getState().startAssignment());
@@ -141,7 +145,7 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
     circleActions: 11,
   });
 
-  usePrototypeStore.getState().setRole('parent');
+  await enterParentExperienceForTest();
   const submissionId = usePrototypeStore.getState().journey?.submission?.id;
   expect(submissionId).toBe('submission_recycling_p0_v1_attempt_1');
   expectOk(
@@ -210,9 +214,9 @@ function unavailableParentGuide(
 }
 
 describe('Feature 003 deterministic external-service-denied store flow', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   afterEach(() => {

@@ -278,23 +278,37 @@ Every Feature 003 requirement and success criterion has at least one implementat
 integration, or evidence task. A task that records `BLOCKED` or `NOT RUN` still satisfies the
 traceability obligation; it does not satisfy the underlying native or human outcome.
 
-| Requirement / outcome range                                                                                            | Primary task coverage                                                                                     |
-| ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| FR-001–FR-010 — historical boundary, exact scope, capability truth, synthetic/offline/prepared AI                      | T002–T003, T008, T013, T016, T018–T020, T025, T027–T029, T063–T071, T082–T090                             |
-| FR-011–FR-017 — entry, role, household overview, non-surveillant summary                                               | T015, T030–T035, T041, T065–T067, T072–T080, T083–T089                                                    |
-| FR-018–FR-029 — category catalog, P0 task, bounded drafting/review/assignment, zero early reward                       | T009–T013, T018–T029, T030–T034, T037–T044, T079, T082–T084                                               |
-| FR-030–FR-040 — Child choices, separate choose/start, bounded Coach, optional media/reflection, zero-reward submission | T009, T013–T016, T018–T021, T025–T030, T033–T035, T045–T050, T063–T071, T079–T084                         |
-| FR-041–FR-055 — check-in, retry/equivalent, praise-first idempotent recognition, reward/phase matrix                   | T009–T010, T014, T018, T021–T029, T033, T051–T056, T063, T070, T079–T084, T089–T090                       |
-| FR-056–FR-070 — five-stage garden, symbolic claims, privacy-first canopy/circle projection                             | T010–T012, T014–T016, T018–T024, T027–T029, T035, T057–T062, T070–T071, T077–T084, T089–T090              |
-| FR-071–FR-081 — exact assistant/media fixtures, prepared-only Coach, safety/fallback/secret boundary                   | T003, T005–T006, T013, T015–T016, T018–T020, T025–T030, T034, T037–T050, T063, T068, T079–T085, T089–T090 |
-| FR-082–FR-098 — task safety, culture, bilingual RTL, accessibility, exact reset/duplicate behavior                     | T004–T006, T009–T016, T018–T035, T037–T071, T079–T090                                                     |
-| SC-001 — exact ten routes and legacy retirement                                                                        | T063–T071, T081–T084, T088–T090                                                                           |
-| SC-002–SC-005 — five offline cycles/resets, exact one-time consequence, no early reward                                | T009–T010, T014, T016–T017, T021–T029, T036–T071, T083–T090                                               |
-| SC-006–SC-008 — reward matrix, stages/category mapping, projection rejection                                           | T010–T012, T017–T024, T027–T029, T036, T051–T062, T077, T082–T090                                         |
-| SC-009–SC-011 — point-of-use origins, bounded Coach, safe Parent summary                                               | T005–T006, T013, T015–T020, T025–T030, T034, T036–T050, T068, T072–T084, T089–T090                        |
-| SC-012–SC-013 — bilingual physical journey and native accessibility                                                    | T004, T015, T030–T035, T044, T050, T056, T062, T065–T071, T078–T080, T083–T085, T089–T090                 |
-| SC-014–SC-017 — rehearsals, comprehension, prohibited claims, named reviews                                            | T002, T004–T006, T071, T077–T086, T089–T090                                                               |
-| SC-018 — optional live Parent AI truth and secure-boundary gate                                                        | T003, T008, T013, T016, T025–T029, T068, T082–T086, T089–T090                                             |
+| Requirement / outcome range                                                                                             | Primary task coverage                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| FR-001–FR-010 — historical boundary, exact scope, capability truth, synthetic/offline/prepared AI                       | T002–T003, T008, T013, T016, T018–T020, T025, T027–T029, T063–T071, T082–T090                             |
+| FR-011–FR-017 — entry, role, household overview, non-surveillant summary                                                | T015, T030–T035, T041, T065–T067, T072–T080, T083–T089                                                    |
+| FR-018–FR-029 — category catalog, P0 task, bounded drafting/review/assignment, zero early reward                        | T009–T013, T018–T029, T030–T034, T037–T044, T079, T082–T084                                               |
+| FR-030–FR-040 — Child choices, separate choose/start, bounded Coach, optional media/reflection, zero-reward submission  | T009, T013–T016, T018–T021, T025–T030, T033–T035, T045–T050, T063–T071, T079–T084                         |
+| FR-041–FR-055 — check-in, retry/equivalent, praise-first idempotent recognition, reward/phase matrix                    | T009–T010, T014, T018, T021–T029, T033, T051–T056, T063, T070, T079–T084, T089–T090                       |
+| FR-056–FR-070 — five-stage garden, symbolic claims, privacy-first canopy/circle projection                              | T010–T012, T014–T016, T018–T024, T027–T029, T035, T057–T062, T070–T071, T077–T084, T089–T090              |
+| FR-071–FR-081 — exact assistant/media fixtures, prepared-only Coach, safety/fallback/secret boundary                    | T003, T005–T006, T013, T015–T016, T018–T020, T025–T030, T034, T037–T050, T063, T068, T079–T085, T089–T090 |
+| FR-082–FR-098 — task safety, culture, bilingual RTL, accessibility, exact reset/duplicate behavior                      | T004–T006, T009–T016, T018–T035, T037–T071, T079–T090                                                     |
+| FR-099–FR-105 — preserved baseline, least-privilege access, pairing, reauthentication, and Child grants                 | T111–T116, T130–T131                                                                                      |
+| FR-106–FR-110 — private Family Reward lifecycle, eligibility, privacy, and prospective changes                          | T111–T112, T117–T120, T130–T131                                                                           |
+| FR-111–FR-115 — private five-Leaf League, capped scoring, rollover, projection, and encouragement                       | T111–T112, T121–T124, T130–T131                                                                           |
+| FR-116–FR-118 — age adaptation, synthetic voice lifecycle, and shared service facade                                    | T112, T125–T131                                                                                           |
+| FR-119–FR-127 — capability-authorized voice presentation and locale-aware typography                                    | T132–T139                                                                                                 |
+| Revision 3 amendment and R001 release — preserved remote ten plus six approved access routes                            | T140–T149                                                                                                 |
+| R002a compatibility intake and implementation; independent R002b Growth/schema gate                                     | T150–T178                                                                                                 |
+| FR-144–FR-159 — R002b flags, ledger/migration, Growth Journey, learning, reveal, Parent Progress, Shared Growth, routes | T179–T222                                                                                                 |
+| SC-001 — preserved remote ten routes, exact R001 inventory of 16, and legacy retirement                                 | T063–T071, T081–T084, T088–T090, T140–T149                                                                |
+| SC-002–SC-005 — five offline cycles/resets, exact one-time consequence, no early reward                                 | T009–T010, T014, T016–T017, T021–T029, T036–T071, T083–T090                                               |
+| SC-006–SC-008 — reward matrix, stages/category mapping, projection rejection                                            | T010–T012, T017–T024, T027–T029, T036, T051–T062, T077, T082–T090                                         |
+| SC-009–SC-011 — point-of-use origins, bounded Coach, safe Parent summary                                                | T005–T006, T013, T015–T020, T025–T030, T034, T036–T050, T068, T072–T084, T089–T090                        |
+| SC-012–SC-013 — bilingual physical journey and native accessibility                                                     | T004, T015, T030–T035, T044, T050, T056, T062, T065–T071, T078–T080, T083–T085, T089–T090                 |
+| SC-014–SC-017 — rehearsals, comprehension, prohibited claims, named reviews                                             | T002, T004–T006, T071, T077–T086, T089–T090                                                               |
+| SC-018 — optional live Parent AI truth and secure-boundary gate                                                         | T003, T008, T013, T016, T025–T029, T068, T082–T086, T089–T090                                             |
+| SC-019 — access capability, pairing, reauthentication, and revocation                                                   | T112–T116, T130–T131                                                                                      |
+| SC-020 — Family Reward transitions, exclusions, privacy, and rank independence                                          | T112, T117–T120, T130–T131                                                                                |
+| SC-021–SC-022 — League scoring, ties, privacy projection, rollover, and allowlists                                      | T112, T121–T124, T130–T131                                                                                |
+| SC-023–SC-024 — age/voice domain behavior and complete static/behavioral convergence                                    | T112, T125–T131                                                                                           |
+| SC-025–SC-028 — Parent voice grant, bilingual presentation, typography, reset, and proxy evidence                       | T132–T139                                                                                                 |
+| SC-036–SC-043 — R002b audit, migration, achievements, learning, reveal, privacy, flags, native/release evidence         | T179–T222                                                                                                 |
 
 The traceability ranges above are complemented by each story's independent-test statement and by
 the executable assertions in `contracts/acceptance-contract.md`.
@@ -590,62 +604,995 @@ network request, or reward mutation.
 - [x] T139 [US11] Record web-proxy versus native evidence truth, review the final diff, release the
       reservation, and commit the validated convergence checkpoint
 
+**Current-checkout closure — 2026-09-10**: These two stale rows are closed by the Phase 48
+verification below. The prepared-voice, bilingual, operator-route, and screen-flow set passed
+75 tests across four files. The supplemental Impeccable source/web scan returned `[]`, and the
+existing prepared-voice tests enforce its capture/provider boundary. Later default-off Feature 004
+adapters are outside that historical scan. No evidence from non-ancestor `8188a5c` is inherited.
+Fresh interactive browser and physical Android review were unavailable; neither is claimed passed.
+
 **Checkpoint**: User Story 11 is demonstrable as prepared/synthetic UI only. Parent enablement is
 explicit, locale changes do not alter the task or voice state, reset is exact, and Android/human
 acceptance remains evidence-dependent.
 
 ---
 
-## Phase 19: User Story 12 — Family Experience Frontend and Android Readiness (Priority: P3)
+## Phase 19: Revision 3 Authority Reconciliation and R001 Release
 
-**Goal**: Make the completed synthetic access, private Family Reward, and synthetic Family League
-domains demonstrable inside the existing ten routes while correcting source-verifiable Android,
-direction, navigation, hierarchy, and accessibility risks.
+**Historical gate, superseded on 2026-09-05**: the R002-wide runtime block applied during this
+R001-only phase. Current work uses the independent R002a and R002b gates in Phases 21–23.
 
-**Independent Test**: A fresh reset supports service-authorized Parent/Child entry, one Child
-revocation/restore, a private Salem promise, a fixed synthetic week, receipt-bound Reward/League
-updates, Arabic/English switching, and another exact reset. Expo/config/source/full/browser/emulator
-checks preserve all P0 counters and capability boundaries.
+**Goal**: Preserve the remote behavioral baseline, encode the user-authoritative Revision 3 product
+contract, and release only the already approved R001 Welcome/Parent-onboarding batch.
 
-- [x] T140 [US12] Reconcile all current Markdown, score feasible gaps, authorize in-route frontend
-      and Android phases, reserve exact files, and preserve production/native/human exclusions in
-      `TEAM_OWNERSHIP.md`, `PRODUCT.md`, `DESIGN.md`, `PROTOTYPE_LIMITATIONS.md`,
-      `specs/003-family-growth-garden/{spec.md,plan.md,tasks.md,redesign-gap-analysis.md}`, and
-      `specs/003-family-growth-garden/contracts/acceptance-contract.md`
-- [x] T141 [P] [US12] Add and observe RED controller tests for service-authorized entry,
-      revoke/restore, private Reward create-before/create-after receipt sync, Parent-only given,
-      League initialization, receipt-bound credit, strict projection, prepared encouragement, P0
-      isolation, and reset in `tests/family-experience-presentation.test.ts`
-- [x] T142 [P] [US12] Add and observe RED static tests for supported Expo patches, minimized Android
-      permissions/dependencies, fixed runtime direction strategy, safe Back/handoff source behavior,
-      secondary optional voice controls, semantic headings, narrow header resilience, and route count in
-      `tests/android-runtime-readiness.test.ts`
-- [x] T143 [US12] Implement the resettable private controller in
-      `src/features/family/familyExperienceController.ts`; accept only authoritative session snapshots
-      and receipts, and expose no credentials, raw eligibility events, raw League weeks, or service
-      registry to presentation code
-- [x] T144 [US12] Expose safe projections and commands through `src/state/usePrototypeStore.ts`,
-      including exact reset and receipt sync after successful recognition, while preserving schema
-      version `3` and every current P0 counter transition
-- [x] T145 [US12] Add `SyntheticAccessPanel.tsx`, mount it on `/role`, and replace direct entry
-      actions with service-authorized Parent/Child entry plus Parent-only profile revoke/restore
-- [x] T146 [US12] Add private `FamilyRewardPanel.tsx` Parent/Salem views, prepared bilingual copy,
-      creation and Parent-only given actions on the existing `/parent` and `/child` routes
-- [x] T147 [US12] Add `FamilyLeaguePanel.tsx` Parent/Child states, direct minimal participant labels,
-      one cooperative goal, and allowlisted encouragement on the existing home routes without reusing
-      the Green Circle visual or counters
-- [x] T148 [US12] Align Expo SDK 57 patches; remove unused audio/form dependencies and plugin; block
-      recording/external-storage permissions; disable Android backup; make keyboard mode explicit; use
-      one runtime direction authority; fix Back, optional-action hierarchy, heading semantics, narrow
-      headers, stale voice states, and token escapes; replace the runtime prepared image with its
-      visually checked WebP while retaining the reviewed PNG source
-- [x] T149 [US12] Run focused/full checks, dependency/config scans, exact route inventory, production-
-      mode web export, browser proxy, and all available local Android emulator checks; record each as
-      `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` without upgrading unobserved physical/human gates
-- [x] T150 [US12] Perform independent defect-first and visual-strategy reviews against the final
-      diff, fix confirmed defects, update exact evidence/counts, release every reservation, and commit
-      each independently verified slice
+- [x] T140 Reconcile `AGENTS.md`, `PRODUCT.md`, `spec.md`, `plan.md`, this task ledger, the R001
+      release gate, design authority, limitations, and documentation map without rewriting remote
+      implementation evidence or applying any of the six local-only commits.
+- [x] T141 [P] Preserve the approved R001 release files from original commit
+      `f63e39fc702bb1797791f7543c6316e3b06f3ba9` with their original bytes/checksums; do not import any
+      generated web runtime or the untracked R002 directory.
+- [x] T142 Validate Markdown, links, stable IDs, exact counts, R001 checksums, authority language,
+      `git diff --check`, and changed paths; record that R002 remains unchanged and blocked.
 
-**Checkpoint**: Access, Reward, and League are truthful deterministic in-route experiences; Android
-static/emulator evidence is current; the original Parent → Child → confirmation → Garden → Circle
-journey remains the dominant ten-route path; production and named-human claims remain excluded.
+**Checkpoint**: Canonical documents agree that the remote access/League/Family Reward/voice/privacy/
+reset implementation is the regression baseline, Revision 3 product rules are approved planning
+authority, and only R001 may enter runtime.
+
+## Phase 20: R001 Batch 1 — Native Foundations and Parent Onboarding
+
+**Released routes**: `/`, `/access/parent/sign-in`, `/access/parent/verification`,
+`/access/parent/family-basics`, `/access/parent/add-first-child`,
+`/access/parent/review-create`, and modal `/access/parent/family-created-success`.
+
+- [x] T143 [P] Write focused RED tests for deterministic Parent identifier/code validation,
+      onboarding-draft guards, idempotent local family receipt, capability-scoped `/parent` handoff,
+      profile isolation, and exact reset while retaining the existing access tests.
+- [x] T144 Implement the smallest R001 onboarding adapter in `src/features/access/**`, the existing
+      models/service registry, and store. Preserve remote Parent/Child capabilities, League, Family
+      Reward, voice, privacy, reset, `task_recycling_p0_v1`, and all unrelated fixture behavior.
+- [x] T145 [P] Write RED localization/structure tests for Arabic/English parity, Alexandria/Readex
+      roles, bidi-safe OTP/data, 48dp targets, route guards, modal ownership, and prohibited web/runtime
+      imports.
+- [x] T146 Reconcile the existing design tokens and primitives; add only reusable R001 access
+      controls, locally bundled Alexandria/Readex weights, responsive safe-area/scroll/keyboard shell,
+      and native success sheet. Do not remove `expo-audio` or add an overlapping UI library.
+- [x] T147 Implement the seven R001 route compositions and interactions from the approved PNGs,
+      treating HTML/CSS/JS only as read-only measurement hints. Child entry stays honestly unavailable
+      until a Child-access batch is released; `/parent` is a handoff destination, not a redesign.
+- [x] T148 Run focused access/localization/route/reset suites after each slice, then `npm run
+format:check`, `npm run typecheck`, `npm run lint`, `npm test`, Expo dependency/config checks,
+      static export, route inventory, forbidden-import scan, and `git diff --check`.
+- [x] T149 Compare all seven screens at 390×844 and test 320×568, 430×932, the target tablet,
+      natural scrolling, keyboard visibility, Arabic RTL, English LTR, 100/130/200% font scale,
+      reduced motion, TalkBack order, native Back, offline/reset, and success-sheet focus restoration.
+      Record unavailable native/human checks as `BLOCKED` or `NOT RUN`, never inferred `PASSED`.
+
+**Checkpoint**: R001 is a coherent deterministic native Parent-onboarding slice over the remote
+behavioral baseline. It does not release any later screen.
+
+## Phase 21: R002 Intake Split and R002a Compatibility Release
+
+**Gates**:
+
+- **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+- **R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+
+- [x] T150 Automate the objective R002 inventory for all 74 export directories, 71 PNGs, 70 HTML
+      files, and 69 complete pairs: record presence, dimensions, hashes, HTML titles, and viewport
+      metadata while excluding every `Zone.Identifier` file.
+- [x] T151 Select the compatibility-safe R002a Parent, task, review, Child, support-loop, and existing
+      Garden variants by mobile composition, pair completeness, live copy, physical RTL,
+      accessibility, interaction-state evidence, and asset viability. Treat numbered progress
+      exports as route states, not duplicate routes.
+- [x] T152 Write `SCREEN_INDEX.md`, `SCREEN_SELECTIONS.md`, `COPY_PARITY.md`,
+      `ASSET_PROVENANCE.md`, `INTERACTION_STATE_MATRIX.md`, and detailed grouped `screen-spec.md`
+      files for selected R002a runtime surfaces. Draft centralized English parity and conservative
+      loading, empty, error, submitting, success, interrupted, and reduced-motion states without
+      inventing a business outcome.
+- [x] T153 Reconcile the selected presentation with the private five-Leaf League,
+      `task_recycling_p0_v1`, schema-3 48→60 behavior, complete approval consequences, access
+      guards, voice/`expo-audio`, reset, and profile isolation. Quarantine invalid, desktop,
+      duplicate, placeholder, unknown-provenance, and R002b exports; record the explicit user and
+      integration-owner R002a release.
+
+No Phase 21 task authorizes application, test, dependency, configuration, or asset changes.
+
+## Phase 22: R002b Product Expansion — Historical Decision Gate
+
+**Historical gate, superseded on 2026-09-05**:
+**R002B PRODUCT EXPANSION — DECISIONS OPEN — IMPLEMENTATION BLOCKED**
+
+- [ ] T154 Supply and approve the missing Child Impact Path, Badge Gallery, Badge Detail, Mangrove
+      Learning, equal-credit accessible Learning, Parent selected-Child Progress, and combined
+      RevealBundle references and specifications.
+- [ ] T155 Specify, test, and integration-release the product-approved 108→120 lifetime-Seed/reset
+      migration with rollback, idempotency, profile-isolation, and schema-3 compatibility evidence;
+      runtime migration execution remains blocked, and Mangrove 48/60 or Family Reward 108/120 must
+      not change by inference.
+- [ ] T156 Write RED tests for one 120–180 derived Impact Path, exact 16-badge registry, zero-Seed
+      equal-credit learning, immutable profile-scoped awards, and one recoverable result per
+      `profileId + triggerEventId`.
+- [ ] T157 Implement Growth domain/projections only after T154–T156 and a new bounded release gate;
+      screens never calculate rewards/unlocks or create a second currency.
+- [ ] T158 Implement only the approved Growth screens, then complete full automated, bilingual,
+      responsive, accessibility, offline, reset, physical Android, content, cultural, safeguarding,
+      and rights evidence.
+
+Phase 22 records the prerequisites that were open before the user approved the bounded product
+contract and code-native missing-screen authority. Current implementation is governed by Phase 24
+and later. A prompt or export filename still does not create product authority by itself.
+
+## Phase 23: R002a Compatibility Implementation — Authorized
+
+**Gate**: **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+
+- [x] T159 Create `integration/r3-r002a-implementation-20260904` directly from verified remote R001
+      evidence head `76fa682`; confirm the original divergent worktree remains untouched and all
+      482 baseline tests pass before R002a changes.
+- [x] T160 Write an integration-level characterization suite that freezes task-ID stability, zero
+      reward at submission, retry/interruption, atomic and idempotent approval, schema-3 Seed and
+      Garden results, canopy, Challenge Leaf/private League, private Family Reward, access and
+      reauthentication, deterministic voice, reset, and profile isolation.
+- [x] T161 [US5] Write focused Parent Home presentation tests for live selector usage, preserved
+      action/route/test-ID reachability, Parent guard/reset/language controls, physical RTL/LTR,
+      accessibility, scroll, and the absence of hard-coded `108`, `120`, or `180` progression.
+- [x] T162 [US5] Recompose `/parent` from `ghaf_parent_home` using the existing tokens, Alexandria
+      and Readex roles, reusable native Soft Geometric components, and live canopy/journey/Child
+      state. Keep unavailable League/Family Reward numeric fragments out of runtime until a real
+      selector adapter is specified.
+- [x] T163 Run focused Parent overview/access/reset tests and the complete static/behavioral gate;
+      compare Arabic and English at 320, 360, 390, and 430 widths plus one wide viewport, then commit
+      the validated Parent Home slice.
+- [x] T164 [US1] Write focused Parent Tasks/Builder presentation tests covering Choose, Edit,
+      Review, task-created, and task-added states without changing actions or payloads.
+- [x] T165 [US1] Recompose Parent Tasks and Builder from the selected compatible variants; preserve
+      the existing task composer, bounded Guide, safety review, assignment authority, and route
+      guards.
+- [x] T166 Validate and commit the Parent Tasks/Builder slice with focused flow, locale, RTL,
+      accessibility, responsive, export, and full regression checks.
+- [x] T167 [US2] Write focused Child Today/Task presentation tests for Ready, Active 0/2–2/2,
+      completion confirmation, submission, waiting, interruption recovery, and zero pre-approval
+      rewards.
+- [x] T168 [US2] Recompose Child Today, Task Detail, Active Task states, completion, and waiting on
+      the existing task state machine and selectors; do not duplicate lifecycle logic in views.
+- [x] T169 Validate and commit the Child task slice with focused flow, profile guard, voice, locale,
+      RTL, accessibility, responsive, export, and full regression checks.
+- [x] T170 [US3] Write focused Parent review and support-loop presentation tests covering pending
+      review, support default/selected/sent, approve/retry, approval success, Child follow-up, and
+      idempotent resubmission.
+- [x] T171 [US3] Recompose Parent review and Child support/follow-up presentation while calling only
+      the existing approval/retry transactions and preserving every current reward consequence.
+- [x] T172 Validate and commit the review/support slice with focused lifecycle, reward, privacy,
+      access, RTL, accessibility, responsive, export, and full regression checks.
+- [x] T173 [US4] Write focused Garden presentation tests proving all displayed values derive from
+      the current selectors and no cumulative Next Stage or second-currency mechanic appears.
+- [x] T174 [US4] Recompose the existing Garden from `ghaf_child_growth_garden_final_corrected` as a
+      visual candidate while preserving current schema-3 progression, routes, announcements, and
+      reset behavior.
+- [x] T175 Validate and commit the Garden slice with focused Garden/canopy/privacy, locale, RTL,
+      accessibility, responsive, export, and full regression checks.
+- [x] T176 Add cross-slice RTL, accessibility, reduced-motion, overflow, fixed-action clearance,
+      keyboard, route-state, and 390×844 visual regression coverage without importing web runtime.
+- [x] T177 Run the complete repository gate, Expo configuration and production exports, route/reset
+      checks, and physical Android smoke test. Record an unavailable device or SDK as `BLOCKED`, not
+      inferred success. Automated, Expo, web, and export gates passed; the physical Android smoke
+      test is `BLOCKED` because this environment has no listed ADB device or configured Android SDK.
+- [x] T178 Record final R002a evidence, remaining visual deviations, human-copy/provenance review,
+      and every deferred R002b surface; verify raw exports and six historical commits remain
+      untouched and unapplied in
+      `specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md`.
+
+**Checkpoint**: R002a is complete only when every implemented compatibility slice preserves the
+characterized behavior and has fresh bilingual, responsive, accessibility, visual, export, reset,
+and Android evidence with truthful limitations. This phase never releases R002b.
+
+## Phase 24: R002b Product Contract, Audit, and Characterization
+
+**Gate**:
+**R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+- [x] T179 Reconcile the approved R002b contract across `AGENTS.md`, `PRODUCT.md`, Feature 003
+      specification/plan/tasks/data model/contracts, design/gate/limitations/runbook records, and
+      `TEAM_OWNERSHIP.md`; keep R001/R002a frozen, flags default-off, and release activation blocked.
+- [x] T180 Verify clean R002a head `0501cf3`, ancestors `a0539e9` and `76fa682`, the isolated new
+      branch, untouched original worktree, and 38 files / 541 tests before R002b changes.
+- [x] T181 Audit Schema 3 source, fixtures, reset, recognition ledger, persistence, epoch/event IDs,
+      and synthetic-only provenance. Record that 48 is both a personal scalar and current Mangrove
+      scalar, no archived 60 or reconciling baseline ledger exists, and any 60 carry-forward is an
+      explicit approved Salem-only synthetic fixture assumption rather than verified history.
+- [x] T182 [P] Write characterization tests for ledger reconstruction, synthetic eligibility,
+      ambiguous/non-synthetic rejection, profile/epoch isolation, reset, task-ID stability, zero
+      submission reward, complete approval consequences, and duplicate/concurrent approval.
+- [x] T183 Define the eight independent default-off flags and prove that disabled flags preserve the
+      exact R002a routes, presentation, task lifecycle, counters, voice, access, privacy, and reset.
+- [x] T184 Validate and commit the contract and characterization boundaries separately; stage exact
+      paths and retain all raw exports and six held commits unchanged.
+
+## Phase 25: Lifetime Seed Projection and Versioned Migration
+
+- [x] T185 Implement a pure shadow-mode Seed-ledger audit and `lifetimeSeeds` selector whose only
+      authority is unique committed entries within the active profile epoch.
+- [x] T186 Add one immutable versioned synthetic migration receipt with explicit fixture provenance:
+      Salem 108 from approved carry-forward-60 assumption plus verified current 48; Alya retains her own
+      verified 36 scalar with no Salem carry-forward; unsupported cousin profiles remain ineligible.
+- [x] T187 Reject ambiguous, real/non-synthetic, cross-profile, wrong-epoch, duplicate, malformed,
+      partial, and non-atomic migration inputs without changing current state.
+- [x] T188 Integrate the existing `+12` recognition entry once so Mangrove remains 48→60 while
+      lifetime Seeds project 108→120; preserve canopy, League, Challenge, Family Reward, praise,
+      task identity, and zero reward before recognition.
+- [x] T189 Record a completed Mangrove 60/60 archive and derive reached Water & Coast stations without
+      a writable Impact Path balance, backfill celebration, or fabricated task/mastery/learning data.
+- [x] T190 Cover thresholds 107, 108, 119, 120, 131, 132, 179, and 180; no spending/decrease; retry,
+      concurrency, restart at transaction boundaries, reset epoch, and profile isolation.
+- [x] T191 Run focused progression/reward/reset tests, full suite, static checks, Expo configuration,
+      production export, route scan, and `git diff --check`; commit the validated migration slice.
+
+## Phase 26: Impact Path, Badge Registry, and Candidate Screens
+
+- [x] T192 Write grouped `screen-spec.md` files for the compact Today card, Garden chapter module,
+      Impact Path, Badge Gallery, and Badge Detail before implementing their routes/components.
+- [x] T193 Encode exactly 16 stable bilingual badge definitions and deterministic criteria in one
+      typed registry; reject duplicate/unknown IDs and preserve permanent private awards.
+- [x] T194 Map each unique `task_recycling_p0_v1` approval to one `skill.sorting` and one separate
+      `skill.coast_care` acquisition credit; never backfill unproved mastery.
+- [x] T195 Implement deterministic badge evaluation/backfill, including 1/3/7 sorting, 2/5/10 water
+      with station-156 Bud gate, two-credit Energy Bud, and the full Mangrove Care composite.
+- [x] T196 Implement Water & Coast stations 120/132/144/156/168/180 as read-only projections and a
+      configured-next-stage fallback without implying a visit or inventing content.
+- [x] T197 Add gated Today/Garden entry components plus `/garden/impact-path`, `/garden/badges`, and
+      `/garden/badges/:badgeId` with typed same-role origin restoration and safe deep-link fallback.
+- [x] T198 Implement earned/in-progress/next/locked/archived gallery states and Badge Detail identity,
+      exact criteria/progress/meaning/provenance/one contextual action without Child task creation.
+- [x] T199 Add bilingual/RTL/LTR, responsive, accessibility, reduced-motion, route-guard, and visual
+      coverage; capture each canonical code-native candidate at 390×844 after implementation.
+- [x] T200 Validate and commit achievements/Impact Path in independent domain and presentation
+      boundaries, with every related flag still off by default.
+
+**Evidence note:** T196–T198 and T200 are implemented and committed through `5c06cef`, with later
+route/origin/accessibility corrections through `895af72` and `680f91b`. T199 is complete at the
+bounded web/source evidence level: all five named surfaces have Arabic and English
+320/360/390/430/768 samples, synthetic 200%-text containment, zero document horizontal overflow,
+and settled reduced-motion samples. Physical Android and named human review remain separate release
+blockers under T220/T221.
+
+## Phase 27: Equal-Credit Learning and Superset RevealBundle
+
+- [x] T201 Write `screen-spec.md` files for Story, accessible alternative, and combined Child reveal
+      before their route/component implementation.
+- [x] T202 Implement the finite bilingual `learning.mangrove_roots.v1` package, sourced content
+      metadata, resumable progress, neutral no-fail check, and equal-credit Story/accessible routes.
+- [x] T203 Record exactly one profile/epoch/package completion from either route; the other becomes a
+      duplicate no-op, and both award zero Seeds/Garden/canopy/League/Challenge/Family Reward.
+- [x] T204 Implement typed origin resume/recovery and prevent lesson autoplay; keep Learning release
+      off pending source provenance and named human content review.
+- [x] T205 Define `reveal:<profileId>:<triggerEventId>` and lifecycle
+      `ready → presenting → acknowledged → archived` with deterministic event-order queueing,
+      exactly-once construction, one visible bundle, interruption resume, and no rebuild after seen.
+- [x] T206 Construct the approval bundle as a role-specific projection of existing committed
+      authorities with complete praise/Seed/stage/canopy/eligible Green Circle/private League/
+      Challenge/Family Reward/badge/station/applicable learning/safe-help consequence parity and no
+      screen-side reward calculation.
+- [x] T207 Permit a separate zero-Seed learning bundle only when its unique completion causes a new
+      eligible outcome; dismissal never reverses committed state and flags never show R002a and v2
+      reveals together.
+- [x] T208 Add the gated Child reveal route/sheet, static reduced-motion outcome, focus containment,
+      restoration, and 390×844 code-native capture.
+- [x] T209 Test retry, interruption at every lifecycle boundary, queue order, duplicate/concurrent
+      triggers, role projection, consequence parity, and default-off R002a fallback; validate and
+      commit Learning and RevealBundle as separate slices.
+
+**Evidence note:** Learning and the receipt-only Reveal lifecycle are implemented and committed.
+`680f91b` hardens focus, recovery, and Back handling. T206 and T209 are completed by `84d9317`,
+`57ed790`, `95eb3ab`, `44f185f`, `c7ee6d6`, and `f546ad9`: the normal approval commits an
+epoch-scoped private League/Challenge Leaf receipt, verifies the private Family Reward unlock, and
+constructs one complete ordered bundle before the atomic store update. Exact retry preserves the
+same queue and authorities; malformed provider, task, praise, timestamp, learning, achievement,
+profile, or epoch evidence fails before mutation. The final focused matrix passed 8 files / 209
+tests, followed by typecheck, lint, format, the full 89-file / 1,221-test suite, dependency
+alignment, and a 39-page / 119-file web export.
+
+T208 is complete at the bounded browser-proxy/source level as of 2026-09-07. Commit `7d6a6da`
+repairs verified web heading focus, retries focus after the route ref commits, restores focus to the
+stable Today heading after the transient Reveal action is archived, and avoids registering the
+nested hardware Back listener outside Android. A fresh normal Arabic-first Parent/Child journey,
+with only `r002b_reveal_bundle_v2` enabled locally, produced all 12 ordered approval consequences
+without state injection. Arabic RTL and recovered English LTR 390×844 top/bottom captures record
+the static reduced-motion state, fixed action clearance, zero horizontal overflow, browser-Back
+recovery, and final archive restoration. The final repository suite now passes 89 files / 1,225
+tests, plus typecheck, lint, formatting, Expo dependency/configuration checks, and fresh web and
+Android JavaScript exports. All R002b flags remain independent and off by default; T218/T245,
+Learning station-132 capture, physical Android/TalkBack, and named-human gates remain open.
+
+## Phase 28: Parent Progress and Additive Shared Growth
+
+- [x] T210 Write `screen-spec.md` files for Parent selected-Child Progress, Child Shared Growth, and
+      Parent Shared Garden settings before route implementation.
+- [x] T211 Implement Parent-only `/parent/family/:profileId/progress` from profile-scoped selectors:
+      lifetime/current/archive, earned/in-progress badges, unlocked learning, and transparent task
+      suggestions with no manual grant/revoke/edit operation.
+- [x] T212 Let Create Suitable Task prefill the existing builder while preserving ordinary Parent
+      review/save; switching Child clears Salem-specific origin/filter/selection state.
+- [x] T213 Implement `/circle/shared-growth` as a secondary qualitative synthetic anonymous view with
+      no names, profiles, ranks, percentages, participant counts, task detail, Seeds, badges, or
+      identifiable events. Keep private five-Leaf League root and identity unchanged.
+- [x] T214 Implement Parent-only `/parent/family/shared-garden` with Continue/Pause/End future-signal
+      controls; Pause/End never alter existing private or task state, and returning after End
+      requires fresh Parent consent.
+- [x] T215 Keep view and contribution behind separate default-off flags and prove view-without-
+      contribution, participation-state independence, profile isolation, reset, privacy, and
+      feature-flag rollback.
+- [x] T216 Add bilingual, accessibility, responsive, route/deep-link, 200%-text, reduced-motion, and
+      canonical 390×844 captures; validate and commit Parent Progress and Shared Growth separately.
+
+**Evidence note:** T211–T215 are implemented and committed through `6730dc1`, with independent-flag,
+Garden-entry, focus, origin, and recoverable-error corrections through `38ff275`. T216 is complete
+at the bounded web/source evidence level: Parent Progress, Shared Growth, and Shared Garden settings
+have Arabic and English 320/360/390/430/768 samples, 200%-text evidence, zero document horizontal
+overflow, and settled reduced-motion samples. Physical Android/TalkBack and named privacy/copy
+review remain separate T220/T221 blockers. The separately gated `/league` compatibility root
+restores private League identity and strict projection; it does not change Shared Growth into a
+League replacement.
+
+## Phase 29: R002b Convergence and Release-Blocked Evidence
+
+- [x] T217 Add cross-feature migration, restart, feature-flag, route-origin, RTL/LTR, accessibility,
+      overflow, focus, keyboard, safe-area, and consequence-parity coverage while retaining all 541
+      R002a tests.
+- [ ] T218 Validate widths 320/360/390/430/768, Arabic RTL, English LTR, 200% text, reduced motion,
+      no horizontal overflow, fixed-action clearance, semantic roles/states, and 48dp controls.
+- [x] T219 Run formatting, lint, typecheck, full unit/integration suite, Expo dependency/configuration
+      checks, production web and Android JavaScript exports, route/reset scans, and `git diff --check`.
+- [x] T220 Attempt physical Android, TalkBack, native Back/IME, OS font scaling, and release-build
+      smoke checks; record unavailable device/SDK as `BLOCKED`, never infer a pass from web.
+- [x] T221 Record content/provenance/human-review gates and keep each applicable flag default-off;
+      update the runbook and R002b validation evidence without rewriting R001/R002a history.
+- [x] T222 Review exact staged paths, prove raw exports/metadata and six held commits remain untouched,
+      and commit final R002b test/evidence boundaries without push, merge, deploy, rebase, or amend.
+
+**Checkpoint:** The core checkpoint `895af72` passed 76 files / 967 tests. Final hardened
+runtime/test checkpoint `4adcb73` passes 78 files / 989 tests; typecheck, lint, formatting, Expo
+dependency/configuration checks, production web and Android JavaScript exports, route/reset scans,
+and Git whitespace validation also pass. The physical Android attempt is recorded as `BLOCKED`
+because no ADB device is available in this environment; TalkBack, native Back/IME, safe areas,
+reduced motion, and OS font scaling therefore remain unobserved. All eight flags remain off by
+default. T218 stays open because Learning Story and Accessible Learning remain truthfully locked,
+approval Reveal remains fail-closed and uncaptured, and the private League bilingual width matrix is
+partial. Passing tests or browser-proxy captures do not activate a release flag or pass native and
+human-review gates.
+
+## Phase 30: Complete Parent and Child Screen Journey
+
+**Gate**: User-authorized local prototype screen completion. Missing Stitch frames inherit the
+existing Soft Geometric design system; Android and named human gates remain separate.
+
+- [x] T223 Record the R003 completion authority, reserve exact writer boundaries, and define the
+      canonical route/state, navigation, access, privacy, and evidence manifest before runtime work.
+- [x] T224 Write RED route-flow and presentation tests for separate Parent/Child access, removal of
+      the role toggle, exact bottom navigation, Family/Reward/settings destinations, typed
+      reauthentication returns, and safe deep-link fallback.
+- [x] T225 Implement Child profile selection, PIN/picture-sequence, synthetic pairing
+      pending/approval/success, active Child-session projection, and signed-out reset using the
+      existing access service boundary.
+- [x] T226 Replace all normal `/role` handoffs with sign-out/access-safe routes; make `/role` a
+      compatibility redirect and expose settings without weakening Parent/Child route guards.
+- [x] T227 Implement Parent Family overview, selected-Child progress entry, private Family Reward
+      plan, Shared Garden entry, and the exact Home/Tasks/Garden/Family bottom navigation.
+- [x] T228 Implement Parent settings, Child read-only settings, permission grants, paired-device
+      management, language, deterministic reset, and typed one-use reauthentication screens.
+- [x] T229 Preserve every completed R002b presentation behind its independent default-off flag,
+      prove explicit environment opt-in and R002a fallback, then complete the receipt-only approval
+      Reveal projection or preserve its fail-closed R002a result when any authority is absent.
+- [x] T230 Run focused and full type/lint/format/unit/export gates; walk both Arabic RTL and English
+      LTR journeys at representative phone widths, verify no horizontal overflow or browser errors,
+      replay reset/Back/deep links, and record Android/human limitations truthfully.
+- [x] T231 Perform the final design/craft review, reconcile `DESIGN.md`, limitations, runbook,
+      evidence, and task states, inspect exact staged paths, and create cohesive local commits
+      without pushing or merging.
+
+## Phase 31: Parent Sign-up Route and Sign-in Hierarchy
+
+**Gate**: User-authorized R003 access usability correction. Frozen R001 evidence stays historical;
+the current operational route inventory may add exactly one code-native sign-up route.
+
+- [x] T232 Record the 37-route sign-up contract, one-household boundary, closed verification-origin
+      behavior, code-native visual inheritance, and exact writer reservation in the active spec,
+      plan, requirements checklist, R003 journey manifest, `DESIGN.md`, and `TEAM_OWNERSHIP.md`.
+- [x] T233 Write RED access/route tests proving centered screen-level sign-in copy, logical-start
+      identifier safeguards, navigation-only Create Family behavior, native sign-up presence,
+      verification origin restoration, bilingual parity, and the exact 37-route inventory.
+- [x] T234 Implement `/access/parent/sign-up` and the bounded sign-in/verification route changes
+      using existing access components, tokens, resources, and Parent verification authority only.
+- [x] T235 Run focused tests, typecheck, lint, format, full tests, route inventory, web export,
+      `git diff --check`, and scoped Arabic/English browser inspection at 320×720 and 390×844;
+      record native and named-human checks without inference.
+- [x] T236 Reconcile the quickstart, acceptance contract, runbook, ownership release, and exact
+      evidence before one cohesive local commit; do not push or merge.
+
+## Phase 32: Natural Botanical Artwork Refresh
+
+**Gate**: User-authorized presentation-only replacement of poor vector-like scenic drawings. The
+official Ghaf brand and functional vector controls remain protected; no behavior or release flag
+changes.
+
+- [x] T237 Audit every tracked runtime visual, classify official brand, functional icon/progress,
+      scenic/decorative drawing, existing prepared media, and evidence-only artifact; reserve exact
+      writers and record the 41-asset prompt/usage manifest before runtime work.
+- [x] T238 Write RED artwork coverage for exact local static mappings, twenty-five distinct Garden
+      states, provenance/checksums/dimensions, accessibility/fallback behavior, unchanged official
+      brand, no remote sources, and removal of replaced scenic vector functions.
+- [x] T239 Generate, inspect, normalize, compress, metadata-clean, prompt-embed, and checksum the
+      complete Quiet UAE Botanical Editorial library with no people, text, logos, hazards, fantasy,
+      misleading ecology, or crop-direction dependency.
+- [x] T240 Add the approved Expo image dependency plus the typed local registry and reusable
+      decorative/informative image wrapper; migrate existing runtime raster presentation without
+      adding networking, capture, analysis, route, flag, or product-state authority.
+- [x] T241 Replace the access backdrop, Welcome hero, botanical profile choices, and Child task hero
+      while preserving all copy, selection semantics, 48dp targets, Arabic/English layout, and
+      deterministic access/task behavior.
+- [x] T242 Replace Garden stages, family-canopy states, and Circle garden scenes while keeping live
+      progress, contribution, privacy, recognition announcements, reduced motion, and data authority
+      outside the pixels.
+- [x] T243 Replace gated Learning, Reveal, and Shared Growth scenes, remove the decorative League
+      watermark, and preserve each unavailable state, accessible learning route, and default-off
+      feature flag.
+- [x] T244 Run focused tests, typecheck, lint, formatting, full tests, Expo dependency/configuration
+      checks, route/reset scans, production exports, asset/provenance audit, and `git diff --check`.
+- [ ] T245 Inspect Arabic RTL and English LTR at 320/390 widths for Welcome, profile selection, task,
+      Garden, Circle, and explicitly enabled gated art surfaces; record crop, overflow, console,
+      Android/TalkBack, named-human, and rights evidence truthfully before cohesive local commits.
+
+      Default-on Arabic/English web-proxy inspection is complete. Explicitly enabled default-off
+          art routes, physical Android/TalkBack, named-human, and image-rights evidence remain open.
+
+## Phase 33: First-run Onboarding and Context Transitions
+
+**Gate**: User-authorized presentation refinement inside the existing route and authority model.
+
+- [x] T246 Read the active product/design/safety contract, reserve exact writer boundaries, and
+      document the three-state onboarding, native/app splash handoff, bounded transition groups,
+      raster-only artwork, accessibility, and evidence truth before runtime work.
+- [x] T247 Write RED source/flow tests for ordered onboarding, skip/back/next/start, active-session
+      bypass, 37-route preservation, bounded context transitions, raster logo, exact 45-asset local
+      registry/provenance, bilingual parity, and reduced-motion behavior.
+- [x] T248 Generate, inspect, normalize, prompt-embed, checksum, and register four Quiet UAE
+      Botanical Editorial raster assets with no people, hands, text, logos, UI, vectors, hazards,
+      fantasy, runtime URL, or impact claim.
+- [x] T249 Build reusable first-run, raster-logo, branded-splash, and context-transition components
+      with existing tokens, Expo Image, Alexandria/Readex, 48 dp controls, localized alternatives,
+      fallback, polite announcements, and reduced-motion equivalence.
+- [x] T250 Integrate the three moments into `/`, preserve active-session redirects and the existing
+      Parent/Child Welcome actions, then classify only major access/experience handoffs for the
+      root transition buffer.
+- [x] T251 Run focused and full tests, typecheck, lint, formatting, dependency/configuration checks,
+      route/reset scans, exports, asset/provenance audit, and `git diff --check`; inspect Arabic and
+      English at 320/390 widths and record Android, TalkBack, font-scale, human-review, and rights
+      gaps truthfully before cohesive local commits.
+
+      Completed locally on 2026-09-06: focused flow/route/reset coverage passed 7 files / 76 tests;
+      the full suite passed 86 files / 1,052 tests; typecheck, lint, format, dependency check, web
+      and Android JS exports, asset provenance, and diff checks passed. Firefox proxy inspection
+      passed at 320×720 and 390×844 in Arabic RTL and English LTR. Physical Android/TalkBack/OS
+      font-scale is `BLOCKED / NOT RUN` with no attached ADB device; named-human and rights review
+      remains `NOT RUN`.
+
+## Phase 34: Child-clear First-run and Branded Access Refinement
+
+**Gate**: User-authorized refinement of the completed first-run/access presentation; product and
+route authorities remain unchanged.
+
+- [x] T252 Re-read the active product/design/safety contract, inspect all Parent/Child access
+      screens and shared components, reserve exact writer boundaries, and record the superseding
+      four-moment, child-copy, raster, loader-timing, and shared-brand contract before runtime work.
+- [x] T253 Update RED tests for `intro → choose → support → growth`, `1/4` semantics, child-clear
+      bilingual fields, exact 46-asset provenance, 1,200/900 ms timing tokens, shared raster brand
+      imports, and brand/backdrop inheritance across all existing access routes.
+- [x] T254 Generate and inspect one new vivid Ghaf-introduction photograph and three replacement
+      feature photographs; normalize, prompt-embed, checksum, and register them without people,
+      hands, text, logos, vectors, UI, hazards, fantasy, or impact claims.
+- [x] T255 Refactor the shared raster logo into `src/components/brand/`, add one reusable compact
+      brand lockup, and apply it plus the leaf-shadow background through `AccessHeader` and
+      `AccessScreen` without duplicating route code.
+- [x] T256 Implement the four child-clear onboarding moments, richer raster framing, simple copy,
+      bilingual alternatives, accessible progress, and reduced-motion-equivalent transitions.
+- [x] T257 Implement the 1,200 ms startup minimum and 900 ms major-section dwell using existing
+      motion tokens, real local-readiness state, clean timer cancellation, and no fake progress.
+- [x] T258 Run focused and full tests, typecheck, lint, format, detector, route/reset scans,
+      production exports, asset/provenance audit, and `git diff --check`; inspect Arabic/English
+      onboarding and representative Parent/Child access screens at 320/390 widths, then record
+      physical Android, TalkBack, OS font-scale, named-human, and rights gaps truthfully.
+
+      Completed locally on 2026-09-06: the required RED state recorded 2 files with 5 failing and
+      4 passing tests before implementation. The final focused brand/onboarding/artwork batch
+      passed 3 files / 16 tests, and the complete suite passed 86 files / 1,053 tests. Typecheck,
+      lint, formatting, Expo dependency alignment, the Impeccable detector, manifest integrity,
+      web export (122 files), Android JS export (91 files), five-image export checksum matching,
+      and `git diff --check` passed. Firefox proxy inspection covered four onboarding moments and
+      eight reachable Parent/Child access states at 320×720 and 390×844 in Arabic RTL and English
+      LTR with zero final-flow console errors. Startup remained visible about 1.48 seconds after
+      mount and the major-section overlay about 1.37 seconds including fade-out. The state-gated
+      pairing screen was source-audited through the same shared shell. Physical Android, TalkBack,
+      OS font scale, named-human review, and public image-rights review remain `BLOCKED` or
+      `NOT RUN`; `adb devices -l` returned no attached device or emulator.
+
+## Phase 35: Startup Asset Readiness and Ghaf Loading Motion
+
+**Gate**: User-authorized loading refinement over the completed R003 first-run presentation; all
+product, route, access, artwork, and feature-flag authorities remain unchanged.
+
+- [x] T259 Re-read the active contract, inspect startup/font/image paths, reserve exact writer
+      boundaries, and record font-plus-raster readiness, fallback, progress, reduced-motion, and
+      native-splash handoff rules before runtime work.
+- [x] T260 Write RED coverage proving the splash waits for every local runtime raster plus fonts,
+      critical brand assets settle before native handoff, progress is resource-derived, and one
+      failed image cannot trap startup.
+- [x] T261 Implement the typed batched local raster preloader and root readiness orchestration with
+      clean cancellation, truthful warnings, the existing 1,200 ms minimum, and no remote request.
+- [x] T262 Replace the generic spinner with a Ghaf-specific Reanimated transform/opacity sequence,
+      real accessible progress, bilingual child-clear loading copy, and a calm reduced-motion state.
+- [x] T263 Run focused/full tests, typecheck, lint, format, dependency/asset/route checks, production
+      exports, detector, and bounded delayed-asset visual inspection; record physical Android and
+      named-human limitations truthfully before a cohesive local commit.
+
+      Completed locally on 2026-09-06: the focused RED state failed because the startup loader did
+      not yet exist. The final focused file passed 7 tests and the full suite passed 86 files /
+      1,055 tests. Typecheck, lint, format, dependency alignment, detector, web export (122 files),
+      Android JS export (91 files), and Git whitespace checks passed. In Firefox, delaying one local
+      raster kept the splash visible after 3.2 seconds with the real progress transform at
+      `0.927273`; it dismissed only after settlement and exposed usable onboarding with zero page
+      errors. Standard pulse values changed over time; reduced motion held the logo at exactly
+      `scale(1)`. Arabic 320×720 and 390×844 proxy layouts were contained. Physical Android,
+      TalkBack, native decode/memory, OS font scale, and named-human review remain `BLOCKED` or
+      `NOT RUN`; `adb devices -l` returned no attached target.
+
+## Phase 36: Section-scoped Loading and Simple Ghaf Leaf Loop
+
+**Gate**: User-authorized performance correction over Phase 35; section boundaries, routes,
+product behavior, and the 46-artwork registry remain unchanged.
+
+- [x] T264 Re-read the active contract, inspect measured raster/font sizes and consumers, reserve
+      exact writer boundaries, and replace the all-app readiness requirement with a bounded
+      signed-out set plus dynamic access/experience section sets before runtime work.
+- [x] T265 Write RED coverage proving startup excludes all Garden/prepared-media imagery, uses only
+      the four referenced brand font files, starts its visible hold after native splash handoff,
+      dynamically settles bounded section images, and renders a static reduced-motion equivalent.
+- [x] T266 Implement signed-out and section-scoped local image preparation with caching, failure
+      settlement, and no runtime URL; leave deeper screen imagery lazy through Expo Image.
+- [x] T267 Replace visible technical loading copy, progress, pulse, and generic spinner with one
+      reusable accessible three-leaf transform loop across startup and major-section buffers.
+- [x] T268 Run focused/full tests, typecheck, lint, format, dependency/asset/route checks,
+      production exports, detector, bounded delayed-asset browser inspection, and the available
+      Android gate; record measured evidence and remaining limitations before a cohesive commit.
+
+      Completed locally on 2026-09-06: the focused RED state recorded 3 failing and 5 passing
+      tests. The final focused batch passed 2 files / 15 tests and the full suite passed 86 files /
+      1,056 tests. Typecheck, lint, formatting, Expo dependency alignment, detector, Git whitespace,
+      119-file web export, and 88-file Android JS export passed. Startup now requests seven
+      signed-out rasters (1,650,726 bytes) and four used branded fonts (546,000 bytes), down from
+      48 rasters plus seven fonts (10,638,873 combined bytes), a 79.4% reduction in the explicit
+      readiness set. Firefox showed the app-owned loader for 1,318 ms on a cached launch including
+      exit, retained it for a delayed onboarding raster, requested five avatar rasters only after
+      entering access, changed the standard leaf rotation, kept reduced motion at the identity
+      matrix, produced zero page errors, and had zero horizontal overflow at 320/390 widths.
+      Physical Android, TalkBack, native decode/memory, and OS font scale remain `BLOCKED / NOT RUN`
+      because `adb devices -l` returned no attached target.
+
+---
+
+## Phase 37: Deferred Post-onboarding Image Warm-up
+
+**Purpose**: Keep first entry bounded while warming every later local raster after onboarding can
+paint, using controlled parallelism and one request cache.
+
+- [x] T269 Re-read the active contract, inspect startup/section source registries and current
+      request measurements, reserve exact writer boundaries, and amend spec/plan/tasks before
+      runtime work.
+- [x] T270 Write RED coverage proving deferred work is excluded from startup readiness, begins only
+      after the app-owned splash exits and a paint opportunity, uses bounded parallel batches,
+      prioritizes access/experience imagery, shares one source cache, and places prepared media last.
+- [x] T271 Extract the cached local-image loader, implement the singleton failure-tolerant deferred
+      queue, and preserve the existing startup and section result contracts.
+- [x] T272 Trigger the queue from root as non-blocking post-splash work without visible progress,
+      route/state authority, duplicate downloads, or a new dependency.
+- [x] T273 Run focused/full tests, typecheck, lint, format, dependency/asset/route checks,
+      production exports, delayed browser request-order inspection, available Android evidence, and
+      record truthful documentation plus the cohesive local checkpoint.
+
+      Completed locally on 2026-09-06: RED failed on the absent batch helper; the focused file then
+      passed 9 tests and the full suite passed 86 files / 1,057 tests. Typecheck, lint, format,
+      dependency alignment, Git whitespace, 119-file web export, and 88-file Android JS export
+      passed. In Firefox, a 2,600 ms delayed onboarding raster kept the branded splash present with
+      zero deferred requests at 1,700 ms. After handoff, all 41 remaining rasters were requested:
+      the five avatars and field image began together within 1 ms, the task image opened batch two,
+      and the 2.3 MB prepared fixture was last. The flow produced zero browser errors. Physical
+      Android decode/cache/memory remains `BLOCKED / NOT RUN` because `adb devices -l` returned no
+      attached target.
+
+---
+
+## Phase 38: Ordered Splash-to-loading Startup
+
+**Purpose**: Guarantee that the Ghaf splash is the first visible app-owned frame, then show a
+distinct loading state before onboarding.
+
+- [x] T274 Inspect the native/app-owned startup handoff, identify the onboarding exposure, reserve
+      exact writer boundaries, and amend the active spec/plan/tasks before runtime work.
+- [x] T275 Write RED coverage for the explicit `splash → loading → complete` order, 2,000/1,000 ms
+      timing tokens, no loader or entering transparency on splash, asset-gated loading, and deferred
+      warming only after completion.
+- [x] T276 Implement the ordered root state and distinct splash/loading contents while preserving
+      the existing native handoff, asset readiness, fallback, accessibility, and reduced motion.
+- [x] T277 Verify fresh cached and delayed launches show no onboarding before splash/loading,
+      preserve the exact seven blocking and 41 deferred raster boundaries, and produce no errors.
+- [x] T278 Run focused/full tests, typecheck, lint, format, dependency/route/asset checks,
+      production exports, detector, available Android evidence, and record the cohesive checkpoint.
+
+      Completed locally on 2026-09-06: RED recorded 2 failing / 8 passing focused tests; the final
+      file passed 10 tests and the full suite passed 86 files / 1,058 tests. Typecheck, lint,
+      formatting, dependency alignment, detector, Git whitespace, 119-file web export, and 88-file
+      Android JS export passed. Fresh Firefox timelines began with a fully covering splash without
+      the leaf loader, changed to loading, then exposed onboarding. Cached loading remained 1,013
+      ms; a 5,200 ms delayed onboarding raster extended loading to 3,214 ms. All 41 deferred
+      requests occurred only during onboarding, and the compact 390×844 splash/loading inspection
+      produced zero page errors. Web total splash time included development bundling and critical
+      pre-handoff preparation; the post-handoff code token is exactly 2,000 ms. Physical Android
+      first-frame timing and motion remain `BLOCKED / NOT RUN` because ADB returned no target.
+
+---
+
+## Phase 39: Returning-family Entry and Dashboard Welcome
+
+**Purpose**: Keep established families out of first-family setup and orient each returning role
+with a concise private summary over its own dashboard.
+
+- [x] T279 Re-read the active access/design/safety contract, inspect existing Parent receipts and
+      Child pairing authority, reserve exact writer boundaries, and amend spec/plan/tasks before
+      runtime work.
+- [x] T280 Write focused RED state and source tests proving fresh setup/pairing receives no welcome,
+      returning Parent/Child entry receives exactly one role-bound signal, clear boundaries remove
+      it, and completed families cannot render the first-family routes.
+- [x] T281 Implement the transient store signal and hardened returning-Parent route handoff without
+      changing controller authority, receipt semantics, route count, reset, or first-family success.
+- [x] T282 Build and integrate one bilingual, accessible, reduced-motion-aware Soft Geometric
+      welcome dialog over Parent Home and Child Today using only role-authorized current state and
+      existing actions.
+- [x] T283 Run focused/full tests, typecheck, lint, format, route/reset/claim checks, detector,
+      bilingual compact browser inspection, and available Android evidence; reconcile product,
+      design, limitations, runbook, ownership release, and the cohesive checkpoint.
+
+      Completed locally on 2026-09-06: RED recorded 5 expected failures in the new focused file;
+      final returning-entry coverage passed 5 tests, the integrated access/localization batch
+      passed 4 files / 35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint,
+      format, Expo dependency alignment, Git whitespace, the Impeccable detector, and the 39-route
+      web export passed. Fresh Parent setup retained Family Basics and first Child pairing showed no
+      return dialog. Existing Parent verification went directly to `/parent`; an already paired
+      Salem PIN went directly to `/child`. Arabic and English Parent/Child dialogs were inspected at
+      320×720 and 390×844 with contained copy, usable actions, no horizontal overflow, and zero page
+      errors. Physical Android, TalkBack, native Back/modal behavior, and OS font scale remain
+      `BLOCKED / NOT RUN` because `adb devices -l` returned no attached target.
+
+---
+
+## Phase 40: SMAC Family–Sustainability–AI Onboarding
+
+**Purpose**: Make the competition pillars immediately understandable and exciting for children
+without weakening Ghaf's safety, privacy, approval, symbolic-growth, or truthful-AI boundaries.
+
+- [x] T284 Re-read the active first-run/design/safety contract, inspect the four-step runtime and
+      startup boundary, reserve exact writer scope, and amend spec/plan/tasks before runtime work.
+- [x] T285 Write focused RED model, copy, source, startup, and provenance tests for six ordered
+      steps, closed three-pillar navigation, bounded AI wording, two new raster assets, exact 48
+      artwork entries, nine startup rasters, and the preserved 41-image deferred queue.
+- [x] T286 Generate, inspect, normalize, prompt-embed, checksum, and register the Family and bounded
+      AI Quiet UAE Botanical Editorial photographs with no people, hands, text, UI, robot, fantasy,
+      hazard, or measured-impact claim.
+- [x] T287 Implement the child-clear bilingual six-step story, accessible three-pillar navigator,
+      energetic editorial layout, and one UI-thread step transition with reduced-motion parity;
+      preserve all route, role, task, reward, privacy, reset, and feature-flag authority.
+- [x] T288 Run focused/full tests, typecheck, lint, format, route/startup/deferred/asset checks,
+      detector, bilingual 320×720 and 390×844 browser inspection, reduced-motion checks,
+      production exports, and available Android evidence; reconcile docs, release ownership, and
+      create one cohesive local checkpoint without push/merge/deployment/release activation.
+
+      Completed locally on 2026-09-06: the first RED state recorded 6 expected failures / 9 passes
+      and the motion refinement recorded 1 expected failure / 11 passes. Final focused coverage
+      passed 3 files / 26 tests; the full suite passed 87 files / 1,065 tests. Typecheck, lint,
+      formatting, Expo dependency alignment, Git whitespace, the 48-raster prompt scan, and the
+      Impeccable detector passed. Web exported 121 files / 39 static routes and Android JS exported
+      90 files; both new onboarding rasters appeared byte-identically in both. Firefox traversed
+      the six moments, pillar jumps, locale change, 320×720 and 390×844 layouts, and reduced motion
+      with 60px pillar targets, no horizontal overflow, and zero page errors. Physical Android,
+      TalkBack, OS font scale, and motion feel remain `BLOCKED / NOT RUN` because ADB returned no
+      target; named Arabic/UAE, safeguarding, botanical, accessibility, and rights review remains
+      `NOT RUN`.
+
+---
+
+## Phase 41: Device-local Family Directory, Multi-child Setup, and AI Profile Helper
+
+**Purpose**: Remember one configured demo family across restarts, guide one or two Child profiles
+through a clear setup sequence, and make bounded AI personalization visibly useful and safe.
+
+- [x] T289 Re-read the active product/design/safety/architecture contract, inspect current
+      onboarding/session/access boundaries, reserve exact files, verify the official Expo SQLite
+      path, and amend spec/plan/tasks before behavior work.
+- [x] T290 Write RED tests for the strict versioned local-family schema, platform repository
+      contract, corrupted/unknown data, minimum collection, configured profile filtering, restore,
+      pairing-marker lifecycle, and reset clearing.
+- [x] T291 Extend the Parent onboarding model/controller with one-or-two Child drafts, indexed
+      updates, full-directory validation, immutable multi-child receipt restoration, and atomic
+      persist-before-authentication semantics.
+- [x] T292 Add the service-registry local repository with SQLite-backed native, localStorage web,
+      and deterministic memory test adapters; hydrate family/profile/pairing state and clear it on
+      Parent reset without persisting task/reward/garden authorities.
+- [x] T293 Write RED assistant-policy and presentation tests, then implement deterministic
+      allowlisted profile personalization that excludes gender/free text and uses the labeled
+      sparkle mark with local/prepared/fallible/Parent-decides disclosure.
+- [x] T294 Redesign Family Basics, sequential Child forms, whole-family review, and success copy in
+      the current Soft Geometric Arabic-first system with clear ordering, optional selections,
+      preserved Back state, keyboard scrolling, 48dp controls, and compact-width resilience.
+- [x] T295 Filter Parent/Child profile selectors and summaries to configured users, persist only an
+      approved synthetic paired marker, restore returning Parent/Child entry and existing role
+      welcome behavior after reload, and reject direct unconfigured-profile access.
+- [x] T296 Complete the open source-verifiable R002b readiness audit, add canonical release-review
+      and physical-device/human-review packets, update only directly supported checklist markers,
+      and retain external gates as `NOT RUN` or `BLOCKED`.
+- [x] T297 Run focused/full tests, typecheck, lint, format, dependency/route/reset/privacy/asset
+      checks, one final detector pass, bilingual 320×720 and 390×844 persistence/onboarding
+      browser journeys, web/Android production exports, and available Android evidence; reconcile
+      all docs, release ownership, and cohesive local checkpoints without push/merge/deployment or
+      release activation.
+
+      Completed locally on 2026-09-06: the focused local-family/access/AI batch passed 8 files / 83
+      tests and the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, format,
+      Expo dependency/public-config checks, 37-file product-route inventory, Git whitespace, and
+      the one permitted final Impeccable detector pass succeeded. Web exported 121 files / 39
+      static routes; Android JavaScript exported 90 files with `expo-sqlite@57.0.2` resolved.
+      Firefox completed the one- and two-Child setup/review, direct storage inspection, reset, and
+      returning Parent/Child paths across Arabic RTL and English LTR at 320×720 and 390×844 with
+      zero horizontal overflow and zero console errors. Physical Android SQLite/process-death,
+      Back/IME, TalkBack, OS font scale, and reduced-motion evidence remains `BLOCKED / NOT RUN`
+      because `adb devices -l` returned no attached device; all named-human review rows remain
+      `NOT RUN` and every R002b flag stays default off.
+
+---
+
+## Phase 42: Convergence
+
+- [x] T298 Persist an established family's changed application language and prefer that current
+      local value on returning Parent handoff per FR-191 and FR-197 (partial).
+
+      Completed locally on 2026-09-06: focused RED reproduced the stored-`ar`/active-`en`
+      mismatch, then the corrected store test passed 12/12. The complete local-family batch passed
+      8 files / 83 tests and the full suite passed 90 files / 1,085 tests. The existing family
+      record now persists a valid changed app language and returning Parent entry prefers it without
+      mutating the immutable completion receipt or restoring a session.
+
+---
+
+## Phase 43: AI-narrated Square Onboarding
+
+**Purpose**: Present the existing six-moment Ghaf Guide introduction as a compact story with square
+artwork, high-contrast lower progress, clearer energy, and optional accessible on-device narration.
+
+- [x] T299 Inspect the active onboarding, voice, accessibility, dependency, and ownership
+      boundaries; reserve exact files; measure the `expo-audio`/missing-binary TTS gap; and amend
+      spec, plan, tasks, product, design, limitations, and first-run intake before behavior work.
+- [x] T300 Write focused RED source/resource tests for a 1:1 image frame, lower high-contrast
+      six-segment story progress, concise first-person bilingual scripts, visible narrator
+      identity/origin, optional stop/enable/replay controls, step/locale/exit cleanup, screen-reader
+      suppression, and nonblocking speech failure.
+- [x] T301 Install the Expo-compatible `expo-speech` package and implement one bounded onboarding
+      narration hook with no microphone, recording, background listening, provider, route, store,
+      or product authority.
+- [x] T302 Recompose `FirstRunOnboarding` with the lower high-contrast story rail, square local
+      artwork, narrator control, and rewritten resources while preserving six-state/pillar
+      navigation, reduced motion, startup/deferred sets, and all access/product behavior.
+- [x] T303 Run focused/full tests, typecheck, lint, format, Expo dependency/route/startup checks,
+      the one final Impeccable detector pass, web export, compact bilingual browser inspection,
+      and available Android/TalkBack/TTS evidence.
+- [x] T304 Reconcile product/design/limitations/runbook/ownership with exact results, retain native
+      and named-human gaps truthfully, and create one cohesive local commit without push, merge,
+      deployment, or release activation.
+
+      Completed locally on 2026-09-07: the initial RED state recorded 3 failures / 10 passes; the
+      requested lower-indicator correction and web opt-in voice guard each recorded 1 expected
+      failure / 12 passes. The final focused file passed 13 tests and the full suite passed 90 files
+      / 1,086 tests. Typecheck, zero-warning lint, format, Expo dependency/public-config, Git
+      whitespace, the final Impeccable detector, 39-route web export, and 90-file Android
+      JavaScript export passed. Firefox inspected Arabic RTL at 390×844 and English LTR at 320×720,
+      measured a 275.8×275.8 px crop, found no horizontal overflow, confirmed the lower rail above
+      the action and `1/6 → 2/6`, and exercised the localized web speech fallback with zero page
+      errors. Physical Android speech/audio focus, TalkBack, OS font scale, motion feel, and named
+      review remain `BLOCKED / NOT RUN`; ADB returned no target.
+
+---
+
+## Phase 44: Compact Audio Onboarding Correction
+
+**Purpose**: Preserve the six-moment AI introduction while reclaiming height, simplifying progress
+and voice control, and making narration replay reliable through prepared local audio.
+
+- [x] T305 Re-read the active onboarding/audio/safety/asset contract, inspect all six 1200×800
+      source photographs, reserve exact files, and amend spec/plan/tasks/product/design/limitations/
+      runbook/first-run intake before behavior work.
+- [x] T306 Write focused RED source/resource tests for responsive 3:2 artwork, centered copy, the
+      original lower current/total plus dots, removal of the Guide panel/toggle, one accessible
+      speaker replay control, image/layout-gated automatic narration, quiet foreground ambience,
+      screen-reader suppression, exit cleanup, local provenance, and no microphone/runtime URL.
+- [x] T307 Prepare exact bilingual synthetic narration clips plus one locally authored nature
+      soundscape under `assets/audio/onboarding/`, record authoring provenance/checksums, register
+      static local sources, and remove the now-unused `expo-speech` dependency.
+- [x] T308 Implement the bounded narration and ambience hooks and recompose
+      `FirstRunOnboarding` with the 3:2 frame, centered copy, single speaker icon, and restored dot
+      row while preserving reducer, pillar, startup/deferred-image, route, privacy, and product
+      behavior.
+- [x] T309 Run focused/full tests, typecheck, lint, format, Expo dependency/public-config checks,
+      one final Impeccable detector pass, web/Android exports, compact bilingual browser/audio
+      inspection, and available physical Android/TalkBack/audio evidence.
+- [x] T310 Reconcile the evidence in runbook/ownership, retain browser-autoplay/native/human gates
+      truthfully, and create one cohesive local commit without push, merge, deployment, or release
+      activation.
+
+      Completed locally on 2026-09-07: RED recorded 2 expected failures / 11 passes and the final
+      focused file passed 13 tests. The full suite passed 90 files / 1,086 tests; typecheck,
+      zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and the
+      final Impeccable detector passed. Web exported 134 files / 39 static routes with 13 MP3s;
+      Android JavaScript exported 103 files and all 13 prepared-audio hashes matched. Firefox
+      measured exact 3:2 frames at Arabic 390×844 and English 320×720, a 48dp speaker, the 24px
+      original dot row directly above navigation, centered copy, and zero overflow. The speaker
+      requested narration plus ambience; subsequent explicit navigation requested the matching
+      settled-slide narration. A fresh web launch made no pre-gesture autoplay call and had zero
+      final console errors; first-screen web autoplay remains platform-limited. Physical Android,
+      TalkBack, audio focus, font scale, and named Arabic/voice/rights review remain
+      `BLOCKED / NOT RUN`; ADB returned no target.
+
+---
+
+## Phase 45: Returning Parent Identifier Lookup
+
+**Purpose**: Bind the one local family to its Parent identifier so returning sign-in can verify
+membership and always bypass first-family creation.
+
+- [x] T311 Re-read the active access/privacy/storage contract, inspect the current local record and
+      verification routes, reserve exact writer boundaries, and amend spec/plan/tasks before
+      behavior work.
+- [x] T312 Write RED schema, repository, store, route, and bilingual-copy tests for normalized
+      identifier persistence, schema-1 canonical migration, mismatch denial without state change,
+      explicit-sign-up-only creation, direct returning handoff, neutral copy, and removal of the
+      simulated biometric control.
+- [x] T313 Implement schema-2 local Parent identifier storage/migration and separate create-family
+      versus returning-sign-in store commands without persisting the deterministic code or session.
+- [x] T314 Harden sign-in/verification routing and rewrite the Parent access UI so a matched Parent
+      enters the existing family directly, an unknown identifier stays out of setup, and the three
+      auth screens show no demo/synthetic/not-real messaging or fake biometric action.
+- [x] T315 Run focused/full tests, typecheck, lint, format, dependency/config/route/privacy checks,
+      web/Android exports, compact bilingual browser inspection, and available physical Android
+      evidence; reconcile docs, release ownership, and one cohesive local commit without push,
+      merge, deployment, or release activation.
+
+      Completed locally on 2026-09-07: RED recorded 15 expected failures / 40 passes; the final
+      focused batch passed 6 files / 84 tests and the full suite passed 90 files / 1,090 tests.
+      Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git
+      whitespace, schema/privacy scans, 39-route web export (134 files), and Android JavaScript
+      export (103 files) passed. Firefox created the schema-2 family, inspected the normalized
+      Parent identifier, denied an unknown email without leaving sign-in, matched a differently
+      cased/space-padded email, and entered `/parent` after `424242` without setup. Arabic 390×844
+      and English 320×720 had no horizontal overflow or console errors. Physical Android and named
+      review remain `BLOCKED / NOT RUN`; `adb devices -l` returned no target.
+
+---
+
+## Phase 46: Onboarding Image Perimeter Progress
+
+**Purpose**: Replace the detached photo accent with one restrained progress treatment that belongs
+to the rounded image frame.
+
+- [x] T316 Inspect the exact rendered element and current onboarding motion/visual contract,
+      reserve the narrow writer boundary, and amend spec/plan/tasks/product/design/direction/intake
+      before behavior work.
+- [x] T317 Write one focused RED source contract for removal of `heroAccent`, symmetric bottom-
+      center SVG paths, deterministic six-step completion, UI-thread dash animation, reduced-motion
+      equivalence, hidden duplicate semantics, and retention of the lower progressbar.
+- [x] T318 Implement the integrated perimeter progress treatment with installed Reanimated and
+      `react-native-svg`, without changing image ratio, audio, copy, navigation, or product state.
+- [x] T319 Run focused/full tests, typecheck, lint, format, detector, web/Android exports, compact
+      Arabic/English browser inspection, and available Android evidence; reconcile runbook and
+      ownership, then create one cohesive local commit without push, merge, deployment, or release
+      activation.
+
+      Completed locally on 2026-09-07: RED recorded one expected failure / 12 passes for the
+      initial source contract and again for each visual correction guard; the final focused file
+      passed 13 tests and the full suite passed 90 files / 1,090 tests. Typecheck, zero-warning
+      lint, formatting, Expo dependency/public-config checks, Git whitespace, and the Impeccable
+      detector passed. Web exported 134 files and Android JavaScript exported 103 files. Firefox
+      inspected the first, intermediate, and fully closed progress extents in Arabic 390×844 and
+      English 320×720, measured the compact frame at 280×186.67, confirmed reduced motion applies
+      the exact static step value, found no horizontal overflow, and reported zero console errors
+      or warnings. Physical Android motion/TalkBack and named review remain `BLOCKED / NOT RUN`;
+      `adb devices -l` returned no target.
+
+---
+
+## Phase 47: AI Services 1–3 Integration
+
+**Purpose**: Preserve and harden the complete deterministic AI path, prepare one authenticated
+default-off live Parent Guide transformation, and carry curated profile recommendations into Task
+Builder without weakening Parent authority or P0 reliability.
+
+- [x] T320 Re-read the active product/design/safety/architecture contract, audit every branch's AI
+      implementation, reserve the exact writer boundary, and amend spec/plan/tasks before behavior.
+- [x] T321 Write and observe focused RED tests for strict live Parent request/result validation,
+      HTTPS/authenticated adapter behavior, timeout/HTTP/non-JSON/schema/correlation/safety fallback,
+      prepared-default zero-fetch behavior, Worker authentication/rate/CORS/body/operation guards,
+      and no live Child operation.
+- [x] T322 Write and observe focused RED tests for deterministic profile-derived category ordering,
+      stable remainder order, exact-once categories, opt-out/invalid fallback, Task Builder labels,
+      and unchanged P0 executable/Parent-review authority.
+- [x] T323 Implement the strict live Parent Guide policy and fetch adapter with injected credential,
+      bounded abort timeout, no retry, exact canonical merge, live disclosure, and typed errors.
+- [x] T324 Implement the authenticated/rate-limited one-operation Cloudflare Worker reference,
+      strict structured output, configured CORS, bounded body, no-store response, no persistence,
+      and deterministic binding tests without deployment.
+- [x] T325 Separate registry primary/fallback authority, integrate live-result validation and
+      same-attempt prepared fallback in the existing store, and prove all deterministic Guide,
+      Coach, summary, age, voice, media, reset, and offline behavior remains the default.
+- [x] T326 Integrate the pure prepared profile recommendation plan into Parent Task Builder with
+      visible bilingual prepared/local/fallible explanation, no persisted derived state, and no
+      assignment or executable-template change.
+- [x] T327 Produce the professional Features 4/5 Codex handoff, run focused/full/static/config/
+      secret/route/Git checks, reconcile product/limitations/runbook/ownership, create cohesive
+      local commits, and leave deploy/live/native/human gates truthful without push or activation.
+
+**Evidence**: The initial focused RED run failed all three new files before the live modules and
+category-plan integration existed. Final focused validation passed 3 files / 26 tests; the wider
+assistant/profile/task batch passed 10 files / 203 tests; and full Vitest passed 93 files / 1,116
+tests. Typecheck, zero-warning Expo lint, Prettier check, Git whitespace, source secret/Child-route/
+app-route scans, Expo public config, a 134-file / 39-route web export, and an Android JavaScript
+export with 94 assets passed. Expo dependency validation used only its local SDK map and therefore
+does not prove online registry freshness. No live gateway/model/deployment/token broker, browser,
+physical Android device, or named-human review ran; those gates remain `BLOCKED` or `NOT RUN`.
+
+---
+
+## Phase 48: Completion Audit and Recovery Corrections — 2026-09-10
+
+**Scope**: Correct approved runtime behavior and reconcile current evidence. No new product
+feature, Seed source, provider, permission, dependency, or release activation is introduced.
+
+- [x] T328 Audit unfinished Feature 003/004/005 work against current code and evidence. Feature
+      004's 87 implementation tasks and Feature 005's original 29 tasks were already complete.
+      Preserve the unrecorded historical RED rows T038/T046/T052/T058/T064/T073, superseded
+      T154–T158, and external or incomplete visual/native/human gates T080/T086/T218/T245.
+- [x] T329 Correct prepared onboarding audio cancellation, out-of-order replay, released-player
+      cleanup, and native screen-reader readiness. Seven behavioral playback regressions and
+      thirteen existing first-run contracts passed; the extracted previous playback behavior
+      reproduced four failures before correction. Both narration and ambience remain optional,
+      local, and nonblocking, with unchanged permission/audio-mode configuration.
+- [x] T330 Retain the original learning unlock snapshot after 132→144 progression, reuse its
+      validated profile/epoch origin after scroll or Path/Badge reentry, and include the profile
+      in Story/Accessible no-stack Back restoration. Five resume and four Back regressions failed
+      before correction; ten focused learning files passed 103 tests afterward. Immutable domain
+      evidence, equal-credit zero-Seed completion, and independent default-off flags remain intact.
+- [x] T331 Split the twelve-raster platform-brand assertion into individual asset cases after a
+      full run exceeded its five-second timeout. Preserve every checksum, dimension, and opacity
+      assertion and the existing timeout. The focused file passed all 17 cases.
+- [x] T332 Complete current full/static/export validation, reconcile T138/T139 and the Reveal/AI
+      review packets, record exact remaining external gates, and release the ownership window.
+
+The returning Child storage-failure correction is recorded separately as Feature 005 T030–T032.
+No historical Feature 002 result or non-ancestor commit is inherited as current evidence.
+
+**Final evidence**: The full `npm.cmd test -- --maxWorkers=2` run passed 123 files / 1,519 tests.
+Typecheck, zero-warning lint, maintained-source formatting, scoped branding formatting/lint,
+the current 39-route web export, and Git whitespace checks passed. Expo compatibility checked
+against its local SDK map; offline validation does not establish online registry freshness.
+The export retained the known `expo-file-system` web warning and Node color-environment warnings.
+The branding case input uses one explicit common type to keep TypeScript inference bounded;
+its final focused rerun retains all 17 asset/configuration cases.
+
+The active Feature 005 requirements checklist remained read-only and passed 16/16 checked items.
+No before/after-implementation extension hooks are configured. Interactive browser review is
+`BLOCKED` because CUA reported no browser surfaces and `Browser is not available: iab`.
+Android/TalkBack/Back/IME/process-death/font-scale, remaining responsive captures, content/rights,
+provider, and named-human reviews remain `BLOCKED / NOT RUN` as applicable. All R002b and optional
+AI defaults remain off. The repaired engineering boundary is ready for integration, not release.

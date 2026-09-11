@@ -1,8 +1,8 @@
 # Feature 003 Story Evidence
 
-**Recorded**: 2026-09-03; Child voice, family frontend, and bounded Android evidence appended below
+**Recorded**: 2026-08-27 12:23; final post-reset-fix validation update
 **Branch**: `feature/003-family-growth-garden`
-**Worktree**: validated Feature 003 branch checkpoint; implementation history is preserved in Git
+**Worktree**: dirty implementation worktree; no commit hash represents this checkpoint
 **Scope**: current deterministic implementation, focused automated checks, and secondary web
 proxy observations only
 
@@ -144,66 +144,3 @@ Salem 60 Seeds, Mangrove 60/60 Sapling, canopy 20/25, and circle 12/12. The Engl
 proved that unsafe shorthand fails without mutation, explains the necessary recovery, and can then
 continue through a bounded Guide decision. Final reset restored Arabic RTL `/` and survived six
 Back actions. Android/native and named-human evidence remains unchanged and open.
-
-## 2026-09-02 Child voice and bilingual typography evidence
-
-User Story 11 adds a presentation layer over the already-tested prepared Coach and synthetic voice
-domain. It does not add real Child audio, a microphone permission, speech recognition, a network
-provider, or a production identity claim.
-
-| Evidence                              | Observed result                                                                                                                                                                                                                                                                                                | Boundary                                                                                                                   |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `tests/child-ai-presentation.test.ts` | **PASSED — 19/19**: stored Parent authority, Child-side grant denial, exact task/version binding, age-derived Coach policy, all voice transitions, locale preservation, English-to-Arabic reset, stale lifecycle rejection, session isolation, reset/reuse, copy parity, route mounting, and forbidden imports | Deterministic prepared/synthetic behavior only                                                                             |
-| `tests/bilingual-typography.test.ts`  | **PASSED — 9/9**: six roles, Arabic/English resolver, explicit language overrides, Arabic zero tracking and body leading, mixed scripts, scaling guards, shared `Text`/`Input`, and scalable step badge                                                                                                        | Source/token evidence; not native font rendering                                                                           |
-| Full `npm test`                       | **PASSED — 25 files / 435 tests**                                                                                                                                                                                                                                                                              | Includes the existing reward, privacy, route, and reset regression suites                                                  |
-| Static checks                         | `npm run typecheck`, `npm run lint`, `npm run format:check`, ten-route inventory, `git diff --check`, and the Impeccable detector (`[]`) **PASSED**                                                                                                                                                            | The detector is heuristic evidence, not human accessibility review                                                         |
-| Web export                            | **PASSED — 12 static routes**, bundle `entry-a36ed701f6f11cbcbc2a457b47e66670.js`                                                                                                                                                                                                                              | Ten authored routes plus generated sitemap and not-found pages                                                             |
-| Aggregate `npm run verify`            | **FAILED at `expo install --check` only** after typecheck, lint, formatting, and the then-current 430 tests passed; Expo reported four installed patch versions behind its current recommendations. Later review regressions make the independently validated current suite 435 tests.                         | Dependencies were deliberately unchanged because this slice prohibits dependency changes; the web export passed separately |
-
-The headed 390×844 web proxy showed the Arabic Parent permission panel disabled, then enabled by a
-distinct action before assignment approval. The Child task showed three complete `9_11` Coach
-steps, three reviewed quick choices, standard pace, the persistent trusted-adult exit, and a
-prepared/may-be-wrong disclosure. The synthetic rehearsal then completed active, review, captions,
-0.75×/1× simulated rate, replay, Arabic/English switching, rehearsal-only send, reset, and
-delete-before-send states without horizontal overflow. The locale switch preserved the transcript
-and replay count. The only console error was the local static server's pre-existing missing
-`favicon.ico`; no application exception was observed.
-
-Screenshots are recorded under `output/playwright/feature003-voice/`. This is **PASSED automated and
-PASSED sampled web proxy** for US11. Physical Android font scale, TalkBack, permission, playback,
-touch, and native bidi behavior remain **BLOCKED / NOT RUN**, and named Arabic, safeguarding, and
-accessibility review remains **NOT RUN**.
-
-## 2026-09-02 Family experience frontend and Android evidence
-
-User Story 12 makes the previously tested synthetic access, Family Reward, and Family League domains
-visible as bounded states inside the ten-route app. It does not add production authentication,
-payments, social networking, persistence, real Child media, or unrestricted communication.
-
-| Evidence                                 | Observed result                                                                                                                                                                                                                                                                | Boundary                                                                                                                                                                |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Seven focused presentation/mobile suites | **PASSED — 7 files / 42 tests** covering authorized entry, revoke/restore, Reward receipt binding and privacy, League isolation/projection, UI wiring, locale parity, Android config, and runtime image selection                                                              | Source and deterministic-controller evidence                                                                                                                            |
-| Final correction regression              | **PASSED — 3 files / 13 tests** covering one inherited direction authority, protected role handoff, explicit structural headings, and the matching prepared encouragement intent; two independent re-reviews found no remaining P0–P2 defect                                   | Source and web-proxy evidence; not native accessibility acceptance                                                                                                      |
-| Full `npm run verify`                    | **PASSED — 30 files / 464 tests**, typecheck, lint, maintained-file formatting, Expo dependency alignment, and 12-page web export; bundle `entry-3296e802c2835dbc71e4d5e1108ed2ec.js`                                                                                          | Ten authored routes plus generated sitemap/not-found                                                                                                                    |
-| Android config introspection             | **PASSED** with package ID, backup disabled, predictive Back enabled, `adjustResize`, Arabic/English locales, and blocked recording/audio/external-storage permissions                                                                                                         | Generated config evidence; not an installed application                                                                                                                 |
-| Android production export                | **PASSED — 1,919 modules**, 5,082,731-byte Hermes bundle `entry-b3c7bf145c9a72aa784c751ce65ea8a7.hbc`, SHA-256 `761D1CD5887F7F50C60FF95E5049CA61D56436E6881DF8D515643DFE7DE4F186`                                                                                              | Bundle generation only; no emulator/native-runtime claim                                                                                                                |
-| Prepared runtime image                   | **PASSED** visual/source checks: 1448×1086 WebP, 124,028 bytes, 94.5% smaller than the archival PNG, PSNR 39.99 dB, no metadata                                                                                                                                                | Does not establish Android frame-rate or memory performance                                                                                                             |
-| Local Android attempt                    | **PASSED sampled / BLOCKED complete** on `Pixel_9_Pro_XL` API 35: after two disk-space preflight failures, the AVD booted and Expo Go 57.0.9 rendered the Arabic entry from local Metro; the host drive then filled and ADB went offline before English or journey interaction | Arabic initial launch/layout only; standalone install, Back, IME, TalkBack, font scale, reduced motion, device-offline, touch journey, and performance remain `NOT RUN` |
-
-Direct local artifacts are `output/android/ghaf-entry-ar.png` and
-`output/android/ghaf-entry.xml`. ADB reported Android 15/API 35, a 1344×2992 display, and
-`sys.boot_completed=1`. Expo CLI ran in offline mode, but the emulator still consumed the local
-Metro connection, so this does not establish device-network-denied operation.
-
-A headed production-web replay at 412×915 and 320×700 observed Arabic-first entry, Parent-authorized
-role access, Salem revoke/restore, private Reward creation and delivery, a fixed synthetic League,
-Salem-only Reward visibility, prepared encouragement, English LTR equivalence, no horizontal
-overflow, and protected role-handoff history. The only console error was the local server's missing
-`favicon.ico`; no application exception was observed. This is **PASSED automated and PASSED sampled
-web proxy** for US12, not Android or named-human acceptance.
-
-The final post-review replay additionally observed `html dir`, computed body direction, and inherited
-row layout at 412×915 Arabic and 320×700 English; both samples kept `scrollWidth === innerWidth`.
-Parent → role → Salem then sent the displayed “Keep growing” fixture, and browser Back reached
-`about:blank` rather than a stale Parent or Child route. Visible heading navigation contained only
-screen and section titles, not the wordmark, Seed/canopy totals, praise, or League metrics.

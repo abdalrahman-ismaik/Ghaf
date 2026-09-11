@@ -11,51 +11,87 @@ living garden.
 
 ## Current status
 
-| Area                 | Current evidence                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | Feature 003 — Family Growth Garden is implemented as one ten-route deterministic P0 journey                                                 |
-| Automated checks     | 17 test files / 305 tests, TypeScript, Expo ESLint, Prettier, and Expo dependency alignment passed at the latest recorded checkpoint        |
-| Web preview          | Arabic RTL and English LTR journeys passed at a 390×844 browser proxy with no runtime errors or horizontal overflow                         |
-| Android              | Authoritative physical-device validation is **BLOCKED** on this host because the Android SDK, ADB, Java, and a named device are unavailable |
-| Human review         | Arabic/UAE culture, safeguarding, accessibility, comprehension, and timed rehearsals are **NOT RUN** until completed by named reviewers     |
-| Production readiness | **No** — data, assistants, media, sharing, rewards, and growth are intentionally local/synthetic/prepared                                   |
+Feature 003 Revision 3 is the active product direction. The current implementation branch is
+`integration/r3-r002b-implementation-20260905`, based on the clean R002a head `0501cf3`. The six
+divergent local commits remain unapplied provenance.
 
-The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md). A browser or source pass
-does not count as native-device or human-review evidence.
+R001 and R002a remain frozen regression baselines and the fallback when an R002b flag is off. The
+R002b Growth Journey, badges, learning, Parent Progress, additive Shared Growth, private League, and
+Reveal candidates are implemented behind independent default-off flags without changing the
+canonical task or existing reward behavior.
 
-## Run it in five minutes
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-Prerequisites:
+R002b release activation remains blocked until the applicable native, bilingual, accessibility,
+content, provenance, privacy, and named-human gates pass. Code-native candidate screens and passing
+local tests do not activate release flags.
 
-- Node.js 22.13 or newer; `.nvmrc` pins the repository baseline;
-- npm; and
-- Git.
+| Area                 | Current evidence                                                                                                                                                                   |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product              | R001/R002a are frozen fallbacks; all 12 indexed R002b code-native surfaces exist behind default-off flags                                                                          |
+| Automated checks     | TypeScript, lint, formatting, Expo configuration/export, and 1,002/1,002 tests pass                                                                                                |
+| Web preview          | Eight nonblocked R002b surfaces have Arabic/English responsive evidence from 320 to 768 pixels; private League is implemented with partial responsive evidence                     |
+| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks still require a connected configured device                      |
+| Remaining work       | Approval Reveal lacks authoritative League/Challenge/Family Reward receipts; Learning remains locked at the truthful 120-Seed fixture; final native and named-human reviews remain |
+| Production readiness | **No** — the MVP remains local, synthetic, feature-flagged, and release-activation blocked                                                                                         |
 
-The easiest path is the local web preview:
+The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md), with the bounded R002a
+results in the [R002a validation evidence](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md).
+A browser or source pass does not count as native-device or human-review evidence.
+
+## Run and test locally
+
+Use one of the following two paths. Install dependencies once with `npm ci` before working offline.
+
+### Offline web testing
+
+From the repository root:
 
 ```bash
-nvm use        # optional, when nvm is installed
-npm ci
 npm run web -- --offline
 ```
 
 Open the URL printed by Expo, normally `http://localhost:8081`. The app starts in Arabic RTL. Use
-the language switcher for English.
+the language switcher for English. This is the quickest visual check, but it does not validate
+native Android behavior.
 
-For a phone through Expo's QR workflow:
+### Android Studio and a USB device on Windows
 
-```bash
-npm start -- --offline
+1. In Android Studio's SDK Manager, install Android SDK Platform 36, Build-Tools, Platform-Tools,
+   NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the first native build.
+2. Enable Developer options and USB debugging on the Android device, connect it, and accept the
+   device authorization prompt.
+3. Open PowerShell in the Windows checkout, then run:
+
+```powershell
+$env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
+$env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
+adb devices
+adb reverse tcp:8081 tcp:8081
+npx expo run:android --device
 ```
 
-For an Android emulator or USB device configured with the Android SDK and ADB:
+Select the connected device when prompted. The first native build can take several minutes because
+Gradle compiles and downloads Android tooling; later builds reuse its cache. For later UI-only
+sessions, keep the device connected and rerun the same commands.
 
-```bash
-npm run android -- --offline
+To inspect the current default-off R002b screens in either path, create an ignored `.env.local`
+containing:
+
+```dotenv
+EXPO_PUBLIC_R002B_PROGRESSION_ENGINE=true
+EXPO_PUBLIC_R002B_IMPACT_PATH_UI=true
+EXPO_PUBLIC_R002B_BADGES_UI=true
+EXPO_PUBLIC_R002B_LEARNING_UI=true
+EXPO_PUBLIC_R002B_PARENT_PROGRESS_UI=true
+EXPO_PUBLIC_R002B_SHARED_GROWTH_VIEW=true
 ```
 
-Android is the competition authority; web is a convenient development and visual-review surface.
-See [Development and testing](docs/DEVELOPMENT.md) for prerequisites and troubleshooting.
+Leave `EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2` and
+`EXPO_PUBLIC_R002B_SHARED_GROWTH_CONTRIBUTION` unset. Those flows remain fail-closed while their
+release evidence is incomplete. Restart Expo after changing `.env.local`.
 
 ## Verify the repository
 
@@ -68,21 +104,17 @@ npm run verify
 It runs TypeScript, lint, formatting, all Vitest suites, Expo dependency alignment, and a static web
 export. The export is written to ignored `dist/`; it is a build artifact, not source evidence.
 
-Useful individual commands:
+Useful verification commands:
 
-| Command                | Purpose                                                        |
-| ---------------------- | -------------------------------------------------------------- |
-| `npm start`            | Start the Expo development server                              |
-| `npm run web`          | Start the web preview                                          |
-| `npm run android`      | Start and open Android; requires a configured device/toolchain |
-| `npm run ios`          | Start and open iOS; requires macOS/Xcode                       |
-| `npm test`             | Run deterministic domain, service, state, and flow tests once  |
-| `npm run test:watch`   | Run tests in watch mode                                        |
-| `npm run typecheck`    | Check strict TypeScript                                        |
-| `npm run lint`         | Run Expo ESLint                                                |
-| `npm run format:check` | Check maintained source and developer-document formatting      |
-| `npm run build:web`    | Produce the ignored static web export in `dist/`               |
-| `npm run verify`       | Run the complete repository gate                               |
+| Command                | Purpose                                                   |
+| ---------------------- | --------------------------------------------------------- |
+| `npm test`             | Run deterministic domain, service, state, and flow tests  |
+| `npm run test:watch`   | Run tests in watch mode                                   |
+| `npm run typecheck`    | Check strict TypeScript                                   |
+| `npm run lint`         | Run Expo ESLint                                           |
+| `npm run format:check` | Check maintained source and developer-document formatting |
+| `npm run build:web`    | Produce the ignored static web export in `dist/`          |
+| `npm run verify`       | Run the complete repository gate                          |
 
 These automated tests do not replace Android, accessibility, media, or human acceptance checks.
 
@@ -141,6 +173,10 @@ For boundaries, dependency direction, data ownership, and failure behavior, read
 - [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
 - [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
   requirements and acceptance criteria.
+- [Feature 003 release gates](specs/003-family-growth-garden/design-intake/release-gate.md) — frozen
+  R001 boundary, authorized R002a compatibility scope, and blocked R002b expansion.
+- [Revision 3 reconciliation package](specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
+  — non-canonical provenance and unresolved R002 design evidence.
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.
 
 ## Safety and scope boundaries

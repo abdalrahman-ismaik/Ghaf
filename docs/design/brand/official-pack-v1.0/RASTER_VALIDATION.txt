@@ -1,0 +1,4 @@
+icon.png 1024x1024 srgb
+android-adaptive-foreground-1024.png 1024x1024 srgba
+splash-icon-1024.png 1024x1024 srgba
+favicon-48.png 48x48 srgba

@@ -5,6 +5,7 @@ import type {
   CapabilityAuthorization,
   CapabilityAuthorizationInput,
   ChildAccessSession,
+  ChildSessionTermination,
   ChildPermissionGrant,
   ChildPermissionQueryInput,
   DeviceAccessState,
@@ -15,6 +16,7 @@ import type {
   PairingRequestInput,
   PairingRevocationInput,
   ParentAccessSession,
+  ParentSessionTermination,
   PermissionUpdateInput,
   ProjectAccessSessionInput,
   ReauthenticationInput,
@@ -35,11 +37,20 @@ import {
   SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
 } from '../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../models/familyGrowth';
+import {
+  liveChildCoachGrantSchema,
+  MAX_SYNTHETIC_GRANT_LIFETIME_MS,
+  type LiveChildCoachCapability,
+  type LiveChildCoachGrant,
+} from '../../models/boundedAi';
 import type { ServiceResult } from '../../services/interfaces';
 
 const CAPABILITY_TRUTH = 'local_prototype_not_authentication' as const;
 const SYNTHETIC_HOUSEHOLD_ID = 'household_al_noor' as const;
 const INITIAL_PERMISSION_TIME = '2026-09-01T00:00:00.000Z';
+export const LIVE_CHILD_AI_NOTICE_VERSION = 1 as const;
+export const LIVE_CHILD_AI_POLICY_VERSION = 'child-coach-policy-v1' as const;
+export const LIVE_CHILD_AI_PROVIDER_VERSION = 'provider-contract-v1' as const;
 
 function success<T>(data: T, fixtureId?: string): ServiceResult<T> {
   return {
@@ -99,6 +110,36 @@ function deviceKey(childId: SyntheticChildId, deviceId: string): string {
   return `${childId}:${deviceId}`;
 }
 
+function permitsRevokedDeviceReplacement(
+  device: DeviceAccessState,
+  requestId: string,
+  childId: SyntheticChildId,
+  deviceId: string,
+  requestedAt: string,
+  approvedByParentId?: PairingRequest['approvedByParentId'],
+): boolean {
+  const pairedAt = parsedTime(device.pairedAt);
+  const revokedAt = device.revokedAt ? parsedTime(device.revokedAt) : null;
+  const replacementRequestedAt = parsedTime(requestedAt);
+  return (
+    device.status === 'revoked' &&
+    device.householdId === SYNTHETIC_HOUSEHOLD_ID &&
+    device.childId === childId &&
+    device.deviceId === deviceId &&
+    nonEmpty(device.pairingRequestId) &&
+    device.pairingRequestId !== requestId &&
+    pairedAt !== null &&
+    revokedAt !== null &&
+    replacementRequestedAt !== null &&
+    pairedAt <= revokedAt &&
+    revokedAt <= replacementRequestedAt &&
+    device.revokedByParentId !== null &&
+    (approvedByParentId === undefined || device.revokedByParentId === approvedByParentId) &&
+    device.origin === 'synthetic' &&
+    device.capabilityTruth === CAPABILITY_TRUTH
+  );
+}
+
 function childFixture(childId: unknown) {
   return childId === 'child_salem' || childId === 'child_alya'
     ? SYNTHETIC_CHILD_CREDENTIAL_FIXTURES[childId]
@@ -110,15 +151,32 @@ function sameSessionIdentity(left: AccessSession, right: AccessSession): boolean
     left.sessionKind !== right.sessionKind ||
     left.id !== right.id ||
     left.deviceId !== right.deviceId ||
-    left.householdId !== right.householdId
+    left.householdId !== right.householdId ||
+    left.issuedAt !== right.issuedAt ||
+    left.expiresAt !== right.expiresAt ||
+    left.origin !== right.origin ||
+    left.capabilityTruth !== right.capabilityTruth
   ) {
     return false;
   }
   if (left.sessionKind === 'parent' && right.sessionKind === 'parent') {
-    return left.principal.parentId === right.principal.parentId;
+    return (
+      left.principal.role === right.principal.role &&
+      left.principal.parentId === right.principal.parentId &&
+      left.principal.householdId === right.principal.householdId &&
+      left.principal.fixtureId === right.principal.fixtureId &&
+      left.principal.origin === right.principal.origin
+    );
   }
   if (left.sessionKind === 'child' && right.sessionKind === 'child') {
-    return left.principal.childId === right.principal.childId;
+    return (
+      left.principal.role === right.principal.role &&
+      left.principal.childId === right.principal.childId &&
+      left.principal.householdId === right.principal.householdId &&
+      left.principal.avatarId === right.principal.avatarId &&
+      left.principal.credentialFixtureId === right.principal.credentialFixtureId &&
+      left.principal.origin === right.principal.origin
+    );
   }
   return false;
 }
@@ -146,11 +204,41 @@ function purposeCapability(purpose: SensitiveActionPurpose): AccessCapability {
       return 'manage_family_rewards';
     case 'change_league_membership':
       return 'manage_league_membership';
+    case 'change_shared_growth_participation':
+      return 'manage_shared_growth_contribution';
     case 'change_voice_permission':
     case 'change_media_permission':
     case 'change_ai_permission':
+    case 'change_live_child_text_permission':
+    case 'change_live_child_voice_permission':
       return 'manage_child_permissions';
   }
+}
+
+export function liveChildSubjectFor(childId: SyntheticChildId): string {
+  return `synthetic_subject_${childId}`;
+}
+
+export function createInitialLiveChildCoachGrant(
+  childId: SyntheticChildId,
+  capability: LiveChildCoachCapability,
+): LiveChildCoachGrant {
+  const issuedAt = '2026-09-07T00:00:00.000Z';
+  const grant = {
+    capability,
+    status: 'revoked' as const,
+    childSubject: liveChildSubjectFor(childId),
+    grantVersion: 1,
+    noticeVersion: LIVE_CHILD_AI_NOTICE_VERSION,
+    policyVersion: LIVE_CHILD_AI_POLICY_VERSION,
+    providerVersion: LIVE_CHILD_AI_PROVIDER_VERSION,
+    issuedAt,
+    expiresAt: new Date(Date.parse(issuedAt) + MAX_SYNTHETIC_GRANT_LIFETIME_MS).toISOString(),
+    revokedAt: issuedAt,
+    reauthenticationProofId: `initial_disabled_${childId}_${capability}_v1`,
+    capabilityTruth: 'synthetic_implementation_only' as const,
+  };
+  return liveChildCoachGrantSchema.parse(grant);
 }
 
 function permissionPurpose(
@@ -291,16 +379,101 @@ export class DeterministicSyntheticAccessService {
     });
   }
 
+  terminateParentSession(
+    input: ProjectAccessSessionInput,
+  ): ServiceResult<ParentSessionTermination> {
+    if (parsedTime(input.now) === null) {
+      return failure('INVALID_INPUT', 'A valid deterministic time is required');
+    }
+    const stored = this.sessions.get(input.session.id);
+    if (
+      !stored ||
+      stored.sessionKind !== 'parent' ||
+      input.session.sessionKind !== 'parent' ||
+      !sameSessionIdentity(stored, input.session) ||
+      stored.issuedAt !== input.session.issuedAt ||
+      stored.expiresAt !== input.session.expiresAt ||
+      stored.origin !== 'synthetic' ||
+      input.session.origin !== 'synthetic' ||
+      stored.capabilityTruth !== CAPABILITY_TRUTH ||
+      input.session.capabilityTruth !== CAPABILITY_TRUTH ||
+      stored.principal.role !== 'parent' ||
+      input.session.principal.role !== 'parent' ||
+      stored.principal.fixtureId !== SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId ||
+      input.session.principal.fixtureId !== stored.principal.fixtureId ||
+      stored.principal.origin !== 'synthetic' ||
+      input.session.principal.origin !== 'synthetic'
+    ) {
+      return failure('INVALID_TRANSITION', 'The synthetic Parent session cannot be terminated');
+    }
+
+    for (const [proofId, proof] of this.proofs) {
+      if (
+        proof.parentSessionId === stored.id &&
+        proof.parentId === stored.principal.parentId &&
+        proof.householdId === stored.householdId &&
+        proof.deviceId === stored.deviceId
+      ) {
+        this.proofs.delete(proofId);
+      }
+    }
+    this.sessions.delete(stored.id);
+    return success({
+      sessionId: stored.id,
+      terminated: true,
+      origin: 'synthetic',
+    });
+  }
+
+  terminateChildSession(input: ProjectAccessSessionInput): ServiceResult<ChildSessionTermination> {
+    if (parsedTime(input.now) === null) {
+      return failure('INVALID_INPUT', 'A valid deterministic time is required');
+    }
+    const stored = this.sessions.get(input.session.id);
+    if (
+      !stored ||
+      stored.sessionKind !== 'child' ||
+      input.session.sessionKind !== 'child' ||
+      !sameSessionIdentity(stored, input.session) ||
+      stored.origin !== 'synthetic' ||
+      input.session.origin !== 'synthetic' ||
+      stored.capabilityTruth !== CAPABILITY_TRUTH ||
+      input.session.capabilityTruth !== CAPABILITY_TRUTH ||
+      stored.principal.role !== 'child' ||
+      input.session.principal.role !== 'child' ||
+      stored.principal.origin !== 'synthetic' ||
+      input.session.principal.origin !== 'synthetic'
+    ) {
+      return failure('INVALID_TRANSITION', 'The synthetic Child session cannot be terminated');
+    }
+
+    this.sessions.delete(stored.id);
+    return success({
+      sessionId: stored.id,
+      terminated: true,
+      origin: 'synthetic',
+    });
+  }
+
   requestPairing(input: PairingRequestInput): ServiceResult<PairingRequest> {
     const expiry = expiresAt(input.now, PAIRING_TTL_MS);
     const existingDevice = this.devices.get(deviceKey(input.childId, input.requestingDeviceId));
+    const existingDeviceBlocksPairing =
+      existingDevice !== undefined &&
+      !permitsRevokedDeviceReplacement(
+        existingDevice,
+        input.requestId,
+        input.childId,
+        input.requestingDeviceId,
+        input.now,
+      );
     if (
       !expiry ||
       !nonEmpty(input.requestId, input.pairingCode, input.requestingDeviceId) ||
       !input.pairingCode.startsWith('synthetic-code-') ||
       !childFixture(input.childId) ||
       this.pairingRequests.has(input.requestId) ||
-      existingDevice
+      existingDeviceBlocksPairing
     ) {
       return failure(
         'INVALID_INPUT',
@@ -401,6 +574,16 @@ export class DeterministicSyntheticAccessService {
     }
     const fixture = childFixture(input.childId);
     const existingDevice = this.devices.get(deviceKey(input.childId, input.deviceId));
+    const existingDeviceBlocksPairing =
+      existingDevice !== undefined &&
+      !permitsRevokedDeviceReplacement(
+        existingDevice,
+        request.id,
+        input.childId,
+        input.deviceId,
+        request.requestedAt,
+        request.approvedByParentId,
+      );
     if (
       request.status !== 'approved' ||
       request.pairingCode !== input.pairingCode ||
@@ -410,7 +593,7 @@ export class DeterministicSyntheticAccessService {
       !fixture ||
       fixture.fixtureId !== input.childCredentialFixtureId ||
       !isWithinWindow(request.requestedAt, request.expiresAt, input.now) ||
-      existingDevice ||
+      existingDeviceBlocksPairing ||
       this.sessions.has(input.sessionId)
     ) {
       return failure(
@@ -446,6 +629,41 @@ export class DeterministicSyntheticAccessService {
       },
       fixture.avatarId,
     );
+  }
+
+  restorePairedDevice(input: {
+    readonly childId: SyntheticChildId;
+    readonly deviceId: string;
+    readonly pairedAt: string;
+  }): ServiceResult<DeviceAccessState> {
+    if (
+      !childFixture(input.childId) ||
+      !nonEmpty(input.deviceId) ||
+      parsedTime(input.pairedAt) === null
+    ) {
+      return failure('INVALID_INPUT', 'A valid device-local Child pairing marker is required');
+    }
+    const key = deviceKey(input.childId, input.deviceId);
+    const existing = this.devices.get(key);
+    if (existing) {
+      return existing.status === 'paired' && existing.pairedAt === input.pairedAt
+        ? success({ ...existing }, existing.pairingRequestId)
+        : failure('INVALID_TRANSITION', 'The device-local Child pairing marker conflicts');
+    }
+    const device: DeviceAccessState = {
+      householdId: SYNTHETIC_HOUSEHOLD_ID,
+      childId: input.childId,
+      deviceId: input.deviceId,
+      pairingRequestId: `restored-${input.childId}`,
+      status: 'paired',
+      pairedAt: input.pairedAt,
+      revokedAt: null,
+      revokedByParentId: null,
+      origin: 'synthetic',
+      capabilityTruth: CAPABILITY_TRUTH,
+    };
+    this.devices.set(key, { ...device });
+    return success({ ...device }, device.pairingRequestId);
   }
 
   revokeDevice(input: DeviceRevocationInput): ServiceResult<DeviceAccessState> {
@@ -616,6 +834,16 @@ export class DeterministicSyntheticAccessService {
     return success({ ...next });
   }
 
+  resetPrototype(): ServiceResult<true> {
+    this.sessions.clear();
+    this.pairingRequests.clear();
+    this.devices.clear();
+    this.proofs.clear();
+    this.permissionGrants.set('child_salem', initialPermissionGrant('child_salem'));
+    this.permissionGrants.set('child_alya', initialPermissionGrant('child_alya'));
+    return success(true);
+  }
+
   private createChildSession(
     input: SyntheticChildSignIn,
     avatarId: ChildAccessSession['principal']['avatarId'],
@@ -685,3 +913,6 @@ export class DeterministicSyntheticAccessService {
 export function createDeterministicSyntheticAccessService(): DeterministicSyntheticAccessService {
   return new DeterministicSyntheticAccessService();
 }
+
+export * from './childAccess';
+export * from './parentOnboarding';

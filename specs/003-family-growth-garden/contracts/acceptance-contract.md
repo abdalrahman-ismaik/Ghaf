@@ -1,7 +1,51 @@
 # Acceptance Contract: Family Growth Garden
 
-**Status**: PROPOSED — executable Feature 003 validation contract. No check is passed by this
-document alone.
+## AC-00 — Split R002 Design-Intake Authority
+
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+R001 Batch 1 remains a frozen regression baseline: `/`, `/access/parent/sign-in`,
+`/access/parent/verification`, `/access/parent/family-basics`,
+`/access/parent/add-first-child`, `/access/parent/review-create`, and modal
+`/access/parent/family-created-success`, followed by history replacement into `/parent`.
+
+R001 acceptance requires deterministic local access labels, route prerequisites, draft preservation,
+idempotent local creation, Back/dismiss restoration, Arabic/English parity, 48dp targets, responsive
+safe-area/scroll/keyboard behavior, state variants, reset/profile isolation, and no regression to
+remote League, Family Reward, voice, privacy, or Parent-authorized reset behavior. PNGs govern
+composition; exported web code never enters runtime.
+
+R002a refreshed Parent Home, Parent Tasks/Builder, Child Today/task execution, Parent review,
+the Child support loop, and the existing Garden. Its completed oracle is verified head `0501cf3`
+(with R001 evidence ancestor `76fa682`),
+`task_recycling_p0_v1`, Schema-3 48→60, zero reward through Child submission and praise
+presentation, and the existing separate atomic/idempotent recognition transaction with all its
+applicable consequences. It preserves private five-Leaf League, Challenge Leaves, private Family
+Reward, capability-scoped access, deterministic `expo-audio` voice, reset, guards, privacy, and
+profile isolation.
+
+`task.recycling_sort.v1` is accepted only as a non-runtime design alias. No R002a screen may store
+it, migrate to it, calculate rewards, hard-code screenshot progression, or omit an existing domain
+consequence.
+
+The cumulative 108→120→180 projection, Impact Path, Badge Gallery/Detail, Learning surfaces, Parent
+Progress, revised combined RevealBundle, additive Shared Growth, Parent participation controls, and
+cumulative Garden chapter are now authorized for default-off implementation under AC-00B. They
+remain excluded from release navigation until their applicable validation and review gates pass.
+
+The remote acceptance oracles below remain current R002a behavior and regression evidence. The
+approved R002b amendment adds only the default-off acceptance boundaries in AC-00B.
+
+The R003 complete-screen amendment supersedes the old operational ten-route count and shared role
+selector wherever they conflict with the current journey. It adds separate synthetic Parent and
+Child access, the exact Parent/Child navigation, Family/Reward/settings surfaces, and documented
+code-native candidates without changing the preserved task, recognition, reward, privacy, or
+Growth authorities. `/role` remains in source only as a compatibility redirect to `/`.
+
+**Status**: ACTIVE for R003 screen-completion acceptance, frozen R001/R002a regression, and
+authorized default-off R002b implementation. No check is passed by this document alone.
 
 **Primary acceptance surface**: named physical Android build, Arabic RTL first and English LTR
 second.
@@ -33,11 +77,127 @@ dependency-blocked exercise as `NOT RUN` or pre-label an unattempted exercise `B
 A source inspection, unit test, web preview, or Feature 002 result MUST NOT pass a physical-device,
 native RTL, media, Back, accessibility, timing, comprehension, or named-human-review criterion.
 
-## Authored Route and Guard Contract
+## AC-00A — R002a Slice Acceptance
 
-The integrated application MUST contain exactly these ten product routes. Framework files such as
-`app/_layout.tsx` are not product routes. Loading, assistant, fallback, retry, awaiting-confirmation,
-phase-review, and celebration are states of these routes.
+| Order | Surface                        | Presentation acceptance                                                                 | Behavior acceptance                                                                                 |
+| ----: | ------------------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+|     1 | Parent Home `/parent`          | `ghaf_parent_home` is the primary candidate; Soft Geometric, bilingual, responsive      | Every existing live action remains; no fabricated League/Reward counter and `/circle` is not League |
+|     2 | Parent Tasks and Builder       | Selected complete mobile pairs cover choose, edit, review, created, and added states    | Existing task actions/payloads remain authoritative; stored ID is `task_recycling_p0_v1`            |
+|     3 | Child Today and task execution | Ready, 0/2, 1/2, 2/2, confirmation, and waiting are states rather than duplicate routes | Existing selectors/transitions are reused; submission awards zero                                   |
+|     4 | Parent review                  | Pending, support, submitting, and approved-success states are coherent and accessible   | Approval calls the existing transaction and calculates no reward in the screen                      |
+|     5 | Child support loop             | Accepted steps, Parent note, adult help, completion, and resubmission remain visible    | Fixed award and progress survive; return to existing Parent review loses and duplicates nothing     |
+|     6 | Compatible existing Garden     | `ghaf_child_growth_garden_final_corrected` is a visual candidate using live values      | No cumulative Next Stage, Impact Path, badge, or other R002b mechanic                               |
+
+Every slice requires centralized Arabic/English copy; loading, empty, validation, recoverable-error,
+submitting, success, interruption recovery, and reduced-motion states; 320/360/390/430 and one wider
+viewport; 200% text, safe area, keyboard, scroll, no horizontal overflow, semantic state, 48dp
+targets, and fixed-action clearance. Arabic physical placement follows the specification. Android
+passes only through a named build/device observation.
+
+## AC-00B — R002b Feature-Flagged Acceptance
+
+R001/R002a remains the visible and behavioral fallback whenever an R002b flag is disabled. All
+eight R002b flags default off. Passing automated or browser checks permits local inspection only;
+it does not activate a release flag or satisfy native/content/human evidence.
+
+| Boundary            | Required acceptance                                                                                                                                                                                                                                                         |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lifetime projection | `lifetimeSeeds` equals unique committed active-profile/epoch ledger entries; no writable duplicate balance, spend, decrease, or reset within an epoch                                                                                                                       |
+| Synthetic migration | One immutable versioned receipt with explicit per-profile provenance; Salem-only 60 carry-forward assumption; ambiguity/non-synthetic/wrong-profile/wrong-epoch/duplicate/partial inputs reject atomically                                                                  |
+| One approval        | Existing recognition remains the sole transaction; Mangrove 48→60 and lifetime 108→120 occur once while every existing consequence remains identical                                                                                                                        |
+| Impact Path         | Stations 120/132/144/156/168/180 derive from the ledger; archive/current chapter remain separate and navigation creates no reward                                                                                                                                           |
+| Badges              | Exactly 16 stable definitions; permanent/private/idempotent; threshold backfill requires evidence; no fabricated mastery                                                                                                                                                    |
+| Learning            | Story and accessible alternative share one package/completion; finite, resumable, no-fail, equal-credit, zero existing reward or progress                                                                                                                                   |
+| RevealBundle        | One `reveal:<profileId>:<triggerEventId>`; complete praise/Seed/stage/canopy/eligible-Green-Circle/private-League/Challenge/Family-Reward/badge/station/learning/safe-help superset; resumable lifecycle; one visible bundle; no re-commit or rebuild after acknowledgement |
+| Parent Progress     | Parent-only, selected-Child scoped and read-only; suggestions may prefill but never assign without normal review/save                                                                                                                                                       |
+| Shared Growth       | Additive to private League; anonymous qualitative projection only; view and contribution flags separate; Pause/End affect future signals only                                                                                                                               |
+| Routes/origins      | Same-role allowlisted origins restore route/profile/filter/scroll/focus; arbitrary/cross-role origins reject and invalid deep links reach a safe role root                                                                                                                  |
+| Presentation        | `screen-spec.md` precedes each missing surface; code-native Soft Geometric UI; Arabic/English; 320–768 widths; 200% text; safe area; keyboard; focus; reduced motion; 48dp targets; no overflow                                                                             |
+
+Required focused coverage includes Schema-3 audit; thresholds 107/108/119/120/131/132/179/180;
+duplicate/concurrent recognition and restart boundaries; profile/reset-epoch isolation; exact registry;
+equal-credit learning; RevealBundle parity/recovery; Shared Growth privacy/participation independence;
+and feature-flag rollback. Physical Android, TalkBack, native Back/IME, and OS font scaling remain
+release blockers until directly observed.
+
+## AC-00C — R003 Complete-Screen and Access Acceptance
+
+R003 changes the operational route journey, not the underlying task/reward authority. The current
+source inventory contains 37 product route files. `/role` is counted only as a compatibility route;
+nine R002b route files remain independently default-off candidates rather than released
+destinations.
+
+| Group             | Required routes and acceptance                                                                                                                                                                                                                                                                                                      |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Entry             | `/` offers distinct Parent and Child actions in Arabic first; `/role` redirects to `/` and cannot create a session or mutate state                                                                                                                                                                                                  |
+| Parent access     | `/access/parent/sign-in`, code-native `/access/parent/sign-up`, `/access/parent/verification`, `/access/parent/family-basics`, `/access/parent/add-first-child`, `/access/parent/review-create`, and modal `/access/parent/family-created-success`; Create Family opens sign-up before code request, its closed origin restores correctly, first-family setup is idempotent, and a returning verified Parent reaches Parent Home |
+| Child access      | `/access/child`, `/access/child/pin`, and `/access/child/pair`; synthetic Salem PIN and Alya picture sequence are profile-bound, pairing is Parent-approved/one-use, and every surface says it is not production authentication                                                                                                     |
+| Parent experience | `/parent`, `/parent/task/new`, `/parent/task/review`, `/parent/check-in`, `/parent/family`, `/parent/family/reward`, `/parent/settings`, `/parent/settings/permissions`, `/parent/settings/devices`, and `/parent/reauthenticate` require an active Parent experience                                                               |
+| Child experience  | `/child`, `/child/task`, `/child/settings`, and `/league` require the matching active Child experience; settings expose only the Child's own read-only permissions                                                                                                                                                                  |
+| Shared role-aware | `/garden` and `/circle` render only safe data for the active experience and never infer a completion on entry                                                                                                                                                                                                                       |
+| R002b candidates  | `/child/reveal/:bundleId`, `/garden/impact-path`, `/garden/badges`, `/garden/badges/:badgeId`, both `/garden/learn/:learningId/**` routes, `/circle/shared-growth`, `/parent/family/:profileId/progress`, and `/parent/family/shared-garden` stay hidden or safely unavailable unless their individual flags and prerequisites pass |
+
+### R003 navigation, guard, and handoff assertions
+
+1. Parent bottom navigation is exactly **Home, Tasks, Garden, Family**. Child bottom navigation is
+   exactly **Today, Garden, League**. Rewards, settings, permissions, devices, reauthentication,
+   Impact Path, Badges, Learning, Shared Growth, and Reveal are contextual destinations only.
+2. There is no normal role toggle. Every Parent/Child change terminates the active synthetic
+   session and returns through Welcome or an explicit access handoff. If termination fails, the
+   route does not navigate and shows a recoverable error.
+3. A signed-out private-route deep link falls back to `/`. An active Child entering any Parent or
+   Parent-access route returns to `/child`; an active Parent entering any Child or Child-access
+   route returns to `/parent`. No rejected deep link mutates task, reward, or access state.
+4. A new Child device follows credential verification → pairing request → Parent sign-in and
+   verification → `/parent/settings/devices` approval → signed-out handoff back to
+   `/access/child/pair` → one completion → `/child`. Wrong-actor, expired, replayed, revoked,
+   mismatched, or stale-session inputs fail closed.
+5. Parent permission changes originate at `/parent/settings/permissions`, pass only the allowlisted
+   profile/kind/value and return target into `/parent/reauthenticate`, accept local demo code `4242`
+   once for that action, and change nothing for an invalid code. Child settings cannot invoke the
+   mutation.
+6. Parent Family exposes the private Family Reward and only flag-available Parent Progress/Shared
+   Garden entries. The Reward plan is read from its authority, remains private, and follows
+   `promised → unlocked → given`; a screen cannot calculate or force an unlock.
+7. Parent-authorized reset is available only in an active Parent experience and atomically returns
+   to signed-out Arabic RTL `/`, invalidates both session types and transient pairing/grant proofs,
+   restores the deterministic fixture, and leaves no stale Back destination.
+8. The normal default-off approval path retains the R002a result whenever complete RevealBundle
+   consequence parity is unavailable. A route file or explicit local test flag is not release
+   activation.
+
+## AC-00D — R003 Natural Botanical Artwork Acceptance
+
+This refresh changes the asset layer only. The official Ghaf mark/wordmark, platform icons, small
+functional navigation/status/safety icons, semantic controls, progress authority, exact 37 routes,
+store/services, deterministic reset, privacy projection, and default-off flags remain unchanged.
+
+| Boundary | Required acceptance |
+| --- | --- |
+| Exact library | The tracked manifest contains 41 unique local assets, including all 25 species/stage Garden combinations and exact family-canopy 19/25 and 20/25 states |
+| Provenance | Every shipping file has its exact prompt, generator/date, source and final dimensions, transformation record, SHA-256, route/state use, accessibility mode, and review status |
+| Content safety | No person, face, hand, readable text, UI, logo, brand, watermark, hazard, fantasy effect, malformed botanical detail, or ecological quantity/claim appears in generated pixels |
+| Runtime | Literal static sources only; no constructed path, remote URL, remote fallback, upload, analysis, media capture, or image-selected product authority |
+| Accessibility | Informative art has bilingual labels and a localized deterministic fallback; decorative art is hidden; selection, focus, status, value, and progress remain native semantics |
+| RTL/responsive | Art is nondirectional and never mirrored; live Arabic/English UI remains readable and crop-safe at 320/390 widths, increased text, and reduced motion |
+| Brand integrity | Official source and platform derivative checksums remain byte-identical; removing product drawings never substitutes or mutates the product mark |
+| Feature integrity | Scenic SVG implementations and the League watermark are gone, while task/Garden/canopy/Circle/learning/reveal/shared behavior and all eight default-off flags are unchanged |
+
+Automated/source and bounded web evidence may pass the exact-library, runtime, checksum,
+accessibility-structure, crop, and overflow portions. Physical Android decode/memory/rendering,
+TalkBack order, and named botanical, UAE cultural, child-safeguarding, accessibility, visual, and
+rights reviews remain `BLOCKED` or `NOT RUN` until directly performed; generated provenance is not
+itself a public-rights clearance.
+
+## Historical R001/R002a Authored Route and Guard Contract
+
+The table below preserves the pre-R003 remote oracle and completed R001/R002a regression history; it
+is not the current operator route inventory. Before R001, the remote application contained exactly
+these ten product routes. R001 preserved all ten route files, replaced the `/` composition in
+place, and added exactly six approved
+`/access/parent/**` route files, so its post-integration inventory is exactly 16. Framework files
+such as `app/_layout.tsx` are not product routes. Loading, assistant, fallback, retry,
+awaiting-confirmation, phase-review, and celebration remain states of their owning routes.
 
 |   # | Route                 | Required entry or safe behavior                                                                                                                                                                              | State mutation allowed on entry                                        |
 | --: | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
@@ -96,7 +256,13 @@ Historical Feature 002 specifications, documentation, screenshots, and evidence 
    pre-reset history after reset. Record the config output, build, device, and OS with the native
    observation.
 
-## Canonical Reset Oracle
+## Historical R002a Schema-3 Reset Value Oracle
+
+The 48-Seed personal reset below is the verified remote R002a compatibility-value oracle. R003
+retains the listed household/task/reward values but AC-00C supersedes its access row: reset now
+lands signed out on Arabic `/`, with no active session, pairing request/device, or transient proof.
+Mangrove remains 48/60→60/60 in the default-off presentation. Any cumulative 108→120→180 display
+belongs to the independently flagged R002b projection.
 
 The Parent-only **Reset synthetic demo** action requires confirmation and MUST restore all values in
 one action without a remote dependency.
@@ -105,7 +271,7 @@ one action without a remote dependency.
 | ------------------------------ | -------------------------------------------------------------- |
 | Locale / direction             | Arabic / RTL                                                   |
 | Route / history                | `/`; no stale Back history                                     |
-| Demo mode                      | Parent; role switch labeled not authentication                 |
+| Historical R002a demo mode     | Parent; role switch labeled not authentication                 |
 | Household                      | Synthetic Al Noor family                                       |
 | Children                       | Salem, age 9; Alya, age 11; both visibly synthetic             |
 | Active Child                   | Salem                                                          |
@@ -129,12 +295,17 @@ Reset MUST be exercised from draft, prepared-assistant result, prepared fallback
 selected, prepared-media removed, image/audio unavailable fallback, reviewed, assigned, chosen,
 `in_progress`, submitted, retry, confirmed/recognized, celebration available, celebration
 consumed, garden, circle, voice active-rehearsal, voice transcript-review, and voice sent states.
-From a Child-only state, first switch to Parent demo mode
-without manually changing counters, then invoke reset. Acceptance requires five consecutive exact
-resets from every named source state; one mismatch is `FAILED` and must not be repaired by manually
-editing counters.
+In the historical R002a flow, a Child-only state first switched to Parent demo mode. R003 must
+instead terminate the Child session, complete Parent access, then invoke reset from the active
+Parent experience; changing a mutable presentation role alone cannot authorize reset. Acceptance
+requires five consecutive exact resets from every named source state; one mismatch is `FAILED` and
+must not be repaired by manually editing counters.
 
-## Lifecycle and No-Early-Reward Oracle
+## Preserved Remote Schema-3 Lifecycle and No-Early-Reward Oracle
+
+The 48-Seed value in this section is the current R002a behavior oracle. Its no-early-reward and
+idempotency invariants remain current; it may be superseded only after a separately approved R002b
+migration is implemented and validated.
 
 The valid main lifecycle is:
 
@@ -159,7 +330,7 @@ the task to `in_progress`. A safe equivalent or smaller replacement may change a
 award only when agreed before Child acceptance; permitted help after acceptance never reduces the
 displayed award.
 
-## Confirmation and Idempotency Oracle
+## Preserved Remote Schema-3 Confirmation and Idempotency Oracle
 
 The P0 submission is one 12-Seed, recurrence-once `standard + acquisition` Green Impact task with
 `visibilityScope = household` and `circleEligible = true`. Its first valid recognition MUST use two
@@ -322,18 +493,6 @@ filenames may follow repository conventions, but every row must be traceable to 
 | Reset/history     | Every meaningful source state restores the complete oracle; check-in admits only matching submitted/pending-praise/recognized-receipt states; predictive Back config is enabled              |
 | Claims/provenance | No real-tree/unsupported impact claim; prepared/synthetic origin labels are present                                                                                                          |
 
-### Family experience and Android integration matrix
-
-| Area                           | Required assertions                                                                                                                                                                                                                              |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Access presentation            | Parent and each Child enter through a stored synthetic projection; revoking Salem blocks only Salem; restore creates a fresh pairing/session; no credential value or production-auth claim reaches the UI                                        |
-| Family Reward presentation     | Only Parent and Salem receive the prepared private plan; plan can unlock from the authoritative receipt whether created before or after recognition; duplicate sync is stable; Alya and League input cannot progress it; only Parent marks given |
-| Family League presentation     | Parent proof creates the fixed week; one matching receipt credits one Salem Leaf; help retains full credit; Child sees only direct minimal projections and one cooperative count; encouragement is allowlisted                                   |
-| Isolation                      | Access, Reward, League, encouragement, and reset do not mutate Seeds, landscape, canopy, Green Circle, task lifecycle, or celebration; only the existing recognition action owns those P0 changes                                                |
-| Android config                 | Supported Expo patches pass `expo install --check`; recording and external-storage permissions are blocked; backup is disabled; keyboard resize and predictive Back are explicit; merged prebuild config contains no unused audio plugin         |
-| Direction/navigation           | Locale changes do not call or persist `forceRTL`; ar→en→ar retains state; safe Back pops and role handoffs replace; reset history cannot expose stale protected screens                                                                          |
-| Mobile hierarchy/accessibility | Task submission is the sole filled Child-task CTA; structural headings have header semantics; header actions fit the narrow/large-text proxy; all targets, labels, states, and bilingual resources pass static checks                            |
-
 Run and record at least:
 
 ```bash
@@ -355,12 +514,18 @@ attempt, a missing named dependency makes it `BLOCKED`, while an executed check 
 
 From a fresh reset, complete the route sequence below without hidden setup:
 
-`/ → /role → /parent → /parent/task/new → /parent/task/review → /role → /child → /child/task → /role → /parent/check-in → /garden → /circle`
+`/ → Parent sign-in → new-family sign-up → verification → first-family setup when required → /parent → /parent/task/new → /parent/task/review → Child access/credential → pairing when required → /child → /child/task → / → Parent sign-in/verification → /parent → /parent/check-in → /garden → /circle → Child access/credential → /child → /garden → /league`
 
-Although several routes recur in navigation, the inventory remains exactly ten authored routes.
-The current internal target is 120–150 seconds; it is not a published SMAC judging rule. Run five
-uninterrupted rehearsals and record operator, duration, reset result, fallback use, and failure note.
-All five must complete at or below 150 seconds for the rehearsal criterion to pass.
+No step uses `/role`; each Parent/Child handoff ends the current synthetic session and requires the
+receiving access path. For a fresh device, include the Parent-approved pairing return through
+`/parent/settings/devices`. The frozen R002a journey previously traversed ten authored routes, but
+that count is historical and does not constrain the current 37-file R003 inventory.
+
+The 120–150 second figure was the internal target for the shorter R002a path and is not a published
+SMAC judging rule. Time the complete R003 path afresh before setting a new target. Run five
+uninterrupted rehearsals and record operator, duration, reset result, access/pairing branch,
+fallback use, and failure note; do not mark the rehearsal criterion passed until the team approves
+and meets one recorded R003 target.
 
 Ask three people unfamiliar with the detailed design what Salem did, what the assistant did, who
 approved the reward, and what another family can see. Record enough of each answer to verify they
@@ -374,28 +539,32 @@ appropriate. It does not validate Android RTL layout, native Back, keyboard/IME,
 targets, screen reader, reduced-motion setting, prepared native media, permissions, performance, or
 an installable build.
 
-At planning time, preserve these truthful initial statuses:
+The current R003 closeout preserves these truthful statuses:
 
 The physical Android row is `BLOCKED` because the recorded baseline availability attempt already
 identified the missing named build/device; `BLOCKED` is not the default for an unattempted
 exercise. Each native subcheck remains `NOT RUN` until it is attempted.
 
-| Gate                                                                                                 | Initial Feature 003 status                     |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Automated implementation commands                                                                    | `NOT RUN`                                      |
-| Ten-route deterministic journey                                                                      | `NOT RUN`                                      |
-| Arabic RTL and English LTR physical journey                                                          | `BLOCKED` pending named build/device           |
-| Predictive/native Back, WCAG contrast, keyboard, media, reduced motion, screen reader, and 200% font | `NOT RUN`                                      |
-| Five timed rehearsals and three-person comprehension                                                 | `NOT RUN`                                      |
-| Arabic/UAE cultural, faith, safeguarding, sustainability, and accessibility reviews                  | `NOT RUN`                                      |
-| Optional live Parent refinement                                                                      | implementation `BLOCKED`; validation `NOT RUN` |
+| Gate                                                                                                 | Current Feature 003 status                      |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Automated implementation commands                                                                    | `PASSED` — runtime checkpoint `40fc5fc`         |
+| R003 role-separated deterministic journey                                                            | `PASSED (web proxy)` — Arabic/English 390×844   |
+| Arabic RTL and English LTR physical journey                                                          | `BLOCKED` — no attached device or SDK/toolchain |
+| Predictive/native Back, WCAG contrast, keyboard, media, reduced motion, screen reader, and 200% font | `NOT RUN`                                       |
+| Five timed rehearsals and three-person comprehension                                                 | `NOT RUN`                                       |
+| Arabic/UAE cultural, faith, safeguarding, sustainability, and accessibility reviews                  | `NOT RUN`                                       |
+| Optional live Parent refinement                                                                      | implementation `BLOCKED`; validation `NOT RUN`  |
 
 ## Release Boundary
 
-This contract is ready for implementation when it is consistent with the approved Feature 003
-specification, plan, data model, service contracts, and tasks. Feature 003 is ready for integration
-only after automated checks and deterministic route/reset/idempotency evidence pass from a named
-worktree state.
+R002a is complete within AC-00A and remains the fallback. R002b implementation is authorized only
+within AC-00B and remains default-off for release. No local implementation or automated pass may
+activate a release flag without the separately recorded applicable native, content, provenance,
+accessibility, and human-review evidence.
+
+R003 screen completion is accepted only within AC-00C. Route/source presence, synthetic access
+tests, and browser proxy evidence may establish a local implementation candidate, but they do not
+prove production authentication, Android behavior, cultural/content approval, or release readiness.
 
 Feature 003 MUST NOT be called **Android-accepted** or **demo-accepted** until the physical bilingual
 journey, offline fallback, predictive/native Back, WCAG contrast, reset/media/accessibility checks,

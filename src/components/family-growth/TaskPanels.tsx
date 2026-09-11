@@ -119,6 +119,7 @@ export function TaskChoice({
 }: TaskChoiceProps) {
   const { t } = useTranslation();
   const [focused, setFocused] = useState(false);
+  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const title = localize(template.title, locale);
   const meaning = localize(template.whyItMatters, locale);
@@ -143,9 +144,9 @@ export function TaskChoice({
       testID={testID}
     >
       {selected ? <View style={styles.selectedRule} /> : null}
-      <View style={styles.taskHeader}>
+      <View style={[styles.taskHeader, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={styles.taskTitleBlock}>
-          <Text accessibilityRole="header" color="forest" variant="heading">
+          <Text color="forest" variant="heading">
             {title}
           </Text>
           <Text color="inkMuted">{meaning}</Text>
@@ -163,7 +164,7 @@ export function TaskChoice({
         </View>
       ) : null}
 
-      <View style={styles.metadataGrid}>
+      <View style={[styles.metadataGrid, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <Metadata
           label={t('taskReview.effort')}
           value={localize(template.estimatedEffort, locale)}
@@ -208,6 +209,7 @@ export function DefinitionOfDone({
   value,
 }: DefinitionOfDoneProps) {
   const { t } = useTranslation();
+  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const resolvedTitle = title ?? t('taskReview.definition');
 
@@ -218,11 +220,11 @@ export function DefinitionOfDone({
       testID={testID}
     >
       <View style={styles.definitionRule} />
-      <View style={styles.definitionHeading}>
+      <View style={[styles.definitionHeading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <View style={styles.definitionIcon}>
           <TargetIcon />
         </View>
-        <Text accessibilityRole="header" color="forest" style={styles.flexText} variant="heading">
+        <Text color="forest" style={styles.flexText} variant="heading">
           {resolvedTitle}
         </Text>
       </View>
@@ -249,12 +251,13 @@ interface TaskStepsProps {
 
 export function TaskSteps({ steps, testID, title }: TaskStepsProps) {
   const { t } = useTranslation();
+  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
 
   return (
     <View style={styles.steps} testID={testID}>
-      <Text accessibilityRole="header" color="forest" variant="heading">
+      <Text color="forest" variant="heading">
         {title ?? t('childTask.steps')}
       </Text>
       <View style={styles.stepList}>
@@ -266,7 +269,7 @@ export function TaskSteps({ steps, testID, title }: TaskStepsProps) {
               accessibilityLabel={`${ordinal}. ${stepText}`}
               accessible
               key={`${index}-${stepText}`}
-              style={styles.stepRow}
+              style={[styles.stepRow, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
             >
               <View style={styles.stepNumber}>
                 <Text align="center" color="forest" variant="label">
@@ -293,6 +296,7 @@ interface SafetyBoundaryProps {
 
 export function SafetyBoundary({ bilingual = false, safety, testID, title }: SafetyBoundaryProps) {
   const { t } = useTranslation();
+  const direction = usePrototypeStore((state) => state.direction);
   const locale = usePrototypeStore((state) => state.locale);
   const standardLines = [
     safety.adultPreCheck,
@@ -309,9 +313,9 @@ export function SafetyBoundary({ bilingual = false, safety, testID, title }: Saf
   return (
     <View style={styles.safetyBoundary} testID={testID}>
       <View style={styles.safetyRule} />
-      <View style={styles.safetyHeading}>
+      <View style={[styles.safetyHeading, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}>
         <SafetyIcon />
-        <Text accessibilityRole="header" color="forest" style={styles.flexText} variant="heading">
+        <Text color="forest" style={styles.flexText} variant="heading">
           {title ?? t('taskReview.safety')}
         </Text>
       </View>
@@ -364,11 +368,17 @@ function BoundaryLine({
   secondaryValue?: string;
   value: string;
 }) {
+  const direction = usePrototypeStore((state) => state.direction);
+
   return (
     <View
       accessibilityLabel={secondaryValue ? undefined : value}
       accessible={!secondaryValue}
-      style={[styles.boundaryLine, prominent ? styles.prominentBoundary : null]}
+      style={[
+        styles.boundaryLine,
+        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
+        prominent ? styles.prominentBoundary : null,
+      ]}
     >
       <View style={styles.boundaryIcon}>
         {alert ? <SafetyIcon alert /> : <CheckIcon color={colors.ghaf} />}
@@ -410,6 +420,7 @@ export function SeedAward({
   testID,
 }: SeedAwardProps) {
   const { t } = useTranslation();
+  const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <View
@@ -419,7 +430,7 @@ export function SeedAward({
         destinationLabel,
         symbolicText,
       ].join('. ')}
-      style={styles.seedAward}
+      style={[styles.seedAward, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
       testID={testID}
     >
       <View style={styles.seedIcon}>
@@ -467,7 +478,7 @@ export function RecognitionPanel({
 
   return (
     <View style={styles.recognitionPanel} testID={testID}>
-      <Text accessibilityRole="header" color="forest" variant="heading">
+      <Text color="forest" variant="heading">
         {title ?? t('taskReview.recognition')}
       </Text>
       <View style={styles.recognitionMeta}>
@@ -556,14 +567,19 @@ export function RetryPanel({
   testID,
   title,
 }: RetryPanelProps) {
+  const direction = usePrototypeStore((state) => state.direction);
+
   return (
-    <View style={styles.retryPanel} testID={testID}>
+    <View
+      style={[styles.retryPanel, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
+      testID={testID}
+    >
       <View style={styles.retryPath}>
         <View style={styles.retryPathLine} />
         <View style={styles.retryPathTurn} />
       </View>
       <View style={styles.retryCopy}>
-        <Text accessibilityRole="header" color="forest" variant="heading">
+        <Text color="forest" variant="heading">
           {title}
         </Text>
         <Text color="inkMuted">{body}</Text>
@@ -620,7 +636,7 @@ export function RoutinePhaseReview({
 }: RoutinePhaseReviewProps) {
   return (
     <View style={styles.phaseReview} testID={testID}>
-      <Text accessibilityRole="header" color="forest" variant="heading">
+      <Text color="forest" variant="heading">
         {title}
       </Text>
       <Text color="inkMuted">{body}</Text>
@@ -656,6 +672,7 @@ function PhaseOption({
   testID: string;
 }) {
   const [focused, setFocused] = useState(false);
+  const direction = usePrototypeStore((state) => state.direction);
 
   return (
     <Pressable
@@ -670,6 +687,7 @@ function PhaseOption({
         selected ? styles.phaseOptionSelected : null,
         focused ? styles.focusedRecord : null,
         pressed ? styles.pressed : null,
+        direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
       ]}
       testID={testID}
     >
@@ -689,6 +707,8 @@ function PhaseOption({
 }
 
 const styles = StyleSheet.create({
+  rowRtl: { flexDirection: 'row-reverse' },
+  rowLtr: { flexDirection: 'row' },
   flexText: { minWidth: 0, flex: 1 },
   focusedRecord: {
     borderColor: colors.gold,
@@ -723,7 +743,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.ghaf,
   },
   taskHeader: {
-    flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
   },
@@ -796,7 +815,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mangrove,
   },
   definitionHeading: {
-    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
   },
@@ -977,7 +995,6 @@ const styles = StyleSheet.create({
   phaseOptions: { gap: spacing.xs },
   phaseOption: {
     minHeight: layout.touchTarget,
-    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     borderRadius: radii.md,

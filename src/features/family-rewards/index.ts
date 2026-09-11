@@ -18,6 +18,7 @@ import type {
   PrivateFamilyRewardView,
   ReviseFamilyRewardPlanInput,
 } from '../../models/familyReward';
+import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
 
 const childIdSchema = z.enum(['child_salem', 'child_alya']);
 const categoryIdSchema = z.enum([
@@ -39,11 +40,7 @@ const isoTimestampSchema = z
   .string()
   .trim()
   .min(1)
-  .regex(
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/u,
-    'Expected an ISO timestamp',
-  )
-  .refine((value) => Number.isFinite(Date.parse(value)), 'Expected an ISO timestamp');
+  .refine(isExactIsoTimestamp, 'Expected an ISO timestamp');
 const monthSchema = z.string().regex(/^\d{4}-(?:0[1-9]|1[0-2])$/u);
 const localizedTextSchema = z
   .object({

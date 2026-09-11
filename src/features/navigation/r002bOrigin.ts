@@ -1,0 +1,404 @@
+import type { DemoRole } from '@/models/familyGrowth';
+import { getBadgeDefinition } from '@/features/growth/badgeRegistry';
+
+export const R002B_ORIGIN_IDS = [
+  'child_today_path_card',
+  'child_garden_path_card',
+  'child_garden_badges_card',
+  'impact_path_badges_action',
+  'impact_path_learning_action',
+  'badge_gallery_badge_card',
+  'badge_detail_path_action',
+  'badge_detail_learning_action',
+  'child_today_reveal_handoff',
+  'child_reveal_growth_action',
+  'child_garden_shared_growth_card',
+  'parent_family_progress_card',
+  'parent_family_overview_progress_row',
+  'parent_family_overview_shared_garden_row',
+  'parent_progress_task_action',
+  'parent_garden_shared_settings_card',
+] as const;
+
+export type R002bOriginId = (typeof R002B_ORIGIN_IDS)[number];
+export type R002bBadgeFilter = 'all' | 'earned' | 'in_progress' | 'locked' | 'archived';
+
+export interface R002bOrigin {
+  readonly version: 1;
+  readonly id: R002bOriginId;
+  readonly profileId: string;
+  readonly scrollOffset?: number;
+  readonly galleryScrollOffset?: number;
+  readonly filter?: R002bBadgeFilter;
+  readonly entityId?: string;
+}
+
+interface OriginDefinition {
+  readonly role: DemoRole;
+  readonly href:
+    | 'child'
+    | 'garden'
+    | 'circle'
+    | 'impact_path'
+    | 'badge_gallery'
+    | 'badge_detail'
+    | 'parent'
+    | 'parent_family';
+  readonly focusTarget: string;
+  readonly entity: 'none' | 'badge' | 'reveal';
+  readonly acceptsFilter?: true;
+  readonly acceptsGalleryScroll?: true;
+}
+
+const ORIGIN_DEFINITIONS: Readonly<Record<R002bOriginId, OriginDefinition>> = {
+  child_today_path_card: {
+    role: 'child',
+    href: 'child',
+    focusTarget: 'r002b-today-path-action',
+    entity: 'none',
+  },
+  child_garden_path_card: {
+    role: 'child',
+    href: 'garden',
+    focusTarget: 'r002b-garden-path-action',
+    entity: 'none',
+  },
+  child_garden_badges_card: {
+    role: 'child',
+    href: 'garden',
+    focusTarget: 'r002b-garden-badges-action',
+    entity: 'none',
+  },
+  impact_path_badges_action: {
+    role: 'child',
+    href: 'impact_path',
+    focusTarget: 'r002b-impact-path-badges-action',
+    entity: 'none',
+  },
+  impact_path_learning_action: {
+    role: 'child',
+    href: 'impact_path',
+    focusTarget: 'r002b-impact-path-learning-action',
+    entity: 'none',
+  },
+  badge_gallery_badge_card: {
+    role: 'child',
+    href: 'badge_gallery',
+    focusTarget: 'r002b-badge-gallery-list',
+    entity: 'badge',
+    acceptsFilter: true,
+  },
+  badge_detail_path_action: {
+    role: 'child',
+    href: 'badge_detail',
+    focusTarget: 'r002b-badge-detail-path-action',
+    entity: 'badge',
+    acceptsFilter: true,
+    acceptsGalleryScroll: true,
+  },
+  badge_detail_learning_action: {
+    role: 'child',
+    href: 'badge_detail',
+    focusTarget: 'r002b-badge-detail-learning-action',
+    entity: 'badge',
+    acceptsFilter: true,
+    acceptsGalleryScroll: true,
+  },
+  child_today_reveal_handoff: {
+    role: 'child',
+    href: 'child',
+    focusTarget: 'open-r002b-reveal-button',
+    entity: 'reveal',
+  },
+  child_reveal_growth_action: {
+    role: 'child',
+    href: 'child',
+    focusTarget: 'r002b-child-reveal-growth-action',
+    entity: 'reveal',
+  },
+  child_garden_shared_growth_card: {
+    role: 'child',
+    href: 'garden',
+    focusTarget: 'r002b-garden-shared-growth-card',
+    entity: 'none',
+  },
+  parent_family_progress_card: {
+    role: 'parent',
+    href: 'parent',
+    focusTarget: 'r002b-parent-family-progress-card',
+    entity: 'none',
+  },
+  parent_family_overview_progress_row: {
+    role: 'parent',
+    href: 'parent_family',
+    focusTarget: 'r003-family-progress-row',
+    entity: 'none',
+  },
+  parent_family_overview_shared_garden_row: {
+    role: 'parent',
+    href: 'parent_family',
+    focusTarget: 'r003-family-shared-garden-row',
+    entity: 'none',
+  },
+  parent_progress_task_action: {
+    role: 'parent',
+    href: 'parent',
+    focusTarget: 'r002b-parent-progress-task-action',
+    entity: 'none',
+  },
+  parent_garden_shared_settings_card: {
+    role: 'parent',
+    href: 'garden',
+    focusTarget: 'r002b-parent-garden-shared-settings-card',
+    entity: 'none',
+  },
+};
+
+const BADGE_FILTERS = new Set<R002bBadgeFilter>([
+  'all',
+  'earned',
+  'in_progress',
+  'locked',
+  'archived',
+]);
+
+export function isR002bBadgeFilter(value: unknown): value is R002bBadgeFilter {
+  return typeof value === 'string' && BADGE_FILTERS.has(value as R002bBadgeFilter);
+}
+
+export type CreateR002bOriginResult =
+  | { readonly ok: true; readonly data: R002bOrigin }
+  | {
+      readonly ok: false;
+      readonly error:
+        | 'invalid_origin'
+        | 'invalid_profile'
+        | 'invalid_entity'
+        | 'invalid_filter'
+        | 'invalid_scroll';
+    };
+
+export type R002bOriginRouteParams = Readonly<{
+  originId: string;
+  originProfileId: string;
+  originScrollOffset?: string;
+  originGalleryScrollOffset?: string;
+  originFilter?: string;
+  originEntityId?: string;
+}>;
+
+function isOriginId(value: unknown): value is R002bOriginId {
+  return typeof value === 'string' && (R002B_ORIGIN_IDS as readonly string[]).includes(value);
+}
+
+function isSafeIdentifier(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    value.length <= 180 &&
+    /^[a-zA-Z0-9._:-]+$/.test(value)
+  );
+}
+
+function isRevealId(value: string, profileId: string): boolean {
+  const prefix = `reveal:${profileId}:`;
+  return value.startsWith(prefix) && value.length > prefix.length && value.length <= 240;
+}
+
+export function createR002bOrigin(input: {
+  readonly id: R002bOriginId;
+  readonly profileId: string;
+  readonly scrollOffset?: number;
+  readonly galleryScrollOffset?: number;
+  readonly filter?: R002bBadgeFilter;
+  readonly entityId?: string;
+}): CreateR002bOriginResult {
+  if (!isOriginId(input?.id)) return { ok: false, error: 'invalid_origin' };
+  if (!isSafeIdentifier(input.profileId)) return { ok: false, error: 'invalid_profile' };
+
+  const definition = ORIGIN_DEFINITIONS[input.id];
+  if (
+    input.scrollOffset !== undefined &&
+    (!Number.isSafeInteger(input.scrollOffset) ||
+      input.scrollOffset < 0 ||
+      input.scrollOffset > 100_000)
+  ) {
+    return { ok: false, error: 'invalid_scroll' };
+  }
+  if (
+    input.galleryScrollOffset !== undefined &&
+    (!definition.acceptsGalleryScroll ||
+      !Number.isSafeInteger(input.galleryScrollOffset) ||
+      input.galleryScrollOffset < 0 ||
+      input.galleryScrollOffset > 100_000)
+  ) {
+    return { ok: false, error: 'invalid_scroll' };
+  }
+  if (
+    input.filter !== undefined &&
+    (!definition.acceptsFilter || !isR002bBadgeFilter(input.filter))
+  ) {
+    return { ok: false, error: 'invalid_filter' };
+  }
+
+  if (definition.entity === 'none' && input.entityId !== undefined) {
+    return { ok: false, error: 'invalid_entity' };
+  }
+  if (
+    definition.entity === 'badge' &&
+    (typeof input.entityId !== 'string' || getBadgeDefinition(input.entityId) === null)
+  ) {
+    return { ok: false, error: 'invalid_entity' };
+  }
+  if (
+    definition.entity === 'reveal' &&
+    (typeof input.entityId !== 'string' || !isRevealId(input.entityId, input.profileId))
+  ) {
+    return { ok: false, error: 'invalid_entity' };
+  }
+
+  const data: R002bOrigin = {
+    version: 1,
+    id: input.id,
+    profileId: input.profileId,
+    ...(input.scrollOffset === undefined ? {} : { scrollOffset: input.scrollOffset }),
+    ...(input.galleryScrollOffset === undefined
+      ? {}
+      : { galleryScrollOffset: input.galleryScrollOffset }),
+    ...(input.filter === undefined ? {} : { filter: input.filter }),
+    ...(input.entityId === undefined ? {} : { entityId: input.entityId }),
+  };
+  return { ok: true, data: Object.freeze(data) };
+}
+
+export function serializeR002bOrigin(origin: R002bOrigin): R002bOriginRouteParams {
+  const normalized = createR002bOrigin(origin);
+  if (!normalized.ok) {
+    throw new Error(`Cannot serialize invalid R002b origin: ${normalized.error}`);
+  }
+
+  return Object.freeze({
+    originId: normalized.data.id,
+    originProfileId: normalized.data.profileId,
+    ...(normalized.data.scrollOffset === undefined
+      ? {}
+      : { originScrollOffset: String(normalized.data.scrollOffset) }),
+    ...(normalized.data.galleryScrollOffset === undefined
+      ? {}
+      : { originGalleryScrollOffset: String(normalized.data.galleryScrollOffset) }),
+    ...(normalized.data.filter === undefined ? {} : { originFilter: normalized.data.filter }),
+    ...(normalized.data.entityId === undefined ? {} : { originEntityId: normalized.data.entityId }),
+  });
+}
+
+export function parseR002bOriginParams(
+  params: Readonly<Record<string, unknown>>,
+): CreateR002bOriginResult {
+  const rawScrollOffset = params?.originScrollOffset;
+  const scrollOffset =
+    rawScrollOffset === undefined
+      ? undefined
+      : typeof rawScrollOffset === 'string' && /^\d+$/.test(rawScrollOffset)
+        ? Number(rawScrollOffset)
+        : Number.NaN;
+  const rawGalleryScrollOffset = params?.originGalleryScrollOffset;
+  const galleryScrollOffset =
+    rawGalleryScrollOffset === undefined
+      ? undefined
+      : typeof rawGalleryScrollOffset === 'string' && /^\d+$/.test(rawGalleryScrollOffset)
+        ? Number(rawGalleryScrollOffset)
+        : Number.NaN;
+
+  return createR002bOrigin({
+    id: params?.originId as R002bOriginId,
+    profileId: params?.originProfileId as string,
+    ...(scrollOffset === undefined ? {} : { scrollOffset }),
+    ...(galleryScrollOffset === undefined ? {} : { galleryScrollOffset }),
+    ...(params?.originFilter === undefined
+      ? {}
+      : { filter: params.originFilter as R002bBadgeFilter }),
+    ...(params?.originEntityId === undefined ? {} : { entityId: params.originEntityId as string }),
+  });
+}
+
+function safeRoot(role: DemoRole): '/child' | '/parent' {
+  return role === 'child' ? '/child' : '/parent';
+}
+
+function hrefFor(origin: R002bOrigin, definition: OriginDefinition): string {
+  switch (definition.href) {
+    case 'child':
+      return '/child';
+    case 'garden':
+      return '/garden';
+    case 'circle':
+      return '/circle';
+    case 'impact_path':
+      return '/garden/impact-path';
+    case 'badge_gallery':
+      return '/garden/badges';
+    case 'badge_detail':
+      return `/garden/badges/${encodeURIComponent(origin.entityId ?? '')}`;
+    case 'parent':
+      return '/parent';
+    case 'parent_family':
+      return '/parent/family';
+  }
+}
+
+function focusTargetFor(origin: R002bOrigin, definition: OriginDefinition): string {
+  return origin.id === 'badge_gallery_badge_card' && origin.entityId
+    ? `r002b-badge-${origin.entityId}`
+    : definition.focusTarget;
+}
+
+export type ResolveR002bOriginResult =
+  | {
+      readonly restored: true;
+      readonly origin: R002bOrigin;
+      readonly href: string;
+      readonly focusTarget: string;
+      readonly scrollOffset: number;
+      readonly galleryScrollOffset?: number;
+      readonly filter: R002bBadgeFilter | null;
+    }
+  | {
+      readonly restored: false;
+      readonly href: '/child' | '/parent';
+      readonly reason: 'invalid_origin' | 'role_mismatch' | 'profile_mismatch';
+    };
+
+export function resolveR002bOrigin(input: {
+  readonly origin: R002bOrigin;
+  readonly activeRole: DemoRole;
+  readonly activeProfileId: string;
+}): ResolveR002bOriginResult {
+  const candidate = input?.origin;
+  if (!candidate || candidate.version !== 1) {
+    return { restored: false, href: safeRoot(input.activeRole), reason: 'invalid_origin' };
+  }
+
+  const normalized = createR002bOrigin(candidate);
+  if (!normalized.ok) {
+    return { restored: false, href: safeRoot(input.activeRole), reason: 'invalid_origin' };
+  }
+  const definition = ORIGIN_DEFINITIONS[normalized.data.id];
+  if (definition.role !== input.activeRole) {
+    return { restored: false, href: safeRoot(input.activeRole), reason: 'role_mismatch' };
+  }
+  if (normalized.data.profileId !== input.activeProfileId) {
+    return { restored: false, href: safeRoot(input.activeRole), reason: 'profile_mismatch' };
+  }
+
+  return {
+    restored: true,
+    origin: normalized.data,
+    href: hrefFor(normalized.data, definition),
+    focusTarget: focusTargetFor(normalized.data, definition),
+    scrollOffset: normalized.data.scrollOffset ?? 0,
+    ...(normalized.data.galleryScrollOffset === undefined
+      ? {}
+      : { galleryScrollOffset: normalized.data.galleryScrollOffset }),
+    filter: normalized.data.filter ?? null,
+  };
+}

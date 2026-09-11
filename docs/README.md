@@ -4,15 +4,27 @@ This directory contains current engineering guidance and preserved Feature 002 r
 Feature 003 product contracts intentionally remain in the repository root because the approved
 handoff, `AGENTS.md`, and Spec Kit workflow reference those canonical paths.
 
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+Clean R002a head `0501cf3` is the implementation baseline. R001/R002a remain frozen fallbacks; R002b
+Growth mechanics may be implemented behind independent default-off flags. The six local-only
+commits remain unapplied, and release activation remains blocked.
+
 ## Start here
 
-| Need                                                   | Document                                                      |
-| ------------------------------------------------------ | ------------------------------------------------------------- |
-| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                     |
-| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                  |
-| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                         |
-| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                         |
-| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md) |
+| Need                                                   | Document                                                                                           |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                                                          |
+| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                                                       |
+| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                              |
+| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                              |
+| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                                      |
+| Check current independent release gates                | [Feature 003 release gates](../specs/003-family-growth-garden/design-intake/release-gate.md)       |
+| Inspect frozen R001 composition references             | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md)                                   |
+| Inspect selected R002a compatibility references        | [R002a selections](design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md)                         |
+| Inspect the R002b implementation contract              | [R002b contract](../specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md) |
 
 ## Active Feature 003 contracts
 
@@ -33,6 +45,13 @@ The active Spec Kit package is
 [`specs/003-family-growth-garden/`](../specs/003-family-growth-garden/). Its `spec.md`, `plan.md`, and
 `tasks.md` are normative for implementation. Contracts and checklists beneath that directory hold
 domain acceptance and exact evidence.
+
+The [Revision 3 proposal package](../specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
+is retained as non-canonical reconciliation evidence. Current user authority now fixes the private
+five-Leaf League, canonical task ID, independent progression authorities, complete existing
+approval consequences, access, voice, reset, and profile isolation. Its Growth recommendations
+are now approved product inputs for feature-flagged implementation, while the proposal package
+remains non-canonical history. Selected R002a visuals remain governed by their intake record.
 
 ## Preserved Feature 002 history
 
@@ -55,12 +74,15 @@ prepared media remains under `assets/demo/`; and the committed `*-mobile-final.p
 
 ## Current evidence locations
 
-| Evidence                      | Location                                                                                      |
-| ----------------------------- | --------------------------------------------------------------------------------------------- |
-| Feature 003 acceptance ledger | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                         |
-| Automated/story evidence      | [`specs/003-family-growth-garden/checklists/`](../specs/003-family-growth-garden/checklists/) |
-| Professional UI critique      | [`.impeccable/critique/`](../.impeccable/critique/)                                           |
-| Curated browser screenshots   | [`output/playwright/feature003-audit/`](../output/playwright/feature003-audit/)               |
+| Evidence                       | Location                                                                                                  |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Feature 003 acceptance ledger  | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                                     |
+| R001 Batch 1 validation        | [R001 validation evidence](../specs/003-family-growth-garden/design-intake/r001-validation-evidence.md)   |
+| R002a compatibility validation | [R002a validation evidence](../specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md) |
+| Automated/story evidence       | [`specs/003-family-growth-garden/checklists/`](../specs/003-family-growth-garden/checklists/)             |
+| Professional UI critique       | [`.impeccable/critique/`](../.impeccable/critique/)                                                       |
+| Curated browser screenshots    | [`output/playwright/feature003-audit/`](../output/playwright/feature003-audit/)                           |
+| R002a browser screenshots      | [`output/playwright/r002a/`](../output/playwright/r002a/)                                                 |
 
 Generated Expo exports (`dist/`, `output/web-*`) and raw Playwright CLI session directories are
 reproducible build/tool output and are not versioned evidence. Preserve the command and result in

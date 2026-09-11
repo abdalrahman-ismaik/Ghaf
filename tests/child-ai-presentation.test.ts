@@ -12,6 +12,11 @@ import { localize } from '../src/i18n';
 import { resources } from '../src/i18n/resources';
 import { createFeature003ServiceRegistry } from '../src/services';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const taskContext: ChildVoiceTaskContext = {
   actorRole: 'child',
@@ -267,9 +272,9 @@ describe('Child AI presentation controller', () => {
 });
 
 describe('Child AI presentation store integration', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   it('keeps Parent permission explicit and rejects a role-only Child grant', () => {
@@ -294,8 +299,7 @@ describe('Child AI presentation store integration', () => {
     reviewP0Task();
     expectOk(usePrototypeStore.getState().setChildVoicePermission(true));
     expectOk(usePrototypeStore.getState().approveAssignment());
-    usePrototypeStore.getState().setRole('child');
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expectOk(usePrototypeStore.getState().startAssignment());
     expectOk(usePrototypeStore.getState().prepareChildVoice());
@@ -360,8 +364,7 @@ describe('Child AI presentation store integration', () => {
     });
     expect(usePrototypeStore.getState().childVoiceView).toEqual(voiceBeforeLocaleChange);
 
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+    expectOk(resetPrototypeForTest());
     expect(usePrototypeStore.getState()).toMatchObject({
       locale: 'ar',
       direction: 'rtl',
@@ -375,8 +378,7 @@ describe('Child AI presentation store integration', () => {
     reviewP0Task();
     expectOk(usePrototypeStore.getState().setChildVoicePermission(true));
     expectOk(usePrototypeStore.getState().approveAssignment());
-    usePrototypeStore.getState().setRole('child');
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expectOk(usePrototypeStore.getState().startAssignment());
     expectOk(usePrototypeStore.getState().prepareChildVoice());
@@ -408,12 +410,11 @@ describe('Child AI presentation store integration', () => {
     });
   });
 
-  it('clears a sent transcript before a later journey reuses the same task fixture', () => {
+  it('clears a sent transcript before a later journey reuses the same task fixture', async () => {
     reviewP0Task();
     expectOk(usePrototypeStore.getState().setChildVoicePermission(true));
     expectOk(usePrototypeStore.getState().approveAssignment());
-    usePrototypeStore.getState().setRole('child');
-    expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expectOk(usePrototypeStore.getState().startAssignment());
     expectOk(usePrototypeStore.getState().prepareChildVoice());
@@ -422,7 +423,7 @@ describe('Child AI presentation store integration', () => {
     expectOk(usePrototypeStore.getState().runChildVoiceCommand({ type: 'send' }));
     expect(usePrototypeStore.getState().childVoiceView.availability).toBe('sent');
 
-    usePrototypeStore.getState().setRole('parent');
+    await enterParentExperienceForTest();
     reviewP0Task();
     expect(usePrototypeStore.getState().childVoiceView).toMatchObject({
       permissionEnabled: true,
@@ -433,7 +434,7 @@ describe('Child AI presentation store integration', () => {
     });
 
     expectOk(usePrototypeStore.getState().approveAssignment());
-    usePrototypeStore.getState().setRole('child');
+    await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
     expectOk(usePrototypeStore.getState().startAssignment());
     expect(expectOk(usePrototypeStore.getState().prepareChildVoice())).toMatchObject({

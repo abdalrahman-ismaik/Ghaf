@@ -14,18 +14,50 @@ import {
 } from '../src/services/mock/fixtures';
 import type { PrototypeStoreState } from '../src/state/usePrototypeStore';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import {
+  enterChildExperienceForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+} from './helpers/prototypeStore';
 
 const EXPECTED_ROUTES = [
   '/',
+  '/access/parent/add-first-child',
+  '/access/parent/family-basics',
+  '/access/parent/family-created-success',
+  '/access/parent/review-create',
+  '/access/parent/sign-in',
+  '/access/parent/sign-up',
+  '/access/parent/verification',
+  '/access/child',
+  '/access/child/pin',
+  '/access/child/pair',
   '/role',
   '/parent',
   '/parent/task/new',
   '/parent/task/review',
+  '/parent/family/[profileId]/progress',
   '/child',
+  '/child/reveal/[bundleId]',
   '/child/task',
+  '/child/settings',
   '/parent/check-in',
   '/garden',
+  '/garden/impact-path',
+  '/garden/badges',
+  '/garden/badges/[badgeId]',
+  '/garden/learn/[learningId]/story',
+  '/garden/learn/[learningId]/accessible',
+  '/league',
   '/circle',
+  '/circle/shared-growth',
+  '/parent/family/shared-garden',
+  '/parent/family',
+  '/parent/family/reward',
+  '/parent/settings',
+  '/parent/settings/permissions',
+  '/parent/settings/devices',
+  '/parent/reauthenticate',
 ] as const;
 
 const LEGACY_ROUTES = [
@@ -114,7 +146,7 @@ function authoredRoutes(): string[] {
   const appRoot = resolve(import.meta.dirname, '../app');
   return listTsxFiles(appRoot)
     .map((file) => relative(appRoot, file).split(sep).join('/'))
-    .filter((file) => file !== '_layout.tsx' && file !== '+html.tsx')
+    .filter((file) => !file.endsWith('_layout.tsx') && file !== '+html.tsx')
     .map((file) => {
       const withoutExtension = file.replace(/\.tsx$/u, '');
       const withoutIndex = withoutExtension.replace(/(?:^|\/)index$/u, '');
@@ -139,10 +171,10 @@ function unavailableParentGuide(
 }
 
 async function completeOfflineCycle(cycle: number): Promise<void> {
-  usePrototypeStore.getState().setRole('parent');
-  const reset = usePrototypeStore.getState().resetPrototype();
+  const reset = resetPrototypeForTest();
   expectOk(reset);
   expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
+  await enterParentExperienceForTest();
 
   expectOk(
     usePrototypeStore.getState().createTaskDraft({
@@ -161,8 +193,7 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
   expectOk(usePrototypeStore.getState().reviewTask());
   expectOk(usePrototypeStore.getState().approveAssignment());
 
-  usePrototypeStore.getState().setRole('child');
-  expectOk(usePrototypeStore.getState().setActiveChild('child_salem'));
+  await enterChildExperienceForTest('child_salem');
   expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
   expectOk(usePrototypeStore.getState().startAssignment());
   expectOk(
@@ -190,7 +221,7 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
     }),
   );
 
-  usePrototypeStore.getState().setRole('parent');
+  await enterParentExperienceForTest();
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -224,16 +255,16 @@ async function completeOfflineCycle(cycle: number): Promise<void> {
 }
 
 describe('US6 bilingual offline operator and reset flow', () => {
-  beforeEach(() => {
-    usePrototypeStore.getState().setRole('parent');
-    expectOk(usePrototypeStore.getState().resetPrototype());
+  beforeEach(async () => {
+    expectOk(resetPrototypeForTest());
+    await enterParentExperienceForTest();
   });
 
   afterEach(() => {
     vi.unstubAllGlobals();
   });
 
-  it('contains exactly the ten authored Feature 003 routes and no replaced Feature 002 route', () => {
+  it('preserves the established routes while adding only authorized default-off R002b routes', () => {
     const actual = authoredRoutes();
     expect(actual).toEqual([...EXPECTED_ROUTES].sort());
     for (const legacyRoute of LEGACY_ROUTES) {
@@ -247,7 +278,7 @@ describe('US6 bilingual offline operator and reset flow', () => {
         source: readFileSync(new URL('../app/parent/task/review.tsx', import.meta.url), 'utf8'),
         destination: '/parent/task/new',
         retiredGuard: 'parent-task-review-guard',
-        nullGuard: 'if (!content || !reviewable) return null;',
+        nullGuard: 'if (!content || (!reviewable && !successVisible)) return null;',
       },
       {
         source: readFileSync(new URL('../app/child/task.tsx', import.meta.url), 'utf8'),
@@ -427,27 +458,26 @@ describe('US6 bilingual offline operator and reset flow', () => {
     expect(counters()).toEqual(before.counters);
   });
 
-  it('hands the shared device back to the exact Salem lifecycle without duplicate role copy', () => {
-    const source = readFileSync(new URL('../app/role.tsx', import.meta.url), 'utf8');
+  it('hands the shared device back through separate Parent and Child access paths', () => {
+    const role = readFileSync(new URL('../app/role.tsx', import.meta.url), 'utf8');
+    const parent = readFileSync(new URL('../app/parent/index.tsx', import.meta.url), 'utf8');
+    const childAccess = readFileSync(
+      new URL('../app/access/child/index.tsx', import.meta.url),
+      'utf8',
+    );
 
-    expect(source).toContain("chosen: '/child/task'");
-    expect(source).toContain("in_progress: '/child/task'");
-    expect(source).toContain("submitted: '/child/task'");
-    expect(source).toContain("recognized: '/garden'");
-    expect(source).toContain("['submitted', 'retry', 'confirmed', 'recognized']");
-    expect(source).toContain("childAccess.child_salem === 'paired'");
-    expect(source).toContain('salemHandoffLabel');
-    expect(source).toContain('statusTestID="salem-handoff-status"');
-    expect(source).not.toContain("{t('role.body')} {t('origin.synthetic')}");
-    expect(source).not.toContain("{t('origin.synthetic')}");
+    expect(role).toContain('<Redirect href="/" />');
+    expect(role).not.toContain('setRole');
+    expect(parent).toContain('signOutExperience()');
+    expect(parent).toContain("router.replace('/access/child' as Href)");
+    expect(childAccess).toContain("router.push('/access/child/pin' as Href)");
   });
 
   it.each(RESET_SOURCE_STATES)(
     'atomically resets the %s source state to Arabic / with replacement',
     (source) => {
       usePrototypeStore.setState(createResetSourceSession(source));
-      usePrototypeStore.getState().setRole('parent');
-      const reset = usePrototypeStore.getState().resetPrototype();
+      const reset = resetPrototypeForTest();
 
       expectOk(reset);
       expect(reset.data).toEqual({ navigateTo: '/', replaceHistory: true });
@@ -477,7 +507,7 @@ describe('US6 bilingual offline operator and reset flow', () => {
     ]) {
       expect(state[key], key).toBeUndefined();
     }
-    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({
+    expect(resetPrototypeForTest()).toMatchObject({
       ok: true,
       data: { navigateTo: '/', replaceHistory: true },
     });

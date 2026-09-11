@@ -4,15 +4,836 @@
 
 **Created**: 2026-08-26
 
-**Status**: Product scope approved. The user's implementation instruction authorizes the
-deterministic P0 after the Feature 003 specification, plan, tasks, and cross-artifact quality gates
-pass. Native-device and human-review acceptance remain open and cannot be inferred from artifact
-approval.
+**Status**: R001 Welcome/Parent onboarding and the completed R002a compatibility presentation are
+frozen regression baselines at clean head `0501cf3`. R002b product expansion is authorized for
+implementation behind independent default-off flags. Release activation, physical-device evidence,
+and named human review remain blocked or evidence-dependent.
 
 **Input**: Create an Arabic-first Parent–Child task, recognition, bounded AI-coaching, and UAE
 living-garden prototype that preserves the Feature 002 historical record while replacing its
 judge-facing product journey with one deterministic, safe, offline-capable ten-route vertical
 slice.
+
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+## R003 AI Services 1–3 Integration Amendment — 2026-09-07
+
+This amendment authorizes three bounded improvements without widening the Child-data or P0 product
+boundary. First, the existing prepared Parent Guide, prepared Child Coach, strengths-first Parent
+summary, age adapter, synthetic voice rehearsal, prepared media, and deterministic profile helper
+remain the complete mandatory offline AI experience. Second, one optional server-side Parent Guide
+operation may transform only the exact synthetic `task_recycling_p0_v1` make-clearer request into
+the already reviewed canonical bilingual task. Third, the existing profile helper may rank and
+mark allowlisted Task Builder categories from the persisted curated profile selections. Every task
+still requires normal Parent selection, review, save, and approval.
+
+The live Parent operation is a provider-neutral adapter plus a Cloudflare Workers AI reference
+gateway. The gateway requires a server-held access token, rejects every operation except the exact
+synthetic Parent request, applies a bound rate limiter, requests strict structured JSON, returns no
+Child Coach or media operation, and stores no request. The Expo bundle may contain the public
+endpoint but never an access token or provider credential. Because this prototype has no production
+session/token broker, the default registry remains prepared and release activation remains
+`BLOCKED`; tests may inject a synthetic credential into the adapter without claiming a deployed or
+live model result. A timeout, authentication failure, non-JSON response, schema mismatch, request
+mismatch, safety rejection, or provider error returns the same-attempt reviewed prepared result and
+retains Parent input.
+
+- **FR-210**: The deterministic Parent Guide, Child Coach, Parent summary, age-adaptation,
+  synthetic voice, prepared media, and profile-personalization services MUST remain registered,
+  offline-capable, reset-safe, and the default application behavior.
+- **FR-211**: The optional live gateway MUST expose only `refine_parent_task_v1` for the exact
+  synthetic Salem/version-one/Green-Impact/make-clearer request and MUST reject Child Coach,
+  summary, media, arbitrary task, real profile, free-text Child, and unknown operations.
+- **FR-212**: The gateway MUST require a server-side access-token secret, use constant-time token
+  comparison, apply the configured authenticated-client rate limiter before inference, bound the
+  request body, permit only configured CORS origin or originless native requests, and emit
+  no-store responses without logging prompt or profile content.
+- **FR-213**: The live Parent Guide adapter MUST use HTTPS, strict request/response schemas, a
+  bounded abort timeout, no automatic model retry, exact request-id correlation, immutable
+  category/reward/privacy/safety fields, local safety validation, and a `live` disclosure only for
+  a directly accepted gateway result.
+- **FR-214**: Gateway credentials MUST enter the adapter through an injected trusted token
+  provider and MUST NOT use an `EXPO_PUBLIC_` variable, committed file, log, error message, fixture,
+  or mobile-bundle constant. With no trusted provider, the prepared service MUST remain primary.
+- **FR-215**: Every optional-live failure MUST resolve in the same request attempt to
+  `guide_recycling_refine_v1`, retain the Parent's exact input, explain prepared fallback, and
+  leave task, assignment, Seeds, Garden, League, Reward, media, and Child Coach state unchanged.
+- **FR-216**: Profile recommendations MUST be derived only from the existing allowlisted age band,
+  interests, hobbies, accessibility defaults, support preferences, and opt-in value; gender,
+  nickname, family name, contact data, free text, media, history, and provider calls remain excluded.
+- **FR-217**: Task Builder recommendation output MUST contain every curated category exactly once,
+  move at most two prepared recommendations ahead of the stable catalog order, visibly disclose
+  prepared/local/fallible status, and return the original order when personalization is disabled or
+  invalid.
+- **FR-218**: A recommendation MAY preselect the top category only when the current Task Builder
+  state has no stronger explicit journey, origin prefill, or canonical P0 selection; it MUST NOT
+  make a future-only template executable, assign work, change an award, or bypass Parent review.
+- **FR-219**: Live Child Coach, real Child text/voice/photo processing, live profile inference,
+  legacy mission generation, provider deployment, and token-broker implementation remain outside
+  this amendment and require separate specification and evidence.
+- **SC-060**: Focused tests prove prepared-default behavior with zero fetches plus authenticated
+  live success, missing/invalid credential denial, strict request rejection, rate-limit rejection,
+  timeout, HTTP, non-JSON, malformed-schema, correlation, and safety fallback cases.
+- **SC-061**: Source/config scans find no provider secret or public access-token variable and prove
+  that the Worker exposes no Child Coach/media route, no permissive wildcard CORS, and no committed
+  local Worker state.
+- **SC-062**: Profile tests prove deterministic stable ordering, no duplicates, opt-out/original
+  order, prohibited-input rejection, visible recommendation labels, and unchanged Parent approval
+  plus sole-executable-task guards.
+- **SC-063**: Typecheck, lint, formatting, full tests, Expo public-config inspection, secret/network
+  scans, and Git whitespace pass without changing the current route manifest or default-off R002b
+  flags.
+- **SC-064**: Worker deployment, direct live-model transformation, trusted mobile token broker,
+  physical Android behavior, and named Arabic/UAE/safeguarding/privacy/accessibility review remain
+  `NOT RUN` or `BLOCKED` until directly evidenced; automated mocks cannot pass them.
+
+## R003 Onboarding Image Perimeter Progress Amendment — 2026-09-07
+
+This amendment removes the detached solid accent strip from the bottom of each onboarding
+photograph. In its place, a thin rounded progress stroke is integrated with the existing 3:2 image
+edge. On the first moment it appears as a short centered mark along the lower edge; each explicit
+Back, Next, or pillar selection grows or reverses two equal branches around the image; and the
+sixth moment completes the full perimeter. It never advances with narration, ambience, or time.
+
+The lower current/total plus six-dot row remains the primary accessible navigation indicator and
+continues to sit above the actions. The perimeter stroke is a noninteractive visual echo of that
+same state, is hidden from assistive technology to avoid duplicate announcements, and uses a
+high-contrast branded stroke plus a restrained edge track. Standard motion runs on the UI thread;
+reduced-motion mode renders the correct static extent without spatial animation.
+
+- **FR-207**: The onboarding photograph MUST NOT render a detached solid lower accent strip.
+- **FR-208**: A thin rounded image-edge progress stroke MUST start at the bottom center, grow
+  symmetrically in both directions from the explicit six-step state, and complete the photograph's
+  perimeter only on the last moment.
+- **FR-209**: The image-edge stroke MUST be noninteractive, hidden from assistive technology,
+  independent of audio/time, and reduced-motion equivalent; the existing lower current/total plus
+  dots MUST retain the sole programmatic progress semantics.
+- **SC-059**: Focused source tests and compact bilingual inspection prove the old strip is absent,
+  the first/last perimeter states are distinct and deterministic, the lower semantic indicator is
+  unchanged, and standard/reduced-motion layouts preserve the 3:2 image without overflow.
+
+## R003 Compact Audio Onboarding Amendment — 2026-09-07
+
+This amendment refines the existing six-moment in-route first-run story without changing its
+order, three-pillar navigation, completion semantics, or any product authority. It supersedes the
+square crop, segmented story rail, and visible Guide panel from the immediately preceding
+presentation pass. Each moment reveals the existing 1200×800 local photograph in its intended
+responsive 3:2 frame, preserving the curated mix of wide establishing views and close details.
+The original direction-aware current/total plus dot indicator returns directly above the actions
+and changes only when the family explicitly uses Next, Back, or a pillar target.
+
+The first-run copy now speaks in the first-person voice of the Ghaf Guide, the app's bounded AI
+assistant. Arabic and English titles and bodies stay short, direct, concrete, energetic, and
+equivalent, render centered, and preserve Parent approval, permitted-help full recognition,
+permanent private symbolic growth, AI fallibility/adult help, and the no-measured-impact boundary.
+
+Each fully settled moment requests its packaged prepared synthetic Arabic or English narration
+automatically. The Guide panel is removed; one high-contrast 48dp speaker icon over the photograph
+replays the current clip. The exact visible title/body remains the transcript. Narration stops on
+step/locale change and onboarding exit, stays silent when a screen reader is active, and failure
+never blocks navigation. Quiet packaged nature ambience may loop only while onboarding is visible,
+at a low level that yields beneath narration and assistive speech; it stops on exit and never opts
+into operating-system background playback. Browser autoplay refusal is an external platform limit:
+the first explicit speaker press must still start the packaged clip when audio is available.
+
+- **FR-202**: Every first-run photograph MUST render in a responsive 3:2 frame using the existing
+  local raster and crop/fallback path; no new raster, runtime URL, or mirrored RTL asset is allowed.
+- **FR-203**: The original direction-aware current/total plus six-dot indicator MUST appear
+  directly above the lower navigation actions with clear inactive dots, a wider high-contrast
+  current dot, and programmatic progress semantics; it MUST NOT use a timer, autoplay navigation,
+  urgency, or completion pressure.
+- **FR-204**: All six Arabic/English titles and bodies MUST be short, direct, enthusiastic
+  centered first-person Ghaf Guide narration while preserving every existing approval, safety,
+  privacy, permanence, fallibility, adult-help, and symbolic-impact truth.
+- **FR-205**: Onboarding narration MUST use packaged prepared synthetic clips, keep the exact
+  transcript visible, start only after the current slide has settled, replay from one speaker icon,
+  stop across step/locale/exit boundaries, suppress playback with an active screen reader, and
+  remain nonblocking when audio is unavailable or browser autoplay is denied.
+- **FR-206**: Narration and quiet packaged nature ambience MUST remain foreground-only presentation
+  with no microphone, recording, recognition, background listening/OS playback, runtime URL, live
+  model call, companion claim, or new AI/access permission. Ambience MUST stop on onboarding exit.
+- **SC-057**: Focused tests prove the 3:2 frame, original lower dot indicator, centered six-script
+  presentation, one speaker control, packaged narration/ambience lifecycle, screen-reader
+  suppression, unchanged reducer/route/startup image sets, and no microphone/network API.
+- **SC-058**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the full wide and
+  close compositions, centered copy, simple indicator, speaker target, scrolling, and standard/
+  reduced-motion states remain readable with no horizontal overflow. Physical Android autoplay,
+  audio focus, TalkBack interaction, and named Arabic/voice review remain separately evidenced.
+
+## R003 Device-local Family Directory and Guided Setup Amendment — 2026-09-06
+
+This amendment authorizes one small device-local database for the demonstration. It supersedes
+earlier statements that the first-family completion receipt, configured profile directory, and
+synthetic paired-device markers always disappear on reload. It does not authorize production
+accounts, remote identity, cross-device synchronization, cloud backup, analytics, notifications,
+or persistence of the task/reward/garden ledgers. The database represents one synthetic household
+on one device and is cleared by the existing Parent-only prototype reset.
+
+The local directory contains exactly one Parent role and one or two configured Child profile slots.
+The Parent setup asks for the family name, app language, and Child count before presenting one
+ordered form for each Child. Every Child form asks for a nickname, botanical avatar, age band,
+preferred language, optional gender selection (`boy`, `girl`, or `prefer not to say`), curated
+interests, curated hobbies, accessibility defaults, and practical support preferences. Gender is
+never inferred and never changes recommendations, rewards, access, or Arabic grammar. No open
+"important information" field, diagnosis, school, address, location, legal name, birthday, photo,
+voice, contact detail, secret, or emotional disclosure is collected.
+
+The form includes a visibly labeled Ghaf AI profile helper. It may turn only the chosen age band,
+interests, hobbies, accessibility defaults, and support preferences into a deterministic prepared
+coaching-style summary and a small allowlisted set of task-category suggestions. The Parent may
+exclude a Child profile from this personalization. The helper must state that it is prepared AI,
+may be wrong, stays on the device, and does not independently assign or approve tasks. Gender is
+explicitly excluded from its inputs. The shared sparkle/star mark appears only beside a real
+bounded Guide, Coach, or prepared-personalization affordance and always has nearby explanatory
+text; it must not become decorative proof that a live model ran.
+
+After successful creation, the application atomically saves the validated directory and restores
+the immutable completion receipt before access routes can make a first-family decision. A verified
+returning Parent therefore reaches Parent Home without Family Basics, Child forms, Review Family,
+or Family Created. Configured Child names and avatars replace the corresponding Salem/Alya display
+fixtures, and an unconfigured second slot is absent from Parent and Child profile selectors. A
+stored paired-device marker may restore only the existing synthetic Child credential path; it is
+not authentication. Corrupt, unknown-version, or unavailable local data fails closed to a fresh
+setup with an honest recoverable local-storage message and never creates partial profiles.
+
+- **FR-190**: The app MUST persist one versioned, validated local family directory through an
+  `expo-sqlite`-backed device adapter and a deterministic test adapter; web preview MAY use
+  `localStorage`, and none of these adapters may claim production security or cloud persistence.
+- **FR-191**: The persisted record MUST contain one synthetic Parent role, one or two configured
+  Child roles, family/app-language metadata, the approved minimum Child profile fields, and
+  synthetic paired-device markers only; it MUST NOT contain verification/PIN values, free-form
+  sensitive notes, media, assistant transcripts, task history, reward balances, or provider data.
+- **FR-192**: Family Basics MUST ask Child count before profile entry, and the setup MUST present
+  exactly one sequential, resumable-in-memory form per selected Child followed by one whole-family
+  review; Back MUST preserve validated draft values without skipping or duplicating a Child.
+- **FR-193**: Child profile validation MUST require only nickname, age band, avatar, and preferred
+  language; gender, interests, hobbies, accessibility defaults, support preferences, and prepared
+  personalization MUST remain optional and independently changeable before family creation.
+- **FR-194**: Gender MUST be limited to `boy`, `girl`, or `prefer not to say`, MUST never be
+  inferred, and MUST be excluded from AI personalization, reward, access, rank, task suitability,
+  and gendered-copy decisions.
+- **FR-195**: Prepared AI personalization MUST consume only allowlisted non-sensitive profile
+  selections, return a deterministic bounded coaching summary plus curated category suggestions,
+  disclose its prepared/local/fallible status, and leave assignment and approval to the Parent.
+- **FR-196**: Family creation MUST validate every configured Child, persist the complete directory
+  as one record, then expose the completion receipt; a save failure MUST keep the Parent in review
+  with no authenticated Parent experience and a retry path.
+- **FR-197**: Startup MUST restore a valid saved directory before access routing decisions, rebuild
+  the existing immutable Parent completion receipt, project configured names/avatars into the
+  prototype session, and never flash or enter first-family setup for a returning household.
+- **FR-198**: Parent and Child selectors MUST expose only configured profile slots, and direct
+  attempts to select an unconfigured Child MUST fail closed without changing the active profile.
+- **FR-199**: A completed synthetic Child pairing MUST persist only its allowlisted Child/device
+  marker; reload MAY restore that marker so the same fixture credential reaches Today and triggers
+  the existing one-use returning-Child welcome, while revoked or reset markers MUST not restore.
+- **FR-200**: Parent reset MUST synchronously clear the local family directory and paired markers,
+  restore the exact canonical synthetic session, return to Arabic-first signed-out entry, and make
+  first-family setup available again without touching packaged fixtures.
+- **FR-201**: The shared AI sparkle/star mark MUST be used at the setup helper and existing bounded
+  Guide/Coach entry points only with readable labels and accessibility names; it MUST NOT imply
+  unrestricted chat, live inference, or autonomous decision-making.
+- **SC-052**: Focused tests prove schema parsing, unknown-version/corruption rejection, atomic save,
+  reload restoration, configured-profile filtering, paired-marker restoration/revocation, and
+  synchronous Parent reset clearing without changing task/reward/privacy authorities.
+- **SC-053**: Controller/store tests prove one- and two-Child sequence order, Back preservation,
+  validation, idempotent family creation, returning-Parent bypass, and unconfigured-slot denial.
+- **SC-054**: Assistant tests prove deterministic output, optional opt-out, input allowlisting,
+  gender exclusion, prohibited-language rejection, and no provider/network dependency.
+- **SC-055**: Arabic RTL and English LTR browser inspection at 320×720 and 390×844 proves the
+  family-count, each Child form, AI helper, review, creation, reload, and return-welcome flows remain
+  readable, keyboard-scrollable, and free of horizontal overflow.
+- **SC-056**: Typecheck, lint, formatting, full tests, dependency alignment, exact route/reset
+  checks, web and Android exports, detector, and Git whitespace checks pass on the integrated slice;
+  physical Android/TalkBack/Back/IME/font-scale results remain separately evidenced.
+
+## R003 SMAC Family–Sustainability–AI Onboarding Amendment — 2026-09-06
+
+This amendment supersedes the four-moment first-run story wherever it conflicts. The optional
+in-route onboarding now contains six short moments in this order: introduce Ghaf, make Family an
+explicit team, make Sustainability an explicit everyday action, explain bounded task-focused AI,
+preserve permitted help/full recognition, and close on permanent private symbolic growth. The
+three competition pillars—Family, Sustainability, and AI—must be readable within seconds and use
+child-clear Modern Standard Arabic with equivalent plain English.
+
+The Ghaf introduction and three pillar moments expose one accessible three-pillar navigator.
+Selecting a pillar moves only to its onboarding explanation; it does not complete onboarding,
+choose a role, approve a task, enable AI, or grant access. Next, Back, always-visible Skip, locale
+retention, active-session bypass, session-local completion, and deterministic reset remain
+unchanged. Standard step changes use one brief UI-thread opacity/vertical-settle transition;
+reduced motion removes travel and presents the settled state.
+
+Two new generated local raster photographs represent Family and bounded AI without people, hands,
+readable text, UI, robot/companion imagery, fantasy claims, or measured-impact claims. This grows
+the generated artwork registry from 46 to exactly 48 entries and the signed-out startup set from
+seven to nine rasters: official logo, shared leaf field, six onboarding photographs, and Welcome.
+The four branded fonts remain the only blocking font set. The post-onboarding queue still contains
+41 rasters because the two new files also move into the expanded startup set; its timing, bounded
+parallelism, cache sharing, and prepared-media-last rule remain unchanged.
+
+The AI moment must say that Ghaf can simplify only a Parent-approved task, that AI may be wrong,
+and that the Child can ask an adult. It must not imply open chat, emotional companionship,
+continuous listening, diagnosis, task approval, Parent replacement, or live-provider processing.
+The Sustainability moment describes safe household actions and Parent approval without claiming
+measured environmental impact. All six moments remain presentation only and preserve the current
+37 product routes and every access, task, Seed, Garden, League, Family Reward, privacy, reset, and
+feature-flag authority.
+
+- **FR-185**: Fresh Arabic-first onboarding MUST expose exactly six ordered, skippable moments:
+  `intro → family → sustainability → ai → support → growth`, with equivalent English resources.
+- **FR-186**: Family, Sustainability, and AI MUST each have a distinct child-clear title, body,
+  local raster photograph, and accessible navigator target; selecting a target MUST change only the
+  onboarding step.
+- **FR-187**: AI onboarding copy MUST disclose the bounded approved-task purpose, fallibility, and
+  adult-help exit and MUST NOT make a live-model, open-chat, companion, surveillance, or diagnosis
+  claim.
+- **FR-188**: Step motion MUST run on the UI thread through transform/opacity only, preserve visible
+  settled content by default, and remove spatial travel when reduced motion is enabled.
+- **FR-189**: Startup MUST settle the exact nine-raster/four-font signed-out set before onboarding;
+  the 41-image deferred queue MUST still begin only after onboarding receives its paint opportunity.
+- **SC-050**: Source and flow tests prove six-state order, pillar navigation, AI/sustainability
+  truthfulness, exact 48-artwork provenance, nine-raster startup readiness, 41-image deferred
+  boundary, unchanged 37-route inventory, and no new product authority.
+- **SC-051**: Arabic RTL and English LTR inspection at 320×720 and 390×844 proves the six moments,
+  three-pillar navigator, Back/Next/Skip/Start, image crops, and standard/reduced motion remain
+  readable and operable without horizontal overflow; physical Android and named-human review stay
+  separately evidenced.
+
+## R003 Returning-family Entry and Welcome Amendment — 2026-09-06
+
+The immutable local Parent completion receipt remains the sole authority that this synthetic
+prototype family already exists. After successful returning-Parent verification, the application
+must reuse that receipt, enter the existing Parent experience, and navigate to Parent Home without
+rendering Family Basics, Add First Child, Review Family, or Family Created. Direct or stale entry
+into a first-family route while verified with an existing receipt must fail closed back through
+the returning verification handoff and must never mutate or replace the household.
+
+Successful sign-in to an already paired Child fixture must likewise enter that Child's Today
+dashboard without exposing Parent setup or another Child profile. First-family completion and the
+first completion of a new Child pairing are not returning entries.
+
+Each qualifying returning sign-in creates one disposable, role-bound dashboard-presentation
+signal. Parent Home or Child Today consumes it through a dismissible Arabic-first/English-
+equivalent welcome dialog that identifies the correct role/user and summarizes at most two current
+local updates already authorized on that dashboard. Parent content remains Parent-only; Child
+content is limited to that Child's own task and permanent personal Garden progress. The dialog is
+an in-app local summary, not a push notification, remote sync, persistence guarantee, or new data
+authority. Dismissal, sign-out, handoff, or deterministic reset clears the signal; opening an
+update clears it before following the existing route/action.
+
+- **FR-180**: A verified Parent with an existing completion receipt MUST bypass every first-family
+  creation screen, reuse the receipt idempotently, and land on the existing Parent dashboard.
+- **FR-181**: A Child credential accepted through an existing active paired-device fixture MUST
+  land on that Child's Today dashboard; new pairing completion MUST NOT be classified as returning.
+- **FR-182**: Returning Parent and Child entries MUST set exactly one transient role/profile-bound
+  welcome signal; first-family creation, sign-out, role handoff, dismissal, and reset MUST leave it
+  absent.
+- **FR-183**: Parent Home and Child Today MUST show the signal as one accessible, reduced-motion-
+  aware, dismissible Soft Geometric dialog containing no more than two role-authorized local
+  updates and one dominant continuation action.
+- **FR-184**: Returning summaries MUST use bilingual resources, 48dp targets, logical RTL/LTR
+  layout, tabular locale-aware values, and explicit local/private wording; they MUST NOT imply push
+  delivery, remote sync, production authentication, or durable notification history.
+- **SC-048**: Focused state and route tests prove fresh creation receives no welcome, returning
+  Parent/Child sign-ins receive the correct one-use signal, every clear boundary removes it, and a
+  completed family can never render or mutate first-family setup.
+- **SC-049**: Arabic RTL and English LTR proxy inspection at 320×720 and 390×844 shows the dialog
+  over each correct dashboard with readable long copy, no overflow, correct Back/dismiss behavior,
+  and no role-private leakage; physical Android/TalkBack remains separately evidenced.
+
+## R003 Ordered Splash-to-loading Startup Amendment — 2026-09-06
+
+This amendment supersedes every earlier combined app-owned splash/loading duration where it
+conflicts. The configured native raster splash remains the first native frame. After its handoff,
+one fully opaque app-owned Ghaf splash must remain first for 2,000 ms; it shows the official raster
+mark/name and botanical field but no loader. It must not use an initial transparent entrance that
+can reveal the already-mounted onboarding route.
+
+The app then changes in place to the loading state, which adds the existing accessible three-leaf
+loop and remains visible for at least 1,000 ms and until the bounded seven-raster/four-font
+signed-out set has settled. Only after both stages complete may onboarding become visible. The
+41-image deferred queue begins after this loading handoff, never during either startup stage.
+Reduced motion keeps the loading leaves static; failures keep the existing deterministic fallback;
+no visible technical copy, percentage, remote-work claim, route, or product authority is added.
+
+## R003 Deferred Post-onboarding Image Warm-up Amendment — 2026-09-06
+
+This amendment preserves the bounded seven-raster/four-font startup gate and supersedes only the
+strictly lazy deeper-image wording below. After the app-owned splash exits and the already-loaded
+onboarding surface receives a paint opportunity, the remaining packaged local rasters warm in the
+background through small bounded parallel batches. That background work is never part of startup
+or onboarding readiness and may not delay first paint, input, navigation, a section transition,
+fallback, or reset.
+
+The queue prioritizes immediate Parent/Child access and experience imagery, then the remaining
+artwork, with the large prepared-media fixture last. A destination transition that needs an image
+sooner shares the same source-level promise cache and may await that exact request without creating
+a duplicate load. Individual failures count as settled for the queue and retain the existing local
+fallback. The warm-up has no visible status, percentage, remote-work claim, runtime URL, product
+state, or new authority; all assets remain packaged for deterministic offline use.
+
+## R003 Section-scoped Startup Readiness Amendment — 2026-09-06
+
+This amendment supersedes the earlier all-runtime-raster and seven-font startup gate wherever they
+conflict. The app-owned splash must wait only for the assets required throughout the signed-out
+first section: the official raster logo, shared leaf-shadow field, four onboarding photographs,
+Welcome photograph, and the four Alexandria/Readex files actually referenced by current branded
+roles. It must never preload Garden, League, reveal, learning, Shared Growth, canopy, Circle, or
+prepared-media imagery during startup.
+
+The native splash yields after the logo and leaf-shadow field settle. The app-owned 1,200 ms
+minimum begins only after that native handoff settles, so the branded loading state is visibly
+present even when local assets are cached. The splash may remain longer only while the bounded
+signed-out set or its font set settles. Image failures count as settled through the existing local
+fallback and warning behavior and cannot trap the family.
+
+Each permitted access/experience handoff dynamically warms only the destination's immediate local
+images and keeps its 900 ms orientation buffer visible until both that minimum and those bounded
+assets settle. Images deeper inside a stable section load only when their existing Expo Image
+consumer renders and then use the memory/disk cache. The loading presentation contains the official
+mark/name and one simple indeterminate three-leaf loop; it contains no visible resource-status
+sentence, count, percentage, or technical claim. The loop uses transform only on the UI thread;
+reduced motion shows the same three leaves without rotation, and assistive technology receives a
+short localized loading label.
+
+## R003 Startup Asset-readiness Amendment — 2026-09-06 (superseded where noted above)
+
+The app-owned branded splash must remain visible until all seven local Alexandria/Readex font
+files and every registered runtime raster image have settled. The official raster logo and
+leaf-shadow loading background settle before the native splash yields, so the animated handoff
+does not expose an empty or partially branded frame. Remaining local images preload through the
+existing Expo asset/image path; a failed image counts as settled only because the existing
+deterministic localized fallback remains usable, and failures must be reported without trapping a
+family on startup.
+
+The loading presentation exposes real settled-resource progress without a numeric percentage or
+remote-work claim. Its single authored motion is a calm Ghaf growth pulse and seed-line progress
+using only transform and opacity on the UI thread. Reduced motion removes the pulse and spatial
+travel while preserving a clear static progress state. The prior 1,200 ms minimum remains; the
+splash may stay longer only while real local font/image readiness is pending. Routes, first-run
+state, access authority, feature flags, product outcomes, and the exact 46-artwork registry remain
+unchanged.
+
+## R003 Child-clear First-run and Branded Access Amendment — 2026-09-06
+
+The user explicitly supersedes the three-moment first-run presentation with four optional moments.
+Moment one introduces Ghaf and its family value before the existing choice, support, and private
+symbolic-growth moments. All four use short concrete language suitable for younger readers in
+Modern Standard Arabic and equivalent English, while retaining Parent approval, permitted-help
+full credit, private permanent growth, and the no-measured-impact boundary.
+
+The three feature photographs may be replaced in place with more vivid, child-welcoming local
+raster photography, and one new Ghaf-introduction photograph extends the registered library from
+45 to exactly 46 images. The screens may use stronger emerald, teal, and amber framing and live
+geometric accents, but no generated or authored vector scene, mascot, fantasy ecology, person,
+hand, text-in-image, hazard, random reward, or pressure mechanic.
+
+The branded startup presentation now has a 1,200 ms minimum visible window and each permitted major
+section orientation buffer has a 900 ms dwell. These are intentional presentation holds requested
+by the user, not claims of remote work; no fake percentage or artificial server/model explanation
+is permitted. Every existing Parent and Child access, verification, pairing, and first-family
+setup screen must inherit a compact official raster Ghaf logo/name and the loading screen's local
+leaf-shadow visual theme through shared components. Routes, access/session authority, form logic,
+offline fallback, reset, and all other product behavior remain unchanged.
+
+## R003 First-run Experience Authority Amendment — 2026-09-06
+
+The user explicitly authorizes a more engaging splash, onboarding, and major-section transition
+experience using the official Ghaf logo and newly generated raster photography. This amendment
+supersedes the frozen Welcome presentation only where needed to add optional first-run states; it
+does not change the existing Welcome access behavior, the exact 37 product routes, or any access,
+task, reward, privacy, Garden, League, reset, or R002b flag authority.
+
+Four Arabic-first onboarding moments live inside `/`: introduce Ghaf, choose a Parent-approved action, use
+permitted support before Parent confirmation, and remember confirmed work as permanent private
+symbolic Garden growth. Every moment is skippable, bilingual, offline deterministic, and explicit
+that Ghaf's landscapes are symbolic rather than measured environmental impact. Completion is
+session-local; active Parent/Child sessions keep their existing redirect and onboarding never
+grants a role.
+
+The native raster splash may hand off to a short branded local-readiness screen. A professional
+transition buffer may run only across Welcome/access/authenticated role boundaries, never during
+ordinary tabs or nested navigation and never as a false remote/model loading claim. The official
+raster logo and five additional provenance-recorded local raster photographs extend the existing
+41-asset library to 46. No new scenic vector, runtime URL, dependency, untruthful delay, or product
+behavior is authorized. Exact screen, motion, and asset rules live in
+`design-intake/r003-first-run-experience.md`.
+
+### User Story 26 — Family understands Ghaf before choosing access (Priority: P1)
+
+As a new Parent or Child, I quickly understand that Ghaf connects chosen real-world action,
+permitted support, Parent confirmation, and permanent private symbolic growth, then I can start or
+skip without losing access to the existing Parent and Child paths.
+
+**Independent acceptance**: On a fresh Arabic launch, traverse all four moments, go back once,
+change language, skip and replay by reload, then reach both existing access paths. Repeat at compact
+width and reduced motion. No new route/session authority, remote request, vector scene, misleading
+impact claim, or routine-tab loader appears.
+
+## R003 Natural Botanical Artwork Authority Amendment — 2026-09-06
+
+The user explicitly authorizes replacement of the app's poor vector-like drawings with
+professionally generated local imagery. This is a presentation-only refinement of the established
+Living Family Garden; it does not authorize a route, state, reward, privacy, access, learning, or
+release change. The replacement direction is **Quiet UAE Botanical Editorial**: calm,
+natural-history editorial photography with botanically plausible texture, restrained warm UAE
+light, real asymmetry, and nondirectional crop-safe compositions.
+
+The complete local library contains one low-contrast field texture, one Welcome Ghaf habitat hero,
+five botanical profile-choice images, one recycling task hero, all twenty-five deterministic
+species-and-stage Garden scenes, two exact family-canopy states, three anonymous cooperative-garden
+scenes, one recognition reveal image, one Mangrove habitat study, and one shared coastal canopy.
+Every state keeps its live text and data outside the pixels. Generated imagery contains no people,
+faces, hands, readable text, UI, logos, brands, watermarks, unsafe objects, fantasy effects, or
+environmental-quantity claims.
+
+The official Ghaf logo/wordmark and platform icons remain immutable. Small functional
+navigation/status/safety icons, control symbols, focus/selection geometry, and live progress
+visualizations remain code-native because they are semantic, tintable, and must stay crisp at small
+sizes. The decorative League watermark is removed rather than replaced. Raw Stitch imagery,
+historical captures, and user-owned source packs remain read-only evidence and never enter runtime.
+
+One Expo-native image package is permitted as the measured minimum for local asset decode, crop,
+cache, transition, and memory behavior. It may not fetch a remote URL or add capture, upload,
+analysis, account, or provider behavior. Images ship locally with static source mappings,
+deterministic fallbacks, bilingual accessibility labels where informative, and recorded prompts,
+generation tool/date, transformations, dimensions, checksums, review status, and usage.
+
+### User Story 25 — Family sees credible natural artwork (Priority: P1)
+
+As a Parent or Child, I see calm, coherent natural botanical imagery instead of synthetic-looking
+vector drawings, while every task, Garden, League, learning, reveal, and access flow works exactly
+as before.
+
+**Independent acceptance**: Traverse Welcome, Child access, active task, Garden, Circle, and every
+locally enabled R002b art surface in Arabic and English. No replaced scenic drawing remains; every
+intended state resolves to an owned local asset or accessible fallback; no network image request,
+rasterized copy, product-meaning change, or official-brand mutation occurs.
+
+## R003 Complete-Screen Authority Amendment — 2026-09-05
+
+This amendment supersedes older screen-count, role-toggle, and missing-Stitch presentation
+requirements where they conflict. The user explicitly authorizes completion of every
+missing P0 screen on `integration/r3-complete-screens-20260905`. A missing Google Stitch frame is
+not a blocker for this local prototype: the screen must be specified first and professionally
+designed with the existing Soft Geometric Ghaf theme and tokens. Raw Stitch web exports remain
+read-only design evidence.
+
+- The canonical Parent navigation is Home, Tasks, Garden, Family. The canonical Child navigation
+  is Today, Garden, League. Contextual routes do not become bottom tabs.
+- Replace the shared-device role picker with separate access journeys. Parent uses the existing
+  sign-in/setup path; Child uses profile selection followed by PIN/picture-sequence or synthetic
+  pairing. `/role` becomes a safe compatibility redirect to `/`.
+- Add the route/state manifest in
+  `design-intake/r003-complete-screen-journey.md`, including Parent Family, private Family Reward,
+  Parent settings, permissions, devices, reauthentication, and Child settings.
+- The already-implemented R002b screens remain behind independent default-off flags. An explicit
+  environment `true` may enable a surface for targeted local validation; disabling a presentation
+  never reverses committed state, and release activation remains blocked.
+- Complete screen availability does not release production authentication, real pairing,
+  persistence, payment, networking, live Child media/AI, or remote invitations. It also does not
+  upgrade physical Android or named human-review evidence.
+- The normal recognition journey may use the v2 Child reveal only after its inputs are committed
+  receipts from the relevant authorities. Until complete consequence parity is proven, the existing
+  recognition result stays fail-closed.
+
+Implementation evidence begins from validated R002b checkpoint `45b18bc`, whose source/static
+baseline contains 78 test files and 989 passing tests.
+
+## R002b Feature-Flagged Authority Amendment — 2026-09-05
+
+This amendment supersedes the former R002b implementation block wherever an older section below
+conflicts. Implementation begins from clean R002a head `0501cf3` on
+`integration/r3-r002b-implementation-20260905`. The R001/R002a runtime remains the fallback when an
+R002b flag is disabled. The six divergent historical commits remain unapplied.
+
+### Preserved transaction and identity boundaries
+
+- Keep `task_recycling_p0_v1`, Parent-controlled assignment/review/recognition, zero reward at Child
+  submission, and the existing atomic/idempotent `+12` Parent recognition transaction.
+- Keep current Mangrove 48/60→60/60 growth, canopy, eligible Green Circle projection, private
+  five-Leaf League, Challenge Leaf, private Family Reward, Parent praise, access/reauthentication,
+  synthetic voice/`expo-audio`, Parent-authorized reset, privacy, and profile isolation.
+- Opening, retrying, requesting support, viewing a badge, or completing learning MUST create zero
+  task reward and MUST NOT change the existing task, Garden, canopy, League, Challenge, or Family
+  Reward consequences.
+
+### Lifetime projection and migration
+
+- `lifetimeSeeds` MUST equal the sum of unique committed Seed ledger entries in the active profile
+  epoch. Impact Path reads this projection and MUST NOT store a writable duplicate balance.
+- The same approved `+12` event maps current Mangrove 48/60→60/60 and lifetime Seeds 108→120. The
+  completed Mangrove stage is archived while the private Water & Coast chapter opens at 120→180.
+- An eligible synthetic-only legacy baseline MAY use one immutable, versioned, idempotent migration
+  receipt with explicit profile, fixture, epoch, and source-field provenance. It MUST NOT invent a
+  task, mastery credit, learning completion, celebration, or League/canopy/Challenge/Family Reward
+  history, and Salem’s carry-forward MUST NOT be copied to another Child.
+- Ambiguous or non-synthetic persisted profiles retain their verified lifetime total and block only
+  that profile’s carry-forward migration.
+
+### Private Growth Journey
+
+The Water & Coast chapter is read-only and uses these canonical lifetime stations:
+
+| Lifetime Seeds | Result                                                                               |
+| -------------: | ------------------------------------------------------------------------------------ |
+|            120 | Archive Mangrove 60/60 and earn `badge.journey.expanding_shade.v1`                   |
+|            132 | Unlock `learning.mangrove_roots.v1`; show Mangrove Care progress without awarding it |
+|            144 | Unlock the approved coastal-ripple cosmetic only                                     |
+|            156 | Evaluate Water Care — Bud; the threshold alone is insufficient                       |
+|            168 | Unlock the Jubail learning story without implying a real visit                       |
+|            180 | Earn `badge.journey.coastal_care.v1` and reveal only a configured next stage         |
+
+Completed stages remain archived. Lifetime Seeds never reset within an epoch, decrease, become
+spendable, or feed League rank. The exact 16 stable badge IDs and bilingual labels in
+`docs/content/BADGE_CATALOG.md` are locked. Seed-threshold badges may be silently backfilled from
+provable ledger evidence; mastery evidence MUST NOT be fabricated.
+
+The canonical recycling approval adds one `skill.sorting` and one separate `skill.coast_care`
+acquisition credit per unique approved occurrence. Sorting thresholds are 1/3/7; Water thresholds
+are 2/5/10 with the 156 station gate for Water Bud; Energy Bud requires two eligible credits; and
+Mangrove Care requires station 132, completed `learning.mangrove_roots.v1`, and three coast-care
+credits. Earned badges are permanent, private, deterministic, and idempotent.
+
+### Learning, reveal, Parent progress, and Shared Growth
+
+- Story and accessible learning routes share `learning.mangrove_roots.v1`, provide equal credit,
+  are finite/no-fail/resumable, and record one idempotent zero-Seed completion event. Neither route
+  autoplays another lesson.
+- One RevealBundle identity is `reveal:<profileId>:<triggerEventId>`. It presents, but never
+  calculates, the full applicable consequence superset in deterministic order: praise; Seed delta
+  and before/after; plant/stage; canopy; eligible Green Circle; private League Leaf; Challenge Leaf;
+  private Family Reward; badges; stations; learning unlocks; optional safe-help recognition. Its lifecycle is
+  `ready → presenting → acknowledged → archived`, retry-safe and resumable, with one visible bundle.
+- Parent Progress is Parent-only, selected-Child scoped, read-only, and may prefill—but never assign—
+  a suitable task through the normal Task Builder review/save flow.
+- Shared Growth is additive and nested; it never replaces or renames private League. Its view is
+  qualitative, synthetic, and anonymous, with no names, profiles, ranks, percentages, participant
+  counts, task details, Seeds, badges, or identifiable events. Continue/Pause/End affects only
+  future anonymous aggregate signals; returning after End requires fresh Parent consent.
+
+### Flags, routes, and release boundary
+
+The independent flags `r002b_progression_engine`, `r002b_impact_path_ui`, `r002b_badges_ui`,
+`r002b_learning_ui`, `r002b_reveal_bundle_v2`, `r002b_parent_progress_ui`,
+`r002b_shared_growth_view`, and `r002b_shared_growth_contribution` default to off. Flags control
+visibility/presentation; disabling them never reverses committed state.
+
+Authorized nested owners are `/garden/impact-path`, `/garden/badges`,
+`/garden/badges/:badgeId`, `/garden/learn/:learningId/story`,
+`/garden/learn/:learningId/accessible`, `/child/reveal/:bundleId` or an equivalent route-owned
+sheet, `/parent/family/:profileId/progress`, `/circle/shared-growth`, and
+`/parent/family/shared-garden`. Impact Path and Badges are not bottom-navigation items. Nested
+routes accept only typed same-role origins and fall back to the active role’s safe root on invalid
+deep links.
+
+Code-native candidate screens are authorized where no approved PNG exists, using the released Soft
+Geometric system and a `screen-spec.md` written before implementation. Each surface stays flagged
+off until its applicable bilingual, visual, accessibility, content/provenance, native, and human
+review gates pass. Physical Android, TalkBack, native Back/IME, and OS font scaling remain release
+blockers until directly observed.
+
+## R002a Compatibility Authority Amendment — 2026-09-05
+
+This amendment supersedes the earlier release-wide R002 gate and governs implementation when an
+older section below conflicts with it. Verified commit `76fa682`—`docs(r001): record onboarding
+validation evidence`—is the implementation baseline. The six conflicting local-only commits remain
+unapplied and must not be cherry-picked.
+
+### Frozen and authorized boundaries
+
+- R001 Welcome and Parent onboarding remain unchanged except for a separately justified regression
+  fix. Their success handoff must continue to replace history into `/parent`.
+- R002a authorizes presentation changes only. Existing routes, selectors, actions, services, task
+  lifecycle, reward transactions, access capabilities, reset, privacy, and profile isolation remain
+  behavioral authority.
+- The implementation order is Parent Home; Parent Tasks and Task Builder; Child Today and task
+  execution; Parent review; the Child support/resubmission loop; and the compatible existing Garden.
+- Raw Stitch PNGs are composition candidates and raw HTML/CSS/JS is measurement evidence only.
+  Neither is runtime code, data, or an automatic source of product authority.
+
+### R002a behavior-preservation oracle
+
+- The executable task identifier remains `task_recycling_p0_v1`. The R002 design label
+  `task.recycling_sort.v1` is a documentation alias only and MUST NOT enter stored state or trigger a
+  migration.
+- Schema-3 48→60 remains the current presentation and regression oracle. R002a MUST display current
+  selector values and MUST NOT hard-code 108, 120, 180, `4/5`, or any other exported counter.
+- Assignment, choice, start, Child submission, help, retry, and confirmation planning award zero.
+  Only the existing separate Parent recognition continuation commits the fixed award.
+- Parent approval remains atomic and idempotent and preserves all existing applicable consequences:
+  specific praise, committed Seeds, mapped plant growth, canopy, Challenge Leaf/private League, and
+  private Family Reward. A screenshot omission does not authorize dropping a consequence.
+- Capability-scoped Parent/Child access, reauthentication, guards, selected-Child isolation,
+  deterministic synthetic voice, `expo-audio`, Parent-authorized reset, and privacy filtering remain
+  unchanged.
+
+### Parent Home first-visible result
+
+`/parent` MUST be refreshed first using `ghaf_parent_home` as its primary candidate composition. The
+screen must retain every currently reachable navigation route, task action, voice action, reset
+control, access/reauthentication boundary, selected-Child behavior, and privacy guard even when the
+candidate image omits it.
+
+Private League and Family Reward services exist in the domain baseline, but the current
+`PrototypeSession` and Parent dashboard selectors do not expose them; their service maps initialize
+empty, and the onboarding handoff does not establish the `ParentAccessSession` they require. R002a
+therefore MUST NOT fabricate a League or Family Reward card or counter, and MUST NOT relabel
+`/circle` as private League. The unavailable screenshot fragments are supporting references only.
+This bounded presentation omission does not weaken either preserved domain contract.
+
+### R002a independently demonstrable stories
+
+#### User Story 12 — Parent recognizes the refreshed home (Priority: P1)
+
+As a Parent completing the frozen onboarding journey, I arrive at a professional Arabic-first Ghaf
+Home that matches the R002 visual language while preserving every live task, garden, access, voice,
+reset, and Child-selection action.
+
+**Independent acceptance**: Complete R001 onboarding, enter `/parent`, exercise every pre-existing
+action, switch Arabic/English, and verify that every displayed value comes from a live selector. No
+League/Reward placeholder or relabeled `/circle` entry appears.
+
+#### User Story 13 — Family completes the existing task loop in the R002 shell (Priority: P1)
+
+As a Parent and Child sharing the prototype, we can create and approve the canonical task, choose and
+complete its steps, request and receive support, submit with zero reward, review, and recognize it
+once without changing the underlying lifecycle or reward rules.
+
+**Independent acceptance**: From reset, complete the Parent Builder → Child Today/task → Parent
+review/support → resubmission/recognition sequence and verify `task_recycling_p0_v1`, zero reward at
+submission, one complete recognition transaction, and a neutral duplicate approval.
+
+#### User Story 14 — Child sees compatible Garden growth (Priority: P1)
+
+As the active Child, I see the existing Garden in the R002 visual language and can understand the
+confirmed action that caused growth without seeing a cumulative Next Stage, Impact Path, badge, or
+other blocked R002b mechanic.
+
+**Independent acceptance**: Compare Garden before and after one recognized task, verify live
+Schema-3 values, bilingual meaning, static reduced-motion equivalence, and no R002b navigation.
+
+## Earlier Revision 3 Product-Expansion Record — 2026-09-04
+
+This earlier record remains product-planning evidence. The R002a amendment above is canonical for
+current implementation; any conflicting migration or Growth item below belongs to blocked R002b.
+The six local-only commits remain unapplied provenance.
+
+### R002b proposal retained for decision
+
+- Preserve the private invite-only five-Leaf League: exactly five age-appropriate Challenge Leaves,
+  20 points per confirmed Leaf, score cap 100, shared ties, no speed tiebreak, full help/adaptation
+  credit, and no extra-task rank benefit.
+- Preserve `task_recycling_p0_v1` as the canonical executable 12-Seed Green Impact task.
+- Keep lifetime Seeds, mapped landscape growth, canopy, League, and Family Reward eligible progress
+  as separate authorities. The Revision 3 P0 oracle is lifetime Seeds 108→120; Mangrove independently
+  48/60→60/60; canopy 19/25→20/25; Salem League 4/5 and 80→5/5 and 100; and private Family Reward
+  108/120 `promised`→120/120 `unlocked`.
+- Present one recoverable result per `profileId + triggerEventId`: praise first; optional honestly
+  labeled self-reported activity result; committed Seeds; mapped garden; canopy/Challenge
+  Leaf/League; Impact Path, badges, and safe-help recognition; private Family Reward last.
+- Preserve capability-scoped Parent/Child access, profile isolation, deterministic synthetic voice
+  with `expo-audio`, and Parent-authorized signed-out Arabic-first reset.
+- Add one free private Impact Path derived from confirmed lifetime Seeds. The P0 Water & Coast
+  chapter spans 120–180; the badge registry has exactly 16 deterministic permanent definitions;
+  Mangrove learning has one finite equal-credit accessible alternative; and Parent progress is a
+  read-only selected-Child projection.
+- Learning and explicit activity completion are idempotent and create zero Seeds and zero garden
+  growth. Growth never creates a second currency or feeds League rank.
+
+### Frozen R001 Batch 1 release
+
+R001 originally released only the following, which now form a frozen regression boundary:
+
+1. canonical design tokens, Alexandria display roles, Readex Pro UI/data roles, RTL primitives,
+   shared access controls, and the navigation/modal shell required by this batch;
+2. `/` Welcome;
+3. `/access/parent/sign-in`;
+4. `/access/parent/verification`;
+5. `/access/parent/family-basics`;
+6. `/access/parent/add-first-child`;
+7. `/access/parent/review-create`; and
+8. `/access/parent/family-created-success`, then replace history into the preserved `/parent`
+   destination. R002a now separately authorizes the `/parent` presentation refresh.
+
+The R001 PNG files are canonical composition references. Exported HTML/CSS/JS is measurement and
+structure evidence only and must not enter runtime. English, focus, disabled, loading, validation,
+offline, success, keyboard, safe-area, scroll, Back, reduced-motion, and increased-font states must
+use the same native system without claiming missing Stitch visual approval.
+
+R001 changes the authored-route inventory from the preserved remote ten to exactly 16 files: the
+existing `/` file receives the approved Welcome composition, the other nine historical route files
+remain available for regression, and the six `/access/parent/**` files above are added. It does not
+duplicate `/` or remove a remote route. Older exact-ten requirements and success criteria below are
+therefore remote-baseline evidence, not the post-R001 inventory target.
+
+### R003 Parent sign-up usability addendum — 2026-09-06
+
+The user-authorized R003 journey adds `/access/parent/sign-up` as the 37th current product route.
+This addition does not rewrite the frozen R001 inventory or introduce a new account, household,
+session, or verification authority. On Parent sign-in, **Create a new family** MUST open the
+dedicated sign-up screen without requesting a code. The sign-up screen MUST collect the same
+Parent phone/email identifier, preserve the local synthetic disclosure, and request the existing
+deterministic verification code only after the Parent chooses its primary continuation.
+
+Verification MUST accept only the closed `create-family` flow marker. Back or **Change phone number
+or email** returns to sign-up for that marker and otherwise returns to sign-in; arbitrary return
+paths are never accepted. Successful first-family verification continues to Family Basics. If the
+immutable local completion receipt already exists, the interface MUST NOT imply that a second
+household can be created or overwrite the completed household. Screen-level orientation and
+supporting copy are centered, while mixed phone/email labels, values, helpers, and errors retain
+logical-start alignment and automatic bidi handling.
+
+### R003 returning Parent identifier lookup addendum — 2026-09-07
+
+The single device-local family directory MUST persist the normalized synthetic Parent identifier
+and its email/phone kind, but MUST NOT persist the deterministic verification code, an authenticated
+session, a password, biometric input, or a provider token. Explicit sign-up MAY create the one
+family only when no completed directory exists. Atomic family creation MUST bind that directory to
+the same normalized identifier that passed the existing deterministic code step.
+
+Returning Parent sign-in MUST normalize the submitted identifier and compare it with the saved
+directory before opening verification. A missing family, unavailable directory, or non-matching
+identifier MUST fail closed on sign-in and MUST NOT request a code, authenticate a Parent, or enter
+Family Basics, Child setup, review, or success. Matching is case-insensitive for email and uses the
+existing canonical phone normalization. After the matching identifier and deterministic code pass,
+the immutable completion receipt MUST be reused and Parent Home MUST open directly, except that the
+existing pending Child-pairing destination remains authoritative.
+
+The prior schema-1 fixture MAY migrate once to schema 2 by binding only the canonical prepared
+`parent@example.com` Parent identifier; corrupt and unknown versions remain rejected. Parent reset
+MUST clear both current and legacy keys. Parent access-screen copy MUST be concise and neutral: it
+MUST NOT display demo, synthetic, simulated, fake, or “not real” authentication disclaimers, and it
+MUST NOT claim that a code was sent or that remote identity verification occurred. The simulated
+biometric shortcut MUST be removed. Product documentation, tests, and runbook evidence MUST retain
+the truthful deterministic local-prototype boundary; this addendum does not authorize production
+authentication or storage of real credentials.
+
+- **FR-202**: Family creation MUST save the normalized Parent identifier and kind in the validated
+  schema-2 local directory only after the complete family record is ready to save.
+- **FR-203**: Returning Parent verification MUST be requestable only after an exact normalized
+  identifier match against the available local family record; missing or mismatched records return
+  `NOT_FOUND` without changing verification or access state.
+- **FR-204**: A matching returning Parent who passes the deterministic code MUST reuse the existing
+  receipt and bypass every create-family route; verification without the closed `create-family`
+  marker MUST never fall forward into Family Basics.
+- **FR-205**: Parent sign-in/sign-up/verification MUST omit prototype-authentication disclaimers and
+  the simulated biometric action while avoiding any claim of message delivery or remote identity
+  proof. Internal capability truth and deterministic test fixtures remain unchanged.
+- **SC-054**: Focused tests prove schema-2 round-trip, schema-1 canonical migration, reset clearing,
+  normalized email/phone matching, mismatch denial without state mutation, explicit-sign-up-only
+  creation, and direct returning-Parent handoff.
+- **SC-055**: Bilingual source/resource tests prove no Parent access screen renders demo,
+  synthetic, simulated, “not real,” fake-biometric, or message-sent copy and that missing-origin
+  verification cannot enter first-family setup.
+
+### Preserved behavior versus blocked expansion
+
+The ten-route journey, Schema-3 48→60 personal-Seed fixture, and `/circle` presentation documented
+below remain the R002a behavioral and regression oracle. They do not approve a Growth screen or
+migration. Existing access, League, Family Reward, voice, privacy, and reset tests must continue to
+pass while the authorized presentation is reconstructed over `76fa682`.
 
 ## Feature Context and Historical Boundary
 
@@ -42,7 +863,11 @@ approved, or a verified environmental-impact platform.
 The deterministic prepared journey is the acceptance baseline and MUST complete with every external
 service denied. Prepared output MUST never be described as live.
 
-## P0 Scope
+## Preserved Remote Ten-Route P0 Scope
+
+This section records the implemented remote scope for regression and compatibility. The R002a
+authority amendment above defines the current implementation boundary; R001 is frozen, and R002a is
+the only additional authorized visual/runtime scope.
 
 P0 contains exactly:
 
@@ -93,7 +918,11 @@ these routes, not additional routes.
 | `/garden`             | Confirmed landscape growth and one household-canopy consequence                                                                      |
 | `/circle`             | Cooperative aggregate household/cousin/family view with privacy and synthetic/local disclosure                                       |
 
-## User Scenarios & Testing _(mandatory)_
+## Preserved Remote User Scenarios & Testing _(mandatory)_
+
+These scenarios remain regression evidence for the remote implementation. Where a counter,
+projection, route, or visual surface conflicts with the Revision 3 authority amendment, the older
+scenario is historical and MUST NOT be used as the target implementation contract.
 
 ### User Story 1 - Parent Approves a Safe, Useful Task (Priority: P1)
 
@@ -401,40 +1230,6 @@ reward state, and no microphone, speech, network, or provider request.
    off, the voice view has the exact idle values, Arabic RTL is restored, and the next Parent may
    enable and run the rehearsal again.
 
-### User Story 12 - Family Experiences Are Demonstrable on Android (Priority: P3)
-
-As a family using the shared prototype device, the Parent can manage truthful local access, make a
-private Family Reward promise, and start a safe synthetic weekly League while each Child sees only
-their own permitted projection inside the existing journey.
-
-**Why this priority**: The redesign domains already pass focused rules, but their value is hidden
-until a narrow application adapter derives state from the authoritative task journey and exposes
-small mobile-first views. Android dependency, permission, direction, and navigation hygiene must be
-settled at the same boundary so a web proxy is not mistaken for native readiness.
-
-**Independent Test**: From reset, revoke and restore one prepared Child profile, enter each role
-through a service-authorized local session, create Salem's private experience promise, start the
-fixed synthetic League, complete the canonical Parent-confirmed task, and verify the promise unlocks
-and exactly one Salem Challenge Leaf is credited. Repeat reset and locale switching; verify exact
-restoration, ten unchanged routes, no Green Circle/Seed/Garden mutation from League actions, and no
-network, payment, real identity, invitation, microphone, storage, or free-message capability.
-
-**Acceptance Scenarios**:
-
-1. **Given** a prepared Child profile is revoked, **When** it tries to enter the Child experience,
-   **Then** service authorization fails, the route does not change, and a Parent can explicitly
-   restore a new local synthetic pairing.
-2. **Given** the Parent creates the prepared private promise before or after recognition, **When**
-   the authoritative receipt records praise-first 12-Seed Mangrove growth, **Then** the adapter
-   unlocks the promise once without accepting caller-authored eligibility data.
-3. **Given** the Parent starts the fixed synthetic week, **When** the same recognition is applied,
-   **Then** Salem gains one Challenge Leaf, every participant projection stays minimal, prepared
-   encouragement remains allowlisted, and permanent P0 counters change only through recognition.
-4. **Given** Arabic, English, Android Back, keyboard, or large-text conditions, **When** the user
-   moves through the journey, **Then** runtime direction is deterministic, optional controls remain
-   visually secondary, headings and controls retain their meaning, and stale protected routes are
-   not exposed.
-
 ### Edge Cases
 
 - The Parent leaves a required definition, adult-supervision, safety, privacy, reward, or
@@ -538,7 +1333,12 @@ Green/circle credit.
 | Kindness & Community | اللطف والمجتمع    | Samar desert grove    | Recognition-only or fade-first preparation; never circle          |
 | Learning & Wellbeing | التعلّم والتوازن  | Sidr reflection grove | Child/guardian; never circle                                      |
 
-### Exact Reset and Confirmation Values
+### Preserved Remote Schema-3 Reset and Confirmation Values
+
+This 48→60 personal-Seed oracle describes the verified remote ten-route behavior only. Revision 3
+keeps Mangrove 48/60→60/60 but changes the target lifetime-Seed story to 108→120 through the
+separately approved, versioned runtime migration in Phase 22. Until that migration is implemented,
+tests for this section remain compatibility/regression tests rather than the Revision 3 target.
 
 The Parent-only reset requires a small confirmation and MUST restore all values atomically without
 network access.
@@ -684,10 +1484,12 @@ required when motion is reduced or unavailable.
 
 - **FR-001**: Feature 003 MUST preserve Feature 002 artifacts and evidence as historical records and
   MUST NOT use any Feature 002 pass to satisfy a Feature 003 criterion.
-- **FR-002**: The product MUST expose exactly the ten authored routes in the Authored Route Contract
-  and no additional authored product route.
+- **FR-002**: The preserved remote baseline MUST retain its ten authored routes. R001 MUST replace
+  the `/` composition in place and add only its six approved `/access/parent/**` routes, producing
+  exactly 16 authored route files without deleting or duplicating a historical route.
 - **FR-003**: Loading, assistant, empty, timeout, fallback, retry, awaiting-confirmation, phase-
-  review, and celebration behavior MUST remain states within the ten routes.
+  review, and celebration behavior MUST remain states within their owning routes; R001 adds no
+  route beyond its six approved access-route files.
 - **FR-004**: Replaced Feature 002 product routes MUST be retired only after the Feature 003 route
   set is integrated and verified; historical Feature 002 artifacts MUST remain intact.
 - **FR-005**: Every judge-facing capability MUST be labeled as real interaction, synthetic,
@@ -1018,10 +1820,10 @@ the historical domain-only result recorded by FR-118.
   captions, playback rate, replay count, and transcript while updating visible copy, direction, and
   accessibility language from the canonical bilingual resources and typed fixtures.
 - **FR-124**: The existing single typography system MUST define complete `display`, `title`,
-  `heading`, `body`, `label`, and `caption` role tokens for Arabic and English. Both scripts MUST use
-  the established platform system-family policy; Arabic tracking MUST be zero, Arabic body leading
-  MUST be at least 1.55 times its size, and `Text` plus `Input` MUST resolve metrics from explicit
-  language or the active locale.
+  `heading`, `body`, `label`, and `caption` role tokens for Arabic and English. It MUST preserve the
+  released Alexandria display roles and Readex Pro body/control/data roles; Arabic tracking MUST be
+  zero, Arabic body leading MUST be at least 1.55 times its size, and `Text` plus `Input` MUST resolve
+  metrics from explicit language or the active locale.
 - **FR-125**: Parent reset MUST revoke or clear the presentation grants and restore the exact
   synthetic voice view to idle, transcript `null`, captions `true`, playback rate `1`, replay count
   `0`, active indicator `false`, and sent time `null` without changing the PrototypeSession schema.
@@ -1034,54 +1836,216 @@ the historical domain-only result recorded by FR-118.
   font-scale, TalkBack, playback, permission, and touch evidence remains `NOT RUN` until observed on
   a named build and device.
 
-#### Family Experience Frontend and Android Integration
+#### R002a Compatibility Presentation
 
-This later phase supersedes only the frontend deferral in FR-118. It preserves the completed
-domain-only result, the ten authored routes, and every production-capability exclusion.
-
-- **FR-128**: Parent and Child entry on `/role` MUST be authorized by the deterministic access
-  service. The UI MAY expose only local synthetic readiness, revocation, and restore controls; it
-  MUST NOT describe the fixture as sign-in, identity verification, consent, or secure persistence.
-- **FR-129**: Revoking one Child fixture MUST prevent that Child session from entering while leaving
-  the other Child and Parent usable. Restore MUST create a fresh one-use pairing and Child session
-  under stored Parent authority. Reset MUST restore both prepared profiles to the initial ready
-  state.
-- **FR-130**: The Parent MAY create one prepared non-monetary Family Reward promise for Salem. Its
-  projection MUST remain `child_guardians_only`; Alya, League, Circle, and public views MUST receive
-  no plan or promise data.
-- **FR-131**: Family Reward evaluation MUST accept eligibility events only from a private adapter
-  which verifies the current recognized journey and its stored `RecognitionReceipt`. Screens and
-  public store commands MUST NOT submit candidate events, Seed deltas, prerequisites, or landscape
-  transitions.
-- **FR-132**: The canonical 12-Seed acquisition receipt MUST unlock the prepared promise exactly
-  once whether the plan is created before or after recognition. Only a Parent-authorized visible
-  action MAY mark it given; League results MUST never unlock or change it.
-- **FR-133**: The Parent MAY initialize one fixed local League week containing the three reviewed
-  synthetic participants and five eligible Challenge Leaves per participating Child. Membership
-  creation MUST consume the existing scoped one-use Parent proof and MUST add no real invitation or
-  relationship claim.
-- **FR-134**: The recognition adapter MAY credit one matching Challenge Leaf only from the same
-  authoritative receipt, approved task/version, Child, and completion mode. League initialization,
-  projection, encouragement, and rollover MUST NOT change Seeds, landscapes, canopy, Green Circle,
-  celebration, or Family Reward state.
-- **FR-135**: Child League presentation MUST consume only the strict participant projection of
-  nickname, tree-avatar token, completed-Leaf count, score, and shared position plus the separate
-  cooperative count. Any encouragement action MUST use one prepared phrase identifier and no free
-  text.
-- **FR-136**: Family access, Reward, and League presentation MUST use existing `/role`, `/parent`,
-  and `/child` route states and shared design tokens. It MUST keep one dominant journey action,
-  direct labels, logical RTL/LTR layout, 48dp controls, unclamped safety copy, and meaningful static
-  output without animation.
-- **FR-137**: Runtime locale switching MUST use one direction authority and MUST NOT persist or call
-  native `I18nManager.forceRTL` during a state-preserving language change. Native startup, restart,
-  and ar→en→ar behavior still require named Android evidence.
-- **FR-138**: The Android configuration MUST keep predictive Back enabled, use resize keyboard
-  layout, disable platform backup for this sensitive prototype, block legacy external-storage and
-  audio-recording permissions, and include no unused real-audio plugin. Expo packages MUST match the
-  installed SDK's supported patch range.
-- **FR-139**: True Back actions MUST pop when safe and role handoffs MUST replace stale protected
-  history. Source and emulator checks MUST be recorded separately; physical-device, TalkBack, 200%
-  font, human comprehension, and named review gates remain open until directly observed.
+- **FR-128**: R001 Welcome and first-time Parent onboarding MUST remain frozen regression baselines;
+  R002a MUST preserve their prerequisites, Back/dismiss behavior, draft state, idempotent creation,
+  and history-replacing handoff into `/parent`.
+- **FR-129**: R002a MUST be delivered in this order: Parent Home; Parent Tasks/Builder; Child Today
+  and task execution; Parent review; Child support/resubmission; and compatible Garden. A blocked
+  surface MUST NOT block an independent earlier or later slice.
+- **FR-130**: `/parent` MUST use `ghaf_parent_home` as its primary composition candidate while
+  preserving all currently reachable navigation, tasks, selected-Child state, voice, reset, access,
+  reauthentication, privacy, and profile-isolation capabilities.
+- **FR-131**: Parent Home MUST render only values exposed by a current canonical selector. Because
+  Parent dashboard state currently exposes neither private League nor Family Reward data, it MUST
+  omit those candidate fragments, MUST NOT invent counters such as `4/5`, `108/120`, or `120/180`,
+  and MUST NOT relabel `/circle` as private League.
+- **FR-132**: Every R002a route and route state MUST reuse the existing actions, selectors, and task
+  lifecycle. Presentation components MUST NOT calculate an award, rebuild state transitions, or
+  manufacture access authority.
+- **FR-133**: `task_recycling_p0_v1` MUST remain the stored and executable task identifier.
+  `task.recycling_sort.v1` MAY appear only in non-runtime design documentation as an alias.
+- **FR-134**: The Schema-3 48→60 oracle remains authoritative in R002a. All Seed, garden, canopy,
+  circle, League, and Family Reward values MUST be live data; exported screenshot values MUST NOT be
+  copied into presentation logic.
+- **FR-135**: Assignment, choice, start, help, retry, Child submission, confirmation planning, and
+  praise presentation MUST award zero. R002a MUST preserve the distinct Parent recognition action
+  and its atomic, idempotent transaction.
+- **FR-136**: A valid recognition MUST preserve every consequence produced by the existing domain
+  transaction, including applicable praise, Seeds, mapped plant growth, canopy, Challenge Leaf and
+  private League state, and private Family Reward state. A selected visual reference MAY omit a
+  presentation fragment but MUST NOT suppress or recalculate its domain consequence.
+- **FR-137**: The support loop MUST preserve accepted steps, Parent note, adult-help context, fixed
+  displayed award, completion, resubmission, and return to Parent review without loss, duplication,
+  shame, or an unapproved business outcome.
+- **FR-138**: R002a MUST retain capability-scoped Parent/Child access, route guards,
+  reauthentication, per-profile state, deterministic synthetic voice, `expo-audio`, and
+  Parent-authorized reset. A visual omission MUST NOT weaken any boundary.
+- **FR-139**: Every R002a user string MUST live in the central Arabic/English resources. Arabic is
+  canonical; English preserves meaning and supports LTR wrapping. Placeholders including `EN:S`
+  MUST NOT appear in live UI, and newly drafted privacy or safety wording MUST be marked for human
+  copy review.
+- **FR-140**: Every R002a surface MUST define loading, empty, validation-error, recoverable-error,
+  submitting, success, interrupted-recovery, and reduced-motion behavior without inventing a new
+  product outcome. It MUST remain usable at widths 320, 360, 390, and 430, one wider viewport, and
+  200% text with safe areas, scrolling, keyboard avoidance, no horizontal overflow, 48×48dp minimum
+  targets, 56dp primary Child actions where specified, non-color-only status, semantic controls, and
+  fixed-action clearance.
+- **FR-141**: In Arabic, Help MUST be physically left, avatar physically right, a root title
+  mathematically centered, Child navigation physically left-to-right as
+  `الدوري | حديقتي | اليوم`, nested Back physically right, forward arrow physically left, and task
+  checkboxes physically right. English MUST provide the equivalent LTR reading and interaction order.
+- **FR-142**: R002a MAY use only repository-owned/provenanced assets, approved icons, code-native
+  vectors, and recorded-provenance exports. It MUST NOT import raw HTML, CSS, JavaScript, WebViews,
+  remote URLs, unknown fonts, rasterized interface text, or Windows `Zone.Identifier` metadata.
+- **FR-143**: When an applicable R002b flag is disabled, the R002a fallback MUST NOT expose the
+  cumulative 108→120→180 projection, Impact Path, Badge Gallery, Badge Detail, Learning Story,
+  accessible Learning Alternative, Parent Progress, RevealBundle v2, Shared Growth, Parent Shared
+  Garden controls, or cumulative Garden Next Stage.
+- **FR-144**: The eight named R002b flags MUST be typed, independent, and off by default. A flag MUST
+  affect only visibility or presentation and MUST NOT reverse, delete, downgrade, or duplicate
+  committed domain state.
+- **FR-145**: `lifetimeSeeds` MUST equal the sum of unique valid committed Seed ledger entries for
+  one profile and active reset epoch. It MUST NOT be writable, spendable, negative, copied between
+  profiles, or reset within that epoch.
+- **FR-146**: Synthetic Schema-3 normalization MUST fail closed for ambiguous, non-synthetic,
+  malformed, wrong-profile, wrong-epoch, or changed-fingerprint input. Salem MAY receive exactly one
+  immutable, versioned, idempotent `60` carry-forward receipt identified as an approved synthetic
+  fixture assumption; Alya and League-only profiles MUST NOT inherit it.
+- **FR-147**: One canonical `+12` approval MUST independently change current Mangrove progress from
+  48/60 to 60/60 and confirmed lifetime Seeds from 108 to 120 exactly once, archive the completed
+  Mangrove stage, and preserve every existing praise, canopy, eligible Green Circle, private League,
+  Challenge Leaf, and private Family Reward consequence.
+- **FR-148**: The Water & Coast Impact Path MUST derive stations 120, 132, 144, 156, 168, and 180
+  from the canonical ledger and named criteria. It MUST remain private, read-only, symbolic, and
+  separate from current landscape, League, canopy, and Family Reward authorities.
+- **FR-149**: The badge registry MUST contain exactly the 16 approved stable IDs and bilingual
+  labels. Earned badges MUST be private, permanent, deterministic, idempotent, and backed by exact
+  Seed, station, mastery, learning, or activity evidence; migration MUST NOT fabricate mastery.
+- **FR-150**: Each unique eligible `task_recycling_p0_v1` approval MUST create at most one
+  `skill.sorting` and one separate `skill.coast_care` acquisition credit. Sorting, Water, Energy,
+  and Mangrove Care badges MUST apply the approved thresholds and composite gates exactly.
+- **FR-151**: Story and accessible routes for `learning.mangrove_roots.v1` MUST share one finite,
+  resumable, no-fail, equal-credit package and one idempotent completion per profile/epoch. Either
+  route MUST award zero Seeds and zero existing Garden, canopy, Circle, League, Challenge Leaf, or
+  Family Reward progress.
+- **FR-152**: RevealBundle v2 MUST use `reveal:<profileId>:<triggerEventId>`, present the complete
+  ordered consequence superset already committed by authoritative services, and follow
+  `ready → presenting → acknowledged → archived` with exactly-once construction, deterministic
+  queueing, one visible bundle, interruption recovery, and no reward calculation or reversal.
+- **FR-153**: Parent Progress MUST be Parent-only, selected-Child scoped, and read-only. It MAY
+  prefill a suitable existing task in Task Builder but MUST NOT grant, revoke, edit, or assign
+  Seeds, badges, criteria, learning, or tasks outside the normal Parent review/save flow.
+- **FR-154**: Shared Growth MUST remain a nested additive experience and MUST NOT replace or rename
+  private five-Leaf League. Its Child projection MUST be qualitative, synthetic, anonymous, and
+  free of names, profiles, ranks, percentages, participant counts, task details, Seeds, badges, and
+  identifiable event data.
+- **FR-155**: Shared Growth view and contribution MUST use separate flags. Continue, Pause, and End
+  affect only future anonymous signals; view without contribution remains possible, Pause preserves
+  existing consent, and returning after End requires fresh Parent consent.
+- **FR-156**: R002b nested navigation MUST preserve the physical Child tab order, omit bottom
+  navigation where specified, place Arabic Back physically right, allow only same-role typed origin
+  state, restore route/profile/filter/scroll/focus, reject cross-role or arbitrary origins, and fall
+  back to the active role's safe root for invalid deep links.
+- **FR-157**: Every missing R002b surface MUST receive a `screen-spec.md` before implementation and a
+  canonical 390×844 capture afterward. Candidate UI MUST use the released native Soft Geometric
+  system, central Arabic/English resources, safe responsive scrolling, reduced motion, semantic
+  controls, and no raw Stitch runtime, remote asset, or unprovenanced dependency.
+- **FR-158**: Opening a screen, viewing a badge, retrying, requesting help, submitting, resuming,
+  and completing learning MUST NOT mint the canonical task award. A learning completion MAY create
+  a zero-Seed reveal only when that completion causes a genuinely new eligible outcome.
+- **FR-159**: R002b release flags MUST remain off until their applicable automated, visual, native,
+  bilingual, content, provenance, privacy, accessibility, and named-human gates are recorded. A
+  local implementation, web capture, or passing unit test MUST NOT activate release navigation.
+- **FR-160**: The current R003 route manifest MUST contain exactly 37 product routes, including one
+  code-native `/access/parent/sign-up` route. **Create a new family** MUST enter that route without
+  requesting verification; only its primary continuation MAY invoke the existing deterministic
+  Parent verification authority. Verification Back/cancel MUST restore sign-up only for the closed
+  `create-family` marker, successful first-family verification MUST continue to Family Basics, and
+  an existing completion receipt MUST never create or overwrite a second household.
+- **FR-161**: Parent sign-up MUST be a signed-out, Parent-only, Arabic-first synthetic setup
+  surface. It MUST request only the existing Parent phone/email identifier and MUST NOT request a
+  password, Child contact information, real biometric input, or imply production account or
+  identity creation.
+- **FR-162**: The `create-family` marker MUST remain presentation context only and MUST grant no
+  capability. Verification Back, Android Back, and **Change phone number or email** MUST cancel the
+  pending verification and return to sign-up only for that exact marker while preserving offline
+  preview; missing or unknown values MUST return safely to sign-in.
+- **FR-163**: Runtime scenic/decorative drawings in the access shell, Welcome hero, profile-choice
+  imagery, Child task hero, Garden stages, family canopy, Circle gardens, learning story, reveal,
+  Shared Growth, and League hero MUST be replaced or removed according to the tracked R003 artwork
+  manifest. The official Ghaf mark/wordmark, platform icons, and functional control/status/safety
+  vectors MUST remain unchanged.
+- **FR-164**: The artwork registry MUST map every named use and all five stages of all five Garden
+  species to a distinct static local source. Runtime code MUST NOT construct asset paths, fetch
+  remote images, mirror artwork for RTL, embed interface text in pixels, or use one generic Garden
+  image to imply multiple deterministic states.
+- **FR-165**: Every shipped generated raster MUST have recorded provenance containing its exact
+  prompt, tool and generation date, source and shipping dimensions, allowed crop, transformations,
+  SHA-256 checksum, intended routes/states, and review status. Assets with people, faces, hands,
+  text, logos, watermarks, unsafe objects, fantasy effects, visible generation artifacts, or
+  misleading ecological content MUST fail closed and not ship.
+- **FR-166**: Informative imagery MUST expose concise locale-aware accessibility text and a
+  deterministic localized unavailable fallback; decorative imagery MUST be hidden from assistive
+  technology. Live labels, values, progress, selection, and state MUST remain semantic native UI
+  outside the raster.
+- **FR-167**: The image presentation layer MAY use only the approved Expo-native image package for
+  local decode, crop, caching, transition, and memory behavior. It MUST add no remote URL, media
+  capture/upload, analysis, provider, or new source of product state, and it MUST preserve reduced
+  motion by disabling decorative transitions when reduction is requested.
+- **FR-168**: The natural-artwork refresh MUST preserve the exact 37-product-route manifest, all
+  existing store/service/domain authorities, deterministic offline reset, Arabic-first RTL and
+  English LTR behavior, privacy projection, and eight independent default-off R002b flags.
+- **FR-169**: `/` MUST present exactly four optional first-run onboarding moments before the
+  existing Welcome access choice, with visible Next, Back where applicable, Skip, Start, and `1/4`
+  progress semantics; onboarding MUST NOT add a product route or grant a role.
+- **FR-170**: The four moments MUST introduce Ghaf and explain Parent-approved choice, permitted help with full
+  credit, Parent confirmation, and permanent private symbolic growth without implying measured
+  impact, obedience scoring, scarcity, punishment, or guaranteed outcomes.
+- **FR-171**: Active Parent/Child sessions MUST bypass onboarding. First-run completion MUST remain
+  session-local and reload-safe without claiming persistence; signed-out reset and existing access
+  isolation MUST remain deterministic.
+- **FR-172**: The native splash and app-owned splash MUST use the immutable local raster Ghaf logo.
+  The app-owned splash MUST wait for local readiness and the user-requested 1,200 ms minimum,
+  expose no fake percentage or remote-loading claim, and resolve to a usable route when local
+  artwork falls back.
+- **FR-173**: A transition buffer MAY appear only when crossing Welcome, Parent access, Child
+  access, Parent experience, or Child experience boundaries. It MUST NOT appear between tabs or
+  contextual routes within the same active experience.
+- **FR-174**: The first-run experience MUST extend the local artwork registry from 41 to exactly 46
+  provenance-recorded raster assets with no people, hands, text, logo, UI, vector scene, hazard,
+  fantasy effect, runtime URL, or misleading environmental claim inside generated pixels.
+- **FR-175**: Onboarding, splash, and transition states MUST provide Arabic RTL/English LTR parity,
+  Alexandria/Readex typography, 48 dp controls, localized image alternatives, 320/390-width
+  resilience, polite state announcements, and a reduced-motion equivalent.
+- **FR-176**: Onboarding and transition presentation MUST remain offline deterministic, use no new
+  provider or dependency, and leave all access, task, Seed, Garden, League, Family Reward, privacy,
+  assistant, reset, and default-off feature-flag authorities unchanged.
+- **FR-177**: The first onboarding moment MUST explain what Ghaf is before feature teaching; every
+  onboarding title/body MUST use short, concrete, child-clear Modern Standard Arabic and equivalent
+  plain English without weakening safety, Parent confirmation, privacy, or symbolic-impact truth.
+- **FR-178**: Every route under `/access/parent/**` and `/access/child/**` MUST inherit the shared
+  official raster logo/name header and local leaf-shadow background while preserving Back,
+  progress, keyboard, safe-area, loading/error, synthetic-origin, and 48 dp control behavior.
+- **FR-179**: Each permitted major-section transition MUST dwell for 900 ms. Startup and transition
+  holds MUST remain determinate local presentation with no fake percentage, remote-work claim, or
+  effect on navigation authority.
+- **FR-180**: The app-owned splash MUST remain visible until the four font files referenced by the
+  current branded roles and the bounded signed-out raster set have settled. Its logo/background
+  MUST settle before the native splash yields; its 1,200 ms window MUST begin after that handoff;
+  and an image failure MUST resolve through the existing fallback and warning path rather than
+  create an infinite startup wait. No Garden, League, reveal, learning, Shared Growth, canopy,
+  Circle, or prepared-media raster may enter the startup set.
+- **FR-181**: Startup and section buffers MUST use one accessible Ghaf-specific three-leaf
+  indeterminate loop with transform-only UI-thread motion. They MUST show no visible technical
+  resource sentence, count, fabricated percentage, or remote operation; reduced motion MUST keep
+  the leaves static.
+- **FR-182**: Each permitted major-section buffer MUST dynamically settle only its bounded immediate
+  destination images and the 900 ms dwell concurrently. Deeper images MUST load only when their
+  existing Expo Image consumer renders, retain deterministic fallback, and use memory/disk caching.
+- **FR-183**: After the app-owned splash exits and the onboarding surface receives a paint
+  opportunity, every remaining packaged local raster MUST warm asynchronously in bounded parallel
+  batches without joining the startup/onboarding readiness calculation or delaying navigation.
+  Immediate access/experience sources MUST come first, the prepared-media fixture MUST come last,
+  source-level requests MUST share one promise cache with section preparation, and failures MUST
+  settle into the existing deterministic fallback path.
+- **FR-184**: Startup MUST present the configured native splash, then a fully opaque app-owned Ghaf
+  splash for 2,000 ms after native handoff, then the Ghaf leaf-loading state for at least 1,000 ms
+  and until bounded signed-out assets/fonts settle, and only then onboarding. The app-owned splash
+  MUST have no loader and no transparent initial entrance; the loading stage MUST retain the
+  accessible UI-thread leaf loop and reduced-motion equivalent; deferred image warming MUST start
+  only after loading completes.
 
 ### Key Entities
 
@@ -1130,18 +2094,36 @@ domain-only result, the ten authored routes, and every production-capability exc
   evidence, Seed, or protected-category data.
 - **Synthetic Voice Session**: Task-bound local interaction state from explicit start through
   transcript review/delete/send/replay; it never represents captured Child audio.
+- **Profile Epoch / Seed Ledger Entry**: One reset-scoped private authority and immutable committed
+  Seed delta used to derive lifetime progress without a second balance.
+- **Progression Migration Receipt**: One versioned, profile/epoch/fingerprint-scoped record of an
+  eligible synthetic normalization; it is idempotent and never invents behavior evidence.
+- **Plant Stage Archive / Impact Station**: Immutable completed-stage context and a read-only
+  threshold/criteria projection from canonical ledger evidence.
+- **Mastery Credit / Badge Award**: Unique Parent-approved acquisition evidence and a permanent
+  private deterministic result from the locked registry.
+- **Learning Completion**: One zero-Seed profile/epoch/package event shared by the story and
+  accessible routes.
+- **RevealBundle**: One recoverable ordered role projection of consequences already committed for a
+  trigger event; it never calculates or reverses them.
+- **Shared Growth Projection / Participation Preference**: Anonymous qualitative synthetic content
+  plus Parent-owned future-signal consent state, independent from every private reward authority.
+- **Navigation Origin**: An allowlisted same-role route, profile, filter, scroll, and focus snapshot
+  used only for safe restoration.
 
 ## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
-- **SC-001**: A route inventory contains exactly the ten authored Feature 003 routes and zero
-  replaced Feature 002 product routes after integration.
+- **SC-001**: The preserved remote baseline contains exactly ten authored Feature 003 routes. The
+  integrated R001 inventory contains exactly 16 authored route files—the same ten files, with `/`
+  recomposed in place, plus six approved Parent-access files—and zero replaced Feature 002 routes.
 - **SC-002**: Five consecutive external-service-denied journeys complete from reset through circle
   without a blocked action or prepared/live mislabel.
 - **SC-003**: Five consecutive resets from each named FR-095 source state restore every canonical
   value, Arabic RTL `/`, and empty history exactly.
-- **SC-004**: One confirmation changes Salem 48→60 Seeds, Mangrove 48/60 Shoot→60/60 Sapling,
+- **SC-004**: As a preserved remote schema-3 regression oracle, one confirmation changes Salem
+  48→60 Seeds, Mangrove 48/60 Shoot→60/60 Sapling,
   canopy 19/25→20/25, and circle 11/12→12/12; five duplicate confirmation attempts change nothing.
 - **SC-005**: Assignment, choosing, starting, and submission each create zero Seeds, persistent
   landscape/canopy growth, and circle progress in all automated and manual checks.
@@ -1158,8 +2140,9 @@ domain-only result, the ten authored routes, and every production-capability exc
   request remains bound to the active Parent-approved task.
 - **SC-011**: A prohibited-language review of Parent summaries finds zero diagnostic, normality,
   character, emotion/personality/risk, deception, religiosity, or parenting-quality judgments.
-- **SC-012**: Arabic RTL and English LTR each complete the same ten-route decisions with equivalent
-  safety, privacy, reward, and capability meaning on a named physical Android build.
+- **SC-012**: Arabic RTL and English LTR each complete the approved seven-surface R001 Parent
+  onboarding flow and preserve the historical journey's equivalent safety, privacy, reward, and
+  capability meaning on a named physical Android build.
 - **SC-013**: Required task/safety copy, actions, and disclosures remain usable at 200% font scale,
   with 48dp targets, logical reading order, once-only announcements, and reduced-motion static
   outcomes on the named target build.
@@ -1192,8 +2175,8 @@ domain-only result, the ten authored routes, and every production-capability exc
   voice-session tests cover permission, task binding, explicit start/stop, transcript deletion,
   send, captions, replay, slower playback, and reset without microphone access.
 - **SC-024**: `npm run typecheck`, `npm run lint`, `npm run format:check`, and `npm test` pass with the
-  existing ten-route P0 behavior unchanged; frontend, Android, and named-human gates remain at their
-  prior evidence status.
+  historical ten route files preserved and the six approved R001 access routes integrated;
+  Android and named-human gates remain at their directly observed evidence status.
 - **SC-025**: Source and behavioral tests prove Parent grant-off denial, service-authorized grant-on
   access, age-derived `9_11` Coach presentation, every legal synthetic voice transition, every
   illegal skipped transition, and exact reset from idle, active-rehearsal, review, and sent states.
@@ -1203,24 +2186,76 @@ domain-only result, the ten authored routes, and every production-capability exc
 - **SC-027**: Typography tests resolve all six roles for both locales, find zero Arabic negative
   tracking, confirm Arabic body leading of at least 1.55, and find no font-size/family/line-height
   escape outside the token and primitive boundary.
-- **SC-028**: The unchanged ten-route web proxy demonstrates Parent enablement and the Child's
-  prepared voice states in Arabic RTL and English LTR with no dynamic service request. Android 200%
-  font scale and TalkBack stay `NOT RUN` unless a named native device becomes available.
-- **SC-029**: Access presentation tests prove Parent entry, two independent Child projections,
-  single-profile revocation, failed revoked entry, fresh restore, and exact reset without exposing a
-  credential value or production-authentication claim.
-- **SC-030**: Family Reward presentation tests prove private Parent/Salem projection, zero Alya
-  projection, authoritative receipt-only evaluation, create-before/create-after unlock equivalence,
-  idempotency, Parent-only given action, and zero League-derived progress.
-- **SC-031**: Family League presentation tests prove fifteen fixed safe Leaves, scoped membership
-  proof, one receipt-bound Salem credit, full permitted-help credit, minimal projections, allowlisted
-  encouragement, and unchanged Seed, Garden, canopy, Circle, and Reward snapshots.
-- **SC-032**: Static Android checks find SDK-compatible Expo patch versions, no unused audio/form
-  dependencies, no requested recording or external-storage permission, backup disabled, resize
-  keyboard behavior, predictive Back enabled, and exactly ten authored routes.
-- **SC-033**: Frontend checks prove no runtime `forceRTL`, optional voice actions use secondary
-  styling, structural headings expose header semantics, compact bilingual headers survive the
-  approved narrow-width proxy, and all resources remain paired and non-empty.
+- **SC-028**: The web proxy preserves the historical journey and demonstrates the R001 Parent
+  onboarding plus the Child's prepared voice states in Arabic RTL and English LTR with no dynamic
+  service request. Android 200% font scale and TalkBack stay `NOT RUN` unless a named native device
+  becomes available.
+- **SC-029**: The complete R001 Welcome and Parent onboarding regression suite passes unchanged, and
+  its success action reaches the refreshed `/parent` with no stale onboarding history.
+- **SC-030**: Parent Home is compared with `ghaf_parent_home` at 390×844, every pre-existing live
+  action remains reachable, every displayed counter traces to a selector, and inspection finds zero
+  fabricated League/Family Reward values or `/circle`-as-League labels.
+- **SC-031**: Focused tests prove that the R002a task presentation stores only
+  `task_recycling_p0_v1`, awards zero through Child submission and praise presentation, applies the
+  complete existing recognition consequences once, treats five duplicate attempts as neutral
+  no-ops, and loses or duplicates nothing across retry, support, interruption, and resubmission.
+- **SC-032**: Each selected R002a route/state has Arabic and English coverage with no empty key or
+  `EN:S` placeholder; privacy/safety copy drafted in this release remains visibly flagged for human
+  review until that review is recorded.
+- **SC-033**: At 320, 360, 390, and 430 widths plus one wider viewport, both locales complete every
+  R002a slice with no horizontal overflow or obscured fixed action; 200% text, keyboard, safe area,
+  scroll, reduced motion, semantic state, and minimum target checks meet FR-140 and FR-141.
+- **SC-034**: Source and route inspection finds no raw Stitch web import, WebView, remote asset URL,
+  unknown font, `Zone.Identifier`, hard-coded screenshot progression, duplicate state route, or
+  exposed R002b navigation/mechanic.
+- **SC-035**: After each slice, relevant behavior, route, RTL, accessibility, and visual checks plus
+  typecheck, lint, format, tests, Expo configuration, production export/build, and
+  `git diff --check` receive an explicit `PASSED`, `FAILED`, `BLOCKED`, or `NOT RUN` result. Android
+  passes only from a named usable build/device.
+- **SC-036**: Characterization proves that Schema 3 duplicates Salem's opening 48 in independent
+  personal and Mangrove scalars, has no archived 60/profile epoch/reconciling opening ledger, and
+  uses only deterministic in-memory synthetic data before any migration value is introduced.
+- **SC-037**: Migration tests prove Salem alone derives 108 from opening 48 plus one explicitly
+  labeled synthetic carry-forward 60 and reaches 120 once from the existing +12 approval; Alya
+  remains 36, unsupported profiles reject, and partial, duplicate, concurrent, wrong-epoch, reset,
+  and changed-input cases preserve atomicity and isolation.
+- **SC-038**: Threshold tests cover 107, 108, 119, 120, 131, 132, 179, and 180; registry tests find
+  exactly 16 stable badges; and badge evaluation proves permanent/idempotent awards, exact mastery
+  criteria, no automatic Mangrove Care at 132, and no fabricated backfill.
+- **SC-039**: Story and accessible learning can each resume and complete the same package exactly
+  once with equal credit, while every Seed, Garden, canopy, Circle, League, Challenge Leaf, and
+  Family Reward value remains unchanged.
+- **SC-040**: Duplicate, concurrent, interrupted, resumed, acknowledged, and archived reveal tests
+  produce at most one ordered bundle per profile/event with complete legacy and R002b consequence
+  parity, one visible presentation, and no repeated transaction.
+- **SC-041**: Parent Progress access/profile-switch tests expose no mutation path, and Shared Growth
+  tests expose no prohibited identity/quantity field while proving view/contribution separation and
+  Continue/Pause/End independence from all private state.
+- **SC-042**: With every R002b UI flag off, route and screenshot assertions retain the R002a
+  fallback. With local test overrides, all authorized nested routes enforce same-role origin and
+  deep-link recovery and remain usable in Arabic RTL and English LTR at 320/360/390/430/768 widths,
+  200% text, reduced motion, safe areas, keyboard/focus, and screen-reader semantics.
+- **SC-043**: Every R002b implementation commit passes its focused tests, typecheck, lint, format,
+  full regression suite, Expo configuration, production export, route/reset scans, and whitespace
+  validation. Physical Android, TalkBack, native Back/IME, and OS font scaling stay explicitly
+  `BLOCKED` until observed on a named configured device.
+- **SC-044**: In Arabic RTL and English LTR at 320 and 390 widths, the Parent sign-in title, body,
+  and supporting biometric copy are centered without changing mixed-identifier alignment; all
+  actions retain at least 48dp targets; **Create a new family** opens sign-up before verification;
+  sign-up verification Back/cancel returns to sign-up; and a successful fresh flow reaches Family
+  Basics with no second-family or production-account claim.
+- **SC-045**: An automated artwork audit finds every required manifest ID and local file, all
+  twenty-five unique Garden state mappings, matching dimensions/checksums/provenance, zero remote
+  image URLs or rasterized copy, unchanged official-brand checksums, and no replaced scenic SVG
+  function. Arabic/English proxy inspection at 320/390 widths shows crop-safe artwork and readable
+  live UI without horizontal overflow; physical Android, TalkBack, botanical/cultural review, and
+  final illustration-rights review remain separately recorded rather than inferred.
+- **SC-046**: Automated source and flow checks find exactly four ordered in-route onboarding
+  moments, both skip and full completion paths, active-session bypass, the exact 37 product routes,
+  exactly 46 local raster manifest/registry entries, and no new authority or runtime image URL.
+- **SC-047**: Arabic RTL and English LTR web-proxy inspection at 320×720 and 390×844 shows the full
+  first-run and Welcome journey with no clipped copy, hidden action, broken image, horizontal
+  overflow, or application console error; reduced motion uses no travel/scale animation.
 
 ## Dependencies and Assumptions
 
@@ -1246,9 +2281,9 @@ domain-only result, the ten authored routes, and every production-capability exc
   self-reported activity, not an environmental-impact conversion.
 - Parents/guardians determine task appropriateness, local recycling acceptance, heat/traffic,
   routes, food safety, cultural phrasing, and when adult help is required.
-- Feature 003 implementation may proceed after the complete Spec Kit artifacts and cross-artifact
-  quality analysis pass; no additional product-choice approval is required unless a genuine
-  unresolved conflict or scope expansion appears.
+- R002a implementation may proceed under the amendment above. Any behavior, reward, privacy,
+  identity, migration, or canonical product-meaning change remains a product decision and MUST NOT
+  be inferred from a design export or conflict resolution.
 - Physical Android, Arabic/RTL, reduced-motion, media, Back/keyboard, timing, comprehension,
   cultural, faith, safeguarding, and accessibility evidence starts fresh for Feature 003.
 
@@ -1277,7 +2312,10 @@ build, device, reviewer, secure boundary, or other required dependency is unavai
 
 ## Out of Scope
 
-- Any authored product route beyond the ten-route contract or a second application.
+- Any authored product route beyond the current 37-route R003 manifest, or a second application.
+  The historical R001 inventory remains the preserved ten plus six frozen access routes; the one
+  later `/access/parent/sign-up` usability route is separately authorized above and does not alter
+  that historical evidence.
 - Production accounts, authentication, guardian-consent systems, age assurance, multi-family
   tenancy, persistence guarantees, notifications, analytics, monitoring, or store deployment;
   deterministic synthetic access fixtures do not remove this boundary.

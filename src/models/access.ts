@@ -16,6 +16,7 @@ export type ParentCapability =
   | 'confirm_tasks'
   | 'manage_family_rewards'
   | 'manage_league_membership'
+  | 'manage_shared_growth_contribution'
   | 'manage_child_permissions'
   | 'manage_child_devices';
 
@@ -38,6 +39,7 @@ export const PARENT_CAPABILITIES: readonly ParentCapability[] = Object.freeze([
   'confirm_tasks',
   'manage_family_rewards',
   'manage_league_membership',
+  'manage_shared_growth_contribution',
   'manage_child_permissions',
   'manage_child_devices',
 ]);
@@ -80,6 +82,7 @@ export const SYNTHETIC_PARENT_ACCESS_FIXTURE: SyntheticParentAccessFixture = Obj
 
 export const SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID =
   'parent_reauthentication_al_noor_v1' as const;
+export const SYNTHETIC_PARENT_REAUTHENTICATION_CODE = '4242' as const;
 
 export const SYNTHETIC_CHILD_CREDENTIAL_FIXTURES: Readonly<
   Record<SyntheticChildId, SyntheticChildCredentialFixture>
@@ -208,9 +211,12 @@ export type SensitiveActionPurpose =
   | 'create_monetary_family_reward'
   | 'change_monetary_family_reward'
   | 'change_league_membership'
+  | 'change_shared_growth_participation'
   | 'change_voice_permission'
   | 'change_media_permission'
-  | 'change_ai_permission';
+  | 'change_ai_permission'
+  | 'change_live_child_text_permission'
+  | 'change_live_child_voice_permission';
 
 export interface ReauthenticationProof {
   readonly id: string;
@@ -266,6 +272,15 @@ export interface ProjectAccessSessionInput {
   readonly session: AccessSession;
   readonly now: string;
 }
+
+export interface AccessSessionTermination {
+  readonly sessionId: string;
+  readonly terminated: true;
+  readonly origin: 'synthetic';
+}
+
+export type ParentSessionTermination = AccessSessionTermination;
+export type ChildSessionTermination = AccessSessionTermination;
 
 export interface CapabilityAuthorizationInput extends ProjectAccessSessionInput {
   readonly capability: AccessCapability;

@@ -1,5 +1,4 @@
 import {
-  evaluateAssistantSafety,
   applyLocalSummaryCorrection,
   validateChildCoachRequest,
   validateParentGuideIntent,
@@ -39,6 +38,8 @@ import {
   sendPreparedEncouragement,
   SYNTHETIC_LEAGUE_PARTICIPANTS,
 } from '../../features/league';
+import { selectPrivateLeagueRecognitionEligibility } from '../../features/league/recognitionRuntime';
+import { isFamilyRewardRecognitionEligible } from '../../features/family-hub';
 import {
   applyCanopy,
   applyCircle,
@@ -63,6 +64,7 @@ import {
 import { transitionTaskLifecycle } from '../../features/tasks/lifecycle';
 import {
   matchesCanonicalP0TaskContent,
+  isDescriptiveTaskPraise,
   validateOptionalTaskReflection,
   validateTaskForReview,
   validateTaskTemplate,
@@ -131,14 +133,18 @@ import type {
   TaskTemplate,
 } from '../../models/familyGrowth';
 import type {
+  CapabilityTokenService,
   CoachAdaptationService,
+  BoundedParentGuideProvider,
   FamilyLeagueService,
   FamilyRewardService,
   FamilyProjectionService,
   Feature003ServiceRegistry,
+  LiveChildCoachTextService,
   GardenService,
   MediaService,
   ParentGuideService,
+  ParentTaskDraftingService,
   ParentSummaryPolicy,
   PreparedChildCoachProvider,
   PreparedParentGuideProvider,
@@ -150,14 +156,23 @@ import type {
   SyntheticVoiceService,
   SyntheticAccessService,
   TaskService,
+  VoiceTranscriptionService,
 } from '../interfaces';
+import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
+import {
+  createPreparedBoundedAiServices,
+  BlockedCapabilityTokenService,
+  DeterministicLiveChildAiGrantService,
+  DeterministicLiveChildCoachTextProvider,
+  DeterministicParentTaskDraftingProvider,
+  DeterministicVoiceTranscriptionProvider,
+} from './boundedAi';
 import {
   CHILD_COACH_FIXTURE,
   createInitialPrototypeSession,
   FEATURE_003_TIMESTAMP,
   PARENT_GUIDE_FIXTURE,
   PARENT_SUMMARY_FIXTURE,
-  PREPARED_PRAISE,
   PREPARED_MEDIA_FIXTURES,
 } from './fixtures';
 
@@ -243,6 +258,29 @@ function validateApprovedJourneyLinks(journey: TaskJourney): ServiceResult<TaskJ
   }
   const validatedTask = validateTaskForReview(journey.task);
   if (!validatedTask.ok) return { ok: false, error: validatedTask.error };
+  const submission = journey.submission;
+  const checkIn = journey.checkIn;
+  const presentationHasRecordedPraise =
+    checkIn?.confirmationPresentation === 'praise_presented' ||
+    checkIn?.confirmationPresentation === 'recognition_applied';
+  if (
+    !isExactIsoTimestamp(assignment.createdAt) ||
+    (submission !== null &&
+      (!isExactIsoTimestamp(submission.submittedAt) ||
+        Date.parse(submission.submittedAt) < Date.parse(assignment.createdAt))) ||
+    (checkIn !== null &&
+      (!submission ||
+        !isExactIsoTimestamp(checkIn.createdAt) ||
+        Date.parse(checkIn.createdAt) < Date.parse(submission.submittedAt) ||
+        (checkIn.praisePresentedAt !== null &&
+          (!isExactIsoTimestamp(checkIn.praisePresentedAt) ||
+            Date.parse(checkIn.praisePresentedAt) < Date.parse(checkIn.createdAt))) ||
+        (presentationHasRecordedPraise
+          ? checkIn.praisePresentedAt === null
+          : checkIn.praisePresentedAt !== null)))
+  ) {
+    return failure('INVALID_RESPONSE', 'The task journey timeline is invalid');
+  }
   if (
     assignment.taskId !== journey.task.id ||
     assignment.taskVersion !== journey.task.version ||
@@ -630,21 +668,6 @@ export class DeterministicTaskService implements TaskService {
   }
 }
 
-function descriptivePraise(praise: LocalizedText): boolean {
-  if (!nonEmptyLocalized(praise)) return false;
-  const safety = evaluateAssistantSafety({ audience: 'parent', texts: [praise] });
-  if (!safety.accepted) return false;
-  if (praise.en === PREPARED_PRAISE.en && praise.ar === PREPARED_PRAISE.ar) return true;
-
-  // Editable praise accepts only the approved action-and-help patterns.
-  // Matching the full field blocks labels or character claims after otherwise valid praise.
-  const boundedEnglishPraise =
-    /^(?:You\s+)?sorted\s+(?:the\s+)?(?:clean\s+)?(?:paper|plastic|items|materials|recyclables)(?:\s+approved\s+by\s+an?\s+adult)?\s+and\s+asked\s+(?:(?:an?\s+adult\s+)?for\s+help\s+when\s+(?:unsure|needed)|an?\s+adult\s+before\s+continuing)[.!]?$/iu;
-  const boundedArabicPraise =
-    /^(?:لقد\s+)?فرزت\s+(?:الورق|المواد)(?:\s+النظيف(?:ة|ين)?)?(?:\s+القابلة\s+لإعادة\s+التدوير)?\s+و(?:سألت\s+شخص(?:اً|ا)?\s+بالغ(?:اً|ا)?\s+قبل\s+المتابعة|طلبت\s+مساعدة\s+شخص\s+بالغ\s+عند\s+الشك)[.!؟]?$/u;
-  return boundedEnglishPraise.test(praise.en) && boundedArabicPraise.test(praise.ar);
-}
-
 function pendingPlan(journey: TaskJourney): PendingConfirmationPlan | null {
   const checkIn = journey.checkIn;
   if (
@@ -903,7 +926,7 @@ export class DeterministicRecognitionService implements RecognitionService {
       }
       return success({ disposition: 'pending_praise', plan: existingPlan });
     }
-    if (journey.lifecycle !== 'submitted' || !descriptivePraise(input.praise)) {
+    if (journey.lifecycle !== 'submitted' || !isDescriptiveTaskPraise(input.praise)) {
       return failure(
         'INVALID_INPUT',
         'Submitted work and descriptive bilingual praise are required',
@@ -964,10 +987,11 @@ export class DeterministicRecognitionService implements RecognitionService {
       !sameStructuredData(plan.praise, plan.checkIn.praise) ||
       action.source !== 'parent_press' ||
       !action.actionId.trim() ||
-      !action.presentedAt.trim() ||
+      !isExactIsoTimestamp(action.presentedAt) ||
+      Date.parse(action.presentedAt) < Date.parse(plan.checkIn.createdAt) ||
       plan.journey.lifecycle !== 'confirmed' ||
       plan.checkIn.confirmationPresentation !== 'editing_praise' ||
-      !descriptivePraise(plan.praise)
+      !isDescriptiveTaskPraise(plan.praise)
     ) {
       return failure('INVALID_TRANSITION', 'A valid Parent praise-presentation press is required');
     }
@@ -1050,7 +1074,7 @@ export class DeterministicRecognitionService implements RecognitionService {
     const confirmedAcquisitionCount =
       recurringFadeFirst && effectiveRoutinePhase === 'acquisition'
         ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0) + 1
-        : (existingRoutineProgress?.confirmedAcquisitionCount ?? 1);
+        : (existingRoutineProgress?.confirmedAcquisitionCount ?? 0);
     const policy = evaluateRecognitionPolicy({
       submissionId: journey.submission.id,
       recognitionMode: journey.task.content.recognitionMode,
@@ -1113,6 +1137,24 @@ export class DeterministicRecognitionService implements RecognitionService {
     const receipt: RecognitionReceipt = {
       recognitionKey,
       checkInId: journey.checkIn.id,
+      provenance: {
+        schemaVersion: 'r003.recognition-provenance.v1',
+        taskId: journey.task.id,
+        taskVersion: journey.task.version,
+        submissionId: journey.submission.id,
+        profileId: journey.task.targetChildId,
+        landscapeId: journey.task.content.landscapeId,
+        completionMode: journey.submission.completionMode,
+        projection: projectionContext,
+        recurrence: journey.task.content.recurrence,
+        routineCompletionCountBefore: recurringFadeFirst
+          ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0)
+          : 0,
+        routineCompletionCountAfter: recurringFadeFirst ? confirmedAcquisitionCount : 0,
+        familyRewardEligible: isFamilyRewardRecognitionEligible(journey),
+        challengeLeafEligible:
+          selectPrivateLeagueRecognitionEligibility(journey)?.challengeLeafEligible === true,
+      },
       seedTransaction,
       landscapeGrowth: growth?.data ?? null,
       canopyContribution: projection.data.canopyContribution,
@@ -1124,7 +1166,9 @@ export class DeterministicRecognitionService implements RecognitionService {
       ? {
           taskId: journey.task.id,
           confirmedAcquisitionCount,
-          futurePhase: existingRoutineProgress?.futurePhase ?? 'acquisition',
+          futurePhase:
+            existingRoutineProgress?.futurePhase ??
+            (effectiveRoutinePhase === 'maintenance' ? 'maintenance' : 'acquisition'),
           phaseReview: phaseReview ?? existingRoutineProgress?.phaseReview ?? null,
           decision: existingRoutineProgress?.decision ?? null,
         }
@@ -2052,15 +2096,24 @@ export class DeterministicPrototypeSessionService implements PrototypeSessionSer
   }
 }
 
-export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
+export function createFeature003ServiceRegistry(options?: {
+  readonly parentGuidePrimary?: BoundedParentGuideProvider;
+  readonly parentTaskDraftingPrimary?: ParentTaskDraftingService;
+  readonly childCoachTextPrimary?: LiveChildCoachTextService;
+  readonly voiceTranscriptionPrimary?: VoiceTranscriptionService;
+  readonly capabilityToken?: CapabilityTokenService;
+}): Feature003ServiceRegistry {
   const access = new DeterministicSyntheticAccessService();
+  const parentGuide = new DeterministicParentGuideProvider();
+  const boundedAiPrepared = createPreparedBoundedAiServices();
   return {
     task: new DeterministicTaskService(),
     recognition: new DeterministicRecognitionService(),
     garden: new DeterministicGardenService(),
     familyProjection: new DeterministicFamilyProjectionService(),
     media: new DeterministicMediaService(),
-    parentGuide: new DeterministicParentGuideProvider(),
+    parentGuide,
+    parentGuidePrimary: options?.parentGuidePrimary ?? parentGuide,
     childCoach: new DeterministicChildCoachProvider(),
     coachAdaptation: new DeterministicCoachAdaptationService(),
     syntheticVoice: new DeterministicSyntheticVoiceService(access),
@@ -2069,5 +2122,27 @@ export function createFeature003ServiceRegistry(): Feature003ServiceRegistry {
     familyLeague: new DeterministicFamilyLeagueService(access),
     parentSummary: new DeterministicParentSummaryPolicy(),
     prototypeSession: new DeterministicPrototypeSessionService(),
+    boundedAi: {
+      parentTaskDraftingPrepared: boundedAiPrepared.parentTaskDraftingPrepared,
+      parentTaskDraftingPrimary:
+        options?.parentTaskDraftingPrimary ?? boundedAiPrepared.parentTaskDraftingPrepared,
+      childCoachTextPrepared: boundedAiPrepared.childCoachTextPrepared,
+      childCoachTextPrimary:
+        options?.childCoachTextPrimary ?? boundedAiPrepared.childCoachTextPrepared,
+      voiceTranscriptionPrepared: boundedAiPrepared.voiceTranscriptionPrepared,
+      voiceTranscriptionPrimary:
+        options?.voiceTranscriptionPrimary ?? boundedAiPrepared.voiceTranscriptionPrepared,
+      capabilityToken: options?.capabilityToken ?? boundedAiPrepared.capabilityToken,
+      childAiGrants: boundedAiPrepared.childAiGrants,
+    },
   };
 }
+
+export {
+  BlockedCapabilityTokenService,
+  createPreparedBoundedAiServices,
+  DeterministicLiveChildCoachTextProvider,
+  DeterministicLiveChildAiGrantService,
+  DeterministicParentTaskDraftingProvider,
+  DeterministicVoiceTranscriptionProvider,
+};

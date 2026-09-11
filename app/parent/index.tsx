@@ -1,54 +1,148 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { FamilyCanopy } from '@/components/family-growth/FamilyCanopy';
-import { FamilyLeaguePanel } from '@/components/family-growth/FamilyLeaguePanel';
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
-import { FamilyRewardPanel } from '@/components/family-growth/FamilyRewardPanel';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { JourneyHeader, OriginDisclosure } from '@/components/journey';
 import { Button, Screen, Text } from '@/components/primitives';
-import { colors, radii, spacing } from '@/design/tokens';
+import { GhafIcon } from '@/components/access';
+import {
+  ReturningWelcomeDialog,
+  type ReturningWelcomeUpdate,
+} from '@/components/session/ReturningWelcomeDialog';
+import {
+  ParentAdjustmentReview,
+  ParentCanopySummaryCard,
+  ParentChildrenSection,
+  ParentHomeHeader,
+  ParentHomeNavigation,
+  ParentLifecycleCard,
+  ParentTasksView,
+  R002aScreen,
+  type ParentChildSummaryItem,
+} from '@/components/r002a';
+import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
+import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
 import { PARENT_NEXT_ACTIONS } from '@/features/family/overview';
+import {
+  readLegacyParentHomeParam,
+  readStrictParentHomeParam,
+  type ParentHomeRouteParam,
+} from '@/features/navigation/parentHomeParams';
+import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
 import { P0_SAFE_EQUIVALENT_TEMPLATE } from '@/features/tasks/demoContent';
 import { localize } from '@/i18n';
-import type { ProspectiveTaskAdjustmentKind } from '@/models/familyGrowth';
+import type {
+  ProspectiveTaskAdjustmentKind,
+  SyntheticChildId,
+  TaskLifecycleStatus,
+} from '@/models/familyGrowth';
 import { PARENT_SUMMARY_FIXTURE, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-import { replaceStackWithRole } from '@/utils/navigation';
+import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
+
+type ParentSection = 'home' | 'tasks';
+type TaskListFilter = 'assigned' | 'pending' | 'completed';
+
+interface ParentHomeParams {
+  readonly added?: ParentHomeRouteParam;
+  readonly section?: ParentHomeRouteParam;
+  readonly restoreFocusTarget?: ParentHomeRouteParam;
+  readonly restoreProfileId?: ParentHomeRouteParam;
+  readonly restoreScrollOffset?: ParentHomeRouteParam;
+}
+
+function taskFilterForLifecycle(lifecycle: TaskLifecycleStatus): TaskListFilter {
+  if (lifecycle === 'submitted' || lifecycle === 'retry' || lifecycle === 'confirmed') {
+    return 'pending';
+  }
+  if (lifecycle === 'recognized') return 'completed';
+  return 'assigned';
+}
+
+function taskStatusKey(lifecycle: TaskLifecycleStatus) {
+  const keys: Record<TaskLifecycleStatus, string> = {
+    draft: 'r002aTasks.statusDraft',
+    reviewed: 'r002aTasks.statusReviewed',
+    assigned: 'r002aTasks.statusAssigned',
+    chosen: 'r002aTasks.statusChosen',
+    in_progress: 'r002aTasks.statusInProgress',
+    retry: 'r002aTasks.statusRetry',
+    submitted: 'r002aTasks.statusSubmitted',
+    confirmed: 'r002aTasks.statusConfirmed',
+    recognized: 'r002aTasks.statusRecognized',
+  };
+  return keys[lifecycle];
+}
 
 export default function ParentHomeScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams() as unknown as ParentHomeParams;
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
   const role = usePrototypeStore((state) => state.role);
+  const householdName = usePrototypeStore((state) => state.household.displayName);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const canopy = usePrototypeStore((state) => state.household.combinedCanopy);
+  const children = usePrototypeStore((state) => state.children);
+  const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const journey = usePrototypeStore((state) => state.journey);
   const preAcceptanceAdjustment = usePrototypeStore((state) => state.preAcceptanceAdjustment);
   const resolvePreAcceptanceAdjustment = usePrototypeStore(
     (state) => state.resolvePreAcceptanceAdjustment,
   );
-  const familyExperience = usePrototypeStore((state) => state.familyExperience);
-  const enterChildExperience = usePrototypeStore((state) => state.enterChildExperience);
-  const createPreparedFamilyReward = usePrototypeStore((state) => state.createPreparedFamilyReward);
-  const markPreparedFamilyRewardGiven = usePrototypeStore(
-    (state) => state.markPreparedFamilyRewardGiven,
+  const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
+  const signOutExperience = usePrototypeStore((state) => state.signOutExperience);
+  const returningUserWelcome = usePrototypeStore((state) => state.returningUserWelcome);
+  const dismissReturningUserWelcome = usePrototypeStore(
+    (state) => state.dismissReturningUserWelcome,
   );
-  const startPreparedFamilyLeague = usePrototypeStore((state) => state.startPreparedFamilyLeague);
+  const progressEntryRef = useRef<View | null>(null);
+  const homeScrollOffsetRef = useRef(0);
   const [adjustmentError, setAdjustmentError] = useState<string | null>(null);
-  const [rewardError, setRewardError] = useState<string | null>(null);
-  const [leagueError, setLeagueError] = useState<string | null>(null);
+  const [taskFilter, setTaskFilter] = useState<TaskListFilter>('assigned');
+  const [dismissedTaskAddedToken, setDismissedTaskAddedToken] = useState<string | null>(null);
+
+  const rawSection = readLegacyParentHomeParam(params.section);
+  const section: ParentSection = rawSection === 'tasks' ? 'tasks' : 'home';
+  const taskAddedToken = readLegacyParentHomeParam(params.added);
+  const restoreProfileId = readStrictParentHomeParam(params.restoreProfileId);
+  const restoreFocusTarget = readStrictParentHomeParam(params.restoreFocusTarget);
+  const rawRestoreScrollOffset = readStrictParentHomeParam(params.restoreScrollOffset);
+  const restoreScrollOffset =
+    rawRestoreScrollOffset && /^\d+$/u.test(rawRestoreScrollOffset)
+      ? Math.min(100_000, Number(rawRestoreScrollOffset))
+      : 0;
+  const hasValidProgressRestore =
+    r002bFeatureFlags.r002b_parent_progress_ui &&
+    restoreFocusTarget === 'r002b-parent-family-progress-card' &&
+    restoreProfileId === activeChildId;
+  const taskAddedVisible = Boolean(taskAddedToken && taskAddedToken !== dismissedTaskAddedToken);
+  const dismissTaskAdded = () => {
+    if (taskAddedToken) setDismissedTaskAddedToken(taskAddedToken);
+  };
 
   useEffect(() => {
-    if (role !== 'parent') router.replace('/role');
+    if (role !== 'parent') router.replace('/');
   }, [role, router]);
+
+  useEffect(() => {
+    if (role !== 'parent' || section !== 'home' || !hasValidProgressRestore) {
+      return;
+    }
+    const frame = requestAnimationFrame(() => {
+      focusAccessibilityTarget(progressEntryRef.current);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hasValidProgressRestore, role, section]);
 
   if (role !== 'parent') {
     return (
       <Screen testID="parent-home-role-guard">
-        <JourneyHeader eyebrow={t('origin.synthetic')} title={t('errors.wrongRole')} />
+        <Text brand color="deepForest" variant="screenTitle">
+          {t('errors.wrongRole')}
+        </Text>
       </Screen>
     );
   }
@@ -63,6 +157,17 @@ export default function ParentHomeScreen() {
     .listTemplates('green_impact')
     .find((template) => template.id === 'GI01');
 
+  const handoffToChildAccess = () => {
+    setAdjustmentError(null);
+    const result = signOutExperience();
+    if (!result.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return false;
+    }
+    requestAnimationFrame(() => router.replace('/access/child' as Href));
+    return true;
+  };
+
   const resolveAdjustment = (decision: ProspectiveTaskAdjustmentKind) => {
     setAdjustmentError(null);
     const result = resolvePreAcceptanceAdjustment({ decision });
@@ -70,30 +175,7 @@ export default function ParentHomeScreen() {
       setAdjustmentError(t('errors.safeRetry'));
       return;
     }
-    const entry = enterChildExperience('child_salem');
-    if (!entry.ok) {
-      setAdjustmentError(t('errors.safeRetry'));
-      return;
-    }
-    requestAnimationFrame(() => router.replace('/child'));
-  };
-
-  const createReward = () => {
-    setRewardError(null);
-    const result = createPreparedFamilyReward();
-    if (!result.ok) setRewardError(t('errors.safeRetry'));
-  };
-
-  const markRewardGiven = () => {
-    setRewardError(null);
-    const result = markPreparedFamilyRewardGiven();
-    if (!result.ok) setRewardError(t('errors.safeRetry'));
-  };
-
-  const startLeague = () => {
-    setLeagueError(null);
-    const result = startPreparedFamilyLeague();
-    if (!result.ok) setLeagueError(t('errors.safeRetry'));
+    handoffToChildAccess();
   };
 
   const nextRoute =
@@ -108,280 +190,708 @@ export default function ParentHomeScreen() {
               journey?.lifecycle === 'in_progress'
             ? '/child'
             : '/parent/task/new';
+  const profileName = (childId: SyntheticChildId) =>
+    localFamily.record?.children.find((profile) => profile.id === childId)?.nickname ??
+    localize(children[childId].displayName, locale);
+  const familyDisplayName = localFamily.record?.familyName ?? localize(householdName, locale);
   const nextLabel =
-    nextRoute === '/parent/check-in'
-      ? t('checkIn.title')
-      : nextRoute === '/garden'
-        ? t('parentHome.openGarden')
-        : nextRoute === '/child'
-          ? t('navigation.childHome')
-          : t('parentHome.createTask');
+    journey?.lifecycle === 'confirmed'
+      ? t('parentHome.continueRecognition')
+      : nextRoute === '/parent/check-in'
+        ? t('parentHome.reviewTask')
+        : nextRoute === '/garden'
+          ? t('parentHome.openGarden')
+          : nextRoute === '/child'
+            ? t('navigation.childHome')
+            : t('parentHome.createTask', { child: profileName('child_salem') });
+  const lifecycleStatus = journey
+    ? journey.lifecycle === 'submitted'
+      ? t('parentHome.awaitingReview')
+      : journey.lifecycle === 'confirmed'
+        ? t('parentHome.approvalRecorded')
+        : journey.lifecycle === 'retry'
+          ? t('parentHome.retryRequested')
+          : journey.lifecycle === 'recognized'
+            ? t('parentHome.recognitionComplete')
+            : t('parentHome.taskInProgress')
+    : t('parentHome.readyStatus');
+  const remainingLeaves = Math.max(0, canopy.goalLeaves - canopy.contributionLeaves);
+  const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
+  const childItems: readonly ParentChildSummaryItem[] = PARENT_NEXT_ACTIONS.filter((action) =>
+    localFamily.configuredChildIds.includes(action.childId),
+  ).map((action) => ({
+    id: action.childId,
+    name: profileName(action.childId),
+    next: t(action.nextKey, { child: profileName(action.childId) }),
+    selected: activeChildId === action.childId,
+    support: t(action.supportKey, { child: profileName(action.childId) }),
+  }));
+
+  const openSalemTaskBuilder = () => {
+    dismissTaskAdded();
+    setAdjustmentError(null);
+    const result = setActiveChild('child_salem');
+    if (!result.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return;
+    }
+    router.push('/parent/task/new');
+  };
+
+  const openPrimaryAction = () => {
+    if (nextRoute === '/child') {
+      handoffToChildAccess();
+      return;
+    }
+    if (nextRoute === '/parent/task/new') {
+      openSalemTaskBuilder();
+      return;
+    }
+    router.push(nextRoute);
+  };
+
+  const chooseChild = (childId: SyntheticChildId) => {
+    dismissTaskAdded();
+    setAdjustmentError(null);
+    const result = setActiveChild(childId);
+    if (!result.ok) setAdjustmentError(t('errors.safeRetry'));
+  };
+
+  const openParentProgress = () => {
+    const origin = createR002bOrigin({
+      id: 'parent_family_progress_card',
+      profileId: activeChildId,
+      scrollOffset: homeScrollOffsetRef.current,
+    });
+    if (!origin.ok) return;
+    router.push({
+      pathname: '/parent/family/[profileId]/progress',
+      params: {
+        profileId: activeChildId,
+        ...serializeR002bOrigin(origin.data),
+      },
+    } as unknown as Href);
+  };
+
+  const selectedJourney = journey?.task.targetChildId === activeChildId ? journey : null;
+  const visibleJourney =
+    selectedJourney && taskFilterForLifecycle(selectedJourney.lifecycle) === taskFilter
+      ? selectedJourney
+      : null;
+  const emptyCopy = {
+    assigned: {
+      body: t('r002aTasks.emptyAssignedBody'),
+      title: t('r002aTasks.emptyAssignedTitle'),
+    },
+    pending: {
+      body: t('r002aTasks.emptyPendingBody'),
+      title: t('r002aTasks.emptyPendingTitle'),
+    },
+    completed: {
+      body: t('r002aTasks.emptyCompletedBody'),
+      title: t('r002aTasks.emptyCompletedTitle'),
+    },
+  }[taskFilter];
+  const openTaskAction = () => {
+    dismissTaskAdded();
+    if (!journey) {
+      openSalemTaskBuilder();
+      return;
+    }
+    if (!visibleJourney) {
+      const selected = setActiveChild(journey.task.targetChildId);
+      if (!selected.ok) {
+        setAdjustmentError(t('errors.safeRetry'));
+        return;
+      }
+      setTaskFilter(taskFilterForLifecycle(journey.lifecycle));
+      return;
+    }
+    if (visibleJourney.lifecycle === 'draft') {
+      router.push('/parent/task/new');
+      return;
+    }
+    if (visibleJourney.lifecycle === 'reviewed') {
+      router.push('/parent/task/review');
+      return;
+    }
+    if (
+      visibleJourney.lifecycle === 'assigned' ||
+      visibleJourney.lifecycle === 'chosen' ||
+      visibleJourney.lifecycle === 'in_progress'
+    ) {
+      handoffToChildAccess();
+      return;
+    }
+    if (
+      visibleJourney.lifecycle === 'submitted' ||
+      visibleJourney.lifecycle === 'retry' ||
+      visibleJourney.lifecycle === 'confirmed'
+    ) {
+      router.push('/parent/check-in');
+      return;
+    }
+    router.push('/garden');
+  };
+  const taskActionLabel = !journey
+    ? t('r002aTasks.createTask')
+    : !visibleJourney
+      ? t('r002aTasks.viewCurrentTask')
+      : visibleJourney.lifecycle === 'draft'
+        ? t('r002aTasks.openBuilder')
+        : visibleJourney.lifecycle === 'reviewed'
+          ? t('r002aTasks.openReview')
+          : visibleJourney.lifecycle === 'recognized'
+            ? t('r002aTasks.openGarden')
+            : visibleJourney.lifecycle === 'retry'
+              ? t('r002aTasks.resumeSupport')
+              : visibleJourney.lifecycle === 'confirmed'
+                ? t('r002aTasks.continueRecognition')
+                : visibleJourney.lifecycle === 'submitted'
+                  ? t('parentHome.reviewTask')
+                  : t('r002aTasks.openChild');
+  const parentWelcomeUpdates: readonly ReturningWelcomeUpdate[] = [
+    {
+      body: journey
+        ? t('r003.welcomeBack.parentTaskBody', {
+            status: lifecycleStatus,
+            task: localize(journey.task.content.title, locale),
+          })
+        : t('r003.welcomeBack.parentReadyBody'),
+      icon: 'leaf',
+      id: 'task',
+      title: journey
+        ? t('r003.welcomeBack.parentTaskTitle')
+        : t('r003.welcomeBack.parentReadyTitle'),
+    },
+    {
+      body: t('r003.welcomeBack.familyProgressBody', {
+        current: formatter.format(canopy.contributionLeaves),
+        goal: formatter.format(canopy.goalLeaves),
+      }),
+      icon: 'ghaf-tree',
+      id: 'family',
+      onPress: () => {
+        dismissReturningUserWelcome();
+        router.push('/parent/family' as Href);
+      },
+      title: t('r003.welcomeBack.familyProgressTitle'),
+    },
+  ];
+
+  if (section === 'tasks') {
+    return (
+      <R002aScreen
+        footer={
+          <ParentHomeNavigation
+            activeKey="tasks"
+            direction={direction}
+            familyLabel={t('navigation.family')}
+            gardenLabel={t('navigation.garden')}
+            homeLabel={t('parentHome.homeLabel')}
+            onFamily={() => router.push('/parent/family' as Href)}
+            onGarden={() => router.push('/garden')}
+            onHome={() => router.replace('/parent')}
+            onTasks={() => undefined}
+            tasksLabel={t('parentHome.tasksLabel')}
+          />
+        }
+        header={
+          <ParentHomeHeader
+            direction={direction}
+            onToggleSettings={() => router.push('/parent/settings' as Href)}
+            profileLabel={t('parentHome.selectedChild', {
+              child: profileName(activeChildId),
+            })}
+            settingsLabel={t('parentHome.settingsLabel')}
+            settingsOpen={false}
+            title={t('common.brand')}
+          />
+        }
+        testID="parent-tasks-screen"
+      >
+        <View style={styles.greeting}>
+          <View
+            style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
+          >
+            <View aria-hidden style={styles.prototypeDot} />
+            <Text brand color="onSurfaceVariant" style={styles.prototypeLabel} variant="caption">
+              {t('common.prototype')} · {t('origin.synthetic')}
+            </Text>
+          </View>
+          <Text brand color="deepForest" variant="parentHero">
+            {t('r002aTasks.title')}
+          </Text>
+          <Text brand color="onSurfaceVariant" variant="bodyLarge">
+            {t('r002aTasks.body')}
+          </Text>
+        </View>
+
+        {!journey ? (
+          <Button
+            brand
+            direction={direction}
+            icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
+            onPress={openTaskAction}
+            size="regular"
+            testID="parent-tasks-create-task"
+          >
+            {t('r002aTasks.createTask')}
+          </Button>
+        ) : null}
+
+        {adjustmentError ? (
+          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+            {adjustmentError}
+          </Text>
+        ) : null}
+
+        <View
+          accessibilityRole="radiogroup"
+          style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {Object.values(children)
+            .filter((child) => localFamily.configuredChildIds.includes(child.id))
+            .map((child) => {
+              const selected = child.id === activeChildId;
+              return (
+                <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  aria-checked={selected}
+                  key={child.id}
+                  onPress={() => chooseChild(child.id)}
+                  style={({ pressed }) => [
+                    styles.childFilterItem,
+                    selected ? styles.childFilterItemActive : null,
+                    pressed ? styles.pressed : null,
+                  ]}
+                  testID={`parent-tasks-child-${child.id}`}
+                >
+                  <Text
+                    align="center"
+                    brand
+                    color={selected ? 'onPrimary' : 'onSurfaceVariant'}
+                    variant="label"
+                  >
+                    {profileName(child.id)}
+                  </Text>
+                </Pressable>
+              );
+            })}
+        </View>
+
+        <View
+          accessibilityRole="tablist"
+          style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {(
+            [
+              ['assigned', t('r002aTasks.assignedTab')],
+              ['pending', t('r002aTasks.pendingTab')],
+              ['completed', t('r002aTasks.completedTab')],
+            ] as const
+          ).map(([key, label]) => {
+            const selected = taskFilter === key;
+            return (
+              <Pressable
+                accessibilityRole="tab"
+                accessibilityState={{ selected }}
+                aria-selected={selected}
+                key={key}
+                onPress={() => {
+                  dismissTaskAdded();
+                  setTaskFilter(key);
+                }}
+                style={({ pressed }) => [
+                  styles.taskTab,
+                  selected ? styles.taskTabActive : null,
+                  pressed ? styles.pressed : null,
+                ]}
+                testID={`parent-tasks-tab-${key}`}
+              >
+                <Text
+                  align="center"
+                  brand
+                  color={selected ? 'primary' : 'onSurfaceVariant'}
+                  variant="label"
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <View accessibilityLiveRegion="polite">
+          <ParentTasksView
+            actionLabel={taskActionLabel}
+            actionTestID="parent-tasks-primary-action"
+            current={
+              visibleJourney
+                ? {
+                    childLabel: localize(
+                      children[visibleJourney.task.targetChildId].displayName,
+                      locale,
+                    ),
+                    metaLabel: visibleJourney.task.content.displayedSeedAward
+                      ? t('childHome.awardAfterConfirmation', {
+                          count: visibleJourney.task.content.displayedSeedAward,
+                        })
+                      : undefined,
+                    statusLabel: t(taskStatusKey(visibleJourney.lifecycle)),
+                    supportLabel: localize(visibleJourney.task.content.permittedHelp, locale),
+                    title: localize(visibleJourney.task.content.title, locale),
+                  }
+                : null
+            }
+            direction={direction}
+            emptyMessage={emptyCopy.body}
+            emptyTitle={emptyCopy.title}
+            heading={t('r002aTasks.currentTask')}
+            onAction={openTaskAction}
+            showAction={Boolean(journey)}
+            state={visibleJourney ? (taskAddedVisible ? 'task_added' : 'current') : 'empty'}
+            taskAddedMessage={t('r002aTasks.taskAdded')}
+            testID="parent-tasks-list"
+          />
+        </View>
+      </R002aScreen>
+    );
+  }
 
   return (
-    <Screen contentContainerStyle={styles.screenContent} testID="parent-home-screen">
-      <JourneyHeader
-        action={<LanguageSwitcher compact showGuidance={false} />}
-        eyebrow={t('origin.synthetic')}
-        subtitle={t('parentHome.body')}
-        title={t('parentHome.title')}
-      />
+    <R002aScreen
+      footer={
+        <ParentHomeNavigation
+          activeKey="home"
+          direction={direction}
+          familyLabel={t('navigation.family')}
+          gardenLabel={t('navigation.garden')}
+          homeLabel={t('parentHome.homeLabel')}
+          onFamily={() => router.push('/parent/family' as Href)}
+          onGarden={() => router.push('/garden')}
+          onHome={() => router.replace('/parent')}
+          onTasks={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
+          tasksLabel={t('parentHome.tasksLabel')}
+        />
+      }
+      header={
+        <ParentHomeHeader
+          direction={direction}
+          onToggleSettings={() => router.push('/parent/settings' as Href)}
+          profileLabel={t('parentHome.selectedChild', {
+            child: profileName(activeChildId),
+          })}
+          settingsLabel={t('parentHome.settingsLabel')}
+          settingsOpen={false}
+          title={t('common.brand')}
+        />
+      }
+      keyboardAware
+      scrollProps={
+        r002bFeatureFlags.r002b_parent_progress_ui
+          ? {
+              contentOffset: { x: 0, y: hasValidProgressRestore ? restoreScrollOffset : 0 },
+              onScroll: (event) => {
+                homeScrollOffsetRef.current = Math.max(
+                  0,
+                  Math.round(event.nativeEvent.contentOffset.y),
+                );
+              },
+              scrollEventThrottle: 16,
+            }
+          : undefined
+      }
+      testID="parent-home-screen"
+    >
+      <View style={styles.greeting}>
+        <View
+          style={[styles.prototypeIdentity, { flexDirection: logicalRowDirection(direction) }]}
+          testID="prototype-status-bar"
+        >
+          <View aria-hidden style={styles.prototypeDot} />
+          <Text brand color="onSurfaceVariant" style={styles.prototypeLabel} variant="caption">
+            {t('common.prototype')} · {t('origin.synthetic')}
+          </Text>
+        </View>
+        <Text brand color="onSurfaceVariant" variant="caption">
+          {familyDisplayName}
+        </Text>
+        <Text brand color="deepForest" variant="parentHero">
+          {t('parentHome.welcome')}
+        </Text>
+        <Text brand color="onSurfaceVariant" variant="bodyLarge">
+          {t('parentHome.title')}
+        </Text>
+      </View>
 
-      <FamilyCanopy
-        accessibilityLabel={`${t('parentHome.canopyTitle')}. ${canopy.contributionLeaves} / ${canopy.goalLeaves}`}
-        contributionLeaves={canopy.contributionLeaves}
-        goalLeaves={canopy.goalLeaves}
+      <ParentCanopySummaryCard
+        current={canopy.contributionLeaves}
+        direction={direction}
+        goal={canopy.goalLeaves}
         meaning={t('parentHome.canopyMeaning')}
-        progressAccessibilityLabel={t('accessibility.progress', {
+        progressLabel={t('parentHome.canopyProgressLive', {
           current: canopy.contributionLeaves,
           goal: canopy.goalLeaves,
         })}
-        progressLabel={t('common.leaves', { count: canopy.contributionLeaves })}
-        testID="family-combined-canopy"
+        remainingLabel={t('parentHome.remainingLeaves', { count: remainingLeaves })}
         title={t('parentHome.canopyTitle')}
       />
 
-      <View style={styles.milestoneRecord}>
-        <View style={styles.milestoneMark} />
-        <View style={styles.grow}>
-          <Text color="forest" variant="label">
-            {t('parentHome.nextMilestone')}
-          </Text>
-        </View>
-      </View>
+      {adjustmentError && !adjustmentUnderReview ? (
+        <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+          {adjustmentError}
+        </Text>
+      ) : null}
 
       {!adjustmentUnderReview ? (
-        <Button
-          onPress={() => {
-            router.push(nextRoute === '/child' ? '/role' : nextRoute);
-          }}
-          testID="parent-primary-action"
-        >
-          {nextLabel}
-        </Button>
+        <ParentLifecycleCard
+          actionLabel={nextLabel}
+          categoryLabel={journey ? t('taskNew.greenImpact') : undefined}
+          childLabel={
+            journey ? localize(children[journey.task.targetChildId].displayName, locale) : undefined
+          }
+          direction={direction}
+          metaLabel={
+            journey?.task.content.displayedSeedAward
+              ? t('childHome.awardAfterConfirmation', {
+                  count: journey.task.content.displayedSeedAward,
+                })
+              : undefined
+          }
+          onPress={openPrimaryAction}
+          statusLabel={lifecycleStatus}
+          supportLabel={
+            journey
+              ? localize(journey.task.content.permittedHelp, locale)
+              : t('parentHome.readyTaskBody')
+          }
+          title={
+            journey ? localize(journey.task.content.title, locale) : t('parentHome.readyTaskTitle')
+          }
+        />
       ) : null}
-
-      <View style={styles.childLedger}>
-        {PARENT_NEXT_ACTIONS.map((action) => (
-          <ChildNextAction
-            key={action.childId}
-            name={t(action.nameKey)}
-            next={t(action.nextKey)}
-            support={t(action.supportKey)}
-          />
-        ))}
-      </View>
 
       {adjustmentUnderReview && journey?.assignment ? (
-        <View style={styles.adjustmentReview} testID="pre-acceptance-parent-review">
-          <View style={styles.adjustmentHeading}>
-            <Text color="earth" variant="caption">
-              {t('origin.synthetic')}
-            </Text>
-            <Text accessibilityRole="header" color="forest" variant="heading">
-              {t('parentHome.adjustmentReviewTitle')}
-            </Text>
-            <Text color="inkMuted">{t('parentHome.adjustmentReviewBody')}</Text>
-          </View>
-
-          <View style={styles.currentTaskRecord}>
-            <Text color="earth" variant="caption">
-              {t('parentHome.currentAssignment')}
-            </Text>
-            <Text color="forest" variant="label">
-              {localize(journey.task.content.title, locale)}
-            </Text>
-            <Text>{localize(journey.task.content.definitionOfDone, locale)}</Text>
-            <Text color="forest" variant="caption">
-              {t('childHome.awardAfterConfirmation', {
-                count: journey.task.content.displayedSeedAward ?? 0,
-              })}
-            </Text>
-          </View>
-
-          {smallerCandidate ? (
-            <View style={styles.resolutionOption}>
-              <Text color="mangrove" variant="label">
-                {t('parentHome.smallerResolution')}
-              </Text>
-              <Text color="forest" variant="label">
-                {localize(smallerCandidate.title, locale)}
-              </Text>
-              <Text color="inkMuted">{localize(smallerCandidate.definitionOfDone, locale)}</Text>
-              <Text color="earth" variant="caption">
-                {t('childHome.awardAfterConfirmation', {
-                  count: smallerCandidate.displayedSeedAward ?? 0,
-                })}
-              </Text>
-              <Button
-                onPress={() => resolveAdjustment('smaller')}
-                testID="resolve-smaller-task-button"
-                variant="secondary"
-              >
-                {t('parentHome.resolveSmaller')}
-              </Button>
-            </View>
-          ) : null}
-
-          <View style={styles.resolutionOption}>
-            <Text color="mangrove" variant="label">
-              {t('parentHome.safeEquivalentResolution')}
-            </Text>
-            <Text color="forest" variant="label">
-              {localize(P0_SAFE_EQUIVALENT_TEMPLATE.title, locale)}
-            </Text>
-            <Text color="inkMuted">
-              {localize(P0_SAFE_EQUIVALENT_TEMPLATE.definitionOfDone, locale)}
-            </Text>
-            <Text color="forest" variant="caption">
-              {localize(
-                P0_SAFE_EQUIVALENT_TEMPLATE.safety.routeConstraint ??
-                  P0_SAFE_EQUIVALENT_TEMPLATE.safety.stopAndAskAdult,
-                locale,
-              )}
-            </Text>
-            <Text color="earth" variant="caption">
-              {t('childHome.awardAfterConfirmation', {
-                count: P0_SAFE_EQUIVALENT_TEMPLATE.displayedSeedAward ?? 0,
-              })}
-            </Text>
-            <Button
-              onPress={() => resolveAdjustment('safe_equivalent')}
-              testID="resolve-safe-equivalent-button"
-              variant="ghost"
-            >
-              {t('parentHome.resolveSafeEquivalent')}
-            </Button>
-          </View>
-
-          <Text color="inkMuted" variant="caption">
-            {t('parentHome.childDecisionNext')}
-          </Text>
-          {adjustmentError ? (
-            <Text accessibilityLiveRegion="polite" color="danger">
-              {adjustmentError}
-            </Text>
-          ) : null}
-        </View>
+        <ParentAdjustmentReview
+          body={t('parentHome.adjustmentReviewBody')}
+          childDecisionLabel={t('parentHome.childDecisionNext')}
+          current={{
+            awardLabel: t('childHome.awardAfterConfirmation', {
+              count: journey.task.content.displayedSeedAward ?? 0,
+            }),
+            body: localize(journey.task.content.definitionOfDone, locale),
+            label: t('parentHome.currentAssignment'),
+            title: localize(journey.task.content.title, locale),
+          }}
+          error={adjustmentError}
+          onResolveSafeEquivalent={() => resolveAdjustment('safe_equivalent')}
+          onResolveSmaller={() => resolveAdjustment('smaller')}
+          safeEquivalent={{
+            awardLabel: t('childHome.awardAfterConfirmation', {
+              count: P0_SAFE_EQUIVALENT_TEMPLATE.displayedSeedAward ?? 0,
+            }),
+            body: localize(P0_SAFE_EQUIVALENT_TEMPLATE.definitionOfDone, locale),
+            label: t('parentHome.safeEquivalentResolution'),
+            safetyLabel: localize(
+              P0_SAFE_EQUIVALENT_TEMPLATE.safety.routeConstraint ??
+                P0_SAFE_EQUIVALENT_TEMPLATE.safety.stopAndAskAdult,
+              locale,
+            ),
+            title: localize(P0_SAFE_EQUIVALENT_TEMPLATE.title, locale),
+          }}
+          safeEquivalentAction={t('parentHome.resolveSafeEquivalent')}
+          safeEquivalentTestID="resolve-safe-equivalent-button"
+          smaller={
+            smallerCandidate
+              ? {
+                  awardLabel: t('childHome.awardAfterConfirmation', {
+                    count: smallerCandidate.displayedSeedAward ?? 0,
+                  }),
+                  body: localize(smallerCandidate.definitionOfDone, locale),
+                  label: t('parentHome.smallerResolution'),
+                  title: localize(smallerCandidate.title, locale),
+                }
+              : null
+          }
+          smallerAction={t('parentHome.resolveSmaller')}
+          smallerTestID="resolve-smaller-task-button"
+          testID="pre-acceptance-parent-review"
+          title={t('parentHome.adjustmentReviewTitle')}
+        />
       ) : null}
 
-      <View style={styles.secondaryActions}>
-        {nextRoute !== '/garden' ? (
-          <Button onPress={() => router.push('/garden')} variant="secondary">
-            {t('parentHome.openGarden')}
-          </Button>
-        ) : null}
-        <Button onPress={() => router.push('/circle')} variant="ghost">
-          {t('parentHome.openCircle')}
-        </Button>
-      </View>
-
-      <FamilyRewardPanel
-        error={rewardError}
-        onCreate={createReward}
-        onMarkGiven={markRewardGiven}
-        plan={familyExperience.reward}
-        role="parent"
+      <ParentChildrenSection
+        createTaskLabel={t('parentHome.createTask', { child: profileName('child_salem') })}
+        direction={direction}
+        items={childItems}
+        onCreateTask={openSalemTaskBuilder}
+        onSelectChild={chooseChild}
+        selectedLabel={t('parentHome.selectedLabel')}
+        title={t('parentHome.todayWithChildren')}
       />
 
-      <FamilyLeaguePanel
-        canSendEncouragement={false}
-        cooperativeConfirmedCount={familyExperience.league?.cooperativeConfirmedCount ?? 0}
-        cooperativeGoal={familyExperience.league?.cooperativeGoal ?? 15}
-        encouragementSent={false}
-        error={leagueError}
-        onSendEncouragement={() => undefined}
-        onStart={startLeague}
-        participants={familyExperience.league?.participants ?? []}
-        role="parent"
-        started={familyExperience.league !== null}
+      {r002bFeatureFlags.r002b_parent_progress_ui ? (
+        <Pressable
+          accessibilityHint={t('r002bParentProgress.entryHint')}
+          accessibilityLabel={t('r002bParentProgress.entryAccessibility', {
+            child: profileName(activeChildId),
+          })}
+          accessibilityRole="button"
+          onPress={openParentProgress}
+          ref={progressEntryRef}
+          style={({ pressed }) => [
+            styles.progressEntry,
+            { flexDirection: logicalRowDirection(direction) },
+            pressed ? styles.pressed : null,
+          ]}
+          testID="r002b-parent-family-progress-card"
+        >
+          <View style={styles.progressEntryIcon}>
+            <GhafIcon color={colors.ghafEmerald} name="sparkle" size={26} />
+          </View>
+          <View style={styles.progressEntryCopy}>
+            <Text brand color="deepForest" direction={direction} variant="bodyLarge">
+              {t('r002bParentProgress.entryTitle', {
+                child: profileName(activeChildId),
+              })}
+            </Text>
+            <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+              {t('r002bParentProgress.entryBody')}
+            </Text>
+          </View>
+          <GhafIcon color={colors.ghafEmerald} direction={direction} name="chevron" size={22} />
+        </Pressable>
+      ) : null}
+
+      <ParentPatternSummary
+        appearance="r002a"
+        summary={PARENT_SUMMARY_FIXTURE}
+        testID="prepared-parent-summary"
       />
 
-      <ParentPatternSummary summary={PARENT_SUMMARY_FIXTURE} testID="prepared-parent-summary" />
-
-      <OriginDisclosure
-        body={t('parentHome.syntheticPrivacyBoundary')}
-        label={t('origin.synthetic')}
-        origin="synthetic"
-      />
-
-      <Button onPress={() => replaceStackWithRole(router)} variant="ghost">
-        {t('navigation.switchToChild')}
-      </Button>
-    </Screen>
-  );
-}
-
-function ChildNextAction({ name, next, support }: { name: string; next: string; support: string }) {
-  return (
-    <View style={styles.childRow}>
-      <View style={styles.childGlyph}>
-        <View style={styles.childLeaf} />
-      </View>
-      <View style={styles.grow}>
-        <Text color="forest" variant="heading">
-          {name}
+      <View style={styles.privacyNote}>
+        <Text brand color="primary" variant="label">
+          {t('origin.synthetic')}
         </Text>
-        <Text>{next}</Text>
-        <Text color="inkMuted" variant="caption">
-          {support}
+        <Text brand color="onSurfaceVariant" variant="caption">
+          {t('parentHome.syntheticPrivacyBoundary')}
         </Text>
       </View>
-    </View>
+      <ReturningWelcomeDialog
+        actionLabel={t('r003.welcomeBack.continue')}
+        direction={direction}
+        language={locale}
+        message={t('r003.welcomeBack.parentMessage', {
+          family: familyDisplayName,
+        })}
+        onDismiss={dismissReturningUserWelcome}
+        summaryLabel={t('r003.welcomeBack.privateSummary')}
+        testID="parent-returning-welcome"
+        title={t('r003.welcomeBack.parentTitle')}
+        updates={parentWelcomeUpdates}
+        visible={returningUserWelcome?.kind === 'returning_parent'}
+      />
+    </R002aScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContent: { paddingBottom: spacing.huge },
-  milestoneRecord: {
+  greeting: {
+    gap: spacing.xxs,
+  },
+  prototypeIdentity: {
+    minWidth: 0,
+    minHeight: 32,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
-    paddingBottom: spacing.lg,
-  },
-  milestoneMark: { width: 4, height: 44, backgroundColor: colors.gold },
-  grow: { flex: 1, minWidth: 0, gap: spacing.xxs },
-  childLedger: { borderTopWidth: 1, borderTopColor: colors.line },
-  adjustmentReview: {
-    gap: spacing.lg,
-    borderWidth: 1,
-    borderColor: colors.mangrove,
-    backgroundColor: colors.waterLight,
-    padding: spacing.lg,
-  },
-  adjustmentHeading: { gap: spacing.xs },
-  currentTaskRecord: {
     gap: spacing.xs,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.water,
-    paddingBottom: spacing.md,
   },
-  resolutionOption: { gap: spacing.sm },
-  childRow: {
-    minHeight: 96,
-    flexDirection: 'row',
+  prototypeDot: {
+    width: 8,
+    height: 8,
+    flexShrink: 0,
+    borderRadius: 4,
+    backgroundColor: colors.mangroveTeal,
+  },
+  prototypeLabel: {
+    minWidth: 0,
+    flex: 1,
+  },
+  privacyNote: {
+    gap: spacing.xs,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.ghafEmeraldTint,
+    padding: spacing.md,
+  },
+  progressEntry: {
+    minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
-    paddingVertical: spacing.md,
+    borderRadius: r001Radii.xl,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.surfaceContainerHigh,
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.md,
   },
-  childGlyph: {
+  progressEntryIcon: {
     width: 48,
     height: 48,
+    flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.sm,
-    backgroundColor: colors.leafMist,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.ghafEmeraldTint,
   },
-  childLeaf: {
-    width: 20,
-    height: 28,
-    borderTopLeftRadius: radii.pill,
-    borderBottomRightRadius: radii.pill,
-    backgroundColor: colors.ghaf,
-    transform: [{ rotate: '22deg' }],
+  progressEntryCopy: {
+    minWidth: 0,
+    flex: 1,
+    gap: spacing.xxs,
   },
-  secondaryActions: { gap: spacing.xs },
+  childFilter: {
+    minHeight: layout.touchTarget,
+    width: '100%',
+    alignSelf: 'stretch',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    borderRadius: r001Radii.pill,
+    backgroundColor: colors.surfaceContainerLow,
+    padding: spacing.xxs,
+  },
+  childFilterItem: {
+    minWidth: 88,
+    minHeight: layout.touchTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.pill,
+    paddingHorizontal: spacing.md,
+  },
+  childFilterItemActive: {
+    backgroundColor: colors.ghafEmerald,
+  },
+  taskTabs: {
+    minHeight: layout.touchTarget,
+    borderRadius: r001Radii.lg,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.xxs,
+  },
+  taskTab: {
+    minHeight: layout.touchTarget,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: r001Radii.md,
+    paddingHorizontal: spacing.xxs,
+    paddingVertical: spacing.xs,
+  },
+  taskTabActive: {
+    backgroundColor: colors.ghafEmeraldTint,
+  },
+  pressed: {
+    opacity: opacity.pressed,
+  },
 });

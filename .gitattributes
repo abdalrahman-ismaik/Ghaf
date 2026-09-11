@@ -3,3 +3,6 @@
 
 # Shell tooling must stay LF so Bash can parse it.
 *.sh text eol=lf
+
+# Preserve exported design references byte-for-byte; they are read-only evidence, not runtime code.
+docs/design/stitch/releases/** whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab

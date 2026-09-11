@@ -3,14 +3,84 @@
 ## Purpose and Boundary
 
 This model replaces the Feature 002 food-rescue domain for the judge-facing Feature 003 journey
-without rewriting Feature 002 history. It is an in-memory, deterministic prototype model. Every
-profile, task choice, assistant result, media item, summary, and circle value is synthetic or
+without rewriting Feature 002 history. The task, reward, Garden, League, assistant-result, and
+circle authorities remain an in-memory deterministic prototype model. R003 additionally persists
+one validated family directory and synthetic paired-device markers locally on the current device.
+Every profile, task choice, assistant result, media item, summary, and circle value is synthetic or
 prepared local data.
 
-The model has one aggregate root, `PrototypeSession`. Screens read the aggregate through services;
+The behavioral model has one aggregate root, `PrototypeSession`; the separate `LocalFamilyRecord`
+is a startup/access directory and never becomes a reward or task ledger. Screens read through services;
 they do not calculate rewards, garden stages, or shared projections. The deterministic provider is
-the complete P0 path. No account, remote persistence, unrestricted assistant conversation, or live
-Child media enters this model.
+the complete P0 path. No production account, remote persistence, unrestricted assistant
+conversation, or live Child media enters this model.
+
+## Device-local Family Directory
+
+```ts
+type LocalChildSlotId = 'child_salem' | 'child_alya';
+type LocalChildGender = 'boy' | 'girl' | 'prefer_not_to_say';
+type LocalChildInterest = 'nature' | 'making' | 'stories' | 'family_helping' | 'sustainability';
+type LocalChildHobby = 'drawing' | 'reading' | 'sports' | 'puzzles' | 'gardening';
+type LocalSupportPreference =
+  'short_steps' | 'visual_examples' | 'extra_time' | 'adult_alongside' | 'quiet_reminders';
+
+interface LocalFamilyRecord {
+  readonly schemaVersion: 2;
+  readonly householdId: 'household_al_noor';
+  readonly familyName: string;
+  readonly appLanguage: 'ar' | 'en';
+  readonly parent: {
+    readonly id: 'parent_al_noor';
+    readonly role: 'parent';
+    readonly normalizedIdentifier: string;
+    readonly identifierKind: 'email' | 'phone';
+  };
+  readonly children: readonly LocalChildProfile[];
+  readonly pairedChildIds: readonly LocalChildSlotId[];
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly origin: 'local_demo';
+  readonly capabilityTruth: 'local_prototype_not_authentication';
+}
+
+interface LocalChildProfile {
+  readonly id: LocalChildSlotId;
+  readonly role: 'child';
+  readonly nickname: string;
+  readonly avatarId: ChildTreeAvatarId;
+  readonly ageBand: AgeBand;
+  readonly preferredLanguage: ChildPreferredLanguage;
+  readonly gender: LocalChildGender | null;
+  readonly interests: readonly LocalChildInterest[];
+  readonly hobbies: readonly LocalChildHobby[];
+  readonly accessibilityDefaults: readonly BasicAccessibilityDefault[];
+  readonly supportPreferences: readonly LocalSupportPreference[];
+  readonly personalizationEnabled: boolean;
+}
+```
+
+One current namespaced JSON value is stored by the repository. On Android/iOS the key-value
+implementation is backed by Expo SQLite; web preview uses browser local storage; tests inject
+memory storage. Every read is parsed through the same strict schema and unknown versions fail
+closed. A valid schema-1 value under the legacy key migrates once to schema 2 with only the
+canonical prepared `parent@example.com` identifier, then the legacy key is removed. The record
+stores the normalized synthetic Parent identifier for local membership lookup, but no verification
+code, password, authenticated session, PIN/picture sequence, media, task text/history,
+reward/Seed value, assistant transcript, location, school, birthday, diagnosis, emotional
+disclosure, or open notes.
+
+The `children` order maps Child 1 to `child_salem` and Child 2 to `child_alya`; these are stable
+synthetic implementation slots, not real identities. The behavioral `PrototypeSession` retains
+both internal slots for existing domain compatibility, while access and presentation selectors
+expose only ids present in this directory. Local nickname/avatar/age display projection does not
+rewrite immutable reward, task, or privacy evidence.
+
+`PreparedProfilePersonalization` is a derived view, never persisted. Its complete input is
+`ageBand`, `interests`, `hobbies`, `accessibilityDefaults`, and `supportPreferences`; gender,
+nickname, family name, and all free text are structurally absent. Its output contains one coaching
+style key, at most three allowlisted `TaskCategoryId` suggestions, prepared/local/fallible metadata,
+and `parentApprovalRequired: true`.
 
 ## Canonical Scalar Types
 
@@ -606,6 +676,136 @@ After the P0 task is approved, completed, and validly recognized once, only thes
 
 Repeated recognition changes no value. Reset from every lifecycle, assistant, media, garden,
 circle, or celebration state reconstructs the exact table above without network access.
+
+## R002b Profile-Scoped Progression Addendum
+
+R002b extends `PrototypeSession` without replacing the existing task or landscape authorities.
+Schema 3’s reset value `48` is currently duplicated as Salem’s `earnedSeeds` scalar and Mangrove’s
+current-stage `cumulativeSeeds`; its `recognitionLedger` starts empty. There is no archived stage,
+profile epoch, baseline Seed entry, durable storage adapter, or verified historical 60 in the
+implementation. Therefore a 108 lifetime total is not reconstructed from existing events. It is an
+approved synthetic fixture assumption that must enter through explicit provenance rather than be
+inferred from the screenshot or the 48 scalar.
+
+```ts
+type ProgressionEventKind = 'legacy_carry_forward' | 'task_recognition';
+
+interface SeedLedgerEntry {
+  readonly id: string;
+  readonly profileId: SyntheticChildProfile['id'];
+  readonly profileEpochId: string;
+  readonly triggerEventId: string;
+  readonly kind: ProgressionEventKind;
+  readonly amount: number;
+  readonly committedAt: string | null;
+  readonly silentBackfill: boolean;
+  readonly provenance: {
+    readonly fixtureVersion: string;
+    readonly source:
+      'schema3_profile_scalar' | 'approved_synthetic_stage_assumption' | 'recognition_receipt';
+    readonly sourceIds: readonly string[];
+  };
+}
+
+interface ProgressionMigrationReceipt {
+  readonly id: string;
+  readonly migrationVersion: string;
+  readonly fixtureVersion: string;
+  readonly profileEpochId: string;
+  readonly status: 'applied';
+  readonly entryIds: readonly string[];
+  readonly appliedAt: string;
+  readonly syntheticOnly: true;
+}
+
+interface PlantStageArchive {
+  readonly id: string;
+  readonly profileId: SyntheticChildProfile['id'];
+  readonly profileEpochId: string;
+  readonly landscapeId: LandscapeId;
+  readonly threshold: 20 | 60 | 120 | 200;
+  readonly seedsBefore: number;
+  readonly seedsAfter: number;
+  readonly stageBefore: GardenStage;
+  readonly stageAfter: GardenStage;
+  readonly triggerEventId: string;
+  readonly symbolicOnly: true;
+}
+```
+
+`lifetimeSeeds(profileId, profileEpochId)` sums unique valid `SeedLedgerEntry.amount` values for the
+exact profile and epoch. It rejects negative, duplicate, cross-profile, wrong-epoch, and malformed
+entries. There is no stored `impactPathSeeds` field.
+
+Migration is profile- and epoch-scoped. One eligible profile receives at most one immutable receipt
+for the version and input fingerprint:
+
+- Salem's receipt atomically normalizes the verified Schema-3 personal scalar 48 and records the
+  approved Salem-only prior-stage assumption 60, producing 108. The 60 is explicitly not verified
+  task or mastery history.
+- Alya receives only a deterministic opening-ledger entry for her own verified Schema-3 personal
+  scalar 36; she receives no legacy carry-forward receipt. Salem’s 60 assumption is never copied to
+  Alya.
+- `cousin_noura`: no local Child profile or Seed authority exists, so the migration is ineligible
+  and writes nothing.
+
+The next unique canonical recognition contributes one 12-Seed `task_recognition` entry for Salem,
+so lifetime Seeds derive as 120 while the existing current Mangrove authority independently changes
+48→60 and creates one archive. Migration never changes canopy, private League, Challenge Leaf,
+Family Reward, or recognition records and never queues a celebration.
+
+A plant-stage archive is derived only from an exact deterministic `LandscapeGrowth` stage crossing.
+Each landscape threshold can be archived at most once per profile epoch, and recognition that does
+not cross a stage creates no archive. The canonical Schema-3 Mangrove 48→60 migration behavior stays
+unchanged while later task recognition can archive the same approved thresholds on any landscape.
+
+Achievements use separate profile/epoch-scoped evidence:
+
+```ts
+interface MasteryCredit {
+  readonly id: string;
+  readonly profileId: SyntheticChildProfile['id'];
+  readonly profileEpochId: string;
+  readonly triggerEventId: string;
+  readonly skillId:
+    'skill.sorting' | 'skill.coast_care' | 'skill.water' | 'skill.energy' | 'skill.nature';
+  readonly phase: 'acquisition';
+}
+
+interface LearningCompletionEvent {
+  readonly id: string;
+  readonly profileId: SyntheticChildProfile['id'];
+  readonly profileEpochId: string;
+  readonly learningId: 'learning.mangrove_roots.v1';
+  readonly route: 'story' | 'accessible';
+  readonly triggerEventId: string;
+  readonly seedDelta: 0;
+}
+
+interface BadgeAward {
+  readonly badgeId: string;
+  readonly profileId: SyntheticChildProfile['id'];
+  readonly profileEpochId: string;
+  readonly triggerEventId: string;
+  readonly earnedAt: string | null;
+  readonly silentBackfill: boolean;
+}
+```
+
+Badge definitions are immutable registry data; awards are permanent and idempotent. Historical
+Seed badges may be silently backfilled from the ledger, but migration creates no mastery or learning
+evidence. Story and accessible learning share one package identity and one completion credit.
+
+`RevealBundle` is an event-owned presentation record keyed by
+`reveal:<profileId>:<triggerEventId>`. It contains ordered projections of consequences already
+committed elsewhere: praise, Seed, plant/stage, canopy, eligible Green Circle, private League,
+Challenge Leaf, private Family Reward, badge, station, learning unlock, and optional safe-help.
+Because the Schema-3 recognition receipt and the existing League/Reward services own different
+consequences, an integration coordinator joins their committed projections without calculating or
+re-committing them. The bundle moves only through
+`ready → presenting → acknowledged → archived`. Dismissal cannot reverse progress.
+`CommunityParticipationPreference` controls only future anonymous aggregate signals and remains
+independent from every private progress authority.
 
 ## Product Experience Redesign Domain Models
 

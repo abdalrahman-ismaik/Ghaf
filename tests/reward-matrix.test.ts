@@ -5,8 +5,9 @@ import {
   recognitionKeyForSubmission,
 } from '../src/features/rewards/policy';
 import { TASK_TEMPLATES } from '../src/features/tasks/demoContent';
-import { createSubmittedP0Session } from '../src/services/mock/fixtures';
+import { PREPARED_PRAISE, createSubmittedP0Session } from '../src/services/mock/fixtures';
 import { usePrototypeStore } from '../src/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 const baseInput = {
   submissionId: 'submission_recycling_p0_1',
@@ -148,6 +149,31 @@ describe('Feature 003 recognition and reward policy', () => {
     const receipt = {
       recognitionKey: 'recognition:submission_recycling_p0_1',
       checkInId: 'checkin_recycling_p0_1',
+      provenance: {
+        schemaVersion: 'r003.recognition-provenance.v1',
+        taskId: 'task_recycling_p0_1',
+        taskVersion: 1,
+        submissionId: 'submission_recycling_p0_1',
+        profileId: 'child_salem',
+        landscapeId: 'mangrove',
+        completionMode: 'permitted_help',
+        projection: {
+          schemaVersion: '1.0',
+          categoryId: 'green_impact',
+          recognitionMode: 'recognition_only',
+          routinePhase: 'not_applicable',
+          visibilityScope: 'household',
+          circleEligible: false,
+          consequenceKind: 'recognition_only',
+          confirmed: true,
+          prohibitedSharedFieldsPresent: false,
+        },
+        recurrence: 'recurrent',
+        familyRewardEligible: false,
+        challengeLeafEligible: false,
+        routineCompletionCountBefore: 0,
+        routineCompletionCountAfter: 0,
+      },
       seedTransaction: null,
       landscapeGrowth: null,
       canopyContribution: null,
@@ -176,7 +202,90 @@ describe('Feature 003 recognition and reward policy', () => {
     );
   });
 
-  it('persists the third recurrent fade-first count and a reversible future-only phase decision', () => {
+  it('keeps an initially declared fade-first maintenance task in maintenance', async () => {
+    const submitted = createSubmittedP0Session();
+    const journey = submitted.journey;
+    if (!journey?.assignment || !journey.submission) {
+      throw new Error('Expected a submitted task journey');
+    }
+    const taskId = 'task_initial_fade_first_maintenance';
+    const assignmentId = 'assignment_initial_fade_first_maintenance';
+    const submissionId = 'submission_initial_fade_first_maintenance';
+    expect(resetPrototypeForTest()).toMatchObject({ ok: true });
+    await enterParentExperienceForTest();
+    usePrototypeStore.setState({
+      ...submitted,
+      role: 'parent',
+      activeAssignmentId: assignmentId,
+      journey: {
+        ...journey,
+        task: {
+          ...journey.task,
+          id: taskId,
+          templateId: taskId,
+          content: {
+            ...journey.task.content,
+            id: taskId,
+            recognitionMode: 'fade_first',
+            routinePhase: 'maintenance',
+            recurrence: 'recurrent',
+            displayedSeedAward: null,
+          },
+        },
+        assignment: {
+          ...journey.assignment,
+          id: assignmentId,
+          taskId,
+        },
+        submission: {
+          ...journey.submission,
+          id: submissionId,
+          assignmentId,
+        },
+      },
+      choicePool: {
+        ...submitted.choicePool,
+        p0AssignmentChoice: submitted.choicePool.p0AssignmentChoice
+          ? { ...submitted.choicePool.p0AssignmentChoice, taskTemplateId: taskId }
+          : null,
+      },
+    });
+    expect(
+      usePrototypeStore.getState().confirmAndPresentPraise(
+        {
+          submissionId,
+          praise: PREPARED_PRAISE,
+          neutralObservation: null,
+          uncertainty: null,
+        },
+        {
+          actionId: 'initial-maintenance-praise',
+          source: 'parent_press',
+          presentedAt: '2026-08-26T09:55:00.000Z',
+        },
+      ),
+    ).toMatchObject({ ok: true });
+    const recognition = usePrototypeStore.getState().applyRecognition({
+      actionId: 'initial-maintenance-recognition',
+      source: 'parent_press',
+      observedRenderState: 'praise_presented',
+      presentationActionId: 'initial-maintenance-praise',
+    });
+
+    expect(recognition).toMatchObject({
+      ok: true,
+      data: { receipt: { seedTransaction: null, landscapeGrowth: null } },
+    });
+    expect(usePrototypeStore.getState().routineProgressByTask[taskId]).toMatchObject({
+      confirmedAcquisitionCount: 0,
+      futurePhase: 'maintenance',
+      phaseReview: null,
+      decision: null,
+    });
+    expect(usePrototypeStore.getState().children.child_salem.earnedSeeds).toBe(48);
+  });
+
+  it('persists the third recurrent fade-first count and a reversible future-only phase decision', async () => {
     const submitted = createSubmittedP0Session();
     if (!submitted.journey) throw new Error('Expected submitted journey');
     const recurrentTemplate = TASK_TEMPLATES.find((template) => template.id === 'GI01');
@@ -197,8 +306,8 @@ describe('Feature 003 recognition and reward policy', () => {
         ? { ...submitted.journey.submission, taskVersion: 2 }
         : null,
     };
-    usePrototypeStore.getState().setRole('parent');
-    expect(usePrototypeStore.getState().resetPrototype()).toMatchObject({ ok: true });
+    expect(resetPrototypeForTest()).toMatchObject({ ok: true });
+    await enterParentExperienceForTest();
     usePrototypeStore.setState({
       ...submitted,
       role: 'parent',
