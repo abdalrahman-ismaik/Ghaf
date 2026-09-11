@@ -46,7 +46,11 @@ import {
   LIVE_CHILD_AI_POLICY_VERSION,
   LIVE_CHILD_AI_PROVIDER_VERSION,
 } from '../features/access';
-import { restoreRememberedDeviceAccess } from '../features/access/rememberedDeviceAccess';
+import {
+  deviceAffinityMatchesFamily,
+  resolveRememberedAccessLocale,
+  restoreRememberedDeviceAccess,
+} from '../features/access/rememberedDeviceAccess';
 import { restoreAmbientAudioPreference } from '../features/audio';
 import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import { createFamilyConnectionPlan } from '../features/family-connections';
@@ -60,6 +64,29 @@ import {
   validateCompleteParentOnboardingDraft,
 } from '../features/access/parentOnboarding';
 import { P0_EXECUTABLE_CHOICE, P0_SAFE_EQUIVALENT_TEMPLATE } from '../features/tasks/demoContent';
+import {
+  cloneRecognitionBoundaryInput,
+  hasCommittedGrowthRecognitionEvidence,
+  hasRecognitionAchievementParity,
+  hasSeedReceiptGrowthParity,
+  validateActivePraisePresentationRequest,
+  validateCheckInRouteRequest,
+  validateCheckInRouteTransition,
+  validateConfirmationPlanningRequest,
+  validateConfirmationPlanningTransition,
+  validateGrowthJourneyRuntimeBoundary,
+  validateRecognitionProviderResult,
+  validatePraisePresentationTransition,
+  validatePraisePresentationRequest,
+  validateRecognitionRequest,
+  validateRecognitionSessionTransition,
+  type CommittedLearningAchievementEvent,
+} from '../features/tasks/recognitionSession';
+import {
+  validateCheckInRouteProviderResult,
+  validateConfirmationProviderResult,
+  validatePraisePresentationProviderResult,
+} from '../features/tasks/recognitionProviderBoundary';
 import {
   matchesCanonicalP0TaskContent,
   validateOptionalTaskReflection,
@@ -81,22 +108,37 @@ import {
 import {
   applyRecognitionToFamilyReward,
   createFamilyRewardRuntime,
+  isFamilyRewardRecognitionEligible,
+  isValidFamilyRewardRuntimeAuthority,
   markFamilyRewardRuntimeGiven,
   projectFamilyRewardRuntime,
   type FamilyRewardPresentation,
   type FamilyRewardRuntime,
 } from '../features/family-hub';
 import {
+  applyRecognitionToPrivateLeague,
+  createPrivateLeagueRecognitionRuntime,
+  selectCommittedPrivateLeagueReceipt,
+  selectPrivateLeagueRecognitionEligibility,
+  type PrivateLeagueRecognitionRuntime,
+} from '../features/league/recognitionRuntime';
+import {
+  constructApprovalReveal,
+  reconcileCommittedApprovalReveal,
+} from '../features/rewards/approvalReveal';
+import {
   acknowledgeRevealBundle,
   archiveRevealBundle,
   constructRevealBundle,
   createEmptyRevealBundleQueue,
   startOrResumeRevealById,
+  validateRevealBundleQueue,
 } from '../features/rewards/revealBundle';
 import {
   advanceMangroveLearningStep as advanceMangroveLearningStepDomain,
   completeMangroveLearning as completeMangroveLearningDomain,
   createMangroveLearningState,
+  restoreMangroveLearningState,
   startMangroveLearningRoute as startMangroveLearningRouteDomain,
   submitMangroveLearningCheck as submitMangroveLearningCheckDomain,
 } from '../features/learning/mangroveLearning';
@@ -107,6 +149,7 @@ import {
   SHARED_GROWTH_QUALITATIVE_FIXTURE,
 } from '../features/shared-growth/sharedGrowth';
 import { coerceLocale, getLocaleDirection } from '../models/prototype';
+import { hasOnlyPlainDataProperties, isPlainDataRecord } from '../utils/exactPlainData';
 import type {
   ChildCoachIntent,
   ChildCoachResult,
@@ -205,6 +248,7 @@ type ActiveChildAssignmentJourney = PrototypeJourney & {
   readonly assignment: NonNullable<PrototypeJourney['assignment']>;
 };
 type MangroveLearningByProfile = Readonly<Record<SyntheticChildId, MangroveLearningState>>;
+type ApprovalRevealCommitments = Readonly<Record<string, string | null>>;
 
 export type ReturningUserWelcome =
   | {
@@ -295,6 +339,30 @@ function deviceAccessView(
   };
 }
 
+function refreshRememberedChildContext(childId: SyntheticChildId): {
+  readonly canResume: boolean;
+  readonly deviceAccess: DeviceAccessView;
+  readonly localFamily: LocalFamilyView;
+} {
+  const currentFamily = serviceRegistry.localFamily.read();
+  const currentAffinity = serviceRegistry.deviceAccess.read();
+  const familyRecord = currentFamily.ok ? currentFamily.data : null;
+  const affinityRecord = currentAffinity.ok ? currentAffinity.data : null;
+  return {
+    canResume:
+      familyRecord !== null &&
+      affinityRecord?.principal.role === 'child' &&
+      affinityRecord.principal.childId === childId &&
+      deviceAffinityMatchesFamily(affinityRecord, familyRecord),
+    deviceAccess: currentAffinity.ok
+      ? deviceAccessView(currentAffinity.data)
+      : deviceAccessView(null, 'unavailable'),
+    localFamily: currentFamily.ok
+      ? localFamilyView(currentFamily.data)
+      : localFamilyView(null, 'unavailable'),
+  };
+}
+
 function restoreInitialLocalFamily(): {
   readonly view: LocalFamilyView;
   readonly profileRepair: LocalFamilyProfileRepairCandidate | null;
@@ -375,6 +443,11 @@ const initialRememberedDeviceAccess = (() => {
       };
 })();
 const initialPrototypeSession = serviceRegistry.prototypeSession.getInitialSession();
+const initialRememberedLocale = resolveRememberedAccessLocale({
+  activeExperience: initialRememberedDeviceAccess.activeExperience,
+  family: initialLocalFamily.record,
+  fallbackLocale: initialPrototypeSession.locale,
+});
 const initialGrowthJourney = createGrowthJourneyRuntime(initialPrototypeSession, 0);
 
 if (!initialGrowthJourney.ok) {
@@ -397,6 +470,9 @@ function createLearningByProfile(runtime: GrowthJourneyRuntimeState): MangroveLe
 }
 
 const initialMangroveLearning = createLearningByProfile(initialGrowthJourney.data);
+const initialPrivateLeague = createPrivateLeagueRecognitionRuntime({
+  profileEpochId: initialGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+});
 
 function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
   const participationEpochId = `shared-growth-epoch-${resetSequence}`;
@@ -434,9 +510,11 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly temporaryParentAccess: TemporaryParentAccess | null;
   readonly familyReward: FamilyRewardRuntime;
   readonly growthJourney: GrowthJourneyRuntimeState;
+  readonly privateLeague: PrivateLeagueRecognitionRuntime;
   readonly mangroveLearningByProfile: MangroveLearningByProfile;
   readonly sharedGrowth: SharedGrowthState;
   readonly revealBundleQueue: RevealBundleQueue;
+  readonly approvalRevealCommitments: ApprovalRevealCommitments;
   readonly parentOnboarding: ParentOnboardingView;
   readonly localFamily: LocalFamilyView;
   readonly localFamilyProfileRepair: LocalFamilyProfileRepairCandidate | null;
@@ -753,6 +831,56 @@ function success<T>(data: T): ServiceResult<T> {
   return { ok: true, data, meta: { origin: 'synthetic', fallbackUsed: false } };
 }
 
+function hasValidApprovalRevealCommitments(input: {
+  readonly session: PrototypeSession;
+  readonly queue: RevealBundleQueue;
+  readonly commitments: ApprovalRevealCommitments;
+}): boolean {
+  try {
+    if (!validateRevealBundleQueue(input.queue).ok) return false;
+    if (!isPlainDataRecord(input.commitments) || !hasOnlyPlainDataProperties(input.commitments)) {
+      return false;
+    }
+    const recognitionKeys = Object.keys(input.session.recognitionLedger);
+    const commitmentKeys = Object.keys(input.commitments);
+    if (
+      recognitionKeys.length !== commitmentKeys.length ||
+      recognitionKeys.some((key) => !Object.prototype.hasOwnProperty.call(input.commitments, key))
+    ) {
+      return false;
+    }
+    const taskBundles = input.queue.bundles.filter(
+      (bundle) => bundle.triggerKind === 'task_approval',
+    );
+    if (
+      taskBundles.some(
+        (bundle) =>
+          !Object.prototype.hasOwnProperty.call(
+            input.session.recognitionLedger,
+            bundle.triggerEventId,
+          ),
+      )
+    ) {
+      return false;
+    }
+    return recognitionKeys.every((recognitionKey) => {
+      const receipt = input.session.recognitionLedger[recognitionKey];
+      const commitment = input.commitments[recognitionKey];
+      const matchingBundles = taskBundles.filter(
+        (bundle) => bundle.triggerEventId === recognitionKey,
+      );
+      return receipt?.seedTransaction
+        ? typeof commitment === 'string' &&
+            commitment.trim().length > 0 &&
+            matchingBundles.length === 1 &&
+            matchingBundles[0]?.sourceFingerprint === commitment
+        : commitment === null && matchingBundles.length === 0;
+    });
+  } catch {
+    return false;
+  }
+}
+
 function requireActiveParentExperience(state: PrototypeStoreState): ServiceResult<true> {
   if (
     state.role !== 'parent' ||
@@ -1013,6 +1141,40 @@ function completionEvidenceFor(
       ]);
 }
 
+function learningAchievementEventsFor(
+  state: PrototypeStoreState,
+): readonly CommittedLearningAchievementEvent[] | null {
+  try {
+    const events: CommittedLearningAchievementEvent[] = [];
+    for (const profileId of ['child_salem', 'child_alya'] as const) {
+      const restored = restoreMangroveLearningState(state.mangroveLearningByProfile[profileId]);
+      const profileEpochId = state.growthJourney.ledgersByProfile[profileId]?.profileEpochId;
+      if (
+        !restored.ok ||
+        restored.data.profileId !== profileId ||
+        restored.data.profileEpochId !== profileEpochId
+      ) {
+        return null;
+      }
+      const completion = restored.data.completion;
+      if (completion !== null) {
+        events.push({
+          id: completion.id,
+          profileId: completion.profileId,
+          profileEpochId: completion.profileEpochId,
+          learningId: completion.learningId,
+          status: completion.status,
+          triggerEventId: completion.triggerEventId,
+          completedAt: completion.completedAt,
+        });
+      }
+    }
+    return Object.freeze(events);
+  } catch {
+    return null;
+  }
+}
+
 function guideRequestFromState(
   state: PrototypeStoreState,
   input: { readonly requestId: string; readonly intent: ParentGuideIntent },
@@ -1247,6 +1409,8 @@ function validateGuideSuggestion(
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
   ambientAudioPreference: initialAmbientAudioPreference,
+  locale: initialRememberedLocale,
+  direction: getLocaleDirection(initialRememberedLocale),
   activeExperience: initialRememberedDeviceAccess.activeExperience,
   activeChildId:
     initialRememberedDeviceAccess.activeChildId ?? initialPrototypeSession.activeChildId,
@@ -1262,9 +1426,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   temporaryParentAccess: null,
   familyReward: createFamilyRewardRuntime(),
   growthJourney: initialGrowthJourney.data,
+  privateLeague: initialPrivateLeague,
   mangroveLearningByProfile: initialMangroveLearning,
   sharedGrowth: initialSharedGrowth,
   revealBundleQueue: createEmptyRevealBundleQueue(),
+  approvalRevealCommitments: {},
   parentOnboarding: parentOnboardingController.getView(),
   localFamily: initialLocalFamily,
   localFamilyProfileRepair: initialLocalFamilyProfileRepair,
@@ -1476,7 +1642,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         ? state.parentOnboarding.completionReceipt.householdId
         : null;
     let newlySavedFamily: LocalFamilyRecord | null = null;
+    let clearedDeviceAffinity = false;
     if (!returningHouseholdId) {
+      const cleared = serviceRegistry.deviceAccess.clear();
+      if (!cleared.ok) return { ok: false, error: cleared.error };
+      clearedDeviceAffinity = true;
       const parentIdentifier = parentOnboardingController.getPendingIdentifier();
       if (!parentIdentifier) {
         return failure('INVALID_TRANSITION', 'Complete Parent verification before family setup');
@@ -1523,6 +1693,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         });
         if (!restoredDevices.ok) return restoredDevices;
       }
+    } else if (!state.rememberParentOnThisDevice && !state.temporaryParentAccess) {
+      const cleared = serviceRegistry.deviceAccess.clear();
+      if (!cleared.ok) return { ok: false, error: cleared.error };
+      clearedDeviceAffinity = true;
     }
     let replacementReset: {
       readonly session: PrototypeSession;
@@ -1641,7 +1815,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           ? remembered.ok
             ? deviceAccessView(remembered.data)
             : deviceAccessView(null, 'unavailable')
-          : state.deviceAccess,
+          : clearedDeviceAffinity
+            ? deviceAccessView(null)
+            : state.deviceAccess,
         parentOnboarding: parentOnboardingController.getView(),
         localFamilyProfileRepair: newlySavedFamily ? null : state.localFamilyProfileRepair,
         pendingFamilyCreation: null,
@@ -1707,7 +1883,6 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       ),
     );
     const result = childAccessController.verifyCredential(value, R001_ONBOARDING_TIME);
-    set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
     if (result.ok && result.data.canEnterChildExperience && result.data.selectedChildId) {
       const rememberedChild = state.localFamily.record
         ? serviceRegistry.deviceAccess.rememberChild(
@@ -1716,19 +1891,31 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
             R003_LOCAL_FAMILY_TIME,
           )
         : null;
+      if (!rememberedChild?.ok) {
+        const signedOut = childAccessController.signOut(R001_ONBOARDING_TIME);
+        if (signedOut.ok) childAccessController.selectProfile(result.data.selectedChildId);
+        set({
+          childAccess: childAccessController.getView(),
+          deviceAccess: deviceAccessView(null, 'unavailable'),
+          returningUserWelcome: null,
+        });
+        return !signedOut.ok
+          ? signedOut
+          : (rememberedChild ??
+              failure('INVALID_TRANSITION', 'A local family is required to remember Child access'));
+      }
       set({
+        childAccess: childAccessController.getView(),
         activeChildId: result.data.selectedChildId,
         activeExperience: 'child',
-        deviceAccess: rememberedChild
-          ? rememberedChild.ok
-            ? deviceAccessView(rememberedChild.data)
-            : deviceAccessView(null, 'unavailable')
-          : state.deviceAccess,
+        deviceAccess: deviceAccessView(rememberedChild.data),
         role: 'child',
         returningUserWelcome: hasActivePairing
           ? { kind: 'returning_child', childId: result.data.selectedChildId }
           : null,
       });
+    } else {
+      set({ childAccess: childAccessController.getView(), returningUserWelcome: null });
     }
     return result;
   },
@@ -1783,45 +1970,86 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   completeChildPairing: () => {
-    if (get().activeExperience !== 'signed_out') {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
       return failure(
         'INVALID_TRANSITION',
         'Parent approval must hand back before pairing completes',
       );
     }
-    const result = childAccessController.completePairing(R001_ONBOARDING_TIME);
-    const childAccess = childAccessController.getView();
-    if (result.ok && childAccess.selectedChildId) {
-      const persisted = serviceRegistry.localFamily.setPairedChild(
-        childAccess.selectedChildId,
-        true,
-        R003_LOCAL_FAMILY_TIME,
+    const childId = state.childAccess.selectedChildId;
+    if (!childId || state.childAccess.status !== 'pairing_approved' || !state.localFamily.record) {
+      return failure(
+        'INVALID_TRANSITION',
+        'An approved configured Child pairing is required before completion',
       );
-      if (!persisted.ok) {
-        childAccessController.signOut(R001_ONBOARDING_TIME);
-        childAccessController.revokeDevice(childAccess.selectedChildId, R001_ONBOARDING_TIME);
-        set({ childAccess: childAccessController.getView() });
-        return { ok: false, error: persisted.error };
-      }
-      const rememberedChild = serviceRegistry.deviceAccess.rememberChild(
-        persisted.data,
-        childAccess.selectedChildId,
+    }
+    const persisted = serviceRegistry.localFamily.setPairedChild(
+      childId,
+      true,
+      R003_LOCAL_FAMILY_TIME,
+    );
+    if (!persisted.ok) return { ok: false, error: persisted.error };
+
+    const rememberedChild = serviceRegistry.deviceAccess.rememberChild(
+      persisted.data,
+      childId,
+      R003_LOCAL_FAMILY_TIME,
+    );
+    if (!rememberedChild.ok) {
+      const rolledBack = serviceRegistry.localFamily.setPairedChild(
+        childId,
+        false,
         R003_LOCAL_FAMILY_TIME,
       );
       set({
-        childAccess,
-        activeChildId: childAccess.selectedChildId,
-        activeExperience: 'child',
-        deviceAccess: rememberedChild.ok
-          ? deviceAccessView(rememberedChild.data)
-          : deviceAccessView(null, 'unavailable'),
-        role: 'child',
-        localFamily: localFamilyView(persisted.data),
-        returningUserWelcome: null,
+        childAccess: childAccessController.getView(),
+        deviceAccess: deviceAccessView(null, 'unavailable'),
+        localFamily: rolledBack.ok
+          ? localFamilyView(rolledBack.data)
+          : localFamilyView(null, 'unavailable'),
       });
-    } else {
-      set({ childAccess });
+      return rolledBack.ok
+        ? rememberedChild
+        : failure(
+            'INVALID_TRANSITION',
+            'Child pairing persistence could not be safely rolled back',
+          );
     }
+
+    const result = childAccessController.completePairing(R001_ONBOARDING_TIME);
+    const childAccess = childAccessController.getView();
+    if (!result.ok) {
+      const familyRollback = serviceRegistry.localFamily.setPairedChild(
+        childId,
+        false,
+        R003_LOCAL_FAMILY_TIME,
+      );
+      const affinityRollback = serviceRegistry.deviceAccess.clearMatchingChild(childId);
+      set({
+        childAccess,
+        deviceAccess:
+          affinityRollback.ok && affinityRollback.data
+            ? deviceAccessView(null)
+            : deviceAccessView(null, 'unavailable'),
+        localFamily: familyRollback.ok
+          ? localFamilyView(familyRollback.data)
+          : localFamilyView(null, 'unavailable'),
+      });
+      return familyRollback.ok && affinityRollback.ok
+        ? result
+        : failure('INVALID_TRANSITION', 'Child pairing completion could not be safely rolled back');
+    }
+
+    set({
+      childAccess,
+      activeChildId: childId,
+      activeExperience: 'child',
+      deviceAccess: deviceAccessView(rememberedChild.data),
+      role: 'child',
+      localFamily: localFamilyView(persisted.data),
+      returningUserWelcome: null,
+    });
     return result;
   },
 
@@ -1886,6 +2114,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       const canceled = parentOnboardingController.cancelVerification();
       if (!canceled.ok) return canceled;
     }
+    const current = refreshRememberedChildContext(temporary.returnChildId);
+    if (!current.canResume) {
+      set({
+        childAccess: childAccessController.getView(),
+        deviceAccess: current.deviceAccess,
+        localFamily: current.localFamily,
+        parentOnboarding: parentOnboardingController.getView(),
+        temporaryParentAccess: null,
+      });
+      return failure('INVALID_TRANSITION', 'Remembered Child access is no longer available');
+    }
     const resumed = childAccessController.resumeRememberedChild(
       temporary.returnChildId,
       R001_ONBOARDING_TIME,
@@ -1893,6 +2132,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!resumed.ok) {
       set({
         childAccess: childAccessController.getView(),
+        deviceAccess: current.deviceAccess,
+        localFamily: current.localFamily,
         parentOnboarding: parentOnboardingController.getView(),
         pendingFamilyCreation: null,
         temporaryParentAccess: null,
@@ -1903,6 +2144,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       activeChildId: temporary.returnChildId,
       activeExperience: 'child',
       childAccess: childAccessController.getView(),
+      deviceAccess: current.deviceAccess,
+      localFamily: current.localFamily,
       parentOnboarding: parentOnboardingController.getView(),
       pendingFamilyCreation: null,
       role: 'child',
@@ -1925,12 +2168,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       if (!result.ok) return result;
       if (state.temporaryParentAccess) {
         const returnChildId = state.temporaryParentAccess.returnChildId;
-        const record = state.deviceAccess.record;
-        const canResume =
-          record?.principal.role === 'child' &&
-          record.principal.childId === returnChildId &&
-          state.localFamily.record?.pairedChildIds.includes(returnChildId);
-        const resumed = canResume
+        const current = refreshRememberedChildContext(returnChildId);
+        const resumed = current.canResume
           ? childAccessController.resumeRememberedChild(returnChildId, R001_ONBOARDING_TIME)
           : null;
         releaseLiveVoiceCapture(state.liveVoiceCapture);
@@ -1938,6 +2177,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
           activeChildId: resumed?.ok ? returnChildId : state.activeChildId,
           activeExperience: resumed?.ok ? 'child' : 'signed_out',
           childAccess: childAccessController.getView(),
+          deviceAccess: current.deviceAccess,
+          localFamily: current.localFamily,
           parentOnboarding: parentOnboardingController.getView(),
           pendingFamilyCreation: null,
           rememberParentOnThisDevice: false,
@@ -2132,29 +2373,22 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     );
     if (!persisted.ok) return { ok: false, error: persisted.error };
     const result = childAccessController.revokeDevice(childId, R001_ONBOARDING_TIME);
-    set({ childAccess: childAccessController.getView() });
-    if (result.ok) {
-      const cleared = serviceRegistry.deviceAccess.clearMatchingChild(childId);
-      if (!cleared.ok) {
-        set({
-          deviceAccess: deviceAccessView(null, 'unavailable'),
-          localFamily: localFamilyView(persisted.data),
-          temporaryParentAccess:
-            state.temporaryParentAccess?.returnChildId === childId
-              ? null
-              : state.temporaryParentAccess,
-        });
-        return cleared;
-      }
-      set({
-        deviceAccess: cleared.data ? deviceAccessView(null) : state.deviceAccess,
-        localFamily: localFamilyView(persisted.data),
-        temporaryParentAccess:
-          state.temporaryParentAccess?.returnChildId === childId
-            ? null
-            : state.temporaryParentAccess,
-      });
-    }
+    const childAccess = result.ok
+      ? childAccessController.getView()
+      : childAccessController.forgetDeviceAfterPersistedRevocation(childId);
+    const cleared = serviceRegistry.deviceAccess.clearMatchingChild(childId);
+    const refreshedAffinity = serviceRegistry.deviceAccess.read();
+    set({
+      childAccess,
+      deviceAccess:
+        cleared.ok && refreshedAffinity.ok
+          ? deviceAccessView(refreshedAffinity.data)
+          : deviceAccessView(null, 'unavailable'),
+      localFamily: localFamilyView(persisted.data),
+      temporaryParentAccess:
+        state.temporaryParentAccess?.returnChildId === childId ? null : state.temporaryParentAccess,
+    });
+    if (!cleared.ok) return cleared;
     return result;
   },
 
@@ -2374,6 +2608,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
     }
     const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
+    const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
+      profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+    });
     const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
@@ -2393,9 +2630,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       deviceAccess: deviceAccessView(null),
       familyReward: createFamilyRewardRuntime(),
       growthJourney: nextGrowthJourney.data,
+      privateLeague: nextPrivateLeague,
       mangroveLearningByProfile: nextMangroveLearning,
       sharedGrowth: nextSharedGrowth,
       revealBundleQueue: createEmptyRevealBundleQueue(),
+      approvalRevealCommitments: {},
       parentOnboarding: onboardingReset.data,
       localFamily: localFamilyView(null),
       localFamilyProfileRepair: null,
@@ -2438,7 +2677,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       profileEpochId: context.data.profileEpochId,
       route,
       origin,
-      ...(unlocked
+      ...(unlocked && context.data.learning.unlockEvidence === null
         ? {
             unlockEvidence: {
               profileId: context.data.profileId,
@@ -3596,7 +3835,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         (snapshot.voiceGrantVersion === null ||
           (current.liveChildAiGrants[snapshot.childId].voice.status === 'granted' &&
             current.liveChildAiGrants[snapshot.childId].voice.grantVersion ===
-              snapshot.voiceGrantVersion)) &&
+              snapshot.voiceGrantVersion &&
+            current.liveVoiceCapture !== null &&
+            boundLiveVoiceIsCurrent(current, current.liveVoiceCapture) &&
+            current.liveVoiceCapture.state.envelope.requestId === snapshot.voiceRequestId &&
+            current.liveVoiceCapture.state.envelope.bindingNonce === input.voiceBindingNonce)) &&
         current.liveChildCoachView.requestRevision === requestRevision
       );
     };
@@ -3771,13 +4014,16 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
       return failure('INVALID_TRANSITION', 'A current held voice session is required');
     }
+    const stopIsCurrent = () =>
+      get().liveVoiceCapture === bound && boundLiveVoiceIsCurrent(get(), bound);
+    const staleStop = () => failure('INVALID_TRANSITION', 'Voice capture stop is stale');
     const discardCapturedFile = async <T>(
       uri: string,
       source: LiveVoiceCaptureState,
       original: ServiceResult<T>,
     ): Promise<ServiceResult<T>> => {
       const deletion = await media.delete(uri);
-      if (boundLiveVoiceIsCurrent(get(), bound)) {
+      if (stopIsCurrent()) {
         const deleting = beginVoiceDeletion(source);
         const completed = deleting.ok
           ? completeVoiceDeletion(deleting.data, deletion.ok)
@@ -3788,12 +4034,23 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     };
     const captured = await capture.stopHeld();
     if (!captured.ok) return captured;
+    if (!stopIsCurrent()) {
+      return discardCapturedFile(captured.data.uri, bound.state, staleStop());
+    }
     const inspected = await media.inspect(captured.data.uri);
+    if (!stopIsCurrent()) {
+      return discardCapturedFile(captured.data.uri, bound.state, staleStop());
+    }
     if (!inspected.ok) {
       return discardCapturedFile(captured.data.uri, bound.state, inspected);
     }
     const bytes = await media.read(captured.data.uri);
+    if (!stopIsCurrent()) {
+      if (bytes.ok) bytes.data.fill(0);
+      return discardCapturedFile(captured.data.uri, bound.state, staleStop());
+    }
     if (!bytes.ok || bytes.data.byteLength !== inspected.data.byteCount) {
+      if (bytes.ok) bytes.data.fill(0);
       return discardCapturedFile(
         captured.data.uri,
         bound.state,
@@ -3832,15 +4089,18 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       metadata,
       audioBytes: bytes.data,
     });
-    const transcript = primary.ok
-      ? primary
-      : await requestVoiceTranscriptionWithinDeadline(
-          serviceRegistry.boundedAi.voiceTranscriptionPrepared,
-          { metadata, audioBytes: bytes.data },
-        );
+    const transcriptionIsCurrent = () =>
+      get().liveVoiceCapture === transcribing && boundLiveVoiceIsCurrent(get(), transcribing);
+    const transcript =
+      primary.ok || !transcriptionIsCurrent()
+        ? primary
+        : await requestVoiceTranscriptionWithinDeadline(
+            serviceRegistry.boundedAi.voiceTranscriptionPrepared,
+            { metadata, audioBytes: bytes.data },
+          );
     bytes.data.fill(0);
     const deletion = await media.delete(captured.data.uri);
-    if (!boundLiveVoiceIsCurrent(get(), transcribing)) {
+    if (!transcriptionIsCurrent()) {
       return failure('INVALID_TRANSITION', 'Voice transcription result is stale');
     }
     if (!deletion.ok) {
@@ -3953,20 +4213,36 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     captureService = liveVoiceCaptureService,
     mediaService = liveVoiceMediaService,
   ) => {
-    const bound = get().liveVoiceCapture;
+    const before = get();
+    const bound = before.liveVoiceCapture;
     if (!bound) return success(true);
-    const canceled = await captureService.cancel();
+    set({
+      liveVoiceCapture: null,
+      liveChildCoachView:
+        before.liveChildCoachView.snapshot?.voiceRequestId === bound.state.envelope.requestId
+          ? idleLiveChildCoachView(before.liveChildCoachView)
+          : before.liveChildCoachView,
+    });
+    let canceled: Awaited<ReturnType<VoiceCaptureService['cancel']>>;
+    try {
+      canceled = await captureService.cancel();
+    } catch {
+      canceled = failure('REMOTE_UNAVAILABLE', 'Voice capture cancellation failed');
+    }
     const uris = new Set(
       [bound.state.envelope.cacheUri, canceled.ok ? canceled.data.uri : null].filter(
         (uri): uri is string => Boolean(uri),
       ),
     );
     for (const uri of uris) {
-      const deleted = await mediaService.delete(uri);
-      if (!deleted.ok) return deleted;
+      try {
+        const deleted = await mediaService.delete(uri);
+        if (!deleted.ok) return deleted;
+      } catch {
+        return failure('REMOTE_UNAVAILABLE', 'Voice capture deletion failed');
+      }
     }
-    set({ liveVoiceCapture: null });
-    return success(true);
+    return canceled.ok ? success(true) : canceled;
   },
 
   submitTask: (input) => {
@@ -4059,125 +4335,715 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   restoreCheckInState: (submissionId) => {
-    const authority = requireActiveParentExperience(get());
+    const state = get();
+    const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    const result = serviceRegistry.recognition.resolveCheckInState(
-      sessionSnapshot(get()),
+    const snapshot = sessionSnapshot(state);
+    if (
+      !hasValidApprovalRevealCommitments({
+        session: snapshot,
+        queue: state.revealBundleQueue,
+        commitments: state.approvalRevealCommitments,
+      })
+    ) {
+      return failure('INVALID_RESPONSE', 'Stored approval Reveal authority is inconsistent');
+    }
+    const requestAuthority = validateCheckInRouteRequest({
+      session: snapshot,
       submissionId,
-    );
+    });
+    if (!requestAuthority.ok) {
+      return failure(requestAuthority.error.code, requestAuthority.error.message);
+    }
+    const baselineSession = cloneRecognitionBoundaryInput(snapshot);
+    const providerSession = cloneRecognitionBoundaryInput(snapshot);
+    if (!baselineSession.ok || !providerSession.ok) {
+      return failure('INVALID_TRANSITION', 'Check-in authority could not be isolated');
+    }
+    let providerResult: unknown;
+    try {
+      providerResult = serviceRegistry.recognition.resolveCheckInState(
+        providerSession.data,
+        submissionId,
+      );
+    } catch {
+      return failure('INVALID_RESPONSE', 'Check-in provider failed outside its result boundary');
+    }
+    const normalizedResult = validateCheckInRouteProviderResult(providerResult);
+    if (!normalizedResult.ok) return failure('INVALID_RESPONSE', normalizedResult.error.message);
+    const result = normalizedResult.data;
     if (!result.ok) return result;
+    const transition = validateCheckInRouteTransition({
+      session: baselineSession.data,
+      submissionId,
+      route: result.data as unknown as CheckInRouteState,
+    });
+    if (!transition.ok) return failure('INVALID_RESPONSE', transition.error.message);
+    const storeRoute = cloneRecognitionBoundaryInput(transition.data);
+    const callerResult = cloneRecognitionBoundaryInput({ ...result, data: transition.data });
+    if (!storeRoute.ok || !callerResult.ok) {
+      return failure('INVALID_RESPONSE', 'Check-in route could not be detached');
+    }
 
-    if (result.data.state === 'confirmation_pending') {
+    if (storeRoute.data.state === 'confirmation_pending') {
       set({
-        journey: result.data.journey,
-        confirmationPlan: result.data.attempt.plan,
+        journey: storeRoute.data.journey,
+        confirmationPlan: storeRoute.data.attempt.plan,
         lastRecognitionAttempt: null,
       });
     } else {
       set({
-        journey: result.data.journey,
+        journey: storeRoute.data.journey,
         confirmationPlan: null,
       });
     }
-    return result;
+    return callerResult.data as unknown as ServiceResult<CheckInRouteState>;
   },
 
   planConfirmation: (input) => {
-    const authority = requireActiveParentExperience(get());
+    const state = get();
+    const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    const result = serviceRegistry.recognition.planConfirmation(sessionSnapshot(get()), input);
-    if (result.ok && result.data.disposition === 'pending_praise') {
-      set({ journey: result.data.plan.journey, confirmationPlan: result.data.plan });
-    } else if (result.ok && result.data.disposition === 'praise_presented') {
-      set({ journey: result.data.plan.journey, confirmationPlan: result.data.plan });
+    const session = sessionSnapshot(state);
+    if (
+      !hasValidApprovalRevealCommitments({
+        session,
+        queue: state.revealBundleQueue,
+        commitments: state.approvalRevealCommitments,
+      })
+    ) {
+      return failure('INVALID_RESPONSE', 'Stored approval Reveal authority is inconsistent');
     }
-    return result;
+    const requestAuthority = validateConfirmationPlanningRequest({ session, request: input });
+    if (!requestAuthority.ok) {
+      return failure(requestAuthority.error.code, requestAuthority.error.message);
+    }
+    const providerInput = cloneRecognitionBoundaryInput({ session, input });
+    if (!providerInput.ok) return failure('INVALID_TRANSITION', providerInput.error.message);
+    let providerResult: unknown;
+    try {
+      providerResult = serviceRegistry.recognition.planConfirmation(
+        providerInput.data.session,
+        providerInput.data.input,
+      );
+    } catch {
+      return failure(
+        'INVALID_RESPONSE',
+        'Confirmation provider failed outside its result boundary',
+      );
+    }
+    const normalizedResult = validateConfirmationProviderResult(providerResult);
+    if (!normalizedResult.ok) return failure('INVALID_RESPONSE', normalizedResult.error.message);
+    const result = normalizedResult.data;
+    if (!result.ok) return result;
+    const transition = validateConfirmationPlanningTransition({
+      session,
+      request: input,
+      attempt: result.data,
+    });
+    if (!transition.ok) return failure('INVALID_RESPONSE', transition.error.message);
+    const storeAttempt = cloneRecognitionBoundaryInput(transition.data);
+    const callerResult = cloneRecognitionBoundaryInput({ ...result, data: transition.data });
+    if (!storeAttempt.ok || !callerResult.ok) {
+      return failure('INVALID_RESPONSE', 'Confirmation result could not be detached');
+    }
+    if (
+      storeAttempt.data.disposition === 'pending_praise' ||
+      storeAttempt.data.disposition === 'praise_presented'
+    ) {
+      set({
+        journey: storeAttempt.data.plan.journey,
+        confirmationPlan: storeAttempt.data.plan,
+      });
+    }
+    return callerResult.data;
   },
 
   markPraisePresented: (action) => {
-    const authority = requireActiveParentExperience(get());
+    const state = get();
+    const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    const plan = get().confirmationPlan;
+    const session = sessionSnapshot(state);
+    if (
+      !hasValidApprovalRevealCommitments({
+        session,
+        queue: state.revealBundleQueue,
+        commitments: state.approvalRevealCommitments,
+      })
+    ) {
+      return failure('INVALID_RESPONSE', 'Stored approval Reveal authority is inconsistent');
+    }
+    const storedPlan = cloneRecognitionBoundaryInput(state.confirmationPlan);
+    if (!storedPlan.ok) {
+      return failure('INVALID_RESPONSE', 'Stored confirmation plan is malformed');
+    }
+    const plan = storedPlan.data;
     if (!plan || plan.renderState !== 'confirmation_pending') {
       return failure('INVALID_TRANSITION', 'Confirmation praise is not awaiting presentation');
     }
-    const result = serviceRegistry.recognition.markPraisePresented(plan, action);
-    if (result.ok) {
-      set({ journey: result.data.journey, confirmationPlan: result.data });
+    const requestAuthority = validateActivePraisePresentationRequest({
+      session,
+      pendingPlan: plan,
+      action,
+    });
+    if (!requestAuthority.ok) {
+      return failure(requestAuthority.error.code, requestAuthority.error.message);
     }
-    return result;
+    const isolatedInput = cloneRecognitionBoundaryInput({ plan, action });
+    if (!isolatedInput.ok) {
+      return failure('INVALID_TRANSITION', isolatedInput.error.message);
+    }
+    let providerResult: unknown;
+    try {
+      providerResult = serviceRegistry.recognition.markPraisePresented(
+        isolatedInput.data.plan,
+        isolatedInput.data.action,
+      );
+    } catch {
+      return failure(
+        'INVALID_RESPONSE',
+        'Praise presentation provider failed outside its result boundary',
+      );
+    }
+    const normalizedResult = validatePraisePresentationProviderResult(providerResult);
+    if (!normalizedResult.ok) return failure('INVALID_RESPONSE', normalizedResult.error.message);
+    const result = normalizedResult.data;
+    if (!result.ok) return result;
+    const transition = validatePraisePresentationTransition({
+      pendingPlan: plan,
+      action,
+      presentedPlan: result.data,
+    });
+    if (!transition.ok) return failure('INVALID_RESPONSE', transition.error.message);
+    const storePlan = cloneRecognitionBoundaryInput(transition.data);
+    const callerResult = cloneRecognitionBoundaryInput({ ...result, data: transition.data });
+    if (!storePlan.ok || !callerResult.ok) {
+      return failure('INVALID_RESPONSE', 'Praise presentation could not be detached');
+    }
+    set({ journey: storePlan.data.journey, confirmationPlan: storePlan.data });
+    return callerResult.data;
   },
 
   confirmAndPresentPraise: (input, action) => {
-    const authority = requireActiveParentExperience(get());
+    const state = get();
+    const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
-    const planned = serviceRegistry.recognition.planConfirmation(sessionSnapshot(get()), input);
+    const session = sessionSnapshot(state);
+    if (
+      !hasValidApprovalRevealCommitments({
+        session,
+        queue: state.revealBundleQueue,
+        commitments: state.approvalRevealCommitments,
+      })
+    ) {
+      return failure('INVALID_RESPONSE', 'Stored approval Reveal authority is inconsistent');
+    }
+    const planningAuthority = validateConfirmationPlanningRequest({ session, request: input });
+    if (!planningAuthority.ok) {
+      return failure(planningAuthority.error.code, planningAuthority.error.message);
+    }
+    const providerInput = cloneRecognitionBoundaryInput({
+      session,
+      input,
+      action,
+    });
+    if (!providerInput.ok) return failure('INVALID_TRANSITION', providerInput.error.message);
+    let providerPlanned: unknown;
+    try {
+      providerPlanned = serviceRegistry.recognition.planConfirmation(
+        providerInput.data.session,
+        providerInput.data.input,
+      );
+    } catch {
+      return failure(
+        'INVALID_RESPONSE',
+        'Confirmation provider failed outside its result boundary',
+      );
+    }
+    const normalizedPlanned = validateConfirmationProviderResult(providerPlanned);
+    if (!normalizedPlanned.ok) return failure('INVALID_RESPONSE', normalizedPlanned.error.message);
+    const planned = normalizedPlanned.data;
     if (!planned.ok) return planned;
-    if (planned.data.disposition === 'already_confirmed') {
+    const plannedTransition = validateConfirmationPlanningTransition({
+      session,
+      request: input,
+      attempt: planned.data,
+    });
+    if (!plannedTransition.ok) {
+      return failure('INVALID_RESPONSE', plannedTransition.error.message);
+    }
+    const validatedPlanned = plannedTransition.data;
+    if (validatedPlanned.disposition === 'already_confirmed') {
       return failure('INVALID_TRANSITION', 'This task was already confirmed');
     }
-    if (planned.data.disposition === 'praise_presented') {
-      set({ journey: planned.data.plan.journey, confirmationPlan: planned.data.plan });
-      return {
+    if (validatedPlanned.disposition === 'praise_presented') {
+      const storePlan = cloneRecognitionBoundaryInput(validatedPlanned.plan);
+      const callerResult = cloneRecognitionBoundaryInput({
         ok: true,
-        data: planned.data.plan,
+        data: validatedPlanned.plan,
         meta: { origin: 'synthetic', fallbackUsed: false },
-      };
+      } as const);
+      if (!storePlan.ok || !callerResult.ok) {
+        return failure('INVALID_RESPONSE', 'Presented confirmation could not be detached');
+      }
+      set({ journey: storePlan.data.journey, confirmationPlan: storePlan.data });
+      return callerResult.data;
     }
-    const presented = serviceRegistry.recognition.markPraisePresented(planned.data.plan, action);
-    if (presented.ok) {
-      set({ journey: presented.data.journey, confirmationPlan: presented.data });
+    const presentedPlan = validatedPlanned.plan;
+    const presentationAuthority = validatePraisePresentationRequest({
+      pendingPlan: presentedPlan,
+      action,
+    });
+    if (!presentationAuthority.ok) {
+      return failure(presentationAuthority.error.code, presentationAuthority.error.message);
     }
-    return presented;
+    const providerPresentationInput = cloneRecognitionBoundaryInput({
+      plan: presentedPlan,
+      action,
+    });
+    if (!providerPresentationInput.ok) {
+      return failure('INVALID_TRANSITION', providerPresentationInput.error.message);
+    }
+    let providerPresented: unknown;
+    try {
+      providerPresented = serviceRegistry.recognition.markPraisePresented(
+        providerPresentationInput.data.plan,
+        providerPresentationInput.data.action,
+      );
+    } catch {
+      return failure(
+        'INVALID_RESPONSE',
+        'Praise presentation provider failed outside its result boundary',
+      );
+    }
+    const normalizedPresented = validatePraisePresentationProviderResult(providerPresented);
+    if (!normalizedPresented.ok) {
+      return failure('INVALID_RESPONSE', normalizedPresented.error.message);
+    }
+    const presented = normalizedPresented.data;
+    if (!presented.ok) return presented;
+    const transition = validatePraisePresentationTransition({
+      pendingPlan: presentedPlan,
+      action,
+      presentedPlan: presented.data,
+    });
+    if (!transition.ok) return failure('INVALID_RESPONSE', transition.error.message);
+    const storePlan = cloneRecognitionBoundaryInput(transition.data);
+    const callerResult = cloneRecognitionBoundaryInput({ ...presented, data: transition.data });
+    if (!storePlan.ok || !callerResult.ok) {
+      return failure('INVALID_RESPONSE', 'Praise presentation could not be detached');
+    }
+    set({ journey: storePlan.data.journey, confirmationPlan: storePlan.data });
+    return callerResult.data;
   },
 
   applyRecognition: (action) => {
     const authority = requireActiveParentExperience(get());
     if (!authority.ok) return authority;
-    const plan = get().confirmationPlan;
+    const storedPlan = cloneRecognitionBoundaryInput(get().confirmationPlan);
+    if (!storedPlan.ok) {
+      return failure('INVALID_RESPONSE', 'Stored confirmation plan is malformed');
+    }
+    const plan = storedPlan.data;
     if (!plan || plan.renderState !== 'praise_presented') {
       return failure('INVALID_TRANSITION', 'Praise must be visibly presented before recognition');
     }
     const before = get();
-    const previousSession = sessionSnapshot(before);
-    const result = serviceRegistry.recognition.applyRecognition(previousSession, plan, action);
+    const snapshot = sessionSnapshot(before);
+    if (
+      !hasValidApprovalRevealCommitments({
+        session: snapshot,
+        queue: before.revealBundleQueue,
+        commitments: before.approvalRevealCommitments,
+      })
+    ) {
+      return failure('INVALID_RESPONSE', 'Stored approval Reveal authority is inconsistent');
+    }
+    const requestAuthority = validateRecognitionRequest({ session: snapshot, plan, action });
+    if (!requestAuthority.ok) {
+      return failure(requestAuthority.error.code, requestAuthority.error.message);
+    }
+    const baselineSession = cloneRecognitionBoundaryInput(snapshot);
+    const providerSession = cloneRecognitionBoundaryInput(snapshot);
+    const providerPlan = cloneRecognitionBoundaryInput(plan);
+    const providerAction = cloneRecognitionBoundaryInput(action);
+    if (!baselineSession.ok || !providerSession.ok || !providerPlan.ok || !providerAction.ok) {
+      return failure('INVALID_RESPONSE', 'Recognition boundary inputs could not be isolated');
+    }
+    const previousSession = baselineSession.data;
+    let providerResult: unknown;
+    try {
+      providerResult = serviceRegistry.recognition.applyRecognition(
+        providerSession.data,
+        providerPlan.data,
+        providerAction.data,
+      );
+    } catch {
+      return failure('INVALID_RESPONSE', 'Recognition provider failed outside its result boundary');
+    }
+    const normalizedResult = validateRecognitionProviderResult(providerResult);
+    if (!normalizedResult.ok) {
+      return failure('INVALID_RESPONSE', 'Recognition provider result is not isolated plain data');
+    }
+    const result = normalizedResult.data;
     if (!result.ok) return result;
-    const growthProjection = projectRecognitionIntoGrowthJourney({
-      runtime: before.growthJourney,
-      previousSession,
-      nextSession: result.data.session,
+    const callerResult = cloneRecognitionBoundaryInput(result);
+    if (!callerResult.ok) {
+      return failure('INVALID_RESPONSE', 'Recognition result could not be detached for its caller');
+    }
+    const detachedResult = callerResult.data;
+    const sessionTransition = validateRecognitionSessionTransition({
+      before: previousSession,
+      after: result.data.session,
+      disposition: result.data.disposition,
+      journey: result.data.journey,
       receipt: result.data.receipt,
-      committedAt: plan.checkIn.praisePresentedAt,
-      learningCompletions: completionEvidenceFor(before, plan.journey.task.targetChildId),
     });
+    if (!sessionTransition.ok) {
+      return failure('INVALID_RESPONSE', sessionTransition.error.message);
+    }
+    const familyRewardEligible = isFamilyRewardRecognitionEligible(result.data.journey);
+    const challengeLeafEligible =
+      selectPrivateLeagueRecognitionEligibility(result.data.journey)?.challengeLeafEligible ===
+      true;
+    if (
+      result.data.receipt.provenance.familyRewardEligible !== familyRewardEligible ||
+      result.data.receipt.provenance.challengeLeafEligible !== challengeLeafEligible
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Recognition provenance does not match explicit task eligibility decisions',
+      );
+    }
+    const growthBeforeBoundary = validateGrowthJourneyRuntimeBoundary(before.growthJourney);
+    if (
+      !growthBeforeBoundary.ok ||
+      !selectGrowthJourneyProfile(growthBeforeBoundary.data, 'child_salem').ok ||
+      !selectGrowthJourneyProfile(growthBeforeBoundary.data, 'child_alya').ok
+    ) {
+      return failure('INVALID_RESPONSE', 'Growth Journey authority is not canonical plain data');
+    }
+    if (
+      !hasSeedReceiptGrowthParity(
+        previousSession,
+        growthBeforeBoundary.data,
+        result.data.disposition === 'already_confirmed'
+          ? result.data.receipt.recognitionKey
+          : undefined,
+      )
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Core Seed receipts do not match committed Growth evidence',
+      );
+    }
+    const learningAchievementEvents = learningAchievementEventsFor(before);
+    if (learningAchievementEvents === null) {
+      return failure('INVALID_RESPONSE', 'Learning achievement authority is malformed');
+    }
+    if (
+      !hasRecognitionAchievementParity(
+        previousSession,
+        growthBeforeBoundary.data,
+        learningAchievementEvents,
+        result.data.disposition === 'already_confirmed'
+          ? result.data.receipt.recognitionKey
+          : undefined,
+      )
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Committed recognition evidence does not match permanent achievement authority',
+      );
+    }
+    let familyRewardAuthorityIsValid = false;
+    try {
+      familyRewardAuthorityIsValid = isValidFamilyRewardRuntimeAuthority(before.familyReward);
+    } catch {
+      familyRewardAuthorityIsValid = false;
+    }
+    if (!familyRewardAuthorityIsValid) {
+      return failure('INVALID_RESPONSE', 'Family Reward authority is not canonical plain data');
+    }
+    const familyRewardRecognitionKey = before.familyReward.progress.recognitionKeys[0];
+    const familyRewardCoreReceipt = familyRewardRecognitionKey
+      ? previousSession.recognitionLedger[familyRewardRecognitionKey]
+      : undefined;
+    if (
+      familyRewardCoreReceipt &&
+      familyRewardCoreReceipt.provenance.familyRewardEligible !== true
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Family Reward authority is not backed by an eligible core recognition',
+      );
+    }
+    const missingFamilyRewardKey = Object.values(previousSession.recognitionLedger)
+      .filter((receipt) => receipt.provenance.familyRewardEligible)
+      .map((receipt) => receipt.recognitionKey)
+      .find(
+        (recognitionKey) => !before.familyReward.progress.recognitionKeys.includes(recognitionKey),
+      );
+    if (missingFamilyRewardKey) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Eligible core recognition is missing its Family Reward authority',
+      );
+    }
+    let storedPrivateLeague: ReturnType<typeof selectCommittedPrivateLeagueReceipt>;
+    try {
+      storedPrivateLeague = selectCommittedPrivateLeagueReceipt(before.privateLeague);
+    } catch {
+      return failure('INVALID_RESPONSE', 'Private League authority is malformed');
+    }
+    if (!storedPrivateLeague.ok) {
+      return failure('INVALID_RESPONSE', storedPrivateLeague.error.message);
+    }
+    const privateLeagueCoreReceipt = storedPrivateLeague.data
+      ? previousSession.recognitionLedger[storedPrivateLeague.data.recognitionKey]
+      : undefined;
+    if (
+      storedPrivateLeague.data &&
+      (!privateLeagueCoreReceipt || !privateLeagueCoreReceipt.provenance.challengeLeafEligible)
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Private League authority is not backed by an eligible core recognition',
+      );
+    }
+    const missingPrivateLeagueKey = Object.values(previousSession.recognitionLedger)
+      .filter((receipt) => receipt.provenance.challengeLeafEligible)
+      .map((receipt) => receipt.recognitionKey)
+      .find((recognitionKey) => storedPrivateLeague.data?.recognitionKey !== recognitionKey);
+    if (missingPrivateLeagueKey) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Eligible core recognition is missing its Private League authority',
+      );
+    }
+    let revealQueueIsValid = false;
+    try {
+      revealQueueIsValid = validateRevealBundleQueue(before.revealBundleQueue).ok;
+    } catch {
+      revealQueueIsValid = false;
+    }
+    if (!revealQueueIsValid) {
+      return failure('INVALID_RESPONSE', 'RevealBundle queue authority is malformed');
+    }
+    const recognitionKey = result.data.receipt.recognitionKey;
+    if (
+      result.data.receipt.seedTransaction === null &&
+      hasCommittedGrowthRecognitionEvidence(growthBeforeBoundary.data, recognitionKey)
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Zero-Seed recognition conflicts with committed Growth evidence',
+      );
+    }
+    let growthProjection: ReturnType<typeof projectRecognitionIntoGrowthJourney>;
+    try {
+      growthProjection = projectRecognitionIntoGrowthJourney({
+        runtime: before.growthJourney,
+        previousSession,
+        nextSession: result.data.session,
+        receipt: result.data.receipt,
+        committedAt: plan.checkIn.praisePresentedAt,
+        learningCompletions: completionEvidenceFor(before, plan.journey.task.targetChildId),
+      });
+    } catch {
+      return failure('INVALID_RESPONSE', 'Growth Journey projection authority is malformed');
+    }
     if (!growthProjection.ok) {
       return failure('INVALID_RESPONSE', growthProjection.error.message);
     }
-    if (result.data.disposition === 'already_confirmed') {
-      if (growthProjection.data.runtime !== before.growthJourney) {
-        set({ growthJourney: growthProjection.data.runtime });
-      }
-      return result;
+    const growthBoundary = validateGrowthJourneyRuntimeBoundary(growthProjection.data.runtime);
+    if (
+      !growthBoundary.ok ||
+      !selectGrowthJourneyProfile(growthBoundary.data, 'child_salem').ok ||
+      !selectGrowthJourneyProfile(growthBoundary.data, 'child_alya').ok
+    ) {
+      return failure('INVALID_RESPONSE', 'Growth Journey authority is not canonical plain data');
+    }
+    if (
+      !hasRecognitionAchievementParity(
+        result.data.session,
+        growthBoundary.data,
+        learningAchievementEvents,
+      )
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Projected recognition evidence does not match permanent achievement authority',
+      );
     }
 
-    const familyReward = applyRecognitionToFamilyReward({
-      runtime: before.familyReward,
-      journey: plan.journey,
-      receipt: result.data.receipt,
-      committedAt: plan.checkIn.praisePresentedAt,
-    });
+    if (
+      result.data.disposition === 'applied' &&
+      before.familyReward.progress.recognitionKeys.includes(result.data.receipt.recognitionKey)
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Family Reward recognition was committed before its core approval authority',
+      );
+    }
+    let familyReward: ReturnType<typeof applyRecognitionToFamilyReward>;
+    try {
+      familyReward = applyRecognitionToFamilyReward({
+        runtime: before.familyReward,
+        journey: result.data.journey,
+        receipt: result.data.receipt,
+        committedAt: plan.checkIn.praisePresentedAt,
+      });
+    } catch {
+      return failure('INVALID_RESPONSE', 'Family Reward authority is malformed');
+    }
     if (!familyReward.ok) {
       return failure('INVALID_RESPONSE', familyReward.error.message);
     }
 
+    const privateLeagueEligibility = selectPrivateLeagueRecognitionEligibility(result.data.journey);
+    if (
+      privateLeagueEligibility === null &&
+      storedPrivateLeague.data?.recognitionKey === result.data.receipt.recognitionKey
+    ) {
+      return failure(
+        'INVALID_RESPONSE',
+        'Private League recognition was committed for an ineligible task version',
+      );
+    }
+    const privateLeague = privateLeagueEligibility
+      ? applyRecognitionToPrivateLeague({
+          runtime: before.privateLeague,
+          profileId: result.data.journey.task.targetChildId,
+          profileEpochId:
+            growthProjection.data.runtime.ledgersByProfile[result.data.journey.task.targetChildId]
+              .profileEpochId,
+          journey: result.data.journey,
+          receipt: result.data.receipt,
+          recognitionLedger: result.data.session.recognitionLedger,
+        })
+      : null;
+    if (privateLeague && !privateLeague.ok) {
+      return failure('INVALID_RESPONSE', privateLeague.error.message);
+    }
+
+    if (result.data.disposition === 'already_confirmed') {
+      const growthAuthorityIsReconciled = result.data.receipt.seedTransaction
+        ? (growthProjection.data.disposition === 'already_projected' &&
+            growthProjection.data.runtime === before.growthJourney) ||
+          (growthProjection.data.disposition === 'projected' &&
+            growthProjection.data.runtime !== before.growthJourney)
+        : growthProjection.data.disposition === 'not_applicable' &&
+          growthProjection.data.runtime === before.growthJourney;
+      if (
+        !growthAuthorityIsReconciled ||
+        familyReward.data !== before.familyReward ||
+        (privateLeagueEligibility !== null &&
+          (!privateLeague?.ok ||
+            privateLeague.data.disposition !== 'already_confirmed' ||
+            privateLeague.data.runtime !== before.privateLeague))
+      ) {
+        return failure(
+          'INVALID_RESPONSE',
+          'Repeated recognition is missing one of its committed secondary authorities',
+        );
+      }
+      const profileId = result.data.journey.task.targetChildId;
+      const profileLedger = growthProjection.data.runtime.ledgersByProfile[profileId];
+      if (!profileLedger) {
+        return failure(
+          'INVALID_RESPONSE',
+          'Repeated recognition is missing its active Growth profile authority',
+        );
+      }
+      const profileEpochId = profileLedger.profileEpochId;
+      if (result.data.receipt.seedTransaction) {
+        const reveal = reconcileCommittedApprovalReveal({
+          queue: before.revealBundleQueue,
+          plan,
+          recognition: result.data,
+          growthRuntime: growthProjection.data.runtime,
+          familyReward: before.familyReward,
+          privateLeague: privateLeague?.ok ? privateLeague.data : null,
+        });
+        if (!reveal.ok || reveal.data.disposition !== 'already_exists') {
+          return failure(
+            'INVALID_RESPONSE',
+            reveal.ok
+              ? 'Repeated recognition is missing its committed result bundle'
+              : reveal.error.message,
+          );
+        }
+      } else {
+        const queueValidation = constructRevealBundle({
+          queue: before.revealBundleQueue,
+          profileId,
+          profileEpochId,
+          triggerEventId: result.data.receipt.recognitionKey,
+          triggerKind: 'task_submission',
+          triggeredAt: plan.checkIn.praisePresentedAt,
+          receipts: [],
+        });
+        if (
+          !queueValidation.ok ||
+          queueValidation.data.disposition !== 'not_created' ||
+          before.revealBundleQueue.bundles.some(
+            (bundle) => bundle.triggerEventId === result.data.receipt.recognitionKey,
+          )
+        ) {
+          return failure(
+            'INVALID_RESPONSE',
+            'Zero-Seed recognition has an invalid result-bundle authority',
+          );
+        }
+      }
+      if (growthProjection.data.runtime !== before.growthJourney) {
+        set({ growthJourney: growthProjection.data.runtime });
+      }
+      return detachedResult;
+    }
+
+    const reveal =
+      result.data.receipt.seedTransaction !== null
+        ? constructApprovalReveal({
+            queue: before.revealBundleQueue,
+            plan,
+            recognition: result.data,
+            previousSession,
+            growthBefore: before.growthJourney,
+            growthProjection: growthProjection.data,
+            familyRewardBefore: before.familyReward,
+            familyRewardAfter: familyReward.data,
+            privateLeague: privateLeague?.ok ? privateLeague.data : null,
+          })
+        : null;
+    if (reveal && !reveal.ok) {
+      return failure('INVALID_RESPONSE', reveal.error.message);
+    }
+    if (
+      result.data.receipt.seedTransaction !== null &&
+      (!reveal?.ok || reveal.data.disposition !== 'created')
+    ) {
+      return failure('INVALID_RESPONSE', 'New Seed recognition requires one new result bundle');
+    }
+    const revealCommitment =
+      reveal?.ok && reveal.data.disposition === 'created'
+        ? reveal.data.bundle.sourceFingerprint
+        : null;
     set({
       ...result.data.session,
       growthJourney: growthProjection.data.runtime,
       confirmationPlan: plan,
       lastRecognitionAttempt: result.data,
       familyReward: familyReward.data,
+      privateLeague: privateLeague?.ok ? privateLeague.data.runtime : before.privateLeague,
+      revealBundleQueue: reveal?.ok ? reveal.data.queue : before.revealBundleQueue,
+      approvalRevealCommitments: {
+        ...before.approvalRevealCommitments,
+        [result.data.receipt.recognitionKey]: revealCommitment,
+      },
     });
-    return result;
+    return detachedResult;
   },
 
   applyRoutinePhaseDecision: (taskId, option) => {

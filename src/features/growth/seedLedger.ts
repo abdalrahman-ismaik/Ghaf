@@ -2,7 +2,7 @@ import {
   IMPACT_PATH_STATIONS,
   SCHEMA3_R002A_FIXTURE_VERSION,
   SEED_LEDGER_MIGRATION_VERSION,
-  type MangroveRecognitionTransition,
+  type LandscapeRecognitionTransition,
   type PlantStageArchive,
   type ProgressionErrorCode,
   type ProgressionMigrationReceipt,
@@ -16,7 +16,9 @@ import {
   type SeedLedgerState,
   type WaterAndCoastPathProjection,
 } from '../../models/growthJourney';
-import type { SyntheticChildId } from '../../models/familyGrowth';
+import type { LandscapeId, SyntheticChildId } from '../../models/familyGrowth';
+import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
+import { stageForSeeds } from '../garden/progression';
 
 const SUPPORTED_PROFILE_IDS = new Set<string>(['child_salem', 'child_alya']);
 const VALID_ENTRY_KINDS = new Set<string>([
@@ -30,6 +32,48 @@ const VALID_PROVENANCE_SOURCES = new Set<string>([
   'recognition_receipt',
 ]);
 const VALID_FIXED_SEED_AWARDS = new Set<number>([4, 6, 8, 12, 15]);
+const LANDSCAPE_IDS = new Set<string>(['ghaf', 'samar', 'sidr', 'date_palm', 'mangrove']);
+const GARDEN_THRESHOLDS = [20, 60, 120, 200] as const;
+const SEED_LEDGER_ENTRY_KEYS = [
+  'id',
+  'profileId',
+  'profileEpochId',
+  'triggerEventId',
+  'kind',
+  'amount',
+  'status',
+  'committedAt',
+  'silentBackfill',
+  'provenance',
+] as const;
+const SEED_LEDGER_PROVENANCE_KEYS = [
+  'fixtureVersion',
+  'source',
+  'sourceIds',
+  'sourceFingerprint',
+] as const;
+const LANDSCAPE_TRANSITION_KEYS = [
+  'landscapeId',
+  'seedsBefore',
+  'seedsAfter',
+  'stageBefore',
+  'stageAfter',
+  'crossedThreshold',
+  'symbolicOnly',
+] as const;
+const PLANT_STAGE_ARCHIVE_KEYS = [
+  'id',
+  'profileId',
+  'profileEpochId',
+  'landscapeId',
+  'threshold',
+  'seedsBefore',
+  'seedsAfter',
+  'stageBefore',
+  'stageAfter',
+  'triggerEventId',
+  'symbolicOnly',
+] as const;
 
 function failure<T>(code: ProgressionErrorCode, message: string): ProgressionResult<T> {
   return { ok: false, error: { code, message } };
@@ -41,6 +85,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isSupportedProfileId(value: unknown): value is SyntheticChildId {
   return typeof value === 'string' && SUPPORTED_PROFILE_IDS.has(value);
+}
+
+function isSupportedLandscapeId(value: unknown): value is LandscapeId {
+  return typeof value === 'string' && LANDSCAPE_IDS.has(value);
 }
 
 function isNonEmptySingleLine(value: unknown): value is string {
@@ -60,11 +108,73 @@ function isPositiveInteger(value: unknown): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
 }
 
+function hasExactKeys(value: Record<string, unknown>, keys: readonly string[]): boolean {
+  const actualKeys = Reflect.ownKeys(value);
+  return (
+    actualKeys.length === keys.length &&
+    actualKeys.every((key) => typeof key === 'string') &&
+    keys.every((key) => actualKeys.includes(key))
+  );
+}
+
+function crossedGardenThreshold(
+  seedsBefore: number,
+  seedsAfter: number,
+): (typeof GARDEN_THRESHOLDS)[number] | null {
+  return (
+    GARDEN_THRESHOLDS.find((threshold) => seedsBefore < threshold && seedsAfter >= threshold) ??
+    null
+  );
+}
+
+function isExactLandscapeTransition(
+  value: unknown,
+  amount: number,
+): value is LandscapeRecognitionTransition {
+  if (
+    !isRecord(value) ||
+    !hasExactKeys(value, LANDSCAPE_TRANSITION_KEYS) ||
+    !isSupportedLandscapeId(value.landscapeId) ||
+    !isNonNegativeInteger(value.seedsBefore) ||
+    !isPositiveInteger(value.seedsAfter) ||
+    value.seedsAfter !== value.seedsBefore + amount ||
+    value.symbolicOnly !== true
+  ) {
+    return false;
+  }
+  const expectedStageBefore = stageForSeeds(value.seedsBefore);
+  const expectedStageAfter = stageForSeeds(value.seedsAfter);
+  const expectedThreshold = crossedGardenThreshold(value.seedsBefore, value.seedsAfter);
+  return (
+    value.stageBefore === expectedStageBefore &&
+    value.stageAfter === expectedStageAfter &&
+    value.crossedThreshold === expectedThreshold
+  );
+}
+
+function inputLandscapeTransition(
+  input: RecognitionSeedProjectionInput,
+): ProgressionResult<LandscapeRecognitionTransition | null> {
+  const hasLandscapeTransition = Object.prototype.hasOwnProperty.call(input, 'landscapeTransition');
+  const hasLegacyTransition = Object.prototype.hasOwnProperty.call(input, 'mangroveTransition');
+  if (hasLandscapeTransition === hasLegacyTransition) {
+    return failure('INVALID_INPUT', 'Recognition requires one landscape transition authority');
+  }
+  const transition = hasLandscapeTransition ? input.landscapeTransition : input.mangroveTransition;
+  if (transition !== null && !isExactLandscapeTransition(transition, input.amount)) {
+    return failure(
+      'INVALID_INPUT',
+      'Landscape growth must match the exact deterministic stage thresholds',
+    );
+  }
+  return { ok: true, data: transition };
+}
+
 function isIsoTimestamp(value: unknown): value is string {
   return (
     isNonEmptySingleLine(value) &&
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(value) &&
-    !Number.isNaN(Date.parse(value))
+    isExactIsoTimestamp(value)
   );
 }
 
@@ -359,6 +469,7 @@ function validateLedger(ledger: unknown): ProgressionResult<SeedLedgerState> {
   for (const candidate of typedLedger.entries) {
     if (
       !isRecord(candidate) ||
+      !hasExactKeys(candidate, SEED_LEDGER_ENTRY_KEYS) ||
       !isNonEmptySingleLine(candidate.id) ||
       candidate.profileId !== typedLedger.profileId ||
       candidate.profileEpochId !== typedLedger.profileEpochId ||
@@ -369,6 +480,7 @@ function validateLedger(ledger: unknown): ProgressionResult<SeedLedgerState> {
       (candidate.committedAt !== null && !isIsoTimestamp(candidate.committedAt)) ||
       typeof candidate.silentBackfill !== 'boolean' ||
       !isRecord(candidate.provenance) ||
+      !hasExactKeys(candidate.provenance, SEED_LEDGER_PROVENANCE_KEYS) ||
       !isNonEmptySingleLine(candidate.provenance.fixtureVersion) ||
       !VALID_PROVENANCE_SOURCES.has(String(candidate.provenance.source)) ||
       !isNonEmptySingleLine(candidate.provenance.sourceFingerprint) ||
@@ -490,41 +602,56 @@ function validateLedger(ledger: unknown): ProgressionResult<SeedLedgerState> {
   }
 
   const archivesById = new Map<string, PlantStageArchive>();
+  const archiveTriggers = new Set<string>();
+  const archivedStages = new Set<string>();
   for (const candidate of typedLedger.plantStageArchives) {
+    const archiveAmount =
+      isRecord(candidate) &&
+      isNonNegativeInteger(candidate.seedsBefore) &&
+      isPositiveInteger(candidate.seedsAfter)
+        ? candidate.seedsAfter - candidate.seedsBefore
+        : 0;
     if (
       !isRecord(candidate) ||
+      !hasExactKeys(candidate, PLANT_STAGE_ARCHIVE_KEYS) ||
       !isNonEmptySingleLine(candidate.id) ||
       candidate.profileId !== typedLedger.profileId ||
       candidate.profileEpochId !== typedLedger.profileEpochId ||
-      candidate.landscapeId !== 'mangrove' ||
-      candidate.threshold !== 60 ||
-      candidate.seedsBefore !== 48 ||
-      candidate.seedsAfter !== 60 ||
-      candidate.stageBefore !== 'shoot' ||
-      candidate.stageAfter !== 'sapling' ||
+      !isSupportedLandscapeId(candidate.landscapeId) ||
+      !isExactLandscapeTransition(
+        {
+          landscapeId: candidate.landscapeId,
+          seedsBefore: candidate.seedsBefore,
+          seedsAfter: candidate.seedsAfter,
+          stageBefore: candidate.stageBefore,
+          stageAfter: candidate.stageAfter,
+          crossedThreshold: candidate.threshold,
+          symbolicOnly: candidate.symbolicOnly,
+        },
+        archiveAmount,
+      ) ||
+      candidate.stageBefore === candidate.stageAfter ||
       !isNonEmptySingleLine(candidate.triggerEventId) ||
       candidate.symbolicOnly !== true
     ) {
-      return failure('INVALID_INPUT', 'Plant archives must preserve the exact symbolic transition');
-    }
-    if (candidate.profileId !== 'child_salem') {
       return failure(
-        'FIXTURE_EVIDENCE_MISMATCH',
-        'The canonical Mangrove 60 archive belongs only to Salem',
+        'INVALID_INPUT',
+        'Plant archives must preserve one exact symbolic stage crossing',
       );
     }
     const archive = candidate as unknown as PlantStageArchive;
     const previous = archivesById.get(archive.id);
-    if (previous && !sameArchive(previous, archive)) {
+    const archivedStageKey = `${archive.landscapeId}:${archive.threshold}`;
+    if (
+      previous ||
+      archiveTriggers.has(archive.triggerEventId) ||
+      archivedStages.has(archivedStageKey)
+    ) {
       return failure('EVENT_CONFLICT', 'A stable archive ID contains conflicting evidence');
     }
     archivesById.set(archive.id, archive);
-  }
-  if (archivesById.size > 1) {
-    return failure(
-      'EVENT_CONFLICT',
-      'A profile epoch can contain only one logical Mangrove 60 archive',
-    );
+    archiveTriggers.add(archive.triggerEventId);
+    archivedStages.add(archivedStageKey);
   }
 
   for (const archive of archivesById.values()) {
@@ -533,15 +660,23 @@ function validateLedger(ledger: unknown): ProgressionResult<SeedLedgerState> {
         entry.kind === 'task_recognition' &&
         entry.triggerEventId === archive.triggerEventId &&
         entry.profileId === archive.profileId &&
-        entry.profileEpochId === archive.profileEpochId,
+        entry.profileEpochId === archive.profileEpochId &&
+        entry.amount === archive.seedsAfter - archive.seedsBefore,
     );
     if (
       !matchingRecognition ||
-      archive.id !== archiveId(archive.profileId, archive.profileEpochId, archive.triggerEventId)
+      archive.id !==
+        archiveId(
+          archive.profileId,
+          archive.profileEpochId,
+          archive.triggerEventId,
+          archive.landscapeId,
+          archive.threshold,
+        )
     ) {
       return failure(
         'EVENT_CONFLICT',
-        'A Mangrove archive requires its exact profile-scoped recognition entry',
+        'A plant archive requires its exact profile-scoped recognition entry',
       );
     }
   }
@@ -577,8 +712,10 @@ function archiveId(
   profileId: SyntheticChildId,
   profileEpochId: string,
   triggerEventId: string,
+  landscapeId: LandscapeId,
+  threshold: PlantStageArchive['threshold'],
 ): string {
-  return `archive:mangrove:60:${segment(profileId)}:${segment(profileEpochId)}:${segment(triggerEventId)}`;
+  return `archive:${segment(landscapeId)}:${threshold}:${segment(profileId)}:${segment(profileEpochId)}:${segment(triggerEventId)}`;
 }
 
 function expectedAuditFingerprint(audit: Schema3SeedAudit): string {
@@ -634,37 +771,37 @@ function createCarryForwardEntry(audit: Schema3SeedAudit): SeedLedgerEntry {
   });
 }
 
-function expectedMangroveArchive(
+function expectedPlantStageArchive(
   input: RecognitionSeedProjectionInput,
+  transition: LandscapeRecognitionTransition | null,
   profileId: SyntheticChildId,
 ): PlantStageArchive | null {
-  if (input.mangroveTransition === null) return null;
+  if (
+    transition === null ||
+    transition.crossedThreshold === null ||
+    transition.stageBefore === transition.stageAfter
+  ) {
+    return null;
+  }
   return freezeArchive({
-    id: archiveId(profileId, input.profileEpochId, input.triggerEventId),
+    id: archiveId(
+      profileId,
+      input.profileEpochId,
+      input.triggerEventId,
+      transition.landscapeId,
+      transition.crossedThreshold,
+    ),
     profileId,
     profileEpochId: input.profileEpochId,
-    landscapeId: 'mangrove',
-    threshold: 60,
-    seedsBefore: 48,
-    seedsAfter: 60,
-    stageBefore: 'shoot',
-    stageAfter: 'sapling',
+    landscapeId: transition.landscapeId,
+    threshold: transition.crossedThreshold,
+    seedsBefore: transition.seedsBefore,
+    seedsAfter: transition.seedsAfter,
+    stageBefore: transition.stageBefore,
+    stageAfter: transition.stageAfter,
     triggerEventId: input.triggerEventId,
     symbolicOnly: true,
   });
-}
-
-function isCanonicalMangroveTransition(value: unknown): value is MangroveRecognitionTransition {
-  return (
-    isRecord(value) &&
-    value.landscapeId === 'mangrove' &&
-    value.seedsBefore === 48 &&
-    value.seedsAfter === 60 &&
-    value.stageBefore === 'shoot' &&
-    value.stageAfter === 'sapling' &&
-    value.crossedThreshold === 60 &&
-    value.symbolicOnly === true
-  );
 }
 
 export function auditSchema3SeedState(
@@ -1005,9 +1142,7 @@ export function projectRecognitionSeedEntry(
     input.recognitionKey === input.seedTransactionId ||
     !VALID_FIXED_SEED_AWARDS.has(input.amount) ||
     !isIsoTimestamp(input.committedAt) ||
-    input.fixtureVersion !== SCHEMA3_R002A_FIXTURE_VERSION ||
-    !Object.prototype.hasOwnProperty.call(input, 'mangroveTransition') ||
-    (input.mangroveTransition !== null && !isCanonicalMangroveTransition(input.mangroveTransition))
+    input.fixtureVersion !== SCHEMA3_R002A_FIXTURE_VERSION
   ) {
     return failure(
       'INVALID_INPUT',
@@ -1016,6 +1151,9 @@ export function projectRecognitionSeedEntry(
   }
   const ledgerResult = validateLedger(input.ledger);
   if (!ledgerResult.ok) return ledgerResult;
+  const transitionResult = inputLandscapeTransition(input);
+  if (!transitionResult.ok) return transitionResult;
+  const landscapeTransition = transitionResult.data;
   const ledger = ledgerResult.data;
   if (ledger.profileId !== input.profileId) {
     return failure('PROFILE_SCOPE_MISMATCH', 'Recognition and ledger profiles must match');
@@ -1034,29 +1172,6 @@ export function projectRecognitionSeedEntry(
       'Recognition cannot be projected before the profile baseline is normalized',
     );
   }
-  const projectedEntryId = recognitionEntryId(
-    ledger.profileId,
-    input.profileEpochId,
-    input.triggerEventId,
-  );
-  const eventAlreadyProjected = ledger.entries.some((entry) => entry.id === projectedEntryId);
-  if (input.mangroveTransition !== null && input.profileId !== 'child_salem') {
-    return failure(
-      'FIXTURE_EVIDENCE_MISMATCH',
-      'The canonical Mangrove archive belongs only to Salem',
-    );
-  }
-  if (input.mangroveTransition !== null && !eventAlreadyProjected) {
-    const beforeResult = selectLifetimeSeeds(ledger, input.profileId, input.profileEpochId);
-    if (!beforeResult.ok) return beforeResult;
-    if (beforeResult.data !== 108 || ledger.plantStageArchives.length > 0) {
-      return failure(
-        'EVENT_CONFLICT',
-        'Only the canonical 108-to-120 event may archive the Mangrove 60 stage',
-      );
-    }
-  }
-
   const fingerprint = stableFingerprint([
     input.profileId,
     input.profileEpochId,
@@ -1084,7 +1199,25 @@ export function projectRecognitionSeedEntry(
       sourceFingerprint: fingerprint,
     },
   });
-  const archive = expectedMangroveArchive(input, input.profileId);
+  const archive = expectedPlantStageArchive(input, landscapeTransition, input.profileId);
+  if (
+    archive &&
+    ledger.plantStageArchives.some(
+      (candidate) =>
+        candidate.landscapeId === archive.landscapeId && candidate.threshold === archive.threshold,
+    )
+  ) {
+    const existingStageArchive = ledger.plantStageArchives.find(
+      (candidate) =>
+        candidate.landscapeId === archive.landscapeId && candidate.threshold === archive.threshold,
+    );
+    if (existingStageArchive?.triggerEventId !== input.triggerEventId) {
+      return failure(
+        'EVENT_CONFLICT',
+        'A Garden stage can be archived only once per profile epoch',
+      );
+    }
+  }
   const existingEntry = ledger.entries.find((candidate) => candidate.id === entry.id);
   const eventEntry = ledger.entries.find(
     (candidate) => candidate.triggerEventId === input.triggerEventId && candidate.id !== entry.id,
@@ -1119,12 +1252,12 @@ export function projectRecognitionSeedEntry(
   ) {
     return failure(
       'EVENT_CONFLICT',
-      'The recognition event has conflicting Mangrove archive evidence',
+      'The recognition event has conflicting plant archive evidence',
     );
   }
   if (existingEntry) {
     if (archive && !existingArchive) {
-      return failure('EVENT_CONFLICT', 'The projected recognition is missing its Mangrove archive');
+      return failure('EVENT_CONFLICT', 'The projected recognition is missing its plant archive');
     }
     return {
       ok: true,
@@ -1137,10 +1270,7 @@ export function projectRecognitionSeedEntry(
     };
   }
   if (existingArchive) {
-    return failure(
-      'EVENT_CONFLICT',
-      'A Mangrove archive exists without its recognition Seed entry',
-    );
+    return failure('EVENT_CONFLICT', 'A plant archive exists without its recognition Seed entry');
   }
 
   const nextLedger = freezeLedger({

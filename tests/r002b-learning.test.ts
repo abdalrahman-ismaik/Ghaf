@@ -644,6 +644,82 @@ describe('R002b equal-credit completion', () => {
 });
 
 describe('R002b safe learning recovery and return intent', () => {
+  it('rejects sparse Story progress before it can authorize package completion', () => {
+    const ready = structuredClone(readyState('story'));
+    const sparseSteps: unknown[] = [];
+    sparseSteps.length = MANGROVE_ROOTS_LEARNING_PACKAGE.routes.story.contentStepIds.length;
+    Object.assign(ready.routeProgress.story, { completedContentStepIds: sparseSteps });
+
+    expect(restoreMangroveLearningState(ready)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_STATE' },
+    });
+    expect(
+      completeMangroveLearning({
+        state: ready,
+        profileId: PROFILE_ID,
+        profileEpochId: EPOCH_ID,
+        route: 'story',
+        completedAt: COMPLETED_AT,
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_STATE' } });
+
+    const completed = completeMangroveLearning({
+      state: readyState('story'),
+      profileId: PROFILE_ID,
+      profileEpochId: EPOCH_ID,
+      route: 'story',
+      completedAt: COMPLETED_AT,
+    });
+    expectOk(completed);
+    const forgedCompletion = structuredClone(completed.data.state);
+    Object.assign(forgedCompletion.routeProgress.story, {
+      completedContentStepIds: sparseSteps,
+    });
+    expect(forgedCompletion.completion?.completionCreditId).toBe('learning.mangrove_roots.v1');
+    expect(restoreMangroveLearningState(forgedCompletion)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_STATE' },
+    });
+  });
+
+  it('requires dense plain arrays for unlock and zero-reward completion evidence', () => {
+    const malformedUnlock = structuredClone(startedState('story'));
+    const sparseThresholds: unknown[] = [];
+    sparseThresholds.length = 2;
+    sparseThresholds[1] = 132;
+    if (malformedUnlock.unlockEvidence) {
+      Object.assign(malformedUnlock.unlockEvidence, { reachedThresholds: sparseThresholds });
+    }
+    expect(restoreMangroveLearningState(malformedUnlock)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_STATE' },
+    });
+
+    const completed = completeMangroveLearning({
+      state: readyState('accessible'),
+      profileId: PROFILE_ID,
+      profileEpochId: EPOCH_ID,
+      route: 'accessible',
+      completedAt: COMPLETED_AT,
+    });
+    expectOk(completed);
+    for (const field of ['masteryCreditIds', 'taskRecognitionIds'] as const) {
+      const malformedCompletion = structuredClone(completed.data.state);
+      const nonPlainEmptyArray: unknown[] = [];
+      Object.setPrototypeOf(nonPlainEmptyArray, null);
+      if (malformedCompletion.completion) {
+        Object.assign(malformedCompletion.completion.consequences, {
+          [field]: nonPlainEmptyArray,
+        });
+      }
+      expect(restoreMangroveLearningState(malformedCompletion)).toMatchObject({
+        ok: false,
+        error: { code: 'COMPLETION_CONFLICT' },
+      });
+    }
+  });
+
   it('restores only a canonical complete event and rejects conflicting reward evidence', () => {
     const completed = completeMangroveLearning({
       state: readyState('accessible'),

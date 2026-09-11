@@ -70,6 +70,21 @@ const CATEGORY_LANDSCAPES = {
 
 const PROHIBITED_FOOD_PRESSURE =
   /(?:clean\s*plate|finish\s+(?:all|every)|every\s+bite|calorie|diet|body\s*weight|إنهاء\s+كل\s+الطعام|الطبق\s+النظيف|السعرات|الحمية|الوزن)/iu;
+const BOUNDED_ENGLISH_PRAISE =
+  /^(?:(?:You\s+)?sorted\s+(?:the\s+)?(?:clean\s+)?(?:paper|plastic|items|materials|recyclables)(?:\s+approved\s+by\s+an?\s+adult)?\s+and\s+asked\s+(?:(?:an?\s+adult\s+)?for\s+help\s+when\s+(?:unsure|needed)|an?\s+adult\s+before\s+continuing)|You\s+sorted\s+the\s+clean\s+recyclables\s+and\s+asked\s+before\s+going\s+to\s+the\s+bin[—-]that\s+kept\s+the\s+job\s+safe\s+and\s+helped\s+our\s+household)[.!]?$/iu;
+const BOUNDED_ARABIC_PRAISE =
+  /^(?:(?:لقد\s+)?فرزت\s+(?:الورق|المواد)(?:\s+النظيف(?:ة|ين)?)?(?:\s+القابلة\s+لإعادة\s+التدوير)?\s+و(?:سألت\s+شخص(?:اً|ا)?\s+بالغ(?:اً|ا)?\s+قبل\s+المتابعة|طلبت\s+مساعدة\s+شخص\s+بالغ\s+عند\s+الشك)|لقد\s+فرزت\s+المواد\s+النظيفة\s+القابلة\s+لإعادة\s+التدوير\s+وسألت\s+قبل\s+الذهاب\s+إلى\s+الحاوية؛\s+وهذا\s+جعل\s+المهمة\s+أكثر\s+أماناً\s+وساعد\s+أسرتنا)[.!؟]?$/u;
+
+export function isDescriptiveTaskPraise(praise: LocalizedText): boolean {
+  const parsed = localizedTextSchema.safeParse(praise);
+  if (!parsed.success) return false;
+  const safety = evaluateAssistantSafety({ audience: 'parent', texts: [parsed.data] });
+  return (
+    safety.accepted &&
+    BOUNDED_ENGLISH_PRAISE.test(parsed.data.en) &&
+    BOUNDED_ARABIC_PRAISE.test(parsed.data.ar)
+  );
+}
 
 export const taskTemplateSchema = z
   .object({

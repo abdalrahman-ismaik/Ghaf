@@ -20,6 +20,14 @@ type DecodedPng = {
   data: Buffer;
 };
 
+type PlatformRaster = {
+  path: string;
+  width: number;
+  height: number;
+  sha256: string;
+  opacity: 'opaque' | 'transparent';
+};
+
 const appIconRoot = 'assets/brand/ghaf/app-icon';
 const brightPearl = '#F7F8F3';
 
@@ -109,6 +117,8 @@ const platformAssets = {
     opacity: 'opaque',
   },
 } as const;
+
+const platformAssetCases: PlatformRaster[] = Object.values(platformAssets);
 
 const protectedContentComponents = [
   'src/components/access/BotanicalAvatar.tsx',
@@ -247,8 +257,9 @@ function nestedFiles(directory: string): string[] {
 }
 
 describe('official Ghaf platform branding', () => {
-  it('preserves the approved platform rasters byte-for-byte with exact image classes', () => {
-    for (const asset of Object.values(platformAssets)) {
+  it.each(platformAssetCases)(
+    'preserves approved raster $path byte-for-byte with its exact image class',
+    (asset) => {
       expect(existsSync(resolve(root, asset.path)), asset.path).toBe(true);
       expect(sha256(asset.path), asset.path).toBe(asset.sha256);
 
@@ -270,8 +281,8 @@ describe('official Ghaf platform branding', () => {
           asset.path,
         ).toBe(false);
       }
-    }
-  });
+    },
+  );
 
   it('keeps adaptive and splash artwork within the validated transparent bounds', () => {
     const foreground = decode(platformAssets.androidAdaptiveForeground.path);

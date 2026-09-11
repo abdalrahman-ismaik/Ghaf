@@ -20,7 +20,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: PROVISIONAL_ANDROID_PACKAGE,
+    allowBackup: false,
+    blockedPermissions: [
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+    ],
     predictiveBackGestureEnabled: true,
+    softwareKeyboardLayoutMode: 'resize',
     icon: './assets/brand/ghaf/app-icon/android-legacy-icon-1024.png',
     adaptiveIcon: {
       foregroundImage: './assets/brand/ghaf/app-icon/android-adaptive-foreground-1024.png',

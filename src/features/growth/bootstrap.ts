@@ -410,30 +410,23 @@ export function projectRecognitionIntoGrowthJourney(input: {
   }
 
   const growth = input.receipt.landscapeGrowth;
-  if (growth) {
-    const previousLandscape = input.previousSession.landscapeProgress[growth.landscapeId];
-    const nextLandscape = input.nextSession.landscapeProgress[growth.landscapeId];
-    if (
-      !previousLandscape ||
-      !nextLandscape ||
-      nextLandscape.cumulativeSeeds !== growth.seedsAfter ||
-      nextLandscape.stage !== growth.stageAfter ||
-      (previouslyCommitted
-        ? previousLandscape.cumulativeSeeds !== growth.seedsAfter ||
-          previousLandscape.stage !== growth.stageAfter
-        : previousLandscape.cumulativeSeeds !== growth.seedsBefore ||
-          previousLandscape.stage !== growth.stageBefore)
-    ) {
-      return failure('Landscape receipt does not reconcile with the authoritative sessions');
-    }
+  if (!growth) {
+    return failure('Seed recognition requires its exact Garden growth transition');
   }
-
-  const requiresMangroveArchive =
-    profileId === 'child_salem' &&
-    transaction.balanceBefore === 48 &&
-    transaction.balanceAfter === 60;
-  if (requiresMangroveArchive && !isCanonicalMangroveArchiveTransition(input.receipt)) {
-    return failure('The canonical 48-to-60 approval requires its Mangrove stage transition');
+  const previousLandscape = input.previousSession.landscapeProgress[growth.landscapeId];
+  const nextLandscape = input.nextSession.landscapeProgress[growth.landscapeId];
+  if (
+    !previousLandscape ||
+    !nextLandscape ||
+    nextLandscape.cumulativeSeeds !== growth.seedsAfter ||
+    nextLandscape.stage !== growth.stageAfter ||
+    (previouslyCommitted
+      ? previousLandscape.cumulativeSeeds !== growth.seedsAfter ||
+        previousLandscape.stage !== growth.stageAfter
+      : previousLandscape.cumulativeSeeds !== growth.seedsBefore ||
+        previousLandscape.stage !== growth.stageBefore)
+  ) {
+    return failure('Landscape receipt does not reconcile with the authoritative sessions');
   }
 
   const projected = projectRecognitionSeedEntry({
@@ -446,17 +439,7 @@ export function projectRecognitionIntoGrowthJourney(input: {
     amount: transaction.amount,
     committedAt: input.committedAt,
     fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
-    mangroveTransition: isCanonicalMangroveArchiveTransition(input.receipt)
-      ? {
-          landscapeId: 'mangrove',
-          seedsBefore: 48,
-          seedsAfter: 60,
-          stageBefore: 'shoot',
-          stageAfter: 'sapling',
-          crossedThreshold: 60,
-          symbolicOnly: true,
-        }
-      : null,
+    landscapeTransition: growth,
   });
   if (!projected.ok) return projected;
 

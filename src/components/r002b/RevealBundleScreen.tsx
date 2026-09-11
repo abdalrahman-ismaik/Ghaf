@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -101,10 +101,14 @@ export function RevealBundleScreen({
   const status = statusPresentation[contentState];
   const initialFocusRef = useRef<View>(null);
   const initialFocusApplied = useRef(false);
-  const focusInitialHeadingAfterLayout = () => {
+  const focusInitialHeading = useCallback(() => {
     if (!initialFocus || initialFocusApplied.current) return;
     initialFocusApplied.current = focusAccessibilityTarget(initialFocusRef.current);
-  };
+  }, [initialFocus]);
+
+  useEffect(() => {
+    focusInitialHeading();
+  }, [focusInitialHeading]);
 
   return (
     <View
@@ -132,7 +136,7 @@ export function RevealBundleScreen({
             accessibilityLabel={`${groupLabel}. ${title}. ${statusLabel}`}
             accessibilityLanguage={language === 'ar' ? 'ar-AE' : 'en-AE'}
             accessibilityRole="header"
-            onLayout={focusInitialHeadingAfterLayout}
+            onLayout={focusInitialHeading}
             ref={initialFocusRef}
             testID="r002b-reveal-initial-focus"
           >

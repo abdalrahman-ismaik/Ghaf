@@ -31,6 +31,7 @@ export interface ExpoVoiceCaptureServiceOptions {
   readonly requestRecordingPermissionsAsync?: () => Promise<{ readonly granted: boolean }>;
   readonly setAudioModeAsync?: (mode: Partial<AudioMode>) => Promise<void>;
   readonly createRecorder?: () => ExpoAudioRecorderPort | Promise<ExpoAudioRecorderPort>;
+  readonly deleteRecording?: (uri: string) => Promise<ServiceResult<true>>;
   readonly now?: () => Date;
 }
 
@@ -74,9 +75,12 @@ export class ExpoVoiceCaptureService implements VoiceCaptureService {
   private readonly requestNativePermission: () => Promise<{ readonly granted: boolean }>;
   private readonly configureAudio: (mode: Partial<AudioMode>) => Promise<void>;
   private readonly createRecorder: () => Promise<ExpoAudioRecorderPort>;
+  private readonly deleteRecording: (uri: string) => Promise<ServiceResult<true>>;
   private readonly now: () => Date;
   private recorder: ExpoAudioRecorderPort | null = null;
   private permissionGranted = false;
+  private lifecycleRevision = 0;
+  private pendingLifecycle: Promise<unknown> | null = null;
 
   constructor(options: ExpoVoiceCaptureServiceOptions = {}) {
     this.requestNativePermission =
@@ -100,6 +104,8 @@ export class ExpoVoiceCaptureService implements VoiceCaptureService {
           });
         };
     this.now = options.now ?? (() => new Date());
+    this.deleteRecording =
+      options.deleteRecording ?? ((uri) => new ExpoEphemeralMediaService().delete(uri));
   }
 
   async requestPermission(): Promise<ServiceResult<'granted' | 'denied'>> {
@@ -113,60 +119,125 @@ export class ExpoVoiceCaptureService implements VoiceCaptureService {
     }
   }
 
+  private async runLifecycle<T>(
+    operation: () => Promise<ServiceResult<T>>,
+  ): Promise<ServiceResult<T>> {
+    const previous = this.pendingLifecycle;
+    const pending = (async () => {
+      await previous?.catch(() => undefined);
+      return operation();
+    })();
+    this.pendingLifecycle = pending;
+    try {
+      return await pending;
+    } finally {
+      if (this.pendingLifecycle === pending) this.pendingLifecycle = null;
+    }
+  }
+
+  private async discardFailedRecording<T>(
+    uri: string | null,
+    result: ServiceResult<T>,
+  ): Promise<ServiceResult<T>> {
+    if (!uri) return result;
+    try {
+      const deleted = await this.deleteRecording(uri);
+      return deleted.ok ? result : deleted;
+    } catch {
+      return failure('REMOTE_UNAVAILABLE', 'Failed voice recording could not be deleted');
+    }
+  }
+
   async startHeld(): Promise<ServiceResult<{ readonly startedAt: string }>> {
     if (!this.permissionGranted) {
       return failure('PRIVACY_REJECTED', 'Microphone permission is required before capture');
     }
-    if (this.recorder) return failure('INVALID_TRANSITION', 'A held recording is already active');
-    let recorder: ExpoAudioRecorderPort | null = null;
-    try {
-      recorder = await this.createRecorder();
-      await this.configureAudio(FOREGROUND_RECORDING_MODE);
-      await recorder.prepareToRecordAsync();
-      recorder.record({ forDuration: 15 });
-      this.recorder = recorder;
-      return success({ startedAt: this.now().toISOString() });
-    } catch {
-      recorder?.release();
-      await this.configureAudio(IDLE_AUDIO_MODE).catch(() => undefined);
-      return failure('REMOTE_UNAVAILABLE', 'Foreground voice capture could not start');
+    if (this.recorder || this.pendingLifecycle) {
+      return failure('INVALID_TRANSITION', 'Voice capture or cleanup is already active');
     }
+    const revision = this.lifecycleRevision;
+    const stale = () => revision !== this.lifecycleRevision;
+    const cancelled = () =>
+      failure<{ readonly startedAt: string }>(
+        'INVALID_TRANSITION',
+        'Foreground voice capture start was cancelled',
+      );
+    return this.runLifecycle(async () => {
+      if (stale()) return cancelled();
+      try {
+        const recorder = await this.createRecorder();
+        this.recorder = recorder;
+        if (stale()) return cancelled();
+        await this.configureAudio(FOREGROUND_RECORDING_MODE);
+        if (stale()) return cancelled();
+        await recorder.prepareToRecordAsync();
+        if (stale()) return cancelled();
+        recorder.record({ forDuration: 15 });
+        return success({ startedAt: this.now().toISOString() });
+      } catch {
+        if (stale()) return cancelled();
+        const uri = this.recorder?.uri ?? null;
+        this.recorder?.release();
+        this.recorder = null;
+        await this.configureAudio(IDLE_AUDIO_MODE).catch(() => undefined);
+        return this.discardFailedRecording(
+          uri,
+          failure('REMOTE_UNAVAILABLE', 'Foreground voice capture could not start'),
+        );
+      }
+    });
   }
 
   async stopHeld(): Promise<ServiceResult<CapturedVoiceFile>> {
     const recorder = this.recorder;
-    if (!recorder) return failure('INVALID_TRANSITION', 'No held recording is active');
-    try {
-      await recorder.stop();
-      const uri = recorder.uri;
-      const durationMs = Math.round(recorder.currentTime * 1_000);
-      if (!uri || durationMs <= 0 || durationMs > 15_000) {
-        return failure('INVALID_INPUT', 'Captured voice duration or URI is outside policy');
-      }
-      return success({ uri, durationMs, mediaType: 'audio/m4a' });
-    } catch {
-      return failure('REMOTE_UNAVAILABLE', 'Foreground voice capture could not stop');
-    } finally {
-      recorder.release();
-      this.recorder = null;
-      await this.configureAudio(IDLE_AUDIO_MODE).catch(() => undefined);
+    if (!recorder || this.pendingLifecycle) {
+      return failure('INVALID_TRANSITION', 'No available held recording is active');
     }
+    return this.runLifecycle(async () => {
+      let uri = recorder.uri;
+      let result: ServiceResult<CapturedVoiceFile>;
+      try {
+        await recorder.stop();
+        uri = recorder.uri ?? uri;
+        const durationMs = Math.round(recorder.currentTime * 1_000);
+        if (!uri || durationMs <= 0 || durationMs > 15_000) {
+          result = failure('INVALID_INPUT', 'Captured voice duration or URI is outside policy');
+        } else {
+          result = success({ uri, durationMs, mediaType: 'audio/m4a' });
+        }
+      } catch {
+        result = failure('REMOTE_UNAVAILABLE', 'Foreground voice capture could not stop');
+      } finally {
+        uri = recorder.uri ?? uri;
+        recorder.release();
+        this.recorder = null;
+        await this.configureAudio(IDLE_AUDIO_MODE).catch(() => undefined);
+      }
+      return result.ok ? result : this.discardFailedRecording(uri, result);
+    });
   }
 
   async cancel(): Promise<ServiceResult<{ readonly uri: string | null }>> {
-    const recorder = this.recorder;
-    if (!recorder) return success({ uri: null });
-    const uri = recorder.uri;
-    try {
-      if (recorder.isRecording) await recorder.stop();
-      return success({ uri: recorder.uri ?? uri });
-    } catch {
-      return failure('REMOTE_UNAVAILABLE', 'Foreground voice capture cancellation failed');
-    } finally {
-      recorder.release();
-      this.recorder = null;
-      await this.configureAudio(IDLE_AUDIO_MODE).catch(() => undefined);
-    }
+    this.lifecycleRevision += 1;
+    const stoppingUri = this.recorder?.uri ?? null;
+    return this.runLifecycle(async () => {
+      const recorder = this.recorder;
+      if (!recorder) return success({ uri: stoppingUri });
+      let uri = recorder.uri;
+      let result: ServiceResult<{ readonly uri: string | null }>;
+      try {
+        if (recorder.isRecording) await recorder.stop();
+        result = success({ uri: recorder.uri ?? uri });
+      } catch {
+        result = failure('REMOTE_UNAVAILABLE', 'Foreground voice capture cancellation failed');
+      } finally {
+        uri = recorder.uri ?? uri;
+        recorder.release();
+        this.recorder = null;
+        await this.configureAudio(IDLE_AUDIO_MODE).catch(() => undefined);
+      }
+      return result.ok ? result : this.discardFailedRecording(uri, result);
+    });
   }
 }
 

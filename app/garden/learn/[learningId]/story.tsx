@@ -111,6 +111,7 @@ function AuthorizedLearningStory({
             badgeId: intent.badgeId,
             profileId,
             ...serializeR002bOrigin(badgeOrigin.data),
+            restoreProfileId: profileId,
             restoreFocusTarget: intent.focusTargetId,
             restoreScrollOffset: String(intent.scrollOffset),
           },
@@ -135,6 +136,7 @@ function AuthorizedLearningStory({
         params: {
           profileId,
           ...serializeR002bOrigin(returnOrigin.data),
+          restoreProfileId: profileId,
           restoreFocusTarget: intent.focusTargetId,
           restoreScrollOffset: String(intent.scrollOffset),
         },

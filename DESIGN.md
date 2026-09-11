@@ -806,8 +806,8 @@ Photo and voice controls must explain:
 - Separate symbolic Seed/garden progress from any measured environmental metric at the type level.
 - Keep a provider interface for prepared AI and an optional server-side live adapter. Never place
   an API secret in the mobile bundle.
-- Update the applicable product requirements before implementation, and do not silently widen
-  preserved Feature 002 behavior.
+- Create Feature 003 through Spec Kit before implementation; do not silently widen Feature 002 or
+  manually edit the Spec Kit-managed block in `AGENTS.md`.
 
 ## Review Checklist
 

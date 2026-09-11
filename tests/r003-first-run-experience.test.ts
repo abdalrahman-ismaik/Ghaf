@@ -283,12 +283,12 @@ describe('R003 first-run experience', () => {
 
   it('settles the bounded signed-out images and reports fallback failures', async () => {
     const calls: number[] = [];
-    const updates: Array<{
+    const updates: {
       readonly failed: number;
       readonly presentationReady: boolean;
       readonly settled: number;
       readonly total: number;
-    }> = [];
+    }[] = [];
 
     const result = await settleStartupImageSources({
       batchSize: 2,
@@ -412,6 +412,7 @@ describe('R003 first-run experience', () => {
 
   it('uses prepared local narration and quiet foreground ambience after the slide settles', () => {
     const narration = source('src/components/onboarding/useOnboardingNarrator.ts');
+    const playback = source('src/features/onboarding/playback.ts');
     const ambience = source('src/components/audio/AmbientAudioProvider.tsx');
     const audioSources = source('src/components/onboarding/onboardingAudioSources.ts');
     const illustration = source('src/components/illustrations/LocalIllustration.tsx');
@@ -429,9 +430,11 @@ describe('R003 first-run experience', () => {
     expect(narration).toContain("if (Platform.OS === 'web') return");
     expect(narration).toContain('AccessibilityInfo.isScreenReaderEnabled()');
     expect(narration).toMatch(/addEventListener\(\s*'screenReaderChanged'/u);
-    expect(narration).toContain('player.play()');
-    expect(narration).toContain('player.pause()');
-    expect(narration).toContain('player.seekTo(0)');
+    expect(playback).toContain('player.play()');
+    expect(playback).toContain('player.pause()');
+    expect(playback).toContain('player.seekTo(0)');
+    expect(narration).toContain('createOnboardingPlayback(player)');
+    expect(narration).toContain('return () => playback.setEnabled(false)');
     expect(narration).toContain('!ready ||');
     expect(narration).toContain('screenReaderEnabled !== false ||');
     expect(narration).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");

@@ -1,6 +1,7 @@
 import { useEffect, type PropsWithChildren, type ReactNode } from 'react';
 import {
   BackHandler,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -45,6 +46,8 @@ export function R002bNestedScreen({
   title,
 }: R002bNestedScreenProps) {
   useEffect(() => {
+    if (Platform.OS !== 'android') return undefined;
+
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       onBack();
       return true;

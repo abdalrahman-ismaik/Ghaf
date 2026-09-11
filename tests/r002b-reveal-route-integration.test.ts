@@ -103,7 +103,11 @@ describe('R002b combined RevealBundle route integration', () => {
     const child = source('app/child/index.tsx');
 
     expect(child).toContain("params.restoreFocusTarget === 'open-r002b-reveal-button'");
+    expect(child).toContain('const focusRevealReturn = useCallback');
     expect(child).toContain('focusAccessibilityTarget(revealReturnFocusRef.current)');
+    expect(child).toContain('revealReturnFocusApplied.current = false;');
+    expect(child).toContain('focusRevealReturn();');
+    expect(child).toContain('onLayout={focusRevealReturn}');
     expect(child).toContain('nativeID="open-r002b-reveal-button"');
     expect(child).toContain("bundle.lifecycle === 'acknowledged'");
   });

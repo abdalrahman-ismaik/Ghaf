@@ -26,6 +26,7 @@ import type {
   StartLearningRouteResult,
   SubmitLearningCheckResult,
 } from '../../models/learning';
+import { hasDensePlainArrayShape } from '../../utils/exactPlainData';
 import { BADGE_IDS } from '../growth/badgeRegistry';
 
 const LEARNING_ID = 'learning.mangrove_roots.v1' as const;
@@ -151,6 +152,20 @@ function failure<T>(code: LearningErrorCode, message: string): LearningResult<T>
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isDensePlainArray(value: unknown): value is unknown[] {
+  return Array.isArray(value) && hasDensePlainArrayShape(value);
+}
+
+function hasOnlyIndexedValues(
+  values: readonly unknown[],
+  predicate: (value: unknown) => boolean,
+): boolean {
+  for (let index = 0; index < values.length; index += 1) {
+    if (!predicate(values[index])) return false;
+  }
+  return true;
 }
 
 function isSupportedProfile(value: unknown): value is SyntheticChildId {
@@ -389,18 +404,23 @@ function contentSteps(route: LearningRoute): readonly LearningContentStepId[] {
 }
 
 function sameStringSequence(left: readonly string[], right: readonly string[]): boolean {
-  return left.length === right.length && left.every((value, index) => value === right[index]);
+  if (left.length !== right.length) return false;
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) return false;
+  }
+  return true;
 }
 
 function validateRouteProgress(
   value: unknown,
   route: LearningRoute,
 ): LearningResult<LearningRouteProgress> {
+  const completedContentStepIds = isRecord(value) ? value.completedContentStepIds : undefined;
   if (
     !isRecord(value) ||
     value.route !== route ||
-    !Array.isArray(value.completedContentStepIds) ||
-    !value.completedContentStepIds.every((stepId) => typeof stepId === 'string') ||
+    !isDensePlainArray(completedContentStepIds) ||
+    !hasOnlyIndexedValues(completedContentStepIds, (stepId) => typeof stepId === 'string') ||
     !isNonNegativeInteger(value.checkAttempts) ||
     typeof value.checkSatisfied !== 'boolean' ||
     (value.lifecycle !== 'not_started' &&
@@ -412,20 +432,20 @@ function validateRouteProgress(
     return failure('INVALID_STATE', `The ${route} progress record is malformed`);
   }
 
-  const completedContentStepIds = value.completedContentStepIds as string[];
+  const canonicalStepIds = completedContentStepIds as string[];
   const steps = contentSteps(route);
   if (
-    completedContentStepIds.length > steps.length ||
-    !sameStringSequence(completedContentStepIds, steps.slice(0, completedContentStepIds.length))
+    canonicalStepIds.length > steps.length ||
+    !sameStringSequence(canonicalStepIds, steps.slice(0, canonicalStepIds.length))
   ) {
     return failure('INVALID_STATE', `The ${route} content progress is not a canonical prefix`);
   }
 
-  const allContentComplete = completedContentStepIds.length === steps.length;
+  const allContentComplete = canonicalStepIds.length === steps.length;
   const lifecycle = value.lifecycle;
   const consistent =
     (lifecycle === 'not_started' &&
-      completedContentStepIds.length === 0 &&
+      canonicalStepIds.length === 0 &&
       value.checkAttempts === 0 &&
       value.checkSatisfied === false) ||
     (lifecycle === 'in_progress' &&
@@ -446,7 +466,7 @@ function validateRouteProgress(
     data: {
       route,
       lifecycle,
-      completedContentStepIds: completedContentStepIds as LearningContentStepId[],
+      completedContentStepIds: canonicalStepIds as LearningContentStepId[],
       checkAttempts: value.checkAttempts,
       checkSatisfied: value.checkSatisfied,
     },
@@ -458,13 +478,15 @@ function completionIdentity(profileId: string, profileEpochId: string): string {
 }
 
 function validateUnlockEvidence(value: unknown): LearningResult<LearningUnlockEvidence> {
+  const reachedThresholdsValue = isRecord(value) ? value.reachedThresholds : undefined;
   if (
     !isRecord(value) ||
     !isSupportedProfile(value.profileId) ||
     !isSafeIdentifier(value.profileEpochId) ||
     value.source !== 'canonical_impact_path_projection' ||
-    !Array.isArray(value.reachedThresholds) ||
-    !value.reachedThresholds.every(
+    !isDensePlainArray(reachedThresholdsValue) ||
+    !hasOnlyIndexedValues(
+      reachedThresholdsValue,
       (threshold) =>
         typeof threshold === 'number' &&
         IMPACT_PATH_THRESHOLDS.includes(threshold as ImpactPathThreshold),
@@ -472,7 +494,7 @@ function validateUnlockEvidence(value: unknown): LearningResult<LearningUnlockEv
   ) {
     return failure('INVALID_INPUT', 'Canonical Impact Path unlock evidence is required');
   }
-  const reachedThresholds = value.reachedThresholds as ImpactPathThreshold[];
+  const reachedThresholds = reachedThresholdsValue as ImpactPathThreshold[];
   if (
     !sameStringSequence(
       reachedThresholds.map(String),
@@ -505,6 +527,8 @@ function validateCompletion(
   }
   const expectedId = completionIdentity(profileId, profileEpochId);
   const consequences = value.consequences;
+  const masteryCreditIds = consequences.masteryCreditIds;
+  const taskRecognitionIds = consequences.taskRecognitionIds;
   if (
     value.id !== expectedId ||
     value.triggerEventId !== expectedId ||
@@ -522,10 +546,10 @@ function validateCompletion(
     consequences.privateLeagueLeafDelta !== 0 ||
     consequences.challengeLeafDelta !== 0 ||
     consequences.familyRewardProgressDelta !== 0 ||
-    !Array.isArray(consequences.masteryCreditIds) ||
-    consequences.masteryCreditIds.length !== 0 ||
-    !Array.isArray(consequences.taskRecognitionIds) ||
-    consequences.taskRecognitionIds.length !== 0
+    !isDensePlainArray(masteryCreditIds) ||
+    masteryCreditIds.length !== 0 ||
+    !isDensePlainArray(taskRecognitionIds) ||
+    taskRecognitionIds.length !== 0
   ) {
     return failure(
       'COMPLETION_CONFLICT',

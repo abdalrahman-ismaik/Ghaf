@@ -1,9 +1,16 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-import { describe, expect, it, vi } from 'vitest';
+import type { ReactElement } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import ImpactPathRoute from '../app/garden/impact-path';
+import BadgeDetailRoute from '../app/garden/badges/[badgeId]';
+import LearningStoryRoute from '../app/garden/learn/[learningId]/story';
+import AccessibleLearningRoute from '../app/garden/learn/[learningId]/accessible';
 import { resolveR002bFeatureFlags } from '@/config/r002bFeatureFlags';
+import type { GrowthJourneyPresentationActions } from '@/features/growth/r002bViewModel';
+import { projectRecognitionSeedEntry } from '@/features/growth/seedLedger';
 import {
   MANGROVE_ROOTS_LEARNING_PACKAGE,
   createMangroveLearningState,
@@ -12,7 +19,81 @@ import {
 } from '@/features/learning/mangroveLearning';
 import { createR002bLearningBackHandler } from '@/features/learning/r002bLearningNavigation';
 import { guardR002bRoute } from '@/features/navigation/r002bRouteGuard';
+import { SCHEMA3_R002A_FIXTURE_VERSION } from '@/models/growthJourney';
 import type { LearningOrigin } from '@/models/learning';
+import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { enterChildExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
+
+const routeHarness = vi.hoisted(() => ({
+  params: {} as Record<string, string>,
+  push: vi.fn(),
+  replace: vi.fn(),
+  back: vi.fn(),
+  presentation: vi.fn(),
+}));
+
+vi.mock('react', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('react')>()),
+  useRef: <T>(current: T) => ({ current }),
+}));
+vi.mock('expo-router', () => ({
+  Redirect: () => null,
+  useLocalSearchParams: () => routeHarness.params,
+  useRouter: () => ({
+    push: routeHarness.push,
+    replace: routeHarness.replace,
+    back: routeHarness.back,
+    canGoBack: () => false,
+  }),
+}));
+vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
+vi.mock('@/config/r002bFeatureFlags', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/config/r002bFeatureFlags')>();
+  return {
+    ...original,
+    r002bFeatureFlags: original.resolveR002bFeatureFlags({
+      r002b_impact_path_ui: true,
+      r002b_badges_ui: true,
+      r002b_learning_ui: true,
+    }),
+  };
+});
+vi.mock('@/components/r002b/R002bNestedScreen', () => ({
+  R002bNestedScreen: () => null,
+  R002bUnavailableState: () => null,
+}));
+vi.mock('@/components/r002b/GrowthJourneyScreens', () => ({
+  ImpactPathScreen: () => null,
+  BadgeDetail: () => null,
+}));
+vi.mock('@/components/r002b/LearningScreens', () => ({
+  MangroveStoryScreen: () => null,
+  AccessibleLearningScreen: () => null,
+}));
+vi.mock('@/features/learning/useR002bLearningPresentation', () => ({
+  useR002bLearningPresentation: (input: { route: 'story' | 'accessible' }) => ({
+    ok: true,
+    state: usePrototypeStore.getState().mangroveLearningByProfile.child_salem,
+    data: { kind: input.route, props: { reducedMotion: true } },
+  }),
+}));
+vi.mock('@/features/growth/useR002bGrowthPresentation', () => ({
+  useR002bGrowthPresentation: (input: unknown) => {
+    routeHarness.presentation(input);
+    return { ok: false };
+  },
+}));
+vi.mock('@/state/usePrototypeStore', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/state/usePrototypeStore')>();
+  return {
+    ...original,
+    usePrototypeStore: Object.assign(
+      (selector: (state: ReturnType<typeof original.usePrototypeStore.getState>) => unknown) =>
+        selector(original.usePrototypeStore.getState()),
+      original.usePrototypeStore,
+    ),
+  };
+});
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const learningId = 'learning.mangrove_roots.v1' as const;
@@ -58,6 +139,220 @@ const impactPathOrigin: LearningOrigin = {
   focusTargetId: 'impact-path-learning-station-132',
   scrollOffset: 0,
 };
+
+const mangroveBadgeId = 'badge.habitat.mangrove_care.v1';
+
+function openEntrySurface(kind: 'impact_path' | 'badge_detail') {
+  routeHarness.params = {
+    profileId,
+    originProfileId: profileId,
+    ...(kind === 'impact_path'
+      ? { originId: 'child_garden_path_card' }
+      : {
+          badgeId: mangroveBadgeId,
+          originId: 'badge_gallery_badge_card',
+          originEntityId: mangroveBadgeId,
+          originFilter: 'in_progress',
+          originScrollOffset: '90',
+        }),
+  };
+  const authorized = kind === 'impact_path' ? ImpactPathRoute() : BadgeDetailRoute();
+  const renderAuthorized = authorized.type as (props: unknown) => ReactElement<{
+    scrollProps: {
+      onScroll: (event: { nativeEvent: { contentOffset: { y: number } } }) => void;
+    };
+  }>;
+  const screen = renderAuthorized(authorized.props);
+  const presentation = routeHarness.presentation.mock.lastCall?.[0] as {
+    actions: GrowthJourneyPresentationActions;
+  };
+  return {
+    actions: presentation.actions,
+    scrollTo: (y: number) =>
+      screen.props.scrollProps.onScroll({ nativeEvent: { contentOffset: { y } } }),
+  };
+}
+
+describe('R002b Learning entry callbacks', () => {
+  beforeEach(async () => {
+    expect(resetPrototypeForTest().ok).toBe(true);
+    await enterChildExperienceForTest();
+    const runtime = usePrototypeStore.getState().growthJourney;
+    let ledger = runtime.ledgersByProfile.child_salem;
+    for (const threshold of [120, 132]) {
+      const projected = projectRecognitionSeedEntry({
+        ledger,
+        profileId,
+        profileEpochId: ledger.profileEpochId,
+        triggerEventId: `learning-entry-${threshold}`,
+        recognitionKey: `recognition:learning-entry-${threshold}`,
+        seedTransactionId: `seed-transaction:learning-entry-${threshold}`,
+        amount: 12,
+        committedAt: '2026-09-05T12:00:00.000Z',
+        fixtureVersion: SCHEMA3_R002A_FIXTURE_VERSION,
+        mangroveTransition: null,
+      });
+      if (!projected.ok) throw new Error(projected.error.message);
+      ledger = projected.data.ledger;
+    }
+    usePrototypeStore.setState({
+      growthJourney: {
+        ...runtime,
+        ledgersByProfile: { ...runtime.ledgersByProfile, child_salem: ledger },
+      },
+    });
+  });
+
+  it.each(['impact_path', 'badge_detail'] as const)(
+    'resumes the same learning origin after scrolling the %s entry',
+    (kind) => {
+      const surface = openEntrySurface(kind);
+      surface.scrollTo(25);
+      surface.actions.openLearning?.(learningId);
+      expect(routeHarness.push).toHaveBeenCalledTimes(1);
+      expect(
+        usePrototypeStore.getState().advanceMangroveLearning('story', 'story_frame_1').ok,
+      ).toBe(true);
+      const learningBefore = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+      const growthBefore = usePrototypeStore.getState().growthJourney;
+
+      surface.scrollTo(30);
+      surface.actions.openLearning?.(learningId);
+
+      expect(routeHarness.push).toHaveBeenCalledTimes(2);
+      expect(routeHarness.push.mock.lastCall).toEqual(routeHarness.push.mock.calls[0]);
+      expect(usePrototypeStore.getState().mangroveLearningByProfile.child_salem).toEqual(
+        learningBefore,
+      );
+      expect(usePrototypeStore.getState().growthJourney).toBe(growthBefore);
+    },
+  );
+
+  it.each([
+    ['impact_path', 'badge_detail'],
+    ['badge_detail', 'impact_path'],
+  ] as const)(
+    'resumes from %s through %s and preserves the original safe Back destination',
+    (first, next) => {
+      const initialSurface = openEntrySurface(first);
+      initialSurface.scrollTo(25);
+      initialSurface.actions.openLearning?.(learningId);
+      expect(routeHarness.push).toHaveBeenCalledTimes(1);
+      const originalLearning = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+      const originalReturn = createMangroveReturnIntent({ state: originalLearning });
+      if (!originalReturn.ok) throw new Error(originalReturn.error.message);
+      const nextSurface = openEntrySurface(next);
+      nextSurface.scrollTo(5);
+
+      nextSurface.actions.openLearning?.(learningId);
+
+      expect(routeHarness.push).toHaveBeenCalledTimes(2);
+      expect(routeHarness.push.mock.lastCall).toEqual(routeHarness.push.mock.calls[0]);
+      const resumedLearning = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+      expect(resumedLearning).toEqual(originalLearning);
+      const replaceValidatedOrigin = vi.fn();
+      const replaceSafeRoot = vi.fn();
+      createR002bLearningBackHandler({
+        state: resumedLearning,
+        profileId,
+        canGoBack: () => false,
+        goBack: vi.fn(),
+        replaceSafeRoot,
+        replaceValidatedOrigin,
+      })();
+      expect(replaceValidatedOrigin).toHaveBeenCalledWith(originalReturn.data);
+      expect(replaceSafeRoot).not.toHaveBeenCalled();
+    },
+  );
+
+  it('opens the accessible route from Impact Path with the existing Badge origin', () => {
+    const badge = openEntrySurface('badge_detail');
+    badge.scrollTo(25);
+    badge.actions.openLearning?.(learningId);
+    const originalLearning = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+    const path = openEntrySurface('impact_path');
+    path.scrollTo(5);
+
+    path.actions.openAccessibleLearning?.(learningId);
+
+    expect(routeHarness.push).toHaveBeenLastCalledWith({
+      pathname: '/garden/learn/[learningId]/accessible',
+      params: routeHarness.push.mock.calls[0]?.[0].params,
+    });
+    const learning = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+    expect(learning.origin).toEqual(originalLearning.origin);
+    expect(learning.activeRoute).toBe('accessible');
+    expect(learning.completion).toBeNull();
+  });
+
+  it.each([
+    ['impact_path', 'profile'],
+    ['impact_path', 'epoch'],
+    ['badge_detail', 'profile'],
+    ['badge_detail', 'epoch'],
+  ] as const)('rejects a %s resume with a stale %s snapshot', (kind, mismatch) => {
+    const surface = openEntrySurface(kind);
+    surface.actions.openLearning?.(learningId);
+    const state = usePrototypeStore.getState();
+    usePrototypeStore.setState({
+      mangroveLearningByProfile: {
+        ...state.mangroveLearningByProfile,
+        child_salem: {
+          ...state.mangroveLearningByProfile.child_salem,
+          ...(mismatch === 'profile'
+            ? { profileId: 'child_alya' as const }
+            : { profileEpochId: 'stale-learning-epoch' }),
+        },
+      },
+    });
+    const learningBefore = usePrototypeStore.getState().mangroveLearningByProfile;
+
+    surface.actions.openLearning?.(learningId);
+
+    expect(routeHarness.push).toHaveBeenCalledTimes(1);
+    expect(usePrototypeStore.getState().mangroveLearningByProfile).toBe(learningBefore);
+  });
+
+  it.each([
+    ['impact_path', 'story'],
+    ['impact_path', 'accessible'],
+    ['badge_detail', 'story'],
+    ['badge_detail', 'accessible'],
+  ] as const)('restores focus and scroll to %s after %s Back without history', (kind, route) => {
+    const entry = openEntrySurface(kind);
+    entry.scrollTo(25);
+    entry.actions.openLearning?.(learningId);
+    const learning = usePrototypeStore.getState().mangroveLearningByProfile.child_salem;
+    if (!learning.origin) throw new Error('Expected a recorded learning origin');
+    if (route === 'accessible') {
+      expect(usePrototypeStore.getState().startMangroveLearning(route, learning.origin).ok).toBe(
+        true,
+      );
+    }
+    routeHarness.params = routeHarness.push.mock.lastCall?.[0].params;
+    const authorized = route === 'story' ? LearningStoryRoute() : AccessibleLearningRoute();
+    const renderAuthorized = authorized.type as (props: unknown) => ReactElement<{
+      onBack: () => void;
+    }>;
+
+    renderAuthorized(authorized.props).props.onBack();
+
+    expect(routeHarness.back).not.toHaveBeenCalled();
+    const target = routeHarness.replace.mock.lastCall?.[0];
+    expect(target.params).toMatchObject({
+      restoreProfileId: profileId,
+      restoreFocusTarget: learning.origin.focusTargetId,
+      restoreScrollOffset: '25',
+    });
+    routeHarness.params = target.params;
+    const destination = kind === 'impact_path' ? ImpactPathRoute() : BadgeDetailRoute();
+    expect(destination.props).toMatchObject(
+      kind === 'impact_path'
+        ? { restored: { focusTarget: learning.origin.focusTargetId, scrollOffset: 25 } }
+        : { restoreFocusTarget: learning.origin.focusTargetId, restoredScrollOffset: 25 },
+    );
+  });
+});
 
 describe('R002b guarded Learning route integration', () => {
   it('mounts exactly the two approved nested Learning surfaces without Child bottom navigation', () => {

@@ -25,6 +25,7 @@ import type {
   SemanticCriterionEvidence,
 } from '../../models/achievements';
 import { IMPACT_PATH_STATIONS, type ImpactPathThreshold } from '../../models/growthJourney';
+import { isExactIsoTimestamp } from '../../utils/isoTimestamp';
 import { BADGE_REGISTRY, getBadgeDefinition } from './badgeRegistry';
 
 const SKILL_IDS = new Set<AchievementSkillId>([
@@ -79,7 +80,7 @@ function isIsoTimestamp(value: unknown): value is string {
   return (
     isNonEmptySingleLine(value) &&
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(value) &&
-    !Number.isNaN(Date.parse(value))
+    isExactIsoTimestamp(value)
   );
 }
 
@@ -292,6 +293,10 @@ function validateState(value: unknown): AchievementResult<AchievementState> {
     awardedBadgeIds.add(award.badgeId);
   }
   return { ok: true, data: state };
+}
+
+export function validateAchievementState(value: unknown): AchievementResult<AchievementState> {
+  return validateState(value);
 }
 
 function scopeFailure<T>(

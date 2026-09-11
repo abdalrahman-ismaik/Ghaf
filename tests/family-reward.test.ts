@@ -295,6 +295,22 @@ describe('Family Reward eligibility and milestones', () => {
 });
 
 describe('Family Reward lifecycle, revision, and privacy', () => {
+  it('rejects impossible calendar timestamps', () => {
+    expect(
+      markFamilyRewardGiven(
+        {
+          ...plan(),
+          lifecycle: 'unlocked',
+          unlockedAt: '2026-09-03T10:01:00.000Z',
+        },
+        {
+          guardianId: 'guardian-parent-1',
+          givenAt: '2026-09-31T10:00:00.000Z',
+        },
+      ),
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+  });
+
   it('moves unlocked to given monotonically and makes the given action idempotent', () => {
     const unlocked = evaluateFamilyRewardPlan(plan(), [event()], {
       evaluatedAt: '2026-09-03T10:01:00.000Z',

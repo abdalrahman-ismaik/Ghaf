@@ -168,6 +168,16 @@ export interface RestoredRememberedExperience {
   readonly activeChildId: SyntheticChildId | null;
 }
 
+export function resolveRememberedAccessLocale(input: {
+  readonly activeExperience: RestoredRememberedExperience['activeExperience'] | 'signed_out';
+  readonly family: LocalFamilyRecord | null;
+  readonly fallbackLocale: LocalFamilyRecord['appLanguage'];
+}): LocalFamilyRecord['appLanguage'] {
+  return input.activeExperience !== 'signed_out' && input.family
+    ? input.family.appLanguage
+    : input.fallbackLocale;
+}
+
 export function restoreRememberedDeviceAccess(input: {
   readonly affinity: DeviceAffinityRecord;
   readonly family: LocalFamilyRecord;

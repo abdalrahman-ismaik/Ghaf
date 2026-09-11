@@ -91,11 +91,14 @@ describe('R002b combined RevealBundle presentation', () => {
   it('focuses one accessible heading deterministically when the route requests initial focus', () => {
     const source = componentSource();
 
+    expect(source).toContain("import { useCallback, useEffect, useRef } from 'react';");
     expect(source).toContain("from '@/utils/accessibilityFocus'");
     expect(source).toContain('readonly initialFocus?: boolean;');
     expect(source).toContain('focusAccessibilityTarget(initialFocusRef.current)');
+    expect(source).toContain('focusInitialHeading();');
+    expect(source).toContain('onLayout={focusInitialHeading}');
     expect(source).toMatch(
-      /<View\s+accessible[\s\S]*?accessibilityRole="header"[\s\S]*?onLayout=\{focusInitialHeadingAfterLayout\}[\s\S]*?ref=\{initialFocusRef\}/u,
+      /<View\s+accessible[\s\S]*?accessibilityRole="header"[\s\S]*?onLayout=\{focusInitialHeading\}[\s\S]*?ref=\{initialFocusRef\}/u,
     );
     expect(source).not.toContain('findNodeHandle');
     expect(source).not.toContain('AccessibilityInfo.setAccessibilityFocus');

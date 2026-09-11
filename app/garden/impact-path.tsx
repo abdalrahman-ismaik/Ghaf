@@ -5,7 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { R002bNestedScreen, R002bUnavailableState } from '@/components/r002b/R002bNestedScreen';
 import { ImpactPathScreen } from '@/components/r002b/GrowthJourneyScreens';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
-import { MANGROVE_ROOTS_LEARNING_PACKAGE } from '@/features/learning/mangroveLearning';
+import {
+  MANGROVE_ROOTS_LEARNING_PACKAGE,
+  restoreMangroveLearningState,
+} from '@/features/learning/mangroveLearning';
 import { useR002bGrowthPresentation } from '@/features/growth/useR002bGrowthPresentation';
 import { createValidatedBackHandler } from '@/features/navigation/r002bBack';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
@@ -14,6 +17,7 @@ import {
   type R002bRouteParam,
 } from '@/features/navigation/r002bRouteRequest';
 import type { SyntheticChildId } from '@/models/familyGrowth';
+import type { LearningOrigin } from '@/models/learning';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 interface ImpactPathParams extends Record<string, R002bRouteParam> {
@@ -121,19 +125,42 @@ function AuthorizedImpactPath({
     learningId: 'learning.mangrove_roots.v1',
   ) => {
     if (learningId !== MANGROVE_ROOTS_LEARNING_PACKAGE.id) return;
-    const routeOrigin = createR002bOrigin({
-      id: 'impact_path_learning_action',
-      profileId,
-      scrollOffset: scrollOffsetRef.current,
-    });
-    if (!routeOrigin.ok) return;
-    const started = usePrototypeStore.getState().startMangroveLearning(route, {
+    const state = usePrototypeStore.getState();
+    const learning = restoreMangroveLearningState(state.mangroveLearningByProfile[profileId]);
+    if (
+      !learning.ok ||
+      learning.data.profileId !== profileId ||
+      learning.data.profileEpochId !==
+        state.growthJourney.ledgersByProfile[profileId].profileEpochId
+    ) {
+      return;
+    }
+    const origin: LearningOrigin = learning.data.origin ?? {
       kind: 'impact_path',
       route: '/garden/impact-path',
       profileId,
       focusTargetId: 'impact-path-learning-station-132',
       scrollOffset: scrollOffsetRef.current,
-    });
+    };
+    if (origin.kind !== 'impact_path' && origin.kind !== 'badge_detail') return;
+    const routeOrigin = createR002bOrigin(
+      origin.kind === 'badge_detail'
+        ? {
+            id: 'badge_detail_learning_action',
+            profileId,
+            entityId: origin.badgeId,
+            filter: origin.filter,
+            galleryScrollOffset: origin.galleryScrollOffset,
+            scrollOffset: origin.scrollOffset,
+          }
+        : {
+            id: 'impact_path_learning_action',
+            profileId,
+            scrollOffset: origin.scrollOffset,
+          },
+    );
+    if (!routeOrigin.ok) return;
+    const started = state.startMangroveLearning(route, origin);
     if (!started.ok) return;
     router.push({
       pathname:

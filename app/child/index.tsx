@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -221,7 +221,7 @@ export default function ChildHomeScreen() {
     childScrollOffsetRef.current = restoredScrollOffset;
   }, [activeChildId, restoredScrollOffset]);
 
-  const focusRevealReturnAfterLayout = () => {
+  const focusRevealReturn = useCallback(() => {
     if (
       (restoredFocusTarget !== 'open-r002b-reveal-button' &&
         restoredFocusTarget !== 'r002b-child-reveal-growth-action') ||
@@ -230,7 +230,12 @@ export default function ChildHomeScreen() {
       return;
     }
     revealReturnFocusApplied.current = focusAccessibilityTarget(revealReturnFocusRef.current);
-  };
+  }, [restoredFocusTarget]);
+
+  useEffect(() => {
+    revealReturnFocusApplied.current = false;
+    focusRevealReturn();
+  }, [activeChildId, focusRevealReturn]);
 
   const previewChoices = useMemo(
     () => choicePool.seededPreviewChoices.filter((choice) => choice.childId === activeChildId),
@@ -565,7 +570,7 @@ export default function ChildHomeScreen() {
             accessibilityLabel={`${t('childHome.currentWork')}. ${formatter.format(child.earnedSeeds)} ${t('common.seedUnit')}`}
             accessibilityRole="header"
             nativeID="open-r002b-reveal-button"
-            onLayout={focusRevealReturnAfterLayout}
+            onLayout={focusRevealReturn}
             ref={revealReturnFocusRef}
             style={[styles.sectionHeading, { flexDirection: logicalRowDirection(direction) }]}
             testID="child-today-reveal-return-region"

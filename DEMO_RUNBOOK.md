@@ -342,6 +342,42 @@ The separate Features 4/5 handoff has since become the approved Feature 004 defa
 implementation recorded above. This earlier AI Services 1–3 evidence remains valid only for its
 original Parent Guide/profile scope and does not pass any Feature 004 activation gate.
 
+## R003 Combined Reveal Browser-evidence Record — 2026-09-07
+
+**Current classification:** T208 complete at the bounded browser/source level; the candidate stays
+default off and release activation, physical Android, wider visual coverage, and named-human gates
+remain open.
+
+Start a fresh local runtime with only `EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2=true`. Follow the normal
+Arabic-first journey: create the synthetic family, approve the canonical Green Impact task, pair
+Salem's local Child experience, complete both approved steps with trusted-adult help, submit, and
+perform the Parent praise-first approval. Return through normal Child access and choose **عرض حصيلة
+النمو / View growth result**. Do not inject store state or bypass access.
+
+The first Reveal must show one complete 12-item receipt-derived result, move focus to the grouped
+Reveal heading, keep Continue clear of the scroll content, and render the reduced-motion state
+without a running animation. To demonstrate recovery before acknowledging, use browser Back, open
+Help, switch language, and reopen the still-pending Reveal. The status must change to **Saved result
+recovered** while the same bundle and focus target remain. Finally choose Continue: the bundle is
+archived once, the transient Reveal action disappears, the normal Garden action returns, and focus
+moves to the persistent Current Task heading on Today.
+
+| Gate                                                                                      | Result              | Evidence                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RED/focused focus and Back coverage                                                       | `PASSED`            | Silent web-focus success, post-ref focus retry, archive return focus, and Android-only Back subscription reproduced before `7d6a6da`; final 5 files / 32 tests |
+| Full automated suite                                                                      | `PASSED`            | typecheck, lint, formatting, and 89 files / 1,225 tests                                                                                                        |
+| Expo dependency/configuration                                                             | `PASSED`            | Dependencies current; public config passed; all R002b source defaults remain off                                                                               |
+| Production exports                                                                        | `PASSED`            | Fresh web export: 39 routes; fresh Android JavaScript export: 2,119 modules / 79 assets                                                                        |
+| Arabic/English 390×844 visual proxy                                                       | `PASSED (bounded)`  | Arabic RTL first presentation and English LTR recovered state; top/bottom captures, all 12 items, zero horizontal overflow, and fixed action clearance         |
+| Focus/recovery/archive proxy                                                              | `PASSED (bounded)`  | Reveal heading and final Today return heading each became the active H1 with `tabindex="-1"`; browser Back preserved the bundle; Continue archived it once     |
+| Reduced motion, console, and network                                                      | `PASSED (bounded)`  | Zero settled running animations, zero console errors, two known development warnings, and no non-static requests                                               |
+| Physical Android, TalkBack, native Back/IME, and OS font scale                            | `BLOCKED / NOT RUN` | Browser proxy and Android JavaScript export cannot pass native gates                                                                                           |
+| Named Arabic/UAE, safeguarding, privacy, sustainability, accessibility, and visual review | `NOT RUN`           | Requires named reviewers and the exact reviewed build/content                                                                                                  |
+
+Local review screenshots are under `output/playwright/r003-reveal-evidence/` and are intentionally
+untracked. Treat them as code-native browser evidence only, not approved mobile references. Do not
+enable the flag for the ordinary judge path until the remaining release gates pass.
+
 ## R003 Onboarding Image Perimeter Progress Record — 2026-09-07
 
 **Current classification:** locally validated presentation candidate; physical Android motion,
@@ -431,6 +467,33 @@ avoids an error overlay, starts sound from the speaker press, and requests autom
 later settled slides after interaction. Physical Android autoplay/audio focus/TalkBack and named
 Arabic performance/asset-rights review require the current competition device and reviewers.
 
+## R003 Approval-authority Reconciliation Record — 2026-09-06
+
+**Current classification:** locally validated, default-off implementation candidate; physical
+Android and named-human gates remain unchanged.
+
+Commits `44f185f`, `c7ee6d6`, and `f546ad9` close the remaining approval-consequence integrity
+work. A recognition attempt now validates the active task, Child, submission, praise, timestamp,
+provider envelope, permanent Seed/Growth/badge evidence, private League Leaf, eligible Family
+Reward progress, and receipt-only RevealBundle before one store update. Exact retries remain
+no-ops. Learning completion requires dense canonical progress, and a learning-dependent badge is
+accepted only when one exact replay can earn it at its recorded source. The candidate stays hidden
+while `r002b_reveal_bundle_v2` is off.
+
+| Gate                                                                              | Result    | Evidence                                                                                   |
+| --------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------ |
+| Focused recognition/reveal/learning matrix                                        | `PASSED`  | 8 files / 209 tests; Reveal store integration 96/96                                        |
+| Complete automated suite                                                          | `PASSED`  | typecheck, lint, format, and 89 files / 1,221 tests                                        |
+| Dependency alignment                                                              | `PASSED`  | `npx expo install --check`: dependencies are up to date                                    |
+| Production web export                                                             | `PASSED`  | 39 static HTML pages / 119 files in the ignored `dist` output                              |
+| Independent final diff review                                                     | `PASSED`  | no remaining actionable P0, P1, or P2 finding after the final fixes                        |
+| Physical Android, TalkBack, native Back/IME, and OS font scale                    | `NOT RUN` | No device attempt in this checkpoint; the previously recorded Android blocker remains open |
+| Named Arabic/UAE, safeguarding, privacy, sustainability, and accessibility review | `NOT RUN` | Requires named reviewers and the exact reviewed build/content                              |
+
+The deterministic commitment fingerprint detects accidental authority drift; it is not a
+signature, production authorization boundary, or proof against coordinated in-memory tampering.
+The export and source/test evidence do not activate any R002b flag or upgrade native/human gates.
+
 ## R003 Device-local Family and AI-guided Setup Record — 2026-09-06
 
 **Current classification:** complete local demo implementation candidate; physical Android and
@@ -518,7 +581,6 @@ backdrop, or native Back request, and does not reappear during ordinary dashboar
 Describe the dialog as a private local summary of current prototype state. Do not call it push
 notifications, remote sync, durable account history, production authentication, or cross-household
 data. Reset deliberately removes the household receipt and therefore restores first-family setup.
-
 ## R003 Ordered Splash-to-loading Startup Record — 2026-09-06
 
 **Current classification:** locally validated implementation candidate; physical Android
@@ -762,8 +824,10 @@ Use saved Parent identifier `parent@example.com`, Parent verification code `4242
 `2468`, Alya's Leaf → Water → Tree picture sequence, and action-scoped Parent reauthentication code
 `4242`. The Parent sign-in/code UI is intentionally neutral and does not expose the operator fixture
 or claim code delivery; this runbook retains the deterministic prototype truth. A previously paired
-Child skips only the pairing approval branch, not profile credential entry. After recognition, the
-normal default-off path keeps the R002a result; do not fabricate or force the combined RevealBundle.
+Child skips only the pairing approval branch, not profile credential entry. Recognition commits the
+receipt-backed RevealBundle candidate, while the normal default-off path continues to present the
+R002a result. Enable `EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2=true` only for the bounded T208 evidence
+path; do not fabricate or force the combined RevealBundle in the ordinary released judge path.
 
 ### Complete-screen sweep after the core spine
 
@@ -960,7 +1024,7 @@ Earlier Feature 002 results prove only the reusable food-rescue baseline and are
 
 | Feature 003 evidence item                               | Status                                  | Evidence required to change status                                                                                       |
 | ------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Product specification, plan, tasks, and analysis        | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent     |
+| Spec Kit specification, plan, tasks, and analysis       | PASSED artifact gate                    | Feature artifacts exist and the pre-implementation quality gate is recorded; runtime tasks remain evidence-dependent     |
 | Typecheck, lint, format, unit, and integration checks   | PASSED final                            | `npm ci`, typecheck, lint, format, 17 files / 305 tests, Expo checks/export, detector, and diff check passed             |
 | Ten-route deterministic journey                         | PASSED bilingual web; native BLOCKED    | Arabic RTL and English LTR completed ten routes; reset locale/direction and six consecutive real Back actions passed     |
 | Secure live Parent task refinement with synthetic input | BLOCKED; validation NOT RUN             | No approved server boundary/provider exists; prepared deterministic Guide remains the honest P0 path                     |

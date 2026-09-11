@@ -32,6 +32,62 @@ describe('cross-platform accessibility focus', () => {
     expect(reactNative.setAccessibilityFocus).not.toHaveBeenCalled();
   });
 
+  it('makes a non-interactive web heading programmatically focusable before focusing it', () => {
+    const ownerDocument: { activeElement: unknown } = { activeElement: {} };
+    let tabIndexAttribute: string | null = null;
+    const target = {
+      focus: vi.fn(function (this: { getAttribute: (name: string) => string | null }) {
+        if (this.getAttribute('tabindex') !== null) ownerDocument.activeElement = this;
+      }),
+      getAttribute: vi.fn(() => tabIndexAttribute),
+      ownerDocument,
+      tagName: 'H1',
+    };
+    Object.defineProperty(target, 'tabIndex', {
+      configurable: true,
+      get: () => (tabIndexAttribute === null ? -1 : Number(tabIndexAttribute)),
+      set: (value: number) => {
+        tabIndexAttribute = String(value);
+      },
+    });
+
+    expect(focusAccessibilityTarget(target)).toBe(true);
+    expect(tabIndexAttribute).toBe('-1');
+    expect(target.focus).toHaveBeenCalledWith({ preventScroll: true });
+    expect(ownerDocument.activeElement).toBe(target);
+  });
+
+  it('reports a silent web focus failure instead of suppressing a later retry', () => {
+    const ownerDocument = { activeElement: {} };
+    const target = {
+      focus: vi.fn(),
+      getAttribute: vi.fn(() => '-1'),
+      ownerDocument,
+      tabIndex: -1,
+      tagName: 'H1',
+    };
+
+    expect(focusAccessibilityTarget(target)).toBe(false);
+    expect(ownerDocument.activeElement).not.toBe(target);
+  });
+
+  it('preserves an existing web tab stop while verifying focus', () => {
+    const ownerDocument: { activeElement: unknown } = { activeElement: {} };
+    const target = {
+      focus: vi.fn(function (this: object) {
+        ownerDocument.activeElement = this;
+      }),
+      getAttribute: vi.fn(() => '0'),
+      ownerDocument,
+      tabIndex: 0,
+      tagName: 'BUTTON',
+    };
+
+    expect(focusAccessibilityTarget(target)).toBe(true);
+    expect(target.tabIndex).toBe(0);
+    expect(ownerDocument.activeElement).toBe(target);
+  });
+
   it('safely skips web targets that are absent, not focusable, or reject focus', () => {
     expect(focusAccessibilityTarget(null)).toBe(false);
     expect(focusAccessibilityTarget({})).toBe(false);

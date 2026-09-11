@@ -312,12 +312,11 @@ duplicate progress.
 The `/parent` refresh is presentation-only. It must retain all currently reachable routes,
 navigation, task actions, voice behavior, reset controls, selected-Child state, access and
 reauthentication boundaries, guards, privacy, and profile isolation. Private League and Family
-Reward remain protected domain behavior, but the current Parent dashboard session has no live
-League or Family Reward selector and their service maps initialize empty. Therefore the screen must
-not invent `4/5`, `108/120`, `120/180`, or any other screenshot counter, and it must not relabel the
-cooperative `/circle` route as the private League. A screenshot fragment without a live authority is
-omitted or treated as supporting reference until an approved adapter exists; that omission does not
-weaken the preserved domain contract.
+Reward remain protected domain behavior. The Child League route consumes an epoch-scoped local
+authority seeded from the approved synthetic `4/4/3` summary and one nominated Salem Leaf; the
+Family Reward route consumes its private plan projection. Parent Home still has no direct selector
+for either detail and must not invent `4/5`, `108/120`, `120/180`, or any other screenshot counter.
+It must not relabel the cooperative `/circle` route as the private League.
 
 R002a copy is Arabic-first and centrally paired with equivalent English. It includes conservative
 loading, empty, validation-error, recoverable-error, submitting, success, interrupted-recovery, and
