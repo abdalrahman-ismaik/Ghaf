@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Alexandria_700Bold } from '@expo-google-fonts/alexandria/700Bold';
 import { Alexandria_800ExtraBold } from '@expo-google-fonts/alexandria/800ExtraBold';
@@ -12,6 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useReducedMotion } from 'react-native-reanimated';
+import { TamaguiProvider } from 'tamagui';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
 import { AmbientAudioProvider } from '@/components/audio';
@@ -23,6 +24,7 @@ import {
 } from '@/components/onboarding';
 import { GhafFontProvider } from '@/components/primitives';
 import { colors, firstRunMotion } from '@/design/tokens';
+import { ghafTamaguiConfig } from '@/design/tamagui';
 import {
   preloadDeferredImages,
   preloadStartupImages,
@@ -34,15 +36,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
-// THESIS: Family action becomes a clear living record. Avoid centered card piles,
-// pastel wellness styling, and generic achievement chrome.
-// OWN-WORLD: The Ghaf Phenology Ledger uses warm paper, dark green ink, small saffron accents,
-// measured rules, botanical plates, low-radius controls, and equal Arabic/English support.
-// STORY: A Parent gives context, a Child acts, a Parent checks, and the Ghaf record grows.
-// FIRST VIEWPORT: Show the tree as an open specimen, framed by identity and one action.
-// FORM: Grounded direction 7, seed ce3efa7d.
-// FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review,
-// the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+// The user-approved botanical redesign keeps one theme and the existing event-owned growth.
 
 const startupFontAssets = {
   Alexandria_700Bold,
@@ -206,27 +200,31 @@ export default function RootLayout() {
   }, [startupPhase]);
 
   return (
-    <SafeAreaProvider>
-      <GhafFontProvider loaded={fontsLoaded}>
-        <AmbientAudioProvider startupReady={startupPhase === 'complete'}>
-          <FirstRunExperienceProvider>
-            <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
-            <View style={styles.root}>
-              {usesLightSystemChrome ? null : <PrototypeStatusBar />}
-              <Stack
-                screenOptions={{
-                  animation: reducedMotion ? 'none' : 'fade',
-                  contentStyle: { backgroundColor: colors.ivory },
-                  headerShown: false,
-                }}
-              />
-              <SectionTransitionOverlay />
-              <BrandedSplash phase={startupPhase} />
-            </View>
-          </FirstRunExperienceProvider>
-        </AmbientAudioProvider>
-      </GhafFontProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={styles.root}>
+      <TamaguiProvider config={ghafTamaguiConfig} defaultTheme="light">
+        <SafeAreaProvider>
+          <GhafFontProvider loaded={fontsLoaded}>
+            <AmbientAudioProvider startupReady={startupPhase === 'complete'}>
+              <FirstRunExperienceProvider>
+                <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
+                <View style={styles.root}>
+                  {usesLightSystemChrome ? null : <PrototypeStatusBar />}
+                  <Stack
+                    screenOptions={{
+                      animation: reducedMotion ? 'none' : 'fade',
+                      contentStyle: { backgroundColor: colors.ivory },
+                      headerShown: false,
+                    }}
+                  />
+                  <SectionTransitionOverlay />
+                  <BrandedSplash phase={startupPhase} />
+                </View>
+              </FirstRunExperienceProvider>
+            </AmbientAudioProvider>
+          </GhafFontProvider>
+        </SafeAreaProvider>
+      </TamaguiProvider>
+    </GestureHandlerRootView>
   );
 }
 

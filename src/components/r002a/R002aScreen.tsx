@@ -12,7 +12,7 @@ import {
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
 import { LocalIllustration } from '@/components/illustrations';
-import { colors, layout, spacing } from '@/design/tokens';
+import { botanical, layout, spacing } from '@/design/tokens';
 
 interface R002aScreenProps extends PropsWithChildren {
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     overflow: 'hidden',
-    backgroundColor: colors.pearlGround,
+    backgroundColor: botanical.colors.canvas,
   },
   fieldTextureFrame: {
     position: 'absolute',
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   fieldTexture: {
     width: '100%',
     height: '100%',
-    opacity: 0.16,
+    opacity: 0.055,
   },
   keyboardRoot: {
     flex: 1,
@@ -137,6 +137,6 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: layout.compactContentWidth,
     alignSelf: 'center',
-    gap: spacing.xl,
+    gap: botanical.space.section,
   },
 });

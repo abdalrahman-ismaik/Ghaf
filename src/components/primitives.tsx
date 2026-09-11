@@ -16,18 +16,19 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
+import { Text as TamaguiText, View as TamaguiView } from 'tamagui';
+import { BotanicalPressable } from '@/components/botanical';
+import { nativeTextStyles, nativeViewStyles } from '@/design/nativeStyles';
 
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
   logicalTextAlign,
   opacity,
-  radii,
-  r001Radii,
   resolveR001TypographyRole,
   resolveTypographyRole,
-  shadows,
   spacing,
   type AppColor,
   type R001TypographyRole,
@@ -116,6 +117,7 @@ export function Screen({
 
 export interface AppTextProps extends React.ComponentProps<typeof NativeText> {
   align?: TextAlign;
+  'aria-level'?: number;
   brand?: boolean;
   color?: AppColor;
   direction?: TextDirection | 'auto';
@@ -135,6 +137,54 @@ const baselineRoleNames: Record<TypographyRole, true> = {
 
 function isBaselineTypographyRole(variant: TextVariant): variant is TypographyRole {
   return variant in baselineRoleNames;
+}
+
+function textWebRole(role: AppTextProps['accessibilityRole'] | AppTextProps['role']) {
+  if (role === 'header') return 'heading';
+  if (role === 'image') return 'img';
+  if (role === 'none') return 'presentation';
+  if (role === 'adjustable') return 'slider';
+  if (role === 'summary') return 'region';
+  if (role === 'text' || role === 'imagebutton' || role === 'keyboardkey') return undefined;
+  return role as React.ComponentProps<typeof TamaguiText>['role'];
+}
+
+// Tamagui 2 renders DOM directly; native accessibility names need explicit web equivalents.
+function textAccessibilityProps(
+  props: Omit<
+    AppTextProps,
+    'align' | 'brand' | 'color' | 'direction' | 'language' | 'tabular' | 'variant' | 'style'
+  >,
+) {
+  if (Platform.OS !== 'web') return props;
+  const webProps = Object.fromEntries(
+    Object.entries(props).filter(
+      ([key]) => !key.startsWith('accessibility') && key !== 'accessible' && key !== 'nativeID',
+    ),
+  );
+  const role = textWebRole(props.role ?? props.accessibilityRole);
+  return {
+    ...webProps,
+    id: props.id ?? props.nativeID,
+    lang: props.accessibilityLanguage,
+    role,
+    'aria-level': props['aria-level'] ?? (role === 'heading' ? 2 : undefined),
+    'aria-label': props['aria-label'] ?? props.accessibilityLabel,
+    'aria-description': props.accessibilityHint,
+    'aria-live':
+      props['aria-live'] ??
+      (props.accessibilityLiveRegion === 'none' ? 'off' : props.accessibilityLiveRegion),
+    'aria-hidden': props['aria-hidden'] ?? props.accessibilityElementsHidden,
+    'aria-busy': props['aria-busy'] ?? props.accessibilityState?.busy,
+    'aria-checked': props['aria-checked'] ?? props.accessibilityState?.checked,
+    'aria-disabled': props['aria-disabled'] ?? props.accessibilityState?.disabled,
+    'aria-expanded': props['aria-expanded'] ?? props.accessibilityState?.expanded,
+    'aria-selected': props['aria-selected'] ?? props.accessibilityState?.selected,
+    'aria-valuemin': props['aria-valuemin'] ?? props.accessibilityValue?.min,
+    'aria-valuemax': props['aria-valuemax'] ?? props.accessibilityValue?.max,
+    'aria-valuenow': props['aria-valuenow'] ?? props.accessibilityValue?.now,
+    'aria-valuetext': props['aria-valuetext'] ?? props.accessibilityValue?.text,
+  } as const;
 }
 
 const brandRoleForBaseline: Record<TypographyRole, R001TypographyRole> = {
@@ -175,34 +225,38 @@ export function Text({
   const alignmentDirection = direction === 'auto' ? storeDirection : direction;
 
   return (
-    <NativeText
-      {...props}
-      accessibilityLanguage={
-        props.accessibilityLanguage ?? ((language ?? locale) === 'ar' ? 'ar-AE' : 'en-AE')
-      }
-      accessibilityRole={
-        props.accessibilityRole ??
-        (variant === 'display' ||
-        variant === 'title' ||
-        variant === 'hero' ||
-        variant === 'parentHero' ||
-        variant === 'screenTitle'
-          ? 'header'
-          : undefined)
-      }
-      style={[
-        styles.textBase,
+    <TamaguiText
+      unstyled
+      {...textAccessibilityProps({
+        ...props,
+        accessibilityLanguage:
+          props.accessibilityLanguage ?? (resolvedLanguage === 'ar' ? 'ar-AE' : 'en-AE'),
+        accessibilityRole:
+          props.accessibilityRole ??
+          (variant === 'display' ||
+          variant === 'title' ||
+          variant === 'hero' ||
+          variant === 'parentHero' ||
+          variant === 'screenTitle'
+            ? 'header'
+            : undefined),
+      })}
+      {...(Platform.OS === 'web' ? { dir: direction } : {})}
+      {...nativeTextStyles([
+        Platform.OS === 'web' ? null : styles.textBase,
         typographyStyle,
         { color: colors[resolvedColor] },
-        direction === 'rtl'
-          ? styles.writingRtl
-          : direction === 'ltr'
-            ? styles.writingLtr
-            : styles.writingAuto,
+        Platform.OS === 'web'
+          ? null
+          : direction === 'rtl'
+            ? styles.writingRtl
+            : direction === 'ltr'
+              ? styles.writingLtr
+              : styles.writingAuto,
         { textAlign: logicalTextAlign(align, alignmentDirection) },
         tabular ? styles.tabularNumbers : null,
         style,
-      ]}
+      ])}
     />
   );
 }
@@ -264,7 +318,7 @@ export function Button({
   const renderedLabel = busy && busyLabel ? busyLabel : children;
 
   return (
-    <Pressable
+    <BotanicalPressable
       {...props}
       aria-busy={busy}
       accessibilityRole="button"
@@ -289,15 +343,7 @@ export function Button({
         { flexDirection: logicalRowDirection(direction) },
         brand ? style : null,
         focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
-        pressed && !isDisabled
-          ? resolvedVariant === 'primary'
-            ? brand
-              ? styles.brandPrimaryPressed
-              : styles.primaryPressed
-            : brand
-              ? styles.brandPressed
-              : styles.pressed
-          : null,
+        pressed && !isDisabled ? { opacity: opacity.pressed } : null,
         isDisabled && dimWhenDisabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
         brand ? null : style,
       ]}
@@ -324,7 +370,7 @@ export function Button({
       {!busy && icon && iconPosition === 'end' ? (
         <View style={styles.buttonIcon}>{icon}</View>
       ) : null}
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -361,13 +407,18 @@ export function Card({
   variant = 'paper',
 }: CardProps) {
   return (
-    <View
-      accessibilityLabel={accessibilityLabel}
-      style={[styles.card, cardVariants[variant], elevated ? styles.cardElevated : null, style]}
+    <TamaguiView
+      {...(Platform.OS === 'web' ? { 'aria-label': accessibilityLabel } : { accessibilityLabel })}
+      {...nativeViewStyles([
+        styles.card,
+        cardVariants[variant],
+        elevated ? styles.cardElevated : null,
+        style,
+      ])}
       testID={testID}
     >
       {children}
-    </View>
+    </TamaguiView>
   );
 }
 
@@ -419,7 +470,7 @@ export function Input({
         : 'inkMuted';
 
   return (
-    <View style={styles.inputGroup}>
+    <TamaguiView style={styles.inputGroup}>
       {label ? (
         <Text brand={brand} direction={direction} language={language} variant="label">
           {label}
@@ -475,7 +526,7 @@ export function Input({
           {statusText}
         </Text>
       ) : null}
-    </View>
+    </TamaguiView>
   );
 }
 
@@ -553,8 +604,8 @@ export function Row({
   const direction = directionOverride ?? storeDirection;
 
   return (
-    <View
-      style={[
+    <TamaguiView
+      {...nativeViewStyles([
         styles.row,
         {
           alignItems: align,
@@ -563,21 +614,21 @@ export function Row({
           gap,
         },
         style,
-      ]}
+      ])}
     >
       {children}
-    </View>
+    </TamaguiView>
   );
 }
 
 const buttonVariants = StyleSheet.create({
   primary: {
-    backgroundColor: colors.ghaf,
-    borderColor: colors.ghaf,
+    backgroundColor: botanical.colors.forest,
+    borderColor: botanical.colors.forest,
   },
   secondary: {
-    backgroundColor: colors.leafLight,
-    borderColor: colors.leaf,
+    backgroundColor: botanical.colors.sage,
+    borderColor: botanical.colors.sage,
   },
   neutral: {
     backgroundColor: colors.surfaceContainerLow,
@@ -591,12 +642,12 @@ const buttonVariants = StyleSheet.create({
 
 const brandButtonVariants = StyleSheet.create({
   primary: {
-    backgroundColor: colors.ghafEmerald,
-    borderColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forest,
+    borderColor: botanical.colors.forest,
   },
   secondary: {
-    backgroundColor: colors.ghafEmeraldTint,
-    borderColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
+    borderColor: botanical.colors.sage,
   },
   neutral: {
     backgroundColor: colors.surfaceContainerLow,
@@ -610,16 +661,16 @@ const brandButtonVariants = StyleSheet.create({
 
 const cardVariants = StyleSheet.create({
   paper: {
-    backgroundColor: colors.surface,
-    borderColor: colors.line,
+    backgroundColor: botanical.colors.paper,
+    borderColor: botanical.colors.line,
   },
   tonal: {
-    backgroundColor: colors.leafMist,
-    borderColor: colors.leafLight,
+    backgroundColor: botanical.colors.sage,
+    borderColor: botanical.colors.sage,
   },
   water: {
-    backgroundColor: colors.waterLight,
-    borderColor: colors.water,
+    backgroundColor: botanical.colors.water,
+    borderColor: botanical.colors.water,
   },
   coral: {
     backgroundColor: colors.coralLight,
@@ -630,7 +681,7 @@ const cardVariants = StyleSheet.create({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.ivory,
+    backgroundColor: botanical.colors.canvas,
     overflow: 'hidden',
   },
   keyboardRoot: {
@@ -704,7 +755,7 @@ const styles = StyleSheet.create({
   },
   button: {
     minHeight: layout.touchTarget,
-    borderRadius: radii.md,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     borderWidth: 1,
     paddingHorizontal: spacing.lg,
@@ -713,7 +764,7 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   buttonBrand: {
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
   },
   buttonCompact: {
     paddingVertical: spacing.sm,
@@ -766,15 +817,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   card: {
-    borderRadius: radii.lg,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    borderWidth: 1,
+    borderWidth: 0,
     padding: spacing.lg,
     gap: spacing.lg,
   },
   cardElevated: {
     borderWidth: 0,
-    ...shadows.lifted,
+    boxShadow: botanical.shadow.surface,
   },
   inputGroup: {
     gap: spacing.xs,
@@ -782,19 +833,19 @@ const styles = StyleSheet.create({
   input: {
     minHeight: layout.touchTarget,
     borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radii.md,
+    borderColor: botanical.colors.line,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.surface,
+    backgroundColor: botanical.colors.paper,
     color: colors.ink,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   inputBrand: {
     minHeight: layout.controlHeight,
-    borderColor: colors.outlineVariant,
-    borderRadius: r001Radii.lg,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    borderRadius: botanical.radius.control,
+    backgroundColor: botanical.colors.paper,
     color: colors.r001Ink,
   },
   inputMultiline: {
@@ -827,15 +878,15 @@ const styles = StyleSheet.create({
   iconButton: {
     width: layout.touchTarget,
     height: layout.touchTarget,
-    borderRadius: radii.sm,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.transparent,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: botanical.colors.line,
   },
   brandIconButton: {
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
   },
 });

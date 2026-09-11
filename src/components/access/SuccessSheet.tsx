@@ -21,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   layout,
   opacity as opacityTokens,
@@ -252,7 +253,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: r001Radii.sheet,
     borderTopRightRadius: r001Radii.sheet,
     borderCurve: 'continuous',
-    backgroundColor: colors.r001Surface,
+    backgroundColor: botanical.colors.paper,
     ...r001Shadows.sheet,
   },
   safeArea: {
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
+    backgroundColor: botanical.colors.sage,
     marginBottom: spacing.xs,
   },
   message: {

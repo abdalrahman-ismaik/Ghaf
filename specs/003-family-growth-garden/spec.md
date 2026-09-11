@@ -1,5 +1,29 @@
 # Feature Specification: Family Growth Garden
 
+## Tamagui Botanical Presentation Amendment — 2026-09-11
+
+The user authorizes a broad presentation redesign using Tamagui and the installed Reanimated
+foundation. The accepted direction is contemporary botanical family UI: warm limestone surfaces,
+deep forest accents, restrained amber, Alexandria/Readex typography, custom UAE landscape
+compositions, composed Parent screens, and more expressive Child screens. This supersedes the
+prior frozen presentation restriction only for the explicitly redesigned surfaces; product,
+access, privacy, reward, deterministic service and default-off R002b boundaries remain intact.
+
+- Migrate shared layout/control primitives to a single Ghaf-configured Tamagui system. Reuse
+  existing typography and logical RTL resolution and retain accessible font fallback/scaling.
+- Redesign Parent Home/Tasks/Family/settings, Child Today/task/settings, Garden/League, and the
+  shared access/form/overlay shell. Existing gated Growth screens inherit shared styling but
+  remain gated. Preserve the route manifest, current translated content, labels and actions.
+- Give Home, Today and Garden distinct compositions anchored in the existing botanical assets.
+  Avoid identical card stacks, decorative metric dashboards, continuous motion and new claims.
+- Use short press/selection transitions and existing event-owned growth motion. Animation never
+  creates progression, gates completion or delays access. Reduced motion exposes the same state.
+- Verify TypeScript, lint, formatting, behavioral regressions, web and Android bundles, and
+  available bilingual compact browser evidence. Native touch/keyboard/Back/TalkBack and named
+  Arabic/visual review require direct evidence and remain NOT RUN until observed.
+
+This is local implementation authorization, not release activation of gated product behavior.
+
 **Feature Branch**: `feature/003-family-growth-garden`
 
 **Created**: 2026-08-26

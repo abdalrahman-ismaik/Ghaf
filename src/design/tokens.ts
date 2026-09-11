@@ -1,5 +1,51 @@
 import { Platform } from 'react-native';
 
+// Botanical presentation values are additive; historical R001 tokens remain available.
+export const botanical = {
+  colors: {
+    canvas: '#F6F3EB',
+    paper: '#FFFCF5',
+    forest: '#183F35',
+    forestRaised: '#245347',
+    ink: '#203D34',
+    muted: '#5D6B5E',
+    line: '#DCDDCF',
+    sage: '#E7ECDD',
+    sageStrong: '#CAD9BB',
+    amber: '#D9AD5B',
+    amberWash: '#F2E6CC',
+    water: '#E1ECE8',
+    onForest: '#FFF9E9',
+  },
+  radius: { control: 16, surface: 20, hero: 28, small: 10, pill: 999 },
+  space: { inset: 20, section: 28, hero: 24, row: 16, small: 8 },
+  motion: { press: 120, state: 180, sheet: 260, pressScale: 0.985 },
+  shadow: {
+    surface: '0 4px 18px rgba(24, 63, 53, 0.05)',
+    floating: '0 6px 24px rgba(24, 63, 53, 0.10)',
+  },
+} as const;
+
+const botanicalFontSize = { 1: 12, 2: 14, 3: 16, 4: 18, 5: 22, 6: 28, 7: 32, true: 16 };
+const botanicalLineHeight = { 1: 20, 2: 23, 3: 26, 4: 28, 5: 32, 6: 40, 7: 44, true: 26 };
+
+export const botanicalFonts = {
+  body: {
+    family: 'ReadexPro_400Regular',
+    size: botanicalFontSize,
+    lineHeight: botanicalLineHeight,
+    weight: { 1: '400', 2: '500', true: '400' },
+    letterSpacing: { 1: 0, true: 0 },
+  },
+  heading: {
+    family: 'Alexandria_700Bold',
+    size: botanicalFontSize,
+    lineHeight: botanicalLineHeight,
+    weight: { 1: '700', true: '700' },
+    letterSpacing: { 1: 0, true: 0 },
+  },
+} as const;
+
 // R001 semantic names are additive. Legacy keys remain byte-for-byte compatible so the preserved
 // ten-route surfaces are not restyled before their own approved design release.
 export const colors = {

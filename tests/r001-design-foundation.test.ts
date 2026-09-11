@@ -216,8 +216,8 @@ describe('R001 native design foundation', () => {
     expect(primitives).toContain("iconPosition?: 'start' | 'end'");
     expect(primitives).toContain("'neutral'");
     expect(primitives).toContain('pressRetentionOffset');
-    expect(primitives).toContain('backgroundColor: colors.ghafEmerald');
-    expect(primitives).toContain('backgroundColor: colors.ghafEmeraldTint');
+    expect(primitives).toContain('backgroundColor: botanical.colors.forest');
+    expect(primitives).toContain('backgroundColor: botanical.colors.sage');
     expect(primitives).toContain('backgroundColor: colors.surfaceContainerLow');
     expect(primitives).not.toContain('allowFontScaling={false}');
     expect(primitives).not.toContain('adjustsFontSizeToFit');
