@@ -1,7 +1,10 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
+import { YStack } from 'tamagui';
 
+import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { nativeViewStyles } from '@/design/nativeStyles';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ParentCanopySummaryCardProps {
@@ -27,19 +30,31 @@ export function ParentCanopySummaryCard({
   const progressWidth = `${ratio * 100}%` as const;
 
   return (
-    <View
-      accessibilityLabel={`${title}. ${progressLabel}. ${remainingLabel}`}
-      style={styles.card}
+    <YStack
+      {...(Platform.OS === 'web'
+        ? { 'aria-label': `${title}. ${progressLabel}. ${remainingLabel}` }
+        : { accessibilityLabel: `${title}. ${progressLabel}. ${remainingLabel}` })}
+      {...nativeViewStyles(styles.card)}
       testID="family-combined-canopy"
     >
-      <View aria-hidden style={styles.botanicalWashOne} />
-      <View aria-hidden style={styles.botanicalWashTwo} />
-      <View style={styles.content}>
-        <View style={[styles.headingRow, { flexDirection: logicalRowDirection(direction) }]}>
-          <Text brand color="ghafEmerald" style={styles.headingText} variant="screenTitle">
+      <View style={[styles.landscapeRow, { flexDirection: logicalRowDirection(direction) }]}>
+        <View style={styles.landscapeCopy}>
+          <Text brand direction={direction} style={styles.forestText} variant="heading">
             {title}
           </Text>
-          <Text brand color="ghafEmerald" style={styles.headingText} tabular variant="label">
+        </View>
+        <LocalIllustration
+          assetId={current >= 20 ? 'family-canopy-20' : 'family-canopy-19'}
+          decorative
+          direction={direction}
+          priority="high"
+          style={styles.landscape}
+          testID="parent-canopy-artwork"
+        />
+      </View>
+      <View style={styles.content}>
+        <View style={[styles.headingRow, { flexDirection: logicalRowDirection(direction) }]}>
+          <Text brand style={[styles.headingText, styles.onForestText]} tabular variant="label">
             {progressLabel}
           </Text>
         </View>
@@ -54,33 +69,58 @@ export function ParentCanopySummaryCard({
         >
           <View style={[styles.progressFill, { width: progressWidth }]} />
         </View>
-        <Text brand color="onSurfaceVariant" variant="caption">
+        <Text brand style={styles.onForestText} variant="caption">
           {remainingLabel}
         </Text>
-        <Text brand color="onSurfaceVariant" variant="caption">
+        <Text brand direction={direction} style={styles.meaningText} variant="caption">
           {meaning}
         </Text>
       </View>
-    </View>
+    </YStack>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    minHeight: 144,
     overflow: 'hidden',
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.hero,
     borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceBright,
-    padding: spacing.xl,
-    ...r001Shadows.soft,
+    backgroundColor: botanical.colors.sage,
+  },
+  landscapeRow: {
+    minWidth: 0,
+    alignItems: 'center',
+    gap: spacing.sm,
+    padding: botanical.space.inset,
+  },
+  landscapeCopy: {
+    minWidth: 0,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 100,
+    gap: spacing.sm,
+  },
+  landscape: {
+    width: 112,
+    height: 112,
+    flexShrink: 0,
+    borderRadius: botanical.radius.surface,
+  },
+  forestText: {
+    color: botanical.colors.forest,
+  },
+  meaningText: {
+    color: botanical.colors.sageStrong,
+  },
+  onForestText: {
+    color: botanical.colors.onForest,
   },
   content: {
-    zIndex: 1,
     minWidth: 0,
     gap: spacing.sm,
+    backgroundColor: botanical.colors.forest,
+    paddingHorizontal: botanical.space.inset,
+    paddingVertical: spacing.md,
   },
   headingRow: {
     minWidth: 0,
@@ -96,30 +136,12 @@ const styles = StyleSheet.create({
   progressTrack: {
     height: spacing.xs,
     overflow: 'hidden',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.forestRaised,
   },
   progressFill: {
     height: '100%',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
-  },
-  botanicalWashOne: {
-    position: 'absolute',
-    right: -28,
-    bottom: -42,
-    width: 126,
-    height: 126,
-    borderRadius: 63,
-    backgroundColor: colors.ghafEmeraldTint,
-  },
-  botanicalWashTwo: {
-    position: 'absolute',
-    left: -24,
-    bottom: -36,
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: colors.mangroveTealTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.amber,
   },
 });

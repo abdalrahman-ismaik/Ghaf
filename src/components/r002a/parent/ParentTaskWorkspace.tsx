@@ -1,16 +1,16 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { Button, Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
   opacity,
-  r001Radii,
-  r001Shadows,
   spacing,
   type LayoutDirection,
 } from '@/design/tokens';
@@ -63,7 +63,7 @@ const CategoryCard = memo(function CategoryCard({
       <View style={styles.categoryIcon}>
         <GhafIcon color={colors.ghafEmerald} name={icon} size={25} />
       </View>
-      <Text brand color="deepForest" numberOfLines={2} variant="label">
+      <Text brand color="deepForest" variant="label">
         {label}
       </Text>
     </View>
@@ -91,7 +91,7 @@ const TemplateCard = memo(function TemplateCard({
           </Text>
         </View>
       </View>
-      <Text brand color="deepForest" numberOfLines={3} variant="heading">
+      <Text brand color="deepForest" variant="heading">
         {title}
       </Text>
     </View>
@@ -248,6 +248,7 @@ export function ParentTaskWorkspace({
               </View>
               {childCurrent ? (
                 <Pressable
+                  accessibilityRole="button"
                   onPress={onOpenCurrent}
                   style={({ pressed }) => [styles.currentTask, pressed ? styles.pressed : null]}
                 >
@@ -337,22 +338,23 @@ const styles = StyleSheet.create({
   createPanel: {
     alignItems: 'stretch',
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
-    padding: spacing.lg,
+    paddingBottom: botanical.space.section,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: botanical.colors.line,
   },
   createCopy: { gap: spacing.xs },
   filterRail: { gap: spacing.xs, flexWrap: 'wrap' },
   filterChip: {
     minHeight: layout.touchTarget,
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.sage,
     paddingHorizontal: spacing.md,
   },
-  filterChipSelected: { backgroundColor: colors.ghafEmerald },
+  filterChipSelected: { backgroundColor: botanical.colors.forest },
   section: { gap: spacing.md },
   sectionHeading: { gap: spacing.xs },
   horizontalContent: {
@@ -363,56 +365,47 @@ const styles = StyleSheet.create({
   },
   categoryCard: {
     width: 132,
-    minHeight: 112,
+    minHeight: 124,
     justifyContent: 'space-between',
     gap: spacing.sm,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
-    ...r001Shadows.soft,
   },
   selectedRailCard: {
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    borderWidth: 2,
-    borderColor: colors.ghafEmerald,
+    borderWidth: 1,
+    borderColor: botanical.colors.forest,
   },
   categoryIcon: {
     width: 44,
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
   },
   templateCard: {
     minHeight: 154,
     justifyContent: 'space-between',
     gap: spacing.lg,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   templateMeta: { gap: spacing.xs },
   previewChip: {
-    alignSelf: 'flex-start',
-    borderRadius: r001Radii.pill,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerHigh,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
+    minWidth: 0,
   },
   childSection: {
     gap: spacing.sm,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
-    padding: spacing.md,
-    ...r001Shadows.soft,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingVertical: spacing.md,
   },
   childHeading: { minHeight: layout.touchTarget, alignItems: 'center', gap: spacing.sm },
   childAvatar: {
@@ -420,16 +413,16 @@ const styles = StyleSheet.create({
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
   },
   currentTask: {
     minHeight: layout.touchTarget,
     gap: spacing.xs,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldSelection,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.md,
   },
   preparedRow: {
@@ -439,5 +432,5 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
   },
   flexText: { flex: 1, minWidth: 0 },
-  pressed: { opacity: opacity.pressed, transform: [{ scale: 0.99 }] },
+  pressed: { opacity: opacity.pressed },
 });

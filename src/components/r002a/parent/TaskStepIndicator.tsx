@@ -3,10 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
-  r001Radii,
   spacing,
   type LayoutDirection,
 } from '@/design/tokens';
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     height: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     borderCurve: 'continuous',
     borderWidth: 1.5,
   },
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   markerPending: {
     borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
   },
   label: {
     minHeight: layout.touchTarget,

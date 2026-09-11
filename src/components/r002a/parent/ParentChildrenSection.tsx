@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { colors, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
+import { botanical, colors, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { SyntheticChildId, TextDirection } from '@/models/familyGrowth';
 
 export interface ParentChildSummaryItem {
@@ -104,25 +105,22 @@ export function ParentChildrenSection({
 const styles = StyleSheet.create({
   section: {
     gap: spacing.md,
+    paddingTop: spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
   },
   rows: {
-    overflow: 'hidden',
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    gap: spacing.xs,
   },
   row: {
     minHeight: 104,
     alignItems: 'center',
     gap: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
+    borderRadius: botanical.radius.control,
     padding: spacing.md,
   },
   selectedRow: {
-    backgroundColor: colors.ghafEmeraldSelection,
+    backgroundColor: botanical.colors.paper,
   },
   avatar: {
     width: 56,
@@ -132,13 +130,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 28,
     borderCurve: 'continuous',
-    borderWidth: 1.5,
-    borderColor: colors.surfaceContainerHighest,
-    backgroundColor: colors.surfaceContainer,
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.sage,
   },
   selectedAvatar: {
-    borderColor: colors.ghafEmerald,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.forest,
+    backgroundColor: botanical.colors.sage,
   },
   content: {
     flex: 1,
@@ -158,13 +156,9 @@ const styles = StyleSheet.create({
   },
   selectedChip: {
     minWidth: 0,
-    minHeight: 28,
     maxWidth: '100%',
     flexShrink: 1,
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmeraldTint,
-    paddingHorizontal: spacing.sm,
   },
   selectedLabel: {
     flexShrink: 1,

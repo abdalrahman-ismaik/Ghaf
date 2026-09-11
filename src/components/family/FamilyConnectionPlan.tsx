@@ -5,9 +5,9 @@ import { GhafIcon } from '@/components/access';
 import { Row, Text } from '@/components/primitives';
 import { R003Section } from '@/components/r003';
 import {
+  botanical,
   colors,
   logicalRowDirection,
-  r001Radii,
   spacing,
   type LayoutDirection,
 } from '@/design/tokens';
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.primaryFixedTint,
   },
   flexCopy: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   entry: {
     gap: spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
+    borderBottomColor: botanical.colors.line,
     paddingVertical: spacing.md,
   },
   lastEntry: {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.primaryFixedTint,
   },
   entryCopy: {
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   boundary: {
     alignItems: 'flex-start',
     gap: spacing.sm,
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
     backgroundColor: colors.secondaryTint,
     padding: spacing.md,

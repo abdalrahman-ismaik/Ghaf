@@ -3,15 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  opacity,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 type ParentNavigationKey = 'family' | 'garden' | 'home' | 'tasks';
@@ -77,14 +69,14 @@ export function ParentHomeNavigation({
               testID={`parent-nav-${item.key}`}
             >
               <GhafIcon
-                color={active ? colors.onPrimary : colors.onSurfaceVariant}
+                color={active ? botanical.colors.forest : botanical.colors.muted}
                 name={item.icon}
                 size={22}
               />
               <Text
                 align="center"
                 brand
-                color={active ? 'onPrimary' : 'onSurfaceVariant'}
+                color={active ? 'primary' : 'onSurfaceVariant'}
                 style={styles.label}
                 variant="caption"
               >
@@ -102,11 +94,10 @@ const styles = StyleSheet.create({
   root: {
     zIndex: 3,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
-    paddingTop: spacing.xs,
+    borderTopColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
+    paddingTop: spacing.sm,
     paddingHorizontal: layout.screenPadding,
-    ...r001Shadows.sheet,
   },
   items: {
     minWidth: 0,
@@ -115,7 +106,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'stretch',
     justifyContent: 'space-between',
-    gap: spacing.xxs,
+    gap: spacing.xs,
   },
   item: {
     minWidth: layout.touchTarget,
@@ -123,11 +114,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 2,
-    borderRadius: r001Radii.lg,
+    gap: spacing.xxs,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.xxs,
-    paddingVertical: spacing.xxs,
+    paddingVertical: spacing.xs,
   },
   label: {
     width: '100%',
@@ -135,10 +126,9 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   activeItem: {
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.sage,
   },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.98 }],
   },
 });

@@ -24,7 +24,7 @@ import {
 } from '@/components/r002a';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { taskWorkspaceFeatureFlag } from '@/config/taskWorkspaceFeatureFlag';
-import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import { PARENT_NEXT_ACTIONS } from '@/features/family/overview';
 import {
   readLegacyParentHomeParam,
@@ -844,6 +844,7 @@ export default function ParentHomeScreen() {
 const styles = StyleSheet.create({
   greeting: {
     gap: spacing.xxs,
+    paddingBottom: spacing.xs,
   },
   prototypeIdentity: {
     minWidth: 0,
@@ -865,20 +866,19 @@ const styles = StyleSheet.create({
   },
   privacyNote: {
     gap: spacing.xs,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
-    padding: spacing.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingTop: spacing.md,
   },
   progressEntry: {
     minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
   progressEntryIcon: {
@@ -887,8 +887,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmeraldTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
   },
   progressEntryCopy: {
     minWidth: 0,
@@ -901,8 +901,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexWrap: 'wrap',
     gap: spacing.xs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.xxs,
   },
   childFilterItem: {
@@ -910,7 +910,7 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     paddingHorizontal: spacing.md,
   },
   childFilterItemActive: {
@@ -918,9 +918,8 @@ const styles = StyleSheet.create({
   },
   taskTabs: {
     minHeight: layout.touchTarget,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    borderBottomWidth: 1,
+    borderBottomColor: botanical.colors.line,
     padding: spacing.xxs,
   },
   taskTab: {
@@ -928,12 +927,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xs,
   },
   taskTabActive: {
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
+    borderRadius: botanical.radius.control,
   },
   pressed: {
     opacity: opacity.pressed,

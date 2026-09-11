@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { PrimaryButton, Text } from '@/components/primitives';
 import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
 import { R003Hero, R003Progress, R003Section, R003Status } from '@/components/r003';
-import { colors, logicalRowDirection, r001Radii, spacing } from '@/design/tokens';
+import { botanical, colors, logicalRowDirection, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.solarAmberTint,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,

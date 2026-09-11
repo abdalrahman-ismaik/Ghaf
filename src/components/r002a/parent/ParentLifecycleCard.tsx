@@ -1,8 +1,10 @@
 import { StyleSheet, View } from 'react-native';
+import { YStack } from 'tamagui';
 
 import { GhafIcon } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { nativeViewStyles } from '@/design/nativeStyles';
+import { botanical, colors, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ParentLifecycleCardProps {
@@ -29,7 +31,7 @@ export function ParentLifecycleCard({
   onPress,
 }: ParentLifecycleCardProps) {
   return (
-    <View style={[styles.card, direction === 'rtl' ? styles.accentRight : styles.accentLeft]}>
+    <YStack {...nativeViewStyles(styles.card)}>
       <View style={[styles.statusRow, { flexDirection: logicalRowDirection(direction) }]}>
         <GhafIcon color={colors.solarAmber} name="info" size={18} />
         <Text brand color="tertiary" style={styles.statusLabel} variant="label">
@@ -37,7 +39,7 @@ export function ParentLifecycleCard({
         </Text>
       </View>
 
-      <Text brand color="onSurface" variant="bodyLarge">
+      <Text brand direction={direction} style={styles.title} variant="heading">
         {title}
       </Text>
 
@@ -58,25 +60,22 @@ export function ParentLifecycleCard({
         </View>
       ) : null}
 
-      <Button brand onPress={onPress} size="regular" testID="parent-primary-action">
+      <Button
+        brand
+        direction={direction}
+        onPress={onPress}
+        size="regular"
+        testID="parent-primary-action"
+      >
         {actionLabel}
       </Button>
-    </View>
+    </YStack>
   );
 }
 
 function MetaChip({ label, tone }: { label: string; tone: 'amber' | 'green' | 'neutral' }) {
   return (
-    <View
-      style={[
-        styles.chip,
-        tone === 'green'
-          ? styles.greenChip
-          : tone === 'amber'
-            ? styles.amberChip
-            : styles.neutralChip,
-      ]}
-    >
+    <View style={styles.chip}>
       <Text
         brand
         color={tone === 'green' ? 'primary' : tone === 'amber' ? 'tertiary' : 'onSurfaceVariant'}
@@ -92,21 +91,10 @@ function MetaChip({ label, tone }: { label: string; tone: 'amber' | 'green' | 'n
 const styles = StyleSheet.create({
   card: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.solarAmberBorder,
-    backgroundColor: colors.surfaceContainerLowest,
-    padding: spacing.lg,
-    ...r001Shadows.soft,
+    paddingVertical: spacing.xs,
   },
-  accentRight: {
-    borderRightWidth: 6,
-    borderRightColor: colors.solarAmber,
-  },
-  accentLeft: {
-    borderLeftWidth: 6,
-    borderLeftColor: colors.solarAmber,
+  title: {
+    color: botanical.colors.forest,
   },
   statusRow: {
     minWidth: 0,
@@ -120,33 +108,24 @@ const styles = StyleSheet.create({
   chips: {
     minWidth: 0,
     flexWrap: 'wrap',
-    gap: spacing.xs,
+    columnGap: spacing.md,
+    rowGap: spacing.xs,
   },
   chip: {
     minWidth: 0,
-    minHeight: 30,
     maxWidth: '100%',
     flexShrink: 1,
     justifyContent: 'center',
-    borderRadius: r001Radii.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
   },
   chipLabel: {
     flexShrink: 1,
   },
-  neutralChip: {
-    backgroundColor: colors.surfaceContainerLow,
-  },
-  greenChip: {
-    backgroundColor: colors.ghafEmeraldTint,
-  },
-  amberChip: {
-    backgroundColor: colors.solarAmberTint,
-  },
   supportRow: {
     alignItems: 'flex-start',
-    gap: spacing.xs,
+    gap: spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingTop: spacing.md,
   },
   grow: {
     flex: 1,
