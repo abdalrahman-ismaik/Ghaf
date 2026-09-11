@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { usePathname, useRouter } from 'expo-router';
+import { useNavigationContainerRef, usePathname } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -7,10 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '@/components/primitives';
 import { colors, layout, spacing } from '@/design/tokens';
 import { selectHasActiveParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
-import { replaceHistoryWithEntry } from '@/utils/navigation';
+import { prepareEntryReset } from '@/utils/navigation';
 
 export function PrototypeStatusBar() {
-  const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
@@ -21,10 +21,12 @@ export function PrototypeStatusBar() {
   const canReset = hasActiveParentExperience && pathname !== '/';
 
   const reset = () => {
+    const resetNavigation = prepareEntryReset(navigation);
+    if (!resetNavigation) return;
     const result = resetPrototype();
     setConfirming(false);
     if (!result.ok) return;
-    replaceHistoryWithEntry(router);
+    resetNavigation();
   };
 
   return (

@@ -279,3 +279,67 @@ case: canDismiss reads current state, but reset's Parent route redirect can chan
 queued pop executes. D must test both root-only and dismissible-history resets through fresh
 verification with no unhandled action or blocking toast. This is an execution gap, not a reproduced
 patch defect. Helper completed/released, no files/tests/jobs/descendants; no alternate scope added.
+
+Full correction-candidate check on `b2208aaaf06ec16d7fb12cc0781aeaba754a7eff`:
+`npm run typecheck`, `npm run lint`, `npm run format:check`, and
+`npm test -- --maxWorkers=2` all exit0; **138files /1,670tests passed**. Sequential execution
+2026-09-11 23:01:43–23:02:40 UTC, CI=1/EXPO_OFFLINE=1. Exact results/four logs in ignored
+`output/competition-readiness/integration-b2208aa/`. Runner251443/exec2855 ended; A heavy slot
+released. This rerun follows the actual utility change; docs-only handoffs do not require another
+full suite. D-004 actual reset retest remains pending, so no full browser/native acceptance yet.
+
+## A-008 — one validated root reset after the queued-pop failure
+
+D-020 reproduced the remaining A-007 failure on b2208aa: canDismiss was true before reset,
+but Parent route cleanup ran before the queued POP_TO_TOP, leaving an unhandled action/toast.
+The first guard patch is **not accepted as closing D-R02**. Its passing tests remain accurately
+attributed, and its failed browser trace is preserved in D's report/artifacts.
+
+A-008 replaces that strategy using the public `useNavigationContainerRef()` at Parent Settings
+and PrototypeStatusBar. The latter is outside the app Stack, so using the same app-level navigation
+hook at both locations would target different navigators. `prepareEntryReset` first validates the
+mounted outer route's nested Stack and declared index route. Callers return without clearing data
+if preparation fails. After the existing authorized store reset succeeds, one public resetRoot
+retains the actual outer wrapper name and a sole nested index route. No previous keys, parameters
+or routes are copied. There is no queued pop/replace sequence or internal runtime navigation import.
+The existing browser Back boundary remains; non-browser window objects without history skip it.
+
+Exact files: `src/utils/navigation.ts`, `app/parent/settings/index.tsx`,
+`src/components/PrototypeStatusBar.tsx`, `tests/reset-navigation.test.ts`. No root-layout, registry,
+store, dependency, persisted data, privilege or feature-flag change. Authority is existing003
+FR-095/096; boardr15/16 reserved both callers explicitly before editing.
+
+RED used Expo's installed StackRouter, not a throwing mock: the old guard queued POP_TO_TOP while
+history was dismissible, then the actual reducer returned null against the collapsed entry state
+(1failed/3passed). GREEN covers root-only, dismissible, missing-entry and post-preparation collapse
+through outer/inner reducers, unavailable/invalid preparation, no browser-history API and repeated
+web Back boundaries. Tests import the installed bundled reducer; runtime uses public APIs only.
+The three-file reset/access suite passes49tests. Initial typecheck identified test partial-state
+inference; the fixture now uses the reducer's actual rehydration API. Final typecheck, scoped lint
+and format pass. Independent helper found no actionable source defect; actual container/URL/guard
+ordering and native behavior still need D/native evidence. No unit result is substituted for them.
+
+Exact read-only design task to `/root/android_build_audit`:
+
+```text
+A one-helper READ-ONLY A-008 design review, no writes/tests/jobs/descendants, preserve others. D reproduced predicted async race on b2208aa: router.canDismiss true at /parent/settings, reset clears role/redirects, queued POP_TO_TOP unhandled and blocking toast persists. Exact new artifact QA output/competition-readiness/d-b2208aa/reset-remembered-child.json. We need the smallest queue-safe full reset-to-entry navigation retaining no stale Back history under Feature003 FR095/096, using installed Expo57 public API, no dependencies. Inspect targeted dismissTo('/') semantics versus root navigation reset (useNavigation('/') / navigation.reset or supported ref). A inspects reducer-test setup independently. Key tradeoff: dismissTo falls back to replace if index route absent, potentially retaining old native routes; root reset reliably sets sole index but needs exact public root seam/callers. Recommend exact smallest safe change and affected existing files, avoiding internal imports in runtime or symptom suppression. Current two callers are Parent Settings and PrototypeStatusBar; both currently use replaceHistoryWithEntry(router). Native still unrun; D owns actual next retest. Do not revisit broad unrelated routes/UI. Return source-grounded bounded recommendation and release.
+```
+
+Exact steering:
+
+```text
+Received outer __root warning; do not use app-level reset against outer navigator. Please finalize smallest public-ref payload preserving correct outer wrapper while replacing nested app stack with sole index, ideally derive wrapper name from actual root state rather than importing internals. I can add reducer tests using installed vendored StackRouter only in tests, including collapsed/dismissible history and missing entry. Exact additional caller grants will be published before edits. No need generic architecture.
+```
+
+Exact final review task:
+
+```text
+A re-holds its single read-only helper allocation for final A-008 diff review. No writes/tests/jobs/descendants; others editing preserve them. Actual diff now in /home/smyk/projects/Ghaf: src/utils/navigation.ts exports prepareEntryReset, validates outer active wrapper's child stack declares index before caller clears data, captures only wrapper name and sole nested index, returns one resetRoot closure, retains web Back guard only when window.history exists. Parent Settings and PrototypeStatusBar use public useNavigationContainerRef, prepare before store reset, apply only on success. tests/reset-navigation.test.ts uses bundled StackRouter in tests only for root-only/dismissible/entry-absent/collapse-after-prepare, invalid shape, non-browser window and web Back. Earlier new red reducer test on b2208aa failed as expected (POP_TO_TOP null after collapse). Review exact four-file diff for correctness, both caller contexts, validation-before-clear and no retained history/authority. D independently retests actual URL/Back after commit. Return only actionable issue or remaining evidence limit, then release.
+```
+
+Accepted: one root-ref reset with derived wrapper and prevalidation. Rejected: dismissTo's
+replace fallback retaining preceding routes, blindly applying app-level reset to the status bar,
+internal runtime imports, hiding development errors, or claiming success before actual D retest.
+Both helper tasks completed/released; no writes, descendants, tests or jobs by the helper. Named
+student review and physical Android remain pending. Arabic CSS200% secondary-label clipping is a
+separate P3 browser stress observation; no unrestricted large-text/native pass or UI rewrite follows.

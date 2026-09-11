@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRouter, type Href } from 'expo-router';
+import { useNavigationContainerRef, useRouter, type Href } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -8,10 +8,11 @@ import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
 import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r003';
 import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-import { replaceHistoryWithEntry } from '@/utils/navigation';
+import { prepareEntryReset } from '@/utils/navigation';
 
 export default function ParentSettingsScreen() {
   const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -22,12 +23,17 @@ export default function ParentSettingsScreen() {
 
   const reset = () => {
     setError(null);
+    const resetNavigation = prepareEntryReset(navigation);
+    if (!resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = resetPrototype();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
     }
-    replaceHistoryWithEntry(router);
+    resetNavigation();
   };
 
   const signOut = () => {

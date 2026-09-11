@@ -1,7 +1,27 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { StackActions, StackRouter } from 'expo-router/build/react-navigation/routers/StackRouter';
 
 import { synchronizeWebDocumentLocale } from '../src/i18n';
-import { replaceHistoryWithEntry } from '../src/utils/navigation';
+import { prepareEntryReset, type EntryResetState } from '../src/utils/navigation';
+
+// Exercise the reducer bundled with the pinned Expo Router; no internal import enters runtime code.
+const appStack = StackRouter({ initialRouteName: 'index' });
+const appOptions = {
+  routeNames: ['index', 'parent'],
+  routeParamList: {},
+  routeGetIdList: {},
+};
+const outerStack = StackRouter({ initialRouteName: 'fixture-shell' });
+const outerOptions = {
+  routeNames: ['fixture-shell'],
+  routeParamList: {},
+  routeGetIdList: {},
+};
+
+function outerState(appState: ReturnType<typeof appStack.getInitialState>) {
+  const outer = outerStack.getInitialState(outerOptions);
+  return { ...outer, routes: [{ ...outer.routes[0]!, state: appState }] };
+}
 
 describe('mounted reset locale and history boundary', () => {
   afterEach(() => {
@@ -18,20 +38,76 @@ describe('mounted reset locale and history boundary', () => {
     expect(documentElement).toEqual({ dir: 'ltr', lang: 'en' });
   });
 
-  it('replaces a root-only stack without queuing an unhandled dismiss action', () => {
-    vi.stubGlobal('window', undefined);
-    const queuedActions: string[] = [];
-    const router = {
-      canDismiss: () => false,
-      dismissAll: () => queuedActions.push('POP_TO_TOP'),
-      replace: vi.fn(),
+  it.each(['root-only', 'dismissible', 'entry-absent', 'collapsed-after-prepare'] as const)(
+    'resets %s history to the sole entry using the installed reducer',
+    (scenario) => {
+      vi.stubGlobal('window', undefined);
+      const entry = appStack.getInitialState(appOptions);
+      const history = appStack.getRehydratedState(
+        appStack.getStateForAction(entry, StackActions.push('parent'), appOptions)!,
+        appOptions,
+      );
+      const prior =
+        scenario === 'root-only'
+          ? entry
+          : scenario === 'entry-absent'
+            ? { ...history, index: 0, routes: [history.routes[1]!] }
+            : history;
+      let mounted = outerState(prior);
+      const navigation = {
+        getRootState: () => mounted,
+        resetRoot: vi.fn((payload: EntryResetState) => {
+          const result = outerStack.getStateForAction(
+            mounted,
+            { type: 'RESET', payload },
+            outerOptions,
+          );
+          expect(result).not.toBeNull();
+          expect(result?.routes.map((route) => route.name)).toEqual(['fixture-shell']);
+          expect(result?.routes[0]?.state).toEqual(payload.routes[0].state);
+          const restored = appStack.getRehydratedState(payload.routes[0].state, appOptions);
+          expect(restored.index).toBe(0);
+          expect(restored.routes.map((route) => route.name)).toEqual(['index']);
+          expect(restored.routes[0]?.params).toBeUndefined();
+        }),
+      };
+
+      const reset = prepareEntryReset(navigation);
+      expect(reset).not.toBeNull();
+      expect(navigation.resetRoot).not.toHaveBeenCalled();
+      if (scenario === 'collapsed-after-prepare') mounted = outerState(entry);
+      reset?.();
+
+      expect(navigation.resetRoot).toHaveBeenCalledExactlyOnceWith({
+        index: 0,
+        routes: [{ name: 'fixture-shell', state: { index: 0, routes: [{ name: 'index' }] } }],
+      });
+    },
+  );
+
+  it.each([
+    undefined,
+    { index: 0, routes: [{ name: 'fixture-shell' }] },
+    {
+      index: 0,
+      routes: [{ name: 'fixture-shell', state: { type: 'stack', routeNames: ['parent'] } }],
+    },
+  ])('declines an unavailable entry boundary before any navigation mutation', (state) => {
+    const navigation = { getRootState: () => state, resetRoot: vi.fn() };
+    expect(prepareEntryReset(navigation)).toBeNull();
+    expect(navigation.resetRoot).not.toHaveBeenCalled();
+  });
+
+  it('does not install browser history handlers on a non-browser window', () => {
+    const requestAnimationFrame = vi.fn();
+    vi.stubGlobal('window', { requestAnimationFrame });
+    const navigation = {
+      getRootState: () => outerState(appStack.getInitialState(appOptions)),
+      resetRoot: vi.fn(),
     };
-
-    replaceHistoryWithEntry(router);
-
-    expect(queuedActions).toEqual([]);
-    expect(router.replace).toHaveBeenCalledOnce();
-    expect(router.replace).toHaveBeenCalledWith('/');
+    prepareEntryReset(navigation)?.();
+    expect(navigation.resetRoot).toHaveBeenCalledOnce();
+    expect(requestAnimationFrame).not.toHaveBeenCalled();
   });
 
   it('replaces the visible route and traps Back at a reset root boundary', () => {
@@ -64,16 +140,14 @@ describe('mounted reset locale and history boundary', () => {
     };
     vi.stubGlobal('window', fakeWindow);
 
-    const router = {
-      canDismiss: () => true,
-      dismissAll: vi.fn(),
-      replace: vi.fn(),
+    const navigation = {
+      getRootState: () => outerState(appStack.getInitialState(appOptions)),
+      resetRoot: vi.fn(),
     };
 
-    replaceHistoryWithEntry(router);
+    prepareEntryReset(navigation)?.();
 
-    expect(router.dismissAll).toHaveBeenCalledOnce();
-    expect(router.replace).toHaveBeenCalledWith('/');
+    expect(navigation.resetRoot).toHaveBeenCalledOnce();
     expect(animationFrames).toHaveLength(1);
 
     animationFrames[0]?.(0);
