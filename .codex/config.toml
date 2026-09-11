@@ -1,3 +1,42 @@
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 4
+max_concurrent_threads_per_session = 10
+
+[mcp_servers.ghaf_playwright]
+command = "node"
+args = ["scripts/tooling/mcp.mjs", "playwright"]
+enabled = true
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+[mcp_servers.ghaf_sequential_thinking]
+command = "node"
+args = ["scripts/tooling/mcp.mjs", "sequential-thinking"]
+enabled = true
+startup_timeout_sec = 20
+tool_timeout_sec = 30
+
+[mcp_servers.ghaf_sequential_thinking.env]
+DISABLE_THOUGHT_LOGGING = "true"
+
+[mcp_servers.ghaf_context7]
+url = "https://mcp.context7.com/mcp"
+enabled = true
+startup_timeout_sec = 20
+tool_timeout_sec = 30
+
+[mcp_servers.ghaf_mobbin]
+url = "https://api.mobbin.com/mcp"
+enabled = false
+
+[mcp_servers.ghaf_figma]
+url = "https://mcp.figma.com/mcp"
+enabled = false
+
+[mcp_servers.ghaf_elevenlabs]
+url = "https://api.elevenlabs.io/v1/mcp"
+enabled = false
+
+[mcp_servers.ghaf_higgsfield]
+url = "https://mcp.higgsfield.ai/mcp"
+enabled = false

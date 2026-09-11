@@ -41,6 +41,10 @@ Thumbs.db
 /docs/design/stitch/releases/ghaf-r002/
 /assets/images/access/*/GENERATION_PROMPT*.txt
 
+# Local third-party source packs; reviewed tooling and catalogs are tracked separately
+/assets/opencode-student-bootstrap/
+/assets/external templates and designs/
+
 # Local build credentials and EAS state
 *.jks
 *.p8
