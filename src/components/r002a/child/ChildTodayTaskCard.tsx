@@ -83,15 +83,6 @@ export function ChildTodayTaskCard({
         {title}
       </Text>
 
-      <View style={styles.meaning}>
-        <Text brand color="ghafEmerald" direction={direction} variant="caption">
-          {whyLabel}
-        </Text>
-        <Text brand color="onSurfaceVariant" direction={direction}>
-          {whyItMatters}
-        </Text>
-      </View>
-
       <View style={styles.metadata}>
         <View style={styles.taskFacts}>
           <MetadataRow direction={direction} icon="calendar" label={effortLabel} tone="primary" />
@@ -103,6 +94,61 @@ export function ChildTodayTaskCard({
           label={`${supervisionLabel}: ${supervisionValue}`}
           tone="primary"
         />
+      </View>
+
+      <View style={styles.decision}>
+        <View style={[styles.help, { flexDirection: logicalRowDirection(direction) }]}>
+          <GhafIcon color={colors.tertiaryContainer} name="info" size={20} />
+          <Text brand color="tertiaryContainer" direction={direction} style={styles.grow}>
+            {helpLabel}
+          </Text>
+        </View>
+
+        {actionLabel && onAction ? (
+          <PrimaryButton
+            brand
+            direction={direction}
+            disabled={actionDisabled}
+            icon={
+              <GhafIcon
+                color={colors.onPrimary}
+                direction={direction === 'rtl' ? 'ltr' : 'rtl'}
+                name="arrow-back"
+                size={22}
+              />
+            }
+            iconPosition="end"
+            onPress={onAction}
+            size="regular"
+            testID={actionTestID}
+          >
+            {actionLabel}
+          </PrimaryButton>
+        ) : null}
+
+        {secondaryActionLabel && onSecondaryAction ? (
+          <QuietButton
+            brand
+            direction={direction}
+            onPress={onSecondaryAction}
+            size="compact"
+            testID={secondaryActionTestID}
+          >
+            {secondaryActionLabel}
+          </QuietButton>
+        ) : null}
+      </View>
+
+      <View style={styles.details}>
+        <View style={styles.meaning}>
+          <Text brand color="ghafEmerald" direction={direction} variant="caption">
+            {whyLabel}
+          </Text>
+          <Text brand color="onSurfaceVariant" direction={direction}>
+            {whyItMatters}
+          </Text>
+        </View>
+
         <MetadataRow
           direction={direction}
           icon="sparkle"
@@ -110,47 +156,6 @@ export function ChildTodayTaskCard({
           tone="primary"
         />
       </View>
-
-      <View style={[styles.help, { flexDirection: logicalRowDirection(direction) }]}>
-        <GhafIcon color={colors.tertiaryContainer} name="info" size={20} />
-        <Text brand color="tertiaryContainer" direction={direction} style={styles.grow}>
-          {helpLabel}
-        </Text>
-      </View>
-
-      {actionLabel && onAction ? (
-        <PrimaryButton
-          brand
-          direction={direction}
-          disabled={actionDisabled}
-          icon={
-            <GhafIcon
-              color={colors.onPrimary}
-              direction={direction === 'rtl' ? 'ltr' : 'rtl'}
-              name="arrow-back"
-              size={22}
-            />
-          }
-          iconPosition="end"
-          onPress={onAction}
-          size="regular"
-          testID={actionTestID}
-        >
-          {actionLabel}
-        </PrimaryButton>
-      ) : null}
-
-      {secondaryActionLabel && onSecondaryAction ? (
-        <QuietButton
-          brand
-          direction={direction}
-          onPress={onSecondaryAction}
-          size="compact"
-          testID={secondaryActionTestID}
-        >
-          {secondaryActionLabel}
-        </QuietButton>
-      ) : null}
     </View>
   );
 }
@@ -175,6 +180,7 @@ function MetadataRow({
         color="onSurfaceVariant"
         direction={direction}
         style={styles.grow}
+        tabular
         variant="caption"
       >
         {label}
@@ -230,6 +236,15 @@ const styles = StyleSheet.create({
     borderBottomColor: botanical.colors.line,
     paddingBottom: botanical.space.row,
     marginBottom: spacing.xxs,
+  },
+  decision: {
+    gap: spacing.xs,
+  },
+  details: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingTop: botanical.space.row,
+    gap: botanical.space.row,
   },
   meaning: {
     gap: spacing.xxs,

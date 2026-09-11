@@ -234,3 +234,180 @@ acceptance. The contribution record is ready for a named student to review and e
   not rerun. No dependency install or heavy/preview allocation was used.
 - The report commit and exact release are published in canonical `STATUS-C.md`; no source
   implementation or release activation is included. Human selection/acceptance remains pending.
+
+## C-002 — implemented Child task choice hierarchy
+
+This section supersedes the earlier implementation-pending statements for this component only.
+A selected **Family Field Journal** in board revision 3, grant `C-002-r3`, after the C-001 report
+commit `0351f9d0f8c023ce598433e665f23a9ea1a8dcfc`. This is A's delegated design decision;
+named student selection, exact-diff acceptance and Arabic/native review remain PENDING/NOT RUN.
+No second direction comparison, new surface, asset, token, dependency or business rule was added.
+
+### Visible problem, action and exact change
+
+The assigned card's primary choice was below the initial 390×844 browser viewport after the long
+rationale. The action is `اختيار هذه المهمة` / `Choose this task`; it accepts the approved task,
+without awarding Seeds. The card now presents title/status, time/award/adult supervision, then
+permitted help and the existing primary/secondary actions. The full rationale and recognition
+mode remain expanded below a restrained rule. No text is clamped, hidden behind disclosure or
+duplicated. All metadata uses the existing `tabular` text option.
+
+Only `src/components/r002a/child/ChildTodayTaskCard.tsx` changed at runtime. Its props, callback
+guards, disabled semantics, icons, labels and test IDs are unchanged. The card still owns no
+store, router, provider or award/eligibility/unlock calculation. R002b flags remain off. The
+current task's +12 with permitted help and personal 48→60 Seeds remain domain-owned; the gated
+lifetime 108→120 fixture is separate. Existing local artwork is unchanged and never mirrored.
+
+Initial browser inspection found the English primary action overlapped the lower navigation by
+4px at 390×844. Changing only the new decision-group gap from existing `spacing.sm` to
+`spacing.xs` corrected it. The final Arabic primary action occupies y701–761 and English
+y709–767; the bottom navigation begins at y767. At 320×720 and enlarged text, scrolling is
+expected and every action remains reachable. This is browser viewport evidence, not phone-size
+or native touch evidence. The landscape proposal is unnecessary for the observed defect and
+remains unselected; no further component rewrite is inferred.
+
+Final card SHA-256:
+`6b1f49a8a807e6574aac68c63da130dc32333b67ea8476c3f0af3394b575025a`.
+The implementation commit and explicit release are recorded in canonical STATUS-C after staging
+only this card and this report. C-001's historical evidence remains attributed to its original hash.
+
+### Browser evidence and its limits
+
+One C-owned Metro instance served the C worktree at `http://127.0.0.1:8096`; one configured
+Playwright Firefox process tree performed all probes. Existing modules were read through Metro's
+development module registry by filename. The harness established synthetic Parent verification
+and Child pairing with existing controllers before rendering Child Today. It then used existing
+`createResetSourceSession` fixtures while preserving validated Child access to render each
+lifecycle. This is actual mounted-component presentation with selected command checks, **not a
+complete end-to-end proof of earning each injected state**. No runtime test hook or route was added.
+External requests were blocked after the initial local load; no remote/provider claim is made.
+
+Artifact root (ignored, local, absolute):
+`/home/smyk/projects/Ghaf/output/playwright/176426/c002/`.
+The `final/` directory is the accepted capture set; `round1/` retains intermediate evidence.
+Exact scripts beside those directories are `matrix-final.js`, `stress.js`,
+`adjustment-empty.js` and `motion-reset.js`. Logs/detector output are separately under
+`/home/smyk/projects/Ghaf-ui-studio/output/playwright/c002/`.
+
+| Evidence               | Cases and observed result                                                                                                                                                                                                                                                                                                                | Files under artifact root                                                                              |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Lifecycle/locale/width | PASSED 28: AR/EN × 320×720/390×844 × assigned, chosen, in_progress, submitted, confirmed, recognized, retry. Correct expected actions; no unexpected confirmed/retry action; no horizontal text overflow; all measured buttons ≥48 CSS px; four tabular metadata elements. Injected recognized balance60, all other fixtures48, award12. | `final/matrix-results.json`; `{ar,en}-{320,390}-{stage}-{task,action}.png`, where an action exists     |
+| Initial-page pair      | Primary choice wholly visible at390 in both locales; full details remain in scroll flow.                                                                                                                                                                                                                                                 | `final/ar-390-assigned-page.png`, `final/en-390-assigned-page.png`                                     |
+| Enlarged text/focus    | PASSED four locale/width cases: doubled computed browser text/line height, no horizontal overflow, long secondary wraps and remains reachable. Real Tab moves primary→secondary; visible 2px amber focus treatment observed.                                                                                                             | `final/stress-results.json`; `*-keyboard-focus.png`, `*-text200-action.png`, `*-text200-secondary.png` |
+| Parent review pending  | Real smaller-task request disables original choice; Seeds48 and award12 remain. Help/terms stay available.                                                                                                                                                                                                                               | `final/*-smaller-pending.png`; `final/stress-results.json`                                             |
+| Child decision/keep    | PASSED four locale/width cases: existing temporary Parent verification and smaller-resolution commands produce `child_decision_required`; original choice disabled. Alternative8 is a proposal only; keeping original restores enabled +12 choice.                                                                                       | `final/adjustment-empty-results.json`; `final/*-child-decision.png`                                    |
+| Empty                  | PASSED four locale/width cases: no assignment card and existing truthful empty-state copy.                                                                                                                                                                                                                                               | `final/*-empty.png`; `final/adjustment-empty-results.json`                                             |
+| Press/reduced motion   | PASSED AR/EN × standard/reduce at390. Standard press scale .985; reduced scale1. Both existing actions enter chosen with Seeds48/award12. No animation gates access.                                                                                                                                                                     | `final/motion-reset-results.json`; `final/*-390-{no-preference,reduce}-press.png`                      |
+| Signed-out reset       | Existing reset command after verified Parent access returns Arabic RTL, activeExperience signed_out, no journey, Seeds48. Settled route `/`; both access authorizers false; no Ghaf localStorage keys. Legacy `role: parent` alone is not authorization.                                                                                 | `final/ar-390-reset.png`; `final/motion-reset-results.json` and settled browser inspection             |
+
+The lead visually inspected the paired assigned pages and selected 320px action/waiting views,
+both enlarged long-label captures, the Arabic reviewed-alternative state and English empty state.
+The range reversal was reproduced in these pre-copy captures; tabular numerals do not fix bidi
+ordering. A owns the canonical duration correction and its separate source synchronization below.
+No loading/network-error interface exists in this card; those states are N/A here. Route-owned
+command error handling was preserved by source review, not passed through a new error injection.
+Browser snapshots reported zero errors; existing repeated warnings are not classified as newly
+introduced defects. Full integrated checks and D's independent candidate review remain separate.
+
+Harness issues were corrected without changing product behavior: the first script filename was
+outside the MCP allowed root and was moved to the allowed artifact directory; the card-child
+selector was corrected for a heading element; the heading selector became semantic `getByRole`;
+and the press check now waits for actionability after the startup splash. Intermediate element
+screenshots intersected fixed header/navigation, so final evidence uses viewport captures and
+explicit scrolling. None of these harness retries is a product pass/fail or a reason to alter
+runtime. The final complete matrix was rerun once because the decision gap changed; subsequent
+checks exercised distinct untested states rather than repeating passing coverage.
+
+### Proportional checks and runtime resources
+
+PASSED: `npm run typecheck`; scoped ESLint; scoped Prettier; `git diff --check`; and
+`node_modules/.bin/vitest run tests/r002a-child-task-presentation.test.ts tests/child-task-flow.test.ts --maxWorkers=1`
+(2 files, 39 tests, 1.75s). Exact test output: local `focused-tests.log`. After the spacing-only
+correction, scoped lint/format/whitespace passed again and the final browser matrix confirmed the
+change. `node .agents/skills/impeccable/scripts/detect.mjs --json src/components/r002a/child/ChildTodayTaskCard.tsx`
+returned `[]` in `design-detector.json`; this is a static signal, not native acceptance. No new
+style-mirroring test was added. Full suite/export/install/native build was not run by C.
+
+Metro used `EXPO_OFFLINE=1 CI=1 npm run web -- --port 8096 --max-workers 2`, first PID206383
+(exec94621), then PID213101 (exec86557) after the spacing correction. The first process was
+stopped before the replacement started. Firefox root PID206699 was the single browser tree.
+The final resource stop/release and any copy-sync restart are recorded with actual handles in
+STATUS-C. A-provided dependency links stayed read-only; no shared configuration was edited.
+
+### Bounded assistance and student explanation
+
+Applied local Impeccable, Expo design-system, React Native and Playwright skills to this existing
+component. No generated full app, raster artwork, template import or supporting model integration
+was used. Root effective Ultra remains unverified as recorded earlier; the same helper's explicit
+Astra/ultra launch was accepted, with Fast unavailable as a launcher field.
+
+Exact second helper assignment, `/root/duration_review`:
+
+```text
+New C-002-r3 bounded READ-ONLY helper allocation, one slot/no descendants. A selected Family Field Journal and grants root ONLY src/components/r002a/child/ChildTodayTaskCard.tsx plus C report; preview lane granted root. You own no writes/browser. While root edits card and starts Metro, locate the shortest existing reusable browser/bootstrap harness to render actual current Child Today assigned/chosen/in_progress/submitted/confirmed/recognized/retry and pre-acceptance disabled states, with correct controller authority and no runtime edits/new routes. Search main checkout output/competition-readiness/qa and existing tests/source for local fixture/bootstrap or Metro module access patterns. Report exact commands/hooks/fixture constraints; do not rerun tests or create files. Do not repeat prior audit or direction exploration. If no safe state injection exists, provide normal UI sequence and distinguish unsupported states. Preserve others' edits. After this investigation, review the changed card's preserved props/callbacks/mandatory text once root signals the edit is ready. Root concurrently implements and sets up the single owned browser. Requested model remains accepted Astra/ultra, Fast not exposed.
+```
+
+Exact review follow-up:
+
+```text
+Card edit is now ready in C worktree. Please finish read-only review of the diff for preserved props/callback/disabled logic and all mandatory text. Change: move rationale + recognition-mode detail below grouped help/actions; time/award/adult supervision remain above actions, all metadata now tabular. No new copy/callback/state. Browser navigate via configured MCP still starting; no independent browser needed. Report scope or accessibility regression risks only, then release allocation.
+```
+
+The helper found no source-interface regression: existing props/defaults, callback guards,
+disabled logic, test IDs and mandatory strings remain; safety/help precede action and details
+remain expanded afterward. It reiterated that tabular does not repair the Arabic duration range.
+Lead reviewed these findings against the diff and actual browser evidence. Helper made no writes,
+browser/test jobs or descendants and released its allocation. Its review is supporting AI evidence,
+not student participation or independent D acceptance.
+
+Student teach-back prompt: identify why choice was hard to find; point to the unchanged time,
+award, adult-help and smaller-task options; explain that moving controls does not award Seeds;
+then demonstrate waiting versus already-confirmed recognition. In the primary-phone story,
+use this existing Child choice after Parent approval, then permitted help, submission, Parent
+confirmation and Garden. Prepared Coach remains local/fallible. No memory, connection service,
+map, transport or optional feature is added to the script. A named student still must review the
+exact diff, explain it and accept the presentation; no such participation has occurred here.
+
+Native Android touch, Back, TextInput/keyboard, TalkBack, system font scaling, native reduced
+motion, installation/restart and physical rehearsal remain NOT RUN/BLOCKED pending actual devices
+and operators. Device models/OS, qualification and September16 presentation status remain unknown.
+These browser captures do not establish device acceptance, measured environmental impact or
+release activation. The component is a local review candidate after its explicit commit/release.
+
+### A-owned duration synchronization and final source state
+
+Board r7 and A messages011/014 authorized only A's `4d26635` copy commit and exact resolution
+of its missing-report conflict. Cherry-pick initially stopped because A's report did not exist
+at C's baseline. C imported that report verbatim from the `4d26635` blob, inspected/staged only
+the already-granted copy/test/report changes and continued as
+`88900c085b55447dd3e5d77236b20d6c3ea45d91`. Dirty card/report edits remained preserved and unstaged.
+The imported A report is evidence only: A-004 Welcome and B-004 store fixes are **absent** from
+this C worktree; independent integrated QA must use A's candidate. A should integrate only C's
+subsequent component commit, not re-import this copy-sync commit/report.
+
+The last copy-only Metro restart used PID223513, exec97133, port8096; previous PID213101 was
+stopped first. Actual AR/EN ×320/390 Today and task-detail duration checks PASSED, source
+`88900c0` plus the unchanged final card hash above. Arabic now reads `من 15 إلى 30 دقيقة`;
+English remains `15–30 minutes`. Both are one line in these states. Real choice/details callbacks
+keep lifecycle chosen, Seeds48 and award12. Paired390 initial pages still expose the primary action.
+Lead viewed both paired390 pages and both320 task-detail captures. Named Arabic review is pending.
+
+Exact additional script: artifact-root `copy-sync.js`; results `copy-sync/results.json`;
+captures `copy-sync/{ar,en}-{320,390}-{today-page,today-duration,task-duration}.png`.
+This directory supersedes earlier assigned/duration images for A's clarified wording only;
+the larger earlier matrix remains evidence of the identical card layout/state interface.
+Harness-only issues: this MCP execution environment has no `require`, so filesystem creation
+and JSON persistence used the terminal; Expo retains hidden stack screens, so duration/action
+locators were narrowed to visible instances. No product change was made to resolve either issue.
+
+Final source verification after copy sync PASSED: plain typecheck, scoped lint/format and the same
+two focused files (39 tests, 1.64s), plus Git whitespace. Log: local `final-source-tests.log`.
+The source change justified this bounded rerun; no full test suite or export ran. Browser close
+completed and Metro exec97133 stopped (exit130); neither PID223513 nor Firefox206699 remains,
+and port8096 has no listener. Preview/helper allocations were explicitly released in C outbox007.
+The final staged card/report receive formatting and whitespace checks before the local commit.
+
+Full native, human and integrated-D gates remain open. No eligible second component is granted at
+board r8; the successful card result provides no reason to expand into landscape changes. Check
+the live board for an explicit next task at handoff. Source/report ownership releases with the
+cohesive commit recorded in STATUS-C; do not infer release from an old heartbeat.
