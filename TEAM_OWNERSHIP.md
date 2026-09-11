@@ -1,5 +1,59 @@
 # Team Ownership
 
+## 2026-09-12 Competition Readiness Inspection and Tooling Window
+
+**Integration owner**: `/root` on `redesign/ui-experiments`.
+
+**Scope**: User-authorized bootstrap/tooling review and repository-local installation, extraction
+and inspection of supplied design references, current QA, evidence-based product proposals, and
+a multi-session implementation prompt pack. Product proposals do not activate new runtime behavior.
+
+**Reserved boundaries**:
+
+- `/root`: `.gitignore`, `.codex/config.toml`, new reviewed `.agents/skills/` additions,
+  `scripts/tooling/`, `tools/`, `TEAM_OWNERSHIP.md`, and `docs/competition-readiness/` except
+  the three reports reserved below. Runtime source and existing product/specification contracts
+  remain read-only in this inspection window.
+- `/root/roadmap_writer`: `docs/competition-readiness/research-and-product-strategy.md` and
+  `docs/competition-readiness/orchestration/*.md` only; aligns the latest competition-first brief.
+- `/root/plan_alignment`: read-only product/prompt alignment review; no write boundary.
+- `/root/bootstrap_audit`: read-only bootstrap/configuration inspection; no write boundary.
+- `/root/tooling_install`: root delegates `.codex/config.toml`, `tools/codex/`,
+  `scripts/tooling/`, the new `ghaf-presentation`, `ghaf-quality-workflow`, and
+  `ghaf-reference-intake` skill directories, and `docs/competition-readiness/tooling-report.md`.
+- `/root/profile_fix`: `src/components/family-growth/ParentTaskComposer.tsx` and new
+  `tests/parent-task-composer-profiles.test.tsx` only. This bounded correction makes existing
+  Task Builder choices reflect configured Child profiles; it adds no product capability.
+- `/root/template_audit`: `output/competition-readiness/template-review/` and
+  `docs/competition-readiness/template-catalog.md` only.
+- `/root/qa_audit`: `output/competition-readiness/qa/` and
+  `docs/competition-readiness/qa-report.md` only.
+
+All writers preserve the user-supplied source folders, existing skills and one another's work.
+Raw bootstrap credentials, third-party archives and extracted exports remain local, outside
+commits. No bundled installer is executed before review. No deployment, push, merge, production
+service, real Child data, release flag, or new product integration is authorized by this window.
+At most four agents run concurrently; root serializes shared tooling and final integration.
+
+**Status — completed 2026-09-12**: Boundaries released after integration review. `9619ed1`
+adds pinned project-local MCP tooling and three scoped skills while preserving the user's updated
+TOML capacity of ten. `236bbae` corrects configured Child choices and Arabic numeric isolation,
+with six regression cases. The final source passes TypeScript, full uncached lint plus a final
+scoped lint, maintained-file formatting, and 137 test files / 1,660 tests. Browser retests pass
+Arabic one-Child and English two-Child choices at 320 CSS pixels, including visual age-band order;
+one complete mixed-locale local task/help/recognition/growth path was observed.
+
+The package catalogs all 13 supplied archives, records bootstrap dispositions and research, and
+provides four copy-paste Codex prompts, a 2–3 minute primary-phone script, independent secondary
+validation, an APK build path, Q&A guide and honest AI-use record. The roadmap prioritizes local
+progress recovery, truthful recommendation rationale and proposed private memory before optional
+breadth. Confirmed progress still resets after reload; the memory timeline is unimplemented.
+Android installation, physical/native acceptance, timed human rehearsals and named reviews remain
+BLOCKED or NOT RUN. User-supplied SMAC PDFs remain untracked and unchanged. Raw source packs,
+credentials and local evidence remain excluded from commits. No push, main merge, deployment,
+submission or feature-flag activation occurred. Four sessions remain the recommended work plan;
+the user's configured capacity of ten is preserved, not treated as a requirement to launch ten.
+
 ## 2026-09-11 Tamagui Botanical Redesign Window
 
 **Integration owner**: `/root`. User authorized the proposed app-wide Tamagui and Reanimated

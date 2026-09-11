@@ -1,0 +1,86 @@
+# AI assistance record — competition readiness inspection
+
+This record covers the September 12, 2026 inspection on `redesign/ui-experiments`, starting at
+`55f9f2b`. It identifies generated assistance honestly. **Student review and teach-back are NOT RUN**
+unless a later entry records an actual named review. Local commits use the repository's configured
+identity; this does not establish that a student authored the generated code or documents.
+
+The supplied orientation permits supporting AI and requires its prompts and contribution to be
+documented. It prohibits AI generating the full app. The four-session pack therefore assigns
+bounded reviewable tasks to support the existing student project. It is not authority to replace
+the team's participation or certify eligibility. The team must explain its actual implementation.
+
+## Requests and provenance
+
+[requests.md](requests.md) preserves the exact current user requests, including the contest brief,
+competition-first selection and the user's increase of the TOML agent capacity to 10. The two
+earlier branch requests were executed before this inspection: switch to the botanical branch,
+bring local main to its already-published head, then create `redesign/ui-experiments`.
+
+The [orchestration prompts](orchestration/README.md) are **future prompts**, not records of work
+already executed. Copy each actual assigned task and any subsequent steering into the team's log
+when it is used. The role summaries below describe the current delegation; they are not verbatim
+subagent transcripts. This file does not claim to capture every historical Ghaf AI prompt. Recover
+earlier prompts from genuine team records and record any missing evidence explicitly.
+
+Codex produced the current assistance. Specialized agents were used for read-only bootstrap and
+product review, template intake, browser QA, tooling setup, a bounded profile correction, and prompt
+alignment. GPT-6 Astra/Ultra was requested where supported by the agent launcher. Fast service delivery
+was not independently measured; the launch guide distinguishes configuration from actual service.
+
+## Contribution register
+
+| ID / actual request or delegated task                    | What Codex produced or changed                                                                                                                                                                          | Affected files / evidence                                                                                                                                                                                                                    | Student review still required                                                                                                                                       |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AI-01: inspect/install supplied productivity pack        | Reviewed installer/credential boundaries; installed pinned project tools, enabled three MCPs and left four account-dependent entries disabled; added three original scoped skills                       | `.codex/config.toml`, `.gitignore`, `tools/codex/**`, `scripts/tooling/**`, `.agents/skills/ghaf-presentation/**`, `.agents/skills/ghaf-quality-workflow/**`, `.agents/skills/ghaf-reference-intake/**`, [tooling report](tooling-report.md) | Understand what each tool sends/executes; review configuration and selective dispositions; no bundled classroom credential use                                      |
+| AI-02: unpack/explore all design references              | Safely extracted 13 archives, inventoried Sketch structure and assets, visually reviewed previews/contact sheets and embedded PDFs, proposed reusable structural ideas                                  | [template catalog](template-catalog.md); ignored `output/competition-readiness/template-review/**`                                                                                                                                           | Select a direction; establish any reuse license/provenance; no copied runtime assets in this inspection                                                             |
+| AI-03: deep QA                                           | Restored lockfile dependencies, ran automated checks, exercised bilingual browser flows, reproduced profile mismatch and lost progress, recorded native/build gaps                                      | [QA report](qa-report.md); ignored `output/competition-readiness/qa/**`                                                                                                                                                                      | Repeat on actual Android hardware; assess remaining findings; understand what browser evidence cannot establish                                                     |
+| AI-04: fix reproduced configured-Child selector mismatch | Replaced static fixture labels with configured profiles/nicknames/age bands, invalid-selection guards and bidi-isolated numeric ranges; added six bilingual regression cases                            | `src/components/family-growth/ParentTaskComposer.tsx`, `tests/parent-task-composer-profiles.test.tsx`                                                                                                                                        | Review full diff; explain profile identity versus display name, allowed task eligibility, selection guard and numeric bidi; native verification remains unperformed |
+| AI-05: research ideas and contest priorities             | Cited evidence assessment of autonomy/help, rewards, learning, money practice, communication and location; differentiated findings from product hypotheses; read supplied competition PDFs              | [research and strategy](research-and-product-strategy.md), [team Q&A](team-qa-guide.md)                                                                                                                                                      | Read key sources and limitations; approve product hypotheses; obtain named Arabic/cultural/content review where required                                            |
+| AI-06: prepare multi-session prompts                     | Four bounded session prompts, shared contract, model/settings evidence, worktree/ownership handoffs and integration/freeze sequence                                                                     | `orchestration/*.md`                                                                                                                                                                                                                         | Assign real student owners and selected task IDs before use; retain exact future prompts and genuine reviews                                                        |
+| AI-07: scope clarification and final integration         | Replaced the initial sync-first/four-minute proposal with the user's 2–3 minute local primary-phone journey and independent secondary checks; documented APK path and proposed memory/persistence gates | [demo](two-device-demo.md), [Android guide](android-build-and-rehearsal.md), [index](README.md), `TEAM_OWNERSHIP.md`, this ledger and requests                                                                                               | Validate final candidate, rehearsal and submission/qualification circumstances; no unbuilt feature may be presented as complete                                     |
+
+## Rejected or deferred suggestions
+
+- The initial two-device relay and four-minute live rehearsal proposal was superseded by the
+  user's latest scope. Synchronization is later work; both phones have independent stores.
+- Broad calendar, study, money, Maps/Google OAuth and free messaging implementations were deferred.
+  Only a local agenda may be reconsidered after core acceptance and if time remains.
+- Bootstrap global installers, classroom credentials, opaque browser extensions, automatic update
+  suites and paid generation workflows were not activated. Exact dispositions are in the tooling report.
+- Imported template code/artwork was not added to the app. The source packs do not establish reuse rights.
+- No runtime memory timeline, generalized live recommendation engine, progress persistence, new
+  backend or default-off feature activation was implemented during this inspection.
+
+## Completed local slices
+
+- `9619ed1` — repository-local MCP tooling and reviewed skills, including the user's capacity-ten setting.
+- `236bbae` — configured Child choices and numeric bidi correction with six regression cases.
+- The remaining inspection/research/prompt documents form their own local documentation commit;
+  see Git history for its actual identifier. No push or main merge is included.
+
+## Validation and acceptance
+
+Read the final [QA report](qa-report.md) for commands, counts, platforms and evidence paths.
+Tooling initialization and synthetic calls are distinct from app AI behavior. Passing tests does
+not prove clinical/developmental benefit, production security, live AI, media analysis, measured
+environmental impact or physical demo readiness. Student contribution and review cannot be inferred
+from automated checks or an agent's review.
+
+For each subsequent bounded contribution, append:
+
+```text
+Date and actual human owner:
+Exact user prompt / follow-up prompts:
+Selected spec task IDs and reserved paths:
+Model / reasoning / speed actually selected:
+Generated output and suggestions rejected:
+Files changed and cohesive commit:
+Commands, results and direct artifacts:
+Human review date, reviewer and code explanation actually observed:
+Remaining work / NOT RUN evidence:
+```
+
+Keep synthetic-only evidence in any shared log. Do not copy secrets, real family information,
+hidden reasoning or unrelated account/session data. Preserve honest history and individual
+contributions; never fabricate reviews, meeting minutes, timestamps or authorship.
