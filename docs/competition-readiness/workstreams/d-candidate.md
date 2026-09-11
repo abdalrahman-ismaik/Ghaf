@@ -1,8 +1,10 @@
-# D-002 candidate browser checkpoint
+# D candidate validation — successive browser checkpoints
 
-**Verdict: bounded checkpoint; final gate pending.** Exact-candidate automated checks passed in
-Session A. D observed Arabic and English browser progression and separate access handoffs, with
-the evidence limits below. The development reset overlay remains an open defect on this candidate.
+**Verdict: reset correction b2208aa FAILED its dismissible-stack browser retest.** Automated
+checks passed in Session A. D observed Arabic and English progression and guarded access, with
+the evidence limits below. Root-only reset passed; the development overlay remains open.
+Sections through the first checkpoint retain source b862eb6 attribution; the D-004 section records
+new source b2208aa evidence. No complete browser matrix is claimed for either candidate.
 This report does not pass physical Android, durable recovery, human review or demo readiness.
 
 ## Identity, ownership and evidence classes
@@ -233,9 +235,9 @@ Precondition was the recognized English UI journey. The script invoked normal st
 with one explicitly injected synchronous local-family save failure restored in `finally`.
 It did not call `setState`, simulate user clicks or claim an ordinary replacement UI journey.
 
-- Cancelled replacement: directory and all sampled authorities unchanged.
-- Failed replacement: injected `INVALID_TRANSITION`, one save call; directory and all authorities
-  unchanged. This is one failure seam, not every interrupted-write or rollback case.
+- Cancelled replacement: in-memory directory record and all sampled progression/reveal authorities unchanged.
+- Failed replacement: injected `INVALID_TRANSITION`, one save call; in-memory directory record
+  and all sampled progression/reveal authorities unchanged. This is one failure seam, not every interrupted-write or rollback case.
 - Successful replacement: epoch `prototype-reset-0001`→`0002`; League uses the new Growth epoch;
   recognition receipts, League receipts, approval/reveal commitments and bundles all clear.
   Seeds reset to 48, Leaf returns to 4/5 and 80, Mangrove 48, canopy 19, Circle 11,
@@ -252,7 +254,7 @@ An identical script copied to D's owned MCP output directory executed the succes
 These results close the B-004 bounded command oracle, not durable recovery, all privacy cases
 or a second full browser journey. No product source or dependency was modified.
 
-Actual bounded helper prompt:
+Bounded B-review task brief retained by the lead (summary, not verbatim):
 
 > D-002-r9 one read-only helper allocation. Exact candidate /home/smyk/projects/Ghaf-qa-rehearsal HEAD b862eb6f85321935d297a411aaa58744cf72f18b (branch redesign/qa-candidate-20260912). You are not alone in the codebase; preserve every other writer's work. No writes, lead status, tests, browser, jobs, descendants. Question: independently review integrated B-004 f38f21d family replacement diff/tests for correctness of privateLeague and approvalRevealCommitments reset, cancellation/failed-save preservation, and recognized→new-family recognition/duplicate flow. Return only material regression concerns with exact references and a small before/after oracle for a separately labeled browser command probe. D lead continues actual role/core/card browser verification and A already ran the full candidate suite. Actual launch selection Astra/ultra; effective tier unexposed.
 
@@ -269,3 +271,95 @@ After this report's scoped format/diff check and commit, D will create the autho
 report commit, restart the owned preview with `--clear` and verify loaded source identity.
 The stronger remembered-Child reload trace and root-only/dismissible/repeated reset checks
 remain pending that correction retest. No release activation or complete readiness is claimed.
+
+## D-004 correction candidate b2208aa
+
+Exact source `b2208aaaf06ec16d7fb12cc0781aeaba754a7eff`; QA branch
+`redesign/qa-reset-20260912`, inspected HEAD `adcec892210b8223e027e263a8042778f2becbd1`
+differs only by this report. Grant D-004-r13, later boardr15 continuation. Baseline report29195c7
+was carried asadcec89; prior branch and raw failures remain preserved. New artifacts below live
+in `output/competition-readiness/d-b2208aa/`, distinct from the earlier candidate.
+
+Owned Metro restarted with `--clear`, PID258963/npm258935/exec46510, Firefox259258, port8097.
+`identity-ready.json` verifies local `app/index.tsx` containing the temporary-Parent redirect and
+local `src/utils/navigation.ts` containing `canDismiss`. Shared Expo dependencies still resolve
+through canonical Ghaf/node_modules as expected; no foreign application route was loaded.
+Initial `page.goto` exceeded its 30-second load timeout during the uncached bundle; the subsequent
+ready/identity observation succeeded. This harness timeout is preserved in `identity-start.json`.
+No product source changed in D, no install or extra full suite was run.
+
+**A-run checks PASSED, D inspected:** `integration-b2208aa/results.json` in the canonical checkout
+records typecheck23:01:43–23:01:59, lint23:01:59–23:02:01, format23:02:01–23:02:09,
+and tests23:02:09–23:02:40 UTC on2026-09-11, all exit0;138files/1,670tests.
+The added test passes do not supersede the actual asynchronous failure below.
+
+**A-004 decisive browser retest PASSED.** `ar-setup-success.json`, `ar-guide-pair.json` and
+`ar-coach-before-reload.json` record actual synthetic setup, Guide/assignment, Child pairing and
+task help. `a004-complete-reload-trace.json` then records, in one successful browser function:
+
+1. Before actual `page.reload`, Child authorized, Parent unauthorized, remembered Child record
+   bound to Salem/household/family generation, current task in progress.
+2. After reload, the same Child affinity restores access, while the process-local task is null.
+   This is remembered access, not durable task recovery.
+3. Child profile→Parent access reaches sign-in; both role authorizations are false while temporary
+   access is active. Cancel returns to authorized Child and clears the temporary marker.
+4. Repeat entry: code000000 leaves both roles unauthorized and shows the validation error;
+   code424242 grants Parent access with the temporary return marker intact.
+
+This closes the earlier reload trace gap on b2208aa. A004 source is unchanged from b862eb6;
+that explicit source attribution supports the unchanged route boundary, not a new full matrix pass.
+
+**D-R02 FAILED again, exact b2208aa.** `reset-remembered-child.json` records actual Parent Settings
+following the above handoff. Immediately before reset, `router.canDismiss()` is true. Reset and
+actual browser Back restore Arabic signed-out entry, null directory/device record/task and neither
+role authorized. However the console handler captures unhandled `POP_TO_TOP`; the visible error
+button is independently observed in the next accessibility snapshot. `reset-after-remembered-child.png`
+and raw console `console-2026-09-11T23-08-01-547Z.log` preserve this development failure.
+The mere existence of the `error-toast` host would not prove a visible toast; its visible button and
+console error do. The source guard fails to prevent invalidation between checking and queued action.
+A acknowledged D020 and owns A008; no D source fix or production/native conclusion follows.
+
+**Root-only branch PASSED.** In `reset-root-only.json`, actual Parent verification explicitly
+selects remembering, then reloads `/parent/settings`. The restored Parent is authorized and
+`canDismiss()` is false. Actual reset→browser Back→fresh English setup/code verification reaches
+family basics without intercepted clicks, console errors or a visible error button. The preceding
+old toast was visibly dismissed before the new setup; the root-only run also used a fresh page
+reload. This does not close the failed dismissible branch or every meaningful-state reset case.
+
+**Additional bounded captures.** `ar-coach-before-reload.json` retains the successful Arabic
+Coach result and prepared/fallible/current-task labels. `en-guide-success.json` retains actual
+English clearer-suggestion acceptance and review, including equivalent Arabic/English details.
+These supplement earlier trace gaps with unchanged source at the new exact candidate.
+`en-offline-guide-confirmed.json` records a new `parent-guide-adapt_age-v1` response while
+`navigator.onLine` is false: mode `deterministic_prepared`, origin `prepared`, explicit fallibility
+and Parent decision metadata, draft stage and Seeds48 unchanged. Networking is restored in
+`finally`. This is a preloaded development-browser check, not native offline launch, provider
+failure injection, live inference or the complete offline journey. Earlier mismatched test-ID
+and immediate-response attempts remain preserved; only the metadata-bearing result passes.
+
+**D-R03 — P3, Arabic browser CSS text stress, native status NOT RUN.** `ar-large-settled.json`
+records35text nodes at doubled computed font sizes with doubled line heights,320px viewport and
+scroll width320. Reduced motion is emulated. The primary button remains240×138 and fully readable
+in `ar-large-settled.png`; the final word of the secondary smaller-task label is vertically clipped
+in `ar-large-secondary.png`. The secondary button measures240×182 with its text box198×156.
+This is a real visual observation under this injected CSS stress, not an ordinary-scale or native
+font-scaling regression. Owner A/C disposition pending; no all-label accessibility pass. The CSS
+was removed before task/reload testing. `ar-compact-320-settled.png` and390 counterpart replace
+transition-only captures for this narrow card state, not every Arabic screen.
+
+## Independent A-007 review and checkpoint
+
+Helper `/root/rehearsal_packet_review` inspected the two-file correction and report read-only.
+It identified the queued-action timing boundary as requiring actual execution and corrected the
+B failure wording to sampled in-memory state, without claiming persistent-store or all-session
+preservation. The lead applied that correction. Helper released all allocation; no writes, tests,
+browser, jobs or descendants. Actual prompt:
+
+> D-004-r13, one read-only helper allocation. You are not alone; preserve all work. No writes, status, tests, browser, commands that start jobs, commits or descendants. Exact QA HEAD adcec892210b8223e027e263a8042778f2becbd1 is source b2208aa plus only our report. Review A-007 diff b862eb6..b2208aa in src/utils/navigation.ts and tests/reset-navigation.test.ts against boardr13, and read current d-candidate.md. Give a compact independent oracle for asynchronous reset/Back: root-only vs dismissible stack, repeated reset, post-reload remembered Child and temporary Parent. Identify any material source concern and any overclaim in baseline report's newly added B section. Lead continues actual browser retest. Return scope/release; source or human pass must not be inferred. Actual helper launch Astra/ultra; tier unexposed.
+
+Current matrix update: D-M03/06 remembered access subset passes; D-M05/07 detailed Guide/Coach
+trace gaps are supplemented above; D-M15 passes one preloaded offline prepared request; D-M20
+has the explicit CSS-stress failure; D-M02/17 remain failed for dismissible reset. Other unexecuted
+matrix rows retain their previous status. A008 is actively producing a correction, so D retains
+its report/preview and continues the ordered batch after this checkpoint commit. Native/human
+acceptance remains BLOCKED/NOT RUN, physical rehearsal count0, qualification unknown.
