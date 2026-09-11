@@ -354,3 +354,73 @@ was produced by this draft-review task. All five findings are proposed-contract 
 not reproduced product defects. Exact request/resolution messages are retained in canonical D
 outbox 008/009 and A's acknowledgments; unresolved entries remain open until a revised snapshot is
 reviewed. New persistence still requires the user's acceptance of A's concrete proposal.
+
+## Revised Feature 014 proposal — third checkpoint
+
+Review recorded 2026-09-11T22:40:11+00:00, under board r8 and A-012. D's QA HEAD before this
+appendix is `c56141b9612ddd189c9cc647a9a54ec88463a113`; application source remains 02b9618.
+Canonical authoring HEAD was `1f80f05edd0b10dc642837c247d0d4a0578a4eff`. The draft is uncommitted
+and evolving; the following hashes identify the reviewed snapshots rather than an accepted build.
+
+| Artifact                                    | SHA-256 at review                                                |
+| ------------------------------------------- | ---------------------------------------------------------------- |
+| spec.md                                     | ab3862291f0333841bf4843287421dbb7f8e7462576de655aea41ec71ae08e7a |
+| plan.md, helper product review              | b937fe11e9217432e0df21df38262db96e6b9058668348aaed8cea810af27cb7 |
+| data-model.md, helper product review        | 3ff2e04d32925a2d4022d2a108de9f0c4bf2c82e8e16f2ca2f80984306f71e31 |
+| plan.md, later lead technical addendum read | bf3ec861bda3b7fc9badea03ccc4912eedeeacb533827cf72ae590faf5d53411 |
+| data-model.md, later lead read              | 7614b758bccee7058f7b0532df86d0fce2f6b94da0444a5d298ab32926867f38 |
+| tasks.md, later lead read                   | 8cded30ec6ad6d5dd3dbf702738c686f301a0e48d63ce0df360cda04405337ae |
+| contracts/recovery-v1.md                    | 63fac5f24a8c772d656b6306e2b68b99d4596b4d6da314eaca9cb8214be43596 |
+| contracts/approved-task-recovery.md         | c969eb4e414adf9762133206f9e0744217c996e68fa36491ddb445ef75d9f1e0 |
+
+D-014-01/02 are ADDRESSED in the proposal: latest durable commit wins before visible acknowledgment,
+and explicit empty/journey evidence distinguishes first use from invalid missing committed facts.
+D-014-04/05 are ADDRESSED: FR-008 and SC-002 preserve canonical +12, smaller +8 and safe-equivalent
++12 with separate eligibility; Story 1/FR-001 and negotiation facts preserve both pending decisions.
+D-014-03 is ADDRESSED at product level by the closed allowlist, omitted-content rules, and actual
+bounded Parent praise/content. Technical completion remains BLOCKED by T004's exact codec,
+recovered execution model and receipt-validation adaptation. No implementation or runtime pass.
+
+The later approved-task seam explicitly separates authoring validation from validated recovered
+execution, forbids fabricated original requests and casts, and names all variable final accepted
+copy for the bounded Parent task source. Its proposed validation proof is neither authentication
+nor tamper-proof storage. Historical praise time is a fact, not a new award permission. D read this
+direction without repeating A's source/type feasibility audit. Final field-level reconciliation and
+behavioral tests remain required before implementation readiness.
+
+| ID       | Priority / scope                                                             | Expected clarification and acceptance                                                                                                                                                                                                                                                                        | Result / owner                                                  |
+| -------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| D-014-06 | P1 reset/restart proposal, plan reset section and recovery-v1 reset contract | After removing v5 but before clearing other established keys, kill the process and restart. Specify durable cleanup detection or mandatory orphan cleanup while the family envelope is absent, failure/retry authority, and safe new-family activation; old templates/preferences/affinity must not surface. | OPEN at these hashes; A proposal. No runtime defect reproduced. |
+| D-014-07 | P3 task path, T006                                                           | Name the actual existing repository adaptation seam rather than nonexistent localFamilyRepository.ts, unless a rename is explicitly intended.                                                                                                                                                                | ADDRESSED: T006 now names src/services/local/repository.ts.     |
+
+D-014-06 is distinct from legacy migration resurrection. The revised plan clears legacy v1–v4 keys
+before v5, which addresses that order, but an absent envelope alone does not recover a durable
+`cleanup_pending` distinction for subsequent affinity/template/preference cleanup. Alternatives
+are design choices for A; D does not prescribe another domain authority or implement a tombstone.
+Outbox 011/012 carries the exact future crash case. These are proposed unbuilt requirements, not
+regressions in the accepted process-local prototype.
+
+The reused privacy helper received this actual bounded prompt:
+
+> Resume one bounded read-only D helper allocation under BOARD r8 / A-012. You are not alone;
+> preserve all work. No writes/status files/jobs/browser/tests or descendants. Current canonical
+> HEAD 1f80f05edd0b10dc642837c247d0d4a0578a4eff; evolving uncommitted 014 spec SHA
+> ab3862291f0333841bf4843287421dbb7f8e7462576de655aea41ec71ae08e7a, data-model SHA
+> 3ff2e04d32925a2d4022d2a108de9f0c4bf2c82e8e16f2ca2f80984306f71e31, plan
+> b937fe11e9217432e0df21df38262db96e6b9058668348aaed8cea810af27cb7. Check only whether revised
+> spec/plan/data-model now resolve your D-014-03/04/05 product-level privacy, variant and
+> negotiation findings. Report addressed versus residual explicit T004 blocker; maximum one new
+> material contradiction if truly present. Do not repeat A helper's implementation/type seam
+> feasibility or root's reset/orphan-cleanup review. A is adding technical disposition; capture
+> start/end hashes and say if changed. Return exact refs and short result. Existing launch
+> Astra/ultra selection; effective tier not exposed.
+
+The helper's start/end hashes were stable; all three product clarifications were accepted as
+addressed, with T004 still blocked and no new contradiction reported. No helper suggestion was
+rejected. Later lead hashes differ because A added the technical contract; this is attributed
+explicitly, not treated as a stable combined candidate. Helper is finished/released, no jobs.
+
+Scoped report formatting and whitespace/exact-file checks accompany the cohesive commit. Browser,
+application suites, native evidence and human review remain NOT RUN for this draft-only appendix.
+D continues the queued integrated candidate after C releases preview; missing hardware does not
+prevent that authorized work.
