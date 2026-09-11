@@ -19,6 +19,7 @@ export default function WelcomeScreen() {
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
   const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
   const { state: firstRunState } = useFirstRunExperience();
 
@@ -31,6 +32,9 @@ export default function WelcomeScreen() {
   }
   if (activeExperience === 'child' && childAccess.canEnterChildExperience) {
     return <Redirect href="/child" />;
+  }
+  if (activeExperience === 'signed_out' && temporaryParentAccess) {
+    return <Redirect href="/access/parent/sign-in" />;
   }
   if (!firstRunState.completed) return <FirstRunOnboarding />;
 
