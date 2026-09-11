@@ -1,4 +1,7 @@
-# B-001 — Core journey and recovery audit
+# Session B — Core journey audit and replacement repair
+
+The B-001 sections below record the audit committed as `b1fc581`. The later B-004 repair and its
+validation are recorded at the end; initial NOT RUN/source-only labels remain attributed to B-001.
 
 This audit maps the existing local journey and identifies the smallest decisions needed before
 restart-safe progress can be implemented. It changes no application behavior and accepts no new
@@ -228,3 +231,106 @@ git diff --cached --check
 Both final commands passed with exit 0. The report commit is published in canonical STATUS-B. The commit containing this report is discoverable with `git log -1 -- <report path>`;
 there is no self-referential commit hash written into its own content. Application behavior before
 and after this report is identical. No application/native/physical rehearsal check is implied.
+
+## B-004 — Clear prior-family League and reveal authority on replacement
+
+**Authority and boundary.** Board revision 3 grant `B-004-r3`, received as
+`A-20260911T2220Z-006` after B-001 commit; Feature 011 FR-013/FR-015 and its completed T014/T016
+at source baseline `02b9618`. Required patch base is `b1fc581f3beeab8dcf3f241929fbf5bc29d9cf81`.
+A exclusively transferred the entire store file to B for this one defect. Changed paths are only
+`src/state/usePrototypeStore.ts`, `tests/family-replacement-flow.test.ts`, and this report.
+No new progression persistence, reset policy, recommendation, memory or feature activation occurs.
+
+**Before.** Replacing a family left the previous League epoch behind even when the old family had
+not completed a task. The new family's next recognition failed. If the old family had recognized
+recycling, replacement also left its League receipt and reveal commitment behind: League displayed
+5/5 and 100 instead of 4/5 and 80, and next check-in restoration failed because the commitment no
+longer matched the cleared core recognition ledger.
+
+**After.** Six added store lines construct replacement League using the new Growth epoch, carry it
+in the prepared replacement state, and install it while clearing approval reveal commitments in
+the successful replacement update. Other authorities retain their existing reset behavior. The
+new family starts at its own baseline, can complete the canonical permitted-help task for +12 once,
+and duplicate recognition returns the existing result with no additional progression. Cancelling
+replacement or failing its final family-directory save preserves the old recognized authorities.
+This does not claim every later activation-failure rollback or crash-safe multi-key storage.
+
+**Regression design.** Four added cases use real store commands for family creation, prepared Guide,
+Parent review/assignment, Child pairing/choice/start/permitted-help submission, Parent check-in/
+praise and recognition. Only the final directory-save error is injected at its actual repository
+boundary; its spy is restored in `finally`. Assertions cover replacement before/after recognition,
+fresh League epoch/4-of-5 presentation, empty old receipt/commitments/reveal queue, new-family
+recognition, personal 48→60 versus separate lifetime 108→120, Mangrove 48→60, canopy 19→20,
+Circle 11→12, Salem 4→5 Leaves and 80→100, private Reward unlock and unchanged Alya 36.
+A second recognition compares the entire relevant authority snapshot for equality. Cancellation
+and a targeted final-save failure preserve that snapshot and the old saved family.
+
+### B-004 validation record
+
+All commands ran in `/home/smyk/projects/Ghaf-demo-systems`, on base `b1fc581` plus exactly the
+granted store/test changes. Test timestamps are converted from the tool's Dubai wall-clock start
+to UTC; durations and counts are copied from actual output.
+
+| Check                                                            | UTC start / result                               | Evidence and limit                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial harness trial                                            | 22:26:47, exit 1, 4 failed / 6 passed            | Test helper lacked Guide acceptance and used wrong Leaf field; corrected tests before valid RED. Runtime unedited. This is not the defect-only RED result.                                                                                            |
+| RED replacement suite                                            | 22:27:09, exit 1, 2 failed / 8 passed, 1.51 s    | Both stale-epoch cases fail; recognized replacement also retains receipt/commitment and 5/5/100. New cancellation/final-save preservation cases pass.                                                                                                 |
+| GREEN same suite                                                 | 22:27:30, exit 0, 10 passed, 1.53 s              | Minimal six-line store fix only.                                                                                                                                                                                                                      |
+| Related authority/access/reset suite                             | 22:28:21, exit 0, 6 files / 112 tests, 5.20 s    | Serial workers/no cache; includes replacement, core reset, Growth, provider boundary, remembered access and access store.                                                                                                                             |
+| Exact private-League suites                                      | 22:28:46, exit 0, 2 files / 20 tests, 0.837 s    | Route integration and presentation; serial/no cache.                                                                                                                                                                                                  |
+| Scoped uncached ESLint and source/test Prettier                  | exit 0                                           | Only changed store/test files; no full-lint claim.                                                                                                                                                                                                    |
+| Plain `npm run typecheck`                                        | exit 2                                           | Missing generated `expo-env.d.ts` in new worktree makes unchanged BotanicalPressable `hovered` fail native type check. Main checkout has the Expo type reference; component/tsconfig source is identical. Reported to A, no ungranted bootstrap edit. |
+| `npm run typecheck -- --types expo/types`                        | exit 0                                           | No-write bootstrap diagnosis includes the same Expo types as the main generated file. Not relabeled as a plain-command pass.                                                                                                                          |
+| Final plain typecheck after A bootstrap; scoped test/lint/format | 22:32 UTC, exit 0; replacement 10 passed, 1.49 s | A supplied ignored Expo ambient types in board r5. Plain typecheck, uncached ESLint and all three changed-file formatting checks passed. Final tests include exact private Reward eligible delta 0→12.                                                |
+| Independent helper review                                        | PASSED source review; no blocking findings       | No separate test execution. Cancellation/final-save coverage distinguished from every activation failure.                                                                                                                                             |
+| Full suite, fresh browser, physical Android, human review        | NOT RUN / NOT RUN / NOT RUN / PENDING            | A/D own integrated candidate checks; no full heavy/browser slot held by B.                                                                                                                                                                            |
+
+Commands:
+
+```text
+npm test -- tests/family-replacement-flow.test.ts
+npm test -- tests/family-replacement-flow.test.ts tests/prototype-state.test.ts tests/r002b-progression-store.test.ts tests/r002b-private-league-recognition.test.ts tests/recognition-provider-store-boundary.test.ts tests/device-remembered-access.test.tsx tests/r003-store-access-flow.test.ts --no-file-parallelism --maxWorkers=1 --no-cache
+npm test -- tests/r002b-private-league-route-integration.test.ts tests/r002b-private-league-presentation.test.ts --no-file-parallelism --maxWorkers=1 --no-cache
+./node_modules/.bin/eslint src/state/usePrototypeStore.ts tests/family-replacement-flow.test.ts --no-cache
+./node_modules/.bin/prettier --check src/state/usePrototypeStore.ts tests/family-replacement-flow.test.ts
+npm run typecheck
+npm run typecheck -- --types expo/types
+```
+
+The related-suite command included a nonexistent `r002b-private-league-recognition.test.ts` filter;
+Vitest matched six real files, not seven. The subsequent command explicitly ran both actual private
+League suites. Combined relevant suite evidence is **8 files / 132 tests**, not an inflated sum
+including repeated replacement runs. All recorded command sessions ended; no B process survives.
+
+### B-004 assistance, review and release
+
+No additional user prompt beyond the recorded Session B role. A's actual task message was:
+
+```text
+Board r3 assigns B-004 suspected replacement omission under existing Feature 011 after B-001 report commit. A releases usePrototypeStore exclusively to B for this defect; test/report paths included. Reproduce before fixing; no new persistence scope. ACK B messages 002–004. Existing dependency symlink is read-only; no installation required.
+```
+
+Actual follow-up prompt to the same helper `/root/replacement_audit`:
+
+```text
+B-004-r3 now granted by A under existing Feature 011 FR-013; B exclusively owns store/test/report. Please independently review the current diff in /home/smyk/projects/Ghaf-demo-systems, base b1fc581. Exact read-only files: src/state/usePrototypeStore.ts and tests/family-replacement-flow.test.ts plus existing Feature 011 contract as needed. Six store lines recreate League from replacement Growth epoch and clear reveal commitments on success; tests add public-action before/after recognition replacement, next-family +12 and duplicate no-op, cancellation and injected final save failure preservation. Valid RED was 2 failed/8 passed; GREEN 10/10. Check correctness, failure preservation, meaningful coverage and any unnecessary scope. No edits, tests, browser, heavy jobs, descendants or coordination writes. Others are editing; preserve them. Lead runs scoped checks and writes evidence in parallel. Report findings or no blocking findings, distinguish source review from runtime; release helper when finished.
+```
+
+Generated contribution: six-line bounded runtime correction, four regression cases and their local
+helpers, evidence above. B lead wrote and reviewed all changes; the helper reviewed independently,
+found no blocking issue and released its allocation with no writes/jobs/descendants. Applied skills:
+Ghaf quality workflow and test-driven development. Model/settings visibility remains as recorded
+for B-001; no model configuration was changed. Student name, understanding, review and acceptance
+remain PENDING and cannot be inferred from agent review.
+
+Student explanation: replacement creates a new generation even though the demo reuses Salem's
+synthetic ID. Two secondary records still belonged to the previous generation. They now reset
+alongside the rest of the family, so an old award cannot appear for or block the new family. The
+new award still comes from Parent-confirmed evidence, and repeating it does not add another +12.
+This repair does not make task progress survive app restart.
+
+A may integrate the cohesive B-004 commit after the explicit source-path release in canonical
+STATUS-B and have D verify the integrated candidate. Plain typecheck passed after A supplied the
+generated Expo types; full integrated checks remain A/D work. The dependency symlink was created by A and remains untracked/read-only; it is excluded
+from this patch. Physical-device/human gates remain open. No push, deployment, main merge, source
+history rewrite or release activation was performed.

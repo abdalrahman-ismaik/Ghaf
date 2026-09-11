@@ -1701,6 +1701,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     let replacementReset: {
       readonly session: PrototypeSession;
       readonly growthJourney: GrowthJourneyRuntimeState;
+      readonly privateLeague: PrivateLeagueRecognitionRuntime;
       readonly mangroveLearningByProfile: MangroveLearningByProfile;
       readonly sharedGrowth: SharedGrowthState;
       readonly childAccess: ChildAccessView;
@@ -1747,6 +1748,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       replacementReset = {
         session: reset.session,
         growthJourney: nextGrowthJourney.data,
+        privateLeague: createPrivateLeagueRecognitionRuntime({
+          profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+        }),
         mangroveLearningByProfile: createLearningByProfile(nextGrowthJourney.data),
         sharedGrowth: createInitialSharedGrowth(nextGrowthJourney.data.resetSequence),
         childAccess: childAccessController.reset(),
@@ -1777,9 +1781,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
             : deviceAccessView(null),
           familyReward: createFamilyRewardRuntime(),
           growthJourney: replacementReset.growthJourney,
+          privateLeague: replacementReset.privateLeague,
           mangroveLearningByProfile: replacementReset.mangroveLearningByProfile,
           sharedGrowth: replacementReset.sharedGrowth,
           revealBundleQueue: createEmptyRevealBundleQueue(),
+          approvalRevealCommitments: {},
           parentOnboarding: parentOnboardingController.getView(),
           localFamily: localFamilyView(newlySavedFamily),
           localFamilyProfileRepair: null,
