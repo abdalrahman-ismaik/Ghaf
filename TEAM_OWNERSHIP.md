@@ -1,5 +1,23 @@
 # Team Ownership
 
+## 2026-09-11 Main Branch Integration Window
+
+**Integration owner and writer**: `/root`.
+
+**Reserved boundary**: Git merge of `integration/r3-complete-screens-20260905` into local
+`main`, including conflict resolutions in `app/**`, `src/**`, `tests/**`,
+`specs/003-family-growth-garden/**`, root product/design/runbook/ownership documents,
+`package.json`, `package-lock.json`, and `app.config.ts`. Preserve main's existing prepared
+WebP, provenance, and five historical screenshots. New reconciliation evidence is limited to
+`docs/merge-notes/main-r3-20260911*`. Other agents perform read-only branch comparisons.
+
+**Scope**: User-authorized local merge and continued work on `main`. Keep the current approved
+access, RTL, progression, audio, and default-off AI architecture; carry forward compatible
+Android settings, prepared-image optimization, and narrow-width header layout. Preserve the
+older main history/evidence without reconnecting its superseded role-toggle controller.
+
+**Status**: In progress. No push or release activation is included.
+
 ## 2026-09-11 Specs 004 and 005 Verification and Voice Lifecycle Window
 
 **Integration owner and only writer**: `/root`
