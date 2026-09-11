@@ -5,7 +5,7 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
 
 ## Mission control
 
-- Revision: **8 — ACTIVE**, 2026-09-11 22:21:22 UTC. A instance: `A-20260911T2220Z-root`.
+- Revision: **20 — PAUSED / LOCAL HANDOFF**, 2026-09-11 23:33:53 UTC. A instance: `A-20260911T2220Z-root`.
 - Integration: `/home/smyk/projects/Ghaf`, `redesign/ui-experiments`.
 - Baseline and initial audit target: `02b9618631fa9fc1b29f2cda5fa68c6adb2003fd`.
 - Mission: competition-first local Parent/Child journey, recovery assessment, one component direction,
@@ -16,27 +16,29 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
   and 013 Parent Tasks contracts. Read-only audits below add no implementation authority.
 - New recovery/rationale/memory contracts: NOT ACCEPTED. R002b flags remain off. No sync/backend,
   live media/location, payments, chat, new accounts or remote services selected.
-- Integrated source candidate: `f38f21d0de1d84dbaf9dea87c07ec9c2527fa35d` (A-004, A-006, B-004; C source in flight).
-  Full integrated checks and D mounted-router retest pending.
+- Integrated source candidate: `7fff0f3c2dc0e802ba1da6a67cd2513a75824809` (A-008 root reset plus prior fixes).
+  Full checks PASSED:138files/1,677tests; D-005-r17 exact-candidate reset retest PASSED (three browser sequences); report93a98c0 integrated7beb61c. A-007 b2208aa passed its suite
+  but FAILED actual dismissible-stack reset; that race is not closed by historical test passes.
+  New recovery014 remains committed DRAFTca54e40, unaccepted/unimplemented.
 - Named student owner, exact-diff acceptance, native acceptance: PENDING / NOT RUN / BLOCKED.
 
 ## Session registration
 
-| Lead | Instance observed         | State / canonical record                                                            |
-| ---- | ------------------------- | ----------------------------------------------------------------------------------- |
-| A    | A-20260911T2220Z-root     | RUNNING; [STATUS-A](STATUS-A.md)                                                    |
-| B    | B-20260911T2217Z-3572e5c9 | Orientation observed; B-004 integrated; B released/paused; [STATUS-B](STATUS-B.md)  |
-| C    | C-20260911T221908Z-root   | Orientation observed; C-002 RUNNING; [STATUS-C](STATUS-C.md)                        |
-| D    | D-20260911T2218Z-p177313  | Orientation observed; D-001 integrated; 014 review ongoing; [STATUS-D](STATUS-D.md) |
+| Lead | Instance observed         | State / canonical record                                                           |
+| ---- | ------------------------- | ---------------------------------------------------------------------------------- |
+| A    | A-20260911T2220Z-root     | PAUSED, local batch handed off; [STATUS-A](STATUS-A.md)                            |
+| B    | B-20260911T2217Z-3572e5c9 | Orientation observed; B-004 integrated; B released/paused; [STATUS-B](STATUS-B.md) |
+| C    | C-20260911T221908Z-root   | C-002 integrated; C released/paused; [STATUS-C](STATUS-C.md)                       |
+| D    | D-20260911T2218Z-p177313  | D-005-r17 INTEGRATED / RELEASED / PAUSED; [STATUS-D](STATUS-D.md)                  |
 
 ## Resource allocations
 
-| Resource           | Live allocation                               | Holder / release                                                                                         |
-| ------------------ | --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Helpers globally   | 4 total; descendants count                    | A 1, B 1, C 1, D 1; each lead may use its quota for independent scoped work                              |
-| Configured ceiling | 10 per session preserved                      | No expansion toward 40 local helpers                                                                     |
-| Heavy job          | One globally                                  | FREE; ask through status before install/full suite/export/build                                          |
-| Preview lane       | One Metro + one browser process tree globally | C reserved for C-002 bilingual component checks; record port/root PID/browser handle, release explicitly |
+| Resource           | Live allocation                               | Holder / release                                                |
+| ------------------ | --------------------------------------------- | --------------------------------------------------------------- |
+| Helpers globally   | 4 total; descendants count                    | A/B/C/D 0 active quotas; all helpers released, four unallocated |
+| Configured ceiling | 10 per session preserved                      | No expansion toward 40 local helpers                            |
+| Heavy job          | One globally                                  | FREE; A four checks at 7fff0f3 completed23:24:11 UTC            |
+| Preview lane       | One Metro + one browser process tree globally | FREE; D final Metro/browser stopped and explicitly released     |
 
 Fresh observation at activation: WSL 7,645 MiB total, 4,908 MiB available (64%), swap 36 MiB;
 last one-second vmstat sample 0 swap-in/out, 98% CPU idle. No increased quota granted. Source reads,
@@ -51,15 +53,15 @@ run native-heavy jobs with a resident preview pair. Report all helper IDs, desce
 | B-001         | B / INTEGRATED (report/source audit only)      | Existing 003/005/008/013 at baseline; read-only audit                  | Report exact reload/reset and authority paths, smallest recovery design, rationale/memory gaps, failure cases; local report commit and explicit release                      |
 | C-001         | C / INTEGRATED (report/source audit only)      | Existing botanical 003 presentation; read-only comparison              | Compare exactly three directions on same real Arabic/English states, recommend one plus small component boundaries; no runtime change; report commit and release             |
 | D-001         | D / INTEGRATED (source matrix only)            | Exact baseline above; existing contracts and current mission           | Independent acceptance matrix with evidence class, recovery/privacy failure cases, device/build gaps; source findings separated from unrun checks; report commit and release |
-| A-002         | A / RUNNING proposal; implementation BLOCKED   | Relevant B/C/D findings and scope decision                             | Small Spec Kit proposal with scope, ordered modules, acceptance and exact file seams; accepted committed contract before runtime grants                                      |
+| A-002         | A / REVIEWED DRAFT; acceptance pending         | Relevant B/C/D findings and scope decision                             | Small Spec Kit proposal with scope, ordered modules, acceptance and exact file seams; accepted committed contract before runtime grants                                      |
 | B-002         | B / BLOCKED                                    | Accepted recovery story, committed contract and exact grant            | Restart-safe evidence/reset slice; no authority persistence; focused tests and release                                                                                       |
-| C-002         | C / RUNNING                                    | Existing approved botanical presentation at 02b9618; A selection below | One ChildTodayTaskCard presentation refinement, preserved props/callbacks/copy; bilingual state evidence and release                                                         |
-| D-002         | D / BLOCKED                                    | A publishes exact integrated candidate and scope                       | Independent regression/retest on resulting hash                                                                                                                              |
+| C-002         | C / INTEGRATED / RELEASED                      | Existing approved botanical presentation at 02b9618; A selection below | One ChildTodayTaskCard presentation refinement, preserved props/callbacks/copy; bilingual state evidence and release                                                         |
+| D-002         | D / INTEGRATED, scoped browser evidence        | A publishes exact integrated candidate and scope                       | Independent regression/retest on resulting hash                                                                                                                              |
 | B-003 / C-003 | B / C, BLOCKED                                 | Explicit accepted next story/component and prior integration           | Continue bounded batch; no inferred roadmap permission                                                                                                                       |
 | A-003         | A / BLOCKED; prerequisite audit allowed        | Verified integrated candidate and build prerequisites                  | Exact local APK/build handoff; human/native gaps remain explicit                                                                                                             |
 | D-003         | D / BLOCKED                                    | Exact APK and actual devices/operator                                  | Per-device evidence and actual rehearsals; never inherit browser passes                                                                                                      |
 
-### A-004 existing-contract correction — READY to A
+### A-004 original grant — now integrated as ffad798, source released
 
 Authority: Feature 005 FR-008–010 and Story 3 at `02b9618`, plus Feature 003 FR-171 active
 role bypass and session-local first-run behavior. Fix QA-04 by routing a validated in-memory
@@ -69,7 +71,7 @@ No persistence, new authority or new capability. Exact paths: `app/index.tsx`,
 cancellation/back and signed-out reset. Acceptance: fresh first-run state + real eligible Child
 handoff reaches Parent sign-in; ordinary signed-out reset shows introduction; failed handoff
 cannot navigate; authenticated roles retain redirects. Focused behavioral tests, full candidate
-checks, D independent retest and pending student review. Prior writer: none; A exclusively HELD.
+checks, D independent retest and pending student review. Original writer: A; completed and released. D actual b2208aa reload/handoff retest passed; native pending.
 
 ## Exact grants
 
@@ -77,12 +79,12 @@ All B/C/D worktrees were created by A from the exact baseline. No worker may cre
 source worktree or change shared runtime/configuration under the report-only grant. Read-only
 access to the canonical checkout, raw references and specifications is permitted.
 
-| Grant    | Worktree                                                         | Exact writable source/report paths                                                                                                                                                       | Writer / state                                                                    |
-| -------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| A-001-r1 | `/home/smyk/projects/Ghaf`                                       | `TEAM_OWNERSHIP.md`; `docs/competition-readiness/workstreams/a-contract.md`; `docs/competition-readiness/{requests,ai-assistance-ledger,android-build-and-rehearsal,two-device-demo}.md` | A / HELD                                                                          |
-| B-001-r1 | `/home/smyk/projects/Ghaf-demo-systems`, `redesign/demo-systems` | `docs/competition-readiness/workstreams/b-recovery-audit.md`                                                                                                                             | B lead; may transfer this exact report to its helper with status record / GRANTED |
-| C-001-r1 | `/home/smyk/projects/Ghaf-ui-studio`, `redesign/ui-studio`       | `docs/competition-readiness/workstreams/c-design-comparison.md`                                                                                                                          | C lead; helper may read independently / GRANTED                                   |
-| D-001-r1 | `/home/smyk/projects/Ghaf-qa-rehearsal`, `redesign/qa-rehearsal` | `docs/competition-readiness/workstreams/d-baseline.md`                                                                                                                                   | D lead; helper may read independently / GRANTED                                   |
+| Grant    | Worktree                                                         | Exact writable source/report paths                                                                                                                                                       | Writer / state                                                              |
+| -------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| A-001-r1 | `/home/smyk/projects/Ghaf`                                       | `TEAM_OWNERSHIP.md`; `docs/competition-readiness/workstreams/a-contract.md`; `docs/competition-readiness/{requests,ai-assistance-ledger,android-build-and-rehearsal,two-device-demo}.md` | A / RELEASED at final checkpoint                                            |
+| B-001-r1 | `/home/smyk/projects/Ghaf-demo-systems`, `redesign/demo-systems` | `docs/competition-readiness/workstreams/b-recovery-audit.md`                                                                                                                             | B lead / RELEASED at b1fc581; integrated c9d5ef6                            |
+| C-001-r1 | `/home/smyk/projects/Ghaf-ui-studio`, `redesign/ui-studio`       | `docs/competition-readiness/workstreams/c-design-comparison.md`                                                                                                                          | C lead / RELEASED at a356998; integrated1428622                             |
+| D-001-r1 | `/home/smyk/projects/Ghaf-qa-rehearsal`, `redesign/qa-rehearsal` | `docs/competition-readiness/workstreams/d-baseline.md`                                                                                                                                   | D lead / RELEASED at242cd49; integrated217f095; new d-candidate grant in r9 |
 
 Canonical BOARD and STATUS-A are A-only; STATUS-B/C/D each lead only. Helpers never write them.
 No previous source writer holds these new report paths. Reports include actual prompt, findings,
@@ -91,8 +93,13 @@ sufficient to start. No dependency installation is required for the initial sour
 
 ## Integration and review register
 
-No new source commits integrated. Initial baseline `02b9618`; existing historical evidence remains
-attributed to its original hashes. Human review PENDING; no student participation invented.
+Runtime candidate `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`: A-004ffad798, A-0064d26635,
+B-004f38f21d, C-0021428622, A-007b2208aa (incomplete strategy), A-0087fff0f3 (root-reset correction).
+Typecheck/lint/format/full suite pass,138files/1,677tests. D-005 actual root-reset retest passes its three sequences;
+D-R02 browser correction is closed at7fff0f3, native remains NOT RUN. D prior core/access/replacement evidence has separate source
+and browser/command/fault scopes, not a blanket matrix pass. Current docs HEAD34a8975.
+Draft014ca54e40 is reviewed documentation only and unaccepted; no source grant follows.
+All worker authorship preserved, human review PENDING, no student participation invented.
 
 ## Decisions / acknowledged requests
 
@@ -105,10 +112,18 @@ attributed to its original hashes. Human review PENDING; no student participatio
 
 ## Resume cursor
 
-A continues build-prerequisite assessment and contract integration planning. B/C/D acknowledge
-revision 1 and produce their assigned reports. Read all canonical statuses before new task grants.
-No active source helper/job is assumed from capacity alone. A records actual helper/job handles in
-STATUS-A; each lead does likewise. Never overwrite live status files or transfer stale locks.
+Local batch has no eligible task or expected active handoff remaining. D report93a98c0 integrated
+7beb61c; final docs5f8ef4e; runtime candidate7fff0f3 passed four checks and the assigned D browser
+reset subset. All source/report/artifact/helper/heavy/preview boundaries are explicitly RELEASED.
+A master-doc and draft014 reservations are released too; sole-writer status rules remain. B/C/D
+have explicitly finished/paused. No job/helper remains and timestamps never transfer ownership.
+
+Next: supply actual Android build prerequisites plus identified devices/operator for A-003/D-003;
+or record a real014 scope decision, commit the accepted exact contract and publish new disjoint
+READY grants. No runtime014/memory/rationale/agenda is authorized by this handoff. Physical/native,
+student review/teach-back and qualification stay pending. Primary rehearsals0/10. Preserve user
+PDFs, historical worktrees and ignored evidence. No push/main merge/deploy/history rewrite/release
+activation. Resume by reading canonical statuses and actual Git before edits.
 
 Revision 2 updated 2026-09-11 22:22:16 UTC: A-004 is an existing Feature 005 repair, not new persistence scope.
 
@@ -225,3 +240,232 @@ Current source fixes have focused evidence, not full-candidate/native/student ac
 blocked on JDK/SDK/device prerequisites. Draft014 is not implementation-ready; no user decision
 or accepted new persistence/memory contract exists. Full candidate checks wait only for C's live
 handoff; no unrelated feature is being opened to occupy idle leads.
+
+Status checkpoint `1f80f05edd0b10dc642837c247d0d4a0578a4eff` completed 2026-09-11 22:38:28 UTC; A-015 resumes status writes. A helper released.
+
+## Revision 9 — exact integrated candidate and retest — 2026-09-11 22:42:00 UTC
+
+**Candidate `b862eb6f85321935d297a411aaa58744cf72f18b`** includes A-004, B-004, A-006 and C-002.
+C-002 worker `a356998` integrated as `1428622`; D report `513ee40` integrated as `b862eb6`.
+C source/card/report, helper and preview explicitly released. A reviewed diff and actual paired
+Arabic/English 390 captures; no missing mandatory text or new behavior found. Named/native review
+remains pending. Source is now frozen for this retest unless a reproduced defect requires repair.
+
+**D-002-r9 READY:** D may first verify its worktree clean, then create/switch a new local branch
+`redesign/qa-candidate-20260912` at exact `b862eb6f85321935d297a411aaa58744cf72f18b` in its existing
+`/home/smyk/projects/Ghaf-qa-rehearsal` worktree. Preserve `redesign/qa-rehearsal` history. This is
+an explicit source synchronization grant, not permission to rewrite or discard dirty work.
+D exclusively owns new `docs/competition-readiness/workstreams/d-candidate.md` and ignored QA
+artifacts for this candidate; existing source is read-only. Its independent 014 proposal appendix
+may stay in a separately regranted report after review; no runtime writes.
+
+D owns the preview lane now (one Metro + one browser tree; record roots/port/handles), and its
+existing one helper quota. Use actual normal router interactions for A-004 Child→Parent→Child,
+cancellation and reset; verify C card AR/EN compact/large text and A duration; run ordinary canonical
+help/submission/praise/+12 once and duplicate no-op where feasible. B replacement may use a labeled
+store fault/command probe if normal full setup is too long, distinguishing it from complete UI.
+Do not claim injected states prove the full journey. Document offline browser scope separately
+from blocked native tests. No full-suite duplication: A owns the one heavy slot for the integrated
+checks below. D may inspect its logs and perform only focused new/reproduced concerns as needed.
+
+**Heavy slot: A reserved** for typecheck → lint → format:check → full tests at this exact candidate,
+with logs under `output/competition-readiness/integration-b862eb6/`. No native build/install/export.
+C heavy/preview/helper released, B no jobs; D's bounded preview may run concurrently with this
+non-native suite within observed memory budget. Full test pool capped at two workers.
+
+Draft014 remains unaccepted/unimplemented; A finishes proposal evidence independently of the frozen
+runtime. D may append a final draft verdict in `docs/competition-readiness/workstreams/d-baseline.md`
+only after explicitly re-holding that report; it is not a runtime-candidate result.
+
+## Revision 10 — integrated checks and proposal disposition — 2026-09-11 22:45 UTC
+
+Full candidate checks on b862eb6 all exit 0: typecheck, lint, format:check, then 138 test files /
+1,669 tests (two workers). Exact times and commands: ignored
+`output/competition-readiness/integration-b862eb6/results.json`; logs alongside. Runner PID229181 /
+exec80818 completed at 22:43:21 UTC, no A job survives. **A heavy slot RELEASED**; D preview stays
+reserved for its active retest. No native evidence follows from these checks.
+
+ACK D-014: released proposal-only review242cd49 integrated as217f095. All seven findings addressed
+in the draft design; exact typed implementation mapping, failing tests, actual scope acceptance
+and native/human evidence remain gates. B-002 stays BLOCKED, no source grant. A commits proposal
+documents and refines the current-feature demo independently; b862eb6 remains the runtime target.
+B and C have completed and paused with all source/helper/jobs released; no file change wakes them.
+
+### Proposal checkpoint — 2026-09-11 22:46 UTC
+
+Draft014 committed asca54e40; no runtime change and no accepted scope. A presented the concrete
+choice to the user: defer recovery until current APK/native validation (recommended), or accept
+proposed scope and proceed through exact contract review before implementation. **Answer PENDING**;
+time passing is not consent. Continue D's authorized b862eb6 retest and current-feature documentation.
+A's generated script removes unbuilt memory/timeline/generalized Coach claims; target150seconds
+is not measured. Primary/secondary devices unknown, physical runs0. No new package/build install.
+
+### Resource clarification — 2026-09-11 22:52:20 UTC
+
+Configured capacity remains ten per session; global operating ceiling remains four helpers.
+Active task quotas are **A1 / D1**, B0 / C0 while their released workstreams are paused, leaving
+two unallocated slots. A's read-only coordination helper and D's helper have completed/released;
+A and D currently have zero active helpers. A future eligible B/C grant must reactivate its quota explicitly. This
+clarifies released allocations without changing file ownership or increasing pressure. D's preview
+remains exclusively D-held; no timestamp or contradictory historical prose transfers it.
+
+## Revision 11 — preview identity failure, retest retained
+
+D-015 identified `../Ghaf-ui-studio/app/index.tsx` served by D's port8097 despite correct disk
+HEADb862eb6. **Initial D browser evidence is candidate-ineligible**; mixed-worktree runtime cannot
+pass the intended candidate. D retains preview/report scope and is restarting uncached, verifying
+loaded source identity before retest. Automated source checks remain PASSED at b862eb6. No product
+regression or source edit is inferred yet. A assigns its one helper read-only Expo root/cache
+mechanics; no second Metro/browser or overlapping mutation. User recovery choice still pending.
+
+Preview recovery update 2026-09-11 22:55:57 UTC: D reports --clear loads its own app/index.tsx with A004. Relevant uncached retest active; first captures remain ineligible. A cache helper released, zero A jobs/helpers.
+
+## Revision 12 — A-007 reset navigation correction
+
+D-017 directly observed an unhandled POP_TO_TOP development error after Parent reset, intercepting
+subsequent verification clicks. Existing Feature003 FR-095/096 authorizes reliable Parent reset
+and usable signed-out Arabic entry. This is an existing-contract repair, not new persistence.
+A exclusively reserves `src/utils/navigation.ts`, `tests/reset-navigation.test.ts` and A's report.
+Installed Expo's dismissAll enqueues POP_TO_TOP without throwing; the existing try/catch cannot
+catch a later unhandled action. Candidate approach: consult the supported canDismiss before
+queuing a pop, always preserve root replacement and the existing web Back guard. Write the failing
+non-dismissable-stack regression, preserve the ordinary dismissable case, then focused/full checks.
+D keeps its b862eb6 source read-only and continues independent EN/B/reset work. No source changes
+in D until A supplies a committed candidate and synchronization grant; new reset fix needs D's
+actual retest. Other dismissAll call sites remain outside this bounded reproduced failure.
+
+## Revision 13 — A-007 committed candidate and correction retest
+
+A-007 committed `b2208aaaf06ec16d7fb12cc0781aeaba754a7eff`: exact utility/test/A-report only.
+RED1failed/2passed; GREEN3files/42tests plus scoped lint/format pass. One helper reviewed/released;
+its remaining async guard/queued-dispatch timing concern requires actual retest, not more guessing.
+A source boundaries RELEASED; no additional runtime edits queued. New candidate sourceb2208aa
+includes all b862eb6 fixes. **A reserves the heavy slot** for one four-check run at b2208aa with
+max2 test workers and logs under `output/competition-readiness/integration-b2208aa/`.
+
+**D-004-r13 READY after D's active baseline checks/report checkpoint:** retain sourceb862eb6 for
+current EN/B/reset investigation, then commit the D-owned report. Verify clean worktree before
+creating `redesign/qa-reset-20260912` at exact b2208aa in the same QA worktree, preserving the old
+branch. Cherry-pick only your own new-file d-candidate report commit into this branch if desired;
+no other source commits, reset or stash. Report/source synchronization is authorized, not a new
+runtime edit grant. D keeps the same sole report and ignored artifacts/preview lane.
+
+Restart only the owned preview with --clear and explicit source-root verification. Retest the
+observed remembered-Child/reload→temporary Parent→Settings reset sequence and a normal dismissible-
+history reset, repeated reset, fresh Arabic/English entry/verification and Back isolation. Require
+no unhandled POP_TO_TOP or blocking error toast. Preserve prior failure evidence and identify
+exact source/HEAD for correction results. Do not repeat the whole matrix or full suite unless an
+actual concern warrants it; A owns full checks. Native/human gates stay blocked/pending. D's final
+status pause request A-026 applies after this correction retest, not before its active handoff.
+
+R13 activated 2026-09-11 23:01:43 UTC; current HEAD/source correction candidate b2208aa, older D source evidence remains b862eb6.
+
+## Revision 14 — 2026-09-11 23:03:33 UTC
+
+A's full b2208aa checks completed23:02:40 UTC exit0:138files/1,670tests plus typecheck/lint/format.
+Runner251443/exec2855 ended; heavy slot FREE. Current authoritative source candidate is b2208aa,
+while D intentionally preserves b862eb6 baseline findings before D-004-r13. A-007 paths released.
+No further source work selected unless D reproduces a remaining defect. D has its report/preview
+and one helper quota; A0active helpers/jobs, B/Cpaused. User014 decision still pending.
+
+## Revision 15 — A-007 race reproduced; scoped correction re-held
+
+D-020 proves the b2208aa canDismiss guard is insufficient: true at check time, unhandled queued
+POP_TO_TOP after reset route change. D-R02 remains OPEN, patch not browser-accepted. A exclusively
+re-holds `src/utils/navigation.ts`, `tests/reset-navigation.test.ts` and its report for A-008 under
+existing Feature003 FR095/096. Choose a supported root action valid after route collapse, verify
+against installed navigation reducer semantics and actual D repro. Other shared route/caller files
+are read-only until an exact additional boundary is published. No source edit by D, no config or
+provider change. A helper1 read-only API review, heavy slot FREE, D retains preview.
+
+### A-008 exact caller grant and implementation contract
+
+A additionally exclusively reserves `app/parent/settings/index.tsx` and
+`src/components/PrototypeStatusBar.tsx`. The public `useNavigationContainerRef()` works at both
+locations; the status bar is outside the app Stack, so do not use app-level useNavigation('/')
+blindly. Prepare/validate the mounted outer wrapper and nested app Stack before clearing app state,
+then one public resetRoot payload retains only the actual wrapper name and sole nested index.
+No pop/replace sequence, old routes/keys/params or framework-internal runtime import. Preserve web
+Back guarding; missing/invalid navigation shape must leave application data unchanged. Root reset
+and browser/native authority remain distinct; D must prove actual URL/Back/fresh-entry behavior.
+Reducer tests may import the pinned installed StackRouter in tests only to model the reported race.
+
+## Revision 16 — 2026-09-11 23:19:30 UTC
+
+A-008 implementation follows the r15 exact caller grant: prepared validated nested root reset,
+one public resetRoot, no POP_TO_TOP/replace sequence, old route keys/params discarded. RED reducer
+race proved on b2208aa;49focused tests pass on draft. A holds four source/test files and report
+until coherent checked commit. D-R02 remains OPEN until new candidate's actual retest. D source
+b2208aa unchanged. No new UI/feature/package grant. A helper1 read-only, D preview, no heavy job.
+
+## Revision 17 — exact A-008 correction and D-005 retest grant
+
+A-008 committed `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`; four source/test files and A report.
+Focused 49 tests, typecheck and scoped lint/format pass; source paths RELEASED. A reserves the
+heavy slot for one full integrated four-check run, max2 test workers, ignored logs
+`output/competition-readiness/integration-7fff0f3/`. D-R02 is still OPEN pending actual retest.
+
+**D-005-r17 READY**: ACK D-022–024, clean report checkpoints and stopped jobs. In the existing QA
+worktree on `redesign/qa-reset-20260912`, verify clean status then cherry-pick ONLY
+`7fff0f3c2dc0e802ba1da6a67cd2513a75824809` onto existing HEAD04ffee9. Preserve own report commits
+and prior branch history; no reset/stash/source edits. Runtime source should match A-008 exactly;
+compare app/src/tests/config/package paths. D retains sole d-candidate report, ignored
+`output/competition-readiness/d-7fff0f3/**`, preview lane and helper quota1. Prepare owned --clear
+preview, verify actual loaded prepareEntryReset utility and both callers (including sibling
+PrototypeStatusBar public container ref). Retest remembered Child actual reload → temporary
+Parent → Settings reset, dismissible and root-only history, repeated reset, statusbar /circle,
+Back isolation and fresh bilingual verification. Preserve original evidence and classify harness
+errors separately. No queued POP_TO_TOP/error overlay or old authorized route may remain. Earlier
+core journey source behavior remains unchanged; do not repeat entire suite/matrix without cause.
+Only A owns the full suite. Missing native/human gates remain explicit. Final A-026 status pause
+applies after finished report release and job cleanup; a grant ACK needs no new routine permission.
+
+## Revision 18 — automated candidate passed; independent browser retest active
+
+A four checks at exact7fff0f3 all exit0,138files/1,677tests,23:23:18–23:24:11 UTC.
+Runner276567/exec40754 completed; heavy slot RELEASED. D synchronized A-008 asa1f1852 over its
+report-only commits and owns actual retest; do not infer pass from source checks. A additionally
+reserves `docs/competition-readiness/README.md` solely to point readers to current execution
+reports instead of old baseline QA counts; no product behavior or new feature grant. A one
+read-only final-evidence helper completes independently. Current WSL available~4.9GiB after suite,
+swap886MiB reflects accumulated paging; one-second sample si4KiB/s/so0,97%idle. No budget increase.
+
+## Revision 19 — D-026 browser correction passed; final handoff active
+
+ACK D-026: three successive Settings/statusbar/root-only reset sequences on source7fff0f3 passed,
+with fresh bilingual continuation, Back/reload and guarded deep links. D-R02 closed for this
+Firefox development-browser subset, not production/native/full-matrix acceptance. D holds report,
+preview278873/exec66015/browser279164 and one read-only evidence helper until explicit release.
+A reviews actual traces/settled screenshots and prepares final docs. D raw initial splash captures
+are transitional and not signed-out UI proof; exact traces/settled capture decide each claim.
+D-R03 Arabic200% CSS secondarylabel clipping stays OPEN/P3; native font scale NOT RUN. Recovery014
+remains DRAFT, user scope question unanswered. No new feature/activation selected.
+
+## Revision 20 — final integration, releases and coordination checkpoint
+
+ACK D027 report-only release and A026 status-pause ACK. Reviewed/integrated only
+adcec89→4392184, cf2f740→a55621e,04ffee9→61810e5,93a98c0→7beb61c; authorship preserved,
+A's duplicate source carrya1f1852 intentionally not cherry-picked. Final docs5f8ef4e pass scoped
+format/link59targets/whitespace checks. Source diff versus7fff0f3 is empty across all runtime,
+tests/package/config paths; no full-suite repeat for report-only integration. Final A report and
+D candidate report carry exact evidence/gaps. Native/APK/human review remain BLOCKED/NOT RUN.
+
+Finished task disposition: A004/A006/A008, B004,C002 integrated; A007 superseded byA008 rather than
+counted as another successful fix. D001/002/004/005 reports integrated with exact failed/passed
+history. A002 reviewed DRAFT, no accepted runtime grant. A003/D003 blocked on toolchain/APK/devices;
+B002/B003/C003 blocked on accepted next contract. No optional feature selected to occupy idle time.
+
+Final path/resource release: all completed A/B/C/D source and report paths, draft014 proposal,
+ignored assigned evidence, helper quotas, heavy slot and preview lane released. Canonical status
+files keep their named sole writers; A alone stages them. D verified final Metro278873/exec66015
+stopped and Firefox279164 closed; A fullrunner276567/exec40754 and all helpers ended. Existing
+unrelated ADB/MCP/client infrastructure is preserved. Configured ten/session unchanged; measured
+global budgetfour retained, zero active allocation, no forty-helper claim.
+
+Status snapshot basis: D fresh explicit A026 ACK at23:31:33; B explicitly ended with A013 pause
+and released all work; C final COMPLETE/PAUSED at22:42:34 after its integration. No new B/C ACK
+or participation is invented, and no heartbeat is treated as a lock expiry. Their quiescent final
+records are staged as authored; A never edits STATUS-B/C/D. The brief status-write pause ends
+once the commit titled `Checkpoint competition handoff and released workstreams` is visible in
+Git history. This permits genuine status updates on resume; it grants no new runtime work and
+does not wake a session. Read the final cursor before the next task.

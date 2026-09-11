@@ -7,36 +7,41 @@
 
 | Field | Value |
 | --- | --- |
-| State | RUNNING C-002-r3; C-001 committed and released |
+| State | C-002 INTEGRATED by A; C COMPLETE / PAUSED with no further grant |
 | Instance / human owner | `C-20260911T221908Z-root` / pending actual owner |
-| Last actual update UTC | 2026-09-11 22:36:40 UTC |
-| Actual checkout / branch / HEAD | `/home/smyk/projects/Ghaf-ui-studio` / `redesign/ui-studio` / `0351f9d0f8c023ce598433e665f23a9ea1a8dcfc` |
+| Last actual update UTC | 2026-09-11 22:42:34 UTC |
+| Actual checkout / branch / HEAD | `/home/smyk/projects/Ghaf-ui-studio` / `redesign/ui-studio` / `a356998c2985a8aa286225fccd165d01fb04c42e` |
 | Intended worktree | Created by A at baseline; branch/HEAD and clean status verified |
-| Board revision acknowledged / task | Revision 7 ACTIVE / C-002-r3; source-sync 4d26635 acknowledged |
+| Board revision acknowledged / task | Revision 9 ACTIVE / C-002 integrated1428622 into candidateb862eb6; no new C grant |
 | Accepted contract | C-002-r3 existing Feature 003 botanical contract; A selects Family Field Journal, existing props/copy/actions only |
-| Exact held paths | Canonical `STATUS-C.md`; C worktree `src/components/r002a/child/ChildTodayTaskCard.tsx` and `docs/competition-readiness/workstreams/c-design-comparison.md`; C lead sole writer |
-| Released source paths | C-001 report released at `0351f9d0f8c023ce598433e665f23a9ea1a8dcfc`; report reacquired under C-002-r3 |
-| Current action / next step | C-002 matrix/checks complete; inspect stress captures, apply A-authorized 4d26635 sync and capture duration, append report and commit/release. No second component grant |
-| Blocker / unblock condition | C-002 unblocked. No source/token/copy/route/landscape expansion; native/human gates remain open |
+| Exact held paths | Canonical STATUS-C only; NO source/evidence/helper/job/preview boundary held |
+| Released source paths | Card + C report at a356998c2985a8aa286225fccd165d01fb04c42e; clean worktree; A may cherry-pick this commit only |
+| Current action / next step | Final C handoff complete. A full checks and D retest own the frozen candidate; resume C only for exact assigned defect/next task |
+| Blocker / unblock condition | C-002 complete. C-003 blocked pending explicit justified scope; native/human and integrated-D gates remain open |
 | Checks / human review / native evidence | Typecheck, scoped lint/format, 39 focused tests and browser matrix PASSED / human PENDING / native NOT RUN |
 | Requested model settings | GPT-6 Astra, Ultra reasoning, Fast where available |
 | Observable runtime settings | Codex/GPT-6 identity; user config reads model `gpt-6-astra`, reasoning `xhigh`, tier `fast`. Effective runtime settings are not exposed; Ultra is not verified. No setting changed |
 
 ## Helpers and local jobs
 
-At revision 7 helper `/root/duration_review` finished both bounded source reviews and is
-RELEASED; no descendants/jobs. C preview lane still HELD: Metro port 8096, current PID 213101,
-exec session 86557 (old 206383/session94621 stopped for the final spacing correction). One
-configured Playwright Firefox root PID 206699; no pending browser call. Artifact directory:
-`/home/smyk/projects/Ghaf/output/playwright/176426/c002/final/`; local scoped logs:
-`/home/smyk/projects/Ghaf-ui-studio/output/playwright/c002/`. Shared dependencies are read-only.
-No heavy suite/export/install/native job. Browser and Metro will stop after copy capture.
+C helper `/root/duration_review` is RELEASED, no descendants/jobs. C preview is RELEASED:
+Metro PID223513/exec97133 stopped with Ctrl-C (exit130); prior213101/86557 already stopped.
+Playwright browser_close completed; Firefox206699 and Metro223513 no longer appear in ps;
+port8096 has no listener. No other process was stopped. C owns no browser/heavy/native job.
+Final proportional source checks exec23242 completed exit0: plain typecheck, scoped lint/format
+and same two-file39-test pair (1.64s); no full suite. Commit complete; worktree clean. No jobs remain.
 
-Current evidence: 28 AR/EN ×320/390×seven-state cases; four enlarged-text/focus/Parent-pending
-cases; four Child-decision/keep/empty cases; four standard/reduced press cases plus signed-out
-Arabic reset all PASSED at dirty card SHA256 6b1f49a8a807e6574aac68c63da130dc32333b67ea8476c3f0af3394b575025a.
-These are actual browser presentations with synthetic fixture seeding and selected genuine
-commands, not a complete native/e2e journey. Final report/commit forthcoming.
+Actual copy sync: `88900c085b55447dd3e5d77236b20d6c3ea45d91` preserves A authorship; exact
+A-report blob used under A-014 after modify/delete conflict. A-004/B-004 runtime absent here;
+A should cherry-pick ONLY the forthcoming component commit. AR/EN ×320/390 Today/details
+copy checks PASSED, viewed four representative captures at `.../c002/copy-sync/` below.
+Arabic duration clarified, English unchanged, real choice enters chosen with Seeds48/award12.
+
+Final component evidence: 28 lifecycle cases, four focus/enlarged/pending cases, four reviewed-
+alternative/keep/empty cases, four press/reduced cases, signed-out Arabic reset. Artifact root:
+`/home/smyk/projects/Ghaf/output/playwright/176426/c002/`; final card SHA256
+6b1f49a8a807e6574aac68c63da130dc32333b67ea8476c3f0af3394b575025a. These are browser
+presentation/selected-command checks, not complete native/end-to-end proof. Human/native pending.
 
 Historical helper record: At revision 1 C had one active helper slot. Reserved for a read-only check of C-F005 range/fixture
 proposal and affected assertions; helper `/root/duration_review` launched with `gpt-6-astra`, `ultra`; Fast not exposed.
@@ -48,6 +53,22 @@ Metro or browser launched. Short read-only commands complete synchronously. Star
 
 ## Completed slices and evidence
 
+**C-002 COMMITTED / RELEASED:** `a356998c2985a8aa286225fccd165d01fb04c42e`, parent
+`88900c085b55447dd3e5d77236b20d6c3ea45d91`, branch `redesign/ui-studio`, clean worktree.
+Only `src/components/r002a/child/ChildTodayTaskCard.tsx` and
+`docs/competition-readiness/workstreams/c-design-comparison.md` changed. A may integrate only
+a356998 after its existing A-006; do not import88900c0's A-report creation into integration.
+Pre-commit staged file list/whitespace and scoped format inspected, commit exit0. Final typecheck,
+lint/format,39 focused tests and complete browser evidence passed in bounded scope. No full
+suite/export/native claim. Exact card SHA remains6b1f49a8a807e6574aac68c63da130dc32333b67ea8476c3f0af3394b575025a.
+Paired current-copy pages:
+`/home/smyk/projects/Ghaf/output/playwright/176426/c002/copy-sync/ar-390-today-page.png` and
+`/home/smyk/projects/Ghaf/output/playwright/176426/c002/copy-sync/en-390-today-page.png`.
+Report contains state matrix, scripts/log locations, all exact helper prompts/contributions,
+rejected directions, A selection, harness limitations and student explanation. Human/native pending.
+Source/report/helper/preview paths and slots explicitly RELEASED; only coordination status held.
+
+
 C-001 committed at `0351f9d0f8c023ce598433e665f23a9ea1a8dcfc`, parent `02b9618`.
 Only `docs/competition-readiness/workstreams/c-design-comparison.md` changed (236 lines).
 Scoped Prettier and staged Git whitespace PASSED, exit 0. No runtime tests/build. The report is
@@ -56,7 +77,7 @@ Helper independently confirmed historical duration reversal and three exact test
 no code/copy was applied. Review/human/native labels remain accurate.
 
 
-No implementation slice or commit. Main checkout initially contains only unrelated untracked
+Historical pre-grant snapshot: no implementation slice or commit then. Main checkout initially contained unrelated untracked
 `docs/SMAC 2026/`; preserved. The prior ownership window explicitly records all boundaries released.
 C's starter status had no registered active instance. The r1 grant now permits the C report.
 The report exists in the assigned worktree; initial Prettier check failed formatting only.
@@ -244,7 +265,44 @@ scale/touch/reduced motion and named Arabic/content/student review remain NOT RU
    ACK A-013: status writes now PAUSED for A's snapshot; source/browser work continues. Please
    publish RESUME when staged snapshot is complete. This file message does not wake other sessions.
 
+7. **C-20260911T221908Z-root-007 → A/D — PREVIEW RELEASE / COPY SYNC COMPLETE.**
+   A-014 exact conflict resolution complete as88900c0; no C edit to A's report text. C card/report
+   remain dirty/held solely for final commit; scope/tests/evidence complete. Browser206699 and
+   Metro223513 stopped,8096 free; preview allocation and helper slot explicitly RELEASED now.
+   Paired copy captures and result JSON: `/home/smyk/projects/Ghaf/output/playwright/176426/c002/copy-sync/`.
+   C-002 final component commit follows shortly; A should integrate only that commit, since its
+   existing source already has A-006. No new C task/resource grant presumed. D can use preview
+   after A allocation, at A's integrated hash rather than this partial-source C branch.
+
+8. **C-20260911T221908Z-root-008 → A/D — C-002 SOURCE/EVIDENCE RELEASE.**
+   Commit `a356998c2985a8aa286225fccd165d01fb04c42e`, parent88900c0; clean C worktree.
+   RELEASED exact card and C report, helpers and preview; no surviving jobs. A should cherry-pick
+   only a356998 onto its candidate with A-006 already present. Latest paired AR/EN captures under
+   `/home/smyk/projects/Ghaf/output/playwright/176426/c002/copy-sync/`; larger final matrix under
+   sibling `final/`. Typecheck, scoped lint/format,39 tests pass; browser state/disabled/focus/text/
+   motion/reset and duration checks pass in documented scope. Independent integrated/native/student
+   gates still open. One direction reused, no landscape/token/route/fixture edits by C. No second
+   READY C task; avoid unnecessary landscape rewrite now that action discoverability is corrected.
+   A integration/D retest remain active expected handoffs; C checks for an exact correction grant.
+
+9. **C-20260911T221908Z-root-009 → A/D — FINAL C HANDOFF / NO NEXT GRANT.**
+   ACK A-018: C-002 integrated as1428622, frozen candidateb862eb6. Integrated card SHA matches
+   C's captured final card exactly. C HEAD a356998 remains clean; no source/report/helper/preview/
+   process boundary held. A and D now own full checks/independent retest; no conditional future
+   defect is self-assigned to C. C pauses its turn with exact recovery cursor below.
+   Added ignored `.../c002/artifact-manifest.json` with104 artifact paths/byte counts/SHA256 values,
+   exact component/copy hashes and evidence-scope note. Counts checked:28 lifecycle,4 stress,
+   4 adjustment/empty,4 motion plus reset,4 dual-renderer copy cases. No new runtime/check repeated.
+   Student selection/teach-back/acceptance, named Arabic review and physical Android remain pending.
+   All prior outbox IDs retained; A r9 ACKs C-007/008. No new UI exploration or scope requested.
+
 ## Acknowledgments and responses
+
+ACK `A-20260911T2220Z-018`: integrated candidateb862eb6 and C commit1428622 observed;
+A/D own subsequent validation; no new C task and no source edits during freeze.
+
+ACK `A-20260911T2220Z-014`: exact A report blob resolution complete, all dirty C work preserved.
+ACK `A-20260911T2220Z-015`: coordination1f80f05 complete; STATUS-C writes RESUMED now.
 
 ACK `A-20260911T2220Z-009`: shared bootstrap observed, plain typecheck passed.
 ACK `A-20260911T2220Z-010`: exact Arabic duration change belongs to A; no C fixture edits.
@@ -282,10 +340,11 @@ successful retry uses `python3` and checks that no C instance registered in the 
 
 ## Resume cursor
 
-C-002 source/report HELD; branch0351f9d plus dirty card, helper released. Status writes PAUSED
-for A-013 snapshot after this update; wait for explicit A RESUME before another status mutation.
-Source/browser work may continue: inspect saved captures, cherry-pick A-authorized4d26635,
-restart owned Metro to apply copy, capture affected AR/EN duration once, stop owned preview jobs,
-append evidence/report, scoped format/whitespace and commit exact card/report only. After A RESUME,
-publish commit/evidence/file+resource release and inspect next READY grant. Do not run another
-whole passing matrix, create new UI scope or edit shared fixture manually.
+C COMPLETE / PAUSED, no next READY grant at board9. Worktree `/home/smyk/projects/Ghaf-ui-studio`,
+branch `redesign/ui-studio`, HEADa356998, clean. Only canonical STATUS-C ownership retained;
+no source/report/helper/job/preview held. A integrated C as1428622 into frozenb862eb6. A full
+checks and D independent retest are active in their own lanes, with no expected new C task yet.
+On an explicit new C grant, read live board/all statuses and Git/process state, verify prior-writer
+release, ACK/reserve exact paths, then handle only assigned reproduced presentation blockers.
+Do not self-assign C-003, reopen comparison, repeat passing matrices or start a browser under D's
+lane. Native/human and qualification gaps remain explicit. No push/deploy/release activation.
