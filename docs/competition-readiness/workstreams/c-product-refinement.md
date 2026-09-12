@@ -436,3 +436,66 @@ packet does not activate narration, recovery014 or any new release flag.
 
 C releases completed candidate files/receipts to A for user review and keeps the private tool
 installation for a bounded requested revision. No audio-generation request remains running.
+
+## User rejects the first Arabic narrator; replacement auditions — 2026-09-12
+
+This is the current listening decision and supersedes the preceding pending-v1 snapshot. The user
+first delegated text review to C/AI and retained personal recording review. The user then reported:
+“I just heard the 3 recordings and they still sound very bad, change the narrator to more
+professional text to speech arabic narrator that has the correct pronunciation and”. All three
+Fatima-v1 Arabic takes are therefore **REJECTED** and preserved. English-v1 remains unreviewed.
+Listener identity beyond the conversation user, device and playback setting are unspecified.
+No human text reviewer is invented; the accepted delegation remains AI editorial review.
+
+C proposed comparing a short identical first-moment script with different narrators before
+regenerating all bodies. A071 initially named Hamed/Zariyah; A073 superseded the second voice with
+Salma after the bounded metadata review. The helper received A073 before starting any request:
+**no Zariyah synthesis occurred**. No script mutation, speed effect or postprocessing concealed
+the narrator change. The same reviewed body fromff72d78 was used byte-for-byte.
+
+| Audition                                                                                                                   | Duration | SHA256                                                             | Current status                              |
+| -------------------------------------------------------------------------------------------------------------------------- | -------: | ------------------------------------------------------------------ | ------------------------------------------- |
+| [Hamed](../../../output/native-ui/narration-candidates/audition-v2/ar-together-hamed-audition-v2.mp3), `ar-SA-HamedNeural` |  12.816s | `cb90f830023bfe3ed413f1ff51c6ca7f75026b3d732d1cc79a247d6139db3b89` | PENDING actual user selection; not imported |
+| [Salma](../../../output/native-ui/narration-candidates/audition-v2/ar-together-salma-audition-v2.mp3), `ar-EG-SalmaNeural` |  12.912s | `f8cf14cc9d582bd39e5d67d816d292ecfbdace472f3e7efceaf5b432cd8db8a5` | PENDING actual user selection; not imported |
+
+Exact tool: existing isolated edge-tts7.2.8, same approved Microsoft Edge speech method,
+rate+0%, pitch+0Hz, volume+0%. Both IDs were verified in the live catalog; the
+[Microsoft voice table](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support)
+also lists their Arabic locales. Metadata is general-purpose/friendly/positive, not proof of
+professional narration quality, accurate pronunciation of this script or native playback.
+The [tool documentation](https://github.com/rany2/edge-tts) does not offer custom phoneme/SSML
+pronunciation control. Existing output-rights uncertainty remains unchanged.
+
+Receipt `output/native-ui/narration-candidates/audition-v2/generation-v2.receipt.json` records
+UTC02:12:48.730006–02:12:53.842627, runner455996, catalog456019, synth456028/456103,
+version/probe456009/456102/456188, all exited0. Two serial synthesis requests succeeded first try;
+50-second limit and one retry maximum were configured, no retry used. Both outputs are MP3,
+24kHz, mono,48kbps; sizes76896/77472 bytes. These are technical measurements only.
+Reviewed transcript SHA256 `63e063ba64027d655a57cdab1fb8a586f119eed7c6ad99ac26fca5426fb4d773`
+matched the original and audition copy. Lead inspected the receipt and preserved original files.
+
+Actual supporting prompts to `/root/duration_review`:
+
+1. Read-only: “User listened to all three ar-AE-FatimaNeural candidate MP3s and rejects them as very
+   bad; asks a more professional Arabic narrator with correct pronunciation. Review existing tool
+   metadata/docs and primary official voice sources for two suitable different Arabic narrators
+   usable through the already-installed candidate-only edge-tts7.2.8 tool, without accounts/payment/
+   voice cloning/new provider selection.” No browser/source/coordination writes or descendants.
+2. Execution after A071: verify exact Hamed/Zariyah catalog IDs, then generate two unchanged
+   first-moment auditions serially under ignored `audition-v2/**`,50s/one retry; record commands,
+   PIDs, source/output hashes and actual failures. Preserve others' concurrent edits.
+3. A073 amendment before requests: “exact second voice now ar-EG-SalmaNeural, Hamed unchanged.
+   Stop before starting Zariyah if possible … If a Zariyah request already ran, preserve/report
+   timing as superseded take … no other voice/full regeneration.” Helper confirmed none had run.
+
+Helper contributions: primary-source/catalog comparison, exact candidate generator/receipts and
+bounded two-file synthesis. Lead accepted the recorded provenance and delivered both direct MP3
+links with an actual listening question. Neither agent listened to or accepted the takes. Requested
+helper Astra/ultra was explicit; Fast/effective serving remain unexposed. Helper allocation, two
+candidate paths and all jobs are RELEASED. No tracked app source or coordination file was written
+by the helper.
+
+Current ledger:3 rejected Arabic full takes,3 unreviewed English takes,2 pending Arabic auditions,
+0 accepted runtime clips. A voice choice must precede full-script replacement, and every eventual
+full take still needs listening review and exact A resource/asset/lifecycle grant. No paid account,
+new runtime provider, voice cloning, real Child recording or product expansion was selected.
