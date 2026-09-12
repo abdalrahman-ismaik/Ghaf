@@ -6,9 +6,9 @@ complete for their recorded scope; APK and physical-device acceptance remain BLO
 format and148files/1,919tests. D independently passed46 synthetic collector checks and76 controller
 fault tests on their separately identified source versions. No APK/device/human rehearsal pass exists.
 
-Latest actual tablet check,2026-09-12 11:01:25UTC: one ADB transport is visible but **UNAUTHORIZED**.
-D stopped before device-property reads. The owner's Android USB debugging trust action is pending;
-model/Android version/ABI, APK installation and native journeys remain unverified.
+Latest actual tablet check,2026-09-12 11:17:31UTC: **zero ADB transports**, following A's recorded
+owner response that Allow was tapped. Earlier unauthorized/timeout evidence is preserved below.
+Model/Android version/ABI, APK installation and native journeys remain unverified.
 
 C's actual `f16112d` browser retest supports closure of duplicate headings and the demo approval
 handoff warning; D independently reviewed its artifacts. The final runtime removes only the
@@ -1072,3 +1072,80 @@ unauthorized and all native gates remain open. It independently verified0600/070
 noted the original JSON omits the overall wrapper exit. Lead's actual command-tool result supplies
 exit3, retained separately in `execution-observation.json`; no original receipt was rewritten.
 Helper reviewed the receipt before this report addition existed, so no final report review is claimed.
+
+## Passive authorization observation and owner-action follow-up — A154/A160
+
+A154 permitted one passive state subscription through the existing server, capped at ten minutes;
+an observed authorized state could enable the already-granted four metadata reads, without
+inventing who accepted a prompt. D044 acknowledged before reacquiring only this report and ignored
+readiness evidence. This is separate from the completed collector and does not change its source.
+The [AOSP service documentation](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/docs/dev/services.md)
+describes tracking state changes on an open connection. The pinned installed binary contains the
+long-format tracking service, and this actual server accepted `host:track-devices-l` with OKAY.
+
+Exact ignored source: `output/native-acceptance/device-readiness/passive-state-listener.py`, SHA256
+`00e882db619e467858e8d192d642c15a267e274d861af5e5017d84a4e308e147`.
+Actual receipt:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T110540Z-passive/receipt.json`.
+
+| Observation         | Actual evidence                                                                              | Disposition                                                |
+| ------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Subscription        | PID119290/session19959, existing127.0.0.1:5037 server15824; one socket, one tracking request | PASSED passive connection; no polling/restart              |
+| Only event          | 11:05:40.824576UTC, one transport matching the prior private serial, unauthorized            | BLOCKED authorized access; no subsequent event             |
+| Completion          | 11:15:55.793624UTC, exit3, timed out; session ended and PID absent                           | BLOCKED; listener allocation released                      |
+| Timing              | Start11:05:40.806677UTC, configured600-second monotonic deadline; actual UTC span614.986947s | FAILED strict600-second wall-clock bound; cause unverified |
+| Remaining server    | Separate termination observation confirms15824 present                                       | Retained existing server; no new subscription              |
+| Metadata/app/native | No serial-scoped property, package, install or UI request                                    | NOT RUN                                                    |
+
+**D-EVID-002 / P3 evidence-control deviation:** on QAfb0a6b5, WSL host, the above exact listener
+command `python3 -u output/native-acceptance/device-readiness/passive-state-listener.py` recorded a
+UTC duration14.986947s beyond600s. Expected: the A154 listener ends within ten minutes. Observed:
+configured monotonic timeout, socket timeout result,614.986947s UTC receipt span. Artifact: exact
+receipt plus `termination-observation.json`. Suspected owner: D evidence runner; underlying cause
+unknown. There are no recorded monotonic start/end timestamps to distinguish timer/scheduling/clock
+behavior. **Retest NOT RUN**; no claimed strict-cap pass or second subscription. Future reuse must
+address/verify that control; this is not a product/native regression. The actual final timeout,
+no-authorization result and PID release remain valid observations.
+
+A160 subsequently records the actual owner's response, “I tapped Allow”, and explicitly grants
+one fresh bounded enumeration after the listener had ended. D047 acknowledged that evidence and
+grant; the response does not itself establish authorized transport. Exact new ignored source:
+`output/native-acceptance/device-readiness/read-authorized-metadata.py`.
+Actual new receipt:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T111731Z-authorized/receipt.json`.
+Its directory name describes the intended check, not a successful authorization result.
+
+This one check verified the same retained server/pinned binary and received OKAY for `host:version`
+(0029) and `host:devices-l`. **The returned transport list was empty.** WrapperPID129560 endedexit3.
+D stopped before any serial-specific state/identity command, USB mapping or four-property read.
+No package/install/UI/media request ran. D048 asks A to verify the actual current attachment and
+owner connection state. The empty list does not diagnose physical disconnection, USB-mode changes,
+Linux permissions, user rejection or an APK failure; no reconnect/restart is selected by D.
+Original unauthorized, timeout and owner-action evidence remain separate and unmodified.
+
+The helper was reused sequentially within D's quota1 for this new passive-listener scope; explicit
+Astra/ultra launch settings were inherited, Fast/effective serving unexposed. Its exact new prompt:
+
+> New bounded scope under A154, reuse D quota1. READ ONLY ignored /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/passive-state-listener.py and 20260912T110540Z-passive/receipt.json, no writes/device/socket/network/tests/descendants/status. Lead listener PID119290/session19959 active, one existing host:track-devices-l stream capped600s/128frames. Concrete independent question: verify it cannot start/restart ADB or select a different transport, preserves private identifiers, records actual state vs human acceptance, and terminates/records failures. Initial actual event one matching prior serial unauthorized, no metadata commands yet. Do not quote serial. Any issue advise lead, do not execute script. A154 permits actual authorized unambiguous event sufficient to resume four metadata fields but no APK/install/human approval. Lead handles stream/status/report, B owns tooling. Inspect only this new listener scope, not prior broad audit; return concise result then release. Requested Astra/Ultra already inherited from prior explicit launch, Fast/effective serving unexposed.
+
+Helper source/initial-receipt review found no selection/privacy violation and verified0600/0700
+permissions and matching script hash. It qualified that disk-write failure can prevent a final
+receipt; this run did write one. The initial review did not observe termination. Actual follow-up:
+
+> Final narrow receipt follow-up under same A154 scope, no execution/writes/descendants: /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T110540Z-passive/{receipt.json,termination-observation.json}. Actual listener119290/session19959 ended exit3/timed out; PIDabsent, existingADB15824 remains. Only initialmatchingunauthorizedevent, no auth or metadata. Important contrary timing: source configured600-second monotonic budget, receiptUTC11:05:40.806677→11:15:55.793624 =614.986947s. Do NOT claim strict10minute wall-clock cap pass or guess scheduling/clock cause; no monotonic start/end inreceipt to diagnose. Lead will record timing deviation, no secondsubscription. Please verify resulting evidence classification and concise concerns, then release. Do not quote realserial. Leadreport/status only, sourcecode unchanged.
+
+The final receipt review independently confirmed the614.986947s duration, exit3, absence of an
+authorized event and the need to leave strict wall-cap compliance failed. No cause was invented.
+Owner-action check follow-up:
+
+> New exact A160 result after actual owner viaA 'I tapped Allow': lead ONE fresh enumeration at /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T111731Z-authorized/receipt.json, ephemeral source ../read-authorized-metadata.py. Runner129560 exit3, pinnedexistingserver/host:version0029/host:devices-l OKAY, nowZEROrows. No serial/state/getprop/sysfs/package/install. READ ONLY receipt to verify no metadata claim or inferredcause; do not execute source/commands, quoteidentifier, writefiles, spawn. Lead routed D048 toA ownerhostUSBverification; no automatic retry/serverrestart. Need concise final review combining preservedunauthorized→timeout614.986947s→ownerAllowattributed→currentempty, then release. Lead updatescohesivereport; A/Bproduceractive separate.
+
+Lead implemented only ignored, bounded evidence runners and this report. No product code, privileged
+session, personal app data or user media was read or generated. Rejected claims include strict
+wall-cap success, a guessed timeout cause, owner Allow proving technical authorization, or an empty
+list proving disconnection. All APK/native/student/human acceptance gates remain unchanged.
+
+Final owner-action receipt review completed and helper allocation released. It confirmed only two
+host requests, empty metadata and zero transports; the intended-check filename is not acceptance.
+No helper executed the listener, device queries or report validation. Lead's scoped formatting and
+diff checks apply to the final report; the next device action awaits A's concrete attachment handoff.
