@@ -499,3 +499,109 @@ Current ledger:3 rejected Arabic full takes,3 unreviewed English takes,2 pending
 0 accepted runtime clips. A voice choice must precede full-script replacement, and every eventual
 full take still needs listening review and exact A resource/asset/lifecycle grant. No paid account,
 new runtime provider, voice cloning, real Child recording or product expansion was selected.
+
+## 2026-09-12 — User selects an ElevenLabs Abdullah audition
+
+A089 regrants only this report and ignored `output/native-ui/narration-research/**`; all runtime
+and preview paths remain released. Base C HEAD `219a6f4`; A's frozen runtime is `5d8a3e8`.
+User's latest request: “I saw good examples in https://elevenlabs.io/, can you try this Arabic
+option: ‘Abdullah - Professional, and Energetic’”. This supersedes the earlier exclusion of
+ElevenLabs and selects one audition. It does not accept a recording or select a paid subscription.
+
+The conversation user rejected Salma-v2 and preferred Hamed-v2 comparatively, without accepting
+Hamed. Fatima-v1's three Arabic takes remain rejected; English-v1 remains unreviewed. Preserve
+all earlier files and their original receipts. Hamed and Salma were Microsoft Edge neural voices
+through edge-tts7.2.8, not ElevenLabs voices. Arabic text review remains delegated to C/AI;
+actual recording quality is reviewed by the user, whose personal name/device is unspecified.
+
+The preceding bounded research recommended Google Gemini TTS as an audition option, not a selected
+replacement or proven quality improvement. Its official [speech guide](https://ai.google.dev/gemini-api/docs/speech-generation)
+lists Arabic, delivery controls and `gemini-3.1-flash-tts-preview`. [AI Studio](https://aistudio.google.com/generate-speech)
+redirected to Google sign-in; [pricing](https://ai.google.dev/gemini-api/docs/pricing) lists a free
+tier. No account, generation or output-rights check occurred. Amazon Polly's current voice table
+lists Zayd as neural, and its [launch note](https://aws.amazon.com/about-aws/whats-new/2023/08/amazon-polly-gulf-arabic-male-ntts-voice/)
+explicitly describes Gulf and Modern Standard Arabic support. No Polly account, generation or
+output-rights check occurred. These alternatives are now secondary to the user's Abdullah choice;
+no new broad comparison, feature scope or provider integration is needed.
+
+### Exact voice and prepared recording packet
+
+Read-only helper `/root/abdullah_voice_review` located the exact name in the public embedded data
+on [ElevenLabs' Arabic TTS page](https://elevenlabs.io/text-to-speech/arabic): voice ID
+`pCKbQ4EPGE06zpEPGNvS`. The provider describes a dynamic baritone and categorizes the voice as
+entertainment. This is provider metadata, not an agent listening judgment. The public page offers
+an editable demo; it is not evidence that this session has authenticated account or API access.
+
+[ElevenLabs' TTS documentation](https://elevenlabs.io/docs/overview/capabilities/text-to-speech)
+states that Voice Library voices are unavailable through the API to free-tier users. The
+[model guide](https://elevenlabs.io/docs/overview/models) lists Arabic for Multilingual v2.
+Proposed first model: `eleven_multilingual_v2`, subject to actual access and this voice's supported
+models. No claim that it is the model used in the provider's public preview. No settings were
+executed, no account plan was observed, and no provider key was inspected.
+
+Prepared exact first-moment transcript, unchanged from the prior auditions:
+
+> يختار الطفل مهمةً وافق عليها وليّ الأمر. في هذا العرض، يجرّب سالم فرز مواد نظيفة قابلة لإعادة التدوير، بإشراف شخص بالغ.
+
+`output/native-ui/narration-research/abdullah-short-script.txt` preserves the original SHA256
+`63e063ba64027d655a57cdab1fb8a586f119eed7c6ad99ac26fca5426fb4d773`.
+The adjacent `abdullah-audition-plan.json` is now BLOCKED_ACCESS_NOT_EXECUTED, with the verified
+voice ID, zero generation requests and zero audio files. `abdullah-request.json` holds the exact
+text/model and proposed first-take settings: stability0.5, similarity0.75, style0, speed1.0 and
+speaker boost enabled. These are a neutral starting configuration, not a validated pronunciation
+recipe. Input SHA256 parity was checked; no paid operation was executed. A097 grants one initial
+synthetic take once usable owner-authorized access and the concrete method are verified; no full three-script regeneration is selected by this preparation.
+
+Send only the transcript to the proposed Multilingual v2 model. Do not reuse the Gemini-style
+spoken direction prompt: ElevenLabs warns that descriptive instructions can be spoken aloud.
+Do not invent SSML/phoneme support for Arabic; the [pronunciation guide](https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices)
+states Multilingual v2 does not support phoneme tags. Any later diacritic or pronunciation edit
+must be versioned against the reviewed transcript rather than silently changing what is spoken.
+
+After usable account access and the exact generation grant exist, save one take with provider,
+voice, model/settings, UTC, unchanged input hash and output hash/duration. Give the user the actual
+MP3 directly. Check their pronunciation, pacing and tone verdict on this exact text; metadata and
+checksum checks cannot pass audio quality. If accepted for direction, obtain all three full takes
+and actual listening before a separate runtime asset/lifecycle integration. Native playback,
+TalkBack priority, Back/background cancellation and transcript parity remain independent gates.
+
+The provider's [output guidance](https://elevenlabs.io/docs/overview/capabilities/text-to-speech)
+reserves commercial usage for paid plans. No new account/payment was selected, and this report does
+not establish distribution rights for a future clip. No real Child recording, voice cloning,
+provider secret in the mobile bundle, runtime service, source change or APK acceptance occurred.
+
+### Assistance, checks and pending access
+
+Helper task summary (verbatim initial prompt in ignored `helper-prompt.txt`): independently verify the exact Abdullah Voice Library listing, official
+page/voice ID/native language/description/model compatibility, public preview and account/plan
+restrictions. Official primary sources and public read-only requests only; no credentials,
+generation, media download, browser/server/build/test jobs, file or coordination writes, or
+subagents. Preserve others' concurrent work. Lead prepared the identical script and this report
+while the helper checked identity. No audio was generated or listened to by either agent.
+Requested helper Astra/Ultra/Fast; launcher accepted Astra/ultra, Fast unavailable. Root config
+previously observed Astra/xhigh/fast; effective serving is unexposed, no settings were changed.
+
+No connected ElevenLabs tool is available in this session. After the user restored full
+filesystem permission, presence-only checks for ELEVENLABS_API_KEY and XI_API_KEY both returned
+false; no values, credential files or unrelated environment entries were read. User was asked
+whether website or local API access already exists; “continue” and filesystem permission did
+not supply account details. Never ask the user to paste a secret into chat. Under A097, new
+generation is now blocked only on usable owner-authorized access and method verification;
+public voice discovery and script preparation are complete. Student exact-diff review and audio
+acceptance remain PENDING. No device or browser quality pass is implied by this report.
+
+Final helper receipt: exact public preview URL is retained in the ignored plan. Lead HEAD check
+returned405 (method unsupported), which does not establish GET/playback failure. No audio body
+was downloaded or listened to. The helper reported one unauthenticated library metadata
+GET returned401; no authenticated entitlement result exists and no restriction was bypassed.
+Exact training language/regional accent and per-model compatibility remain unknown. Helper
+read-only allocation is complete/released, no helper files, jobs or descendants. The public voice
+preview is a provider example, not a Ghaf-script take. Use the official Arabic page, find Abdullah's
+exact name or ID, and generate the text above with the recorded model/settings if the user's
+account permits it. Inspect any account restriction before proceeding; no subscription purchase
+or account creation is inferred. Save the resulting MP3 for actual listening, separate from runtime.
+
+The interrupted report save later returned exit0; only this report changed. The full-permission
+restoration resolves sibling-worktree write access. It does not create an ElevenLabs account.
+No new source or native job was started. Formatting, diff whitespace and exact request/transcript
+parity checks accompany the report commit; app suites and browser matrices are unnecessary here.
