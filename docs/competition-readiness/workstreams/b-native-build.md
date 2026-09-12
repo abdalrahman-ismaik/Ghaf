@@ -1,6 +1,6 @@
 # Session B — Repeatable Android build
 
-**Current: Build Tools35 is installed and the preflight now requires35 alongside36. The corrected APK attempt was deliberately stopped after observing that the configured CMake single-job setting did not limit direct Ninja compiler concurrency. No APK exists; a supported compiler-limit correction and exact new build grant are pending. Manifest review and Feature015 adapter evidence remain valid within their recorded scopes.**
+**Current: the shared-pool build-control patch passes an isolated installed CMake/Ninja fixture and54 exact-hook mock checks, including included-build receipt reuse. Actual application task-graph/configuration, generated Ninja coverage, compiler-process validation and APK/device acceptance remain pending. Both Build Tools35/36 are installed and required by preflight.**
 
 The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
 attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
@@ -1146,3 +1146,170 @@ build. A117 does not require an APK rebuild merely for this preflight change. B 
 completed preflight/report commit for integration; maintenance ownership and private boundaries
 remain B-held for the pending compiler-limit proposal. All native jobs are ended; no APK, device,
 primary/secondary Android rehearsal, human acceptance or Recovery014 approval is claimed.
+
+## A125/A133 — Per-invocation shared native pool
+
+The lead implemented the reviewed proposal only in this report and scripts/native/build-apk.sh.
+Each future Gradle invocation receives a retained `native-one-job.init.gradle` through
+`--init-script`. Its Android application/library `finalizeDsl` hooks add the three approved
+CMake arguments for modules declaring a CMake project:
+
+```text
+-DCMAKE_JOB_POOLS=ghaf_native=1
+-DCMAKE_JOB_POOL_COMPILE=ghaf_native
+-DCMAKE_JOB_POOL_LINK=ghaf_native
+```
+
+DefaultConfig, buildType and productFlavor arguments are checked first. A preexisting controlled
+argument, including typed or split `-D` forms, is refused rather than overridden. An ndk-build
+module is refused as uncovered. Selected/skipped records include canonical build root, module
+path, requested pool arguments and actual plugin class/version/code source when Android applies.
+Missing lifecycle/API/identity refuses instead of claiming coverage. Included/non-Android projects
+are recorded; skipped projects and custom compiler commands still require later graph review.
+No dependency, generated root Gradle source, tool binary, old.cxx, key or application file changes.
+
+The mechanism follows [CMake3.30 shared pools](https://cmake.org/cmake/help/v3.30/prop_gbl/JOB_POOLS.html)
+and [compile-pool initialization](https://cmake.org/cmake/help/v3.30/prop_tgt/JOB_POOL_COMPILE.html).
+The earlier [parallel-level environment setting](https://cmake.org/cmake/help/v3.30/envvar/CMAKE_BUILD_PARALLEL_LEVEL.html)
+applies to cmake --build; observed AGP direct Ninja did not use that entry point. The environment
+setting is retained, but the receipt now labels `cmake_pool_requested_depth=1`, not proven jobs1.
+No actual `-j1` argument is added. Equivalence applies only to inspected edges using the shared pool.
+
+Installed AGP8.12 class inspection supports CmakeFlags.arguments and DslLifecycle.finalizeDsl(Action),
+and shows configure arguments enter CxxAbiModelSettingsRewriterKt's configuration hash. This does
+not prove the app resolves8.12 everywhere. Actual per-module identity and resulting configuration
+paths remain a required next observation. No guessed maxConcurrentCompileJobs property was added.
+
+### Included-build receipt correction before application execution
+
+The first exact-hook mock suite passed43 cases. Review then found that multiple init executions in
+one Gradle invocation collided with unconditional createNewFile. The helper reproduced the new
+same-invocation replay test:43 existing cases passed and that new case failed. Its RED receipt is
+`output/native-build/script-checks/ninja-one-job/hook-20260912T102643Z/receipt.json`.
+A133/A134 independently confirmed the lifecycle from Gradle9.3.1 source: init scripts and system
+properties propagate into included builds, and nested settings loading executes them. Relevant
+primary source is [BuildDefinition](https://github.com/gradle/gradle/blob/v9.3.1/subprojects/core/src/main/java/org/gradle/api/internal/BuildDefinition.java)
+and [StartParameter](https://github.com/gradle/gradle/blob/v9.3.1/subprojects/core-api/src/main/java/org/gradle/StartParameter.java).
+No real Gradle or native failure was run to establish this source/mock defect.
+
+The wrapper now creates one new regular receipt before Gradle starts and refuses an existing init,
+hash or module-receipt file without overwriting it. The header records source commit, build HEAD,
+init hash and pending coverage. Every init execution validates the prepared receipt/hash and then
+appends under a shared JVM mutex and FileChannel lock, preserving the single header. Build roots
+distinguish otherwise identical module paths. Fresh wrapper preparation, rather than init replay,
+is responsible for rejecting prior-run outputs. Generator failures return explicitly because the
+outer step runner captures status through `||`; implicit shell errexit inside a function is not
+relied upon. Init hash verification runs before and after the future Gradle command.
+The code-source check remains strict; A's separate source review found no reason to weaken it
+merely because a plugin class is decorated.
+
+### Proportional checks and their limits
+
+The helper's isolated native fixture used approved installed CMake3.30.5, Ninja and NDK27 with an
+Android x86_64/API24 toolchain. It generated eight tiny C compilation units, two static libraries
+and two executables, without running the produced executables. The direct Ninja command had no
+`-j`; all8 compile and4 archive/link edges were assigned to ghaf_native depth1. All12 entries in
+.ninja_log were non-overlapping at integer-millisecond resolution, including interleaved compile
+and link work; span0–216ms. Four synthetic missing/conflicting pool/compile-edge cases refused.
+This proves the installed pool mechanism on that fixture, not application coverage or host capacity.
+
+Fixture interval10:20:30.863959–10:20:31.343769UTC, exit0; receipt/logs/generated files:
+`output/native-build/script-checks/ninja-one-job/20260912T102030Z/`.
+Build.ninja SHA256575a73e06532ebc16c02f47d48caba9acabeb98f81668a5e42207209f516d46f;
+rules.ninja SHA256db430362cc44d58c39bd1c27c709e68a318ca88845c59cc8853519fb39040bcc.
+Fixture runner73793/CMake73806/Ninja73847 ended; heavy allocation released before A's host setup.
+
+Final exact-code command:
+
+```text
+python3 output/native-build/script-checks/ninja-one-job/run_hook_checks.py
+```
+
+It ran the actual extracted Bash generator and Groovy hook with installed Groovy/Gradle Action
+API classes and explicitly synthetic Gradle/DSL/plugin identity objects. All54 cases passed at
+10:29:49.313546–10:29:54.575767UTC, exit0. This includes application/library selection, skipped
+projects, default/buildType/flavor conflicts, unsupported ndk-build/lifecycle/identity, malformed
+receipt/header/path/hash, and repeated independent mock Gradle initialization. Duplicate prepare
+and hash-tamper checks correctly exited1; duplicate preparation preserved all four existing policy
+and receipt files byte-for-byte. The final replay kept one header and two distinct build_root rows.
+Receipt: `output/native-build/script-checks/ninja-one-job/hook-20260912T102949Z/receipt.json`;
+case details: `cases/hook-results.json`. The original43-pass run and43/44 replay RED remain intact.
+All final owned helper PIDs were absent at10:30:03.213587UTC; helper/boundary/allocation released.
+Actual concurrent lock contention was not exercised. Mock plugin identity is not real AGP identity.
+
+Final tested script SHA256:
+`c229e099b918fdfccc3048b43b8e097a2c16f102eb0aeb9c57de8c0a0b943cf7`.
+Emitted init SHA256:
+`638f3160d2226fabe78258f47bced87df928ed3c03f89ff7ab0f3999ef2ae585`.
+Lead syntax/help checks passed; missing build acknowledgments refused1 before Gradle.
+Final default preflight passed all12 steps10:31:16–10:31:20UTC, exit0, session26465 ended:
+`output/native-build/20260912T103118Z-preflight.MAqdqT/receipt.txt`.
+No init or app build executes in default preflight. Resource-monitor, owned-process cleanup and
+input-identity blocks were compared byte-for-byte with659f521 and remained unchanged. Heap,
+Gradle-worker, CPU-affinity, SDK35/36, source/config/key and no-install guards remain in place.
+No application suite was repeated for this tooling-only change.
+
+### Next actual native gate and proposed command
+
+A125 authorizes only the isolated fixture and tooling checks. A136 released/rescheduled host setup
+after a Windows check found no installer process and no usbipd service; installation remains
+unconfirmed. A132/A135 retain the single restored canonical Metro79445, which A must stop/release
+before actual application Gradle execution. This commit does not consume a new APK attempt or
+grant one.
+
+Proposed next Gradle task vector, after a separately named controlled recipe/HEAD/slot grant:
+
+```text
+./gradlew :app:assembleRelease --task-graph \
+  --init-script <fresh-run>/native-one-job.init.gradle \
+  -Dghaf.nativePolicyReceipt=<fresh-run>/native-module-policy.jsonl \
+  -Dghaf.nativePolicyInitSha=638f3160d2226fabe78258f47bced87df928ed3c03f89ff7ab0f3999ef2ae585 \
+  -Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false \
+  --no-daemon --no-parallel --max-workers=1 \
+  -Pkotlin.compiler.execution.strategy=in-process \
+  '-Dorg.gradle.jvmargs=-Xmx1536m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/home/smyk/projects/Ghaf-demo-systems/output/native-cache/tmp'
+```
+
+This is a proposal, not an executed command or new CLI mode. It must use the same controlled
+private environment, source/input checks, prepared hash-bound receipt, lock, affinity, resource
+monitor and owned cleanup as the canonical script; do not run an unguarded alternate build path.
+The [Gradle CLI reference](https://docs.gradle.org/current/userguide/command_line_interface.html)
+describes --task-graph since9.1 as disabling task actions and printing dependencies. Project and
+plugin configuration still need observation; no native side-effect claim is made before execution.
+The pinned9.3.1 web page did not open through the browser tool, so that particular page was not
+reported as read; installed CLI behavior still belongs to the next evidence gate.
+
+Inspect the actual dependency graph before selecting a configure-only target: observed library
+prefab dependencies mean a task called configureCMake cannot be assumed compilation-free.
+Then obtain the exact execution grant, inspect each selected module/release ABI's effective AGP,
+arguments, build.ninja and included rules/subninja, and require the depth1 pool on every relevant
+compile, PCH and link edge. Missing/overridden pools or uncovered custom compiler commands/module
+types block a concurrency claim. Later actual process observations and the APK verification remain
+separate required evidence. Preserve old.cxx/native identity and let supported configure arguments
+produce their normal new configuration; no blind cleanup or stale-graph reuse.
+
+### Assistance, review and release
+
+The lead generated and reviewed the tracked hook/wrapper correction and report. The helper wrote
+only the ignored tiny C fixture, generated-graph checker and exact extracted-code mock harness;
+it also identified/reproduced the receipt replay failure and checked the lead's correction.
+No complete application, new product behavior, persistence or authentication was generated.
+Actual prompts, intermediate findings and rejected suggestions are retained in
+`output/native-build/ninja-one-job-proposal/helper-prompt-and-proof.txt` and
+`output/native-build/script-checks/ninja-one-job/lead-assistance-record.md`, both under the absolute
+B worktree named above. Requested Astra/Ultra/Fast remains distinct from
+prior observed root config Astra/xhigh/fast; effective serving settings are unexposed, helper
+launch Astra/ultra and tier unexposed. No student or human participation is invented.
+
+Student explanation: different native libraries required two installed Build Tools versions, so
+preflight checks both. Native compile and link work share one requested pool, and nested Gradle
+builds append to one prepared run receipt. The tiny fixture and mocks test these mechanics. They
+do not prove every app graph uses them or that an APK runs on Android. Exact-diff review and
+teach-back remain PENDING. Human review gates acceptance; it does not prevent this tooling release.
+
+Release the coherent script/report commit for A's inspection/integration. Runtime source remains
+5d8a3e8, with only the previously authorized package Android/iOS normalization unstaged. No B
+helper or native/fixture job remains; B keeps script/report maintenance and private native/output
+boundaries for the next exact grant. The two A-owned permission JSON files remain A-exclusive.
+No APK hash/signature/device pass or primary/secondary rehearsal is fabricated. Recovery014,
+student/native/human acceptance and any broader feature remain deferred/pending as before.

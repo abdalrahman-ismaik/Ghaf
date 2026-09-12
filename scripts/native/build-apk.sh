@@ -12,7 +12,7 @@ MODE=preflight
 ENTRY_MODE=ordinary
 ROOT= EXPECTED_HEAD= SOURCE_COMMIT= JDK= SDK= OUTPUT= CACHE=
 SIGNING=0 HEAVY_ACK= METRO_ACK= LICENSE_ACK= APPROVED_PERMISSIONS=
-RUN= CHILD_PID= LAST_LOG= STEP=0
+RUN= CHILD_PID= LAST_LOG= NATIVE_POOL_SHA= STEP=0
 
 usage() {
   cat <<'HELP'
@@ -55,7 +55,8 @@ A changed source/generation identity stops reuse: A must grant archival and fres
 generation of the owned android tree. The script never archives or cleans it itself.
 
 Build resource policy: two allowed CPUs, one Gradle worker, no parallel Gradle,
-1536 MiB Java heap / 512 MiB metaspace, 1024 MiB Node heap and one CMake job.
+1536 MiB Java heap / 512 MiB metaspace, 1024 MiB Node heap and a requested shared
+Ninja compile/link pool of depth 1. Generated-edge and process coverage need review.
 These are individual limits, NOT a total memory cap. Owned descendants are tracked
 by boot/PID/start identity, including separate daemon groups, and stopped on low
 available memory, sustained paging or low disk; logs and generated files remain.
@@ -375,7 +376,7 @@ if [[ "$ENTRY_MODE" == demo ]]; then
 fi
 CHILD_ENV+=("EXPO_PUBLIC_GHAF_DEMO_ENTRY=$DEMO_ENTRY_VALUE")
 printf 'EXPO_PUBLIC_GHAF_DEMO_ENTRY=%s\n' "$DEMO_ENTRY_VALUE" >> "$RUN/receipt.txt"
-printf 'gradle_heap_mib=1536\ngradle_metaspace_mib=512\nnode_heap_mib=1024\ngradle_workers=1\ncmake_jobs=1\nmetro_workers=1\n' >> "$RUN/receipt.txt"
+printf 'gradle_heap_mib=1536\ngradle_metaspace_mib=512\nnode_heap_mib=1024\ngradle_workers=1\ncmake_pool_requested_depth=1\nmetro_workers=1\n' >> "$RUN/receipt.txt"
 printf 'resource_policy=memory-correlated-paging-v2\ncritical_available_percent=15\npaging_available_percent=30\npaging_pages_threshold=1024\npaging_consecutive_samples=3\nsample_interval_seconds=5\nruntime_disk_floor_gib=5\n' >> "$RUN/receipt.txt"
 mkdir -p "$CACHE/tmp" "$CACHE/gradle" "$CACHE/xdg" "$CACHE/expo" "$CACHE/android-user"
 step ninja-version "$SDK/cmake/3.30.5/bin/ninja" --version
@@ -516,6 +517,114 @@ rg -q 'signingConfig signingConfigs.debug' android/app/build.gradle || fail 'Exp
 step template-certificate "${CHILD_ENV[@]}" "$JDK/bin/keytool" -exportcert -keystore "$RUN/template-debug.keystore" -alias androiddebugkey -storepass android -file "$RUN/template-cert.der"
 sha256sum "$RUN/template-cert.der" > "$RUN/template-cert.sha256"
 
+write_native_pool_policy() {
+  for policy_file in native-one-job.init.gradle native-one-job.init.sha256 native-module-policy.jsonl; do
+    [[ ! -e "$RUN/$policy_file" && ! -L "$RUN/$policy_file" ]] || { printf 'Native policy output already exists; use a new run.\n' >&2; return 1; }
+  done
+  cat > "$RUN/native-one-job.init.gradle" <<'GRADLE_NATIVE_POOL' || return $?
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import java.nio.ByteBuffer
+import java.nio.channels.FileChannel
+import java.nio.file.StandardOpenOption
+import org.gradle.api.Action
+import org.gradle.api.GradleException
+
+def receiptPath = System.getProperty('ghaf.nativePolicyReceipt')
+def initHash = System.getProperty('ghaf.nativePolicyInitSha')
+if (!receiptPath || !(initHash ==~ /[0-9a-f]{64}/)) throw new GradleException('Missing Ghaf native policy receipt path or init identity.')
+def receipt = new File(receiptPath)
+def allowedRoot = new File('/home/smyk/projects/Ghaf-demo-systems/output/native-build').toPath().toRealPath()
+if (!receipt.isAbsolute() || receipt.name != 'native-module-policy.jsonl' ||
+    receipt.canonicalFile != receipt.absoluteFile ||
+    !receipt.parentFile.toPath().toRealPath().startsWith(allowedRoot) || !receipt.isFile()) {
+    throw new GradleException('Native policy receipt must be a prepared regular run file in the granted output boundary.')
+}
+def record = { Map value ->
+    synchronized (receipt.canonicalPath.intern()) {
+        FileChannel.open(receipt.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE).withCloseable { channel ->
+            def lock = channel.lock()
+            try {
+                def header = new JsonSlurper().parseText(receipt.withReader('UTF-8') { it.readLine() })
+                if (header.schema_version != 1 || header.policy != 'ninja-shared-pool-v1' || header.init_sha256 != initHash ||
+                    !(header.source_commit ==~ /[0-9a-f]{40}/) || !(header.head ==~ /[0-9a-f]{40}/)) {
+                    throw new GradleException('Native policy receipt identity mismatch; preserve it for review.')
+                }
+                if (value != null) {
+                    def bytes = ByteBuffer.wrap((JsonOutput.toJson(value) + '\n').getBytes('UTF-8'))
+                    channel.position(channel.size())
+                    while (bytes.hasRemaining()) channel.write(bytes)
+                    channel.force(false)
+                }
+            } finally { lock.release() }
+        }
+    }
+}
+record(null)
+def refuse = { String reason ->
+    record([status: 'blocked', reason: reason])
+    throw new GradleException(reason)
+}
+def controlled = ~/^CMAKE_JOB_(POOLS|POOL_COMPILE|POOL_LINK)(?::[^=]+)?(?:=.*)?$/
+def poolArguments = ['-DCMAKE_JOB_POOLS=ghaf_native=1',
+                     '-DCMAKE_JOB_POOL_COMPILE=ghaf_native',
+                     '-DCMAKE_JOB_POOL_LINK=ghaf_native']
+gradle.beforeProject { p ->
+    def androidPluginSeen = false
+    ['com.android.application', 'com.android.library'].each { pluginId ->
+        p.pluginManager.withPlugin(pluginId) {
+            androidPluginSeen = true
+            def plugin = p.plugins.findPlugin(pluginId)
+            def versionClass = plugin.class.classLoader.loadClass('com.android.Version')
+            def version = versionClass.getField('ANDROID_GRADLE_PLUGIN_VERSION').get(null)
+            def origin = plugin.class.protectionDomain.codeSource?.location?.toString()
+            if (!(version instanceof String) || !version.trim() || !origin) refuse('Missing actual Android plugin identity: ' + p.path)
+            def identity = [build_root: p.rootDir.canonicalPath, module: p.path, plugin: pluginId, plugin_class: plugin.class.name,
+                            agp_version: version, plugin_code_source: origin]
+            p.extensions.getByName('androidComponents').finalizeDsl({ dsl ->
+                if (dsl.externalNativeBuild.ndkBuild.path != null) refuse('Uncovered ndk-build module: ' + p.path)
+                if (dsl.externalNativeBuild.cmake.path == null) {
+                    record(identity + [status: 'skipped', reason: 'no CMake project'])
+                    return
+                }
+                def scopes = [[name: 'defaultConfig', value: dsl.defaultConfig]]
+                dsl.buildTypes.each { scopes.add([name: 'buildType:' + it.name, value: it]) }
+                dsl.productFlavors.each { scopes.add([name: 'flavor:' + it.name, value: it]) }
+                scopes.each { scope ->
+                    def args = scope.value.externalNativeBuild.cmake.arguments.collect { it.toString() }
+                    args.eachWithIndex { arg, i ->
+                        def definition = arg.startsWith('-D') ? arg.substring(2) : (i > 0 && args[i - 1] == '-D' ? arg : '')
+                        if (definition ==~ controlled) refuse('Conflicting native pool argument in ' + p.path + '/' + scope.name)
+                    }
+                }
+                dsl.defaultConfig.externalNativeBuild.cmake.arguments.addAll(poolArguments)
+                record(identity + [status: 'selected', cmake_path: p.file(dsl.externalNativeBuild.cmake.path).canonicalPath,
+                                   requested_arguments: poolArguments])
+                p.logger.lifecycle('GHAF requested native pool=ghaf_native depth=1 module=' + p.path)
+            } as Action)
+        }
+    }
+    p.afterEvaluate {
+        if (!androidPluginSeen) record([build_root: p.rootDir.canonicalPath, module: p.path, status: 'skipped', reason: 'not an Android application/library project'])
+    }
+}
+GRADLE_NATIVE_POOL
+  sha256sum "$RUN/native-one-job.init.gradle" > "$RUN/native-one-job.init.sha256" || return $?
+  read -r NATIVE_POOL_SHA _ < "$RUN/native-one-job.init.sha256" || return $?
+  python3 - "$RUN" "$SOURCE_COMMIT" "$EXPECTED_HEAD" "$NATIVE_POOL_SHA" <<'PY_POOL_RECEIPT' || return $?
+import json, pathlib, sys
+run, source, head, init_hash = pathlib.Path(sys.argv[1]), *sys.argv[2:]
+header = {'schema_version': 1, 'policy': 'ninja-shared-pool-v1', 'init_sha256': init_hash,
+          'source_commit': source, 'head': head, 'pool': 'ghaf_native', 'depth': 1,
+          'coverage': 'PENDING: inspect generated edges and actual compiler processes'}
+with (run / 'native-module-policy.jsonl').open('x') as receipt:
+    receipt.write(json.dumps(header) + '\n')
+PY_POOL_RECEIPT
+  printf 'native_parallel_policy=ninja-shared-pool-v1\nnative_pool_graph_acceptance=PENDING\n' >> "$RUN/receipt.txt" || return $?
+  cat "$RUN/native-one-job.init.sha256" >> "$RUN/receipt.txt"
+}
+step native-pool-policy write_native_pool_policy
+
 GRADLE_TASK=:app:assembleRelease
 [[ "$MODE" != manifest ]] || GRADLE_TASK=:app:processReleaseMainManifest
 
@@ -616,6 +725,8 @@ compile() {
   (
     cd "$ROOT/android"
     exec setsid taskset -c "$cpu_set" "${CHILD_ENV[@]}" ./gradlew "$GRADLE_TASK" -Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false \
+      --init-script "$RUN/native-one-job.init.gradle" "-Dghaf.nativePolicyReceipt=$RUN/native-module-policy.jsonl" \
+      "-Dghaf.nativePolicyInitSha=$NATIVE_POOL_SHA" \
       --no-daemon --no-parallel --max-workers=1 \
       -Pkotlin.compiler.execution.strategy=in-process \
       "-Dorg.gradle.jvmargs=-Xmx1536m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp"
@@ -648,8 +759,10 @@ compile() {
   CHILD_PID=
   return "$status"
 }
+step native-pool-identity sha256sum --check "$RUN/native-one-job.init.sha256"
 step resource-before-compile resource_check
 step "gradle-$MODE" compile
+step after-compile-pool-identity sha256sum --check "$RUN/native-one-job.init.sha256"
 step after-compile-inputs check_inputs
 step after-compile-native generation_identity verify
 if [[ "$MODE" == manifest ]]; then
