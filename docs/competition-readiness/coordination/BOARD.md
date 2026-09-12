@@ -3,6 +3,53 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 79 — exact restoration complete
+
+Updated 2026-09-12T17:40:45.935059+00:00; final source46e9b58, all4checksPASS/153files/2025tests.
+Original6pageonboarding and originaltwo-choiceWelcomerender live; exactstylesequality and real
+AR/ENbrowser/3demoaccountsPASS. SeparateParent9afd720 preserved. Oldvoiceoff pendingoptionaluser
+choice; noWiamtextmismatch. Earlierreference-led visuals rejected/superseded, retainedas history.
+Aallsource/helpers/browser/heavyjobsRELEASED; retain soleMetro427191/8081 andowncoordwriter.
+B/C/Dstatusfiles are not staged byA. Native/physicalaudio/studentreview pending; no newAPK,
+push/mainmerge/submission/deployment/flags. Resumeonlyforactualnewuserdecision/correction.
+
+## Revision 78 — exact original onboarding and Welcome
+
+Updated 2026-09-12T17:35:44.271639+00:00; latest user rejects reference-led redesign and requires exact original screens.
+Contract42b1a07; integrated33a37c1 plus bounded regression cleanup. OriginalFirstRunOnboarding
+and originalWelcome JSX/styles restored, two mainParent/Childactions, existing demo authority.
+A owns final originalentrytests/report/ledger and owncoordination. Browser all6AR6EN/3accountsPASS;
+helpers/browser0. One finalcheckpool, no nativeoverlap. Metro427191/8081 alive after prior1024MiB
+heap failure; replacement1536MiB/oneworker. C100 six-file Parent slice integrated9afd720, separate.
+B/C/D source/resource allocations released; statuses remain their own. Narrationquestion unanswered,
+oldvoiceoff in demo; Wiam retainedwithouttextmismatch. Native/human gates pending. No new feature.
+
+## Revision 77 — six-page restoration and Parent presentation
+
+Updated 2026-09-12T16:43:31.149187+00:00. A228 records selected contract e4ec763/6b8d4bb and exact paths.
+A holds entry/story/audio/resource/tests, browser lane queued after C408291 release; no helpers live.
+C owns user-authorized four Parent presentation files/new rendered test/own report; source changes
+are disjoint and preserved. C finishes already-running408291 under A229, explicitly releases before A capture. D087/088 Child brief ACK, no Child source grant
+yet. B native remains paused. A full checks wait meaningful integrated candidate; no duplicate pools.
+
+## Active reference-led restoration
+
+- Revision **76**, updated 2026-09-12T16:30:24.221033+00:00; A continues on7454d27/runtime0da7237.
+- User rejects current onboarding/login design and selects restoration of the older screens,
+  improved using supplied external templates/components. Existing quick demo authority, narration,
+  ordinary access, flags, poster and native build boundaries remain preserved.
+- A reserves src/components/demo/**, relevant tests/demo-entry* and demo-narration* tests,
+  app/index.tsx, bilingual resources,015spec/contracts/tasks, scoped design/reference brief,
+  own evidence/AI ledger/BOARD/STATUS-A. No shared-token/primitive or ordinary-auth behavior change.
+- One A read-only helper traces old FirstRunOnboarding/Welcome presentation and reuse boundaries;
+  A lead inspects actual extracted external design previews, artboard/layer structures and rights.
+  No template execution/dependency/source/assets imported. One existing Metro366844, browser free.
+- ACK D086 user-selected Child dashboard reference review: D may prepare its read-only exact
+  presentation brief in own report; publish proposed paths/acceptance before implementation grant.
+  A's entry/onboarding does not overlap Child dashboard; no D store/token/package edit selected.
+- B/C/D own live status files; A does not stage them. New source work needs the bounded restoration
+  contract first. No native build, release activation, external submission or history reset.
+
 ## Current user correction — visible onboarding and narration
 
 - Revision **75**, updated 2026-09-12T16:18:00.548784+00:00; continuing A-20260911T2220Z-root.
