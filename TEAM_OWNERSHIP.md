@@ -1,34 +1,33 @@
 # Team Ownership
 
-## NB1 current integration — 2026-09-12 10:43 UTC
+## NB1 current integration — 2026-09-12 11:09 UTC
 
-Canonical board54 and continuing A instance A-20260911T2220Z-root govern current grants.
-User-confirmed restarted B/C/D retain ownership. Runtime5d8a3e8 is frozen after148 files /
-1,919 tests and typecheck/lint/format passed; canonical51d99f3 includes the released native-pool
-script/report correction. A retains shared integration, master docs, BOARD/STATUS-A and the two
-A-authored permission-review JSON paths in B output. No app source change is currently selected.
+Canonical board57 and continuing A instance A-20260911T2220Z-root govern current grants.
+B/C/D retain their exact ownership. Runtime5d8a3e8 is frozen after148 files /1,919 tests and
+all three static checks passed. Canonical40fb6fd includes the released build-stage and final
+CMake callback corrections. A owns shared integration, master docs, BOARD/STATUS-A and the two
+previously released A-authored permission-review JSONs under B output.
 
-B owns scripts/native/build-apk.sh, workstreams/b-native-build.md, private native/tool/cache/output
-paths and the two transient package script fields. A138/A140 grants one minimal guarded task-graph
-mode and focused checks. Actual Gradle configuration can compile included plugins and remains
-blocked until A reviews the released candidate and stops/releases its preview. B has one read-only
-helper, no native-heavy job; completed tiny native and mock-policy fixtures are released.
+B owns scripts/native/build-apk.sh, its build report, private native/tool/cache/output paths and
+two transient package script fields. A156 grants ONE guarded Worklets configuration stage on
+exact B9062719/runtime5d/demo, with source/script/report frozen during execution. B holds the
+sole heavy slot, no helper. Actual final six-module coverage and fresh generated Worklets
+PCH/compile/link pools must pass before the second stage, which compiles Worklets transitively.
+All source, dependency, ABI, signing, resource and cleanup boundaries remain unchanged.
 
-A owns canonical demo Metro79445 at8081, with one worker and no browser, restored under the user's
-standing authorization. HTTP readiness is verified; this is not Android acceptance. A must stop
-only its owned preview before native Gradle and restore it afterward. D retains ADBserver15824;
-all other D report/test/helper boundaries are released pending an actual artifact/device grant.
+A's Metro79445 was stopped and released at10:49:02UTC;8081 was rechecked free before A156.
+No browser/emulator is selected. A owes one demo-preview restart after native work.
+Windows binding and Ubuntu USB attachment succeeded; D sees one UNAUTHORIZED ADB transport.
+D owns its exact readiness report/ignored receipts, existing ADB15824 and one passive listener
+119290 capped at11:15:40UTC. The owner must approve Android USB debugging; no device trust,
+properties, APK installation or native journey has passed. D's prior reportfb0a6b5 is integrated
+as1c0f809. All D helpers released. Tablet evidence cannot replace the two planned phone gates.
 
-The user completed Windows usbipd5.3.0 installation; A verified service Running and publisher
-signature Valid. Windows now detects the connected Galaxy Tab S4 at USB2-1. Sharing/attachment
-remains pending the supplied Windows administrator bind command. Real hardware identifiers are
-kept out of Git. Tablet tests supplement, but do not replace, the two planned phone gates.
-
-C reports e66d3ec/8822e13 are integrated; first Wiam sample is user-approved for sound and intended
-transcript, remaining clips/provenance/native listening pending. Runtime remains silent.
-All eight R002b and three live-AI flags remain off; recovery014 deferred, optional additions
-unselected, student exact-diff acceptance pending, actual rehearsals0/10. All status writers
-remain live; no checkpoint pause requested. Four global helpers maximum, no quota increase.
+C's first Wiam clip is approved for sound/intended text; remaining clips/provenance/native
+listening remain pending. Runtime is silent. All eight R002b and three live-AI flags stay off;
+recovery014 remains deferred, optional additions unselected, student exact-diff review pending,
+actual rehearsals0/10. A helpers/jobs0; four global helpers maximum, no quota increase.
+Status writers remain live; A alone stages their records after the required pause acknowledgments.
 
 ## NB1 activation (historical) — 2026-09-12 01:18:23 UTC
 

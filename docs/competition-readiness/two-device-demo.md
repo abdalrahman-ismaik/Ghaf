@@ -40,10 +40,10 @@ symbolic and does not establish real trees planted or measured environmental imp
 
 ## Preparation
 
-Windows identifies the connected Galaxy Tab S4 at BUSID2-1, currently unshared. Administrator
-binding, WSL attachment and Android debugging trust remain pending; model number/Android version
-and ADB visibility are unverified. Use this tablet for initial native evidence when ready; both
-planned phone gates remain pending. Windows tool installation does not establish an app rehearsal.
+The Galaxy Tab S4 is attached to Ubuntu. D's actual11:01:25UTC check sees one UNAUTHORIZED ADB
+transport; the tablet's USB debugging approval is pending. Android model number/version and ABI
+remain unread. Use this tablet for initial native evidence after authorization and a verified APK;
+both planned phone gates remain pending. USB attachment alone is not an app rehearsal.
 
 Install the exact same candidate APK on both phones using the
 [Android build and acceptance guide](android-build-and-rehearsal.md). Record actual models, Android

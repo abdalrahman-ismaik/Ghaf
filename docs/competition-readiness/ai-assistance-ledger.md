@@ -777,3 +777,64 @@ was performed; the helper released its allocation. Actual initial prompt:
 ```text
 Session A one READ-ONLY helper, no descendants/jobs/tests/build/browser/device/provider/writes. Others edit; preserve all work. In /home/smyk/projects/Ghaf inspect ONLY docs/competition-readiness/android-build-and-rehearsal.md and two-device-demo.md plus canonical STATUS-A Current snapshot for a specific stale-current-instruction question. Actual current runtime5d8a3e8, full148files/1919tests+TS/lint/format PASS; no APK yet. Latest actual build VLrTIn exited143 policy stop for3clang processes, resource guard never fired. Pool script integrated51d99f3, B adding guarded task-graph-only mode; isolated tests are not app coverage. A restored canonical demo Metro79445 at8081 HTTP200 and must stop before real native/restart afterward. User completed usbipd5.3 installed/serviceRunning/Valid signature. Now Windows sees actual Galaxy Tab S4 bus2-1 but unshared; manual admin bind pending. No Android model number/OS/serial/trust/ADB/native acceptance. C first Wiam clip sound+intended transcript approved only; runtime remains silent, remaining2clips/provenance/listening pending. Recovery014 deferred, flagsalloff. Return only concrete stale current-facing statements and smallest proposed replacements; clearly historical attempts should remain historical, don't flatten chronology or rewrite whole docs. A will edit. Need bounded quick read result, release allocation when finished. Requested Astra/ultra; Fast unexposed. No other broad exploration.
 ```
+
+## Actual graph review, staged native coverage and attached tablet — September12
+
+A reviewed and integrated the released graph-mode52c43a3 as99630f4, passed Bash syntax/help/diff
+checks, stopped its owned Metro79445 and verified process/port release at10:49:02UTC. A144 granted
+one exact graph run on B52c43a3/runtime5d. Actual Gradle and cleanup returned0, but the wrapper
+returned1 because its parser omitted the observed `(org.gradle.api.Task)` root annotation. A145
+granted a one-line exact-type correction against the retained output, with no repeated Gradle
+run. B's73-case result and separately attributed saved-log replay passed; A integrated64cdbec
+as ef56c57. The original failed wrapper/log remains unchanged.
+
+The actual graph exposed another gap: the app had native tasks but the earlier module callback
+classified it as no-CMake. B's distinct source audit traced React Native's later finalizeDsl
+callback. A149 granted early addition of the same three pool arguments without forcing a CMake
+path, then read-only final classification/validation after all callbacks. This is build tooling;
+no application feature or dependency changed. Actual generated-edge coverage remains pending.
+
+A's read-only native_graph_closure explorer found two fixed configure stages from the saved graph: four
+Worklets tasks, then sixteen app/Expo Core/Gesture Handler/Screens tasks covering four additional
+Reanimated configurations transitively. Stage2 necessarily compiles all four Worklets ABIs via its
+prefab dependency. CMake compiler probes remain possible even in stage1. Separate IDE-model/Debug
+ProcessBuilder PCH tasks do not appear in this saved release closure; no general absence of custom
+compiler activity is claimed. The helper released its allocation without writes or execution.
+Exact findings are retained in output/native-integration/015/native-graph-closure-review.md.
+
+A148 granted only the fixed guarded selector, preserving all existing source/tool/resource/cleanup
+constraints. B's65 focused cases passed; A reviewed and integrated51d9c44 as e857ad9 with shell
+syntax/help/diff checks. No configuration stage or APK is implied by those fixture checks.
+
+Actual initiating helper prompt:
+
+```text
+Session A one READ-ONLY helper. Others editing; preserve work, no writes/tests/JVM/Gradle/native/browser/device/provider/descendants. Exact /home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T104951Z-graph.x9Xru1/21-gradle-graph.log, native-module-policy.jsonl, gradle-arguments.json plus immediately relevant selected module installed build.gradle/CMakeLists if needed. B lead owns parser repair/report and own helper fixture. Actual graph Gradle0 with real root graph completed; final verifier1 only unhandled (org.gradle.api.Task) suffix, A145 grants bounded repair against saved log no Gradle replay. Distinct question assigned exclusively to you, A146 told B not duplicate: from actual graph select smallest ordered configure-CMake target batches covering the SELECTED release module/ABI scopes, enumerate actual prefab/native/custom-compiler dependencies (do not assume configure is compile-free). Need practical next local APK step after job-pool depth1 injected per module via finalizeDsl but generated Ninja edges still unverified. Old .cxx remain preserved; no tool/source/ABI/build config changes granted. All four releaseABIs remain current scope. Return actual selected modules/task paths/dependency edges showing what can configure first and what necessarily compiles other modules. Identify any custom compiler action in required closure that escapes normal CMAKE_JOB_POOL compile/link settings, from exact script only. Do not repeat Gradle graph-mode/pool-init reviews or propose large framework rewrite; no new CLI execution. B script current /scripts/native/build-apk.sh supports build/manifest/task-graph-only only. Needed bounded evidence + smallest safe next task recommendation for A exact grant; runtime5d, BHEAD52c43a3, allguards unchanged. Exact paths/lines, unsupported uncertainties. Release helper when complete. Requested Astra/ultra, Fast unexposed.
+```
+
+A explicitly separated this dependency review from B's app callback investigation and required app
+coverage despite its skipped row. The final scope and accepted fixed targets are in A146–149.
+Rejected suggestions: compiling downstream configure targets before inspecting Worklets pools,
+adding IDE-model targets, repeating Gradle for output parsing, or treating mocked graphs as native
+evidence. Student exact-diff review and teach-back remain pending.
+
+The user answered that the manual bind command had not run, then said “run it yourself.” A
+reverified the unique Samsung port2-1, invoked installed usbipd through Windows RunAs, and recorded
+Windows PID23776 completing with exit0 at10:58:32UTC. Actual state then reported sharedtrue. A
+ran `usbipd attach --wsl Ubuntu --busid 2-1`, which returned0 at10:59:12UTC. The10:59:45 observation
+confirmed Windows attachment and Linux Samsung USB visibility. A did not claim who interacted
+with UAC or infer Android trust. Both owned tool sessions ended and the host setup slot released.
+A152 assigned D the existing-server ADB readiness check; no second server, installation or APK
+acceptance occurred through A's setup work. Real hardware identifiers remain in ignored receipts.
+
+A reviewed B's released final callback correction9062719 and integrated40fb6fd, preserving
+authorship; local syntax/help/diff checks passed. B's101 standalone Groovy cases and12-step
+preflight remain attributed; no application suite was repeated. A156 grants one exact four-ABI
+Worklets configure stage after verifying preview absence and fresh resource headroom. Actual
+module and generated-edge acceptance remain separate from those fixture checks.
+
+D's actual attached-device reportfb0a6b5 was inspected and integrated as1c0f809. It establishes one
+UNAUTHORIZED transport, not Android metadata or native acceptance. A instructed the owner to
+approve Android's USB debugging prompt. A154 permits one existing-server passive state listener
+with a ten-minute cap, avoiding a required message round trip; it cannot grant trust or restart
+the server. D's actual119290 listener and initial unauthorized event are D-attributed evidence.

@@ -83,10 +83,11 @@ maximum216KiB swap used and no paging streak. Preserve the exact compiler-concur
 post-exit receipts. A117's missing35 preflight check and a bounded compiler-limit correction are
 separate tooling work; unchanged source checks do not need repeating.
 
-Windows now identifies the connected Galaxy Tab S4 at BUSID2-1, currently unshared. Android
-model number/OS, debugging trust and ADB visibility remain unverified. D's September12 09:20UTC
-zero-transport result predates this connection and remains historical. The device report and exact
-private receipt are in [D's native evidence](workstreams/d-native-acceptance.md).
+Windows and Ubuntu USB attachment are complete for the connected Galaxy Tab S4. D's11:01:25UTC
+check found one ADB transport, currently UNAUTHORIZED. Android model number/OS and ABI remain
+unread; the tablet owner must approve the USB debugging prompt. D's earlier zero-transport result
+is historical. See [D's native evidence](workstreams/d-native-acceptance.md); hardware identifiers
+remain in ignored local receipts.
 The tablet can provide useful first hardware evidence once visible. It cannot establish the planned
 narrow-screen primary/secondary phone coverage. No app installation or device journey has run yet.
 
@@ -108,25 +109,29 @@ Exact receipts stay under canonical `output/native-integration/015/usbipd-5.3.0/
 
 The user subsequently clarified that no installer window appeared, then completed the supplied
 manual installation step. A verified usbipd5.3.0, service Running and Valid publisher signature
-at10:37UTC. Installation is complete; do not reinstall it. Windows then identified one Galaxy Tab S4
-at BUSID2-1. Sharing is pending an actual Windows administrator action.
-
-Following the [Microsoft WSL USB guide](https://learn.microsoft.com/en-us/windows/wsl/connect-usb),
-open Administrator PowerShell, confirm the tablet still has BUSID2-1 with `usbipd list`, then run:
+at10:37UTC. Installation is complete; do not reinstall it. After the user requested A run binding,
+A launched the verified installed tool through Windows elevation. The bind process returned0 at
+10:58:32UTC; actual state reported sharedtrue. A then ran attachment to Ubuntu, returning0 at
+10:59:12UTC. Windows state and Linux USB visibility independently confirmed attachment at10:59:45.
+These completed commands are recorded for recovery, not instructions to repeat now:
 
 ```powershell
 & "$env:ProgramFiles\usbipd-win\usbipd.exe" bind --busid 2-1
+& "$env:ProgramFiles\usbipd-win\usbipd.exe" attach --wsl Ubuntu --busid 2-1
 ```
 
-Keep Ubuntu open. After sharing succeeds, A attaches the same observed device using
-`usbipd attach --wsl --busid 2-1`; attachment does not require Administrator. Windows cannot use
-that USB device while attached. Recheck the actual BUSID after reconnection; do not bind another
-device or restart WSL during a build. Binding and attachment are not yet confirmed in this record.
+Binding requires Administrator; attachment does not. Following the
+[Microsoft WSL USB guide](https://learn.microsoft.com/en-us/windows/wsl/connect-usb), recheck the
+actual device/BUSID if reconnecting. Windows cannot use that USB device while attached. Do not
+bind another device or restart WSL during a build.
 
 On the unlocked tablet, enable Developer options and USB debugging, then accept the computer's
 RSA authorization prompt when shown. See [Android's device guide](https://developer.android.com/studio/run/device).
-Attachment and debugging trust are separate gates. D then repeats its existing targeted readiness
-check; only a verified authorized target may proceed to exact APK installation and native tests.
+Attachment and debugging trust are separate gates. D's actual transport currently reports
+UNAUTHORIZED. A154 permits one bounded passive listener on the existing server to detect an
+actual authorized transition before allowlisted device properties. No automatic trust acceptance,
+server restart or repeated polling is selected. Only an authorized target and an exact verified
+APK may proceed to installation and native tests.
 
 ## Historical Session A prerequisite audit — September 12, 2026
 
