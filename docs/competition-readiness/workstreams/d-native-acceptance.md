@@ -659,3 +659,55 @@ C explicitly closed/released browser444083 at02:14:24.994798UTC. A owns its Metr
 queue; D holds no browser/server/native job or helper. APK, identified phones, native checks and
 actual primary rehearsals remain absent/NOT RUN. The new defects and rejected clips prevent a
 blanket readiness verdict while useful correction and build verification continue.
+
+## D-EVID-001 — preserved diagnostic image does not show the reported repair
+
+At 2026-09-12T02:21:08.837585+00:00, independent artifact review found **FAILED evidence support**,
+P2 D-EVID-001. This corrects the preceding attributed statement that C's temporary relative-position
+probe exposed the complete word. That was a reported observation; the preserved image does not
+substantiate it. D-R03 remains OPEN until fresh exact-candidate verification.
+
+Source being prepared for retest: f16112d2daf0378445df08654e7da872af4f5658, including web-only
+label changeaf8da6c. Original browser source2ecea74. Under canonical
+`/home/smyk/projects/Ghaf/output/playwright/176426/integrated-015/`, these three files are
+byte-identical, each SHA256 `c5a98062115434ae4c05d6a927a06766fcd21141c0db974421cbf34aeac79488`:
+
+- `ar-card-css200-secondary.png`
+- `ar-card-css200-relative-diagnostic.png`
+- `ar-card-css200-blurred.png`
+
+The helper also matched transform-none/block diagnostic files, C's copied directory and manifest.
+Lead independently ran SHA256 on the three named canonical files (exit0) and directly viewed the
+relative diagnostic: the last line's Arabic glyphs remain cut at the bottom. These images cannot
+support a before/after improvement. Focus adds an amber border and two pixels of control height,
+not a demonstrated text repair. No asset was changed, replaced or removed. A/C own corrected
+attribution and fresh retest evidence; no further product fix is inferred from this evidence issue.
+
+The exact recorded CSS recipe is available in
+`/home/smyk/projects/Ghaf-ui-studio/output/native-ui/integrated-015/card-diagnostic-ar.json`:
+320×844, Salem's assigned unaccepted task, fonts ready plus two frames; select35 nonempty
+positive-width leaf span.is_Text elements within child-home-screen; index with data-d-stress;
+double computed font-size and line-height with important rules; wait two frames and scroll the
+primary action into view before viewport/secondary crops. The secondary is index13, text
+`طلب مهمة أصغر قبل البدء`,16/26→32/52px. Original button240×182, label198×156; final-word
+Range remains within both, so geometry alone did not establish painted visibility. Normal secondary
+is240×52 at320 and310×52 at390. Native text scaling is a separate unrun requirement.
+
+Fresh retest must verify loadedf16112d modules, repeat the recorded recipe without adding another
+relative-position override, inspect complete final-word paint, record actual geometry/focus and
+preserve both outcomes. English needs its own visible-route-scoped run: C's previous duplicate
+testID error establishes no English card stress result.
+
+Helper `/root/native_visual_evidence_review` (ghaf-demo-qa-agent) was launched explicitly
+Astra/ultra; effective serving/Fast remain unexposed. It read artifacts/source only, opened no
+browser, ran no app/test/native command, wrote no files and spawned no descendants. Lead reviewed
+its findings and released the allocation. Rejected inference: treating C031/A075's reported
+relative-position improvement as supported by the preserved paired PNGs. Actual prompt:
+
+> You are Session D's ONLY active helper under NB1 one-helper quota (no descendants). Requested Astra/Ultra; launch explicit, effective serving/Fast unexposed. READ ONLY bounded artifact preparation while lead waits for A's exact browser grant and prepares actions. Source candidate being retested f16112d2daf0378445df08654e7da872af4f5658 (canonical /home/smyk/projects/Ghaf); original C browser source2ecea74. Question: from C report/status and exact artifacts under /home/smyk/projects/Ghaf/output/playwright/176426/integrated-015/ and /home/smyk/projects/Ghaf-ui-studio/output/native-ui/integrated-015/, identify the recorded Arabic D-R03 CSS stress recipe and paired visual evidence required for an equivalent independent retest (35 leaf spans,320 width, text/line sizes, focused/settled differences). Distinguish what is actually recorded from guesses. Inspect code-native sharedButton correction af8da6c and affected 2heading/handoff changes only as needed. You are not alone; preserve everyone's changes. NO WRITES, no coordination/report edits, no app/test/browser/Metro/native execution, no tool install, no commits or recursive spawning. Do not open a browser or claim native passes. Report concise exact paths/recipe/limits to D and release; later I may ask you to inspect new paired screenshots read-only. Lead owns all report/status/browser actions.
+
+D read the Playwright skill and confirmed existing npx. The repository MCP workflow and A's
+serialized resource/artifact grants take precedence over downloading an additional CLI. D has not
+started a browser or installed tools. A078 assigns C the affected retest; D016/017 request for an
+independent browser allocation remains pending. A's new fullf16112d four-check receipt records
+exit0 throughout and148files/1,919tests are A's published count, not D execution or visual acceptance.
