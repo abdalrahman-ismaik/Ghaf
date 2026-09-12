@@ -429,3 +429,61 @@ Current disposition: **OPEN — A correction/focused regression required before 
 transaction boundary.** No product source was fixed by its reviewer. APK still absent: B's
 manifest-only job ended with resource-stop exit75 at01:43:50UTC (B attribution); this is an
 environment/resource failure, not a completed APK or an application rejection.
+
+## D-N05 independent RED regression — D-NATIVE-001 reproduced
+
+Completed 2026-09-12T01:56:07.007925+00:00 under A059/board29. **FAILED at the real-controller Node
+fault-injection boundary; P2 D-NATIVE-001 remains OPEN.** This supersedes the previous
+“focused execution NOT RUN” disposition for this defect only. No UI trigger, APK, device or
+production authentication exploit is demonstrated.
+
+A authorized only source commit263bc889cdbcf979e03e52bc45183f6071e6bdcf, cherry-picked without
+conflict/reset/stash into the clean D tree as1fc7afcaf8a688c439906695ab204b9ce7b918a1.
+Other015 application integration is absent from this QA candidate; this is a foundation test, not
+a complete demo build. D authored only `tests/demo-entry-independent-acceptance.test.ts` and this
+report. A retains all product hooks/interfaces.
+
+Executed at01:55:20.767947–01:55:21.751592UTC, PID427933, exit1:
+
+```bash
+./node_modules/.bin/vitest run tests/demo-entry-independent-acceptance.test.ts \
+  --maxWorkers=1 --no-file-parallelism --reporter=verbose --reporter=json \
+  --outputFile.json=/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/transaction-review/red/vitest.json
+```
+
+Exact test SHA256 `fe65a4438258c9114a15eeebd1389526118e2b1419ef6ed01ce7f020455078e8`.
+Absolute evidence directory: `/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/transaction-review/red/`.
+`receipt.json` binds command, source/QA hashes, UTC, PID and exit; `console.log` and `vitest.json`
+preserve the original failures. No full suite, browser, native job or device command was run.
+
+| Cases                                                             | Result                                    | Observed behavior                                                                                                                                                                              |
+| ----------------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parent, Salem, Alya without injection                             | PASSED 3/3                                | Same real restoration/resume path obtains only the selected controller authority.                                                                                                              |
+| Outer Access reentry after Parent/Salem/Alya resume               | FAILED 3/3                                | Nested operation is rejected without executing; outer result is INVALID_TRANSITION. Selected controller remains authenticated, public snapshots retain changes and valid same-run retry fails. |
+| Middle Parent reentry after Salem/Alya resume                     | FAILED 2/2                                | Parent snapshot is restored, but inner Child remains authenticated with retained state; same public retry fails.                                                                               |
+| Failed attempt projection and both controller authorization calls | PASSED assertions in all five fault cases | Actual failed authority is denied before retry. Stale controller presentation is not treated as usable permission.                                                                             |
+
+The tests deliberately swallow the nested rejection after valid entry inside Access → Parent →
+Child wrappers. Soft assertions collect the distinct public-view/status and retry failures without
+skipping authority checks. The retry repeats public restoration/resume without reset or private
+repair. A passive subclass records the real service's returned synthetic session solely for the
+projection assertion; it changes no result or private state. Failed-session validity after a later
+same-time successful retry is outside this test and remains the previously documented trusted
+interception limitation.
+
+Independent helper native_storage_review reviewed the new exact test source while D executed the
+single worker. It found no false-failure source, unnecessary private-state requirement or must-fix
+test issue. It ran no commands/tests, wrote no files, spawned no descendants and released its
+allocation. Lead accepted the review and inspected every failed case: three positive controls
+passed, five expected cases failed on controller rollback and retry, with no authority-denial
+assertion failures. No suggestion required rejection or product source change. Scoped ESLint,
+Prettier and whitespace checks passed exit0. Full candidate typecheck remains A's coordinated gate.
+
+Actual bounded helper prompt:
+
+> A059 now grants D-N05 independent regression. Reuse D's sole helper quota; READ ONLY review /home/smyk/projects/Ghaf-qa-rehearsal/tests/demo-entry-independent-acceptance.test.ts, currently uncommitted, source exact263bc889cdbcf979e03e52bc45183f6071e6bdcf cherry-picked as1fc7afc atop prior D evidence. Concrete question: do new tests faithfully demonstrate your composite rollback defect with real public controllers, verify valid fixture controls, denied failed authority, exact public rollback and usable retry without manufacturing an implementation-only requirement? Check potential false failures/overassertions; no repeat broad review. Lead executes one granted single-worker test and writes evidence in parallel. You are not alone; preserve all edits. NO writes/product fixes/coordination/test commands/browser/native/installs/commits/descendants. Report concrete improvements/rejected scope distinctions and release. Prior requested Astra/Ultra launcher accepted; Fast/effective remains unexposed.
+
+This is a deliberately failing regression handoff to A, not a green integration recommendation.
+Retest unchanged or justified amended assertions on A's exact corrected source before closing
+D-NATIVE-001. All native, narration-listening, student acceptance and actual rehearsal rows retain
+their earlier BLOCKED/NOT RUN/PENDING status; primary rehearsals remain0/10.
