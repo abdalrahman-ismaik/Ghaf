@@ -68,7 +68,12 @@ export function useDemoOnboardingNarrator({
     reader: null as boolean | null,
     readerObserved: false,
   });
-  const [permissions, setPermissions] = useState(environment.current);
+  const [permissions, setPermissions] = useState({
+    appActive: false,
+    appObserved: false,
+    reader: null as boolean | null,
+    readerObserved: false,
+  });
   const [display, setDisplay] = useState<DemoNarrationControls['status']>('silent');
   const [replay, setReplay] = useState(false);
 
