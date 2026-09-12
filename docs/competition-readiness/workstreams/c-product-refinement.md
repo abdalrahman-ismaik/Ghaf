@@ -382,3 +382,57 @@ New user authorizes C/AI to review Arabic text and says they personally will lis
 Helper corrected the provenance distinction and confirmed only the bounded absence checks. C
 accepted those findings, authored the MSA/English revision and retains review responsibility.
 Helper released with no writes/jobs/descendants; no listening or human approval was inferred.
+
+## Generated listening candidates — A060
+
+This receipt supersedes the earlier zero-take checkpoint. A060 authorized a private generator and
+six review-only MP3s. The user authorized AI text review and personally retains listening judgment.
+These files are **candidates, not accepted runtime assets**. No narrator/player import was changed.
+
+Exact private edge-tts7.2.8 wheel was checked against publisher SHA256
+`361fe48ce7ef613adbe30f664e3765dd71029c6cb57427279eff8ad6df2eb211` before installation.
+The [versioned publisher page](https://pypi.org/project/edge-tts/7.2.8/) provides the wheel/hash;
+actual installed Python/pip tooling, dependency versions/archive hashes and wheel license are in
+`output/native-ui/narration-tool/{install.receipt.json,pip-install-report.json,pip-freeze.txt,wheel-license.json}`.
+Private venv/cache only; no global or Expo dependency change. Tool licensing does not establish
+rights to redistribute speech-service output; no such clearance is claimed.
+
+All six UTF-8 body files came directly from committed `ff72d78` revision1. Before sending, every
+exact body matched A's current canonical `src/i18n/resources.ts`; source/body hashes are in
+`output/native-ui/narration-candidates/scripts-v1.json`. Only these synthetic public scripts went
+to the approved speech service. No title, user data, additional SSML, music, clone or recorded person.
+
+Actual generation used `python -m edge_tts --voice <voice> --rate=+0% --pitch=+0Hz --volume=+0%`
+with exact `--file`, `--write-media` and `--write-subtitles` paths. Arabic voice Fatima, English
+Emma, exactly as A060. The runner allowed50seconds/request and at most one retry, stopped after
+any double failure, and sent only one request at a time. All six succeeded on first attempt;
+no timeout, retry, rejected listening take or alternate voice was produced.
+
+| Candidate MP3                                                                                                               | Duration, seconds | SHA256                                                             | Listening / runtime    |
+| --------------------------------------------------------------------------------------------------------------------------- | ----------------: | ------------------------------------------------------------------ | ---------------------- |
+| [ar-together-neutral-v1-attempt-1.mp3](../../../output/native-ui/narration-candidates/ar-together-neutral-v1-attempt-1.mp3) |            13.248 | `ad01129b26e80be2d037429180cffd8efe148f8be8ada822b24d1c871c45eca0` | PENDING / not imported |
+| [ar-support-neutral-v1-attempt-1.mp3](../../../output/native-ui/narration-candidates/ar-support-neutral-v1-attempt-1.mp3)   |            26.544 | `555986d0e670e8d56d6a7885ac2a7984660726f12ac07aa095da2c306d757a88` | PENDING / not imported |
+| [ar-growth-neutral-v1-attempt-1.mp3](../../../output/native-ui/narration-candidates/ar-growth-neutral-v1-attempt-1.mp3)     |            23.904 | `6ad07e11b30d0454a46755ecddb2c936b213eed9532831d06228362f16385b91` | PENDING / not imported |
+| [en-together-neutral-v1-attempt-1.mp3](../../../output/native-ui/narration-candidates/en-together-neutral-v1-attempt-1.mp3) |             9.384 | `7e1039097bbaf22eb907c0c540c89088f12ca7d6b0f92405dd5c6b2b3c9615cd` | PENDING / not imported |
+| [en-support-neutral-v1-attempt-1.mp3](../../../output/native-ui/narration-candidates/en-support-neutral-v1-attempt-1.mp3)   |            16.824 | `2ab447f03e1135d7608a4b73f50ec1568becaad1b1616cfc5fbd4a7791d11c5f` | PENDING / not imported |
+| [en-growth-neutral-v1-attempt-1.mp3](../../../output/native-ui/narration-candidates/en-growth-neutral-v1-attempt-1.mp3)     |            17.040 | `64b167a7ba4ec68613d07b2223b0bbc92dd8c0eb01ebd4fbd47ac97ac9bdd38e` | PENDING / not imported |
+
+Generation UTC `2026-09-12T01:55:58.157723+00:00` → `2026-09-12T01:56:22.310221+00:00`, runner428787/session92724;
+children428812/428902/428957/429063/429195/429357 all exited0. No resident process remains.
+The receipt `generation-v1.receipt.json` records commands, source/script/tool settings, each PID,
+file bytes/hash, format probe and actual times. MP3/24kHz/mono metadata is technical evidence,
+not a pronunciation or naturalness pass. C cannot establish listening quality from file metadata.
+
+C supplied the three Arabic MP3 links/audio attachments to the user and asked whether pronunciation,
+pacing and tone are good enough. **No listening response has been received at this checkpoint.**
+English clips are available above for later listening too. A decision about three Arabic takes
+must not automatically accept three unheard English takes. Listening device/model/context is
+unknown; a user's audio decision does not pass APK/TalkBack/Back/native lifecycle requirements.
+
+Ledger:6 technically generated candidates,0 accepted,0 rejected by the listener. Preserve these
+exact files and failed/rejected replacements if later required. A must publish exact accepted
+asset/player paths and matching resources before runtime wiring; completion of this candidate
+packet does not activate narration, recovery014 or any new release flag.
+
+C releases completed candidate files/receipts to A for user review and keeps the private tool
+installation for a bounded requested revision. No audio-generation request remains running.
