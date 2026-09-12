@@ -74,7 +74,7 @@ describe('Feature 009 access family portraits', () => {
   });
 
   it('uses exact responsive 3:2 frames on Welcome and both access components', () => {
-    const welcome = source('app/index.tsx');
+    const welcome = source('src/components/access/OriginalWelcomeScreen.tsx');
     const parent = source('src/components/access/ParentAccessPortrait.tsx');
     const child = source('src/components/access/ChildAccessPortrait.tsx');
 

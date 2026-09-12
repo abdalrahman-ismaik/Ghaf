@@ -192,7 +192,6 @@ export function DemoEntryScreen({
               direction={direction}
               language={locale}
               variant="parentHero"
-              style={styles.entryTitle}
             >
               {restartRequired ? copy.restartRequiredTitle : copy.title}
             </Text>
@@ -444,7 +443,6 @@ const styles = StyleSheet.create({
     gap: botanical.space.row,
     paddingBottom: botanical.space.section,
   },
-  entryTitle: { fontSize: 28, lineHeight: 40 },
   introduction: {
     color: botanical.colors.muted,
   },

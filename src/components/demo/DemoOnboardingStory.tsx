@@ -322,8 +322,6 @@ const styles = StyleSheet.create({
   title: {
     color: botanical.colors.forest,
     textAlign: 'center',
-    fontSize: 28,
-    lineHeight: 42,
     flexShrink: 1,
   },
   artworkFrame: { width: '100%', overflow: 'hidden', borderRadius: botanical.radius.surface },
@@ -336,8 +334,6 @@ const styles = StyleSheet.create({
   transcript: {
     color: botanical.colors.ink,
     textAlign: 'center',
-    fontSize: 16,
-    lineHeight: 28,
     flexShrink: 1,
   },
   audio: { gap: botanical.space.small, alignItems: 'center' },

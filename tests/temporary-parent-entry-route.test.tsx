@@ -15,6 +15,10 @@ import {
   resetPrototypeForTest,
 } from './helpers/prototypeStore';
 
+vi.mock('@/components/demo/OriginalDemoEntryScreen', () => ({
+  OriginalDemoEntryScreen: () => null,
+}));
+
 vi.mock('expo-router', () => ({ Redirect: () => null, useRouter: () => ({ push: vi.fn() }) }));
 vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
 vi.mock('react-native', () => ({

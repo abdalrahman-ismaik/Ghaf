@@ -214,7 +214,10 @@ describe('approved R001 Parent onboarding integration', () => {
   });
 
   it('uses the approved Parent access hierarchy while keeping actions functional', () => {
-    const welcome = readFileSync(new URL('../app/index.tsx', import.meta.url), 'utf8');
+    const welcome = readFileSync(
+      new URL('../src/components/access/OriginalWelcomeScreen.tsx', import.meta.url),
+      'utf8',
+    );
     const routeSource = (route: (typeof R001_ACCESS_ROUTES)[number]) =>
       readFileSync(resolve(import.meta.dirname, `../app${route}.tsx`), 'utf8');
     const languageAction = welcome.slice(
