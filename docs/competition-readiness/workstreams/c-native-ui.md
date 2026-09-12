@@ -714,3 +714,118 @@ approved task. No screenshot is yet represented as the final refined candidate. 
 TalkBack, hardware Back, phone dimensions/model/OS and audio remain BLOCKED/NOT RUN. Student
 exact-diff/visual acceptance is PENDING. The current screenshot lane continues after source release;
 A integration and poster generation are verified active handoffs.
+
+### Integration and final capture allocation
+
+A integrated Cce9ebca as42203a3 after exact-diff review (A205). A204 confirms the user selected
+English poster text with bilingual Ghaf; final primary screenshots therefore use English Entry,
+Parent Home and Salem Today, with Arabic counterparts retained. Team details belong only in A's
+ignored deliverable and are not copied into this report. A205 re-grants this report/ignored poster
+evidence while source components/tests return to A. C keeps its existing Firefox207767 idle during
+A's serialized full checks and Metro restart. One additional blank context in the same browser is
+prepared at390×844 CSS/DPR3/reduced motion; it has not loaded the app or produced final evidence.
+No second browser, Metro, native build or deferred narration harness was launched.
+
+Student explanation prompts for this exact slice (answers/review still pending):
+
+- Explain why Parent is one dark full-width action while the two Child choices share a row only
+  when space allows. Show that the same three callbacks and complete accessible names are used.
+- Point to the approved habitat/portrait assets and existing forest/paper tokens. Explain why
+  photographs are not mirrored in Arabic and why layout uses logical row direction.
+- Show Story's three progress marks alongside its full textual progress, then scroll to Back.
+  Explain how the optional narration can be unavailable while the complete introduction works.
+- Distinguish the40 focused SSR/callback tests from actual browser captures and unrun Android
+  font-scale/TalkBack/audio checks. No student participation or answer is claimed here.
+
+### Final actual-app browser evidence and release
+
+Source slice **ce9ebca** was integrated as **42203a3**. A's subsequent owner-only narrator initializer
+correction is **98be86558426f593b639e0db2be0da9cebc36078**. At that exact candidate, A207 reports
+TypeScript, lint, formatting and **150 files / 1,979 tests PASSED**; fullcheck receipt is canonical
+`output/native-integration/015/full-98be865/`. The prior42203a3 lint failure is preserved; its
+render-time ref read was not an Entry/Story composition defect. C did not rerun full checks.
+
+All final app captures use actual canonical Expo routes, Firefox155.0,390×844 CSS/DPR3,
+1170×2532 PNG originals, reduced-motion preference `reduce`. Loaded Alexandria700 and Readex400/500
+were observed. A Metro225406 on8081 uses canonical project root and private
+`output/native-integration/015/poster-final-preview-ej2sw0bh` cache. The cold first navigation
+55s timeout, SSR68.079s/web70.335s bundle log, optional DevTools libnss3.so failure and web filesystem
+warnings are preserved separately from final rendered evidence; no new DevTools install occurred.
+
+The final source map has SHA256
+`f5439f30dafba0d7d77fa89e5282023052bf32b53348bedf5dfb2f7eef9daccd`.
+Its original contents match canonical disk for Entry, Story, narrator hook, Parent canopy and
+Child task card. Canonical documentation HEAD4260b8e has the same runtime98be865. Original proof
+UTC12:51:14.961 and saved raw-map confirmation UTC13:35:31.884 agree byte-for-byte. This records
+actual served modules, not a claim based only on Git HEAD. Raw map and receipts are retained.
+
+The complete local packet is
+`/home/smyk/projects/Ghaf-ui-studio/output/native-ui/poster-20260912/`:
+
+- `capture-manifest.json`:49 PNGs with hashes, dimensions, locale, route, state, capture scale,
+  actual filesystem UTC and evidence limits. Four before,30 final/supplementary,15 QA captures;
+  this count includes two explicitly superseded/invalid originals, not49 passing checks.
+- `final-source-map.json`, `final-source-receipt-first.json`, `final-source-receipt.json` and
+  `browser-tool-evidence.json`: frozen source proof plus actual browser code/results for the
+  paired Story, compact/CSS, focus, image fallback and final task-framing steps.
+- Main poster recommendation: `final-entry-en-390.png`, `final-parent-en-390.png`,
+  `final-salem-en-390-card-framed.png`. Original hero/scrolled companions are retained unchanged.
+- Arabic counterparts: `final-entry-ar-390.png`, `final-parent-ar-390.png`,
+  `final-salem-ar-390-settled.png`, `final-salem-ar-390-card-framed.png`.
+- Story: `final-story-{ar|en}-{together|support|growth}-390.png` and corresponding `-controls.png`.
+  Each pair preserves full transcript/navigation by actual scrolling. A viewport is not the
+  entire scrollable screen; the fixed header may cover content deliberately scrolled out of view.
+
+The exact actual task sequence was Entry→Parent→Create task→Continue→Make it clearer→Accept
+suggestion→Review task→Approve task for Salem→Open Child experience→signed-out selector→Salem.
+The poster task state is Parent-approved and ready to choose,48 Seeds,12 only after confirmation.
+Separate supplementary captures then chose/started that task, showing0/2 steps and disabled
+completion; no Seeds, garden growth, Leaf, reward or completion was calculated or granted by C.
+A full browser navigation to root later began a fresh Arabic demo run; ordinary in-run role handoff
+preserved the approved task. These are different observations and do not establish durability014.
+The second real Parent approval sequence produced the final matched ready-to-choose AR/EN frames.
+
+A211's framing request is resolved by actual scrolling: the English current-task region begins
+y79.83, titley198.83, Choose y505.83/h58 and smaller-task y571.83/h74, above the fixed bottom tabs.
+The Arabic final visible card beginsy79.83, Choose y501.83/h60 and smaller-task y569.83/h52.
+Both show full title, award, adult supervision, permitted-help/full-credit notice and both actions.
+No crop, overlay, rewritten text, modified runtime style or injected store fixture was used.
+D078 independently inspected the English image/hash
+`c933ff8e14445e58fb497bc7d92581f9ba1f29497dc5d5c3afe88c12576e5ae9` and recommended it for selection.
+A retains actual poster selection and caption ownership.
+
+The optional `final-parent-review-en-390.png` shows prepared Ghaf Guide wording choices, the
+accepted-suggestion status, Parent decision,12 fixed recognition and **Review task** action on
+`/parent/task/new`. It does not show canopy or completed approval; D078 agrees its caption must
+say prepared wording assistance if selected. Its SHA256 is
+`fdc14a8e825a61e9483bc97ec8768fdfd20e744e4b10d96dcc14702c6c1aff9c`.
+The existing Parent Home image remains an honest canopy/overview illustration.
+
+| Evidence                                                    | Actual result and limitation                                                                                                                                                                               |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Three Story moments, AR/EN,390 ordinary                     | PASSED complete text, Next/Finish/Back/Skip and silent unavailable narration; top/control companions. No audible playback claim.                                                                           |
+| Entry + support Story × AR/EN ×320 ordinary,320/390 CSS200% | 12 rows executed; no document horizontal overflow. Profiles/Next/Back measured at least48CSSpx, full labels remain in DOM and inspected representative captures wrap. CSS200% is not native font scale.    |
+| 390 CSS200% English profile name                            | “Salem” wraps as “Sale” then “m”; complete name retained. Native fontScale≥1.3 stacks rows in source/SSR, direct phone geometry NOT RUN. No font shrinking/truncation workaround.                          |
+| Keyboard navigation                                         | Language→browser scroll container→Parent→Salem→Alya, visible gold focus borders. Enter opens Story; keyboard activation of Back returns to selector. Extra scroll-container focus is recorded, not hidden. |
+| Image failure, AR390                                        | Actual illustration requests aborted in this owned browser; Entry falls back to existing icons, Story to equivalent alt text. Full text/actions remain available. Interception removed afterward.          |
+| Reduced motion                                              | Actual context used reduce throughout and exposed final text/controls promptly. No newly introduced animation or timing gate.                                                                              |
+| Busy/error/restart states                                   | Existing focused presentation/callback tests retained; not newly forced in the app via store or fixture injection.                                                                                         |
+| Native, human review                                        | Android font scale, TalkBack, touch, Back, focus/audio interruption and APK listening BLOCKED/NOT RUN. Student exact-diff and visual review remain PENDING.                                                |
+
+Harness failures were corrected without concealing originals. `qa-entry-ar-images-failed.png`
+caught the opening splash rather than settled Entry and is INVALID as fallback-screen evidence.
+One correction waited for the real Parent control to receive its center-point hit test, then saved
+`qa-entry-ar-images-failed-settled.png`; all three fallback actions and full labels were visible.
+The router also retains an aria-hidden previous Child card with0×0 geometry. Broad testID selection
+therefore hit two elements, and a10s wait for total DOM count1 timed out. Selecting the single
+visible card resolved the capture; no product change was needed. C088's premature AR-frame-ready
+line was explicitly corrected in C089 before the actual final visible-screen capture. The initial
+`final-salem-ar-390.png` remains superseded by the explicit settled/framed originals.
+
+C closed its additional capture context, then the original browser page. Firefox207767 was
+verified absent; A Metro225406 remained alive. All C browser/helper/check allocations and completed
+source/capture paths are RELEASED. This report is released with its final evidence commit. A/D
+retain poster assembly and independent verdicts; their font-portability defect is a separate
+PowerPoint issue, not an app screenshot or UI-source pass. No further screenshot request remains
+under A213/D078. The prepared narration harness stays deferred and unexecuted; no new native
+build, account/provider call, submission, release flag or optional feature was started.
