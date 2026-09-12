@@ -10,13 +10,14 @@ readonly GRADLE_SHA=b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76bea
 STARTED=$(date -u +%FT%TZ)
 MODE=preflight
 ENTRY_MODE=ordinary
+NATIVE_CONFIGURE_STAGE=
 ROOT= EXPECTED_HEAD= SOURCE_COMMIT= JDK= SDK= OUTPUT= CACHE=
 SIGNING=0 HEAVY_ACK= METRO_ACK= LICENSE_ACK= APPROVED_PERMISSIONS=
 RUN= CHILD_PID= LAST_LOG= GRADLE_LOG= NATIVE_POOL_SHA= STEP=0
 
 usage() {
   cat <<'HELP'
-Usage: build-apk.sh [--build | --manifest-only | --task-graph-only] REQUIRED_OPTIONS
+Usage: build-apk.sh [--build | --manifest-only | --task-graph-only | --native-configure-stage STAGE] REQUIRED_OPTIONS
 
 Default: PREFLIGHT. Never installs, generates Android, downloads Gradle or compiles.
 Preflight writes an isolated receipt only after root/input/path validation.
@@ -36,6 +37,9 @@ Required in all modes:
 Generation/Gradle modes require explicit coordination/terms receipt references:
   --task-graph-only            Render release task graph from matching existing Android;
                                configuration/plugin setup can execute; no APK inspection
+  --native-configure-stage worklets|remaining
+                               Fixed release CMake targets; existing Android required.
+                               Remaining also compiles Worklets through prefab dependencies.
   --manifest-only              Generate and merge release manifest for A review; no APK
   --build                      Compile and inspect the standalone release APK
   --heavy-slot-ack REFERENCE    Current A/operator grant for this native build
@@ -168,6 +172,11 @@ while (($#)); do
         --task-graph-only) MODE=graph ;;
       esac
       shift ;;
+    --native-configure-stage)
+      [[ "$MODE" == preflight ]] || fail 'Choose only one explicit execution mode.'
+      need_value "$@"
+      [[ "$2" == worklets || "$2" == remaining ]] || fail 'Native configure stage must be worklets or remaining; arbitrary targets are not accepted.'
+      MODE=configure; NATIVE_CONFIGURE_STAGE=$2; shift 2 ;;
     --allow-internal-debug-signing) SIGNING=1; shift ;;
     --project-root|--expected-head|--source-commit|--jdk-home|--sdk-root|--output-dir|--cache-dir|--entry-mode|--heavy-slot-ack|--metro-release-ack|--sdk-license-ack|--approved-permissions)
       need_value "$@"
@@ -438,7 +447,9 @@ if blocked: sys.exit('BLOCKED: resident preview processes; owner must release th
 print('no_resident_preview_detected; explicit operator acknowledgment still required')
 PY
 
-[[ "$MODE" != graph || -d android ]] || fail 'Task graph requires the existing matching Android tree; generation needs its own grant.'
+if [[ "$MODE" == graph || "$MODE" == configure ]]; then
+  [[ -d android ]] || fail 'Graph/configure mode requires the existing matching Android tree; generation needs its own grant.'
+fi
 # Retain the exact prebuild package delta even when generation fails.
 cp package.json "$RUN/package.before.json"
 capture_delta() {
@@ -632,12 +643,29 @@ PY_POOL_RECEIPT
 }
 step native-pool-policy write_native_pool_policy
 
+native_configuration_tasks() {
+  local module abi
+  local modules=()
+  case "$NATIVE_CONFIGURE_STAGE" in
+    worklets) modules=(react-native-worklets) ;;
+    remaining) modules=(app expo-modules-core react-native-gesture-handler react-native-screens) ;;
+    *) printf 'Unsupported native configuration stage.\n' >&2; return 1 ;;
+  esac
+  NATIVE_TASKS=()
+  for module in "${modules[@]}"; do
+    for abi in arm64-v8a armeabi-v7a x86 x86_64; do
+      NATIVE_TASKS+=(":$module:configureCMakeRelWithDebInfo[$abi]")
+    done
+  done
+}
+
 gradle_arguments() {
   GRADLE_ARGS=(:app:assembleRelease)
   case "$MODE" in
     build) ;;
     manifest) GRADLE_ARGS=(:app:processReleaseMainManifest) ;;
     graph) GRADLE_ARGS+=(--task-graph --console=plain) ;;
+    configure) native_configuration_tasks || return $?; GRADLE_ARGS=("${NATIVE_TASKS[@]}") ;;
     *) printf 'Unsupported Gradle execution mode.\n' >&2; return 1 ;;
   esac
   GRADLE_ARGS+=(-Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false
@@ -701,6 +729,38 @@ with (run / 'graph-review.json').open('x') as output:
     output.write(json.dumps(receipt, indent=2) + '\n')
 print(json.dumps(receipt, indent=2))
 PY_TASK_GRAPH
+}
+
+record_native_configure_stage() {
+  native_configuration_tasks || return $?
+  python3 - "$1" "$RUN" "$SOURCE_COMMIT" "$EXPECTED_HEAD" "$NATIVE_CONFIGURE_STAGE" "${NATIVE_TASKS[@]}" <<'PY_CONFIGURE_STAGE'
+import hashlib, json, pathlib, re, sys
+log, run = map(pathlib.Path, sys.argv[1:3])
+tasks = sys.argv[6:]
+args = json.loads((run / 'gradle-arguments.json').read_text())
+argv = args.get('argv')
+if (args.get('schema_version') != 1 or not isinstance(argv, list) or not tasks or
+    any(not isinstance(a, str) or not a for a in argv) or argv[:len(tasks)] != tasks or
+    [a for a in argv if not a.startswith(('-', '/'))] != tasks or
+    any(a in ('--task-graph', '--dry-run', '-m') or a.startswith('--dry-run=') for a in argv)):
+    sys.exit('BLOCKED: native configure command differs from its fixed stage targets.')
+if not log.is_file() or log.is_symlink() or log.resolve() != log or log.parent != run:
+    sys.exit('BLOCKED: native configure log must be a retained regular file in this run.')
+raw = log.read_bytes()
+lines = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', raw.decode('utf-8')).splitlines()
+if b'\x00' in raw or not any(re.fullmatch(r'BUILD SUCCESSFUL(?: in .+)?', line) for line in lines) or any('BUILD FAILED' in line for line in lines):
+    sys.exit('BLOCKED: native configure log lacks a complete successful terminal result.')
+receipt = {'schema_version': 1, 'stage': sys.argv[5], 'status': 'CONFIGURE_STAGE_COMPLETED',
+           'source_commit': sys.argv[3], 'head': sys.argv[4], 'requested_tasks': tasks, 'argv': argv,
+           'log': str(log), 'log_sha256': hashlib.sha256(raw).hexdigest(),
+           'scope': 'Fixed release CMake configuration targets, not APK assembly.',
+           'compilation': 'CMake probes may compile; remaining also compiles Worklets through prefab dependencies.',
+           'generated_pool_coverage': 'PENDING separate graph/edge review',
+           'apk_acceptance': 'NOT RUN', 'device_acceptance': 'NOT RUN'}
+with (run / 'native-configure-review.json').open('x') as output:
+    output.write(json.dumps(receipt, indent=2) + '\n')
+print(json.dumps(receipt, indent=2))
+PY_CONFIGURE_STAGE
 }
 
 resource_sample() {
@@ -839,6 +899,11 @@ step after-compile-native generation_identity verify
 if [[ "$MODE" == graph ]]; then
   step task-graph-review verify_task_graph "$GRADLE_LOG"
   printf 'TASK GRAPH RENDERED FOR A REVIEW. Configuration/setup work recorded; native pool coverage, APK and device validation NOT RUN.\n' | tee -a "$RUN/receipt.txt"
+  exit 0
+fi
+if [[ "$MODE" == configure ]]; then
+  step native-configure-review record_native_configure_stage "$GRADLE_LOG"
+  printf 'NATIVE CONFIGURE STAGE COMPLETED. Transitive compilation may occur; generated pool coverage requires review. APK and device validation NOT RUN.\n' | tee -a "$RUN/receipt.txt"
   exit 0
 fi
 if [[ "$MODE" == manifest ]]; then

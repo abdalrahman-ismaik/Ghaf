@@ -1520,3 +1520,57 @@ and teach-back remain PENDING; source/receipt review never establishes generated
 acceptance. Only the script/report repair slice is released for integration; B retains maintenance
 and its private boundaries for the separately granted next step. Package two-field delta stays
 unstaged; Recovery014 and unrelated features remain deferred.
+
+## A148 — Two fixed native configuration stages
+
+A's separate read-only closure review is canonical at
+`/home/smyk/projects/Ghaf/output/native-integration/015/native-graph-closure-review.md`.
+It derives two stages from the saved actual release graph: worklets requests four
+`:react-native-worklets:configureCMakeRelWithDebInfo[ABI]` tasks. Remaining requests16 tasks,
+the same configure suffix for app, expo-modules-core, gesture-handler and screens, each on
+arm64-v8a, armeabi-v7a, x86 and x86_64. Four Reanimated configurations are transitive; no redundant
+targets were added. These20 explicit requests cover24 module/ABI configuration nodes.
+
+Stage2 necessarily builds Worklets for all four ABIs through prefabReleaseConfigurePackage →
+externalNativeBuildRelease, supported by Worklets fix-prefab.gradle.kts:14–19 and the saved graph.
+Standard PCH/compile/link edges therefore require first-stage generated evidence before A grants
+stage2. The observed release graph excludes the separate IDE-model/Debug generateStubPCH tasks;
+this selector does not add them. CMake compiler probes can still compile even in stage1.
+
+The CLI adds only the mutually exclusive `--native-configure-stage worklets|remaining`. Unknown
+stages, arbitrary task strings and conflicting execution modes refuse. The single canonical
+native_configuration_tasks function expands both argv and receipt expectations. It preserves
+the same controlled launcher/options, prerequisites, resource/preview/owned-process guards and
+existing-native identity requirement. No new source, native generation, dependency or ABI change
+is allowed through this selector. A native-configure-review.json receipt records exact stage,
+requested tasks, full argv, source/HEAD and raw successful-log hash after existing post-run checks.
+It explicitly retains transitive compilation and pending generated-pool/APK/device validation,
+then exits before artifact inspection. Target selection never becomes a compile-free claim.
+
+This is tooling preparation only. A149 separately grants the late-app-CMake hook repair; A148
+stage1 execution still needs its reviewed candidate and named resource grant, and stage2 needs
+reviewed fresh Worklets edges plus A's separate grant. The lead owns this script/report; one
+helper owns only ignored native-configure-stage behavioral fixtures. No actual stage has run.
+
+Final source SHA256:
+`c19796476a5bb8b52d4e0230e7733dfc2c983ab55f0ec6af279bc1fcb1e293b0`.
+The helper's first and only focused run passed65/65 at10:58:32.293319–10:58:33.417270UTC,
+exit0: `python3 output/native-build/script-checks/native-configure-stage/run_checks.py`.
+It covered both exact task arrays/ABI order, invalid/missing/arbitrary/mixed modes, acknowledgment
+gates, unchanged build/manifest/graph argv against64cdbec, and valid/refused stage receipts.
+No production or harness failure occurred. Results, all commands, exact initiating prompt,
+contributions and A's closure-report hash are in
+`output/native-build/script-checks/native-configure-stage/20260912T105832Z/{receipt.json,assistance.json}`.
+All66 recorded runner/Bash PIDs were absent10:58:57.775935UTC; helper/allocation released.
+No JVM/Gradle/native/application execution or unrelated suite repetition occurred.
+
+Lead syntax/help passed0; invalid stage and conflicting mode each refused1 before execution
+at10:59:29UTC. Exact commands/times: `output/native-build/native-stage-release/safe-checks.json`.
+Report formatting/diff checks passed; pool init638f remained byte-identical. Lead authored the
+stage selector and receipt, helper only ignored fixtures/read-only review; student exact-diff
+review and teach-back remain PENDING. No full application was generated.
+
+Release the coherent stage CLI/report commit for A, keeping A149's separate app-hook correction
+next in the queue. Runtime5d and the unstaged package-script delta remain unchanged. Finished
+paths/helper/jobs are released for integration; maintenance/private native boundaries remain B's.
+Neither this release nor passing mocked receipts authorizes stage1/stage2 execution or APK proof.
