@@ -113,6 +113,14 @@ existing access service and Parent/Child controllers. Access owns the outer wrap
 middle, Child the inner. On error/throw/malformed or thenable result, restore private state directly;
 never call termination/reset for rollback. Sanitize exceptions as INVALID_RESPONSE, no raw error copy.
 Reject same-instance reentry and propagate abort so a swallowed nested error cannot commit.
+All three nested wrappers participate in one synchronous internal transaction scope. Any participant
+failure, malformed result, exception or reentry aborts the whole scope, even when a caller swallows
+the error. Retain each participant's private snapshot until the outermost wrapper finishes; on
+abort restore every participant, including inner callbacks that already returned success. An outer
+failure after inner success must also restore all participants. Release the scope in finally so a
+clean same-run retry works. A owns the internal helper src/features/access/demoEntryTransaction.ts;
+this changes no public adapter signature, ordinary authority or persistence. Never expose snapshots.
+The shared scope is synchronous only; ordinary access calls outside these wrappers do not join it.
 
 Snapshot only entry-mutated state by value:
 
@@ -253,3 +261,5 @@ real controller sessions and isolated repositories, handoff, Back, deep links, r
 48→60 and task help +12 once, and no Salem action under Alya. C rendered tests: real props/actions,
 three profiles, three optional moments, bilingual copy, failure state and no automatic audio.
 D independent retests actual source/APK, native large text/RTL/Back and real Arabic listening.
+
+User clarification via C014/016: AI may review the script; the user will personally judge the recordings. C revision1 is AI-editorially reviewed, not human-approved. User listening acceptance remains required for accepted clips, with actual date/decision and exact hash; no invented personal name. C candidate generation grantA060 is development-only, outside runtime; output rights/provenance remain separate.

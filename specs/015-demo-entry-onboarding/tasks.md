@@ -1,7 +1,7 @@
 # Tasks: Fast Demo Entry and Family Onboarding
 
 **Input**: spec.md, plan.md, research.md, data-model.md and contracts/demo-entry-v1.md.
-**Status**: Draft task queue; committed accepted contract and board grant precede implementation.
+**Status**: Implementation active under committed contract293d351 and exact NB1 grants. Human/native acceptance remains pending.
 Tests are required by the selected behavior/safety/competition scope. A owns shared integration;
 B/C/D roles are actual separate leads, with one helper each and serialized heavy work.
 
@@ -9,9 +9,9 @@ B/C/D roles are actual separate leads, with one helper each and serialized heavy
 
 - [x] T001 A: Write selected-scope stories, plan, model and exact contract in specs/015-demo-entry-onboarding/; preserve branch/managed AGENTS block and deferred014.
 - [x] T002 D/A: Resolve D failure/privacy review in specs/015-demo-entry-onboarding/analysis.md; confirm postconditions, entry epoch, reset-failure oracle and actual source seams; commit accepted artifacts before source grants.
-- [ ] T003 A: Publish shared DemoPrincipal/EntryMode/request types in src/models/demoEntry.ts and immutable exact build mode in src/config/demoEntry.ts; test strict resolution in tests/demo-entry-mode.test.ts.
-- [ ] T004 A: Extract memory factory into src/services/local/memoryStorage.ts; preserve src/services/local/storage.ts ordinary behavior, explicit export src/services/local/index.ts and select all4 isolated repositories in src/services/index.ts; test storage separation in tests/demo-storage-isolation.test.ts.
-- [ ] T005 A: Add narrow rollback capability to src/features/access/index.ts, src/services/interfaces/index.ts, src/features/access/parentOnboarding/controller.ts and src/features/access/childAccess.ts; drive second-marker/authorization+cleanup/throw/reentry/permission-preservation regressions in tests/demo-entry-transaction.test.ts.
+- [x] T003 A: Publish shared DemoPrincipal/EntryMode/request types in src/models/demoEntry.ts and immutable exact build mode in src/config/demoEntry.ts; test strict resolution in tests/demo-entry-mode.test.ts.
+- [x] T004 A: Extract memory factory into src/services/local/memoryStorage.ts; preserve src/services/local/storage.ts ordinary behavior, explicit export src/services/local/index.ts and select all4 isolated repositories in src/services/index.ts; test storage separation in tests/demo-storage-isolation.test.ts.
+- [ ] T005 A: Add narrow rollback capability to src/features/access/index.ts, src/services/interfaces/index.ts, src/features/access/parentOnboarding/controller.ts and src/features/access/childAccess.ts; drive second-marker/authorization+cleanup/throw/reentry/permission-preservation regressions in tests/demo-entry-transaction.test.ts. D-NATIVE-001 requires shared synchronous rollback scope in src/features/access/demoEntryTransaction.ts plus all-three composition regressions; no completed T005 claim until independent retest.
 
 ## Phase 2 — US1/US2: Three-profile access and current-run continuity
 
@@ -28,15 +28,15 @@ B/C/D roles are actual separate leads, with one helper each and serialized heavy
 **Goal**: Immediate profiles plus three clear, skippable bilingual story moments.
 **Independent test**: Real rendered controls for all profiles/story transitions/error/fallback without services.
 
-- [ ] T010 C [P] [US3]: Implement exact src/components/demo/{DemoEntryScreen,DemoOnboardingStory}.tsx and types.ts from contract; import A's published shared principal type, no router/store/services. Test actions/three-profile enforcement/three moments/restart-required state in tests/demo-entry-presentation.test.tsx.
-- [ ] T011 A [US3]: Add equivalent reviewed-candidate copy from released C report to src/i18n/resources.ts and wire route props; retain named Arabic review as PENDING, not invented approval. Cover resource parity and no legacy narration in tests/demo-entry-routes.test.tsx.
+- [x] T010 C [P] [US3]: Implement exact src/components/demo/{DemoEntryScreen,DemoOnboardingStory}.tsx and types.ts from contract; import A's published shared principal type, no router/store/services. Test actions/three-profile enforcement/three moments/restart-required state in tests/demo-entry-presentation.test.tsx.
+- [ ] T011 A [US3]: Add equivalent reviewed-candidate copy from released C report to src/i18n/resources.ts and wire route props; record user-delegated AI editorial review distinctly from pending user listening; never invent a human name or approval. Cover resource parity and no legacy narration in tests/demo-entry-routes.test.tsx.
 - [ ] T012 C/D [US3]: After granted preview/native resources, inspect actual AR/EN narrow/large-text/reduced-motion/missing-media states and record exact source/device evidence in their own workstream reports. No source-only native pass.
 
 ## Phase 4 — US4: Arabic narration
 
 - [ ] T013 C [US4]: Prepare exact three-body Arabic/English script, proposed voice method/settings/rights and reviewer packet in docs/competition-readiness/workstreams/c-product-refinement.md; retain rejected takes and actual review status. No generated clip exists yet.
 - [ ] T014 C/A [US4]: Only after matching reviewed candidate and exact asset/lifecycle grant, implement packaged opt-in play/stop/replay with transcript parity, cancellation and screen-reader priority; exact paths must be added to this task and BOARD before writes. Otherwise complete silent visual flow and mark audio BLOCKED.
-- [ ] T015 D [US4]: Record actual named Arabic editorial/listening/device review and lifecycle evidence in docs/competition-readiness/workstreams/d-native-acceptance.md; no metadata/test substitute.
+- [ ] T015 D [US4]: Record actual Arabic editorial, user listening and device review and lifecycle evidence in docs/competition-readiness/workstreams/d-native-acceptance.md; no metadata/test substitute.
 
 ## Phase 5 — Integration and independent acceptance
 

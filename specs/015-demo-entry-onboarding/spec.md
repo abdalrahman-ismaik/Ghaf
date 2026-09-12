@@ -18,7 +18,7 @@ R002b/live-AI flags stay off. Ordinary exploration remains a separately configur
 in-app mode switch. No managed AGENTS block or historical evidence is rewritten.
 
 The exact contract must be reviewed and committed before source grants. Product intent is already
-requested; do not ask again for that scope. Student exact-diff understanding, Arabic/editorial/voice
+requested; do not ask again for that scope. Student exact-diff understanding and actual voice listening
 review and physical acceptance remain evidence-dependent after implementation.
 
 ## User Scenarios & Testing
@@ -93,7 +93,7 @@ Arabic-speaking users can choose natural, accurate narration matching the visibl
 and continue silently. No narration/ambience plays without their action in the demo entry/story.
 
 **Why this priority**: The user reports poor quality in the existing bundled Arabic voice/script.
-**Independent Test**: A named Arabic reviewer listens to each exact final clip on a phone and
+**Independent Test**: A actual Arabic reviewer listens to each exact final clip on a phone and
 compares its transcript; playback/interruption tests are evidenced separately.
 
 **Acceptance Scenarios**:
@@ -156,7 +156,7 @@ compares its transcript; playback/interruption tests are evidenced separately.
   replay and stop across step/locale/exit/background or screen-reader conflict.
 - **FR-014**: Only reviewed matching packaged narration may enter the accepted candidate. Missing
   assets/review MUST leave a complete silent flow; old mismatched clips are forbidden.
-- **FR-015**: Arabic editorial/listening review MUST name an actual reviewer/date and record clip
+- **FR-015**: Arabic editorial review MAY be the user-delegated AI review, explicitly identified as AI; listening acceptance MUST come from the actual user with date (personal name may remain unspecified). Record clip
   provenance/settings/rights and rejected takes. Metadata/player tests are not listening evidence.
 - **FR-016**: Ordinary access/setup and task/progression/privacy regression coverage MUST remain.
   No package, remote service, real data or R002b activation is selected.
