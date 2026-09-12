@@ -452,7 +452,8 @@ describe('R003 first-run experience', () => {
     expect(illustration).toContain('readonly onSettled?: () => void');
     expect(illustration).toContain('onLoad={onSettled}');
     expect(onboarding).toContain('onSettled={() => setImageReadyStep(state.step)}');
-    expect(onboarding).toContain('ready: slideReady');
+    expect(onboarding).toContain('ready: narrationEnabled && slideReady');
+    expect(onboarding).toContain('narrationEnabled = true');
     expect(onboarding).not.toContain('first-run-narrator');
     expect(onboarding).not.toContain('first-run-narration-toggle');
     expect(onboarding).toContain('first-run-narration-replay');

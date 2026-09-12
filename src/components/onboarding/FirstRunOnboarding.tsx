@@ -160,7 +160,9 @@ const pillarTones: Readonly<
   ai: { active: colors.secondary, idle: colors.secondaryTint },
 };
 
-export function FirstRunOnboarding() {
+export function FirstRunOnboarding({
+  narrationEnabled = true,
+}: { readonly narrationEnabled?: boolean } = {}) {
   const { height } = useWindowDimensions();
   const { t } = useTranslation();
   const reducedMotion = Boolean(useReducedMotion());
@@ -187,7 +189,7 @@ export function FirstRunOnboarding() {
   const slideReady = imageReadyStep === state.step && settledStep === state.step;
   const narration = useOnboardingNarrator({
     locale,
-    ready: slideReady,
+    ready: narrationEnabled && slideReady,
     step: state.step,
     webPlaybackUnlocked,
   });
@@ -250,9 +252,9 @@ export function FirstRunOnboarding() {
   }, [copyProgress, reducedMotion, state.step, visualProgress]);
 
   useEffect(() => {
-    setNarrationPlaying(narration.status === 'speaking');
+    setNarrationPlaying(narrationEnabled && narration.status === 'speaking');
     return () => setNarrationPlaying(false);
-  }, [narration.status, setNarrationPlaying]);
+  }, [narration.status, narrationEnabled, setNarrationPlaying]);
 
   useEffect(() => {
     const settleDelay = reducedMotion ? 0 : motion.duration.standard + 45;
@@ -333,14 +335,14 @@ export function FirstRunOnboarding() {
             <IconButton
               accessibilityHint={narrationHint}
               brand
-              disabled={narration.screenReaderActive}
+              disabled={!narrationEnabled || narration.screenReaderActive}
               icon={
                 <GhafIcon color={colors.white} direction={direction} name="speaker" size={24} />
               }
               label={t('firstRun.narrator.replay')}
               onPress={() => {
                 unlockPlayback();
-                narration.replay();
+                if (narrationEnabled) narration.replay();
               }}
               style={styles.speakerButton}
               testID="first-run-narration-replay"

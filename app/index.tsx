@@ -1,22 +1,18 @@
 import { useState } from 'react';
 import { Redirect, useRouter, type Href } from 'expo-router';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AccessScreen, PrototypePill } from '@/components/access';
-import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
-import { LocalIllustration } from '@/components/illustrations';
 import { FirstRunOnboarding, useFirstRunExperience } from '@/components/onboarding';
-import { Button, Text } from '@/components/primitives';
-import { colors, layout, r001Radii, spacing } from '@/design/tokens';
 import {
   selectCanEnterChildExperience,
   selectHasActiveParentExperience,
   usePrototypeStore,
 } from '@/state/usePrototypeStore';
 import { entryMode } from '@/config/demoEntry';
-import { DemoEntryScreen } from '@/components/demo/DemoEntryScreen';
 import type { DemoEntryCopy } from '@/components/demo/types';
+import { OriginalWelcomeScreen } from '@/components/access/OriginalWelcomeScreen';
+import { OriginalDemoEntryScreen } from '@/components/demo/OriginalDemoEntryScreen';
 import type { DemoPrincipal } from '@/models/demoEntry';
 
 export default function WelcomeScreen() {
@@ -55,117 +51,13 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <AccessScreen
-      background="welcome"
-      contentContainerStyle={styles.viewport}
-      contentMaxWidth={layout.readableContentWidth}
-      contentStyle={styles.content}
-      header={
-        <View
-          style={[
-            styles.languageBar,
-            direction === 'rtl' ? styles.languageBarRtl : styles.languageBarLtr,
-          ]}
-        >
-          <Button
-            accessibilityLabel={t('access.welcome.switchLanguage')}
-            brand
-            direction="ltr"
-            fullWidth={false}
-            language={locale}
-            onPress={switchLocale}
-            style={styles.languageButton}
-            testID="welcome-language-button"
-            variant="quiet"
-          >
-            {t('access.welcome.switchLanguage')}
-          </Button>
-        </View>
-      }
-      testID="welcome-screen"
-    >
-      <View style={styles.hero}>
-        <GhafRasterLogo
-          accessibilityLabel={t('common.brand')}
-          size={76}
-          testID="welcome-raster-logo"
-        />
-        <Text
-          align="center"
-          brand
-          color="ghafEmerald"
-          direction="rtl"
-          language="ar"
-          testID="welcome-wordmark"
-          variant="wordmark"
-        >
-          {t('common.brand')}
-        </Text>
-        <LocalIllustration
-          assetId="welcome-ghaf-habitat"
-          decorative
-          direction={direction}
-          language={locale}
-          priority="high"
-          style={styles.heroImage}
-          testID="welcome-natural-hero"
-        />
-        <Text
-          align="center"
-          brand
-          color="deepForest"
-          direction={direction}
-          language={locale}
-          style={styles.title}
-          testID="welcome-title"
-          variant="hero"
-        >
-          {t('access.welcome.title')}
-        </Text>
-        <Text
-          align="center"
-          brand
-          color="onSurfaceVariant"
-          direction={direction}
-          language={locale}
-          style={styles.body}
-          variant="body"
-        >
-          {t('access.welcome.body')}
-        </Text>
-      </View>
-
-      <View style={styles.actions}>
-        <Button
-          brand
-          direction={direction}
-          language={locale}
-          onPress={openParent}
-          size="regular"
-          testID="welcome-parent-button"
-        >
-          {t('access.welcome.parentAction')}
-        </Button>
-        <Button
-          brand
-          direction={direction}
-          language={locale}
-          onPress={() => router.push('/access/child' as Href)}
-          size="regular"
-          testID="welcome-child-button"
-          variant="secondary"
-        >
-          {t('access.welcome.childAction')}
-        </Button>
-      </View>
-
-      <PrototypePill
-        direction={direction}
-        language={locale}
-        message={t('access.welcome.origin')}
-        style={styles.origin}
-      />
-    </AccessScreen>
+    <OriginalWelcomeScreen
+      locale={locale}
+      direction={direction}
+      onChangeLocale={switchLocale}
+      onParent={openParent}
+      onChild={() => router.push('/access/child' as Href)}
+    />
   );
 }
 
@@ -302,69 +194,17 @@ function DemoWelcomeRoute() {
     },
   };
   return (
-    <DemoEntryScreen
-      runGeneration={runGeneration}
-      entryEpoch={entryEpoch}
+    <OriginalDemoEntryScreen
       locale={locale}
       direction={direction}
       copy={copy}
       busy={busy}
       error={error}
       restartRequired={restartRequired}
+      runGeneration={runGeneration}
+      entryEpoch={entryEpoch}
       onChooseProfile={choose}
-      onChangeLocale={() => {
-        setError(null);
-        setLocale(locale === 'ar' ? 'en' : 'ar');
-      }}
+      onChangeLocale={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  languageBar: {
-    alignSelf: 'center',
-    width: '100%',
-    maxWidth: layout.readableContentWidth + layout.screenPadding * 2,
-    minHeight: layout.touchTarget + spacing.xs,
-    justifyContent: 'center',
-    paddingHorizontal: layout.screenPadding,
-    paddingTop: spacing.xs,
-  },
-  languageBarRtl: { alignItems: 'flex-end' },
-  languageBarLtr: { alignItems: 'flex-start' },
-  languageButton: {
-    borderRadius: r001Radii.pill,
-    paddingHorizontal: spacing.sm,
-  },
-  viewport: {
-    paddingTop: 0,
-    paddingBottom: spacing.lg,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'space-between',
-    gap: spacing.xl,
-  },
-  hero: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: spacing.lg,
-    minHeight: 500,
-    paddingTop: spacing.xl,
-  },
-  heroImage: {
-    width: '100%',
-    aspectRatio: 3 / 2,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
-  },
-  title: { maxWidth: 340 },
-  body: { maxWidth: 340 },
-  actions: {
-    width: '100%',
-    gap: spacing.md,
-  },
-  origin: { marginTop: spacing.xs },
-});

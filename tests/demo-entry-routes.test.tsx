@@ -95,8 +95,8 @@ vi.mock('@/components/onboarding', () => ({
   },
   useFirstRunExperience: () => ({ state: { completed: false, step: 'intro' } }),
 }));
-vi.mock('@/components/demo/DemoEntryScreen', () => ({
-  DemoEntryScreen: (props: DemoEntryScreenProps) => {
+vi.mock('@/components/demo/OriginalDemoEntryScreen', () => ({
+  OriginalDemoEntryScreen: (props: DemoEntryScreenProps) => {
     rendered.demo = props;
     return createElement(
       'main',
