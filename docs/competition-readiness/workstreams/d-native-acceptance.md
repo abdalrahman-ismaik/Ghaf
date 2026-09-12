@@ -374,3 +374,58 @@ and preserved limits; no additional product change or human approval was inferre
 No helper suggestion was rejected in this review; the source/native distinction is retained.
 The preceding collector correction is commitc30700a; earlier D slices15a8316/f5149be remain
 independently attributable. Foundation review adds no acceptance for the unbuilt integrated demo.
+
+## D-N04 transaction source challenge — D-NATIVE-001
+
+Reviewed 2026-09-12T01:47:24.459086+00:00: exact foundation
+`263bc889cdbcf979e03e52bc45183f6071e6bdcf`, contract293d351. **P2 contract defect inferred from
+source; focused execution NOT RUN, no released UI/native trigger established.** A owns correction;
+D outbox007 requests a specific independent test-file/candidate/short-run grant before any new test
+write. A's attributed46 new/104 focused passing tests do not cover this composition case.
+
+Reproduction skeleton (fault injection, not a completed UI journey): compose Access → Parent →
+Child wrappers; restore valid receipt/markers and resume a chosen principal inside Child; reenter
+the outer Access wrapper and deliberately swallow its INVALID_TRANSITION; return success from
+the inner operation. Repeat with reentry of the middle Parent wrapper while Child has resumed.
+
+Expected: the composite failure restores every participating controller and service to usable
+signed-out state; captured attempt authority is denied and a valid subsequent entry succeeds.
+Source-inferred result: each wrapper has its own abort flag. Inner Child/Parent can commit before
+outer Access notices its abort and restores only access maps. Controller views can stay authenticated
+with a session absent from the service map; next resume rejects an existing controller session, and
+termination can reject the missing service session. This is a retry/cleanup failure rather than proof
+of usable leaked capability. Evidence: access/index.ts328–359, Parent controller221–242 and
+ChildAccess141–156 at the exact commit; minimal reproduction and expected state are this artifact.
+
+Lead independently inspected the test source: each swallowed-reentry test composes Access plus
+one selected host (or Access alone). It does not call an outer wrapper from inside all three while
+asserting inner controller state and retry. Other existing oracles use real controllers, actual
+capability/projection rejection, maps by identity/value, sanitized exceptions, malformed envelopes,
+second-marker failure and prepared voice/grant preservation. Those are useful source-level test
+oracles, not new D execution or Android evidence.
+
+Helper implementation review otherwise found the specified snapshots/clones and clear/set map
+restoration coherent. Rollback does not call termination/reset/provider functions. The wrappers
+are not a sandbox for trusted callbacks that mutate forbidden APIs, corrupted private internals
+or monkeypatched Maps; no such production protection is claimed.
+
+Separate conditional limitation: with trusted provider/test interception, a failed raw AccessSession
+can become valid after a same-time retry recreates its ID/time/principal/device fields. The contract
+explicitly rolls back those counters; accepted adapter/UI ports expose no raw session. No user-facing
+privacy bypass was demonstrated. D rejected classifying that private instrumentation case as a
+proven UI defect; it remains an explicit limit to synthetic authentication claims.
+
+Helper native_storage_review was reused as the sole read-only helper, inspected the four implementation
+files, ran no tests, made no writes/descendants and released. Lead owned the disjoint test-source review.
+Actual followup prompt:
+
+> New bounded D-N04 foundation source review under A051: exact canonical commit263bc889cdbcf979e03e52bc45183f6071e6bdcf adds access/Parent/Child withDemoEntryTransaction and optional interface capability. Review ONLY implementation in those four source files at that exact commit against accepted015 contract293d351 (+ harmless startup/copy amendments). Lead independently inspects tests/demo-entry-transaction.test.ts coverage; do not repeat test-file review unless needed for a concrete defect. Question: do nested error/throw/malformed/thenable/reentry rollback paths restore actual maps/controller authority while preserving unrelated grants/voice and fail closed? Check clones, reset/session/verification generations and exceptions in rollback. Lead noticed tests require retry session id equal the failed id after rollback; assess whether a captured failed AccessSession could become valid again on retry through projectSession/authorizeCapability, and distinguish a reachable accepted-scope defect from private trusted-callback limitations. READ ONLY, no files/tests/device/browser/installs/commits/descendants or D sync. You are not alone; preserve others. Same one-helper allocation Astra/Ultra requested; effective/Fast unexposed. Report concrete source evidence and release. Lead handles test evidence/status in parallel.
+
+Actual lead coverage reply:
+
+> Confirmed test-source gap: envelopeHarness composes access+one selected host (or access alone), and each same-instance reentry test checks only that host. No case invokes outer Access or middle Parent reentry from inside all three wrappers while an inner Child controller has resumed. This appears to violate committed composite rollback/usable signed-out retry contract even though no UI trigger is demonstrated. Please finish exact minimal pseudocode/reachable injected dependency scenario, controller status versus actual capability distinctions, and line refs; no execution. Captured-session resurrection is conditional trusted-boundary limitation as you found, not UI/privacy regression. I will publish main finding to A and request an exact independent test path + short-run grant before writing any new test.
+
+Current disposition: **OPEN — A correction/focused regression required before accepting this
+transaction boundary.** No product source was fixed by its reviewer. APK still absent: B's
+manifest-only job ended with resource-stop exit75 at01:43:50UTC (B attribution); this is an
+environment/resource failure, not a completed APK or an application rejection.
