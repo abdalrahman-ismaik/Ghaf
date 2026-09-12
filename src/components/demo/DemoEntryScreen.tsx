@@ -90,7 +90,9 @@ export function DemoEntryScreen({
   useEffect(() => {
     if (showingStory) return;
     if (Platform.OS === 'web') {
-      headingRef.current?.focus();
+      (
+        headingRef.current as unknown as { focus(options: { preventScroll: boolean }): void } | null
+      )?.focus({ preventScroll: true });
       return;
     }
     const handle = findNodeHandle(headingRef.current);
@@ -176,6 +178,7 @@ export function DemoEntryScreen({
             accessibilityRole="header"
             accessible
             ref={headingRef}
+            style={Platform.OS === 'web' ? { outlineWidth: 0 } : undefined}
             tabIndex={Platform.OS === 'web' ? -1 : undefined}
           >
             <Text
@@ -185,6 +188,7 @@ export function DemoEntryScreen({
               direction={direction}
               language={locale}
               variant="parentHero"
+              style={styles.entryTitle}
             >
               {restartRequired ? copy.restartRequiredTitle : copy.title}
             </Text>
@@ -211,20 +215,6 @@ export function DemoEntryScreen({
               >
                 {copy.body}
               </Text>
-              <LocalIllustration
-                assetId="welcome-ghaf-habitat"
-                decorative
-                direction={direction}
-                fallback={
-                  <View style={styles.habitatFallback}>
-                    <GhafIcon name="ghaf-tree" color={botanical.colors.forest} size={56} />
-                  </View>
-                }
-                language={locale}
-                priority="high"
-                style={styles.habitat}
-                testID="demo-entry-habitat"
-              />
               <Text
                 align="center"
                 brand
@@ -363,6 +353,20 @@ export function DemoEntryScreen({
                   );
                 })}
               </View>
+              <LocalIllustration
+                assetId="welcome-ghaf-habitat"
+                decorative
+                direction={direction}
+                fallback={
+                  <View style={styles.habitatFallback}>
+                    <GhafIcon name="ghaf-tree" color={botanical.colors.forest} size={56} />
+                  </View>
+                }
+                language={locale}
+                priority="high"
+                style={styles.habitat}
+                testID="demo-entry-habitat"
+              />
               <Text
                 align="center"
                 brand
@@ -436,12 +440,13 @@ const styles = StyleSheet.create({
     gap: botanical.space.row,
     paddingBottom: botanical.space.section,
   },
+  entryTitle: { fontSize: 28, lineHeight: 40 },
   introduction: {
     color: botanical.colors.muted,
   },
   habitat: {
     width: '100%',
-    aspectRatio: 3 / 2,
+    aspectRatio: 2,
     borderRadius: botanical.radius.hero,
   },
   habitatFallback: {

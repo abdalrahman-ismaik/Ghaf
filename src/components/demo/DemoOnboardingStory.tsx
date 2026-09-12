@@ -26,7 +26,9 @@ export function DemoOnboardingStory({
 
   useEffect(() => {
     if (Platform.OS === 'web') {
-      headingRef.current?.focus();
+      (
+        headingRef.current as unknown as { focus(options: { preventScroll: boolean }): void } | null
+      )?.focus({ preventScroll: true });
       return;
     }
     const handle = findNodeHandle(headingRef.current);
@@ -59,19 +61,6 @@ export function DemoOnboardingStory({
 
   return (
     <View style={styles.story} testID="demo-onboarding-story">
-      <View style={[styles.topLine, { flexDirection: logicalRowDirection(direction) }]}>
-        <QuietButton
-          brand
-          direction={direction}
-          fullWidth={false}
-          language={locale}
-          onPress={onClose}
-          style={styles.close}
-          testID="demo-story-close"
-        >
-          {copy.story.close}
-        </QuietButton>
-      </View>
       <View style={styles.artworkFrame}>
         <LocalIllustration
           accessibilityLabel={moment.imageAlt}
@@ -86,7 +75,7 @@ export function DemoOnboardingStory({
           pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          style={StyleSheet.absoluteFillObject}
+          style={StyleSheet.absoluteFill}
         >
           <Svg width="100%" height="100%" viewBox="0 0 300 200" preserveAspectRatio="none">
             <Rect
@@ -237,31 +226,44 @@ export function DemoStoryNavigation({
 >) {
   return (
     <View style={styles.actions} testID="demo-story-navigation">
-      <View style={styles.progressGroup}>
-        <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={[styles.progressMarks, { flexDirection: logicalRowDirection(direction) }]}
-        >
-          {momentIds.map((id, index) => (
-            <View
-              key={id}
-              style={[styles.progressMark, index === step ? styles.progressMarkReached : null]}
-            />
-          ))}
-        </View>
-        <Text
-          accessibilityLabel={copy.story.progressLabel(step + 1, momentIds.length)}
+      <View style={[styles.progressAndSkip, { flexDirection: logicalRowDirection(direction) }]}>
+        <QuietButton
           brand
           direction={direction}
+          fullWidth={false}
           language={locale}
-          style={styles.progress}
-          tabular
-          testID="demo-story-progress"
-          variant="caption"
+          onPress={onClose}
+          style={styles.close}
+          testID="demo-story-close"
         >
-          {copy.story.progressLabel(step + 1, momentIds.length)}
-        </Text>
+          {copy.story.close}
+        </QuietButton>
+        <View style={styles.progressGroup}>
+          <View
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            style={[styles.progressMarks, { flexDirection: logicalRowDirection(direction) }]}
+          >
+            {momentIds.map((id, index) => (
+              <View
+                key={id}
+                style={[styles.progressMark, index === step ? styles.progressMarkReached : null]}
+              />
+            ))}
+          </View>
+          <Text
+            accessibilityLabel={copy.story.progressLabel(step + 1, momentIds.length)}
+            brand
+            direction={direction}
+            language={locale}
+            style={styles.progress}
+            tabular
+            testID="demo-story-progress"
+            variant="caption"
+          >
+            {copy.story.progressLabel(step + 1, momentIds.length)}
+          </Text>
+        </View>
       </View>
       <View style={[styles.navigationRow, { flexDirection: logicalRowDirection(direction) }]}>
         <QuietButton
@@ -295,7 +297,12 @@ export function DemoStoryNavigation({
 
 const styles = StyleSheet.create({
   story: { gap: botanical.space.row, width: '100%', minWidth: 0 },
-  topLine: { alignItems: 'center', justifyContent: 'flex-end' },
+  progressAndSkip: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: botanical.space.small,
+    flexWrap: 'wrap',
+  },
   progressGroup: { gap: botanical.space.small, alignItems: 'center' },
   progressMarks: { gap: botanical.space.small },
   progressMark: {
@@ -307,7 +314,11 @@ const styles = StyleSheet.create({
   progressMarkReached: { width: 24, backgroundColor: botanical.colors.forest },
   progress: { color: botanical.colors.muted, textAlign: 'center' },
   close: { flexShrink: 1, maxWidth: '100%', minHeight: layout.touchTarget },
-  heading: { minWidth: 0, alignItems: 'center' },
+  heading: {
+    minWidth: 0,
+    alignItems: 'center',
+    ...(Platform.OS === 'web' ? { outlineWidth: 0 } : {}),
+  },
   title: {
     color: botanical.colors.forest,
     textAlign: 'center',
