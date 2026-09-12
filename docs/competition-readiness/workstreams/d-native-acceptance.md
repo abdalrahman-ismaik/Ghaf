@@ -1589,3 +1589,158 @@ all artifact/candidate fields remain empty, and12 AR/EN caption strings occur ve
 exact0d23b8e resource blob. `preparation-receipt.json` records file hashes and zero actual images.
 Scoped report Prettier/diff checks passed. This is document integrity, not an app test or screenshot
 pass. A200 acknowledges receipt of the packet; final image/candidate review remains the next task.
+
+### C080 actual before frames — independent image/source review
+
+A201 re-grants D's report and existing poster directory for actual capture review. D070 acknowledged
+board68/C080 and clean QA39620b8 before writing. C published four Entry/Story AR/EN browser images
+at390×844, DPR1, reduced motion, **before C's A194 composition**. C's source receipt names canonical
+`4b685438aceea767f35c0b47c9e9f18a84396823`, Metro203040 and Firefox207767. These are actual-app
+browser captures attributed to C, not D pointer actions or physical-device evidence.
+
+Original files and source receipt are in
+`/home/smyk/projects/Ghaf-ui-studio/output/native-ui/poster-20260912/`:
+`before-entry-{ar,en}-390.png`, `before-story-{ar,en}-390.png`, `before-source-receipt.json` and
+`before-source-map.json`. D independently recomputed source-map SHA256
+`514e60797021b472268d5d71334170447c5a8ea22c5f2ae8ded67a7bac2d4337` and compared all four inspected
+emitted source contents with their exact4b685438 Git blobs: DemoEntryScreen, DemoOnboardingStory,
+ChildTodayTaskCard and ParentCanopySummaryCard all match. This is a four-module identity check;
+it does not prove every module, flag or browser interaction. Parent/Child source matches do not
+create absent Parent/Child screenshots. All four PNG dimensions/hashes were independently recorded
+in D's `before-identity-review.json`; commandcb933e exited0 at12:41:04UTC.
+
+D viewed all four images; its sole helper separately reviewed the two Arabic frames. Visible Entry
+headlines, synthetic-data disclosure, Parent/Salem/Alya choices, Salem-only task limit and restart
+notice are readable in both locales. Story step2 shows the complete help/full-award/prepared/fallible
+AI/Parent-support paragraph and narration-unavailable notice. English Back lies partly beyond the
+bottom viewport; Arabic Back sits near the lower edge but is visible. D did not exercise scrolling
+or touch, so neither observation is a demonstrated reachability or layout-clipping defect. The
+Arabic Entry has a visible blue rectangular heading outline; its cause is not established and it
+is not a text-clipping diagnosis. Preserve the baseline original and capture an actual settled
+state for the final poster, without disabling accessibility behavior in source.
+
+**PASSED only for observed visible-label readability and the bounded identity checks.** No product
+fix is requested. The help-story frame alone lacks the entry's synthetic-data/restart context; use
+an appropriate surrounding caption if presented separately. It does not demonstrate the other
+story steps or a completed task/growth transition. Final C composition, DPR3 print images,320-width,
+large-text, native RTL/TalkBack/Back/media, actual D browser actions and named human review remain
+NOT RUN. `before-visual-review.json` preserves these limits; the final screenshot manifest remains
+unpopulated until the exact final handoff.
+
+Actual follow-up prompt to the existing explicit Astra/ultra helper, Fast unexposed:
+
+> D sole helper A201/C080/D070, board68. Actual C BEFORE captures available; review READ ONLY two exact files /home/smyk/projects/Ghaf-ui-studio/output/native-ui/poster-20260912/before-entry-ar-390.png and before-story-ar-390.png using view_image, and before-source-receipt.json if needed. Canonical source4b685438aceea767f35c0b47c9e9f18a84396823; 390x844 CSS/DPR1/reduced motion. These are pre-A194 Entry/Story, NOT C's new composition or final DPR3 poster images. You are not alone; preserve all files. No writes, descendants, tests, app/browser/native/device/media recording. Concrete independent question: are visible critical Arabic task/help/fallibility/restart/synthetic-data labels and navigation readable and complete in these actual frames? Separate viewport/scroll boundary from a demonstrated clipping defect; no D-R03-like glyph diagnosis without evidence. Lead independently reviews English pair and verifies source map/commit hashes. Report actual observed frame-only findings and poster-use limits; do not pass native RTL/large text/Back/TalkBack or claim final capture/source identity. No source redesign suggestions; C already owns the composition. Existing explicit Astra/ultra, Fast unexposed. Return bounded result then release.
+
+Helper `/root/poster_claim_review` completed/released with no writes, descendants or browser/device
+execution. Lead accepted its readable-visible-copy finding and rejected promoting it to a native,
+interaction or final poster pass. A204 subsequently selects **English main images with Arabic review
+counterparts**; A202 specifies390×844 CSS/DPR3, DPR2 if constrained. D updated the live packet and
+planned manifest accordingly, preserving their earlier bytes as `packet-pre-A204.md` and
+`capture-manifest-pre-A204.json`; `packet-update-A204.json` records new hashes. App default locale
+is unchanged. A205's full-check/restart window is respected: D performs only local image/source
+reads while C keeps its browser idle. Final integrated source/captures remain the next dependency.
+
+### C086 first final captures — runtime98be865, independent D review
+
+A207/A212/A213 authorize incoming captures and actual poster review, with the same D report/ignored
+poster boundary. D073–076 acknowledge board70, QA39620b8 and continuing sole-writer ownership.
+The exact runtime is `98be86558426f593b639e0db2be0da9cebc36078`, documentation HEAD
+`4260b8e3763bac6b43151f2a64dcd455bceb5c3a`. A207 reports typecheck, lint, format and full tests
+PASSED:150 files/1,979 tests, all exit0, suite60.73seconds. D did not duplicate that run.
+Receipts are in canonical `output/native-integration/015/full-98be865/`. Preserve the earlier
+42203a3 lint exit1 for render-time `useState(environment.current)` and the prior768MiB typecheck
+heap failure; the corrected candidate's pass does not erase either failed attempt.
+
+C's first released `capture-manifest.json` records Firefox155.0/PID207767, A Metro225406,
+390×844 CSS/DPR3/reduced motion, loaded canonical root and six1170×2532 PNGs. D independently
+recomputed all six PNG hashes/dimensions and exact98be865 Git blobs for five source-receipt paths;
+all five equal C's reported served hashes. Final raw source-map retrieval is **attributed to C**;
+D did not independently fetch that map. This is five-module identity evidence, not complete-bundle,
+flag, native, device or synchronization proof. D's `C086-identity-review.json` contains full paths,
+hashes and the manifest identity. Earlier incoming snapshots are preserved in
+`provisional-20260912T1327Z/`, with actual file mtimes distinguished from C's capture timestamp.
+
+The C-attributed interaction sequence is EntryEnglish→Parent→create task for Salem→Continue→
+Make it clearer→Accept suggestion→Review task→Approve task for Salem→Open Child experience→
+signed-out selector→Salem→Today. The task is approved and ready to choose, with48Seeds unchanged;
+no completion or growth is demonstrated by this set. D did not perform these pointer actions.
+
+| Image in C poster directory     | Independent D result and limits                                                                                                                                                                                                         |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `final-entry-en-390.png`        | PASSED visible headline, synthetic-data disclosure, three profile cards and Salem-only task limit. Restart notice is below this viewport.                                                                                               |
+| `final-entry-en-390-footer.png` | PASSED visible fresh-run restart notice after C's scroll; upper headline lies under fixed header. This is supplementary scroll evidence, not the main poster image.                                                                     |
+| `final-parent-en-390.png`       | PASSED visible Parent navigation, synthetic/local label, cooperative canopy19/25 and no-comparison wording. Upper view does not show a selected Child or approval action; do not claim those are pictured.                              |
+| `final-salem-en-390.png`        | PASSED visible correct synthetic Child, approved clean-recycling task,48Seeds,12 fixed Seeds after Parent confirmation, adult-supervision notice. Help paragraph is partly below bottom navigation; not a complete help-action capture. |
+| `final-salem-en-390-task.png`   | Hash/dimensions PASSED; title-under-header framing reported by A211. D has not independently passed that frame's visual composition.                                                                                                    |
+| `final-entry-ar-390.png`        | Hash/dimensions PASSED; independent Arabic helper pixel review pending at this checkpoint.                                                                                                                                              |
+
+These captures are eligible for truthful browser/synthetic poster illustration. Parent approval,
+permitted help and confirmation/praise may be explained as product behavior; the pictured canopy
+and ready-to-choose task alone do not demonstrate those transitions. A210/211 requests a naturally
+framed task/help view, preserving originals. C's supplementary Arabic/Story/320/enlarged checks
+remain separately in progress. No native, printed-page, TalkBack, touch, audio or human acceptance
+is inherited. Rehearsals remain0/10 and recovery014 remains deferred.
+
+### Actual poster findings — A213 candidate, corrections pending
+
+D read actual PPTX OOXML and viewed actual PowerPoint PNG exports without changing A's artifacts.
+A212 candidate `Ghaf-A1-Portrait-CANDIDATE.pptx` SHA256
+`756df368e1431e6b3ee4510cecdffc42c597578bd1752c3e8cc277492c60ad2a` embeds the three English C086
+PNG byte streams unchanged. A213 names final
+`/home/smyk/projects/Ghaf/output/poster-20260912/final/Ghaf-Team-SMAC-2026-A1.pptx`, SHA256
+`56e6a16528e2e5d74cddbc3152c1183b5603dcb371f86abccd47ad54056389f0`, and adjacent PNG SHA256
+`47542a1b8d314946fe1a7550bd65274d9af7920156fc50e6018e75dd69073f93`. These exact bytes received
+the following independent findings; later replacements require retest.
+
+- **D-POSTER-001 / P2 / FAILED, OPEN / A poster copy.** The Salem caption says Parent confirmation
+  and praise lead to “permanent symbolic garden growth.” Exact wording is present in the draft,
+  A212 candidate and A213 final OOXML/PNG; no slide restart qualifier exists. It can imply durable
+  progress although isolated-demo restart begins a fresh run and recovery014 is deferred. Expected:
+  remove “permanent” or explicitly limit progress to the current local run. D072/D075/D076 route the
+  correction to A. Original draft SHA34fce9d and `draft-poster-copy-review.json` remain preserved.
+  Retest of a corrected artifact: NOT RUN.
+- **D-POSTER-002 / P2 / FAILED, OPEN / A font portability/export.** Compare A's actual
+  `poster-candidate-render-20260912T132814Z/Ghaf-SMAC-2026-A1-Portrait.png`, SHA256
+  `368efda75943d08367afaed93894abd625e3c8079d43d60ee07e011d1acaf105`, with A213 final PNG above.
+  Former rendering used temporary Alexandria/Readex registrations; the final is attributed to
+  embedded-font-only reopen. Final Latin Ghaf/headline visibly changes from sans to serif, Arabic
+  branding changes letterform/width, and body/caption wrapping changes. Screenshot typography
+  remains unchanged. Expected: intended released typography survives reopen/render. D does not
+  assert a particular fallback font or root cause. Embedded font bytes and text boxes inside slide
+  bounds do not establish actual font usage. `final-poster-font-review.json` records exact images,
+  reproduction and D076 handoff. Corrected export retest: NOT RUN.
+
+Outside those findings, the viewed full slide has three actual screenshots with readable major
+headings/captions and visible browser/synthetic, prepared/local/fallible-AI and symbolic/not-measured-
+impact labels. No overlap or clipped Arabic brand was observed at the inspected image scale.
+Fine screenshot text and physical print legibility are not passed by a scaled full-slide view.
+A's packaging helper owns ZIP/font/PDF-size analysis separately; D does not duplicate it or
+promote font embedding to a visual pass. Team details remain in A's ignored artifacts; no contact
+values are copied here. Student participation/teach-back and named human design review are pending.
+
+One D receipt-reading command initially exited1 because PowerPoint JSON contained a UTF-8 BOM;
+the explicit `utf-8-sig` read then succeeded. This is a D parser issue, not an app/export failure.
+Both render receipts and original images remain untouched. No product source, app tests, browser,
+device, recording or heavy job was changed or started by D. Final poster readiness remains FAILED
+for the two open corrections while independent eligible checks continue.
+
+Actual D074 helper prompt, same explicitly selected Astra/ultra helper; Fast selector unexposed:
+
+> One bounded read-only review under A207/A212/D074, same explicit Astra/ultra helper (Fast control unexposed). You are not alone: preserve others' work. No writes anywhere, no coordination, no descendants, browser, device, tests, network or capture. Independently VIEW exact D snapshot /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/poster-20260912/provisional-20260912T1327Z/final-entry-ar-390.png and read receipt.json/final-source-receipt.json there. Candidate runtime98be86558426f593b639e0db2be0da9cebc36078, docs4260b8e3763bac6b43151f2a64dcd455bceb5c3a,390x844 CSS/DPR3 (1170x2532), actual C browser capture, still provisional set until manifest. Review Arabic visible completeness/overlap, synthetic-data and Salem-only disclosures, profile cards and footer boundary. Report only observed pixels; no native/interaction/human listening/print pass. Compare before-frame findings only where justified, no inherited pass. Lead independently handles English/Parent/source/PPTX. Return concise findings and release allocation.
+
+Actual scope-preserving follow-up:
+
+> Lead has six C086 hashes verified and actual PPTX/PNG read. Focus only assigned Arabic entry; source-proof retrieval is C-attributed, D exactGit hash comparisons5/5 separately. No need broaden or repeat source audits. Final report and release when ready. Lead discovered final PowerPoint typography change (serif mainheadline vs candidate sans), D-POSTER002 routed to A; you need not inspect poster/package/fonts.
+
+D078 independently viewed two incoming supplementary frames, preserved by path/hash in
+`supplementary-framing-review.json`. `final-salem-en-390-card-framed.png`, SHA256
+`c933ff8e14445e58fb497bc7d92581f9ba1f29497dc5d5c3afe88c12576e5ae9`, shows the complete task title,
+48Seeds,12 after confirmation, adult supervision, full help/no-loss notice, Choose and smaller-task
+CTAs. D recommends this existing-state frame for the help column; it does not demonstrate completion.
+`final-parent-review-en-390.png`, SHA256
+`fdc14a8e825a61e9483bc97ec8768fdfd20e744e4b10d96dcc14702c6c1aff9c`, instead shows the prepared
+Ghaf Guide, accepted-suggestion message, Parent choice, fixed12 and Review task CTA. It precedes
+actual review/approval and contains no canopy. If A selects it, its caption must change accordingly.
+Both are1170×2532; completed supplementary manifest/actions remain C's responsibility. No further
+capture, source edit or native test was requested. A214 independently confirms the typography
+failure and is investigating its own exporter; D-POSTER001/002 remain open at this checkpoint.
