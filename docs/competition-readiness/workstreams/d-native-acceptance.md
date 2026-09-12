@@ -335,3 +335,42 @@ interrupt405246/fake children ended. No actual APK/device or native performance 
 A052 prompt/contribution was the exact request in canonical STATUS-A outbox052: private JDK bin
 must be on PATH for apksigner; correct the owned report and optionally add a bounded missing-Java
 diagnostic. D accepted both. No other product change was requested or made.
+
+## D-N04 foundation and startup-seam source review
+
+Completed 2026-09-12T01:41:08.314690+00:00 under A051/A053/A054; no D source
+synchronization or product edits. Technical contract293d351 and startup amendment7a87f69 are the
+authority. A reconciled the three cross-document notes from D004 before contract commit.
+
+- **31f1833cb94b3c2289f4d5bb0e2c8437f9d1f88d — PASSED source review.** Lead inspected exact
+  shared types/config/test source. Request and handoff include generation/epoch; exact build
+  string `true` alone selects demo, and the exported constant cannot switch modes mid-run. A's
+  seven mode tests are attributed to A; no D suite rerun or bundled APK flag proof.
+- **973193542e256a3745ef8b42a53a7ab4211f3c11 — PASSED bounded storage source review.** Independent
+  helper found all four repositories use one newly created demo memory instance, including legacy
+  migration/clear paths. The factory exports directly from memoryStorage, avoiding platform-specific
+  factory resolution; the existing ordinary adapters and Node singleton behavior are retained.
+  No actionable storage-isolation defect was found.
+- **Limits:** the registry still imports the native platform storage module through the barrel.
+  ExpoSQLite must therefore be present even though its database opens lazily. This is an existing
+  native dependency requirement, not proof of ordinary-data access or a regression. Vitest's Node
+  sentinel/spying tests do not establish Metro platform resolution or physical storage bytes. Only
+  ambience has an explicit save exercise in the new test, and read return values are not asserted;
+  the test demonstrates noninterference rather than all repository functions. Actual startup,
+  same-run handoff, failed reset and process restart remain untested by this source slice.
+- **7a87f69 — PASSED bounded contract review.** Demo-only artificial holds may be removed while
+  actual font/image readiness and failure fallbacks remain. Global ambience must be suppressed
+  on signed-out/reset-failed demo entry, even after Parent previously enabled it. These address
+  selected immediate/silent entry; no new provider/assets or ordinary timing change. Native
+  silence, focus cancellation and measured latency remain NOT RUN.
+
+Helper `/root/native_storage_review` was D's sole active helper for this slice, an explorer launched
+with Astra/ultra; effective serving and Fast are unexposed. It changed no files, ran no tests/browser/
+device commands, spawned no descendants and released its scope. Lead reviewed its concrete findings
+and preserved limits; no additional product change or human approval was inferred. Actual prompt:
+
+> You are Session D's sole currently active helper, board28 NB1, under A051 D read-only foundation inspection and D-N04 review. Exact source candidate9731935 in /home/smyk/projects/Ghaf (canonical A worktree); D worktree /home/smyk/projects/Ghaf-qa-rehearsal remains f5149be and must not be synchronized by you. Requested Astra/Ultra; record launcher accepted vs effective settings; Fast not exposed. Concrete bounded question: does commit9731935's demo storage extraction/registry selection preserve ordinary storage behavior and isolate ALL four demo repositories with no accidental native/web storage resolution leak? Read exact git show9731935 and committed015 contract293d351, plus only directly relevant imports/test source. Report line/symbol evidence, realistic failure/privacy concerns and limits; do not repeat prior broad audit. This is source review, not module execution/native/process recovery proof. You are not alone; preserve everyone's edits. READ ONLY: no file writes, coordination edits, tests/suites, installs, browser, device commands, commits or descendants. Lead handles own collector Java prerequisite repair in parallel. Report findings only to D here; release when bounded review is done.
+
+No helper suggestion was rejected in this review; the source/native distinction is retained.
+The preceding collector correction is commitc30700a; earlier D slices15a8316/f5149be remain
+independently attributable. Foundation review adds no acceptance for the unbuilt integrated demo.
