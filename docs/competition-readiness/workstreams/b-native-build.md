@@ -11,7 +11,7 @@ exact module/test grants; no access behavior is implemented by this report.
 - B instance: `B-NB1-20260912T011745Z-545b9f58`.
 - Worktree: `/home/smyk/projects/Ghaf-demo-systems`, branch `redesign/native-build-20260912`.
 - Prepared baseline: `52c61fcab45f40b233d823a9178780fd07c56efd`, runtime `7fff0f3`.
-- Canonical A's newer runtime `e02d02b` has not been synchronized or built by B.
+- A046 authorized only the e02d02b cherry-pick. It completed clean as `bb747cf80bdfc9bad312014d1492710511f855fd` after B's N01 commit `51da7f7ea8bf4ccbdd9e5ff22446ecb2069d03ac`; full runtime input equality passed. No compile yet.
 - Board 24 was prepared only. B registered without source/helper writes. Board 25 activated
   `B-N01-r25` and bounded `B-N02-r25`; B acknowledged `A-20260911T2220Z-042` before work.
 - Durable grants: this report and `scripts/native/build-apk.sh`. Ignored B output boundaries:
@@ -111,7 +111,7 @@ computed SHA-256 as a publisher-published checksum.
 | platform-tools;37.0.1            | `platform-tools_r37.0.1-linux.zip`           | `477254aa5f903c15cf51001717bdf347fb6b53e0` |
 
 Archive URLs use Google's `https://dl.google.com/android/repository/` prefix. Platform 36 extension
-18/19 alternatives are not the selected plain revision-2 platform. All eight pinned archives passed their published checksum before extraction. Initial provision at 01:29:22–01:30:47 UTC stopped exit1 on the verified CMake flat archive layout. Inspection found exactly `bin`, `doc`, `share`, `source.properties`; the ignored local extractor was narrowly corrected, preserving old staging/failure logs. Rerun 01:31:49–01:31:53 UTC reused verified destinations and completed exit0. Exact receipts are `output/native-build/provision-20260912T012922Z/receipt.json` and `provision-20260912T013149Z/receipt.json`; each records URL, publisher algorithm/checksum, computed SHA-256 and destination. Accepted license hash is `9002c006f4b8d9a16e715a9fa4df30ddb8abf9d9`. Actual executable versions and full toolchain preflight remain the next check; extraction is not compatibility proof.
+18/19 alternatives are not the selected plain revision-2 platform. All eight pinned archives passed their published checksum before extraction. Initial provision at 01:29:22–01:30:47 UTC stopped exit1 on the verified CMake flat archive layout. Inspection found exactly `bin`, `doc`, `share`, `source.properties`; the ignored local extractor was narrowly corrected, preserving old staging/failure logs. Rerun 01:31:49–01:31:53 UTC reused verified destinations and completed exit0. Exact receipts are `output/native-build/provision-20260912T012922Z/receipt.json` and `provision-20260912T013149Z/receipt.json`; each records URL, publisher algorithm/checksum, computed SHA-256 and destination. Accepted license hash is `9002c006f4b8d9a16e715a9fa4df30ddb8abf9d9`. Actual executable versions and toolchain preflight passed in the N02 checkpoint below; extraction and preflight do not prove native compilation compatibility.
 
 ## B-N01 script and validation
 
@@ -131,7 +131,7 @@ scripts/native/build-apk.sh \
   --allow-internal-debug-signing
 ```
 
-Only an explicitly granted build adds `--build --heavy-slot-ack A046 --metro-release-ack A046 --sdk-license-ack A045 --approved-permissions ABSOLUTE_REVIEWED_JSON_PATH`. A046 authorizes B to cherry-pick only `e02d02b` and records the user's authorized Metro shutdown; source synchronization is still pending at this N01 release. No B preview runs. A's exact permission-set input remains pending.
+Only an explicitly granted build adds `--build --heavy-slot-ack A046 --metro-release-ack A046 --sdk-license-ack A045 --approved-permissions ABSOLUTE_REVIEWED_JSON_PATH`. A046 authorizes B to cherry-pick only `e02d02b` and records the user's authorized Metro shutdown; source synchronization was pending at the N01 release and completed in the N02 checkpoint below. No B preview runs. A's exact permission-set input remains pending.
 
 Generation uses installed Expo `prebuild --platform android --no-install` only when Android is absent; it captures the exact permitted package android/ios script delta without committing or restoring package.json. Reuse requires this script's source/native inventory receipt. A different runtime source requires A's explicit archive/fresh-generation decision; there is no automatic cleanup. The generated wrapper receives the published Gradle checksum before execution.
 
@@ -142,6 +142,20 @@ Actual artifact inspection checks signed release status, template certificate, p
 Safe-check evidence: `output/native-build/script-checks/safe-checks.json`. Twelve initial full-script cases passed at 01:24:11–13 UTC; five follow-up full-script cases and two exact-source guard fixtures passed at 01:27:04–07 UTC. These cover help, invalid/missing inputs, wrong root/HEAD/source/paths, symlink escape, build without grants, missing signing/tools, public overrides, dependency-link refusal and preserved exit37. Final cleanup refinement SHA-256 `65e6ecb24373b421bba57317a6a8e1c0d0f03ab19ea30168f47af0b4a0441bf1` passed Bash syntax, all nine embedded Python syntax checks and expected missing-toolchain refusal at 01:27:57 UTC. Earlier cases are attributed to their earlier script hash, not retroactively claimed on the final hash. Watched package/lock/appconfig bytes were unchanged; Android remained absent. Lead independently reviewed the final script and Bash syntax. Full app tests are not claimed for this shell/report slice.
 
 Helper source/check paths were explicitly released to B lead. Student review is pending. For recovery, preserve any failed receipt and generated tree, inspect its failed step, resolve only the named prerequisite within A's grant and rerun with the exact current source/HEAD. Never replace a key, normalize unexpected package fields or remove another owner's work to make a check pass.
+
+## B-N02 — Actual executable/preflight release
+
+N01 script/report commit is `51da7f7ea8bf4ccbdd9e5ff22446ecb2069d03ac`. Under A046, B inspected clean Git and cherry-picked exactly A's existing instruction correction `e02d02b3a43c062bd637b57a475b43419a9f9939`, producing `bb747cf80bdfc9bad312014d1492710511f855fd`. Source identity remains the original e02d02b; B tooling/document commits are recorded separately. No history was reset.
+
+Actual full script preflight, with the documented private paths and exact local/source hashes, passed all 11 steps from 2026-09-12 01:33:02–01:33:05 UTC, exit0. Receipt: `output/native-build/20260912T013302Z-preflight.XgmAxc/receipt.txt`. Input equality/private dependency identity, SDK/JDK/CMake/NDK, installed Expo, public ordinary-mode configuration and resource headroom passed. Generation/compilation were not invoked. Package/lock/config remained unchanged and Android absent.
+
+Separate executable commands at 01:33:14–01:33:16 UTC all returned0, recorded in `output/native-build/tool-versions/receipt.json` and per-tool logs:
+
+- Temurin Java 17.0.20.1+1; Gradle9.3.1 with launcher JVM17.0.20.1; `--version --no-daemon` only.
+- SDK manager19.0; CMake3.30.5; Ninja1.10.2; pinned NDK clang18.0.2 (Android build12285214).
+- AAPT v0.2-13193326; apksigner0.9; platform-tools37.0.1-15733141 / ADB1.0.41. `adb version` only: no server, device list, install or device mutation.
+
+All provision/version runners ended. A046 holds B's native-heavy lane and records external preview release. The next compile still requires A's exact approved merged-permission input. No full application suite, device/human listening or APK acceptance is implied. Preserve the initial CMake-layout failure receipt alongside successful rerun evidence.
 
 ## AI assistance and student review
 
@@ -194,4 +208,10 @@ Follow-up artifact/recovery review:
 
 ```text
 Additional review point: current artifact check records every permission but only rejects two blocked storage permissions. Don't label full manifest/config approval PASSED if unexpected permissions remain unreviewed. Either require an explicit A-approved expected permission set at build (compare exact merged set), or make structural APK verification scope explicit with permission review pending and no acceptance claim. User asks compare actual merged manifest to A-approved config. Also document new-source generation-marker mismatch as deliberate stop requiring A archive/re-generation grant; no auto-clean. Existing protected files/checks remain intact. No need expand into device install or extra runtime tests.
+```
+
+Read-only follow-up after N01 release (no new source contribution yet):
+
+```text
+Reactivating your one B helper allocation for READ-ONLY bounded review, no source/coordination writes or descendants. Your script was released/committed51da7f7; B source cherry-picked exactA046 e02d02b into bb747cf. Actual private-tool preflight passed. Lead works version evidence/A build handoff. Inspect current B installed Android library manifests and Expo app config to propose exact merged uses-permission names likely on ordinary-mode candidate; give exact refs, distinguish static inputs from actual merged APK evidence, flag any unexpected provider/storage/media permission. A must approve exact set; do not self-approve. No Gradle/prebuild/browser/tools installs or runtime tests. Also note any specific artifact parser concern found from read-only review, no speculative scope expansion. All others editing must be preserved; paths read only /home/smyk/projects/Ghaf-demo-systems/{app.config.ts,node_modules,scripts/native/build-apk.sh}; no secret/env reads. Return bounded findings then release allocation. Requested Astra/ultra carried from launcher, Fast unexposed.
 ```
