@@ -37,24 +37,26 @@ export function ParentCanopySummaryCard({
       {...nativeViewStyles(styles.card)}
       testID="family-combined-canopy"
     >
-      <View style={[styles.landscapeRow, { flexDirection: logicalRowDirection(direction) }]}>
-        <View style={styles.landscapeCopy}>
-          <Text brand direction={direction} style={styles.forestText} variant="heading">
-            {title}
-          </Text>
-        </View>
-        <LocalIllustration
-          assetId={current >= 20 ? 'family-canopy-20' : 'family-canopy-19'}
-          decorative
-          direction={direction}
-          priority="high"
-          style={styles.landscape}
-          testID="parent-canopy-artwork"
-        />
-      </View>
+      <LocalIllustration
+        assetId={current >= 20 ? 'family-canopy-20' : 'family-canopy-19'}
+        decorative
+        direction={direction}
+        priority="high"
+        style={styles.landscape}
+        testID="parent-canopy-artwork"
+      />
       <View style={styles.content}>
+        <Text brand direction={direction} style={styles.onForestText} variant="heading">
+          {title}
+        </Text>
         <View style={[styles.headingRow, { flexDirection: logicalRowDirection(direction) }]}>
-          <Text brand style={[styles.headingText, styles.onForestText]} tabular variant="label">
+          <Text
+            brand
+            direction={direction}
+            style={[styles.headingText, styles.onForestText]}
+            tabular
+            variant="label"
+          >
             {progressLabel}
           </Text>
         </View>
@@ -69,7 +71,7 @@ export function ParentCanopySummaryCard({
         >
           <View style={[styles.progressFill, { width: progressWidth }]} />
         </View>
-        <Text brand style={styles.onForestText} variant="caption">
+        <Text brand direction={direction} style={styles.onForestText} variant="caption">
           {remainingLabel}
         </Text>
         <Text brand direction={direction} style={styles.meaningText} variant="caption">
@@ -85,29 +87,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: botanical.radius.hero,
     borderCurve: 'continuous',
-    backgroundColor: botanical.colors.sage,
-  },
-  landscapeRow: {
-    minWidth: 0,
-    alignItems: 'center',
-    gap: spacing.sm,
-    padding: botanical.space.inset,
-  },
-  landscapeCopy: {
-    minWidth: 0,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 100,
-    gap: spacing.sm,
+    backgroundColor: botanical.colors.forest,
   },
   landscape: {
-    width: 112,
-    height: 112,
-    flexShrink: 0,
-    borderRadius: botanical.radius.surface,
-  },
-  forestText: {
-    color: botanical.colors.forest,
+    width: '100%',
+    aspectRatio: 2.15,
   },
   meaningText: {
     color: botanical.colors.sageStrong,
@@ -120,7 +104,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     backgroundColor: botanical.colors.forest,
     paddingHorizontal: botanical.space.inset,
-    paddingVertical: spacing.md,
+    paddingVertical: botanical.space.inset,
   },
   headingRow: {
     minWidth: 0,

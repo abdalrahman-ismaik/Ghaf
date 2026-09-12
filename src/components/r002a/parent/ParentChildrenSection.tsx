@@ -35,7 +35,7 @@ export function ParentChildrenSection({
 }: ParentChildrenSectionProps) {
   return (
     <View style={styles.section}>
-      <Text brand color="deepForest" variant="screenTitle">
+      <Text brand color="deepForest" direction={direction} variant="screenTitle">
         {title}
       </Text>
 
@@ -57,30 +57,41 @@ export function ParentChildrenSection({
           >
             <View style={[styles.avatar, item.selected ? styles.selectedAvatar : null]}>
               <GhafIcon
-                color={item.selected ? colors.ghafEmerald : colors.mangroveTeal}
-                name="child"
+                color={item.selected ? botanical.colors.onForest : botanical.colors.forest}
+                name={item.id === 'child_salem' ? 'ghaf-tree' : 'flower'}
                 size={28}
               />
             </View>
             <View style={styles.content}>
               <View style={[styles.nameRow, { flexDirection: logicalRowDirection(direction) }]}>
-                <Text brand color="onSurface" style={styles.nameLabel} variant="bodyLarge">
+                <Text brand direction={direction} style={styles.nameLabel} variant="heading">
                   {item.name}
                 </Text>
                 {item.selected ? (
                   <View style={styles.selectedChip}>
-                    <Text brand color="primary" style={styles.selectedLabel} variant="caption">
+                    <Text
+                      brand
+                      direction={direction}
+                      style={styles.selectedLabel}
+                      variant="caption"
+                    >
                       {selectedLabel}
                     </Text>
                   </View>
                 ) : null}
               </View>
-              <Text brand color="onSurfaceVariant">
+              <Text brand color="onSurfaceVariant" direction={direction}>
                 {item.next}
               </Text>
               <View style={[styles.support, { flexDirection: logicalRowDirection(direction) }]}>
-                <GhafIcon color={colors.solarAmber} name="help" size={17} />
-                <Text brand color="onSurfaceVariant" style={styles.grow} variant="caption">
+                <GhafIcon color={botanical.colors.forestRaised} name="help" size={17} />
+                <Text
+                  brand
+                  color="onSurfaceVariant"
+                  direction={direction}
+                  style={styles.grow}
+                  variant="caption"
+                >
                   {item.support}
                 </Text>
               </View>
@@ -91,6 +102,7 @@ export function ParentChildrenSection({
 
       <Button
         brand
+        direction={direction}
         icon={<GhafIcon color={colors.ghafEmerald} name="plus" size={22} />}
         onPress={onCreateTask}
         testID="parent-create-task-button"
@@ -116,11 +128,11 @@ const styles = StyleSheet.create({
     minHeight: 104,
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: botanical.radius.control,
-    padding: spacing.md,
+    borderRadius: botanical.radius.surface,
+    padding: botanical.space.inset,
   },
   selectedRow: {
-    backgroundColor: botanical.colors.paper,
+    backgroundColor: botanical.colors.sage,
   },
   avatar: {
     width: 56,
@@ -128,15 +140,12 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 28,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: botanical.colors.line,
-    backgroundColor: botanical.colors.sage,
+    backgroundColor: botanical.colors.paper,
   },
   selectedAvatar: {
-    borderColor: botanical.colors.forest,
-    backgroundColor: botanical.colors.sage,
+    backgroundColor: botanical.colors.forest,
   },
   content: {
     flex: 1,
@@ -153,6 +162,7 @@ const styles = StyleSheet.create({
   nameLabel: {
     minWidth: 0,
     flexShrink: 1,
+    color: botanical.colors.ink,
   },
   selectedChip: {
     minWidth: 0,
@@ -162,6 +172,7 @@ const styles = StyleSheet.create({
   },
   selectedLabel: {
     flexShrink: 1,
+    color: botanical.colors.forest,
   },
   support: {
     alignItems: 'flex-start',
