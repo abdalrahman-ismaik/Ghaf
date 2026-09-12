@@ -40,11 +40,11 @@ symbolic and does not establish real trees planted or measured environmental imp
 
 ## Preparation
 
-The Galaxy Tab S4 is attached to Ubuntu. D's actual11:01:25UTC check sees one UNAUTHORIZED ADB
-transport; the tablet's USB debugging approval is pending. Android model number/version and ABI
-remain unread. Use this tablet for initial native evidence after authorization and a verified APK;
-both planned phone gates remain pending. USB attachment alone is not an app rehearsal.
-
+The owner reported tapping Allow on the connected Galaxy Tab S4. The latest ADB check returned
+zero transports after USB attachment dropped. A later diagnostic attachment remained visible
+in Windows/WSL at11:24:06UTC; D's11:24:16 check found the same tablet still UNAUTHORIZED.
+Model/Android version/ABI are still unread. Tablet testing awaits a stable authorized connection
+and the verified APK; both planned phone gates remain pending.
 Install the exact same candidate APK on both phones using the
 [Android build and acceptance guide](android-build-and-rehearsal.md). Record actual models, Android
 versions, app commit, APK hash, locale and flags; none are assumed. Use adult presenters and the

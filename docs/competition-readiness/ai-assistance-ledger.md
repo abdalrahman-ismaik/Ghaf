@@ -838,3 +838,63 @@ UNAUTHORIZED transport, not Android metadata or native acceptance. A instructed 
 approve Android's USB debugging prompt. A154 permits one existing-server passive state listener
 with a ten-minute cap, avoiding a required message round trip; it cannot grant trust or restart
 the server. D's actual119290 listener and initial unauthorized event are D-attributed evidence.
+
+## Actual stage1 acceptance and post-Allow USB diagnosis — September12
+
+A reviewed B's b32174d report and ignored Worklets checker/receipt without rerunning it, then
+integrated the released report as3f943ae. The actual25-step configuration result and all156
+hashed PCH/CXX/shared-link edges support only the selected four Worklets ABI graphs. A162 grants
+one remaining configure stage with the same script, init, tools, runtime and limits. It explicitly
+includes transitive Worklets compilation and requires real process observation and fresh graph
+review. B owns those checks; A does not duplicate its compiler job or claim an APK.
+
+The actual user response was “I tapped Allow.” A160 passed that action to D. D's existing-server
+check returned zero transports, not authorized properties. A inspected and integrated D's released
+be9d1fa report as2bb144d, preserving its earlier unauthorized result, passive timeout and actual
+614.986947-second timing deviation. A's diff check passed; no application suite was repeated.
+
+A's Windows check found Samsung2-1 shared but detached. One authorized reattachment returned0 at
+11:19:56UTC; subsequent Windows/Linux observations showed it had immediately dropped. Windows
+Application provider usbipd-win recorded claim/release20ms apart; the first provider usbipd query
+had no matching events. Narrow System Kernel-PnP/UserPnp events also had no matches. Raw device
+identifiers are retained only in private ignored receipts, never repository documentation.
+
+One A helper /root/usb_drop_diagnosis performed independent read-only Linux/primary-source review
+while A inspected Windows logs and B compiled. Its initial actual prompt:
+
+```text
+Session A bounded READ-ONLY host USB diagnosis, quota1 no descendants. Others editing; preserve all files, never write coordination/source, no ADB/device queries, no attach/bind/detach/restart/installs/security changes. Lead handles Windows event evidence and B runs native build independently. Concrete task: determine supported diagnostic or fix for usbipd-win5.3 Samsung Tab S4 immediately dropping from WSL after successful attach. Read only /home/smyk/projects/Ghaf/output/native-integration/015/usbipd-5.3.0/{after-attach-state,reattach-after-allow,after-reattach-state}.json, WSL kernel dmesg USB/vhci/error messages (no identifiers in response), installed usbipd --help/attach --help or official primary docs as needed. Initial bind succeeded10:58, attach10:59Linux04e8:6860visible/ADBunauthorized. Owner later tappedAllow; D one fresh11:17listempty. A reattach11:19:54→56exit0 but11:20:14WindowsSamsung2-1 stillShared, LinuxSamsungabsent. User fullyauthorized local connection setup, but no guessed changes. Investigate concrete kernel cause, known protocol/device compatibility or actual logs; no blanket troubleshooting, duplicate broad baseline audit, repeated connection attempt. Return evidence-backed smallest next operation and uncertainty. Do not expose real serials. Root handles Windows EventLog separately so focus Linux + primary upstream evidence. Requested Astra/ultra; tierunexposed. Release on result.
+```
+
+The helper found kernel TCP EOF17.5ms after the second attachment, before USB enumeration;
+it did not establish which side initiated closure. It distinguished kernel monotonic from skewed
+ctime labels. Primary sources: [Microsoft WSL kernel vhci_rx.c](https://github.com/microsoft/WSL2-Linux-Kernel/blob/linux-msft-wsl-6.18.y/drivers/usb/usbip/vhci_rx.c#L194),
+[usbipd5.3 ConnectedClient.cs](https://github.com/dorssel/usbipd-win/blob/v5.3.0/Usbipd/ConnectedClient.cs#L26)
+and [WSL attachment implementation](https://github.com/dorssel/usbipd-win/blob/v5.3.0/Usbipd/Wsl.cs#L516).
+Normal attach-command completion is expected. No evidence selects force-binding, firewall changes,
+auto-attach loops, new drivers or a WSL restart. The helper wrote nothing and released its quota.
+
+A163 selected one bounded diagnostic attachment with the initiating PowerShell kept alive45seconds,
+not an established fix. Linux Samsung visibility returned at11:23:10UTC; A164 handed actual
+changed state to D for the already-authorized narrow readiness check. Final launcher outcome and
+Android authorization still require their actual receipts. No trust acceptance, installation,
+native test or causal fix is inferred from the attachment command. A updated the Android guide,
+demo preparation and ownership records to remove stale requests for the same user approval.
+
+Generated contributions are local operator evidence, documentation and coordination; no product
+behavior was generated in this slice. Student exact-diff review and teach-back remain PENDING.
+Root actual serving settings are unexposed; the one helper was explicitly requested Astra/ultra,
+with Fast unconfirmed. Recovery014 remains deferred and native/human acceptance remains open.
+
+The held-launcher experiment ended0 at11:23:49.825UTC. A fresh11:24:06 Windows/Linux observation
+still showed attachment after the launcher exited. A released the host job and helper, and A165
+published D's actual readiness dependency. This does not prove that keeping the launcher open
+fixed the original cause. D's device authorization remains a separate actual check.
+
+D's subsequent A164 check found the same selected tablet still UNAUTHORIZED; A reviewed and
+integrated released d15663f as66edce5. A166 permits one short existing-server state subscription
+with both monotonic and wall durations recorded, preserving the earlier timing deviation.
+No repeated trust acceptance or native pass is inferred. The user briefly requested a latest-code
+project description, then explicitly cancelled it. Fetch and fast-forward-only pull from origin/main
+reported Already up to date; no source changed. The bounded read-only description helper was
+interrupted, produced no accepted artifact and released its allocation. Native validation continues.

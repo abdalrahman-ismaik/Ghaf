@@ -1,10 +1,11 @@
 # Installable Android build and rehearsal
 
-**NB1 status, September12: the final-source manifest passed and Build Tools 35.0.0 is installed.
-The compiler-pool correction is integrated; its actual application coverage must be checked before
-the next APK attempt. No APK or native acceptance is claimed yet.** B's private build worktree is
-`/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
-pausing Expo for native builds. A restored one demo preview at localhost:8081; it must be stopped for native work and restarted afterward.
+**NB1 status, September12: the manifest and first native configuration stage passed.**
+The remaining configuration stage is running on B b32174d/runtime5d8a3e8. Its dependencies compile
+Worklets; actual process limits and fresh generated graphs must be checked before the full APK.
+No APK or native acceptance exists yet. B's private worktree is
+`/home/smyk/projects/Ghaf-demo-systems`. SDK terms/tools and preview pauses are authorized.
+The canonical demo preview is stopped for native work; A will restore it afterward.
 
 The installed private tools include Temurin17.0.20.1+1, Gradle9.3.1, command-line tools19.0,
 Android36r2, BuildTools35.0.0 and36.0.0, NDK27.1.12297006, CMake3.30.5 and platform-tools37.0.1. Publisher
@@ -21,10 +22,12 @@ Use the repository's reviewed `scripts/native/build-apk.sh` invocation from B's 
 exact source/build identity, `EXPO_PUBLIC_GHAF_DEMO_ENTRY=true`, one Gradle worker,1536MiB Gradle
 heap/512MiB metaspace,1024MiB Node heap and generated-only Metro `--max-workers 1`.
 The requested CMake single-job environment setting did not constrain direct Ninja invocation;
-B stopped the observed attempt. The integrated script requests one shared compile/link Ninja pool;
-its54 mock-policy checks and12 isolated native edges pass, while actual AGP/module coverage remains
-pending. A138/A140 grants a guarded task-graph mode to inspect the real dependency graph. Included
-plugin compilation may run during that phase, so all native resource and preview guards apply.
+B stopped the observed attempt. The integrated script requests one shared compile/link Ninja pool.
+Actual stage1 `20260912T110835Z-configure.rhvmwi` passed all25 steps, final six-module DSL
+coverage and four Worklets ABI configurations. Reviewed snapshots contain156 PCH/CXX/shared-link
+edges in the depth1 pool. This covers those graphs; regeneration, CMake probes and concurrent
+Ninja instances require separate observation. A162 grants the remaining stage on B b32174d,
+script99ae/init a2d7; no full APK success is implied. See B's exact receipts and reviewed limits.
 Record the one-line generated Gradle adjustment. A must review the actual merged permission set
 before full APK compilation; do not guess it. The existing template debug signing identity is
 approved only for the labeled internal standalone rehearsal artifact. No new/public signing or
@@ -83,13 +86,13 @@ maximum216KiB swap used and no paging streak. Preserve the exact compiler-concur
 post-exit receipts. A117's missing35 preflight check and a bounded compiler-limit correction are
 separate tooling work; unchanged source checks do not need repeating.
 
-Windows and Ubuntu USB attachment are complete for the connected Galaxy Tab S4. D's11:01:25UTC
-check found one ADB transport, currently UNAUTHORIZED. Android model number/OS and ABI remain
-unread; the tablet owner must approve the USB debugging prompt. D's earlier zero-transport result
-is historical. See [D's native evidence](workstreams/d-native-acceptance.md); hardware identifiers
-remain in ignored local receipts.
-The tablet can provide useful first hardware evidence once visible. It cannot establish the planned
-narrow-screen primary/secondary phone coverage. No app installation or device journey has run yet.
+The owner tapped Allow on the tablet, but D's11:17:31UTC check returned zero ADB transports.
+A found Windows still saw the Samsung as shared but detached from WSL. One authorized reattachment
+returned0 at11:19:56UTC, then immediately disconnected again. A subsequent bounded diagnostic attachment remained visible
+after its launcher exited at11:24:06UTC; the original cause remains unknown.
+D then observed the same selected tablet, still UNAUTHORIZED, at11:24:16UTC. Model/OS/ABI,
+installation and native journeys remain NOT RUN. See [D's evidence](workstreams/d-native-acceptance.md).
+The Tab S4 can supply initial tablet evidence; both planned phone gates remain separate.
 
 ### Prepared Windows USB attachment step
 
@@ -125,13 +128,11 @@ Binding requires Administrator; attachment does not. Following the
 actual device/BUSID if reconnecting. Windows cannot use that USB device while attached. Do not
 bind another device or restart WSL during a build.
 
-On the unlocked tablet, enable Developer options and USB debugging, then accept the computer's
-RSA authorization prompt when shown. See [Android's device guide](https://developer.android.com/studio/run/device).
-Attachment and debugging trust are separate gates. D's actual transport currently reports
-UNAUTHORIZED. A154 permits one bounded passive listener on the existing server to detect an
-actual authorized transition before allowlisted device properties. No automatic trust acceptance,
-server restart or repeated polling is selected. Only an authorized target and an exact verified
-APK may proceed to installation and native tests.
+The owner has already enabled debugging and reported tapping Allow; do not request the same
+approval again without an actual new prompt. USB attachment and Android debugging authorization
+remain separate gates. D owns the existing ADB server and targeted checks after stable attachment;
+no authorized device properties have been observed. Do not restart WSL during the native build.
+Only an authorized target and an exact verified APK may proceed to installation and native tests.
 
 ## Historical Session A prerequisite audit — September 12, 2026
 

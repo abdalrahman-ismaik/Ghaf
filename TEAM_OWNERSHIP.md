@@ -1,33 +1,29 @@
 # Team Ownership
 
-## NB1 current integration — 2026-09-12 11:09 UTC
+## NB1 current integration — 2026-09-12T11:22:10.376696+00:00
 
-Canonical board57 and continuing A instance A-20260911T2220Z-root govern current grants.
-B/C/D retain their exact ownership. Runtime5d8a3e8 is frozen after148 files /1,919 tests and
-all three static checks passed. Canonical40fb6fd includes the released build-stage and final
-CMake callback corrections. A owns shared integration, master docs, BOARD/STATUS-A and the two
-previously released A-authored permission-review JSONs under B output.
+Canonical board59 and continuing A instance A-20260911T2220Z-root govern exact grants.
+Runtime5d8a3e8 is frozen after148 files/1,919 tests plus typecheck/lint/format passed.
+Canonical2bb144d integrates B's stage1 evidence and D's actual connection results.
+A owns shared integration/master docs/BOARD/STATUS-A and its two permission JSONs in B output.
 
-B owns scripts/native/build-apk.sh, its build report, private native/tool/cache/output paths and
-two transient package script fields. A156 grants ONE guarded Worklets configuration stage on
-exact B9062719/runtime5d/demo, with source/script/report frozen during execution. B holds the
-sole heavy slot, no helper. Actual final six-module coverage and fresh generated Worklets
-PCH/compile/link pools must pass before the second stage, which compiles Worklets transitively.
-All source, dependency, ABI, signing, resource and cleanup boundaries remain unchanged.
+B owns scripts/native/build-apk.sh, its report, private native/tool/cache/output paths and two
+transient package script fields. A162 grants ONE remaining configure stage on B b32174d/runtime5d,
+script99ae/init a2d7 with unchanged tools, signing, inputs and limits. B is sole heavy; source/report
+frozen while running. Actual process concurrency and fresh generated-edge proof precede full APK.
+Runner133052/script133053/observer133054 are B-owned. No emulator/browser/Metro overlaps.
 
-A's Metro79445 was stopped and released at10:49:02UTC;8081 was rechecked free before A156.
-No browser/emulator is selected. A owes one demo-preview restart after native work.
-Windows binding and Ubuntu USB attachment succeeded; D sees one UNAUTHORIZED ADB transport.
-D owns its exact readiness report/ignored receipts, existing ADB15824 and one passive listener
-119290 capped at11:15:40UTC. The owner must approve Android USB debugging; no device trust,
-properties, APK installation or native journey has passed. D's prior reportfb0a6b5 is integrated
-as1c0f809. All D helpers released. Tablet evidence cannot replace the two planned phone gates.
+A's Metro79445 is stopped; one demo-preview restart is owed after native work. Owner tapped Allow,
+but D then found zero transports. A's authorized reattachment returned0 then dropped immediately.
+A read-only helper usb_drop_diagnosis owns Linux/primary-source diagnosis; A lead checks Windows
+logs. No new tools, trust, restart or repeated attach loop. D retains existingADB15824; report and
+ignored readiness paths remain exclusively D-owned. Its prior listener ended/released. No actual
+Android properties, APK install or native journey has passed. Two phone gates remain pending.
 
-C's first Wiam clip is approved for sound/intended text; remaining clips/provenance/native
-listening remain pending. Runtime is silent. All eight R002b and three live-AI flags stay off;
-recovery014 remains deferred, optional additions unselected, student exact-diff review pending,
-actual rehearsals0/10. A helpers/jobs0; four global helpers maximum, no quota increase.
-Status writers remain live; A alone stages their records after the required pause acknowledgments.
+C narration remains silent at runtime: first Wiam clip approved, two clips/provenance/listening
+pending. Recovery014 deferred; all eight R002b and three live-AI flags off. Student exact-diff
+review pending; rehearsals0/10. Four global helpers maximum; A1/B0/C0/D0 currently, no descendants.
+Status writers remain live; only A stages their records after explicit brief pause ACKs.
 
 ## NB1 activation (historical) — 2026-09-12 01:18:23 UTC
 
