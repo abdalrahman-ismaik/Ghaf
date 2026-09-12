@@ -605,3 +605,52 @@ The interrupted report save later returned exit0; only this report changed. The 
 restoration resolves sibling-worktree write access. It does not create an ElevenLabs account.
 No new source or native job was started. Formatting, diff whitespace and exact request/transcript
 parity checks accompany the report commit; app suites and browser matrices are unnecessary here.
+
+## 2026-09-12 09:44 UTC — Key setup verified; Abdullah API take refused
+
+The user entered an ElevenLabs key through the hidden terminal prompt and supplied the “Key
+saved locally” confirmation. C inspected only the exact user-selected ignored file, verified
+regular/nonsymlink/current-owner metadata and mode0600, then loaded the key only in memory for
+the authorized requests. No key value or hash entered tool output, source, this report or receipts.
+No account was created, subscription changed, key permissions edited or package installed by C.
+
+Actual read-only access checks:09:42:38–40UTC, PID39862/session92085 ended0. Models GET200 confirms
+`eleven_multilingual_v2`, TTS/speaker-boost capability and Arabic. Direct voice GET400 returned
+`voice_not_found`; this did not prove the key invalid or the shared voice unavailable. Shared
+library GET200 at09:43:28–29UTC, PID41315, found the exact selected `pCKbQ4EPGE06zpEPGNvS`, name
+Abdullah - Professional, and Energetic, language ar, accent modern standard, rate1.0,
+`free_users_allowed:true` and ar-SA verified for Multilingual v2. Provider metadata is not an
+agent listening pass. Sanitized receipts are in ignored `narration-research/access-checks/`.
+
+The [official Voice Library guide](https://elevenlabs.io/docs/eleven-creative/voices/voice-library)
+allows direct use without saving a voice to My Voices. C therefore made no Add Voice or other
+account mutation. Under A097, exactly ONE synthesis POST used the unchanged119-character first
+transcript (SHA256 `63e063ba64027d655a57cdab1fb8a586f119eed7c6ad99ac26fca5426fb4d773`),
+`eleven_multilingual_v2`, stability0.5, similarity0.75, style0, speed1.0, speaker boost enabled,
+and requested MP3 at44.1kHz/128kbps. No descriptive directions, SSML or alternate voice were sent.
+
+Actual request09:44:26.211508–09:44:35.482375UTC, PID42257/session72962 ended0 with captured
+provider rejection: HTTP402, code `payment_required`, message:
+
+> Free users cannot use library voices via the API. Please upgrade your subscription to use this voice.
+
+This is a provider plan restriction, not a failed local key setup. No audio file was returned or
+created; no listening, duration, pronunciation or native playback pass exists. The request was
+not retried, no different voice/model substituted, and no purchase or API-access workaround was
+attempted. Actual billing/credit consumption was not queried or inferred. The receipt is
+`output/native-ui/narration-research/abdullah-audition/generation-v1.receipt.json`.
+
+Next step: the owner can use the provider website with the same exact voice/script; the voice
+listing allows free users, but available website credits have not been observed. Alternatively,
+the owner may independently select an eligible paid API plan. That decision has not been made.
+A subsequent API attempt needs the changed entitlement and a renewed bounded attempt grant;
+A097's single attempted POST has been used. Do not replace this402 evidence or ask for the key
+again. The ignored credential file remains private for the owner's authorized future use.
+
+Lead applied the local API integration specialist skill for narrow authentication, timeouts,
+redirect refusal and error handling. The task's one-attempt limit overrides generic retry advice;
+there is no runtime client or new app dependency. Only official api.elevenlabs.io received the
+key header, with redirects disabled. Receipt output uses selected fields and redacts the loaded
+key from error messages. All commands/jobs ended; no helper or browser was needed for these serial
+access requests. Scoped report formatting/diff checks and request/transcript SHA parity passed;
+no broad app suite was rerun. User/student clip acceptance remains pending, not fabricated.
