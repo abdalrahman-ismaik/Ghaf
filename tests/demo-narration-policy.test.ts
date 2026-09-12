@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { isDemoNarrationAllowed } from '../src/features/onboarding/demoNarrationPolicy';
+import {
+  isDemoNarrationAllowed,
+  isDemoNarrationPlaying,
+} from '../src/features/onboarding/demoNarrationPolicy';
 import { createDemoPlayback } from '../src/features/onboarding/demoPlayback';
 
 const unknownReader = Object.freeze({
@@ -100,5 +103,24 @@ describe('demo narration environment policy', () => {
     expect(player.play).not.toHaveBeenCalled();
     expect(environment.reader).toBeNull();
     expect(environment.readerObserved).toBe(false);
+  });
+});
+
+describe('actual web narration startup', () => {
+  const optimisticPlay = { playing: true, isLoaded: true, isBuffering: false, currentTime: 0 };
+  it('does not establish playback from the SDK play event before media time advances', () => {
+    const loading = { ...optimisticPlay, playing: false };
+    expect(isDemoNarrationPlaying(optimisticPlay, true)).toBe(false);
+    expect(isDemoNarrationPlaying(loading, true)).toBe(false);
+    expect(isDemoNarrationPlaying({ ...optimisticPlay, currentTime: 0.1 }, true)).toBe(true);
+  });
+  it('preserves native startup at time zero and denies stopped, unloaded or buffering status', () => {
+    expect(isDemoNarrationPlaying(optimisticPlay, false)).toBe(true);
+    for (const isWeb of [false, true]) {
+      const started = { ...optimisticPlay, currentTime: 1 };
+      expect(isDemoNarrationPlaying({ ...started, playing: false }, isWeb)).toBe(false);
+      expect(isDemoNarrationPlaying({ ...started, isLoaded: false }, isWeb)).toBe(false);
+      expect(isDemoNarrationPlaying({ ...started, isBuffering: true }, isWeb)).toBe(false);
+    }
   });
 });

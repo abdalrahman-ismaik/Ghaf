@@ -2,7 +2,10 @@ import { createAudioPlayer, type AudioPlayer, type AudioStatus } from 'expo-audi
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, AppState, Platform } from 'react-native';
 
-import { isDemoNarrationAllowed } from '@/features/onboarding/demoNarrationPolicy';
+import {
+  isDemoNarrationAllowed,
+  isDemoNarrationPlaying,
+} from '@/features/onboarding/demoNarrationPolicy';
 import {
   createDemoPlayback,
   type DemoPlaybackController,
@@ -295,7 +298,7 @@ export function useDemoOnboardingNarrator({
           retire(current);
           return;
         }
-        if (status.playing && status.isLoaded && !status.isBuffering) {
+        if (isDemoNarrationPlaying(status, Platform.OS === 'web')) {
           if (!current.controller?.getState().requested) {
             retire(current, true);
             return;
