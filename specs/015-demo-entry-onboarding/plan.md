@@ -168,3 +168,9 @@ regressions, source checks, then one full suite for the integrated candidate. No
 ## User-selected six-page restoration — September 12
 
 Implement [the six-page restoration contract](contracts/six-page-restoration.md) with existing Expo/Tamagui components, assets and local narrator; no new library. A owns shared composition; helper entry-screen ownership is disjoint.
+
+## Exact original restoration
+
+Reuse existing FirstRunOnboarding and extract the original Welcome JSX/styles into a callback-only
+shared presentation. Keep demo authority behind those original actions; no store/provider change.
+See contracts/exact-original-restoration.md; original narration is a separate user decision.

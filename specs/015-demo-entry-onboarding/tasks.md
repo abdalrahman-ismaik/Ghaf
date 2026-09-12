@@ -94,3 +94,9 @@ stages live coordination after a brief status-write pause/ACK. No push/main merg
 - [ ] T022 A/helper: Restore six-page visual story and clear full-width demo entry.
 - [ ] T023 A: Verify six-step navigation, exact three-clip mapping, bilingual layout and role isolation.
 - [ ] T024 A: Independent visual review, final checks, evidence and student/native review handoff.
+
+## Exact original restoration — latest user instruction
+
+- [ ] T025 A: Reuse original six-page/Welcome UI; retain safe demo callbacks and Child selection.
+- [ ] T026 A: Verify original source equality, real navigation/access and bilingual browser render.
+- [ ] T027 A: Final integrated checks and honest evidence; narration follows actual user answer.

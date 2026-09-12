@@ -230,3 +230,8 @@ Actual student/native review remains pending. Poster artifacts remain frozen to 
 ## User-selected six-page restoration — September 12
 
 User-selected six-page restoration supersedes the earlier three-page presentation; see [exact contract](contracts/six-page-restoration.md). All demo authority and normal access invariants remain.
+
+## Latest selection — exact original screens
+
+The user superseded the reference-led visual redesign with [exact original restoration](contracts/exact-original-restoration.md).
+Reuse the existing six-page onboarding and two-choice Welcome appearance verbatim.
