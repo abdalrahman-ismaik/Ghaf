@@ -3,41 +3,65 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
-## Mission control — current NB1 resume
+## Mission control — poster ready, native work preserved
 
-- Revision **50**, updated 2026-09-12 09:34:12 UTC; continuing A A-20260911T2220Z-root.
-- Canonical HEAD03cb386; runtime5d8a3e8 frozen. Full checks148files/1,919tests plus type/lint/format PASS.
-- User confirms restarted B/C/D; retain exact ownership. Full access is active, approval never.
-- Cache repair preserved245 diagnosed empty-metadata entries in two quarantines. A106 manifest
-  PZp7Ci passed21 steps at09:36:18UTC, XML5ba0ea. D independent e5291f0 integrated03cb386.
-  A110 approves exact8 declared permissions/full attributes only for existing-config internal build;
-  microphone/overlay use remains unselected. B builds exact3d1320d/runtime5d8a3e8/demo with the
-  A-authored hashed permission array and unchanged tools/guards. TWkyVS then failed on missing Build Tools35.0.0; A113 authorizes only that measured
-  side-by-side tool addition and one corrected APK build. No APK success claimed yet.
-- D actual enumeration zero ADB transports; user Tab S4 connection not yet visible in WSL.
-  Reporte064064 released; no device OS/installation/native evidence. Server15824 retained by D.
-- C report94d2e0a released: exact Abdullah audition prepared, generation blocked on actual existing
-  access. No accepted runtime audio. New short demo onboarding works silently.
-- Native/human/student gates pending,0/10 rehearsals. Recovery014 deferred; optional features
-  unselected, all eight R002b and three live-AI flags off. No push/main merge/deploy/cloud.
+- Revision **73**, updated 2026-09-12T13:46:42Z; A-20260911T2220Z-root.
+- Required A1portrait PPT/PPTX due20:00Dubai September12. User confirmed English/bilingualGhaf,
+  exact team details and finalist qualification. Contacts only in ignored poster output.
+- PRINT delivery ready: output/poster-20260912/final-reviewed/Ghaf-Team-SMAC-2026-A1-PRINT.pptx,
+  SHA bf0868597d91a8c2850a0c8d180999b3ed2b3093ead1ab62d2d1a2f67d3972ad. Exact594x841mm,
+  actual no-font PowerPoint render, independent metadata and D083 visual/copy retest PASS.
+  Outlined type preserves printing; separate editable master requires suppliedfonts. Earlier
+  fontsubstitution and permanence wording failures are preserved/closed for PRINT delivery only.
+- Integrated source/report HEAD4f4c7f3; runtime98be865. Typecheck/lint/format/fullsuitePASS,150files/1979tests.
+  Entry/onboarding and Parent/Child presentation integrated, actual bilingual screen evidence ready.
+- C70c0bdc report integrated8e28544; D initialb99a656 integrated92a5a6e, finalb9b0f8f integrated4f4c7f3.
+  Gallery13originals; C49total originals include before/invalid/superseded rows, not49passes.
+- B A171 stopped75 on paging, NO APK; all captured processes released, native/cache preserved.
+  Native/listening/physicalprint/rehearsals0of10 remain unrun. Recovery014 deferred;11flags off.
+  Student exact-diff/editorial/Q&A and publicaudio rights pending. No submission/upload/push/merge.
 
-A holds only the two B041-released future permission-review JSON paths named in A105/A107.
-A110 populated them after actual review; hashes and restricted internal-build disposition are in STATUS-A.
-All other private paths stay B-owned.
+## Session registration and resource disposition
 
-## Session registration and resources
-
-| Lead | Instance / present state |
+| Lead | Actual current disposition |
 | --- | --- |
-| A | A-20260911T2220Z-root; integration; helpers0; USB setup review complete |
-| B | B-NB1-20260912T011745Z-545b9f58; A113 exact Build Tools35.0.0 addition then corrected APK, sole heavy allocation |
-| C | C-20260912T011718Z-root; report94d2e0a released, no helpers/jobs, access blocked |
-| D | D-NB1-20260912T0122Z-root; A108 exact manifest review/report regrant, ADB server15824 retained |
+| A | A-20260911T2220Z-root; integrated4f4c7f3/runtime98be865; helpers0; sole Metro225406/8081 for user |
+| B | B-NB1-20260912T011745Z-545b9f58; paused/nativecache preserved; helpers/jobs0 |
+| C | C-20260912T011718Z-root;70c0bdc released; browser207767 absent; helpers/jobs0 |
+| D | D-NB1-20260912T0122Z-root; b9b0f8f fully released/integrated; D085 status-pause ACK; ADB15824 retained |
 
-One heavy job, zero preview/browser during native work; no quota increase. A owes demo preview
-restoration after native release. Historical queues below do not override these current grants.
+One helper per lead/four global remains capacity only; no native/heavy/fullcheck job active.
+No browser is held after C090 release. D085 acknowledged A219's brief status-write pause. A stages
+only BOARD/STATUS-A/STATUS-D; B/C have not acknowledged this pause and their files remain untouched.
+After that checkpoint, D may resume status updates; no new task, browser or native grant follows.
+No source-file ownership transfers by stale heartbeat.
 
-## Ordered task queue
+## Final queue
+
+| Task | State / owner | Result or exact remaining action |
+| --- | --- | --- |
+| Selected Entry/Story/Parent/Child visuals | Integrated / A | Runtime98be865, existing behavior preserved; actualC/D browser evidence |
+| Exact source checks | PASS / A | Typecheck/lint/format/fullsuite150files/1979tests; old failures preserved |
+| Poster PRINT/PDF/PNG and gallery | Ready / A | PRINTbf086859; outlined typography;13original gallery captures |
+| Final independent poster retest | PASS / D083 | D001/D002 closed for PRINT; D finalb9b0f8f integrated4f4c7f3 |
+| C final bilingual/QA report | Integrated / A | C70c0bdc→8e28544; allC source/capture/browser allocations released |
+| Native APK/device journey | BLOCKED/deferred during poster | NoAPK; exact source reconciliation and measured later build needed |
+| Mounted narration/publicaudio/student review | Pending | No invented lifecycle/listening/rights/human pass |
+| Coordination checkpoint | A / final snapshot | D085 ACK permits STATUS-D; commit A/BOARD/D only, preserve unacknowledged B/C |
+
+All source grants are completed/released. No next feature, native retry or optional breadth is
+selected by a successful poster. Existing accepted product/access authority remains unchanged.
+
+Handoff cursor: poster and gallery are ready in `output/poster-20260912/final-reviewed/` and
+`output/poster-20260912/screen-gallery/index.html`; master report is `../poster-handoff.md`.
+All completed A source/report/output/helper allocations are released. A retains its coordination
+writer and the user-requested Metro preview (PID225406), plus existing ADB15824. No active producer
+or unfinished poster dependency remains. Native resumption needs an exact candidate/resource grant
+and later device evidence; no automatic retry. User-added `docs/SMAC 2026/` remains untouched.
+
+## Historical initial task queue — superseded by NB1 grants
+
+
 
 | Task          | Owner / state                                    | Dependencies and authority                                             | Acceptance / release condition                                                                                                                                               |
 | ------------- | ------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
