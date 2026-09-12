@@ -1,7 +1,8 @@
 # Installable Android build and rehearsal
 
-**NB1 status, September12: local toolchain installed; the interrupted final-source manifest build
-is being resumed, with no APK or native acceptance yet.** B's private build worktree is
+**NB1 status, September12: the final-source manifest passed; standalone APK assembly is the
+current step, after adding a discovered Build Tools35.0.0 prerequisite. No APK or native acceptance
+is claimed yet.** B's private build worktree is
 `/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
 pausing Expo for native builds. A stopped the prior preview and owes its restart in demo mode.
 
@@ -36,11 +37,37 @@ After the environment interruption, all54 generated native source files still ma
 generation marker. The previous run `20260912T024056Z-manifest.2nbNeM` has no final exit receipt;
 its partial logs and surviving intermediate bundle establish neither success nor a resource stop.
 The resumed run `20260912T092026Z-manifest.Mf3DxX` stopped before Gradle because B's report was
-still dirty after a failed preservation command. B corrected that command and preserved its report;
-A100 permits the corrected launch with unchanged source, tools, build limits and resource guards.
-See [B's report](workstreams/b-native-build.md) and the canonical coordination record for its outcome.
+still dirty after a failed preservation command. After its correction, two builds exposed123 and
+122 distinct empty Gradle transform-metadata entries. A complete namespace inventory identified
+the remaining empty metadata; B preserved those245 entries in two exact quarantines, without a
+whole-cache purge or source change. Empty results files with nonempty metadata were left untouched.
 
-The user connected a Samsung Tab S4. D's September12 09:20UTC preflight successfully ran the pinned
+The corrected run `20260912T093503Z-manifest.PZp7Ci` passed all21 steps at09:36:18UTC, including
+actual merged XML generation and post-build input/native identity checks. D independently verified
+manifest SHA256 `5ba0ea320a67dde7fdd8f6099bb23c5c17a11ca5d462248e4559d7cd43797e9a`, package
+`ae.ac.ku.ghaf.prototype`, version0.1.0/code1, minSdk24/targetSdk36, backupfalse and blocked storage
+permission exclusions. These are manifest results, not installed-device compatibility evidence.
+
+A110 approves the actual eight permission declarations and their complete attributes for this
+unchanged **internal rehearsal build**. The app-scoped receiver permission is explicitly defined
+at signature protection level. Existing RECORD_AUDIO and SYSTEM_ALERT_WINDOW declarations remain;
+no real recording or overlay use is selected, and direct native no-prompt/prepared-only behavior
+still needs testing. This is not a public-release or least-privilege claim. The exact approval
+array and detailed receipt are A-authored files under B's ignored output/native-build, with hashes
+recorded in canonical STATUS-A. B's full build uses HEAD3d1320d, runtime5d8a3e8/demo and unchanged
+script7c2a2c8d. See [B's build report](workstreams/b-native-build.md) and
+[D's independent review](workstreams/d-native-acceptance.md). No app suite was repeated for these
+report-only commits.
+
+The first full APK run `20260912T094244Z-build.TWkyVS` ended09:44:19UTC, exit1/cleanup0,
+because gesture-handler Java compilation requires missing Build Tools35.0.0. A113 authorizes
+only that side-by-side tool in the existing private SDK and one corrected same-source build.
+The accepted SDK terms remain applicable; no new app package, configuration, guard or signing
+change is selected. Actual installation evidence is still pending in B's report.
+
+The user initially reported a connected Samsung Tab S4 and later clarified it is currently
+disconnected. A instructed reconnecting it, keeping it unlocked and enabling USB debugging;
+actual reconnection/trust is not confirmed. D's September12 09:20UTC preflight successfully ran the pinned
 ADB tool, but WSL returned zero visible transports. Android version, debug trust and USB attachment
 remain unverified; this is not proof that the tablet is physically disconnected. The device report
 and exact private receipt are in [D's native evidence](workstreams/d-native-acceptance.md).

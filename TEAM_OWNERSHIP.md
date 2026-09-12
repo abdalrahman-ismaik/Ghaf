@@ -1,24 +1,38 @@
 # Team Ownership
 
-## NB1 current integration — 2026-09-12 02:33 UTC
+## NB1 current integration — 2026-09-12 09:43 UTC
 
-Canonical board39 and continuing A instance A-20260911T2220Z-root govern current grants.
-Feature015 source5d8a3e8 is frozen after148files/1,919tests and typecheck/lint/format passed.
-A retains shared integration, specs/master docs, BOARD/STATUS-A; no source helper remains.
-B holds only native build script/report, private generated/tool/cache evidence and the two expected
-transient package script fields under A087. B's one helper owns only ignored resource-guard test
-fixtures; no application code, native job or preview is active. A must inspect the script before
-one exact manifest retry. C's released UI source is integrated; A089 grants only its provider-research
-report and optional bounded read-only helper. D's source/report/evidence are released and integrated;
-next artifact verification needs an actual APK. Each lead alone writes its canonical STATUS file.
+Canonical board50 and continuing A instance A-20260911T2220Z-root govern current grants.
+User-confirmed restarted B/C/D retain their actual ownership. Full filesystem/network access is
+restored. Feature015 runtime5d8a3e8 is frozen after148 files/1,919 tests and typecheck/lint/format
+passed. Canonical HEAD03cb386 integrates released C narration, B cache-recovery/manifest and D
+independent-manifest reports; these integrations change no runtime behavior.
 
-All other adapter/controller/store/route/presentation/test helper paths are explicitly released.
-Eight R002b and three live-AI flags remain off. Recovery014 and optional product additions are
-unselected/deferred. Human/student acceptance is pending, never inferred from source integration.
-SDK tools/terms and pausing Expo were explicitly authorized. Both native attempts stopped at their
-resource guard, with no APK; all owned build/preview processes ended. A owes demo preview restart
-when the native lane is released. One heavy job total, no native/preview overlap; ten configured
-helper slots per session do not enlarge the measured four-helper global budget.
+A retains shared integration, specs/master docs and BOARD/STATUS-A. Both resumed A helpers are
+released. B alone holds native-heavy A110 for full internal APK assembly on its HEAD3d1320d,
+source5d8a3e8/demo/script7c2. B's exact native/script/report/private paths and two transient package
+script fields remain held. B041 explicitly released only the two future permission JSON paths to
+A; A110 populated them after direct and D-independent XML review. B reads their approved bytes.
+
+The actual manifest PZp7Ci passed21 steps. Both diagnosed cache quarantines and all original failure
+receipts are preserved. A110 accepts eight declared permissions only as this unchanged internal
+candidate; retained microphone/overlay declarations do not authorize real use or public release.
+B full APK TWkyVS ended09:44:19UTC on missing Build Tools35.0.0. A113 grants only that
+side-by-side tool addition and a corrected same-source APK invocation. No completed APK/native
+pass is claimed yet. B helpers0.
+
+C released all reports/jobs/helpers; exact Abdullah recording awaits existing provider access.
+D released e5291f0 report/helper and retains ADB15824 plus status ownership, ready for exact APK
+verification. The user now reports the Tab S4 disconnected; reconnection/debugging/trust is not
+confirmed. Windows usbipd setup is prepared from verified official metadata, with no installation,
+service/firewall/USB mutation. No other source/helper boundary is held.
+
+Eight R002b and three live-AI flags remain off. Recovery014 stays deferred; optional additions
+remain unselected. Human/student acceptance is pending. A owes demo preview restart after native
+release. One heavy job total, no native/preview overlap; four global helpers remain the ceiling,
+currently zero live. Tablet evidence cannot substitute for narrow-phone gates; rehearsals0/10.
+A111 received D034 pause ACK only at this checkpoint; A stages its own files and paused STATUS-D, preserving
+all other contributors' live files and unacknowledged outboxes.
 
 ## NB1 activation (historical) — 2026-09-12 01:18:23 UTC
 

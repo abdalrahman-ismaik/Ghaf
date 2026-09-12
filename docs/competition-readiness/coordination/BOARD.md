@@ -3,51 +3,39 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
-## Mission control — current NB1
+## Mission control — current NB1 resume
 
-- Revision **39**, updated 2026-09-12 02:25:39 UTC, continuing A-20260911T2220Z-root.
-- Published final runtime **5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051** on redesign/ui-experiments.
-  Final typecheck, lint, format and **148 files / 1,919 tests PASS**. No further runtime edit selected.
-- B clean b317f2da6e87c5118734f2e5a56110f8f533f151 matches final runtime exactly. A083 manifest attempt
-  stopped75 on paging with~39% available; all owned jobs released. A087 grants only the measured
-  script guard correction and safe synthetic checks; A reviews before one bounded manifest retry.
-  Actual merged permission approval precedes full APK; no APK/native pass exists yet.
-- C released all source/report/browser paths C039/040. Corrected headings and approval handoff
-  passed actual targeted browser actions. Report219a6f4 queued for integration. Isolated glyph
-  evidence independently corroborated by D021: captured clipping diagnosis withdrawn, no patch
-  improvement claimed; reference setup attributed to C. Native scaling remains NOT RUN.
-  Unsupported web property removed; historical evidence retained. Native scaling remains unrun.
-- Expo466808/npm466762/shell466807/browser467810 absent,8081 free; A final checks ended.
-  B released heavy; no native job active. User authorized pause and demo preview restoration after build.
-- Selected015 exact three principals and optional silent story integrated. Arabic Fatima-v1 takes
-  rejected; Salma rejected, Hamed preferred but not accepted. C089 bounded provider research report only;
-  no generated audio/account/provider/runtime approval. English unreviewed.
-- Recovery014 remains deferred; no automatic approval. Reciprocal support and all optional feature
-  proposals remain unselected. All eight R002b and three live-AI flags off. Native phone models/OS,
-  student exact-diff review/teach-back, actual listening and rehearsals remain pending (0/10).
-  Qualification unknown; no push/main merge/deploy/cloud/submission/release activation.
-- Historical tables/queues below do not override current NB1 and numbered grants.
+- Revision **50**, updated 2026-09-12 09:34:12 UTC; continuing A A-20260911T2220Z-root.
+- Canonical HEAD03cb386; runtime5d8a3e8 frozen. Full checks148files/1,919tests plus type/lint/format PASS.
+- User confirms restarted B/C/D; retain exact ownership. Full access is active, approval never.
+- Cache repair preserved245 diagnosed empty-metadata entries in two quarantines. A106 manifest
+  PZp7Ci passed21 steps at09:36:18UTC, XML5ba0ea. D independent e5291f0 integrated03cb386.
+  A110 approves exact8 declared permissions/full attributes only for existing-config internal build;
+  microphone/overlay use remains unselected. B builds exact3d1320d/runtime5d8a3e8/demo with the
+  A-authored hashed permission array and unchanged tools/guards. TWkyVS then failed on missing Build Tools35.0.0; A113 authorizes only that measured
+  side-by-side tool addition and one corrected APK build. No APK success claimed yet.
+- D actual enumeration zero ADB transports; user Tab S4 connection not yet visible in WSL.
+  Reporte064064 released; no device OS/installation/native evidence. Server15824 retained by D.
+- C report94d2e0a released: exact Abdullah audition prepared, generation blocked on actual existing
+  access. No accepted runtime audio. New short demo onboarding works silently.
+- Native/human/student gates pending,0/10 rehearsals. Recovery014 deferred; optional features
+  unselected, all eight R002b and three live-AI flags off. No push/main merge/deploy/cloud.
 
-## Session registration
+A holds only the two B041-released future permission-review JSON paths named in A105/A107.
+A110 populated them after actual review; hashes and restricted internal-build disposition are in STATUS-A.
+All other private paths stay B-owned.
 
-| Lead | Actual instance | Current responsibility |
-| --- | --- | --- |
-| A | A-20260911T2220Z-root | Integration, actual manifest approval, final handoff; helpers0 |
-| B | B-NB1-20260912T011745Z-545b9f58 | A087 script correction, then separately granted single retry; helpers0 |
-| C | C-20260912T011718Z-root | Source/reports/resources released; audio choice pending; helpers0 |
-| D | D-NB1-20260912T0122Z-root | Read-only capture review, then exact APK/native evidence; helpers0 |
+## Session registration and resources
 
-## Resource allocations
-
-| Resource | Current allocation |
+| Lead | Instance / present state |
 | --- | --- |
-| Helpers | Four global maximum, one per lead including descendants; all released |
-| Configured capacity | Ten per session retained; no grant for forty local helpers |
-| Heavy job | Released after stop75; B A087 safe script checks only, no native retry yet |
-| Preview | Fully stopped/released; no overlap with native; A restores after build |
+| A | A-20260911T2220Z-root; integration; helpers0; USB setup review complete |
+| B | B-NB1-20260912T011745Z-545b9f58; A113 exact Build Tools35.0.0 addition then corrected APK, sole heavy allocation |
+| C | C-20260912T011718Z-root; report94d2e0a released, no helpers/jobs, access blocked |
+| D | D-NB1-20260912T0122Z-root; A108 exact manifest review/report regrant, ADB server15824 retained |
 
-Before grant:3380MiB available/7645, swap1524MiB, last si4/so0,889GiB disk. B rechecks before
-starting; no quota increase. Explicit release controls ownership, never a stale timestamp.
+One heavy job, zero preview/browser during native work; no quota increase. A owes demo preview
+restoration after native release. Historical queues below do not override these current grants.
 
 ## Ordered task queue
 

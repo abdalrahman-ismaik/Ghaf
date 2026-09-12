@@ -606,3 +606,40 @@ helper allocation is released. Its explicitly selected model was Astra/ultra; Fa
 settings are unexposed. Rejected approaches: guessing a device BUSID, changing USB/services during
 the native job, hidden account/key access, treating a tablet as narrow-phone coverage, and rerunning
 passing application suites for report-only integration.
+
+## Exact cache repair and successful manifest review — September12
+
+A reviewed B's observed Gradle errors and independently counted only the named empty metadata
+files. A103 and A106 granted preserved atomic quarantine of123 then122 distinct transform entries.
+The complete immediate namespace inventory found3118 entries,2996 with nonempty metadata and122
+remaining empty; each remaining empty entry matched the actual second failure log. This supported
+a bounded correction, not a broad cache purge or an invented restart cause. B owns the actual
+repair runners, before/after receipts and helper prompts in its report. A integrated859436b as
+c98b1d4 and3d1320d as5842a5d, retaining the correction that nonempty metadata did not establish
+that every results file was nonempty. All245 affected entries and all failed logs remain preserved.
+
+The actual corrected manifest passed21 steps at09:36:18UTC. A directly parsed/hash-verified its
+XML, version/SDK/backup/storage exclusions, full eight permission declarations and custom
+signature-level permission definition. D independently reviewed those artifacts and origins;
+released e5291f0 integrated03cb386. A110 selected this unchanged candidate only for internal APK
+assembly and wrote the exact permission array plus full review receipt in the two paths explicitly
+released by B041. RECORD_AUDIO and SYSTEM_ALERT_WINDOW remain declared; no actual recording,
+overlay, runtime permission, native no-prompt or public-release acceptance was fabricated.
+All existing live-AI and R002b flags remain off. Full APK and human/student review stay pending.
+
+The Windows follow-up was read-only: exact winget show for dorssel.usbipd-win5.3.0/source winget
+confirmed publisher Frans van Dorsselaer and upstream x64 installer SHA256
+1c984914aec944de19b64eff232421439629699f8138e3ddc29301175bc6d938. The command exited0; no installer,
+USB binding, service/firewall change, device query or reboot ran. The earlier owner debugging/trust
+question remains unanswered. Prepared host instructions do not establish physical acceptance.
+
+No new A helper or product source was generated for these reviews. Exact A grant text is retained
+in canonical STATUS-A103–111; B/D reports preserve the actual helper prompts and generated
+contributions. Student names, understanding and exact-diff acceptance remain PENDING.
+
+A110's first full APK run then failed on a concrete additional Build Tools35.0.0 requirement for
+gesture-handler Java compilation (TWkyVS,09:44:19UTC, exit1/cleanup0). A113 grants B that exact
+side-by-side tool only, official publisher/checksum verification, reuse of existing accepted SDK
+terms and one corrected build with unchanged app/source/guards. Installation is not yet claimed.
+The user also clarified that the Tab S4 is currently disconnected; A gave reconnection/debugging
+instructions. No connection, trust prompt or native pass was inferred from that instruction.
