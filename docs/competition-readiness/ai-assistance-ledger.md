@@ -939,3 +939,36 @@ and bounded sampled-process evidence. Released B0ba89d3 integratedb3a7ba9; Dacb9
 A171 granted ONE exact full APK on B0ba89d3/runtime5d/script99ae/init a2d7 with unchanged tools,
 A-authored permission approvals, resource controls and internal template signing. The running
 T4DtZl build is not yet an APK/native acceptance result. No repeated full application suite ran.
+
+## T014 contract review and Free-plan disposition — September12
+
+C resumed after the user's restart request and released c91f95e, integrated2145636. Its dated
+primary-source report distinguishes noncommercial evaluation from unresolved public competition/
+APK classification and title attribution. Original Wiam files and all three actual user quality
+approvals remain unchanged. No new account, generation, upgrade or publication occurred.
+D released91f988f, integratedd6b48c7: successful guard/callback reentrancy, unknown foreground
+state, missing mounted-test harness and native automatic resumption challenged the initial draft.
+
+A revised only selected015 planning artifacts before source implementation. The pure controller
+must check request identity after external callbacks; known-active foreground and known-disabled
+screen reader are necessary. Mounted tests remain BLOCKED until C's existing-tool harness runs.
+The manually owned player design invalidates identity, pauses/disposes, unsubscribes, unregisters
+and releases on cancellation. Source review cannot prove instantaneous physical release or prevent
+an already-captured native focus callback. Android also reports intended playing during buffering
+and hides native error status; the contract names these limits and a ten-second startup fallback.
+
+A's exact read-only helper follow-up: verify installed createAudioPlayer ownership, remove/release
+and native registry semantics, then return the smallest lifetime/status design; do not repeat D's
+focus/pause audit, edit source, run tests/playback, add descendants or change dependency/global mode.
+The helper found remove only unregisters, release schedules native disposal, and no synchronous
+focus-loss event exists. It proposed one fresh player/controller per explicit intent with guarded
+cleanup and identity-bound listeners/timers. A accepted the bounded mechanism and retained native
+acceptance gates; rejected claims of atomic native silence, exhaustive decode errors, or SSR proving
+mounted lifecycle. Actual prompt/final are in this conversation and A176/177. Helper released.
+
+A applied the repository Spec Kit implementation skill for the selected continuation. Prerequisites
+resolve015 with tasks; all10 requirement checklist items are checked. No before/after implement
+hooks are configured. Existing ignore rules cover generated builds, output, dependencies and keys;
+no package, managed AGENTS or tool configuration changed. Planning format/diff checks passed.
+No new runtime test or native playback pass is claimed here. D's exact final mechanism review,
+implementation checks, student teach-back and artifact-specific native evidence remain pending.

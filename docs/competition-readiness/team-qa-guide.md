@@ -91,3 +91,29 @@ been accepted as a repaired Arabic narrator.
 Student action: review the actual Feature015 diff, explain one rollback and one sibling-isolation
 test, then demonstrate the same behavior on the exact APK. Names, answers and acceptance remain
 pending until those activities actually happen; this packet does not fabricate participation.
+
+## Optional narration teach-back — selected T014, implementation pending
+
+These are explanation prompts for the next reviewed diff, not records of student participation.
+All three exact Wiam Arabic recordings have user listening approval, but the frozen5d demo APK
+source still has silent onboarding. C's Free-plan research records conditional noncommercial use
+and attribution; public competition/APK use remains unresolved. No new voice service runs in-app.
+
+- **Why is narration optional?** A user can read every story and enter any synthetic profile
+  without waiting for media. Play/Replay are explicit actions; moving screens never starts audio.
+- **What happens if Skip is pressed while a clip loads?** The planned controller invalidates that
+  request before navigation. When its old seek completes, it must not call play or change a newer
+  story. Show the focused delayed-seek test once it exists.
+- **Why do we need player cleanup as well as pause?** The installed Android library may resume a
+  registered player after an interruption. The selected adapter retires its identity, pauses it,
+  removes listeners, unregisters and releases it. Physical release is asynchronous; actual focus/
+  background tests are still needed and are not proven by a JavaScript test.
+- **How does it work with TalkBack?** Unknown or active screen-reader state keeps narration silent.
+  A late accessibility query must not override a newer event. Foreground return does not press Play.
+- **What proves the voice is repaired?** Separate the user's exact-file listening approval from
+  bundled-file identity, matching text, mounted event tests and listening on the installed APK.
+  Each has its own evidence; none replaces student understanding or the other checks.
+
+For the final integrated candidate, each student records their actual name, reviewed commit,
+which function/test they explained and any correction they made. All such responses remain
+PENDING here. Do not read planned behavior as a current product demonstration claim.
