@@ -42,7 +42,7 @@ Generation/Gradle modes require explicit coordination/terms receipt references:
   --approved-permissions FILE   Build only: A-reviewed JSON array of permission names;
                                absolute existing file within output/native-build/
 
-Inputs inspected: JDK 17, SDK 36, Build Tools 36.0.0, NDK 27.1.12297006,
+Inputs inspected: JDK 17, SDK 36, Build Tools 35.0.0 and 36.0.0, NDK 27.1.12297006,
 CMake 3.30.5, template Gradle 9.3.1. Their compatibility is NOT yet proven.
 Private dependencies must match package-lock.json; no linked/shared node_modules.
 Entry mode is supplied only through this option, never inherited environment or
@@ -334,7 +334,7 @@ printf '\ndistributionSha256Sum=%s\n' "$GRADLE_SHA" >> "$RUN/approved-gradle-wra
 tar -xOf "$TEMPLATE" package/android/app/debug.keystore > "$RUN/template-debug.keystore"
 sha256sum "$TEMPLATE" > "$RUN/template.sha256"
 
-for executable in "$JDK/bin/java" "$JDK/bin/javac" "$JDK/bin/keytool" "$SDK/build-tools/36.0.0/aapt" "$SDK/build-tools/36.0.0/apksigner" "$SDK/cmake/3.30.5/bin/cmake" "$SDK/cmake/3.30.5/bin/ninja" "$SDK/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/clang"; do
+for executable in "$JDK/bin/java" "$JDK/bin/javac" "$JDK/bin/keytool" "$SDK/build-tools/35.0.0/aapt" "$SDK/build-tools/35.0.0/apksigner" "$SDK/build-tools/36.0.0/aapt" "$SDK/build-tools/36.0.0/apksigner" "$SDK/cmake/3.30.5/bin/cmake" "$SDK/cmake/3.30.5/bin/ninja" "$SDK/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/clang"; do
   [[ -x "$executable" ]] || fail "Missing approved executable: $executable; operator provisioning required."
 done
 step java-version env -i "PATH=$JDK/bin:/usr/bin:/bin" "$JDK/bin/java" -version
@@ -344,7 +344,7 @@ rg -q '^javac 17\.' "$LAST_LOG" || fail 'Javac major must be 17.'
 step sdk-inputs python3 - "$SDK" <<'PY'
 import pathlib, re, sys
 sdk = pathlib.Path(sys.argv[1])
-for location, version in [('build-tools/36.0.0', '36.0.0'), ('ndk/27.1.12297006', '27.1.12297006'), ('cmake/3.30.5', '3.30.5')]:
+for location, version in [('build-tools/35.0.0', '35.0.0'), ('build-tools/36.0.0', '36.0.0'), ('ndk/27.1.12297006', '27.1.12297006'), ('cmake/3.30.5', '3.30.5')]:
     p = sdk / location / 'source.properties'
     if not p.is_file() or not re.search(r'^Pkg.Revision\s*=\s*' + re.escape(version) + r'\s*$', p.read_text(), re.M):
         sys.exit('BLOCKED: missing/wrong SDK component: ' + location)

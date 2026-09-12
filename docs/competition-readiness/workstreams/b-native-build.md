@@ -1,6 +1,6 @@
 # Session B — Repeatable Android build
 
-**Current: actual release manifest generated successfully on runtime5d8a3e8 after bounded cache recovery. Build script, private tools and Feature015 adapter released. APK assembly, device validation and human acceptance remain pending.**
+**Current: Build Tools35 is installed and the preflight now requires35 alongside36. The corrected APK attempt was deliberately stopped after observing that the configured CMake single-job setting did not limit direct Ninja compiler concurrency. No APK exists; a supported compiler-limit correction and exact new build grant are pending. Manifest review and Feature015 adapter evidence remain valid within their recorded scopes.**
 
 The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
 attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
@@ -951,3 +951,198 @@ cache; removing warnings through dependency changes; guessing a restart cause; i
 native success from bundling/manifest generation; assigning permission approval to B; treating
 nonempty cache metadata as full integrity proof; ignoring the initial report-save preparation error.
 The next concrete task is A-reviewed APK assembly using the same source and verified inputs.
+
+## SDK prerequisite correction after the first full APK attempt
+
+A110 approved the existing-config internal rehearsal build after A/D reviewed the actual PZp7Ci
+merged manifest. D review commit e5291f078c111a31e8bd42e5420e912ab916f70b was integrated by A.
+The eight declared permissions include microphone and overlay permissions; they do not authorize
+real recording or overlay use, or prove that the device shows no prompt. A alone wrote the two
+released permission JSON inputs. Their SHA256 values were checked before the build:
+
+- a-approved-permissions-5d8a3e8-demo.json: 8f2cfb92edf37604981141f9156b2136284436ddf846182f1755f2d1891aaead
+- a-manifest-review-5d8a3e8-demo.json: b87fd95907ae3731a25d007bba7aba71a2a109cd33b145d03f5fe59c18977d5a
+
+The actual first full APK run was output/native-build/20260912T094244Z-build.TWkyVS,
+09:42:42–09:44:19 UTC. Script and Gradle exited1; owned cleanup exited0. The task-dependency
+failure was `:react-native-gesture-handler:compileReleaseJavaWithJavac`: Build Tools35.0.0 was
+missing. All17 prerequisites had passed, showing a concrete preflight coverage gap. No APK was
+produced. Seventeen resource samples had minimum65.313% available memory, maximum swap used0KiB,
+no sustained paging streak or recorded resource stop. Owned PIDs39982/40333/40371
+were absent at09:45:55 UTC. The failed log SHA256 is
+6528d2033da516bf7fc01e3add4e90725a148c7701386404bfa72b8bec62aacd;
+receipt SHA256 is12bf247bc958ff01cc8c66b615340bf29d7f3bf23c6b52c905520a00fbe761c7.
+Original logs and post-exit-observation.json remain intact.
+
+The read-only helper found installed RNGH2.32.0 declares AGP8.10.1 in its buildscript but does
+not assign buildToolsVersion. Its SDK inheritance helper reads root compile/min/target SDK values;
+root reports Build Tools36.0.0. The observed35 requirement is consistent with a library-plugin
+default, but the resolved effective AGP version/default constant was not proved. No dependency,
+root Gradle, SDK platform or app configuration override was applied. RNGH build.gradle SHA256
+6c4add444dec7a99a37d4c9f8f81cee46aaa6b7aaaefbaaf9a659fd5c81dbc49;
+generated root build.gradle SHA256
+bdb916d3fe7085c9e9f3bb45bd5eacb97f5d2c5a2b2af965642f7d904739ca68.
+
+A113 granted only side-by-side Build Tools35.0.0 in B's existing private SDK and one corrected
+same-source APK attempt. The existing official Google repository2-1.xml metadata identified
+https://dl.google.com/android/repository/build-tools_r35_linux.zip,61,958,799 bytes,
+published SHA1 2cfaa0bbb2336e9ec18ed3ecea84fa2e2af607bc. The09:48:03.630694–09:48:13.791763UTC
+download passed that checksum; computed SHA256 is
+bd3a4966912eb8b30ed0d00b0cda6b6543b949d5ffe00bea54c04c81e1561d88.
+The retained ZIP source.properties reports35.0.0. No new JDK, platform, NDK, CMake, Gradle, dependency or lockfile change was selected.
+The installer records a scoped check of11 protected SDK file hashes; it does not perform a
+complete toolchain or dependency integrity audit.
+
+The first explicit sdkmanager install returned0 while printing that it skipped the package for an
+unrecognized license record. The wrapper correctly rejected the absent installed source.properties
+and exited1; return0 alone was not reported as installation success. No acceptance input was sent:
+stdin was closed. The first installer records its11 protected SDK file hashes unchanged.
+The failed sdkmanager log and corrected BLOCKED receipt are retained in
+output/native-build/build-tools35-A113/; no installed35 directory existed after that attempt.
+
+Lead compared the publisher XML agreement with the displayed SDK Manager agreement through
+January16,2019. Both were16962 characters and word-for-word equal after whitespace normalization,
+normalized SHA1 a90c249c9e874a0ca1854dd16aa9827dec1430da. The old XML stripped-text SHA1
+9002c006f4b8d9a16e715a9fa4df30ddb8abf9d9 was the only stored line. Displayed stripped text
+produced SDK Manager acknowledgement hash24333f8a63b6825ea9c5514f83c2829b004d1fee. This was an acknowledgement encoding
+mismatch; no changed agreement wording was found. A independently verified the comparison and
+A118 authorized precisely that marker append under the user's existing A045 SDK acceptance.
+No new human action or generic terms acceptance was invented.
+
+The checked append completed09:54:46.148202–09:54:46.153255UTC exit0, preserving the original
+line/bytes. The append receipt records those preserved bytes and the exact authorized new line;
+the lead's execution additionally checked the preimage/nonsymlink path under B's private lock.
+License file SHA256 changed only fromf2ac255611b04e91254dadab03b5bcc03c6a4e338400d7a0a3ebbae8ef6bfcaf
+toafd3c0a637ba1c4cd01beec2ba65bd0be86dd256b91dfd3108409c35833e4b5f.
+license-marker-A118.json retains before/after bytes and UTC times. The separate retry directory
+preserves the skipped attempt: retry-after-license-marker/install-verified-sdkmanager.py uses the
+verified existing manager/JDK and explicit35 only, stdinclosed/private caches, then compares every
+installed archive file and tool version before reporting success. The retry completed09:54:51.138546–09:58:49.209687UTC, sdkmanager0 and verification0.
+The installer reports verification of168 unique archive-supplied files beneath Build Tools35.0.0;
+package.xml is recorded separately with SHA256
+efe1bc3424e93863725a90df610fae21e29aca6634f99dd3510d5b42fa2ff049.
+aapt0.2-11948202, aapt2.19-11948202, apksigner0.9 and D8 8.6.2-dev each returned0.
+All11 recorded protected SDK file hashes were unchanged relative to the post-append baseline.
+This verifies the recorded files, not every path in the installed SDK. The full receipt SHA256 is
+c8a1be0f1b37e4ebfc44bccc71b593e6b2ca5847c4e1156a6a16d56f9a979246.
+At09:59:19.807370UTC both installer PIDs50724/50753 were absent and session38551 had ended0;
+the separate post-exit observation released those consumers before native compilation.
+
+### SDK35 bounded AI contribution and review
+
+The lead generated the ignored download/install verification runners, comparison and append receipt,
+reviewed actual output and A's exact grants, and retained the skipped-install failure. The helper
+provided only the read-only Gradle selection finding; no file edits, native job or descendants.
+Scope released. Requested Astra/Ultra/Fast; prior root config Astra/xhigh/fast was observable,
+effective serving settings unexposed. Helper launch Astra/ultra; service tier unexposed.
+Student exact-diff review and teach-back remain PENDING; no reviewer name or acceptance invented.
+
+Actual helper prompt:
+
+```text
+A110 full APK TWkyVS ended09:44:19 exit1: dependencies of :react-native-gesture-handler:compileReleaseJavaWithJavac cannot find Build Tools35.0.0. One B helper READ-ONLY concrete tool-selection diagnosis; no writes/Gradle/tests/downloads/source/config/coordination/descendants. You are not alone, preserve all. Exact paths B /home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T094244Z-build.TWkyVS/18-gradle-build.log; node_modules/react-native-gesture-handler/android/build.gradle and gradle.properties; generated android/build.gradle and gradle.properties; installed RNGH package.json; only immediately referenced Gradle config if needed (report before broader read). Explain actual35selection relative app/root36, whether standard dependency default/tool prerequisite or source config mismatch, with exactlines. No recommendation to edit dependency/root config bypassingA. Lead captures final jobs/resources and official publisher package35/license/checksum proposal inparallel. Need smallest supplemental toolchain/script validation proposal, preserve existing36/SDK36/NDK/etc. RequestedAstra/ultra actuallaunch; tierunexposed. A111 requests STATUS-onlycheckpointpause; helpernevercoordwrites. Return findings/limits/release.
+```
+
+Rejected claims/actions: SDKmanager exit0 as success despite missing files; automatic license piping;
+replacing the original license record; changing library/root configuration to bypass a concrete tool
+requirement; claiming the effective AGP default was proved; upgrading all SDK tools; treating a
+signed artifact as physical Android acceptance. A117 separately grants a post-build preflight35
+check without an app-source change or a rebuild for tooling-only documentation.
+
+Second read-only review checked this draft against exact receipts while the lead monitored native
+compilation. The helper caught overbroad integrity wording and unsupported attribution to a receipt,
+and supplied the actual completed-install paragraph. Lead accepted the factual narrowing above.
+The helper did not independently repeat the archive comparison or run native tools. Allocation released.
+Actual prompt:
+
+```text
+One B helper READ-ONLY evidence review while lead monitors A113 native build VLrTIn. No file edits, native/tool execution, tests, downloads, re-hashing all archives, coordination writes or descendants. You are not alone; preserve all others' files/work. Exact scope /home/smyk/projects/Ghaf-demo-systems/output/native-build/build-tools35-A113/{report-draft.md,download-receipt.json,install-receipt.json,license-comparison.json,license-marker-A118.json}; retry-after-license-marker/{install-receipt.json,post-exit-observation.json,tool-version-*.log}; and output/native-build/20260912T094244Z-build.TWkyVS/{post-exit-observation.json,receipt.txt}. Review factual accuracy/unsupported claims, particularly SDKmanager returned0 but skipped first install, same agreement vs acknowledgement marker, protected-input scope, installed168file comparison claim and exact timings/version output. Draft currently correctly says retry result pending (created before completion); propose concise actual result paragraph from completed receipt. No generalized legal advice or extra SDK install needed. Return high-signal findings/exact draft corrections and scope release; do not edit report. Lead handles native monitoring/recovery/status/build outcome, then A117 script after job ends. Requested earlier Astra/ultra launch retained; serving tier unexposed.
+```
+
+## Corrected APK attempt — measured compiler concurrency gap
+
+A113's corrected build used exact HEAD3d1320d937e5d0853dceafa70d2fe6542a04d477,
+runtime5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051, demo entry, A110 permission array and original
+script SHA2567c2a2c8da6081586d6182232948a512615c242e67024655063f85487db9abfcf.
+No source or tracked report/script writes occurred during compilation. Run:
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T095927Z-build.VLrTIn`.
+All17 prerequisites passed and the retained native tree was reused without prebuild/clean.
+The build passed the earlier missing35 failure and advanced through worklets native architectures.
+
+At10:06:09 the lead's process checkpoint showed three simultaneous clang++ children beneath
+Ninja60384. A second observation recorded three beneath Ninja60875, whose actual command was:
+
+```text
+/home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/sdk/cmake/.extract-yue16cow/bin/ninja -C /home/smyk/projects/Ghaf-demo-systems/node_modules/react-native-worklets/android/.cxx/RelWithDebInfo/f3j115v1/x86_64 worklets
+```
+
+There was no `-j` argument. The script's `CMAKE_BUILD_PARALLEL_LEVEL=1` setting and
+`cmake_jobs=1` receipt field therefore did not establish actual direct Ninja concurrency1.
+Those historical fields describe intended configuration, not measured enforcement. The observed
+staging-path Ninja executable remained inside B's private SDK; no tool binary was replaced.
+This is a build-control defect, not an application behavior or memory-pressure failure.
+
+The lead saved the observations and sent SIGTERM only to the verified owned build-script PID54547
+via Linux pidfd at10:06:54.326652UTC. Existing cleanup handled its descendants. The script ended
+at10:07:01UTC with143 (session43629), not a completed Gradle verdict. The signal trap does not
+record a separate numeric Gradle/cleanup exit; none is invented. At10:07:11.339324UTC all119
+recorded script/descendant PIDs were absent, and heavy allocation was explicitly released.
+No APK existed. Eighty-six samples had minimum55.814% available memory, maximum216KiB swap
+used, no paging streak and no resource stop reason. The deliberate stop is preserved separately
+from earlier automatic guard stops, tool failures and interruption.
+
+| Evidence                              | SHA256                                                           |
+| ------------------------------------- | ---------------------------------------------------------------- |
+| receipt.txt                           | caf38153c2a7112931dab573bceaf08ff03fdab1ee2c002f6caf46e5b6864cdb |
+| 18-gradle-build.log                   | 6c9bbc13daae9996a4aba2cef7dac2874c8e359352a565510e1eccdf5e6178a5 |
+| compiler-concurrency-observation.json | fadf136d27c2c8068bc0c78944aca1cad63e44d6c8a240db7433f9137d7458a3 |
+| manual-policy-stop.json               | 38bebd8bb21127a7f42ba27b19c8d9cb0f6cbf0da167c8efa76c5a7a803fc246 |
+
+A120 acknowledged the controlled stop and requested a minimal supported correction proposal.
+One read-only B helper investigates installed Android Gradle plugin support while the lead
+completes the independent A117 preflight slice. No compiler-limit fix, binary wrapper, generated
+configuration change, cache cleanup or native retry is implied by the SDK35 preflight commit.
+The actual helper prompt and reviewed conclusion will accompany that separate slice.
+
+## A117 — SDK35 preflight requirement
+
+Only three script lines change: the help's inspected-input list, the executable allowlist to
+require35 aapt/apksigner alongside36, and exact source.properties revision validation/recording.
+Missing or wrong35 now fails before generation/Gradle instead of passing preflight and failing
+later at RNGH's task dependency. Existing36, SDK36, NDK/CMake/JDK/key/source/default-mode,
+resource and private-dependency checks are preserved. No tool is installed by the script.
+Current script SHA256 is69912fcc7157a5baf95f60421597610596d25dddf12c2d2ae12a7bd28579af24;
+it is distinct from the7c2 script used by the stopped APK attempts.
+
+Focused ignored harness: `output/native-build/script-checks/build-tools35/check_sdk35.py`.
+It executes the actual extracted SDK-input and executable guard blocks against isolated synthetic
+fixtures. The first fixture omitted a synthetic license sentinel, so its unrelated refusal was
+retained as initial-fixture-error-results.json and corrected before the valid RED baseline.
+On the unchanged script, four intended35 assertions failed: missing metadata, wrong revision,
+missing executable and positive35 receipt; existing36/platform exclusions passed. After the
+three-line change, all6 checks passed at10:09:04.146466–10:09:04.354357UTC, exit0.
+No installed SDK file was removed to simulate failure. Syntax/help passed0; unknown option
+refused1 as expected. Separate safe-checks.json records all commands, times and exits.
+
+The actual default-mode preflight used the existing approved private paths/currentHEAD/runtime5d
+with `--entry-mode demo`; neither --build nor --manifest-only was supplied. It passed all12
+steps at10:09:23–10:09:27UTC, exit0, session60284 ended. Artifact:
+`output/native-build/20260912T100925Z-preflight.STQqen/receipt.txt`.
+Its05-sdk-inputs.log explicitly records35.0.0 and36.0.0. This did not generate, compile or inspect
+an APK. No application suite was repeated for a three-line tooling check.
+
+Lead generated/reviewed the script edit and focused harness, including correcting its own first
+fixture mistake. Helpers did not write this slice. Scope is small enough for a student to explain:
+we require both installed tool versions because actual modules needed both; file presence/revision
+and executable checks are preconditions, while an APK/device pass needs later evidence. Student
+exact-diff review and teach-back remain PENDING. No complete app was AI-generated.
+
+Integration: cherry-pick this coherent script/report commit using the configured contributor
+identity. It changes tooling/evidence only; runtime5d and approved package/config/key remain the
+same, and package.json's two authorized generated script edits remain unstaged for A review.
+Use the newly released B HEAD only after A publishes the exact next native grant. Preserve every
+old receipt/hash and the generated native tree; do not infer permission for cleanup or another
+build. A117 does not require an APK rebuild merely for this preflight change. B releases the
+completed preflight/report commit for integration; maintenance ownership and private boundaries
+remain B-held for the pending compiler-limit proposal. All native jobs are ended; no APK, device,
+primary/secondary Android rehearsal, human acceptance or Recovery014 approval is claimed.
