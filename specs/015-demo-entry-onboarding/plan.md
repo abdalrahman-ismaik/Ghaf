@@ -92,6 +92,7 @@ app/index.tsx                         A: demo entry routing
 app/_layout.tsx                       A: omit artificial demo splash/loading holds only
 src/components/audio/AmbientAudioProvider.tsx A: silence demo entry/story and failed reset
 app/access/_layout.tsx                A: new layout guarding existing ordinary-entry routes in demo
+app/parent/task/review.tsx            A: existing approval-to-Child demo handoff uses fresh root
 app/parent/settings/index.tsx               A: demo signed-out root navigation as necessary
 app/child/settings.tsx                A: demo signed-out root navigation as necessary
 src/components/demo/*                 C: exact two components + types from contract only

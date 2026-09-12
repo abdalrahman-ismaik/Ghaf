@@ -60,3 +60,12 @@ Deliver coherent typed foundation/rollback, adapter, silent entry/story and inte
 Do not wait for audio approval to complete silent UI, and do not call the audio story complete from
 silent fallback. Do not edit B runtime while its APK compiles. Keep source commits small; only A
 stages live coordination after a brief status-write pause/ACK. No push/main merge/release activation.
+
+## Existing-contract navigation correction after browser validation
+
+- [ ] T020 A: C030 reproduced an unhandled POP_TO_TOP warning on the demo approval dialog's
+      Child handoff. Repair only app/parent/task/review.tsx using existing prepareEntryReset before
+      sign-out in demo mode; fresh signed-out selector after successful sign-out, no dismissAll in
+      that branch. Preserve ordinary path. tests/demo-task-handoff-route.test.tsx must exercise actual
+      approval/store callbacks, unavailable root, failed sign-out and accepted handoff. This extends
+      T009 to the newly observed caller; no task/authority/product behavior change.
