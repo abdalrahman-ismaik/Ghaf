@@ -1,7 +1,9 @@
+import { entryMode } from '../config/demoEntry';
 import { createFeature003ServiceRegistry } from './mock';
 import type { Feature003ServiceRegistry } from './interfaces';
 import {
   createAmbientAudioPreferencesRepository,
+  createMemoryLocalKeyValueStorage,
   createDeviceAccessRepository,
   createLocalFamilyRepository,
   createSavedTaskTemplateRepository,
@@ -98,6 +100,9 @@ export {
   type LocalKeyValueStorage,
 } from './local';
 
+const repositoryStorage =
+  entryMode === 'demo' ? createMemoryLocalKeyValueStorage() : deviceLocalStorage;
+
 // Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
 export const serviceRegistry: Feature003ServiceRegistry & {
   readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
@@ -106,8 +111,8 @@ export const serviceRegistry: Feature003ServiceRegistry & {
   readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
 } = {
   ...createFeature003ServiceRegistry(),
-  ambientAudioPreferences: createAmbientAudioPreferencesRepository(deviceLocalStorage),
-  deviceAccess: createDeviceAccessRepository(deviceLocalStorage),
-  localFamily: createLocalFamilyRepository(deviceLocalStorage),
-  savedTaskTemplates: createSavedTaskTemplateRepository(deviceLocalStorage),
+  ambientAudioPreferences: createAmbientAudioPreferencesRepository(repositoryStorage),
+  deviceAccess: createDeviceAccessRepository(repositoryStorage),
+  localFamily: createLocalFamilyRepository(repositoryStorage),
+  savedTaskTemplates: createSavedTaskTemplateRepository(repositoryStorage),
 };
