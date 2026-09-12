@@ -5,9 +5,10 @@ Android independently verifies installation, touch, responsive layout, persisten
 The two installations have separate local state. Live synchronization is deferred.
 
 This is an operator script, not completed rehearsal evidence. Feature015 adds a build-selected
-three-profile demo selector and optional silent, three-moment onboarding. Source integration and
-acceptance are in progress; publish the exact validated commit/APK before rehearsal. Earlier
-7fff0f3 browser reset evidence and e02d02b full checks remain historical and do not pass015/native.
+three-profile demo selector and optional silent, three-moment onboarding. Source integration is
+complete at `5d8a3e8`, with 148 files / 1,919 tests plus typecheck/lint/format passing. No APK or physical
+rehearsal has passed yet; publish the exact built artifact/hash before executing this script.
+Earlier `7fff0f3` browser reset evidence and e02d02b checks remain historical, not native acceptance.
 
 One Parent and two Child synthetic profiles (Salem and Alya) are available without credentials
 in the demo build. Enter Parent, explicitly sign out to the selector, enter Salem, then return to
@@ -38,6 +39,11 @@ actual selection inputs, never invented psychology or relationship scores. The v
 symbolic and does not establish real trees planted or measured environmental impact.
 
 ## Preparation
+
+The currently offered device is a Samsung Tab S4 tablet; actual model/Android version and ADB
+visibility remain unconfirmed. Use it for initial native evidence when ready, while keeping both
+planned phone gates pending. The user's last connection report was disconnected. Do not infer
+installation or a rehearsal from the prepared Windows USB steps.
 
 Install the exact same candidate APK on both phones using the
 [Android build and acceptance guide](android-build-and-rehearsal.md). Record actual models, Android

@@ -9,30 +9,42 @@ contract before implementation.
 
 ## Session A execution handoff
 
-Session A/B/C/D execution began from `02b9618`. Current runtime candidate is `e02d02b`:
-Parent handoff, family replacement, Arabic duration wording, one Child Today card refinement and
-root-reset repairs are locally integrated. The latest fix shows Parent-approved wording in the
-Child's chosen/active task. Typecheck, lint, formatting and139files/1,695tests pass.
-Independent reset evidence covers three browser sequences on earlier7fff0f3; it does not pass the
-new instruction paragraph's appearance or native acceptance. Read the
-[concrete product/service review](workstreams/a-product-service-review.md) for the nine findings,
-repair receipt and actual versus proposed features. Follow the live
-[board](coordination/BOARD.md), [A implementation/evidence record](workstreams/a-contract.md),
-[D independent candidate report](workstreams/d-candidate.md) and
-[demo script](two-device-demo.md) for current status. The original QA report below remains
-attributed to its historical candidate. Reviewed recovery014 is committed DRAFT, unaccepted and
-unimplemented; no memory/timeline is built. APK, physical Android, named review and rehearsal
-remain blocked or not run.
+Session A/B/C/D began from `02b9618`. The current frozen runtime is `5d8a3e8`:
+Parent handoff, family replacement, Arabic duration wording, Child Today card refinement,
+Parent-approved instruction display, root reset and Feature015 demo entry are locally integrated.
+Typecheck, lint, formatting and 148 files / 1,919 tests passed on that exact runtime. Later commits
+record evidence or repair build tooling; they do not change the app's source or prove Android use.
+
+The [product/service review](workstreams/a-product-service-review.md) separates implemented repairs
+from research and proposed features. Follow the canonical [board](coordination/BOARD.md),
+[Android guide](android-build-and-rehearsal.md), [B build report](workstreams/b-native-build.md),
+[D native report](workstreams/d-native-acceptance.md) and [demo script](two-device-demo.md).
+The original QA report and earlier browser passes remain attributed to their historical candidates.
+Recovery014 is reviewed DRAFT and explicitly deferred, not accepted or implemented. A durable
+memory/timeline and reciprocal-support feature remain proposals; no native result selects them.
 
 ## NB1 implementation checkpoint
 
-Feature015's three-profile demo entry and optional silent onboarding are integrated at runtime
-`2ecea74`; typecheck/lint/format and147files1914tests passed. Later test-onlyc3b1cc8 adds real
-prepared-media/privacy handoff coverage (18 focused store tests passed). D independently closed
-the composite rollback defect with76 tests. The three Arabic narration candidates were rejected by the user; English is unreviewed and
-alternative Arabic auditions are being prepared. No new recording is accepted. Expo was restored in demo mode for C's visual checks; B has an exact-source
-preflight and awaits the preview lane release before the next standalone build. No APK/native/
-physical rehearsal result is claimed. The live board and reports supersede older checkpoints.
+Feature015 provides exactly Parent, Salem and Alya in a build-selected synthetic selector, with
+three optional short onboarding moments. Access uses existing role controllers and isolated memory
+repositories; same-run handoff preserves approved task state, while restart begins a fresh run.
+D's independent 76-test controller review closed the composite rollback defect. C's actual AR/EN
+browser heading and approval-handoff checks passed on `f16112d`; `5d8a3e8` removed the ineffective
+web-only property after the suspected Arabic clipping diagnosis was withdrawn. Native typography,
+Back, installed identity, offline launch and rehearsals remain untested.
+
+The actual merged Android manifest passed on `5d8a3e8` and received A/D review for the internal build.
+Build Tools 35.0.0 is now installed alongside 36.0.0. No APK exists: the latest assembly was deliberately
+stopped when direct Ninja compilation exceeded the requested single-job setting. The next tooling
+correction must be checked before another named build. Expo remains paused for native work and
+will be restored in demo mode afterward.
+
+The user approved the supplied first Wiam narration clip for sound and intended transcript match.
+The remaining clips, export provenance and native playback still need review; no new audio has
+entered the app. The onboarding is fully usable silently. The Tab S4 can provide initial tablet
+evidence once connected and visible; it cannot replace narrow-phone coverage. Windows USB setup
+is prepared, but its administrator request was reported canceled and the service remains absent.
+Student exact-diff review and physical rehearsals remain pending; no participation is invented.
 
 ## Start the four sessions
 
@@ -84,8 +96,8 @@ September 16 demonstration depends on qualification. No late-submission permissi
 ## Recommended order
 
 1. Produce and directly test an installable Android candidate; resolve core UI/access blockers.
-2. Commit the smallest contract for the requested three-profile demo entry, onboarding redesign
-   and Arabic narration repair, then implement/test the exact owned slices alongside native work.
+2. Validate the implemented Feature015 three-profile entry and short onboarding on the exact APK;
+   finish the remaining narration review separately while retaining the complete silent flow.
 3. Review the proposed reciprocal support interaction and truthful recommendation improvements;
    proposals need explicit selection and their accepted contracts before implementation.
 4. Recovery014 remains explicitly deferred until current native validation and requires later
@@ -101,7 +113,7 @@ Preserve the living Ghaf identity and UAE landscapes. The recommended design can
 memory treatment. Compare representative screens before selecting it; the catalog's imported
 visuals are inspiration, not licensed app assets or implementation authority.
 
-## What changed in the application
+## Earlier inspection and toolkit results (historical)
 
 The bounded runtime correction makes Task Builder show only configured Child profiles, using
 their current nicknames and age bands, with numeric bidi isolation and invalid-selection guards.
@@ -118,7 +130,7 @@ captures and tool logs remain in ignored local directories. The tracked reports 
 evidence; this is not a claim that every Sketch screen was freshly rendered or every dependency
 was executed. Embedded artwork has not been copied into the mobile bundle.
 
-## Acceptance boundary
+## Earlier inspection acceptance boundary (historical)
 
 The automated baseline and the corrected profile path have passing evidence. A full browser
 task/help/confirmation/growth journey was observed. Progress loss after reload remains a core gap;

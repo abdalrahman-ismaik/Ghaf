@@ -675,3 +675,33 @@ calling a deliberate TERM an out-of-memory crash, and accepting all narration fr
 The helper found no report corrections or exposed secret/private Child data in the scoped additions,
 and released its allocation. A integrated the report-only commits as e785131 then9fadd64, preserving
 authorship. No tests, provider calls, playback or independent transcription occurred in this review.
+
+## Local USB installer preparation and canceled launch — September12
+
+A used the existing local-tooling authorization to prepare the measured Windows USB passthrough
+gap while B's native job was stopped. The exact official usbipd-win5.3.0 x64 MSI was downloaded
+from the upstream release and matched the winget-published SHA256
+1c984914aec944de19b64eff232421439629699f8138e3ddc29301175bc6d938 (4,501,504 bytes).
+Get-AuthenticodeSignature returned UnknownError on the WSL UNC path. A retained that result,
+copied identical bytes into a new task-specific Windows temp directory, and verified a Valid
+signature from Open Source Developer, Frans van Dorsselaer, under Certum Code Signing2021CA.
+
+A prepared and launched the exact local MSI through interactive Windows Installer with /norestart,
+recorded in ignored launch-command.ps1. At10:14:56UTC Start-Process returned an error saying the
+operation was canceled by the user; no installer PID/success was returned. A's subsequent query
+found the usbipd service absent. No administrator acceptance, host installation, device attachment
+or reboot is claimed. A released its serialized host setup slot and did not reopen the prompt.
+The async question about the visible wizard remains unanswered; it is not an approval or evidence
+of who canceled it. All receipt files stay under output/native-integration/015/usbipd-5.3.0/.
+
+A referred to Microsoft's WSL USB guide and Standard Installer command-line options, plus the
+upstream5.3.0 release. No helper, credential access or device query was used for this preparation.
+The full exact command is retained locally; the tracked contribution is the Android guide's
+accurate operator handoff. Student review stays pending.
+
+A independently inspected B's SDK35 three-line guard change and report, integrated659f521 as
+d8a347b, and ran local shell syntax/help/diff checks successfully. B's six focused guard cases and
+actual default preflight remain attributed to B. No duplicate app suite or native build ran.
+A126 then refreshed the competition README and demo script to distinguish the completed015
+source from APK/native acceptance, remaining narration and deferred recovery. This changes only
+documentation; no new product behavior or student participation is claimed.

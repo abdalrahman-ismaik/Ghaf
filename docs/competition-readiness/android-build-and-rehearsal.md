@@ -1,6 +1,6 @@
 # Installable Android build and rehearsal
 
-**NB1 status, September12: the final-source manifest passed and Build Tools35.0.0 is installed.
+**NB1 status, September12: the final-source manifest passed and Build Tools 35.0.0 is installed.
 The next APK attempt awaits a correction to native compiler parallelism. No APK or native acceptance
 is claimed yet.** B's private build worktree is
 `/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
@@ -62,7 +62,7 @@ script7c2a2c8d. See [B's build report](workstreams/b-native-build.md) and
 report-only commits.
 
 The first full APK run `20260912T094244Z-build.TWkyVS` ended09:44:19UTC, exit1/cleanup0,
-because gesture-handler Java compilation requires missing Build Tools35.0.0. A113 authorizes
+because gesture-handler Java compilation requires missing Build Tools 35.0.0. A113 authorizes
 only that side-by-side tool in the existing private SDK and one corrected same-source build.
 The accepted SDK terms remain applicable; no new app package, configuration, guard or signing
 change is selected. The explicit SDKmanager installation completed09:58:49UTC;168 installed files
@@ -94,9 +94,18 @@ narrow-screen primary/secondary phone coverage. No app installation or device jo
 Read-only September12 host checks found Windows `winget.exe`, but no `usbipd.exe` command or
 file at its standard Program Files location. The current Windows token is not Administrator.
 This is a bounded availability check, not a scan of every possible installation. No Windows
-installation, USB binding, firewall/service change or tablet setting was performed.
+installation, USB binding, firewall/service change or tablet setting was performed in that audit.
 
-After the native job releases its lane, the owner can follow the
+A later A123 preparation downloaded the exact 5.3.0 x64 MSI (4,501,504 bytes), matched the published
+SHA256 `1c984914aec944de19b64eff232421439629699f8138e3ddc29301175bc6d938`, and copied the same bytes
+into a fresh Windows task-temp directory. Authenticode on the WSL path returned UnknownError;
+the local Windows copy verified Valid for Open Source Developer, Frans van Dorsselaer. The
+interactive `/norestart` launch returned “The operation was canceled by the user” at 10:14:56 UTC.
+No installer PID or successful installation was recorded; the follow-up service check remained
+ABSENT. A released the host setup slot and will not reopen the canceled prompt automatically.
+Exact receipts stay under canonical `output/native-integration/015/usbipd-5.3.0/`.
+
+When the owner resumes this Windows step outside a native build, follow the
 [Microsoft WSL USB guide](https://learn.microsoft.com/en-us/windows/wsl/connect-usb).
 The current upstream release observed is [usbipd-win5.3.0](https://github.com/dorssel/usbipd-win/releases/tag/v5.3.0).
 Run the interactive Windows installation command; review the installer instead of allowing an
