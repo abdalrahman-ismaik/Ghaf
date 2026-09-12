@@ -194,3 +194,34 @@ compares its transcript; playback/interruption tests are evidenced separately.
   replacement clips await Arabic/rights review, without claiming that narration is repaired.
 - Recovery014 and reciprocal-support/calendar/study/money/maps/chat/memory remain unselected for
   implementation. A native pass cannot automatically select them.
+
+## September 12 correction — visible story, clear profiles and browser narration
+
+The user rejected the selector-first delivery and asked for the onboarding pages, narration and
+Parent/Child entry design to be visible. This selected correction supersedes selector-first
+FR-010/Story1 scenario1 and SC-001's fresh-launch one-selection condition only. All access,
+synthetic-data, task, reset, current-run and ordinary-mode boundaries remain unchanged.
+
+- Fresh demo entry (entry epoch zero) opens moment1 of the existing three-moment introduction.
+  Each is a distinct manually advanced page. No timer, new route or storage flag is introduced.
+- Every moment has a visible Choose a profile action. Skip/finish returns to exactly the existing
+  Parent, Salem and Alya choices; no credential form or extra intermediate role chooser is added.
+  After authenticated handoff, a nonzero entry epoch opens those profiles directly. Reset/fresh
+  process starts the introduction again. Replaying the introduction remains possible.
+- Next/Back and profile entry stay reachable while the complete text scrolls independently.
+  No safety/body script is shortened; approved audio still matches exactly. Existing artwork/fonts
+  receive a new page composition, with separate profile heading and clear Parent/Child labels.
+- All three Arabic clips have visible opt-in Listen/Stop/Replay controls in a foreground browser.
+  Browser inability to detect a screen reader must not be represented as detection of no reader.
+  A direct Play/Replay gesture is the explicit web permission; no autoplay or automatic resumption.
+  Native retains known reader-disabled observation before playback. English stays text-only with
+  a clear Arabic-only explanation. Clip failure leaves all text/navigation available.
+- Web hiding/backgrounding, step/locale/profile/close/reset changes cancel the current player.
+  Browser testing establishes media playback and cancellation only, never actual native sound,
+  native focus handling, new rights or student acceptance. Public distribution stays pending.
+
+Acceptance: fresh launch shows1/3; Next shows2/3 then3/3; Skip/finish exposes all three profiles;
+ordinary access remains unchanged; nonzero-epoch handoff avoids re-onboarding; Arabic explicit Play
+advances the actual media clock, Stop/step/locale/navigation leave no playback, no initial audio;
+English explains Arabic-only audio; narrow and enlarged layouts retain full text and controls.
+Actual student/native review remains pending. Poster artifacts remain frozen to their recorded source.

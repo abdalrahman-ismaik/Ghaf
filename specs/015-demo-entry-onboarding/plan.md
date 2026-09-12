@@ -151,3 +151,16 @@ D063 reviewed the concrete A177 retirement revision and found no new cleanup/own
 D-T014004 is closed for the pause-only contract correction; actual native no-resume/race and
 mounted lifecycle gates remain BLOCKED. A accepts this adapter contract for implementation after
 prerequisite publication. The status amendment does not change its reviewed interface or rules.
+
+## September 12 correction implementation
+
+A owns the bounded015 amendment, DemoEntryScreen/Story presentation, types/resources and tests.
+Use existing entryEpoch to choose initial local story state: zero→0, nonzero→null; no store changes.
+Expose Story navigation through the existing AccessScreen footer with a default inline fallback
+for direct component use. All script text stays byte-identical. Profile headings change through
+bilingual resources only. Story close/finish always return to profiles, never create authority.
+The one helper may own only the narrator hook and its regression after A grants the committed
+contract; it must preserve native reader gating, foreground checks and session retirement.
+Web uses explicit-user-intent permission without asserting a screen-reader value. Inspect actual
+HTML media playback and cancelled seeks, using the sole existing preview/browser lane. Run focused
+regressions, source checks, then one full suite for the integrated candidate. No new library/tool.

@@ -79,3 +79,11 @@ stages live coordination after a brief status-write pause/ACK. No push/main merg
       T009 to the newly observed caller; no task/authority/product behavior change. Implementedf16112d;
       four real-route cases plus21 Parent-flow tests pass, full corrected148files/1919tests pass.
       C affected browser and physical Android remain separate acceptance gates.
+
+## September 12 user correction
+
+- [x] T017 Record rejected selector-first/audio-unavailable delivery and exact correction contract.
+- [ ] T018 Implement distinct default story pages, fixed navigation and clear three-profile entry.
+- [ ] T019 Enable explicit browser Arabic narration while preserving native/accessibility guards.
+- [ ] T020 Run meaningful fresh/handoff/three-page/audio/browser and full candidate checks; record
+      exact source, real media-clock/cancellation and remaining native/human gates.

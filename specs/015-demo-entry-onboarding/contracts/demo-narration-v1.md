@@ -218,3 +218,16 @@ only A's published exact runtime candidate; baseline5d APK stays separately iden
 verifies the new APK and real native lifecycle, Arabic quality and touch/RTL states when authorized
 hardware is available. User listening approvals are retained; native/student/public-rights gaps
 remain honestly pending. No recovery014, optional feature or release-flag activation follows.
+
+## September 12 explicit browser playback correction
+
+User requests the missing narration. Supersede only the blanket web-unknown-screen-reader denial:
+web still records reader=null/readerObserved=false truthfully, but a foreground, observed web
+session may expose Play/Replay and start solely from that explicit gesture. No native exception:
+Android/iOS still require known disabled reader plus active/subscribed AppState. Never assume the
+browser has no reader. Real browser playback must not depend on an unsupported observer API.
+Keep generation/epoch/source/session identity, timeout, retired-player cleanup and all cancellation.
+No autoplay, persistence, provider, old clips or live/native acceptance follows. A pure eligibility
+helper can express this policy if it supports meaningful native/web failure tests, but do not
+replace mounted/browser checks with source-text assertions. Preserve web HTML play-promise limits
+unless a bounded existing-API fix is necessary to deliver actual successful playback.

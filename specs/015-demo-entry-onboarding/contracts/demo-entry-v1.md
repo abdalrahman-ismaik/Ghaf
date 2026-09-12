@@ -263,3 +263,16 @@ three profiles, three optional moments, bilingual copy, failure state and no aut
 D independent retests actual source/APK, native large text/RTL/Back and real Arabic listening.
 
 User clarification via C014/016: AI may review the script; the user will personally judge the recordings. C revision1 is AI-editorially reviewed, not human-approved. User listening acceptance remains required for accepted clips, with actual date/decision and exact hash; no invented personal name. C candidate generation grantA060 is development-only, outside runtime; output rights/provenance remain separate.
+
+## September 12 requested presentation correction
+
+Supersedes initial null story-state requirement: DemoEntryScreen initializes local DemoStoryStep|null
+from entryEpoch===0 ? 0 : null. Existing run/epoch authority remains unchanged; no persistence.
+A local skip/finish selects null, Back at0 selects null, replay selects0. Error/restart guards remain.
+DemoOnboardingStoryProps gains optional navigationPlacement: 'inline'|'footer' (default inline).
+Export DemoStoryNavigation with Pick<DemoOnboardingStoryProps, 'locale'|'direction'|'copy'|'step'|
+'onStepChange'|'onClose'>. DemoEntryScreen puts this navigation in AccessScreen.footer and requests
+footer placement; direct Story callers retain inline controls. No duplicate controls in the app.
+Copy may change selector title/body and close/finish action labels through existing resource keys;
+three moment body strings and exact audio bytes remain unchanged. English audio-unavailable copy
+must explain that prepared narration exists in Arabic only. All callbacks cancel before navigation.
