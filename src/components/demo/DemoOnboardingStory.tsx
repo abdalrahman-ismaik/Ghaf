@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
   heading: {
     minWidth: 0,
     alignItems: 'center',
-    ...(Platform.OS === 'web' ? { outlineWidth: 0 } : {}),
+    ...(Platform.OS === 'web' ? { outlineWidth: 0, outlineStyle: 'solid' as const } : {}),
   },
   title: {
     color: botanical.colors.forest,

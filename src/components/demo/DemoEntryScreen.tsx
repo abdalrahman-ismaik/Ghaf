@@ -178,7 +178,11 @@ export function DemoEntryScreen({
             accessibilityRole="header"
             accessible
             ref={headingRef}
-            style={Platform.OS === 'web' ? { outlineWidth: 0 } : undefined}
+            style={
+              Platform.OS === 'web'
+                ? { outlineWidth: 0, outlineStyle: 'solid' as const }
+                : undefined
+            }
             tabIndex={Platform.OS === 'web' ? -1 : undefined}
           >
             <Text
