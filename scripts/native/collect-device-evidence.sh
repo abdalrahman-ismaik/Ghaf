@@ -12,7 +12,8 @@ All five identity arguments are required. No artifact or phone is auto-selected.
 --preflight validates host tools and APK only; it executes no adb command.
 Default additionally inspects the explicitly targeted, already installed package.
 
-Prerequisites: Python 3.10+, trusted adb, aapt and apksigner on PATH (Android SDK).
+Prerequisites: Python 3.10+, trusted java, adb, aapt and apksigner on PATH.
+Put the approved private JDK bin on PATH; JAVA_HOME alone does not run apksigner.
 The approved package is ae.ac.ku.ghaf.prototype. Use A's published APK hash/build
 receipt; the supplied source/build labels are attribution, not provenance proof.
 Output: fresh mode-0700 directory under this checkout's output/native-acceptance/,
@@ -279,9 +280,12 @@ def digest(path):
 
 
 try:
-    for name in ("adb", "aapt", "apksigner"):
+    for name in ("adb", "aapt", "apksigner", "java"):
         tool = shutil.which(name)
-        require(tool is not None, f"Missing {name}. Ask B/A for the verified SDK tool path; add its existing bin directory to PATH. This collector installs nothing.")
+        if name == "java":
+            require(tool is not None, "Missing java on PATH. Add the approved private JDK bin directory to PATH; JAVA_HOME alone is insufficient for the apksigner launcher. This collector installs nothing.")
+        else:
+            require(tool is not None, f"Missing {name}. Ask B/A for the verified SDK tool path; add its existing bin directory to PATH. This collector installs nothing.")
         receipt["tools"][name] = {"path": str(Path(tool).resolve())}
     apk = Path(receipt["apk_path"])
     require(apk.is_file(), "APK is absent or not a regular readable file. Obtain A's exact published APK and digest.")
@@ -302,6 +306,7 @@ try:
     phase = "apk_metadata"
     aapt = receipt["tools"]["aapt"]["path"]
     signer = receipt["tools"]["apksigner"]["path"]
+    receipt["tools"]["java"]["version"] = command([receipt["tools"]["java"]["path"], "--version"])
     receipt["tools"]["aapt"]["version"] = command([aapt, "version"])
     receipt["tools"]["apksigner"]["version"] = command([signer, "version"])
     badging = command([aapt, "dump", "badging", str(apk)])

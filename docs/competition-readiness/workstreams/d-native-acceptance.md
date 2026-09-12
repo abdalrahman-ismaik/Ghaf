@@ -34,7 +34,8 @@ serial first. The placeholders below are instructions, not an invocation or obse
 
 ```bash
 scripts/native/collect-device-evidence.sh --help
-scripts/native/collect-device-evidence.sh \
+PATH="/home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/jdk-17.0.20.1+1/bin:/home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/sdk/build-tools/36.0.0:/home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/sdk/platform-tools:$PATH" \
+  scripts/native/collect-device-evidence.sh \
   --apk /absolute/path/to/A-published.apk \
   --serial OWNER_OBSERVED_SERIAL \
   --sha256 A_PUBLISHED_64_HEX_DIGEST \
@@ -48,7 +49,10 @@ APK container/hash/required entries, package/version, signature certificate, ABI
 and blocked shared-storage permissions. Remove only `--preflight` for narrow inspection of an
 already installed package on the explicitly selected owner-authorized phone. It does not install.
 Use verified SDK `aapt` and `apksigner` from B's provisioned tool directories on PATH; no download,
-dependency change or environment repair is performed. Python3.10+ is required; observed host
+dependency change or environment repair is performed. Put B’s approved private JDK `bin` on PATH as shown: the inspected Build Tools36.0.0
+`apksigner` launcher executes `java` directly, so JAVA_HOME alone is insufficient. The collector
+reports missing Java before artifact/device work and records its executable/version.
+Python3.10+ is required; observed host
 Python3.12.3. `--help` uses Bash builtins and needs neither Python nor Android tools.
 
 The default device path contacts only an **existing loopback ADB service on5037**. It sends
@@ -312,3 +316,22 @@ candidate. The failed-reset row now requires actual latched-state command/route 
 fresh-process restart; source/module-isolation tests cannot establish physical Android restart.
 Missing clips still require a complete silent flow and do not mark narration fixed. Human acceptance
 is PENDING while authorized implementation and verification can continue.
+
+## A052 private-JDK prerequisite correction
+
+At 2026-09-12T01:40:27.023077+00:00, A's read-only script reviewer identified the
+missing private-JDK PATH instruction. D independently inspected the installed Build Tools36.0.0
+launcher at B's `output/native-toolchain/sdk/build-tools/36.0.0/apksigner:97`: it executes `java`
+directly. The invocation above now includes B's approved JDK bin; the collector fails actionably
+on absent Java and records the chosen executable/version. No tool was installed or reconfigured.
+
+Updated collector SHA256 `13c942d50b84e0076f593ef367965164dbb8d959bb726d48f34beacfc5f97b79`. **46/46 synthetic checks PASSED** in
+`output/native-acceptance/script-checks/pass4/results.json` and `extra2/results.json`; both bind
+to this new script hash. The added missing-Java case exits3 before APK/device inspection. Earlier
+45-case receipts remain attributed to the earlier script. Real30second fake-tool timeout and
+SIGINT child-cleanup checks also passed; sessions8482/75821 completed exit0, timeout404487 and
+interrupt405246/fake children ended. No actual APK/device or native performance evidence.
+
+A052 prompt/contribution was the exact request in canonical STATUS-A outbox052: private JDK bin
+must be on PATH for apksigner; correct the owned report and optionally add a bounded missing-Java
+diagnostic. D accepted both. No other product change was requested or made.
