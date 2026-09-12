@@ -480,3 +480,130 @@ Final preflight receipts: demo12steps exit0 at01:59:13.881945–01:59:17.660696U
 `20260912T015918Z-preflight.pGzQ8T`. Both bind the final script hash above and partial source2fe4b09,
 with the exact controlled boolean and budgets; protected inputs unchanged and root android absent.
 Scoped report formatting, Bash syntax and diff checks exit0 before release.
+
+## Final source synchronization and second manifest attempt
+
+A published the integrated demo runtime, then two small accessibility/navigation repairs and the
+removal of an ineffective web-only style. B used only the explicitly granted clean cherry-picks,
+preserving all previous source and report history:
+
+| Grant | A commits → B commits                                           | B runtime comparison                                |
+| ----- | --------------------------------------------------------------- | --------------------------------------------------- |
+| A064  | 802a4a5→076cc18,1bdad93→b238965,3f194bc→e7c55cf,2ecea74→d9f1318 | Exact app/src/assets/config/package match to2ecea74 |
+| A076  | ed51b32→9c2c674,af8da6c→f8870d8,f16112d→9c4b9dd                 | Exact match to f16112d                              |
+| A082  | 5d8a3e8→b317f2d                                                 | Exact match to final5d8a3e8                         |
+
+Final runtime source: `5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`.
+Build HEAD: `b317f2da6e87c5118734f2e5a56110f8f533f151`.
+A083 attributes final TypeScript/lint/format and148files/1,919tests PASS to that source, with receipt
+`/home/smyk/projects/Ghaf/output/native-integration/015/full-5d8a3e8/`. B did not duplicate them.
+D's independently unchanged transaction regression passed76 scoped cases after A's shared rollback
+correction. C's heading/handoff browser passes remain attributed to f16112d, and the ineffective
+web-style evidence was withdrawn and its line removed; none of these are physical Android passes.
+The current accepted015 amendments preserve B's public adapter signature and leave shared authority
+and root-navigation implementation with A. Recovery014 remains deferred.
+
+B performed exact-source12-step demo preflights at02:03:39–43UTC on2ecea74
+(`20260912T020341Z-preflight.MdmjY8`) and02:17:35–40UTC onf16112d
+(`20260912T021737Z-preflight.iRpWDM`), both exit0. No generation occurred in these preflights.
+A083 granted the final manifest phase only after final checks passed and C039 explicitly released
+the browser; A082 separately verified the owned Expo process/wrappers and port8081 had stopped.
+No permission, SDK license or signing question was repeated.
+
+### A083 actual execution and stop
+
+Exact command executed from B's worktree:
+
+```bash
+scripts/native/build-apk.sh --manifest-only \
+  --project-root /home/smyk/projects/Ghaf-demo-systems \
+  --expected-head b317f2da6e87c5118734f2e5a56110f8f533f151 \
+  --source-commit 5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051 \
+  --jdk-home /home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/jdk-17.0.20.1+1 \
+  --sdk-root /home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/sdk \
+  --output-dir /home/smyk/projects/Ghaf-demo-systems/output/native-build \
+  --cache-dir /home/smyk/projects/Ghaf-demo-systems/output/native-cache \
+  --allow-internal-debug-signing --entry-mode demo \
+  --heavy-slot-ack A083-board38 --metro-release-ack A082-C039 --sdk-license-ack A045
+```
+
+Run directory: `/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T022614Z-manifest.CaPVjg`.
+Script SHA256: `77fa09a61aee7d124100093dbec5f5e8d42c25df06366d673e6d980877029efe`.
+UTC start02:26:13, end02:27:21, **exit75: approved resource guard**. Tool session89057 ended.
+Private dependencies/tools/source/config checks passed. Fresh prebuild ran02:26:16–20 and changed
+only the allowed android/ios scripts. Generated Metro1 insertion, native marker, template certificate
+and before-compile checks passed; Gradle began at02:26:23 with one worker and the approved lower
+heaps/CMake/Metro settings. No source/script/report was edited while it read the worktree.
+
+The actual Gradle graph reached `:app:createBundleReleaseJsAndAssets` and started Metro. Three
+consecutive5-second samples exceeded the unchanged1024-page paging threshold:
+
+| UTC      | Paging pages in interval | Available memory KiB |
+| -------- | -----------------------: | -------------------: |
+| 02:27:09 |                   14,264 |            3,275,200 |
+| 02:27:14 |                   10,597 |            3,125,808 |
+| 02:27:19 |                    4,775 |            3,050,084 |
+
+The15% low-memory and low-disk thresholds did not trigger. The log measures the sum of global
+swap-in/out counters; it does not establish which process or paging direction caused the increase.
+No OOM, dependency incompatibility or specific host cause is claimed. Lower worker/heap settings
+did not establish a successful manifest build under this policy. **No merged manifest or APK was
+produced**, so no permission array was fabricated and no APK assembly was started.
+
+The identity-bound guard stopped only captured descendants. At02:27:41, script478154,
+wrapper478743, separate-group daemon478818 and bundler480190 were all absent; evidence is
+`observed-processes-after-exit.json` beside `owned-processes.json`, `resources.log`, `receipt.txt`
+and `21-gradle-manifest.log`. B explicitly released the heavy lane, helper and command jobs in
+outbox025. It did not silently rerun the build or weaken the threshold. A must decide any changed
+host resources/policy or exact subsequent attempt; all pinned tools are now installed.
+
+### Generated input evidence and retained recovery state
+
+The read-only helper independently verified all54 newly recorded native source hashes and all54
+archived baseline hashes. New `generation.json` equals `android/.ghaf-generation.json` and binds
+source5d8a3e8, demo mode and versioned Metro1 policy. Marker SHA256:
+`aeb76360f7f42cb5149163235e792489ddc6c16419eea80cc07d1e0919ce447b`.
+The only new app Gradle line is the approved extraPackagerArgs setting. Before app Gradle SHA256:
+`35115d8ea39d5c3824d8c67353b6a658c5c45d1fd480f8a91a663a26c6f6fbd9`;
+after SHA256: `e8a6120cec5c40a0d816a6385e095cee8ec5bfc519748918f091a5b1e6992528`.
+
+Package before/after hashes remain2c7436d3…e6144 and3e1ecfa8…00432; the complete normalized JSON
+otherwise matches. Exact `package.prebuild.diff` SHA256:
+`d03246192abb88588099f723a93de5adc30709555ec0f61f64a2d371b061b7ed`.
+The same template key remains in the new tree, run receipt and archived baseline:
+`221e0a3106aa4c3ccc154e0a418b55020b3f9ea6e84f92e8749cd9e2f39f5e58`.
+Certificate DER SHA256 is `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`;
+it matches the earlier baseline certificate. This is input identity, **not** an APK signature pass.
+Lock SHA256 remainsd312af8f…5ccb and app-config65646459…44b; no dependency/config/signing change.
+
+Retain the fresh owned android tree, both transient package-script fields and all verified private
+caches for A's explicit recovery decision. Do not stage package.json, restore unrelated edits or
+clean-generate over this tree. Same-source/mode reuse must pass the marker's complete comparison;
+a later source/mode change requires A-authorized archival/fresh generation. On resume first read
+live board/statuses and actual Git, confirm the exact source/head and a free heavy/preview lane,
+then follow A's chosen resource policy. A report-only commit changes build HEAD but not runtime
+source; use its actual new full HEAD in any authorized command.
+
+### Actual helper prompt, review and student explanation
+
+```text
+A083 exact final manifest phase now RUNNING, one B helper READ-ONLY receipt/native-input review. No writes, tests, builds, commands executing app/Gradle, descendants, coordination or commits. Preserve others. B root /home/smyk/projects/Ghaf-demo-systems HEADb317f2da6e87c5118734f2e5a56110f8f533f151 runtime5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051, run output/native-build/20260912T022614Z-manifest.CaPVjg. Lead monitors memory/owned processes; no source changes while job runs. Specific bounded review: inspect exact package.prebuild.diff, generation.json/android marker, app-build before/diff/after/Metro receipt and source/config/template certificate identities. Confirm only granted Android/iOS script normalization, fresh Android source binding demo+Metro1, same template key, and preserved baseline-e02-native; identify concrete mismatch without touching files. Do not repeat generic script/source audits or scan large caches. No APK/manifest success claim before actual job completes. Return exact relevant hashes/paths or mismatch and release. Actual helper model launch Astra/ultra; Fast tier unexposed.
+```
+
+The helper generated only the receipt findings above and found no mismatch. Lead reviewed them
+against the run, preserved the failing exit and verified process cleanup. No helper writes/tests,
+recursive agents or extra heavy jobs occurred; allocation released. Rejected conclusions/actions:
+calling prebuild an APK, calling a template certificate an APK signature pass, assigning global
+paging to a particular process, installing different tools, weakening limits or claiming a native
+pass from unit/browser tests. Student owner/reviewer remains PENDING; actual settings retain the
+requested-versus-observable distinction recorded earlier.
+
+For student Q&A: choosing a demo profile asks the existing controllers to grant one role for this
+memory-only run. Signing out removes that role but keeps the run's task/progress; it does not award
+Seeds. A confirmed task still follows its normal once-only +12 path with permitted help. A fresh
+app process starts a new demo run, while ordinary stored family/access data stays isolated.
+The build script checks and records inputs before it generates anything, and stops when a required
+check or resource guard fails. Today the application source passed its checks, but producing and
+validating a standalone APK is still blocked at native build execution. Primary/secondary Android,
+process death, offline launch, physical accessibility, actual rehearsals and student acceptance
+remain NOT RUN/PENDING; no artifact path/hash can yet be handed to D as an installable result.
