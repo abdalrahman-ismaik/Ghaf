@@ -6,9 +6,9 @@ complete for their recorded scope; APK and physical-device acceptance remain BLO
 format and148files/1,919tests. D independently passed46 synthetic collector checks and76 controller
 fault tests on their separately identified source versions. No APK/device/human rehearsal pass exists.
 
-Latest actual tablet check,2026-09-12 11:24:16UTC: the **same selected transport is visible but
-UNAUTHORIZED** after A's USB restoration. Earlier empty-list, owner Allow and timeout evidence
-remain preserved. Model/Android version/ABI, APK installation and native journeys are unverified.
+Latest completed observation,2026-09-12 11:29:25UTC: a short passive check observed only the
+**same unauthorized tablet**, with no authorization transition. Earlier owner Allow, empty-list
+and timeout evidence remain preserved. Model/OS/ABI, APK installation and native journeys are unverified.
 
 C's actual `f16112d` browser retest supports closure of duplicate headings and the demo approval
 handoff warning; D independently reviewed its artifacts. The final runtime removes only the
@@ -1180,3 +1180,54 @@ scan, new subscription, reconnect or server restart follows from this result. Th
 Lead performed this small follow-up without another helper or a repeated broad audit; prior helper
 scope reviews remain separately attributed. No new student/human acceptance or Android device
 identity is invented. Raw serial stays in the private ignored receipt, never this report or Git.
+
+## Short dual-clock observation — A166
+
+A166 explicitly authorized one new existing-server passive subscription with a120-second maximum,
+both wall-clock and monotonic timestamps, and the same authorized-only property boundary. A asked
+the owner to inspect any new RSA prompt after USB restoration; no new human response is inferred.
+D053 acknowledged and reacquired only this report and ignored readiness files, QA d15663f/runtime5d.
+The new separate runner uses a115-second observation budget to leave cleanup margin, checking the
+earlier of both deadlines through at-most-one-second reads on the **same socket**. Socket read
+waits do not send repeated device-list requests. The earlier runner and its timing failure are
+unchanged; this does not retrospectively pass D-EVID-002.
+
+Source: `output/native-acceptance/device-readiness/passive-state-listener-A166.py`, SHA256
+`50f985930f1e1cd97527f96fef6d87622127e0b90e899bb1a8d0c53c6398492b`.
+Actual receipt:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T112730Z-passive-A166/receipt.json`.
+
+- PID142039/session13072 sent one `host:track-devices-l` request to retained server15824, OKAY.
+- Only event:11:27:30.342161UTC, one transport matching the prior private serial, unauthorized.
+- Finalization:11:29:25.324071UTC, exit3,115-second observation budget reached. Recorded wall
+  duration115.001170158s and monotonic duration111.479130239s both recompute from the stored values.
+  Their difference has no established cause. Finalization occurred within120seconds.
+- The actual tool returned exit3. Separate `exit-observation.json` confirms the listener absent
+  and existing server present at11:29:32.735763UTC,122.412855 wall seconds after start. That later
+  check proves termination by the observation; it cannot establish a strict120-second process-exit
+  pass or an overrun. The finalization timestamp precedes final save/print/exit.
+- Device readiness remains **BLOCKED**. No authorized transition, property, package, install,
+  native journey or human acceptance was observed. No additional subscription follows this result.
+
+D055 published completion and helper/job release. An initial status-update helper command had a
+literal-brace NameError before any write; the corrected status update succeeded without changing
+original device receipts. This bookkeeping failure is separate from the actual observation.
+
+Bounded independent helper reused within quota1; exact prompt:
+
+> A166 expressly grants ONE new <=120second existing-server passive subscription with BOTH wall/monotonic timestamps. D currentQA d15663f/runtime5d. READ ONLY new ignored /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/passive-state-listener-A166.py and 20260912T112730Z-passive-A166/receipt.json; no writes/execution/device/socket/tests/descendants/status. Concrete question: review dual-clock115second observation budget inside120max, 1second waits on SAMEsocket (not network polling), exactpriorprivateidentity checks and result/timing attribution. New PID142039/session13072 active initialunauthorizedevent; original600sec variant/614.986947UTCfailure untouched. Lead handlesactualrun/report. Return any blockingfinding promptly, then finalreceipt when supplied; no inferredauthorization/promptactor/properties. RequestedAstraUltra inherited, Fastunexposed; preserveothers'work, B/APKreviewindependent.
+
+Helper source review confirmed one fixed tracking request, exact identity rejection, matching
+script hash/private modes and no reconnect/ADB execution. It qualified that the timer/finalization
+field is not an external process watchdog; final disk writes or scheduling remain outside that
+field's measurement. Final actual receipt prompt:
+
+> Actual A166 completed exit3 via toolchunk e031a7; final receipt + exit-observation.json now in 20260912T112730Z-passive-A166. One initialmatchingunauthorizedevent only, no metadata. Receipt wall115.001170158s vsmono111.479130239s, finish11:29:25.324071; no causeinferred. FollowupPIDabsent check11:29:32.735763 /122.41285491wall-since-start is later than120 but does NOT prove actualprocessoverrun; finalizationwithin120 observed, exactprocess-exitwalltime notrecorded. Original600s/614.986947s failureunchanged. Please finalnarrowassessment/limitations/release withoutclaimstrictprocess-exitbound orhumanacceptance. No new subscription.
+
+Final independent review recomputed both deltas, confirmed the above distinctions and released
+without writes, execution or descendants. Lead wrote only the ignored runner and this report;
+no product/source/collector change or student/human participation is fabricated. Rejected claims:
+one-second local waits are repeated ADB requests; configured timeout proves process-exit timing;
+clock difference identifies its cause; unauthorized observations establish a native app failure.
+All completed evidence and helper allocation are released after scoped report checks/commit;
+only the existing ADB server and D status writer remain held for the next actual handoff.
