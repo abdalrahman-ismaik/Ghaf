@@ -643,3 +643,35 @@ side-by-side tool only, official publisher/checksum verification, reuse of exist
 terms and one corrected build with unchanged app/source/guards. Installation is not yet claimed.
 The user also clarified that the Tab S4 is currently disconnected; A gave reconnection/debugging
 instructions. No connection, trust prompt or native pass was inferred from that instruction.
+
+## SDK35 completion and measured compiler concurrency — September12
+
+A113/A118 reused the user's actual accepted SDK terms. A compared the official XML agreement and
+SDKmanager-displayed agreement after whitespace normalization; their text matched. The canonical
+license digest was appended without deleting the original record. SDK35 installation then completed
+09:58:49UTC; B records168 archive-file comparisons, four tool checks and exactly11 protected files
+unchanged from the post-marker baseline. These claims do not establish a complete SDK-tree audit.
+
+The next build VLrTIn ended10:07:01UTC, exit143, after B deliberately stopped its owned process for
+three observed concurrent clang++ children despite requested CMake1. A checked the stop and
+post-exit receipts: all119 captured PIDs absent, no APK, minimum55.814% memory available across86
+samples and no resource guard trigger. A120 acknowledges that evidence and preserves source5d8a3e8.
+B owns the exact A117 missing35 preflight correction and a distinct read-only compiler-limit
+investigation. No application failure, native pass or student acceptance is inferred.
+
+C subsequently released e66d3ec and8822e13 documenting one blocked provider attempt and the user's
+approved supplied first Wiam clip. A's helper checks only those report diffs and selected sanitized
+receipts while A handles build coordination. Exact helper prompt:
+
+```text
+A's one read-only helper, Ghaf NB1. Others are editing; preserve all files and no descendants. Root /home/smyk/projects/Ghaf; C /home/smyk/projects/Ghaf-ui-studio. B native stopped, lead A handles build follow-up/master docs while you review independently. Task: inspect ONLY released report commits e66d3ec then8822e13, path docs/competition-readiness/workstreams/c-product-refinement.md and selected sanitized C receipts output/native-ui/narration-research/wiam-intake.json, wiam-script-manifest.json, access-checks/wiam-20260912T095935Z.json if necessary. Read canonical STATUS-C current snapshot/outboxes045–056 for actual release/user statements. Check evidence accuracy, user-approved first Wiam clip distinction from full runtime/native/rights approval, no secret values/private data committed, report-only integration order and exact files. NEVER read .env, keys, credential/account files, other provider logs, or upload/play/generate audio. No writes, tests, browser, network, device, build, descendants or coordination mutations. Return concise findings whether these two report commits safe to integrate, exact claim corrections if any, and release your allocation. User requests Astra/Ultra/Fast; set Astra/Ultra, Fast unexposed. This is report consistency review, not human listening.
+```
+
+No audio was generated or imported by A; the selected runtime remains silent and source-frozen.
+Named student review and physical/listening acceptance beyond the user's first-clip review remain
+pending. Rejected approaches include claiming the environment variable enforced Ninja parallelism,
+calling a deliberate TERM an out-of-memory crash, and accepting all narration from one reviewed clip.
+
+The helper found no report corrections or exposed secret/private Child data in the scoped additions,
+and released its allocation. A integrated the report-only commits as e785131 then9fadd64, preserving
+authorship. No tests, provider calls, playback or independent transcription occurred in this review.

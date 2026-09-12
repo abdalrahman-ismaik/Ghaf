@@ -1,38 +1,32 @@
 # Team Ownership
 
-## NB1 current integration — 2026-09-12 09:43 UTC
+## NB1 current integration — 2026-09-12 10:08 UTC
 
-Canonical board50 and continuing A instance A-20260911T2220Z-root govern current grants.
-User-confirmed restarted B/C/D retain their actual ownership. Full filesystem/network access is
-restored. Feature015 runtime5d8a3e8 is frozen after148 files/1,919 tests and typecheck/lint/format
-passed. Canonical HEAD03cb386 integrates released C narration, B cache-recovery/manifest and D
-independent-manifest reports; these integrations change no runtime behavior.
+Canonical board51 and continuing A instance A-20260911T2220Z-root govern current grants.
+User-confirmed restarted B/C/D retain their ownership. Runtime5d8a3e8 is frozen after148 files /
+1,919 tests and typecheck/lint/format passed; canonical9fadd64 includes the two newly released C narration reports only.
 
-A retains shared integration, specs/master docs and BOARD/STATUS-A. Both resumed A helpers are
-released. B alone holds native-heavy A110 for full internal APK assembly on its HEAD3d1320d,
-source5d8a3e8/demo/script7c2. B's exact native/script/report/private paths and two transient package
-script fields remain held. B041 explicitly released only the two future permission JSON paths to
-A; A110 populated them after direct and D-independent XML review. B reads their approved bytes.
+A retains shared integration, specs/master docs and BOARD/STATUS-A. A's narration report helper completed and released;
+no source/audio/provider access. B holds script/report/private
+native boundaries and the two transient package script fields. Build Tools35.0.0 installed under
+A113/A118 with the same accepted terms. The corrected APK run VLrTIn ended10:07:01 exit143 after
+B's policy stop for observed compiler concurrency. All119 recorded PIDs ended; no APK. B released
+the heavy job and now handles A117's exact preflight35 check, with one read-only helper researching
+supported native parallelism enforcement. No native retry or new app/config change is implied.
+A's two B041-released manifest approval JSON paths remain A-exclusive; B reads them.
 
-The actual manifest PZp7Ci passed21 steps. Both diagnosed cache quarantines and all original failure
-receipts are preserved. A110 accepts eight declared permissions only as this unchanged internal
-candidate; retained microphone/overlay declarations do not authorize real use or public release.
-B full APK TWkyVS ended09:44:19UTC on missing Build Tools35.0.0. A113 grants only that
-side-by-side tool addition and a corrected same-source APK invocation. No completed APK/native
-pass is claimed yet. B helpers0.
+C released report commits e66d3ec and8822e13 and all jobs/helpers. The user approved the supplied
+first Wiam clip's sound and intended transcript. Remaining clips, export provenance and native
+playback remain pending; no audio entered runtime. D retains status and ADBserver15824; its exact
+manifest report is integrated, actual APK and physical-device evidence await concrete inputs.
+The user's last tablet report was disconnected; reconnection/debugging/trust is unconfirmed.
+No Windows USB driver/service/firewall installation or device attachment has occurred.
 
-C released all reports/jobs/helpers; exact Abdullah recording awaits existing provider access.
-D released e5291f0 report/helper and retains ADB15824 plus status ownership, ready for exact APK
-verification. The user now reports the Tab S4 disconnected; reconnection/debugging/trust is not
-confirmed. Windows usbipd setup is prepared from verified official metadata, with no installation,
-service/firewall/USB mutation. No other source/helper boundary is held.
-
-Eight R002b and three live-AI flags remain off. Recovery014 stays deferred; optional additions
-remain unselected. Human/student acceptance is pending. A owes demo preview restart after native
-release. One heavy job total, no native/preview overlap; four global helpers remain the ceiling,
-currently zero live. Tablet evidence cannot substitute for narrow-phone gates; rehearsals0/10.
-A111 received D034 pause ACK only at this checkpoint; A stages its own files and paused STATUS-D, preserving
-all other contributors' live files and unacknowledged outboxes.
+All eight R002b and three live-AI flags remain off; recovery014 deferred, optional additions
+unselected and student exact-diff acceptance pending. Preview restoration remains owed after native
+work. Current heavy jobs0, no preview/browser; four global helpers maximum, A0/B1 live.
+All status writers resumed after1eade23; no checkpoint pause is pending. Tablet evidence cannot
+replace narrow-phone gates and no actual rehearsal has occurred.
 
 ## NB1 activation (historical) — 2026-09-12 01:18:23 UTC
 

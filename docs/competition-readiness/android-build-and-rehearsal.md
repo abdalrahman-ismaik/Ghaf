@@ -1,13 +1,13 @@
 # Installable Android build and rehearsal
 
-**NB1 status, September12: the final-source manifest passed; standalone APK assembly is the
-current step, after adding a discovered Build Tools35.0.0 prerequisite. No APK or native acceptance
+**NB1 status, September12: the final-source manifest passed and Build Tools35.0.0 is installed.
+The next APK attempt awaits a correction to native compiler parallelism. No APK or native acceptance
 is claimed yet.** B's private build worktree is
 `/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
 pausing Expo for native builds. A stopped the prior preview and owes its restart in demo mode.
 
 The installed private tools include Temurin17.0.20.1+1, Gradle9.3.1, command-line tools19.0,
-Android36r2, BuildTools36.0.0, NDK27.1.12297006, CMake3.30.5 and platform-tools37.0.1. Publisher
+Android36r2, BuildTools35.0.0 and36.0.0, NDK27.1.12297006, CMake3.30.5 and platform-tools37.0.1. Publisher
 and computed hashes, commands and installation receipts are in B's ignored `output/native-toolchain/`
 and [B's build report](workstreams/b-native-build.md). No app dependency/lockfile change was made.
 Earlier absent-tool observations below are historical baseline evidence.
@@ -19,7 +19,9 @@ next attempt targets the integrated Feature015 demo candidate, not another basel
 
 Use the repository's reviewed `scripts/native/build-apk.sh` invocation from B's report, with
 exact source/build identity, `EXPO_PUBLIC_GHAF_DEMO_ENTRY=true`, one Gradle worker,1536MiB Gradle
-heap/512MiB metaspace,1024MiB Node heap, one CMake job and generated-only Metro `--max-workers 1`.
+heap/512MiB metaspace,1024MiB Node heap and generated-only Metro `--max-workers 1`.
+The requested CMake single-job environment setting did not constrain direct Ninja invocation;
+B stopped the observed attempt and is preparing supported enforcement before the next build.
 Record the one-line generated Gradle adjustment. A must review the actual merged permission set
 before full APK compilation; do not guess it. The existing template debug signing identity is
 approved only for the labeled internal standalone rehearsal artifact. No new/public signing or
@@ -63,7 +65,20 @@ The first full APK run `20260912T094244Z-build.TWkyVS` ended09:44:19UTC, exit1/c
 because gesture-handler Java compilation requires missing Build Tools35.0.0. A113 authorizes
 only that side-by-side tool in the existing private SDK and one corrected same-source build.
 The accepted SDK terms remain applicable; no new app package, configuration, guard or signing
-change is selected. Actual installation evidence is still pending in B's report.
+change is selected. The explicit SDKmanager installation completed09:58:49UTC;168 installed files
+matched the publisher-verified archive and four tool version checks passed. The original SDK
+agreement marker encoded different whitespace. A independently verified unchanged agreement
+wording, then authorized appending its canonical digest while retaining the original entry; no
+new agreement or generic automatic license acceptance was used.
+
+The corrected full build `20260912T095927Z-build.VLrTIn` advanced into native C++ configuration.
+B observed three concurrent compiler children despite the requested CMake single-job setting and
+sent TERM to its owned script at10:06:54UTC. The run ended10:07:01UTC, exit143, without an APK.
+All119 captured process IDs were absent at10:07:11UTC. This was a deliberate policy stop, not
+an application failure or resource-guard trigger:86 samples had minimum55.814% available memory,
+maximum216KiB swap used and no paging streak. Preserve the exact compiler-concurrency and
+post-exit receipts. A117's missing35 preflight check and a bounded compiler-limit correction are
+separate tooling work; unchanged source checks do not need repeating.
 
 The user initially reported a connected Samsung Tab S4 and later clarified it is currently
 disconnected. A instructed reconnecting it, keeping it unlocked and enabling USB debugging;
