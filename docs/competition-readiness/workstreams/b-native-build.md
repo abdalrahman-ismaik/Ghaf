@@ -1875,3 +1875,111 @@ resource grant, with unchanged internal-debug signing limitation, permission app
 The result must receive actual APK/hash/signature/manifest/assets inspection before D installation.
 Device trust/readiness remains A/D-owned; no physical Android, human rehearsal or Recovery014
 acceptance follows from this stage.
+
+### A171 — full baseline build stopped by the paging guard
+
+The full build reached final release packaging, then stopped with exit **75** under the approved
+`sustained_paging` policy. **No APK was produced.** This is a preserved resource-stop result, not a
+compiler failure diagnosis, an OOM claim, or a successful native build. A194/A196/A197 subsequently
+prioritized the actual-app poster preview: no retry or native-identity recertification is selected
+before that visual handoff.
+
+The frozen build HEAD was `0ba89d38b2aa3ac1d8a8d794685e2c99bf5eb6e1`, with runtime
+`5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`, demo entry, script
+`99ae5e6c1b9df0198d85f1b1cc10a9c4ea02d419f3748f9af961dce0a9d1dcab` and init
+`a2d7d42ed62360d9d5636f2e45b2e7f2be51e60eb67920dede4d4627f2754435`.
+The exact command, tool/cache paths and grant references are retained in
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/full-A171-launch.json`.
+The run directory is
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T113307Z-build.T4DtZl/`.
+UTC start/end: **11:33:05.568115–12:24:55.088411 on 2026-09-12**. Session 22895 ended with exit 75;
+observer ended with exit 0. All 20 prerequisite steps returned 0. The guard path does not retain a separate
+raw terminal Gradle exit code or `cleanup_exit` field; neither is presented as 0 here.
+
+The log records native library compilation, Java/Kotlin work, DEX merging and release lint, then
+`validateSigningRelease` and `writeReleaseSigningConfigVersions` before the stop. The release
+bundler reported 2,755 modules, 98 copied assets and completed bundle/sourcemap writes. These are
+intermediate build outputs, not packaged-APK inspection or proof of offline launch. The signing
+task name does not establish a signed artifact. Source, script and report stayed frozen during
+the run; no version, key, ABI, resource threshold or permission approval was changed.
+
+| Final guard sample UTC | Available memory | Swap-page delta | Paging streak |
+| ---------------------- | ---------------: | --------------: | ------------: |
+| 12:24:40.952238        |          29.463% |            2279 |             1 |
+| 12:24:46.071286        |          28.582% |            3859 |             2 |
+| 12:24:52.726667        |          28.345% |            5843 |             3 |
+
+Each sample was below 30% available with more than 1,024 pages transferred; the third triggered the
+existing guard. Across 588 resource samples, minimum available memory was 28.345% and maximum swap
+use was 827,088 KiB. The policy is an operating guard, not proof of a particular process causing pressure.
+All 2,565 captured PIDs were absent at **12:25:45.518917UTC**, including runner 147755, script 147756,
+observer 147757, wrapper 148105 and daemon 148143. The independent existence observation is saved in
+`full-post-exit-observation.json`. B released the heavy slot and all helper/job allocations.
+Uncaptured descendants cannot be excluded by sampling alone; owned-process cleanup and observed
+PID absence remain separately identified evidence.
+
+The read-only observer saved 5,915 samples with maximum inter-sample gap 0.548966 seconds. No sample
+contained more than one recognized Ninja, or more than one instance of any individually counted
+`clang`, `clang++` or `ld.lld` command name. These sequential, non-atomic observations can miss
+short-lived, detached or differently named processes. A compiler driver and its linker child can
+belong to one edge; the counts do not prove global concurrency or compiler internal thread limits.
+
+After exit, `python3 output/native-build/20260912T113307Z-build.T4DtZl/final-graph-review.py`
+passed its first execution at **12:27:25.257872–12:27:25.859678UTC**, exit 0. It ran no native tools.
+All 24 selected module/ABI graphs retain 1,156 pooled native edges: 1,100 CXX objects, 16 PCH, 36 shared
+links and four archives. The original marker and all 54 generated source hashes match the run's
+generation receipt. This does not certify caches or intermediate outputs as correct.
+
+All 24 rules files, 20 non-app build graphs and 12 glob scripts match the stage2 snapshots. The four
+app graphs match the helper's independently reviewed new hashes. Per ABI, their only differences
+are removed unused PDB bindings, four unused shared-link PDB values changed to `.so.dbg`, and 83
+removed compiler-detection/test dependencies in the regeneration and corresponding phony statements.
+All other lines match after those exact exclusions. Removing dependencies reduces explicit
+regeneration triggers; regeneration still can run probes or replace graphs. Old snapshots remain
+intact alongside the final snapshots under `final-graphs/`.
+
+The 24 retained Ninja logs contain 1,156 native output records. Of these, 1,000 output modification
+times fall within this full run; 156 Worklets records are retained from stage2. Native intervals
+do not overlap within each inspected log. Relative clocks are not merged across Ninja invocations,
+and utility/glob/regeneration rows are excluded. This establishes bounded graph/log evidence only.
+
+| Preserved evidence         | SHA-256                                                            |
+| -------------------------- | ------------------------------------------------------------------ |
+| receipt.txt                | `bffb9a8dd8c177339a4887e6fe6f2f2679e512360a706ffd9fe7aa1b3a376709` |
+| 21-gradle-build.log        | `2481f80391211c3f930bcf6c4e4d7d3d6196c48966409ca2365bd1c3b1c5f54f` |
+| resources.log              | `7dce387eae2b1c30fbd3266feafcfe2c90b97ee1d34aba0126ee91479cf18b78` |
+| native-module-policy.jsonl | `acf3a1dacb9bf8bdbd9926a75296b6711fb7e14329ef194e2674f0ab70fc7ac4` |
+| final-graph-review.py      | `33f4c0d54e5f29cf27f8081dd9401f6c7f926603b5bf2d645dd6c194c584ce06` |
+| final-graph-review.json    | `62c4926650fd818b949b76b0bab66834b8bc9ffa2819123c983b5296e53569b1` |
+
+`full-build-summary.json` also binds command arguments, observer data, cleanup observation and
+assistance receipts. One reused helper, `/root/task_graph_audit`, independently reviewed the APK
+validator's limits while the lead monitored compilation, then compared regenerated graph commands
+while the lead prepared final inspection. It wrote no files, ran no native tools/tests and spawned
+no descendants; its allocation is released. Exact prompts, contributions and rejected claims are
+in `apk-review-assistance.json` and `graph-review-assistance.json`. The lead reviewed those results
+and authored the ignored post-exit auditor and this report; no application behavior was generated.
+Rejected claims include all graphs being unchanged, compiler-free regeneration, global serial
+execution, and packaging task names establishing an APK pass.
+
+APK-validator review identified additional checks for a future successful artifact: compare full
+permission declarations and application attributes with A's approved manifest, verify per-ABI ELF
+headers, compare both recorded APK hashes, and match four startup fonts/four prepared audio files
+by bytes. Reference hashes are saved in `expected-startup-assets.json`; the existing SDK
+`apkanalyzer` was inspected but not executed. Those actual-APK checks, signature verification,
+package/version/backup inspection, installation, launch and all physical Android gates are **NOT
+RUN** for A171. New narration source is absent from this frozen baseline. No D installation
+handoff exists, and no earlier source/browser evidence is upgraded to native acceptance.
+
+Requested settings remain Astra/Ultra/Fast, distinct from last observed root configuration
+Astra/xhigh/fast and helper Astra/ultra request; effective serving tier is unexposed. Student owner,
+exact-diff review and teach-back remain **PENDING**. Recovery014 remains deferred.
+
+Release this report-only checkpoint for A integration. Script/runtime and all previous receipts
+remain unchanged; package Android/iOS normalization stays unstaged for A review. Completed
+script/report/helper/job/heavy boundaries are released. Preserve B's private native/dependency/
+tool/cache/artifact boundary for its next exact grant; no cleanup, marker relabeling or automatic
+retry. Resume only after reading live coordination and actual Git state, with A's named candidate,
+preview release and heavy allocation. A189's future single-pair external attestation remains a
+proposal requiring its own implementation/validation grant; it does not bypass current identity
+checks or the poster priority.
