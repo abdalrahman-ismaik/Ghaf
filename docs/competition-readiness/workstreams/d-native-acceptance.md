@@ -6,9 +6,9 @@ complete for their recorded scope; APK and physical-device acceptance remain BLO
 format and148files/1,919tests. D independently passed46 synthetic collector checks and76 controller
 fault tests on their separately identified source versions. No APK/device/human rehearsal pass exists.
 
-Latest actual tablet check,2026-09-12 11:17:31UTC: **zero ADB transports**, following A's recorded
-owner response that Allow was tapped. Earlier unauthorized/timeout evidence is preserved below.
-Model/Android version/ABI, APK installation and native journeys remain unverified.
+Latest actual tablet check,2026-09-12 11:24:16UTC: the **same selected transport is visible but
+UNAUTHORIZED** after A's USB restoration. Earlier empty-list, owner Allow and timeout evidence
+remain preserved. Model/Android version/ABI, APK installation and native journeys are unverified.
 
 C's actual `f16112d` browser retest supports closure of duplicate headings and the demo approval
 handoff warning; D independently reviewed its artifacts. The final runtime removes only the
@@ -1149,3 +1149,34 @@ Final owner-action receipt review completed and helper allocation released. It c
 host requests, empty metadata and zero transports; the intended-check filename is not acceptance.
 No helper executed the listener, device queries or report validation. Lead's scoped formatting and
 diff checks apply to the final report; the next device action awaits A's concrete attachment handoff.
+
+## Restored attachment, same unauthorized transport — A164
+
+A161 independently observed the Samsung still connected/shared in Windows while detached from
+WSL. A's targeted restoration exited0 but the attachment was lost again; A163/A164 then recorded
+Linux visibility during a45-second held Windows launcher. These are attributed A observations,
+not a demonstrated cause or permanent attachment fix. D performed no host attachment operation.
+
+D050 acknowledged A164 before reacquiring only this report and ignored readiness evidence.
+QA was clean at `be9d1fa10c307eb69a75fc8d5ca4ee1f9021ba30`; frozen runtime5d is unchanged.
+One new evidence-reader copy changes only the grant/current QA attribution from the preserved
+A160 reader: `output/native-acceptance/device-readiness/read-authorized-metadata-A164.py`, SHA256
+`69490aa78734fc0211d1ae736185ca7cfc4d31009835e0ded720f6a33490985d`. No collector or product source changed.
+
+Actual receipt:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T112416Z-authorized/receipt.json`.
+Runner136909 started `2026-09-12T11:24:16.177420+00:00`, ended `2026-09-12T11:24:16.193555+00:00`, exit3.
+The existing server15824/pinned binary and host protocol0029 matched. The one fresh host list
+returned **one transport with the exact prior private serial and state unauthorized**. D stopped
+before serial-specific state/identity queries, USB mapping or any property/package/install/UI
+command. Model, Android release/SDK, ABI and native acceptance remain **NOT RUN/BLOCKED**.
+
+The actual owner Allow response recorded in A160 remains valid attributed action; the later
+unauthorized state does not explain why access is unavailable or establish that the owner rejected
+a prompt. D051 asks A to verify the current tablet trust/connection state. No automatic repeated
+scan, new subscription, reconnect or server restart follows from this result. The receipt's
+`-authorized` directory describes the intended check and does not override its BLOCKED status.
+
+Lead performed this small follow-up without another helper or a repeated broad audit; prior helper
+scope reviews remain separately attributed. No new student/human acceptance or Android device
+identity is invented. Raw serial stays in the private ignored receipt, never this report or Git.
