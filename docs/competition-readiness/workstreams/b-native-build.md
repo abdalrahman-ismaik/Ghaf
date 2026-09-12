@@ -1652,3 +1652,112 @@ another actual graph-only run. Stage1 must yield final module evidence and fresh
 pool checks before A grants stage2, which necessarily compiles Worklets. No native configuration,
 cleanup or follow-up is automatically authorized by this tooling release. Helpers/jobs/heavy are
 released, maintenance/private boundaries retained; device trust/readiness remains A/D-owned.
+
+### A156 — actual Worklets configuration and generated-edge review
+
+The first native configuration stage passed on B commit
+`9062719d2d939225b674e54bef6778553fd7d5ee`, runtime
+`5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`, demo entry, unchanged script99ae/init a2d7
+recorded above. This is configuration evidence, not library compilation or an APK.
+The exact four Worklets `configureCMakeRelWithDebInfo[ABI]` requests used A045 terms,
+A156 sole-heavy authorization and A144 preview release. No source/report changed during the run.
+
+Actual invocation and outer result:
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/worklets-A156-launch.json`.
+Run directory:
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T110835Z-configure.rhvmwi/`.
+UTC11:08:33.547404–11:09:36.095286; wrapper exit0, all25 steps0, Gradle0 and cleanup0.
+The four requested configure rows ran; CMake compiler probes may execute during configuration.
+Final module policy now selects app and all five libraries with AGP8.12.0, correct canonical
+CMake paths, and the exact three pool arguments in final DSL. App resolves to React Native's
+`ReactAndroid/cmake-utils/default-app-setup/CMakeLists.txt`. The coverage row explicitly covers
+final DSL only. This actual result closes the early-null-path classification defect independently
+of the preceding mock evidence. A158's separate receipt/identity review agrees, attributed to A.
+
+All seven captured PIDs were absent at11:10:34.389834UTC, recorded in
+`post-exit-observation.json`; session42058 completed0. Ten resource samples recorded minimum
+available memory53.571%, maximum swap460KiB and paging streak0; no guard fired. B released the
+sole heavy allocation and consumers in B087. These observations do not bound a later compilation.
+
+| Actual run artifact          | SHA-256                                                            |
+| ---------------------------- | ------------------------------------------------------------------ |
+| receipt.txt                  | `10640bd7319eb9958d7742f934a464eea7c2cacdb69d322ca25061db558bee36` |
+| 21-gradle-configure.log      | `1946af2671fcd1d457a5a30288942a2de6eb9af55ffaea59eb57cda570128440` |
+| native-module-policy.jsonl   | `3691c56a8f939ccb3fb2a9f2449eab5150fca854e568a72b435fcf2c8248066f` |
+| native-configure-review.json | `18f85c8414bbeff9d08c2a44d88282270e06766807119a64ccb525ecd7243121` |
+| gradle-arguments.json        | `e2b12e0f62f6b2bc5f6ff9738cff1f05871f93fd20f23eafe50a6daf0cabe17e` |
+
+Read-only edge evidence is in
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/worklets-edge-review/`.
+`audit.py` binds each ABI's unique build model to the actual successful run interval, module/root,
+release variant, tool versions and exact pool flags. It checks configure-command arguments,
+effective CMake cache, AGP's selected Ninja directory and compile database; hashes/snapshots every
+inspected file and checks it did not change during reading. The selected configuration is
+`node_modules/react-native-worklets/android/.cxx/RelWithDebInfo/6y5sz712/<ABI>/`.
+The old `f3j115v1` models fail the current flags/run-time selection and remain intact. Selection
+does not rely on a convenient glob result or newest timestamp alone.
+
+Every ABI has exactly39 compiler/linker edges: one PCH,37 CXX objects and one shared-library link.
+All156 edges across four graphs explicitly use the same `ghaf_native` pool with depth1.
+Each compile database contains38 entries. There are no C, static-archive or executable-link
+edges in these graphs; those classes receive no inferred pass. Eight phony edges, two custom
+utility edges, one glob check, one regeneration edge and clean/help are separately inventoried.
+
+| ABI         | build.ninja SHA-256                                                | CMakeFiles/rules.ninja SHA-256                                     |
+| ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| arm64-v8a   | `b4b569d3dcac7733e9491b6e870f8a302b40eebc5cb0afb77387e4982f4f6069` | `dd34c85f560b142a37951a023bf296027e08a3a94cb7649135636b7f635cc985` |
+| armeabi-v7a | `02c20c017f3e8537ece04923c49531d0c795db41f73b4a1e175ad0d6c7621ffc` | `ea64ba7ab832af02f52191b9f8081717dc9061bef5571fbb82fbc54705fcd6e5` |
+| x86         | `cfaea3abf3b65e019127c7cc33e9e44170888964748550d5882bced89da93596` | `43aa15078a280ce9ef42b896e19cf4b0e312c7541ac46f3d03208883bd1d9044` |
+| x86_64      | `200e56423025a746c688663a1cfaa82df0876adc5e597d4f3601b0d3290036d3` | `7cd6573b7b0db2edb006af9a075710bf17a12ac9b626247c7460d96d9f654124` |
+
+The bounded checker accepts only the inspected literal Ninja grammar and single
+`include CMakeFiles/rules.ninja`; unsupported topology/continuations/subninja are refused.
+It is not a general Ninja parser or a substitute for command review. The helper independently
+read all four rule/edge command bodies and `VerifyGlobs.cmake`: no assigned LAUNCHER/CODE_CHECK,
+response-file override, hidden custom compiler or extra compiler rule exists. PRE_LINK and
+POST_BUILD are literal shell no-op `:`. PCH uses the CXX rule with `-emit-pch`, and regular CXX
+objects consume it with `-include-pch`. These findings apply to the hashed files only.
+
+Explicit exceptions: `edit_cache` only prints a CMake message. `clean` and `help` invoke Ninja
+tools, and are not requested compilation targets. `VerifyGlobs.cmake` only performs two recursive
+globs, comparison, message and touch; no included script/process execution appears. The console
+pool covers glob verification, `rebuild_cache` and automatic `RERUN_CMAKE`. Regeneration can replace
+the audited files and may execute compiler probes; it is not declared compiler-free. A changed
+graph needs fresh review. A pool constrains one Ninja process, not concurrent Ninja instances,
+compiler/linker internal threads, or total memory. Actual stage2 process monitoring remains required.
+
+Actual commands reference retained `sdk/cmake/.extract-yue16cow/bin/{cmake,ninja}`. Read-only
+`tool-path-identity.json` confirms both files exist and match the installed3.30.5 copies byte for
+byte: CMake `db4a893ef3d836bf4762e291e62a0c93c1ca29a71e5e69d6cb229dd9232ffe5e`, Ninja
+`6fa84be1efc3ab25d1cf397d0bb35891e5f99316a35d89cd8c04be5898730174`. Neither path was moved,
+deleted, normalized or executed by this audit. Cache values for CXX compiler AR/RANLIB name
+`/usr/bin/llvm-ar-18` and `/usr/bin/llvm-ranlib-18`; these four graphs contain no archive edge,
+so no execution of those tools is inferred and broader module/tool coverage remains pending.
+
+`python3 output/native-build/worklets-edge-review/audit.py` passed the four actual graphs and
+eight in-memory refusal mutations at11:15:24.177404–11:15:24.248215UTC, exit0. The mutations
+remove a PCH/shared-link pool, change depth, introduce subninja/a different include/another rule,
+override a launcher or add a custom compiler. No native command ran. Two earlier auditor-only
+development exits1 are recorded honestly: the draft cache regex crossed newlines, then a draft
+expected10 phony edges where the actual reviewed inventory has8. Both were corrected; neither is
+a native build failure. Final checker SHA
+`e6c962516df29419722703f3213deddf8720e74c0d7e14b1fe3f3bb7cc37026d`; receipt SHA
+`b19949cabcda9b318df2fae089d687cd31ace922f6bcfd9836a1465e03b33671`.
+
+Exact two helper prompts, actual contributions, development results and rejected claims are in
+`worklets-edge-review/assistance.json`. The one reused helper `/root/task_graph_audit` first
+reviewed the tiny fixture checker's limitations while the lead monitored stage1, then reviewed
+current command semantics while the lead authored the provenance/inventory audit. It performed
+read-only text/hash inspection, no writes, native execution or descendants; allocation released.
+The lead reviewed both contributions. No full application or new product behavior was generated.
+Requested Astra/Ultra/Fast remains distinct from last observed root configuration Astra/xhigh/fast
+and requested helper Astra/ultra; effective serving tier is unexposed. Student owner, exact-diff
+review and teach-back remain PENDING.
+
+Release this report-only evidence slice for A integration. Script/init/runtime remain unchanged;
+only authorized package Android/iOS normalization stays unstaged. Stage2 necessarily compiles all
+four Worklets ABIs through prefab dependencies and still requires A's exact candidate/heavy grant,
+review of the conditional regeneration exception and actual process observation. No automatic
+retry or full APK grant is inferred. B retains maintenance/private paths, with no helper, heavy,
+preview or command job. APK hash/signature/assets/manifest inspection and D's device journey remain
+NOT RUN; physical/human acceptance and Recovery014 remain pending/deferred respectively.
