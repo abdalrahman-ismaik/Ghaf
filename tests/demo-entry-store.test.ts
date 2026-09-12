@@ -171,6 +171,120 @@ describe('isolated three-profile demo controller integration', () => {
     }).toEqual(authorities);
   });
 
+  it('clears Salem voice and draft media across profile handoffs without losing progress or permission', async () => {
+    const run = await freshRun();
+    const { P0_RECYCLING_TEMPLATE } = await import('../src/features/tasks/demoContent');
+    ok(run.enter('parent_al_noor'));
+    ok(
+      run.state().createTaskDraft({
+        childId: 'child_salem',
+        templateId: P0_RECYCLING_TEMPLATE.id,
+        parentText: {
+          ar: 'افرز الورق والبلاستيك النظيفين اللذين وافق عليهما شخص بالغ، وتوقف واسأل شخصاً بالغاً عند الشك.',
+          en: 'Sort the clean paper and plastic approved by an adult, and stop to ask an adult when unsure.',
+        },
+      }),
+    );
+    ok(run.state().reviewTask());
+    ok(run.state().setChildVoicePermission(true));
+    ok(run.state().approveAssignment());
+    const permission = run.state().getChildPermissionGrant('child_salem');
+    expect(permission).toMatchObject({
+      ok: true,
+      data: { childId: 'child_salem', voiceGranted: true, aiGranted: true },
+    });
+
+    ok(run.state().signOutExperience());
+    ok(run.enter('child_salem'));
+    ok(run.state().chooseAssignment('choice_recycling_p0_v1'));
+    ok(run.state().startAssignment());
+    ok(run.state().prepareChildVoice());
+    ok(run.state().runChildVoiceCommand({ type: 'start' }));
+    ok(run.state().runChildVoiceCommand({ type: 'stop' }));
+    ok(run.state().runChildVoiceCommand({ type: 'replay' }));
+    expect(run.state().childVoiceView).toMatchObject({
+      lifecycle: 'transcript_review',
+      transcript: { ar: expect.any(String), en: expect.any(String) },
+      replayCount: 1,
+    });
+    ok(run.state().selectPreparedMedia('fixture_recycling_clean_v1'));
+    ok(run.state().markPreparedMediaUnavailable('fixture_salem_plan_ar_v1'));
+    const reflection = { ar: 'طلبت مساعدة عند الشك.', en: 'I asked for help when unsure.' };
+    ok(run.state().setChildTaskReflection(reflection));
+    expect(run.state().childTaskDraft).toMatchObject({
+      selectedMediaFixtureId: 'fixture_recycling_clean_v1',
+      unavailableMediaFixtureIds: ['fixture_salem_plan_ar_v1'],
+      reflection,
+    });
+    ok(await run.state().requestChildCoach({ requestId: 'handoff-coach', intent: 'show_steps' }));
+    expect(run.state().childCoachResult).not.toBeNull();
+    expect(run.state().ageAdaptedCoachResult).not.toBeNull();
+
+    const progress = () => ({
+      journey: run.state().journey,
+      activeAssignmentId: run.state().activeAssignmentId,
+      children: run.state().children,
+      growthJourney: run.state().growthJourney,
+      recognitionLedger: run.state().recognitionLedger,
+      demoRunGeneration: run.state().demoRunGeneration,
+    });
+    const retainedProgress = structuredClone(progress());
+    const expectClearedTransients = () => {
+      expect(run.state().childTaskDraft).toEqual({
+        selectedMediaFixtureId: null,
+        removedMediaFixtureIds: [],
+        unavailableMediaFixtureIds: [],
+        reflection: null,
+      });
+      expect(run.state().childVoiceView).toMatchObject({
+        taskId: null,
+        approvedTaskVersion: null,
+        lifecycle: 'idle',
+        transcript: null,
+        replayCount: 0,
+        activeIndicatorVisible: false,
+        sentAt: null,
+      });
+      expect(run.state().childCoachResult).toBeNull();
+      expect(run.state().ageAdaptedCoachResult).toBeNull();
+      expect(run.state().liveVoiceCapture).toBeNull();
+      expect(progress()).toEqual(retainedProgress);
+    };
+
+    ok(run.state().signOutExperience());
+    expect(run.state().activeExperience).toBe('signed_out');
+    expectClearedTransients();
+    ok(run.enter('parent_al_noor'));
+    expectClearedTransients();
+    expect(run.state().getChildPermissionGrant('child_salem')).toEqual(permission);
+    expect(run.state().runChildVoiceCommand({ type: 'replay' }).ok).toBe(false);
+
+    ok(run.state().signOutExperience());
+    ok(run.enter('child_alya'));
+    expectClearedTransients();
+    expect(run.state().prepareChildVoice().ok).toBe(false);
+    expect(run.state().runChildVoiceCommand({ type: 'replay' }).ok).toBe(false);
+    expectClearedTransients();
+
+    ok(run.state().signOutExperience());
+    ok(run.enter('child_salem'));
+    expectClearedTransients();
+    expect(run.state().getOwnChildPermissionGrant()).toEqual(permission);
+    expect(run.state().runChildVoiceCommand({ type: 'replay' }).ok).toBe(false);
+    ok(run.state().prepareChildVoice());
+    expect(run.state().childVoiceView).toMatchObject({
+      permissionEnabled: true,
+      availability: 'ready',
+      lifecycle: 'idle',
+      transcript: null,
+      replayCount: 0,
+      sentAt: null,
+    });
+    expect(progress()).toEqual(retainedProgress);
+    expect(run.state().childTaskDraft.reflection).toBeNull();
+    expect(run.state().childTaskDraft.selectedMediaFixtureId).toBeNull();
+  });
+
   it('resets to fresh Arabic defaults, invalidates captured entry, and can enter again', async () => {
     const run = await freshRun();
     const captured = run.request('child_salem');
