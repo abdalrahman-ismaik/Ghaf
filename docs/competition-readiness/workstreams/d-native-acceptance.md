@@ -144,11 +144,11 @@ rollback, denied active/sibling selection and a complete silent three-moment flo
 No old six-clip mapping or new permissions are approved. Three clarifications were sent to A in
 D outbox002; only A may resolve the contract and grant implementation.
 
-| ID / priority          | Reproduction or ambiguity                                                                                                                                      | Required clarification / owner / retest                                                                                                              |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| D-015-01 / P2 contract | Draft says recheck entry preconditions after chosen resume; both controllers can no longer both be signed_out                                                  | Name postconditions: chosen scoped authority active, other signed_out, unchanged generation/context; A, PENDING                                      |
-| D-015-02 / P2 contract | Capture selector callback at generationG; enter Parent; sign out; old callback still hasG and passes signed-out guards                                         | State stale-handoff policy and test it; separate entry epoch if stale callbacks must be rejected, without reseeding progress; A, PENDING             |
-| D-015-03 / P2 contract | Existing reset clears repositories and several authorities sequentially before later fallible calls; unchanged generation alone does not preserve a failed run | Specify failed-reset oracle and observable retry; inject a mid-reset failure and inspect actual authority/maps; A, PENDING. No recovery014 expansion |
+| ID / priority          | Reproduction or ambiguity                                                                                                                                      | Required clarification / owner / retest                                                                                                                                                 |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D-015-01 / P2 contract | Draft says recheck entry preconditions after chosen resume; both controllers can no longer both be signed_out                                                  | Name postconditions: chosen scoped authority active, other signed_out, unchanged generation/context; A, RESOLVED in A047 contract; runtime NOT RUN                                      |
+| D-015-02 / P2 contract | Capture selector callback at generationG; enter Parent; sign out; old callback still hasG and passes signed-out guards                                         | State stale-handoff policy and test it; separate entry epoch if stale callbacks must be rejected, without reseeding progress; A, RESOLVED in A047 contract; runtime NOT RUN             |
+| D-015-03 / P2 contract | Existing reset clears repositories and several authorities sequentially before later fallible calls; unchanged generation alone does not preserve a failed run | Specify failed-reset oracle and observable retry; inject a mid-reset failure and inspect actual authority/maps; A, RESOLVED in A047 contract; runtime NOT RUN. No recovery014 expansion |
 
 Ordinary configuration still requires its existing access flow; demo storage must make no ordinary
 repository reads/writes. Test existing ordinary family/affinity/template/ambience bytes before and
@@ -283,3 +283,32 @@ Release the collector and this report for A's local integration after the cohesi
 D-N04 contract clarifications continue through the existing review grant; APK/phone gates remain
 external. No product source, signing identity, release flag, dependency or coordination record is
 in this commit.
+
+## D-N04 corrected draft re-review
+
+At 2026-09-12T01:34:38.543959+00:00, ACK A047/A048, board27. Re-read corrected spec/typed contract,
+plan/tasks, research/data model and quickstart; exact snapshots/hashes in
+`output/native-acceptance/contract-review/corrected/receipt.json`. Corrected typed contract SHA256
+`a6c96eeaefd94921586e205961a910867cd0f1716001866944317eb4538b54dd`. No runtime was implemented or tested by this review.
+
+- D-015-01 **RESOLVED at contract level**: selected controller must be authenticated with scoped
+  authority, other controller signed out, aggregate context/generation/epoch unchanged until commit.
+- D-015-02 **RESOLVED at contract level**: a distinct monotonic entry epoch is captured in requests,
+  advanced at successful entry/sign-out and authorized reset start. It invalidates stale selectors
+  without reseeding same-run task/progress.
+- D-015-03 **RESOLVED at contract level**: reset failure closes aggregate access and latches a
+  complete bilingual restart-required screen. No profile/story/role actions, false reset success
+  or partially cleared-run retry is offered. A fresh process, not foregrounding, makes a new run.
+  Ordinary reset is unchanged; no atomic/durable recovery014 claim is made. First/middle/last
+  injected reset failures and actual route/command denial must still be tested.
+
+No blocking contract issue remains in this bounded failure/privacy review. Before source grants,
+A should reconcile the plan's sequence3/4 to include expectedEpoch, the data model's handoff summary
+to include entryEpoch, and the Parent settings path to actual `app/parent/settings/index.tsx`
+(the plan currently says settings.tsx). These are cross-document corrections, not new product scope.
+
+Runtime acceptance rows N04-ENTRY/HANDOFF/ISOLATION/STORY remain BLOCKED pending an exact integrated
+candidate. The failed-reset row now requires actual latched-state command/route denial and a true
+fresh-process restart; source/module-isolation tests cannot establish physical Android restart.
+Missing clips still require a complete silent flow and do not mark narration fixed. Human acceptance
+is PENDING while authorized implementation and verification can continue.
