@@ -206,8 +206,9 @@ synthetic-data, task, reset, current-run and ordinary-mode boundaries remain unc
   Each is a distinct manually advanced page. No timer, new route or storage flag is introduced.
 - Every moment has a visible Choose a profile action. Skip/finish returns to exactly the existing
   Parent, Salem and Alya choices; no credential form or extra intermediate role chooser is added.
-  After authenticated handoff, a nonzero entry epoch opens those profiles directly. Reset/fresh
-  process starts the introduction again. Replaying the introduction remains possible.
+  After authenticated handoff, a nonzero entry epoch opens those profiles directly. A fresh
+  process starts the introduction again; explicit Parent reset retains the existing direct profile
+  selector. Replaying the introduction remains possible.
 - Next/Back and profile entry stay reachable while the complete text scrolls independently.
   No safety/body script is shortened; approved audio still matches exactly. Existing artwork/fonts
   receive a new page composition, with separate profile heading and clear Parent/Child labels.
