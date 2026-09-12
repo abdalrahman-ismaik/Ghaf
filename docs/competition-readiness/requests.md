@@ -328,3 +328,18 @@ video independently has a 2–3 minute limit. Native/human gaps may remain BLOCK
 Omit unfinished optional features from the script. No push, main merge, deployment, submission,
 history rewrite or deferred release activation is authorized by this prompt.
 ```
+
+## Recovery sequencing decision — 2026-09-12 00:49:33 UTC
+
+In response to A's question about proposal014 at ca54e40, the user selected:
+
+> Defer recovery implementation until the current APK/native journey is validated (recommended).
+
+The user then stated:
+
+> by the way, all the other codex sessions also stopped
+
+Disposition: recovery implementation is deferred; current APK/native validation is the next
+priority. B/C/D are confirmed stopped and are not restarted by this decision. Their released
+commits/evidence remain preserved. No recovery scope acceptance, native pass or automatic future
+implementation grant follows. Later scope acceptance and exact typed-contract review remain gates.

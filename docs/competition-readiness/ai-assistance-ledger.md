@@ -200,3 +200,27 @@ and audio/native/recovery limitations. No generated screenshot was used as execu
 A's final report records exact source7fff0f3,138files/1,677tests, per-deviceNOT RUN, pending student
 review and the bounded next-work cursor. Human exact-diff acceptance and participant teach-back
 remain PENDING. No new feature, dependency, real account, provider, release flag or remote action.
+
+### User-selected recovery deferral — 2026-09-12 00:49:33 UTC
+
+Actual user inputs: “Defer recovery implementation until the current APK/native journey is
+validated (recommended).” Then: “by the way, all the other codex sessions also stopped”.
+A recorded this sequencing decision in014 spec/plan/tasks, BOARD/STATUS-A, TEAM_OWNERSHIP and
+requests. No recovery source, build, dependency, feature flag or B/C/D status changed. Native
+validation is necessary before reconsideration; it does not automatically accept recovery scope
+or replace exact typed-contract review. Human acceptance of implementation remains pending.
+The user decision itself is recorded as provided, without inventing any student review.
+
+One A-only read-only helper received this actual prompt while A edited decision records:
+
+```text
+One bounded READ-ONLY A-009 decision check. User has now explicitly selected: 'Defer recovery implementation until the current APK/native journey is validated (recommended).' User also confirms all other Codex sessions stopped. Do not wake B/C/D; you are only A's temporary helper. No writes/jobs/tests/descendants; preserve others. Read tops of specs/014-local-progress-recovery/{spec,plan,tasks}.md and canonical BOARD/STATUS-A as A updates them. Check only that deferral is recorded, native validation is necessary but does not automatically approve recovery implementation, and stopped sessions have no active grants/jobs. Don't review the full proposal or app. A edits decision records/ledger independently. Return any semantic contradiction in current decision wording and release. Global budget4, A quota1, no heavy/preview.
+```
+
+Rejected inference: selecting deferral approves the recovery contract or validates the current
+native app. The previous test results remain attributed to7fff0f3; documentation edits require
+only scoped formatting/consistency/whitespace checks, not another app test run.
+
+Helper outcome: old header/cursor wording was aligned during A's edits; its additional finding
+removed the stale T004 authorization and made T001 a later reconsideration. Read-only review
+completed with no writes, jobs, tests or descendants. A released that helper; B/C/D stayed stopped.

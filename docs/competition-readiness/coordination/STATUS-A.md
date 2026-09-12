@@ -4,24 +4,25 @@ Sole writer: A instance `A-20260911T2220Z-root`. Canonical live record.
 
 ## Current snapshot
 
-- State: PAUSED / completed local integration handoff; remaining native/human/scope gates.
-- Last actual update: 2026-09-11 23:33:53 UTC; board revision20.
+- State: PAUSED / completed local integration handoff; native/human gates remain; recovery implementation explicitly deferred.
+- Last actual update: 2026-09-12 00:49:33 UTC; board revision21.
 - Instance `A-20260911T2220Z-root`; no other A instance observed or overwritten.
 - Worktree `/home/smyk/projects/Ghaf`; branch `redesign/ui-experiments`.
-- HEAD observed immediately before this coordination checkpoint: `5f8ef4e28d966fed4ea1a2a1276527fb5a2b42fc`.
+- HEAD observed immediately before this coordination checkpoint: `713daaea756907ecca860604a7122a5f08942847`.
   The checkpoint itself is documentation only; exact tested runtime is
   `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`, initial baseline02b9618.
 - Full checks PASSED: typecheck/lint/format,138files/1,677tests. D assigned three-browser-reset
   retest PASSED; final report93a98c0 integrated7beb61c. Human exact-diff review PENDING.
 - Build/APK: none; primary/secondary model/OS unknown and physical results NOT RUN;
-  rehearsals0/10. Native gate BLOCKED. Qualification unknown;014 DRAFT unaccepted.
+  rehearsals0/10. Native gate BLOCKED. Qualification unknown;014 DRAFT unaccepted and explicitly deferred by user.
 - Source/report/proposal/master-doc paths: all completed boundaries RELEASED at this checkpoint;
   no unfinished source path retained. Canonical BOARD/STATUS-A remain A-only on future resume.
 - User requested Astra/Ultra/Fast. Runtime identifies Codex/GPT-6; effective served model,
   reasoning and tier are unexposed. D-inspected user config reads Astra/xhigh/fast, not verified
   Ultra. Helper launcher accepted Astra/ultra; no setting or participant identity fabricated.
-- Next: actual native/build/device handoff, or real014 decision then committed accepted contract
-  and disjoint READY grants. No remaining eligible task or active expected handoff in this batch.
+- Next: actual native/build/device handoff. The user defers014 implementation until current
+  APK/native validation; later acceptance and exact typed-contract review still required.
+  B/C/D explicitly stopped by user confirmation; no automatic wakeup or new runtime grant.
 
 ## Helpers and local jobs
 
@@ -84,8 +85,8 @@ Read board/all statuses and Git before new work. Final source7fff0f3 and docs5f8
 this final checkpoint commits authored coordination records only. No dirty A source/job/helper or
 active expected dependency remains. User PDFs remain untracked and unchanged. B/C explicitly
 finished/paused, D fresh A026 pause ACK at23:31:33. No status ownership is transferred by age.
-All completed paths/proposal allocations are released. Await exact native/build/device evidence
-or a real scope answer/new grant; do not self-approve014 or repeat passing tests to stay busy.
+All completed paths/proposal allocations are released. Await exact native/build/device evidence. The real scope answer is DEFER recovery until native
+validation; do not self-approve014 afterward or repeat passing tests to stay busy.
 No push/main merge/deploy/submission/history rewrite/release activation is authorized.
 
 ## Revision 2 task transition
@@ -510,3 +511,26 @@ transitional splash captures excluded. D source/report/history reviewed before i
 Final proportional docs checks:59local targets present, formatting and whitespace pass. App source
 is unchanged from7fff0f3 after full138file/1,677test pass; no redundant suite run. Named student
 review, genuine contribution/teach-back, Android and0/10rehearsals remain explicit. No push.
+
+## User decision resume — 2026-09-12 00:48:35 UTC
+
+A-009 documentation-only, current HEAD713daae, worktree/branch unchanged and tracked tree clean
+before edits. Read canonical B/C/D statuses: all completed/released, no new A writer observed.
+User defers014 implementation until current APK/native journey validated. Exact write scope in
+TEAM; no runtime authority or new APK/native pass. A one read-only helper quota, no heavy jobs.
+
+39. **A-20260911T2220Z-039 → B/C/D — USER DECISION / STOPPED SESSIONS.** Recovery014
+    implementation is explicitly DEFERRED until current APK/native validation. This is not scope
+    acceptance or an automatic later implementation grant; exact typed-contract review remains
+    required. User confirms all other sessions stopped. Preserve your released work/handoffs and
+    remain stopped until an eligible assigned batch is actually started. Current native evidence
+    remains BLOCKED/NOT RUN. This addressed file notice does not deliver a wakeup or invent an ACK.
+
+A-009 helper `/root/coordination_review` completed/released. Accepted its correction that the old
+T004 draft-work authorization is historical, and updated T001 to a later scope reconsideration.
+Other initial review notes concerned pre-edit headers/cursors and are now aligned. Zero helpers,
+commands or source paths remain held after this documentation commit. B/C/D were not restarted.
+Only A-owned coordination records are staged; other leads' status files remain unchanged.
+
+A-009 scoped Prettier and Git whitespace checks passed. Documentation only; no application tests
+rerun and no new native evidence claimed. User-supplied PDFs remain untracked and untouched.

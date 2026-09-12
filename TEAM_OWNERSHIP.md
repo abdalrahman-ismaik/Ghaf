@@ -1,5 +1,15 @@
 # Team Ownership
 
+## Recovery deferral decision — 2026-09-12 00:48:35 UTC
+
+A instance `A-20260911T2220Z-root` recorded the user's decision on recovery014.
+Exact temporary write scope: this file; `specs/014-local-progress-recovery/{spec,plan,tasks}.md`;
+`docs/competition-readiness/{requests,ai-assistance-ledger}.md`; canonical BOARD/STATUS-A.
+No application, dependency, worker status or native build change. One read-only helper reviewed
+the decision semantics and released its allocation; no descendants/jobs. The user confirms B/C/D
+stopped; they remain stopped. These temporary documentation paths are released after this decision
+commit. APK/native validation comes first; later recovery still needs scope/contract acceptance.
+
 ## 2026-09-12 Session A Competition Execution Window
 
 **Integration owner**: Session A instance `A-20260911T2220Z-root`, on

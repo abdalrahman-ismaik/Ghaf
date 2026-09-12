@@ -5,7 +5,7 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
 
 ## Mission control
 
-- Revision: **20 — PAUSED / LOCAL HANDOFF**, 2026-09-11 23:33:53 UTC. A instance: `A-20260911T2220Z-root`.
+- Revision: **21 — RECOVERY DEFERRED / NATIVE FIRST**, 2026-09-12 00:49:33 UTC. A instance: `A-20260911T2220Z-root`.
 - Integration: `/home/smyk/projects/Ghaf`, `redesign/ui-experiments`.
 - Baseline and initial audit target: `02b9618631fa9fc1b29f2cda5fa68c6adb2003fd`.
 - Mission: competition-first local Parent/Child journey, recovery assessment, one component direction,
@@ -14,7 +14,8 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
 - Authority: user Session A/B/C/D mission and existing committed specifications at baseline:
   `specs/003-family-growth-garden/{spec,plan,tasks}.md`, preserved 005 access, 008 recognition-only
   and 013 Parent Tasks contracts. Read-only audits below add no implementation authority.
-- New recovery/rationale/memory contracts: NOT ACCEPTED. R002b flags remain off. No sync/backend,
+- Recovery014 implementation: DEFERRED by user until current APK/native journey is validated.
+  Native validation does not automatically accept recovery scope. Rationale/memory: NOT ACCEPTED. R002b flags remain off. No sync/backend,
   live media/location, payments, chat, new accounts or remote services selected.
 - Integrated source candidate: `7fff0f3c2dc0e802ba1da6a67cd2513a75824809` (A-008 root reset plus prior fixes).
   Full checks PASSED:138files/1,677tests; D-005-r17 exact-candidate reset retest PASSED (three browser sequences); report93a98c0 integrated7beb61c. A-007 b2208aa passed its suite
@@ -47,19 +48,19 @@ run native-heavy jobs with a resident preview pair. Report all helper IDs, desce
 
 ## Ordered task queue
 
-| Task          | Owner / state                                  | Dependencies and authority                                             | Acceptance / release condition                                                                                                                                               |
-| ------------- | ---------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A-001         | A / VERIFIED coordination/build-gap audit only | Current mission, baseline above                                        | Activate grants/worktrees, establish build path, record ownership and truthful gates                                                                                         |
-| B-001         | B / INTEGRATED (report/source audit only)      | Existing 003/005/008/013 at baseline; read-only audit                  | Report exact reload/reset and authority paths, smallest recovery design, rationale/memory gaps, failure cases; local report commit and explicit release                      |
-| C-001         | C / INTEGRATED (report/source audit only)      | Existing botanical 003 presentation; read-only comparison              | Compare exactly three directions on same real Arabic/English states, recommend one plus small component boundaries; no runtime change; report commit and release             |
-| D-001         | D / INTEGRATED (source matrix only)            | Exact baseline above; existing contracts and current mission           | Independent acceptance matrix with evidence class, recovery/privacy failure cases, device/build gaps; source findings separated from unrun checks; report commit and release |
-| A-002         | A / REVIEWED DRAFT; acceptance pending         | Relevant B/C/D findings and scope decision                             | Small Spec Kit proposal with scope, ordered modules, acceptance and exact file seams; accepted committed contract before runtime grants                                      |
-| B-002         | B / BLOCKED                                    | Accepted recovery story, committed contract and exact grant            | Restart-safe evidence/reset slice; no authority persistence; focused tests and release                                                                                       |
-| C-002         | C / INTEGRATED / RELEASED                      | Existing approved botanical presentation at 02b9618; A selection below | One ChildTodayTaskCard presentation refinement, preserved props/callbacks/copy; bilingual state evidence and release                                                         |
-| D-002         | D / INTEGRATED, scoped browser evidence        | A publishes exact integrated candidate and scope                       | Independent regression/retest on resulting hash                                                                                                                              |
-| B-003 / C-003 | B / C, BLOCKED                                 | Explicit accepted next story/component and prior integration           | Continue bounded batch; no inferred roadmap permission                                                                                                                       |
-| A-003         | A / BLOCKED; prerequisite audit allowed        | Verified integrated candidate and build prerequisites                  | Exact local APK/build handoff; human/native gaps remain explicit                                                                                                             |
-| D-003         | D / BLOCKED                                    | Exact APK and actual devices/operator                                  | Per-device evidence and actual rehearsals; never inherit browser passes                                                                                                      |
+| Task          | Owner / state                                    | Dependencies and authority                                             | Acceptance / release condition                                                                                                                                               |
+| ------------- | ------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A-001         | A / VERIFIED coordination/build-gap audit only   | Current mission, baseline above                                        | Activate grants/worktrees, establish build path, record ownership and truthful gates                                                                                         |
+| B-001         | B / INTEGRATED (report/source audit only)        | Existing 003/005/008/013 at baseline; read-only audit                  | Report exact reload/reset and authority paths, smallest recovery design, rationale/memory gaps, failure cases; local report commit and explicit release                      |
+| C-001         | C / INTEGRATED (report/source audit only)        | Existing botanical 003 presentation; read-only comparison              | Compare exactly three directions on same real Arabic/English states, recommend one plus small component boundaries; no runtime change; report commit and release             |
+| D-001         | D / INTEGRATED (source matrix only)              | Exact baseline above; existing contracts and current mission           | Independent acceptance matrix with evidence class, recovery/privacy failure cases, device/build gaps; source findings separated from unrun checks; report commit and release |
+| A-002         | A / REVIEWED DRAFT; user deferred implementation | Relevant B/C/D findings and scope decision                             | Small Spec Kit proposal with scope, ordered modules, acceptance and exact file seams; accepted committed contract before runtime grants                                      |
+| B-002         | B / DEFERRED                                     | Accepted recovery story, committed contract and exact grant            | Restart-safe evidence/reset slice; no authority persistence; focused tests and release                                                                                       |
+| C-002         | C / INTEGRATED / RELEASED                        | Existing approved botanical presentation at 02b9618; A selection below | One ChildTodayTaskCard presentation refinement, preserved props/callbacks/copy; bilingual state evidence and release                                                         |
+| D-002         | D / INTEGRATED, scoped browser evidence          | A publishes exact integrated candidate and scope                       | Independent regression/retest on resulting hash                                                                                                                              |
+| B-003 / C-003 | B / C, BLOCKED                                   | Explicit accepted next story/component and prior integration           | Continue bounded batch; no inferred roadmap permission                                                                                                                       |
+| A-003         | A / BLOCKED; prerequisite audit allowed          | Verified integrated candidate and build prerequisites                  | Exact local APK/build handoff; human/native gaps remain explicit                                                                                                             |
+| D-003         | D / BLOCKED                                      | Exact APK and actual devices/operator                                  | Per-device evidence and actual rehearsals; never inherit browser passes                                                                                                      |
 
 ### A-004 original grant — now integrated as ffad798, source released
 
@@ -97,7 +98,7 @@ Runtime candidate `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`: A-004ffad798, A-00
 B-004f38f21d, C-0021428622, A-007b2208aa (incomplete strategy), A-0087fff0f3 (root-reset correction).
 Typecheck/lint/format/full suite pass,138files/1,677tests. D-005 actual root-reset retest passes its three sequences;
 D-R02 browser correction is closed at7fff0f3, native remains NOT RUN. D prior core/access/replacement evidence has separate source
-and browser/command/fault scopes, not a blanket matrix pass. Current docs HEAD34a8975.
+and browser/command/fault scopes, not a blanket matrix pass. Last integrated handoff HEAD713daae; current decision is documentation only.
 Draft014ca54e40 is reviewed documentation only and unaccepted; no source grant follows.
 All worker authorship preserved, human review PENDING, no student participation invented.
 
@@ -118,9 +119,10 @@ reset subset. All source/report/artifact/helper/heavy/preview boundaries are exp
 A master-doc and draft014 reservations are released too; sole-writer status rules remain. B/C/D
 have explicitly finished/paused. No job/helper remains and timestamps never transfer ownership.
 
-Next: supply actual Android build prerequisites plus identified devices/operator for A-003/D-003;
-or record a real014 scope decision, commit the accepted exact contract and publish new disjoint
-READY grants. No runtime014/memory/rationale/agenda is authorized by this handoff. Physical/native,
+Next: supply actual Android build prerequisites plus identified devices/operator for A-003/D-003.
+The user has explicitly deferred014 until that APK/native journey is validated. Afterward, any
+recovery batch still needs scope acceptance, exact typed-contract review, committed accepted
+authority and new disjoint READY grants; validation alone activates nothing. No runtime014/memory/rationale/agenda is authorized by this handoff. Physical/native,
 student review/teach-back and qualification stay pending. Primary rehearsals0/10. Preserve user
 PDFs, historical worktrees and ignored evidence. No push/main merge/deploy/history rewrite/release
 activation. Resume by reading canonical statuses and actual Git before edits.
@@ -469,3 +471,17 @@ records are staged as authored; A never edits STATUS-B/C/D. The brief status-wri
 once the commit titled `Checkpoint competition handoff and released workstreams` is visible in
 Git history. This permits genuine status updates on resume; it grants no new runtime work and
 does not wake a session. Read the final cursor before the next task.
+
+## Revision 21 — user decision recorded
+
+User explicitly selected: “Defer recovery implementation until the current APK/native journey is
+validated (recommended).” A-009 is a documentation-only decision record at current HEAD713daae,
+with exact paths reserved in TEAM_OWNERSHIP. Recovery014 remains unaccepted and gets no runtime
+grant. APK/native validation is the next priority. A used one read-only consistency helper, now completed/released;
+zero active helpers/descendants/heavy/preview jobs; all B/C/D allocations stay released. A alone edits BOARD/STATUS-A.
+
+User additionally confirms all other Codex sessions stopped. B/C/D remain stopped with their
+previously released paths/jobs/helpers; this decision does not wake or restart them. A's bounded
+A-009 update records only that decision. No new APK/native evidence, source change or test pass.
+Native toolchain/device prerequisites remain the next engineering boundary. The old unanswered
+scope-question entries are historical; this explicit deferral supersedes them.

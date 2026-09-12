@@ -6,7 +6,13 @@
 
 **Created**: 2026-09-12 UAE time
 
-**Status**: DRAFT — proposed scope; implementation and release NOT AUTHORIZED
+**Status**: DRAFT — implementation DEFERRED by user; implementation and release NOT AUTHORIZED
+
+**Scope decision — 2026-09-12**: The user selected: “Defer recovery implementation until the
+current APK/native journey is validated (recommended).” Validate the existing runtime candidate
+first. This is a sequencing decision, not acceptance of recovery scope, a native pass or permission
+to implement automatically after validation. Any later recovery batch still requires scope
+acceptance, exact typed-contract review, committed accepted authority and explicit file/task grants.
 
 **Input**: Session A competition mission: prioritize local progress recovery/reset, with validated
 versioned evidence, family/Child/task binding, idempotency, interrupted-write handling and stale-work

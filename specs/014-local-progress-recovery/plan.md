@@ -2,7 +2,10 @@
 
 **Branch**: `redesign/ui-experiments` | **Date**: 2026-09-12 | **Spec**: [spec.md](spec.md)
 
-**Status**: DRAFT design, not accepted implementation authority. Spec Kit setup reported the
+**Status**: DRAFT design; implementation DEFERRED by the user's 2026-09-12 decision until the
+current APK/native journey is validated. Native validation does not automatically approve this
+proposal; later scope acceptance and exact typed-contract review remain required. See the
+[recorded scope decision](spec.md). This plan is not accepted implementation authority. Spec Kit setup reported the
 feature-directory label as `BRANCH`; actual Git remains `redesign/ui-experiments`.
 
 ## Summary
@@ -31,8 +34,8 @@ Do not layer a second aggregate store or independent counter cache onto the appl
 
 Design assessment: MVP/local scope, existing Arabic stack, no new service/package, Child privacy,
 separate progress authority and student explainability are preserved. No constitution exception
-requested. Acceptance remains pending user scope decision, D's failure/privacy review and then
-native/student evidence. A draft's internally consistent design is not approval to implement.
+requested. Implementation is deferred by the user; later acceptance still requires the exact contract and
+independent failure/privacy review, plus applicable native/student evidence. A draft's internally consistent design is not approval to implement.
 
 ## Architecture decision and commit boundary
 

@@ -1,12 +1,16 @@
 # Tasks: Local Progress Recovery
 
-**Status**: PROPOSED/BLOCKED. No checkbox below is an implementation grant. Work stays on the
-experimental branch; A publishes exact task/file grants only after the acceptance gate.
+**Status**: DEFERRED by the user's 2026-09-12 decision until the current APK/native journey is
+validated. No recovery implementation task is READY. No checkbox below is an implementation grant.
+Work stays on the experimental branch; later scope acceptance, exact typed-contract review and
+committed accepted authority must precede A's task/file grants. Native validation alone does not
+activate these tasks. See the [scope decision](spec.md).
 
 ## Phase 1 — Decision and contract gate
 
-- [ ] T001 Review `specs/014-local-progress-recovery/spec.md` with the user: accept/reject one-task
-      continuity, save-before-success and legacy re-verification/pairing; record the real decision.
+- [ ] T001 After current APK/native validation, revisit scope acceptance with the user for
+      `specs/014-local-progress-recovery/spec.md`: one-task continuity, save-before-success and
+      legacy re-verification/pairing. The 2026-09-12 decision is deferral, not acceptance.
 - [ ] T002 After the T004 design is complete, resolve D's independent failure/privacy/migration review in
       `specs/014-local-progress-recovery/analysis.md`; commit the accepted spec/plan/tasks/contracts.
 - [ ] T003 Integrate and independently verify B-004's existing replacement repair in
@@ -74,7 +78,9 @@ test: interruption at each operation produces complete old/committed-new state, 
 
 ## Dependencies and parallelism
 
-T004 is authorized draft design work alongside the T001 product decision. T001 + T004 → T002
+The earlier T004 draft-design authorization is historical and its file allocation was released.
+Further recovery work requires a later explicit grant; no work starts automatically after native
+validation. The following dependency graph applies only to a later accepted batch: T001 + T004 → T002
 accepted-contract commit; T003 existing repair must also pass before T005–008 → T009–013 →
 T014–017 → T018–021. T009's pure tests/validator may run in
 parallel with A's T005–008 storage/access foundation only after the common contract is committed
