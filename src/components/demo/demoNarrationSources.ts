@@ -13,7 +13,9 @@ export function getDemoNarrationSource(
   step: DemoStoryStep | null,
   active: boolean,
 ): number | null {
-  return active && locale === 'ar' && (step === 0 || step === 1 || step === 2)
-    ? (sources[step] ?? null)
-    : null;
+  if (!active || locale !== 'ar') return null;
+  if (step === 2) return sources[0];
+  if (step === 4) return sources[1];
+  if (step === 5) return sources[2];
+  return null;
 }

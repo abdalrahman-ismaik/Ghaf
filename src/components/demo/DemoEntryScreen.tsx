@@ -5,13 +5,12 @@ import {
   findNodeHandle,
   Platform,
   StyleSheet,
-  useWindowDimensions,
   View,
 } from 'react-native';
 
 import { AccessScreen } from '@/components/access/AccessShell';
 import { GhafIcon, type GhafIconName } from '@/components/access/GhafIcon';
-import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
+import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration } from '@/components/illustrations/LocalIllustration';
 import { Button, QuietButton, Text } from '@/components/primitives';
 import { botanical, layout, logicalRowDirection } from '@/design/tokens';
@@ -54,8 +53,6 @@ export function DemoEntryScreen({
   onChangeLocale,
 }: DemoEntryScreenProps) {
   const [storyStep, setStoryStep] = useState<DemoStoryStep | null>(entryEpoch === 0 ? 0 : null);
-  const { width, fontScale } = useWindowDimensions();
-  const stackChildChoices = width < 360 || fontScale >= 1.3;
   const headingRef = useRef<View>(null);
   const showingStory = storyStep !== null && !restartRequired;
   const narration = useDemoOnboardingNarrator({
@@ -102,7 +99,13 @@ export function DemoEntryScreen({
 
   const header = (
     <View style={[styles.header, { flexDirection: logicalRowDirection(direction) }]}>
-      <GhafRasterLogo decorative size={56} />
+      <GhafBrandLockup
+        brand={copy.brand}
+        direction={direction}
+        language={locale}
+        logoSize={40}
+        testID="demo-brand-lockup"
+      />
       <QuietButton
         brand
         direction={direction}
@@ -135,8 +138,9 @@ export function DemoEntryScreen({
 
   return (
     <AccessScreen
-      background="plain"
-      contentContainerStyle={showingStory ? styles.storyViewport : undefined}
+      background="welcome"
+      contentContainerStyle={showingStory ? styles.storyViewport : styles.entryViewport}
+      contentMaxWidth={showingStory ? layout.accessContentWidth : layout.readableContentWidth}
       contentStyle={showingStory ? styles.storyContent : styles.content}
       footer={
         showingStory ? (
@@ -176,6 +180,7 @@ export function DemoEntryScreen({
           >
             <Text
               accessibilityRole="text"
+              align="center"
               brand
               direction={direction}
               language={locale}
@@ -197,7 +202,13 @@ export function DemoEntryScreen({
             </Text>
           ) : (
             <>
-              <Text brand direction={direction} language={locale} style={styles.introduction}>
+              <Text
+                align="center"
+                brand
+                direction={direction}
+                language={locale}
+                style={styles.introduction}
+              >
                 {copy.body}
               </Text>
               <LocalIllustration
@@ -210,10 +221,12 @@ export function DemoEntryScreen({
                   </View>
                 }
                 language={locale}
+                priority="high"
                 style={styles.habitat}
                 testID="demo-entry-habitat"
               />
               <Text
+                align="center"
                 brand
                 direction={direction}
                 language={locale}
@@ -247,11 +260,14 @@ export function DemoEntryScreen({
                   {copy.busyLabel}
                 </Text>
               ) : null}
-              <View style={[styles.profiles, { flexDirection: logicalRowDirection(direction) }]}>
+              <View style={styles.profiles}>
                 {profiles.map((profile) => {
                   const isParent = profile.principal === 'parent_al_noor';
-                  const portrait = profile.avatar === 'flower' ? 'avatar-flower' : 'avatar-ghaf';
-                  const isRow = isParent || stackChildChoices;
+                  const portrait = isParent
+                    ? 'avatar-leaf'
+                    : profile.avatar === 'flower'
+                      ? 'avatar-flower'
+                      : 'avatar-ghaf';
                   return (
                     <Button
                       accessibilityLabel={[profile.name, profile.roleLabel]
@@ -262,7 +278,7 @@ export function DemoEntryScreen({
                       brand
                       direction={direction}
                       disabled={busy}
-                      fullWidth={isRow}
+                      fullWidth
                       key={profile.principal}
                       language={locale}
                       onPress={() => {
@@ -274,7 +290,6 @@ export function DemoEntryScreen({
                       style={[
                         styles.profileButton,
                         isParent ? styles.parentButton : styles.childButton,
-                        !isRow ? styles.childTile : null,
                       ]}
                       testID={`demo-profile-${profile.principal}`}
                       variant="neutral"
@@ -282,42 +297,28 @@ export function DemoEntryScreen({
                       <View
                         style={[
                           styles.profileContent,
-                          isRow
-                            ? {
-                                flexDirection: logicalRowDirection(direction),
-                                alignItems: 'center',
-                              }
-                            : styles.childContent,
+                          { flexDirection: logicalRowDirection(direction) },
                         ]}
                       >
-                        {isParent ? (
-                          <View style={styles.parentAvatar}>
-                            <GhafIcon
-                              color={botanical.colors.onForest}
-                              name={avatarIcons[profile.avatar]}
-                              size={28}
-                            />
-                          </View>
-                        ) : (
-                          <LocalIllustration
-                            assetId={portrait}
-                            decorative
-                            direction={direction}
-                            fallback={
-                              <View style={styles.avatarFallback}>
-                                <GhafIcon
-                                  color={botanical.colors.forest}
-                                  name={avatarIcons[profile.avatar]}
-                                  size={32}
-                                />
-                              </View>
-                            }
-                            language={locale}
-                            style={isRow ? styles.childAvatarCompact : styles.childAvatar}
-                            testID={`demo-profile-portrait-${profile.principal}`}
-                          />
-                        )}
-                        <View style={[styles.profileCopy, !isRow ? styles.tileCopy : null]}>
+                        <LocalIllustration
+                          assetId={portrait}
+                          contentFit="contain"
+                          decorative
+                          direction={direction}
+                          fallback={
+                            <View style={styles.avatarFallback}>
+                              <GhafIcon
+                                color={botanical.colors.forest}
+                                name={avatarIcons[profile.avatar]}
+                                size={32}
+                              />
+                            </View>
+                          }
+                          language={locale}
+                          style={styles.profileAvatar}
+                          testID={`demo-profile-portrait-${profile.principal}`}
+                        />
+                        <View style={styles.profileCopy}>
                           <Text
                             accessibilityRole="text"
                             brand
@@ -334,7 +335,7 @@ export function DemoEntryScreen({
                               direction={direction}
                               language={locale}
                               style={isParent ? styles.parentSupporting : styles.supporting}
-                              variant="caption"
+                              variant="label"
                             >
                               {profile.roleLabel}
                             </Text>
@@ -349,20 +350,21 @@ export function DemoEntryScreen({
                             {profile.description}
                           </Text>
                         </View>
-                        {isRow ? (
+                        <View style={styles.profileChevron}>
                           <GhafIcon
                             color={isParent ? botanical.colors.onForest : botanical.colors.forest}
                             direction={direction}
                             name="chevron"
                             size={20}
                           />
-                        ) : null}
+                        </View>
                       </View>
                     </Button>
                   );
                 })}
               </View>
               <Text
+                align="center"
                 brand
                 direction={direction}
                 language={locale}
@@ -387,6 +389,7 @@ export function DemoEntryScreen({
                 {copy.storyAction}
               </QuietButton>
               <Text
+                align="center"
                 brand
                 direction={direction}
                 language={locale}
@@ -405,6 +408,9 @@ export function DemoEntryScreen({
 
 const styles = StyleSheet.create({
   header: {
+    alignSelf: 'center',
+    width: '100%',
+    maxWidth: layout.accessContentWidth + botanical.space.inset * 2,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -420,6 +426,9 @@ const styles = StyleSheet.create({
     paddingTop: botanical.space.small,
     paddingBottom: botanical.space.row,
   },
+  entryViewport: {
+    paddingTop: botanical.space.row,
+  },
   storyContent: {
     gap: botanical.space.row,
   },
@@ -432,8 +441,8 @@ const styles = StyleSheet.create({
   },
   habitat: {
     width: '100%',
-    aspectRatio: 2.8,
-    borderRadius: botanical.radius.control,
+    aspectRatio: 3 / 2,
+    borderRadius: botanical.radius.hero,
   },
   habitatFallback: {
     width: '100%',
@@ -451,7 +460,6 @@ const styles = StyleSheet.create({
     borderRadius: botanical.radius.small,
   },
   profiles: {
-    flexWrap: 'wrap',
     alignItems: 'stretch',
     gap: botanical.space.small,
   },
@@ -468,36 +476,16 @@ const styles = StyleSheet.create({
     backgroundColor: botanical.colors.paper,
     borderColor: botanical.colors.line,
   },
-  childTile: {
-    flex: 1,
-    minWidth: 0,
-    alignItems: 'stretch',
-  },
   profileContent: {
     flex: 1,
     minWidth: 0,
+    alignItems: 'center',
     gap: botanical.space.small,
   },
-  childContent: {
-    alignItems: 'stretch',
-    gap: botanical.space.row,
-  },
-  parentAvatar: {
-    width: layout.touchTarget,
-    height: layout.touchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: botanical.colors.forestRaised,
-    borderRadius: botanical.radius.small,
-  },
-  childAvatar: {
-    width: '100%',
-    aspectRatio: 2,
-    borderRadius: botanical.radius.small,
-  },
-  childAvatarCompact: {
-    width: layout.touchTarget,
-    height: layout.touchTarget,
+  profileAvatar: {
+    width: 64,
+    height: 64,
+    flexShrink: 0,
     borderRadius: botanical.radius.small,
   },
   avatarFallback: {
@@ -510,8 +498,8 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
   },
-  tileCopy: {
-    flex: 0,
+  profileChevron: {
+    flexShrink: 0,
   },
   parentText: {
     color: botanical.colors.onForest,

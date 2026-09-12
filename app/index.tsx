@@ -204,6 +204,7 @@ function DemoWelcomeRoute() {
     router.replace(result.data.destination);
   };
   const copy: DemoEntryCopy = {
+    brand: t('common.brand'),
     title: t('demoEntry.title'),
     body: t('demoEntry.body'),
     disclosure: t('demoEntry.disclosure'),
@@ -244,11 +245,32 @@ function DemoWelcomeRoute() {
     ],
     moments: [
       {
+        id: 'intro',
+        title: t('demoEntry.moments.intro.title'),
+        body: t('demoEntry.moments.intro.body'),
+        imageAlt: t('demoEntry.moments.intro.imageAlt'),
+        assetId: 'onboarding-ghaf-intro',
+      },
+      {
+        id: 'family',
+        title: t('demoEntry.moments.family.title'),
+        body: t('demoEntry.moments.family.body'),
+        imageAlt: t('demoEntry.moments.family.imageAlt'),
+        assetId: 'onboarding-family',
+      },
+      {
         id: 'together',
         title: t('demoEntry.moments.together.title'),
         body: t('demoEntry.moments.together.body'),
         imageAlt: t('demoEntry.moments.together.imageAlt'),
         assetId: 'onboarding-action',
+      },
+      {
+        id: 'ai',
+        title: t('demoEntry.moments.ai.title'),
+        body: t('demoEntry.moments.ai.body'),
+        imageAlt: t('demoEntry.moments.ai.imageAlt'),
+        assetId: 'onboarding-ai',
       },
       {
         id: 'support',

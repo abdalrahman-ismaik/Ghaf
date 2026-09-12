@@ -398,7 +398,10 @@ describe('demo welcome route and real controller handoff', () => {
       expect(props.copy.body).toBe(copy.body);
       expect(props.copy.profiles.map((profile) => profile.principal)).toEqual(principals);
       expect(props.copy.moments.map((moment) => moment.body)).toEqual([
+        copy.moments.intro.body,
+        copy.moments.family.body,
         copy.moments.together.body,
+        copy.moments.ai.body,
         copy.moments.support.body,
         copy.moments.growth.body,
       ]);
@@ -407,9 +410,9 @@ describe('demo welcome route and real controller handoff', () => {
       );
       expect(/\p{Script=Arabic}/u.test(bodyText)).toBe(locale === 'ar');
       expect(/\p{Script=Latin}/u.test(bodyText)).toBe(locale === 'en');
-      expect(props.copy.story.progressLabel(1, 3)).not.toContain('{{');
-      expect(props.copy.story.progressLabel(1, 3)).toContain('1');
-      expect(props.copy.story.progressLabel(1, 3)).toContain('3');
+      expect(props.copy.story.progressLabel(1, 6)).not.toContain('{{');
+      expect(props.copy.story.progressLabel(1, 6)).toContain('1');
+      expect(props.copy.story.progressLabel(1, 6)).toContain('6');
       const ar = resourceLeaves(run.resources.ar.translation.demoEntry);
       const en = resourceLeaves(run.resources.en.translation.demoEntry);
       expect(Object.keys(ar).sort()).toEqual(Object.keys(en).sort());

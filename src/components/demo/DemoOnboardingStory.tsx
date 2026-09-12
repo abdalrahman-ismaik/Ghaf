@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { AccessibilityInfo, findNodeHandle, Platform, StyleSheet, View } from 'react-native';
+import Svg, { Rect } from 'react-native-svg';
 
 import { GhafIcon } from '@/components/access/GhafIcon';
 import { LocalIllustration } from '@/components/illustrations/LocalIllustration';
@@ -8,7 +9,7 @@ import { botanical, layout, logicalRowDirection } from '@/design/tokens';
 
 import type { DemoOnboardingStoryProps, DemoStoryStep } from './types';
 
-const momentIds = ['together', 'support', 'growth'] as const;
+const momentIds = ['intro', 'family', 'together', 'ai', 'support', 'growth'] as const;
 
 export function DemoOnboardingStory({
   locale,
@@ -34,8 +35,9 @@ export function DemoOnboardingStory({
 
   if (!moment) return null;
 
-  const progress = copy.story.progressLabel(step + 1, momentIds.length);
+  const hasRecording = step === 2 || step === 4 || step === 5;
   const audioAvailable =
+    hasRecording &&
     locale === 'ar' &&
     narration &&
     !narration.screenReaderActive &&
@@ -58,32 +60,6 @@ export function DemoOnboardingStory({
   return (
     <View style={styles.story} testID="demo-onboarding-story">
       <View style={[styles.topLine, { flexDirection: logicalRowDirection(direction) }]}>
-        <View style={styles.progressGroup}>
-          <View
-            accessibilityElementsHidden
-            importantForAccessibility="no-hide-descendants"
-            style={[styles.progressMarks, { flexDirection: logicalRowDirection(direction) }]}
-          >
-            {momentIds.map((id, index) => (
-              <View
-                key={id}
-                style={[styles.progressMark, index <= step ? styles.progressMarkReached : null]}
-              />
-            ))}
-          </View>
-          <Text
-            accessibilityLabel={progress}
-            brand
-            direction={direction}
-            language={locale}
-            style={styles.progress}
-            tabular
-            testID="demo-story-progress"
-            variant="caption"
-          >
-            {progress}
-          </Text>
-        </View>
         <QuietButton
           brand
           direction={direction}
@@ -106,27 +82,40 @@ export function DemoOnboardingStory({
           style={styles.artwork}
           testID={`demo-story-image-${moment.id}`}
         />
-      </View>
-      <View style={styles.readingPanel}>
         <View
-          accessibilityLabel={moment.title}
-          accessibilityRole="header"
-          accessible
-          ref={headingRef}
-          style={styles.heading}
-          tabIndex={Platform.OS === 'web' ? -1 : undefined}
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={StyleSheet.absoluteFillObject}
         >
-          <Text
-            accessibilityRole="text"
-            brand
-            direction={direction}
-            language={locale}
-            style={styles.title}
-            variant="parentHero"
-          >
-            {moment.title}
-          </Text>
+          <Svg width="100%" height="100%" viewBox="0 0 300 200" preserveAspectRatio="none">
+            <Rect
+              x={3}
+              y={3}
+              width={294}
+              height={194}
+              rx={18}
+              fill="none"
+              stroke={botanical.colors.paper}
+              strokeOpacity={0.55}
+              strokeWidth={1.5}
+            />
+            <Rect
+              x={3}
+              y={3}
+              width={294}
+              height={194}
+              rx={18}
+              fill="none"
+              stroke={botanical.colors.amber}
+              strokeWidth={2.5}
+              strokeDasharray={`${(945 * (step + 1)) / 6} 945`}
+              strokeLinecap="round"
+            />
+          </Svg>
         </View>
+      </View>
+      {hasRecording ? (
         <View style={styles.audio}>
           {audioAvailable ? (
             <>
@@ -136,6 +125,7 @@ export function DemoOnboardingStory({
                 language={locale}
                 icon={<GhafIcon name="speaker" direction={direction} />}
                 onPress={pressAudio}
+                fullWidth={false}
                 style={styles.audioControl}
                 testID={`demo-story-audio-${primaryAudioAction}`}
               >
@@ -149,6 +139,7 @@ export function DemoOnboardingStory({
                   onPress={() => {
                     if (audioAvailable && narration.canReplay) narration.onReplay();
                   }}
+                  fullWidth={false}
                   style={styles.audioControl}
                   testID="demo-story-audio-replay"
                 >
@@ -188,6 +179,27 @@ export function DemoOnboardingStory({
             </Text>
           )}
         </View>
+      ) : null}
+      <View style={styles.readingPanel}>
+        <View
+          accessibilityLabel={moment.title}
+          accessibilityRole="header"
+          accessible
+          ref={headingRef}
+          style={styles.heading}
+          tabIndex={Platform.OS === 'web' ? -1 : undefined}
+        >
+          <Text
+            accessibilityRole="text"
+            brand
+            direction={direction}
+            language={locale}
+            style={styles.title}
+            variant="parentHero"
+          >
+            {moment.title}
+          </Text>
+        </View>
         <Text
           brand
           direction={direction}
@@ -225,112 +237,109 @@ export function DemoStoryNavigation({
 >) {
   return (
     <View style={styles.actions} testID="demo-story-navigation">
-      <PrimaryButton
-        brand
-        direction={direction}
-        language={locale}
-        onPress={() => (step === 2 ? onClose() : onStepChange((step + 1) as DemoStoryStep))}
-        size="regular"
-        style={styles.navigationControl}
-        testID={step === 2 ? 'demo-story-finish' : 'demo-story-next'}
-      >
-        {step === 2 ? copy.story.finish : copy.story.next}
-      </PrimaryButton>
-      <QuietButton
-        brand
-        direction={direction}
-        icon={<GhafIcon direction={direction} name="arrow-back" />}
-        language={locale}
-        onPress={() => (step === 0 ? onClose() : onStepChange((step - 1) as DemoStoryStep))}
-        style={styles.navigationControl}
-        testID="demo-story-back"
-      >
-        {copy.story.back}
-      </QuietButton>
+      <View style={styles.progressGroup}>
+        <View
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={[styles.progressMarks, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {momentIds.map((id, index) => (
+            <View
+              key={id}
+              style={[styles.progressMark, index === step ? styles.progressMarkReached : null]}
+            />
+          ))}
+        </View>
+        <Text
+          accessibilityLabel={copy.story.progressLabel(step + 1, momentIds.length)}
+          brand
+          direction={direction}
+          language={locale}
+          style={styles.progress}
+          tabular
+          testID="demo-story-progress"
+          variant="caption"
+        >
+          {copy.story.progressLabel(step + 1, momentIds.length)}
+        </Text>
+      </View>
+      <View style={[styles.navigationRow, { flexDirection: logicalRowDirection(direction) }]}>
+        <QuietButton
+          brand
+          direction={direction}
+          icon={<GhafIcon direction={direction} name="arrow-back" />}
+          language={locale}
+          onPress={() => (step === 0 ? onClose() : onStepChange((step - 1) as DemoStoryStep))}
+          fullWidth={false}
+          style={styles.navigationControl}
+          testID="demo-story-back"
+        >
+          {copy.story.back}
+        </QuietButton>
+        <PrimaryButton
+          brand
+          direction={direction}
+          language={locale}
+          onPress={() => (step === 5 ? onClose() : onStepChange((step + 1) as DemoStoryStep))}
+          size="regular"
+          fullWidth={false}
+          style={styles.navigationControl}
+          testID={step === 5 ? 'demo-story-finish' : 'demo-story-next'}
+        >
+          {step === 5 ? copy.story.finish : copy.story.next}
+        </PrimaryButton>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  story: {
-    gap: botanical.space.row,
-    width: '100%',
-    minWidth: 0,
-  },
-  topLine: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: botanical.space.small,
-  },
-  progressGroup: {
-    gap: botanical.space.small,
-    flexShrink: 1,
-    minWidth: 0,
-  },
-  progressMarks: {
-    gap: botanical.space.small,
-  },
+  story: { gap: botanical.space.row, width: '100%', minWidth: 0 },
+  topLine: { alignItems: 'center', justifyContent: 'flex-end' },
+  progressGroup: { gap: botanical.space.small, alignItems: 'center' },
+  progressMarks: { gap: botanical.space.small },
   progressMark: {
-    width: botanical.space.hero,
-    height: botanical.space.small / 2,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: botanical.colors.sageStrong,
   },
-  progressMarkReached: {
-    backgroundColor: botanical.colors.forest,
-  },
-  progress: {
-    flexShrink: 1,
-    color: botanical.colors.forest,
-  },
-  close: {
-    flexShrink: 1,
-    maxWidth: '100%',
-    minHeight: layout.touchTarget,
-  },
-  heading: {
-    minWidth: 0,
-  },
+  progressMarkReached: { width: 24, backgroundColor: botanical.colors.forest },
+  progress: { color: botanical.colors.muted, textAlign: 'center' },
+  close: { flexShrink: 1, maxWidth: '100%', minHeight: layout.touchTarget },
+  heading: { minWidth: 0, alignItems: 'center' },
   title: {
     color: botanical.colors.forest,
+    textAlign: 'center',
+    fontSize: 28,
+    lineHeight: 42,
     flexShrink: 1,
   },
-  artworkFrame: {
-    width: '100%',
-    overflow: 'hidden',
-    borderRadius: botanical.radius.surface,
-  },
-  artwork: {
-    width: '100%',
-    aspectRatio: 1.7,
-  },
+  artworkFrame: { width: '100%', overflow: 'hidden', borderRadius: botanical.radius.surface },
+  artwork: { width: '100%', aspectRatio: 1.5 },
   readingPanel: {
     minWidth: 0,
-    gap: botanical.space.row,
-    paddingTop: botanical.space.small,
+    gap: botanical.space.small,
+    paddingHorizontal: botanical.space.small,
   },
   transcript: {
     color: botanical.colors.ink,
+    textAlign: 'center',
+    fontSize: 16,
+    lineHeight: 28,
     flexShrink: 1,
   },
-  audio: {
-    gap: botanical.space.small,
-    alignItems: 'stretch',
-  },
+  audio: { gap: botanical.space.small, alignItems: 'center' },
   audioControl: {
     minHeight: layout.touchTarget,
     minWidth: 0,
+    alignSelf: 'center',
+    paddingHorizontal: botanical.space.row,
     backgroundColor: botanical.colors.sage,
-    borderRadius: botanical.radius.control,
+    borderRadius: botanical.radius.pill,
   },
-  actions: {
-    gap: botanical.space.small,
-  },
-  navigationControl: {
-    minHeight: layout.touchTarget,
-    minWidth: 0,
-  },
-  mediaNotice: {
-    color: botanical.colors.muted,
-  },
+  actions: { gap: botanical.space.row },
+  navigationRow: { gap: botanical.space.small, alignItems: 'stretch' },
+  navigationControl: { flex: 1, minHeight: layout.touchTarget, minWidth: 0 },
+  mediaNotice: { color: botanical.colors.muted, textAlign: 'center' },
 });

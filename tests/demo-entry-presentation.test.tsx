@@ -88,6 +88,14 @@ vi.mock('@/components/demo/useDemoOnboardingNarrator', () => ({
   },
 }));
 
+vi.mock('react-native-svg', () => ({
+  default: ({ children }: LeafProps) => createElement('svg', null, children),
+  Rect: () => createElement('rect'),
+}));
+vi.mock('@/components/brand/GhafBrandLockup', () => ({
+  GhafBrandLockup: ({ brand }: { brand: string }) => createElement('span', null, brand),
+}));
+
 vi.mock('react-native', () => ({
   AccessibilityInfo: { setAccessibilityFocus: vi.fn() },
   BackHandler: { addEventListener: vi.fn(() => ({ remove: vi.fn() })) },
@@ -143,13 +151,21 @@ const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/serve
 };
 
 const principals = ['parent_al_noor', 'child_salem', 'child_alya'] as const;
-const momentIds = ['together', 'support', 'growth'] as const;
-const momentAssets = ['onboarding-action', 'onboarding-support', 'onboarding-growth'] as const;
+const momentIds = ['intro', 'family', 'together', 'ai', 'support', 'growth'] as const;
+const momentAssets = [
+  'onboarding-ghaf-intro',
+  'onboarding-family',
+  'onboarding-action',
+  'onboarding-ai',
+  'onboarding-support',
+  'onboarding-growth',
+] as const;
 const locales = ['ar', 'en'] as const;
 
 function copyFor(locale: (typeof locales)[number]): DemoEntryCopy {
   const ar = locale === 'ar';
   return {
+    brand: ar ? 'غاف' : 'Ghaf',
     unavailableError: ar
       ? 'تعذّر عرض ملفات العرض التجريبي. أغلق التطبيق بالكامل ثم افتحه من جديد.'
       : 'Demo profiles could not be displayed. Fully close and reopen the app.',
@@ -196,6 +212,22 @@ function copyFor(locale: (typeof locales)[number]): DemoEntryCopy {
     ],
     moments: [
       {
+        id: 'intro',
+        title: ar ? 'مرحبًا بكم في غاف' : 'Welcome to Ghaf',
+        body: ar
+          ? 'نختار فعلًا صغيرًا ونتعاون على إنجازه.'
+          : 'Choose a small action and help each other carry it out.',
+        imageAlt: 'Ghaf introduction',
+        assetId: 'onboarding-ghaf-intro',
+      },
+      {
+        id: 'family',
+        title: ar ? 'عائلتنا، فريق واحد' : 'One family. One team.',
+        body: ar ? 'نبدأ بخطوة نتفق عليها معًا.' : 'Start with a small step you agree on together.',
+        imageAlt: 'Family trees',
+        assetId: 'onboarding-family',
+      },
+      {
         id: 'together',
         title: ar ? 'نختار خطوة آمنة معًا' : 'Choose a safe step together',
         body: ar
@@ -203,6 +235,15 @@ function copyFor(locale: (typeof locales)[number]): DemoEntryCopy {
           : 'The Child chooses from tasks approved by the Parent. In this demo, Salem tries sorting clean recyclable materials with adult supervision.',
         imageAlt: ar ? 'خطوة آمنة مع الأسرة' : 'A safe step with the family',
         assetId: 'onboarding-action',
+      },
+      {
+        id: 'ai',
+        title: ar ? 'إرشاد للخطوة التالية' : 'Help with the next step',
+        body: ar
+          ? 'الإرشادات مُعدّة مسبقًا وقد تكون غير دقيقة.'
+          : 'Prepared guidance may be wrong; ask an adult.',
+        imageAlt: 'Curated guidance',
+        assetId: 'onboarding-ai',
       },
       {
         id: 'support',
@@ -325,12 +366,12 @@ beforeEach(() => {
 
 describe('demo entry rendered presentation and callbacks', () => {
   it.each(locales)(
-    'opens the three-page introduction on a fresh %s run with immediate profile escape',
+    'opens the six-page introduction on a fresh %s run with immediate profile escape',
     (locale) => {
       const props = entryProps(locale, { entryEpoch: 0 });
       const markup = renderEntry(props);
       expectText(markup, props.copy.moments[0]!.title);
-      expectText(markup, props.copy.story.progressLabel(1, 3));
+      expectText(markup, props.copy.story.progressLabel(1, 6));
       expect(profileControls()).toHaveLength(0);
       expect(control('demo-story-close').onPress).toEqual(expect.any(Function));
       expect(control('demo-story-next').onPress).toEqual(expect.any(Function));
@@ -504,7 +545,7 @@ describe('demo entry rendered presentation and callbacks', () => {
 
 describe('controlled optional demo story', () => {
   for (const locale of locales) {
-    it.each([0, 1, 2] as const)(
+    it.each([0, 1, 2, 3, 4, 5] as const)(
       `renders exact ${locale} step %s with manual callback requests only`,
       (step) => {
         const copy = copyFor(locale);
@@ -522,10 +563,11 @@ describe('controlled optional demo story', () => {
 
         expectText(markup, moment.title);
         expectText(markup, moment.body);
-        expectText(markup, copy.story.audioUnavailable);
+        if ([2, 4, 5].includes(step)) expectText(markup, copy.story.audioUnavailable);
+        else expect(markup).not.toContain(copy.story.audioUnavailable);
         expectText(markup, copy.story.close);
         expectText(markup, copy.story.back);
-        expectText(markup, copy.story.progressLabel(step + 1, 3));
+        expectText(markup, copy.story.progressLabel(step + 1, 6));
         for (const other of copy.moments.filter((item) => item.id !== moment.id)) {
           expect(markup).not.toContain(other.title);
           expect(markup).not.toContain(other.body);
@@ -543,16 +585,17 @@ describe('controlled optional demo story', () => {
           }),
         ]);
         expect(node('demo-story-progress').accessibilityLabel).toBe(
-          copy.story.progressLabel(step + 1, 3),
+          copy.story.progressLabel(step + 1, 6),
         );
-        expect(node('demo-story-audio-unavailable').children).toBe(copy.story.audioUnavailable);
+        if ([2, 4, 5].includes(step))
+          expect(node('demo-story-audio-unavailable').children).toBe(copy.story.audioUnavailable);
         expect(onStepChange).not.toHaveBeenCalled();
         expect(onClose).not.toHaveBeenCalled();
         expect(rendered.controls.map((item) => item.testID).sort()).toEqual(
           [
             'demo-story-close',
             'demo-story-back',
-            step === 2 ? 'demo-story-finish' : 'demo-story-next',
+            step === 5 ? 'demo-story-finish' : 'demo-story-next',
           ].sort(),
         );
 
@@ -570,10 +613,10 @@ describe('controlled optional demo story', () => {
         }
         onClose.mockClear();
         onStepChange.mockClear();
-        const primaryId = step === 2 ? 'demo-story-finish' : 'demo-story-next';
-        expectText(markup, step === 2 ? copy.story.finish : copy.story.next);
+        const primaryId = step === 5 ? 'demo-story-finish' : 'demo-story-next';
+        expectText(markup, step === 5 ? copy.story.finish : copy.story.next);
         press(primaryId);
-        if (step === 2) {
+        if (step === 5) {
           expect(onClose).toHaveBeenCalledExactlyOnceWith();
           expect(onStepChange).not.toHaveBeenCalled();
         } else {
@@ -586,7 +629,7 @@ describe('controlled optional demo story', () => {
     it(`keeps the complete ${locale} story usable when the image leaf renders no image`, () => {
       rendered.omitImages = true;
       const copy = copyFor(locale);
-      for (const step of [0, 1, 2] satisfies DemoStoryStep[]) {
+      for (const step of [0, 1, 2, 3, 4, 5] satisfies DemoStoryStep[]) {
         const onStepChange = vi.fn();
         const onClose = vi.fn();
         const markup = renderStory({
@@ -600,10 +643,11 @@ describe('controlled optional demo story', () => {
 
         expect(markup).not.toContain('<img');
         expectText(markup, copy.moments[step]!.body);
-        expectText(markup, copy.story.audioUnavailable);
+        if ([2, 4, 5].includes(step)) expectText(markup, copy.story.audioUnavailable);
+        else expect(markup).not.toContain(copy.story.audioUnavailable);
         expect(control('demo-story-close').disabled).not.toBe(true);
-        press(step === 2 ? 'demo-story-finish' : 'demo-story-next');
-        if (step === 2) expect(onClose).toHaveBeenCalledExactlyOnceWith();
+        press(step === 5 ? 'demo-story-finish' : 'demo-story-next');
+        if (step === 5) expect(onClose).toHaveBeenCalledExactlyOnceWith();
         else expect(onStepChange).toHaveBeenCalledExactlyOnceWith(step + 1);
       }
     });
@@ -633,12 +677,12 @@ describe('optional demo narration controls and cancellation handoff', () => {
       locale,
       direction: locale === 'ar' ? 'rtl' : 'ltr',
       copy,
-      step: 1,
+      step: 4,
       narration: audio,
       onClose,
       onStepChange,
     });
-    expectText(markup, copy.moments[1]!.body);
+    expectText(markup, copy.moments[4]!.body);
     expect(control('demo-story-next').disabled).not.toBe(true);
     expect(control('demo-story-back').disabled).not.toBe(true);
     expect(control('demo-story-close').disabled).not.toBe(true);
@@ -663,7 +707,7 @@ describe('optional demo narration controls and cancellation handoff', () => {
     press('demo-story-audio-stop');
     expect(audio.onStop).toHaveBeenCalledExactlyOnceWith();
     press('demo-story-next');
-    expect(onStepChange).toHaveBeenCalledExactlyOnceWith(2);
+    expect(onStepChange).toHaveBeenCalledExactlyOnceWith(5);
   });
 
   it('offers Stop and Replay during playback, and a single Replay afterward', () => {

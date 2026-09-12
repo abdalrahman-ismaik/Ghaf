@@ -92,16 +92,16 @@ describe('approved local demo narration source identity', () => {
         resolve(root, `assets/audio/demo-onboarding/ar-${moment}-wiam-v1.mp3`),
       );
       expect(createHash('sha256').update(readFileSync(required[step]!)).digest('hex')).toBe(hash);
-      expect(resolveSource('ar', step, true)).toBe(101 + step);
+      expect(resolveSource('ar', [2, 4, 5][step], true)).toBe(101 + step);
     });
   });
 
   it('returns no source for English, inactive stories or malformed steps', () => {
-    for (const step of [0, 1, 2]) {
+    for (const step of [0, 1, 2, 3, 4, 5]) {
       expect(resolveSource('en', step, true)).toBeNull();
       expect(resolveSource('ar', step, false)).toBeNull();
     }
-    for (const step of [null, undefined, -1, 3, 0.5, NaN, '0', 'length', '__proto__']) {
+    for (const step of [null, undefined, -1, 0, 1, 3, 6, 0.5, NaN, '0', 'length', '__proto__']) {
       expect(resolveSource('ar', step, true)).toBeNull();
     }
     expect(resolveSource('unknown', 0, true)).toBeNull();

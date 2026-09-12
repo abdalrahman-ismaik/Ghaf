@@ -21,10 +21,10 @@ export const resources = {
         salemDescription: 'جرّب المهمة واطلب المساعدة',
         alyaDescription: 'استكشف ملف علياء التجريبي',
         story: {
-          close: 'اختيار ملف',
+          close: 'تخطّي المقدمة',
           next: 'التالي',
           back: 'السابق',
-          finish: 'اختيار وليّ الأمر أو الطفل',
+          finish: 'هيا نبدأ',
           progress: '{{current}} من {{total}}',
           audioUnavailable: 'السرد الصوتي غير متاح. يمكنك قراءة النص والمتابعة.',
           audioPlay: 'استمع إلى النص',
@@ -34,6 +34,21 @@ export const resources = {
           audioScreenReader: 'السرد متوقف أثناء استخدام قارئ الشاشة.',
         },
         moments: {
+          intro: {
+            title: 'مرحبًا بكم في غاف',
+            body: 'مساحة للعائلة، مستوحاة من شجرة الغاف. نختار فعلًا صغيرًا، ونتعاون على إنجازه، ثم نحتفل بنمو حديقتنا الرمزي.',
+            imageAlt: 'شجرة غاف كبيرة في ضوء الصباح فوق كثبان هادئة',
+          },
+          family: {
+            title: 'عائلتنا، فريق واحد',
+            body: 'للطفل مساحة للاختيار وطلب المساعدة، ولوليّ الأمر دور في الموافقة والدعم والتقدير. نبدأ بخطوة نتفق عليها معًا.',
+            imageAlt: 'ثلاث أشجار غاف متقاربة تلتقي أغصانها في ظل واحد',
+          },
+          ai: {
+            title: 'إرشاد للخطوة التالية',
+            body: 'يساعد دليل غاف في تبسيط المهمة التي وافق عليها وليّ الأمر. إجاباته في هذا العرض مُعدّة مسبقًا وقد تكون غير دقيقة؛ اسألوا شخصًا بالغًا عند الحاجة.',
+            imageAlt: 'غصن غاف بجانب علامات حجرية متصلة بمسار قصير',
+          },
           together: {
             title: 'نختار خطوة آمنة معًا',
             body: 'يختار الطفل مهمةً وافق عليها وليّ الأمر. في هذا العرض، يجرّب سالم فرز مواد نظيفة قابلة لإعادة التدوير، بإشراف شخص بالغ.',
@@ -1919,10 +1934,10 @@ export const resources = {
         salemDescription: 'Try the task and ask for help',
         alyaDescription: 'Explore Alya’s demo profile',
         story: {
-          close: 'Choose a profile',
+          close: 'Skip introduction',
           next: 'Next',
           back: 'Back',
-          finish: 'Choose Parent or Child',
+          finish: 'Get started',
           progress: '{{current}} of {{total}}',
           audioUnavailable:
             'Prepared narration is in Arabic. Switch language to listen, or continue reading.',
@@ -1933,6 +1948,21 @@ export const resources = {
           audioScreenReader: 'Narration is off while a screen reader is active.',
         },
         moments: {
+          intro: {
+            title: 'Welcome to Ghaf',
+            body: 'A place for family, inspired by the Ghaf tree. Choose a small action, help each other carry it out, and celebrate your symbolic garden growing.',
+            imageAlt: 'A mature Ghaf tree in morning light above quiet dunes',
+          },
+          family: {
+            title: 'One family. One team.',
+            body: 'Children choose and ask for help. Parents approve, support and recognise the effort. Start with a small step you agree on together.',
+            imageAlt: 'Three neighbouring Ghaf trees sharing one canopy of shade',
+          },
+          ai: {
+            title: 'Help with the next step',
+            body: 'The Ghaf guide helps simplify a Parent-approved task. Its responses in this demo are prepared examples and may be wrong. Ask an adult when you need help.',
+            imageAlt: 'A Ghaf sprig beside stone markers joined by a short path',
+          },
           together: {
             title: 'Choose a safe step together',
             body: 'The Child chooses a task already approved by the Parent. In this demo, Salem tries sorting clean recyclable materials with adult supervision.',

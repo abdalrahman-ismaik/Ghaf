@@ -10,14 +10,21 @@ export interface DemoProfileOption {
 }
 
 export interface DemoStoryMoment {
-  readonly id: 'together' | 'support' | 'growth';
+  readonly id: 'intro' | 'family' | 'together' | 'ai' | 'support' | 'growth';
   readonly title: string;
   readonly body: string;
   readonly imageAlt: string;
-  readonly assetId: 'onboarding-action' | 'onboarding-support' | 'onboarding-growth';
+  readonly assetId:
+    | 'onboarding-ghaf-intro'
+    | 'onboarding-family'
+    | 'onboarding-action'
+    | 'onboarding-ai'
+    | 'onboarding-support'
+    | 'onboarding-growth';
 }
 
 export interface DemoEntryCopy {
+  readonly brand: string;
   readonly title: string;
   readonly body: string;
   readonly disclosure: string;
@@ -70,7 +77,7 @@ export interface DemoEntryScreenProps {
   readonly onChangeLocale: () => void;
 }
 
-export type DemoStoryStep = 0 | 1 | 2;
+export type DemoStoryStep = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface DemoOnboardingStoryProps {
   readonly navigationPlacement?: 'inline' | 'footer';
