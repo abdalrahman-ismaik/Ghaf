@@ -452,3 +452,16 @@ Accept bounded evidence gap. Exact test-only grant: tests/demo-entry-store.test.
 Strategy/index updated to distinguish actually selected/delivered015 access and onboarding from
 unselected reciprocal-help, memory/recovery, calendar/study/money/maps/chat proposals. Existing
 research preserved; no new study, proven family outcome, human scope acceptance or feature invented.
+
+## Actual Arabic listening rejection — C026/A071
+
+User listened to the three new Arabic Fatima-v1 takes and rejected all three as still sounding bad,
+requesting a different professional Arabic narrator. C recorded the actual request in its canonical
+outbox026. Those three files/receipts remain preserved as REJECTED; English takes remain unreviewed.
+No rejected take was imported into runtime. Playback context and user name were not supplied.
+
+A071 permits two short alternative narrator auditions of the exact reviewed first-moment body,
+using the same private pinned tool/service and verified ar-SA-HamedNeural/ar-SA-ZariyahNeural IDs
+at neutral rate/pitch. This is candidate preparation, not a guaranteed quality or rights claim.
+No new provider/account/runtime integration, full regeneration or human approval is inferred.
+C's browser task proceeds independently so audio review cannot hold the Android build resource.

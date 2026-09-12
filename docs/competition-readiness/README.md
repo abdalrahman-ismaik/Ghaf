@@ -29,8 +29,8 @@ remain blocked or not run.
 Feature015's three-profile demo entry and optional silent onboarding are integrated at runtime
 `2ecea74`; typecheck/lint/format and147files1914tests passed. Later test-onlyc3b1cc8 adds real
 prepared-media/privacy handoff coverage (18 focused store tests passed). D independently closed
-the composite rollback defect with76 tests. New narration has six candidates but no accepted
-recordings yet. Expo was restored in demo mode for C's visual checks; B has an exact-source
+the composite rollback defect with76 tests. The three Arabic narration candidates were rejected by the user; English is unreviewed and
+alternative Arabic auditions are being prepared. No new recording is accepted. Expo was restored in demo mode for C's visual checks; B has an exact-source
 preflight and awaits the preview lane release before the next standalone build. No APK/native/
 physical rehearsal result is claimed. The live board and reports supersede older checkpoints.
 

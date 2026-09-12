@@ -11,7 +11,8 @@ The current selected batch prioritizes a fast, understandable local journey and 
 artifact. The user explicitly deferred recovery014 until native validation and selected three
 synthetic no-auth profiles, shorter onboarding and Arabic narration repair. Runtime2ecea74 now
 implements the isolated demo doorway and silent three-moment story; full checks pass147files/
-1914tests. Six matching narration candidates are awaiting actual user listening. Physical APK/
+1914tests. The user rejected all three Arabic narration candidates; English remains unreviewed, and short
+alternative Arabic narrator auditions are authorized. Physical APK/
 phone acceptance is still pending; test counts do not substitute for it.
 
 Research on the suggested ideas is preserved below. Research and a roadmap do not mean those
