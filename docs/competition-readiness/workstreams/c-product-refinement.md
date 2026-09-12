@@ -700,3 +700,77 @@ human or agent listening beyond the user's stated review is invented. Scoped rep
 unchanged-file hash and transcript-manifest parity passed. Single-thread local FFmpeg decode to
 null output returned0 with no errors; that is file decodability, not a second listening or native
 acceptance claim. The MP3 remains byte-identical to the supplied file.
+
+## 2026-09-12 — Remaining Wiam exports received
+
+The user replied “done” to the remaining-two recording request, then supplied the actual directory
+`output/native-ui/narration-candidates`. Both requested filenames are present there. The initial
+check of `narration-research` found only the first clip because the new files were saved in this
+other directory; that observation is retained in C057/C058, without treating it as a file defect.
+The first approved MP3 remains in its original research directory. No file was renamed or replaced.
+
+| Story    | Supplied file relative to `output/native-ui/`           | Bytes  | Duration    | SHA256                                                             |
+| -------- | ------------------------------------------------------- | ------ | ----------- | ------------------------------------------------------------------ |
+| Together | `narration-research/voice_preview_wiam - confident.mp3` | 245805 | 15.360000 s | `8782ac7eb4bbd6ec04296206e700dea62562cc4b43258744c5b66caeeab19edf` |
+| Support  | `narration-candidates/ar-support-wiam-v1.mp3`           | 379551 | 23.719125 s | `3815ad0eedd67a6cd8e9446599640239732e222f04272200ecd115acf756c034` |
+| Growth   | `narration-candidates/ar-growth-wiam-v1.mp3`            | 366177 | 22.883250 s | `ff7d2ae63f6985c5a8a0d19164f52c0bd9130273d68bad37d4189fc3c7da0d5e` |
+
+All three are MP3/44100Hz/mono with encoder tag Lavf60.16.101. Neither that tag nor matching file
+properties proves a voice/model or pronunciation. The intended new scripts retain support SHA256
+`9299aab4bdcf884d62eba7a545622081113654c9257b9ac58daafabcab9e754d` and growth SHA256
+`316ca89f3d25f99a4f109e750967096caa253985b8c8ec34115fc9f1f807b1bf`.
+New-clip mapping is based on the requested export filenames, not independent transcription.
+
+Local intake at10:55:42–43UTC, runner109619, verified all three transcript-manifest hashes and
+unchanged MP3 hashes. Single-thread FFmpeg decode of support (PID109622) and growth (PID109642)
+returned0 with empty stderr. The first clip's prior successful decode was not repeated. All jobs
+ended. Exact argv, times, metadata and source identities are in ignored
+`narration-research/wiam-three-clip-intake-v1.json`; a readable three-clip/script mapping is in
+`wiam-three-clip-handoff.md`. Total file duration is61.962375seconds, not a measured demo time.
+
+First-clip actual user approval is unchanged. C asked whether the newly located support/growth
+clips had approved full wording, pronunciation and delivery, and which ElevenLabs model was used.
+The user answered **“yes, multilingual v2”**. Both exact new clips are therefore USER APPROVED
+for those aspects, and all three Wiam narrations now have actual user listening approval. Record
+**Multilingual v2 (`eleven_multilingual_v2`)** as the user-reported generation model; MP3 metadata
+does not independently identify it. Other generation settings and export-plan/rights provenance
+are unspecified. Reviewer is the conversation user; no personal name or device is invented.
+Agent listening/transcription was NOT RUN. Native playback and student exact-diff review remain
+pending. No original audio was modified, uploaded or synthesized; no credential was read and no
+paid operation, source import or APK job was performed.
+
+A089 permits this report/ignored-research intake. The source base remains C8822e13 and frozen
+runtime5d8a3e8; eventual accepted audio requires A's exact asset/lifecycle candidate grant.
+The existing silent introduction remains usable. New files do not authorize changing app audio,
+reenabling old mismatched clips, or accepting English audio without its own review.
+
+### Independent text parity and integration handoff
+
+C reused the sole read-only helper `/root/abdullah_voice_review` while the lead inspected files
+and wrote this intake. It verified all three intended body-only scripts byte-for-byte against
+current canonical `src/i18n/resources.ts` fields `demoEntry.moments.{together,support,growth}.body`
+at lines34/39/44:216/438/382 UTF-8 bytes, matching the three manifest hashes. Separate moment titles
+are not narrated. This proves intended text/resource parity, not speech-to-text parity.
+
+The helper identified the exact existing integration seams for A: `app/index.tsx` supplies the
+three IDs/copy; `src/components/demo/types.ts` and `DemoOnboardingStory.tsx` currently have no
+playback API and render the silent fallback. The older `onboardingAudioSources.ts` belongs to
+six-step onboarding and must not be treated as this three-script registry merely because some
+IDs overlap. `useOnboardingNarrator.ts` provides a reuse reference for player/replay/status/
+screen-reader handling, but automatically restarts when eligible, exposes no explicit stop method
+and has no direct background listener. Its downstream internals were outside this review scope.
+A must reconcile the accepted opt-in/stop/cancellation contract in its exact integration grant;
+copying the new files into the old registry alone does not implement the requested behavior.
+
+Exact bounded helper prompt is retained in ignored `wiam-three-clip-helper-prompt.txt`; findings
+and prompt hash are in the intake JSON. Scope was the named canonical copy/contract/demo and old
+onboarding files plus three script texts/manifest. No helper writes, media listening, credential
+access, network, tests, browser/native jobs or descendants. Helper completed/released. Requested
+Astra/Ultra/Fast; reused launcher previously accepted Astra/ultra, Fast/effective serving unexposed.
+Lead config remains previously observed Astra/xhigh/fast; no settings were changed.
+
+Validation: scoped `prettier --check --ignore-path /dev/null` passed for this report, the handoff
+Markdown and intake JSON; `git diff --check` passed. A focused local verification matched all
+original audio/transcript/prompt hashes, checked recorded approval/model consistency, and confirmed
+both decode processes ended. No application behavior changed, so no app suite/browser matrix was
+rerun. Only this report is committed; ignored receipts/media remain local, with source hashes above.
