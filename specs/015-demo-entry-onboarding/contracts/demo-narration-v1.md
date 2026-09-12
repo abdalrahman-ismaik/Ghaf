@@ -1,11 +1,11 @@
 # Feature015 T014 — optional Arabic demo narration v1
 
-Status: A accepts the pure-controller and coherent shared-publication boundaries after D061's
-technical review of A175. Their implementation may begin only after this contract is committed.
-The A177 native-retirement adapter revision remains under D review; no C runtime adapter grant
-follows yet. Product intent and the user's three exact listening approvals are already recorded.
-This does not reopen those approvals. Baseline APK runtime5d8a3e8 stays frozen. No native, mounted,
-student or public-distribution acceptance is claimed by this bounded preparation authorization.
+Status: A accepts the selected T014 controller/shared boundaries after D061 and the native
+adapter retirement contract after D063 (report887cdf2). D reviewed exact f452d25 source-contract
+content; subsequent status text records preparation/acceptance without changing the API or rules.
+C implementation still requires A's published prerequisites and exact synchronization/file grant.
+Product intent and the user's three exact listening approvals are already recorded. Baseline APK
+runtime5d8a3e8 stays frozen. No native, mounted, student or public-distribution acceptance is claimed.
 
 ## Scope and accepted content
 

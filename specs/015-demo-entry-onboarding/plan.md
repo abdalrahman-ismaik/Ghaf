@@ -146,3 +146,8 @@ A180 preparation decision: D061 already reviewed the exact pure-controller/share
 boundary and closed reentrancy/foreground contract clarifications. A accepts T014a preparation
 after this committed contract; the new native-retirement revision still requires D review before
 C's T014b runtime grant. No acceptance of an unreviewed adapter is inferred from elapsed time.
+
+D063 reviewed the concrete A177 retirement revision and found no new cleanup/ownership blocker.
+D-T014004 is closed for the pause-only contract correction; actual native no-resume/race and
+mounted lifecycle gates remain BLOCKED. A accepts this adapter contract for implementation after
+prerequisite publication. The status amendment does not change its reviewed interface or rules.
