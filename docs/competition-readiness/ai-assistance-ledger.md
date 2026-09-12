@@ -433,3 +433,9 @@ A sole helper quota reassigned to a bounded READ-ONLY final integration review w
 
 Generated review is in flight, no result preclaimed. Full source assertions/physical evidence remain
 attributed to their actual scope; prepared narration candidates are not accepted runtime audio.
+
+A documentation follow-up: README quick demo command, actual three-profile/restart/storage
+limitations and link to standalone build guide. No new runtime contribution or source test rerun;
+scoped formatting only. D independent76test retest report6ec0fcd→4472c8a closes the reproduced
+transaction defect; it does not pass physical devices or app-wide native behavior. Student review
+remains pending.

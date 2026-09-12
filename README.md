@@ -105,6 +105,26 @@ and native build instructions in the [development guide](docs/DEVELOPMENT.md). A
 testing is authoritative; the web preview does not validate native Back, keyboard, permissions,
 TalkBack, safe areas, or device performance.
 
+### Fast synthetic demo entry
+
+For the competition preview, start a separate demo-mode process:
+
+```bash
+EXPO_NO_DOTENV=1 EXPO_PUBLIC_GHAF_DEMO_ENTRY=true npm start
+```
+
+The entry screen offers **Parent, Salem and Alya** without credentials, plus three optional
+onboarding moments. Each choice uses the existing role controller. Sign out and choose another
+profile to continue the same task within the running app. Restarting starts a fresh demo;
+independent phones do not synchronize. Demo repositories use isolated memory and do not replace
+an ordinary locally configured family. Without this flag, the existing verification/pairing entry
+remains in use. Neither path is production authentication.
+
+The new story is fully usable silently; revised narration samples await actual listening review.
+For the standalone internal Android build, use the pinned local toolchain and exact-source
+receipt procedure in the [Android guide](docs/competition-readiness/android-build-and-rehearsal.md).
+A web preview is not an installable APK or evidence of physical-phone acceptance.
+
 ## Verification
 
 Run the complete repeatable repository gate:
