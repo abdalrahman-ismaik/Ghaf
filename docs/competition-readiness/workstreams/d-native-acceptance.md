@@ -1672,7 +1672,7 @@ no completion or growth is demonstrated by this set. D did not perform these poi
 | `final-parent-en-390.png`       | PASSED visible Parent navigation, synthetic/local label, cooperative canopy19/25 and no-comparison wording. Upper view does not show a selected Child or approval action; do not claim those are pictured.                              |
 | `final-salem-en-390.png`        | PASSED visible correct synthetic Child, approved clean-recycling task,48Seeds,12 fixed Seeds after Parent confirmation, adult-supervision notice. Help paragraph is partly below bottom navigation; not a complete help-action capture. |
 | `final-salem-en-390-task.png`   | Hash/dimensions PASSED; title-under-header framing reported by A211. D has not independently passed that frame's visual composition.                                                                                                    |
-| `final-entry-ar-390.png`        | Hash/dimensions PASSED; independent Arabic helper pixel review pending at this checkpoint.                                                                                                                                              |
+| `final-entry-ar-390.png`        | PASSED visible Arabic headline, synthetic/Salem-only disclosures and three complete cards. Restart notice crosses the lower screenshot edge; complete-footer evidence FAILED, not a demonstrated scroll/layout defect.                  |
 
 These captures are eligible for truthful browser/synthetic poster illustration. Parent approval,
 permitted help and confirmation/praise may be explained as product behavior; the pictured canopy
@@ -1744,3 +1744,120 @@ actual review/approval and contains no canopy. If A selects it, its caption must
 Both are1170×2532; completed supplementary manifest/actions remain C's responsibility. No further
 capture, source edit or native test was requested. A214 independently confirms the typography
 failure and is investigating its own exporter; D-POSTER001/002 remain open at this checkpoint.
+
+D074's sole Arabic helper completed and released. The lead accepted its pixel-only findings:
+readable complete visible content, no card/label overlap, no former blue headline outline, and a
+partially visible restart notice at the bottom screenshot boundary. Unlike the earlier before
+frame, this image cannot evidence the complete restart disclosure. The English supplementary
+footer does not substitute for Arabic/native evidence. No new product defect or extra capture is
+requested solely from this viewport boundary. Rejected promotions: complete footer/readability
+from a partial image; absent blue outline proves an accessibility fix; browser pixels prove native
+RTL, touch or human review. Helpers0, no writes or descendants by the helper.
+
+### C090 completed evidence and corrected poster closure
+
+C090 releases report commit70c0bdc3677e80912ee69611594ed9ce6e10bd0f, all captures and its browser.
+D independently verified all49 manifest PNG hashes/dimensions:4 historical before,30 final and15
+browser-QA artifacts, including the invalid early splash and superseded Arabic original. This is
+**49 identity checks, not49 visual or acceptance passes**. Exact manifest SHA256 is
+`9e34a87248b4bea001af54a614d09dab35272926ee81898e864b2f3d8ef2a089`; D's receipt is
+`C090-final-manifest-review.json`. The formerly empty D six-shot manifest is populated with scoped
+review/identity results, preserving its prior bytes as `capture-manifest-pre-C090.json`. D review
+UTC, C file mtime and attributed browser operation are distinct fields; none invents capture timing.
+
+D also read the newly released raw `final-source-map.json`, SHA256
+`f5439f30dafba0d7d77fa89e5282023052bf32b53348bedf5dfb2f7eef9daccd`: five emitted `sourcesContent`
+values equal their exact98be865 Git blobs byte-for-byte. This supplements the earlier receipt-only
+comparison; original HTTP retrieval remains attributed to C. `final-raw-source-map-review.json`
+records the bounded check. No whole-bundle, default-flag or native-source attestation is implied.
+
+D directly viewed six final Story images: AR/EN together and AR/EN support/growth control views.
+All six show readable complete body copy, silent unavailable-narration text, and Next/Enter demo
+and Back controls. Content preserves Parent-approved clean recycling/adult supervision; smaller
+before acceptance, full award with help and prepared/fallible AI; confirmation/praise before Seeds,
+private symbolic growth, no measured impact and fresh local restart. Scrolled support headings and
+English growth heading extend above the fixed header; this is not a demonstrated scrolling defect.
+`story-visual-review.json` binds all six exact hashes. Listening/native/human review remain NOT RUN.
+
+D finally viewed the released Parent Arabic Home and actual framed Arabic Salem task. Main
+synthetic/local, cooperative19/25 canopy, task title,48Seeds,12-after-confirmation, adult-supervision
+and help/no-loss labels are readable. Lower rationale continues beyond the Salem viewport. This is
+not a complete fine-glyph, native-font-scale or touch pass. C089's premature companion claim remains
+preserved; C090 supplies the actual later file821bcbac188334d523812e6988168d8a7d10674195edd5391c700b67c28f2d0d.
+
+D's sole helper reviewed the saved C browser results independently, then released. It saw13 records,
+including two errors; the lead's final13-record snapshot and hash are in
+`C090-browser-tool-evidence.json` and `C090-browser-tool-receipt.json`. Findings accepted by D:
+
+| Recorded browser claim                                       | Independent evidence-review disposition                                                                                                                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 12 AR/EN Entry/Support rows at320 ordinary and320/390 CSS200 | PASSED measured document overflow=false;18 profile scroll/client widths agree. Descendant clipping/complete visual wrapping is NOT RUN by this numeric review.                 |
+| Named profile/Back/Next target geometry                      | PASSED recorded dimensions, minimum measured height50 CSS px; not all controls/native touch.                                                                                   |
+| Image request failures                                       | PASSED injected illustration-request abort, retained text, Story→Support fallback, removed interception and return to entry. Whole-app offline/media/native operation NOT RUN. |
+| Parent entry with failed images                              | NOT RUN: later record proves center-point hit-test only, not activation. Early splash screenshot remains INVALID.                                                              |
+| Keyboard Enter/Back                                          | PASSED narrow Arabic sequence after programmatic focus of Story opener and Back; selector returned. Full keyboard-only navigation, English and Android Back NOT RUN.           |
+| Duplicate retained task-card locators                        | Two failed automation attempts preserved: duplicate selector and10second timeout. No product defect inferred; later visible-only selection succeeds.                           |
+
+Actual second helper prompt, same explicit Astra/ultra setting, Fast selector unexposed:
+
+> New bounded read-only task after previous release, D081/A207/A213/C088/board71. You are D's ONE helper, no descendants. You are not alone; preserve all files. NO writes/source/coordination/browser/device/tests/network actions. Read ONLY /home/smyk/projects/Ghaf-ui-studio/output/native-ui/poster-20260912/browser-tool-evidence.json (12 saved actual tool result records, two isError=true), plus C088/C089 paragraphs in canonical /home/smyk/projects/Ghaf/docs/competition-readiness/coordination/STATUS-C.md for claimed scope. Exact runtime98be86558426f593b639e0db2be0da9cebc36078, Firefox155/390x844DPR3/C-ownedbrowser207767; compact/CSS200 probes are browser stress, never native font scaling. Concrete question: do recorded code/results substantiate C088's 320 ordinary and320/390 CSS200 wrap/no-horizontal-overflow, >=48 measured targets, image-request failure fallback and keyboard Enter/Back claims? Preserve failed attempts and identify missing/fault-injected evidence versus completed interactions; no broad app audit or recommendations for new features. C089 retracts premature Arabic-framed companion claim; don't pass missing frame. Lead independently handles exact raw sourcemap hash/Git and actual Story PNGs. Return concise per-claim PASSED/FAILED/BLOCKED/NOT RUN evidence review, important limitations and release. Existing explicit Astra/ultra; Fast selector unexposed.
+
+The file grew from12 records at dispatch to13 at helper inspection; no earlier12-record byte hash
+was claimed. Rejected promotions: horizontal-overflow=false proves all text unclipped; injected
+illustration failures prove offline APK behavior; programmatic focus proves a full keyboard journey;
+a hit-test proves Parent entry; rendered text proves audio or human understanding. Helper wrote
+nothing, executed no app/device/test command and spawned no descendants. All D helpers released.
+
+### Exact corrected print package — independent retest PASSED
+
+A216 acknowledges D072–079 and selects the prepared Parent Guide and fully framed Salem task,
+updates the Parent caption and removes “permanent.” A217/A218 publish the corrected package in
+`/home/smyk/projects/Ghaf/output/poster-20260912/final-reviewed/`. D rehashed all four delivery
+files and the three selected original screenshots; all match the receipts. D read the actual
+editable-master slide captions and viewed the actual no-font-registration PowerPoint print PNG.
+
+| Artifact                               | Independently checked SHA256                                       |
+| -------------------------------------- | ------------------------------------------------------------------ |
+| `Ghaf-Team-SMAC-2026-A1-PRINT.pptx`    | `bf0868597d91a8c2850a0c8d180999b3ed2b3093ead1ab62d2d1a2f67d3972ad` |
+| `Ghaf-Team-SMAC-2026-A1-PRINT.png`     | `8872eb6fac37105fedcec03fe5c5e798803703b8f3ead2114252cb3507760fa5` |
+| `Ghaf-Team-SMAC-2026-A1-PRINT.pdf`     | `32a91c1dd999892e76d126e5216465cc5959450410f44d6243117fd77f9d41f3` |
+| `Ghaf-Team-SMAC-2026-A1-EDITABLE.pptx` | `666638aacf6fdc1bfc9aea037572e7ea713faa71b3f0bc2bdedeabfff3465043` |
+
+Actual renderer receipt `poster-final-print-20260912T133736Z/render-receipt.json` binds inputbf086859,
+RENDERED at13:37:37.2976341–13:37:40.4817557UTC, with no font additions/removals. A owns the renderer;
+D independently reads that receipt and checks the resulting image. `corrected-print-retest.json`
+records D083's exact review and limitations.
+
+- **D-POSTER-001 PASSED/CLOSED for this corrected package:** all three captions match the selected
+  states; “permanent” is absent from actual editable-master OOXML and corrected PNG. The Parent
+  caption describes prepared guidance and Parent acceptance/review/choice. No completion is
+  falsely pictured by the approved ready-to-choose Salem task.
+- **D-POSTER-002 PASSED/CLOSED for outlined PRINT delivery only:** the actual PNG restores intended
+  sans headline/Latin branding, Arabic letterforms and body/caption typography. PRINT uses outlined
+  vector letters with a PNG fallback. It has no editable text; the editable master remains separate.
+  **Editable-master font portability is still unpassed.** This is a delivery workaround, not a claim
+  that font embedding was repaired. The failed original final/** artifacts remain preserved.
+
+At the inspected full-slide digital scale, major headings/captions and browser/synthetic,
+prepared/local/fallible-AI and symbolic/no-measured-impact labels are readable without observed
+new overlap or clipping. Physical print and fine screenshot-text legibility remain NOT RUN.
+A's separate packaging review owns vector/ZIP/font/PDF-dimension checks; D does not duplicate or
+inherit that check as visual evidence. User/team contact values remain only in A's ignored output.
+
+**Integration verdict:** D's corrected PRINT poster visual/caption/identity boundary is PASSED and
+ready for A's file handoff. Exact runtime98be865 has attributed passing static/full tests and the
+bounded source/browser evidence above. This does not establish full application/native acceptance.
+There is still no APK; B's guarded build stopped75 with raw Gradle terminal code unrecorded. The
+last selected tablet transport was unauthorized, with no inspected Android model/OS/ABI/package,
+installation or native journey. Primary/secondary phones, TalkBack/IME/Back/font scaling/audio,
+cold-start/offline physical behavior and human rehearsal remain BLOCKED/NOT RUN,0/10. Recovery014
+is deferred; process-local progress loss and signed-out fresh demo restart stay explicit. Historical
+collector46 synthetic checks and transaction76 tests retain their original scope; they were not rerun.
+
+The existing student Q&A/device scripts remain prepared, with actual student answers/teach-back and
+named human review PENDING. Qualification is confirmed only with attribution to A197's supplied
+email review, not D inspection. No push, submission, public release, source fix or device operation
+was performed by D. Completed report/evidence/helper allocations can release; retain only canonical
+status ownership until A's checkpoint and A-retained ADB15824. Next native work requires A's exact
+candidate/build/hash/resource handoff plus actual authorized target transport; no active B producer
+or current native grant remains. Missing hardware does not hold these completed poster files.
