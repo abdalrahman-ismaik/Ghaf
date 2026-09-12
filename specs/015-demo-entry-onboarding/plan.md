@@ -164,3 +164,7 @@ contract; it must preserve native reader gating, foreground checks and session r
 Web uses explicit-user-intent permission without asserting a screen-reader value. Inspect actual
 HTML media playback and cancelled seeks, using the sole existing preview/browser lane. Run focused
 regressions, source checks, then one full suite for the integrated candidate. No new library/tool.
+
+## User-selected six-page restoration — September 12
+
+Implement [the six-page restoration contract](contracts/six-page-restoration.md) with existing Expo/Tamagui components, assets and local narrator; no new library. A owns shared composition; helper entry-screen ownership is disjoint.

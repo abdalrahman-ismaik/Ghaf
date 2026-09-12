@@ -87,3 +87,10 @@ stages live coordination after a brief status-write pause/ACK. No push/main merg
 - [x] T019 Enable explicit browser Arabic narration while preserving native/accessibility guards.
 - [x] T020 Run meaningful fresh/handoff/three-page/audio/browser and full candidate checks; record
       exact source, real media-clock/cancellation and remaining native/human gates.
+
+## User-selected six-page restoration — September 12
+
+- [ ] T021 A: Commit the selected six-page restoration contract and reference mapping.
+- [ ] T022 A/helper: Restore six-page visual story and clear full-width demo entry.
+- [ ] T023 A: Verify six-step navigation, exact three-clip mapping, bilingual layout and role isolation.
+- [ ] T024 A: Independent visual review, final checks, evidence and student/native review handoff.

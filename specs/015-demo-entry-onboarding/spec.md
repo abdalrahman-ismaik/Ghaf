@@ -226,3 +226,7 @@ ordinary access remains unchanged; nonzero-epoch handoff avoids re-onboarding; A
 advances the actual media clock, Stop/step/locale/navigation leave no playback, no initial audio;
 English explains Arabic-only audio; narrow and enlarged layouts retain full text and controls.
 Actual student/native review remains pending. Poster artifacts remain frozen to their recorded source.
+
+## User-selected six-page restoration — September 12
+
+User-selected six-page restoration supersedes the earlier three-page presentation; see [exact contract](contracts/six-page-restoration.md). All demo authority and normal access invariants remain.
