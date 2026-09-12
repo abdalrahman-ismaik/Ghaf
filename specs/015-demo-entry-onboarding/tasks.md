@@ -21,7 +21,7 @@ B/C/D roles are actual separate leads, with one helper each and serialized heavy
 - [ ] T006 B [US1]: Implement only src/features/access/demoEntry.ts and tests/demo-entry-adapter.test.ts against committed contract; canonical two-Child record, narrowed ports, generation/epoch, synchronous transaction and retry; no store/route import.
 - [ ] T007 A [US1]: Integrate lazy adapter and single successful store commit in src/state/usePrototypeStore.ts; bypass ordinary restoration in demo; cover real guarded actions in tests/demo-entry-store.test.ts.
 - [ ] T008 A [US2]: Integrate entry epoch, sign-out/current-run retention, demo temporary-Parent CTA semantics and reset-failure latch in src/state/usePrototypeStore.ts; tests/demo-entry-store.test.ts covers stale callbacks, successful reset, first/middle/last failures and fresh-process recovery.
-- [ ] T009 A [US1]: Route demo welcome through app/index.tsx and new app/access/_layout.tsx; preserve ordinary/role layouts. Use fresh-root navigation in existing settings callers if required. Prove route/deep-link/Back guards in tests/demo-entry-routes.test.tsx; no ordinary credential bypass.
+- [ ] T009 A [US1]: Route demo welcome through app/index.tsx and new app/access/_layout.tsx; preserve ordinary/role layouts. Use fresh-root navigation in existing settings callers if required. In app/_layout.tsx omit only demo artificial splash/loading holds, keeping actual readiness/fallback; in src/components/audio/AmbientAudioProvider.tsx gate signed-out demo ambience. Prove route/deep-link/Back guards in tests/demo-entry-routes.test.tsx; no ordinary credential bypass.
 
 ## Phase 3 — US3: Optional botanical onboarding
 

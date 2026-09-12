@@ -143,6 +143,8 @@ The epoch is distinct from runGeneration: it invalidates captured old-selector c
 a later sign-out within the same run, without reseeding progression. Publish errors without making
 partially restored controller views visible.
 
+A additionally owns app/_layout.tsx for zero artificial splash/loading hold in demo (actual font/image readiness and existing failure fallbacks remain); ordinary timing is unchanged. A owns src/components/audio/AmbientAudioProvider.tsx to suppress ambience whenever demo is signed out or reset-failed, including story after a prior Parent enabled sound. This implements already selected fast/silent entry, with no new audio provider or asset.
+
 The welcome route uses the demo selector before the ordinary FirstRunOnboarding branch in demo
 configuration. Active authorized roles still redirect to their own home. Guard `/access` ordinary
 setup/sign-in/pairing routes back to signed-out demo entry in demo mode. Authenticated Parent/Child
