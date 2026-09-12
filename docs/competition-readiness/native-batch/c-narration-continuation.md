@@ -1,13 +1,15 @@
 # Session C — approved narration and playback continuation
 
-Resume Ghaf Session C in `/home/smyk/projects/Ghaf-ui-studio`, branch
-`redesign/native-ui-20260912`. Use GPT-6 Astra, Ultra reasoning and Fast where available;
+Resume Ghaf Session C in `/home/smyk/projects/Ghaf-ui-studio`. A186 authorizes the clean transition
+to `redesign/narration-ui-20260912` at `fa9821c68eb80985b690f5551fee08c7c9cdcd33`, preserving the old
+`redesign/native-ui-20260912` branch. Inspect the actual current branch before any switch; never
+repeat a completed synchronization or overwrite newer work. Use GPT-6 Astra, Ultra reasoning and Fast where available;
 record actual settings and uncertainty. Retain the four-lead arrangement and configured ten-slot
 capacity; your active allocation is one helper, not ten workloads. You are not alone: preserve
 other edits and follow exact ownership and resource grants.
 
-The user confirmed this C session stopped after clean report commit
-`5dca31234e097ed9dfbcf05d26ee96f5c8b297d0`. Reconcile actual Git/status/worktrees/jobs before writing;
+The user originally confirmed C stopped after report `5dca312`; C then resumed, completed C-N06
+at `c91f95e` and acknowledged A186/T014b in C070. Reconcile actual Git/status/worktrees/jobs before writing;
 never reset, stash, or overwrite a moved tree. Continue the same truthful instance or record a new
 resume instance. Read repository instructions, canonical Feature015 spec/plan/tasks/contracts and
 canonical coordination BOARD/STATUS-A/B/C/D under `/home/smyk/projects/Ghaf/`; worker checkout
@@ -15,6 +17,13 @@ copies are historical. Read A170–173 and subsequent live grants. A alone write
 you alone write STATUS-C. Files do not wake stopped sessions.
 
 ## Facts already accepted
+
+Current next task: continue A186's adapter/presentation implementation and A183's ignored mounted
+harness preparation. Accepted contract40a6299 and preparationfa9821c already exist. C-N06 rights
+research is complete; do not repeat it. A188 explicitly grants the durable report
+`docs/competition-readiness/workstreams/c-native-ui.md`. Full TypeScript validation remains
+pending after A's bounded768MiB attempt exhausted its heap; do not claim a source error or pass.
+Read the latest build/resource grant before any check, browser, Metro or native operation.
 
 All three exact Wiam clips have the user's approval for complete wording, pronunciation and
 delivery. The user reported ElevenLabs Multilingual v2. Their new answer to A is **Free plan** at
@@ -29,12 +38,13 @@ that baseline build must continue without your runtime or toolchain changes. Nat
 student exact-diff understanding and public output rights remain separate from listening approval.
 Recovery014 stays deferred; all eight R002b and three live-AI flags remain off.
 
-## C-N06 — READY under A173
+## C-N06 — completed history, reuse c91f95e
 
-Own only `docs/competition-readiness/workstreams/c-product-refinement.md`, ignored
+The original A173 boundary was only `docs/competition-readiness/workstreams/c-product-refinement.md`, ignored
 `output/native-ui/narration-research/**`, and canonical STATUS-C for this initial task.
 
-Read official ElevenLabs terms/help/license documentation for outputs generated on the Free plan.
+The completed task read official ElevenLabs terms/help/license documentation for Free-plan output.
+Reuse its report and original receipts; the following records that task's original acceptance scope.
 Prepare a concise dated source-backed disposition for: local internal evaluation, a competition
 video or public demonstration, downloadable APK redistribution, required attribution and whether
 any later plan change affects previously generated files. Distinguish directly stated terms from
@@ -53,16 +63,16 @@ Make a cohesive report-only commit after proportional formatting/diff checks. Re
 request, sources, findings, rejected claims, generated contribution and human-review status.
 Publish the commit and explicit path/helper release to A; do not fabricate a native listening result.
 
-## C-N07 / T014b — proceed only after its exact live grant
+## C-N07 / T014b — READY under A186, acknowledge current state
 
 The concrete proposal is canonical
 `specs/015-demo-entry-onboarding/contracts/demo-narration-v1.md`, with ordered T014 tasks.
-It is under D technical review. A will commit the accepted contract and publish the controller,
-assets and shared typed/copy/caller boundaries before issuing your clean synchronization and exact
-source grant. A173 is not that runtime grant. Read the resulting committed contract, not an older
-prompt's tentative ownership. Do not self-cherry-pick arbitrary newer commits or reset your tree.
+It passed D063's bounded technical review and is committed as40a6299. A published controller,
+assets and coherent shared types/copy/callers atfa9821c and issued exact synchronization/source
+grant A186. Use that grant and subsequent corrections, not A173 or an older prompt's tentative
+ownership. Do not self-cherry-pick arbitrary newer commits or reset your tree.
 
-When A grants T014b, implement only its exact released presentation/hook/source-map/test files.
+Implement only A186's exact released presentation/hook/source-map/test files.
 Retain Tamagui, Alexandria/Readex, logical RTL, existing artwork and full visible text. Default to
 silence; expose clear Play/Stop/Replay controls. Use only the three accepted Arabic clips permitted
 by the recorded disposition. English remains complete and silent until separately reviewed audio
