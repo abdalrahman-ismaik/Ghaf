@@ -231,3 +231,39 @@ One follow-up READ-ONLY diff review under same one-helper budget, no writes/desc
 ```
 
 Helper released all scopes/jobs; B accepted its missing-report finding. Human/student review remains pending. Ordinary e02d02b runtime, config and package versions are unchanged by this phase.
+
+## B-N03 — First actual manifest attempt stopped by resource guard
+
+Source `e02d02b`, B build HEAD `6b5d9ac808080d0ea2d26068beb853e9c5f127dc`, script SHA-256 `c9f17ca2b37f4d4d4956c834f506a556be1cc08a2a127dae376b57d31828b647`. Invocation used the documented paths plus `--manifest-only --heavy-slot-ack A049-board28 --metro-release-ack A046 --sdk-license-ack A045`.
+
+Receipt `output/native-build/20260912T013553Z-manifest.wje3YH/receipt.txt` records 2026-09-12 01:35:52–01:43:50 UTC, **exit75/resource stop**. Installed Expo prebuild passed at01:36:06. Only package.json android/ios changed from `expo start --android` / `expo start --ios` to `expo run:android` / `expo run:ios`; exact `package.prebuild.diff` remains for A, unstaged. No lockfile/appconfig/dependency version changed. Fresh Android generation and source/native inventory marker passed. The wrapper verified Gradle9.3.1; project configuration reported SDK36, BuildTools36.0.0, NDK27.1.12297006 and CMake3.30.5. This establishes configuration progress, not a successful native build.
+
+The real manifest task graph invoked `:app:createBundleReleaseJsAndAssets`, so its own Metro bundler ran as a dependency. This was not an external preview. Three consecutive5-second samples showed paging4710/1147/8997 pages and available memory1754532/1717236/1491240KiB. The conservative monitor stopped the wrapper and returned75, retaining `19-gradle-manifest.log` and `resources.log`. There is **no merged release manifest or APK** to approve or hand D yet. No identical attempt was silently rerun with weaker thresholds.
+
+Observed process identities were shell397538, wrapper398356, separate-group single-use Gradle daemon398652 and bundler411415. Despite `--no-daemon`, Gradle used a daemon configured to stop after this build. All three captured descendant PIDs were absent after exit, recorded in `observed-processes-after-exit.json`; no B native process remains. B released the heavy slot and requested A's next resource/source decision. Suggested smaller individual heap budgets remain a proposal, not an applied change. Generated Android, verified caches and the transient package diff remain held for authorized recovery.
+
+### Cleanup repair after the stopped run
+
+Actual observation showed that group-only signaling does not cover Gradle's separate daemon group. After the run ended, B replaced it with a private receipt of boot/PID/start identities, initial launching-parent verification, descendant refresh before/during termination and Linux pidfd signaling. It never signals an unrelated process group. Empty/unproven ownership fails closed. Original nonzero Gradle exit wins if cleanup also fails; both statuses are logged. This correction is within A049/A055 script maintenance and changes no app source.
+
+Host evidence in `output/native-build/process-guard-check/` and `process-guard-check-v2/` covers an owned separate-group child, unrelated process preservation, stale PID-start and wrong-boot rejection, a child spawned during TERM, empty receipts and an unowned initial parent. Four exact completion-block fixtures prove Gradle37/cleanup9→37,0/9→9,37/0→37 and0/0→0. These are synthetic process/exit tests, not APK or Android acceptance. Helper review found three candidate defects (late descendants, initial ownership and overwritten error code); B accepted and corrected all three before source adoption. The executing script was never edited mid-run.
+
+Actual cleanup-review prompt:
+
+```text
+READ-ONLY final bounded cleanup review; one B helper, no writes/descendants/jobs/tests. Actual manifest run still executing script6b5d9ac; do not touch source. Observed Gradle --no-daemon spawns single-use daemon PID398652 with separatePGID398652, parent wrapper398356/PGID398356, so group-only cleanup is incomplete. Lead prepared output/native-build/build-apk-candidate.sh containing owned_processes Python boot/PID/start+pidfd descendant capture/stop, called before/during compile, on pressure, completion and EXIT; exact implementation extracted draft output/native-build/process-guard.py passed synthetic separate-group child/unrelated process/stale-start/wrong-boot cases. Review candidate delta versus current script for concrete cleanup/exit-status risks; propose narrow corrections, no broader design. Lead monitors live native run and A messages. Guard may only signal descendants captured from its own launched root, never other lead/user jobs. Helper findings and actual prompt go report; source will be changed only after current run ends.
+```
+
+### Parallel read-only adapter intake
+
+Accepted015 contract293d351 was read without source synchronization during native work. Explorer `/root/demo_family_map` identified production constructors, receipt conversion and public controller postconditions; no adapter code or test was generated. A055 resolved the existing spelling discrepancy: the new demo uses `علياء / Alya`, leaving ordinary data unchanged. Construction uses the existing two-Child defaults, a role-only guardian label and canonical production schema/receipt functions. Source work still needs B-N05's exact grant and T005 foundation. Student review remains pending.
+
+Actual explorer prompt:
+
+```text
+Session B one-helper allocation, READ ONLY, no descendants/writes/coordination/tests/builds. You are not alone; preserve others' edits. B native Gradle manifest job runs in /home/smyk/projects/Ghaf-demo-systems at6b5d9ac runtimee02d02b; do not modify source there. A accepted Feature015 contract commit293d351 at /home/smyk/projects/Ghaf/specs/015-demo-entry-onboarding/contracts/demo-entry-v1.md, but B-N05 runtime grant pending. Specific bounded code question: identify exact existing canonical synthetic family/profile defaults and production schema/receipt constructors B should use to implement createCanonicalDemoFamily(now), without importing test helpers or adding credentials; identify runtime validation fields for Parent/Child resume handoff postconditions from their public view types. Read only src/models/localFamily.ts, src/services/local/repository.ts, src/features/access/{parentOnboarding,childAccess.ts}, existing fixture/model profile modules as needed. A helper owns controller transaction work; do not audit/reimplement it or registry/store integration. Return exact file/symbol refs and minimal construction/validation recipe, any concrete contract gap; no generated module or suggested new behavior. Lead monitors native evidence and report concurrently. Requested Astra/ultra explicit; Fast not exposed. Release allocation on completion.
+```
+
+Both helpers explicitly released their allocations; no descendant/helper job remains. Baseline APK, later demo-mode APK, physical primary/secondary validation, Arabic listening and student exact-diff acceptance remain **NOT RUN/PENDING**. Recovery014 remains deferred.
+
+Final cleanup source verification: Bash syntax, all11 embedded Python blocks, help and actual full12-step preflight passed. Exact preflight receipt `output/native-build/20260912T014519Z-preflight.IMMGNG/receipt.txt`, UTC01:45:17–01:45:21, exit0; script SHA-256 `3ca7626b6793768365b4ed0845b132814a35be0f481e254a5b7e79d019718ce3`. No new generation/compile occurred. The preserved two-script package delta is excluded from this commit. A057 has now published T005/exact B-N05 grant; adapter implementation follows source sync, independently of the stopped baseline build.

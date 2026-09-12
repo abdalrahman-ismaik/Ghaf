@@ -53,7 +53,8 @@ generation of the owned android tree. The script never archives or cleans it its
 Build resource policy: one process group on two allowed CPUs, two Gradle workers,
 no parallel Gradle,
 2 GiB Java heap / 512 MiB metaspace, 1536 MiB Node heap and two CMake jobs.
-These are individual limits, NOT a total memory cap. The group is stopped on low
+These are individual limits, NOT a total memory cap. Owned descendants are tracked
+by boot/PID/start identity, including separate daemon groups, and stopped on low
 available memory, sustained paging or low disk; logs and generated files remain.
 Receipts retain UTC step times, exit codes, config, package diff, tool identities,
 APK hash/certificate/ABIs/merged manifest and bundle inventory. Successful artifact
@@ -61,19 +62,79 @@ inspection does not establish physical-device or human acceptance.
 HELP
 }
 
+owned_processes() {
+  python3 - "$1" "$CHILD_PID" "$RUN/owned-processes.json" <<'PYPROCESSES'
+import json, os, pathlib, signal, sys, time
+mode, root_raw, file_raw = sys.argv[1:]
+root, path = int(root_raw), pathlib.Path(file_raw)
+boot = pathlib.Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+def identity(pid):
+    try:
+        parts = pathlib.Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()
+        return {'pid': pid, 'parent': int(parts[1]), 'start': parts[19], 'state': parts[0]}
+    except (FileNotFoundError, ProcessLookupError, PermissionError):
+        return None
+record = json.loads(path.read_text()) if path.exists() else {'boot': boot, 'root': root, 'processes': []}
+if record['boot'] != boot or record['root'] != root:
+    sys.exit('BLOCKED: owned process receipt identity differs; no signals sent.')
+known = {p['pid']: p for p in record['processes']}
+def refresh(adopt=False):
+    live = {int(p.name): identity(int(p.name)) for p in pathlib.Path('/proc').iterdir() if p.name.isdecimal()}
+    live = {pid: row for pid, row in live.items() if row is not None}
+    owned = {pid for pid, old in known.items() if pid in live and live[pid]['start'] == old['start']}
+    if not known and adopt:
+        if root not in live or live[root]['parent'] != os.getppid():
+            sys.exit('BLOCKED: initial process root is not a live child of this launcher; no ownership adopted.')
+        owned.add(root)
+    while True:
+        added = {pid for pid, row in live.items() if row['parent'] in owned} - owned
+        if not added: break
+        owned |= added
+    for pid in owned:
+        known[pid] = live[pid]
+    record['processes'] = list(known.values())
+    temp = path.with_suffix('.tmp')
+    temp.write_text(json.dumps(record, indent=2) + '\n')
+    temp.replace(path)
+if mode == 'capture':
+    refresh(adopt=True)
+elif mode == 'stop':
+    if not known:
+        sys.exit('BLOCKED: no captured owned process identity; cleanup requires operator inspection.')
+    if not hasattr(os, 'pidfd_open') or not hasattr(signal, 'pidfd_send_signal'):
+        sys.exit('BLOCKED: Linux pidfd signaling unavailable; inspect recorded owned PIDs.')
+    def alive(row):
+        current = identity(row['pid'])
+        return current is not None and current['start'] == row['start'] and current['state'] != 'Z'
+    for sig, pause in [(signal.SIGTERM, 2), (signal.SIGKILL, .2)]:
+        refresh()
+        for row in reversed(list(known.values())):
+            if not alive(row): continue
+            try:
+                fd = os.pidfd_open(row['pid'])
+                try:
+                    if alive(row): signal.pidfd_send_signal(fd, sig)
+                finally: os.close(fd)
+            except ProcessLookupError: pass
+        time.sleep(pause)
+    refresh()
+    remaining = [row['pid'] for row in known.values() if alive(row)]
+    if remaining: sys.exit('BLOCKED: owned processes still alive: ' + str(remaining))
+else:
+    sys.exit('Unknown process receipt operation')
+PYPROCESSES
+}
+
 finish() {
   local status=$?
   trap - EXIT INT TERM
   if [[ -n "$CHILD_PID" ]]; then
-    local child_group
-    child_group=$(ps -o pgid= -p "$CHILD_PID" | tr -d ' ') || true
-    if [[ "$child_group" == "$CHILD_PID" ]]; then
-      kill -TERM -- "-$CHILD_PID" 2>/dev/null || true
-      sleep 2
-      kill -KILL -- "-$CHILD_PID" 2>/dev/null || true
+    owned_processes capture || true
+    if owned_processes stop; then
       wait "$CHILD_PID" 2>/dev/null || true
     else
-      printf 'Owned build PID %s requires operator inspection; process group not verified.\n' "$CHILD_PID" >&2
+      printf 'Owned descendant cleanup failed; inspect the PID receipt.\n' >&2
+      [[ "$status" != 0 ]] || status=1
     fi
   fi
   printf 'END utc=%s mode=%s exit=%s started=%s\n' "$(date -u +%FT%TZ)" "$MODE" "$status" "$STARTED"
@@ -252,6 +313,7 @@ if any(p.name != '.env.example' for p in root.glob('.env*')):
 PY
 }
 step input-identity check_inputs
+step process-control python3 -c 'import os, signal, sys; sys.exit(0 if hasattr(os, "pidfd_open") and hasattr(signal, "pidfd_send_signal") else "Linux pidfd support required for safe owned-process cleanup")'
 
 readonly EXPO="$ROOT/node_modules/expo/bin/cli"
 readonly TEMPLATE="$ROOT/node_modules/expo/template.tgz"
@@ -416,7 +478,7 @@ GRADLE_TASK=:app:assembleRelease
 [[ "$MODE" != manifest ]] || GRADLE_TASK=:app:processReleaseMainManifest
 
 compile() {
-  local status=0 pressure=0 previous_swap=0 pid_pgid
+  local status=0 pressure=0 previous_swap=0
   local cpu_set
   cpu_set=$(python3 -c 'import os; print(",".join(map(str, sorted(os.sched_getaffinity(0))[:2])))') || return $?
   printf 'build_cpu_affinity=%s\n' "$cpu_set" >> "$RUN/receipt.txt"
@@ -428,8 +490,10 @@ compile() {
       "-Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp"
   ) &
   CHILD_PID=$!
-  printf 'owned_process_group=%s\n' "$CHILD_PID" >> "$RUN/receipt.txt"
+  printf 'owned_process_root=%s\n' "$CHILD_PID" >> "$RUN/receipt.txt"
+  owned_processes capture || return $?
   while kill -0 "$CHILD_PID" 2>/dev/null; do
+    owned_processes capture || return $?
     local available total swap free swap_delta
     read -r total available < <(awk '/^MemTotal:/ {t=$2} /^MemAvailable:/ {a=$2} END {print t,a}' /proc/meminfo)
     swap=$(awk '/^pswpin / {i=$2} /^pswpout / {o=$2} END {print i+o}' /proc/vmstat)
@@ -439,12 +503,9 @@ compile() {
     if ((available * 100 < total * 15 || swap_delta > 1024)); then pressure=$((pressure + 1)); else pressure=0; fi
     previous_swap=$swap
     if ((pressure >= 3 || free < 5 * 1024 * 1024)); then
-      printf 'Resource stop: owned build group only; no other process is terminated.\n' >&2
-      pid_pgid=$(ps -o pgid= -p "$CHILD_PID" | tr -d ' ') || true
-      [[ "$pid_pgid" == "$CHILD_PID" ]] || fail 'Cannot verify owned build group; operator must inspect recorded PID.'
-      kill -TERM -- "-$CHILD_PID" 2>/dev/null || true
-      sleep 5
-      kill -KILL -- "-$CHILD_PID" 2>/dev/null || true
+      printf 'Resource stop: recorded owned descendants only; unrelated processes are preserved.\n' >&2
+      owned_processes capture || return $?
+      owned_processes stop || return $?
       wait "$CHILD_PID" || true
       CHILD_PID=
       return 75
@@ -452,6 +513,13 @@ compile() {
     sleep 5
   done
   wait "$CHILD_PID" || status=$?
+  local cleanup_status=0
+  owned_processes stop || cleanup_status=$?
+  printf 'gradle_exit=%s cleanup_exit=%s\n' "$status" "$cleanup_status" >> "$RUN/receipt.txt"
+  if [[ "$cleanup_status" != 0 ]]; then
+    [[ "$status" != 0 ]] || status=$cleanup_status
+    return "$status"
+  fi
   CHILD_PID=
   return "$status"
 }
