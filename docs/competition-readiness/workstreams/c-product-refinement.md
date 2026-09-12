@@ -287,3 +287,98 @@ Exact follow-up prompt:
 ```text
 C-N01 read-only allocation released; reuse same one C r25 slot for independent script/props review. READ ONLY, no writes/coordination/browser/tests/jobs/descendants; preserve others. Exact target /home/smyk/projects/Ghaf-ui-studio/docs/competition-readiness/workstreams/c-product-refinement.md C-N04 storyboard + six proposed body transcripts only (not optional reciprocal proposal). Compare canonical /home/smyk/projects/Ghaf/docs/competition-readiness/native-batch/entry-onboarding-contract.md selected intent. Check bilingual semantic parity, safety/Parent approval, full permitted-help credit vs smaller-before-acceptance, prepared/fallible AI, symbolic-growth/restart truth, three-profile exclusivity and visible-vs-spoken parity. Flag concrete missing/misleading claims or ambiguous component state/callback interfaces to A. Do NOT represent your review as named human Arabic/cultural/listening approval; no clip exists. Do not redo access/audio service audit or D's spec/privacy review. Lead concurrently formats/commits C-N01 checklist then aligns proposed components with A's emerging015 draft. Return focused findings/release; exact prompt will be logged.
 ```
+
+## User-delegated Arabic editorial review — C-N04 revision 1
+
+Review recorded at 2026-09-12 01:49:20 UTC. The user replied:
+
+> the text you can review it and the recordings I can hear it by my self and determine if its good enough
+
+This supersedes the earlier requirement to find a separate human text reviewer for this selected
+script packet. **AI Arabic/English editorial review: PASSED for the revision below.** Reviewer:
+Session C/Codex, instance `C-20260912T011718Z-root`; this is explicitly AI review, not named human
+participation. The **user is the voice-quality decision-maker**, name unspecified. Listening
+acceptance is still **PENDING** because no replacement recording has been generated or heard.
+A's resource integration and exact asset/lifecycle grant remain separate boundaries. Earlier draft
+text and pending-review records above are historical, not deleted or presented as human approval.
+
+The review checked ordinary MSA grammar, a speakable sentence structure, action-focused praise,
+Parent approval, smaller-task timing, full permitted-help credit, prepared/fallible AI, adult help,
+private symbolic growth and restart truth. It makes no cognition/family-outcome claim. No dialect,
+religious phrase, personal-character judgment or new task behavior was introduced.
+
+| Observed wording issue                                                            | Editorial decision                                                             | Meaning retained                                                          |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| “يختار الطفل من المهام” is understandable but leaves the chosen object implicit   | Say “يختار الطفل مهمةً وافق عليها وليّ الأمر”                                  | The Child chooses one already approved task                               |
+| “مع إشراف” is less natural here than the direct preposition                       | Use “بإشراف شخص بالغ”                                                          | Adult supervision remains explicit                                        |
+| “نسخة أصغر” is abstract when spoken                                               | Use “مهمة أصغر ليراجعها وليّ الأمر”                                            | Request and Parent review happen before acceptance; no automatic approval |
+| Long help sentence joins prepared AI, fallibility and adult help with a semicolon | Separate prepared/fallible guidance and asking the Parent into short sentences | No live/general assistant or replacement-Parent promise                   |
+| Nested confirmation/recognition clause is hard to follow aloud                    | State confirmation and action appreciation, then Seeds and growth              | Praise/confirmation still precede symbolic growth                         |
+| A 3-moment body script differs from old title+body narration                      | Generate only the exact visible body text                                      | No old audio or hidden spoken sentence is substituted                     |
+
+### Exact reviewed revision for A's bilingual resource patch
+
+The following bodies supersede the draft packet only after A applies them to the canonical
+resources. C does not edit those resources. Titles remain unchanged. Body text, including
+punctuation/diacritics, must be the input to the matching candidate recording; no separate spoken
+paraphrase. The English revision below preserves the same meaning and order.
+
+| Moment   | Arabic body — reviewed revision 1                                                                                                                                                                                                                | Equivalent English body                                                                                                                                                                                                                                                                |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| together | يختار الطفل مهمةً وافق عليها وليّ الأمر. في هذا العرض، يجرّب سالم فرز مواد نظيفة قابلة لإعادة التدوير، بإشراف شخص بالغ.                                                                                                                          | The Child chooses a task already approved by the Parent. In this demo, Salem tries sorting clean recyclable materials with adult supervision.                                                                                                                                          |
+| support  | قبل قبول المهمة، يمكن للطفل طلب مهمة أصغر ليراجعها وليّ الأمر. المساعدة المسموح بها لا تقلّل المكافأة المتفق عليها. إرشادات الذكاء الاصطناعي هنا أمثلة مُعدّة مسبقًا للمهمة المعتمدة، وقد تكون غير دقيقة. يمكن للطفل سؤال وليّ الأمر عند الحاجة. | Before accepting the task, the Child can ask for a smaller task for the Parent to review. Permitted help does not reduce the agreed award. The AI guidance here uses prepared examples for the approved task and may be inaccurate. The Child can ask the Parent when needed.          |
+| growth   | يؤكد وليّ الأمر إكمال المهمة ويقدّر ما أُنجز. بعدها تُضاف البذور، وتنمو الحديقة الخاصة نموًا رمزيًا. هذا النمو لا يعني زراعة أشجار حقيقية أو قياس أثر بيئي. هذا عرض محلي؛ تبدأ تجربة جديدة عند إعادة تشغيل التطبيق.                              | The Parent confirms completion of the task and praises the action. Seeds are then added, and the private garden grows symbolically. This growth does not mean real trees were planted or environmental impact was measured. This demo is local; restarting the app begins a fresh run. |
+
+The user need not approve the same text-review assignment again. A reconciles this exact resource
+patch with the selected contract; the user's later listening decision applies to the actual clips.
+A bad pronunciation, clipped word, rushed pause, mismatched text or robotic delivery is a reason
+to reject a take, even if its MP3 metadata/checksum is valid. Do not normalize pitch/rate afterward
+and call the result the same reviewed take; a changed clip needs its own listening record.
+
+### Available method, proposed candidate and limits
+
+No callable speech-generation tool is exposed to this session. Read-only local checks did not find
+`edge-tts` on PATH, in the checked project/user tool environments, or importable by `python3`.
+No generator was installed or invoked. Existing `ffmpeg` availability is not a voice generator.
+
+Provenance correction: `assets/audio/onboarding/README.md` records Arabic `ar-AE-FatimaNeural`
+(rate+7%, pitch+2Hz) and English `en-US-EmmaMultilingualNeural` (rate+8%, pitch+2Hz), dated2026-09-07;
+it does **not** establish the generating tool/version. `docs/DESIGN_DIRECTION.md` records
+edge-tts7.2.8 for four older Feature002 fixtures; that does not prove the onboarding clips used it.
+The existing README retains voice-quality and asset-rights review as pending.
+
+The [generator's own documentation](https://github.com/rany2/edge-tts) describes an online
+Microsoft Edge TTS client and its voice/rate/pitch controls. This would be **asset preparation before bundling**, requiring connectivity during generation,
+never runtime TTS or in-app networking.
+The output would be bundled only after the applicable acceptance/grant. This source does not
+establish output redistribution permission or actual present service availability.
+
+Proposed first method for A's decision: isolated pinned edge-tts tooling in
+`output/native-ui/narration-tool/**`; exact text/MP3/log/receipt files in
+`output/native-ui/narration-candidates/**`; existing Fatima/Emma voice IDs at **rate+0%, pitch+0Hz**,
+normal volume, no music. This removes the earlier tuning as a comparison variable; it is **not**
+a claim neutral settings sound better. No new voice/person imitation, paid service, account or
+Child recording is proposed. C requests exact tool version/method/path authority through outbox015.
+Candidate clips stay outside runtime assets/imports until actual user listening and A's grant.
+
+Candidate invocation shape after method/tool approval (not executed):
+
+```bash
+edge-tts --voice ar-AE-FatimaNeural --rate=+0% --pitch=+0Hz \
+  --file output/native-ui/narration-candidates/ar-together.txt \
+  --write-media output/native-ui/narration-candidates/ar-together-candidate.mp3
+```
+
+Clip review ledger now: **0 generated, 0 accepted, 0 rejected replacement takes**. User listening
+PENDING, current provider/voice availability NOT RUN, method/output-rights reconciliation PENDING.
+The complete silent UI at931a186 is already released; these audio dependencies do not undo it.
+
+Exact helper prompt for method preparation, `/root/duration_review`, one C allocation:
+
+```text
+New user authorizes C/AI to review Arabic text and says they personally will listen to recordings and decide quality. Bounded read-only method preparation under C's one helper quota; no descendants or writes. Lead reviews Arabic scripts now. Locate the existing narration generation method/provenance and whether its recorded edge-tts7.2.8 tool/environment is already available locally (read assets/audio/onboarding/README.md, docs/DESIGN_DIRECTION.md and narrow repo/tool paths; avoid secrets/private data). Explain minimal candidate-only invocation at neutral rate/pitch using synthetic script, proposed existing voice choices, and what remains unknown about method approval/rights. No network generation, installs, provider/account changes, voice cloning, tests, browser/heavy jobs or source/coordination/report writes. Do not re-audit runtime audio/access services. Return exact evidence paths/available executable, or truthful not found, and release. Worktree /home/smyk/projects/Ghaf-ui-studio. Preserve others' concurrent edits.
+```
+
+Helper corrected the provenance distinction and confirmed only the bounded absence checks. C
+accepted those findings, authored the MSA/English revision and retains review responsibility.
+Helper released with no writes/jobs/descendants; no listening or human approval was inferred.
