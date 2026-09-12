@@ -1,10 +1,11 @@
 # Session B — Repeatable Android build
 
-**B-N01 ready: executable fail-closed build script and safe validation; private dependencies and pinned tools provisioned. No APK or native pass yet.**
+**Current: build script, private tools and Feature 015 demo adapter released; A087 resource-guard correction ready for review. No merged manifest, APK or native pass yet.**
 
-This batch owns build tooling and a later separately granted demo-access adapter. Recovery 014 is
-deferred. The requested three-principal entry is awaiting A's committed Feature 015 contract and
-exact module/test grants; no access behavior is implemented by this report.
+The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
+attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
+permits a bounded script correction, with a single retry requiring A's subsequent reviewed grant.
+Recovery 014 remains deferred. Earlier sections below are historical checkpoints.
 
 ## Identity and authority
 
@@ -607,3 +608,119 @@ check or resource guard fails. Today the application source passed its checks, b
 validating a standalone APK is still blocked at native build execution. Primary/secondary Android,
 process death, offline launch, physical accessibility, actual rehearsals and student acceptance
 remain NOT RUN/PENDING; no artifact path/hash can yet be handed to D as an installable result.
+
+## A087 — Correlate sustained paging with available memory
+
+Authority is canonical A-20260911T2220Z-087, board39, issued at02:29:53UTC. This operational
+correction changes only the script and this report; runtime remains
+`5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`, on B baseline
+`c0e847fb1e6a31c68b3241504baeb298e2285cff`. It is not a new application behavior or recovery story.
+The actual CaPVjg failure above remains exit75. Its summed counters cannot establish paging
+source or direction, and post-stop PSI is not evidence of exact during-run pressure.
+
+The revised policy is recorded as `memory-correlated-paging-v2` in both the run receipt and each
+JSON resource sample:
+
+| Boundary                | Result                                                                                                           |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Start                   | Unchanged: available memory at least3GiB AND40%; existing disk/headroom checks retained                          |
+| Runtime critical memory | Below15% available stops on that sample, independent of paging                                                   |
+| Runtime critical disk   | Below5GiB free stops on that sample, independent of paging                                                       |
+| Sustained paging        | Sum of swap-in/out deltas exceeds1024 pages AND available memory below30%, for three consecutive5-second samples |
+| Recovery                | Either paging or memory recovery resets the consecutive count                                                    |
+| Invalid essential data  | Missing, malformed, inconsistent or decreasing counters fail closed with exit1                                   |
+| Optional memory PSI     | Preserve readable raw text, otherwise explicitly record unavailable; no PSI threshold selected                   |
+
+Gradle1536MiB heap/512MiB metaspace, Node1024MiB, Gradle/CMake/Metro1, two CPUs and all source,
+mode, dependency, tool, signing and generation guards are unchanged. No kernel, WSL, swappiness,
+host service, cache-clearing or capacity change was made. A policy stop retains exit75 and uses
+the same identity-bound descendant cleanup. These per-process limits still are not a total cap.
+
+Samples now record separate cumulative and interval swap-in/out values, their summed delta,
+swap used/free, available memory percentage, consecutive count, UTC, PSI and the actual stop
+reason. A first sample records its counter baseline explicitly instead of inventing paging before
+observation. Essential values reject booleans, negative/missing/non-integer inputs and inconsistent
+memory/swap totals. Existing corrupt/non-object state or a state file disappearing after an
+already logged sample fails closed instead of forgetting the streak. The Linux kernel documents
+memory PSI's `some` and `full` stall measures and their time windows; the script retains the raw
+observation without treating it as an attribution or capacity benchmark.
+[Kernel PSI documentation](https://docs.kernel.org/accounting/psi.html).
+
+### Focused evidence and generation reuse
+
+The helper extracted and executed the exact `PYRESOURCE` block with mocked input; it did not run
+Gradle or the app. A first31-case run had30 passes and one failure: existing JSON `null` was being
+accepted as a fresh baseline. Lead corrected the wrapper to reject it, and added rejection when
+previous state disappears after a resource log exists. The original failure remains in
+`output/native-build/script-checks/resource-v2/red-null-state-results.json` and
+`red-null-state-tests.log`, with draft scriptSHA
+`d0a013547464c612f4353632e086ef6b819342a5df5c2e5feda30370d09996e8`.
+
+The33-case follow-up passed exit0 at02:37:15.529382–02:37:15.568732UTC. The final34-case run
+also tests disappearance after a valid sample and passed exit0 at02:38:56.504051–02:38:56.531379UTC.
+It covers exact thresholds,
+high-headroom paging, the third correlated sample, both recovery conditions, independent first-sample
+memory/disk stops, every essential field, malformed prior state, decreasing counters, mocked
+status/logging and optional PSI absence/unreadable/empty/readable text. Old CaPVjg replay preserves
+its actual summed values but uses explicitly synthetic all-in/all-out splits; those splits are not
+new observations of that failed build. Evidence and exact command are in
+`output/native-build/script-checks/resource-v2/policy-results.json` and `policy-tests.log`.
+The exact final scriptSHA is
+`7c2a2c8da6081586d6182232948a512615c242e67024655063f85487db9abfcf`.
+
+Lead ran one non-heavy real host sample at02:33:45.709096UTC: available4250572/7829152KiB
+(54.292%), swap used1665568/free431584KiB, initial counter deltas0 and readable PSI. It returned0;
+this idle single sample does not demonstrate native capacity. The check preceded the null-state
+wrapper correction and is not claimed as final-script whole-run evidence. Receipt:
+`output/native-build/resource-policy-host-check/{receipt.json,resources.log,command.log}`.
+
+The exact current generation verifier passed against the retained Android tree, and its generated
+receipt is byte-equal to the prior A083 marker. Evidence:
+`output/native-build/resource-policy-host-check/{generation-verify.py,generation-verify.log,generation.json}`.
+MarkerSHA remains `aeb76360f7f42cb5149163235e792489ddc6c16419eea80cc07d1e0919ce447b`.
+Source5d8a3e8, demo mode, Metro1 and all native source hashes are unchanged; this script-only
+correction requires no prebuild or cleanup. The start-check, generation-identity and owned-process
+functions are byte-unchanged from baseline. Helper independently confirmed full owned-process
+functionSHA `18a0689663c5fce0edfc4614392a59fae36ba56f25c4ad83136e171aa98c68fc` on both sides.
+Existing archive, current Android tree and the two authorized package-script changes are retained.
+Package.json must not be included in this script/report commit.
+
+### Assistance, decisions and pending acceptance
+
+Lead generated the bounded policy sampler/integration and reviewed the helper's cases/results.
+The helper generated only ignored test/evidence files and reviewed the narrow diff; no app, native,
+preview, descendants or coordination writes. Requested/observable settings remain as recorded
+above: helper launch Astra/ultra, serving tier unexposed; root config Astra/xhigh/fast does not prove
+root served Ultra/Fast. Student owner, exact-diff understanding and human acceptance remain PENDING.
+No suggestion to remove safeguards, increase heaps, infer harmless paging, reset generation,
+re-run the full app suite or claim an APK from prebuild was accepted. The null-state finding was
+accepted and fixed; optional PSI absence was intentionally kept distinct from essential failures.
+
+Actual helper prompts, including follow-ups:
+
+```text
+A087 new bounded guard correction; one B helper. You own ONLY /home/smyk/projects/Ghaf-demo-systems/output/native-build/script-checks/resource-v2/** (ignored synthetic test runner/evidence). You are not alone; preserve source/package/native/report edits, no tracked files/coordination/descendants/Gradle/preview/fullsuite/commits. Lead owns scripts/native/build-apk.sh + report. Current HEADc0e847fb1e6a31c68b3241504baeb298e2285cff, package only permitted twofielddiff retained, oldmanifestCaPVjg stopped75 highheadroompaging. New policy exactly A087 liveSTATUS-A: unchangedstart3GiB AND40%; critical<15% immediate; disk<5GiB immediate; summedpagingdelta>1024 AND avail<30% for3consecutive5s; recoveryresetsstreak; missinginvalidessentialmemory/disk/swapcountersfailclosed, optionalPSI explicitlyunavailable. Noheap/worker/mode/source/identity/cleanup changes. Lead will add Python heredoc marker PYRESOURCE defining evaluate_sample(sample, previous) -> (state, reason), reason None/'critical_memory'/'critical_disk'/'sustained_paging'; ValueError on invalid sample/previous; state includes swap_in_pages,swap_out_pages,paging_streak and delta keys. sample keys total_kib,available_kib,swap_total_kib,swap_free_kib,swap_in_pages,swap_out_pages,disk_free_bytes, all exact ints. Previous None baseline else prior returnedstate. Extract exact PYRESOURCE body and exec namespace __name__='resource_test' (main guard prevents host reads). Create behavior tests for highheadroompaging not stop (incl oldCaPVjg sequence), exactly3correlatedstops, healthy/sample recovery resetsstreak, independentcritical15/diskimmediate includingfirstsample, exactthreshold boundaries30/15/1024/5GiB, missing/invalidessentialvalues+decreasingcounterfailclosed, unchanged source owned_processes function hash vs HEAD. Read returned reason/state, not source-string assertions except unchangedcleanup. Initial missing PYRESOURCE mayfail; actualCaPVjg highheadroomstop is existingRED and must be retained. Lead will notify oncefunctionexists. No repeatedappchecks, no actualnativeexecution. Record actualcommands/exits/UTC/limits; send test issues before changingassumptions, and release on finalresult. RequestedAstra/ultra explicitoldlaunch, Fasttierunexposed. A088 pausesB STATUSwrites only untilRESUME; neverwritecoord yourself. Lead has useful source implementation inparallel.
+
+PYRESOURCE landed in script. evaluate_sample tuple(state,reason) exactinterface; delta keys swap_in_pages_delta,swap_out_pages_delta,swap_pages_delta; state counters/streak asagreed. main(root,run) log resource-state.json/resources.log JSONL; read_sample/read_psi available for monkeypatch tests so missingessentialmetrics actualmain returns1+stop_reason measurement_invalid. OptionalPSI string unavailable preserved. Please run boundarysuite, review sampling integration narrowdefects. No native tool/process source execution; pure/exactblock and mockedread_sample/rootmain only. Lead adds scoped syntax/help and controlledhost-read sample (nonheavy); no preflight/fullsuite duplication. STATUSpauseduntilAresume.
+
+Minor final script additions now present: resource_policy=memory-correlated-paging-v2 in runreceipt+JSONsample, exactthresholds inreceipt; read_psi catches UnicodeError as explicitunavailable too. Evaluationtuple unchanged. Existingactualandroid generation verify passes with unchangedmarker/source/mode/Metro inventory (lead ignored resource-policy-host-check/generation-verify.log), no regeneration. Please include finalscriptSHA in result afterlasttests; then finalread-onlypolicy review/release. A088 statuswritepause stillwaitingRESUME; no newnativegrant.
+
+Lead fixed the reproduced null-state defect: existing resource-state.json now must decode to a dict; missing prior state when resources.log exists also fails closed. Please add a missing-state-after-valid-sample regression, preserve the RED null-state artifacts, then rerun the final exact-block/mocked-main suite and report final script SHA, commands/exits, findings and release. No native execution, app suite, tracked or coordination writes. Current code passes bash syntax and git diff --check.
+```
+
+On release A must inspect/integrate this coherent script/report slice before granting ONE exact
+manifest-only retry on the retained source/mode/native tree. Use the then-current full B HEAD in
+`--expected-head`, source5d8a3e8 separately, and a new heavy-slot grant; A083 is not reusable.
+If the revised guard stops that retry, retain the measured limitation and stop repeated attempts.
+A successful actual merged manifest still requires A's exact permission-array approval before
+APK assembly. D then needs the actual signed APK path/hash/source receipt for device work;
+primary/secondary physical runs, cold-start/process-death, audio, rehearsals and human acceptance
+remain NOT RUN/PENDING. No installable artifact exists at this checkpoint.
+
+Final lead checks passed at02:39:25.877824–02:39:26.752236UTC: Bash syntax, all13 embedded
+Python blocks compiled, help exit0, scoped report Prettier write/check and git diff whitespace
+check. Exact commands/exits are in `output/native-build/script-checks/resource-final/receipt.json`.
+No app suite or native job ran. Helper `/root/native_script` explicitly released all ignored test
+paths and allocation after the34-case result; no live B helper/job remains. The completed
+script/report slice is released for A intake; B retains maintenance and private build boundaries
+for the separately granted retry. Adapter/test and shared source remain released to A.

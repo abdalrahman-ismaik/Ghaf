@@ -59,6 +59,9 @@ Build resource policy: two allowed CPUs, one Gradle worker, no parallel Gradle,
 These are individual limits, NOT a total memory cap. Owned descendants are tracked
 by boot/PID/start identity, including separate daemon groups, and stopped on low
 available memory, sustained paging or low disk; logs and generated files remain.
+Runtime stop: below 15% available memory immediately, below 5 GiB disk, or paging
+over 1024 pages with below 30% available memory for three consecutive 5s samples.
+Missing essential measurements fail closed; optional PSI absence is recorded.
 Receipts retain UTC step times, exit codes, config, package diff, tool identities,
 APK hash/certificate/ABIs/merged manifest and bundle inventory. Successful artifact
 inspection does not establish physical-device or human acceptance.
@@ -373,6 +376,7 @@ fi
 CHILD_ENV+=("EXPO_PUBLIC_GHAF_DEMO_ENTRY=$DEMO_ENTRY_VALUE")
 printf 'EXPO_PUBLIC_GHAF_DEMO_ENTRY=%s\n' "$DEMO_ENTRY_VALUE" >> "$RUN/receipt.txt"
 printf 'gradle_heap_mib=1536\ngradle_metaspace_mib=512\nnode_heap_mib=1024\ngradle_workers=1\ncmake_jobs=1\nmetro_workers=1\n' >> "$RUN/receipt.txt"
+printf 'resource_policy=memory-correlated-paging-v2\ncritical_available_percent=15\npaging_available_percent=30\npaging_pages_threshold=1024\npaging_consecutive_samples=3\nsample_interval_seconds=5\nruntime_disk_floor_gib=5\n' >> "$RUN/receipt.txt"
 mkdir -p "$CACHE/tmp" "$CACHE/gradle" "$CACHE/xdg" "$CACHE/expo" "$CACHE/android-user"
 step ninja-version "$SDK/cmake/3.30.5/bin/ninja" --version
 step ndk-clang-version "$SDK/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/clang" --version
@@ -515,8 +519,97 @@ sha256sum "$RUN/template-cert.der" > "$RUN/template-cert.sha256"
 GRADLE_TASK=:app:assembleRelease
 [[ "$MODE" != manifest ]] || GRADLE_TASK=:app:processReleaseMainManifest
 
+resource_sample() {
+  python3 - "$ROOT" "$RUN" <<'PYRESOURCE'
+import datetime, json, pathlib, re, shutil, sys
+
+def evaluate_sample(sample, previous):
+    fields = ('total_kib', 'available_kib', 'swap_total_kib', 'swap_free_kib',
+              'swap_in_pages', 'swap_out_pages', 'disk_free_bytes')
+    if not isinstance(sample, dict) or any(type(sample.get(k)) is not int or sample[k] < 0 for k in fields):
+        raise ValueError('Missing or invalid essential resource measurement')
+    if sample['total_kib'] == 0 or sample['available_kib'] > sample['total_kib'] or sample['swap_free_kib'] > sample['swap_total_kib']:
+        raise ValueError('Inconsistent essential resource measurement')
+    if previous is not None and (not isinstance(previous, dict) or any(type(previous.get(k)) is not int or previous[k] < 0 for k in ('swap_in_pages', 'swap_out_pages', 'paging_streak'))):
+        raise ValueError('Invalid prior resource measurement')
+    delta_in = 0 if previous is None else sample['swap_in_pages'] - previous['swap_in_pages']
+    delta_out = 0 if previous is None else sample['swap_out_pages'] - previous['swap_out_pages']
+    if delta_in < 0 or delta_out < 0:
+        raise ValueError('Resource counters decreased during the run')
+    correlated = delta_in + delta_out > 1024 and sample['available_kib'] * 100 < sample['total_kib'] * 30
+    streak = (0 if previous is None else previous['paging_streak']) + 1 if correlated else 0
+    state = {'swap_in_pages': sample['swap_in_pages'], 'swap_out_pages': sample['swap_out_pages'],
+             'swap_in_pages_delta': delta_in, 'swap_out_pages_delta': delta_out,
+             'swap_pages_delta': delta_in + delta_out, 'paging_streak': streak}
+    reason = None
+    if sample['available_kib'] * 100 < sample['total_kib'] * 15:
+        reason = 'critical_memory'
+    elif sample['disk_free_bytes'] < 5 * 1024**3:
+        reason = 'critical_disk'
+    elif streak >= 3:
+        reason = 'sustained_paging'
+    return state, reason
+
+def read_sample(root):
+    names = {'MemTotal': 'total_kib', 'MemAvailable': 'available_kib',
+             'SwapTotal': 'swap_total_kib', 'SwapFree': 'swap_free_kib'}
+    sample = {}
+    for line in pathlib.Path('/proc/meminfo').read_text().splitlines():
+        match = re.fullmatch(r'(MemTotal|MemAvailable|SwapTotal|SwapFree):\s+(\d+)\s+kB', line)
+        if match:
+            sample[names[match[1]]] = int(match[2])
+    for line in pathlib.Path('/proc/vmstat').read_text().splitlines():
+        match = re.fullmatch(r'(pswpin|pswpout)\s+(\d+)', line)
+        if match:
+            sample['swap_in_pages' if match[1] == 'pswpin' else 'swap_out_pages'] = int(match[2])
+    sample['disk_free_bytes'] = shutil.disk_usage(root).free
+    return sample
+
+def read_psi():
+    try:
+        text = pathlib.Path('/proc/pressure/memory').read_text().strip()
+        return text if text else 'unavailable: empty memory PSI'
+    except (OSError, UnicodeError):
+        return 'unavailable: memory PSI could not be read'
+
+def main(root, run):
+    entry = {'utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+             'resource_policy': 'memory-correlated-paging-v2',
+             'memory_psi': read_psi()}
+    status = 1
+    try:
+        sample = read_sample(root)
+        state_path = run / 'resource-state.json'
+        previous = None
+        if state_path.exists():
+            previous = json.loads(state_path.read_text())
+            if not isinstance(previous, dict):
+                raise ValueError('Invalid prior resource measurement')
+        elif (run / 'resources.log').exists():
+            raise ValueError('Prior resource measurement disappeared during the run')
+        state, reason = evaluate_sample(sample, previous)
+        entry.update(sample)
+        entry.update(state)
+        entry.update({'available_percent': round(sample['available_kib'] * 100 / sample['total_kib'], 3),
+                      'swap_used_kib': sample['swap_total_kib'] - sample['swap_free_kib'],
+                      'counter_baseline': previous is None, 'stop_reason': reason})
+        state_path.write_text(json.dumps(state) + '\n')
+        status = 75 if reason else 0
+    except (OSError, ValueError, TypeError) as error:
+        entry.update({'stop_reason': 'measurement_invalid', 'detail': str(error)})
+    with (run / 'resources.log').open('a') as log:
+        log.write(json.dumps(entry) + '\n')
+    if status:
+        print('Resource stop: ' + str(entry['stop_reason']) + '; recorded owned descendants only.', file=sys.stderr)
+    return status
+
+if __name__ == '__main__':
+    sys.exit(main(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])))
+PYRESOURCE
+}
+
 compile() {
-  local status=0 pressure=0 previous_swap=0
+  local status=0
   local cpu_set
   cpu_set=$(python3 -c 'import os; print(",".join(map(str, sorted(os.sched_getaffinity(0))[:2])))') || return $?
   printf 'build_cpu_affinity=%s\n' "$cpu_set" >> "$RUN/receipt.txt"
@@ -532,21 +625,15 @@ compile() {
   owned_processes capture || return $?
   while kill -0 "$CHILD_PID" 2>/dev/null; do
     owned_processes capture || return $?
-    local available total swap free swap_delta
-    read -r total available < <(awk '/^MemTotal:/ {t=$2} /^MemAvailable:/ {a=$2} END {print t,a}' /proc/meminfo)
-    swap=$(awk '/^pswpin / {i=$2} /^pswpout / {o=$2} END {print i+o}' /proc/vmstat)
-    free=$(df -Pk "$ROOT" | awk 'END {print $4}')
-    swap_delta=$((previous_swap == 0 ? 0 : swap - previous_swap))
-    printf 'utc=%s available_kib=%s total_kib=%s swap_pages_delta=%s root_free_kib=%s\n' "$(date -u +%FT%TZ)" "$available" "$total" "$swap_delta" "$free" >> "$RUN/resources.log"
-    if ((available * 100 < total * 15 || swap_delta > 1024)); then pressure=$((pressure + 1)); else pressure=0; fi
-    previous_swap=$swap
-    if ((pressure >= 3 || free < 5 * 1024 * 1024)); then
-      printf 'Resource stop: recorded owned descendants only; unrelated processes are preserved.\n' >&2
+    if resource_sample; then
+      :
+    else
+      status=$?
       owned_processes capture || return $?
       owned_processes stop || return $?
       wait "$CHILD_PID" || true
       CHILD_PID=
-      return 75
+      return "$status"
     fi
     sleep 5
   done
