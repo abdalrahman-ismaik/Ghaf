@@ -1,5 +1,38 @@
 # Team Ownership
 
+## NB1 current integration — 2026-09-12 02:33 UTC
+
+Canonical board39 and continuing A instance A-20260911T2220Z-root govern current grants.
+Feature015 source5d8a3e8 is frozen after148files/1,919tests and typecheck/lint/format passed.
+A retains shared integration, specs/master docs, BOARD/STATUS-A; no source helper remains.
+B holds only native build script/report, private generated/tool/cache evidence and the two expected
+transient package script fields under A087. B's one helper owns only ignored resource-guard test
+fixtures; no application code, native job or preview is active. A must inspect the script before
+one exact manifest retry. C's released UI source is integrated; A089 grants only its provider-research
+report and optional bounded read-only helper. D's source/report/evidence are released and integrated;
+next artifact verification needs an actual APK. Each lead alone writes its canonical STATUS file.
+
+All other adapter/controller/store/route/presentation/test helper paths are explicitly released.
+Eight R002b and three live-AI flags remain off. Recovery014 and optional product additions are
+unselected/deferred. Human/student acceptance is pending, never inferred from source integration.
+SDK tools/terms and pausing Expo were explicitly authorized. Both native attempts stopped at their
+resource guard, with no APK; all owned build/preview processes ended. A owes demo preview restart
+when the native lane is released. One heavy job total, no native/preview overlap; ten configured
+helper slots per session do not enlarge the measured four-helper global budget.
+
+## NB1 activation (historical) — 2026-09-12 01:18:23 UTC
+
+A resumes instance `A-20260911T2220Z-root` on `redesign/ui-experiments` at3b5317a.
+A owns `specs/015-demo-entry-onboarding/**`, `.specify/feature.json`, master competition docs,
+canonical BOARD/STATUS-A, and upcoming shared store/registry/routes/config/resources integration.
+No shared source edit occurs before the committed015 contract. Managed AGENTS block unchanged.
+B/C/D exact initial grants are board revision25 and shared-contract.md; each lead acknowledges
+its grant on actual startup. One helper per lead, four global; A helper task_product_trace is
+read-only exact isolation/adapter feasibility. No other A instance or worker edits overwritten.
+The existing terminal-owned Expo PID341101 at canonical root is not ours to kill; native compile
+remains blocked until its owner releases it. B may prepare script and bounded isolated dependencies
+under its grant, but no competing preview/native build.
+
 ## Product correction handoff — 2026-09-12 01:13:40 UTC
 
 A-P01 review and A-P02 existing-behavior repair completed. Runtime commit `e02d02b` changes only

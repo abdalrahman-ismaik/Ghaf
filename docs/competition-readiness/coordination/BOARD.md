@@ -3,51 +3,51 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
-## Mission control
+## Mission control — current NB1
 
-- Revision: **24 — A-P01/P02 COMPLETE; NB1 PREPARED / NOT STARTED**, 2026-09-12 01:13:40 UTC. A instance: `A-20260911T2220Z-root`.
-- Integration: `/home/smyk/projects/Ghaf`, `redesign/ui-experiments`.
-- Baseline and initial audit target: `02b9618631fa9fc1b29f2cda5fa68c6adb2003fd`.
-- Mission: competition-first local Parent/Child journey, recovery assessment, one component direction,
-  bounded repairs, exact build and rehearsal evidence. September 14 freeze, September 15 rehearsal,
-  September 16 presentation subject to qualification (unknown).
-- Authority: user Session A/B/C/D mission and existing committed specifications at baseline:
-  `specs/003-family-growth-garden/{spec,plan,tasks}.md`, preserved 005 access, 008 recognition-only
-  and 013 Parent Tasks contracts. Read-only audits below add no implementation authority.
-- Recovery014 implementation: DEFERRED by user until current APK/native journey is validated.
-  Native validation does not automatically accept recovery scope. Rationale/memory: NOT ACCEPTED. R002b flags remain off. No sync/backend,
-  live media/location, payments, free chat, real accounts or remote services selected. The user now
-  requests three synthetic demo profiles, onboarding redesign and Arabic narration repair; commit
-  the exact Spec Kit/typed contract before their implementation grants.
-- Integrated source candidate: `e02d02b3a43c062bd637b57a475b43419a9f9939` (existing Parent-approved
-  instruction presentation correction). Full checks PASSED:139files/1,695tests,01:11:45–01:12:25 UTC.
-  Earlier D three-browser-reset evidence remains attributed to7fff0f3, not a native or visual
-  acceptance pass on the new paragraph. A-007 failed race history remains preserved.
-  Recovery014 remains DRAFT/unaccepted/unimplemented and explicitly deferred.
-- Named student owner, exact-diff acceptance, native acceptance: PENDING / NOT RUN / BLOCKED.
+- Revision **39**, updated 2026-09-12 02:25:39 UTC, continuing A-20260911T2220Z-root.
+- Published final runtime **5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051** on redesign/ui-experiments.
+  Final typecheck, lint, format and **148 files / 1,919 tests PASS**. No further runtime edit selected.
+- B clean b317f2da6e87c5118734f2e5a56110f8f533f151 matches final runtime exactly. A083 manifest attempt
+  stopped75 on paging with~39% available; all owned jobs released. A087 grants only the measured
+  script guard correction and safe synthetic checks; A reviews before one bounded manifest retry.
+  Actual merged permission approval precedes full APK; no APK/native pass exists yet.
+- C released all source/report/browser paths C039/040. Corrected headings and approval handoff
+  passed actual targeted browser actions. Report219a6f4 queued for integration. Isolated glyph
+  evidence independently corroborated by D021: captured clipping diagnosis withdrawn, no patch
+  improvement claimed; reference setup attributed to C. Native scaling remains NOT RUN.
+  Unsupported web property removed; historical evidence retained. Native scaling remains unrun.
+- Expo466808/npm466762/shell466807/browser467810 absent,8081 free; A final checks ended.
+  B released heavy; no native job active. User authorized pause and demo preview restoration after build.
+- Selected015 exact three principals and optional silent story integrated. Arabic Fatima-v1 takes
+  rejected; Salma rejected, Hamed preferred but not accepted. C089 bounded provider research report only;
+  no generated audio/account/provider/runtime approval. English unreviewed.
+- Recovery014 remains deferred; no automatic approval. Reciprocal support and all optional feature
+  proposals remain unselected. All eight R002b and three live-AI flags off. Native phone models/OS,
+  student exact-diff review/teach-back, actual listening and rehearsals remain pending (0/10).
+  Qualification unknown; no push/main merge/deploy/cloud/submission/release activation.
+- Historical tables/queues below do not override current NB1 and numbered grants.
 
 ## Session registration
 
-| Lead | Instance observed         | State / canonical record                                                           |
-| ---- | ------------------------- | ---------------------------------------------------------------------------------- |
-| A    | A-20260911T2220Z-root     | PAUSED, local batch handed off; [STATUS-A](STATUS-A.md)                            |
-| B    | B-20260911T2217Z-3572e5c9 | Orientation observed; B-004 integrated; B released/paused; [STATUS-B](STATUS-B.md) |
-| C    | C-20260911T221908Z-root   | C-002 integrated; C released/paused; [STATUS-C](STATUS-C.md)                       |
-| D    | D-20260911T2218Z-p177313  | D-005-r17 INTEGRATED / RELEASED / PAUSED; [STATUS-D](STATUS-D.md)                  |
+| Lead | Actual instance | Current responsibility |
+| --- | --- | --- |
+| A | A-20260911T2220Z-root | Integration, actual manifest approval, final handoff; helpers0 |
+| B | B-NB1-20260912T011745Z-545b9f58 | A087 script correction, then separately granted single retry; helpers0 |
+| C | C-20260912T011718Z-root | Source/reports/resources released; audio choice pending; helpers0 |
+| D | D-NB1-20260912T0122Z-root | Read-only capture review, then exact APK/native evidence; helpers0 |
 
 ## Resource allocations
 
-| Resource           | Live allocation                               | Holder / release                                                |
-| ------------------ | --------------------------------------------- | --------------------------------------------------------------- |
-| Helpers globally   | 4 total; descendants count                    | All A/B/C/D allocations released; four helper slots unallocated |
-| Configured ceiling | 10 per session preserved                      | No expansion toward 40 local helpers                            |
-| Heavy job          | One globally                                  | FREE; A four checks at e02d02b completed01:12:25 UTC            |
-| Preview lane       | One Metro + one browser process tree globally | FREE; D final Metro/browser stopped and explicitly released     |
+| Resource | Current allocation |
+| --- | --- |
+| Helpers | Four global maximum, one per lead including descendants; all released |
+| Configured capacity | Ten per session retained; no grant for forty local helpers |
+| Heavy job | Released after stop75; B A087 safe script checks only, no native retry yet |
+| Preview | Fully stopped/released; no overlap with native; A restores after build |
 
-Fresh observation at activation: WSL 7,645 MiB total, 4,908 MiB available (64%), swap 36 MiB;
-last one-second vmstat sample 0 swap-in/out, 98% CPU idle. No increased quota granted. Source reads,
-focused inspection and small document checks may proceed without occupying the heavy slot. Do not
-run native-heavy jobs with a resident preview pair. Report all helper IDs, descendants and jobs.
+Before grant:3380MiB available/7645, swap1524MiB, last si4/so0,889GiB disk. B rechecks before
+starting; no quota increase. Explicit release controls ownership, never a stale timestamp.
 
 ## Ordered task queue
 
@@ -573,3 +573,153 @@ D-N04 grants are not live yet. The product brief is not an accepted Spec Kit con
 A source/docs/ignored-evidence boundaries release at this checkpoint; B/C/D statuses are neither
 edited nor staged. User explicitly confirmed those leads stopped, so no pause ACK is fabricated.
 Only A-owned BOARD/STATUS-A are committed. No push/main merge/remote activation.
+
+
+## Revision 25 — NB1 activated under the user's Session A instruction
+
+A continuing instance verified clean tracked3b5317a; runtime e02d02b, four checks139/1695.
+Prepared clean B/C/D branches remain52c61fc and preserve old history. Each lead ACKs this grant
+on actual startup; old statuses do not mean they are running. B/C/D may resume their own status
+writes now; no old pause survives this activation. A alone writes BOARD/STATUS-A.
+
+| Task | Owner/state | Exact grant / release condition |
+| --- | --- | --- |
+| A-N05 | A ACTIVE | specs/015-demo-entry-onboarding/**, .specify/feature.json; spec/plan/tasks/typed contract, D failure review and cohesive commit before runtime grants |
+| B-N01-r25 | B READY on ACK | scripts/native/build-apk.sh, workstreams/b-native-build.md, B output/native-build/**; safe preflight/help/missing-input/script tests, commit/release |
+| B-N02-r25 | B READY on ACK, bounded | Verify/unlink ONLY B node_modules symlink to canonical; private npm ci unchanged lock under initial heavy slot. B output/native-toolchain/**, output/native-cache/** reserved; propose exact missing tool versions/publisher checksums before tool install |
+| B-N03/04 | B BLOCKED | Exact A-published source, verified host toolchain/licenses, private deps and external Metro release. B android/** + transient package.json android/ios script fields only; default template debug certificate internal rehearsal only. No source/package/lock/appconfig upgrade |
+| C-N01-r25 | C READY for source diagnosis; preview blocked | src/components/r002a/child/ChildTodayTaskCard.tsx, workstreams/c-native-ui.md, C output/native-ui/**; D-R03 exact source diagnosis/minimal owned repair, shared primitive needs transfer; no guessed fix |
+| C-N02-r25 | C READY on ACK | workstreams/c-product-refinement.md; reuse A product trace/research/catalog; concrete proposal and requested entry/onboarding storyboard/script while A formalizes015; no new source yet |
+| C-N03 | C READY checklist / native BLOCKED | Same report; real APK/device needed for native rows |
+| D-N01-r25 | D READY on ACK | scripts/native/collect-device-evidence.sh, workstreams/d-native-acceptance.md, D output/native-acceptance/**; read-only explicit-target collector and packet |
+| D-N04-r25 | D READY review only | Read-only015 draft/typed-contract failure/privacy review, findings in D report/status; no spec/source edits. Native/audio/human rows remain unrun |
+| B-N05/C-N04/A-N06 | DEPENDENT | Committed015 contract plus exact new source-path grant; no implementation from roadmap alone |
+
+All workstream report paths above are under docs/competition-readiness/ in the named worker tree.
+One helper per lead; no descendants beyond that quota. Initial B heavy slot permits only private
+npm ci and bounded tool preparation after fresh pressure check, not native compilation while
+external Metro is resident. Current WSL total7645MiB/available3864MiB, swap1461MiB, sample96%idle
+with1060KiB/s swap-in and0swap-out; disk896GiB free. Recheck before commands and avoid multiplying
+jobs. Native-heavy and C/D preview lanes remain conditional. Do not kill terminal-owned341101.
+No SDK terms are accepted by this grant; no public distribution/signing identity change.
+
+A reserves upcoming shared integration src/state/usePrototypeStore.ts, src/services/index.ts,
+app/index.tsx, existing access/settings routes as later specified, bilingual resources and a new
+explicit demo config, but does not edit runtime before015 commit. Eight R002b flags stay off.
+No recovery014, reciprocal-support proposal or optional feature implementation selected.
+
+
+## Revision26 — active workers, C reports integrated, exact tools and015 draft
+
+ACK B-NB1-20260912T011745Z-545b9f58-001 through004, C-20260912T011718Z-root-001 through005,
+D-NB1-20260912T0122Z-root-001. All three actual new leads registered/ACKed r25. B private npm ci
+finished/lock unchanged; initial helper writing build script. C reports8b3b9ec/6da17e9 released and
+locally integrated; no UI/native pass. D collector and independent draft review active.
+
+B-N02-r26 exact JDK/Gradle serial download/verified extraction grant is A043; same B ignored dirs,
+checksums from publisher metadata, no global install. Google SDK/download/licenses and external
+terminal Metro pause both await actual user decisions. Native compile/second preview still blocked.
+A helper exact isolation/transaction feasibility completed/released. A-N05 spec/typed draft ready
+for D read-only review under A044; plan/tasks in progress. A retains all015/managed pointer writes.
+C proposed action/support/growth image IDs verified; shared model type precedes later C source grant.
+No recovery014 or other proposed feature selection.
+
+
+A045 update: user explicitly accepted Google's Android SDK License Agreement and the six named
+SDK packages. B-N02 exact isolated download/install now AUTHORIZED alongside JDK/Gradle; record
+actual accepted terms and checksums, no blanket acceptance of other agreements. Native compilation
+remains blocked on the separately pending external Metro pause plus published source/tool readiness.
+
+
+A046 update: user authorized pause/restart of external canonical Expo. Exact341101 SIGINT ended
+its process tree341100/341088; no preview listener8081/8097. B heavy slot now includes native
+compilation under the pinned validated toolchain, internal signing and explicit e02d02b source
+sync grant. Preserve B's dirty owned files. First artifact is ordinary-mode baseline, not015demo.
+A will restore canonical preview in new demo mode once the lane is released and source ready.
+
+## NB1 Feature015 implementation — r28, 2026-09-12 01:35 UTC
+
+Contract authority293d351, requested scope and D004 technical failure/privacy review. Native/student
+acceptance pending. Recovery014 remains deferred. A-N05 complete; A-N06 foundation/integration ACTIVE.
+A owns exact T003/T004/T005/T007/T008/T009/T011 paths listed in committed015 plan/tasks, including
+src/models/demoEntry.ts, src/config/demoEntry.ts and their tests. No source is delegated implicitly.
+C-N04 READY after A051 named synchronization; exact four files only: src/components/demo/
+DemoEntryScreen.tsx, DemoOnboardingStory.tsx, types.ts, tests/demo-entry-presentation.test.tsx.
+B-N05 module/tests remains pending available build boundary and explicit synchronization.
+A-N06 helpers: android_build_audit read-only script review, one allocation, no descendants/jobs.
+B native-heavy lane remains held; no browser/Metro. Short single-worker tests allowed with pressure
+check; latest WSL available4744MiB, swap1375MiB occupied (capacity2048), no quota increase.
+
+B-N05 ACTIVE underA057/A058; native baseline stopped honestly, next target integrated015 demo. C-N04 source931a186/report779717b integrated, paths released. Next native memory/worker budgets and exact archiving/sync conditions are A058. No current Metro/browser/native command; demo preview restart still owed.
+
+## Revision30 — composition correction and adapter integration
+
+Contractd927f61 and B adapter5632005 integrated. A-N06 active: helper task_product_trace exclusively
+owns src/features/access/{index.ts,childAccess.ts,parentOnboarding/controller.ts,demoEntryTransaction.ts}
+and tests/demo-entry-transaction.test.ts for D-NATIVE-001 shared synchronous rollback correction.
+A retains store/routes/tests/demo-entry-store.test.ts and released route tests. D owns independent
+composition test; no overlapping writes. Public adapter interface unchanged. B generated-only
+Metro max-workers1 approved as A061, with original/diff receipt; no native job until exact candidate.
+C isolated narration candidates active; user listening remains pending. Heavy slot A checks, preview
+absent and still owed after readiness. One helper per lead, four global unchanged.
+
+A063:2ecea74 transaction correction released, helperA0. D may sync only2ecea74 to its cleanQA
+and independently retest unchanged composite regression+transaction suite one worker; own report.
+A holds heavy slot for full integrated checks on2ecea74. B script maintenance, C awaits actual
+listening/brief integratedpreview. No native/preview running or delegated yet.
+
+## Revision31 — source2ecea74 validated, brief preview before native
+
+A fulltypecheck/lint/format/suite PASS147files/1914tests,02:01:52–02:03:00UTC. Receipt
+output/native-integration/015/full-2ecea74/receipt.json. Heavyjob ended, runner438240 released.
+A now owns canonicalExpo8081 at runtime2ecea74/currentHEAD78975ca (onlyscript/reportdiff).
+C receives solebrowser lane for integrated AR/EN selector/three-story moments/profileentry,
+narrow/large-text/Back/missing-media checks; no nativepass, no secondMetro. Artifacts C ignored
+output/native-ui/integrated-015/**, report c-native-ui.md reheld. Exactnewsourcecorrections require
+reported reproduction and transfer asneeded; current sharedroutes/resources remainA. C retain
+existing ChildTodayTaskCard-only diagnostic grant; no guessedfix. Finish bounded checks thenclose
+browser and explicitly release so B can build. A will pause ownedMetro with persistentuserpermission.
+B may sync/preflight underA064; no nativewhile previewresident. D exactcomposition retestA063
+continues singleworker, not fullsuite. Actualphone/listening/student gates remain pending.
+
+A066:MetroPID441606/npm441578/shell441576 owns8081, exec44936, C browserlanegranted. A helper
+android_build_audit one read-only store/reset/async review, no writes/jobs/descendants. No native.
+
+A068: tests/demo-entry-store.test.ts transferred from A lead to A helperandroid_build_audit for
+one prepared-media/privacy handoff lifecycle test; no runtime edits. Prior read-only source review
+found no actionabledefect. C browser grant awaitsACK; operatorstatusasked without inferredstop.
+B nativehelduntilpreviewrelease; allotherresourcegrantsunchanged.
+
+A069 ACKC023: C is actively inspecting grantedpreview; user status question is resolved by actual
+ACK, no reassignment or restart required. LastWSLavailable2636MiB/7645; no quota increase/heavyjob.
+
+A070:C exclusive output/playwright/176426/** for tool-allowed MCP evidence then copy toC
+integrated-015 path; no source changes. Ahelperc3b1cc8 test-only release, helpersA0/sourceunchanged.
+
+A071: Actualuserrejects3ArabicFatima-v1 takes. Samepinnedtool/sameexistingservice permits candidate-
+only Hamed/ZariyahMSA firstmoment auditions afterexactvoicemetadata verification; C onehelper may
+produce ignored audition-v2 receipts/files serially whileCleadfinishesbrowser. No newprovider,
+acceptedruntimeasset orfullregeneration. Englishunreviewed. Nativebuildmustnotwaitforaudioquality.
+
+A072: C exclusively reholds DemoEntryScreen.tsx/DemoOnboardingStory.tsx for reproducedduplicate
+heading fix only, existingpresentationtests/scopedchecks. A ownsintegration/restart/fullcandidate;
+C affectedheadingretetst after. B native waits correctedcandidate+previewrelease. No newbehavior.
+
+A073 supersedes A071 narrator set with verified ar-SA-HamedNeural and ar-EG-SalmaNeural, exactly
+two short same-script auditions. C onehelpermaygenerate ignoredreceipt/files whileleadfinishesUI.
+
+A074: A helperapproved_instruction_fix owns ONLYapp/parent/task/review.tsx and new
+tests/demo-task-handoff-route.test.tsx, existing015T020 observedPOP_TO_TOP correction. C twoheading
+files remainsdisjoint. Both integrate beforeone correctedcandidatefullcheck/retest/nativebuild.
+
+A075: Cbrowser released. A ownsprimitives.tsx one web-only buttonLabel positionrelative repair
+fromreproducedD-R03 before/diagnosticpaint evidence; no font/truncation/nativebusinesschange.
+Cheading integrateded51b32. Ahelperhandoffpending; threecorrections shareone nextcandidate/retest.
+
+A076: correctedruntimef16112d; previewoldPIDs+port verifiedended. Aheavyfullchecks, helpersA0.
+B exactcleansync ed51b32→af8da6c→f16112d permitted, native waits affectedCretetst+resourcegrant.
+
+A077: current correctedruntimef16112d includesCheadings+webpaint+handofffixes. Prior2ecea74fullpass
+remainsattributed; correctedtype/lint/formatPASS/fulltestsactiveexec5643. AllpreviewPIDsended,
+Ahelpers0. Ctargetedretetstafterchecks, thenBnative. ThreeFatimaArabicclipsREJECTED; twoHamed/Salma
+auditionsawaitactuallistening, ENunreviewed. No acceptedaudio/newfeature.
