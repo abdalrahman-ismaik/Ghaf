@@ -1367,3 +1367,79 @@ D independently compared it with the preserved63c492d snapshot; the new snapshot
 No source implementation or tests were run for these closures. The supporting helper allocations
 are released; lead alone reviewed the revised text. This cohesive initial/revised contract evidence
 is ready for integration while the concrete native-stop contract remains under A review.
+
+### A177 retirement revision — bounded technical preparation review
+
+D062 acknowledged board62 and reacquired only this report plus the ignored revision snapshot before
+writing. Exact draft SHA256 is
+`f452d25d10a4d451b39f9dddc4b14dc9d08d0ff56253df3e55c072bf9812aa69`, independently captured at
+2026-09-12T11:52:59.837084+00:00 from canonical HEAD
+`4e7540d1430d5dbb325160337cfad3e257287649`. QA was clean at91f988f; the draft was untracked,
+not a source implementation grant. Absolute snapshot and receipt boundary:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/contract-review/T014/revision-f452d25/`.
+The comparison against preserved2be2c772 exited1 because the contract text changed; that expected
+`diff` result is not a failed validation command. A178 attributes integration of the prior D report
+91f988f asd6b48c7. Frozen5d8a3e8 and B's active A171 APK build remain separate.
+
+The lead reviewed the concrete change in status and failure handling, without repeating the earlier
+SDK API or Android audio-focus source audits:
+
+- Lines131–137 allocate no player until explicit Play/Replay and bind a fresh player/controller to
+  an immutable source/locale/step/generation/epoch token. Pending input coalesces; retired players
+  cannot be reused. This prevents hook-owned automatic source allocation from being mistaken for
+  an explicit narration request.
+- Lines140–147 require matching token and player ID, with playing, loaded and non-buffering state.
+  That state is player-reported playback, not evidence of audible output or Arabic quality. The
+  startup deadline is10,000ms from the accepted intent, with no queued retry; stale timers/events
+  cannot retire a later session. Observed interruption and normal completion retire the session.
+- Lines149–154 invalidate the token and clear the active slot before independent cleanup attempts.
+  A pause, cancellation or subscription-removal exception cannot skip subsequent removal/release.
+  Fresh intent allocates another instance; source checks or mocked removal do not prove native
+  release scheduling or uninterrupted silence.
+- Lines170–185 explicitly preserve the captured-reference/native-focus race, Android's null error
+  reporting, and web's discarded underlying play promise. The deadline supplies bounded startup
+  fallback; it does not prove exhaustive decoding-error notification or absence of resumed sound.
+- Lines124–127 preserve full transcript and immediate navigation/Stop during loading, with a new
+  screen-reader reason seam. English, unavailable detection and rejected permissions remain silent.
+  No media, preference, session, progression or Child-private content persistence is added.
+
+The exact execution matrix for this revision remains:
+
+| Required evidence / owner        | Result required                                                                                                                                                      | Current result                                                                                |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| A pure controller                | Reentrant guard/callback cancellation, failed operations, pending seeks and disposal remain inert after invalidation                                                 | NOT RUN for the proposed implementation; earlier contract clarifications001/002 remain closed |
+| C actual mounted adapter         | Fresh intent only, current token/player matching, startup timeout, stale events/timers, independent cleanup failures, Back/locale/profile/reset/unmount cancellation | BLOCKED pending implemented adapter and the concrete existing-tool harness/preview grant      |
+| C status and silent fallback     | Full transcript, equivalent labels, readable English, screen-reader failure silence, immediate Stop/navigation; no optimistic playing                                | NOT RUN for the proposed adapter                                                              |
+| D/B actual new APK               | Exact asset hashes and new source/build identity, distinct from the frozen silent5d artifact                                                                         | BLOCKED; no corresponding completed APK                                                       |
+| D actual Android interruption    | Play → transient focus loss → Stop → focus gain, plus background → cancellation → foreground; no resumed audio without new explicit intent                           | BLOCKED; no authorized native execution, captured-reference race remains unproven             |
+| D actual hardware media failures | Actual load/decode failure, interruptions and permitted Stop/Replay with app navigation still usable                                                                 | BLOCKED; synthetic status.error tests cannot establish Android's absent native error callback |
+| Human review                     | Preserve already recorded user approval of all three exact Wiam clips; separately identify native listener/student reviewer and scope                                | User quality approval attributed to A/C; D listening NOT RUN, student review PENDING          |
+
+A180 may prepare the previously reviewed pure controller/shared types/assets under its committed
+contract and own grants. This review does not grant C source ownership, a preview, native builds,
+public distribution or release activation. A owns the exact contract commit and subsequent transfers.
+
+The sole helper `/root/narration_contract_privacy_review` completed and released its independent
+cleanup/ownership review. The retained helper was originally launched with explicit Astra/ultra;
+Fast/effective serving remains unexposed. Actual follow-up prompt:
+
+> D sole helper under board62/A177, exact revision snapshot /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/contract-review/T014/revision-f452d25/demo-narration-v1.md SHA f452d25d10a4d451b39f9dddc4b14dc9d08d0ff56253df3e55c072bf9812aa69, canonical HEAD4e7540d / QA91f988f / frozen APK runtime5d. READ ONLY, no writes, descendants, execution, tools/build/browser/device/provider jobs. You are not alone; preserve others' work. Bounded question: does new adapter retirement order/token invalidation/independent cleanup exception handling/fresh-intent player ownership coherently address your prior D-T014004 pause-only reuse finding, while explicitly retaining native captured-reference/focus races as unproven gates? Look only for new material cleanup/reentrancy ambiguity in exact contract, not repeat A's installed remove/release API audit, your earlier Android focus source audit, or broad privacy review. Lead separately checks UI/status/startup timeout/evidence gates. Return limited technical preparation verdict with exact contract lines, remaining native limits and any genuinely new blocker; no implementation/native acceptance, no product fix, no public rights ruling. Existing helper explicit Astra/ultra request retained, Fast unexposed. Finish/release.
+
+The helper independently found no new blocker in that boundary and confirmed token invalidation
+before guarded cleanup, fresh ownership and preserved callback checks. The lead accepts that
+bounded conclusion. Rejected claims: successful remove/release proves no native audio blip; a
+synthetic error event establishes Android decode-error reporting; controller unit tests establish
+mounted effect wiring; user clip approval establishes public rights or native listening. No student
+understanding or participation was inferred.
+
+**D-T014-004: CLOSED for the contract's pause-only ownership correction; actual no-resume acceptance
+remains BLOCKED.** D's technical preparation review of exactf452d25 is PASSED with the stated
+limits. Every adapter cancellation entry must execute the full retirement path, including native
+Back, background and screen-reader events; passing only the pure controller's pause is insufficient.
+This is an implementation acceptance row, not another API redesign request. The stronger native
+requirement has not been waived, weakened into a source pass or proven by this report.
+
+This report-only boundary is ready for A integration after scoped format/diff checks. No product
+source, test, asset, dependency, device or APK mutation was performed. Completed snapshot and helper
+allocations are released with the commit; D retains only its status writer and existing ADB15824,
+and continues to the published APK or next exact integrated candidate.
