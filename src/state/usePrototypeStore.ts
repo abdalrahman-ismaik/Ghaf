@@ -1,5 +1,9 @@
 import { create } from 'zustand';
 
+import { entryMode } from '../config/demoEntry';
+import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
+import type { DemoEntryRequest, DemoEntryHandoff } from '../models/demoEntry';
+
 import {
   createChildVoiceController,
   INITIAL_CHILD_VOICE_VIEW,
@@ -282,6 +286,9 @@ const childAccessController = createChildAccessController(
 );
 const R001_ONBOARDING_TIME = '2026-09-04T10:00:00.000Z';
 const R003_LOCAL_FAMILY_TIME = '2026-09-06T14:00:00.000Z';
+let demoEntryAdapter: DemoEntryAdapter | null = null;
+let demoEntryInFlight = false;
+let demoEntryAborted = false;
 function feature004Now(): string {
   return new Date().toISOString();
 }
@@ -367,6 +374,7 @@ function restoreInitialLocalFamily(): {
   readonly view: LocalFamilyView;
   readonly profileRepair: LocalFamilyProfileRepairCandidate | null;
 } {
+  if (entryMode === 'demo') return { view: localFamilyView(null), profileRepair: null };
   const read = serviceRegistry.localFamily.read();
   if (!read.ok) {
     const repair = serviceRegistry.localFamily.readProfileRepairCandidate();
@@ -395,12 +403,19 @@ const initialLocalFamilyRestore = restoreInitialLocalFamily();
 const initialLocalFamily = initialLocalFamilyRestore.view;
 const initialLocalFamilyProfileRepair = initialLocalFamilyRestore.profileRepair;
 const initialAmbientAudioPreference: AmbientAudioPreferenceView = (() => {
+  if (entryMode === 'demo') return { enabled: false, status: 'ready', source: 'default' };
   const read = serviceRegistry.ambientAudioPreferences.read();
   return read.ok
     ? restoreAmbientAudioPreference({ storageAvailable: true, record: read.data })
     : restoreAmbientAudioPreference({ storageAvailable: false });
 })();
 const initialRememberedDeviceAccess = (() => {
+  if (entryMode === 'demo')
+    return {
+      view: deviceAccessView(null),
+      activeExperience: 'signed_out' as const,
+      activeChildId: null,
+    };
   const read = serviceRegistry.deviceAccess.read();
   if (!read.ok) {
     return {
@@ -502,6 +517,10 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly demoRunGeneration: number;
+  readonly demoEntryEpoch: number;
+  readonly demoResetFailed: boolean;
+  readonly enterDemoExperience: (request: DemoEntryRequest) => ServiceResult<DemoEntryHandoff>;
   readonly ambientAudioPreference: AmbientAudioPreferenceView;
   readonly activeExperience: 'signed_out' | 'parent' | 'child';
   readonly childAccess: ChildAccessView;
@@ -790,15 +809,18 @@ export interface PrototypeStoreState extends PrototypeSession {
 }
 
 export function selectCanEnterParentExperience(
-  state: Pick<PrototypeStoreState, 'parentOnboarding'>,
+  state: Pick<PrototypeStoreState, 'parentOnboarding'> &
+    Partial<Pick<PrototypeStoreState, 'demoResetFailed'>>,
 ): boolean {
-  return state.parentOnboarding.canEnterParentExperience;
+  return !state.demoResetFailed && state.parentOnboarding.canEnterParentExperience;
 }
 
 export function selectHasActiveParentExperience(
-  state: Pick<PrototypeStoreState, 'activeExperience' | 'parentOnboarding' | 'role'>,
+  state: Pick<PrototypeStoreState, 'activeExperience' | 'parentOnboarding' | 'role'> &
+    Partial<Pick<PrototypeStoreState, 'demoResetFailed'>>,
 ): boolean {
   return (
+    !state.demoResetFailed &&
     state.role === 'parent' &&
     state.activeExperience === 'parent' &&
     state.parentOnboarding.canEnterParentExperience
@@ -806,9 +828,11 @@ export function selectHasActiveParentExperience(
 }
 
 export function selectCanEnterChildExperience(
-  state: Pick<PrototypeStoreState, 'activeChildId' | 'activeExperience' | 'childAccess' | 'role'>,
+  state: Pick<PrototypeStoreState, 'activeChildId' | 'activeExperience' | 'childAccess' | 'role'> &
+    Partial<Pick<PrototypeStoreState, 'demoResetFailed'>>,
 ): boolean {
   return (
+    !state.demoResetFailed &&
     state.role === 'child' &&
     state.activeExperience === 'child' &&
     state.childAccess.canEnterChildExperience &&
@@ -1408,6 +1432,9 @@ function validateGuideSuggestion(
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
+  demoRunGeneration: 0,
+  demoEntryEpoch: 0,
+  demoResetFailed: false,
   ambientAudioPreference: initialAmbientAudioPreference,
   locale: initialRememberedLocale,
   direction: getLocaleDirection(initialRememberedLocale),
@@ -1453,7 +1480,85 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   taskDraftRevision: 0,
   permissionProofSequence: 0,
 
+  enterDemoExperience: (request) => {
+    if (demoEntryInFlight) {
+      demoEntryAborted = true;
+      return failure('INVALID_TRANSITION', 'A demo entry is already in progress');
+    }
+    const state = get();
+    if (entryMode !== 'demo' || state.demoResetFailed) {
+      return failure('INVALID_TRANSITION', 'Demo entry is unavailable in this run');
+    }
+    if (!demoEntryAdapter) {
+      demoEntryAdapter = createDemoEntryAdapter({
+        family: serviceRegistry.localFamily,
+        parent: parentOnboardingController,
+        child: childAccessController,
+        now: () => R001_ONBOARDING_TIME,
+        readContext: () => ({
+          mode: entryMode,
+          runGeneration: get().demoRunGeneration,
+          entryEpoch: get().demoEntryEpoch,
+          activeExperience: get().activeExperience,
+          activeChildId: get().activeChildId,
+          temporaryParentAccess: get().temporaryParentAccess !== null,
+        }),
+        runAtomically: (operation) => {
+          if (!serviceRegistry.access.withDemoEntryTransaction)
+            return failure('INVALID_RESPONSE', 'Demo authority transaction is unavailable');
+          return serviceRegistry.access.withDemoEntryTransaction(() =>
+            parentOnboardingController.withDemoEntryTransaction(() =>
+              childAccessController.withDemoEntryTransaction(() => {
+                const result = operation();
+                return demoEntryAborted
+                  ? failure('INVALID_TRANSITION', 'Demo entry was invalidated')
+                  : result;
+              }),
+            ),
+          );
+        },
+      });
+    }
+    demoEntryInFlight = true;
+    demoEntryAborted = false;
+    try {
+      const result = demoEntryAdapter.enter(request);
+      if (!result.ok) return result;
+      const handoff = result.data;
+      set({
+        activeExperience: handoff.principal === 'parent_al_noor' ? 'parent' : 'child',
+        role: handoff.principal === 'parent_al_noor' ? 'parent' : 'child',
+        activeChildId: handoff.activeChildId,
+        parentOnboarding: handoff.parentOnboarding,
+        childAccess: handoff.childAccess,
+        localFamily: localFamilyView(handoff.family),
+        localFamilyProfileRepair: null,
+        deviceAccess: deviceAccessView(null),
+        demoEntryEpoch: state.demoEntryEpoch + 1,
+        temporaryParentAccess: null,
+        pendingFamilyCreation: null,
+        rememberParentOnThisDevice: false,
+        returningUserWelcome: null,
+        parentGuideSuggestion: null,
+        parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+        liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+        liveVoiceCapture: null,
+        childCoachResult: null,
+        ageAdaptedCoachResult: null,
+        childVoiceView: { ...INITIAL_CHILD_VOICE_VIEW },
+        childTaskDraft: createEmptyChildTaskDraft(),
+        taskDraftRevision: state.taskDraftRevision + 1,
+      });
+      return result;
+    } finally {
+      demoEntryInFlight = false;
+      demoEntryAborted = false;
+    }
+  },
+
   requestParentVerification: (input) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before starting Parent verification');
@@ -1475,6 +1580,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   requestFamilyReplacementVerification: (input) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before starting family replacement');
@@ -1496,6 +1603,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   requestExistingParentVerification: (input) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before starting Parent verification');
@@ -1529,6 +1638,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   verifyParentCode: async (code) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     if (get().activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before verifying Parent access');
     }
@@ -1540,6 +1651,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   beginVerifiedFamilyReplacement: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (
       state.activeExperience !== 'signed_out' ||
@@ -1560,6 +1673,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   beginVerifiedFamilyProfileRepair: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (
       state.activeExperience !== 'signed_out' ||
@@ -1585,6 +1700,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resendParentVerification: (input) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     if (get().activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before resending Parent verification');
     }
@@ -1594,6 +1711,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   cancelParentVerification: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     if (get().activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before cancelling Parent verification');
     }
@@ -1606,6 +1725,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   updateParentOnboardingDraft: (patch) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     if (get().activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before changing Parent setup');
     }
@@ -1615,6 +1736,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   completeParentOnboarding: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience === 'child') {
       return failure('INVALID_TRANSITION', 'Sign out before completing Parent access');
@@ -1848,13 +1971,15 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   authorizeParentExperience: () => {
     const state = get();
-    if (state.activeExperience !== 'parent' || state.role !== 'parent') {
+    if (state.demoResetFailed || state.activeExperience !== 'parent' || state.role !== 'parent') {
       return failure('INVALID_TRANSITION', 'An active Parent experience is required');
     }
     return parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME);
   },
 
   enterParentExperience: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     if (get().activeExperience === 'child') {
       return failure('INVALID_TRANSITION', 'Sign out of the Child experience before Parent access');
     }
@@ -1864,6 +1989,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   selectChildAccessProfile: (childId) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before choosing a Child profile');
@@ -1877,6 +2004,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   verifyChildCredential: (value) => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before verifying a Child credential');
@@ -1927,6 +2056,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   requestChildPairing: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     if (get().activeExperience !== 'signed_out') {
       return failure('INVALID_TRANSITION', 'Sign out before requesting Child pairing');
     }
@@ -1936,6 +2067,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   approveChildPairing: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'parent' || state.role !== 'parent') {
       return failure('INVALID_TRANSITION', 'Only the active Parent can approve Child pairing');
@@ -1946,6 +2079,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   handoffApprovedChildPairing: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (
       state.activeExperience !== 'parent' ||
@@ -1976,6 +2111,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   completeChildPairing: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     if (state.activeExperience !== 'signed_out') {
       return failure(
@@ -2062,6 +2199,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   authorizeChildExperience: () => {
     const state = get();
     if (
+      state.demoResetFailed ||
       state.activeExperience !== 'child' ||
       state.role !== 'child' ||
       state.childAccess.selectedChildId !== state.activeChildId
@@ -2078,6 +2216,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
 
   beginTemporaryParentAccess: () => {
     const state = get();
+    if (entryMode === 'demo') {
+      const authority = requireActiveChildExperience(state);
+      return authority.ok ? get().signOutExperience() : authority;
+    }
     const authority = requireActiveChildExperience(state);
     if (!authority.ok) return authority;
     const record = state.deviceAccess.record;
@@ -2111,6 +2253,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   cancelTemporaryParentAccess: () => {
+    if (entryMode === 'demo')
+      return failure('INVALID_TRANSITION', 'Use the synthetic demo profile selector');
     const state = get();
     const temporary = state.temporaryParentAccess;
     if (!temporary || state.activeExperience !== 'signed_out') {
@@ -2164,7 +2308,18 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   dismissReturningUserWelcome: () => set({ returningUserWelcome: null }),
 
   signOutExperience: () => {
+    if (demoEntryInFlight) {
+      demoEntryAborted = true;
+      return failure('INVALID_TRANSITION', 'Wait for demo entry to finish');
+    }
     const state = get();
+    if (state.demoResetFailed)
+      return failure('INVALID_TRANSITION', 'Restart the demo before continuing');
+    if (entryMode === 'demo') {
+      const clearedVoice = childVoiceController.clearTaskBinding('parent');
+      if (!clearedVoice.ok) return clearedVoice;
+      set({ childVoiceView: clearedVoice.data });
+    }
     if (state.activeExperience === 'parent') {
       if (!state.temporaryParentAccess) {
         const cleared = serviceRegistry.deviceAccess.clear();
@@ -2206,6 +2361,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     releaseLiveVoiceCapture(state.liveVoiceCapture);
     set({
       activeExperience: 'signed_out',
+      ...(entryMode === 'demo'
+        ? {
+            demoEntryEpoch: state.demoEntryEpoch + 1,
+            parentGuideSuggestion: null,
+            childCoachResult: null,
+            ageAdaptedCoachResult: null,
+            childVoiceView: { ...INITIAL_CHILD_VOICE_VIEW },
+            childTaskDraft: createEmptyChildTaskDraft(),
+            taskDraftRevision: state.taskDraftRevision + 1,
+          }
+        : {}),
       childAccess: childAccessController.getView(),
       deviceAccess: deviceAccessView(null),
       parentOnboarding: parentOnboardingController.getView(),
@@ -2538,7 +2704,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const locale = coerceLocale(value);
     const state = get();
     const record = state.localFamily.record;
-    if (!record || record.appLanguage === locale) {
+    if (state.demoResetFailed || !record || record.appLanguage === locale) {
       set({ locale, direction: getLocaleDirection(locale) });
       return;
     }
@@ -2555,6 +2721,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   setAmbientSoundEnabled: (enabled) => {
+    if (get().demoResetFailed)
+      return failure('INVALID_TRANSITION', 'Restart the demo before continuing');
     const saved = serviceRegistry.ambientAudioPreferences.save(enabled);
     if (!saved.ok) return saved;
     set({
@@ -2567,9 +2735,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return success(saved.data.ambientSoundEnabled);
   },
 
-  setRole: (role) => set({ role }),
+  setRole: (role) => {
+    if (entryMode !== 'demo') set({ role });
+  },
 
-  switchRole: () => set((state) => ({ role: state.role === 'parent' ? 'child' : 'parent' })),
+  switchRole: () => {
+    if (entryMode !== 'demo')
+      set((state) => ({ role: state.role === 'parent' ? 'child' : 'parent' }));
+  },
 
   setActiveChild: (childId) => {
     const state = get();
@@ -2593,79 +2766,141 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   resetPrototype: () => {
+    if (demoEntryInFlight) {
+      demoEntryAborted = true;
+      return failure('INVALID_TRANSITION', 'Wait for demo entry to finish');
+    }
     const state = get();
-    if (state.role !== 'parent' || state.activeExperience !== 'parent') {
+    if (
+      state.demoResetFailed ||
+      state.role !== 'parent' ||
+      state.activeExperience !== 'parent' ||
+      (entryMode === 'demo' && !requireActiveParentExperience(state).ok)
+    ) {
       return failure('INVALID_TRANSITION', 'An active Parent experience is required before reset');
     }
-    const deviceAccessReset = serviceRegistry.deviceAccess.clear();
-    if (!deviceAccessReset.ok) return { ok: false, error: deviceAccessReset.error };
-    const localReset = serviceRegistry.localFamily.clear();
-    if (!localReset.ok) return { ok: false, error: localReset.error };
-    const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
-    if (!ambientAudioReset.ok) return { ok: false, error: ambientAudioReset.error };
-    const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
-    if (!savedTaskTemplateReset.ok) return { ok: false, error: savedTaskTemplateReset.error };
-    const reset = serviceRegistry.prototypeSession.resetPrototype();
-    const nextGrowthJourney = createGrowthJourneyRuntime(
-      reset.session,
-      get().growthJourney.resetSequence + 1,
-    );
-    if (!nextGrowthJourney.ok) {
-      return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
+    const rejectReset = (result: ServiceResult<never>): ServiceResult<never> => {
+      if (entryMode !== 'demo') return result;
+      demoEntryAdapter?.invalidate();
+      releaseLiveVoiceCapture(state.liveVoiceCapture);
+      set({
+        demoResetFailed: true,
+        activeExperience: 'signed_out',
+        temporaryParentAccess: null,
+        pendingFamilyCreation: null,
+        returningUserWelcome: null,
+        rememberParentOnThisDevice: false,
+        parentOnboarding: {
+          ...get().parentOnboarding,
+          status: 'signed_out',
+          canEnterParentExperience: false,
+        },
+        childAccess: {
+          ...get().childAccess,
+          status: 'signed_out',
+          canEnterChildExperience: false,
+          selectedChildId: null,
+        },
+        parentGuideSuggestion: null,
+        parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+        liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+        liveVoiceCapture: null,
+        childCoachResult: null,
+        ageAdaptedCoachResult: null,
+        childVoiceView: { ...INITIAL_CHILD_VOICE_VIEW },
+        childTaskDraft: createEmptyChildTaskDraft(),
+        taskDraftRevision: state.taskDraftRevision + 1,
+        confirmationPlan: null,
+        lastRecognitionAttempt: null,
+      });
+      return result;
+    };
+    if (entryMode === 'demo') set({ demoEntryEpoch: state.demoEntryEpoch + 1 });
+    try {
+      const deviceAccessReset = serviceRegistry.deviceAccess.clear();
+      if (!deviceAccessReset.ok) return rejectReset({ ok: false, error: deviceAccessReset.error });
+      const localReset = serviceRegistry.localFamily.clear();
+      if (!localReset.ok) return rejectReset({ ok: false, error: localReset.error });
+      const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
+      if (!ambientAudioReset.ok) return rejectReset({ ok: false, error: ambientAudioReset.error });
+      const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
+      if (!savedTaskTemplateReset.ok)
+        return rejectReset({ ok: false, error: savedTaskTemplateReset.error });
+      const reset = serviceRegistry.prototypeSession.resetPrototype();
+      const nextGrowthJourney = createGrowthJourneyRuntime(
+        reset.session,
+        get().growthJourney.resetSequence + 1,
+      );
+      if (!nextGrowthJourney.ok) {
+        return rejectReset(failure('INVALID_RESPONSE', nextGrowthJourney.error.message));
+      }
+      const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
+      const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
+        profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+      });
+      const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
+      const voiceReset = childVoiceController.resetPrototype('parent');
+      if (!voiceReset.ok) return rejectReset(voiceReset);
+      const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+      if (!onboardingReset.ok) return rejectReset(onboardingReset);
+      const accessReset = serviceRegistry.access.resetPrototype();
+      if (!accessReset.ok) return rejectReset(accessReset);
+      const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
+      if (!liveChildAiGrantReset.ok) return rejectReset(liveChildAiGrantReset);
+      const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
+      releaseLiveVoiceCapture(state.liveVoiceCapture);
+      set((state) => ({
+        ...reset.session,
+        demoRunGeneration:
+          entryMode === 'demo' ? state.demoRunGeneration + 1 : state.demoRunGeneration,
+        demoResetFailed: false,
+        ambientAudioPreference: {
+          enabled: entryMode !== 'demo',
+          status: 'ready',
+          source: 'default',
+        },
+        activeExperience: 'signed_out',
+        childAccess: childAccessController.reset(),
+        deviceAccess: deviceAccessView(null),
+        familyReward: createFamilyRewardRuntime(),
+        growthJourney: nextGrowthJourney.data,
+        privateLeague: nextPrivateLeague,
+        mangroveLearningByProfile: nextMangroveLearning,
+        sharedGrowth: nextSharedGrowth,
+        revealBundleQueue: createEmptyRevealBundleQueue(),
+        approvalRevealCommitments: {},
+        parentOnboarding: onboardingReset.data,
+        localFamily: localFamilyView(null),
+        localFamilyProfileRepair: null,
+        pendingFamilyCreation: null,
+        rememberParentOnThisDevice: false,
+        returningUserWelcome: null,
+        temporaryParentAccess: null,
+        parentGuideSuggestion: null,
+        parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+        liveChildAiGrants: createInitialLiveChildAiGrants(),
+        liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+        liveVoiceCapture: null,
+        childCoachResult: null,
+        ageAdaptedCoachResult: null,
+        childVoiceView: releasedVoiceView,
+        confirmationPlan: null,
+        lastRecognitionAttempt: null,
+        prospectiveTaskAdjustment: null,
+        preAcceptanceAdjustment: null,
+        routineProgressByTask: reset.session.routineProgressByTask ?? {},
+        childTaskDraft: createEmptyChildTaskDraft(),
+        taskDraftRevision: state.taskDraftRevision + 1,
+        permissionProofSequence: 0,
+      }));
+      if (entryMode === 'demo') demoEntryAdapter?.invalidate();
+      return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
+    } catch (error) {
+      if (entryMode !== 'demo') throw error;
+      return rejectReset(
+        failure('INVALID_RESPONSE', 'Demo reset could not finish; restart the app'),
+      );
     }
-    const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
-    const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
-      profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
-    });
-    const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
-    const voiceReset = childVoiceController.resetPrototype('parent');
-    if (!voiceReset.ok) return voiceReset;
-    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
-    if (!onboardingReset.ok) return onboardingReset;
-    const accessReset = serviceRegistry.access.resetPrototype();
-    if (!accessReset.ok) return accessReset;
-    const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
-    if (!liveChildAiGrantReset.ok) return liveChildAiGrantReset;
-    const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
-    releaseLiveVoiceCapture(state.liveVoiceCapture);
-    set((state) => ({
-      ...reset.session,
-      ambientAudioPreference: { enabled: true, status: 'ready', source: 'default' },
-      activeExperience: 'signed_out',
-      childAccess: childAccessController.reset(),
-      deviceAccess: deviceAccessView(null),
-      familyReward: createFamilyRewardRuntime(),
-      growthJourney: nextGrowthJourney.data,
-      privateLeague: nextPrivateLeague,
-      mangroveLearningByProfile: nextMangroveLearning,
-      sharedGrowth: nextSharedGrowth,
-      revealBundleQueue: createEmptyRevealBundleQueue(),
-      approvalRevealCommitments: {},
-      parentOnboarding: onboardingReset.data,
-      localFamily: localFamilyView(null),
-      localFamilyProfileRepair: null,
-      pendingFamilyCreation: null,
-      rememberParentOnThisDevice: false,
-      returningUserWelcome: null,
-      temporaryParentAccess: null,
-      parentGuideSuggestion: null,
-      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
-      liveChildAiGrants: createInitialLiveChildAiGrants(),
-      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
-      liveVoiceCapture: null,
-      childCoachResult: null,
-      ageAdaptedCoachResult: null,
-      childVoiceView: releasedVoiceView,
-      confirmationPlan: null,
-      lastRecognitionAttempt: null,
-      prospectiveTaskAdjustment: null,
-      preAcceptanceAdjustment: null,
-      routineProgressByTask: reset.session.routineProgressByTask ?? {},
-      childTaskDraft: createEmptyChildTaskDraft(),
-      taskDraftRevision: state.taskDraftRevision + 1,
-      permissionProofSequence: 0,
-    }));
-    return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
   },
 
   resetDemo: () => {
@@ -3708,6 +3943,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const currentAssignment = validateActiveChildAssignment(currentState, true);
     if (
       !currentAssignment.ok ||
+      (entryMode === 'demo' && currentState.demoEntryEpoch !== state.demoEntryEpoch) ||
       currentState.activeChildId !== request.child.id ||
       currentAssignment.data.assignment.id !== request.assignmentId ||
       currentAssignment.data.task.id !== request.taskId ||
