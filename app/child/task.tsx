@@ -349,6 +349,11 @@ export default function ChildTaskScreen() {
           statusLabel={t('childTask.statusReady')}
           title={childFacingTitle}
         />
+        {preparedCoachAvailable ? (
+          <Text brand direction={direction} testID="child-approved-action">
+            {localize(content.positiveAction, locale)}
+          </Text>
+        ) : null}
         <ChildTaskPlanCard
           direction={direction}
           steps={taskCheckpoints}
@@ -456,6 +461,11 @@ export default function ChildTaskScreen() {
           title={childFacingTitle}
           variant="active"
         />
+        {preparedCoachAvailable ? (
+          <Text brand direction={direction} testID="child-approved-action">
+            {localize(content.positiveAction, locale)}
+          </Text>
+        ) : null}
 
         {priorSubmission ? (
           <ChildTaskFollowUpContext
