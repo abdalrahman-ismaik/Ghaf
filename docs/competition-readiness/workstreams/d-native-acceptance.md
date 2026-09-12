@@ -1231,3 +1231,139 @@ one-second local waits are repeated ADB requests; configured timeout proves proc
 clock difference identifies its cause; unauthorized observations establish a native app failure.
 All completed evidence and helper allocation are released after scoped report checks/commit;
 only the existing ADB server and D status writer remain held for the next actual handoff.
+
+## Selected T014 narration contract review — A172 draft63c492d
+
+This is an independent **pre-implementation contract review**, not a new product/native regression,
+a listening session or approval to release features. A172 grants only read-only contract/direct-seam
+inspection and D's report/ignored evidence. D058 acknowledged board61 before writing. Exact canonical
+HEAD at capture: `6076dbad634d9be1cb6266df89a539ac3cdc4121`; the contract is an untracked draft with
+SHA256 `63c492da6472ca3d5657225247f41d66ef424bf2127128d118437b754e762a17`, not yet a committed
+implementation authority. Snapshot and five Spec amendment diff/receipt are retained under
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/contract-review/T014/draft-63c492d/`.
+QA source remainsacb962f; the active baseline APK build remains5d8a3e8 with no narration import.
+
+A170/C060 records all three exact Wiam clips approved by the actual user for wording/pronunciation/
+delivery; D does not request those approvals again or claim to have listened. The draft names the
+three supplied hashes and body-only transcript IDs. English is complete and silent. C separately
+owns current export-plan/rights intake; user quality approval does not establish native execution,
+named student review or public distribution rights. No provider, microphone, persisted preference,
+authentication or progression authority is added by this selected story.
+
+Read-only evidence: draft lines70–85 specify the pure controller,103–132 the context and native-event
+adapter,141–150 the required tests. Existing app/index.tsx180–181 already reads aggregate generation
+and epoch; current caller278 does not yet pass them. Existing DemoEntryScreen Back/profile/locale
+callbacks and keyed AccessScreen were inspected, preserving the ordinary narrator's separate
+existing behavior. Installed Expo status includes player `id`/`isLoaded`/`playing`/`error`; no native
+playback was executed. No source, contract or test file was edited by D.
+
+| ID / priority / kind            | Concrete challenge on draft63c492d                                                                                                                                                                                                                                        | Requested owner decision / evidence                                                                                                                                                                                                                                                           |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D-T014-001 / P2 contract        | Lines73–76 recheck revision before calling isAllowed; a guard can synchronously cancel/fail/dispose then returntrue. A successful onChange callback can also invalidate without throwing. Checking only before that callback can still allow the old play/next operation. | A: revalidate revision/disposal/failure after externally supplied synchronous callbacks/guard return and before further player operations. Pure tests must include successful reentrant invalidation, not only thrown callbacks. Implementation NOT RUN.                                      |
+| D-T014-002 / P2 contract        | Lines127–130 specify background events and fail-closed SR detection, but do not explicitly define unknown initial foreground state or failed AppState subscription. Installed RN AppState.currentState starts nullable.                                                   | A: allowed predicate requires known active foreground; synchronously revoke permission/cancel before publishing React state; unknown initial state or failed foreground observation stays silent. No automatic foreground resume. Implementation NOT RUN.                                     |
+| D-T014-003 / P2 validation path | Lines145–150 require mounted effect tests while forbidding new dependencies. Actual Vitest environment is node; existing demo presentation tests137–143 explicitly use React server rendering only.                                                                       | A: name a feasible existing browser/ReactDOM mounted harness and its exact paths/preview slot, or leave mounted rows BLOCKED pending a concrete tooling decision. SSR or a hand-built fake hook dispatcher cannot establish mounted effect wiring. No dependency installed/test written by D. |
+
+D059 published these concrete clarifications to A. Node module-resolution inspection exited0:
+react-dom/client resolves; react-test-renderer, jsdom, happy-dom, both testing-library variants,
+react-reconciler and @vitest/browser do not resolve from the canonical project. Their optional
+references/types in the lockfile do not establish an installed runtime. Repository-provided browser
+tooling remains available under the serialized preview grant; a package-resolution result does not
+prove that no browser harness can be built. No browser/native slot or new package was requested by D.
+
+A174 independently identifies the typed publication seam: required generation/epoch/copy fields
+must land coherently with caller/resources/current typed fixtures. D supports A owning that small
+preparation slice, then explicitly releasing types/fixtures to C; an optional narration prop may
+preserve the silent story until C wires the controls. This is an integration-order recommendation,
+not an overlapping source reservation or permission to leave the final lifecycle props unbound.
+
+Acceptance matrix for the selected narration work:
+
+| Owner / evidence row          | Required observable result                                                                                                                                                                                           | Current status                                                                          |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| A T014a / pure controller     | No construction autoplay; Play/Replay only; fixed player operation ordering; failures settle without unhandled rejection; cancel/dispose/guard/callback reentrancy cannot start stale work                           | NOT RUN; clarification001 pending                                                       |
+| A/C / per-player pending work | Repeated Play coalesces; cancelled old seek retains its lock; source/context replacement cannot cause overlapping seeks on one player or permit old settlement to alter new state                                    | NOT RUN; existing universal invariant, not a separate defect                            |
+| C T014b / mounted wiring      | Back/close/finish/step/locale/profile cancel synchronously; generation/epoch/unmount cleanup invalidates pending work, including settlement before a later passive effect                                            | BLOCKED on concrete mounted evidence path, then implementation                          |
+| C / foreground and SR         | Known permitted foreground/SR state only; thrown/rejected query or failed observer stays silent; new SR event wins over late initial query; cancellation precedes state publication; no resume on disable/foreground | NOT RUN; clarification002 pending                                                       |
+| C / player status             | Match current player/source/context; loaded native status alone establishes playing; error cancels/unavailable; completion changes no story, profile, Seeds or replay                                                | NOT RUN                                                                                 |
+| A/C / content and absence     | Exact three supplied hashes map to current AR body transcripts; EN/absent media complete and silent; full text and navigation remain usable during loading/error                                                     | NOT RUN after copy/integration; actual user clip quality approval attributed separately |
+| A / integration               | Compatible required types, route aggregate props, bilingual resources and typed fixtures; ordinary narrator/tests unchanged; no new dependency or progression/session authority                                      | NOT RUN; A174 preparation order accepted in review                                      |
+| D/B / exact artifact/native   | New runtime and APK identified separately from5d; actual AR touch/RTL/TalkBack, Back, background/audio interruption and playback/error/Stop on authorized hardware                                                   | BLOCKED; no corresponding APK or authorized device                                      |
+
+Sole initial helper `/root/narration_contract_privacy_review`, explorer explicitly launched
+Astra/ultra; Fast/effective serving unexposed. It owns read-only guard/reentrancy/privacy analysis;
+lead owns foreground/SR/event wiring and evidence feasibility. Exact prompt:
+
+> D's solehelper board61/A172, READ ONLY, no writes/descendants/tests/Gradle/browser/device/provider/network/install. You are not alone; preserve allothersfiles. Concreteboundedquestion: challenge ONLY pure DemoPlaybackController guard/callback reentrancy, outstanding seek/cancel/fail/dispose semantics and source/player/principal generation/epoch privacy boundaries in exact draft snapshot /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/contract-review/T014/draft-63c492d/demo-narration-v1.md SHA63c492da6472ca3d5657225247f41d66ef424bf2127128d118437b754e762a17. CanonicalHEAD6076dbad634d9be1cb6266df89a539ac3cdc4121/runtimeAPK5d8a3e8 unchanged; draftnotimplemented. Read directly relevant existing seams in /home/smyk/projects/Ghaf/src/features/onboarding/playback.ts, components/onboarding, components/demo, app/index.tsx, aggregate generation/epoch ifneeded. Do notduplicate lead's SRquery/eventrace/nativeUIwiring or mountedtestfeasibility review, A'scompletedExpoAPIseamreview, or broadbaselineaudit. Return ONLY materialcontractambiguities/defects with exactlines and concreteadversarialsequence, versus alreadycoveredrequirements; no productfix/sourcegrant. Userapprovedall3exactARWiamclips; qualitynotreopened, nohuman/nativeclaim. AaloneamendsSpec/contracts; Dleadwritesownreport/status, helpernevercoordination. RequestedAstra/Ultraexplicit; Fastunexposed. Useboundedfile reads only, neverexecuteapp/sourceunderreview. Finishconcise/release.
+
+Helper independently confirmed001. It explicitly rejected two extra diagnoses: a separate principal
+field is not inherently missing because the aggregate epoch already changes on handoff; the universal
+per-player no-overlapping-seek invariant already covers replacement instances and must be tested
+rather than reported as a separate missing contract. No helper product/source/test write occurred.
+
+### Android focus/foreground resumption — D-T014-004
+
+**P2 contract gap; native execution NOT RUN.** The same exact draft123–132 requires no automatic
+resume after cancellation/foreground restoration. The independent helper found installed Android
+implementation behavior that the proposed pause-only cancellation cannot disarm:
+
+- `node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioModule.kt`88–128 sets
+  an internal paused marker on transient focus loss (and the default duck-loss branch), then calls
+  `playable.play()` directly on focus gain. The exposed pause483–486 only pauses the underlying
+  reference and does not clear that marker.
+- The same file286–319 marks playing instances paused on background and restarts them on foreground
+  when background playback is disabled. Consequently Play → interruption → JS Stop → focus gain,
+  and background → cancel → foreground, can bypass the pure controller's revision check.
+- Native initial interruptionMode is null61 and requests focus143–155. The TypeScript-documented
+  mixWithOthers default cannot be assumed to describe untouched Android initialization. Explicit
+  mixWithOthers avoids requesting focus and therefore does not establish stopping on interruption.
+- `AudioModule.types.ts`278 exposes generic playback-status events, and `BaseAudioPlayer.kt`79
+  emits playing changes. `AudioPlayer.kt`194 returns null waiting reason. No dedicated focus reason
+  is exposed here. A reactive pause after an unexpected playing event cannot prove that no audio
+  already resumed. keepAudioSessionActive is not an Android solution.
+
+D060 asks A to specify an existing-API player-ownership mechanism that actually disarms/retires
+native resume eligibility before claiming the promise, with fresh explicit intent required for a
+new start. The pure controller/adapter ownership and removal boundary must agree. D proposes no
+SDK/dependency patch, global audio-mode change or new library. The exact interruption → Stop → gain
+and background → cancel → foreground cases belong in the acceptance matrix, separately labelled
+source, mounted and actual native evidence. No native result is inherited from these source reads.
+
+The relevant installed/source file hashes are retained in `supporting-source-identities.json` next
+to the draft snapshot. A owns the resulting contract revision and any subsequent source grant.
+Actual additional helper prompt:
+
+> One additional disjoint exact code question under sameA172/quota1, read-only/no execution/writes/descendants: installed canonical node_modules/expo-audio/android/** + immediately relevant TS defaultaudiooptions. Does current Expo57 player automatically resume on Android audiofocus gain after transient loss or duck under default configuration, without explicit Play/Replay? If yes, what concreteexisting option/status/event seam supports contract's noauto-resume/no-background/interruption expectations, and is draft63c492d explicitenough? Do NOT repeat API signatures/A'searlierseamreview or broadenintoOSaudiodesign. User nativeacceptance includesaudiointerruption; don'tinventobservednativebehaviorfromsource. Return exactlines/limitedsuggestion; leadwritesmatrix whileyouread. SamefrozenAPK5d/draftnotimplemented, private/progression scopeunchanged. Finish/release.
+
+Helper completed and released with exact source lines and the limited mechanism assessment above.
+Lead accepted those substantiated findings and rejected assuming a documented default, pausing
+reactively, or disabling focus callbacks as proof of no native restart. All four D-T014 items are
+pre-implementation contract/evidence findings, not fixed runtime defects. This draft review is
+complete and ready for A's corrections; implementation, mounted/native execution, student review
+and public rights remain separate. The frozen5d APK build continues independently.
+
+### A175 revised draft — closure limited to contract text
+
+A175 publishes exact revision SHA256
+`2be2c77223dc3d6bf09142354026f15fcd10a5aece823d76df9e7f1d8809ba09`.
+D independently compared it with the preserved63c492d snapshot; the new snapshot/receipt are in
+`output/native-acceptance/contract-review/T014/revision-2be2c77/`.
+
+- D-T014-001: **CLOSED for contract clarification only**. Request identity/lock precede external
+  callbacks; the contract now requires before/after guard/callback checks, rechecks after pause
+  and loading notification, and tests successful reentrant cancel/fail/dispose/restart.
+- D-T014-002: **CLOSED for contract clarification only**. A known active AppState is required;
+  unknown state/failed observation or subscription fails closed, with permission refs and
+  invalidation preceding React publication.
+- D-T014-003: **The evidence gap is explicitly bounded; mounted execution remains BLOCKED.** A names
+  an existing Metro/ReactDOM/Playwright harness in C's ignored lifecycle directory, requiring a
+  concrete plan/preview allocation. No new dependency, SSR-to-mounted promotion or fake dispatcher
+  pass is selected. That future harness has not been executed or proven feasible yet.
+- A's required type/caller/resource/typed-fixture publication and later explicit C transfer are
+  now coherent. Optional presentation controls preserve the silent preparation slice; this does
+  not waive final scope binding. Free-plan provenance is recorded, with C's rights review separate.
+- **D-T014-004 remains OPEN**: this revision still relies on pause/controller invalidation without
+  specifying how the installed native resume marker loses authority. A owns that correction.
+
+No source implementation or tests were run for these closures. The supporting helper allocations
+are released; lead alone reviewed the revised text. This cohesive initial/revised contract evidence
+is ready for integration while the concrete native-stop contract remains under A review.
