@@ -819,3 +819,91 @@ our original clipping interpretation. Actual follow-up prompt:
 Report and completed ignored review evidence are released after the scoped format/diff check and
 commit. D retains only its status writer and waits for the verified active B artifact handoff.
 Physical phones/owner authorization, actual human review and0/10 rehearsals remain unchanged.
+
+## Resumed tablet preflight — A093 retained by A096
+
+The user resumed D after the environment interruption, then restored full filesystem/network tool
+access. Same D instance and clean QA5501b4a were reconciled against board43 and A094–098.
+The old B A092 processes were absent; its receipt had no final exit and the logs contained partial
+NUL tails. A095 independently recorded an intermediate bundle but no merged manifest or APK.
+This is an interrupted build with unknown final exit, not a new resource-stop or native pass.
+B alone owns the subsequent A096 build recovery. No old build output was modified by D.
+
+A093 records the owner's statement, “yes I have connected my samsung tab s4”, and grants D a
+bounded read-only visibility check. The reported Samsung Tab S4 is a **tablet**; it does not
+establish primary/secondary narrow-phone coverage. Actual Android model, OS, ABI, serial and
+installed Ghaf identity remain unknown until a usable transport is observed. No APK/install
+permission is inferred from the connection statement.
+
+D's first restricted `ss` listener check returned “Operation not permitted”. Its escalation request
+was interrupted before any successful result. After the user restored full access, a fresh `ss`
+check returned exit0 with no5037listener. No surviving adb/java/node process was observed at that
+check. This environment/tool failure is preserved separately from device visibility. Existing
+default host adbkey was present; only existence was checked, never contents. No custom ADB socket,
+port or vendor-key environment was set. No new key, USB setting or host configuration was selected.
+
+Actual evidence directory:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-preflight/20260912T092019Z/`.
+The local0600receipt and raw command files are inside a0700directory; device lines/serials belong
+only there. No serial was returned in this run or added to Git. Receipt identifies runner15820,
+source5d8a3e8, QA5501b4a and exact tool path:
+
+```text
+/home/smyk/projects/Ghaf-demo-systems/output/native-toolchain/sdk/platform-tools/adb
+```
+
+Tool SHA256 `a902be8f45c6c62e76c9efaf6947a0fa747c9cabd89a2ac8e0d16ecb30b3ed01`.
+Version output: ADB1.0.41,37.0.1-15733141, Linux WSL2. The Linux version describes this host,
+not the tablet's Android version.
+
+| Check                                                 | Actual command/result                                                                                                          | Status and limit                                    |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
+| Host tool identity                                    | Exact binary `version`, PID15821,09:20:19.458968–.462188UTC, exit0                                                             | PASSED host tool check                              |
+| Transport enumeration                                 | Exact binary `devices -l`, PID15822,09:20:19.462470–.470111UTC, exit0; no timeout, header only, zero rows                      | PASSED enumeration; device work BLOCKED             |
+| Local server                                          | stderr says absent daemon started successfully; subsequent `ss -ltnp 'sport = :5037'` exit0 observes adb15824 on127.0.0.1:5037 | A093 lightweight local server; no tablet acceptance |
+| Model/Android SDK/release                             | No selected authorized transport, so no serial-scoped getprop command executed                                                 | BLOCKED                                             |
+| Existing Ghaf package                                 | No device query executed                                                                                                       | NOT RUN                                             |
+| APK/install/journey                                   | No published APK, no install or UI action                                                                                      | NOT RUN/BLOCKED                                     |
+| Narrow primary/secondary phones and actual rehearsals | No observed phone, operator timing or human run                                                                                | NOT RUN;0/10                                        |
+
+A header-only successful enumeration establishes **no ADB-visible device in this WSL host at that
+observation**. It does not prove that no tablet is physically connected, that Android debugging is
+disabled, that permission was denied, or that Ghaf is absent. No target was selected by order or
+inferred serial. No reconnect, install, uninstall, reset, clear-data, permission acceptance,
+recording, screenshot, broad properties, package inventory or logcat command ran.
+
+D028 asks A to coordinate the exact owner step: make the selected tablet visible and authorized
+to the intended ADB host. USB attachment, Windows-versus-WSL visibility and debugging/trust state
+remain unknown. D will not alter USB/WSL/services as a shortcut. The observed local server15824
+is retained for explicit handoff; no unrelated server was killed. Any future scoped device reads
+must revalidate a nonempty, unambiguous authorized transport, then use the exact selected serial.
+Successful metadata would still not pass APK, native or human rows.
+
+This is **separate from collector --preflight**, which requires a real APK and all five explicit
+identity arguments and performs host/APK checks only. D did not invoke the collector with a
+fabricated APK or serial. The collector's default installed-package/ABI inspection exceeds this
+initial A093 model/OS visibility scope and is not used to bypass the missing artifact gate.
+
+Bounded AI review: sole helper `/root/tablet_preflight_review`, explicit Astra/ultra launch accepted;
+Fast/effective serving unavailable. Initial wording “no commands” was clarified to permit bounded
+read-only file readers, while forbidding device/network/socket/app/test execution. It reviewed
+collector/report semantics and supplied the above empty-list/host-versus-Android distinctions;
+lead executed actual preflight and owns this report. No product generation or human approval.
+Initial exact prompt:
+
+> You are D's sole helper under canonical board43/A093/A096 quota1. READ ONLY bounded safety review, no descendants or commands/device/browser/tests/writes. You are not alone; preserve all files. Exact QA /home/smyk/projects/Ghaf-qa-rehearsal HEAD5501b4a, final runtime5d8a3e8; no actualAPK yet. User via A093 reported connected SamsungTabS4; actual serial/model/OS unknown. A093 grants B SDK adb version + bounded devices -l enumeration, then only exact owner-selected authorized TabS4 serial model/release/SDK and targetGhafpackage if relevant. No install/uninstall/clear/reset/permissions/media/personaldata/host USB services. Existing5037 listener was absent at09:18 full-access ss; no adbprocess observed. Lead will run version then enumerate (maystart lightweightADBserver underA093), keep raw serial/device lines only ignored QA output/native-acceptance/device-preflight, report sanitized status. If multiple/offline/unauthorized/mismatcheddevice block followup, do not auto-reconnect/selectfirst. Concrete question: inspect existing collector/docs read-only and advise minimal correct command/receipt/absence interpretation for this preflight; assess resulting receipts when supplied. Do not repeat broad audits or run device/network/socket actions. Lead owns actual commands/report/status. Requested Astra/Ultra explicit, Fast launch unavailable; effective settings unexposed. Return findings here, never shared coordination. Initial output concise; wait for receipt followup if necessary.
+
+Actual clarification:
+
+> Clarification: bounded read-only shell cat/rg/python file reads are permitted for exact collector/docs/receipt; no app/device/network/socket/test/native commands. The no-commands phrase meant no execution under review, not file inspection. Existing default ~/.android/adbkey is present (contents never read/output), no custom ADB socket/port/vendor-key env; exact B adb version37.0.1-15733141/1.0.41 observed. Lead now records enumeration.
+
+Receipt follow-up:
+
+> Actual receipt now at /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-preflight/20260912T092019Z/receipt.json plus version/devices stdout/stderr. B SDK version37.0.1-15733141, client1.0.41. devices -l exit0/header-only/zero rows, no timeout. stderr server absent→started successfully. Afterwards ss observed loopback127.0.0.1:5037 adbPID15824. No device-specific command issued, no serial/model/AndroidOS known, no install. Please read exact outputs/receipt for narrow evidence classification and safe owner next-step, then finalize/release. Lead records own fresh observer commands and outbox to A; no second enumeration needed.
+
+Helper final review accepted the host-enumeration classification and explicitly released with no
+writes, device/test/browser operations or descendants. Server PID/listener proof is D's separate
+observation, not a helper-executed check. Rejected inferences: treating zero rows as no physical
+connection, diagnosing a cable/driver/trust/WSL fault without evidence, or calling this collector
+execution/native acceptance. Initial scoped format check reported style warnings; formatted output
+and a fresh scoped check follow before commit. No app suite was repeated for this report change.
