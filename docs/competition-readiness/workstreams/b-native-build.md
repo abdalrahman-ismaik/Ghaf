@@ -1,10 +1,11 @@
 # Session B — Repeatable Android build
 
-**Current: build script, private tools and Feature 015 demo adapter released; A087 resource-guard correction ready for review. No merged manifest, APK or native pass yet.**
+**Current: actual release manifest generated successfully on runtime5d8a3e8 after bounded cache recovery. Build script, private tools and Feature015 adapter released. APK assembly, device validation and human acceptance remain pending.**
 
 The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
 attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
-permits a bounded script correction, with a single retry requiring A's subsequent reviewed grant.
+permitted the reviewed resource correction; A092/A096/A100/A103/A106 subsequently governed the
+interrupted-run and precisely diagnosed cache recovery documented below.
 Recovery 014 remains deferred. Earlier sections below are historical checkpoints.
 
 ## Identity and authority
@@ -724,3 +725,224 @@ No app suite or native job ran. Helper `/root/native_script` explicitly released
 paths and allocation after the34-case result; no live B helper/job remains. The completed
 script/report slice is released for A intake; B retains maintenance and private build boundaries
 for the separately granted retry. Adapter/test and shared source remain released to A.
+
+## A092 — Interrupted single retry and resumable handoff
+
+A reviewed/integrated the guard correction5f990802 as305681e and granted ONE manifest-only retry
+in A092/board40. Source remained5d8a3e8/demo, exact B build HEAD
+`5f990802eb4217b7c9d49ff91c1efddcb005421f`, scriptSHA7c2a2c8d…abfcf. The command used all
+previously approved paths/low budgets with `--heavy-slot-ack A092-board40`,
+`--metro-release-ack A082-C039-A092`, `--sdk-license-ack A045`. No new tools, configuration,
+source, signing identity, dependency versions or memory limits were selected.
+
+Run: `/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T024056Z-manifest.2nbNeM`.
+Start02:40:54UTC; all17 prerequisite steps passed; actual generation reuse passed02:40:58 and
+Gradle began02:40:59. No prebuild or clean ran. The graph progressed through JavaScript bundling
+and dependency manifest tasks, but there is no completed release-main manifest or APK evidence.
+
+On user-directed resume at09:12UTC, tool session41379 no longer existed. The run receipt has no
+terminal exit or end time; do not assign exit0, exit75 or a failure cause. Every recorded process
+was absent: script497090, wrapper497447, daemon497525 and descendants498539/499660/500302/500546.
+The current Linux boot identifier differs from the captured run's identifier, establishing that
+the environment restarted between observations, without establishing the exact cause or timing
+of this build interruption. No process was signalled on resume and prior cleanup is not inferred.
+
+The preserved resource log has27 valid samples and one final77-NUL-byte line. Its last valid sample
+is02:43:14.227203UTC: available41.922%, paging delta371, streak0, no stop reason. Across the valid
+samples minimum available memory was35.647% and maximum paging streak0; none recorded a policy
+stop. The Gradle log also has trailing NUL bytes. The original logs were neither repaired nor
+truncated. This partial record does not prove sufficient build capacity or a completed build.
+
+Separate resume observation: `resume-observation-20260912T0913Z.json` inside the run above. It
+records current UTC, old/current boot identity, absent PIDs, exact raw-log hashes, partial sample
+statistics and absent artifact paths. The durable evidence status is **INTERRUPTED / terminal
+result UNKNOWN**, with merged permissions/APK/native acceptance **NOT RUN**.
+
+B published outbox030 and explicitly released the heavy lane after verifying no recorded job
+remained. All helpers were already released. The script/report completed slices, demo adapter
+and tests remain released for integration; the owned private toolchain/dependencies/cache/current
+Android tree/archive and authorized two-field package diff are retained for recovery. Do not
+stage package.json, discard raw output, clean-generate or rerun A092 automatically. A must issue
+an exact interruption-recovery decision and renewed heavy/preview grant; existing source/mode
+can then attempt marker validation before reuse. A resource stop was not observed, but the single
+authorized attempt was already started. A096 subsequently granted one exact interruption-recovery
+execution after B resumed; its separate status is recorded below.
+
+The runtime remains unchanged and A's148files/1919tests plus four checks remain attributed source
+evidence. No duplicate app suite was run. Student exact-diff review/teach-back and human acceptance
+remain PENDING. A093 separately grants D read-only readiness checks for the owner's Samsung Tab S4;
+B performed no device scan/install, and tablet readiness cannot pass either narrow-phone gate.
+Recovery014 remains deferred with no automatic later approval.
+
+Actual resume assistance was limited to lead read-only Git/process/log inspection and this bounded
+receipt/report; no helper was restarted, no runtime contribution was generated and no native
+attempt was repeated. Requested versus observable model/settings distinctions remain unchanged.
+Rejected conclusions: assuming success from task logs, fabricating a guard exit from an interrupted
+receipt, attributing the restart cause, silently reusing the exhausted single-attempt grant or
+claiming native acceptance from the source suite. Original history and evidence remain intact.
+
+The first resumed managed sandbox excluded B's assigned worktree. The report/receipt write used
+explicit tool escalation and completed at09:19:03UTC. The user then restored full filesystem
+access; no further filesystem approval was required. Neither change expands the assigned product
+or native build scope. Exact final checks/commit are published in B's canonical status.
+
+### A096 prerequisite refusal and preservation correction
+
+A096/board43 granted one exact manifest recovery on unchanged BHEAD5f990802/source5d8a3e8/demo,
+with the existing script, low budgets, private inputs and guards. A asked B to retain that HEAD
+before launch. B prepared to save only its uncommitted report append under ignored output and
+return that report to committed content, leaving the authorized package scripts untouched.
+
+Lead's first report-save Python command had an invalid non-ASCII bytes literal and wrote nothing.
+The enclosing command still continued to the status update and subsequent launcher, so B031's
+initial claim of successful draft preservation was premature. B explicitly corrected it in032.
+The unchanged build script correctly refused the still-dirty report at its FIRST input-identity
+step: `20260912T092026Z-manifest.Mf3DxX`, start09:20:19, end09:20:26UTC, exit1. Tool98311 ended;
+no Gradle, prebuild or native compilation began. This is a real preparation error and a working
+input guard, not an app regression or resource-limit stop. Original refusal receipt/log retained.
+
+The corrected report-save operation then succeeded. It checked that the report started with the
+exact committed bytes and contained only B's known appended section, saved the complete report
+and exact diff under `output/native-build/a096-report-draft/`, verified the copy, and wrote only
+that report's committed bytes back. The saved `receipt.json` retains draft/base hashes and UTC;
+package.json was never restored/staged, HEAD never moved, and Git now has only its two permitted
+script edits. No other contributor's work was modified or hidden. The updated handoff draft is
+stored separately as `b-native-build.updated.md`, preserving the first saved version and hashes.
+
+B requested A's corrected-prerequisite launch acknowledgment in032; no repeat was launched while
+that single-execution interpretation remained pending. All failure observations and actual lead
+contributions are retained; no helper was active for this preparation step. Report draft restoration
+and a report-only commit follow native job completion or an explicit paused handoff.
+
+## Completed cache recovery and actual manifest checkpoint
+
+A100 clarified that the first input refusal had started no native work, and granted the corrected
+A096 launch. All subsequent executions retained exact BHEAD
+`5f990802eb4217b7c9d49ff91c1efddcb005421f`, runtime
+`5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`, demo mode and scriptSHA
+`7c2a2c8da6081586d6182232948a512615c242e67024655063f85487db9abfcf`.
+No source, app configuration, package version, lockfile, tool version, signing identity, worker,
+heap or resource-policy change was made. Report-only work was preserved outside tracked build
+inputs until this coherent checkpoint after actual manifest success.
+
+All three runs used the existing `--manifest-only` command and pinned private paths, with the
+applicable A acknowledgment substituted for the heavy-slot and Metro-release arguments:
+
+| Grant/run under output/native-build     | UTC start → end   | Actual result                                                                       |
+| --------------------------------------- | ----------------- | ----------------------------------------------------------------------------------- |
+| A100 / 20260912T092446Z-manifest.3Chgns | 09:24:44→09:27:11 | Gradle1, cleanup0, script1:123 distinct empty transform metadata entries            |
+| A103 / 20260912T092958Z-manifest.HfIhlC | 09:29:57→09:31:13 | Gradle1, cleanup0, script1:122 different empty transform metadata entries           |
+| A106 / 20260912T093503Z-manifest.PZp7Ci | 09:35:01→09:36:18 | Gradle0, cleanup0, script0:actual main release manifest and merger report generated |
+
+HfIhlC was launched by the tool at09:29:56; its script's retained `start_utc` is09:29:57. The table
+uses the script receipt, not the earlier tool/status timestamp. Native task failure in both failed
+runs was `:app:processReleaseMainManifest` unable to read specific workspace `metadata.bin` files.
+Gradle10 deprecation and provider replacement messages are retained warnings, not separate fatal
+errors or reasons to change dependencies. No error was relabeled as a resource stop.
+
+Actual resource samples:3Chgns26samples/minimum58.699% available; HfIhlC13/minimum57.103%;
+PZp7Ci13/minimum58.5%. All recorded zero swap use, paging streak0 and no guard stop reason.
+Each run's `post-exit-observation.json` captures absent owned PIDs, final exits and raw-log hashes.
+These measurements apply to these manifest tasks, not a guarantee for subsequent APK compilation.
+
+### Exact diagnosed cache changes
+
+The first failed log named123 distinct immediate transform entries,145 error occurrences. Each
+entry's `metadata.bin` and `results.bin` existed as regular zero-byte files. The helper found no
+separate fatal error and proposed preserving each complete entry instead of removing one file.
+A103 granted exactly those123 directories under B's private
+`output/native-cache/gradle/caches/9.3.1/transforms/`, with complete preservation and a new retry.
+
+Lead's ignored `3Chgns/quarantine-A103.py` verified the frozen failed-log hash, exact named path set,
+full B HEAD, permitted Git state, absent captured PIDs, private native-build lock, root containment,
+regular non-symlink entry/files, expected empty hashes and no destination collision. It recorded
+all entries before any move, atomically renamed only each complete entry, checked preserved inode
+identity, and fsynced the before/after per-entry receipt and directory metadata. No deletion or
+cache-wide purge occurred. A103 completed09:29:44.901852–09:29:45.732103UTC, exit0.
+
+Actual first quarantine: `output/native-build/cache-quarantine-A103/`, receipt
+`quarantine-receipt.json` SHA256
+`abeeaaa10bab9958c86779d4eca8308bc4aa564c0e97d1a80a3b6fd05a97a7ca`.
+Sorted original parent-path list SHA256:
+`850ea405fc579b02a60ef9917832a6533f00083d17b652a4a0417b1e5c25a2c8`.
+A104 subsequently accepted B's earlier proposed alternate directory, but the actual A103 operation
+had already completed. A105 explicitly accepted the executed target and required preserving it;
+neither alternate target was created nor the operation repeated.
+
+HfIhlC then named122 completely different entries,144 error occurrences. The independent helper
+inspected only the immediate32-hex namespace and metadata/results stats/hashes:3118 directories,
+2996 nonempty metadata files,122 empty files, none missing or symlinked. Every remaining empty
+metadata file belonged to the actual new failure set; there were zero unreported empty entries.
+All first123 entries had reappeared with nonempty metadata/results, supporting their regeneration.
+Nonempty files were not claimed semantically valid. A independently obtained the same inventory.
+The logs and metadata do not prove precisely when, why or whether interruption emptied these files.
+
+A106 granted only those122 complete entries. Lead adapted the preserved A103 runner to the exact
+new frozen-log/list/target/PIDs and added complete before/after namespace counts and named-path
+equality. It completed09:34:40.231369–09:34:41.241868UTC, exit0; before3118 entries/122 empty,
+after2996 entries/all nonempty metadata and **zero empty metadata/results pairs**. Every moved
+entry remained preserved with before/after path, inode, empty-file hash and UTC observations.
+Second quarantine: `output/native-build/cache-quarantine-A106/quarantine-receipt.json`;
+runner: `HfIhlC/quarantine-A106.py`. Sorted122-parent list SHA256:
+`c739dd84632f02e734ca1679e8a759492ecfad37f25abe146a09d950af2b9657`.
+The two old quarantine trees and every interrupted/refused/failed run remain intact.
+
+### Actual manifest evidence and next APK gate
+
+PZp7Ci passed all21 script steps:17 prerequisites including actual retained-native reuse, Gradle,
+post-build input equality, post-build generation identity, and actual merged-manifest extraction.
+No prebuild/clean ran. Gradle reported success in1m2s,87 actionable tasks:6 executed/81 up-to-date.
+At09:36:45UTC, script31362 and all recorded descendants31742/31796/32515/32611/32914 were absent;
+heavy/helper/job allocations were explicitly released in B046. No extra app suite ran.
+
+Actual retained files under the absolute PZp7Ci run directory:
+
+| Artifact                    | SHA256                                                           |
+| --------------------------- | ---------------------------------------------------------------- |
+| merged-release-manifest.xml | 5ba0ea320a67dde7fdd8f6099bb23c5c17a11ca5d462248e4559d7cd43797e9a |
+| merged-manifest-review.json | fb1a63c5125035f2b17fdd031b5e0c9c0569707bb47dcca2ab74d010ce7b9f6c |
+| manifest-merger-0.txt       | 363f60ef6ab1e1d0c9f388d7c5d3d739190b5045f04bc56dd543ddf7bd68d469 |
+| receipt.txt                 | 978c603d0ae0ee6a297ba353a30d7a04f90b605c538cb2639888f5ceffecf86c |
+| 18-gradle-manifest.log      | a8b6fb7bbbf9abe2fc2d09502db11f459d2bf955455273053d70dbf53c4e4815 |
+
+The actual manifest declares package `ae.ac.ku.ghaf.prototype`, `allowBackup=false` and eight
+permission names: its package-scoped DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION plus Android
+ACCESS_NETWORK_STATE, INTERNET, MODIFY_AUDIO_SETTINGS, RECORD_AUDIO, SYSTEM_ALERT_WINDOW,
+VIBRATE and WAKE_LOCK. These are observations, **not approval** or proof of exercised capabilities.
+Prepared audio does not become real Child recording because a microphone permission is declared.
+The manifest cannot prove JavaScript demo entry, embedded assets or actual APK signing.
+
+B041 explicitly released only the two unused paths below to A; A107 acknowledged exclusive
+ownership. A must inspect actual names, attributes and merger origins before writing approval:
+`output/native-build/a-approved-permissions-5d8a3e8-demo.json` and
+`output/native-build/a-manifest-review-5d8a3e8-demo.json`. Every other private path remains B-owned.
+B will use the actual A-authored permission input only under a separately published full-APK grant.
+This report-only checkpoint changes B HEAD, not runtime source; use its new full HEAD for the next
+invocation after A acknowledgment. Preserve package.json's two permitted transient script edits.
+
+No signed APK, ABI/package/signature/embedded-asset inspection or physical-device pass exists yet.
+D's observed zero ADB transports and user-reported TabS4 remain separate readiness evidence;
+primary/secondary phone gates and0/10 rehearsals are unchanged. Named student/human review,
+exact-diff teach-back and acceptance remain PENDING. Recovery014 remains deferred.
+
+### Actual bounded helper prompts and review
+
+Lead wrote only the ignored checked maintenance runners and evidence/report in this slice. The
+helper generated read-only findings, caught no application defect, and made no file/coordination
+writes, app tests, Gradle jobs, signals, installs or descendants. Lead reviewed its exact counts,
+list identities and concrete recovery proposal against the failing logs and A's grants before
+mutation. No whole app or new product behavior was generated. Requested/observable settings are
+unchanged: requested Astra/Ultra/Fast; root config Astra/xhigh/fast with serving unexposed; helper
+launch Astra/ultra, tier unexposed. Both helper scopes explicitly released on completion.
+
+```text
+A100 recovery native run ended exit1, not guardstop. One B helper READ-ONLY diagnosis; you are not alone, preserve all files/other edits. Exact scope B /home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T092446Z-manifest.3Chgns/18-gradle-manifest.log and ONLY metadata.bin files / immediate parent directory inventories named by its 'Could not read workspace metadata from' errors under output/native-cache/gradle/caches/9.3.1/transforms/. No writes, Gradle/app/tests/downloads/signals/coordination/descendants. Lead captures final processes/resources/evidence and A outbox in parallel. Extract distinct named transform parents, report existence/size/all-zero or truncated metadata evidence, distinguish observed unreadable failure from inferred restart cause. Propose smallest exact quarantine/recompute boundary, preserving receipts and other caches, for A's separate approval under A096; do not perform mutations or broad cache scans. Identify any unrelated error in same exact log that invalidates cache-only diagnosis. Return exact counts/hash examples/limits and release. Current BHEAD5f990802/source5d8a3e8/demo, script7c2, no actual main manifest/APK; oldboot restart known, cache causal attribution unproved. Requested launch Astra/ultra, Fast tier unexposed.
+
+New bounded READ-ONLY follow-up; one B helper, no descendants/writes/native/tests/coordination/signals. A103 moved exact123 approved parents with preserved receipt under B output/native-build/cache-quarantine-A103, then ONE sameHEAD/source manifest HfIhlC ended09:31:13 exit1 cleanup0, again metadata errors but names appear different. Scope ONLY /home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T092958Z-manifest.HfIhlC/18-gradle-manifest.log; previous3Chgns log and A103quarantine-receipt.json for set comparison; current output/native-cache/gradle/caches/9.3.1/transforms IMMEDIATE32hex directories and their metadata.bin/results.bin stat/hash only (do not descend transformed or othercaches). Identify exact newfailed set vs123moved; whether allnewfailedmetadataempty; count remaining zero-byte metadata across this immediate cache namespace and distinguish unreported empty entries from Gradle-diagnosed entries. Any examples newly recomputed prior123 metadata nonempty supports narrow repair outcome but not generalcachehealth. No mutation grant inferred. Lead captures finalprocess/resources/status and requested A105 release of two permissionJSONpaths in parallel. Need smallest evidence-backed next boundary proposal, avoiding serial blind retries or wholecachepurge. State exact counts/list hashes/limits and release. Preservesource5d/HEAD5f990802/script7c2. ActualAstra/ultra launch; tierunexposed.
+```
+
+Rejected actions/claims: deleting metadata alone while results were also empty; purging the entire
+cache; removing warnings through dependency changes; guessing a restart cause; inferring APK or
+native success from bundling/manifest generation; assigning permission approval to B; treating
+nonempty cache metadata as full integrity proof; ignoring the initial report-save preparation error.
+The next concrete task is A-reviewed APK assembly using the same source and verified inputs.
