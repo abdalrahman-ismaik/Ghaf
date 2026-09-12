@@ -278,3 +278,194 @@ in this worktree. Arabic reviewer, voice assets/listening, exact-diff student re
 captures and native evidence remain pending as labeled above. No audio repair is claimed.
 C continues the active queue after this checkpoint, using only a later exact preview/candidate
 grant for C-N01 reproduction or C-N04 visual inspection.
+
+## Integrated browser pass and heading correction — 2026-09-12
+
+This section supersedes earlier NOT RUN rows only for the exact browser states below. Android,
+TalkBack, native font scaling, native Back/audio and student acceptance remain NOT RUN/PENDING.
+A065/A070 granted one browser against A's canonical Metro and the MCP artifact directory; A072
+then re-granted only the two demo components for the reproduced duplicate-heading correction.
+
+### Candidate and harness identity
+
+Served runtime: `2ecea74f3dc0886a2be4461d701678365673beaa` from `/home/smyk/projects/Ghaf`.
+A's initial launch HEAD78975ca and observed later327fd52 differ only in documentation/tooling;
+`git diff 2ecea74 -- src app assets app.config.ts package.json package-lock.json` was empty.
+Metro441606/npm441578/shell441576, port8081, exec44936, explicit canonical cwd, demo=true,
+R002b/live-AI flags=false, CI/no hot reload, one worker. Private TMP/cache:
+`/home/smyk/projects/Ghaf/output/native-integration/015/preview-cache`.
+
+C used only Firefox444083, MCP176458, isolated profile `/tmp/playwright_firefoxdev_profile-ND135H`.
+The loaded Metro module registry identifies initialized DemoEntryScreen, DemoOnboardingStory,
+resources and demo configuration; loaded `entryMode` is `demo`, revised Arabic body and malformed
+copy fallback are present, and each factory SHA256 is recorded. This is served-module evidence
+plus verified server root, not disk HEAD alone. The browser used `http://127.0.0.1:8081/`.
+
+Initial localhost navigation timed out at the MCP60s limit; a second root navigation timed out
+at25s. `/status` returned200 in0.084s. A's log then recorded first SSR67.7s/web70.7s compilation,
+and the page settled normally. These are first-bundle/harness timing observations, not device
+startup measurements or UI failures. The optional DevTools missing-libnss3 warning and web-only
+expo-file-system warnings do not establish an app or APK defect.
+
+MCP initially denied the C worktree artifact path. A070 granted
+`/home/smyk/projects/Ghaf/output/playwright/176426/**`. Two relative filenames unexpectedly landed
+in canonical root; C moved only its own screenshot/proof into the granted subdirectory. Every
+later filename was absolute. A failed VM dynamic-import attempt and an overlarge command-argument
+attempt wrote no evidence and were abandoned. No permission root was bypassed or package installed.
+
+### Covered browser states
+
+All viewports are CSS pixels with height844; they are compact browser probes, not physical phone
+sizes. Fonts settled through `document.fonts.ready` and two animation frames before measurement.
+
+| Scope                                 | Exact coverage                        | Result and limit                                                                                                                                                                                                              |
+| ------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Signed-out selector                   | AR/EN ×320/390                        | Exactly Parent/Salem/Alya, immediate profile controls, language and optional story visible; no horizontal overflow; buttons at least50px high.                                                                                |
+| Three story moments                   | AR/EN ×3×320/390                      | All12 states captured; full revised body copy, approved local images loaded, manual Next/Back/Finish available; no horizontal overflow or target below48px.                                                                   |
+| CSS stress                            | AR/EN ×3×320/390                      | 12 story states with doubled computed font size AND line height on nonempty leaf Text spans; separate top/action captures. No horizontal overflow or undersized target. This is not native font scaling.                      |
+| Story interactions                    | Both locales                          | Finish returns selector; reopening starts1/3; visible Back2→1→selector works; title receives web focus and next Tab reaches Parent profile. Browser hardware-history Back/native Back were not inferred.                      |
+| Image failure + reduced motion        | Both locales, first moment            | Abort actual onboarding-action image request after fresh page load with reduced-motion media preference. Localized fallback and complete body remain; Next reaches2/3. Restore route interception/media preference afterward. |
+| Real synthetic entry                  | Parent, Alya, Salem                   | Parent Home, Alya's no-assignment Child state and Salem's48/60 state reached without credentials. Parent sign-out and Child Parent-access return to selector. This is browser routing, not APK acceptance.                    |
+| Parent assignment handoff             | Arabic canonical Green task           | Parent prepared MakeClear→accept→review→approve succeeds; no growth on assignment. Success-dialog Child handoff reaches selector but emits POP_TO_TOP warning; separate A-owned defect below.                                 |
+| Busy/error/malformed/restart-required | Existing29 focused presentation tests | Source/SSR callback evidence only; no browser fault injection was added and no native pass inferred.                                                                                                                          |
+
+Copied evidence root: `output/native-ui/integrated-015/`; original captures remain in the granted
+canonical `output/playwright/176426/integrated-015/`. The initial copy verified55
+files by SHA256. Key paired captures:
+
+- `captures/ar-entry-390.png` and `captures/en-entry-390.png`;
+- `captures/ar-story-1-320.png` and `captures/en-story-1-320.png`;
+- `captures/ar-story-2-390-css200-action.png` and `captures/en-story-2-390-css200-action.png`;
+- `captures/ar-missing-image-reduced.png` and `captures/en-missing-image-reduced.png`.
+
+Raw matrix/interaction receipts: `normal-story-matrix.json`, `entry-stress-matrix.json`,
+`story-interactions.json`, `failure-reduced-motion.json`; loaded proof is
+`captures/loaded-module-proof.json`. Lead visually inspected representative AR/EN story and
+normal/stressed secondary-control captures; geometry alone was not treated as readability proof.
+
+### Reproduced defects and exact ownership
+
+**C-N04 heading:** the entry and story each rendered an outer named focusable header plus an inner
+Text whose parentHero variant automatically adds another header role. Accessibility snapshots
+listed the same title twice, although pixels showed it once. A072 authorized the smallest
+component change: `accessibilityRole="text"` on each inner title, retaining the outer heading,
+focus behavior, typography, content and callbacks. Shared Text was unchanged.
+
+Commit `5cd3b9178c1a3c003e7b500a2b9fffd52e0b819e`, parentf998c36, contains only
+`src/components/demo/DemoEntryScreen.tsx` and `src/components/demo/DemoOnboardingStory.tsx`.
+Scoped Prettier/ESLint and existing29 presentation tests passed, serially02:14:25.037980–02:14:28.301441UTC.
+Runner458498, children458499/458510/458619, all exited0. Receipt:
+`output/native-ui/heading-fix-checks/receipt.json`, with exact args and both source hashes.
+No mirror-style test or full suite was added. Both source paths are RELEASED for A integration.
+The corrected-candidate heading retest below passes; the earlier source-only checkpoint did not establish that pass.
+
+**C030 handoff warning:** after actual Parent approval, pressing `فتح تجربة الطفل` opened the
+selector but produced a visible developer warning: `The action 'POP_TO_TOP' was not handled`.
+Original snapshot `page-2026-09-12T02-12-07-331Z.yml` and console trace remain under MCP176426.
+C reported the route issue without changing business state or hiding it. A074 owns the exact
+review-route/test repair; the actual corrected-candidate handoff result is recorded below.
+
+**D-R03 initial P3 interpretation:** exact35-leaf-span doubling at320 reproduced the same final-word
+image previously interpreted as cut; the later isolated reference below contradicts that clipping interpretation. Ordinary Arabic320/390 labels are readable; main action remains readable.
+Button240×182, label198×156, font32/line52; last-word Range40px high stays inside label/button
+bounds. No max-height, line clamp or nearby clipping boundary explained the cut pixels.
+Focus/blur, button transform:none and display:block did not resolve it. C initially misread the temporary `position:relative` capture as an improvement. Subsequent byte
+comparison disproved that reading: the before, temporary relative, original D and corrected-candidate
+images are identical. Explicit overflow:visible was already the computed value. All temporary
+diagnostic inline changes were restored. See the isolated-glyph comparison below; this was not a fix.
+
+The direct label is owned by shared Button in `src/components/primitives.tsx`, not the card.
+The initially proposed A-owned experiment was web-only relative position for `styles.buttonLabel`;
+it was implemented by A, but the contrary evidence below does not support retaining it as a fix.
+C applied no card workaround, shared primitive change, font shrink, truncation or award calculation.
+Before/diagnostic images are `ar-card-css200-secondary.png` and
+`ar-card-css200-relative-diagnostic.png`; exact source/geometry is in `card-diagnostic-ar.json`
+and `captures/ar-card-css200-computed.json`. This does not prove a native font-scale regression.
+
+The follow-on English card matrix hit a strict-locator error because retained hidden and current
+routes both exposed the same testID after settings Back. `card-diagnostic-en.json` preserves this
+harness failure; those new EN card rows are NOT RUN, not a product failure or pass. Browser was
+closed for the planned source-check handoff rather than repeating assignment setup. Further card
+checks require the same ownership/resource protocol and a scoped visible route locator.
+
+### Assistance, review and release
+
+Lead used Impeccable onboarding and existing Expo design-system conventions, then the repository's
+installed Playwright MCP; no new design assets/dependency or second server. Actual bounded tool
+instructions were to inspect loaded modules, record AR/EN320/390 states, inject exact doubled CSS,
+exercise public controls, fail an image request, restore diagnostics and preserve receipts. No
+helper produced the full application. Narrator helper work is recorded in the product report.
+
+Rejected directions: speculative card fix, geometry-only readability claim, clearing another
+process cache, broad consistency rewrite, runtime audio from rejected takes, and treating the
+native gate as passed. User listening has rejected the first three Arabic recordings; new narrator
+samples remain separate from UI and pending actual selection. Student exact-diff review remains
+PENDING; no reviewer name or participation is invented.
+
+Firefox444083 was closed and confirmed absent before source checks at02:14; the browser allocation
+and unchanged ChildTodayTaskCard path are RELEASED. A owns Metro shutdown/restart and integration.
+Reports/evidence remain held until the corrected-candidate receipt below is committed.
+
+### Corrected candidate retest and evidence correction — 02:20–02:23 UTC
+
+A078 granted C the sole browser for three affected boundaries only. Candidate
+`f16112d2daf0378445df08654e7da872af4f5658` includes headinged51b32, handofff16112d and the
+experimental web-label changeaf8da6c. A's type/lint/format and148files/1919tests passed, attributed
+to its receipt `output/native-integration/015/full-f16112d/`; C did not repeat the suite.
+
+Fresh browser467810, parent176458, profile `/tmp/playwright_firefoxdev_profile-joVWA9` loaded
+A Metro466808/8081. Canonical cwd and exact runtime-input diff to f16112d verified. Initialized
+loaded factories expose both inner text roles, the actual web-relative label, corrected route's
+prepareEntryReset and demo configuration; factory hashes are in `captures/corrected/loaded-proof.json`.
+
+- **Heading PASS, browser scope:** AR/EN entry each has four headings total (one page title plus
+  three profile names), with zero nested headings. First story has one heading with zero nesting.
+  Each page title still receives focus. `corrected-headings.json` and four paired PNGs record this.
+- **Approval handoff PASS, browser scope:** repeat actual canonical Parent task setup, accept
+  prepared MakeClear wording, review, approve, and success-dialog Child handoff. Selector has
+  exactly3 profiles, no visible POP_TO_TOP warning and no console error/warning of that kind during
+  the handoff; Salem subsequently reaches the assigned task. `corrected-handoff.json` and
+  `captures/corrected/ar-approved-handoff-selector.png` preserve it. This is not a native Back pass.
+- **Label matrix executed:** AR/EN ×320/390 ×normal/CSS200,8 rows, scoped by visible exact accessible
+  label rather than duplicate retained-route testIDs. All35 leaf Text spans in the visible Child
+  root doubled in each stress row; main and secondary controls captured separately. Full labels,
+  geometry and computed relative position are in `corrected-card-matrix.json`. Ordinary controls
+  remain readable; no font size or label was changed to pass.
+
+**Correction to C031 and A075's experimental fix rationale:** SHA256 of original D
+`ar-large-secondary.png`, C's reproduced before, temporary relative diagnostic and corrected
+AR320 CSS200 result is the same:
+`c5a98062115434ae4c05d6a927a06766fcd21141c0db974421cbf34aeac79488`.
+The earlier visual claim that relative positioning restored missing word paint was wrong. C
+reported this immediately in C037; D independently identified the byte equality too. No D-R03
+closure may be based on that unchanged image or the position change.
+
+C then rendered the actual last word from the existing Text node in a temporary, aria-hidden,
+fixed body div outside the card/button: same ReadexPro_500Medium,32px font,52px line height, RTL,
+198px content width, visible overflow. The isolated word reference is
+`captures/corrected/ar-isolated-final-word-reference.png`; the temporary node was removed.
+A read-only Pillow pixel analysis selected green ink (`G > R*1.2`, `G > B`, `R <180`) and compared
+the original last line (y≥115) with that isolated reference after bounding-box translation.
+Original bbox[90,131,148,163], reference[91,26,149,58]; each contains483 ink pixels; masks are
+exactly equal, IoU1.0, no missing or extra pixel. No image was edited or resized.
+`glyph-reference-comparison.json` preserves the measurements.
+
+This comparison supports the natural complete glyph shape in the approved font, rather than
+missing paint in this observed state. It does not erase D's initial P3 concern or prove native
+large-text acceptance. A/D own the final disposition; C038 requested removal of the unneeded
+experimental shared-label change. No additional card/shared fix is justified by this evidence.
+The earlier English harness failure remains preserved; the eight corrected-candidate rows supply
+new successful scoped execution, not a rewritten historical result.
+
+Final copied artifact manifest verifies81 files, including both console traces and the original
+handoff-warning snapshot, while preserving canonical originals. Browser467810 closed and was
+confirmed absent at02:22:54UTC; sole browser allocation is RELEASED. C owns no helper/server/test/
+native process. Both heading source files and unchanged ChildTodayTaskCard are already RELEASED.
+The report/evidence release follows its local commit. Human/student exact-diff, phone settings,
+TalkBack, native Back and recording selection remain pending independently.
+
+A080/A081 disposition at this report checkpoint: remove the unsupported web-only label property,
+retain the historical P3 concern as OPEN while D independently reviews the isolated-glyph evidence,
+and stop further browser/font investigation in this batch. C ACKs that boundary. The removal is
+A-owned; it neither changes C's heading commit nor upgrades the native scaling gate. No additional
+C source, preview or helper work is held for it.
