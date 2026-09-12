@@ -1,6 +1,6 @@
 # Session B — Repeatable Android build
 
-**Current: the shared-pool build-control patch passes an isolated installed CMake/Ninja fixture and54 exact-hook mock checks, including included-build receipt reuse. Actual application task-graph/configuration, generated Ninja coverage, compiler-process validation and APK/device acceptance remain pending. Both Build Tools35/36 are installed and required by preflight.**
+**Current: shared-pool control passes the isolated native fixture and54 hook mocks; the guarded task-graph CLI passes68 focused checks and the real12-step preflight. Actual application graph/configuration, generated Ninja coverage, compiler-process validation and APK/device acceptance remain pending. Build Tools35/36 are installed and required.**
 
 The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
 attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
@@ -1383,3 +1383,77 @@ disables Gradle networking; graph task names prove action execution; generic suc
 mode. The lead reviewed these findings and published B070. Helper scope/allocation released at
 its final response; no descendant or job remains. Explicit launch Astra/ultra, effective tier
 unexposed; student exact-diff review/teach-back and native acceptance remain PENDING.
+
+## A138/A140 — Guarded task-graph CLI
+
+A integrated pool fabe2cb as51d99f3 and the read-only audit1ef559d as0987f24. Board54/A138/A140
+then granted only the smallest graph-mode addition in B's existing script/report and ignored
+focused fixtures. Actual Gradle execution remains separately gated on A's released candidate
+review and explicit preview stop. The selected single spelling is `--task-graph-only`.
+
+The mode is mutually exclusive with --build and --manifest-only. It requires all existing
+non-preflight source/private-tool/SDK-license/heavy-slot/preview acknowledgments and an existing
+matching Android tree. It cannot initiate fresh generation. The existing controlled launcher
+receives an argv array beginning `:app:assembleRelease --task-graph --console=plain`; normal
+manifest/build task vectors retain their prior options. Every mode now saves the actual array
+as gradle-arguments.json before launch, without dumping its controlled environment.
+
+After successful Gradle/owned cleanup and the existing init/source/native revalidation, the new
+branch verifies a retained regular Gradle log, the requested task vector, exact graph header/root
+node and subsequent successful terminal result. It rejects missing/truncated/NUL evidence,
+dry-run/extra-task vectors and unexpected application/native-module task execution rows. Only
+the specifically identified included-plugin namespaces may supply recorded setup-task statuses.
+Raw log SHA256, source/HEAD/init identities, argv and setup rows enter graph-review.json. That
+receipt states GRAPH_RENDERED and keeps native pool coverage/APK/device acceptance NOT RUN.
+The branch returns before manifest/APK inspection. Graph names alone never prove action execution.
+
+The lead authored the mode and verifier; helper native_script owns only ignored task-graph
+fixtures and reads the script. No application, package, dependency, generated-native, signing or
+pool-init edit is part of this slice. The same resource thresholds, one Gradle worker, two-CPU
+affinity, heap limits and process-identity cleanup remain. Initial lead source comparison found
+pool generator, cleanup, input guards and resource-sampling blocks byte-identical to1ef559d;
+receipt output/native-build/graph-mode-release/lead-static.json records exact block hashes.
+The init remains638f3160d2226fabe78258f47bced87df928ed3c03f89ff7ab0f3999ef2ae585.
+
+Final script SHA256 is11f41cb4d12853f80877207af36859dea0487d9c538e2eb097760af7b9ab4559.
+The helper ran `python3 output/native-build/script-checks/task-graph/run_checks.py` against exact
+extracted parser/acknowledgment/argv/verifier functions at10:46:19.083416–10:46:20.448008UTC,
+exit0,68/68 PASS. Baseline build and manifest arrays match1ef559d; graph adds only --task-graph
+and --console=plain. Receipt and all case commands:
+`output/native-build/script-checks/task-graph/20260912T104619Z/receipt.json`.
+Runner98803 and all69 recorded runner/Bash PIDs were absent10:46:32UTC. Helper and ignored
+boundary released; no JVM, Gradle, application/native command or full suite ran.
+
+The retained first run at104523Z contains one reproduced production defect: the verifier accepted
+a second different task-graph header alongside the expected graph. The lead corrected it to count
+all headers and require exactly the requested one. That same run separately contains five helper
+fixture-extraction errors (a greedy DOTALL initialization regex crossed its intended boundary).
+Those were corrected in the harness; they were not application failures. Original RED/incorrect
+fixture receipts remain intact, and the final source has68 passing cases. Assistance and review:
+`output/native-build/script-checks/task-graph/20260912T104619Z/assistance.json`.
+
+Lead Bash syntax/help/format/diff checks passed. Full-script graph mode with missing acknowledgments
+refused1 at10:46:10.798117–10:46:13.993972UTC, before any Gradle execution. Default preflight
+passed all12 steps at10:46:13.994026–10:46:17.660855UTC, exit0, tool session27350 ended:
+`output/native-build/20260912T104615Z-preflight.eOXv3d/receipt.txt`.
+Exact safe-check commands/times/exits are in
+`output/native-build/graph-mode-release/20260912T104610Z/receipt.json`.
+These results apply to the final11f41 script, not a later actual graph or APK.
+
+The lead's exact helper prompt/follow-ups are retained in
+`output/native-build/graph-mode-release/helper-prompt.txt`; this narrowly assigned fixtures and
+read-only review, never the full application. Generated contributions: lead script/report and
+helper ignored behavioral fixtures. Rejected suggestions/assumptions include accepting mixed
+graphs and treating configuration as execution-free. Earlier observed root settings remain
+Astra/xhigh/fast; requested Astra/Ultra/Fast and helper explicit Astra/ultra do not expose effective
+serving settings. Student exact-diff review/teach-back and human/native acceptance remain PENDING.
+
+Integration: release this coherent script/report commit for A, preserving the preceding report
+commit1ef559d and runtime5d. Once A names this released HEAD and stops/releases its preview, invoke
+the existing script with --task-graph-only, the usual approved absolute paths, demo entry/source,
+unchanged signing opt-in, A045 SDK terms, and the actual new heavy/preview acknowledgment IDs.
+Do not run the report's raw Gradle vector as a bypass. Graph output and per-module pool receipt
+need actual review before any follow-on configure/compile grant. No APK retry is consumed by these
+safe checks. Completed paths/helper/jobs are released for integration; B retains script/report
+maintenance and private native/output boundaries. Package.json's two generated script fields
+stay unstaged. No generated tree/cache cleanup, source change, device installation or014 approval.

@@ -12,16 +12,16 @@ MODE=preflight
 ENTRY_MODE=ordinary
 ROOT= EXPECTED_HEAD= SOURCE_COMMIT= JDK= SDK= OUTPUT= CACHE=
 SIGNING=0 HEAVY_ACK= METRO_ACK= LICENSE_ACK= APPROVED_PERMISSIONS=
-RUN= CHILD_PID= LAST_LOG= NATIVE_POOL_SHA= STEP=0
+RUN= CHILD_PID= LAST_LOG= GRADLE_LOG= NATIVE_POOL_SHA= STEP=0
 
 usage() {
   cat <<'HELP'
-Usage: build-apk.sh [--build | --manifest-only] REQUIRED_OPTIONS
+Usage: build-apk.sh [--build | --manifest-only | --task-graph-only] REQUIRED_OPTIONS
 
 Default: PREFLIGHT. Never installs, generates Android, downloads Gradle or compiles.
 Preflight writes an isolated receipt only after root/input/path validation.
 
-Required in both modes:
+Required in all modes:
   --project-root ABS_PATH       Exactly /home/smyk/projects/Ghaf-demo-systems
   --expected-head FULL_SHA      Exact checked-out 40-character Git HEAD
   --source-commit FULL_SHA      A's published runtime-source commit (exact input match)
@@ -34,6 +34,8 @@ Required in both modes:
                                Opt in to the unchanged Expo template debug identity
 
 Generation/Gradle modes require explicit coordination/terms receipt references:
+  --task-graph-only            Render release task graph from matching existing Android;
+                               configuration/plugin setup can execute; no APK inspection
   --manifest-only              Generate and merge release manifest for A review; no APK
   --build                      Compile and inspect the standalone release APK
   --heavy-slot-ack REFERENCE    Current A/operator grant for this native build
@@ -158,9 +160,13 @@ need_value() { [[ $# -ge 2 && -n "$2" && "$2" != --* ]] || fail "Missing value f
 while (($#)); do
   case "$1" in
     --help|-h) usage; exit 0 ;;
-    --build|--manifest-only)
+    --build|--manifest-only|--task-graph-only)
       [[ "$MODE" == preflight ]] || fail 'Choose only one explicit execution mode.'
-      [[ "$1" == --build ]] && MODE=build || MODE=manifest
+      case "$1" in
+        --build) MODE=build ;;
+        --manifest-only) MODE=manifest ;;
+        --task-graph-only) MODE=graph ;;
+      esac
       shift ;;
     --allow-internal-debug-signing) SIGNING=1; shift ;;
     --project-root|--expected-head|--source-commit|--jdk-home|--sdk-root|--output-dir|--cache-dir|--entry-mode|--heavy-slot-ack|--metro-release-ack|--sdk-license-ack|--approved-permissions)
@@ -432,6 +438,7 @@ if blocked: sys.exit('BLOCKED: resident preview processes; owner must release th
 print('no_resident_preview_detected; explicit operator acknowledgment still required')
 PY
 
+[[ "$MODE" != graph || -d android ]] || fail 'Task graph requires the existing matching Android tree; generation needs its own grant.'
 # Retain the exact prebuild package delta even when generation fails.
 cp package.json "$RUN/package.before.json"
 capture_delta() {
@@ -625,8 +632,76 @@ PY_POOL_RECEIPT
 }
 step native-pool-policy write_native_pool_policy
 
-GRADLE_TASK=:app:assembleRelease
-[[ "$MODE" != manifest ]] || GRADLE_TASK=:app:processReleaseMainManifest
+gradle_arguments() {
+  GRADLE_ARGS=(:app:assembleRelease)
+  case "$MODE" in
+    build) ;;
+    manifest) GRADLE_ARGS=(:app:processReleaseMainManifest) ;;
+    graph) GRADLE_ARGS+=(--task-graph --console=plain) ;;
+    *) printf 'Unsupported Gradle execution mode.\n' >&2; return 1 ;;
+  esac
+  GRADLE_ARGS+=(-Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false
+    --init-script "$RUN/native-one-job.init.gradle" "-Dghaf.nativePolicyReceipt=$RUN/native-module-policy.jsonl"
+    "-Dghaf.nativePolicyInitSha=$NATIVE_POOL_SHA"
+    --no-daemon --no-parallel --max-workers=1
+    -Pkotlin.compiler.execution.strategy=in-process
+    "-Dorg.gradle.jvmargs=-Xmx1536m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp")
+}
+gradle_arguments
+step gradle-command python3 - "$RUN" "${GRADLE_ARGS[@]}" <<'PY_GRADLE_COMMAND'
+import json, pathlib, sys
+with (pathlib.Path(sys.argv[1]) / 'gradle-arguments.json').open('x') as receipt:
+    json.dump({'schema_version': 1, 'argv': sys.argv[2:]}, receipt, indent=2)
+    receipt.write('\n')
+PY_GRADLE_COMMAND
+
+verify_task_graph() {
+  python3 - "$1" "$RUN" "$SOURCE_COMMIT" "$EXPECTED_HEAD" "$NATIVE_POOL_SHA" <<'PY_TASK_GRAPH'
+import hashlib, json, pathlib, re, sys
+log, run = map(pathlib.Path, sys.argv[1:3])
+def refuse(reason):
+    sys.exit('BLOCKED: task graph evidence ' + reason + '; retain the complete run for review.')
+command = json.loads((run / 'gradle-arguments.json').read_text())
+args = command.get('argv')
+task = ':app:assembleRelease'
+if (command.get('schema_version') != 1 or not isinstance(args, list) or not args or
+    any(not isinstance(arg, str) or not arg for arg in args) or args[0] != task or
+    args.count('--task-graph') != 1 or args.count('--console=plain') != 1 or
+    any(arg in ('--dry-run', '-m') or arg.startswith('--dry-run=') for arg in args) or
+    [arg for arg in args if not arg.startswith(('-', '/'))] != [task]):
+    refuse('has an unexpected command vector')
+if not log.is_file() or log.is_symlink() or log.resolve() != log or log.parent != run:
+    refuse('log is not a retained regular file in this run')
+raw = log.read_bytes()
+if b'\x00' in raw:
+    refuse('contains interrupted/NUL log data')
+lines = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', raw.decode('utf-8')).splitlines()
+headers = [i for i, line in enumerate(lines) if line.startswith('Tasks graph for:')]
+nodes = [i for i, line in enumerate(lines) if re.fullmatch(r'[ |+\\`-]*:app:assembleRelease(?: \(\*\))?', line)]
+success = [i for i, line in enumerate(lines) if re.fullmatch(r'BUILD SUCCESSFUL(?: in .+)?', line)]
+if (len(headers) != 1 or lines[headers[0]] != 'Tasks graph for: ' + task or
+    not any(i > headers[0] for i in nodes) or not success or
+    success[-1] <= max(nodes, default=-1) or any('BUILD FAILED' in line for line in lines)):
+    refuse('lacks one complete expected root graph and successful terminal result')
+setup = []
+allowed = (':gradle-plugin:', ':expo-gradle-plugin:', ':expo-module-gradle-plugin:')
+for line in lines:
+    if not line.startswith('> Task '):
+        continue
+    match = re.fullmatch(r'> Task (\S+)(?: (.*))?', line)
+    if not match or not match[1].startswith(allowed):
+        refuse('contains an unapproved application/native task execution record')
+    setup.append({'task': match[1], 'status': match[2] or 'no status suffix'})
+receipt = {'schema_version': 1, 'mode': 'graph', 'status': 'GRAPH_RENDERED',
+           'source_commit': sys.argv[3], 'head': sys.argv[4], 'init_sha256': sys.argv[5],
+           'argv': args, 'task': task, 'log': str(log), 'log_sha256': hashlib.sha256(raw).hexdigest(),
+           'setup_tasks': setup, 'configuration_side_effects': 'Permitted setup actions may execute; this is post-run output verification.',
+           'native_pool_coverage': 'NOT RUN', 'apk_acceptance': 'NOT RUN', 'device_acceptance': 'NOT RUN'}
+with (run / 'graph-review.json').open('x') as output:
+    output.write(json.dumps(receipt, indent=2) + '\n')
+print(json.dumps(receipt, indent=2))
+PY_TASK_GRAPH
+}
 
 resource_sample() {
   python3 - "$ROOT" "$RUN" <<'PYRESOURCE'
@@ -724,12 +799,7 @@ compile() {
   printf 'build_cpu_affinity=%s\n' "$cpu_set" >> "$RUN/receipt.txt"
   (
     cd "$ROOT/android"
-    exec setsid taskset -c "$cpu_set" "${CHILD_ENV[@]}" ./gradlew "$GRADLE_TASK" -Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false \
-      --init-script "$RUN/native-one-job.init.gradle" "-Dghaf.nativePolicyReceipt=$RUN/native-module-policy.jsonl" \
-      "-Dghaf.nativePolicyInitSha=$NATIVE_POOL_SHA" \
-      --no-daemon --no-parallel --max-workers=1 \
-      -Pkotlin.compiler.execution.strategy=in-process \
-      "-Dorg.gradle.jvmargs=-Xmx1536m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp"
+    exec setsid taskset -c "$cpu_set" "${CHILD_ENV[@]}" ./gradlew "${GRADLE_ARGS[@]}"
   ) &
   CHILD_PID=$!
   printf 'owned_process_root=%s\n' "$CHILD_PID" >> "$RUN/receipt.txt"
@@ -762,9 +832,15 @@ compile() {
 step native-pool-identity sha256sum --check "$RUN/native-one-job.init.sha256"
 step resource-before-compile resource_check
 step "gradle-$MODE" compile
+GRADLE_LOG=$LAST_LOG
 step after-compile-pool-identity sha256sum --check "$RUN/native-one-job.init.sha256"
 step after-compile-inputs check_inputs
 step after-compile-native generation_identity verify
+if [[ "$MODE" == graph ]]; then
+  step task-graph-review verify_task_graph "$GRADLE_LOG"
+  printf 'TASK GRAPH RENDERED FOR A REVIEW. Configuration/setup work recorded; native pool coverage, APK and device validation NOT RUN.\n' | tee -a "$RUN/receipt.txt"
+  exit 0
+fi
 if [[ "$MODE" == manifest ]]; then
   step merged-manifest-review python3 - "$ROOT" "$RUN" "$SOURCE_COMMIT" "$ENTRY_MODE" <<'PYMANIFEST'
 import hashlib, json, pathlib, shutil, sys, xml.etree.ElementTree as ET
