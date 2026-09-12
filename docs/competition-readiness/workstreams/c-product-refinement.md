@@ -774,3 +774,96 @@ Markdown and intake JSON; `git diff --check` passed. A focused local verificatio
 original audio/transcript/prompt hashes, checked recorded approval/model consistency, and confirmed
 both decode processes ended. No application behavior changed, so no app suite/browser matrix was
 rerun. Only this report is committed; ignored receipts/media remain local, with source hashes above.
+
+## 2026-09-12 — C-N06 Free-plan disposition and playback preparation
+
+A173 and the user's continuation request confirm that all three Wiam files were generated on the
+**Free plan**, using the user-reported Multilingual v2 model. This updates the previously unknown
+plan provenance; it does not reopen their actual full-wording/pronunciation/delivery approvals.
+Original three files, hashes and scripts above are unchanged. No account or credential inspection
+was needed. C resumed clean5dca312 on redesign/native-ui-20260912 under the same instance.
+
+### Rights and attribution: sources read 12 September 2026
+
+[ElevenLabs billing documentation](https://elevenlabs.io/docs/overview/administration/billing)
+explicitly permits Free output for noncommercial use with attribution. Application to the selected
+local educational evaluation is conditional on that use actually being noncommercial; neither
+being internal nor using a free app independently proves this classification.
+
+[Publishing help](https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform)
+requires `elevenlabs.io` or `11.ai` in published content's title. It ties commercial rights to
+creation during a paid subscription: upgrading later does not retroactively license these files.
+A video title could be `Ghaf demonstration — narration: elevenlabs.io`. An About screen or credits
+alone is not identified as a substitute. Attribution never turns commercial use into permitted
+Free-plan use. The help page displayed no update date when read.
+
+| Intended use                           | Disposition from published conditions                                                                     | Exact unresolved condition / smallest option                                                                                                                            |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Local internal evaluation              | Supported for noncommercial evaluation, with applicable attribution when shared.                          | Keep the files local for that scope; do not infer business use is noncommercial solely because access is private.                                                       |
+| Competition video/public demonstration | Conditional; the reviewed pages do not classify this competition or prize eligibility.                    | A records whether the exact use is noncommercial. If unclear, seek provider confirmation for the existing files; a silent presentation avoids the unresolved audio use. |
+| Downloadable APK with static MP3s      | No APK-specific ban found; downloaded output is allowed outside the service, subject to its restrictions. | Noncommercial scope and suitable title attribution still need resolution for this format. Retain local evaluation; public downloadable audio remains pending.           |
+
+The [non-EEA Terms, sections1(c)/4(a)](https://elevenlabs.io/terms-of-use), updated31March2026,
+allow downloaded output outside the service subject to the same conditions. They are not a blanket
+redistribution license; the user's governing regional agreement has not been established here.
+The [Use Policy, section9(a)/(b)](https://elevenlabs.io/use-policy), displayed as updated17August2026
+in the helper's read, prohibits commercial Free usage and mentions running contests. It does not
+expressly classify entering this competition. Its restriction on reselling Services expressly
+preserves permitted output use; a static MP3 is not automatically an embedded generation service.
+This is a bounded reading of official sources, not a legal-compliance finding.
+
+For A: preserve these exact clips and continue the internal playback engineering lane. Public use
+needs resolution of **this competition's commercial/noncommercial classification and acceptable
+attribution placement for live presentation/APK**. A written provider clarification can address
+both while keeping the approved files. No message was sent, account upgraded, new license claimed,
+clip regenerated or public file distributed. Changing plan or downloading the old output again
+is not evidence of new generation-time rights. September16 qualification remains unknown separately.
+
+### Prepared presentation checklist; implementation still awaits exact grant
+
+The visible issue is concrete: the three-moment demo has full readable copy but only an unavailable
+notice for audio. The intended action is optional Play/Stop/Replay for the current Arabic body,
+with Next/Back/Close and profile entry independent of media. Keep the existing botanical layout,
+Tamagui controls, Alexandria/Readex, artwork, logical RTL, wrapping labels and minimum48dp targets.
+Narration controls belong near the full transcript, before navigation in reading order, while the
+journey CTA retains the strongest emphasis. No decorative waveform or automatic advance.
+
+Ignored `c-n06-presentation-checklist.md` records idle/loading/playing/completed/stopped/error/
+English/screen-reader/large-text states and event wiring. Loading retains enabled Stop. Unknown
+screen-reader status stays silent; navigation cancels synchronously before state/caller changes.
+The hook remains outside keyed AccessScreen, bound to A's generation/epoch and source/player
+identity. Ordinary six-step audio, progression and entry authority are unchanged.
+
+Existing presentation tests use real React server rendering plus captured callbacks; they cannot
+pass mounted effects or native lifecycle. No jsdom/happy-dom/react-test-renderer/react-reconciler
+entry was found in the declared lock. C062 reports this to A: use existing browser/ReactDOM only
+after the shared preview grant, or record a concrete mounted-evidence gap. No dependency, browser,
+server, app test or native job was launched. B's frozen5d/A171 APK remains independently identified.
+Canonical draft demo-narration-v1.md SHA63c492da6472ca3d5657225247f41d66ef424bf2127128d118437b754e762a17
+was read for preparation; A174's shared types/copy/fixture publication supersedes tentative ownership.
+C-N07/T014b begins only after the accepted contract and exact synchronization/source grant.
+
+### Assistance and review record
+
+Actual user request: execute canonical `native-batch/c-narration-continuation.md`, start READY C-N06
+under A173, record Free-plan findings, then continue T014b after committed authority while preserving
+the baseline APK. Prompt SHA256986f14ef010cf3e37b71d75a7b2f176dd4865af4956f1669a74caf452797a22a.
+One read-only helper `/root/abdullah_voice_review` researched official terms while the lead prepared
+the UI checklist; lead then checked the core official pages and wrote this disposition. Exact helper
+prompt/hash/sources are in ignored `c-n06-helper-prompt.txt` and `c-n06-rights-receipt.json`.
+Helper released; no descendants or local jobs. Requested Astra/Ultra/Fast; previous root observation
+Astra/xhigh/fast and helper launcher Astra/ultra, effective serving/tier unexposed. No settings changed.
+Expo design-system and Ghaf quality skills were applied to preparation, not used as new authority.
+
+Rejected inferences: Free means unrestricted; later upgrade licenses earlier exports; public always
+means commercial; every competition is forbidden; APK bundling equals service resale; metadata or
+source review proves native audio quality. No human legal review, student exact-diff understanding,
+phone listening/lifecycle result or publication approval is invented. Existing actual user listening
+approval remains complete. Formatting/diff and original-asset identity checks accompany this
+report-only slice; no broad app suite or historical visual matrix is repeated.
+
+C-N06 checks PASSED: scoped Prettier on report/checklist/receipt, `git diff --check`, original
+three audio/script SHA256 verification and exact helper-prompt hash. Subsequent A175/D059/D060
+technical revisions remain A/D-owned; notably foreground/focus native auto-resume requires their
+explicit resolution before C implements. This checklist is preparatory and does not override
+those revised contracts. Rights findings do not pause that separate engineering work.
