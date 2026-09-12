@@ -52,96 +52,110 @@ export function ChildTodayTaskCard({
 }: ChildTodayTaskCardProps) {
   return (
     <View style={styles.card}>
-      <View style={[styles.chips, { flexDirection: logicalRowDirection(direction) }]}>
-        <View style={[styles.statusChip, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={botanical.colors.forest} name="sparkle" size={15} />
-          <Text
-            brand
-            color="onTertiaryFixed"
-            direction={direction}
-            style={styles.chipLabel}
-            variant="caption"
-          >
-            {statusLabel}
-          </Text>
-        </View>
-        <View style={[styles.categoryChip, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={botanical.colors.forestRaised} name="leaf" size={15} />
-          <Text
-            brand
-            color="mangroveTeal"
-            direction={direction}
-            style={styles.chipLabel}
-            variant="caption"
-          >
-            {categoryLabel}
-          </Text>
-        </View>
-      </View>
-
-      <Text brand color="r001Ink" direction={direction} variant="screenTitle">
-        {title}
-      </Text>
-
-      <View style={styles.metadata}>
-        <View style={styles.taskFacts}>
-          <MetadataRow direction={direction} icon="calendar" label={effortLabel} tone="primary" />
-          <MetadataRow direction={direction} icon="energy-leaf" label={awardLabel} tone="amber" />
-        </View>
-        <MetadataRow
-          direction={direction}
-          icon="shield"
-          label={`${supervisionLabel}: ${supervisionValue}`}
-          tone="primary"
-        />
-      </View>
-
-      <View style={styles.decision}>
-        <View style={[styles.help, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={colors.tertiaryContainer} name="info" size={20} />
-          <Text brand color="tertiaryContainer" direction={direction} style={styles.grow}>
-            {helpLabel}
-          </Text>
+      <View style={styles.content}>
+        <View style={[styles.chips, { flexDirection: logicalRowDirection(direction) }]}>
+          <View style={[styles.statusChip, { flexDirection: logicalRowDirection(direction) }]}>
+            <GhafIcon color={botanical.colors.forest} name="sparkle" size={15} />
+            <Text
+              brand
+              direction={direction}
+              style={[styles.chipLabel, styles.statusLabel]}
+              variant="label"
+            >
+              {statusLabel}
+            </Text>
+          </View>
+          <View style={[styles.categoryChip, { flexDirection: logicalRowDirection(direction) }]}>
+            <GhafIcon color={botanical.colors.forestRaised} name="leaf" size={15} />
+            <Text
+              brand
+              direction={direction}
+              style={[styles.chipLabel, styles.categoryLabel]}
+              variant="label"
+            >
+              {categoryLabel}
+            </Text>
+          </View>
         </View>
 
-        {actionLabel && onAction ? (
-          <PrimaryButton
-            brand
-            direction={direction}
-            disabled={actionDisabled}
-            icon={
-              <GhafIcon
-                color={colors.onPrimary}
-                direction={direction === 'rtl' ? 'ltr' : 'rtl'}
-                name="arrow-back"
-                size={22}
+        <Text brand direction={direction} style={styles.title} variant="screenTitle">
+          {title}
+        </Text>
+
+        <View style={styles.metadata}>
+          <View style={[styles.taskFacts, { flexDirection: logicalRowDirection(direction) }]}>
+            <View style={styles.effort}>
+              <MetadataRow
+                direction={direction}
+                icon="calendar"
+                label={effortLabel}
+                tone="primary"
               />
-            }
-            iconPosition="end"
-            onPress={onAction}
-            size="regular"
-            testID={actionTestID}
-          >
-            {actionLabel}
-          </PrimaryButton>
-        ) : null}
-
-        {secondaryActionLabel && onSecondaryAction ? (
-          <QuietButton
-            brand
+            </View>
+            <View style={styles.award}>
+              <MetadataRow
+                direction={direction}
+                icon="energy-leaf"
+                label={awardLabel}
+                tone="amber"
+              />
+            </View>
+          </View>
+          <MetadataRow
             direction={direction}
-            onPress={onSecondaryAction}
-            size="compact"
-            testID={secondaryActionTestID}
-          >
-            {secondaryActionLabel}
-          </QuietButton>
-        ) : null}
+            icon="shield"
+            label={`${supervisionLabel}: ${supervisionValue}`}
+            tone="primary"
+          />
+        </View>
+
+        <View style={styles.decision}>
+          <View style={[styles.help, { flexDirection: logicalRowDirection(direction) }]}>
+            <GhafIcon color={colors.tertiaryContainer} name="info" size={20} />
+            <Text brand color="tertiaryContainer" direction={direction} style={styles.grow}>
+              {helpLabel}
+            </Text>
+          </View>
+
+          {actionLabel && onAction ? (
+            <PrimaryButton
+              brand
+              direction={direction}
+              disabled={actionDisabled}
+              icon={
+                <GhafIcon
+                  color={colors.onPrimary}
+                  direction={direction === 'rtl' ? 'ltr' : 'rtl'}
+                  name="arrow-back"
+                  size={22}
+                />
+              }
+              iconPosition="end"
+              onPress={onAction}
+              size="regular"
+              testID={actionTestID}
+            >
+              {actionLabel}
+            </PrimaryButton>
+          ) : null}
+
+          {secondaryActionLabel && onSecondaryAction ? (
+            <QuietButton
+              brand
+              direction={direction}
+              onPress={onSecondaryAction}
+              size="compact"
+              testID={secondaryActionTestID}
+            >
+              {secondaryActionLabel}
+            </QuietButton>
+          ) : null}
+        </View>
       </View>
 
       <View style={styles.details}>
         <View style={styles.meaning}>
-          <Text brand color="ghafEmerald" direction={direction} variant="caption">
+          <Text brand direction={direction} style={styles.title} variant="label">
             {whyLabel}
           </Text>
           <Text brand color="onSurfaceVariant" direction={direction}>
@@ -177,11 +191,10 @@ function MetadataRow({
       <GhafIcon color={color} name={icon} size={20} />
       <Text
         brand
-        color="onSurfaceVariant"
         direction={direction}
-        style={styles.grow}
+        style={[styles.grow, tone === 'amber' ? styles.awardLabel : styles.metadataLabel]}
         tabular
-        variant="caption"
+        variant={tone === 'amber' ? 'label' : 'caption'}
       >
         {label}
       </Text>
@@ -191,18 +204,26 @@ function MetadataRow({
 
 const styles = StyleSheet.create({
   card: {
+    minWidth: 0,
     overflow: 'hidden',
-    gap: botanical.space.row,
-    borderRadius: botanical.radius.hero,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
     backgroundColor: botanical.colors.paper,
+  },
+  content: {
+    minWidth: 0,
+    gap: botanical.space.row,
     padding: botanical.space.inset,
   },
+  title: { color: botanical.colors.ink },
   chips: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-    gap: spacing.xs,
+    columnGap: spacing.sm,
+    rowGap: spacing.xs,
   },
   statusChip: {
     maxWidth: '100%',
@@ -210,7 +231,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xxs,
-    borderRadius: botanical.radius.small,
+    borderRadius: botanical.radius.pill,
     backgroundColor: botanical.colors.sage,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
@@ -230,26 +251,44 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chipLabel: { minWidth: 0, flexShrink: 1 },
+  statusLabel: { color: botanical.colors.forest },
+  categoryLabel: { color: botanical.colors.muted },
   taskFacts: {
+    minWidth: 0,
+    flexWrap: 'wrap',
     gap: spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: botanical.colors.line,
     paddingBottom: botanical.space.row,
     marginBottom: spacing.xxs,
   },
+  effort: {
+    minWidth: 0,
+    flexGrow: 1,
+    flexBasis: 100,
+  },
+  award: {
+    minWidth: 0,
+    flexGrow: 2,
+    flexBasis: 156,
+  },
+  awardLabel: { color: colors.tertiary },
+  metadataLabel: { color: botanical.colors.muted },
   decision: {
     gap: spacing.xs,
   },
   details: {
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: botanical.colors.line,
-    paddingTop: botanical.space.row,
+    backgroundColor: botanical.colors.sage,
+    padding: botanical.space.inset,
     gap: botanical.space.row,
   },
   meaning: {
     gap: spacing.xxs,
   },
   metaRow: {
+    minWidth: 0,
     alignItems: 'flex-start',
     gap: spacing.sm,
   },
@@ -258,7 +297,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
     borderRadius: botanical.radius.small,
-    backgroundColor: botanical.colors.canvas,
+    backgroundColor: botanical.colors.amberWash,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
