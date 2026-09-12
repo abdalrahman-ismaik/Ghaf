@@ -25,3 +25,20 @@ Failure in fixture save remains signed_out; authority failure returns to exact p
 access state. A saved zero-authority memory fixture may remain. Successful sign-out returns to
 selector with the same task/progress. Successful Parent reset invalidates generation and clears the
 run; process death starts a fresh run. Ordinary mode bypasses all new demo entry commands/UI.
+
+## T014 ephemeral narration context
+
+All three exact Arabic Wiam clips now have actual user listening approval (C060); the earlier
+no-accepted-clips statement above is historical. No audio is yet imported into the baseline5d build.
+The new controller holds only revision, pending/requested/unavailable flags and disposed status.
+Its source context binds locale, one story ID, runGeneration, entryEpoch and one player identity.
+No context or playback preference is persisted; it creates no session, permission, Seed or event.
+Only explicit Play/Replay may request start; cancellation invalidates before pause, and stale seek
+completion cannot play. View playing state comes from matching current native status. See exact
+controller/presentation contracts in contracts/demo-narration-v1.md.
+
+Each accepted playback intent creates a fresh manually owned player/controller and session token.
+Retirement clears the active token before independent cleanup attempts. Startup deadline and native
+status subscriptions are session-bound; stale events/timers never affect a newer intent. Native
+resource release is asynchronous and focus interruption observation is incomplete; acceptance
+retains those explicit device gates. Nothing in this context confers access or progression.

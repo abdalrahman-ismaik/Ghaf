@@ -128,3 +128,21 @@ leave unowned sessions/device markers. Narrowed operations, private snapshots, s
 and focused fault tests bound it. Whole-service reset was rejected because it would reset permission
 and voice state; runtime mode switching was rejected because registry/store objects are captured.
 No generic persistence/transaction framework, new account infrastructure or second app is introduced.
+
+## Selected T014 narration continuation
+
+C060/5dca312 records all three exact Arabic clips approved by the user. The smallest remaining
+US4 slice is a separate pure demo controller, existing-Expo hook and presentation controls, with
+explicit cancellation and no ordinary narrator change. See contracts/demo-narration-v1.md for
+exact types/paths/evidence. A prepares this additive plan under existing015 authority; setup_plan
+reused the existing plan without changing actual redesign/ui-experiments or managed AGENTS.
+D reviews failure/privacy cases before the contract is committed and source grants start.
+The frozen5d APK pipeline continues independently. New source requires its own checks/rebuild.
+Constitution recheck: one optional existing-story interaction, no new dependency/account/provider,
+no Child recording, no persistence/progression authority, silent accessible fallback preserved.
+Optional agent-context post-hook is skipped under the user's managed-block preservation instruction.
+
+A180 preparation decision: D061 already reviewed the exact pure-controller/shared publication
+boundary and closed reentrancy/foreground contract clarifications. A accepts T014a preparation
+after this committed contract; the new native-retirement revision still requires D review before
+C's T014b runtime grant. No acceptance of an unreviewed adapter is inferred from elapsed time.

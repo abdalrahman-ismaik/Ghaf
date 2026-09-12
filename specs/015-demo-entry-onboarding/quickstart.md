@@ -18,3 +18,15 @@ controller actions in automated tests, then D independently checks the exact APK
 Explore three optional story moments in AR/EN, skip/replay and large text, with every medium absent.
 No narration is considered repaired until an Arabic reviewer listens to the exact matching clips.
 Voice/native/student results remain separate. Recovery014, other features and R002b activation stay off.
+
+## T014 narration validation after its separate source integration
+
+The three C060 clip approvals are already recorded; do not request the same review again. Enter
+the optional Arabic story: it starts silent, Play starts only the current matching clip, Stop
+acts immediately, and Replay restarts only by request. Navigate/Back/close/change locale during
+a deferred load or seek; no old clip may begin later. Background/reopen and enable/disable
+TalkBack: narration stops and never auto-resumes. English remains complete and silent.
+Reset or change entry identity while pending, then verify no stale start. Repeat with a failed
+player and absent source. These require mounted lifecycle tests plus real Android evidence;
+audit MP3 hashes separately. Freeze and identify a new source/APK; do not attribute these changes
+to baseline5d or claim public asset rights/native/student review from quality approval alone.
