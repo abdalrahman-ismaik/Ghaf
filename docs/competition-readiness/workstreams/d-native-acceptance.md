@@ -543,3 +543,61 @@ C reports six generated narration candidates under A060. Generation metadata and
 are not listening evidence. Actual user acceptance of exact clips, runtime import/cancellation
 checks and native audio interruption remain pending. A/B remain active candidate producers; D
 continues the queue after this source checkpoint.
+
+## D-N05 correction retest — D-NATIVE-001 closed for tested boundary
+
+At 2026-09-12T02:03:29.305268+00:00, **PASSED: D-NATIVE-001 CLOSED for the reproduced real-controller
+Node fault boundary** on exact correction `2ecea74f3dc0886a2be4461d701678365673beaa`.
+The original263bc88 failures remain in `transaction-review/red/`; no assertion or result was
+erased. This does not establish an actual UI/native trigger, complete015 acceptance or durable recovery.
+
+Under A063, D cherry-picked only2ecea74 into its clean tree as
+`ee804aaa4dc2188f868047933703383a76ac4797`. Exact changed transaction source, relevant models,
+interfaces and plain-data helper match A's commit. The rest of015 is intentionally absent from
+this QA synchronization; B adapter/store/routes were reviewed separately without being run here.
+
+D executed at02:02:32.154966–02:02:34.439967UTC, PID439434/session40816, exit0:
+
+```bash
+./node_modules/.bin/vitest run tests/demo-entry-independent-acceptance.test.ts \
+  tests/demo-entry-transaction.test.ts --maxWorkers=1 --no-file-parallelism \
+  --reporter=verbose --reporter=json \
+  --outputFile.json=/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/transaction-review/green/vitest.json
+```
+
+**2 files /76 tests PASSED**: unchanged independent8 plus existing68, including22 new composite
+cases from A. The independent test SHA remains
+`fe65a4438258c9114a15eeebd1389526118e2b1419ef6ed01ce7f020455078e8`; existing transaction test SHA
+`6b506faf5282e1939ccf42a45844366f2d09f3c4ae167d2483d4cb06215b4c9d`. Absolute artifact directory
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/transaction-review/green/` contains
+receipt, full console and Vitest JSON. No fullsuite/native/preview job was duplicated.
+
+The five previously failing cases now restore public views and signed-out controller state, deny
+failed authority and permit the same valid retry without reset. Lead also inspected A's new tests:
+outer/middle declared failure, exception, malformed/thenable result after inner success; swallowed
+inner failure; all three principals/participant reentry; and reuse of a returned participant before
+the outer scope ends. The existing assertion that retry IDs repeat is retained as A's counter-rollback
+contract test; D's independent test requires no private ID equality or post-retry old-session claim.
+
+The independent helper found the correction uses one synchronous scope, a shared monotonic failure
+and retained rollback closures. Inner success no longer discards snapshots. The outermost wrapper
+restores Child → Parent → Access on abort and releases the scope in finally. Closures preserve
+the prior field/counter snapshots and Map identities without invoking fallible termination/reset
+services. No new accepted-scope defect was found.
+
+Limits remain explicit: trusted callbacks must not schedule asynchronous work. An actual exception
+in a private rollback closure produces sanitized INVALID_RESPONSE and allows the remaining closures
+to run, but cannot promise complete restoration of the throwing closure. Current reviewed closures
+contain no ordinary external fallible operation. This is a local synchronous mechanism, not durable
+storage recovery, production authentication or a sandbox against arbitrary trusted-code mutation.
+
+Helper native_storage_review was the sole read-only helper, ran no tests/app/device operations,
+changed no files or descendants and released. Lead accepted the review without additional source
+changes or rejected corrective suggestions. Actual prompt:
+
+> A063 exact correction grant now active: source2ecea74f3dc0886a2be4461d701678365673beaa, QA ee804aa (only source sync) at /home/smyk/projects/Ghaf-qa-rehearsal. READ ONLY bounded independent review of new src/features/access/demoEntryTransaction.ts and three revised wrapper methods at that exact commit against accepted d927f61 composite contract. Does new shared synchronous scope retain/restore all private snapshots on outer failure after inner success, swallowed nested failure/reentry, exception/malformed/thenable, then release for usable retry, without changing ordinary calls or persisting authority? Check realistic fail-closed limitations; do not create new product requirements for malicious trusted callbacks. Lead executes unchanged D8 + existing transaction suite one worker under A063, and inspects new test oracles independently. No file writes, coordination/tests/app execution/browser/native/installs/commits/descendants. You are not alone; preserve all edits. Sole D helper quota1; prior Astra/Ultra accepted/effective and Fast unexposed. Return findings here and release.
+
+Report/test/completed ignored evidence can be released for integration. No D product fix was made.
+Next gates are the exact integrated candidate's checks/browser evidence, actual APK identity, chosen
+owner-authorized primary and secondary devices, native operation and actual listening/rehearsals.
+The collector remains ready; native/human readiness is not implied by closing this source defect.
