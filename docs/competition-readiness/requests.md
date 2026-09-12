@@ -343,3 +343,35 @@ Disposition: recovery implementation is deferred; current APK/native validation 
 priority. B/C/D are confirmed stopped and are not restarted by this decision. Their released
 commits/evidence remain preserved. No recovery scope acceptance, native pass or automatic future
 implementation grant follows. Later scope acceptance and exact typed-contract review remain gates.
+
+## New session prompts and product-value clarification — 2026-09-12 00:59:35 UTC
+
+Actual user request:
+
+> if you want to give me new prompts for them so they can work also I can do that just give me the appropriate prompts for them
+
+Actual steering while A prepared the pack:
+
+> I can still see the same old app ideas and logic, did you do a research on the new ideas and features I suggested to you? did you improve the app logic and features and ideas?
+
+Subsequent explicit confirmation:
+
+> yes please do that, because the current features and services doesnt look or feel correctly and properly implemented.
+
+Subsequent selected access/onboarding/audio direction:
+
+> I was thinking about something regarding the sign in for both parents and children, I want the app to come with a 3 main demo accounts that doesnt require authentication, 1 parent account and 2 child accounts, I want them to be accisable easily because the current flow is slow and time consuming, also in your design and theme refactor, I want you to highly consider the onboarding screens and their content and design and try to make them more attractive, premium, modern and interesting, also the arabic narrator is very bad and its language is very broken in arabic
+
+Disposition: A traces actual service/access/audio behavior and commissions one existing-authority
+Parent-approved instruction presentation correction. The three-profile demo doorway, onboarding
+redesign and Arabic narration repair are selected product intent in the new entry/onboarding brief;
+A must commit their reconciled Spec Kit/typed contract before implementation grants. This is not a
+request to re-approve the same product intent. Other suggested features remain evaluated proposals.
+No new voice quality, Android or student-review pass is inferred from this request.
+
+A supplied the existing research report and clarified that the completed implementation batch
+mainly stabilized current behavior; new calendar/study/money/maps/chat/memory features were not
+implemented. The new native-batch pack includes product refinement C-N02 alongside build/UI/QA:
+one concrete before/after family-experience proposal, evaluated against the user's ideas and
+existing evidence/templates. This does not approve new runtime behavior or reverse recovery deferral.
+A activation must precede future B/C/D execution; writing prompts does not start those sessions.

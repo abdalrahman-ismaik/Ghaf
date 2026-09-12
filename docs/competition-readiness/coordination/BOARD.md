@@ -5,7 +5,7 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
 
 ## Mission control
 
-- Revision: **21 — RECOVERY DEFERRED / NATIVE FIRST**, 2026-09-12 00:49:33 UTC. A instance: `A-20260911T2220Z-root`.
+- Revision: **24 — A-P01/P02 COMPLETE; NB1 PREPARED / NOT STARTED**, 2026-09-12 01:13:40 UTC. A instance: `A-20260911T2220Z-root`.
 - Integration: `/home/smyk/projects/Ghaf`, `redesign/ui-experiments`.
 - Baseline and initial audit target: `02b9618631fa9fc1b29f2cda5fa68c6adb2003fd`.
 - Mission: competition-first local Parent/Child journey, recovery assessment, one component direction,
@@ -16,11 +16,14 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
   and 013 Parent Tasks contracts. Read-only audits below add no implementation authority.
 - Recovery014 implementation: DEFERRED by user until current APK/native journey is validated.
   Native validation does not automatically accept recovery scope. Rationale/memory: NOT ACCEPTED. R002b flags remain off. No sync/backend,
-  live media/location, payments, chat, new accounts or remote services selected.
-- Integrated source candidate: `7fff0f3c2dc0e802ba1da6a67cd2513a75824809` (A-008 root reset plus prior fixes).
-  Full checks PASSED:138files/1,677tests; D-005-r17 exact-candidate reset retest PASSED (three browser sequences); report93a98c0 integrated7beb61c. A-007 b2208aa passed its suite
-  but FAILED actual dismissible-stack reset; that race is not closed by historical test passes.
-  New recovery014 remains committed DRAFTca54e40, unaccepted/unimplemented.
+  live media/location, payments, free chat, real accounts or remote services selected. The user now
+  requests three synthetic demo profiles, onboarding redesign and Arabic narration repair; commit
+  the exact Spec Kit/typed contract before their implementation grants.
+- Integrated source candidate: `e02d02b3a43c062bd637b57a475b43419a9f9939` (existing Parent-approved
+  instruction presentation correction). Full checks PASSED:139files/1,695tests,01:11:45–01:12:25 UTC.
+  Earlier D three-browser-reset evidence remains attributed to7fff0f3, not a native or visual
+  acceptance pass on the new paragraph. A-007 failed race history remains preserved.
+  Recovery014 remains DRAFT/unaccepted/unimplemented and explicitly deferred.
 - Named student owner, exact-diff acceptance, native acceptance: PENDING / NOT RUN / BLOCKED.
 
 ## Session registration
@@ -36,9 +39,9 @@ Follow [the protocol](README.md); checkout copies are snapshots, not the live bo
 
 | Resource           | Live allocation                               | Holder / release                                                |
 | ------------------ | --------------------------------------------- | --------------------------------------------------------------- |
-| Helpers globally   | 4 total; descendants count                    | A/B/C/D 0 active quotas; all helpers released, four unallocated |
+| Helpers globally   | 4 total; descendants count                    | All A/B/C/D allocations released; four helper slots unallocated |
 | Configured ceiling | 10 per session preserved                      | No expansion toward 40 local helpers                            |
-| Heavy job          | One globally                                  | FREE; A four checks at 7fff0f3 completed23:24:11 UTC            |
+| Heavy job          | One globally                                  | FREE; A four checks at e02d02b completed01:12:25 UTC            |
 | Preview lane       | One Metro + one browser process tree globally | FREE; D final Metro/browser stopped and explicitly released     |
 
 Fresh observation at activation: WSL 7,645 MiB total, 4,908 MiB available (64%), swap 36 MiB;
@@ -485,3 +488,88 @@ previously released paths/jobs/helpers; this decision does not wake or restart t
 A-009 update records only that decision. No new APK/native evidence, source change or test pass.
 Native toolchain/device prerequisites remain the next engineering boundary. The old unanswered
 scope-question entries are historical; this explicit deferral supersedes them.
+
+## Revision 22 — NB1 prompt pack prepared; native batch NOT STARTED
+
+User requested new prompts for the stopped sessions. A prepares
+`docs/competition-readiness/native-batch/` with A activation and B/C/D role prompts, shared contract
+and short launchers. This is not a claim that B/C/D restarted. User must start A activation first;
+A then verifies current state and publishes exact live grants. Recovery014 remains deferred.
+
+Prepared clean branches at52c61fc (runtime7fff0f3), prior branches preserved:
+B `/home/smyk/projects/Ghaf-demo-systems`, `redesign/native-build-20260912`;
+C `/home/smyk/projects/Ghaf-ui-studio`, `redesign/native-ui-20260912`;
+D `/home/smyk/projects/Ghaf-qa-rehearsal`, `redesign/native-qa-20260912`.
+Each dependency lockfile hash matched and each android directory was absent. Existing symlinks
+remain untouched now; B must install private dependencies under the future exact grant before
+native generation/build. Prompts are read from the canonical absolute directory because these
+worker snapshots predate the new pack. No toolchain install/native build/source change now.
+
+| Future task | Owner/state                                      | Boundary and prerequisite                                                                                                  |
+| ----------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| A-N01       | A / NOT STARTED                                  | Activate NB1, inspect state/resources, grant exact worker paths and host-tool scope from shared contract                   |
+| B-N01       | B / PREPARED, NOT READY before activation        | build-apk.sh + b-native-build.md; preflight/script, no repeated broad baseline audit                                       |
+| B-N02       | B / BLOCKED on A installation/resource grant     | private B node_modules, ignored host-tool/cache dirs; official checksums, real license readiness                           |
+| B-N03/04    | B / BLOCKED on toolchain/exact source/heavy slot | standalone internal-rehearsal APK, generated two-script diff, verified receipt; rebuild only a new published runtime       |
+| C-N01       | C / PREPARED, NOT READY before activation        | ChildTodayTaskCard.tsx + c-native-ui.md; reproduce D-R03 and minimal contained correction, shared primitives need transfer |
+| C-N02       | C / PREPARED proposal, activation required       | c-product-refinement.md; evaluate user ideas and one reciprocal family journey, no new behavior approval                   |
+| C-N03       | C / DEPENDENT                                    | native UI checklist and actual artifact verification; no new design direction                                              |
+| D-N01       | D / PREPARED, NOT READY before activation        | collect-device-evidence.sh + d-native-acceptance.md; read-only explicit-target tooling and executable packet               |
+| D-N02/03    | D / BLOCKED on artifact/owner-selected devices   | independent APK identity, actual primary/secondary journey, C patch retest and real rehearsals                             |
+
+A preparation helpers: prompt writer `/root/sustained_prompts` owns only three new role files;
+read-only `/root/android_build_audit` reviewed installed prebuild/Gradle and released. No worker
+session or heavy/preview job starts from this table. Future initial allocation is one helper per
+lead (four globally), one heavy job, no native build with the resident browser/Metro pair.
+Prompt-preparation sample: available4924MiB of7645MiB; swap1521MiB; current sample98%idle,
+si8KiB/s,so0. Recheck before native work; no capacity claim for forty agents or total compiler RAM.
+
+User steering during prompt preparation asks whether suggested ideas were researched/implemented.
+A read the existing research report and answered: research covers those ideas; actual recent code
+is stabilization/refinement, not new calendar/study/money/maps/chat/memory features. The pack now
+includes C-N02 `c-product-refinement.md` and A-N04 review of a concrete connected family story,
+within proposal-only scope. This is independent useful work while APK dependencies are pending;
+it neither accepts a new product story nor reverses the explicit recovery deferral.
+
+Preparation complete: both A helpers released, zero active helpers/jobs or previews. The three
+role prompt files were explicitly handed back before A's final product-refinement edits. B/C/D
+remain stopped; prepared branches are not running sessions. NB1 has no active execution grant
+until the human starts Session A's activation prompt. All prompt-preparation paths are released
+at the final documentation commit. Source7fff0f3 and previous138/1677results are unchanged.
+
+## Revision 23 — product diagnosis, requested entry scope and one bounded repair
+
+A-P01 user-authorized source review is complete. Nine findings and a concrete reciprocal support
+proposal are in a-product-service-review.md. The user explicitly selects three no-auth synthetic
+demo profiles, onboarding redesign and Arabic narration repair; entry-onboarding-contract.md
+records product intent, with A-N05 committed Spec Kit/typed contract before source delegation.
+A-N05/B-N05/C-N04/A-N06/D-N04 are PREPARED, not active worker grants. Other proposed features stay
+unselected; recovery014 stays deferred. B/C/D have not restarted.
+
+A-P02 bounded existing003 correction: helper /root/approved_instruction_fix wrote only
+app/child/task.tsx and tests/child-approved-instruction.test.tsx, then released both to A.
+Reviewed +10 runtime lines display existing approved Parent wording without altering safety,
+checklists, v2, task or progression. RED6fail/12pass; GREEN18 and related86 tests. A holds the
+integrated candidate for full checks and local commit. Native/browser appearance NOT RUN.
+
+Read-only assistant/task/audio/access helpers released; one prompt-consistency helper now reads
+the final pack, no writes/descendants. A acquires the single heavy slot for sequential four checks;
+no preview/native job or installation. A alone writes/stages its coordination records; B/C/D
+statuses stay unchanged. Live command ID is recorded in STATUS-A after launch.
+
+## Revision 24 — review/repair complete; revised prompts ready to launch
+
+A-P01 source review, requested-entry brief and A-P02 correction complete. Runtime e02d02b passes
+all four checks (139files/1,695tests); no native/browser/listening/student acceptance invented.
+All helper allocations released: assistant_service_trace, task_product_trace, approved_instruction_fix
+and final read-only sustained_prompts reviewer. The final reviewer found three prompt ambiguities;
+A resolved ordinary-versus-demo restart rows, C-N01-only scope wording and the B contract path.
+Fullrunner363643/exec21484 completed; no descendants, preview, build or heavy job remains.
+
+Next: activate NB1 using canonical native-batch/README.md and Session A prompt, then the human
+starts B/C/D. Initial and future contract-gated tasks are detailed there. Prepared branches remain
+52c61fc; synchronize only A's named source before build. Newly selected A-N05/B-N05/C-N04/A-N06/
+D-N04 grants are not live yet. The product brief is not an accepted Spec Kit contract. All finished
+A source/docs/ignored-evidence boundaries release at this checkpoint; B/C/D statuses are neither
+edited nor staged. User explicitly confirmed those leads stopped, so no pause ACK is fabricated.
+Only A-owned BOARD/STATUS-A are committed. No push/main merge/remote activation.

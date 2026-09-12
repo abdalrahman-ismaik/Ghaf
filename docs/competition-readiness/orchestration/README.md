@@ -1,5 +1,10 @@
 # Four-session Codex work plan
 
+**Next batch after recovery deferral:** use the [product, onboarding and Android prompts](../native-batch/README.md).
+The original prompts below preserve the completed batch's history. Start the new A activation
+prompt first, then B/C/D; the old recovery queue is not selected. Fresh worker branches are already
+prepared, so do not rerun the historical worktree-creation commands below.
+
 Use **four working sessions**, including the integration owner, as the recommended arrangement.
 The user's current TOML capacity is **ten** (`max_concurrent_threads_per_session = 10`); preserve
 that setting. Capacity and the number of sessions selected for this task are different decisions.

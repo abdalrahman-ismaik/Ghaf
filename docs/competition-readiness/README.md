@@ -9,10 +9,14 @@ contract before implementation.
 
 ## Session A execution handoff
 
-Session A/B/C/D execution began from `02b9618`. Current runtime candidate is `7fff0f3`:
+Session A/B/C/D execution began from `02b9618`. Current runtime candidate is `e02d02b`:
 Parent handoff, family replacement, Arabic duration wording, one Child Today card refinement and
-root-reset repairs are locally integrated. Typecheck, lint, formatting and138files/1,677tests pass.
-Independent reset retest passes three browser sequences; this is not release acceptance. Follow the live
+root-reset repairs are locally integrated. The latest fix shows Parent-approved wording in the
+Child's chosen/active task. Typecheck, lint, formatting and139files/1,695tests pass.
+Independent reset evidence covers three browser sequences on earlier7fff0f3; it does not pass the
+new instruction paragraph's appearance or native acceptance. Read the
+[concrete product/service review](workstreams/a-product-service-review.md) for the nine findings,
+repair receipt and actual versus proposed features. Follow the live
 [board](coordination/BOARD.md), [A implementation/evidence record](workstreams/a-contract.md),
 [D independent candidate report](workstreams/d-candidate.md) and
 [demo script](two-device-demo.md) for current status. The original QA report below remains
@@ -22,18 +26,20 @@ remain blocked or not run.
 
 ## Start the four sessions
 
-Read the [launch, model, worktree and sequencing guide](orchestration/README.md). It includes
+Use the new [product, onboarding and Android prompt pack](native-batch/README.md), including the
+requested three no-auth synthetic profiles and Arabic narration repair. The original prompts
+are historical. Read the [launch, model, worktree and sequencing guide](orchestration/README.md). It includes
 GPT-6 Astra / Ultra / Fast setup and the distinction between selected settings and verified service.
 Assign each bounded task to a real student owner and keep its actual AI-use record.
 
-| Session | Copy-paste prompt                                                    | Responsibility                                                                         |
-| ------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| A       | [Product and integration](orchestration/session-a-integration.md)    | Reconcile scope/specification, reserve files and integrate reviewed slices             |
-| B       | [Core journey and recovery](orchestration/session-b-demo-systems.md) | One assigned persistence, recommendation/rationale or private-memory task              |
-| C       | [UI and interaction](orchestration/session-c-ui-studio.md)           | Compare coherent visual directions, then implement one assigned screen/component slice |
-| D       | [Independent QA and rehearsal](orchestration/session-d-qa.md)        | Verify the exact candidate, report defects and gather Android/demo evidence            |
+| Session | Copy-paste prompt                                                       | Responsibility                                                                            |
+| ------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| A       | [Product and integration](native-batch/session-a-native-integration.md) | Commit requested access contract, resolve shared integration and publish exact candidates |
+| B       | [Build and demo access](native-batch/session-b-android-build.md)        | Reproducible APK and later exact demo-access adapter grant                                |
+| C       | [Onboarding and product UI](native-batch/session-c-native-ui.md)        | Three-profile entry, onboarding, Arabic scripts/voice and bounded product refinement      |
+| D       | [Independent QA](native-batch/session-d-device-qa.md)                   | Role/sibling/storage isolation, actual APK/Android and Arabic listening acceptance        |
 
-The prompts share an [ownership and evidence contract](orchestration/shared-contract.md) and a
+The prompts share an [ownership and evidence contract](native-batch/shared-contract.md) and a
 [live coordination protocol](coordination/README.md). Start A first to activate
 [BOARD](coordination/BOARD.md), then B/C/D. Each lead publishes progress and findings in its own
 `STATUS-*.md`; all sessions read the same absolute hub in the main checkout. Their worktree copies
@@ -68,10 +74,13 @@ September 16 demonstration depends on qualification. No late-submission permissi
 ## Recommended order
 
 1. Produce and directly test an installable Android candidate; resolve core UI/access blockers.
-2. Specify and implement minimal restart-safe task/progress recovery and deterministic reset.
-3. Make one useful recommendation and its true rationale clear, with honest prepared/live labels.
-4. Complete Parent-confirmed action → authorized garden growth → one durable private memory leaf
-   and a readable family timeline. Memory is currently unimplemented and needs an accepted story.
+2. Commit the smallest contract for the requested three-profile demo entry, onboarding redesign
+   and Arabic narration repair, then implement/test the exact owned slices alongside native work.
+3. Review the proposed reciprocal support interaction and truthful recommendation improvements;
+   proposals need explicit selection and their accepted contracts before implementation.
+4. Recovery014 remains explicitly deferred until current native validation and requires later
+   scope/typed-contract acceptance. A durable private memory leaf/timeline is also unimplemented;
+   neither follows automatically from a native pass.
 5. Freeze, rehearse the 2–3 minute journey and practice student Q&A. Repository/knowledge is 35%
    of the rubric, including 25% for Q&A.
 6. Consider only a local agenda if the core passes and time remains. Study, money practice, Maps,

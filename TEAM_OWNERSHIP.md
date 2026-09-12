@@ -1,5 +1,60 @@
 # Team Ownership
 
+## Product correction handoff — 2026-09-12 01:13:40 UTC
+
+A-P01 review and A-P02 existing-behavior repair completed. Runtime commit `e02d02b` changes only
+Child approved-instruction presentation and its meaningful regression tests. All four checks pass,
+139 files/1,695 tests; browser/native and human exact-diff acceptance pending. All review/correction
+helpers explicitly released. Runner363643/exec21484 ended; no heavy/preview/build job remains.
+
+A temporarily owns `docs/competition-readiness/README.md` as well as the reserved prompt, report,
+request/ledger and A coordination files to publish the current handoff and avoid the old recovery
+queue being mistaken for selected work. All these completed paths release at the documentation
+checkpoint; no unfinished source boundary is held. B/C/D remain stopped on prepared52c61fc branches.
+New three-profile entry/onboarding/narration work is requested and specified as product intent,
+with exact Spec Kit/typed contract and disjoint source grants next. Recovery014 stays deferred.
+
+## Current product correction and entry brief — 2026-09-12 01:05:19 UTC
+
+A continues A-P01 and records the user's explicit three-profile no-auth demo entry,
+onboarding redesign and Arabic narration repair request. A owns the new diagnostic report and
+`docs/competition-readiness/native-batch/entry-onboarding-contract.md` plus the previously reserved
+prompt/master docs. No new entry behavior is implemented in this documentation step.
+
+A additionally grants one bounded correction helper ONLY `app/child/task.tsx` and new
+`tests/child-approved-instruction.test.tsx`: show the existing Parent-approved action in the
+chosen and active Child task views without removing safety/checklist content or changing task
+authority. Existing 003 Parent-reviewed wording is the authority; no new task/content/service.
+The helper must establish a meaningful failing rendered regression, preserve others' work, run
+focused checks and release its exact diff to A. A alone commits/integrates and runs the full
+candidate checks. Completed read-only helpers free their allocations before this worker starts;
+maximum two live A helpers, no descendants. B/C/D remain stopped.
+
+## Product/service review steering — 2026-09-12 01:00:55 UTC
+
+User confirms the connected product/service review because features do not feel properly
+implemented. A owns new `docs/competition-readiness/workstreams/a-product-service-review.md`
+and already held prompt/master docs. Two read-only explorers may trace bounded current services
+and task behavior; no writes, tests, jobs or descendants. App source/native/recovery implementation
+remains unchanged in this diagnostic/proposal step. Future B/C/D still NOT STARTED.
+
+## Native-batch prompt preparation — 2026-09-12 00:52:17 UTC
+
+A instance `A-20260911T2220Z-root` owns `docs/competition-readiness/native-batch/{README,shared-contract,session-a-native-integration}.md`,
+this ownership record, orchestration README, requests/AI ledger, and canonical BOARD/STATUS-A.
+Helper `/root/sustained_prompts` exclusively owns the three new `native-batch/session-{b-android-build,c-native-ui,d-device-qa}.md` prompts.
+A may safely prepare fresh branches at52c61fc in the explicitly stopped B/C/D worktrees after clean
+status checks, preserving all prior branches. This prepares launch inputs; B/C/D are NOT STARTED.
+No application code, dependencies, native generation or other lead's status file changes now.
+A helper budget2 during preparation: one prompt writer and one read-only review if useful; no heavy
+job or preview. Runtime native-batch grants remain pending A's explicit activation on resume.
+
+**Prompt-preparation handoff**: A inspected the three released helper prompts and added the user's
+product-refinement steering to C, shared contract and A review. Both helpers released; no job or
+future worker session started. New B/C/D branches at52c61fc are prepared, old branches preserved.
+All current prompt-preparation paths released after the documentation commit. Native execution
+starts only from the new A activation prompt; future grants are not active now.
+
 ## Recovery deferral decision — 2026-09-12 00:48:35 UTC
 
 A instance `A-20260911T2220Z-root` recorded the user's decision on recovery014.

@@ -224,3 +224,118 @@ only scoped formatting/consistency/whitespace checks, not another app test run.
 Helper outcome: old header/cursor wording was aligned during A's edits; its additional finding
 removed the stale T004 authorization and made T001 a later reconsideration. Read-only review
 completed with no writes, jobs, tests or descendants. A released that helper; B/C/D stayed stopped.
+
+### Native-batch prompts and product-refinement clarification
+
+Actual user request and steering are preserved in requests.md's dated new-session section. A
+created `native-batch/{README,shared-contract,session-a-native-integration}.md`, coordinated the
+three role prompts, updated the launcher index and prepared fresh clean B/C/D branches at52c61fc
+without rewriting prior history. No worker session was started. A recorded that the prior research
+exists but the recent code batch did not implement the user's new feature modules. After that
+steering, A added C-N02 proposal-only product refinement and A-N04 scope review. Recovery remains
+deferred; no new feature scope is self-approved.
+
+`/root/sustained_prompts` generated only the three B/C/D prompt files and released them after scoped
+formatting checks. A then inspected all three and added the product-refinement section after the
+user's steering. `/root/android_build_audit` read installed build behavior only and returned five
+requirements: private native dependencies; expected prebuild script rewrites; separate provisioning/
+compile grants; frozen source/artifact identity; rehearsal signing and device-action boundaries.
+A accepted these into the shared/role prompts. No helper ran native builds, app tests, installs,
+previews or descendants. All helper allocations released after prompt preparation.
+
+Exact native review prompt:
+
+```text
+Bounded READ-ONLY prompt-contract review under A preparation quota2 total (otherhelper writes B/C/D prompts). No writes/jobs/tests/browser/download/descendants. User wants new session prompts after deferring recovery until APK/native validated. Fresh clean B/C/D branches at52c61fc prepared; B worktree /home/smyk/projects/Ghaf-demo-systems has no android dir, shared read-only node_modules identicallock. A plans B build-preflight/failclosed scripts/native/build-apk.sh, separate A-granted isolated host JDK17/SDK provisioning then standalone releaseAPK, no automaticlicense acceptance/global installs/cloud; C minimal D-R03 Arabic200%existingcard candidate, sharedprimitivesneedAgrant; D read-only scripts/native/collect-device-evidence.sh thenactualAPKdeviceQA. Review existing android-build-and-rehearsal.md and installed package/config only for critical native prompt traps (prebuildwritespackagejson/appconfig, sharedsymlink Gradle outputs, stale sourceattribution, builddebugkey/distribution, room/resources). Prior audit alreadyknownmissingtoolchain; don'tduplicate. Return max5 actionable prompt requirements for A shared-contract/buildgrants to avoid deadlock or unsafe sharedwrites. Relevant published spec003native obligations existing; no businessfeatures. A writespackwhileyoureview. Release afterward.
+```
+
+Exact three-file prompt-writing assignment:
+
+```text
+Produce three NEW detailed copy-paste Codex prompts, ~650–1000 words each, ownership ONLY /home/smyk/projects/Ghaf/docs/competition-readiness/native-batch/session-b-android-build.md, session-c-native-ui.md, session-d-device-qa.md. You are not alone; preserve all others' edits, no other writes/commits/deps/tests/jobs/descendants/coordination. A independently writes shared-contract/README/A-resume and live prepared register. Read current native build guide, D candidate report and old shared coordination protocol, avoid repeating completed audits. User defers recovery014 until APK/native validated, confirms B/C/D stopped and now requests prompts so they can resume productive work. Worktrees JUST prepared clean at52c61fc: B /home/smyk/projects/Ghaf-demo-systems branch redesign/native-build-20260912; C /home/smyk/projects/Ghaf-ui-studio branch redesign/native-ui-20260912; D /home/smyk/projects/Ghaf-qa-rehearsal branch redesign/native-qa-20260912. All contain source7fff0f3,138/1677tests historical, no APK/devices/toolchain. Old branches preserved. Prompts loaded from canonical /home/smyk/projects/Ghaf/docs/competition-readiness/native-batch/, checkout copies may not contain them. A resume activation MUST precede runtime/helper/resource grants; writing prompts doesn't start workers. Each lead read shared-contract at canonical abs, AGENTS required docs, BOARD/all statuses; reserve new instance/status ACK without overwriting active lead. Task design: B-N01 create repeatable build readiness/preflight and fail-closed build script at scripts/native/build-apk.sh + report docs/competition-readiness/workstreams/b-native-build.md; B-N02 provision only A-granted isolated host toolchain/download paths, validate publisher checksums/no sudo/global package change/no automatic new license acceptance; B-N03 build standalone release APK on exact A-published source, max2workers serialized heavy slot, --no-install prebuild in B-owned android only (currently absent), inspect any tracked autochanges and stop/reconcile unauthorized shared files with A; no shared node_modules mutation. B validates SHA/package/version/ABI/signing/permissions/JS asset bundle actualartifact, no debug-keystore public release claim, no cloud/EAS or signingidentitychange authorized. If tools/licensing block, complete script/handoff and exact prerequisite rather than stop after known missing-JDK audit. C-N01 bounded D-R03 Arabic secondarylabel CSS200% clipping repro and minimal existing card fix candidate under003visual scope (not new design round), owns ONLY src/components/r002a/child/ChildTodayTaskCard.tsx, report docs/competition-readiness/workstreams/c-native-ui.md, optional existing focused card test if A explicitly grants; common QuietButton/primitives/tokens/resources A-only unless transfer. Use prior D raw artifacts canonical otherworktree readable. Preserve labels/actions/fullaward/fonts/RTL, no disablingfontscale/truncation to hide. If cause sharedprimitive, report exacttransferrequest, don't workaround/hardcode sibling text. Candidate needs normalAR/EN320/390/browser native separately; browser lane can't overlapBnativeheavy. C-N02 prepare actionable native UI checklist and patch verification while awaiting actualAPK, no gallery/new screens/recovery. D-N01 owns scripts/native/collect-device-evidence.sh and report docs/competition-readiness/workstreams/d-native-acceptance.md; useful now create read-only explicitserial/explicitAPK validation/evidencecollector, no installs/uninstall/reset/logcat personaldata bydefault, commandexitstatus/UTC/hash identity real result no fabricate. D-N02 independent actualAPK check/install once candidate supplied and deviceowner authorizes chosen serial; D-N03 nativejourney primary/secondary +real timedrehearsals target10 only actualhumans, existingprogressloss honest not recoverypass; independent C retest after exactsourceintegration. B/C/D each1helper initially global4includingA, descendantscount, A writesBOARD mastersharedsource; no max40. No push/mainmerge/deploy/submission/releaseflags/newfeatures. Sustainable orderedtasks and active producer waits bounded<=60sec, stop honestly only when all eligible work completed or externalgate with no active expectedhandoff. Detailed phase acceptance, narrow failure handling, cross-session outputs/outbox/state10min/commitcheckpoints, actual model/request AstraUltraFast vsunverifiedavailable, actualAI prompts/rejectedideas/studentreview. No obsoleteT004 permission. Only draft prompts then scopedPrettier files iftoolavailable; report result/release. Do not launch B/C/D.
+```
+
+Exact steering to that helper, in order:
+
+```text
+Critical B detail: native Gradle may write build outputs inside installed native module directories. Shared read-only node_modules symlink is NOT sufficient for B native build. Shared contract will require A-N01 exact grant: verify B's path is symlink to canonical, unlink ONLY that symlink (never target), npm ci from unchanged lockfile into private B node_modules under heavy slot, no other dependency/version/package change. Use private B tool/download caches and GRADLE_USER_HOME, no nativebuild with C/Dpreview. Preserve C/D's existing symlinks read-only. B must not prebuild/compile before isolation. A read-only nativehelper checking othertraps. Initial working branches at52c61fc stable; newprompts onlycanonicalabs.
+```
+
+```text
+Native helper confirmed two requirements: 1) Gradle/Reanimated write build/.cxx inside native-module deps, so private B npm ci mandatory (sharedGradlecache alone insufficient). 2) Installed prebuild --no-install WILL normalize package.json android AND ios scripts. Shared contract will preauthorize B transient ownership of ONLY those two script fields during prebuild, capture exact diff in artifact receipt, no package deps/lock/appconfig mutation; do not stop solely for expected two-script rewrite. B must not commit package.json; retain documented generateddiff for A review/safe cleanup of own fields. Unknown fields/configchange stop forA beforecompile. 3) Explicitly authorize existing template debug certificate only for clearly labeled internal rehearsal releasevariant; not publicdistribution approval. Compilationgrant bounded --no-daemon --no-parallel --max-workers=2; 2workers not totalmemorycap, watchprocesses. A shared contract/Aprompt beingupdated. Keep B/C/D full prompts aligned.
+```
+
+```text
+A's shared-contract.md and session-a-native-integration.md now exist; explicit transient prebuild Android/iOS script-field grant, isolated private dependencies and internal template-debug-signed rehearsal artifact authorization included. Please align any B top blanket package prohibition with that narrow exception, then finish scoped checks and release three role files. A will review complete prompts and commit; no runtime tasks activated.
+```
+
+Official Astra prompting guidance was fetched through OpenAI Docs; the pack makes delegation,
+follow-through and proportional checks explicit without promising hours or model-tier availability.
+Rejected: shared writable native dependencies, false native/idea-delivery claims, automatic SDK
+license acceptance, automatic post-validation recovery approval and unbounded feature accumulation.
+Student exact-output review remains PENDING; no student names/contributions or APK evidence invented.
+
+### Product/service review and selected entry scope — 2026-09-12 01:10:06 UTC
+
+Actual user requests are preserved verbatim in [requests](requests.md), including the confirmation
+that services feel improperly implemented and the new three-account/onboarding/Arabic-voice request.
+A produced [the source-based review](workstreams/a-product-service-review.md), the selected-scope
+[entry/onboarding brief](native-batch/entry-onboarding-contract.md), and revised all four prompt roles.
+The review distinguishes observed code, intentional P0 limitations, proposed behavior and unrun
+native/listening evidence. Research sources were re-opened for UNICEF communication and CFPB youth
+financial capability; no Ghaf outcome benefit was claimed.
+
+Initial helper audits were read-only: `/root/assistant_service_trace` traced Parent Guide/Child
+Coach/Parent summary/Feature008; `/root/task_product_trace` traced catalog/customization/task and
+reward authority. These are scope summaries, not reconstructed verbatim prompts. They found a
+source-level omission of approved Parent wording, identical prepared Guide intents, static summary
+and read-only planning limits. They did not run the app or perform new browser/native tests.
+
+Exact follow-up prompt to `/root/assistant_service_trace`:
+
+```text
+New bounded read-only audit: user reports Arabic narrator language/voice very poor. Trace onboarding narration actual source, synthesis/audio assets, locale/voice selection, playback lifecycle and exact wording. Find safest existing-authority fix vs new content requiring Arabic human review. Max5 sourced findings with paths/lines, current tests and minimal candidate implementation boundary. Do not listen to personal media, write files, run builds/browser/tests or spawn descendants. Other contributors exist, preserve work. Also identify if actual synthetic shipped Arabic audio can be inspected through available tool without generating new media; do not claim listened unless actually done. You own only this independent read-only investigation.
+```
+
+Exact follow-up prompt to `/root/task_product_trace`:
+
+```text
+New bounded read-only audit: user requests fast no-auth demo entry for exactly 1 Parent +2 Child synthetic accounts. Trace current welcome/onboarding/access/account seed helpers/guards and route state. Identify minimal explicit Demo-mode entry contract preserving strict Parent/Child authority separation (no privileged persisted session/role toggle within signed-in app), ideal reuse of seeded Salem/Alya family. Report exact file seams, state transitions, reset/profile isolation implications, tests to adapt, whether existing deterministic entry method can be safely reused. No writes/tests/browser/builds/descendants; other contributors editing, preserve work. Focus only this new sign-in scope, not prior findings.
+```
+
+Both released. A then commissioned `/root/approved_instruction_fix` with this exact prompt:
+
+```text
+Implement bounded existing-behavior correction in /home/smyk/projects/Ghaf (canonical shared checkout), branch redesign/ui-experiments HEAD52c61fc. Ownership ONLY app/child/task.tsx and NEW tests/child-approved-instruction.test.tsx. You are not alone; preserve every other contributor's edits. No coordination/docs/source other files/deps/build/browser/descendants/commit. A alone commits and fullchecks. Read required repository instructions and relevant focused test conventions. Parent custom approved action survives as journey.task.content.positiveAction and Parent review, but initial Child task v1 displays only fixed title/checklist; approved wording absent. Existing003/Parent flow authority permits displaying already accepted safe wording. Small correction: render the localized approved positiveAction in chosen (before start) AND in_progress/retry active presentation using existing Text/components, preserving all current fixed safety/checklist/definition/help copy, two-checkbox completion, version2 adjusted behavior, scopes/guards. No new translation/content/key/award/task/service. Avoid replacement of required checklist by custom content. Prove meaningful RED→GREEN with actual rendered route/component + real store journey fixtures where practical (existing temporary-parent-entry-route.test.tsx illustrates route import + hook/store mocks). Test exact approved action in both locales and chosen/active states, no cross-child/unassigned projection; don't substitute source-string assertions. Can mock platform/router/hooks to traverse React element tree, but retain real store authority/setup/actions rather than invent successful states. Inspect existing test helpers; do not import test helpers into runtime. First deliver RED evidence, then smallpatch, focused relevant tests and scoped lint/format/typecheck if proportional. Share exact commands/results and any native/rendering limitations; no browser/native pass claim. Finish release exact two paths to A; no commit.
+```
+
+Output: ten runtime lines show approved wording in chosen/active version-one views; 18 rendered
+regressions cover AR/EN, chosen/active/retry, retained safety/checklists, unchanged version-two
+presentation and sibling/unassigned isolation. RED six expected failures/twelve passes; GREEN
+18 passes and related four-file/86-test batch. Native hosts/peripheral UI are mocked; real React
+rendering and store/controller/service actions are retained. A reviews and commits the exact diff;
+full-candidate checks are reported separately. No student authored/understood/accepted claim.
+
+Rejected suggestions: treating all service limits as bugs; claiming new ideas already shipped;
+replacing required safety steps with custom copy; broad role mutation as demo access; overwriting
+custom local families; claiming phone TTS changes repair bundled MP3; using metadata as proof of
+Arabic voice quality; shipping old audio against rewritten transcripts. Named Arabic/asset-rights,
+actual-phone and student exact-diff reviews remain PENDING. New entry/onboarding runtime is not
+implemented in this review/prompt pass. Recovery014 remains explicitly deferred.
+
+Final correction receipt: local source commit `e02d02b3a43c062bd637b57a475b43419a9f9939`.
+A's four checks ran 01:11:45–01:12:25 UTC on 2026-09-12, all exit0; 139 files/1,695 tests.
+Ignored exact logs: `output/competition-readiness/product-instruction-repair/`. Scoped mechanical
+UI detector returned `[]`; no browser/native quality claim. New demo-entry/onboarding/audio runtime
+is still pending the committed contract and owned implementation queue. A also refreshed the
+competition-readiness index to point to the new prompts and preserve the recovery deferral.
+
+Exact final read-only prompt review request to `/root/sustained_prompts`:
+
+```text
+Read-only final consistency review, no writes/jobs/tests/descendants. A revised your released prompts after user selected no-auth 1 Parent+2 Child demo accounts, attractive onboarding, repaired Arabic narrator. Read canonical docs/competition-readiness/native-batch/{README,shared-contract,entry-onboarding-contract,session-a-native-integration,session-b-android-build,session-c-native-ui,session-d-device-qa}.md. Check only contradictions that could prevent execution or widen authority: new selected intent vs unselected proposals/recovery; exact future grants after committed Spec Kit; initial branches52c61fc vs A's new pending narrow approved-instruction fix; no B/C/D live claims; shared ownership/resources; coherent launch order. Do not rewrite prose or duplicate product/service research. Return at most5 actionable material findings and release. Other contributors exist, preserve all work. A performs full candidate checks and final receipts independently.
+```
+
+The helper released with three actionable ambiguities. A corrected ordinary/demo restart distinction,
+C-N01-only scope wording, and B's entry-contract path. No new behavior was self-approved by this
+review. A alone staged its coordination records; other stopped leads' statuses stayed untouched.

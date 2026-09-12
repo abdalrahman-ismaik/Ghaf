@@ -4,34 +4,35 @@ Sole writer: A instance `A-20260911T2220Z-root`. Canonical live record.
 
 ## Current snapshot
 
-- State: PAUSED / completed local integration handoff; native/human gates remain; recovery implementation explicitly deferred.
-- Last actual update: 2026-09-12 00:49:33 UTC; board revision21.
-- Instance `A-20260911T2220Z-root`; no other A instance observed or overwritten.
+- State: A-P01 review and A-P02 repair COMPLETE; revised NB1 prompts PREPARED / NOT STARTED.
+- Last actual update: 2026-09-12 01:13:40 UTC; board revision24.
+- Instance `A-20260911T2220Z-root`; no active A instance overwritten.
 - Worktree `/home/smyk/projects/Ghaf`; branch `redesign/ui-experiments`.
-- HEAD observed immediately before this coordination checkpoint: `713daaea756907ecca860604a7122a5f08942847`.
-  The checkpoint itself is documentation only; exact tested runtime is
-  `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`, initial baseline02b9618.
-- Full checks PASSED: typecheck/lint/format,138files/1,677tests. D assigned three-browser-reset
-  retest PASSED; final report93a98c0 integrated7beb61c. Human exact-diff review PENDING.
-- Build/APK: none; primary/secondary model/OS unknown and physical results NOT RUN;
-  rehearsals0/10. Native gate BLOCKED. Qualification unknown;014 DRAFT unaccepted and explicitly deferred by user.
-- Source/report/proposal/master-doc paths: all completed boundaries RELEASED at this checkpoint;
-  no unfinished source path retained. Canonical BOARD/STATUS-A remain A-only on future resume.
+- HEAD/runtime source before this documentation checkpoint:
+  `e02d02b3a43c062bd637b57a475b43419a9f9939`.
+- Full checks PASSED: typecheck/lint/format,139files/1,695tests. New rendered regression RED6fail/
+  12pass→GREEN18. Historical D reset/browser evidence stays attributed to7fff0f3. New paragraph
+  browser/native appearance NOT RUN; student exact-diff review PENDING.
+- Build/APK: none; primary/secondary model/OS unknown; physical results NOT RUN; rehearsals0/10.
+  Qualification unknown; recovery014 remains unaccepted and explicitly deferred.
+- Finished source/report/entry-brief/prompt/master-doc paths released at this documentation
+  checkpoint. No unfinished source path held. BOARD/STATUS-A retain A-only ownership on resume.
 - User requested Astra/Ultra/Fast. Runtime identifies Codex/GPT-6; effective served model,
   reasoning and tier are unexposed. D-inspected user config reads Astra/xhigh/fast, not verified
   Ultra. Helper launcher accepted Astra/ultra; no setting or participant identity fabricated.
-- Next: actual native/build/device handoff. The user defers014 implementation until current
-  APK/native validation; later acceptance and exact typed-contract review still required.
-  B/C/D explicitly stopped by user confirmation; no automatic wakeup or new runtime grant.
+- Next: activate the revised NB1 queue from native-batch/README.md; commit A-N05's precise Spec
+  Kit/typed contract for selected three-profile entry/onboarding/narration, then grant disjoint
+  implementation. Baseline APK work can proceed independently. Recovery014 remains deferred.
+  B/C/D remain user-confirmed stopped; files do not wake sessions.
 
 ## Helpers and local jobs
 
-Zero active A/B/C/D helpers, descendants, heavy jobs or previews. A fullrunner276567/exec40754
-ended; all scoped doc commands ended. A helpers `/root/android_build_audit` and
-`/root/coordination_review` completed/released. D final Metro278873/exec66015 stopped exit130,
-Firefox279164 closed per explicit D027. B/C final releases preserved. Configuredten/session
-unchanged; global helper budgetfour, all quotasinactive. Unrelated ADB/MCP/client infrastructure
-not stopped. Current source worktrees retained; untracked user PDFs not staged or modified.
+All current helpers explicitly released: assistant_service_trace, task_product_trace,
+approved_instruction_fix, sustained_prompts, android_build_audit; no descendants. Full checks
+runner363643/exec21484 ended01:12:25 UTC. Heavy slot and preview lane FREE. No toolchain install,
+APK/native job or new audio generation ran. Historical D Metro/browser releases remain preserved.
+Configured capacityten/session unchanged; global helper budgetfour, zero active allocations.
+Unrelated infrastructure and user-supplied untracked PDFs preserved. Only A-owned statuses staged.
 
 ## Initial activation record (historical)
 
@@ -534,3 +535,41 @@ Only A-owned coordination records are staged; other leads' status files remain u
 
 A-009 scoped Prettier and Git whitespace checks passed. Documentation only; no application tests
 rerun and no new native evidence claimed. User-supplied PDFs remain untracked and untouched.
+
+## Native-batch prompt preparation
+
+User requests appropriate new B/C/D prompts. A is preparing bounded build/UI/device QA queues,
+keeping014 deferred. Current HEAD52c61fc, tracked worktree clean before docs edits. B/C/D confirmed
+stopped by user; no active A instance conflict. Exact doc/helper scopes in TEAM. Two A helpers
+maximum, no heavy/preview/runtime work. Current preparation is not future-session activation.
+
+40. **A-20260911T2220Z-040 → B/C/D — NEW PROMPTS PREPARED, NOT ACTIVATED.** Read canonical
+    native-batch/README.md and your new role prompt on the next human-started session. A activation
+    first; initial tasks/grants then ACK. Fresh prepared worktree branches all52c61fc preserve your
+    previous branches. B builds privately; C has both bounded UI work and a concrete product brief;
+    D prepares safe evidence tooling then actual device QA. Writing the pack does not wake you.
+    No native or recovery implementation grant is live yet. All preparation helpers/jobs released.
+
+Product clarification: existing research covers user ideas; recent code work primarily stabilized
+current behavior. New idea modules were not implemented. C-N02/A-N04 now explicitly develop/review
+one proposed connected family experience alongside native work; no inferred new-feature approval.
+Prompt writer and native reviewer completed/released, scoped files reviewed by A. No app source,
+installed dependencies, toolchain, Android files or release flags changed in this prompt task.
+
+User confirms product/service review during prompt preparation. A starts A-P01 source-based
+review/proposal, exact report a-product-service-review.md, two read-only explorers under global
+budgetfour. Prompt helpers already released; no native/runtime job. This is not B/C/D activation.
+
+41. **A-20260911T2220Z-041 → B/C/D — REVISED NEXT QUEUE / NOT A WAKEUP.** The user selects
+    three no-auth synthetic demo profiles, redesigned onboarding and repaired Arabic narration.
+    Read native-batch/entry-onboarding-contract.md plus your revised prompt; A-N05 commits the
+    formal contract before source grants. C-N04 is substantive requested UI work, not just CSS
+    clipping. A-P02 runtime e02d02b now displays approved Parent instructions; all four checks pass
+    with139files/1,695tests. Your prepared branches remain52c61fc until A publishes synchronization.
+    Keep ordinary remembered-access and isolated-demo signed-out restart evidence distinct.
+    No app voice/demo-entry change is yet implemented. Prior unacknowledged notices remain here.
+
+Final recovery cursor: all authorized review/prompt and narrow correction outputs are concrete,
+locally committed after proportional checks. Start Session A's NB1 activation for the next batch;
+B/C/D need actual human startup. No eligible active worker handoff remains. Current native/human
+gaps remain BLOCKED/NOT RUN; source e02d02b is the exact next candidate, not an APK.
