@@ -1505,3 +1505,87 @@ imports establish that the future C adapter works. No student understanding was 
 All source, test and asset files remained read-only. No new defect or fix grant is requested.
 The report and source-fa9821c evidence are ready for A integration/release after scoped report
 checks; D continues to B's actual published APK and C's later integrated adapter candidate.
+
+## September12 poster handoff — A194–197 priority
+
+A194 supersedes the earlier native/harness order for the user’s poster deadline. A195 grants D
+only this report and ignored `output/native-acceptance/poster-20260912/**`; D067 acknowledged
+board66 before writing. QA remains880e868, with no product/source synchronization or design edit.
+A/C own the presentation changes, canonical preview and sole browser; D will inspect their actual
+captures without starting a second browser. The optional mounted narration harness is deferred.
+
+A197 reports that the user-supplied official finalist email confirms qualification and specifies
+**A1 portrait PPT/PPTX, due20:00 Asia/Dubai on September12**. This supersedes the earlier unknown
+qualification state **with attribution to A’s email review**. D has not inspected that email;
+team/student names, poster language, attendance and submission remain with A/user. No student
+participation, exact-diff approval, Arabic review or device evidence follows from qualification.
+
+The independently reviewed copy/shot packet and explicit empty capture manifest are available at:
+
+- `/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/poster-20260912/packet.md`
+- `/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/poster-20260912/capture-manifest.json`
+
+Reference runtime is0d23b8eeec27c11d570139fac6db48b5b7550401. A/C visual changes are in progress;
+that reference cannot identify their later final screenshots. The manifest currently contains
+**zero images / six planned AR/EN rows NOT RUN**. It requires the actual integrated source, loaded
+source proof, URL, viewport/DPR, principal/state, interactions, UTC/operator, original path/hash and
+D review. Prepared mock harness images and historical screenshots are not current product captures.
+
+Concise screenshot and caption map, using existing canonical `demoEntry` resources:
+
+| Priority / actual state                      | Existing Arabic / English caption                                         | What the image may support                                                                       |
+| -------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 1 / signed-out demo entry                    | خطوة صغيرة، ننجزها معًا / A small step, done together                     | Three synthetic profile choices, readable demo and Salem-only task disclosures                   |
+| 2 / Parent Home                              | راجع المهمة وقدّم الدعم / Review the task and offer support               | Actual Parent route, selected Child and visible task/support actions                             |
+| 3 / Salem Today after Parent approval        | جرّب المهمة واطلب المساعدة / Try the task and ask for help                | Correct Child, approved task, displayed +12 and permitted Help action                            |
+| Optional / actual confirmed result or Garden | نقدّر الفعل، ثم تنمو الحديقة / Recognize the action, then grow the garden | Only the genuinely captured completion/confirmation/praise sequence and resulting symbolic state |
+
+Proposed supporting English copy, an AI drafting contribution for A’s editorial selection:
+
+> A Parent approves a task, such as sorting clean recyclables with adult supervision. The Child
+> can ask for permitted help without losing the agreed award. The Parent confirms completion
+> and praises the action; Seeds and private symbolic garden growth follow.
+
+Keep **Browser preview · Synthetic demo data** with screenshots. Prepared task-focused AI examples
+may be inaccurate; symbolic garden growth is not measured environmental impact. This wording is
+not a named human/editorial approval. Exact existing Arabic headings are reused; D supplied no
+new Arabic translation. A static baseline view cannot prove award transitions, idempotency,
+privacy enforcement or persistence. A completed result capture must distinguish default Seeds48→60
+and Mangrove48/60→60/60 from the optional lifetime/Reward108→120 fixture. Restarting the isolated
+demo begins a fresh run; recovery014 remains deferred. Do not advertise live inference, recording,
+synchronization, production accounts, measured impact or native/rehearsal acceptance.
+
+D’s sole helper `/root/poster_claim_review`, ghaf-demo-qa-agent explicitly launched Astra/ultra,
+completed/released read-only claim review. Fast/effective serving is unexposed. It required praise
+before growth, a concrete supervised recycling example, task-specific+12, a separate actual result
+capture and the explicit restart limitation. The lead incorporated all five. Rejected claims:
+Parent approval proves automated safety assessment; baseline screenshots demonstrate completion;
+all tasks award12; narration controls prove native audible playback; later visual edits inherit
+reference0d23b8e identity. No files, tests, media, device/network actions or descendants were used
+by the helper. Exact prompt:
+
+> Session D sole helper under board66/A194–195. You are not alone; preserve others' edits. READ ONLY; no writes, descendants, coordination edits, tests/browser/native/device/provider/network jobs. Concrete bounded task: review a concise poster screenshot/capability map for misleading claims, using only canonical /home/smyk/projects/Ghaf/docs/competition-readiness/coordination/BOARD.md current poster priority, native-batch/shared-contract.md, and current source copy src/i18n/resources.ts + D report /home/smyk/projects/Ghaf-qa-rehearsal/docs/competition-readiness/workstreams/d-native-acceptance.md if needed. Runtime integrated0d23b8e, canonical docs HEADb93935e; A/C new presentation edits in progress, no final capture candidate yet. B APK frozen5d still building; TabS4 last unauthorized, no physical/native passes,0/10 human rehearsals. Recovery014 deferred. Do not repeat broad contract/source audit or research rights already resolved/pending. Proposed short factual claims: Parent approves a safe task; Child can ask for permitted help without losing its agreed +12 award; Parent confirms completion; Seeds and private symbolic garden growth follow. Default Seeds48→60 and Mangrove48/60→60/60 distinct from optional108→120 reward fixture. AI assistance uses local prepared examples and may be inaccurate; no live inference/sync/measured environmental impact. Screenshot selection: actual final integrated demo entry, Parent Home, Salem Today; optional separate garden only if truly captured. Every image must bind source/URL/viewport/locale/interaction/state, label browser preview + synthetic data, never pose as device evidence. Use existing canonical AR/EN headlines only; no invented translation/human approval. Lead independently prepares exact shot priorities, caption map and manifest in assigned ignored poster-20260912 directory/report. Return only material wording/evidence pitfalls and a bounded verdict; no new product/design edits or extra features. New source may show audio controls but source/button presence is not audible/native/media rights acceptance. Requested explicit Astra/Ultra; Fast selector unavailable. Report only to D, then release.
+
+### Frozen APK build stop — preserved contrary evidence
+
+B102/A196 report that A171T4DtZl ended with wrapper exit75 at12:24:55.088411UTC after the
+sustained-paging guard triggered12:24:52.726667UTC. D read the actual
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T113307Z-build.T4DtZl/full-build-summary.json`:
+three correlated samples record available29.463→28.582→28.345percent and paging deltas2279→3859→5843,
+ending in sustained_paging; `apk_files` is empty. The raw Gradle terminal code was **NOT RECORDED**
+on that stop path; do not substitute wrapper75 for it or infer a signal, compiler error, OOM or
+normal build completion. Source/Java/Kotlin/bundle/native-task progress is not an APK gate pass.
+B separately reports all2565 captured PIDs absent12:25:45.518917UTC and releases heavy/observer/jobs;
+D attributes that cleanup result rather than claiming to have re-audited all consumers.
+
+A197 restores one canonical actual-app Metro8081, PID203040, for poster capture after that release.
+D does not start a browser, query the tablet, retry the build or alter caches/guards. APK inspection,
+installation and native journeys remain BLOCKED/NOT RUN; rehearsals remain0/10. The poster packet
+preparation is complete and releaseable after scoped checks, while actual screenshot review remains
+NOT RUN pending A/C’s exact integrated capture handoff. No submission or public release is authorized.
+
+Poster preparation integrity check exited0 at12:30:37UTC: JSON parses, six planned IDs are unique,
+all artifact/candidate fields remain empty, and12 AR/EN caption strings occur verbatim in the
+exact0d23b8e resource blob. `preparation-receipt.json` records file hashes and zero actual images.
+Scoped report Prettier/diff checks passed. This is document integrity, not an app test or screenshot
+pass. A200 acknowledges receipt of the packet; final image/candidate review remains the next task.
