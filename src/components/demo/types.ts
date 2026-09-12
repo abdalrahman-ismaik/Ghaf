@@ -38,10 +38,28 @@ export interface DemoEntryCopy {
     readonly finish: string;
     readonly progressLabel: (current: number, total: number) => string;
     readonly audioUnavailable: string;
+    readonly audioPlay: string;
+    readonly audioStop: string;
+    readonly audioReplay: string;
+    readonly audioLoading: string;
+    readonly audioScreenReader: string;
   };
 }
 
+export interface DemoNarrationControls {
+  readonly status: 'silent' | 'loading' | 'playing' | 'unavailable';
+  readonly canPlay: boolean;
+  readonly canStop: boolean;
+  readonly canReplay: boolean;
+  readonly screenReaderActive: boolean;
+  readonly onPlay: () => void;
+  readonly onStop: () => void;
+  readonly onReplay: () => void;
+}
+
 export interface DemoEntryScreenProps {
+  readonly runGeneration: number;
+  readonly entryEpoch: number;
   readonly locale: LocaleCode;
   readonly direction: TextDirection;
   readonly copy: DemoEntryCopy;
@@ -55,6 +73,7 @@ export interface DemoEntryScreenProps {
 export type DemoStoryStep = 0 | 1 | 2;
 
 export interface DemoOnboardingStoryProps {
+  readonly narration?: DemoNarrationControls;
   readonly locale: LocaleCode;
   readonly direction: TextDirection;
   readonly copy: DemoEntryCopy;

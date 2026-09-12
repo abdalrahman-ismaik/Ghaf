@@ -307,6 +307,29 @@ describe('demo welcome route and real controller handoff', () => {
     expect(rendered.router.replace).toHaveBeenCalledExactlyOnceWith('/child');
   });
 
+  it('passes fresh narration scope after handoff and reset without granting authority', async () => {
+    const run = await freshRun();
+    render(run.Welcome);
+    const original = demoProps();
+    original.onChooseProfile('parent_al_noor');
+    ok(run.state().signOutExperience());
+    render(run.Welcome);
+    const returned = demoProps();
+    expect(returned.entryEpoch).toBeGreaterThan(original.entryEpoch);
+    expect(returned.runGeneration).toBe(original.runGeneration);
+    expectNoAuthority(run);
+
+    returned.onChooseProfile('parent_al_noor');
+    ok(run.state().resetPrototype());
+    render(run.Welcome);
+    const reset = demoProps();
+    expect(reset.runGeneration).toBeGreaterThan(returned.runGeneration);
+    expect(reset.entryEpoch).toBeGreaterThan(returned.entryEpoch);
+    expect(reset.runGeneration).toBe(run.state().demoRunGeneration);
+    expect(reset.entryEpoch).toBe(run.state().demoEntryEpoch);
+    expectNoAuthority(run);
+  });
+
   it('keeps the ordinary first-run route and denies its demo command', async () => {
     const run = await freshRun('ordinary');
     const markup = render(run.Welcome);
@@ -359,6 +382,17 @@ describe('demo welcome route and real controller handoff', () => {
       render(run.Welcome);
       const props = demoProps();
       const copy = run.resources[locale].translation.demoEntry;
+      expect(props.runGeneration).toBe(run.state().demoRunGeneration);
+      expect(props.entryEpoch).toBe(run.state().demoEntryEpoch);
+      for (const label of [
+        'audioPlay',
+        'audioStop',
+        'audioReplay',
+        'audioLoading',
+        'audioScreenReader',
+      ] as const) {
+        expect(props.copy.story[label]).toBe(copy.story[label]);
+      }
       expect(props.locale).toBe(locale);
       expect(props.direction).toBe(locale === 'ar' ? 'rtl' : 'ltr');
       expect(props.copy.body).toBe(copy.body);

@@ -27,6 +27,11 @@ export const resources = {
           finish: 'دخول العرض التجريبي',
           progress: '{{current}} من {{total}}',
           audioUnavailable: 'السرد الصوتي غير متاح. يمكنك قراءة النص والمتابعة.',
+          audioPlay: 'استمع إلى النص',
+          audioStop: 'إيقاف السرد',
+          audioReplay: 'إعادة الاستماع',
+          audioLoading: 'جارٍ تحميل السرد…',
+          audioScreenReader: 'السرد متوقف أثناء استخدام قارئ الشاشة.',
         },
         moments: {
           together: {
@@ -1920,6 +1925,11 @@ export const resources = {
           finish: 'Enter demo',
           progress: '{{current}} of {{total}}',
           audioUnavailable: 'Narration is unavailable. Read the text and continue.',
+          audioPlay: 'Listen to text',
+          audioStop: 'Stop narration',
+          audioReplay: 'Replay',
+          audioLoading: 'Loading narration…',
+          audioScreenReader: 'Narration is off while a screen reader is active.',
         },
         moments: {
           together: {

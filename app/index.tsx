@@ -271,11 +271,18 @@ function DemoWelcomeRoute() {
       back: t('demoEntry.story.back'),
       finish: t('demoEntry.story.finish'),
       audioUnavailable: t('demoEntry.story.audioUnavailable'),
+      audioPlay: t('demoEntry.story.audioPlay'),
+      audioStop: t('demoEntry.story.audioStop'),
+      audioReplay: t('demoEntry.story.audioReplay'),
+      audioLoading: t('demoEntry.story.audioLoading'),
+      audioScreenReader: t('demoEntry.story.audioScreenReader'),
       progressLabel: (current, total) => t('demoEntry.story.progress', { current, total }),
     },
   };
   return (
     <DemoEntryScreen
+      runGeneration={runGeneration}
+      entryEpoch={entryEpoch}
       locale={locale}
       direction={direction}
       copy={copy}

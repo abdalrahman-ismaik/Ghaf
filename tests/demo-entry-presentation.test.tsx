@@ -195,6 +195,13 @@ function copyFor(locale: (typeof locales)[number]): DemoEntryCopy {
       finish: ar ? 'دخول العرض التجريبي' : 'Enter demo',
       progressLabel: (current, total) =>
         ar ? `الخطوة ${current} من ${total}` : `Step ${current} of ${total}`,
+      audioPlay: ar ? 'استمع إلى النص' : 'Listen to text',
+      audioStop: ar ? 'إيقاف السرد' : 'Stop narration',
+      audioReplay: ar ? 'إعادة الاستماع' : 'Replay',
+      audioLoading: ar ? 'جارٍ تحميل السرد…' : 'Loading narration…',
+      audioScreenReader: ar
+        ? 'السرد متوقف أثناء استخدام قارئ الشاشة.'
+        : 'Narration is off while a screen reader is active.',
       audioUnavailable: ar
         ? 'السرد الصوتي غير متاح. يمكنك قراءة النص والمتابعة.'
         : 'Narration is unavailable. Read the text and continue.',
@@ -210,6 +217,8 @@ function entryProps(
     locale,
     direction: locale === 'ar' ? 'rtl' : 'ltr',
     copy: copyFor(locale),
+    runGeneration: 0,
+    entryEpoch: 0,
     busy: false,
     error: null,
     restartRequired: false,

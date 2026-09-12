@@ -972,3 +972,43 @@ hooks are configured. Existing ignore rules cover generated builds, output, depe
 no package, managed AGENTS or tool configuration changed. Planning format/diff checks passed.
 No new runtime test or native playback pass is claimed here. D's exact final mechanism review,
 implementation checks, student teach-back and artifact-specific native evidence remain pending.
+
+## T014a source preparation — September12
+
+After committedcb8abd0 and final adapter contract40a6299, A delegated exactly
+`src/features/onboarding/demoPlayback.ts` and `tests/demo-playback.test.ts` to the one Astra/Ultra
+helper `demo_playback_controller`; Fast was unexposed. Actual prompt: implement the exact pure
+controller contract, preserve other writers and ordinary audio, write behavioral tests first, no
+React/native/provider/dependency imports, no staging or commit, and defer execution until A grants
+the bounded single-file check. A182 later granted60s/256MiB/one-thread RED/GREEN runs in ignored
+controller-checks. No descendants or overlapping test pool. The full prompt/follow-up is retained
+in this conversation and A180–184. Helper completed/released both files and all processes.
+
+Generated contribution:151-line controller, frozen snapshots, pending-request coalescing, synchronous
+cancellation, post-callback identity checks and permanent disposal. Final44tests passed; inert
+implementation RED29failed/13passed retained. The first RED also exposed two test-fixture unhandled
+rejections; preconditions were corrected before the second RED. Final GREEN adds explicit settled
+Stop reentry and current failure tests. A inspected the implementation; no broader runtime/native
+acceptance is claimed. Commands/hashes/results: ignored
+`output/native-integration/015/narration-preparation/controller-checks/receipt.md`.
+
+A generated shared narration types, equivalent Arabic/English labels, existing route generation/
+epoch plumbing and typed presentation fixtures. The49route/presentation tests pass (two files,
+11:57:29–34UTC), including changed scope after real handoff/reset and unchanged signed-out authority.
+All3 original MP3 hashes and canonical body/script parity pass; no audio was regenerated or played.
+The asset README records Free-plan attribution/limits and existing approvals. No hook imports the
+new audio yet; C's adapter/presentation remains the next slice. Student review of the new labels/
+exact code remains PENDING.
+
+A's bounded full TypeScript attempt (768MiB heap,60s timeout) FAILED from Node's heap limit at
+12:01:08UTC, exit-6 after30s. No TypeScript source diagnostic was emitted, but this is NOT a typecheck
+pass. Receipt/log: `output/native-integration/015/narration-preparation/typecheck.{json,log}`. B's
+resource log then showed34.15% available and no stop reason; its native build continues. A chose
+to keep the mandatory full candidate check pending until the exclusive native build releases
+memory, rather than raising concurrent memory use. Focused tests and source inspection support
+this reviewable preparation commit; it is not full feature acceptance. No full suite rerun yet.
+
+C065's concrete existingReactDOM/Metro harness plan is now A183-authorized for ignored file
+preparation only. It must label real React effects separately from mocked native/media events.
+No browser/Metro/native launch is granted until B releases heavy work. Actual Android playback,
+no-resume race, mounted lifecycle, public rights and student teach-back remain pending/BLOCKED.
