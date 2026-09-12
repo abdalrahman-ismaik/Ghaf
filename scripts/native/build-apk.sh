@@ -15,7 +15,7 @@ RUN= CHILD_PID= LAST_LOG= STEP=0
 
 usage() {
   cat <<'HELP'
-Usage: build-apk.sh [--build] REQUIRED_OPTIONS
+Usage: build-apk.sh [--build | --manifest-only] REQUIRED_OPTIONS
 
 Default: PREFLIGHT. Never installs, generates Android, downloads Gradle or compiles.
 Preflight writes an isolated receipt only after root/input/path validation.
@@ -31,12 +31,13 @@ Required in both modes:
   --allow-internal-debug-signing
                                Opt in to the unchanged Expo template debug identity
 
-Build additionally requires explicit coordination/terms receipt references:
-  --build
+Generation/Gradle modes require explicit coordination/terms receipt references:
+  --manifest-only              Generate and merge release manifest for A review; no APK
+  --build                      Compile and inspect the standalone release APK
   --heavy-slot-ack REFERENCE    Current A/operator grant for this native build
   --metro-release-ack REFERENCE Current confirmation Metro/browser have stopped
   --sdk-license-ack REFERENCE   Applicable accepted SDK terms evidence
-  --approved-permissions FILE   A-reviewed JSON array of merged uses-permission names;
+  --approved-permissions FILE   Build only: A-reviewed JSON array of permission names;
                                absolute existing file within output/native-build/
 
 Inputs inspected: JDK 17, SDK 36, Build Tools 36.0.0, NDK 27.1.12297006,
@@ -89,7 +90,10 @@ need_value() { [[ $# -ge 2 && -n "$2" && "$2" != --* ]] || fail "Missing value f
 while (($#)); do
   case "$1" in
     --help|-h) usage; exit 0 ;;
-    --build) MODE=build; shift ;;
+    --build|--manifest-only)
+      [[ "$MODE" == preflight ]] || fail 'Choose only one explicit execution mode.'
+      [[ "$1" == --build ]] && MODE=build || MODE=manifest
+      shift ;;
     --allow-internal-debug-signing) SIGNING=1; shift ;;
     --project-root|--expected-head|--source-commit|--jdk-home|--sdk-root|--output-dir|--cache-dir|--heavy-slot-ack|--metro-release-ack|--sdk-license-ack|--approved-permissions)
       need_value "$@"
@@ -140,9 +144,11 @@ PY
 [[ ! -L node_modules && -d node_modules ]] || fail 'Private node_modules is required; shared/symlinked dependencies cannot generate or compile.'
 [[ "$(realpath -e node_modules)" == "$ROOT/node_modules" ]] || fail 'Dependency root escapes the B worktree.'
 
-if [[ "$MODE" == build ]]; then
+if [[ "$MODE" != preflight ]]; then
   [[ -n "$HEAVY_ACK" && -n "$METRO_ACK" && -n "$LICENSE_ACK" ]] || fail 'Build requires heavy-slot, Metro/browser-release and accepted SDK terms acknowledgments.'
-  [[ -n "$APPROVED_PERMISSIONS" ]] || fail 'Build requires --approved-permissions with A-reviewed merged permission names.'
+  if [[ "$MODE" == build ]]; then
+    [[ -n "$APPROVED_PERMISSIONS" ]] || fail 'Build requires --approved-permissions with A-reviewed merged permission names.'
+  fi
 fi
 if [[ -n "$APPROVED_PERMISSIONS" ]]; then
   python3 - "$ROOT" "$APPROVED_PERMISSIONS" <<'PY'
@@ -406,6 +412,9 @@ rg -q 'signingConfig signingConfigs.debug' android/app/build.gradle || fail 'Exp
 step template-certificate "${CHILD_ENV[@]}" "$JDK/bin/keytool" -exportcert -keystore "$RUN/template-debug.keystore" -alias androiddebugkey -storepass android -file "$RUN/template-cert.der"
 sha256sum "$RUN/template-cert.der" > "$RUN/template-cert.sha256"
 
+GRADLE_TASK=:app:assembleRelease
+[[ "$MODE" != manifest ]] || GRADLE_TASK=:app:processReleaseMainManifest
+
 compile() {
   local status=0 pressure=0 previous_swap=0 pid_pgid
   local cpu_set
@@ -413,7 +422,7 @@ compile() {
   printf 'build_cpu_affinity=%s\n' "$cpu_set" >> "$RUN/receipt.txt"
   (
     cd "$ROOT/android"
-    exec setsid taskset -c "$cpu_set" "${CHILD_ENV[@]}" ./gradlew :app:assembleRelease -Pandroid.cmakeVersion=3.30.5 \
+    exec setsid taskset -c "$cpu_set" "${CHILD_ENV[@]}" ./gradlew "$GRADLE_TASK" -Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false \
       --no-daemon --no-parallel --max-workers=2 \
       -Pkotlin.compiler.execution.strategy=in-process \
       "-Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp"
@@ -447,9 +456,43 @@ compile() {
   return "$status"
 }
 step resource-before-compile resource_check
-step assemble-release compile
+step "gradle-$MODE" compile
 step after-compile-inputs check_inputs
 step after-compile-native generation_identity verify
+if [[ "$MODE" == manifest ]]; then
+  step merged-manifest-review python3 - "$ROOT" "$RUN" <<'PYMANIFEST'
+import hashlib, json, pathlib, shutil, sys, xml.etree.ElementTree as ET
+root, run = map(pathlib.Path, sys.argv[1:])
+base = root / 'android/app/build'
+files = sorted(p for p in (base / 'intermediates').glob('**/AndroidManifest.xml')
+               if p.parent.name == 'processReleaseMainManifest' and 'release' in p.parts)
+if len(files) != 1:
+    sys.exit('BLOCKED: expected one actual release-main merged manifest; preserve outputs for review: ' + str(files))
+manifest = files[0]
+ns = '{http://schemas.android.com/apk/res/android}'
+tree = ET.parse(manifest).getroot()
+permissions = sorted({e.attrib[ns + 'name'] for e in tree if e.tag in ('uses-permission', 'uses-permission-sdk-23')})
+application = tree.find('application')
+if application is None:
+    sys.exit('BLOCKED: merged manifest lacks application element.')
+shutil.copyfile(manifest, run / 'merged-release-manifest.xml')
+reports = sorted(p for p in (base / 'outputs/logs').glob('*manifest*release*') if p.is_file())
+if not reports:
+    sys.exit('BLOCKED: release manifest merger report missing; retain generated outputs for A.')
+for index, report in enumerate(reports):
+    shutil.copyfile(report, run / f'manifest-merger-{index}.txt')
+receipt = {'source_manifest': str(manifest), 'sha256': hashlib.sha256(manifest.read_bytes()).hexdigest(),
+           'package': tree.get('package'), 'permissions': permissions,
+           'permission_declarations': [dict(e.attrib) for e in tree if e.tag in ('uses-permission', 'uses-permission-sdk-23')],
+           'allowBackup': application.get(ns + 'allowBackup'), 'merger_reports': [str(p) for p in reports],
+           'approval': 'PENDING A exact permission review; no APK or native acceptance'}
+(run / 'merged-manifest-review.json').write_text(json.dumps(receipt, indent=2) + '\n')
+print(json.dumps(receipt, indent=2))
+PYMANIFEST
+  printf 'MANIFEST GENERATED FOR A REVIEW. Permission approval, APK and device validation NOT RUN.\n' | tee -a "$RUN/receipt.txt"
+  exit 0
+fi
+
 APK="$ROOT/android/app/build/outputs/apk/release/app-release.apk"
 [[ -s "$APK" && ! -L "$APK" ]] || fail 'Signed release APK missing; unsigned APK/AAB/export is not success.'
 [[ "$(realpath -e "$APK")" == "$APK" ]] || fail 'APK path escapes generated output.'
