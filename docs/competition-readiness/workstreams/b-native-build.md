@@ -267,3 +267,121 @@ Session B one-helper allocation, READ ONLY, no descendants/writes/coordination/t
 Both helpers explicitly released their allocations; no descendant/helper job remains. Baseline APK, later demo-mode APK, physical primary/secondary validation, Arabic listening and student exact-diff acceptance remain **NOT RUN/PENDING**. Recovery014 remains deferred.
 
 Final cleanup source verification: Bash syntax, all11 embedded Python blocks, help and actual full12-step preflight passed. Exact preflight receipt `output/native-build/20260912T014519Z-preflight.IMMGNG/receipt.txt`, UTC01:45:17–01:45:21, exit0; script SHA-256 `3ca7626b6793768365b4ed0845b132814a35be0f481e254a5b7e79d019718ce3`. No new generation/compile occurred. The preserved two-script package delta is excluded from this commit. A057 has now published T005/exact B-N05 grant; adapter implementation follows source sync, independently of the stopped baseline build.
+
+## B-N05 — isolated three-profile demo adapter
+
+Authority: accepted015 contract `293d351`, amendments `7a87f69`/`3f7d5a9`, A055 canonical Alya
+spelling and exact A057/A058 grant. B synchronized ONLY A's six named commits after the native job
+ended:293d351→28b4fe4,31f1833→8e98fdc,9731935→ef49687,7a87f69→437daa1,
+3f7d5a9→bbb9d1e,263bc88→7132946. Adapter baseline is
+`713294634609853e0f4ddddbdb2f03d284985b72`; no reset/stash or other contributor edits were used.
+
+A058's archive/restore completed at2026-09-12T01:46:47.714009+00:00. The recorded prebuild package
+diff exactly matched current android/ios-only changes and the before bytes matched HEAD. Restored
+package SHA256 is `2c7436d3adbee3c532b3dd5ada6623070fb3a3fef5355d97b16b2742c2fe6144`.
+Only B's generated Android tree and marker moved to
+`output/native-build/baseline-e02-native/android`; its sibling `archive-receipt.json` preserves the
+original e02d02b source binding. Package.json is clean, root android absent, caches/logs retained.
+This is an archive of a stopped build, not an APK or successful native baseline.
+
+### Behavior and boundaries
+
+Before this slice,015 had shared types, memory repositories and controller transaction wrappers,
+but no three-profile entry adapter. `src/features/access/demoEntry.ts` now exports the exact typed
+factory/adapter/dependencies. Construction does nothing. First explicit entry validates and saves
+the canonical synthetic household in the isolated repository before any authority transaction.
+It reuses production schema, default profiles and receipt conversion. The Parent is role-labeled;
+Salem is سالم and demo Alya is علياء. Existing ordinary onboarding spelling is untouched. The
+schema-required `parent@example.com` is synthetic directory metadata, not a supplied credential or
+proof of identity. No relatives, new private content or runtime test helper are introduced.
+
+Every request validates the fixed three-principal set, plain data shape, generation and epoch.
+Ordinary mode, active/temporary access, stale callbacks and reentry fail closed. The callback
+restores the canonical receipt and two synthetic markers only on initialization, then invokes
+only the selected existing resume method. Role, selected Child, receipt and current-context
+postconditions remain inside A's rollback boundary. No store role assignment, registry import,
+route action, timer, verification, pairing approval, permission grant or progression call occurs.
+A completed initialization retains valid profile wording through same-run sign-out/re-entry;
+missing/replaced/wrong-family records fail instead of being silently reseeded. Invalidation drops
+only this adapter's cache and invalidates in-flight work, never awards or restores progress.
+
+The production dependency contract remains narrow and synchronous. A supplies isolated memory
+and composed Access→Parent→Child transaction wrappers, checks its aggregate abort latch inside
+the innermost callback, commits a successful handoff once and advances epoch. A owns actual reset,
+failed-reset latch, routes, sign-out and all progression. D's independently reported outer/middle
+wrapper reentry issue at263bc88 is **not** resolved by these adapter tests; A059 assigns its
+reproduction/correction separately. Integrate that correction before claiming full transaction
+composition acceptance. No shared hook/store workaround was added here.
+
+### Focused evidence and review
+
+Applied test-driven-development. Helper wrote behavior tests first: the initial focused run failed
+because the new module did not yet exist (one failed suite, zero collected tests). After the module
+appeared,62/64 cases passed; two invalid-time assertions overconstrained the error code to
+INVALID_INPUT although the production schema returns INVALID_RESPONSE and the accepted contract
+allows either. Those assertions were corrected to require rejection, without weakening any
+successful-state oracle or changing production behavior. Expanded coverage passed69/69.
+
+Lead scoped TypeScript initially found a generic `vi.fn` return type widened to unknown in the test
+harness. The harness now keeps a zero-argument call observer inside its explicitly generic real
+transaction function; no cast or production change hides the mismatch. A draft request-snapshot
+edit initially missed its formatted target and referenced an undeclared request; the helper caught
+it before the final passing run. The lead corrected the actual snapshot before all final checks.
+
+Final commands on the adapter/test dirty candidate at7132946,2026-09-12 01:54 UTC:
+
+- `./node_modules/.bin/tsc -p output/native-build/adapter-tsconfig.json`: exit0. Ignored temporary
+  config extends the real tsconfig and includes only the two new files plus expo-env.d.ts and their
+  imported graph; this is **not** full-project typecheck.
+- `./node_modules/.bin/vitest run tests/demo-entry-adapter.test.ts --maxWorkers=1 --no-file-parallelism`:
+  exit0,1file/69tests,1.09s. Test runner's displayed05:54:21 is local Asia/Dubai time.
+- `./node_modules/.bin/eslint src/features/access/demoEntry.ts tests/demo-entry-adapter.test.ts --no-cache --max-warnings=0`:
+  exit0; scoped Prettier check also exit0.
+
+The69 cases exercise malformed/accessor requests, request snapshot mutation, wrong modes/counters,
+active aggregate/controllers, failed seed with zero authority, second-marker rollback, injected
+resume/termination failure, throws after actual session creation, valid retries, both-role/wrong-Child
+postconditions, real session denial after rollback/sign-out, invalidation, reentry and stale context,
+family replacement/missing records, sibling isolation, retained profile wording and no forbidden
+approval/permission/reset calls. A pre-existing Parent-granted voice permission survives a failed
+initialized entry and retry; entry creates none. Test progress preservation uses an independent
+sentinel, **not** a substitute for A's full-store48→60/+12/help/duplicate progression tests.
+
+No heavy suite, preview, native build or device command ran for N05. A owns next integrated checks.
+Source review is AI review; student exact-diff understanding/acceptance and human identity remain
+PENDING. No APK, native cold-start/process-death, physical Android, Arabic listening or rehearsal
+pass is claimed. The run is memory-only and full process restart discards it; recovery014 is deferred.
+
+### Actual supporting-AI prompts and contributions
+
+Lead input remains the full user Session B native-build/adapter prompt, preserved in canonical
+`native-batch/session-b-android-build.md`. Requested settings are Astra/Ultra/Fast; observable local
+config is Astra/xhigh/fast; effective root serving settings are unexposed. Helper launch explicitly
+requested Astra/ultra; Fast tier was not exposed. No model/identity/participation was fabricated.
+
+Actual worker `/root/demo_adapter_tests` initial prompt:
+
+```text
+Session B-N05 READY A057; you own ONLY /home/smyk/projects/Ghaf-demo-systems/tests/demo-entry-adapter.test.ts. You are not alone; preserve others' edits. NO descendants, coordination/report/module/store/registry/config/package writes or commits. B lead implements ONLY src/features/access/demoEntry.ts and records evidence. Current B HEAD713294634609853e0f4ddddbdb2f03d284985b72 after exact A057 sync; package.json has authorized transient android/ios prebuild fields, preserve. Native build stopped, no heavy/preview; focused single-worker tests allowed. Read committed specs/015-demo-entry-onboarding/{spec,plan}.md and contracts/demo-entry-v1.md; A057/A055 canonical STATUS-A read only, existing tests/demo-entry-transaction.test.ts and real controllers/service/local-memory-repository. Write behavior-first tests for exact adapter contract exports createCanonicalDemoFamily(now),createDemoEntryAdapter(deps); shared types from src/models/demoEntry.ts, dependency types expected exported from adapter. Lead module absent initially: run focused command once for valid initial RED and send result immediately before lead implementation. Exact immutable demo three principals; initial canonical house, Arabic role-only Parent no invented person, Salem سالم/Alya علياء fixed IDs and existing valid profiles. Cover malformed request/mode/generation/epoch/activeaggregate/activecontrollers/temporary/reentrant; failing seed no controllers; wrong initialized family rejects; second marker failure/authorization+termination failure/throw rollback with real A transaction wrappers and retry; invalidation/stale context during callback; sibling authority; same-run signout/reentry retains canonical/profile edits and independent progress sentinel/no new seed; no auto approval/permission APIs called. Narrow ports intentionally exclude reset/signin/permissions; don't import runtime test helpers into module. Compose real deterministic access.withDemoEntryTransaction→parent→child. Tests may use fault subclasses/spies to reproduce boundaries; assert actual authorize/projectSession views/maps not justflags. Avoid duplicating A wrapper46cases or store integration tests; exact+12 fulljourney remains A. Record commands/RED/GREEN distinctions, no fullsuite/typecheck pool/browser/native. Ask lead via collaboration for exact interface issues, not user. Once module appears run focused tests and owntest-only fixes; never alter expectations to bless prohibited behavior. Return reviewable tests and release path. Requested Astra/ultra explicit, tierunexposed.
+```
+
+Follow-up instructions coordinated the single focused runner, requested snapshot mutation coverage,
+reported the corrected snapshot edit, removed an unnecessary fixture cast, accepted the schema's
+contract-permitted invalid-time rejection and required final test-only lint/format/release. The helper
+generated only the test file; lead generated/reviewed the isolated module and this report. Rejected
+suggestions: narrow INVALID_INPUT-only oracle, using fixture progress as full-store evidence,
+editing A's hooks around the independent composition defect, or generating another app/provider.
+
+Actual final read-only review prompt:
+
+```text
+Final READ-ONLY review of lead module src/features/access/demoEntry.ts against accepted015 typed contract and your69cases. You are not alone; no file writes, tests, commands that run code, descendants, coordination or commits. Lead now owns released test and fixed scoped TypeScript generic vi.fn issue by a zero-argument observer inside the real generic transaction callback; final TS pending. Review bounded adapter for concrete contract violations/failure gaps independently; do not duplicate A-owned hook composition D-NATIVE-001 review (A059/D handling). Return concise findings or none and release. Lead appends report/checks in parallel; requested settings inherited from explicit Astra/ultra launch, tier unexposed.
+```
+
+Final independent helper source review found no concrete violation within the B adapter boundary;
+A/D wrapper composition review was explicitly excluded. Helper path/allocation released with no
+writes or test rerun. Lead reviewed exact exports/imports, behavioral assertions and final scoped
+check results. Adapter/test and this evidence slice are ready for A integration; source acceptance
+remains gated on A's integrated checks/correction and pending student review. B releases the module
+and test after the recorded commit; script/report/private build paths remain held for the next
+exact015 candidate. The local commit hash is published in canonical STATUS-B, which A alone stages.
