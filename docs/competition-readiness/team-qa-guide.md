@@ -61,3 +61,33 @@ the team's records; do not invent a complete historical log from filenames.
 Before submission or an allowed update, review the precise package with the team: required video,
 two-page description, GitHub accounts/access, honest AI report, and the qualified-team demo
 instructions. The orientation does not specify the AI-report length or whether it is an appendix.
+
+## Feature015 demo-entry teach-back — student review pending
+
+**Why can three profiles enter without a password?** This is a separate, explicitly selected
+synthetic demo build. The selector asks existing Parent/Child controllers to create the correct
+session; it does not change a role variable or authenticate a real person. Ordinary builds keep
+their verification/pairing flow. Do not describe demo access as production authentication.
+
+**What prevents Alya approving or completing Salem's task?** The controller and guarded commands
+bind authority to the selected role and Child. Entry creates no task. Salem's approved assignment
+is retained through handoffs, while Alya's commands cannot act on it. Parent approval, praise and
+recognition remain distinct steps; permitted help earns the accepted +12 once.
+
+**What happens if entry or reset fails?** Entry uses one synchronous transaction retaining private
+controller snapshots until all participants finish. Any failure rolls back all three authorities
+and permits retry. Existing reset is sequential; if it fails, the demo denies every entry and shows
+an instruction to fully restart. It does not claim atomic reset or recovery of partially cleared data.
+
+**What survives restarting the app?** Nothing from the demo run is restored. The four repositories
+use isolated memory; restart returns to the three-profile selector with a fresh synthetic fixture.
+Signing out within the running app preserves task progress. Independent phones do not synchronize.
+
+**Why are the new onboarding screens silent?** The old recordings do not match the revised text.
+Six replacement candidates are prepared for actual listening review; AI text review, MP3 metadata,
+mocked playback tests and human listening are separate kinds of evidence. No unheard recording has
+been accepted as a repaired Arabic narrator.
+
+Student action: review the actual Feature015 diff, explain one rollback and one sibling-isolation
+test, then demonstrate the same behavior on the exact APK. Names, answers and acceptance remain
+pending until those activities actually happen; this packet does not fabricate participation.

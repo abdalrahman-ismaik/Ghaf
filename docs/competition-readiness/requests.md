@@ -375,3 +375,20 @@ implemented. The new native-batch pack includes product refinement C-N02 alongsi
 one concrete before/after family-experience proposal, evaluated against the user's ideas and
 existing evidence/templates. This does not approve new runtime behavior or reverse recovery deferral.
 A activation must precede future B/C/D execution; writing prompts does not start those sessions.
+
+## NB1 SDK acceptance — 2026-09-12
+
+A asked whether the user accepts Google's SDK terms and local command-line tools19.0, Android36,
+BuildTools36.0.0, NDK27.1.12297006, CMake3.30.5 and platform-tools37.0.1. Actual answer:
+
+> I accept the SDK terms and authorize these local tools
+
+A045 grants only the reviewed isolated package set. The separate preview-pause decision remains
+pending; no native compile permission is inferred from this SDK answer.
+
+Actual answer to the separate terminal-preview handoff request:
+
+> Yes, pause it for builds and restart afterward
+
+A verified/stopped only the named Expo node process; native resource condition is released.
+Restart in the new demo mode remains A's authorized follow-up after the build lane releases.

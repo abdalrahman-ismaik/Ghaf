@@ -1,5 +1,53 @@
 # Session A — integration contract and executed evidence
 
+## NB1 selected demo integration — current checkpoint
+
+The historical sections below preserve earlier evidence. Recovery014 was explicitly deferred by the
+user until native validation and remains unimplemented; a successful native result will not accept it.
+The selected Feature015 contract293d351/d927f61 authorizes exactly one Parent/two Child synthetic
+profiles, separate in-memory demo repositories, optional three-moment onboarding and narration repair.
+It does not authorize the separately proposed reciprocal family-support feature.
+
+- B adapter2fe4b09→5632005:69 focused real-controller adapter tests passed; no progression authority
+  inside adapter. A foundations31f1833/9731935 isolate all four repositories and static build mode.
+- A store1bdad93: explicit profile entry, current-run handoff, no ordinary credentials in demo,
+  reset-start invalidation and failed-reset restart latch.17 store tests pass, including the real
+  Parent approval→Salem permitted-help completion→Parent praise→+12 once journey; Alya excluded.
+- A routes3f194bc: new profile/story entry, access-route guard, safe settings handoff, zero artificial
+  demo splash holds and silent signed-out ambience;19 route/callback cases pass. These use React
+  rendering/real store commands with host/router mocks, not Android navigation. Ordinary39 access/
+  temporary-parent tests pass. Scoped integration ESLint and formatting pass.
+- Valid new defect: a delayed prepared Child Coach response survived sign-out/reentry of the same
+  Child/task. The regression failed with an accepted stale result; the demo entry-epoch check now
+  rejects it. Initial unsafe test wording, invalid regex and unmocked native import were harness
+  failures and are not reported as product defects. Logs: output/native-integration/015/.
+- D composite rollback regression fec750e:3 controls pass/5 injected reentry cases fail on263bc88.
+  A helper owns the bounded shared-scope correction under committed d927f61; independent retest
+  and complete015 suite are still pending at this checkpoint. No whole-candidate pass implied.
+- C's reviewed text1364d6a is applied; six candidate narration MP3s/reportbe4c3b2 are available under
+  C output/native-ui/narration-candidates. AI editorial review was explicitly delegated by the user.
+  Actual user listening, asset-rights and native playback remain pending; new screens stay silent.
+- B's e02d02b baseline native attempt stopped75 on paging after prebuild/Gradle setup; no merged
+  manifest/APK exists. Lower-memory budgets and generated Metro1worker are granted for the next
+  exact015 demo candidate. User-approved preview pause was performed; restart is still owed.
+- Student exact-diff acceptance/teach-back, real phone models/OS, native checks and0/10 rehearsals
+  remain pending. No real family data, production authentication, live AI, recovery or sync claim.
+
+### Integrated source verification at2ecea74
+
+A helper correction2ecea74 restores all participants when any nested entry fails;145 focused cases
+pass, including D's unchanged8 tests. D's separate retest remains pending. Full integrated checks
+ran02:01:52–02:03:00UTC: typecheck, lint, format and147files/1914tests PASS. Exact command/PIDs/exit
+receipt and logs: output/native-integration/015/full-2ecea74/. Current78975ca differs only in the
+build script/report, not app runtime; no repeated app suite was warranted for that tooling commit.
+B's new script passed its10synthetic cases/two12step preflights; A inspected diff and syntax/help.
+
+A restored Expo in demo mode atlocalhost8081, PID441606, exec44936, private cache and all8R002b/
+3liveAIflagsfalse; dotenv disabled. CI pins source during review. Optional desktop RN DevTools
+fails to load hostlibnss3, while Metro remains available; this is not an app/native acceptance
+failure. C receives one browser lane for actual visual checks; B must await explicit preview
+release before native-heavy build. APK/device/rehearsal/listening/student gates remain unchanged.
+
 ## Run and authority
 
 Instance `A-20260911T2220Z-root`; source baseline `02b9618631fa9fc1b29f2cda5fa68c6adb2003fd`,

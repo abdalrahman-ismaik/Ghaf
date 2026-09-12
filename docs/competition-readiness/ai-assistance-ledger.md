@@ -339,3 +339,97 @@ Read-only final consistency review, no writes/jobs/tests/descendants. A revised 
 The helper released with three actionable ambiguities. A corrected ordinary/demo restart distinction,
 C-N01-only scope wording, and B's entry-contract path. No new behavior was self-approved by this
 review. A alone staged its coordination records; other stopped leads' statuses stayed untouched.
+
+## NB1 actual implementation work — 2026-09-12 (in progress)
+
+The user launched the native-batch Session A prompt and explicitly selected three synthetic no-auth
+profiles, short attractive onboarding and Arabic narration repair. The user accepted the named Google
+SDK tools/terms and authorized pausing Expo PID341101 for builds, then restarting it afterward in demo
+mode. Those are actual permissions, not inferred student review. Exact grants/ACKs and revisions are
+retained in canonical coordination/STATUS-A.md and worker statuses; the native-batch prompts are now
+used task instructions, not evidence that an unstarted session ran. Actual active NB1 instances are
+recorded on BOARD. Runtime settings remain observed config Astra/xhigh/fast; served Ultra/tier unknown.
+
+A generated Feature015 stories/plan/tasks/types/storage and integration drafts. D's three technical
+findings were accepted before contract293d351: chosen-role postconditions, a separate entry epoch, and
+an honest terminal restart state after partial reset failure. This is not recovery014. A-I001 plan
+alignment and actual settings-path correction were applied. Human/native/Arabic listening acceptance
+remain pending. No participant name or approval was invented.
+
+Completed A source slices:31f1833 immutable build mode/shared types (7 focused mode checks),9731935
+isolated memory repositories (19 focused repository checks). A helper263bc88 adds narrow rollback
+hooks and46 new fault cases;104 focused existing/new access checks pass. D reviewed foundation
+storage/startup contracts independently with no actionable source finding. C931a186/779717b integrate
+as802a4a5/9b8431b: three-profile selector and optional story,29 rendered/callback checks, no native
+claim or generated audio. The root store/navigation/copy integration is in progress and is not yet
+an accepted functional candidate. Full checks will be recorded against its exact eventual commit.
+
+B installed only the approved private dependencies/toolchain. Baseline native attempt reached Expo
+prebuild, Gradle configuration and bundled-JS dependency, then stopped at its paging threshold; no
+APK/merged-manifest pass exists. B owns repeatable script and failure evidence; D owns a read-only
+collector with46 synthetic host cases, not actual physical-device results. See their workstream
+reports for exact prompt copies, hashes, tool receipts and failures. A script reviewer identified the
+missing JDK bin/PATH instruction, accepted and fixed by D6214078. The process-descendant correction
+is B7d9a850 integrateda0af5c0; no unrelated process was selected for termination.
+
+Rejected shortcuts: direct role mutation/credentials to enter demo; shared ordinary storage; seeding
+on each handoff; cleanup-as-rollback; reuse of mismatched six legacy clips; a new Parent name; native
+claims from web/SSR; forty-helper expansion; a repeated baseline build solely for documentation.
+Narration bodies are C's exact Arabic/English candidate script; extra entry/error/restart labels are
+A-generated MSA/English copy requiring human review. No new clips, provider/account or asset license
+claim was produced. The reciprocal support-request story remains a proposal, not selected code.
+
+A helper actual T005 instruction (same conversation, task_product_trace): implement only the four
+existing access/interface/controller files plus tests/demo-entry-transaction.test.ts against293d351;
+by-value direct rollback on failure/throw/malformed/thenable, same-instance reentry with abort,
+no permission/voice reset, one-worker fault tests, scoped checks and exact-file commit/release.
+Generated output263bc88 was inspected and accepted as an integration slice, not student acceptance.
+The subsequent test-only instruction assigns tests/demo-entry-routes.test.tsx with real controller
+commands/rendered route callbacks, failed navigation/entry and ordinary/role/reset guards; adapter
+absence is an honest test dependency, never an excuse to stub away authority. No descendants were
+permitted. Full exact helper prompt text remains in this session's actual tool-call transcript; this
+paragraph is an explicitly labeled summary, not a fabricated verbatim quote.
+
+## NB1 Feature015 integrated access and presentation
+
+Actual user request: "I want the app to come with a 3 main demo accounts that doesnt require
+authentication, 1 parent account and 2 child accounts"; the same request selected attractive
+onboarding and Arabic narration repair. Full accepted Session A mission is in native-batch/session-a-native-integration.md
+and this conversation; exact contract293d351 plus d927f61 governs these bounded contributions.
+
+Generated: B adapter2fe4b09→5632005, A store1bdad93, A routes/resources3f194bc, C components802a4a5,
+C AI-reviewed copy1364d6a and candidate-only narration reportbe4c3b2. Exact files/command evidence
+are recorded in workstreams/a-contract.md and each worker report. Root prepared17 real-store tests;
+helper prepared19 route/callback tests, lead repaired two test harness issues without weakening
+assertions. Root added the demo epoch guard after reproducing a delayed Coach response on same-Child
+reentry.39 ordinary access regressions pass. Full015/native acceptance remains pending here.
+
+Rejected: direct store role selection, universal credentials, persistent authority, reseeding at
+handoff, duplicating Salem's task for Alya, calling a test setup failure a product defect, reusing
+old narration under new copy, claiming AI editorial review was human listening. No contribution or
+student comprehension inferred from Git identity; exact diff review and teach-back PENDING.
+
+Exact helper follow-up prompt, A061:
+
+```text
+A061 / board30 grants bounded D-NATIVE-001 correction in canonical /home/smyk/projects/Ghaf. Contract d927f61 now committed; read authority transaction section. Others editing; preserve all work. You exclusively own src/features/access/index.ts, childAccess.ts, parentOnboarding/controller.ts, new demoEntryTransaction.ts and tests/demo-entry-transaction.test.ts. DO NOT edit store/routes/interface/independent D test or coordination. One helper, no descendants. All three nested wrappers must share synchronous transaction scope: retain each private rollback callback until outermost exit; any failure/throw/malformed/thenable/reentry aborts whole composite even when swallowed, including failure after inner success. Restore all private snapshots directly in reverse order; finally release control for same-run retry. No snapshot exposure, ordinary authority/persistence change. D test in QA tests/demo-entry-independent-acceptance.test.ts reproduces 5 fail/3 pass with existing wrappers; read it without edits. Lead integrating B adapter5632005 and store tests in parallel. Implement minimal understandable internal coordinator (or equivalent robust mechanism), extend existing transaction tests for all-three and outer-after-inner failure, run focused single-worker transaction+adapter tests, lint/format exact paths. D independently owns next retest. Inspect diff, cohesive local commit ONLY owned source/test when green, explicitly release paths/allocation; record exact command/results and actual prompt for A ledger. No fullsuite/build/browser.
+```
+
+Follow-up: D test integratedfec750e, preserve all assertions; lead alone fixes store/route scope.
+Git-index pause coordinated for two lead commits, then explicitly released to helper. Helper outcome
+and independent retest will be recorded against their actual completed commits; no preclaimed pass.
+
+A061 outcome: helper2ecea74 shared synchronous rollback correction,145focused tests PASS including
+D unchanged8/8 and22new composite cases. A reviewed source and ran full integrated typecheck/lint/
+format/147files1914tests PASS on2ecea74. Limitations: reviewed callbacks may not schedule async
+side effects; private rollback closures must remain infallible direct restoration. Native and
+independent D retest remain separate. No student acceptance inferred.
+
+Exact A read-only helper prompt after integration:
+
+```text
+A sole helper quota reassigned to a bounded READ-ONLY final integration review while lead handles preview/native handoff. Canonical runtime2ecea74, focus ONLY A store changes1bdad93 in src/state/usePrototypeStore.ts and tests/demo-entry-store.test.ts, plus existing authority helpers they call. Others editing; preserve their work. No writes/tests/build/browser/descendants/coordination. D already reviews wrapper/adapter; do not duplicate that work. Inspect whether demo failed-reset latch actually denies all product commands, handoff clears Child-private async/media state, old same-Child async responses are invalidated, and ordinary behavior remains unchanged. Report only concrete reproducible code paths and minimal correction/test, distinguish source inference from execution. Don't demand extra architecture or audit unrelated legacy features; current live AI/R002bflags off. A handles exact preview/source receipts independently. Explicitly release allocation after concise findings.
+```
+
+Generated review is in flight, no result preclaimed. Full source assertions/physical evidence remain
+attributed to their actual scope; prepared narration candidates are not accepted runtime audio.

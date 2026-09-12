@@ -4,16 +4,17 @@ The target is **one complete 2–3 minute journey on the primary Android phone**
 Android independently verifies installation, touch, responsive layout, persistence and reliability.
 The two installations have separate local state. Live synchronization is deferred.
 
-This is the current-feature operator and acceptance script, not completed rehearsal evidence.
-Runtime target: `7fff0f3c2dc0e802ba1da6a67cd2513a75824809`; later documentation commits do not
-change that source. Full checks pass (138 files / 1,677 tests); D's three successive root-reset browser sequences pass. Source-verified
-b862eb6 core journeys and b2208aa access traces are separate evidence. The b2208aa dismissal guard
-failed the real reset race; no prior passing suite closes that defect. Initial mixed-worktree
-preview captures are excluded from candidate evidence.
-The current build supports the canonical task/help/Parent-confirmation/growth flow locally, but
-progress restoration, a durable private memory leaf/timeline and generalized recommendation
-presentation remain gaps. See [current candidate QA](workstreams/d-candidate.md);
-[initial QA](qa-report.md) retains its historical source attribution. Do not narrate proposed features as built.
+This is an operator script, not completed rehearsal evidence. Feature015 adds a build-selected
+three-profile demo selector and optional silent, three-moment onboarding. Source integration and
+acceptance are in progress; publish the exact validated commit/APK before rehearsal. Earlier
+7fff0f3 browser reset evidence and e02d02b full checks remain historical and do not pass015/native.
+
+One Parent and two Child synthetic profiles (Salem and Alya) are available without credentials
+in the demo build. Enter Parent, explicitly sign out to the selector, enter Salem, then return to
+Parent through the same selector. This retains the approved task within the running app. Alya
+has a separate Child profile; the Salem task is not duplicated for her. Restart begins a fresh
+run. Ordinary builds retain their existing verification/pairing flow. A saved memory timeline,
+generalized live Connection Coach and progress recovery remain unimplemented/deferred.
 
 The supplied [orientation](../SMAC%202026/SMAC2026_Orientation_Day.pdf), page 12, specifies a
 2–3 minute submission video and September 16 for qualified teams' on-campus demonstration.
@@ -45,8 +46,8 @@ synthetic family only. Keep the prepared assets local and all independent releas
 approved settings. Do not enable a blocked experience for its appearance alone.
 
 Before rehearsal, prove the app launches without Metro and without internet. Reset to the signed-out
-Arabic-first state. Use existing separate Parent and Child access for the local handoffs; there is
-no in-app role toggle. Measure the actual time those transitions take. If the complete flow cannot
+Arabic-first state. Use the explicit demo profile selector for local handoffs. Selecting a profile enters its
+controller-owned synthetic session; changing a role field is not the entry mechanism. Measure the actual time those transitions take. If the complete flow cannot
 fit, shorten narration and prepare approved fixtures before presentation; do not bypass role guards
 or quietly edit the recording into a claim of uninterrupted live execution.
 
@@ -57,21 +58,19 @@ QA device, not a staged live recipient of the primary phone's actions.
 
 ## 150-second main storyboard — current features only
 
-These are target timings, not measured runs. Prepare the synthetic family and approved Child
-pairing through normal UI before timing; record that preparation. Do not relabel a prepared start
-as a clean install or reload after preparing process-local progress. Keep all role verification
-visible. If access/setup exceeds the target, shorten narration or the prepared starting point
-honestly rather than bypassing a guard. A separate installation check covers a clean start.
+These are target timings, not measured runs. Begin on the signed-out selector of the exact demo
+APK. The optional three-moment story can be shown separately during Q&A; it never blocks profile
+entry. Do not claim a prepared action or edited recording is uninterrupted live execution.
 
-| Time      | Visible action                                                                                                         | Suggested explanation and exact boundary                                                                                                |
-| --------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 0:00–0:15 | Open the prepared Parent Home and show Ghaf                                                                            | “Small family agreements become shared growth.” Arabic-first identity, synthetic household                                              |
-| 0:15–0:40 | Open the existing prepared Parent Guide, review the recycling action and assign                                        | “This prepared example makes a task clearer. The Parent decides.” Explain only actual task/category/profile inputs; no live-model claim |
-| 0:40–1:00 | Sign out of Parent access, enter Salem through existing paired access, choose/start the approved task and ask for help | “Help is part of success; the accepted award stays +12.” No role toggle or device sync                                                  |
-| 1:00–1:15 | Demonstrate the safe action with prepared clean plastic items; submit completion with help                             | “The task waits for Parent review.” Seeds remain 48; no real media capture required                                                     |
-| 1:15–1:45 | Choose Parent access, verify, review completion, present action-specific praise and recognize once                     | “Human recognition comes first.” Show the actual praise/recognition order; no Child self-approval                                       |
-| 1:45–2:10 | Show Seeds 48→60 and Mangrove 48/60→60/60, then the private cooperative family view if time permits                    | “The garden represents the confirmed action.” Symbolic growth, no planted-tree/carbon claim                                             |
-| 2:10–2:30 | Close on shared routines, Child choice and UAE family identity                                                         | “Ghaf helps families agree, help and recognize each other.” No unbuilt memory, maps, agenda, money app or chat                          |
+| Time      | Visible action                                                                                                    | Suggested explanation and exact boundary                                                                                                |
+| --------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 0:00–0:15 | Choose the Parent demo profile, open Home and show Ghaf                                                           | “Small family agreements become shared growth.” Arabic-first identity, synthetic household                                              |
+| 0:15–0:40 | Open the existing prepared Parent Guide, review the recycling action and assign                                   | “This prepared example makes a task clearer. The Parent decides.” Explain only actual task/category/profile inputs; no live-model claim |
+| 0:40–1:00 | Sign out of Parent access, select Salem on the demo entry screen, choose/start the approved task and ask for help | “Help is part of success; the accepted award stays +12.” No role toggle or device sync                                                  |
+| 1:00–1:15 | Demonstrate the safe action with prepared clean plastic items; submit completion with help                        | “The task waits for Parent review.” Seeds remain 48; no real media capture required                                                     |
+| 1:15–1:45 | Return to the selector, choose Parent, review completion, present action-specific praise and recognize once       | “Human recognition comes first.” Show the actual praise/recognition order; no Child self-approval                                       |
+| 1:45–2:10 | Show Seeds 48→60 and Mangrove 48/60→60/60, then the private cooperative family view if time permits               | “The garden represents the confirmed action.” Symbolic growth, no planted-tree/carbon claim                                             |
+| 2:10–2:30 | Close on shared routines, Child choice and UAE family identity                                                    | “Ghaf helps families agree, help and recognize each other.” No unbuilt memory, maps, agenda, money app or chat                          |
 
 The UAE's official [Year of Family page](https://u.ae/en/Year-of-family/Family-year-2026) links the
 2026 theme to family bonds, shared identity and family stability. Explain alignment without
@@ -79,12 +78,10 @@ claiming government affiliation or demonstrated wellbeing outcomes.
 
 The optional duplicate-confirmation, cancellation and reset probes belong in Q&A/rehearsal after
 the main timed story. Use the [runbook](../../DEMO_RUNBOOK.md) for existing route-specific access
-instructions. A-004 now routes a valid temporary Child-to-Parent handoff directly to the existing
-Parent sign-in even with fresh introduction state; it does not authenticate the Parent. Parent
-logout returns to the eligible remembered Child through the existing flow. D verified the actual
-remembered-Child reload, handoff, cancellation and invalid/valid verification on b2208aa; Android
-Back/restart remains an independent gate. The root-reset correction passed separate Settings/statusbar/root-only browser sequences on7fff0f3;
-that evidence does not pass Android navigation.
+instructions for ordinary mode. Demo entry uses the selected015 doorway instead. Parent sign-out
+and the Child's Parent-access action return to the selector without reseeding current-run progress.
+A failed reset displays a restart-required state and denies profile entry until the app fully
+restarts. Actual native Back, reset and startup behavior must be tested on the exact demo APK.
 
 No durable memory or generalized recommendation surface is selected. Proposed recovery 014 is
 separate and unaccepted; the script must not promise progress survives process restart. If the

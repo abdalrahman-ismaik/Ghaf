@@ -1,12 +1,38 @@
 # Installable Android build and rehearsal
 
-**Status: documented path; APK build and physical acceptance NOT RUN.** This checkout has Expo
-SDK 57, React Native 0.86, a provisional Android package `ae.ac.ku.ghaf.prototype`, bundled fonts,
-and native plugins in `app.config.ts`. It has no committed `eas.json` or verified APK/AAB. The
-inspection environment has `adb`, but no connected device, Java, `sdkmanager`, configured
-`ANDROID_HOME`, `ANDROID_SDK_ROOT` or `JAVA_HOME`. An Android JavaScript export is not an APK.
+**NB1 status, September12: local toolchain installed; first manifest build stopped on the
+resource guard, with no APK or native acceptance yet.** B's private build worktree is
+`/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
+pausing Expo for native builds. A stopped the prior preview and owes its restart in demo mode.
 
-## Session A prerequisite evidence — September 12, 2026
+The installed private tools include Temurin17.0.20.1+1, Gradle9.3.1, command-line tools19.0,
+Android36r2, BuildTools36.0.0, NDK27.1.12297006, CMake3.30.5 and platform-tools37.0.1. Publisher
+and computed hashes, commands and installation receipts are in B's ignored `output/native-toolchain/`
+and [B's build report](workstreams/b-native-build.md). No app dependency/lockfile change was made.
+Earlier absent-tool observations below are historical baseline evidence.
+
+The first e02d02b manifest attempt (`20260912T013553Z-manifest.wje3YH`) completed prebuild and
+Gradle configuration but stopped with exit75 on sustained paging while the manifest task's JS
+bundle dependency ran. It produced no merged manifest or APK. Its owned processes ended. The
+next attempt targets the integrated Feature015 demo candidate, not another baseline build.
+
+Use the repository's reviewed `scripts/native/build-apk.sh` invocation from B's report, with
+exact source/build identity, `EXPO_PUBLIC_GHAF_DEMO_ENTRY=true`, one Gradle worker,1536MiB Gradle
+heap/512MiB metaspace,1024MiB Node heap, one CMake job and generated-only Metro `--max-workers 1`.
+Record the one-line generated Gradle adjustment. A must review the actual merged permission set
+before full APK compilation; do not guess it. The existing template debug signing identity is
+approved only for the labeled internal standalone rehearsal artifact. No new/public signing or
+cloud upload is selected. Put the approved JDK `bin/` on PATH for both Gradle and `apksigner`.
+Native builds and the resident Expo/browser preview remain mutually exclusive.
+
+The demo's three synthetic profiles require no credentials and keep current-run task progress
+across explicit sign-out/profile entry. All local repositories use separate memory storage.
+A process restart begins a fresh signed-out run; it does not restore task progress or authority.
+Ordinary builds retain their verification/pairing flow. Neither configuration is production login.
+Actual APK identity, installation, device models/OS, Android RTL/Back/audio and rehearsals remain
+NOT RUN/BLOCKED until their exact evidence is supplied.
+
+## Historical Session A prerequisite audit — September 12, 2026
 
 Read-only audit at `02b9618` found Node 24.16.0, npm 11.13.0, Expo 57.0.20, its nested CLI
 57.0.22 and bundled bare-minimum template 57.0.22, with React Native 0.86.3. The installed
