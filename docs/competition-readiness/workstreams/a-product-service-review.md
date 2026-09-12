@@ -138,3 +138,20 @@ the extra instruction paragraph and student exact-diff acceptance remain NOT RUN
 
 This is the only runtime change in this review/prompt batch. Demo profiles, new onboarding and
 replacement narration are specified in the selected work brief, not implemented here.
+
+## Subsequent selected implementation — Feature015
+
+The earlier report's “only runtime change” statement describes its P01 batch. The subsequently
+selected Feature015 is now integrated at5d8a3e8: immediate Parent/Salem/Alya synthetic entry,
+controller-owned role separation, isolated demo repositories and short bilingual onboarding.
+The prepared Parent Guide remains prepared/local; no live generalized Coach or reciprocal-support
+feature has been added. Current-run handoff preserves tasks, while process restart starts fresh.
+
+All four final checks pass,148files/1,919tests. C's integrated browser evidence covers the selector,
+three moments and corrected approval handoff; physical Android validation remains pending.
+Arabic candidate narration was actually rejected and remains outside the runtime. Two alternative
+voice auditions await user selection; the complete new onboarding currently works silently.
+
+The strongest proposed product addition remains reciprocal Parent support within an approved task.
+It is unselected and absent from the presentation. Research does not establish that this prototype
+improves cognition or family wellbeing. Student review and explanation remain pending.

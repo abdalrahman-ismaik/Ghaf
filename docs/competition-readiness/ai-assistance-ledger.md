@@ -505,3 +505,22 @@ Manifest helper returned the exact two-phase interface: reviewed merged manifest
 unique permission-name JSON array, separate full-build run, same source/mode and fresh heavy grant.
 The script checks permission names; A must additionally bind manifest hash and inspect full
 permission attributes. Read-only helper released, no code or executed build contribution.
+
+## Final source freeze and actual navigation-helper prompt
+
+A removed the ineffective web-only property in5d8a3e8. Final source
+5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051 passes all four checks,148files/1,919tests; receipt
+output/native-integration/015/full-5d8a3e8/. C219a6f4→0be2030 records actual heading and approval
+handoff passes, eight label states and the isolated glyph reference. D reviews that last inference
+independently; no native glyph/font pass is inferred. The three-profile/silent onboarding candidate
+is now frozen for B's A083 manifest phase. No APK completion has been claimed.
+
+Exact A074 helper instruction, recovered verbatim from the helper's retained context:
+
+```text
+A074 grants exact existing-demo navigation repair in canonical Ghaf, source2ecea74/currentHEAD1d3972f. Others editing; preserve their work. You own ONLY app/parent/task/review.tsx and NEW tests/demo-task-handoff-route.test.tsx; no descendants or coordination writes. C actual browser Parent→canonicaltask→preparedGuide→accept→review→approve→successsheet 'openChild' reached selector but devtoast unhandled POP_TO_TOP (artifact output/playwright/176426/page-2026-09-12T02-12-07-331Z.yml). Source continueToChild calls signOutExperience then router.dismissAll after role unmount. Existing015freshroot contract/T020 committed1d3972f: in DEMO mode preflight existing prepareEntryReset(navigation) before mutating/signout, error if unavailable; after successful signout invoke resetRoot; no dismissAll/replace in that branch. Preserve ordinary path, approval/praise/authority/copy. Match existing settings route pattern, add useNavigationContainerRef/entryMode imports only asneeded. Drive meaningful actual route callbacks with real store approval/session (SSR host stubs acceptable; TaskCreatedSuccessSheet captures onSecondary and footer onApprove), success→single rootreset/noPOP, navigation unavailable→no signout, failedsignout→no reset, ordinary path regression. No directrole/state spoofing or runtime helper extracted merely fortests. Run focused test plus existingparent-task-flow singleworker, lint/format; inspectdiff and cohesive local commit exacttwofiles then release. No fullsuite/native/browser. Lead coordinates C headingfix, preview restart and nextAPK in parallel.
+```
+
+Generatedf16112d route correction and four tests; actual RED/GREEN evidence recorded above.
+The later helper reply only reproduced this prompt and released; no second implementation or
+student approval was invented. All contributions remain subject to student exact-diff review.

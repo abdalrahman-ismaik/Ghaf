@@ -30,11 +30,14 @@ B/C/D roles are actual separate leads, with one helper each and serialized heavy
 
 - [x] T010 C [P] [US3]: Implement exact src/components/demo/{DemoEntryScreen,DemoOnboardingStory}.tsx and types.ts from contract; import A's published shared principal type, no router/store/services. Test actions/three-profile enforcement/three moments/restart-required state in tests/demo-entry-presentation.test.tsx.
 - [x] T011 A [US3]: Add equivalent reviewed-candidate copy from released C report to src/i18n/resources.ts and wire route props; record user-delegated AI editorial review distinctly from pending user listening; never invent a human name or approval. Cover resource parity and no legacy narration in tests/demo-entry-routes.test.tsx.
-- [ ] T012 C/D [US3]: After granted preview/native resources, inspect actual AR/EN narrow/large-text/reduced-motion/missing-media states and record exact source/device evidence in their own workstream reports. No source-only native pass.
+- [ ] T012 C/D [US3]: After granted preview/native resources, inspect actual AR/EN narrow/large-text/reduced-motion/missing-media states and record exact source/device evidence in their own workstream reports. C browser scope passed atf16112d (report219a6f4): four entry,12 normal/12 CSS story rows,
+      focus/fallback, corrected headings/handoff and eight label rows. Native remains NOT RUN;
+      no source-only native pass.
 
 ## Phase 4 — US4: Arabic narration
 
-- [x] T013 C [US4]: Prepare exact three-body Arabic/English script, proposed voice method/settings/rights and reviewer packet in docs/competition-readiness/workstreams/c-product-refinement.md; retain rejected takes and actual review status. Six candidate clips generated under A060; user listening and runtime import remain pending.
+- [x] T013 C [US4]: Prepare exact three-body Arabic/English script, proposed voice method/settings/rights and reviewer packet in docs/competition-readiness/workstreams/c-product-refinement.md; retain rejected takes and actual review status. Six candidates generated under A060; user rejected all three Arabic Fatima-v1 takes.
+      Two Hamed/Salma first-moment auditions now await selection; English unreviewed, runtime import pending.
 - [ ] T014 C/A [US4]: Only after matching reviewed candidate and exact asset/lifecycle grant, implement packaged opt-in play/stop/replay with transcript parity, cancellation and screen-reader priority; exact paths must be added to this task and BOARD before writes. Otherwise complete silent visual flow and mark audio BLOCKED.
 - [ ] T015 D [US4]: Record actual Arabic editorial, user listening and device review and lifecycle evidence in docs/competition-readiness/workstreams/d-native-acceptance.md; no metadata/test substitute.
 
