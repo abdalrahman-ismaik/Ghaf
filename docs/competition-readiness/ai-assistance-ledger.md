@@ -1061,3 +1061,40 @@ from the new narration candidate. Full adequate-memory checks, mounted effects, 
 physical listening/interruption, public asset rights and student review remain pending. The earlier
 768 MiB TypeScript heap failure is retained. No human approval of the exact source diff or new
 control-label editorial review was invented. Recovery 014 and release flags remain deferred/off.
+
+## Poster deadline and visible home refinement — September 12
+
+The user changed the immediate priority to seeing polished app screens and submitting a poster.
+They supplied the finalist email: A1 portrait, PPT/PPTX, due 20:00 UAE on September 12. This provides
+qualification confirmation; it does not authorize submission or attendance-form actions. A assumed
+English poster text with the bilingual Ghaf name while asking for exact team names and language.
+
+A applied Impeccable, Expo design-system and Ghaf presentation guidance, preserving the existing
+botanical identity. A authored `6f15abb`: Parent Home now presents the existing canopy artwork at
+full width above a forest progress panel, and Child selection uses clearer names and selected state.
+A's one helper `poster_child_ui` authored the reviewed two-file slice committed as `4ef4add`:
+full-width stage-derived Child landscape and clearer task title, award, help/action and rationale
+hierarchy. The exact A195 prompt assigned those two files, preserved every existing prop/callback/
+text/testID and prohibited new business logic, tokens, dependencies, routes or source authority.
+It ran only scoped formatting/diff checks and explicitly released its files. A reviewed the diff.
+No student authorship or visual approval is implied; actual helper selection Astra/Ultra, Fast
+unexposed. Full prompt and returned contribution are retained in the session conversation.
+
+A ran three existing presentation/cross-slice files: 30 tests passed at 12:28:40–41 UTC, one worker,
+256 MiB, exit 0. Exact four source hashes, command/PID and log are in ignored
+`output/native-integration/015/poster-ui-checks/`. These checks do not establish rendered/native
+quality. C's separate entry/story refinement and real app captures remain in progress.
+
+The frozen baseline APK build stopped at its sustained-paging safeguard, exit 75, without an APK.
+B released all recorded jobs and preserved native/cache work. A restarted one canonical demo preview
+at localhost:8081, PID 203040, in `output/native-integration/015/poster-preview-jzrxs93g/`, with mock
+services and all eight R002b/three live-AI flags off. A deferred another build and the prepared
+mounted narration harness to secure actual screens and the poster first. Full integrated checks,
+native narration, physical rehearsal and exact student review remain pending.
+
+A198 then assigned the sole replacement helper `poster_powerpoint` only the ignored
+`output/poster-20260912/` directory: prepare an A1 portrait PowerPoint generator using existing
+branding and actual upcoming app screenshots, with editable text/shapes and no fabricated names,
+features or results. Isolated authoring tools there do not alter the app package or lockfile.
+D independently supplies the concise source-grounded caption/claim packet. No public upload or
+new clip generation is selected; narration clips are not embedded in the poster.
