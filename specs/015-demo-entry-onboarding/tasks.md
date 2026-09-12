@@ -97,6 +97,8 @@ stages live coordination after a brief status-write pause/ACK. No push/main merg
 
 ## Exact original restoration — latest user instruction
 
-- [ ] T025 A: Reuse original six-page/Welcome UI; retain safe demo callbacks and Child selection.
-- [ ] T026 A: Verify original source equality, real navigation/access and bilingual browser render.
-- [ ] T027 A: Final integrated checks and honest evidence; narration follows actual user answer.
+- [x] T025 A: Reuse original six-page/Welcome UI; retain safe demo callbacks and Child selection.
+- [x] T026 A: Verify original source equality, real navigation/access and bilingual browser render.
+- [x] T027 A: Final integrated checks and honest evidence; narration follows actual user answer.
+
+Exact restoration46e9b58: all4checksPASS,153files/2025tests. Browser original6AR/6EN and3accountsPASS. Native/studentacceptance pending; oldnarration remains off while optional userchoice is unanswered. Reference-led T022–T024 are superseded visual work, not user-accepted delivery.

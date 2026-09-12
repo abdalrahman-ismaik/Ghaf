@@ -1211,3 +1211,21 @@ an additional observed Expo web optimistic-play/loading teardown and preserved t
 media/browser receipts. The audio-output fix applied only to the test browser's inherited existing
 WSLg environment; no system setting, product mute flag or provider changed. Six actual screenshots
 and exact receipts are linked from the correction report. All helper/browser/check jobs released.
+
+## September 12 — user-selected six-page reference restoration
+
+The owner rejected the earlier visual correction and explicitly selected all six original topics.
+[The restoration report](workstreams/a-six-page-restoration.md) records the actual prompts,
+reference previews/patterns, generated source82c8647, helper boundaries, checks and pending reviews.
+Three approved Wiam recordings remain exact at steps2/4/5; silent pages are not new audio assets.
+No template code/assets/packages, ordinary-auth changes, recovery or release activation occurred.
+Earlier passing checks remain historical functional evidence, not acceptance of rejected design.
+
+## September 12 — exact original screens supersede the redesign
+
+User: “I want you to restore the onboarding screens and the main login screen exactly as they were”.
+[Exact restoration record](workstreams/a-original-entry-restoration.md) documents reused source,
+controlled demo callbacks, helper scopes, narration decision, real browser evidence and failed then
+corrected regression checks. The reference-led candidate is historical and rejected, not accepted
+student work. Original wording is restored; Wiam clips remain unused rather than mismatched.
+Student/native/human review is pending. No push/submission or release activation occurred.
