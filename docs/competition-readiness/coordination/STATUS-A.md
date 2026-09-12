@@ -4,35 +4,28 @@ Sole writer: A instance `A-20260911T2220Z-root`. Canonical live record.
 
 ## Current snapshot
 
-- UTC 2026-09-12T13:46:42Z; continuing A-20260911T2220Z-root, board73, integrated report HEAD4f4c7f3.
-- User selected English A1 portrait PPTX with bilingual Ghaf and exact owner team details. Final
-  PRINT: output/poster-20260912/final-reviewed/Ghaf-Team-SMAC-2026-A1-PRINT.pptx, SHA
-  bf0868597d91a8c2850a0c8d180999b3ed2b3093ead1ab62d2d1a2f67d3972ad. PNG/PDF/master/gallery ready.
-  Contacts remain only in ignored outputs. Actual requirement deadline20:00Dubai today.
-- PRINT exactly594x841mm, outlined vector letters/PNGfallback. Actual no-font PowerPoint render,
-  independent packaging and D083 visual/copy retest PASSED. Editable master requires bundledfonts;
-  its font portability remains unpassed. Both prior poster defects closed for PRINT only.
-- App runtime98be865; typecheck/lint/format/fullsuite PASS:150files/1979tests. Bilingual browser
-  Entry/Story/Parent/Child task, compact/CSSstress/focus/imagefallback evidence retained with limits.
-  C report70c0bdc integrated8e28544; D initialreportb99a656 integrated92a5a6e; D finalb9b0f8f integrated4f4c7f3.
-- C090 all source/report/captures/browser/helpers released;49originals include invalid/old states,
-  not49passes. A gallery contains13 validated final originals. No screenshot or store fabricated.
-- B native build stopped75 on paging guard; noAPK/cachepreserved/jobsreleased. No retry before
-  handoff. Tablet lastUNAUTHORIZED; Android/listening/physicalprint/0of10rehearsals NOTRUN.
-  Recovery014 deferred,11flags off; publicaudio and student exactdiff/Q&A acceptance pending.
+- UTC 2026-09-12T16:18:00.548784+00:00; same A-20260911T2220Z-root, board75, runtime0da7237.
+- Owner rejected onboarding atlocalhost8081. Fresh launch now opens the existing3story moments;
+  fixed Next/Back and Choose profile action lead to clear Parent/Salem/Alya selector. Nonzero-epoch
+  handoff/reset keep direct profiles; no auth/store/authority/persistence change.
+- Arabic opt-in browser narration enabled with truthful unknown reader state. Native observation
+  remains required. Web startup now waits for positive media time to avoid optimistic-play teardown.
+- One fresh existingPlaywright Firefox with existingWSLgPulse recorded all3UNMUTED media clocks,
+  Stop/Replay/stepfinishcancel, silentEnglish/320width and actual3profile homes. Script/6images/receipt
+  at output/native-integration/015/onboarding-correction-browser. No audible human/native pass.
+- Final typecheck/lint/format/fullsuitePASS:151files/1995tests. Earliercad80c0 candidate151files/1993testsPASS;
+  web-start correction58focusedPASS and independent read-only helperreview no material finding.
+- Reports/AI ledger/spec tasks updated with actual initial browser/typecheck/media failures.
+  Final report: ../workstreams/a-onboarding-correction.md. Poster files remain frozen/unchanged.
+- Recovery014 deferred; all11flags off. NativeAPK/device/student/publicrights gates still pending.
 
-## Helpers and jobs
+## Helpers, jobs and recovery cursor
 
-A0helpers; packaginghelper final metadata PASS/released. All PowerPoint/font registrations and
-check/render jobs ended. Sole Metro225406/8081 remains for owner preview, root canonical, runtime
-98be865/privatecache/demo/mock; C browser207767 ended, no browserlane held. D report released and
-integrated; A-retainedADB15824 persists with no device job. B paused/private build inputs untouched.
-A219 pause ACK received from D085 only; stage BOARD/STATUS-A/STATUS-D, leaving live B/C untouched.
-After checkpoint D may resume status updates without a new task/resource grant. Completed A source,
-reports, poster outputs and helper allocations are released; retain only coordination writers,
-user preview and existing ADB. No submission/push/mainmerge/deployment. No poster dependency remains.
-Recovery cursor: exact PRINT and gallery above, handoff report at ../poster-handoff.md; native build
-requires a later exact-source/resource grant. Preserve user-added docs/SMAC 2026/ and B/C live records.
+All helpers and browser allocations released. Sole final fullcheck runner ended successfully; no native job.
+Canonical Metro366844/8081 watches current root normally, demo/mock/allflags off; old225406 ended.
+ExistingADB15824 retained without device actions. Final fullcheck receipt recorded; all correction files are ready for owner review. Only A BOARD/STATUS-A/master docs staged; B/C live records and user
+SMAC directory remain untouched. Completed source/QA paths released, no new worker task selected.
+No submission, push, main merge, deployment or public audio-rights/native acceptance.
 
 ## Initial activation record (historical)
 
@@ -992,3 +985,18 @@ hooks are skipped to preserve the user's managed AGENTS block; no mandatory hook
 
 
 221. **A-20260911T2220Z-221 → B/C/D — FINAL REPORT INTEGRATED / POSTER HANDOFF.** 2026-09-12T13:46:42Z. ACK D084/D085: reviewed exact b9b0f8f, cherry-picked as4f4c7f3, report-only/diff check0. Both corrected PRINT findings closed with original failures retained; no native/human promotion. D085 permits the final paused STATUS-D snapshot. B/C have no A219 pause ACK, so A does not stage or edit their live records. Checkpoint scope is BOARD/STATUS-A/STATUS-D only; D status updates may resume after that commit. All completed A source/report/poster/helper allocations released; retain coordination writer, user Metro225406/8081 and existing ADB15824. Preview status running at13:46:42Z. Final PRINTbf086859, gallery13 originals, runtime98be865/full checks1979 passed, noAPK/native/rehearsal/student acceptance. No next producer or poster dependency remains; future native work needs an exact candidate/resource grant. No submission/push/main merge or optional task activation. User docs/SMAC 2026 and B/C dirty records preserved.
+
+
+222. **A-20260911T2220Z-222 → B/C/D — USER ONBOARDING CORRECTION.** 2026-09-12T15:56:38.010390+00:00. ACK user rejection: investigate apparent one-screen onboarding, missing narrations and unclear role entry. Resume A on c1741cc; board74 reserves exact demo UI/hook/tests/015/resources/master docs, all prior C/D source explicitly released. One read-only helper for actual audio availability; A lead handles disjoint route/UI/preview. A sole browser lane plus existing Metro225406; no native/rebuild/provider/new dependency/flags. Poster delivery unchanged. Commit smallest exact correction contract before behavioral edits. B/C statuses untouched; c1741cc completed D085 paused snapshot, D may resume status writing with no new task.
+
+
+223. **A-20260911T2220Z-223 → B/C/D — COMMITTED CORRECTION / AUDIO HELPER GRANT.** 2026-09-12T15:59:52.475073+00:00. Contract5ab8571 precedes edits. Same one helper owns only useDemoOnboardingNarrator.ts plus optional pure demoNarrationPolicy.ts/tests/demo-narration-policy.test.ts; preserves native fail-closed state, explicit browser-only start, no guessed screen-reader value. A edits Entry/Story/types/resources/presentation tests and actual browser flow. Existing reset epoch increments (not zero), so explicit Parent reset continues direct profile entry; only fresh process starts Story. No new store field. Native/public/student gates pending; no poster-byte changes.
+
+
+224. **A-20260911T2220Z-224 → B/C/D — CORRECTION CHECKPOINT.** 2026-09-12T16:04:39.752870+00:00. User confirms localhost8081. Reproduced old selector-first and hidden Story; old hook blanket-denied web. Contract5ab8571 plus reset clarification6bfea81 committed. One helper audio policy released; A found/corrected a test-local TypeScript literal narrowing error, corrected typecheck0. Fresh-entry rendered regression RED2 then GREEN46 focused tests; helper12 policy/controller tests PASS. Lint/format0; one full suite active, no browser/native. Old225406 preview was CI-frozen/no file watching, stopped verified own group for exact refresh. A will restart one8081 preview after checks with fresh cache and ordinary watch enabled; no environment/provider secrets. Reuse one helper for read-only UI lifecycle/heading/footer review while A writes own docs/competition-readiness/workstreams/a-onboarding-correction.md and masterledger (exact paths reserved). Prior poster bytes/runtime evidence remain unchanged.
+
+
+225. **A-20260911T2220Z-225 → B/C/D — REAL BROWSER CORRECTION VERIFIED.** 2026-09-12T16:17:11.016717+00:00. Source0da7237 after97556cf/cad80c0. ActualSDK optimistic play/zero-time loadeddata reproduced immediate retirement; require web currentTime>0, unchangednative. Pure58PASS/helperreviewreleased. MCP Firefox omitted existing Pulse environment and failedOnMediaSinkAudioError; exact owned browser closed, one standalone existingPlaywright Firefox inheritedexistingWSLgPulse, actualunmuted3clocks>0.5s/volume1/Stop/Replay/stepfinishcancel/English/320width/3profilehomesPASS, receipt and6images in output/native-integration/015/onboarding-correction-browser. Allbrowser/helper allocations released. A reserves poster-handoff.md solely dated pointer to later correction, never edits original PPTX/images. One final fullcheck pool active after meaningful audiofix, no browser/native, existing Metro366844idleandretained foruser. A219/Dpausealreadyended; B/Cstatusfiles remainuntouched. Human/native/publicrights unclaimed.
+
+
+226. **A-20260911T2220Z-226 → B/C/D — CORRECTION COMPLETE / RELEASE.** 2026-09-12T16:18:41.129500+00:00. Exact0da7237 all4checks0/151files1995tests. Browserreceipt actualunmuted3clips/StopReplay/stepfinishcancel/English/320/3profilesPASS; native/human/publicrights pending. Helpers0/browser0/checkjobs0. Retain userMetro366844/8081 and existingADB only; allcompletedsource/report/QAallocations released. A-only BOARD/STATUS-A/masterevidencecheckpoint; nootherleadstatusstagedorpaused. B/Cdirtylivefiles and userSMAC originals preserved. User reloadsroot tosee3pageonboarding, ArabicListen and Chooseprofile. Posterartifactbytesunchanged, no push/submission/native retry.

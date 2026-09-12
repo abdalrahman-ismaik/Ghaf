@@ -3,7 +3,28 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
-## Mission control — poster ready, native work preserved
+## Current user correction — visible onboarding and narration
+
+- Revision **75**, updated 2026-09-12T16:18:00.548784+00:00; continuing A-20260911T2220Z-root.
+- Runtime0da7237 integrates three fresh-entry story pages, fixed Next/Back, direct profile escape,
+  clearer Parent/Salem/Alya entry and explicit Arabic browser narration. Ordinary access unchanged.
+- Contract5ab8571/reset clarification6bfea81; source97556cf/cad80c0/0da7237. Human review pending.
+- Reproduced/corrected both blanket web denial and premature retirement from optimistic SDK play.
+  The separate MCP audio-output error was environmental; the final browser inherited existing
+  WSLg Pulse and recorded all3unmuted clocks, Stop/Replay/step/finish cancellation and3profile homes.
+  Final screenshots/receipt: output/native-integration/015/onboarding-correction-browser/.
+- Existing first candidate passed151files/1993tests. Final0da typecheck/lint/formatPASS, final full
+  suitePASS:151files/1995tests. Helper14policy +44controller tests pass; helpers0/browser0.
+- One existing canonical Metro366844/8081 remains, normal watching/demo/mock/all11flags off.
+  No native build, provider call, new dependency, new recording or public release selected.
+- Completed source/report/helper/browser paths RELEASED; A retains own coordination writer,
+  user preview and existingADB15824. B/C STATUS files untouched.
+  D085 status-write pause ended atc1741cc. No next worker producer or optional feature selected.
+- User's original poster/PPTX/gallery remain frozen to98be865 with unchanged hashes. Later app
+  correction is linked from poster-handoff.md; no external submission or push has occurred.
+- Recovery014 deferred. Native APK/device sound/focus, human review and public audio rights pending.
+
+## Historical poster handoff — native work preserved
 
 - Revision **73**, updated 2026-09-12T13:46:42Z; A-20260911T2220Z-root.
 - Required A1portrait PPT/PPTX due20:00Dubai September12. User confirmed English/bilingualGhaf,
