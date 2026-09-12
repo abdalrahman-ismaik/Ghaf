@@ -73,6 +73,7 @@ export interface DemoEntryScreenProps {
 export type DemoStoryStep = 0 | 1 | 2;
 
 export interface DemoOnboardingStoryProps {
+  readonly navigationPlacement?: 'inline' | 'footer';
   readonly narration?: DemoNarrationControls;
   readonly locale: LocaleCode;
   readonly direction: TextDirection;

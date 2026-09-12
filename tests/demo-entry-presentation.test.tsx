@@ -16,6 +16,7 @@ import type { DemoPrincipal } from '@/models/demoEntry';
 interface LeafProps {
   children?: ReactNode;
   header?: ReactNode;
+  footer?: ReactNode;
   label?: string;
   testID?: string;
   disabled?: boolean;
@@ -62,6 +63,7 @@ function renderLeaf(tag: 'div' | 'span' | 'button' | 'main', props: LeafProps) {
     },
     props.header,
     props.children ?? props.label,
+    props.footer,
   );
 }
 
@@ -251,7 +253,7 @@ function entryProps(
     direction: locale === 'ar' ? 'rtl' : 'ltr',
     copy: copyFor(locale),
     runGeneration: 0,
-    entryEpoch: 0,
+    entryEpoch: 1,
     busy: false,
     error: null,
     restartRequired: false,
@@ -323,7 +325,22 @@ beforeEach(() => {
 
 describe('demo entry rendered presentation and callbacks', () => {
   it.each(locales)(
-    'offers exactly the three profiles and supplied %s text immediately',
+    'opens the three-page introduction on a fresh %s run with immediate profile escape',
+    (locale) => {
+      const props = entryProps(locale, { entryEpoch: 0 });
+      const markup = renderEntry(props);
+      expectText(markup, props.copy.moments[0]!.title);
+      expectText(markup, props.copy.story.progressLabel(1, 3));
+      expect(profileControls()).toHaveLength(0);
+      expect(control('demo-story-close').onPress).toEqual(expect.any(Function));
+      expect(control('demo-story-next').onPress).toEqual(expect.any(Function));
+      expect(control('demo-story-back').onPress).toEqual(expect.any(Function));
+      expect(props.onChooseProfile).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(locales)(
+    'offers exactly the three profiles and supplied %s text immediately on handoff',
     (locale) => {
       const props = entryProps(locale);
       const markup = renderEntry(props);

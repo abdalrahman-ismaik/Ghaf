@@ -17,7 +17,7 @@ import { Button, QuietButton, Text } from '@/components/primitives';
 import { botanical, layout, logicalRowDirection } from '@/design/tokens';
 import type { DemoPrincipal } from '@/models/demoEntry';
 
-import { DemoOnboardingStory } from './DemoOnboardingStory';
+import { DemoOnboardingStory, DemoStoryNavigation } from './DemoOnboardingStory';
 import type { DemoEntryScreenProps, DemoProfileOption, DemoStoryStep } from './types';
 import { useDemoOnboardingNarrator } from './useDemoOnboardingNarrator';
 
@@ -53,7 +53,7 @@ export function DemoEntryScreen({
   onChooseProfile,
   onChangeLocale,
 }: DemoEntryScreenProps) {
-  const [storyStep, setStoryStep] = useState<DemoStoryStep | null>(null);
+  const [storyStep, setStoryStep] = useState<DemoStoryStep | null>(entryEpoch === 0 ? 0 : null);
   const { width, fontScale } = useWindowDimensions();
   const stackChildChoices = width < 360 || fontScale >= 1.3;
   const headingRef = useRef<View>(null);
@@ -124,10 +124,32 @@ export function DemoEntryScreen({
     </View>
   );
 
+  const closeStory = () => {
+    cancelNarration();
+    setStoryStep(null);
+  };
+  const changeStoryStep = (next: DemoStoryStep) => {
+    cancelNarration();
+    setStoryStep(next);
+  };
+
   return (
     <AccessScreen
       background="plain"
-      contentStyle={styles.content}
+      contentContainerStyle={showingStory ? styles.storyViewport : undefined}
+      contentStyle={showingStory ? styles.storyContent : styles.content}
+      footer={
+        showingStory ? (
+          <DemoStoryNavigation
+            copy={copy}
+            direction={direction}
+            locale={locale}
+            onClose={closeStory}
+            onStepChange={changeStoryStep}
+            step={storyStep}
+          />
+        ) : undefined
+      }
       header={header}
       key={showingStory ? `story-${storyStep}` : 'entry'}
       testID="demo-entry-screen"
@@ -138,14 +160,9 @@ export function DemoEntryScreen({
           direction={direction}
           locale={locale}
           narration={narration}
-          onClose={() => {
-            cancelNarration();
-            setStoryStep(null);
-          }}
-          onStepChange={(next) => {
-            cancelNarration();
-            setStoryStep(next);
-          }}
+          navigationPlacement="footer"
+          onClose={closeStory}
+          onStepChange={changeStoryStep}
           step={storyStep}
         />
       ) : (
@@ -398,6 +415,13 @@ const styles = StyleSheet.create({
   language: {
     flexShrink: 1,
     minHeight: layout.touchTarget,
+  },
+  storyViewport: {
+    paddingTop: botanical.space.small,
+    paddingBottom: botanical.space.row,
+  },
+  storyContent: {
+    gap: botanical.space.row,
   },
   content: {
     gap: botanical.space.row,

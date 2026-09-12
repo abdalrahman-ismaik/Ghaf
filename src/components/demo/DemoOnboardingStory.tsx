@@ -16,6 +16,7 @@ export function DemoOnboardingStory({
   copy,
   step,
   narration,
+  navigationPlacement = 'inline',
   onStepChange,
   onClose,
 }: DemoOnboardingStoryProps) {
@@ -95,7 +96,18 @@ export function DemoOnboardingStory({
           {copy.story.close}
         </QuietButton>
       </View>
-      <View style={styles.poster}>
+      <View style={styles.artworkFrame}>
+        <LocalIllustration
+          accessibilityLabel={moment.imageAlt}
+          assetId={moment.assetId}
+          direction={direction}
+          fallbackLabel={moment.imageAlt}
+          language={locale}
+          style={styles.artwork}
+          testID={`demo-story-image-${moment.id}`}
+        />
+      </View>
+      <View style={styles.readingPanel}>
         <View
           accessibilityLabel={moment.title}
           accessibilityRole="header"
@@ -115,113 +127,126 @@ export function DemoOnboardingStory({
             {moment.title}
           </Text>
         </View>
-        <View style={styles.artworkFrame}>
-          <LocalIllustration
-            accessibilityLabel={moment.imageAlt}
-            assetId={moment.assetId}
-            direction={direction}
-            fallbackLabel={moment.imageAlt}
-            language={locale}
-            style={styles.artwork}
-            testID={`demo-story-image-${moment.id}`}
-          />
-        </View>
-        <View style={styles.readingPanel}>
-          <Text
-            brand
-            direction={direction}
-            language={locale}
-            style={styles.transcript}
-            variant="body"
-          >
-            {moment.body}
-          </Text>
-          <View style={styles.audio}>
-            {audioAvailable ? (
-              <>
+        <View style={styles.audio}>
+          {audioAvailable ? (
+            <>
+              <QuietButton
+                brand
+                direction={direction}
+                language={locale}
+                icon={<GhafIcon name="speaker" direction={direction} />}
+                onPress={pressAudio}
+                style={styles.audioControl}
+                testID={`demo-story-audio-${primaryAudioAction}`}
+              >
+                {audioLabel}
+              </QuietButton>
+              {narration.canStop && narration.canReplay ? (
                 <QuietButton
                   brand
                   direction={direction}
                   language={locale}
-                  onPress={pressAudio}
+                  onPress={() => {
+                    if (audioAvailable && narration.canReplay) narration.onReplay();
+                  }}
                   style={styles.audioControl}
-                  testID={`demo-story-audio-${primaryAudioAction}`}
+                  testID="demo-story-audio-replay"
                 >
-                  {audioLabel}
+                  {copy.story.audioReplay}
                 </QuietButton>
-                {narration.canStop && narration.canReplay ? (
-                  <QuietButton
-                    brand
-                    direction={direction}
-                    language={locale}
-                    onPress={() => {
-                      if (audioAvailable && narration.canReplay) narration.onReplay();
-                    }}
-                    style={styles.audioControl}
-                    testID="demo-story-audio-replay"
-                  >
-                    {copy.story.audioReplay}
-                  </QuietButton>
-                ) : null}
-                {narration.status === 'loading' ? (
-                  <Text
-                    accessibilityLiveRegion="polite"
-                    brand
-                    direction={direction}
-                    language={locale}
-                    style={styles.mediaNotice}
-                    testID="demo-story-audio-loading"
-                    variant="caption"
-                  >
-                    {copy.story.audioLoading}
-                  </Text>
-                ) : null}
-              </>
-            ) : (
-              <Text
-                brand
-                direction={direction}
-                language={locale}
-                style={styles.mediaNotice}
-                testID={
-                  narration?.screenReaderActive
-                    ? 'demo-story-audio-screen-reader'
-                    : 'demo-story-audio-unavailable'
-                }
-                variant="caption"
-              >
-                {narration?.screenReaderActive
-                  ? copy.story.audioScreenReader
-                  : copy.story.audioUnavailable}
-              </Text>
-            )}
-          </View>
-          <View style={styles.actions}>
-            <PrimaryButton
+              ) : null}
+              {narration.status === 'loading' ? (
+                <Text
+                  accessibilityLiveRegion="polite"
+                  brand
+                  direction={direction}
+                  language={locale}
+                  style={styles.mediaNotice}
+                  testID="demo-story-audio-loading"
+                  variant="caption"
+                >
+                  {copy.story.audioLoading}
+                </Text>
+              ) : null}
+            </>
+          ) : (
+            <Text
               brand
               direction={direction}
               language={locale}
-              onPress={() => (step === 2 ? onClose() : onStepChange((step + 1) as DemoStoryStep))}
-              size="regular"
-              style={styles.navigationControl}
-              testID={step === 2 ? 'demo-story-finish' : 'demo-story-next'}
+              style={styles.mediaNotice}
+              testID={
+                narration?.screenReaderActive
+                  ? 'demo-story-audio-screen-reader'
+                  : 'demo-story-audio-unavailable'
+              }
+              variant="caption"
             >
-              {step === 2 ? copy.story.finish : copy.story.next}
-            </PrimaryButton>
-            <QuietButton
-              brand
-              direction={direction}
-              icon={<GhafIcon direction={direction} name="arrow-back" />}
-              language={locale}
-              onPress={() => (step === 0 ? onClose() : onStepChange((step - 1) as DemoStoryStep))}
-              style={styles.navigationControl}
-              testID="demo-story-back"
-            >
-              {copy.story.back}
-            </QuietButton>
-          </View>
+              {narration?.screenReaderActive
+                ? copy.story.audioScreenReader
+                : copy.story.audioUnavailable}
+            </Text>
+          )}
         </View>
+        <Text
+          brand
+          direction={direction}
+          language={locale}
+          style={styles.transcript}
+          variant="body"
+        >
+          {moment.body}
+        </Text>
+        {navigationPlacement === 'inline' ? (
+          <DemoStoryNavigation
+            copy={copy}
+            direction={direction}
+            locale={locale}
+            onClose={onClose}
+            onStepChange={onStepChange}
+            step={step}
+          />
+        ) : null}
       </View>
+    </View>
+  );
+}
+
+export function DemoStoryNavigation({
+  locale,
+  direction,
+  copy,
+  step,
+  onStepChange,
+  onClose,
+}: Pick<
+  DemoOnboardingStoryProps,
+  'locale' | 'direction' | 'copy' | 'step' | 'onStepChange' | 'onClose'
+>) {
+  return (
+    <View style={styles.actions} testID="demo-story-navigation">
+      <PrimaryButton
+        brand
+        direction={direction}
+        language={locale}
+        onPress={() => (step === 2 ? onClose() : onStepChange((step + 1) as DemoStoryStep))}
+        size="regular"
+        style={styles.navigationControl}
+        testID={step === 2 ? 'demo-story-finish' : 'demo-story-next'}
+      >
+        {step === 2 ? copy.story.finish : copy.story.next}
+      </PrimaryButton>
+      <QuietButton
+        brand
+        direction={direction}
+        icon={<GhafIcon direction={direction} name="arrow-back" />}
+        language={locale}
+        onPress={() => (step === 0 ? onClose() : onStepChange((step - 1) as DemoStoryStep))}
+        style={styles.navigationControl}
+        testID="demo-story-back"
+      >
+        {copy.story.back}
+      </QuietButton>
     </View>
   );
 }
@@ -263,36 +288,26 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     minHeight: layout.touchTarget,
   },
-  poster: {
-    width: '100%',
-    minWidth: 0,
-    overflow: 'hidden',
-    borderRadius: botanical.radius.hero,
-    backgroundColor: botanical.colors.forest,
-  },
   heading: {
-    padding: botanical.space.inset,
-    paddingTop: botanical.space.hero,
+    minWidth: 0,
   },
   title: {
-    color: botanical.colors.onForest,
+    color: botanical.colors.forest,
     flexShrink: 1,
   },
   artworkFrame: {
-    paddingHorizontal: botanical.space.small,
-    paddingBottom: botanical.space.small,
+    width: '100%',
+    overflow: 'hidden',
+    borderRadius: botanical.radius.surface,
   },
   artwork: {
     width: '100%',
-    aspectRatio: 3 / 2,
-    borderRadius: botanical.radius.surface,
+    aspectRatio: 1.7,
   },
   readingPanel: {
     minWidth: 0,
     gap: botanical.space.row,
-    padding: botanical.space.inset,
-    paddingBottom: botanical.space.hero,
-    backgroundColor: botanical.colors.paper,
+    paddingTop: botanical.space.small,
   },
   transcript: {
     color: botanical.colors.ink,
@@ -300,17 +315,16 @@ const styles = StyleSheet.create({
   },
   audio: {
     gap: botanical.space.small,
-    paddingTop: botanical.space.small,
-    borderTopWidth: 1,
-    borderTopColor: botanical.colors.line,
+    alignItems: 'stretch',
   },
   audioControl: {
     minHeight: layout.touchTarget,
     minWidth: 0,
+    backgroundColor: botanical.colors.sage,
+    borderRadius: botanical.radius.control,
   },
   actions: {
     gap: botanical.space.small,
-    paddingTop: botanical.space.small,
   },
   navigationControl: {
     minHeight: layout.touchTarget,

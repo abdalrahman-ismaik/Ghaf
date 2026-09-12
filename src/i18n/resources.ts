@@ -2,8 +2,8 @@ export const resources = {
   ar: {
     translation: {
       demoEntry: {
-        title: 'خطوة صغيرة، ننجزها معًا',
-        body: 'نختار مهمة، نتعاون، ونقدّر ما أنجزناه.',
+        title: 'من سيستخدم غاف الآن؟',
+        body: 'اختر ملفًا تجريبيًا لوليّ الأمر أو الطفل، دون تسجيل دخول.',
         disclosure: 'عرض تجريبي ببيانات افتراضية. اختر وليّ الأمر أو أحد الطفلين.',
         restartNotice: 'تبدأ تجربة جديدة عند إعادة تشغيل التطبيق.',
         breadthNotice: 'المهمة القابلة للتجربة متاحة لسالم فقط في هذا العرض.',
@@ -21,10 +21,10 @@ export const resources = {
         salemDescription: 'جرّب المهمة واطلب المساعدة',
         alyaDescription: 'استكشف ملف علياء التجريبي',
         story: {
-          close: 'تخطّي المقدمة',
+          close: 'اختيار ملف',
           next: 'التالي',
           back: 'السابق',
-          finish: 'دخول العرض التجريبي',
+          finish: 'اختيار وليّ الأمر أو الطفل',
           progress: '{{current}} من {{total}}',
           audioUnavailable: 'السرد الصوتي غير متاح. يمكنك قراءة النص والمتابعة.',
           audioPlay: 'استمع إلى النص',
@@ -1899,8 +1899,8 @@ export const resources = {
   en: {
     translation: {
       demoEntry: {
-        title: 'A small step, done together',
-        body: 'Choose a task, help each other, and recognize what you did.',
+        title: 'Who’s joining Ghaf?',
+        body: 'Choose a Parent or Child demo profile. No sign-in needed.',
         disclosure: 'A demo with synthetic data. Choose the Parent or one of the Children.',
         restartNotice: 'Restarting the app begins a fresh demo run.',
         breadthNotice: 'The executable task is available only to Salem in this demo.',
@@ -1919,12 +1919,13 @@ export const resources = {
         salemDescription: 'Try the task and ask for help',
         alyaDescription: 'Explore Alya’s demo profile',
         story: {
-          close: 'Skip introduction',
+          close: 'Choose a profile',
           next: 'Next',
           back: 'Back',
-          finish: 'Enter demo',
+          finish: 'Choose Parent or Child',
           progress: '{{current}} of {{total}}',
-          audioUnavailable: 'Narration is unavailable. Read the text and continue.',
+          audioUnavailable:
+            'Prepared narration is in Arabic. Switch language to listen, or continue reading.',
           audioPlay: 'Listen to text',
           audioStop: 'Stop narration',
           audioReplay: 'Replay',
