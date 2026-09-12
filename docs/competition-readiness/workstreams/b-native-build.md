@@ -873,7 +873,9 @@ HfIhlC then named122 completely different entries,144 error occurrences. The ind
 inspected only the immediate32-hex namespace and metadata/results stats/hashes:3118 directories,
 2996 nonempty metadata files,122 empty files, none missing or symlinked. Every remaining empty
 metadata file belonged to the actual new failure set; there were zero unreported empty entries.
-All first123 entries had reappeared with nonempty metadata/results, supporting their regeneration.
+All first123 entries had reappeared with nonempty metadata, supporting their regeneration.
+The helper sampled nonempty recreated results files; it did not establish that every results file
+was nonempty.
 Nonempty files were not claimed semantically valid. A independently obtained the same inventory.
 The logs and metadata do not prove precisely when, why or whether interruption emptied these files.
 
@@ -882,6 +884,9 @@ new frozen-log/list/target/PIDs and added complete before/after namespace counts
 equality. It completed09:34:40.231369–09:34:41.241868UTC, exit0; before3118 entries/122 empty,
 after2996 entries/all nonempty metadata and **zero empty metadata/results pairs**. Every moved
 entry remained preserved with before/after path, inode, empty-file hash and UTC observations.
+The full count also recorded529 remaining empty results files paired with nonempty metadata.
+These were outside the diagnosed empty metadata/results pairs and were preserved unchanged; no
+semantic validity or corruption claim is made about them.
 Second quarantine: `output/native-build/cache-quarantine-A106/quarantine-receipt.json`;
 runner: `HfIhlC/quarantine-A106.py`. Sorted122-parent list SHA256:
 `c739dd84632f02e734ca1679e8a759492ecfad37f25abe146a09d950af2b9657`.
