@@ -898,3 +898,44 @@ No repeated trust acceptance or native pass is inferred. The user briefly reques
 project description, then explicitly cancelled it. Fetch and fast-forward-only pull from origin/main
 reported Already up to date; no source changed. The bounded read-only description helper was
 interrupted, produced no accepted artifact and released its allocation. Native validation continues.
+
+## Approved three-clip handoff and C continuation — September12
+
+A reconciled C's current snapshot rather than its historical tail: C059/060 had already recorded
+all three Wiam clips approved for wording, pronunciation and delivery, with user-reported
+Multilingual v2. Released report5dca312 was inspected and integrated8fa429d. Earlier A current-facing
+statements about two missing clips were stale; the approvals must not be requested again. No MP3
+was imported by that report integration. Actual user later answered A's asset-record question:
+**Free plan** when the three files were generated. The user also confirmed C stopped at5dca312
+and requested its next prompt.
+
+A prepared native-batch/c-narration-continuation.md and published exact A173 C-N06 report-only
+rights/attribution intake, using official primary sources. T014b runtime remains gated on D's
+technical review, committed typed contract, published A prerequisites and exact synchronization.
+The user received a ready-to-paste instruction pointing to that canonical prompt. No plan upgrade,
+new account, generation, media upload or public distribution is authorized by this preparation.
+
+A used the existing Spec Kit plan skill for the selected T014 continuation. setup_plan.py --json
+reused015/plan.md without overwriting it; its feature identifier is015 while actual Git stays
+redesign/ui-experiments. The optional agent-context hook was skipped to preserve the instructed
+managed AGENTS block. A prepared a review draft, not a runtime implementation: exact controller/
+hook/presentation/source-map/assets boundaries and cancellation, accessibility and failure checks.
+A172 delegates D's read-only concrete failure review; A174 identifies the shared typed/caller/fixture
+publication order to reconcile before source grants. Baseline5d APK inputs remain unchanged.
+
+The one read-only narration_contract_seams helper inspected current demo/ordinary playback and
+installed Expo57 types while A reviewed B's native evidence. It found ordinary autoplay, the keyed
+AccessScreen boundary, current route generation/epoch values and the async seek versus synchronous
+play/pause interface. It recommended a separate small demo controller/hook and real lifecycle
+wiring evidence. Its findings distinguish Expo web's discarded media-play promise from native
+status errors. No helper wrote files, played audio, ran tests or generated content; allocation released.
+Exact task and follow-up were recorded in this conversation and A170/A172; human/student/native
+review remains pending. Rejected claims: silent baseline already plays the clips; user approval
+establishes public licensing; SSR tests establish mounted lifecycle cleanup; delayed seek may
+resume after leaving the story; documentation changes require another baseline APK build.
+
+A169 reviewed all24 final native graphs/1156 pooled edges, actual Worklets ELF/nonoverlap logs
+and bounded sampled-process evidence. Released B0ba89d3 integratedb3a7ba9; Dacb962f integrated6076dba.
+A171 granted ONE exact full APK on B0ba89d3/runtime5d/script99ae/init a2d7 with unchanged tools,
+A-authored permission approvals, resource controls and internal template signing. The running
+T4DtZl build is not yet an APK/native acceptance result. No repeated full application suite ran.
