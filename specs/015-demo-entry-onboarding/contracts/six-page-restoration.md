@@ -8,7 +8,7 @@ presentation in the September 12 correction, not the underlying demo/access cont
 
 - `DemoStoryStep = 0 | 1 | 2 | 3 | 4 | 5`. Ordered moment IDs are `intro`, `family`, `together`,
   `ai`, `support`, `growth`. Together is the Sustainability page; its approved transcript stays exact.
-- Moment artwork adds existing `onboarding-intro`, `onboarding-family`, `onboarding-ai`; preserve
+- Moment artwork adds existing `onboarding-ghaf-intro`, `onboarding-family`, `onboarding-ai`; preserve
   existing action/support/growth assets. All text remains in bilingual resources.
 - Fresh-run entry opens page zero. Next/Back move one page; final action/Skip return to the three
   principals. Back from page zero returns to profiles. Handoff/reset retain immediate profile entry.
