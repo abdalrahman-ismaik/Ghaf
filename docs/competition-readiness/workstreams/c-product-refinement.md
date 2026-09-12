@@ -654,3 +654,49 @@ key header, with redirects disabled. Receipt output uses selected fields and red
 key from error messages. All commands/jobs ended; no helper or browser was needed for these serial
 access requests. Scoped report formatting/diff checks and request/transcript SHA parity passed;
 no broad app suite was rerun. User/student clip acceptance remains pending, not fabricated.
+
+## 2026-09-12 — User approves a supplied Wiam sample
+
+The user supplied `output/native-ui/narration-research/voice_preview_wiam - confident.mp3` and
+reported “much much better and very good”. This is actual positive listening review of that exact
+file. The user then confirmed “It reads your Ghaf test script”. Record the first together clip
+as approved by the user for sound quality and intended transcript match. Preserve it unchanged.
+Reviewer is the conversation user; personal name, playback device and settings are unspecified.
+This does not approve the two remaining clips, student diff or native playback.
+
+Actual file:245805bytes; SHA256 `8782ac7eb4bbd6ec04296206e700dea62562cc4b43258744c5b66caeeab19edf`;
+MP3,15.360s,44100Hz,mono. The sole embedded tag is encoder `Lavf60.16.101`; it does not identify the
+voice, model, settings or spoken text. C did not listen/transcribe or upload the recording. The
+first-script match is supported by the user's explicit confirmation, not independent transcription.
+
+A bounded read-only helper search found no indexed exact Wiam listing and its direct public page
+read encountered a network restriction; that result is preserved without treating absence of an
+indexed result as absence of the voice. Lead's single authenticated shared-library GET200 at
+09:59:32–35UTC, PID54950/session82764, found **Wiam - Confident**, ID `R5kMoWNNTn84ezIJA53m`, ar,
+modern standard, professional category, rate1.0 and free-users-allowed. Arabic/Multilingual v2 is
+in its verified model metadata. This is an exact name match for the filename, not cryptographic
+proof of the supplied file's generator. The owner's export model/settings remain unknown.
+
+Ignored `wiam-intake.json` records file identity and the bounded human review; the sanitized
+lookup receipt is `access-checks/wiam-20260912T095935Z.json`. `wiam-recording-packet.md` and
+`wiam-script-manifest.json` copy all three unchanged reviewed narration bodies with hashes.
+The first clip maps to together and the unchanged first-transcript SHA256
+`63e063ba64027d655a57cdab1fb8a586f119eed7c6ad99ac26fca5426fb4d773`. Retain it and obtain only support
+and growth, using the same preferred voice/settings on the website. Do not add instructions or
+hashes to spoken text. Those two full clips still need actual user listening approval.
+
+No new synthesis, account change, voice upload, provider switch in code or runtime import occurred.
+The prior authenticated Abdullah API402 restriction remains; the Wiam metadata's free-user flag
+is not proof of free-tier API entitlement. A097's single attempted POST remains consumed. Future
+asset integration requires A's exact candidate/paths and transcript parity. Existing silent
+onboarding and frozen runtime5d8a3e8 remain unchanged. Student review, licensing/plan provenance
+for the uploaded export and native audio lifecycle evidence remain pending.
+
+Helper task was the distinct, public-source-only Wiam name/voice-ID/model lookup; no credentials,
+media, files, generation, browser, native jobs or descendants. Lead handled the supplied file,
+actual authenticated name lookup and report/packet while the helper worked. Helper allocation is
+released. Requested Astra/ultra used the prior launcher, Fast/effective serving unexposed. No
+human or agent listening beyond the user's stated review is invented. Scoped report/packet format,
+unchanged-file hash and transcript-manifest parity passed. Single-thread local FFmpeg decode to
+null output returned0 with no errors; that is file decodability, not a second listening or native
+acceptance claim. The MP3 remains byte-identical to the supplied file.
