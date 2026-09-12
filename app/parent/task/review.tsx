@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter, type Href } from 'expo-router';
+import { useNavigationContainerRef, useRouter, type Href } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ import {
   TaskCreatedSuccessSheet,
   TaskStepIndicator,
 } from '@/components/r002a';
+import { entryMode } from '@/config/demoEntry';
 import {
   botanical,
   colors,
@@ -24,6 +25,7 @@ import {
 import { bilingualResource, localize } from '@/i18n';
 import type { LocalizedText, RecognitionMode, RoutinePhase } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { prepareEntryReset } from '@/utils/navigation';
 
 function BilingualField({ label, value }: { label: string; value: LocalizedText }) {
   const { t } = useTranslation();
@@ -148,6 +150,7 @@ function LanguageTerms({
 
 export default function ParentTaskReviewScreen() {
   const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -254,9 +257,18 @@ export default function ParentTaskReviewScreen() {
 
   const continueToChild = () => {
     setError(null);
+    const resetNavigation = entryMode === 'demo' ? prepareEntryReset(navigation) : null;
+    if (entryMode === 'demo' && !resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = signOutExperience();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
+      return;
+    }
+    if (resetNavigation) {
+      resetNavigation();
       return;
     }
     router.dismissAll();
