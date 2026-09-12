@@ -573,3 +573,36 @@ Helper launched Astra/ultra; effective root/Fast settings unexposed. No source e
 acceptance invented. Full helper result and exact hash/paths retained in A095. Allocation released.
 C044 separately records user selection of the ElevenLabs Abdullah audition; this supersedes their
 earlier provider preference but establishes neither generated audio nor actual clip acceptance.
+
+## Resumed lead handoffs and WSL device preparation — September12
+
+The user clarified that B/C/D had stopped and then restarted. All actual lead ACKs were checked;
+A kept their boundaries and integrated report-only C94d2e0a as353af36 and De064064 asedb2faf.
+No runtime or package change occurred. C's report prepares the exact user-selected Abdullah
+audition, with generation blocked on actual existing provider access and no accepted recording.
+D's report records successful pinned-ADB enumeration with zero WSL-visible transports; actual
+Tab S4 model/Android version and native acceptance remain unknown. Student exact-diff review is
+pending; the configured Git identity is preserved and does not establish student participation.
+
+B's first resumed invocation failed at the input guard before Gradle because its report preservation
+command had failed. B recorded and corrected that error; A independently checked the remaining
+two authorized package script changes and granted the corrected launch A100. No guard was removed
+and no incomplete build was called a pass. The earlier interrupted outputs remain preserved.
+
+A's one read-only helper usb_setup_review checked official Microsoft/Android/Samsung instructions
+and Windows tool presence while A integrated reports. No device enumeration, host mutation or
+installation was delegated. Its actual prompt:
+
+```text
+You are A's one read-only helper in Ghaf NB1. Others are editing; preserve all work, no writes or descendants. User connected Samsung Tab S4 to Windows laptop with Ubuntu WSL2 kernel6.18.33.2. Actual existing private Android adb37.0.1 devices -l succeeded ZERO rows. D owns adb server15824 on127.0.0.1:5037 and device evidence; do not run adb/device queries or stop/start services. User has full local tooling permission; SDK ready. A asks user whether tablet USB debugging/trust enabled. B native build active independently. Task: read-only discover Windows USB passthrough tool availability (command -v powershell.exe exists at /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe; usbipd.exe not in Linux PATH), use exact read-only PowerShell Get-Command/installed file presence if useful, and browse PRIMARY official Microsoft WSL USB + Android/Samsung debugging instructions. Return minimal exact next steps based on actual tool availability and documentation, distinguish bind (admin) / attach (nonadmin), debugging/trust, no guessed device bus/serial. No USB enumeration if it exposes unrelated hardware/personal identifiers; no settings changes/install/network downloads/browsers/screenshots. Do not mutate Windows or project, query personal content, search credentials, build, tests, or coordination. A lead integrates released reports while you work. Report actual commands/evidence/URLs, no invented device authorization or native pass. Model explicitly Astra/Ultra; Fast unexposed.
+```
+
+A requested a read-only Windows elevation check and exact official installation conditions as a
+follow-up; the helper had already finished its bounded result. A ran the elevation check itself
+(False) and opened the official Microsoft and upstream release pages. Helper found winget available,
+usbipd absent from PATH and its standard location. The Android guide now contains concrete owner
+steps, without claiming installation, blanket absence, trust acceptance or device success. The
+helper allocation is released. Its explicitly selected model was Astra/ultra; Fast and root serving
+settings are unexposed. Rejected approaches: guessing a device BUSID, changing USB/services during
+the native job, hidden account/key access, treating a tablet as narrow-phone coverage, and rerunning
+passing application suites for report-only integration.

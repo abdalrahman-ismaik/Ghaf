@@ -1,7 +1,7 @@
 # Installable Android build and rehearsal
 
-**NB1 status, September12: local toolchain installed; first manifest build stopped on the
-resource guard, with no APK or native acceptance yet.** B's private build worktree is
+**NB1 status, September12: local toolchain installed; the interrupted final-source manifest build
+is being resumed, with no APK or native acceptance yet.** B's private build worktree is
 `/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
 pausing Expo for native builds. A stopped the prior preview and owes its restart in demo mode.
 
@@ -31,6 +31,49 @@ A process restart begins a fresh signed-out run; it does not restore task progre
 Ordinary builds retain their verification/pairing flow. Neither configuration is production login.
 Actual APK identity, installation, device models/OS, Android RTL/Back/audio and rehearsals remain
 NOT RUN/BLOCKED until their exact evidence is supplied.
+
+After the environment interruption, all54 generated native source files still matched their
+generation marker. The previous run `20260912T024056Z-manifest.2nbNeM` has no final exit receipt;
+its partial logs and surviving intermediate bundle establish neither success nor a resource stop.
+The resumed run `20260912T092026Z-manifest.Mf3DxX` stopped before Gradle because B's report was
+still dirty after a failed preservation command. B corrected that command and preserved its report;
+A100 permits the corrected launch with unchanged source, tools, build limits and resource guards.
+See [B's report](workstreams/b-native-build.md) and the canonical coordination record for its outcome.
+
+The user connected a Samsung Tab S4. D's September12 09:20UTC preflight successfully ran the pinned
+ADB tool, but WSL returned zero visible transports. Android version, debug trust and USB attachment
+remain unverified; this is not proof that the tablet is physically disconnected. The device report
+and exact private receipt are in [D's native evidence](workstreams/d-native-acceptance.md).
+The tablet can provide useful first hardware evidence once visible. It cannot establish the planned
+narrow-screen primary/secondary phone coverage. No app installation or device journey has run yet.
+
+### Prepared Windows USB attachment step
+
+Read-only September12 host checks found Windows `winget.exe`, but no `usbipd.exe` command or
+file at its standard Program Files location. The current Windows token is not Administrator.
+This is a bounded availability check, not a scan of every possible installation. No Windows
+installation, USB binding, firewall/service change or tablet setting was performed.
+
+After the native job releases its lane, the owner can follow the
+[Microsoft WSL USB guide](https://learn.microsoft.com/en-us/windows/wsl/connect-usb).
+The current upstream release observed is [usbipd-win5.3.0](https://github.com/dorssel/usbipd-win/releases/tag/v5.3.0).
+Run the interactive Windows installation command; review the installer instead of allowing an
+unattended driver-install restart:
+
+```powershell
+winget install --interactive --exact dorssel.usbipd-win
+```
+
+In Administrator PowerShell, use `usbipd list` locally to identify the Samsung tablet's actual
+BUSID, then `usbipd bind --busid <actual-tablet-busid>`. Keep Ubuntu open and attach with
+`usbipd attach --wsl --busid <actual-tablet-busid>`; attachment does not require Administrator.
+The installer adds a host service and firewall rule. While attached, Windows cannot use that USB
+device. Do not guess a BUSID or bind another device. Do not restart WSL during a build.
+
+On the unlocked tablet, enable Developer options and USB debugging, then accept the computer's
+RSA authorization prompt when shown. See [Android's device guide](https://developer.android.com/studio/run/device).
+Attachment and debugging trust are separate gates. D then repeats its existing targeted readiness
+check; only a verified authorized target may proceed to exact APK installation and native tests.
 
 ## Historical Session A prerequisite audit — September 12, 2026
 
