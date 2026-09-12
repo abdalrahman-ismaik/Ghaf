@@ -677,7 +677,7 @@ if b'\x00' in raw:
     refuse('contains interrupted/NUL log data')
 lines = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', raw.decode('utf-8')).splitlines()
 headers = [i for i, line in enumerate(lines) if line.startswith('Tasks graph for:')]
-nodes = [i for i, line in enumerate(lines) if re.fullmatch(r'[ |+\\`-]*:app:assembleRelease(?: \(\*\))?', line)]
+nodes = [i for i, line in enumerate(lines) if re.fullmatch(r'[ |+\\`-]*:app:assembleRelease(?: \(org\.gradle\.api\.Task\))?(?: \(\*\))?', line)]
 success = [i for i, line in enumerate(lines) if re.fullmatch(r'BUILD SUCCESSFUL(?: in .+)?', line)]
 if (len(headers) != 1 or lines[headers[0]] != 'Tasks graph for: ' + task or
     not any(i > headers[0] for i in nodes) or not success or

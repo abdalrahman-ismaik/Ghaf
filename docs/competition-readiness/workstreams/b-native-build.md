@@ -1,6 +1,6 @@
 # Session B — Repeatable Android build
 
-**Current: shared-pool control passes the isolated native fixture and54 hook mocks; the guarded task-graph CLI passes68 focused checks and the real12-step preflight. Actual application graph/configuration, generated Ninja coverage, compiler-process validation and APK/device acceptance remain pending. Build Tools35/36 are installed and required.**
+**Current: actual Gradle graph x9Xru1 completed0/cleanup0; the wrapper retained exit1 for an unhandled typed root label. The narrow parser correction passes73 checks including the saved real graph. Actual evidence exposes an app CMake callback-order gap: five libraries receive requested pools, but the app was skipped. No native follow-up or APK acceptance is established.**
 
 The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
 attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
@@ -1457,3 +1457,66 @@ need actual review before any follow-on configure/compile grant. No APK retry is
 safe checks. Completed paths/helper/jobs are released for integration; B retains script/report
 maintenance and private native/output boundaries. Package.json's two generated script fields
 stay unstaged. No generated tree/cache cleanup, source change, device installation or014 approval.
+
+## A144/A145 — Actual graph evidence and typed-root repair
+
+A integrated52c43a3 as99630f4 and stopped/released its owned Metro79445 at10:49:01–02UTC.
+A144 granted one guarded graph invocation on exact BHEAD52c43a3/runtime5d/demo/script11f41,
+using the unchanged private toolchain/keys/resource limits and A045/A144 acknowledgment IDs.
+No source/report changed during this invocation. Exact outer command/start/PIDs/end:
+`output/native-build/graph-A144-launch.json`.
+
+Actual run `output/native-build/20260912T104951Z-graph.x9Xru1` started10:49:49.696380UTC and
+ended10:50:41.074128UTC, wrapper exit1. All24 prior steps passed, including Gradle exit0,
+cleanup0 and after-run init/source/native identity checks. The sole failing step25 was graph
+verification. Its actual line117 is `\--- :app:assembleRelease (org.gradle.api.Task)`; the
+fixture-derived regex had not allowed that task-type annotation. Gradle itself reported
+BUILD SUCCESSFUL in39s. This was a receipt-parser failure, not a native compilation failure.
+The original log, wrapper exit1 and failed review remain unchanged; they are never relabeled0.
+
+There were54 included-plugin setup rows:36 UP-TO-DATE,10 NO-SOURCE,8 SKIPPED. These are actual
+statuses, not newly executed plugin compilation. The task graph still permits configuration
+effects in general. The observed module receipt retained one header and24 rows across four build
+roots, proving the included-init receipt no longer collided in this run. Five libraries were
+selected with actual AGP8.12.0 identity: worklets, expo-modules-core, gesture-handler, reanimated
+and screens. Nineteen rows were skipped. The app's no-CMake skip conflicts with its actual graph
+configure/build-CMake nodes and blocks coverage acceptance; requested library arguments alone
+do not prove generated pools or app coverage. A147 reserves that app callback investigation to
+B's read-only helper; A's separate helper owns general dependency/target closure.
+
+Resource sampling retained8 records: minimum55.617% available memory, maximum420KiB swap used,
+paging streak0, no guard stop. Captured launcher/script/wrapper/daemon PIDs102410/102411/102773/
+102844 were all absent10:51:29.829824UTC. B explicitly released the heavy slot; no native task,
+APK retry, device action or new helper-heavy job followed. Post-exit observations:
+`output/native-build/20260912T104951Z-graph.x9Xru1/post-exit-observation.json`.
+
+| Original evidence          | SHA256                                                           |
+| -------------------------- | ---------------------------------------------------------------- |
+| receipt.txt                | 2a3be5522899445359ef374439701b9d6e580d86d5375d3dc20ecc83e7bfdb0b |
+| 21-gradle-graph.log        | 5630ab4dace594bf913e217e7f6ae15085c05bfe6a69795e08a7fb2d5ff3a058 |
+| native-module-policy.jsonl | eb9a6fd752b6cc8a5fd77b7257173e66fec097f929e56fc6927652d860ca0556 |
+| gradle-arguments.json      | 0283d59bde84e8d6db98a56595493362f61844e4fc4bb3685dc0f520145b24aa |
+| 25-task-graph-review.log   | d887655c73dce4c01fa1ccfacd1974513b27237676aa6853637c3eabbe308fee |
+
+A145/A147 authorized the one-line parser correction: accept only the observed optional
+`(org.gradle.api.Task)` annotation, retaining exact root name, single graph, terminal result,
+task-vector, setup-namespace and log-integrity checks. No arbitrary type or trailing text is
+accepted. The lead reproduced the exact saved-log rejection at10:52:20UTC in
+`output/native-build/graph-mode-release/actual-log-red/receipt.json`, then added that real log,
+the exact type and three lookalike/wrong-type/trailing-text cases to the released ignored harness.
+All73 checks passed with `python3 output/native-build/script-checks/task-graph/run_checks.py`;
+receipt `output/native-build/script-checks/task-graph/20260912T105311Z/receipt.json`.
+Final corrected script SHA256:
+`8b67d221b708d3a135cf3be8b8b4729a0759a78abd3c53ec020b9eba146d619c`.
+The pool init remains638f3160 unchanged. Bash/format/diff checks pass; no Gradle run was repeated.
+
+The lead authored this one-line repair, five added ignored cases and report from A145's explicit
+prompt and the retained line117 evidence. No new helper wrote this repair; the one read-only
+helper handles the separate app callback question. Rejected approach: broad arbitrary text/type
+matching or rerunning Gradle merely to fix output parsing. After commit, a separate ignored
+review receipt will name original52c43a3/log hash and the corrected verifier commit/hash, preserving
+the failed original run. The release outbox supplies its absolute path. Student exact-diff review
+and teach-back remain PENDING; source/receipt review never establishes generated-edge/native/APK
+acceptance. Only the script/report repair slice is released for integration; B retains maintenance
+and its private boundaries for the separately granted next step. Package two-field delta stays
+unstaged; Recovery014 and unrelated features remain deferred.
