@@ -204,6 +204,7 @@ interface DemoEntryCopy {
   readonly restartNotice: string;
   readonly breadthNotice: string;
   readonly busyLabel: string;
+  readonly unavailableError: string;
   readonly restartRequiredTitle: string;
   readonly restartRequiredBody: string;
   readonly storyAction: string;
