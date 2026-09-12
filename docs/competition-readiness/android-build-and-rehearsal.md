@@ -1,10 +1,10 @@
 # Installable Android build and rehearsal
 
 **NB1 status, September12: the final-source manifest passed and Build Tools 35.0.0 is installed.
-The next APK attempt awaits a correction to native compiler parallelism. No APK or native acceptance
-is claimed yet.** B's private build worktree is
+The compiler-pool correction is integrated; its actual application coverage must be checked before
+the next APK attempt. No APK or native acceptance is claimed yet.** B's private build worktree is
 `/home/smyk/projects/Ghaf-demo-systems`. The user accepted the listed SDK terms/tools and approved
-pausing Expo for native builds. A stopped the prior preview and owes its restart in demo mode.
+pausing Expo for native builds. A restored one demo preview at localhost:8081; it must be stopped for native work and restarted afterward.
 
 The installed private tools include Temurin17.0.20.1+1, Gradle9.3.1, command-line tools19.0,
 Android36r2, BuildTools35.0.0 and36.0.0, NDK27.1.12297006, CMake3.30.5 and platform-tools37.0.1. Publisher
@@ -21,7 +21,10 @@ Use the repository's reviewed `scripts/native/build-apk.sh` invocation from B's 
 exact source/build identity, `EXPO_PUBLIC_GHAF_DEMO_ENTRY=true`, one Gradle worker,1536MiB Gradle
 heap/512MiB metaspace,1024MiB Node heap and generated-only Metro `--max-workers 1`.
 The requested CMake single-job environment setting did not constrain direct Ninja invocation;
-B stopped the observed attempt and is preparing supported enforcement before the next build.
+B stopped the observed attempt. The integrated script requests one shared compile/link Ninja pool;
+its54 mock-policy checks and12 isolated native edges pass, while actual AGP/module coverage remains
+pending. A138/A140 grants a guarded task-graph mode to inspect the real dependency graph. Included
+plugin compilation may run during that phase, so all native resource and preview guards apply.
 Record the one-line generated Gradle adjustment. A must review the actual merged permission set
 before full APK compilation; do not guess it. The existing template debug signing identity is
 approved only for the labeled internal standalone rehearsal artifact. No new/public signing or
@@ -56,7 +59,7 @@ at signature protection level. Existing RECORD_AUDIO and SYSTEM_ALERT_WINDOW dec
 no real recording or overlay use is selected, and direct native no-prompt/prepared-only behavior
 still needs testing. This is not a public-release or least-privilege claim. The exact approval
 array and detailed receipt are A-authored files under B's ignored output/native-build, with hashes
-recorded in canonical STATUS-A. B's full build uses HEAD3d1320d, runtime5d8a3e8/demo and unchanged
+recorded in canonical STATUS-A. The first full-build attempt below used HEAD3d1320d, runtime5d8a3e8/demo and unchanged
 script7c2a2c8d. See [B's build report](workstreams/b-native-build.md) and
 [D's independent review](workstreams/d-native-acceptance.md). No app suite was repeated for these
 report-only commits.
@@ -80,12 +83,10 @@ maximum216KiB swap used and no paging streak. Preserve the exact compiler-concur
 post-exit receipts. A117's missing35 preflight check and a bounded compiler-limit correction are
 separate tooling work; unchanged source checks do not need repeating.
 
-The user initially reported a connected Samsung Tab S4 and later clarified it is currently
-disconnected. A instructed reconnecting it, keeping it unlocked and enabling USB debugging;
-actual reconnection/trust is not confirmed. D's September12 09:20UTC preflight successfully ran the pinned
-ADB tool, but WSL returned zero visible transports. Android version, debug trust and USB attachment
-remain unverified; this is not proof that the tablet is physically disconnected. The device report
-and exact private receipt are in [D's native evidence](workstreams/d-native-acceptance.md).
+Windows now identifies the connected Galaxy Tab S4 at BUSID2-1, currently unshared. Android
+model number/OS, debugging trust and ADB visibility remain unverified. D's September12 09:20UTC
+zero-transport result predates this connection and remains historical. The device report and exact
+private receipt are in [D's native evidence](workstreams/d-native-acceptance.md).
 The tablet can provide useful first hardware evidence once visible. It cannot establish the planned
 narrow-screen primary/secondary phone coverage. No app installation or device journey has run yet.
 
@@ -105,21 +106,22 @@ No installer PID or successful installation was recorded; the follow-up service 
 ABSENT. A released the host setup slot and will not reopen the canceled prompt automatically.
 Exact receipts stay under canonical `output/native-integration/015/usbipd-5.3.0/`.
 
-When the owner resumes this Windows step outside a native build, follow the
-[Microsoft WSL USB guide](https://learn.microsoft.com/en-us/windows/wsl/connect-usb).
-The current upstream release observed is [usbipd-win5.3.0](https://github.com/dorssel/usbipd-win/releases/tag/v5.3.0).
-Run the interactive Windows installation command; review the installer instead of allowing an
-unattended driver-install restart:
+The user subsequently clarified that no installer window appeared, then completed the supplied
+manual installation step. A verified usbipd5.3.0, service Running and Valid publisher signature
+at10:37UTC. Installation is complete; do not reinstall it. Windows then identified one Galaxy Tab S4
+at BUSID2-1. Sharing is pending an actual Windows administrator action.
+
+Following the [Microsoft WSL USB guide](https://learn.microsoft.com/en-us/windows/wsl/connect-usb),
+open Administrator PowerShell, confirm the tablet still has BUSID2-1 with `usbipd list`, then run:
 
 ```powershell
-winget install --interactive --exact dorssel.usbipd-win
+& "$env:ProgramFiles\usbipd-win\usbipd.exe" bind --busid 2-1
 ```
 
-In Administrator PowerShell, use `usbipd list` locally to identify the Samsung tablet's actual
-BUSID, then `usbipd bind --busid <actual-tablet-busid>`. Keep Ubuntu open and attach with
-`usbipd attach --wsl --busid <actual-tablet-busid>`; attachment does not require Administrator.
-The installer adds a host service and firewall rule. While attached, Windows cannot use that USB
-device. Do not guess a BUSID or bind another device. Do not restart WSL during a build.
+Keep Ubuntu open. After sharing succeeds, A attaches the same observed device using
+`usbipd attach --wsl --busid 2-1`; attachment does not require Administrator. Windows cannot use
+that USB device while attached. Recheck the actual BUSID after reconnection; do not bind another
+device or restart WSL during a build. Binding and attachment are not yet confirmed in this record.
 
 On the unlocked tablet, enable Developer options and USB debugging, then accept the computer's
 RSA authorization prompt when shown. See [Android's device guide](https://developer.android.com/studio/run/device).

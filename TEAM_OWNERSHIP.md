@@ -1,32 +1,34 @@
 # Team Ownership
 
-## NB1 current integration — 2026-09-12 10:08 UTC
+## NB1 current integration — 2026-09-12 10:43 UTC
 
-Canonical board51 and continuing A instance A-20260911T2220Z-root govern current grants.
-User-confirmed restarted B/C/D retain their ownership. Runtime5d8a3e8 is frozen after148 files /
-1,919 tests and typecheck/lint/format passed; canonical9fadd64 includes the two newly released C narration reports only.
+Canonical board54 and continuing A instance A-20260911T2220Z-root govern current grants.
+User-confirmed restarted B/C/D retain ownership. Runtime5d8a3e8 is frozen after148 files /
+1,919 tests and typecheck/lint/format passed; canonical51d99f3 includes the released native-pool
+script/report correction. A retains shared integration, master docs, BOARD/STATUS-A and the two
+A-authored permission-review JSON paths in B output. No app source change is currently selected.
 
-A retains shared integration, specs/master docs and BOARD/STATUS-A. A's narration report helper completed and released;
-no source/audio/provider access. B holds script/report/private
-native boundaries and the two transient package script fields. Build Tools35.0.0 installed under
-A113/A118 with the same accepted terms. The corrected APK run VLrTIn ended10:07:01 exit143 after
-B's policy stop for observed compiler concurrency. All119 recorded PIDs ended; no APK. B released
-the heavy job and now handles A117's exact preflight35 check, with one read-only helper researching
-supported native parallelism enforcement. No native retry or new app/config change is implied.
-A's two B041-released manifest approval JSON paths remain A-exclusive; B reads them.
+B owns scripts/native/build-apk.sh, workstreams/b-native-build.md, private native/tool/cache/output
+paths and the two transient package script fields. A138/A140 grants one minimal guarded task-graph
+mode and focused checks. Actual Gradle configuration can compile included plugins and remains
+blocked until A reviews the released candidate and stops/releases its preview. B has one read-only
+helper, no native-heavy job; completed tiny native and mock-policy fixtures are released.
 
-C released report commits e66d3ec and8822e13 and all jobs/helpers. The user approved the supplied
-first Wiam clip's sound and intended transcript. Remaining clips, export provenance and native
-playback remain pending; no audio entered runtime. D retains status and ADBserver15824; its exact
-manifest report is integrated, actual APK and physical-device evidence await concrete inputs.
-The user's last tablet report was disconnected; reconnection/debugging/trust is unconfirmed.
-No Windows USB driver/service/firewall installation or device attachment has occurred.
+A owns canonical demo Metro79445 at8081, with one worker and no browser, restored under the user's
+standing authorization. HTTP readiness is verified; this is not Android acceptance. A must stop
+only its owned preview before native Gradle and restore it afterward. D retains ADBserver15824;
+all other D report/test/helper boundaries are released pending an actual artifact/device grant.
 
+The user completed Windows usbipd5.3.0 installation; A verified service Running and publisher
+signature Valid. Windows now detects the connected Galaxy Tab S4 at USB2-1. Sharing/attachment
+remains pending the supplied Windows administrator bind command. Real hardware identifiers are
+kept out of Git. Tablet tests supplement, but do not replace, the two planned phone gates.
+
+C reports e66d3ec/8822e13 are integrated; first Wiam sample is user-approved for sound and intended
+transcript, remaining clips/provenance/native listening pending. Runtime remains silent.
 All eight R002b and three live-AI flags remain off; recovery014 deferred, optional additions
-unselected and student exact-diff acceptance pending. Preview restoration remains owed after native
-work. Current heavy jobs0, no preview/browser; four global helpers maximum, A0/B1 live.
-All status writers resumed after1eade23; no checkpoint pause is pending. Tablet evidence cannot
-replace narrow-phone gates and no actual rehearsal has occurred.
+unselected, student exact-diff acceptance pending, actual rehearsals0/10. All status writers
+remain live; no checkpoint pause requested. Four global helpers maximum, no quota increase.
 
 ## NB1 activation (historical) — 2026-09-12 01:18:23 UTC
 

@@ -705,3 +705,75 @@ actual default preflight remain attributed to B. No duplicate app suite or nativ
 A126 then refreshed the competition README and demo script to distinguish the completed015
 source from APK/native acceptance, remaining narration and deferred recovery. This changes only
 documentation; no new product behavior or student participation is claimed.
+
+## Included-build review and restored preview — September12
+
+The user clarified “No window appeared” after the Windows launch error. A records the error as an
+operating-system result, not proof that the user deliberately canceled. A supplied a manual
+Windows PowerShell command for the already verified MSI with /norestart. No completion was
+reported; a10:32:36UTC read-only check found zero Windows Installer processes and no usbipd service.
+A rescheduled that operator step after APK work and released the host reservation, preserving the
+prepared files. Missing device setup must not block the standalone build.
+
+While B tested a bounded compiler-pool correction, A restored the requested canonical demo preview.
+Owned MetroPID79445 uses a new ignored cache directory, one worker, explicit demo entry, mock
+services, no dotenv and all eight R002b/three live-AI flags false. Its first30s HTTP request timed
+out during cold bundling; logs then recorded about59s/62s bundles. The later direct /status and /
+requests returned HTTP200 at10:28:39UTC. The known optional DevTools missing-libnss3 error remains;
+Metro's page response works without it. This is preview readiness, not a new browser or native pass.
+Exact receipts: output/native-integration/015/preview-restored-6j12rwgj/.
+
+A's independent read-only explorer caught a lifecycle issue in B's in-flight init script: Gradle
+9.3.1 propagates both init scripts and system properties into included builds. Unconditional fresh
+receipt creation inside the script therefore fails when an included plugin build initializes.
+A133 granted the smallest correction within B's existing boundary: create the receipt once in the
+wrapper, validate and append from each build, retain path/hash protections and distinguish build
+roots. The normal inspected decorator path preserves the original protection domain; a speculative
+CodeSource workaround was rejected. B's later real-Groovy/mock regression independently reproduced
+the receipt defect and passed54 focused cases after the correction. These are not actual app
+Gradle execution or process-concurrency evidence.
+
+Exact A helper prompt:
+
+```text
+A's one READ-ONLY explorer, Ghaf NB1. Others are editing; preserve all work, no writes/descendants/tests/Gradle/JVM/native/browsers/device/provider/credentials. B worktree /home/smyk/projects/Ghaf-demo-systems, frozen app source5d8a3e8, HEAD659f521 with in-flight80-line scripts/native/build-apk.sh pool-init delta. B lead owns that script, B helper tests tiny CMake pool and mock DSL. A reviews script and operator USB setup independently. Distinct concrete question: inspect current write_native_pool_policy init body plus android/settings.gradle and immediately referenced installed Gradle9.3.1 metadata/source/JARs or PRIMARY Gradle docs if needed: (1) does --init-script run again for these included/composite builds with same System property ghaf.nativePolicyReceipt, making createNewFile() of one path fail? (2) can p.plugins.findPlugin(pluginId).class.protectionDomain.codeSource be null for a decorated installed AGP plugin? Prior B helper proved finalizeDsl(Action) API only, do not duplicate Ninja root-cause/job-pool research. Read-only local small Python/archive inspection allowed, no Java/Gradle execution. Return exact evidence vs uncertainty and smallest correction only if supported; actual native dry-run remains separately gated. Avoid broad exploration; no credential/.env/provider reads or private data. No file or coordination edits. Need bounded result within useful review window; release allocation when done. Requested Astra/ultra, Fast unexposed.
+```
+
+Primary references are Gradle v9.3.1 BuildDefinition.startParameterForIncludedBuildFrom,
+StartParameter.prepareNewBuild, DefaultSettingsLoaderFactory.forNestedBuild and
+InitScriptHandlingSettingsLoader.findAndLoadSettings. Exact links are retained in A134 and the
+helper result. Installed JAR method references were inspected without launching Java or Gradle.
+The helper changed no file and released its allocation. Actual Astra/ultra launch was selected;
+Fast/root serving unexposed. Student exact-diff review and all physical gates remain pending.
+
+## USB installation verified and compiler-pool handoff — September12
+
+The user replied “Installation finished” to the manual MSI step. A independently verified Windows
+usbipd5.3.0, service Running and Valid publisher signature at10:37UTC. The first enumeration had
+no Samsung candidate. The user then reported connection through Type-C; the next actual Windows
+state showed one Galaxy Tab S4 at USB2-1, unshared/unattached. A supplied the exact administrator
+PowerShell bind command for this observed port. No device model number, Android version, trust,
+attachment or native pass is inferred. Real hardware identifiers remain out of tracked evidence.
+Ignored receipts are under output/native-integration/015/usbipd-5.3.0/. Prior canceled-launch and
+no-visible-window evidence is preserved as history, not rewritten as a deliberate user refusal.
+
+A inspected B's released fabe2cb script/report correction, integrated it as51d99f3 with original
+authorship, and passed shell syntax/help/diff checks. B's actual54/54 Groovy/mock checks,12edge
+installed native fixture and12step preflight are attributed to B. No duplicate app suite ran.
+A138/A140 grants the smallest --task-graph-only mode in the same script/report boundary, preserving
+all ownership, source, environment, resource, cleanup and signing constraints. B's read-only helper
+found included plugin compilation may execute during graph configuration; this phase is not called
+compile-free. No unguarded Gradle command or new application behavior is selected.
+
+Human/student exact-diff review remains pending. These contributions are tooling, coordination and
+operator documentation; they do not establish Android acceptance or student participation.
+
+A's one read-only native_handoff_claims explorer inspected the Android guide and demo script for
+stale current-facing claims against STATUS-A. It identified old disconnected wording, reinstall
+instructions after successful Windows setup, and an old build identity phrased as current. A
+applied bounded corrections while retaining failed-attempt history. No runtime/test/device action
+was performed; the helper released its allocation. Actual initial prompt:
+
+```text
+Session A one READ-ONLY helper, no descendants/jobs/tests/build/browser/device/provider/writes. Others edit; preserve all work. In /home/smyk/projects/Ghaf inspect ONLY docs/competition-readiness/android-build-and-rehearsal.md and two-device-demo.md plus canonical STATUS-A Current snapshot for a specific stale-current-instruction question. Actual current runtime5d8a3e8, full148files/1919tests+TS/lint/format PASS; no APK yet. Latest actual build VLrTIn exited143 policy stop for3clang processes, resource guard never fired. Pool script integrated51d99f3, B adding guarded task-graph-only mode; isolated tests are not app coverage. A restored canonical demo Metro79445 at8081 HTTP200 and must stop before real native/restart afterward. User completed usbipd5.3 installed/serviceRunning/Valid signature. Now Windows sees actual Galaxy Tab S4 bus2-1 but unshared; manual admin bind pending. No Android model number/OS/serial/trust/ADB/native acceptance. C first Wiam clip sound+intended transcript approved only; runtime remains silent, remaining2clips/provenance/listening pending. Recovery014 deferred, flagsalloff. Return only concrete stale current-facing statements and smallest proposed replacements; clearly historical attempts should remain historical, don't flatten chronology or rewrite whole docs. A will edit. Need bounded quick read result, release allocation when finished. Requested Astra/ultra; Fast unexposed. No other broad exploration.
+```

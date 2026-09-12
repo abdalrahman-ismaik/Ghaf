@@ -40,10 +40,10 @@ symbolic and does not establish real trees planted or measured environmental imp
 
 ## Preparation
 
-The currently offered device is a Samsung Tab S4 tablet; actual model/Android version and ADB
-visibility remain unconfirmed. Use it for initial native evidence when ready, while keeping both
-planned phone gates pending. The user's last connection report was disconnected. Do not infer
-installation or a rehearsal from the prepared Windows USB steps.
+Windows identifies the connected Galaxy Tab S4 at BUSID2-1, currently unshared. Administrator
+binding, WSL attachment and Android debugging trust remain pending; model number/Android version
+and ADB visibility are unverified. Use this tablet for initial native evidence when ready; both
+planned phone gates remain pending. Windows tool installation does not establish an app rehearsal.
 
 Install the exact same candidate APK on both phones using the
 [Android build and acceptance guide](android-build-and-rehearsal.md). Record actual models, Android
