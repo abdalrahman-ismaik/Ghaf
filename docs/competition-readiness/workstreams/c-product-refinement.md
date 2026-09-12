@@ -1,0 +1,289 @@
+# C native batch — selected onboarding and a bounded product proposal
+
+Session `C-20260912T011718Z-root`; prepared branch `redesign/native-ui-20260912`, initial
+HEAD `52c61fcab45f40b233d823a9178780fd07c56efd` (runtime `7fff0f3`). Board r25 grants this
+report only for C-N02 and C-N04 preparation. The user selected fast synthetic demo entry,
+onboarding redesign and Arabic narration repair. A is preparing Feature015; its committed
+contract and exact source grants must precede implementation. The reciprocal story below remains
+an unselected hypothesis. No report text changes app behavior, awards, release flags or storage.
+
+## Selected C-N04: reach the family experience immediately
+
+**User action:** choose one synthetic role and enter its existing home. The current six-moment
+introduction plus simulated setup/credentials obscure this first value. Reuse Family Field Journal,
+the approved botanical imagery, official mark, Alexandria headings and Readex controls. The new
+entry is an Operate surface; its optional story supplies three brief Experience moments. This
+replaces onboarding composition, not the rest of Ghaf's visual identity or authenticated navigation.
+
+### One proposed composition and storyboard
+
+The signed-out screen leads with the Ghaf lockup and language control, one short family statement,
+then three full-width, distinct profile rows: Parent, Salem, Alya. Use existing tree/avatar artwork
+as supporting identity, never as identity proof. Keep imagery compact here so all three choices
+are discoverable; no new portrait, dashboard metric or ceremonial animation. The optional story
+is a clearly separate secondary action below the selector. No login fields precede demo entry.
+A's emerging015 contract selects ordinary access through a separately configured run, so the
+demo selector has no in-app ordinary-access/mode-switch control.
+
+The optional story uses one existing approved subject image, a short title, expanded transcript,
+and simple reading/navigation controls. Give the subject a generous landscape-shaped region at
+ordinary text size; let content scroll naturally at enlarged sizes. Do not put safety copy inside
+an image. A compact top bar contains language and Skip; a persistent-in-flow entry CTA appears
+on every moment. Back and Next remain adjacent to the step indicator. No timed advance, six-dot
+legacy navigator, perimeter timer or hidden dependency on image/audio readiness remains proposed.
+
+| Screen                | Actual proposed reading/action order                                                                    | Image and interaction rationale                                                                                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Signed-out selector   | Brand/language → title/disclosure → Parent → Salem → Alya → optional story                              | Three named native controls establish the choice immediately; ordinary access stays in a separately configured run. Profile selection requests the authoritative callback once. |
+| Moment 1: safe choice | Language/Skip → one safe-action image → title/body → optional narration → 1 of 3/Back/Next → Enter demo | One concrete approved task explains the family action without implying a whole executable catalog.                                                                              |
+| Moment 2: help        | Same structure, help/support image and copy; 2 of 3                                                     | Make permitted help and Parent responsibility explicit; no simulated chat or live notification.                                                                                 |
+| Moment 3: recognition | Same structure, approved symbolic-growth image; 3 of 3; final action returns to the selector            | Describe confirmation before growth. An onboarding image is an illustration, never a new Seed event.                                                                            |
+
+At the first story moment, Back returns to the selector; later Back returns one moment. Skip,
+Enter demo and the final action return to the signed-out selector without choosing a profile.
+Android Back follows that same intent when A connects the route/reducer. `onOpenStory` always
+starts at moment 1 with silence. `onReplayNarration` replays only the current body. The last
+moment has no Next action: its Enter demo control calls `onEnterDemo` to return to the selector. A owns final mode-selection and normal-access boundary semantics.
+
+### Proposed bilingual selector and control copy
+
+Copy below is a review packet, not a second runtime resource authority. A owns canonical resource
+integration; named Arabic review is **PENDING**. Existing synthetic spelling is `سالم` / Salem
+and `علياء` / Alya. The family display-name reconciliation remains A's contract decision; no
+invented Parent personal name is inserted here.
+
+| Role/key         | Arabic proposal                                              | English equivalent                                                    |
+| ---------------- | ------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Entry title      | خطوة صغيرة، ننجزها معًا                                      | A small step, done together                                           |
+| Entry disclosure | عرض تجريبي ببيانات افتراضية. اختر وليّ الأمر أو أحد الطفلين. | A demo with synthetic data. Choose the Parent or one of the Children. |
+| Parent           | وليّ الأمر                                                   | Parent                                                                |
+| Parent purpose   | راجع المهمة وقدّم الدعم                                      | Review the task and offer support                                     |
+| Salem            | سالم                                                         | Salem                                                                 |
+| Salem purpose    | جرّب المهمة واطلب المساعدة                                   | Try the task and ask for help                                         |
+| Alya             | علياء                                                        | Alya                                                                  |
+| Alya purpose     | استكشف ملف علياء التجريبي                                    | Explore Alya’s demo profile                                           |
+| Breadth notice   | المهمة القابلة للتجربة متاحة لسالم فقط في هذا العرض.         | The executable task is available only to Salem in this demo.          |
+| Restart notice   | تبدأ تجربة جديدة عند إعادة تشغيل التطبيق.                    | Restarting the app begins a fresh demo run.                           |
+| Optional story   | تعرّف إلى غاف                                                | Discover Ghaf                                                         |
+| Enter/skip       | دخول العرض التجريبي / تخطّي المقدمة                          | Enter demo / Skip introduction                                        |
+| Back/Next        | السابق / التالي                                              | Back / Next                                                           |
+| Audio            | استمع / إيقاف / استمع مجددًا                                 | Listen / Stop / Listen again                                          |
+| Missing audio    | السرد الصوتي غير متاح. يمكنك قراءة النص والمتابعة.           | Narration is unavailable. Read the text and continue.                 |
+| Entry busy       | جارٍ فتح الملف التجريبي…                                     | Opening demo profile…                                                 |
+| Entry failure    | تعذّر فتح الملف التجريبي. حاول مجددًا.                       | The demo profile could not open. Try again.                           |
+| Image fallback   | الصورة غير متاحة؛ النص يشرح هذه الخطوة.                      | The image is unavailable; the text explains this step.                |
+
+No “secure account,” “online,” delivery, payment or measured impact claim is proposed. Detailed
+error wording must reflect A's actual result type; a generic message cannot hide corrupted mode
+or authority. The three-value principal union belongs to A/B, not these display labels.
+
+### Recording packet: exact proposed body transcripts
+
+Each body below is both the full visible transcript and the proposed spoken clip. Titles are
+visible but not additional hidden spoken sentences. This gives one exact parity authority after
+A accepts the text. No old clip can be relabelled as matching these scripts. Spoken numbers,
+punctuation and pauses are reviewed with the actual recording, not inferred from file metadata.
+
+| Moment          | Arabic title and body                                                                                                                                                                                                                                       | English title and body                                                                                                                                                                                                                                                                                                           |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — choice      | **نختار خطوة آمنة معًا** — يختار الطفل من المهام التي وافق عليها وليّ الأمر. في هذا العرض، يجرّب سالم فرز مواد نظيفة قابلة لإعادة التدوير، مع إشراف شخص بالغ.                                                                                               | **Choose a safe step together** — The Child chooses from tasks approved by the Parent. In this demo, Salem tries sorting clean recyclable materials with adult supervision.                                                                                                                                                      |
+| 2 — help        | **المساعدة جزء من المهمة** — قبل قبول المهمة، يمكن للطفل طلب نسخة أصغر يراجعها وليّ الأمر. المساعدة المسموح بها لا تقلّل المكافأة المتفق عليها. إرشادات الذكاء الاصطناعي هنا أمثلة مُعدّة للمهمة المعتمدة وقد تخطئ؛ ويمكن للطفل سؤال وليّ الأمر عند الحاجة. | **Help is part of the task** — Before accepting the task, the Child can ask the Parent to review a smaller version. Permitted help does not reduce the agreed award. The AI guidance here uses prepared examples for the approved task and may be wrong; the Child can ask the Parent when needed.                               |
+| 3 — recognition | **نقدّر الفعل، ثم تنمو الحديقة** — بعد تأكيد وليّ الأمر إكمال هذه المهمة وتقدير ما أُنجز، تُضاف البذور وتُظهر الحديقة الخاصة نموًا رمزيًا. لا يثبت ذلك زراعة أشجار أو أثرًا بيئيًا مقاسًا. هذا العرض محلي؛ تبدأ تجربة جديدة عند إعادة تشغيل التطبيق.        | **Recognize the action, then grow the garden** — After the Parent confirms completion of this task and praises the action, Seeds are added and the private garden shows symbolic growth. This does not prove trees were planted or environmental impact was measured. This demo is local; restarting the app begins a fresh run. |
+
+Proposed six new clips: three Arabic and three English, bundled MP3, natural neutral delivery,
+no music mixed into narration and no imitation of a person. Do not prescribe a runtime TTS voice:
+the existing defect concerns bundled recordings. Reuse an already approved method only after the
+reviewed text and method are available. No paid service, new account, voice cloning, real Child
+recording or unreviewed uploaded content is selected. Current reviewer/method/new clips: **none**.
+Audio acceptance is **BLOCKED**, while the complete silent visual path can proceed when granted.
+
+Recording acceptance sheet per clip: script version/hash; locale/moment; generation or recording
+method; provider/voice/settings and applicable rights; source file/hash; reviewer name/date;
+actual phone/headphone or speaker setup; grammar, Ghaf pronunciation, prosody, pauses, pace,
+volume, comprehensibility and exact transcript match; accepted/rejected with reason. Do not fill
+these fields with a helper's source review. No takes have been generated or rejected in this run.
+
+### Props/state handoff proposed to A
+
+Use separate props-only selector/story components, with a small controller-owned view model.
+Selector receives a keyed presentation for exactly `parent_al_noor`, `child_salem` and
+`child_alya`, rendered once each, never an arbitrary length-three array, plus `idle | entering | error`,
+pending principal, localized error/disclosure and `onSelectPrincipal`, `onCancelEntry`, `onOpenStory`,
+`onLocaleChange`. Story receives a three-value moment, localized copy,
+approved artwork ID, narration state and `onBack`, `onNext`, `onSkip`, `onEnterDemo`,
+`onPlay`, `onStop`, `onReplayNarration`, `onLocaleChange`. A chooses the final typed file/interface.
+
+Components never import access controllers, fake credentials, write `role`, seed the family,
+mutate progression or route around a denied command. A owns authority, async invalidation,
+navigation reset, mode config, canonical resources and lifecycle cancellation. New files can
+live beside existing `src/components/onboarding/`; do not add routes or duplicate primitive APIs.
+
+| State/trigger                          | Visible result and callback requirement                                                                                                                                                                                                                                                               |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Idle selector                          | Three complete named controls, no preset principal/session. Accessible name combines role/name and purpose; no auto-entry.                                                                                                                                                                            |
+| Entering                               | Selected control shows actual busy text; all entry controls disabled against repeated taps. No artificial delay. Story/locale controls also disable while entering; an explicit Cancel/Back calls `onCancelEntry` before returning to idle. A owns invalidation, so stale completion cannot navigate. |
+| Entry failure                          | Inline announced error; retry reuses `onSelectPrincipal(errorPrincipal)` only when A marks the error retryable. Mode/corruption errors follow A's recovery action. No partial-authority home or changed-progress implication.                                                                         |
+| Story normal                           | Full transcript available immediately; steps move only from explicit controls. Play/Stop/Replay is optional.                                                                                                                                                                                          |
+| Missing/loading image                  | Stable subject space or compact fallback; text, Skip and entry usable throughout. Image readiness does not gate input.                                                                                                                                                                                |
+| Missing/unreviewed/failed clip         | Silent readable story and localized unavailable notice; no playback of old or wrong-language audio.                                                                                                                                                                                                   |
+| Step/locale/Back/Skip/entry/background | Existing player receives stop/cancel; stale completion cannot start another clip or advance. Reentry remains silent.                                                                                                                                                                                  |
+| Screen reader                          | Native reading order follows visual order; no automatic narration competition. Spoken-control policy supplied by A's narrator; human TalkBack evidence pending.                                                                                                                                       |
+| Enlarged text/reduced motion           | Wrapping expands layout, actions remain reachable; image shrinks or scrolls before essential text. No text shrink/truncation or animation delay.                                                                                                                                                      |
+
+Meaningful checks after grant: selected principal callback and duplicate suppression; error retry;
+Back/Skip/locale callback mapping; narration stop/replay and stale completion with real player
+adapter tests; image failure and silent fallback. A/B tests own authorization/progress isolation.
+One AR/EN ×320/390 normal/enlarged-state browser pass, one correction confirmation; loaded source
+identity must match candidate. Phone TalkBack/Back/font/audio tests remain D-owned evidence.
+
+### Selected reference ideas and rejected alternatives
+
+The existing [template catalog](../template-catalog.md) is the provenance source; archives were
+not extracted or executed again. **Quickfit — Shadhin** (filename attribution), four tour moments
+inside eight artboards: use one subject/concept and clear Skip/Next; reject fitness metrics, cyan
+identity and imported photos. **Notes — Atiq31416** (filename attribution), three artboards: use
+image → short text → action rhythm; reject unrestricted notes and location reminders. **Music —
+Atiqur Rahaman/atiq31416** (embedded creator attribution), Now Playing/Lyrics: distinguish current
+audio from expanded transcript; reject autoplay, streaming shelves and decorative waveform.
+Its personal-use notice does not establish asset redistribution rights. **Booking — Hoangpts**
+(filename attribution): consistent selection/busy/error anatomy, without rating Children or
+artificial waiting. Only composition ideas are used; all runtime artwork remains approved Ghaf art.
+
+Reject another three-theme comparison, repeated icon-card feature lists, autoplay narration,
+mandatory tutorial completion, fake generation progress, and a single authenticated role toggle.
+The requested three-moment structure comes from the user/A contract, not from copying Quickfit.
+
+## C-N02 optional proposal: make support reciprocal on the same task
+
+This section is not selected implementation. Existing recent work improved correctness and
+presentation; calendar, generic study/custom goals, money practice, maps, free chat and memory
+have not shipped. Reuse [A's service/access/audio findings](a-product-service-review.md) and
+[existing research](../research-and-product-strategy.md); recovery014 remains deferred despite
+the earlier strategy's proposed ordering. Do not reopen the completed audits or implement memory.
+
+The strongest small hypothesis is a **specific support agreement attached to an accepted task**:
+Salem chooses the attainable approved recycling task; may request that the Parent sort the first
+items with him; the Parent explicitly accepts that support action or offers another time; after
+the real activity, each may acknowledge what they did. This makes the adult's action visible
+without rewarding closeness, creating a chat platform or assessing who is a good Parent/Child.
+
+The full reciprocal hypothesis includes two acknowledgments, but the smallest recommended
+acceptance story is only **one Child request and one Parent acknowledgment**. Optional completion
+acknowledgments can follow later without holding task completion hostage. Parent unavailability
+must offer a smaller safe plan or postponement through the existing domain flow; it is not a
+public rejection, lost Seed event or failure badge.
+
+### Evaluate the ideas as parts of one relationship
+
+| Idea/current truth                                                                    | Concrete future behavior and family interaction                                                                             | Evidence, feasibility and limitation                                                                                                                                                                                | Decision, seams and relative effort                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Calendar: no executable schedule; Feature008 rhythms are descriptions                 | Agree one optional task window, let Child request moving it; Parent confirms the change in person                           | Clear agreement may aid coordination: design inference, not app efficacy. Offline feasible; date/timezone, cancellation and no-response require real semantics. A month grid adds no family action by itself.       | Propose later, after explicit selection. Task planning model + Parent/Child contextual views, no Google sync. Medium vs the small request story.                                                              |
+| Study/custom goals: catalog previews and gated finite learning, no generic study mode | Choose one short practice strategy; Parent offers a worked example or checks the Child's explanation; agree a later revisit | Retrieval-practice evidence supports practice with feedback, not a timer/marks dashboard. Curriculum and cultural applicability remain unresolved. Offline authored examples feasible.                              | Propose later, separately reviewed material + task/learning adapter. Medium–large. Education stays ineligible for Family Rewards; no cash for grades.                                                         |
+| Money literacy: private Reward promise exists, no wallet or budgeting                 | Discuss two synthetic spending/saving allocations and explain one choice; equivalent route for families without allowance   | CFPB provides a developmental design framework, not proof a balance screen teaches competence. Offline exercise feasible; age/material review needed.                                                               | Propose later as zero-progression finite learning, separate from Seeds/Reward. Medium. No custody, transfers, investment, debt or exchange rate.                                                              |
+| Maps: no tracking, live map or visit proof                                            | Parent reads a curated shared-outing card and chooses an indoor equivalent if unsuitable                                    | Shared activity rationale is a design hypothesis; no new scientific claim. Offline place cards feasible; real navigation needs separate reviewed transport/privacy/service scope.                                   | Propose later; curated content/list first, map optional. Medium–large. Reject surveillance, arrival awards and Child coordinate collection.                                                                   |
+| Chat: “ask an adult” is a local instruction, no delivered request                     | One task-bound request followed by Parent acknowledgment on the same primary phone                                          | Specific language/listening/credible support follows UNICEF guidance. This is not validated family-outcome improvement. Offline local handoff is demonstrable and explainable; secondary phone remains independent. | Recommend smallest proposal for later selection. Small: version-bound finite request projection + two existing task surfaces. Reject free chat, inbox/unread pressure, push and emotional disclosure prompts. |
+| Memory leaf: absent; recovery deferred                                                | Later private acknowledgment of an accepted shared event, no award or unlock authority                                      | A useful reminder is only a hypothesis. Cannot honestly promise durability now. Visibility/deletion/content/minimal evidence need another contract.                                                                 | Defer beyond recovery decision and native validation; no leaf/timeline in this acceptance story. Medium dependent work.                                                                                       |
+
+### Evidence used without outcome claims
+
+Three relevant original references from the existing report were reopened on 2026-09-12;
+no new competitor search, archive extraction or interviews were performed. UNICEF recommends
+clear specific language, listening, action-focused praise and keeping credible promises; this
+supports the proposed interaction as a design inference, not an app trial or proof across ages6–14.
+[UNICEF guidance](https://www.unicef.org/lac/en/parenting-lac/nurturing-care/how-communicate-effectively-young-child).
+
+Agarwal, Nunes and Blunt's classroom review examines retrieval practice and reports limited
+non-WEIRD representation. A later study story can use reviewed recall/feedback, without claiming
+Ghaf improves cognition, grades or wellbeing.
+[Institutional author record](https://remix.berklee.edu/faculty-works/12/).
+CFPB's report proposes childhood foundations and promising strategies for financial capability;
+it does not evaluate this app or validate a synthetic allocation screen.
+[CFPB report](https://www.consumerfinance.gov/data-research/research-reports/building-blocks-help-youth-achieve-financial-capability/).
+
+### Before/after and one Parent/Child storyboard
+
+| Existing loop                                           | Proposed addition                                                     | What stays unchanged                                                                        |
+| ------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Parent approves executable task and safety terms        | Parent can see an explicit task-bound support request                 | No request assigns/revises a task or relaxes adult safety responsibilities.                 |
+| Child chooses task, receives “ask an adult” instruction | Child taps a curated request such as sorting the first items together | Full accepted +12 with permitted help; no request points.                                   |
+| Parent chiefly reviews submitted completion             | Parent acknowledges a concrete support action before the family acts  | Parent may defer safely; no demand for instant response, notification or automatic handoff. |
+| Child returns to generic help copy                      | Same-task view says Parent accepted the named support action          | No chat history, free text, diagnosis or appearance of live delivery.                       |
+| Parent confirms/praises; Seeds/Garden update            | Optional acknowledgment can name the shared action after completion   | Confirmation/recognition still own all progression; opening acknowledgment earns nothing.   |
+
+Proposed sequence for a future 2–3 minute primary-phone demonstration: Parent approves the
+existing task → signed-out handoff to Salem → Salem chooses it and requests help with the first
+items → signed-out handoff to Parent → Parent acknowledges the exact support → return to Salem
+and do the real safe action with adult support → submit → Parent confirms and gives action-specific
+praise → existing +12 and symbolic Mangrove growth. This proposal adds one purposeful exchange;
+the selected quick-entry work makes presenting roles easier but does not implement this request.
+Do not spend the demo opening unimplemented calendar/map/money modules.
+
+Expected optional-agreement states: `none → requested → acknowledged`; Child may withdraw a
+pending request; Parent may return an explicit `unavailable` response with safe existing next-step
+options. A new request uses a new identifier after withdrawal/unavailability, not silent mutation
+of the previous acknowledgment. Replacement/reset invalidates the request. Any later `done`
+acknowledgment is optional and cannot gate submission or recognition. Dates and durable history
+are omitted from the smallest story; restart begins without an agreement under the existing
+process-local limitation. These are proposed semantics requiring A's exact accepted contract.
+
+Likely future seams: new small support-agreement model/reducer/service; A's existing registry and
+aggregate-store adapter; Child task help panel and Parent task/check-in context; canonical bilingual
+resources; focused authorization/idempotency/reset tests. No new route/library or arbitrary message
+store is needed. The existing A-P01 trace already established that no such request service exists.
+Do not quietly reinterpret the current help toast as a delivered agreement.
+
+Failure/privacy acceptance proposal: reject cross-family, cross-Child and changed-task/version
+requests; signed-out or Child callers cannot acknowledge as Parent; repeated taps are idempotent;
+stale async work after reset cannot revive a request; missing Parent response is neutral; no task
+title/help/accommodation/disclosure reaches League/Green/other households; no support data changes
+Seeds, lifetime, Garden, Leaf eligibility, canopy or private Reward progress. The request may
+never replace adult safety presence, create pressure to disclose emotions or force affection.
+
+**Smallest proposed acceptance story:** Given Salem's already approved canonical task on one
+synthetic phone, when Salem requests help with the first items and the Parent later acknowledges
+under a valid separate Parent session, only Salem's matching task shows that acknowledgment.
+The family can still postpone, retry or complete with permitted help. Submission awards zero;
+the existing Parent confirmation/praise/recognition awards +12 once. Alya sees no request; reset
+removes it. This is one bounded product addition, not approval to build it now.
+
+AI role: prepared current-task examples may explain a step or phrase a reviewed request. The
+human chooses/acknowledges the action. AI neither detects need, generates an agreement, judges
+Parent compliance, diagnoses the Child, listens in the background nor determines rewards.
+No additional model service is required to demonstrate the proposed reciprocal interaction.
+
+## Decisions and actual contribution record
+
+- User selection: three synthetic profiles, onboarding redesign, Arabic narration repair.
+- A implementation authority: Feature015 in progress at r25; source paths not yet granted.
+- Recommended reciprocal story: proposal only; student/user selection PENDING.
+- Named student owner, understanding/teach-back, exact-diff acceptance, Arabic script/listening
+  reviewer, device/operator settings: PENDING/unknown. No interviews or participation fabricated.
+- Root requested Astra/Ultra/Fast; fresh config reads `gpt-6-astra`/`xhigh`/`fast`, served settings
+  unexposed. Ultra is not verified for root. No config or runtime dependency changed.
+- Root authored this bounded storyboard/copy/state proposal and reused cited research/catalog;
+  no full app, template code, image or voice asset generated. Helper reviewed C-N01 diagnosis and this bounded script/interface packet read-only.
+
+Exact user prompt is the supplied Session C native-batch role instruction, mirrored in canonical
+`docs/competition-readiness/native-batch/session-c-native-ui.md`, SHA-256
+`adc2142821a4eca68cf69980bffc3122ea7b89e09fe88bbfa228212534ee33c6`. All generated wording above is a candidate
+requiring named review. Rejected directions and missing audio acceptance are explicit. No runtime
+tests/browser/native pass is claimed for this report; formatting/whitespace and source receipt
+will accompany its coherent local commit. C-N04 implementation takes priority when A grants it.
+
+### Supporting script review, not human acceptance
+
+The same one allocated helper independently reviewed only the selected scripts/interfaces. Lead
+accepted two corrections: a smaller proposal is Parent-reviewed before task acceptance (not just
+before starting), and Seeds follow explicit Parent confirmation of this task's completion. Lead
+also separated opening the story from replaying the current clip, specified final-moment entry,
+retry/cancel semantics, three distinct IDs and third-person task-bounded AI wording. A's emerging
+015 decision removed the proposed in-app ordinary-access link; ordinary mode is a separate run.
+These are draft refinements, not shipped behavior or named Arabic approval. Helper released its
+allocation with no writes, jobs or descendants. Actual user question requesting the Arabic reviewer
+name is pending; no name or approval is invented.
+
+Exact follow-up prompt:
+
+```text
+C-N01 read-only allocation released; reuse same one C r25 slot for independent script/props review. READ ONLY, no writes/coordination/browser/tests/jobs/descendants; preserve others. Exact target /home/smyk/projects/Ghaf-ui-studio/docs/competition-readiness/workstreams/c-product-refinement.md C-N04 storyboard + six proposed body transcripts only (not optional reciprocal proposal). Compare canonical /home/smyk/projects/Ghaf/docs/competition-readiness/native-batch/entry-onboarding-contract.md selected intent. Check bilingual semantic parity, safety/Parent approval, full permitted-help credit vs smaller-before-acceptance, prepared/fallible AI, symbolic-growth/restart truth, three-profile exclusivity and visible-vs-spoken parity. Flag concrete missing/misleading claims or ambiguous component state/callback interfaces to A. Do NOT represent your review as named human Arabic/cultural/listening approval; no clip exists. Do not redo access/audio service audit or D's spec/privacy review. Lead concurrently formats/commits C-N01 checklist then aligns proposed components with A's emerging015 draft. Return focused findings/release; exact prompt will be logged.
+```
