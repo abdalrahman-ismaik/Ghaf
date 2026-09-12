@@ -1,9 +1,24 @@
 # D — independent native acceptance
 
-**D-N01 collector/checklist complete; APK/device acceptance BLOCKED.** D-N01-r25
-owns the collector, this report and local ignored `output/native-acceptance/**`. D-N04-r25 is
-read-only contract review. No product source, shared tooling, board or another lead's report was
-edited. This cohesive slice is ready for A to integrate; no native acceptance is implied.
+**Collector and independent source/artifact review are complete for the recorded scope; APK and
+physical-device acceptance remain BLOCKED.** Final published runtime is
+`5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`. A's exact four-check receipt passes typecheck, lint,
+format and148files/1,919tests. D independently passed46 synthetic collector checks and76 controller
+fault tests on their separately identified source versions. No APK/device/human rehearsal pass exists.
+
+C's actual `f16112d` browser retest supports closure of duplicate headings and the demo approval
+handoff warning; D independently reviewed its artifacts. The final runtime removes only the
+ineffective web label positioning. D-R03's recorded clipping interpretation is **withdrawn after
+contrary pixel evidence**, not repaired by that property. Native font scaling remains NOT RUN.
+Historical findings below are retained in chronological order; the final disposition section
+supersedes earlier open/visual statements without erasing their evidence.
+
+D owns only the collector, assigned independent test, this report and local ignored
+`output/native-acceptance/**` under A's exact grants. Product source changes were limited to A's
+explicit transaction-source cherry-picks for testing; D made no product correction. Recovery014
+remains deferred, ordinary progress remains process-local and demo restart restores no principal.
+All native/human/audio acceptance limits remain open. This evidence is ready for integration;
+readiness for an APK demonstration has not been established.
 
 ## Identity and evidence limits
 
@@ -711,3 +726,96 @@ serialized resource/artifact grants take precedence over downloading an addition
 started a browser or installed tools. A078 assigns C the affected retest; D016/017 request for an
 independent browser allocation remains pending. A's new fullf16112d four-check receipt records
 exit0 throughout and148files/1,919tests are A's published count, not D execution or visual acceptance.
+
+## Final browser-artifact disposition and frozen build handoff
+
+Checkpoint 2026-09-12T02:28:02.582898+00:00; board38/A079–084 acknowledged.
+Final published runtime `5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`; D report base
+`fdcfe7c91f234579cf819fc755b95546373c1981` in the QA branch, which contains only the separately
+authorized transaction source sync and is not a full015 runtime checkout. B's clean
+`b317f2da6e87c5118734f2e5a56110f8f533f151` matches final runtime according to A/B's source receipt.
+No final APK is published yet. A083 grants B manifest-only generation, followed by A's explicit
+actual merged-permission review before a full build. D claims no native/heavy/browser slot.
+
+**D-R03: captured-state clipping diagnosis WITHDRAWN following contrary evidence.** D's earlier
+statement that the final Arabic glyph was cut was a visual misreading. The helper independently
+reproduced C's483-pixel green mask, matching bboxes `[90,131,148,163]` and `[91,26,149,58]`,
+normalized IoU1.0 and zero missing/extra pixels. All599 pixels differing from the observed
+background also match. More strongly, the entire original crop `(70,115,170,181)` and isolated
+reference crop `(71,10,171,76)` are exactly RGB-identical,100×66 including the full last word and
+padding. Lead independently repeated the full RGB comparison: equal bytes and no difference bbox.
+Thus a green threshold cannot hide missing faint ink in this comparison.
+
+Original canonical `ar-card-css200-secondary.png` remains SHA256
+`c5a98062115434ae4c05d6a927a06766fcd21141c0db974421cbf34aeac79488`; isolated reference
+`corrected/ar-isolated-final-word-reference.png` is
+`5caa686f603e3704d8ad3746e7789883a0c4a989051ce1b37948bc66739a5811`, both under
+`/home/smyk/projects/Ghaf/output/playwright/176426/integrated-015/`. The240×76 isolated image
+shows the same word shape with surrounding space. C records extraction into a body element with
+ReadexPro_500Medium,32px font,52px line height, RTL,198px content width and visible overflow.
+Those setup details are **attributed to C**: the granted artifact directories contain no raw
+reference-creation Playwright code/computed-style receipt. The pixels and original computed-style
+receipt are consistent with that record, but do not independently establish every setup detail.
+This bounded withdrawal is not an all-label, all-font, Arabic-language or native-scaling pass.
+
+**D-EVID-001: evidence correction complete.** Original before/relative/blurred and freshf16112d
+secondary PNGs are byte-identical. The temporary property never demonstrated a repair. A079/C037
+explicitly withdrew the claimed paired improvement; A removed the unsupported property in5d8a3e8.
+Preserve the original unsupported inference, evidence and correction. Do not describe either the
+property addition or removal as a demonstrated typography fix.
+
+**D-NATIVE-002 / C030: CLOSED for the exact recorded demo browser caller onf16112d.** D read
+`corrected-handoff.json`, including the executed Playwright click code: approve Salem's task,
+press open-Child, wait for the Salem profile selector, settle two frames, capture and inspect.
+Result: URL `/`, three profiles, no POP_TO_TOP text, no collected error/POP_TO_TOP console message.
+Loaded route name is canonical `app/parent/task/review.tsx` and contains prepareEntryReset.
+The PNG shows the selector; the receipt supplies the action evidence that a static image alone
+cannot establish. Source change prepares the root reset before sign-out, fails safely if preparation
+fails, then uses the prepared reset. Ordinary fallback is unchanged and was not passed by this
+retest. This closes only C's browser reproduction plus D's independent source/artifact review.
+D's own pointer execution, native Back, authority/counter journey and ordinary caller remain NOT RUN
+for this browser receipt. Historical D-R02 reset closure remains separately scoped.
+
+**C027 duplicate heading: CLOSED for C's four recorded AR/EN browser states onf16112d.**
+`corrected-headings.json` records actual locale switch, story open/close, snapshots and DOM
+observations: entry has four headings (title plus profiles), story one, zero nested heading nodes
+in each locale, with the intended title active. Loaded module proof records both inner text-role
+changes from canonical source. This is browser focus/DOM evidence, not TalkBack names/order.
+
+C's `corrected-card-matrix.json` records eight AR/EN×320/390×normal/CSS200 states, including the
+previously failed English selector probe now scoped successfully. It captures primary/secondary
+buttons and geometry; D read all eight results and directly viewed the320 English and390 Arabic
+stressed secondary crops, without operating the app. Arabic320 matches the original pixel evidence.
+CSS injection is a labeled browser stress test, not Android font scaling. No entire native matrix
+or new D interaction pass is inferred.
+
+Lead independently checked all81 canonical/copy artifact pairs against C's `capture-manifest.json`:
+**81/81 SHA256 matches**. D's own receipt is
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/visual-review/final-c-artifact-review.json`.
+It records UTC, absolute original/copy paths, expected/actual hashes, receipt hashes and the lead's
+RGB comparison. Host Python/Pillow analysis exited0, modified no input images and ran no browser,
+app, device or test. Raw originals remain in their granted local ignored boundaries.
+
+Loaded proof at `corrected/loaded-proof.json` records02:20:16.678Z, fonts loaded, canonical module
+names and demo mode onf16112d; no mixed-worktree preview root is accepted. C is the executor.
+A's final5d8a3e8 commit removes only one web-only style line. The heading and handoff evidence is
+reused with that exact source attribution and unchanged behavior scope; there was no further D/C
+browser run after removal. A explicitly selected no repeat for this ineffective-property removal.
+
+D read A's final receipt at
+`/home/smyk/projects/Ghaf/output/native-integration/015/full-5d8a3e8/receipt.json`:
+02:24:07.613684–02:25:11.152004UTC; runner473953; typecheck473955, lint474383, format474589,
+test474896 all exit0. Published count148files/1,919tests is attributed to A. D did not duplicate
+those checks. No pass transfers to an as-yet-unbuilt APK, signing identity, installed package,
+physical phone, cold start, offline launch or actual human rehearsal.
+
+The sole helper `/root/native_visual_evidence_review` completed and released with no writes,
+app/tests/browser/native commands or descendants. It also corrected its earlier visual reading.
+Lead accepted the independent pixel evidence and rejected both the unsupported repair claim and
+our original clipping interpretation. Actual follow-up prompt:
+
+> A081 explicitly grants bounded independent read-only review of new glyph evidence, no browser or broad investigation. C038 now captured corrected/ar-isolated-final-word-reference.png and /home/smyk/projects/Ghaf-ui-studio/output/native-ui/integrated-015/glyph-reference-comparison.json; claims original last-line bbox[90,131,148,163] and isolated bbox[91,26,149,58],483 green pixels each, IoU1 after translation; same Readex500/font32/line52/RTL outside button/card. Please assess actual recorded capture/code provenance, equal font/size/context, mask threshold interpretation and whether it supports withdrawing initial D-R03 clipping diagnosis (rather than claiming relative patch fixed it). Read images/receipts and perform read-only pixel calculations if needed; no outputs/files, app/tests/browser/native/installs/descendants. You are not alone; preserve originals and others' work. Lead independently reviews heading/handoff final artifact scope and writes D analysis receipt/report. D's one-helper quota reused, settings unchanged. Be candid about our earlier visual misreading and any remaining limits; report to D and release.
+
+Report and completed ignored review evidence are released after the scoped format/diff check and
+commit. D retains only its status writer and waits for the verified active B artifact handoff.
+Physical phones/owner authorization, actual human review and0/10 rehearsals remain unchanged.
