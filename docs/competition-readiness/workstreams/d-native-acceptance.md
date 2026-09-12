@@ -601,3 +601,61 @@ Report/test/completed ignored evidence can be released for integration. No D pro
 Next gates are the exact integrated candidate's checks/browser evidence, actual APK identity, chosen
 owner-authorized primary and secondary devices, native operation and actual listening/rehearsals.
 The collector remains ready; native/human readiness is not implied by closing this source defect.
+
+## New integrated-browser findings and actual narration rejection
+
+Checkpoint 2026-09-12T02:15:31.519912+00:00. A attributes all four checks on runtime2ecea74 to
+147files/1,914tests; D did not repeat them. Later A privacy lifecycle testc3b1cc8 adds a real-command
+prepared transcript/media/reflection handoff case without changing runtime source. C performed
+the serialized browser pass; D inspected the named failure artifact and corresponding source,
+not C's live browser.
+
+**P2 D-NATIVE-002 / C030 — OPEN, same defect under two references.** Candidate
+2ecea74f3dc0886a2be4461d701678365673beaa, browser. C actually chose Parent, created the Salem
+Green task, used the prepared clearer wording, reviewed/approved and pressed the success dialog's
+open-Child action. The selector appeared with visible “The action 'POP_TO_TOP' was not handled”;
+subsequent Salem selection still reached the assigned task. Expected: clean signed-out demo
+selector, preserved approved task and correct subsequent Child authority, without an unhandled
+navigation action. Native outcome and independent D pointer reproduction: **NOT RUN**.
+
+D read the exact original snapshot at
+`/home/smyk/projects/Ghaf/output/playwright/176426/page-2026-09-12T02-12-07-331Z.yml`,
+SHA256 `81658dda3ef489d8a4540deff202b9cb3fbc6bc10e4b512e6fdb401a40c672d7`; lines27–29
+record the warning next to the three-profile selector. D independently traced
+`app/parent/task/review.tsx` at2ecea74: continueToChild signs out, calls router.dismissAll and
+then replaces with /access/child. Ending role authority can unmount the stack before the queued
+pop. Existing public-container prepareEntryReset is already used by demo Settings; A074 owns
+any correction to the approval-handoff route and its tests. No product source was changed by D.
+
+This is a separate caller from the three historical D-R02 reset cases. Their narrow7fff0f3 closure
+stands; neither it nor the new transaction closure establishes this approval-handoff pass. D016/017
+request a short independent retest of the exact released correction with explicit browser/artifact
+allocation; no C slot or stopped-process ownership is inferred.
+
+Other C evidence remains carefully attributed:
+
+- C027 found duplicate accessibility headings in the AR/EN selector/story: one visual title but
+  two heading nodes. A072 grants C a two-file correction, retaining the outer focusable header.
+  Independent corrected-browser and native TalkBack acceptance remain pending.
+- C031 records four normal entry and12 normal story rows,12 enlarged CSS story rows, AR/EN
+  Finish/Back/reopen/focus and a labeled missing-image/reduced-motion probe. These are C browser
+  observations, not phone measurements or a D whole-matrix pass.
+- D-R03 remains **OPEN, P3 browser CSS-stress clipping**. C's new Arabic35-span200% probe
+  reproduces the cut final word at320; normal text remains readable. Focus/blur and removing a
+  transform did not fix it. A temporary label position:relative probe exposed the word and was
+  restored; this is diagnostic injection, not a released correction. The shared Button owns the
+  label, so C did not patch its card as a workaround. C's English card attempt hit a duplicate
+  hidden-route testID selector error; that row is NOT RUN, not an app failure.
+
+C026 records an actual user reply at02:08:27.912227UTC saying they heard the three recordings and
+found them very bad, requesting a different Arabic narrator. All three original Fatima-v1 Arabic
+takes are therefore **REJECTED**, not pending or approved. This is attributed to C's recorded user
+listening; D has not listened, and the user's name/playback device/context remain unspecified.
+English listening is NOT RUN. Hamed and Salma first-moment audition candidates were subsequently
+generated under A073; C032 supplies hashes and durations. They await actual user selection and
+are not accepted full narration or runtime assets. The complete silent onboarding remains selected.
+
+C explicitly closed/released browser444083 at02:14:24.994798UTC. A owns its Metro and correction
+queue; D holds no browser/server/native job or helper. APK, identified phones, native checks and
+actual primary rehearsals remain absent/NOT RUN. The new defects and rejected clips prevent a
+blanket readiness verdict while useful correction and build verification continue.
