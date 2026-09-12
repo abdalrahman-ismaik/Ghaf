@@ -4,11 +4,12 @@ The target is **one complete 2–3 minute journey on the primary Android phone**
 Android independently verifies installation, touch, responsive layout, persistence and reliability.
 The two installations have separate local state. Live synchronization is deferred.
 
-This is an operator script, not completed rehearsal evidence. Feature015 adds a build-selected
-three-profile demo selector and optional silent, three-moment onboarding. Source integration is
-complete at `5d8a3e8`, with 148 files / 1,919 tests plus typecheck/lint/format passing. No APK or physical
-rehearsal has passed yet; publish the exact built artifact/hash before executing this script.
-Earlier `7fff0f3` browser reset evidence and e02d02b checks remain historical, not native acceptance.
+This is an operator script, not completed rehearsal evidence. Feature 015 provides a build-selected
+three-profile demo selector and optional three-moment onboarding. Baseline `5d8a3e8` has a complete
+silent story and passed typecheck, lint, formatting and 1,919 tests across 148 files. Its APK is still
+being packaged. Candidate `0d23b8e` adds optional Arabic narration using the three approved Wiam
+clips; its full checks, mounted lifecycle and rebuilt APK remain pending. Neither source inspection
+nor earlier browser evidence passes physical rehearsal. Publish the exact APK hash before use.
 
 One Parent and two Child synthetic profiles (Salem and Alya) are available without credentials
 in the demo build. Enter Parent, explicitly sign out to the selector, enter Salem, then return to
@@ -67,6 +68,13 @@ QA device, not a staged live recipient of the primary phone's actions.
 These are target timings, not measured runs. Begin on the signed-out selector of the exact demo
 APK. The optional three-moment story can be shown separately during Q&A; it never blocks profile
 entry. Do not claim a prepared action or edited recording is uninterrupted live execution.
+
+Keep the optional narration outside the timed main journey. On the rebuilt narration candidate,
+Arabic offers explicit Listen, Stop and Replay controls; there is no automatic playback. English,
+screen-reader priority and unavailable-media states retain the complete text. A web preview does
+not establish native sound or interruption behavior. The three Free-plan clips have user quality
+approval, while public contest/APK rights and attribution remain unresolved; local rehearsal
+approval is not permission to publish them.
 
 | Time      | Visible action                                                                                                    | Suggested explanation and exact boundary                                                                                                |
 | --------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |

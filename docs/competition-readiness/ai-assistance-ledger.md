@@ -1037,3 +1037,27 @@ bundle/APK checks. No marker or script was changed and no reuse proof is complet
 C runtime candidate is not published. Rejected: relabel old generation as new, generic source-
 independent bypass, assuming cache validity from metadata, or making every UI change discard valid
 native outputs without checking the actual input boundary. Native/student review still pending.
+
+## T014b narration integration — September 12
+
+C released `61d2576`; A integrated it as `0d23b8e` without changing authorship. The seven-file slice
+adds the manual player adapter and exact asset resolver, wires cancellation before entry/story
+navigation, presents optional Arabic Listen/Stop/Replay controls and records focused evidence.
+C's complete prompt and contribution report are in `workstreams/c-native-ui.md` and the refreshed
+`native-batch/c-narration-continuation.md`. Its 40 tests are SSR/resolver checks, including existing
+presentation cases; they are not 40 mounted lifecycle tests.
+
+A reviewed the UI, callback wiring, source map, tests and report. A's sole read-only helper
+`narration_contract_seams` reviewed the exact hook at `61d2576` against contract `40a6299`:
+The assigned scope was actual hook lifecycle, creation and retirement: material reentry, stale
+events, permission and cleanup failures. The prompt excluded repeated SDK/pure-controller review,
+file writes, execution, descendants and native claims. It found no material defect and
+released its allocation. Actual selection was Astra/Ultra; the effective Fast tier was unexposed.
+C subsequently allocated a duplicate hook review; A192 asked C to reuse this result and focus its
+remaining work on the independent mounted harness. No duplicate review is a new test pass.
+
+A updated the task state and operator/build documentation to distinguish the frozen baseline APK
+from the new narration candidate. Full adequate-memory checks, mounted effects, exact rebuilt APK,
+physical listening/interruption, public asset rights and student review remain pending. The earlier
+768 MiB TypeScript heap failure is retained. No human approval of the exact source diff or new
+control-label editorial review was invented. Recovery 014 and release flags remain deferred/off.

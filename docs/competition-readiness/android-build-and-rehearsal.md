@@ -355,8 +355,10 @@ identity, offline launch, audio listening and real rehearsals remain NOT RUN.
 Preparation sourcefa9821c adds a separate pure optional-playback controller, bilingual control
 interfaces and the three exact approved Arabic files.44controller and49shared tests, scoped
 formatting, source review and asset/script hashes pass. D independently reviewed the source and
-committed asset identities. The adapter/UI remains C's separate T014b slice; this is not an APK
-that plays the new narration. The frozen A171 build still uses5d8a3e8.
+committed asset identities. C's adapter/UI source was subsequently released as `61d2576` and integrated as `0d23b8e`.
+Its 40 focused SSR/resolver tests passed, and bounded source review found no material defect.
+Actual mounted effects, native playback and the new full candidate checks remain pending. There
+is no narration APK yet: the frozen A171 build still uses `5d8a3e8`.
 
 A full TypeScript attempt at a temporary768MiB heap limit failed from Node heap exhaustion on
 12September at12:01:08UTC. It emitted no source diagnostic, but it did not pass. Adequate-memory
