@@ -9,6 +9,7 @@ readonly KEY_SHA=221e0a3106aa4c3ccc154e0a418b55020b3f9ea6e84f92e8749cd9e2f39f5e5
 readonly GRADLE_SHA=b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76beaff06
 STARTED=$(date -u +%FT%TZ)
 MODE=preflight
+ENTRY_MODE=ordinary
 ROOT= EXPECTED_HEAD= SOURCE_COMMIT= JDK= SDK= OUTPUT= CACHE=
 SIGNING=0 HEAVY_ACK= METRO_ACK= LICENSE_ACK= APPROVED_PERMISSIONS=
 RUN= CHILD_PID= LAST_LOG= STEP=0
@@ -28,6 +29,7 @@ Required in both modes:
   --sdk-root ABS_PATH           Approved SDK within output/native-toolchain/
   --output-dir ABS_PATH         Existing directory within output/native-build/
   --cache-dir ABS_PATH          Existing directory within output/native-cache/
+  --entry-mode ordinary|demo    Default ordinary; demo requires A's selected015 source
   --allow-internal-debug-signing
                                Opt in to the unchanged Expo template debug identity
 
@@ -43,6 +45,8 @@ Generation/Gradle modes require explicit coordination/terms receipt references:
 Inputs inspected: JDK 17, SDK 36, Build Tools 36.0.0, NDK 27.1.12297006,
 CMake 3.30.5, template Gradle 9.3.1. Their compatibility is NOT yet proven.
 Private dependencies must match package-lock.json; no linked/shared node_modules.
+Entry mode is supplied only through this option, never inherited environment or
+dotenv. Demo sets EXPO_PUBLIC_GHAF_DEMO_ENTRY=true in the controlled child environment.
 Generation uses installed Expo prebuild --platform android --no-install only when
 android/ is absent. Existing trees need this script's matching generation receipt.
 Only package.json android/ios script normalization is tolerated and retained for A.
@@ -50,9 +54,8 @@ No automatic restore, clean generation, signing-key replacement, upload or insta
 A changed source/generation identity stops reuse: A must grant archival and fresh
 generation of the owned android tree. The script never archives or cleans it itself.
 
-Build resource policy: one process group on two allowed CPUs, two Gradle workers,
-no parallel Gradle,
-2 GiB Java heap / 512 MiB metaspace, 1536 MiB Node heap and two CMake jobs.
+Build resource policy: two allowed CPUs, one Gradle worker, no parallel Gradle,
+1536 MiB Java heap / 512 MiB metaspace, 1024 MiB Node heap and one CMake job.
 These are individual limits, NOT a total memory cap. Owned descendants are tracked
 by boot/PID/start identity, including separate daemon groups, and stopped on low
 available memory, sustained paging or low disk; logs and generated files remain.
@@ -156,12 +159,13 @@ while (($#)); do
       [[ "$1" == --build ]] && MODE=build || MODE=manifest
       shift ;;
     --allow-internal-debug-signing) SIGNING=1; shift ;;
-    --project-root|--expected-head|--source-commit|--jdk-home|--sdk-root|--output-dir|--cache-dir|--heavy-slot-ack|--metro-release-ack|--sdk-license-ack|--approved-permissions)
+    --project-root|--expected-head|--source-commit|--jdk-home|--sdk-root|--output-dir|--cache-dir|--entry-mode|--heavy-slot-ack|--metro-release-ack|--sdk-license-ack|--approved-permissions)
       need_value "$@"
       case "$1" in
         --project-root) ROOT=$2 ;; --expected-head) EXPECTED_HEAD=$2 ;;
         --source-commit) SOURCE_COMMIT=$2 ;; --jdk-home) JDK=$2 ;;
         --sdk-root) SDK=$2 ;; --output-dir) OUTPUT=$2 ;; --cache-dir) CACHE=$2 ;;
+        --entry-mode) ENTRY_MODE=$2 ;;
         --heavy-slot-ack) HEAVY_ACK=$2 ;; --metro-release-ack) METRO_ACK=$2 ;;
         --sdk-license-ack) LICENSE_ACK=$2 ;;
         --approved-permissions) APPROVED_PERMISSIONS=$2 ;;
@@ -170,6 +174,7 @@ while (($#)); do
     *) fail "Unknown option: $1 (see --help)" ;;
   esac
 done
+[[ "$ENTRY_MODE" == ordinary || "$ENTRY_MODE" == demo ]] || fail 'Entry mode must be ordinary or demo.'
 for value in ROOT EXPECTED_HEAD SOURCE_COMMIT JDK SDK OUTPUT CACHE; do
   [[ -n "${!value}" ]] || fail "Missing required input: $value (see --help)"
 done
@@ -226,8 +231,8 @@ for value in HEAVY_ACK METRO_ACK LICENSE_ACK; do
   [[ "${!value}" != *$'\n'* && "${!value}" != *$'\r'* ]] || fail 'Acknowledgment references must be one line, without credentials.'
 done
 RUN=$(mktemp -d "$OUTPUT/$(date -u +%Y%m%dT%H%M%SZ)-$MODE.XXXXXX")
-printf 'start_utc=%s\nmode=%s\nhead=%s\nsource_commit=%s\nroot=%s\nscript_sha256=%s\nsigning=internal-rehearsal-template-debug-only\nheavy_slot_ack=%s\nmetro_release_ack=%s\nsdk_license_ack=%s\n' \
-  "$STARTED" "$MODE" "$EXPECTED_HEAD" "$SOURCE_COMMIT" "$ROOT" "$(sha256sum "${BASH_SOURCE[0]}" | awk '{print $1}')" \
+printf 'start_utc=%s\nmode=%s\nentry_mode=%s\nhead=%s\nsource_commit=%s\nroot=%s\nscript_sha256=%s\nsigning=internal-rehearsal-template-debug-only\nheavy_slot_ack=%s\nmetro_release_ack=%s\nsdk_license_ack=%s\n' \
+  "$STARTED" "$MODE" "$ENTRY_MODE" "$EXPECTED_HEAD" "$SOURCE_COMMIT" "$ROOT" "$(sha256sum "${BASH_SOURCE[0]}" | awk '{print $1}')" \
   "$HEAVY_ACK" "$METRO_ACK" "$LICENSE_ACK" > "$RUN/receipt.txt"
 printf 'Receipt: %s\n' "$RUN"
 if [[ -n "$APPROVED_PERMISSIONS" ]]; then
@@ -359,7 +364,15 @@ CHILD_ENV=(env -i "PATH=$JDK/bin:$(dirname "$NODE"):/usr/bin:/bin" "HOME=$HOME" 
   "ANDROID_USER_HOME=$CACHE/android-user" "GRADLE_USER_HOME=$CACHE/gradle" \
   "XDG_CACHE_HOME=$CACHE/xdg" "__UNSAFE_EXPO_HOME_DIRECTORY=$CACHE/expo" "TMPDIR=$CACHE/tmp" \
   "GRADLE_OPTS=-Djava.io.tmpdir=$CACHE/tmp" \
-  'NODE_OPTIONS=--max-old-space-size=1536' CMAKE_BUILD_PARALLEL_LEVEL=2)
+  'NODE_OPTIONS=--max-old-space-size=1024' CMAKE_BUILD_PARALLEL_LEVEL=1)
+DEMO_ENTRY_VALUE=false
+if [[ "$ENTRY_MODE" == demo ]]; then
+  [[ -f src/config/demoEntry.ts ]] || fail 'Demo entry requires the selected015 source configuration.'
+  DEMO_ENTRY_VALUE=true
+fi
+CHILD_ENV+=("EXPO_PUBLIC_GHAF_DEMO_ENTRY=$DEMO_ENTRY_VALUE")
+printf 'EXPO_PUBLIC_GHAF_DEMO_ENTRY=%s\n' "$DEMO_ENTRY_VALUE" >> "$RUN/receipt.txt"
+printf 'gradle_heap_mib=1536\ngradle_metaspace_mib=512\nnode_heap_mib=1024\ngradle_workers=1\ncmake_jobs=1\nmetro_workers=1\n' >> "$RUN/receipt.txt"
 mkdir -p "$CACHE/tmp" "$CACHE/gradle" "$CACHE/xdg" "$CACHE/expo" "$CACHE/android-user"
 step ninja-version "$SDK/cmake/3.30.5/bin/ninja" --version
 step ndk-clang-version "$SDK/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/clang" --version
@@ -420,14 +433,38 @@ capture_delta() {
   git diff -- package.json > "$RUN/package.prebuild.diff"
   cp package.json "$RUN/package.after.json"
 }
+configure_generated_bundle() {
+  python3 - "$ROOT" "$RUN" <<'PYBUNDLE'
+import difflib, hashlib, json, pathlib, re, sys
+root, run = map(pathlib.Path, sys.argv[1:])
+path = root / 'android/app/build.gradle'
+if path.is_symlink() or path.resolve() != path or not path.is_file():
+    sys.exit('BLOCKED: fresh app Gradle file is missing or linked; preserve native output.')
+before = path.read_text()
+anchor = 'react {\n'
+if before.count(anchor) != 1 or re.search(r'^\s*extraPackagerArgs\b', before, re.M) or before.count('bundleCommand = "export:embed"') != 1:
+    sys.exit('BLOCKED: fresh Expo bundling configuration differs; preserve it for A review.')
+after = before.replace(anchor, anchor + '    extraPackagerArgs = ["--max-workers", "1"]\n', 1)
+(run / 'app-build.before.gradle').write_text(before)
+(run / 'app-build.metro.diff').write_text(''.join(difflib.unified_diff(before.splitlines(True), after.splitlines(True), fromfile='before/android/app/build.gradle', tofile='after/android/app/build.gradle')))
+path.write_text(after)
+(run / 'app-build.after.gradle').write_text(after)
+receipt = {'policy': 'expo-embed-one-worker-v1', 'metro_max_workers': 1,
+           'before_sha256': hashlib.sha256(before.encode()).hexdigest(),
+           'after_sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+(run / 'app-build.metro.json').write_text(json.dumps(receipt, indent=2) + '\n')
+print(json.dumps(receipt))
+PYBUNDLE
+}
 generation_identity() {
-  python3 - "$ROOT" "$SOURCE_COMMIT" "$RUN" "$1" <<'PY'
+  python3 - "$ROOT" "$SOURCE_COMMIT" "$RUN" "$1" "$ENTRY_MODE" <<'PY'
 import hashlib, json, os, pathlib, sys
 root, source, run, mode = pathlib.Path(sys.argv[1]), sys.argv[2], pathlib.Path(sys.argv[3]), sys.argv[4]
 native = root / 'android'
 marker = native / '.ghaf-generation.json'
 def digest(p): return hashlib.sha256(p.read_bytes()).hexdigest()
-identity = {'source_commit': source, 'lock_sha256': digest(root / 'package-lock.json'),
+identity = {'source_commit': source, 'entry_mode': sys.argv[5], 'lock_sha256': digest(root / 'package-lock.json'),
+            'metro_policy': 'expo-embed-one-worker-v1', 'metro_max_workers': 1,
             'app_config_sha256': digest(root / 'app.config.ts'), 'template_sha256': digest(root / 'node_modules/expo/template.tgz'),
             'wrapper_sha256': digest(run / 'approved-gradle-wrapper.properties')}
 inventory = {}
@@ -464,6 +501,7 @@ else
   cmp "$RUN/template-gradle-wrapper.properties" android/gradle/wrapper/gradle-wrapper.properties || fail 'Fresh wrapper differs from template; preserve generated tree for A.'
   cp "$RUN/approved-gradle-wrapper.properties" android/gradle/wrapper/gradle-wrapper.properties
   diff -u "$RUN/template-gradle-wrapper.properties" android/gradle/wrapper/gradle-wrapper.properties > "$RUN/gradle-wrapper-checksum.diff" || [[ $? == 1 ]]
+  step configure-metro-worker configure_generated_bundle
   step record-generated-tree generation_identity record
 fi
 capture_delta
@@ -485,9 +523,9 @@ compile() {
   (
     cd "$ROOT/android"
     exec setsid taskset -c "$cpu_set" "${CHILD_ENV[@]}" ./gradlew "$GRADLE_TASK" -Pandroid.cmakeVersion=3.30.5 -Pandroid.builder.sdkDownload=false \
-      --no-daemon --no-parallel --max-workers=2 \
+      --no-daemon --no-parallel --max-workers=1 \
       -Pkotlin.compiler.execution.strategy=in-process \
-      "-Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp"
+      "-Dorg.gradle.jvmargs=-Xmx1536m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=$CACHE/tmp"
   ) &
   CHILD_PID=$!
   printf 'owned_process_root=%s\n' "$CHILD_PID" >> "$RUN/receipt.txt"
@@ -528,9 +566,9 @@ step "gradle-$MODE" compile
 step after-compile-inputs check_inputs
 step after-compile-native generation_identity verify
 if [[ "$MODE" == manifest ]]; then
-  step merged-manifest-review python3 - "$ROOT" "$RUN" <<'PYMANIFEST'
+  step merged-manifest-review python3 - "$ROOT" "$RUN" "$SOURCE_COMMIT" "$ENTRY_MODE" <<'PYMANIFEST'
 import hashlib, json, pathlib, shutil, sys, xml.etree.ElementTree as ET
-root, run = map(pathlib.Path, sys.argv[1:])
+root, run = map(pathlib.Path, sys.argv[1:3])
 base = root / 'android/app/build'
 files = sorted(p for p in (base / 'intermediates').glob('**/AndroidManifest.xml')
                if p.parent.name == 'processReleaseMainManifest' and 'release' in p.parts)
@@ -550,6 +588,8 @@ if not reports:
 for index, report in enumerate(reports):
     shutil.copyfile(report, run / f'manifest-merger-{index}.txt')
 receipt = {'source_manifest': str(manifest), 'sha256': hashlib.sha256(manifest.read_bytes()).hexdigest(),
+           'source_commit': sys.argv[3], 'requested_entry_mode': sys.argv[4],
+           'entry_mode_evidence': 'build input only; manifest does not establish JS entry behavior',
            'package': tree.get('package'), 'permissions': permissions,
            'permission_declarations': [dict(e.attrib) for e in tree if e.tag in ('uses-permission', 'uses-permission-sdk-23')],
            'allowBackup': application.get(ns + 'allowBackup'), 'merger_reports': [str(p) for p in reports],
@@ -575,9 +615,9 @@ step apk-permissions "$SDK/build-tools/36.0.0/aapt" dump permissions "$APK"
 PERMISSIONS_LOG=$LAST_LOG
 step apk-manifest "$SDK/build-tools/36.0.0/aapt" dump xmltree "$APK" AndroidManifest.xml
 MANIFEST_LOG=$LAST_LOG
-step verify-artifact python3 - "$APK" "$RUN/template-cert.der" "$SIGNATURE_LOG" "$BADGING_LOG" "$PERMISSIONS_LOG" "$MANIFEST_LOG" "$CONFIG_LOG" <<'PY'
+step verify-artifact python3 - "$APK" "$RUN/template-cert.der" "$SIGNATURE_LOG" "$BADGING_LOG" "$PERMISSIONS_LOG" "$MANIFEST_LOG" "$CONFIG_LOG" "$SOURCE_COMMIT" "$ENTRY_MODE" <<'PY'
 import hashlib, json, pathlib, re, sys, zipfile
-apk, cert, signature, badging, permissions, manifest, config = map(pathlib.Path, sys.argv[1:])
+apk, cert, signature, badging, permissions, manifest, config = map(pathlib.Path, sys.argv[1:8])
 def reject(message): sys.exit('BLOCKED: ' + message)
 expected_cert = hashlib.sha256(cert.read_bytes()).hexdigest()
 certs = re.findall(r'^Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]+)$', signature.read_text(), re.M)
@@ -602,8 +642,8 @@ if actual_permissions != expected_permissions:
 with zipfile.ZipFile(apk) as archive:
     entries = archive.infolist()
     names = [i.filename for i in entries]
-    bundles = [i for i in entries if i.filename == 'assets/index.android.bundle' and i.file_size > 0]
-    if not bundles: reject('APK has no nonempty bundled JavaScript/Hermes payload.')
+    bundles = [i for i in entries if i.filename == 'assets/index.android.bundle']
+    if len(bundles) != 1 or bundles[0].file_size <= 0: reject('APK must have exactly one nonempty bundled JavaScript/Hermes payload.')
     abis = sorted({name.split('/')[1] for name in names if name.startswith('lib/') and name.endswith('.so')})
     expected_abis = sorted(['armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'])
     if abis != expected_abis: reject('APK ABI set differs from unchanged template defaults: ' + ','.join(abis))
@@ -614,6 +654,10 @@ with zipfile.ZipFile(apk) as archive:
     if not any(i.filename.endswith(('.ttf', '.otf')) for i in assets): reject('Bundled fonts absent from APK.')
     if not any(i.filename.endswith(('.png', '.webp', '.jpg')) for i in assets): reject('Bundled image assets absent from APK.')
     inventory = {'package': package.group(1), 'version_code': package.group(2), 'version_name': package.group(3),
+                 'source_commit': sys.argv[8], 'requested_entry_mode': sys.argv[9],
+                 'EXPO_PUBLIC_GHAF_DEMO_ENTRY': 'true' if sys.argv[9] == 'demo' else 'false',
+                 'bundle_sha256': hashlib.sha256(archive.read(bundles[0])).hexdigest(),
+                 'entry_mode_acceptance': 'NOT RUN; verify selected entry on this exact APK',
                  'abis': abis, 'permissions': sorted(actual_permissions), 'certificate_sha256': expected_cert, 'apk_sha256': hashlib.sha256(apk.read_bytes()).hexdigest(),
                  'assets': [{'path': i.filename, 'bytes': i.file_size} for i in assets]}
     (apk.parent / 'artifact.json').write_text(json.dumps(inventory, indent=2) + '\n')

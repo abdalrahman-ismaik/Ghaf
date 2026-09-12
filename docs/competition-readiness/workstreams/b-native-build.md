@@ -385,3 +385,98 @@ check results. Adapter/test and this evidence slice are ready for A integration;
 remains gated on A's integrated checks/correction and pending student review. B releases the module
 and test after the recorded commit; script/report/private build paths remain held for the next
 exact015 candidate. The local commit hash is published in canonical STATUS-B, which A alone stages.
+
+## Next015 build preparation — A058/A061
+
+Adapter2fe4b09 was integrated by A as5632005. A's current producer is completing integrated015
+and the independently reproduced transaction composition correction; B has no new compilation
+grant yet. A058 selects the next DEMO candidate instead of repeating the ordinary baseline and
+lowers individual budgets to Gradle1536MiB heap/512MiB metaspace, Node1024MiB, one Gradle worker,
+one CMake job. A061 additionally approves generated-only Metro `--max-workers 1`. CPU affinity
+remains two allowed CPUs; the start/stop memory, paging and disk thresholds are unchanged. These
+limits are not a total memory cap and have not yet passed a native build.
+
+The script now accepts `--entry-mode ordinary|demo`, default ordinary for existing invocations.
+Only that explicit option can choose demo. Both values map to fixed false/true in the controlled
+child environment, never inherited EXPO_PUBLIC variables or dotenv. Run receipts record the option,
+exact public boolean and resource limits. Accepted015 requires the static build-time expression
+in src/config/demoEntry.ts; current Expo public config does not use this flag and cannot prove
+entry mode. B's partial source/preflight is not A's final integrated demo candidate.
+
+Under A061 the fresh native generation step inserts exactly one line into the existing React
+configuration: `extraPackagerArgs = ["--max-workers", "1"]`. It refuses an unexpected template,
+multiple React anchors, a missing Expo export:embed command or an already active packager setting.
+It preserves before/after Gradle files, exact diff and hashes in the run receipt before recording
+native identity. No package/config/dependency file is edited by this setting. Native identity now
+includes source, entry mode and versioned Metro policy, in addition to existing input/source-file
+hashes. Missing/legacy/different-mode markers fail instead of relabeling old build outputs. Any
+source or mode change needs A's explicit archive/fresh-generation instruction; no automatic clean.
+
+Installed-source references reviewed: Expo CLI export/embed/index.js accepts --max-workers;
+resolveOptions.js88 and exportEmbedAsync.js287/395 pass it to Metro. ReactExtension.kt96 exposes
+extraPackagerArgs and BundleHermesCTask.kt170 adds it to the command. Gradle's bundle task does not
+declare the public environment flag as an input; fresh app/build outputs are therefore required
+across source/mode regeneration. The template already supplies --reset-cache when the task runs.
+No root Metro configuration, cache purge or new library was added.
+
+Actual future APK inspection now records source, requested entry mode/public value and SHA256 of
+the single nonempty embedded `assets/index.android.bundle`, alongside the APK/signature/ABI/asset
+checks. Duplicate or empty bundle entries fail. Manifest receipts label mode as requested build
+input only. The actual earlier manifest graph invoked JS bundling; neither a manifest nor a mode
+receipt establishes successful selector behavior. D must check the exact new installed APK.
+
+### Safe verification only
+
+Initial six script cases at01:56:54–01:57:01UTC passed: help, invalid/missing mode, manifest without
+a grant, inherited demo override rejection and actual demo preflight. Four extracted identity
+cases passed ordinary record/reuse and rejected changed mode/legacy marker. Protected package,
+lock and app.config bytes remained unchanged; root android stayed absent.
+
+Final source SHA256 `77fa09a61aee7d124100093dbec5f5e8d42c25df06366d673e6d980877029efe`:
+Bash syntax and all12 embedded Python blocks passed. Exact extracted-block checks at01:59:01UTC
+passed10 behavioral cases: fresh template insertion; repeated/changed-template refusal; demo
+marker record/reuse; wrong-mode/legacy-policy rejection; synthetic APK metadata/bundle-hash
+extraction; duplicate/empty bundle rejection. These use ignored synthetic parser fixtures, not
+cryptographic verification of a real APK or a native pass. Evidence:
+`output/native-build/demo-script-final-checks/{results.json,preflight-results.json,*.log}`.
+Final ordinary and demo preflight results are retained separately; no generation, compile or
+device command was launched. The next build still needs A's exact source, free heavy/preview
+lane and the actual permission-manifest review/approved JSON before assembleRelease.
+
+Use the existing documented absolute toolchain/output/cache invocation with `--entry-mode demo`
+and A's exact source/head; start with default preflight, then A-authorized `--manifest-only`.
+After A approves the actual merged permissions, run `--build` with the same source/mode and
+`--approved-permissions` file. All heavy/preview/license ACK arguments still apply. Do not reuse
+any old ordinary APK or claim docs-only commits change runtime source.
+
+### Supporting AI and review
+
+Actual helper prompt:
+
+```text
+B next bounded READ-ONLY build-script review, one helper allocation, no descendants/writes/coordination/jobs/builds. Worktree Ghaf-demo-systems HEAD2fe4b09. A058 grants lowering next native budgets Gradle heap1536/meta512,Node1024,1Gradleworker,CMake1, unchanged stopthresholds; lead implements these script/report edits. Accepted local specs/015-demo-entry-onboarding/contracts/demo-entry-v1.md requires explicit EXPO_PUBLIC_GHAF_DEMO_ENTRY=true for A's future named candidate. Inspect current scripts/native/build-apk.sh and local mode contract to propose smallest failclosed explicit --entry-mode ordinary|demo wiring, controlled env/receipt/generation marker reuse checks. Do not implement. Independently flag exact ignored build artifacts needed to bind mode/reject stale ordinary generatedtree and whether mode influences Expo config vs only JS bundle. Lead handles resource edit and waits A response to generated-only react extraPackagerArgs=["--max-workers","1"] proposal. No root config/deps/native mutation. Return exact proposal/findings, release. Actual launch originally explicit Astra/ultra, Fast tier unexposed.
+```
+
+The helper supplied source references, mode/marker/artifact attribution recommendations and a
+read-only diff review; lead wrote script, host fixtures and report. Accepted: fixed public value,
+strict stale-mode refusal and actual bundle hash. Rejected: making ordinary mode a new required
+option, unnecessary cache cleanup and the helper's initially incorrect statement that a manifest
+phase never bundles JS. It explicitly corrected that statement against the observed task graph.
+
+Actual final review prompt:
+
+```text
+A061 now approved generated-only Metro1 injection. READ-ONLY final diff review scripts/native/build-apk.sh vs HEAD2fe4b09 for explicit mode, generated configure_generated_bundle() before/diff/hash/marker, immutable source/mode reuse and artifactbundlehash. Lead writes ignored synthetic host/parser checks and report, no actualGradle. You own no files, no tests/jobs/descendants/coordination. Do not rerun checks; inspect for concrete bugs only. Note previous wording 'manifest-only never bundles JS' rejected: actual earlier manifest graph invoked createBundleReleaseJsAndAssets; manifest receipt still cannot prove runtime mode. Defaultordinary retained, explicittrue/false env recorded, inherited overrides still rejected. Return findings, release. RequestedAstra/ultra/tierunexposed.
+```
+
+Final helper review found no concrete blocking regression within this diff, checked argument
+positions and released its allocation. No helpers/descendants/jobs remain. Student exact-diff
+review, actual APK, native cold-start, phones and rehearsals remain PENDING/NOT RUN. Script/report
+commit is released for A intake while B retains their maintenance and private build boundaries
+for the expected integrated-candidate handoff; adapter/test remain released to A.
+
+Final preflight receipts: demo12steps exit0 at01:59:13.881945–01:59:17.660696UTC,
+`20260912T015915Z-preflight.jgnIrx`; ordinary12steps exit0 at01:59:17.660731–01:59:20.949311UTC,
+`20260912T015918Z-preflight.pGzQ8T`. Both bind the final script hash above and partial source2fe4b09,
+with the exact controlled boolean and budgets; protected inputs unchanged and root android absent.
+Scoped report formatting, Bash syntax and diff checks exit0 before release.
