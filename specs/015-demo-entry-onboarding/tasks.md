@@ -11,7 +11,7 @@ B/C/D roles are actual separate leads, with one helper each and serialized heavy
 - [x] T002 D/A: Resolve D failure/privacy review in specs/015-demo-entry-onboarding/analysis.md; confirm postconditions, entry epoch, reset-failure oracle and actual source seams; commit accepted artifacts before source grants.
 - [x] T003 A: Publish shared DemoPrincipal/EntryMode/request types in src/models/demoEntry.ts and immutable exact build mode in src/config/demoEntry.ts; test strict resolution in tests/demo-entry-mode.test.ts.
 - [x] T004 A: Extract memory factory into src/services/local/memoryStorage.ts; preserve src/services/local/storage.ts ordinary behavior, explicit export src/services/local/index.ts and select all4 isolated repositories in src/services/index.ts; test storage separation in tests/demo-storage-isolation.test.ts.
-- [x] T005 A: Add narrow rollback capability to src/features/access/index.ts, src/services/interfaces/index.ts, src/features/access/parentOnboarding/controller.ts and src/features/access/childAccess.ts; drive second-marker/authorization+cleanup/throw/reentry/permission-preservation regressions in tests/demo-entry-transaction.test.ts. D-NATIVE-001 requires shared synchronous rollback scope in src/features/access/demoEntryTransaction.ts plus all-three composition regressions; A correction2ecea74 passes145focused cases including unchanged D tests; independent D retest separately pending.
+- [x] T005 A: Add narrow rollback capability to src/features/access/index.ts, src/services/interfaces/index.ts, src/features/access/parentOnboarding/controller.ts and src/features/access/childAccess.ts; drive second-marker/authorization+cleanup/throw/reentry/permission-preservation regressions in tests/demo-entry-transaction.test.ts. D-NATIVE-001 requires shared synchronous rollback scope in src/features/access/demoEntryTransaction.ts plus all-three composition regressions; A correction2ecea74 passes145focused cases including unchanged D tests; D independent unchanged8 plus existing68 =76 tests passed; native acceptance remains pending.
 
 ## Phase 2 — US1/US2: Three-profile access and current-run continuity
 
@@ -63,9 +63,11 @@ stages live coordination after a brief status-write pause/ACK. No push/main merg
 
 ## Existing-contract navigation correction after browser validation
 
-- [ ] T020 A: C030 reproduced an unhandled POP_TO_TOP warning on the demo approval dialog's
+- [x] T020 A: C030 reproduced an unhandled POP_TO_TOP warning on the demo approval dialog's
       Child handoff. Repair only app/parent/task/review.tsx using existing prepareEntryReset before
       sign-out in demo mode; fresh signed-out selector after successful sign-out, no dismissAll in
       that branch. Preserve ordinary path. tests/demo-task-handoff-route.test.tsx must exercise actual
       approval/store callbacks, unavailable root, failed sign-out and accepted handoff. This extends
-      T009 to the newly observed caller; no task/authority/product behavior change.
+      T009 to the newly observed caller; no task/authority/product behavior change. Implementedf16112d;
+      four real-route cases plus21 Parent-flow tests pass, full corrected148files/1919tests pass.
+      C affected browser and physical Android remain separate acceptance gates.

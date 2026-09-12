@@ -485,3 +485,28 @@ checks; there is no new runtime change warranting another full suite. Finished A
 report and resource boundaries are released at the final coordination checkpoint. Draft014
 proposal paths are released without acceptance; future work must obtain an exact READY grant.
 Canonical status sole-writer rules remain; a paused record does not become another lead's file.
+
+## NB1 selected entry integration — corrected source f16112d
+
+This checkpoint supersedes the preceding historical build/recovery blockers where stated.
+Recovery014 was explicitly deferred by the user; native validation does not automatically approve
+it. Local tools and SDK terms are now authorized and installed by B. Initial baseline manifest
+compilation stopped on sustained paging, exit75; no APK was produced. Corrected-source B preflight
+passed, with lower single-worker budgets; exact native build remains pending preview release.
+
+Selected Feature015 now provides the signed-out Parent/Salem/Alya demo selector, controller-owned
+role sessions, isolated memory repositories and optional three-moment bilingual onboarding.
+Current-run role handoff retains approved progress; restart clears the synthetic run and authority.
+Ordinary verification/pairing stays separate. Rejected or mismatched narration is not imported.
+
+Runtimef16112d includes three post-browser corrections: one accessible heading per demo title,
+web-only shared label positioning and fresh-root approval-to-Child handoff. Full typecheck, lint,
+format and148files/1,919tests pass; logs output/native-integration/015/full-f16112d/. D independently
+closed composite rollback using76tests. C performs the affected browser retest; no native pass.
+
+D found the original label diagnostic before/after PNGs identical. A withdraws the previous claim
+of supported visual improvement; D-EVID-001/D-R03 stay open until fresh exact-source evidence.
+Original files and failed observations remain historical evidence, not silently replaced.
+
+Student diff review, teach-back, real phones, TalkBack/font scaling/Back, actual listening, APK
+identity and rehearsals remain pending. This is an integrated candidate, not competition acceptance.

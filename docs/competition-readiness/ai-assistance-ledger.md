@@ -465,3 +465,43 @@ using the same private pinned tool/service and verified ar-SA-HamedNeural/ar-SA-
 at neutral rate/pitch. This is candidate preparation, not a guaranteed quality or rights claim.
 No new provider/account/runtime integration, full regeneration or human approval is inferred.
 C's browser task proceeds independently so audio review cannot hold the Android build resource.
+
+## NB1 corrected source and contrary visual evidence — 2026-09-12
+
+Actual C browser observations at2ecea74 prompted three bounded changes: duplicate entry/story
+headings, approval-to-Child navigation warning and enlarged Arabic secondary-button clipping.
+C's two-heading fix5cd3b91 was integrated ased51b32; A changed only web label positioning in
+af8da6c; helper approval-handoff correction isf16112d. Four focused real-route tests were added,
+with RED3fail/1pass then GREEN25including Parent task flow. Ordinary navigation is preserved.
+
+A's corrected full checks onf16112d passed typecheck, lint, format and148files/1,919tests. Receipt
+and command logs: output/native-integration/015/full-f16112d/. The full test run is not Android,
+TalkBack, actual playback or human review evidence. C now performs only affected browser retests.
+
+D independently found the old before/relative diagnostic PNGs byte-identical, SHA256
+c5a98062115434ae4c05d6a927a06766fcd21141c0db974421cbf34aeac79488. A withdraws its earlier
+claim that those paired files showed improvement. Both original evidence and contrary D report
+are preserved. D-EVID-001/D-R03 remain open pending fresh captures; no inferred visual pass.
+
+Narration authorization A071 was superseded by A073 BEFORE requests: verified Hamed and Salma,
+not Zariyah. Two first-moment auditions were produced and delivered; user selection pending.
+All three rejected Fatima-v1 takes remain excluded, English unreviewed, no runtime import.
+C reportd3f885a→97fb114 records exact generation prompts, receipts and actual rejection.
+
+A helper follow-up actual prompt for manifest preparation (read-only; outcome pending):
+
+```text
+Read-only narrow native handoff review while A updates evidence and C retests. Others are editing; preserve all work. In canonical /home/smyk/projects/Ghaf inspect scripts/native/build-apk.sh and B workstream report only for exact manifest-only → permission JSON approval → full APK continuation interface, artifact receipts/source-binding and fail-closed conditions. B runtime synced f16112d at B9c4b9dd; native not granted yet. Return the exact permission JSON schema/where approved path should live, which output manifest fields A must inspect and correct command continuation expectations. Do not repeat previous package/toolchain audit, run jobs/tests/browser, edit any file, spawn descendants or act on devices. One A read-only helper allocation; release when done. Lead handles actual manifest judgment only after generated evidence exists.
+```
+
+Student exact-diff acceptance, comprehension and actual native checks remain pending. No new
+feature, remote provider, library or release flag was activated by these corrections.
+
+C037 confirms the fresh corrected Arabic CSS crop is also byte-identical; loaded relative property
+was verified, but no improvement exists. A080 selects removing only the unsupported web property
+after C releases the browser. D-R03 remains open; no extra speculative patch or native claim.
+
+Manifest helper returned the exact two-phase interface: reviewed merged manifest then nonempty
+unique permission-name JSON array, separate full-build run, same source/mode and fresh heavy grant.
+The script checks permission names; A must additionally bind manifest hash and inspect full
+permission attributes. Read-only helper released, no code or executed build contribution.
