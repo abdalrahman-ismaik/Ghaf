@@ -131,7 +131,13 @@ export function DemoEntryScreen({
             ref={headingRef}
             tabIndex={Platform.OS === 'web' ? -1 : undefined}
           >
-            <Text brand direction={direction} language={locale} variant="parentHero">
+            <Text
+              accessibilityRole="text"
+              brand
+              direction={direction}
+              language={locale}
+              variant="parentHero"
+            >
               {restartRequired ? copy.restartRequiredTitle : copy.title}
             </Text>
           </View>

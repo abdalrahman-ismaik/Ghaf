@@ -68,7 +68,13 @@ export function DemoOnboardingStory({
         ref={headingRef}
         tabIndex={Platform.OS === 'web' ? -1 : undefined}
       >
-        <Text brand direction={direction} language={locale} variant="parentHero">
+        <Text
+          accessibilityRole="text"
+          brand
+          direction={direction}
+          language={locale}
+          variant="parentHero"
+        >
           {moment.title}
         </Text>
       </View>
