@@ -70,3 +70,32 @@ vmstat 1 3
 The audit additionally read selected cgroup limits and `/proc/meminfo`, classified executable/RSS
 records, and inspected V8 heap statistics. It did not dump inherited environment variables or
 credentials. Record fresh measurements in A's status before changing [BOARD](BOARD.md) allocations.
+
+## NB1 build guard amendment — 2026-09-12, A087
+
+The final-source manifest attempt ended with exit75 at02:27:21UTC. Three combined swap-counter
+samples exceeded1,024pages while MemAvailable remained approximately39–42%; neither the15%
+memory floor nor disk floor triggered. These counters do not separate reads/writes or identify
+which process caused paging. No OOM, app compatibility defect or proven WSL capacity limit follows.
+
+An independent five-second post-stop sample showed54.4% /4.06GiB available, zero swap-in/out,
+~421MiB swap free and memory PSI avg10zero. This supports one measured retry, not a capacity pass.
+Kernel [PSI documentation](https://docs.kernel.org/accounting/psi.html) explains that memory-pressure
+values measure time tasks stall; the build will log them separately from paging volume. Post-stop
+PSI is not a reconstruction of exact during-build pressure.
+
+For A087's script correction and a separately granted single retry:
+
+- Keep start headroom at least3GiB **and**40%, existing low heaps/one-worker budgets, one heavy job
+  and no resident preview. Do not increase helper allocations or alter host/WSL settings.
+- Stop immediately below15% available or below5GiB runtime disk free.
+- Stop after three consecutive five-second samples with both less than30% available memory and
+  more than1,024 combined paging pages; reset the streak when that conjunction is false.
+- Log separate paging directions, available percentage, swap free/used, memory PSI availability
+  and exact stop reason. Fail closed on missing essential memory/disk measurements.
+- Treat growing swap/paging above30% headroom as a warning for admitting more work, not by itself
+  an automatic running-build abort. High static swap use still limits reserve.
+
+These are conservative operational choices, not experimentally established safe limits. If the
+corrected guard stops the single retry after owned workload cleanup, preserve evidence and report
+the measured capacity blocker instead of repeatedly weakening thresholds.

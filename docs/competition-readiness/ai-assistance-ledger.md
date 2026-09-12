@@ -524,3 +524,28 @@ A074 grants exact existing-demo navigation repair in canonical Ghaf, source2ecea
 Generatedf16112d route correction and four tests; actual RED/GREEN evidence recorded above.
 The later helper reply only reproduced this prompt and released; no second implementation or
 student approval was invented. All contributions remain subject to student exact-diff review.
+
+## Local build pressure investigation and bounded tooling correction
+
+B's final-source A083 manifest attempt (20260912T022614Z-manifest.CaPVjg) ended75 during Metro
+bundling, before merged XML/APK. The existing guard treated any combined paging above1,024pages
+for three five-second samples as pressure, even with~39% memory available. Actual logs do not
+identify paging direction/source; swap use increased. No OOM or app incompatibility was inferred.
+
+A read the guard and official kernel PSI documentation, then obtained independent read-only review
+from resource_audit. It recommended correlating sustained paging with<30% available memory and
+logging directions/PSI, preserving start40%+3GiB, critical15%, disk floor and worker/heap budgets.
+A087 strengthens critical low-memory handling to immediate stop. B owns the exact script/check
+implementation; A must inspect its release before one bounded retry. No host/kernel change.
+
+Actual helper prompt:
+
+```text
+Bounded READ-ONLY resource-policy review, no writes/jobs/build/browser/descendants. Others editing; preserve. A current local read found B script scripts/native/build-apk.sh lines519–545 combines pswpin+pswpout and stops after3 samples >1024pages/5s regardless MemAvailable. Latest final-source manifest run /home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T022614Z-manifest.CaPVjg stopped75 at02:27:21, available~3050084/7829152KiB (~39%), swap grew~116MiB, no APK. Lower budgets1536Gradle/512meta/1024Node +allworkers1; no residentpreview. Do NOT repeat hardware/tools audit or pretend all paging was reads (sum log cannot distinguish). Assess current /proc memory pressure + existing docs/competition-readiness/coordination/resource-assessment.md and propose smallest conservative logging/guard correction IF evidence justifies, or exact external capacity blocker. A considers retaining 3GiB+40% start, 15% critical floor/5GiBdisk, and sustained paging correlated with <30%available rather than any swap traffic with39%free. Explain uncertainty, limits and whether narrow retry provides meaningful measured progress. Source remainsB-owned; no implementation. One A helper quota; release with concise recommendation.
+```
+
+Follow-up accepted the bounded recommendation and requested final release; no further work. Helper
+reported54.4% available and no paging in its actual five-second post-stop sample. That is neither
+an exact during-build pressure trace nor a native capacity pass. Rejected: blind repeated attempts,
+raising heaps/helpers, disabling guards, attributing global paging to a particular process, or
+claiming a missing tool when the installed build instead stopped at the resource guard.

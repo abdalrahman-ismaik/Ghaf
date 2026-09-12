@@ -229,3 +229,21 @@ function (D used its browser's Metro module inspection); match it to the exact c
 Retain that identity evidence with the captures. Do not edit shared node_modules, delete another
 lead's cache or run another preview alongside the allocated pair. An isolated temporary directory
 is a launch precaution, not a tested APK or production setting. Only the lead owns/cleans its jobs.
+
+## Final demo-source build checkpoint — 2026-09-12
+
+Final runtime is5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051; all four source checks pass,148files /
+1,919tests. B's matching branch HEADb317f2d generated the demo-mode native project with pinned
+tools and one Metro worker. Attempt20260912T022614Z-manifest.CaPVjg ended02:27:21UTC, exit75
+during bundling. No merged manifest or APK exists from that attempt; owned jobs were stopped.
+
+The paging-only guard fired at~39% available memory. A087 authorizes a bounded guard correction
+with directional logging, unchanged start/heap/worker limits, immediate15% memory floor and paging
+correlated with<30% headroom. See the [resource assessment](coordination/resource-assessment.md).
+A reviews the script before one measured manifest-only retry. No permission list is guessed: actual
+merged XML/declarations and source/hash review must precede a separate full-APK grant.
+
+C browser evidence and D artifact review close the duplicate-heading/approval-handoff observations
+within their exact scope. The earlier Arabic clipping diagnosis was withdrawn after identical
+isolated-glyph evidence; no typography repair is claimed. Physical Android/font scaling, installed
+identity, offline launch, audio listening and real rehearsals remain NOT RUN.
