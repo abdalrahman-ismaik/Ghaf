@@ -549,3 +549,27 @@ reported54.4% available and no paging in its actual five-second post-stop sample
 an exact during-build pressure trace nor a native capacity pass. Rejected: blind repeated attempts,
 raising heaps/helpers, disabling guards, attributing global paging to a particular process, or
 claiming a missing tool when the installed build instead stopped at the resource guard.
+
+## Resumed native batch after interruption — 2026-09-12
+
+User resumed A after an environment restart and selected their connected Samsung Tab S4 for
+hardware testing. The tablet's Android version/ADB visibility are still unobserved. Existing
+SDK/preview authorization persists; managed filesystem/network restrictions require normal tool
+approval for external writes or network execution. No permission bypass or extra host change.
+
+A found B's old native PIDs absent and no final manifest/APK receipt. One read-only helper verified
+all54 generated sources against their unchanged marker, matching script/source/config/lock identity.
+It found39/77 trailing NUL bytes in logs and an intermediate bundle, with no completed Gradle exit.
+These are interrupted artifacts, not a resource-stop or native pass. Existing source can be checked
+for reuse; build/cache health remains unknown. B/C/D activity is being reconciled before takeover.
+
+Actual helper instruction:
+
+```text
+Read-only bounded artifact audit after an interrupted Ghaf native build. Others may still own worktrees; preserve all work. No writes, tests, Gradle/ADB/network/browser, installs, signals or descendants. Canonical /home/smyk/projects/Ghaf runtime5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051, tooling305681e; B /home/smyk/projects/Ghaf-demo-systems HEAD5f990802eb4217b7c9d49ff91c1efddcb005421f. Latest interrupted run output/native-build/20260912T024056Z-manifest.2nbNeM (old PIDs497090/497447/497525 absent, logs stop02:43; now09:13). Inspect only native run receipt/generation marker, scripts/native/build-apk.sh reuse checks, and relevant android/app/build outputs for any surviving merged XML/APK. Detect partial/NUL-tailed files honestly. Report exact surviving source/mode/script/native identity, whether existing script can safely validate/reuse generated source without cleaning, and what evidence is missing. Do not run the script itself. Don't repeat broad repo/toolchain audit. A reconciles coordination/device questions in parallel. Return concise concrete paths/hashes/limits, then release one A helper allocation.
+```
+
+Helper launched Astra/ultra; effective root/Fast settings unexposed. No source edits or student
+acceptance invented. Full helper result and exact hash/paths retained in A095. Allocation released.
+C044 separately records user selection of the ElevenLabs Abdullah audition; this supersedes their
+earlier provider preference but establishes neither generated audio nor actual clip acceptance.
