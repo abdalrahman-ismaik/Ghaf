@@ -1,5 +1,10 @@
 # September 12 poster and refreshed-screen handoff
 
+Later owner feedback led to a separate [onboarding correction](workstreams/a-onboarding-correction.md)
+on source0da7237: visible three-page introduction, clear profiles and explicit browser narration.
+The poster files/screenshots below remain frozen to their original98be865 source and verified hashes.
+References below to the current preview describe the earlier poster handoff, not this later source.
+
 Use the **A1 portrait PRINT PowerPoint** at
 `/home/smyk/projects/Ghaf/output/poster-20260912/final-reviewed/Ghaf-Team-SMAC-2026-A1-PRINT.pptx`.
 SHA256: `bf0868597d91a8c2850a0c8d180999b3ed2b3093ead1ab62d2d1a2f67d3972ad`.

@@ -83,7 +83,7 @@ stages live coordination after a brief status-write pause/ACK. No push/main merg
 ## September 12 user correction
 
 - [x] T017 Record rejected selector-first/audio-unavailable delivery and exact correction contract.
-- [ ] T018 Implement distinct default story pages, fixed navigation and clear three-profile entry.
-- [ ] T019 Enable explicit browser Arabic narration while preserving native/accessibility guards.
-- [ ] T020 Run meaningful fresh/handoff/three-page/audio/browser and full candidate checks; record
+- [x] T018 Implement distinct default story pages, fixed navigation and clear three-profile entry.
+- [x] T019 Enable explicit browser Arabic narration while preserving native/accessibility guards.
+- [x] T020 Run meaningful fresh/handoff/three-page/audio/browser and full candidate checks; record
       exact source, real media-clock/cancellation and remaining native/human gates.

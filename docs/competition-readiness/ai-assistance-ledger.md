@@ -1192,3 +1192,22 @@ No teacher/student contribution or acceptance was invented. Supporting authoring
 [Microsoft font embedding](https://support.microsoft.com/en-us/Office/fonts/benefits-of-embedding-custom-fonts),
 [Microsoft embedded-font schema](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.presentation.font),
 [PyMuPDF vector page export](https://pymupdf.readthedocs.io/en/latest/page.html#Page.get_svg_image).
+
+## September 12 — owner rejects opening; browser narration and visible story correction
+
+Actual request and contributed files/checks are recorded in
+[the correction report](workstreams/a-onboarding-correction.md). Owner confirmed localhost8081.
+A updated existing015 contracts before implementation, corrected fresh story/profile presentation
+and bilingual labels, and retained exact audio scripts/assets. One bounded helper diagnosed the
+blanket browser denial and implemented explicit foreground web intent with unchanged native
+reader gating. Pure/SSR tests do not establish mounted/native playback. Earlier failed typecheck
+and old frozen preview are preserved. Student review/native/public-audio gates remain pending;
+no poster regeneration, external submission, push or new feature claim follows.
+
+Final correction source0da7237 passes typecheck/lint/format and151files/1,995tests. Actual unmuted
+browser media playback/Stop/Replay/step/finish cancellation and three profile entries passed in the
+bounded existing-tool script; human sound/editorial/native acceptance remains pending. A corrected
+an additional observed Expo web optimistic-play/loading teardown and preserved the initial failed
+media/browser receipts. The audio-output fix applied only to the test browser's inherited existing
+WSLg environment; no system setting, product mute flag or provider changed. Six actual screenshots
+and exact receipts are linked from the correction report. All helper/browser/check jobs released.
