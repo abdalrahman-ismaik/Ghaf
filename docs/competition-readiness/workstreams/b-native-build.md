@@ -1313,3 +1313,73 @@ helper or native/fixture job remains; B keeps script/report maintenance and priv
 boundaries for the next exact grant. The two A-owned permission JSON files remain A-exclusive.
 No APK hash/signature/device pass or primary/secondary rehearsal is fabricated. Recovery014,
 student/native/human acceptance and any broader feature remain deferred/pending as before.
+
+## Read-only task-graph handoff after fabe2cb
+
+The pool slice was committed as fabe2cb5a6fbbdf28a8d3b4ad6349ff22cef8948, parent659f521.
+Both exact source/report paths were released to A; only the authorized package Android/iOS
+normalization remained dirty. Report formatting and diff checks passed. No application command
+ran in this interval. A137 separately verified the Windows USB tool after the user's installation;
+that host result does not establish tablet visibility or affect the runtime source.
+
+One bounded read-only explorer, `/root/task_graph_audit`, reviewed the proposed next command.
+Installed Gradle9.3.1 TaskGraphBuildExecutionAction.execute delegates actual execution while
+ConfigurationTimeBarrier.isAtConfigurationTime() is true (embedded source lines61–62), then
+renders the root graph and returns success outside configuration (66–71). Therefore included
+plugin compilation/JAR tasks can still execute before graph rendering. No Gradle/JVM experiment
+was performed. Core-JAR SHA256, equal in the inspected and wrapper-installed copies:
+`9ee3787fb4972209d51622b42ba39ba9a0263381d49fd9efd4a24c875153a34b`.
+
+The installed RootNode class supplies the exact header `Tasks graph for: `; the proposed task's
+expected line is `Tasks graph for: :app:assembleRelease`. BuildScopeServices.createBuildExecuter
+(embedded source871–874) selects dry-run before task-graph; combining --dry-run/-m with graph
+mode would therefore defeat this output check. StartParameter.prepareNewBuild copies taskGraph
+(embedded source273), but included builds retain the configuration-time execution exception.
+These are archive/bytecode observations, not executed graph evidence.
+
+Locally grounded configuration side effects include:
+
+- `android/settings.gradle:1` invokes Node resolution and includes RN/Expo plugin builds.
+  Expo SettingsExtension.kt:22 can include additional discovered plugin sources.
+- `node_modules/@react-native/gradle-plugin/settings-plugin/src/main/kotlin/com/facebook/react/ReactSettingsExtension.kt:48`
+  creates autolinking directories and can execute commands/write JSON and lock hashes.
+- `node_modules/expo-modules-autolinking/android/expo-gradle-plugin/expo-autolinking-settings-plugin/src/main/kotlin/expo/modules/plugin/SettingsManager.kt:51`
+  resolves Expo configuration and may evaluate publication-selection scripts.
+- `android/app/build.gradle:13` directly executes Node for entry/package resolution. Dependency
+  resolution, script compilation and applicable transforms also remain configuration work.
+  EXPO_OFFLINE=1 does not supply Gradle --offline; repository access is not claimed disabled.
+
+Historical `20260912T013553Z-manifest.wje3YH/19-gradle-manifest.log:10` records plugin compileKotlin,
+pluginDescriptors, processResources and jar before root configuration. This supports the setup
+inventory only; that ordinary manifest run is not graph-mode evidence. Conversely, bundle/Hermes
+commands live inside BundleHermesCTask.kt:82's task action, and Expo's stub-PCH ProcessBuilder
+is inside expo-modules-core/android/build.gradle:270's doLast. Merely rendering those task names
+does not prove that their actions ran.
+
+The proposed minimal mode preserves all non-preflight identity, private-path, resource, preview,
+lock and owned-cleanup checks. It records actual argv and uses only :app:assembleRelease with
+--task-graph and plain console output. After zero Gradle/cleanup exit and existing identity
+revalidation, it must verify the exact header and root task node, retain/hash the complete log,
+record any setup execution statuses, and return before APK inspection. Unexpected application
+or native-module `> Task` execution rows should refuse acceptance; any allowed setup rows need
+the specifically identified included-plugin namespaces, never a broad `:expo*` exemption.
+This output check would be post-run acceptance, not prevention of configuration side effects.
+No graph result establishes Ninja pool coverage, zero setup compilation, an APK or Android pass.
+The graph CLI mode remains a proposal awaiting A's exact source/execution grant.
+
+Actual initial helper prompt, recorded without claiming a different model setting:
+
+```text
+Session B read-only bounded native review. You are not alone; preserve all other edits. No writes, coordination changes, descendants, builds, tests, JVM/Gradle execution or network installs. Worktree /home/smyk/projects/Ghaf-demo-systems, HEAD fabe2cb5a6fbbdf28a8d3b4ad6349ff22cef8948/runtime5d8a3e8. Read scripts/native/build-apk.sh and generated android/settings.gradle plus immediately relevant installed Gradle9.3.1/Expo/RN task configuration or existing logs under output/native-build. Concrete question: for a proposed guarded :app:assembleRelease --task-graph invocation, what task actions or included-build setup could still execute during configuration, and what output is reliable proof that --task-graph was applied rather than an APK build? Identify a minimal script acceptance/receipt guard and pitfalls, with exact local source references. Do not repeat pool/receipt-hook review already completed54/54. A has not yet granted actual app graph execution; no command beyond read-only source/archive inspection. Source-only findings and unknowns must be explicit. Return actual commands/prompts/contributions; requested Astra/Ultra/Fast, effective tier unexposed. Your one helper allocation is for this read-only question only; report then release.
+```
+
+The lead supplied the parser/argv/early-return seam and then asked the helper to finish without
+broadening the audit. Exact prompt and follow-ups are retained under
+`output/native-build/script-checks/ninja-one-job/task-graph-audit-prompt.txt`.
+Helper tools were read-only pwd/Git/rg/nl/sed/sha256sum and Python zipfile/struct archive decoding;
+one initial parser attempt failed, and its corrected read-only rerun succeeded. No test passed or
+build occurred by implication. Rejected assumptions: graph mode is zero-execution; Expo offline
+disables Gradle networking; graph task names prove action execution; generic success proves graph
+mode. The lead reviewed these findings and published B070. Helper scope/allocation released at
+its final response; no descendant or job remains. Explicit launch Astra/ultra, effective tier
+unexposed; student exact-diff review/teach-back and native acceptance remain PENDING.
