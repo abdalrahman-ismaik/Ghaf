@@ -1,7 +1,7 @@
 # D — independent native acceptance
 
-**Collector and independent source/artifact review are complete for the recorded scope; APK and
-physical-device acceptance remain BLOCKED.** Final published runtime is
+**Collector, independent source/browser-artifact review and the actual merged-manifest review are
+complete for their recorded scope; APK and physical-device acceptance remain BLOCKED.** Final published runtime is
 `5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051`. A's exact four-check receipt passes typecheck, lint,
 format and148files/1,919tests. D independently passed46 synthetic collector checks and76 controller
 fault tests on their separately identified source versions. No APK/device/human rehearsal pass exists.
@@ -907,3 +907,103 @@ observation, not a helper-executed check. Rejected inferences: treating zero row
 connection, diagnosing a cable/driver/trust/WSL fault without evidence, or calling this collector
 execution/native acceptance. Initial scoped format check reported style warnings; formatted output
 and a fresh scoped check follow before commit. No app suite was repeated for this report change.
+
+## Independent actual merged-manifest review — A108/A109
+
+D reviewed the first successful manifest candidate, not an estimated source list. B's exact run is
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T093503Z-manifest.PZp7Ci/`,
+start09:35:01/end09:36:18UTC, build HEAD5f990802eb4217b7c9d49ff91c1efddcb005421f,
+runtime5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051, demo mode and reviewed script SHA
+`7c2a2c8da6081586d6182232948a512615c242e67024655063f85487db9abfcf`. B records21steps exit0,
+Gradle0 and cleanup0, with owned processes absent. D read the actual final receipt and artifacts;
+it did not run or duplicate this build. Earlier interrupted/refused/cache-failed outputs remain
+preserved and do not acquire this success. This is a manifest gate only; no APK yet exists.
+
+Lead independently parsed the XML and verified three-way SHA256 equality: copied
+`merged-release-manifest.xml`, its actual generated release-main source and B's recorded hash:
+`5ba0ea320a67dde7fdd8f6099bb23c5c17a11ca5d462248e4559d7cd43797e9a`.
+All eight actual permission declarations match the names and full attributes in
+`merged-manifest-review.json`. The merger-origin evidence is `manifest-merger-0.txt`.
+D's independent receipt stores absolute paths, sizes/hashes, parsed attributes and source-file
+comparison results at
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/manifest-review/PZp7Ci/independent-manifest-receipt.json`.
+The host parser exited0; it did not execute the app or modify any B artifact.
+
+| Boundary                    | Actual XML/source evidence                                                                                       | Disposition                                                         |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Package/version             | ae.ac.ku.ghaf.prototype, versionCode1, versionName0.1.0                                                          | PASSED against unchanged config                                     |
+| Android range               | minSdk24, targetSdk36                                                                                            | PASSED manifest identity; phone compatibility NOT RUN               |
+| Backup                      | application allowBackup=false                                                                                    | PASSED declaration; no production data-protection claim             |
+| Debug/cleartext             | debuggable and usesCleartextTraffic attributes absent                                                            | Record absence; final APK badging/behavior still NOT RUN            |
+| RTL/keyboard                | supportsRtl=true; MainActivity adjustResize, portrait, singleTask                                                | Configuration only; RTL/IME/Back/native scaling NOT RUN             |
+| Blocked storage permissions | READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE absent; merger records dependency declarations rejected         | PASSED merged exclusion                                             |
+| Entry/providers/flags       | exact source config matches5d8a3e8; build child env is cleared, mock service, demo=true, no live/R002b overrides | PASSED source/input fidelity; actual APK selection/behavior NOT RUN |
+| APK/signing/install         | manifest phase only; template certificate is a build input                                                       | NOT RUN; no signed APK identity or native acceptance                |
+
+Every final uses-permission element has only `android:name`: no maxSdkVersion or other qualifier
+is present. Full names below are declarations, not a grant to exercise those capabilities.
+Origins refer to the actual merger report's line numbers and supporting unchanged inputs:
+
+| Permission                                                       | Actual merged origin                                                                                            |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| android.permission.INTERNET                                      | Generated main; merged expo.modules.filesystem57.0.6 and expo.modules.image57.0.4, report177–184                |
+| android.permission.MODIFY_AUDIO_SETTINGS                         | Generated main and expo.modules.audio57.0.4, report185–190                                                      |
+| android.permission.RECORD_AUDIO                                  | Generated main, report199–202; unchanged expo-audio config recordAudioAndroid=true                              |
+| android.permission.SYSTEM_ALERT_WINDOW                           | Generated main, report203–206; retained installed Expo template declaration                                     |
+| android.permission.VIBRATE                                       | Generated main, report207–210; retained template declaration                                                    |
+| android.permission.ACCESS_NETWORK_STATE                          | expo.modules.image57.0.4 plus Media3 exoplayer/common1.9.0, report714–721                                       |
+| android.permission.WAKE_LOCK                                     | androidx.media3:media3-exoplayer1.9.0, report722–725                                                            |
+| ae.ac.ku.ghaf.prototype.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION | androidx.core:core1.18.0, report766–785; same-name permission explicitly defined with protectionLevel=signature |
+
+WAKE_LOCK and the app-scoped signature permission account for the difference from B's earlier
+six-name source estimate. That estimate was explicitly provisional; it was not an approved final
+permission set. The actual storage exclusions are substantiated by both final XML and merger
+rejection records, not by source configuration alone.
+
+No mismatch against the unchanged selected configuration was found. **Acceptance concern remains
+explicit:** RECORD_AUDIO and SYSTEM_ALERT_WINDOW are declared capabilities outside the prepared
+demo's permitted recording/overlay behavior. Their declaration is not evidence of an actual
+request, prompt, grant, recording or overlay. The build's cleared environment and default-off
+three live-AI/eight R002b flags are source/input evidence only; direct APK/native no-prompt and
+prepared-only behavior remain unrun. Do not request real Child media or exercise those capabilities
+as a shortcut. A alone decides whether this disclosed existing-config internal rehearsal artifact
+is approved; D does not approve a guessed permission list or alter the configuration.
+
+Lead inspected `src/config/r002bFeatureFlags.ts`, `aiFeatureFlags.ts`, `demoEntry.ts` and
+`app.config.ts`, verifying their actual B bytes against the exact5d8a3e8 Git objects. Eight and
+three respective flags enable only true/'true' and default false. Build script uses env-i,
+EXPO_NO_DOTENV=1, serviceMode=mock and selected demo=true; its own input guard rejects inherited
+public overrides. The manifest cannot establish whether the future APK opens the selected profile
+picker or preserves all private role/progress authorities. Recovery014 and task durability remain
+deferred, regardless of this manifest success.
+
+Independent helper `/root/manifest_origin_review` is D's sole Astra/ultra launch for this scope;
+Fast/effective serving unexposed. It reads only exact XML/merger/config/template/dependency origins
+and reports to D. Lead owns package/SDK/config/hash verification and the durable report. No source,
+provider, feature or human-review generation is delegated. Actual prompt:
+
+> D sole helper under board48/A108. READ ONLY independent manifest permission-origin review; no descendants or writes, no device/browser/app/test/native/install/network commands. B actual completed manifest /home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T093503Z-manifest.PZp7Ci/{merged-release-manifest.xml,merged-manifest-review.json,manifest-merger-0.txt}; XMLSHA5ba0ea320a67dde7fdd8f6099bb23c5c17a11ca5d462248e4559d7cd43797e9a, source5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051/demo/script7c2. Grant question: map ALL eight uses-permission names/fullattributes to actual merger origins (generated main/template/config or exact dependency), verify signature-level dynamic receiver declaration and anything materially broader than prior source assumptions (WAKE_LOCK/custompermission vs previously six). Identify actionable evidence gaps or boundary concerns without approving set: A alone finalpermissiondecision/fullAPKgrant. Current product prepared/synthetic only; recordingcapability not authorization realChildmedia. Product source/shared reports/status read-only; only lead D writes ownreport/ignoredmanifest-review and separately checks config/package/SDK/backup/debuggable/flags. You are not alone, preserve all edits. File-reading cat/rg/python permitted; no code execution under review/device/socket/test/network. Inspect narrowly supporting installed manifests/config if needed to substantiate origin. Return exact source/report line references and limits here then release. Requested Astra/Ultra explicit; Fast/effective serving unexposed.
+
+Follow-up:
+
+> Lead independently parsed/hash-verified XML==generatedsource==Breceipt5ba0ea, all8attributes/name sets, exactconfig/defaultflag source matches5d8a3e8, controlledenv clears alloverrides/serviceMode mock/demo true. debuggable/cleartext absent, backupfalse, min24/target36, supportsRtltrue, no storage permissions. No sourcefidelity mismatch found; A owns explicitinternalpermissiondecision, native recording/overlay/flag behavior unrun. Please finish origin evidence and concise acceptance concerns, then release; no broader source audit.
+
+Helper completed and released: all eight origins and name-only attributes independently confirmed,
+including six exact transformed dependency manifests. Installed Expo template archive SHA256
+`2d088eab31fd6b113ee3d5069927467c205f7a62d33fc408a44a7db25a5cb4f3` matches its receipt;
+archive main manifest supplies INTERNET/SYSTEM_ALERT_WINDOW/VIBRATE. Installed expo-audio plugin
+withAudio.ts68–89 supplies RECORD_AUDIO/MODIFY_AUDIO_SETTINGS from the true recording option;
+its Android build.gradle29–32 declares Media3/ExoPlayer1.9.0. The review does not establish
+necessity of the declared capabilities for this prepared journey.
+
+One approval-evidence detail must remain explicit: B's JSON records uses-permission attributes but
+omits the separate custom permission definition. The XML37–41 and D's independent receipt retain
+its exact name and signature protectionLevel; A should preserve that declaration in its review,
+not infer it from the permission name alone. Background recording/playback false also does not
+remove the transitive WAKE_LOCK declaration. No runtime lock/background behavior was tested.
+
+Lead accepted the independently substantiated provenance and kept these limits. Rejected inference:
+permission provenance or a disabled background option establishes native non-use. No product-source
+suggestion was implemented, no native/human pass invented, and the sole helper allocation is released.
+This cohesive report and ignored receipt are ready for integration after scoped formatting/diff
+checks; the next gate is A's permission decision and exact completed APK/source/hash handoff.
