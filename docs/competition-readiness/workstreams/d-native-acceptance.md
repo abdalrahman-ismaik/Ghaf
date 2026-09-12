@@ -1443,3 +1443,65 @@ This report-only boundary is ready for A integration after scoped format/diff ch
 source, test, asset, dependency, device or APK mutation was performed. Completed snapshot and helper
 allocations are released with the commit; D retains only its status writer and existing ADB15824,
 and continues to the published APK or next exact integrated candidate.
+
+### A187 published preparation fa9821c — independent source conformance
+
+**PASSED for bounded source-contract conformance; no material defect substantiated.** This is not
+an implementation test execution, mounted lifecycle pass, audible playback or native acceptance.
+D064 began read-only review after A186 published exact candidate
+`fa9821c68eb80985b690f5551fee08c7c9cdcd33`, governed by accepted contract40a6299. D065 acknowledged
+A187/board64 and reacquired this report and the exact ignored evidence boundary before writing:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/contract-review/T014/source-fa9821c/`.
+QA stayed on887cdf2, with no source synchronization. The Git-object snapshot receipt records four
+commands, individual PIDs/UTC/exit0/hashes and source paths; runner181490 completed. It preserves
+controller/tests/accepted contract and the shared-publication diff rather than inspecting a later
+working-tree edit. Frozen5d8a3e8 and B's A171 APK build contain no new narration implementation.
+
+The lead independently inspected the actual route/type/resource delta:
+
+- `app/index.tsx` already reads `demoRunGeneration` and `demoEntryEpoch` from the aggregate at180–181.
+  New props at284–285 pass those same values directly to DemoEntryScreen; no replacement authority
+  or persisted principal is created. Existing role redirects and guarded entry command remain intact.
+- Required type fields and all five AR/EN audio labels land with their caller and typed fixture.
+  The story narration prop remains optional. At this exact commit, Git search found no runtime
+  import of demoPlayback or the new demo audio paths; the prepared source slice remains silent.
+- The added route test explicitly inspects a later epoch after sign-out and a later generation/epoch
+  after reset, comparing them with the actual aggregate and checking absent authority. D inspected
+  that test's content; the49 shared-test passes remain A's attributed execution.
+- Independent `git show` blob reads and SHA256 calculation matched all three accepted audio hashes:
+  together245805bytes, support379551bytes, growth366177bytes. Command tool receiptf684fa exited0.
+  This establishes committed byte identity only; no decoder, speaker, listener or device was used.
+  New control-label editorial review remains pending; prior user clip approvals are retained.
+
+The sole independent helper reviewed actual pure-controller code and its tests, not another broad
+SDK or contract audit. It found no material implementation defect in the selected boundary:
+controller95–125 rechecks current identity after guard/observer callbacks and locks before external
+calls;128–134 retains the pending lock through settlement notification;54–92 and143–149 contain
+observer/pause failures, prevent stop-time rearming and suppress disposed observers. Existing tests
+98–203,205–351 and384–462 include successful reentrant cancellation/failure/disposal/restart,
+stale exceptions and rejected seeks, repeated cancellation and disposal. Those are source-inspected
+cases, not independently executed tests in this review.
+
+Actual prompt to the retained explicit Astra/ultra helper; Fast/effective serving unexposed:
+
+> D sole helper board64/D064, independent READ-ONLY published exact source fa9821c68eb80985b690f5551fee08c7c9cdcd33 against accepted contract40a6299. You are not alone, preserve others' work. Concrete bounded review: git show this exact commit's src/features/onboarding/demoPlayback.ts and tests/demo-playback.test.ts; challenge actual pure-controller cancellation/disposal/guard/onChange reentrancy and seek-finally failure behavior against accepted contract. A reports44 tests passing; don't rerun or assume their pass covers adversarial paths. No writes, descendants, tests/code execution, source sync, browser/build/device/network/provider. Lead independently checks changed route generation/epoch and typed publication; don't review UI or repeat earlier SDK/contract audits. Return only material substantiated implementation findings with exact lines, concrete callback sequence, whether existing tests cover it, or bounded no-finding verdict. Distinguish synthetic port reentrancy from actual native bug, no fix. Source-preparation commit not full feature/native pass. Same explicit Astra/ultra request; Fast unexposed. Report only to D, never shared status; finish/release.
+
+Helper `/root/narration_contract_privacy_review` completed/released with no writes, descendants or
+application/test execution. Lead accepted its bounded no-finding result. Rejected promotions:
+44 prior passing tests prove every adapter lifecycle path; a new source commit inherits5d full
+checks; exact MP3 bytes establish audible quality or public distribution rights; absent runtime
+imports establish that the future C adapter works. No student understanding was inferred.
+
+| Evidence on fa9821c                        | Disposition                                                                                                             |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| D source/controller/shared-boundary review | PASSED in the bounded inspected scope; no material finding                                                              |
+| D independent committed audio identity     | PASSED,3/3 accepted hashes; no listening                                                                                |
+| A pure controller/shared test execution    | Attributed PASSED44+49; no D rerun                                                                                      |
+| A limited full TypeScript attempt          | FAILED to complete:768MiB Node heap exhaustion, exit-6 at12:01:08 perA185; no TypeScript diagnostic or pass established |
+| Mandatory new-candidate static/full checks | BLOCKED on serialized resource allocation after B; no heap-increase retry by D                                          |
+| C adapter/mounted lifecycle                | NOT RUN for this source slice; adapter is a separate later candidate and mounted evidence remains BLOCKED               |
+| D APK/device/native/human rehearsal        | BLOCKED/NOT RUN; no corresponding artifact or native execution,0/10 human rehearsals                                    |
+
+All source, test and asset files remained read-only. No new defect or fix grant is requested.
+The report and source-fa9821c evidence are ready for A integration/release after scoped report
+checks; D continues to B's actual published APK and C's later integrated adapter candidate.
