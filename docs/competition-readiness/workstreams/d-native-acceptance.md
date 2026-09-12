@@ -487,3 +487,59 @@ This is a deliberately failing regression handoff to A, not a green integration 
 Retest unchanged or justified amended assertions on A's exact corrected source before closing
 D-NATIVE-001. All native, narration-listening, student acceptance and actual rehearsal rows retain
 their earlier BLOCKED/NOT RUN/PENDING status; primary rehearsals remain0/10.
+
+## Released adapter review and next integrated evidence boundary
+
+At 2026-09-12T01:59:00.855107+00:00, D independently reviewed adapter source5632005 (B original2fe4b09)
+against accepted015 contract293d351 and shared-scope clarificationd927f61. **PASSED bounded source
+review with no additional accepted-scope defect.** D-NATIVE-001 remains open independently.
+
+Helper native_storage_review inspected implementation; lead read the entire released adapter test
+source (SHA256 `4a848711f48650f6ad287359d0e9b936cb90b96966c25b4fdc9c0b2406a74618`).
+B's69 passing tests are attributed to B, not rerun or inherited as native evidence.
+
+The request accepts only principal/generation/epoch as plain data. It cannot select a mode, storage
+provider, destination or extra principal. Canonical identity and two pairing markers are validated;
+initial family seeding creates no session. Exactly one resume branch runs inside the supplied
+transaction. Final postconditions require the other controller signed out and unchanged context,
+generation, epoch and original selected-Child context. Output contains the specified internal
+family/controller views, without raw sessions or transaction snapshots.
+
+The immutable mode, isolated family repository and corrected composite transaction remain trusted
+integration responsibilities. The adapter does not independently prevent a deliberately miswired
+provider from returning forged context or touching ordinary storage. That is not a user-controlled
+request path, nor a reason to claim production authentication/security.
+
+Lead test-source observations:
+
+- Real controller/projection/capability oracles cover each principal, rejected sibling authority,
+  malformed/stale requests, restoration failures, denied authorization, sanitized exceptions and
+  successful same-run retry. No fake OTP or direct role assignment establishes these results.
+- Context changes and invalidation during resume are labeled injected callbacks. They do not
+  establish actual Back, double-tap, process death or device behavior.
+- The profile-edit/handoff test stores an arbitrary independent progress JSON sentinel. Its
+  unchanged bytes establish that this module leaves that sentinel alone, not that real Seeds,
+  Garden, League, canopy or Family Rewards persist through the complete app journey.
+- The module harness uses an isolated in-memory repository. Ordinary-family whole-run storage
+  noninterference, native platform resolution and the actual +12 journey remain integration/device
+  rows. Source inspection of A's still-dirty store/route tests is preparation, not an executed
+  candidate pass.
+
+A059 also authorized a narrow legacy-root guard check. At01:56–01:57UTC, /circle and /garden
+redirect signed-out state and require the role selectors; /league requires Child authority and
+/role always redirects to root. A's uncommitted reset-failure snapshot explicitly sets signed out
+and false controller entry flags, and all role selectors reject demoResetFailed. No rendering-guard
+gap was inferred in these named roots. Exact hashed dirty-source receipt:
+`output/native-acceptance/transaction-review/legacy-route-source-receipt.json`. This is not a
+published integrated candidate or proof that deep-link rendering/Back and every command fail closed.
+
+The sole helper made no writes, ran no app/test/native/browser operation, spawned no descendants
+and released. Lead accepted its bounded conclusions; no corrective suggestion was rejected.
+Actual prompt:
+
+> New bounded source review alongside D's useful test-matrix work: exact canonical A commit5632005 integrates B adapter2fe4b09 under015 contract293d351 + amendmentsd927f61. Review ONLY src/features/access/demoEntry.ts at5632005 and directly needed contract/model references. Question: do explicit immutable demo mode, family/principal validation, stale generation+epoch checks, signed-out gate, postconditions and metadata limit entry to one correct principal without exposing sessions or touching ordinary storage/progression? Identify realistic accepted-scope defects vs trusted injected-port abuse; do NOT re-review already assigned shared-wrapper defect (A fixing separately). Lead reviews tests/demo-entry-adapter.test.ts source/coverage independently and maintains handoff. READ ONLY, exact source via git show (canonical store dirty unrelated); no file writes, coordination, tests/commands that execute app, installs/browser/native/commits/descendants. You are not alone; preserve all work. Sole D helper quota1, Astra/Ultra launcher previously accepted/effective and Fast unexposed. Release on bounded review completion; send exact findings here.
+
+C reports six generated narration candidates under A060. Generation metadata and AI editorial review
+are not listening evidence. Actual user acceptance of exact clips, runtime import/cancellation
+checks and native audio interruption remain pending. A/B remain active candidate producers; D
+continues the queue after this source checkpoint.
