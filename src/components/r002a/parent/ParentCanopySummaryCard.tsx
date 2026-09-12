@@ -46,14 +46,14 @@ export function ParentCanopySummaryCard({
         testID="parent-canopy-artwork"
       />
       <View style={styles.content}>
-        <Text brand direction={direction} style={styles.onForestText} variant="heading">
+        <Text brand direction={direction} style={styles.canopyText} variant="heading">
           {title}
         </Text>
         <View style={[styles.headingRow, { flexDirection: logicalRowDirection(direction) }]}>
           <Text
             brand
             direction={direction}
-            style={[styles.headingText, styles.onForestText]}
+            style={[styles.headingText, styles.canopyText]}
             tabular
             variant="label"
           >
@@ -71,7 +71,7 @@ export function ParentCanopySummaryCard({
         >
           <View style={[styles.progressFill, { width: progressWidth }]} />
         </View>
-        <Text brand direction={direction} style={styles.onForestText} variant="caption">
+        <Text brand direction={direction} style={styles.canopyText} variant="caption">
           {remainingLabel}
         </Text>
         <Text brand direction={direction} style={styles.meaningText} variant="caption">
@@ -85,26 +85,27 @@ export function ParentCanopySummaryCard({
 const styles = StyleSheet.create({
   card: {
     overflow: 'hidden',
-    borderRadius: botanical.radius.hero,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: botanical.colors.forest,
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
   },
   landscape: {
     width: '100%',
-    aspectRatio: 2.15,
+    aspectRatio: 3.2,
   },
   meaningText: {
-    color: botanical.colors.sageStrong,
+    color: botanical.colors.muted,
   },
-  onForestText: {
-    color: botanical.colors.onForest,
+  canopyText: {
+    color: botanical.colors.forest,
   },
   content: {
     minWidth: 0,
     gap: spacing.sm,
-    backgroundColor: botanical.colors.forest,
-    paddingHorizontal: botanical.space.inset,
-    paddingVertical: botanical.space.inset,
+    backgroundColor: botanical.colors.paper,
+    padding: spacing.md,
   },
   headingRow: {
     minWidth: 0,
@@ -121,11 +122,11 @@ const styles = StyleSheet.create({
     height: spacing.xs,
     overflow: 'hidden',
     borderRadius: botanical.radius.pill,
-    backgroundColor: botanical.colors.forestRaised,
+    backgroundColor: botanical.colors.sage,
   },
   progressFill: {
     height: '100%',
     borderRadius: botanical.radius.pill,
-    backgroundColor: botanical.colors.amber,
+    backgroundColor: botanical.colors.forestRaised,
   },
 });

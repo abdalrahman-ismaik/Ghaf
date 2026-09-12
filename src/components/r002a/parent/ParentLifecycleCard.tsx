@@ -31,10 +31,16 @@ export function ParentLifecycleCard({
   onPress,
 }: ParentLifecycleCardProps) {
   return (
-    <YStack {...nativeViewStyles(styles.card)}>
+    <YStack {...nativeViewStyles(styles.card)} testID="parent-lifecycle-card">
       <View style={[styles.statusRow, { flexDirection: logicalRowDirection(direction) }]}>
         <GhafIcon color={colors.solarAmber} name="info" size={18} />
-        <Text brand color="tertiary" style={styles.statusLabel} variant="label">
+        <Text
+          brand
+          color="tertiary"
+          direction={direction}
+          style={styles.statusLabel}
+          variant="label"
+        >
           {statusLabel}
         </Text>
       </View>
@@ -54,7 +60,13 @@ export function ParentLifecycleCard({
       {supportLabel ? (
         <View style={[styles.supportRow, { flexDirection: logicalRowDirection(direction) }]}>
           <GhafIcon color={colors.outline} name="help" size={17} />
-          <Text brand color="onSurfaceVariant" style={styles.grow} variant="caption">
+          <Text
+            brand
+            color="onSurfaceVariant"
+            direction={direction}
+            style={styles.grow}
+            variant="body"
+          >
             {supportLabel}
           </Text>
         </View>
@@ -90,8 +102,14 @@ function MetaChip({ label, tone }: { label: string; tone: 'amber' | 'green' | 'n
 
 const styles = StyleSheet.create({
   card: {
+    minWidth: 0,
     gap: spacing.md,
-    paddingVertical: spacing.xs,
+    padding: botanical.space.inset,
+    borderRadius: botanical.radius.surface,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
   },
   title: {
     color: botanical.colors.forest,

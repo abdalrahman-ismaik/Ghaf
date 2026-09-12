@@ -662,26 +662,13 @@ export default function ParentHomeScreen() {
         <Text brand color="onSurfaceVariant" variant="caption">
           {familyDisplayName}
         </Text>
-        <Text brand color="deepForest" variant="parentHero">
+        <Text brand color="deepForest" direction={direction} variant="screenTitle">
           {t('parentHome.welcome')}
         </Text>
-        <Text brand color="onSurfaceVariant" variant="bodyLarge">
+        <Text brand color="onSurfaceVariant" direction={direction} variant="body">
           {t('parentHome.title')}
         </Text>
       </View>
-
-      <ParentCanopySummaryCard
-        current={canopy.contributionLeaves}
-        direction={direction}
-        goal={canopy.goalLeaves}
-        meaning={t('parentHome.canopyMeaning')}
-        progressLabel={t('parentHome.canopyProgressLive', {
-          current: canopy.contributionLeaves,
-          goal: canopy.goalLeaves,
-        })}
-        remainingLabel={t('parentHome.remainingLeaves', { count: remainingLeaves })}
-        title={t('parentHome.canopyTitle')}
-      />
 
       {adjustmentError && !adjustmentUnderReview ? (
         <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
@@ -774,6 +761,19 @@ export default function ParentHomeScreen() {
         onSelectChild={chooseChild}
         selectedLabel={t('parentHome.selectedLabel')}
         title={t('parentHome.todayWithChildren')}
+      />
+
+      <ParentCanopySummaryCard
+        current={canopy.contributionLeaves}
+        direction={direction}
+        goal={canopy.goalLeaves}
+        meaning={t('parentHome.canopyMeaning')}
+        progressLabel={t('parentHome.canopyProgressLive', {
+          current: canopy.contributionLeaves,
+          goal: canopy.goalLeaves,
+        })}
+        remainingLabel={t('parentHome.remainingLeaves', { count: remainingLeaves })}
+        title={t('parentHome.canopyTitle')}
       />
 
       {r002bFeatureFlags.r002b_parent_progress_ui ? (

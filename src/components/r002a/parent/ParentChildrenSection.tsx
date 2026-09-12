@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { botanical, colors, logicalRowDirection, opacity, spacing } from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { SyntheticChildId, TextDirection } from '@/models/familyGrowth';
 
 export interface ParentChildSummaryItem {
@@ -35,7 +35,13 @@ export function ParentChildrenSection({
 }: ParentChildrenSectionProps) {
   return (
     <View style={styles.section}>
-      <Text brand color="deepForest" direction={direction} variant="screenTitle">
+      <Text
+        accessibilityRole="header"
+        brand
+        color="deepForest"
+        direction={direction}
+        variant="heading"
+      >
         {title}
       </Text>
 
@@ -68,7 +74,10 @@ export function ParentChildrenSection({
                   {item.name}
                 </Text>
                 {item.selected ? (
-                  <View style={styles.selectedChip}>
+                  <View
+                    style={[styles.selectedChip, { flexDirection: logicalRowDirection(direction) }]}
+                  >
+                    <GhafIcon color={botanical.colors.forest} name="check-filled" size={18} />
                     <Text
                       brand
                       direction={direction}
@@ -117,26 +126,28 @@ export function ParentChildrenSection({
 const styles = StyleSheet.create({
   section: {
     gap: spacing.md,
-    paddingTop: spacing.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: botanical.colors.line,
   },
   rows: {
-    gap: spacing.xs,
+    gap: spacing.sm,
   },
   row: {
-    minHeight: 104,
-    alignItems: 'center',
-    gap: spacing.md,
-    borderRadius: botanical.radius.surface,
-    padding: botanical.space.inset,
+    minHeight: layout.touchTarget,
+    alignItems: 'flex-start',
+    gap: spacing.sm,
+    borderRadius: botanical.radius.control,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
+    padding: spacing.md,
   },
   selectedRow: {
+    borderColor: botanical.colors.forestRaised,
     backgroundColor: botanical.colors.sage,
   },
   avatar: {
-    width: 56,
-    height: 56,
+    width: layout.touchTarget,
+    height: layout.touchTarget,
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
@@ -168,7 +179,8 @@ const styles = StyleSheet.create({
     minWidth: 0,
     maxWidth: '100%',
     flexShrink: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
+    gap: spacing.xxs,
   },
   selectedLabel: {
     flexShrink: 1,
