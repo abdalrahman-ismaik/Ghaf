@@ -5,12 +5,14 @@ import {
   findNodeHandle,
   Platform,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from 'react-native';
 
 import { AccessScreen } from '@/components/access/AccessShell';
 import { GhafIcon, type GhafIconName } from '@/components/access/GhafIcon';
 import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
+import { LocalIllustration } from '@/components/illustrations/LocalIllustration';
 import { Button, QuietButton, Text } from '@/components/primitives';
 import { botanical, layout, logicalRowDirection } from '@/design/tokens';
 import type { DemoPrincipal } from '@/models/demoEntry';
@@ -52,6 +54,8 @@ export function DemoEntryScreen({
   onChangeLocale,
 }: DemoEntryScreenProps) {
   const [storyStep, setStoryStep] = useState<DemoStoryStep | null>(null);
+  const { width, fontScale } = useWindowDimensions();
+  const stackChildChoices = width < 360 || fontScale >= 1.3;
   const headingRef = useRef<View>(null);
   const showingStory = storyStep !== null && !restartRequired;
   const narration = useDemoOnboardingNarrator({
@@ -176,9 +180,22 @@ export function DemoEntryScreen({
             </Text>
           ) : (
             <>
-              <Text brand direction={direction} language={locale}>
+              <Text brand direction={direction} language={locale} style={styles.introduction}>
                 {copy.body}
               </Text>
+              <LocalIllustration
+                assetId="welcome-ghaf-habitat"
+                decorative
+                direction={direction}
+                fallback={
+                  <View style={styles.habitatFallback}>
+                    <GhafIcon name="ghaf-tree" color={botanical.colors.forest} size={56} />
+                  </View>
+                }
+                language={locale}
+                style={styles.habitat}
+                testID="demo-entry-habitat"
+              />
               <Text
                 brand
                 direction={direction}
@@ -213,62 +230,120 @@ export function DemoEntryScreen({
                   {copy.busyLabel}
                 </Text>
               ) : null}
-              <View style={styles.profiles}>
-                {profiles.map((profile) => (
-                  <Button
-                    accessibilityLabel={[profile.name, profile.roleLabel]
-                      .filter((value, index, values) => values.indexOf(value) === index)
-                      .join(', ')}
-                    accessibilityHint={profile.description}
-                    accessibilityState={{ busy, disabled: busy }}
-                    brand
-                    direction={direction}
-                    disabled={busy}
-                    key={profile.principal}
-                    language={locale}
-                    onPress={() => {
-                      if (!busy && !restartRequired && validProfiles) {
-                        cancelNarration();
-                        onChooseProfile(profile.principal);
-                      }
-                    }}
-                    style={styles.profileButton}
-                    testID={`demo-profile-${profile.principal}`}
-                    variant="neutral"
-                  >
-                    <View
-                      style={[styles.profileRow, { flexDirection: logicalRowDirection(direction) }]}
+              <View style={[styles.profiles, { flexDirection: logicalRowDirection(direction) }]}>
+                {profiles.map((profile) => {
+                  const isParent = profile.principal === 'parent_al_noor';
+                  const portrait = profile.avatar === 'flower' ? 'avatar-flower' : 'avatar-ghaf';
+                  const isRow = isParent || stackChildChoices;
+                  return (
+                    <Button
+                      accessibilityLabel={[profile.name, profile.roleLabel]
+                        .filter((value, index, values) => values.indexOf(value) === index)
+                        .join(', ')}
+                      accessibilityHint={profile.description}
+                      accessibilityState={{ busy, disabled: busy }}
+                      brand
+                      direction={direction}
+                      disabled={busy}
+                      fullWidth={isRow}
+                      key={profile.principal}
+                      language={locale}
+                      onPress={() => {
+                        if (!busy && !restartRequired && validProfiles) {
+                          cancelNarration();
+                          onChooseProfile(profile.principal);
+                        }
+                      }}
+                      style={[
+                        styles.profileButton,
+                        isParent ? styles.parentButton : styles.childButton,
+                        !isRow ? styles.childTile : null,
+                      ]}
+                      testID={`demo-profile-${profile.principal}`}
+                      variant="neutral"
                     >
-                      <View style={styles.avatar}>
-                        <GhafIcon
-                          color={botanical.colors.forest}
-                          name={avatarIcons[profile.avatar]}
-                          size={32}
-                        />
-                      </View>
-                      <View style={styles.profileCopy}>
-                        <Text brand direction={direction} language={locale} variant="screenTitle">
-                          {profile.name}
-                        </Text>
-                        {profile.roleLabel !== profile.name ? (
-                          <Text brand direction={direction} language={locale} variant="caption">
-                            {profile.roleLabel}
+                      <View
+                        style={[
+                          styles.profileContent,
+                          isRow
+                            ? {
+                                flexDirection: logicalRowDirection(direction),
+                                alignItems: 'center',
+                              }
+                            : styles.childContent,
+                        ]}
+                      >
+                        {isParent ? (
+                          <View style={styles.parentAvatar}>
+                            <GhafIcon
+                              color={botanical.colors.onForest}
+                              name={avatarIcons[profile.avatar]}
+                              size={28}
+                            />
+                          </View>
+                        ) : (
+                          <LocalIllustration
+                            assetId={portrait}
+                            decorative
+                            direction={direction}
+                            fallback={
+                              <View style={styles.avatarFallback}>
+                                <GhafIcon
+                                  color={botanical.colors.forest}
+                                  name={avatarIcons[profile.avatar]}
+                                  size={32}
+                                />
+                              </View>
+                            }
+                            language={locale}
+                            style={isRow ? styles.childAvatarCompact : styles.childAvatar}
+                            testID={`demo-profile-portrait-${profile.principal}`}
+                          />
+                        )}
+                        <View style={[styles.profileCopy, !isRow ? styles.tileCopy : null]}>
+                          <Text
+                            accessibilityRole="text"
+                            brand
+                            direction={direction}
+                            language={locale}
+                            style={isParent ? styles.parentText : undefined}
+                            variant="screenTitle"
+                          >
+                            {profile.name}
                           </Text>
+                          {profile.roleLabel !== profile.name ? (
+                            <Text
+                              brand
+                              direction={direction}
+                              language={locale}
+                              style={isParent ? styles.parentSupporting : styles.supporting}
+                              variant="caption"
+                            >
+                              {profile.roleLabel}
+                            </Text>
+                          ) : null}
+                          <Text
+                            brand
+                            direction={direction}
+                            language={locale}
+                            style={isParent ? styles.parentSupporting : styles.supporting}
+                            variant="caption"
+                          >
+                            {profile.description}
+                          </Text>
+                        </View>
+                        {isRow ? (
+                          <GhafIcon
+                            color={isParent ? botanical.colors.onForest : botanical.colors.forest}
+                            direction={direction}
+                            name="chevron"
+                            size={20}
+                          />
                         ) : null}
-                        <Text
-                          brand
-                          direction={direction}
-                          language={locale}
-                          style={styles.supporting}
-                          variant="caption"
-                        >
-                          {profile.description}
-                        </Text>
                       </View>
-                      <GhafIcon direction={direction} name="chevron" size={20} />
-                    </View>
-                  </Button>
-                ))}
+                    </Button>
+                  );
+                })}
               </View>
               <Text
                 brand
@@ -328,8 +403,23 @@ const styles = StyleSheet.create({
     gap: botanical.space.row,
     paddingBottom: botanical.space.section,
   },
+  introduction: {
+    color: botanical.colors.muted,
+  },
+  habitat: {
+    width: '100%',
+    aspectRatio: 2.8,
+    borderRadius: botanical.radius.control,
+  },
+  habitatFallback: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: botanical.colors.sage,
+  },
   disclosure: {
-    color: botanical.colors.forest,
+    color: botanical.colors.muted,
   },
   error: {
     padding: botanical.space.row,
@@ -337,32 +427,73 @@ const styles = StyleSheet.create({
     borderRadius: botanical.radius.small,
   },
   profiles: {
+    flexWrap: 'wrap',
+    alignItems: 'stretch',
     gap: botanical.space.small,
   },
   profileButton: {
     minHeight: layout.touchTarget,
     padding: botanical.space.row,
-    backgroundColor: botanical.colors.paper,
-    borderColor: botanical.colors.line,
     borderRadius: botanical.radius.control,
   },
-  profileRow: {
+  parentButton: {
+    backgroundColor: botanical.colors.forest,
+    borderColor: botanical.colors.forest,
+  },
+  childButton: {
+    backgroundColor: botanical.colors.paper,
+    borderColor: botanical.colors.line,
+  },
+  childTile: {
     flex: 1,
     minWidth: 0,
-    alignItems: 'center',
+    alignItems: 'stretch',
+  },
+  profileContent: {
+    flex: 1,
+    minWidth: 0,
     gap: botanical.space.small,
   },
-  avatar: {
+  childContent: {
+    alignItems: 'stretch',
+    gap: botanical.space.row,
+  },
+  parentAvatar: {
     width: layout.touchTarget,
     height: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: botanical.colors.forestRaised,
+    borderRadius: botanical.radius.small,
+  },
+  childAvatar: {
+    width: '100%',
+    aspectRatio: 2,
+    borderRadius: botanical.radius.small,
+  },
+  childAvatarCompact: {
+    width: layout.touchTarget,
+    height: layout.touchTarget,
+    borderRadius: botanical.radius.small,
+  },
+  avatarFallback: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: botanical.colors.sage,
-    borderRadius: botanical.radius.control,
   },
   profileCopy: {
     flex: 1,
     minWidth: 0,
+  },
+  tileCopy: {
+    flex: 0,
+  },
+  parentText: {
+    color: botanical.colors.onForest,
+  },
+  parentSupporting: {
+    color: botanical.colors.sage,
   },
   supporting: {
     color: botanical.colors.muted,

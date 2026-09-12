@@ -57,18 +57,32 @@ export function DemoOnboardingStory({
   return (
     <View style={styles.story} testID="demo-onboarding-story">
       <View style={[styles.topLine, { flexDirection: logicalRowDirection(direction) }]}>
-        <Text
-          accessibilityLabel={progress}
-          brand
-          direction={direction}
-          language={locale}
-          style={styles.progress}
-          tabular
-          testID="demo-story-progress"
-          variant="caption"
-        >
-          {progress}
-        </Text>
+        <View style={styles.progressGroup}>
+          <View
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            style={[styles.progressMarks, { flexDirection: logicalRowDirection(direction) }]}
+          >
+            {momentIds.map((id, index) => (
+              <View
+                key={id}
+                style={[styles.progressMark, index <= step ? styles.progressMarkReached : null]}
+              />
+            ))}
+          </View>
+          <Text
+            accessibilityLabel={progress}
+            brand
+            direction={direction}
+            language={locale}
+            style={styles.progress}
+            tabular
+            testID="demo-story-progress"
+            variant="caption"
+          >
+            {progress}
+          </Text>
+        </View>
         <QuietButton
           brand
           direction={direction}
@@ -81,114 +95,132 @@ export function DemoOnboardingStory({
           {copy.story.close}
         </QuietButton>
       </View>
-      <View
-        accessibilityLabel={moment.title}
-        accessibilityRole="header"
-        accessible
-        ref={headingRef}
-        tabIndex={Platform.OS === 'web' ? -1 : undefined}
-      >
-        <Text
-          accessibilityRole="text"
-          brand
-          direction={direction}
-          language={locale}
-          variant="parentHero"
+      <View style={styles.poster}>
+        <View
+          accessibilityLabel={moment.title}
+          accessibilityRole="header"
+          accessible
+          ref={headingRef}
+          style={styles.heading}
+          tabIndex={Platform.OS === 'web' ? -1 : undefined}
         >
-          {moment.title}
-        </Text>
-      </View>
-      <LocalIllustration
-        accessibilityLabel={moment.imageAlt}
-        assetId={moment.assetId}
-        direction={direction}
-        fallbackLabel={moment.imageAlt}
-        language={locale}
-        style={styles.artwork}
-        testID={`demo-story-image-${moment.id}`}
-      />
-      <Text brand direction={direction} language={locale} variant="body">
-        {moment.body}
-      </Text>
-      <View style={styles.audio}>
-        {audioAvailable ? (
-          <>
-            <QuietButton
-              brand
-              direction={direction}
-              language={locale}
-              onPress={pressAudio}
-              testID={`demo-story-audio-${primaryAudioAction}`}
-            >
-              {audioLabel}
-            </QuietButton>
-            {narration.canStop && narration.canReplay ? (
-              <QuietButton
-                brand
-                direction={direction}
-                language={locale}
-                onPress={() => {
-                  if (audioAvailable && narration.canReplay) narration.onReplay();
-                }}
-                testID="demo-story-audio-replay"
-              >
-                {copy.story.audioReplay}
-              </QuietButton>
-            ) : null}
-            {narration.status === 'loading' ? (
-              <Text
-                accessibilityLiveRegion="polite"
-                brand
-                direction={direction}
-                language={locale}
-                style={styles.mediaNotice}
-                testID="demo-story-audio-loading"
-                variant="caption"
-              >
-                {copy.story.audioLoading}
-              </Text>
-            ) : null}
-          </>
-        ) : (
+          <Text
+            accessibilityRole="text"
+            brand
+            direction={direction}
+            language={locale}
+            style={styles.title}
+            variant="parentHero"
+          >
+            {moment.title}
+          </Text>
+        </View>
+        <View style={styles.artworkFrame}>
+          <LocalIllustration
+            accessibilityLabel={moment.imageAlt}
+            assetId={moment.assetId}
+            direction={direction}
+            fallbackLabel={moment.imageAlt}
+            language={locale}
+            style={styles.artwork}
+            testID={`demo-story-image-${moment.id}`}
+          />
+        </View>
+        <View style={styles.readingPanel}>
           <Text
             brand
             direction={direction}
             language={locale}
-            style={styles.mediaNotice}
-            testID={
-              narration?.screenReaderActive
-                ? 'demo-story-audio-screen-reader'
-                : 'demo-story-audio-unavailable'
-            }
-            variant="caption"
+            style={styles.transcript}
+            variant="body"
           >
-            {narration?.screenReaderActive
-              ? copy.story.audioScreenReader
-              : copy.story.audioUnavailable}
+            {moment.body}
           </Text>
-        )}
-      </View>
-      <View style={styles.actions}>
-        <PrimaryButton
-          brand
-          direction={direction}
-          language={locale}
-          onPress={() => (step === 2 ? onClose() : onStepChange((step + 1) as DemoStoryStep))}
-          size="regular"
-          testID={step === 2 ? 'demo-story-finish' : 'demo-story-next'}
-        >
-          {step === 2 ? copy.story.finish : copy.story.next}
-        </PrimaryButton>
-        <QuietButton
-          brand
-          direction={direction}
-          icon={<GhafIcon direction={direction} name="arrow-back" />}
-          language={locale}
-          onPress={() => (step === 0 ? onClose() : onStepChange((step - 1) as DemoStoryStep))}
-          testID="demo-story-back"
-        >
-          {copy.story.back}
-        </QuietButton>
+          <View style={styles.audio}>
+            {audioAvailable ? (
+              <>
+                <QuietButton
+                  brand
+                  direction={direction}
+                  language={locale}
+                  onPress={pressAudio}
+                  style={styles.audioControl}
+                  testID={`demo-story-audio-${primaryAudioAction}`}
+                >
+                  {audioLabel}
+                </QuietButton>
+                {narration.canStop && narration.canReplay ? (
+                  <QuietButton
+                    brand
+                    direction={direction}
+                    language={locale}
+                    onPress={() => {
+                      if (audioAvailable && narration.canReplay) narration.onReplay();
+                    }}
+                    style={styles.audioControl}
+                    testID="demo-story-audio-replay"
+                  >
+                    {copy.story.audioReplay}
+                  </QuietButton>
+                ) : null}
+                {narration.status === 'loading' ? (
+                  <Text
+                    accessibilityLiveRegion="polite"
+                    brand
+                    direction={direction}
+                    language={locale}
+                    style={styles.mediaNotice}
+                    testID="demo-story-audio-loading"
+                    variant="caption"
+                  >
+                    {copy.story.audioLoading}
+                  </Text>
+                ) : null}
+              </>
+            ) : (
+              <Text
+                brand
+                direction={direction}
+                language={locale}
+                style={styles.mediaNotice}
+                testID={
+                  narration?.screenReaderActive
+                    ? 'demo-story-audio-screen-reader'
+                    : 'demo-story-audio-unavailable'
+                }
+                variant="caption"
+              >
+                {narration?.screenReaderActive
+                  ? copy.story.audioScreenReader
+                  : copy.story.audioUnavailable}
+              </Text>
+            )}
+          </View>
+          <View style={styles.actions}>
+            <PrimaryButton
+              brand
+              direction={direction}
+              language={locale}
+              onPress={() => (step === 2 ? onClose() : onStepChange((step + 1) as DemoStoryStep))}
+              size="regular"
+              style={styles.navigationControl}
+              testID={step === 2 ? 'demo-story-finish' : 'demo-story-next'}
+            >
+              {step === 2 ? copy.story.finish : copy.story.next}
+            </PrimaryButton>
+            <QuietButton
+              brand
+              direction={direction}
+              icon={<GhafIcon direction={direction} name="arrow-back" />}
+              language={locale}
+              onPress={() => (step === 0 ? onClose() : onStepChange((step - 1) as DemoStoryStep))}
+              style={styles.navigationControl}
+              testID="demo-story-back"
+            >
+              {copy.story.back}
+            </QuietButton>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -206,25 +238,83 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: botanical.space.small,
   },
+  progressGroup: {
+    gap: botanical.space.small,
+    flexShrink: 1,
+    minWidth: 0,
+  },
+  progressMarks: {
+    gap: botanical.space.small,
+  },
+  progressMark: {
+    width: botanical.space.hero,
+    height: botanical.space.small / 2,
+    backgroundColor: botanical.colors.sageStrong,
+  },
+  progressMarkReached: {
+    backgroundColor: botanical.colors.forest,
+  },
   progress: {
     flexShrink: 1,
-    color: botanical.colors.muted,
+    color: botanical.colors.forest,
   },
   close: {
     flexShrink: 1,
+    maxWidth: '100%',
     minHeight: layout.touchTarget,
+  },
+  poster: {
+    width: '100%',
+    minWidth: 0,
+    overflow: 'hidden',
+    borderRadius: botanical.radius.hero,
+    backgroundColor: botanical.colors.forest,
+  },
+  heading: {
+    padding: botanical.space.inset,
+    paddingTop: botanical.space.hero,
+  },
+  title: {
+    color: botanical.colors.onForest,
+    flexShrink: 1,
+  },
+  artworkFrame: {
+    paddingHorizontal: botanical.space.small,
+    paddingBottom: botanical.space.small,
   },
   artwork: {
     width: '100%',
     aspectRatio: 3 / 2,
-    borderRadius: botanical.radius.hero,
+    borderRadius: botanical.radius.surface,
+  },
+  readingPanel: {
+    minWidth: 0,
+    gap: botanical.space.row,
+    padding: botanical.space.inset,
+    paddingBottom: botanical.space.hero,
+    backgroundColor: botanical.colors.paper,
+  },
+  transcript: {
+    color: botanical.colors.ink,
+    flexShrink: 1,
   },
   audio: {
     gap: botanical.space.small,
+    paddingTop: botanical.space.small,
+    borderTopWidth: 1,
+    borderTopColor: botanical.colors.line,
+  },
+  audioControl: {
+    minHeight: layout.touchTarget,
+    minWidth: 0,
   },
   actions: {
     gap: botanical.space.small,
     paddingTop: botanical.space.small,
+  },
+  navigationControl: {
+    minHeight: layout.touchTarget,
+    minWidth: 0,
   },
   mediaNotice: {
     color: botanical.colors.muted,

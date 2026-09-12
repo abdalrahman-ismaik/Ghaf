@@ -44,6 +44,8 @@ const rendered = vi.hoisted(() => ({
   nodes: [] as LeafProps[],
   images: [] as IllustrationProps[],
   omitImages: false,
+  width: 390,
+  fontScale: 1,
 }));
 
 function renderLeaf(tag: 'div' | 'span' | 'button' | 'main', props: LeafProps) {
@@ -94,7 +96,12 @@ vi.mock('react-native', () => ({
     absoluteFillObject: {},
     hairlineWidth: 1,
   },
-  useWindowDimensions: () => ({ width: 390, height: 844, scale: 1, fontScale: 1 }),
+  useWindowDimensions: () => ({
+    width: rendered.width,
+    height: 844,
+    scale: 1,
+    fontScale: rendered.fontScale,
+  }),
   View: (props: LeafProps) => renderLeaf('div', props),
   ScrollView: (props: LeafProps) => renderLeaf('main', props),
   Text: (props: LeafProps) => renderLeaf('span', props),
@@ -310,6 +317,8 @@ function expectAnnouncement(testID: string) {
 beforeEach(() => {
   clearRender();
   rendered.omitImages = false;
+  rendered.width = 390;
+  rendered.fontScale = 1;
 });
 
 describe('demo entry rendered presentation and callbacks', () => {
@@ -700,4 +709,35 @@ describe('optional demo narration controls and cancellation handoff', () => {
     expect(order).toEqual(['cancel', 'profile', 'cancel', 'locale']);
     narrator.cancel.mockReset();
   });
+});
+
+// These rows cover conditional presentation and image fallback, not actual font geometry.
+describe('botanical demo entry retains direct access across presentation fallbacks', () => {
+  for (const locale of locales) {
+    it.each([
+      { width: 320, fontScale: 1 },
+      { width: 390, fontScale: 2 },
+    ])(`keeps all three ${locale} choices and labels at %j with failed artwork`, (dimensions) => {
+      rendered.width = dimensions.width;
+      rendered.fontScale = dimensions.fontScale;
+      rendered.omitImages = true;
+      const props = entryProps(locale);
+      const markup = renderEntry(props);
+      expect(profileControls().map((item) => item.testID)).toEqual(
+        principals.map((principal) => `demo-profile-${principal}`),
+      );
+      for (const profile of props.copy.profiles) {
+        expectText(markup, profile.name);
+        expectText(markup, profile.description);
+        const choice = control(`demo-profile-${profile.principal}`);
+        expect(choice.accessibilityLabel).toContain(profile.name);
+        expect(choice.disabled).not.toBe(true);
+        press(`demo-profile-${profile.principal}`);
+      }
+      expect(props.onChooseProfile).toHaveBeenCalledTimes(3);
+      expectText(markup, props.copy.disclosure);
+      expectText(markup, props.copy.breadthNotice);
+      expect(control('demo-story-open').disabled).not.toBe(true);
+    });
+  }
 });

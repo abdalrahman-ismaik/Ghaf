@@ -609,3 +609,108 @@ only its status and A183 ignored harness preparation while awaiting the preview 
 Any actual mounted defect must be corrected under the live ownership grant before claiming its row.
 This checkpoint does not end the active continuation: helper preparation, A integration and B's
 packaging are verified in-flight handoffs. No paired screenshot exists for this delta yet.
+
+## A194 poster priority — entry and Story composition
+
+IN PROGRESS, source-only preparation until the actual app captures below are recorded.
+A194/A195 supersede the earlier harness-first continuation. A reports the user's poster deadline
+as20:00Dubai12September and requests visibly refined real app screens. Exact C grant is now
+DemoEntryScreen.tsx, DemoOnboardingStory.tsx, the existing presentation test and this report.
+The narrator hook/map/types/resources/assets and every authority remain A-owned. Both prepared
+narration harness modes are deferred; neither was executed. Source61d2576 already integrated as
+A0d23b8e. This refinement starts from C's clean61d2576, preserving the prior branch and commits.
+
+Observed presentation issue: Arabic **وليّ الأمر**, **سالم**, **علياء** and English **Parent**,
+**Salem**, **Alya** use three visually equal rows. The hierarchy does not explain the separate
+Parent support/review role and Child exploration choices quickly. Users should immediately choose
+one of exactly three synthetic profiles, with the optional introduction still easy to reach.
+The accepted Family Field Journal direction continues; no three-direction exercise is reopened.
+
+Lead's Entry change places a compact approved Ghaf habitat image beneath the existing value
+statement, gives Parent one full-width forest action, and gives the two Child options distinct
+approved botanical portraits. At compact width or increased reported font scale the Child choices
+become full-width rows. Complete descriptions, disclosure, Salem-only executable-task notice,
+error/busy/restart states and callback guards remain. The official Ghaf mark and bilingual language
+control stay at the top. Images are decorative, never mirrored, with existing-icon fallbacks;
+no new claim, translated label, role authority, session or growth calculation is added.
+
+Static sRGB color-pair calculation: onForest/forest11.09:1; sage/forest9.68:1; ink/paper11.52:1;
+muted/paper5.49:1. These are source color calculations, not a captured runtime contrast/font pass.
+Actual 320/390 compact browser, fonts, scrolling and full-label visibility remain to be observed.
+Four added rendered tests cover the newly conditional compact/large-font and failed-artwork
+branches while preserving all three accessible profile actions and required notices; they do not
+pretend SSR measures native geometry.
+
+Impeccable onboarding and craft-floor references were applied alongside the existing Expo design
+system conventions. The prior context/selected visual world is reused; no master design document,
+new palette, shared primitive or library was created. Rejected directions: an oversized image that
+hides direct entry, three interchangeable generic cards, text over a busy photograph, clipped or
+abbreviated Arabic, new marketing copy, ornamental metrics and a new onboarding flow.
+
+One bounded helper owns only DemoOnboardingStory.tsx while lead owns Entry/tests/report.
+Actual helper prompt:
+
+> NEW A194/A195 poster priority, source grant active/ACK C078. You OWN ONLY
+> /home/smyk/projects/Ghaf-ui-studio/src/components/demo/DemoOnboardingStory.tsx on current
+> clean61d2576 (redesign/narration-ui-20260912). Lead edits Entry/tests/report independently;
+> you are not alone, preserve others' edits, no overlap/revert, no descendants. Implement a visibly
+> composed/premium botanical three-moment Story, not another broad design exploration. Use
+> existing Tamagui/primitives/tokens, Alexandria/Readex, current approved moment artwork, complete
+> supplied copy, all current navigation/Play/Stop/Replay/reader/unavailable behavior and testIDs
+> unchanged. Strong forest contrast + art hierarchy + readable paper transcript/controls; no text
+> on busy photograph, new strings/icons/assets/libraries/global tokens, no hook/types/route/state
+> edits. Fit320/390 and large Arabic copy by wrapping/scrolling,48 touch targets. Read relevant
+> Impeccable onboard/craft-floor (context was applied earlier) and existing Expo design convention.
+> Aim one bounded inspectable source slice in10min; do not spend a whole turn on planning. Write
+> only this one file, no staging/commits/browser/tests/heavy jobs. Scoped format permitted. Return
+> exact changes/prompt/rejected ideas/source check gaps and RELEASE file. Actual app capture happens
+> through A after B build, harness now deferred.
+
+Human exact-diff review and student explanation remain PENDING; the voice-listening approvals
+remain valid and are not generalized to visual acceptance. No new narration generation or provider
+operation occurred. A201 focused check grant waits for the helper's source release. A197 grants one
+actual canonical-app browser, with A owning Metro8081/root203040/privatecache. C's first navigate
+returned a60s tool timeout; the same Firefox root207767 remained alive and a subsequent snapshot
+showed Expo's **Bundling… app/\_layout.tsx**. This is a loading/harness observation, not a product
+regression or a valid final-screen capture. No second browser or Metro was launched.
+
+### A194 source handoff — 2026-09-12T12:40Z
+
+The Story helper landed only DemoOnboardingStory.tsx, then explicitly stopped/released it.
+Its first formatting call was interrupted with no completion result or known PID; lead ran the
+scoped formatter successfully and inspected the resulting diff. Story now groups the existing
+heading and approved artwork inside a forest frame, followed by a paper transcript/control panel.
+Three decorative progress marks supplement the existing spoken/text progress; full body text,
+Skip, Next/Finish, Back, Play/Stop/Replay and every existing callback/testID remain. No new motion
+or business behavior was added. Lead owns the Entry/test/report contribution; helper owns this
+bounded Story draft. No full-app generation or image generation occurred. Helpers/jobs released.
+
+A201 focused run **PASSED, one file / 40 tests**, exit0, UTC12:40:19.656–12:40:20.628,
+PID216427 ended, at base61d2576 plus the exact source hashes recorded in
+`output/native-ui/poster-20260912/checks/receipt.json`; adjacent `focused.log` preserves raw output.
+Initial available3973580/7829156KiB (50.75%) passed the35% resource guard. Exact command:
+
+```bash
+node --max-old-space-size=256 node_modules/vitest/vitest.mjs run tests/demo-entry-presentation.test.tsx --pool=threads --maxWorkers=1 --no-file-parallelism
+```
+
+The60s deadline was not reached. This is SSR/callback/fallback evidence, not mounted geometry,
+phone font scale or audible lifecycle acceptance. Scoped formatting and `git diff --check` pass.
+A retains full integrated checks; C releases this exact four-file slice for integration.
+
+Actual before captures at `/home/smyk/projects/Ghaf-ui-studio/output/native-ui/poster-20260912/`:
+`before-entry-ar-390.png`, `before-entry-en-390.png`, `before-story-ar-390.png`,
+`before-story-en-390.png`. Entry is signed out; Story is support, moment2/3. All390×844 CSS,
+DPR1, Firefox root207767, reduced-motion reduce. Full text remains scrollable; images are secondary
+browser evidence. `before-source-receipt.json` compares canonical emitted source-map contents with
+disk (all four inspected modules match), canonical HEAD4b685438 at12:35:43UTC. This proves the
+**prior** Entry/Story source, not this newly refined C draft. A owns Metro203040/8081 and its private
+cache. Final screenshots require A integration/restart and new loaded-source proof before capture.
+The original60s navigation timeout and subsequent bundling state remain loading observations.
+
+Next authorized work is the actual integrated app: paired Arabic/English Entry and Story inspection,
+320-width QA, and390×844/DPR3 uncropped poster captures of Entry, Parent Home and the real Salem
+approved task. No screenshot is yet represented as the final refined candidate. Native large-text,
+TalkBack, hardware Back, phone dimensions/model/OS and audio remain BLOCKED/NOT RUN. Student
+exact-diff/visual acceptance is PENDING. The current screenshot lane continues after source release;
+A integration and poster generation are verified active handoffs.
