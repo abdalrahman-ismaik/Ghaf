@@ -11,6 +11,7 @@ import {
 import { AccessibilityInfo, AppState, Platform, type AppStateStatus } from 'react-native';
 
 import { resolveAmbientPlaybackDecision, type AmbientAudioAppState } from '@/features/audio';
+import { entryMode } from '@/config/demoEntry';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 const ambientSoundscapeSource = require('../../../assets/audio/ambient/calm-soundscape-v2.mp3');
@@ -72,6 +73,7 @@ export function AmbientAudioProvider({
   startupReady,
 }: PropsWithChildren<{ readonly startupReady: boolean }>) {
   const preference = usePrototypeStore((state) => state.ambientAudioPreference);
+  const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const liveVoiceStatus = usePrototypeStore(
     (state) => state.liveVoiceCapture?.state.envelope.status ?? 'idle',
   );
@@ -144,7 +146,7 @@ export function AmbientAudioProvider({
   }, [webPlaybackUnlocked]);
 
   const decision = resolveAmbientPlaybackDecision({
-    enabled: preference.enabled,
+    enabled: preference.enabled && (entryMode !== 'demo' || activeExperience !== 'signed_out'),
     startupReady,
     appState,
     screenReaderActive,

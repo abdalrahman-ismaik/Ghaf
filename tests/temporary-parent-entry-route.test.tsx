@@ -23,6 +23,7 @@ vi.mock('react-native', () => ({
   View: () => null,
 }));
 vi.mock('expo-crypto', () => ({ randomUUID: () => 'prepared-entry-test' }));
+vi.mock('@/components/demo/DemoEntryScreen', () => ({ DemoEntryScreen: () => null }));
 vi.mock('@/components/access', () => ({ AccessScreen: () => null, PrototypePill: () => null }));
 vi.mock('@/components/brand/GhafRasterLogo', () => ({ GhafRasterLogo: () => null }));
 vi.mock('@/components/illustrations', () => ({ LocalIllustration: () => null }));

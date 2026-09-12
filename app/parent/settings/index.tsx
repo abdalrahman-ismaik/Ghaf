@@ -9,6 +9,7 @@ import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r
 import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { prepareEntryReset } from '@/utils/navigation';
+import { entryMode } from '@/config/demoEntry';
 
 export default function ParentSettingsScreen() {
   const router = useRouter();
@@ -38,12 +39,18 @@ export default function ParentSettingsScreen() {
 
   const signOut = () => {
     setError(null);
+    const resetNavigation = entryMode === 'demo' ? prepareEntryReset(navigation) : null;
+    if (entryMode === 'demo' && !resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = signOutExperience();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
     }
-    router.replace('/');
+    if (resetNavigation) resetNavigation();
+    else router.replace('/');
   };
 
   return (

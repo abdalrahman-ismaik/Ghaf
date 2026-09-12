@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Redirect, useRouter, type Href } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AccessScreen, PrototypePill } from '@/components/access';
@@ -8,7 +9,15 @@ import { LocalIllustration } from '@/components/illustrations';
 import { FirstRunOnboarding, useFirstRunExperience } from '@/components/onboarding';
 import { Button, Text } from '@/components/primitives';
 import { colors, layout, r001Radii, spacing } from '@/design/tokens';
-import { usePrototypeStore } from '@/state/usePrototypeStore';
+import {
+  selectCanEnterChildExperience,
+  selectHasActiveParentExperience,
+  usePrototypeStore,
+} from '@/state/usePrototypeStore';
+import { entryMode } from '@/config/demoEntry';
+import { DemoEntryScreen } from '@/components/demo/DemoEntryScreen';
+import type { DemoEntryCopy } from '@/components/demo/types';
+import type { DemoPrincipal } from '@/models/demoEntry';
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -26,6 +35,8 @@ export default function WelcomeScreen() {
   const switchLocale = () => {
     setLocale(locale === 'ar' ? 'en' : 'ar');
   };
+
+  if (entryMode === 'demo') return <DemoWelcomeRoute />;
 
   if (activeExperience === 'parent' && parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href="/parent" />;
@@ -155,6 +166,128 @@ export default function WelcomeScreen() {
         style={styles.origin}
       />
     </AccessScreen>
+  );
+}
+
+function DemoWelcomeRoute() {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const locale = usePrototypeStore((state) => state.locale);
+  const direction = usePrototypeStore((state) => state.direction);
+  const setLocale = usePrototypeStore((state) => state.setLocale);
+  const parentActive = usePrototypeStore(selectHasActiveParentExperience);
+  const childActive = usePrototypeStore(selectCanEnterChildExperience);
+  const runGeneration = usePrototypeStore((state) => state.demoRunGeneration);
+  const entryEpoch = usePrototypeStore((state) => state.demoEntryEpoch);
+  const restartRequired = usePrototypeStore((state) => state.demoResetFailed);
+  const enterDemoExperience = usePrototypeStore((state) => state.enterDemoExperience);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  if (parentActive) return <Redirect href="/parent" />;
+  if (childActive) return <Redirect href="/child" />;
+
+  const choose = (principal: DemoPrincipal) => {
+    if (busy || restartRequired) return;
+    setError(null);
+    setBusy(true);
+    const result = enterDemoExperience({
+      principal,
+      expectedGeneration: runGeneration,
+      expectedEpoch: entryEpoch,
+    });
+    setBusy(false);
+    if (!result.ok) {
+      setError(t('demoEntry.entryError'));
+      return;
+    }
+    router.replace(result.data.destination);
+  };
+  const copy: DemoEntryCopy = {
+    title: t('demoEntry.title'),
+    body: t('demoEntry.body'),
+    disclosure: t('demoEntry.disclosure'),
+    restartNotice: t('demoEntry.restartNotice'),
+    breadthNotice: t('demoEntry.breadthNotice'),
+    busyLabel: t('demoEntry.busyLabel'),
+    unavailableError: t(
+      Platform.OS === 'web' ? 'demoEntry.unavailableErrorWeb' : 'demoEntry.unavailableError',
+    ),
+    restartRequiredTitle: t('demoEntry.restartRequiredTitle'),
+    restartRequiredBody: t(
+      Platform.OS === 'web' ? 'demoEntry.restartRequiredBodyWeb' : 'demoEntry.restartRequiredBody',
+    ),
+    storyAction: t('demoEntry.storyAction'),
+    languageAction: t('demoEntry.languageAction'),
+    profiles: [
+      {
+        principal: 'parent_al_noor',
+        name: t('common.parent'),
+        roleLabel: t('common.parent'),
+        description: t('demoEntry.parentDescription'),
+        avatar: 'parent',
+      },
+      {
+        principal: 'child_salem',
+        name: t('common.salem'),
+        roleLabel: t('common.child'),
+        description: t('demoEntry.salemDescription'),
+        avatar: 'ghaf_tree',
+      },
+      {
+        principal: 'child_alya',
+        name: t('common.alya'),
+        roleLabel: t('common.child'),
+        description: t('demoEntry.alyaDescription'),
+        avatar: 'flower',
+      },
+    ],
+    moments: [
+      {
+        id: 'together',
+        title: t('demoEntry.moments.together.title'),
+        body: t('demoEntry.moments.together.body'),
+        imageAlt: t('demoEntry.moments.together.imageAlt'),
+        assetId: 'onboarding-action',
+      },
+      {
+        id: 'support',
+        title: t('demoEntry.moments.support.title'),
+        body: t('demoEntry.moments.support.body'),
+        imageAlt: t('demoEntry.moments.support.imageAlt'),
+        assetId: 'onboarding-support',
+      },
+      {
+        id: 'growth',
+        title: t('demoEntry.moments.growth.title'),
+        body: t('demoEntry.moments.growth.body'),
+        imageAlt: t('demoEntry.moments.growth.imageAlt'),
+        assetId: 'onboarding-growth',
+      },
+    ],
+    story: {
+      close: t('demoEntry.story.close'),
+      next: t('demoEntry.story.next'),
+      back: t('demoEntry.story.back'),
+      finish: t('demoEntry.story.finish'),
+      audioUnavailable: t('demoEntry.story.audioUnavailable'),
+      progressLabel: (current, total) => t('demoEntry.story.progress', { current, total }),
+    },
+  };
+  return (
+    <DemoEntryScreen
+      locale={locale}
+      direction={direction}
+      copy={copy}
+      busy={busy}
+      error={error}
+      restartRequired={restartRequired}
+      onChooseProfile={choose}
+      onChangeLocale={() => {
+        setError(null);
+        setLocale(locale === 'ar' ? 'en' : 'ar');
+      }}
+    />
   );
 }
 

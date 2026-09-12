@@ -1,6 +1,51 @@
 export const resources = {
   ar: {
     translation: {
+      demoEntry: {
+        title: 'خطوة صغيرة، ننجزها معًا',
+        body: 'نختار مهمة، نتعاون، ونقدّر ما أنجزناه.',
+        disclosure: 'عرض تجريبي ببيانات افتراضية. اختر وليّ الأمر أو أحد الطفلين.',
+        restartNotice: 'تبدأ تجربة جديدة عند إعادة تشغيل التطبيق.',
+        breadthNotice: 'المهمة القابلة للتجربة متاحة لسالم فقط في هذا العرض.',
+        busyLabel: 'جارٍ فتح الملف التجريبي…',
+        entryError: 'تعذّر فتح الملف التجريبي. حاول مجددًا.',
+        unavailableError: 'تعذّر عرض الملفات التجريبية. أغلق التطبيق بالكامل ثم افتحه من جديد.',
+        unavailableErrorWeb: 'تعذّر عرض الملفات التجريبية. أعد تحميل الصفحة للمحاولة مجددًا.',
+        restartRequiredTitle: 'أعد تشغيل العرض التجريبي',
+        restartRequiredBody:
+          'لم تكتمل إعادة العرض. أغلق التطبيق بالكامل ثم افتحه من جديد لبدء تجربة جديدة.',
+        restartRequiredBodyWeb: 'لم تكتمل إعادة العرض. أعد تحميل الصفحة لبدء تجربة جديدة.',
+        storyAction: 'تعرّف إلى غاف',
+        languageAction: 'English',
+        parentDescription: 'راجع المهمة وقدّم الدعم',
+        salemDescription: 'جرّب المهمة واطلب المساعدة',
+        alyaDescription: 'استكشف ملف علياء التجريبي',
+        story: {
+          close: 'تخطّي المقدمة',
+          next: 'التالي',
+          back: 'السابق',
+          finish: 'دخول العرض التجريبي',
+          progress: '{{current}} من {{total}}',
+          audioUnavailable: 'السرد الصوتي غير متاح. يمكنك قراءة النص والمتابعة.',
+        },
+        moments: {
+          together: {
+            title: 'نختار خطوة آمنة معًا',
+            body: 'يختار الطفل مهمةً وافق عليها وليّ الأمر. في هذا العرض، يجرّب سالم فرز مواد نظيفة قابلة لإعادة التدوير، بإشراف شخص بالغ.',
+            imageAlt: 'رسم توضيحي لمهمة عائلية آمنة',
+          },
+          support: {
+            title: 'المساعدة جزء من المهمة',
+            body: 'قبل قبول المهمة، يمكن للطفل طلب مهمة أصغر ليراجعها وليّ الأمر. المساعدة المسموح بها لا تقلّل المكافأة المتفق عليها. إرشادات الذكاء الاصطناعي هنا أمثلة مُعدّة مسبقًا للمهمة المعتمدة، وقد تكون غير دقيقة. يمكن للطفل سؤال وليّ الأمر عند الحاجة.',
+            imageAlt: 'رسم توضيحي للتعاون وتقديم المساعدة',
+          },
+          growth: {
+            title: 'نقدّر الفعل، ثم تنمو الحديقة',
+            body: 'يؤكد وليّ الأمر إكمال المهمة ويقدّر ما أُنجز. بعدها تُضاف البذور، وتنمو الحديقة الخاصة نموًا رمزيًا. هذا النمو لا يعني زراعة أشجار حقيقية أو قياس أثر بيئي. هذا عرض محلي؛ تبدأ تجربة جديدة عند إعادة تشغيل التطبيق.',
+            imageAlt: 'رسم توضيحي لنمو الحديقة الرمزي',
+          },
+        },
+      },
       common: {
         brand: 'غاف',
         brandLatin: 'Ghaf',
@@ -1848,6 +1893,52 @@ export const resources = {
   },
   en: {
     translation: {
+      demoEntry: {
+        title: 'A small step, done together',
+        body: 'Choose a task, help each other, and recognize what you did.',
+        disclosure: 'A demo with synthetic data. Choose the Parent or one of the Children.',
+        restartNotice: 'Restarting the app begins a fresh demo run.',
+        breadthNotice: 'The executable task is available only to Salem in this demo.',
+        busyLabel: 'Opening demo profile…',
+        entryError: 'The demo profile could not open. Try again.',
+        unavailableError: 'Demo profiles could not be displayed. Fully close and reopen the app.',
+        unavailableErrorWeb: 'Demo profiles could not be displayed. Reload the page to try again.',
+        restartRequiredTitle: 'Restart the demo',
+        restartRequiredBody:
+          'The reset could not finish. Fully close and reopen the app to begin a fresh demo.',
+        restartRequiredBodyWeb:
+          'The reset could not finish. Reload the page to begin a fresh demo.',
+        storyAction: 'Discover Ghaf',
+        languageAction: 'العربية',
+        parentDescription: 'Review the task and offer support',
+        salemDescription: 'Try the task and ask for help',
+        alyaDescription: 'Explore Alya’s demo profile',
+        story: {
+          close: 'Skip introduction',
+          next: 'Next',
+          back: 'Back',
+          finish: 'Enter demo',
+          progress: '{{current}} of {{total}}',
+          audioUnavailable: 'Narration is unavailable. Read the text and continue.',
+        },
+        moments: {
+          together: {
+            title: 'Choose a safe step together',
+            body: 'The Child chooses a task already approved by the Parent. In this demo, Salem tries sorting clean recyclable materials with adult supervision.',
+            imageAlt: 'Illustration of a safe family task',
+          },
+          support: {
+            title: 'Help is part of the task',
+            body: 'Before accepting the task, the Child can ask for a smaller task for the Parent to review. Permitted help does not reduce the agreed award. The AI guidance here uses prepared examples for the approved task and may be inaccurate. The Child can ask the Parent when needed.',
+            imageAlt: 'Illustration of working together and offering help',
+          },
+          growth: {
+            title: 'Recognize the action, then grow the garden',
+            body: 'The Parent confirms completion of the task and praises the action. Seeds are then added, and the private garden grows symbolically. This growth does not mean real trees were planted or environmental impact was measured. This demo is local; restarting the app begins a fresh run.',
+            imageAlt: 'Illustration of symbolic garden growth',
+          },
+        },
+      },
       common: {
         brand: 'Ghaf',
         brandLatin: 'غاف',

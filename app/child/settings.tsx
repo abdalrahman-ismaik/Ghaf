@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect, useNavigationContainerRef, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
@@ -12,6 +12,8 @@ import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
 import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
+import { entryMode } from '@/config/demoEntry';
+import { prepareEntryReset } from '@/utils/navigation';
 
 const PERMISSIONS = [
   { key: 'voiceGranted', label: 'r003.permissions.voice', icon: 'dialpad' },
@@ -21,6 +23,7 @@ const PERMISSIONS = [
 
 export default function ChildSettingsScreen() {
   const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -39,12 +42,18 @@ export default function ChildSettingsScreen() {
 
   const openParentAccess = () => {
     setError(null);
+    const resetNavigation = entryMode === 'demo' ? prepareEntryReset(navigation) : null;
+    if (entryMode === 'demo' && !resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = beginTemporaryParentAccess();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
     }
-    router.replace('/');
+    if (resetNavigation) resetNavigation();
+    else router.replace('/');
   };
 
   return (

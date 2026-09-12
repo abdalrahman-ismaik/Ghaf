@@ -33,6 +33,7 @@ import {
 } from '@/features/startup';
 import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { entryMode } from '@/config/demoEntry';
 
 void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -137,7 +138,7 @@ export default function RootLayout() {
     let frame: number | undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     const elapsed = Date.now() - splashStartedAt.current;
-    const remaining = Math.max(0, firstRunMotion.splashHold - elapsed);
+    const remaining = Math.max(0, (entryMode === 'demo' ? 0 : firstRunMotion.splashHold) - elapsed);
     timeout = setTimeout(() => {
       frame = requestAnimationFrame(() => {
         if (mounted) {
@@ -161,7 +162,10 @@ export default function RootLayout() {
     let frame: number | undefined;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     const elapsed = Date.now() - loadingStartedAt.current;
-    const remaining = Math.max(0, firstRunMotion.loadingHold - elapsed);
+    const remaining = Math.max(
+      0,
+      (entryMode === 'demo' ? 0 : firstRunMotion.loadingHold) - elapsed,
+    );
     timeout = setTimeout(() => {
       frame = requestAnimationFrame(() => {
         if (mounted) setStartupPhase('complete');
