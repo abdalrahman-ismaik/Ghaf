@@ -1098,3 +1098,42 @@ branding and actual upcoming app screenshots, with editable text/shapes and no f
 features or results. Isolated authoring tools there do not alter the app package or lockfile.
 D independently supplies the concise source-grounded caption/claim packet. No public upload or
 new clip generation is selected; narration clips are not embedded in the poster.
+
+## Final entry composition and poster personalization — September 12
+
+The owner supplied exact team identity and selected English text with bilingual Ghaf branding.
+A inserted those details only into ignored poster deliverables; this record deliberately omits
+personal email addresses. This is owner-supplied content, not invented student participation.
+
+C released `ce9ebca`; A inspected all four changed files and integrated `42203a3`, preserving
+authorship. Entry now uses the approved panoramic landscape, a clear Parent choice and two
+Child tiles with a narrow/large-text stacking fallback. The three-part story uses a consistent
+forest heading, photographic frame, paper transcript and explicit navigation/audio controls.
+All existing strings, access controllers, route guards and optional narration semantics remain.
+C's 40 focused presentation tests passed; they are not mounted/native lifecycle evidence.
+
+A205's full check on `42203a3` passed typecheck with 2048 MiB and failed lint on render-time ref
+access in the narration state initializer. Format/suite did not run in that attempt. A corrected
+only the initializer's source in `98be865`, retaining the same false/false/null/false defaults.
+The exact follow-up prompt to `narration_contract_seams` was to inspect this one diff for first-
+render/lifecycle permission changes, read-only, with no tests, browser, wider audit or writes.
+It found no actionable defect and released. Scoped lint/diff checks passed. Full corrected
+candidate checks and final captures are recorded in the subsequent handoff evidence.
+
+A continued the released poster generator with a three-column contact footer, accurate AI-
+assistance metadata and removed inherited PowerPoint theme shadows. Installed Windows PowerPoint
+opened the owned draft and embedded two supplied OFL fonts, exporting an actual PNG. The first
+PDF optional-argument COM call failed; A retained that failure and changed the exporter to
+PowerPoint SaveAs PDF. Temporary font registrations were removed and only A's presentation
+closed. No permanent font installation, other-user-document edit, audio embedding, upload or
+submission occurred. Final actual screenshot placement and rendering are a separate deliverable.
+
+Rejected: using mockup screenshots as app evidence, calling browser captures native acceptance,
+including unfinished timeline/maps/chat features, or treating team names as approval of source.
+Student review, public-audio rights and physical listening remain pending.
+
+A206 full corrected-source checks completed at 12:47:45 UTC: typecheck/lint/format/full suite all
+exit 0; 150 files and 1,979 tests. The exact clean runtime was `98be865`. A restored one fresh
+canonical demo Metro (PID 225406, A207) and granted C final captures with served-source proof.
+A updated the Android guide, current demonstration checkpoint and pending student teach-back
+questions to match the actual source and preserved native-build stop. No student review is claimed.

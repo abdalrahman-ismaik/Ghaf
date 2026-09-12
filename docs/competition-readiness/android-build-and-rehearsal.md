@@ -332,9 +332,9 @@ Retain that identity evidence with the captures. Do not edit shared node_modules
 lead's cache or run another preview alongside the allocated pair. An isolated temporary directory
 is a launch precaution, not a tested APK or production setting. Only the lead owns/cleans its jobs.
 
-## Final demo-source build checkpoint — 2026-09-12
+## Historical baseline demo-source build checkpoint — 2026-09-12
 
-Final runtime is5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051; all four source checks pass,148files /
+That baseline runtime is5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051; all four source checks pass,148files /
 1,919tests. B's matching branch HEADb317f2d generated the demo-mode native project with pinned
 tools and one Metro worker. Attempt20260912T022614Z-manifest.CaPVjg ended02:27:21UTC, exit75
 during bundling. No merged manifest or APK exists from that attempt; owned jobs were stopped.
@@ -370,3 +370,27 @@ preparing the latter while preserving the original marker/generated-from source;
 an executable reuse authorization. Only a final exact source pair with unchanged native/config/
 plugin/dependency/codegen inputs may qualify. Normal bundling, Gradle and new APK/device checks
 still run. Do not copy or rename the baseline APK and call it the narration candidate.
+
+## Poster candidate and preserved native work — September 12, 12:48 UTC
+
+The current app source is `98be86558426f593b639e0db2be0da9cebc36078`. It includes the selected
+three-profile demo entry, optional Arabic narration integration, refreshed entry/story composition
+and Parent/Child home presentation. Typecheck, lint, format and the full suite passed: **150 files,
+1,979 tests**, one worker. Receipt/logs: `output/native-integration/015/full-98be865/`. The earlier
+768 MiB heap failure and `42203a3` lint failure remain recorded; neither was silently relabeled.
+
+This is not an APK identity. B's baseline A171 run `20260912T113307Z-build.T4DtZl` stopped with
+exit 75 on sustained paging at 12:24:55 UTC, with no APK. All 2,565 recorded PIDs were absent
+at release; generated native inputs and build/cache outputs were preserved. There is no native
+retry or recertification while the selected urgent poster handoff is in progress.
+
+A restored the canonical demo preview on localhost:8081, PID 225406, with one worker, private
+caches, mock services and all eight R002b/three live-AI flags off. C owns the sole actual-app
+browser capture session. This preview is for visible UI and poster evidence; it cannot pass
+Android installation, offline startup, Back, TalkBack, font scaling or audible playback.
+
+After the poster handoff, the resumable native task is a separately reviewed exact baseline-to-
+new-source build-input reconciliation, then a measured build on the final published source.
+D independently verifies the resulting APK before installation. The tablet was last UNAUTHORIZED;
+no current properties or native pass are inferred. Recovery 014 remains deferred even if a future
+native gate passes. Human/public-audio/student gates remain separately pending.

@@ -117,3 +117,26 @@ and attribution; public competition/APK use remains unresolved. No new voice ser
 For the final integrated candidate, each student records their actual name, reviewed commit,
 which function/test they explained and any correction they made. All such responses remain
 PENDING here. Do not read planned behavior as a current product demonstration claim.
+
+## September 12 visual and poster changes to explain
+
+Student teach-back is **PENDING**; named team details on the poster do not establish code review.
+Review the exact source slices `6f15abb`, `4ef4add`, `42203a3` and `98be865`, plus the earlier
+015 access/controller contract and narration integration `0d23b8e`. Explain these points in your
+own words after inspecting the code:
+
+- The Parent/Child profile chooser enters isolated synthetic demo services. Normal sign-in and
+  pairing guards remain separate; selecting a tile is not production authentication.
+- The visual refactor reorganizes existing artwork, typography, spacing and actions. It does not
+  grant Seeds or change who may approve a task. Salem has the executable fixture; Alya does not
+  receive a copied Salem task.
+- Task-focused assistance is prepared/local and fallible. The Parent remains responsible for
+  assignment and recognition; help retains the accepted award and retry removes nothing.
+- Narration starts silent and requires explicit permitted playback. The final initializer fix
+  avoids reading a React ref during render while retaining fail-closed initial state. Native
+  listening/interruption and public audio rights are still separate open gates.
+- The poster contains actual browser captures. Passing 1,979 automated tests does not prove
+  Android touch, offline startup, TalkBack, audio playback, device sync or process recovery.
+
+Record the real reviewing student, exact diff, questions answered and unresolved questions only
+after the session actually occurs. Do not turn these proposed prompts into fabricated records.

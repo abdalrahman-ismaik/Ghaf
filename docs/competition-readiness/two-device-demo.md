@@ -152,3 +152,16 @@ wider layout, text scaling, Back, touch, persistence and reset.
 Screenshots and source checks cannot pass Android RTL, TalkBack, keyboard, Back, permission,
 reduced-motion or physical acceptance. Named Arabic/cultural review and genuine student code
 explanation also remain required evidence; use the [Q&A guide](team-qa-guide.md).
+
+## Poster-day source checkpoint
+
+The September 12 poster uses the refreshed local demo source `98be865` and actual browser
+screenshots, labeled accordingly. The quick selector has exactly one Parent, Salem and Alya;
+Salem owns the executable recycling journey. The optional introduction can be skipped. Use the
+script above through real UI actions; neither profile selection nor switching implies production
+authentication, another device synchronizing, or durable task recovery.
+
+All four code checks passed on this source (150 files / 1,979 tests). The native build did not
+produce an APK before the poster handoff, and there are still **0/10 physical rehearsals**.
+The supplied finalist email confirms qualification; poster submission and attendance confirmation
+remain operator actions. The poster is a communication artifact, not native acceptance evidence.
