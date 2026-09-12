@@ -349,3 +349,22 @@ C browser evidence and D artifact review close the duplicate-heading/approval-ha
 within their exact scope. The earlier Arabic clipping diagnosis was withdrawn after identical
 isolated-glyph evidence; no typography repair is claimed. Physical Android/font scaling, installed
 identity, offline launch, audio listening and real rehearsals remain NOT RUN.
+
+## Narration preparation and the next rebuild
+
+Preparation sourcefa9821c adds a separate pure optional-playback controller, bilingual control
+interfaces and the three exact approved Arabic files.44controller and49shared tests, scoped
+formatting, source review and asset/script hashes pass. D independently reviewed the source and
+committed asset identities. The adapter/UI remains C's separate T014b slice; this is not an APK
+that plays the new narration. The frozen A171 build still uses5d8a3e8.
+
+A full TypeScript attempt at a temporary768MiB heap limit failed from Node heap exhaustion on
+12September at12:01:08UTC. It emitted no source diagnostic, but it did not pass. Adequate-memory
+full checks remain mandatory for the integrated candidate after native-heavy release.
+
+B's generation guard binds the exact source commit. A later narration rebuild therefore needs
+either fresh generation or a separately reviewed, case-specific equivalence receipt. A189 selects
+preparing the latter while preserving the original marker/generated-from source; this is not yet
+an executable reuse authorization. Only a final exact source pair with unchanged native/config/
+plugin/dependency/codegen inputs may qualify. Normal bundling, Gradle and new APK/device checks
+still run. Do not copy or rename the baseline APK and call it the narration candidate.

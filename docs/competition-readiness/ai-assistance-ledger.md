@@ -1012,3 +1012,28 @@ C065's concrete existingReactDOM/Metro harness plan is now A183-authorized for i
 preparation only. It must label real React effects separately from mocked native/media events.
 No browser/Metro/native launch is granted until B releases heavy work. Actual Android playback,
 no-resume race, mounted lifecycle, public rights and student teach-back remain pending/BLOCKED.
+
+## Exact native reuse proposal and independent preparation review — September12
+
+D released880e868, integratedd20bdc5: bounded source review of exactfa9821c found no material
+controller or shared-binding defect, and independently verified all three committed audio hashes.
+Its report attributes A's44+49 test runs rather than duplicating them. Full TypeScript/mounted/
+native/public/student gates remain separate. C received A186's exact clean newbranch grant at
+fa9821c, preserving its oldc91f95e branch and ignored evidence, and acknowledged T014b implementation.
+
+B099 identified why its current generation guard will refuse a later JS-only source: the marker
+also binds source_commit. A delegated a read-only schema/input review to native_resume_audit while
+reviewing the actual5d→fa982 runtime delta. Exact prompt: inspect the current guard/marker and
+relevant package/config/codegen boundaries; propose the smallest case-specific old→final-new-source
+recertification evidence, preserving old provenance, with no writes, build, rehash of all dependencies
+or repeated task-graph audit. One helper, no descendants; completed/released.
+
+The helper found root app codegen gated by codegenConfig, currently absent, and the need to bind
+package/config variants, referenced native-generation assets/plugins, unchanged private-install
+provenance and full resolved public configuration as well as all54 native-source hashes. A accepted
+the narrower sidecar direction in A189: exact generated-from/build-source pair and approved delta,
+old marker retained unchanged, separately reviewed validator/guard patch and normal new Gradle/
+bundle/APK checks. No marker or script was changed and no reuse proof is complete yet; the final
+C runtime candidate is not published. Rejected: relabel old generation as new, generic source-
+independent bypass, assuming cache validity from metadata, or making every UI change discard valid
+native outputs without checking the actual input boundary. Native/student review still pending.
