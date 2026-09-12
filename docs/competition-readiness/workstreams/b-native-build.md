@@ -1761,3 +1761,117 @@ review of the conditional regeneration exception and actual process observation.
 retry or full APK grant is inferred. B retains maintenance/private paths, with no helper, heavy,
 preview or command job. APK hash/signature/assets/manifest inspection and D's device journey remain
 NOT RUN; physical/human acceptance and Recovery014 remain pending/deferred respectively.
+
+### A162 — remaining configuration and actual four-ABI Worklets build
+
+The second stage passed on report-only descendant
+`b32174d7063fd6510a17da1baf98f6b0566f2c96`, unchanged runtime5d8a3e8/demo/script99ae/init a2d7.
+It compiled Worklets for all four ABIs and configured all24 module/ABI combinations. It did not
+assemble an APK or build Reanimated's library. A168 independently reviewed the exact identity,
+fixed16 requests, four transitive Reanimated configurations, four Worklets configurations/builds,
+final six AGP8.12 owners and absence of added Debug/IDE/stub-PCH tasks; that review is attributed.
+
+Exact invocation and outer result:
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/remaining-A162-launch.json`.
+Run directory:
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/20260912T112122Z-configure.kBHYHW/`.
+UTC11:21:20.872803–11:26:26.598535; wrapper0/all25 steps0/Gradle0/cleanup0, observer0.
+Gradle reported81 actionable tasks,35 executed/46 up-to-date. Source/report remained frozen during
+execution. Session74458 completed0. All428 captured PIDs were absent at11:27:05.804127UTC;
+the sole heavy allocation, runner133052/script133053/observer133054 and consumers were released.
+The56 resource samples show minimum available48.086%, maximum swap652KiB, paging streak0 and no
+guard stop. This result establishes the executed stage only.
+
+| Actual run artifact          | SHA-256                                                            |
+| ---------------------------- | ------------------------------------------------------------------ |
+| receipt.txt                  | `1d80253643bc49382b064fb19513c1f471d45b686450bc512da9c352f8439e8b` |
+| 21-gradle-configure.log      | `62d6aa204f76a619addd6a8a185dd381970ee8e080f48813d7ce540237dd24d9` |
+| native-module-policy.jsonl   | `a695fdd52000cfec55833ff92158b1d799ec3a02fdd27f254c6f1c9ab9d9cb79` |
+| native-configure-review.json | `bbf11f3e279eb3a0db1d018b7a570cb1f589a0dd72c19d7072378b235c3afb90` |
+| gradle-arguments.json        | `0307c9aab9739e3bf4fc347d5cbd5eb2e196d9c9bddcf0a4f263a69306356634` |
+
+`remaining-A162-native-processes.jsonl` has one header,583 samples and one terminal row. The maximum
+observed inter-sample gap is0.522054 seconds; no sample shows more than one recognized Ninja or
+compiler driver. The read-only observer records filtered argv/executable/cwd/identity metadata
+without environments or signals. Its0.5-second sleep follows a sequential scan: observations are
+not atomic, and short-lived, unreadable, differently named or detached processes may be missed.
+Driver/front-end/linker process counts are not compiler-edge counts. Root disappearance does not
+prove descendant cleanup; the independent wrapper/owned-process receipts above supply that result.
+Do not turn these samples into continuous or application-wide serialization proof.
+
+Final graph and execution evidence:
+`/home/smyk/projects/Ghaf-demo-systems/output/native-build/remaining-edge-review/`.
+The selected configuration hashes are app2c1b1mx6, Worklets6y5sz712, Reanimated1n1k4n1p,
+Gesture Handler86m5o2u4, Screensj1z2j254 and Expo Core4m2wyzjb. Each model is from this actual run,
+bound to its module/root/ABI, release variant and exact pool/tool arguments. Configure commands,
+effective cache, AGP Ninja paths and compile databases agree. Unchanged Worklets metadata retained
+from stage1 is accepted only when its bytes match the preserved stage1 snapshot; it is explicitly
+distinguished from newly written files. All inspected final files are hashed/copied and rechecked
+for changes during reading. This is a bounded literal-grammar inventory, not a general Ninja parser.
+
+| Per ABI             | Ordinary CXX | PCH | Shared link | Static archive |
+| ------------------- | -----------: | --: | ----------: | -------------: |
+| App/codegen targets |           69 |   0 |           4 |              0 |
+| Worklets            |           37 |   1 |           1 |              0 |
+| Reanimated          |          105 |   1 |           1 |              0 |
+| Gesture Handler     |            1 |   0 |           1 |              0 |
+| Screens             |            5 |   0 |           1 |              0 |
+| Expo Core/JSI       |           58 |   2 |           1 |              1 |
+
+Across all24 graphs, all1156 native edges explicitly select `ghaf_native` depth1:1100 CXX objects,
+16 PCH,36 shared links and four static archives. No C/ASM/executable-link rule appears. The Expo
+archive edge runs `cmake -E rm -f`, private NDK `llvm-ar qc`, and private NDK `llvm-ranlib`
+sequentially within that one pooled command. It is included in coverage, not inferred from an
+unused CMake cache variable. Every compile database count and working directory agrees.
+
+The helper independently inspected all48 Ninja files and12 referenced glob scripts. Every graph
+has one literal rules include, with no subninja/continued lines or further rules includes. There
+are no launcher/code-check/response-file/edge-command overrides, and PRE_LINK/POST_BUILD are `:`.
+All custom commands are CMake echo or regeneration; glob scripts only glob/compare/message/touch.
+Ninja clean/help and CMake regeneration remain explicit utility exceptions. Regeneration may
+replace files or invoke probes; its commands do not receive a compiler-free guarantee. The pool
+continues to constrain one Ninja process, not every internal thread or independent Ninja instance.
+
+Worklets did regenerate during stage2. Old snapshots remain intact; point-in-time comparison and
+revalidation were recorded during compilation, followed by the stable final24-graph review above.
+Final graph hashes differ from stage1 where metadata/regeneration dependencies changed, while
+all compiler/linker pool assignments remain checked. `worklets-execution.json` retains old/final
+hash pairs and each `.ninja_log` snapshot. Each ABI records exactly39 native outputs from this run,
+with nonoverlapping native start/end intervals inside its own Ninja invocation: `arm64-v8a` 0–59799ms,
+`armeabi-v7a` 1–52364ms, `x86` 1–48621ms, `x86_64` 0–48710ms. The preceding glob row is excluded; relative
+clocks are not merged across invocations or used as a global concurrency trace.
+
+Four actual `libworklets.so` files have ELF headers matching their stated ABI; paths, sizes,
+modification times and SHA-256 values are in `worklets-execution.json`. These are native libraries,
+not an installable APK:
+
+| ABI         | Library SHA-256                                                    |
+| ----------- | ------------------------------------------------------------------ |
+| arm64-v8a   | `366a59331444b87890b00373762b3d96597cfb032f4d72688573b2d55d2fc37a` |
+| armeabi-v7a | `3865ba057771c757bb80b3d22bb0bea44dde698932169c4ddfa56a136a0e32b7` |
+| x86         | `aa5487fcd522ab4831c0b1ed82f32dbcae7f0293d1b7d73672e07cff3ae2ef1c` |
+| x86_64      | `8cfe15338ec70496ef6592da55fb51d891fbca8c145b0264658f01fd56cef3f2` |
+
+`python3 output/native-build/remaining-edge-review/audit.py` passed all24 graph inventories and
+six per-module removed-pool refusal mutations on its first execution at11:29:04.522787–.889306UTC,
+exit0. Checker SHA `3ae95a727a862bb88fd54f073039ce67325dad7f50343aeeeeba3b888ffad168`;
+receipt SHA `ab5e70d01b4a0811815376774f3b4568f350de4aacec94f12297cf2b5f18f177`.
+Separate one-off development mistakes in the post-exit/header summary and selected-model
+enumeration exited1 before writing their artifacts, then were corrected. They were not native
+failures; details and actual helper prompt/contributions/rejected claims are in
+`remaining-edge-review/assistance.json` and `worklets-edge-review/observer-assistance.json`.
+
+The lead authored/reviewed the ignored observer and final provenance/inventory/execution analysis.
+One reused read-only helper reviewed observer limitations during the build, then final command
+semantics alongside lead graph work; all helper scopes/jobs are complete and released. No full
+app, feature, dependency/configuration change or authority was generated. Requested settings remain
+Astra/Ultra/Fast, distinct from last observed root Astra/xhigh/fast and helper Astra/ultra request;
+effective serving tier is unexposed. Student owner, exact-diff review and teach-back remain PENDING.
+
+Release this coherent report-only slice for A review/integration; script/runtime are unchanged,
+package Android/iOS normalization remains unstaged, and B retains maintenance/private paths with
+no active helper/job/heavy/preview. Full APK assembly needs A's separately named candidate and
+resource grant, with unchanged internal-debug signing limitation, permission approval and guards.
+The result must receive actual APK/hash/signature/manifest/assets inspection before D installation.
+Device trust/readiness remains A/D-owned; no physical Android, human rehearsal or Recovery014
+acceptance follows from this stage.
