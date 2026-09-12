@@ -134,6 +134,126 @@ function expectSessionRejected(access: FaultAccess) {
   expect(access.projectSession({ session: access.captured!, now: NOW }).ok).toBe(false);
 }
 
+describe('one shared demo entry transaction scope', () => {
+  function enter(h: ReturnType<typeof harness>, principal: 'parent' | SyntheticChildId) {
+    const restored = h.restore();
+    if (!restored.ok) return restored;
+    const result =
+      principal === 'parent'
+        ? h.parent.resumeRememberedParent(NOW)
+        : h.child.resumeRememberedChild(principal, NOW);
+    return result.ok ? success(true) : result;
+  }
+
+  function assertRolledBackAndRetry(
+    h: ReturnType<typeof harness>,
+    before: {
+      parent: ReturnType<typeof h.parent.getView>;
+      child: ReturnType<typeof h.child.getView>;
+    },
+    principal: 'parent' | SyntheticChildId,
+  ) {
+    expect(h.parent.getView()).toEqual(before.parent);
+    expect(h.child.getView()).toEqual(before.child);
+    expect(h.parent.authorizeParentExperience(NOW).ok).toBe(false);
+    expect(h.child.authorizeChildExperience(NOW).ok).toBe(false);
+    expectSessionRejected(h.access);
+    const failedSessionId = h.access.captured!.id;
+    expectOk(h.run(() => enter(h, principal)));
+    expect(h.access.captured!.id).toBe(failedSessionId);
+    expect(h.parent.authorizeParentExperience(NOW).ok).toBe(principal === 'parent');
+    expect(h.child.authorizeChildExperience(NOW).ok).toBe(principal !== 'parent');
+  }
+
+  for (const principal of ['parent', 'child_salem', 'child_alya'] as const) {
+    it.each(['access', 'parent', 'child'] as const)(
+      `rolls back all participants after swallowed %s reentry during ${principal} entry`,
+      (owner) => {
+        const h = harness();
+        const before = { parent: h.parent.getView(), child: h.child.getView() };
+        const nested = vi.fn(() => success(true));
+        const result = h.run(() => {
+          expectOk(enter(h, principal));
+          expect(h[owner].withDemoEntryTransaction(nested)).toMatchObject({
+            ok: false,
+            error: { code: 'INVALID_TRANSITION' },
+          });
+          return success(true);
+        });
+        expect(nested).not.toHaveBeenCalled();
+        expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+        assertRolledBackAndRetry(h, before, principal);
+      },
+    );
+  }
+
+  const faultCases = ['declared failure', 'exception', 'malformed', 'thenable'] as const;
+  function failWith(kind: (typeof faultCases)[number]): ServiceResult<true> {
+    if (kind === 'exception') throw new Error('Private composite failure detail');
+    if (kind === 'malformed') return null as unknown as ServiceResult<true>;
+    if (kind === 'thenable')
+      return Promise.resolve(success(true)) as unknown as ServiceResult<true>;
+    return failure();
+  }
+
+  for (const owner of ['access', 'parent'] as const) {
+    it.each(faultCases)(`restores successful inner participants after ${owner} %s`, (kind) => {
+      const h = harness();
+      const before = { parent: h.parent.getView(), child: h.child.getView() };
+      const result = h.access.withDemoEntryTransaction(() => {
+        const middle = h.parent.withDemoEntryTransaction(() => {
+          expectOk(h.child.withDemoEntryTransaction(() => enter(h, 'child_salem')));
+          return owner === 'parent' ? failWith(kind) : success(true);
+        });
+        if (owner === 'parent') return middle;
+        expectOk(middle);
+        return failWith(kind);
+      });
+      expect(result.ok).toBe(false);
+      expect(JSON.stringify(result)).not.toContain('Private composite failure detail');
+      assertRolledBackAndRetry(h, before, 'child_salem');
+    });
+  }
+
+  it.each(faultCases)('aborts access even when the caller swallows an inner %s', (kind) => {
+    const h = harness();
+    const before = { parent: h.parent.getView(), child: h.child.getView() };
+    const result = h.access.withDemoEntryTransaction(() => {
+      const inner = h.parent.withDemoEntryTransaction(() =>
+        h.child.withDemoEntryTransaction(() => {
+          expectOk(enter(h, 'parent'));
+          return failWith(kind);
+        }),
+      );
+      expect(inner.ok).toBe(false);
+      return success(true);
+    });
+    expect(result.ok).toBe(false);
+    assertRolledBackAndRetry(h, before, 'parent');
+  });
+
+  it('rejects reuse of a returned participant before the outer scope finishes', () => {
+    const h = harness();
+    const before = { parent: h.parent.getView(), child: h.child.getView() };
+    const nested = vi.fn(() => success(true));
+    const result = h.access.withDemoEntryTransaction(() => {
+      expectOk(
+        h.parent.withDemoEntryTransaction(() =>
+          h.child.withDemoEntryTransaction(() => enter(h, 'child_alya')),
+        ),
+      );
+      expect(h.child.withDemoEntryTransaction(nested)).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_TRANSITION' },
+      });
+      return success(true);
+    });
+    expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(nested).not.toHaveBeenCalled();
+    assertRolledBackAndRetry(h, before, 'child_alya');
+  });
+});
+
 describe('demo entry authority transaction', () => {
   it.each(['parent', 'child_salem', 'child_alya'] as const)(
     'commits only the selected %s controller authority',
