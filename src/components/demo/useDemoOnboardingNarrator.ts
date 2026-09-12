@@ -2,6 +2,7 @@ import { createAudioPlayer, type AudioPlayer, type AudioStatus } from 'expo-audi
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, AppState, Platform } from 'react-native';
 
+import { isDemoNarrationAllowed } from '@/features/onboarding/demoNarrationPolicy';
 import {
   createDemoPlayback,
   type DemoPlaybackController,
@@ -117,15 +118,11 @@ export function useDemoOnboardingNarrator({
   );
 
   const permitted = useCallback((expectedKey: string) => {
-    const env = environment.current;
     return (
       mounted.current &&
       scope.current.key === expectedKey &&
       scope.current.source !== null &&
-      env.appObserved &&
-      env.appActive &&
-      env.readerObserved &&
-      env.reader === false &&
+      isDemoNarrationAllowed(environment.current, Platform.OS === 'web') &&
       !failed.current
     );
   }, []);
@@ -177,38 +174,42 @@ export function useDemoOnboardingNarrator({
       environment.current.appActive = false;
       retire();
     }
-    try {
-      // React Native Web cannot determine whether a screen reader is active.
-      if (Platform.OS === 'web') throw new Error('Screen reader detection unavailable');
-      readerSubscription = AccessibilityInfo.addEventListener('screenReaderChanged', (enabled) => {
-        if (!alive) return;
-        readerRevision += 1;
-        environment.current.reader = typeof enabled === 'boolean' ? enabled : null;
-        if (environment.current.reader !== false) retire();
-        announce();
-      });
-      if (typeof readerSubscription?.remove !== 'function')
-        throw new Error('Screen reader observer unavailable');
-      environment.current.readerObserved = true;
-      const queryRevision = readerRevision;
-      Promise.resolve(AccessibilityInfo.isScreenReaderEnabled()).then(
-        (enabled) => {
-          if (!alive || readerRevision !== queryRevision) return;
-          environment.current.reader = typeof enabled === 'boolean' ? enabled : null;
-          if (environment.current.reader !== false) retire();
-          announce();
-        },
-        () => {
-          if (!alive || readerRevision !== queryRevision) return;
-          environment.current.reader = null;
-          retire();
-          announce();
-        },
-      );
-    } catch {
-      environment.current.readerObserved = false;
-      environment.current.reader = null;
-      retire();
+    // Web keeps reader state unknown; only an explicit Play/Replay can request narration.
+    if (Platform.OS !== 'web') {
+      try {
+        readerSubscription = AccessibilityInfo.addEventListener(
+          'screenReaderChanged',
+          (enabled) => {
+            if (!alive) return;
+            readerRevision += 1;
+            environment.current.reader = typeof enabled === 'boolean' ? enabled : null;
+            if (environment.current.reader !== false) retire();
+            announce();
+          },
+        );
+        if (typeof readerSubscription?.remove !== 'function')
+          throw new Error('Screen reader observer unavailable');
+        environment.current.readerObserved = true;
+        const queryRevision = readerRevision;
+        Promise.resolve(AccessibilityInfo.isScreenReaderEnabled()).then(
+          (enabled) => {
+            if (!alive || readerRevision !== queryRevision) return;
+            environment.current.reader = typeof enabled === 'boolean' ? enabled : null;
+            if (environment.current.reader !== false) retire();
+            announce();
+          },
+          () => {
+            if (!alive || readerRevision !== queryRevision) return;
+            environment.current.reader = null;
+            retire();
+            announce();
+          },
+        );
+      } catch {
+        environment.current.readerObserved = false;
+        environment.current.reader = null;
+        retire();
+      }
     }
     announce();
     return () => {
@@ -324,12 +325,7 @@ export function useDemoOnboardingNarrator({
   }, [key, permitted, retire, publish, isCurrent]);
 
   const cancel = useCallback(() => retire(), [retire]);
-  const allowed =
-    source !== null &&
-    permissions.appObserved &&
-    permissions.appActive &&
-    permissions.readerObserved &&
-    permissions.reader === false;
+  const allowed = source !== null && isDemoNarrationAllowed(permissions, Platform.OS === 'web');
   const status = !allowed ? 'unavailable' : display;
   const stoppable = status === 'loading' || status === 'playing';
   return {
