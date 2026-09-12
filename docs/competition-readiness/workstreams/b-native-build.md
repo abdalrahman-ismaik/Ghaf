@@ -1,6 +1,6 @@
 # Session B — Repeatable Android build
 
-**Current: actual Gradle graph x9Xru1 completed0/cleanup0; the wrapper retained exit1 for an unhandled typed root label. The narrow parser correction passes73 checks including the saved real graph. Actual evidence exposes an app CMake callback-order gap: five libraries receive requested pools, but the app was skipped. No native follow-up or APK acceptance is established.**
+**Current: the actual graph's typed-root parser repair is released, and the app's late-CMake hook correction passes101 standalone mock checks plus the real12-step preflight. Fixed configuration-stage selectors pass65 checks. The six-module final DSL gate and generated Worklets edges still need the separately granted first native configuration run. No APK/device acceptance is established.**
 
 The accepted three-principal adapter is integrated into A's final runtime `5d8a3e8`. Two manifest
 attempts stopped on the resource guard; the later sections preserve their exact evidence. A087
@@ -1574,3 +1574,81 @@ Release the coherent stage CLI/report commit for A, keeping A149's separate app-
 next in the queue. Runtime5d and the unstaged package-script delta remain unchanged. Finished
 paths/helper/jobs are released for integration; maintenance/private native boundaries remain B's.
 Neither this release nor passing mocked receipts authorizes stage1/stage2 execution or APK proof.
+
+## A149 — Late app CMake path and final module verification
+
+A granted this correction separately from stage selection. The read-only B helper established
+the exact ordering: android/app/build.gradle applies Android atline1 and React atline3. Our init
+registers finalizeDsl when Android applies; ReactPlugin.kt:83 subsequently calls
+configureReactNativeNdk. NdkConfiguratorUtils.kt:21 registers a later finalizeDsl callback;
+its29–34 set the app's default CMake path and37–55 add to the existing arguments without clearing
+them. The early null-path return therefore skipped the app before its later native setup.
+
+Installed AGP8.12 DslLifecycleComponentsOperationsRegistrar appends callbacks to an ArrayList and
+iterates in insertion order (embedded source24/27/31). BasePlugin.createAndroidTasks executes
+callbacks at632, locks the DSL at705, then creates variants at745. Archive hash:
+`ac19aabdfb6736ed49697e107ba0d824c6f5078e203f2bce911e8a6bba6d91cb`, under the previously recorded
+private AGP8.12 cache path. These source/bytecode observations support the callback explanation;
+they do not themselves validate a new native execution. A owns the independent full task closure.
+
+The lead keeps argument mutation in finalizeDsl: check conflicts and add the three existing pool
+arguments even while the CMake path is null. The hook never sets a CMake path. A read-only
+taskGraph.whenReady callback then checks final CMake/ndk-build paths and all default/build-type/
+flavor argument scopes. The three exact default definitions must each occur once; removal,
+replacement, duplicates and typed/split-form overrides refuse. Android selected/skipped rows are
+issued only here with canonical build root, module, actual plugin identity, final path and verified
+argument fields. An ndk-build module still refuses. The main B Android build must contain exactly
+the six native owners from the approved release graph; included-build roots keep their own hooks
+and receipt identity without inheriting that main-build module set.
+
+Coverage here means final module DSL verified, not generated Ninja edges accepted. Mutation is
+never delayed until taskGraph.whenReady, projectsEvaluated or beforeVariants. This avoids trying
+to repair an already locked DSL. The existing wrapper/header/hash binding, process/resource
+guards, task vectors and stage receipts remain unchanged. Lead static comparison with51d9c44
+confirmed identical cleanup, input, stage/argv/verifier and resource/launcher blocks; hashes are
+in `output/native-build/late-cmake-release/preserved-blocks.json`.
+
+The helper reproduced the old early-path bug in a sequential mock RN callback:54 existing cases
+passed and late_rn_application_path failed. Its old638f hook recorded no CMake despite the later
+path being present. Evidence remains in
+`output/native-build/script-checks/ninja-one-job/hook-20260912T110106Z/receipt.json`.
+Lead authors the correction; the helper owns only the ignored extracted-code/mock harness.
+No Gradle/native stage is being used as a test for this source change.
+
+Final script SHA256:
+`99ae5e6c1b9df0198d85f1b1cc10a9c4ea02d419f3748f9af961dce0a9d1dcab`.
+New emitted init SHA256:
+`a2d7d42ed62360d9d5636f2e45b2e7f2be51e60eb67920dede4d4627f2754435`.
+At11:03:43.834517–11:03:51.786569UTC, the existing
+`python3 output/native-build/script-checks/ninja-one-job/run_hook_checks.py` passed101/101
+standalone Groovy mock cases, exit0. These cover late RN path selection, early canonical arguments,
+all six owners/every missing owner/extra or duplicate owners, later default/build-type/flavor
+changes and added scopes, late ndk-build, included-root receipt reuse and unchanged hash/preparation
+guards. Immutable snapshots prove the final callback does not mutate the mock DSL or path.
+No harness error was observed in this slice. Actual Gradle lifecycle/native execution remains a
+separate gate. All six recorded final PIDs were absent11:03:58.960957UTC; helper/allocation released.
+
+Final evidence, exact helper prompt, contributions, preserved harness copies and pristine init:
+`output/native-build/script-checks/ninja-one-job/hook-20260912T110343Z/`.
+Its receipt.json and assistance.json distinguish the old54/55 RED from the new101/101 GREEN.
+The lead authored/reviewed production code; helper contributions are isolated fixtures and
+independent read-only review. No full application or new product behavior was generated.
+Rejected approaches: forcing RN's CMake path, choosing guessed callback order, mutating locked
+DSL in a late callback, or treating module arguments as generated-pool/native acceptance.
+Settings retain the previously documented requested/observable distinction; student exact-diff
+review and teach-back remain PENDING.
+
+Lead Bash syntax and report formatting/diff checks passed. Actual default preflight passed all12
+steps at11:04:40.880722–11:04:44.867755UTC, exit0, runner118443/script118445/session10986 ended.
+Receipt `output/native-build/20260912T110442Z-preflight.T2gX9z/receipt.txt`; exact invocation and
+outer result `output/native-build/late-cmake-release/20260912T110440Z/receipt.json`.
+No init, Gradle graph, native configure or APK job ran in this preflight.
+
+Release the coherent A149 script/report commit for A, following separate stage commit51d9c44.
+Only the authorized package Android/iOS delta remains unstaged. A149 permits the first four
+Worklets configure requests, after a separately named candidate/resource grant, to exercise actual
+final DSL verification for all six native owners and generate Worklets graphs. It does not require
+another actual graph-only run. Stage1 must yield final module evidence and fresh PCH/compile/link
+pool checks before A grants stage2, which necessarily compiles Worklets. No native configuration,
+cleanup or follow-up is automatically authorized by this tooling release. Helpers/jobs/heavy are
+released, maintenance/private boundaries retained; device trust/readiness remains A/D-owned.

@@ -587,6 +587,22 @@ def controlled = ~/^CMAKE_JOB_(POOLS|POOL_COMPILE|POOL_LINK)(?::[^=]+)?(?:=.*)?$
 def poolArguments = ['-DCMAKE_JOB_POOLS=ghaf_native=1',
                      '-DCMAKE_JOB_POOL_COMPILE=ghaf_native',
                      '-DCMAKE_JOB_POOL_LINK=ghaf_native']
+def androidDsl = []
+def scopesFor = { dsl ->
+    def scopes = [[name: 'defaultConfig', value: dsl.defaultConfig]]
+    dsl.buildTypes.each { scopes.add([name: 'buildType:' + it.name, value: it]) }
+    dsl.productFlavors.each { scopes.add([name: 'flavor:' + it.name, value: it]) }
+    scopes
+}
+def controlledArguments = { scope ->
+    def args = scope.externalNativeBuild.cmake.arguments.collect { it.toString() }
+    def found = []
+    args.eachWithIndex { arg, i ->
+        def definition = arg.startsWith('-D') ? arg.substring(2) : (i > 0 && args[i - 1] == '-D' ? arg : '')
+        if (definition ==~ controlled) found.add(arg)
+    }
+    found
+}
 gradle.beforeProject { p ->
     def androidPluginSeen = false
     ['com.android.application', 'com.android.library'].each { pluginId ->
@@ -601,29 +617,55 @@ gradle.beforeProject { p ->
                             agp_version: version, plugin_code_source: origin]
             p.extensions.getByName('androidComponents').finalizeDsl({ dsl ->
                 if (dsl.externalNativeBuild.ndkBuild.path != null) refuse('Uncovered ndk-build module: ' + p.path)
-                if (dsl.externalNativeBuild.cmake.path == null) {
-                    record(identity + [status: 'skipped', reason: 'no CMake project'])
-                    return
-                }
-                def scopes = [[name: 'defaultConfig', value: dsl.defaultConfig]]
-                dsl.buildTypes.each { scopes.add([name: 'buildType:' + it.name, value: it]) }
-                dsl.productFlavors.each { scopes.add([name: 'flavor:' + it.name, value: it]) }
-                scopes.each { scope ->
-                    def args = scope.value.externalNativeBuild.cmake.arguments.collect { it.toString() }
-                    args.eachWithIndex { arg, i ->
-                        def definition = arg.startsWith('-D') ? arg.substring(2) : (i > 0 && args[i - 1] == '-D' ? arg : '')
-                        if (definition ==~ controlled) refuse('Conflicting native pool argument in ' + p.path + '/' + scope.name)
-                    }
+                scopesFor(dsl).each { scope ->
+                    if (!controlledArguments(scope.value).empty) refuse('Conflicting native pool argument in ' + p.path + '/' + scope.name)
                 }
                 dsl.defaultConfig.externalNativeBuild.cmake.arguments.addAll(poolArguments)
-                record(identity + [status: 'selected', cmake_path: p.file(dsl.externalNativeBuild.cmake.path).canonicalPath,
-                                   requested_arguments: poolArguments])
+                androidDsl.add([project: p, dsl: dsl, identity: identity])
                 p.logger.lifecycle('GHAF requested native pool=ghaf_native depth=1 module=' + p.path)
             } as Action)
         }
     }
     p.afterEvaluate {
         if (!androidPluginSeen) record([build_root: p.rootDir.canonicalPath, module: p.path, status: 'skipped', reason: 'not an Android application/library project'])
+    }
+}
+gradle.taskGraph.whenReady {
+    def nativeOwners = []
+    androidDsl.each { item ->
+        def p = item.project
+        def dsl = item.dsl
+        if (dsl.externalNativeBuild.ndkBuild.path != null) refuse('Uncovered final ndk-build module: ' + p.path)
+        scopesFor(dsl).each { scope ->
+            def found = controlledArguments(scope.value)
+            if (scope.name == 'defaultConfig') {
+                if (found.size() != poolArguments.size() || poolArguments.any { found.count(it) != 1 }) {
+                    refuse('Final native pool arguments removed, replaced or duplicated: ' + p.path)
+                }
+            } else if (!found.empty) {
+                refuse('Final native pool override in ' + p.path + '/' + scope.name)
+            }
+        }
+        def path = dsl.externalNativeBuild.cmake.path
+        def finalRecord = item.identity + [phase: 'task-graph-ready', verified_arguments: poolArguments,
+                                           all_scopes_verified: true]
+        if (path == null) {
+            record(finalRecord + [status: 'skipped', reason: 'no CMake project after DSL finalization'])
+        } else {
+            nativeOwners.add(p.path)
+            record(finalRecord + [status: 'selected', cmake_path: p.file(path).canonicalPath,
+                                  requested_arguments: poolArguments])
+        }
+    }
+    def buildRoot = gradle.rootProject.rootDir.canonicalPath
+    if (buildRoot == '/home/smyk/projects/Ghaf-demo-systems/android') {
+        def required = [':app', ':expo-modules-core', ':react-native-gesture-handler',
+                        ':react-native-reanimated', ':react-native-screens', ':react-native-worklets']
+        if (nativeOwners.size() != required.size() || nativeOwners.toSet() != required.toSet()) {
+            refuse('Final native owners differ from the approved release graph; preserve module receipts.')
+        }
+        record([status: 'coverage_verified', phase: 'task-graph-ready', build_root: buildRoot,
+                native_modules: required, coverage: 'Final module DSL only; generated Ninja edges remain pending'])
     }
 }
 GRADLE_NATIVE_POOL
