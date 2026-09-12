@@ -5,7 +5,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DemoEntryScreen } from '@/components/demo/DemoEntryScreen';
 import { DemoOnboardingStory } from '@/components/demo/DemoOnboardingStory';
-import type { DemoEntryCopy, DemoEntryScreenProps, DemoStoryStep } from '@/components/demo/types';
+import type {
+  DemoEntryCopy,
+  DemoEntryScreenProps,
+  DemoNarrationControls,
+  DemoStoryStep,
+} from '@/components/demo/types';
 import type { DemoPrincipal } from '@/models/demoEntry';
 
 interface LeafProps {
@@ -57,6 +62,27 @@ function renderLeaf(tag: 'div' | 'span' | 'button' | 'main', props: LeafProps) {
     props.children ?? props.label,
   );
 }
+
+const narrator = vi.hoisted(() => ({
+  cancel: vi.fn(),
+  options: null as unknown,
+}));
+vi.mock('@/components/demo/useDemoOnboardingNarrator', () => ({
+  useDemoOnboardingNarrator: (options: unknown) => {
+    narrator.options = options;
+    return {
+      status: 'unavailable',
+      canPlay: false,
+      canStop: false,
+      canReplay: false,
+      screenReaderActive: false,
+      onPlay: vi.fn(),
+      onStop: narrator.cancel,
+      onReplay: vi.fn(),
+      cancel: narrator.cancel,
+    };
+  },
+}));
 
 vi.mock('react-native', () => ({
   AccessibilityInfo: { setAccessibilityFocus: vi.fn() },
@@ -556,4 +582,122 @@ describe('controlled optional demo story', () => {
       }
     });
   }
+});
+
+// Captured callbacks and SSR output only; native/media hook lifecycle is covered separately.
+describe('optional demo narration controls and cancellation handoff', () => {
+  function narration(overrides: Partial<DemoNarrationControls> = {}): DemoNarrationControls {
+    return {
+      status: 'silent',
+      canPlay: true,
+      canStop: false,
+      canReplay: false,
+      screenReaderActive: false,
+      onPlay: vi.fn(),
+      onStop: vi.fn(),
+      onReplay: vi.fn(),
+      ...overrides,
+    };
+  }
+  function story(audio: DemoNarrationControls, locale: 'ar' | 'en' = 'ar') {
+    const copy = copyFor(locale);
+    const onClose = vi.fn();
+    const onStepChange = vi.fn();
+    const markup = renderStory({
+      locale,
+      direction: locale === 'ar' ? 'rtl' : 'ltr',
+      copy,
+      step: 1,
+      narration: audio,
+      onClose,
+      onStepChange,
+    });
+    expectText(markup, copy.moments[1]!.body);
+    expect(control('demo-story-next').disabled).not.toBe(true);
+    expect(control('demo-story-back').disabled).not.toBe(true);
+    expect(control('demo-story-close').disabled).not.toBe(true);
+    return { markup, copy, onClose, onStepChange };
+  }
+
+  it('plays only on explicit control press and keeps the complete transcript', () => {
+    const audio = narration();
+    const { markup, copy } = story(audio);
+    expectText(markup, copy.story.audioPlay);
+    expect(audio.onPlay).not.toHaveBeenCalled();
+    press('demo-story-audio-play');
+    expect(audio.onPlay).toHaveBeenCalledExactlyOnceWith();
+  });
+
+  it('offers immediate Stop during loading and never delays navigation', () => {
+    const audio = narration({ status: 'loading', canPlay: false, canStop: true });
+    const { markup, copy, onStepChange } = story(audio);
+    expectText(markup, copy.story.audioLoading);
+    expectAnnouncement('demo-story-audio-loading');
+    expect(control('demo-story-audio-stop').disabled).not.toBe(true);
+    press('demo-story-audio-stop');
+    expect(audio.onStop).toHaveBeenCalledExactlyOnceWith();
+    press('demo-story-next');
+    expect(onStepChange).toHaveBeenCalledExactlyOnceWith(2);
+  });
+
+  it('offers Stop and Replay during playback, and a single Replay afterward', () => {
+    const audio = narration({ status: 'playing', canPlay: false, canStop: true, canReplay: true });
+    story(audio);
+    press('demo-story-audio-stop');
+    press('demo-story-audio-replay');
+    expect(audio.onStop).toHaveBeenCalledOnce();
+    expect(audio.onReplay).toHaveBeenCalledOnce();
+    story(narration({ canReplay: true }));
+    expect(
+      rendered.controls
+        .filter((item) => item.testID?.startsWith('demo-story-audio-'))
+        .map((item) => item.testID),
+    ).toEqual(['demo-story-audio-replay']);
+  });
+
+  it.each(['en', 'unavailable', 'screen_reader'] as const)(
+    'keeps %s fully readable without enabled playback',
+    (reason) => {
+      const audio = narration({
+        status: reason === 'unavailable' ? 'unavailable' : 'silent',
+        screenReaderActive: reason === 'screen_reader',
+      });
+      const { markup, copy } = story(audio, reason === 'en' ? 'en' : 'ar');
+      expectText(
+        markup,
+        reason === 'screen_reader' ? copy.story.audioScreenReader : copy.story.audioUnavailable,
+      );
+      expect(rendered.controls.some((item) => item.testID?.startsWith('demo-story-audio-'))).toBe(
+        false,
+      );
+      expect(audio.onPlay).not.toHaveBeenCalled();
+    },
+  );
+
+  it('passes authoritative identity and cancels before profile/locale callbacks', () => {
+    const order: string[] = [];
+    narrator.cancel.mockImplementation(() => order.push('cancel'));
+    const props = entryProps('ar', {
+      runGeneration: 7,
+      entryEpoch: 9,
+      onChooseProfile: () => {
+        order.push('profile');
+      },
+      onChangeLocale: () => {
+        order.push('locale');
+      },
+    });
+    renderEntry(props);
+    expect(narrator.options).toEqual({
+      locale: 'ar',
+      step: null,
+      active: false,
+      runGeneration: 7,
+      entryEpoch: 9,
+    });
+    press('demo-profile-child_salem');
+    press('demo-language');
+    expect(order).toEqual(['cancel', 'profile', 'cancel', 'locale']);
+    narrator.cancel.mockReset();
+  });
 });

@@ -15,6 +15,7 @@ export function DemoOnboardingStory({
   direction,
   copy,
   step,
+  narration,
   onStepChange,
   onClose,
 }: DemoOnboardingStoryProps) {
@@ -33,6 +34,25 @@ export function DemoOnboardingStory({
   if (!moment) return null;
 
   const progress = copy.story.progressLabel(step + 1, momentIds.length);
+  const audioAvailable =
+    locale === 'ar' &&
+    narration &&
+    !narration.screenReaderActive &&
+    narration.status !== 'unavailable' &&
+    (narration.canPlay || narration.canStop || narration.canReplay);
+  const primaryAudioAction = narration?.canStop ? 'stop' : narration?.canReplay ? 'replay' : 'play';
+  const audioLabel =
+    primaryAudioAction === 'stop'
+      ? copy.story.audioStop
+      : primaryAudioAction === 'replay'
+        ? copy.story.audioReplay
+        : copy.story.audioPlay;
+  const pressAudio = () => {
+    if (!audioAvailable || !narration) return;
+    if (narration.canStop) narration.onStop();
+    else if (narration.canReplay) narration.onReplay();
+    else if (narration.canPlay) narration.onPlay();
+  };
 
   return (
     <View style={styles.story} testID="demo-onboarding-story">
@@ -90,6 +110,64 @@ export function DemoOnboardingStory({
       <Text brand direction={direction} language={locale} variant="body">
         {moment.body}
       </Text>
+      <View style={styles.audio}>
+        {audioAvailable ? (
+          <>
+            <QuietButton
+              brand
+              direction={direction}
+              language={locale}
+              onPress={pressAudio}
+              testID={`demo-story-audio-${primaryAudioAction}`}
+            >
+              {audioLabel}
+            </QuietButton>
+            {narration.canStop && narration.canReplay ? (
+              <QuietButton
+                brand
+                direction={direction}
+                language={locale}
+                onPress={() => {
+                  if (audioAvailable && narration.canReplay) narration.onReplay();
+                }}
+                testID="demo-story-audio-replay"
+              >
+                {copy.story.audioReplay}
+              </QuietButton>
+            ) : null}
+            {narration.status === 'loading' ? (
+              <Text
+                accessibilityLiveRegion="polite"
+                brand
+                direction={direction}
+                language={locale}
+                style={styles.mediaNotice}
+                testID="demo-story-audio-loading"
+                variant="caption"
+              >
+                {copy.story.audioLoading}
+              </Text>
+            ) : null}
+          </>
+        ) : (
+          <Text
+            brand
+            direction={direction}
+            language={locale}
+            style={styles.mediaNotice}
+            testID={
+              narration?.screenReaderActive
+                ? 'demo-story-audio-screen-reader'
+                : 'demo-story-audio-unavailable'
+            }
+            variant="caption"
+          >
+            {narration?.screenReaderActive
+              ? copy.story.audioScreenReader
+              : copy.story.audioUnavailable}
+          </Text>
+        )}
+      </View>
       <View style={styles.actions}>
         <PrimaryButton
           brand
@@ -112,16 +190,6 @@ export function DemoOnboardingStory({
           {copy.story.back}
         </QuietButton>
       </View>
-      <Text
-        brand
-        direction={direction}
-        language={locale}
-        style={styles.mediaNotice}
-        testID="demo-story-audio-unavailable"
-        variant="caption"
-      >
-        {copy.story.audioUnavailable}
-      </Text>
     </View>
   );
 }
@@ -150,6 +218,9 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 3 / 2,
     borderRadius: botanical.radius.hero,
+  },
+  audio: {
+    gap: botanical.space.small,
   },
   actions: {
     gap: botanical.space.small,

@@ -17,6 +17,7 @@ import type { DemoPrincipal } from '@/models/demoEntry';
 
 import { DemoOnboardingStory } from './DemoOnboardingStory';
 import type { DemoEntryScreenProps, DemoProfileOption, DemoStoryStep } from './types';
+import { useDemoOnboardingNarrator } from './useDemoOnboardingNarrator';
 
 const principals: readonly DemoPrincipal[] = ['parent_al_noor', 'child_salem', 'child_alya'];
 const avatarIcons: Record<DemoProfileOption['avatar'], GhafIconName> = {
@@ -45,12 +46,22 @@ export function DemoEntryScreen({
   busy,
   error,
   restartRequired,
+  runGeneration,
+  entryEpoch,
   onChooseProfile,
   onChangeLocale,
 }: DemoEntryScreenProps) {
   const [storyStep, setStoryStep] = useState<DemoStoryStep | null>(null);
   const headingRef = useRef<View>(null);
   const showingStory = storyStep !== null && !restartRequired;
+  const narration = useDemoOnboardingNarrator({
+    locale,
+    step: storyStep,
+    active: showingStory && !busy,
+    runGeneration,
+    entryEpoch,
+  });
+  const cancelNarration = narration.cancel;
   const profileOptions = Array.isArray(copy.profiles) ? Array.from(copy.profiles) : [];
   const validProfiles =
     profileOptions.length === principals.length &&
@@ -66,13 +77,14 @@ export function DemoEntryScreen({
   useEffect(() => {
     if (!showingStory) return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      cancelNarration();
       setStoryStep((current) =>
         current === null || current === 0 ? null : ((current - 1) as DemoStoryStep),
       );
       return true;
     });
     return () => subscription.remove();
-  }, [showingStory]);
+  }, [showingStory, cancelNarration]);
 
   useEffect(() => {
     if (showingStory) return;
@@ -95,7 +107,10 @@ export function DemoEntryScreen({
         icon={<GhafIcon direction={direction} name="language" />}
         language={locale}
         onPress={() => {
-          if (!busy || restartRequired) onChangeLocale();
+          if (!busy || restartRequired) {
+            cancelNarration();
+            onChangeLocale();
+          }
         }}
         style={styles.language}
         testID="demo-language"
@@ -118,8 +133,15 @@ export function DemoEntryScreen({
           copy={copy}
           direction={direction}
           locale={locale}
-          onClose={() => setStoryStep(null)}
-          onStepChange={setStoryStep}
+          narration={narration}
+          onClose={() => {
+            cancelNarration();
+            setStoryStep(null);
+          }}
+          onStepChange={(next) => {
+            cancelNarration();
+            setStoryStep(next);
+          }}
           step={storyStep}
         />
       ) : (
@@ -205,8 +227,10 @@ export function DemoEntryScreen({
                     key={profile.principal}
                     language={locale}
                     onPress={() => {
-                      if (!busy && !restartRequired && validProfiles)
+                      if (!busy && !restartRequired && validProfiles) {
+                        cancelNarration();
                         onChooseProfile(profile.principal);
+                      }
                     }}
                     style={styles.profileButton}
                     testID={`demo-profile-${profile.principal}`}
@@ -261,7 +285,10 @@ export function DemoEntryScreen({
                 disabled={busy}
                 language={locale}
                 onPress={() => {
-                  if (!busy) setStoryStep(0);
+                  if (!busy) {
+                    cancelNarration();
+                    setStoryStep(0);
+                  }
                 }}
                 testID="demo-story-open"
               >

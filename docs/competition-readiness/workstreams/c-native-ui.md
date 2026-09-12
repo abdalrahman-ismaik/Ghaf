@@ -469,3 +469,143 @@ retain the historical P3 concern as OPEN while D independently reviews the isola
 and stop further browser/font investigation in this batch. C ACKs that boundary. The removal is
 A-owned; it neither changes C's heading commit nor upgrades the native scaling gate. No additional
 C source, preview or helper work is held for it.
+
+## C-N07 / T014b — approved narration implementation
+
+Status: source slice ready for A integration after the bounded A190 checks. Mounted/native and
+full integrated validation remain pending; T014 is not fully accepted.
+
+Authority: A186/A188, board64, accepted Feature015 contract40a6299 and shared preparation
+fa9821c68eb80985b690f5551fee08c7c9cdcd33. On 2026-09-12 C created the explicitly granted
+`redesign/narration-ui-20260912` branch at that exact preparation commit in the existing
+Ghaf-ui-studio worktree. Previous `redesign/native-ui-20260912` at c91f95e remains preserved.
+B's concurrent APK build remains frozen at runtime5d8a3e8 and contains none of this new adapter.
+
+The visible problem is that the three-moment introduction has complete text but cannot play the
+three accepted Arabic recordings. The intended action is optional **استمع إلى النص**; while
+loading or playing it becomes **إيقاف السرد**, with **إعادة الاستماع** after playback has begun.
+Navigation and the complete transcript remain available. English remains silent with the supplied
+unavailable notice; active screen readers receive the supplied priority explanation. The existing
+botanical composition, Alexandria/Readex, logical direction, artwork and control primitives remain.
+No new visual direction, dependency, state authority or progression behavior is introduced.
+
+### Bounded contribution and review record
+
+Actual user continuation: “Start with the READY C-N06 task under A173. All three Wiam recordings
+are user-approved, and the user confirmed they were generated on the Free plan. Record the
+rights/attribution findings, then continue into T014b when A publishes its committed contract and
+exact source grant. Preserve the running baseline APK build and coordinate through the canonical
+board.” C-N06 report commit c91f95e was integrated by A as2145636. Its official-source findings,
+actual prompts and rejected claims remain in c-product-refinement.md; they are not repeated here.
+
+C/AI authored the hook, immutable source resolver, entry cancellation wrappers and focused checks.
+The hook consumes A's existing pure playback controller and supplied run generation/entry epoch;
+it does not establish sessions, roles, progress or audio rights. A owns resources, routes,
+controller, assets and public-use decisions. Existing design-system and Ghaf quality workflow
+skills were applied. Requested settings: GPT-6 Astra, Ultra and Fast. Last observable root settings
+were Astra/xhigh/fast; effective serving is unexposed. The reused helper was previously launched
+as Astra/ultra; its Fast setting is unexposed. No configuration was changed or serving guarantee made.
+
+One helper `/root/abdullah_voice_review` prepares only ignored native/audio/presentation doubles
+under `output/native-ui/narration-lifecycle-harness/mocks/**`; no descendants or coordination edits.
+Lead independently owns the real hook/Entry/source resolver and harness root files. Helper work
+is reviewed before acceptance and any next disjoint allocation. The mock prompt/contribution
+receipt and subsequent precise allocation will be retained here when released.
+
+Rejected implementation directions: automatic playback, reused retired players, effects that
+resume audio, pause-only cancellation, an enabled English playback button without accepted media,
+assuming browser screen-reader detection is false, adding a testing/UI library, changing global
+native audio mode, and treating server rendering or media checksums as lifecycle/listening proof.
+The current implementation follows the reviewed fresh-player-per-intent and guarded retirement
+contract. It does not claim to eliminate the installed native player's already-captured focus race.
+
+User review of full wording/pronunciation/delivery is **APPROVED for all three supplied clips**;
+model and Free-plan generation are user-reported. AI reviewed MSA text at the user's direction.
+Named student owner, exact-diff understanding/acceptance and native listening remain **PENDING**.
+No additional human participation or approval is inferred. English narration is unselected.
+
+### Candidate behavior and evidence boundaries
+
+A player is allocated only by accepted Play/Replay. A fresh token binds the current source,
+locale, moment, generation and entry epoch. Pending intents coalesce. The hook displays playing
+only after a matching loaded/non-buffering player status. A 10-second startup deadline falls
+back to readable text, without automatic retry. Stop remains available during loading.
+
+Cancellation clears the active session before controller cancellation/disposal and independently
+guarded subscription removal, player removal and player release. Entry wrappers cancel before
+step/close/finish/Back/language/profile callbacks. Layout cleanup handles changed scope and unmount.
+Known-active AppState and observed screen-reader-disabled state are required. Unknown or failed
+observation fails closed; newer reader events take priority over the initial query. Background,
+reader enablement, observed interruption, error and completion retire the session. Foreground
+return, reader disablement and source changes do not play audio.
+
+| Check                                   | Current status / exact scope                                                                                                      |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Approved asset identity                 | PASSED A190: actual resolver registration/order, exact three SHA256s, invalid-step/inactive/English rejection                     |
+| Entry/Story rendered controls           | PASSED A190: full text, silent/load/play/replay/reader/error controls, callback order and scope; effects are not exercised by SSR |
+| Real React mount / mocked native events | BLOCKED pending working existing-Metro/ReactDOM harness and A's preview resource grant after B release                            |
+| Actual botanical browser layout         | NOT RUN for this delta; requires the real unmocked presentation, separate from lifecycle doubles                                  |
+| Full integrated type/lint/format/suite  | A-owned pending after heavy release; A's earlier 768MiB TypeScript heap failure is not a source diagnostic or a pass              |
+| Native playback, focus and TalkBack     | BLOCKED; no authorized device/artifact result                                                                                     |
+| Public video/demo/APK rights            | Pending competition-use classification and format-specific attribution; internal noncommercial evaluation only                    |
+
+Ignored harness preparation uses an explicit C project root, private run/cache directories and
+future localhost8082. Its proof records candidate HEAD plus individual source/asset hashes and
+process PID. Native/audio and presentation doubles are explicit; it mounts the real React hook,
+components and A controller but cannot pass actual fonts, touch geometry, native audio or TalkBack.
+No harness server/browser is launched while B holds the heavy slot. No API key is read or bundled.
+
+### Direct Android collection packet — T014b
+
+Use A's next published APK/source/hash, not baseline5d. D owns the device session; actual model,
+OS and owner-approved font settings remain unknown until observed. Keep ordinary text and
+owner-approved enlarged text in separate rows. CSS200% is not Android font scale.
+
+1. Signed-out demo entry `/`: verify exactly Parent, Salem and Alya with no automatic sound;
+   open the three-moment story. Collect `ar-together-silent`, `ar-support-silent`,
+   `ar-growth-silent` screenshots with full body and visible navigation/audio labels.
+2. Explicitly press **استمع إلى النص**; collect `ar-together-playing` and one actual loading
+   state if observable. Check Stop **إيقاف السرد** is reachable immediately, then Replay
+   **إعادة الاستماع** starts a fresh reading. Confirm each moment uses its approved body clip.
+3. While starting/playing, separately test Next, Back button, hardware Back, Skip, Finish,
+   language change and exit/profile entry. No audio may delay navigation or resume on return.
+   Record exact event sequence and observed sound, not only a static screenshot.
+4. Background/foreground, transient audio focus interruption followed by Stop and focus return,
+   and background followed by Stop/cancellation and foreground require actual device evidence.
+   An already-captured native reference may outlive JS retirement; source/mocks do not prove this.
+5. With owner-approved TalkBack settings, narration must remain silent, text and controls readable,
+   and focus follow headings/navigation. Enable the reader while loading/playing, then disable;
+   no automatic restart. Collect `ar-screen-reader-priority` and the actual focus/event notes.
+6. English keeps complete equivalent text and `Narration is unavailable. Read the text and continue.`
+   Collect `en-support-silent`; no Arabic or old six-step clip substitutes for English narration.
+7. Collect `ar-support-large-text` and `en-support-large-text` at observed native settings; inspect
+   full labels, wrapping, touch/focus order, mixed-script language action and no cropped final words.
+   Reduced motion must expose the same content and controls promptly; no motion gates access.
+8. Restart/reset and reenter: silent initially, no old completion/error/seek may restart playback.
+   Record APK SHA, source identity, date/operator, actual font/accessibility settings and outcome
+   PASSED/FAILED/BLOCKED/NOT RUN for every row. Do not modify global settings without owner approval.
+
+### A190 source checkpoint — 2026-09-12T12:14:01Z
+
+Executed from `/home/smyk/projects/Ghaf-ui-studio`, base fa9821c plus the seven-file C slice:
+
+```bash
+node --max-old-space-size=256 node_modules/vitest/vitest.mjs run tests/demo-entry-presentation.test.tsx tests/demo-narration.test.tsx --pool=threads --maxWorkers=1 --no-file-parallelism
+```
+
+**PASSED: 2 files, 40 tests**, exit0. Actual UTC12:13:59.448–12:14:01.478; child PID189456,
+command session38387 both ended. Initial memory2933824/7829156KiB (37.47%) satisfied A190's35%
+guard. Timeout60s was not reached. Exact command, input hashes and log:
+`output/native-ui/narration-lifecycle-harness/checks/20260912T121359Z/{receipt.json,focused.log}`.
+The 40 tests include unchanged existing presentation cases; they are not 40 new lifecycle tests.
+No full TypeScript/lint/suite or browser process was run. Scoped Prettier and `git diff --check`
+pass for this slice; A retains mandatory adequate-memory full checks after B heavy release.
+
+Lead owns the actual Story/control implementation and both test edits; the helper's scope remains
+ignored doubles only. No helper runtime code is included in this source checkpoint. All seven
+changed source/test/report paths may integrate as one cohesive candidate; exact commit is published
+in canonical STATUS-C. The unused types.ts grant is also released without a change. C retains
+only its status and A183 ignored harness preparation while awaiting the preview allocation.
+Any actual mounted defect must be corrected under the live ownership grant before claiming its row.
+This checkpoint does not end the active continuation: helper preparation, A integration and B's
+packaging are verified in-flight handoffs. No paired screenshot exists for this delta yet.
