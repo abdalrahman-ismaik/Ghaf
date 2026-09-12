@@ -6,6 +6,10 @@ complete for their recorded scope; APK and physical-device acceptance remain BLO
 format and148files/1,919tests. D independently passed46 synthetic collector checks and76 controller
 fault tests on their separately identified source versions. No APK/device/human rehearsal pass exists.
 
+Latest actual tablet check,2026-09-12 11:01:25UTC: one ADB transport is visible but **UNAUTHORIZED**.
+D stopped before device-property reads. The owner's Android USB debugging trust action is pending;
+model/Android version/ABI, APK installation and native journeys remain unverified.
+
 C's actual `f16112d` browser retest supports closure of duplicate headings and the demo approval
 handoff warning; D independently reviewed its artifacts. The final runtime removes only the
 ineffective web label positioning. D-R03's recorded clipping interpretation is **withdrawn after
@@ -1007,3 +1011,64 @@ permission provenance or a disabled background option establishes native non-use
 suggestion was implemented, no native/human pass invented, and the sole helper allocation is released.
 This cohesive report and ignored receipt are ready for integration after scoped formatting/diff
 checks; the next gate is A's permission decision and exact completed APK/source/hash handoff.
+
+## Attached tablet readiness — A152, unauthorized transport
+
+A's published A152 records the actual Windows bind exit0 and Ubuntu USB attachment exit0 for the
+owner-selected Galaxy Tab S4. Those setup commands and Windows device description are **attributed
+to A**, not executed by D. Windows BusId is not an Android serial or evidence of app readiness.
+D acknowledged board56/A152 in D041 before reacquiring only this report and ignored
+`output/native-acceptance/device-readiness/**`. QA was clean at
+`e5291f078c111a31e8bd42e5420e912ab916f70b`; runtime remains5d8a3e8.
+
+Actual D receipt:
+`/home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T110125Z/receipt.json`.
+The fresh directory is0700; receipt and `devices-raw.txt` are0600. The returned hardware identifier
+is confined to those ignored files and omitted from this report, coordination and user-facing output.
+
+| Check                                    | Actual result                                                                                                                             | Disposition                                               |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Existing server/tool                     | `/proc/15824/exe` resolves to the exact B SDK adb; binary SHA256 remains a902be8f45c6c62e76c9efaf6947a0fa747c9cabd89a2ac8e0d16ecb30b3ed01 | PASSED identity; retained existing server                 |
+| Host `adb version`                       | PID115445,11:01:25.908933–.911638UTC, exit0                                                                                               | PASSED host tool, not Android version                     |
+| Direct `host:version`                    | Existing127.0.0.1:5037 smart socket,11:01:25.911656–.914872UTC, OKAY,0029                                                                 | PASSED protocol1.0.41; no child-process exit code applies |
+| Direct `host:devices-l`                  | Same server,11:01:25.914890–.915262UTC, OKAY, exactly one transport with state unauthorized                                               | PASSED enumeration, BLOCKED authorized device access      |
+| Overall readiness wrapper                | PID115444,11:01:25.717066–.915525UTC, exit3                                                                                               | BLOCKED, not a product defect                             |
+| Serial-scoped model/release/SDK/ABI      | No transport selection, sysfs mapping, serial query or shell request executed                                                             | NOT RUN                                                   |
+| APK/package/install/native/human journey | No artifact, package query, install or UI action                                                                                          | BLOCKED/NOT RUN;0/10 rehearsals                           |
+
+This is an actual change from the earlier zero-row enumeration. It establishes that the existing
+WSL ADB server can now see one transport, while Android has not authorized its debug access.
+The host query's OKAY status is recorded separately from shell exit codes; there were no device
+shell commands. D did not run `adb devices` through a client branch that might restart a server:
+the bounded direct smart-socket requests used the existing server only. `adb version` does not
+contact or start a server. The readiness wrapper had a ten-second per-query deadline and64KiB
+response cap; neither limit was reached. This was not an APK-required collector invocation.
+
+D042 asks A to have the actual owner unlock the tablet and review/approve the USB debugging RSA
+prompt for this host. D has not observed that prompt, invented its acceptance, changed USB settings,
+reconnected, restarted ADB, installed anything or diagnosed a Linux file-permission failure. After
+confirmed owner action, a fresh bounded enumeration must establish authorized unambiguous access
+before the four allowlisted properties. A serial must never be selected merely by list order.
+The current evidence cannot identify either narrow primary/secondary phone or pass an APK, native
+accessibility, offline, reset, recovery014, student or human-rehearsal gate.
+
+Bounded supporting AI: sole helper `/root/attached_tablet_evidence_review`, launched explicitly
+Astra/ultra; Fast selector/effective serving unexposed. Lead executed the actual commands and wrote
+this evidence; helper only read the previous policy and exact receipt. No product generation,
+shared coordination writes, descendants or delegated device operations. Actual initial prompt:
+
+> You are D's only helper, quota1 board56/A152. You are not alone; preserve all others' files. READ ONLY, no writes or descendants, no device/ADB/socket/network/browser/native/app/test execution. B/A own active build tooling; don't duplicate it. Exact QA /home/smyk/projects/Ghaf-qa-rehearsal HEAD e5291f078c111a31e8bd42e5420e912ab916f70b, runtime5d8a3e8cd90ac0975b0d4be7eeb2d66b3fbde051; APK absent. Concrete task: independently review D's forthcoming actual device-readiness receipt and report addition for safe scope, accurate transport/model/OS/ABI claims and missing gates. A152 reports owner-selected Samsung Galaxy Tab S4 attached Ubuntu after exact Windows bind/attach exit0; D owns existing loopbackADB PID15824. Lead will inspect host version/list, then model/Androidrelease/SDK/ABI only if one authorized matched selected device. No first-phone selection, no install/permissions/media/personal logs. Serials/raw stay ignored and must never appear in your reply/status/Git. Read relevant report's prior tablet preflight section + collector smart-socket policy, then wait for exact receipt path. Bounded file-reading shell is allowed; no execution of anything under review. Lead owns report/status and actual commands. Return findings only to lead, do not touch coordination. Requested Astra/Ultra explicit; Fast/effective serving unexposed. Initial output concise; review receipt when sent, then release.
+
+Actual receipt follow-up:
+
+> Actual bounded run exit3 at /home/smyk/projects/Ghaf-qa-rehearsal/output/native-acceptance/device-readiness/20260912T110125Z/receipt.json (raw serial private, do not quote). Existing exact server15824/proc executable + pinnedSHA, host adb version0, host:version0029 and host:devices-l OKAY; exactlyONE transport state unauthorized. Lead stopped before sysfs mapping or any serial/shell property command, no device metadata. Actual runner115444 ended. Please inspect receipt for accurate limitation/operator next-step, return brief final review/release. Report draft will state owner Android USBdebugging trust action pending, not Linuxpermission diagnosis or APK failure. No repeat enumeration without confirmed owner action.
+
+Rejected inferences: one visible transport means authorized access, A's Windows description means
+Android model/OS have been inspected, host protocol/version is Android version, or this tablet
+closes both phone gates. No product fix or human review is generated by this evidence.
+
+Helper receipt review completed and allocation released: no scope violation observed; transport
+unauthorized and all native gates remain open. It independently verified0600/0700 boundaries and
+noted the original JSON omits the overall wrapper exit. Lead's actual command-tool result supplies
+exit3, retained separately in `execution-observation.json`; no original receipt was rewritten.
+Helper reviewed the receipt before this report addition existed, so no final report review is claimed.
