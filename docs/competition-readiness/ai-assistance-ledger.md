@@ -1137,3 +1137,58 @@ exit 0; 150 files and 1,979 tests. The exact clean runtime was `98be865`. A rest
 canonical demo Metro (PID 225406, A207) and granted C final captures with served-source proof.
 A updated the Android guide, current demonstration checkpoint and pending student teach-back
 questions to match the actual source and preserved native-build stop. No student review is claimed.
+
+## Finished poster and bilingual visual handoff — September 12
+
+A completed the owner-requested English A1 portrait PowerPoint with the bilingual Ghaf name and
+owner-supplied identity, kept only in ignored artifacts. The current print file is
+`output/poster-20260912/final-reviewed/Ghaf-Team-SMAC-2026-A1-PRINT.pptx`, SHA256
+`bf0868597d91a8c2850a0c8d180999b3ed2b3093ead1ab62d2d1a2f67d3972ad`. Adjacent PNG/PDF, separate
+editable master, repeatable scripts, original captures and source receipts are supplied. Nothing
+was submitted, uploaded, pushed or merged to main. Human approval remains pending.
+
+C's report `70c0bdc` was reviewed and integrated as `8e28544`:49 capture originals include4before,
+30final/supplementary and15QA images, including explicitly invalid/superseded attempts—not49
+passed checks. C exercised actual local Parent preparation/approval, signed-out handoff and Salem
+task entry. Story AR/EN, compact/CSS200%, focus and image-fallback observations have bounded
+browser evidence. C's first splash fallback capture and hidden-router locator ambiguity were
+retained and corrected as harness issues; no speculative product fix was added. Source remains
+`98be865`, all4checks passed,150files/1,979tests. Android and mounted narration remain unpassed.
+
+A selected three actual English states: quick entry; prepared Parent Guide wording assistance
+before review; and the naturally scrolled Salem task with full award/help/actions. A retained
+13 English/Arabic originals in `output/poster-20260912/screen-gallery/`, with a local HTML gallery.
+No screenshot text, route state, store or pixels were fabricated/overlaid. D independently checked
+source/image identities and reviewed actual pictures. Its first report `b99a656` integrated as
+`92a5a6e` preserves both poster defects and their failed originals.
+
+D-POSTER001 caught wording that could imply durable progress. A removed “permanent” from the
+caption; recovery014 remains deferred. D-POSTER002 and A's own rendered inspection caught font
+substitution after PowerPoint reopened the embedded-font master. The package had the correct
+font names, relationships and embedding flags; a charset experiment did not fix it. A rejected
+claiming success from font parts, changing system settings, or sending the substituted file.
+
+A installed only pinned PyMuPDF1.26.4 into the ignored poster authoring venv to convert the actual
+correct-font PowerPoint PDF to SVG with outlined letterforms. The print PowerPoint embeds that
+self-contained vector artwork and a PNG fallback, while the editable master remains separate.
+The original screenshots remain byte-identical/uncropped in the editable master; the print
+conversion preserves their visible content. Exact PRINT dimensions are594×841mm. Actual no-font
+PowerPoint reopen/export preserved the intended typography, Arabic wordmark and corrected copy.
+The editable master's font portability remains unpassed and requires the supplied fonts.
+
+A's sole helper `poster_powerpoint` first reviewed original ZIP/media/identity/font metadata, then
+the corrected package. Exact follow-up prompt: read only the named PRINT hash, editable master,
+selection and vector receipts; check A1 dimensions, self-contained outlined SVG/no font or external
+dependencies, PNG fallback, original master screenshot hashes, matching owner details/captions,
+absence of the rejected permanence wording, and PDF page/vector properties using existing tools;
+no writes, browser, PowerPoint, installs or D visual-review duplication. It passed those bounded
+checks and released. Actual selection Astra/Ultra; Fast serving unexposed. Its minor stale preset
+label finding does not change the exact authoritative slide dimensions.
+
+D083 independently rehashed/reviewed the corrected actual PRINT PNG and master wording, closing
+both poster defects for the print deliverable only. Fine-text physical print, native Android,
+student editorial review, exact-diff teach-back and public narration rights remain separate.
+No teacher/student contribution or acceptance was invented. Supporting authoring API references:
+[Microsoft font embedding](https://support.microsoft.com/en-us/Office/fonts/benefits-of-embedding-custom-fonts),
+[Microsoft embedded-font schema](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.presentation.font),
+[PyMuPDF vector page export](https://pymupdf.readthedocs.io/en/latest/page.html#Page.get_svg_image).
