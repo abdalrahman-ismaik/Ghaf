@@ -23,6 +23,7 @@ import type {
   NormalizedParentIdentifier,
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
+import { hasOnlyPlainDataProperties, isPlainDataRecord } from '../../../utils/exactPlainData';
 import {
   cloneFamilyConnectionDirectory,
   validateCompleteFamilyConnectionDirectory,
@@ -87,6 +88,45 @@ function success<T>(
   };
 }
 
+function isDemoEntryTransactionResult<T>(value: unknown): value is ServiceResult<T> {
+  if (!isPlainDataRecord(value) || !hasOnlyPlainDataProperties(value) || 'then' in value) {
+    return false;
+  }
+  if (value.ok === true) {
+    const meta = value.meta;
+    return (
+      Object.hasOwn(value, 'data') &&
+      isPlainDataRecord(meta) &&
+      hasOnlyPlainDataProperties(meta) &&
+      ['synthetic', 'prepared', 'simulated', 'live'].includes(meta.origin as string) &&
+      typeof meta.fallbackUsed === 'boolean' &&
+      (!Object.hasOwn(meta, 'fixtureId') || typeof meta.fixtureId === 'string')
+    );
+  }
+  const error = value.error;
+  return (
+    value.ok === false &&
+    isPlainDataRecord(error) &&
+    hasOnlyPlainDataProperties(error) &&
+    [
+      'INVALID_INPUT',
+      'NOT_FOUND',
+      'INVALID_TRANSITION',
+      'NOT_ASSIGNED_CHILD',
+      'SAFETY_REJECTED',
+      'PRIVACY_REJECTED',
+      'INVALID_REWARD_PAIRING',
+      'PREPARED_FIXTURE_UNAVAILABLE',
+      'REMOTE_UNAVAILABLE',
+      'TIMEOUT',
+      'INVALID_RESPONSE',
+    ].includes(error.code as string) &&
+    typeof error.message === 'string' &&
+    typeof error.retryable === 'boolean' &&
+    typeof error.fallbackAvailable === 'boolean'
+  );
+}
+
 function cloneDraft(draft: ParentOnboardingDraft): ParentOnboardingDraft {
   return {
     ...draft,
@@ -131,11 +171,80 @@ export class ParentOnboardingController {
   private replacementDraftBackup: ParentOnboardingDraft | null = null;
   private verificationAttempt = 0;
   private sessionGeneration = 0;
+  private demoEntryTransactionActive = false;
+  private demoEntryTransactionAborted = false;
 
   constructor(
     private readonly access: ParentOnboardingAccessAuthority,
     private readonly config: ParentOnboardingControllerConfig = DEFAULT_CONFIG,
   ) {}
+
+  // Compose inside the access transaction; callbacks must not schedule asynchronous work.
+  withDemoEntryTransaction<T>(operation: () => ServiceResult<T>): ServiceResult<T> {
+    if (this.demoEntryTransactionActive) {
+      this.demoEntryTransactionAborted = true;
+      return failure('INVALID_TRANSITION', 'Demo entry cannot reenter an active transaction');
+    }
+    const snapshot = {
+      status: this.status,
+      identifierKind: this.identifierKind,
+      normalizedIdentifier: this.normalizedIdentifier,
+      maskedDestination: this.maskedDestination,
+      delivery: this.delivery,
+      offlineFallbackUsed: this.offlineFallbackUsed,
+      draft: cloneDraft(this.draft),
+      parentSession: this.parentSession
+        ? {
+            ...this.parentSession,
+            principal: { ...this.parentSession.principal },
+            capabilities: [...this.parentSession.capabilities],
+          }
+        : null,
+      completionReceipt: this.completionReceipt ? cloneReceipt(this.completionReceipt) : null,
+      replacementReceiptBackup: this.replacementReceiptBackup
+        ? cloneReceipt(this.replacementReceiptBackup)
+        : null,
+      replacementDraftBackup: this.replacementDraftBackup
+        ? cloneDraft(this.replacementDraftBackup)
+        : null,
+      verificationAttempt: this.verificationAttempt,
+      sessionGeneration: this.sessionGeneration,
+    };
+    this.demoEntryTransactionActive = true;
+    this.demoEntryTransactionAborted = false;
+    let committed = false;
+    try {
+      const result = operation();
+      if (!isDemoEntryTransactionResult<T>(result)) {
+        return failure('INVALID_RESPONSE', 'Demo entry requires a synchronous service result');
+      }
+      if (this.demoEntryTransactionAborted) {
+        return failure('INVALID_TRANSITION', 'Demo entry transaction was interrupted');
+      }
+      committed = result.ok;
+      return result;
+    } catch {
+      return failure('INVALID_RESPONSE', 'Demo entry transaction could not be completed');
+    } finally {
+      if (!committed) {
+        this.status = snapshot.status;
+        this.identifierKind = snapshot.identifierKind;
+        this.normalizedIdentifier = snapshot.normalizedIdentifier;
+        this.maskedDestination = snapshot.maskedDestination;
+        this.delivery = snapshot.delivery;
+        this.offlineFallbackUsed = snapshot.offlineFallbackUsed;
+        this.draft = snapshot.draft;
+        this.parentSession = snapshot.parentSession;
+        this.completionReceipt = snapshot.completionReceipt;
+        this.replacementReceiptBackup = snapshot.replacementReceiptBackup;
+        this.replacementDraftBackup = snapshot.replacementDraftBackup;
+        this.verificationAttempt = snapshot.verificationAttempt;
+        this.sessionGeneration = snapshot.sessionGeneration;
+      }
+      this.demoEntryTransactionActive = false;
+      this.demoEntryTransactionAborted = false;
+    }
+  }
 
   getView(): ParentOnboardingView {
     return {

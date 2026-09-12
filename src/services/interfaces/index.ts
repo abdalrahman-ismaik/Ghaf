@@ -362,6 +362,8 @@ export interface VoiceCaptureService {
 }
 
 export interface SyntheticAccessService {
+  // Optional for older providers; demo entry must fail closed when this capability is absent.
+  withDemoEntryTransaction?<T>(operation: () => ServiceResult<T>): ServiceResult<T>;
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession>;
   terminateParentSession(input: ProjectAccessSessionInput): ServiceResult<ParentSessionTermination>;
   signInChild(input: SyntheticChildSignIn): ServiceResult<ChildAccessSession>;

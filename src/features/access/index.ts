@@ -44,6 +44,7 @@ import {
   type LiveChildCoachGrant,
 } from '../../models/boundedAi';
 import type { ServiceResult } from '../../services/interfaces';
+import { hasOnlyPlainDataProperties, isPlainDataRecord } from '../../utils/exactPlainData';
 
 const CAPABILITY_TRUTH = 'local_prototype_not_authentication' as const;
 const SYNTHETIC_HOUSEHOLD_ID = 'household_al_noor' as const;
@@ -69,6 +70,45 @@ function failure(code: DomainErrorCode, message: string): ServiceResult<never> {
     ok: false,
     error: { code, message, retryable: false, fallbackAvailable: false },
   };
+}
+
+function isDemoEntryTransactionResult<T>(value: unknown): value is ServiceResult<T> {
+  if (!isPlainDataRecord(value) || !hasOnlyPlainDataProperties(value) || 'then' in value) {
+    return false;
+  }
+  if (value.ok === true) {
+    const meta = value.meta;
+    return (
+      Object.hasOwn(value, 'data') &&
+      isPlainDataRecord(meta) &&
+      hasOnlyPlainDataProperties(meta) &&
+      ['synthetic', 'prepared', 'simulated', 'live'].includes(meta.origin as string) &&
+      typeof meta.fallbackUsed === 'boolean' &&
+      (!Object.hasOwn(meta, 'fixtureId') || typeof meta.fixtureId === 'string')
+    );
+  }
+  const error = value.error;
+  return (
+    value.ok === false &&
+    isPlainDataRecord(error) &&
+    hasOnlyPlainDataProperties(error) &&
+    [
+      'INVALID_INPUT',
+      'NOT_FOUND',
+      'INVALID_TRANSITION',
+      'NOT_ASSIGNED_CHILD',
+      'SAFETY_REJECTED',
+      'PRIVACY_REJECTED',
+      'INVALID_REWARD_PAIRING',
+      'PREPARED_FIXTURE_UNAVAILABLE',
+      'REMOTE_UNAVAILABLE',
+      'TIMEOUT',
+      'INVALID_RESPONSE',
+    ].includes(error.code as string) &&
+    typeof error.message === 'string' &&
+    typeof error.retryable === 'boolean' &&
+    typeof error.fallbackAvailable === 'boolean'
+  );
 }
 
 function parsedTime(value: string): number | null {
@@ -183,6 +223,7 @@ function sameSessionIdentity(left: AccessSession, right: AccessSession): boolean
 
 function cloneAccessSession(session: ParentAccessSession): ParentAccessSession;
 function cloneAccessSession(session: ChildAccessSession): ChildAccessSession;
+function cloneAccessSession(session: AccessSession): AccessSession;
 function cloneAccessSession(session: AccessSession): AccessSession {
   return session.sessionKind === 'parent'
     ? {
@@ -279,6 +320,48 @@ export class DeterministicSyntheticAccessService {
     ['child_salem', initialPermissionGrant('child_salem')],
     ['child_alya', initialPermissionGrant('child_alya')],
   ]);
+  private demoEntryTransactionActive = false;
+  private demoEntryTransactionAborted = false;
+
+  // Entry callbacks are synchronous and must not schedule work or mutate unrelated authorities.
+  withDemoEntryTransaction<T>(operation: () => ServiceResult<T>): ServiceResult<T> {
+    if (this.demoEntryTransactionActive) {
+      this.demoEntryTransactionAborted = true;
+      return failure('INVALID_TRANSITION', 'Demo entry cannot reenter an active transaction');
+    }
+    const sessions = new Map(
+      [...this.sessions].map(([key, session]) => [key, cloneAccessSession(session)]),
+    );
+    const devices = new Map([...this.devices].map(([key, device]) => [key, { ...device }]));
+    const proofs = new Map([...this.proofs].map(([key, proof]) => [key, { ...proof }]));
+    this.demoEntryTransactionActive = true;
+    this.demoEntryTransactionAborted = false;
+    let committed = false;
+    try {
+      const result = operation();
+      if (!isDemoEntryTransactionResult<T>(result)) {
+        return failure('INVALID_RESPONSE', 'Demo entry requires a synchronous service result');
+      }
+      if (this.demoEntryTransactionAborted) {
+        return failure('INVALID_TRANSITION', 'Demo entry transaction was interrupted');
+      }
+      committed = result.ok;
+      return result;
+    } catch {
+      return failure('INVALID_RESPONSE', 'Demo entry transaction could not be completed');
+    } finally {
+      if (!committed) {
+        this.sessions.clear();
+        sessions.forEach((session, key) => this.sessions.set(key, session));
+        this.devices.clear();
+        devices.forEach((device, key) => this.devices.set(key, device));
+        this.proofs.clear();
+        proofs.forEach((proof, key) => this.proofs.set(key, proof));
+      }
+      this.demoEntryTransactionActive = false;
+      this.demoEntryTransactionAborted = false;
+    }
+  }
 
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession> {
     const expiry = expiresAt(input.now, ACCESS_SESSION_TTL_MS);
