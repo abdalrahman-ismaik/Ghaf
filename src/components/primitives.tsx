@@ -778,6 +778,7 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     flexShrink: 1,
+    position: Platform.OS === 'web' ? 'relative' : undefined,
   },
   buttonIcon: {
     alignItems: 'center',
