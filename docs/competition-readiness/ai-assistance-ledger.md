@@ -439,3 +439,16 @@ limitations and link to standalone build guide. No new runtime contribution or s
 scoped formatting only. D independent76test retest report6ec0fcd→4472c8a closes the reproduced
 transaction defect; it does not pass physical devices or app-wide native behavior. Student review
 remains pending.
+
+A068 follow-up generatedc3b1cc8: one test-only lifecycle case with actual prepared voice/transcript,
+media/reflection and Coach state acrossSalem→Parent→Alya→Salem.18focusedstoretests/scopedlint/
+format/whitespace pass. No runtime defect found, no realrecording, no fullsuite rerun for test-only
+change. Helper released. Exact follow-up prompt:
+
+```text
+Accept bounded evidence gap. Exact test-only grant: tests/demo-entry-store.test.ts now exclusively yours until release (A holds source; others editing preserve). Add one meaningful real-controller demo lifecycle case: Parent prepares/approves canonical task and existing synthetic voice permission; Salem populates prepared voice/transcript and draft media/reflection through real allowed commands (no direct state mutation), signs out through selector, Parent or Alya cannot observe that transient state, re-enter Salem retains task progress/permissions while transients remain cleared. Do not enable live AI/record realmedia or change runtime. Run only this test file singleworker + scopedlint/format; if evidence finds failure report reproduction, don't edit source. Cohesive test-only commit when green; release. No fullsuite/build/browser/descendants/coordination. Lead handles UI/nativehandoff in parallel.
+```
+
+Strategy/index updated to distinguish actually selected/delivered015 access and onboarding from
+unselected reciprocal-help, memory/recovery, calendar/study/money/maps/chat proposals. Existing
+research preserved; no new study, proven family outcome, human scope acceptance or feature invented.

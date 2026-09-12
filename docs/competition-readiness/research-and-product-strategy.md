@@ -7,13 +7,28 @@ role-separated journey in the user's requested **2–3 minutes**. A secondary ph
 checks installation, responsiveness, touch, restart and reset; it does not share the primary
 phone's household state. The exact phone models are not yet known.
 
-Competition work concentrates on a restart-safe core, honest prepared recommendations with a
-clear rationale, and Parent confirmation followed by growth. A small private durable memory leaf
-is a proposed next story, not an existing timeline or feature. Calendar is optional only after
-the core passes; study, money literacy, maps, Google integrations and chat stay later or
-post-competition. No backend, live tracking, payments, social networking or real family data
-enters this slice. “Competition-ready” means demonstrated reliability and a clear proposition;
-it cannot mean a guaranteed prize or proven developmental benefit.
+The current selected batch prioritizes a fast, understandable local journey and a real Android
+artifact. The user explicitly deferred recovery014 until native validation and selected three
+synthetic no-auth profiles, shorter onboarding and Arabic narration repair. Runtime2ecea74 now
+implements the isolated demo doorway and silent three-moment story; full checks pass147files/
+1914tests. Six matching narration candidates are awaiting actual user listening. Physical APK/
+phone acceptance is still pending; test counts do not substitute for it.
+
+Research on the suggested ideas is preserved below. Research and a roadmap do not mean those
+features were implemented. The earlier stabilization work repaired existing logic; the current
+Feature015 change improves demo access and onboarding. A private durable memory leaf remains a
+proposal, and native validation will not automatically activate recovery or memory work. Calendar
+is optional only after core acceptance and explicit selection. Study, money literacy, maps, Google
+integrations and chat remain later/post-competition. No backend, live tracking, payments, social
+networking or real family data enters this batch. A prize or developmental benefit is not guaranteed.
+
+The strongest next product hypothesis is the bounded **“Do the first step together”** interaction:
+the Child requests one concrete kind of help on the approved task, the Parent acknowledges that
+same private request, and the Child completes with the agreed support. It makes Parent participation
+visible without chat, sync, new points or reward pressure. This remains **unselected**, with the
+specific before/after and failure cases in [A's product review](workstreams/a-product-service-review.md)
+and [C's proposal](workstreams/c-product-refinement.md). It needs an explicit user/student scope
+choice and committed story before implementation; do not present it in the current demo as built.
 
 ## Competition alignment
 
