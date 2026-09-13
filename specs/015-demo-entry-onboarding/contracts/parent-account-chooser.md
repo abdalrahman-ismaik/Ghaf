@@ -57,3 +57,31 @@ The sole helper owns new `src/features/access/localParentEntry.ts`, the bounded 
 No controller/provider method changes or dependencies are expected. Lead owns one serialized check
 lane then one isolated browser using existing8082; helper has no jobs/browser/descendants unless
 explicitly transferred. Shared narration work remains separately owned and untouched.
+
+## September 13 follow-up — remove the local verification step
+
+The user explicitly requests: remove “أدخل رمز التحقق” from the login process. This supersedes
+this document's retained verification stage for new family, replacement and legacy profile repair.
+The existing local account chooser remains one tap. No local Parent journey displays an OTP form.
+
+- New family form retains its existing identifier validation and family details; Continue stages
+  local setup directly and opens family basics. No requestVerification or verifyCode call is made.
+- Add a narrow controller method to normalize the supplied local identifier and stage the existing
+  internal setup-ready state (legacy name verified), with delivery null. This is not identity proof
+  and creates no Parent authority, receipt or storage write. Invalidate old verification callbacks.
+- Store commands start fresh/replacement setup or known-profile repair only when ordinary and
+  signed out. Reuse transactional controller rollback; retain final replacement consent and backup
+  restoration on cancellation. Real messaging credentials and all task/growth state remain untouched.
+- The former verification route becomes a safe compatibility redirect. Stale code-sent/verifying
+  states return to account selection after cancellation. Direct links/query parameters never
+  create authority or silently start/complete replacement. Valid staged setup resumes its next
+  details screen; no redirect loop. Active Child remains in its own role.
+- Move the existing optional remember-Parent choice into family details, unavailable on temporary
+  Child handoff. Do not create a new remember mechanism or silently remember the demo Parent.
+- Update visible copy that promises verification to say setup/repair instead. Keep bilingual
+  resources and existing layouts; Child PIN/pairing and Feature016 real Auth remain unchanged.
+
+Tests: fresh/replacement/repair stage without OTP/provider/session; invalid input/active Child/demo
+mode deny; failed staging rolls back; final replacement still needs confirmation; cancel preserves
+stored family/affinity; stale verification navigation clears old pending state; rendered controls
+skip OTP in AR/EN. Native and named human acceptance remain separate NOT RUN gates.

@@ -180,3 +180,7 @@ See contracts/exact-original-restoration.md; original narration is a separate us
 Follow contracts/parent-account-chooser.md. Reuse the existing canonical family factory and
 transactional synthetic controllers; a small localParentEntry helper and one store action feed
 the existing route. No mode, registry, package, real Auth or task authority changes.
+
+## Parent no-code follow-up
+
+Stage local setup directly through one controller method and ordinary-only store wrappers; reuse replacement/repair transactions. Retire the verification UI to a safe redirect and move the existing remember option to family basics. No fake OTP submission or new dependency.

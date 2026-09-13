@@ -3,6 +3,29 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 90 — remove local Parent verification step
+
+Updated 2026-09-13T09:46:05.460286+00:00; current415f0c4, same shared branch.
+Direct user: remove “أدخل رمز التحقق” from login. Extend the preceding local-only account contract:
+new-family setup, replacement, legacy profile repair and stale verification URLs must not show OTP.
+Real messaging authentication and Child PIN/pairing remain unchanged. No flags/packages/audio edits.
+
+Lead owns additive015 contract/spec/plan/tasks, this board and new workstream report
+parent-no-code-entry.md; exact routes app/access/parent/sign-in.tsx, sign-up.tsx, verification.tsx,
+family-basics.tsx (including moving the existing optional remember control), add-first-child.tsx
+and family-created-success.tsx only if their stale redirects require repair; src/i18n/resources.ts.
+Lead test grants: tests/access/parent-account-chooser.test.tsx, family-replacement-flow.test.ts,
+device-remembered-access.test.tsx; tests/presentation/r001-onboarding-flow.test.ts;
+tests/platform/parent-access-portrait.test.tsx; new tests/access/parent-no-code-routes.test.tsx.
+One helper messaging_seams read-only until contract commit, then owns ONLY
+src/features/access/parentOnboarding/controller.ts, src/state/usePrototypeStore.ts and new
+tests/access/local-parent-setup.test.ts for additive local setup/repair staging commands.
+No other controller/store change, commits, descendants or helper jobs. Lead one serialized check
+lane then own isolated browser on existing62701/8082; no Metro restart/second preview/native build.
+Acceptance: direct local setup with no requested/auto-submitted fake code; no early Parent authority,
+family writes or replacement consent bypass; cancel/Child return preserved; stale URL safely redirects;
+actual AR/EN controls and focused regressions. Other status/media/source edits preserved.
+
 ## Revision 89 — Parent account chooser integrated and released
 
 Updated 2026-09-13T09:37:59.987262+00:00. Contract4f48a75; runtime65efe80. Parent Welcome-back

@@ -241,3 +241,7 @@ Reuse the existing six-page onboarding and two-choice Welcome appearance verbati
 The latest user selects credential-free local Parent account selection on the ordinary Welcome-back
 route. See [the bounded amendment](contracts/parent-account-chooser.md) for superseded ordinary
 credential requirements, retained authority/data rules and separate real-messaging authentication.
+
+## Parent no-code follow-up
+
+The latest user removes every local Parent verification-code screen. The September13 follow-up in contracts/parent-account-chooser.md supersedes retained local setup/repair OTP; real messaging Auth is unchanged.

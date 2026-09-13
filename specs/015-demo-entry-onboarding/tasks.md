@@ -111,3 +111,10 @@ Exact restoration46e9b58: all4checksPASS,153files/2025tests. Browser original6AR
 - [x] T029 Run proportional checks and one bounded browser pass; publish evidence, commit and release.
 
 T026–T029: contract4f48a75, runtime65efe80; report docs/competition-readiness/workstreams/parent-account-chooser.md. Actual browser account selection passes in AR/EN; native/human acceptance remains NOT RUN.
+
+## Parent no-code follow-up
+
+- [x] T030 Commit the no-code local Parent follow-up contract.
+- [ ] T031 Implement and test direct local setup/replacement/repair staging.
+- [ ] T032 Retire OTP UI, connect direct routes and move optional remember control.
+- [ ] T033 Validate affected guards/cancellation and AR/EN browser; commit/report/release.
