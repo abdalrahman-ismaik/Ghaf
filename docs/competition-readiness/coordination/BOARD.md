@@ -3,6 +3,113 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 87 — M016 source handoff; allocations released
+
+Updated 2026-09-13T09:12:36.251484+00:00. Contract `45d6796`; integrated messaging runtime `fd6b72c`
+on the unchanged shared branch. Independent implementation is complete; real hosted authentication
+and two-installation exchange remain BLOCKED because the user confirms no Supabase project exists.
+The setup guide and [implementation report](../workstreams/m016-implementation.md) give exact next steps.
+
+M016 releases ALL source grants from revisions 81–84: `specs/016-real-family-messaging/**`,
+`.specify/memory/constitution.md`, `src/features/familyMessaging/**`,
+`src/components/familyMessaging/**`, `src/components/companion/**`, `app/messages/**`,
+`assets/images/companion/**`, `workers/ghaf-family-messaging/**`, `tests/messaging/**`,
+`src/services/index.ts`, `src/i18n/resources.ts`, `app/_layout.tsx`,
+`app/parent/family/index.tsx`, `app/child/index.tsx`, `app/child/task.tsx`, `app.config.ts`,
+`package.json`, `package-lock.json`, and the route-inventory-only grants in
+`tests/integration/operator-demo-flow.test.ts`, `tests/presentation/r001-onboarding-flow.test.ts`,
+`tests/platform/r003-first-run-experience.test.ts`. The audio owner may now repair the separate
+narration assertion in the last file under its own grant. No audio source or other status was staged.
+This report and additive board entry release with the final handoff documentation commit.
+
+Final evidence: 29 isolated SQL cases and 216 focused/affected tests passed; scoped lint, full
+TypeScript and formatting passed. Shared full suite: 2073 passed / one concurrent narration failure;
+shared lint: one unowned audio-test hook error. Expo compatibility check flags 13 existing package
+patch updates; newly added SecureStore is not flagged. No broad dependency update was performed.
+Browser AR/EN checks include 22 screenshots and explicitly synthetic transport states; they do not
+establish hosted Auth or native acceptance. Native and human review remain NOT RUN.
+
+Helpers: zero, all released, no descendants. Owned browser closed, own Metro 62621 stopped,
+all isolated SQL/test/check jobs ended; heavy/browser allocations released. Preserve user terminal
+Metro 62701 on 8082 and all other sessions' processes/edits. No calling or further source task is
+activated. Evidence: `/home/smyk/projects/Ghaf/output/competition-readiness/family-messaging-016-20260913/`.
+
+## Revision 86 — browser complete; integration checks and concurrent-audio notice
+
+Updated 2026-09-13T09:00:32.759466+00:00. M016 browser closed; ownMetro62621 remainsstopped.
+UserterminalMetro62701/8082 preserved. Browser fixture evidence distinguishes unconfigured actual
+candidate from injectedtransport/preapprovedtask/imageerror/large-text simulation; no provider/native
+pass. Corrected Sendvisibility, ArabicBack, selectablewebprop, counterbidi and unboundlocale lock.
+Lead holds one final static/fullsuite lane; nohelpers. Exactsource manifest in016receipts.
+
+Concurrent audio owner: current full lint fails ONLY tests/presentation/onboarding-v2-audio.test.tsx:93
+(useNarrator called inside lowercase render). This is outside M016ownership; please repair under your
+own grant. M016 preserves all onboarding/audio/otherstatus edits and will not stage them. Report at
+output/competition-readiness/family-messaging-016-20260913/receipts/lint-final.log.
+Final suite:2073passed/1failed, the unrelated narration source-count expectation in
+tests/platform/r003-first-run-experience.test.ts:451 expects12requires but currentaudio sourcehas11.
+M016 changed onlyrouteinventory lines128–129 in that file; narration assertion remainsowner-controlled.
+Lead moves Child messaging entry immediatelyaftercurrenttask/beforeGrowth+futurepreviews, then one
+short affectedentry browser confirmation and scopedchecks. No test pool repeats whilebrowseractive.
+
+## Revision 85 — preview collision resolved by stopping our server
+
+Updated 2026-09-13T08:44:17.063016+00:00. Lead started solegrantedMetro62621/8081 at08:42:20UTC
+(port previouslyfree). Other session started npm62689/Metro62701 at08:42:22UTC on8082, samecanonical
+workspace. M016 stopped ONLY own62621 to remove duplicateworkload; otherprocesspreserved. M016 own
+isolatedbrowser may reuse existing8082 aftersource/envcheck, no restart/change of otherowner's
+process. Backend/helper jobs allreleased. No test/build pool runs with browser. Initial8081cold
+bundle72s exceededMCP60stimeout; page loaded afterward. This isdevcompile, notdeviceperformance.
+
+## Revision 84 — backend committed; lead integration validation
+
+Updated 2026-09-13T08:37:39.895784+00:00. Backende54924f passed29 isolatedSQL cases; cluster55432
+stopped. Helper client/controller handoff passed167 tests across7files; final credential-clear guard
+adds one focused regression for lead integrated suite. All source paths returned to lead.
+Same solehelper now READ ONLY UI/privacy/navigation review, no descendants/jobs/writes.
+Review complete/released: lead repairs uppercase enrollment, polling cursor gap and helper draft
+identity disclosure. Extend lead test grant ONLY tests/integration/operator-demo-flow.test.ts,
+tests/presentation/r001-onboarding-flow.test.ts, tests/platform/r003-first-run-experience.test.ts
+to add the contracted /messages route to exhaustive inventories (3 fullsuitefailures;2060passed).
+No other existingroute assertion or invariant is weakened. Lead alone
+holds serialized full static/test lane, then sole isolated browser/Metro lane at8081 if still free.
+No native/build/provider job, no other browser interruption. Concurrent maintenance052b4a8 moves
+canonical docs underdocs; follow updatedAGENTS/relocationmap without recreating old root files.
+Project still absent. No native/two-device/provider acceptance claimed.
+
+## Revision 83 — independent implementation; no hosted project
+
+Updated 2026-09-13T08:25:41.060470+00:00. User confirms no Supabase project exists.
+Hosted Auth, PostgREST and two-install acceptance remain BLOCKED. Backend isolated PostgreSQL
+26 checks passed; helper is finishing provider deletion/ban and UUID-envelope hardening with one
+short isolated SQL rerun, then releases heavy slot. No browser/Metro/build runs concurrently.
+
+After backend release, the same sole helper messaging_backend takes ONLY
+`src/features/familyMessaging/**` and `tests/messaging/**` for lifecycle/security review, focused
+behavior tests and necessary fixes. Lead transfers these paths; lead owns UI, resources, registry,
+entry/root seams and portrait only. Preserve public controller method signatures or coordinate.
+No descendants, commits or coordination writes by helper. One focused Vitest runner may follow SQL;
+lead full checks/browser wait release. No other session status/TEAM changes are ours.
+
+## Revision 82 — contract45d6796 committed; first text milestone active
+
+Updated 2026-09-13T08:12:55.293910+00:00. Feature016 contract and bounded
+constitution amendment committed45d6796 before runtime. Maintenance owner committedd4d3dd6 and
+released package/TEAM/index paths; shared branch preserved. M016-root now activates the exact
+runtime seams in revision81. Add `app.config.ts`, `package.json`, `package-lock.json` solely for
+Expo57 secure-store measured gap; `.specify/feature.json` local ignored pointer names016.
+
+One helper `messaging_backend` owns ONLY `workers/ghaf-family-messaging/**` for SQL/Auth authorization,
+retention/provisioning docs and isolated PostgreSQL tests. No descendants/shared UI/package/index/
+board writes. Prior readonly messaging_seams helper complete/released. Lead owns client/controller,
+UI/companion, tests/messaging and shared integration. Backend tests wait for explicit heavy-slot
+handoff; lead first installs only compatible secure-store. No existing preview/build/test job seen.
+
+Provider choice Supabase Auth+Postgres. Project setup request is concrete in committed quickstart;
+no secrets/public deployment/purchase permitted. Independent source continues. One bounded browser
+pass after implementation; no actual native/provider acceptance inferred from tests. Current
+helper/backend source and lead source grants RUNNING; progress in unique016 evidence directory.
+
 ## Revision 81 — user-authorized real family messaging / M016
 
 Updated 2026-09-13T08:02:54.483690+00:00. New integration lead `M016-root` has direct user authority in this

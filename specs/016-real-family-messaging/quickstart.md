@@ -2,8 +2,12 @@
 
 ## Service setup — operator action, no public deployment by this implementation
 
-Use a dedicated team-test Supabase project. Do not purchase a plan or expose real Child data under
-this work. The app needs only the HTTPS project URL and publishable key; never send a service-role
+Current setup: the user confirms no project exists (2026-09-13). Source work and isolated tests
+continue; hosted Auth, cleanup and a real two-installation exchange are BLOCKED.
+
+Create a dedicated team-test Supabase project using a team-controlled operator account.
+Record the selected region and project owner before applying the migration. Do not purchase a plan
+or expose real Child data under this work. The app needs only the HTTPS project URL and publishable key; never send a service-role
 key, database password, Parent password or refresh token through chat or commit them.
 
 1. In the chosen project's SQL editor, review/apply
@@ -17,7 +21,7 @@ key, database password, Parent password or refresh token through chat or commit 
    that UUID and synthetic Parent/household display data. The app cannot provision its own Parent.
 4. Enable the reviewed hourly cleanup in `workers/ghaf-family-messaging/retention.sql`; verify a
    run and record provider backup/region settings. Until this is verified, remote retention acceptance
-   is BLOCKED even though reads hide messages older than30days.
+   is BLOCKED even though reads hide messages older than 30 days.
 5. Configure local ignored environment values `EXPO_PUBLIC_GHAF_MESSAGING_URL` and
    `EXPO_PUBLIC_GHAF_MESSAGING_PUBLISHABLE_KEY`. No demo/live-AI/R002b flag changes are required.
    Missing values give an unavailable messaging surface; they never select a fake provider.
@@ -31,22 +35,22 @@ Do not claim the text milestone passed until the real two-installation procedure
 
 ## Focused checks
 
-Run the eventual backend test script from `workers/ghaf-family-messaging/README.md`; it uses only
+Run the backend test script from `workers/ghaf-family-messaging/README.md`; it uses only
 its own temporary PostgreSQL cluster and synthetic auth claims. It validates SQL authorization,
 not actual provider login. Run `npx vitest run tests/messaging --maxWorkers=1` using installed tools,
 then affected task/assistant/demo/localization regressions. Reuse shared test lane and do not overlap
 another build/pool. Typecheck/lint/format and integrated suite follow the final coherent candidate.
 
-A bounded browser pass covers AR/EN320×740 and390×844, authentication/enrollment, empty/thread/draft,
+A bounded browser pass covers AR/EN 320×740 and 390×844, authentication/enrollment, empty/thread/draft,
 sending/accepted/unknown/retry/offline/revoked, keyboard/Back/large text and helper image fallback.
 If transport is intercepted for test states, label fixtures explicitly; do not call that real delivery.
 Correct observed defects in one batch and confirm affected states. Physical gates remain separate.
 
 ## Real two-installation procedure
 
-1. Parent installationA signs in with the provisioned real account. Create Salem (9–11) and Alya
+1. Parent installation A signs in with the provisioned real account. Create Salem (9–11) and Alya
    as separate messaging identities; issue an invitation for Salem. Record recipient before sharing
-   the short-lived code privately. Child installationB redeems it and sees the actual Parent name.
+   the short-lived code privately. Child installation B redeems it and sees the actual Parent name.
 2. Parent opens Salem thread and sends a unique synthetic text. Child receives it through the
    service and replies. Parent sees that reply. Record server message IDs/sequences and redacted
    screenshots; no tokens, passwords, invitation code or real Child data in evidence.
@@ -57,7 +61,7 @@ Correct observed defects in one batch and confirm affected states. Physical gate
    revalidate credential/session/device before showing server history.
 5. Attempt Alya's thread from Salem, wrong household access, reused/expired invitation and revoked
    device access; verify denial. Parent revokes B; its next request clears private view. Sign-out
-   erases local view/cache without claiming remote history deletion. Verify30day retention separately.
+   erases local view/cache without claiming remote history deletion. Verify 30-day retention separately.
 6. On the local approved task, open the supplied-character prepared helper, request the supported
    explanation, select Message Parent, inspect/edit the generic draft under the actual remote Child
    identity, and Send. Parent receives plain text only. No assistant transcript, task reference,
