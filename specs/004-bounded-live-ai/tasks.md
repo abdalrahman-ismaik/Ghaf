@@ -421,3 +421,15 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   inspection is `BLOCKED` because Chromium lacks `libnss3` in the container and dependency
   installation requires an unavailable sudo password; physical Android and named Arabic/
   accessibility review remain `NOT RUN`.
+
+**Later browser evidence — 2026-09-12**: The next day's explicitly requested
+interactive follow-up completed configured-age checks for all three bands,
+Parent grant/revocation controls, pairing and temporary Parent access, remembered
+access, and signed-out Arabic reset. It also repaired and replayed the static-web
+hydration boundary against the final default build. The earlier blocked attempt
+above remains historical evidence. The follow-up recorded 332 snapshots across
+21 routes and 20 screenshots; its final default-build interval recorded no runtime
+exception. Final static checks and 130 files / 1,699 tests passed, and the web
+export produced 39 routes. These are local synthetic browser results, not native
+audio, provider or release acceptance. See
+`docs/audits/2026-09-11-maintainer-audit.md`, section "Interactive browser follow-up".
