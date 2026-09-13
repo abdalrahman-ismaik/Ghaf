@@ -15,6 +15,8 @@ import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
   resetPrototypeForTest,
+  seedPrototypeStateForTest,
+  taskPraiseForTest,
 } from '../helpers/prototypeStore';
 
 const PREPARED_PRAISE = {
@@ -30,10 +32,11 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asser
 }
 
 function counters(state: PrototypeStoreState = usePrototypeStore.getState()) {
+  const landscapes = state.landscapeProgressByChild?.child_salem ?? state.landscapeProgress;
   return {
     salemSeeds: state.children.child_salem.earnedSeeds,
-    mangroveSeeds: state.landscapeProgress.mangrove.cumulativeSeeds,
-    mangroveStage: state.landscapeProgress.mangrove.stage,
+    mangroveSeeds: landscapes.mangrove.cumulativeSeeds,
+    mangroveStage: landscapes.mangrove.stage,
     canopyLeaves: state.household.combinedCanopy.contributionLeaves,
     circleActions: state.circleGoal.eligibleGreenActions,
   };
@@ -66,7 +69,7 @@ function planAndPresentPraise(): void {
 describe('US3 Parent check-in, retry, and praise-first recognition', () => {
   beforeEach(async () => {
     expectOk(resetPrototypeForTest());
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     await enterParentExperienceForTest();
   });
 
@@ -104,7 +107,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
   });
 
   it('restores the pending praise plan when a confirmed session re-enters check-in', () => {
-    usePrototypeStore.setState(createResetSourceSession('confirmed'));
+    seedPrototypeStateForTest(createResetSourceSession('confirmed'));
 
     const restored = usePrototypeStore
       .getState()
@@ -221,7 +224,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
   });
 
   it('negotiates a bounded smaller or safe-equivalent task before Child acceptance', async () => {
-    usePrototypeStore.setState(createResetSourceSession('assigned'));
+    seedPrototypeStateForTest(createResetSourceSession('assigned'));
     await enterChildExperienceForTest('child_salem');
     const baseline = structuredClone(usePrototypeStore.getState().journey);
     const baselineCounters = counters();
@@ -268,7 +271,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
   });
 
   it('applies an accepted pre-acceptance proposal prospectively while retaining the assignment identity', async () => {
-    usePrototypeStore.setState(createResetSourceSession('assigned'));
+    seedPrototypeStateForTest(createResetSourceSession('assigned'));
     await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().requestSmallerTask());
     await enterParentExperienceForTest();
@@ -331,7 +334,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
   ])(
     'keeps the $decision replacement coherent through one full recognized journey',
     async ({ decision, replacementTemplateId, seedAward, expectedSeeds, expectedStage }) => {
-      usePrototypeStore.setState(createResetSourceSession('assigned'));
+      seedPrototypeStateForTest(createResetSourceSession('assigned'));
       const sourceTask = structuredClone(usePrototypeStore.getState().journey?.task);
       await enterChildExperienceForTest('child_salem');
       expectOk(usePrototypeStore.getState().requestSmallerTask());
@@ -381,18 +384,10 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
         usePrototypeStore.getState().submitTask({
           definitionAcknowledged: true,
           completionMode: 'permitted_help',
-          helpUsed: {
-            ar: 'فحص شخص بالغ المواد وساعد عند الحاجة.',
-            en: 'An adult checked the items and helped when needed.',
-          },
+          helpUsed: adjustedTask!.content.permittedHelp,
           preparedMediaFixtureId: null,
           reflection: null,
-          observableFacts: [
-            {
-              ar: 'فرز سالم الورق والبلاستيك النظيفين بعد فحص شخص بالغ.',
-              en: 'Salem sorted clean paper and plastic after an adult check.',
-            },
-          ],
+          observableFacts: [],
         }),
       );
       expect(usePrototypeStore.getState().journey?.submission).toMatchObject({
@@ -404,10 +399,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
       expectOk(
         usePrototypeStore.getState().planConfirmation({
           submissionId: 'submission_recycling_p0_v1_attempt_1',
-          praise: {
-            ar: 'فرزت الورق النظيف وطلبت مساعدة شخص بالغ عند الشك.',
-            en: 'You sorted the clean paper and asked an adult for help when unsure.',
-          },
+          praise: taskPraiseForTest(),
           neutralObservation: null,
           uncertainty: null,
         }),
@@ -537,7 +529,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expectOk(usePrototypeStore.getState().setActiveChild('child_alya'));
     expect(usePrototypeStore.getState().planFutureTaskAdjustment('safe_equivalent')).toMatchObject({
       ok: false,
-      error: { code: 'NOT_ASSIGNED_CHILD' },
+      error: { code: 'INVALID_TRANSITION' },
     });
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
@@ -559,7 +551,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
     expectOk(resetPrototypeForTest());
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     await enterParentExperienceForTest();
     expectOk(usePrototypeStore.getState().planFutureTaskAdjustment('safe_equivalent'));
     expectOk(
@@ -872,7 +864,7 @@ describe('US3 Parent check-in, retry, and praise-first recognition', () => {
 
     for (const corruption of corruptions) {
       expectOk(resetPrototypeForTest());
-      usePrototypeStore.setState(createSubmittedP0Session());
+      seedPrototypeStateForTest(createSubmittedP0Session());
       await enterParentExperienceForTest();
       planAndPresentPraise();
       const baseline = counters();

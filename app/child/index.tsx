@@ -1,3 +1,4 @@
+import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
@@ -127,6 +128,15 @@ export default function ChildHomeScreen() {
     (state) => state.dismissReturningUserWelcome,
   );
   const children = usePrototypeStore((state) => state.children);
+  const hasCatalog = usePrototypeStore((state) =>
+    state.taskAssignments.order.some((id) => {
+      const entry = state.taskAssignments.byId[id];
+      return (
+        entry?.childId === state.activeChildId &&
+        Boolean(entry.journey.assignment && entry.journey.task.content.catalogExecution)
+      );
+    }),
+  );
   const landscapeProgress = usePrototypeStore((state) => state.landscapeProgress);
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
@@ -271,8 +281,11 @@ export default function ChildHomeScreen() {
   const childName =
     localFamily.record?.children.find((profile) => profile.id === activeChildId)?.nickname ??
     localize(child.displayName, locale);
-  const gardenTarget = 60;
-  const gardenCurrent = Math.min(child.earnedSeeds, gardenTarget);
+  const gardenLandscapeId = currentTemplate?.landscapeId ?? 'mangrove';
+  const personalLandscape = landscapeProgress[gardenLandscapeId];
+  const gardenTarget =
+    personalLandscape.nextThreshold ?? Math.max(60, personalLandscape.cumulativeSeeds);
+  const gardenCurrent = Math.min(personalLandscape.cumulativeSeeds, gardenTarget);
   const gardenRemaining = Math.max(0, gardenTarget - gardenCurrent);
   const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
 
@@ -591,46 +604,50 @@ export default function ChildHomeScreen() {
               {formatter.format(child.earnedSeeds)} {t('common.seedUnit')}
             </Text>
           </View>
-          <ChildTodayTaskCard
-            actionDisabled={currentWorkMode === 'choose' && adjustmentBlocksChoice}
-            actionLabel={taskAction?.label}
-            actionTestID={taskAction?.testID}
-            awardLabel={
-              currentTemplate.displayedSeedAward
-                ? t('childHome.awardAfterConfirmation', {
-                    count: currentTemplate.displayedSeedAward,
-                  })
-                : t('taskReview.noSeedRecognition')
-            }
-            categoryLabel={
-              currentCategory ? localize(currentCategory.label, locale) : t('origin.prepared')
-            }
-            direction={direction}
-            effortLabel={localize(currentTemplate.estimatedEffort, locale)}
-            helpLabel={localize(currentTemplate.permittedHelp, locale)}
-            recognitionLabel={t('taskReview.recognition')}
-            recognitionValue={t(RECOGNITION_LABEL_KEYS[currentTemplate.recognitionMode])}
-            onAction={taskAction?.onPress}
-            onSecondaryAction={
-              currentWorkMode === 'choose' && !activeAdjustment ? requestSmaller : undefined
-            }
-            secondaryActionLabel={
-              currentWorkMode === 'choose' && !activeAdjustment
-                ? t('childHome.requestSmaller')
-                : undefined
-            }
-            secondaryActionTestID="request-smaller-task-button"
-            statusLabel={t(STATUS_KEY_BY_LIFECYCLE[journey.lifecycle] ?? 'origin.prepared')}
-            supervisionLabel={t('taskReview.supervision')}
-            supervisionValue={localize(currentTemplate.supervision, locale)}
-            title={
-              currentTemplate.id === P0_RECYCLING_TEMPLATE.id
-                ? t('childTask.title')
-                : localize(currentTemplate.title, locale)
-            }
-            whyItMatters={localize(currentTemplate.whyItMatters, locale)}
-            whyLabel={t('taskReview.why')}
-          />
+          {hasCatalog ? (
+            <CatalogTaskList role="child" />
+          ) : (
+            <ChildTodayTaskCard
+              actionDisabled={currentWorkMode === 'choose' && adjustmentBlocksChoice}
+              actionLabel={taskAction?.label}
+              actionTestID={taskAction?.testID}
+              awardLabel={
+                currentTemplate.displayedSeedAward
+                  ? t('childHome.awardAfterConfirmation', {
+                      count: currentTemplate.displayedSeedAward,
+                    })
+                  : t('taskReview.noSeedRecognition')
+              }
+              categoryLabel={
+                currentCategory ? localize(currentCategory.label, locale) : t('origin.prepared')
+              }
+              direction={direction}
+              effortLabel={localize(currentTemplate.estimatedEffort, locale)}
+              helpLabel={localize(currentTemplate.permittedHelp, locale)}
+              recognitionLabel={t('taskReview.recognition')}
+              recognitionValue={t(RECOGNITION_LABEL_KEYS[currentTemplate.recognitionMode])}
+              onAction={taskAction?.onPress}
+              onSecondaryAction={
+                currentWorkMode === 'choose' && !activeAdjustment ? requestSmaller : undefined
+              }
+              secondaryActionLabel={
+                currentWorkMode === 'choose' && !activeAdjustment
+                  ? t('childHome.requestSmaller')
+                  : undefined
+              }
+              secondaryActionTestID="request-smaller-task-button"
+              statusLabel={t(STATUS_KEY_BY_LIFECYCLE[journey.lifecycle] ?? 'origin.prepared')}
+              supervisionLabel={t('taskReview.supervision')}
+              supervisionValue={localize(currentTemplate.supervision, locale)}
+              title={
+                currentTemplate.id === P0_RECYCLING_TEMPLATE.id
+                  ? t('childTask.title')
+                  : localize(currentTemplate.title, locale)
+              }
+              whyItMatters={localize(currentTemplate.whyItMatters, locale)}
+              whyLabel={t('taskReview.why')}
+            />
+          )}
           {adjustmentBlocksChoice && currentWorkMode === 'choose' ? (
             <Text accessibilityLiveRegion="polite" brand color="tertiary" direction={direction}>
               {smallerRequestPending
@@ -699,14 +716,14 @@ export default function ChildHomeScreen() {
         current={gardenCurrent}
         direction={direction}
         onAction={() => router.push('/garden')}
-        progressLabel={t('childHome.personalGardenProgress')}
+        progressLabel={t(LANDSCAPE_LABEL_KEYS[gardenLandscapeId])}
         remainingLabel={t(
           gardenRemaining > 0 ? 'childHome.gardenRemaining' : 'childHome.gardenMilestoneComplete',
           { count: formatter.format(gardenRemaining) },
         )}
-        symbolicLabel={t('origin.symbolic')}
+        symbolicLabel={t('catalog.unmapped')}
         target={gardenTarget}
-        title={t('childHome.howGardenHelps')}
+        title={t('catalog.personalLandscape', { child: childName })}
       />
 
       {previewChoices.length > 0 ? (
@@ -716,7 +733,7 @@ export default function ChildHomeScreen() {
               {t('childHome.preparedChoices')}
             </Text>
             <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-              {t('childHome.previewOnlyBody')}
+              {t('catalog.previewIdeas')}
             </Text>
           </View>
           <View style={styles.previewList}>
@@ -740,7 +757,7 @@ export default function ChildHomeScreen() {
                     </Text>
                   </View>
                   <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                    {t('origin.future')}
+                    {t('catalog.needsApproval')}
                   </Text>
                 </View>
               );

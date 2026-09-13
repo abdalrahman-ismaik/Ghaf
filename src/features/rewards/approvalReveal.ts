@@ -22,7 +22,7 @@ import {
   type FamilyRewardRuntime,
 } from '../family-hub';
 import { planAfterConfirmation } from '../circle/projection';
-import { nextThresholdForSeeds } from '../garden/progression';
+import { nextThresholdForSeeds, stageForSeeds } from '../garden/progression';
 import type {
   GrowthJourneyRecognitionProjection,
   GrowthJourneyRuntimeState,
@@ -35,7 +35,16 @@ import {
 } from '../league/recognitionRuntime';
 import { evaluateRecognitionPolicy } from './policy';
 import { constructRevealBundle } from './revealBundle';
-import { hasValidRoutineProgressAuthority } from '../tasks/recognitionSession';
+import {
+  hasCanonicalRecognitionAggregateAuthority,
+  hasValidRoutineProgressAuthority,
+} from '../tasks/recognitionSession';
+import {
+  initializeProfileLandscapes,
+  landscapesForChild,
+  openingPersonalLandscapes,
+  routineProgressKey,
+} from '../tasks/assignmentInstances';
 
 export interface ApprovalRevealProjectionInput {
   readonly queue: RevealBundleQueue;
@@ -208,12 +217,14 @@ export function constructApprovalReveal(
 
   const task = input.recognition.journey.task;
   const submission = input.recognition.journey.submission;
-  const existingRoutineProgress = input.previousSession.routineProgressByTask?.[task.id] ?? null;
+  const routineKey = routineProgressKey(task);
+  const existingRoutineProgress = input.previousSession.routineProgressByTask?.[routineKey] ?? null;
   const recurringFadeFirst =
     task.content.recognitionMode === 'fade_first' && task.content.recurrence === 'recurrent';
-  const effectiveRoutinePhase = recurringFadeFirst
-    ? (existingRoutineProgress?.futurePhase ?? task.content.routinePhase)
-    : task.content.routinePhase;
+  const effectiveRoutinePhase =
+    recurringFadeFirst && !task.occurrence
+      ? (existingRoutineProgress?.futurePhase ?? task.content.routinePhase)
+      : task.content.routinePhase;
   const confirmedAcquisitionCount =
     recurringFadeFirst && effectiveRoutinePhase === 'acquisition'
       ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0) + 1
@@ -237,7 +248,7 @@ export function constructApprovalReveal(
     policy.data.seedAmount !== seedTransaction.amount ||
     !sameValue(
       receipt.phaseReview,
-      policy.data.phaseReview ? { taskId: task.id, ...policy.data.phaseReview } : null,
+      policy.data.phaseReview ? { taskId: routineKey, ...policy.data.phaseReview } : null,
     )
   ) {
     return failure('RECEIPT_CONFLICT', 'Approval reward policy does not match its Seed receipt');
@@ -322,10 +333,12 @@ export function constructApprovalReveal(
   if (!landscapeGrowth) {
     return failure('RECEIPT_CONFLICT', 'Seed approval is missing its Garden growth consequence');
   }
-  const beforeLandscape = input.previousSession.landscapeProgress[landscapeGrowth.landscapeId];
-  const afterLandscape = input.recognition.session.landscapeProgress[landscapeGrowth.landscapeId];
+  const beforePersonal = landscapesForChild(input.previousSession, profileId);
+  const afterPersonal = landscapesForChild(input.recognition.session, profileId);
+  const beforeLandscape = beforePersonal[landscapeGrowth.landscapeId];
+  const afterLandscape = afterPersonal[landscapeGrowth.landscapeId];
   const expectedLandscapeProgress = {
-    ...input.previousSession.landscapeProgress,
+    ...beforePersonal,
     [landscapeGrowth.landscapeId]: {
       landscapeId: landscapeGrowth.landscapeId,
       cumulativeSeeds: landscapeGrowth.seedsAfter,
@@ -333,6 +346,12 @@ export function constructApprovalReveal(
       nextThreshold: nextThresholdForSeeds(landscapeGrowth.seedsAfter),
     },
   };
+  const expectedProfileMaps = input.recognition.session.landscapeProgressByChild
+    ? {
+        ...initializeProfileLandscapes(input.previousSession),
+        [profileId]: expectedLandscapeProgress,
+      }
+    : undefined;
   if (
     !beforeLandscape ||
     !afterLandscape ||
@@ -342,7 +361,8 @@ export function constructApprovalReveal(
     afterLandscape.stage !== landscapeGrowth.stageAfter ||
     landscapeGrowth.seedsAfter !== landscapeGrowth.seedsBefore + seedTransaction.amount ||
     landscapeGrowth.symbolicOnly !== true ||
-    !sameValue(input.recognition.session.landscapeProgress, expectedLandscapeProgress)
+    !sameValue(afterPersonal, expectedLandscapeProgress) ||
+    !sameValue(input.recognition.session.landscapeProgressByChild, expectedProfileMaps)
   ) {
     return failure('RECEIPT_CONFLICT', 'Garden growth does not match the approval sessions');
   }
@@ -695,6 +715,147 @@ export function constructApprovalReveal(
 export function reconcileCommittedApprovalReveal(
   input: CommittedApprovalRevealReconciliationInput,
 ): RevealBundleResult<RevealConstructionResult> {
+  const historical = historicalApprovalContext(input);
+  return historical.ok ? reconcileHistoricalApprovalReveal(historical.data) : historical;
+}
+
+function historicalApprovalContext(
+  input: CommittedApprovalRevealReconciliationInput,
+): RevealBundleResult<CommittedApprovalRevealReconciliationInput> {
+  const { recognition } = input;
+  const { session, receipt } = recognition;
+  if (
+    !hasCanonicalRecognitionAggregateAuthority(session) ||
+    !sameValue(session.recognitionLedger[receipt.recognitionKey], receipt)
+  )
+    return failure(
+      'RECEIPT_CONFLICT',
+      'Historical approval requires the complete canonical receipt ledger',
+    );
+  const all = Object.values(session.recognitionLedger);
+  const legacy = all.filter((entry) => entry.provenance.recognitionSequence === undefined);
+  const sequence = receipt.provenance.recognitionSequence;
+  if (sequence === undefined && legacy.length !== 1)
+    return failure('RECEIPT_CONFLICT', 'Historical legacy approval order is ambiguous');
+  const prefix =
+    sequence === undefined
+      ? [receipt]
+      : all.filter(
+          (entry) =>
+            entry.provenance.recognitionSequence === undefined ||
+            entry.provenance.recognitionSequence <= sequence,
+        );
+  const keys = new Set(prefix.map((entry) => entry.recognitionKey));
+  const later = all.filter((entry) => !keys.has(entry.recognitionKey));
+  if (later.length === 0) return { ok: true, data: input };
+  const profileId = receipt.provenance.profileId;
+  const profiles = ['child_salem', 'child_alya'] as const;
+  const maps = { ...initializeProfileLandscapes(session) };
+  const children = { ...session.children };
+  for (const childId of profiles) {
+    const opening = openingPersonalLandscapes(childId);
+    const personal = { ...opening };
+    for (const landscapeId of Object.keys(opening) as (keyof typeof opening)[]) {
+      const seeds =
+        opening[landscapeId].cumulativeSeeds +
+        prefix.reduce(
+          (sum, entry) =>
+            sum +
+            (entry.provenance.profileId === childId && entry.provenance.landscapeId === landscapeId
+              ? (entry.seedTransaction?.amount ?? 0)
+              : 0),
+          0,
+        );
+      personal[landscapeId] = {
+        landscapeId,
+        cumulativeSeeds: seeds,
+        stage: stageForSeeds(seeds),
+        nextThreshold: nextThresholdForSeeds(seeds),
+      };
+    }
+    maps[childId] = personal;
+    children[childId] = {
+      ...children[childId],
+      earnedSeeds:
+        children[childId].earnedSeeds -
+        later.reduce(
+          (sum, entry) =>
+            sum +
+            (entry.provenance.profileId === childId ? (entry.seedTransaction?.amount ?? 0) : 0),
+          0,
+        ),
+    };
+  }
+  const task = recognition.journey.task;
+  const routineKey = routineProgressKey(task);
+  const currentRoutine = session.routineProgressByTask?.[routineKey];
+  const countAfter = receipt.provenance.routineCompletionCountAfter;
+  const routineProgressByTask = currentRoutine
+    ? {
+        ...session.routineProgressByTask,
+        [routineKey]: {
+          ...currentRoutine,
+          confirmedAcquisitionCount: countAfter,
+          futurePhase: 'acquisition' as const,
+          phaseReview: countAfter < 3 ? null : (receipt.phaseReview ?? currentRoutine.phaseReview),
+          decision: null,
+        },
+      }
+    : session.routineProgressByTask;
+  const historicalSession: PrototypeSession = {
+    ...session,
+    children,
+    household: {
+      ...session.household,
+      combinedCanopy: {
+        ...session.household.combinedCanopy,
+        contributionLeaves:
+          session.household.combinedCanopy.contributionLeaves -
+          later.reduce((sum, entry) => sum + (entry.canopyContribution?.leafDelta ?? 0), 0),
+      },
+    },
+    circleGoal: {
+      ...session.circleGoal,
+      eligibleGreenActions:
+        session.circleGoal.eligibleGreenActions -
+        later.reduce((sum, entry) => sum + (entry.circleEvent?.actionDelta ?? 0), 0),
+    },
+    landscapeProgress: maps[session.activeChildId],
+    ...(session.landscapeProgressByChild ? { landscapeProgressByChild: maps } : {}),
+    recognitionLedger: Object.fromEntries(prefix.map((entry) => [entry.recognitionKey, entry])),
+    routineProgressByTask,
+  };
+  const ledger = input.growthRuntime.ledgersByProfile[profileId];
+  if (!ledger || !Array.isArray(ledger.entries) || !Array.isArray(ledger.plantStageArchives))
+    return failure('PROFILE_SCOPE_MISMATCH', 'Historical approval is missing its Growth profile');
+  const historicalGrowth: GrowthJourneyRuntimeState = {
+    ...input.growthRuntime,
+    ledgersByProfile: {
+      ...input.growthRuntime.ledgersByProfile,
+      [profileId]: {
+        ...ledger,
+        entries: ledger.entries.filter(
+          (entry) => entry.kind !== 'task_recognition' || keys.has(entry.triggerEventId ?? ''),
+        ),
+        plantStageArchives: ledger.plantStageArchives.filter((archive) =>
+          keys.has(archive.triggerEventId),
+        ),
+      },
+    },
+  };
+  return {
+    ok: true,
+    data: {
+      ...input,
+      recognition: { ...recognition, session: historicalSession },
+      growthRuntime: historicalGrowth,
+    },
+  };
+}
+
+function reconcileHistoricalApprovalReveal(
+  input: CommittedApprovalRevealReconciliationInput,
+): RevealBundleResult<RevealConstructionResult> {
   const { recognition, plan } = input;
   const { receipt, session } = recognition;
   const transaction = receipt.seedTransaction;
@@ -754,14 +915,15 @@ export function reconcileCommittedApprovalReveal(
   }
 
   const task = session.journey.task;
+  const routineKey = routineProgressKey(task);
   const recurringFadeFirst =
     task.content.recognitionMode === 'fade_first' && task.content.recurrence === 'recurrent';
   let previousRoutineProgressByTask = session.routineProgressByTask;
   if (recurringFadeFirst) {
-    const currentProgress = session.routineProgressByTask?.[task.id];
+    const currentProgress = session.routineProgressByTask?.[routineKey];
     if (
       !currentProgress ||
-      currentProgress.taskId !== task.id ||
+      currentProgress.taskId !== routineKey ||
       currentProgress.confirmedAcquisitionCount < 1
     ) {
       return failure(
@@ -769,20 +931,42 @@ export function reconcileCommittedApprovalReveal(
         'Repeated approval has no valid routine progress authority',
       );
     }
-    const approvalCreatedPhaseReview = currentProgress.confirmedAcquisitionCount === 3;
-    previousRoutineProgressByTask = {
-      ...session.routineProgressByTask,
-      [task.id]: {
-        ...currentProgress,
-        confirmedAcquisitionCount: currentProgress.confirmedAcquisitionCount - 1,
-        futurePhase: 'acquisition',
-        phaseReview: approvalCreatedPhaseReview ? null : currentProgress.phaseReview,
-        decision: approvalCreatedPhaseReview ? null : currentProgress.decision,
-      },
-    };
+    const countBefore = receipt.provenance.routineCompletionCountBefore;
+    previousRoutineProgressByTask =
+      countBefore === 0
+        ? Object.fromEntries(
+            Object.entries(session.routineProgressByTask ?? {}).filter(
+              ([key]) => key !== routineKey,
+            ),
+          )
+        : {
+            ...session.routineProgressByTask,
+            [routineKey]: {
+              ...currentProgress,
+              confirmedAcquisitionCount: countBefore,
+              futurePhase: 'acquisition',
+              phaseReview: countBefore < 3 ? null : currentProgress.phaseReview,
+              decision: null,
+            },
+          };
   }
 
   const currentChild = session.children[profileId];
+  const personal = landscapesForChild(session, profileId);
+  const previousPersonal = receipt.landscapeGrowth
+    ? {
+        ...personal,
+        [receipt.landscapeGrowth.landscapeId]: {
+          landscapeId: receipt.landscapeGrowth.landscapeId,
+          cumulativeSeeds: receipt.landscapeGrowth.seedsBefore,
+          stage: receipt.landscapeGrowth.stageBefore,
+          nextThreshold: nextThresholdForSeeds(receipt.landscapeGrowth.seedsBefore),
+        },
+      }
+    : personal;
+  const previousMaps = session.landscapeProgressByChild
+    ? { ...session.landscapeProgressByChild, [profileId]: previousPersonal }
+    : undefined;
   const previousSession: PrototypeSession = {
     ...session,
     household: receipt.canopyContribution
@@ -801,17 +985,8 @@ export function reconcileCommittedApprovalReveal(
       [profileId]: { ...currentChild, earnedSeeds: transaction.balanceBefore },
     },
     journey: plan.journey,
-    landscapeProgress: receipt.landscapeGrowth
-      ? {
-          ...session.landscapeProgress,
-          [receipt.landscapeGrowth.landscapeId]: {
-            landscapeId: receipt.landscapeGrowth.landscapeId,
-            cumulativeSeeds: receipt.landscapeGrowth.seedsBefore,
-            stage: receipt.landscapeGrowth.stageBefore,
-            nextThreshold: nextThresholdForSeeds(receipt.landscapeGrowth.seedsBefore),
-          },
-        }
-      : session.landscapeProgress,
+    landscapeProgress: previousMaps ? previousMaps[session.activeChildId] : previousPersonal,
+    ...(previousMaps ? { landscapeProgressByChild: previousMaps } : {}),
     circleGoal: receipt.circleEvent
       ? {
           ...session.circleGoal,

@@ -1,3 +1,4 @@
+import { CatalogChildTask } from '@/components/catalog/CatalogChildTask';
 import { CompanionPortrait } from '@/components/companion/CompanionPortrait';
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useEffect, useRef, useState } from 'react';
@@ -71,6 +72,19 @@ function coachLinesForIntent(
 }
 
 export default function ChildTaskScreen() {
+  const journey = usePrototypeStore((state) => state.journey);
+  if (!journey) return null;
+  return journey?.task.content.catalogExecution ? (
+    <CatalogChildTask
+      key={`${journey.task.id}:${journey.submission?.attempt ?? 0}`}
+      journey={journey}
+    />
+  ) : (
+    <OriginalChildTaskScreen />
+  );
+}
+
+function OriginalChildTaskScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
@@ -156,7 +170,12 @@ export default function ChildTaskScreen() {
   }, [canEnterChildExperience, hasTaskPrerequisite, role, router]);
 
   useEffect(() => {
-    if (role === 'child' && journey?.lifecycle === 'in_progress') {
+    if (
+      role === 'child' &&
+      journey?.lifecycle === 'in_progress' &&
+      journey.task.id === P0_RECYCLING_TEMPLATE.id &&
+      journey.task.version === 1
+    ) {
       prepareChildVoice();
     }
   }, [journey?.lifecycle, journey?.task.id, journey?.task.version, prepareChildVoice, role]);
@@ -221,7 +240,8 @@ export default function ChildTaskScreen() {
     ageAdaptedCoachResult?.aiDisclosure ??
     coach?.meta.disclosure.text ??
     serviceRegistry.childCoach.disclosure.text;
-  const preparedCoachAvailable = journey.task.version === 1;
+  const preparedCoachAvailable =
+    journey.task.version === 1 && journey.task.id === P0_RECYCLING_TEMPLATE.id;
   const taskCheckpoints: readonly ChildTaskCheckpoint[] = preparedCoachAvailable
     ? [
         {

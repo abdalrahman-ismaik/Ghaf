@@ -1,4 +1,14 @@
-import { create } from 'zustand';
+import {
+  allocateTaskOccurrence,
+  createTaskAssignmentCollection,
+  initializeProfileLandscapes,
+  landscapesForChild,
+  recordTaskJourney,
+  selectTaskInstance,
+  selectAssignedTasks,
+  type TaskAssignmentCollection,
+} from '../features/tasks/assignmentInstances';
+import { create, type StateCreator } from 'zustand';
 
 import { entryMode } from '../config/demoEntry';
 import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
@@ -523,6 +533,22 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly taskAssignments: TaskAssignmentCollection;
+  readonly catalogSupportRequests: Readonly<Record<string, true>>;
+  readonly taskContexts: Readonly<
+    Record<
+      string,
+      {
+        readonly confirmationPlan: ConfirmationPlan | null;
+        readonly childTaskDraft: ChildTaskDraftState;
+        readonly prospectiveTaskAdjustment: ProspectiveTaskAdjustment | null;
+        readonly preAcceptanceAdjustment: PreAcceptanceTaskAdjustment | null;
+      }
+    >
+  >;
+  readonly selectTaskOccurrence: (instanceId: string) => ServiceResult<true>;
+  readonly beginNewTask: () => ServiceResult<true>;
+  readonly requestCatalogSmallerTask: () => ServiceResult<true>;
   readonly demoRunGeneration: number;
   readonly demoEntryEpoch: number;
   readonly demoResetFailed: boolean;
@@ -1042,6 +1068,9 @@ function sessionSnapshot(state: PrototypeStoreState): PrototypeSession {
     activeAssignmentId: state.activeAssignmentId,
     journey: state.journey,
     landscapeProgress: state.landscapeProgress,
+    ...(state.landscapeProgressByChild
+      ? { landscapeProgressByChild: state.landscapeProgressByChild }
+      : {}),
     circleGoal: state.circleGoal,
     recognitionLedger: state.recognitionLedger,
     routineProgressByTask: state.routineProgressByTask,
@@ -1441,8 +1470,179 @@ function validateGuideSuggestion(
   return evaluateAssistantSafety({ audience: 'parent', texts }).accepted;
 }
 
-export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
+function sameTaskAuthority(left: unknown, right: unknown): boolean {
+  if (Object.is(left, right)) return true;
+  if (
+    !left ||
+    !right ||
+    typeof left !== 'object' ||
+    typeof right !== 'object' ||
+    Array.isArray(left) !== Array.isArray(right)
+  )
+    return false;
+  const leftKeys = Object.keys(left).sort();
+  const rightKeys = Object.keys(right).sort();
+  return (
+    leftKeys.length === rightKeys.length &&
+    leftKeys.every(
+      (key, index) =>
+        key === rightKeys[index] &&
+        sameTaskAuthority(
+          (left as Record<string, unknown>)[key],
+          (right as Record<string, unknown>)[key],
+        ),
+    )
+  );
+}
+
+function choiceForSelectedJourney(
+  journey: PrototypeSession['journey'],
+): PrototypeSession['choicePool']['p0AssignmentChoice'] {
+  if (!journey?.assignment) return null;
+  const task = journey.task;
+  if (task.id === 'task_recycling_p0_v1')
+    return {
+      ...P0_EXECUTABLE_CHOICE,
+      childId: task.targetChildId,
+      taskTemplateId: task.templateId,
+    };
+  return {
+    id: `choice:${journey.assignment.id}`,
+    childId: task.targetChildId,
+    taskTemplateId: task.templateId,
+    assignmentId: journey.assignment.id,
+    approvalState: 'parent_approved_fixture',
+    demoAvailability: 'catalog_executable',
+    origin: 'prepared',
+  };
+}
+
+function withTaskAssignments(
+  factory: StateCreator<PrototypeStoreState>,
+): StateCreator<PrototypeStoreState> {
+  return (rawSet, get, api) => {
+    // Keep selected-journey transitions and their instance history in one Zustand commit.
+    const set = (
+      update:
+        | Partial<PrototypeStoreState>
+        | ((state: PrototypeStoreState) => Partial<PrototypeStoreState>),
+    ) => {
+      rawSet((previous) => {
+        const patch = typeof update === 'function' ? update(previous) : update;
+        let next = { ...previous, ...patch };
+        const reset =
+          patch.growthJourney &&
+          patch.growthJourney.resetSequence !== previous.growthJourney.resetSequence;
+        if (reset) {
+          next = {
+            ...next,
+            taskAssignments: createTaskAssignmentCollection(
+              `run-${next.growthJourney.resetSequence}`,
+            ),
+            taskContexts: {},
+            catalogSupportRequests: {},
+            landscapeProgressByChild: initializeProfileLandscapes({
+              ...next,
+              landscapeProgressByChild: undefined,
+            }),
+          };
+        }
+        let collection = next.taskAssignments;
+        let contexts = next.taskContexts;
+        const previousId =
+          previous.journey?.task.occurrence?.instanceId ??
+          (previous.journey?.task.id === 'task_recycling_p0_v1'
+            ? 'assignment_recycling_p0_v1'
+            : null);
+        if (!reset && previousId && previous.journey) {
+          contexts = {
+            ...contexts,
+            [previousId]: {
+              confirmationPlan: previous.confirmationPlan,
+              childTaskDraft: previous.childTaskDraft,
+              prospectiveTaskAdjustment: previous.prospectiveTaskAdjustment,
+              preAcceptanceAdjustment: previous.preAcceptanceAdjustment,
+            },
+          };
+        }
+        const switching =
+          patch.activeChildId !== undefined && patch.activeChildId !== previous.activeChildId;
+        const enteringChild =
+          patch.activeExperience === 'child' && previous.activeExperience !== 'child';
+        if (!reset && !Object.hasOwn(patch, 'journey') && (switching || enteringChild)) {
+          const selectedId = collection.selectedByChild[next.activeChildId];
+          let entry = selectedId ? collection.byId[selectedId] : undefined;
+          if (next.activeExperience === 'child' && !entry?.journey.assignment)
+            entry = selectAssignedTasks(collection, next.activeChildId).at(-1);
+          const context = entry ? contexts[entry.id] : undefined;
+          const choice = choiceForSelectedJourney(entry?.journey ?? null);
+          next = {
+            ...next,
+            choicePool: { ...next.choicePool, p0AssignmentChoice: choice },
+            journey: entry?.journey ?? null,
+            activeAssignmentId: entry?.journey.assignment?.id ?? null,
+            confirmationPlan: context?.confirmationPlan ?? null,
+            childTaskDraft: context?.childTaskDraft ?? createEmptyChildTaskDraft(),
+            childCoachResult: null,
+            ageAdaptedCoachResult: null,
+            parentGuideSuggestion: null,
+            lastRecognitionAttempt: null,
+            prospectiveTaskAdjustment: context?.prospectiveTaskAdjustment ?? null,
+            preAcceptanceAdjustment: context?.preAcceptanceAdjustment ?? null,
+            taskDraftRevision: next.taskDraftRevision + 1,
+          };
+        }
+        const journey = next.journey;
+        const instanceId =
+          journey?.task.occurrence?.instanceId ??
+          (journey?.task.id === 'task_recycling_p0_v1' ? 'assignment_recycling_p0_v1' : null);
+        if (
+          journey &&
+          instanceId &&
+          (journey !== previous.journey || collection !== previous.taskAssignments)
+        ) {
+          const recorded = recordTaskJourney(collection, {
+            instanceId,
+            expectedTaskVersion: journey.task.version,
+            journey,
+          });
+          if (!recorded.ok) throw new Error(`Task occurrence invariant: ${recorded.error.message}`);
+          collection = recorded.data;
+        }
+        if (journey && instanceId) {
+          contexts = {
+            ...contexts,
+            [instanceId]: {
+              confirmationPlan: next.confirmationPlan,
+              childTaskDraft: next.childTaskDraft,
+              prospectiveTaskAdjustment: next.prospectiveTaskAdjustment,
+              preAcceptanceAdjustment: next.preAcceptanceAdjustment,
+            },
+          };
+        }
+        return {
+          ...next,
+          taskAssignments: collection,
+          taskContexts: contexts,
+          landscapeProgress:
+            next.landscapeProgressByChild?.[next.activeChildId] ?? next.landscapeProgress,
+        };
+      });
+    };
+    return factory(set, get, api);
+  };
+}
+
+const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => ({
   ...initialPrototypeSession,
+  taskAssignments: createTaskAssignmentCollection('run-0'),
+  taskContexts: {},
+  catalogSupportRequests: {},
+  landscapeProgressByChild: initializeProfileLandscapes(initialPrototypeSession),
+  landscapeProgress:
+    initializeProfileLandscapes(initialPrototypeSession)[
+      initialRememberedDeviceAccess.activeChildId ?? initialPrototypeSession.activeChildId
+    ],
   demoRunGeneration: 0,
   demoEntryEpoch: 0,
   demoResetFailed: false,
@@ -2731,9 +2931,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
             profileId,
             profileEpochId: ledger.profileEpochId,
             landscapeId: 'mangrove' as const,
-            cumulativeSeeds: state.landscapeProgress.mangrove.cumulativeSeeds,
-            stage: state.landscapeProgress.mangrove.stage,
-            nextThreshold: state.landscapeProgress.mangrove.nextThreshold,
+            cumulativeSeeds: landscapesForChild(state, profileId).mangrove.cumulativeSeeds,
+            stage: landscapesForChild(state, profileId).mangrove.stage,
+            nextThreshold: landscapesForChild(state, profileId).mangrove.nextThreshold,
             symbolicOnly: true as const,
           }
         : null;
@@ -3231,16 +3431,126 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     return success(result.data);
   },
 
+  selectTaskOccurrence: (instanceId) => {
+    const state = get();
+    const authority =
+      state.activeExperience === 'child'
+        ? requireActiveChildExperience(state)
+        : requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    const entry = state.taskAssignments.byId[instanceId];
+    if (
+      !entry ||
+      !state.localFamily.configuredChildIds.includes(entry.childId) ||
+      (state.activeExperience === 'child' &&
+        (entry.childId !== state.activeChildId || !entry.journey.assignment))
+    )
+      return failure('NOT_ASSIGNED_CHILD', 'This task is unavailable to the active profile');
+    const selected = selectTaskInstance(state.taskAssignments, {
+      instanceId,
+      childId: entry.childId,
+    });
+    if (!selected.ok) return failure(selected.error.code, selected.error.message);
+    releaseLiveVoiceCapture(state.liveVoiceCapture);
+    const voice = childVoiceController.releaseTaskContextForNavigation();
+    if (!voice.ok) return voice;
+    const context = state.taskContexts[instanceId];
+    const executableChoice = choiceForSelectedJourney(entry.journey);
+    set({
+      journey: selected.data.journey,
+      activeAssignmentId: selected.data.activeAssignmentId,
+      activeChildId: selected.data.activeChildId,
+      taskAssignments: selected.data.collection,
+      choicePool: { ...state.choicePool, p0AssignmentChoice: executableChoice },
+      confirmationPlan: context?.confirmationPlan ?? null,
+      childTaskDraft: context?.childTaskDraft ?? createEmptyChildTaskDraft(),
+      childVoiceView: voice.data,
+      liveVoiceCapture: null,
+      parentGuideSuggestion: null,
+      childCoachResult: null,
+      ageAdaptedCoachResult: null,
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+      lastRecognitionAttempt: null,
+      prospectiveTaskAdjustment: context?.prospectiveTaskAdjustment ?? null,
+      preAcceptanceAdjustment: context?.preAcceptanceAdjustment ?? null,
+      taskDraftRevision: state.taskDraftRevision + 1,
+    });
+    return success(true);
+  },
+
+  beginNewTask: () => {
+    const state = get();
+    const authority = requireActiveParentExperience(state);
+    if (!authority.ok) return authority;
+    releaseLiveVoiceCapture(state.liveVoiceCapture);
+    set({
+      journey: null,
+      activeAssignmentId: null,
+      confirmationPlan: null,
+      childTaskDraft: createEmptyChildTaskDraft(),
+      parentGuideSuggestion: null,
+      childCoachResult: null,
+      ageAdaptedCoachResult: null,
+      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+      liveVoiceCapture: null,
+      lastRecognitionAttempt: null,
+      prospectiveTaskAdjustment: null,
+      preAcceptanceAdjustment: null,
+      taskDraftRevision: state.taskDraftRevision + 1,
+    });
+    return success(true);
+  },
+
+  requestCatalogSmallerTask: () => {
+    const state = get();
+    const authority = requireActiveChildExperience(state);
+    if (!authority.ok) return authority;
+    const journey = state.journey;
+    if (
+      !journey?.task.content.catalogExecution ||
+      journey.lifecycle !== 'assigned' ||
+      journey.assignment?.childId !== state.activeChildId
+    )
+      return failure(
+        'INVALID_TRANSITION',
+        'A smaller choice requires an unaccepted approved catalog task',
+      );
+    set({
+      catalogSupportRequests: { ...state.catalogSupportRequests, [journey.assignment.id]: true },
+    });
+    return success(true);
+  },
+
   createTaskDraft: (input) => {
     const current = get();
     const authority = requireActiveParentExperience(current);
     if (!authority.ok) return authority;
-    const result = serviceRegistry.task.createDraft(input);
+    const profile = current.localFamily.record?.children.find(
+      (child) => child.id === input.childId,
+    );
+    if (!profile || !current.localFamily.configuredChildIds.includes(input.childId))
+      return failure('NOT_FOUND', 'Configured Child required');
+    const allocation = allocateTaskOccurrence(current.taskAssignments, {
+      householdId: current.household.id,
+      childId: input.childId,
+      templateId: input.templateId,
+    });
+    if (!allocation.ok) return failure(allocation.error.code, allocation.error.message);
+    const future = current.routineProgressByTask[allocation.data.identity.routineKey]?.futurePhase;
+    const result = serviceRegistry.task.createDraft({
+      ...input,
+      occurrence: allocation.data.identity,
+      childProfile: profile,
+      ...(future ? { routinePhase: future } : {}),
+    });
     if (result.ok) {
       releaseLiveVoiceCapture(current.liveVoiceCapture);
       const clearedVoice = childVoiceController.clearTaskBinding('parent');
       if (!clearedVoice.ok) return clearedVoice;
       set((state) => ({
+        taskAssignments: allocation.data.collection,
         activeChildId: input.childId,
         activeAssignmentId: null,
         journey: result.data,
@@ -3645,40 +3955,34 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const authority = requireActiveParentExperience(state);
     if (!authority.ok) return authority;
     if (!journey) return failure('INVALID_TRANSITION', 'A reviewed task is required');
+    const profile = state.localFamily.record?.children.find(
+      (child) => child.id === journey.task.targetChildId,
+    );
+    if (!profile || !state.localFamily.configuredChildIds.includes(profile.id))
+      return failure('NOT_FOUND', 'Configured Child required');
     if (journey.lifecycle === 'assigned') {
-      const assignment = journey.assignment;
-      const choice = state.choicePool.p0AssignmentChoice;
-      if (
-        assignment &&
-        choice &&
-        state.activeAssignmentId === assignment.id &&
-        assignment.id === 'assignment_recycling_p0_v1' &&
-        assignment.taskId === journey.task.id &&
-        assignment.taskVersion === journey.task.version &&
-        assignment.childId === journey.task.targetChildId &&
-        assignment.childId === 'child_salem' &&
-        assignment.approvedByParent === true &&
-        assignment.approvalSequence === 1 &&
-        assignment.createdAt === '2026-08-26T09:00:00.000Z' &&
-        choice.childId === assignment.childId &&
-        choice.id === P0_EXECUTABLE_CHOICE.id &&
-        choice.taskTemplateId === journey.task.templateId &&
-        choice.approvalState === P0_EXECUTABLE_CHOICE.approvalState &&
-        choice.demoAvailability === P0_EXECUTABLE_CHOICE.demoAvailability &&
-        choice.origin === P0_EXECUTABLE_CHOICE.origin
-      ) {
-        return {
-          ok: true,
-          data: journey,
-          meta: { origin: 'synthetic', fallbackUsed: false },
-        };
-      }
-      return failure(
-        'INVALID_TRANSITION',
-        'The existing assignment no longer exactly matches this task, version, Child, and choice',
+      const expected = serviceRegistry.task.approveAssignment(
+        { ...journey, lifecycle: 'reviewed', assignment: null, submission: null, checkIn: null },
+        profile,
       );
+      const instance = journey.assignment
+        ? state.taskAssignments.byId[journey.assignment.id]
+        : undefined;
+      if (
+        !expected.ok ||
+        !instance?.approvedSnapshot ||
+        state.activeAssignmentId !== journey.assignment?.id ||
+        !sameTaskAuthority(instance.approvedSnapshot, journey.task) ||
+        !sameTaskAuthority(expected.data.journey.assignment, journey.assignment) ||
+        !sameTaskAuthority(expected.data.executableChoice, state.choicePool.p0AssignmentChoice)
+      )
+        return failure(
+          'INVALID_TRANSITION',
+          'The existing assignment no longer matches its approved task and choice',
+        );
+      return success(journey);
     }
-    const result = serviceRegistry.task.approveAssignment(journey);
+    const result = serviceRegistry.task.approveAssignment(journey, profile);
     if (!result.ok) return result;
     set((state) => ({
       journey: result.data.journey,
@@ -3699,7 +4003,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       !state.journey ||
       !state.choicePool.p0AssignmentChoice ||
       choiceId !== state.choicePool.p0AssignmentChoice.id ||
-      state.choicePool.p0AssignmentChoice.demoAvailability !== 'p0_executable' ||
+      !['p0_executable', 'catalog_executable'].includes(
+        state.choicePool.p0AssignmentChoice.demoAvailability,
+      ) ||
       !state.journey.assignment ||
       state.activeAssignmentId !== state.journey.assignment.id ||
       state.choicePool.p0AssignmentChoice.childId !== state.journey.assignment.childId ||
@@ -5495,6 +5801,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     set({ celebration });
     return success(celebration);
   },
-}));
+});
+
+export const usePrototypeStore = create<PrototypeStoreState>(
+  withTaskAssignments(prototypeStoreCreator),
+);
 
 export type PrototypeStoreSnapshot = PrototypeSession;

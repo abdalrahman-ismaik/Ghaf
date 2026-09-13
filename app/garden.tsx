@@ -195,6 +195,9 @@ export default function GardenScreen() {
     recognitionLedger,
   });
   const matchingGrowth = activeRecognition?.growth ?? null;
+  const activeLandscapeId =
+    matchingGrowth?.landscapeId ??
+    (journey?.task.targetChildId === activeChildId ? journey.task.content.landscapeId : 'mangrove');
   const [revealOnMount] = useState(
     () =>
       matchingGrowth !== null && celebration.available === true && celebration.consumed === false,
@@ -379,7 +382,7 @@ export default function GardenScreen() {
 
       <View style={styles.intro}>
         <Text brand color="deepForest" direction={direction} variant="parentHero">
-          {t('garden.title')}
+          {t('catalog.personalLandscape', { child: activeChildName })}
         </Text>
         <View style={[styles.contextRow, { flexDirection: logicalRowDirection(direction) }]}>
           <View style={styles.contextIcon}>
@@ -395,7 +398,7 @@ export default function GardenScreen() {
           </View>
         </View>
         <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
-          {t('garden.body')}
+          {t('catalog.unmapped')}
         </Text>
       </View>
 
@@ -440,8 +443,8 @@ export default function GardenScreen() {
 
       {tracks ? (
         <GardenLandscape
-          accessibilityLabel={`${t('garden.title')}. ${tracks.mangrove.accessibilityLabel}`}
-          activeLandscapeId="mangrove"
+          accessibilityLabel={`${t('catalog.personalLandscape', { child: activeChildName })}. ${tracks[activeLandscapeId].accessibilityLabel}`}
+          activeLandscapeId={activeLandscapeId}
           labels={{
             activeTrack: t(matchingGrowth ? 'garden.activeTrack' : 'garden.focusTrack'),
             inspiredBy: t('garden.inspiredBy'),
@@ -527,7 +530,7 @@ export default function GardenScreen() {
           goal: formatter.format(canopy.goalLeaves),
         })}
         testID="recognized-family-canopy"
-        title={t('parentHome.canopyTitle')}
+        title={t('catalog.sharedCanopy')}
       />
 
       <View style={styles.symbolicBoundary}>

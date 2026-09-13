@@ -13,6 +13,7 @@ import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
   resetPrototypeForTest,
+  seedPrototypeStateForTest,
 } from '../helpers/prototypeStore';
 
 interface HostProps {
@@ -164,7 +165,7 @@ function progress() {
   const state = usePrototypeStore.getState();
   return structuredClone({
     children: state.children,
-    landscapes: state.landscapeProgress,
+    landscapes: state.landscapeProgressByChild,
     canopy: state.household.combinedCanopy,
     circle: state.circleGoal,
     recognitionLedger: state.recognitionLedger,
@@ -172,7 +173,7 @@ function progress() {
 }
 
 async function prepareParent(locale: LocaleCode, lifecycle: ResetSourceState = 'submitted') {
-  usePrototypeStore.setState(createResetSourceSession(lifecycle));
+  seedPrototypeStateForTest(createResetSourceSession(lifecycle));
   await enterParentExperienceForTest();
   usePrototypeStore.setState({ locale, direction: locale === 'ar' ? 'rtl' : 'ltr' });
   return i18n.getFixedT(locale);
@@ -226,67 +227,83 @@ describe.each(['ar', 'en'] as const)('Parent dashboard rendered behavior in %s',
     },
   );
 
-  it('selects Alya without hiding Salem’s pending task and keeps create explicitly for Salem', async () => {
+  it('selects Alya’s task context while retaining Salem’s independent assignment', async () => {
     const t = await prepareParent(locale);
     const journey = structuredClone(usePrototypeStore.getState().journey!);
     const before = progress();
-
     renderHome();
     press('parent-child-child_alya');
     renderHome();
-
     expect(usePrototypeStore.getState().activeChildId).toBe('child_alya');
+    expect(usePrototypeStore.getState().journey).toBeNull();
     expect(control('parent-child-child_alya').accessibilityState?.selected).toBe(true);
     expect(control('parent-child-child_salem').accessibilityState?.selected).toBe(false);
-    expect(rendered.text).toContain(localize(journey.task.content.title, locale));
-    expect(rendered.text).toContain(localize(journey.task.content.permittedHelp, locale));
-    const names = usePrototypeStore.getState().localFamily.record!.children;
-    expect(rendered.text).toContain(
-      t('parentHome.alyaSupport', {
-        child: names.find((child) => child.id === 'child_alya')!.nickname,
-      }),
-    );
+    expect(rendered.text).not.toContain(localize(journey.task.content.title, locale));
     expect(control('parent-create-task-button').children).toBe(
       t('parentHome.createTask', {
-        child: names.find((child) => child.id === 'child_salem')!.nickname,
+        child: usePrototypeStore
+          .getState()
+          .localFamily.record!.children.find((child) => child.id === 'child_alya')!.nickname,
       }),
     );
-
     press('parent-create-task-button');
-
-    expect(usePrototypeStore.getState().activeChildId).toBe('child_salem');
+    expect(usePrototypeStore.getState().activeChildId).toBe('child_alya');
     expect(rendered.router.push).toHaveBeenCalledExactlyOnceWith('/parent/task/new');
-    expect(usePrototypeStore.getState().journey).toEqual(journey);
+    expect(
+      usePrototypeStore.getState().taskAssignments.byId.assignment_recycling_p0_v1?.journey,
+    ).toEqual(journey);
     expect(progress()).toEqual(before);
   });
 
-  it('filters pending tasks by Child and restores the current task through its real action', async () => {
-    const t = await prepareParent(locale);
+  it('acknowledges the newly added task without granting progress or following another Child', async () => {
+    const t = await prepareParent(locale, 'assigned');
+    const journey = usePrototypeStore.getState().journey!;
     const before = progress();
-    rendered.params = { section: 'tasks', added: usePrototypeStore.getState().journey!.task.id };
-    renderHome();
-    expect(rendered.ids).not.toContain('parent-current-task');
-    expect(rendered.text).toContain(t('r002aTasks.emptyAssignedTitle'));
+    rendered.params = { section: 'tasks', added: journey.task.id };
 
-    press('parent-tasks-primary-action');
     renderHome();
-    expect(control('parent-tasks-tab-pending').accessibilityState?.selected).toBe(true);
-    expect(rendered.ids).toContain('parent-current-task');
-    expect(rendered.ids).not.toContain('parent-task-added-status');
+
+    expect(rendered.ids).toContain('parent-tasks-added');
+    expect(rendered.text).toContain(t('r002aTasks.taskAdded'));
+    expect(progress()).toEqual(before);
 
     press('parent-tasks-child-child_alya');
     renderHome();
-    expect(control('parent-tasks-child-child_alya').accessibilityState?.checked).toBe(true);
-    expect(rendered.ids).not.toContain('parent-current-task');
-    expect(rendered.text).toContain(t('r002aTasks.emptyPendingTitle'));
+    expect(rendered.ids).not.toContain('parent-tasks-added');
+    expect(rendered.text).not.toContain(t('r002aTasks.taskAdded'));
 
-    press('parent-tasks-primary-action');
+    press('parent-tasks-child-child_salem');
     renderHome();
-    expect(usePrototypeStore.getState().activeChildId).toBe('child_salem');
+    expect(rendered.ids).not.toContain('parent-tasks-added');
+    expect(progress()).toEqual(before);
+  });
+
+  it('does not acknowledge an unknown task from a route parameter', async () => {
+    await prepareParent(locale, 'assigned');
+    rendered.params = { section: 'tasks', added: 'unknown-task' };
+    renderHome();
+    expect(rendered.ids).not.toContain('parent-tasks-added');
+  });
+
+  it('filters pending tasks by Child and opens the selected occurrence', async () => {
+    const t = await prepareParent(locale);
+    const before = progress();
+    rendered.params = { section: 'tasks' };
+    renderHome();
+    expect(rendered.text).toContain(t('catalog.emptySection'));
+    press('parent-tasks-tab-pending');
+    renderHome();
     expect(control('parent-tasks-tab-pending').accessibilityState?.selected).toBe(true);
-    expect(rendered.ids).toContain('parent-current-task');
-    expect(rendered.router.push).not.toHaveBeenCalled();
-    expect(rendered.router.replace).not.toHaveBeenCalled();
+    expect(rendered.ids).toContain('catalog-item-task_recycling_p0_v1');
+    press('parent-tasks-child-child_alya');
+    renderHome();
+    expect(control('parent-tasks-child-child_alya').accessibilityState?.checked).toBe(true);
+    expect(rendered.ids).not.toContain('catalog-item-task_recycling_p0_v1');
+    expect(rendered.text).toContain(t('catalog.emptySection'));
+    press('parent-tasks-child-child_salem');
+    renderHome();
+    press('open-assignment_recycling_p0_v1');
+    expect(rendered.router.push).toHaveBeenCalledExactlyOnceWith('/parent/check-in');
     expect(progress()).toEqual(before);
   });
 

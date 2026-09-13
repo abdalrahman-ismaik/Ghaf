@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { constructApprovalReveal } from '../../src/features/rewards/approvalReveal';
 import { createFamilyRewardRuntime } from '../../src/features/family-hub';
-import { P0_SAFE_EQUIVALENT_TEMPLATE, TASK_TEMPLATES } from '../../src/features/tasks/demoContent';
+import { P0_SAFE_EQUIVALENT_TEMPLATE } from '../../src/features/tasks/demoContent';
 import {
   applyRecognitionToPrivateLeague,
   createPrivateLeagueRecognitionRuntime,
@@ -28,6 +28,9 @@ import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
   resetPrototypeForTest,
+  seedPrototypeStateForTest,
+  createCatalogSubmittedStateForTest,
+  taskPraiseForTest,
 } from '../helpers/prototypeStore';
 
 const PRAISE_ACTION = {
@@ -51,7 +54,7 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
 }
 
 function applyCanonicalRecognitionWithContext() {
-  usePrototypeStore.setState(createSubmittedP0Session());
+  seedPrototypeStateForTest(createSubmittedP0Session());
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -113,53 +116,22 @@ function canonicalApprovalProjectionInput() {
 }
 
 function createRecognitionOnlySubmittedSession() {
-  const session = createSubmittedP0Session();
-  const journey = session.journey;
-  const template = TASK_TEMPLATES.find((candidate) => candidate.id === 'FA02');
-  if (!journey?.assignment || !template) {
-    throw new Error('Expected one submitted journey and recognition-only fixture');
-  }
-  const taskId = 'task_fa02_v1';
-  return {
-    ...session,
-    journey: {
-      ...journey,
-      task: {
-        ...journey.task,
-        id: taskId,
-        templateId: template.id,
-        parentOriginalText: template.positiveAction,
-        acceptedGuideFixtureId: null,
-        content: template,
-      },
-      assignment: { ...journey.assignment, taskId },
-    },
-  };
+  return createCatalogSubmittedStateForTest('FA02');
 }
 
-function stageRecognitionOnlyJourneyOverHistory(submissionId: string) {
+function stageRecognitionOnlyJourneyOverHistory() {
   const fixture = createRecognitionOnlySubmittedSession();
-  const journey = fixture.journey;
-  if (!journey?.assignment || !journey.submission) {
-    throw new Error('Expected one recognition-only submitted journey');
-  }
-  const assignmentId = `assignment:${submissionId}`;
-  usePrototypeStore.setState({
-    activeAssignmentId: assignmentId,
-    journey: {
-      ...journey,
-      assignment: { ...journey.assignment, id: assignmentId },
-      submission: { ...journey.submission, id: submissionId, assignmentId },
-    },
-  });
+  seedPrototypeStateForTest(fixture);
+  if (!fixture.journey.submission) throw new Error('Expected one recognition-only submission');
+  return fixture.journey.submission.id;
 }
 
-function prepareHistoricalZeroSeedRecognition(submissionId: string, actionPrefix: string) {
-  stageRecognitionOnlyJourneyOverHistory(submissionId);
+function prepareHistoricalZeroSeedRecognition(_historicalLabel: string, actionPrefix: string) {
+  const submissionId = stageRecognitionOnlyJourneyOverHistory();
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId,
-      praise: PREPARED_PRAISE,
+      praise: taskPraiseForTest(),
       neutralObservation: null,
       uncertainty: null,
     }),
@@ -173,6 +145,8 @@ function prepareHistoricalZeroSeedRecognition(submissionId: string, actionPrefix
   };
 }
 
+// Explicit historical authority fixture for existing badge allowlists.
+// This is not a generated CE1 assignment or a supported repeated-task UI path.
 function applyAdditionalGreenRecognition(
   submissionId: string,
   actionPrefix: string,
@@ -190,8 +164,11 @@ function applyAdditionalGreenRecognition(
     taskId === 'task_recycling_p0_v1' && taskVersion > 1
       ? P0_SAFE_EQUIVALENT_TEMPLATE
       : journey.task.content;
-  const assignmentId = `assignment-other-green-${actionPrefix}`;
-  usePrototypeStore.setState({
+  const assignmentId =
+    taskId === 'task_recycling_p0_v1'
+      ? 'assignment_recycling_p0_v1'
+      : `assignment-other-green-${actionPrefix}`;
+  seedPrototypeStateForTest({
     activeAssignmentId: assignmentId,
     journey: {
       ...journey,
@@ -277,11 +254,11 @@ function applyZeroSeedRecognition(
 ) {
   const submissionId = session.journey.submission?.id;
   if (!submissionId) throw new Error('Expected one zero-Seed submission');
-  usePrototypeStore.setState(session);
+  seedPrototypeStateForTest(session);
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId,
-      praise: PREPARED_PRAISE,
+      praise: taskPraiseForTest(session.journey),
       neutralObservation: null,
       uncertainty: null,
     }),
@@ -372,7 +349,7 @@ function createRecurringSubmittedSession(priorCompletionCount: 1 | 2 | 3) {
 function applyRecurringRecognition(priorCompletionCount: 1 | 2 | 3) {
   const session = createRecurringSubmittedSession(priorCompletionCount);
   const submissionId = session.journey.submission.id;
-  usePrototypeStore.setState(session);
+  seedPrototypeStateForTest(session);
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId,
@@ -396,7 +373,7 @@ function applyRecurringRecognition(priorCompletionCount: 1 | 2 | 3) {
 }
 
 function prepareCanonicalProviderResult() {
-  usePrototypeStore.setState(createSubmittedP0Session());
+  seedPrototypeStateForTest(createSubmittedP0Session());
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -435,7 +412,7 @@ async function prepareReplacementRecognition(
   decision: 'smaller' | 'safe_equivalent',
   submissionId = 'submission_recycling_p0_v1_attempt_1',
 ) {
-  usePrototypeStore.setState(createResetSourceSession('assigned'));
+  seedPrototypeStateForTest(createResetSourceSession('assigned'));
   await enterChildExperienceForTest('child_salem');
   expectOk(usePrototypeStore.getState().requestSmallerTask());
   await enterParentExperienceForTest();
@@ -448,23 +425,15 @@ async function prepareReplacementRecognition(
     usePrototypeStore.getState().submitTask({
       definitionAcknowledged: true,
       completionMode: 'permitted_help',
-      helpUsed: {
-        ar: 'فحص شخص بالغ المواد وساعد عند الحاجة.',
-        en: 'An adult checked the items and helped when needed.',
-      },
+      helpUsed: usePrototypeStore.getState().journey!.task.content.permittedHelp,
       preparedMediaFixtureId: null,
       reflection: null,
-      observableFacts: [
-        {
-          ar: 'فرز سالم الورق والبلاستيك النظيفين بعد فحص شخص بالغ.',
-          en: 'Salem sorted clean paper and plastic after an adult check.',
-        },
-      ],
+      observableFacts: [],
     }),
   );
   const submittedJourney = usePrototypeStore.getState().journey;
   if (!submittedJourney?.submission) throw new Error('Expected replacement submission');
-  usePrototypeStore.setState({
+  seedPrototypeStateForTest({
     journey: {
       ...submittedJourney,
       submission: { ...submittedJourney.submission, id: submissionId },
@@ -474,7 +443,7 @@ async function prepareReplacementRecognition(
   expectOk(
     usePrototypeStore.getState().planConfirmation({
       submissionId,
-      praise: PREPARED_PRAISE,
+      praise: taskPraiseForTest(),
       neutralObservation: null,
       uncertainty: null,
     }),
@@ -554,7 +523,7 @@ describe('R002b RevealBundle store integration', () => {
   it('starts empty and creates no result bundle for zero-reward submission', () => {
     expect(usePrototypeStore.getState().revealBundleQueue.bundles).toEqual([]);
 
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('submitted');
     expect(usePrototypeStore.getState().revealBundleQueue.bundles).toEqual([]);
   });
@@ -566,7 +535,7 @@ describe('R002b RevealBundle store integration', () => {
     '2026-09-05T14:00:00.000+04:00',
     '2026-08-26T09:30:00.000Z',
   ])('rejects the invalid praise-presentation time %s before state changes', (presentedAt) => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -585,7 +554,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('rejects malformed praise authority returned by the presentation provider', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -630,7 +599,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('isolates praise-plan input when its provider mutates data and fails', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -712,7 +681,7 @@ describe('R002b RevealBundle store integration', () => {
   );
 
   it('rejects an impossible persisted check-in time before calling recognition', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -758,7 +727,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('rejects resumed praise-presented state when its presentation time is missing', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -791,11 +760,12 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('fails closed when a zero-Seed duplicate has no active Growth ledger', () => {
-    usePrototypeStore.setState(createRecognitionOnlySubmittedSession());
+    const fixture = createRecognitionOnlySubmittedSession();
+    seedPrototypeStateForTest(fixture);
     expectOk(
       usePrototypeStore.getState().planConfirmation({
-        submissionId: 'submission_recycling_p0_v1_attempt_1',
-        praise: PREPARED_PRAISE,
+        submissionId: fixture.journey.submission!.id,
+        praise: taskPraiseForTest(fixture.journey),
         neutralObservation: null,
         uncertainty: null,
       }),
@@ -834,11 +804,12 @@ describe('R002b RevealBundle store integration', () => {
         },
       },
     });
-    usePrototypeStore.setState(createRecognitionOnlySubmittedSession());
+    const fixture = createRecognitionOnlySubmittedSession();
+    seedPrototypeStateForTest(fixture);
     expectOk(
       usePrototypeStore.getState().planConfirmation({
-        submissionId: 'submission_recycling_p0_v1_attempt_1',
-        praise: PREPARED_PRAISE,
+        submissionId: fixture.journey.submission!.id,
+        praise: taskPraiseForTest(fixture.journey),
         neutralObservation: null,
         uncertainty: null,
       }),
@@ -2493,7 +2464,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('commits nothing when a provider returns a different persisted journey', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -2549,7 +2520,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('commits nothing when a Salem approval changes Alya session data', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -2632,7 +2603,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('rejects a stale continuation before calling the recognition provider', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -2676,7 +2647,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('rejects malformed continuation data before calling the recognition provider', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -2767,7 +2738,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('isolates nested recognition inputs before calling the provider', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -2805,7 +2776,7 @@ describe('R002b RevealBundle store integration', () => {
   });
 
   it('detaches committed state from provider and caller result ownership', () => {
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -3042,7 +3013,7 @@ describe('R002b RevealBundle store integration', () => {
       } as unknown as typeof state.familyReward,
     });
 
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -3080,7 +3051,7 @@ describe('R002b RevealBundle store integration', () => {
           },
         },
       });
-      usePrototypeStore.setState(createSubmittedP0Session());
+      seedPrototypeStateForTest(createSubmittedP0Session());
       expectOk(
         usePrototypeStore.getState().planConfirmation({
           submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -3120,7 +3091,7 @@ describe('R002b RevealBundle store integration', () => {
         },
       },
     });
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -3157,7 +3128,7 @@ describe('R002b RevealBundle store integration', () => {
         },
       },
     });
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',
@@ -3191,7 +3162,7 @@ describe('R002b RevealBundle store integration', () => {
     expectOk(resetPrototypeForTest());
     await enterParentExperienceForTest();
     usePrototypeStore.setState({ familyReward: unlockedFamilyReward });
-    usePrototypeStore.setState(createSubmittedP0Session());
+    seedPrototypeStateForTest(createSubmittedP0Session());
     expectOk(
       usePrototypeStore.getState().planConfirmation({
         submissionId: 'submission_recycling_p0_v1_attempt_1',

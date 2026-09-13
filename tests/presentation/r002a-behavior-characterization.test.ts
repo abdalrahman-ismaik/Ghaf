@@ -51,8 +51,8 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asser
 function counters(state: PrototypeStoreState = usePrototypeStore.getState()) {
   return {
     salemSeeds: state.children.child_salem.earnedSeeds,
-    mangroveSeeds: state.landscapeProgress.mangrove.cumulativeSeeds,
-    mangroveStage: state.landscapeProgress.mangrove.stage,
+    mangroveSeeds: state.landscapeProgressByChild!.child_salem.mangrove.cumulativeSeeds,
+    mangroveStage: state.landscapeProgressByChild!.child_salem.mangrove.stage,
     canopyLeaves: state.household.combinedCanopy.contributionLeaves,
     circleActions: state.circleGoal.eligibleGreenActions,
   };
@@ -100,9 +100,13 @@ describe('R002a preserved behavioral oracle', () => {
     await enterChildExperienceForTest('child_alya');
     expect(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1')).toMatchObject({
       ok: false,
-      error: { code: 'NOT_ASSIGNED_CHILD' },
+      error: { code: 'INVALID_TRANSITION' },
     });
-    expect(usePrototypeStore.getState().journey?.lifecycle).toBe('assigned');
+    expect(usePrototypeStore.getState().journey).toBeNull();
+    expect(
+      usePrototypeStore.getState().taskAssignments.byId.assignment_recycling_p0_v1?.journey
+        .lifecycle,
+    ).toBe('assigned');
     expect(counters()).toEqual(RESET_COUNTERS);
 
     await enterChildExperienceForTest('child_salem');

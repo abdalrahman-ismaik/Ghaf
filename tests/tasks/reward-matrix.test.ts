@@ -4,10 +4,15 @@ import {
   evaluateRecognitionPolicy,
   recognitionKeyForSubmission,
 } from '../../src/features/rewards/policy';
-import { TASK_TEMPLATES } from '../../src/features/tasks/demoContent';
 import { PREPARED_PRAISE, createSubmittedP0Session } from '../../src/services/mock/fixtures';
 import { usePrototypeStore } from '../../src/state/usePrototypeStore';
-import { enterParentExperienceForTest, resetPrototypeForTest } from '../helpers/prototypeStore';
+import {
+  createCatalogSubmittedStateForTest,
+  enterParentExperienceForTest,
+  resetPrototypeForTest,
+  seedPrototypeStateForTest,
+  taskPraiseForTest,
+} from '../helpers/prototypeStore';
 
 const baseInput = {
   submissionId: 'submission_recycling_p0_1',
@@ -286,105 +291,80 @@ describe('Feature 003 recognition and reward policy', () => {
   });
 
   it('persists the third recurrent fade-first count and a reversible future-only phase decision', async () => {
-    const submitted = createSubmittedP0Session();
-    if (!submitted.journey) throw new Error('Expected submitted journey');
-    const recurrentTemplate = TASK_TEMPLATES.find((template) => template.id === 'GI01');
-    if (!recurrentTemplate) throw new Error('Expected the reviewed GI01 replacement fixture');
-    const recurrentSubmittedJourney = {
-      ...submitted.journey,
-      task: {
-        ...submitted.journey.task,
-        version: 2,
-        templateId: recurrentTemplate.id,
-        acceptedGuideFixtureId: null,
-        content: recurrentTemplate,
-      },
-      assignment: submitted.journey.assignment
-        ? { ...submitted.journey.assignment, taskVersion: 2 }
-        : null,
-      submission: submitted.journey.submission
-        ? { ...submitted.journey.submission, taskVersion: 2 }
-        : null,
-    };
     expect(resetPrototypeForTest()).toMatchObject({ ok: true });
     await enterParentExperienceForTest();
-    usePrototypeStore.setState({
-      ...submitted,
-      role: 'parent',
-      journey: recurrentSubmittedJourney,
-      choicePool: {
-        ...submitted.choicePool,
-        p0AssignmentChoice: submitted.choicePool.p0AssignmentChoice
-          ? {
-              ...submitted.choicePool.p0AssignmentChoice,
-              taskTemplateId: recurrentTemplate.id,
-            }
+    const counters = () => {
+      const state = usePrototypeStore.getState();
+      return {
+        seeds: state.children.child_salem.earnedSeeds,
+        mangrove: state.landscapeProgress.mangrove.cumulativeSeeds,
+        canopy: state.household.combinedCanopy.contributionLeaves,
+        circle: state.circleGoal.eligibleGreenActions,
+      };
+    };
+    const confirm = (prefix: string) => {
+      const journey = usePrototypeStore.getState().journey;
+      if (!journey?.submission) throw new Error('Expected a submitted occurrence');
+      expect(
+        usePrototypeStore.getState().confirmAndPresentPraise(
+          {
+            submissionId: journey.submission.id,
+            praise: taskPraiseForTest(journey),
+            neutralObservation: null,
+            uncertainty: null,
+          },
+          {
+            actionId: `${prefix}-praise`,
+            source: 'parent_press',
+            presentedAt: '2026-08-26T10:00:00.000Z',
+          },
+        ),
+      ).toMatchObject({ ok: true });
+      const action = {
+        actionId: `${prefix}-recognition`,
+        source: 'parent_press' as const,
+        observedRenderState: 'praise_presented' as const,
+        presentationActionId: `${prefix}-praise`,
+      };
+      const result = usePrototypeStore.getState().applyRecognition(action);
+      expect(result.ok).toBe(true);
+      if (!result.ok) throw new Error(result.error.message);
+      return { result: result.data, action };
+    };
+    const occurrenceIds = new Set<string>();
+    let routineKey = '';
+    for (let count = 1; count <= 3; count += 1) {
+      const fixture = createCatalogSubmittedStateForTest('GI01');
+      seedPrototypeStateForTest(fixture);
+      const occurrence = fixture.journey.task.occurrence;
+      if (!occurrence) throw new Error('Expected an allocated catalog occurrence');
+      occurrenceIds.add(occurrence.instanceId);
+      routineKey = occurrence.routineKey;
+      const { result } = confirm(`acquisition-${count}`);
+      expect(result.receipt.seedTransaction?.amount).toBe(8);
+      expect(result.receipt.phaseReview).toEqual(
+        count === 3
+          ? expect.objectContaining({
+              selected: null,
+              appliesTo: 'future_completions_only',
+              reversibleByParent: true,
+            })
           : null,
-      },
-      routineProgressByTask: {
-        task_recycling_p0_v1: {
-          taskId: 'task_recycling_p0_v1',
-          confirmedAcquisitionCount: 2,
-          futurePhase: 'acquisition',
-          phaseReview: null,
-          decision: null,
-        },
-      },
-    });
-
-    expect(
-      usePrototypeStore.getState().confirmAndPresentPraise(
-        {
-          submissionId: 'submission_recycling_p0_v1_attempt_1',
-          praise: {
-            ar: 'فرزت المواد النظيفة وطلبت مساعدة شخص بالغ عند الشك.',
-            en: 'You sorted the clean items and asked an adult for help when unsure.',
-          },
-          neutralObservation: null,
-          uncertainty: null,
-        },
-        {
-          actionId: 'phase-review-praise',
-          source: 'parent_press',
-          presentedAt: '2026-08-26T10:00:00.000Z',
-        },
-      ).ok,
-    ).toBe(true);
-    const recognized = usePrototypeStore.getState().applyRecognition({
-      actionId: 'phase-review-recognition',
-      source: 'parent_press',
-      observedRenderState: 'praise_presented',
-      presentationActionId: 'phase-review-praise',
-    });
-    expect(recognized).toMatchObject({
-      ok: true,
-      data: {
-        receipt: {
-          phaseReview: {
-            selected: null,
-            appliesTo: 'future_completions_only',
-            reversibleByParent: true,
-          },
-        },
-      },
-    });
-    expect(usePrototypeStore.getState().routineProgressByTask.task_recycling_p0_v1).toMatchObject({
+      );
+    }
+    expect(occurrenceIds.size).toBe(3);
+    expect(usePrototypeStore.getState().routineProgressByTask[routineKey]).toMatchObject({
       confirmedAcquisitionCount: 3,
       futurePhase: 'acquisition',
       phaseReview: { selected: null },
       decision: null,
     });
-
-    const countersAfterCurrentCompletion = {
-      seeds: usePrototypeStore.getState().children.child_salem.earnedSeeds,
-      mangrove: usePrototypeStore.getState().landscapeProgress.mangrove.cumulativeSeeds,
-      canopy: usePrototypeStore.getState().household.combinedCanopy.contributionLeaves,
-      circle: usePrototypeStore.getState().circleGoal.eligibleGreenActions,
-    };
+    const countersAfterCurrentCompletion = counters();
+    const acceptedHistory = structuredClone(usePrototypeStore.getState().taskAssignments.byId);
     expect(
       usePrototypeStore
         .getState()
-        .applyRoutinePhaseDecision('task_recycling_p0_v1', 'move_future_to_maintenance'),
+        .applyRoutinePhaseDecision(routineKey, 'move_future_to_maintenance'),
     ).toMatchObject({
       ok: true,
       data: {
@@ -397,87 +377,40 @@ describe('Feature 003 recognition and reward policy', () => {
         },
       },
     });
-    expect({
-      seeds: usePrototypeStore.getState().children.child_salem.earnedSeeds,
-      mangrove: usePrototypeStore.getState().landscapeProgress.mangrove.cumulativeSeeds,
-      canopy: usePrototypeStore.getState().household.combinedCanopy.contributionLeaves,
-      circle: usePrototypeStore.getState().circleGoal.eligibleGreenActions,
-    }).toEqual(countersAfterCurrentCompletion);
+    expect(counters()).toEqual(countersAfterCurrentCompletion);
+    expect(usePrototypeStore.getState().taskAssignments.byId).toEqual(acceptedHistory);
 
-    const current = usePrototypeStore.getState();
-    if (!recurrentSubmittedJourney.submission) throw new Error('Expected recurrent submission');
-    usePrototypeStore.setState({
-      journey: {
-        ...recurrentSubmittedJourney,
-        submission: {
-          ...recurrentSubmittedJourney.submission,
-          id: 'submission_recycling_p0_v1_attempt_2',
-          attempt: 2,
-        },
-        checkIn: null,
-      },
-      confirmationPlan: null,
-      lastRecognitionAttempt: null,
-      celebration: { available: current.celebration.available, consumed: true },
+    const maintenance = createCatalogSubmittedStateForTest('GI01', { routinePhase: 'maintenance' });
+    seedPrototypeStateForTest(maintenance);
+    expect(occurrenceIds.has(maintenance.journey.assignment!.id)).toBe(false);
+    expect(maintenance.journey.task.content.displayedSeedAward).toBeNull();
+    const { result, action } = confirm('maintenance-future');
+    expect(result.receipt).toMatchObject({
+      seedTransaction: null,
+      landscapeGrowth: null,
+      canopyContribution: null,
     });
-    expect(
-      usePrototypeStore.getState().confirmAndPresentPraise(
-        {
-          submissionId: 'submission_recycling_p0_v1_attempt_2',
-          praise: {
-            ar: 'فرزت المواد النظيفة وطلبت مساعدة شخص بالغ عند الشك.',
-            en: 'You sorted the clean items and asked an adult for help when unsure.',
-          },
-          neutralObservation: null,
-          uncertainty: null,
-        },
-        {
-          actionId: 'maintenance-future-praise',
-          source: 'parent_press',
-          presentedAt: '2026-08-26T10:10:00.000Z',
-        },
-      ).ok,
-    ).toBe(true);
-    expect(
-      usePrototypeStore.getState().applyRecognition({
-        actionId: 'maintenance-future-recognition',
-        source: 'parent_press',
-        observedRenderState: 'praise_presented',
-        presentationActionId: 'maintenance-future-praise',
-      }),
-    ).toMatchObject({
+    expect(counters()).toEqual({
+      ...countersAfterCurrentCompletion,
+      circle: countersAfterCurrentCompletion.circle + 1,
+    });
+    expect(usePrototypeStore.getState().applyRecognition(action)).toMatchObject({
       ok: true,
-      data: {
-        receipt: {
-          seedTransaction: null,
-          landscapeGrowth: null,
-          canopyContribution: null,
-        },
-      },
+      data: { disposition: 'already_confirmed' },
     });
-    expect({
-      seeds: usePrototypeStore.getState().children.child_salem.earnedSeeds,
-      mangrove: usePrototypeStore.getState().landscapeProgress.mangrove.cumulativeSeeds,
-      canopy: usePrototypeStore.getState().household.combinedCanopy.contributionLeaves,
-    }).toEqual({
-      seeds: countersAfterCurrentCompletion.seeds,
-      mangrove: countersAfterCurrentCompletion.mangrove,
-      canopy: countersAfterCurrentCompletion.canopy,
+    expect(counters()).toEqual({
+      ...countersAfterCurrentCompletion,
+      circle: countersAfterCurrentCompletion.circle + 1,
     });
-    expect(usePrototypeStore.getState().circleGoal.eligibleGreenActions).toBe(
-      countersAfterCurrentCompletion.circle + 1,
-    );
-    expect(usePrototypeStore.getState().routineProgressByTask.task_recycling_p0_v1).toMatchObject({
+    expect(usePrototypeStore.getState().routineProgressByTask[routineKey]).toMatchObject({
       confirmedAcquisitionCount: 3,
       futurePhase: 'maintenance',
       decision: { selected: 'move_future_to_maintenance' },
     });
-
-    expect(
-      usePrototypeStore.getState().reverseRoutinePhaseDecision('task_recycling_p0_v1'),
-    ).toMatchObject({
+    expect(usePrototypeStore.getState().reverseRoutinePhaseDecision(routineKey)).toMatchObject({
       ok: true,
       data: { futurePhase: 'acquisition', decision: null, phaseReview: { selected: null } },
     });
+    expect(usePrototypeStore.getState().journey?.task.content.routinePhase).toBe('maintenance');
   });
 });

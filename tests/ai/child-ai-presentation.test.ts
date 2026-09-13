@@ -410,7 +410,7 @@ describe('Child AI presentation store integration', () => {
     });
   });
 
-  it('clears a sent transcript before a later journey reuses the same task fixture', async () => {
+  it('clears a sent transcript and rejects prepared voice for a later task occurrence', async () => {
     reviewP0Task();
     expectOk(usePrototypeStore.getState().setChildVoicePermission(true));
     expectOk(usePrototypeStore.getState().approveAssignment());
@@ -435,10 +435,13 @@ describe('Child AI presentation store integration', () => {
 
     expectOk(usePrototypeStore.getState().approveAssignment());
     await enterChildExperienceForTest('child_salem');
-    expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
+    const choice = usePrototypeStore.getState().choicePool.p0AssignmentChoice;
+    if (!choice) throw new Error('Expected the later occurrence choice');
+    expectOk(usePrototypeStore.getState().chooseAssignment(choice.id));
     expectOk(usePrototypeStore.getState().startAssignment());
-    expect(expectOk(usePrototypeStore.getState().prepareChildVoice())).toMatchObject({
-      availability: 'ready',
+    expect(usePrototypeStore.getState().journey?.task.id).not.toBe('task_recycling_p0_v1');
+    expect(usePrototypeStore.getState().prepareChildVoice()).toMatchObject({ ok: false });
+    expect(usePrototypeStore.getState().childVoiceView).toMatchObject({
       lifecycle: 'idle',
       transcript: null,
       sentAt: null,

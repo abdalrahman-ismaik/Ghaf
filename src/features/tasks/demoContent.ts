@@ -1,3 +1,4 @@
+import { applyCatalogDefinition } from './catalogDefinitions';
 import type {
   ApprovedChoiceFixture,
   SyntheticChildProfile,
@@ -766,7 +767,7 @@ export const TASK_TEMPLATES: readonly TaskTemplate[] = [
     visibilityScope: 'child_guardian',
     circleEligible: false,
   }),
-] as const;
+].map(applyCatalogDefinition);
 
 export interface CulturalPhraseOptionGroup {
   readonly situation: 'general_greeting' | 'wedding_congratulations';

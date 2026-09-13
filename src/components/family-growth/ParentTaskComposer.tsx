@@ -1,3 +1,4 @@
+import { CatalogParentReview } from '@/components/catalog/CatalogParentReview';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -158,7 +159,9 @@ export function ParentTaskComposer({
     [profileCategoryPlan],
   );
   const recommendedCategoryIds = profileCategoryPlan?.recommendedCategoryIds ?? [];
-  const [stage, setStage] = useState<BuilderStage>(journey ? 'edit' : 'choose');
+  const [stage, setStage] = useState<BuilderStage>(
+    journey && ['draft', 'reviewed'].includes(journey.lifecycle) ? 'edit' : 'choose',
+  );
   const [categoryId, setCategoryId] = useState<TaskCategoryId | null>(
     journey?.task.content.categoryId ??
       (acceptedInitialPrefill || activeChildId === 'child_salem'
@@ -188,10 +191,13 @@ export function ParentTaskComposer({
   const guideSuggestionApplied = Boolean(journey?.task.acceptedGuideFixtureId) && !suggestion;
   const liveDraftPending =
     liveDraftView.status === 'requesting' || liveDraftView.suggestion !== null;
-  const hasExecutableSelection =
-    selectedChildId === 'child_salem' &&
-    categoryId === 'green_impact' &&
-    selectedTemplateId === P0_RECYCLING_TEMPLATE.id;
+  const hasExecutableSelection = Boolean(
+    selectedChildId &&
+    (TASK_TEMPLATES.some(
+      (item) => item.id === selectedTemplateId && item.categoryId === categoryId,
+    ) ||
+      (selectedChildId === 'child_salem' && selectedTemplateId === P0_RECYCLING_TEMPLATE.id)),
+  );
   const hasCompleteSelection = Boolean(selectedChildId && categoryId && selectedTemplateId);
   const canContinueSelection = taskWorkspaceFeatureFlag
     ? hasCompleteSelection
@@ -213,14 +219,19 @@ export function ParentTaskComposer({
       setError(t('errors.invalidState'));
       return false;
     }
-    if (journey?.lifecycle === 'draft') return true;
+    if (
+      journey?.lifecycle === 'draft' &&
+      journey.task.templateId === selectedTemplateId &&
+      journey.task.targetChildId === selectedChildId
+    )
+      return true;
     if (journey?.lifecycle === 'reviewed') {
       const returned = returnReviewedTaskToDraft();
       if (returned.ok) return true;
       setError(t('errors.safeRetry'));
       return false;
     }
-    if (journey) {
+    if (journey && !usePrototypeStore.getState().beginNewTask().ok) {
       setError(t('errors.invalidState'));
       return false;
     }
@@ -230,7 +241,7 @@ export function ParentTaskComposer({
     }
     const created = createTaskDraft({
       childId: selectedChildId,
-      templateId: P0_RECYCLING_TEMPLATE.id,
+      templateId: selectedTemplateId ?? P0_RECYCLING_TEMPLATE.id,
       parentText,
     });
     if (!created.ok) {
@@ -373,6 +384,19 @@ export function ParentTaskComposer({
     }
     setStage('edit');
   };
+
+  if (stage === 'edit' && selectedTemplate?.catalogExecution && selectedChildId) {
+    return (
+      <CatalogParentReview
+        key={`${selectedChildId}:${selectedTemplate.id}`}
+        content={selectedTemplate}
+        childId={selectedChildId}
+        childName={selectedProfile?.nickname ?? ''}
+        onBack={() => setStage('choose')}
+        onDone={onBack}
+      />
+    );
+  }
 
   return (
     <R002aScreen
@@ -575,13 +599,8 @@ function ChooseStage({
           />
         ))}
       </View>
-      {selectedChildId === 'child_alya' && !taskWorkspaceFeatureFlag ? (
-        <Text brand color="onSurfaceVariant" variant="caption">
-          {t('origin.future')}
-        </Text>
-      ) : null}
 
-      {selectedChildId === 'child_salem' || taskWorkspaceFeatureFlag ? (
+      {selectedChildId ? (
         <View style={styles.section}>
           {recommendedCategoryIds.length > 0 ? (
             <View style={styles.recommendationPanel} testID="profile-recommendation-panel">
@@ -681,7 +700,10 @@ function ChooseStage({
           <View accessibilityRole="radiogroup" style={styles.templateList}>
             {categoryTemplates.map((template) => {
               const isP0 = template.id === P0_RECYCLING_TEMPLATE.id;
-              const isExecutableForSelection = isP0 && selectedChildId === 'child_salem';
+              const isExecutableForSelection = Boolean(
+                selectedChildId &&
+                (template.catalogExecution || (isP0 && selectedChildId === 'child_salem')),
+              );
               const selected = selectedTemplateId === template.id;
               const disabled = !isExecutableForSelection && !taskWorkspaceFeatureFlag;
               return (
@@ -713,7 +735,9 @@ function ChooseStage({
                       <Text brand color="onSurfaceVariant" variant="caption">
                         {localize(template.estimatedEffort, locale)} ·{' '}
                         {isExecutableForSelection || !taskWorkspaceFeatureFlag
-                          ? t('common.seeds', { count: template.displayedSeedAward })
+                          ? template.recognitionMode === 'recognition_only'
+                            ? t('catalog.noAward')
+                            : t('catalog.award', { count: template.displayedSeedAward })
                           : t('taskWorkspace.previewOnly')}
                       </Text>
                     </View>
@@ -726,7 +750,7 @@ function ChooseStage({
                   >
                     <Text brand color={selected ? 'primary' : 'onSurfaceVariant'} variant="caption">
                       {isExecutableForSelection
-                        ? t('childHome.availableTask')
+                        ? t('catalog.ready')
                         : t(
                             taskWorkspaceFeatureFlag
                               ? 'taskWorkspace.previewOnly'
@@ -738,11 +762,6 @@ function ChooseStage({
               );
             })}
           </View>
-          {categoryId !== 'green_impact' ? (
-            <Text brand color="onSurfaceVariant" variant="caption">
-              {t(taskWorkspaceFeatureFlag ? 'taskWorkspace.previewEditing' : 'origin.future')}
-            </Text>
-          ) : null}
         </View>
       ) : null}
 

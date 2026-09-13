@@ -75,17 +75,13 @@ describe('R002a Child Today and task presentation', () => {
     expect(combined).not.toMatch(/\/(?:child\/)?task\/(?:active|confirmation|waiting)/u);
   });
 
-  it('projects the active Child profile toward the preserved 60-Seed milestone', () => {
+  it('projects personal landscape progress separately from personal Seeds', () => {
     const todayRoute = source('app/child/index.tsx');
-
     expect(todayRoute).toContain('child.earnedSeeds');
-    expect(todayRoute).toMatch(/(?:gardenTarget|gardenMilestone)\s*=\s*60/u);
-    expect(todayRoute).toMatch(
-      /gardenCurrent\s*=\s*Math\.min\(child\.earnedSeeds,\s*gardenTarget\)/u,
-    );
-    expect(todayRoute).toMatch(/<ChildGardenProgressCard[\s\S]{0,500}current=\{gardenCurrent\}/u);
-    expect(todayRoute).toMatch(/<ChildGardenProgressCard[\s\S]{0,700}target=\{garden/u);
-    expect(todayRoute).not.toContain('currentLandscape.nextThreshold');
+    expect(todayRoute).toContain('personalLandscape.nextThreshold');
+    expect(todayRoute).toContain('Math.min(personalLandscape.cumulativeSeeds, gardenTarget)');
+    expect(todayRoute).toContain('current={gardenCurrent}');
+    expect(todayRoute).toContain('target={gardenTarget}');
   });
 
   it('renders 0/2, 1/2, and 2/2 as accessible checklist states with physical RTL placement', () => {

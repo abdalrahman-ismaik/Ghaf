@@ -1,3 +1,4 @@
+import { landscapesForChild } from '../tasks/assignmentInstances';
 import type {
   PrototypeSession,
   RecognitionReceipt,
@@ -398,11 +399,12 @@ export function projectRecognitionIntoGrowthJourney(input: {
     transaction.recognitionKey !== input.receipt.recognitionKey ||
     !VALID_FIXED_SEED_AWARDS.has(transaction.amount) ||
     transaction.balanceAfter !== transaction.balanceBefore + transaction.amount ||
-    nextChild.earnedSeeds !== transaction.balanceAfter ||
     (previouslyCommitted
-      ? previousChild.earnedSeeds !== transaction.balanceAfter ||
+      ? nextChild.earnedSeeds !== previousChild.earnedSeeds ||
+        nextChild.earnedSeeds < transaction.balanceAfter ||
         !sameReceipt(previouslyCommitted, input.receipt)
-      : previousChild.earnedSeeds !== transaction.balanceBefore) ||
+      : nextChild.earnedSeeds !== transaction.balanceAfter ||
+        previousChild.earnedSeeds !== transaction.balanceBefore) ||
     !nextCommitted ||
     !sameReceipt(nextCommitted, input.receipt)
   ) {
@@ -413,17 +415,20 @@ export function projectRecognitionIntoGrowthJourney(input: {
   if (!growth) {
     return failure('Seed recognition requires its exact Garden growth transition');
   }
-  const previousLandscape = input.previousSession.landscapeProgress[growth.landscapeId];
-  const nextLandscape = input.nextSession.landscapeProgress[growth.landscapeId];
+  const previousLandscape = landscapesForChild(input.previousSession, profileId)[
+    growth.landscapeId
+  ];
+  const nextLandscape = landscapesForChild(input.nextSession, profileId)[growth.landscapeId];
   if (
     !previousLandscape ||
     !nextLandscape ||
-    nextLandscape.cumulativeSeeds !== growth.seedsAfter ||
-    nextLandscape.stage !== growth.stageAfter ||
     (previouslyCommitted
-      ? previousLandscape.cumulativeSeeds !== growth.seedsAfter ||
-        previousLandscape.stage !== growth.stageAfter
-      : previousLandscape.cumulativeSeeds !== growth.seedsBefore ||
+      ? nextLandscape.cumulativeSeeds !== previousLandscape.cumulativeSeeds ||
+        nextLandscape.stage !== previousLandscape.stage ||
+        nextLandscape.cumulativeSeeds < growth.seedsAfter
+      : nextLandscape.cumulativeSeeds !== growth.seedsAfter ||
+        nextLandscape.stage !== growth.stageAfter ||
+        previousLandscape.cumulativeSeeds !== growth.seedsBefore ||
         previousLandscape.stage !== growth.stageBefore)
   ) {
     return failure('Landscape receipt does not reconcile with the authoritative sessions');
@@ -442,6 +447,33 @@ export function projectRecognitionIntoGrowthJourney(input: {
     landscapeTransition: growth,
   });
   if (!projected.ok) return projected;
+  if (
+    previouslyCommitted &&
+    input.nextSession.journey?.task.occurrence &&
+    input.nextSession.journey.task.id !== 'task_recycling_p0_v1'
+  ) {
+    const taskSeedBalance = ledger.entries
+      .filter((entry) => entry.kind === 'opening_balance' || entry.kind === 'task_recognition')
+      .reduce((sum, entry) => sum + entry.amount, 0);
+    if (
+      projected.data.disposition !== 'already_projected' ||
+      taskSeedBalance !== nextChild.earnedSeeds
+    ) {
+      return failure(
+        'An existing occurrence requires its exact committed Seed entry and current ledger total',
+      );
+    }
+    return {
+      ok: true,
+      data: Object.freeze({
+        disposition: 'already_projected',
+        runtime: input.runtime,
+        addedCreditIds: Object.freeze([]),
+        newlyEarnedBadgeIds: Object.freeze([]),
+        newlyReachedThresholds: Object.freeze([]),
+      }),
+    };
+  }
 
   let nextAchievementState = achievementState;
   let addedCreditIds: readonly string[] = Object.freeze([]);

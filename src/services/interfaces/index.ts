@@ -134,6 +134,9 @@ export interface TaskService {
     readonly childId: SyntheticChildId;
     readonly templateId: string;
     readonly parentText: LocalizedText;
+    readonly occurrence?: import('../../models/familyGrowth').TaskOccurrenceIdentity;
+    readonly childProfile?: import('../../models/familyGrowth').TaskChildProfile;
+    readonly routinePhase?: 'acquisition' | 'maintenance';
   }): ServiceResult<TaskJourney>;
   updateDraftParentText(
     journey: TaskJourney,
@@ -145,7 +148,10 @@ export interface TaskService {
   ): ServiceResult<TaskJourney>;
   keepParentText(journey: TaskJourney): ServiceResult<TaskJourney>;
   review(journey: TaskJourney): ServiceResult<TaskReviewResult>;
-  approveAssignment(journey: TaskJourney): ServiceResult<AssignmentApprovalResult>;
+  approveAssignment(
+    journey: TaskJourney,
+    childProfile?: import('../../models/familyGrowth').TaskChildProfile,
+  ): ServiceResult<AssignmentApprovalResult>;
   chooseAssignment(
     journey: TaskJourney,
     activeChildId: SyntheticChildId,

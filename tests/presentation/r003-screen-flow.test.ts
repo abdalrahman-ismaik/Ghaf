@@ -102,13 +102,16 @@ describe('R003 complete screen journey', () => {
     );
   });
 
-  it('keeps every Salem-specific task-builder action scoped to Salem', () => {
+  it('keeps task-builder actions scoped to the selected Child', () => {
     const parent = source('app/parent/index.tsx');
 
-    expect(parent).toContain('const openSalemTaskBuilder = () => {');
-    expect(parent).toContain("setActiveChild('child_salem')");
+    expect(parent).toContain('const openSelectedChildTaskBuilder = () => {');
+    expect(parent).toContain('const openTaskBuilderFor = (childId: SyntheticChildId) => {');
+    expect(parent).toContain('setActiveChild(childId)');
     expect(parent).toContain("if (nextRoute === '/parent/task/new')");
-    expect(parent).toContain('onCreateTask={openSalemTaskBuilder}');
+    expect(parent).toContain('onCreateTask={openSelectedChildTaskBuilder}');
+    expect(parent).toContain('onCreateTask={openTaskBuilderFor}');
+    expect(parent).not.toContain("setActiveChild('child_salem')");
     expect(parent).not.toContain("onCreateTask={() => router.push('/parent/task/new')}");
   });
 

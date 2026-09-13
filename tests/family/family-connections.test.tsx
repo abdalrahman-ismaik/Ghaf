@@ -172,13 +172,13 @@ describe('family connection presentation and isolation contract', () => {
     expect(parentFamily).not.toContain('record.familyConnections');
   });
 
-  it('keeps the existing recycling assignment as the sole executable Task Builder selection', () => {
+  it('keeps the approved catalog separate from private family contacts', () => {
     const composer = source('src/components/family-growth/ParentTaskComposer.tsx');
     const taskService = source('src/services/mock/index.ts');
 
     expect(composer).toContain('selectedTemplateId === P0_RECYCLING_TEMPLATE.id');
-    expect(composer).toContain("categoryId === 'green_impact'");
-    expect(taskService).toContain('Only the reviewed recycling task is executable');
+    expect(composer).toContain('template.catalogExecution');
+    expect(composer).toContain('<CatalogParentReview');
     expect(composer).not.toContain('family-connections');
     expect(taskService).not.toContain('family-connections');
   });

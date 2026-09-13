@@ -69,6 +69,7 @@ vi.mock('react-native', () => ({
   AccessibilityInfo: { announceForAccessibility: vi.fn() },
   ActivityIndicator: () => null,
   Platform: { OS: 'web', select: (options: Record<string, unknown>) => options.default },
+  Pressable: HostView,
   StyleSheet: { create: <T,>(styles: T) => styles, hairlineWidth: 1 },
   View: HostView,
 }));
@@ -253,7 +254,7 @@ describe.each(['ar', 'en'] as const)('Child approved instruction in %s', (locale
 
   it('does not expose unassigned Parent draft wording to the Child', async () => {
     await enterChildExperienceForTest();
-    expect(usePrototypeStore.getState().journey?.assignment).toBeNull();
+    expect(usePrototypeStore.getState().journey).toBeNull();
     expect(renderTask(locale)).toBe('');
   });
 
@@ -270,9 +271,11 @@ describe.each(['ar', 'en'] as const)('Child approved instruction in %s', (locale
       expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
       if (phase === 'in_progress') expectOk(usePrototypeStore.getState().startAssignment());
       await enterChildExperienceForTest('child_alya');
-      expect(usePrototypeStore.getState().journey?.task.content.positiveAction).toEqual(
-        APPROVED_ACTION,
-      );
+      expect(usePrototypeStore.getState().journey).toBeNull();
+      expect(
+        usePrototypeStore.getState().taskAssignments.byId.assignment_recycling_p0_v1?.journey.task
+          .content.positiveAction,
+      ).toEqual(APPROVED_ACTION);
       expect(usePrototypeStore.getState().activeChildId).toBe('child_alya');
       expect(renderTask(locale)).toBe('');
     },

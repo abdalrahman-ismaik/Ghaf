@@ -1,3 +1,4 @@
+import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
 import { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -18,7 +19,6 @@ import {
   ParentHomeNavigation,
   ParentLifecycleCard,
   ParentTaskWorkspace,
-  ParentTasksView,
   R002aScreen,
   type ParentChildSummaryItem,
 } from '@/components/r002a';
@@ -208,7 +208,7 @@ export default function ParentHomeScreen() {
           ? t('parentHome.openGarden')
           : nextRoute === '/child'
             ? t('navigation.childHome')
-            : t('parentHome.createTask', { child: profileName('child_salem') });
+            : t('parentHome.createTask', { child: profileName(activeChildId) });
   const lifecycleStatus = journey
     ? journey.lifecycle === 'submitted'
       ? t('parentHome.awaitingReview')
@@ -232,15 +232,16 @@ export default function ParentHomeScreen() {
     support: t(action.supportKey, { child: profileName(action.childId) }),
   }));
 
-  const openSalemTaskBuilder = () => {
+  const openSelectedChildTaskBuilder = () => {
     dismissTaskAdded();
     setAdjustmentError(null);
-    const result = setActiveChild('child_salem');
+    const result = setActiveChild(activeChildId);
     if (!result.ok) {
       setAdjustmentError(t('errors.safeRetry'));
       return;
     }
-    router.push('/parent/task/new');
+    const cleared = usePrototypeStore.getState().beginNewTask();
+    if (cleared.ok) router.push('/parent/task/new');
   };
 
   const openTaskBuilderFor = (childId: SyntheticChildId) => {
@@ -251,7 +252,8 @@ export default function ParentHomeScreen() {
       setAdjustmentError(t('errors.safeRetry'));
       return;
     }
-    router.push('/parent/task/new');
+    const cleared = usePrototypeStore.getState().beginNewTask();
+    if (cleared.ok) router.push('/parent/task/new');
   };
 
   const openPrimaryAction = () => {
@@ -260,7 +262,7 @@ export default function ParentHomeScreen() {
       return;
     }
     if (nextRoute === '/parent/task/new') {
-      openSalemTaskBuilder();
+      openSelectedChildTaskBuilder();
       return;
     }
     router.push(nextRoute);
@@ -294,24 +296,10 @@ export default function ParentHomeScreen() {
     selectedJourney && taskFilterForLifecycle(selectedJourney.lifecycle) === taskFilter
       ? selectedJourney
       : null;
-  const emptyCopy = {
-    assigned: {
-      body: t('r002aTasks.emptyAssignedBody'),
-      title: t('r002aTasks.emptyAssignedTitle'),
-    },
-    pending: {
-      body: t('r002aTasks.emptyPendingBody'),
-      title: t('r002aTasks.emptyPendingTitle'),
-    },
-    completed: {
-      body: t('r002aTasks.emptyCompletedBody'),
-      title: t('r002aTasks.emptyCompletedTitle'),
-    },
-  }[taskFilter];
   const openTaskAction = () => {
     dismissTaskAdded();
     if (!journey) {
-      openSalemTaskBuilder();
+      openSelectedChildTaskBuilder();
       return;
     }
     if (!visibleJourney) {
@@ -349,23 +337,7 @@ export default function ParentHomeScreen() {
     }
     router.push('/garden');
   };
-  const taskActionLabel = !journey
-    ? t('r002aTasks.createTask')
-    : !visibleJourney
-      ? t('r002aTasks.viewCurrentTask')
-      : visibleJourney.lifecycle === 'draft'
-        ? t('r002aTasks.openBuilder')
-        : visibleJourney.lifecycle === 'reviewed'
-          ? t('r002aTasks.openReview')
-          : visibleJourney.lifecycle === 'recognized'
-            ? t('r002aTasks.openGarden')
-            : visibleJourney.lifecycle === 'retry'
-              ? t('r002aTasks.resumeSupport')
-              : visibleJourney.lifecycle === 'confirmed'
-                ? t('r002aTasks.continueRecognition')
-                : visibleJourney.lifecycle === 'submitted'
-                  ? t('parentHome.reviewTask')
-                  : t('r002aTasks.openChild');
+
   const parentWelcomeUpdates: readonly ReturningWelcomeUpdate[] = [
     {
       body: journey
@@ -442,6 +414,18 @@ export default function ParentHomeScreen() {
             {t('r002aTasks.body')}
           </Text>
         </View>
+
+        {taskAddedVisible && visibleJourney?.task.id === taskAddedToken ? (
+          <Text
+            accessibilityLiveRegion="polite"
+            brand
+            color="ghafEmerald"
+            direction={direction}
+            testID="parent-tasks-added"
+          >
+            {t('r002aTasks.taskAdded')}
+          </Text>
+        ) : null}
 
         {taskWorkspaceFeatureFlag ? (
           <ParentTaskWorkspace
@@ -569,37 +553,7 @@ export default function ParentHomeScreen() {
             </View>
 
             <View accessibilityLiveRegion="polite">
-              <ParentTasksView
-                actionLabel={taskActionLabel}
-                actionTestID="parent-tasks-primary-action"
-                current={
-                  visibleJourney
-                    ? {
-                        childLabel: localize(
-                          children[visibleJourney.task.targetChildId].displayName,
-                          locale,
-                        ),
-                        metaLabel: visibleJourney.task.content.displayedSeedAward
-                          ? t('childHome.awardAfterConfirmation', {
-                              count: visibleJourney.task.content.displayedSeedAward,
-                            })
-                          : undefined,
-                        statusLabel: t(taskStatusKey(visibleJourney.lifecycle)),
-                        supportLabel: localize(visibleJourney.task.content.permittedHelp, locale),
-                        title: localize(visibleJourney.task.content.title, locale),
-                      }
-                    : null
-                }
-                direction={direction}
-                emptyMessage={emptyCopy.body}
-                emptyTitle={emptyCopy.title}
-                heading={t('r002aTasks.currentTask')}
-                onAction={openTaskAction}
-                showAction={Boolean(journey)}
-                state={visibleJourney ? (taskAddedVisible ? 'task_added' : 'current') : 'empty'}
-                taskAddedMessage={t('r002aTasks.taskAdded')}
-                testID="parent-tasks-list"
-              />
+              <CatalogTaskList role="parent" filter={taskFilter} />
             </View>
           </>
         )}
@@ -757,10 +711,10 @@ export default function ParentHomeScreen() {
       ) : null}
 
       <ParentChildrenSection
-        createTaskLabel={t('parentHome.createTask', { child: profileName('child_salem') })}
+        createTaskLabel={t('parentHome.createTask', { child: profileName(activeChildId) })}
         direction={direction}
         items={childItems}
-        onCreateTask={openSalemTaskBuilder}
+        onCreateTask={openSelectedChildTaskBuilder}
         onSelectChild={chooseChild}
         selectedLabel={t('parentHome.selectedLabel')}
         title={t('parentHome.todayWithChildren')}

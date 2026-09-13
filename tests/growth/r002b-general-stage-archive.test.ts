@@ -6,6 +6,7 @@ import {
 } from '../../src/features/growth/bootstrap';
 import type { PrototypeSession, RecognitionReceipt } from '../../src/models/familyGrowth';
 import { createInitialPrototypeSession } from '../../src/services/mock/fixtures';
+import { initializeProfileLandscapes } from '../../src/features/tasks/assignmentInstances';
 
 function expectOk<T>(result: {
   readonly ok: boolean;
@@ -17,17 +18,31 @@ function expectOk<T>(result: {
 describe('R002b general plant-stage archive projection', () => {
   it('projects the normal Samar 16-to-24 crossing into Alya Growth history', () => {
     const opening = createInitialPrototypeSession();
+    const openingMaps = initializeProfileLandscapes(opening);
+    const previousLandscapes = {
+      ...openingMaps.child_alya,
+      samar: {
+        landscapeId: 'samar' as const,
+        cumulativeSeeds: 16,
+        stage: 'seed' as const,
+        nextThreshold: 20 as const,
+      },
+    };
+    const nextLandscapes = {
+      ...previousLandscapes,
+      samar: {
+        landscapeId: 'samar' as const,
+        cumulativeSeeds: 24,
+        stage: 'shoot' as const,
+        nextThreshold: 60 as const,
+      },
+    };
+    // Historical projection fixture: the Samar 16 balance is explicitly profile-scoped.
     const previousSession: PrototypeSession = {
       ...opening,
-      landscapeProgress: {
-        ...opening.landscapeProgress,
-        samar: {
-          landscapeId: 'samar',
-          cumulativeSeeds: 16,
-          stage: 'seed',
-          nextThreshold: 20,
-        },
-      },
+      activeChildId: 'child_alya',
+      landscapeProgressByChild: { ...openingMaps, child_alya: previousLandscapes },
+      landscapeProgress: previousLandscapes,
     };
     const recognitionKey = 'recognition:submission_samar_threshold_attempt_1';
     const receipt: RecognitionReceipt = {
@@ -86,18 +101,11 @@ describe('R002b general plant-stage archive projection', () => {
         ...previousSession.children,
         child_alya: { ...previousSession.children.child_alya, earnedSeeds: 44 },
       },
-      landscapeProgress: {
-        ...previousSession.landscapeProgress,
-        samar: {
-          landscapeId: 'samar',
-          cumulativeSeeds: 24,
-          stage: 'shoot',
-          nextThreshold: 60,
-        },
-      },
+      landscapeProgressByChild: { ...openingMaps, child_alya: nextLandscapes },
+      landscapeProgress: nextLandscapes,
       recognitionLedger: { [recognitionKey]: receipt },
     };
-    const runtime = createGrowthJourneyRuntime(previousSession, 7);
+    const runtime = createGrowthJourneyRuntime(opening, 7);
     expectOk(runtime);
 
     const projected = projectRecognitionIntoGrowthJourney({

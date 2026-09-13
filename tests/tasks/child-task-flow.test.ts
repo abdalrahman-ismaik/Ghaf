@@ -13,6 +13,7 @@ import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
   resetPrototypeForTest,
+  seedPrototypeStateForTest,
 } from '../helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asserts result is {
@@ -23,17 +24,18 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asser
 }
 
 function counters(state: PrototypeStoreState = usePrototypeStore.getState()) {
+  const landscapes = state.landscapeProgressByChild?.child_salem ?? state.landscapeProgress;
   return {
     salemSeeds: state.children.child_salem.earnedSeeds,
-    mangroveSeeds: state.landscapeProgress.mangrove.cumulativeSeeds,
-    mangroveStage: state.landscapeProgress.mangrove.stage,
+    mangroveSeeds: landscapes.mangrove.cumulativeSeeds,
+    mangroveStage: landscapes.mangrove.stage,
     canopyLeaves: state.household.combinedCanopy.contributionLeaves,
     circleActions: state.circleGoal.eligibleGreenActions,
   };
 }
 
 async function setAssignedSalemJourney(): Promise<void> {
-  usePrototypeStore.setState(createResetSourceSession('assigned'));
+  seedPrototypeStateForTest(createResetSourceSession('assigned'));
   await enterChildExperienceForTest('child_salem');
 }
 
@@ -121,7 +123,10 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
       ...(pool.p0AssignmentChoice ? [pool.p0AssignmentChoice] : []),
     ].filter((choice) => choice.childId === 'child_alya');
     expect(alyaChoices).toEqual([]);
-    expect(usePrototypeStore.getState().journey).toMatchObject({
+    expect(usePrototypeStore.getState().journey).toBeNull();
+    expect(
+      usePrototypeStore.getState().taskAssignments.byId.assignment_recycling_p0_v1?.journey,
+    ).toMatchObject({
       lifecycle: 'assigned',
       assignment: { childId: 'child_salem' },
     });
@@ -156,7 +161,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
   it.each(['in_progress', 'submitted', 'recognized'] as const)(
     'preserves the %s Salem journey when the shared device reselects his profile',
     async (lifecycle) => {
-      usePrototypeStore.setState(createResetSourceSession(lifecycle));
+      seedPrototypeStateForTest(createResetSourceSession(lifecycle));
       await enterChildExperienceForTest('child_salem');
       const before = structuredClone(usePrototypeStore.getState().journey);
 
@@ -177,9 +182,9 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     await enterChildExperienceForTest('child_alya');
     expect(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1')).toMatchObject({
       ok: false,
-      error: { code: 'NOT_ASSIGNED_CHILD' },
+      error: { code: 'INVALID_TRANSITION' },
     });
-    expect(usePrototypeStore.getState().journey?.lifecycle).toBe('assigned');
+    expect(usePrototypeStore.getState().journey).toBeNull();
 
     await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().chooseAssignment('choice_recycling_p0_v1'));
@@ -210,7 +215,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     });
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('assigned');
 
-    usePrototypeStore.setState(createResetSourceSession('chosen'));
+    seedPrototypeStateForTest(createResetSourceSession('chosen'));
     usePrototypeStore.getState().setRole('parent');
     expect(usePrototypeStore.getState().startAssignment()).toMatchObject({
       ok: false,
@@ -218,7 +223,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     });
     expect(usePrototypeStore.getState().journey?.lifecycle).toBe('chosen');
 
-    usePrototypeStore.setState(createResetSourceSession('in_progress'));
+    seedPrototypeStateForTest(createResetSourceSession('in_progress'));
     usePrototypeStore.getState().setRole('parent');
     expect(
       await usePrototypeStore.getState().requestChildCoach({
@@ -315,7 +320,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
     await enterChildExperienceForTest('child_alya');
     expect(usePrototypeStore.getState().requestSmallerTask()).toMatchObject({
       ok: false,
-      error: { code: 'NOT_ASSIGNED_CHILD' },
+      error: { code: 'INVALID_TRANSITION' },
     });
     expect(usePrototypeStore.getState().prospectiveTaskAdjustment).toBeNull();
 
@@ -337,9 +342,13 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
 
     expect(usePrototypeStore.getState().startAssignment()).toMatchObject({
       ok: false,
-      error: { code: 'NOT_ASSIGNED_CHILD' },
+      error: { code: 'INVALID_TRANSITION' },
     });
-    expect(usePrototypeStore.getState().journey?.lifecycle).toBe('chosen');
+    expect(usePrototypeStore.getState().journey).toBeNull();
+    expect(
+      usePrototypeStore.getState().taskAssignments.byId.assignment_recycling_p0_v1?.journey
+        .lifecycle,
+    ).toBe('chosen');
 
     await enterChildExperienceForTest('child_salem');
     expectOk(usePrototypeStore.getState().startAssignment());
@@ -350,7 +359,7 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
         requestId: 'us2-wrong-profile-coach',
         intent: 'show_steps',
       }),
-    ).toMatchObject({ ok: false, error: { code: 'NOT_ASSIGNED_CHILD' } });
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
     expect(
       usePrototypeStore.getState().submitTask({
         definitionAcknowledged: true,
@@ -368,8 +377,12 @@ describe('US2 Child choice, bounded help, and submission flow', () => {
           },
         ],
       }),
-    ).toMatchObject({ ok: false, error: { code: 'NOT_ASSIGNED_CHILD' } });
-    expect(usePrototypeStore.getState().journey?.lifecycle).toBe('in_progress');
+    ).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(usePrototypeStore.getState().journey).toBeNull();
+    expect(
+      usePrototypeStore.getState().taskAssignments.byId.assignment_recycling_p0_v1?.journey
+        .lifecycle,
+    ).toBe('in_progress');
     expect(usePrototypeStore.getState().childCoachResult).toBeNull();
     expect(counters()).toEqual(baseline);
   });

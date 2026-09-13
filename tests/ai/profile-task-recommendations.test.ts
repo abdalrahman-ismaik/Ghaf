@@ -86,13 +86,13 @@ describe('prepared profile recommendations in Task Builder', () => {
     expect(source).toContain('recommendedCategoryIds.includes(category.id)');
     expect(source).toContain("t('taskNew.profileRecommended')");
     expect(source).toContain(
-      "const isExecutableForSelection = isP0 && selectedChildId === 'child_salem'",
+      "(template.catalogExecution || (isP0 && selectedChildId === 'child_salem'))",
     );
     expect(source).toContain(
       'const disabled = !isExecutableForSelection && !taskWorkspaceFeatureFlag',
     );
     expect(source).toContain("selectedChildId === 'child_salem'");
-    expect(source).toContain("categoryId === 'green_impact'");
+    expect(source).toContain('<CatalogParentReview');
     expect(resources).toContain('profileRecommended:');
     expect(resources).toContain('profileRecommendationDisclosure:');
   });

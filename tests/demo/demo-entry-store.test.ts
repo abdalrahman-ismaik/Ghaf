@@ -115,7 +115,8 @@ describe('isolated three-profile demo controller integration', () => {
     ok(run.enter('child_alya'));
     expect(run.state().chooseAssignment('choice_recycling_p0_v1').ok).toBe(false);
     expect(run.state().startAssignment().ok).toBe(false);
-    expect(run.state().journey).toEqual(assigned);
+    expect(run.state().journey).toBeNull();
+    expect(run.state().taskAssignments.byId.assignment_recycling_p0_v1?.journey).toEqual(assigned);
     ok(run.state().signOutExperience());
     ok(run.enter('child_salem'));
     ok(run.state().chooseAssignment('choice_recycling_p0_v1'));
@@ -221,8 +222,7 @@ describe('isolated three-profile demo controller integration', () => {
     expect(run.state().ageAdaptedCoachResult).not.toBeNull();
 
     const progress = () => ({
-      journey: run.state().journey,
-      activeAssignmentId: run.state().activeAssignmentId,
+      assignments: run.state().taskAssignments.byId,
       children: run.state().children,
       growthJourney: run.state().growthJourney,
       recognitionLedger: run.state().recognitionLedger,
