@@ -175,8 +175,9 @@ npm run verify
 
 Automated checks do not replace physical Android, accessibility, media, or human-review evidence.
 The current auditable product gate status is recorded in the [demo runbook](docs/competition-readiness/DEMO_RUNBOOK.md).
-The [GitHub workflow](.github/workflows/ci.yml) defines the same source checks and a web export;
-its hosted execution is pending. See the [test guide](tests/README.md) for focused commands.
+The [GitHub workflow](.github/workflows/ci.yml) runs the same source checks and a web export;
+[workflow runs](https://github.com/abdalrahman-ismaik/Ghaf/actions/workflows/ci.yml) record hosted
+results for each pushed commit. See the [test guide](tests/README.md) for focused commands.
 
 ## Architecture
 

@@ -1,5 +1,10 @@
 import { forwardRef, useEffect, useState } from 'react';
-import { Pressable, type PressableProps, type View } from 'react-native';
+import {
+  Pressable,
+  type PressableProps,
+  type PressableStateCallbackType,
+  type View,
+} from 'react-native';
 import Animated, {
   Easing,
   ReduceMotion,
@@ -44,6 +49,10 @@ export const BotanicalPressable = forwardRef<View, PressableProps>(function Bota
       }),
     );
   };
+  const interactionState: PressableStateCallbackType & { readonly hovered: boolean } = {
+    pressed: pressed && !disabled,
+    hovered: hovered && !disabled,
+  };
 
   return (
     <AnimatedPressable
@@ -68,12 +77,7 @@ export const BotanicalPressable = forwardRef<View, PressableProps>(function Bota
         onPressOut?.(event);
       }}
       ref={ref}
-      style={[
-        typeof style === 'function'
-          ? style({ pressed: pressed && !disabled, hovered: hovered && !disabled })
-          : style,
-        animatedStyle,
-      ]}
+      style={[typeof style === 'function' ? style(interactionState) : style, animatedStyle]}
     />
   );
 });

@@ -21,6 +21,15 @@ Source/helper/check boundaries are released. Root retains only the final publica
 checkpoint and authorized branch push. Native, human and live-service validation
 remain NOT RUN; the publication report preserves exact evidence and initial failures.
 
+Hosted CI follow-up: root reserves `src/components/botanical/BotanicalPressable.tsx`
+for the clean-checkout TypeScript excess-property failure reported by GitHub run
+34771317980. Preserve pressed/hover behavior; no feature or style change. Root also
+owns the README's hosted-check status wording and an additive publication-report
+result. The existing push authorization covers this focused correction.
+The unchanged fresh-checkout configuration reproduced the failure before the fix
+and passed afterward; ordinary typecheck, scoped zero-warning lint, formatting and
+whitespace checks also passed. Source scope is released for the follow-up push.
+
 ## Root documentation cleanup — 2026-09-13
 
 Owner: root repository-maintenance session, direct user authorization to move unnecessary root

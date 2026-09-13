@@ -68,6 +68,21 @@ sandbox `spawnSync git EPERM`; its unchanged command passed outside the sandbox.
 Application checks ran with Node 24.16.0; CI remains pinned to Node 22.13.0.
 Hosted CI is not represented as passed before a result is observed.
 
+## Clean-checkout CI follow-up
+
+The first normal push succeeded at `a4a89e2`, and the remote commit matched exactly.
+[GitHub run 34771317980](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34771317980)
+passed installation and repository checks, then found a TypeScript excess-property
+error in `BotanicalPressable`. Local generated `expo-env.d.ts` loads Expo's web type
+augmentation; a fresh checkout does not yet have that ignored file. The component
+must accept its explicit hover-state extension without depending on generated types.
+The correction preserves both pressed and hover values and changes only how the
+callback state is typed. A temporary config with the same source includes but no
+generated Expo declarations reproduced the exact error before the fix and passed
+afterward. Ordinary typecheck, scoped zero-warning lint, formatting and whitespace
+checks also passed. The subsequent hosted result is recorded in the final handoff;
+the failed first run remains historical.
+
 ## Assistance and handoff
 
 Codex reviewed the pending work, updated README copy, repaired integration defects,
