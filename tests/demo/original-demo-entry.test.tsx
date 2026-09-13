@@ -210,15 +210,18 @@ beforeEach(() => {
 });
 
 describe('restored demo entry SSR and callback contracts', () => {
-  it('uses the original onboarding with narration disabled on an incomplete fresh run', () => {
-    const props = entryProps();
-    const markup = renderToStaticMarkup(createElement(OriginalDemoEntryScreen, props));
+  it.each(['ar', 'en'] as const)(
+    'uses the selected Arabic narrator without enabling English demo audio for %s',
+    (locale) => {
+      const props = { ...entryProps(), locale };
+      const markup = renderToStaticMarkup(createElement(OriginalDemoEntryScreen, props));
 
-    expect(rendered.onboarding).toEqual([{ narrationEnabled: false }]);
-    expect(markup).not.toContain('welcome-screen');
-    expect(rendered.controls).toHaveLength(0);
-    expect(props.onChooseProfile).not.toHaveBeenCalled();
-  });
+      expect(rendered.onboarding).toEqual([{ narrationEnabled: locale === 'ar' }]);
+      expect(markup).not.toContain('welcome-screen');
+      expect(rendered.controls).toHaveLength(0);
+      expect(props.onChooseProfile).not.toHaveBeenCalled();
+    },
+  );
 
   it.each([
     { completed: true, entryEpoch: 0 },

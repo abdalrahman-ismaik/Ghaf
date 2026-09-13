@@ -21,7 +21,7 @@ export function OriginalDemoEntryScreen({
   const [choosingChild, setChoosingChild] = useState(false);
 
   if (entryEpoch === 0 && !firstRunState.completed && !restartRequired) {
-    return <FirstRunOnboarding narrationEnabled={false} />;
+    return <FirstRunOnboarding narrationEnabled={locale === 'ar'} />;
   }
   if (choosingChild && !restartRequired) {
     return (

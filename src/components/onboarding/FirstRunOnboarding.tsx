@@ -335,11 +335,15 @@ export function FirstRunOnboarding({
             <IconButton
               accessibilityHint={narrationHint}
               brand
-              disabled={!narrationEnabled || narration.screenReaderActive}
+              disabled={!narrationEnabled || narration.screenReaderActive || !narration.hasSource}
               icon={
                 <GhafIcon color={colors.white} direction={direction} name="speaker" size={24} />
               }
-              label={t('firstRun.narrator.replay')}
+              label={
+                !narration.hasSource
+                  ? t('firstRun.narrator.unavailable')
+                  : t('firstRun.narrator.replay')
+              }
               onPress={() => {
                 unlockPlayback();
                 if (narrationEnabled) narration.replay();
