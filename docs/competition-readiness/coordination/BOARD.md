@@ -3,6 +3,23 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 91 — local Parent no-code entry complete and released
+
+Updated 2026-09-13T09:55:52.367766+00:00. Contract56c9063, runtime42eb809 on the same shared branch.
+All exact source/test/spec/report allocations in revision90, including the four additional stale
+assertion files, are RELEASED. Helpers0, descendants0, owned browser/jobs0. User Metro62701/8082
+was neither stopped nor restarted. Other sessions' source/audio/status files remain unstaged.
+
+New-family and repair entry no longer request a code. Stale verification URL returns to chooser
+without authority; final replacement review and cancellation remain. Arabic390x844 and English
+320x740 actual controls/Enter/Back/chooser passed. Optional Remember stays unchecked in details.
+TypeScript/lint/format passed. Initial full suite2110pass/4obsolete expectations; corrected44tests
+passed with maxWorkers1 and corrected-file lint passed. No final full-suite rerun is claimed.
+Default test pool accidentally used default workers; wrapper stopped, pool already completed.
+Native/human acceptance NOT RUN; no Supabase project still blocks hosted two-install messaging.
+Report ../workstreams/parent-no-code-entry.md; evidence output/competition-readiness/
+parent-no-code-20260913/. No new UI, assets, flags, dependencies, push or deployment authorized.
+
 ## Revision 90 — remove local Parent verification step
 
 Updated 2026-09-13T09:46:05.460286+00:00; current415f0c4, same shared branch.
@@ -25,6 +42,15 @@ lane then own isolated browser on existing62701/8082; no Metro restart/second pr
 Acceptance: direct local setup with no requested/auto-submitted fake code; no early Parent authority,
 family writes or replacement consent bypass; cancel/Child return preserved; stale URL safely redirects;
 actual AR/EN controls and focused regressions. Other status/media/source edits preserved.
+
+Revision90 checkpoint: local staging helper released its three paths; helpers0. Lead source now
+removes OTP UI and preserves final review. Type/lint/format pass. One default-worker full suite
+completed with2110pass/4superseded source assertions; all new behavioral tests passed. Lead grants
+these exact additional assertion files: tests/access/local-family-profile-repair.test.ts,
+tests/access/r003-returning-family-entry.test.ts, tests/platform/r003-first-run-experience.test.ts,
+tests/presentation/r003-screen-flow.test.ts. No runtime expansion; update only obsolete OTP/retired
+screen expectations. Remaining retest explicitly maxWorkers1, then own browser8082. Default pool
+was unintentionally unbounded; wrapper stopped, pool had already completed; no other job interrupted.
 
 ## Revision 89 — Parent account chooser integrated and released
 
