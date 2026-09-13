@@ -2,7 +2,16 @@
 
 Sole live writer: `D-NB1-20260912T0122Z-root`. Prior D instance completed/released and paused for A's checkpoint; r25 explicitly resumes status writes. A alone stages canonical coordination.
 
-## Current NB1 snapshot — released, status writes paused
+## Current task — Child reference brief complete, implementation assignment pending
+
+- UTC 2026-09-12T16:28:02.742645+00:00; same sole D-NB1-20260912T0122Z-root, board75, ACK A221–226/B108/C current reference-inspection release. D085 pause ended at c1741cc; status writes resumed.
+- Per direct shared-directory decision recorded by A/C/B, D now uses `/home/smyk/projects/Ghaf`, shared branch `redesign/ui-experiments`, inspected HEAD7454d27f348c8a88e344e6d79362dcc26f9903a4/runtime0da7237. No branch/index/source change. Existing dirty STATUS-B/STATUS-C and untracked docs/SMAC 2026 preserved; old QA worktree untouched.
+- New direct user request selects dailoz-app-vektora-studio and edulive-learning-app-concept-atiqur-rahaman for Child screens, especially dashboard: clear/simple/modern navigation/layout/type/hierarchy. D read-only reference/source intake COMPLETE in D087; no new A runtime/evidence/helper/browser grant yet. Only own STATUS-D writable; do not take a source boundary from this proposal.
+- Both originals and C's completed13-document parsed catalog reused without extraction/executing template code. D viewed both saved overview PNGs and current Child dashboard/landscape/task/header/garden source. Reference licensing unestablished: adapt layout/component ideas using Ghaf assets/fonts/tokens, no imported source/art/branding.
+- Prior D evidence fully integrated/released. New0da7237 onboarding results are attributed A226151files1995tests; old98be865 poster evidence not promoted. A retains Metro366844/8081 andADB15824, no D preview/device/heavy action.
+- Helpers0/jobs0. D086/D087 await A exact implementation owner/source/contract and D review/evidence paths. No current expected producer or eligible D source task; brief complete and source unchanged. Actual native/human/rehearsals remain unpassed. RequestedAstra/Ultra/Fast vs observable earlierleadAstra/xhigh/fast retained, effective serving unexposed.
+
+## Historical D085 released snapshot — pause ended at c1741cc
 
 - UTC 2026-09-12T13:43:26.658742+00:00; sole instance D-NB1-20260912T0122Z-root, board71, ACK throughA219/B104/C090. STATUS WRITES PAUSED underA219 afterD085 below; A maystage/inspect/commit this exact acknowledgedsnapshot. Resume onlyafterA releasespause/newactivation; all numberedoutboxesretained.
 - QA `/home/smyk/projects/Ghaf-qa-rehearsal`, branch `redesign/native-qa-20260912`, HEADb9b0f8f1bafe2e21f61af0bad6aa5e4316f97ecd,parentb99a656. Cleanworktree/index. No productsource/source-sync/device action.
@@ -821,3 +830,65 @@ Capture checkpoint 2026-09-12T12:42:49.348394+00:00: C080 before source4b685438 
 84. **D-NB1-20260912T0122Z-084 → A/C/B — FINAL QA COMMIT / COMPLETE FILE RELEASE.** 2026-09-12T13:43:26.658742+00:00. Exactb9b0f8f1bafe2e21f61af0bad6aa5e4316f97ecd,parentb99a6563823e5f5f978c090e8b5806ef4c01d8a2, ONLYd-native-acceptance.md +118/-1. Scopedformat/diff/stagedchecks0, configuredidentitycommit0, QAclean/indexempty. IncludesC090final49identityreceipt, completeboundedAR/ENStory/matrixhelperresults+actualprompts/rejections, D083correctedPRINT001/002closureandnative/humanlimits. AllDreport/ignoredcompletedposter/script/test/helper/joballocations RELEASED forAintegration. No hiddenjobs/sourceedits; directpsC207767absent,A225406+retainedADB15824alive. ExactPRINTbf086859/PNG8872eb6freadyforAfilehandoff; editablefontportabilitynotpassed. NoAPK/device/native/humanrehearsalpass,0/10. Integrationorderb99a656thenb9b0f8f iffirstnotyetapplied; do notresyncproductsource. Alloldfailedreceiptsremain.
 
 85. **D-NB1-20260912T0122Z-085 → A — ACK A219 / STATUS WRITES PAUSED.** 2026-09-12T13:43:26.658742+00:00. Cohesivefinalreportcomplete/releasedD084, no dirtypaths/helpers/jobs. ExplicitlyACKA219 and PAUSE DSTATUSwrites now; A maystage/inspect/commit this acknowledgedcanonicalSTATUS-D snapshot. AalonewritesBOARD/masterrecords/coordinationGitstage. RetainnumberedoutboxesandreceivedACKhistory. No nextelegibleDtask/activeAPKproducer; plannedresumablepause, notnativeacceptance. OwnstatuswriterandA-retainedADB15824boundaryonlyremain; allfinishedfilesreleased. AwaitAstatusreactivation/futureexactcandidate/resourcegrant before newwrite/test/deviceoperation.
+
+86. **D-NB1-20260912T0122Z-086 → A/C — USER SELECTED DAILOZ + EDULIVE CHILD REFACTOR.** 2026-09-12T16:28:02.742645+00:00. ResumedD/sharedcanonical7454d27/board75, allotherdirtyfilespreserved. Directuserrequest: mimic designs/components appropriately from dailoz-app-vektora-studio and edulive-learning-app-concept-atiqur-rahaman into Childscreens,especiallydashboard; clearer/simple/modern layout/type/hierarchy/navigation. D viewed bothCcatalogpreviews and dashboardcomponentcode; read-onlybrief underway. Pleasepublishexactpresentationcontract/implementationownership (recommendC UI; A routes/sharedintegration) and D review/evidence/helper/browsergrant. Suggested firstsourceboundary ChildTodayLandscape/ChildTodayTaskCard/ChildHomeHeader/ChildGardenProgressCard, routecomposition A app/child/index.tsx, then existingtaskHero/checklist/footer ifselected; notblanketChilddirectory. Currentbiglandscape+screenTitle-on-everysection pushestask/actionbelowfold; Dailozcompacttask/stateanatomy+Edulivehorizontalillustratedcards/finite-stepsequence fitexistingjourney. Preservebotanicalidentity,Alexandria/Readex,Arabicfirst,role/profileisolation,allaward/safety/help wording,counterauthorities/default-offflags. No fake taskcounts, filters/calendar,courseenrollment,livechat or copiedunlicensedassets. NoDproductsourceedit or self-assignedhelper/runtimejob; nextconcretebriefinownoutbox, implementationrequestpendingAactivation.
+
+87. **D-NB1-20260912T0122Z-087 → A/C — CONCRETE CHILD REFACTOR BRIEF / IMPLEMENTATION REQUEST.** 2026-09-12T16:29:45.940346+00:00.
+
+Direct reference inspection completed without importing source/assets. Exact local source identities:
+Dailoz Sketch0378541c2cb9175f04ba53d72e0b2ede5cdd31042d86f16eaf7b5067cd7c3870,
+Home0512C301-0E46-4CEB-958B-F29FD231AEC1 and DetailTask7CA888CF-65A2-4CC8-8A64-2A285D9D82EA;
+Edulive Sketch708c5ed1cefd38847a87d7261c58c572a4f7ff0897f292fa442062e51a15267c,
+MyClassroom8645A217-CDB1-42CC-8411-D21016ADA2A5 and Details9C1A4ACB-88C8-4F97-833B-427DE7531C16.
+Sources/previews/parsed layerdata are in released C output/competition-readiness/sketch-inspection-20260912-c/.
+D compared98be865..7454d27 for app/child/index.tsx and src/components/r002a/child: no source differences,
+so prior dashboard image can explain this unchanged boundary with attribution; no new browser pass.
+Initial scalar/list catalog-inspection TypeError corrected by reading boards list; no source mutation.
+
+**Recommended implementation, existing behavior only:**
+1. Compact profile/help header and short greeting. Replace the large full-width Today landscape block
+   with a small approved botanical thumbnail beside the greeting; landscape remains prominent on Garden.
+2. Put Current task immediately next. One clear card: textual state/category, approved task title,
+   effort and fixed award after confirmation, full adult/safety and permitted-help wording, then one
+   state-appropriate primary action. Smaller-task-before-acceptance remains a visible secondary action.
+   Preserve all existing choose/start/resume/waiting/retry/recognized/empty and Alya-no-task states.
+3. Use Dailoz's compact task/state hierarchy and Edulive's horizontal illustrated-card anatomy,
+   adapted with forest/sage/paper Ghaf tokens. No copied purple/orange theme, referencefonts or art.
+   Show actual Seeds as a modest labelled value; no invented completed/pending/cancelled statistics.
+4. Garden becomes a quiet secondary progress card with its current authority/target and existing link.
+   Preserve Today/Garden/League three-tab destinations, obvious active state and visible text labels;
+   no centered plus button, calendar, search, new tabs or nonfunctional category/filter controls.
+5. Carry the same hierarchy into chosen/active task views using Edulive's finite-step row rhythm:
+   numbered existing steps, full Parent-approved instruction, existing completion/check/help controls.
+   Avoid play icons suggesting audio or videos where no corresponding supported action exists.
+6. Clear type roles: one page heading, smaller section/task headings, Readex body/control text;
+   reuse approved Alexandria/Readex tokens, generous Arabic line heights, consistent16/24-ish existing
+   spacing scale, restrained surface radii and sparse dividers. Reduce decorative space before reducing
+   readable type. At narrow/large-text widths stack metadata and let long instructions grow naturally.
+
+**Proposed source ownership for A to grant:** C initial dashboard slice ONLY
+src/components/r002a/child/ChildTodayLandscape.tsx, ChildTodayTaskCard.tsx, ChildHomeHeader.tsx,
+ChildGardenProgressCard.tsx; A owns app/child/index.tsx route composition/shared exports/resources if
+needed. Grant exact later TaskHero/TaskPlanCard/TaskChecklist/TaskActionFooter paths separately for
+consistent detail screens. No blanket directory grant. D own review report/ignored comparison paths
+and one read-only helper need explicit assignment; D remains independent reviewer, not product editor.
+
+**Acceptance to bind to exact integrated candidate:** actual C/D before/after AR/EN390 and320;
+first normal dashboard view prioritizes approved task and next action, no hero dominating the viewport;
+all safety/help/award text remains available before acceptance, no truncation or overlap, all controls
+>=48 target; large-text/mixed-script/reduced-motion and missing-illustration fallbacks recorded;
+Salem/Alya/Parent isolation, same accepted+12/help/no-loss/idempotency and separate counters retained;
+no new network/storage/permission/flags. Native RTL/touch/TalkBack/Back/font-scale remain separate
+hardware gates. One serialized meaningful-candidate check batch, no current D app/test/browser job.
+
+Actual AI contribution is this inspected-reference/source-to-component brief. Rejected ideas: importing
+Dailoz's four productivity counts/cancel pressure, Edulive's enrollment/attendance/chat/course breadth,
+copying unlicensed illustration/font/source, hiding required safety to fit, new collapsible behavior
+without contract, presenting browser comparisons as native/human acceptance. Named student/UI review
+pending. Current user selection of both references is explicit; do not ask them to choose those again.
+
+D read-only intake COMPLETE; no app/source changes. A225/226 last runtime producer released; new
+Child implementation is NOT RUN until A publishes owner/paths/contract/resources. D086/D087 pendingACK.
+Only STATUS-D held, helpers/jobs0; A Metro366844 andADB preserved. Sharedroot7454d27/board75 cursor.
+
+88. **D-NB1-20260912T0122Z-088 → A/C — READ-ONLY BRIEF HANDOFF / EXACT RESUME GATE.** 2026-09-12T16:30:29.133385+00:00. D087complete and readyforimplementationplanning: referencesactuallyviewed, sourceboundaries/behaviorlimits/AR-ENacceptance mapped. No grantedDdurableevidence/productfilewritten; onlyownSTATUS-D updated. SharedGitstill7454d27 with B/C/status/userSMACdirtypreserved; no source/index/commit/browser/test/device/package/action. No helperstartedwithoutgrant; helpers/jobs0. AlloldDallocationsreleased, onlystatuswriterheld; Apreview366844/ADB15824untouched. Currentboard75/A226explicitlyreleasespriorproducer and selectsnonewsourcework. Blocker is AexactChildimplementation/reviewassignment, not referencefiles/useraestheticchoice/hardware. ResumeA withD086/D087 thenassignedCimplementation+Dindependentreview on publishedcandidate; filesalonecannotwakeendedsessions. Currentturnendsatconcretebriefhandoff, UIrefactorNOTRUN and nofullnativeclaim.

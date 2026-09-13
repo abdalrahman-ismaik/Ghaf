@@ -3,6 +3,95 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Publication checkpoint — all sessions paused, 2026-09-13
+
+The user explicitly confirmed all other editing sessions are paused and authorized
+root to finalize all latest changes, update README and push the current branch.
+This checkpoint supersedes earlier active-job descriptions for this handoff without
+rewriting their historical evidence. README `b2902a1`, CE1 catalog `3b58e95` and
+Arabic v2 narration `6913c52` are committed. All source/helper boundaries are released.
+Final TypeScript, zero-warning lint, formatting, 167 files / 2,269 tests and repository
+checks passed. Web static export passed with Expo's shutdown warning. Physical
+Android, new browser/human review and live-service gates remain NOT RUN.
+Root owns only the final documentation checkpoint and normal push to
+`origin/redesign/ui-experiments`; no main merge, force-push or deployment.
+See [the publication record](../workstreams/repository-publication-20260913.md).
+
+## Revision 104 — CE1 focused regression and final UI lane
+
+2026-09-13T14:30:28.907192+00:00. Helper released all7 test files, A owns final corrections/formatting.
+Same one helper now read-only completion/authority seam review, no edits/jobs/descendants. A sole
+checker runs16 focused files maxWorkers1 after full-suite failures; source+fixture corrections
+preserve immutable completed history and deny malicious provider results. Next same A browser lane
+on existing user Metro62701/8082, no new server. Personal active-child builder and transient context
+clear corrections included. Exact source grants unchanged; no outside status/source writes.
+Native/human reviews remain NOT RUN; no live task synchronization or service deployment.
+
+## Revision 103 — regression repairs and explicit fixture migration
+
+Full suite:2181 passed/76 failed. Some failures expose real P0 reentry/approval regressions; others
+assert the superseded sole-task/shared-projection contract or seed incomplete prototype snapshots.
+Lead repairs application state and preserves P0 idempotency. One helper receives exact TEST-ONLY
+write grant: tests/helpers/prototypeStore.ts; tests/tasks/{child-task-flow,parent-check-in-flow,
+reward-matrix}.test.ts; tests/growth/{r002b-reveal-store-integration,r002b-general-stage-archive}.test.ts;
+tests/ai/child-ai-presentation.test.ts. Migrate explicit fixtures to complete collection/profile
+state and real approved CE1 zero-growth occurrences before malicious-provider tampering. Retain
+all denial assertions; do not weaken them or replace completed history with a rewound occurrence.
+No helper app writes/jobs/browser/commits/descendants. Lead owns tests/tasks/{parent-task-flow.test.ts,
+child-approved-instruction.test.tsx}, tests/presentation/{parent-dashboard-presentation.test.tsx,
+r002a-behavior-characterization.test.ts,r002a-child-task-presentation.test.ts},
+tests/demo/demo-entry-store.test.ts, tests/ai/profile-task-recommendations.test.ts,
+tests/family/family-connections.test.tsx for explicit CE1 contract assertion updates only.
+Same single serialized check/browser lane; native/human NOT RUN. No weakening existing guards.
+
+## Revision 102 — source checks active; exact integration corrections
+
+Screen-clarity source committed6ea6412 and released. A now owns the released
+app/child/index.tsx and ChildTodayLandscape.tsx CE1 personal-progress seam; retain its clarity edits.
+First catalog check:108 cases,43 passed/65 failed; five shared causes identified (conditional kind,
+optional-only allowed-action metadata, non-sharp safety matching, Child navigation clearing of voice
+context, P0 test grammar). A additionally owns src/features/assistants/childVoiceController.ts for
+permission-preserving task-context clearing after authorized navigation, not new voice capability.
+A owns new catalog tests and all helper-released source. One helper temporarily read-only reviews
+historical receipt/reveal failures; no helper writes/jobs. A alone runs serialized maxWorkers1 checks
+then browser. External check ended; browser closed. Native/human remain NOT RUN.
+
+Check checkpoint: all108 catalog cases and current typecheck PASSED after shared-cause fixes.
+Full existing regression suite running one worker; helper messaging_backend receives one bounded
+READ-ONLY legacy-domain failure triage (logs/source only, no writes/jobs/descendants). Lead owns
+all released source corrections. Clarity Parent Home missing-declaration issue fixed. Await full
+result before deciding which existing contracts require code repair versus obsolete fixtures.
+
+## Revision 101 — browser release; final source integration
+
+Screen-clarity released its owned browser and reported a Parent Home integration exception.
+A restored the accidentally removed parentWelcomeUpdates declaration in its own Parent route.
+Its three presentation source files remain HELD until that writer's scoped commit/release.
+A grants itself additionally src/features/growth/bootstrap.ts for exact previously-committed
+receipt reentry and personal-landscape projection (required by CE1; no new unlock policy).
+An external tsc job283245 is running: no duplicate checker/test/browser starts while it runs.
+After that job and domain helper release, A resumes the serialized check lane, maxWorkers1,
+then one bounded browser using existing Metro62701/8082. No helper jobs or additional helper.
+
+## Revision 100 — CE1 integration seams, source-only checkpoint
+
+Updated 2026-09-13T14:11:20.687390+00:00. Contract bd79169 is committed. Same one-helper budget,
+no descendants; heavy/browser/check allocations remain serialized and await screen-clarity release.
+Grant messaging_backend additionally src/features/rewards/approvalReveal.ts: this independent
+receipt/reentry boundary still reads future phase/template-only routine keys and global landscape
+state. Align it with CE1 immutable accepted awards and personal receipt replay; preserve fail-closed
+result-bundle reconciliation. No other reward/badge/League policy file grant.
+Lead exact new catalog UI directory and catalog-execution.test.ts remain board99-owned. Source
+syntax-only inspection passed; behavior/typecheck/browser not yet run, no acceptance inferred.
+The active screen-clarity writer is explicitly asked to release Child Today and browser when done;
+its source and browser remain protected. Resume cursor in ignored CE1 PROGRESS.md.
+
+CE1 follow-up: lead connected the approved task list through the already granted
+ChildTodayTaskCard.tsx component. No app/child/index.tsx edits needed for that connection.
+Child Today landscape teaser still awaits its active owner release to align its personal
+landscape numbers; full Garden route uses the profile-owned map and separate shared canopy.
+Browser lane release remains pending. No claim of runtime validation yet.
+
 ## Revision 99 — C115/C116 accepted; complete24 catalog execution CE1
 
 Updated 2026-09-13T13:59:55.961534+00:00, baseline 4ec358fc561feacc6b3ec4956f8c1b0ef85c4384. A acknowledges C115/C116 and the user's repeated

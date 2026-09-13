@@ -1,5 +1,26 @@
 # Team Ownership
 
+## Repository publication — 2026-09-13
+
+Owner: root publication session. The user explicitly requested an updated README
+with the selected logo and current information, followed by an appropriate push of
+all latest changes, and confirmed that all other editing sessions are paused.
+Root now owns final integration, validation, focused corrections, staging and
+committing the pending files captured in `output/publication-20260913/initial-status.txt`.
+Additional exact documentation boundaries: `README.md`, this reservation,
+`docs/competition-readiness/workstreams/repository-publication-20260913.md` and an
+additive final publication entry in the existing coordination board. Preserve all
+historical status content, attribution, private inputs and ignored build outputs.
+One read-only helper reviews the CE1 authority seams; no helper writes or descendants.
+Root runs one serialized check lane. The authorized remote action is a normal push
+to `origin/redesign/ui-experiments`; no main merge, force-push or deployment is selected.
+The initial branch baseline is `bc21189`. README `b2902a1`, catalog `3b58e95` and
+narration `6913c52` are committed. All source checks, 167 files / 2,269 tests,
+repository checks and web export passed; Expo retained its shutdown warning.
+Source/helper/check boundaries are released. Root retains only the final publication
+checkpoint and authorized branch push. Native, human and live-service validation
+remain NOT RUN; the publication report preserves exact evidence and initial failures.
+
 ## Root documentation cleanup — 2026-09-13
 
 Owner: root repository-maintenance session, direct user authorization to move unnecessary root
