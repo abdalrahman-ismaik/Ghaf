@@ -1,197 +1,282 @@
-# Ghaf — غاف
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/ghaf/ghaf-mark-reverse.svg" />
+    <img src="assets/brand/ghaf/ghaf-mark-full-color.svg" alt="Ghaf: three family figures beneath a Ghaf tree canopy" width="176" />
+  </picture>
+</p>
 
-Ghaf is an Arabic-first Parent–Child family routine prototype for SMAC 2026. A Parent prepares a
-safe, age-appropriate task; a Child completes it with permitted help; the Parent confirms it and
-gives specific praise; eligible acquisition work earns fixed symbolic Seeds and grows a shared UAE
-living garden.
+<h1 align="center">Ghaf — غاف</h1>
 
-> This is a competition MVP, not a production child-data service. It uses one synthetic household,
-> deterministic local providers, and visibly prepared assistant/media fixtures. It requires no API
-> key, account, backend, camera, microphone, or real Child information.
+<p align="center">
+  <strong>Arabic-first family routines that grow connection, confidence, and sustainable habits.</strong>
+</p>
 
-## Current status
+<p align="center">
+  SMAC 2026 competition prototype · Expo · React Native · Android-first · Arabic RTL + English LTR
+</p>
 
-Feature 003 Revision 3 is the active product direction, with implementation integrated on `main`.
-Feature 004 adds independently gated bounded AI text/voice adapters; Feature 005 adds local
-remembered-device access. The clean R002a head `0501cf3` remains the frozen behavioral baseline,
-and the six divergent local commits remain unapplied provenance.
+Ghaf helps a Parent turn an everyday routine into one clear, age-appropriate task. A Child can
+choose the task, complete it with permitted help, and ask for bounded coaching. After the Parent
+gives specific praise and confirms the action, eligible acquisition work earns the displayed
+symbolic Seeds and grows that Child's UAE-inspired landscapes. A separate family canopy records
+eligible cooperative progress.
 
-R001 and R002a remain frozen regression baselines and the fallback when an R002b flag is off. The
-R002b Growth Journey, badges, learning, Parent Progress, additive Shared Growth, private League, and
-Reveal candidates are implemented behind independent default-off flags without changing the
-canonical task or existing reward behavior.
+> **Prototype boundary:** The repeatable competition journey uses synthetic profiles, local task
+> state and prepared assistance. Optional adult login, AI and family-messaging integrations have separate
+> configuration and validation gates. This repository does not establish production readiness,
+> payment processing or measured environmental impact.
 
-> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
->
-> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+## Latest updates — September 2026
 
-R002b release activation remains blocked until the applicable native, bilingual, accessibility,
-content, provenance, privacy, and named-human gates pass. Code-native candidate screens and passing
-local tests do not activate release flags.
+- **New Ghaf identity:** the selected [5A Refined Classic logo](docs/design/brand/5a-refined-classic/README.md)
+  brings three family figures beneath one canopy, with matching app icons and botanical UI.
+- **Complete task catalog:** 24 curated tasks across eight categories now have Parent review,
+  approved occurrences, Child completion and recognition flows. Recognition-only tasks earn no
+  Seeds; eligible catalog tasks retain their fixed 4, 6 or 8 Seed awards. The separate recycling
+  demonstration retains its 12 Seed award.
+- **Personal growth:** each Child has their own task history and landscapes, alongside the shared
+  family canopy. Switching Children or tasks preserves the correct approval and progress context.
+- **Clearer entry and onboarding:** six botanical introduction pages lead to separate Parent and
+  Child experiences. Arabic onboarding uses the six supplied v2 recordings with a text-only fallback.
+- **Bounded communication foundation:** an isolated family-messaging client, server permission
+  rules and task-focused helper presentation are implemented. Live service and two-device
+  acceptance remain separate from the local task demonstration.
+- **Separate adult login pilot:** real adult Supabase accounts, email-code flows and administrator
+  approval protect an isolated synthetic sample. The default authentication mode remains `demo`;
+  hosted activation still requires direct delivery, account-flow and device evidence.
+- **Confirmed local recovery:** corrupt saved demo-family data offers a separate explicit reset
+  confirmation; temporary storage failures offer non-destructive retry. Valid families retain
+  the Parent-only reset boundary.
 
-| Area                 | Current evidence                                                                                                                                                                    |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | R001/R002a are frozen fallbacks; all 12 indexed R002b code-native surfaces exist behind default-off flags                                                                           |
-| Automated checks     | Exact commands and current results are recorded in the [maintainer audit](docs/audits/2026-09-11-maintainer-audit.md); older counts belong to their dated checkpoints               |
-| Web preview          | Eight nonblocked R002b surfaces have Arabic/English responsive evidence from 320 to 768 pixels; private League is implemented with partial responsive evidence                      |
-| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks still require a connected configured device                       |
-| Remaining work       | Approval Reveal has authoritative receipts; station-132 Learning, live-provider activation, physical Android, and named-human review remain gated; see the audit for open decisions |
-| Production readiness | **No** — the MVP remains local, synthetic, feature-flagged, and release-activation blocked                                                                                          |
+The [catalog execution contract](specs/013-parent-task-workspace/contracts/catalog-execution.md),
+[narration record](docs/competition-readiness/workstreams/c-v2-narration.md) and
+[messaging specification](specs/016-real-family-messaging/spec.md) document the exact boundaries.
 
-The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md), with the bounded R002a
-results in the [R002a validation evidence](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md).
-A browser or source pass does not count as native-device or human-review evidence.
+## Evidence and remaining gates
 
-## Run and test locally
+Feature 003 Revision 3 remains the product foundation. R001/R002a retain their frozen
+behavioral baseline at `0501cf3`; R002b surfaces keep independent default-off flags.
+Feature 004 owns gated bounded AI text/voice adapters, and Feature 005 owns local remembered access.
 
-Use one of the following two paths. Install dependencies once with `npm ci` before working offline.
+| Area                          | Evidence boundary                                                                                                                                                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maintainer and recovery fixes | The [maintainer audit](docs/audits/2026-09-11-maintainer-audit.md) and [completion review](docs/audits/2026-09-13-repository-completion.md) retain their dated checks, browser evidence and limitations.               |
+| Growth Journey                | All 12 indexed R002b code-native surfaces exist behind their flags; responsive evidence varies by surface. Approval Reveal has authoritative receipts, while station-132 Learning and release activation remain gated. |
+| Physical acceptance           | Web observations and Android JavaScript exports do not pass physical-device, TalkBack, native Back/IME, safe-area, OS font-scale or named-human review.                                                                |
+| Adult account pilot           | The [pilot validation record](specs/006-real-parent-pilot/validation.md) distinguishes local implementation and saved SMTP configuration from external delivery, hosted flows and native acceptance.                   |
+| Production readiness          | Not established. Optional providers retain their own activation gates; the default competition journey remains synthetic and deterministic.                                                                            |
 
-### Offline web testing
+## Product screens
 
-From the repository root:
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/parent-home-ar.png" alt="Arabic Parent Home screen" width="240" />
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/child-today-ar.png" alt="Arabic Child Today task screen" width="240" />
+    </td>
+    <td align="center" width="33%">
+      <img src="docs/screenshots/family-garden-ar.png" alt="Arabic Family Garden screen" width="240" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Parent Home</strong><br />Prepare and review the next task.</td>
+    <td align="center"><strong>Child Today</strong><br />Choose, understand, and complete it with help.</td>
+    <td align="center"><strong>Family Garden</strong><br />Recognize confirmed progress without loss or pressure.</td>
+  </tr>
+</table>
+
+<p align="center"><sub>Earlier Arabic RTL captures from the local synthetic competition build; preserved as dated presentation evidence.</sub></p>
+
+## The Ghaf experience
+
+```text
+Parent prepares and approves a task
+  → Child chooses, completes, or asks for help
+  → Parent gives specific praise, then confirms the observable action
+  → eligible acquisition work awards the displayed Seeds exactly once
+  → permanent personal landscapes and eligible family-canopy growth
+```
+
+| Experience            | What it provides                                                                                   |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| Parent journey        | Family setup, task creation and approval, confirmation, praise, progress, and private reward plans |
+| Child journey         | A separate, age-appropriate Today view with choice, retry, permitted help, and bounded coaching    |
+| Sustainable growth    | 24 curated tasks, eight categories, fixed awards and five personal UAE-inspired landscape tracks   |
+| Family connection     | Private family planning, cooperative canopy growth, and an invite-only synthetic League            |
+| Safe assistance       | Constrained Parent Guide and Child Coach intents with deterministic fallback and safety validation |
+| Accessible foundation | Arabic-first RTL, equivalent English LTR, reduced-motion support, captions, and scalable layouts   |
+
+Ghaf's proposed **Family Plus** model keeps the core experience ad-free and previews one
+household subscription for families with three to six Children. The competition build does not
+process purchases or activate extra profiles; the
+[commercial case](docs/GHAF_PLUS_COMMERCIAL_CASE.md) documents the pricing assumptions, which
+never change a Child's safety, help, rewards, or access.
+
+## Why it is different
+
+- **Family agency first:** the Parent approves tasks and recognition; the Child may choose, ask for
+  help, retry, or use an agreed smaller equivalent.
+- **Growth without punishment:** earned Seeds and garden progress are permanent. There is no debt,
+  loss, dying tree, randomized reward, or speed-based ranking.
+- **AI within clear boundaries:** assistance stays tied to the approved task and cannot diagnose,
+  infer personality or emotion, request secrets, or replace a trusted adult.
+- **Privacy by design:** Parent and Child routes are separate, family rewards stay private, and
+  shared views receive only explicitly eligible coarse events. Live-service security requires
+  separate validation.
+- **Built for its context:** Arabic is the starting language, Android is the authoritative demo
+  platform, and the symbolic garden uses recognizable UAE landscapes.
+
+## Quick start
+
+### Requirements
+
+- Node.js 22.13.0 (the version pinned in `.nvmrc` and CI), or a compatible newer version
+- npm
+- Git
+
+Install the locked dependencies and start the offline web preview:
 
 ```bash
+npm ci
 npm run web -- --offline
 ```
 
-Open the URL printed by Expo, normally `http://localhost:8081`. The app starts in Arabic RTL. Use
-the language switcher for English. This is the quickest visual check, but it does not validate
-native Android behavior.
+Open the URL printed by Expo, normally `http://localhost:8081`. The app starts in Arabic RTL; use
+the language control to switch to English.
 
-### Android Studio and a USB device on Windows
+For an Android Studio emulator or a physical USB device, follow the host-specific SDK, ADB, WSL2,
+and native build instructions in the [development guide](docs/DEVELOPMENT.md). Android device
+testing is authoritative; the web preview does not validate native Back, keyboard, permissions,
+TalkBack, safe areas, or device performance.
 
-1. In Android Studio's SDK Manager, install Android SDK Platform 36, Build-Tools, Platform-Tools,
-   NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the first native build.
-2. Enable Developer options and USB debugging on the Android device, connect it, and accept the
-   device authorization prompt.
-3. Open PowerShell in the Windows checkout, then run:
+### Fast synthetic demo entry
 
-```powershell
-$env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
-$env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
-adb devices
-adb reverse tcp:8081 tcp:8081
-npx expo run:android --device
+For the competition preview, start a separate demo-mode process:
+
+```bash
+EXPO_NO_DOTENV=1 EXPO_PUBLIC_GHAF_DEMO_ENTRY=true npm start
 ```
 
-Select the connected device when prompted. The first native build can take several minutes because
-Gradle compiles and downloads Android tooling; later builds reuse its cache. For later UI-only
-sessions, keep the device connected and rerun the same commands.
+Fresh entry shows the original six-page onboarding, followed by the **Parent** and **Child**
+choices. Parent opens the synthetic Parent experience; Child lets the operator choose **Salem**
+or **Alya** without credentials. Each choice uses the existing role controller. Sign out and choose
+another profile to continue the same task within the running app. Restarting starts a fresh demo;
+independent phones do not synchronize. Demo repositories use isolated memory and do not replace
+an ordinary locally configured family. Without this flag, the local Parent account chooser and
+Child pairing paths remain in use. Local Parent account selection requires no verification code;
+it is prototype access, separate from real messaging authentication.
 
-To inspect the current default-off R002b screens in either path, create an ignored `.env.local`
-containing:
+Arabic onboarding selects the supplied v2 narration. Use the speaker control when a browser
+requires an explicit playback gesture. English demo narration remains silent; the ordinary
+English onboarding retains its prepared v1 clips. Unavailable audio never blocks navigation.
+Pronunciation, transcript parity and physical-device listening still require human review.
+For the standalone internal Android build, use the pinned local toolchain and exact-source
+receipt procedure in the [Android guide](docs/competition-readiness/android-build-and-rehearsal.md).
+A web preview is not an installable APK or evidence of physical-phone acceptance.
 
-```dotenv
-EXPO_PUBLIC_R002B_PROGRESSION_ENGINE=true
-EXPO_PUBLIC_R002B_IMPACT_PATH_UI=true
-EXPO_PUBLIC_R002B_BADGES_UI=true
-EXPO_PUBLIC_R002B_LEARNING_UI=true
-EXPO_PUBLIC_R002B_PARENT_PROGRESS_UI=true
-EXPO_PUBLIC_R002B_SHARED_GROWTH_VIEW=true
-```
+## Verification
 
-Leave `EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2` and
-`EXPO_PUBLIC_R002B_SHARED_GROWTH_CONTRIBUTION` unset. Those flows remain fail-closed while their
-release evidence is incomplete. Restart Expo after changing `.env.local`.
-
-## Verify the repository
-
-Run the complete repeatable local gate:
+Run the complete repeatable repository gate:
 
 ```bash
 npm run verify
 ```
 
-It runs TypeScript, lint, formatting, all Vitest suites, Expo dependency alignment, and a static web
-export. The export is written to ignored `dist/`; it is a build artifact, not source evidence.
+| Command                | Purpose                                                        |
+| ---------------------- | -------------------------------------------------------------- |
+| `npm test`             | Run deterministic domain, service, state, and flow tests       |
+| `npm run repo:check`   | Validate navigation, test locations and tracked-artifact rules |
+| `npm run typecheck`    | Check strict TypeScript                                        |
+| `npm run lint`         | Run Expo ESLint                                                |
+| `npm run format:check` | Check maintained source and documentation formatting           |
+| `npm run build:web`    | Produce the ignored static web export in `dist/`               |
 
-Useful verification commands:
+Automated checks do not replace physical Android, accessibility, media, or human-review evidence.
+The current auditable product gate status is recorded in the [demo runbook](docs/competition-readiness/DEMO_RUNBOOK.md).
+The [GitHub workflow](.github/workflows/ci.yml) runs the same source checks and a web export;
+[workflow runs](https://github.com/abdalrahman-ismaik/Ghaf/actions/workflows/ci.yml) record hosted
+results for each pushed commit. See the [test guide](tests/README.md) for focused commands.
 
-| Command                | Purpose                                                   |
-| ---------------------- | --------------------------------------------------------- |
-| `npm test`             | Run deterministic domain, service, state, and flow tests  |
-| `npm run test:watch`   | Run tests in watch mode                                   |
-| `npm run typecheck`    | Check strict TypeScript                                   |
-| `npm run lint`         | Run Expo ESLint                                           |
-| `npm run format:check` | Check maintained source and developer-document formatting |
-| `npm run build:web`    | Produce the ignored static web export in `dist/`          |
-| `npm run verify`       | Run the complete repository gate                          |
+## Architecture
 
-These automated tests do not replace Android, accessibility, media, or human acceptance checks.
-
-## Demonstrate the P0 loop
-
-The canonical judge flow is:
-
-```text
-Parent creates and reviews a Green Impact task
-  → Child chooses, starts, uses bounded Coach help, and submits
-  → Parent confirms and presents specific praise
-  → a separate continuation awards exactly 12 Seeds once
-  → Mangrove reaches 60/60, canopy reaches 20/25, circle reaches 12/12
-```
-
-Use [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md) for the exact bilingual route sequence and expected values.
-To reset manually, enter Parent mode, open a Parent route, choose **Reset demo** in the top prototype
-bar, and confirm. The app returns to `/` in Arabic RTL with the canonical synthetic baseline.
-
-## Architecture at a glance
+Ghaf uses one Expo/React Native application with TypeScript, Expo Router, Tamagui, Zustand, Zod,
+and Arabic/English resources. Alexandria and Readex Pro provide the shared typography. Thin routes
+call reusable components and provider-neutral services; domain rules own approval, awards and
+privacy. Every required competition path has a resettable deterministic provider.
 
 ```text
 app/ routes
   → src/components/ + src/design/ + src/i18n/
-  → src/state/usePrototypeStore.ts application commands
-  → src/features/ pure task/reward/garden/circle/assistant policy
+  → src/state/usePrototypeStore.ts
+  → src/features/ domain and assistant policy
   → src/services/interfaces/ provider-neutral contracts
   → src/services/mock/ deterministic providers and fixtures
 ```
 
-| Path              | Responsibility                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------ |
-| `app/`            | Thin Expo Router route composition and navigation                                                |
-| `src/components/` | Shared UI primitives and Family Growth presentation components                                   |
-| `src/design/`     | Design tokens and semantic visual roles                                                          |
-| `src/features/`   | Pure bounded domain policy and lifecycle logic                                                   |
-| `src/i18n/`       | Arabic/English interface resources and direction utilities                                       |
-| `src/models/`     | Strict Feature 003 domain and session contracts                                                  |
-| `src/services/`   | Provider-neutral interfaces, registry, and deterministic local providers                         |
-| `src/state/`      | One resettable in-memory application session and guarded commands                                |
-| `tests/`          | Domain, service, state, privacy, safety, reset, and complete-flow tests                          |
-| `specs/`          | Versioned Spec Kit records for Features 001–003                                                  |
-| `docs/`           | Documentation index, architecture guidance, development guide, and preserved Feature 002 history |
+| Path              | Responsibility                                                        |
+| ----------------- | --------------------------------------------------------------------- |
+| `app/`            | Expo Router screens and navigation                                    |
+| `src/components/` | Shared UI and Family Growth presentation                              |
+| `src/features/`   | Task, reward, garden, privacy, and assistant rules                    |
+| `src/services/`   | Contracts, provider registry, and deterministic local implementations |
+| `src/state/`      | Application commands and exact prototype reset                        |
+| `src/i18n/`       | Arabic/English resources and direction utilities                      |
+| `workers/`        | Bounded AI/MCP gateway and separate family-messaging backend          |
+| `tests/`          | Domain, safety, privacy, reset, and complete-flow verification        |
 
-For boundaries, dependency direction, data ownership, and failure behavior, read
-[Architecture](docs/architecture/ARCHITECTURE.md).
+### AI and database integrations
 
-## Documentation map
+The team describes Ghaf's project architecture as an **Expo/React Native app → backend API →
+Gemini AI**, with an **MCP server** for approved tools and **Firebase** as the database. The
+[latest poster handoff](docs/competition-readiness/workstreams/ghiraas-inspired-poster.md)
+uses that architecture.
 
-- [Documentation index](docs/README.md) — where active contracts, historical records, and evidence
-  belong.
-- [Product contract](PRODUCT.md) — users, behavior, reward/garden rules, AI jobs, and P0 scope.
-- [Design contract](DESIGN.md) and [design direction](DESIGN_DIRECTION.md) — system rules and visual
-  north star.
-- [Research basis](RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale.
-- [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — truthful capability boundaries.
-- [Active Feature 003 specification](specs/003-family-growth-garden/spec.md) — normative feature
-  requirements and acceptance criteria.
-- [Feature 003 release gates](specs/003-family-growth-garden/design-intake/release-gate.md) — frozen
-  R001 boundary, authorized R002a compatibility scope, and blocked R002b expansion.
-- [Revision 3 reconciliation package](specs/003-family-growth-garden/design-intake/revision-3-proposal/REVISION_3_DECISION_BRIEF.md)
-  — non-canonical provenance and unresolved R002 design evidence.
-- [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow.
+Repository evidence has a narrower scope: the [AI/MCP gateway](workers/ghaf-ai-gateway/README.md)
+is a default-off reference implementation, and the default assistant registry uses prepared
+responses. Gemini/Firebase deployment and end-to-end operation are not verified by the local
+demo or its screenshots. The separately specified [family-messaging service](workers/ghaf-family-messaging/README.md)
+uses Supabase Auth and PostgreSQL; it does not synchronize task, Seed or landscape state.
+The independently gated [adult login pilot](specs/006-real-parent-pilot/spec.md) also uses
+Supabase Auth, with server-owned administrator approval and memory-only sample-family progress.
+Its [setup guide](docs/backend/parent-pilot.md) records configuration and activation requirements.
 
-## Safety and scope boundaries
+Local family settings use SQLite-backed key/value storage on native and browser storage on web.
+Competition task progress remains process-local: restarting is not durable recovery.
+
+See the [architecture guide](docs/architecture/ARCHITECTURE.md) for dependency direction, data
+ownership, and failure behavior, and the [repository map](docs/architecture/REPOSITORY_STRUCTURE.md)
+for the complete folder structure and placement rules.
+
+## Documentation
+
+The [root-file guide](docs/architecture/PUBLIC_REPOSITORY.md) explains the cleaned root and
+relocated documents. [AI assistance and team review](docs/AI_ASSISTANCE.md) records the disclosure
+boundary and links to the detailed contribution history.
+
+- [Documentation index](docs/README.md) — engineering, product, and evidence map
+- [Product contract](docs/PRODUCT.md) — users, lifecycle rules, commercial preview, and P0 scope
+- [Design contract](docs/DESIGN.md) and [design direction](docs/design/DESIGN_DIRECTION.md) — visual and interaction
+  rules
+- [Research basis](docs/product/RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale
+- [Development guide](docs/DEVELOPMENT.md) — setup, USB device workflow, reset, and troubleshooting
+- [Prototype limitations](docs/product/PROTOTYPE_LIMITATIONS.md) — explicit capability and evidence boundaries
+- [Demo runbook](docs/competition-readiness/DEMO_RUNBOOK.md) — judge journey, expected values, and validation status
+- [Poster handoff](docs/competition-readiness/workstreams/ghiraas-inspired-poster.md) — latest editable poster and architecture revision
+- [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow
+
+## Safety and truthfulness
 
 - Parent approval is required before assignment and before Seeds or symbolic growth.
 - Seeds are fixed, nonfinancial, permanent, and never deducted.
-- The Child Coach is bounded to the approved task; no age band receives unrestricted chat.
+- No Child age band receives unrestricted chat, live background listening, or hidden analysis.
 - Prepared assistants disclose that they may be wrong and direct hazards to a trusted adult.
-- Cross-household views receive only coarse eligible Green Impact events—never Child identity,
-  Seeds, task records, notes, reflection, or media.
-- Symbolic garden growth is not a claim that real trees were planted or environmental impact was
-  measured.
-- Live AI, production authentication/storage, real Child data/media, public ranking, payments,
-  analytics, notifications, and deployment infrastructure are outside P0.
+- Symbolic garden growth does not claim that a real tree was planted or that environmental impact
+  was measured.
+- Real payments, public ranking, analytics and notifications are outside the competition build.
+- Optional adult login, server AI and real family messaging remain subject to their own activation and evidence
+  gates; their presence in source does not establish deployment or production child-data protection.
 
-Do not place provider secrets in `EXPO_PUBLIC_*` variables or the mobile bundle. The implemented P0
-path is deterministic and local.
+Never place provider secrets in `EXPO_PUBLIC_*` variables or the mobile bundle. The complete
+competition path remains deterministic and available offline.

@@ -63,10 +63,18 @@ import {
 } from '../../features/tasks/demoContent';
 import { transitionTaskLifecycle } from '../../features/tasks/lifecycle';
 import {
+  initializeProfileLandscapes,
+  isTaskOccurrenceIdentity,
+  landscapesForChild,
+  routineProgressKey,
+} from '../../features/tasks/assignmentInstances';
+import {
   matchesCanonicalP0TaskContent,
   isDescriptiveTaskPraise,
   validateOptionalTaskReflection,
   validateTaskForReview,
+  validateCatalogTaskAuthority,
+  validateTaskSubmissionPolicy,
   validateTaskTemplate,
 } from '../../features/tasks/validation';
 import type {
@@ -258,6 +266,13 @@ function validateApprovedJourneyLinks(journey: TaskJourney): ServiceResult<TaskJ
   }
   const validatedTask = validateTaskForReview(journey.task);
   if (!validatedTask.ok) return { ok: false, error: validatedTask.error };
+  if (
+    journey.task.id !== P0_RECYCLING_TEMPLATE.id &&
+    TASK_TEMPLATES.some((template) => template.id === journey.task.templateId)
+  ) {
+    const catalog = validateCatalogTaskAuthority(journey.task);
+    if (!catalog.ok) return catalog;
+  }
   const submission = journey.submission;
   const checkIn = journey.checkIn;
   const presentationHasRecordedPraise =
@@ -290,6 +305,22 @@ function validateApprovedJourneyLinks(journey: TaskJourney): ServiceResult<TaskJ
       'INVALID_TRANSITION',
       'The assignment no longer matches the approved task, Child, and version',
     );
+  }
+  if (
+    journey.task.occurrence &&
+    (assignment.id !== journey.task.occurrence.assignmentId ||
+      !isTaskOccurrenceIdentity(journey.task.occurrence, journey.task))
+  )
+    return failure('INVALID_RESPONSE', 'Assignment occurrence authority is invalid');
+  if (journey.submission) {
+    const policy = validateTaskSubmissionPolicy(journey.task, journey.submission);
+    if (!policy.ok) return policy;
+    if (
+      journey.task.occurrence &&
+      assignment.id !== 'assignment_recycling_p0_v1' &&
+      journey.submission.id !== `submission:${assignment.id}:attempt:${journey.submission.attempt}`
+    )
+      return failure('INVALID_RESPONSE', 'Submission identity is not bound to its occurrence');
   }
   if (
     journey.submission &&
@@ -328,6 +359,26 @@ function cloneTemplate(template: TaskTemplate): TaskTemplate {
       aftercare: template.safety.aftercare ? { ...template.safety.aftercare } : null,
     },
     privacyNotice: { ...template.privacyNotice },
+    ...(template.catalogExecution
+      ? {
+          catalogExecution: {
+            ...template.catalogExecution,
+            steps: template.catalogExecution.steps.map((step) => ({
+              ...step,
+              text: { ...step.text },
+              condition: step.condition ? { ...step.condition } : null,
+            })),
+            confirmationPraise: { ...template.catalogExecution.confirmationPraise },
+            permittedHelpPraise: { ...template.catalogExecution.permittedHelpPraise },
+            smallerAlternative: template.catalogExecution.smallerAlternative
+              ? { ...template.catalogExecution.smallerAlternative }
+              : null,
+            safeEquivalent: template.catalogExecution.safeEquivalent
+              ? { ...template.catalogExecution.safeEquivalent }
+              : null,
+          },
+        }
+      : {}),
   };
 }
 
@@ -360,12 +411,28 @@ export class DeterministicTaskService implements TaskService {
     if (template.id === P0_RECYCLING_TEMPLATE.id && input.childId !== 'child_salem') {
       return failure('INVALID_INPUT', 'The sole executable P0 recycling fixture is bound to Salem');
     }
+    if (
+      input.occurrence &&
+      (!input.childProfile ||
+        input.childProfile.id !== input.childId ||
+        !template.childAgeBands.includes(input.childProfile.ageBand))
+    )
+      return failure('INVALID_INPUT', 'The actual Child profile must be eligible for this task');
+    if (
+      input.routinePhase === 'maintenance' &&
+      (template.recognitionMode !== 'fade_first' || template.recurrence !== 'recurrent')
+    )
+      return failure(
+        'INVALID_INPUT',
+        'Only reviewed recurrent routines may enter future maintenance',
+      );
 
     const task: Task = {
       id:
-        template.id === P0_RECYCLING_TEMPLATE.id
+        input.occurrence?.taskId ??
+        (template.id === P0_RECYCLING_TEMPLATE.id
           ? template.id
-          : `task_${template.id.toLowerCase()}_v1`,
+          : `task_${template.id.toLowerCase()}_v1`),
       version: 1,
       templateId: template.id,
       targetChildId: input.childId,
@@ -374,9 +441,21 @@ export class DeterministicTaskService implements TaskService {
       content: {
         ...cloneTemplate(template),
         positiveAction: { ...input.parentText },
+        ...(input.routinePhase === 'maintenance'
+          ? { routinePhase: 'maintenance' as const, displayedSeedAward: null }
+          : {}),
       },
       origin: 'synthetic',
+      ...(input.occurrence
+        ? { occurrence: { ...input.occurrence }, approvedAgeBand: input.childProfile!.ageBand }
+        : {}),
     };
+    if (task.occurrence && !isTaskOccurrenceIdentity(task.occurrence, task))
+      return failure('INVALID_INPUT', 'Occurrence identity does not match the selected task');
+    if (task.occurrence && template.catalogExecution) {
+      const canonical = validateCatalogTaskAuthority(task, input.childProfile);
+      if (!canonical.ok) return canonical;
+    }
     return success({ lifecycle: 'draft', task, assignment: null, submission: null, checkIn: null });
   }
 
@@ -495,11 +574,22 @@ export class DeterministicTaskService implements TaskService {
     return success({ task: journey.task, warnings: [] });
   }
 
-  approveAssignment(journey: TaskJourney): ServiceResult<AssignmentApprovalResult> {
+  approveAssignment(
+    journey: TaskJourney,
+    childProfile?: Parameters<TaskService['approveAssignment']>[1],
+  ): ServiceResult<AssignmentApprovalResult> {
     if (journey.lifecycle !== 'reviewed') {
       return failure('INVALID_TRANSITION', 'Parent approval requires a reviewed task');
     }
-    if (
+    const catalog =
+      journey.task.content.catalogExecution !== undefined &&
+      journey.task.id !== P0_RECYCLING_TEMPLATE.id;
+    if (catalog) {
+      if (!childProfile)
+        return failure('INVALID_INPUT', 'Catalog approval requires the actual Child age');
+      const canonical = validateCatalogTaskAuthority(journey.task, childProfile);
+      if (!canonical.ok) return canonical;
+    } else if (
       journey.task.templateId !== P0_RECYCLING_TEMPLATE.id ||
       journey.task.content.id !== P0_RECYCLING_TEMPLATE.id ||
       journey.task.targetChildId !== 'child_salem'
@@ -519,19 +609,32 @@ export class DeterministicTaskService implements TaskService {
     if (!transition.ok) return { ok: false, error: transition.error };
     const assignment = {
       id:
-        journey.task.id === P0_RECYCLING_TEMPLATE.id
+        journey.task.occurrence?.assignmentId ??
+        (journey.task.id === P0_RECYCLING_TEMPLATE.id
           ? 'assignment_recycling_p0_v1'
-          : `assignment_${journey.task.id}`,
+          : `assignment_${journey.task.id}`),
       taskId: journey.task.id,
       taskVersion: journey.task.version,
       childId: journey.task.targetChildId,
       approvedByParent: true as const,
-      approvalSequence: 1,
+      approvalSequence:
+        journey.task.id === P0_RECYCLING_TEMPLATE.id ? 1 : (journey.task.occurrence?.sequence ?? 1),
       createdAt: FEATURE_003_TIMESTAMP,
     };
     return success({
       journey: { ...journey, lifecycle: transition.data.lifecycle, assignment },
-      executableChoice: { ...P0_EXECUTABLE_CHOICE, childId: journey.task.targetChildId },
+      executableChoice:
+        journey.task.id === P0_RECYCLING_TEMPLATE.id
+          ? { ...P0_EXECUTABLE_CHOICE, childId: journey.task.targetChildId }
+          : {
+              id: `choice:${assignment.id}`,
+              childId: journey.task.targetChildId,
+              taskTemplateId: journey.task.templateId,
+              approvalState: 'parent_approved_fixture',
+              demoAvailability: 'catalog_executable',
+              origin: 'prepared',
+              assignmentId: assignment.id,
+            },
     });
   }
 
@@ -576,6 +679,8 @@ export class DeterministicTaskService implements TaskService {
     if (!linked.ok) return linked;
     const assignment = journey.assignment;
     if (!assignment) return failure('INVALID_TRANSITION', 'An assignment is required');
+    const submissionPolicy = validateTaskSubmissionPolicy(journey.task, input);
+    if (!submissionPolicy.ok) return submissionPolicy;
     if (
       input.preparedMediaFixtureId !== null &&
       !PREPARED_MEDIA_FIXTURES.some((item) => item.id === input.preparedMediaFixtureId)
@@ -606,7 +711,10 @@ export class DeterministicTaskService implements TaskService {
       ...journey,
       lifecycle: transition.data.lifecycle,
       submission: {
-        id: `submission_recycling_p0_v1_attempt_${attempt}`,
+        id:
+          assignment.id === 'assignment_recycling_p0_v1'
+            ? `submission_recycling_p0_v1_attempt_${attempt}`
+            : `submission:${assignment.id}:attempt:${attempt}`,
         assignmentId: assignment.id,
         taskVersion: journey.task.version,
         attempt,
@@ -926,7 +1034,10 @@ export class DeterministicRecognitionService implements RecognitionService {
       }
       return success({ disposition: 'pending_praise', plan: existingPlan });
     }
-    if (journey.lifecycle !== 'submitted' || !isDescriptiveTaskPraise(input.praise)) {
+    if (
+      journey.lifecycle !== 'submitted' ||
+      !isDescriptiveTaskPraise(input.praise, journey.task, journey.submission?.completionMode)
+    ) {
       return failure(
         'INVALID_INPUT',
         'Submitted work and descriptive bilingual praise are required',
@@ -991,7 +1102,7 @@ export class DeterministicRecognitionService implements RecognitionService {
       Date.parse(action.presentedAt) < Date.parse(plan.checkIn.createdAt) ||
       plan.journey.lifecycle !== 'confirmed' ||
       plan.checkIn.confirmationPresentation !== 'editing_praise' ||
-      !isDescriptiveTaskPraise(plan.praise)
+      !isDescriptiveTaskPraise(plan.praise, plan.journey.task, submission.completionMode)
     ) {
       return failure('INVALID_TRANSITION', 'A valid Parent praise-presentation press is required');
     }
@@ -1064,13 +1175,15 @@ export class DeterministicRecognitionService implements RecognitionService {
       return { ok: false, error: transition.error };
     }
 
-    const existingRoutineProgress = session.routineProgressByTask?.[journey.task.id] ?? null;
+    const routineKey = routineProgressKey(journey.task);
+    const existingRoutineProgress = session.routineProgressByTask?.[routineKey] ?? null;
     const recurringFadeFirst =
       journey.task.content.recognitionMode === 'fade_first' &&
       journey.task.content.recurrence === 'recurrent';
-    const effectiveRoutinePhase = recurringFadeFirst
-      ? (existingRoutineProgress?.futurePhase ?? journey.task.content.routinePhase)
-      : journey.task.content.routinePhase;
+    const effectiveRoutinePhase =
+      recurringFadeFirst && !journey.task.occurrence
+        ? (existingRoutineProgress?.futurePhase ?? journey.task.content.routinePhase)
+        : journey.task.content.routinePhase;
     const confirmedAcquisitionCount =
       recurringFadeFirst && effectiveRoutinePhase === 'acquisition'
         ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0) + 1
@@ -1108,7 +1221,8 @@ export class DeterministicRecognitionService implements RecognitionService {
     const seedAmount = policy.data.seedAmount;
     const child = session.children[journey.task.targetChildId];
     if (!child) return failure('INVALID_RESPONSE', 'Assigned synthetic Child is missing');
-    const landscape = session.landscapeProgress[journey.task.content.landscapeId];
+    const personalLandscapes = landscapesForChild(session, journey.task.targetChildId);
+    const landscape = personalLandscapes[journey.task.content.landscapeId];
     const growth = seedAmount === null ? null : planLandscapeGrowth({ landscape, seedAmount });
     if (growth && !growth.ok) return { ok: false, error: growth.error };
 
@@ -1126,7 +1240,7 @@ export class DeterministicRecognitionService implements RecognitionService {
           };
     const phaseReview = policy.data.phaseReview
       ? {
-          taskId: journey.task.id,
+          taskId: routineKey,
           confirmedAcquisitionCount: 3 as const,
           options: policy.data.phaseReview.options,
           selected: null,
@@ -1154,6 +1268,12 @@ export class DeterministicRecognitionService implements RecognitionService {
         familyRewardEligible: isFamilyRewardRecognitionEligible(journey),
         challengeLeafEligible:
           selectPrivateLeagueRecognitionEligibility(journey)?.challengeLeafEligible === true,
+        ...(journey.task.occurrence && journey.task.id !== P0_RECYCLING_TEMPLATE.id
+          ? { routineKey }
+          : {}),
+        ...(journey.task.occurrence
+          ? { recognitionSequence: Object.keys(session.recognitionLedger).length + 1 }
+          : {}),
       },
       seedTransaction,
       landscapeGrowth: growth?.data ?? null,
@@ -1164,7 +1284,7 @@ export class DeterministicRecognitionService implements RecognitionService {
 
     const nextRoutineProgress = recurringFadeFirst
       ? {
-          taskId: journey.task.id,
+          taskId: routineKey,
           confirmedAcquisitionCount,
           futurePhase:
             existingRoutineProgress?.futurePhase ??
@@ -1182,6 +1302,21 @@ export class DeterministicRecognitionService implements RecognitionService {
         confirmationPresentation: 'recognition_applied',
       },
     };
+    const updatedPersonal = growth?.data
+      ? {
+          ...personalLandscapes,
+          [growth.data.landscapeId]: {
+            landscapeId: growth.data.landscapeId,
+            cumulativeSeeds: growth.data.seedsAfter,
+            stage: growth.data.stageAfter,
+            nextThreshold: nextThresholdForSeeds(growth.data.seedsAfter),
+          },
+        }
+      : personalLandscapes;
+    const profileLandscapes =
+      session.landscapeProgressByChild || journey.task.occurrence
+        ? { ...initializeProfileLandscapes(session), [child.id]: updatedPersonal }
+        : undefined;
     const nextSession: PrototypeSession = {
       ...session,
       household: projection.data.canopyContribution
@@ -1200,17 +1335,10 @@ export class DeterministicRecognitionService implements RecognitionService {
           }
         : session.children,
       journey: recognizedJourney,
-      landscapeProgress: growth?.data
-        ? {
-            ...session.landscapeProgress,
-            [growth.data.landscapeId]: {
-              landscapeId: growth.data.landscapeId,
-              cumulativeSeeds: growth.data.seedsAfter,
-              stage: growth.data.stageAfter,
-              nextThreshold: nextThresholdForSeeds(growth.data.seedsAfter),
-            },
-          }
-        : session.landscapeProgress,
+      landscapeProgress: profileLandscapes
+        ? profileLandscapes[session.activeChildId]
+        : updatedPersonal,
+      ...(profileLandscapes ? { landscapeProgressByChild: profileLandscapes } : {}),
       circleGoal: projection.data.circleEvent
         ? applyCircle(session.circleGoal, projection.data.circleEvent)
         : session.circleGoal,
@@ -1221,7 +1349,7 @@ export class DeterministicRecognitionService implements RecognitionService {
       routineProgressByTask: nextRoutineProgress
         ? {
             ...(session.routineProgressByTask ?? {}),
-            [journey.task.id]: nextRoutineProgress,
+            [routineKey]: nextRoutineProgress,
           }
         : session.routineProgressByTask,
       celebration: { available: seedAmount !== null, consumed: false },

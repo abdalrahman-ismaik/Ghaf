@@ -3,13 +3,7 @@ import { useReducedMotion } from 'react-native-reanimated';
 
 import { SuccessSheet } from '@/components/access';
 import { Text } from '@/components/primitives';
-import {
-  colors,
-  r001Radii,
-  spacing,
-  type LayoutDirection,
-  type TypographyLanguage,
-} from '@/design/tokens';
+import { botanical, spacing, type LayoutDirection, type TypographyLanguage } from '@/design/tokens';
 
 export interface TaskCreatedSuccessSheetProps {
   visible: boolean;
@@ -89,9 +83,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   consequence: {
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },

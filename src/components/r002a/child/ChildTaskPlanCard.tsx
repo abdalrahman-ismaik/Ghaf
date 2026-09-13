@@ -1,8 +1,8 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 import type { ChildTaskCheckpoint } from './ChildTaskChecklist';
@@ -15,11 +15,12 @@ interface ChildTaskPlanCardProps {
 
 export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCardProps) {
   const formatter = new Intl.NumberFormat(direction === 'rtl' ? 'ar-AE' : 'en-AE');
+  const isWeb = Platform.OS === 'web';
 
   return (
     <View style={styles.card} testID="child-task-plan">
       <View style={[styles.heading, { flexDirection: logicalRowDirection(direction) }]}>
-        <GhafIcon color={colors.ghafEmerald} name="calendar" size={24} />
+        <GhafIcon color={botanical.colors.forest} name="calendar" size={24} />
         <Text
           brand
           color="deepForest"
@@ -33,12 +34,19 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
       <View style={styles.steps}>
         {steps.map((step, index) => (
           <View
-            accessibilityLabel={`${formatter.format(index + 1)}. ${step.title}. ${step.detail}`}
-            accessible
+            accessibilityLabel={
+              isWeb ? undefined : `${formatter.format(index + 1)}. ${step.title}. ${step.detail}`
+            }
+            accessible={!isWeb}
             key={step.id}
             style={[styles.step, { flexDirection: logicalRowDirection(direction) }]}
           >
-            <View style={styles.number}>
+            <View
+              accessibilityElementsHidden={!isWeb}
+              aria-hidden={isWeb ? undefined : true}
+              importantForAccessibility={isWeb ? undefined : 'no-hide-descendants'}
+              style={styles.number}
+            >
               <Text
                 align="center"
                 brand
@@ -50,7 +58,12 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
                 {formatter.format(index + 1)}
               </Text>
             </View>
-            <View aria-hidden style={styles.copy}>
+            <View
+              accessibilityElementsHidden={!isWeb}
+              aria-hidden={isWeb ? undefined : true}
+              importantForAccessibility={isWeb ? undefined : 'no-hide-descendants'}
+              style={styles.copy}
+            >
               <Text brand color="deepForest" direction={direction} variant="label">
                 {step.title}
               </Text>
@@ -67,14 +80,8 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
 
 const styles = StyleSheet.create({
   card: {
-    gap: spacing.lg,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
-    padding: spacing.lg,
-    ...r001Shadows.soft,
+    gap: botanical.space.row,
+    paddingVertical: botanical.space.small,
   },
   heading: {
     alignItems: 'center',
@@ -90,6 +97,7 @@ const styles = StyleSheet.create({
   step: {
     alignItems: 'flex-start',
     gap: spacing.md,
+    paddingVertical: botanical.space.small,
   },
   number: {
     width: 48,
@@ -97,8 +105,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: botanical.radius.control,
+    backgroundColor: botanical.colors.sage,
   },
   copy: {
     flex: 1,

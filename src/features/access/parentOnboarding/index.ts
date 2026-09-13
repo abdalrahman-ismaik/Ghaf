@@ -6,6 +6,7 @@ export {
 } from './controller';
 export {
   createInitialParentOnboardingDraft,
+  isChildProfileComplete,
   normalizeParentIdentifier,
   PARENT_VERIFICATION_CODE,
   toAccessLanguagePreference,

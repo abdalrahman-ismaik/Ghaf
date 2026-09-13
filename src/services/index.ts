@@ -1,3 +1,5 @@
+import { entryMode } from '../config/demoEntry';
+import { createFamilyMessaging } from '../features/familyMessaging';
 import {
   createFeature003ServiceRegistry,
   DeterministicFamilyLeagueService,
@@ -9,9 +11,11 @@ import { createSupabaseParentAccountService } from './accounts';
 import type { ParentAccountService } from '../models/parentAccount';
 import type { Feature003ServiceRegistry } from './interfaces';
 import {
+  createAmbientAudioPreferencesRepository,
+  createMemoryLocalKeyValueStorage,
   createDeviceAccessRepository,
   createLocalFamilyRepository,
-  createMemoryLocalKeyValueStorage,
+  createSavedTaskTemplateRepository,
   deviceLocalStorage,
 } from './local';
 
@@ -93,25 +97,32 @@ export {
 } from './mock/boundedAiFixtures';
 export { PARENT_GUIDE_FIXTURE, PARENT_SUMMARY_FIXTURE, PREPARED_PRAISE } from './mock/fixtures';
 export {
+  createAmbientAudioPreferencesRepository,
   createLocalFamilyRepository,
   createDeviceAccessRepository,
   createMemoryLocalKeyValueStorage,
   LEGACY_LOCAL_FAMILY_STORAGE_KEY,
   LOCAL_FAMILY_STORAGE_KEY,
+  OLDEST_LOCAL_FAMILY_STORAGE_KEY,
   type LocalFamilyRepository,
+  type SavedTaskTemplateRepository,
   type LocalKeyValueStorage,
 } from './local';
 
 // Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
 export const pilotSampleEnabled = getPilotConfig().enabled;
-const sampleLocalStorage = pilotSampleEnabled
-  ? createMemoryLocalKeyValueStorage()
-  : deviceLocalStorage;
+const repositoryStorage =
+  pilotSampleEnabled || entryMode === 'demo'
+    ? createMemoryLocalKeyValueStorage()
+    : deviceLocalStorage;
 
 export const serviceRegistry: Feature003ServiceRegistry & {
   readonly createParentAccountService: () => ParentAccountService | null;
+  readonly familyMessaging: ReturnType<typeof createFamilyMessaging>;
+  readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
+  readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
 } = {
   ...createFeature003ServiceRegistry(),
   createParentAccountService() {
@@ -124,8 +135,11 @@ export const serviceRegistry: Feature003ServiceRegistry & {
       publishableKey: config.supabasePublishableKey,
     });
   },
-  deviceAccess: createDeviceAccessRepository(sampleLocalStorage),
-  localFamily: createLocalFamilyRepository(sampleLocalStorage),
+  familyMessaging: createFamilyMessaging(),
+  ambientAudioPreferences: createAmbientAudioPreferencesRepository(repositoryStorage),
+  deviceAccess: createDeviceAccessRepository(repositoryStorage),
+  localFamily: createLocalFamilyRepository(repositoryStorage),
+  savedTaskTemplates: createSavedTaskTemplateRepository(repositoryStorage),
 };
 
 // Each mounted gate owns a fresh lazy service and disposes it on final unmount.

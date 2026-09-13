@@ -1,9 +1,20 @@
 import { forwardRef, type ReactNode } from 'react';
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { YStack } from 'tamagui';
+import { BotanicalPressable as Pressable } from '@/components/botanical';
+import { nativeViewStyles } from '@/design/nativeStyles';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Text } from '@/components/primitives';
-import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
+import {
+  botanical,
+  colors,
+  layout,
+  logicalRowDirection,
+  opacity,
+  r001Radii,
+  spacing,
+} from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 
 export function R003Hero({
@@ -20,13 +31,13 @@ export function R003Hero({
   title: string;
 }) {
   return (
-    <View style={styles.hero}>
+    <View style={[styles.hero, { flexDirection: logicalRowDirection(direction) }]}>
       <View style={styles.heroIcon}>
         <GhafIcon color={colors.ghafEmerald} direction={direction} name={icon} size={30} />
       </View>
       <View style={styles.heroCopy}>
         <Text
-          align="center"
+          align="start"
           brand
           color="deepForest"
           direction={direction}
@@ -36,7 +47,7 @@ export function R003Hero({
           {title}
         </Text>
         <Text
-          align="center"
+          align="start"
           brand
           color="onSurfaceVariant"
           direction={direction}
@@ -62,14 +73,14 @@ export function R003Section({
   title?: string;
 }) {
   return (
-    <View style={[styles.section, style]} testID={testID}>
+    <YStack {...nativeViewStyles([styles.section, style])} testID={testID}>
       {title ? (
         <Text brand color="deepForest" variant="screenTitle">
           {title}
         </Text>
       ) : null}
       {children}
-    </View>
+    </YStack>
   );
 }
 
@@ -217,38 +228,40 @@ export function R003Status({
 
 const styles = StyleSheet.create({
   hero: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: spacing.lg,
-    paddingVertical: spacing.lg,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.lg,
   },
   heroIcon: {
-    width: 72,
-    height: 72,
+    width: 48,
+    height: 48,
+    flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.control,
+    backgroundColor: botanical.colors.sage,
   },
   heroCopy: {
     maxWidth: layout.readableContentWidth,
-    alignItems: 'center',
+    minWidth: 0,
+    flex: 1,
     gap: spacing.xs,
   },
   section: {
-    overflow: 'hidden',
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
-    padding: spacing.lg,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingTop: botanical.space.section,
+    paddingBottom: spacing.sm,
   },
   actionRow: {
     minHeight: 72,
     alignItems: 'center',
     gap: spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
-    paddingVertical: spacing.sm,
+    borderBottomColor: botanical.colors.line,
+    paddingVertical: spacing.md,
   },
   rowIcon: {
     width: 44,
@@ -256,8 +269,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.lg,
-    backgroundColor: colors.mangroveTealTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.sage,
   },
   rowCopy: {
     minWidth: 0,
@@ -274,12 +287,12 @@ const styles = StyleSheet.create({
     height: 10,
     overflow: 'hidden',
     borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.sageStrong,
   },
   progressFill: {
     height: '100%',
     borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forest,
   },
   progressFillLtr: { alignSelf: 'flex-start' },
   progressFillRtl: { alignSelf: 'flex-end' },

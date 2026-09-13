@@ -34,6 +34,28 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Local generated review, capture, and submission work
+/output/
+/docs/submissions/
+/docs/Ghaf_Official_Logo_and_App_Icon_Pack_v1.0/
+/docs/design/stitch/releases/ghaf-r002/
+/assets/images/access/*/GENERATION_PROMPT*.txt
+
+# Local third-party source packs; reviewed tooling and catalogs are tracked separately
+/assets/opencode-student-bootstrap/
+/assets/external templates and designs/
+
+# Local reference inputs and private working notes; approved assets stay tracked
+/assets/character_companion/
+/docs/SMAC 2026/
+/docs/private/
+
+# Machine-local agent state; shared instructions and assistance records stay tracked
+/.codex/sessions/
+/.codex/logs/
+/.codex/*.local.toml
+/.impeccable/cache/
+
 # Local build credentials and EAS state
 *.jks
 *.p8

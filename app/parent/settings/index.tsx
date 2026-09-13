@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { useRouter, type Href } from 'expo-router';
+import { useNavigationContainerRef, useRouter, type Href } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { PrimaryButton, QuietButton } from '@/components/primitives';
 import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
 import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r003';
+import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-import { replaceHistoryWithEntry } from '@/utils/navigation';
+import { prepareEntryReset } from '@/utils/navigation';
+import { entryMode } from '@/config/demoEntry';
 
 export default function ParentSettingsScreen() {
   const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -21,22 +24,33 @@ export default function ParentSettingsScreen() {
 
   const reset = () => {
     setError(null);
+    const resetNavigation = prepareEntryReset(navigation);
+    if (!resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = resetPrototype();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
     }
-    replaceHistoryWithEntry(router);
+    resetNavigation();
   };
 
   const signOut = () => {
     setError(null);
+    const resetNavigation = entryMode === 'demo' ? prepareEntryReset(navigation) : null;
+    if (entryMode === 'demo' && !resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = signOutExperience();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
     }
-    router.replace('/');
+    if (resetNavigation) resetNavigation();
+    else router.replace('/');
   };
 
   return (
@@ -60,6 +74,9 @@ export default function ParentSettingsScreen() {
       />
       <R003Section title={t('r003.settings.languageTitle')}>
         <LanguageSwitcher compact showGuidance={false} />
+      </R003Section>
+      <R003Section title={t('r003.settings.ambientAudio.sectionTitle')}>
+        <AmbientSoundSetting />
       </R003Section>
       <R003Section>
         <R003ActionRow

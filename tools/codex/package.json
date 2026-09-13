@@ -1,0 +1,16 @@
+{
+  "name": "ghaf-codex-tooling",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated, pinned development-only MCP tools for Ghaf contributors.",
+  "scripts": {
+    "check": "node ../../scripts/tooling/check-mcp.mjs",
+    "check:online": "node ../../scripts/tooling/check-mcp.mjs --online",
+    "browser:install": "node node_modules/playwright/cli.js install firefox"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server-sequential-thinking": "2026.8.31",
+    "@playwright/mcp": "0.0.80"
+  }
+}

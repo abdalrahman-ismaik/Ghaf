@@ -21,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   layout,
   opacity as opacityTokens,
@@ -70,6 +71,7 @@ export function SuccessSheet({
   visible,
 }: SuccessSheetProps) {
   const reducedMotion = useReducedMotion();
+  const isWeb = Platform.OS === 'web';
   const resolvedAnnouncementMessage = announcementMessage ?? message;
   const progress = useSharedValue(visible && reducedMotion ? 1 : 0);
   const announcementRef = useRef<View>(null);
@@ -153,16 +155,18 @@ export function SuccessSheet({
             showsVerticalScrollIndicator={false}
           >
             <View
-              accessibilityLabel={`${title}. ${resolvedAnnouncementMessage}`}
-              accessibilityLiveRegion="polite"
-              accessible
+              accessibilityLabel={isWeb ? undefined : `${title}. ${resolvedAnnouncementMessage}`}
+              accessibilityLiveRegion={isWeb ? undefined : 'polite'}
+              accessible={!isWeb}
+              aria-live={isWeb ? 'polite' : undefined}
               ref={announcementRef}
+              role={isWeb ? 'status' : undefined}
               style={styles.announcement}
             >
               <View
-                accessibilityElementsHidden
-                aria-hidden
-                importantForAccessibility="no-hide-descendants"
+                accessibilityElementsHidden={!isWeb}
+                aria-hidden={isWeb ? undefined : true}
+                importantForAccessibility={isWeb ? undefined : 'no-hide-descendants'}
                 style={styles.visualAnnouncement}
               >
                 <View style={styles.successMark}>
@@ -252,7 +256,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: r001Radii.sheet,
     borderTopRightRadius: r001Radii.sheet,
     borderCurve: 'continuous',
-    backgroundColor: colors.r001Surface,
+    backgroundColor: botanical.colors.paper,
     ...r001Shadows.sheet,
   },
   safeArea: {
@@ -289,7 +293,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
+    backgroundColor: botanical.colors.sage,
     marginBottom: spacing.xs,
   },
   message: {

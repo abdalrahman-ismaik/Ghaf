@@ -10,9 +10,9 @@ safety, or production readiness.
 2. Read the repository's canonical `AGENTS.md`.
 3. Read `.specify/memory/constitution.md` and the active feature's `spec.md`, `plan.md`, and
    `tasks.md`.
-4. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
+4. Read `docs/PRODUCT.md`, `docs/product/RESEARCH_BASIS.md`, and `docs/product/PROTOTYPE_LIMITATIONS.md` for any
    user-facing change.
-5. Check `TEAM_OWNERSHIP.md` and reserve the exact file boundary.
+5. Check `docs/competition-readiness/TEAM_OWNERSHIP.md` and reserve the exact file boundary.
 6. Confirm no person or agent is writing the same file or shared configuration.
 
 Feature 003 is the active approved Spec Kit package. Update its artifacts before changing behavior
@@ -54,7 +54,8 @@ Cross-cutting review: Arabic/culture/safeguarding/accessibility as applicable
 ```
 
 Only the integration owner changes shared app configuration or resolves dependency conflicts.
-At most four agents may run concurrently, with disjoint write scopes.
+Follow the current [shared coordination budget](docs/competition-readiness/coordination/README.md)
+and its board; helper capacity does not replace an explicit file reservation or job allocation.
 
 ## Branch and Commit Discipline
 
@@ -76,6 +77,10 @@ docs: record Arabic Android rehearsal
 
 ## Implementation Conventions
 
+Use the [repository placement rules](docs/architecture/REPOSITORY_STRUCTURE.md) and
+[test directory guide](tests/README.md). Keep canonical product documents and historical evidence
+at their established paths. Place new tests directly in the relevant subject folder.
+
 - Keep Expo Router screens thin and put reusable UI in `src/components/`.
 - Put task, reward, garden, circle, and assistant behavior in bounded feature modules.
 - Consume service interfaces through the central registry; screens never import a concrete remote
@@ -89,6 +94,19 @@ docs: record Arabic Android rehearsal
 - Use code-native SVG and existing libraries before installing a new UI or illustration system.
 - If an optional remote AI provider is approved, keep the secret on a server, validate structured
   output, time out quickly, and fall back within the same attempt.
+
+## Repository Checks and Pull Requests
+
+`npm run repo:check` validates maintained navigation links, test relocation references and tracked
+artifact hygiene. `npm run verify` also runs the existing source checks, tests, Expo compatibility
+check and web export. GitHub uses [the repository workflow](.github/workflows/ci.yml); a local
+workflow file does not mean a hosted run has passed.
+
+Use the PR template to state the concrete change, applicable contract, actual checks and remaining
+evidence gates. Generated exports and raw captures stay in ignored `output/`; intentionally selected
+new screenshots belong in `docs/screenshots/` with source attribution. The historical output
+exception list preserves existing evidence only. Do not add another package, dependency manager,
+license grant or reviewer identity as a cosmetic repository change.
 
 ## Behavioral-Design Review
 
@@ -161,7 +179,7 @@ Back behavior, empty/loading/retry states, and external-service denial.
 
 A source review is not evidence for a native, physical, media, permission, timing, or human-
 comprehension result. Record those as `NOT RUN` or `BLOCKED` until directly observed in
-`DEMO_RUNBOOK.md`.
+`docs/competition-readiness/DEMO_RUNBOOK.md`.
 
 ## Handoff Format
 

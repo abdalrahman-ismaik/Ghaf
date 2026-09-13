@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GhafIcon } from '@/components/access';
 import { Button } from '@/components/primitives';
-import { colors, layout, r001Shadows, spacing, type LayoutDirection } from '@/design/tokens';
+import { botanical, colors, layout, spacing, type LayoutDirection } from '@/design/tokens';
 
 export interface TaskBuilderFooterProps {
   actionLabel: string;
@@ -53,11 +53,10 @@ export function TaskBuilderFooter({
 const styles = StyleSheet.create({
   root: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.surfaceContainerHigh,
+    borderTopColor: botanical.colors.line,
     backgroundColor: colors.r001Surface,
     paddingTop: spacing.md,
     paddingHorizontal: layout.screenPadding,
-    ...r001Shadows.sheet,
   },
   content: {
     width: '100%',

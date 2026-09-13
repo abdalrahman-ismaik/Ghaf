@@ -27,9 +27,6 @@ export default function ParentTaskNewScreen() {
       router.replace('/');
       return;
     }
-    if (journey && journey.lifecycle !== 'draft' && journey.lifecycle !== 'reviewed') {
-      router.replace({ pathname: '/parent', params: { section: 'tasks' } });
-    }
   }, [journey, role, router]);
 
   if (role !== 'parent') {
@@ -39,8 +36,6 @@ export default function ParentTaskNewScreen() {
       </Screen>
     );
   }
-
-  if (journey && journey.lifecycle !== 'draft' && journey.lifecycle !== 'reviewed') return null;
 
   return (
     <ParentTaskComposer

@@ -1,8 +1,17 @@
 import { z } from 'zod';
 
-import type { DomainResult, LocalizedText, Task, TaskTemplate } from '../../models/familyGrowth';
+import type {
+  CompletionMode,
+  DomainResult,
+  LocalizedText,
+  Submission,
+  Task,
+  TaskChildProfile,
+  TaskTemplate,
+} from '../../models/familyGrowth';
 import { evaluateAssistantSafety } from '../assistants/policy';
 import { P0_RECYCLING_TEMPLATE, P0_SAFE_EQUIVALENT_TEMPLATE, TASK_TEMPLATES } from './demoContent';
+import { isTaskOccurrenceIdentity } from './assignmentInstances';
 
 export const TASK_REFLECTION_MAX_LENGTH = 180;
 
@@ -75,10 +84,22 @@ const BOUNDED_ENGLISH_PRAISE =
 const BOUNDED_ARABIC_PRAISE =
   /^(?:(?:لقد\s+)?فرزت\s+(?:الورق|المواد)(?:\s+النظيف(?:ة|ين)?)?(?:\s+القابلة\s+لإعادة\s+التدوير)?\s+و(?:سألت\s+شخص(?:اً|ا)?\s+بالغ(?:اً|ا)?\s+قبل\s+المتابعة|طلبت\s+مساعدة\s+شخص\s+بالغ\s+عند\s+الشك)|لقد\s+فرزت\s+المواد\s+النظيفة\s+القابلة\s+لإعادة\s+التدوير\s+وسألت\s+قبل\s+الذهاب\s+إلى\s+الحاوية؛\s+وهذا\s+جعل\s+المهمة\s+أكثر\s+أماناً\s+وساعد\s+أسرتنا)[.!؟]?$/u;
 
-export function isDescriptiveTaskPraise(praise: LocalizedText): boolean {
+export function isDescriptiveTaskPraise(
+  praise: LocalizedText,
+  task?: Task,
+  completionMode?: CompletionMode,
+): boolean {
   const parsed = localizedTextSchema.safeParse(praise);
   if (!parsed.success) return false;
   const safety = evaluateAssistantSafety({ audience: 'parent', texts: [parsed.data] });
+  const catalog = task?.content.catalogExecution;
+  if (catalog && task?.occurrence) {
+    const permitted =
+      completionMode === 'permitted_help'
+        ? catalog.permittedHelpPraise
+        : catalog.confirmationPraise;
+    return safety.accepted && sameLocalizedText(parsed.data, permitted);
+  }
   return (
     safety.accepted &&
     BOUNDED_ENGLISH_PRAISE.test(parsed.data.en) &&
@@ -110,9 +131,44 @@ export const taskTemplateSchema = z
     circleEligible: z.boolean(),
     privacyNotice: localizedTextSchema,
     origin: z.literal('prepared'),
+    catalogExecution: z
+      .object({
+        revision: z.string().trim().min(1),
+        steps: z
+          .array(
+            z
+              .object({
+                id: z.string().trim().min(1),
+                kind: z.enum(['action', 'optional', 'adult', 'conditional']),
+                text: localizedTextSchema,
+                condition: localizedTextSchema.nullable(),
+              })
+              .strict(),
+          )
+          .min(1),
+        completionScope: z.enum(['one_session', 'parent_observed_period']),
+        confirmationPraise: localizedTextSchema,
+        permittedHelpPraise: localizedTextSchema,
+        smallerAlternative: localizedTextSchema.nullable(),
+        safeEquivalent: localizedTextSchema.nullable(),
+      })
+      .strict()
+      .optional(),
   })
   .strict()
   .superRefine((template, context) => {
+    const steps = template.catalogExecution?.steps;
+    if (
+      steps &&
+      (new Set(steps.map((step) => step.id)).size !== steps.length ||
+        steps.some((step) => (step.kind === 'conditional') !== (step.condition !== null)))
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['catalogExecution'],
+        message: 'Reviewed steps require unique IDs and explicit conditional text',
+      });
+    }
     if (CATEGORY_LANDSCAPES[template.categoryId] !== template.landscapeId) {
       context.addIssue({
         code: 'custom',
@@ -261,7 +317,7 @@ export function validateOptionalTaskReflection(
 }
 
 const HAZARDOUS_ENGLISH_INSTRUCTION =
-  /\b(?:carry|take|bring|move|sort|collect|gather|place|bag|dispose|throw|pick\s*up|touch|handle|repair)\b.{0,55}\b(?:glass|sharps?|batter(?:y|ies)|chemicals?|medicine|unknown\s+waste|electrical\s+(?:item|wire|device))\b/iu;
+  /\b(?:carry|take|bring|move|sort|collect|gather|place|bag|dispose|throw|pick\s*up|touch|handle|repair)\b.{0,55}\b(?:glass|(?<!non-)sharps?|batter(?:y|ies)|chemicals?|medicine|unknown\s+waste|electrical\s+(?:item|wire|device))\b/iu;
 const HAZARDOUS_ARABIC_INSTRUCTION =
   /(?:احمل|خذ|انقل|افرز|اجمع|ضع|تخلّص|التقط|المس|تعامل|أصلح).{0,55}(?:الزجاج|أداة\s+حادّة|أدوات\s+حادّة|بطارية|بطاريات|مادة\s+كيميائية|مواد\s+كيميائية|دواء|أدوية|نفايات\s+مجهولة|عنصر\s+كهربائي)/iu;
 const PROHIBITED_HAZARD_NOUNS_ENGLISH =
@@ -410,6 +466,72 @@ export function matchesCanonicalP0TaskContent(
   return sameStructuredValue(comparable, P0_RECYCLING_TEMPLATE);
 }
 
+export function validateCatalogTaskAuthority(
+  task: Task,
+  childProfile?: TaskChildProfile,
+): DomainResult<Task> {
+  const canonical = TASK_TEMPLATES.find((template) => template.id === task.templateId);
+  if (
+    !canonical?.catalogExecution ||
+    !task.occurrence ||
+    !isTaskOccurrenceIdentity(task.occurrence, task) ||
+    task.content.id !== canonical.id ||
+    task.acceptedGuideFixtureId !== null ||
+    !task.approvedAgeBand ||
+    !canonical.childAgeBands.includes(task.approvedAgeBand) ||
+    (childProfile &&
+      (childProfile.id !== task.targetChildId || childProfile.ageBand !== task.approvedAgeBand))
+  )
+    return unsafeTask(
+      'Catalog execution requires its reviewed definition, occurrence and actual Child age',
+    );
+  const accepted =
+    task.content.routinePhase === 'maintenance' &&
+    canonical.recognitionMode === 'fade_first' &&
+    canonical.recurrence === 'recurrent'
+      ? { ...canonical, routinePhase: 'maintenance', displayedSeedAward: null }
+      : canonical;
+  if (
+    !sameStructuredValue(task.content, accepted) ||
+    !sameLocalizedText(task.parentOriginalText, canonical.positiveAction)
+  )
+    return unsafeTask(
+      'Catalog content and accepted consequences must match the complete reviewed definition',
+    );
+  return { ok: true, data: task };
+}
+
+export function validateTaskSubmissionPolicy(
+  task: Task,
+  input: Pick<
+    Submission,
+    'completionMode' | 'helpUsed' | 'preparedMediaFixtureId' | 'reflection' | 'observableFacts'
+  >,
+): DomainResult<true> {
+  if (task.content.evidencePolicy === 'none' && input.preparedMediaFixtureId !== null)
+    return unsafeTask('This task does not accept prepared media');
+  if (task.content.reflectionPolicy === 'none' && input.reflection !== null)
+    return unsafeTask('This task does not accept a reflection');
+  if (task.content.catalogExecution && task.occurrence) {
+    if (
+      input.completionMode === 'independent'
+        ? input.helpUsed !== null
+        : input.completionMode !== 'permitted_help' ||
+          input.helpUsed === null ||
+          !sameLocalizedText(input.helpUsed, task.content.permittedHelp)
+    )
+      return unsafeTask('Completion mode must truthfully identify the agreed help');
+    const permittedFacts = [task.content.definitionOfDone, task.content.positiveAction];
+    if (
+      input.observableFacts.some(
+        (fact) => !permittedFacts.some((allowed) => sameLocalizedText(fact, allowed)),
+      )
+    )
+      return unsafeTask('Facts must describe only this reviewed task');
+  }
+  return { ok: true, data: true };
+}
+
 export function validateTaskForReview(task: Task): DomainResult<Task> {
   if (
     !task.id.trim() ||
@@ -424,6 +546,9 @@ export function validateTaskForReview(task: Task): DomainResult<Task> {
 
   const content = validateTaskTemplate(task.content);
   if (!content.ok) return content;
+  if (task.occurrence && task.content.catalogExecution && task.id !== P0_RECYCLING_TEMPLATE.id) {
+    return validateCatalogTaskAuthority(task);
+  }
 
   const reviewedReplacement =
     task.id === P0_RECYCLING_TEMPLATE.id && task.version > 1

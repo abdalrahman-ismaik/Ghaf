@@ -1,3 +1,4 @@
+import { CatalogCheckIn } from '@/components/catalog/CatalogCheckIn';
 import { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, findNodeHandle, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -53,7 +54,16 @@ interface ParentCheckInProps {
   onReturnToTasks: () => void;
 }
 
-export function ParentCheckIn({
+export function ParentCheckIn(props: ParentCheckInProps) {
+  const journey = usePrototypeStore((state) => state.journey);
+  return journey?.task.content.catalogExecution ? (
+    <CatalogCheckIn key={journey.task.id} {...props} />
+  ) : (
+    <OriginalParentCheckIn {...props} />
+  );
+}
+
+function OriginalParentCheckIn({
   onBack,
   onOpenGarden,
   onResumeChild,
@@ -663,11 +673,6 @@ export function ParentCheckIn({
             value={
               submission.reflection ? localize(submission.reflection, locale) : t('common.optional')
             }
-          />
-          <ReviewFact
-            direction={direction}
-            label={t('checkIn.uncertainty')}
-            value={t('parentHome.summaryDisclosure')}
           />
         </View>
 

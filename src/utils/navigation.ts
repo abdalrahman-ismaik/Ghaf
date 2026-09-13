@@ -1,6 +1,19 @@
-export interface EntryReplaceRouter {
-  dismissAll: () => void;
-  replace: (href: '/') => void;
+export interface EntryResetState {
+  index: 0;
+  routes: [{ name: string; state: { index: 0; routes: [{ name: 'index' }] } }];
+}
+
+export interface EntryResetNavigation {
+  getRootState: () =>
+    | {
+        index: number;
+        routes: readonly {
+          name: string;
+          state?: { type?: string; routeNames?: readonly string[] };
+        }[];
+      }
+    | undefined;
+  resetRoot: (state: EntryResetState) => void;
 }
 
 const RESET_BOUNDARY_KEY = '__ghafResetBoundary';
@@ -47,17 +60,27 @@ function armWebResetHistoryBoundary(webWindow: Window): void {
   webWindow.history.pushState(historyStateWithMarker(boundaryState, RESET_GUARD), '', '/');
 }
 
-// Router state stays outside the prototype store. Reset the store first, then clear
-// the visible stack and replace its root.
-export function replaceHistoryWithEntry(router: EntryReplaceRouter): void {
-  try {
-    router.dismissAll();
-  } catch {
-    // A stack already at root cannot be dismissed, but replace still restores `/`.
+// Validate navigation before clearing app data. Apply the prepared root reset only
+// after the authorized store reset succeeds; do not queue a pop against changing routes.
+export function prepareEntryReset(navigation: EntryResetNavigation): (() => void) | null {
+  const root = navigation.getRootState();
+  const appRoute = root?.routes[root.index];
+  if (
+    !appRoute ||
+    appRoute.state?.type !== 'stack' ||
+    !appRoute.state.routeNames?.includes('index')
+  ) {
+    return null;
   }
-  router.replace('/');
 
-  if (typeof window !== 'undefined') {
-    window.requestAnimationFrame(() => armWebResetHistoryBoundary(window));
-  }
+  const entry: EntryResetState = {
+    index: 0,
+    routes: [{ name: appRoute.name, state: { index: 0, routes: [{ name: 'index' }] } }],
+  };
+  return () => {
+    navigation.resetRoot(entry);
+    if (typeof window !== 'undefined' && window.history) {
+      window.requestAnimationFrame(() => armWebResetHistoryBoundary(window));
+    }
+  };
 }

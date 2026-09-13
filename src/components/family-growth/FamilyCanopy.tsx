@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { GhafIcon } from '@/components/access';
 import { LocalIllustration, type ArtworkId } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, colors, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface FamilyCanopyProps {
@@ -61,12 +61,6 @@ export function FamilyCanopy({
 
         <View style={styles.canopyCopy}>
           <View style={styles.titleGroup}>
-            <View
-              style={[
-                styles.titleRule,
-                direction === 'rtl' ? styles.titleRuleRtl : styles.titleRuleLtr,
-              ]}
-            />
             <Text brand color="deepForest" variant="screenTitle">
               {title}
             </Text>
@@ -152,19 +146,12 @@ function getProgressPercent(current: number, goal: number): number {
 const styles = StyleSheet.create({
   canopy: {
     width: '100%',
-    overflow: 'hidden',
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
-    ...r001Shadows.soft,
   },
   canopyLayout: {
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: spacing.lg,
-    padding: spacing.md,
+    gap: botanical.space.row,
+    paddingVertical: botanical.space.small,
   },
   canopyVisual: {
     flexGrow: 1,
@@ -174,7 +161,7 @@ const styles = StyleSheet.create({
     minWidth: 0,
     maxWidth: 360,
     aspectRatio: 288 / 208,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.hero,
     borderCurve: 'continuous',
   },
   canopyCopy: {
@@ -186,22 +173,19 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   titleGroup: { gap: spacing.sm },
-  titleRule: { width: 48, height: 3, backgroundColor: colors.gold },
-  titleRuleLtr: { alignSelf: 'flex-start' },
-  titleRuleRtl: { alignSelf: 'flex-end' },
   contribution: { gap: spacing.xs },
   progressTrack: {
     position: 'relative',
-    height: 14,
+    height: 6,
     overflow: 'hidden',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
   },
   progressFill: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forest,
   },
   progressFillLtr: { left: 0 },
   progressFillRtl: { right: 0 },
@@ -211,8 +195,8 @@ const styles = StyleSheet.create({
     top: 2,
     bottom: 2,
     width: 3,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.solarAmber,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.amber,
   },
   progressRootLtr: { left: spacing.xs },
   progressRootRtl: { right: spacing.xs },
@@ -223,7 +207,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderTopWidth: 1,
-    borderTopColor: colors.surfaceContainerHigh,
+    borderTopColor: botanical.colors.line,
   },
   latestIcon: { width: 32, height: 28, alignItems: 'center', justifyContent: 'center' },
   latestContributionText: { flex: 1 },

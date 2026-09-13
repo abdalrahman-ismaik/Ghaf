@@ -1,3 +1,4 @@
+import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
 import { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -17,12 +18,13 @@ import {
   ParentHomeHeader,
   ParentHomeNavigation,
   ParentLifecycleCard,
-  ParentTasksView,
+  ParentTaskWorkspace,
   R002aScreen,
   type ParentChildSummaryItem,
 } from '@/components/r002a';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
-import { colors, layout, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
+import { taskWorkspaceFeatureFlag } from '@/config/taskWorkspaceFeatureFlag';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import { PARENT_NEXT_ACTIONS } from '@/features/family/overview';
 import {
   readLegacyParentHomeParam,
@@ -30,6 +32,7 @@ import {
   type ParentHomeRouteParam,
 } from '@/features/navigation/parentHomeParams';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
+import { resolveLocalFamilyDisplayName } from '@/features/access/localFamilyDisplayName';
 import { P0_SAFE_EQUIVALENT_TEMPLATE } from '@/features/tasks/demoContent';
 import { localize } from '@/i18n';
 import type {
@@ -193,7 +196,9 @@ export default function ParentHomeScreen() {
   const profileName = (childId: SyntheticChildId) =>
     localFamily.record?.children.find((profile) => profile.id === childId)?.nickname ??
     localize(children[childId].displayName, locale);
-  const familyDisplayName = localFamily.record?.familyName ?? localize(householdName, locale);
+  const familyDisplayName = localFamily.record
+    ? resolveLocalFamilyDisplayName(localFamily.record, localize(householdName, locale))
+    : localize(householdName, locale);
   const nextLabel =
     journey?.lifecycle === 'confirmed'
       ? t('parentHome.continueRecognition')
@@ -203,7 +208,7 @@ export default function ParentHomeScreen() {
           ? t('parentHome.openGarden')
           : nextRoute === '/child'
             ? t('navigation.childHome')
-            : t('parentHome.createTask', { child: profileName('child_salem') });
+            : t('parentHome.createTask', { child: profileName(activeChildId) });
   const lifecycleStatus = journey
     ? journey.lifecycle === 'submitted'
       ? t('parentHome.awaitingReview')
@@ -227,15 +232,28 @@ export default function ParentHomeScreen() {
     support: t(action.supportKey, { child: profileName(action.childId) }),
   }));
 
-  const openSalemTaskBuilder = () => {
+  const openSelectedChildTaskBuilder = () => {
     dismissTaskAdded();
     setAdjustmentError(null);
-    const result = setActiveChild('child_salem');
+    const result = setActiveChild(activeChildId);
     if (!result.ok) {
       setAdjustmentError(t('errors.safeRetry'));
       return;
     }
-    router.push('/parent/task/new');
+    const cleared = usePrototypeStore.getState().beginNewTask();
+    if (cleared.ok) router.push('/parent/task/new');
+  };
+
+  const openTaskBuilderFor = (childId: SyntheticChildId) => {
+    dismissTaskAdded();
+    setAdjustmentError(null);
+    const result = setActiveChild(childId);
+    if (!result.ok) {
+      setAdjustmentError(t('errors.safeRetry'));
+      return;
+    }
+    const cleared = usePrototypeStore.getState().beginNewTask();
+    if (cleared.ok) router.push('/parent/task/new');
   };
 
   const openPrimaryAction = () => {
@@ -244,7 +262,7 @@ export default function ParentHomeScreen() {
       return;
     }
     if (nextRoute === '/parent/task/new') {
-      openSalemTaskBuilder();
+      openSelectedChildTaskBuilder();
       return;
     }
     router.push(nextRoute);
@@ -278,24 +296,10 @@ export default function ParentHomeScreen() {
     selectedJourney && taskFilterForLifecycle(selectedJourney.lifecycle) === taskFilter
       ? selectedJourney
       : null;
-  const emptyCopy = {
-    assigned: {
-      body: t('r002aTasks.emptyAssignedBody'),
-      title: t('r002aTasks.emptyAssignedTitle'),
-    },
-    pending: {
-      body: t('r002aTasks.emptyPendingBody'),
-      title: t('r002aTasks.emptyPendingTitle'),
-    },
-    completed: {
-      body: t('r002aTasks.emptyCompletedBody'),
-      title: t('r002aTasks.emptyCompletedTitle'),
-    },
-  }[taskFilter];
   const openTaskAction = () => {
     dismissTaskAdded();
     if (!journey) {
-      openSalemTaskBuilder();
+      openSelectedChildTaskBuilder();
       return;
     }
     if (!visibleJourney) {
@@ -333,23 +337,7 @@ export default function ParentHomeScreen() {
     }
     router.push('/garden');
   };
-  const taskActionLabel = !journey
-    ? t('r002aTasks.createTask')
-    : !visibleJourney
-      ? t('r002aTasks.viewCurrentTask')
-      : visibleJourney.lifecycle === 'draft'
-        ? t('r002aTasks.openBuilder')
-        : visibleJourney.lifecycle === 'reviewed'
-          ? t('r002aTasks.openReview')
-          : visibleJourney.lifecycle === 'recognized'
-            ? t('r002aTasks.openGarden')
-            : visibleJourney.lifecycle === 'retry'
-              ? t('r002aTasks.resumeSupport')
-              : visibleJourney.lifecycle === 'confirmed'
-                ? t('r002aTasks.continueRecognition')
-                : visibleJourney.lifecycle === 'submitted'
-                  ? t('parentHome.reviewTask')
-                  : t('r002aTasks.openChild');
+
   const parentWelcomeUpdates: readonly ReturningWelcomeUpdate[] = [
     {
       body: journey
@@ -427,135 +415,148 @@ export default function ParentHomeScreen() {
           </Text>
         </View>
 
-        {!journey ? (
-          <Button
+        {taskAddedVisible && visibleJourney?.task.id === taskAddedToken ? (
+          <Text
+            accessibilityLiveRegion="polite"
             brand
+            color="ghafEmerald"
             direction={direction}
-            icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
-            onPress={openTaskAction}
-            size="regular"
-            testID="parent-tasks-create-task"
+            testID="parent-tasks-added"
           >
-            {t('r002aTasks.createTask')}
-          </Button>
-        ) : null}
-
-        {adjustmentError ? (
-          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
-            {adjustmentError}
+            {t('r002aTasks.taskAdded')}
           </Text>
         ) : null}
 
-        <View
-          accessibilityRole="radiogroup"
-          style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
-        >
-          {Object.values(children)
-            .filter((child) => localFamily.configuredChildIds.includes(child.id))
-            .map((child) => {
-              const selected = child.id === activeChildId;
-              return (
-                <Pressable
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: selected }}
-                  aria-checked={selected}
-                  key={child.id}
-                  onPress={() => chooseChild(child.id)}
-                  style={({ pressed }) => [
-                    styles.childFilterItem,
-                    selected ? styles.childFilterItemActive : null,
-                    pressed ? styles.pressed : null,
-                  ]}
-                  testID={`parent-tasks-child-${child.id}`}
-                >
-                  <Text
-                    align="center"
-                    brand
-                    color={selected ? 'onPrimary' : 'onSurfaceVariant'}
-                    variant="label"
-                  >
-                    {profileName(child.id)}
-                  </Text>
-                </Pressable>
-              );
-            })}
-        </View>
-
-        <View
-          accessibilityRole="tablist"
-          style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
-        >
-          {(
-            [
-              ['assigned', t('r002aTasks.assignedTab')],
-              ['pending', t('r002aTasks.pendingTab')],
-              ['completed', t('r002aTasks.completedTab')],
-            ] as const
-          ).map(([key, label]) => {
-            const selected = taskFilter === key;
-            return (
-              <Pressable
-                accessibilityRole="tab"
-                accessibilityState={{ selected }}
-                aria-selected={selected}
-                key={key}
-                onPress={() => {
-                  dismissTaskAdded();
-                  setTaskFilter(key);
-                }}
-                style={({ pressed }) => [
-                  styles.taskTab,
-                  selected ? styles.taskTabActive : null,
-                  pressed ? styles.pressed : null,
-                ]}
-                testID={`parent-tasks-tab-${key}`}
-              >
-                <Text
-                  align="center"
-                  brand
-                  color={selected ? 'primary' : 'onSurfaceVariant'}
-                  variant="label"
-                >
-                  {label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <View accessibilityLiveRegion="polite">
-          <ParentTasksView
-            actionLabel={taskActionLabel}
-            actionTestID="parent-tasks-primary-action"
+        {taskWorkspaceFeatureFlag ? (
+          <ParentTaskWorkspace
+            activeChildId={activeChildId}
+            childProfiles={Object.values(children)
+              .filter((child) => localFamily.configuredChildIds.includes(child.id))
+              .map((child) => ({ id: child.id, label: profileName(child.id) }))}
             current={
-              visibleJourney
+              journey
                 ? {
-                    childLabel: localize(
-                      children[visibleJourney.task.targetChildId].displayName,
-                      locale,
-                    ),
-                    metaLabel: visibleJourney.task.content.displayedSeedAward
+                    childId: journey.task.targetChildId,
+                    childLabel: profileName(journey.task.targetChildId),
+                    metaLabel: journey.task.content.displayedSeedAward
                       ? t('childHome.awardAfterConfirmation', {
-                          count: visibleJourney.task.content.displayedSeedAward,
+                          count: journey.task.content.displayedSeedAward,
                         })
                       : undefined,
-                    statusLabel: t(taskStatusKey(visibleJourney.lifecycle)),
-                    supportLabel: localize(visibleJourney.task.content.permittedHelp, locale),
-                    title: localize(visibleJourney.task.content.title, locale),
+                    statusLabel: t(taskStatusKey(journey.lifecycle)),
+                    supportLabel: localize(journey.task.content.permittedHelp, locale),
+                    title: localize(journey.task.content.title, locale),
                   }
                 : null
             }
             direction={direction}
-            emptyMessage={emptyCopy.body}
-            emptyTitle={emptyCopy.title}
-            heading={t('r002aTasks.currentTask')}
-            onAction={openTaskAction}
-            showAction={Boolean(journey)}
-            state={visibleJourney ? (taskAddedVisible ? 'task_added' : 'current') : 'empty'}
-            taskAddedMessage={t('r002aTasks.taskAdded')}
-            testID="parent-tasks-list"
+            locale={locale}
+            onCreateTask={openTaskBuilderFor}
+            onOpenCurrent={openTaskAction}
           />
-        </View>
+        ) : (
+          <>
+            {!journey ? (
+              <Button
+                brand
+                direction={direction}
+                icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
+                onPress={openTaskAction}
+                size="regular"
+                testID="parent-tasks-create-task"
+              >
+                {t('r002aTasks.createTask')}
+              </Button>
+            ) : null}
+
+            {adjustmentError ? (
+              <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+                {adjustmentError}
+              </Text>
+            ) : null}
+
+            <View
+              accessibilityRole="radiogroup"
+              style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              {Object.values(children)
+                .filter((child) => localFamily.configuredChildIds.includes(child.id))
+                .map((child) => {
+                  const selected = child.id === activeChildId;
+                  return (
+                    <Pressable
+                      accessibilityRole="radio"
+                      accessibilityState={{ checked: selected }}
+                      aria-checked={selected}
+                      key={child.id}
+                      onPress={() => chooseChild(child.id)}
+                      style={({ pressed }) => [
+                        styles.childFilterItem,
+                        selected ? styles.childFilterItemActive : null,
+                        pressed ? styles.pressed : null,
+                      ]}
+                      testID={`parent-tasks-child-${child.id}`}
+                    >
+                      <Text
+                        align="center"
+                        brand
+                        color={selected ? 'onPrimary' : 'onSurfaceVariant'}
+                        variant="label"
+                      >
+                        {profileName(child.id)}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+            </View>
+
+            <View
+              accessibilityRole="tablist"
+              style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
+            >
+              {(
+                [
+                  ['assigned', t('r002aTasks.assignedTab')],
+                  ['pending', t('r002aTasks.pendingTab')],
+                  ['completed', t('r002aTasks.completedTab')],
+                ] as const
+              ).map(([key, label]) => {
+                const selected = taskFilter === key;
+                return (
+                  <Pressable
+                    accessibilityRole="tab"
+                    accessibilityState={{ selected }}
+                    aria-selected={selected}
+                    key={key}
+                    onPress={() => {
+                      dismissTaskAdded();
+                      setTaskFilter(key);
+                    }}
+                    style={({ pressed }) => [
+                      styles.taskTab,
+                      selected ? styles.taskTabActive : null,
+                      pressed ? styles.pressed : null,
+                    ]}
+                    testID={`parent-tasks-tab-${key}`}
+                  >
+                    <Text
+                      align="center"
+                      brand
+                      color={selected ? 'primary' : 'onSurfaceVariant'}
+                      variant="label"
+                    >
+                      {label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            <View accessibilityLiveRegion="polite">
+              <CatalogTaskList role="parent" filter={taskFilter} />
+            </View>
+          </>
+        )}
       </R002aScreen>
     );
   }
@@ -618,26 +619,13 @@ export default function ParentHomeScreen() {
         <Text brand color="onSurfaceVariant" variant="caption">
           {familyDisplayName}
         </Text>
-        <Text brand color="deepForest" variant="parentHero">
+        <Text brand color="deepForest" direction={direction} variant="screenTitle">
           {t('parentHome.welcome')}
         </Text>
-        <Text brand color="onSurfaceVariant" variant="bodyLarge">
+        <Text brand color="onSurfaceVariant" direction={direction} variant="body">
           {t('parentHome.title')}
         </Text>
       </View>
-
-      <ParentCanopySummaryCard
-        current={canopy.contributionLeaves}
-        direction={direction}
-        goal={canopy.goalLeaves}
-        meaning={t('parentHome.canopyMeaning')}
-        progressLabel={t('parentHome.canopyProgressLive', {
-          current: canopy.contributionLeaves,
-          goal: canopy.goalLeaves,
-        })}
-        remainingLabel={t('parentHome.remainingLeaves', { count: remainingLeaves })}
-        title={t('parentHome.canopyTitle')}
-      />
 
       {adjustmentError && !adjustmentUnderReview ? (
         <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
@@ -723,13 +711,26 @@ export default function ParentHomeScreen() {
       ) : null}
 
       <ParentChildrenSection
-        createTaskLabel={t('parentHome.createTask', { child: profileName('child_salem') })}
+        createTaskLabel={t('parentHome.createTask', { child: profileName(activeChildId) })}
         direction={direction}
         items={childItems}
-        onCreateTask={openSalemTaskBuilder}
+        onCreateTask={openSelectedChildTaskBuilder}
         onSelectChild={chooseChild}
         selectedLabel={t('parentHome.selectedLabel')}
         title={t('parentHome.todayWithChildren')}
+      />
+
+      <ParentCanopySummaryCard
+        current={canopy.contributionLeaves}
+        direction={direction}
+        goal={canopy.goalLeaves}
+        meaning={t('parentHome.canopyMeaning')}
+        progressLabel={t('parentHome.canopyProgressLive', {
+          current: canopy.contributionLeaves,
+          goal: canopy.goalLeaves,
+        })}
+        remainingLabel={t('parentHome.remainingLeaves', { count: remainingLeaves })}
+        title={t('parentHome.canopyTitle')}
       />
 
       {r002bFeatureFlags.r002b_parent_progress_ui ? (
@@ -800,6 +801,7 @@ export default function ParentHomeScreen() {
 const styles = StyleSheet.create({
   greeting: {
     gap: spacing.xxs,
+    paddingBottom: spacing.xs,
   },
   prototypeIdentity: {
     minWidth: 0,
@@ -821,20 +823,19 @@ const styles = StyleSheet.create({
   },
   privacyNote: {
     gap: spacing.xs,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
-    padding: spacing.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.line,
+    paddingTop: spacing.md,
   },
   progressEntry: {
     minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
   progressEntryIcon: {
@@ -843,8 +844,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmeraldTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
   },
   progressEntryCopy: {
     minWidth: 0,
@@ -857,8 +858,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexWrap: 'wrap',
     gap: spacing.xs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.xxs,
   },
   childFilterItem: {
@@ -866,7 +867,7 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     paddingHorizontal: spacing.md,
   },
   childFilterItemActive: {
@@ -874,9 +875,8 @@ const styles = StyleSheet.create({
   },
   taskTabs: {
     minHeight: layout.touchTarget,
-    borderRadius: r001Radii.lg,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    borderBottomWidth: 1,
+    borderBottomColor: botanical.colors.line,
     padding: spacing.xxs,
   },
   taskTab: {
@@ -884,12 +884,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xs,
   },
   taskTabActive: {
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
+    borderRadius: botanical.radius.control,
   },
   pressed: {
     opacity: opacity.pressed,

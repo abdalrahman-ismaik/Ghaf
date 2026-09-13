@@ -26,10 +26,15 @@ export function AIProfilePreview({
   const { t } = useTranslation();
   const result = createPreparedProfilePersonalization({
     ageBand: child.ageBand,
+    sex: child.sex,
     interests: child.interests,
     hobbies: child.hobbies,
     accessibilityDefaults: child.accessibilityDefaults,
     supportPreferences: child.supportPreferences,
+    customInterest: child.customInterest,
+    customHobby: child.customHobby,
+    customSupportPreference: child.customSupportPreference,
+    customAccessibility: child.customAccessibility,
     personalizationEnabled: child.personalizationEnabled,
   });
   if (!result.ok) return null;
@@ -58,6 +63,26 @@ export function AIProfilePreview({
       />
       {result.data.enabled ? (
         <View style={styles.details}>
+          <View style={styles.detail} testID="profile-address-form">
+            <Text
+              brand
+              color="onSurfaceVariant"
+              direction={direction}
+              language={language}
+              variant="caption"
+            >
+              {t('access.setup.aiAddressingLabel')}
+            </Text>
+            <Text
+              brand
+              color="deepForest"
+              direction={direction}
+              language={language}
+              variant="label"
+            >
+              {t(`access.setup.aiAddressForm.${result.data.addressForm}`)}
+            </Text>
+          </View>
           <View style={styles.detail} testID="profile-support-style">
             <Text
               brand

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
   Platform,
-  Pressable,
   StyleSheet,
   TextInput,
   useWindowDimensions,
@@ -11,13 +10,14 @@ import {
 } from 'react-native';
 
 import { Input, Row, Text, type InputProps } from '@/components/primitives';
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
   opacity,
   r001Radii,
-  r001Shadows,
   spacing,
   type LayoutDirection,
   type TypographyLanguage,
@@ -678,9 +678,8 @@ const styles = StyleSheet.create({
     borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
-    ...r001Shadows.soft,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
   },
   otpCellFocused: {
     borderColor: colors.ghafEmerald,
@@ -721,15 +720,15 @@ const styles = StyleSheet.create({
     borderRadius: r001Radii.lg,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
   },
   selectionSelected: {
-    borderColor: colors.ghafEmerald,
+    borderColor: botanical.colors.forest,
     borderWidth: 2,
-    backgroundColor: colors.leafMist,
+    backgroundColor: botanical.colors.sage,
   },
   selectionFocused: {
     borderColor: colors.solarAmber,
@@ -743,25 +742,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: r001Radii.pill,
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
   },
   choiceChipSelected: {
-    borderColor: colors.secondaryContainer,
-    backgroundColor: colors.secondaryContainer,
+    borderColor: botanical.colors.forest,
+    backgroundColor: botanical.colors.sage,
   },
   summaryCard: {
     width: '100%',
     gap: spacing.md,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   reviewRow: {
     minHeight: layout.touchTarget,

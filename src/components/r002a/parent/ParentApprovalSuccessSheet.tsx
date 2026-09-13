@@ -6,9 +6,9 @@ import { useReducedMotion } from 'react-native-reanimated';
 import { GhafIcon, SuccessSheet } from '@/components/access';
 import { Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   logicalRowDirection,
-  r001Radii,
   spacing,
   type LayoutDirection,
   type TypographyLanguage,
@@ -149,9 +149,9 @@ const styles = StyleSheet.create({
   receipt: {
     width: '100%',
     gap: spacing.xs,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.md,
   },
   receiptRow: {
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.paper,
   },
   receiptText: {
     flex: 1,

@@ -15,6 +15,7 @@ import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration } from '@/components/illustrations';
 import { IconButton, Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
@@ -319,21 +320,21 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     overflow: 'hidden',
-    backgroundColor: colors.pearlGround,
+    backgroundColor: botanical.colors.canvas,
   },
   fieldTexture: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.pearlGround,
+    backgroundColor: botanical.colors.canvas,
   },
   fieldTextureWelcome: {
-    opacity: 0.34,
-  },
-  fieldTextureDotted: {
     opacity: 0.18,
   },
+  fieldTextureDotted: {
+    opacity: 0.07,
+  },
   fieldTextureOrganic: {
-    opacity: 0.24,
+    opacity: 0.1,
   },
   keyboardRoot: {
     flex: 1,
@@ -364,8 +365,8 @@ const styles = StyleSheet.create({
   footerFrame: {
     flexShrink: 0,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.surfaceContainerLow,
-    backgroundColor: colors.pearlGround,
+    borderTopColor: botanical.colors.line,
+    backgroundColor: botanical.colors.canvas,
     paddingHorizontal: layout.screenPadding,
     paddingTop: spacing.sm,
     paddingBottom: spacing.sm,
@@ -378,8 +379,8 @@ const styles = StyleSheet.create({
     minHeight: 84,
     alignItems: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerLow,
-    backgroundColor: colors.pearlGround,
+    borderBottomColor: botanical.colors.line,
+    backgroundColor: botanical.colors.canvas,
     paddingHorizontal: layout.screenPadding,
     paddingVertical: spacing.xs,
   },
@@ -412,12 +413,12 @@ const styles = StyleSheet.create({
     height: 6,
     overflow: 'hidden',
     borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.sageStrong,
   },
   progressFill: {
     height: '100%',
     borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
+    backgroundColor: botanical.colors.forest,
   },
   actionRegion: {
     width: '100%',

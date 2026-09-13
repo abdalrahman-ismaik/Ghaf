@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Text } from '@/components/primitives';
-import { colors, layout, opacity, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, layout, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 export type ChildNavigationKey = 'league' | 'garden' | 'today';
@@ -77,7 +78,7 @@ export function ChildBottomNavigation({
               testID={`child-nav-${item.id}`}
             >
               <GhafIcon
-                color={active ? colors.onSecondaryContainer : colors.onSurfaceVariant}
+                color={active ? botanical.colors.onForest : botanical.colors.muted}
                 name={item.icon}
                 size={23}
               />
@@ -86,6 +87,7 @@ export function ChildBottomNavigation({
                 brand
                 color={active ? 'onSecondaryContainer' : 'onSurfaceVariant'}
                 direction={direction}
+                style={active ? styles.activeLabel : styles.inactiveLabel}
                 variant="caption"
               >
                 {item.label}
@@ -102,11 +104,10 @@ const styles = StyleSheet.create({
   root: {
     zIndex: 3,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
-    paddingTop: spacing.xs,
+    borderTopColor: botanical.colors.line,
+    backgroundColor: botanical.colors.canvas,
+    paddingTop: botanical.space.small,
     paddingHorizontal: layout.screenPadding,
-    ...r001Shadows.sheet,
   },
   physicalRow: {
     width: '100%',
@@ -124,22 +125,23 @@ const styles = StyleSheet.create({
   },
   item: {
     minWidth: 64,
-    minHeight: layout.touchTarget + spacing.xs,
+    minHeight: layout.touchTarget + spacing.sm,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xxs,
   },
   activeItem: {
-    backgroundColor: colors.secondaryContainer,
+    backgroundColor: botanical.colors.forest,
   },
+  activeLabel: { color: botanical.colors.onForest },
+  inactiveLabel: { color: botanical.colors.muted },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.98 }],
   },
   disabled: {
     opacity: 0.72,

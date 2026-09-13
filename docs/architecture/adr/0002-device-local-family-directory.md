@@ -59,6 +59,7 @@ configuration that the current static demonstration does not need.
 
 ## Related records
 
-- [`plan.md`](../../../specs/003-family-growth-garden/plan.md)
-- [`data-model.md`](../../../specs/003-family-growth-garden/data-model.md)
+- [Product contract](../../PRODUCT.md)
+- [Architecture](../ARCHITECTURE.md)
+- [Prototype limitations](../../product/PROTOTYPE_LIMITATIONS.md)
 - [Expo SQLite documentation](https://docs.expo.dev/versions/latest/sdk/sqlite/)

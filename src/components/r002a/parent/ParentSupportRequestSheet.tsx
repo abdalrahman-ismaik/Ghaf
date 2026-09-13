@@ -1,4 +1,4 @@
-import { useRef, useState, type RefObject } from 'react';
+import { useRef, useState, type KeyboardEvent, type RefObject } from 'react';
 import {
   AccessibilityInfo,
   findNodeHandle,
@@ -15,12 +15,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GhafIcon } from '@/components/access';
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
   opacity,
-  r001Radii,
-  r001Shadows,
   spacing,
   type LayoutDirection,
   type TypographyLanguage,
@@ -98,6 +97,17 @@ export function ParentSupportRequestSheet({
     );
   };
 
+  const webCheckboxKeys = (stepId: string) =>
+    Platform.OS === 'web'
+      ? {
+          onKeyDown: (event: KeyboardEvent) => {
+            if (event.key !== ' ' && event.key !== 'Spacebar') return;
+            event.preventDefault();
+            if (!event.repeat) toggleStep(stepId);
+          },
+        }
+      : {};
+
   return (
     <Modal
       animationType={reducedMotion ? 'none' : 'slide'}
@@ -163,8 +173,10 @@ export function ParentSupportRequestSheet({
                   const selected = selectedStepIds.includes(step.id);
                   return (
                     <Pressable
+                      {...webCheckboxKeys(step.id)}
                       accessibilityRole="checkbox"
                       accessibilityState={{ checked: selected }}
+                      aria-checked={selected}
                       key={step.id}
                       onPress={() => toggleStep(step.id)}
                       style={({ pressed }) => [
@@ -259,11 +271,10 @@ const styles = StyleSheet.create({
     maxHeight: '90%',
     alignSelf: 'center',
     overflow: 'hidden',
-    borderTopLeftRadius: r001Radii.sheet,
-    borderTopRightRadius: r001Radii.sheet,
+    borderTopLeftRadius: botanical.radius.hero,
+    borderTopRightRadius: botanical.radius.hero,
     borderCurve: 'continuous',
     backgroundColor: colors.r001Surface,
-    ...r001Shadows.sheet,
   },
   safeArea: {
     maxHeight: '100%',
@@ -275,7 +286,7 @@ const styles = StyleSheet.create({
     width: layout.touchTarget,
     height: 6,
     alignSelf: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.outlineVariant,
   },
   content: {
@@ -294,17 +305,17 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'center',
     gap: spacing.sm,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   stepSelected: {
     borderColor: colors.ghafEmerald,
-    backgroundColor: colors.ghafEmeraldSelection,
+    backgroundColor: botanical.colors.sage,
   },
   stepLabel: {
     flex: 1,
@@ -312,7 +323,7 @@ const styles = StyleSheet.create({
   notice: {
     alignItems: 'flex-start',
     gap: spacing.sm,
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     backgroundColor: colors.solarAmberTint,
     padding: spacing.md,
   },

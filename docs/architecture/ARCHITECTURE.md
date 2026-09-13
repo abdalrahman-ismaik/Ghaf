@@ -10,8 +10,8 @@ paired-device markers across restarts. It does not contain a
 production backend, authentication system, cross-household network, analytics pipeline, or live
 child-media/AI processor.
 
-The active implementation plan remains authoritative for Feature 003 detail:
-[`specs/003-family-growth-garden/plan.md`](../../specs/003-family-growth-garden/plan.md).
+The [product contract](../PRODUCT.md), [design contract](../DESIGN.md), and
+[prototype limitations](../product/PROTOTYPE_LIMITATIONS.md) define the public Feature 003 boundary.
 
 ## System context
 
@@ -134,7 +134,7 @@ providers. Prepared image/audio surfaces retain descriptions/transcripts when me
   `src/features/`.
 - Add a feature directory only when it owns behavior, not as an empty placeholder.
 - Keep generated caches, static exports, and raw browser sessions ignored.
-- Preserve root Feature 003 contracts and historical Feature 001/002 specifications/evidence in
+- Preserve current Feature 003 contracts and historical Feature 001/002 specifications/evidence in
   place; use [the documentation map](../README.md) to disambiguate them.
 - Introduce no second app, overlapping state/UI/localization library, or production infrastructure
   without an approved architecture/specification change.
@@ -156,6 +156,6 @@ considered. This is maintainability debt, not permission to add a backend to P0.
 
 - [ADR 0001 — Single Expo app with deterministic local core](adr/0001-single-expo-deterministic-core.md)
 - [ADR 0002 — Device-local family directory](adr/0002-device-local-family-directory.md)
-- [Feature 003 domain contract](../../specs/003-family-growth-garden/contracts/domain-contract.md)
-- [Feature 003 assistant contract](../../specs/003-family-growth-garden/contracts/assistant-contract.md)
-- [Feature 003 acceptance contract](../../specs/003-family-growth-garden/contracts/acceptance-contract.md)
+- [Product behavior and safety](../PRODUCT.md)
+- [Design and accessibility](../DESIGN.md)
+- [Judge journey and acceptance evidence](../competition-readiness/DEMO_RUNBOOK.md)

@@ -18,6 +18,7 @@ interface UseOnboardingNarratorOptions {
 }
 
 interface OnboardingNarrator {
+  readonly hasSource: boolean;
   readonly replay: () => void;
   readonly screenReaderActive: boolean;
   readonly screenReaderReady: boolean;
@@ -35,7 +36,8 @@ export function useOnboardingNarrator({
   step,
   webPlaybackUnlocked,
 }: UseOnboardingNarratorOptions): OnboardingNarrator {
-  const player = useAudioPlayer(onboardingNarrationSources[locale][step], {
+  const source = onboardingNarrationSources[locale][step];
+  const player = useAudioPlayer(source, {
     updateInterval: 120,
   });
   const playerStatus = useAudioPlayerStatus(player);
@@ -76,10 +78,11 @@ export function useOnboardingNarrator({
   }, [player]);
 
   useEffect(() => {
-    playback.setEnabled(ready && screenReaderEnabled === false);
+    playback.setEnabled(source !== null && ready && screenReaderEnabled === false);
 
     if (
       !ready ||
+      source === null ||
       screenReaderEnabled !== false ||
       (Platform.OS === 'web' && !webPlaybackUnlocked)
     ) {
@@ -88,16 +91,22 @@ export function useOnboardingNarrator({
 
     void playback.restart();
     return () => playback.setEnabled(false);
-  }, [locale, playback, ready, screenReaderEnabled, step, webPlaybackUnlocked]);
+  }, [locale, playback, ready, screenReaderEnabled, source, step, webPlaybackUnlocked]);
 
   const replay = useCallback(() => {
-    void playback.restart();
-  }, [playback]);
+    if (source !== null) void playback.restart();
+  }, [playback, source]);
 
   return {
+    hasSource: source !== null,
     replay,
     screenReaderActive: screenReaderEnabled === true,
     screenReaderReady: screenReaderEnabled !== null,
-    status: playerStatus.error ? 'unavailable' : playerStatus.playing ? 'speaking' : 'idle',
+    status:
+      source === null || playerStatus.error
+        ? 'unavailable'
+        : playerStatus.playing
+          ? 'speaking'
+          : 'idle',
   };
 }

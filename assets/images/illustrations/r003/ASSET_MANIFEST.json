@@ -7,1134 +7,1038 @@
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 206773,
+        "bytes": 204485,
         "height": 1920,
         "path": "assets/images/illustrations/r003/final/field-paper.jpg",
-        "sha256": "2a14b20e37d958bee095ce49d66a6e2afab97ff0ae058ff6c9900a45bef6669c",
+        "sha256": "5d7d1414ca124fdd7e8289f17785ca5b9148a97deb6b44dc9522755bda5bcd6b",
         "width": 1080
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "field-paper",
       "source": { "format": "RGB PNG", "height": 1672, "width": 941 },
-      "prompt": "Use case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Primary request: A very-low-contrast tactile warm pearl and ivory handmade paper-and-fine-stone botanical-field texture for a full-bleed mobile background; subtle organic fibers, faint mineral grain, and barely perceptible natural tonal variation, with no identifiable object or focal subject. Scene/backdrop: seamless warm pearl/ivory surface only. Subject: abstract material texture only, with no leaf, plant, symbol, edge, seam, vignette, or recognizable motif. Style/medium: macro editorial material photography, opaque raster. Composition/framing: portrait 9:16, evenly distributed full bleed, no directional lighting, crop-safe on every edge. Lighting/mood: soft diffuse early-morning daylight impression, exceptionally quiet and calm, with enough contrast only to avoid a flat digital fill and never enough to compete with UI text. Color palette: warm Pearl/Ivory with the faintest restrained Sand and Earth undertones. Materials/textures: natural handmade paper fibers blended subtly with honed fine stone grain; realistic, matte, tactile, seamless.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.\nConstraints: Opaque image. No identifiable botanical object. Keep texture very low contrast and uniform enough for dark green and charcoal interface text to remain highly legible.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/", "/access/**", "/parent/**", "/child/**"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1080x1920 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 281475,
+        "bytes": 277858,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/welcome-ghaf-habitat.jpg",
-        "sha256": "215e7ef4a7a2c80d1d9be016725c5cbabd9a2d88bc141fa1517b1d3e2dd545e8",
+        "sha256": "b504c892ea07dde3ce5cde3a78cfa21ad0ddbac183a86fd1eb1791a2e97c7cef",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "welcome-ghaf-habitat",
       "regeneratedAt": "2026-09-07",
       "source": { "format": "RGB PNG", "height": 1024, "width": 1536 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: 3:2 welcome hero for an Arabic-first Expo family growth and sustainability app\nPrimary request: Regenerate the reference as a more eye-catching ultra-wide-angle environmental portrait that communicates Ghaf's goals: a family growing together through small daily actions, supportive choice, lasting progress, and care for UAE nature. Do not merely widen the same single-tree portrait.\nInput images: Image 1 is a style and palette reference only; preserve its credible natural-history photography, warm light, UAE desert authenticity, and restrained green/earth palette, but create a new composition and viewpoint.\nScene/backdrop: An expansive, botanically plausible UAE desert garden at early morning. A magnificent mature Ghaf tree anchors the scene and shelters a small natural cluster of younger Ghaf growth at different early stages—one new shoot and two healthy saplings—suggesting parent, child, support, and permanent growth without literal labels. A gentle curved trail of a few fallen Ghaf seed pods and fresh leaves leads from the near foreground toward the young trees, suggesting small actions accumulating over time. The wider background subtly opens toward a distant date-palm oasis and a faint coastal-green horizon, visually connecting UAE landscapes without combining incompatible habitats in the same foreground.\nSubject: Authentic Prosopis cineraria with broad irregular canopy, fine compound leaves, tactile grey-brown bark, exposed rooted ground, and believable young growth. The family metaphor should feel warm and clear but remain a real natural scene.\nStyle/medium: Premium cinematic natural-history editorial photography, realistic full-frame camera, 24mm wide-angle lens, low but natural eye-level viewpoint, crisp organic texture, subtle depth, opaque raster.\nComposition/framing: Exact landscape 3:2 aspect ratio. Expansive wide-angle perspective with the mature Ghaf placed slightly off center, canopy spanning the upper middle, young growth visibly sheltered beneath and beside it, curved foreground seed/leaf trail, generous crop-safe edges, level horizon, visually balanced when viewed in Arabic RTL or English LTR. Strong immediate silhouette and layered near/mid/far depth. No important subject at the extreme edges.\nLighting/mood: Luminous UAE golden hour just after sunrise, soft long shadows, gentle rays through leaves, hopeful and welcoming, attractive and emotionally resonant but not dramatic or fantastical.\nColor palette: Pearl and ivory sky, sun-warmed sand, Ghaf emerald and deep forest foliage, restrained mangrove teal in the far horizon, earth-brown bark, a very subtle date-gold highlight.\nMaterials/textures: Natural leaflets, bark fissures, seed pods, dry soil, small stones, wind-shaped sand, restrained morning haze.\nConstraints: Preserve exact 3:2 ratio. Opaque image. No UI copy or baked-in text. No people, children, faces, hands, silhouettes, buildings, roads, cars, playground equipment, furniture, logos, brands, watermarks, QR codes, screens, robots, coins, trophies, badges, recycling bins, litter, or visible technology. No claim or implication that the app plants real trees or measures environmental impact. Keep the metaphor symbolic and natural.\nAvoid: illustration, painterly or vector aesthetic, CGI, 3D/plastic rendering, fantasy glow, magical particles, perfect symmetry, repeated cloned foliage, oversaturation, orange color cast, fake bokeh, hyper-HDR, lush lawn, dense forest, storm sky, wildlife focal points, unsafe objects, or botanical impossibility.\n",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the regenerated opaque RGB PNG source at original 1536x1024 resolution.",
         "Resized the exact 3:2 source to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3 with non-prompt metadata removed.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3 with non-prompt metadata removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 36248,
+        "bytes": 33931,
         "height": 512,
         "path": "assets/images/illustrations/r003/final/avatar-ghaf.jpg",
-        "sha256": "a5947ffbeb90768ba160c54fd3f5dd3ed71ca08732ac74a7c3b2349ded95a1d2",
+        "sha256": "a79d6a36741319751bbc0cfaac05272d3b4c44a220dfee9eefc82740fbbfc044",
         "width": 512
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "avatar-ghaf",
       "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
-      "prompt": "Use case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Primary request: An intimate botanical macro portrait of one authentic Prosopis cineraria (Ghaf) sprig with fine compound leaflets and one naturally curved ripe seed pod, designed as a distinctive profile-avatar photograph. Scene/backdrop: softly textured warm pearl/ivory natural ground with a faint sand-toned falloff, no environment or horizon. Subject: one small Ghaf sprig and one seed pod with botanically plausible attachment, realistic scale, healthy but naturally imperfect leaflets, and no extra species. Style/medium: premium natural-history studio macro photography, opaque raster, lifelike detail. Composition/framing: square 1:1, circle-safe; the complete sprig and pod centered within the inner 68 percent with generous clean margin; readable at 48–96 dp; nondirectional. Lighting/mood: soft early-morning UAE daylight, gentle dimensional shadow, quiet and welcoming. Color palette: restrained Ghaf Emerald and Deep Forest against warm Pearl/Ivory, with subtle Sand and Earth pod tones. Materials/textures: crisp natural leaflets, papery seed-pod texture, fine stem, matte ground.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.\nConstraints: Opaque image. Exactly one coherent sprig and one seed pod, no vase, pot, ribbon, badge border, circle drawn into the image, or floating disassembled parts.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 34392,
+        "bytes": 32099,
         "height": 512,
         "path": "assets/images/illustrations/r003/final/avatar-leaf.jpg",
-        "sha256": "c3766839e6e000fd119bc091459183bbf50affc70850cdeddba311facf164570",
+        "sha256": "b20407d18b04695fa5eeb69155f77324ba0ab4e18f594e27bf8fab3f7564fe43",
         "width": 512
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "avatar-leaf",
       "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
-      "prompt": "Use case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Primary request: A quiet botanical macro portrait of one healthy native-looking green leaf, photographed as a simple, clear, nature-based profile avatar with real imperfections and no symbolic styling. Scene/backdrop: softly textured warm pearl/ivory natural ground with a faint sand-toned falloff. Subject: exactly one complete green leaf with visible petiole, subtle venation, a naturally asymmetric contour, tiny believable surface variation, and no attached branch or second leaf. Style/medium: premium natural-history studio macro photography, opaque raster, true-to-life rather than stock-icon perfection. Composition/framing: square 1:1, circle-safe; leaf centered diagonally but visually nondirectional inside the inner 65 percent, generous clean margin, readable at 48–96 dp. Lighting/mood: soft early-morning UAE daylight, delicate realistic shadow, calm premium family-safe mood. Color palette: restrained Ghaf Emerald and Deep Forest on warm Pearl/Ivory, subtle Earth shadow. Materials/textures: matte leaf cuticle, fine veins, slight natural edge wear, tactile paper-stone ground.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.\nConstraints: Opaque image. Exactly one leaf, no flower, fruit, dew, decorative ring, drawn circle, badge, pot, stem bundle, or floating particles.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 21739,
+        "bytes": 19264,
         "height": 512,
         "path": "assets/images/illustrations/r003/final/avatar-flower.jpg",
-        "sha256": "be33a9ad0ebcb82080c30e65cd320dc7535889af39f8f960f8d1f59c93ff0232",
+        "sha256": "faded224f84232ab64c662a6748a83509ea56f6deb8d366fc4bd5c0a4b9f0854",
         "width": 512
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "avatar-flower",
       "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
-      "prompt": "Use case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Primary request: A delicate macro portrait of one small, subtle UAE desert wildflower bloom on a short natural stem, photographed as a gentle profile avatar; the flower should feel locally plausible, modest, and real, never exotic or ornamental. Scene/backdrop: softly textured warm pearl/ivory natural ground with a faint sand-toned falloff and no visible landscape. Subject: one tiny pale golden-yellow five-petal desert bloom, a short slender green stem, and two very small naturally imperfect leaves; no bouquet and no duplicate blossoms. Style/medium: premium natural-history studio macro photography, opaque raster, true-to-life scale and material. Composition/framing: square 1:1, circle-safe; complete flower and short stem centered within the inner 62 percent, generous clean margin, readable at 48–96 dp, nondirectional. Lighting/mood: soft early-morning UAE daylight, subtle true shadow, quiet optimism and family-safe calm. Color palette: restrained Sand-gold flower, muted Ghaf Emerald stem, warm Pearl/Ivory ground, subtle Earth shadow. Materials/textures: thin translucent petals with tiny natural variation, fine pollen detail without exaggeration, matte leaves and tactile paper-stone ground.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.\nConstraints: Opaque image. Exactly one small bloom, not a rose, sunflower, lotus, orchid, tropical flower, ornamental cultivar, floral arrangement, badge, or botanical diagram; no decorative ring or drawn circle.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 24552,
+        "bytes": 22161,
         "height": 512,
         "path": "assets/images/illustrations/r003/final/avatar-energy-leaf.jpg",
-        "sha256": "dc5e09cb04f02f4c535adc60376c79fa3076eaa16634fb8a14645a516979907f",
+        "sha256": "d7fe6a703145e6dbb31deb06bb0e92f06503d576f67b38db4a8678887cf7065f",
         "width": 512
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "avatar-energy-leaf",
       "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
-      "prompt": "Use case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Primary request: A close botanical portrait of one small sunlit unfurling green shoot, using real new growth and natural light to suggest gentle energy and renewal without any electricity, power, or lightning symbol. Scene/backdrop: softly textured warm pearl/ivory natural ground with a very faint sand-toned falloff. Subject: one short living shoot with two tender leaves opening and one small central bud, organically curved and botanically plausible, with no roots, pot, branch cluster, or additional plant. Style/medium: premium natural-history studio macro photography, opaque raster, true-to-life detail. Composition/framing: square 1:1, circle-safe; complete shoot centered within the inner 62 percent, generous clean margin, readable at 48–96 dp, nondirectional. Lighting/mood: soft early-morning UAE daylight with a single restrained rim of real sunlight across the new leaves, calm vitality, no glow effects. Color palette: fresh but restrained Ghaf Emerald and Deep Forest on warm Pearl/Ivory, soft Sand-gold highlights and Earth shadow. Materials/textures: slightly translucent young leaves, fine veins, tender matte stem, tactile paper-stone ground.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.\nConstraints: Opaque image. No lightning bolt, plug, battery, sun icon, rays, spark, halo, luminescence, metaphorical symbol, drawn circle, badge, or artificial energy effect.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 38493,
+        "bytes": 35978,
         "height": 512,
         "path": "assets/images/illustrations/r003/final/avatar-water-drop.jpg",
-        "sha256": "1417a11f10806df8ab539c3b201191db24a6da527dfdc2c6142b6db61f5652cb",
+        "sha256": "940dd4a67f85ec53ddc269a7a4803981596adb64f4c7c79fab5e1ad8c35851a4",
         "width": 512
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "avatar-water-drop",
       "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
-      "prompt": "Use case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Primary request: A precise botanical macro portrait of one clear natural dewdrop resting on one healthy Avicennia marina grey-mangrove leaf, created as a calm water-themed profile avatar without symbols or fantasy effects. Scene/backdrop: softly textured warm pearl/ivory natural ground with an extremely subtle Mangrove Teal tonal falloff, no coast or horizon. Subject: exactly one complete leathery elliptic mangrove leaf with a subtly grey-green surface, visible central vein, short petiole, and exactly one realistic round dewdrop that refracts the leaf texture; no second leaf. Style/medium: premium natural-history studio macro photography, opaque raster, lifelike botanical and optical detail. Composition/framing: square 1:1, circle-safe; leaf and single drop centered within the inner 65 percent, generous clean margin, readable at 48–96 dp, nondirectional. Lighting/mood: soft early-morning UAE daylight, gentle real specular highlight on the water only, calm and fresh without glow. Color palette: restrained Mangrove Teal, muted Ghaf Emerald and Deep Forest on warm Pearl/Ivory, subtle Sand and Earth shadow. Materials/textures: matte salt-tolerant leaf cuticle, fine veins, transparent water surface tension, tactile paper-stone ground.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.\nConstraints: Opaque image. Exactly one leaf and one dewdrop. No splash, wave, ocean, faucet, water-drop icon, decorative ring, drawn circle, badge, multiple droplets, condensation field, or artificial lens flare.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/access/parent/add-first-child", "/access/child", "/access/child/pin", "/league"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 512x512 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 59120,
+        "bytes": 55902,
         "height": 500,
         "path": "assets/images/illustrations/r003/final/task-recycling.jpg",
-        "sha256": "183f76a78c2d80c2b842bc9b59db43a42ba00cb0957671bbaebee3a553378865",
+        "sha256": "751aa8d0035279911321b14cddf4eeda10a42e3cbf1b2d326caf242cca173305",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "task-recycling",
       "source": { "format": "RGB PNG", "height": 887, "width": 1774 },
-      "prompt": "Use case: photorealistic-natural.\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app.\nPrimary request: Create a wide, clean household recycling still life suitable as a crop-safe task hero. Show a small, orderly group of intact dry paper pieces and clean, empty, safe plastic containers ready to be sorted; make the task immediately understandable without words.\nScene/backdrop: A quiet neutral Pearl/Ivory matte surface with a subtle warm sand-toned wall or backdrop, no visible room or household identifiers.\nSubject: Unbranded brown kraft paper and cardboard, one or two clean translucent or muted-plastic containers with caps removed and placed safely beside them; all objects intact, dry, empty, and visibly safe.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood.\nComposition/framing: Very wide horizontal hero composition, low three-quarter camera angle, centered nondirectional arrangement within the middle 60 percent, generous empty crop-safe edges and clear breathing room above and below; opaque background.\nLighting/mood: Soft early-morning UAE daylight, calm, quiet, tactile, honest, premium but unstyled.\nColor palette: Warm Pearl/Ivory, sand, earth brown, restrained Ghaf Emerald and Mangrove Teal accents only.\nMaterials/textures: Real matte kraft fibers, clean slightly scuffed household plastic, natural imperfections, no glossy advertising polish.\nConstraints: No glass, battery, chemical container, aerosol, sharp edge, food residue, liquid, cord, tool, unsafe object, hazardous symbol, overflowing waste, bin, bag, litter, person, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, false environmental metric. One clear recycling subject. Opaque.\nAvoid: No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic-looking rendered surface, fantasy glow, perfect symmetry, repeated foliage, generic camel/falcon ornament, oversaturation, or fake bokeh.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/child", "/child/task"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1200x500 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 133581,
+        "bytes": 131616,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/ghaf-seed.jpg",
-        "sha256": "a87a9044f73468b6871618e72033408c221be66219e00fa44c4dcaa1cb0bf896",
+        "sha256": "222030f42dc5b4693c4289a5002425757929c022e3f3af8c564afbacd3f5095a",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "ghaf-seed",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nPrimary request: Create the SEED state for a five-image growth sequence of the Ghaf tree, Prosopis cineraria. Show exactly one botanically plausible Ghaf seed partly nestled in undisturbed UAE desert soil. There must be no sprout, no root, no seedling, no other seed, and no mature tree.\nScene/backdrop: Quiet UAE arid habitat at ground level, softly graded sand and fine earth, uncluttered natural horizon/background.\nSubject: One species-appropriate Ghaf seed, intact, naturally asymmetrical, clearly readable at mobile size.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; true-to-life macro photography with botanically plausible tactile seed, sand, and soil detail; absolutely not an illustration.\nComposition/framing: Landscape crop matching 176:104 (approximately 22:13). Low fixed camera viewpoint and fixed horizon designed to remain consistent across a five-stage sequence. Subject centered within the safe middle 70 percent, generous crop-safe edges, nondirectional composition, opaque full frame.\nLighting/mood: Soft early-morning UAE daylight, calm premium family-safe mood.\nColor palette: Warm Pearl/Ivory ground with restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette.\nMaterials/textures: Natural imperfections, granular desert soil, realistic seed coat, restrained depth of field with the full subject sharp.\nConstraints: Exactly one seed partly in soil and no germination. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 138929,
+        "bytes": 136498,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/ghaf-shoot.jpg",
-        "sha256": "fe163f02de8fc89c9c23465b0b826b917b25a82c2838993fbe7d39432e6bd652",
+        "sha256": "4fccb722b87fc83e71dc4b09450d66fc7e16398bea388cabc2276c880e0e6a3b",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "ghaf-shoot",
       "source": { "format": "RGB PNG", "height": 963, "width": 1634 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput image: Image 1 is the immediately preceding Ghaf seed-state image and is a composition, camera, horizon, lighting, soil, and palette continuity reference only.\nPrimary request: Create the distinct SHOOT state for the same five-image growth sequence of the Ghaf tree, Prosopis cineraria. Replace the visible seed with exactly one newly germinated Ghaf shoot emerging from the same soil. It must read as a very early shoot, not a sapling or mature tree.\nScene/backdrop: Keep the quiet UAE arid habitat, softly graded sand and fine earth, fixed low camera viewpoint, horizon position, early-morning light, and restrained background character consistent with Image 1.\nSubject: One botanically plausible tender Ghaf shoot with a short stem and only the first small leaves; the seed coat may be subtly present at soil level but do not show a second plant.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; true-to-life macro photography with botanically plausible tactile stem, leaf, sand, and soil detail; absolutely not an illustration.\nComposition/framing: Landscape crop matching 176:104 (approximately 22:13). Same low fixed camera viewpoint and fixed horizon as Image 1. Subject centered within the safe middle 70 percent, generous crop-safe edges, nondirectional composition, opaque full frame.\nLighting/mood: Soft early-morning UAE daylight, calm premium family-safe mood.\nColor palette: Warm Pearl/Ivory ground with restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette.\nMaterials/textures: Natural imperfections, granular desert soil, delicate real plant tissue, restrained depth of field with the full shoot sharp.\nConstraints: Exactly one newly germinated shoot; no mature tree, no sapling, no grove, no hands or gardening tools. Preserve the overall camera/horizon/soil/light continuity from Image 1 while making a genuinely distinct growth state. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 166055,
+        "bytes": 163329,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/ghaf-sapling.jpg",
-        "sha256": "0e81e3ddc7bfd1940c30eed35d022acf3895e2ec941cb0f25825a0ee28f55a83",
+        "sha256": "b79bab9ce1ea47c1cac62ce5c213b9994add3b46d762f4f14e1321c8b564438a",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "ghaf-sapling",
       "source": { "format": "RGB PNG", "height": 963, "width": 1634 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput image: Image 1 is the immediately preceding Ghaf shoot-state image and is a composition, camera, horizon, lighting, soil, and palette continuity reference only.\nPrimary request: Create the distinct SAPLING state for the same five-image growth sequence of the Ghaf tree, Prosopis cineraria. Replace the tiny shoot with exactly one slender young Ghaf sapling rooted in the same soil. It must be clearly more developed than a shoot but still juvenile, sparse, and far smaller than a shade tree.\nScene/backdrop: Keep the quiet UAE arid habitat, softly graded sand and fine earth, fixed low camera viewpoint, horizon position, early-morning light, and restrained background character consistent with Image 1.\nSubject: One botanically plausible young Prosopis cineraria sapling, approximately knee-high in visual scale, with a thin naturally irregular woody stem, a few delicate branches, and sparse paired feathery compound leaves with small leaflets characteristic of a young Ghaf. No flowers or seed pods.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; true-to-life environmental plant photography with tactile young bark, leaf, sand, and soil detail; absolutely not an illustration.\nComposition/framing: Landscape crop matching 176:104 (approximately 22:13). Same fixed camera and horizon family as Image 1, adjusted only enough to fit the taller plant. Entire sapling visible, centered within the safe middle 70 percent, generous crop-safe edges, nondirectional composition, opaque full frame.\nLighting/mood: Soft early-morning UAE daylight, calm premium family-safe mood.\nColor palette: Warm Pearl/Ivory ground with restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette.\nMaterials/textures: Natural asymmetry and imperfections, granular desert soil, authentic slender bark and fine leaflets, realistic shadows, restrained depth of field with the full sapling readable.\nConstraints: Exactly one young sapling; no seed-only state, no tiny shoot, no established shade canopy, no mature tree, no grove, no hands or gardening tools. Preserve the overall camera/horizon/soil/light continuity from Image 1 while making a genuinely distinct growth state. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 174100,
+        "bytes": 171320,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/ghaf-shade.jpg",
-        "sha256": "daf2606bc84ef8ccaf875247d28addbfbc389058be5e477a9d2bf4c2e0aca395",
+        "sha256": "caa1f69c5da46e67bf7873be4bc1ccf3d794be0a56cd7cbaaedf9e5c258cb239",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "ghaf-shade",
       "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput image: Image 1 is the immediately preceding Ghaf sapling-state image and is a composition, location, horizon, lighting, soil, and palette continuity reference only.\nPrimary request: Create the distinct SHADE state for the same five-image growth sequence of the Ghaf tree, Prosopis cineraria. Replace the juvenile sapling with exactly one established medium Ghaf tree rooted at the same center point. The tree should now provide a clearly readable pool of shade, yet remain younger and less expansive than the final flourishing mature tree.\nScene/backdrop: Keep the quiet UAE arid habitat, warm sand and fine earth, horizon position, early-morning light direction, and restrained background character consistent with Image 1.\nSubject: One botanically plausible medium-age Prosopis cineraria with a naturally irregular branching trunk, tactile grey-brown bark, airy rounded-to-umbrella canopy, and fine paired compound leaflets. A soft natural tree shadow falls across the soil. No flowers or exaggerated fruit.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial environmental photography; true-to-life bark, foliage, sand, and soil detail; absolutely not an illustration.\nComposition/framing: Landscape crop matching 176:104 (approximately 22:13). Maintain the same visual horizon and central planting point as Image 1 while using a slightly wider natural-history camera framing to fit the whole tree. Complete trunk and canopy visible, centered within the safe middle 70 percent, generous crop-safe edges, nondirectional composition, opaque full frame.\nLighting/mood: Soft early-morning UAE daylight, gentle believable shade, calm premium family-safe mood.\nColor palette: Warm Pearl/Ivory ground with restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette.\nMaterials/textures: Natural asymmetry and imperfections, rugged bark, fine non-repeating foliage, granular desert soil, physically believable shadows, broad environmental focus without fake bokeh.\nConstraints: Exactly one established medium Ghaf tree; not a tiny shoot, not a sapling, not an ancient monumental specimen, no grove and no duplicated trunk. Preserve the camera/horizon/soil/light family from Image 1 while making a genuinely distinct growth state. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 218753,
+        "bytes": 215652,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/ghaf-flourishing.jpg",
-        "sha256": "30c7a945a8fa5dd2e4fa91e66f0bdffbbf63f51b086951bbd82369f9044d7b7b",
+        "sha256": "f5885d534cb7bcd53bef62bada68123f9eaff3c35313f78ab81fd5b051757684",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "ghaf-flourishing",
       "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput image: Image 1 is the immediately preceding Ghaf shade-state image and is a composition, habitat, horizon, lighting, soil, and palette continuity reference only.\nPrimary request: Create the distinct FLOURISHING state for the same five-image growth sequence of the Ghaf tree, Prosopis cineraria. Replace the medium tree with exactly one mature, healthy, long-established Ghaf rooted at the same center point. It should be visibly older, broader, taller, and more structurally complex than the shade state, with a generous thriving canopy, while remaining botanically and environmentally plausible.\nScene/backdrop: Keep the quiet UAE arid habitat, warm sand and fine earth, horizon position, early-morning light direction, and restrained background character consistent with Image 1.\nSubject: One mature Prosopis cineraria with a sturdy naturally irregular and lightly gnarled grey-brown trunk, layered open branching, a broad airy rounded-to-umbrella canopy, and fine paired compound leaflets. Show healthy but not unnaturally lush foliage, authentic gaps in the canopy, and a broad believable shade footprint. No decorative flowers, no exaggerated fruit, no impossible green lawn.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial environmental photography; true-to-life mature bark, foliage, sand, and soil detail; absolutely not an illustration.\nComposition/framing: Landscape crop matching 176:104 (approximately 22:13). Maintain the same visual horizon and central planting point as Image 1 while using a naturally wider camera framing to fit the full mature tree. Complete trunk and canopy visible, centered inside the safe middle 70 percent, generous crop-safe edges, nondirectional composition, opaque full frame.\nLighting/mood: Soft early-morning UAE daylight, layered believable shade, calm premium family-safe mood.\nColor palette: Warm Pearl/Ivory ground with restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette.\nMaterials/textures: Natural asymmetry and imperfections, rugged mature bark, fine varied non-repeating foliage, granular desert soil, physically believable shadows, broad environmental focus without fake bokeh.\nConstraints: Exactly one mature flourishing Ghaf as the clear subject; it must read older and broader than Image 1 but not fantastical, ornamental, manicured, or duplicated. No seed-only state, no shoot, no sapling, no grove, no repeated trunk, no artificial irrigation fixtures. Preserve the camera/horizon/soil/light family from Image 1 while making a genuinely distinct final growth state. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage patterns, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 117638,
+        "bytes": 115226,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/samar-seed.jpg",
-        "sha256": "f9a643c4a62c08e368ba05370cf6966ce5f1da89895634ff99eaaf824c61df4b",
+        "sha256": "a1681d98fe595f769b0cdc3fda9cd46654d4c61cde6064bb0a86cf4f24e281fd",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "samar-seed",
       "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nPrimary request: Regenerate the Samar growth family stage 1 of 5 as a true UAE desert Samr acacia habitat. Show exactly one small flattened dark-brown acacia-like Samar seed partly nestled in undisturbed natural soil, with no germination and absolutely no sprout. Establish and lock the family camera: quiet low macro editorial viewpoint, natural depth, low horizon in the upper third. In the far background, only a few unmistakable low, broad, thorny umbrella-canopy Samr acacia trees—not palms. This image will anchor later shoot, sapling, shade-tree, and flourishing-tree stages with the same habitat and camera axis.\nScene/backdrop: warm sandy-gravel UAE arid-grove soil with sparse native dry ground texture; low broad acacia silhouettes far away; open pale sky; absolutely no date palms, palm fronds, orchards, or cultivated rows\nSubject: one species-appropriate flattened acacia-like seed, clearly visible and partly embedded; no other seeds; no shoot, root, stem, leaf, fruit, flower, or pod\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile seed, sand, stones and soil; authentic camera optics and real material detail\nComposition/framing: landscape, crop-safe for exact 176:104 display; seed centered in middle 70 percent; generous nondirectional edges; fixed low horizon; understated habitat context; no dramatic diagonal or side bias\nLighting/mood: soft early-morning UAE daylight, calm premium family-safe mood, restrained natural contrast\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Deep Forest only in distant acacia canopies\nMaterials/textures: natural asymmetry, fine sand grains, small stones, dry organic soil, matte seed coat\nConstraints: opaque image; exactly one seed partly in soil; no sprout; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, environmental claim\nAvoid: date palms, palm trees, palm fronds, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh, staged studio product look, multiple seeds",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 117598,
+        "bytes": 115346,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/samar-shoot.jpg",
-        "sha256": "9d0f4a78b968b21a6c82fcdba0ae89c97ad23cadf477b7aee1ff6beb98d077fe",
+        "sha256": "f21c8aafe221253c2cb933df4392500e2d619ffe1b6dcba91c7397212bc2aacc",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "samar-shoot",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Samar seed-stage image is the edit target and exact family reference\nPrimary request: Create Samar growth family stage 2 of 5 by changing only the central seed-stage subject into one newly germinated Samr/Samar desert acacia shoot. The emerging shoot should be tiny and botanically plausible, with a short fresh stem and only its first delicate leaflets, visibly rooted at the same central soil spot. Preserve the exact camera position, lens height, horizon, crop, terrain, background low umbrella-canopy acacia trees, early-morning light, tonal character, and landscape composition from the reference.\nScene/backdrop: unchanged warm sandy-gravel UAE arid-grove soil; unchanged distant low broad Samr acacia silhouettes; no date palms\nSubject: exactly one newly germinated Samar/Samr acacia-like shoot at center, small enough to read as the earliest living stage; no second shoot, no mature trunk, no flowers, fruit, or pods\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile stem, first leaflets, sand, stones and soil; authentic camera optics and real material detail\nComposition/framing: exact locked family landscape composition; crop-safe for 176:104; central subject in middle 70 percent; generous nondirectional edges; low horizon in upper third\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; natural restrained contrast\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage\nConstraints: opaque image; edit the growth stage only; preserve environment and camera; one tiny newly germinated shoot; no people, child, face, hand, body part, text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: date palms, large plant, established sapling, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 127476,
+        "bytes": 125208,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/samar-sapling.jpg",
-        "sha256": "49d8be476ec5cd0fa583cb5c606cc6186e5126063af9cd0df31dda50492a111c",
+        "sha256": "c24d763249740ca3f3e68e7d2df13dfe2918b768b8d6b7e3dea0ce2f775169ef",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "samar-sapling",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Samar shoot-stage image is the edit target and exact family reference\nPrimary request: Create Samar growth family stage 3 of 5 by changing only the central newly germinated shoot into one slender young Samr/Samar desert acacia sapling. It should be clearly older than a shoot yet still juvenile: a thin natural woody stem, modest height, several sparse feathery acacia-like leaf branches, and a small irregular canopy. Preserve the exact camera axis, terrain, fixed horizon, background low umbrella-canopy acacia trees, early-morning light, tonal character, and crop of the reference.\nScene/backdrop: unchanged warm sandy-gravel UAE arid grove with the same distant low broad Samr acacias; no date palms\nSubject: exactly one centered slender young Samar/Samr acacia-like sapling, naturally rooted at the same soil point; juvenile proportions; no second plant, no mature heavy trunk, no flowers, fruit, or pods\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile bark, fine compound leaflets, sand, stones and soil; authentic camera optics and real material detail\nComposition/framing: exact locked family landscape composition, crop-safe for 176:104; entire sapling visible with generous air and nondirectional edges; horizon and background placement preserved\nLighting/mood: preserve soft early-morning UAE daylight, calm premium family-safe mood, restrained natural contrast\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage\nConstraints: opaque image; edit the growth stage only; preserve environment and camera; one slender juvenile sapling; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: date palms, thick mature trunk, full shade tree, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 194688,
+        "bytes": 192189,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/samar-shade.jpg",
-        "sha256": "64c6252896062c821e71c3d33e3ac6cfa8a6f8ab42427cf33ff74e2ec920abf3",
+        "sha256": "eefc4f954834f9334ea150f3b3077e7f95dc9a592ec80e4023b37c4c58c7da3b",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "samar-shade",
       "source": { "format": "RGB PNG", "height": 954, "width": 1648 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Samar sapling-stage image is the edit target and exact family reference\nPrimary request: Create Samar growth family stage 4 of 5 by changing only the central juvenile sapling into one established medium Samr/Samar desert acacia shade tree. Give it a credible weathered trunk, natural irregular branching, and a meaningful broad but not fully mature umbrella canopy that casts gentle shade. It must be visibly more established than the sapling and still less expansive than the final flourishing stage. Preserve the reference's landscape framing, camera axis, terrain character, fixed horizon, background acacias, early-morning light, and tonal continuity; keep the complete central tree comfortably within the crop.\nScene/backdrop: same warm sandy-gravel UAE arid grove and distant broad low Samr acacia habitat; no date palms\nSubject: exactly one central established medium Samar/Samr acacia-like tree, full trunk and full canopy visible, broad enough to provide shade; no second foreground tree; no flowers, fruit, or pods\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile bark, fine compound leaves, sand, stones and soil; authentic camera optics and real material detail\nComposition/framing: locked family landscape composition, crop-safe for 176:104; centered nondirectional tree within middle 70 percent, full canopy clear of edges, generous breathing room; preserve low horizon/background placement as closely as physically coherent\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; restrained natural contrast and a soft real shadow\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage\nConstraints: opaque image; edit growth stage only; preserve habitat and camera identity; one established medium shade tree; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: date palms, giant ancient tree, dense forest, ornamental landscaping, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 216073,
+        "bytes": 213528,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/samar-flourishing.jpg",
-        "sha256": "1632295e18fc405bc11c0bd2f1799d5abe08f1cab31ad3f6615f865824613209",
+        "sha256": "a8e23bb87234e1671e4d1ba36b18cfc7dcc8cc618d11748de43380bd1562560d",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "samar-flourishing",
       "source": { "format": "RGB PNG", "height": 954, "width": 1648 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Samar shade-stage image is the edit target and exact family reference\nPrimary request: Create Samar growth family stage 5 of 5 by maturing only the central established tree into one healthy flourishing Samr/Samar desert acacia. Preserve its identity and rooted position while making the canopy subtly wider, fuller, more layered, and visibly healthy, with a more weathered trunk and richer but still arid-adapted foliage. The change must read as natural long-term flourishing, not fantasy and not a sudden lush forest. Preserve the exact camera, terrain, fixed horizon, distant acacias, early-morning light, and crop of the reference; keep the complete tree comfortably inside the image.\nScene/backdrop: unchanged warm sandy-gravel UAE arid grove with the same distant broad low Samr acacias; no date palms\nSubject: exactly one central mature healthy Samar/Samr acacia-like tree with natural asymmetric umbrella canopy, credible arid-adapted foliage and textured bark; no second foreground tree; no excessive flowers, fruit, or pods\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile bark, fine compound leaves, sand, stones and soil; authentic camera optics and real material detail\nComposition/framing: exact locked family landscape composition, crop-safe for 176:104; centered nondirectional tree within middle 70 percent, full canopy clear of edges, generous breathing room; unchanged horizon/background placement\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; restrained natural contrast and credible shadow\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage; no tropical saturation\nConstraints: opaque image; change only the central tree's mature fullness; preserve habitat and camera; one flourishing tree; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: date palms, tropical lushness, fantasy growth, flowers or fruit as spectacle, dense forest, ornamental landscaping, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 168210,
+        "bytes": 165573,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/sidr-seed.jpg",
-        "sha256": "e9d2704c21ccbee0040b156d55b79a2b206ae5d839f30c5ae15a2a30e24a11d1",
+        "sha256": "111022c03018614cf73aa343afcc19e56aa881422ce443d9466fc1ab8cb7afaa",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "sidr-seed",
       "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nPrimary request: Sidr growth family, stage 1 of 5 — portray exactly one botanically plausible Sidr / Christ's thorn jujube (Ziziphus spina-christi-like) seed stone partly nestled in natural UAE desert soil, with no germination and absolutely no sprout. Establish and lock a Sidr-family camera distinct from the Samar family: quiet low macro editorial viewpoint, natural depth, horizon in the upper third, with a few softly receding rounded, dense-crowned Sidr trees in the far background. This image must serve as the compositional reference for later shoot, sapling, shade-tree, and flourishing-tree stages in the same habitat and camera axis.\nScene/backdrop: undisturbed warm sandy-loam and small gravel in a UAE wadi-edge desert grove; sparse native ground texture; distant rounded Sidr crowns only as unobtrusive habitat context; no acacia umbrella silhouettes and no date palms\nSubject: exactly one small species-appropriate hard oval Sidr seed stone, matte tan-brown, clearly visible and partly embedded in soil; no fruit flesh, no other seeds, no sprout, no leaf, no root\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile seed stone, sand, soil and small gravel; authentic camera optics and real material detail; no illustrated or rendered quality\nComposition/framing: landscape frame, crop-safe for exact 176:104 display; seed centered in middle 70 percent; generous nondirectional edges; fixed low viewpoint and horizon suitable for full five-stage family; no dramatic diagonal or side bias\nLighting/mood: soft early-morning UAE daylight; calm premium family-safe mood; natural restrained contrast\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Deep Forest only in distant rounded foliage\nMaterials/textures: natural asymmetry, sandy-loam crumbs, small stones, dry organic soil, credible matte seed-stone surface\nConstraints: opaque image; exactly one Sidr seed stone partly in soil; no sprout or germination; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: fruit, flowers, acacia umbrella trees, date palms, palm fronds, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh, staged studio look, multiple seeds",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 186292,
+        "bytes": 183972,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/sidr-shoot.jpg",
-        "sha256": "7de73501da5d80ed86ecbec5bcbdf1579b525a61978c8afab3d2b7e61accea0a",
+        "sha256": "9a79cb174100059675c50c08dea598362910397869da1c21d403e36e35854e9a",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "sidr-shoot",
       "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Sidr seed-stage image is the edit target and exact family reference\nPrimary request: Create Sidr growth family stage 2 of 5 by changing only the central seed stone into exactly one newly germinated Sidr / Ziziphus spina-christi-like shoot, visibly rooted at the same central soil point. The shoot should be tiny and botanically plausible, with a short fresh stem and only the first two to four small oval leaves. Preserve the exact low camera, horizon, crop, wadi-edge soil, distant rounded Sidr crowns, early-morning daylight, and tonal identity of the reference.\nScene/backdrop: unchanged sandy-loam and small gravel in the same UAE wadi-edge desert grove; same softly receding rounded dense Sidr trees; no acacia umbrella trees and no date palms\nSubject: exactly one newly germinated Sidr-like shoot, small enough to read as the earliest living stage; fresh but restrained oval leaves; no second shoot, no established woody trunk, no flowers or fruit\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile stem, small oval leaves, soil and gravel; authentic camera optics and real material detail\nComposition/framing: exact locked Sidr-family landscape composition, crop-safe for 176:104; centered subject in middle 70 percent; generous nondirectional edges; fixed horizon in upper third\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; natural restrained contrast\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage\nConstraints: opaque image; edit growth stage only; preserve environment and camera; one tiny new shoot; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: fruit, flowers, acacia feathery leaflets, date palms, large plant, established sapling, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 192588,
+        "bytes": 189975,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/sidr-sapling.jpg",
-        "sha256": "d6bf59f7dc57495d701d232b67d2167abadd86cc8c839147d97af6335f5ec71a",
+        "sha256": "8832e148b9fee703790dcf760707a598b175dcc8a9d02d967dbdca0b9fb9020c",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "sidr-sapling",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Sidr shoot-stage image is the edit target and exact family reference\nPrimary request: Regenerate Sidr growth family stage 3 of 5 by replacing only the central tiny shoot with exactly one slender young Sidr / Ziziphus spina-christi-like sapling. Give it one thin lightly woody stem, a handful of modest irregular branches, and a consistent leaf language across the entire plant: every leaf is a simple small oval-to-elliptic leaf, glossy muted green, with subtly visible three main veins from the leaf base. There must be no feathery leaflets and no compound acacia foliage anywhere on the sapling. Preserve the exact low camera axis, horizon, crop, soil, distant rounded Sidr crowns, daylight, and tonal identity of the reference.\nScene/backdrop: unchanged UAE wadi-edge sandy-loam and gravel with same softly receding rounded Sidr trees; no acacia umbrella silhouettes and no date palms\nSubject: one centered slender juvenile Sidr sapling rooted at the same soil point; thin stem; sparse, simple oval leaves of consistent type; no second plant, thick mature trunk, flowers, fruit, or compound leaves\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile young bark, simple oval Sidr leaves, soil and gravel; authentic camera optics and real material detail\nComposition/framing: exact locked Sidr-family landscape composition, crop-safe for 176:104; entire sapling visible in middle 70 percent with generous nondirectional edges; fixed horizon and background placement\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; restrained natural contrast\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage\nConstraints: opaque image; edit growth stage only; preserve environment and camera; exactly one slender juvenile sapling; all sapling leaves simple oval and internally consistent; no people, child, face, hand, body part, text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: feathery foliage, compound leaves, acacia leaflets, mixed leaf types, fruit, flowers, date palms, thick mature trunk, full shade tree, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 201221,
+        "bytes": 198558,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/sidr-shade.jpg",
-        "sha256": "43f410485c5c877e8504a7bbc93a69d474d5c620f15f5bd8f5e05b0f6a2492c5",
+        "sha256": "d6ce0b9f25cc157ee879a08e9f6dde2b996af40d15689e9064360a0c24053030",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "sidr-shade",
       "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Sidr sapling-stage image is the edit target and exact family reference\nPrimary request: Create Sidr growth family stage 4 of 5 by changing only the central juvenile sapling into exactly one established medium Sidr / Ziziphus spina-christi-like shade tree. Give it a credible textured grey-brown trunk, low irregular branching, and a broad rounded but naturally uneven crown of consistent simple small oval leaves. It should cast meaningful gentle shade, look more established than the sapling, and remain less expansive than the final flourishing stage. Preserve the family landscape framing, camera axis, terrain, horizon, distant rounded Sidr trees, early-morning daylight, and tonal continuity; keep the full trunk and crown comfortably visible.\nScene/backdrop: same UAE wadi-edge sandy-loam and gravel with softly receding rounded Sidr trees; no acacia umbrella silhouettes and no date palms\nSubject: exactly one central established medium Sidr-like tree, full tree visible; rounded irregular shade canopy; every visible leaf simple and oval, not compound; no second foreground tree; no flowers or fruit\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile bark, oval leaves, soil and gravel; authentic camera optics and real material detail\nComposition/framing: locked Sidr-family landscape composition, crop-safe for 176:104; centered nondirectional tree within middle 70 percent, full crown clear of edges, generous breathing room; preserve horizon/background placement as closely as physically coherent\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; restrained natural contrast and soft real shadow\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage\nConstraints: opaque image; edit growth stage only; preserve habitat and camera identity; exactly one established medium Sidr shade tree; all foliage simple oval leaves; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: fruit, flowers, feathery or compound acacia foliage, date palms, giant ancient tree, dense forest, ornamental landscaping, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 211491,
+        "bytes": 208820,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/sidr-flourishing.jpg",
-        "sha256": "6635812c75dff98abf562066eb501d42d8b0e71b1535a906bc0ea397f49fe4fd",
+        "sha256": "f7cdf71618a707a86d3abd055e53528f3cd4bf4b7663f63ff28307b30c111fe2",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "sidr-flourishing",
       "source": { "format": "RGB PNG", "height": 965, "width": 1629 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster botanical growth-state artwork for an Arabic-first Expo family sustainability app\nInput image: the supplied Sidr shade-stage image is the edit target and exact family reference\nPrimary request: Create Sidr growth family stage 5 of 5 by maturing only the central established tree into exactly one healthy flourishing Sidr / Ziziphus spina-christi-like tree. Preserve its identity and rooted position while making the rounded crown subtly wider, fuller, more layered, and visibly healthy; deepen the weathered trunk character and add richer but still arid-adapted coverage of consistent simple oval leaves. The change must read as natural long-term flourishing, not fantasy, and the complete tree must remain within the frame. Preserve the exact camera, terrain, horizon, distant rounded Sidr grove, early-morning daylight, and crop of the reference.\nScene/backdrop: unchanged UAE wadi-edge sandy-loam and gravel with the same distant rounded Sidr trees; no acacia umbrella silhouettes and no date palms\nSubject: exactly one central mature healthy Sidr-like tree with a naturally asymmetric rounded crown, tactile bark, and consistent simple small oval leaves; no second foreground tree; no flowers and no visible fruit\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history field photography; botanically plausible tactile bark, oval leaves, soil and gravel; authentic camera optics and real material detail\nComposition/framing: exact locked Sidr-family landscape composition, crop-safe for 176:104; centered nondirectional tree within middle 70 percent, full crown clear of edges, generous breathing room; unchanged horizon and background placement\nLighting/mood: preserve soft early-morning UAE daylight; calm premium family-safe mood; restrained natural contrast and credible shade\nColor palette: warm Pearl/Ivory ground, muted Sand and Earth, restrained Ghaf Emerald and Deep Forest foliage; no tropical saturation\nConstraints: opaque image; change only mature fullness of central tree; preserve habitat and camera; exactly one flourishing Sidr tree; all foliage simple oval leaves; no people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, fence, car, animal, litter, unsafe object, false environmental metric\nAvoid: fruit, flowers, feathery or compound foliage, date palms, tropical lushness, fantasy growth, dense forest, ornamental landscaping, illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 97615,
+        "bytes": 95615,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/date-palm-seed.jpg",
-        "sha256": "f9c7adbece67fb6b01e84d3ab1efb5db85640e8f0018b740124eb349f515500e",
+        "sha256": "c39b3263f5c37cace22f136aa98c5847fc106b0c3b6d291cc36e6d159810fbd1",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "date-palm-seed",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nPrimary request: A botanically plausible date-palm seed state for the first stage of a five-image Phoenix dactylifera growth sequence. Show exactly one intact date stone partly embedded in lightly textured oasis soil; no sprout, no roots above ground, no additional seeds.\nScene/backdrop: restrained UAE oasis ground plane with only a softly receding sandy-earth horizon; no visible buildings or props.\nSubject: one realistic Phoenix dactylifera seed, naturally ridged and imperfect, partly in the ground.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real, not designed artwork.\nComposition/framing: crop-safe landscape composition matching 176:104; camera very low and nearly level with the ground, 50 mm natural perspective; seed centered within the middle 55 percent; same locked camera height, viewing angle, horizon, and quiet background suitable for later growth stages; generous clean margins on every edge.\nLighting/mood: soft early-morning UAE daylight, warm Pearl/Ivory ground, calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth.\nMaterials/textures: tactile seed ridges, fine irregular soil grains, subtle natural dust, physically plausible shadows, natural asymmetry and real material detail.\nConstraints: opaque image; one clear botanical subject; no sprout; no flowers; no fruit; no other plants; no irrigation equipment.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 99774,
+        "bytes": 97551,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/date-palm-shoot.jpg",
-        "sha256": "e8da264530ea630fe444762ce0bef9b1dbc4c6aae3d5a1217fb4d5557100525a",
+        "sha256": "63a7c53c948c3e840188f145f7ac5155036f5980081095b9ba85e97ab7931d29",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "date-palm-shoot",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous date-palm seed-stage photograph and must define the exact ground plane, camera height, viewing angle, horizon, lighting, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to a newly germinated Phoenix dactylifera shoot. Replace the exposed seed with one tiny, botanically plausible date-palm shoot emerging from the same centered patch of soil; a small portion of the seed may remain naturally at the base. Show no mature trunk and no broad mature fronds.\nScene/backdrop: preserve the restrained UAE oasis ground plane and softly receding sandy-earth horizon from Image 1.\nSubject: one very young date-palm shoot with one or two narrow fresh green spear-like leaves, delicate and naturally imperfect.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: preserve Image 1’s crop-safe 176:104 landscape frame, low nearly ground-level 50 mm perspective, centered subject within the middle 55 percent, horizon, scale relationship, and generous clean margins.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory ground.\nMaterials/textures: tactile narrow leaf surface, fine irregular soil grains, natural dust, physically plausible shadows, natural asymmetry and real material detail.\nConstraints: opaque image; change only the growth state; one clear botanical subject; newly germinated shoot only; no flowers; no fruit; no other plants; no irrigation equipment.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 114278,
+        "bytes": 112006,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/date-palm-sapling.jpg",
-        "sha256": "f2327cb5847eb778e1d6068f00e6a5dd1826b3e88299a4860666ac7eda4db29e",
+        "sha256": "ff7643c59b7e2874f6aa3f1bf0f87364909b8b604390063614d9ff8f552c6c1a",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "date-palm-sapling",
       "source": { "format": "RGB PNG", "height": 963, "width": 1634 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous Phoenix dactylifera shoot-stage photograph and must define the exact soil, camera height, viewing angle, horizon, lighting, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to a slender young date-palm sapling. Grow the same centered plant into a small juvenile Phoenix dactylifera with several upright narrow juvenile leaves and the earliest naturally divided young fronds; keep it clearly young, with little or no visible trunk.\nScene/backdrop: preserve the restrained UAE oasis ground plane and softly receding sandy-earth horizon from Image 1.\nSubject: one healthy, botanically plausible juvenile date-palm sapling, naturally asymmetrical, modest in scale.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: preserve Image 1’s crop-safe 176:104 landscape frame, low nearly ground-level 50 mm perspective, same centered planting point and horizon; keep the entire sapling inside the central 70 percent with generous clean margins and no clipped leaves.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory ground.\nMaterials/textures: real matte leaf fibers and slight edge wear, fine irregular soil grains, subtle natural dust, physically plausible shadows, natural asymmetry and real material detail.\nConstraints: opaque image; change only the growth state; one clear botanical subject; sapling stage only; no mature tall trunk; no flowers; no dates or fruit; no other plants; no irrigation equipment.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 143717,
+        "bytes": 141278,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/date-palm-shade.jpg",
-        "sha256": "64975ec5a7a2b64ed16a287d6e4676b8696fd5dedf8f6bb5b488a3e54afdfa7b",
+        "sha256": "0989508cb720c5380c54415c7f19317d327d78f43e271f2609542bb423b1414f",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "date-palm-shade",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous Phoenix dactylifera sapling-stage photograph and must define the exact sandy-earth setting, viewing axis, horizon, lighting, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to an established medium date palm capable of giving shade. Grow the same centered plant into one healthy Phoenix dactylifera with a recognizable textured juvenile trunk and a broad but not fully mature crown of real feathered fronds. Show the entire tree from ground contact through every frond tip.\nScene/backdrop: preserve the restrained UAE oasis sandy-earth plane and softly receding horizon from Image 1; keep the background empty and quiet.\nSubject: one botanically plausible established medium date palm, naturally asymmetrical, with layered pinnate fronds and modest crown spread; no fruit.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: crop-safe 176:104 landscape, same central planting point and horizon family as Image 1; adjust only apparent plant scale as needed so the whole tree fits comfortably inside the central 70 percent, with at least 10 percent clean margin above and on each side; grounded roots and shadow visible.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory ground.\nMaterials/textures: tactile fibrous trunk, individually varied matte fronds, fine irregular soil, physically plausible soft shadow, natural asymmetry and real material detail.\nConstraints: opaque image; change only the growth state; exactly one clear tree; established medium shade stage; no dates or fruit; no flowers; no other plants; no irrigation equipment.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, cloned or repeated fronds, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh, clipped crown or trunk.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 135897,
+        "bytes": 133419,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/date-palm-flourishing.jpg",
-        "sha256": "b02aa4a99cffb6e7c7d7ede198c6505ebdeac39511ab526c713e4e9ec6833b1c",
+        "sha256": "2849f2825baf70de36b4880a60c81c1b2392b58bd53d81c865950e8cef03cd7b",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "date-palm-flourishing",
       "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous Phoenix dactylifera shade-stage photograph and must define the sandy-earth setting, viewing axis, horizon, lighting, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to a mature, flourishing date palm. Grow the same centered tree into one robust healthy Phoenix dactylifera with a taller deeply textured fibrous trunk, a full naturally irregular crown, and abundant individually varied feathered fronds. The visual change should clearly read as long-term healthy maturity, not magic or instant growth.\nScene/backdrop: preserve the restrained UAE oasis sandy-earth plane and softly receding horizon from Image 1; keep the background empty and quiet.\nSubject: one botanically plausible mature date palm, naturally asymmetrical, with layered pinnate fronds and realistic older lower fronds; no fruit required.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: crop-safe 176:104 landscape, same central planting point and horizon family as Image 1; adjust only apparent plant scale as needed so the entire mature tree fits comfortably inside the central 72 percent, with clean margin above and on both sides; ground contact and shadow visible.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory ground.\nMaterials/textures: tactile fibrous trunk plates, individually varied matte fronds with subtle age variation, fine irregular soil, physically plausible soft shadow, natural asymmetry and real material detail.\nConstraints: opaque image; change only the growth state; exactly one clear mature tree; no flowers; no dates or fruit clusters; no other plants; no irrigation equipment.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, cloned or repeated fronds, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh, clipped crown or trunk.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 90340,
+        "bytes": 88229,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/mangrove-seed.jpg",
-        "sha256": "f3a5e1518e6a4b25cd059599c9bb296829a9286bc85ece26cb99704504c93d5d",
+        "sha256": "9c38c07a00fd3edbadb01408b38cfc4a3d9be0e35d73ec2ff1343b617b97a6a6",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "mangrove-seed",
       "source": { "format": "RGB PNG", "height": 964, "width": 1631 },
-      "prompt": "Create one new opaque raster photograph for the Ghaf Arabic-first family sustainability app, in the established Quiet UAE Botanical Editorial direction.\n\nUse case: photorealistic-natural botanical state image, not a diagram. Primary subject: exactly one fruit/propagule of the UAE grey mangrove, Avicennia marina, in its pre-germination seed stage. The propagule must be botanically plausible for Avicennia marina: small, pale grey-green, heart-shaped to ellipsoidal/flattened ovoid, with a softly rounded apex or very short beak and a thin slightly velvety pericarp. Make it unmistakably organic rather than a pebble. It rests naturally at the edge of a shallow receding tide on wet intertidal mud, with a delicate water line and a few authentic mineral grains. Do not depict the long pencil-shaped or cigar-shaped propagule associated with Rhizophora or other mangrove genera.\n\nComposition: horizontal landscape frame near 176:104, low close natural-history camera, the single propagule within the crop-safe middle 55 percent but slightly off perfect center, fixed low horizon family consistent with a five-stage growth sequence, generous nondirectional margins, no side-dependent narrative. Lighting: soft early-morning UAE daylight with quiet warm reflection, physically believable subdued shadow, no dramatic sunset. Palette: warm Pearl/Ivory, Sand and Earth with restrained Mangrove Teal and grey-green. Texture: realistic thin fruit coat, wet silt, shallow water, tiny natural imperfections, clear subject and restrained depth of field.\n\nNo illustration, vector aesthetic, drawing, watercolor, 3D render, CGI, plastic surface, fantasy glow, lens flare, starburst, perfect symmetry, repeated foliage, people, children, faces, hands, body parts, animals, readable text, letters, numbers, UI, logo, brand, watermark, building, boat, car, litter, tools, unsafe objects, false environmental metrics, or fake bokeh. Exactly one propagule; no sprout, root, leaf, seedling, mature tree, grove, flower, pod cluster, shell, or stone. Opaque full frame, premium credible editorial photography.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 69646,
+        "bytes": 67229,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/mangrove-shoot.jpg",
-        "sha256": "76485b2989a4d85f8cb679fa6fae21beed32f1f2f16241aca7b3e6bba8c69bbe",
+        "sha256": "9d65fd9c7d0bc81adffeb1fd54c24e14721bd0aa7ca0aa3541085bc807aaa6c5",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "mangrove-shoot",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous UAE grey-mangrove seed-stage photograph and must define the exact intertidal mud, shallow-water film, camera height, viewing angle, low horizon, lighting, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to a newly germinated Avicennia marina shoot. Replace the intact seed-bearing fruit with one tiny young grey-mangrove shoot emerging from the same centered place in the wet silt, with a short green stem, a pair of small fleshy cotyledon or first leaves, and only minimal naturally anchored root structure at the mud surface.\nScene/backdrop: preserve Image 1’s quiet shallow UAE tidal margin, reflective water film, silty mud, low coastal horizon, and empty background.\nSubject: one newly germinated Avicennia marina shoot, delicate, fresh, botanically plausible, naturally imperfect and clearly at an early stage.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: preserve Image 1’s crop-safe 176:104 landscape frame, low nearly mud-level 50 mm perspective, same centered growth point, waterline, horizon, and generous clean margins.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight, restrained Mangrove Teal reflection, and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory highlights.\nMaterials/textures: real fleshy young leaf surfaces, fine wet silt, faint salt texture, gentle water ripple, physically plausible reflections and shadows, natural asymmetry.\nConstraints: opaque image; change only the growth state; exactly one clear botanical subject; newly germinated shoot only; no woody trunk; no flowers; no fruit; no other plants; no wildlife; no debris.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, exaggerated stilt roots, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, boat, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 82340,
+        "bytes": 79796,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/mangrove-sapling.jpg",
-        "sha256": "e7f42c22a6a28cdc88c430be5aebc932e7ed369b8128b77e0a371e5e322afd78",
+        "sha256": "97f57be59af06526c75602bdbc4fa49b9b71d894f30849750f7c8509bd04ced1",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "mangrove-sapling",
       "source": { "format": "RGB PNG", "height": 964, "width": 1632 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous Avicennia marina shoot-stage photograph and must define the exact intertidal mud, shallow-water film, camera height, viewing angle, low horizon, lighting, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to a slender young UAE grey-mangrove sapling. Grow the same centered plant into one small Avicennia marina sapling with a thin lightly woody stem, a few natural side branches, and several opposite pairs of thick oval grey-green leaves with subtly paler undersides. Include only a few short, botanically plausible pencil-like pneumatophores near the base if visible.\nScene/backdrop: preserve Image 1’s quiet shallow UAE tidal margin, reflective water film, silty mud, low coastal horizon, and empty background.\nSubject: one healthy young Avicennia marina sapling, clearly juvenile, naturally asymmetrical and modest in scale.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: preserve Image 1’s crop-safe 176:104 landscape frame, low nearly mud-level 50 mm perspective, same centered growth point, waterline, horizon; keep the entire sapling inside the central 70 percent with generous margins and no clipped leaves.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight, restrained Mangrove Teal reflection, and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory highlights.\nMaterials/textures: real waxy salt-tolerant leaf surfaces with minor irregularity, lightly textured young bark, fine wet silt, faint salt texture, gentle water ripple, physically plausible reflection and shadow.\nConstraints: opaque image; change only the growth state; exactly one clear botanical subject; sapling stage only; no dense mature canopy; no flowers; no fruit; no other plants; no wildlife; no debris.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, cloned leaves, exaggerated tangled or stilt roots, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, boat, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 152031,
+        "bytes": 149396,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/mangrove-shade.jpg",
-        "sha256": "e6273c37676c5c2e6b109c09816434d8714a7b5c6f6fc10e521b79d5933b88e9",
+        "sha256": "b607e2fb7c09ae204e9cfa9dc4efa7ac232959544b9a20df70f00291abe1b930",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "mangrove-shade",
       "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous Avicennia marina sapling-stage photograph and must define the intertidal setting, viewing axis, low horizon, soft daylight, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to one established medium UAE grey-mangrove tree capable of giving shade. Grow the same centered plant into a healthy Avicennia marina with a modest branching grey-brown trunk, a broad naturally irregular crown of dense opposite oval grey-green leaves, and a small field of realistic upright pencil-like pneumatophores emerging from the nearby tidal mud. Do not create arching prop or stilt roots.\nScene/backdrop: preserve the quiet shallow UAE tidal margin, reflective water film, silty mud, low coastal horizon, and empty background from Image 1.\nSubject: one botanically plausible established medium grey mangrove, naturally asymmetrical, with the entire crown, base and breathing-root zone visible.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: crop-safe 176:104 landscape, same central planting point and horizon family as Image 1; adjust only apparent plant scale as needed so the entire tree fits inside the central 72 percent, with clean margin above and on both sides; base, pneumatophores, reflection, and soft shadow remain visible.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight, restrained Mangrove Teal reflection, and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory highlights.\nMaterials/textures: tactile grey-brown bark, varied matte-to-waxy salt-tolerant leaves with pale undersides, fine wet silt, slender pneumatophores, gentle ripples, physically plausible reflection and shadow.\nConstraints: opaque image; change only the growth state; exactly one clear established tree; no flowers; no fruit; no other plants; no wildlife; no debris.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, cloned leaves, arching prop roots, stilt roots, tangled fantasy roots, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, boat, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh, clipped crown or base.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 165057,
+        "bytes": 162342,
         "height": 624,
         "path": "assets/images/illustrations/r003/final/mangrove-flourishing.jpg",
-        "sha256": "cb71549d14e5a66b8ac0e3fae150f07d294bce2ed0d73bc7cd11642d775506fa",
+        "sha256": "022ae0424158c569759342b94b7f8fcfc4dc948d47df814542b18a0fed40554c",
         "width": 1056
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "mangrove-flourishing",
       "source": { "format": "RGB PNG", "height": 965, "width": 1630 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app\nInput images: Image 1 is the locked-camera previous Avicennia marina shade-stage photograph and must define the UAE intertidal setting, viewing axis, low horizon, soft daylight, palette, and crop.\nPrimary request: Advance only the botanical growth state in Image 1 to one mature, flourishing UAE grey mangrove. Grow the same centered tree into a robust healthy Avicennia marina with a thicker naturally forked grey-brown trunk, a wider deeper irregular crown of abundant varied opposite oval grey-green leaves, and an established but restrained field of upright pencil-like pneumatophores in the nearby tidal mud. Do not create arching prop or stilt roots. The visual change should read as long-term healthy maturity, never magic.\nScene/backdrop: preserve the quiet shallow UAE tidal margin, reflective water film, silty mud, low coastal horizon, and empty background from Image 1.\nSubject: one botanically plausible mature grey mangrove, naturally asymmetrical; entire crown, trunk base, breathing-root zone and subtle reflection visible.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic and physically real.\nComposition/framing: crop-safe 176:104 landscape, same central planting point and horizon family as Image 1; adjust only apparent plant scale as needed so the entire mature tree fits inside the central 76 percent, with clean margin above and on both sides; no clipped foliage or base.\nLighting/mood: preserve Image 1’s soft early-morning UAE daylight, restrained Mangrove Teal reflection, and calm premium family-safe mood.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory highlights.\nMaterials/textures: tactile weathered grey-brown bark, individually varied salt-tolerant leaves with subtle pale undersides and edge wear, fine wet silt, slender pneumatophores, gentle ripples, physically plausible reflections and shadows.\nConstraints: opaque image; change only the growth state; exactly one clear mature tree; no flowers; no fruit; no other trees or plants; no wildlife; no debris.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, cloned foliage, arching prop roots, stilt roots, tangled fantasy roots, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, boat, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh, clipped crown or base.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1056x624 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 222945,
+        "bytes": 220451,
         "height": 780,
         "path": "assets/images/illustrations/r003/final/family-canopy-19.jpg",
-        "sha256": "929a99affeb74a66ccc4434a00c2c54d2da99e1620e0e73e8449acd445d9c6d4",
+        "sha256": "50bf5725dbc96c7953733fce8d99b36e84be5c6e4dd83fb7b846bc678b92950a",
         "width": 1080
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "family-canopy-19",
       "source": { "format": "RGB PNG", "height": 1067, "width": 1474 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: local mobile-app family canopy habitat image, pre-threshold visual companion\nPrimary request: Create a restrained premium natural-history photograph of one anonymous mature Ghaf tree habitat in the UAE desert. The tree is healthy and established but its canopy remains naturally airy, with some warm sky and distant sand visible between irregular fine leaf clusters. This photograph must not depict, encode, hint at, or invite counting nineteen, twenty, points, goals, rewards, milestones, ranks, family members, or contributions.\nScene/backdrop: quiet open UAE desert habitat, pale warm sand, a very soft distant dune horizon, faint dry native ground texture, no buildings or infrastructure.\nSubject: one central mature Ghaf tree, credible rough bark and branching, fine natural foliage with non-repeating leaf detail, stable trunk and grounded roots, no tagged tree.\nStyle/medium: photorealistic editorial environmental photography, credible natural-history field photograph, tactile and calm. No illustration, no vector art, no painting, no CGI, no 3D render.\nComposition/framing: landscape frame approximately 18:13, centered and nondirectional for identical Arabic RTL and English LTR use; natural asymmetry inside a balanced silhouette; generous crop-safe breathing room on every edge; eye-level medium-wide field view; no side-biased visual narrative.\nLighting/mood: soft early-morning UAE sunlight, warm Pearl and Ivory atmosphere, restrained Ghaf Emerald and Deep Forest foliage, quiet optimistic realism, subtle natural shadow, no dramatic sunset.\nMaterials/textures: authentic fissured bark, fine imperfect leaf clusters, granular sand, slight atmospheric haze; avoid over-sharpening and excessive depth-of-field blur.\nText: none.\nConstraints: opaque raster photograph; no people, no children, no faces, no hands, no animals, no readable text, no letters, no numbers, no logos, no brands, no watermark, no UI, no labels, no badges, no ribbons, no circular progress motif, no icons, no objects arranged in countable groups, no hazards. Botanically coherent branching and foliage; no malformed, fused, duplicated, mirrored, or repeated botanical details.\nAvoid: fantasy glow, magical particles, perfect symmetry, cloned leaves, surreal roots, overgrown lush forest, lawn, flowers, fruit, litter, roads, buildings, cars, fences, irrigation equipment, harsh midday contrast, oversaturated greens, artificial studio look.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1080x780 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 226845,
+        "bytes": 223924,
         "height": 780,
         "path": "assets/images/illustrations/r003/final/family-canopy-20.jpg",
-        "sha256": "22d44fada4bb5a30fccaedbddc456a24437b63639f3c8b955ef7f3af5dffb162",
+        "sha256": "934c909f161a80beee24fa911b29c214be17c877bf1001cf4764f667a9e2c4a2",
         "width": 1080
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "family-canopy-20",
       "source": { "format": "RGB PNG", "height": 1067, "width": 1474 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: local mobile-app family canopy habitat image, subtly fuller companion state\nInput image: the provided photograph is the edit target and composition lock for the paired canopy image.\nPrimary request: Change only the same anonymous mature Ghaf tree's canopy so it feels subtly fuller and a little more established through a modest increase in naturally irregular fine leaf coverage. Keep the exact same tree identity, trunk, major branches, camera position, framing, UAE desert background, horizon, sand, natural ground texture, soft early-morning light, color balance, crop safety, and overall restrained photographic treatment unchanged. The change must be understated, credible, and visible without looking magical or instantaneous. This photograph must not depict, encode, hint at, or invite counting nineteen, twenty, points, goals, rewards, milestones, ranks, family members, or contributions.\nScene/backdrop: unchanged quiet open UAE desert habitat with pale warm sand and soft distant dune horizon.\nSubject: the exact same central mature Ghaf tree, with only subtly denser natural fine foliage; credible rough bark, coherent branching, and non-repeating leaf detail.\nStyle/medium: photorealistic editorial environmental photography, credible natural-history field photograph, tactile and calm. No illustration, no vector art, no painting, no CGI, no 3D render.\nComposition/framing: preserve the exact landscape frame approximately 18:13, central nondirectional composition for identical Arabic RTL and English LTR use, natural asymmetry, and generous crop-safe breathing room on every edge.\nLighting/mood: preserve the same soft early-morning UAE sunlight, warm Pearl and Ivory atmosphere, restrained Ghaf Emerald and Deep Forest foliage, quiet optimistic realism, and subtle natural shadow.\nMaterials/textures: preserve authentic fissured bark, granular sand, and slight haze; add only plausible fine leaf clusters without cloning.\nText: none.\nConstraints: change only modest foliage fullness; keep all other pixels and scene relationships as faithful to the input as possible; opaque raster photograph; no people, no children, no faces, no hands, no animals, no readable text, no letters, no numbers, no logos, no brands, no watermark, no UI, no labels, no badges, no ribbons, no circular progress motif, no icons, no objects arranged in countable groups, no hazards. Botanically coherent foliage; no malformed, fused, duplicated, mirrored, or repeated botanical details.\nAvoid: changing trunk shape, major branch structure, camera, crop, horizon, dunes, ground, lighting, color grade, or season; fantasy glow, magical particles, perfect symmetry, cloned leaves, surreal roots, overgrown lush forest, lawn, flowers, fruit, litter, roads, buildings, cars, fences, irrigation equipment, harsh contrast, oversaturated greens, artificial studio look.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1080x780 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 144264,
+        "bytes": 140789,
         "height": 656,
         "path": "assets/images/illustrations/r003/final/circle-garden-1.jpg",
-        "sha256": "c46e4b56165f2e8c9809188a62cd4b7f33c377eae0d4d484cc85d0002110c9f3",
+        "sha256": "2cd447111ef94c5a636f62f0cae7c7773de06126edba9ebaa0d4066b14fb49de",
         "width": 832
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "circle-garden-1",
       "source": { "format": "RGB PNG", "height": 1115, "width": 1411 },
-      "prompt": "Use case: photorealistic-natural.\nAsset type: offline local raster artwork for an Arabic-first Expo family sustainability app.\nPrimary request: Create an anonymous cooperative Ghaf desert-garden habitat for a shared family progress surface. Show one mature, healthy Ghaf tree as the clear focal point, with a few naturally spaced young native desert plants sharing the same tended soil patch; the scene must suggest collective care without people and without encoding any count, score, rank, or achievement.\nScene/backdrop: Quiet open UAE desert-garden habitat with pale dunes and low native ground cover in the far distance, no structures and no recognizable private place.\nSubject: A botanically plausible Prosopis cineraria Ghaf tree with fine feathery paired leaflets, irregular spreading canopy, textured twisting trunk, and natural asymmetry; several subtle native seedlings and low plants around the base, no repeated or identical foliage.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood.\nComposition/framing: Landscape scene designed for a 52:41 crop, centered nondirectional composition with the full tree canopy and trunk kept inside the middle 72 percent, generous crop-safe edges, moderate depth, no side-dependent narrative, opaque.\nLighting/mood: Soft early-morning UAE daylight, long delicate natural shadows, quiet and hopeful, grounded rather than dramatic.\nColor palette: Warm Pearl/Ivory sky haze, sand and earth, restrained Ghaf Emerald and Deep Forest foliage, very subtle Mangrove Teal shadow notes.\nMaterials/textures: Real fissured bark, delicate matte leaflets, fine sand and tended soil, natural imperfections.\nConstraints: No people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, wall, fence, road, irrigation equipment, car, animal, generic camel/falcon ornament, litter, unsafe object, false environmental metric, rings, badges, tokens, evenly spaced plant count, or data/count encoded in the landscape. One clear botanical habitat. Opaque.\nAvoid: No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, oversaturation, fake bokeh, dramatic sunset, or impossible plant density.\nUse case: photorealistic-natural. Asset type: offline local raster artwork for an Arabic-first Expo family sustainability app. Quiet UAE Botanical Editorial; premium natural-history editorial photography; botanically plausible tactile bark, leaf, seed, sand and soil; soft early-morning UAE daylight; warm Pearl/Ivory ground; restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand and Earth palette; natural asymmetry and real material detail; calm premium family-safe mood; centered nondirectional composition with generous crop-safe edges. No illustration, vector aesthetic, watercolor, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, repeated foliage, people, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, car, generic camel/falcon ornament, litter, unsafe object, false environmental metric, oversaturation, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/circle"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 832x656 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 174819,
+        "bytes": 171989,
         "height": 656,
         "path": "assets/images/illustrations/r003/final/circle-garden-2.jpg",
-        "sha256": "cbde7fb2165634c4810936a800a9d9c80aa525596023e153164a352087162b84",
+        "sha256": "f2f29ffef9c076ccb433172b7cc240d3fa745bdbf28c0ecfd66446fa0c0331d7",
         "width": 832
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "circle-garden-2",
       "source": { "format": "RGB PNG", "height": 1114, "width": 1412 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: local mobile-app private family Circle habitat image\nPrimary request: Create a restrained premium natural-history photograph of an anonymous native Sidr tree habitat in a quiet UAE gravel wadi. The scene should feel distinct from a central Ghaf desert portrait while carrying equal visual weight, calm, polish, and dignity. It must function only as atmospheric habitat imagery and must not depict, encode, hint at, or invite counting people, families, contributions, points, goals, ranks, rewards, levels, or progress.\nScene/backdrop: broad, dry UAE wadi floor with pale gravel, warm sandstone fragments, sparse credible native scrub, a low softly hazed rocky rise in the far background, and no infrastructure.\nSubject: one healthy mature Sidr tree with a naturally rounded but irregular canopy, believable rough gray-brown bark, fine non-repeating leaves, and a softly defined pool of natural shade; no visible fruit or flowers, no tagged tree.\nStyle/medium: photorealistic editorial environmental photography, credible natural-history field photograph, tactile and understated. No illustration, no vector art, no painting, no CGI, no 3D render.\nComposition/framing: landscape frame approximately 832 by 656, central and nondirectional for identical Arabic RTL and English LTR use; balanced visual mass with natural asymmetry; crop-safe breathing room around canopy, trunk, and ground; eye-level medium-wide view; no path, arrow, or side-leading visual narrative.\nLighting/mood: soft early-morning UAE sunlight with gentle warm Ivory and Sand tones, restrained deep green foliage, quiet welcoming realism, mild atmospheric haze, subtle shadow detail, no dramatic sunset.\nMaterials/textures: authentic irregular bark, fine imperfect foliage, matte gravel, dry soil, weathered rock, slight natural dust; avoid waxy leaves, hyper-detailed oversharpening, and excessive background blur.\nText: none.\nConstraints: opaque raster photograph; anonymous equal-weight habitat; no people, no children, no faces, no hands, no silhouettes, no animals, no readable text, no letters, no numbers, no logos, no brands, no watermark, no UI, no signage, no badges, no ribbons, no circular progress motif, no icons, no decorative object groups, no countable arrangements, and no hazards. Botanically coherent tree structure and ground ecology; no malformed, fused, duplicated, mirrored, or conspicuously repeated branches or leaves.\nAvoid: copying a lone Ghaf tree on open sand; fantasy glow, magical particles, perfect symmetry, cloned foliage, manicured garden, irrigated lawn, lush forest, abundant flowers or fruit, litter, roads, buildings, cars, fences, pipes, tools, fire, glass, sharps, harsh midday contrast, oversaturated green, teal-orange grading, artificial studio look.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/circle"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 832x656 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 181208,
+        "bytes": 178051,
         "height": 656,
         "path": "assets/images/illustrations/r003/final/circle-garden-3.jpg",
-        "sha256": "0c6f17c1e46cc40c44b56d0ffe7789b74714cd9c165fa961b4bdf58308d58668",
+        "sha256": "271b914e69a5d94a6954ea5b5238be21166da78af339881d3788a9530adf0b75",
         "width": 832
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "circle-garden-3",
       "source": { "format": "RGB PNG", "height": 1114, "width": 1411 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: local mobile-app private family Circle habitat image\nPrimary request: Create a restrained premium natural-history photograph of an anonymous mature gray mangrove habitat on the UAE coast. A continuous, naturally irregular mangrove canopy and its interlaced lower branches should form one cohesive habitat mass above a calm shallow tidal edge. The scene must carry the same visual importance and compositional weight as a mature desert tree portrait while remaining unmistakably coastal. It must function only as atmospheric habitat imagery and must not depict, encode, hint at, or invite counting people, families, trees, seedlings, contributions, points, goals, ranks, rewards, levels, or progress.\nScene/backdrop: quiet UAE intertidal margin at a gentle tide, shallow muted teal water, patches of wet sand, softly hazed pale horizon, no skyline, buildings, boats, boardwalks, or infrastructure.\nSubject: one visually cohesive mature gray mangrove habitat with credible small leathery leaves, naturally irregular branching and subtle pneumatophore texture near the wet-sand edge; no planted rows, nursery stakes, tags, or individually countable seedlings.\nStyle/medium: photorealistic editorial environmental photography, credible natural-history field photograph, tactile and understated. No illustration, no vector art, no painting, no CGI, no 3D render.\nComposition/framing: landscape frame approximately 832 by 656, central and nondirectional for identical Arabic RTL and English LTR use; balanced visual mass with natural asymmetry; crop-safe breathing room on all edges; low eye-level medium-wide habitat view; no path, arrow, shoreline sweep, or side-leading visual narrative.\nLighting/mood: soft early-morning UAE coastal light, warm Pearl and Ivory sky, restrained Mangrove Teal water and Deep Forest leaves, calm welcoming realism, gentle reflections, subtle atmospheric haze, no dramatic sunset.\nMaterials/textures: authentic matte leaves, weathered branching, fine wet-sand texture, subtle ripples, diffused salt-air haze; avoid plastic foliage, glassy water, over-sharpening, and excessive background blur.\nText: none.\nConstraints: opaque raster photograph; anonymous equal-weight habitat; no people, no children, no faces, no hands, no silhouettes, no animals, no birds, no readable text, no letters, no numbers, no logos, no brands, no watermark, no UI, no signage, no badges, no ribbons, no circular progress motif, no icons, no decorative object groups, no countable arrangements, and no hazards. Botanically and physically coherent branches, roots, shoreline, reflection, and water; no malformed, fused, duplicated, mirrored, floating, or conspicuously repeated vegetation.\nAvoid: isolated rows of saplings, visible planting activity, fantasy glow, magical particles, perfect symmetry, cloned foliage, tropical rainforest density, palm trees, flowers, fruit, litter, plastic, fishing gear, roads, buildings, boats, fences, pipes, tools, glass, sharps, deep or stormy water, wildlife, harsh midday contrast, oversaturated teal, teal-orange grading, artificial studio look.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/circle"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 832x656 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 97208,
+        "bytes": 94957,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/recognition-reveal.jpg",
-        "sha256": "85b0adc4744869d5524481b08b20c9ac5b4ef8ca9d3b1a191aefaf9041dba7f2",
+        "sha256": "03299ec4d52b6ec1c6577ecc369dabc6913d77782200e3a29b0d1cba127c048b",
         "width": 800
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "recognition-reveal",
       "source": { "format": "RGB PNG", "height": 1254, "width": 1254 },
-      "prompt": "Create one new opaque raster photograph for the Ghaf Arabic-first family sustainability app, in the established Quiet UAE Botanical Editorial direction.\n\nUse case: photorealistic-natural recognition-result supporting image, never a badge, trophy, reward icon, or proof of environmental impact. Primary subject: one modest newly established grey-mangrove shoot (Avicennia marina) at the edge of very shallow tidal water. It has one slightly leaning young stem, three small leaves at visibly different angles and sizes, one leaf partly opening, subtle natural wear, and an irregular root contact with wet mud. The growth must feel real, quiet, and earned through care without looking staged or magical.\n\nScene: warm shallow coastal water over fine intertidal silt, a soft uneven reflection of morning sky, a few tiny natural ripples crossing the frame, and sparse mineral texture. No perfect circular ripple around the plant. Composition: square 1:1, intimate low natural-history camera, the shoot slightly off-center but wholly inside the crop-safe middle 60 percent, negative space distributed unevenly yet safe for either RTL or LTR, no side-dependent narrative. Lighting: soft early-morning UAE daylight reflected gently from one side, restrained realistic highlights on water and leaf edges, no visible sun and no theatrical effect. Palette: Mangrove Teal, muted Ghaf Emerald, Deep Forest, warm Pearl/Ivory, Sand and Earth. Texture: believable leathery young leaves, matte irregular stem, wet silt, slightly imperfect water surface, restrained depth of field.\n\nNo illustration, vector aesthetic, drawing, watercolor, 3D render, CGI, plastic surface, fantasy glow, luminescence, lens flare, starburst, spotlight, halo, perfect symmetry, paired mirror-image leaves, concentric rings, repeated foliage, people, children, faces, hands, body parts, animals, readable text, letters, numbers, UI, logo, brand, watermark, building, boat, car, litter, tools, unsafe objects, false environmental metric, achievement symbol, confetti, coins, badges, trophies, or fake bokeh. Exactly one young shoot; no second plant, mature tree, grove, flower, fruit cluster, or ornamental pot. Opaque full frame, premium credible editorial photography.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/child/reveal/[bundleId]"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 800x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 287751,
+        "bytes": 285211,
         "height": 750,
         "path": "assets/images/illustrations/r003/final/mangrove-habitat.jpg",
-        "sha256": "e754d12a26a1fb1dd0b65008c2c283a2afd0d6dc97840d622a83ed67e44685fb",
+        "sha256": "c43bf8696b7d0eadf9195dcff5acff401055148c194e22180f24a09242e46752",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "mangrove-habitat",
       "source": { "format": "RGB PNG", "height": 992, "width": 1586 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local 8:5 supporting habitat artwork for an Arabic-first Expo family sustainability learning screen\nPrimary request: An atmospheric but clear UAE grey-mangrove habitat study showing Avicennia marina at a shallow intertidal edge. The image should help a family notice real habitat structure: several naturally spaced mature grey mangroves, irregular branching trunks, abundant upright pencil-like pneumatophores in wet silt, shallow tidal water, and subtle reflections. It is supporting photography, not a diagram and not proof of measured impact.\nScene/backdrop: anonymous undeveloped UAE coastal tidal flat in soft early-morning conditions, low calm water and warm hazy sky; no identifiable landmark.\nSubject: botanically plausible Avicennia marina habitat with one primary mangrove grove as the focal subject, realistic breathing roots and grey-green foliage; no stilt or arching prop roots.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic, documentary-clear, and physically real.\nComposition/framing: wide 8:5 landscape; eye level just above the shallow water, centered nondirectional composition, primary grove inside the middle 70 percent, visible base and pneumatophore field in the lower third, quiet clean sky and side margins for resilient crops; balanced scan-friendly detail.\nLighting/mood: soft early-morning UAE daylight, gentle warm side light, calm contemplative family-safe mood, restrained atmospheric haze.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory and muted Sun Gold.\nMaterials/textures: tactile grey-brown bark, individually varied oval salt-tolerant leaves with subtly pale undersides, wet silty mud, slender vertical pneumatophores, shallow transparent water and physically plausible reflections.\nConstraints: opaque image; no labels, arrows, callouts, legends, map pins, measurements or interface elements; no people; no wildlife required; no claims.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, cloned trees or repeated foliage, arching prop roots, stilt roots, tangled fantasy roots, person, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, skyline, bridge, boat, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/garden/learn/[learningId]/story"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1200x750 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 329797,
+        "bytes": 327221,
         "height": 750,
         "path": "assets/images/illustrations/r003/final/shared-coastal-canopy.jpg",
-        "sha256": "5a6eda2b53175301dc77baeee721759691163d3c5f2c26c015dec58a52454953",
+        "sha256": "029f608b82d026d65018a815290f6d88c129ed62168b8d1f963d24c36c33bffe",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "shared-coastal-canopy",
       "source": { "format": "RGB PNG", "height": 992, "width": 1586 },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local 8:5 shared-growth supporting artwork for an Arabic-first Expo family sustainability app\nPrimary request: An anonymous UAE coastal grey-mangrove canopy scene that quietly suggests shared shelter and connected growth without depicting any family, identity, score, quantity, or measured outcome. Show several Avicennia marina crowns naturally overlapping into one coherent coastal canopy above shallow tidal water.\nScene/backdrop: undeveloped UAE tidal margin in soft early-morning light, low warm haze, calm shallow water and natural silty shore; no identifiable landmark.\nSubject: a healthy botanically plausible group of grey mangroves with irregular branching, layered grey-green oval leaves, glimpses of the trunks and restrained upright pneumatophores; canopy relationship is the focus, not a single perfect specimen.\nStyle/medium: Quiet UAE Botanical Editorial; premium natural-history editorial photography; convincingly photographic, atmospheric, and physically real.\nComposition/framing: wide 8:5 landscape; slightly below-canopy eye level from the shallow-water edge; centered nondirectional composition with overlapping crowns forming a gentle open arch but never a perfect symbol; focal canopy inside the middle 72 percent, clean crop-safe edges, visible natural water reflections below.\nLighting/mood: soft early-morning UAE daylight filtering unevenly through real leaves, calm cooperative and family-safe mood, restrained warmth, no dramatic spectacle.\nColor palette: restrained Ghaf Emerald, Deep Forest, Mangrove Teal, Sand, Earth, warm Pearl/Ivory and muted Sun Gold.\nMaterials/textures: varied salt-tolerant leaf surfaces, tactile grey-brown bark, fine wet silt, shallow transparent water, slender pencil-like pneumatophores, physically plausible soft reflections and shadows.\nConstraints: opaque image; qualitative visual only; no people, silhouettes, portraits, initials, avatars, numbers, scores, counters, badges, paths, labels, arrows, map pins, text, UI, or claims; no wildlife required.\nAvoid: illustration, vector aesthetic, watercolor, painting, 3D render, CGI, plastic surface, fantasy glow, perfect symmetry, heart-shaped canopy, cloned trees, repeated foliage, arching prop roots, stilt roots, tangled fantasy roots, person, child, face, hand, body part, readable text, letters, numbers, UI, logo, brand, watermark, building, skyline, bridge, boat, car, generic camel or falcon ornament, litter, unsafe object, false environmental metric, oversaturation, fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/circle/shared-growth", "/parent/family/shared-garden"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Center-cropped and resized to 1200x750 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 287061,
+        "bytes": 285878,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-ghaf-intro.jpg",
-        "sha256": "c1923c96e6cf923fee12c16fa06eb2725eb26e780d894fdb50093719af1c3251",
+        "sha256": "7c2537f94147826426e9f1ac0c84c0856ea2aa1afa0ae4c00d99c743e37de704",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "onboarding-ghaf-intro",
       "source": {
         "format": "RGB PNG",
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: introduce Ghaf with a magnificent mature Ghaf tree in a real UAE desert landscape at golden sunrise, welcoming and full of life without showing any person\nScene/backdrop: warm sand, small native grasses and scattered Ghaf seed pods, clear turquoise-to-gold morning sky\nSubject: one botanically plausible mature Ghaf tree with a broad emerald canopy and richly textured trunk\nStyle/medium: premium natural-history editorial photography, photorealistic, real bark and leaf texture, natural asymmetry\nComposition/framing: dynamic child-height low viewpoint, a gentle sandy path leads toward the tree, landscape 3:2, central crop-safe subject with breathing room\nLighting/mood: luminous amber rim light, hopeful, adventurous, calm and safe\nConstraints: nondirectional composition; no readable text; no logo; no UI; no building; no vehicle; no environmental-impact claim\nAvoid: illustration, vector art, 3D render, CGI, fantasy glow, magical particles, people, person, faces, hands, mascots, animals, brands, watermarks, hazards",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 387273,
+        "bytes": 382876,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-family.jpg",
-        "sha256": "502248fd9623b19e290d75a84514304172cf864e3f20f8a663c9a10f8554cb5a",
+        "sha256": "396e57fde320ec21547adb93d6181fae20f710465a934a2e3fe5af8684dd1515",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "onboarding-family",
       "source": {
         "format": "RGB PNG",
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster hero photograph for a child-friendly Arabic-first Expo family sustainability app onboarding screen\nPrimary request: Create a vivid, joyful natural metaphor for FAMILY as a team: exactly three young Ghaf trees, Prosopis cineraria, growing close together so their separate branches meet into one shared sheltering canopy. The trees should feel related and mutually supportive without looking identical or arranged artificially.\nScene/backdrop: A clean UAE desert garden at early morning, warm sand and low native grasses, open sky, no buildings or people.\nSubject: Exactly three botanically plausible young Ghaf trees of slightly different heights, their canopies visibly overlapping around one small open sunlit patch of earth in the center. Natural asymmetry and real fine paired leaf texture.\nStyle/medium: Quiet UAE Botanical Editorial; premium environmental photography, highly realistic, tactile natural-history detail, not an illustration.\nComposition/framing: Landscape 3:2 hero crop, generous crop-safe edges, the trio centered in the safe middle 70 percent, strong readable silhouette at small mobile size, nondirectional composition that works unchanged in RTL and LTR.\nLighting/mood: Luminous UAE sunrise with warm amber rim light and fresh emerald leaves; energetic, welcoming, hopeful, child-friendly, never saccharine.\nColor palette: Ghaf emerald, deep forest, warm pearl sand, solar amber, a restrained clear teal sky.\nMaterials/textures: Authentic bark, feathery leaflets, granular sand, soft grasses, restrained depth of field with all three trees readable.\nConstraints: Exactly three trees and no other prominent tree. No people, child, family portrait, face, hand, body part, animal, readable text, letters, numbers, logo, brand, UI, screen, icon, vector aesthetic, illustration, watercolor, 3D render, CGI, plastic surface, fantasy glow, magical effect, heart symbol, perfect symmetry, repeated cloned foliage, building, car, litter, unsafe object, environmental quantity, watermark, or fake bokeh. The family meaning must come only from the three distinct trees sharing one canopy.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 252918,
+        "bytes": 251700,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-action.jpg",
-        "sha256": "114dcf74c11068528cf02fd316e2c7ab4534a0698b7796657ff29feacc8955f8",
+        "sha256": "7aacc8735f21b63c02d41dce95f80d45c6849935288ad323b3807e42c1a8c2b5",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "onboarding-action",
       "source": {
         "format": "RGB PNG",
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: make a safe everyday sustainability action feel colorful, energetic, and inviting\nScene/backdrop: sunlit warm paper surface with soft teal and amber shadows\nSubject: only clean safe recyclable household objects—smooth paper, flattened cardboard, intact aluminum cans, and capped plastic bottles—arranged in playful flowing color groups ready to sort\nStyle/medium: premium editorial still-life photography, photorealistic, tactile paper grain, real material texture and small natural imperfections\nComposition/framing: bold close crop, curved rhythm moving toward an open central area, landscape 3:2, crop-safe and nondirectional\nLighting/mood: bright warm window light, lively emerald, teal, amber and coral accents, curious and capable rather than childish\nConstraints: all objects clean and intact; no glass, sharps, batteries, chemicals, food, medicine, unknown waste, readable text, logo, UI, person, face, or hand\nAvoid: illustration, vector art, cartoon, 3D render, CGI, fantasy effects, people, mascots, brands, watermarks, clutter, unsafe objects",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 319149,
+        "bytes": 314198,
         "height": 800,
-        "path": "assets/images/illustrations/r003/final/onboarding-ai.jpg",
-        "sha256": "c4fa71159a1b1de9ed262ecbba7c38c7a300af56bfd7c791a3d04d8a75c60c61",
+        "path": "assets/images/illustrations/r003/final/onboarding-assistant.jpg",
+        "sha256": "fd62d50885a03f0ae830364523f059f1ba79baf9d85eeb93df41749bbd002ade",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "onboarding-ai",
       "source": {
         "format": "RGB PNG",
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Use case: photorealistic-natural\nAsset type: offline local raster hero photograph for a child-friendly Arabic-first Expo family sustainability app onboarding screen\nPrimary request: Create a vivid, intelligent natural still life that communicates BOUNDED AI GUIDANCE FOR ONE NEXT STEP, not magic and not a robot. Arrange one real Ghaf leaf sprig beside exactly three smooth stone stepping markers that form a short, clear path across warm UAE sand. Connect only the three markers with a subtle thin teal inlay line, like a restrained circuit path embedded in the stone, ending beside the leaf.\nScene/backdrop: Top-down natural-history editorial tabletop made from sunlit UAE sand and pale stone, with a little authentic fine earth and no built environment.\nSubject: One botanically plausible Ghaf sprig with fine paired leaflets; exactly three distinct tactile stone markers in a simple sequence; one restrained teal inlay path that visually suggests clear guided steps.\nStyle/medium: Quiet UAE Botanical Editorial; premium photorealistic still-life photography with real materials and natural imperfections, not an illustration or UI mockup.\nComposition/framing: Landscape 3:2 hero crop, bold diagonal flow contained inside the safe middle 75 percent, generous crop-safe edges, nondirectional enough for unchanged RTL and LTR use, readable at small mobile size.\nLighting/mood: Bright soft morning light with energetic teal and emerald accents, curious, reassuring, clever, child-friendly, professional.\nColor palette: Warm pearl stone and sand, Ghaf emerald, deep forest shadows, restrained mangrove teal, small solar-amber highlights.\nMaterials/textures: Real stone grain, granular sand, delicate natural leaflets, thin matte mineral inlay, crisp tactile detail with restrained depth of field.\nConstraints: The metaphor is limited guidance through three steps only. Exactly three stone markers and one leaf sprig. No robot, face, eyes, character, mascot, brain, human, child, family portrait, hand, body part, microphone, camera, phone, tablet, computer, screen, app UI, chat bubbles, readable text, letters, numbers, icon, logo, brand, glowing orb, magical energy, fantasy glow, neon, hologram, surveillance imagery, medical imagery, vector aesthetic, illustration, watercolor, 3D render, CGI, plastic surface, perfect symmetry, repeated cloned foliage, building, car, litter, unsafe object, environmental quantity, watermark, or fake bokeh.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 329063,
+        "bytes": 327824,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-support.jpg",
-        "sha256": "096f37a4d79ceea5d8d62c39edebbda59d4d373c8f06b49fd0576036be6c3bc2",
+        "sha256": "6d0ff28e30b56983c76d77c58719b9c91e8437dc303c26d95ec63bcd9ef71cc3",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "onboarding-support",
       "source": {
         "format": "RGB PNG",
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Use case: photorealistic-natural\nAsset type: landscape mobile onboarding hero for children ages 6–14\nPrimary request: show that asking for help supports growth through a real sheltered Ghaf seedling\nScene/backdrop: a small UAE desert grove after gentle morning watering, warm sand, mature canopy shade, soft turquoise sky glimpsed through leaves\nSubject: one healthy young Ghaf seedling protected by a simple low ring of natural twigs and palm fiber, with the broad shadow of a mature Ghaf tree sheltering it\nStyle/medium: premium natural-history editorial photography, photorealistic, botanically plausible leaves, real sand and fiber texture\nComposition/framing: close child-height viewpoint, seedling large and vivid in the foreground, sweeping dappled leaf shadows create movement, landscape 3:2, crop-safe and nondirectional\nLighting/mood: crisp sunlit leaves, emerald and teal with warm amber highlights, reassuring, energetic and safe\nConstraints: no person, face, hand, readable text, logo, UI, building, tool, hazard, or claim that growth happened automatically\nAvoid: illustration, vector art, cartoon, 3D render, CGI, fantasy glow, magical particles, people, mascots, brands, watermarks",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "informative",
       "final": {
-        "bytes": 314467,
+        "bytes": 313370,
         "height": 800,
         "path": "assets/images/illustrations/r003/final/onboarding-growth.jpg",
-        "sha256": "bcef0b89c08075162699e0a7751a256ba570b44b5896a0fe36cdd5fe69607059",
+        "sha256": "2bbcda0f3472796e1340a79d73959a699a545cb5f85f11b2728d80d845de20ef",
         "width": 1200
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "onboarding-growth",
       "source": {
         "format": "RGB PNG",
         "height": 1024,
         "width": 1536
       },
-      "prompt": "Edit this existing onboarding photograph while preserving its landscape 3:2 crop, camera position, bright UAE morning light, blue sky, sprout, young sapling, mature tree, surrounding grove, realistic sand, overall color balance, and premium natural-history editorial photographic style. Change only the foreground botanical material: remove every large round green split husk, nut-like shell, and round nut. Replace them with several botanically plausible Ghaf (Prosopis cineraria) seed pods: long, slender, gently curved, dry tan-to-brown segmented pods lying naturally on the sand, plus a few small flattened brown seeds at believable scale. The pods must read as modest real desert-tree pods, not giant fruit, dates, acacia balls, or fantasy objects. Keep the result fully photorealistic and naturally imperfect. No illustration, vector art, cartoon, CGI look, 3D render, instant-growth effect, fantasy glow, magical particles, people, person, faces, hands, text, logo, UI, tools, buildings, hazards, labels, measurements, or environmental-impact claims.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 1200x800 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     },
     {
       "accessibility": "decorative",
       "final": {
-        "bytes": 160647,
+        "bytes": 157491,
         "height": 1350,
         "path": "assets/images/illustrations/r003/final/section-transition.jpg",
-        "sha256": "fb042c1e95b712ffbf5301868a003ed3f87f07cb91938f56b1b9f0428ff35bd6",
+        "sha256": "a7194410f455abb0e544041e87136125b7b520db765ef9a7c790510c140fd6e7",
         "width": 900
       },
       "generatedAt": "2026-09-06",
-      "generator": "OpenAI imagegen",
+      "generator": "prepared synthetic image generation",
       "id": "section-transition",
       "source": {
         "format": "RGB PNG",
         "height": 1536,
         "width": 1024
       },
-      "prompt": "Create one new opaque raster photograph for the Ghaf Arabic-first family sustainability app in the established Quiet UAE Botanical Editorial direction.\n\nUse case: full-screen local startup and major-context transition background behind a live official raster logo, short live status line, and native activity indicator. This image is purely decorative atmosphere and must contain no focal object that competes with interface content.\nPrimary subject: soft dappled shadows of authentic small feathery Ghaf leaflets falling across a warm Pearl-and-Ivory lime-plaster surface, with a subtle band of pale Sand texture near the lower edge and a barely perceptible out-of-focus Ghaf Emerald tone at one corner. The leaf source stays outside the frame; show shadows only.\nScene/backdrop: quiet sunlit plaster plane inspired by a shaded UAE courtyard, anonymous and architectural only through material texture; no room, wall seam, window, furniture, object, landmark, or identifiable place.\nStyle/medium: premium photorealistic editorial material-and-light photography, refined, calm, tactile, understated, modern, and unmistakably photographic. No illustration, no vector art, no drawing, no painting, no CGI, no 3D render, no rasterized interface.\nComposition/framing: vertical 2:3 portrait, edge-to-edge; the central middle 55 percent and lower-middle area remain pale, low-detail, and open for live logo/status content; leaf shadows enter irregularly from upper corners but never form a frame, arrow, ring, symbol, face, or directional sweep; crop-safe at 320x720, 390x844, and taller Android ratios; no essential detail at any edge.\nLighting/mood: very soft early-morning UAE daylight, warm welcoming confidence, restrained contrast, quiet sense of readiness and movement between spaces. Pearl, Ivory, Sand, a trace of warm Gold, and the faintest Deep Forest/Ghaf Emerald only at an outer edge.\nMaterials/textures: natural matte lime plaster, fine mineral grain, physically plausible soft leaf-shadow penumbra, gentle tonal falloff, subtle real-world imperfection. Keep enough contrast for deep-green live text placed at center.\nText: none.\nConstraints: decorative background only; no people, children, adults, faces, hands, arms, bodies, silhouettes, animals, plant itself, readable text, letters, numbers, logo, brand, watermark, UI, buttons, icons, spinners, progress bars, percentages, badges, rewards, coins, trophies, ribbons, paths, doors, portals, maps, data, identity, device, network, cloud, sync, AI symbol, security symbol, measurement, or impact claim.\nAvoid: illustration, vector aesthetic, watercolor, paper cutout, poster, flat design, gradient graphic, CGI surface, fantasy glow, magical particles, halo, spotlight, radial burst, perfect symmetry, repeating wallpaper, cloned shadow patterns, hard black shadows, dense foliage, tropical leaves, broad generic houseplant shadows, neon, oversaturated green, teal-orange grading, lens flare, dramatic sunbeam, excessive blur, visible dust, cracks, dirt, stains, or moiré. Keep it low-contrast, premium, photographic, legible behind live UI, and nondirectional for RTL/LTR.",
       "reviewStatus": "curated-local-candidate",
       "routes": ["/", "/access/parent/sign-in", "/access/child", "/parent", "/child"],
       "transformations": [
         "Inspected the opaque RGB PNG source at original resolution.",
         "Resized to 900x1350 with FFmpeg Lanczos scaling.",
-        "Encoded as an opaque JPEG at FFmpeg q=3; non-prompt metadata was removed with ExifTool.",
-        "Embedded the exact generation prompt in the JPEG COM segment with the Impeccable prompt tool."
+        "Encoded as an opaque JPEG at FFmpeg q=3; embedded metadata was removed."
       ]
     }
   ]

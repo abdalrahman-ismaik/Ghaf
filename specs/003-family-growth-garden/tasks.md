@@ -3,20 +3,34 @@
 ## Confirmed local recovery — 2026-09-13
 
 - [x] T334 Record the owner's confirmed-local-recovery decision and the narrow
-  signed-out corruption exception in FR-220–224, plan and ownership.
+      signed-out corruption exception in FR-220–224, plan and ownership.
 - [x] T335 Implement corrupt-versus-unavailable classification, verified ordered
-  clearing, fresh pre-confirmation recheck, bounded retry and shared deterministic
-  reset; prove these with isolated synthetic storage regressions.
+      clearing, fresh pre-confirmation recheck, bounded retry and shared deterministic
+      reset; prove these with isolated synthetic storage regressions.
 - [x] T336 Implement the bilingual Welcome recovery state before first-run
-  onboarding, separate proposal/confirmation, cancel/Back, non-destructive retry,
-  failure and signed-out Arabic success; preserve the existing route manifest.
+      onboarding, separate proposal/confirmation, cancel/Back, non-destructive retry,
+      failure and signed-out Arabic success; preserve the existing route manifest.
 - [x] T337 Complete focused/full checks, exports, available UI evidence and
-  independent review; reconcile the recovery boundary and remaining external gates.
+      independent review; reconcile the recovery boundary and remaining external gates.
 
 **Evidence:** `docs/audits/2026-09-13-repository-completion.md` records 1,768 passing
 tests across 133 files, static checks, web/Android exports, independent review and
 isolated synthetic browser recovery. Physical Android/TalkBack and named Arabic
 review remain NOT RUN; no release flag is enabled by this completion.
+
+## Tamagui Botanical Redesign — 2026-09-11
+
+- [x] TB01 Record user-authorized presentation scope, design direction, ownership and preserved boundaries.
+- [x] TB02 Integrate a version-aligned Tamagui provider/theme with existing Arabic/English font and token authority.
+- [x] TB03 Migrate shared controls, layout surfaces, form presentation and restrained Reanimated feedback.
+- [x] TB04 Redesign Parent Home, task presentation, Family and settings in the botanical system.
+- [x] TB05 Redesign Child Today/task, Garden and League presentation, retaining all event/projection authorities.
+- [x] TB06 Reconcile access, general sections, navigation and supporting states with the shared system.
+- [x] TB07 Complete automated checks, bilingual visual inspection, web/Android bundle validation and truthful handoff.
+
+Completed 2026-09-12 on `redesign/tamagui-botanical`. The
+[evidence record](checklists/tamagui-botanical-evidence.md) distinguishes passing automated/web
+checks from physical Android and named-human gates that remain **NOT RUN**.
 
 **Input**: Design documents from `specs/003-family-growth-garden/`
 
@@ -1060,7 +1074,7 @@ changes.
       Android/TalkBack, named-human, and rights evidence truthfully before cohesive local commits.
 
       Default-on Arabic/English web-proxy inspection is complete. Explicitly enabled default-off
-          art routes, physical Android/TalkBack, named-human, and image-rights evidence remain open.
+              art routes, physical Android/TalkBack, named-human, and image-rights evidence remain open.
 
 ## Phase 33: First-run Onboarding and Context Transitions
 
@@ -1087,11 +1101,11 @@ changes.
       gaps truthfully before cohesive local commits.
 
       Completed locally on 2026-09-06: focused flow/route/reset coverage passed 7 files / 76 tests;
-      the full suite passed 86 files / 1,052 tests; typecheck, lint, format, dependency check, web
-      and Android JS exports, asset provenance, and diff checks passed. Firefox proxy inspection
-      passed at 320×720 and 390×844 in Arabic RTL and English LTR. Physical Android/TalkBack/OS
-      font-scale is `BLOCKED / NOT RUN` with no attached ADB device; named-human and rights review
-      remains `NOT RUN`.
+          the full suite passed 86 files / 1,052 tests; typecheck, lint, format, dependency check, web
+          and Android JS exports, asset provenance, and diff checks passed. Firefox proxy inspection
+          passed at 320×720 and 390×844 in Arabic RTL and English LTR. Physical Android/TalkBack/OS
+          font-scale is `BLOCKED / NOT RUN` with no attached ADB device; named-human and rights review
+          remains `NOT RUN`.
 
 ## Phase 34: Child-clear First-run and Branded Access Refinement
 
@@ -1120,17 +1134,17 @@ route authorities remain unchanged.
       physical Android, TalkBack, OS font-scale, named-human, and rights gaps truthfully.
 
       Completed locally on 2026-09-06: the required RED state recorded 2 files with 5 failing and
-      4 passing tests before implementation. The final focused brand/onboarding/artwork batch
-      passed 3 files / 16 tests, and the complete suite passed 86 files / 1,053 tests. Typecheck,
-      lint, formatting, Expo dependency alignment, the Impeccable detector, manifest integrity,
-      web export (122 files), Android JS export (91 files), five-image export checksum matching,
-      and `git diff --check` passed. Firefox proxy inspection covered four onboarding moments and
-      eight reachable Parent/Child access states at 320×720 and 390×844 in Arabic RTL and English
-      LTR with zero final-flow console errors. Startup remained visible about 1.48 seconds after
-      mount and the major-section overlay about 1.37 seconds including fade-out. The state-gated
-      pairing screen was source-audited through the same shared shell. Physical Android, TalkBack,
-      OS font scale, named-human review, and public image-rights review remain `BLOCKED` or
-      `NOT RUN`; `adb devices -l` returned no attached device or emulator.
+          4 passing tests before implementation. The final focused brand/onboarding/artwork batch
+          passed 3 files / 16 tests, and the complete suite passed 86 files / 1,053 tests. Typecheck,
+          lint, formatting, Expo dependency alignment, the Impeccable detector, manifest integrity,
+          web export (122 files), Android JS export (91 files), five-image export checksum matching,
+          and `git diff --check` passed. Firefox proxy inspection covered four onboarding moments and
+          eight reachable Parent/Child access states at 320×720 and 390×844 in Arabic RTL and English
+          LTR with zero final-flow console errors. Startup remained visible about 1.48 seconds after
+          mount and the major-section overlay about 1.37 seconds including fade-out. The state-gated
+          pairing screen was source-audited through the same shared shell. Physical Android, TalkBack,
+          OS font scale, named-human review, and public image-rights review remain `BLOCKED` or
+          `NOT RUN`; `adb devices -l` returned no attached device or emulator.
 
 ## Phase 35: Startup Asset Readiness and Ghaf Loading Motion
 
@@ -1152,15 +1166,15 @@ product, route, access, artwork, and feature-flag authorities remain unchanged.
       named-human limitations truthfully before a cohesive local commit.
 
       Completed locally on 2026-09-06: the focused RED state failed because the startup loader did
-      not yet exist. The final focused file passed 7 tests and the full suite passed 86 files /
-      1,055 tests. Typecheck, lint, format, dependency alignment, detector, web export (122 files),
-      Android JS export (91 files), and Git whitespace checks passed. In Firefox, delaying one local
-      raster kept the splash visible after 3.2 seconds with the real progress transform at
-      `0.927273`; it dismissed only after settlement and exposed usable onboarding with zero page
-      errors. Standard pulse values changed over time; reduced motion held the logo at exactly
-      `scale(1)`. Arabic 320×720 and 390×844 proxy layouts were contained. Physical Android,
-      TalkBack, native decode/memory, OS font scale, and named-human review remain `BLOCKED` or
-      `NOT RUN`; `adb devices -l` returned no attached target.
+          not yet exist. The final focused file passed 7 tests and the full suite passed 86 files /
+          1,055 tests. Typecheck, lint, format, dependency alignment, detector, web export (122 files),
+          Android JS export (91 files), and Git whitespace checks passed. In Firefox, delaying one local
+          raster kept the splash visible after 3.2 seconds with the real progress transform at
+          `0.927273`; it dismissed only after settlement and exposed usable onboarding with zero page
+          errors. Standard pulse values changed over time; reduced motion held the logo at exactly
+          `scale(1)`. Arabic 320×720 and 390×844 proxy layouts were contained. Physical Android,
+          TalkBack, native decode/memory, OS font scale, and named-human review remain `BLOCKED` or
+          `NOT RUN`; `adb devices -l` returned no attached target.
 
 ## Phase 36: Section-scoped Loading and Simple Ghaf Leaf Loop
 
@@ -1182,17 +1196,17 @@ product behavior, and the 46-artwork registry remain unchanged.
       Android gate; record measured evidence and remaining limitations before a cohesive commit.
 
       Completed locally on 2026-09-06: the focused RED state recorded 3 failing and 5 passing
-      tests. The final focused batch passed 2 files / 15 tests and the full suite passed 86 files /
-      1,056 tests. Typecheck, lint, formatting, Expo dependency alignment, detector, Git whitespace,
-      119-file web export, and 88-file Android JS export passed. Startup now requests seven
-      signed-out rasters (1,650,726 bytes) and four used branded fonts (546,000 bytes), down from
-      48 rasters plus seven fonts (10,638,873 combined bytes), a 79.4% reduction in the explicit
-      readiness set. Firefox showed the app-owned loader for 1,318 ms on a cached launch including
-      exit, retained it for a delayed onboarding raster, requested five avatar rasters only after
-      entering access, changed the standard leaf rotation, kept reduced motion at the identity
-      matrix, produced zero page errors, and had zero horizontal overflow at 320/390 widths.
-      Physical Android, TalkBack, native decode/memory, and OS font scale remain `BLOCKED / NOT RUN`
-      because `adb devices -l` returned no attached target.
+          tests. The final focused batch passed 2 files / 15 tests and the full suite passed 86 files /
+          1,056 tests. Typecheck, lint, formatting, Expo dependency alignment, detector, Git whitespace,
+          119-file web export, and 88-file Android JS export passed. Startup now requests seven
+          signed-out rasters (1,650,726 bytes) and four used branded fonts (546,000 bytes), down from
+          48 rasters plus seven fonts (10,638,873 combined bytes), a 79.4% reduction in the explicit
+          readiness set. Firefox showed the app-owned loader for 1,318 ms on a cached launch including
+          exit, retained it for a delayed onboarding raster, requested five avatar rasters only after
+          entering access, changed the standard leaf rotation, kept reduced motion at the identity
+          matrix, produced zero page errors, and had zero horizontal overflow at 320/390 widths.
+          Physical Android, TalkBack, native decode/memory, and OS font scale remain `BLOCKED / NOT RUN`
+          because `adb devices -l` returned no attached target.
 
 ---
 
@@ -1216,14 +1230,14 @@ paint, using controlled parallelism and one request cache.
       record truthful documentation plus the cohesive local checkpoint.
 
       Completed locally on 2026-09-06: RED failed on the absent batch helper; the focused file then
-      passed 9 tests and the full suite passed 86 files / 1,057 tests. Typecheck, lint, format,
-      dependency alignment, Git whitespace, 119-file web export, and 88-file Android JS export
-      passed. In Firefox, a 2,600 ms delayed onboarding raster kept the branded splash present with
-      zero deferred requests at 1,700 ms. After handoff, all 41 remaining rasters were requested:
-      the five avatars and field image began together within 1 ms, the task image opened batch two,
-      and the 2.3 MB prepared fixture was last. The flow produced zero browser errors. Physical
-      Android decode/cache/memory remains `BLOCKED / NOT RUN` because `adb devices -l` returned no
-      attached target.
+          passed 9 tests and the full suite passed 86 files / 1,057 tests. Typecheck, lint, format,
+          dependency alignment, Git whitespace, 119-file web export, and 88-file Android JS export
+          passed. In Firefox, a 2,600 ms delayed onboarding raster kept the branded splash present with
+          zero deferred requests at 1,700 ms. After handoff, all 41 remaining rasters were requested:
+          the five avatars and field image began together within 1 ms, the task image opened batch two,
+          and the 2.3 MB prepared fixture was last. The flow produced zero browser errors. Physical
+          Android decode/cache/memory remains `BLOCKED / NOT RUN` because `adb devices -l` returned no
+          attached target.
 
 ---
 
@@ -1245,15 +1259,15 @@ distinct loading state before onboarding.
       production exports, detector, available Android evidence, and record the cohesive checkpoint.
 
       Completed locally on 2026-09-06: RED recorded 2 failing / 8 passing focused tests; the final
-      file passed 10 tests and the full suite passed 86 files / 1,058 tests. Typecheck, lint,
-      formatting, dependency alignment, detector, Git whitespace, 119-file web export, and 88-file
-      Android JS export passed. Fresh Firefox timelines began with a fully covering splash without
-      the leaf loader, changed to loading, then exposed onboarding. Cached loading remained 1,013
-      ms; a 5,200 ms delayed onboarding raster extended loading to 3,214 ms. All 41 deferred
-      requests occurred only during onboarding, and the compact 390×844 splash/loading inspection
-      produced zero page errors. Web total splash time included development bundling and critical
-      pre-handoff preparation; the post-handoff code token is exactly 2,000 ms. Physical Android
-      first-frame timing and motion remain `BLOCKED / NOT RUN` because ADB returned no target.
+          file passed 10 tests and the full suite passed 86 files / 1,058 tests. Typecheck, lint,
+          formatting, dependency alignment, detector, Git whitespace, 119-file web export, and 88-file
+          Android JS export passed. Fresh Firefox timelines began with a fully covering splash without
+          the leaf loader, changed to loading, then exposed onboarding. Cached loading remained 1,013
+          ms; a 5,200 ms delayed onboarding raster extended loading to 3,214 ms. All 41 deferred
+          requests occurred only during onboarding, and the compact 390×844 splash/loading inspection
+          produced zero page errors. Web total splash time included development bundling and critical
+          pre-handoff preparation; the post-handoff code token is exactly 2,000 ms. Physical Android
+          first-frame timing and motion remain `BLOCKED / NOT RUN` because ADB returned no target.
 
 ---
 
@@ -1278,15 +1292,15 @@ with a concise private summary over its own dashboard.
       design, limitations, runbook, ownership release, and the cohesive checkpoint.
 
       Completed locally on 2026-09-06: RED recorded 5 expected failures in the new focused file;
-      final returning-entry coverage passed 5 tests, the integrated access/localization batch
-      passed 4 files / 35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint,
-      format, Expo dependency alignment, Git whitespace, the Impeccable detector, and the 39-route
-      web export passed. Fresh Parent setup retained Family Basics and first Child pairing showed no
-      return dialog. Existing Parent verification went directly to `/parent`; an already paired
-      Salem PIN went directly to `/child`. Arabic and English Parent/Child dialogs were inspected at
-      320×720 and 390×844 with contained copy, usable actions, no horizontal overflow, and zero page
-      errors. Physical Android, TalkBack, native Back/modal behavior, and OS font scale remain
-      `BLOCKED / NOT RUN` because `adb devices -l` returned no attached target.
+          final returning-entry coverage passed 5 tests, the integrated access/localization batch
+          passed 4 files / 35 tests, and the full suite passed 87 files / 1,063 tests. Typecheck, lint,
+          format, Expo dependency alignment, Git whitespace, the Impeccable detector, and the 39-route
+          web export passed. Fresh Parent setup retained Family Basics and first Child pairing showed no
+          return dialog. Existing Parent verification went directly to `/parent`; an already paired
+          Salem PIN went directly to `/child`. Arabic and English Parent/Child dialogs were inspected at
+          320×720 and 390×844 with contained copy, usable actions, no horizontal overflow, and zero page
+          errors. Physical Android, TalkBack, native Back/modal behavior, and OS font scale remain
+          `BLOCKED / NOT RUN` because `adb devices -l` returned no attached target.
 
 ---
 
@@ -1312,16 +1326,16 @@ without weakening Ghaf's safety, privacy, approval, symbolic-growth, or truthful
       create one cohesive local checkpoint without push/merge/deployment/release activation.
 
       Completed locally on 2026-09-06: the first RED state recorded 6 expected failures / 9 passes
-      and the motion refinement recorded 1 expected failure / 11 passes. Final focused coverage
-      passed 3 files / 26 tests; the full suite passed 87 files / 1,065 tests. Typecheck, lint,
-      formatting, Expo dependency alignment, Git whitespace, the 48-raster prompt scan, and the
-      Impeccable detector passed. Web exported 121 files / 39 static routes and Android JS exported
-      90 files; both new onboarding rasters appeared byte-identically in both. Firefox traversed
-      the six moments, pillar jumps, locale change, 320×720 and 390×844 layouts, and reduced motion
-      with 60px pillar targets, no horizontal overflow, and zero page errors. Physical Android,
-      TalkBack, OS font scale, and motion feel remain `BLOCKED / NOT RUN` because ADB returned no
-      target; named Arabic/UAE, safeguarding, botanical, accessibility, and rights review remains
-      `NOT RUN`.
+          and the motion refinement recorded 1 expected failure / 11 passes. Final focused coverage
+          passed 3 files / 26 tests; the full suite passed 87 files / 1,065 tests. Typecheck, lint,
+          formatting, Expo dependency alignment, Git whitespace, the 48-raster prompt scan, and the
+          Impeccable detector passed. Web exported 121 files / 39 static routes and Android JS exported
+          90 files; both new onboarding rasters appeared byte-identically in both. Firefox traversed
+          the six moments, pillar jumps, locale change, 320×720 and 390×844 layouts, and reduced motion
+          with 60px pillar targets, no horizontal overflow, and zero page errors. Physical Android,
+          TalkBack, OS font scale, and motion feel remain `BLOCKED / NOT RUN` because ADB returned no
+          target; named Arabic/UAE, safeguarding, botanical, accessibility, and rights review remains
+          `NOT RUN`.
 
 ---
 
@@ -1361,16 +1375,16 @@ through a clear setup sequence, and make bounded AI personalization visibly usef
       release activation.
 
       Completed locally on 2026-09-06: the focused local-family/access/AI batch passed 8 files / 83
-      tests and the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, format,
-      Expo dependency/public-config checks, 37-file product-route inventory, Git whitespace, and
-      the one permitted final Impeccable detector pass succeeded. Web exported 121 files / 39
-      static routes; Android JavaScript exported 90 files with `expo-sqlite@57.0.2` resolved.
-      Firefox completed the one- and two-Child setup/review, direct storage inspection, reset, and
-      returning Parent/Child paths across Arabic RTL and English LTR at 320×720 and 390×844 with
-      zero horizontal overflow and zero console errors. Physical Android SQLite/process-death,
-      Back/IME, TalkBack, OS font scale, and reduced-motion evidence remains `BLOCKED / NOT RUN`
-      because `adb devices -l` returned no attached device; all named-human review rows remain
-      `NOT RUN` and every R002b flag stays default off.
+          tests and the full suite passed 90 files / 1,085 tests. Typecheck, zero-warning lint, format,
+          Expo dependency/public-config checks, 37-file product-route inventory, Git whitespace, and
+          the one permitted final Impeccable detector pass succeeded. Web exported 121 files / 39
+          static routes; Android JavaScript exported 90 files with `expo-sqlite@57.0.2` resolved.
+          Firefox completed the one- and two-Child setup/review, direct storage inspection, reset, and
+          returning Parent/Child paths across Arabic RTL and English LTR at 320×720 and 390×844 with
+          zero horizontal overflow and zero console errors. Physical Android SQLite/process-death,
+          Back/IME, TalkBack, OS font scale, and reduced-motion evidence remains `BLOCKED / NOT RUN`
+          because `adb devices -l` returned no attached device; all named-human review rows remain
+          `NOT RUN` and every R002b flag stays default off.
 
 ---
 
@@ -1380,10 +1394,10 @@ through a clear setup sequence, and make bounded AI personalization visibly usef
       local value on returning Parent handoff per FR-191 and FR-197 (partial).
 
       Completed locally on 2026-09-06: focused RED reproduced the stored-`ar`/active-`en`
-      mismatch, then the corrected store test passed 12/12. The complete local-family batch passed
-      8 files / 83 tests and the full suite passed 90 files / 1,085 tests. The existing family
-      record now persists a valid changed app language and returning Parent entry prefers it without
-      mutating the immutable completion receipt or restoring a session.
+          mismatch, then the corrected store test passed 12/12. The complete local-family batch passed
+          8 files / 83 tests and the full suite passed 90 files / 1,085 tests. The existing family
+          record now persists a valid changed app language and returning Parent entry prefers it without
+          mutating the immutable completion receipt or restoring a session.
 
 ---
 
@@ -1413,15 +1427,15 @@ artwork, high-contrast lower progress, clearer energy, and optional accessible o
       deployment, or release activation.
 
       Completed locally on 2026-09-07: the initial RED state recorded 3 failures / 10 passes; the
-      requested lower-indicator correction and web opt-in voice guard each recorded 1 expected
-      failure / 12 passes. The final focused file passed 13 tests and the full suite passed 90 files
-      / 1,086 tests. Typecheck, zero-warning lint, format, Expo dependency/public-config, Git
-      whitespace, the final Impeccable detector, 39-route web export, and 90-file Android
-      JavaScript export passed. Firefox inspected Arabic RTL at 390×844 and English LTR at 320×720,
-      measured a 275.8×275.8 px crop, found no horizontal overflow, confirmed the lower rail above
-      the action and `1/6 → 2/6`, and exercised the localized web speech fallback with zero page
-      errors. Physical Android speech/audio focus, TalkBack, OS font scale, motion feel, and named
-      review remain `BLOCKED / NOT RUN`; ADB returned no target.
+          requested lower-indicator correction and web opt-in voice guard each recorded 1 expected
+          failure / 12 passes. The final focused file passed 13 tests and the full suite passed 90 files
+          / 1,086 tests. Typecheck, zero-warning lint, format, Expo dependency/public-config, Git
+          whitespace, the final Impeccable detector, 39-route web export, and 90-file Android
+          JavaScript export passed. Firefox inspected Arabic RTL at 390×844 and English LTR at 320×720,
+          measured a 275.8×275.8 px crop, found no horizontal overflow, confirmed the lower rail above
+          the action and `1/6 → 2/6`, and exercised the localized web speech fallback with zero page
+          errors. Physical Android speech/audio focus, TalkBack, OS font scale, motion feel, and named
+          review remain `BLOCKED / NOT RUN`; ADB returned no target.
 
 ---
 
@@ -1452,17 +1466,17 @@ and voice control, and making narration replay reliable through prepared local a
       activation.
 
       Completed locally on 2026-09-07: RED recorded 2 expected failures / 11 passes and the final
-      focused file passed 13 tests. The full suite passed 90 files / 1,086 tests; typecheck,
-      zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and the
-      final Impeccable detector passed. Web exported 134 files / 39 static routes with 13 MP3s;
-      Android JavaScript exported 103 files and all 13 prepared-audio hashes matched. Firefox
-      measured exact 3:2 frames at Arabic 390×844 and English 320×720, a 48dp speaker, the 24px
-      original dot row directly above navigation, centered copy, and zero overflow. The speaker
-      requested narration plus ambience; subsequent explicit navigation requested the matching
-      settled-slide narration. A fresh web launch made no pre-gesture autoplay call and had zero
-      final console errors; first-screen web autoplay remains platform-limited. Physical Android,
-      TalkBack, audio focus, font scale, and named Arabic/voice/rights review remain
-      `BLOCKED / NOT RUN`; ADB returned no target.
+          focused file passed 13 tests. The full suite passed 90 files / 1,086 tests; typecheck,
+          zero-warning lint, formatting, Expo dependency/public-config checks, Git whitespace, and the
+          final Impeccable detector passed. Web exported 134 files / 39 static routes with 13 MP3s;
+          Android JavaScript exported 103 files and all 13 prepared-audio hashes matched. Firefox
+          measured exact 3:2 frames at Arabic 390×844 and English 320×720, a 48dp speaker, the 24px
+          original dot row directly above navigation, centered copy, and zero overflow. The speaker
+          requested narration plus ambience; subsequent explicit navigation requested the matching
+          settled-slide narration. A fresh web launch made no pre-gesture autoplay call and had zero
+          final console errors; first-screen web autoplay remains platform-limited. Physical Android,
+          TalkBack, audio focus, font scale, and named Arabic/voice/rights review remain
+          `BLOCKED / NOT RUN`; ADB returned no target.
 
 ---
 
@@ -1489,14 +1503,14 @@ membership and always bypass first-family creation.
       merge, deployment, or release activation.
 
       Completed locally on 2026-09-07: RED recorded 15 expected failures / 40 passes; the final
-      focused batch passed 6 files / 84 tests and the full suite passed 90 files / 1,090 tests.
-      Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git
-      whitespace, schema/privacy scans, 39-route web export (134 files), and Android JavaScript
-      export (103 files) passed. Firefox created the schema-2 family, inspected the normalized
-      Parent identifier, denied an unknown email without leaving sign-in, matched a differently
-      cased/space-padded email, and entered `/parent` after `424242` without setup. Arabic 390×844
-      and English 320×720 had no horizontal overflow or console errors. Physical Android and named
-      review remain `BLOCKED / NOT RUN`; `adb devices -l` returned no target.
+          focused batch passed 6 files / 84 tests and the full suite passed 90 files / 1,090 tests.
+          Typecheck, zero-warning lint, formatting, Expo dependency/public-config checks, Git
+          whitespace, schema/privacy scans, 39-route web export (134 files), and Android JavaScript
+          export (103 files) passed. Firefox created the schema-2 family, inspected the normalized
+          Parent identifier, denied an unknown email without leaving sign-in, matched a differently
+          cased/space-padded email, and entered `/parent` after `424242` without setup. Arabic 390×844
+          and English 320×720 had no horizontal overflow or console errors. Physical Android and named
+          review remain `BLOCKED / NOT RUN`; `adb devices -l` returned no target.
 
 ---
 
@@ -1519,15 +1533,15 @@ to the rounded image frame.
       activation.
 
       Completed locally on 2026-09-07: RED recorded one expected failure / 12 passes for the
-      initial source contract and again for each visual correction guard; the final focused file
-      passed 13 tests and the full suite passed 90 files / 1,090 tests. Typecheck, zero-warning
-      lint, formatting, Expo dependency/public-config checks, Git whitespace, and the Impeccable
-      detector passed. Web exported 134 files and Android JavaScript exported 103 files. Firefox
-      inspected the first, intermediate, and fully closed progress extents in Arabic 390×844 and
-      English 320×720, measured the compact frame at 280×186.67, confirmed reduced motion applies
-      the exact static step value, found no horizontal overflow, and reported zero console errors
-      or warnings. Physical Android motion/TalkBack and named review remain `BLOCKED / NOT RUN`;
-      `adb devices -l` returned no target.
+          initial source contract and again for each visual correction guard; the final focused file
+          passed 13 tests and the full suite passed 90 files / 1,090 tests. Typecheck, zero-warning
+          lint, formatting, Expo dependency/public-config checks, Git whitespace, and the Impeccable
+          detector passed. Web exported 134 files and Android JavaScript exported 103 files. Firefox
+          inspected the first, intermediate, and fully closed progress extents in Arabic 390×844 and
+          English 320×720, measured the compact frame at 280×186.67, confirmed reduced motion applies
+          the exact static step value, found no horizontal overflow, and reported zero console errors
+          or warnings. Physical Android motion/TalkBack and named review remain `BLOCKED / NOT RUN`;
+          `adb devices -l` returned no target.
 
 ---
 
@@ -1621,3 +1635,20 @@ AI defaults remain off. The repaired engineering boundary is ready for integrati
       Coach policy and live-voice eligibility while preserving canonical fixture ages.
       Update FR-197, the data model and plan; track the cross-feature implementation
       and regression evidence under Feature 004 T088–T091.
+
+## Phase 50: User-selected catalog execution CE1 — 2026-09-13
+
+The CE1 prefix disambiguates the incoming catalog plan's original T333–T338 identifiers from the
+configured-age and local-recovery tasks retained above. The checkboxes below preserve
+the original planning checkpoint; the [publication evidence](../../docs/competition-readiness/workstreams/repository-publication-20260913.md)
+tracks subsequent implementation and validation.
+
+- [x] CE1-T333 Commit explicit003/013 scope, content snapshot and exact ownership before source work.
+- [ ] CE1-T334 Add canonical24-task content and tested occurrence/attempt/domain identity.
+- [ ] CE1-T335 Integrate authoritative store collection, selection and personal landscape verification.
+- [ ] CE1-T336 Connect Parent/Child tasks, help/retry/recognition and safe reset without discarding work.
+- [ ] CE1-T337 Validate every24×2profile flow, privacy/eligibility/duplicate and P0 regressions.
+- [ ] CE1-T338 Complete bounded bilingual browser, proportional checks, local commits and evidence.
+
+[CE1 contract](../013-parent-task-workspace/contracts/catalog-execution.md). Android/human gates
+remain unpassed; no claimed real-task synchronization or automatic scheduling.

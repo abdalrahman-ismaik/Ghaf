@@ -10,6 +10,7 @@ import {
   type ReauthenticationProof,
 } from '../../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../../models/familyGrowth';
+import type { LocalFamilyProfileRepairCandidate } from '../../../models/localFamily';
 import type {
   ParentOnboardingCompletionReceipt,
   ParentOnboardingDraft,
@@ -22,6 +23,11 @@ import type {
   NormalizedParentIdentifier,
 } from '../../../models/parentOnboarding';
 import type { ServiceResult, SyntheticAccessService } from '../../../services/interfaces';
+import { runDemoEntryTransaction } from '../demoEntryTransaction';
+import {
+  cloneFamilyConnectionDirectory,
+  validateCompleteFamilyConnectionDirectory,
+} from '../../family-connections';
 import {
   createInitialParentOnboardingDraft,
   normalizeParentIdentifier,
@@ -85,6 +91,7 @@ function success<T>(
 function cloneDraft(draft: ParentOnboardingDraft): ParentOnboardingDraft {
   return {
     ...draft,
+    familyConnections: cloneFamilyConnectionDirectory(draft.familyConnections),
     children: draft.children.map((child) => ({
       ...child,
       interests: [...child.interests],
@@ -100,6 +107,7 @@ function cloneReceipt(
 ): ParentOnboardingCompletionReceipt {
   return {
     ...receipt,
+    familyConnections: cloneFamilyConnectionDirectory(receipt.familyConnections),
     children: receipt.children.map((child) => ({
       ...child,
       interests: [...child.interests],
@@ -120,6 +128,8 @@ export class ParentOnboardingController {
   private draft = createInitialParentOnboardingDraft();
   private parentSession: ParentAccessSession | null = null;
   private completionReceipt: ParentOnboardingCompletionReceipt | null = null;
+  private replacementReceiptBackup: ParentOnboardingCompletionReceipt | null = null;
+  private replacementDraftBackup: ParentOnboardingDraft | null = null;
   private verificationAttempt = 0;
   private sessionGeneration = 0;
 
@@ -127,6 +137,56 @@ export class ParentOnboardingController {
     private readonly access: ParentOnboardingAccessAuthority,
     private readonly config: ParentOnboardingControllerConfig = DEFAULT_CONFIG,
   ) {}
+
+  // Compose inside the access transaction; callbacks must not schedule asynchronous work.
+  withDemoEntryTransaction<T>(operation: () => ServiceResult<T>): ServiceResult<T> {
+    return runDemoEntryTransaction(
+      this,
+      () => {
+        const snapshot = {
+          status: this.status,
+          identifierKind: this.identifierKind,
+          normalizedIdentifier: this.normalizedIdentifier,
+          maskedDestination: this.maskedDestination,
+          delivery: this.delivery,
+          offlineFallbackUsed: this.offlineFallbackUsed,
+          draft: cloneDraft(this.draft),
+          parentSession: this.parentSession
+            ? {
+                ...this.parentSession,
+                principal: { ...this.parentSession.principal },
+                capabilities: [...this.parentSession.capabilities],
+              }
+            : null,
+          completionReceipt: this.completionReceipt ? cloneReceipt(this.completionReceipt) : null,
+          replacementReceiptBackup: this.replacementReceiptBackup
+            ? cloneReceipt(this.replacementReceiptBackup)
+            : null,
+          replacementDraftBackup: this.replacementDraftBackup
+            ? cloneDraft(this.replacementDraftBackup)
+            : null,
+          verificationAttempt: this.verificationAttempt,
+          sessionGeneration: this.sessionGeneration,
+        };
+        return () => {
+          this.status = snapshot.status;
+          this.identifierKind = snapshot.identifierKind;
+          this.normalizedIdentifier = snapshot.normalizedIdentifier;
+          this.maskedDestination = snapshot.maskedDestination;
+          this.delivery = snapshot.delivery;
+          this.offlineFallbackUsed = snapshot.offlineFallbackUsed;
+          this.draft = snapshot.draft;
+          this.parentSession = snapshot.parentSession;
+          this.completionReceipt = snapshot.completionReceipt;
+          this.replacementReceiptBackup = snapshot.replacementReceiptBackup;
+          this.replacementDraftBackup = snapshot.replacementDraftBackup;
+          this.verificationAttempt = snapshot.verificationAttempt;
+          this.sessionGeneration = snapshot.sessionGeneration;
+        };
+      },
+      operation,
+    );
+  }
 
   getView(): ParentOnboardingView {
     return {
@@ -154,12 +214,37 @@ export class ParentOnboardingController {
     };
   }
 
+  stageLocalSetup(identifier: unknown): ServiceResult<ParentOnboardingView> {
+    if (
+      this.parentSession ||
+      !['signed_out', 'code_sent', 'verifying'].includes(this.status) ||
+      this.replacementReceiptBackup ||
+      this.replacementDraftBackup
+    ) {
+      return failure('INVALID_TRANSITION', 'Cancel the current local setup before starting again');
+    }
+    const normalized = normalizeParentIdentifier(identifier);
+    if (!normalized.ok) return { ok: false, error: normalized.error };
+    this.verificationAttempt += 1;
+    // The legacy verified state now also represents local setup readiness, never identity proof.
+    this.status = 'verified';
+    this.normalizedIdentifier = normalized.data.normalizedIdentifier;
+    this.identifierKind = normalized.data.identifierKind;
+    this.maskedDestination = normalized.data.maskedDestination;
+    this.delivery = null;
+    this.offlineFallbackUsed = false;
+    return success(this.getView());
+  }
+
   requestVerification(input: {
     readonly identifier: unknown;
     readonly networkAvailable?: boolean;
   }): ServiceResult<ParentOnboardingView> {
     if (this.status === 'authenticated_parent') {
       return failure('INVALID_TRANSITION', 'The synthetic Parent session is already active');
+    }
+    if (this.replacementReceiptBackup || this.replacementDraftBackup) {
+      return failure('INVALID_TRANSITION', 'Cancel the staged family replacement before retrying');
     }
     const normalized = normalizeParentIdentifier(input.identifier);
     if (!normalized.ok) return { ok: false, error: normalized.error };
@@ -226,7 +311,86 @@ export class ParentOnboardingController {
       return failure('INVALID_TRANSITION', 'Reset the active synthetic Parent session instead');
     }
     this.verificationAttempt += 1;
+    this.restoreReplacementBackup();
     this.clearVerification();
+    return success(this.getView());
+  }
+
+  beginVerifiedFamilyReplacement(): ServiceResult<ParentOnboardingView> {
+    if (
+      this.status !== 'verified' ||
+      !this.completionReceipt ||
+      this.parentSession ||
+      !this.normalizedIdentifier ||
+      this.replacementReceiptBackup ||
+      this.replacementDraftBackup
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'Verified access to the current local family is required before replacement',
+      );
+    }
+
+    this.replacementReceiptBackup = cloneReceipt(this.completionReceipt);
+    this.replacementDraftBackup = cloneDraft(this.draft);
+    this.completionReceipt = null;
+    this.draft = createInitialParentOnboardingDraft();
+    return success(this.getView());
+  }
+
+  beginVerifiedProfileRepair(
+    candidate: LocalFamilyProfileRepairCandidate,
+  ): ServiceResult<ParentOnboardingView> {
+    if (
+      this.status !== 'verified' ||
+      this.completionReceipt ||
+      this.parentSession ||
+      !this.normalizedIdentifier ||
+      !this.identifierKind ||
+      this.normalizedIdentifier !== candidate.parent.normalizedIdentifier ||
+      this.identifierKind !== candidate.parent.identifierKind ||
+      candidate.children.length < 1 ||
+      candidate.children.length > 2
+    ) {
+      return failure(
+        'INVALID_TRANSITION',
+        'Verified access to the repairable local family is required',
+      );
+    }
+
+    let staged = createInitialParentOnboardingDraft();
+    const family = updateParentOnboardingDraft(staged, {
+      familyConnections: candidate.familyConnections,
+      familyName: candidate.familyName,
+      appLanguage: candidate.appLanguage,
+      childCount: candidate.children.length as 1 | 2,
+    });
+    if (!family.ok) return { ok: false, error: family.error };
+    staged = family.data;
+    for (const [childIndex, child] of candidate.children.entries()) {
+      const childUpdate = updateParentOnboardingDraft(staged, {
+        childIndex,
+        child: {
+          nickname: child.nickname,
+          avatarId: child.avatarId,
+          ageBand: child.ageBand,
+          preferredLanguage: child.preferredLanguage,
+          sex: child.sex,
+          interests: child.interests,
+          hobbies: child.hobbies,
+          accessibilityDefaults: child.accessibilityDefaults,
+          supportPreferences: child.supportPreferences,
+          customInterest: null,
+          customHobby: null,
+          customSupportPreference: null,
+          customAccessibility: null,
+          personalizationEnabled: child.personalizationEnabled,
+        },
+      });
+      if (!childUpdate.ok) return { ok: false, error: childUpdate.error };
+      staged = childUpdate.data;
+    }
+    this.draft = staged;
     return success(this.getView());
   }
 
@@ -258,7 +422,14 @@ export class ParentOnboardingController {
     ) {
       return failure('INVALID_INPUT', 'The device-local family receipt is invalid');
     }
+    const restoredFamilyConnections = validateCompleteFamilyConnectionDirectory(
+      receipt.familyConnections,
+    );
+    if (!restoredFamilyConnections.ok) {
+      return failure('INVALID_INPUT', 'The device-local family receipt is invalid');
+    }
     const draft: ParentOnboardingDraft = {
+      familyConnections: restoredFamilyConnections.data,
       familyName: receipt.familyName,
       appLanguage: receipt.appLanguage,
       childCount: receipt.childCount,
@@ -271,11 +442,15 @@ export class ParentOnboardingController {
               avatarId: child.avatarId,
               ageBand: child.ageBand,
               preferredLanguage: child.preferredLanguage,
-              gender: child.gender,
+              sex: child.sex,
               interests: [...child.interests],
               hobbies: [...child.hobbies],
               accessibilityDefaults: [...child.accessibilityDefaults],
               supportPreferences: [...child.supportPreferences],
+              customInterest: child.customInterest,
+              customHobby: child.customHobby,
+              customSupportPreference: child.customSupportPreference,
+              customAccessibility: child.customAccessibility,
               personalizationEnabled: child.personalizationEnabled,
             }
           : fallback;
@@ -345,6 +520,7 @@ export class ParentOnboardingController {
       completedAt: now,
       destination: '/parent',
       householdId: signedIn.data.householdId,
+      familyConnections: cloneFamilyConnectionDirectory(validatedDraft.data.familyConnections),
       familyName: validatedDraft.data.familyName,
       appLanguage: validatedDraft.data.appLanguage,
       childCount: validatedDraft.data.childCount,
@@ -357,17 +533,23 @@ export class ParentOnboardingController {
           ageBand: child.ageBand,
           preferredLanguage: child.preferredLanguage,
           accessLanguagePreference: toAccessLanguagePreference(child.preferredLanguage),
-          gender: child.gender,
+          sex: child.sex!,
           interests: [...child.interests],
           hobbies: [...child.hobbies],
           accessibilityDefaults: [...child.accessibilityDefaults],
           supportPreferences: [...child.supportPreferences],
+          customInterest: child.customInterest,
+          customHobby: child.customHobby,
+          customSupportPreference: child.customSupportPreference,
+          customAccessibility: child.customAccessibility,
           personalizationEnabled: child.personalizationEnabled,
         })),
       origin: 'synthetic',
       capabilityTruth: CAPABILITY_TRUTH,
     };
     this.status = 'authenticated_parent';
+    this.replacementReceiptBackup = null;
+    this.replacementDraftBackup = null;
     return success(cloneReceipt(this.completionReceipt), {
       fixtureId: SYNTHETIC_PARENT_ACCESS_FIXTURE.fixtureId,
     });
@@ -572,6 +754,7 @@ export class ParentOnboardingController {
     }
 
     this.parentSession = null;
+    this.restoreReplacementBackup();
     this.clearVerification();
     return success(this.getView());
   }
@@ -691,6 +874,8 @@ export class ParentOnboardingController {
 
     this.parentSession = null;
     this.completionReceipt = null;
+    this.replacementReceiptBackup = null;
+    this.replacementDraftBackup = null;
     this.draft = createInitialParentOnboardingDraft();
     this.offlineFallbackUsed = false;
     this.clearVerification();
@@ -704,6 +889,14 @@ export class ParentOnboardingController {
     this.maskedDestination = null;
     this.delivery = null;
     this.offlineFallbackUsed = false;
+  }
+
+  private restoreReplacementBackup(): void {
+    if (!this.replacementReceiptBackup || !this.replacementDraftBackup) return;
+    this.completionReceipt = cloneReceipt(this.replacementReceiptBackup);
+    this.draft = cloneDraft(this.replacementDraftBackup);
+    this.replacementReceiptBackup = null;
+    this.replacementDraftBackup = null;
   }
 
   private isConfiguredChild(childId: SyntheticChildId): boolean {

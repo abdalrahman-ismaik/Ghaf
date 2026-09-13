@@ -1,0 +1,653 @@
+# Prototype Limitations
+
+## Feature 006 adult account pilot — 2026-09-13
+
+Feature 006 adds a separately configured Supabase adult login and server-owned
+approval gate. It does not convert the sample family into a real household or
+provide saved tasks, Seeds, gardens, rewards, real Child access, cloud sync, live
+AI, production-readiness or compliance evidence. The default build stays entirely
+synthetic. Pilot sample data resets on process restart; adult session persistence
+is separate. Native SecureStore and namespaced web auth storage do not establish
+production Child-data protection. See [the pilot validation record](../../specs/006-real-parent-pilot/validation.md)
+for the exact local, hosted, email and physical-device evidence rather than
+assuming any feature is activated. The owner selected a dedicated Gmail SMTP
+sender without a domain purchase. SMTP and bilingual confirmation/recovery
+templates are saved and their persisted configuration is verified. Actual external
+delivery and hosted account-flow checks remain NOT RUN, so pilot activation stays
+blocked. Gmail may throttle or fail delivery; this is a small pilot option. Resend
+with an owned domain remains a later alternative.
+
+## Confirmed corrupt-data recovery — 2026-09-13
+
+The owner-approved recovery path may clear this installation's corrupt local demo
+family only after an explicit user confirmation and a fresh corruption check. It
+does not recover the damaged profiles, authenticate a guardian, retrieve a cloud
+backup, or operate across devices. Temporary storage errors do not authorize
+deletion. Valid families retain the ordinary Parent-only reset boundary.
+
+Synthetic tests can verify the confirmation, ordered clearing and retry contracts;
+physical SQLite/storage failure, Android Back and assistive-technology acceptance
+still require direct evidence. Recovery tests use isolated synthetic storage and
+never clear a user's existing local browser or device data.
+
+## Tamagui botanical presentation — 2026-09-11
+
+The shared UI and principal Parent/Child/Garden/League screens now use the approved botanical
+direction, Tamagui primitives and restrained Reanimated press feedback. Automated checks and web/
+Android exports are recorded in the [redesign evidence](../../specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
+Browser observations remain a proxy: physical Android, TalkBack, keyboard, font scaling, native
+motion and named-human acceptance are **NOT RUN**. Existing capability labels and release flags
+retain their previous authority.
+
+## Feature 011 verified family replacement boundary — 2026-09-08
+
+**Create a new family** now works on a device that already stores one complete synthetic family,
+but it does not add account switching or multi-family storage. In that state, “new family” means a
+deliberate replacement of the sole schema-3 local record after email/phone entry, deterministic
+code `424242`, personal and family setup, Child profiles, and explicit final review.
+
+The old record remains recoverable while verification or setup is incomplete and when the final
+local write fails. After a successful final replacement, the prototype intentionally clears the old
+household's private runtime, pairings, permissions, and progress; it provides no cloud backup,
+undo, recovery, export, remote account, identity proof, secure credential storage, or production
+transaction. The email/phone value is a synthetic local lookup identifier, not a verified contact
+channel, and no message is sent. Browser evidence cannot establish Android Back, keyboard,
+TalkBack, font-scale, process-death, secure storage, or production privacy behavior.
+
+## Feature 008 family connection boundary — 2026-09-08
+
+The family-person directory is minimized, synthetic, Parent-entered prototype data stored only in
+the device-local family record. It supports one required Parent/guardian display name, one optional
+second guardian, and zero to six optional grandparents, aunts, or uncles. It is not a contact book,
+family tree, identity record, genealogy service, cloud household, or verified relationship graph;
+Ghaf does not know whether a named relative is alive, nearby, safe to visit, available, or willing.
+
+The displayed rhythms are descriptive choices, not a scheduler. This build creates no date,
+calendar item, notification, reminder, missed or overdue state, proof request, location request, or
+background work. Connection ideas are prepared local previews in Parent Family only. They are not
+Child assignments and cannot be accepted, completed, confirmed, or rewarded. They create no Seed,
+Garden, canopy, Circle, League, badge, Impact Path, or Family Reward effect, and they are never sent
+to an assistant or shared projection.
+
+Schema 3 adds the minimized directory and migrates valid schema-2/schema-1 records with a neutral
+Parent label and no inferred relatives. It does not add encryption, production authentication,
+cross-device sync, backup, recovery, household invitation, or remote account storage. Browser
+inspection is secondary evidence; physical Android SQLite migration, process restart, keyboard,
+Back, TalkBack, font scale, and named Arabic/UAE cultural, safeguarding, privacy, accessibility,
+and visual review remain NOT RUN.
+
+## Feature 007 Family Plus boundary — 2026-09-08
+
+The Parent Family Basics screen now previews a proposed Ghaf Plus household plan for three through
+six Child profiles. This build still creates and stores only one or two profiles backed by the
+complete synthetic Salem/Alya access, task, Seed, Garden, League, Family Reward, privacy, and reset
+journeys. Selecting the Plus row does not mutate the draft or create a profile.
+
+AED 19.99 monthly, AED 159.99 annual, and the 33% annual saving are local pricing hypotheses. The
+preview performs no subscription, purchase, charge, checkout, entitlement, renewal, restoration,
+cancellation, account binding, analytics, or external request. Illustrative billings are exact
+price multiplication only; they are not validated demand, collected or recognized revenue,
+margin, valuation, or profit and exclude store fees, tax, refunds, churn, acquisition,
+infrastructure, AI, support, safeguarding, legal, and operating costs.
+
+No commercial copy or control appears on Child routes, and Plus grants no reward, progression,
+safety, privacy, accessibility, or assistance advantage. Actual larger-household activation
+requires stable dynamic identities and complete per-profile behavior plus Google Play purchase
+verification and lifecycle handling, lapse-safe data rules, legal/privacy/tax/safeguarding review,
+and physical Android evidence. Current Firefox web checks are secondary presentation evidence;
+Android Back, TalkBack, font scale, reduced motion, and native focus remain `NOT RUN` because ADB
+reported no attached device.
+
+## Feature 010 calm ambient soundscape boundary — 2026-09-08
+
+The active app-wide source is a 60.029-second mono MP3 locally authored from three deterministic
+filtered brown/pink noise layers. It deliberately removes the original repeated bird-like tonal
+accents and contains no melody, beat, speech, alert, downloaded recording, field sample, personal
+data, or third-party audio. A four-second circular crossfade supports the loop boundary. The prior
+v1 file remains byte-identical for rollback and is not selected at runtime.
+
+Source inspection passed the recorded hash, format, duration, -36.4 LUFS integrated loudness,
+-22.2 dBFS true peak, and no detected interval of at least 250ms below -50 dB. Those measurements
+do not prove that v2 sounds calm or natural, stays comfortable on the demo speaker, balances with
+Arabic/English narration, or loops without a perceived seam. Physical Android listening and named
+audio/product review remain `NOT RUN`.
+
+Feature 010 changes no control or product behavior. Feature 006's one root player, quiet/ducked
+levels, shared device-local Parent/Child setting, foreground/screen-reader/voice-focus rules, safe
+silence fallback, and exact reset remain authoritative.
+
+## Feature 006 natural ambient audio baseline — 2026-09-08
+
+Feature 006 introduced one locally packaged, 48-second synthesized nature soundscape owned by the app root.
+It loops across active foreground routes and replaces the earlier onboarding-only background
+soundtrack behavior. It ducks beneath prepared narration and pauses when the app is inactive or
+backgrounded, a native screen reader is active, browser playback has not been unlocked by a user
+gesture, the stored preference is invalid or unavailable, or foreground voice capture owns audio.
+It is not music streaming, continuous listening, recording, a notification, a background service,
+or a source of product feedback.
+
+The same native **Nature ambience** switch appears after language in Parent and Child Settings.
+It stores one versioned Boolean on the device with no role, account, profile, media, playback
+position, or identity data. The choice survives sign-out and role handoff; a failed write keeps the
+previous choice, and the Parent-authorized exact reset clears it and restores default-on. Missing
+data means default-on, while invalid or unreadable data fails safely to silence.
+
+The original MP3 was locally synthesized from layered pink/brown noise and restrained bird-like
+tones. Feature 010 supersedes only that active asset identity; it does not inherit Feature 006's
+unrun physical Android or named-human gates.
+
+## Emirati access family portrait boundary — 2026-09-08
+
+The Parent sign-in, sign-up, and verification screens now share one versioned, locally bundled
+portrait of a fictional synthetic Emirati father and mother; the mother wears the requested
+traditional black abaya and hijab. Child profile access separately shows one locally bundled image
+of a fictional synthetic Emirati boy and girl in age-appropriate traditional clothing before the
+existing tree-avatar profile controls. The generated children do not depict Salem or Alya and are
+not selectable.
+
+Both images are decorative presentation only. They do not depict real Ghaf users, authenticate an
+identity, prove nationality or guardianship, personalize an account, select a Child profile, or
+represent every Emirati Parent, Child, or family. They contain no user data, readable text, device,
+unsafe prop, task evidence, reward, or environmental-impact claim and are removed from the
+accessibility tree. Each renders from a local 1200×800 JPEG in a responsive 3:2 frame; a decode
+failure removes only that frame without blocking any access action. The original one-father asset
+remains preserved as a versioned reference rather than being overwritten.
+
+Source and final-crop inspection can establish subject count, visible requested attire, crop
+safety, dimensions, and absence of obvious prohibited elements; it cannot establish cultural
+accuracy or public image rights. Physical Android decode/memory, TalkBack, font-scale, and named
+Emirati cultural, Arabic/UAE, image-rights, safeguarding, accessibility, and visual review remain
+`NOT RUN` until directly observed.
+
+## Feature 005 remembered device access boundary — 2026-09-07
+
+Remembered access is a device-local prototype convenience, not a production account or trusted
+device system. A Parent must explicitly opt in after verification. Approved Child pairing
+automatically remembers only that Child as the installation's primary profile. The separate
+affinity record contains a schema version, one role/profile reference, family/profile binding,
+and update time; it contains no password, verification code, PIN, authenticated session, token,
+task, progression ledger, media, transcript, or assistant content.
+
+Native uses the existing Expo SQLite key-value boundary and web uses browser localStorage. Each
+restart validates the marker against the local family directory and creates fresh synthetic
+controller authority; it never serializes or replays an authenticated session. One installation
+can remember one Parent or one Child, not both. This models the intended normal arrangement of
+separate Parent and Child devices, but the repository still has no production accounts, remote
+household state, cloud sync, recovery, encryption claim, or evidence that two physical devices
+share data.
+
+On a remembered Child installation, temporary Parent access ends Child authority before Parent
+verification and preserves the pairing. Parent logout then restores only the same still-eligible
+Child. Revocation, reset, mismatch, corruption, or storage failure fails closed. An active Parent
+must log out before Child access on the same installation. Physical Android process-death,
+SQLite, Back, TalkBack, and font-scale behavior plus named Arabic/UAE, privacy, safeguarding, and
+accessibility review remain `BLOCKED / NOT RUN` until directly observed.
+
+## Feature 004 bounded live AI boundary — 2026-09-07
+
+F4 Parent task drafting, F5 bounded Child Coach text, and ages-12–14 push-to-talk voice now exist
+as default-off implementation candidates with strict local contracts, prepared fallback, and a
+non-deployed reference Worker. This source can be exercised only with synthetic profiles, media,
+capabilities, and fake model bindings. It does not establish that any real model request,
+production identity, valid consent, provider account, network path, retention control, or remote
+deletion occurred.
+
+The mobile app cannot mint a capability or contain a provider secret. The reference gateway's HMAC
+test capability, process-local replay store, and injected fake budget/rate services are test seams,
+not deployable authentication or abuse controls. The three app flags remain independent and false
+by default, and the MCP projection is a fourth server-only default-off switch. MCP offers only the
+two bounded text operations and no media/voice capability.
+
+Child text is not open chat: it is one terminal task-bound request under the approved age policy,
+current task/version, current profile-scoped grant, local and server safety filters, and exact
+correlation. Voice is unavailable below age 12 and to the current ages-9–11 P0 profiles. For an
+eligible synthetic 12–14 harness it uses explicit foreground permission and held capture, caps one
+clip at 15 seconds/256 KiB, deletes local cache audio before transcript display, requires visible
+review plus a separate approve action, and sends text only. Background/continuous recording,
+biometric or speaker identification, emotion/personality/truthfulness inference, and Child photo
+processing remain absent and prohibited.
+
+In-memory byte clearing and a provider response are not proof of provider zero-data-retention or
+remote deletion. Real Child activation remains `BLOCKED`: it requires the trusted broker and
+shared replay/budget stores, provider/ZDR evidence, privacy/legal and safeguarding approval,
+Arabic/UAE and accessibility review, incident and deletion procedures, a physical Android matrix,
+and named human rehearsal. Until those gates pass, demonstrate only the prepared Feature 003 path
+and describe the live code as an implementation candidate—not an available service.
+
+## AI Services 1–3 integration boundary — 2026-09-07
+
+The app still runs the prepared deterministic Parent Guide, Child Coach, summary, age adaptation,
+media, and synthetic voice services by default. An optional HTTPS Parent Guide adapter and one
+Cloudflare Worker reference now exist in source, but no Worker deployment, real model response,
+trusted mobile token broker, production authentication, security assessment, or provider account
+configuration was performed. Worker tests use fake AI/rate-limit bindings and a synthetic token;
+they do not establish that a live service is available or safe for production. A gateway secret
+cannot be distributed in Expo, so the live primary must remain unconfigured until a separately
+approved trusted credential flow exists.
+
+The device-local profile helper now orders and labels Task Builder categories from the saved
+age-band, interest, hobby, accessibility, support, custom-answer, and opt-in fields. The required
+male/female value controls only a masculine/feminine grammatical-address key and never category,
+difficulty, reward, or ability. Reviewed custom wording is reduced locally to allowlisted signals,
+is never echoed in the suggestion result, and is not sent to a provider. The helper stores no
+derived ranking, exposes no Child data outside the device, and cannot make a future-only template
+executable or approve a task. Invalid or opted-out inputs fail back to the catalog order.
+
+The earlier AI Services 1–3 Parent Guide gateway still accepts only one synthetic Parent request
+and exposes no Child operation. The separate Feature 004 gateway and its stricter approved contract
+now cover the implementation candidates described above; they do not add a live Parent summary or
+Child photo processing and do not change the default prepared path.
+
+## Onboarding prepared narration and app ambience — 2026-09-07
+
+The Ghaf Guide introduction uses packaged prepared synthetic audio to read the exact visible Arabic
+or English slide script. One separately owned app-wide player now supplies the locally authored
+low-volume nature soundscape throughout eligible foreground routes. This does not prove that a
+live AI model ran, and it is not a human
+performance, cloned personal voice, speech recognition, microphone session, continuous listening,
+or background audio service. Missing or failed audio leaves the full transcript and navigation
+available.
+
+Automatic native narration waits for the image/layout-ready signal and is disabled while a screen
+reader is active to avoid duplicate speech; app ambience is also disabled for that session. Browser
+autoplay policy may reject audible automatic playback before a user gesture, so automatic web
+sound is best-effort while the explicit speaker control remains available. The app config keeps
+recording and operating-system background playback disabled. Narration stops when onboarding
+exits; eligible ambience follows the shared device setting and continues through the route handoff.
+Browser/source checks cannot pass physical Android Arabic voice performance,
+TalkBack coexistence, audio focus, silent-mode behavior, or named Arabic review. Those remain
+`BLOCKED` or `NOT RUN` until directly observed on the current build.
+
+## Returning-family local summary — 2026-09-06
+
+The returning-family decision now relies on one validated device-local demo directory. Native uses
+Expo SQLite key-value storage and web uses browser localStorage; it stores one synthetic Parent
+normalized phone/email lookup identifier and kind, the minimized family-connection directory, one
+or two Child profiles, bounded curated setup preferences, and approved paired-Child markers. The
+family-directory schema is 3; valid schema-2 and schema-1 fixtures migrate with a neutral Parent
+label and no inferred relatives, and schema 1 also migrates only to the canonical prepared
+`parent@example.com` identifier. This is durable enough for a local demo restart, but it is not
+encrypted production
+account storage, identity assurance, cloud backup, household discovery, recovery, migration, or
+cross-device sync. Feature 005 keeps its affinity marker separate from this family-directory
+schema, validates it at startup, and mints fresh synthetic authority without serializing or
+replaying a session. Parent reset deliberately removes both records and returns the app to
+first-family behavior.
+
+Passwords, verification codes, authenticated sessions, task/Seed/Garden/League/Reward ledgers,
+media, transcripts, notification history, and general free-text Child notes are not part of the
+local record. The record does contain one explicit required male/female value plus four narrowly
+labeled, bounded custom preference answers. These remain device-local and Parent-only; they are not
+encrypted production custody and never enter shared projections or live provider requests. The
+prepared helper is deterministic and local-only; it does not prove that a live model ran and must
+not be used to infer identity, emotion, diagnosis, personality, ability, risk, or stereotyped
+interests.
+
+The required-sex schema update includes a bounded compatibility repair for otherwise valid
+schema-1/2/3 families that stored the former optional value. The legacy record cannot restore a
+Parent or Child session. It exposes only a strict local repair candidate, accepts only the exact
+saved Parent identifier through deterministic verification, and requires the Parent to choose any
+missing Male/Female value before schema 4 is written. Wrong input, cancellation, or a failed write
+leaves the old record unchanged. This prevents silent inference and data loss, but it is not a
+production migration, account recovery, encrypted backup, or multi-device repair service.
+
+The Parent/Child welcome is a one-use in-app dashboard summary assembled from current local state
+already visible to that role. It is not a push notification, inbox, server timestamp, background
+sync, or proof that anything changed while the user was away. It stores no notification history
+and introduces no cross-household or cross-profile data. Browser/source checks cannot establish
+native modal focus, Android Back, TalkBack reading order, OS font-scale behavior, or physical-device
+motion quality.
+
+## First-run and transition presentation — 2026-09-06
+
+The six-moment presentation-onboarding marker remains session-local, so a reload may show that
+introductory story again. The separate validated family directory may still bypass first-family
+creation after Parent verification. The configured
+native splash hands off to a fully opaque 2,000 ms app-owned splash and then a separate loading
+state that remains for at least 1,000 ms and until the four current branded font files plus the
+bounded nine-raster signed-out set settle. These requested presentation holds add intentional startup time; they
+do not represent remote work. Startup intentionally excludes later Garden, League, learning,
+reveal, canopy, Circle, Shared Growth, and prepared-media images from blocking readiness. After the
+loading overlay exits, those 41 remaining packaged rasters warm in
+failure-tolerant batches of six; this may use bandwidth, cache, and memory while onboarding is
+visible, but never delays first paint or navigation. A failed raster resolves through its existing
+local fallback and warning path; warm-up completion does not prove that every image decoded
+successfully on every physical device. The section
+transition is a 900 ms orientation buffer for major access/role changes and waits only for a small
+immediate destination set, reusing any in-flight background request. Neither is
+evidence of a server request, authentication, AI processing, data sync, or completed security
+check. Every Parent/Child access route inherits the official raster logo/name and the same local
+leaf-shadow backdrop from one shared shell; this presentation does not upgrade the synthetic
+access path into production authentication. The six-moment story and three-pillar navigator are
+presentation only. The AI moment describes a bounded Parent-approved-task helper, not unrestricted
+chat, a companion, a therapist, continuous listening, diagnosis, task approval, or proof that a
+live model ran. The Sustainability moment does not prove or measure environmental impact.
+Generated first-run photographs remain symbolic presentation assets subject to the same rights,
+botanical, cultural, safeguarding, accessibility,
+and physical Android review limits as the existing natural artwork library.
+
+## Generated natural artwork — 2026-09-06
+
+The current integration replaces vector-like product drawings with locally generated natural
+botanical imagery. These files are presentation assets, not documentary evidence, a botanical
+model, a site record, a real habitat measurement, a real Child submission, or proof of
+environmental impact. Garden stages and family/circle scenes remain deterministic symbolic UI
+states selected by live app data.
+
+Prompts, generator/date, transformations, dimensions, checksums, intended use, and review status
+are recorded locally. That provenance does not by itself establish public-release rights,
+botanical accuracy, UAE cultural approval, child-safeguarding approval, accessibility acceptance,
+or Android rendering/performance. Those reviews remain `NOT RUN` or `BLOCKED` until a named reviewer
+or physical device directly evaluates the current build.
+
+## Capability Truth
+
+> **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
+>
+> **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
+
+Verified clean head `0501cf3` is the R002b behavioral and presentation baseline. It contains the
+tested synthetic access, private five-Leaf League, private Family Reward, synthetic voice,
+privacy/profile isolation, Parent reset, R001 onboarding, and completed R002a Parent/task/Child/
+Garden surfaces with 541 passing tests. R001 and R002a remain frozen regression fallbacks. Their
+automated evidence does not satisfy R002b Android, accessibility, content, visual, or human-review
+acceptance.
+
+R002b authorizes local implementation of one private 120–180 Seed-derived Impact Path, exactly 16
+deterministic permanent badges, one finite Mangrove learning package with an equal-credit accessible
+route, one Parent read-only selected-Child progress view, one recoverable superset result, and
+additive anonymous Shared Growth. Every surface remains behind an independent default-off flag and
+is not a released capability. The six local-only commits remain unapplied candidate provenance; raw
+R002 exports remain design evidence, not runtime code or proof of release acceptance.
+
+R002a preserves `task_recycling_p0_v1`, the Schema-3 48→60 behavior, zero reward at Child
+submission, and the complete atomic/idempotent Parent-approval consequences. The design label
+`task.recycling_sort.v1` is an alias only. Screens use live selectors and actions rather than copied
+screenshot counters. The R003 Family screen reads a protected local Family Reward projection and
+the Child `/league` route reads an epoch-scoped private League projection without merging either
+authority with `/circle`. Parent Home still has no direct detail selector and must not invent `4/5`,
+`108/120`, or `120/180`.
+
+The normal synthetic P0 approval now derives a ready RevealBundle only after its praise, lifetime
+Seed, Garden archive, canopy, eligible Green Circle, private League/Challenge Leaf, Family Reward,
+badge, station, and safe-help authorities reconcile. The League boundary preserves the approved
+aggregate summary as a presentation fixture, while its runtime persists only one nominated Salem
+Leaf and the real epoch-scoped confirmation; it does not fabricate baseline task history. This
+local bundle remains hidden while `r002b_reveal_bundle_v2` is off, and its implementation is not
+release, Android, or human-review evidence.
+
+R003 completes the local screen journey with distinct synthetic Parent and Child access paths,
+Parent Home/Tasks/Garden/Family navigation, Child Today/Garden/League navigation, Family Reward,
+settings, permissions, devices, reauthentication, and Child read-only settings. `/role` is now a
+compatibility redirect to Welcome, not a selectable authority. A Parent/Child change signs out the
+current experience and requires the receiving access path. These screens are local prototype
+interactions; they do not prove identity, protect a production account, or persist authorization.
+
+The R003 Parent sign-up screen is a route and form simulation only. It reuses the local Parent
+identifier/code fixture before first-family setup; it does not create a real account, send a
+message, verify an identity, store a password, or add a second household. A completed synthetic
+family receipt remains immutable, and direct sign-up entry cannot overwrite it. Returning sign-in
+must match the saved normalized identifier before code entry and then skips all create-family
+screens. The three Parent access screens intentionally use neutral user-facing copy without a
+demo/not-real footer, while this document and the runbook retain the capability boundary.
+
+The R003-only screens without approved reference frames are documented code-native Soft Geometric
+candidates built from the existing theme and tokens. Their existence is not visual approval,
+asset approval, physical Android acceptance, or release activation. Final focused/full validation
+and bilingual browser-proxy evidence are recorded against the current worktree extending runtime
+checkpoint `40fc5fc`; the frozen R001/R002a evidence below was not reused as R003 acceptance.
+
+The prototype does not claim production authentication/security, real pairing or biometrics, real
+Child voice capture/analysis, payment/custody, environmental measurement, rights clearance, named
+human review, or completed physical-device validation unless a later evidence record proves each
+claim directly. `expo-audio` supports prepared synthetic playback only.
+
+Ghaf — غاف is an MVP Prototype for Khalifa University SMAC 2026. It is intended to demonstrate a
+mobile product concept, a deterministic Parent–Child reward loop, bounded AI value, UAE cultural
+grounding, and sustainability storytelling. It is not production-ready and must not be presented as
+an authenticated child service, social network, diagnostic product, religious authority, verified
+impact platform, or legally compliant deployment.
+
+As of 2026-09-06, the R003 complete-screen source is a locally validated integration candidate.
+Typecheck, lint, formatting, 84 files / 1,044 tests, a 39-route web export, and the scoped Arabic/
+English Firefox proxy journeys passed. Physical Android is `BLOCKED` because no device or configured
+SDK/toolchain is available; native subchecks and named human reviews remain `NOT RUN`. The documents
+under `docs/` preserve earlier Feature 002 food-rescue evidence and do not pass current native or
+human criteria.
+
+## P0 Capability Matrix
+
+| Classification                 | Feature 003 treatment                                                                                                                                                                                                               |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Target real interaction        | Separate local Parent/Child access screens; Arabic/English direction; task creation/execution/support; Parent approval/retry; deterministic Seeds; private League/Reward views; privacy-filtered garden/circle update; Parent reset |
+| Prepared and synthetic         | Parent verification, Child PIN/picture credentials, pairing/devices/permissions, two Child profiles, one household, League/circle aggregates, Family Reward promise, task catalog, media/assistant fixtures, Parent observations    |
+| Prepared fallback              | AI task refinement, prepared-photo response, synthetic push-to-talk transcript rehearsal, Child coaching, Parent summary, any generation progress; always labeled prepared/simulated                                                |
+| Competition AI target          | At least one real model transformation using synthetic input through an approved secure server-side provider, strict schema, safety checks, timeout, and deterministic fallback; otherwise status remains `BLOCKED` or `NOT RUN`    |
+| Parent-entered activity metric | Optional observable quantities such as accepted-item count or minutes; labeled self-reported/estimated activity and never called environmental impact without an approved conversion method                                         |
+| Future production work         | Accounts, secure authentication/recovery, consent, age assurance, persistent privacy controls, real media, family invitations, notifications, moderation, reporting, deletion/export, monitoring, legal review, store release       |
+
+The required judge journey must complete with every external request denied. Prepared or simulated
+AI is labeled as such and never presented as live inference.
+
+## Reward-Psychology Limits
+
+Seeds are symbolic progress units, not money, clinical treatment, proof of virtue, or a prediction
+of future behavior.
+
+- Token systems may support a new routine, but points alone do not create lasting character.
+- A Child may be motivated differently from research averages; Parents must be able to adjust or
+  disable rewards.
+- No reward is removed after it is earned.
+- No punitive streak, debt, public failure, red shame state, dying tree, randomized reward, loot
+  box, scarcity countdown, or paid currency is allowed.
+- An accepted task completed with permitted help earns its displayed award. Only a smaller task
+  agreed before acceptance may display a smaller award.
+- `standard`/`fade-first` acquisition may earn the displayed Seeds and persistent eligible growth.
+  Maintenance earns neither. Recognition-only uses `not_applicable` and creates only Parent
+  acknowledgement—no Seed, persistent landscape/canopy growth, or circle event. Only recurrent
+  fade-first acquisition tasks prompt a Parent review after three confirmations; no phase changes
+  automatically, and all prior progress remains.
+- Prayer, affection, kindness, visits, food intake, emotions, hygiene, and disability-related tasks
+  must not become public comparisons or permanent transactions.
+
+Ghaf is not a substitute for evidence-based parenting support, therapy, education planning, or
+professional care.
+
+## Child AI Limits
+
+The P0 Ghaf Coach is a prepared, task-bounded interaction. It may explain the current approved task,
+break it into steps, create an if–then cue, rehearse a curated phrase, respond to a prepared fixture,
+offer one optional, skippable, task-focused reflection question, or direct the Child to an adult.
+
+It does not:
+
+- offer unrestricted chat or act as a friend, companion, therapist, confidant, religious authority,
+  teacher replacement, or substitute Parent;
+- invite secrets, exclusivity, dependency, affection, or continued engagement;
+- diagnose, infer emotion/personality, recognize a face, detect deception, assess sincerity, or
+  judge religious correctness;
+- listen continuously or in the background;
+- process or retain real Child photos, voice, faces, names, locations, or private family stories in
+  the competition prototype; or
+- independently authorize cooking, hot liquids, electricity, chemicals, sharp/unknown waste,
+  outdoor routes, transport, or other hazards.
+
+The Coach says it is AI and may be wrong. A future real provider requires age-appropriate filters,
+monitoring, reporting, a reviewed escalation policy, clear Parent visibility, an alternative
+trusted-adult path, minimum data, and current provider/UAE requirements.
+
+The later in-route voice presentation remains a rehearsal over one canonical bilingual transcript.
+It starts disabled, requires a distinct stored synthetic Parent voice and AI grant, and never treats
+assignment approval, a presentation role value, or Child credential entry as permission. Its active indicator does not
+mean a microphone is open. Stop loads prepared text, simulated replay changes a counter only, and
+send closes the rehearsal without model processing or evidence attachment.
+
+## Parent AI Limits
+
+The P0 Ghaf Guide uses synthetic task and completion records. It may suggest a curated task, rewrite
+it as a positive observable action, offer a smaller step, draft descriptive praise, and summarize a
+time-bounded record.
+
+It never reports that a Child is “normal” or “abnormal.” It must not diagnose or infer a disorder,
+developmental delay, risk score, personality, emotion, intent, truthfulness, religiosity, parenting
+quality, or family quality. It cannot replace a pediatrician, teacher, school professional,
+counselor, or qualified religious adviser.
+
+A safe summary separates facts from uncertainty, leads with strengths, suggests a question or task
+adjustment, and lets the Parent correct the record. Any reference to professional help must be a
+general suggestion rather than an AI conclusion.
+
+## Shared-Device and Social Limits
+
+R003 no longer offers a normal Parent/Child role selector. Welcome opens separate deterministic
+Parent verification/setup or Child profile/credential/pairing paths, and `/role` redirects to
+Welcome. The local sessions improve flow isolation for the prototype but are still synthetic and
+in-memory; they are not production authentication, secure device trust, or proof of guardian/Child
+identity. Therefore every profile, pairing, permission, Parent note, message, League row, Reward
+plan, and circle record in P0 is synthetic.
+
+The circle screen is a local simulation of a cooperative dashboard. It does not implement:
+
+- real family accounts, identity verification, invitation codes, tenancy, or access control;
+- public profiles, discovery, following, direct messages, comments, reactions, or a social feed;
+- live sharing of Child tasks, names, photos, audio, reflections, prayer, kinship, affection,
+  hygiene, wellbeing, disability-related routines, food consumption, Child-assistant content, or
+  Parent observations; or
+- a persistent individual leaderboard across siblings, cousins, or unrelated families.
+
+Only coarse, synthetic family-level counts of eligible Green Impact actions appear in the circle
+demo; Seeds are not impact units. Production
+sharing requires guardian consent, Child assent, privacy controls, moderation/reporting, deletion,
+and current UAE legal review.
+
+## Cultural and Religious Limits
+
+Modern Standard Arabic phrase options are prototype content. They do not establish one universal
+Emirati custom. Wedding practices, majlis behavior, greetings, dialect, gendered forms, dress,
+photography, coffee service, and family expectations differ by family, emirate, event, and context.
+
+- Offer several Parent-approved phrases; never mark a family's expression wrong.
+- Children follow Parent/host cues and ask permission before photographing or recording.
+- Children do not handle hot gahwa in P0.
+- Faith content is opt-in, Parent-controlled, private, nonpunitive, and excluded from all circle
+  comparisons.
+- AI never decides prayer validity, sincerity, religiosity, or a ruling.
+- A qualified UAE Arabic/cultural reviewer and, for faith content, qualified local religious review
+  are required before public release.
+
+Meanings assigned to Samar, Sidr, date palm, and mangrove are product metaphors, not official UAE
+symbolism.
+
+## Sustainability and Impact Limits
+
+The digital garden represents repeated action and family stewardship. It does not mean that Ghaf
+plants a real tree, restores a habitat, offsets carbon, saves a verified number of litres, or proves
+environmental change.
+
+- Use official UAE guidance for task wording where possible.
+- Show an activity quantity only when a Parent directly enters or confirms an observable value.
+- Label it self-reported or estimated activity. Reserve environmental-impact language for a
+  separately approved conversion method.
+- Do not apply impact numbers to prayer, kinship, kindness, hospitality, heritage, wellbeing, or
+  ordinary household tasks.
+- Food safety remains a Parent decision; AI does not decide whether food is edible.
+- The current executable P0 action is recycling and does not calculate a food-rescue quantity. Any
+  later food-rescue demonstration must use a Parent-confirmed observable quantity, label it
+  self-reported/estimated, and cite an approved conversion method before making an outcome claim.
+- Children report leaks, electrical issues, chemicals, glass, sharps, batteries, unknown waste, and
+  unsafe litter to an adult rather than touching or repairing them.
+
+## Food and Wellbeing Limits
+
+Ghaf may reward food planning, table help, safe leftover storage with a Parent, or waste reduction.
+It does not score body weight, calories, dieting, how much a Child eats, trying a disliked food, or
+“cleaning the plate.” Food is not used as a reward or punishment.
+
+Wellbeing tasks support routine and reflection only. Ghaf does not assess sleep quality, mental
+health, emotion, physical fitness, nutrition, disability, or medical status.
+
+## Data and Privacy Limits
+
+P0 uses only synthetic and team-created information. It has no basis to claim compliance with UAE
+child-digital-safety, data-protection, health, education, or consumer law.
+
+Before real child data, photo/voice, AI, notifications, analytics, or family sharing, a separate
+production feature must define and validate guardian consent, Child assent, age assurance, simple
+bilingual privacy explanations, privacy-by-default, purpose limitation, minimum collection,
+separate media consent, task-scoped retention/deletion, no provider training or secondary use, no
+biometric templates or face/voice identification, no emotion inference, export/correction, consent
+withdrawal, Parent visibility, reporting, moderation, high-risk escalation, and provider handling.
+
+If OpenAI services are used for minors, re-check the current
+[OpenAI Under 18 API Guidance](https://developers.openai.com/api/docs/guides/safety-checks/under-18-api-guidance)
+and applicable terms at implementation time. Do not rely on a copied summary as a compliance plan.
+
+## Technical Limits
+
+The implemented Feature 003 technical limits are:
+
+- state may remain in memory and reset on reload;
+- Parent verification, Child credentials, pairing, devices, permission grants, and reauthentication
+  use visible fixed local fixtures and provide no production security;
+- all new profiles, tasks, awards, growth, circle data, and assistant responses are local fixtures;
+- no native photo capture, recording, background audio, or real upload exists;
+- native direction changes may require reopen/reload;
+- garden species/stages are generated symbolic images, not biological models or measured growth;
+- approval commitments use a deterministic local consistency fingerprint, not a signature,
+  durable audit log, authentication mechanism, or protection from coordinated in-memory changes;
+- task recognitions have a stable local commit order, while the single learning completion lives in
+  a separate authority without one durable global sequence; validation therefore requires an exact
+  valid insertion replay and exact badge source, but does not prove real-world event chronology;
+- routine history and permanent local reward authorities remain prototype state rather than
+  cryptographically verifiable records;
+- Android identifiers, builds, and physical-device behavior remain whatever the actual repository
+  and runbook verify;
+- old Feature 002 tests and screenshots do not pass Feature 003 acceptance; and
+- web/source evidence does not pass native Android or named-human acceptance.
+
+## Product Experience Redesign Domain Limits
+
+The post-P0 redesign code proves local rules/state transitions and now presents the R003 access,
+Family, Reward, settings, permissions, devices, reauthentication, Child settings, and League
+surfaces. It still does not establish any production capability:
+
+- Parent/Child sessions, pairing codes, reauthentication proofs, devices, and permissions are fixed
+  synthetic values. They do not authenticate a person, protect secrets, survive reinstall, recover
+  an account, establish consent, or provide a production security boundary.
+- Family Reward values are private synthetic promise metadata shown only through the Parent
+  projection. Ghaf does not hold money, transfer value, purchase anything, guarantee fulfillment,
+  resolve disputes, or convert Seeds to currency. Eligibility remains fail-closed for unknown or
+  prohibited task/version provenance.
+- League members and the Child League screen are synthetic fixtures. There is no real invitation,
+  family relationship check,
+  contact, moderation, report, block, retention, deletion, notification, or cross-household service.
+- The League projection is a separate allowlisted model and does not weaken the existing
+  identity-free Green Circle. Its rank is a synthetic weekly calculation, not a judgment of effort,
+  ability, character, or family contribution.
+- Voice interaction is a synthetic state machine and presentation over a prepared transcript. There
+  is no microphone request, audio capture, speech recognition, speaker identification, provider
+  call, or background listening. Parent/Child access objects and grants remain local fixtures rather
+  than production authorization.
+- Age-adaptive output metadata does not assess developmental level or ability. Parents keep control
+  of task suitability, help, accessibility adaptations, and participation.
+- Arabic-English code-switch understanding and Emirati/Gulf conversational output remain
+  unimplemented; any later phrase or voice library requires named human review.
+
+R002b implementation does not itself change the public-demo claim or pass native/human evidence.
+It must preserve capability-scoped access, deterministic voice and `expo-audio`, Parent-authorized
+reset, route guards, and profile isolation. Web evidence cannot upgrade Android or named-human
+results, and no default-off flag may be activated for release without its applicable evidence.
+
+## Public Demo Disclosure
+
+Use this language during the pitch:
+
+> Ghaf's interaction, reward logic, bilingual experience, and deterministic family journey are the
+> prototype. Parent/Child access, credentials, pairing, devices, permissions, the children, media,
+> League/circle data, Family Reward promise, and assistant conversations are synthetic.
+> Prepared AI responses keep the live demo reliable; any enabled remote AI is separately labeled
+> and falls back safely. The garden is symbolic and no diagnosis, religious judgment, real social
+> sharing, or verified environmental-impact claim is made.
+
+Detailed command, Android, timing, and human-comprehension evidence belongs only in
+`DEMO_RUNBOOK.md`.

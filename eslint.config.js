@@ -70,15 +70,7 @@ const ghafCommentRules = {
 module.exports = defineConfig([
   ...expoConfig,
   {
-    ignores: [
-      '.expo/**',
-      'coverage/**',
-      'dist/**',
-      'node_modules/**',
-      '.agents/**',
-      '.specify/**',
-      'expo-env.d.ts',
-    ],
+    ignores: ['.expo/**', 'coverage/**', 'dist/**', 'node_modules/**', 'expo-env.d.ts'],
   },
   {
     files: ['**/*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}'],

@@ -4,6 +4,17 @@ shell commands, and other important information, read the current plan
 at specs/005-remembered-device-access/plan.md
 <!-- SPECKIT END -->
 
+## Documentation locations
+
+The user authorized the 2026-09-13 root cleanup. Current product and design context now lives at
+`docs/PRODUCT.md` and `docs/DESIGN.md`, which the installed design tooling discovers automatically.
+Research and limitations live under `docs/product/`; the current runbook and file reservations
+live under `docs/competition-readiness/`. Read the updated paths below. When an older task or
+conversation names a former root path, resolve it through
+`docs/architecture/document-relocations.json`; do not recreate root copies.
+Historical Feature 002 files directly under `docs/` remain historical. AI-assistance records and
+authorship evidence remain tracked; private local notes are not a substitute for required disclosure.
+
 # Ghaf Repository Collaboration Contract
 
 ## Current Feature
@@ -48,14 +59,14 @@ Read in this order:
 
 1. `.specify/memory/constitution.md`
 2. the active feature's `spec.md`, `plan.md`, and `tasks.md`
-3. `PRODUCT.md`
-4. `RESEARCH_BASIS.md`
-5. `DESIGN.md` and `DESIGN_DIRECTION.md`
+3. `docs/PRODUCT.md`
+4. `docs/product/RESEARCH_BASIS.md`
+5. `docs/DESIGN.md` and `docs/design/DESIGN_DIRECTION.md`
 6. `docs/GHAF_GROWTH_JOURNEY_PROMPT_PACK/README.md` and
    `specs/003-family-growth-garden/design-intake/growth-journey-preflight.md` for Growth work
-7. `PROTOTYPE_LIMITATIONS.md`
-8. `TEAM_OWNERSHIP.md`
-9. `DEMO_RUNBOOK.md` when the change affects the judge journey
+7. `docs/product/PROTOTYPE_LIMITATIONS.md`
+8. `docs/competition-readiness/TEAM_OWNERSHIP.md`
+9. `docs/competition-readiness/DEMO_RUNBOOK.md` when the change affects the judge journey
 
 If attachment names include suffixes such as `README(5).md` or `AGENTS(1).md`, find and edit the
 canonical repository files rather than introducing duplicate suffixed files.
@@ -236,12 +247,18 @@ or `NOT RUN` and label prepared responses honestly.
 
 ## Collaboration and Ownership
 
-Before writing, inspect `git status --short`, read `TEAM_OWNERSHIP.md`, and reserve exact files
+Before writing, inspect `git status --short`, read `docs/competition-readiness/TEAM_OWNERSHIP.md`, and reserve exact files
 or directories. One person or agent owns a file boundary at a time. Read-only research may run in
 parallel; overlapping writes may not.
 
-Run no more than four agents concurrently. Use the smallest applicable project agent and honor its
-write scope. The integration owner resolves shared configuration, dependency, and final merge work.
+The user authorizes scoped subagents with a configured ceiling of ten per session. For the
+four-session competition work plan, follow the canonical shared budget and ownership protocol in
+`docs/competition-readiness/coordination/README.md` and its `BOARD.md`: start with four leads and
+four helpers total, and increase only after measured headroom and explicit coordinator allocation.
+The per-session setting does not authorize forty simultaneous local workloads. Count descendants,
+serialize heavy jobs, and keep one writer per file. Use the smallest applicable project agent;
+leads publish helper scopes and releases. The integration owner resolves shared configuration,
+dependency, and final integration work. Preserve the Spec Kit-managed context block above.
 
 ## Comment and Commit Conventions
 

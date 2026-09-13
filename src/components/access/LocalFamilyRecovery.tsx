@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useNavigationContainerRef } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -9,10 +9,10 @@ import { Button, Text } from '@/components/primitives';
 import { layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { focusAccessibilityTarget } from '@/utils/accessibilityFocus';
-import { replaceHistoryWithEntry } from '@/utils/navigation';
+import { prepareEntryReset } from '@/utils/navigation';
 
 export function LocalFamilyRecovery() {
-  const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -60,13 +60,18 @@ export function LocalFamilyRecovery() {
   const confirm = () => {
     if (!confirming) return;
     setFailed(false);
+    const resetNavigation = prepareEntryReset(navigation);
+    if (!resetNavigation) {
+      setFailed(true);
+      return;
+    }
     const result = confirmCorruptLocalFamilyRecovery({ confirmed: true });
     if (!result.ok) {
       setFailed(true);
       return;
     }
     dispatch({ type: 'skip' });
-    replaceHistoryWithEntry(router);
+    resetNavigation();
   };
 
   const titleKey = confirming ? 'confirmTitle' : corrupt ? 'corruptTitle' : 'unavailableTitle';

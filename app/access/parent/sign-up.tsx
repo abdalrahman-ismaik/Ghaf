@@ -7,11 +7,11 @@ import {
   AccessHeader,
   AccessScreen,
   AccessTextField,
-  GhafIcon,
+  ParentAccessPortrait,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { colors, layout, r001Radii, spacing } from '@/design/tokens';
+import { colors, layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentSignUpScreen() {
@@ -21,16 +21,13 @@ export default function ParentSignUpScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
-  const requestParentVerification = usePrototypeStore((state) => state.requestParentVerification);
+  const beginLocalFamilySetup = usePrototypeStore((state) => state.beginLocalFamilySetup);
   const [identifier, setIdentifier] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const networkAvailable = preview !== 'offline';
-  const verificationHref =
-    preview === 'offline'
-      ? '/access/parent/verification?flow=create-family&preview=offline'
-      : '/access/parent/verification?flow=create-family';
+  const isReplacingFamily = Boolean(localFamily.record && parentOnboarding.completionReceipt);
 
   const returnToSignIn = useCallback(() => {
     if (preview === 'offline') {
@@ -50,12 +47,11 @@ export default function ParentSignUpScreen() {
     return () => subscription.remove();
   }, [returnToSignIn]);
 
-  const requestCode = async () => {
+  const startSetup = () => {
     if (busy) return;
     setBusy(true);
     setError(null);
-    await Promise.resolve();
-    const result = requestParentVerification({ identifier, networkAvailable });
+    const result = beginLocalFamilySetup({ identifier });
     if (!result.ok) {
       setError(
         result.error.code === 'INVALID_INPUT'
@@ -65,20 +61,18 @@ export default function ParentSignUpScreen() {
       setBusy(false);
       return;
     }
-    router.replace(verificationHref);
+    router.replace('/access/parent/family-basics');
   };
 
   if (parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href={activeExperience === 'parent' ? '/parent' : '/'} />;
   }
-  if (parentOnboarding.completionReceipt) {
-    return <Redirect href="/access/parent/sign-in" />;
-  }
-  if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
-    return <Redirect href={verificationHref} />;
-  }
-  if (parentOnboarding.status === 'verified') {
-    return <Redirect href="/access/parent/family-basics" />;
+  if (
+    parentOnboarding.status === 'code_sent' ||
+    parentOnboarding.status === 'verifying' ||
+    parentOnboarding.status === 'verified'
+  ) {
+    return <Redirect href="/access/parent/verification" />;
   }
 
   return (
@@ -99,14 +93,9 @@ export default function ParentSignUpScreen() {
       keyboardAware
       testID="parent-sign-up-screen"
     >
+      <ParentAccessPortrait />
+
       <View style={styles.intro}>
-        <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={styles.iconPlate}
-        >
-          <GhafIcon direction={direction} name="family" size={32} />
-        </View>
         <Text
           align="center"
           brand
@@ -139,6 +128,16 @@ export default function ParentSignUpScreen() {
         />
       ) : null}
 
+      {isReplacingFamily ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.signUp.replacementBody')}
+          title={t('access.signUp.replacementTitle')}
+          tone="offline"
+        />
+      ) : null}
+
       <View style={styles.form}>
         <AccessTextField
           accessibilityHint={t('access.signIn.identifierExample')}
@@ -155,7 +154,7 @@ export default function ParentSignUpScreen() {
             setIdentifier(value);
             setError(null);
           }}
-          onSubmitEditing={() => void requestCode()}
+          onSubmitEditing={startSetup}
           placeholder={t('access.signIn.identifierPlaceholder')}
           returnKeyType="go"
           testID="parent-sign-up-identifier-input"
@@ -169,11 +168,11 @@ export default function ParentSignUpScreen() {
           busyLabel={t('access.signUp.loading')}
           direction={direction}
           language={locale}
-          onPress={() => void requestCode()}
+          onPress={startSetup}
           size="regular"
-          testID="request-parent-sign-up-code-button"
+          testID="start-local-family-setup-button"
         >
-          {t('access.signUp.action')}
+          {t(isReplacingFamily ? 'access.signUp.replacementAction' : 'access.signUp.action')}
         </Button>
       </View>
 
@@ -217,14 +216,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     gap: spacing.xs,
-  },
-  iconPlate: {
-    width: spacing.massive,
-    height: spacing.massive,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHigh,
   },
   form: { width: '100%', gap: spacing.sm },
   returningFamilyGroup: {

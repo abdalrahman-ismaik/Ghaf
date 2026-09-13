@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
+import { GhafHeaderTitle } from '@/components/brand';
 import { QuietButton, Text } from '@/components/primitives';
 import { R002aScreen } from '@/components/r002a';
 import { colors, layout, opacity, r001Radii, spacing } from '@/design/tokens';
@@ -87,17 +88,7 @@ export function R002bNestedScreen({
           <View style={styles.physicalRow}>
             {direction === 'rtl' ? emptySlot : backControl}
             <View style={styles.titleSlot}>
-              <Text
-                accessibilityRole="header"
-                align="center"
-                brand
-                color="r001Ink"
-                direction={direction}
-                language={language}
-                variant="screenTitle"
-              >
-                {title}
-              </Text>
+              <GhafHeaderTitle direction={direction} language={language} title={title} />
             </View>
             {direction === 'rtl' ? backControl : emptySlot}
           </View>

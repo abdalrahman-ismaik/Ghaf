@@ -10,7 +10,7 @@ import {
   PrivateLeagueScreen,
   type PrivateLeagueParticipantItem,
 } from '@/components/r002b/PrivateLeagueScreen';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import { buildPrivateLeaguePresentation } from '@/features/league/presentation';
 import { localize } from '@/i18n';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
@@ -24,6 +24,9 @@ export default function PrivateLeagueRoute() {
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const activeChild = usePrototypeStore((state) => state.children[state.activeChildId]);
+  const localProfile = usePrototypeStore((state) =>
+    state.localFamily.record?.children.find((profile) => profile.id === state.activeChildId),
+  );
   const privateLeague = usePrototypeStore((state) => state.privateLeague);
   const [helpOpen, setHelpOpen] = useState(false);
   const formatter = useMemo(
@@ -99,7 +102,8 @@ export default function PrivateLeagueRoute() {
       footer={footer}
       header={
         <ChildHomeHeader
-          avatarLabel={localize(activeChild.displayName, locale)}
+          avatarId={localProfile?.avatarId}
+          avatarLabel={localProfile?.nickname ?? localize(activeChild.displayName, locale)}
           direction={direction}
           helpLabel={t('common.help')}
           helpOpen={helpOpen}
@@ -114,7 +118,7 @@ export default function PrivateLeagueRoute() {
         <View accessibilityLiveRegion="polite" style={styles.helpCard} testID="league-help-card">
           <View style={[styles.helpCopy, { flexDirection: logicalRowDirection(direction) }]}>
             <View style={styles.helpIcon}>
-              <GhafIcon color={colors.ghafEmerald} name="help" size={24} />
+              <GhafIcon color={botanical.colors.forest} name="help" size={24} />
             </View>
             <Text
               brand
@@ -174,11 +178,10 @@ const styles = StyleSheet.create({
   },
   helpCard: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   helpCopy: {
     minWidth: 0,
@@ -190,9 +193,9 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.ghafEmeraldTint,
+    backgroundColor: botanical.colors.sage,
   },
   flexText: {
     minWidth: 0,

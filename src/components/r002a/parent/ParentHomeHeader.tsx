@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
-import { Text } from '@/components/primitives';
-import { colors, layout, opacity, spacing } from '@/design/tokens';
+import { GhafHeaderTitle } from '@/components/brand';
+import { botanical, colors, layout, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ParentHomeHeaderProps {
@@ -38,16 +39,7 @@ export function ParentHomeHeader({
         </Pressable>
 
         <View style={styles.titleSlot}>
-          <Text
-            accessibilityRole="header"
-            align="center"
-            brand
-            color="ghafEmerald"
-            direction={direction}
-            variant="screenTitle"
-          >
-            {title}
-          </Text>
+          <GhafHeaderTitle color="ghafEmerald" direction={direction} title={title} />
         </View>
 
         <View accessibilityLabel={profileLabel} accessible style={styles.sideSlot}>
@@ -63,9 +55,7 @@ export function ParentHomeHeader({
 const styles = StyleSheet.create({
   root: {
     zIndex: 2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.pearlGround,
+    backgroundColor: botanical.colors.canvas,
     paddingHorizontal: layout.screenPadding,
     paddingVertical: spacing.xs,
   },
@@ -96,12 +86,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 20,
     borderCurve: 'continuous',
-    borderWidth: 1.5,
-    borderColor: colors.ghafEmerald,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.sage,
   },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.97 }],
   },
 });

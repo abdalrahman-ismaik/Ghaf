@@ -44,6 +44,7 @@ import {
   type LiveChildCoachGrant,
 } from '../../models/boundedAi';
 import type { ServiceResult } from '../../services/interfaces';
+import { runDemoEntryTransaction } from './demoEntryTransaction';
 
 const CAPABILITY_TRUTH = 'local_prototype_not_authentication' as const;
 const SYNTHETIC_HOUSEHOLD_ID = 'household_al_noor' as const;
@@ -183,6 +184,7 @@ function sameSessionIdentity(left: AccessSession, right: AccessSession): boolean
 
 function cloneAccessSession(session: ParentAccessSession): ParentAccessSession;
 function cloneAccessSession(session: ChildAccessSession): ChildAccessSession;
+function cloneAccessSession(session: AccessSession): AccessSession;
 function cloneAccessSession(session: AccessSession): AccessSession {
   return session.sessionKind === 'parent'
     ? {
@@ -279,6 +281,29 @@ export class DeterministicSyntheticAccessService {
     ['child_salem', initialPermissionGrant('child_salem')],
     ['child_alya', initialPermissionGrant('child_alya')],
   ]);
+
+  // Entry callbacks are synchronous and must not schedule work or mutate unrelated authorities.
+  withDemoEntryTransaction<T>(operation: () => ServiceResult<T>): ServiceResult<T> {
+    return runDemoEntryTransaction(
+      this,
+      () => {
+        const sessions = new Map(
+          [...this.sessions].map(([key, session]) => [key, cloneAccessSession(session)]),
+        );
+        const devices = new Map([...this.devices].map(([key, device]) => [key, { ...device }]));
+        const proofs = new Map([...this.proofs].map(([key, proof]) => [key, { ...proof }]));
+        return () => {
+          this.sessions.clear();
+          sessions.forEach((session, key) => this.sessions.set(key, session));
+          this.devices.clear();
+          devices.forEach((device, key) => this.devices.set(key, device));
+          this.proofs.clear();
+          proofs.forEach((proof, key) => this.proofs.set(key, proof));
+        };
+      },
+      operation,
+    );
+  }
 
   signInParent(input: SyntheticParentSignIn): ServiceResult<ParentAccessSession> {
     const expiry = expiresAt(input.now, ACCESS_SESSION_TTL_MS);

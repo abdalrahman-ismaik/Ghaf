@@ -1,12 +1,19 @@
 import { useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect, useNavigationContainerRef, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalAvatar } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { Text } from '@/components/primitives';
 import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
-import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r003';
+import { R003ActionRow, R003Section, R003Status } from '@/components/r003';
+import { AmbientSoundSetting } from '@/components/settings/AmbientSoundSetting';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import { localize } from '@/i18n';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
+import { entryMode } from '@/config/demoEntry';
+import { prepareEntryReset } from '@/utils/navigation';
 
 const PERMISSIONS = [
   { key: 'voiceGranted', label: 'r003.permissions.voice', icon: 'dialpad' },
@@ -16,6 +23,7 @@ const PERMISSIONS = [
 
 export default function ChildSettingsScreen() {
   const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -34,12 +42,18 @@ export default function ChildSettingsScreen() {
 
   const openParentAccess = () => {
     setError(null);
+    const resetNavigation = entryMode === 'demo' ? prepareEntryReset(navigation) : null;
+    if (entryMode === 'demo' && !resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = beginTemporaryParentAccess();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
       return;
     }
-    router.replace('/');
+    if (resetNavigation) resetNavigation();
+    else router.replace('/');
   };
 
   return (
@@ -54,19 +68,29 @@ export default function ChildSettingsScreen() {
       }
       testID="child-settings-screen"
     >
-      <R003Hero
-        body={t('r003.childSettings.body')}
-        direction={direction}
-        icon="settings"
-        language={locale}
-        title={`${t('r003.childSettings.title')} · ${name}`}
-      />
+      <View style={[styles.profile, { flexDirection: logicalRowDirection(direction) }]}>
+        <BotanicalAvatar
+          direction={direction}
+          id={
+            localFamily.record?.children.find((profile) => profile.id === child.id)?.avatarId ??
+            'ghaf_tree'
+          }
+          size={72}
+        />
+        <View style={styles.profileCopy}>
+          <Text brand direction={direction} language={locale} variant="screenTitle">
+            {name}
+          </Text>
+          <Text brand color="onSurfaceVariant" direction={direction} language={locale}>
+            {t('r003.childSettings.body')}
+          </Text>
+        </View>
+      </View>
       <R003Section title={t('r003.childSettings.ownPermissions')}>
         {grant.ok ? (
           PERMISSIONS.map((permission) => (
             <R003ActionRow
               direction={direction}
-              disabled
               icon={permission.icon}
               key={permission.key}
               language={locale}
@@ -75,6 +99,7 @@ export default function ChildSettingsScreen() {
                   ? 'r003.permissions.enabled'
                   : 'r003.permissions.disabled',
               )}
+              testID={`child-permission-${permission.key}`}
               title={t(permission.label)}
             />
           ))
@@ -96,6 +121,9 @@ export default function ChildSettingsScreen() {
       <R003Section title={t('r003.settings.languageTitle')}>
         <LanguageSwitcher compact showGuidance={false} />
       </R003Section>
+      <R003Section title={t('r003.settings.ambientAudio.sectionTitle')}>
+        <AmbientSoundSetting />
+      </R003Section>
       <R003ActionRow
         body={t('r003.childSettings.parentAccessBody')}
         direction={direction}
@@ -111,3 +139,16 @@ export default function ChildSettingsScreen() {
     </R002aScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  profile: {
+    minWidth: 0,
+    alignItems: 'center',
+    gap: botanical.space.row,
+    paddingVertical: botanical.space.small,
+    paddingBottom: botanical.space.section,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: botanical.colors.line,
+  },
+  profileCopy: { flex: 1, minWidth: 0, gap: spacing.xs },
+});

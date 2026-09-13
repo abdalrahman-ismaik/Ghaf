@@ -86,6 +86,37 @@ export interface TaskSafetyBoundary {
   readonly aftercare: LocalizedText | null;
 }
 
+export interface CatalogExecutionMetadata {
+  readonly revision: string;
+  readonly steps: readonly {
+    readonly id: string;
+    readonly kind: 'action' | 'optional' | 'adult' | 'conditional';
+    readonly text: LocalizedText;
+    readonly condition: LocalizedText | null;
+  }[];
+  readonly completionScope: 'one_session' | 'parent_observed_period';
+  readonly confirmationPraise: LocalizedText;
+  readonly permittedHelpPraise: LocalizedText;
+  readonly smallerAlternative: LocalizedText | null;
+  readonly safeEquivalent: LocalizedText | null;
+}
+
+export interface TaskOccurrenceIdentity {
+  readonly instanceId: string;
+  readonly householdId: string;
+  readonly generationId: string;
+  readonly sequence: number;
+  readonly childId: SyntheticChildId;
+  readonly taskId: string;
+  readonly assignmentId: string;
+  readonly routineKey: string;
+}
+
+export interface TaskChildProfile {
+  readonly id: SyntheticChildId;
+  readonly ageBand: AgeBand;
+}
+
 export interface TaskTemplate {
   readonly id: string;
   readonly categoryId: TaskCategoryId;
@@ -109,6 +140,7 @@ export interface TaskTemplate {
   readonly circleEligible: boolean;
   readonly privacyNotice: LocalizedText;
   readonly origin: 'prepared';
+  readonly catalogExecution?: CatalogExecutionMetadata;
 }
 
 export interface Task {
@@ -120,15 +152,18 @@ export interface Task {
   readonly acceptedGuideFixtureId: string | null;
   readonly content: TaskTemplate;
   readonly origin: 'prepared' | 'synthetic';
+  readonly occurrence?: TaskOccurrenceIdentity;
+  readonly approvedAgeBand?: AgeBand;
 }
 
 export interface ApprovedChoiceFixture {
-  readonly id: 'choice_preview_hr02_v1' | 'choice_preview_lw01_v1' | 'choice_recycling_p0_v1';
+  readonly id: string;
   readonly childId: SyntheticChildId;
   readonly taskTemplateId: string;
   readonly approvalState: 'parent_approved_fixture';
-  readonly demoAvailability: 'display_only' | 'p0_executable';
+  readonly demoAvailability: 'display_only' | 'p0_executable' | 'catalog_executable';
   readonly origin: 'prepared';
+  readonly assignmentId?: string;
 }
 
 export interface ChildChoicePool {
@@ -357,6 +392,8 @@ export interface RecognitionReceiptProvenance {
   readonly routineCompletionCountAfter: number;
   readonly familyRewardEligible: boolean;
   readonly challengeLeafEligible: boolean;
+  readonly routineKey?: string;
+  readonly recognitionSequence?: number;
 }
 
 export interface RecognitionReceipt {
@@ -414,6 +451,9 @@ export interface PrototypeSession {
   readonly activeAssignmentId: string | null;
   readonly journey: TaskJourney | null;
   readonly landscapeProgress: Readonly<Record<LandscapeId, LandscapeProgress>>;
+  readonly landscapeProgressByChild?: Readonly<
+    Record<SyntheticChildId, Readonly<Record<LandscapeId, LandscapeProgress>>>
+  >;
   readonly circleGoal: CircleGoal;
   readonly recognitionLedger: Readonly<Record<string, RecognitionReceipt>>;
   // The store adds this after recurrent task confirmations. Reset sessions can leave it out.

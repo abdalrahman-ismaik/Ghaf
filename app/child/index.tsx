@@ -1,3 +1,5 @@
+import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
+import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
@@ -18,8 +20,9 @@ import {
   R002aScreen,
 } from '@/components/r002a';
 import { TodayImpactPathCard } from '@/components/r002b/GrowthJourneyScreens';
+import { ChildTodayLandscape } from '@/components/r002a/child/ChildTodayLandscape';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, colors, logicalRowDirection, spacing } from '@/design/tokens';
 import {
   P0_RECYCLING_TEMPLATE,
   TASK_CATEGORIES,
@@ -125,6 +128,16 @@ export default function ChildHomeScreen() {
     (state) => state.dismissReturningUserWelcome,
   );
   const children = usePrototypeStore((state) => state.children);
+  const hasCatalog = usePrototypeStore((state) =>
+    state.taskAssignments.order.some((id) => {
+      const entry = state.taskAssignments.byId[id];
+      return (
+        entry?.childId === state.activeChildId &&
+        Boolean(entry.journey.assignment && entry.journey.task.content.catalogExecution)
+      );
+    }),
+  );
+  const landscapeProgress = usePrototypeStore((state) => state.landscapeProgress);
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const choicePool = usePrototypeStore((state) => state.choicePool);
@@ -268,8 +281,11 @@ export default function ChildHomeScreen() {
   const childName =
     localFamily.record?.children.find((profile) => profile.id === activeChildId)?.nickname ??
     localize(child.displayName, locale);
-  const gardenTarget = 60;
-  const gardenCurrent = Math.min(child.earnedSeeds, gardenTarget);
+  const gardenLandscapeId = currentTemplate?.landscapeId ?? 'mangrove';
+  const personalLandscape = landscapeProgress[gardenLandscapeId];
+  const gardenTarget =
+    personalLandscape.nextThreshold ?? Math.max(60, personalLandscape.cumulativeSeeds);
+  const gardenCurrent = Math.min(personalLandscape.cumulativeSeeds, gardenTarget);
   const gardenRemaining = Math.max(0, gardenTarget - gardenCurrent);
   const formatter = new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE');
 
@@ -431,20 +447,20 @@ export default function ChildHomeScreen() {
       }}
       testID="child-home-screen"
     >
-      <View style={styles.welcome}>
-        <Text brand color="r001Ink" direction={direction} variant="hero">
-          {t('childHome.welcome', { child: childName })}
-        </Text>
-        <Text brand color="onSurfaceVariant" direction={direction} variant="bodyLarge">
-          {t(hasCurrentWork ? 'childHome.todaySummary' : 'childHome.noCurrentTaskSummary')}
-        </Text>
-      </View>
+      <ChildTodayLandscape
+        body={t(hasCurrentWork ? 'childHome.todaySummary' : 'childHome.noCurrentTaskSummary')}
+        compact={hasCurrentWork}
+        direction={direction}
+        landscapeId={currentTemplate?.landscapeId ?? 'mangrove'}
+        stage={landscapeProgress[currentTemplate?.landscapeId ?? 'mangrove'].stage}
+        title={t('childHome.welcome', { child: childName })}
+      />
 
       {helpOpen ? (
         <View accessibilityLiveRegion="polite" style={styles.helpPanel} testID="child-help-panel">
           <View style={[styles.panelHeading, { flexDirection: logicalRowDirection(direction) }]}>
             <View style={styles.iconBubble}>
-              <GhafIcon color={colors.ghafEmerald} name="help" size={24} />
+              <GhafIcon color={botanical.colors.forest} name="help" size={24} />
             </View>
             <View style={styles.grow}>
               <Text brand color="deepForest" direction={direction} variant="label">
@@ -484,7 +500,7 @@ export default function ChildHomeScreen() {
         >
           <View style={[styles.panelHeading, { flexDirection: logicalRowDirection(direction) }]}>
             <View style={styles.iconBubble}>
-              <GhafIcon color={colors.mangroveTeal} name="info" size={23} />
+              <GhafIcon color={botanical.colors.forestRaised} name="info" size={23} />
             </View>
             <View style={styles.grow}>
               <Text brand color="deepForest" direction={direction} variant="screenTitle">
@@ -588,46 +604,50 @@ export default function ChildHomeScreen() {
               {formatter.format(child.earnedSeeds)} {t('common.seedUnit')}
             </Text>
           </View>
-          <ChildTodayTaskCard
-            actionDisabled={currentWorkMode === 'choose' && adjustmentBlocksChoice}
-            actionLabel={taskAction?.label}
-            actionTestID={taskAction?.testID}
-            awardLabel={
-              currentTemplate.displayedSeedAward
-                ? t('childHome.awardAfterConfirmation', {
-                    count: currentTemplate.displayedSeedAward,
-                  })
-                : t('taskReview.noSeedRecognition')
-            }
-            categoryLabel={
-              currentCategory ? localize(currentCategory.label, locale) : t('origin.prepared')
-            }
-            direction={direction}
-            effortLabel={localize(currentTemplate.estimatedEffort, locale)}
-            helpLabel={localize(currentTemplate.permittedHelp, locale)}
-            recognitionLabel={t('taskReview.recognition')}
-            recognitionValue={t(RECOGNITION_LABEL_KEYS[currentTemplate.recognitionMode])}
-            onAction={taskAction?.onPress}
-            onSecondaryAction={
-              currentWorkMode === 'choose' && !activeAdjustment ? requestSmaller : undefined
-            }
-            secondaryActionLabel={
-              currentWorkMode === 'choose' && !activeAdjustment
-                ? t('childHome.requestSmaller')
-                : undefined
-            }
-            secondaryActionTestID="request-smaller-task-button"
-            statusLabel={t(STATUS_KEY_BY_LIFECYCLE[journey.lifecycle] ?? 'origin.prepared')}
-            supervisionLabel={t('taskReview.supervision')}
-            supervisionValue={localize(currentTemplate.supervision, locale)}
-            title={
-              currentTemplate.id === P0_RECYCLING_TEMPLATE.id
-                ? t('childTask.title')
-                : localize(currentTemplate.title, locale)
-            }
-            whyItMatters={localize(currentTemplate.whyItMatters, locale)}
-            whyLabel={t('taskReview.why')}
-          />
+          {hasCatalog ? (
+            <CatalogTaskList role="child" />
+          ) : (
+            <ChildTodayTaskCard
+              actionDisabled={currentWorkMode === 'choose' && adjustmentBlocksChoice}
+              actionLabel={taskAction?.label}
+              actionTestID={taskAction?.testID}
+              awardLabel={
+                currentTemplate.displayedSeedAward
+                  ? t('childHome.awardAfterConfirmation', {
+                      count: currentTemplate.displayedSeedAward,
+                    })
+                  : t('taskReview.noSeedRecognition')
+              }
+              categoryLabel={
+                currentCategory ? localize(currentCategory.label, locale) : t('origin.prepared')
+              }
+              direction={direction}
+              effortLabel={localize(currentTemplate.estimatedEffort, locale)}
+              helpLabel={localize(currentTemplate.permittedHelp, locale)}
+              recognitionLabel={t('taskReview.recognition')}
+              recognitionValue={t(RECOGNITION_LABEL_KEYS[currentTemplate.recognitionMode])}
+              onAction={taskAction?.onPress}
+              onSecondaryAction={
+                currentWorkMode === 'choose' && !activeAdjustment ? requestSmaller : undefined
+              }
+              secondaryActionLabel={
+                currentWorkMode === 'choose' && !activeAdjustment
+                  ? t('childHome.requestSmaller')
+                  : undefined
+              }
+              secondaryActionTestID="request-smaller-task-button"
+              statusLabel={t(STATUS_KEY_BY_LIFECYCLE[journey.lifecycle] ?? 'origin.prepared')}
+              supervisionLabel={t('taskReview.supervision')}
+              supervisionValue={localize(currentTemplate.supervision, locale)}
+              title={
+                currentTemplate.id === P0_RECYCLING_TEMPLATE.id
+                  ? t('childTask.title')
+                  : localize(currentTemplate.title, locale)
+              }
+              whyItMatters={localize(currentTemplate.whyItMatters, locale)}
+              whyLabel={t('taskReview.why')}
+            />
+          )}
           {adjustmentBlocksChoice && currentWorkMode === 'choose' ? (
             <Text accessibilityLiveRegion="polite" brand color="tertiary" direction={direction}>
               {smallerRequestPending
@@ -638,10 +658,10 @@ export default function ChildHomeScreen() {
           {currentWorkMode === 'waiting' ? (
             <View
               accessibilityLiveRegion="polite"
-              style={styles.statusNotice}
+              style={[styles.statusNotice, { flexDirection: logicalRowDirection(direction) }]}
               testID="current-task-waiting"
             >
-              <GhafIcon color={colors.ghafEmerald} name="info" size={20} />
+              <GhafIcon color={botanical.colors.forest} name="info" size={20} />
               <Text
                 brand
                 color="deepForest"
@@ -656,7 +676,10 @@ export default function ChildHomeScreen() {
             </View>
           ) : null}
           {currentWorkMode === 'paused' ? (
-            <View accessibilityLiveRegion="polite" style={styles.statusNotice}>
+            <View
+              accessibilityLiveRegion="polite"
+              style={[styles.statusNotice, { flexDirection: logicalRowDirection(direction) }]}
+            >
               <GhafIcon color={colors.tertiary} name="info" size={20} />
               <Text
                 brand
@@ -671,6 +694,8 @@ export default function ChildHomeScreen() {
           ) : null}
         </View>
       ) : null}
+
+      <MessagingEntry role="child" />
 
       {r002bGrowth.ok ? (
         <TodayImpactPathCard
@@ -691,14 +716,14 @@ export default function ChildHomeScreen() {
         current={gardenCurrent}
         direction={direction}
         onAction={() => router.push('/garden')}
-        progressLabel={t('childHome.personalGardenProgress')}
+        progressLabel={t(LANDSCAPE_LABEL_KEYS[gardenLandscapeId])}
         remainingLabel={t(
           gardenRemaining > 0 ? 'childHome.gardenRemaining' : 'childHome.gardenMilestoneComplete',
           { count: formatter.format(gardenRemaining) },
         )}
-        symbolicLabel={t('origin.symbolic')}
+        symbolicLabel={t('catalog.unmapped')}
         target={gardenTarget}
-        title={t('childHome.howGardenHelps')}
+        title={t('catalog.personalLandscape', { child: childName })}
       />
 
       {previewChoices.length > 0 ? (
@@ -708,7 +733,7 @@ export default function ChildHomeScreen() {
               {t('childHome.preparedChoices')}
             </Text>
             <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-              {t('childHome.previewOnlyBody')}
+              {t('catalog.previewIdeas')}
             </Text>
           </View>
           <View style={styles.previewList}>
@@ -721,7 +746,7 @@ export default function ChildHomeScreen() {
                   style={[styles.previewChoice, { flexDirection: logicalRowDirection(direction) }]}
                 >
                   <View style={styles.previewIcon}>
-                    <GhafIcon color={colors.mangroveTeal} name="leaf" size={20} />
+                    <GhafIcon color={botanical.colors.forestRaised} name="leaf" size={20} />
                   </View>
                   <View style={styles.grow}>
                     <Text brand color="deepForest" direction={direction} variant="label">
@@ -732,7 +757,7 @@ export default function ChildHomeScreen() {
                     </Text>
                   </View>
                   <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
-                    {t('origin.future')}
+                    {t('catalog.needsApproval')}
                   </Text>
                 </View>
               );
@@ -742,8 +767,8 @@ export default function ChildHomeScreen() {
       ) : null}
 
       {choices.length === 0 ? (
-        <View style={styles.emptyNotice}>
-          <GhafIcon color={colors.ghafEmerald} name="leaf" size={25} />
+        <View style={[styles.emptyNotice, { flexDirection: logicalRowDirection(direction) }]}>
+          <GhafIcon color={botanical.colors.forest} name="leaf" size={25} />
           <View style={styles.grow}>
             <Text brand color="deepForest" direction={direction} variant="label">
               {t('errors.missingTask')}
@@ -761,8 +786,11 @@ export default function ChildHomeScreen() {
         </Text>
       ) : null}
       {smallerRequestPending ? (
-        <View accessibilityLiveRegion="polite" style={styles.statusNotice}>
-          <GhafIcon color={colors.mangroveTeal} name="info" size={20} />
+        <View
+          accessibilityLiveRegion="polite"
+          style={[styles.statusNotice, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          <GhafIcon color={botanical.colors.forestRaised} name="info" size={20} />
           <Text brand color="deepForest" direction={direction} style={styles.grow}>
             {t('childHome.smallerRequested')}
           </Text>
@@ -800,18 +828,14 @@ const styles = StyleSheet.create({
   screenContent: {
     paddingBottom: spacing.xxl,
   },
-  welcome: {
-    gap: spacing.xs,
-  },
   helpPanel: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   panelHeading: {
     alignItems: 'flex-start',
@@ -823,8 +847,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
   },
   grow: {
     flex: 1,
@@ -833,19 +857,18 @@ const styles = StyleSheet.create({
   },
   adjustmentPanel: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.mangroveTeal,
-    backgroundColor: colors.mangroveTealTint,
+    borderColor: botanical.colors.forestRaised,
+    backgroundColor: botanical.colors.water,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   proposalDetail: {
     gap: spacing.xxs,
-    borderStartWidth: 2,
-    borderStartColor: colors.mangroveTeal,
-    paddingStart: spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: botanical.colors.sageStrong,
+    paddingTop: spacing.sm,
   },
   adjustmentActions: {
     gap: spacing.xs,
@@ -856,6 +879,7 @@ const styles = StyleSheet.create({
   sectionHeading: {
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     gap: spacing.sm,
   },
   statusNotice: {
@@ -863,8 +887,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.sm,
   },
   previewSection: {
@@ -874,20 +898,15 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   previewList: {
-    overflow: 'hidden',
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    minWidth: 0,
   },
   previewChoice: {
     minHeight: 72,
     alignItems: 'center',
     gap: spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
-    padding: spacing.md,
+    borderBottomColor: botanical.colors.line,
+    paddingVertical: botanical.space.row,
   },
   previewIcon: {
     width: 40,
@@ -895,16 +914,16 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.mangroveTealTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.water,
   },
   emptyNotice: {
     minHeight: 72,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.sm,
-    borderRadius: r001Radii.xl,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.surface,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.lg,
   },
 });

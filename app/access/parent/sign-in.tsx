@@ -3,9 +3,16 @@ import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { AccessHeader, AccessScreen, AccessTextField, StatusBanner } from '@/components/access';
+import {
+  AccessHeader,
+  AccessScreen,
+  ParentAccessPortrait,
+  StatusBanner,
+} from '@/components/access';
 import { Button, Text } from '@/components/primitives';
+import { ParentAccountChooser } from '@/components/access/ParentAccountChooser';
 import { colors, layout, spacing } from '@/design/tokens';
+import { resolveLocalFamilyDisplayName } from '@/features/access/localFamilyDisplayName';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentSignInScreen() {
@@ -15,18 +22,19 @@ export default function ParentSignInScreen() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
+  const localFamilyProfileRepair = usePrototypeStore((state) => state.localFamilyProfileRepair);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
   const cancelTemporaryParentAccess = usePrototypeStore(
     (state) => state.cancelTemporaryParentAccess,
   );
-  const requestExistingParentVerification = usePrototypeStore(
-    (state) => state.requestExistingParentVerification,
+  const beginLocalFamilyProfileRepair = usePrototypeStore(
+    (state) => state.beginLocalFamilyProfileRepair,
   );
-  const [identifier, setIdentifier] = useState('');
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const enterLocalParentAccount = usePrototypeStore((state) => state.enterLocalParentAccount);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const networkAvailable = preview !== 'offline';
   const signUpHref =
     preview === 'offline' ? '/access/parent/sign-up?preview=offline' : '/access/parent/sign-up';
 
@@ -53,33 +61,30 @@ export default function ParentSignInScreen() {
     return () => subscription.remove();
   }, [goBack]);
 
-  const requestCode = async (candidate: string) => {
+  const openAccount = () => {
     if (busy) return;
     setBusy(true);
     setError(null);
-    await Promise.resolve();
-    const result = requestExistingParentVerification({
-      identifier: candidate,
-      networkAvailable,
-    });
+    const result = localFamilyProfileRepair
+      ? beginLocalFamilyProfileRepair()
+      : enterLocalParentAccount();
     if (!result.ok) {
-      setError(
-        result.error.code === 'INVALID_INPUT'
-          ? t('access.signIn.invalidIdentifier')
-          : result.error.code === 'NOT_FOUND'
-            ? t('access.signIn.accountNotFound')
-            : t('access.states.interrupted'),
-      );
+      setError(t('access.signIn.entryError'));
       setBusy(false);
       return;
     }
-    router.replace('/access/parent/verification');
+    router.replace(localFamilyProfileRepair ? '/access/parent/add-first-child' : '/parent');
   };
+
+  const familyName = localFamily.record
+    ? resolveLocalFamilyDisplayName(localFamily.record, t('access.signIn.demoFamily'))
+    : (localFamilyProfileRepair?.familyName ?? t('access.signIn.demoFamily'));
+  const accountUnavailable = localFamily.status !== 'ready' && !localFamilyProfileRepair;
 
   if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
     return <Redirect href="/access/parent/verification" />;
   }
-  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+  if (parentOnboarding.status === 'verified') {
     return <Redirect href="/access/parent/verification" />;
   }
   if (parentOnboarding.status === 'authenticated_parent') {
@@ -101,9 +106,10 @@ export default function ParentSignInScreen() {
           onBack={goBack}
         />
       }
-      keyboardAware
       testID="parent-sign-in-screen"
     >
+      <ParentAccessPortrait />
+
       <View style={styles.intro}>
         <Text
           align="center"
@@ -137,62 +143,70 @@ export default function ParentSignInScreen() {
         />
       ) : null}
 
-      <View style={styles.signInPanel}>
-        <View style={styles.credentials}>
-          <AccessTextField
-            accessibilityHint={t('access.signIn.identifierExample')}
-            autoCapitalize="none"
-            autoComplete="username"
-            autoCorrect={false}
-            direction="auto"
-            editable={!busy}
-            errorText={error ?? undefined}
-            helperText={t('access.signIn.identifierExample')}
-            label={t('access.signIn.identifierLabel')}
-            language={locale}
-            onChangeText={(value) => {
-              setIdentifier(value);
-              setError(null);
-            }}
-            onSubmitEditing={() => void requestCode(identifier)}
-            placeholder={t('access.signIn.identifierPlaceholder')}
-            returnKeyType="go"
-            testID="parent-identifier-input"
-            textContentType="username"
-            value={identifier}
-          />
+      {localFamilyProfileRepair ? (
+        <StatusBanner
+          direction={direction}
+          language={locale}
+          message={t('access.setup.profileRepairBody')}
+          title={t('access.setup.profileRepairTitle')}
+          tone="origin"
+        />
+      ) : null}
 
-          <Button
+      <View style={styles.signInPanel}>
+        <ParentAccountChooser
+          actionLabel={t('access.signIn.continue')}
+          busy={busy}
+          busyLabel={t('access.signIn.loading')}
+          detail={t(
+            localFamilyProfileRepair
+              ? 'access.signIn.repairAccount'
+              : localFamily.record
+                ? 'access.signIn.savedAccount'
+                : 'access.signIn.demoAccount',
+          )}
+          direction={direction}
+          disabled={accountUnavailable}
+          familyName={familyName}
+          language={locale}
+          onSelect={openAccount}
+        />
+        {!localFamilyProfileRepair ? (
+          <Text
+            align="center"
             brand
-            busy={busy}
-            busyLabel={t('access.signIn.loading')}
+            color="onSurfaceVariant"
             direction={direction}
             language={locale}
-            onPress={() => void requestCode(identifier)}
-            size="regular"
-            testID="request-parent-code-button"
+            variant="caption"
           >
-            {t('access.signIn.continue')}
+            {t('access.signIn.localNotice')}
+          </Text>
+        ) : null}
+        {error || accountUnavailable ? (
+          <StatusBanner
+            direction={direction}
+            language={locale}
+            message={error ?? t('access.signIn.entryError')}
+            tone="error"
+          />
+        ) : null}
+
+        <View style={styles.createFamilyGroup}>
+          <Button
+            brand
+            direction={direction}
+            disabled={busy}
+            language={locale}
+            onPress={() => router.push(signUpHref)}
+            size="regular"
+            style={styles.createFamilyButton}
+            testID="create-family-button"
+            variant="quiet"
+          >
+            {t('access.signIn.createFamily')}
           </Button>
         </View>
-
-        {parentOnboarding.completionReceipt ? null : (
-          <View style={styles.createFamilyGroup}>
-            <Button
-              brand
-              direction={direction}
-              disabled={busy}
-              language={locale}
-              onPress={() => router.push(signUpHref)}
-              size="regular"
-              style={styles.createFamilyButton}
-              testID="create-family-button"
-              variant="quiet"
-            >
-              {t('access.signIn.createFamily')}
-            </Button>
-          </View>
-        )}
       </View>
     </AccessScreen>
   );
@@ -210,7 +224,6 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: spacing.md,
   },
-  credentials: { gap: spacing.sm },
   createFamilyGroup: { paddingTop: spacing.xs },
   createFamilyButton: {
     borderColor: colors.ghafEmerald,

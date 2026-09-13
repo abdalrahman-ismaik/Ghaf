@@ -1,0 +1,10 @@
+{
+  "PRODUCT.md": "docs/PRODUCT.md",
+  "DESIGN.md": "docs/DESIGN.md",
+  "RESEARCH_BASIS.md": "docs/product/RESEARCH_BASIS.md",
+  "PROTOTYPE_LIMITATIONS.md": "docs/product/PROTOTYPE_LIMITATIONS.md",
+  "DESIGN_DIRECTION.md": "docs/design/DESIGN_DIRECTION.md",
+  "DEMO_RUNBOOK.md": "docs/competition-readiness/DEMO_RUNBOOK.md",
+  "TEAM_OWNERSHIP.md": "docs/competition-readiness/TEAM_OWNERSHIP.md",
+  "CODEX_IMPLEMENTATION_PROMPT.md": "docs/archive/CODEX_IMPLEMENTATION_PROMPT.md"
+}

@@ -299,6 +299,10 @@ export class ChildVoiceController {
     if (actorRole !== 'parent') {
       return failure('INVALID_TRANSITION', 'Only the Parent can clear prepared voice task state');
     }
+    return this.releaseTaskContextForNavigation();
+  }
+
+  releaseTaskContextForNavigation(): ServiceResult<ChildVoiceView> {
     if (this.voiceSession) {
       const reset = this.registry.syntheticVoice.reset(this.voiceSession, this.childAuthority());
       if (!reset.ok) return reset;

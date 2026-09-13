@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { GhafIcon } from '@/components/access';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, logicalRowDirection, r001Radii, r001Shadows, spacing } from '@/design/tokens';
+import { botanical, colors, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 interface ChildTaskHeroProps {
@@ -43,26 +43,44 @@ export function ChildTaskHero({
             {statusLabel}
           </Text>
         </View>
-        <View style={styles.categoryBadge}>
-          <GhafIcon color={colors.mangroveTeal} name="leaf" size={16} />
-          <Text brand color="mangroveTeal" direction={direction} variant="label">
+        <View style={[styles.categoryBadge, { flexDirection: logicalRowDirection(direction) }]}>
+          <GhafIcon color={botanical.colors.forestRaised} name="leaf" size={16} />
+          <Text
+            brand
+            color="mangroveTeal"
+            direction={direction}
+            style={styles.metaLabel}
+            variant="label"
+          >
             {categoryLabel}
           </Text>
         </View>
       </View>
-      <Text align="center" brand color="deepForest" direction={direction} variant="screenTitle">
+      <Text brand color="deepForest" direction={direction} variant="screenTitle">
         {title}
       </Text>
       <View style={[styles.metadata, { flexDirection: logicalRowDirection(direction) }]}>
         <View style={[styles.metaChip, { flexDirection: logicalRowDirection(direction) }]}>
           <GhafIcon color={colors.onSurfaceVariant} name="calendar" size={18} />
-          <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
+          <Text
+            brand
+            color="onSurfaceVariant"
+            direction={direction}
+            style={styles.metaLabel}
+            variant="caption"
+          >
             {effortLabel}
           </Text>
         </View>
         <View style={[styles.metaChip, { flexDirection: logicalRowDirection(direction) }]}>
-          <GhafIcon color={colors.ghafEmerald} name="energy-leaf" size={18} />
-          <Text brand color="ghafEmerald" direction={direction} variant="caption">
+          <GhafIcon color={botanical.colors.forest} name="energy-leaf" size={18} />
+          <Text
+            brand
+            color="ghafEmerald"
+            direction={direction}
+            style={styles.metaLabel}
+            variant="caption"
+          >
             {awardLabel}
           </Text>
         </View>
@@ -77,51 +95,51 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   botanicalHero: {
-    height: 132,
+    aspectRatio: 2,
+    maxHeight: 220,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    borderRadius: r001Radii.xl,
-    backgroundColor: colors.primaryFixedTint,
-    ...r001Shadows.soft,
+    borderRadius: botanical.radius.hero,
+    backgroundColor: botanical.colors.sage,
   },
   badges: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
     gap: spacing.xs,
   },
   statusBadge: {
+    maxWidth: '100%',
     minHeight: 34,
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.tertiaryFixedDim,
-    paddingHorizontal: spacing.lg,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.sage,
+    paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
   },
   categoryBadge: {
+    maxWidth: '100%',
     minHeight: 34,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xxs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.mangroveTealTint,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xxs,
   },
   metadata: {
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexWrap: 'wrap',
     gap: spacing.xs,
   },
   metaChip: {
+    maxWidth: '100%',
     minHeight: 38,
     alignItems: 'center',
     gap: spacing.xs,
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLow,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.xxs,
     paddingVertical: spacing.xs,
   },
+  metaLabel: { minWidth: 0, flexShrink: 1 },
 });

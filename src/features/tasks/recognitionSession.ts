@@ -35,8 +35,25 @@ import { BADGE_REGISTRY } from '../growth/badgeRegistry';
 import type { GrowthJourneyRuntimeState } from '../growth/bootstrap';
 import { projectWaterAndCoastPath, selectLifetimeSeeds } from '../growth/seedLedger';
 import { evaluateRecognitionPolicy } from '../rewards/policy';
-import { SYNTHETIC_CHILDREN, SYNTHETIC_HOUSEHOLD } from './demoContent';
-import { isDescriptiveTaskPraise } from './validation';
+import {
+  P0_RECYCLING_TEMPLATE,
+  SYNTHETIC_CHILDREN,
+  SYNTHETIC_HOUSEHOLD,
+  TASK_TEMPLATES,
+} from './demoContent';
+import {
+  isDescriptiveTaskPraise,
+  validateCatalogTaskAuthority,
+  validateTaskForReview,
+  validateTaskSubmissionPolicy,
+} from './validation';
+import {
+  initializeProfileLandscapes,
+  isTaskOccurrenceIdentity,
+  landscapesForChild,
+  openingPersonalLandscapes,
+  routineProgressKey,
+} from './assignmentInstances';
 
 const PROFILE_IDS = ['child_salem', 'child_alya'] as const;
 const LANDSCAPE_IDS = ['ghaf', 'samar', 'sidr', 'date_palm', 'mangrove'] as const;
@@ -607,6 +624,25 @@ export function hasExactTaskJourneyTimeline(journey: TaskJourney): boolean {
   const submission = journey.submission;
   const checkIn = journey.checkIn;
   if (
+    journey.task.id !== P0_RECYCLING_TEMPLATE.id &&
+    TASK_TEMPLATES.some((template) => template.id === journey.task.templateId) &&
+    !validateCatalogTaskAuthority(journey.task).ok
+  )
+    return false;
+  if (journey.task.occurrence) {
+    if (
+      !validateTaskForReview(journey.task).ok ||
+      !isTaskOccurrenceIdentity(journey.task.occurrence, journey.task) ||
+      assignment?.id !== journey.task.occurrence.assignmentId ||
+      assignment.approvedByParent !== true ||
+      (submission &&
+        (!validateTaskSubmissionPolicy(journey.task, submission).ok ||
+          (assignment.id !== 'assignment_recycling_p0_v1' &&
+            submission.id !== `submission:${assignment.id}:attempt:${submission.attempt}`)))
+    )
+      return false;
+  }
+  if (
     !assignment ||
     !isExactIsoTimestamp(assignment.createdAt) ||
     (submission !== null &&
@@ -713,6 +749,8 @@ export function hasCanonicalRecognitionProvenance(
       'challengeLeafEligible',
       'routineCompletionCountBefore',
       'routineCompletionCountAfter',
+      ...(provenance.routineKey !== undefined ? ['routineKey'] : []),
+      ...(provenance.recognitionSequence !== undefined ? ['recognitionSequence'] : []),
     ]) ||
     provenance.schemaVersion !== 'r003.recognition-provenance.v1' ||
     typeof provenance.taskId !== 'string' ||
@@ -736,6 +774,45 @@ export function hasCanonicalRecognitionProvenance(
   ) {
     return false;
   }
+  if (
+    provenance.recognitionSequence !== undefined &&
+    (!Number.isSafeInteger(provenance.recognitionSequence) || provenance.recognitionSequence < 1)
+  )
+    return false;
+  if (provenance.taskId.startsWith('task:')) {
+    const parts = provenance.taskId.split(':');
+    const template = [...TASK_TEMPLATES, P0_RECYCLING_TEMPLATE].find(
+      (item) => encodeURIComponent(item.id) === parts[5],
+    );
+    const phase = provenance.projection.routinePhase;
+    const expectedRoutineKey =
+      template?.id === P0_RECYCLING_TEMPLATE.id
+        ? P0_RECYCLING_TEMPLATE.id
+        : `routine:${parts[1]}:${parts[2]}:${parts[3]}:${parts[5]}`;
+    if (
+      parts.length !== 6 ||
+      !parts[1] ||
+      !parts[2] ||
+      parts[3] !== provenance.profileId ||
+      !/^[1-9]\d*$/.test(parts[4] ?? '') ||
+      !template ||
+      provenance.recognitionSequence === undefined ||
+      provenance.routineKey !== expectedRoutineKey ||
+      provenance.projection.categoryId !== template.categoryId ||
+      provenance.projection.recognitionMode !== template.recognitionMode ||
+      provenance.projection.visibilityScope !== template.visibilityScope ||
+      provenance.projection.circleEligible !== template.circleEligible ||
+      provenance.recurrence !== template.recurrence ||
+      (phase !== template.routinePhase &&
+        !(
+          phase === 'maintenance' &&
+          template.recognitionMode === 'fade_first' &&
+          template.recurrence === 'recurrent'
+        )) ||
+      (phase === 'acquisition' && receipt.seedTransaction?.amount !== template.displayedSeedAward)
+    )
+      return false;
+  } else if (provenance.routineKey !== undefined) return false;
   const projection = planAfterConfirmation(provenance.projection);
   if (
     !projection.ok ||
@@ -771,7 +848,7 @@ export function hasCanonicalRecognitionProvenance(
     provenance.routineCompletionCountAfter === 3;
   if (
     expectsPhaseReview
-      ? !isCanonicalPhaseReview(receipt.phaseReview, provenance.taskId)
+      ? !isCanonicalPhaseReview(receipt.phaseReview, provenance.routineKey ?? provenance.taskId)
       : receipt.phaseReview !== null
   ) {
     return false;
@@ -810,6 +887,7 @@ function recognitionProvenanceMatchesJourney(
     provenance.landscapeId === journey.task.content.landscapeId &&
     provenance.completionMode === submission.completionMode &&
     provenance.recurrence === journey.task.content.recurrence &&
+    (provenance.routineKey ?? provenance.taskId) === routineProgressKey(journey.task) &&
     provenance.projection.categoryId === journey.task.content.categoryId &&
     provenance.projection.recognitionMode === journey.task.content.recognitionMode &&
     provenance.projection.visibilityScope === journey.task.content.visibilityScope &&
@@ -817,7 +895,7 @@ function recognitionProvenanceMatchesJourney(
   );
 }
 
-function hasCanonicalRecognitionAggregateAuthority(session: PrototypeSession): boolean {
+export function hasCanonicalRecognitionAggregateAuthority(session: PrototypeSession): boolean {
   try {
     if (
       !isPlainRecord(session.recognitionLedger) ||
@@ -906,6 +984,18 @@ function hasCanonicalRecognitionAggregateAuthority(session: PrototypeSession): b
     }
 
     const routineProvenanceByTask = new Map<string, RecognitionReceipt['provenance'][]>();
+    const receipts = Object.values(session.recognitionLedger);
+    const legacyCount = receipts.filter(
+      (receipt) => receipt.provenance.recognitionSequence === undefined,
+    ).length;
+    const sequences = receipts
+      .flatMap((receipt) =>
+        receipt.provenance.recognitionSequence === undefined
+          ? []
+          : [receipt.provenance.recognitionSequence],
+      )
+      .sort((a, b) => a - b);
+    if (sequences.some((sequence, index) => sequence !== legacyCount + index + 1)) return false;
     for (const receipt of Object.values(session.recognitionLedger)) {
       if (
         receipt.provenance.projection.recognitionMode !== 'fade_first' ||
@@ -913,9 +1003,10 @@ function hasCanonicalRecognitionAggregateAuthority(session: PrototypeSession): b
       ) {
         continue;
       }
-      const existing = routineProvenanceByTask.get(receipt.provenance.taskId) ?? [];
+      const routineKey = receipt.provenance.routineKey ?? receipt.provenance.taskId;
+      const existing = routineProvenanceByTask.get(routineKey) ?? [];
       existing.push(receipt.provenance);
-      routineProvenanceByTask.set(receipt.provenance.taskId, existing);
+      routineProvenanceByTask.set(routineKey, existing);
     }
     for (const [taskId, provenances] of routineProvenanceByTask) {
       const progress = session.routineProgressByTask?.[taskId];
@@ -952,36 +1043,99 @@ function hasCanonicalRecognitionAggregateAuthority(session: PrototypeSession): b
         pending.splice(pending.indexOf(next), 1);
       }
       if (session.children[profileId].earnedSeeds !== balance) return false;
+      const sequenced = receipts
+        .filter(
+          (receipt) =>
+            receipt.provenance.profileId === profileId &&
+            receipt.seedTransaction &&
+            receipt.provenance.recognitionSequence !== undefined,
+        )
+        .sort((a, b) => a.provenance.recognitionSequence! - b.provenance.recognitionSequence!);
+      let orderedBalance =
+        SYNTHETIC_CHILDREN[profileId].earnedSeeds +
+        receipts.reduce(
+          (sum, receipt) =>
+            sum +
+            (receipt.provenance.profileId === profileId &&
+            receipt.provenance.recognitionSequence === undefined
+              ? (receipt.seedTransaction?.amount ?? 0)
+              : 0),
+          0,
+        );
+      for (const receipt of sequenced) {
+        if (receipt.seedTransaction!.balanceBefore !== orderedBalance) return false;
+        orderedBalance = receipt.seedTransaction!.balanceAfter;
+      }
     }
 
-    for (const landscapeId of LANDSCAPE_IDS) {
-      let progress: PrototypeSession['landscapeProgress'][typeof landscapeId] = {
-        landscapeId,
-        cumulativeSeeds: OPENING_LANDSCAPE_SEEDS[landscapeId],
-        stage: stageForSeeds(OPENING_LANDSCAPE_SEEDS[landscapeId]),
-        nextThreshold: nextThresholdForSeeds(OPENING_LANDSCAPE_SEEDS[landscapeId]),
-      };
-      const pending = seedEvidence.filter(({ growth }) => growth.landscapeId === landscapeId);
-      while (pending.length > 0) {
-        const candidates = pending.filter(
-          ({ growth }) => growth.seedsBefore === progress.cumulativeSeeds,
-        );
-        if (candidates.length !== 1) return false;
-        const next = candidates[0]!;
-        const planned = planLandscapeGrowth({
-          landscape: progress,
-          seedAmount: next.transaction.amount,
-        });
-        if (!planned.ok || !sameValue(planned.data, next.growth)) return false;
-        progress = {
+    const profileMaps = session.landscapeProgressByChild;
+    if (
+      profileMaps !== undefined &&
+      (!isPlainRecord(profileMaps) ||
+        !hasExactKeys(profileMaps, PROFILE_IDS) ||
+        PROFILE_IDS.some(
+          (profileId) =>
+            !isPlainRecord(profileMaps[profileId]) ||
+            !hasExactKeys(profileMaps[profileId], LANDSCAPE_IDS),
+        ) ||
+        !sameValue(session.landscapeProgress, profileMaps[session.activeChildId]))
+    )
+      return false;
+    if (
+      !profileMaps &&
+      Object.values(session.recognitionLedger).some((receipt) =>
+        receipt.provenance.taskId.startsWith('task:'),
+      )
+    )
+      return false;
+    const landscapeProfiles: readonly (SyntheticChildId | null)[] = profileMaps
+      ? PROFILE_IDS
+      : [null];
+    for (const profileId of landscapeProfiles) {
+      for (const landscapeId of LANDSCAPE_IDS) {
+        const opening = profileId
+          ? openingPersonalLandscapes(profileId)[landscapeId].cumulativeSeeds
+          : OPENING_LANDSCAPE_SEEDS[landscapeId];
+        let progress: PrototypeSession['landscapeProgress'][typeof landscapeId] = {
           landscapeId,
-          cumulativeSeeds: planned.data.seedsAfter,
-          stage: planned.data.stageAfter,
-          nextThreshold: nextThresholdForSeeds(planned.data.seedsAfter),
+          cumulativeSeeds: opening,
+          stage: stageForSeeds(opening),
+          nextThreshold: nextThresholdForSeeds(opening),
         };
-        pending.splice(pending.indexOf(next), 1);
+        const pending = seedEvidence.filter(
+          ({ growth, transaction }) =>
+            growth.landscapeId === landscapeId &&
+            (profileId === null || transaction.childId === profileId),
+        );
+        while (pending.length > 0) {
+          const candidates = pending.filter(
+            ({ growth }) => growth.seedsBefore === progress.cumulativeSeeds,
+          );
+          if (candidates.length !== 1) return false;
+          const next = candidates[0]!;
+          const planned = planLandscapeGrowth({
+            landscape: progress,
+            seedAmount: next.transaction.amount,
+          });
+          if (!planned.ok || !sameValue(planned.data, next.growth)) return false;
+          progress = {
+            landscapeId,
+            cumulativeSeeds: planned.data.seedsAfter,
+            stage: planned.data.stageAfter,
+            nextThreshold: nextThresholdForSeeds(planned.data.seedsAfter),
+          };
+          pending.splice(pending.indexOf(next), 1);
+        }
+        if (
+          !sameValue(
+            profileId && profileMaps
+              ? profileMaps[profileId][landscapeId]
+              : session.landscapeProgress[landscapeId],
+            progress,
+          )
+        )
+          return false;
       }
-      if (!sameValue(session.landscapeProgress[landscapeId], progress)) return false;
     }
 
     return (
@@ -1070,7 +1224,8 @@ export function hasValidRoutineProgressAuthority(
     const count = progress.confirmedAcquisitionCount as number;
     const phaseReview = progress.phaseReview;
     const decision = progress.decision;
-    const activeTask = activeJourney?.task.id === key ? activeJourney.task : null;
+    const activeTask =
+      activeJourney && routineProgressKey(activeJourney.task) === key ? activeJourney.task : null;
     if (
       activeTask &&
       (activeTask.content.recognitionMode !== 'fade_first' ||
@@ -1123,11 +1278,12 @@ function zeroSeedDuplicateMatchesPolicy(
   const submission = journey.submission;
   if (!submission) return false;
   const task = journey.task;
-  const progress = session.routineProgressByTask?.[task.id] ?? null;
+  const progress = session.routineProgressByTask?.[routineProgressKey(task)] ?? null;
   const recurringFadeFirst =
     task.content.recognitionMode === 'fade_first' && task.content.recurrence === 'recurrent';
-  const effectiveRoutinePhase =
-    task.content.recognitionMode === 'recognition_only'
+  const effectiveRoutinePhase = task.occurrence
+    ? task.content.routinePhase
+    : task.content.recognitionMode === 'recognition_only'
       ? 'not_applicable'
       : task.content.routinePhase === 'maintenance'
         ? 'maintenance'
@@ -1454,7 +1610,7 @@ export function validateConfirmationPlanningRequest(input: {
     if (journey.lifecycle === 'confirmed') {
       return checkIn?.decision === 'confirm' &&
         checkIn.praise !== null &&
-        isDescriptiveTaskPraise(checkIn.praise) &&
+        isDescriptiveTaskPraise(checkIn.praise, journey.task, submission.completionMode) &&
         checkIn.recognitionKey === recognitionKey &&
         (checkIn.confirmationPresentation === 'editing_praise' ||
           checkIn.confirmationPresentation === 'praise_presented') &&
@@ -1467,7 +1623,7 @@ export function validateConfirmationPlanningRequest(input: {
     return journey.lifecycle === 'submitted' &&
       checkIn === null &&
       isBilingualText(request.praise) &&
-      isDescriptiveTaskPraise(request.praise) &&
+      isDescriptiveTaskPraise(request.praise, journey.task, submission.completionMode) &&
       (request.neutralObservation === null || isBilingualText(request.neutralObservation)) &&
       (request.uncertainty === null || isBilingualText(request.uncertainty))
       ? { ok: true, data: true }
@@ -1501,7 +1657,7 @@ export function validateCheckInRouteRequest(input: {
       ((journey.lifecycle === 'confirmed' || journey.lifecycle === 'recognized') &&
         checkIn?.decision === 'confirm' &&
         checkIn.praise !== null &&
-        isDescriptiveTaskPraise(checkIn.praise));
+        isDescriptiveTaskPraise(checkIn.praise, journey.task, journey.submission?.completionMode));
     return resumable
       ? { ok: true, data: true }
       : requestFailure('Check-in request is not safely resumable');
@@ -1556,7 +1712,11 @@ export function validatePraisePresentationRequest(input: {
       Date.parse(submission.submittedAt) <= Date.parse(checkIn.createdAt) &&
       Date.parse(checkIn.createdAt) <= Date.parse(action.presentedAt) &&
       checkIn.praise !== null &&
-      isDescriptiveTaskPraise(checkIn.praise) &&
+      isDescriptiveTaskPraise(
+        checkIn.praise,
+        pendingPlan.journey.task,
+        submission.completionMode,
+      ) &&
       sameValue(pendingPlan.checkIn, checkIn) &&
       sameValue(pendingPlan.praise, checkIn.praise) &&
       pendingPlan.recognitionKey === checkIn.recognitionKey;
@@ -1671,7 +1831,7 @@ export function validateConfirmationPlanningTransition(input: {
         !checkIn ||
         checkIn.decision !== 'confirm' ||
         checkIn.praise === null ||
-        !isDescriptiveTaskPraise(checkIn.praise) ||
+        !isDescriptiveTaskPraise(checkIn.praise, journey.task, submission.completionMode) ||
         checkIn.recognitionKey !== recognitionKey ||
         (checkIn.confirmationPresentation !== 'editing_praise' &&
           checkIn.confirmationPresentation !== 'praise_presented')
@@ -1702,7 +1862,7 @@ export function validateConfirmationPlanningTransition(input: {
       if (
         journey.checkIn !== null ||
         !isBilingualText(request.praise) ||
-        !isDescriptiveTaskPraise(request.praise) ||
+        !isDescriptiveTaskPraise(request.praise, journey.task, submission.completionMode) ||
         (request.neutralObservation !== null && !isBilingualText(request.neutralObservation)) ||
         (request.uncertainty !== null && !isBilingualText(request.uncertainty))
       ) {
@@ -1865,7 +2025,11 @@ export function validatePraisePresentationTransition(input: {
       Date.parse(submission.submittedAt) > Date.parse(pendingCheckIn.createdAt) ||
       Date.parse(pendingCheckIn.createdAt) > Date.parse(action.presentedAt) ||
       pendingCheckIn.praise === null ||
-      !isDescriptiveTaskPraise(pendingCheckIn.praise) ||
+      !isDescriptiveTaskPraise(
+        pendingCheckIn.praise,
+        pendingPlan.journey.task,
+        submission.completionMode,
+      ) ||
       !sameValue(pendingPlan.journey.checkIn, pendingPlan.checkIn) ||
       !sameValue(pendingPlan.praise, pendingCheckIn.praise)
     ) {
@@ -1974,12 +2138,14 @@ function validateRecognitionSessionTransitionIsolated(input: {
     return failure('Recognition session changed outside its approved journey transition');
   }
 
-  const existingRoutineProgress = before.routineProgressByTask?.[task.id] ?? null;
+  const routineKey = routineProgressKey(task);
+  const existingRoutineProgress = before.routineProgressByTask?.[routineKey] ?? null;
   const recurringFadeFirst =
     task.content.recognitionMode === 'fade_first' && task.content.recurrence === 'recurrent';
-  const effectiveRoutinePhase = recurringFadeFirst
-    ? (existingRoutineProgress?.futurePhase ?? task.content.routinePhase)
-    : task.content.routinePhase;
+  const effectiveRoutinePhase =
+    recurringFadeFirst && !task.occurrence
+      ? (existingRoutineProgress?.futurePhase ?? task.content.routinePhase)
+      : task.content.routinePhase;
   const confirmedAcquisitionCount =
     recurringFadeFirst && effectiveRoutinePhase === 'acquisition'
       ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0) + 1
@@ -2016,14 +2182,15 @@ function validateRecognitionSessionTransitionIsolated(input: {
   }
 
   const expectedPhaseReview = policy.data.phaseReview
-    ? { taskId: task.id, ...policy.data.phaseReview }
+    ? { taskId: routineKey, ...policy.data.phaseReview }
     : null;
   const child = before.children[task.targetChildId];
-  const landscape = before.landscapeProgress[task.content.landscapeId];
+  const personalLandscapes = landscapesForChild(before, task.targetChildId);
+  const landscape = personalLandscapes[task.content.landscapeId];
   let expectedSeedTransaction: RecognitionReceipt['seedTransaction'] = null;
   let expectedLandscapeGrowth: RecognitionReceipt['landscapeGrowth'] = null;
   let expectedChildren = before.children;
-  let expectedLandscapeProgress = before.landscapeProgress;
+  let expectedLandscapeProgress = personalLandscapes;
 
   if (policy.data.seedAmount !== null) {
     const growth = planLandscapeGrowth({ landscape, seedAmount: policy.data.seedAmount });
@@ -2045,7 +2212,7 @@ function validateRecognitionSessionTransitionIsolated(input: {
       [child.id]: { ...child, earnedSeeds: expectedSeedTransaction.balanceAfter },
     };
     expectedLandscapeProgress = {
-      ...before.landscapeProgress,
+      ...personalLandscapes,
       [growth.data.landscapeId]: {
         landscapeId: growth.data.landscapeId,
         cumulativeSeeds: growth.data.seedsAfter,
@@ -2074,6 +2241,10 @@ function validateRecognitionSessionTransitionIsolated(input: {
         ? (existingRoutineProgress?.confirmedAcquisitionCount ?? 0)
         : 0,
       routineCompletionCountAfter: recurringFadeFirst ? confirmedAcquisitionCount : 0,
+      ...(task.occurrence && task.id !== P0_RECYCLING_TEMPLATE.id ? { routineKey } : {}),
+      ...(task.occurrence
+        ? { recognitionSequence: Object.keys(before.recognitionLedger).length + 1 }
+        : {}),
     },
     seedTransaction: expectedSeedTransaction,
     landscapeGrowth: expectedLandscapeGrowth,
@@ -2088,7 +2259,7 @@ function validateRecognitionSessionTransitionIsolated(input: {
   let expectedRoutineProgress = before.routineProgressByTask;
   if (recurringFadeFirst) {
     const nextRoutineProgress: RoutineProgressState = {
-      taskId: task.id,
+      taskId: routineKey,
       confirmedAcquisitionCount,
       futurePhase:
         existingRoutineProgress?.futurePhase ??
@@ -2098,10 +2269,14 @@ function validateRecognitionSessionTransitionIsolated(input: {
     };
     expectedRoutineProgress = {
       ...(before.routineProgressByTask ?? {}),
-      [task.id]: nextRoutineProgress,
+      [routineKey]: nextRoutineProgress,
     };
   }
 
+  const profileLandscapes =
+    before.landscapeProgressByChild || task.occurrence
+      ? { ...initializeProfileLandscapes(before), [child.id]: expectedLandscapeProgress }
+      : undefined;
   const expectedAfter: PrototypeSession = {
     ...before,
     household: projection.data.canopyContribution
@@ -2115,7 +2290,10 @@ function validateRecognitionSessionTransitionIsolated(input: {
       : before.household,
     children: expectedChildren,
     journey,
-    landscapeProgress: expectedLandscapeProgress,
+    landscapeProgress: profileLandscapes
+      ? profileLandscapes[before.activeChildId]
+      : expectedLandscapeProgress,
+    ...(profileLandscapes ? { landscapeProgressByChild: profileLandscapes } : {}),
     circleGoal: projection.data.circleEvent
       ? applyCircle(before.circleGoal, projection.data.circleEvent)
       : before.circleGoal,

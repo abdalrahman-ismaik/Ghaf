@@ -3,10 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
 import {
+  botanical,
   colors,
   logicalRowDirection,
-  r001Radii,
-  r001Shadows,
   spacing,
   type LayoutDirection,
 } from '@/design/tokens';
@@ -69,13 +68,12 @@ export function ParentReviewTaskCard({
 const styles = StyleSheet.create({
   card: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   identityRow: {
     alignItems: 'center',
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.ghafEmerald,
   },
   identityCopy: {
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
   },
   rule: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.line,
   },
   metaRow: {
     alignItems: 'center',

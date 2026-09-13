@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button, Text } from '@/components/primitives';
-import { colors, r001Radii, spacing } from '@/design/tokens';
+import { botanical, colors, spacing } from '@/design/tokens';
 
 interface ParentHomeUtilitiesProps {
   cancelLabel: string;
@@ -90,11 +90,11 @@ export function ParentHomeUtilities({
 const styles = StyleSheet.create({
   panel: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
   },
   heading: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   confirmation: {
     gap: spacing.sm,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     backgroundColor: colors.errorContainer,
     padding: spacing.md,

@@ -2,14 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 export interface ChildTaskFollowUpContextProps {
@@ -59,7 +52,7 @@ export function ChildTaskFollowUpContext({
       <View style={styles.supportSummary}>
         <View style={[styles.statusRow, { flexDirection: logicalRowDirection(direction) }]}>
           <View style={styles.supportIcon}>
-            <GhafIcon color={colors.ghafEmerald} name="help" size={26} />
+            <GhafIcon color={botanical.colors.forest} name="help" size={26} />
           </View>
           <View style={styles.statusPill}>
             <Text brand color="primary" direction={direction} variant="label">
@@ -106,7 +99,7 @@ export function ChildTaskFollowUpContext({
                       key={`${index}-${fact}`}
                       style={[styles.factRow, { flexDirection: logicalRowDirection(direction) }]}
                     >
-                      <GhafIcon color={colors.ghafEmerald} name="check" size={20} />
+                      <GhafIcon color={botanical.colors.forest} name="check" size={20} />
                       <Text
                         brand
                         color="deepForest"
@@ -128,7 +121,7 @@ export function ChildTaskFollowUpContext({
       <View style={styles.freshStepsCard}>
         <View style={[styles.freshStepsMain, { flexDirection: logicalRowDirection(direction) }]}>
           <View style={styles.freshStepsIcon}>
-            <GhafIcon color={colors.ghafEmerald} name="check" size={26} />
+            <GhafIcon color={botanical.colors.forest} name="check" size={26} />
           </View>
           <View style={styles.freshStepsCopy}>
             <Text brand color="deepForest" direction={direction} variant="bodyLarge">
@@ -162,7 +155,7 @@ function SectionHeading({
   return (
     <View style={[styles.sectionHeading, { flexDirection: logicalRowDirection(direction) }]}>
       <View style={styles.sectionIcon}>
-        <GhafIcon color={colors.ghafEmerald} name={icon} size={22} />
+        <GhafIcon color={botanical.colors.forest} name={icon} size={22} />
       </View>
       <Text brand color="deepForest" direction={direction} style={styles.grow} variant="label">
         {label}
@@ -201,11 +194,11 @@ const styles = StyleSheet.create({
   supportSummary: {
     minWidth: 0,
     gap: spacing.sm,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.secondaryFixedDim,
-    backgroundColor: colors.secondaryTint,
+    borderColor: botanical.colors.sageStrong,
+    backgroundColor: botanical.colors.water,
     padding: spacing.lg,
   },
   statusRow: {
@@ -220,26 +213,25 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.paper,
   },
   statusPill: {
     minWidth: 0,
     flexShrink: 1,
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.secondaryContainer,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.water,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
   },
   parentNoteCard: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   sectionHeading: {
     minWidth: 0,
@@ -250,26 +242,26 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.xs,
   },
   evidenceCard: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
   },
   evidenceBody: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.md,
   },
   evidenceField: {
@@ -292,11 +284,11 @@ const styles = StyleSheet.create({
   freshStepsCard: {
     minWidth: 0,
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.primaryFixedDim,
-    backgroundColor: colors.primaryFixedTint,
+    borderColor: botanical.colors.sageStrong,
+    backgroundColor: botanical.colors.sage,
     padding: spacing.lg,
   },
   freshStepsMain: {
@@ -310,21 +302,21 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.paper,
   },
   noLoss: {
     minWidth: 0,
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
-    backgroundColor: colors.solarAmberTint,
+    backgroundColor: botanical.colors.amberWash,
     padding: spacing.sm,
   },
   rule: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.surfaceContainerHigh,
+    backgroundColor: botanical.colors.line,
   },
   grow: {
     flex: 1,

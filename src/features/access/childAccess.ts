@@ -8,6 +8,7 @@ import type {
 import { SYNTHETIC_CHILD_CREDENTIAL_FIXTURES } from '../../models/access';
 import type { DomainErrorCode, SyntheticChildId } from '../../models/familyGrowth';
 import type { ServiceResult, SyntheticAccessService } from '../../services/interfaces';
+import { runDemoEntryTransaction } from './demoEntryTransaction';
 import type { ParentOnboardingController } from './parentOnboarding';
 
 export type ChildCredentialKind = 'pin' | 'picture_sequence';
@@ -67,6 +68,39 @@ export class ChildAccessController {
     private readonly access: SyntheticAccessService,
     private readonly parent: ParentOnboardingController,
   ) {}
+
+  // Compose inside access and Parent transactions; callbacks must not schedule asynchronous work.
+  withDemoEntryTransaction<T>(operation: () => ServiceResult<T>): ServiceResult<T> {
+    return runDemoEntryTransaction(
+      this,
+      () => {
+        const snapshot = {
+          status: this.status,
+          selectedChildId: this.selectedChildId,
+          pairingRequest: clonePairing(this.pairingRequest),
+          session: this.session
+            ? {
+                ...this.session,
+                principal: { ...this.session.principal },
+                capabilities: [...this.session.capabilities],
+              }
+            : null,
+          devices: new Map([...this.devices].map(([key, device]) => [key, { ...device }])),
+          sequence: this.sequence,
+        };
+        return () => {
+          this.status = snapshot.status;
+          this.selectedChildId = snapshot.selectedChildId;
+          this.pairingRequest = snapshot.pairingRequest;
+          this.session = snapshot.session;
+          this.devices.clear();
+          snapshot.devices.forEach((device, key) => this.devices.set(key, device));
+          this.sequence = snapshot.sequence;
+        };
+      },
+      operation,
+    );
+  }
 
   getView(): ChildAccessView {
     const fixture = this.selectedChildId

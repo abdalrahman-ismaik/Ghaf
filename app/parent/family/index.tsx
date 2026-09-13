@@ -1,3 +1,4 @@
+import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { View } from 'react-native';
@@ -5,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ParentHomeHeader, ParentHomeNavigation, R002aScreen } from '@/components/r002a';
 import { R003ActionRow, R003Hero, R003Progress, R003Section, R003Status } from '@/components/r003';
+import { FamilyConnectionPlan } from '@/components/family/FamilyConnectionPlan';
 import { Text } from '@/components/primitives';
 import { r002bFeatureFlags } from '@/config/r002bFeatureFlags';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
@@ -30,6 +32,7 @@ export default function ParentFamilyScreen() {
   const children = usePrototypeStore((state) => state.children);
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const familyReward = usePrototypeStore((state) => state.familyReward);
+  const getFamilyConnectionPlan = usePrototypeStore((state) => state.getFamilyConnectionPlan);
   const getFamilyReward = usePrototypeStore((state) => state.getFamilyReward);
   const setActiveChild = usePrototypeStore((state) => state.setActiveChild);
   const [transitionError, setTransitionError] = useState<string | null>(null);
@@ -39,6 +42,10 @@ export default function ParentFamilyScreen() {
     void familyReward;
     return getFamilyReward();
   }, [familyReward, getFamilyReward]);
+  const familyConnections = useMemo(() => {
+    void localFamily;
+    return getFamilyConnectionPlan();
+  }, [getFamilyConnectionPlan, localFamily]);
   const formatter = useMemo(
     () => new Intl.NumberFormat(locale === 'ar' ? 'ar-AE' : 'en-AE', { useGrouping: false }),
     [locale],
@@ -167,6 +174,15 @@ export default function ParentFamilyScreen() {
         language={locale}
         title={t('r003.family.title')}
       />
+
+      <MessagingEntry role="parent" />
+      {familyConnections.ok && familyConnections.data.entries.length > 0 ? (
+        <FamilyConnectionPlan
+          direction={direction}
+          language={locale}
+          plan={familyConnections.data}
+        />
+      ) : null}
 
       <R003Section title={t('r003.family.childrenTitle')}>
         {localFamily.configuredChildIds.map((childId) => {

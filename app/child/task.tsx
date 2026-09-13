@@ -1,3 +1,6 @@
+import { CatalogChildTask } from '@/components/catalog/CatalogChildTask';
+import { CompanionPortrait } from '@/components/companion/CompanionPortrait';
+import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
@@ -26,14 +29,7 @@ import {
   R002aScreen,
   type ChildTaskCheckpoint,
 } from '@/components/r002a';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { ChildVoiceCommand } from '@/features/assistants/childVoiceController';
 import { resolveConfiguredChildAgeBand } from '@/features/local-family';
 import { P0_RECYCLING_TEMPLATE, TASK_CATEGORIES } from '@/features/tasks/demoContent';
@@ -72,6 +68,19 @@ function coachLinesForIntent(
 }
 
 export default function ChildTaskScreen() {
+  const journey = usePrototypeStore((state) => state.journey);
+  if (!journey) return null;
+  return journey?.task.content.catalogExecution ? (
+    <CatalogChildTask
+      key={`${journey.task.id}:${journey.submission?.attempt ?? 0}`}
+      journey={journey}
+    />
+  ) : (
+    <OriginalChildTaskScreen />
+  );
+}
+
+function OriginalChildTaskScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
@@ -157,7 +166,12 @@ export default function ChildTaskScreen() {
   }, [canEnterChildExperience, hasTaskPrerequisite, role, router]);
 
   useEffect(() => {
-    if (role === 'child' && journey?.lifecycle === 'in_progress') {
+    if (
+      role === 'child' &&
+      journey?.lifecycle === 'in_progress' &&
+      journey.task.id === P0_RECYCLING_TEMPLATE.id &&
+      journey.task.version === 1
+    ) {
       prepareChildVoice();
     }
   }, [journey?.lifecycle, journey?.task.id, journey?.task.version, prepareChildVoice, role]);
@@ -222,7 +236,8 @@ export default function ChildTaskScreen() {
     ageAdaptedCoachResult?.aiDisclosure ??
     coach?.meta.disclosure.text ??
     serviceRegistry.childCoach.disclosure.text;
-  const preparedCoachAvailable = journey.task.version === 1;
+  const preparedCoachAvailable =
+    journey.task.version === 1 && journey.task.id === P0_RECYCLING_TEMPLATE.id;
   const taskCheckpoints: readonly ChildTaskCheckpoint[] = preparedCoachAvailable
     ? [
         {
@@ -352,6 +367,11 @@ export default function ChildTaskScreen() {
           statusLabel={t('childTask.statusReady')}
           title={childFacingTitle}
         />
+        {preparedCoachAvailable ? (
+          <Text brand direction={direction} testID="child-approved-action">
+            {localize(content.positiveAction, locale)}
+          </Text>
+        ) : null}
         <ChildTaskPlanCard
           direction={direction}
           steps={taskCheckpoints}
@@ -459,6 +479,11 @@ export default function ChildTaskScreen() {
           title={childFacingTitle}
           variant="active"
         />
+        {preparedCoachAvailable ? (
+          <Text brand direction={direction} testID="child-approved-action">
+            {localize(content.positiveAction, locale)}
+          </Text>
+        ) : null}
 
         {priorSubmission ? (
           <ChildTaskFollowUpContext
@@ -501,7 +526,7 @@ export default function ChildTaskScreen() {
             style={[styles.recoveryNotice, { flexDirection: logicalRowDirection(direction) }]}
             testID="child-task-interrupted-recovery"
           >
-            <GhafIcon color={colors.mangroveTeal} name="info" size={20} />
+            <GhafIcon color={botanical.colors.forestRaised} name="info" size={20} />
             <Text
               brand
               color="deepForest"
@@ -554,7 +579,7 @@ export default function ChildTaskScreen() {
         <View style={styles.supportEntry}>
           <View style={[styles.supportHeading, { flexDirection: logicalRowDirection(direction) }]}>
             <View style={styles.supportIcon}>
-              <GhafIcon color={colors.ghafEmerald} name="help" size={25} />
+              <GhafIcon color={botanical.colors.forest} name="help" size={25} />
             </View>
             <View style={styles.grow}>
               <Text brand color="deepForest" direction={direction} variant="heading">
@@ -613,6 +638,7 @@ export default function ChildTaskScreen() {
               />
             ) : (
               <View style={styles.coach} testID="prepared-child-coach">
+                <CompanionPortrait />
                 <AssistantIdentity
                   description={t('childTask.coachPreparedPurpose')}
                   direction={direction}
@@ -630,6 +656,7 @@ export default function ChildTaskScreen() {
                     <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
                       {t('assistant.noChat')}
                     </Text>
+                    <MessagingEntry role="child" helperDraft />
                     <Text
                       brand
                       color="deepForest"
@@ -902,27 +929,26 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.solarAmberTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.amberWash,
     padding: spacing.sm,
   },
   recoveryNotice: {
     minHeight: layout.touchTarget,
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.mangroveTealTint,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.water,
     padding: spacing.sm,
   },
   supportEntry: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   supportHeading: {
     alignItems: 'flex-start',
@@ -934,8 +960,8 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.primaryFixedTint,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.sage,
   },
   supportTools: {
     gap: spacing.xl,
@@ -955,16 +981,16 @@ const styles = StyleSheet.create({
   },
   coachResult: {
     gap: spacing.md,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    backgroundColor: colors.secondaryContainer,
+    backgroundColor: botanical.colors.water,
     padding: spacing.md,
   },
   coachPolicy: {
     gap: spacing.xxs,
-    borderRadius: r001Radii.md,
+    borderRadius: botanical.radius.small,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.sm,
   },
   mediaSection: {
@@ -974,8 +1000,8 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     alignItems: 'flex-start',
     gap: spacing.xs,
-    borderRadius: r001Radii.md,
-    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: botanical.radius.small,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.sm,
   },
 });

@@ -9,6 +9,7 @@ export * from './ParentLifecycleCard';
 export * from './ParentReviewTaskCard';
 export * from './ParentSupportRequestSheet';
 export * from './ParentTasksView';
+export * from './ParentTaskWorkspace';
 export * from './TaskBuilderFooter';
 export * from './TaskCreatedSuccessSheet';
 export * from './TaskStepIndicator';

@@ -1,3 +1,5 @@
+export { GhafHeaderTitle } from './GhafHeaderTitle';
+export type { GhafHeaderTitleProps } from './GhafHeaderTitle';
 export { GhafMark, ghafMarkSizes } from './GhafMark';
 export type {
   GhafMarkAccessibility,
@@ -5,3 +7,4 @@ export type {
   GhafMarkSize,
   GhafMarkVariant,
 } from './GhafMark';
+export { GhafRasterLogo, officialGhafRasterLogoSource } from './GhafRasterLogo';

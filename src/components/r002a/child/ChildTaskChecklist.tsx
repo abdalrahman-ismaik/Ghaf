@@ -1,16 +1,9 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import {
-  colors,
-  layout,
-  logicalRowDirection,
-  opacity,
-  r001Radii,
-  r001Shadows,
-  spacing,
-} from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 export interface ChildTaskCheckpoint {
@@ -92,7 +85,7 @@ export function ChildTaskChecklist({
             >
               <View style={[styles.check, completed ? styles.checkCompleted : null]}>
                 {completed ? (
-                  <GhafIcon color={colors.ghafEmerald} name="check-filled" size={30} />
+                  <GhafIcon color={botanical.colors.forest} name="check-filled" size={30} />
                 ) : null}
               </View>
               <View style={styles.copy}>
@@ -126,17 +119,12 @@ export function ChildTaskChecklist({
 const styles = StyleSheet.create({
   card: {
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
-    padding: spacing.lg,
-    ...r001Shadows.soft,
+    paddingVertical: botanical.space.small,
   },
   heading: {
     alignItems: 'flex-end',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     gap: spacing.sm,
   },
   grow: {
@@ -144,15 +132,15 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   progressTrack: {
-    height: 8,
+    height: 6,
     overflow: 'hidden',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.surfaceContainerHighest,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.line,
   },
   progressFill: {
     height: '100%',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmerald,
+    borderRadius: botanical.radius.pill,
+    backgroundColor: botanical.colors.forest,
   },
   fillRtl: {
     alignSelf: 'flex-end',
@@ -167,18 +155,18 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget + spacing.xl,
     alignItems: 'flex-start',
     gap: spacing.md,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.transparent,
-    backgroundColor: colors.surfaceContainerLow,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
   rowRtl: { flexDirection: 'row-reverse' },
   rowLtr: { flexDirection: 'row' },
   stepCompleted: {
-    borderColor: colors.primaryFixedDim,
-    backgroundColor: colors.primaryFixedTint,
+    borderColor: botanical.colors.sageStrong,
+    backgroundColor: botanical.colors.sage,
   },
   check: {
     width: 38,
@@ -186,13 +174,13 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.small,
     borderWidth: 2,
-    borderColor: colors.outlineVariant,
-    backgroundColor: colors.surfaceContainerLowest,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
   },
   checkCompleted: {
-    borderColor: colors.ghafEmerald,
+    borderColor: botanical.colors.forest,
   },
   copy: {
     flex: 1,
@@ -200,11 +188,9 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   completedText: {
-    textDecorationLine: 'line-through',
-    opacity: 0.72,
+    opacity: 1,
   },
   pressed: {
     opacity: opacity.pressed,
-    transform: [{ scale: 0.99 }],
   },
 });

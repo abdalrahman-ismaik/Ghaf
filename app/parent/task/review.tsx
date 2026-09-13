@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter, type Href } from 'expo-router';
+import { useNavigationContainerRef, useRouter, type Href } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,28 +13,29 @@ import {
   TaskCreatedSuccessSheet,
   TaskStepIndicator,
 } from '@/components/r002a';
+import { entryMode } from '@/config/demoEntry';
 import {
+  botanical,
   colors,
   layout,
   logicalRowDirection,
-  r001Radii,
-  r001Shadows,
   spacing,
   type LayoutDirection,
 } from '@/design/tokens';
 import { bilingualResource, localize } from '@/i18n';
 import type { LocalizedText, RecognitionMode, RoutinePhase } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { prepareEntryReset } from '@/utils/navigation';
 
 function BilingualField({ label, value }: { label: string; value: LocalizedText }) {
   const { t } = useTranslation();
   return (
     <View style={styles.field}>
-      <Text brand color="onSurfaceVariant" variant="caption">
+      <Text accessibilityRole="header" brand color="deepForest" variant="label">
         {label}
       </Text>
       <View style={styles.languageBlock}>
-        <Text brand color="primary" direction="rtl" language="ar" variant="label">
+        <Text brand color="onSurfaceVariant" direction="rtl" language="ar" variant="caption">
           {t('language.arabic')}
         </Text>
         <Text brand direction="rtl" language="ar">
@@ -42,7 +43,7 @@ function BilingualField({ label, value }: { label: string; value: LocalizedText 
         </Text>
       </View>
       <View style={styles.languageBlock}>
-        <Text brand color="primary" direction="ltr" language="en" variant="label">
+        <Text brand color="onSurfaceVariant" direction="ltr" language="en" variant="caption">
           {t('language.english')}
         </Text>
         <Text brand direction="ltr" language="en">
@@ -149,6 +150,7 @@ function LanguageTerms({
 
 export default function ParentTaskReviewScreen() {
   const router = useRouter();
+  const navigation = useNavigationContainerRef();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
@@ -255,9 +257,18 @@ export default function ParentTaskReviewScreen() {
 
   const continueToChild = () => {
     setError(null);
+    const resetNavigation = entryMode === 'demo' ? prepareEntryReset(navigation) : null;
+    if (entryMode === 'demo' && !resetNavigation) {
+      setError(t('errors.safeRetry'));
+      return;
+    }
     const result = signOutExperience();
     if (!result.ok) {
       setError(t('errors.safeRetry'));
+      return;
+    }
+    if (resetNavigation) {
+      resetNavigation();
       return;
     }
     router.dismissAll();
@@ -310,7 +321,7 @@ export default function ParentTaskReviewScreen() {
           <Text brand color="deepForest" variant="screenTitle">
             {t('r002aTasks.reviewHeading')}
           </Text>
-          <Text brand color="onSurfaceVariant" variant="bodyLarge">
+          <Text brand color="onSurfaceVariant">
             {t('r002aTasks.reviewBody')}
           </Text>
         </View>
@@ -333,23 +344,31 @@ export default function ParentTaskReviewScreen() {
                 locale,
               )}
             </Text>
+            <Text brand color="tertiary" direction={direction} tabular variant="label">
+              {content.displayedSeedAward
+                ? t('childHome.awardAfterConfirmation', { count: content.displayedSeedAward })
+                : t('taskReview.noSeedRecognition')}
+            </Text>
           </View>
         </View>
 
         <View style={styles.record}>
-          <Text brand color="primary" variant="heading">
+          <Text accessibilityRole="header" brand color="primary" variant="heading">
             {localize(content.title, locale)}
           </Text>
           <BilingualField label={t('taskReview.action')} value={content.positiveAction} />
-          <BilingualField label={t('taskReview.definition')} value={content.definitionOfDone} />
-          <BilingualField label={t('taskReview.why')} value={content.whyItMatters} />
-          <BilingualField label={t('taskReview.effort')} value={content.estimatedEffort} />
           <BilingualField label={t('taskReview.help')} value={content.permittedHelp} />
           <BilingualField label={t('taskReview.supervision')} value={content.supervision} />
+          <BilingualField label={t('taskReview.definition')} value={content.definitionOfDone} />
         </View>
 
         <View style={styles.panel}>
           <SafetyBoundary bilingual safety={content.safety} testID="task-safety-boundary" />
+        </View>
+
+        <View style={styles.record}>
+          <BilingualField label={t('taskReview.effort')} value={content.estimatedEffort} />
+          <BilingualField label={t('taskReview.why')} value={content.whyItMatters} />
         </View>
 
         <BilingualTerms terms={policyTerms} title={t('taskReview.recognition')} />
@@ -468,7 +487,7 @@ function ReviewFooter({
 }
 
 const styles = StyleSheet.create({
-  screenContent: { paddingBottom: spacing.xxl },
+  screenContent: { gap: spacing.md, paddingBottom: spacing.xxl },
   heading: { gap: spacing.xs },
   prototypeIdentity: {
     minHeight: 28,
@@ -486,9 +505,9 @@ const styles = StyleSheet.create({
     minHeight: 88,
     alignItems: 'center',
     gap: spacing.md,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
+    backgroundColor: botanical.colors.canvas,
     padding: spacing.md,
   },
   childMark: {
@@ -496,23 +515,22 @@ const styles = StyleSheet.create({
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: r001Radii.pill,
+    borderRadius: botanical.radius.pill,
     backgroundColor: colors.ghafEmerald,
   },
   flexText: { flex: 1, minWidth: 0, gap: spacing.xxs },
   record: {
     gap: spacing.xl,
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    borderRadius: r001Radii.xl,
+    borderColor: botanical.colors.line,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   field: {
-    gap: spacing.sm,
-    borderBottomWidth: 1,
+    gap: spacing.xs,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.outlineVariant,
     paddingBottom: spacing.lg,
   },
@@ -520,12 +538,11 @@ const styles = StyleSheet.create({
   termsRecord: {
     gap: spacing.lg,
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    borderRadius: r001Radii.xl,
+    borderColor: botanical.colors.line,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   termsLanguage: { gap: spacing.xs },
   termRow: {
@@ -542,15 +559,14 @@ const styles = StyleSheet.create({
   metadata: {
     gap: spacing.xl,
     borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    borderRadius: r001Radii.xl,
+    borderColor: botanical.colors.line,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.lg,
-    ...r001Shadows.soft,
   },
   panel: {
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     overflow: 'hidden',
   },
@@ -558,18 +574,17 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     borderWidth: 1,
     borderColor: colors.solarAmberBorder,
-    borderRadius: r001Radii.lg,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     backgroundColor: colors.solarAmberTint,
     padding: spacing.md,
   },
   footer: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.surfaceContainerHigh,
+    borderTopColor: botanical.colors.line,
     backgroundColor: colors.r001Surface,
     paddingTop: spacing.md,
     paddingHorizontal: layout.screenPadding,
-    ...r001Shadows.sheet,
   },
   footerContent: {
     width: '100%',

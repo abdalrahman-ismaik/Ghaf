@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
-import { colors, logicalRowDirection, opacity, r001Radii, spacing } from '@/design/tokens';
+import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { SyntheticChildId, TextDirection } from '@/models/familyGrowth';
 
 export interface ParentChildSummaryItem {
@@ -34,7 +35,13 @@ export function ParentChildrenSection({
 }: ParentChildrenSectionProps) {
   return (
     <View style={styles.section}>
-      <Text brand color="deepForest" variant="screenTitle">
+      <Text
+        accessibilityRole="header"
+        brand
+        color="deepForest"
+        direction={direction}
+        variant="heading"
+      >
         {title}
       </Text>
 
@@ -56,30 +63,44 @@ export function ParentChildrenSection({
           >
             <View style={[styles.avatar, item.selected ? styles.selectedAvatar : null]}>
               <GhafIcon
-                color={item.selected ? colors.ghafEmerald : colors.mangroveTeal}
-                name="child"
+                color={item.selected ? botanical.colors.onForest : botanical.colors.forest}
+                name={item.id === 'child_salem' ? 'ghaf-tree' : 'flower'}
                 size={28}
               />
             </View>
             <View style={styles.content}>
               <View style={[styles.nameRow, { flexDirection: logicalRowDirection(direction) }]}>
-                <Text brand color="onSurface" style={styles.nameLabel} variant="bodyLarge">
+                <Text brand direction={direction} style={styles.nameLabel} variant="heading">
                   {item.name}
                 </Text>
                 {item.selected ? (
-                  <View style={styles.selectedChip}>
-                    <Text brand color="primary" style={styles.selectedLabel} variant="caption">
+                  <View
+                    style={[styles.selectedChip, { flexDirection: logicalRowDirection(direction) }]}
+                  >
+                    <GhafIcon color={botanical.colors.forest} name="check-filled" size={18} />
+                    <Text
+                      brand
+                      direction={direction}
+                      style={styles.selectedLabel}
+                      variant="caption"
+                    >
                       {selectedLabel}
                     </Text>
                   </View>
                 ) : null}
               </View>
-              <Text brand color="onSurfaceVariant">
+              <Text brand color="onSurfaceVariant" direction={direction}>
                 {item.next}
               </Text>
               <View style={[styles.support, { flexDirection: logicalRowDirection(direction) }]}>
-                <GhafIcon color={colors.solarAmber} name="help" size={17} />
-                <Text brand color="onSurfaceVariant" style={styles.grow} variant="caption">
+                <GhafIcon color={botanical.colors.forestRaised} name="help" size={17} />
+                <Text
+                  brand
+                  color="onSurfaceVariant"
+                  direction={direction}
+                  style={styles.grow}
+                  variant="caption"
+                >
                   {item.support}
                 </Text>
               </View>
@@ -90,6 +111,7 @@ export function ParentChildrenSection({
 
       <Button
         brand
+        direction={direction}
         icon={<GhafIcon color={colors.ghafEmerald} name="plus" size={22} />}
         onPress={onCreateTask}
         testID="parent-create-task-button"
@@ -106,39 +128,35 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   rows: {
-    overflow: 'hidden',
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    borderColor: colors.surfaceContainerHigh,
-    backgroundColor: colors.surfaceContainerLowest,
+    gap: spacing.sm,
   },
   row: {
-    minHeight: 104,
-    alignItems: 'center',
-    gap: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHigh,
+    minHeight: layout.touchTarget,
+    alignItems: 'flex-start',
+    gap: spacing.sm,
+    borderRadius: botanical.radius.control,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: botanical.colors.line,
+    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
   selectedRow: {
-    backgroundColor: colors.ghafEmeraldSelection,
+    borderColor: botanical.colors.forestRaised,
+    backgroundColor: botanical.colors.sage,
   },
   avatar: {
-    width: 56,
-    height: 56,
+    width: layout.touchTarget,
+    height: layout.touchTarget,
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 28,
+    borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
-    borderWidth: 1.5,
-    borderColor: colors.surfaceContainerHighest,
-    backgroundColor: colors.surfaceContainer,
+    backgroundColor: botanical.colors.paper,
   },
   selectedAvatar: {
-    borderColor: colors.ghafEmerald,
-    backgroundColor: colors.surfaceContainerLowest,
+    backgroundColor: botanical.colors.forest,
   },
   content: {
     flex: 1,
@@ -155,19 +173,18 @@ const styles = StyleSheet.create({
   nameLabel: {
     minWidth: 0,
     flexShrink: 1,
+    color: botanical.colors.ink,
   },
   selectedChip: {
     minWidth: 0,
-    minHeight: 28,
     maxWidth: '100%',
     flexShrink: 1,
-    justifyContent: 'center',
-    borderRadius: r001Radii.pill,
-    backgroundColor: colors.ghafEmeraldTint,
-    paddingHorizontal: spacing.sm,
+    alignItems: 'center',
+    gap: spacing.xxs,
   },
   selectedLabel: {
     flexShrink: 1,
+    color: botanical.colors.forest,
   },
   support: {
     alignItems: 'flex-start',

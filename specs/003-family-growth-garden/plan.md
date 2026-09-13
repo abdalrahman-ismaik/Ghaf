@@ -32,6 +32,30 @@ Implementation and validation are tracked in Feature 004 T088–T091 and the
 maintainer audit. This approval adds no profile-editing feature, persistent field,
 provider call, media capture, dependency or release activation.
 
+## Catalog execution CE1 plan — 2026-09-13
+
+Implement the accepted [CE1 amendment](../013-parent-task-workspace/contracts/catalog-execution.md)
+through the existing typed services/store/routes: canonical24-task content, independent occurrences
+and attempts, per-Child landscape producer/verifier, and profile-scoped Parent/Child task lists.
+Keep legacy P0 compatibility and shared canopy; no new dependency, provider, automatic recurrence,
+Recovery014 storage or unrelated release flag. Exact owners/resources are on canonical board99.
+
+## Tamagui Botanical Redesign Plan — 2026-09-11
+
+Add one version-aligned Tamagui dependency and a minimal theme mapped from the existing token
+authority. Keep Expo Router, Zustand, forms, localization, icons, SVG and Reanimated. Do not add
+another UI kit or animation framework. Preserve the existing package-lock metadata edits.
+
+Root owns dependency/provider integration, shared primitives, botanical tokens, access shell,
+reusable R003 presentation, and integration checks. Independent workers own Parent and Child/
+Garden presentation respectively. Keep routes' current commands and state selectors unchanged.
+
+Sequence: document scope and ownership; establish Tamagui/provider/token contract; update shared
+controls and distinct Home/Today/Garden layouts; extend the same system across task, Family,
+League, settings and access surfaces; verify all paths and capture representative Arabic/English
+compact web views; record remaining native/human gates. New implementation is code-native and
+uses existing approved local artwork. No new media generation or remote assets are needed.
+
 ## R003 AI Services 1–3 Integration Addendum — 2026-09-07
 
 Preserve the current deterministic AI stack as the non-negotiable application default. Extract a

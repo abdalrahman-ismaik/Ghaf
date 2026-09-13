@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { Button, Text } from '@/components/primitives';
-import { colors, r001Radii, spacing } from '@/design/tokens';
+import { botanical, colors, spacing } from '@/design/tokens';
 
 interface AdjustmentOption {
   awardLabel: string;
@@ -113,7 +113,7 @@ function Option({ option }: { option: AdjustmentOption }) {
 const styles = StyleSheet.create({
   card: {
     gap: spacing.lg,
-    borderRadius: r001Radii.xl,
+    borderRadius: botanical.radius.surface,
     borderCurve: 'continuous',
     borderWidth: 1,
     borderColor: colors.secondary,

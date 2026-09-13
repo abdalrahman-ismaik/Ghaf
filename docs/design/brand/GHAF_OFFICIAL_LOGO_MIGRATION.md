@@ -1,5 +1,10 @@
 # Ghaf Official Logo Migration Record
 
+> **Historical record — superseded for current brand identity on 2026-09-13.** The user selected
+> **5A Refined Classic** and authorized replacement of the previous logo. Current assets and
+> validation are documented in the [5A migration record](5a-refined-classic/README.md). The original
+> pack, hashes and validation results below remain unchanged historical evidence.
+
 **STATUS: INTERNALLY AUTHORIZED BRAND MIGRATION — PUBLIC TRADEMARK/SIMILARITY REVIEW PENDING**
 
 **Implementation gate:** `R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED`
