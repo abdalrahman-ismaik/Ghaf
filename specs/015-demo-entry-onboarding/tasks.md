@@ -106,6 +106,8 @@ Exact restoration46e9b58: all4checksPASS,153files/2025tests. Browser original6AR
 ## September 13 — selected Parent account chooser
 
 - [x] T026 Record and commit the bounded local account chooser contract before behavior edits.
-- [ ] T027 Implement transactional local Parent entry and focused data/role/failure/handoff tests.
-- [ ] T028 Replace credential form with botanical account selection and Create family; AR/EN parity.
-- [ ] T029 Run proportional checks and one bounded browser pass; publish evidence, commit and release.
+- [x] T027 Implement transactional local Parent entry and focused data/role/failure/handoff tests.
+- [x] T028 Replace credential form with botanical account selection and Create family; AR/EN parity.
+- [x] T029 Run proportional checks and one bounded browser pass; publish evidence, commit and release.
+
+T026–T029: contract4f48a75, runtime65efe80; report docs/competition-readiness/workstreams/parent-account-chooser.md. Actual browser account selection passes in AR/EN; native/human acceptance remains NOT RUN.

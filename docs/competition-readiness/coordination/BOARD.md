@@ -3,6 +3,24 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 89 — Parent account chooser integrated and released
+
+Updated 2026-09-13T09:37:59.987262+00:00. Contract4f48a75; runtime65efe80. Parent Welcome-back
+now shows the stored local family or prepared Al Noor account, no credential field. One selection
+opens Parent Home without a second welcome dialog. Existing creation/replacement and temporary
+Child handoff remain available; Feature016 real authentication is unchanged.
+
+All exact source/test/contract/report grants in revision88 are RELEASED, including the added
+tests/platform/parent-access-portrait.test.tsx assertion. Helpers zero, no descendants or owned
+jobs/browser/Metro. User Metro62701/8082 preserved. No other status/narration source was staged.
+
+TypeScript/full formatting passed; full suite2093 passed with one stale credential-button assertion.
+That assertion and one new-test import-order warning were corrected: affected29 tests, subsequent
+49 access/handoff tests and final scoped lint/format passed. Browser ordinary AR390x844 and EN320x740:
+Parent button→account→home, zero inputs, Back/Create/keyboard entry passed. CSS1.6x text is explicitly
+a simulation. Early overlay captures are excluded; settled images are named in the report at
+../workstreams/parent-account-chooser.md. Native and named human review NOT RUN.
+
 ## Revision 88 — user-selected Parent account chooser
 
 Updated 2026-09-13T09:22:03.791275+00:00; lead M016-root continues on `d2694e6`.
@@ -31,6 +49,12 @@ new `src/features/access/localParentEntry.ts`, the `enterLocalParentAccount` int
 `src/state/usePrototypeStore.ts`, and `tests/access/local-parent-entry.test.ts`. Lead does not write
 these files while helper runs. Existing controller/factory public methods suffice; no controller
 edit granted. Helper runs no tests/build/browser; lead uses the serialized integrated check lane.
+
+Revision88 validation correction: initial full suite passes 2093 cases, fails only the stale
+`tests/platform/parent-access-portrait.test.tsx` expectation for the removed credential button.
+Lead additionally reserves ONLY that test's Parent sign-in action assertion; portrait/signup/code
+checks remain unchanged. New rendered test import order is corrected under its existing grant.
+All helper files released to lead, helpers zero. Native/other source/preview remain untouched.
 
 ## Revision 87 — M016 source handoff; allocations released
 
