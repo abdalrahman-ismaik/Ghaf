@@ -31,6 +31,8 @@ Context: `{role:'parent'|'child',personId,displayName,householdId,deviceId,ageBa
 Child: `{id,displayName,ageBand,threadId,active}`. Thread: `{id,childId,otherName,otherRole:'parent'|'child'}`.
 Message: `{id,threadId,senderId,body,sequence,createdAt,clientKey}`; sequence is positive safe integer.
 Device: `{id,personName,role,label,active,current}`. Void operations return `{ok:true}`.
+Safe RPC errors use `{code:<identifier>,message:<same identifier>}` with an appropriate4xx status.
+Enrollment returns this response rather than raising so failed-attempt counters commit.
 Errors include `not_authenticated`, `not_authorized`, `access_revoked`, `invalid_invite`,
 `rate_limited`, `invalid_message`, `idempotency_conflict`, `invalid_request` and `service_unavailable`.
 Client maps unexpected HTTP/shape failures safely; POST send timeout/malformed success/5xx is unknown,
