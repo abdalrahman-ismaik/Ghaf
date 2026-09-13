@@ -3,6 +3,39 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 81 — user-authorized real family messaging / M016
+
+Updated 2026-09-13T08:02:54.483690+00:00. New integration lead `M016-root` has direct user authority in this
+session to publish exact grants and implement the completed C proposal. This is an additive
+mission record, not takeover of STATUS-A/B/C/D. A235/B119/C completed messaging-plan release/D088
+and the previous audit are acknowledged. All sessions stay in canonical Ghaf; baseline29f9fe4.
+Existing uncommitted repository organization/package/docs work is preserved; that owner reports
+COMPLETE but its final reservation release is tied to commit. No index/package/TEAM write until
+that boundary is reconciled. No currently observed Metro/browser/build/test job; preserve tool servers.
+
+- Contract lead owns new `specs/016-real-family-messaging/**`, this revision/status additions,
+  `.specify/memory/constitution.md` bounded amendment, and new
+  `docs/competition-readiness/workstreams/m016-implementation.md`. Existing AGENTS managed block
+  and all other status writers remain untouched. Source implementation waits contract commit.
+- Prospective runtime seams, activated only after committed contract: new
+  `src/features/familyMessaging/**`, `src/components/familyMessaging/**`, `app/messages/**`,
+  `workers/ghaf-family-messaging/**`, `tests/messaging/**`; lead owns exact integration changes in
+  `src/services/index.ts`, `src/i18n/resources.ts`, `app/parent/family/index.tsx`,
+  `app/child/index.tsx`, `app/child/task.tsx`, `app/_layout.tsx` as needed. No store/task authority rewrite.
+- Companion seam: new `src/components/companion/**`, `assets/images/companion/**` and provenance;
+  adapt only original user-created portrait, no Flutter/build/cache import or AI/multi-turn expansion.
+- Dependencies: real identity provider / database selection, precise enrollment/retention contract,
+  secure native session-storage gap, private service setup and two physical installations. No paid
+  service, public deployment, push, main merge or calling activation authorized.
+- Acceptance: server-enforced household/participant/device permissions; stable durable ordered
+  plain text; idempotent retry/unknown outcome; no fake fallback; AR/EN controls; no task/Seed/Garden
+  sync; focused isolation/revocation tests, bounded browser evidence and explicit native gaps.
+- Allocation: M016 one helper maximum including descendants (none permitted), initially read-only
+  architecture/seam explorer; lead contract/references. At most one serialized test/build job and
+  one isolated browser lane after confirming port/process availability. No duplicate Metro.
+- Current state: CONTRACT IN PROGRESS, runtime NOT STARTED. Unique progress/evidence:
+  `/home/smyk/projects/Ghaf/output/competition-readiness/family-messaging-016-20260913/`.
+
 ## Revision 80 — narration v2 intake needs one replacement
 
 Updated 2026-09-13T07:08:47.446496+00:00; currentHEAD87033fd/B5Abrandpreserved. A fileinspection complete.
