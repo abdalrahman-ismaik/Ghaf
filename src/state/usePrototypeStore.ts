@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import { getPilotConfig } from '../features/pilot/config';
+
 import {
   createChildVoiceController,
   INITIAL_CHILD_VOICE_VIEW,
@@ -55,6 +57,7 @@ import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features
 import {
   createParentOnboardingController,
   normalizeParentIdentifier,
+  PARENT_VERIFICATION_CODE,
   type ParentOnboardingCompletionReceipt,
   type ParentOnboardingDraftPatch,
   type ParentOnboardingHandoff,
@@ -223,6 +226,8 @@ import type {
 } from '../models/sharedGrowth';
 import {
   serviceRegistry,
+  clearPilotSampleServiceHistory,
+  pilotSampleEnabled,
   type EphemeralMediaService,
   type LiveChildCoachTextService,
   type ParentGuideService,
@@ -254,6 +259,7 @@ export type ReturningUserWelcome =
 
 export interface BoundLiveVoiceCapture {
   readonly state: LiveVoiceCaptureState;
+  readonly pilotSampleGeneration?: number;
   readonly childId: SyntheticChildId;
   readonly assignmentId: string;
   readonly taskId: string;
@@ -485,6 +491,7 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly pilotSampleActive: boolean;
   readonly activeExperience: 'signed_out' | 'parent' | 'child';
   readonly childAccess: ChildAccessView;
   readonly deviceAccess: DeviceAccessView;
@@ -585,6 +592,8 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
   readonly resetPrototype: () => ServiceResult<Omit<ResetResult, 'session'>>;
+  readonly startPilotSample: () => Promise<ServiceResult<ParentOnboardingHandoff>>;
+  readonly clearPilotSample: () => ServiceResult<Omit<ResetResult, 'session'>>;
   readonly retryLocalFamilyLoad: () => ServiceResult<true>;
   readonly confirmCorruptLocalFamilyRecovery: (input: {
     readonly confirmed: boolean;
@@ -961,6 +970,7 @@ function boundLiveVoiceIsCurrent(
   const authority = validateLiveVoiceAuthority(state);
   return (
     authority.ok &&
+    (!pilotSampleEnabled || bound.pilotSampleGeneration === pilotSampleGeneration) &&
     state.liveVoiceCapture?.state.envelope.voiceSessionId === bound.state.envelope.voiceSessionId &&
     state.activeChildId === bound.childId &&
     authority.data.journey.assignment.id === bound.assignmentId &&
@@ -1385,11 +1395,13 @@ function validateGuideSuggestion(
 
 // Retain the confirmed corruption context only for this session's incomplete local recovery.
 let confirmedCorruptRecoveryPending: LocalFamilyView | null = null;
+let pilotSampleGeneration = 0;
 
 function resetClearedPrototype(
   set: (updater: (state: PrototypeStoreState) => Partial<PrototypeStoreState>) => void,
   get: () => PrototypeStoreState,
 ): ServiceResult<Omit<ResetResult, 'session'>> {
+  if (pilotSampleEnabled) pilotSampleGeneration += 1;
   const state = get();
   const reset = serviceRegistry.prototypeSession.resetPrototype();
   const nextGrowthJourney = createGrowthJourneyRuntime(
@@ -1414,6 +1426,7 @@ function resetClearedPrototype(
   releaseLiveVoiceCapture(state.liveVoiceCapture);
   set((state) => ({
     ...reset.session,
+    pilotSampleActive: false,
     activeExperience: 'signed_out',
     childAccess: childAccessController.reset(),
     deviceAccess: deviceAccessView(null),
@@ -1447,11 +1460,13 @@ function resetClearedPrototype(
     permissionProofSequence: 0,
   }));
   confirmedCorruptRecoveryPending = null;
+  if (pilotSampleEnabled) clearPilotSampleServiceHistory();
   return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
 }
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   ...initialPrototypeSession,
+  pilotSampleActive: false,
   locale: initialRememberedLocale,
   direction: getLocaleDirection(initialRememberedLocale),
   activeExperience: initialRememberedDeviceAccess.activeExperience,
@@ -2470,6 +2485,47 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!affinityReset.ok) return affinityReset;
     const familyReset = serviceRegistry.localFamily.clear();
     if (!familyReset.ok) return familyReset;
+    return resetClearedPrototype(set, get);
+  },
+
+  startPilotSample: async () => {
+    if (!pilotSampleEnabled || !getPilotConfig().valid) {
+      return failure('INVALID_TRANSITION', 'A configured real-account pilot is required');
+    }
+    const locale = get().locale;
+    const cleared = get().clearPilotSample();
+    if (!cleared.ok) return cleared;
+    const generation = pilotSampleGeneration;
+    const requested = get().requestParentVerification({
+      identifier: 'parent@example.com',
+      networkAvailable: false,
+    });
+    if (!requested.ok) return requested;
+    const verified = await get().verifyParentCode(PARENT_VERIFICATION_CODE);
+    if (generation !== pilotSampleGeneration) {
+      return failure('INVALID_TRANSITION', 'The sample launch was interrupted');
+    }
+    if (!verified.ok) return verified;
+    const configured = get().updateParentOnboardingDraft({
+      familyName: 'عائلة النور',
+      appLanguage: locale,
+    });
+    if (!configured.ok) return configured;
+    const completed = get().completeParentOnboarding();
+    if (!completed.ok) return completed;
+    const authorized = get().authorizeParentExperience();
+    if (authorized.ok) set({ pilotSampleActive: true });
+    return authorized;
+  },
+
+  clearPilotSample: () => {
+    if (!pilotSampleEnabled) {
+      return failure('INVALID_TRANSITION', 'Sample teardown is available only in the pilot');
+    }
+    const deviceAccessReset = serviceRegistry.deviceAccess.clear();
+    if (!deviceAccessReset.ok) return { ok: false, error: deviceAccessReset.error };
+    const localReset = serviceRegistry.localFamily.clear();
+    if (!localReset.ok) return { ok: false, error: localReset.error };
     return resetClearedPrototype(set, get);
   },
 
@@ -3495,6 +3551,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
   },
 
   requestChildCoach: async (input) => {
+    const generation = pilotSampleGeneration;
     const state = get();
     const guarded = validateActiveChildAssignment(state, true);
     if (!guarded.ok) return guarded;
@@ -3526,6 +3583,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const currentState = get();
     const currentAssignment = validateActiveChildAssignment(currentState, true);
     if (
+      generation !== pilotSampleGeneration ||
       !currentAssignment.ok ||
       currentState.activeChildId !== request.child.id ||
       currentAssignment.data.assignment.id !== request.assignmentId ||
@@ -3768,6 +3826,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     }
     const bound: BoundLiveVoiceCapture = {
       state: voiceState,
+      ...(pilotSampleEnabled ? { pilotSampleGeneration } : {}),
       childId: state.activeChildId,
       assignmentId: authority.data.journey.assignment.id,
       taskId: authority.data.journey.task.id,
