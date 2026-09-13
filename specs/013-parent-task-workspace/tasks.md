@@ -60,3 +60,16 @@ persists, and Parents can understand the household without weakening Child priva
   key. Browser console contained no errors.
 - Enlarged native text, reduced motion, Child-device manual traversal, physical Android, and named
   product/cultural/accessibility review: `NOT RUN`. T011 and release activation remain open.
+
+## CE1 — Full catalog execution
+
+- [x] T014 Commit expanded contract, content snapshot, plan and board99 grants.
+- [ ] T015 Implement occurrence/attempt identity, canonical definitions and fail-closed task services.
+- [ ] T016 Implement per-profile landscape producer/verifier and immutable accepted award/phase.
+- [ ] T017 Integrate store context, multiple tasks and profile-only projections with safe reset.
+- [ ] T018 Connect all24 Parent/Child workflows; task-specific help and zero-growth acknowledgement.
+- [ ] T019 Test all24×2 profiles and interleaving/retry/duplicate/authority/P0 compatibility.
+- [ ] T020 Run serialized static/regression and one bilingual browser batch; resolve actual defects.
+- [ ] T021 Commit validated slices, evidence/native-human gaps and exact releases.
+
+This is the user's full-task selection, not activation of the default-off alternative workspace.

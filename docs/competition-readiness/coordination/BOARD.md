@@ -3,6 +3,47 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 99 — C115/C116 accepted; complete24 catalog execution CE1
+
+Updated 2026-09-13T13:59:55.961534+00:00, baseline 4ec358fc561feacc6b3ec4956f8c1b0ef85c4384. A acknowledges C115/C116 and the user's repeated
+instruction to implement all24 future-only tasks. CE1 contracts/content +003/013 amendments are
+committed before runtime edits; source work begins on the committed candidate. No renewed user
+selection needed. Canonical P0+12,12recognition-only zero and12catalog awards4/6/8 preserved.
+Personal Child landscapes/separate shared canopy are part of the accepted authority prerequisite.
+
+A helper messaging_backend (one slot, no descendants) starts READ-ONLY reconnaissance, then after
+contract commit owns ONLY src/models/familyGrowth.ts, src/services/interfaces/index.ts,
+src/services/mock/index.ts, src/features/tasks/{assignmentInstances.ts (new),lifecycle.ts,
+validation.ts,recognitionSession.ts,recognitionProviderBoundary.ts} and new
+ tests/tasks/catalog-engine.test.ts. Domain/identity/producer/verifier tests source; no jobs,
+formatter, browser, commits, store, UI, content or localization writes by helper.
+
+Lead A owns src/features/tasks/demoContent.ts, new src/features/tasks/catalogDefinitions.ts,
+new tests/tasks/catalog-execution.test.ts, src/state/usePrototypeStore.ts, src/i18n/resources.ts;
+Parent components family-growth/ParentTaskComposer.tsx and ParentCheckIn.tsx;
+r002a/parent/{ParentTaskWorkspace,ParentTasksView,ParentReviewTaskCard}.tsx;
+Child components r002a/child/{ChildTodayTaskCard,ChildTaskPlanCard,ChildTaskChecklist,ChildTaskHero,
+ChildTaskActionFooter,ChildTaskFollowUpContext}.tsx; app/child/task.tsx, app/parent/index.tsx,
+app/parent/task/new.tsx, app/parent/check-in.tsx and app/garden.tsx.
+New focused UI components under src/components/catalog/ are lead-owned. Existing affected tests
+will be granted by exact path before edits. No shared token/brand/package/flag changes.
+
+BLOCK overlapping app/child/index.tsx, ChildTodayLandscape.tsx, app/parent/task/review.tsx until
+screen-clarity writer completes and explicitly releases. Its existing edits/browser PID225334
+are protected; A requests release notification through that workstream. Existing Metro62701/8082
+preserved. Lead can continue content/store/domain and nonoverlapping UI meanwhile.
+
+A owns CE1 new contract/content JSON + additive003/013spec/plan/tasks, new workstreams/catalog-execution.md,
+released C handoff snapshot, own BOARD and additive product/limitations/runbook summary. Evidence:
+output/competition-readiness/catalog-execution-20260913/. One allocated helper, no descendants;
+measured available1524MiB/swap1359MiB in use: NO extra helper or heavy job while current browser runs.
+A check slot maxWorkers1 waits active browser release; A browser follows checks, no second Metro.
+B/C/D source not assigned by this revision; C's completed handoff is consumed, not left waiting for
+an idle external producer. C UI help may be transferred later only by explicit exact-path grant.
+Acceptance: all24×2profile flow, distinct attempts/receipts, immutable awards, no sibling leak,
+zero-growth private tasks, existingLeague/Reward allowlists, real AR/EN current controls. Native and
+named content/human review remain NOT RUN without evidence. No deployment, package or release flag.
+
 ## Revision 98 — Slice 2 integrated; Garden product choice recorded
 
 Updated 2026-09-13T13:18:26.809618+00:00, runtime 08f04b3, shared redesign/ui-experiments.

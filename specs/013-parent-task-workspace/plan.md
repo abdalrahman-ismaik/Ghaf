@@ -1,5 +1,13 @@
 # Implementation Plan: Parent Task Workspace
 
+## CE1 execution plan — 2026-09-13
+
+Follow [catalog-execution.md](contracts/catalog-execution.md): commit scope/content first; build
+instance/attempt authority and independent recognition validation; integrate store projections;
+connect existing Parent/Child UI; verify all24×2profiles, zero/positive awards, retries and reset.
+Keep the alternate workspace flag off and reuse existing libraries. C115/C116 supply reviewed
+engineering content, with human review pending. Canonical board99 owns exact sequential grants.
+
 **Branch**: `013-parent-task-workspace` | **Date**: 2026-09-08 | **Spec**: [spec.md](spec.md)
 
 ## Summary

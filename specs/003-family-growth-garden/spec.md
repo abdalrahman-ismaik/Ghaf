@@ -1,5 +1,14 @@
 # Feature Specification: Family Growth Garden
 
+## Catalog execution CE1 — 2026-09-13
+
+The user selected full execution of the existing24 catalog tasks and personal Child landscapes
+with a separate shared family canopy. The accepted [CE1 contract](../013-parent-task-workspace/contracts/catalog-execution.md)
+supersedes sole-P0 execution statements only for those24 reviewed definitions, preserving the
+separate canonical+12 task and unrelated flags. Independent occurrence/attempt/receipt authority,
+Parent gates, recognition-only zero growth, per-profile landscapes and existing eligibility rules
+are mandatory. Human/native acceptance remains evidence-dependent.
+
 ## Tamagui Botanical Presentation Amendment — 2026-09-11
 
 The user authorizes a broad presentation redesign using Tamagui and the installed Reanimated

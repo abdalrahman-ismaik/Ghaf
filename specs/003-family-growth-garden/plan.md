@@ -1,5 +1,13 @@
 # Implementation Plan: Family Growth Garden
 
+## Catalog execution CE1 plan — 2026-09-13
+
+Implement the accepted [CE1 amendment](../013-parent-task-workspace/contracts/catalog-execution.md)
+through the existing typed services/store/routes: canonical24-task content, independent occurrences
+and attempts, per-Child landscape producer/verifier, and profile-scoped Parent/Child task lists.
+Keep legacy P0 compatibility and shared canopy; no new dependency, provider, automatic recurrence,
+Recovery014 storage or unrelated release flag. Exact owners/resources are on canonical board99.
+
 ## Tamagui Botanical Redesign Plan — 2026-09-11
 
 Add one version-aligned Tamagui dependency and a minimal theme mapped from the existing token

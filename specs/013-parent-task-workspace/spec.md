@@ -1,5 +1,15 @@
 # Feature Specification: Parent Task Workspace
 
+## Catalog execution amendment CE1 — 2026-09-13
+
+User selection authorizes completing all24 existing catalog tasks under
+[contracts/catalog-execution.md](contracts/catalog-execution.md). This explicitly supersedes FR009
+and preview-only assumptions for those definitions. Saved custom wording and unknown templates
+remain planning-only. FR014 continues to gate the alternate workspace presentation; execution
+works through the normal current surfaces without changing that flag. Parent approval, private
+Child lists, immutable accepted awards, separate occurrences and personal landscapes are required.
+Engineering implementation is authorized; named content/native acceptance is not claimed.
+
 **Feature Branch**: `013-parent-task-workspace`
 
 **Created**: 2026-09-08

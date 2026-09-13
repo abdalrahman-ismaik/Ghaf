@@ -1610,3 +1610,15 @@ No before/after-implementation extension hooks are configured. Interactive brows
 Android/TalkBack/Back/IME/process-death/font-scale, remaining responsive captures, content/rights,
 provider, and named-human reviews remain `BLOCKED / NOT RUN` as applicable. All R002b and optional
 AI defaults remain off. The repaired engineering boundary is ready for integration, not release.
+
+## Phase49: User-selected catalog execution CE1 — 2026-09-13
+
+- [x] T333 Commit explicit003/013 scope, content snapshot and exact ownership before source work.
+- [ ] T334 Add canonical24-task content and tested occurrence/attempt/domain identity.
+- [ ] T335 Integrate authoritative store collection, selection and personal landscape verification.
+- [ ] T336 Connect Parent/Child tasks, help/retry/recognition and safe reset without discarding work.
+- [ ] T337 Validate every24×2profile flow, privacy/eligibility/duplicate and P0 regressions.
+- [ ] T338 Complete bounded bilingual browser, proportional checks, local commits and evidence.
+
+[CE1 contract](../013-parent-task-workspace/contracts/catalog-execution.md). Android/human gates
+remain unpassed; no claimed real-task synchronization or automatic scheduling.
