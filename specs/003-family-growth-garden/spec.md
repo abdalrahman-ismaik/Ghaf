@@ -259,6 +259,10 @@ setup with an honest recoverable local-storage message and never creates partial
 - **FR-197**: Startup MUST restore a valid saved directory before access routing decisions, rebuild
   the existing immutable Parent completion receipt, project configured names/avatars into the
   prototype session, and never flash or enter first-family setup for a returning household.
+  The configured Child's age band MUST govern Coach input/output policy and live-voice
+  eligibility through a derived view; packaged fixtures and their stored synthetic ages MUST
+  remain unchanged. This age authority was explicitly approved on 2026-09-11 and also applies
+  after directory restoration. Existing Parent grants, notices and release flags remain required.
 - **FR-198**: Parent and Child selectors MUST expose only configured profile slots, and direct
   attempts to select an unconfigured Child MUST fail closed without changing the active profile.
 - **FR-199**: A completed synthetic Child pairing MUST persist only its allowlisted Child/device

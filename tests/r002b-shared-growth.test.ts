@@ -843,6 +843,61 @@ describe('R002b anonymous future-signal boundary', () => {
     expectFailureCode(recordSharedGrowthSignal({ state } as never), 'INVALID_INPUT');
   });
 
+  it.each([
+    ['pause_new_contributions', '2026-09-05T08:05:00.000Z'],
+    ['pause_new_contributions', '2026-09-05T08:10:00.000Z'],
+    ['end_participation', '2026-09-05T08:05:00.000Z'],
+    ['end_participation', '2026-09-05T08:10:00.000Z'],
+  ] as const)(
+    'rejects %s at %s when it would invalidate a recorded signal, then permits a valid retry',
+    (action, actedAt) => {
+      const recorded = recordSignal(createInitialState());
+      if (!recorded.ok) throw new Error(recorded.error.message);
+      const state = recorded.data.state;
+      const before = JSON.stringify(state);
+      const actionId = 'participation-history-boundary';
+      const proofId = 'reauth-history-boundary';
+
+      expectFailureCode(
+        applyAction(state, actionId, action, actedAt, proofId),
+        'INVALID_TRANSITION',
+      );
+      expect(JSON.stringify(state)).toBe(before);
+      expect(state.preference.actionHistory).toEqual([]);
+
+      const retried = applyAction(state, actionId, action, '2026-09-05T08:20:00.000Z', proofId);
+      if (!retried.ok) throw new Error(retried.error.message);
+      expect(retried.data.state.signalHistory).toEqual(state.signalHistory);
+      expect(retried.data.state.preference.actionHistory).toHaveLength(1);
+
+      const continued = applyAction(
+        retried.data.state,
+        'participation-history-continue',
+        'continue',
+        '2026-09-05T08:45:00.000Z',
+        'reauth-history-continue',
+        action === 'end_participation' ? freshConsent(actionId) : null,
+      );
+      if (!continued.ok) throw new Error(continued.error.message);
+      expect(continued.data.state.signalHistory).toEqual(state.signalHistory);
+      expect(continued.data.state.preference.status).toBe('continued');
+      expect(continued.data.state.preference.consentReceipts).toHaveLength(
+        action === 'end_participation' ? 2 : 1,
+      );
+
+      const nextSignal = recordSignal(
+        continued.data.state,
+        acceptedSignal({
+          id: 'anonymous-signal-after-valid-retry',
+          observedAt: '2026-09-05T08:46:00.000Z',
+          consentReceiptId: continued.data.state.preference.activeConsentReceiptId,
+        }),
+      );
+      expect(nextSignal).toMatchObject({ ok: true, data: { disposition: 'recorded' } });
+      expect(JSON.stringify(state)).toBe(before);
+    },
+  );
+
   it('preserves Shared Growth history and every private authority snapshot byte-for-byte', () => {
     const privateAuthorities = Object.freeze({
       task: Object.freeze({ status: 'submitted', taskId: 'task_recycling_p0_v1' }),

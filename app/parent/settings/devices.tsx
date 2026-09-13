@@ -14,6 +14,7 @@ export default function ParentDevicesScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const children = usePrototypeStore((state) => state.children);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const approve = usePrototypeStore((state) => state.approveChildPairing);
   const handoff = usePrototypeStore((state) => state.handoffApprovedChildPairing);
   const revoke = usePrototypeStore((state) => state.revokeChildDevice);
@@ -59,6 +60,9 @@ export default function ParentDevicesScreen() {
 
   const pendingChildId = childAccess.pairingRequest?.childId;
   const pendingChild = pendingChildId ? children[pendingChildId] : null;
+  const profileName = (childId: 'child_salem' | 'child_alya') =>
+    localFamily.record?.children.find((profile) => profile.id === childId)?.nickname ??
+    localize(children[childId].displayName, locale);
 
   return (
     <R002aScreen
@@ -83,7 +87,7 @@ export default function ParentDevicesScreen() {
         <R003Section title={t('r003.devices.pendingTitle')} testID="pending-pairing-request">
           <R003ActionRow
             body={t('r003.devices.pendingFor', {
-              name: localize(pendingChild.displayName, locale),
+              name: profileName(pendingChild.id),
             })}
             direction={direction}
             icon="person"
@@ -102,7 +106,7 @@ export default function ParentDevicesScreen() {
             icon="check-filled"
             language={locale}
             message={t('r003.devices.approvedFor', {
-              name: localize(pendingChild.displayName, locale),
+              name: profileName(pendingChild.id),
             })}
             tone="success"
           />
@@ -137,7 +141,7 @@ export default function ParentDevicesScreen() {
       <R003Section>
         {childAccess.pairedDevices.length > 0 ? (
           childAccess.pairedDevices.map((device) => {
-            const name = localize(children[device.childId].displayName, locale);
+            const name = profileName(device.childId);
             return (
               <R003ActionRow
                 body={t('r003.devices.pairedFor', { name })}

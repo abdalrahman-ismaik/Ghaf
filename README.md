@@ -11,9 +11,10 @@ living garden.
 
 ## Current status
 
-Feature 003 Revision 3 is the active product direction. The current implementation branch is
-`integration/r3-r002b-implementation-20260905`, based on the clean R002a head `0501cf3`. The six
-divergent local commits remain unapplied provenance.
+Feature 003 Revision 3 is the active product direction, with implementation integrated on `main`.
+Feature 004 adds independently gated bounded AI text/voice adapters; Feature 005 adds local
+remembered-device access. The clean R002a head `0501cf3` remains the frozen behavioral baseline,
+and the six divergent local commits remain unapplied provenance.
 
 R001 and R002a remain frozen regression baselines and the fallback when an R002b flag is off. The
 R002b Growth Journey, badges, learning, Parent Progress, additive Shared Growth, private League, and
@@ -28,14 +29,14 @@ R002b release activation remains blocked until the applicable native, bilingual,
 content, provenance, privacy, and named-human gates pass. Code-native candidate screens and passing
 local tests do not activate release flags.
 
-| Area                 | Current evidence                                                                                                                                                                   |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product              | R001/R002a are frozen fallbacks; all 12 indexed R002b code-native surfaces exist behind default-off flags                                                                          |
-| Automated checks     | TypeScript, lint, formatting, Expo configuration/export, and 1,002/1,002 tests pass                                                                                                |
-| Web preview          | Eight nonblocked R002b surfaces have Arabic/English responsive evidence from 320 to 768 pixels; private League is implemented with partial responsive evidence                     |
-| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks still require a connected configured device                      |
-| Remaining work       | Approval Reveal lacks authoritative League/Challenge/Family Reward receipts; Learning remains locked at the truthful 120-Seed fixture; final native and named-human reviews remain |
-| Production readiness | **No** — the MVP remains local, synthetic, feature-flagged, and release-activation blocked                                                                                         |
+| Area                 | Current evidence                                                                                                                                                                    |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product              | R001/R002a are frozen fallbacks; all 12 indexed R002b code-native surfaces exist behind default-off flags                                                                           |
+| Automated checks     | Exact commands and current results are recorded in the [maintainer audit](docs/audits/2026-09-11-maintainer-audit.md); older counts belong to their dated checkpoints               |
+| Web preview          | Eight nonblocked R002b surfaces have Arabic/English responsive evidence from 320 to 768 pixels; private League is implemented with partial responsive evidence                      |
+| Android              | Android JavaScript export passes; physical-device, TalkBack, native Back/IME, safe-area, and OS font-scale checks still require a connected configured device                       |
+| Remaining work       | Approval Reveal has authoritative receipts; station-132 Learning, live-provider activation, physical Android, and named-human review remain gated; see the audit for open decisions |
+| Production readiness | **No** — the MVP remains local, synthetic, feature-flagged, and release-activation blocked                                                                                          |
 
 The detailed, auditable status lives in [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md), with the bounded R002a
 results in the [R002a validation evidence](specs/003-family-growth-garden/design-intake/r002a-validation-evidence.md).

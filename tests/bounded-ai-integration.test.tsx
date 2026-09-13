@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { resolveAiFeatureFlags } from '@/config/aiFeatureFlags';
 import { SYNTHETIC_PARENT_REAUTHENTICATION_CODE } from '@/models/access';
 import type { LiveChildCoachTextService, ParentTaskDraftingService } from '@/services';
-import { usePrototypeStore, type PrototypeStoreState } from '@/state/usePrototypeStore';
+import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { configureChildAgeForTest } from './helpers/configuredChildAge';
 import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
@@ -61,13 +62,7 @@ describe('bounded AI cross-feature integration', () => {
   });
 
   it('combines prepared fallbacks with zero progression effects and an exact reset', async () => {
-    const initialState = usePrototypeStore.getState();
-    usePrototypeStore.setState({
-      children: {
-        ...initialState.children,
-        child_salem: { ...initialState.children.child_salem, age: 14, ageBand: '12_14' },
-      },
-    } as unknown as Partial<PrototypeStoreState>);
+    configureChildAgeForTest('12_14');
     expectOk(
       usePrototypeStore.getState().createTaskDraft({
         childId: 'child_salem',

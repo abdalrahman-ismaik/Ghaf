@@ -857,6 +857,16 @@ export function applySharedGrowthParticipationAction(
     actionHistory: [...preference.actionHistory, receipt],
     revision: preference.revision + 1,
   };
+  if (
+    !state.signalHistory.every((signal) =>
+      signalFallsWithinRecordedContributionWindow(nextPreference, signal),
+    )
+  ) {
+    return failure(
+      'INVALID_TRANSITION',
+      'Participation changes cannot invalidate previously recorded contributions',
+    );
+  }
   return success({
     disposition: 'applied',
     state: {

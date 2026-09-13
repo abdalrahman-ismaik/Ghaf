@@ -53,7 +53,11 @@ import {
   resolveRememberedAccessLocale,
   restoreRememberedDeviceAccess,
 } from '../features/access/rememberedDeviceAccess';
-import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
+import {
+  createLocalFamilyRecord,
+  localFamilyRecordToReceipt,
+  resolveConfiguredChildAgeBand,
+} from '../features/local-family';
 import {
   createParentOnboardingController,
   normalizeParentIdentifier,
@@ -946,7 +950,7 @@ function validateLiveVoiceAuthority(state: PrototypeStoreState): ServiceResult<{
 }> {
   const active = validateActiveChildAssignment(state, true);
   if (!active.ok) return active;
-  const ageBand: string = state.children[state.activeChildId].ageBand;
+  const ageBand = resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId);
   const grants = state.liveChildAiGrants[state.activeChildId];
   const now = Date.now();
   if (ageBand !== '12_14') {
@@ -2139,11 +2143,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!authority.ok) {
       return failure('INVALID_TRANSITION', 'Only the active Parent can change bounded AI access');
     }
-    if (
-      input.capability === 'voice' &&
-      input.granted &&
-      (state.children[input.childId].ageBand as string) !== '12_14'
-    ) {
+    const ageBand = resolveConfiguredChildAgeBand(state.localFamily, input.childId);
+    if (input.granted && ageBand === null) {
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
+    if (input.capability === 'voice' && input.granted && ageBand !== '12_14') {
       return failure('PRIVACY_REJECTED', 'Live voice grants are limited to ages 12–14');
     }
     const permissionProofSequence = state.permissionProofSequence + 1;
@@ -3501,10 +3505,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const guarded = validateActiveChildAssignment(state, true);
     if (!guarded.ok) return guarded;
     const journey = guarded.data;
+    const ageBand = resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId);
+    if (ageBand === null) {
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
     const result = childVoiceController.bindActiveTask({
       actorRole: 'child',
       childId: state.activeChildId,
-      ageBand: state.children[state.activeChildId].ageBand,
+      ageBand,
       taskId: journey.task.id,
       approvedTaskVersion: journey.task.version,
       lifecycle: journey.lifecycle,
@@ -3556,6 +3564,10 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const guarded = validateActiveChildAssignment(state, true);
     if (!guarded.ok) return guarded;
     const journey = guarded.data;
+    const ageBand = resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId);
+    if (ageBand === null) {
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
     if (journey.task.version !== 1 || journey.assignment.taskVersion !== 1) {
       return failure(
         'INVALID_TRANSITION',
@@ -3569,7 +3581,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       locale: state.locale,
       child: {
         id: state.activeChildId,
-        ageBand: state.children[state.activeChildId].ageBand,
+        ageBand,
         synthetic: true as const,
       },
       assignmentId: journey.assignment.id,
@@ -3577,7 +3589,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       approvedTaskVersion: journey.task.version,
       lifecycle: journey.lifecycle,
       fixtureId: input.fixtureId ?? null,
-      templateSelection: input.templateSelection ?? input.intent,
+      templateSelection: input.templateSelection ?? (ageBand === '6_8' ? null : input.intent),
     };
     const result = await serviceRegistry.childCoach.respond(request);
     const currentState = get();
@@ -3586,6 +3598,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       generation !== pilotSampleGeneration ||
       !currentAssignment.ok ||
       currentState.activeChildId !== request.child.id ||
+      resolveConfiguredChildAgeBand(currentState.localFamily, request.child.id) !==
+        request.child.ageBand ||
       currentAssignment.data.assignment.id !== request.assignmentId ||
       currentAssignment.data.task.id !== request.taskId ||
       currentAssignment.data.task.version !== request.approvedTaskVersion
@@ -3623,6 +3637,19 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     const grant = before.liveChildAiGrants[before.activeChildId].text;
     const voiceGrant = before.liveChildAiGrants[before.activeChildId].voice;
     const requestRevision = before.liveChildCoachView.requestRevision + 1;
+    const ageBand = resolveConfiguredChildAgeBand(before.localFamily, before.activeChildId);
+    if (ageBand === null) {
+      set({
+        liveChildCoachView: { ...INITIAL_LIVE_CHILD_COACH_VIEW, status: 'denied', requestRevision },
+      });
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
+    if (ageBand !== '12_14' && input.boundedText !== undefined) {
+      set({
+        liveChildCoachView: { ...INITIAL_LIVE_CHILD_COACH_VIEW, status: 'denied', requestRevision },
+      });
+      return failure('INVALID_INPUT', 'Text input is outside the configured Child age policy');
+    }
     if (grant.status !== 'granted') {
       set({
         liveChildCoachView: {
@@ -3651,7 +3678,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       }
     }
     const built = createLiveChildCoachRequest({
-      ageBand: before.children[before.activeChildId].ageBand,
+      ageBand,
       childId: before.activeChildId,
       locale: before.locale,
       now: feature004Now(),
@@ -3706,15 +3733,20 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       const current = get();
       const active = validateActiveChildAssignment(current, true);
       const currentGrant = current.liveChildAiGrants[snapshot.childId].text;
+      const now = Date.now();
       return (
         active.ok &&
         current.activeChildId === snapshot.childId &&
+        resolveConfiguredChildAgeBand(current.localFamily, snapshot.childId) ===
+          built.data.ageBand &&
         active.data.assignment.id === snapshot.assignmentId &&
         active.data.task.id === snapshot.taskId &&
         active.data.task.version === snapshot.approvedTaskVersion &&
         currentGrant.status === 'granted' &&
         currentGrant.grantVersion === snapshot.grantVersion &&
         currentGrant.noticeVersion === snapshot.noticeVersion &&
+        now >= Date.parse(currentGrant.issuedAt) &&
+        now < Date.parse(currentGrant.expiresAt) &&
         (snapshot.voiceGrantVersion === null ||
           (current.liveChildAiGrants[snapshot.childId].voice.status === 'granted' &&
             current.liveChildAiGrants[snapshot.childId].voice.grantVersion ===
@@ -3726,10 +3758,17 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         current.liveChildCoachView.requestRevision === requestRevision
       );
     };
+    const rejectStaleRequest = () => {
+      const current = get();
+      if (current.liveChildCoachView.requestRevision === requestRevision) {
+        set({ liveChildCoachView: idleLiveChildCoachView(current.liveChildCoachView) });
+      }
+      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+    };
 
     const primary = await requestLiveChildCoachWithinDeadline(primaryService, built.data);
     if (!requestIsCurrent()) {
-      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+      return rejectStaleRequest();
     }
     const validated = primary.ok
       ? validateLiveChildCoachResponse(built.data, primary.data)
@@ -3757,7 +3796,7 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
         : 'invalid_response';
     const prepared = await serviceRegistry.boundedAi.childCoachTextPrepared.respond(built.data);
     if (!requestIsCurrent()) {
-      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+      return rejectStaleRequest();
     }
     if (!prepared.ok) return prepared;
     const preparedValidated = validateLiveChildCoachResponse(built.data, prepared.data);
@@ -3895,7 +3934,8 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       services.transcription ?? serviceRegistry.boundedAi.voiceTranscriptionPrimary;
     const before = get();
     const bound = before.liveVoiceCapture;
-    if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
+    // Stopping and deleting owned audio remains required after its grant expires.
+    if (!bound || bound.state.envelope.status !== 'recording_held') {
       return failure('INVALID_TRANSITION', 'A current held voice session is required');
     }
     const stopIsCurrent = () =>
@@ -3907,8 +3947,11 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       original: ServiceResult<T>,
     ): Promise<ServiceResult<T>> => {
       const deletion = await media.delete(uri);
-      if (stopIsCurrent()) {
-        const deleting = beginVoiceDeletion(source);
+      if (get().liveVoiceCapture === bound) {
+        const deleting = beginVoiceDeletion({
+          ...source,
+          envelope: { ...source.envelope, cacheUri: uri },
+        });
         const completed = deleting.ok
           ? completeVoiceDeletion(deleting.data, deletion.ok)
           : deleting;
@@ -3916,8 +3959,56 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       }
       return deletion.ok ? original : deletion;
     };
-    const captured = await capture.stopHeld();
-    if (!captured.ok) return captured;
+    let captured: Awaited<ReturnType<VoiceCaptureService['stopHeld']>>;
+    try {
+      captured = await capture.stopHeld();
+    } catch {
+      captured = failure('REMOTE_UNAVAILABLE', 'Voice capture could not stop');
+    }
+    if (!captured.ok) {
+      if (get().liveVoiceCapture !== bound) return staleStop();
+      const deleting = beginVoiceDeletion(bound.state);
+      if (!deleting.ok) return deleting;
+      const cleaning = { ...bound, state: deleting.data };
+      set({ liveVoiceCapture: cleaning });
+      let canceled: Awaited<ReturnType<VoiceCaptureService['cancel']>>;
+      try {
+        canceled = await capture.cancel();
+      } catch {
+        canceled = failure('REMOTE_UNAVAILABLE', 'Failed voice capture cleanup is unavailable');
+      }
+      let cleanup: ServiceResult<true> = canceled.ok ? success(true) : canceled;
+      let retainedUri = bound.state.envelope.cacheUri;
+      const uris = new Set(
+        [retainedUri, canceled.ok ? canceled.data.uri : null].filter((uri): uri is string =>
+          Boolean(uri),
+        ),
+      );
+      for (const uri of uris) {
+        let deleted: ServiceResult<true>;
+        try {
+          deleted = await media.delete(uri);
+        } catch {
+          deleted = failure('REMOTE_UNAVAILABLE', 'Failed voice capture deletion is unavailable');
+        }
+        if (!deleted.ok) {
+          cleanup = deleted;
+          retainedUri = uri;
+        }
+      }
+      if (get().liveVoiceCapture !== cleaning) {
+        return staleStop();
+      }
+      const completed = completeVoiceDeletion(
+        {
+          ...deleting.data,
+          envelope: { ...deleting.data.envelope, cacheUri: retainedUri },
+        },
+        cleanup.ok,
+      );
+      if (completed.ok) set({ liveVoiceCapture: { ...bound, state: completed.data } });
+      return cleanup.ok ? captured : cleanup;
+    }
     if (!stopIsCurrent()) {
       return discardCapturedFile(captured.data.uri, bound.state, staleStop());
     }
@@ -3975,16 +4066,25 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     });
     const transcriptionIsCurrent = () =>
       get().liveVoiceCapture === transcribing && boundLiveVoiceIsCurrent(get(), transcribing);
-    const transcript =
-      primary.ok || !transcriptionIsCurrent()
-        ? primary
-        : await requestVoiceTranscriptionWithinDeadline(
-            serviceRegistry.boundedAi.voiceTranscriptionPrepared,
-            { metadata, audioBytes: bytes.data },
-          );
+    let applied = primary.ok
+      ? applyVoiceTranscript(
+          transcribing.state,
+          primary.data,
+          primary.meta.origin === 'live' ? 'transcribed' : 'prepared_synthetic',
+        )
+      : primary;
+    if (!applied.ok && transcriptionIsCurrent()) {
+      const prepared = await requestVoiceTranscriptionWithinDeadline(
+        serviceRegistry.boundedAi.voiceTranscriptionPrepared,
+        { metadata, audioBytes: bytes.data },
+      );
+      applied = prepared.ok
+        ? applyVoiceTranscript(transcribing.state, prepared.data, 'prepared_synthetic')
+        : prepared;
+    }
     bytes.data.fill(0);
     const deletion = await media.delete(captured.data.uri);
-    if (!transcriptionIsCurrent()) {
+    if (get().liveVoiceCapture !== transcribing) {
       return failure('INVALID_TRANSITION', 'Voice transcription result is stale');
     }
     if (!deletion.ok) {
@@ -3993,18 +4093,14 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       if (failed.ok) set({ liveVoiceCapture: { ...bound, state: failed.data } });
       return deletion;
     }
-    if (!transcript.ok) {
+    if (!applied.ok || !transcriptionIsCurrent()) {
       const deleting = beginVoiceDeletion(transcribing.state);
       const deleted = deleting.ok ? completeVoiceDeletion(deleting.data, true) : deleting;
       if (deleted.ok) set({ liveVoiceCapture: { ...bound, state: deleted.data } });
-      return transcript;
+      return !applied.ok
+        ? applied
+        : failure('INVALID_TRANSITION', 'Voice transcription result is stale');
     }
-    const applied = applyVoiceTranscript(
-      transcribing.state,
-      transcript.data,
-      primary.ok && primary.meta.origin === 'live' ? 'transcribed' : 'prepared_synthetic',
-    );
-    if (!applied.ok) return applied;
     const next = { ...bound, state: applied.data };
     set({ liveVoiceCapture: next });
     return success(next);

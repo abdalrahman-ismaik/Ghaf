@@ -150,4 +150,49 @@ describe('device-local family repository', () => {
     });
     expect(repository.read()).toEqual({ ok: true, data: record });
   });
+
+  it.each([LEGACY_LOCAL_FAMILY_STORAGE_KEY, LOCAL_FAMILY_STORAGE_KEY])(
+    'preserves the current family when reset cannot remove %s, then allows retry',
+    (failedKey) => {
+      const storage = createMemoryLocalKeyValueStorage();
+      let failedRemovalKey: string | null = LEGACY_LOCAL_FAMILY_STORAGE_KEY;
+      const repository = createLocalFamilyRepository({
+        getItem: storage.getItem,
+        setItem: storage.setItem,
+        removeItem(key) {
+          if (key === failedRemovalKey) {
+            failedRemovalKey = null;
+            throw new Error('Prepared local storage removal failure');
+          }
+          storage.removeItem(key);
+        },
+      });
+      const current = validRecord();
+      const legacy = {
+        ...current,
+        schemaVersion: 1,
+        familyName: 'Previous Family',
+        pairedChildIds: ['child_salem'],
+        parent: { id: current.parent.id, role: current.parent.role },
+      };
+      storage.setItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(legacy));
+
+      expect(repository.read()).toMatchObject({ ok: false });
+      expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+      expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+      expect(repository.save(current)).toEqual({ ok: true, data: current });
+
+      failedRemovalKey = failedKey;
+      expect(repository.clear()).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_TRANSITION' },
+      });
+
+      expect(createLocalFamilyRepository(storage).read()).toEqual({ ok: true, data: current });
+      expect(repository.clear()).toEqual({ ok: true, data: true });
+      expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+      expect(storage.getItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+      expect(createLocalFamilyRepository(storage).read()).toEqual({ ok: true, data: null });
+    },
+  );
 });

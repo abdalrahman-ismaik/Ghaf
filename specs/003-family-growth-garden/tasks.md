@@ -1614,3 +1614,10 @@ No before/after-implementation extension hooks are configured. Interactive brows
 Android/TalkBack/Back/IME/process-death/font-scale, remaining responsive captures, content/rights,
 provider, and named-human reviews remain `BLOCKED / NOT RUN` as applicable. All R002b and optional
 AI defaults remain off. The repaired engineering boundary is ready for integration, not release.
+
+## Phase 49: Configured Child Age Authority — 2026-09-11
+
+- [x] T333 Record the owner's decision that configured Child age governs prepared/live
+      Coach policy and live-voice eligibility while preserving canonical fixture ages.
+      Update FR-197, the data model and plan; track the cross-feature implementation
+      and regression evidence under Feature 004 T088–T091.

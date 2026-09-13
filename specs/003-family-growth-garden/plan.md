@@ -17,6 +17,21 @@ credential, provider or release flag is required. Reuse current access component
 Arabic/English resources, typography and history-reset adapter. Tests use isolated
 synthetic storage; native/human gates stay independently evidenced.
 
+## Configured Child Age Authority Clarification — 2026-09-11
+
+Use a single pure selector over the validated local family directory for effective
+Coach age. Missing, unavailable or unconfigured profiles do not authorize input.
+Keep the canonical `SyntheticChildProfile` and reset fixtures unchanged; widen only
+the prepared `ChildCoachRequest` age field and its validator to the existing three
+age bands. Feed the selected age to prepared input validation/output adaptation and
+pending-result revalidation. The Child task and Parent permission routes share this
+selector with Feature 004's grants, text, voice and transcript lifecycle. Curated
+Coach actions remain available independently of output quick-choice limits.
+
+Implementation and validation are tracked in Feature 004 T088–T091 and the
+maintainer audit. This approval adds no profile-editing feature, persistent field,
+provider call, media capture, dependency or release activation.
+
 ## R003 AI Services 1–3 Integration Addendum — 2026-09-07
 
 Preserve the current deterministic AI stack as the non-negotiable application default. Extract a

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SYNTHETIC_PARENT_REAUTHENTICATION_CODE } from '@/models/access';
 import type {
@@ -7,7 +7,9 @@ import type {
   VoiceCaptureService,
   VoiceTranscriptionService,
 } from '@/services';
-import { usePrototypeStore, type PrototypeStoreState } from '@/state/usePrototypeStore';
+import { serviceRegistry } from '@/services';
+import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { configureChildAgeForTest } from './helpers/configuredChildAge';
 import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
@@ -37,13 +39,7 @@ function deferred<T>() {
 
 async function prepareChild({ grants = true, eligibleAge = true } = {}) {
   if (eligibleAge) {
-    const state = usePrototypeStore.getState();
-    usePrototypeStore.setState({
-      children: {
-        ...state.children,
-        child_salem: { ...state.children.child_salem, age: 14, ageBand: '12_14' },
-      },
-    } as unknown as Partial<PrototypeStoreState>);
+    configureChildAgeForTest('12_14');
   }
   if (grants) {
     const capabilities: readonly ('text' | 'voice')[] = eligibleAge ? ['text', 'voice'] : ['text'];
@@ -133,6 +129,447 @@ describe('live voice integration', () => {
   beforeEach(async () => {
     expectOk(resetPrototypeForTest());
     await enterParentExperienceForTest();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it.each(['6_8', '9_11'] as const)(
+    'stops and deletes an owned recording after configured age changes to %s',
+    async (ageBand) => {
+      await prepareChild();
+      const fixtures = structuredClone(usePrototypeStore.getState().children);
+      const deps = dependencies();
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_age_release_123',
+          requestId: 'request_age_release_123',
+          bindingNonce: 'binding_age_release_123',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+      configureChildAgeForTest(ageBand);
+      expect(await usePrototypeStore.getState().stopLiveVoiceHold(deps)).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_TRANSITION' },
+      });
+      expect(deps.capture.stopHeld).toHaveBeenCalledOnce();
+      expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+      expect(deps.transcription.transcribe).not.toHaveBeenCalled();
+      expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+        envelope: { status: 'deleted', cacheUri: null },
+        transcript: null,
+      });
+      expect(usePrototypeStore.getState().children).toEqual(fixtures);
+    },
+  );
+
+  it('discards a pending transcript and deletes its audio after a configured age downgrade', async () => {
+    await prepareChild();
+    const deps = dependencies();
+    const started = deferred<void>();
+    const response = deferred<Awaited<ReturnType<VoiceTranscriptionService['transcribe']>>>();
+    vi.mocked(deps.transcription.transcribe).mockImplementationOnce(async () => {
+      started.resolve();
+      return response.promise;
+    });
+    const prepared = vi.spyOn(serviceRegistry.boundedAi.voiceTranscriptionPrepared, 'transcribe');
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_age_pending_123',
+        requestId: 'request_age_pending_123',
+        bindingNonce: 'binding_age_pending_123',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+    expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+    const pending = usePrototypeStore.getState().stopLiveVoiceHold(deps);
+    await started.promise;
+    configureChildAgeForTest('6_8');
+    response.resolve({
+      ok: true,
+      data: {
+        schemaVersion: '1.0',
+        requestId: 'request_age_pending_123',
+        bindingNonce: 'binding_age_pending_123',
+        text: 'Please clarify the first step.',
+        locale: 'ar',
+        audioDeleted: true,
+      },
+      meta: { origin: 'live', fallbackUsed: false },
+    });
+    expect(await pending).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+    expect(prepared).not.toHaveBeenCalled();
+    expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+      envelope: { status: 'deleted', cacheUri: null },
+      transcript: null,
+    });
+  });
+
+  it('rejects capture preparation for a younger configured child despite existing older-age grants', async () => {
+    await prepareChild();
+    configureChildAgeForTest('6_8');
+    expect(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_age_gate_123',
+        requestId: 'request_age_gate_123',
+        bindingNonce: 'binding_age_gate_123',
+      }),
+    ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+    expect(usePrototypeStore.getState().liveVoiceCapture).toBeNull();
+  });
+
+  it('still stops and deletes an owned recording when its grant expires before release', async () => {
+    await prepareChild();
+    const deps = dependencies();
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_expired_release_123',
+        requestId: 'request_expired_release_123',
+        bindingNonce: 'binding_expired_release_123',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+    expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(usePrototypeStore.getState().liveChildAiGrants.child_salem.voice.expiresAt);
+
+    await expect(usePrototypeStore.getState().stopLiveVoiceHold(deps)).resolves.toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(deps.capture.stopHeld).toHaveBeenCalledOnce();
+    expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+    expect(deps.transcription.transcribe).not.toHaveBeenCalled();
+    expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+      envelope: { status: 'deleted', cacheUri: null, deletionStatus: 'deleted' },
+      transcript: null,
+    });
+  });
+
+  it.each(
+    (['stop', 'failed_stop', 'transcription', 'cleanup'] as const).flatMap((stage) =>
+      [true, false].map((deletionSucceeds) => ({ stage, deletionSucceeds })),
+    ),
+  )(
+    'finishes owned cleanup after expiry during $stage with deletion success $deletionSucceeds',
+    async ({ stage, deletionSucceeds }) => {
+      await prepareChild();
+      const grants = usePrototypeStore.getState().liveChildAiGrants.child_salem;
+      const expiry = Math.min(
+        Date.parse(grants.text.expiresAt),
+        Date.parse(grants.voice.expiresAt),
+      );
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(expiry - 500);
+      const deps = dependencies();
+      const entered = deferred<void>();
+      const release = deferred<void>();
+      const stopHeld = deps.capture.stopHeld;
+      const transcribe = deps.transcription.transcribe;
+      const cancel = deps.capture.cancel;
+      const nativeFailure = {
+        ok: false as const,
+        error: {
+          code: 'REMOTE_UNAVAILABLE' as const,
+          message: 'Synthetic native cleanup failure',
+          retryable: false,
+          fallbackAvailable: true,
+        },
+      };
+      const pause = async () => {
+        entered.resolve();
+        await release.promise;
+      };
+      deps.capture.stopHeld = vi.fn(async () => {
+        if (stage === 'stop' || stage === 'failed_stop') await pause();
+        return stage === 'failed_stop' || stage === 'cleanup' ? nativeFailure : stopHeld();
+      });
+      deps.capture.cancel = vi.fn(async () => {
+        if (stage === 'cleanup') await pause();
+        return cancel();
+      });
+      deps.transcription.transcribe = vi.fn(async (input) => {
+        if (stage === 'transcription') await pause();
+        return transcribe(input);
+      });
+      if (!deletionSucceeds) deps.media.delete = vi.fn(async () => nativeFailure);
+      const prepared = vi.spyOn(serviceRegistry.boundedAi.voiceTranscriptionPrepared, 'transcribe');
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_expiring_cleanup_123',
+          requestId: 'request_expiring_cleanup_123',
+          bindingNonce: 'binding_expiring_cleanup_123',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+      const pending = usePrototypeStore.getState().stopLiveVoiceHold(deps);
+      await entered.promise;
+      vi.setSystemTime(expiry);
+      release.resolve();
+
+      expect(await pending).toMatchObject({ ok: false });
+      expect(prepared).not.toHaveBeenCalled();
+      expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+      expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+        envelope: {
+          status: deletionSucceeds ? 'deleted' : 'failed',
+          deletionStatus: deletionSucceeds ? 'deleted' : 'failed',
+          cacheUri: deletionSucceeds ? null : 'file:///cache/voice.m4a',
+        },
+        transcript: null,
+      });
+      expect(usePrototypeStore.getState().liveChildCoachView.status).toBe('idle');
+    },
+  );
+
+  it.each([true, false])(
+    'settles a failed native stop only after cleanup with deletion success %s',
+    async (deletionSucceeds) => {
+      await prepareChild();
+      const deps = dependencies();
+      const stopped = {
+        ok: false as const,
+        error: {
+          code: 'REMOTE_UNAVAILABLE' as const,
+          message: 'Synthetic native stop failed',
+          retryable: false,
+          fallbackAvailable: true,
+        },
+      };
+      deps.capture.stopHeld = vi.fn(async () => stopped);
+      if (!deletionSucceeds) {
+        deps.media.delete = vi.fn(async () => ({
+          ...stopped,
+          error: { ...stopped.error, message: 'Synthetic file deletion failed' },
+        }));
+      }
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_native_failure_123',
+          requestId: 'request_native_failure_123',
+          bindingNonce: 'binding_native_failure_123',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+
+      await expect(usePrototypeStore.getState().stopLiveVoiceHold(deps)).resolves.toMatchObject({
+        ok: false,
+        error: { code: 'REMOTE_UNAVAILABLE' },
+      });
+      expect(deps.capture.cancel).toHaveBeenCalledOnce();
+      expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+      expect(deps.transcription.transcribe).not.toHaveBeenCalled();
+      expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+        envelope: {
+          status: deletionSucceeds ? 'deleted' : 'failed',
+          deletionStatus: deletionSucceeds ? 'deleted' : 'failed',
+          cacheUri: deletionSucceeds ? null : 'file:///cache/voice.m4a',
+        },
+        transcript: null,
+      });
+    },
+  );
+
+  it('preserves a replacement while cleanup after failed native stop settles', async () => {
+    await prepareChild();
+    const deps = dependencies();
+    deps.capture.stopHeld = vi.fn(async () => ({
+      ok: false as const,
+      error: {
+        code: 'REMOTE_UNAVAILABLE' as const,
+        message: 'Synthetic native stop failed',
+        retryable: false,
+        fallbackAvailable: true,
+      },
+    }));
+    const cleanup = deferred<Awaited<ReturnType<VoiceCaptureService['cancel']>>>();
+    deps.capture.cancel = vi.fn(() => cleanup.promise);
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_failed_stop_slow_123',
+        requestId: 'request_failed_stop_slow_123',
+        bindingNonce: 'binding_failed_stop_slow_123',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+    expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+    const pending = usePrototypeStore.getState().stopLiveVoiceHold(deps);
+    await vi.waitFor(() => expect(deps.capture.cancel).toHaveBeenCalledOnce());
+    expect(usePrototypeStore.getState().liveVoiceCapture?.state.envelope).toMatchObject({
+      status: 'deleting',
+      deletionStatus: 'pending',
+    });
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_failed_stop_new_123',
+        requestId: 'request_failed_stop_new_123',
+        bindingNonce: 'binding_failed_stop_new_123',
+      }),
+    );
+    const replacement = usePrototypeStore.getState().liveVoiceCapture;
+    cleanup.resolve({
+      ok: true,
+      data: { uri: 'file:///cache/voice.m4a' },
+      meta: { origin: 'live', fallbackUsed: false },
+    });
+    await expect(pending).resolves.toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(deps.media.delete).toHaveBeenCalledWith('file:///cache/voice.m4a');
+    expect(deps.transcription.transcribe).not.toHaveBeenCalled();
+    expect(usePrototypeStore.getState().liveVoiceCapture).toBe(replacement);
+  });
+
+  it.each(['unknown_field', 'wrong_correlation'] as const)(
+    'uses a prepared same-attempt transcript after an invalid successful response: %s',
+    async (invalidity) => {
+      await prepareChild();
+      const deps = dependencies();
+      const originalTranscribe = deps.transcription.transcribe;
+      deps.transcription.transcribe = vi.fn(async (input) => {
+        const response = await originalTranscribe(input);
+        if (!response.ok) return response;
+        return {
+          ...response,
+          data:
+            invalidity === 'unknown_field'
+              ? { ...response.data, unexpectedField: true }
+              : { ...response.data, requestId: 'request_mismatched_123456' },
+        };
+      });
+      const prepared = vi.spyOn(serviceRegistry.boundedAi.voiceTranscriptionPrepared, 'transcribe');
+      const deleteFile = deps.media.delete;
+      deps.media.delete = vi.fn(async (uri) => {
+        expect(usePrototypeStore.getState().liveVoiceCapture?.state.transcript).toBeNull();
+        return deleteFile(uri);
+      });
+      expectOk(
+        usePrototypeStore.getState().prepareLiveVoiceCapture({
+          voiceSessionId: 'voice_invalid_output_123',
+          requestId: 'request_invalid_output_123',
+          bindingNonce: 'binding_invalid_output_123',
+        }),
+      );
+      expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+      expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+      const taskBefore = usePrototypeStore.getState().journey;
+
+      expectOk(await usePrototypeStore.getState().stopLiveVoiceHold(deps));
+      expect(deps.transcription.transcribe).toHaveBeenCalledOnce();
+      expect(prepared).toHaveBeenCalledOnce();
+      expect(prepared).toHaveBeenCalledWith(
+        expect.objectContaining({
+          metadata: expect.objectContaining({ requestId: 'request_invalid_output_123' }),
+        }),
+      );
+      expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+      expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+        envelope: { status: 'transcript_review', cacheUri: null, deletionStatus: 'deleted' },
+        transcript: {
+          requestId: 'request_invalid_output_123',
+          origin: 'prepared_synthetic',
+          reviewStatus: 'unreviewed',
+        },
+      });
+      expect(usePrototypeStore.getState().liveChildCoachView.status).toBe('idle');
+      expect(usePrototypeStore.getState().journey).toBe(taskBefore);
+    },
+  );
+
+  it('discards a prepared transcript when cancellation replaces its pending operation', async () => {
+    await prepareChild();
+    const deps = dependencies();
+    const transcribe = deps.transcription.transcribe;
+    deps.transcription.transcribe = vi.fn(async (input) => {
+      const response = await transcribe(input);
+      return response.ok
+        ? { ...response, data: { ...response.data, requestId: 'request_wrong_voice_123' } }
+        : response;
+    });
+    const preparedService = serviceRegistry.boundedAi.voiceTranscriptionPrepared;
+    const preparedTranscribe = preparedService.transcribe.bind(preparedService);
+    const entered = deferred<void>();
+    const release = deferred<void>();
+    const prepared = vi.spyOn(preparedService, 'transcribe').mockImplementation(async (input) => {
+      entered.resolve();
+      await release.promise;
+      return preparedTranscribe(input);
+    });
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_stale_fallback_123',
+        requestId: 'request_stale_fallback_123',
+        bindingNonce: 'binding_stale_fallback_123',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+    expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+    const pending = usePrototypeStore.getState().stopLiveVoiceHold(deps);
+    await entered.promise;
+    expectOk(await usePrototypeStore.getState().cancelLiveVoiceCapture(deps.capture, deps.media));
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_after_fallback_123',
+        requestId: 'request_after_fallback_123',
+        bindingNonce: 'binding_after_fallback_123',
+      }),
+    );
+    const replacement = usePrototypeStore.getState().liveVoiceCapture;
+    const published = vi.fn();
+    const unsubscribe = usePrototypeStore.subscribe((state) => published(state.liveVoiceCapture));
+    release.resolve();
+    const result = await pending;
+    unsubscribe();
+
+    expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+    expect(prepared).toHaveBeenCalledOnce();
+    expect(deps.media.delete).toHaveBeenCalledWith('file:///cache/voice.m4a');
+    expect(Array.from(prepared.mock.calls[0]![0].audioBytes)).toEqual([0, 0, 0, 0]);
+    expect(usePrototypeStore.getState().liveVoiceCapture).toBe(replacement);
+    expect(published.mock.calls.every(([capture]) => capture === replacement)).toBe(true);
+  });
+
+  it('ends the operation with deleted audio when both transcripts fail validation', async () => {
+    await prepareChild();
+    const deps = dependencies();
+    const preparedService = serviceRegistry.boundedAi.voiceTranscriptionPrepared;
+    const transcribe = deps.transcription.transcribe;
+    const invalidTranscribe: VoiceTranscriptionService['transcribe'] = async (input) => {
+      const response = await transcribe(input);
+      return response.ok
+        ? { ...response, data: { ...response.data, unexpectedField: true } }
+        : response;
+    };
+    deps.transcription.transcribe = vi.fn(invalidTranscribe);
+    const prepared = vi.spyOn(preparedService, 'transcribe').mockImplementation(invalidTranscribe);
+    expectOk(
+      usePrototypeStore.getState().prepareLiveVoiceCapture({
+        voiceSessionId: 'voice_invalid_fallback_123',
+        requestId: 'request_invalid_fallback_123',
+        bindingNonce: 'binding_invalid_fallback_123',
+      }),
+    );
+    expectOk(await usePrototypeStore.getState().requestLiveVoicePermission(deps.capture));
+    expectOk(await usePrototypeStore.getState().startLiveVoiceHold(deps.capture));
+
+    await expect(usePrototypeStore.getState().stopLiveVoiceHold(deps)).resolves.toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_RESPONSE' },
+    });
+    expect(prepared).toHaveBeenCalledOnce();
+    expect(deps.media.delete).toHaveBeenCalledExactlyOnceWith('file:///cache/voice.m4a');
+    expect(usePrototypeStore.getState().liveVoiceCapture?.state).toMatchObject({
+      envelope: { status: 'deleted', cacheUri: null, deletionStatus: 'deleted' },
+      transcript: null,
+    });
   });
 
   it('keeps current P0 ages 9–11 unable to reach real capture', async () => {

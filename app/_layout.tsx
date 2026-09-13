@@ -6,7 +6,7 @@ import { ReadexPro_400Regular } from '@expo-google-fonts/readex-pro/400Regular';
 import { ReadexPro_500Medium } from '@expo-google-fonts/readex-pro/500Medium';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -52,8 +52,19 @@ const startupFontAssets = {
   ReadexPro_500Medium,
 } as const;
 
+const webHydrationBoundary = {
+  subscribe: () => () => undefined,
+  getSnapshot: () => true,
+  getServerSnapshot: () => Platform.OS !== 'web',
+};
+
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
+  const webMounted = useSyncExternalStore(
+    webHydrationBoundary.subscribe,
+    webHydrationBoundary.getSnapshot,
+    webHydrationBoundary.getServerSnapshot,
+  );
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
   const splashStartedAt = useRef<number | null>(null);
@@ -205,6 +216,8 @@ export default function RootLayout() {
       if (secondFrame !== undefined) cancelAnimationFrame(secondFrame);
     };
   }, [startupPhase]);
+
+  if (!webMounted) return <View style={styles.root} testID="web-hydration-boundary" />;
 
   const demo = (
     <FirstRunExperienceProvider presentationReady={startupPhase === 'complete'}>

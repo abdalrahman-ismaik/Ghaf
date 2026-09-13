@@ -290,6 +290,9 @@ disabled, legacy transport is used, the tool is unknown, or authorization scope 
   input; ages 9–11 MUST have structured template fields only and no unrestricted text; ages 12–14
   MAY have guardian-enabled bounded text and, under the separate requirements below, an explicitly
   reviewed push-to-talk transcript. No age band may send raw audio to the Coach model.
+  The configured local Child age band is authoritative for these controls and all prepared/live
+  request and response policy (owner-approved clarification, 2026-09-11). Resolve that age without
+  changing the underlying synthetic fixtures; pending results must be rejected if it changes.
 - **FR-019**: The initial live Coach allowlist MUST use server-owned reviewed task content selected
   by public archetype/catalog version. Arbitrary Parent-authored task text MUST use deterministic
   Coach fallback until separately approved minimization and PII controls exist.
@@ -342,6 +345,8 @@ disabled, legacy transport is used, the tool is unknown, or authorization scope 
 - **FR-034**: Real voice MUST be available only to ages 12–14 with separate, unexpired guardian
   voice and live-Coach grants, fresh age-appropriate notice, and an independent default-off flag;
   text approval or synthetic `voiceGranted` state MUST NOT imply real-voice authorization.
+  Grant creation, capture, review/send, currentness checks and Parent/Child presentation MUST
+  use the same configured-age authority as FR-018.
 - **FR-035**: Capture MUST be a visible, user-held push-to-talk action for one clip, MUST stop on
   release and on every interruption/background/route-exit/revocation/reset boundary, and MUST NOT
   support continuous listening, background capture, wake words, or automatic restart.

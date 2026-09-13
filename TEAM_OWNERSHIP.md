@@ -34,7 +34,6 @@ configured and verified. Controlled delivery, hosted account flows and physical
 Android acceptance remain outstanding; hosted activation remains blocked. Exact evidence is recorded in
 `specs/006-real-parent-pilot/validation.md`.
 
-
 ## 2026-09-13 Repository Completion Review
 
 **Integration owner**: `/root`. Preserve the existing uncommitted maintainer,
@@ -106,6 +105,160 @@ acceptance remain NOT RUN or their existing blocked status. No dependency, flag,
 provider, deployment, push or shared-history rewrite occurs. Root owns final scoped
 local commits and preserves all unrelated starting changes. Full evidence and file
 boundaries are in `docs/audits/2026-09-13-repository-completion.md`.
+
+## 2026-09-12 Interactive Configured Age Verification
+
+**Owner**: `/root`, following the user's explicit request to start interactive
+browser verification. Reserved files: this ownership log,
+`docs/audits/2026-09-11-maintainer-audit.md`, ignored local preview/browser helpers,
+and `output/playwright/maintainer-audit/configured-age-*.png` evidence. Existing
+source/test changes remain preserved. `/root/configured_age_map` provides a
+read-only route and safety checklist; only root operates the browser.
+
+**Scope**: Local UI-driven synthetic setup, configured-age Coach controls and
+permission visibility. No real recording, provider requests, production systems,
+release activation, commit or push. Record observed results and exact blockers.
+
+**Status**: Complete and released. Chromium verification captured 332 snapshots
+across 21 routes and 20 new synthetic screenshots. Configured-age controls, Parent
+grants/revocation, pairing, repeated Coach actions and reset passed. A confirmed
+static-web hydration mismatch was repaired and replayed against the final default
+build for remembered Arabic/English Child, remembered English Parent and signed-out
+reset states. Final typecheck, lint, formatting, whitespace and all 1,699 tests across
+130 files passed; default web export produced 39 routes. Browser and preview are
+closed (no listeners on 8093/9225). Native/provider acceptance remains unverified.
+No default flag, fixture, dependency, commit or push change occurred.
+
+**Confirmed browser fix allocation**: `/root/configured_age_ui` owns
+`app/_layout.tsx` and new `tests/web-hydration-boundary.test.tsx` only, for the
+verified static-web hydration mismatch between exported signed-out HTML and a
+remembered Child session. Preserve native initialization, access rules and store
+restoration. Root owns subsequent export and browser replay; no overlapping edits.
+
+## 2026-09-11 Configured Child Age Authority Follow-up
+
+**Integration owner**: `/root`. The user approved configured Child age as the
+authority for Coach input options and voice permissions while retaining the
+underlying demo fixtures. Preserve every uncommitted maintainer-audit change.
+
+**Root documentation boundary**: this ownership log,
+`docs/audits/2026-09-11-maintainer-audit.md`,
+`specs/003-family-growth-garden/{spec,plan,tasks,data-model}.md`, and
+`specs/004-bounded-live-ai/{spec,plan,tasks}.md` for the approved clarification,
+implementation tasks and exact verification evidence. Runtime/test allocations
+are recorded below; no overlapping writers.
+
+**Scope**: One shared effective-age projection, corresponding prepared/live Coach
+and voice authorization, pending-result invalidation, and the existing Child task
+and Parent permissions surfaces. No fixture mutation, age-editing feature,
+dependency, native capture, provider call, release activation, commit or push.
+
+**Runtime/test allocation**:
+
+- `/root/configured_age_core`: `src/features/local-family/agePolicy.ts`, its export
+  in `src/features/local-family/index.ts`, `src/models/familyGrowth.ts` only the
+  `ChildCoachRequest` age field, `src/features/assistants/policy.ts` only prepared
+  Coach age validation, and age-related paths in `src/state/usePrototypeStore.ts`.
+  Tests: new `tests/configured-child-age-policy.test.ts`, and the directly affected
+  age cases in `tests/{assistant-safety,live-child-ai-grants,live-child-coach-store}.test.ts`,
+  `tests/{live-voice-integration,bounded-ai-integration}.test.tsx`.
+  Also `tests/helpers/configuredChildAge.ts` for shared synthetic directory setup
+  that persists through normal access rehydration without changing fixture ages.
+- `/root/configured_age_ui`: `app/child/task.tsx`,
+  `app/parent/settings/permissions.tsx`, new
+  `tests/configured-child-age-ui.test.tsx`, and directly affected source/render
+  expectations in `tests/{live-child-coach-ui,live-voice-ui}.test.tsx` only.
+- `/root/configured_age_map` remains read-only. Root owns documentation and final
+  integration; additional files require an explicit reservation.
+- `/root/audit_access_persistence`: browser-only follow-up using isolated local
+  synthetic profiles, ignored helper/profile data and `configured-age-*.png`
+  evidence under `output/playwright/maintainer-audit/`; no tracked source edits.
+- Root resumes the released boundaries for final integration, including formatting
+  only `tests/configured-child-age-policy.test.ts` after the global formatter caught
+  its newly added cases. Worker source/test edits are complete.
+
+**Status**: Complete and released. Configured age now governs prepared/live Coach
+policy and live voice eligibility through one validated selector. Missing or invalid
+age fails closed; existing grants remain revocable. Canonical fixture ages and all
+previous audit fixes are preserved. Core checks passed 161 tests; UI checks passed
+64 tests. Final typecheck, lint, formatting, whitespace and all 1,695 tests across
+129 files passed; web export produced 39 routes and Android export one Hermes bundle.
+Automatic approval review blocked the isolated Chromium launch with “blocked by
+policy”; new interactive browser evidence is `BLOCKED / NOT RUN`, as is native
+acceptance without direct device evidence. No provider/audio activity, dependency
+change, live-flag activation, commit or push occurred. R-01 is resolved; the unrelated
+corrupt-directory recovery decision remains open in the audit report.
+
+## 2026-09-11 Maintainer Correctness and Completeness Audit
+
+**Integration owner and writer**: `/root`.
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and
+`docs/audits/2026-09-11-maintainer-audit.md` for the worklist and coverage/evidence map.
+Runtime, test, and additional documentation boundaries will be reserved explicitly
+after a defect is confirmed. Baseline logs and build output remain ignored under
+`.expo/` and `dist/`.
+
+**Allocated fix boundaries**:
+
+- `/root/audit_access_persistence`: `src/services/local/repository.ts` and
+  `tests/local-family-repository.test.ts` only, for failed reset/legacy resurrection.
+- `/root/audit_ai_lifecycle`: `src/state/usePrototypeStore.ts` only inside
+  `requestLiveChildCoach` and directly necessary local request-current validation;
+  `tests/live-child-coach-store.test.ts` for pending authorization expiry/age changes.
+  Also `src/services/native/ExpoVoiceCaptureService.ts` and
+  `tests/live-voice-services.test.ts` for duration validation against the installed
+  Android recorder's stop/reset behavior, with synthetic adapters only.
+  These first two fixes are released. The follow-up allocation is
+  `src/state/usePrototypeStore.ts` only `stopLiveVoiceHold` and
+  `tests/live-voice-integration.test.tsx` for invalid successful transcription fallback.
+  Review follow-up also includes the same native adapter/service tests for resolved
+  native stop-status failures, plus current-operation capture failure cleanup in the
+  same store/test boundary. No duration may be fabricated for native auto-stop.
+- `/root/audit_growth_transactions`: `src/features/shared-growth/sharedGrowth.ts`
+  and `tests/r002b-shared-growth.test.ts`, preventing participation actions from
+  invalidating existing contribution history.
+- `/root/audit_access_persistence`: the repository fix is released. Follow-up
+  ownership is `app/access/child/{pin,pair}.tsx`,
+  `app/parent/settings/{devices,permissions}.tsx`, and
+  `tests/configured-child-identity-ui.test.tsx` for configured identity presentation.
+  One small shared presentation selector may be added at
+  `src/features/local-family/childIdentity.ts` if needed by these four routes.
+- Root: audit/ownership records, navigation investigation, project health, and
+  final integration. Root will not edit the store while the AI boundary is owned.
+  Root additionally owns `README.md` to correct stale branch/feature-completeness
+  statements using accepted implementation evidence.
+- `/root/audit_ai_lifecycle`: prior fixes are released. Browser follow-up ownership
+  is `app/access/child/pair.tsx` and `tests/child-pairing-back.test.tsx` only,
+  restoring the credential-ready state when returning from pairing to PIN.
+  Preserve the configured identity presentation edits in the route.
+- `/root/audit_access_persistence`: identity edits are released; current work is
+  browser verification and its scoped screenshot artifacts only.
+- `/root/audit_growth_transactions`: native completion follow-up owns
+  `src/services/native/ExpoVoiceCaptureService.ts` and
+  `tests/live-voice-services.test.ts` only. Recover trustworthy duration for
+  native automatic completion using the installed silent media metadata reader;
+  preserve all previous stop/status/cleanup fixes and use synthetic adapters only.
+
+**Scope and authority**: Audit accepted Features 003–005, fix verified defects with
+local synthetic regressions, preserve default-off flags and native/human gates.
+The starting tree is clean on `main` at `07f484c`. The current user instruction
+prohibits commits, pushes, deployment, production activity, and destructive changes;
+it supersedes earlier commit/push permissions for this audit.
+
+**Status**: Complete; all runtime and test boundaries released. Root integrated
+verified persistence/reset, configured identity, pairing Back, Shared Growth history,
+Coach authorization, voice fallback/cleanup, and native stop/duration repairs.
+Final typecheck, lint, formatting and all 1,631 tests across 127 files pass. Web export
+passes for 39 routes; Android Hermes JavaScript export passes. Isolated Chromium
+verified configured identity, pairing/Back, remembered access, temporary Parent
+handoff and signed-out Arabic reset; ten synthetic screenshots are retained in
+`output/playwright/maintainer-audit/`. Physical Android is blocked by no attached
+target; live provider and named-human acceptance remain unrun. Age authority and
+corrupt-directory recovery needed owner decisions at that checkpoint; the approved
+configured-age follow-up above resolves the former.
+No dependencies, release flags or shared history changed. The patch is ready for
+contributor review and remains uncommitted/unpushed under the current user authority.
 
 ## 2026-09-11 Public AI and Agent Tooling Restoration Window
 

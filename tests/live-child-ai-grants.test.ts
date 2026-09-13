@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { SYNTHETIC_PARENT_REAUTHENTICATION_CODE } from '@/models/access';
 import { createFeature003ServiceRegistry } from '@/services';
-import { usePrototypeStore, type PrototypeStoreState } from '@/state/usePrototypeStore';
+import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { configureChildAgeForTest } from './helpers/configuredChildAge';
 import { enterParentExperienceForTest, resetPrototypeForTest } from './helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asserts result is {
@@ -44,13 +45,7 @@ describe('Feature 004 synthetic Child AI grants', () => {
   });
 
   it('requires Parent reauthentication and immediately versions revocation', () => {
-    const state = usePrototypeStore.getState();
-    usePrototypeStore.setState({
-      children: {
-        ...state.children,
-        child_salem: { ...state.children.child_salem, age: 14, ageBand: '12_14' },
-      },
-    } as unknown as Partial<PrototypeStoreState>);
+    configureChildAgeForTest('12_14');
     const rejected = usePrototypeStore.getState().updateLiveChildAiGrant({
       childId: 'child_salem',
       capability: 'voice',
@@ -89,6 +84,89 @@ describe('Feature 004 synthetic Child AI grants', () => {
         reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
       }),
     ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+  });
+
+  it.each(['6_8', '9_11', '12_14'] as const)(
+    'uses configured %s for voice grants while keeping text separate and fixtures unchanged',
+    (ageBand) => {
+      const fixtures = structuredClone(usePrototypeStore.getState().children);
+      configureChildAgeForTest(ageBand);
+      expectOk(
+        usePrototypeStore.getState().updateLiveChildAiGrant({
+          childId: 'child_salem',
+          capability: 'text',
+          granted: true,
+          reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+        }),
+      );
+      const result = usePrototypeStore.getState().updateLiveChildAiGrant({
+        childId: 'child_salem',
+        capability: 'voice',
+        granted: true,
+        reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+      });
+      expect(result.ok).toBe(ageBand === '12_14');
+      expect(usePrototypeStore.getState().liveChildAiGrants.child_alya.voice.status).toBe(
+        'revoked',
+      );
+      expect(usePrototypeStore.getState().children).toEqual(fixtures);
+    },
+  );
+
+  it('rejects new grants without configured age but still allows reauthenticated revocation', () => {
+    configureChildAgeForTest('12_14');
+    for (const capability of ['text', 'voice'] as const) {
+      expectOk(
+        usePrototypeStore.getState().updateLiveChildAiGrant({
+          childId: 'child_salem',
+          capability,
+          granted: true,
+          reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+        }),
+      );
+    }
+    const { localFamily } = usePrototypeStore.getState();
+    usePrototypeStore.setState({ localFamily: { ...localFamily, record: null } });
+    for (const capability of ['text', 'voice'] as const) {
+      expect(
+        usePrototypeStore.getState().updateLiveChildAiGrant({
+          childId: 'child_salem',
+          capability,
+          granted: true,
+          reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+        }),
+      ).toMatchObject({ ok: false, error: { code: 'PRIVACY_REJECTED' } });
+      expectOk(
+        usePrototypeStore.getState().updateLiveChildAiGrant({
+          childId: 'child_salem',
+          capability,
+          granted: false,
+          reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+        }),
+      );
+    }
+  });
+
+  it('allows revoking an older voice grant after a configured age downgrade', () => {
+    configureChildAgeForTest('12_14');
+    expectOk(
+      usePrototypeStore.getState().updateLiveChildAiGrant({
+        childId: 'child_salem',
+        capability: 'voice',
+        granted: true,
+        reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+      }),
+    );
+    configureChildAgeForTest('6_8');
+    expectOk(
+      usePrototypeStore.getState().updateLiveChildAiGrant({
+        childId: 'child_salem',
+        capability: 'voice',
+        granted: false,
+        reauthenticationCode: SYNTHETIC_PARENT_REAUTHENTICATION_CODE,
+      }),
+    );
+    expect(usePrototypeStore.getState().liveChildAiGrants.child_salem.voice.status).toBe('revoked');
   });
 
   it('fails closed on stale versions and projects expiry without reviving access', () => {

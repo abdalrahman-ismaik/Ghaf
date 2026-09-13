@@ -18,6 +18,8 @@ export default function PairChildDeviceScreen() {
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const children = usePrototypeStore((state) => state.children);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const selectProfile = usePrototypeStore((state) => state.selectChildAccessProfile);
   const requestPairing = usePrototypeStore((state) => state.requestChildPairing);
   const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
   const completePairing = usePrototypeStore((state) => state.completeChildPairing);
@@ -28,7 +30,18 @@ export default function PairChildDeviceScreen() {
   }
   if (!childAccess.selectedChildId) return <Redirect href={'/access/child' as Href} />;
   const child = children[childAccess.selectedChildId];
-  const name = localize(child.displayName, locale);
+  const profile = localFamily.record?.children.find((candidate) => candidate.id === child.id);
+  const name = profile?.nickname ?? localize(child.displayName, locale);
+
+  const backToCredential = () => {
+    setError(null);
+    const result = selectProfile(child.id);
+    if (!result.ok) {
+      setError(t('r003.access.parentRequired'));
+      return;
+    }
+    router.replace('/access/child/pin' as Href);
+  };
 
   const run = (action: () => ReturnType<typeof requestPairing>) => {
     setError(null);
@@ -56,7 +69,7 @@ export default function PairChildDeviceScreen() {
           brand={t('common.brand')}
           direction={direction}
           language={locale}
-          onBack={() => router.replace('/access/child/pin' as Href)}
+          onBack={backToCredential}
         />
       }
       testID="child-pair-device-screen"
@@ -72,7 +85,7 @@ export default function PairChildDeviceScreen() {
         <View style={[styles.identity, { flexDirection: logicalRowDirection(direction) }]}>
           <BotanicalAvatar
             direction={direction}
-            id={child.id === 'child_salem' ? 'ghaf_tree' : 'flower'}
+            id={profile?.avatarId ?? (child.id === 'child_salem' ? 'ghaf_tree' : 'flower')}
             size={56}
           />
           <View style={styles.grow}>

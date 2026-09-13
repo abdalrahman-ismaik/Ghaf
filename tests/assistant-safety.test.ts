@@ -199,12 +199,18 @@ describe('bounded assistant intent and age policy', () => {
     },
   );
 
-  it('limits P0 Coach requests to 9_11 and the active approved task/version', () => {
-    expect(validateChildCoachRequest(childRequest, activeCoachContext)).toMatchObject({ ok: true });
+  it('accepts configured age bands while retaining the active approved task/version binding', () => {
+    for (const ageBand of ['6_8', '9_11', '12_14'] as const) {
+      expect(
+        validateChildCoachRequest(
+          { ...childRequest, child: { ...childRequest.child, ageBand } },
+          activeCoachContext,
+        ),
+      ).toMatchObject({ ok: true, data: { child: { ageBand } } });
+    }
 
     for (const patch of [
-      { child: { ...childRequest.child, ageBand: '6_8' } },
-      { child: { ...childRequest.child, ageBand: '12_14' } },
+      { child: { ...childRequest.child, ageBand: '15_17' } },
       { child: { ...childRequest.child, id: 'child_alya' } },
       { assignmentId: 'wrong-assignment' },
       { taskId: 'wrong-task' },
@@ -221,6 +227,24 @@ describe('bounded assistant intent and age policy', () => {
         ...activeCoachContext,
         approvedByParent: false,
       }),
+    ).toMatchObject({ ok: false });
+  });
+
+  it('does not accept template text outside the curated intent for ages 6–8', () => {
+    const child = { ...childRequest.child, ageBand: '6_8' as const };
+    for (const templateSelection of [null, childRequest.intent]) {
+      expect(
+        validateChildCoachRequest(
+          { ...childRequest, child, templateSelection },
+          activeCoachContext,
+        ),
+      ).toMatchObject({ ok: true });
+    }
+    expect(
+      validateChildCoachRequest(
+        { ...childRequest, child, templateSelection: 'Please rewrite a different task.' },
+        activeCoachContext,
+      ),
     ).toMatchObject({ ok: false });
   });
 });
