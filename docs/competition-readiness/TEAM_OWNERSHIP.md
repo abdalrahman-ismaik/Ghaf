@@ -1,5 +1,23 @@
 # Team Ownership
 
+## Masroofi category and card revision — 2026-09-13
+
+User requests more spending categories (confirmed), a stronger UAE card identity, and fewer demo
+marks. Root reserves specs/017-masroofi-demo/**, docs/PRODUCT.md, this entry,
+docs/competition-readiness/{DEMO_RUNBOOK,ai-assistance-ledger}.md,
+docs/competition-readiness/workstreams/masroofi-20260913.md, docs/product/PROTOTYPE_LIMITATIONS.md,
+src/state/usePrototypeStore.ts, src/components/masroofi/{MasroofiParentScreen,MasroofiChildScreen,shared}.tsx,
+src/i18n/masroofi.ts, tests/family/masroofi-{presentation,workflow}.test.* and ignored output/masroofi/**.
+Domain helper alone owns src/models/masroofi.ts, src/features/masroofi/service.ts and
+tests/family/masroofi-service.test.ts. UI helper alone owns src/components/masroofi/MasroofiCard.tsx
+and src/design/masroofi.ts for the scoped card artwork palette. Root serializes checks/browser;
+helpers may not run heavy checks or spawn descendants. Existing package-lock.json edit is excluded.
+
+Revision handoff: both helper scopes released to root before final integration; root reservation
+ends with the local revision commit. Typecheck/lint/format, 170 files / 2378 tests, repository
+checks and final bilingual web inspection passed. Physical Android and named human gates remain
+NOT RUN. The first card visual has been superseded; see the revised Feature 017 surface brief.
+
 ## Masroofi competition implementation — 2026-09-13
 
 User authorizes Feature 017 simulated reward/card implementation. Local coordinator is `/root`

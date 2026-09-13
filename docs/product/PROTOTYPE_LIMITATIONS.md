@@ -5,7 +5,9 @@
 The user-authorized card experience is a synthetic educational ledger in the current app session.
 All balances, reward credits, Parent-added funds and practice purchases are simulated. No real
 card number, bank account, issuer, custody, transfer or checkout exists. Parent controls are
-demonstrated against two local purchase fixtures, not actual merchants or individual products.
+demonstrated against eight local purchase fixtures, not actual merchants or individual products.
+One visible notice below the card identifies the practice mode; repeated artwork stamps and
+balance qualifiers were removed at the user's request.
 Age 9–11 profiles require Parent attestation of age 10+; this is not age verification. The normal
 prototype access guards do not become production financial security. Task progress/card history
 does not synchronize across devices or recover after restart. Existing Family Reward promise

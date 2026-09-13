@@ -10,7 +10,13 @@ import { botanical, logicalRowDirection } from '@/design/tokens';
 import { selectAssignedTasks } from '@/features/tasks/assignmentInstances';
 import { localize } from '@/i18n';
 import type { SyntheticChildId, TaskJourney } from '@/models/familyGrowth';
-import type { MasroofiControls, MasroofiParentView, MasroofiResult } from '@/models/masroofi';
+import {
+  MASROOFI_CATEGORIES,
+  type MasroofiCategory,
+  type MasroofiControls,
+  type MasroofiParentView,
+  type MasroofiResult,
+} from '@/models/masroofi';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { MasroofiCard } from './MasroofiCard';
@@ -25,7 +31,7 @@ import {
   useMasroofiPresentation,
 } from './shared';
 
-type Feedback = { readonly message: string; readonly error: boolean } | null;
+type Feedback = { readonly messageKey: string; readonly error: boolean } | null;
 
 function ParentControls({
   childId,
@@ -38,7 +44,7 @@ function ParentControls({
   const [controls, setControls] = useState(initial);
   const [feedback, setFeedback] = useState<Feedback>(null);
   const save = usePrototypeStore((state) => state.setMasroofiControls);
-  const category = (name: 'stationery' | 'games', allowed: boolean) =>
+  const category = (name: MasroofiCategory, allowed: boolean) =>
     setControls((current) => ({
       ...current,
       allowedCategories: allowed
@@ -64,18 +70,15 @@ function ParentControls({
         values={[1000, 2000, 5000, 10000]}
       />
       <View style={styles.group}>
-        <MasroofiToggle
-          label={t('masroofi.stationery')}
-          onChange={(value) => category('stationery', value)}
-          testID="masroofi-category-stationery"
-          value={controls.allowedCategories.includes('stationery')}
-        />
-        <MasroofiToggle
-          label={t('masroofi.games')}
-          onChange={(value) => category('games', value)}
-          testID="masroofi-category-games"
-          value={controls.allowedCategories.includes('games')}
-        />
+        {MASROOFI_CATEGORIES.map((name) => (
+          <MasroofiToggle
+            key={name}
+            label={t(`masroofi.${name}`)}
+            onChange={(value) => category(name, value)}
+            testID={`masroofi-category-${name}`}
+            value={controls.allowedCategories.includes(name)}
+          />
+        ))}
         <MasroofiToggle
           label={t('masroofi.online')}
           onChange={(value) => setControls((current) => ({ ...current, onlineAllowed: value }))}
@@ -95,7 +98,7 @@ function ParentControls({
         onPress={() => {
           const result = save(childId, controls);
           setFeedback({
-            message: t(result.ok ? 'masroofi.controlsSaved' : masroofiErrorKey(result.error.code)),
+            messageKey: result.ok ? 'masroofi.controlsSaved' : masroofiErrorKey(result.error.code),
             error: !result.ok,
           });
         }}
@@ -103,7 +106,9 @@ function ParentControls({
       >
         {t('masroofi.saveControls')}
       </PrimaryButton>
-      {feedback ? <MasroofiMessage {...feedback} /> : null}
+      {feedback ? (
+        <MasroofiMessage error={feedback.error} message={t(feedback.messageKey)} />
+      ) : null}
     </MasroofiSection>
   );
 }
@@ -115,7 +120,7 @@ function ParentFunds({
   childId: SyntheticChildId;
   transactionCount: number;
 }) {
-  const { t, direction, amount } = useMasroofiPresentation();
+  const { t, amount } = useMasroofiPresentation();
   const topUp = usePrototypeStore((state) => state.topUpMasroofi);
   const [feedback, setFeedback] = useState<Feedback>(null);
   return (
@@ -125,7 +130,7 @@ function ParentFunds({
         onPress={() => {
           const result = topUp(childId, 2000, `masroofi-ui-topup-${childId}-${transactionCount}`);
           setFeedback({
-            message: t(result.ok ? 'masroofi.fundsAdded' : masroofiErrorKey(result.error.code)),
+            messageKey: result.ok ? 'masroofi.fundsAdded' : masroofiErrorKey(result.error.code),
             error: !result.ok,
           });
         }}
@@ -133,10 +138,9 @@ function ParentFunds({
       >
         {t('masroofi.addFunds', { amount: amount(2000) })}
       </SecondaryButton>
-      {feedback ? <MasroofiMessage {...feedback} /> : null}
-      <Text brand color="inkMuted" direction={direction} variant="caption">
-        {t('masroofi.demoNotice')}
-      </Text>
+      {feedback ? (
+        <MasroofiMessage error={feedback.error} message={t(feedback.messageKey)} />
+      ) : null}
     </MasroofiSection>
   );
 }
@@ -200,7 +204,7 @@ function ParentTaskRewards({
               onPress={() => {
                 const result = usePrototypeStore.getState().setActiveChild(childId);
                 if (!result.ok) {
-                  setFeedback({ message: t('masroofi.noAccess'), error: true });
+                  setFeedback({ messageKey: 'masroofi.noAccess', error: true });
                   return;
                 }
                 router.replace({ pathname: '/parent', params: { section: 'tasks' } });
@@ -227,9 +231,9 @@ function ParentTaskRewards({
                 if (!selected?.assignment) return;
                 const result = promise(selected.assignment.id, rewardFils);
                 setFeedback({
-                  message: t(
-                    result.ok ? 'masroofi.rewardLocked' : masroofiErrorKey(result.error.code),
-                  ),
+                  messageKey: result.ok
+                    ? 'masroofi.rewardLocked'
+                    : masroofiErrorKey(result.error.code),
                   error: !result.ok,
                 });
               }}
@@ -239,7 +243,9 @@ function ParentTaskRewards({
             </PrimaryButton>
           </>
         )}
-        {feedback ? <MasroofiMessage {...feedback} /> : null}
+        {feedback ? (
+          <MasroofiMessage error={feedback.error} message={t(feedback.messageKey)} />
+        ) : null}
       </MasroofiSection>
       {view.promises.length > 0 ? (
         <MasroofiSection title={t('masroofi.promisesTitle')}>
@@ -311,7 +317,14 @@ function ParentCardContent({
             )}
           </Text>
         </View>
-        <Text align="center" brand color="inkMuted" direction={direction} variant="caption">
+        <Text
+          align="center"
+          brand
+          color="inkMuted"
+          direction={direction}
+          testID="masroofi-simulation-notice"
+          variant="caption"
+        >
           {t('masroofi.demoNotice')}
         </Text>
       </View>
@@ -357,9 +370,9 @@ function ParentCardContent({
                 onPress={() => {
                   const result = enable(childId, confirmedAge);
                   setFeedback({
-                    message: t(
-                      result.ok ? 'masroofi.enabled' : masroofiErrorKey(result.error.code),
-                    ),
+                    messageKey: result.ok
+                      ? 'masroofi.enabled'
+                      : masroofiErrorKey(result.error.code),
                     error: !result.ok,
                   });
                 }}
@@ -369,7 +382,9 @@ function ParentCardContent({
               </PrimaryButton>
             </>
           )}
-          {feedback ? <MasroofiMessage {...feedback} /> : null}
+          {feedback ? (
+            <MasroofiMessage error={feedback.error} message={t(feedback.messageKey)} />
+          ) : null}
         </MasroofiSection>
       )}
     </>

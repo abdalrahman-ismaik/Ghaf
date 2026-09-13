@@ -16,3 +16,11 @@ src/i18n/masroofi.ts. No overlapping edits; all checks serialized by root.
 Constitution check: synthetic data, no real finance, Parent approval, deterministic offline,
 small existing architecture, Arabic-first, no-loss Seeds preserved. No amendment required to
 the no-real-banking boundary. This spec explicitly extends simulated presentation only.
+
+2026-09-13 revision: extend the finite merchant/category unions and the existing fixture registry,
+then derive category controls, Child category selection and activity names from those contracts.
+No money-task eligibility or service permission boundary changes. Keep the previous default
+controls and validate each new category through the existing purchase pipeline. Replace only
+the card's artwork palette/composition; one visible simulation notice per card screen replaces
+repeated labels. Root owns UI/category integration and disclosure cleanup; domain helper owns
+model/service/tests; UI helper owns card artwork and its feature-scoped design palette.

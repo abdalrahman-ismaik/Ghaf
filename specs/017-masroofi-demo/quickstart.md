@@ -24,12 +24,23 @@ rehearsal is Alya, age 11; Salem, age 9, is deliberately ineligible for the card
    The task award/growth completes and Masroofi records exactly one simulated AED 5 credit.
 6. Return to Alya's Today → My Masroofi card. The card reveals the earned reward and balance.
    Buy the practice notebook for AED 3: balance becomes AED 2. Try the AED 12 online game: it is
-   declined under default category/online rules and the balance stays AED 2.
+   declined under default category/online rules and the balance stays AED 2. Choose **Games**
+   in the shop's category picker to reveal that purchase.
 7. Parent may change per-purchase/daily limits, category permissions, online permission or freeze
    purchases, then explicitly save. Changes apply prospectively. A freeze preserves earned money.
    Parent may add AED 20 demo funds to rehearse controls independently of task recognition.
 8. Use the existing Parent prototype reset. All cards, promises and transactions clear, along
    with the ordinary Arabic-first signed-out demo reset. Family replacement also clears the card.
+
+The shop now has eight spending categories: stationery, books, sports, arts and crafts, outings,
+snacks, gifts, and games. Each category shows one fixed example. Only stationery is allowed by
+default; Parent can enable categories individually and save. An online museum ticket also needs
+online permission. To rehearse: add AED 20 practice funds, enable Books and Snacks, then buy the
+AED 8 storybook and AED 4 fruit cup. A museum ticket remains blocked unless both Outings and
+online purchases are allowed, and all purchases still obey balance and spending limits.
+
+The revised pearl/red-woven card has a UAE flag and architectural engraving. It carries no DEMO
+stamp; one visible notice below it identifies all balances and purchases as virtual.
 
 This is one-device, in-memory competition state, like task progress. Reloading/restarting does
 not restore a financial history. No accounts, actual funds, issuer, card network or checkout exists.

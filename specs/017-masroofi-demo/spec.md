@@ -25,7 +25,10 @@ Family Reward promise. It does not change that promise, Seeds, growth, League or
    do not invent a real transfer/pending-bank state.
 4. Child and Parent see a realistic native card and private activity. Child projections omit all
    unearned reward amounts and other profiles. No card/money data enters AI or shared projections.
-5. A finite practice shop offers one stationery purchase and an online game purchase. Enforce
+5. A finite practice shop offers eight spending categories: stationery, books, sports, arts and
+   crafts, outings, snacks, gifts, and games. Each has one fixed, local sample purchase. Child
+   can switch categories without navigating away. Parent sets each category independently;
+   the existing stationery-only default remains and new categories require Parent opt-in. Enforce
    enabled/frozen, category, online, per-purchase/daily limits, balance and duplicate request checks.
    Declines explain the rule and never debit. Purchases reduce only simulated money, never Seeds.
 6. Parent can add bounded demo funds for practice. All balances begin at zero, and all funding is
@@ -36,9 +39,15 @@ Family Reward promise. It does not change that promise, Seeds, growth, League or
 ## Design
 
 Arabic-first, equivalent English; Alexandria/Readex Pro and incumbent botanical tokens.
-Card-first composition, Ghaf forest green, warm gold chip geometry, dune contours, woven
-geometric edge inspired by UAE craft, abstract Ghaf mark; no official emblem or issuer logos.
-Native readable text, restrained decoration, visible demo mark, no usable card number/CVV.
+Card-first composition with pearl/sand, ink and red woven detailing, a UAE flag accent and
+crisp architectural engraving. The user rejected the green-dominant first card on 2026-09-13.
+The card uses an original UAE-inspired composition; no official emblem or issuer logos.
+Native readable text and restrained decoration; no usable card number/CVV.
+Remove repeated DEMO stamps and simulated qualifiers from card artwork, balance and routine
+feedback. One concise, visible simulation notice immediately below the card on each role's
+screen explains that balances and purchases are virtual. Keep the practice-shop and top-up
+context honest without repeating that notice throughout the page. Task reward notices retain
+their own truthful label because they appear outside the card screen.
 Compact-width, long names, font scaling, readable bidi amounts and accessible controls required.
 All copy is in bilingual resources. Modern Standard Arabic; human cultural review remains open.
 

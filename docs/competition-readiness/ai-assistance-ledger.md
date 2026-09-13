@@ -1259,3 +1259,16 @@ SVG DOM warning and route-inventory regressions were corrected; historical failu
 evidence are recorded in the [workstream report](workstreams/masroofi-20260913.md). Physical
 Android, named Arabic/UAE review and student teach-back remain NOT RUN. The
 [workflow](../../specs/017-masroofi-demo/quickstart.md) explains the demonstration and limits.
+
+### Masroofi revision — spending categories and UAE card identity
+
+Actual user request: “add more categories, and for the car, make it's design much better, with
+UAE identity not just green one. also remove the exesive "DEMO" marks around it”. Clarification:
+“Spending categories on the card”. Codex root revised the contract, category picker/controls,
+translations, activity naming, store typing, feedback localization and evidence. The domain
+helper extended the finite service/model/tests; the UI helper replaced the artwork and scoped
+palette. Root corrected the category validation type and web direction warning. The domain helper
+reviewed final visual captures without authoring the UI. These generated changes do not establish
+student authorship or human cultural review. The [revision record](workstreams/masroofi-20260913.md)
+preserves checks and remaining native/human gates. One clear virtual-money notice remains below
+the card; no real finance claim or payment integration follows from removing repeated stamps.

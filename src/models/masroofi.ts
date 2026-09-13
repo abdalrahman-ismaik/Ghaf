@@ -3,8 +3,27 @@ import type { AgeBand, RecognitionReceipt, SyntheticChildId, TaskJourney } from 
 export type MasroofiActor =
   { readonly role: 'parent' } | { readonly role: 'child'; readonly childId: SyntheticChildId };
 
-export type MasroofiCategory = 'stationery' | 'games';
-export type MasroofiPurchaseFixtureId = 'stationery' | 'game_online';
+export const MASROOFI_CATEGORIES = [
+  'stationery',
+  'books',
+  'sports',
+  'arts',
+  'outings',
+  'snacks',
+  'gifts',
+  'games',
+] as const;
+
+export type MasroofiCategory = (typeof MASROOFI_CATEGORIES)[number];
+export type MasroofiPurchaseFixtureId =
+  | 'stationery'
+  | 'storybook'
+  | 'football'
+  | 'art_supplies'
+  | 'museum_ticket'
+  | 'snack'
+  | 'gift'
+  | 'game_online';
 
 export interface MasroofiControls {
   readonly frozen: boolean;

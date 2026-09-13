@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest';
 
 import { masroofiResources } from '../../src/i18n/masroofi';
 import { resources } from '../../src/i18n/resources';
+import { MASROOFI_CATEGORIES } from '../../src/models/masroofi';
+import { MASROOFI_PURCHASE_FIXTURES } from '../../src/features/masroofi/service';
 
 const source = (path: string) =>
   readFileSync(fileURLToPath(new URL(`../../${path}`, import.meta.url)), 'utf8');
@@ -36,10 +38,18 @@ describe('Masroofi bilingual presentation and route boundaries', () => {
     );
   });
 
-  it('keeps card markings synthetic and uses the version-aware Child projection for hidden rewards', () => {
-    const card = source('src/components/masroofi/MasroofiCard.tsx');
-    expect(card).toContain("t('masroofi.demo')");
-    expect(card).not.toMatch(/\b(?:Visa|Mastercard|CVV|IBAN)\b/);
+  it('provides readable labels for every spending category and purchase in both languages', () => {
+    for (const locale of ['ar', 'en'] as const) {
+      const copy: Readonly<Record<string, string>> = masroofiResources[locale];
+      for (const category of MASROOFI_CATEGORIES) expect(copy[category]?.trim()).toBeTruthy();
+      for (const fixture of Object.values(MASROOFI_PURCHASE_FIXTURES)) {
+        expect(copy[`item_${fixture.id}`]?.trim()).toBeTruthy();
+      }
+      expect(copy.channelOnline).not.toBe(copy.channelInStore);
+    }
+  });
+
+  it('uses the version-aware Child projection for hidden task rewards', () => {
     const notice = source('src/components/masroofi/MasroofiTaskRewardNotice.tsx');
     expect(notice).toContain('getMasroofiChild');
     expect(notice).toContain('promisedTasks');

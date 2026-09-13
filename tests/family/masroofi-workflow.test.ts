@@ -151,6 +151,31 @@ describe('Masroofi competition workflow', () => {
     expect(state().purchaseMasroofi('stationery', 'signed-out').ok).toBe(false);
   });
 
+  it('applies Parent category choices across books, snacks and online outings through the store', async () => {
+    await assignReward();
+    ok(state().topUpMasroofi('child_salem', 2000, 'category-practice'));
+    const controls = ok(state().getMasroofiParent('child_salem')).card!.controls;
+    ok(
+      state().setMasroofiControls('child_salem', {
+        ...controls,
+        allowedCategories: ['books', 'snacks', 'outings'],
+      }),
+    );
+    await enterChildExperienceForTest();
+    const book = ok(state().purchaseMasroofi('storybook', 'book-1'));
+    expect(book.card?.balanceFils).toBe(1200);
+    const outing = ok(state().purchaseMasroofi('museum_ticket', 'museum-1'));
+    expect(outing.transactions.at(-1)?.declineReason).toBe('online_blocked');
+    expect(outing.card?.balanceFils).toBe(1200);
+    const snack = ok(state().purchaseMasroofi('snack', 'snack-1'));
+    expect(snack.card?.balanceFils).toBe(800);
+    expect(snack.transactions.at(-1)?.fixtureId).toBe('snack');
+    const blocked = ok(state().purchaseMasroofi('stationery', 'no-stationery'));
+    expect(blocked.transactions.at(-1)?.declineReason).toBe('category_blocked');
+    expect(blocked.card?.balanceFils).toBe(800);
+    expect(blocked.card?.controls.allowedCategories).toEqual(['books', 'snacks', 'outings']);
+  });
+
   it('locks the amount immediately and refuses attaching money after acceptance', async () => {
     const id = await assignReward();
     expect(state().promiseMasroofi(id, 300).ok).toBe(false);

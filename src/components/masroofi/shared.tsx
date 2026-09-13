@@ -235,11 +235,7 @@ export function MasroofiActivity({
                 </Text>
                 {transaction.fixtureId ? (
                   <Text brand color="inkMuted" direction={direction} variant="caption">
-                    {t(
-                      transaction.fixtureId === 'stationery'
-                        ? 'masroofi.notebook'
-                        : 'masroofi.game',
-                    )}
+                    {t(`masroofi.item_${transaction.fixtureId}`)}
                   </Text>
                 ) : null}
               </View>

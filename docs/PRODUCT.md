@@ -8,7 +8,10 @@ existing praise and recognition credits it once. Children see the reward after i
 then practice purchases under Parent-set limits, category/online permissions and freeze controls.
 Known competition fixture ages apply: Alya (11) is eligible; Salem (9) is not. Custom 9–11-band
 profiles need Parent attestation because exact age is not stored in the family directory.
-The UAE-inspired card is original code-native forest/gold geometry. All money is simulated,
+The revised UAE-inspired card uses pearl/sand, red woven geometry, a flag accent and architectural
+engraving. Eight independently controlled spending categories offer fixed practice purchases;
+only stationery is allowed by default. One visible notice below the card replaces repeated DEMO
+marks and qualifiers. All money is simulated,
 in-memory and one-device only. No issuer, custody, transfer or real purchase exists. Seeds,
 growth, League and existing Family Reward promises are separate. See the
 [workflow](../specs/017-masroofi-demo/quickstart.md) and

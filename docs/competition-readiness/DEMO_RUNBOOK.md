@@ -7,7 +7,10 @@ The optional synthetic **Family → Masroofi / مصروفي** card journey is do
 eligible unaccepted task, complete it with permitted help, and confirm through the existing
 praise/recognition flow. Alya's card receives one simulated credit; a practice AED 3 notebook
 purchase leaves AED 2 and a blocked online-game purchase leaves that balance unchanged.
-The Parent sets prospective limits/category/online/freeze rules. No real money or card exists.
+The Parent sets prospective limits/category/online/freeze rules across eight spending categories.
+The Child uses category choices to show a single sample product. The revised pearl/red-woven
+card carries a UAE flag and architecture motif with one virtual-money notice below it.
+No real money or card exists.
 See [evidence and limitations](workstreams/masroofi-20260913.md); physical Android/human review
 remains separately required. Existing Family Reward promises and all growth authorities remain
 unchanged, and the existing Parent reset clears the extension.

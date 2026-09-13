@@ -5,6 +5,7 @@ import {
   eligibleJourney,
   MASROOFI_DEFAULT_CONTROLS,
   MASROOFI_MAX_BALANCE_FILS,
+  MASROOFI_PURCHASE_FIXTURES,
   masroofiService as service,
 } from '../../src/features/masroofi/service';
 import { P0_RECYCLING_TEMPLATE, TASK_TEMPLATES } from '../../src/features/tasks/demoContent';
@@ -15,7 +16,9 @@ import type {
   TaskJourney,
   TaskTemplate,
 } from '../../src/models/familyGrowth';
+import { MASROOFI_CATEGORIES } from '../../src/models/masroofi';
 import type {
+  MasroofiCategory,
   MasroofiControls,
   MasroofiPurchaseInput,
   MasroofiResult,
@@ -38,6 +41,193 @@ it('does not allow Parent attestation to override a known under-10 competition a
   expect(
     service.enable(createMasroofiRuntime(), { ...input, childId: 'child_alya', knownAge: 11 }).ok,
   ).toBe(true);
+});
+
+describe('Masroofi independent spending categories', () => {
+  const fixtures = Object.values(MASROOFI_PURCHASE_FIXTURES);
+
+  function permitted(fixture: (typeof fixtures)[number], amountFils = 50000) {
+    return controls(funded(amountFils), {
+      allowedCategories: [fixture.category],
+      onlineAllowed: true,
+      perPurchaseLimitFils: 50000,
+      dailyLimitFils: 50000,
+    });
+  }
+
+  it.each(fixtures)(
+    '$id requires its own category and never unlocks another category',
+    (fixture) => {
+      const runtime = permitted(fixture);
+      const bought = ok(service.purchase(runtime, purchaseInput({ fixtureId: fixture.id })));
+      expect(bought.cards.child_salem!.balanceFils).toBe(50000 - fixture.amountFils);
+      expect(bought.transactions.at(-1)).toMatchObject({
+        fixtureId: fixture.id,
+        status: 'approved',
+        amountFils: fixture.amountFils,
+      });
+      for (const other of fixtures.filter((item) => item.category !== fixture.category)) {
+        const declined = ok(service.purchase(runtime, purchaseInput({ fixtureId: other.id })));
+        expect(declined.transactions.at(-1)).toMatchObject({
+          status: 'declined',
+          declineReason: 'category_blocked',
+        });
+        expect(declined.cards.child_salem!.balanceFils).toBe(50000);
+      }
+      expect(runtime.transactions).toHaveLength(1);
+    },
+  );
+
+  it.each(fixtures.filter((fixture) => fixture.category !== 'stationery'))(
+    '$id stays blocked under the existing default controls',
+    (fixture) => {
+      const runtime = funded(50000);
+      const attempted = ok(service.purchase(runtime, purchaseInput({ fixtureId: fixture.id })));
+      expect(attempted.transactions.at(-1)?.declineReason).toBe('category_blocked');
+      expect(attempted.cards.child_salem!.balanceFils).toBe(50000);
+    },
+  );
+
+  it.each(fixtures)(
+    '$id respects freeze, per-purchase, daily and balance boundaries',
+    (fixture) => {
+      const runtime = permitted(fixture);
+      const input = purchaseInput({ fixtureId: fixture.id });
+      const withControls = (patch: Partial<MasroofiControls>) =>
+        controls(runtime, {
+          ...runtime.cards.child_salem!.controls,
+          ...patch,
+        });
+      for (const [declineReason, restricted] of [
+        ['card_frozen', withControls({ frozen: true })],
+        ['per_purchase_limit', withControls({ perPurchaseLimitFils: fixture.amountFils - 1 })],
+        ['daily_limit', withControls({ dailyLimitFils: fixture.amountFils - 1 })],
+        ['insufficient_balance', permitted(fixture, fixture.amountFils - 1)],
+      ] as const) {
+        const attempted = ok(service.purchase(restricted, input));
+        expect(attempted.transactions.at(-1)?.declineReason).toBe(declineReason);
+        expect(attempted.cards.child_salem!.balanceFils).toBe(
+          restricted.cards.child_salem!.balanceFils,
+        );
+      }
+      const boundary = withControls({
+        perPurchaseLimitFils: fixture.amountFils,
+        dailyLimitFils: fixture.amountFils,
+      });
+      const first = ok(service.purchase(boundary, input));
+      expect(first.transactions.at(-1)?.status).toBe('approved');
+      const next = ok(service.purchase(first, { ...input, requestId: 'same-day-next' }));
+      expect(next.transactions.at(-1)?.declineReason).toBe('daily_limit');
+      const tomorrow = ok(
+        service.purchase(next, { ...input, requestId: 'tomorrow', day: '2026-09-14' }),
+      );
+      expect(tomorrow.transactions.at(-1)?.status).toBe('approved');
+      expect(tomorrow.cards.child_salem!.balanceFils).toBe(50000 - fixture.amountFils * 2);
+    },
+  );
+
+  it.each(fixtures)('$id applies online permission independently of its category', (fixture) => {
+    const runtime = permitted(fixture);
+    const offlineOnly = controls(runtime, {
+      ...runtime.cards.child_salem!.controls,
+      onlineAllowed: false,
+    });
+    const attempted = ok(service.purchase(offlineOnly, purchaseInput({ fixtureId: fixture.id })));
+    const onlinePurchase = fixture.id === 'museum_ticket' || fixture.id === 'game_online';
+    expect(attempted.transactions.at(-1)?.status).toBe(onlinePurchase ? 'declined' : 'approved');
+    expect(attempted.transactions.at(-1)?.declineReason).toBe(
+      onlinePurchase ? 'online_blocked' : null,
+    );
+    expect(attempted.cards.child_salem!.balanceFils).toBe(
+      onlinePurchase ? 50000 : 50000 - fixture.amountFils,
+    );
+  });
+
+  it.each(fixtures)('$id retains idempotency across retries and permission changes', (fixture) => {
+    const runtime = permitted(fixture);
+    const input = purchaseInput({ fixtureId: fixture.id });
+    const approved = ok(service.purchase(runtime, input));
+    expect(ok(service.purchase(approved, input))).toBe(approved);
+    const otherFixture = fixture.id === 'stationery' ? 'storybook' : 'stationery';
+    expect(service.purchase(approved, { ...input, fixtureId: otherFixture })).toMatchObject({
+      ok: false,
+      error: { code: 'request_conflict' },
+    });
+    const restricted = controls(runtime, {
+      ...runtime.cards.child_salem!.controls,
+      allowedCategories: [],
+    });
+    const declined = ok(service.purchase(restricted, input));
+    const reallowed = controls(declined, runtime.cards.child_salem!.controls);
+    expect(ok(service.purchase(reallowed, input))).toBe(reallowed);
+    const fresh = ok(service.purchase(reallowed, { ...input, requestId: 'retry-explicit-new' }));
+    expect(fresh.cards.child_salem!.balanceFils).toBe(50000 - fixture.amountFils);
+  });
+
+  it('combines spending across categories in one daily allowance', () => {
+    const runtime = controls(funded(5000), {
+      allowedCategories: ['books', 'snacks'],
+      onlineAllowed: false,
+      dailyLimitFils: 1000,
+    });
+    const book = ok(service.purchase(runtime, purchaseInput({ fixtureId: 'storybook' })));
+    expect(book.cards.child_salem!.balanceFils).toBe(4200);
+    const snack = ok(
+      service.purchase(book, purchaseInput({ fixtureId: 'snack', requestId: 'snack-after-book' })),
+    );
+    expect(snack.transactions.at(-1)?.declineReason).toBe('daily_limit');
+    expect(snack.cards.child_salem!.balanceFils).toBe(4200);
+  });
+
+  it('can enable all finite categories while keeping the original controls default isolated', () => {
+    const categories = [...MASROOFI_CATEGORIES];
+    const runtime = controls(enabled(), { allowedCategories: categories });
+    categories.pop();
+    expect(runtime.cards.child_salem!.controls.allowedCategories).toHaveLength(8);
+    expect(MASROOFI_DEFAULT_CONTROLS.allowedCategories).toEqual(['stationery']);
+    expect(enabled('child_alya', runtime).cards.child_alya!.controls.allowedCategories).toEqual([
+      'stationery',
+    ]);
+  });
+
+  it.each(['__proto__', 'constructor', 'toString', 'hasOwnProperty', 'unknown'])(
+    'rejects non-fixture object key %s without recording a transaction',
+    (fixtureId) => {
+      const runtime = funded();
+      expect(
+        service.purchase(
+          runtime,
+          purchaseInput({ fixtureId: fixtureId as MasroofiPurchaseInput['fixtureId'] }),
+        ),
+      ).toMatchObject({ ok: false, error: { code: 'invalid_request' } });
+      expect(runtime.transactions).toHaveLength(1);
+      expect(runtime.cards.child_salem!.balanceFils).toBe(2000);
+    },
+  );
+
+  it('rejects malformed categories rather than coercing unknown values into permission', () => {
+    const sparse = new Array<MasroofiCategory>(1);
+    for (const allowedCategories of [
+      ['__proto__'],
+      ['constructor'],
+      ['books', 'books'],
+      ['shopping'],
+      [null],
+      [5],
+      sparse,
+    ]) {
+      expect(
+        service.setControls(enabled(), {
+          actor: parent,
+          childId: child.childId,
+          controls: {
+            ...MASROOFI_DEFAULT_CONTROLS,
+            allowedCategories: allowedCategories as readonly MasroofiCategory[],
+          },
+        }),
+      ).toMatchObject({ ok: false, error: { code: 'invalid_controls' } });
+    }
+  });
 });
 
 function ok<T>(result: MasroofiResult<T>): T {

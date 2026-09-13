@@ -13,7 +13,12 @@ import { create, type StateCreator } from 'zustand';
 import { entryMode } from '../config/demoEntry';
 import { masroofiDemoEnabled } from '../config/masroofi';
 import { createMasroofiRuntime } from '../features/masroofi/service';
-import type { MasroofiControls, MasroofiRuntime, MasroofiResult } from '../models/masroofi';
+import type {
+  MasroofiControls,
+  MasroofiRuntime,
+  MasroofiResult,
+  MasroofiPurchaseFixtureId,
+} from '../models/masroofi';
 import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
 import { createLocalParentEntry } from '../features/access/localParentEntry';
 import type { DemoEntryRequest, DemoEntryHandoff } from '../models/demoEntry';
@@ -655,7 +660,7 @@ export interface PrototypeStoreState extends PrototypeSession {
     amountFils: number,
   ) => MasroofiResult<MasroofiRuntime>;
   readonly purchaseMasroofi: (
-    fixtureId: 'stationery' | 'game_online',
+    fixtureId: MasroofiPurchaseFixtureId,
     requestId: string,
   ) => ReturnType<typeof serviceRegistry.masroofi.projectChild>;
   readonly markFamilyRewardGiven: () => ServiceResult<FamilyRewardPresentation>;
