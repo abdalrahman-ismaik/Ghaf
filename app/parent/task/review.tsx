@@ -31,11 +31,11 @@ function BilingualField({ label, value }: { label: string; value: LocalizedText 
   const { t } = useTranslation();
   return (
     <View style={styles.field}>
-      <Text brand color="onSurfaceVariant" variant="caption">
+      <Text accessibilityRole="header" brand color="deepForest" variant="label">
         {label}
       </Text>
       <View style={styles.languageBlock}>
-        <Text brand color="primary" direction="rtl" language="ar" variant="label">
+        <Text brand color="onSurfaceVariant" direction="rtl" language="ar" variant="caption">
           {t('language.arabic')}
         </Text>
         <Text brand direction="rtl" language="ar">
@@ -43,7 +43,7 @@ function BilingualField({ label, value }: { label: string; value: LocalizedText 
         </Text>
       </View>
       <View style={styles.languageBlock}>
-        <Text brand color="primary" direction="ltr" language="en" variant="label">
+        <Text brand color="onSurfaceVariant" direction="ltr" language="en" variant="caption">
           {t('language.english')}
         </Text>
         <Text brand direction="ltr" language="en">
@@ -321,7 +321,7 @@ export default function ParentTaskReviewScreen() {
           <Text brand color="deepForest" variant="screenTitle">
             {t('r002aTasks.reviewHeading')}
           </Text>
-          <Text brand color="onSurfaceVariant" variant="bodyLarge">
+          <Text brand color="onSurfaceVariant">
             {t('r002aTasks.reviewBody')}
           </Text>
         </View>
@@ -344,23 +344,31 @@ export default function ParentTaskReviewScreen() {
                 locale,
               )}
             </Text>
+            <Text brand color="tertiary" direction={direction} tabular variant="label">
+              {content.displayedSeedAward
+                ? t('childHome.awardAfterConfirmation', { count: content.displayedSeedAward })
+                : t('taskReview.noSeedRecognition')}
+            </Text>
           </View>
         </View>
 
         <View style={styles.record}>
-          <Text brand color="primary" variant="heading">
+          <Text accessibilityRole="header" brand color="primary" variant="heading">
             {localize(content.title, locale)}
           </Text>
           <BilingualField label={t('taskReview.action')} value={content.positiveAction} />
-          <BilingualField label={t('taskReview.definition')} value={content.definitionOfDone} />
-          <BilingualField label={t('taskReview.why')} value={content.whyItMatters} />
-          <BilingualField label={t('taskReview.effort')} value={content.estimatedEffort} />
           <BilingualField label={t('taskReview.help')} value={content.permittedHelp} />
           <BilingualField label={t('taskReview.supervision')} value={content.supervision} />
+          <BilingualField label={t('taskReview.definition')} value={content.definitionOfDone} />
         </View>
 
         <View style={styles.panel}>
           <SafetyBoundary bilingual safety={content.safety} testID="task-safety-boundary" />
+        </View>
+
+        <View style={styles.record}>
+          <BilingualField label={t('taskReview.effort')} value={content.estimatedEffort} />
+          <BilingualField label={t('taskReview.why')} value={content.whyItMatters} />
         </View>
 
         <BilingualTerms terms={policyTerms} title={t('taskReview.recognition')} />
@@ -479,7 +487,7 @@ function ReviewFooter({
 }
 
 const styles = StyleSheet.create({
-  screenContent: { paddingBottom: spacing.xxl },
+  screenContent: { gap: spacing.md, paddingBottom: spacing.xxl },
   heading: { gap: spacing.xs },
   prototypeIdentity: {
     minHeight: 28,
@@ -521,8 +529,8 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   field: {
-    gap: spacing.sm,
-    borderBottomWidth: 1,
+    gap: spacing.xs,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.outlineVariant,
     paddingBottom: spacing.lg,
   },

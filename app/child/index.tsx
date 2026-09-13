@@ -436,6 +436,7 @@ export default function ChildHomeScreen() {
     >
       <ChildTodayLandscape
         body={t(hasCurrentWork ? 'childHome.todaySummary' : 'childHome.noCurrentTaskSummary')}
+        compact={hasCurrentWork}
         direction={direction}
         landscapeId={currentTemplate?.landscapeId ?? 'mangrove'}
         stage={landscapeProgress[currentTemplate?.landscapeId ?? 'mangrove'].stage}
