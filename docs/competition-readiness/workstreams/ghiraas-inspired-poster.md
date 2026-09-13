@@ -1,5 +1,41 @@
 # Ghiraas-inspired Ghaf poster — 13 September 2026
 
+## V3 — original template edited in desktop PowerPoint
+
+The current delivery is `output/poster-20260913-powerpoint-template-v3/`. The user
+explicitly requested the original supplied PowerPoint be copied and edited with real
+components. V3 therefore edits a byte-identical copy in desktop PowerPoint, retaining
+twelve original native panel/masthead/capsule groups and their exact geometry, plus
+the supplied institutional marks. The original reference remains unchanged.
+
+The PowerPoint MCP reported no connected document session. Native desktop PowerPoint
+automation was the disclosed fallback. The result contains 45 editable editorial text
+boxes, 18 six-component phone groups, an editable laptop/architecture diagram with
+three connected arrows, and 196 leaf components. Screenshots remain separately
+replaceable images; every final embedded screen matches its source file bytes.
+The original-size template and exact-A1 editable versions accompany PDF/PNG exports,
+font files, editing instructions and slide notes. Both PowerPoints contain native
+objects rather than a flattened poster image.
+
+Native edit/save/reopen checks passed for the headline, phone-frame colour and diagram
+label. All 38 final delivery checks passed, including geometry, source identity and
+archive integrity; fresh PowerPoint
+renders with the fonts loaded were visually inspected. Earlier image compression,
+A1 scaling and text-fit issues were corrected. Embedded-font-only rendering failed
+in the long-running host, including stale glyph rendering. Those font parts were
+removed; the approved font files are supplied for installation before future editing.
+No font-independent editable-PowerPoint claim is made. The PDFs/PNGs are portable
+visual outputs. The saved task-owned V2 PRINT view was closed for the fresh check;
+the new V3 editable master is opened for the user with both fonts loaded for the
+current Windows session. No unrelated or unsaved presentation was closed.
+
+The 12/13 September screenshot provenance and prepared/synthetic/symbolic capability
+labels remain as recorded below. No fresh application or Android evidence is claimed.
+Only this additive report and isolated V3 output were written; no source, dependency,
+shared coordination or other session changes were staged. No helper or browser job
+was added under the current resource limit. Ready for user editing and review;
+physical print, human acceptance and submission remain NOT RUN.
+
 ## V2 — direct reference layout replaces the rejected first redesign
 
 The user rejected V1 as insufficiently professional and clarified that the poster should use the
