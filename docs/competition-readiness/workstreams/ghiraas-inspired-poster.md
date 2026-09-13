@@ -1,5 +1,40 @@
 # Ghiraas-inspired Ghaf poster — 13 September 2026
 
+## V4 — technology section correction
+
+The latest delivery is `output/poster-20260913-technology-v4/deliverables/`, also
+packaged as `output/poster-20260913-technology-v4/Ghaf-Technology-Poster-V4.zip`.
+Both original-size and exact A1 editable PowerPoints adapt the supplied original's
+architecture arrangement: Ghaf's Expo/React Native frontend, Firebase database,
+Gemini AI, MCP server and backend API gateway. Five native nodes and five attached
+bidirectional connectors replace V3's simplified local-state diagram. The technology
+description now explains all four layers. A short footer clarification attributes
+prepared AI to the displayed screenshots. The remaining slide components, all
+embedded assets, both V3 source posters and the original reference are unchanged.
+
+All 35 delivery checks passed, including actual desktop PowerPoint renders of the
+exact final files, 46 text objects fitting their bounds, 18 preserved editable phone
+groups, unique component IDs, attached connectors, A1 geometry and archive integrity.
+The lead inspected both final PNGs; an A1 diagram-font scaling issue was corrected
+before delivery. PDF/PNG exports, editing fonts, checksums, verification and short
+technology speaking notes accompany the editable files. No connected PowerPoint MCP
+session was available; local OOXML editing and native desktop PowerPoint rendering
+were used. No raster illustration, source screenshot or app behavior was generated.
+
+The user supplied the Gemini/MCP/Firebase architecture confirmation. This editing
+task did not test deployed integrations, infer Firebase authentication or assert a
+FastAPI backend. Slide notes retain that source distinction; older screenshot
+evidence remains prepared and synthetic. Physical print, named-human review and
+live-provider/database validation remain NOT RUN for this revision. Application
+tests were not rerun for an isolated poster change.
+
+Codex produced the revised copy, editable diagram, authoring script, exports and
+mechanical checks. No student authorship or human review is inferred. Only this
+additive tracked report and isolated ignored outputs changed; no helpers, app,
+dependency, shared coordination, browser or native-build jobs were allocated.
+The output/report scope is complete and released, ready for user review. No
+submission, push, merge or deployment occurred.
+
 ## V3 — original template edited in desktop PowerPoint
 
 The current delivery is `output/poster-20260913-powerpoint-template-v3/`. The user
