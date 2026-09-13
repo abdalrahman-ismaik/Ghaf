@@ -100,7 +100,7 @@ beforeEach(() => {
     temporaryParentAccess: null,
     localFamily: { status: 'ready', record: null },
     enterLocalParentAccount: vi.fn(() => ({ ok: true, data: { destination: '/parent' } })),
-    requestExistingParentVerification: vi.fn(),
+    beginLocalFamilyProfileRepair: vi.fn(() => ({ ok: true })),
     cancelTemporaryParentAccess: vi.fn(() => ({ ok: true })),
   };
 });
@@ -118,7 +118,7 @@ describe('Parent account chooser rendered controls', () => {
       expect(html).not.toMatch(/<input|parent-identifier-input|request-parent-code-button/u);
       control('local-parent-account-button').onPress?.();
       expect(harness.state.enterLocalParentAccount).toHaveBeenCalledOnce();
-      expect(harness.state.requestExistingParentVerification).not.toHaveBeenCalled();
+      expect(harness.state.beginLocalFamilyProfileRepair).not.toHaveBeenCalled();
       expect(harness.router.replace).toHaveBeenCalledWith('/parent');
     },
   );
@@ -128,6 +128,15 @@ describe('Parent account chooser rendered controls', () => {
     control('create-family-button').onPress?.();
     expect(harness.router.push).toHaveBeenCalledWith('/access/parent/sign-up?preview=offline');
     expect(harness.state.enterLocalParentAccount).not.toHaveBeenCalled();
+  });
+  it('opens required profile details directly without a code or Parent authority', () => {
+    harness.state.localFamilyProfileRepair = { familyName: 'Saved family' };
+    harness.state.localFamily = { status: 'unavailable', record: null };
+    render();
+    control('local-parent-account-button').onPress?.();
+    expect(harness.state.beginLocalFamilyProfileRepair).toHaveBeenCalledOnce();
+    expect(harness.state.enterLocalParentAccount).not.toHaveBeenCalled();
+    expect(harness.router.replace).toHaveBeenCalledWith('/access/parent/add-first-child');
   });
   it('does not navigate on failed local authority', () => {
     harness.state.enterLocalParentAccount = vi.fn(() => ({ ok: false }));

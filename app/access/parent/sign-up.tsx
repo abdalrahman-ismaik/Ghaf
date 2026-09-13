@@ -22,21 +22,12 @@ export default function ParentSignUpScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const localFamily = usePrototypeStore((state) => state.localFamily);
-  const pendingFamilyCreation = usePrototypeStore((state) => state.pendingFamilyCreation);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
-  const requestParentVerification = usePrototypeStore((state) => state.requestParentVerification);
-  const requestFamilyReplacementVerification = usePrototypeStore(
-    (state) => state.requestFamilyReplacementVerification,
-  );
+  const beginLocalFamilySetup = usePrototypeStore((state) => state.beginLocalFamilySetup);
   const [identifier, setIdentifier] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const networkAvailable = preview !== 'offline';
   const isReplacingFamily = Boolean(localFamily.record && parentOnboarding.completionReceipt);
-  const verificationHref =
-    preview === 'offline'
-      ? '/access/parent/verification?flow=create-family&preview=offline'
-      : '/access/parent/verification?flow=create-family';
 
   const returnToSignIn = useCallback(() => {
     if (preview === 'offline') {
@@ -56,15 +47,11 @@ export default function ParentSignUpScreen() {
     return () => subscription.remove();
   }, [returnToSignIn]);
 
-  const requestCode = async () => {
+  const startSetup = () => {
     if (busy) return;
     setBusy(true);
     setError(null);
-    await Promise.resolve();
-    const requestVerification = isReplacingFamily
-      ? requestFamilyReplacementVerification
-      : requestParentVerification;
-    const result = requestVerification({ identifier, networkAvailable });
+    const result = beginLocalFamilySetup({ identifier });
     if (!result.ok) {
       setError(
         result.error.code === 'INVALID_INPUT'
@@ -74,24 +61,18 @@ export default function ParentSignUpScreen() {
       setBusy(false);
       return;
     }
-    router.replace(verificationHref);
+    router.replace('/access/parent/family-basics');
   };
 
   if (parentOnboarding.status === 'authenticated_parent') {
     return <Redirect href={activeExperience === 'parent' ? '/parent' : '/'} />;
   }
-  if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
-    return <Redirect href={verificationHref} />;
-  }
-  if (parentOnboarding.status === 'verified') {
-    if (pendingFamilyCreation === 'replacement' && parentOnboarding.completionReceipt) {
-      return <Redirect href={verificationHref} />;
-    }
-    return parentOnboarding.completionReceipt ? (
-      <Redirect href="/access/parent/sign-in" />
-    ) : (
-      <Redirect href="/access/parent/family-basics" />
-    );
+  if (
+    parentOnboarding.status === 'code_sent' ||
+    parentOnboarding.status === 'verifying' ||
+    parentOnboarding.status === 'verified'
+  ) {
+    return <Redirect href="/access/parent/verification" />;
   }
 
   return (
@@ -173,7 +154,7 @@ export default function ParentSignUpScreen() {
             setIdentifier(value);
             setError(null);
           }}
-          onSubmitEditing={() => void requestCode()}
+          onSubmitEditing={startSetup}
           placeholder={t('access.signIn.identifierPlaceholder')}
           returnKeyType="go"
           testID="parent-sign-up-identifier-input"
@@ -187,9 +168,9 @@ export default function ParentSignUpScreen() {
           busyLabel={t('access.signUp.loading')}
           direction={direction}
           language={locale}
-          onPress={() => void requestCode()}
+          onPress={startSetup}
           size="regular"
-          testID="request-parent-sign-up-code-button"
+          testID="start-local-family-setup-button"
         >
           {t(isReplacingFamily ? 'access.signUp.replacementAction' : 'access.signUp.action')}
         </Button>

@@ -293,7 +293,7 @@ export const resources = {
           demoFamily: 'أسرة النور',
           demoAccount: 'وليّ الأمر · حساب تجريبي جاهز',
           savedAccount: 'وليّ الأمر · محفوظ على هذا الجهاز',
-          repairAccount: 'متابعة التحقق لإصلاح بيانات العائلة',
+          repairAccount: 'متابعة تحديث بيانات العائلة',
           localNotice: 'دخول محلي تجريبي دون بريد أو كلمة مرور أو رمز.',
           entryError: 'تعذّر فتح الحساب المحلي. ارجع وحاول مجددًا؛ تبقى بيانات عائلتك محفوظة.',
           identifierLabel: 'رقم الهاتف أو البريد الإلكتروني',
@@ -311,8 +311,8 @@ export const resources = {
           action: 'متابعة إعداد العائلة',
           replacementTitle: 'ستبقى عائلتك الحالية حتى الخطوة الأخيرة',
           replacementBody:
-            'يحفظ هذا الجهاز عائلة واحدة. بعد التحقق وإكمال البيانات، ستختار بوضوح إن كنت تريد استبدال العائلة الحالية ومسح تقدمها وربط أجهزتها.',
-          replacementAction: 'متابعة التحقق لعائلة جديدة',
+            'يحفظ هذا الجهاز عائلة واحدة. بعد إكمال البيانات، ستختار بوضوح إن كنت تريد استبدال العائلة الحالية ومسح تقدمها وربط أجهزتها.',
+          replacementAction: 'متابعة إعداد عائلة جديدة',
           loading: 'جارٍ تجهيز الخطوة التالية…',
           returningPrompt: 'لديك عائلة بالفعل؟',
           returnToSignIn: 'العودة إلى تسجيل دخول وليّ الأمر',
@@ -328,8 +328,7 @@ export const resources = {
           invalidCode: 'تحقق من الرمز وحاول مجددًا.',
           offline: 'يمكنك متابعة هذه الخطوة دون اتصال.',
           rememberDeviceTitle: 'تذكّرني على هذا الجهاز',
-          rememberDeviceBody:
-            'يفتح غاف مساحة وليّ الأمر تلقائيًا حتى تسجّل الخروج. لا يُحفظ رمز التحقق.',
+          rememberDeviceBody: 'يفتح غاف مساحة وليّ الأمر تلقائيًا حتى تسجّل الخروج.',
           temporaryParentAccess:
             'هذا جهاز طفل مرتبط. دخول وليّ الأمر مؤقت، وعند تسجيل الخروج يعود غاف إلى مساحة الطفل تلقائيًا.',
         },
@@ -2324,7 +2323,7 @@ export const resources = {
           demoFamily: 'Al Noor Family',
           demoAccount: 'Parent · Ready-to-use demo account',
           savedAccount: 'Parent · Saved on this device',
-          repairAccount: 'Continue verification to repair family details',
+          repairAccount: 'Continue updating family details',
           localNotice: 'Local demo access. No email, password or code needed.',
           entryError:
             'Could not open the local account. Go back and try again; your family data is kept.',
@@ -2344,8 +2343,8 @@ export const resources = {
           action: 'Continue family setup',
           replacementTitle: 'Your current family stays until the final step',
           replacementBody:
-            'This device stores one family. After verification and setup, you will explicitly choose whether to replace the current family and clear its progress and device pairings.',
-          replacementAction: 'Continue verification for a new family',
+            'This device stores one family. After setup, you will explicitly choose whether to replace the current family and clear its progress and device pairings.',
+          replacementAction: 'Continue setting up a new family',
           loading: 'Preparing the next step…',
           returningPrompt: 'Already have a family?',
           returnToSignIn: 'Return to Parent sign in',
@@ -2361,8 +2360,7 @@ export const resources = {
           invalidCode: 'Check the code and try again.',
           offline: 'You can continue this step while offline.',
           rememberDeviceTitle: 'Remember me on this device',
-          rememberDeviceBody:
-            'Ghaf opens Parent space automatically until you sign out. The verification code is not saved.',
+          rememberDeviceBody: 'Ghaf opens Parent space automatically until you sign out.',
           temporaryParentAccess:
             'This is a paired Child device. Parent access is temporary; signing out returns to Child space automatically.',
         },

@@ -154,7 +154,11 @@ import {
   SHARED_GROWTH_QUALITATIVE_FIXTURE,
 } from '../features/shared-growth/sharedGrowth';
 import { coerceLocale, getLocaleDirection } from '../models/prototype';
-import { hasOnlyPlainDataProperties, isPlainDataRecord } from '../utils/exactPlainData';
+import {
+  hasOnlyPlainDataProperties,
+  isExactPlainDataEqual,
+  isPlainDataRecord,
+} from '../utils/exactPlainData';
 import type {
   ChildCoachIntent,
   ChildCoachResult,
@@ -561,6 +565,10 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly requestParentVerification: (
     input: Parameters<typeof parentOnboardingController.requestVerification>[0],
   ) => ServiceResult<ParentOnboardingView>;
+  readonly beginLocalFamilySetup: (input: {
+    readonly identifier: unknown;
+  }) => ServiceResult<ParentOnboardingView>;
+  readonly beginLocalFamilyProfileRepair: () => ServiceResult<ParentOnboardingView>;
   readonly requestFamilyReplacementVerification: (
     input: Parameters<typeof parentOnboardingController.requestVerification>[0],
   ) => ServiceResult<ParentOnboardingView>;
@@ -1557,6 +1565,98 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       demoEntryInFlight = false;
       demoEntryAborted = false;
     }
+  },
+
+  beginLocalFamilySetup: (input) => {
+    const state = get();
+    if (
+      entryMode !== 'ordinary' ||
+      state.demoResetFailed ||
+      state.activeExperience !== 'signed_out' ||
+      state.parentOnboarding.status !== 'signed_out' ||
+      state.localFamily.status !== 'ready' ||
+      state.localFamilyProfileRepair !== null ||
+      state.pendingFamilyCreation !== null ||
+      Boolean(state.localFamily.record) !== Boolean(state.parentOnboarding.completionReceipt)
+    ) {
+      return failure('INVALID_TRANSITION', 'A ready signed-out local family is required for setup');
+    }
+    const family = serviceRegistry.localFamily.read();
+    if (!family.ok) return family;
+    if (!isExactPlainDataEqual(family.data, state.localFamily.record)) {
+      return failure('INVALID_TRANSITION', 'The local family changed; reopen setup');
+    }
+    if (!serviceRegistry.access.withDemoEntryTransaction)
+      return failure('INVALID_RESPONSE', 'Local setup transaction is unavailable');
+    const result = serviceRegistry.access.withDemoEntryTransaction(() =>
+      parentOnboardingController.withDemoEntryTransaction(() => {
+        const staged = parentOnboardingController.stageLocalSetup(input?.identifier);
+        if (!staged.ok) return staged;
+        if (family.data) {
+          const replacement = parentOnboardingController.beginVerifiedFamilyReplacement();
+          if (!replacement.ok) return replacement;
+        }
+        const localized = parentOnboardingController.updateDraft({ appLanguage: state.locale });
+        if (!localized.ok) return localized;
+        if (get() !== state) return failure('INVALID_TRANSITION', 'Local setup was interrupted');
+        return localized;
+      }),
+    );
+    if (!result.ok) return result;
+    set({
+      parentOnboarding: result.data,
+      pendingFamilyCreation: family.data ? 'replacement' : 'fresh',
+      rememberParentOnThisDevice: false,
+      returningUserWelcome: null,
+    });
+    return result;
+  },
+
+  beginLocalFamilyProfileRepair: () => {
+    const state = get();
+    if (
+      entryMode !== 'ordinary' ||
+      state.demoResetFailed ||
+      state.activeExperience !== 'signed_out' ||
+      state.parentOnboarding.status !== 'signed_out' ||
+      state.parentOnboarding.completionReceipt !== null ||
+      state.localFamily.record !== null ||
+      state.localFamilyProfileRepair === null ||
+      state.pendingFamilyCreation !== null
+    ) {
+      return failure('INVALID_TRANSITION', 'A signed-out repairable local profile is required');
+    }
+    const candidate = serviceRegistry.localFamily.readProfileRepairCandidate();
+    if (!candidate.ok) return candidate;
+    if (!candidate.data || !isExactPlainDataEqual(candidate.data, state.localFamilyProfileRepair)) {
+      return failure('INVALID_TRANSITION', 'The repairable local profile changed; reopen setup');
+    }
+    const repair = candidate.data;
+    if (!serviceRegistry.access.withDemoEntryTransaction)
+      return failure('INVALID_RESPONSE', 'Local setup transaction is unavailable');
+    const result = serviceRegistry.access.withDemoEntryTransaction(() =>
+      parentOnboardingController.withDemoEntryTransaction(() => {
+        const staged = parentOnboardingController.stageLocalSetup(
+          repair.parent.normalizedIdentifier,
+        );
+        if (!staged.ok) return staged;
+        const repaired = parentOnboardingController.beginVerifiedProfileRepair(repair);
+        if (!repaired.ok) return repaired;
+        const localized = parentOnboardingController.updateDraft({ appLanguage: state.locale });
+        if (!localized.ok) return localized;
+        if (get() !== state)
+          return failure('INVALID_TRANSITION', 'Local profile repair was interrupted');
+        return localized;
+      }),
+    );
+    if (!result.ok) return result;
+    set({
+      parentOnboarding: result.data,
+      pendingFamilyCreation: 'profile_repair',
+      rememberParentOnThisDevice: false,
+      returningUserWelcome: null,
+    });
+    return result;
   },
 
   requestParentVerification: (input) => {

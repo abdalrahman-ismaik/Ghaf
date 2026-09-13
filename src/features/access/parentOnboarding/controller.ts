@@ -214,6 +214,28 @@ export class ParentOnboardingController {
     };
   }
 
+  stageLocalSetup(identifier: unknown): ServiceResult<ParentOnboardingView> {
+    if (
+      this.parentSession ||
+      !['signed_out', 'code_sent', 'verifying'].includes(this.status) ||
+      this.replacementReceiptBackup ||
+      this.replacementDraftBackup
+    ) {
+      return failure('INVALID_TRANSITION', 'Cancel the current local setup before starting again');
+    }
+    const normalized = normalizeParentIdentifier(identifier);
+    if (!normalized.ok) return { ok: false, error: normalized.error };
+    this.verificationAttempt += 1;
+    // The legacy verified state now also represents local setup readiness, never identity proof.
+    this.status = 'verified';
+    this.normalizedIdentifier = normalized.data.normalizedIdentifier;
+    this.identifierKind = normalized.data.identifierKind;
+    this.maskedDestination = normalized.data.maskedDestination;
+    this.delivery = null;
+    this.offlineFallbackUsed = false;
+    return success(this.getView());
+  }
+
   requestVerification(input: {
     readonly identifier: unknown;
     readonly networkAvailable?: boolean;

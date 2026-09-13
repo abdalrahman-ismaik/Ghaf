@@ -115,6 +115,6 @@ T026–T029: contract4f48a75, runtime65efe80; report docs/competition-readiness/
 ## Parent no-code follow-up
 
 - [x] T030 Commit the no-code local Parent follow-up contract.
-- [ ] T031 Implement and test direct local setup/replacement/repair staging.
-- [ ] T032 Retire OTP UI, connect direct routes and move optional remember control.
+- [x] T031 Implement and test direct local setup/replacement/repair staging.
+- [x] T032 Retire OTP UI, connect direct routes and move optional remember control.
 - [ ] T033 Validate affected guards/cancellation and AR/EN browser; commit/report/release.

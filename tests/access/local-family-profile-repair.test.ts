@@ -342,7 +342,7 @@ describe('verified returning-family profile repair', () => {
 });
 
 describe('profile repair route contract', () => {
-  it('reuses verified profile and review screens with equivalent bilingual explanation', () => {
+  it('reuses local profile and review screens with equivalent bilingual explanation', () => {
     const verification = readFileSync(
       new URL('../../app/access/parent/verification.tsx', import.meta.url),
       'utf8',
@@ -357,13 +357,13 @@ describe('profile repair route contract', () => {
     );
     const resources = readFileSync(new URL('../../src/i18n/resources.ts', import.meta.url), 'utf8');
 
-    expect(verification).toContain('beginVerifiedFamilyProfileRepair');
+    expect(verification).not.toContain('beginVerifiedFamilyProfileRepair');
     expect(verification).toContain("pendingFamilyCreation === 'profile_repair'");
     expect(childProfile).toContain("pendingFamilyCreation === 'profile_repair'");
     expect(review).toContain("pendingFamilyCreation === 'profile_repair'");
     expect(
       readFileSync(new URL('../../app/access/parent/sign-in.tsx', import.meta.url), 'utf8'),
-    ).toContain('localFamilyProfileRepair');
+    ).toContain('beginLocalFamilyProfileRepair');
     for (const key of ['profileRepairTitle', 'profileRepairBody', 'profileRepairReview']) {
       expect(resources.match(new RegExp(`${key}:`, 'gu'))).toHaveLength(2);
     }

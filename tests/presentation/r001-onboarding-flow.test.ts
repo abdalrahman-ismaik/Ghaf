@@ -168,12 +168,14 @@ describe('approved R001 Parent onboarding integration', () => {
       new URL('../../app/access/parent/sign-up.tsx', import.meta.url),
       'utf8',
     );
-    expect(signUp).toContain('requestParentVerification');
-    expect(signUp).toContain('flow=create-family');
+    expect(signUp).toContain('beginLocalFamilySetup');
+    expect(signUp).not.toContain('requestParentVerification');
+    expect(signUp).not.toContain('flow=create-family');
 
     const verification = routeSource('/access/parent/verification');
-    expect(verification).toContain('verifyParentCode');
-    expect(verification).toContain('resendParentVerification');
+    expect(verification).not.toContain('verifyParentCode');
+    expect(verification).not.toContain('resendParentVerification');
+    expect(verification).not.toContain('completeParentOnboarding');
     expect(verification).toContain('cancelParentVerification');
 
     const familyBasics = routeSource('/access/parent/family-basics');
@@ -288,7 +290,7 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(createFamilyStyle).not.toContain('paddingHorizontal');
 
     const verification = routeSource('/access/parent/verification');
-    expect(verification).toContain('iconPosition="end"');
+    expect(verification).not.toContain('<OtpInput');
 
     const review = routeSource('/access/parent/review-create');
     expect(review).not.toContain('footer={');
@@ -307,7 +309,7 @@ describe('approved R001 Parent onboarding integration', () => {
       'utf8',
     );
     expect(signUp).toContain('testID="parent-sign-up-screen"');
-    expect(signUp).toContain('testID="request-parent-sign-up-code-button"');
+    expect(signUp).toContain('testID="start-local-family-setup-button"');
     expect(signUp).toContain('testID="return-to-parent-sign-in-button"');
     expect(signUp).toContain('<ParentAccessPortrait />');
     expect(signUp).toContain('variant="quiet"');

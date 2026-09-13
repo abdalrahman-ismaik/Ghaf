@@ -489,7 +489,6 @@ describe('R003 first-run experience', () => {
       'app/access/child/pair.tsx',
       'app/access/parent/sign-in.tsx',
       'app/access/parent/sign-up.tsx',
-      'app/access/parent/verification.tsx',
       'app/access/parent/family-basics.tsx',
       'app/access/parent/add-first-child.tsx',
       'app/access/parent/review-create.tsx',

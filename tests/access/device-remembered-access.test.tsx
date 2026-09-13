@@ -743,15 +743,15 @@ describe('Feature 005 presentation source contract', () => {
 
   it('shows an accessible unchecked Parent choice or a temporary Child-device notice', () => {
     const choice = source('src/components/access/RememberDeviceChoice.tsx');
-    const verification = source('app/access/parent/verification.tsx');
+    const familyBasics = source('app/access/parent/family-basics.tsx');
 
     expect(choice).toContain('accessibilityRole="checkbox"');
     expect(choice).toContain('accessibilityState={{ checked: selected, disabled }}');
     expect(choice).toContain('minHeight: layout.touchTarget');
-    expect(verification).toContain('<RememberDeviceChoice');
-    expect(verification).toContain('selected={rememberParentOnThisDevice}');
-    expect(verification).toContain("t('access.verification.temporaryParentAccess')");
-    expect(verification).toContain('temporaryParentAccess ? (');
+    expect(familyBasics).toContain('<RememberDeviceChoice');
+    expect(familyBasics).toContain('selected={rememberParentOnThisDevice}');
+    expect(familyBasics).toContain("t('access.verification.temporaryParentAccess')");
+    expect(familyBasics).toContain('temporaryParentAccess ? (');
   });
 
   it('uses the dedicated Child-to-Parent handoff from every Child-facing switch action', () => {

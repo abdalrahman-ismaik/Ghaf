@@ -18,6 +18,7 @@ import {
   AccessTextField,
   FamilyPeopleEditor,
   InfoRow,
+  RememberDeviceChoice,
   SegmentedControl,
   StatusBanner,
 } from '@/components/access';
@@ -40,6 +41,11 @@ export default function FamilyBasicsScreen() {
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const setLocale = usePrototypeStore((state) => state.setLocale);
+  const rememberParentOnThisDevice = usePrototypeStore((state) => state.rememberParentOnThisDevice);
+  const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
+  const setRememberParentOnThisDevice = usePrototypeStore(
+    (state) => state.setRememberParentOnThisDevice,
+  );
   const cancelParentVerification = usePrototypeStore((state) => state.cancelParentVerification);
   const updateParentOnboardingDraft = usePrototypeStore(
     (state) => state.updateParentOnboardingDraft,
@@ -360,6 +366,24 @@ export default function FamilyBasicsScreen() {
             <GhafIcon color={colors.outline} direction={direction} name="chevron" size={22} />
           </Pressable>
         </View>
+        {temporaryParentAccess ? (
+          <StatusBanner
+            direction={direction}
+            language={locale}
+            message={t('access.verification.temporaryParentAccess')}
+            tone="origin"
+          />
+        ) : (
+          <RememberDeviceChoice
+            body={t('access.verification.rememberDeviceBody')}
+            direction={direction}
+            disabled={busy}
+            language={locale}
+            onChange={setRememberParentOnThisDevice}
+            selected={rememberParentOnThisDevice}
+            title={t('access.verification.rememberDeviceTitle')}
+          />
+        )}
         <InfoRow
           direction={direction}
           icon="sparkle"

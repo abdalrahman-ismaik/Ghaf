@@ -27,14 +27,13 @@ export default function ParentSignInScreen() {
   const cancelTemporaryParentAccess = usePrototypeStore(
     (state) => state.cancelTemporaryParentAccess,
   );
-  const requestExistingParentVerification = usePrototypeStore(
-    (state) => state.requestExistingParentVerification,
+  const beginLocalFamilyProfileRepair = usePrototypeStore(
+    (state) => state.beginLocalFamilyProfileRepair,
   );
   const localFamily = usePrototypeStore((state) => state.localFamily);
   const enterLocalParentAccount = usePrototypeStore((state) => state.enterLocalParentAccount);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const networkAvailable = preview !== 'offline';
   const signUpHref =
     preview === 'offline' ? '/access/parent/sign-up?preview=offline' : '/access/parent/sign-up';
 
@@ -66,17 +65,14 @@ export default function ParentSignInScreen() {
     setBusy(true);
     setError(null);
     const result = localFamilyProfileRepair
-      ? requestExistingParentVerification({
-          identifier: localFamilyProfileRepair.parent.normalizedIdentifier,
-          networkAvailable,
-        })
+      ? beginLocalFamilyProfileRepair()
       : enterLocalParentAccount();
     if (!result.ok) {
       setError(t('access.signIn.entryError'));
       setBusy(false);
       return;
     }
-    router.replace(localFamilyProfileRepair ? '/access/parent/verification' : '/parent');
+    router.replace(localFamilyProfileRepair ? '/access/parent/add-first-child' : '/parent');
   };
 
   const familyName =
@@ -88,7 +84,7 @@ export default function ParentSignInScreen() {
   if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
     return <Redirect href="/access/parent/verification" />;
   }
-  if (parentOnboarding.status === 'verified' && parentOnboarding.completionReceipt) {
+  if (parentOnboarding.status === 'verified') {
     return <Redirect href="/access/parent/verification" />;
   }
   if (parentOnboarding.status === 'authenticated_parent') {

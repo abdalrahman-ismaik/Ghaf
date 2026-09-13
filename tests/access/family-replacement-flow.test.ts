@@ -189,7 +189,7 @@ async function recognizeCurrentFamily(identifier = 'parent@example.com') {
 describe('Feature 011 Parent access presentation contract', () => {
   const source = (relativePath: string) => readFileSync(join(process.cwd(), relativePath), 'utf8');
 
-  it('keeps Create a new family visible and routes through guarded replacement verification', () => {
+  it('keeps Create a new family visible and stages local replacement without a verification step', () => {
     const signIn = source('app/access/parent/sign-in.tsx');
     const signUp = source('app/access/parent/sign-up.tsx');
     const verification = source('app/access/parent/verification.tsx');
@@ -198,12 +198,13 @@ describe('Feature 011 Parent access presentation contract', () => {
     expect(signIn).toContain('testID="create-family-button"');
     expect(signIn).not.toContain('parentOnboarding.completionReceipt ? null');
     expect(signIn).toContain('router.push(signUpHref)');
-    expect(signUp).toContain('requestFamilyReplacementVerification');
+    expect(signUp).toContain('beginLocalFamilySetup');
     expect(signUp).toContain("t('access.signUp.replacementTitle')");
     expect(signUp).not.toContain(
       'if (parentOnboarding.completionReceipt) {\n    return <Redirect href="/access/parent/sign-in" />;',
     );
-    expect(verification).toContain('beginVerifiedFamilyReplacement');
+    expect(verification).not.toContain('beginVerifiedFamilyReplacement');
+    expect(verification).not.toContain('completeParentOnboarding');
     expect(review).toContain("pendingFamilyCreation === 'replacement'");
     expect(review).toContain("'access.review.replaceFamily'");
   });

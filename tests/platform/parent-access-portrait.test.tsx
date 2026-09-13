@@ -83,19 +83,15 @@ describe('Emirati Parent access portrait', () => {
   });
 
   it('keeps the portrait on local account selection and the existing setup steps', () => {
-    const routes = [
-      'app/access/parent/sign-in.tsx',
-      'app/access/parent/sign-up.tsx',
-      'app/access/parent/verification.tsx',
-    ].map(source);
+    const routes = ['app/access/parent/sign-in.tsx', 'app/access/parent/sign-up.tsx'].map(source);
 
     for (const route of routes) {
       expect(route).toContain('<ParentAccessPortrait');
     }
     expect(routes[0]).toContain('<ParentAccountChooser');
     expect(routes[0]).toContain('enterLocalParentAccount');
-    expect(routes[1]).toContain('testID="request-parent-sign-up-code-button"');
-    expect(routes[2]).toContain('testID="verify-parent-code-button"');
+    expect(routes[1]).toContain('testID="start-local-family-setup-button"');
+    expect(source('app/access/parent/verification.tsx')).not.toContain('<OtpInput');
   });
 
   it('preloads the portrait only with the Parent access section', () => {

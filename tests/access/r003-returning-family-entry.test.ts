@@ -112,14 +112,11 @@ describe('R003 returning-family route and presentation contract', () => {
     }
 
     const verification = source('app/access/parent/verification.tsx');
-    expect(verification).toContain("parentOnboarding.status !== 'verified'");
     expect(verification).toContain('!parentOnboarding.completionReceipt');
-    expect(verification).toContain('completeParentOnboarding()');
-    expect(verification).toContain('if (!isCreateFamilyFlow && result.data.completionReceipt)');
-    expect(verification).toContain('return <Redirect href={entryHref} />');
-    expect(verification).not.toContain(
-      'parentOnboarding.status === \'verified\' && !parentOnboarding.completionReceipt) {\n    return <Redirect href="/access/parent/family-basics" />',
-    );
+    expect(verification).toContain('cancelParentVerification()');
+    expect(verification).toContain('<Redirect href="/access/parent/sign-in" />');
+    expect(verification).not.toContain('completeParentOnboarding');
+    expect(verification).not.toContain('useLocalSearchParams');
 
     const success = source('app/access/parent/family-created-success.tsx');
     expect(success).toContain("returningUserWelcome?.kind === 'returning_parent'");
