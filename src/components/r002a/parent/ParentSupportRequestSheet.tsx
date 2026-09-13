@@ -1,4 +1,4 @@
-import { useRef, useState, type RefObject } from 'react';
+import { useRef, useState, type KeyboardEvent, type RefObject } from 'react';
 import {
   AccessibilityInfo,
   findNodeHandle,
@@ -97,6 +97,17 @@ export function ParentSupportRequestSheet({
     );
   };
 
+  const webCheckboxKeys = (stepId: string) =>
+    Platform.OS === 'web'
+      ? {
+          onKeyDown: (event: KeyboardEvent) => {
+            if (event.key !== ' ' && event.key !== 'Spacebar') return;
+            event.preventDefault();
+            if (!event.repeat) toggleStep(stepId);
+          },
+        }
+      : {};
+
   return (
     <Modal
       animationType={reducedMotion ? 'none' : 'slide'}
@@ -162,8 +173,10 @@ export function ParentSupportRequestSheet({
                   const selected = selectedStepIds.includes(step.id);
                   return (
                     <Pressable
+                      {...webCheckboxKeys(step.id)}
                       accessibilityRole="checkbox"
                       accessibilityState={{ checked: selected }}
+                      aria-checked={selected}
                       key={step.id}
                       onPress={() => toggleStep(step.id)}
                       style={({ pressed }) => [

@@ -71,6 +71,7 @@ export function SuccessSheet({
   visible,
 }: SuccessSheetProps) {
   const reducedMotion = useReducedMotion();
+  const isWeb = Platform.OS === 'web';
   const resolvedAnnouncementMessage = announcementMessage ?? message;
   const progress = useSharedValue(visible && reducedMotion ? 1 : 0);
   const announcementRef = useRef<View>(null);
@@ -154,16 +155,18 @@ export function SuccessSheet({
             showsVerticalScrollIndicator={false}
           >
             <View
-              accessibilityLabel={`${title}. ${resolvedAnnouncementMessage}`}
-              accessibilityLiveRegion="polite"
-              accessible
+              accessibilityLabel={isWeb ? undefined : `${title}. ${resolvedAnnouncementMessage}`}
+              accessibilityLiveRegion={isWeb ? undefined : 'polite'}
+              accessible={!isWeb}
+              aria-live={isWeb ? 'polite' : undefined}
               ref={announcementRef}
+              role={isWeb ? 'status' : undefined}
               style={styles.announcement}
             >
               <View
-                accessibilityElementsHidden
-                aria-hidden
-                importantForAccessibility="no-hide-descendants"
+                accessibilityElementsHidden={!isWeb}
+                aria-hidden={isWeb ? undefined : true}
+                importantForAccessibility={isWeb ? undefined : 'no-hide-descendants'}
                 style={styles.visualAnnouncement}
               >
                 <View style={styles.successMark}>

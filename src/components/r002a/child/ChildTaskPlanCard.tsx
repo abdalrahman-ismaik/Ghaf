@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
@@ -15,6 +15,7 @@ interface ChildTaskPlanCardProps {
 
 export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCardProps) {
   const formatter = new Intl.NumberFormat(direction === 'rtl' ? 'ar-AE' : 'en-AE');
+  const isWeb = Platform.OS === 'web';
 
   return (
     <View style={styles.card} testID="child-task-plan">
@@ -33,12 +34,19 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
       <View style={styles.steps}>
         {steps.map((step, index) => (
           <View
-            accessibilityLabel={`${formatter.format(index + 1)}. ${step.title}. ${step.detail}`}
-            accessible
+            accessibilityLabel={
+              isWeb ? undefined : `${formatter.format(index + 1)}. ${step.title}. ${step.detail}`
+            }
+            accessible={!isWeb}
             key={step.id}
             style={[styles.step, { flexDirection: logicalRowDirection(direction) }]}
           >
-            <View style={styles.number}>
+            <View
+              accessibilityElementsHidden={!isWeb}
+              aria-hidden={isWeb ? undefined : true}
+              importantForAccessibility={isWeb ? undefined : 'no-hide-descendants'}
+              style={styles.number}
+            >
               <Text
                 align="center"
                 brand
@@ -50,7 +58,12 @@ export function ChildTaskPlanCard({ direction, steps, title }: ChildTaskPlanCard
                 {formatter.format(index + 1)}
               </Text>
             </View>
-            <View aria-hidden style={styles.copy}>
+            <View
+              accessibilityElementsHidden={!isWeb}
+              aria-hidden={isWeb ? undefined : true}
+              importantForAccessibility={isWeb ? undefined : 'no-hide-descendants'}
+              style={styles.copy}
+            >
               <Text brand color="deepForest" direction={direction} variant="label">
                 {step.title}
               </Text>

@@ -91,7 +91,6 @@ export default function ChildSettingsScreen() {
           PERMISSIONS.map((permission) => (
             <R003ActionRow
               direction={direction}
-              disabled
               icon={permission.icon}
               key={permission.key}
               language={locale}
@@ -100,6 +99,7 @@ export default function ChildSettingsScreen() {
                   ? 'r003.permissions.enabled'
                   : 'r003.permissions.disabled',
               )}
+              testID={`child-permission-${permission.key}`}
               title={t(permission.label)}
             />
           ))

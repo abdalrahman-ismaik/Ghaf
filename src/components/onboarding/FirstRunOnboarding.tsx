@@ -513,6 +513,7 @@ const styles = StyleSheet.create({
   },
   topBar: {
     width: '100%',
+    flexWrap: 'wrap',
     minHeight: 60,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -522,11 +523,16 @@ const styles = StyleSheet.create({
   },
   topActions: {
     flexShrink: 0,
+    maxWidth: '100%',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     gap: spacing.xxs,
   },
   topAction: {
     minWidth: layout.touchTarget,
+    maxWidth: '100%',
+    flexShrink: 1,
     paddingHorizontal: spacing.xs,
   },
   story: {
