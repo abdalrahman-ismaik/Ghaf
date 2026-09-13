@@ -1,16 +1,17 @@
 # Ghaf documentation map
 
-This directory contains current engineering guidance and preserved Feature 002 records. The active
-Feature 003 product contracts intentionally remain in the repository root because the approved
-handoff, `AGENTS.md`, and Spec Kit workflow reference those canonical paths.
+This directory contains engineering guidance, design/content provenance, competition work records
+and preserved Feature 002 evidence. Feature 003 owns the Family Growth Garden baseline; later
+numbered packages describe bounded amendments. The [specification index](../specs/README.md) maps
+them without treating every proposal as released behavior.
 
 > **R002A COMPATIBILITY SCOPE APPROVED — IMPLEMENTATION AUTHORIZED**
 >
 > **R002B PRODUCT CONTRACT APPROVED — FEATURE-FLAGGED IMPLEMENTATION AUTHORIZED — RELEASE ACTIVATION BLOCKED**
 
-Clean R002a head `0501cf3` is the implementation baseline. R001/R002a remain frozen fallbacks; R002b
-Growth mechanics may be implemented behind independent default-off flags. The six local-only
-commits remain unapplied, and release activation remains blocked.
+Root product contracts intentionally remain at their established paths. R001/R002a remain
+regression boundaries; R002b and optional AI release status must be read from their applicable
+feature and evidence records. A source or browser pass does not establish physical-demo acceptance.
 
 ## Start here
 
@@ -18,6 +19,10 @@ commits remain unapplied, and release activation remains blocked.
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                                                          |
 | Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                                                       |
+| Find the right folder for a change                     | [Repository structure](architecture/REPOSITORY_STRUCTURE.md)                                       |
+| Review organization findings and remaining debt        | [Repository audit](architecture/REPOSITORY_AUDIT.md)                                               |
+| Run a focused test group                               | [Test suite guide](../tests/README.md)                                                             |
+| Inspect current competition work and gates             | [Competition readiness](competition-readiness/README.md)                                           |
 | Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                              |
 | Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md)                                                              |
 | Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                                      |
@@ -89,6 +94,9 @@ reproducible build/tool output and are not versioned evidence. Preserve the comm
 the evidence ledger; preserve only deliberately selected screenshots.
 
 ## Documentation rules
+
+Folder guides also describe [source](../src/README.md), [assets](../assets/README.md),
+[scripts](../scripts/README.md), [Workers](../workers/README.md) and [tools](../tools/README.md).
 
 - Update the active Feature 003 source of truth; do not create a second copy under `docs/`.
 - Keep behavior changes aligned across the spec, product contract, implementation, tests, and

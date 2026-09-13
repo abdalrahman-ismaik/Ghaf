@@ -1,5 +1,35 @@
 # Team Ownership
 
+## Repository organization — completed 2026-09-13
+
+Owner: root, user-authorized repository organization and GitHub review preparation.
+Scope: `tests/**` (path organization and corresponding relative references only),
+`README.md`, `CONTRIBUTING.md`, `docs/{README,DEVELOPMENT}.md`,
+`docs/architecture/{REPOSITORY_STRUCTURE,REPOSITORY_AUDIT}.md`,
+`docs/architecture/adr/0003-repository-organization.md`,
+`{src,assets,scripts,specs,workers,tools}/README.md`, `.github/**`, `.editorconfig`,
+`package.json`, `scripts/repository/**`, and this reservation.
+No helpers allocated. One serialized validation job; no native build or preview restart.
+Preserve runtime source, canonical product/specification contracts, historical evidence,
+all B/C/D status/report ownership, and user-added media/reference directories.
+Handoff: cohesive local commits, complete test discovery, static checks, repository navigation
+validation, and an explicit remaining-evidence record. Status: COMPLETE; release all reserved
+maintenance paths when this record is committed. No helper, build or preview process is retained.
+
+Validation follow-up: additionally reserve `app/index.tsx` for the single unused `t` binding
+reported by zero-warning lint. Preserve its translation hook and all route behavior.
+The test boundary also covers four existing lint-only warnings (unused bindings, readonly-array
+syntax and import order), retaining every test assertion. Include tests, Workers and the new
+repository tooling in the maintained lint command.
+
+Handoff: test organization committed as `7624d92`; unused route binding as `29f9fe4`.
+Final regression passed 153 files / 2,027 tests; typecheck, expanded zero-warning lint,
+formatting, four repository-tool tests, navigation/artifact checks, local Expo compatibility,
+workflow YAML and 39-route web export passed. Export retained color/shutdown warnings.
+See `docs/architecture/REPOSITORY_AUDIT.md` for precise commands and limitations.
+Hosted CI, browser, physical Android and named-human review were NOT RUN. No push, merge,
+deployment, native build, flag activation, media intake or other owners' work was included.
+
 ## NB1 current integration — 2026-09-12T11:22:10.376696+00:00
 
 Canonical board59 and continuing A instance A-20260911T2220Z-root govern exact grants.

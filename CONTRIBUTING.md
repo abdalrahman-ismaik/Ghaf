@@ -54,7 +54,8 @@ Cross-cutting review: Arabic/culture/safeguarding/accessibility as applicable
 ```
 
 Only the integration owner changes shared app configuration or resolves dependency conflicts.
-At most four agents may run concurrently, with disjoint write scopes.
+Follow the current [shared coordination budget](docs/competition-readiness/coordination/README.md)
+and its board; helper capacity does not replace an explicit file reservation or job allocation.
 
 ## Branch and Commit Discipline
 
@@ -76,6 +77,10 @@ docs: record Arabic Android rehearsal
 
 ## Implementation Conventions
 
+Use the [repository placement rules](docs/architecture/REPOSITORY_STRUCTURE.md) and
+[test directory guide](tests/README.md). Keep canonical product documents and historical evidence
+at their established paths. Place new tests directly in the relevant subject folder.
+
 - Keep Expo Router screens thin and put reusable UI in `src/components/`.
 - Put task, reward, garden, circle, and assistant behavior in bounded feature modules.
 - Consume service interfaces through the central registry; screens never import a concrete remote
@@ -89,6 +94,19 @@ docs: record Arabic Android rehearsal
 - Use code-native SVG and existing libraries before installing a new UI or illustration system.
 - If an optional remote AI provider is approved, keep the secret on a server, validate structured
   output, time out quickly, and fall back within the same attempt.
+
+## Repository Checks and Pull Requests
+
+`npm run repo:check` validates maintained navigation links, test relocation references and tracked
+artifact hygiene. `npm run verify` also runs the existing source checks, tests, Expo compatibility
+check and web export. GitHub uses [the repository workflow](.github/workflows/ci.yml); a local
+workflow file does not mean a hosted run has passed.
+
+Use the PR template to state the concrete change, applicable contract, actual checks and remaining
+evidence gates. Generated exports and raw captures stay in ignored `output/`; intentionally selected
+new screenshots belong in `docs/screenshots/` with source attribution. The historical output
+exception list preserves existing evidence only. Do not add another package, dependency manager,
+license grant or reviewer identity as a cosmetic repository change.
 
 ## Behavioral-Design Review
 

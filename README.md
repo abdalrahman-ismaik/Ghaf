@@ -113,14 +113,16 @@ For the competition preview, start a separate demo-mode process:
 EXPO_NO_DOTENV=1 EXPO_PUBLIC_GHAF_DEMO_ENTRY=true npm start
 ```
 
-The entry screen offers **Parent, Salem and Alya** without credentials, plus three optional
-onboarding moments. Each choice uses the existing role controller. Sign out and choose another
-profile to continue the same task within the running app. Restarting starts a fresh demo;
+Fresh entry shows the original six-page onboarding, followed by the **Parent** and **Child**
+choices. Parent opens the synthetic Parent experience; Child lets the operator choose **Salem**
+or **Alya** without credentials. Each choice uses the existing role controller. Sign out and choose
+another profile to continue the same task within the running app. Restarting starts a fresh demo;
 independent phones do not synchronize. Demo repositories use isolated memory and do not replace
 an ordinary locally configured family. Without this flag, the existing verification/pairing entry
 remains in use. Neither path is production authentication.
 
-The new story is fully usable silently; revised narration samples await actual listening review.
+Demo onboarding currently runs silently; revised narration samples await complete validation and
+actual listening review.
 For the standalone internal Android build, use the pinned local toolchain and exact-source
 receipt procedure in the [Android guide](docs/competition-readiness/android-build-and-rehearsal.md).
 A web preview is not an installable APK or evidence of physical-phone acceptance.
@@ -133,16 +135,19 @@ Run the complete repeatable repository gate:
 npm run verify
 ```
 
-| Command                | Purpose                                                  |
-| ---------------------- | -------------------------------------------------------- |
-| `npm test`             | Run deterministic domain, service, state, and flow tests |
-| `npm run typecheck`    | Check strict TypeScript                                  |
-| `npm run lint`         | Run Expo ESLint                                          |
-| `npm run format:check` | Check maintained source and documentation formatting     |
-| `npm run build:web`    | Produce the ignored static web export in `dist/`         |
+| Command                | Purpose                                                        |
+| ---------------------- | -------------------------------------------------------------- |
+| `npm test`             | Run deterministic domain, service, state, and flow tests       |
+| `npm run repo:check`   | Validate navigation, test locations and tracked-artifact rules |
+| `npm run typecheck`    | Check strict TypeScript                                        |
+| `npm run lint`         | Run Expo ESLint                                                |
+| `npm run format:check` | Check maintained source and documentation formatting           |
+| `npm run build:web`    | Produce the ignored static web export in `dist/`               |
 
 Automated checks do not replace physical Android, accessibility, media, or human-review evidence.
-The current auditable gate status is recorded in the [demo runbook](DEMO_RUNBOOK.md).
+The current auditable product gate status is recorded in the [demo runbook](DEMO_RUNBOOK.md).
+The [GitHub workflow](.github/workflows/ci.yml) defines the same source checks and a web export;
+its hosted execution is pending. See the [test guide](tests/README.md) for focused commands.
 
 ## Architecture
 
@@ -170,7 +175,8 @@ app/ routes
 | `tests/`          | Domain, safety, privacy, reset, and complete-flow verification        |
 
 See the [architecture guide](docs/architecture/ARCHITECTURE.md) for dependency direction, data
-ownership, and failure behavior.
+ownership, and failure behavior, and the [repository map](docs/architecture/REPOSITORY_STRUCTURE.md)
+for the complete folder structure and placement rules.
 
 ## Documentation
 

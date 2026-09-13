@@ -282,20 +282,22 @@ npm run verify
 
 That command runs:
 
-1. strict TypeScript;
-2. Expo ESLint;
-3. Prettier checks for maintained source/developer docs;
-4. all deterministic Vitest suites;
-5. Expo dependency alignment; and
-6. a static web export to ignored `dist/`.
+1. repository navigation, test-layout and tracked-artifact checks;
+2. strict TypeScript;
+3. Expo ESLint;
+4. Prettier checks for maintained source/developer docs;
+5. all deterministic Vitest suites;
+6. Expo dependency alignment; and
+7. a static web export to ignored `dist/`.
 
 Run an individual layer when iterating:
 
 ```bash
+npm run repo:check
 npm run typecheck
 npm run lint
 npm run format:check
-npm test
+npm test -- --maxWorkers=2
 npm run test:watch
 npm run build:web
 ```
@@ -311,6 +313,11 @@ git status --short
 `npm test` covers domain, service, state, privacy, assistant safety, reset, and deterministic
 operator flows. It is not native UI automation. Record physical and named-human evidence only in
 the root Feature 003 runbook.
+
+Tests are grouped by subject; use `npm test -- tests/access` or another directory from the
+[test guide](../tests/README.md) for a focused run. Historical test paths are retained in its
+relocation map. The [repository map](architecture/REPOSITORY_STRUCTURE.md) explains where source,
+specifications, provenance and generated output belong.
 
 ## Troubleshooting
 
