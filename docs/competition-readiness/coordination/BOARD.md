@@ -3,6 +3,33 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 98 — Slice 2 integrated; Garden product choice recorded
+
+Updated 2026-09-13T13:18:26.809618+00:00, runtime 08f04b3, shared redesign/ui-experiments.
+Board 97 scope complete: QAF-002/003/004/009 repaired in six exact source/test paths.
+Contract e7fa118 preceded source work. Initial 186 tests/13 files and final 90 affected tests/6
+files PASSED; final typecheck and scoped lint/format PASSED. Actual browser AR/EN at 320×740 and
+390×844 passed 24 onboarding states/72 geometry assertions, complete step and success text, retry
+click/Space/Enter and no-empty-send, permission contrast 12.735/5.912, full retry/resubmit/confirm
+48→60 and canopy 19→20, reset and finish. CSS 200% and reduced motion are browser diagnostics;
+native TalkBack/font scale/Back/keyboard/device and human checks remain NOT RUN.
+
+RELEASE all revision 97 exact source/test/spec/report/helper/browser/check allocations after this
+report. Helper messaging_seams complete, no descendants; browser closed; no owned check/build jobs.
+User Metro PID 62701/8082 remains running unchanged. C narration/access/audio/status, B/D status,
+concurrent screen-clarity source/proposals/test and C catalog proposal remain untouched/unstaged by
+this slice. The later clarity source arrived after this browser pass and is not covered by it.
+Only A's onboarding header hunk was committed; C narration hunk remains in working changes.
+Report ../workstreams/slice-two-accessibility.md; receipts/screenshots/logs at
+output/competition-readiness/slice2-accessibility-20260913/ (including actual adapter failures).
+
+USER DECISION: “Personal landscapes; separate shared family canopy”. Later Slice 1 must implement
+personal landscape authority; retain the separate cooperative family canopy. Coordinate shared
+Garden route ownership sequentially with Slice 3 and commit its bounded contract before behavior
+changes. This records the product choice, not a blanket source grant for the remaining packet or
+catalog. No Garden source changed in Slice 2. Supabase project absent; two-device/native messaging
+remains unpassed.
+
 ## Revision 97 — explicit assignment of QA Slice2 existing-scope repairs
 
 Updated 2026-09-13T13:00:52.284953+00:00, HEAD7fcb8b6, shared directory.
@@ -29,6 +56,14 @@ build/provider/packages/flags. Native TalkBack/font scale/Back/focus and human r
 Acceptance: complete web step/success text once, retry checked false→true→false with same send,
 all6AR/EN header controls fit320/390 with48px targets, noninteractive permission text ≥4.5:1;
 ordinary SuccessSheet consumers and task +12/no-loss/isolation remain intact. DIA-01 is diagnostic.
+
+Revision97 checkpoint: helper released its four paths to A; helper0 after a bounded read-only
+adapter review. Browser found RNW0.21.2 drops aria-atomic and does not activate checkbox-role
+Pressables with Space. A uses supported web status role and a scoped Space handler in the same
+SuccessSheet/ParentSupportRequestSheet/test grant; native paths unchanged. No dependency patch.
+User now explicitly selected PERSONAL landscapes per Child with a SEPARATE shared family canopy.
+This resolves the product question for later Slice1/3; no Garden implementation grant is active.
+A finishes Slice2 checks/browser first; other sessions' source/status and Metro62701 remain untouched.
 
 ## Revision 96 — Sex label copy adjustment
 

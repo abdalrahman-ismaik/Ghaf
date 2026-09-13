@@ -134,3 +134,15 @@ T030–T033: contract56c9063, runtime42eb809. No local OTP UI; direct setup/repa
   Runtime829c9db. Typecheck/scoped lint+format and46existing focused tests PASS. Actual AR390x844/
   EN320x740 logo/photo/language/navigation checks PASS; native/human and effective enlarged-text
   NOT RUN. Evidence and limitation: docs/competition-readiness/workstreams/welcome-logo-focus.md.
+
+## Assigned QA Slice2 — accessibility and compact controls
+
+- [x] T036 Commit the bounded QAF-002/003/004/009 contract and exact board97 assignment before edits.
+- [x] T037 Repair web task/success semantics, retry state/Space activation, compact onboarding
+  header and readable noninteractive Child permissions; preserve native and task behavior.
+- [x] T038 Complete affected checks, AR/EN browser evidence, cohesive commit and exact-path release.
+  Runtime08f04b3; report docs/competition-readiness/workstreams/slice-two-accessibility.md.
+  Source/web passed; Android and human acceptance NOT RUN.
+
+The user selected personal landscapes with a separate shared family canopy for later Slice1/3.
+No Garden source grant or implementation is included here.

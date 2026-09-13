@@ -21,11 +21,21 @@ accessibility, RTL and readable-state requirements; no new product behavior or p
 Lead owns onboarding header/styles, Child-settings caller, integration and evidence. One helper
 owns only the three semantic components and focused rendered tests listed on board97. Existing
 uncommitted narration changes in FirstRunOnboarding are snapshotted/preserved and excluded from
-this slice's staged diff. No Garden files: shared-versus-personal decision still pending and
-Slice3 must coordinate the same route with Slice1. No other packet recommendation is granted.
+this slice's staged diff. No Garden files: Slice3 must coordinate the same route with Slice1.
+No other packet recommendation is granted.
 
 Validate existing affected tests and focused regressions, then one bounded real-browser AR/EN
 320/390 pass with six-page header geometry, accessibility snapshots, checkbox keyboard/click,
 ordinary success consumers and permission contrast. Treat any injected fixtures as synthetic,
 separate from actual UI journeys. Larger-text browser probes are diagnostic; actual Android
 TalkBack/font scale/Back/focus/keyboard and human review remain NOT RUN without direct evidence.
+
+Browser-confirmed implementation details: RNW0.21.2 drops aria-atomic and ignores Space on
+checkbox-role Pressables. Use a web status role with real title/message descendants and a local
+Space handler that prevents scrolling and ignores key repeats; preserve RNW Enter and native
+activation. No dependency patch or global control rewrite.
+
+Latest explicit user selection, received during this slice: “Personal landscapes; separate shared
+family canopy”. This resolves the later Garden product choice. Record the personal projection and
+shared-canopy distinction in the later bounded contract before Garden implementation; coordinate
+Slice1/Slice3 ownership. No Garden runtime work is part of Slice2.
