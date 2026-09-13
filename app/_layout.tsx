@@ -207,7 +207,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GhafFontProvider loaded={fontsLoaded}>
-        <FirstRunExperienceProvider>
+        <FirstRunExperienceProvider presentationReady={startupPhase === 'complete'}>
           <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
           <View style={styles.root}>
             {usesLightSystemChrome ? null : <PrototypeStatusBar />}

@@ -16,15 +16,26 @@ import {
 
 interface FirstRunExperienceValue {
   readonly dispatch: (action: FirstRunAction) => void;
+  readonly presentationReady: boolean;
   readonly state: FirstRunState;
 }
 
 const FirstRunExperienceContext = createContext<FirstRunExperienceValue | null>(null);
 
-export function FirstRunExperienceProvider({ children }: PropsWithChildren) {
+interface FirstRunExperienceProviderProps extends PropsWithChildren {
+  readonly presentationReady: boolean;
+}
+
+export function FirstRunExperienceProvider({
+  children,
+  presentationReady,
+}: FirstRunExperienceProviderProps) {
   const [state, reducerDispatch] = useReducer(reduceFirstRunState, initialFirstRunState);
   const dispatch = useCallback((action: FirstRunAction) => reducerDispatch(action), []);
-  const value = useMemo(() => ({ dispatch, state }), [dispatch, state]);
+  const value = useMemo(
+    () => ({ dispatch, presentationReady, state }),
+    [dispatch, presentationReady, state],
+  );
 
   return (
     <FirstRunExperienceContext.Provider value={value}>

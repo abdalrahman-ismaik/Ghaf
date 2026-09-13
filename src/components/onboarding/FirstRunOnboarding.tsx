@@ -32,6 +32,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { ONBOARDING_PILLARS, ONBOARDING_STEPS, type OnboardingPillar } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
 import { useOnboardingAmbience } from './useOnboardingAmbience';
+import { useOnboardingForeground } from './useOnboardingForeground';
 import { useOnboardingNarrator } from './useOnboardingNarrator';
 
 interface FirstRunStepCopy {
@@ -167,7 +168,8 @@ export function FirstRunOnboarding() {
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
-  const { dispatch, state } = useFirstRunExperience();
+  const { dispatch, presentationReady, state } = useFirstRunExperience();
+  const foreground = useOnboardingForeground();
   const [imageReadyStep, setImageReadyStep] = useState<(typeof ONBOARDING_STEPS)[number] | null>(
     null,
   );
@@ -185,15 +187,16 @@ export function FirstRunOnboarding() {
   const showPillarNavigator = stepIndex <= 3;
   const storyAccent = storyAccents[stepIndex] ?? colors.ghafEmerald;
   const slideReady = imageReadyStep === state.step && settledStep === state.step;
+  const playbackReady = presentationReady && foreground && !state.completed && slideReady;
   const narration = useOnboardingNarrator({
     locale,
-    ready: slideReady,
+    ready: playbackReady,
     step: state.step,
     webPlaybackUnlocked,
   });
   const ambience = useOnboardingAmbience({
     narrationPlaying: narration.status === 'speaking',
-    ready: slideReady && narration.screenReaderReady,
+    ready: playbackReady && narration.screenReaderReady,
     screenReaderActive: narration.screenReaderActive,
     webPlaybackUnlocked,
   });
@@ -322,6 +325,7 @@ export function FirstRunOnboarding() {
               direction={direction}
               fallbackLabel={t('firstRun.imageFallback')}
               language={locale}
+              key={artworkId}
               onSettled={() => setImageReadyStep(state.step)}
               priority="high"
               style={styles.heroImage}

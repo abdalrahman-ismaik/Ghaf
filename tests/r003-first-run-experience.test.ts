@@ -435,7 +435,7 @@ describe('R003 first-run experience', () => {
     expect(playback).toContain('player.seekTo(0)');
     expect(narration).toContain('createOnboardingPlayback(player)');
     expect(narration).toContain('return () => playback.setEnabled(false)');
-    expect(onboarding).toContain('ready: slideReady && narration.screenReaderReady');
+    expect(onboarding).toContain('ready: playbackReady && narration.screenReaderReady');
     expect(narration).toContain('!ready ||');
     expect(narration).toContain('screenReaderEnabled !== false ||');
     expect(narration).toContain("Platform.OS === 'web' && !webPlaybackUnlocked");
@@ -459,7 +459,7 @@ describe('R003 first-run experience', () => {
     expect(illustration).toContain('readonly onSettled?: () => void');
     expect(illustration).toContain('onLoad={onSettled}');
     expect(onboarding).toContain('onSettled={() => setImageReadyStep(state.step)}');
-    expect(onboarding).toContain('ready: slideReady');
+    expect(onboarding).toContain('ready: playbackReady');
     expect(onboarding).not.toContain('first-run-narrator');
     expect(onboarding).not.toContain('first-run-narration-toggle');
     expect(onboarding).toContain('first-run-narration-replay');
