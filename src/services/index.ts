@@ -1,4 +1,5 @@
 import { entryMode } from '../config/demoEntry';
+import { masroofiService, type MasroofiService } from '../features/masroofi/service';
 import { createFamilyMessaging } from '../features/familyMessaging';
 import { createFeature003ServiceRegistry } from './mock';
 import type { Feature003ServiceRegistry } from './interfaces';
@@ -106,12 +107,14 @@ const repositoryStorage =
 
 // Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
 export const serviceRegistry: Feature003ServiceRegistry & {
+  readonly masroofi: MasroofiService;
   readonly familyMessaging: ReturnType<typeof createFamilyMessaging>;
   readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
   readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
 } = {
+  masroofi: masroofiService,
   ...createFeature003ServiceRegistry(),
   familyMessaging: createFamilyMessaging(),
   ambientAudioPreferences: createAmbientAudioPreferencesRepository(repositoryStorage),

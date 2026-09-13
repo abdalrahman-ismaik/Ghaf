@@ -1,8 +1,10 @@
 import { phraseText } from '../features/familyMessaging/contracts';
+import { masroofiResources } from './masroofi';
 
 export const resources = {
   ar: {
     translation: {
+      masroofi: masroofiResources.ar,
       catalog: {
         previewIdeas: 'أفكار يمكنك مراجعتها مع وليّ الأمر. تحتاج إلى اعتماد خاص بك قبل البدء.',
         needsApproval: 'تحتاج إلى اعتماد وليّ الأمر',
@@ -2092,6 +2094,7 @@ export const resources = {
   },
   en: {
     translation: {
+      masroofi: masroofiResources.en,
       catalog: {
         previewIdeas:
           'Ideas to review with your Parent. You need your own approval before starting.',

@@ -1238,3 +1238,24 @@ failed decoding, confirmed on recheck. Receipt: output/native-integration/015/na
 A read-only helper audited existing manual playback reuse while A inspected files; no source/audio
 was changed or activated. Human listening/transcript fidelity and generation provenance are not
 verified by metadata. Integration awaits the replacement file; existing originals and5Abrand preserved.
+
+## September 13 — Masroofi competition card implementation
+
+Actual user request: “I want to have for competition, implement it as good as possible and explain
+the workflow when you finish, and for "مصروفي" card try to have a real card like design and
+influenced by the UAE traditions and UAE in general”. The preceding idea described Parent-set
+task rewards whose amounts remain hidden until earned, an ages-10+ card and Parent purchase rules.
+
+Codex root wrote the Feature 017 contract, store/recognition integration, guarded routes and
+entries, workflow tests and rehearsal documentation. A bounded AI-prototype helper wrote the
+pure service/model and unit tests; a bounded Expo UI helper wrote the native card, controls, shop
+and bilingual resources. Root integrated/fixed these contributions and ran checks and a browser
+rehearsal. The service helper separately reviewed the final UI captures without authoring the UI.
+These are generated contributions, not evidence of independent student authorship or review.
+
+The scope is explicitly simulated: original SVG card geometry, no external brand or generated
+raster, no real payment credentials, card issuance, funds, purchases or provider. The initial new
+SVG DOM warning and route-inventory regressions were corrected; historical failures and final
+evidence are recorded in the [workstream report](workstreams/masroofi-20260913.md). Physical
+Android, named Arabic/UAE review and student teach-back remain NOT RUN. The
+[workflow](../../specs/017-masroofi-demo/quickstart.md) explains the demonstration and limits.

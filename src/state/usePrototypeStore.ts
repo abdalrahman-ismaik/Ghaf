@@ -11,6 +11,9 @@ import {
 import { create, type StateCreator } from 'zustand';
 
 import { entryMode } from '../config/demoEntry';
+import { masroofiDemoEnabled } from '../config/masroofi';
+import { createMasroofiRuntime } from '../features/masroofi/service';
+import type { MasroofiControls, MasroofiRuntime, MasroofiResult } from '../models/masroofi';
 import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
 import { createLocalParentEntry } from '../features/access/localParentEntry';
 import type { DemoEntryRequest, DemoEntryHandoff } from '../models/demoEntry';
@@ -560,6 +563,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly rememberParentOnThisDevice: boolean;
   readonly temporaryParentAccess: TemporaryParentAccess | null;
   readonly familyReward: FamilyRewardRuntime;
+  readonly masroofi: MasroofiRuntime;
   readonly growthJourney: GrowthJourneyRuntimeState;
   readonly privateLeague: PrivateLeagueRecognitionRuntime;
   readonly mangroveLearningByProfile: MangroveLearningByProfile;
@@ -629,6 +633,31 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly signOutExperience: () => ServiceResult<true>;
   readonly getFamilyConnectionPlan: () => ServiceResult<FamilyConnectionPlan>;
   readonly getFamilyReward: () => ServiceResult<FamilyRewardPresentation>;
+  readonly getMasroofiParent: (
+    childId: SyntheticChildId,
+  ) => ReturnType<typeof serviceRegistry.masroofi.projectParent>;
+  readonly getMasroofiChild: () => ReturnType<typeof serviceRegistry.masroofi.projectChild>;
+  readonly enableMasroofi: (
+    childId: SyntheticChildId,
+    age10PlusConfirmed: boolean,
+  ) => MasroofiResult<MasroofiRuntime>;
+  readonly setMasroofiControls: (
+    childId: SyntheticChildId,
+    controls: MasroofiControls,
+  ) => MasroofiResult<MasroofiRuntime>;
+  readonly topUpMasroofi: (
+    childId: SyntheticChildId,
+    amountFils: number,
+    requestId: string,
+  ) => MasroofiResult<MasroofiRuntime>;
+  readonly promiseMasroofi: (
+    assignmentId: string,
+    amountFils: number,
+  ) => MasroofiResult<MasroofiRuntime>;
+  readonly purchaseMasroofi: (
+    fixtureId: 'stationery' | 'game_online',
+    requestId: string,
+  ) => ReturnType<typeof serviceRegistry.masroofi.projectChild>;
   readonly markFamilyRewardGiven: () => ServiceResult<FamilyRewardPresentation>;
   readonly getChildPermissionGrant: (
     childId: SyntheticChildId,
@@ -962,6 +991,42 @@ function requireActiveChildExperience(state: PrototypeStoreState): ServiceResult
     return failure('INVALID_TRANSITION', 'An active synthetic Child session is required');
   }
   return success(true);
+}
+
+function masroofiAccess(
+  state: PrototypeStoreState,
+  childId: SyntheticChildId,
+  role: 'parent' | 'child',
+): MasroofiResult<true> {
+  if (!masroofiDemoEnabled)
+    return { ok: false, error: { code: 'feature_disabled', message: 'Masroofi demo is disabled' } };
+  const authority =
+    role === 'parent' ? requireActiveParentExperience(state) : requireActiveChildExperience(state);
+  if (!authority.ok || (role === 'child' && state.activeChildId !== childId)) {
+    return {
+      ok: false,
+      error: { code: 'access_denied', message: 'An authorized profile is required' },
+    };
+  }
+  if (!state.localFamily.configuredChildIds.includes(childId)) {
+    return {
+      ok: false,
+      error: { code: 'profile_unavailable', message: 'The configured profile is unavailable' },
+    };
+  }
+  return { ok: true, data: true };
+}
+
+function masroofiDay(): string {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Dubai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+  return ['year', 'month', 'day']
+    .map((type) => parts.find((part) => part.type === type)?.value)
+    .join('-');
 }
 
 function createEmptyChildTaskDraft(): ChildTaskDraftState {
@@ -1663,6 +1728,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
   rememberParentOnThisDevice: false,
   temporaryParentAccess: null,
   familyReward: createFamilyRewardRuntime(),
+  masroofi: createMasroofiRuntime(),
   growthJourney: initialGrowthJourney.data,
   privateLeague: initialPrivateLeague,
   mangroveLearningByProfile: initialMangroveLearning,
@@ -2206,6 +2272,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
               : deviceAccessView(null, 'unavailable')
             : deviceAccessView(null),
           familyReward: createFamilyRewardRuntime(),
+          masroofi: createMasroofiRuntime(),
           growthJourney: replacementReset.growthJourney,
           privateLeague: replacementReset.privateLeague,
           mangroveLearningByProfile: replacementReset.mangroveLearningByProfile,
@@ -2748,6 +2815,115 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       : failure('PRIVACY_REJECTED', projected.error.message);
   },
 
+  getMasroofiParent: (childId) => {
+    const state = get();
+    const access = masroofiAccess(state, childId, 'parent');
+    if (!access.ok) return access;
+    return serviceRegistry.masroofi.projectParent(state.masroofi, {
+      actor: { role: 'parent' },
+      childId,
+    });
+  },
+
+  getMasroofiChild: () => {
+    const state = get();
+    const access = masroofiAccess(state, state.activeChildId, 'child');
+    if (!access.ok) return access;
+    return serviceRegistry.masroofi.projectChild(state.masroofi, {
+      actor: { role: 'child', childId: state.activeChildId },
+      childId: state.activeChildId,
+    });
+  },
+
+  enableMasroofi: (childId, age10PlusConfirmed) => {
+    const state = get();
+    const access = masroofiAccess(state, childId, 'parent');
+    if (!access.ok) return access;
+    const profile = state.localFamily.record?.children.find((child) => child.id === childId);
+    if (!profile)
+      return {
+        ok: false,
+        error: { code: 'profile_unavailable', message: 'The configured profile is unavailable' },
+      };
+    const result = serviceRegistry.masroofi.enable(state.masroofi, {
+      actor: { role: 'parent' },
+      childId,
+      ageBand: profile.ageBand,
+      age10PlusConfirmed,
+      ...(entryMode === 'demo' ? { knownAge: state.children[childId].age } : {}),
+    });
+    if (result.ok) set({ masroofi: result.data });
+    return result;
+  },
+
+  setMasroofiControls: (childId, controls) => {
+    const state = get();
+    const access = masroofiAccess(state, childId, 'parent');
+    if (!access.ok) return access;
+    const result = serviceRegistry.masroofi.setControls(state.masroofi, {
+      actor: { role: 'parent' },
+      childId,
+      controls,
+    });
+    if (result.ok) set({ masroofi: result.data });
+    return result;
+  },
+
+  topUpMasroofi: (childId, amountFils, requestId) => {
+    const state = get();
+    const access = masroofiAccess(state, childId, 'parent');
+    if (!access.ok) return access;
+    const result = serviceRegistry.masroofi.topUp(state.masroofi, {
+      actor: { role: 'parent' },
+      childId,
+      amountFils,
+      requestId,
+      day: masroofiDay(),
+    });
+    if (result.ok) set({ masroofi: result.data });
+    return result;
+  },
+
+  promiseMasroofi: (assignmentId, amountFils) => {
+    const state = get();
+    const parentAccess = masroofiAccess(state, state.activeChildId, 'parent');
+    if (!parentAccess.ok) return parentAccess;
+    const journey = state.taskAssignments.byId[assignmentId]?.journey;
+    if (!journey?.assignment)
+      return {
+        ok: false,
+        error: { code: 'task_not_available', message: 'An approved task is required' },
+      };
+    const access = masroofiAccess(state, journey.assignment.childId, 'parent');
+    if (!access.ok) return access;
+    const result = serviceRegistry.masroofi.promise(state.masroofi, {
+      actor: { role: 'parent' },
+      journey,
+      amountFils,
+    });
+    if (result.ok) set({ masroofi: result.data });
+    return result;
+  },
+
+  purchaseMasroofi: (fixtureId, requestId) => {
+    const state = get();
+    const access = masroofiAccess(state, state.activeChildId, 'child');
+    if (!access.ok) return access;
+    const input = {
+      actor: { role: 'child' as const, childId: state.activeChildId },
+      childId: state.activeChildId,
+    };
+    const result = serviceRegistry.masroofi.purchase(state.masroofi, {
+      ...input,
+      fixtureId,
+      requestId,
+      day: masroofiDay(),
+    });
+    if (!result.ok) return result;
+    set({ masroofi: result.data });
+    return serviceRegistry.masroofi.projectChild(result.data, input);
+  },
+
   getFamilyConnectionPlan: () => {
     const state = get();
     if (!requireActiveParentExperience(state).ok) {
@@ -3211,6 +3387,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         childAccess: childAccessController.reset(),
         deviceAccess: deviceAccessView(null),
         familyReward: createFamilyRewardRuntime(),
+        masroofi: createMasroofiRuntime(),
         growthJourney: nextGrowthJourney.data,
         privateLeague: nextPrivateLeague,
         mangroveLearningByProfile: nextMangroveLearning,
@@ -5726,8 +5903,20 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       reveal?.ok && reveal.data.disposition === 'created'
         ? reveal.data.bundle.sourceFingerprint
         : null;
+    const masroofiCredit = masroofiDemoEnabled
+      ? serviceRegistry.masroofi.credit(before.masroofi, {
+          actor: { role: 'parent' },
+          journey: result.data.journey,
+          receipt: result.data.receipt,
+          day: masroofiDay(),
+        })
+      : { ok: true as const, data: before.masroofi };
+    if (!masroofiCredit.ok) {
+      return failure('INVALID_RESPONSE', 'The fixed Masroofi reward could not be reconciled');
+    }
     set({
       ...result.data.session,
+      masroofi: masroofiCredit.data,
       growthJourney: growthProjection.data.runtime,
       confirmationPlan: plan,
       lastRecognitionAttempt: result.data,

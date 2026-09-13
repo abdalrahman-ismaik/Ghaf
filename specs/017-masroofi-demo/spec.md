@@ -10,7 +10,9 @@ Family Reward promise. It does not change that promise, Seeds, growth, League or
 1. Parent opens Family → Masroofi, chooses a configured Child, confirms age 10 or older,
    enables the card, and sets per-purchase/daily limits, online permission and freeze state.
    Age 6–8 is always ineligible; age 9–11 requires explicit age-10+ attestation because the
-   directory stores bands, not birthdays. Ages 12–14 still require Parent enablement.
+   directory stores bands, not birthdays. Ages 12–14 still require Parent enablement. In explicit
+   competition entry mode, the known fixture ages also apply: Salem (9) is ineligible; Alya (11)
+   is the card-demo profile. Parent attestation cannot override a known under-10 fixture age.
 2. Parent attaches a fixed AED amount to a specific approved, unaccepted task occurrence.
    The amount is locked immediately, cannot be reduced/deleted, and is hidden from the Child
    until recognition. Child sees a clear fixed-reward notice before acceptance. No random rewards.

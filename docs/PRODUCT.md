@@ -1,5 +1,19 @@
 # Product
 
+## Masroofi competition card — Feature 017, 2026-09-13
+
+The user-authorized **مصروفي / Masroofi** experience adds an optional, private simulated card
+for Parent-enabled ages 10+. Parents lock a fixed hidden amount to an eligible unaccepted task;
+existing praise and recognition credits it once. Children see the reward after it is earned,
+then practice purchases under Parent-set limits, category/online permissions and freeze controls.
+Known competition fixture ages apply: Alya (11) is eligible; Salem (9) is not. Custom 9–11-band
+profiles need Parent attestation because exact age is not stored in the family directory.
+The UAE-inspired card is original code-native forest/gold geometry. All money is simulated,
+in-memory and one-device only. No issuer, custody, transfer or real purchase exists. Seeds,
+growth, League and existing Family Reward promises are separate. See the
+[workflow](../specs/017-masroofi-demo/quickstart.md) and
+[evidence](competition-readiness/workstreams/masroofi-20260913.md).
+
 ## Status
 
 | Item                      | Truth as of 2026-09-08                                                                                                                                      |

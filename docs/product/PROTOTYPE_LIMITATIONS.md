@@ -1,5 +1,16 @@
 # Prototype Limitations
 
+## Masroofi competition simulation — Feature 017
+
+The user-authorized card experience is a synthetic educational ledger in the current app session.
+All balances, reward credits, Parent-added funds and practice purchases are simulated. No real
+card number, bank account, issuer, custody, transfer or checkout exists. Parent controls are
+demonstrated against two local purchase fixtures, not actual merchants or individual products.
+Age 9–11 profiles require Parent attestation of age 10+; this is not age verification. The normal
+prototype access guards do not become production financial security. Task progress/card history
+does not synchronize across devices or recover after restart. Existing Family Reward promise
+metadata and Seeds remain separate. Native and named-human acceptance are still required.
+
 ## Tamagui botanical presentation — 2026-09-11
 
 The shared UI and principal Parent/Child/Garden/League screens now use the approved botanical

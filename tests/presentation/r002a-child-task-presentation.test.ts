@@ -44,7 +44,7 @@ describe('R002a Child Today and task presentation', () => {
       readdirSync(`${root}app/child`)
         .filter((file) => file.endsWith('.tsx'))
         .sort(),
-    ).toEqual(['_layout.tsx', 'index.tsx', 'settings.tsx', 'task.tsx']);
+    ).toEqual(['_layout.tsx', 'index.tsx', 'masroofi.tsx', 'settings.tsx', 'task.tsx']);
 
     expect(
       readdirSync(`${root}src/components/r002a/child`)

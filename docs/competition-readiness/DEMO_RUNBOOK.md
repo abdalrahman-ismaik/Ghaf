@@ -1,5 +1,17 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Masroofi competition extension — 2026-09-13
+
+The optional synthetic **Family → Masroofi / مصروفي** card journey is documented in the
+[Feature 017 workflow](../../specs/017-masroofi-demo/quickstart.md). Lock AED 5 against Alya's
+eligible unaccepted task, complete it with permitted help, and confirm through the existing
+praise/recognition flow. Alya's card receives one simulated credit; a practice AED 3 notebook
+purchase leaves AED 2 and a blocked online-game purchase leaves that balance unchanged.
+The Parent sets prospective limits/category/online/freeze rules. No real money or card exists.
+See [evidence and limitations](workstreams/masroofi-20260913.md); physical Android/human review
+remains separately required. Existing Family Reward promises and all growth authorities remain
+unchanged, and the existing Parent reset clears the extension.
+
 ## Botanical presentation review — 2026-09-11
 
 The current build uses the botanical Tamagui theme for shared controls, open Parent sections,

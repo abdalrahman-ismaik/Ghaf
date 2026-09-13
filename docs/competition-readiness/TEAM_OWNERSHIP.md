@@ -11,10 +11,23 @@ docs/competition-readiness/workstreams/masroofi-20260913.md, src/state/useProtot
 src/services/index.ts, src/config/masroofi.ts, src/i18n/resources.ts,
 app/parent/family/{index,masroofi}.tsx, app/child/{index,task,masroofi}.tsx,
 tests/family/masroofi-workflow.test.ts and tests/family/masroofi-presentation.test.tsx.
+Root additionally reserves src/components/catalog/{CatalogChildTask,CatalogTaskList}.tsx for
+the fixed-reward notice before task acceptance, plus ignored output/masroofi/** evidence/scripts.
+Root also reserves the additive Feature 017 summary in docs/PRODUCT.md, the append-only
+docs/competition-readiness/ai-assistance-ledger.md entry and its feature-local design/evidence
+records. Both helpers have released their write scopes to root for integration.
+Validation grants: tests/integration/operator-demo-flow.test.ts,
+tests/presentation/{r001-onboarding-flow,r002a-child-task-presentation}.test.ts and
+tests/platform/r003-first-run-experience.test.ts for additive route inventories only.
 Domain helper reserves src/models/masroofi.ts, src/features/masroofi/service.ts and
 tests/family/masroofi-service.test.ts. UI helper reserves src/components/masroofi/** and
 src/i18n/masroofi.ts. Two helpers maximum, no descendants; root owns one serialized check/browser
 lane. Preserve the existing unrelated package-lock.json change. No push/deploy/real money.
+
+Handoff: Feature 017 source is complete; all helper scopes are released. Root's source reservation
+ends with the local integration commit. Typecheck/lint/format, 170 files / 2329 tests, repository
+checks and bounded web-phone inspection passed. Physical Android and named human review remain
+NOT RUN. See workstreams/masroofi-20260913.md for exact evidence and assistance disclosure.
 
 ## Repository publication — 2026-09-13
 
