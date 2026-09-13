@@ -5,6 +5,10 @@ dedicated Mumbai pilot and signed into Supabase. `/root` owns Dashboard changes
 and direct hosted evidence; this record contains no passwords, keys or account
 emails. It does not establish pilot activation or external email delivery.
 
+The owner subsequently chose a **zero-cost pilot for other adult registrants**
+using a dedicated Gmail SMTP sender and declined a domain purchase. Resend with a
+verified owned domain remains a later alternative, not an immediate launch gate.
+
 ## Project
 
 | Setting                         | Recorded value                                                    |
@@ -37,9 +41,10 @@ public configuration, not an authentication credential.
 | Hosted public Auth settings read                       | **PASSED**                 | Publishable-key GET `/auth/v1/settings` returned HTTP 200 with email enabled, anonymous disabled, email confirmation required and signup enabled. |
 | Anonymous approval API denial                          | **PASSED**                 | Anonymous GET `/rest/v1/pilot_access?select=user_id,status&limit=1` returned HTTP 401, code `42501`, permission denied.                           |
 | Hosted endpoint rate settings                          | **PASSED**                 | Root recorded the existing Dashboard verification, signup/signin and refresh limits without changing them.                                        |
-| Email resend interval                                  | **NOT RUN — not verified** | The setting was not visible before custom SMTP setup. Verify a minimum interval of at least 60 seconds when configuring SMTP.                     |
+| Email resend interval                                  | **NOT RUN — not verified** | The unsaved draft shows 60 seconds; the persisted setting is not verified. Confirm at least 60 seconds after saving SMTP.                         |
 | Hosted bilingual email templates                       | **BLOCKED**                | The Free Dashboard requires custom SMTP before editing templates; the existing default templates remain in effect.                                |
-| Resend SMTP and external email delivery                | **BLOCKED**                | No sending domain was supplied and custom SMTP is not configured. No paid upgrade or Send Email Hook was configured.                              |
+| Dedicated Gmail custom SMTP                            | **BLOCKED**                | Root prepared an unsaved form; sender address, username and app password are still blank. Effective hosted SMTP remains off.                      |
+| Actual external email delivery                         | **NOT RUN**                | No hosted authentication message has been sent or delivery verified. No paid upgrade or Send Email Hook was configured.                           |
 | Hosted app registration, login and recovery            | **NOT RUN**                | No hosted account-flow pass is inferred from local integration tests.                                                                             |
 | Pilot release activation                               | **BLOCKED**                | Required hosted email, native and activation evidence remains incomplete.                                                                         |
 
@@ -96,16 +101,63 @@ expiry. This configuration evidence does not demonstrate a completed hosted
 verification or recovery flow.
 
 The email resend interval is **not verified** because its control is unavailable
-until custom SMTP setup. Before email launch, verify it is at least 60 seconds and
+in the saved SMTP-off configuration. The unsaved form shows a 60-second default;
+after saving, verify it is at least 60 seconds and
 replace the default Site URL with the approved pilot web origin.
 
 The Free Dashboard displayed **“Set up custom SMTP to edit templates.”** Until
 custom SMTP is configured, Supabase's default email templates remain in effect;
 the repository's bilingual code templates have **not** been installed. The menu
 also offered a paid Pro upgrade and a Send Email Hook, neither of which was
-configured. No owner-supplied domain is available, so template setup and external
-delivery remain blocked. No real hosted login/recovery or public activation pass
-is claimed.
+configured. The repository templates remain **NOT INSTALLED**. Setup now awaits
+the owner's dedicated Gmail account and app credential, followed by saved SMTP
+settings and templates. No real hosted delivery, login/recovery or public activation
+pass is claimed.
+
+## Approved Gmail setup and unsaved form
+
+Root prepared the following Dashboard form and **did not click Save**. These are
+draft inputs, not verified effective configuration:
+
+| Draft field             | Observed draft value                                                      |
+| ----------------------- | ------------------------------------------------------------------------- |
+| Custom SMTP toggle      | On in the unsaved form; effective configuration remains off               |
+| Sender name             | `Ghaf — غاف`                                                              |
+| SMTP host               | `smtp.gmail.com`                                                          |
+| SMTP port               | `465` default; Gmail uses implicit TLS on this port                       |
+| Minimum interval        | `60` seconds default; verify the persisted value after saving             |
+| Sender email / username | Blank; both must use the owner's full dedicated Gmail address             |
+| Password                | Blank; owner must enter a Google app password directly into Supabase      |
+| Email rate after saving | Dashboard indicates 30 emails/hour; retain and verify after configuration |
+
+The owner must create the dedicated Gmail account, enable 2-Step Verification and
+generate an app password. The Google account password must not be used for SMTP.
+Never put credentials in chat or the repository; keep real sender/recipient
+addresses out of the committed repository.
+Some Google account configurations do not expose app passwords; setup must resolve
+that prerequisite without disabling verification or lowering account protection.
+[Google app passwords](https://support.google.com/accounts/answer/185833?hl=en)
+
+The Dashboard warns that Gmail is a personal rather than transactional email
+provider and that deliverability may be affected. Gmail's 500-email/day consumer
+ceiling is not guaranteed pilot capacity; throttling or temporary blocks remain
+possible. The approved scope is a limited adult pilot, with email confirmation on,
+30 emails/hour, at least 60 seconds between resends and controlled delivery checks
+before invitations. No public-readiness claim follows from saving the form.
+[Gmail sending limits](https://support.google.com/mail/answer/22839?hl=en),
+[Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
+
+Google processes adult recipient addresses and authentication message content,
+including codes, and Gmail SMTP automatically stores copies in Sent. This adds
+an email-provider copy, not cloud family or Child records. Deletion in Supabase
+does not establish deletion of these copies or complete provider erasure.
+[Gmail SMTP sent copies](https://support.google.com/mail/answer/78892)
+
+After the owner supplies the credential directly to the form, save and verify
+SMTP settings, install the unchanged bilingual confirmation/recovery templates,
+and validate controlled adult delivery and complete account flows. No app-side
+Resend integration is required. Physical Android acceptance also remains **NOT RUN**;
+the latest `adb devices` check still listed no connected devices.
 
 The existing local suite passed 37 PostgreSQL assertions against an isolated local
 stack. That result does not pass hosted account isolation or delivery checks. The

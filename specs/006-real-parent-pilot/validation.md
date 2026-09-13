@@ -89,18 +89,26 @@ preview does not establish hosted registration, recovery or session restoration.
   refresh-token compromise detection on, reuse interval 10 seconds and access-token
   expiry 3,600 seconds, directly observed in Dashboard. The app accepts exactly six
   or eight digits; 71 focused account/storage/UI tests passed after that adjustment.
-- BLOCKED: External verification/recovery delivery. Owner confirmed no sending
-  domain. Resend requires a verified domain; local Mailpit is test evidence only.
-  This Free project's Dashboard also blocks template editing until custom SMTP is
-  configured. Repository bilingual code templates are ready but are not installed;
-  default hosted emails remain active. Resend interval must be checked at SMTP setup.
+- BLOCKED: External verification/recovery delivery. Owner declined a paid domain
+  and selected a dedicated Gmail SMTP sender for a zero-cost small pilot. Supabase's
+  SMTP form is prepared but **not saved**: host `smtp.gmail.com`, port 465, sender
+  name `Ghaf — غاف`, and minimum per-user interval 60 seconds. Sender address,
+  username and app password are still awaiting the owner. Effective custom SMTP
+  remains off. The Dashboard warns that Gmail is designed for personal rather than
+  transactional email and delivery may be affected; no delivery guarantee follows.
+  This Free project's Dashboard blocks template editing until custom SMTP is
+  configured. Repository bilingual code templates remain ready but not installed;
+  default hosted emails remain active. Resend with a verified domain is a later
+  option, not a required purchase for the selected Gmail trial. Local Mailpit is
+  test evidence only.
 - NOT RUN: Hosted registration, email verification, login, recovery and approval
   transitions with controlled adult accounts. No local result substitutes for them.
 - NOT RUN: Approved hosted web origin configuration; Site URL remains `http://localhost:3000`
   with no redirect allowlist. Typed-code templates do not use redirects.
 - NOT RUN: Physical Android SecureStore, process restart, keyboard, Back, TalkBack,
   RTL/reduced motion and provider failure/recovery. SDK `adb devices -l` returned no
-  attached device. JavaScript exports and component tests cannot pass these gates.
+  attached device, including a fresh check after the zero-cost sender decision.
+  JavaScript exports and component tests cannot pass these gates.
 - NOT RUN: Named Arabic/human pilot review and hosted activation review.
 - Default authentication mode remains demo; no hosted activation, provider/SMTP
   secret, real Child data or real family-progress persistence is enabled.

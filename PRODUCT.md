@@ -11,7 +11,9 @@ real Child accounts/pairing and live AI expansion remain outside this feature.
 Restart sample retains adult login; real account signout clears sample authority
 from every role. Feature 006 owns implementation and evidence; older statements
 about simulated authentication continue to describe the default competition build.
-Hosted activation requires the recorded provider, sender-domain and device gates.
+Hosted activation requires the recorded provider, SMTP delivery and device gates.
+The owner selected a dedicated Gmail SMTP sender for the zero-cost small pilot;
+Resend with an owned domain remains a later option.
 
 ## Confirmed local demo recovery — 2026-09-13
 

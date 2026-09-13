@@ -2,6 +2,8 @@
 
 **Authority:** User-approved implementation plan, 2026-09-13.
 **Status:** Implementation authorized; hosted activation pending direct evidence.
+**Email decision:** Owner approved a zero-cost pilot using a dedicated Gmail SMTP
+sender; domain purchase was declined. Resend with an owned domain remains optional.
 
 ## Outcome and boundary
 
@@ -43,9 +45,17 @@ remote pairing, admin app, or AI changes are included.
   Child, signed-out sample, pending, suspended, recovery and error states.
 - FR-008: All new copy is Arabic-first with equivalent English, approved typography,
   logical direction, accessible labels, long-label and keyboard resilience.
-- FR-009: Use Resend SMTP and a verified owner-supplied sender domain. Admin approval,
-  suspension and deletion use the Supabase dashboard. No approval emails or new
-  notification service are included.
+- FR-009: For the owner-approved small, zero-cost pilot, use a dedicated Gmail
+  account through Supabase custom SMTP. The owner enables Google 2-Step
+  Verification and enters an app password directly into Supabase; credentials
+  never enter the app or repository. Keep email confirmation enabled, a conservative
+  30-email/hour limit and at least 60 seconds between resends. Gmail delivery may
+  be throttled; its daily ceiling is not guaranteed pilot capacity. Google receives
+  adult recipient addresses and authentication message content, with sent-message
+  copies in Gmail. This adds no family or Child data, and makes no erasure promise.
+  Resend SMTP with a verified owner-controlled domain is a later alternative.
+  Admin approval, suspension and deletion use the Supabase dashboard. No approval
+  emails or new notification service are included.
 - FR-010: No production readiness, real Child privacy, compliance, or cloud-progress
   claim follows from this adult login feature. Default flags remain unchanged.
 
@@ -55,4 +65,6 @@ Verify registration/verification/recovery, pending-to-approved and suspended
 transitions, isolation of two adult accounts, denied approval writes, startup and
 foreground failures, late callbacks, Child-view logout, sample reset, default-demo
 regressions, bilingual browser presentation and direct physical Android behavior.
+Verify the configured sender, code templates, resend interval and controlled adult
+delivery before opening the pilot. SMTP configuration alone does not pass delivery.
 Record PASSED, FAILED, BLOCKED or NOT RUN with exact evidence; no inherited passes.

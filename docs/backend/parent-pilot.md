@@ -72,8 +72,10 @@ without copying service-role, JWT-signing, database or SMTP secrets into app env
 ## Prepare the hosted Mumbai pilot
 
 Hosted activation follows review of the implementation and recorded acceptance
-evidence. Project organization access and a verified sending domain are external
-prerequisites. Do not treat the local configuration file as hosted configuration.
+evidence. The owner approved a zero-cost pilot using a dedicated Gmail sender and
+declined a domain purchase. Owner-controlled SMTP credentials and verified delivery
+are prerequisites; an owned domain is needed only for the optional Resend route.
+Do not treat the local configuration file as hosted configuration.
 
 1. In the owner's Supabase organization, create the dedicated pilot project in
    **South Asia (Mumbai), `ap-south-1`**. Record its project reference and region in
@@ -97,14 +99,28 @@ prerequisites. Do not treat the local configuration file as hosted configuration
    The app accepts exactly six or eight digits, including normalized Arabic/Persian
    input. Local tests retain six-digit codes; the hosted project retains its
    eight-digit default.
-4. Configure Resend SMTP: `smtp.resend.com`, port `465`, username `resend`, and a
-   Resend API key as the password. Supply an owner-controlled sender email on the
-   verified domain and sender name `Ghaf — غاف`. Put these values in Supabase SMTP
-   settings, never in Expo public env or committed files. Verify the required DNS
-   records in Resend before testing a controlled adult recipient. Keep provider
-   email tracking disabled. There is no verified sending domain recorded for this
-   implementation; external pilot email delivery is **BLOCKED** until it exists.
-   [Resend SMTP setup](https://resend.com/docs/send-with-supabase-smtp)
+4. Configure the approved **dedicated Gmail SMTP sender** for this limited pilot:
+   - The owner creates a dedicated Gmail account, enables **2-Step Verification**,
+     then generates a Google app password. App passwords may be unavailable for
+     some managed accounts, Advanced Protection or security-key-only verification.
+     If unavailable, resolve the sender account setup before proceeding; do not
+     substitute the Google account password or weaken account protection.
+     [Google app passwords](https://support.google.com/accounts/answer/185833?hl=en)
+   - In Supabase custom SMTP, use host `smtp.gmail.com`, port `465` with implicit
+     TLS, the full dedicated Gmail address for both username and sender email,
+     and sender name `Ghaf — غاف`. The owner enters the app password directly into
+     Supabase. Do not paste it into chat, Expo env, evidence or committed files.
+     No purchased domain or extra mailbox purchase is required for this route.
+     [Gmail SMTP settings](https://developers.google.com/workspace/gmail/imap/imap-smtp)
+   - Keep **Confirm email** enabled. Retain the conservative custom-SMTP default
+     of **30 emails/hour**, and verify a minimum resend interval of **60 seconds**
+     after saving. Request-rate limits and the email/hour limit are separate.
+     [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
+   - Gmail is a personal email service. Its consumer sending ceiling of 500 emails
+     per day is not guaranteed capacity; throttling and temporary sending blocks
+     can interrupt the pilot. Supabase also warns about Gmail deliverability.
+     This setup does not establish public-launch readiness or a delivery SLA.
+     [Gmail sending limits](https://support.google.com/mail/answer/22839?hl=en)
 5. Copy `supabase/templates/confirmation.html` into **Confirm signup**, and
    `supabase/templates/recovery.html` into **Reset password**. Use their matching
    bilingual subjects from `config.toml`. Both show Arabic first and English below,
@@ -120,6 +136,21 @@ prerequisites. Do not treat the local configuration file as hosted configuration
    the project URL and its publishable key from `.env.example`. Keep the default
    competition build in `demo` mode. Only public project configuration belongs in
    the Expo bundle. Never use a service-role or secret key as the publishable key.
+
+Google receives adult recipient addresses and the authentication message content,
+including verification/recovery codes. Messages sent through Gmail SMTP are
+automatically copied into Gmail's Sent folder. Restrict access to the dedicated
+sender account; deleting an adult from Supabase does not erase those email copies
+or establish provider-wide erasure. No family profiles, tasks or Child data are
+sent through this flow. [Gmail SMTP sent copies](https://support.google.com/mail/answer/78892)
+
+**Optional later sender:** Resend SMTP requires an owner-controlled, verified
+sending domain. Use `smtp.resend.com`, port `465`, username `resend`, a Resend API
+key as password, and an address on that domain with sender name `Ghaf — غاف`.
+Verify its DNS records before controlled delivery tests and keep email tracking
+disabled. Credentials remain in Supabase, with no Resend SDK in the app. This
+alternative is deferred; a domain purchase is not a Gmail pilot launch gate.
+[Resend SMTP setup](https://resend.com/docs/send-with-supabase-smtp)
 
 ### Run the separate hosted preview
 
@@ -180,7 +211,7 @@ npx supabase db push
 
 The last command changes the linked hosted database. Inspect the project reference
 and dry-run migration list before the approved activation. Never run the pgTAP
-fixture suite against hosted adult accounts. Supabase and Resend Dashboard setup
+fixture suite against hosted adult accounts. Supabase and email-provider setup
 are operator steps, not actions performed by the app.
 
 The recorded hosted project already received migration `20260913000100` through
@@ -225,8 +256,9 @@ participant details in evidence committed to the repository.
   out, account switching, direct routes while blocked, background/foreground and
   connection failure. Check the sample stays synthetic and never saves real email.
 - Do not activate until required direct browser/native checks and hosted email
-  delivery pass. Physical Android, owner account access and sender-domain readiness
-  must be recorded independently of local source/unit-test results.
+  delivery pass. Physical Android, owner account access and SMTP sender readiness
+  must be recorded independently of local source/unit-test results. Domain
+  verification applies only if the optional Resend route is selected.
 
 Direct local evidence on 2026-09-13: Docker Engine **29.2.1**, Supabase CLI
 **2.117.0**, PostgreSQL image **17.6.1.167**. The migration applied successfully and
@@ -246,8 +278,10 @@ Back or physical-device behavior.
 Hosted Mumbai provisioning, schema/access metadata verification and a read-only
 public-API connection check are **PASSED**. The connection check returned Auth
 settings successfully and denied an anonymous approval-table read. Hosted email
-templates and delivery are **BLOCKED** pending custom SMTP and a verified sending
-domain. Hosted registration/login/recovery are **NOT RUN**. Local email capture
+templates are **BLOCKED** pending the owner's dedicated Gmail account/app credential
+and saved custom SMTP configuration. Actual hosted delivery and
+registration/login/recovery are **NOT RUN**. The prepared Gmail form is unsaved;
+effective hosted SMTP remains off. Local email capture
 and SQL permission tests do not establish hosted account flows, Android acceptance
 or release readiness. The integration owner's validation record carries subsequent
 app and provider evidence.

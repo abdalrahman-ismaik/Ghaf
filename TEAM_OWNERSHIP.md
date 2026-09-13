@@ -27,9 +27,10 @@ Preserve all starting worktree changes; baseline copies are ignored under
 Writers are not alone in the repository. Do not revert others' edits, stage their
 work, or commit shared files. Root serializes formatting, integration and scoped
 commits. Hosted activation remains a separate reviewed gate; provisioning and
-sender-domain readiness are recorded truthfully.
+SMTP sender readiness are recorded truthfully.
 
-**Status**: Implementation in progress. Exact evidence will be recorded in
+**Status**: Implementation complete; Gmail SMTP setup awaits owner credentials.
+Hosted activation remains blocked. Exact evidence is recorded in
 `specs/006-real-parent-pilot/validation.md`.
 
 

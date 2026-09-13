@@ -10,8 +10,11 @@ synthetic. Pilot sample data resets on process restart; adult session persistenc
 is separate. Native SecureStore and namespaced web auth storage do not establish
 production Child-data protection. See `specs/006-real-parent-pilot/validation.md`
 for the exact local, hosted, email and physical-device evidence rather than
-assuming any feature is activated. The owner has no sender domain yet; external
-verification/recovery email delivery is blocked until a domain is verified.
+assuming any feature is activated. The owner selected a dedicated Gmail SMTP
+sender without a domain purchase. External verification/recovery delivery remains
+blocked until the owner supplies its app credential, SMTP and templates are saved,
+and delivery is verified. Gmail may throttle or fail delivery; this is a small
+pilot option. Resend with an owned domain remains a later alternative.
 
 ## Confirmed corrupt-data recovery — 2026-09-13
 

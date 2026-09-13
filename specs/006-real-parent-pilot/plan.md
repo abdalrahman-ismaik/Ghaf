@@ -39,8 +39,23 @@ the app. No provider is created in default demo mode.
 
 ## Deployment and evidence
 
-Prepare a Mumbai pilot project and Resend SMTP instructions. Owner sign-in, project
-organization availability and verified sending domain are external prerequisites.
+Use the provisioned Mumbai pilot project and the owner-approved dedicated Gmail
+sender for a small, zero-cost pilot. Configure Supabase custom SMTP with
+`smtp.gmail.com`, port `465` with TLS, the full dedicated Gmail address as username
+and sender, an app password, and sender name `Ghaf — غاف`. The owner creates the
+account, enables 2-Step Verification and enters the app password directly into
+Supabase. Never use the Google account password or store either password in app
+configuration. Keep email confirmation enabled, 30 emails/hour and a resend
+interval of at least 60 seconds; Gmail can throttle and is not a delivery guarantee.
+
+Install the existing bilingual code templates after SMTP is configured. No app
+provider or Resend SDK changes are needed. Google handles adult recipient addresses
+and authentication messages and retains sent-message copies in Gmail; no complete
+erasure claim is made. Family and Child data remain outside this email flow.
+Resend with a verified owner-controlled domain remains a later alternative; the
+owner declined domain purchases. The immediate prerequisites are the owner's
+dedicated account/app credential, saved SMTP/templates and verified delivery.
+
 Use local Supabase tests where available and fake provider tests regardless. Do not
 claim hosted provisioning, delivered email, native acceptance or release activation
 without direct evidence. Build/preview locally before any hosted activation review.
