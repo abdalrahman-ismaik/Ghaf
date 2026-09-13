@@ -1,5 +1,41 @@
 # Feature Specification: Family Growth Garden
 
+## Confirmed corrupt local-family recovery amendment — 2026-09-13
+
+The owner explicitly approved recovery from corrupt saved demo-family data. This
+resolves the earlier R-02 conflict between rejecting corrupt data and requiring an
+authenticated Parent for the only reset path. This narrow exception does not
+authorize ordinary signed-out reset, account recovery or access to a saved family.
+
+- **FR-220**: Before first-run onboarding, signed-out Welcome MUST show a bilingual
+  local-data recovery state when the family directory cannot be loaded. Corrupt
+  JSON/schema/version data MUST be distinguished from transient storage or migration
+  failure. Neither state may reveal raw saved content or grant Parent/Child access.
+- **FR-221**: Confirmed corrupt data MAY offer an explicit reset proposal followed
+  by a separate confirmation explaining that local demo profiles, pairing, remembered
+  access and current demo progress will be cleared. Cancel or Back MUST clear nothing.
+  A storage-unavailable state MUST offer a non-destructive retry, not deletion.
+- **FR-222**: The recovery command MUST require explicit confirmation, signed-out
+  experience and a fresh corruption result immediately before deletion. A valid,
+  missing, temporarily unreadable or externally repaired family MUST NOT authorize
+  deletion. Ordinary `resetPrototype()` remains Parent-only; recovery never creates
+  a temporary Parent role or weakens protected-route guards.
+- **FR-223**: Recovery MUST remove and verify remembered affinity first, then the
+  legacy migration source, then the current family record. A thrown error or failed
+  removal MUST retain a recoverable failure state and MUST NOT report success.
+  Retries must recheck current data. If a previously confirmed attempt removed all
+  records but final verification failed, a session-local continuation MAY verify
+  absence and complete reset without deleting newly repaired data.
+- **FR-224**: After verified clearing, recovery MUST reuse the existing deterministic
+  reset to clear transient role/controller/AI/task/growth state and return to Arabic
+  signed-out Welcome with fresh setup available. The UI MUST replace reset history,
+  never navigate into an authenticated experience, and require normal Parent setup.
+- **SC-065**: Synthetic behavioral tests MUST cover corrupt current/legacy records,
+  missing confirmation, cancellation, active-role denial, valid/absent/unavailable
+  data, repair between prompt and confirmation, thrown/silent removal failures,
+  retry/absence continuation, exact reset and fresh setup. Bilingual component
+  checks and available browser evidence supplement, not replace, native acceptance.
+
 **Feature Branch**: `feature/003-family-growth-garden`
 
 **Created**: 2026-08-26

@@ -305,14 +305,23 @@ function createInitialLiveChildAiGrants(): LiveChildAiGrantsByProfile {
 function localFamilyView(
   record: LocalFamilyRecord | null,
   status: LocalFamilyView['status'] = 'ready',
+  errorCode: LocalFamilyView['errorCode'] = 'invalid_or_unavailable_local_data',
 ): LocalFamilyView {
   return {
     status,
     record,
     configuredChildIds: record ? record.children.map((child) => child.id) : [],
-    errorCode: status === 'unavailable' ? 'invalid_or_unavailable_local_data' : null,
+    errorCode: status === 'unavailable' ? errorCode : null,
     storageTruth: 'device_local_demo_only',
   };
+}
+
+function localFamilyReadFailure(code: DomainErrorCode): LocalFamilyView {
+  return localFamilyView(
+    null,
+    'unavailable',
+    code === 'INVALID_RESPONSE' ? 'corrupt_local_data' : 'invalid_or_unavailable_local_data',
+  );
 }
 
 function deviceAccessView(
@@ -349,13 +358,13 @@ function refreshRememberedChildContext(childId: SyntheticChildId): {
       : deviceAccessView(null, 'unavailable'),
     localFamily: currentFamily.ok
       ? localFamilyView(currentFamily.data)
-      : localFamilyView(null, 'unavailable'),
+      : localFamilyReadFailure(currentFamily.error.code),
   };
 }
 
 function restoreInitialLocalFamily(): LocalFamilyView {
   const read = serviceRegistry.localFamily.read();
-  if (!read.ok) return localFamilyView(null, 'unavailable');
+  if (!read.ok) return localFamilyReadFailure(read.error.code);
   if (!read.data) return localFamilyView(null);
   const restoredReceipt = parentOnboardingController.restoreCompletionReceipt(
     localFamilyRecordToReceipt(read.data),
@@ -576,6 +585,10 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
   readonly resetPrototype: () => ServiceResult<Omit<ResetResult, 'session'>>;
+  readonly retryLocalFamilyLoad: () => ServiceResult<true>;
+  readonly confirmCorruptLocalFamilyRecovery: (input: {
+    readonly confirmed: boolean;
+  }) => ServiceResult<Omit<ResetResult, 'session'>>;
   // Route shell still uses this alias; resetPrototype owns the reset behavior.
   readonly resetDemo: () => ServiceResult<'/'>;
   readonly startMangroveLearning: (
@@ -1368,6 +1381,73 @@ function validateGuideSuggestion(
     suggestion.suggestedContent.supervision,
   ];
   return evaluateAssistantSafety({ audience: 'parent', texts }).accepted;
+}
+
+// Retain the confirmed corruption context only for this session's incomplete local recovery.
+let confirmedCorruptRecoveryPending: LocalFamilyView | null = null;
+
+function resetClearedPrototype(
+  set: (updater: (state: PrototypeStoreState) => Partial<PrototypeStoreState>) => void,
+  get: () => PrototypeStoreState,
+): ServiceResult<Omit<ResetResult, 'session'>> {
+  const state = get();
+  const reset = serviceRegistry.prototypeSession.resetPrototype();
+  const nextGrowthJourney = createGrowthJourneyRuntime(
+    reset.session,
+    get().growthJourney.resetSequence + 1,
+  );
+  if (!nextGrowthJourney.ok) {
+    return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
+  }
+  const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
+  const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
+    profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+  });
+  const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
+  const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+  if (!onboardingReset.ok) return onboardingReset;
+  const accessReset = serviceRegistry.access.resetPrototype();
+  if (!accessReset.ok) return accessReset;
+  const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
+  if (!liveChildAiGrantReset.ok) return liveChildAiGrantReset;
+  const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
+  releaseLiveVoiceCapture(state.liveVoiceCapture);
+  set((state) => ({
+    ...reset.session,
+    activeExperience: 'signed_out',
+    childAccess: childAccessController.reset(),
+    deviceAccess: deviceAccessView(null),
+    familyReward: createFamilyRewardRuntime(),
+    growthJourney: nextGrowthJourney.data,
+    privateLeague: nextPrivateLeague,
+    mangroveLearningByProfile: nextMangroveLearning,
+    sharedGrowth: nextSharedGrowth,
+    revealBundleQueue: createEmptyRevealBundleQueue(),
+    approvalRevealCommitments: {},
+    parentOnboarding: onboardingReset.data,
+    localFamily: localFamilyView(null),
+    rememberParentOnThisDevice: false,
+    returningUserWelcome: null,
+    temporaryParentAccess: null,
+    parentGuideSuggestion: null,
+    parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+    liveChildAiGrants: createInitialLiveChildAiGrants(),
+    liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+    liveVoiceCapture: null,
+    childCoachResult: null,
+    ageAdaptedCoachResult: null,
+    childVoiceView: releasedVoiceView,
+    confirmationPlan: null,
+    lastRecognitionAttempt: null,
+    prospectiveTaskAdjustment: null,
+    preAcceptanceAdjustment: null,
+    routineProgressByTask: reset.session.routineProgressByTask ?? {},
+    childTaskDraft: createEmptyChildTaskDraft(),
+    taskDraftRevision: state.taskDraftRevision + 1,
+    permissionProofSequence: 0,
+  }));
+  confirmedCorruptRecoveryPending = null;
+  return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
 }
 
 export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
@@ -2303,6 +2383,96 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     };
   },
 
+  retryLocalFamilyLoad: () => {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Local family retry requires a signed-out experience');
+    }
+    const read = serviceRegistry.localFamily.read();
+    if (!read.ok) {
+      set({ localFamily: localFamilyReadFailure(read.error.code) });
+      return { ok: false, error: read.error };
+    }
+    if (confirmedCorruptRecoveryPending && !read.data) {
+      set({ localFamily: confirmedCorruptRecoveryPending });
+      return {
+        ok: false,
+        error: {
+          code: 'INVALID_TRANSITION',
+          message: 'Confirm the pending local recovery to finish reset',
+          retryable: true,
+          fallbackAvailable: false,
+        },
+      };
+    }
+    confirmedCorruptRecoveryPending = null;
+    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+    if (!onboardingReset.ok) {
+      set({ localFamily: localFamilyView(null, 'unavailable') });
+      return onboardingReset;
+    }
+    childAccessController.reset();
+    const restored = restoreInitialLocalFamily();
+    const affinity = serviceRegistry.deviceAccess.read();
+    set({
+      localFamily: restored,
+      parentOnboarding: parentOnboardingController.getView(),
+      childAccess: childAccessController.getView(),
+      deviceAccess:
+        affinity.ok &&
+        (!affinity.data ||
+          (restored.record && deviceAffinityMatchesFamily(affinity.data, restored.record)))
+          ? deviceAccessView(affinity.data)
+          : deviceAccessView(null, 'unavailable'),
+      returningUserWelcome: null,
+    });
+    return restored.status === 'ready'
+      ? success(true)
+      : failure(
+          restored.errorCode === 'corrupt_local_data' ? 'INVALID_RESPONSE' : 'INVALID_TRANSITION',
+          'The saved local family could not be restored',
+        );
+  },
+
+  confirmCorruptLocalFamilyRecovery: (input) => {
+    if (input?.confirmed !== true || get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Explicit signed-out recovery confirmation is required');
+    }
+    const read = serviceRegistry.localFamily.read();
+    if (read.ok) {
+      if (read.data) {
+        confirmedCorruptRecoveryPending = null;
+        get().retryLocalFamilyLoad();
+        return failure(
+          'INVALID_TRANSITION',
+          'A valid saved local family cannot be cleared by recovery',
+        );
+      }
+      if (!confirmedCorruptRecoveryPending) {
+        return failure('INVALID_TRANSITION', 'No confirmed corrupt local family requires recovery');
+      }
+      const affinity = serviceRegistry.deviceAccess.read();
+      if (!affinity.ok) {
+        return { ok: false, error: affinity.error };
+      }
+      if (affinity.data !== null) {
+        return failure(
+          'INVALID_TRANSITION',
+          'Remembered access must also be absent to finish recovery',
+        );
+      }
+      return resetClearedPrototype(set, get);
+    }
+    set({ localFamily: localFamilyReadFailure(read.error.code) });
+    if (read.error.code !== 'INVALID_RESPONSE') return { ok: false, error: read.error };
+    confirmedCorruptRecoveryPending = localFamilyReadFailure(read.error.code);
+    const affinityReset = serviceRegistry.deviceAccess.clear();
+    if (!affinityReset.ok) return affinityReset;
+    const familyReset = serviceRegistry.localFamily.clear();
+    if (!familyReset.ok) return familyReset;
+    return resetClearedPrototype(set, get);
+  },
+
   resetPrototype: () => {
     const state = get();
     if (state.role !== 'parent' || state.activeExperience !== 'parent') {
@@ -2312,64 +2482,9 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
     if (!deviceAccessReset.ok) return { ok: false, error: deviceAccessReset.error };
     const localReset = serviceRegistry.localFamily.clear();
     if (!localReset.ok) return { ok: false, error: localReset.error };
-    const reset = serviceRegistry.prototypeSession.resetPrototype();
-    const nextGrowthJourney = createGrowthJourneyRuntime(
-      reset.session,
-      get().growthJourney.resetSequence + 1,
-    );
-    if (!nextGrowthJourney.ok) {
-      return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
-    }
-    const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
-    const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
-      profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
-    });
-    const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
     const voiceReset = childVoiceController.resetPrototype('parent');
     if (!voiceReset.ok) return voiceReset;
-    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
-    if (!onboardingReset.ok) return onboardingReset;
-    const accessReset = serviceRegistry.access.resetPrototype();
-    if (!accessReset.ok) return accessReset;
-    const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
-    if (!liveChildAiGrantReset.ok) return liveChildAiGrantReset;
-    const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
-    releaseLiveVoiceCapture(state.liveVoiceCapture);
-    set((state) => ({
-      ...reset.session,
-      activeExperience: 'signed_out',
-      childAccess: childAccessController.reset(),
-      deviceAccess: deviceAccessView(null),
-      familyReward: createFamilyRewardRuntime(),
-      growthJourney: nextGrowthJourney.data,
-      privateLeague: nextPrivateLeague,
-      mangroveLearningByProfile: nextMangroveLearning,
-      sharedGrowth: nextSharedGrowth,
-      revealBundleQueue: createEmptyRevealBundleQueue(),
-      approvalRevealCommitments: {},
-      parentOnboarding: onboardingReset.data,
-      localFamily: localFamilyView(null),
-      rememberParentOnThisDevice: false,
-      returningUserWelcome: null,
-      temporaryParentAccess: null,
-      parentGuideSuggestion: null,
-      parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
-      liveChildAiGrants: createInitialLiveChildAiGrants(),
-      liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
-      liveVoiceCapture: null,
-      childCoachResult: null,
-      ageAdaptedCoachResult: null,
-      childVoiceView: releasedVoiceView,
-      confirmationPlan: null,
-      lastRecognitionAttempt: null,
-      prospectiveTaskAdjustment: null,
-      preAcceptanceAdjustment: null,
-      routineProgressByTask: reset.session.routineProgressByTask ?? {},
-      childTaskDraft: createEmptyChildTaskDraft(),
-      taskDraftRevision: state.taskDraftRevision + 1,
-      permissionProofSequence: 0,
-    }));
-    return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
+    return resetClearedPrototype(set, get);
   },
 
   resetDemo: () => {

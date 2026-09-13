@@ -1,5 +1,13 @@
 # Ghaf Design Direction
 
+## Local recovery extension — 2026-09-13
+
+The owner-approved corrupted-family recovery is a calm in-route access state using
+the existing Soft Geometric design. Clear consequence copy and a separate explicit
+confirmation establish the hierarchy; cancellation remains obvious. Reuse the
+existing bilingual typography, tokens and controls without new assets or routes.
+This is a code-native candidate subject to the usual native and human-review limits.
+
 ## 2026-09-07 onboarding image-edge progress clarification
 
 The dark lower strip on the onboarding photographs feels applied after the image rather than

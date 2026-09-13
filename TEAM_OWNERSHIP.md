@@ -1,5 +1,77 @@
 # Team Ownership
 
+## 2026-09-13 Repository Completion Review
+
+**Integration owner**: `/root`. Preserve the existing uncommitted maintainer,
+configured-age and hydration fixes. Read-only reviewers `unfinished_inventory`,
+`growth_task_review` and `async_ui_review` inspect disjoint behavior areas; no more
+than four agents run concurrently.
+
+**Initial writer boundary**: `/root` owns this log,
+`docs/audits/2026-09-13-repository-completion.md`,
+`specs/004-bounded-live-ai/tasks.md` only for the later browser-evidence addendum,
+and ignored `.expo/repository-completion/` verification logs. Runtime and regression
+test files will be reserved below before edits. No dependency, flag activation,
+deployment or shared-history change is included.
+
+**Scope**: Find and repair confirmed defects in approved Features 003–005, verify
+the integrated worktree, and distinguish incomplete implementation from historical,
+native, provider and named-human acceptance gates. Corrupt-directory recovery was
+initially pending; the user explicitly approved confirmed local recovery during
+this work period.
+
+**Runtime allocations**:
+
+- `/root/onboarding_audio_fix`: `app/_layout.tsx`,
+  `src/components/onboarding/{FirstRunExperienceContext,FirstRunOnboarding}.tsx`,
+  the existing narrator/ambience hooks only if necessary, one bounded foreground
+  readiness hook in that directory if needed, `tests/r003-first-run-experience.test.ts`,
+  and new `tests/onboarding-presentation-readiness.test.tsx`. Repair startup,
+  foreground/focus, and failed-image-revisit audio readiness while preserving the
+  existing hydration repair and prepared-only playback.
+- `/root`: `src/services/mock/index.ts` only Family League week creation and
+  `tests/family-league.test.ts`, for filling a rolled week after a prepared
+  encouragement without losing that valid encouragement.
+
+Every writer preserves the starting worktree changes and releases its exact
+boundary after focused verification. Root serializes final integration.
+
+- `/root/completed_task_suggestion_fix`: `src/features/growth/parentProgress.ts`
+  and `tests/r002b-parent-progress.test.ts`;
+  suppress an unavailable Task Builder suggestion after the one-time P0 task is
+  recognized. Do not add repeat assignments or change any progression authority.
+
+**Confirmed local recovery allocation**: `/root` owns the Feature 003
+`{spec,plan,tasks}.md` amendment, Feature 005 `{spec,plan,tasks}.md` compatibility
+addendum, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`,
+`DEMO_RUNBOOK.md`, and the new audit report. Recovery is an in-route Welcome state,
+not a new route or production account-recovery feature.
+
+- `/root/local_recovery_core`: `src/models/localFamily.ts`,
+  `src/state/usePrototypeStore.ts` only family-read classification, recovery commands
+  and shared reset implementation, `src/services/local/{repository,deviceAccessRepository}.ts`,
+  `tests/local-family-repository.test.ts`, new `tests/corrupt-local-family-recovery.test.ts`,
+  and affected local-family/remembered-device tests if needed for the new contract.
+- `/root/local_recovery_ui`: `app/index.tsx`, new
+  `src/components/access/LocalFamilyRecovery.tsx`, `src/i18n/resources.ts` only additive
+  recovery copy, and new `tests/local-family-recovery-ui.test.tsx`.
+
+Core and UI writers agree the typed command contract before implementation.
+Preserve ordinary Parent-only reset and all previous source changes; no real data
+is cleared during verification. Use isolated synthetic storage.
+
+**Status:** All boundaries are released after independent review. Final typecheck,
+lint, formatting, whitespace and all 1,768 tests across 133 files pass. Updated web
+export has 39 routes; Android Hermes export passes after the required compiler
+execution retry. Browser evidence covers bilingual recovery, Cancel/Back, corrupt
+Retry, verified three-key clearing, Arabic Welcome and new-family setup. Measured
+320-pixel Arabic/English confirmation layouts fit without horizontal overflow.
+Physical Android/TalkBack, native media, named Arabic review and external provider
+acceptance remain NOT RUN or their existing blocked status. No dependency, flag,
+provider, deployment, push or shared-history rewrite occurs. Root owns final scoped
+local commits and preserves all unrelated starting changes. Full evidence and file
+boundaries are in `docs/audits/2026-09-13-repository-completion.md`.
+
 ## 2026-09-11 Public AI and Agent Tooling Restoration Window
 
 **Integration owner and only writer**: `/root`.

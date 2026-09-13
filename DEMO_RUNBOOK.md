@@ -1,5 +1,21 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Confirmed corrupt local-family recovery — 2026-09-13
+
+Use an isolated synthetic storage harness, never an existing family's browser or
+device data. With a corrupt current or legacy family record, signed-out Welcome
+must show recovery before onboarding. Open the reset proposal, cancel (and repeat
+with Back), and confirm no storage change. Open again and explicitly confirm;
+verify remembered affinity, legacy and current records are absent, no role remains
+authorized, Arabic Welcome appears, and normal fresh Parent setup is available.
+
+Inject a temporary read failure: only non-destructive Retry is available. Inject
+thrown or silent clear failures: no success or authenticated navigation is shown;
+retry succeeds once the failure is removed. Repair the family between prompt and
+confirmation: the valid record must survive. These are synthetic engineering
+checks, not production account-recovery or native SQLite acceptance. Current
+results are recorded in `docs/audits/2026-09-13-repository-completion.md`.
+
 ## Feature 005 Remembered Device Access Record — 2026-09-07
 
 **Current classification:** implemented device-local prototype continuity; physical Android,

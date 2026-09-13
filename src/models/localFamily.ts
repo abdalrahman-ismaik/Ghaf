@@ -63,7 +63,7 @@ export interface LocalFamilyView {
   readonly status: 'ready' | 'unavailable';
   readonly record: LocalFamilyRecord | null;
   readonly configuredChildIds: readonly SyntheticChildId[];
-  readonly errorCode: 'invalid_or_unavailable_local_data' | null;
+  readonly errorCode: 'corrupt_local_data' | 'invalid_or_unavailable_local_data' | null;
   readonly storageTruth: 'device_local_demo_only';
 }
 

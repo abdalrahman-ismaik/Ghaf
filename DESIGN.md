@@ -122,6 +122,16 @@ components:
 
 # Ghaf Design System
 
+## Confirmed local recovery state — 2026-09-13
+
+Reuse the existing access shell, brand lockup, Alexandria headings, Readex body and
+controls, logical RTL layout, tokens and 48dp buttons. The signed-out Welcome error
+state appears before onboarding. Corruption offers an explicit reset proposal and
+a separate confirmation with clear local-data consequences, a safe Cancel/Back
+action and recoverable error feedback. Unavailable storage offers retry only.
+Both languages remain readable without raw saved data, technical exception text,
+new imagery, new routes or a new visual system. Success returns to Arabic Welcome.
+
 ## R003 onboarding image perimeter progress
 
 Remove the detached filled strip from the lower portion of every onboarding photograph. Replace it

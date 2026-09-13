@@ -1,5 +1,19 @@
 # Product
 
+## Confirmed local demo recovery — 2026-09-13
+
+If saved family data is corrupt, signed-out Welcome presents an explicit local
+recovery proposal before the introductory story. A second confirmation explains
+that local demo profiles, pairing, remembered access and current demo progress will
+be cleared. Cancel and Back preserve data. Temporary storage errors offer retry
+without deletion. Confirmation rechecks the saved data so a valid repaired family
+is never cleared under a stale error screen.
+
+Successful recovery verifies local removal, clears transient prototype state and
+returns to Arabic signed-out Welcome. Creating a new family still requires normal
+Parent setup. Ordinary reset stays Parent-only. This is a narrow local demo
+recovery exception, not production authentication, account recovery or cloud backup.
+
 <!-- impeccable:product-schema 1 -->
 
 ## Status

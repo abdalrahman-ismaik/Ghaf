@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AccessScreen, PrototypePill } from '@/components/access';
+import { LocalFamilyRecovery } from '@/components/access/LocalFamilyRecovery';
 import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
 import { LocalIllustration } from '@/components/illustrations';
 import { FirstRunOnboarding, useFirstRunExperience } from '@/components/onboarding';
@@ -19,6 +20,7 @@ export default function WelcomeScreen() {
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
   const { state: firstRunState } = useFirstRunExperience();
 
@@ -31,6 +33,9 @@ export default function WelcomeScreen() {
   }
   if (activeExperience === 'child' && childAccess.canEnterChildExperience) {
     return <Redirect href="/child" />;
+  }
+  if (activeExperience === 'signed_out' && localFamily.status === 'unavailable') {
+    return <LocalFamilyRecovery />;
   }
   if (!firstRunState.completed) return <FirstRunOnboarding />;
 

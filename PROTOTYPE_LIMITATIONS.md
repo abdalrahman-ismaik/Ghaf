@@ -1,5 +1,18 @@
 # Prototype Limitations
 
+## Confirmed corrupt-data recovery — 2026-09-13
+
+The owner-approved recovery path may clear this installation's corrupt local demo
+family only after an explicit user confirmation and a fresh corruption check. It
+does not recover the damaged profiles, authenticate a guardian, retrieve a cloud
+backup, or operate across devices. Temporary storage errors do not authorize
+deletion. Valid families retain the ordinary Parent-only reset boundary.
+
+Synthetic tests can verify the confirmation, ordered clearing and retry contracts;
+physical SQLite/storage failure, Android Back and assistive-technology acceptance
+still require direct evidence. Recovery tests use isolated synthetic storage and
+never clear a user's existing local browser or device data.
+
 ## Feature 005 remembered device access boundary — 2026-09-07
 
 Remembered access is a device-local prototype convenience, not a production account or trusted

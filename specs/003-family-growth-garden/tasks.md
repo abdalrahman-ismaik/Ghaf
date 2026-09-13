@@ -1,5 +1,23 @@
 # Tasks: Family Growth Garden
 
+## Confirmed local recovery — 2026-09-13
+
+- [x] T334 Record the owner's confirmed-local-recovery decision and the narrow
+  signed-out corruption exception in FR-220–224, plan and ownership.
+- [x] T335 Implement corrupt-versus-unavailable classification, verified ordered
+  clearing, fresh pre-confirmation recheck, bounded retry and shared deterministic
+  reset; prove these with isolated synthetic storage regressions.
+- [x] T336 Implement the bilingual Welcome recovery state before first-run
+  onboarding, separate proposal/confirmation, cancel/Back, non-destructive retry,
+  failure and signed-out Arabic success; preserve the existing route manifest.
+- [x] T337 Complete focused/full checks, exports, available UI evidence and
+  independent review; reconcile the recovery boundary and remaining external gates.
+
+**Evidence:** `docs/audits/2026-09-13-repository-completion.md` records 1,768 passing
+tests across 133 files, static checks, web/Android exports, independent review and
+isolated synthetic browser recovery. Physical Android/TalkBack and named Arabic
+review remain NOT RUN; no release flag is enabled by this completion.
+
 **Input**: Design documents from `specs/003-family-growth-garden/`
 
 **Prerequisites**: `spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, and

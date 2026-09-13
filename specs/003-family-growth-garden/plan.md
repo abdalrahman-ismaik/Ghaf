@@ -1,5 +1,22 @@
 # Implementation Plan: Family Growth Garden
 
+## Confirmed local recovery implementation — 2026-09-13
+
+Implement FR-220–224 in the existing Welcome route and local storage boundary.
+Preserve `LocalFamilyView.status` compatibility while adding a corruption-specific
+error code derived only from the repository's parser `INVALID_RESPONSE` result;
+I/O, migration and controller failures remain unavailable. Add signed-out retry and
+explicit-confirmation recovery commands. Share the existing post-clear reset
+implementation privately with Parent reset, without changing its public guard.
+
+Repository clear operations verify removal, preserving affinity-first and
+legacy-before-current ordering. A private session-local continuation may finish an
+already confirmed partial recovery only after verifying all records absent; it
+cannot delete a valid replacement family. No new persisted schema, route, library,
+credential, provider or release flag is required. Reuse current access components,
+Arabic/English resources, typography and history-reset adapter. Tests use isolated
+synthetic storage; native/human gates stay independently evidenced.
+
 ## R003 AI Services 1–3 Integration Addendum — 2026-09-07
 
 Preserve the current deterministic AI stack as the non-negotiable application default. Extract a
