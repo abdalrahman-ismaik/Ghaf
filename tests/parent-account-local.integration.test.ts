@@ -60,6 +60,31 @@ it.runIf(enabled)(
       createdIds.push(id);
       return id;
     };
+    const expectExpiredCode = async (
+      userId: string,
+      sentAtColumn: 'confirmation_sent_at' | 'recovery_sent_at',
+      verify: () => Promise<unknown>,
+    ) => {
+      const id = checkedId(userId);
+      if (!createdIds.includes(id)) throw new Error('Expiry checks require a test-created user.');
+      const original = sql(`select ${sentAtColumn}::text from auth.users where id = '${id}';`);
+      if (!original) throw new Error('Expected an issued email-code timestamp.');
+      sql(`update auth.users set ${sentAtColumn} = now() - interval '2 hours' where id = '${id}';`);
+      try {
+        expect(
+          Number(
+            sql(
+              `select extract(epoch from (now() - ${sentAtColumn})) from auth.users where id = '${id}';`,
+            ),
+          ),
+        ).toBeGreaterThan(3600);
+        await expect(verify()).rejects.toMatchObject({ code: 'invalid_code' });
+      } finally {
+        sql(
+          `update auth.users set ${sentAtColumn} = '${original.replaceAll("'", "''")}'::timestamptz where id = '${id}';`,
+        );
+      }
+    };
     const codeFor = async (email: string) => {
       const deadline = Date.now() + 10_000;
       while (Date.now() < deadline) {
@@ -134,6 +159,9 @@ it.runIf(enabled)(
       await expect(first.service.verifyEmail(firstEmail, wrongCode)).rejects.toMatchObject({
         code: 'invalid_code',
       });
+      await expectExpiredCode(firstId, 'confirmation_sent_at', () =>
+        first.service.verifyEmail(firstEmail, signupCode),
+      );
       expect(await first.service.verifyEmail(firstEmail, signupCode)).toEqual({
         userId: firstId,
         email: firstEmail,
@@ -165,7 +193,11 @@ it.runIf(enabled)(
       await first.service.signOut();
       expect(first.records.size).toBe(0);
       await first.service.requestPasswordReset(firstEmail);
-      await first.service.verifyRecovery(firstEmail, await codeFor(firstEmail));
+      const recoveryCode = await codeFor(firstEmail);
+      await expectExpiredCode(firstId, 'recovery_sent_at', () =>
+        first.service.verifyRecovery(firstEmail, recoveryCode),
+      );
+      await first.service.verifyRecovery(firstEmail, recoveryCode);
       await expect(first.service.restoreSession()).rejects.toMatchObject({
         code: 'recovery_required',
       });
