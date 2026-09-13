@@ -11,7 +11,7 @@ local Supabase project; no real participant or Child data was used.
 | TypeScript                        | PASSED | `npm run typecheck`, including final UI changes.                                                                                                                                                                                                                                                                                                                                                                                             |
 | Lint                              | PASSED | `npm run lint`; final changed UI/controller/integration files also passed scoped ESLint.                                                                                                                                                                                                                                                                                                                                                     |
 | Formatting                        | PASSED | `npm run format:check`; final changed files also passed scoped Prettier.                                                                                                                                                                                                                                                                                                                                                                     |
-| Complete regression suite         | PASSED | `npx vitest run --maxWorkers=2`: 140 passed files, 1 skipped file; 1,866 passed tests, 1 skipped test. The skipped integration test was run separately with its opt-in flag.                                                                                                                                                                                                                                                                 |
+| Complete regression suite         | PASSED | Final `npx vitest run --maxWorkers=1`: 140 passed files, 1 skipped file; 1,878 passed tests, 1 skipped test. The skipped local integration test was run separately with its opt-in flag during the implementation phase.                                                                                                                                                                                                                     |
 | Account service/storage           | PASSED | 31 focused tests, including the installed SDK with injected transport, SecureStore chunking/failures, logout write barriers, identity changes and recovery receipts bound to the verified account.                                                                                                                                                                                                                                           |
 | Gate/controller UI                | PASSED | 19 controller tests and 28 UI tests. Includes idle/busy identity changes, delayed callbacks, reset during refresh, blocked navigation, Android Back handler behavior and Child-view logout at component level.                                                                                                                                                                                                                               |
 | Sample lifecycle/existing access  | PASSED | 159 tests across the focused pilot/access selection: memory-only fixtures, unchanged demo configuration, cleared service history and generation isolation.                                                                                                                                                                                                                                                                                   |
@@ -24,7 +24,7 @@ local Supabase project; no real participant or Child data was used.
 
 The integration suite cleaned its own users and mailbox records. The separate
 browser fixture was deleted too. Final local queries returned zero `auth.users`
-and zero `pilot_access` rows. No hosted data was changed.
+and zero `pilot_access` rows. That local verification did not change hosted data.
 
 ## Direct browser evidence
 
@@ -51,6 +51,13 @@ are in the implementation task; credentials/codes are not copied into this recor
   storage-denial injection and the full one-minute polling interval. These have
   provider/controller/component coverage, not direct browser passes.
 
+Hosted-configuration follow-up: `npm run start:pilot -- --localhost --port 8081
+--max-workers 1` started the dedicated development preview. Brave directly showed
+the Arabic login (screenshot reviewed) and English controls; direct `/parent` and
+`/child` both settled on the signed-out gate. No error-level browser console entries
+were captured. No credentials were entered or emails sent. This PASSED signed-out
+preview does not establish hosted registration, recovery or session restoration.
+
 ## Environment issues resolved during verification
 
 - Optional Studio/postgres-meta images failed with `exec format error`.
@@ -58,6 +65,10 @@ are in the implementation task; credentials/codes are not copied into this recor
   Mailpit. No unrelated Docker images or volumes were removed.
 - Concurrent compiler work exhausted memory; final checks ran serially, with two
   regression workers.
+- During hosted setup, the two-worker regression rerun hit the existing Expo
+  branding-config test's 5-second timeout (1,877 other tests passed). That file
+  passed alone, then the complete one-worker suite passed all 1,878 tests in 97.88
+  seconds. No unrelated test timeout or implementation was changed.
 - Initial Android export/index writes failed with `ENOSPC`. After the owner freed
   disk space, both succeeded. Cleanup attempts rejected by automatic approval
   review were not performed.
@@ -66,13 +77,32 @@ are in the implementation task; credentials/codes are not copied into this recor
 
 ## External gates
 
-- BLOCKED: Hosted Mumbai project provisioning; Supabase dashboard is signed out.
-  Owner sign-in requested in the opened tab; no hosted project is claimed.
+- PASSED: Owner-authorized Mumbai project provisioning and schema/access metadata
+  verification. The dedicated `ghaf-parent-pilot` project is healthy; the migration
+  is applied and both Auth/approval tables contain zero users/rows. See the
+  [hosted operator record](../../docs/backend/hosted-pilot.md).
+- PASSED: Hosted read-only connection check with the publishable key. Auth settings
+  returned HTTP 200 with email/signup enabled, confirmation required and anonymous
+  access disabled. Anonymous approval-table SELECT returned HTTP 401 / SQLSTATE
+  `42501` permission denied. No hosted identities or messages were created.
+- PASSED: Email minimum password length 12, OTP length 8 with 3,600-second expiry,
+  refresh-token compromise detection on, reuse interval 10 seconds and access-token
+  expiry 3,600 seconds, directly observed in Dashboard. The app accepts exactly six
+  or eight digits; 71 focused account/storage/UI tests passed after that adjustment.
 - BLOCKED: External verification/recovery delivery. Owner confirmed no sending
   domain. Resend requires a verified domain; local Mailpit is test evidence only.
+  This Free project's Dashboard also blocks template editing until custom SMTP is
+  configured. Repository bilingual code templates are ready but are not installed;
+  default hosted emails remain active. Resend interval must be checked at SMTP setup.
+- NOT RUN: Hosted registration, email verification, login, recovery and approval
+  transitions with controlled adult accounts. No local result substitutes for them.
+- NOT RUN: Approved hosted web origin configuration; Site URL remains `http://localhost:3000`
+  with no redirect allowlist. Typed-code templates do not use redirects.
 - NOT RUN: Physical Android SecureStore, process restart, keyboard, Back, TalkBack,
   RTL/reduced motion and provider failure/recovery. SDK `adb devices -l` returned no
   attached device. JavaScript exports and component tests cannot pass these gates.
 - NOT RUN: Named Arabic/human pilot review and hosted activation review.
 - Default authentication mode remains demo; no hosted activation, provider/SMTP
   secret, real Child data or real family-progress persistence is enabled.
+  An ignored `.env.pilot.local` supplies public project configuration only to the
+  explicit `npm run start:pilot` development command, which clears Metro's cache.

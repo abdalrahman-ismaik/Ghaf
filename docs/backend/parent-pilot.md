@@ -88,12 +88,15 @@ prerequisites. Do not treat the local configuration file as hosted configuration
    the migration intentionally does not backfill or approve preexisting accounts.
 3. In Authentication, enable email/password signup and **Confirm email**. Disable
    anonymous, phone and social-provider sign-in. Set minimum password length to 12,
-   email OTP length to 6, email OTP expiry to 3600 seconds, and resend interval to
+   email OTP length to 8, email OTP expiry to 3600 seconds, and resend interval to
    at least 60 seconds. Keep refresh-token rotation enabled. Password recovery
    uses a verified recovery session; leave Secure password change disabled for this
    code-based flow. Set Site URL to the approved pilot web origin and do not add
    wildcard redirect URLs. Ghaf consumes typed codes rather than redirect tokens.
    [Supabase configuration](https://supabase.com/docs/guides/local-development/cli/config)
+   The app accepts exactly six or eight digits, including normalized Arabic/Persian
+   input. Local tests retain six-digit codes; the hosted project retains its
+   eight-digit default.
 4. Configure Resend SMTP: `smtp.resend.com`, port `465`, username `resend`, and a
    Resend API key as the password. Supply an owner-controlled sender email on the
    verified domain and sender name `Ghaf — غاف`. Put these values in Supabase SMTP
@@ -109,10 +112,41 @@ prerequisites. Do not treat the local configuration file as hosted configuration
    images, user metadata or embedded app secrets. The one-hour copy must match the
    configured expiry. Editing the local files does not update hosted templates.
    [Supabase email templates](https://supabase.com/docs/guides/auth/auth-email-templates)
+   On this Free project, the Dashboard blocks template editing until custom SMTP
+   is configured. Default emails remain active and do not implement Ghaf's typed-code
+   journey. Do not invite participants before both custom templates are saved and
+   delivered successfully.
 6. After review and acceptance, build the pilot with `EXPO_PUBLIC_GHAF_AUTH_MODE=supabase`,
    the project URL and its publishable key from `.env.example`. Keep the default
    competition build in `demo` mode. Only public project configuration belongs in
    the Expo bundle. Never use a service-role or secret key as the publishable key.
+
+### Run the separate hosted preview
+
+The owner-authorized project is now provisioned; see [its operator record](hosted-pilot.md)
+for verified settings and remaining gates. This workstation has an ignored
+`.env.pilot.local` containing only the public project URL/key and pilot-mode flags.
+From a shell without conflicting `EXPO_PUBLIC_...` overrides, run:
+
+```powershell
+npm run start:pilot -- --web
+```
+
+The command explicitly loads that file and clears Metro's cache. `npm start` and
+`npm run web` do not load `.env.pilot.local`; their default remains demo. On a fresh
+checkout, create `.env.pilot.local` from the relevant entries in `.env.example`,
+set auth mode to `supabase`, and use the intended project's publishable settings.
+Do not use `.env.local` for this separate preview, as Expo loads that file during
+ordinary demo starts too. Node's existing shell environment takes precedence over
+`--env-file`, so unset conflicting mode/project variables before starting.
+
+When returning from the pilot preview to the default browser demo, stop the pilot
+server and run `npm run web -- --clear` from a shell without pilot overrides. The
+cache-clearing requirement below also applies in this direction.
+
+This command is a development preview, not pilot activation. Hosted registration
+and recovery remain blocked by sender/template setup; physical Android and review
+gates also remain open.
 
 ### Clear the app cache when switching mode or project
 
@@ -148,6 +182,10 @@ The last command changes the linked hosted database. Inspect the project referen
 and dry-run migration list before the approved activation. Never run the pgTAP
 fixture suite against hosted adult accounts. Supabase and Resend Dashboard setup
 are operator steps, not actions performed by the app.
+
+The recorded hosted project already received migration `20260913000100` through
+the SQL Editor. Before using this CLI workflow there, follow the migration-history
+reconciliation in [the operator record](hosted-pilot.md); do not execute its DDL twice.
 
 ## Dashboard approval, suspension and deletion
 
@@ -205,8 +243,11 @@ Android acceptance remains **NOT RUN**: `adb devices` listed no connected device
 An exported JavaScript bundle does not establish native session-storage, keyboard,
 Back or physical-device behavior.
 
-Hosted project provisioning is **NOT RUN** and external email delivery is
-**BLOCKED** pending owner organization/domain configuration. Local email capture
-and SQL permission tests do not establish hosted delivery, Android acceptance or
-release readiness. The integration owner's validation record carries subsequent
+Hosted Mumbai provisioning, schema/access metadata verification and a read-only
+public-API connection check are **PASSED**. The connection check returned Auth
+settings successfully and denied an anonymous approval-table read. Hosted email
+templates and delivery are **BLOCKED** pending custom SMTP and a verified sending
+domain. Hosted registration/login/recovery are **NOT RUN**. Local email capture
+and SQL permission tests do not establish hosted account flows, Android acceptance
+or release readiness. The integration owner's validation record carries subsequent
 app and provider evidence.
