@@ -17,30 +17,30 @@ const brandRoot = `${root}assets/brand/ghaf`;
 
 const expectedHashes = {
   'app-icon/android-adaptive-foreground-1024.png':
-    '0eac8d971c0cdf1d3979a21ff23f818a51b273b41a91070c01d57ece0e75860e',
+    'cd92b525cdcb53525de7c584d77602f7e7af75220e0def4b4c12a4c5f7f22dbe',
   'app-icon/android-adaptive-monochrome-1024.png':
-    'be0b45bb2b18a5860591a4c1fd2bdf9232ec37243d94a7267c070b687e9adf6d',
+    '144b160309823643f7209f6ba1daf389084baa29b5778228f50daf94733bdff1',
   'app-icon/android-legacy-icon-1024.png':
-    '27f3aecacfda7697226972d37e04a66001c510d485aa8a8dd9643e99f0d7c1a6',
+    '44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c',
   'app-icon/apple-touch-icon-180.png':
-    'e3a514a89004f38d6161a933da5d438f50dae17bf1eab3550b9ee886054cc45e',
-  'app-icon/favicon-32.png': 'f960eafe6d8b0fe1cc0444db1f87ae40c31b4c7b22d7566f9341324553cbe503',
-  'app-icon/favicon-48.png': '6f6c075f39cd88e838e2266062b1ac116d32b479e1723bb40c30db2394b00acb',
-  'app-icon/icon.png': '27f3aecacfda7697226972d37e04a66001c510d485aa8a8dd9643e99f0d7c1a6',
-  'app-icon/ios-icon-1024.png': '27f3aecacfda7697226972d37e04a66001c510d485aa8a8dd9643e99f0d7c1a6',
+    '37cb5f688d4356326b80cf85d187f7c6e09f395196596311b48941214a45c492',
+  'app-icon/favicon-32.png': 'd1c008abf714e0094d780582a42892d5cb92d6e44acfb75c2b4c13808f232a95',
+  'app-icon/favicon-48.png': '876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6',
+  'app-icon/icon.png': '44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c',
+  'app-icon/ios-icon-1024.png': '44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c',
   'app-icon/play-store-icon-512.png':
-    'f28aaca3dd5d1ab0c162624b7bcb42148920fb97b554e5ac19ab35503198bddc',
-  'app-icon/pwa-icon-192.png': '9ae053a566460c9dae05a766ccb4e0952e47f1c1a2684ed18d25d51b6ca7e28f',
-  'app-icon/pwa-icon-512.png': 'f28aaca3dd5d1ab0c162624b7bcb42148920fb97b554e5ac19ab35503198bddc',
+    '908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4',
+  'app-icon/pwa-icon-192.png': '1e6063e6b31770c3b92ec1e4aa03a45882e9f4caff6b94d79639254f6694a92c',
+  'app-icon/pwa-icon-512.png': '908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4',
   'app-icon/pwa-maskable-512.png':
-    '816e6516a0c6b2982a1b04c04be2e65d83eaaf6175d0f9824061cfa2f525f2b6',
+    '4f021290d28a32547d79b6ab2348c83e59f57d25da8c957a1b96060642c5a1d0',
   'app-icon/splash-icon-1024.png':
-    'd12917f3289c3bf8da71ed1365aebefe8c09cc54e56233ddc93f5ce05d6aedba',
-  'ghaf-mark-deep-forest.svg': 'f0a6f2c7349f7c49cda0cf29b881dcf753095a60c1c21c17939077392ab3dc0b',
+    '44c2d366cdd176882d4701c58c699f816c01e82d930186a0a9cb23e74730527a',
+  'ghaf-mark-deep-forest.svg': '427bab9c4049b81153e31093b20ec9c1aef66a31a8538415435c7e2b74dc9b9a',
   'ghaf-mark-full-color-1024.png':
-    '28a09269c993d4aacbc40385102f9fa70d555d63b2319f238a5fce6cd277e7dc',
-  'ghaf-mark-full-color.svg': '67bf09fd84db2b20d030aef73167459d12ebe363d580951336936ca3e255d4a3',
-  'ghaf-mark-reverse.svg': '9a8e357cb51279291ceadf4419691ecad0430ef32ca4ca51b5859cf9ac8ea2c2',
+    'f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b',
+  'ghaf-mark-full-color.svg': '417f488a937f67c9eabfb6d585ffea1eb220185dcc4e42dcef69277d8a4e2eeb',
+  'ghaf-mark-reverse.svg': 'a00a2317eda628280aa14fc4feb89dab90dbdd231809ad760339925b6a3bbca3',
 } as const;
 
 const expectedDimensions = {
@@ -70,11 +70,15 @@ const transparentPngs = new Set([
 ]);
 
 const expectedGeometryHashes = [
-  '3b68797794cdf1a6abeb91e2ebb6054ed30c933fc5b49d6bf88fea786aa594d7',
-  '99b16b161a3d2d931911611f25a8a9e8d00250fc7b8875add37a7b1a593c975c',
-  'feee89d2a20b393dbcf1870a165365c6004530ce6b9ccc903cfa895e7993e088',
-  '7b7edd738bd8722df8e95241502b3d81779ee3450c3b5104fe8b9e0849d75db3',
+  '0ed22b2cfe20b0b44f159b27cc5404d1841cba701c2692a4d435df550fe178a3',
+  'f37556dd428505a2ae1f4bc9505ed352a53ff6a51314700208b53e5640ab998c',
 ] as const;
+
+const expectedFills = {
+  fullColor: ['#0D3128', '#188B83'],
+  deepForest: ['#0D3128', '#0D3128'],
+  reverse: ['#F7F8F3', '#F7F8F3'],
+} as const;
 
 interface PngInfo {
   readonly colorType: number;
@@ -158,6 +162,7 @@ function inspectPng(relativePath: keyof typeof expectedDimensions): PngInfo {
 
   for (let row = 0; row < height; row += 1) {
     const filter = scanlines.readUInt8(cursor);
+    expect([0, 1, 2, 3, 4]).toContain(filter);
     cursor += 1;
 
     for (let column = 0; column < stride; column += 1) {
@@ -176,8 +181,6 @@ function inspectPng(relativePath: keyof typeof expectedDimensions): PngInfo {
         predictor = Math.floor((left + above) / 2);
       } else if (filter === 4) {
         predictor = paeth(left, above, upperLeft);
-      } else {
-        expect(filter).toBe(0);
       }
 
       current.writeUInt8((encoded + predictor) & 0xff, column);
@@ -229,7 +232,7 @@ describe('official Ghaf brand assets', () => {
     expect(listFiles(brandRoot)).not.toContain('app-icon/app-icon-dark-alternate-1024.png');
   });
 
-  it('preserves every supplied file byte-for-byte', () => {
+  it('pins every approved 5A master and platform derivative byte-for-byte', () => {
     for (const [relativePath, expectedHash] of Object.entries(expectedHashes)) {
       expect(hash(readFileSync(`${brandRoot}/${relativePath}`)), relativePath).toBe(expectedHash);
     }
@@ -244,7 +247,7 @@ describe('official Ghaf brand assets', () => {
     }
   });
 
-  it('keeps the three vectors safe and their four canonical regions identical', () => {
+  it('keeps the three vectors safe and their two canonical 5A color regions identical', () => {
     const variants = [
       parseSvg('ghaf-mark-full-color.svg'),
       parseSvg('ghaf-mark-deep-forest.svg'),
@@ -252,19 +255,19 @@ describe('official Ghaf brand assets', () => {
     ];
 
     for (const variant of variants) {
-      expect(variant.contents).toContain('viewBox="0 0 1254 1254"');
+      expect(variant.contents).toContain('viewBox="0 0 1024 1024"');
       expect(variant.contents).not.toMatch(
         /<(?:image|script|filter|font|linearGradient|radialGradient)\b/iu,
       );
       expect(variant.contents).not.toMatch(/\b(?:href|xlink:href)\s*=|url\(/iu);
-      expect(variant.ids).toEqual(['region-1', 'region-2', 'region-3', 'region-4']);
+      expect(variant.ids).toEqual(['region-1', 'region-2']);
       expect(variant.geometry.map(hash)).toEqual(expectedGeometryHashes);
       expect(variant.geometry.every((path) => path.endsWith('Z'))).toBe(true);
     }
 
-    expect(variants[0]?.fills).toEqual(['#0D3128', '#126A50', '#28736C', '#188B83']);
-    expect(variants[1]?.fills).toEqual(Array(4).fill('#0D3128'));
-    expect(variants[2]?.fills).toEqual(Array(4).fill('#F7F8F3'));
+    expect(variants[0]?.fills).toEqual(expectedFills.fullColor);
+    expect(variants[1]?.fills).toEqual(expectedFills.deepForest);
+    expect(variants[2]?.fills).toEqual(expectedFills.reverse);
   });
 });
 
@@ -285,32 +288,30 @@ describe('GhafMark', () => {
     expect(source).not.toMatch(/(?:color|fill|height|width)\??:/u);
   });
 
-  it('renders canonical vector geometry without stretching or arbitrary color', () => {
-    const rendered = asElement(
-      GhafMark({
-        accessibility: 'decorative',
-        size: 'standard',
-        variant: 'fullColor',
-      }),
-    );
-    const props = rendered.props;
-    const paths = props.children as MockElement[];
+  it.each(['fullColor', 'deepForest', 'reverse'] as const)(
+    'renders canonical 5A %s geometry without stretching or arbitrary color',
+    (variant) => {
+      const rendered = asElement(
+        GhafMark({
+          accessibility: 'decorative',
+          size: 'standard',
+          variant,
+        }),
+      );
+      const props = rendered.props;
+      const paths = props.children as MockElement[];
 
-    expect(props).toMatchObject({
-      height: 64,
-      preserveAspectRatio: 'xMidYMid meet',
-      viewBox: '0 0 1254 1254',
-      width: 64,
-    });
-    expect(paths.map((path) => hash(String(path.props.d)))).toEqual(expectedGeometryHashes);
-    expect(paths.map((path) => path.props.fill)).toEqual([
-      '#0D3128',
-      '#126A50',
-      '#28736C',
-      '#188B83',
-    ]);
-    expect(paths.map((path) => path.props.fillRule)).toEqual(Array(4).fill('evenodd'));
-  });
+      expect(props).toMatchObject({
+        height: 64,
+        preserveAspectRatio: 'xMidYMid meet',
+        viewBox: '0 0 1024 1024',
+        width: 64,
+      });
+      expect(paths.map((path) => hash(String(path.props.d)))).toEqual(expectedGeometryHashes);
+      expect(paths.map((path) => path.props.fill)).toEqual(expectedFills[variant]);
+      expect(paths.map((path) => path.props.fillRule)).toEqual(['evenodd', 'evenodd']);
+    },
+  );
 
   it('hides decorative marks and localizes identifying marks', () => {
     const decorative = asElement(

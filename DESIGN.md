@@ -140,6 +140,14 @@ components:
 
 # Ghaf Design System
 
+## 2026-09-13 selected brand identity
+
+The user selected **5A Refined Classic** as the new Ghaf logo and authorized replacement of the
+previous mark. The family beneath a spreading Ghaf canopy is now the current identity; see the
+[5A master, derivatives and migration record](docs/design/brand/5a-refined-classic/README.md).
+This supersedes earlier logo-geometry preservation rules for brand assets only. Live Arabic/English
+wordmarks, design tokens, screen layouts and product illustrations retain their existing roles.
+
 ## Overview
 
 **Creative North Star: "The Living Family Garden — الحديقة العائلية الحية"**

@@ -36,84 +36,84 @@ const platformAssets = {
     path: `${appIconRoot}/icon.png`,
     width: 1024,
     height: 1024,
-    sha256: '27f3aecacfda7697226972d37e04a66001c510d485aa8a8dd9643e99f0d7c1a6',
+    sha256: '44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c',
     opacity: 'opaque',
   },
   ios: {
     path: `${appIconRoot}/ios-icon-1024.png`,
     width: 1024,
     height: 1024,
-    sha256: '27f3aecacfda7697226972d37e04a66001c510d485aa8a8dd9643e99f0d7c1a6',
+    sha256: '44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c',
     opacity: 'opaque',
   },
   androidLegacy: {
     path: `${appIconRoot}/android-legacy-icon-1024.png`,
     width: 1024,
     height: 1024,
-    sha256: '27f3aecacfda7697226972d37e04a66001c510d485aa8a8dd9643e99f0d7c1a6',
+    sha256: '44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c',
     opacity: 'opaque',
   },
   androidAdaptiveForeground: {
     path: `${appIconRoot}/android-adaptive-foreground-1024.png`,
     width: 1024,
     height: 1024,
-    sha256: '0eac8d971c0cdf1d3979a21ff23f818a51b273b41a91070c01d57ece0e75860e',
+    sha256: 'cd92b525cdcb53525de7c584d77602f7e7af75220e0def4b4c12a4c5f7f22dbe',
     opacity: 'transparent',
   },
   androidAdaptiveMonochrome: {
     path: `${appIconRoot}/android-adaptive-monochrome-1024.png`,
     width: 1024,
     height: 1024,
-    sha256: 'be0b45bb2b18a5860591a4c1fd2bdf9232ec37243d94a7267c070b687e9adf6d',
+    sha256: '144b160309823643f7209f6ba1daf389084baa29b5778228f50daf94733bdff1',
     opacity: 'transparent',
   },
   splash: {
     path: `${appIconRoot}/splash-icon-1024.png`,
     width: 1024,
     height: 1024,
-    sha256: 'd12917f3289c3bf8da71ed1365aebefe8c09cc54e56233ddc93f5ce05d6aedba',
+    sha256: '44c2d366cdd176882d4701c58c699f816c01e82d930186a0a9cb23e74730527a',
     opacity: 'transparent',
   },
   favicon32: {
     path: `${appIconRoot}/favicon-32.png`,
     width: 32,
     height: 32,
-    sha256: 'f960eafe6d8b0fe1cc0444db1f87ae40c31b4c7b22d7566f9341324553cbe503',
+    sha256: 'd1c008abf714e0094d780582a42892d5cb92d6e44acfb75c2b4c13808f232a95',
     opacity: 'transparent',
   },
   favicon48: {
     path: `${appIconRoot}/favicon-48.png`,
     width: 48,
     height: 48,
-    sha256: '6f6c075f39cd88e838e2266062b1ac116d32b479e1723bb40c30db2394b00acb',
+    sha256: '876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6',
     opacity: 'transparent',
   },
   pwa192: {
     path: `${appIconRoot}/pwa-icon-192.png`,
     width: 192,
     height: 192,
-    sha256: '9ae053a566460c9dae05a766ccb4e0952e47f1c1a2684ed18d25d51b6ca7e28f',
+    sha256: '1e6063e6b31770c3b92ec1e4aa03a45882e9f4caff6b94d79639254f6694a92c',
     opacity: 'opaque',
   },
   pwa512: {
     path: `${appIconRoot}/pwa-icon-512.png`,
     width: 512,
     height: 512,
-    sha256: 'f28aaca3dd5d1ab0c162624b7bcb42148920fb97b554e5ac19ab35503198bddc',
+    sha256: '908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4',
     opacity: 'opaque',
   },
   pwaMaskable512: {
     path: `${appIconRoot}/pwa-maskable-512.png`,
     width: 512,
     height: 512,
-    sha256: '816e6516a0c6b2982a1b04c04be2e65d83eaaf6175d0f9824061cfa2f525f2b6',
+    sha256: '4f021290d28a32547d79b6ab2348c83e59f57d25da8c957a1b96060642c5a1d0',
     opacity: 'opaque',
   },
   appleTouch: {
     path: `${appIconRoot}/apple-touch-icon-180.png`,
     width: 180,
     height: 180,
-    sha256: 'e3a514a89004f38d6161a933da5d438f50dae17bf1eab3550b9ee886054cc45e',
+    sha256: '37cb5f688d4356326b80cf85d187f7c6e09f395196596311b48941214a45c492',
     opacity: 'opaque',
   },
 } as const;
@@ -186,6 +186,7 @@ function decode(relativePath: string) {
 
   for (let row = 0; row < height; row += 1) {
     const filter = scanlines.readUInt8(cursor);
+    expect([0, 1, 2, 3, 4]).toContain(filter);
     cursor += 1;
 
     for (let column = 0; column < stride; column += 1) {
@@ -200,7 +201,6 @@ function decode(relativePath: string) {
       else if (filter === 2) predictor = above;
       else if (filter === 3) predictor = Math.floor((left + above) / 2);
       else if (filter === 4) predictor = paeth(left, above, upperLeft);
-      else expect(filter).toBe(0);
 
       current.writeUInt8((encoded + predictor) & 0xff, column);
     }
@@ -289,9 +289,9 @@ describe('official Ghaf platform branding', () => {
     const monochrome = decode(platformAssets.androidAdaptiveMonochrome.path);
     const splash = decode(platformAssets.splash.path);
 
-    expect(alphaBounds(foreground)).toEqual({ minX: 207, minY: 228, maxX: 816, maxY: 795 });
-    expect(alphaBounds(monochrome)).toEqual({ minX: 207, minY: 228, maxX: 816, maxY: 795 });
-    expect(alphaBounds(splash)).toEqual({ minX: 297, minY: 312, maxX: 726, maxY: 711 });
+    expect(alphaBounds(foreground)).toEqual({ minX: 207, minY: 324, maxX: 816, maxY: 699 });
+    expect(alphaBounds(monochrome)).toEqual({ minX: 207, minY: 324, maxX: 816, maxY: 699 });
+    expect(alphaBounds(splash)).toEqual({ minX: 297, minY: 379, maxX: 726, maxY: 644 });
 
     const guaranteedSafeInset = Math.floor((1024 - (1024 * 66) / 108) / 2);
     const guaranteedSafeLimit = 1023 - guaranteedSafeInset;

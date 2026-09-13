@@ -47,12 +47,12 @@ const routeHeaderInventory = [
 ] as const;
 
 describe('role header branding', () => {
-  it('keeps the immutable official local mark as the sole logo source', () => {
+  it('keeps the approved 5A local mark as the sole logo source', () => {
     const assetPath = `${root}assets/brand/ghaf/ghaf-mark-full-color-1024.png`;
     const rasterLogo = source('src/components/brand/GhafRasterLogo.tsx');
 
     expect(createHash('sha256').update(readFileSync(assetPath)).digest('hex')).toBe(
-      '28a09269c993d4aacbc40385102f9fa70d555d63b2319f238a5fce6cd277e7dc',
+      'f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b',
     );
     expect(rasterLogo).toContain(
       "require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png')",

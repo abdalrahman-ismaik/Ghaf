@@ -1,5 +1,13 @@
 # Ghaf Design Direction
 
+## 2026-09-13 selected brand identity
+
+**5A Refined Classic** is the user-selected Ghaf logo: three family figures beneath one spreading
+Ghaf canopy. Current raster, vector and platform assets derive from one master; the
+[5A migration record](docs/design/brand/5a-refined-classic/README.md) owns its provenance and usage.
+Earlier references to immutable logo geometry describe the superseded September 5 mark. This
+brand replacement does not change the botanical UI direction, typography or product content.
+
 ## 2026-09-11 implemented botanical direction
 
 The user-approved Tamagui and Reanimated redesign is the active visual direction. The built

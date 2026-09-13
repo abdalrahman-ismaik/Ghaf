@@ -1,0 +1,197 @@
+{
+  "baseline": "2efc68afde724a5e62985042b1a0e9438638c8d3",
+  "result": "Focused48tests/5filesPASS; typecheck andscopedlintPASS",
+  "final": {
+    "runner_pid": 501190,
+    "checks": [
+      {
+        "name": "focused-tests-final",
+        "command": [
+          "./node_modules/.bin/vitest",
+          "run",
+          "tests/official-brand-mark.test.ts",
+          "tests/official-brand-platform.test.ts",
+          "tests/role-header-branding.test.tsx",
+          "tests/r003-first-run-experience.test.ts",
+          "tests/r003-illustration-assets.test.ts",
+          "--maxWorkers=1"
+        ],
+        "pid": 501191,
+        "started_utc": "2026-09-13T06:04:51.052114+00:00",
+        "ended_utc": "2026-09-13T06:04:55.807272+00:00",
+        "exit_code": 0,
+        "log": "output/brand-exploration/ghaf-5a-integration-20260913/focused-tests-final.log"
+      },
+      {
+        "name": "typecheck",
+        "command": ["npm", "run", "typecheck"],
+        "pid": 501366,
+        "started_utc": "2026-09-13T06:04:55.807706+00:00",
+        "ended_utc": "2026-09-13T06:05:16.885725+00:00",
+        "exit_code": 0,
+        "log": "output/brand-exploration/ghaf-5a-integration-20260913/typecheck.log"
+      },
+      {
+        "name": "scoped-lint",
+        "command": [
+          "./node_modules/.bin/eslint",
+          "src/components/brand/GhafMark.tsx",
+          "tests/official-brand-mark.test.ts",
+          "tests/official-brand-platform.test.ts",
+          "tests/role-header-branding.test.tsx"
+        ],
+        "pid": 501580,
+        "started_utc": "2026-09-13T06:05:16.886862+00:00",
+        "ended_utc": "2026-09-13T06:05:21.558395+00:00",
+        "exit_code": 0,
+        "log": "output/brand-exploration/ghaf-5a-integration-20260913/scoped-lint.log"
+      }
+    ]
+  },
+  "syntax_and_initial_attempt": {
+    "runner_pid": 498719,
+    "checks": [
+      {
+        "name": "syntax",
+        "command": ["node", "--check", "scripts/brand/build-5a-assets.mjs"],
+        "pid": 498722,
+        "started_utc": "2026-09-13T06:01:27.271943+00:00",
+        "ended_utc": "2026-09-13T06:01:27.305350+00:00",
+        "exit_code": 0,
+        "log": "output/brand-exploration/ghaf-5a-integration-20260913/syntax.log"
+      },
+      {
+        "name": "focused-tests",
+        "command": [
+          "./node_modules/.bin/vitest",
+          "run",
+          "tests/official-brand-mark.test.ts",
+          "tests/official-brand-platform.test.ts",
+          "tests/role-header-branding.test.tsx",
+          "tests/r003-first-run-experience.test.ts",
+          "tests/r003-illustration-assets.test.ts",
+          "--maxWorkers=1"
+        ],
+        "pid": 498759,
+        "started_utc": "2026-09-13T06:01:27.305787+00:00",
+        "ended_utc": "2026-09-13T06:04:20.639968+00:00",
+        "exit_code": 143,
+        "log": "output/brand-exploration/ghaf-5a-integration-20260913/focused-tests.log"
+      }
+    ]
+  },
+  "initial_limit": "PNGtestdecoder asserted unchangedfilter0 onceperbyte; fourplatformrows failed after23\u201376seconds each andownedfirstpool wasstopped143 beforecompletefailuretext. Leadmovedthe sameallowlistedfiltervalidation tothe rowboundary, withoutchangingdecodedbytes, bounds orassertionmeaning. Final5files48tests passedin4.30s. Originaloutputretained.",
+  "original_stop": {
+    "utc": "2026-09-13T06:04:20.622108+00:00",
+    "owned_processes": [
+      {
+        "pid": 498800,
+        "status": "already ended"
+      },
+      {
+        "pid": 498759,
+        "signal": "SIGTERM",
+        "reason": "Redundant per-byte PNG filter assertions stalled focused validation; move identical check to row boundary"
+      }
+    ]
+  },
+  "regeneration": {
+    "started_utc": "2026-09-13T05:59:52.339680+00:00",
+    "ended_utc": "2026-09-13T05:59:56.102681+00:00",
+    "command": ["node", "scripts/brand/build-5a-assets.mjs"],
+    "exit_code": 0,
+    "compared_files": 25,
+    "identical": true,
+    "hashes": {
+      "assets/brand/ghaf/ghaf-mark-full-color-1024.png": "f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b",
+      "assets/brand/ghaf/ghaf-mark-deep-forest.svg": "427bab9c4049b81153e31093b20ec9c1aef66a31a8538415435c7e2b74dc9b9a",
+      "assets/brand/ghaf/ghaf-mark-reverse.svg": "a00a2317eda628280aa14fc4feb89dab90dbdd231809ad760339925b6a3bbca3",
+      "assets/brand/ghaf/ghaf-mark-full-color.svg": "417f488a937f67c9eabfb6d585ffea1eb220185dcc4e42dcef69277d8a4e2eeb",
+      "assets/brand/ghaf/app-icon/icon.png": "44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c",
+      "assets/brand/ghaf/app-icon/favicon-48.png": "876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6",
+      "assets/brand/ghaf/app-icon/pwa-icon-512.png": "908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4",
+      "assets/brand/ghaf/app-icon/pwa-icon-192.png": "1e6063e6b31770c3b92ec1e4aa03a45882e9f4caff6b94d79639254f6694a92c",
+      "assets/brand/ghaf/app-icon/apple-touch-icon-180.png": "37cb5f688d4356326b80cf85d187f7c6e09f395196596311b48941214a45c492",
+      "assets/brand/ghaf/app-icon/pwa-maskable-512.png": "4f021290d28a32547d79b6ab2348c83e59f57d25da8c957a1b96060642c5a1d0",
+      "assets/brand/ghaf/app-icon/android-legacy-icon-1024.png": "44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c",
+      "assets/brand/ghaf/app-icon/favicon-32.png": "d1c008abf714e0094d780582a42892d5cb92d6e44acfb75c2b4c13808f232a95",
+      "assets/brand/ghaf/app-icon/splash-icon-1024.png": "44c2d366cdd176882d4701c58c699f816c01e82d930186a0a9cb23e74730527a",
+      "assets/brand/ghaf/app-icon/play-store-icon-512.png": "908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4",
+      "assets/brand/ghaf/app-icon/android-adaptive-monochrome-1024.png": "144b160309823643f7209f6ba1daf389084baa29b5778228f50daf94733bdff1",
+      "assets/brand/ghaf/app-icon/android-adaptive-foreground-1024.png": "cd92b525cdcb53525de7c584d77602f7e7af75220e0def4b4c12a4c5f7f22dbe",
+      "assets/brand/ghaf/app-icon/ios-icon-1024.png": "44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c",
+      "public/apple-touch-icon.png": "37cb5f688d4356326b80cf85d187f7c6e09f395196596311b48941214a45c492",
+      "public/favicon-48.png": "876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6",
+      "public/favicon-32.png": "d1c008abf714e0094d780582a42892d5cb92d6e44acfb75c2b4c13808f232a95",
+      "public/icons/pwa-icon-512.png": "908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4",
+      "public/icons/pwa-icon-192.png": "1e6063e6b31770c3b92ec1e4aa03a45882e9f4caff6b94d79639254f6694a92c",
+      "public/icons/pwa-maskable-512.png": "4f021290d28a32547d79b6ab2348c83e59f57d25da8c957a1b96060642c5a1d0",
+      "docs/design/brand/5a-refined-classic/manifest.json": "f3bd7035b83c4d67624d5b67defecb05dc1823bcd9399bfac8894bc9799c650c",
+      "src/components/brand/GhafMark.tsx": "de204032df07f4794bb2ac6a8f26ea938e63232a49145373e4227281b146af1b"
+    }
+  },
+  "served_assets": {
+    "utc": "2026-09-13T06:04:52.364151+00:00",
+    "rows": [
+      {
+        "url": "http://127.0.0.1:8081/favicon-48.png",
+        "status": 200,
+        "content_type": "image/png",
+        "sha256": "876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6",
+        "expected": "876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6",
+        "match": true
+      },
+      {
+        "url": "http://127.0.0.1:8081/assets/assets/brand/ghaf/ghaf-mark-full-color-1024.png?platform=web",
+        "status": 200,
+        "content_type": "image/png",
+        "sha256": "f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b",
+        "expected": "f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b",
+        "match": true
+      }
+    ],
+    "scope": "Read-only HTTP asset delivery from existing A-owned Metro; no browser, bundle rebuild, process start/stop or native pass"
+  },
+  "visual_inspection": [
+    "Opaque1024launcher",
+    "192PWAicon",
+    "Transparent1024runtimemark",
+    "Extractedmain comparedwithselected5Aboard"
+  ],
+  "not_run": [
+    "Freshbrowser fulljourney/screenshots",
+    "Fullrepositorytestpool",
+    "NativeAPK/reinstall/launcher/themedicon/coldsplash",
+    "Namedstudentorhumanexactassetreview"
+  ],
+  "formatted_regeneration": {
+    "compared_files": 25,
+    "identical": true,
+    "commands": [
+      {
+        "command": ["node", "scripts/brand/build-5a-assets.mjs"],
+        "started_utc": "2026-09-13T06:06:56.856647+00:00",
+        "ended_utc": "2026-09-13T06:07:00.279140+00:00",
+        "exit_code": 0,
+        "output": "{\"identity\":\"5A Refined Classic\",\"components\":7,\"compoundPaths\":2,\"assets\":17,\"publicCopies\":6,\"geometryHashes\":[\"0ed22b2cfe20b0b44f159b27cc5404d1841cba701c2692a4d435df550fe178a3\",\"f37556dd428505a2ae1f4bc9505ed352a53ff6a51314700208b53e5640ab998c\"]}\n"
+      },
+      {
+        "command": [
+          "./node_modules/.bin/prettier",
+          "--write",
+          "src/components/brand/GhafMark.tsx",
+          "docs/design/brand/5a-refined-classic/manifest.json"
+        ],
+        "started_utc": "2026-09-13T06:07:00.279165+00:00",
+        "ended_utc": "2026-09-13T06:07:00.546293+00:00",
+        "exit_code": 0,
+        "output": "src/components/brand/GhafMark.tsx 93ms\ndocs/design/brand/5a-refined-classic/manifest.json 25ms\n"
+      }
+    ]
+  },
+  "format_and_whitespace": {
+    "command": "prettier --check scoped script/component/three tests/current 5A docs; git diff --check",
+    "result": "PASS exit0",
+    "utc": "2026-09-13T06:07:00.548820+00:00"
+  }
+}

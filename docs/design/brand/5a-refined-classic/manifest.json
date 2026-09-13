@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "identity": "5A Refined Classic",
+  "selectedBoardSha256": "fb38af19fe6e7192536cc62c3f68da5bef0f21a6b5d66a744b9cae2c0468fa8d",
+  "extractedMasterSha256": "db6e72ecb8ddf1a370f24f61d36271552324b8fa5baa449d144afd3b7734df8a",
+  "viewBox": "0 0 1024 1024",
+  "fills": ["#0D3128", "#188B83"],
+  "geometryHashes": [
+    "0ed22b2cfe20b0b44f159b27cc5404d1841cba701c2692a4d435df550fe178a3",
+    "f37556dd428505a2ae1f4bc9505ed352a53ff6a51314700208b53e5640ab998c"
+  ],
+  "contourPolicy": {
+    "threshold": 32,
+    "tolerance": 0.8,
+    "components": 7,
+    "compoundColorPaths": 2,
+    "runtimeMarkWidth": 960
+  },
+  "assets": {
+    "ghaf-mark-full-color.svg": {
+      "sha256": "417f488a937f67c9eabfb6d585ffea1eb220185dcc4e42dcef69277d8a4e2eeb"
+    },
+    "ghaf-mark-deep-forest.svg": {
+      "sha256": "427bab9c4049b81153e31093b20ec9c1aef66a31a8538415435c7e2b74dc9b9a"
+    },
+    "ghaf-mark-reverse.svg": {
+      "sha256": "a00a2317eda628280aa14fc4feb89dab90dbdd231809ad760339925b6a3bbca3"
+    },
+    "ghaf-mark-full-color-1024.png": {
+      "sha256": "f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 6,
+      "targetWidth": 960,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 32,
+        "minY": 216,
+        "maxX": 991,
+        "maxY": 807
+      }
+    },
+    "app-icon/icon.png": {
+      "sha256": "44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 1023,
+        "maxY": 1023
+      }
+    },
+    "app-icon/ios-icon-1024.png": {
+      "sha256": "44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 1023,
+        "maxY": 1023
+      }
+    },
+    "app-icon/android-legacy-icon-1024.png": {
+      "sha256": "44bd0b2c27aebbbabcac04c7d2e1858107e551968d3b392fa29291f75309b34c",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 1023,
+        "maxY": 1023
+      }
+    },
+    "app-icon/android-adaptive-foreground-1024.png": {
+      "sha256": "cd92b525cdcb53525de7c584d77602f7e7af75220e0def4b4c12a4c5f7f22dbe",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 6,
+      "targetWidth": 610,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 207,
+        "minY": 324,
+        "maxX": 816,
+        "maxY": 699
+      }
+    },
+    "app-icon/android-adaptive-monochrome-1024.png": {
+      "sha256": "144b160309823643f7209f6ba1daf389084baa29b5778228f50daf94733bdff1",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 6,
+      "targetWidth": 610,
+      "mode": "monochrome",
+      "alphaBounds": {
+        "minX": 207,
+        "minY": 324,
+        "maxX": 816,
+        "maxY": 699
+      }
+    },
+    "app-icon/splash-icon-1024.png": {
+      "sha256": "44c2d366cdd176882d4701c58c699f816c01e82d930186a0a9cb23e74730527a",
+      "width": 1024,
+      "height": 1024,
+      "colorType": 6,
+      "targetWidth": 430,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 297,
+        "minY": 379,
+        "maxX": 726,
+        "maxY": 644
+      }
+    },
+    "app-icon/favicon-32.png": {
+      "sha256": "d1c008abf714e0094d780582a42892d5cb92d6e44acfb75c2b4c13808f232a95",
+      "width": 32,
+      "height": 32,
+      "colorType": 6,
+      "targetWidth": 820,
+      "mode": "deepForest",
+      "alphaBounds": {
+        "minX": 3,
+        "minY": 8,
+        "maxX": 28,
+        "maxY": 23
+      }
+    },
+    "app-icon/favicon-48.png": {
+      "sha256": "876766c9d7eac42847a2b737b2f5725779b79d347b8c58f721c765530054a8f6",
+      "width": 48,
+      "height": 48,
+      "colorType": 6,
+      "targetWidth": 820,
+      "mode": "deepForest",
+      "alphaBounds": {
+        "minX": 4,
+        "minY": 12,
+        "maxX": 43,
+        "maxY": 35
+      }
+    },
+    "app-icon/pwa-icon-192.png": {
+      "sha256": "1e6063e6b31770c3b92ec1e4aa03a45882e9f4caff6b94d79639254f6694a92c",
+      "width": 192,
+      "height": 192,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 191,
+        "maxY": 191
+      }
+    },
+    "app-icon/pwa-icon-512.png": {
+      "sha256": "908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4",
+      "width": 512,
+      "height": 512,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 511,
+        "maxY": 511
+      }
+    },
+    "app-icon/play-store-icon-512.png": {
+      "sha256": "908f18f13c49700f0e68fffd7fbc3f12b42e3c28dd52eae6de4a07f8b25b39f4",
+      "width": 512,
+      "height": 512,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 511,
+        "maxY": 511
+      }
+    },
+    "app-icon/pwa-maskable-512.png": {
+      "sha256": "4f021290d28a32547d79b6ab2348c83e59f57d25da8c957a1b96060642c5a1d0",
+      "width": 512,
+      "height": 512,
+      "colorType": 2,
+      "targetWidth": 610,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 511,
+        "maxY": 511
+      }
+    },
+    "app-icon/apple-touch-icon-180.png": {
+      "sha256": "37cb5f688d4356326b80cf85d187f7c6e09f395196596311b48941214a45c492",
+      "width": 180,
+      "height": 180,
+      "colorType": 2,
+      "targetWidth": 680,
+      "mode": "fullColor",
+      "alphaBounds": {
+        "minX": 0,
+        "minY": 0,
+        "maxX": 179,
+        "maxY": 179
+      }
+    }
+  },
+  "publicCopies": {
+    "public/favicon-32.png": "app-icon/favicon-32.png",
+    "public/favicon-48.png": "app-icon/favicon-48.png",
+    "public/apple-touch-icon.png": "app-icon/apple-touch-icon-180.png",
+    "public/icons/pwa-icon-192.png": "app-icon/pwa-icon-192.png",
+    "public/icons/pwa-icon-512.png": "app-icon/pwa-icon-512.png",
+    "public/icons/pwa-maskable-512.png": "app-icon/pwa-maskable-512.png"
+  }
+}
