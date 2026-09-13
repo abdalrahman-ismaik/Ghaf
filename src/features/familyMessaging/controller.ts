@@ -188,7 +188,8 @@ export class FamilyMessagingController {
       for (const [id, draft] of this.drafts) if (draft.originScope) this.drafts.delete(id);
     }
     this.localScope = scope;
-    if (scopeChanged || (this.state.context && role !== this.state.context.role)) this.lock();
+    if (scopeChanged || (role && this.state.context && role !== this.state.context.role))
+      this.lock();
     if (this.state.expectedRole !== role) this.publish({ expectedRole: role });
   }
   openFor(role: MessagingRole, help = false) {

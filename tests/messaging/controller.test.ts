@@ -27,6 +27,15 @@ async function ready(context = parent) {
 }
 
 describe('real messaging controller lifecycle', () => {
+  it('keeps a directly authenticated inbox open on an unchanged signed-out demo scope', async () => {
+    const { controller } = await ready();
+    controller.setLocalContext('signed-out:stable', null);
+    await controller.validate();
+    expect(controller.getSnapshot().phase).toBe('ready');
+    controller.setLocale('ar');
+    controller.setLocalContext('signed-out:stable', null);
+    expect(controller.getSnapshot().phase).toBe('ready');
+  });
   it('fetches unseen earlier messages after an own accepted send jumps ahead', async () => {
     const { controller, service } = await ready();
     vi.mocked(service.messages).mockResolvedValueOnce([message]);
