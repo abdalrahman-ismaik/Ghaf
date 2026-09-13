@@ -3,6 +3,10 @@
 - Date: 2026-09-13
 - Status: Accepted for the user-authorized repository maintenance scope
 
+The root-document location decision below is superseded by
+[ADR 0004](0004-root-documentation-relocation.md). The test organization and evidence-preservation
+decisions remain in effect.
+
 ## Context
 
 The application already separates routes, UI, domain policy, models, services and state. However,

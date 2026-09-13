@@ -10,9 +10,9 @@ safety, or production readiness.
 2. Read the repository's canonical `AGENTS.md`.
 3. Read `.specify/memory/constitution.md` and the active feature's `spec.md`, `plan.md`, and
    `tasks.md`.
-4. Read `PRODUCT.md`, `RESEARCH_BASIS.md`, and `PROTOTYPE_LIMITATIONS.md` for any
+4. Read `docs/PRODUCT.md`, `docs/product/RESEARCH_BASIS.md`, and `docs/product/PROTOTYPE_LIMITATIONS.md` for any
    user-facing change.
-5. Check `TEAM_OWNERSHIP.md` and reserve the exact file boundary.
+5. Check `docs/competition-readiness/TEAM_OWNERSHIP.md` and reserve the exact file boundary.
 6. Confirm no person or agent is writing the same file or shared configuration.
 
 Feature 003 is the active approved Spec Kit package. Update its artifacts before changing behavior
@@ -179,7 +179,7 @@ Back behavior, empty/loading/retry states, and external-service denial.
 
 A source review is not evidence for a native, physical, media, permission, timing, or human-
 comprehension result. Record those as `NOT RUN` or `BLOCKED` until directly observed in
-`DEMO_RUNBOOK.md`.
+`docs/competition-readiness/DEMO_RUNBOOK.md`.
 
 ## Handoff Format
 

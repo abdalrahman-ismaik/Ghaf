@@ -4,6 +4,11 @@ Date: 2026-09-13. Scope: recursive tracked-file inventory, runtime module bounda
 documentation, assets, scripts, hidden project tooling and GitHub contribution workflow.
 This is repository maintenance, not a product behavior or release-activation change.
 
+The subsequent user-authorized root cleanup is documented in the
+[root-file guide](PUBLIC_REPOSITORY.md). It supersedes this audit's initial decision to keep
+canonical product documents at the root. The measurements and validation below describe the
+earlier maintenance slice; they are not new passes for concurrent Feature 016 implementation.
+
 ## Findings and treatment
 
 | Finding at intake                                               | Treatment                                                                                    |

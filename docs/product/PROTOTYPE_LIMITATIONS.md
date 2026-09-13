@@ -4,7 +4,7 @@
 
 The shared UI and principal Parent/Child/Garden/League screens now use the approved botanical
 direction, Tamagui primitives and restrained Reanimated press feedback. Automated checks and web/
-Android exports are recorded in the [redesign evidence](specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
+Android exports are recorded in the [redesign evidence](../../specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
 Browser observations remain a proxy: physical Android, TalkBack, keyboard, font scaling, native
 motion and named-human acceptance are **NOT RUN**. Existing capability labels and release flags
 retain their previous authority.

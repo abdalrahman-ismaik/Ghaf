@@ -572,8 +572,8 @@ Learning and explicit activity completion are idempotent, create zero Seeds and 
 garden/canopy/League/Challenge/Family Reward progress, and never compare siblings. Badge, learning,
 and Path screens read authoritative selectors and cannot create a task or calculate an unlock.
 
-The exact badge criteria and learning package live in [the badge catalog](docs/content/BADGE_CATALOG.md)
-and [learning contract](docs/content/LEARNING_STORIES.md). They are approved product authority for
+The exact badge criteria and learning package live in [the badge catalog](content/BADGE_CATALOG.md)
+and [learning contract](content/LEARNING_STORIES.md). They are approved product authority for
 default-off implementation. Learning release still requires source provenance and named bilingual,
 content, cultural, safeguarding, and accessibility review.
 

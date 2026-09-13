@@ -11,8 +11,21 @@ test('allows exact historical artifacts while rejecting new generated output', (
 });
 
 test('rejects root-level tests and accidental copied filenames', () => {
-  assert.equal(findPathIssues(['tests/access.test.ts', 'README(5).md'], []).length, 2);
+  assert.equal(findPathIssues(['tests/access.test.ts'], []).length, 1);
+  assert.ok(
+    findPathIssues(['README(5).md'], []).some((issue) => issue.includes('duplicate filename')),
+  );
   assert.deepEqual(findPathIssues(['tests/access/access.test.ts', 'src/models/access.ts'], []), []);
+});
+
+test('keeps root entry documents while requiring product documents in docs', () => {
+  assert.deepEqual(
+    findPathIssues(['README.md', 'AGENTS.md', 'CONTRIBUTING.md', 'docs/PRODUCT.md'], []),
+    [],
+  );
+  assert.deepEqual(findPathIssues(['PRODUCT.md'], []), [
+    'Place product and working documents under docs/: PRODUCT.md',
+  ]);
 });
 
 test('resolves files, directory links, fragments, encoded paths and HTML images', () => {

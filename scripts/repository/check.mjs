@@ -7,8 +7,20 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 
 export function findPathIssues(paths, preservedArtifacts) {
   const preserved = new Set(preservedArtifacts);
+  const rootMarkdown = new Set([
+    'README.md',
+    'CONTRIBUTING.md',
+    'AGENTS.md',
+    'LICENSE.md',
+    'SECURITY.md',
+    'CODE_OF_CONDUCT.md',
+    'CHANGELOG.md',
+  ]);
   const issues = [];
   for (const path of paths) {
+    if (!path.includes('/') && path.endsWith('.md') && !rootMarkdown.has(path)) {
+      issues.push(`Place product and working documents under docs/: ${path}`);
+    }
     if (/(^|\/)(node_modules|dist|coverage|\.expo|\.wrangler|\.playwright-cli)\//u.test(path)) {
       issues.push(`Generated directory is tracked: ${path}`);
     }
@@ -62,14 +74,21 @@ export function checkRepository(root = repositoryRoot) {
   );
   const readJson = (path) => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
   const preserved = readJson('scripts/repository/preserved-artifacts.json');
-  const issues = findPathIssues(tracked, preserved);
+  const issues = findPathIssues(
+    tracked.filter((path) => existsSync(resolve(root, path))),
+    preserved,
+  );
   const navigation = [
     'README.md',
     'CONTRIBUTING.md',
     'docs/README.md',
+    'AGENTS.md',
+    'docs/AI_ASSISTANCE.md',
+    'docs/architecture/PUBLIC_REPOSITORY.md',
     'docs/architecture/REPOSITORY_STRUCTURE.md',
     'docs/architecture/REPOSITORY_AUDIT.md',
     'docs/architecture/adr/0003-repository-organization.md',
+    'docs/architecture/adr/0004-root-documentation-relocation.md',
     ...['src', 'assets', 'scripts', 'specs', 'tests', 'workers', 'tools'].map(
       (directory) => `${directory}/README.md`,
     ),
@@ -86,6 +105,12 @@ export function checkRepository(root = repositoryRoot) {
   const legacyTests = readJson('tests/legacy-paths.json');
   for (const [previous, current] of Object.entries(legacyTests)) {
     if (!paths.includes(current)) issues.push(`Missing relocated test: ${previous} -> ${current}`);
+  }
+  const legacyDocuments = readJson('docs/architecture/document-relocations.json');
+  for (const [previous, current] of Object.entries(legacyDocuments)) {
+    if (!paths.includes(current))
+      issues.push(`Missing relocated document: ${previous} -> ${current}`);
+    if (paths.includes(previous)) issues.push(`Remove duplicate former root document: ${previous}`);
   }
   return issues;
 }

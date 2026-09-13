@@ -145,7 +145,7 @@ npm run verify
 | `npm run build:web`    | Produce the ignored static web export in `dist/`               |
 
 Automated checks do not replace physical Android, accessibility, media, or human-review evidence.
-The current auditable product gate status is recorded in the [demo runbook](DEMO_RUNBOOK.md).
+The current auditable product gate status is recorded in the [demo runbook](docs/competition-readiness/DEMO_RUNBOOK.md).
 The [GitHub workflow](.github/workflows/ci.yml) defines the same source checks and a web export;
 its hosted execution is pending. See the [test guide](tests/README.md) for focused commands.
 
@@ -180,14 +180,18 @@ for the complete folder structure and placement rules.
 
 ## Documentation
 
+The [root-file guide](docs/architecture/PUBLIC_REPOSITORY.md) explains the cleaned root and
+relocated documents. [AI assistance and team review](docs/AI_ASSISTANCE.md) records the disclosure
+boundary and links to the detailed contribution history.
+
 - [Documentation index](docs/README.md) — engineering, product, and evidence map
-- [Product contract](PRODUCT.md) — users, lifecycle rules, commercial preview, and P0 scope
-- [Design contract](DESIGN.md) and [design direction](DESIGN_DIRECTION.md) — visual and interaction
+- [Product contract](docs/PRODUCT.md) — users, lifecycle rules, commercial preview, and P0 scope
+- [Design contract](docs/DESIGN.md) and [design direction](docs/design/DESIGN_DIRECTION.md) — visual and interaction
   rules
-- [Research basis](RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale
+- [Research basis](docs/product/RESEARCH_BASIS.md) — reward, safety, content, and UAE-grounding rationale
 - [Development guide](docs/DEVELOPMENT.md) — setup, USB device workflow, reset, and troubleshooting
-- [Prototype limitations](PROTOTYPE_LIMITATIONS.md) — explicit capability and evidence boundaries
-- [Demo runbook](DEMO_RUNBOOK.md) — judge journey, expected values, and validation status
+- [Prototype limitations](docs/product/PROTOTYPE_LIMITATIONS.md) — explicit capability and evidence boundaries
+- [Demo runbook](docs/competition-readiness/DEMO_RUNBOOK.md) — judge journey, expected values, and validation status
 - [Contributing](CONTRIBUTING.md) — ownership, implementation, validation, and handoff workflow
 
 ## Safety and truthfulness

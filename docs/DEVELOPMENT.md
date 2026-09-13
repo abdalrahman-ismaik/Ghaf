@@ -269,7 +269,7 @@ The commands above follow Expo's
 4. Confirm the reset.
 5. Verify route `/`, Arabic RTL, Parent demo mode, Salem selected, and no active assignment.
 
-The full counter and fixture baseline is in [DEMO_RUNBOOK.md](../DEMO_RUNBOOK.md). Reloading alone is
+The full counter and fixture baseline is in [DEMO_RUNBOOK.md](competition-readiness/DEMO_RUNBOOK.md). Reloading alone is
 not the authoritative reset.
 
 ## Validation
@@ -312,7 +312,7 @@ git status --short
 
 `npm test` covers domain, service, state, privacy, assistant safety, reset, and deterministic
 operator flows. It is not native UI automation. Record physical and named-human evidence only in
-the root Feature 003 runbook.
+the current [Feature 003 runbook](competition-readiness/DEMO_RUNBOOK.md).
 
 Tests are grouped by subject; use `npm test -- tests/access` or another directory from the
 [test guide](../tests/README.md) for a focused run. Historical test paths are retained in its

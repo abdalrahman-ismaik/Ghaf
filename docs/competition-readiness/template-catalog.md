@@ -84,7 +84,7 @@ The full [page-by-page text extraction](../../output/competition-readiness/templ
 and original-size-bounded page renders remain local. PDF inspection confirms the catalog's
 existing interpretation and does not add a new design direction or asset-adoption candidate.
 
-The current [design rulebook](../../DESIGN.md),
+The current [design rulebook](../DESIGN.md),
 [botanical amendment](../../specs/003-family-growth-garden/spec.md), and
 [runtime tokens](../../src/design/tokens.ts) remain visual authority. The approved Tamagui mapping,
 Alexandria/Readex roles, Reanimated controls, botanical artwork, logical RTL helpers, existing

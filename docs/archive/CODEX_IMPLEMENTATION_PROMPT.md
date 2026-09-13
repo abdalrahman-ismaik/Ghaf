@@ -1,5 +1,9 @@
 # Codex Implementation Prompt — Ghaf Feature 003
 
+Archived handoff, relocated from the root on 2026-09-13. For current execution, read
+[`AGENTS.md`](../../AGENTS.md) and the applicable feature contract. Resolve older root document
+names through the [relocation map](../architecture/document-relocations.json).
+
 ## Current execution override — 2026-09-05
 
 Clean R002a head `0501cf3` is the implementation and regression baseline. Do not follow later
@@ -20,9 +24,9 @@ first. PNGs remain composition evidence; Stitch HTML/CSS/JS is non-runtime measu
 Missing R002b frames may use documented code-native Soft Geometric candidates, but no implementation
 may activate a release flag or invent product behavior.
 
-The authoritative execution order is [the active plan](specs/003-family-growth-garden/plan.md),
-[task ledger](specs/003-family-growth-garden/tasks.md), and
-[R002b implementation contract](specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md).
+The authoritative execution order is [the active plan](../../specs/003-family-growth-garden/plan.md),
+[task ledger](../../specs/003-family-growth-garden/tasks.md), and
+[R002b implementation contract](../../specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md).
 
 Paste the prompt below into Codex from the actual Ghaf repository root.
 

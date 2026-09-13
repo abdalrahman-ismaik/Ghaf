@@ -67,6 +67,6 @@ Implement Feature 003 inside the existing single Expo application.
 
 ## Related records
 
-- [Product contract](../../../PRODUCT.md)
-- [Design contract](../../../DESIGN.md)
-- [Prototype limitations](../../../PROTOTYPE_LIMITATIONS.md)
+- [Product contract](../../PRODUCT.md)
+- [Design contract](../../DESIGN.md)
+- [Prototype limitations](../../product/PROTOTYPE_LIMITATIONS.md)

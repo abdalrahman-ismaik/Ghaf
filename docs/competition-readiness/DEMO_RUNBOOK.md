@@ -6,7 +6,7 @@ The current build uses the botanical Tamagui theme for shared controls, open Par
 illustrated Child Today, landscape-focused Garden, and consistent League/settings/access surfaces.
 Follow the existing deterministic journey below; task, Seed, access and reset commands are unchanged.
 Check both Arabic and English, compact widths, large text and reduced motion before rehearsal.
-See [current evidence and remaining device gates](specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
+See [current evidence and remaining device gates](../../specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md).
 Web captures and Android export do not establish physical-demo acceptance.
 
 ## Feature 011 Verified Family Replacement Record — 2026-09-08

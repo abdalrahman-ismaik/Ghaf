@@ -91,7 +91,7 @@ The UAE's official [Year of Family page](https://u.ae/en/Year-of-family/Family-y
 claiming government affiliation or demonstrated wellbeing outcomes.
 
 The optional duplicate-confirmation, cancellation and reset probes belong in Q&A/rehearsal after
-the main timed story. Use the [runbook](../../DEMO_RUNBOOK.md) for existing route-specific access
+the main timed story. Use the [runbook](DEMO_RUNBOOK.md) for existing route-specific access
 instructions for ordinary mode. Demo entry uses the selected015 doorway instead. Parent sign-out
 and the Child's Parent-access action return to the selector without reseeding current-run progress.
 A failed reset displays a restart-required state and denies profile entry until the app fully

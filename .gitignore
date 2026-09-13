@@ -45,6 +45,17 @@ Thumbs.db
 /assets/opencode-student-bootstrap/
 /assets/external templates and designs/
 
+# Local reference inputs and private working notes; approved assets stay tracked
+/assets/character_companion/
+/docs/SMAC 2026/
+/docs/private/
+
+# Machine-local agent state; shared instructions and assistance records stay tracked
+/.codex/sessions/
+/.codex/logs/
+/.codex/*.local.toml
+/.impeccable/cache/
+
 # Local build credentials and EAS state
 *.jks
 *.p8

@@ -32,10 +32,12 @@ Ghaf/
 ├── specs/                     Numbered Spec Kit feature contracts and evidence
 ├── docs/
 │   ├── architecture/          System boundaries, structure, audit and ADRs
+│   ├── archive/               Preserved historical implementation handoffs
 │   ├── competition-readiness/ Coordination, workstream reports and rehearsal evidence
 │   ├── content/               Reviewed learning content and provenance
 │   ├── design/                Design intake, selected references and brand provenance
 │   ├── merge-notes/           Historical integration records
+│   ├── product/               Research basis and current prototype limitations
 │   └── screenshots/           Curated README screenshots
 ├── .github/                   CI and contribution templates
 ├── .agents/                   Project skills
@@ -71,10 +73,14 @@ The [test guide](../../tests/README.md) explains suite selection and historical 
 
 ## Canonical documents and preserved history
 
-Root `AGENTS.md`, `PRODUCT.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`, `RESEARCH_BASIS.md`,
-`PROTOTYPE_LIMITATIONS.md`, `TEAM_OWNERSHIP.md` and `DEMO_RUNBOOK.md` are established contract
-paths. Keep them stable. The similarly named files under `docs/` are historical Feature 002
-records, with their own acceptance boundaries; they are not duplicate current policies.
+The root keeps `README.md`, `CONTRIBUTING.md`, `AGENTS.md` and conventional tool configuration.
+Current product, design, research, limitations, runbook and ownership documents live under `docs/`.
+The [root-file guide](PUBLIC_REPOSITORY.md) lists their exact locations and explains design-tool
+discovery. [Document relocations](document-relocations.json) resolve prior root references.
+
+The four historical Feature 002 documents directly under `docs/` retain their original names,
+contents and acceptance boundaries. The [documentation index](../README.md) distinguishes them
+from current contracts. AI-assistance records remain public and versioned.
 
 Likewise, 66 already tracked files under `output/pdf/` and `output/playwright/` remain at their
 original paths. The exact exception list is
@@ -89,7 +95,7 @@ application requirement.
 
 ## Automatic enforcement
 
-`npm run repo:check` checks maintained navigation links, the historical test relocation map,
+`npm run repo:check` checks maintained navigation links, the test/document relocation maps,
 accidental copied filenames, flat-root tests and tracked generated output. Local checks include
 untracked, nonignored files as link targets; CI checks the committed checkout. Link validation
 is deliberately limited to the maintained navigation documents, checks destinations rather than

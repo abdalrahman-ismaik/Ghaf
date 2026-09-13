@@ -1,5 +1,29 @@
 # Team Ownership
 
+## Root documentation cleanup — 2026-09-13
+
+Owner: root repository-maintenance session, direct user authorization to move unnecessary root
+documents, remove redundant local files and add appropriate ignore rules. This supersedes the
+earlier maintenance decision to retain all canonical Markdown files at the repository root.
+Reserve the eight root product/design/research/runbook/ownership/handoff documents, their new
+locations under `docs/`, `AGENTS.md` outside its managed block, `README.md`, `CONTRIBUTING.md`,
+maintained documentation link targets, `docs/architecture/**`, `scripts/repository/**`,
+`.gitignore`, and a public AI-assistance summary. Historical evidence content and detailed
+AI-assistance records remain tracked. No authorship or human-review claim is added.
+Preserve M016's active source, spec, package/configuration, index activity and B/C/D/BOARD writers.
+No package, dependency, app/source/test, native, provider or heavy-job changes are reserved here.
+Update current navigation atomically with relocation; old narrative paths remain traceable in a
+document relocation map. No helpers allocated. Completion evidence follows.
+Current ownership location: `docs/competition-readiness/TEAM_OWNERSHIP.md`.
+Maintenance handoff: eight documents relocated; seven redundant download sidecars removed;
+private/reference/tool-state ignore rules added; required AI-assistance evidence retained.
+Five repository-tool tests, navigation/relocation checks, scoped lint/format, design-context
+discovery, managed-block equality and ignore acceptance passed. Sixteen moved/relinked documents
+introduce zero new broken Markdown destinations; 54 existing local/historical destinations remain
+attributed to their original records. No application/native/provider checks were claimed.
+Status: COMPLETE; release these documentation/tooling paths after the scoped local commit.
+M016 source, package, specification, resource/job and coordination ownership remains unchanged.
+
 ## Repository organization — completed 2026-09-13
 
 Owner: root, user-authorized repository organization and GitHub review preparation.
@@ -308,7 +332,7 @@ the bounded browser review. Work is saved on `redesign/tamagui-botanical`; local
 the starting commit `16583a3`. Nothing was pushed. Existing lockfile metadata removal remains
 outside the redesign commits. Temporary read-only browser tooling and captures remain under
 ignored `output/botanical-review/`. See the
-[redesign evidence](specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md) for
+[redesign evidence](../../specs/003-family-growth-garden/checklists/tamagui-botanical-evidence.md) for
 checks, review scope and outstanding physical Android/human acceptance.
 
 ## 2026-09-11 Remote Main Reconciliation and Publication Window

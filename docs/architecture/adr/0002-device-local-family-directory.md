@@ -59,7 +59,7 @@ configuration that the current static demonstration does not need.
 
 ## Related records
 
-- [Product contract](../../../PRODUCT.md)
+- [Product contract](../../PRODUCT.md)
 - [Architecture](../ARCHITECTURE.md)
-- [Prototype limitations](../../../PROTOTYPE_LIMITATIONS.md)
+- [Prototype limitations](../../product/PROTOTYPE_LIMITATIONS.md)
 - [Expo SQLite documentation](https://docs.expo.dev/versions/latest/sdk/sqlite/)
