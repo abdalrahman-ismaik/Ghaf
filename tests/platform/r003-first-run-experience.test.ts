@@ -125,8 +125,16 @@ describe('R003 first-run experience', () => {
     const welcome = source('app/index.tsx');
     const rasterPresentation = `${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
-    expect(authoredRoutes()).toHaveLength(38);
-    expect(authoredRoutes()).toContain('messages/index.tsx');
+    const routes = authoredRoutes();
+    expect(routes).toHaveLength(42);
+    for (const addition of [
+      'messages/index.tsx',
+      'parent/study.tsx',
+      'parent/practices.tsx',
+      'child/study.tsx',
+      'child/practices.tsx',
+    ])
+      expect(routes).toContain(addition);
     expect(rasterPresentation).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
     expect(`${onboarding}\n${rasterPresentation}`).not.toMatch(/https?:\/\//u);
     expect(logo).toContain("from 'expo-image'");

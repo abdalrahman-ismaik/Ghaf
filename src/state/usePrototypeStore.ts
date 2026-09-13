@@ -9,6 +9,14 @@ import {
   type TaskAssignmentCollection,
 } from '../features/tasks/assignmentInstances';
 import { create, type StateCreator } from 'zustand';
+import { applyStudyCommand } from '../features/study';
+import type {
+  StudyActor,
+  StudyCommand,
+  StudyContext,
+  StudyResult,
+  StudyState,
+} from '../models/study';
 
 import { entryMode } from '../config/demoEntry';
 import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
@@ -641,6 +649,10 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => ServiceResult<ParentOnboardingView>;
   readonly completeParentOnboarding: () => ServiceResult<ParentOnboardingCompletionReceipt>;
   readonly authorizeParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
+  readonly studyRevision: number;
+  readonly initializeStudy: () => StudyResult<StudyState>;
+  readonly getStudy: () => StudyResult<StudyState>;
+  readonly dispatchStudy: (command: StudyCommand) => StudyResult<StudyState>;
   readonly enterParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
   readonly enterLocalParentAccount: () => ServiceResult<ParentOnboardingHandoff>;
   readonly selectChildAccessProfile: (childId: SyntheticChildId) => ServiceResult<ChildAccessView>;
@@ -1004,6 +1016,41 @@ function createEmptyChildTaskDraft(): ChildTaskDraftState {
     removedMediaFixtureIds: [],
     unavailableMediaFixtureIds: [],
     reflection: null,
+  };
+}
+
+function studyAuthority(state: PrototypeStoreState): StudyResult<{
+  actor: StudyActor;
+  context: StudyContext;
+}> {
+  const authorized =
+    state.role === 'parent'
+      ? requireActiveParentExperience(state)
+      : requireActiveChildExperience(state);
+  const family = state.localFamily.record;
+  if (!authorized.ok || state.localFamily.status !== 'ready' || !family?.studyInstanceId) {
+    return { ok: false, error: { code: 'forbidden' } };
+  }
+  const childIds = family.children.map((child) => child.id);
+  if (!childIds.includes(state.activeChildId)) return { ok: false, error: { code: 'forbidden' } };
+  return {
+    ok: true,
+    data: {
+      actor:
+        state.role === 'parent'
+          ? { role: 'parent' }
+          : { role: 'child', childId: state.activeChildId },
+      context: { familyKey: family.studyInstanceId, childIds, now: new Date().toISOString() },
+    },
+  };
+}
+
+function projectStudy(state: StudyState, actor: StudyActor): StudyState {
+  if (actor.role === 'parent') return state;
+  return {
+    ...state,
+    plans: state.plans.filter((plan) => plan.childId === actor.childId),
+    goals: state.goals.filter((goal) => goal.childId === actor.childId),
   };
 }
 
@@ -1519,6 +1566,8 @@ function resetClearedPrototype(
   if (!ambientAudioReset.ok) return ambientAudioReset;
   const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
   if (!savedTaskTemplateReset.ok) return savedTaskTemplateReset;
+  const studyReset = serviceRegistry.study.clear();
+  if (!studyReset.ok) return failure('INVALID_RESPONSE', 'Study records could not be cleared');
   const reset = serviceRegistry.prototypeSession.resetPrototype();
   const nextGrowthJourney = createGrowthJourneyRuntime(
     reset.session,
@@ -1542,6 +1591,7 @@ function resetClearedPrototype(
   releaseLiveVoiceCapture(state.liveVoiceCapture);
   set((state) => ({
     ...reset.session,
+    studyRevision: state.studyRevision + 1,
     pilotSampleActive: false,
     demoRunGeneration: entryMode === 'demo' ? state.demoRunGeneration + 1 : state.demoRunGeneration,
     demoResetFailed: false,
@@ -1755,6 +1805,49 @@ function withTaskAssignments(
 
 const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => ({
   ...initialPrototypeSession,
+  studyRevision: 0,
+  initializeStudy: () => {
+    const state = get();
+    const authorized =
+      state.role === 'parent'
+        ? requireActiveParentExperience(state)
+        : requireActiveChildExperience(state);
+    const family = state.localFamily.record;
+    if (!authorized.ok || !family || state.localFamily.status !== 'ready') {
+      return { ok: false, error: { code: 'forbidden' } };
+    }
+    if (family.studyInstanceId) return get().getStudy();
+    // A family without a binding cannot own records left by a failed earlier reset.
+    const cleared = serviceRegistry.study.clear();
+    if (!cleared.ok) return cleared;
+    const studyInstanceId = `study-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+    const saved = serviceRegistry.localFamily.save({ ...family, studyInstanceId });
+    if (!saved.ok) return { ok: false, error: { code: 'storage_write' } };
+    const verified = serviceRegistry.localFamily.read();
+    if (!verified.ok || verified.data?.studyInstanceId !== studyInstanceId)
+      return { ok: false, error: { code: 'storage_write' } };
+    set({ localFamily: localFamilyView(verified.data), studyRevision: state.studyRevision + 1 });
+    return get().getStudy();
+  },
+  getStudy: () => {
+    const authority = studyAuthority(get());
+    if (!authority.ok) return authority;
+    const loaded = serviceRegistry.study.load(authority.data.context.familyKey);
+    return loaded.ok ? { ok: true, data: projectStudy(loaded.data, authority.data.actor) } : loaded;
+  },
+  dispatchStudy: (command) => {
+    const authority = studyAuthority(get());
+    if (!authority.ok) return authority;
+    const { actor, context } = authority.data;
+    const loaded = serviceRegistry.study.load(context.familyKey);
+    if (!loaded.ok) return loaded;
+    const next = applyStudyCommand(loaded.data, actor, command, context);
+    if (!next.ok) return next;
+    const saved = serviceRegistry.study.save(next.data);
+    if (!saved.ok) return saved;
+    set((state) => ({ studyRevision: state.studyRevision + 1 }));
+    return { ok: true, data: projectStudy(next.data, actor) };
+  },
   pilotSampleActive: false,
   taskAssignments: createTaskAssignmentCollection('run-0'),
   taskContexts: {},
@@ -2292,6 +2385,11 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         restorePreviousFamily();
         return savedTaskTemplateReset;
       }
+      const studyReset = serviceRegistry.study.clear();
+      if (!studyReset.ok) {
+        restorePreviousFamily();
+        return failure('INVALID_RESPONSE', 'Study records could not be cleared');
+      }
       replacementReset = {
         session: reset.session,
         growthJourney: nextGrowthJourney.data,
@@ -2319,6 +2417,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         releaseLiveVoiceCapture(state.liveVoiceCapture);
         set((current) => ({
           ...replacementReset.session,
+          studyRevision: current.studyRevision + 1,
           activeExperience: 'parent',
           childAccess: replacementReset.childAccess,
           deviceAccess: remembered

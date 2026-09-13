@@ -1,10 +1,16 @@
 import { pilotResources } from './pilotResources';
+import { studyResources } from './studyResources';
+import { familyPracticeResources } from './familyPracticeResources';
+import { peerMessagingAr, peerMessagingEn } from './peerMessagingResources';
 import { phraseText } from '../features/familyMessaging/contracts';
 
 export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
+      study: studyResources.ar,
+      familyPractices: familyPracticeResources.ar,
+      peerMessaging: peerMessagingAr,
       catalog: {
         previewIdeas: 'أفكار يمكنك مراجعتها مع وليّ الأمر. تحتاج إلى اعتماد خاص بك قبل البدء.',
         needsApproval: 'تحتاج إلى اعتماد وليّ الأمر',
@@ -2113,6 +2119,9 @@ export const resources = {
   en: {
     translation: {
       pilot: pilotResources.en,
+      study: studyResources.en,
+      familyPractices: familyPracticeResources.en,
+      peerMessaging: peerMessagingEn,
       catalog: {
         previewIdeas:
           'Ideas to review with your Parent. You need your own approval before starting.',

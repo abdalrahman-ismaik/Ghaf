@@ -4,6 +4,7 @@ import { PARENT_VERIFICATION_CODE } from '../../src/features/access';
 import { INITIAL_CHILD_VOICE_VIEW } from '../../src/features/assistants/childVoiceController';
 import { TASK_TEMPLATES } from '../../src/features/tasks/demoContent';
 import type { LocalFamilyRecord } from '../../src/models/localFamily';
+import { STUDY_STORAGE_KEY } from '../../src/models/study';
 import { serviceRegistry } from '../../src/services';
 import {
   AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY,
@@ -28,6 +29,7 @@ const ALL_KEYS = [
 const AUXILIARY_KEYS = [
   AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY,
   SAVED_TASK_TEMPLATE_STORAGE_KEY,
+  STUDY_STORAGE_KEY,
 ] as const;
 const HISTORICAL_FAMILIES = [
   { key: OLDEST_LOCAL_FAMILY_STORAGE_KEY, schemaVersion: 1 },
@@ -265,7 +267,7 @@ describe('confirmed corrupt saved-family recovery', () => {
   );
 
   it('verifies affinity removal before legacy and current family removal', () => {
-    ALL_KEYS.forEach((key) => corrupt(key));
+    [...ALL_KEYS, ...AUXILIARY_KEYS].forEach((key) => corrupt(key));
     const events: string[] = [];
     const originalRead = deviceLocalStorage.getItem;
     const originalRemove = deviceLocalStorage.removeItem;
@@ -281,7 +283,9 @@ describe('confirmed corrupt saved-family recovery', () => {
     expect(events.slice(events.indexOf(`remove:${DEVICE_ACCESS_STORAGE_KEY}`))).toEqual([
       ...ALL_KEYS.flatMap((key) => [`remove:${key}`, `read:${key}`]),
       ...AUXILIARY_KEYS.map((key) => `remove:${key}`),
+      `read:${STUDY_STORAGE_KEY}`,
     ]);
+    expect(deviceLocalStorage.getItem(STUDY_STORAGE_KEY)).toBeNull();
   });
 
   it.each(ALL_KEYS.flatMap((key) => ['throw', 'no-op'].map((mode) => ({ key, mode }))))(
@@ -530,7 +534,7 @@ describe('confirmed corrupt saved-family recovery', () => {
       pendingFamilyCreation: null,
       ambientAudioPreference: { enabled: true, status: 'ready', source: 'default' },
     });
-    expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual([null, null]);
+    expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual([null, null, null]);
   });
 
   it('clears transient state and all voice authority exactly like ordinary reset, then permits normal setup', async () => {
