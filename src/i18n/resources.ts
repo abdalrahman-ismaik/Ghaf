@@ -290,7 +290,7 @@ export const resources = {
         signIn: {
           title: 'مرحبًا بعودتك',
           body: 'اختر حساب العائلة للمتابعة، أو أنشئ عائلة جديدة.',
-          demoFamily: 'أسرة النور',
+          demoFamily: 'عائلة أبو راشد',
           demoAccount: 'وليّ الأمر · حساب تجريبي جاهز',
           savedAccount: 'وليّ الأمر · محفوظ على هذا الجهاز',
           repairAccount: 'متابعة تحديث بيانات العائلة',
@@ -337,7 +337,7 @@ export const resources = {
           familyTitle: 'لنبدأ بعائلتك',
           familyBody: 'ابدأ بأسماء أولياء الأمور. إضافة الأقارب اختيارية.',
           familyNameLabel: 'اسم العائلة داخل التطبيق',
-          familyNamePlaceholder: 'مثال: عائلة النخلة',
+          familyNamePlaceholder: 'مثال: عائلة أبو راشد',
           familyPrivacy: 'يبقى هذا الاسم على هذا الجهاز في النسخة التجريبية المحلية.',
           peopleTitle: 'أولياء الأمور',
           peopleBody:
@@ -1180,7 +1180,7 @@ export const resources = {
         privacy: 'لا تظهر هوية الطفل أو المهمة أو الوسائط أو البذور للعائلات الأخرى.',
         milestone: 'اكتملت المحطة التعاونية',
         next: 'ابدؤوا هدفاً محلياً جديداً عندما تكون العائلة مستعدة.',
-        householdGarden: 'حديقة أسرة النور',
+        householdGarden: 'حديقة عائلة أبو راشد',
         cousinGardenOne: 'حديقة أقارب اصطناعية أ',
         cousinGardenTwo: 'حديقة أقارب اصطناعية ب',
         syntheticDisclosure:
@@ -2320,7 +2320,7 @@ export const resources = {
         signIn: {
           title: 'Welcome back',
           body: 'Choose a family account to continue, or create a new family.',
-          demoFamily: 'Al Noor Family',
+          demoFamily: 'Abu Rashid Family',
           demoAccount: 'Parent · Ready-to-use demo account',
           savedAccount: 'Parent · Saved on this device',
           repairAccount: 'Continue updating family details',
@@ -2369,7 +2369,7 @@ export const resources = {
           familyTitle: 'Let’s begin with your family',
           familyBody: 'Start with Parent names. Relatives are optional.',
           familyNameLabel: 'Family name in the app',
-          familyNamePlaceholder: 'Example: Palm Family',
+          familyNamePlaceholder: 'Example: Abu Rashid Family',
           familyPrivacy: 'This name stays on this device in the local prototype.',
           peopleTitle: 'Parents and guardians',
           peopleBody:
@@ -3238,7 +3238,7 @@ export const resources = {
         privacy: 'Other households never see Child identity, task, media, or Seed details.',
         milestone: 'Cooperative marker reached',
         next: 'Start a new local goal when the family is ready.',
-        householdGarden: 'Al Noor family garden',
+        householdGarden: 'Abu Rashid family garden',
         cousinGardenOne: 'Synthetic cousin garden A',
         cousinGardenTwo: 'Synthetic cousin garden B',
         syntheticDisclosure:

@@ -85,3 +85,12 @@ Tests: fresh/replacement/repair stage without OTP/provider/session; invalid inpu
 mode deny; failed staging rolls back; final replacement still needs confirmation; cancel preserves
 stored family/affinity; stale verification navigation clears old pending state; rendered controls
 skip OTP in AR/EN. Native and named human acceptance remain separate NOT RUN gates.
+
+## User-selected natural family name — September 13
+
+User: “dont use weird names for the families, use a name like عائلة أبو راشد”. Use exactly
+عائلة أبو راشد for the prepared/default Arabic family and Abu Rashid Family in English. Update
+new-family examples and the synthetic garden/household labels consistently. Stable household,
+Parent and Child identifiers are unchanged. For an already saved, identifiable prepared family,
+show the selected localized name without rewriting its record or progress; user-entered custom
+family names remain visible. This is a copy refinement, not a storage/account migration.

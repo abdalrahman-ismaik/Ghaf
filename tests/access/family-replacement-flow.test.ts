@@ -379,7 +379,7 @@ describe('Feature 011 verified family replacement', () => {
         status: 'verified',
         completionReceipt: null,
         canEnterParentExperience: false,
-        draft: { familyName: 'عائلة النخلة' },
+        draft: { familyName: 'عائلة أبو راشد' },
       },
       localFamily: { record: previousRecord },
     });

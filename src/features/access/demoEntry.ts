@@ -130,7 +130,7 @@ export function createCanonicalDemoFamily(now: string): ServiceResult<LocalFamil
       });
     }
     const created = createLocalFamilyRecord({
-      familyName: 'أسرة النور',
+      familyName: 'عائلة أبو راشد',
       familyConnections: {
         primaryGuardianName: 'وليّ الأمر',
         secondaryGuardianName: '',

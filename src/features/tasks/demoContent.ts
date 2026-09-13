@@ -812,7 +812,7 @@ export const CULTURAL_PHRASE_OPTIONS: readonly CulturalPhraseOptionGroup[] = [
 
 export const SYNTHETIC_HOUSEHOLD: SyntheticHousehold = {
   id: 'household_al_noor',
-  displayName: text('أسرة النور', 'Al Noor family'),
+  displayName: text('عائلة أبو راشد', 'Abu Rashid Family'),
   origin: 'synthetic',
   childIds: ['child_salem', 'child_alya'],
   combinedCanopy: { contributionLeaves: 19, goalLeaves: 25 },

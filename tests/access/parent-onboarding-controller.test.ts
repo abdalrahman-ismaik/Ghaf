@@ -402,7 +402,7 @@ describe('R001 Parent onboarding controller', () => {
       ok: false,
       error: { code: 'INVALID_TRANSITION' },
     });
-    expect(controller.getView().draft.familyName).toBe('عائلة النخلة');
+    expect(controller.getView().draft.familyName).toBe('عائلة أبو راشد');
   });
 
   it('integrates with the existing shared registry access facade', async () => {
@@ -435,7 +435,7 @@ describe('R001 Parent onboarding controller', () => {
     expect(controller.getView()).toMatchObject({
       status: 'signed_out',
       canEnterParentExperience: false,
-      draft: { familyName: 'عائلة النخلة' },
+      draft: { familyName: 'عائلة أبو راشد' },
     });
     expect(controller.authorizeParentExperience(BASE_TIME)).toMatchObject({
       ok: false,
@@ -623,7 +623,7 @@ describe('R001 Parent onboarding controller', () => {
     expect(controller.getView()).toMatchObject({
       status: 'verified',
       completionReceipt: null,
-      draft: { familyName: 'عائلة النخلة' },
+      draft: { familyName: 'عائلة أبو راشد' },
     });
     expectOk(controller.updateDraft({ familyName: 'Unfinished Family' }));
 

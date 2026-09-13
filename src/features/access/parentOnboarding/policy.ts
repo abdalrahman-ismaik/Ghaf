@@ -166,7 +166,7 @@ function cloneDraft(draft: ParentOnboardingDraft): ParentOnboardingDraft {
 export function createInitialParentOnboardingDraft(): ParentOnboardingDraft {
   return {
     familyConnections: createInitialFamilyConnectionDirectory(),
-    familyName: 'عائلة النخلة',
+    familyName: 'عائلة أبو راشد',
     appLanguage: 'ar',
     childCount: 2,
     children: [

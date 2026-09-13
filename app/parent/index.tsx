@@ -32,6 +32,7 @@ import {
   type ParentHomeRouteParam,
 } from '@/features/navigation/parentHomeParams';
 import { createR002bOrigin, serializeR002bOrigin } from '@/features/navigation/r002bOrigin';
+import { resolveLocalFamilyDisplayName } from '@/features/access/localFamilyDisplayName';
 import { P0_SAFE_EQUIVALENT_TEMPLATE } from '@/features/tasks/demoContent';
 import { localize } from '@/i18n';
 import type {
@@ -195,7 +196,9 @@ export default function ParentHomeScreen() {
   const profileName = (childId: SyntheticChildId) =>
     localFamily.record?.children.find((profile) => profile.id === childId)?.nickname ??
     localize(children[childId].displayName, locale);
-  const familyDisplayName = localFamily.record?.familyName ?? localize(householdName, locale);
+  const familyDisplayName = localFamily.record
+    ? resolveLocalFamilyDisplayName(localFamily.record, localize(householdName, locale))
+    : localize(householdName, locale);
   const nextLabel =
     journey?.lifecycle === 'confirmed'
       ? t('parentHome.continueRecognition')

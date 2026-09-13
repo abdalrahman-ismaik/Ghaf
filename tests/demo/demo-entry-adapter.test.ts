@@ -186,7 +186,7 @@ describe('canonical synthetic demo family', () => {
     if (!result.ok) throw new Error('Expected the canonical synthetic family');
     expect(result.data).toMatchObject({
       householdId: 'household_al_noor',
-      familyName: 'أسرة النور',
+      familyName: 'عائلة أبو راشد',
       appLanguage: 'ar',
       parent: { id: 'parent_al_noor', role: 'parent' },
       children: [

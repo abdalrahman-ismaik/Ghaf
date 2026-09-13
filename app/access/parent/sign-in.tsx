@@ -12,6 +12,7 @@ import {
 import { Button, Text } from '@/components/primitives';
 import { ParentAccountChooser } from '@/components/access/ParentAccountChooser';
 import { colors, layout, spacing } from '@/design/tokens';
+import { resolveLocalFamilyDisplayName } from '@/features/access/localFamilyDisplayName';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export default function ParentSignInScreen() {
@@ -75,10 +76,9 @@ export default function ParentSignInScreen() {
     router.replace(localFamilyProfileRepair ? '/access/parent/add-first-child' : '/parent');
   };
 
-  const familyName =
-    localFamily.record?.familyName ??
-    localFamilyProfileRepair?.familyName ??
-    t('access.signIn.demoFamily');
+  const familyName = localFamily.record
+    ? resolveLocalFamilyDisplayName(localFamily.record, t('access.signIn.demoFamily'))
+    : (localFamilyProfileRepair?.familyName ?? t('access.signIn.demoFamily'));
   const accountUnavailable = localFamily.status !== 'ready' && !localFamilyProfileRepair;
 
   if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
