@@ -1,7 +1,41 @@
-# Family messaging service — Feature 016
+# Family messaging service — Features 016 and 017
+
+## Feature017 peer extension
+
+Apply [002_peer_threads.sql](migrations/002_peer_threads.sql) once after migration001.
+This additive upgrade preserves Parent thread IDs, message history and sequences.
+It adds canonical pairs of distinct active Children within the same provisioned
+family. Parent explicitly enables a pair after both Children have enrolled devices.
+Only the two participants can list, read or send peer messages: Parent permission
+management does not grant access to peer content. Either Child can stop the pair;
+only a fresh Parent enable resumes it. Retained history follows the existing 30-day
+policy and can be read again by participants when Parent resumes the conversation.
+
+New authenticated RPCs are `fm_peer_permissions()`,
+`fm_set_peer_permission(p_first_child_id text, p_second_child_id text, p_enabled boolean)`
+and `fm_leave_peer_thread(p_thread_id text)`. The first returns canonical pairs with
+`firstChildId`, `secondChildId`, `firstName`, `secondName`, nullable `threadId`,
+`enabled` and `available` (both Children have active provider-backed enrollment).
+The mutations return `{ "ok": true }`; shared safe error envelopes apply.
+Thread DTOs add `kind: parent_child | child_child`. Peer `childId` identifies the
+other participant. Existing Parent `childId` and Child inventory `threadId` retain
+their original meaning. The client reads migration001 Parent DTOs with a default
+`parent_child` kind; an unavailable peer RPC disables only the permission panel.
+
+Every peer read/send uses the same live provider/session/device/Parent checks as
+Feature016, plus both active Child records and enabled pair membership. The
+household transaction lock serializes permission changes, leave and sends.
+Permissions allow at most 100 attempts per Parent per hour. No new direct table
+grants, AI access, progression authority or real account deployment are introduced.
+
+The isolated SQL runner now applies001, inserts a retained Parent fixture, applies002,
+checks upgrade preservation and runs original plus peer authorization tests. Hosted
+messaging remains unconfigured in the implementation environment; the separately
+configured adult pilot is not messaging authority. Local tests cannot pass hosted
+Auth, PostgREST, two-device delivery, native or human-review gates.
 
 This boundary contains reviewed source for a dedicated Supabase Auth + PostgreSQL team-test
-project. It creates no service, logs into no provider and deploys nothing. There is no project
+project. It creates no service, logs into no provider and deploys nothing. No messaging project is
 configured at this handoff; real Auth, PostgREST transport, hosted cleanup and two-installation
 delivery remain **BLOCKED / NOT RUN**. Initial content must be synthetic and accounts team-controlled.
 
@@ -25,7 +59,8 @@ safe unexpected-error handling; never render a raw provider response.
 3. Review and apply [001_family_messaging.sql](migrations/001_family_messaging.sql) once through
    the project's operator SQL editor. It runs transactionally and deliberately fails if the new
    `fm_private` schema already exists. Do not rerun it as an upgrade or drop existing data to retry.
-   Only `public` needs PostgREST exposure; never expose `fm_private` or grant clients its tables.
+   Then apply migration002 once to add approved peer conversations. Only `public` needs
+   PostgREST exposure; never expose `fm_private` or grant clients its tables.
 4. Enable provider email/password Auth for the Parent and anonymous sign-in for Child installations.
    Disable unused providers. Create/confirm the team Parent through the provider dashboard. Review
    anonymous-signup limits and controls before even controlled external testing. A new anonymous
@@ -58,8 +93,9 @@ safe unexpected-error handling; never render a raw provider response.
   verifies `auth.uid()`, the JWT `session_id`, the actual undeleted/unbanned user and live unexpired
   session row. The client `role`, metadata, demo identity, nickname and route are never authority.
 - Device/session binding, active Parent allowlist and active exact Child relationship are checked
-  on every read/send. Parent devices can see only their household; a Child can see only its one
-  relationship. Only Parents get Child/device inventory; device metadata omits provider identifiers.
+  on every read/send. Parent devices see only their own Parent–Child relationships;
+  a Child sees that Parent thread and explicitly approved peer pairs it participates in.
+  Only Parents get Child/device inventory; device metadata omits provider identifiers.
   The Parent's provider user must also remain confirmed, non-anonymous, undeleted and unbanned;
   deleting/banning it immediately denies enrolled Children. Provider-user UUID tombstones have no
   Auth foreign key, so actual provider user deletion remains possible without deleting message history.
@@ -106,6 +142,10 @@ After obtaining the shared serialized validation slot, run from the repository r
 ```bash
 workers/ghaf-family-messaging/tests/run.sh
 ```
+
+For a Windows-mounted checkout under WSL, set `FM_RUN_ROOT` to an isolated Linux
+directory such as `/tmp/ghaf-messaging-017`. PostgreSQL requires native directory
+permissions; the runner keeps its temporary database and logs under that path.
 
 Requires existing PostgreSQL 16 binaries at `/usr/lib/postgresql/16/bin`, Python 3, Bash and a
 non-root user; override only `FM_PG_BIN` if needed. No package install is performed. The script

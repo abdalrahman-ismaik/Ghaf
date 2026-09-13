@@ -9,6 +9,7 @@ import type {
 } from '@/features/familyMessaging/controller';
 import type { MessagingAgeBand } from '@/features/familyMessaging';
 import { MessageButton, MessageText, styles } from './shared';
+import { MessagingPeerPermissions } from './MessagingPeerPermissions';
 
 export function MessagingManagement({
   controller,
@@ -101,6 +102,7 @@ export function MessagingManagement({
           {t('messaging.addChild')}
         </MessageButton>
       </View>
+      <MessagingPeerPermissions controller={controller} state={state} />
       <View style={styles.section}>
         <MessageText accessibilityRole="header" variant="heading">
           {t('messaging.devices')}

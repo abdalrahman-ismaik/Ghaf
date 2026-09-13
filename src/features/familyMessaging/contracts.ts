@@ -49,13 +49,30 @@ export const childSchema = z.object({
   active: z.boolean(),
 });
 export type MessagingChild = z.infer<typeof childSchema>;
-export const threadSchema = z.object({
-  id,
-  childId: id,
-  otherName: name,
-  otherRole: z.enum(['parent', 'child']),
-});
+export const threadSchema = z
+  .object({
+    id,
+    kind: z.enum(['parent_child', 'child_child']).default('parent_child'),
+    childId: id,
+    otherName: name,
+    otherRole: z.enum(['parent', 'child']),
+  })
+  .refine((thread) => thread.kind !== 'child_child' || thread.otherRole === 'child');
 export type MessagingThread = z.infer<typeof threadSchema>;
+export const peerPermissionSchema = z
+  .object({
+    firstChildId: id,
+    secondChildId: id,
+    firstName: name,
+    secondName: name,
+    threadId: id.nullable(),
+    enabled: z.boolean(),
+    available: z.boolean(),
+  })
+  .refine(
+    (pair) => pair.firstChildId < pair.secondChildId && (!pair.enabled || pair.threadId !== null),
+  );
+export type PeerPermission = z.infer<typeof peerPermissionSchema>;
 export const messageSchema = z.object({
   id,
   threadId: id,
@@ -158,6 +175,14 @@ export interface FamilyMessagingService {
   ): Promise<FamilyMessage[]>;
   send(input: SendInput, signal?: AbortSignal): Promise<FamilyMessage>;
   children(signal?: AbortSignal): Promise<MessagingChild[]>;
+  peerPermissions(signal?: AbortSignal): Promise<PeerPermission[]>;
+  setPeerPermission(
+    firstChildId: string,
+    secondChildId: string,
+    enabled: boolean,
+    signal?: AbortSignal,
+  ): Promise<void>;
+  leavePeerThread(threadId: string, signal?: AbortSignal): Promise<void>;
   createChild(
     name: string,
     ageBand: MessagingAgeBand,

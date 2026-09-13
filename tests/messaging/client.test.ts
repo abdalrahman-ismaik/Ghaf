@@ -3,7 +3,7 @@ import {
   SupabaseFamilyMessagingService,
   readMessagingConfig,
 } from '../../src/features/familyMessaging/client';
-import { deferred, ids, memoryStorage, message, parent } from './fixtures';
+import { deferred, ids, memoryStorage, message, parent, thread } from './fixtures';
 import { createCredentialStorage } from '../../src/features/familyMessaging/credentialStorage';
 
 const config = {
@@ -31,6 +31,29 @@ async function signedIn(fetcher = vi.fn<typeof fetch>()) {
 }
 
 describe('real messaging Auth and transport boundary', () => {
+  it('preserves legacy Parent threads and calls only bounded peer RPC contracts', async () => {
+    const { service, fetcher } = await signedIn();
+    const { kind: _kind, ...legacyThread } = thread;
+    expect(_kind).toBe('parent_child');
+    fetcher.mockResolvedValueOnce(response([legacyThread]));
+    expect(await service.threads()).toEqual([thread]);
+    fetcher.mockResolvedValueOnce(response({ ok: true }));
+    await service.setPeerPermission(ids.person, ids.user, true);
+    expect(fetcher.mock.calls.at(-1)?.[0]).toBe(`${config.url}/rest/v1/rpc/fm_set_peer_permission`);
+    expect(JSON.parse(String(fetcher.mock.calls.at(-1)?.[1]?.body))).toEqual({
+      p_first_child_id: ids.person,
+      p_second_child_id: ids.user,
+      p_enabled: true,
+    });
+    fetcher.mockResolvedValueOnce(response({ ok: true }));
+    await service.leavePeerThread(ids.thread);
+    expect(fetcher.mock.calls.at(-1)?.[0]).toBe(`${config.url}/rest/v1/rpc/fm_leave_peer_thread`);
+    expect(JSON.parse(String(fetcher.mock.calls.at(-1)?.[1]?.body))).toEqual({
+      p_thread_id: ids.thread,
+    });
+    fetcher.mockResolvedValueOnce(response([{ enabled: true }]));
+    await expect(service.peerPermissions()).rejects.toMatchObject({ code: 'service_unavailable' });
+  });
   it('normalizes an uppercase typed or pasted hexadecimal enrollment code', async () => {
     const { service, fetcher } = client();
     fetcher.mockResolvedValueOnce(response(auth)).mockResolvedValueOnce(response(parent));

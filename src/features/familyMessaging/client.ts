@@ -8,6 +8,7 @@ import {
   messageSchema,
   MessagingError,
   PAGE_SIZE,
+  peerPermissionSchema,
   sessionSchema,
   threadSchema,
   type CredentialStorage,
@@ -342,6 +343,29 @@ export class SupabaseFamilyMessagingService implements FamilyMessagingService {
   }
   children(signal?: AbortSignal) {
     return this.rpc('fm_children', {}, z.array(childSchema), signal);
+  }
+  peerPermissions(signal?: AbortSignal) {
+    return this.rpc('fm_peer_permissions', {}, z.array(peerPermissionSchema), signal);
+  }
+  async setPeerPermission(
+    firstChildId: string,
+    secondChildId: string,
+    enabled: boolean,
+    signal?: AbortSignal,
+  ) {
+    await this.rpc(
+      'fm_set_peer_permission',
+      {
+        p_first_child_id: firstChildId,
+        p_second_child_id: secondChildId,
+        p_enabled: enabled,
+      },
+      okSchema,
+      signal,
+    );
+  }
+  async leavePeerThread(threadId: string, signal?: AbortSignal) {
+    await this.rpc('fm_leave_peer_thread', { p_thread_id: threadId }, okSchema, signal);
   }
   createChild(name: string, ageBand: '6_8' | '9_11' | '12_14', signal?: AbortSignal) {
     return this.rpc(
