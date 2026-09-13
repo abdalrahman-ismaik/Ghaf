@@ -24,6 +24,9 @@ export default function PrivateLeagueRoute() {
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const activeChild = usePrototypeStore((state) => state.children[state.activeChildId]);
+  const localProfile = usePrototypeStore((state) =>
+    state.localFamily.record?.children.find((profile) => profile.id === state.activeChildId),
+  );
   const privateLeague = usePrototypeStore((state) => state.privateLeague);
   const [helpOpen, setHelpOpen] = useState(false);
   const formatter = useMemo(
@@ -99,7 +102,8 @@ export default function PrivateLeagueRoute() {
       footer={footer}
       header={
         <ChildHomeHeader
-          avatarLabel={localize(activeChild.displayName, locale)}
+          avatarId={localProfile?.avatarId}
+          avatarLabel={localProfile?.nickname ?? localize(activeChild.displayName, locale)}
           direction={direction}
           helpLabel={t('common.help')}
           helpOpen={helpOpen}
