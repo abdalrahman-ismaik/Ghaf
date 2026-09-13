@@ -54,6 +54,7 @@ export interface LocalFamilyRecord {
   readonly pairedChildIds: readonly SyntheticChildId[];
   readonly createdAt: string;
   readonly updatedAt: string;
+  readonly studyInstanceId?: string;
   readonly origin: 'local_demo';
   readonly capabilityTruth: 'local_prototype_not_authentication';
 }

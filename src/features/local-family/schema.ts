@@ -14,6 +14,7 @@ import {
 import { normalizeParentIdentifier, toAccessLanguagePreference } from '../access/parentOnboarding';
 
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001f\u007f-\u009f]/u;
+const STUDY_INSTANCE_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/;
 const CHILD_IDS = ['child_salem', 'child_alya'] as const;
 const LOCALES = new Set(['ar', 'en']);
 const AGE_BANDS = new Set(['6_8', '9_11', '12_14']);
@@ -250,7 +251,10 @@ export function parseLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRec
   } catch {
     return failure('The device-local family directory is not valid JSON');
   }
-  if (!isRecord(value) || !hasOnlyKeys(value, RECORD_KEYS)) {
+  if (
+    !isRecord(value) ||
+    (!hasOnlyKeys(value, RECORD_KEYS) && !hasOnlyKeys(value, [...RECORD_KEYS, 'studyInstanceId']))
+  ) {
     return failure('The device-local family directory shape is invalid');
   }
   const familyConnections = validateCompleteFamilyConnectionDirectory(value.familyConnections);
@@ -276,6 +280,9 @@ export function parseLocalFamilyRecord(raw: string): DomainResult<LocalFamilyRec
     !isIsoTime(value.createdAt) ||
     !isIsoTime(value.updatedAt) ||
     Date.parse(value.updatedAt) < Date.parse(value.createdAt) ||
+    (value.studyInstanceId !== undefined &&
+      (!isText(value.studyInstanceId, 1, 100) ||
+        !STUDY_INSTANCE_ID_PATTERN.test(value.studyInstanceId))) ||
     value.origin !== 'local_demo' ||
     value.capabilityTruth !== 'local_prototype_not_authentication'
   ) {
