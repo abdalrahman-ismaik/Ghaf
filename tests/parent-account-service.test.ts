@@ -186,6 +186,38 @@ describe('real Parent account adapter', () => {
     });
   });
 
+  it('accepts eight-digit provider codes for signup and recovery without truncating them', async () => {
+    const h = harness();
+    await expect(h.service.verifyEmail(h.user.email, '12345678')).resolves.toMatchObject({
+      userId: h.user.id,
+    });
+    expect(h.client.auth.verifyOtp).toHaveBeenLastCalledWith({
+      email: h.user.email,
+      token: '12345678',
+      type: 'signup',
+    });
+    await expect(h.service.verifyRecovery(h.user.email, '87654321')).resolves.toBeUndefined();
+    expect(h.client.auth.verifyOtp).toHaveBeenLastCalledWith({
+      email: h.user.email,
+      token: '87654321',
+      type: 'recovery',
+    });
+  });
+
+  it.each(['1234567', '12345', '123456789', '1234567a', '١٢٣٤٥٦٧٨'])(
+    'rejects invalid or unnormalized code %s before contacting the provider',
+    async (code) => {
+      const h = harness();
+      await expect(h.service.verifyEmail(h.user.email, code)).rejects.toMatchObject({
+        code: 'invalid_code',
+      });
+      await expect(h.service.verifyRecovery(h.user.email, code)).rejects.toMatchObject({
+        code: 'invalid_code',
+      });
+      expect(h.client.auth.verifyOtp).not.toHaveBeenCalled();
+    },
+  );
+
   it('maps expired/reused codes and credentials to stable errors without provider details', async () => {
     const h = harness();
     h.client.auth.verifyOtp.mockRejectedValue({

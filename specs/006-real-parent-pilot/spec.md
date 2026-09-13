@@ -17,6 +17,8 @@ remote pairing, admin app, or AI changes are included.
   Demo mode makes no Supabase authentication calls and preserves Features 003–005.
 - FR-002: Supabase owns email/password credentials. Verification and recovery use
   provider-issued single-use email codes, never the synthetic verification code.
+  Accept six- or eight-digit provider codes; keep the hosted provider's eight-digit
+  default and retain the isolated local six-digit configuration for regression tests.
   Recovery remains isolated until a password has been set and normal login resumes.
 - FR-003: A server-created `pilot_access` row references `auth.users.id` and begins
   `pending`. Status is `pending | approved | suspended`; missing rows deny access.

@@ -108,7 +108,10 @@ vi.mock('@/components/access', () => ({
   AccessTextField: 'AccessTextField',
   StatusBanner: 'StatusBanner',
   normalizeOtpDigits: (value: string) =>
-    value.replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit))).replace(/[^0-9]/g, ''),
+    value
+      .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+      .replace(/[۰-۹]/g, (digit) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+      .replace(/[^0-9]/g, ''),
 }));
 vi.mock('@/components/primitives', () => ({ Button: 'Button', Text: 'Text' }));
 vi.mock('@/components/LanguageSwitcher', () => ({ LanguageSwitcher: 'LanguageSwitcher' }));
@@ -293,11 +296,48 @@ describe('Pilot account forms', () => {
       renderView();
       expect(byId('pilot-code-input')?.props.value).toBe('');
       expect(byId('pilot-code-input')?.props).toMatchObject({
-        maxLength: 6,
+        maxLength: 8,
         textContentType: 'oneTimeCode',
         direction: 'rtl',
         style: { textAlign: 'left', writingDirection: 'ltr' },
       });
+    },
+  );
+
+  it.each([
+    ['verify', '١٢٣٤٥٦٧٨'],
+    ['recovery-code', '١٢٣٤٥٦٧٨'],
+    ['verify', '۱۲۳۴۵۶۷۸'],
+    ['recovery-code', '۱۲۳۴۵۶۷۸'],
+  ] as const)('normalizes all eight digits for %s using %s', (phase, enteredCode) => {
+    mock.pilot = { ...mock.pilot, phase, email: 'adult@example.com' };
+    renderView();
+    (byId('pilot-code-input')!.props.onChangeText as (value: string) => void)(enteredCode);
+    renderView();
+    expect(byId('pilot-code-input')?.props.value).toBe('12345678');
+    expect(byId('pilot-submit')?.props.disabled).toBe(false);
+    press('pilot-submit');
+    expect(
+      phase === 'verify' ? mock.controller.verify : mock.controller.verifyRecovery,
+    ).toHaveBeenCalledWith('12345678');
+    renderView();
+    expect(byId('pilot-code-input')?.props.value).toBe('');
+  });
+
+  it.each(['verify', 'recovery-code'] as const)(
+    'blocks seven-digit %s codes on button and keyboard submission',
+    (phase) => {
+      mock.pilot = { ...mock.pilot, phase, email: 'adult@example.com' };
+      renderView();
+      (byId('pilot-code-input')!.props.onChangeText as (value: string) => void)('١٢٣٤٥٦٧');
+      renderView();
+      expect(byId('pilot-submit')?.props.disabled).toBe(true);
+      press('pilot-submit');
+      (byId('pilot-code-input')!.props.onSubmitEditing as () => void)();
+      expect(mock.controller.verify).not.toHaveBeenCalled();
+      expect(mock.controller.verifyRecovery).not.toHaveBeenCalled();
+      renderView();
+      expect(byId('pilot-code-input')?.props.value).toBe('1234567');
     },
   );
 

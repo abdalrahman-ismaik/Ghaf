@@ -146,7 +146,7 @@ function strongPassword(value: string) {
 }
 
 function emailCode(value: string) {
-  if (!/^\d{6}$/.test(value)) throw new ParentAccountError('invalid_code');
+  if (!/^(?:[0-9]{6}|[0-9]{8})$/.test(value)) throw new ParentAccountError('invalid_code');
 }
 
 function checked<T>(result: ProviderResult<T>, fallback?: ParentAccountErrorCode): T {

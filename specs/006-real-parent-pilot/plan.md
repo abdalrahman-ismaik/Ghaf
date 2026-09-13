@@ -24,6 +24,9 @@ own-row SELECT for clients. A constrained status field, foreign-key primary key,
 timestamps, and cascading deletion provide the complete data contract.
 Use Supabase Auth email/password and typed email codes. Keep recovery sessions
 outside the demo; finish password recovery then require normal login.
+Hosted setup confirmed an eight-digit provider default. Keep it and accept exactly
+six or eight digits in the app, preserving local six-digit fixtures. The provider
+remains the authority for whether the submitted code matches and is unexpired.
 
 ## Integration
 

@@ -32,6 +32,7 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
   const hasEmail = phase === 'signin' || phase === 'register' || phase === 'forgot';
   const hasPassword = phase === 'signin' || phase === 'register' || phase === 'new-password';
   const hasCode = phase === 'verify' || phase === 'recovery-code';
+  const codeIsComplete = /^(?:[0-9]{6}|[0-9]{8})$/.test(code);
   const canReturn = ['register', 'verify', 'forgot', 'recovery-code'].includes(phase);
   const canSignOut = [
     'verify',
@@ -44,7 +45,7 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
   ].includes(phase);
   const canRefresh = ['pending', 'suspended', 'error'].includes(phase);
   const submit = () => {
-    if (state.busy) return;
+    if (state.busy || (hasCode && !codeIsComplete)) return;
     const submittedPassword = password;
     const submittedCode = code;
     setPassword('');
@@ -71,7 +72,7 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
   const formIsComplete =
     (!hasEmail || email.trim().length > 0) &&
     (!hasPassword || password.length > 0) &&
-    (!hasCode || code.length === 6);
+    (!hasCode || codeIsComplete);
   const goBack = () => {
     setPassword('');
     setCode('');
@@ -199,8 +200,8 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
               keyboardType="number-pad"
               label={t('pilot.code')}
               language={locale}
-              maxLength={6}
-              onChangeText={(value) => setCode(normalizeOtpDigits(value).slice(0, 6))}
+              maxLength={8}
+              onChangeText={(value) => setCode(normalizeOtpDigits(value).slice(0, 8))}
               onSubmitEditing={submit}
               returnKeyType="go"
               style={styles.latinInput}
