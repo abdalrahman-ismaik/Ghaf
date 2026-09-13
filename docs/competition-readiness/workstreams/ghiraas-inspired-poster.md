@@ -1,5 +1,38 @@
 # Ghiraas-inspired Ghaf poster — 13 September 2026
 
+## V2 — direct reference layout replaces the rejected first redesign
+
+The user rejected V1 as insufficiently professional and clarified that the poster should use the
+same layout approach as the supplied reference. The current delivery is now
+`/home/smyk/projects/Ghaf/output/poster-20260913-reference-layout-v2/`, with the complete
+`Ghaf-SMAC-2026-Reference-Layout-V2.zip` package. The earlier version below is preserved history,
+not the recommended current poster.
+
+V2 matches the reference composition: two overlapping tilted hero phones, four onboarding phones,
+twelve feature phones in four triads flanking narrow descriptions, outlined problem/solution
+boxes, a technology panel beside a laptop diagram, and three compact value boxes plus team column.
+It uses the reference's green/pale-sage/orange palette with Ghaf's selected mark and approved fonts.
+There are 18 phone placements, 284 editorial words and 66 editable text boxes.
+
+All 21 delivery checks passed, including exact A1 size, source-picture identity for native images,
+self-contained vector hero composites, no text-frame overlaps and all editable text bounds fitting
+in actual PowerPoint. Both exact PRINT and editable files were rendered and visually inspected in
+PowerPoint; PRINT needed no authoring fonts. A read-only helper confirmed the requested layout
+fidelity and found no critical clipping or caption mismatch. Initial collisions and a transient
+hero image were corrected before final export. No reference artwork was copied.
+
+Parent Home and Guide use preserved 12 September captures; the remaining placements use the
+13 September audit, with one Child screen repeated between hero and main feature. No new app
+capture is claimed. Screenshot resolution is approximately 166–607 ppi at placement. The final
+poster retains prepared/synthetic/symbolic labels and distinguishes League, private Family Reward
+and Green Circle. Fonts, usage instructions, a layout review and speaking notes accompany delivery.
+
+Only this additive report and isolated V2 output were written; other sessions' source/coordination
+edits remain untouched. Helpers and render jobs are finished. Physical print and human acceptance
+remain NOT RUN. V2 is ready for user review; no submission, app change, push or deployment occurred.
+
+## V1 — historical first redesign
+
 The user rejected the earlier generic poster, supplied a Ghiraas PowerPoint reference and asked for a similar Ghaf poster. A new A1 portrait poster is complete for user review, preserving the original reference, previous poster and other sessions' application changes.
 
 ## Deliverable
