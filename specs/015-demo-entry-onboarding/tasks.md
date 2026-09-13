@@ -127,3 +127,10 @@ T030–T033: contract56c9063, runtime42eb809. No local OTP UI; direct setup/repa
   display old canonical saved names compatibly without persistence changes, preserve custom names,
   and verify Arabic/English entry. Runtime0b400da;208focused tests/typecheck/scoped lint+format PASS;
   actual browser and isolated synthetic legacy fixture PASS, native/human exact-diff NOT RUN.
+
+## Selected Welcome logo focus
+
+- [x] T035 Remove Welcome photo, enlarge selected5A mark and retain all original controls/copy.
+  Runtime829c9db. Typecheck/scoped lint+format and46existing focused tests PASS. Actual AR390x844/
+  EN320x740 logo/photo/language/navigation checks PASS; native/human and effective enlarged-text
+  NOT RUN. Evidence and limitation: docs/competition-readiness/workstreams/welcome-logo-focus.md.

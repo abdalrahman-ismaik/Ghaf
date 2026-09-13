@@ -3,6 +3,31 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 95 — Welcome logo focus integrated and released
+
+Updated 2026-09-13T10:40:38.401694+00:00; runtime829c9db on shared redesign/ui-experiments. Selected5A mark208dp
+(previous76); Welcome photo removed, original wording/language/Parent/Child behavior retained.
+All revision94 exact source/test/spec/report paths RELEASED. Helpers0/jobs0/browser0; existing
+user Metro62701/8082 untouched. Other sessions' dirty source/audio/status remains unstaged.
+46focused tests/typecheck/scoped lint+format PASS. Actual AR390x844 and EN320x740 no-photo/208logo/
+buttons/Back/language/keyboard PASS. Compact EN content scrolls. Enlarged-text attempt NOT RUN as
+acceptance because effective visible-route scaling was unconfirmed; native/human NOT RUN.
+Report ../workstreams/welcome-logo-focus.md; output/competition-readiness/welcome-logo-focus-20260913/.
+
+## Revision 94 — logo-focused Welcome composition
+
+Updated 2026-09-13T10:37:00.887371+00:00, HEAD7b5f4a7. User explicitly
+requests removal of the photo on “Growing good habits together” and a larger, more prominent logo.
+This supersedes exact-restoration only for that shared Welcome composition. Keep the selected5A
+artwork, original wording, both Parent/Child actions, language switch and callback/role behavior.
+Lead owns src/components/access/OriginalWelcomeScreen.tsx; existing affected presentation assertions
+in tests/platform/access-family-portraits.test.tsx if needed. Additive015 exact-original-restoration
+contract/tasks, this board, and new workstreams/welcome-logo-focus.md are lead-owned.
+One helper messaging_seams read-only: identify exact affected tests/shared-rendering boundaries;
+no edits/jobs/browser/descendants. Lead uses one scoped check lane (maxWorkers1), then isolated
+AR/EN browser8082, regular/compact widths. Preserve user Metro62701 and other sessions' dirty
+OriginalDemoEntryScreen/onboarding/audio/status files. No new assets, packages, flags or business logic.
+
 ## Revision 93 — selected family name integrated and released
 
 Updated 2026-09-13T10:21:16.316562+00:00. Runtime0b400da; same shared branch. Prepared/default family name is now
