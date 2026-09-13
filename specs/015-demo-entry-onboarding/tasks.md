@@ -120,3 +120,10 @@ T026–T029: contract4f48a75, runtime65efe80; report docs/competition-readiness/
 - [x] T033 Validate affected guards/cancellation and AR/EN browser; commit/report/release.
 
 T030–T033: contract56c9063, runtime42eb809. No local OTP UI; direct setup/repair, preserved replacement/cancel authority. Report docs/competition-readiness/workstreams/parent-no-code-entry.md. AR390x844/EN320x740 browser passed; full type/lint/format passed, initial2110pass/4obsolete source assertions corrected with44affected tests passing. Native/human NOT RUN.
+
+## Natural prepared family name
+
+- [x] T034 Apply the user-selected عائلة أبو راشد / Abu Rashid Family to prepared names and examples;
+  display old canonical saved names compatibly without persistence changes, preserve custom names,
+  and verify Arabic/English entry. Runtime0b400da;208focused tests/typecheck/scoped lint+format PASS;
+  actual browser and isolated synthetic legacy fixture PASS, native/human exact-diff NOT RUN.

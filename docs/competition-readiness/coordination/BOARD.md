@@ -3,6 +3,39 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 93 — selected family name integrated and released
+
+Updated 2026-09-13T10:21:16.316562+00:00. Runtime0b400da; same shared branch. Prepared/default family name is now
+عائلة أبو راشد / Abu Rashid Family; garden/examples consistent. Exact canonical old saved family
+gets a display-only alias; custom names/profiles, bytes and stable identity unchanged. All exact
+source/test/spec/report paths in revision92 RELEASED; helpers0/browser0/jobs0, Metro62701/8082
+preserved. Other sessions' audio/status/source remains unstaged. Typecheck/scoped lint/format and
+208focused tests (maxWorkers1) passed. Actual AR390x844 entry and EN320x740 synthetic legacy-state
+entry passed after one English-titlecase correction. Native/human exact-diff NOT RUN. Report
+../workstreams/parent-family-name.md; evidence output/competition-readiness/parent-family-name-20260913/.
+
+## Revision 92 — user-selected family display name
+
+Updated 2026-09-13T10:15:01.735399+00:00, HEAD98aa066. User asks for
+natural family names such as عائلة أبو راشد. Lead owns src/i18n/resources.ts,
+src/features/access/demoEntry.ts, src/features/access/parentOnboarding/policy.ts,
+src/features/tasks/demoContent.ts; app/access/parent/sign-in.tsx and app/parent/index.tsx only for
+legacy prepared-family display compatibility if required. New display helper, if needed, will have
+an exact grant before writing. Existing household/profile identifiers and custom names stay intact.
+Lead owns copy amendment in015 contracts/parent-account-chooser.md and tasks.md, this board and
+new workstreams/parent-family-name.md; exact existing tests follow reference tracing.
+One helper messaging_seams read-only: identify saved-fixture display compatibility and narrow test
+impact; no writes/jobs/browser/descendants. Lead edits copy independently. One serialized focused
+check lane (maxWorkers1), then own brief browser8082, user Metro62701 preserved. Other status/audio
+source untouched. No new account behavior, flags, packages or storage migration authorized.
+
+Revision92 exact follow-up: helper released read-only scope, helpers0. Lead additionally owns
+new src/features/access/localFamilyDisplayName.ts and tests/access/local-family-display-name.test.ts;
+existing tests/access/parent-account-chooser.test.tsx, parent-onboarding-controller.test.ts,
+family-replacement-flow.test.ts and tests/demo/demo-entry-adapter.test.ts for affected expectations.
+Alias only exact old/current canonical prepared name with canonical content (locale/update time
+may differ); customized names/profiles retain stored display. No storage or receipt change.
+
 ## Revision 91 — local Parent no-code entry complete and released
 
 Updated 2026-09-13T09:55:52.367766+00:00. Contract56c9063, runtime42eb809 on the same shared branch.
