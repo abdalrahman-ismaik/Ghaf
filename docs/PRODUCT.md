@@ -1,5 +1,17 @@
 # Product
 
+## Feature 017 study and family support — 2026-09-13
+
+The owner selected saved proposals 8–12: private Study Mode, jointly agreed academic
+goals and optional prizes, Parent–Child and Parent-approved Child–Child messages,
+and sourced guided family practices. [Feature 017](../specs/017-study-family-support/spec.md)
+owns this additive scope. Study records remain synthetic and private to the local
+family; academic prizes are nonessential Parent promises with no Seeds, League or
+existing Family Reward contribution. Essential education and care are unconditional.
+Messaging retains Feature 016's independently configured service and authorization;
+peer permission management does not grant the Parent access to peer conversations.
+Research supports individual strategies, not a demonstrated Ghaf wellbeing outcome.
+
 ## Feature 006 adult pilot account exception — 2026-09-13
 
 The owner approved a separate login-only pilot with real adult Supabase accounts,

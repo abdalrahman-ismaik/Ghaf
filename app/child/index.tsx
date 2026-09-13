@@ -1,4 +1,5 @@
 import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
+import { StudyEntries } from '@/components/study/StudyEntries';
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
@@ -696,6 +697,7 @@ export default function ChildHomeScreen() {
       ) : null}
 
       <MessagingEntry role="child" />
+      <StudyEntries role="child" />
 
       {r002bGrowth.ok ? (
         <TodayImpactPathCard

@@ -1,6 +1,7 @@
 <!--
 Sync Impact Report
-- Version change: 2.0.0 -> 2.1.0
+- Version change: 2.1.0 -> 2.2.0
+- Approved Feature017 exception: selected study, jointly agreed academic prizes and family peer text.
 - Approved exception: Feature 006 real adult pilot authentication, separate from the synthetic demo.
 
 - Feature016 amendment: user-authorized real human messaging; deterministic P0 preserved
@@ -100,6 +101,20 @@ before release. Multi-turn AI, custom goals and T1/V1/V2/V3 calling need separat
 
 ## Prototype Boundaries
 
+### Feature 017 selected study and communication exception — 2026-09-13
+
+The user's explicit selection of proposals 8–12 authorizes synthetic private study
+planning, jointly agreed academic practice/achievement/mark goals and optional
+nonessential prizes. This narrowly supersedes prior blanket academic-prize
+exclusions. Basic education, safety, meals, care, affection and dignity never depend
+on a result. Academic prizes remain separate from Seeds and existing Family Rewards;
+accepted terms and unlocked prizes cannot be weakened or confiscated.
+
+Feature016 may add explicit Parent-approved, same-family, participant-only Child
+peer text. Parent permission management is separate from access to peer content.
+Human messages never enter AI or grant academic/task/reward authority. No other
+networking, media, provider, calling or production exception follows from this work.
+
 ### Feature 006 adult pilot exception — 2026-09-13
 
 The owner-approved Feature 006 plan permits an independent default-off Supabase
@@ -147,4 +162,4 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.1.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-13
+**Version**: 2.2.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-13

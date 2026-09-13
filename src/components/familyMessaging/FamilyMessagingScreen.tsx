@@ -45,13 +45,13 @@ export function FamilyMessagingScreen() {
       setManagementDevice(null);
       return;
     }
-    if (state.threadId && state.context?.role === 'parent') {
+    if (state.threadId) {
       controller.closeThread();
       return;
     }
     if (router.canGoBack()) router.back();
     else router.replace('/');
-  }, [controller, management, router, state.context?.role, state.threadId]);
+  }, [controller, management, router, state.threadId]);
   useFocusEffect(
     useCallback(() => {
       controller.setVisible(true);
@@ -108,7 +108,11 @@ export function FamilyMessagingScreen() {
           </View>
           {ready && thread ? (
             <MessageText variant="caption" color="onSurfaceVariant">
-              {t(`messaging.${thread.otherRole}`)}
+              {t(
+                thread.kind === 'child_child'
+                  ? 'peerMessaging.participant'
+                  : `messaging.${thread.otherRole}`,
+              )}
             </MessageText>
           ) : (
             <LanguageSwitcher compact showGuidance={false} />
@@ -163,6 +167,11 @@ export function FamilyMessagingScreen() {
             {ready && !management ? (
               <>
                 <MessageText color="onSurfaceVariant">{t('messaging.separate')}</MessageText>
+                {state.peerAccessRemoved ? (
+                  <MessageText accessibilityLiveRegion="polite">
+                    {t('peerMessaging.removed')}
+                  </MessageText>
+                ) : null}
                 <MessageText accessibilityRole="header" variant="heading">
                   {t('messaging.conversations')}
                 </MessageText>
@@ -175,7 +184,11 @@ export function FamilyMessagingScreen() {
                       {candidate.otherName}
                     </MessageText>
                     <MessageText variant="caption">
-                      {t(`messaging.${candidate.otherRole}`)}
+                      {t(
+                        candidate.kind === 'child_child'
+                          ? 'peerMessaging.participant'
+                          : `messaging.${candidate.otherRole}`,
+                      )}
                     </MessageText>
                     <MessageButton
                       variant="secondary"

@@ -18,6 +18,7 @@ import {
   type MessagingRole,
   type MessagingThread,
   type PhraseId,
+  type PeerPermission,
   type SendInput,
 } from './contracts';
 
@@ -47,6 +48,10 @@ export interface MessagingState {
   hasNewMessages: boolean;
   error: MessagingErrorCode | null;
   children: MessagingChild[];
+  peerPermissions: PeerPermission[];
+  peerPermissionsLoaded: boolean;
+  peerError: MessagingErrorCode | null;
+  peerAccessRemoved: boolean;
   devices: MessagingDevice[];
   invitation: MessagingInvitation | null;
   remoteSignoutUnconfirmed: boolean;
@@ -68,6 +73,10 @@ function initial(configured: boolean): MessagingState {
     hasNewMessages: false,
     error: null,
     children: [],
+    peerPermissions: [],
+    peerPermissionsLoaded: false,
+    peerError: null,
+    peerAccessRemoved: false,
     devices: [],
     invitation: null,
     remoteSignoutUnconfirmed: false,
@@ -178,6 +187,17 @@ export class FamilyMessagingController {
       this.publish({ error: code, busy: false, loading: false });
     }
   }
+  private async failThread(error: unknown, epoch: number, threadId: string) {
+    if (epoch !== this.epoch) return;
+    if (
+      asMessagingError(error).code === 'not_authorized' &&
+      this.state.threads.some((thread) => thread.id === threadId && thread.kind === 'child_child')
+    ) {
+      this.acceptThreads(this.state.threads.filter((thread) => thread.id !== threadId));
+      return;
+    }
+    await this.fail(error, epoch);
+  }
   setLocale(locale: 'ar' | 'en') {
     this.locale = locale;
   }
@@ -227,6 +247,30 @@ export class FamilyMessagingController {
     this.principal = key;
     this.publish({ phase: 'ready', context, error: null, remoteSignoutUnconfirmed: false });
   }
+  private acceptThreads(threads: MessagingThread[]) {
+    const allowed = new Set(threads.map((thread) => thread.id));
+    for (const id of this.drafts.keys()) if (!allowed.has(id)) this.drafts.delete(id);
+    for (const id of this.attempts.keys()) if (!allowed.has(id)) this.attempts.delete(id);
+    for (const id of this.fetchedCursors.keys())
+      if (!allowed.has(id)) this.fetchedCursors.delete(id);
+    const removed = this.selected !== null && !allowed.has(this.selected);
+    this.publish({ threads });
+    if (removed) {
+      this.closeThread();
+      this.publish({ peerAccessRemoved: true });
+    }
+    return removed;
+  }
+  private preferredThread(context: MessagingContext, threads: MessagingThread[]) {
+    if (context.role === 'child' && this.helpRequested)
+      return threads.find(
+        (thread) => thread.kind === 'parent_child' && thread.otherRole === 'parent',
+      );
+    return (
+      threads.find((thread) => thread.id === this.selected) ??
+      (context.role === 'child' && threads.length === 1 ? threads[0] : undefined)
+    );
+  }
   async validate() {
     if (
       !this.service.configured ||
@@ -253,10 +297,8 @@ export class FamilyMessagingController {
       }
       this.acceptContext(context);
       const threads = await this.run((signal) => this.service.threads(signal));
-      this.publish({ threads });
-      const selected =
-        threads.find((thread) => thread.id === this.selected) ??
-        (context.role === 'child' ? threads[0] : undefined);
+      this.acceptThreads(threads);
+      const selected = this.preferredThread(context, threads);
       if (selected) await this.openThread(selected.id);
       else this.schedule();
     } catch (error) {
@@ -297,8 +339,10 @@ export class FamilyMessagingController {
       if (context.role !== mode) throw new MessagingError('role_mismatch');
       this.acceptContext(context);
       const threads = await this.run((signal) => this.service.threads(signal));
-      this.publish({ threads, busy: false });
-      if (context.role === 'child' && threads[0]) await this.openThread(threads[0].id);
+      this.acceptThreads(threads);
+      this.publish({ busy: false });
+      const selected = this.preferredThread(context, threads);
+      if (selected) await this.openThread(selected.id);
       else this.schedule();
     } catch (error) {
       if (epoch !== this.epoch) return;
@@ -317,6 +361,13 @@ export class FamilyMessagingController {
   }
   async openThread(threadId: string) {
     if (!this.state.context || !this.state.threads.some((thread) => thread.id === threadId)) return;
+    if (this.helpRequested && this.state.context.role === 'child') {
+      const parentThread = this.state.threads.find(
+        (thread) => thread.kind === 'parent_child' && thread.otherRole === 'parent',
+      );
+      if (!parentThread) return;
+      threadId = parentThread.id;
+    }
     this.cancel();
     this.selected = threadId;
     const epoch = this.epoch;
@@ -341,6 +392,7 @@ export class FamilyMessagingController {
       error: null,
       hasEarlier: false,
       hasNewMessages: false,
+      peerAccessRemoved: false,
       draft: this.drafts.get(threadId) ?? blankDraft(),
       pending: this.attempts.get(threadId) ?? null,
     });
@@ -354,7 +406,7 @@ export class FamilyMessagingController {
         hasEarlier: messages.length === PAGE_SIZE,
       });
     } catch (error) {
-      await this.fail(error, epoch);
+      await this.failThread(error, epoch, threadId);
     } finally {
       if (epoch === this.epoch) this.schedule();
     }
@@ -417,9 +469,14 @@ export class FamilyMessagingController {
         context.ageBand !== this.state.context.ageBand
       )
         throw new MessagingError('access_revoked');
+      const threads = await this.run((signal) => this.service.threads(signal));
+      if (this.acceptThreads(threads)) return;
+      if (context.role === 'parent' && this.state.peerPermissionsLoaded) {
+        await this.loadPeerPermissions();
+        if (epoch !== this.epoch) return;
+      }
       if (!threadId) {
-        const threads = await this.run((signal) => this.service.threads(signal));
-        this.publish({ threads, loading: false, error: null });
+        this.publish({ loading: false, error: null });
         return;
       }
       const incoming = await this.run((signal) => this.service.messages(threadId, cursor, signal));
@@ -434,7 +491,8 @@ export class FamilyMessagingController {
         hasNewMessages: !earlier && incoming.length > 0 ? true : this.state.hasNewMessages,
       });
     } catch (error) {
-      await this.fail(error, epoch);
+      if (threadId) await this.failThread(error, epoch, threadId);
+      else await this.fail(error, epoch);
     } finally {
       if (epoch === this.epoch) this.schedule();
     }
@@ -528,7 +586,7 @@ export class FamilyMessagingController {
         this.attempts.set(threadId, failed);
         this.publish({ pending: failed, busy: false });
       }
-      await this.fail(error, epoch);
+      await this.failThread(error, epoch, threadId);
     }
   }
   cancelAttempt() {
@@ -574,9 +632,72 @@ export class FamilyMessagingController {
       const children = await this.run((signal) => this.service.children(signal));
       const devices = await this.run((signal) => this.service.devices(signal));
       const threads = await this.run((signal) => this.service.threads(signal));
-      this.publish({ children, devices, threads, busy: false });
+      this.acceptThreads(threads);
+      this.publish({ children, devices, busy: false });
+      await this.loadPeerPermissions();
     } catch (error) {
       await this.fail(error, epoch);
+    }
+  }
+  async loadPeerPermissions() {
+    if (this.state.context?.role !== 'parent' || this.state.phase !== 'ready') return;
+    const epoch = this.epoch;
+    try {
+      const peerPermissions = await this.run((signal) => this.service.peerPermissions(signal));
+      this.publish({ peerPermissions, peerError: null, peerPermissionsLoaded: true });
+    } catch (error) {
+      if (epoch !== this.epoch) return;
+      const code = asMessagingError(error).code;
+      if (['access_revoked', 'not_authenticated', 'not_authorized'].includes(code))
+        await this.fail(error, epoch);
+      else this.publish({ peerPermissions: [], peerError: code, peerPermissionsLoaded: true });
+    }
+  }
+  async setPeerPermission(firstChildId: string, secondChildId: string, enabled: boolean) {
+    if (
+      this.state.context?.role !== 'parent' ||
+      this.state.phase !== 'ready' ||
+      this.state.busy ||
+      !this.visible ||
+      !this.foreground
+    )
+      return;
+    const pair = this.state.peerPermissions.find(
+      (candidate) =>
+        candidate.firstChildId === firstChildId && candidate.secondChildId === secondChildId,
+    );
+    if (!pair || (enabled && !pair.available)) return;
+    const epoch = this.epoch;
+    this.publish({ busy: true, peerError: null });
+    try {
+      await this.run((signal) =>
+        this.service.setPeerPermission(firstChildId, secondChildId, enabled, signal),
+      );
+      await this.loadPeerPermissions();
+      if (epoch === this.epoch) this.publish({ busy: false });
+    } catch (error) {
+      await this.fail(error, epoch);
+    }
+  }
+  async leavePeerThread() {
+    const { threadId, context } = this.state;
+    if (
+      context?.role !== 'child' ||
+      this.state.phase !== 'ready' ||
+      !threadId ||
+      this.state.busy ||
+      !this.visible ||
+      !this.foreground ||
+      !this.state.threads.some((thread) => thread.id === threadId && thread.kind === 'child_child')
+    )
+      return;
+    const epoch = this.epoch;
+    this.publish({ busy: true, error: null });
+    try {
+      await this.run((signal) => this.service.leavePeerThread(threadId, signal));
+      this.acceptThreads(this.state.threads.filter((thread) => thread.id !== threadId));
+    } catch (error) {
+      await this.failThread(error, epoch, threadId);
     }
   }
   dismissInvitation() {

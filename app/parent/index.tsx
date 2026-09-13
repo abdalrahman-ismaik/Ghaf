@@ -1,4 +1,5 @@
 import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
+import { StudyEntries } from '@/components/study/StudyEntries';
 import { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -719,6 +720,8 @@ export default function ParentHomeScreen() {
         selectedLabel={t('parentHome.selectedLabel')}
         title={t('parentHome.todayWithChildren')}
       />
+
+      <StudyEntries role="parent" />
 
       <ParentCanopySummaryCard
         current={canopy.contributionLeaves}

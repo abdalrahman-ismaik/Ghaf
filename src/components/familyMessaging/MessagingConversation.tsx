@@ -25,6 +25,7 @@ export function MessagingConversation({
   const [clearConfirmation, setClearConfirmation] = useState(false);
   const [details, setDetails] = useState(false);
   const [showPhrases, setShowPhrases] = useState(false);
+  const [leaveConfirmation, setLeaveConfirmation] = useState(false);
   const thread = state.threads.find((candidate) => candidate.id === state.threadId);
   if (!thread || !state.context) return null;
   const phraseOnly = state.context.role === 'child' && state.context.ageBand === '6_8';
@@ -39,6 +40,33 @@ export function MessagingConversation({
         keyboardDismissMode="on-drag"
         testID="message-history"
       >
+        {thread.kind === 'child_child' ? (
+          <View style={styles.notice}>
+            <MessageText variant="caption">{t('peerMessaging.childBoundary')}</MessageText>
+            <MessageButton
+              variant="quiet"
+              disabled={state.busy}
+              onPress={() => setLeaveConfirmation(true)}
+            >
+              {t('peerMessaging.leave')}
+            </MessageButton>
+            {leaveConfirmation ? (
+              <>
+                <MessageText>{t('peerMessaging.leaveBody')}</MessageText>
+                <MessageButton
+                  busy={state.busy}
+                  busyLabel={t('messaging.working')}
+                  onPress={() => void controller.leavePeerThread()}
+                >
+                  {t('peerMessaging.confirmLeave')}
+                </MessageButton>
+                <MessageButton variant="quiet" onPress={() => setLeaveConfirmation(false)}>
+                  {t('messaging.cancel')}
+                </MessageButton>
+              </>
+            ) : null}
+          </View>
+        ) : null}
         <MessageButton
           variant="quiet"
           onPress={() => setDetails((value) => !value)}

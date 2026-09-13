@@ -1,4 +1,5 @@
 <!-- SPECKIT START -->
+
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
 at specs/005-remembered-device-access/plan.md
@@ -18,6 +19,14 @@ authorship evidence remain tracked; private local notes are not a substitute for
 # Ghaf Repository Collaboration Contract
 
 ## Current Feature
+
+Feature 017 (`specs/017-study-family-support/`) implements the user's selected
+proposals 8–12. Study/goals use synthetic family-scoped local data. Joint academic
+goals may have private nonessential mark/achievement prizes under its explicit
+narrow exception; they never feed Seeds, League or existing Family Rewards.
+Parent-approved participant-only sibling text extends Feature016 via additive SQL;
+Parent membership alone does not grant peer-content access. Prior P0 exclusions
+remain for other features. Hosted/native/human acceptance still needs direct evidence.
 
 Feature 006 (`specs/006-real-parent-pilot/`) is the owner-approved adult login-only
 pilot exception. Its separate `EXPO_PUBLIC_GHAF_AUTH_MODE=supabase` gate may use

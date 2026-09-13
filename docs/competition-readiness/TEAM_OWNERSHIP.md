@@ -1,5 +1,47 @@
 # Team Ownership
 
+## 2026-09-13 Study and family support — Feature 017
+
+User selected proposals 8–12 and confirmed using their saved proposals. Root starts
+from clean `c07bad9` on `feature/017-study-family-support`. This Windows worktree is
+the coordination location; prior merge boundaries are released. At most four active
+agents, no descendants, and one serialized heavy check/database/browser lane.
+
+- `/root`: Feature017 specification/plan/tasks/research/evidence and governing addenda;
+  `src/state/usePrototypeStore.ts`, `src/services/index.ts`, i18n resource aggregation,
+  `src/components/study/`, study routes/resources, Home/Today/Family entry points,
+  integration tests, final checks and local cohesive commits.
+- `/root/study_core`: `src/models/study.ts`, `src/features/study/`,
+  `src/services/local/studyRepository.ts`, `tests/study/domain.test.ts` and
+  `tests/study/repository.test.ts`; the reviewed family-binding fix additionally owns
+  `src/models/localFamily.ts`, `src/features/local-family/schema.ts` and
+  `tests/study/family-binding.test.ts`.
+- `/root/messaging_extension`: `src/features/familyMessaging/`,
+  `src/components/familyMessaging/`, `app/messages/`, `tests/messaging/`,
+  `workers/ghaf-family-messaging/`, and `src/i18n/peerMessagingResources.ts` only.
+- `/root/family_practices`: `src/features/familyPractices/`,
+  `src/components/familyPractices/`, `app/parent/practices.tsx`,
+  `app/child/practices.tsx`, `src/i18n/familyPracticeResources.ts`,
+  `tests/study/practices.test.tsx` and Feature017 `practice-research.md` only.
+  Final integration grant: the five existing route/recovery assertions in
+  `tests/access/corrupt-local-family-recovery.test.ts`,
+  `tests/integration/operator-demo-flow.test.ts`,
+  `tests/platform/r003-first-run-experience.test.ts`,
+  `tests/presentation/r001-onboarding-flow.test.ts` and
+  `tests/presentation/r002a-child-task-presentation.test.ts`.
+
+Read-only explorers `study_map` and `messaging_map` have released their maps. Writers
+are not alone; preserve others' edits and do not stage, commit or run heavy checks.
+Root integrates every shared boundary. No provider activation or deployment is
+included; real-message delivery readiness is documented separately from source.
+
+**Implementation release:** all helper write boundaries are released to root.
+Typecheck, lint, formatting, 2,718 regression tests (one opt-in skip), 41 SQL tests,
+compact AR/EN browser journeys and web/Android exports passed. Root owns final
+documentation and the user's authorized merge/push. Source is ready for integration;
+hosted messaging, physical Android and named human review remain NOT RUN. See
+[Feature 017 evidence](../../specs/017-study-family-support/validation.md).
+
 ## 2026-09-13 Main merge conflict resolution
 
 The user authorizes pushing all work, merging and resolving conflicts. `/root`

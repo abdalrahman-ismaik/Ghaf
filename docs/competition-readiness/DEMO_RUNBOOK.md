@@ -1,5 +1,30 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 017 study and family support rehearsal — 2026-09-13
+
+Use synthetic data. Open **Study space** from Parent Home, select Salem, create a
+small plan, then propose an academic goal with practical Parent support and one
+criterion. An optional gift, experience or extra activity is a separate private promise.
+Review the exact proposal as Parent. Sign out, enter Salem, open Study space, choose
+the plan, start it, ask for help and complete it. Open Goals, accept the reviewed
+agreement and record a result. Return through Child settings → Parent access.
+Review the result and acknowledge the action. A matching result unlocks the promise;
+mark it fulfilled only as a synthetic rehearsal of an outside-app action. A lower
+result allows another attempt. Check Alya's space has none of Salem's records.
+
+Open **Family practices**, choose a short activity and optionally its supported route,
+then walk through the steps. Finishing acknowledges the activity on that screen only.
+Open **Practice understanding** for a finite equal-groups example and the optional
+recall/check/explain/revisit sequence. Reset from Parent settings, confirm, and verify
+Arabic signed-out Welcome and empty study records on the next entry.
+
+For real messages, use the separately configured Feature 016 service and both migrations
+in `workers/ghaf-family-messaging/`. Connect Parent and two Child devices; Parent enables
+the pair in management, Children select the peer conversation, and either may leave.
+Verify Parent content access is denied and revoked peers cannot read/send. **This hosted
+two-device segment is NOT RUN** in Feature 017's local evidence. Do not narrate a send
+when the build shows the unconfigured-service screen.
+
 ## Feature 006 adult pilot and competition default — 2026-09-13
 
 Keep `EXPO_PUBLIC_GHAF_AUTH_MODE=demo` for the offline competition journey below.

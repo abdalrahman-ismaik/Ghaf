@@ -25,10 +25,22 @@ export function MessagingEntry({
           router.push('/messages' as Href);
         }}
       >
-        {t(role === 'parent' ? 'messaging.parentEntry' : 'messaging.childEntry')}
+        {t(
+          role === 'parent'
+            ? 'messaging.parentEntry'
+            : helperDraft
+              ? 'messaging.childEntry'
+              : 'peerMessaging.entry',
+        )}
       </MessageButton>
       <MessageText variant="caption" color="onSurfaceVariant">
-        {t(helperDraft ? 'messaging.helperDraft' : 'messaging.entryBody')}
+        {t(
+          helperDraft
+            ? 'messaging.helperDraft'
+            : role === 'child'
+              ? 'peerMessaging.entryBody'
+              : 'messaging.entryBody',
+        )}
       </MessageText>
     </View>
   );
