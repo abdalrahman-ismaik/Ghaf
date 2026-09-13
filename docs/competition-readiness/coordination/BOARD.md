@@ -3,6 +3,23 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 96 — Sex label copy adjustment
+
+Updated 2026-09-13T10:42:05.109792+00:00, HEAD2e35c04. User asks to remove
+“(required)” beside Sex. Lead owns ONLY src/i18n/resources.ts for the English label Sex and Arabic
+الجنس; existing sexRequired resource key, field validation, error text and data remain unchanged.
+This is an existing-spec copy change, no new product behavior. No helper needed for two strings.
+One short serialized focused check (maxWorkers1) and scoped format/lint; no browser/native job or
+Metro change. Other sessions' source/audio/status files remain untouched. Evidence and release
+will be appended here; no additional feature contract required.
+
+Revision96 COMPLETE: changed only the two label values to Sex / الجنس. Existing key and required
+validation unchanged. Seven focused profile tests, scoped lint/format and diff check PASSED;
+no new tests, full suite, browser or native checks (NOT RUN). Evidence at
+output/competition-readiness/sex-label-20260913/. Source grant RELEASED, helpers/jobs/browser0;
+existing Metro62701/8082 and other sessions' edits preserved. Exact user prompt:
+remove the "(required)" beside sex. Lead-only copy edit; no human exact-diff acceptance claimed.
+
 ## Revision 95 — Welcome logo focus integrated and released
 
 Updated 2026-09-13T10:40:38.401694+00:00; runtime829c9db on shared redesign/ui-experiments. Selected5A mark208dp
