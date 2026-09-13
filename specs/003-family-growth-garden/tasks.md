@@ -1,5 +1,9 @@
 # Tasks: Family Growth Garden
 
+## Masroofi extension
+
+Track the user-authorized simulated-card slice in [Feature 017 tasks](../017-masroofi-demo/tasks.md).
+
 ## Tamagui Botanical Redesign — 2026-09-11
 
 - [x] TB01 Record user-authorized presentation scope, design direction, ownership and preserved boundaries.

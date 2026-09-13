@@ -1,5 +1,21 @@
 # Team Ownership
 
+## Masroofi competition implementation — 2026-09-13
+
+User authorizes Feature 017 simulated reward/card implementation. Local coordinator is `/root`
+in `C:\Users\moham\Code\Ghaf`; prior publication checkpoint releases source scopes. This local
+reservation is authoritative for this bounded Windows session, not a restart of Linux A/B/C/D.
+Root reserves specs/017-masroofi-demo/**, this entry, additive 003 spec/plan/tasks references,
+docs/competition-readiness/DEMO_RUNBOOK.md, docs/product/PROTOTYPE_LIMITATIONS.md,
+docs/competition-readiness/workstreams/masroofi-20260913.md, src/state/usePrototypeStore.ts,
+src/services/index.ts, src/config/masroofi.ts, src/i18n/resources.ts,
+app/parent/family/{index,masroofi}.tsx, app/child/{index,task,masroofi}.tsx,
+tests/family/masroofi-workflow.test.ts and tests/family/masroofi-presentation.test.tsx.
+Domain helper reserves src/models/masroofi.ts, src/features/masroofi/service.ts and
+tests/family/masroofi-service.test.ts. UI helper reserves src/components/masroofi/** and
+src/i18n/masroofi.ts. Two helpers maximum, no descendants; root owns one serialized check/browser
+lane. Preserve the existing unrelated package-lock.json change. No push/deploy/real money.
+
 ## Repository publication — 2026-09-13
 
 Owner: root publication session. The user explicitly requested an updated README

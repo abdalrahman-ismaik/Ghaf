@@ -1,5 +1,12 @@
 # Feature Specification: Family Growth Garden
 
+## Masroofi competition extension — 2026-09-13
+
+The directly authorized [Feature 017](../017-masroofi-demo/spec.md) adds a separate synthetic
+task-money/card practice experience. Its fixed hidden amounts, age/Parent gate, private credit
+and purchase simulation do not change Family Reward promises or any Seed/growth/League authority.
+No real-money, issuer, custody or production-finance capability is authorized.
+
 ## Catalog execution CE1 — 2026-09-13
 
 The user selected full execution of the existing24 catalog tasks and personal Child landscapes

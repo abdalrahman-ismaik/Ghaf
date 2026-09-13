@@ -1,5 +1,10 @@
 # Implementation Plan: Family Growth Garden
 
+## Masroofi extension
+
+Implement the separate [Feature 017 plan](../017-masroofi-demo/plan.md) through the existing
+registry and guarded store, preserving every prior recognition and reset authority.
+
 ## Catalog execution CE1 plan — 2026-09-13
 
 Implement the accepted [CE1 amendment](../013-parent-task-workspace/contracts/catalog-execution.md)
