@@ -17,7 +17,7 @@ import type { DemoPrincipal } from '@/models/demoEntry';
 
 export default function WelcomeScreen() {
   const router = useRouter();
-  const { t } = useTranslation();
+  useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
