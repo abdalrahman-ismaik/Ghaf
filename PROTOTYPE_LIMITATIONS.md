@@ -11,10 +11,11 @@ is separate. Native SecureStore and namespaced web auth storage do not establish
 production Child-data protection. See `specs/006-real-parent-pilot/validation.md`
 for the exact local, hosted, email and physical-device evidence rather than
 assuming any feature is activated. The owner selected a dedicated Gmail SMTP
-sender without a domain purchase. External verification/recovery delivery remains
-blocked until the owner supplies its app credential, SMTP and templates are saved,
-and delivery is verified. Gmail may throttle or fail delivery; this is a small
-pilot option. Resend with an owned domain remains a later alternative.
+sender without a domain purchase. SMTP and bilingual confirmation/recovery
+templates are saved and their persisted configuration is verified. Actual external
+delivery and hosted account-flow checks remain NOT RUN, so pilot activation stays
+blocked. Gmail may throttle or fail delivery; this is a small pilot option. Resend
+with an owned domain remains a later alternative.
 
 ## Confirmed corrupt-data recovery — 2026-09-13
 

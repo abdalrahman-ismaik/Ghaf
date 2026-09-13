@@ -128,10 +128,11 @@ Do not treat the local configuration file as hosted configuration.
    images, user metadata or embedded app secrets. The one-hour copy must match the
    configured expiry. Editing the local files does not update hosted templates.
    [Supabase email templates](https://supabase.com/docs/guides/auth/auth-email-templates)
-   On this Free project, the Dashboard blocks template editing until custom SMTP
-   is configured. Default emails remain active and do not implement Ghaf's typed-code
-   journey. Do not invite participants before both custom templates are saved and
-   delivered successfully.
+   On this Free project, the Dashboard required custom SMTP before template editing.
+   SMTP is now saved. Both subjects and full template bodies were verified after
+   Dashboard reload, and both Arabic/English previews were checked; see
+   [the operator record](hosted-pilot.md). Do not invite participants before controlled
+   delivery and complete account-flow validation pass.
 6. After review and acceptance, build the pilot with `EXPO_PUBLIC_GHAF_AUTH_MODE=supabase`,
    the project URL and its publishable key from `.env.example`. Keep the default
    competition build in `demo` mode. Only public project configuration belongs in
@@ -176,8 +177,8 @@ server and run `npm run web -- --clear` from a shell without pilot overrides. Th
 cache-clearing requirement below also applies in this direction.
 
 This command is a development preview, not pilot activation. Hosted registration
-and recovery remain blocked by sender/template setup; physical Android and review
-gates also remain open.
+and recovery still require controlled delivery and account-flow validation;
+physical Android and review gates also remain open.
 
 ### Clear the app cache when switching mode or project
 
@@ -278,10 +279,11 @@ Back or physical-device behavior.
 Hosted Mumbai provisioning, schema/access metadata verification and a read-only
 public-API connection check are **PASSED**. The connection check returned Auth
 settings successfully and denied an anonymous approval-table read. Hosted email
-templates are **BLOCKED** pending the owner's dedicated Gmail account/app credential
-and saved custom SMTP configuration. Actual hosted delivery and
-registration/login/recovery are **NOT RUN**. The prepared Gmail form is unsaved;
-effective hosted SMTP remains off. Local email capture
+SMTP configuration is **PASSED** after reload: enabled Gmail SMTP on port 465,
+sender name `Ghaf — غاف` and a 60-second resend interval. Both bilingual templates
+and subjects passed independent readback against repository source, and Dashboard
+Rate Limits directly verified 30 emails/hour. Actual hosted delivery and registration/login/recovery are
+**NOT RUN**. Local email capture
 and SQL permission tests do not establish hosted account flows, Android acceptance
 or release readiness. The integration owner's validation record carries subsequent
 app and provider evidence.

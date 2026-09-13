@@ -30,23 +30,24 @@ public configuration, not an authentication credential.
 
 ## Provisioning and schema evidence
 
-| Check                                                  | Result                     | Evidence                                                                                                                                          |
-| ------------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Owner-authorized project provisioning                  | **PASSED**                 | Root configured the creation form; the owner clicked Create. The named Mumbai project reported Healthy.                                           |
-| Empty-project preflight                                | **PASSED**                 | Root's read-only SQL returned zero Auth users and no `public.pilot_access` table.                                                                 |
-| Approved migration application                         | **PASSED**                 | Root applied the exact repository file `supabase/migrations/20260913000100_pilot_access.sql` through the SQL Editor successfully.                 |
-| Post-application schema, policies, grants and triggers | **PASSED**                 | Root's metadata-only SQL verified the exact schema and authority boundaries detailed below.                                                       |
-| Post-application data counts                           | **PASSED**                 | `auth_users=0`, `pilot_rows=0`; the only public application table is `pilot_access`. No new data was created.                                     |
-| Hosted core authentication configuration               | **PASSED**                 | Root verified the saved email, password, OTP and session settings detailed below.                                                                 |
-| Hosted public Auth settings read                       | **PASSED**                 | Publishable-key GET `/auth/v1/settings` returned HTTP 200 with email enabled, anonymous disabled, email confirmation required and signup enabled. |
-| Anonymous approval API denial                          | **PASSED**                 | Anonymous GET `/rest/v1/pilot_access?select=user_id,status&limit=1` returned HTTP 401, code `42501`, permission denied.                           |
-| Hosted endpoint rate settings                          | **PASSED**                 | Root recorded the existing Dashboard verification, signup/signin and refresh limits without changing them.                                        |
-| Email resend interval                                  | **NOT RUN — not verified** | The unsaved draft shows 60 seconds; the persisted setting is not verified. Confirm at least 60 seconds after saving SMTP.                         |
-| Hosted bilingual email templates                       | **BLOCKED**                | The Free Dashboard requires custom SMTP before editing templates; the existing default templates remain in effect.                                |
-| Dedicated Gmail custom SMTP                            | **BLOCKED**                | Root prepared an unsaved form; sender address, username and app password are still blank. Effective hosted SMTP remains off.                      |
-| Actual external email delivery                         | **NOT RUN**                | No hosted authentication message has been sent or delivery verified. No paid upgrade or Send Email Hook was configured.                           |
-| Hosted app registration, login and recovery            | **NOT RUN**                | No hosted account-flow pass is inferred from local integration tests.                                                                             |
-| Pilot release activation                               | **BLOCKED**                | Required hosted email, native and activation evidence remains incomplete.                                                                         |
+| Check                                                  | Result                     | Evidence                                                                                                                                                 |
+| ------------------------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owner-authorized project provisioning                  | **PASSED**                 | Root configured the creation form; the owner clicked Create. The named Mumbai project reported Healthy.                                                  |
+| Empty-project preflight                                | **PASSED**                 | Root's read-only SQL returned zero Auth users and no `public.pilot_access` table.                                                                        |
+| Approved migration application                         | **PASSED**                 | Root applied the exact repository file `supabase/migrations/20260913000100_pilot_access.sql` through the SQL Editor successfully.                        |
+| Post-application schema, policies, grants and triggers | **PASSED**                 | Root's metadata-only SQL verified the exact schema and authority boundaries detailed below.                                                              |
+| Post-application data counts                           | **PASSED**                 | `auth_users=0`, `pilot_rows=0`; the only public application table is `pilot_access`. No new data was created.                                            |
+| Hosted core authentication configuration               | **PASSED**                 | Root verified the saved email, password, OTP and session settings detailed below.                                                                        |
+| Hosted public Auth settings read                       | **PASSED**                 | Publishable-key GET `/auth/v1/settings` returned HTTP 200 with email enabled, anonymous disabled, email confirmation required and signup enabled.        |
+| Anonymous approval API denial                          | **PASSED**                 | Anonymous GET `/rest/v1/pilot_access?select=user_id,status&limit=1` returned HTTP 401, code `42501`, permission denied.                                  |
+| Hosted endpoint rate settings                          | **PASSED**                 | Root recorded the existing Dashboard verification, signup/signin and refresh limits without changing them.                                               |
+| Email resend interval                                  | **PASSED**                 | Root reloaded the saved SMTP configuration and verified the persisted 60-second minimum interval.                                                        |
+| Hosted bilingual email templates                       | **PASSED — configuration** | Both subjects persisted; after Dashboard reload, full saved bodies matched repository source with normalized newlines. Arabic/English previews verified. |
+| Dedicated Gmail custom SMTP                            | **PASSED — configuration** | After the owner completed 2-Step Verification and app-password entry/save, Root reloaded SMTP and verified it enabled with the recorded settings.        |
+| SMTP hourly email limit                                | **PASSED**                 | Root directly verified 30 emails/hour in the Dashboard Rate Limits screenshot.                                                                           |
+| Actual external email delivery                         | **NOT RUN**                | No hosted authentication message has been sent or delivery verified. No paid upgrade or Send Email Hook was configured.                                  |
+| Hosted app registration, login and recovery            | **NOT RUN**                | No hosted account-flow pass is inferred from local integration tests.                                                                                    |
+| Pilot release activation                               | **BLOCKED**                | Required hosted email, native and activation evidence remains incomplete.                                                                                |
 
 Root's read-only metadata verification confirmed:
 
@@ -91,7 +92,9 @@ two-account hosted isolation check.
 | Signup/signin requests                                     | 30 per 5 minutes; unchanged                                        |
 | Refresh requests                                           | 150 per 5 minutes; unchanged                                       |
 | IP forwarding                                              | Off                                                                |
-| Custom SMTP                                                | Off                                                                |
+| Custom SMTP                                                | On; persisted value verified after reload                          |
+| SMTP minimum resend interval                               | 60 seconds; persisted value verified after reload                  |
+| SMTP hourly email limit                                    | 30 emails/hour; directly verified in Dashboard Rate Limits         |
 | Site URL                                                   | Default `http://localhost:3000`; final approved web origin pending |
 | Additional redirect URLs                                   | None                                                               |
 
@@ -100,38 +103,37 @@ app was adjusted to accept either length; both configurations use a one-hour cod
 expiry. This configuration evidence does not demonstrate a completed hosted
 verification or recovery flow.
 
-The email resend interval is **not verified** because its control is unavailable
-in the saved SMTP-off configuration. The unsaved form shows a 60-second default;
-after saving, verify it is at least 60 seconds and
-replace the default Site URL with the approved pilot web origin.
+The saved email resend interval is verified at 60 seconds. The final approved pilot
+web origin remains pending; the Site URL still needs its separate configuration.
 
-The Free Dashboard displayed **“Set up custom SMTP to edit templates.”** Until
-custom SMTP is configured, Supabase's default email templates remain in effect;
-the repository's bilingual code templates have **not** been installed. The menu
-also offered a paid Pro upgrade and a Send Email Hook, neither of which was
-configured. The repository templates remain **NOT INSTALLED**. Setup now awaits
-the owner's dedicated Gmail account and app credential, followed by saved SMTP
-settings and templates. No real hosted delivery, login/recovery or public activation
-pass is claimed.
+The Free Dashboard initially required custom SMTP before editing email templates.
+After SMTP was saved, Root saved the repository's confirmation and recovery bodies
+and their matching bilingual subjects through the Dashboard. After reload, both
+subjects persisted and the full saved bodies matched repository source with
+newlines normalized: confirmation 1,983 characters, recovery 2,075 characters, each
+with exactly one `{{ .Token }}` placeholder. Both Dashboard previews showed
+Arabic-first and English content. No paid Pro upgrade or Send Email Hook was
+configured. These configuration checks do not establish hosted delivery,
+login/recovery or public activation.
 
-## Approved Gmail setup and unsaved form
+## Saved Gmail SMTP configuration
 
-Root prepared the following Dashboard form and **did not click Save**. These are
-draft inputs, not verified effective configuration:
+The owner completed 2-Step Verification, entered the app password directly into
+Supabase and saved the SMTP settings. Root reloaded the page and observed these
+persisted values with Save disabled, confirming no outstanding form changes:
 
-| Draft field             | Observed draft value                                                      |
-| ----------------------- | ------------------------------------------------------------------------- |
-| Custom SMTP toggle      | On in the unsaved form; effective configuration remains off               |
-| Sender name             | `Ghaf — غاف`                                                              |
-| SMTP host               | `smtp.gmail.com`                                                          |
-| SMTP port               | `465` default; Gmail uses implicit TLS on this port                       |
-| Minimum interval        | `60` seconds default; verify the persisted value after saving             |
-| Sender email / username | Blank; both must use the owner's full dedicated Gmail address             |
-| Password                | Blank; owner must enter a Google app password directly into Supabase      |
-| Email rate after saving | Dashboard indicates 30 emails/hour; retain and verify after configuration |
+| Field                   | Recorded value                                                           |
+| ----------------------- | ------------------------------------------------------------------------ |
+| Custom SMTP             | On                                                                       |
+| Sender name             | `Ghaf — غاف`                                                             |
+| SMTP host               | `smtp.gmail.com`                                                         |
+| SMTP port               | `465`; Gmail uses implicit TLS on this port                              |
+| Minimum interval        | `60` seconds                                                             |
+| Sender email / username | Owner's dedicated Gmail address; omitted from this record                |
+| Password                | Owner entered an app password directly; no value retained in this record |
+| Hourly email limit      | 30 emails/hour; directly verified in Dashboard Rate Limits               |
 
-The owner must create the dedicated Gmail account, enable 2-Step Verification and
-generate an app password. The Google account password must not be used for SMTP.
+The Google account password must not be used for SMTP.
 Never put credentials in chat or the repository; keep real sender/recipient
 addresses out of the committed repository.
 Some Google account configurations do not expose app passwords; setup must resolve
@@ -153,9 +155,7 @@ an email-provider copy, not cloud family or Child records. Deletion in Supabase
 does not establish deletion of these copies or complete provider erasure.
 [Gmail SMTP sent copies](https://support.google.com/mail/answer/78892)
 
-After the owner supplies the credential directly to the form, save and verify
-SMTP settings, install the unchanged bilingual confirmation/recovery templates,
-and validate controlled adult delivery and complete account flows. No app-side
+Next validate controlled adult delivery and complete account flows. No app-side
 Resend integration is required. Physical Android acceptance also remains **NOT RUN**;
 the latest `adb devices` check still listed no connected devices.
 

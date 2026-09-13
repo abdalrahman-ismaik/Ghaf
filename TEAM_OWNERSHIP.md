@@ -29,8 +29,9 @@ work, or commit shared files. Root serializes formatting, integration and scoped
 commits. Hosted activation remains a separate reviewed gate; provisioning and
 SMTP sender readiness are recorded truthfully.
 
-**Status**: Implementation complete; Gmail SMTP setup awaits owner credentials.
-Hosted activation remains blocked. Exact evidence is recorded in
+**Status**: Implementation complete; Gmail SMTP and bilingual email templates are
+configured and verified. Controlled delivery, hosted account flows and physical
+Android acceptance remain outstanding; hosted activation remains blocked. Exact evidence is recorded in
 `specs/006-real-parent-pilot/validation.md`.
 
 
