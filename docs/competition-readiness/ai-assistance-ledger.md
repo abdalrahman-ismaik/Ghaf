@@ -7,7 +7,12 @@ The user selected saved proposals 8–12 for implementation and then instructed:
 plan and task boundaries from those records. Three bounded workers were assigned
 study domain/storage, the messaging extension, and sourced family practices; root
 owns integration, UI for study/goals and validation. Generated implementation and
-tests will be recorded in Feature 017 evidence. Named human Arabic review, student
+tests are recorded in [Feature 017 evidence](../../specs/017-study-family-support/validation.md).
+The study worker also found and helped close a family-binding flaw caused by fixed
+prepared timestamps; root integrated an opaque local study-instance identifier and
+verified orphan cleanup. Browser validation covered real synthetic UI interactions,
+while isolated SQL exercised actual authorization functions with synthetic Auth fixtures.
+Named human Arabic review, student
 teach-back and physical-device acceptance are not inferred from automated work.
 
 ## 2026-09-13 Main merge assistance

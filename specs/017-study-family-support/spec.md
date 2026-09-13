@@ -51,7 +51,9 @@ This implementation adds no paid service, deployment, live AI activation or call
 - FR006: Validate bounded persisted records before use. Storage read/write/clear
   failure must be visible and must not claim a successful saved mutation. Reset,
   verified family replacement and pilot teardown clear this feature's own records;
-  a different family cannot inherit them. Malformed storage is not silently overwritten.
+  a different family cannot inherit them. Malformed records bound to the current
+  family are not silently overwritten. First authorized study entry verifies removal
+  of unbound orphan records before assigning and verifying a new family-instance token.
 
 ## US2: Joint academic goals and private prizes
 

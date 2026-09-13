@@ -1,5 +1,26 @@
 # Prototype Limitations
 
+## Feature 017 study and family support — 2026-09-13
+
+Study records are synthetic, private and device-local in ordinary family mode;
+quick demo and the adult pilot sample use isolated memory. They do not sync to
+another device or connect to schools. First study entry binds storage to an opaque
+family-instance identifier; this is local isolation metadata, not authentication.
+Reset clears the study repository. Its dates and suggested durations do not trigger
+notifications, calendar events, monitoring or automatic proof of learning.
+
+The equal-groups example and own-material study guide are finite prepared content,
+not a live tutor or certified curriculum. Self-reported marks require Parent review.
+Optional academic prizes are private nonessential promises fulfilled outside the app;
+they never add Seeds, existing Family Reward progress, badges, canopy or League score.
+Sourced activities do not establish a measured Ghaf learning or wellbeing benefit.
+
+Feature 017 adds Parent-approved sibling messaging to Feature 016's separate service.
+Parent permission management grants no access to peer conversation content. The local
+PostgreSQL tests do not verify hosted Auth, PostgREST, real two-device delivery or
+native session handling. Messaging is unconfigured in the checked default build.
+The adult pilot's project and credentials are not messaging activation evidence.
+
 ## Feature 006 adult account pilot — 2026-09-13
 
 Feature 006 adds a separately configured Supabase adult login and server-owned
