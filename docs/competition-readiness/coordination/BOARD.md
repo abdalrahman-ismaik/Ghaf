@@ -3,6 +3,35 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 88 — user-selected Parent account chooser
+
+Updated 2026-09-13T09:22:03.791275+00:00; lead M016-root continues on `d2694e6`.
+Direct user correction: Parent “Welcome back” must show local/preconfigured accounts and Create new
+family; the demo Parent must enter without email, password or code. This changes only local
+prototype entry, never Feature016 real authentication. Ordinary preview 62701/8082 is preserved.
+
+Lead reserves `app/access/parent/sign-in.tsx`, `src/i18n/resources.ts`, new
+`src/components/access/ParentAccountChooser.tsx`, new `tests/access/parent-account-chooser.test.tsx`,
+new `tests/access/local-parent-entry.test.ts`, `tests/presentation/r001-onboarding-flow.test.ts`,
+`src/state/usePrototypeStore.ts` for one local entry action, and a small access helper/controller
+seam after read-only tracing. Contract amendment: new015 `contracts/parent-account-chooser.md`
+and additive015 spec/plan/tasks; report `docs/competition-readiness/workstreams/parent-account-chooser.md`.
+No narration, original Welcome, Child picker or real messaging writes are allocated.
+
+One read-only helper `messaging_seams` traces existing authoritative local entry and temporary Child
+handoff; no writes, jobs or descendants. Lead owns UI/contract/integration; one serialized focused
+check lane followed by isolated browser reuse of8082, no second Metro or native build.
+Acceptance: no credential input on this Parent screen; one-tap seeded Parent or existing local
+family; existing data and active-role restrictions preserved; Create family and Back remain usable;
+AR/EN and compact layout checks; no backend identity or task/progression side effect.
+C's latest narration release/repair is acknowledged and preserved; prior failures stay historical.
+
+Revision88 exact helper handoff after the contract commit: `messaging_seams` exclusively owns
+new `src/features/access/localParentEntry.ts`, the `enterLocalParentAccount` integration only in
+`src/state/usePrototypeStore.ts`, and `tests/access/local-parent-entry.test.ts`. Lead does not write
+these files while helper runs. Existing controller/factory public methods suffice; no controller
+edit granted. Helper runs no tests/build/browser; lead uses the serialized integrated check lane.
+
 ## Revision 87 — M016 source handoff; allocations released
 
 Updated 2026-09-13T09:12:36.251484+00:00. Contract `45d6796`; integrated messaging runtime `fd6b72c`

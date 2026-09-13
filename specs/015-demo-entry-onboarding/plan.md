@@ -174,3 +174,9 @@ Implement [the six-page restoration contract](contracts/six-page-restoration.md)
 Reuse existing FirstRunOnboarding and extract the original Welcome JSX/styles into a callback-only
 shared presentation. Keep demo authority behind those original actions; no store/provider change.
 See contracts/exact-original-restoration.md; original narration is a separate user decision.
+
+## September 13 — Parent account chooser
+
+Follow contracts/parent-account-chooser.md. Reuse the existing canonical family factory and
+transactional synthetic controllers; a small localParentEntry helper and one store action feed
+the existing route. No mode, registry, package, real Auth or task authority changes.

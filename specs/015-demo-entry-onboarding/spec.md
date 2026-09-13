@@ -235,3 +235,9 @@ User-selected six-page restoration supersedes the earlier three-page presentatio
 
 The user superseded the reference-led visual redesign with [exact original restoration](contracts/exact-original-restoration.md).
 Reuse the existing six-page onboarding and two-choice Welcome appearance verbatim.
+
+## September 13 — local Parent account selection
+
+The latest user selects credential-free local Parent account selection on the ordinary Welcome-back
+route. See [the bounded amendment](contracts/parent-account-chooser.md) for superseded ordinary
+credential requirements, retained authority/data rules and separate real-messaging authentication.
