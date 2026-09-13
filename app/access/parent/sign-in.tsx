@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next';
 import {
   AccessHeader,
   AccessScreen,
-  AccessTextField,
   ParentAccessPortrait,
   StatusBanner,
 } from '@/components/access';
 import { Button, Text } from '@/components/primitives';
+import { ParentAccountChooser } from '@/components/access/ParentAccountChooser';
 import { colors, layout, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -30,7 +30,8 @@ export default function ParentSignInScreen() {
   const requestExistingParentVerification = usePrototypeStore(
     (state) => state.requestExistingParentVerification,
   );
-  const [identifier, setIdentifier] = useState('');
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const enterLocalParentAccount = usePrototypeStore((state) => state.enterLocalParentAccount);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const networkAvailable = preview !== 'offline';
@@ -60,28 +61,29 @@ export default function ParentSignInScreen() {
     return () => subscription.remove();
   }, [goBack]);
 
-  const requestCode = async (candidate: string) => {
+  const openAccount = () => {
     if (busy) return;
     setBusy(true);
     setError(null);
-    await Promise.resolve();
-    const result = requestExistingParentVerification({
-      identifier: candidate,
-      networkAvailable,
-    });
+    const result = localFamilyProfileRepair
+      ? requestExistingParentVerification({
+          identifier: localFamilyProfileRepair.parent.normalizedIdentifier,
+          networkAvailable,
+        })
+      : enterLocalParentAccount();
     if (!result.ok) {
-      setError(
-        result.error.code === 'INVALID_INPUT'
-          ? t('access.signIn.invalidIdentifier')
-          : result.error.code === 'NOT_FOUND'
-            ? t('access.signIn.accountNotFound')
-            : t('access.states.interrupted'),
-      );
+      setError(t('access.signIn.entryError'));
       setBusy(false);
       return;
     }
-    router.replace('/access/parent/verification');
+    router.replace(localFamilyProfileRepair ? '/access/parent/verification' : '/parent');
   };
+
+  const familyName =
+    localFamily.record?.familyName ??
+    localFamilyProfileRepair?.familyName ??
+    t('access.signIn.demoFamily');
+  const accountUnavailable = localFamily.status !== 'ready' && !localFamilyProfileRepair;
 
   if (parentOnboarding.status === 'code_sent' || parentOnboarding.status === 'verifying') {
     return <Redirect href="/access/parent/verification" />;
@@ -108,7 +110,6 @@ export default function ParentSignInScreen() {
           onBack={goBack}
         />
       }
-      keyboardAware
       testID="parent-sign-in-screen"
     >
       <ParentAccessPortrait />
@@ -157,43 +158,43 @@ export default function ParentSignInScreen() {
       ) : null}
 
       <View style={styles.signInPanel}>
-        <View style={styles.credentials}>
-          <AccessTextField
-            accessibilityHint={t('access.signIn.identifierExample')}
-            autoCapitalize="none"
-            autoComplete="username"
-            autoCorrect={false}
-            direction="auto"
-            editable={!busy}
-            errorText={error ?? undefined}
-            helperText={t('access.signIn.identifierExample')}
-            label={t('access.signIn.identifierLabel')}
-            language={locale}
-            onChangeText={(value) => {
-              setIdentifier(value);
-              setError(null);
-            }}
-            onSubmitEditing={() => void requestCode(identifier)}
-            placeholder={t('access.signIn.identifierPlaceholder')}
-            returnKeyType="go"
-            testID="parent-identifier-input"
-            textContentType="username"
-            value={identifier}
-          />
-
-          <Button
+        <ParentAccountChooser
+          actionLabel={t('access.signIn.continue')}
+          busy={busy}
+          busyLabel={t('access.signIn.loading')}
+          detail={t(
+            localFamilyProfileRepair
+              ? 'access.signIn.repairAccount'
+              : localFamily.record
+                ? 'access.signIn.savedAccount'
+                : 'access.signIn.demoAccount',
+          )}
+          direction={direction}
+          disabled={accountUnavailable}
+          familyName={familyName}
+          language={locale}
+          onSelect={openAccount}
+        />
+        {!localFamilyProfileRepair ? (
+          <Text
+            align="center"
             brand
-            busy={busy}
-            busyLabel={t('access.signIn.loading')}
+            color="onSurfaceVariant"
             direction={direction}
             language={locale}
-            onPress={() => void requestCode(identifier)}
-            size="regular"
-            testID="request-parent-code-button"
+            variant="caption"
           >
-            {t('access.signIn.continue')}
-          </Button>
-        </View>
+            {t('access.signIn.localNotice')}
+          </Text>
+        ) : null}
+        {error || accountUnavailable ? (
+          <StatusBanner
+            direction={direction}
+            language={locale}
+            message={error ?? t('access.signIn.entryError')}
+            tone="error"
+          />
+        ) : null}
 
         <View style={styles.createFamilyGroup}>
           <Button
@@ -227,7 +228,6 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: spacing.md,
   },
-  credentials: { gap: spacing.sm },
   createFamilyGroup: { paddingTop: spacing.xs },
   createFamilyButton: {
     borderColor: colors.ghafEmerald,

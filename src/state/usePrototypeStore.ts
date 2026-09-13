@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { entryMode } from '../config/demoEntry';
 import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
+import { createLocalParentEntry } from '../features/access/localParentEntry';
 import type { DemoEntryRequest, DemoEntryHandoff } from '../models/demoEntry';
 
 import {
@@ -289,6 +290,7 @@ const R003_LOCAL_FAMILY_TIME = '2026-09-06T14:00:00.000Z';
 let demoEntryAdapter: DemoEntryAdapter | null = null;
 let demoEntryInFlight = false;
 let demoEntryAborted = false;
+let localParentEntry: ReturnType<typeof createLocalParentEntry> | null = null;
 function feature004Now(): string {
   return new Date().toISOString();
 }
@@ -578,6 +580,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly completeParentOnboarding: () => ServiceResult<ParentOnboardingCompletionReceipt>;
   readonly authorizeParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
   readonly enterParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
+  readonly enterLocalParentAccount: () => ServiceResult<ParentOnboardingHandoff>;
   readonly selectChildAccessProfile: (childId: SyntheticChildId) => ServiceResult<ChildAccessView>;
   readonly verifyChildCredential: (value: unknown) => ServiceResult<ChildAccessView>;
   readonly requestChildPairing: () => ServiceResult<ChildAccessView>;
@@ -1975,6 +1978,51 @@ export const usePrototypeStore = create<PrototypeStoreState>((set, get) => ({
       return failure('INVALID_TRANSITION', 'An active Parent experience is required');
     }
     return parentOnboardingController.authorizeParentExperience(R001_ONBOARDING_TIME);
+  },
+
+  enterLocalParentAccount: () => {
+    localParentEntry ??= createLocalParentEntry({
+      family: serviceRegistry.localFamily,
+      parent: parentOnboardingController,
+      child: childAccessController,
+      now: () => R001_ONBOARDING_TIME,
+      readContext: () => {
+        const state = get();
+        return {
+          mode: entryMode,
+          activeExperience: state.activeExperience,
+          activeChildId: state.activeChildId,
+          resetFailed: state.demoResetFailed,
+          familyReady: state.localFamily.status === 'ready',
+          family: state.localFamily.record,
+          incompleteSetup:
+            state.pendingFamilyCreation !== null || state.localFamilyProfileRepair !== null,
+          temporaryChildId: state.temporaryParentAccess?.returnChildId ?? null,
+        };
+      },
+      runAtomically: (operation) => {
+        if (!serviceRegistry.access.withDemoEntryTransaction)
+          return failure('INVALID_RESPONSE', 'Local Parent authority transaction is unavailable');
+        return serviceRegistry.access.withDemoEntryTransaction(() =>
+          parentOnboardingController.withDemoEntryTransaction(() =>
+            childAccessController.withDemoEntryTransaction(operation),
+          ),
+        );
+      },
+    });
+    const result = localParentEntry();
+    if (!result.ok) return result;
+    const { family, parent, child, handoff } = result.data;
+    set({
+      activeExperience: 'parent',
+      role: 'parent',
+      parentOnboarding: parent,
+      childAccess: child,
+      localFamily: localFamilyView(family),
+      rememberParentOnThisDevice: false,
+      returningUserWelcome: null,
+    });
+    return success(handoff);
   },
 
   enterParentExperience: () => {

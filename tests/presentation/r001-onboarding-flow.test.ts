@@ -122,11 +122,16 @@ describe('approved R001 Parent onboarding integration', () => {
     expect(en.get('verification.invalidCode')).not.toContain('424242');
     const parentAuthCopy = [...ar, ...en]
       .filter(([key]) => /^(?:signIn|signUp|verification)\./u.test(key))
+      .filter(([key]) => !['signIn.demoAccount', 'signIn.localNotice'].includes(key))
       .map(([, value]) => value)
       .join(' ');
     expect(parentAuthCopy).not.toMatch(
       /demo|synthetic|simulation|simulated|not real|no real|تجريب|اصطناع|محاكاة|غير حقيقي|حقيقيًا/iu,
     );
+    expect(ar.get('signIn.demoAccount')).toContain('تجريبي');
+    expect(en.get('signIn.demoAccount')).toContain('demo');
+    expect(ar.get('signIn.localNotice')).toContain('دون بريد');
+    expect(en.get('signIn.localNotice')).toContain('No email, password or code');
     expect(ar.get('welcome.childUnavailable')).toContain('الطفل');
     expect(en.get('welcome.childUnavailable')).toMatch(/Child access/i);
     expect(ar.get('success.origin')).toContain('الجهاز');
@@ -156,7 +161,8 @@ describe('approved R001 Parent onboarding integration', () => {
     const routeSource = (route: (typeof R001_ACCESS_ROUTES)[number]) =>
       readFileSync(resolve(import.meta.dirname, `../../app${route}.tsx`), 'utf8');
 
-    expect(routeSource('/access/parent/sign-in')).toContain('requestExistingParentVerification');
+    expect(routeSource('/access/parent/sign-in')).toContain('enterLocalParentAccount');
+    expect(routeSource('/access/parent/sign-in')).not.toContain('<AccessTextField');
 
     const signUp = readFileSync(
       new URL('../../app/access/parent/sign-up.tsx', import.meta.url),
@@ -232,11 +238,11 @@ describe('approved R001 Parent onboarding integration', () => {
     const signIn = routeSource('/access/parent/sign-in');
     expect(signIn).not.toContain('disabled={identifier.trim().length === 0}');
     expect(signIn).toContain('<View style={styles.signInPanel}>');
-    expect(signIn).toContain('<View style={styles.credentials}>');
+    expect(signIn).toContain('<ParentAccountChooser');
     expect(signIn).toContain('<View style={styles.createFamilyGroup}>');
     expect(signIn).toContain('viewport: { paddingTop: spacing.xs }');
     expect(signIn).toContain("intro: { width: '100%', alignItems: 'center', gap: spacing.xxs }");
-    expect(signIn).toContain('credentials: { gap: spacing.sm }');
+    expect(signIn).not.toContain('parent-identifier-input');
     expect(signIn).toContain('createFamilyGroup: { paddingTop: spacing.xs }');
     expect(signIn).not.toContain('styles.sectionDivider');
 
@@ -252,14 +258,14 @@ describe('approved R001 Parent onboarding integration', () => {
     const intro = signIn.slice(introStart, introEnd);
     expect(intro.match(/align="center"/gu)).toHaveLength(2);
 
-    const primaryActionIndex = signIn.indexOf('testID="request-parent-code-button"');
+    const primaryActionIndex = signIn.indexOf('<ParentAccountChooser');
     const createFamilyActionIndex = signIn.indexOf('testID="create-family-button"');
     expect(primaryActionIndex).toBeLessThan(createFamilyActionIndex);
     expect(signIn).not.toContain('<LabeledDivider');
     expect(signIn).not.toContain('simulated-biometric-button');
     expect(signIn).not.toContain('<PrototypePill');
 
-    for (const actionIndex of [primaryActionIndex, createFamilyActionIndex]) {
+    for (const actionIndex of [createFamilyActionIndex]) {
       const actionStart = signIn.lastIndexOf('<Button', actionIndex);
       const actionEnd = signIn.indexOf('</Button>', actionIndex);
       const action = signIn.slice(actionStart, actionEnd);
