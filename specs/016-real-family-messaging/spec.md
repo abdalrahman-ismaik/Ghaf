@@ -134,3 +134,11 @@ SC004: Network loss/timeout and sign-out during send never become fake success o
 SC005: AR/EN320/390 browser states are usable; physical Android keyboard/Back/TalkBack/font scaling
 have their own exact build/device receipts, or remain BLOCKED/NOT RUN.
 SC006: Existing task/help/approval/growth regression remains intact. Human messages never enter AI.
+
+# Feature 017 extension authority — 2026-09-13
+
+The owner subsequently selected Child–Child messaging from the saved proposals.
+[Feature 017](../017-study-family-support/spec.md) supersedes this specification's
+peer-chat exclusion only for explicit Parent-approved, same-household, participant-only
+text threads. All existing Parent–Child, session, privacy and service requirements
+remain. This addendum does not claim hosted activation or device acceptance.

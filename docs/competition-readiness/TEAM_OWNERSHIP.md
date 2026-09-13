@@ -1,5 +1,32 @@
 # Team Ownership
 
+## 2026-09-13 Study and family support — Feature 017
+
+User selected proposals 8–12 and confirmed using their saved proposals. Root starts
+from clean `c07bad9` on `feature/017-study-family-support`. This Windows worktree is
+the coordination location; prior merge boundaries are released. At most four active
+agents, no descendants, and one serialized heavy check/database/browser lane.
+
+- `/root`: Feature017 specification/plan/tasks/research/evidence and governing addenda;
+  `src/state/usePrototypeStore.ts`, `src/services/index.ts`, i18n resource aggregation,
+  `src/components/study/`, study routes/resources, Home/Today/Family entry points,
+  integration tests, final checks and local cohesive commits.
+- `/root/study_core`: `src/models/study.ts`, `src/features/study/`,
+  `src/services/local/studyRepository.ts`, `tests/study/domain.test.ts` and
+  `tests/study/repository.test.ts` only.
+- `/root/messaging_extension`: `src/features/familyMessaging/`,
+  `src/components/familyMessaging/`, `app/messages/`, `tests/messaging/`,
+  `workers/ghaf-family-messaging/`, and `src/i18n/peerMessagingResources.ts` only.
+- `/root/family_practices`: `src/features/familyPractices/`,
+  `src/components/familyPractices/`, `app/parent/practices.tsx`,
+  `app/child/practices.tsx`, `src/i18n/familyPracticeResources.ts`,
+  `tests/study/practices.test.tsx` and Feature017 `practice-research.md` only.
+
+Read-only explorers `study_map` and `messaging_map` have released their maps. Writers
+are not alone; preserve others' edits and do not stage, commit or run heavy checks.
+Root integrates every shared boundary. No provider activation or deployment is
+included; real-message delivery readiness is documented separately from source.
+
 ## 2026-09-13 Main merge conflict resolution
 
 The user authorizes pushing all work, merging and resolving conflicts. `/root`

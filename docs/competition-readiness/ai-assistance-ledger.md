@@ -1,5 +1,15 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-13 Study and family support
+
+The user selected saved proposals 8–12 for implementation and then instructed:
+"Proceed from the saved proposals". Codex prepared Feature 017's specification,
+plan and task boundaries from those records. Three bounded workers were assigned
+study domain/storage, the messaging extension, and sourced family practices; root
+owns integration, UI for study/goals and validation. Generated implementation and
+tests will be recorded in Feature 017 evidence. Named human Arabic review, student
+teach-back and physical-device acceptance are not inferred from automated work.
+
 ## 2026-09-13 Main merge assistance
 
 User request: "push everything and merge, solve any conflict". Codex and three
