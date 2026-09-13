@@ -114,6 +114,27 @@ prerequisites. Do not treat the local configuration file as hosted configuration
    competition build in `demo` mode. Only public project configuration belongs in
    the Expo bundle. Never use a service-role or secret key as the publishable key.
 
+### Clear the app cache when switching mode or project
+
+Expo embeds public environment values in the app bundle. Whenever the authentication
+mode, Supabase URL or publishable key changes, set the intended environment values
+and clear the Metro cache for the next development session or export:
+
+```powershell
+npx expo start --clear
+npx expo export --platform web --clear
+```
+
+Use `--clear` for Android exports as well. Changing environment files does not
+reconfigure an existing exported artifact. During this implementation, a nominal
+demo export without a cleared cache retained the previous pilot values. Preview
+the newly generated artifact and verify its effective authentication mode and
+project before handoff. The default demo must open the deterministic experience
+without making Supabase authentication calls; a successful export alone does not
+verify that boundary.
+
+### Apply reviewed hosted migrations
+
 Optional reviewed CLI migration workflow, after selecting the correct new project:
 
 ```powershell
@@ -176,6 +197,13 @@ Initial full startup failed because the optional Studio and postgres-meta images
 reported `exec format error`. The targeted `start --exclude studio,postgres-meta`
 command passed; Auth, API, PostgreSQL and the local mailbox were available. No
 global images, existing other-project volumes or hosted data were removed.
+
+Final local verification also passed the Supabase account integration suite after
+the recovery-session fixes, all **1,866 regression tests**, typecheck, lint and
+format checks. The pilot Android Hermes JavaScript export **PASSED**. Physical
+Android acceptance remains **NOT RUN**: `adb devices` listed no connected device.
+An exported JavaScript bundle does not establish native session-storage, keyboard,
+Back or physical-device behavior.
 
 Hosted project provisioning is **NOT RUN** and external email delivery is
 **BLOCKED** pending owner organization/domain configuration. Local email capture
