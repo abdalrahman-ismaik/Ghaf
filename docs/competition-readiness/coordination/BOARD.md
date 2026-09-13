@@ -3,6 +3,33 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 97 — explicit assignment of QA Slice2 existing-scope repairs
+
+Updated 2026-09-13T13:00:52.284953+00:00, HEAD7fcb8b6, shared directory.
+A integration lead assigns ONLY Slice2 QAF-002/003/004/009 from the independent proposal. The packet
+itself remains a proposal, not the grant. Existing P0 accessibility/RTL/readability requirements
+and the user-selected independent Slice2 sequence govern these repairs. No Garden edits granted:
+Slice1 awaits shared-versus-personal authority decision; later Slice3 must receive the same Garden
+file only after Slice1 release. No product/data/task/Seed/access behavior change is authorized here.
+
+Exact helper grant (one messaging_seams, no descendants): src/components/r002a/child/ChildTaskPlanCard.tsx,
+src/components/access/SuccessSheet.tsx, src/components/r002a/parent/ParentSupportRequestSheet.tsx,
+new tests/presentation/slice-two-accessibility.test.tsx. Helper owns native/web semantics and retry
+checked state with focused regressions; no tests/browser/jobs/commits or other source writes.
+Lead owns src/components/onboarding/FirstRunOnboarding.tsx HEADER/STYLE ONLY and app/child/settings.tsx
+permission-row caller ONLY; shared brand/row/primitives untouched unless separately granted.
+Lead owns additive015 contracts/slice-two-accessibility.md/tasks.md, this board and new workstream
+slice-two-accessibility.md. Existing source assertions may be regranted exactly if obsolete.
+
+Preserve C's released dirty narration edits. Snapshot its full pre-edit file/diff in
+output/competition-readiness/slice2-accessibility-20260913/ and stage only this slice's onboarding
+hunk. C/B/D status files and audio assets remain outside source commit. Existing Metro62701/8082
+preserved; lead serialized check slot maxWorkers1 then sole isolated browser. No new server/native
+build/provider/packages/flags. Native TalkBack/font scale/Back/focus and human review remain NOT RUN.
+Acceptance: complete web step/success text once, retry checked false→true→false with same send,
+all6AR/EN header controls fit320/390 with48px targets, noninteractive permission text ≥4.5:1;
+ordinary SuccessSheet consumers and task +12/no-loss/isolation remain intact. DIA-01 is diagnostic.
+
 ## Revision 96 — Sex label copy adjustment
 
 Updated 2026-09-13T10:42:05.109792+00:00, HEAD2e35c04. User asks to remove
