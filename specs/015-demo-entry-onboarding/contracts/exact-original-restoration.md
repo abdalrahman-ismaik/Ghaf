@@ -26,3 +26,15 @@ the existing source; extraction has no layout/copy changes. Parent dashboard9afd
 Validate original JSX/style equality, six steps, two main actions, both Child identities, access
 failure/Back/handoff, exact locale text, browser render, then one integrated check batch. Student
 and Android evidence remain separate; no push, release or public rights inference.
+
+## September 13 — explicitly selected logo-focused Welcome
+
+User: “I want you to remove the photo from the page that contains: Growing good habits together
+and focus more on the logo and make it bigger”. This supersedes exact visual restoration only for
+that Welcome composition. Remove its welcome-ghaf-habitat photo element and photo-only styling;
+promote the existing selected5A Ghaf mark from76 to208dp, grouping it with the live wordmark.
+Allow natural scrollable height instead of the old500dp minimum. Preserve botanical background,
+original bilingual slogan/body, language action, Parent/Child choices, busy/error behavior and callbacks.
+No asset replacement, new art, new feature, altered narration, access authority or other screen change.
+One shared OriginalWelcomeScreen implementation serves ordinary and demo modes. Verify regular/
+compact AR/EN render, complete controls, no photo and enlarged brand; native acceptance stays separate.

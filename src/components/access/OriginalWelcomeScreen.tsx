@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import { AccessScreen, PrototypePill } from '@/components/access';
 import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
-import { LocalIllustration } from '@/components/illustrations';
 import { Button, Text } from '@/components/primitives';
-import { colors, layout, r001Radii, spacing } from '@/design/tokens';
+import { layout, r001Radii, spacing } from '@/design/tokens';
 import type { LocaleCode, TextDirection } from '@/models/familyGrowth';
 
 export interface OriginalWelcomeScreenProps {
@@ -62,31 +61,24 @@ export function OriginalWelcomeScreen({
       testID="welcome-screen"
     >
       <View style={styles.hero}>
-        <GhafRasterLogo
-          accessibilityLabel={t('common.brand')}
-          size={76}
-          testID="welcome-raster-logo"
-        />
-        <Text
-          align="center"
-          brand
-          color="ghafEmerald"
-          direction="rtl"
-          language="ar"
-          testID="welcome-wordmark"
-          variant="wordmark"
-        >
-          {t('common.brand')}
-        </Text>
-        <LocalIllustration
-          assetId="welcome-ghaf-habitat"
-          decorative
-          direction={direction}
-          language={locale}
-          priority="high"
-          style={styles.heroImage}
-          testID="welcome-natural-hero"
-        />
+        <View style={styles.brand}>
+          <GhafRasterLogo
+            accessibilityLabel={t('common.brand')}
+            size={208}
+            testID="welcome-raster-logo"
+          />
+          <Text
+            align="center"
+            brand
+            color="ghafEmerald"
+            direction="rtl"
+            language="ar"
+            testID="welcome-wordmark"
+            variant="wordmark"
+          >
+            {t('common.brand')}
+          </Text>
+        </View>
         <Text
           align="center"
           brand
@@ -192,7 +184,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.lg,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'space-between',
     gap: spacing.xl,
   },
@@ -201,15 +193,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: spacing.lg,
-    minHeight: 500,
-    paddingTop: spacing.xl,
+    paddingVertical: spacing.md,
   },
-  heroImage: {
-    width: '100%',
-    aspectRatio: 3 / 2,
-    borderRadius: r001Radii.xl,
-    borderCurve: 'continuous',
-    backgroundColor: colors.surfaceContainerLow,
+  brand: {
+    alignItems: 'center',
+    gap: spacing.xxs,
   },
   title: { maxWidth: 340 },
   body: { maxWidth: 340 },

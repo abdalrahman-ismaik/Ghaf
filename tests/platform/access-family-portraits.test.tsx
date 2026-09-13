@@ -73,13 +73,14 @@ describe('Feature 009 access family portraits', () => {
     expect(jpegHasComment(readFileSync(childFamilyPath))).toBe(false);
   });
 
-  it('uses exact responsive 3:2 frames on Welcome and both access components', () => {
+  it('uses a logo-focused Welcome and retains responsive Parent and Child portraits', () => {
     const welcome = source('src/components/access/OriginalWelcomeScreen.tsx');
     const parent = source('src/components/access/ParentAccessPortrait.tsx');
     const child = source('src/components/access/ChildAccessPortrait.tsx');
 
-    expect(welcome).toContain('aspectRatio: 3 / 2');
-    expect(welcome).not.toContain('height: 168');
+    expect(welcome).toContain('<GhafRasterLogo');
+    expect(welcome).not.toContain('welcome-natural-hero');
+    expect(welcome).not.toContain('<LocalIllustration');
     for (const component of [parent, child]) {
       expect(component).toContain("from 'expo-image'");
       expect(component).toContain('aspectRatio: 3 / 2');
