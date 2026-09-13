@@ -1,6 +1,9 @@
+import { pilotResources } from './pilotResources';
+
 export const resources = {
   ar: {
     translation: {
+      pilot: pilotResources.ar,
       common: {
         brand: 'غاف',
         brandLatin: 'Ghaf',
@@ -1720,6 +1723,7 @@ export const resources = {
   },
   en: {
     translation: {
+      pilot: pilotResources.en,
       common: {
         brand: 'Ghaf',
         brandLatin: 'غاف',

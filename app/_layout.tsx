@@ -14,6 +14,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useReducedMotion } from 'react-native-reanimated';
 
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
+import { PilotGate } from '@/components/pilot';
+import { getPilotConfig } from '@/features/pilot/config';
 import {
   BrandedSplash,
   FirstRunExperienceProvider,
@@ -204,24 +206,28 @@ export default function RootLayout() {
     };
   }, [startupPhase]);
 
+  const demo = (
+    <FirstRunExperienceProvider presentationReady={startupPhase === 'complete'}>
+      <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
+      <View style={styles.root}>
+        {usesLightSystemChrome ? null : <PrototypeStatusBar />}
+        <Stack
+          screenOptions={{
+            animation: reducedMotion ? 'none' : 'fade',
+            contentStyle: { backgroundColor: colors.ivory },
+            headerShown: false,
+          }}
+        />
+        <SectionTransitionOverlay />
+        <BrandedSplash phase={startupPhase} />
+      </View>
+    </FirstRunExperienceProvider>
+  );
+
   return (
     <SafeAreaProvider>
       <GhafFontProvider loaded={fontsLoaded}>
-        <FirstRunExperienceProvider presentationReady={startupPhase === 'complete'}>
-          <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
-          <View style={styles.root}>
-            {usesLightSystemChrome ? null : <PrototypeStatusBar />}
-            <Stack
-              screenOptions={{
-                animation: reducedMotion ? 'none' : 'fade',
-                contentStyle: { backgroundColor: colors.ivory },
-                headerShown: false,
-              }}
-            />
-            <SectionTransitionOverlay />
-            <BrandedSplash phase={startupPhase} />
-          </View>
-        </FirstRunExperienceProvider>
+        {getPilotConfig().enabled ? <PilotGate>{demo}</PilotGate> : demo}
       </GhafFontProvider>
     </SafeAreaProvider>
   );
