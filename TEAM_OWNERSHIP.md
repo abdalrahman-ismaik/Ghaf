@@ -1,5 +1,38 @@
 # Team Ownership
 
+## 2026-09-13 Real Parent Pilot Authentication
+
+**Integration owner**: `/root`. The user approved the complete login-only pilot
+plan: Supabase in Mumbai, email/password, self-registration with dashboard approval,
+Android and web, real adult accounts only. Feature 006 owns the narrow exception.
+Preserve all starting worktree changes; baseline copies are ignored under
+`.expo/pilot-auth/baseline/`. No more than four agents run concurrently.
+
+**Exclusive write boundaries**:
+
+- `/root`: Feature 006 specification and evidence, constitution and product/runbook
+  addenda, this ownership record, dependency/lock/config changes, `app/_layout.tsx`,
+  pilot components/controller and their tests, bilingual resources, final integration.
+  Root also owns the bounded pilot import mock in the existing hydration test and
+  additive Feature 006 guidance in `AGENTS.md`, design and demo runbooks.
+- `/root/pilot_accounts`: `src/models/parentAccount.ts`,
+  `src/services/accounts/`, and `tests/parent-account-*.test.ts` only.
+- `/root/pilot_database`: `supabase/`, `docs/backend/`, and
+  `tests/pilot-database-*.test.ts` only.
+- `/root/pilot_lifecycle`: `src/state/usePrototypeStore.ts` only additive pilot
+  lifecycle commands, `src/services/index.ts`, `src/services/local/` only memory
+  storage extraction/exports, `src/features/pilot/config.ts`, and
+  `tests/pilot-demo-*.test.ts` only.
+
+Writers are not alone in the repository. Do not revert others' edits, stage their
+work, or commit shared files. Root serializes formatting, integration and scoped
+commits. Hosted activation remains a separate reviewed gate; provisioning and
+sender-domain readiness are recorded truthfully.
+
+**Status**: Implementation in progress. Exact evidence will be recorded in
+`specs/006-real-parent-pilot/validation.md`.
+
+
 ## 2026-09-13 Repository Completion Review
 
 **Integration owner**: `/root`. Preserve the existing uncommitted maintainer,

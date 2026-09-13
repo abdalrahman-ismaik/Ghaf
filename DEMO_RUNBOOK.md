@@ -1,5 +1,16 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Feature 006 adult pilot and competition default — 2026-09-13
+
+Keep `EXPO_PUBLIC_GHAF_AUTH_MODE=demo` for the offline competition journey below.
+The separately configured adult pilot uses real email/password, emailed codes and
+administrator approval before opening the sample family. The pilot launcher
+enters the canonical Parent directly; every Child/PIN/pairing interaction remains
+a simulation. Pilot account controls stay available across sample roles. Restart
+sample retains adult login; Sign out of pilot removes it and clears the sample.
+Sample progress is memory-only and never syncs. See `docs/backend/parent-pilot.md`
+for setup and administration, and Feature 006 validation for exact evidence.
+
 ## Confirmed corrupt local-family recovery — 2026-09-13
 
 Use an isolated synthetic storage harness, never an existing family's browser or

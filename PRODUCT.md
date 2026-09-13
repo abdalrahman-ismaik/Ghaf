@@ -1,5 +1,18 @@
 # Product
 
+## Feature 006 adult pilot account exception — 2026-09-13
+
+The owner approved a separate login-only pilot with real adult Supabase accounts,
+email/password, email-code verification/recovery and administrator approval.
+`EXPO_PUBLIC_GHAF_AUTH_MODE=demo` remains the competition default. The independently
+configured pilot opens only a synthetic sample family; real account email never
+enters sample profiles and sample progress is memory-only. Cloud family data,
+real Child accounts/pairing and live AI expansion remain outside this feature.
+Restart sample retains adult login; real account signout clears sample authority
+from every role. Feature 006 owns implementation and evidence; older statements
+about simulated authentication continue to describe the default competition build.
+Hosted activation requires the recorded provider, sender-domain and device gates.
+
 ## Confirmed local demo recovery — 2026-09-13
 
 If saved family data is corrupt, signed-out Welcome presents an explicit local

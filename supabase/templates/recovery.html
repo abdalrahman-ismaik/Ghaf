@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>إعادة تعيين كلمة مرور غاف | Reset your Ghaf password</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 24px;
+      background: #f7f5ed;
+      color: #233d31;
+      font-family: Arial, sans-serif;
+      line-height: 1.8;
+    "
+  >
+    <main
+      style="
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 24px;
+        background: #ffffff;
+        border-radius: 16px;
+      "
+    >
+      <h1 style="font-size: 26px">إعادة تعيين كلمة مرور غاف</h1>
+      <p>استخدم الرمز التالي في شاشة استعادة كلمة المرور داخل تطبيق غاف:</p>
+      <p
+        dir="ltr"
+        style="
+          font-size: 32px;
+          font-weight: bold;
+          text-align: center;
+          font-variant-numeric: tabular-nums;
+        "
+      >
+        {{ .Token }}
+      </p>
+      <p>هذا الرمز صالح لمدة ساعة واحدة ويُستخدم مرة واحدة فقط. لا تشاركه مع أي شخص.</p>
+      <p>
+        اختر كلمة مرور جديدة، ثم سجّل الدخول بها. استعادة كلمة المرور لا تغيّر قرار الموافقة على
+        الوصول إلى التجربة.
+      </p>
+      <p>
+        إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذه الرسالة. لن تتغيّر كلمة مرورك بسبب هذا
+        الطلب وحده.
+      </p>
+      <hr style="border: 0; border-top: 1px solid #dbe1d6; margin: 24px 0" />
+      <section lang="en" dir="ltr" style="text-align: left">
+        <h2 style="font-size: 24px">Reset your Ghaf password</h2>
+        <p>Enter the code shown above on the password recovery screen in Ghaf.</p>
+        <p>This code expires in one hour and can be used once. Do not share it with anyone.</p>
+        <p>
+          Choose a new password, then sign in with it. Password recovery does not change your pilot
+          approval status.
+        </p>
+        <p>
+          If you did not request a password reset, you can ignore this email. This request alone
+          does not change your password.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

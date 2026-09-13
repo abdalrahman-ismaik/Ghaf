@@ -122,6 +122,16 @@ components:
 
 # Ghaf Design System
 
+## Feature 006 adult pilot presentation — 2026-09-13
+
+The separate adult account gate reuses the access shell, Alexandria/Readex Pro,
+shared controls and Arabic-first resources. Registration, code verification,
+password recovery and approval statuses appear before mounting the sample
+navigator. An approved adult chooses to explore the canonical sample; no second
+simulated email form is required. A persistent Pilot account control distinguishes
+real logout from restarting or leaving a synthetic role. The default demo design
+and all earlier release gates remain unchanged.
+
 ## Confirmed local recovery state — 2026-09-13
 
 Reuse the existing access shell, brand lockup, Alexandria headings, Readex body and

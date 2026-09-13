@@ -1,5 +1,18 @@
 # Prototype Limitations
 
+## Feature 006 adult account pilot — 2026-09-13
+
+Feature 006 adds a separately configured Supabase adult login and server-owned
+approval gate. It does not convert the sample family into a real household or
+provide saved tasks, Seeds, gardens, rewards, real Child access, cloud sync, live
+AI, production-readiness or compliance evidence. The default build stays entirely
+synthetic. Pilot sample data resets on process restart; adult session persistence
+is separate. Native SecureStore and namespaced web auth storage do not establish
+production Child-data protection. See `specs/006-real-parent-pilot/validation.md`
+for the exact local, hosted, email and physical-device evidence rather than
+assuming any feature is activated. The owner has no sender domain yet; external
+verification/recovery email delivery is blocked until a domain is verified.
+
 ## Confirmed corrupt-data recovery — 2026-09-13
 
 The owner-approved recovery path may clear this installation's corrupt local demo

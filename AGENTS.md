@@ -8,6 +8,15 @@ at specs/005-remembered-device-access/plan.md
 
 ## Current Feature
 
+Feature 006 (`specs/006-real-parent-pilot/`) is the owner-approved adult login-only
+pilot exception. Its separate `EXPO_PUBLIC_GHAF_AUTH_MODE=supabase` gate may use
+real adult email/password accounts, administrator approval and secure session
+persistence; `demo` remains the default. All family/Child/progression data remains
+synthetic. Apply Constitution 2.1.0's narrow exception for this feature; the P0
+production-account exclusions below still govern the default competition build.
+Hosted activation, external email delivery and native acceptance require direct
+Feature 006 evidence. Do not enable AI or migrate local sample data into accounts.
+
 Ghaf — غاف Feature 003 Revision 3 is the active pre-Stitch planning direction. It inherits the
 Arabic-first Revision 2 application with separately authenticated-looking Parent and Child
 prototype experiences, Parent-approved tasks, bounded AI coaching, permanent Seeds and UAE

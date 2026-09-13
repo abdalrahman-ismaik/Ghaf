@@ -1,6 +1,7 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 -> 2.0.0
+- Version change: 2.0.0 -> 2.1.0
+- Approved exception: Feature 006 real adult pilot authentication, separate from the synthetic demo.
 - Modified principles: MVP Prototype First; Design Is a Core Feature; Visible AI Value;
   Demo Reliability
 - Modified sections: Prototype Boundaries; Delivery Workflow
@@ -70,6 +71,19 @@ unless an authoritative source establishes it.
 
 ## Prototype Boundaries
 
+### Feature 006 adult pilot exception — 2026-09-13
+
+The owner-approved Feature 006 plan permits an independent default-off Supabase
+email/password pilot for real adults, with server-owned administrator approval and
+native/web session persistence. This narrow exception to Principles I, V, VI and
+X authorizes only identity/session/approval infrastructure; real-account failures
+must fail closed rather than create synthetic authority. The complete deterministic
+demo remains available in its default build. Children, families, tasks and growth
+remain synthetic, with no cloud family data or live AI expansion. Implementation
+does not imply hosted activation, production readiness or regulatory compliance.
+The integration owner records the amendment and Feature 006 evidence separately;
+historical feature constraints and acceptance records remain attributed as written.
+
 - The app MUST use synthetic or team-created demo data and MUST NOT contain real child data.
 - API keys MUST NOT be committed, and OpenAI secret keys MUST NOT be embedded in the mobile app.
 - Audio capture MUST start only after a visible microphone action; continuous or background
@@ -104,4 +118,4 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.0.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-08-26
+**Version**: 2.1.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-13
