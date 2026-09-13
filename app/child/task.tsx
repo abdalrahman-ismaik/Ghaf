@@ -1,3 +1,5 @@
+import { CompanionPortrait } from '@/components/companion/CompanionPortrait';
+import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
@@ -616,6 +618,7 @@ export default function ChildTaskScreen() {
               />
             ) : (
               <View style={styles.coach} testID="prepared-child-coach">
+                <CompanionPortrait />
                 <AssistantIdentity
                   description={t('childTask.coachPreparedPurpose')}
                   direction={direction}
@@ -633,6 +636,7 @@ export default function ChildTaskScreen() {
                     <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
                       {t('assistant.noChat')}
                     </Text>
+                    <MessagingEntry role="child" helperDraft />
                     <Text
                       brand
                       color="deepForest"

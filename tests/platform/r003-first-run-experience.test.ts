@@ -125,7 +125,8 @@ describe('R003 first-run experience', () => {
     const welcome = source('app/index.tsx');
     const rasterPresentation = `${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
-    expect(authoredRoutes()).toHaveLength(37);
+    expect(authoredRoutes()).toHaveLength(38);
+    expect(authoredRoutes()).toContain('messages/index.tsx');
     expect(rasterPresentation).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
     expect(`${onboarding}\n${rasterPresentation}`).not.toMatch(/https?:\/\//u);
     expect(logo).toContain("from 'expo-image'");

@@ -1,6 +1,116 @@
+import { phraseText } from '../features/familyMessaging/contracts';
+
 export const resources = {
   ar: {
     translation: {
+      messaging: {
+        title: 'رسائل الأسرة',
+        privacyTitle: 'خصوصية الرسائل وحالة الإرسال',
+        webSession:
+          'في المتصفح، تبقى جلسة الرسائل في علامة التبويب فقط. بعد إعادة التحميل، يحتاج الطفل إلى رمز ربط جديد.',
+        parentEntry: 'مراسلة الطفل',
+        childEntry: 'مراسلة وليّ الأمر',
+        entryBody: 'محادثة خاصة عبر خدمة منفصلة عن العرض التجريبي.',
+        unavailable: 'خدمة الرسائل غير مُعدّة في هذا الإصدار.',
+        unavailableBody:
+          'يحتاج الفريق إلى إعداد الخدمة قبل ربط الأجهزة. يمكنك متابعة المهام التجريبية. لم تُرسل أي رسالة.',
+        back: 'رجوع',
+        cancel: 'إلغاء',
+        continue: 'متابعة',
+        parent: 'وليّ الأمر',
+        child: 'الطفل',
+        authTitle: 'دخول رسائل الأسرة',
+        authBody:
+          'استخدم حساب وليّ الأمر الذي أعدّه الفريق. ملفات العرض التجريبي لا تمنح الوصول إلى الرسائل.',
+        email: 'البريد الإلكتروني',
+        password: 'كلمة المرور',
+        deviceLabel: 'اسم لهذا الجهاز',
+        signIn: 'تسجيل الدخول',
+        enrollTitle: 'ربط جهاز الطفل',
+        enrollBody:
+          'اطلب من وليّ الأمر رمزًا جديدًا من إدارة أجهزة الرسائل. يمنح الرمز هذا الجهاز الوصول إلى محادثتك معه.',
+        code: 'رمز الربط',
+        enroll: 'ربط الجهاز',
+        loading: 'جارٍ التحقق…',
+        working: 'جارٍ التنفيذ…',
+        retry: 'إعادة المحاولة',
+        signOut: 'تسجيل الخروج من الرسائل',
+        signOutNotice:
+          'مُسحت الجلسة محليًا، لكن تعذّر تأكيد إلغاء الجهاز لدى الخدمة. ألغِ الجهاز من جهاز آخر متصل.',
+        identity: 'حساب الرسائل: {{name}}',
+        separate:
+          'هوية الرسائل مستقلة عن ملف العرض التجريبي. لا تتزامن المهام أو البذور أو الحديقة.',
+        privacy:
+          'رسائل بشرية خاصة، لا يقرأها المساعد. تُحفظ في الخدمة لمدة تصل إلى ٣٠ يومًا. المسودات على هذا الجهاز مؤقتة ولا تُرسل تلقائيًا.',
+        conversations: 'المحادثات',
+        emptyThreads: 'لا توجد محادثة بعد. أضف الطفل ثم أنشئ رمز ربط لجهازه.',
+        openThread: 'فتح المحادثة مع {{name}}',
+        manage: 'إدارة الأطفال والأجهزة',
+        childName: 'اسم الطفل في الرسائل',
+        ageBand: 'الفئة العمرية للطفل',
+        band6_8: '٦–٨ سنوات: عبارات جاهزة فقط',
+        band9_11: '٩–١١ سنة: رسائل نصية قصيرة',
+        band12_14: '١٢–١٤ سنة: رسائل نصية قصيرة',
+        addChild: 'إضافة الطفل إلى الرسائل',
+        invite: 'إنشاء رمز ربط لـ {{name}}',
+        inviteTitle: 'رمز ربط جهاز {{name}}',
+        inviteBody:
+          'اعرض الرمز للطفل على جهازه فقط. صالح لاستخدام واحد خلال ١٠ دقائق. الرمز الجديد يُلغي السابق لهذا الطفل.',
+        expires: 'ينتهي في {{time}}',
+        hideCode: 'إخفاء الرمز',
+        devices: 'الأجهزة المصرّح لها',
+        currentDevice: 'هذا الجهاز',
+        revoke: 'إلغاء وصول {{name}}',
+        revokeBody:
+          'سيفقد هذا الجهاز الوصول إلى الرسائل عند اتصاله بالخدمة. ستبقى الرسائل وفق مدة الاحتفاظ.',
+        revokeAccount: 'إلغاء وصول حساب الرسائل',
+        revokeAccountBody:
+          'سيُلغى وصول وليّ الأمر وكل أجهزة الأطفال في هذه الأسرة إلى الرسائل. لا يمكن استعادته من التطبيق. تبقى الرسائل حتى انتهاء مدة الاحتفاظ.',
+        confirmRevoke: 'تأكيد إلغاء الوصول',
+        older: 'رسائل أقدم',
+        refresh: 'تحديث الرسائل',
+        newMessages: 'الانتقال إلى الرسائل الجديدة',
+        emptyMessages: 'لا توجد رسائل محفوظة بعد. ابدأ بعبارة قصيرة.',
+        accepted: 'قبلتها الخدمة',
+        acceptedMeaning: 'القبول يعني حفظ الرسالة في الخدمة، ولا يعني أن الطرف الآخر قرأها.',
+        you: 'أنت',
+        composer: 'رسالتك إلى {{name}}',
+        phrases: 'عبارات سريعة',
+        phraseOnly: 'اختر عبارة جاهزة. يمكن تغييرها قبل الإرسال.',
+        count: '{{count}} / 500',
+        send: 'إرسال الرسالة',
+        sending: 'جارٍ الإرسال…',
+        failed: 'لم يتم الإرسال',
+        unknown: 'نتيجة الإرسال غير معروفة',
+        unknownBody:
+          'قد تكون الخدمة قد حفظت الرسالة. إعادة المحاولة تستخدم الطلب نفسه لتجنب تكرارها. لا يبدأ إرسال جديد تلقائيًا.',
+        clearAttempt: 'مسح المحاولة من هذا الجهاز',
+        clearAttemptBody: 'هذا لا يحذف رسالة قد تكون الخدمة قد حفظتها.',
+        helperTitle: 'مساعد المهمة',
+        helperDraft: 'ستفتح مسودة بشرية قابلة للتعديل. لن تُرسل إجابة المساعد أو المحادثة معه.',
+        portraitFallback: 'مساعد المهمة — الصورة غير متاحة',
+        errors: {
+          not_authenticated: 'انتهت الجلسة أو لم تنجح بيانات الدخول. سجّل الدخول من جديد.',
+          not_authorized: 'هذا الحساب غير مصرّح له برسائل الأسرة. تحقّق مع من أعدّ الخدمة.',
+          access_revoked: 'أُلغي الوصول إلى الرسائل. اطلب من وليّ الأمر مراجعة الجهاز.',
+          invalid_invite: 'رمز الربط غير صالح أو انتهت مدته. اطلب رمزًا جديدًا.',
+          rate_limited: 'محاولات كثيرة خلال وقت قصير. انتظر قليلًا قبل المحاولة مجددًا.',
+          invalid_message: 'اكتب رسالة غير فارغة لا تتجاوز ٥٠٠ حرف.',
+          idempotency_conflict:
+            'لا يطابق الطلب المحاولة الأصلية. امسح المحاولة محليًا ثم راجع الرسائل قبل إرسال جديد.',
+          invalid_request: 'تعذّر قبول البيانات. راجع الحقول وحاول مجددًا.',
+          service_unavailable: 'الخدمة غير متاحة الآن. أعد المحاولة لاحقًا.',
+          offline: 'تعذّر الاتصال بالخدمة. تحقّق من اتصالك ثم أعد المحاولة.',
+          unknown: 'تعذّر تأكيد نتيجة الإرسال. راجع المحاولة أدناه.',
+          storage_failed:
+            'تعذّر حفظ الجلسة أو مسحها بأمان على الجهاز. أعد تشغيل التطبيق قبل المتابعة.',
+          role_mismatch:
+            'الجلسة المحفوظة تخص دورًا آخر. سجّل الخروج منها قبل دخول رسائل هذا الدور.',
+          attempt_expired:
+            'انتهت مهلة إعادة هذه المحاولة. حدّث الرسائل وراجعها قبل مسح المحاولة وإرسال رسالة جديدة.',
+        },
+        phrasesText: phraseText.ar,
+      },
       demoEntry: {
         title: 'من سيستخدم غاف الآن؟',
         body: 'اختر ملفًا تجريبيًا لوليّ الأمر أو الطفل، دون تسجيل دخول.',
@@ -1913,6 +2023,117 @@ export const resources = {
   },
   en: {
     translation: {
+      messaging: {
+        title: 'Family messages',
+        privacyTitle: 'Message privacy and send status',
+        webSession:
+          'In a browser, the messaging session lasts only in this tab. After a reload, a Child needs a new enrollment code.',
+        parentEntry: 'Message your Child',
+        childEntry: 'Message Parent',
+        entryBody: 'A private conversation through a service separate from the demo.',
+        unavailable: 'Messaging is not configured in this build.',
+        unavailableBody:
+          'The team needs to set up the service before linking devices. You can continue the demo tasks. No message has been sent.',
+        back: 'Back',
+        cancel: 'Cancel',
+        continue: 'Continue',
+        parent: 'Parent',
+        child: 'Child',
+        authTitle: 'Sign in to family messages',
+        authBody:
+          'Use the Parent account provisioned by the team. Demo profiles do not grant access to messages.',
+        email: 'Email',
+        password: 'Password',
+        deviceLabel: 'Name this device',
+        signIn: 'Sign in',
+        enrollTitle: 'Link this Child device',
+        enrollBody:
+          'Ask your Parent for a new code from messaging device management. The code gives this device access to your conversation with them.',
+        code: 'Enrollment code',
+        enroll: 'Link device',
+        loading: 'Checking access…',
+        working: 'Working…',
+        retry: 'Retry',
+        signOut: 'Sign out of messages',
+        signOutNotice:
+          'The local session was cleared, but service-side device revocation could not be confirmed. Revoke this device from another connected device.',
+        identity: 'Messaging account: {{name}}',
+        separate:
+          'Messaging identity is separate from the demo profile. Tasks, Seeds and Garden do not synchronize.',
+        privacy:
+          'Private human messages, never read by the assistant. Stored by the service for up to 30 days. Drafts on this device are temporary and never send automatically.',
+        conversations: 'Conversations',
+        emptyThreads: 'No conversation yet. Add your Child, then create a code for their device.',
+        openThread: 'Open conversation with {{name}}',
+        manage: 'Manage Children and devices',
+        childName: 'Child’s messaging name',
+        ageBand: 'Child’s age band',
+        band6_8: '6–8 years: quick phrases only',
+        band9_11: '9–11 years: short text messages',
+        band12_14: '12–14 years: short text messages',
+        addChild: 'Add Child to messaging',
+        invite: 'Create enrollment code for {{name}}',
+        inviteTitle: 'Device code for {{name}}',
+        inviteBody:
+          'Show this code only on your Child’s device. One use within 10 minutes. A new code replaces the previous one for this Child.',
+        expires: 'Expires at {{time}}',
+        hideCode: 'Hide code',
+        devices: 'Authorized devices',
+        currentDevice: 'This device',
+        revoke: 'Revoke access for {{name}}',
+        revokeBody:
+          'This device will lose messaging access when it contacts the service. Messages remain under the retention policy.',
+        revokeAccount: 'Revoke messaging account access',
+        revokeAccountBody:
+          'This revokes messaging access for this Parent and all Child devices in the household. It cannot be restored in the app. Messages remain until retention expires.',
+        confirmRevoke: 'Confirm revocation',
+        older: 'Older messages',
+        refresh: 'Refresh messages',
+        newMessages: 'Go to new messages',
+        emptyMessages: 'No saved messages yet. Start with a short phrase.',
+        accepted: 'Accepted by service',
+        acceptedMeaning:
+          'Accepted means stored by the service; it does not mean the other person read it.',
+        you: 'You',
+        composer: 'Your message to {{name}}',
+        phrases: 'Quick phrases',
+        phraseOnly: 'Choose a quick phrase. You can change it before sending.',
+        count: '{{count}} / 500',
+        send: 'Send message',
+        sending: 'Sending…',
+        failed: 'Send failed',
+        unknown: 'Send outcome unknown',
+        unknownBody:
+          'The service may have stored this message. Retry uses the same request to avoid a duplicate. A new send never starts automatically.',
+        clearAttempt: 'Clear attempt from this device',
+        clearAttemptBody: 'This does not delete a message the service may already have stored.',
+        helperTitle: 'Task helper',
+        helperDraft:
+          'An editable human-message draft will open. The assistant’s response and conversation will not be shared.',
+        portraitFallback: 'Task helper — image unavailable',
+        errors: {
+          not_authenticated: 'The session expired or sign-in did not succeed. Sign in again.',
+          not_authorized:
+            'This account is not authorized for family messages. Check with the service operator.',
+          access_revoked: 'Messaging access was revoked. Ask your Parent to review this device.',
+          invalid_invite: 'The enrollment code is invalid or expired. Ask for a new code.',
+          rate_limited: 'Too many attempts in a short time. Wait before trying again.',
+          invalid_message: 'Write a non-empty message of up to 500 characters.',
+          idempotency_conflict:
+            'The request does not match the original attempt. Clear it locally, then review messages before a new send.',
+          invalid_request: 'The information could not be accepted. Check the fields and retry.',
+          service_unavailable: 'The service is unavailable now. Try again later.',
+          offline: 'Could not reach the service. Check your connection, then retry.',
+          unknown: 'The send outcome could not be confirmed. Review the attempt below.',
+          storage_failed:
+            'The device could not safely save or clear the session. Restart the app before continuing.',
+          role_mismatch:
+            'The saved session belongs to another role. Sign out of it before entering messages for this role.',
+          attempt_expired:
+            'The retry window expired. Refresh and review messages before clearing this attempt and sending a new message.',
+        },
+        phrasesText: phraseText.en,
+      },
       demoEntry: {
         title: 'Who’s joining Ghaf?',
         body: 'Choose a Parent or Child demo profile. No sign-in needed.',

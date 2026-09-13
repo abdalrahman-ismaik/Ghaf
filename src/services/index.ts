@@ -1,4 +1,5 @@
 import { entryMode } from '../config/demoEntry';
+import { createFamilyMessaging } from '../features/familyMessaging';
 import { createFeature003ServiceRegistry } from './mock';
 import type { Feature003ServiceRegistry } from './interfaces';
 import {
@@ -105,12 +106,14 @@ const repositoryStorage =
 
 // Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
 export const serviceRegistry: Feature003ServiceRegistry & {
+  readonly familyMessaging: ReturnType<typeof createFamilyMessaging>;
   readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
   readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
 } = {
   ...createFeature003ServiceRegistry(),
+  familyMessaging: createFamilyMessaging(),
   ambientAudioPreferences: createAmbientAudioPreferencesRepository(repositoryStorage),
   deviceAccess: createDeviceAccessRepository(repositoryStorage),
   localFamily: createLocalFamilyRepository(repositoryStorage),

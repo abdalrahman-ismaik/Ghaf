@@ -1,3 +1,4 @@
+import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
@@ -675,6 +676,8 @@ export default function ChildHomeScreen() {
           ) : null}
         </View>
       ) : null}
+
+      <MessagingEntry role="child" />
 
       {r002bGrowth.ok ? (
         <TodayImpactPathCard

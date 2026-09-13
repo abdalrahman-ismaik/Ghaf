@@ -98,6 +98,7 @@ describe('approved R001 Parent onboarding integration', () => {
         ...R001_ACCESS_ROUTES,
         ...DEFAULT_OFF_R002B_ROUTES,
         ...R003_COMPLETE_JOURNEY_ROUTES,
+        '/messages',
       ].sort(),
     );
     for (const route of R001_ACCESS_ROUTES) expect(authoredRoutes()).toContain(route);

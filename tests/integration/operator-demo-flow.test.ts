@@ -264,9 +264,9 @@ describe('US6 bilingual offline operator and reset flow', () => {
     vi.unstubAllGlobals();
   });
 
-  it('preserves the established routes while adding only authorized default-off R002b routes', () => {
+  it('preserves established routes with authorized R002b and Feature016 additions', () => {
     const actual = authoredRoutes();
-    expect(actual).toEqual([...EXPECTED_ROUTES].sort());
+    expect(actual).toEqual([...EXPECTED_ROUTES, '/messages'].sort());
     for (const legacyRoute of LEGACY_ROUTES) {
       expect(actual).not.toContain(legacyRoute);
     }

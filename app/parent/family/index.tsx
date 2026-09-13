@@ -1,3 +1,4 @@
+import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { View } from 'react-native';
@@ -174,6 +175,7 @@ export default function ParentFamilyScreen() {
         title={t('r003.family.title')}
       />
 
+      <MessagingEntry role="parent" />
       {familyConnections.ok && familyConnections.data.entries.length > 0 ? (
         <FamilyConnectionPlan
           direction={direction}

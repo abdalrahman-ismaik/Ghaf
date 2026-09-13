@@ -14,6 +14,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useReducedMotion } from 'react-native-reanimated';
 import { TamaguiProvider } from 'tamagui';
 
+import { MessagingLifecycle } from '@/components/familyMessaging/MessagingLifecycle';
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
 import { AmbientAudioProvider } from '@/components/audio';
 import {
@@ -66,6 +67,7 @@ export default function RootLayout() {
     isR001Route ||
     isR002aParentSurface ||
     pathname.startsWith('/child') ||
+    pathname.startsWith('/messages') ||
     pathname === '/garden' ||
     pathname.startsWith('/garden/') ||
     pathname === '/league' ||
@@ -210,6 +212,7 @@ export default function RootLayout() {
           <GhafFontProvider loaded={fontsLoaded}>
             <AmbientAudioProvider startupReady={startupPhase === 'complete'}>
               <FirstRunExperienceProvider>
+                <MessagingLifecycle />
                 <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
                 <View style={styles.root}>
                   {usesLightSystemChrome ? null : <PrototypeStatusBar />}
