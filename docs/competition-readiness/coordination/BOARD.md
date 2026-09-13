@@ -3,6 +3,15 @@
 Sole writer: Session A. Canonical directory: `/home/smyk/projects/Ghaf/docs/competition-readiness/coordination/`.
 Follow [the protocol](README.md); checkout copies are snapshots, not the live board.
 
+## Revision 80 — narration v2 intake needs one replacement
+
+Updated 2026-09-13T07:08:47.446496+00:00; currentHEAD87033fd/B5Abrandpreserved. A fileinspection complete.
+All6filenamespresent;5MP3sdecode, Sustainabilityv2 is0bytes andcannotplay.
+Noapp/source/audiofiles changed; narration remainsoff. Helperaudit released; noheavy/browserjob.
+Usermustreplace assets/audio/onboarding/narration-ar-sustainability-v2.mp3 before sixclip
+validation/textsync/manualplayback integration. Evidence output/native-integration/015/narration-v2.
+B/C/Dstatuses untouched. Existingpreview427191 retained; no newnative/provider/release work.
+
 ## Revision 79 — exact restoration complete
 
 Updated 2026-09-12T17:40:45.935059+00:00; final source46e9b58, all4checksPASS/153files/2025tests.

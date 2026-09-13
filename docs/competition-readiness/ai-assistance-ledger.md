@@ -1229,3 +1229,12 @@ controlled demo callbacks, helper scopes, narration decision, real browser evide
 corrected regression checks. The reference-led candidate is historical and rejected, not accepted
 student work. Original wording is restored; Wiam clips remain unused rather than mismatched.
 Student/native/human review is pending. No push/submission or release activation occurred.
+
+## September 13 — user-supplied six Arabic v2 recordings checked
+
+Actual user request: “I have added them, check”. A checked all six expected filenames, hashes,
+codec metadata and full ffmpeg decoding. Five passed; Sustainability is an empty0byte file and
+failed decoding, confirmed on recheck. Receipt: output/native-integration/015/narration-v2/file-checks.json.
+A read-only helper audited existing manual playback reuse while A inspected files; no source/audio
+was changed or activated. Human listening/transcript fidelity and generation provenance are not
+verified by metadata. Integration awaits the replacement file; existing originals and5Abrand preserved.
