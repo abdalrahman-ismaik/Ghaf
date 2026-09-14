@@ -75,7 +75,7 @@ export class SupabaseFamilyMessagingService implements FamilyMessagingService {
   constructor(
     private readonly config: MessagingConfig | null,
     private readonly storage: CredentialStorage,
-    private readonly fetcher: typeof fetch = fetch,
+    private readonly fetcher: typeof fetch = (...args) => globalThis.fetch(...args),
     private readonly now = Date.now,
     private readonly timeoutMs = 8_000,
   ) {

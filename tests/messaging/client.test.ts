@@ -31,6 +31,27 @@ async function signedIn(fetcher = vi.fn<typeof fetch>()) {
 }
 
 describe('real messaging Auth and transport boundary', () => {
+  it('calls the default browser fetch with the global receiver', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(response(auth))
+      .mockResolvedValueOnce(response(parent));
+    vi.stubGlobal('fetch', function (this: unknown, ...args: Parameters<typeof fetch>) {
+      if (this !== globalThis) throw new TypeError('Illegal invocation');
+      return fetcher(...args);
+    });
+    try {
+      const service = new SupabaseFamilyMessagingService(config, memoryStorage());
+      await expect(
+        service.signIn('synthetic@example.invalid', 'synthetic-password', 'Web device'),
+      ).resolves.toEqual(parent);
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      expect(fetcher.mock.calls[0]?.[0]).toBe(`${config.url}/auth/v1/token?grant_type=password`);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('preserves legacy Parent threads and calls only bounded peer RPC contracts', async () => {
     const { service, fetcher } = await signedIn();
     const { kind: _kind, ...legacyThread } = thread;
