@@ -1,6 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: 2.2.0 -> 2.3.0
+- Version change: 2.3.0 -> 2.4.0
+- Approved Feature020 exception: fresh Supabase family accounts, managed Child identity,
+  persistent implemented family domains, server authority and explicit demo isolation.
 - Approved Feature018 exception: real adult-owned profile/family/task/study planning,
   scoped backend maintenance and internal APK delivery; synthetic progression remains separate.
 - Approved Feature017 exception: selected study, jointly agreed academic prizes and family peer text.
@@ -84,6 +86,24 @@ data, and a visible reset path MUST support repeatable rehearsal within the acti
 documented demonstration target even when network services are unavailable. The target MUST be
 recorded as an internal rehearsal goal rather than represented as an external competition rule
 unless an authoritative source establishes it.
+
+## Feature020 fresh Supabase family accounts amendment — 2026-09-14
+
+The current direct user instruction authorizes migration of implemented persistent
+account and family behavior to Supabase, including server-enforced managed Child
+pairing and family sharing. Feature020 supersedes the earlier planning-only and
+synthetic-only boundaries for the real account path. Real accounts are the default;
+demo entry is explicit and isolated. A failed real query must never use mock data.
+New accounts receive no fabricated people, history, balances or entitlements.
+Existing legitimate records are preserved; local sample data is never automatically
+imported. Parent approvals, permanent growth, private rewards and all prior safety
+invariants remain applicable. Supabase membership and live provider identity govern
+access; a local role or Parent preview never constitutes Child authorization.
+Approved catalog and learning content remain global reference content. Additive
+migrations and restricted-identity tests precede hosted activation. This amendment
+does not claim production readiness, authorize destructive remote cleanup, introduce
+banking, or imply that absent integrations have been implemented. See
+`specs/020-supabase-family-data/` for acceptance and actual evidence.
 
 ## Feature018 persistent adult account amendment — 2026-09-14
 
@@ -181,4 +201,4 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.3.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14
+**Version**: 2.4.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14
