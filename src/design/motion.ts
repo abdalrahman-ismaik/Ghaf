@@ -11,7 +11,7 @@ export const interactionMotion = {
     panel: botanical.motion.sheet,
     busyOrbit: 1_600,
   },
-  displacement: { pressScale: botanical.motion.pressScale, panel: 24 },
+  displacement: { pressScale: botanical.motion.pressScale, panel: 24, story: 8 },
   easing: Easing.out(Easing.cubic),
   // A small, firm return with no overshoot. Retargeting starts at the live value.
   spring: {

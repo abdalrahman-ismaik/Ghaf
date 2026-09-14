@@ -141,11 +141,13 @@ describe('R003 first-run experience', () => {
     expect(logo).toContain("require('../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png')");
     expect(onboarding).toContain('LocalIllustration');
     expect(onboarding).toContain('accessibilityLiveRegion="polite"');
-    expect(onboarding).toContain('useReducedMotion');
+    expect(onboarding).toContain('useReducedMotionPreference');
     expect(onboarding).toContain('first-run-pillar-');
     expect(onboarding).toContain('accessibilityState={{ selected:');
     expect(onboarding).toContain("type: 'goToPillar'");
-    expect(onboarding).toContain('withDelay');
+    expect(onboarding).not.toContain('withDelay');
+    expect(onboarding).toContain('interactionMotion.timing.state');
+    expect(onboarding).toContain('interactionMotion.displacement.story');
     expect(onboarding).toContain('testID="first-run-visual-story"');
     expect(onboarding).toContain('scale:');
     expect(onboarding).toContain('aspectRatio: 3 / 2');
@@ -164,13 +166,7 @@ describe('R003 first-run experience', () => {
     expect(onboarding).toContain('accessibilityElementsHidden');
     expect(onboarding).toContain('testID="first-run-image-progress"');
     expect(onboarding).toContain('testID="first-run-progress"');
-    expect(onboarding.indexOf('testID="first-run-progress"')).toBeGreaterThan(
-      onboarding.indexOf('testID="first-run-visual-story"'),
-    );
     expect(onboarding).toContain('testID="first-run-navigation-actions"');
-    expect(onboarding.indexOf('testID="first-run-progress"')).toBeLessThan(
-      onboarding.indexOf('testID="first-run-navigation-actions"'),
-    );
     expect(onboarding).toContain('styles.progressRow');
     expect(onboarding).toContain('styles.dots');
     expect(onboarding).toContain('styles.dotActive');
@@ -464,7 +460,8 @@ describe('R003 first-run experience', () => {
     expect(audioSources).not.toMatch(/https?:\/\//u);
     expect(illustration).toContain('readonly onSettled?: () => void');
     expect(illustration).toContain('onLoad={onSettled}');
-    expect(onboarding).toContain('onSettled={() => setImageReadyStep(state.step)}');
+    expect(onboarding).toContain('current.visit === visit ? { ...current, imageReady: true }');
+    expect(onboarding).toContain('presentation.imageReady && presentation.settled');
     expect(onboarding).toContain('ready: narrationEnabled && playbackReady');
     expect(onboarding).toContain('narrationEnabled = true');
     expect(onboarding).not.toContain('first-run-narrator');

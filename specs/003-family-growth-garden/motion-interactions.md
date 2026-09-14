@@ -23,6 +23,22 @@ Current Feature 003 spec already requires animation not to delay access.
 5. Reuse live preferences for the existing leaf loader. Retain its static busy
    semantics and brand; no additional loop or celebratory animation.
 
+## Main native continuation
+
+The user's follow-up authorizes native implementation and verification on `main`
+without commits. Baseline emulator evidence at 360 × 640 dp shows the onboarding
+Next control initially clipped; scrolling reveals it. Reuse the existing native
+footer for progress/Next/Back, preserving the story scroller and web layout.
+Connect onboarding to the shared live motion preference. Only a new step starts
+its entrance; preference changes settle/cancel without replay. Use the shared
+180 ms state preset for image/copy together, removing the copy stagger. Narration
+still waits for the current image and completed presentation; stale step timers
+remain cancelled. This explicitly supersedes the earlier unchanged story-timing
+statement for this bounded continuation. No new product or account behavior.
+
+Evidence and remaining native gates are recorded in
+`docs/competition-readiness/workstreams/native-motion-main-20260914.md`.
+
 ## Tasks and acceptance
 
 - [x] Record baseline source findings, versions and focused test results.

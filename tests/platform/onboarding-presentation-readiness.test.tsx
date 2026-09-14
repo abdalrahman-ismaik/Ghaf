@@ -6,6 +6,7 @@ import { AmbientAudioProvider } from '@/components/audio';
 import { LocalIllustration } from '../../src/components/illustrations/LocalIllustration';
 import { FirstRunExperienceProvider } from '../../src/components/onboarding/FirstRunExperienceContext';
 import { FirstRunOnboarding } from '../../src/components/onboarding/FirstRunOnboarding';
+import { interactionMotion } from '../../src/design/motion';
 import { firstRunMotion, motion } from '../../src/design/tokens';
 import { resources } from '../../src/i18n/resources';
 
@@ -19,6 +20,17 @@ interface HookScope {
   cursor: number;
   slots: HookSlot[];
   effects: (() => void)[];
+}
+interface TimingAnimation {
+  kind: 'timing';
+  target: number;
+  config: { duration: number; reduceMotion: string };
+}
+interface SharedValue {
+  value: number;
+  animation?: TimingAnimation;
+  get: () => number;
+  set: (next: number | TimingAnimation | ((current: number) => number | TimingAnimation)) => void;
 }
 
 const mock = vi.hoisted(() => ({
@@ -34,6 +46,16 @@ const mock = vi.hoisted(() => ({
   experience: {} as Record<string, unknown>,
   contexts: new Map<unknown, unknown>(),
   locale: 'ar',
+  reducedMotion: false,
+  sharedValues: [] as SharedValue[],
+  cancelAnimation: vi.fn((shared: SharedValue) => {
+    shared.animation = undefined;
+  }),
+  withTiming: vi.fn((target: number, config: TimingAnimation['config']): TimingAnimation => ({
+    kind: 'timing',
+    target,
+    config,
+  })),
   players: new Map<string, ReturnType<typeof createPlayer>>(),
 }));
 
@@ -179,18 +201,38 @@ vi.mock('react-native-reanimated', async () => {
   const { useRef } = await import('react');
   return {
     default: { View: 'AnimatedView', createAnimatedComponent: (component: unknown) => component },
-    cancelAnimation: () => undefined,
-    Easing: { bezier: () => undefined },
-    ReduceMotion: { System: 'system' },
+    cancelAnimation: mock.cancelAnimation,
+    Easing: { bezier: () => undefined, out: () => undefined, cubic: undefined },
+    ReduceMotion: { System: 'system', Never: 'never' },
     useAnimatedStyle: () => ({}),
     useAnimatedProps: () => ({}),
     useReducedMotion: () => false,
-    useSharedValue: (initial: number) =>
-      useRef({ get: () => initial, set: () => undefined }).current,
-    withTiming: (value: unknown) => value,
+    useSharedValue: (initial: number) => {
+      const reference = useRef<SharedValue | null>(null);
+      if (!reference.current) {
+        const shared: SharedValue = {
+          value: initial,
+          get: () => shared.value,
+          set: (next) => {
+            const result = typeof next === 'function' ? next(shared.value) : next;
+            if (typeof result === 'number') {
+              shared.value = result;
+              shared.animation = undefined;
+            } else shared.animation = result;
+          },
+        };
+        reference.current = shared;
+        mock.sharedValues.push(shared);
+      }
+      return reference.current;
+    },
+    withTiming: mock.withTiming,
     withDelay: (_delay: number, value: unknown) => value,
   };
 });
+vi.mock('@/utils/useReducedMotionPreference', () => ({
+  useReducedMotionPreference: () => mock.reducedMotion,
+}));
 vi.mock('react-native-svg', () => ({ default: 'Svg', Path: 'Path' }));
 vi.mock('expo-image', () => ({ Image: 'Image' }));
 vi.mock('expo-status-bar', () => ({ StatusBar: 'StatusBar' }));
@@ -340,7 +382,9 @@ function find(tree: ReactNode, match: (node: Node) => boolean): Node | undefined
   if (!isValidElement<Record<string, unknown>>(tree)) return undefined;
   if (match(tree)) return tree;
   return (
-    find(tree.props.children as ReactNode, match) ?? find(tree.props.header as ReactNode, match)
+    find(tree.props.children as ReactNode, match) ??
+    find(tree.props.header as ReactNode, match) ??
+    find(tree.props.footer as ReactNode, match)
   );
 }
 
@@ -428,6 +472,10 @@ beforeEach(() => {
   mock.screenReader = false;
   mock.queryScreenReader = null;
   mock.locale = 'ar';
+  mock.reducedMotion = false;
+  mock.sharedValues.length = 0;
+  mock.cancelAnimation.mockClear();
+  mock.withTiming.mockClear();
   mock.players.clear();
   mock.appListeners.clear();
   mock.screenReaderListeners.clear();
@@ -448,6 +496,276 @@ afterEach(() => {
 });
 
 describe('onboarding presentation readiness', () => {
+  it.each(['android', 'web'])(
+    'keeps %s navigation in its supported container with progress before the actions',
+    (platform) => {
+      mock.platform = platform;
+      refresh();
+      const screen = find(onboarding, (node) => node.type === 'AccessScreen')!;
+      const footerNavigation = find(
+        screen.props.footer as ReactNode,
+        (node) => node.props.testID === 'first-run-navigation',
+      );
+      const inlineNavigation = find(
+        screen.props.children as ReactNode,
+        (node) => node.props.testID === 'first-run-navigation',
+      );
+      const navigation = platform === 'android' ? footerNavigation : inlineNavigation;
+      expect(navigation).toBeDefined();
+      expect(platform === 'android' ? inlineNavigation : footerNavigation).toBeUndefined();
+      const contentStyles = screen.props.contentStyle as (Record<string, unknown> | false)[];
+      const contentStyle = Object.assign({}, ...contentStyles.filter(Boolean));
+      expect(contentStyle).toEqual(
+        expect.objectContaining(
+          platform === 'android' ? { flex: 0, flexGrow: 1, flexShrink: 0 } : { flex: 1 },
+        ),
+      );
+      expect((navigation!.props.children as Node[]).map((node) => node.props.testID)).toEqual([
+        'first-run-progress',
+        'first-run-navigation-actions',
+      ]);
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-back-button'),
+      ).toBeUndefined();
+
+      press('first-run-next-button');
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-title-family'),
+      ).toBeDefined();
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-progress')!.props
+          .accessibilityValue,
+      ).toEqual(expect.objectContaining({ now: 2, min: 1, max: 6 }));
+      press('first-run-back-button');
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-title-intro'),
+      ).toBeDefined();
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-progress')!.props
+          .accessibilityValue,
+      ).toEqual(expect.objectContaining({ now: 1 }));
+
+      for (let step = 1; step < 6; step += 1) press('first-run-next-button');
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-title-growth'),
+      ).toBeDefined();
+      expect(
+        find(onboarding, (node) => node.props.testID === 'first-run-next-button'),
+      ).toBeUndefined();
+      press('first-run-start-button');
+      expect(mock.experience.state).toEqual(expect.objectContaining({ completed: true }));
+    },
+  );
+
+  it('changes the story immediately and moves its image and copy together without a delayed start', () => {
+    refresh();
+    mock.withTiming.mockClear();
+    press('first-run-next-button');
+    expect(
+      find(onboarding, (node) => node.props.testID === 'first-run-title-family'),
+    ).toBeDefined();
+    expect(find(imageTree, (node) => node.type === 'Image')!.props.transition).toBe(0);
+    expect(mock.sharedValues).toHaveLength(2);
+    expect(mock.withTiming).toHaveBeenCalledTimes(2);
+    for (const shared of mock.sharedValues) {
+      expect(shared.get()).toBe(0);
+      expect(shared.animation).toEqual({
+        kind: 'timing',
+        target: 1,
+        config: expect.objectContaining({
+          duration: interactionMotion.timing.state,
+          reduceMotion: 'never',
+        }),
+      });
+    }
+  });
+
+  it('preserves the default image transition outside the onboarding-owned fade', () => {
+    const standaloneScope = scope();
+    try {
+      const illustration = render(standaloneScope, () =>
+        LocalIllustration({ assetId: 'onboarding-ghaf-intro' }),
+      );
+      expect(find(illustration, (node) => node.type === 'Image')!.props.transition).toBe(
+        motion.duration.quick,
+      );
+    } finally {
+      dispose(standaloneScope);
+    }
+  });
+
+  it('retargets an interrupted step from each live value instead of flashing back to zero', () => {
+    refresh();
+    press('first-run-next-button');
+    const [visual, copy] = mock.sharedValues;
+    visual!.value = 0.45;
+    copy!.value = 0.6;
+    mock.cancelAnimation.mockClear();
+    press('first-run-back-button');
+    expect(find(onboarding, (node) => node.props.testID === 'first-run-title-intro')).toBeDefined();
+    expect(visual!.get()).toBe(0.45);
+    expect(copy!.get()).toBe(0.6);
+    for (const shared of [visual, copy]) {
+      expect(mock.cancelAnimation).toHaveBeenCalledWith(shared);
+      expect(shared!.animation?.target).toBe(1);
+    }
+  });
+
+  it('settles a running transition when motion is disabled and does not replay it on re-enable', () => {
+    refresh();
+    press('first-run-next-button');
+    for (const shared of mock.sharedValues) shared.value = 0.4;
+    mock.reducedMotion = true;
+    refresh();
+    for (const shared of mock.sharedValues) {
+      expect(shared.get()).toBe(1);
+      expect(shared.animation).toBeUndefined();
+    }
+    mock.withTiming.mockClear();
+    mock.reducedMotion = false;
+    refresh();
+    expect(mock.withTiming).not.toHaveBeenCalled();
+    for (const shared of mock.sharedValues) expect(shared.get()).toBe(1);
+    press('first-run-next-button');
+    expect(mock.withTiming).toHaveBeenCalledTimes(2);
+  });
+
+  it('shows a reduced-motion step immediately without starting an animation', () => {
+    mock.reducedMotion = true;
+    refresh();
+    press('first-run-next-button');
+    expect(mock.withTiming).not.toHaveBeenCalled();
+    expect(
+      find(onboarding, (node) => node.props.testID === 'first-run-title-family'),
+    ).toBeDefined();
+    expect(find(imageTree, (node) => node.type === 'Image')!.props.transition).toBe(0);
+    for (const shared of mock.sharedValues) {
+      expect(shared.get()).toBe(1);
+      expect(shared.animation).toBeUndefined();
+    }
+  });
+
+  it('does not add a motion delay before narrating a ready reduced-motion step', async () => {
+    mock.reducedMotion = true;
+    refresh();
+    settleImage();
+    await reveal();
+    press('first-run-next-button');
+    settleImage();
+    await advance(0);
+    expect(player('ar-family').play).toHaveBeenCalledOnce();
+    expect(mock.withTiming).not.toHaveBeenCalled();
+  });
+
+  it('narrates only the latest ready slide after rapid navigation finishes settling', async () => {
+    refresh();
+    settleImage();
+    await reveal();
+    press('first-run-next-button');
+    settleImage();
+    await advance(interactionMotion.timing.state - 1);
+    expect(player('ar-family').play).not.toHaveBeenCalled();
+    press('first-run-next-button');
+    settleImage();
+    await advance(1);
+    expect(player('ar-family').play).not.toHaveBeenCalled();
+    expect(player('ar-sustainability').play).not.toHaveBeenCalled();
+    await advance(interactionMotion.timing.state - 1);
+    expect(player('ar-family').play).not.toHaveBeenCalled();
+    expect(player('ar-sustainability').play).toHaveBeenCalledOnce();
+  });
+
+  it.each(['normal', 'reduced'])(
+    'waits for the current intro visit to load and settle after immediate Next/Back with %s motion',
+    async (motionPreference) => {
+      mock.reducedMotion = motionPreference === 'reduced';
+      refresh();
+      settleImage();
+      await reveal();
+      const introPlays = player().play.mock.calls.length;
+      expect(introPlays).toBe(1);
+
+      press('first-run-next-button');
+      press('first-run-back-button');
+      await flush();
+      expect(player().play).toHaveBeenCalledTimes(introPlays);
+      expect(player('ar-family').play).not.toHaveBeenCalled();
+
+      settleImage();
+      await flush();
+      expect(player().play).toHaveBeenCalledTimes(introPlays);
+      if (mock.reducedMotion) await advance(0);
+      else {
+        await advance(interactionMotion.timing.state - 1);
+        expect(player().play).toHaveBeenCalledTimes(introPlays);
+        await advance(1);
+      }
+      expect(player().play).toHaveBeenCalledTimes(introPlays + 1);
+      expect(player('ar-family').play).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(['normal', 'reduced'])(
+    'rejects a previous intro image callback while revisiting intro with %s motion',
+    async (motionPreference) => {
+      mock.reducedMotion = motionPreference === 'reduced';
+      refresh();
+      const previousIntroLoad = find(imageTree, (node) => node.type === 'Image')!.props
+        .onLoad as () => void;
+      settleImage();
+      await reveal();
+      const introPlays = player().play.mock.calls.length;
+      expect(introPlays).toBe(1);
+
+      press('first-run-next-button');
+      press('first-run-back-button');
+      previousIntroLoad();
+      refresh();
+      await advance(mock.reducedMotion ? 0 : interactionMotion.timing.state);
+      expect(player().play).toHaveBeenCalledTimes(introPlays);
+
+      settleImage();
+      await flush();
+      expect(player().play).toHaveBeenCalledTimes(introPlays + 1);
+      expect(player('ar-family').play).not.toHaveBeenCalled();
+    },
+  );
+
+  it('cancels pending narration settlement and animations on unmount', async () => {
+    refresh();
+    settleImage();
+    await reveal();
+    // RootLayout's post-paint image warmup still owns a mocked animation-frame timer.
+    const unrelatedTimers = vi.getTimerCount();
+    const scheduleTimeout = vi.spyOn(globalThis, 'setTimeout');
+    const cancelTimeout = vi.spyOn(globalThis, 'clearTimeout');
+    try {
+      press('first-run-next-button');
+      settleImage();
+      expect(scheduleTimeout).toHaveBeenCalledTimes(1);
+      expect(scheduleTimeout).toHaveBeenCalledWith(
+        expect.any(Function),
+        interactionMotion.timing.state,
+      );
+      const narrationTimeout = scheduleTimeout.mock.results[0]!.value;
+      expect(vi.getTimerCount()).toBe(unrelatedTimers + 1);
+      mock.cancelAnimation.mockClear();
+      cancelTimeout.mockClear();
+      dispose(onboardingScope);
+      expect(cancelTimeout).toHaveBeenCalledWith(narrationTimeout);
+      expect(vi.getTimerCount()).toBe(unrelatedTimers);
+      for (const shared of mock.sharedValues) {
+        expect(mock.cancelAnimation).toHaveBeenCalledWith(shared);
+        expect(shared.animation).toBeUndefined();
+      }
+      await vi.advanceTimersByTimeAsync(interactionMotion.timing.state);
+      expect(player('ar-family').play).not.toHaveBeenCalled();
+    } finally {
+      scheduleTimeout.mockRestore();
+      cancelTimeout.mockRestore();
+    }
+  });
+
   it('keeps settled-slide narration and ambience silent through both opaque startup stages', async () => {
     refresh();
     settleImage();

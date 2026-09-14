@@ -22,6 +22,7 @@ export interface LocalIllustrationProps {
   readonly priority?: 'low' | 'normal' | 'high';
   readonly style?: StyleProp<ViewStyle>;
   readonly testID?: string;
+  readonly transitionDuration?: number;
 }
 
 export function LocalIllustration({
@@ -37,6 +38,7 @@ export function LocalIllustration({
   priority = 'normal',
   style,
   testID,
+  transitionDuration = motion.duration.quick,
 }: LocalIllustrationProps) {
   const reduceMotion = useReducedMotion();
   const [failedAssetId, setFailedAssetId] = useState<ArtworkId | null>(null);
@@ -86,7 +88,7 @@ export function LocalIllustration({
           recyclingKey={assetId}
           source={artworkSources[assetId]}
           style={styles.image}
-          transition={reduceMotion ? 0 : motion.duration.quick}
+          transition={reduceMotion ? 0 : transitionDuration}
         />
       )}
     </View>

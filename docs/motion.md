@@ -17,8 +17,9 @@ the stack (this version uses `standard-navigation`, not separately installed
 `@react-navigation/native-stack`). Vitest 4.1.11 runs Node tests with host mocks.
 
 This is Expo with generated, ignored Android files. Local `android/gradle.properties`
-enables New Architecture, Hermes and edge-to-edge. App config enables predictive
-Back and keyboard resize. The RN Gradle version catalog declares minimum SDK 24
+enables New Architecture, Hermes and edge-to-edge. Current app config disables
+predictive Back for the verified API 35 compatibility fix (`9d756ef`) and retains
+keyboard resize. The RN Gradle version catalog declares minimum SDK 24
 (Android 7), compile/target SDK 36; generated app Gradle consumes the root defaults.
 No custom Babel/Metro config is tracked. Installed `babel-preset-expo` 57.0.10
 auto-configures the Worklets plugin; Metro is 0.84.5. Root already contains
@@ -106,6 +107,21 @@ animation completion. Existing route/modal ownership controls dismissal; no dela
 business close is introduced for an exit animation.
 
 ## Evidence and Android procedure
+
+The original source-only results below are historical. The main continuation,
+including current APK identities, emulator recordings, interruption/accessibility
+results and remaining limits, is tracked in the
+[native motion evidence](competition-readiness/workstreams/native-motion-main-20260914.md).
+
+Onboarding now reuses the native access footer so progress/Next/Back remain
+available while story content scrolls. Web keeps its inline navigation. Its image,
+copy and perimeter use the shared 180 ms state timing; image/copy retain the small
+8dp story displacement. An optional `LocalIllustration.transitionDuration` defaults
+to existing behavior; onboarding passes zero to avoid a second image fade inside
+the parent transition. Live preference changes cancel/settle without replay.
+Only actual step visits animate. Visit-scoped image/settlement callbacks prevent
+old work from authorizing narration after a rapid Next/Back reversal. There are
+no navigation delays, new gestures or dependency/native configuration changes.
 
 Baseline before source edits: 3 files / 42 tests passed (`r001-design-foundation`,
 `slice-two-accessibility`, `r003-first-run-experience`, single worker). No baseline
