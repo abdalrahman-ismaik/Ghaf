@@ -23,7 +23,7 @@ export function getPilotConfig(
   },
 ): PilotConfig {
   const selectedMode = environment.EXPO_PUBLIC_GHAF_AUTH_MODE?.trim() ?? '';
-  if (selectedMode === '' || selectedMode === 'demo') {
+  if (selectedMode === 'demo') {
     return {
       mode: 'demo',
       enabled: false,
@@ -37,7 +37,7 @@ export function getPilotConfig(
   const supabaseUrl = environment.EXPO_PUBLIC_SUPABASE_URL?.trim() || null;
   const supabasePublishableKey = environment.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() || null;
   const configurationError =
-    selectedMode !== 'supabase'
+    selectedMode !== '' && selectedMode !== 'supabase'
       ? 'invalid_auth_mode'
       : !supabaseUrl || !supabasePublishableKey?.startsWith('sb_publishable_')
         ? 'missing_supabase_configuration'

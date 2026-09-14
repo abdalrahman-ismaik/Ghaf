@@ -15,6 +15,7 @@ import { Button, Text } from '@/components/primitives';
 import { colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { PilotController, PilotState } from '@/features/pilot/controller';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { ChildDevicePairing } from './ChildDevicePairing';
 
 export interface PilotAccountViewProps {
   readonly controller: PilotController;
@@ -61,6 +62,11 @@ export function PilotAccountView({ controller, state, children }: PilotAccountVi
       <PilotAccountBody key={bodyKey} controller={controller} state={state}>
         {children}
       </PilotAccountBody>
+      {controller.pairChildAvailable &&
+      !state.account &&
+      ['signin', 'error'].includes(state.phase) ? (
+        <ChildDevicePairing controller={controller} busy={state.busy} />
+      ) : null}
     </AccessScreen>
   );
 }

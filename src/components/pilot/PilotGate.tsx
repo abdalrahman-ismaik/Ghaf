@@ -15,6 +15,7 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { PilotAccountView } from './PilotAccountView';
 import { AccountWorkspaceBoundary } from './AccountWorkspaceBoundary';
+import { RealFamilySession } from './RealFamilySession';
 
 function createAccountRuntime() {
   let service = null;
@@ -117,6 +118,7 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
     if (Platform.OS !== 'android') return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       const current = controller.getSnapshot();
+      if (current.phase === 'ready' && !current.sampleOpen && service?.familyRequest) return false;
       if (current.phase === 'ready' && current.sampleOpen && !current.accountPanel) return false;
       if (current.accountPanel) controller.continueSample();
       else if (['register', 'verify', 'forgot', 'recovery-code'].includes(current.phase)) {
@@ -125,7 +127,7 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
       return true;
     });
     return () => subscription.remove();
-  }, [controller]);
+  }, [controller, service]);
 
   useEffect(() => {
     const current = controller.getSnapshot();
@@ -138,6 +140,17 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
     navigatedGeneration.current = state.sampleGeneration;
     router.replace('/parent');
   }, [demoMounted, navigation?.key, router, state.sampleGeneration]);
+
+  if (state.phase === 'ready' && !state.sampleOpen && state.account && service?.familyRequest)
+    return (
+      <RealFamilySession
+        key={state.account.userId}
+        controller={controller}
+        state={state}
+        service={service}
+        userId={state.account.userId}
+      />
+    );
 
   if (!demoMounted)
     return (

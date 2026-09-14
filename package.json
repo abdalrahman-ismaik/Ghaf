@@ -6,6 +6,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
+    "start:demo": "node scripts/start-demo.mjs",
     "start:pilot": "node --env-file=.env.pilot.local ./node_modules/expo/bin/cli start --clear",
     "start:messaging": "node --env-file=.env.messaging.local ./node_modules/expo/bin/cli start --clear",
     "android": "expo start --android",

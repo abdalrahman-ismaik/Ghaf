@@ -9,6 +9,7 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PilotAccountView } from '../../src/components/pilot/PilotAccountView';
+import { ChildDevicePairing } from '../../src/components/pilot/ChildDevicePairing';
 import { EnabledPilotGate, PilotGate } from '../../src/components/pilot/PilotGate';
 import type { PilotController, PilotState } from '../../src/features/pilot/controller';
 import { pilotResources } from '../../src/i18n/pilotResources';
@@ -38,6 +39,7 @@ const mock = vi.hoisted(() => ({
   getService: vi.fn(),
   createController: vi.fn(),
   router: { replace: vi.fn() },
+  uuidSequence: 0,
 }));
 
 vi.mock('react', async (importOriginal) => {
@@ -83,6 +85,9 @@ vi.mock('expo-router', () => ({
   useRootNavigationState: () => (mock.navigationKey ? { key: mock.navigationKey } : undefined),
 }));
 vi.mock('expo-status-bar', () => ({ StatusBar: 'StatusBar' }));
+vi.mock('expo-crypto', () => ({
+  randomUUID: () => `02000000-0000-4000-8000-${String(++mock.uuidSequence).padStart(12, '0')}`,
+}));
 vi.mock('react-native', () => ({
   View: 'View',
   ActivityIndicator: 'ActivityIndicator',
@@ -137,6 +142,9 @@ vi.mock('@/services', () => ({
 }));
 vi.mock('../../src/components/pilot/AccountWorkspaceBoundary', () => ({
   AccountWorkspaceBoundary: 'AccountWorkspaceBoundary',
+}));
+vi.mock('../../src/components/pilot/RealFamilySession', () => ({
+  RealFamilySession: 'RealFamilySession',
 }));
 vi.mock('@/features/pilot/controller', () => ({
   createPilotController: (...args: unknown[]) => mock.createController(...args),
@@ -197,6 +205,7 @@ function renderView(children?: ReactNode) {
     renderedBodyKey = body.key;
   }
   mock.cursor = 0;
+  mock.uuidSequence = 0;
   const rendered = (body.type as (props: Record<string, unknown>) => ReactNode)(body.props);
   tree = cloneElement(shell, {
     children: Children.map(shell.props.children, (child) => (child === body ? rendered : child)),
@@ -248,6 +257,8 @@ beforeEach(() => {
     profileNotice: null,
   };
   mock.controller = {
+    pairChildAvailable: false,
+    pairChildDevice: vi.fn(async () => undefined),
     getSnapshot: () => mock.pilot,
     subscribe: vi.fn(() => () => undefined),
     initialize: vi.fn(async () => undefined),
@@ -287,6 +298,33 @@ afterEach(async () => {
 });
 
 describe('Pilot account forms', () => {
+  it('keeps the pairing request ID stable across a failed send and changes it with the token', () => {
+    const renderPairing = (busy = false) => {
+      mock.cursor = 0;
+      tree = ChildDevicePairing({ controller: mock.controller, busy });
+    };
+    renderPairing();
+    const token = 'abcd0123'.repeat(8);
+    (byId('cloud-child-pairing-token')!.props.onChangeText as (value: string) => void)(token);
+    renderPairing();
+    press('cloud-child-pairing-submit');
+    const first = vi.mocked(mock.controller.pairChildDevice).mock.calls[0];
+    expect(first).toEqual([token, expect.any(String)]);
+    mock.pilot = { ...mock.pilot, error: 'network_unavailable' };
+    renderPairing();
+    press('cloud-child-pairing-submit');
+    expect(vi.mocked(mock.controller.pairChildDevice).mock.calls[1]).toEqual(first);
+    renderPairing(true);
+    expect(byId('cloud-child-pairing-token')?.props.editable).toBe(false);
+    expect(byId('cloud-child-pairing-submit')?.props.busy).toBe(true);
+    (byId('cloud-child-pairing-token')!.props.onChangeText as (value: string) => void)(
+      'ef'.repeat(32),
+    );
+    renderPairing();
+    press('cloud-child-pairing-submit');
+    expect(vi.mocked(mock.controller.pairChildDevice).mock.calls[2]?.[1]).not.toBe(first?.[1]);
+  });
+
   it('keeps the access shell and dark status bar stable while replacing the phase-owned body', () => {
     renderView();
     const signedOutShell = byId('pilot-signin-screen')!;

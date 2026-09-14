@@ -5,6 +5,8 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/**/*.test.{ts,tsx}'],
     clearMocks: true,
+    // The historical fixture suite explicitly selects the isolated demonstration.
+    env: { EXPO_PUBLIC_GHAF_AUTH_MODE: 'demo' },
   },
   resolve: {
     alias: {

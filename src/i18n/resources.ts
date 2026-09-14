@@ -1,4 +1,9 @@
 import { pilotResources } from './pilotResources';
+import { cloudFamilyResources } from './cloudFamilyResources';
+import { cloudAccessResources } from './cloudAccessResources';
+import { cloudDocumentResources } from '../features/cloud-study/resources';
+import { cloudGrowthResources } from './cloudGrowthResources';
+import { cloudMessagingResources } from './cloudMessagingResources';
 import { memoryResources } from './memoryResources';
 import { onboardingControlResources } from './onboardingControlResources';
 import { profileRecommendationResources } from './profileRecommendationResources';
@@ -13,6 +18,11 @@ export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
+      cloudFamily: cloudFamilyResources.ar,
+      cloudAccess: cloudAccessResources.ar,
+      cloudDocuments: cloudDocumentResources.ar,
+      cloudGrowth: cloudGrowthResources.ar,
+      cloudMessaging: cloudMessagingResources.ar,
       memories: memoryResources.ar,
       onboardingControls: onboardingControlResources.ar,
       profileRecommendations: profileRecommendationResources.ar,
@@ -2129,6 +2139,11 @@ export const resources = {
   en: {
     translation: {
       pilot: pilotResources.en,
+      cloudFamily: cloudFamilyResources.en,
+      cloudAccess: cloudAccessResources.en,
+      cloudDocuments: cloudDocumentResources.en,
+      cloudGrowth: cloudGrowthResources.en,
+      cloudMessaging: cloudMessagingResources.en,
       memories: memoryResources.en,
       onboardingControls: onboardingControlResources.en,
       profileRecommendations: profileRecommendationResources.en,
