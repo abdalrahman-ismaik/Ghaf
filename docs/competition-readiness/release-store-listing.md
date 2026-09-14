@@ -7,6 +7,8 @@ No store entry, hosted page, asset upload or promotional recording was created.
 The complete [45-row release ledger](release-readiness.md) (R01–R38, A01–A07),
 [Feature021](../../specs/021-release-readiness/spec.md) and
 [security/privacy assessment](release-security-and-privacy.md) remain authoritative.
+The [asset notices and commercial-rights gaps](release-asset-notices.md) must also
+be reconciled before public distribution; approved appearance alone is insufficient.
 This shorter marketing narrative does not reduce that scope or defer missing
 features. Every functional claim below requires acceptance on the current
 standalone Android candidate using two independent clients; historical source,

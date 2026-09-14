@@ -2,16 +2,17 @@
 
 Verdict: **NOT READY**. Active execution; no public-release acceptance.
 Owner: root release coordinator. Authority: [Feature021](../../specs/021-release-readiness/spec.md).
-Updated: **2026-09-14**, at the checkpoint described below. This ledger preserves
+Updated: **2026-09-15 Dubai**, at the checkpoint described below. This ledger preserves
 all **R01–R38 / A01–A07** commitments; missing features remain blockers, not implicit
 deferrals. Supporting documents: [security/privacy evidence](release-security-and-privacy.md)
 and [unpublished bilingual listing](release-store-listing.md). Detailed evidence:
 [QA](release-qa-results.md), [24-task audit](release-task-catalog.md),
-[performance](release-performance.md), [deployment](release-deployment-runbook.md).
+[performance](release-performance.md), [deployment](release-deployment-runbook.md),
+[asset notices and rights gaps](release-asset-notices.md).
 
 ## Candidate and access checkpoint
 
-- Current release source: `63353ae`, pushed to
+- Current release source: `b2b4302`, pushed to
   `release/021-internal-20260914`. Feature020 real access enters
   [RealFamilySession](../../src/components/pilot/RealFamilySession.tsx) →
   [CloudFamilyBoundary](../../src/components/cloud-family/CloudFamilyBoundary.tsx);
@@ -20,8 +21,8 @@ and [unpublished bilingual listing](release-store-listing.md). Detailed evidence
 - Root mitigations included: `15182d0` source-check/provenance guard,
   `bb75cbb` overlay-permission removal and `a6b57f6` missing-replay-store denial.
   Later fixes: `f129b7f` compatible YAML parser patch, `e8c6b3b` preaccept Help
-  and `63353ae` complete safety guidance. They do not activate live AI or
-  establish a new native pass.
+  and `63353ae` complete safety guidance. `b2b4302` addresses the three-row
+  native footer reproduced on d13. Live AI remains disabled.
 - Fresh Gradle [workflow run 34887712753](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34887712753)
   at `c54f25f` **FAILED in verify**: application tests reported **1 failed,
   3,387 passed, 6 skipped**. The Gemini unauthorized-request fixture omitted the
@@ -29,9 +30,14 @@ and [unpublished bilingual listing](release-store-listing.md). Detailed evidence
   Earlier verification steps passed; Android compilation was skipped and **no
   artifact was produced**. Correction `d13c148` passed the full verify job in
   [run34888514880](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34888514880);
-  its fresh Gradle build is running. The later candidate `63353ae` is queued in
+  its fresh Gradle build succeeded and its exact APK passed local hash/signature/
+  alignment and upgrade installation. Synthetic Parent login, native Child pairing,
+  Child cold restoration and offline/retry passed on that standalone d13 APK.
+  The later safety candidate `63353ae` built successfully in
   [run34889994736](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34889994736).
-  No current APK/install result is claimed at this checkpoint.
+  The footer candidate `b2b4302` passed all source checks and is compiling in
+  [run34891473556](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34891473556);
+  its separate repository/backend CI passed. Later-source native acceptance is pending.
 - Package `ae.ac.ku.ghaf.prototype`, version `0.1.0` / code `1`; current
   workflow uses the Expo internal template signer. Production/store signing and
   account identity are unresolved. GitHub access is available; EAS is signed out
@@ -164,16 +170,16 @@ supersession is recorded as explicitly deferred.
 | ------------------------------------------------ | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1. Functional scope and persistence              | **BLOCKED**                 | Core/document/message source and F020-H/B evidence improved; R05/R06/R07/R16 remain missing, paid capacity and live AI incomplete. Public registration still needs manual approval.    | Finish every applicable R01–R38/A01–A07 obligation, resolve public onboarding, and execute the whole current standalone Parent/Child journey across independent clients. Retain newly reported hosted growth evidence and complete reset/recovery cases. |
 | 2. Security and identity isolation               | **PARTIAL — NOT ACCEPTED**  | Restricted hosted negative checks, pinned identity and RLS/RPC guards; replay/overlay source fixes. Production metadata/advisors reviewed only.                                        | Resolve individual advisor/privilege findings, validate all current role/device/revocation/error boundaries, verify fresh APK permissions and durable gateway controls before any provider activation. Preserve real records.                            |
-| 3. Usability, Arabic and accessibility           | **BLOCKED**                 | F020-B browser core loop; ROOT-N0 historical entry/keyboard only; existing bilingual/motion tests.                                                                                     | Verify current Android RTL/LTR, TalkBack, large text, keyboard/Back, interruption/reduced motion, complete onboarding/audio and human Arabic/cultural review. Use the actual candidate for captures/rehearsal.                                           |
-| 4. Engineering quality and reproducible artifact | **PARTIAL — BUILD PENDING** | Corrected d13c148 source/backend/repository CI passed;63353ae backend CI passed; native build/queue active.                                                                            | Finish exact63353ae fresh Gradle artifact checks and clean/upgrade/standalone regression. Keep older binaries and rebundles separately attributed.                                                                                                       |
-| 5. Performance and physical Android              | **BLOCKED**                 | No current physical-device measurements or release-build frame/memory/startup evidence.                                                                                                | Measure the same representative lower/mid-range Android flows on baseline/candidate; test scrolling, input, transitions, lifecycle and memory. Record actual measurements, thermal/device/build conditions and functional regressions.                   |
+| 3. Usability, Arabic and accessibility           | **BLOCKED**                 | F020-B browser core loop; root d13 native pairing/restart/offline and large-text baseline; existing bilingual/motion tests. Locale persistence remains P2.                             | Verify current Android RTL/LTR, TalkBack, large text, keyboard/Back, interruption/reduced motion, complete onboarding/audio and human Arabic/cultural review. Use the actual candidate for captures/rehearsal.                                           |
+| 4. Engineering quality and reproducible artifact | **PARTIAL — BUILD PENDING** | d13/633 fresh Gradle and b2 source/backend/repository CI passed; b2 native compilation is active.                                                                                      | Finish exact b2b4302 fresh Gradle artifact checks and clean/upgrade/standalone regression. Keep older binaries and rebundles separately attributed.                                                                                                      |
+| 5. Performance and physical Android              | **BLOCKED**                 | Standalone emulator startup/frame/memory baselines are measured. Candidate comparison and physical-device acceptance remain pending.                                                   | Measure the same representative lower/mid-range Android flows on baseline/candidate; test scrolling, input, transitions, lifecycle and memory. Record actual measurements, thermal/device/build conditions and functional regressions.                   |
 | 6. Privacy, policy and truthful presentation     | **BLOCKED**                 | [Data/retention assessment](release-security-and-privacy.md) and [bilingual listing draft](release-store-listing.md) prepared; no public pages/deletion path or approved declarations. | Establish actual operator/contact, in-app and web deletion, recipient/retention terms, Child SDK/social/consent review and accurate Play audience/Data safety/content answers. Keep unverified feature claims and historical screenshots unpublished.    |
 | 7. Operations, recovery and support              | **BLOCKED**                 | Main Free/Nano has no managed backup. Root read back a successful scheduled retention run and restored hourly schedule. SMTP delivery/support/recovery remain unverified.              | Assign accountable owners; prove protected backup and isolated database/media restore, delivery, account deletion and actual public support hosting.                                                                                                     |
 | 8. Store access, signing and publication         | **BLOCKED**                 | Current login reaches developer registration; no track/app access or production signer verified. Internal template-signed APK workflow only.                                           | Establish authorized developer/app identity and production signing, finish store-required records and testing, then upload/submit/publish only after all preceding gates pass. No purchase, terms acceptance or identity submission is inferred.         |
 
 ## Immediate continuation
 
-1. Complete the queued `63353ae` candidate through the full gated fresh
+1. Complete the `b2b4302` candidate through the full gated fresh
    Gradle workflow. On success verify/download its exact artifact and receipt,
    then run current Feature020 Android acceptance in an isolated QA session while
    preserving original installations/data.

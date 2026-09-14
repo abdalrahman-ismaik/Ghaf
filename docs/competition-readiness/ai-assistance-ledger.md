@@ -24,6 +24,16 @@ store evidence remain distinct. Fresh CI candidates and subsequent native outcom
 belong in the [release ledger](release-readiness.md) and [QA record](release-qa-results.md).
 No private household content or credential-bearing fixture is tracked.
 
+The fresh d13 APK then passed isolated Parent login, real native Child pairing,
+Child restart and offline/retry checks. Root measured repeated-navigation frame/
+memory counters, inspected50 ELF libraries and triaged raw credential-pattern
+false positives through22,314 decoded Hermes strings without publishing values.
+The next source b2b4302 reduces the reproduced three-row family footer using
+existing labeled controls;26focused UI checks, typecheck and scoped lint passed.
+Its fresh native acceptance is pending at this checkpoint. One helper executed
+a30-call loopback authenticated-role SQL timing sample with transactional fixtures
+and verified rollback; this is neither HTTP authorization nor production capacity.
+
 The [Feature021 contract](../../specs/021-release-readiness/spec.md), catalog,
 security, performance, deployment and unpublished listing records retain missing
 functionality and owner/tooling gates. These are AI-assisted implementation and

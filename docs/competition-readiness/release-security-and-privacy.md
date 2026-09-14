@@ -158,6 +158,26 @@ close P1 gates with direct evidence before publication.
 
 ## Subsequent root execution
 
+Fresh d13 Gradle run34888514880 succeeded. Its merged APK excludes the blocked
+overlay permission; local signature/hash/ZIP checks, update installation, real
+synthetic-account login and secure-session restart passed. Supported voice/media
+flows remain unverified. All50 native ELF libraries satisfy the inspected16KiB
+PT_LOAD alignment/congruence rules; actual16KiB-device behavior remains untested.
+
+A bounded known-credential scan covered all1,652 d13 APK entries. Raw Hermes
+storage initially matched an SDK key-format prefix concatenated with adjacent
+strings and `sk-` inside task identifiers. Root decoded22,314 Hermes strings using
+the installed compiler: no privileged key/provider match remained; `sb_secret_`
+was exactly the public SDK format-detection literal. No matched values or decoded
+bundle dump were published. The scan also checked known private PEM/GitHub/Google
+key patterns and privileged JWT roles. This is bounded evidence, not proof against
+every encoded secret or data leak. Recheck the actual final candidate separately.
+
+The [asset/license record](release-asset-notices.md) identifies exact packaged font
+and audio bytes, full supplied font licenses and unresolved recording/artwork
+commercial rights. It does not substitute for a public privacy policy or full
+dependency/license clearance.
+
 The compatible YAML patch is committed as `f129b7f`. An isolated4.3.2 install
 rejected the bounded empty-merge input accepted by4.3.1; all three workflow parse
 results were identical. The locked production audit now reports0high/14moderate;
