@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GhafIcon } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { logicalRowDirection } from '@/design/tokens';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { MessagingAccess } from './MessagingAccess';
@@ -82,7 +83,15 @@ export function FamilyMessagingScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.header}>
-          <View style={[styles.row, { direction, flexDirection: 'row' }]}>
+          <View
+            style={[
+              styles.row,
+              {
+                direction: Platform.OS === 'web' ? direction : 'ltr',
+                flexDirection: Platform.OS === 'web' ? 'row' : logicalRowDirection(direction),
+              },
+            ]}
+          >
             <MessageButton
               variant="quiet"
               fullWidth={false}
