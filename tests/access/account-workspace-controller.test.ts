@@ -62,6 +62,7 @@ describe('account workspace controller', () => {
     expect(await h.controller.load()).toBe(false);
     expect(await h.controller.update({ type: 'rename_family', name: 'Not loaded' })).toBe(false);
     expect(h.service.loadWorkspace).toHaveBeenCalledOnce();
+    expect(h.service.loadWorkspace).toHaveBeenCalledWith(saved.userId);
     expect(h.service.updateWorkspace).not.toHaveBeenCalled();
     waiting.resolve(saved);
     await first;
@@ -76,10 +77,13 @@ describe('account workspace controller', () => {
     const first = h.controller.update(command);
     expect(await h.controller.update(command)).toBe(false);
     expect(await h.controller.load()).toBe(false);
-    expect(h.service.updateWorkspace).toHaveBeenCalledExactlyOnceWith({
-      expectedRevision: 1,
-      command,
-    });
+    expect(h.service.updateWorkspace).toHaveBeenCalledExactlyOnceWith(
+      {
+        expectedRevision: 1,
+        command,
+      },
+      saved.userId,
+    );
     expect(h.controller.getSnapshot()).toMatchObject({ data: saved, busy: true, notice: null });
     waiting.resolve({ ...saved, familyName: 'Saved change', revision: 2 });
     expect(await first).toBe(true);
@@ -102,10 +106,13 @@ describe('account workspace controller', () => {
     h.service.updateWorkspace.mockRejectedValueOnce(new ParentAccountError('profile_conflict'));
     const command = { type: 'rename_family', name: 'My draft' } as const;
     expect(await h.controller.update(command, 1)).toBe(false);
-    expect(h.service.updateWorkspace).toHaveBeenCalledExactlyOnceWith({
-      expectedRevision: 1,
-      command,
-    });
+    expect(h.service.updateWorkspace).toHaveBeenCalledExactlyOnceWith(
+      {
+        expectedRevision: 1,
+        command,
+      },
+      saved.userId,
+    );
     expect(h.controller.getSnapshot()).toMatchObject({
       conflict: true,
       error: 'profile_conflict',
@@ -118,7 +125,10 @@ describe('account workspace controller', () => {
     await h.controller.reload();
     expect(h.controller.getSnapshot()).toMatchObject({ conflict: false, error: null });
     expect(await h.controller.update(command)).toBe(true);
-    expect(h.service.updateWorkspace).toHaveBeenLastCalledWith({ expectedRevision: 2, command });
+    expect(h.service.updateWorkspace).toHaveBeenLastCalledWith(
+      { expectedRevision: 2, command },
+      saved.userId,
+    );
   });
 
   it('does not queue or automatically replay a failed write after reconnecting', async () => {
@@ -193,16 +203,19 @@ describe('account workspace controller', () => {
     });
   });
 
-  it.each(['access_unavailable', 'session_expired', 'storage_unavailable'] as const)(
-    'closes saved data on %s during a write',
-    async (code) => {
-      const h = harness();
-      await h.controller.load();
-      h.service.updateWorkspace.mockRejectedValueOnce(new ParentAccountError(code));
-      await h.controller.update({ type: 'rename_family', name: 'Prepared update' });
-      expect(h.controller.getSnapshot()).toMatchObject({ data: null, error: code, notice: null });
-    },
-  );
+  it.each([
+    'access_unavailable',
+    'session_expired',
+    'storage_unavailable',
+    'operation_cancelled',
+    'recovery_required',
+  ] as const)('closes saved data on %s during a write', async (code) => {
+    const h = harness();
+    await h.controller.load();
+    h.service.updateWorkspace.mockRejectedValueOnce(new ParentAccountError(code));
+    await h.controller.update({ type: 'rename_family', name: 'Prepared update' });
+    expect(h.controller.getSnapshot()).toMatchObject({ data: null, error: code, notice: null });
+  });
 
   it.each(['load', 'update'] as const)(
     'clears private data and ignores late %s after disposal',

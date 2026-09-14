@@ -168,6 +168,8 @@ export function createPilotController(
       'account_unavailable',
       'session_expired',
       'storage_unavailable',
+      'operation_cancelled',
+      'recovery_required',
     ].includes(error.code);
   const applyProfile = (profile: AccountProfile, discardDraft: boolean) => {
     const keepDraft =
@@ -195,7 +197,7 @@ export function createPilotController(
     if (!current(attempt) || !service) return;
     publish({ profileBusy: true, profileNotice: null });
     try {
-      const profile = await service.loadProfile();
+      const profile = await service.loadProfile(account.userId);
       if (!current(attempt) || state.account?.userId !== account.userId) return;
       if (profile.userId !== account.userId) throw new ParentAccountError('profile_unavailable');
       applyProfile(profile, discardDraft);
@@ -237,7 +239,8 @@ export function createPilotController(
       email: account.email,
       error: null,
     });
-    if (status === 'approved') await loadProfile(account, attempt, discardDraft);
+    if (status === 'approved' && account.role !== 'child')
+      await loadProfile(account, attempt, discardDraft);
   };
   const refresh = async (discardDraft = false) => {
     if (state.phase === 'logout-error') {
@@ -289,6 +292,7 @@ export function createPilotController(
   };
 
   return {
+    pairChildAvailable: Boolean(service?.pairChildDevice),
     getSnapshot: () => state,
     subscribe(listener: () => void) {
       listeners.add(listener);
@@ -342,7 +346,7 @@ export function createPilotController(
     },
     refresh,
     reloadProfile() {
-      if (state.phase !== 'ready') return Promise.resolve();
+      if (state.phase !== 'ready' || state.account?.role === 'child') return Promise.resolve();
       return refresh(true);
     },
     editProfile(patch: Partial<Pick<AccountProfileDraft, 'displayName' | 'preferredLocale'>>) {
@@ -376,11 +380,14 @@ export function createPilotController(
       return run(async (attempt) => {
         publish({ profileBusy: true, profileError: null, profileNotice: null });
         try {
-          const profile = await service!.saveProfile({
-            displayName: draft.displayName,
-            preferredLocale: draft.preferredLocale,
-            expectedRevision: draft.expectedRevision,
-          });
+          const profile = await service!.saveProfile(
+            {
+              displayName: draft.displayName,
+              preferredLocale: draft.preferredLocale,
+              expectedRevision: draft.expectedRevision,
+            },
+            draft.userId,
+          );
           if (!current(attempt) || state.account?.userId !== draft.userId) return;
           if (profile.userId !== draft.userId) throw new ParentAccountError('profile_unavailable');
           applyProfile(profile, true);
@@ -418,6 +425,21 @@ export function createPilotController(
         async (attempt) => {
           const account = await service!.signIn(email, password);
           if (!current(attempt)) return;
+          publish({ phase: 'restoring' });
+          await accept(account, attempt);
+        },
+        'signin',
+        true,
+      );
+    },
+    pairChildDevice(token: string, requestId: string) {
+      if (!service?.pairChildDevice || !['signin', 'error'].includes(state.phase) || state.account)
+        return Promise.resolve();
+      return run(
+        async (attempt) => {
+          const account = await service.pairChildDevice!(token, requestId);
+          if (!current(attempt)) return;
+          if (account.role !== 'child') throw new ParentAccountError('access_unavailable');
           publish({ phase: 'restoring' });
           await accept(account, attempt);
         },
@@ -487,11 +509,11 @@ export function createPilotController(
       );
     },
     async explore() {
-      if (state.phase !== 'ready' || !state.account) return;
+      if (state.phase !== 'ready' || !state.account || state.account.role === 'child') return;
       await run(async (attempt) => {
         const account = await service!.restoreSession();
         await accept(account, attempt);
-        if (!current(attempt) || state.phase !== 'ready') return;
+        if (!current(attempt) || state.phase !== 'ready' || state.account?.role === 'child') return;
         await sample.start();
         if (current(attempt))
           publish({
@@ -505,10 +527,11 @@ export function createPilotController(
       if (state.phase === 'ready') publish({ accountPanel: true });
     },
     continueSample() {
-      if (state.phase === 'ready' && state.sampleOpen) publish({ accountPanel: false });
+      if (state.phase === 'ready' && state.sampleOpen && state.account?.role !== 'child')
+        publish({ accountPanel: false });
     },
     restartSample() {
-      if (state.phase !== 'ready' || state.busy) return;
+      if (state.phase !== 'ready' || state.busy || state.account?.role === 'child') return;
       ++generation;
       try {
         clear();

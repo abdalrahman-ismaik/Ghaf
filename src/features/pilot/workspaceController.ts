@@ -51,7 +51,7 @@ export function createWorkspaceController(
     const attempt = ++generation;
     publish({ busy: true, loading: true, error: null, notice: null });
     try {
-      const data = await service.loadWorkspace();
+      const data = await service.loadWorkspace(userId);
       if (!current(attempt)) return false;
       validateOwner(data);
       publish({
@@ -89,7 +89,7 @@ export function createWorkspaceController(
       const attempt = ++generation;
       publish({ busy: true, error: null, notice: null });
       try {
-        const data = await service.updateWorkspace({ expectedRevision, command });
+        const data = await service.updateWorkspace({ expectedRevision, command }, userId);
         if (!current(attempt)) return false;
         validateOwner(data);
         if (data.revision <= expectedRevision) throw new ParentAccountError('profile_unavailable');
@@ -103,6 +103,8 @@ export function createWorkspaceController(
             'account_unavailable',
             'session_expired',
             'storage_unavailable',
+            'operation_cancelled',
+            'recovery_required',
           ].includes(code);
           publish({
             ...(deniesAccess ? { data: null } : {}),

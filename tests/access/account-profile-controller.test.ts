@@ -75,6 +75,7 @@ describe('account-owned profile lifecycle', () => {
   it('keeps the authenticated workspace mounted while a known account refreshes', async () => {
     const h = harness();
     await h.controller.initialize();
+    expect(h.service.loadProfile).toHaveBeenCalledWith(adultA.userId);
     h.controller.editProfile({ displayName: 'Unsaved draft' });
     const waiting = deferred<typeof adultA>();
     vi.mocked(h.service.restoreSession).mockReturnValueOnce(waiting.promise);
@@ -164,11 +165,14 @@ describe('account-owned profile lifecycle', () => {
     });
     vi.mocked(h.service.saveProfile).mockRejectedValue(new ParentAccountError('profile_conflict'));
     await h.controller.saveProfile();
-    expect(h.service.saveProfile).toHaveBeenCalledExactlyOnceWith({
-      displayName: 'My unsaved draft',
-      preferredLocale: 'en',
-      expectedRevision: 1,
-    });
+    expect(h.service.saveProfile).toHaveBeenCalledExactlyOnceWith(
+      {
+        displayName: 'My unsaved draft',
+        preferredLocale: 'en',
+        expectedRevision: 1,
+      },
+      adultA.userId,
+    );
     expect(h.controller.getSnapshot()).toMatchObject({
       profileError: 'profile_conflict',
       profileNotice: null,

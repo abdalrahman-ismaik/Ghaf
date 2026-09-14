@@ -5,6 +5,9 @@ export type PilotAccessStatus = 'pending' | 'approved' | 'suspended';
 export interface RealAccountSession {
   readonly userId: string;
   readonly email: string;
+  readonly role?: 'child';
+  readonly familyId?: string;
+  readonly childId?: string;
 }
 
 export interface AccountProfile {
@@ -36,6 +39,7 @@ export type ParentAccountErrorCode =
   | 'profile_conflict'
   | 'profile_unavailable'
   | 'recovery_required'
+  | 'reauth_required'
   | 'session_expired'
   | 'operation_cancelled'
   | 'provider_unavailable';
@@ -50,15 +54,26 @@ export class ParentAccountError extends Error {
 export type ParentAccountEvent = 'signed-out' | 'changed' | 'refreshed' | 'recovery' | 'error';
 
 export interface ParentAccountService {
+  familyRequest?(
+    name: string,
+    args?: Record<string, unknown>,
+    expectedUserId?: string,
+  ): Promise<unknown>;
+  subscribeFamily?(familyId: string, onChange: () => void): Promise<() => void>;
+  pairChildDevice?(token: string, requestId: string): Promise<RealAccountSession>;
+  reauthenticate?(password: string, expectedUserId?: string): Promise<void>;
   signUp(email: string, password: string): Promise<void>;
   verifyEmail(email: string, code: string): Promise<RealAccountSession>;
   signIn(email: string, password: string): Promise<RealAccountSession>;
   restoreSession(): Promise<RealAccountSession | null>;
   getAccess(userId: string): Promise<PilotAccessStatus>;
-  loadProfile(): Promise<AccountProfile>;
-  saveProfile(update: AccountProfileUpdate): Promise<AccountProfile>;
-  loadWorkspace(): Promise<AccountWorkspace>;
-  updateWorkspace(update: AccountWorkspaceUpdate): Promise<AccountWorkspace>;
+  loadProfile(expectedUserId?: string): Promise<AccountProfile>;
+  saveProfile(update: AccountProfileUpdate, expectedUserId?: string): Promise<AccountProfile>;
+  loadWorkspace(expectedUserId?: string): Promise<AccountWorkspace>;
+  updateWorkspace(
+    update: AccountWorkspaceUpdate,
+    expectedUserId?: string,
+  ): Promise<AccountWorkspace>;
   resendVerification(email: string): Promise<void>;
   requestPasswordReset(email: string): Promise<void>;
   verifyRecovery(email: string, code: string): Promise<void>;

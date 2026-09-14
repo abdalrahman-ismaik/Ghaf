@@ -15,6 +15,7 @@ const errorsAr: Record<ParentAccountErrorCode, string> = {
   access_unavailable:
     'تعذّر التحقّق من الموافقة على الحساب. تبقى بيانات الحساب مغلقة حتى يكتمل التحقّق.',
   recovery_required: 'أكمل تعيين كلمة المرور الجديدة للعودة إلى تسجيل الدخول.',
+  reauth_required: 'أعد تأكيد كلمة المرور لمتابعة هذا الإجراء الخاص بوليّ الأمر.',
   session_expired: 'انتهت جلسة الدخول. سجّل الدخول مجدداً.',
   operation_cancelled: 'توقّفت المحاولة. يمكنك البدء مجدداً.',
   provider_unavailable: 'تعذّر إكمال الطلب الآن. حاول مجدداً.',
@@ -39,6 +40,7 @@ const errorsEn: Record<ParentAccountErrorCode, string> = {
   access_unavailable:
     'Account approval could not be checked. Account data stays closed until verification succeeds.',
   recovery_required: 'Finish setting a new password to return to sign in.',
+  reauth_required: 'Confirm your password again to continue this Parent action.',
   session_expired: 'Your session has expired. Sign in again.',
   operation_cancelled: 'The attempt was interrupted. You can start again.',
   provider_unavailable: 'The request could not be completed now. Please retry.',

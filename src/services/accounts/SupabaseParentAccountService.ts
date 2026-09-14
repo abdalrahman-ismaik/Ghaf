@@ -9,6 +9,7 @@ import {
   type RealAccountSession,
 } from '../../models/parentAccount';
 import { GuardedAccountStorage, RECOVERY_STORAGE_KEY } from './storage';
+import type { Database } from './database.types';
 import type {
   AccountWorkspace,
   AccountWorkspaceUpdate,
@@ -19,12 +20,62 @@ interface ProviderUser {
   id: string;
   email?: string;
   email_confirmed_at?: string;
+  is_anonymous?: boolean;
+}
+
+const allowedFamilyRpcNames = [
+  'ghaf_family_snapshot',
+  'ghaf_family_command',
+  'ghaf_family_identity',
+  'ghaf_redeem_family_invite',
+  'ghaf_family_documents',
+  'ghaf_family_document_snapshot',
+  'ghaf_family_document_command',
+  'ghaf_family_growth',
+  'ghaf_family_growth_command',
+  'ghaf_family_message_threads',
+  'ghaf_family_message_page',
+  'ghaf_family_message_send',
+  'ghaf_family_message_mark_read',
+  'ghaf_family_peer_permissions',
+  'ghaf_family_peer_permission',
+  'ghaf_family_peer_leave',
+] as const satisfies readonly (keyof Database['public']['Functions'])[];
+
+type FamilyRpcName = (typeof allowedFamilyRpcNames)[number];
+const familyRpcNames = new Set<string>(allowedFamilyRpcNames);
+
+type SchemaRpcName<Name extends keyof Database['public']['Functions']> = Name;
+type AccountRpcName = SchemaRpcName<
+  | FamilyRpcName
+  | 'get_or_create_account_profile'
+  | 'save_account_profile'
+  | 'get_or_create_account_workspace'
+  | 'update_account_workspace'
+>;
+
+type ProviderAccessRow = Pick<
+  Database['public']['Tables']['pilot_access']['Row'],
+  'user_id' | 'status'
+>;
+
+interface FamilyChannel {
+  on(
+    event: 'postgres_changes',
+    filter: { event: 'UPDATE'; schema: 'public'; table: 'app_families'; filter: string },
+    callback: () => void,
+  ): FamilyChannel;
+  subscribe(callback: (status: string) => void): FamilyChannel;
 }
 
 interface ProviderResult<T> {
   data: T;
   error: unknown;
   status?: number;
+}
+
+interface AccountRpcRequest extends PromiseLike<ProviderResult<unknown>> {
+  setHeader?(name: string, value: string): AccountRpcRequest;
 }
 
 interface RecoveryReceipt {
@@ -53,6 +104,7 @@ function recoveryReceipt(value: string): RecoveryReceipt | null {
 
 export interface AccountClientPort {
   auth: {
+    signInAnonymously?(): Promise<ProviderResult<{ session: unknown }>>;
     signUp(credentials: {
       email: string;
       password: string;
@@ -70,7 +122,7 @@ export interface AccountClientPort {
     resetPasswordForEmail(email: string): Promise<ProviderResult<unknown>>;
     updateUser(attributes: { password: string }): Promise<ProviderResult<unknown>>;
     getSession(): Promise<ProviderResult<{ session: unknown }>>;
-    getUser(): Promise<ProviderResult<{ user: ProviderUser | null }>>;
+    getUser(jwt?: string): Promise<ProviderResult<{ user: ProviderUser | null }>>;
     signOut(options: { scope: 'local' | 'global' }): Promise<{ error: unknown }>;
     onAuthStateChange(
       listener: (event: string, session?: { user?: ProviderUser } | null) => void,
@@ -86,29 +138,29 @@ export interface AccountClientPort {
         column: 'user_id',
         value: string,
       ): {
-        maybeSingle(): PromiseLike<ProviderResult<{ user_id: string; status: string } | null>>;
+        maybeSingle(): PromiseLike<ProviderResult<ProviderAccessRow | null>>;
       };
     };
   };
   rpc(
-    name:
-      | 'get_or_create_account_profile'
-      | 'save_account_profile'
-      | 'get_or_create_account_workspace'
-      | 'update_account_workspace',
+    name: AccountRpcName,
     parameters?:
       | {
           p_display_name: string;
           p_preferred_locale: 'ar' | 'en';
           p_expected_revision: number;
         }
-      | { p_expected_revision: number; p_command: WorkspaceCommand },
-  ): PromiseLike<ProviderResult<unknown>>;
+      | { p_expected_revision: number; p_command: WorkspaceCommand }
+      | Record<string, unknown>,
+  ): AccountRpcRequest;
+  channel?(name: string): FamilyChannel;
+  removeChannel?(channel: FamilyChannel): PromiseLike<unknown>;
 }
 
 export interface AccountRuntime {
   client: AccountClientPort;
   storage: GuardedAccountStorage;
+  confirmIdentity?: () => Promise<void>;
 }
 
 function sanitize(
@@ -118,6 +170,7 @@ function sanitize(
   if (error instanceof ParentAccountError) return error;
   if (typeof error !== 'object' || error === null) return new ParentAccountError(fallback);
   const candidate = error as { code?: unknown; status?: unknown; name?: unknown };
+  if (candidate.code === 'PT428') return new ParentAccountError('reauth_required');
   const codes: Record<string, ParentAccountErrorCode> = {
     invalid_credentials: 'invalid_credentials',
     email_not_confirmed: 'email_not_verified',
@@ -136,6 +189,10 @@ function sanitize(
     PGRST303: 'session_expired',
     PT400: 'invalid_profile',
     PT409: 'profile_conflict',
+    PT429: 'rate_limited',
+    '22023': 'invalid_profile',
+    '40001': 'profile_conflict',
+    '54000': 'rate_limited',
     '42501': 'access_unavailable',
   };
   if (typeof candidate.code === 'string' && codes[candidate.code]) {
@@ -238,6 +295,20 @@ function isUuid(value: unknown): value is string {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function childIdentity(data: unknown, userId: string): RealAccountSession {
+  if (
+    !isRecord(data) ||
+    !hasExactKeys(data, ['userId', 'role', 'familyId', 'childId']) ||
+    !isUuid(userId) ||
+    data.userId !== userId ||
+    data.role !== 'child' ||
+    !isUuid(data.familyId) ||
+    !isUuid(data.childId)
+  )
+    throw new ParentAccountError('access_unavailable');
+  return { userId, email: '', role: 'child', familyId: data.familyId, childId: data.childId };
 }
 
 function hasExactKeys(value: Record<string, unknown>, keys: string[]) {
@@ -482,6 +553,10 @@ export class SupabaseParentAccountService implements ParentAccountService {
   private knownUserId: string | null = null;
   private ownAuthMutation = false;
   private ownMutationEmail: string | null = null;
+  private familySubscriptions = new Set<() => void>();
+  private channelSequence = 0;
+  private pairingAttempt: { userId: string; token: string; requestId: string } | null = null;
+  private reauthenticating = false;
 
   constructor(private readonly initialize: () => Promise<AccountRuntime>) {}
 
@@ -500,11 +575,13 @@ export class SupabaseParentAccountService implements ParentAccountService {
             if (event === 'SIGNED_OUT') {
               this.generation++;
               this.blocked = true;
+              this.clearFamilySubscriptions();
               runtime.storage.blockWrites();
               this.emit('signed-out');
               void runtime.storage.clearCredentials().catch(() => this.emit('error'));
             } else if (event === 'PASSWORD_RECOVERY') {
               this.recovering = true;
+              this.clearFamilySubscriptions();
               this.emit('recovery');
             } else if (
               event === 'TOKEN_REFRESHED' ||
@@ -512,11 +589,11 @@ export class SupabaseParentAccountService implements ParentAccountService {
               event === 'USER_UPDATED'
             ) {
               const sameIdentity =
-                !this.ownAuthMutation &&
+                (!this.ownAuthMutation || this.reauthenticating) &&
                 this.knownUserId !== null &&
                 session?.user?.id === this.knownUserId &&
                 (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN');
-              if (event === 'SIGNED_IN' && session?.user?.id) {
+              if (session?.user?.id) {
                 const changedDuringRead =
                   !this.ownAuthMutation && this.knownUserId && session.user.id !== this.knownUserId;
                 const unexpectedMutationIdentity =
@@ -525,6 +602,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
                   session.user.email?.trim().toLowerCase() !== this.ownMutationEmail;
                 if (changedDuringRead || unexpectedMutationIdentity) {
                   this.generation++;
+                  this.clearFamilySubscriptions();
                   this.knownUserId = session.user.id;
                 }
               }
@@ -588,12 +666,31 @@ export class SupabaseParentAccountService implements ParentAccountService {
       throw new ParentAccountError('operation_cancelled');
   }
 
-  private async identity(runtime: AccountRuntime): Promise<RealAccountSession> {
+  private async identity(runtime: AccountRuntime, token?: string): Promise<RealAccountSession> {
     const generation = this.generation;
-    const { user } = checked(await runtime.client.auth.getUser());
+    const { user } = checked(
+      await (token ? runtime.client.auth.getUser(token) : runtime.client.auth.getUser()),
+    );
     this.assertCurrent(generation);
-    if (!user?.id || !user.email) throw new ParentAccountError('session_expired');
+    if (!user?.id) throw new ParentAccountError('session_expired');
+    if (user.is_anonymous === true) {
+      const data = checked(
+        await (token
+          ? this.pinnedRpc(runtime, 'ghaf_family_identity', undefined, token)
+          : runtime.client.rpc('ghaf_family_identity')),
+        'access_unavailable',
+      );
+      this.assertCurrent(generation);
+      const session = childIdentity(data, user.id);
+      await runtime.confirmIdentity?.();
+      this.assertCurrent(generation);
+      this.knownUserId = user.id;
+      return session;
+    }
+    if (!user.email) throw new ParentAccountError('session_expired');
     if (!user.email_confirmed_at) throw new ParentAccountError('email_not_verified');
+    await runtime.confirmIdentity?.();
+    this.assertCurrent(generation);
     this.knownUserId = user.id;
     return { userId: user.id, email: user.email };
   }
@@ -656,6 +753,32 @@ export class SupabaseParentAccountService implements ParentAccountService {
     }, true);
   }
 
+  reauthenticate(password: string, expectedUserId?: string): Promise<void> {
+    return this.run(async (runtime, generation) => {
+      if (!password || password.length > 256) throw new ParentAccountError('invalid_credentials');
+      const before = await this.profileIdentity(runtime, generation);
+      if (expectedUserId !== undefined && before.userId !== expectedUserId)
+        throw new ParentAccountError('operation_cancelled');
+      try {
+        this.reauthenticating = true;
+        checked(
+          await this.authMutation(
+            () => runtime.client.auth.signInWithPassword({ email: before.email, password }),
+            emailAddress(before.email),
+          ),
+        );
+        this.assertCurrent(generation);
+        const after = await this.profileIdentity(runtime, generation);
+        if (before.userId !== after.userId || before.email !== after.email) {
+          await this.clearRuntimeSession();
+          throw new ParentAccountError('access_unavailable');
+        }
+      } finally {
+        this.reauthenticating = false;
+      }
+    });
+  }
+
   restoreSession(): Promise<RealAccountSession | null> {
     if (this.blocked) return Promise.resolve(null);
     return this.run(async (runtime) => {
@@ -685,6 +808,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
         throw new ParentAccountError('recovery_required');
       const session = await this.identity(runtime);
       if (session.userId !== userId) throw new ParentAccountError('access_unavailable');
+      if (session.role === 'child') return 'approved';
       const row = checked(
         await runtime.client
           .from('pilot_access')
@@ -704,11 +828,11 @@ export class SupabaseParentAccountService implements ParentAccountService {
     });
   }
 
-  loadProfile(): Promise<AccountProfile> {
+  loadProfile(expectedUserId?: string): Promise<AccountProfile> {
     return this.run(async (runtime, generation) => {
-      const session = await this.profileIdentity(runtime, generation);
+      const { session, token } = await this.rpcIdentity(runtime, generation, expectedUserId, true);
       const data = checked(
-        await runtime.client.rpc('get_or_create_account_profile'),
+        await this.pinnedRpc(runtime, 'get_or_create_account_profile', undefined, token),
         'profile_unavailable',
       );
       this.assertCurrent(generation);
@@ -716,16 +840,21 @@ export class SupabaseParentAccountService implements ParentAccountService {
     });
   }
 
-  saveProfile(update: AccountProfileUpdate): Promise<AccountProfile> {
+  saveProfile(update: AccountProfileUpdate, expectedUserId?: string): Promise<AccountProfile> {
     return this.run(async (runtime, generation) => {
       const valid = profileUpdate(update);
-      const session = await this.profileIdentity(runtime, generation);
+      const { session, token } = await this.rpcIdentity(runtime, generation, expectedUserId, true);
       const data = checked(
-        await runtime.client.rpc('save_account_profile', {
-          p_display_name: valid.displayName,
-          p_preferred_locale: valid.preferredLocale,
-          p_expected_revision: valid.expectedRevision,
-        }),
+        await this.pinnedRpc(
+          runtime,
+          'save_account_profile',
+          {
+            p_display_name: valid.displayName,
+            p_preferred_locale: valid.preferredLocale,
+            p_expected_revision: valid.expectedRevision,
+          },
+          token,
+        ),
         'profile_unavailable',
       );
       this.assertCurrent(generation);
@@ -742,19 +871,218 @@ export class SupabaseParentAccountService implements ParentAccountService {
   }
 
   private async profileIdentity(runtime: AccountRuntime, generation: number) {
+    const session = await this.familyIdentity(runtime, generation);
+    if (session.role === 'child') throw new ParentAccountError('access_unavailable');
+    return session;
+  }
+
+  private async familyIdentity(runtime: AccountRuntime, generation: number, token?: string) {
     const recovery = this.recovering || (await runtime.storage.getItem(RECOVERY_STORAGE_KEY));
     this.assertCurrent(generation);
     if (recovery) throw new ParentAccountError('recovery_required');
-    const session = await this.identity(runtime);
+    const session = await this.identity(runtime, token);
     this.assertCurrent(generation);
     return session;
   }
 
-  loadWorkspace(): Promise<AccountWorkspace> {
+  private pinnedRpc(
+    runtime: AccountRuntime,
+    name: AccountRpcName,
+    args: Record<string, unknown> | undefined,
+    token: string,
+  ) {
+    const request = args === undefined ? runtime.client.rpc(name) : runtime.client.rpc(name, args);
+    if (!request.setHeader) throw new ParentAccountError('configuration_unavailable');
+    return request.setHeader('Authorization', `Bearer ${token}`);
+  }
+
+  private async rpcIdentity(
+    runtime: AccountRuntime,
+    generation: number,
+    expectedUserId?: string,
+    parentOnly = false,
+  ) {
+    if (expectedUserId !== undefined && !isUuid(expectedUserId))
+      throw new ParentAccountError('access_unavailable');
+    const { session: providerSession } = checked(await runtime.client.auth.getSession());
+    this.assertCurrent(generation);
+    if (
+      !isRecord(providerSession) ||
+      typeof providerSession.access_token !== 'string' ||
+      !providerSession.access_token ||
+      providerSession.access_token.length > 20_000
+    )
+      throw new ParentAccountError('session_expired');
+    const session = await this.familyIdentity(runtime, generation, providerSession.access_token);
+    if (parentOnly && session.role === 'child') throw new ParentAccountError('access_unavailable');
+    if (expectedUserId !== undefined && session.userId !== expectedUserId)
+      throw new ParentAccountError('operation_cancelled');
+    return { session, token: providerSession.access_token };
+  }
+
+  familyRequest(
+    name: string,
+    args?: Record<string, unknown>,
+    expectedUserId?: string,
+  ): Promise<unknown> {
     return this.run(async (runtime, generation) => {
-      const session = await this.profileIdentity(runtime, generation);
+      if (!familyRpcNames.has(name)) throw new ParentAccountError('access_unavailable');
+      const { session: before, token } = await this.rpcIdentity(
+        runtime,
+        generation,
+        expectedUserId,
+      );
+      const data = checked(await this.pinnedRpc(runtime, name as FamilyRpcName, args, token));
+      this.assertCurrent(generation);
+      const after = await this.familyIdentity(runtime, generation);
+      if (
+        before.userId !== after.userId ||
+        before.role !== after.role ||
+        (before.role === 'child' &&
+          (before.familyId !== after.familyId || before.childId !== after.childId))
+      )
+        throw new ParentAccountError('operation_cancelled');
+      return data;
+    });
+  }
+
+  subscribeFamily(familyId: string, onChange: () => void): Promise<() => void> {
+    return this.run(async (runtime, generation) => {
+      if (!isUuid(familyId)) throw new ParentAccountError('invalid_profile');
+      const session = await this.familyIdentity(runtime, generation);
+      if (session.role === 'child' && session.familyId !== familyId)
+        throw new ParentAccountError('access_unavailable');
+      if (!runtime.client.channel || !runtime.client.removeChannel)
+        throw new ParentAccountError('configuration_unavailable');
+      let closed = false;
+      const notify = () => {
+        if (
+          !closed &&
+          !this.blocked &&
+          !this.disposed &&
+          generation === this.generation &&
+          session.userId === this.knownUserId
+        )
+          onChange();
+      };
+      const channel = runtime.client.channel(`ghaf-family:${familyId}:${++this.channelSequence}`);
+      const cleanup = () => {
+        if (closed) return;
+        closed = true;
+        this.familySubscriptions.delete(cleanup);
+        void Promise.resolve(runtime.client.removeChannel!(channel)).catch(() => undefined);
+      };
+      this.familySubscriptions.add(cleanup);
+      try {
+        channel
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'app_families',
+              filter: `id=eq.${familyId}`,
+            },
+            notify,
+          )
+          .subscribe((status) => {
+            // A subscription is only a refetch signal; its payload never becomes family state.
+            if (['SUBSCRIBED', 'CHANNEL_ERROR', 'TIMED_OUT', 'CLOSED'].includes(status)) notify();
+          });
+        this.assertCurrent(generation);
+        return cleanup;
+      } catch (error) {
+        cleanup();
+        throw error;
+      }
+    });
+  }
+
+  private clearFamilySubscriptions() {
+    for (const cleanup of this.familySubscriptions) cleanup();
+  }
+
+  pairChildDevice(token: string, requestId: string): Promise<RealAccountSession> {
+    return this.run(async (runtime, generation) => {
+      if (!/^[0-9a-f]{64}$/.test(token) || !isUuid(requestId))
+        throw new ParentAccountError('invalid_code');
+      if (this.recovering || (await runtime.storage.getItem(RECOVERY_STORAGE_KEY)))
+        throw new ParentAccountError('recovery_required');
+      this.assertCurrent(generation);
+      const previous = checked(await runtime.client.auth.getSession()).session;
+      this.assertCurrent(generation);
+      let anonymousCreated = false;
+      if (previous) {
+        const { user } = checked(await runtime.client.auth.getUser());
+        this.assertCurrent(generation);
+        if (user?.is_anonymous !== true) throw new ParentAccountError('access_unavailable');
+        if (
+          this.knownUserId !== null &&
+          (!this.pairingAttempt ||
+            this.pairingAttempt.userId !== user.id ||
+            this.pairingAttempt.token !== token ||
+            this.pairingAttempt.requestId !== requestId)
+        )
+          throw new ParentAccountError('access_unavailable');
+      } else {
+        if (!runtime.client.auth.signInAnonymously)
+          throw new ParentAccountError('configuration_unavailable');
+        const { session } = checked(
+          await this.authMutation(() => runtime.client.auth.signInAnonymously!(), null),
+        );
+        this.assertCurrent(generation);
+        if (!session) throw new ParentAccountError('session_expired');
+        anonymousCreated = true;
+      }
+      try {
+        const { session: providerSession } = checked(await runtime.client.auth.getSession());
+        this.assertCurrent(generation);
+        if (
+          !isRecord(providerSession) ||
+          typeof providerSession.access_token !== 'string' ||
+          !providerSession.access_token ||
+          providerSession.access_token.length > 20_000
+        )
+          throw new ParentAccountError('session_expired');
+        const { user } = checked(await runtime.client.auth.getUser(providerSession.access_token));
+        this.assertCurrent(generation);
+        if (!isUuid(user?.id) || user.is_anonymous !== true)
+          throw new ParentAccountError('access_unavailable');
+        this.pairingAttempt = { userId: user.id, token, requestId };
+        checked(
+          await this.pinnedRpc(
+            runtime,
+            'ghaf_redeem_family_invite',
+            {
+              p_token: token,
+              p_request_id: requestId,
+            },
+            providerSession.access_token,
+          ),
+          'invalid_code',
+        );
+        this.assertCurrent(generation);
+        const session = await this.familyIdentity(runtime, generation);
+        if (session.userId !== user.id || session.role !== 'child')
+          throw new ParentAccountError('access_unavailable');
+        this.pairingAttempt = null;
+        return session;
+      } catch (error) {
+        this.assertCurrent(generation);
+        const safe = sanitize(error);
+        // Keep an ambiguous network result on its own identity so an exact retry can recover it.
+        if (safe.code !== 'network_unavailable' && (anonymousCreated || previous))
+          await this.clearRuntimeSession();
+        throw safe;
+      }
+    }, true);
+  }
+
+  loadWorkspace(expectedUserId?: string): Promise<AccountWorkspace> {
+    return this.run(async (runtime, generation) => {
+      const { session, token } = await this.rpcIdentity(runtime, generation, expectedUserId, true);
       const data = checked(
-        await runtime.client.rpc('get_or_create_account_workspace'),
+        await this.pinnedRpc(runtime, 'get_or_create_account_workspace', undefined, token),
         'profile_unavailable',
       );
       this.assertCurrent(generation);
@@ -762,15 +1090,23 @@ export class SupabaseParentAccountService implements ParentAccountService {
     });
   }
 
-  updateWorkspace(update: AccountWorkspaceUpdate): Promise<AccountWorkspace> {
+  updateWorkspace(
+    update: AccountWorkspaceUpdate,
+    expectedUserId?: string,
+  ): Promise<AccountWorkspace> {
     return this.run(async (runtime, generation) => {
       const valid = workspaceUpdate(update);
-      const session = await this.profileIdentity(runtime, generation);
+      const { session, token } = await this.rpcIdentity(runtime, generation, expectedUserId, true);
       const data = checked(
-        await runtime.client.rpc('update_account_workspace', {
-          p_expected_revision: valid.expectedRevision,
-          p_command: valid.command,
-        }),
+        await this.pinnedRpc(
+          runtime,
+          'update_account_workspace',
+          {
+            p_expected_revision: valid.expectedRevision,
+            p_command: valid.command,
+          },
+          token,
+        ),
         'profile_unavailable',
       );
       this.assertCurrent(generation);
@@ -865,7 +1201,11 @@ export class SupabaseParentAccountService implements ParentAccountService {
     });
   }
 
-  private async authMutation<T>(operation: () => Promise<T>, expectedEmail: string): Promise<T> {
+  private async authMutation<T>(
+    operation: () => Promise<T>,
+    expectedEmail: string | null,
+  ): Promise<T> {
+    if (!this.reauthenticating) this.clearFamilySubscriptions();
     this.ownAuthMutation = true;
     this.ownMutationEmail = expectedEmail;
     try {
@@ -883,6 +1223,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
     const runtime = this.runtime;
     if (!runtime) return;
     this.blocked = true;
+    this.clearFamilySubscriptions();
     runtime.storage.blockWrites();
     let providerError: unknown;
     try {
@@ -897,6 +1238,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
         runtime.storage.forgetSnapshot();
         this.recovering = preserveRecovery;
         this.knownUserId = null;
+        this.pairingAttempt = null;
       }
     }
     if (providerError) throw sanitize(providerError);
@@ -906,6 +1248,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
     this.generation++;
     this.blocked = true;
     this.recovering = false;
+    this.clearFamilySubscriptions();
     this.runtime?.storage.blockWrites();
     this.emit('signed-out');
     const immediateClear = this.runtime?.storage.clearCredentials().catch(() => undefined);
@@ -936,6 +1279,8 @@ export class SupabaseParentAccountService implements ParentAccountService {
   dispose(): void {
     this.disposed = true;
     this.generation++;
+    this.clearFamilySubscriptions();
+    this.pairingAttempt = null;
     this.runtime?.storage.blockWrites();
     this.unsubscribe?.();
     this.listeners.clear();

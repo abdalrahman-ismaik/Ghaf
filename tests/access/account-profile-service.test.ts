@@ -43,11 +43,15 @@ function harness() {
     email_confirmed_at: '2026-09-14T00:00:00Z',
   };
   let listener: (event: string, session?: { user?: typeof user } | null) => void = () => undefined;
-  const rpc = vi.fn(async (): Promise<{ data: unknown; error: unknown; status?: number }> => ({
-    data: [row],
-    error: null,
-    status: 200,
-  }));
+  const rpc = vi.fn(
+    async (
+      ..._args: Parameters<AccountClientPort['rpc']>
+    ): Promise<{ data: unknown; error: unknown; status?: number }> => ({
+      data: [row],
+      error: null,
+      status: 200,
+    }),
+  );
   const client = {
     auth: {
       signUp: vi.fn(async () => ({ data: { session: null }, error: null })),
@@ -56,7 +60,10 @@ function harness() {
       resend: vi.fn(async () => ({ data: {}, error: null })),
       resetPasswordForEmail: vi.fn(async () => ({ data: {}, error: null })),
       updateUser: vi.fn(async () => ({ data: {}, error: null })),
-      getSession: vi.fn(async () => ({ data: { session: {} }, error: null })),
+      getSession: vi.fn(async () => ({
+        data: { session: { access_token: 'synthetic-profile-token' } },
+        error: null,
+      })),
       getUser: vi.fn(async () => ({
         data: { user: user as typeof user | null },
         error: null as unknown,
@@ -74,7 +81,10 @@ function harness() {
         eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }),
       }),
     })),
-    rpc,
+    rpc(...args: Parameters<AccountClientPort['rpc']>) {
+      const request = rpc(...args);
+      return Object.assign(request, { setHeader: vi.fn(() => request) });
+    },
   } satisfies AccountClientPort;
   const service = new SupabaseParentAccountService(async () => ({ client, storage }));
   return {
