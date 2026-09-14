@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   InteractionManager,
@@ -13,6 +13,7 @@ import {
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { LocalIllustration } from '@/components/illustrations';
+import { BotanicalPressable } from '@/components/botanical/BotanicalPressable';
 import { Text } from '@/components/primitives';
 import {
   colors,
@@ -208,18 +209,15 @@ export function SharedGrowthEntryCard({
   };
 
   return (
-    <Pressable
+    <BotanicalPressable
       accessibilityHint={body}
       accessibilityLabel={`${title}. ${statusLabel}. ${body}. ${actionLabel}`}
       accessibilityRole="button"
       onLayout={focusAfterLayout}
       onPress={onPress}
       ref={actionRef}
-      style={({ pressed }) => [
-        styles.entryCard,
-        tone === 'parent' ? styles.entryCardParent : styles.entryCardChild,
-        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
-      ]}
+      reducedMotion={reducedMotion}
+      style={[styles.entryCard, tone === 'parent' ? styles.entryCardParent : styles.entryCardChild]}
       testID={testID}
     >
       <View style={[styles.entryHeading, { flexDirection: logicalRowDirection(direction) }]}>
@@ -275,7 +273,7 @@ export function SharedGrowthEntryCard({
           size={22}
         />
       </View>
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -443,12 +441,32 @@ export function ParentSharedGardenScreen({
   const { compact, expanded, onLayout } = useResponsiveSharedGrowthLayout();
   const actionRefs = useRef<Record<string, View | null>>({});
   const statusRef = useRef<View>(null);
+  const previousConfirmation = useRef(confirmation);
 
-  const restoreParticipationFocus = (targetTestID: string) => {
-    const target = actionRefs.current[targetTestID] ?? statusRef.current;
-    focusAccessibilityTarget(target);
-    confirmation?.onRequestFocusRestore(targetTestID);
-  };
+  useLayoutEffect(() => {
+    const dismissed = previousConfirmation.current;
+    previousConfirmation.current = confirmation;
+    if (confirmation || !dismissed) return;
+
+    // Restore only after authoritative dismissal, never while a save or retry stays open.
+    let current = true;
+    let frame: number | undefined;
+    const task = InteractionManager.runAfterInteractions(() => {
+      if (!current) return;
+      frame = requestAnimationFrame(() => {
+        if (!current) return;
+        const targetTestID = dismissed.focusReturnTargetTestID;
+        const target = actionRefs.current[targetTestID] ?? statusRef.current;
+        focusAccessibilityTarget(target);
+        dismissed.onRequestFocusRestore(targetTestID);
+      });
+    });
+    return () => {
+      current = false;
+      task.cancel();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [confirmation]);
 
   return (
     <View
@@ -589,7 +607,6 @@ export function ParentSharedGardenScreen({
           confirmation={confirmation}
           direction={direction}
           language={language}
-          onRestoreFocus={restoreParticipationFocus}
           reducedMotion={reducedMotion}
         />
       ) : null}
@@ -611,16 +628,16 @@ function SharedGrowthRecoveryAction({
   const { busy = false, disabled = false } = action;
 
   return (
-    <Pressable
+    <BotanicalPressable
       accessibilityLabel={action.accessibilityLabel}
       accessibilityRole="button"
       accessibilityState={{ busy, disabled }}
       disabled={busy || disabled}
       onPress={action.onPress}
-      style={({ pressed }) => [
+      reducedMotion={reducedMotion}
+      style={[
         styles.recoveryAction,
         { flexDirection: logicalRowDirection(direction) },
-        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
         busy || disabled ? styles.disabled : null,
       ]}
       testID={action.testID}
@@ -640,7 +657,7 @@ function SharedGrowthRecoveryAction({
       >
         {action.label}
       </Text>
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -959,7 +976,7 @@ function ParentParticipationAction({
   const color = busy || disabled ? 'onSurfaceVariant' : actionTextColor[action.tone];
 
   return (
-    <Pressable
+    <BotanicalPressable
       accessibilityLabel={action.accessibilityLabel}
       accessibilityHint={action.description}
       accessibilityRole="button"
@@ -967,10 +984,10 @@ function ParentParticipationAction({
       disabled={busy || disabled}
       onPress={action.onPress}
       ref={actionRef}
-      style={({ pressed }) => [
+      reducedMotion={reducedMotion}
+      style={[
         styles.parentAction,
         actionSurfaceStyle[action.tone],
-        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
         busy || disabled ? styles.disabled : null,
       ]}
       testID={action.testID}
@@ -1008,7 +1025,7 @@ function ParentParticipationAction({
       >
         {action.description}
       </Text>
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -1016,46 +1033,33 @@ function ParentParticipationConfirmation({
   confirmation,
   direction,
   language,
-  onRestoreFocus,
   reducedMotion,
 }: {
   confirmation: ParentSharedGrowthConfirmationPresentation;
   direction: SharedGrowthDirection;
   language: SharedGrowthLanguage;
-  onRestoreFocus: (targetTestID: string) => void;
   reducedMotion: boolean;
 }) {
   const headingRef = useRef<View>(null);
-  const restorationTaskRef =
-    useRef<ReturnType<typeof InteractionManager.runAfterInteractions>>(undefined);
 
   const focusHeading = () => {
     focusAccessibilityTarget(headingRef.current);
   };
 
-  const restoreFocusAfterDismissal = () => {
-    restorationTaskRef.current?.cancel();
-    restorationTaskRef.current = InteractionManager.runAfterInteractions(() => {
-      requestAnimationFrame(() => onRestoreFocus(confirmation.focusReturnTargetTestID));
-    });
-  };
-
-  const cancelAndRestoreFocus = () => {
+  const requestCancel = () => {
     if (confirmation.cancelAction.busy || confirmation.cancelAction.disabled) return;
     confirmation.cancelAction.onPress();
-    restoreFocusAfterDismissal();
   };
 
-  const confirmAndRestoreFocus = () => {
+  const requestConfirm = () => {
     if (confirmation.confirmAction.busy || confirmation.confirmAction.disabled) return;
     confirmation.confirmAction.onPress();
-    restoreFocusAfterDismissal();
   };
 
   return (
     <Modal
       animationType={reducedMotion ? 'none' : 'fade'}
-      onRequestClose={cancelAndRestoreFocus}
+      onRequestClose={requestCancel}
       onShow={focusHeading}
       presentationStyle="overFullScreen"
       statusBarTranslucent
@@ -1072,7 +1076,7 @@ function ParentParticipationConfirmation({
           accessibilityElementsHidden
           accessible={false}
           importantForAccessibility="no-hide-descendants"
-          onPress={cancelAndRestoreFocus}
+          onPress={requestCancel}
           style={styles.confirmationScrim}
         />
         <View style={styles.confirmationCard}>
@@ -1115,7 +1119,7 @@ function ParentParticipationConfirmation({
                 action={confirmation.confirmAction}
                 direction={direction}
                 language={language}
-                onPress={confirmAndRestoreFocus}
+                onPress={requestConfirm}
                 reducedMotion={reducedMotion}
                 tone={confirmation.tone}
               />
@@ -1123,7 +1127,7 @@ function ParentParticipationConfirmation({
                 action={confirmation.cancelAction}
                 direction={direction}
                 language={language}
-                onPress={cancelAndRestoreFocus}
+                onPress={requestCancel}
                 reducedMotion={reducedMotion}
                 tone="neutral"
               />
@@ -1161,16 +1165,16 @@ function ConfirmationButton({
           : 'deepForest';
 
   return (
-    <Pressable
+    <BotanicalPressable
       accessibilityLabel={action.accessibilityLabel}
       accessibilityRole="button"
       accessibilityState={{ busy, disabled }}
       disabled={busy || disabled}
       onPress={onPress}
-      style={({ pressed }) => [
+      reducedMotion={reducedMotion}
+      style={[
         styles.confirmationButton,
         confirmationButtonSurface[tone],
-        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
         busy || disabled ? styles.disabled : null,
       ]}
       testID={action.testID}
@@ -1187,7 +1191,7 @@ function ConfirmationButton({
       >
         {action.label}
       </Text>
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -1734,13 +1738,6 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-  },
-  pressedStatic: {
-    opacity: opacity.pressed,
-  },
-  pressedMotion: {
-    opacity: opacity.pressed,
-    transform: [{ scale: 0.99 }],
   },
   disabled: {
     borderColor: colors.outline,

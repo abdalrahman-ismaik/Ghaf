@@ -115,10 +115,10 @@ describe('R002b Shared Growth presentation components', () => {
     expect(source).toContain('accessibilityViewIsModal');
     expect(source).toContain('onShow={focusHeading}');
     expect(source).toContain('focusAccessibilityTarget');
-    expect(source).toContain('onRequestClose={cancelAndRestoreFocus}');
+    expect(source).toContain('onRequestClose={requestCancel}');
     expect(source).toContain('InteractionManager.runAfterInteractions');
     expect(source).toContain('requestAnimationFrame');
-    expect(source).toContain('onRestoreFocus(confirmation.focusReturnTargetTestID)');
+    expect(source).toContain('dismissed.onRequestFocusRestore(targetTestID)');
     expect(source.match(/focusAccessibilityTarget\(/gu)).toHaveLength(3);
     expect(source).not.toContain('findNodeHandle');
     expect(source).toContain('actionRefs.current[targetTestID] ?? statusRef.current');
@@ -194,9 +194,9 @@ describe('R002b Shared Growth presentation components', () => {
   it('uses restrained reduced-motion press feedback and readable disabled actions', () => {
     const source = componentSource();
 
-    expect(source).toMatch(
-      /pressed\s*\?\s*\(?\s*reducedMotion\s*\?\s*styles\.pressedStatic\s*:\s*styles\.pressedMotion/u,
-    );
+    expect(source).toContain('<BotanicalPressable');
+    expect(source).toContain('reducedMotion={reducedMotion}');
+    expect(source).not.toContain('styles.pressedMotion');
     expect(source).not.toMatch(/(?:useEffect|setTimeout|Animated\.loop|autoPlay|autoplay)/u);
     expect(source).not.toContain('opacity: opacity.disabled');
     expect(source).toContain("borderStyle: 'dashed'");
