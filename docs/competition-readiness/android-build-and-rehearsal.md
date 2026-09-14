@@ -1,5 +1,55 @@
 # Installable Android build and rehearsal
 
+## Windows phone build — September 14, 2026
+
+The owner authorized native compilation on D: after the Expo Go connection failed.
+The Windows launcher is [build-apk.ps1](../../scripts/native/build-apk.ps1). It uses
+an explicitly selected disposable checkout, SDK and cache; default invocation is
+preflight only. The original C: repository remains intact. This run uses JDK 17,
+Android 36, Gradle 9.3.1, CMake 3.30.5 and NDK 27.1.12297006, with one worker and
+only `arm64-v8a` for the connected Samsung phone. It does not produce an x86 emulator APK.
+
+```powershell
+$candidateHead = git -c safe.directory=D:/GhafNative/20260914/source -C D:/GhafNative/20260914/source rev-parse HEAD
+./scripts/native/build-apk.ps1 `
+  -ProjectRoot D:/GhafNative/20260914/source `
+  -ExpectedHead $candidateHead `
+  -SdkRoot D:/GhafNative/20260914/sdk `
+  -JdkHome 'C:/Program Files/Microsoft/jdk-17.0.18.8-hotspot' `
+  -GradleUserHome D:/GhafNative/20260914/gradle `
+  -OutputDirectory D:/GhafNative/20260914/evidence `
+  -MessagingEnvFile D:/GhafNative/20260914/evidence/messaging-public.env
+```
+
+Add `-Build -AllowDependencyDownloads` for the authorized build. The public
+configuration file contains only the dedicated messaging URL and publishable key.
+The launcher fixes demo access, mock core services and disabled live AI, and records
+the public configuration hash as a bundle task input. Passwords remain outside the
+bundle and evidence. Build logs, receipts and APKs remain ignored on D:.
+
+Keep one heavy job active. Admission requires 3 GiB of available Windows memory;
+the operator monitors the run and stops its owned build if sustained availability
+falls below 1 GiB. The launcher records snapshots, not an automatic watchdog.
+The verified internal artifact uses the existing Expo template debug signing
+identity. Actual APK permission, source/configuration identity, installation and
+standalone launch require recorded evidence. See the
+[current backend and Android record](../../specs/016-real-family-messaging/backend-android-validation.md)
+for outcomes. Historical Linux stages below are not Windows or phone acceptance.
+
+The first complete Windows run finished at 04:25:42 UTC on September 14:
+`20260914T033313062Z-b2ba959f`, source `273f97d`, Gradle success in 52m 11s.
+Its internal APK passed signer, package, SDK, backup, storage-permission, standalone
+bundle and arm64 checks. It is a diagnostic candidate; the next candidate must
+include the later browser transport fix. Six generated main graphs contain 289
+compile/link edges in the depth-one pool. Two CMake LTO probe graphs have six edges
+outside that pool; probe serialization and continuous runtime-wide compiler coverage
+remain unverified. The merged manifest's 10 permissions include SecureStore's
+biometric dependency declarations, which do not establish biometric login.
+The updated launcher disables file-stream buffering so later run logs are visible
+immediately; the first run's exact launcher copy and hash are retained with its receipt.
+
+## Historical Linux build — September 12, 2026
+
 **NB1 status, September12: the manifest and first native configuration stage passed.**
 The remaining configuration stage is running on B b32174d/runtime5d8a3e8. Its dependencies compile
 Worklets; actual process limits and fresh generated graphs must be checked before the full APK.
