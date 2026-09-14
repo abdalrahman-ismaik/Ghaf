@@ -125,6 +125,7 @@ export function ParentSupportRequestSheet({
               contentContainerStyle={styles.content}
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
+              style={styles.scroll}
             >
               <View
                 accessibilityLabel={`${title}. ${message}`}
@@ -209,7 +210,8 @@ export function ParentSupportRequestSheet({
                   {error}
                 </Text>
               ) : null}
-
+            </ScrollView>
+            <View style={styles.actions} testID="support-request-actions">
               <PrimaryButton
                 brand
                 busy={busy}
@@ -234,7 +236,7 @@ export function ParentSupportRequestSheet({
               >
                 {backLabel}
               </QuietButton>
-            </ScrollView>
+            </View>
           </SafeAreaView>
         </View>
       </View>
@@ -264,7 +266,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.r001Surface,
   },
   safeArea: {
+    flexShrink: 1,
     maxHeight: '100%',
+  },
+  scroll: {
+    flexShrink: 1,
+  },
+  actions: {
+    flexShrink: 0,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
   },
   handle: {
     position: 'absolute',

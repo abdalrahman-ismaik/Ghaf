@@ -97,6 +97,7 @@ export function ChildCompletionConfirmationSheet({
               contentInsetAdjustmentBehavior="automatic"
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
+              style={styles.scroll}
             >
               <View
                 accessibilityLabel={`${title}. ${message}`}
@@ -198,7 +199,8 @@ export function ChildCompletionConfirmationSheet({
                   {error}
                 </Text>
               ) : null}
-
+            </ScrollView>
+            <View style={styles.actions} testID="task-completion-actions">
               <PrimaryButton
                 brand
                 busy={busy}
@@ -231,7 +233,7 @@ export function ChildCompletionConfirmationSheet({
               >
                 {returnLabel}
               </SecondaryButton>
-            </ScrollView>
+            </View>
           </SafeAreaView>
         </View>
       </View>
@@ -292,7 +294,17 @@ const styles = StyleSheet.create({
     backgroundColor: botanical.colors.canvas,
   },
   safeArea: {
+    flexShrink: 1,
     maxHeight: '100%',
+  },
+  scroll: {
+    flexShrink: 1,
+  },
+  actions: {
+    flexShrink: 0,
+    gap: spacing.sm,
+    paddingHorizontal: layout.screenPadding,
+    paddingVertical: spacing.md,
   },
   handle: {
     position: 'absolute',

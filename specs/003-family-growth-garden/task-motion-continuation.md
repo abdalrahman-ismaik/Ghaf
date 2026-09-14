@@ -18,6 +18,11 @@ flags, actions, awards, dependencies or permissions.
    selection. Existing BotanicalPressable supplies button feedback; callers do not
    stack the obsolete pressed-opacity effect on its scale. Reduced motion retains
    the shared static feedback. No selection/content delay or added animation.
+4. Native inspection at 360dp width found the completion sheet's initial viewport
+   clipped Send and hid Return below long Arabic content. Both task sheets keep
+   actions in a reserved footer while the summary/selection body scrolls. This
+   preserves usable dismissal and submission through variable content and font
+   changes without animating layout or changing business state.
 
 Test rapid dismiss/reopen, stale native show callbacks, unmount, externally driven
 successful close, busy/error state, live preference changes, keyboard activation,
