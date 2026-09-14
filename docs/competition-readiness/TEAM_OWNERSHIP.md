@@ -2,11 +2,18 @@
 
 ## 2026-09-14 Messaging backend integration and Android acceptance
 
-**Owner-requested pause:** all audit helpers have released their boundaries, and
-native/web build and test servers are stopped. The installed diagnostic APK and
-all evidence are preserved. Read the
-[resume checkpoint](workstreams/messaging-android-resume-20260914.md) before continuing;
-do not restart work until the user resumes.
+**Resumed by the owner:** continue from clean checkpoint `ce6bd72`; the phone is
+authorized and D: caches are available. Artificial commit spacing is revoked:
+commit each completed, verified slice promptly. The
+[pause checkpoint](workstreams/messaging-android-resume-20260914.md) remains the
+historical handoff, not a current instruction to stay paused.
+
+Current exact grants: `/root/merge_core` owns only
+`src/components/study/StudyScreen.tsx` and `src/components/study/shared.tsx` for the
+observed native layout correction and scoped checks. Root owns `AGENTS.md`,
+coordination/evidence, final integration and the sole heavy build lane.
+`/root/integration_audit_coordinator` may review the patch read-only. Earlier grants
+below are historical releases; no other writer retains a source boundary.
 
 The user explicitly authorized backend integration and physical Android testing
 using Android Studio. Root starts from clean `caf2d00` on

@@ -280,6 +280,8 @@ dependency, and final integration work. Preserve the Spec Kit-managed context bl
 - Commit each completed, independently verifiable function, fix, or feature slice as a small,
   cohesive commit. Split unrelated work into separate commits and avoid accumulating one large
   catch-all commit.
+- The owner revoked artificial commit spacing on 2026-09-14. Commit completed, verified work
+  promptly; do not wait 15 minutes or any other minimum interval to simulate an activity pattern.
 - During longer assignments, create a checkpoint around every 30 minutes when the work forms a
   coherent, validated state. Do not fabricate timestamps or split incomplete work only to imitate
   a particular activity pattern.
