@@ -12,6 +12,12 @@ Current exact grants: `/root/merge_core` owns only
 `src/components/study/StudyScreen.tsx` and `src/components/study/shared.tsx` for the
 observed native layout correction and scoped checks. Root owns `AGENTS.md`,
 coordination/evidence, final integration and the sole heavy build lane.
+Root also owns `src/components/familyMessaging/FamilyMessagingScreen.tsx` for the
+same directly observed native paragraph-direction correction on messaging access.
+That messaging boundary includes `MessagingAccess.tsx` and `MessagingConversation.tsx`
+to preserve explicit Arabic role/quick-phrase row order inside the corrected context.
+Root also updates the existing React Native mock in `tests/messaging/peer-ui.test.tsx`
+to support the platform-aware presentation imports; no domain-test rewrite is granted.
 `/root/integration_audit_coordinator` may review the patch read-only. Earlier grants
 below are historical releases; no other writer retains a source boundary.
 

@@ -73,7 +73,7 @@ export function FamilyMessagingScreen() {
     state.phase === 'signedOut' || state.phase === 'authenticating' || state.phase === 'revoked';
   return (
     <SafeAreaView
-      style={styles.root}
+      style={[styles.root, Platform.OS === 'web' ? null : { direction: 'ltr' }]}
       edges={['top', 'left', 'right', 'bottom']}
       testID="family-messaging-screen"
     >

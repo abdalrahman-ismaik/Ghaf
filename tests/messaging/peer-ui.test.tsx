@@ -46,7 +46,14 @@ vi.mock('react-native', async () => {
   const { createElement } = await import('react');
   const container = ({ children, testID }: { children?: ReactNode; testID?: string }) =>
     createElement('div', { 'data-testid': testID }, children);
-  return { View: container, ScrollView: container };
+  return {
+    View: container,
+    ScrollView: container,
+    Platform: {
+      OS: 'android',
+      select: (options: Record<string, unknown>) => options.android ?? options.default,
+    },
+  };
 });
 vi.mock('@/components/primitives', () => ({ Input: () => null }));
 vi.mock('../../src/components/familyMessaging/shared', async () => {

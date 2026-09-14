@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 import { Input } from '@/components/primitives';
+import { logicalRowDirection } from '@/design/tokens';
 import { phraseIds, phraseText, validBody } from '@/features/familyMessaging';
 import type {
   FamilyMessagingController,
@@ -231,7 +232,14 @@ export function MessagingConversation({
         )}
         {phraseOnly || showPhrases ? (
           <>
-            <View style={styles.row}>
+            <View
+              style={[
+                styles.row,
+                Platform.OS === 'web'
+                  ? null
+                  : { direction: 'ltr', flexDirection: logicalRowDirection(direction) },
+              ]}
+            >
               {phraseIds.map((phrase) => (
                 <MessageButton
                   key={phrase}
