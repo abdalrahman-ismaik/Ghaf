@@ -33,6 +33,12 @@ const storedSchema = z.object({
   session: sessionSchema,
 });
 const okSchema = z.object({ ok: z.literal(true) });
+const terminalAuthCodes = [
+  'session_not_found',
+  'session_expired',
+  'refresh_token_not_found',
+  'refresh_token_already_used',
+];
 
 export function readMessagingConfig(
   url: string | undefined,
@@ -152,6 +158,21 @@ export class SupabaseFamilyMessagingService implements FamilyMessagingService {
       const code = data && typeof data === 'object' && 'code' in data ? data.code : undefined;
       if (!response.ok) {
         if (isSend && response.status >= 500) throw new MessagingError('unknown');
+        const authCode =
+          typeof code === 'string'
+            ? code
+            : data && typeof data === 'object' && 'error_code' in data
+              ? data.error_code
+              : undefined;
+        if (
+          path.startsWith('/auth/v1/') &&
+          response.status >= 400 &&
+          response.status < 500 &&
+          response.status !== 429 &&
+          typeof authCode === 'string' &&
+          terminalAuthCodes.includes(authCode)
+        )
+          throw new MessagingError('not_authenticated');
         if (typeof code === 'string' && (errorCodes as readonly string[]).includes(code)) {
           throw new MessagingError(code as MessagingErrorCode);
         }

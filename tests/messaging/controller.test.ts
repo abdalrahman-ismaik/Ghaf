@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FamilyMessagingController } from '../../src/features/familyMessaging/controller';
+import { SupabaseFamilyMessagingService } from '../../src/features/familyMessaging/client';
 import {
   ATTEMPT_LIFETIME_MS,
   HISTORY_RETENTION_MS,
@@ -7,7 +8,16 @@ import {
   phraseText,
   POLL_MS,
 } from '../../src/features/familyMessaging/contracts';
-import { child, deferred, fakeService, ids, message, parent } from './fixtures';
+import {
+  child,
+  deferred,
+  fakeService,
+  ids,
+  memoryStorage,
+  message,
+  parent,
+  thread,
+} from './fixtures';
 
 const controllers: FamilyMessagingController[] = [];
 afterEach(() => {
@@ -114,6 +124,72 @@ describe('real messaging controller lifecycle', () => {
     clearing.resolve();
     await syncing;
   });
+
+  it.each(['code', 'error_code'])(
+    'clears private state and credentials on terminal provider refresh using %s',
+    async (field) => {
+      let now = Date.parse(message.createdAt);
+      let rejectRefresh = false;
+      const storage = memoryStorage();
+      const fetcher = vi.fn<typeof fetch>(async (url) => {
+        const path = new URL(String(url)).pathname;
+        if (path === '/auth/v1/token') {
+          if (rejectRefresh)
+            return new Response(JSON.stringify({ [field]: 'refresh_token_not_found' }), {
+              status: 400,
+            });
+          return new Response(
+            JSON.stringify({
+              access_token: 'synthetic-access',
+              refresh_token: 'synthetic-refresh',
+              expires_in: 3600,
+              user: { id: ids.user },
+            }),
+          );
+        }
+        if (path === '/auth/v1/user') return new Response(JSON.stringify({ id: ids.user }));
+        if (path === '/rest/v1/rpc/fm_register_parent' || path === '/rest/v1/rpc/fm_context')
+          return new Response(JSON.stringify(parent));
+        if (path === '/rest/v1/rpc/fm_threads') return new Response(JSON.stringify([thread]));
+        if (path === '/rest/v1/rpc/fm_messages') return new Response(JSON.stringify([message]));
+        throw new Error('Unexpected synthetic endpoint');
+      });
+      const service = new SupabaseFamilyMessagingService(
+        { url: 'https://synthetic.invalid', publishableKey: 'sb_publishable_synthetic_test' },
+        storage,
+        fetcher,
+        () => now,
+      );
+      await service.signIn('synthetic@example.invalid', 'synthetic-password', 'Test');
+      const controller = new FamilyMessagingController(
+        service,
+        async () => ids.key,
+        () => now,
+      );
+      controllers.push(controller);
+      controller.setVisible(true);
+      await vi.waitFor(() => expect(controller.getSnapshot().phase).toBe('ready'));
+      await controller.openThread(ids.thread);
+      expect(controller.getSnapshot().messages).toEqual([message]);
+      controller.setDraft('Private draft');
+      now += 3_550_000;
+      rejectRefresh = true;
+      await controller.sync();
+      expect(controller.getSnapshot()).toMatchObject({
+        phase: 'revoked',
+        context: null,
+        messages: [],
+        threads: [],
+        draft: { text: '' },
+        pending: null,
+        error: 'not_authenticated',
+      });
+      expect(await storage.read()).toBeNull();
+      const requestsAfterRevocation = fetcher.mock.calls.length;
+      await controller.sync();
+      expect(fetcher.mock.calls).toHaveLength(requestsAfterRevocation);
+    },
+  );
 
   it('does not mint a fresh operation when Retry has no pending attempt', async () => {
     const { controller, service } = await ready();
