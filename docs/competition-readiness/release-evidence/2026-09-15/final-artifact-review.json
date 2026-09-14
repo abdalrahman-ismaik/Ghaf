@@ -1,0 +1,24 @@
+{
+  "utc": "2026-09-14T21:22:22.856359+00:00",
+  "source": "4dd649025da828a53ee9617573ebbc0b2849245c",
+  "apk": {
+    "fileName": "ghaf-internal-4dd649025da8.apk",
+    "bytes": 88451956,
+    "sha256": "eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886",
+    "signerSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+  },
+  "receiptMatches": true,
+  "assetComparison": {
+    "audio": {
+      "entries": 13,
+      "uniqueBinaries": 13,
+      "sameHashMultisetAsB2": true
+    },
+    "fonts": {
+      "entries": 10,
+      "uniqueBinaries": 6,
+      "sameHashMultisetAsB2": true
+    }
+  },
+  "limitations": "Read-only receipt/hash and font/audio byte identity; signer verified separately. Asset identity is not commercial-rights clearance or native acceptance."
+}

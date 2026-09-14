@@ -1,0 +1,31 @@
+{
+  "recordedUtc": "2026-09-14T21:30:24.503660+00:00",
+  "source": "4dd649025da828a53ee9617573ebbc0b2849245c",
+  "sha256": "eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886",
+  "device": "Ghaf_API35_ARM64Bridge / emulator-5554 / API35 / x86_64",
+  "profile": 11,
+  "viewport": "720x1600 @320dpi",
+  "fontScale": 1,
+  "method": "Three process-cold am start -W launches after force-stop, signed out, caches retained. UI resource ID confirms sign-in after each. TotalTime is activity display time, not time to usable authenticated data.",
+  "limitations": "Shared Windows16GB host; no physical-device or frame-rate claim; first boot and first secondary-user launch excluded as different conditions.",
+  "samples": [
+    {
+      "Status": "ok",
+      "LaunchState": "COLD",
+      "TotalTime": "1406",
+      "WaitTime": "1418"
+    },
+    {
+      "Status": "ok",
+      "LaunchState": "COLD",
+      "TotalTime": "1261",
+      "WaitTime": "1300"
+    },
+    {
+      "Status": "ok",
+      "LaunchState": "COLD",
+      "TotalTime": "1419",
+      "WaitTime": "1430"
+    }
+  ]
+}

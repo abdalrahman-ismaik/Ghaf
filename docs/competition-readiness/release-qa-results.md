@@ -17,7 +17,8 @@ the parser patch, deployed Help repair `e8c6b3b` and safety display. The tested
 `b2b4302` APK includes those changes and the default-font footer repair; fresh
 build34891473556 passed, and its native execution is recorded below. Later
 `4dd6490` adjusts enlarged-text footer columns after a b2 failure; its source
-checks passed, but fresh build34896135774/native acceptance remain pending.
+checks and fresh build34896135774 passed. Its exact artifact and bounded native
+acceptance are recorded in the final4dd section below.
 These candidates exclude the separately owned uncommitted navigation work.
 
 Package: `ae.ac.ku.ghaf.prototype`, version `0.1.0`, code `1`, minimum API24,
@@ -64,7 +65,7 @@ Typecheck, lint, format and repository checks passed; the source job also passed
 16KiB ZIP alignment, `testOnly=false`, `debuggable=false`, cleartext disabled and
 backup disabled. These checks do not establish physical-device or public-release
 acceptance. Later `4dd6490` has root-executed typecheck, scoped lint and26 focused
-UI passes; its fresh native result is not yet claimed.
+UI passes. Its subsequent complete CI and native result are recorded below.
 
 ## Task safety and Help repair
 
@@ -213,7 +214,7 @@ ordinary demo isolation and the existing account revision/Child-access boundarie
 Root layout already follows store locale; no NAV-owned layout change is justified
 by this diagnosis. Cold restart and profile arrival must both be regression-tested.
 
-**P2 — footer height and enlarged text.** On d13 at720×1600/font1 the six destinations wrapped into
+**Fixed P2 — footer height and enlarged text.** On d13 at720×1600/font1 the six destinations wrapped into
 three rows, consuming384px before insets and hiding much of the Child action area
 until scrolling. The b2 native footer now uses two rows at font1: its top moved
 from y1120 to y1256 in the same viewport, reclaiming136px. This default-font
@@ -221,7 +222,9 @@ correction is **verified on b2**. At font1.5, b2 broke the Arabic Settings word
 across lines. Source `4dd6490` changes enlarged-text/narrow layouts to two wider
 columns;26 focused UI tests, typecheck and scoped lint passed. Its fresh
 [build34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774)
-and corrected large-text native layout remain **pending**.
+and corrected large-text native layout **PASSED**. The final4dd section records
+normal/enlarged Arabic/English, repeated input and cancellation limits; full
+accessibility and physical-device acceptance remain open.
 
 ## Executed b2 standalone task-to-growth journey
 
@@ -310,6 +313,59 @@ this empty state. B was an already-approved QA account without a family; this is
 not fresh public signup or a native cross-family mutation test. B was then signed
 out and the sign-in screen returned. Family A's controlled data remains intact.
 
+## Final4dd standalone acceptance — bounded pass
+
+[Run34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774)
+finished successfully at21:20:49UTC. The exact source is
+`4dd649025da828a53ee9617573ebbc0b2849245c`. Complete source CI passed typecheck,
+lint, format,5 repository checks,20 Node verifier checks and **3,397 application
+tests /7 skipped;233 files passed /7 skipped**,52.52seconds. Separate backend
+CI34896121034 passed migrations/function lint/pgTAP and one real Auth integration
+test with none skipped; isolated messaging SQL passed with its stated provider/
+HTTP/hosted/two-device exclusions. Repository CI34896121110 also passed.
+
+The fresh Gradle APK is **88,451,956bytes**, SHA-256
+`eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886`.
+Root independently matched receipt/hash, existing template signer, signaturev2,
+16KiB ZIP alignment and all50 ELF PT_LOAD alignments/congruences. The installed
+`base.apk` independently has that same hash. Merged-manifest checks retain backup
+disabled and no enabled debug/cleartext/overlay setting. The1,652-entry known-key
+scan had the same two raw Hermes false-positive categories;22,322 decoded strings
+contained no actual known privileged-key match. This is a bounded pattern review,
+not a guarantee against all secrets or an Android security certification.
+
+Actual native checks on API35 emulator5554,720×1600@320dpi:
+
+| Check                                    | Executed result                                                                                                                                                                                                                                                                           |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Upgrade with existing Child pairing      | `adb install -r --user11` succeeded. Restricted Child session and both recognized tasks restored without data clearing.                                                                                                                                                                   |
+| Default footer                           | Three columns/two rows; all six labeled, enabled controls remain at least48dp. Arabic selected state and104px-high bounds retained.                                                                                                                                                       |
+| Font1.5 Arabic and English               | Two columns/three rows; direct screenshot review confirms whole labels, including Arabic Settings and English Messages. Multiline task titles remain readable.                                                                                                                            |
+| Repeated input and Back                  | Each of normal, enlarged Arabic, enlarged English and zero-scale modes passed12 consecutive native Garden/Family/Tasks taps, last-intent selection, then Garden and immediate system Back to Tasks. ADB cadence includes command overhead; latency was not measured.                      |
+| Press cancellation                       | Moving away from a task Review press cancelled activation and retained the task list. The short two-task list does not establish fast-scrolling acceptance.                                                                                                                               |
+| Disabled animations and restart          | Animator, transition and window scales0: navigation/Back passed; force-stop/cold restart restored the restricted session/tasks. Full reduced-motion/TalkBack coverage remains open.                                                                                                       |
+| Persistence after final upgrade/restart  | Child Garden showed16Seeds/two canopy contributions and both memories. An independent Parent SDK read at21:29:31UTC confirmed task revision9/recognized and two recognitions/memories/canopy; no new recognition was requested by these regression checks.                                |
+| Final clean app-data launch              | After verifying user12 was signed out with an empty form, root cleared only this synthetic QA profile's app data. The exact installed final APK launched to blank Arabic sign-in. This is a clean app-data test on an existing emulator installation, not a Play install or fresh device. |
+| Parent restoration from that clean state | Fresh native QA Parent A login restored the existing Child,16Seeds/two canopy contributions and both memories. Parent signed out afterward. No original Android profile or hosted records were cleared.                                                                                   |
+| Signed-out startup                       | Three `COLD`/`ok` activity TotalTime samples1,406/1,261/1,419ms; sign-in resource IDs confirmed each. Median1,406ms is not usable-content or physical-device timing.                                                                                                                      |
+| Scoped crash evidence                    | Retained crash buffers for QA app UIDs1110209/1210209 contained zero fatal-exception, fatal-signal or package-ANR markers. This does not cover every historical crash/ANR or physical device.                                                                                             |
+
+[Reviewed screenshots and sanitized receipts](release-evidence/2026-09-15/README.md)
+make the before/after and exact final candidate reviewable. Warmed frame/memory
+samples remain mixed and do not pass the [performance gate](release-performance.md).
+The native core GI01 lifecycle was executed on b2;4dd changes footer width only
+and passed the relevant regression/readback checks above, not another full task
+submission. Its restored locale still resets English to Arabic on process restart
+(P2). White status icons against the light cloud background remain P2; the separate
+root navigation/status-bar work is excluded from this artifact.
+
+At21:34:36UTC both QA accounts were signed out. Font scales1,60-second screen
+timeouts, disabled accessibility service state, original default animator setting
+and1.0 window/transition scales were verified restored. User12 app was stopped;
+user11 was returned to sign-in. ADB reverse was empty. The emulator was left
+running. Regenerable extracted bytecode was deleted after inspection; APKs,
+controlled QA backend records and required evidence were retained.
+
 ## Other coordinator evidence
 
 Feature020's [inventory](supabase-data-migration.md) records its own local SQL,
@@ -320,8 +376,7 @@ and are not substituted for current standalone Android acceptance.
 
 ## Not yet passed
 
-Fresh `4dd6490` artifact installation and enlarged-text behavior; clean APK install;
-complete24-task acceptance, authoritative adult prerequisite/retry/adaptation
+Fresh device/store installation; complete24-task acceptance, authoritative adult prerequisite/retry/adaptation
 lifecycle; two physical devices; minimum/current OS matrix; full TalkBack,
 large-text/reduced-motion/notification/media-denial coverage; process death during
 mutation; controlled comparative frame/memory acceptance; representative physical

@@ -6,7 +6,7 @@
 - [ ] Fix reproduced P0/P1 defects and validate restricted local/staging identities.
 - [ ] Prove fresh account, restart, core journey, two clients and identity isolation.
 - [ ] Complete or explicitly block every committed launch feature; no silent narrowing.
-- [ ] Capture actual Android before/after UI and measured performance evidence.
+- [x] Capture actual Android before/after UI and measured performance evidence; physical-device/performance acceptance remains blocked.
 - [ ] Complete privacy/deletion/audience/permission/AI and external-service controls.
 - [x] Gate internal builds and enforce complete version/configuration provenance.
 - [ ] Produce reproducible signed release artifacts after source/backend checks.
@@ -23,8 +23,12 @@ Completed bounded repairs do not close the larger unchecked release obligations:
 - [x] Restore bilingual task safety instructions with focused rendered-component checks.
 - [x] Reproduce/fix preaccept Help, run24+73local SQL checks, deploy015 and prove ordinary hosted retry/readback without growth changes.
 - [x] Audit all24catalog tasks and separate P0, retaining missing lifecycle/safety evidence as blockers.
-- [ ] Reconcile the native family footer into two equal-column rows without reducing text size, touch targets, RTL or selected-tab semantics; verify larger text and repeated tab changes in its own fresh APK.
+- [x] Reconcile the native family footer into two equal-column rows without reducing text size, touch targets, RTL or selected-tab semantics; verify larger text and repeated tab changes in its own fresh APK.
 
 Native b2 font1.5 follow-up: use wider two-column navigation on narrow/enlarged
 layouts to preserve whole Arabic labels; retain three columns at default size.
-Actual candidate verification remains required.
+The exact4dd APK passed default three-column and font1.5 two-column rendering,
+Arabic/English whole labels,48dp-or-larger controls, repeated selections, Back,
+disabled-animation navigation/restart and cancelled task press on API35 user11.
+This bounded pass does not close full accessibility, physical-device or public
+release gates. See the canonical release QA/performance records.

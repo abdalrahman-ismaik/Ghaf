@@ -1,0 +1,7 @@
+{
+  "utc": "2026-09-14T21:28:48.765319+00:00",
+  "source": "4dd6490",
+  "check": "Drag away from task Review press cancels activation and leaves the task list interactive",
+  "passed": true,
+  "limitations": "Cancellation tested; this short two-task list does not establish fast scrolling or scroll-performance quality."
+}

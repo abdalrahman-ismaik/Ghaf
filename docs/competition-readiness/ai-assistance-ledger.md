@@ -32,7 +32,13 @@ The b2b4302 APK passed the native Child submission, separate Parent praise and
 recognition, memory save and both-session restart journey using synthetic QA
 records. Its default footer uses two rows, but font1.5 broke an Arabic label.
 Root corrected responsive column width in4dd6490, passing26focused UI checks,
-typecheck and scoped lint; its later fresh artifact acceptance is pending.
+typecheck and scoped lint. Its fresh34896135774 artifact passed full CI and native
+normal/font1.5 Arabic/English, repeated input/Back, cancelled press and disabled
+animation/restart checks. Child upgrade and Parent login after isolated signed-out
+QA app-data clearing restored16Seeds/two canopy/two memories. Root matched the
+installed APK hash, collected mixed warmed frame/memory and signed-out cold-start
+samples, retained reviewed synthetic screenshots and restored QA device settings.
+No physical-device, all-task, production-signing or store acceptance is implied.
 Root's single confirmation email reached the exact QA inbox; no OTP redemption,
 recovery or public-onboarding acceptance is implied. One helper executed
 a30-call loopback authenticated-role SQL timing sample with transactional fixtures

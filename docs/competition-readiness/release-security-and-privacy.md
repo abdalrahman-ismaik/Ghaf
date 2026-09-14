@@ -237,4 +237,13 @@ A helper compared all APK entries against d13:13 audio entries and10 TTF entries
 (six distinct fonts) have identical hash multisets. Complete exact supplied font
 licenses accompany the local candidate under THIRD-PARTY-NOTICES; unresolved
 artwork/narration rights and Roboto provenance still block public clearance.
-The later4dd6490 artifact must retain its own hash and validation evidence.
+The final4dd6490 artifact also passed independent hash/signer/ZIP and50-library
+ELF checks. Its installed `base.apk` SHA-256 is
+`eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886`, matching
+the88,451,956-byte build artifact. The same1,652-entry known-pattern scan and
+22,322 decoded-string review found no actual privileged key within that scope.
+Font/audio hash multisets match b2. Six full supplied licenses accompany the final
+APK, with exact source/artifact hashes; commercial clearance and in-app notices
+remain unresolved. The [final QA record](release-qa-results.md#final4dd-standalone-acceptance--bounded-pass)
+distinguishes clean synthetic app-data testing from a fresh-device/store install.
+No production account erasure or real-record deletion was performed.

@@ -4,8 +4,10 @@
 
 This bounded review traces current source-selected logo, artwork, fonts and audio to supplied
 provenance and license files. Source was read at `61a56e2` with other lanes' work preserved.
-A later read-only inspection verifies font/audio bytes in the exact earlier `d13c148` APK below;
-it does not verify another APK, store upload, public video or permission to publish. The
+A later read-only inspection verifies font/audio bytes in the exact earlier `d13c148` APK below,
+followed by separate `b2b4302` and final `4dd6490` identity checks and companion-license preparation.
+These checks cover the named artifacts' font/audio identity, not all images, a public video or
+permission to publish. Root's native execution is separately recorded in [QA](release-qa-results.md). The
 [main release ledger](release-readiness.md) remains authoritative; this document does not change
 its verdict. It complements the [store draft](release-store-listing.md) and
 [security/privacy record](release-security-and-privacy.md).
@@ -22,8 +24,8 @@ referenced asset is absent from an export.
 | **48 R003 botanical JPEGs**                    | All 48 literal references occur in [illustrationSources](../../src/components/illustrations/illustrationSources.ts). Exact filenames, hashes and transformations are in the [asset manifest](../../assets/images/illustrations/r003/ASSET_MANIFEST.json); final files are under `assets/images/illustrations/r003/final/`. [Provenance](../../assets/images/illustrations/r003/PROVENANCE.md) records prepared synthetic generation on 2026-09-06 and the 2026-09-07 Welcome replacement.                                                                                                                                                                                            | **Commercial clearance undocumented for this entire 48-file boundary.** Provider/model/account-use terms are not identified in the public manifest; its review status is `curated-local-candidate`. Named image-rights review explicitly remains `NOT RUN`. Obtain the generation and reference-input rights record for these exact hashes; do not convert crop/visual approval into a license claim. |
 | **Parent and Child access portraits**          | [Parent registry](../../src/components/access/parentAccessAssets.ts) selects `assets/images/access/parent-emirati/parent-access-emirati-family-v2.jpg`; [its provenance](../../assets/images/access/parent-emirati/PROVENANCE_FAMILY_V2.md) identifies the synthetic v1 father as an edit reference. [Child registry](../../src/components/access/childAccessAssets.ts) selects `assets/images/access/child-emirati/child-access-emirati-v1.jpg`; [its provenance](../../assets/images/access/child-emirati/PROVENANCE.md) records synthetic generation without real-person input.                                                                                                   | **Commercial clearance undocumented.** Both records explicitly leave named image-rights and cultural review unrun. Record provider/account terms and input provenance, including the Parent v1 reference. Fictional subjects and user-requested composition do not resolve output rights or cultural acceptance.                                                                                      |
 | **Task helper portrait**                       | [CompanionPortrait](../../src/components/companion/CompanionPortrait.tsx) imports `assets/images/companion/task-helper.png`. The [README](../../assets/images/companion/README.md) records a byte-for-byte copy of supplied `assets/character_companion/assets/images/avatars/avatar3.png` and the user's statement that they created the character.                                                                                                                                                                                                                                                                                                                                 | **Owner creation attestation recorded; distribution authority still to be recorded.** Confirm that the eventual app publisher is authorized by that creator. Do not invent a creator name, stock license, copyright assignment or reviewed human identity. No third-party attribution requirement is supplied.                                                                                        |
-| **Alexandria 700 Bold / 800 ExtraBold**        | [Root font loading](../../app/_layout.tsx) and [native font configuration](../../app.config.ts) select these two TTFs from installed `@expo-google-fonts/alexandria@0.4.2`. Its `LICENSE_FONT` supplies the Alexandria author notice and SIL OFL 1.1; `LICENSE` covers the package wrapper under MIT.                                                                                                                                                                                                                                                                                                                                                                                | **Bundling permission documented, subject to notices.** Preserve the exact notice and full OFL below in an easily viewable form in each distributed copy. No font modification was identified in this bounded source review. APK notice delivery is **not verified**.                                                                                                                                 |
-| **Readex Pro 400 Regular / 500 Medium**        | The same root and native configuration select these two TTFs from installed `@expo-google-fonts/readex-pro@0.4.1`. Its `LICENSE_FONT` supplies the author notice, reserved name and SIL OFL 1.1; wrapper `LICENSE` is MIT.                                                                                                                                                                                                                                                                                                                                                                                                                                                           | **Bundling permission documented, subject to notices.** Retain the exact Reserved Font Name statement below. Names appearing elsewhere in design tokens are not evidence that additional font files are loaded. APK notice delivery is **not verified**.                                                                                                                                              |
+| **Alexandria 700 Bold / 800 ExtraBold**        | [Root font loading](../../app/_layout.tsx) and [native font configuration](../../app.config.ts) select these two TTFs from installed `@expo-google-fonts/alexandria@0.4.2`. Its `LICENSE_FONT` supplies the Alexandria author notice and SIL OFL 1.1; `LICENSE` covers the package wrapper under MIT.                                                                                                                                                                                                                                                                                                                                                                                | **Bundling permission documented, subject to notices.** Preserve the exact notice and full OFL below in an easily viewable form in each distributed copy. No font modification was identified in this bounded source review. Full companion licenses are verified beside b2 and final 4dd; in-app notice delivery is **not verified**.                                                                |
+| **Readex Pro 400 Regular / 500 Medium**        | The same root and native configuration select these two TTFs from installed `@expo-google-fonts/readex-pro@0.4.1`. Its `LICENSE_FONT` supplies the author notice, reserved name and SIL OFL 1.1; wrapper `LICENSE` is MIT.                                                                                                                                                                                                                                                                                                                                                                                                                                                           | **Bundling permission documented, subject to notices.** Retain the exact Reserved Font Name statement below. Names appearing elsewhere in design tokens are not evidence that additional font files are loaded. Full companion licenses are verified beside b2 and final 4dd; in-app notice delivery is **not verified**.                                                                             |
 | **Six current Arabic onboarding recordings**   | [onboardingAudioSources](../../src/components/onboarding/onboardingAudioSources.ts) selects `assets/audio/onboarding/narration-ar-{intro,family,sustainability,assistant,support,growth}-v2.mp3`. The [audio README](../../assets/audio/onboarding/README.md) and [v2 selection report](workstreams/c-v2-narration.md) preserve per-file hashes and the user's supplied selection.                                                                                                                                                                                                                                                                                                   | **Commercial clearance undocumented for all six.** The record does not establish provider/model, generation plan, human/voice rights, or per-clip license. Obtain the actual supplied recordings' rights evidence. Do not inherit the distinct three Wiam clips' approval or plan conditions. Decode success and voice selection are not redistribution permission.                                   |
 | **Six current English onboarding recordings**  | The same registry selects `assets/audio/onboarding/narration-en-{intro,family,sustainability,assistant,support,growth}-v1.mp3`. The [README](../../assets/audio/onboarding/README.md) records prepared synthetic authoring on 2026-09-07 with `en-US-EmmaMultilingualNeural`, public title/body scripts, and exact hashes.                                                                                                                                                                                                                                                                                                                                                           | **Commercial clearance undocumented for all six.** The voice identifier alone does not establish which service/account/license generated the files. Retrieve that authoring evidence and applicable terms. English ordinary onboarding remains distinct from the silent English demo setting.                                                                                                         |
 | **Ambient calm soundscape v2**                 | [AmbientAudioProvider](../../src/components/audio/AmbientAudioProvider.tsx) imports `assets/audio/ambient/calm-soundscape-v2.mp3`. [Provenance](../../assets/audio/ambient/README.md) records local FFmpeg synthesis from fixed noise seeds on 2026-09-08, without downloaded recordings, field samples, speech or third-party audio.                                                                                                                                                                                                                                                                                                                                                | **Local authoring documented; publisher authority not named.** No third-party recording attribution is identified by this record. Confirm the authored output's publication authority; the generation tool's software license is not itself an audio-output license or a supplied-sample rights clearance.                                                                                            |
@@ -97,6 +99,75 @@ The Readex TTF metadata says **Copyright 2019**, while the supplied package `LIC
 **Copyright 2018** and names **RevReading Lexend**. Both actual notices are preserved below;
 this audit does not silently replace one with the other or declare a legal conflict resolved.
 
+## Executed b2 APK and companion verification — 2026-09-15
+
+The separate comparison at **20:46:26 UTC on September14 / September15 Dubai**
+verified `output/release-021-candidate/ghaf-internal-b2b43028ebd6.apk`,
+**88,451,812 bytes**, SHA-256
+`ec870fa8bf8153c847751482ae4bba161f86fd141bedb4b70078606ea3510ff5`.
+The hash and source `b2b43028ebd61ba943a808bf6c3be35ff8f78d5f` match its adjacent
+build receipt. The d13 baseline was independently rehashed for this comparison.
+
+All **1,652 non-directory entries in each APK** were streamed through SHA-256.
+The complete font/audio hash multisets, including duplicate counts, are identical:
+
+- **13 audio entries:** six Arabic v2, six English v1 and ambient v2, each matching
+  the local source bytes and the d13 resource paths listed above.
+- **10 TTF entries / six distinct font binaries:** two copies of each configured
+  Alexandria/Readex font, one Material Symbols Regular and one Roboto numeric subset.
+  The first five binaries match their installed package sources; Roboto matches d13
+  and remains without a verified upstream source-byte/license attachment.
+- No added or removed font/audio hashes. No exact-byte match anywhere in b2 for
+  the three Wiam, six Arabic v1 or ambient v1 recordings. Transformed or nested
+  content is outside that absence claim.
+
+The existing ignored `output/release-021-candidate/THIRD-PARTY-NOTICES/README.md`
+and adjacent `source-manifest.json` record exact entry paths, source/artifact hashes
+and six complete license copies. These local artifacts are not tracked repository files.
+The Alexandria 0.4.2, Readex Pro 0.4.1 and Material Symbols 0.4.44 package versions
+match b2's committed lockfile. Each copied `LICENSE_FONT` and wrapper `LICENSE`
+was verified byte-for-byte, preserving its original header and line endings.
+The manifest's source-document hash identifies this audit at preparation time;
+later documentation edits do not change the checked APK or copied license bytes.
+
+This extends artifact identity evidence to b2, **not commercial clearance**.
+The same narration/artwork decisions remain open. All image bytes and a
+user-readable in-app full-license surface were not verified by this comparison.
+The detailed d13 notice-marker inspection above is not claimed as a repeated b2
+notice scan. Final `4dd6490` has a separate artifact record below.
+
+## Final 4dd artifact and companion notices — 2026-09-15
+
+Fresh Gradle [run34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774)
+succeeded for source `4dd649025da828a53ee9617573ebbc0b2849245c`. The downloaded
+artifact is `output/release-021-final/ghaf-internal-4dd649025da8.apk`,
+**88,451,956 bytes**, SHA-256
+`eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886`.
+Its adjacent `build-receipt.json` records the same source, size and hash.
+
+Root's ignored `.expo/release-20260914/final-artifact-review.json`, dated
+**21:22:22 UTC on September14 / 01:22:22 Dubai on September15**, independently
+records **13 audio entries / 13 unique binaries** and **10 TTF entries / six
+unique binaries**, with both hash multisets identical to b2, including duplicate
+counts. No font/audio content change is indicated. This extends the b2 source-byte
+attribution for the configured fonts, selected narration and ambient v2 to the final
+artifact; the unchanged Roboto subset remains without a verified upstream source.
+
+The documentation helper independently rehashed the final APK, checked the root
+review against the exact build receipt, and checked all three font package versions
+against the committed 4dd lockfile. It copied the eight-file b2 companion folder to
+`output/release-021-final/THIRD-PARTY-NOTICES/`, then verified all six complete
+license copies against both b2 and their installed source hashes. The final README
+and manifest identify 4dd and preserve the b2/d13 comparison as historical evidence.
+The manifest records this tracked notice document's hash at final preparation.
+
+No native actions or playback were performed by this asset review. Root's native
+checks were starting at this artifact checkpoint; **no final native pass is claimed
+here**. The final companion addresses file delivery, not public/commercial rights
+clearance, full dependency notices or a user-readable notices surface inside the
+standalone app. Artwork/narration rights, exact Roboto attribution and in-app
+notices remain open.
+
 ## Retained assets that must not be confused with the current selection
 
 The three `assets/audio/demo-onboarding/ar-{together,support,growth}-wiam-v1.mp3` files have
@@ -111,7 +182,7 @@ However, the current [entry route](../../app/index.tsx) imports
 [OriginalDemoEntryScreen](../../src/components/demo/OriginalDemoEntryScreen.tsx), which uses
 [FirstRunOnboarding](../../src/components/onboarding/FirstRunOnboarding.tsx) and the six-topic
 source registry. This audit found no `app/` or `src/` importer of the old `DemoEntryScreen`.
-The d13 APK inspection above found no exact-byte copy of those three recordings in any ZIP entry.
+The independent d13 and b2 APK inspections found no exact-byte copy of those three recordings in any ZIP entry.
 Other artifacts still require their own check; a source repository or older artifact may contain
 them. No conclusion about a transformed recording is inferred from its filename.
 
@@ -131,13 +202,13 @@ is a transcript fallback record, not evidence of a supplied audio binary.
 
 ## Concrete release decisions still open
 
-| Priority       | Exact unresolved boundary                                                   | Required evidence or implementation before clearance                                                                                                                                                                           |
-| -------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| P1             | 5A mark; 48 botanical JPEGs; two access portraits                           | Record actual creator/provider, input rights, applicable generation-account terms, and authorized publisher decision against existing manifests. Keep named cultural/image-rights review distinct from commercial-use rights.  |
-| P1             | Six Arabic v2 and six English v1 selected narration files                   | Establish per-collection or per-file generation/recording rights covering the exact hashes and intended public APK/video use. No replacement, upload or regeneration is authorized by this document.                           |
-| P1             | Four selected TTFs and font package wrappers                                | Deliver the exact OFL notices/full license and applicable MIT wrapper notice below in a user-viewable distributed form; verify that form in the final APK. A Markdown file in the repository is not proof the APK includes it. |
-| P2             | User-created companion and locally authored ambient v2                      | Associate the existing authorship attestation/provenance with the eventual publisher's permission. No invented copyright holder or additional license is supplied here.                                                        |
-| Conditional P1 | Old Wiam recordings if included in a distributed artifact or source package | Reconcile exact inclusion and allowed use/attribution with the Free-generation record and official policy. Current source route tracing does not prove artifact absence.                                                       |
+| Priority       | Exact unresolved boundary                                                   | Required evidence or implementation before clearance                                                                                                                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1             | 5A mark; 48 botanical JPEGs; two access portraits                           | Record actual creator/provider, input rights, applicable generation-account terms, and authorized publisher decision against existing manifests. Keep named cultural/image-rights review distinct from commercial-use rights.                                         |
+| P1             | Six Arabic v2 and six English v1 selected narration files                   | Establish per-collection or per-file generation/recording rights covering the exact hashes and intended public APK/video use. No replacement, upload or regeneration is authorized by this document.                                                                  |
+| P1             | Selected text fonts, Material Symbols and package wrappers                  | Six complete OFL/Apache/MIT license copies are verified beside b2 and final 4dd. Preserve them in its companion package; separately verify a user-readable full-notice surface in the final standalone APK. Repository/companion files do not prove in-app inclusion. |
+| P2             | User-created companion and locally authored ambient v2                      | Associate the existing authorship attestation/provenance with the eventual publisher's permission. No invented copyright holder or additional license is supplied here.                                                                                               |
+| Conditional P1 | Old Wiam recordings if included in a distributed artifact or source package | Reconcile exact inclusion and allowed use/attribution with the Free-generation record and official policy. Current source route tracing does not prove artifact absence.                                                                                              |
 
 ## Font notices prepared for distribution
 
@@ -334,10 +405,12 @@ Copyright 2011 Google Inc. All Rights Reserved.
 ```
 
 The APK resource table contains `roboto_medium_numbers`, and its
-`META-INF/com.google.android.material_material.version` is **1.13.0**. These observations
-point to the Material Components numeric subset; this is an **inference**, not an upstream
-binary hash match. No Roboto font file was found among the installed `node_modules` paths.
-Local SDK/cache provenance was not verified in this helper scope.
+`META-INF/com.google.android.material_material.version` is **1.13.0**. Their coexistence
+initially suggested Material Components as a source, but does not establish that link.
+Root subsequently inspected the official Material 1.13.0 AAR twice in memory and found
+no font/TTF/Roboto entry, as recorded in the companion README. Do not assert that AAR
+is the source of this subset. No matching Roboto file was found among the installed
+`node_modules` paths; exact native source/cache attribution remains unresolved.
 
 The [Material Components Android 1.13.0 license](https://github.com/material-components/material-components-android/blob/1.13.0/LICENSE)
 and [Roboto-2 upstream license](https://github.com/googlefonts/roboto-2/blob/main/LICENSE)
@@ -561,9 +634,19 @@ Apache License
 
 ## Candidate delivery boundary
 
-A locally assembled candidate ZIP may retain the APK, its receipt and checksums, this notice
-record, and the **complete supplied license files** side by side. The source files to preserve
-without replacing their headers are:
+The final 4dd APK, receipt and **complete supplied license files** now exist side by
+side under `output/release-021-final/`. The earlier b2 companion remains under
+`output/release-021-candidate/`, with its original receipts intact. The helper
+copied and verified the final companion; its exact folder paths are:
+
+- `THIRD-PARTY-NOTICES/README.md` and `source-manifest.json`.
+- `THIRD-PARTY-NOTICES/alexandria/{LICENSE_FONT,LICENSE}`.
+- `THIRD-PARTY-NOTICES/readex-pro/{LICENSE_FONT,LICENSE}`.
+- `THIRD-PARTY-NOTICES/material-symbols/{LICENSE_FONT,LICENSE}`.
+
+A local candidate ZIP can preserve this same companion layout. This review does
+not claim that a ZIP has been assembled or that the files are available inside
+the installed app. The original source files retained without header changes are:
 
 - `node_modules/@expo-google-fonts/alexandria/LICENSE_FONT`
 - `node_modules/@expo-google-fonts/readex-pro/LICENSE_FONT`
@@ -571,7 +654,7 @@ without replacing their headers are:
 - The identical Expo font-package wrapper `LICENSE`, plus the exact embedded font copyright
   notices reproduced above and any verified native dependency notices.
 
-This helper did not create that ZIP or alter the APK. Including notices addresses a concrete
+This helper did not create a ZIP or alter the APK. Including notices addresses a concrete
 distribution requirement; it does **not** grant commercial rights for the selected recordings,
 generated images or logo, clear the unresolved Roboto provenance link, or establish full legal
 compliance. Keep public/commercial distribution unresolved until the corresponding evidence is
@@ -581,10 +664,13 @@ release gates even if a local ZIP includes companion license files.
 ## Verification and limits
 
 **Executed:** read source references and existing manifests/provenance; read the three installed
-font packages' licenses and versions; measure the configured fonts and exact d13 artifact inputs;
-hash all 1,652 APK entries; parse packaged font metadata; inspect native dependency/resource
-identifiers; perform bounded full-license/text-marker comparisons; read the official policy and
-upstream license sources linked above. No private media, provider accounts or generation
+font packages' licenses and versions; measure the configured fonts and exact d13/b2 artifact inputs;
+hash all 1,652 entries in each APK; compare font/audio hashes and retained duplicate counts;
+prepare and verify six companion license files; parse d13 font metadata and inspect its native
+dependency/resource identifiers; perform the bounded d13 full-license/text-marker comparisons;
+rehash the final 4dd APK and cross-check root's font/audio comparison, final lockfile
+and six companion license copies; read the official policy and upstream license
+sources linked above. No private media, provider accounts or generation
 credentials were inspected.
 
 | Local font input                                      | SHA-256 measured 2026-09-15                                        |
@@ -598,9 +684,10 @@ credentials were inspected.
 
 Paths in this table are relative to `node_modules/@expo-google-fonts/`. Artwork checksums remain
 in their linked manifests and were not independently recalculated by this audit. Local audio
-bytes were hashed and compared with the d13 APK as recorded above.
+bytes were hashed and compared independently with both d13 and b2 as recorded above;
+root's separate final 4dd comparison establishes the unchanged font/audio hash multisets.
 
-**Not executed:** new exports/builds; artifact checks beyond the exact d13 candidate; device or
+**Not executed by this asset review:** new exports/builds; device or
 user-viewable notice acceptance; public upload; new playback/listening or visual/cultural review;
 provider account/license verification. Historical asset tests and decode results remain their
 dated evidence, not new passes here. Reconcile any later artifact separately, close exact native

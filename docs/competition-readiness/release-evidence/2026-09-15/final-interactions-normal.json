@@ -1,0 +1,12 @@
+{
+  "utc": "2026-09-14T21:24:02.369257+00:00",
+  "source": "4dd649025da828a53ee9617573ebbc0b2849245c",
+  "setting": "normal",
+  "checks": [
+    "six labeled enabled destinations, minimum48dp bounds",
+    "expected column count",
+    "12 consecutive native taps settle on last requested Tasks destination",
+    "Garden then immediate system Back returns to Tasks"
+  ],
+  "limitations": "ADB event cadence includes command overhead; no touch-to-display timing, TalkBack speech or gesture-frame measurement."
+}

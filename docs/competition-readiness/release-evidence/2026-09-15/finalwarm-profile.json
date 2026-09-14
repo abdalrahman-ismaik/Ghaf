@@ -1,0 +1,14 @@
+{
+  "utc": "2026-09-14T21:25:33.421247+00:00",
+  "label": "finalwarm",
+  "elapsedSeconds": 43.13,
+  "method": "3 cycles garden/family/settings/tasks; native UIAutomator ID lookup + adb tap + 200ms after each. Paired Child, Arabic, font1, 2tasks, 2recognitions, 2memories. Two full navigation warmup cycles before measurement. Shared-host emulator; no FPS/physical claim.",
+  "frameStats": {
+    "Total frames rendered": "390\r",
+    "Janky frames": "39 (10.00%)\r",
+    "50th percentile": "18ms\r",
+    "90th percentile": "31ms\r",
+    "95th percentile": "36ms\r",
+    "99th percentile": "53ms\r"
+  }
+}

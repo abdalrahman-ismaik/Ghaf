@@ -12,7 +12,9 @@ store release, production-readiness claim or native acceptance result.
 ## Build configuration
 
 Open **Actions → Internal Android APK → Run workflow**, select the reviewed
-`main` revision and provide these two public client keys:
+source revision/ref and provide these two public client keys. The current release
+lane uses `release/021-internal-20260914`; do not accidentally build unrelated
+working-tree or later main changes:
 
 | Input                  | Fixed backend                              |
 | ---------------------- | ------------------------------------------ |
@@ -88,24 +90,30 @@ does not bypass approval or prove external email delivery.
 ## Current release-engineering evidence
 
 The latest validated internal artifact in this lane is
-[ghaf-internal-b2b43028ebd6.apk](../../output/release-021-candidate/ghaf-internal-b2b43028ebd6.apk),
-from [run34891473556](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34891473556).
-It is88,451,812bytes, SHA-256
-`ec870fa8bf8153c847751482ae4bba161f86fd141bedb4b70078606ea3510ff5`,
+[ghaf-internal-4dd649025da8.apk](../../output/release-021-final/ghaf-internal-4dd649025da8.apk),
+from [run34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774),
+exact source `4dd649025da828a53ee9617573ebbc0b2849245c`.
+It is88,451,956bytes, SHA-256
+`eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886`,
 and retains the existing internal template signer. It is not a production-signed
 AAB or store-distributed release.
 
-Root installed its normal update into API35 user11 and enabled it with clean app
+The preceding b2 candidate was installed as a normal update into API35 user11 and enabled with clean app
 data in user12. Independent Child/Parent native sessions completed the controlled
 GI01 submission, praise, recognition and memory loop, then recovered16Seeds, two
 canopy contributions and two memories after restart. Account B showed a truthful
 empty setup. Exact boundaries and remaining blockers are in the
 [release QA record](../competition-readiness/release-qa-results.md).
 
-The default footer improved, but font1.5 split one Arabic label. Follow-up
-`4dd6490` passed source checks and is building in
-[run34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774);
-its artifact/native acceptance remains pending. Public verdict is **NOT READY**.
+The default footer improved, but font1.5 split one Arabic label. Final4dd passed
+source/Gradle/backend CI, independent artifact and installed-hash checks, native
+normal/enlarged Arabic/English labels, repeated selections/Back, cancellation and
+zero-animation restart. Its normal Child upgrade preserved data; a fresh Parent
+login after clearing only signed-out synthetic user12 app data restored the same
+16Seeds/two canopy/two memories. This was not another complete task mutation loop,
+a fresh physical device or a store install. Both QA profiles were signed out and
+their settings restored. Full licenses accompany the APK in THIRD-PARTY-NOTICES;
+remaining rights/notice gaps are documented. Public verdict is **NOT READY**.
 Do not substitute the older Feature018 evidence below for these newer journeys.
 
 ## Historical Feature018 acceptance evidence

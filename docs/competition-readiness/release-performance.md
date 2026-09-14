@@ -1,7 +1,7 @@
 # Release performance evidence
 
 Updated:2026-09-15 Dubai; receipts are dated2026-09-14UTC.
-**Historical startup baseline and bounded d13/b2 frame/memory samples measured;
+**Historical startup baseline and bounded d13/b2/final 4dd frame/memory samples measured;
 controlled comparison and performance gate NOT PASSED.** No FPS or
 lower/mid-range physical-device claim is supported.
 
@@ -11,7 +11,8 @@ lower/mid-range physical-device claim is supported.
 | -------------------- | ---------: | ------------------: | ------------------: |
 | Historical `5ad7faa` | 88,134,244 |                   — |                   — |
 | `d13c148`            | 88,449,616 |                   — |            +315,372 |
-| Current `b2b4302`    | 88,451,812 |    +2,196 (0.0025%) |  +317,568 (0.3603%) |
+| `b2b4302`            | 88,451,812 |    +2,196 (0.0025%) |  +317,568 (0.3603%) |
+| Final `4dd6490`      | 88,451,956 |              +2,340 |            +317,712 |
 
 The downloaded b2 artifact is `ghaf-internal-b2b43028ebd6.apk`, source
 `b2b43028ebd61ba943a808bf6c3be35ff8f78d5f`, SHA-256
@@ -21,6 +22,12 @@ independent APK hashing and the d13 comparison; exact artifact identities are
 also recorded in the [QA record](release-qa-results.md). APK byte growth is below
 the provisional 5% investigation trigger below. This does not establish installed
 disk usage, startup performance or a passed performance gate.
+
+Final `ghaf-internal-4dd649025da8.apk`, source
+`4dd649025da828a53ee9617573ebbc0b2849245c`, is **144 bytes larger than b2**.
+Its independently verified SHA-256 is
+`eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886`;
+the artifact and receipt are under `output/release-021-final/`.
 
 ## Android baseline method
 
@@ -46,9 +53,9 @@ interaction nor a clean-install cold-start benchmark. First secondary-user launc
 (15068ms) and the first launch after emulator reboot (8158ms) had different cache/
 boot conditions and are excluded from the comparison set.
 
-The candidate must repeat this method on the same isolated user/device/configuration
-before an improvement is claimed. Candidate startup is not yet measured in this
-record. A build alone cannot close this comparison.
+The final4dd candidate repeated this method on the same isolated user/device;
+see the final signed-out startup sample below. Shared-host and cache histories
+remain uncontrolled, so the later result does not establish a causal improvement.
 The later YAML parser patch is build-tool hardening, not an app startup optimization.
 
 ## d13 paired-Child navigation sample
@@ -166,6 +173,87 @@ were uncontrolled. These snapshots cannot establish retained growth, a leak or
 a regression caused by this change. Stable view/activity counts do not close
 that gap. The memory and physical-device performance gates remain **NOT PASSED**.
 
+## b2 and final 4dd samples after explicit warm-up
+
+Root executed two additional matched-journey samples on the same API35 emulator,
+paired Child in user11, Arabic, font scale1. Both used **two tasks, two recognitions
+and two memories**, following the core task test. These are a separate comparison
+from the earlier d13/b2 one-recognition samples; the old measurements remain above.
+The final default-font footer layout was the same as b2. Background user12's app
+was force-stopped for this comparison.
+
+Before each measured run, root completed **two full navigation warm-up cycles**.
+The measured workload was then three cycles of Garden → Family → Settings → Tasks,
+with the same native UIAutomator resource-ID lookup, ADB taps and 200ms delay after
+each tap. Ignored `.expo/release-20260914/b2warm-profile.json` is dated
+**21:08:59 UTC on September14 / 01:08:59 Dubai on September15**;
+`finalwarm-profile.json` is dated **21:25:33 UTC / 01:25:33 Dubai**. Exact artifact
+identities are recorded above. No startup measurement was part of these runs.
+
+| Reported counter               |     b2warm | finalwarm (4dd) |              Final minus b2 |
+| ------------------------------ | ---------: | --------------: | --------------------------: |
+| Instrumented elapsed time      |     43.31s |          43.13s |                      −0.18s |
+| Total frames rendered          |        396 |             390 |                          −6 |
+| Janky frames                   | 36 (9.09%) |     39 (10.00%) | +3; +0.91 percentage points |
+| Frame-duration 50th percentile |       17ms |            18ms |                        +1ms |
+| Frame-duration 90th percentile |       27ms |            31ms |                        +4ms |
+| Frame-duration 95th percentile |       32ms |            36ms |                        +4ms |
+| Frame-duration 99th percentile |       46ms |            53ms |                        +7ms |
+
+The final run recorded higher janky-frame percentage and frame-duration
+percentiles. The elapsed-time difference includes automation overhead and does
+not indicate faster interaction. These are measured differences, not a causal
+regression or improvement finding. The host remained shared, cache/GC/swap history
+was uncontrolled, and one measured run per candidate is insufficient for a release
+performance decision. Frames divided by this instrumented duration are not FPS.
+
+### Warm-run memory snapshots
+
+The corresponding `{b2warm,finalwarm}-memory-{before,after}.txt` receipts contain
+Android `meminfo`. b2 used PID28622, uptime6030725→6074189ms; final used PID4092,
+uptime7024562→7068026ms. Each memory pair spans 43.464 seconds, a surrounding
+capture window rather than the profile script's exact elapsed-time boundary.
+Values below are **KB as reported by Android**.
+
+| Counter                   | b2 before | b2 after | b2 difference | Final before | Final after | Final difference |
+| ------------------------- | --------: | -------: | ------------: | -----------: | ----------: | ---------------: |
+| Total PSS                 |   188,394 |  203,741 |       +15,347 |      196,180 |     176,071 |          −20,109 |
+| Total RSS                 |   219,148 |  236,948 |       +17,800 |      256,408 |     210,688 |          −45,720 |
+| Total swap PSS            |    54,586 |   53,655 |          −931 |       31,240 |      55,021 |          +23,781 |
+| Native heap allocated     |    81,555 |   87,857 |        +6,302 |       86,172 |      91,802 |           +5,630 |
+| Dalvik heap allocated     |     6,513 |    6,521 |            +8 |        9,583 |       9,719 |             +136 |
+| Views                     |        57 |       57 |             0 |           57 |          57 |                0 |
+| Activities / ViewRootImpl |     1 / 1 |    1 / 1 |         0 / 0 |        1 / 1 |       1 / 1 |            0 / 0 |
+
+Final PSS/RSS fell while swap PSS and allocated heaps rose. These snapshots
+cannot be read as a memory optimization, a leak or proof that the earlier b2 PSS
+increase is resolved. Explicit navigation warm-up does not control GC, paging or
+post-run idle settling. Repeat settled measurements under controlled pressure and
+on representative physical devices before assigning causality or accepting a
+budget. **The physical Android/performance gate remains blocked.**
+
+## Final signed-out startup sample
+
+At21:30:24UTC on September14 /01:30:24Dubai on September15, root measured
+three process-cold `am start -W` launches of the exact4dd APK after force-stop,
+signed out in user11, font1, normal system animation scales. Each launch reported
+`COLD`/`ok`; native resource IDs confirmed the sign-in screen after each.
+
+| Sample | Activity TotalTime | WaitTime |
+| ------ | -----------------: | -------: |
+| 1      |            1,406ms |  1,418ms |
+| 2      |            1,261ms |  1,300ms |
+| 3      |            1,419ms |  1,430ms |
+
+Median activity-display time is1,406ms, versus the earlier5ad screening median
+4,056ms. This does not establish a2,650ms application improvement: process/OS
+caches, runtime compilation history and shared-host load were not controlled
+across the earlier and later sessions. It does not measure usable authenticated
+content, first installation, network latency or physical-device startup. The
+ignored `startup-final.json` records the exact source/APK hash and method. An
+initial harness assertion rejected CRLF-bearing fields before normalization;
+that attempt is not counted among these three successful samples.
+
 ## Backend observations
 
 Root ran project-scoped read-only metadata/aggregate queries at19:36:42UTC on
@@ -215,7 +303,8 @@ claims that the current product meets them:
   settling, request count, API p50/p95 and offline/reconnect. Do not convert mock
   test duration, mixed database aggregates or emulator smoothness into FPS claims.
 
-The bounded d13/b2 frame counters, surrounding memory snapshots and APK byte
+The bounded d13/b2/final 4dd frame counters, including the explicit-warm-up pair,
+surrounding memory snapshots and APK byte
 comparison above are **executed**.
 Controlled before/after candidate measurement, sustained memory-growth evaluation,
 physical-device frame acceptance, battery/thermal behavior, AI latency/cost and

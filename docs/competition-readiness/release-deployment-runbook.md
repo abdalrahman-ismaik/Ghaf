@@ -78,8 +78,15 @@ Fresh b2 run34891473556 completed successfully and its exact APK passed local
 artifact checks, a normal update of the paired Child session, a clean app-data
 profile and the native Child/Parent/persistence journey recorded in
 [QA](release-qa-results.md). Its font1.5 Arabic word break led to the bounded
-responsive-column correction4dd6490. Run34896135774 has passed source checks and
-is building that later source; its native acceptance remains pending.
+responsive-column correction4dd6490. Run34896135774 passed source checks and fresh
+Gradle. Its exact final APK, local/installed hash, preserved signer, ZIP/ELF alignment,
+enlarged Arabic/English, repeated input/Back/zero-animation checks, Child upgrade
+and Parent restoration after clean QA app data passed within the final QA scope.
+Current artifact: `output/release-021-final/ghaf-internal-4dd649025da8.apk`,
+88,451,956bytes, SHA-256
+`eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886`.
+Exact full font licenses accompany it under `THIRD-PARTY-NOTICES/`; this does not
+close rights or in-app notice gaps. Public verdict remains NOT READY.
 
 On a successful run, download its artifact into a new owned output directory:
 

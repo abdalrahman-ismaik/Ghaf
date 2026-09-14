@@ -175,3 +175,23 @@ word across lines. Root extends the same CloudFamilyView.tsx boundary plus
 tests/cloud-family-ui/core-ui.test.tsx for responsive wider columns at enlarged
 text/narrow width. Selection state, six labels and press/Back behavior remain.
 Fresh artifact and large-text acceptance required; no NAV-MOTION edits.
+
+RELEASE-020: root reserves release-evidence/2026-09-15/ for a small reviewed
+synthetic-only native screenshot set and its source/limitations index. No real
+account, credentials, pairing tokens or user0 captures will be included. Helper
+owns only release-store-listing.md and release-asset-notices.md for reconciliation
+against recorded b2 evidence; final4dd native acceptance is still pending.
+
+RELEASE-021: final4dd build34896135774 and backend/repository CI passed. Root
+matched downloaded and installed APK hashes; exact retained template signer,
+ZIP and50-library ELF checks passed. Native font1/font1.5 Arabic/English footer,
+repeated tabs/Back, cancelled press and zero-scale restart passed. Child upgrade
+and Parent restoration from clean signed-out synthetic QA app data retained the
+existing16Seeds/two canopy/two memories. Both profiles signed out and device
+settings restored; emulator remains running. Warmed measurements are mixed,
+with no physical/performance acceptance. Helper released all document scopes.
+Final source4dd649025da828a53ee9617573ebbc0b2849245c; APK SHA
+eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886.
+Publication stays blocked by the canonical45-row/eight-gate ledger. This is a
+coherent execution checkpoint, not background work or public release approval.
+NAV-MOTION source and tests remain untouched/uncommitted by this lane.

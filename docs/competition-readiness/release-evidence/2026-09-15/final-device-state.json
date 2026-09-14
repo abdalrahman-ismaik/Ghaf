@@ -1,0 +1,39 @@
+{
+  "utc": "2026-09-14T21:34:36.129063+00:00",
+  "installedApkSha256": "eacad1cc78a04e4d2a7d753a646ea07bb0540061e7e0fd47497ad757afd3a886",
+  "crashBuffer": {
+    "1110209": {
+      "fatalExceptions": 0,
+      "fatalSignals": 0,
+      "packageAnrMarkers": 0,
+      "bufferTextBytes": 0
+    },
+    "1210209": {
+      "fatalExceptions": 0,
+      "fatalSignals": 0,
+      "packageAnrMarkers": 0,
+      "bufferTextBytes": 0
+    }
+  },
+  "settings": {
+    "11": {
+      "font_scale": "1.0",
+      "screen_off_timeout": "60000",
+      "enabled_accessibility_services": "null",
+      "accessibility_enabled": "0"
+    },
+    "12": {
+      "font_scale": "1.0",
+      "screen_off_timeout": "60000",
+      "enabled_accessibility_services": "null",
+      "accessibility_enabled": "0"
+    },
+    "global": {
+      "animator_duration_scale": "null",
+      "transition_animation_scale": "1.0",
+      "window_animation_scale": "1.0"
+    }
+  },
+  "adbReverse": "",
+  "limitations": "UID-filtered retained crash buffer only; not all historical crashes, ANR traces, physical or release population evidence. QA users signed out; original user0 data untouched."
+}
