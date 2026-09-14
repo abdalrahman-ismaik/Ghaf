@@ -142,7 +142,7 @@ export function ParentTaskWorkspace({
             TASK_CATEGORIES.find((category) => category.id === item.categoryId)!.label,
             locale,
           )}
-          previewLabel={t('taskWorkspace.previewOnly')}
+          previewLabel={t(item.catalogExecution ? 'catalog.ready' : 'taskWorkspace.previewOnly')}
           title={localize(item.title, locale)}
         />
       </View>
