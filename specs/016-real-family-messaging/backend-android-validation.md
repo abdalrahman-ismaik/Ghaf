@@ -47,7 +47,15 @@ Storage-failure evidence is retained at
 `.expo/messaging-integration/failed-native-052545/`. D: reports `Warning / Full Repair
 Needed`; C: has about 1 GiB free. No disk repair, formatting or user-file removal was
 performed. The failure exposed a launcher output-drain error that was not surfaced
-until the Gradle client stopped; a bounded launcher correction is being validated.
+until the Gradle client stopped. The corrected launcher writes batch logs directly
+to validated file paths and checks utility copy-task failures while the process is
+alive. AST parsing and 16 scoped synthetic checks passed, including large dual-stream
+output, nonzero exit, spaced paths, environment isolation and unsafe-token rejection.
+Evidence: `.expo/messaging-integration/native logging check 64b5595c/checks.json`
+(SHA-256 `8c68570dfcfedae7c9cad5242119b958a850b2bbe0579477d43c1e8ce6dbb5a5`).
+An additional debugger-based fault-injection probe stalled and was preserved as failed;
+its exact synthetic process tree was stopped. No successful reproduction of a disk
+failure, or causal claim about the previous buffer size, follows from these checks.
 
 | Check                                      | Status  | Observed result                                                                                                                                                                                                                                        |
 | ------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

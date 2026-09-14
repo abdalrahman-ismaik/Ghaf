@@ -95,40 +95,74 @@ function Read-Headroom([switch]$SnapshotOnly) {
 }
 
 function Invoke-Recorded([string]$Name, [string]$Executable, [string[]]$Arguments) {
+    $stdoutPath = Join-Path $runDirectory "$Name.stdout.log"
+    $stderrPath = Join-Path $runDirectory "$Name.stderr.log"
+    $batchCommand = [IO.Path]::GetExtension($Executable) -in @('.bat', '.cmd')
     $info = [Diagnostics.ProcessStartInfo]::new()
     $info.WorkingDirectory = Join-Path $ProjectRoot 'android'
     $info.UseShellExecute = $false; $info.CreateNoWindow = $true
-    $info.RedirectStandardOutput = $true; $info.RedirectStandardError = $true
+    $info.RedirectStandardOutput = -not $batchCommand; $info.RedirectStandardError = -not $batchCommand
     $info.Environment.Clear()
     foreach ($key in $script:childEnvironment.Keys) { $info.Environment[$key] = $script:childEnvironment[$key] }
-    if ([IO.Path]::GetExtension($Executable) -in @('.bat', '.cmd')) {
+    if ($batchCommand) {
         $tokens = @($Executable) + $Arguments
-        foreach ($token in $tokens) { if ($token -match '[\r\n"&|<>^%!]') { throw 'Unsafe batch command argument.' } }
+        foreach ($token in @($tokens) + @($stdoutPath, $stderrPath)) {
+            if ($token -match '[\r\n"&|<>^%!]') { throw 'Unsafe batch command argument or log path.' }
+        }
         $info.FileName = $script:commandExe
-        $info.Arguments = '/d /s /c "' + (($tokens | ForEach-Object { '"' + $_ + '"' }) -join ' ') + '"'
+        $info.Arguments = '/d /s /c "' + (($tokens | ForEach-Object { '"' + $_ + '"' }) -join ' ') +
+            ' 1>"' + $stdoutPath + '" 2>"' + $stderrPath + '""'
     } else {
         $info.FileName = $Executable
         foreach ($argument in $Arguments) { $info.ArgumentList.Add($argument) }
     }
-    $stdoutPath = Join-Path $runDirectory "$Name.stdout.log"
-    $stderrPath = Join-Path $runDirectory "$Name.stderr.log"
     $step = [ordered]@{ name = $Name; startedUtc = [DateTime]::UtcNow.ToString('o'); stdout = $stdoutPath; stderr = $stderrPath }
     $receipt.steps.Add($step)
     $process = [Diagnostics.Process]::new(); $process.StartInfo = $info
-    # Keep redirected progress visible during long tasks instead of buffering the final lines.
-    $stdout = [IO.FileStream]::new($stdoutPath, [IO.FileMode]::Create, [IO.FileAccess]::Write, [IO.FileShare]::Read, 1)
-    $stderr = [IO.FileStream]::new($stderrPath, [IO.FileMode]::Create, [IO.FileAccess]::Write, [IO.FileShare]::Read, 1)
+    $stdout = $null; $stderr = $null; $started = $false
     try {
+        if ($batchCommand) {
+            # CMD writes Gradle logs directly, without a parent output pipe that can fill.
+            [IO.File]::WriteAllText($stdoutPath, '')
+            [IO.File]::WriteAllText($stderrPath, '')
+        } else {
+            $stdout = [IO.FileStream]::new($stdoutPath, [IO.FileMode]::Create, [IO.FileAccess]::Write, [IO.FileShare]::Read, 4096)
+            $stderr = [IO.FileStream]::new($stderrPath, [IO.FileMode]::Create, [IO.FileAccess]::Write, [IO.FileShare]::Read, 4096)
+        }
         if (-not $process.Start()) { throw 'Process did not start.' }
+        $started = $true
         $step.pid = $process.Id
-        $copyOut = $process.StandardOutput.BaseStream.CopyToAsync($stdout)
-        $copyError = $process.StandardError.BaseStream.CopyToAsync($stderr)
-        $process.WaitForExit()
-        $null = $copyOut.GetAwaiter().GetResult()
-        $null = $copyError.GetAwaiter().GetResult()
+        if ($batchCommand) {
+            $process.WaitForExit()
+        } else {
+            $copyOut = $process.StandardOutput.BaseStream.CopyToAsync($stdout)
+            $copyError = $process.StandardError.BaseStream.CopyToAsync($stderr)
+            do {
+                # Surface failed drains while the child is alive, before its pipe can stall.
+                foreach ($copy in @($copyOut, $copyError)) {
+                    if ($copy.IsFaulted -or $copy.IsCanceled) { $null = $copy.GetAwaiter().GetResult() }
+                }
+                $exited = $process.WaitForExit(250)
+            } while (-not $exited)
+            $null = $copyOut.GetAwaiter().GetResult()
+            $null = $copyError.GetAwaiter().GetResult()
+        }
         $step.exitCode = $process.ExitCode; $step.finishedUtc = [DateTime]::UtcNow.ToString('o')
         if ($process.ExitCode -ne 0) { throw "Step $Name failed; inspect its retained logs." }
-    } finally { $stdout.Dispose(); $stderr.Dispose(); $process.Dispose() }
+    } catch {
+        $step.finishedUtc = [DateTime]::UtcNow.ToString('o')
+        if ($started -and -not $process.HasExited) {
+            try {
+                $process.Kill($true)
+                if (-not $process.WaitForExit(5000)) { $step.cleanupFailure = 'Owned process did not exit within five seconds.' }
+            } catch { $step.cleanupFailure = $_.Exception.Message }
+        }
+        throw
+    } finally {
+        if ($null -ne $stdout) { $stdout.Dispose() }
+        if ($null -ne $stderr) { $stderr.Dispose() }
+        $process.Dispose()
+    }
     return (Get-Content -LiteralPath $stdoutPath -Raw) + (Get-Content -LiteralPath $stderrPath -Raw)
 }
 

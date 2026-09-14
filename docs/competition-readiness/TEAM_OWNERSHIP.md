@@ -9,9 +9,10 @@ commit each completed, verified slice promptly. The
 historical handoff, not a current instruction to stay paused.
 
 Current exact grants: the Study and messaging layout fixes are committed and released.
-`/root/merge_core` owns only `scripts/native/build-apk.ps1` for fail-fast output
-recording after the observed D: volume-write failure, with an ignored synthetic
-logging harness. No native rebuild is allocated while the drive is unhealthy.
+`/root/merge_core` released `scripts/native/build-apk.ps1` after scoped output-recording
+checks. Root owns a bounded C:-only internal JavaScript-update APK experiment using
+the verified diagnostic native container; it is not a passing full native rebuild.
+No native rebuild is allocated on D: while the drive is unhealthy.
 Root owns `AGENTS.md`,
 coordination/evidence, final integration and the sole heavy build lane.
 Root also owns `src/components/familyMessaging/FamilyMessagingScreen.tsx` for the
