@@ -57,3 +57,28 @@ unmount cleanup; event/query races; interrupted section loading; live preference
 changes and backgrounding; sheet focus/actions and hidden state. Native release
 frame timing, TalkBack, Back, keyboard, large text and actual device feel require
 direct evidence. The active backend session owns the device/build lane.
+
+## Second-pass compatible presentation repair
+
+The user's second-pass request authorizes three bounded continuations without new
+product behavior or release flag activation:
+
+1. Garden recognition consumes the existing live motion preference. A sequence
+   plays once per mounted presentation; disabling motion/backgrounding settles
+   both cues, and resuming or toggling preferences cannot replay that sequence.
+   Keep existing event authority, announcement and finite recognition timings.
+2. Private Growth and Shared Growth controls reuse BotanicalPressable. Preserve
+   their supplied static-motion request, native roles, refs, selected/disabled/busy
+   state, touch targets and immediate actions. Remove duplicate scale/opacity
+   definitions; do not add a selection delay or animate recycled rows.
+3. The persistent Shared Growth parent owns dismissal focus restoration. Dismissal
+   commits immediately; queued restoration is cancelled on reopening/unmount and
+   cannot target the background while a newer confirmation is present. A failed
+   or still-pending operation keeps focus inside its existing confirmation.
+
+Record executed interruption tests and static checks separately from unrun native
+feel/performance evidence in the second-pass workstream report. Preserve the
+concurrent login session's source and exclusive device/build lane.
+
+Second-pass implementation and exact validation/remaining native gates are recorded
+in [the workstream report](../../docs/competition-readiness/workstreams/motion-pass2-20260914.md).

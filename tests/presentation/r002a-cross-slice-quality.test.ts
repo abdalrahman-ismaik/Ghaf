@@ -276,7 +276,10 @@ describe('R002a cross-slice quality contracts', () => {
       expect(source(path), path).toContain('useReducedMotion');
     }
     expect(source('src/components/family-growth/GardenLandscape.tsx')).toContain(
-      'reduceMotion: ReduceMotion.System',
+      'useReducedMotionPreference()',
+    );
+    expect(source('src/components/family-growth/GardenLandscape.tsx')).toContain(
+      'reduceMotion: ReduceMotion.Never',
     );
     expect(source('src/components/r002a/child/ChildCompletionConfirmationSheet.tsx')).toContain(
       "animationType={reducedMotion ? 'none' : 'fade'}",

@@ -6,7 +6,6 @@ import Animated, {
   cancelAnimation,
   interpolate,
   useAnimatedStyle,
-  useReducedMotion,
   useSharedValue,
   withDelay,
   withTiming,
@@ -18,6 +17,7 @@ import { Text } from '@/components/primitives';
 import { botanical, colors, motion, spacing } from '@/design/tokens';
 import type { GardenStage, LandscapeId } from '@/models/familyGrowth';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 const LANDSCAPE_ORDER: readonly LandscapeId[] = ['mangrove', 'ghaf', 'samar', 'sidr', 'date_palm'];
 
@@ -296,18 +296,26 @@ function useGardenRecognitionReveal(
   recognitionReveal: GardenRecognitionReveal | undefined,
   direction: 'rtl' | 'ltr',
 ) {
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useReducedMotionPreference();
   const shouldRender = recognitionReveal?.play === true;
   const seedTravel = useSharedValue(shouldRender && !reducedMotion ? 0 : 1);
   const detailReveal = useSharedValue(shouldRender && !reducedMotion ? 0 : 1);
-  const lastAnnouncedSequence = useRef<string | number | null>(null);
+  const presentedSequences = useRef(new Set<string | number>());
+  const announcedSequences = useRef(new Set<string | number>());
   const sequenceKey = recognitionReveal?.sequenceKey;
 
   useLayoutEffect(() => {
     cancelAnimation(seedTravel);
     cancelAnimation(detailReveal);
 
-    if (!shouldRender || reducedMotion) {
+    const alreadyPresented =
+      sequenceKey !== undefined && presentedSequences.current.has(sequenceKey);
+    if (shouldRender && sequenceKey !== undefined) {
+      // Static presentation also consumes the sequence before a live preference resolves.
+      presentedSequences.current.add(sequenceKey);
+    }
+
+    if (!shouldRender || reducedMotion || alreadyPresented) {
       seedTravel.set(1);
       detailReveal.set(1);
       return;
@@ -315,11 +323,12 @@ function useGardenRecognitionReveal(
 
     seedTravel.set(0);
     detailReveal.set(0);
+    // The live preference above owns policy; do not reuse Reanimated's startup snapshot.
     seedTravel.set(
       withTiming(1, {
         duration: SEED_TRAVEL_DURATION,
         easing: EASE_IN_OUT,
-        reduceMotion: ReduceMotion.System,
+        reduceMotion: ReduceMotion.Never,
       }),
     );
     detailReveal.set(
@@ -328,8 +337,9 @@ function useGardenRecognitionReveal(
         withTiming(1, {
           duration: DETAIL_REVEAL_DURATION,
           easing: EASE_OUT,
-          reduceMotion: ReduceMotion.System,
+          reduceMotion: ReduceMotion.Never,
         }),
+        ReduceMotion.Never,
       ),
     );
 
@@ -342,9 +352,9 @@ function useGardenRecognitionReveal(
   useEffect(() => {
     const announcement = recognitionReveal?.accessibilityAnnouncement;
     if (!shouldRender || !announcement || sequenceKey === undefined) return;
-    if (lastAnnouncedSequence.current === sequenceKey) return;
+    if (announcedSequences.current.has(sequenceKey)) return;
 
-    lastAnnouncedSequence.current = sequenceKey;
+    announcedSequences.current.add(sequenceKey);
     AccessibilityInfo.announceForAccessibility(announcement);
   }, [recognitionReveal?.accessibilityAnnouncement, sequenceKey, shouldRender]);
 
