@@ -20,7 +20,6 @@ jobs:
       CI: '1'
       EXPO_NO_DOTENV: '1'
       EXPO_NO_TELEMETRY: '1'
-      SUPABASE_CLI: ${{ runner.temp }}/ghaf-supabase-cli/node_modules/.bin/supabase
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -31,7 +30,9 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Install the validated CLI outside the repository
-        run: npm install --prefix "$RUNNER_TEMP/ghaf-supabase-cli" --no-save --package-lock=false supabase@2.117.0
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ghaf-supabase-cli" --no-save --package-lock=false supabase@2.117.0
+          printf 'SUPABASE_CLI=%s\n' "$RUNNER_TEMP/ghaf-supabase-cli/node_modules/.bin/supabase" >> "$GITHUB_ENV"
       - name: Check local verifier safety
         run: node --test scripts/backend/verify-local.test.mjs
       - name: Start isolated local Auth, REST, database and mail
