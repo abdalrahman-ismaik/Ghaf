@@ -534,7 +534,11 @@ describe('confirmed corrupt saved-family recovery', () => {
       pendingFamilyCreation: null,
       ambientAudioPreference: { enabled: true, status: 'ready', source: 'default' },
     });
-    expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual([null, null, null]);
+    expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual([
+      null,
+      null,
+      null,
+    ]);
   });
 
   it('clears transient state and all voice authority exactly like ordinary reset, then permits normal setup', async () => {
