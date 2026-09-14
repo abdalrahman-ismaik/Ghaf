@@ -118,3 +118,67 @@ evidence; R01/R18/A01–A06 lack durable authoritative history. Legacy multi-key
 still needs a failure-atomic design after family deletion. Existing configured
 messaging/adult accounts must retain their identities and synthetic-data boundaries.
 No push, release deployment or production mutation was performed by this audit.
+
+Recovery implementation detail for the next owner: serializing `PrototypeSession`
+alone omits the current task assignment/context collections, per-Child landscapes
+and separate League/Family Reward authorities. `withTaskAssignments` also treats a
+reset-epoch change as a reason to reinitialize those collections. Define a strict
+versioned family-bound DTO and restore the active store's separate ledgers together;
+do not reuse Feature014's old P0-only snapshot or make memory records award authority.
+
+The resumed read-only `core_audit` confirmed the generic registry Reward/League
+maps currently have no app/store callers; the active authorities are the store's
+family-hub reward and private-League runtimes. The DTO must include full session,
+assignment order/IDs/generation/next occurrence/approved snapshots/attempt history,
+per-task contexts and support requests, both growth ledgers/archives/achievements,
+family reward provenance, private League receipt/week, both learning states,
+reveal queue plus approval commitments, shared-growth consent/history, and
+`memoryRunId`. Exclude authorization, session capabilities, AI grants/responses
+and live media. Validate all archived occurrences and reconcile every receipt,
+not only the selected journey. The existing P0 rehydrator rejects multiple
+receipts. Candidate validation and verified persistence must precede a successful
+mutation result; a write-after-publish store subscriber cannot do this. Recovery
+must bypass the ordinary reset-epoch reinitialization only through a separately
+validated initialization path. This investigation changed no runtime code.
+
+Resume after disk recovery: C: had 3,708,350,464 bytes free. Root is capturing the
+final test result in `.expo/feature-audit-final-tests.log`, including the separate
+motion fix `a34cf70`. `core_audit` has a read-only follow-up on complete progression
+recovery. `backend_audit` is granted only `src/services/local/repository.ts` and
+`tests/access/local-family-repository.test.ts` for canonical save/migration/repair
+readback protection. No other file ownership changes; root integrates and checks.
+
+To MOTION-CONTINUATION: resumed suite started 21:59:36 and ended in 70.18 s,
+3,199 passed / 1 failed / 2 skipped. The sole failure is your now-reserved
+`tests/presentation/r002a-child-task-presentation.test.ts`: the removed-arrow
+assertion was loaded before the motion owner's new footer assertion landed. The
+error frame displayed the newer source while the error text still requires
+`iconPosition="end"`; this is not evidence against the replacement regex. Full
+receipt is `.expo/feature-audit-final-tests.log`. This lane leaves the owned test
+alone and will use the owner's replacement check. The test lane is now released.
+
+Resumed R24/R25 repair: `backend_audit` added 24 repository regressions that failed
+before the fix, then 106 repository/profile-repair/corrupt-recovery tests passed.
+Root inspected the patch and ran full typecheck, lint and format successfully.
+Canonical save/migration/repair now requires exact serialized readback before
+legacy deletion; cleanup verifies absence and interrupted operations can retry.
+This does not make the multi-repository reset failure-atomic. Both helper scopes
+are released; no background helper is left running.
+
+Root also exercised the full isolated browser quick-demo task journey, original
+six Arabic onboarding screens and narration Stop control. Prepared rationale/Guide,
+Parent assignment, Child choice/steps/prepared coaching/submission, Parent praise,
+recognition 48→60 Seeds/Mangrove sapling/canopy 19→20, and duplicate-safe memory
+save all completed. English garden/memory retained the same result. Exact limits
+and observed console messages are in the implementation ledger. No new real
+provider, device, account or production mutation was used. Browser and Metro closed.
+
+Final resumed integrated evidence: `npm.cmd test -- --maxWorkers=2 --reporter=dot`
+passed 219 files / 3,224 tests, two files/tests skipped, at 22:07:35 Asia/Dubai,
+72.86 s. Log `.expo/feature-audit-integrated-tests.log`. Typecheck, zero-warning
+lint and format also passed after the repository fix. C: measured 5,129,568,256
+bytes free at 22:07:56; concurrent cleanup is not attributed to this lane.
+The resumed repository fix and regressions were committed locally as `7aa0112`.
+The prior integrated ledger, poster and architecture commit is `718336e`.
+Remaining unstaged navigation/motion files retain their independent ownership;
+this audit made no push, shared-history rewrite, deployment or release build.

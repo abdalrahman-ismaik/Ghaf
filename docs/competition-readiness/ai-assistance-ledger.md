@@ -30,6 +30,15 @@ losslessly compressed. Source, family data and APKs were preserved. Subsequent
 free-space recovery enabled validation and a successful poster render; its full
 size is not attributed to this session's small cleanup alone.
 
+On resume, the existing core helper investigated the exact full progression
+recovery boundary read-only; the backend helper fixed verified local-family
+save/migration/repair cleanup and added 24 negative regressions. Root reviewed
+and integrated the patch. The final suite passed 3,224 tests with two configured
+service gates skipped. Root exercised all six Arabic onboarding pages, narration
+Stop, and the full isolated prepared task-to-growth-to-memory browser journey,
+including duplicate save and English result views. This does not establish live
+AI, ordinary memory restart on a device, native media or two-device synchronization.
+
 ## 2026-09-14 Native motion, persistent accounts and backend readiness
 
 The owner requested native animation improvements, real persistent adult accounts,

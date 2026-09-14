@@ -169,6 +169,44 @@ Environment for this run: 2026-09-14, Windows PowerShell checkout, existing lock
 
 Historical evidence remains separately attributed: Feature016 `backend-android-validation.md` records a diagnostic Samsung SM-S918B Android 16 artifact `273f97d` exchanging actual hosted text with browser `1a1c474`; Feature017 records three-browser peer enable/send/revoke and native synthetic study/goal/prize paths; Feature018 `validation.md` records account-owned hosted/native/independent-client persistence and its recovery-keyboard gap. A phone+browser or two installations on one emulator is not two physical phones. These records do not verify the new current-source features.
 
+### Resumed validation after disk recovery
+
+- Final integrated run, after `47ebfef` and the migration fix:
+  `npm.cmd test -- --maxWorkers=2 --reporter=dot` **PASSED**: 219 files / 3,224
+  tests passed, two files/tests skipped (3,226 total), 2026-09-14 22:07:35
+  Asia/Dubai, 72.86 s. Receipt `.expo/feature-audit-integrated-tests.log`.
+  The two configured-service gates remain skipped as documented above.
+- Local-family repository regressions first reproduced 24 failures (21 existing
+  tests passed). The fix verifies canonical writes before migration/repair
+  deletion, verifies cleanup, and makes interrupted storage operations retryable.
+  `npm.cmd test -- tests/access/local-family-repository.test.ts
+  tests/access/local-family-profile-repair.test.ts
+  tests/access/corrupt-local-family-recovery.test.ts --maxWorkers=2` passed all
+  106 tests in three files at 22:02:27 Asia/Dubai on 2026-09-14 (3.05 s).
+  Fresh typecheck, zero-warning lint and format checks passed after this change.
+- The 21:59:36 full run had 3,199 passed / one obsolete removed-arrow assertion
+  failed / two skipped (70.18 s). The motion owner replaced the obsolete assertion
+  in `47ebfef`; the captured error frame showed newer source than the executing
+  assertion. That failed run remains recorded, not promoted to a pass.
+- CUA browser runtime, isolated `localhost:8082`, quick-demo/auth-demo, all three
+  live AI flags false: traversed all six original Arabic onboarding screens,
+  exercised narration Stop → Replay state, then Parent task creation → prepared
+  preference rationale → prepared Guide rewrite accepted → review/assignment →
+  sign-out and Salem selection → choose/start → prepared bounded steps → complete
+  both task-specific steps and definition acknowledgment → submit → Parent review
+  and praise → separate recognition continuation → 48→60 Seeds, Mangrove bud→sapling,
+  canopy 19→20, one Green action → explicit memory save. A second save retained
+  one leaf. Navigation retained 60 Seeds and 20 canopy leaves. English switching
+  showed the same garden and memory with translated text. Arabic memory rendering
+  was visually inspected. This is one browser installation, reduced motion,
+  synthetic prepared input and session-only memory; no live AI or two-client sync.
+  Ordinary memory restart remains automated-only; human timing/listening and
+  native acceptance are outstanding.
+- Browser console contained Expo web file-system/pointerEvents warnings and one
+  `AbortError` when playback was interrupted by pause. The stop state and navigation
+  completed, with no visible error or stalled journey. This is not an error-free
+  media/native acceptance claim. The isolated tab and its Metro process were closed.
+
 ## Configuration, demonstration and continuation
 
 ### Exact configuration and concrete blockers
@@ -196,7 +234,11 @@ R22 is independently tracked:
 
 ### Repeatable Parent/Child walkthrough
 
-This script is supplied for execution; it is **not a recorded successful current-run rehearsal**. Use only synthetic local data. Never reset or seed an existing hosted family during preparation.
+The core single-installation quick-demo sequence below was exercised successfully
+in the resumed CUA browser run described above, including prepared coaching,
+recognition and duplicate-safe memory saving. It was not a timed 2–3 minute human
+rehearsal or a two-device task demonstration. Use only synthetic local data. Never
+reset or seed an existing hosted family during preparation.
 
 1. Start the intended quick-demo build with `EXPO_PUBLIC_GHAF_DEMO_ENTRY=true`, auth mode demo and all live/R002b release flags false. Preserve the separate ordinary configuration when checking restart persistence. Complete or skip the original six-page story; stop narration or mute nature sound if desired.
 2. Choose the Parent demo account for **عائلة أبو راشد**. Open Tasks/Create task, select Salem and the separate canonical 12-Seed recycling task. Show the prepared preference rationale and one prepared Guide transformation; explicitly call it prepared. Review the wording and assign through the existing Parent action.

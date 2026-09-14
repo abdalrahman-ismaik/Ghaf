@@ -10,6 +10,10 @@ volume controls. Its Gemini text adapter has local transport tests only; no live
 model transformation is established by this run. The executable task/growth journey
 still shares one running installation and does not synchronize across devices.
 Historical hosted messaging evidence below does not establish task synchronization.
+The resumed browser check exercised the complete prepared task → Parent praise →
+48-to-60 Seed growth → one memory leaf journey, including repeated memory save,
+all six Arabic onboarding screens and English garden/memory display. This was an
+isolated quick-demo installation, not timed human rehearsal or native/two-device proof.
 The [current editable poster](poster/README.md) explicitly identifies historical
 screenshots and capability limits.
 
