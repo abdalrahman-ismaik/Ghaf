@@ -18,6 +18,39 @@ engineering assistance, not a full Gradle rebuild, physical-device acceptance,
 student authorship or named human review. Functional follow-up evidence belongs
 in the [integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
 
+The subsequent native check reproduced Study hardware Back exiting to Android's
+launcher. Codex delegated only `StudyScreen.tsx` and its focused regression to
+`study_back_fix`, which implemented focused role-safe Back handling and preserved
+keyboard drafts. Eight tests failed before the fix and passed afterward; root
+reviewed and committed `e8ae266`. The unrelated recovery-test assertion formatting
+was committed separately as `b8da974`. The released motion session was included
+without changing its source. Final TypeScript, full lint, full formatting and
+2,773 tests across 193 files passed, with two skipped tests/files recorded.
+
+Root compiled the exact `e8ae266` source and produced emulator APK `a55a6acb…`
+using the existing diagnostic native container and verified extraction package.
+Resource, payload, signer and alignment checks passed; installation returned
+Success and two independent installed hashes matched. The read-only integration
+helper found no source blocker, then reconciled exactly three existing handoff
+documents and released them. Source review and automated emulator operation do not
+constitute student teach-back, physical-device or named human acceptance. Final
+observed UI checks and exclusions are attributed in the integration record.
+
+Direct `a55a6acb…` native Back testing failed despite the eight passing tests.
+Codex retained that failure and asked `study_back_fix` to inspect installed React
+Native/Expo navigation and primary Android guidance. Root tested its bounded
+four-byte predictive Back opt-out experiment, APK `615048cd…`, with unchanged
+JavaScript and other payloads. Parent repeat Back, Parent keyboard/draft retention
+and Child Back passed; `resume_audit` independently inspected the actual images
+and receipts. Root committed the matching build configuration as `9d756ef` after
+Expo introspection, scoped lint and formatting passed. No additional Study rewrite
+or mock-only native claim was used. The later 22,440 ms cold-launch timeout remains
+an explicit reliability gap. Physical, student and named human acceptance remain separate.
+The final `9d756ef` TypeScript rerun passed. Later settled startup, English Study/Back,
+AR/EN messaging and Parent account restoration were observed separately from the
+failed launch timing. Root saved `resumed-final-acceptance.json` with screenshot
+hashes and stopped the owned emulator after collection.
+
 ## 2026-09-14 Resumed native and messaging acceptance
 
 The owner resumed after reconnecting and explicitly revoked artificial commit spacing:

@@ -4,8 +4,13 @@
 diagnostic native Parent login/restoration, Study/goal/isolation/reset, phone/web
 exchange, browser sibling controls and hosted retention pass. Both corrected full
 native builds failed after D: write errors. A C:-only internal JavaScript update
-installed and passed limited phone checks. The later `0ad7a0d` header correction
-now has a verified C:-only APK; emulator installation and presentation are pending.
+installed and passed limited phone checks. Pinned `73aced8e…` (`0ad7a0d` runtime)
+passed emulator AR/EN presentation and Parent login/restoration, but Study Back failed.
+New `e8ae266` source checks, packaging and installation pass; its `a55a6acb…` APK
+still exits to the launcher on Study hardware Back. The separate `615048cd…`
+predictive-Back manifest comparison passes Parent/Child Study Back and Parent
+keyboard dismissal with draft preservation on the emulator. Physical acceptance
+and the remaining native cases remain separate.
 
 The user authorized dedicated backend integration and physical Android testing using
 Android Studio. Root coordinates `integration/messaging-android-20260914`, starting
@@ -42,11 +47,86 @@ Each artifact's results remain separately attributed. No production readiness is
 The owner subsequently selected the Android Studio emulator for further testing,
 requested C:-only work and authorized removal of disposable intermediates after use.
 Root restored the phone's original USB stay-awake setting to `0` and released it
-from further testing. The existing C: AVD/tools are being checked; emulator evidence
+from further testing. The separate C: AVD booted and runs the extraction candidate; emulator evidence
 must remain separate from the physical passes already recorded below. D: is no
 longer an active build or cache location for this work.
 
 ## Current evidence
+
+### Predictive-Back comparison — 2026-09-14
+
+The independently inspected packaging receipt and installed identity pin APK
+`615048cd27c2c2856fbbaac2de113024325d3ec8d8819d9b56c216770705b27f`,
+62,436,538 bytes. Against `a55a6acb…`, only manifest bytes 7864–7867 changed from
+`ffffffff` to `00000000` for `application/android:enableOnBackInvokedCallback`
+(resource ID `0x0101066c`). All 1,626 other payloads, including the `e8ae266`
+JavaScript bundle, stayed identical; all 1,627 signed payloads matched. The
+original APK and extraction setting were preserved. Packaging and the installed
+SHA-256 matched; this remains the `273f97d` native container, not a full Gradle build.
+
+| Check                      | Result | Direct evidence                                                                                                                                                                                                                                           |
+| -------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parent Study hardware Back | PASSED | Root sent Back and observed Parent Home with the app still resumed, then repeated the check. Independently inspected `predictive-parent-back-settled.png` and `predictive-parent-repeat-back.png` show Parent Home.                                       |
+| Parent Study keyboard Back | PASSED | `predictive-study-draft.png` shows the keyboard and `Math` draft; `predictive-study-keyboard-back.png` shows the keyboard hidden with `Math` retained in Study after root sent Back.                                                                      |
+| Child Study hardware Back  | PASSED | Root entered signed-out Child access, selected Salem, opened Study and sent Back. `predictive-child-study.png` and `predictive-child-back-result.png` record the sequence; independently inspected `predictive-child-back-settled.png` shows Salem Today. |
+
+Receipts are `.expo/messaging-integration/predictive-back-e8ae266/packaging-receipt.json`
+and `predictive-installed-identity.json`; screenshots use that integration directory.
+The packaging receipt's `nativeAcceptance: NOT RUN` records its pre-install checkpoint;
+the subsequent bounded observations above do not imply full native acceptance.
+Source commit `9d756efd1562ccd3ec2f4ba40e06d6dd107c988a` sets the matching Expo Android
+configuration to false. Root verified generated-manifest introspection and scoped
+lint/format; it adds no JavaScript change to the bundle already tested below.
+The final TypeScript rerun at `9d756ef` passed; its log is
+`.expo/messaging-integration/final-9d756ef-typecheck.log`.
+The controlled comparison supports the Back compatibility correction on this
+API35 bridge emulator. A later force-stop restart's launch command timed out at
+22,440 ms (`predictive-cold-restart.log`). Subsequent settled rendering and Parent
+account/conversation restoration passed separately; reliable startup timing did not.
+Root also checked the English Study layout/mixed nickname and Back to Home, plus
+AR/EN messaging headers and a readable existing message after history scrolling.
+Screenshots are `predictive-study-en.png`, `predictive-study-en-back.png`,
+`predictive-messaging-{en,ar}-final.png` and `predictive-conversation-composer.png`.
+The history/composer regions scroll separately; the Send control remains close to
+the compact viewport's bottom edge. No new message was sent during this recovery.
+The consolidated receipt is `.expo/messaging-integration/resumed-final-acceptance.json`.
+Physical-device behavior, accessibility, revocation and broader Study/goal/reset
+regressions remain separate. The owned emulator was stopped after evidence collection.
+
+### Earlier `e8ae266` source and installed candidate — 2026-09-14
+
+Final TypeScript, full lint, full formatting and 2,773 tests across 193 files passed,
+with two opt-in tests skipped. The eight focused Study Back/keyboard tests pass;
+format-only `b8da974` closes the earlier unrelated formatting failure. These checks
+cover the released motion work and `e8ae266` JavaScript Back handler, not native
+callback delivery. Source receipts use `.expo/messaging-integration/resumed-source-*`.
+
+The compiled APK is `.expo/messaging-integration/resumed-candidate/ghaf-resumed-emulator.apk`,
+62,436,538 bytes, SHA-256
+`a55a6acb1e1beae32b982f364ff84b602efd83d66854e77fb6e9fd30a9ca5337`.
+Hermes SHA-256 is `da402d92ba6857afd208ea10eb39b8989769d1f13e2c6b0857895cc567c18c67`.
+All 98 resource mappings matched, 1,626 non-bundle payloads were preserved, and all
+1,627 signed payloads matched. The existing signer, v2/v3 signatures and 16 KiB
+alignment passed. Installation and two on-device SHA-256 checks matched this APK.
+It retains the `273f97d` native container and `73aced8e…` extraction configuration;
+it is not a full Gradle rebuild or physical-phone evidence.
+
+| New candidate check                     | Status  | Direct observation                                                                                                                                                                                        |
+| --------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parent Study and messaging presentation | PASSED  | Root observed Arabic Study/header and Arabic/English messaging screens, with history/composer regions present on `a55a6acb…`.                                                                             |
+| Parent messaging account restoration    | PASSED  | The Synthetic Parent messaging account restored; this does not pass Child restoration, revocation or every lifecycle case.                                                                                |
+| Study hardware Back                     | FAILED  | Back still left Study for the Android launcher; `resumed-parent-study-back.png` records the result. Warm relaunch showed Parent Home. Source tests do not supersede this native failure.                  |
+| Predictive-Back comparison              | NOT RUN | Root is preparing an otherwise identical `a55a6acb…` copy with only `enableOnBackInvokedCallback=false`; results belong to the separate `.expo/messaging-integration/predictive-back-e8ae266/` candidate. |
+
+The first startup attempt encountered a System UI ANR reported at 11:27:19 and
+device sleep. Recovery later rendered Arabic Welcome in `resumed-awake-system.png`.
+UIAutomator attempts with a null root and captures reused while ADB was offline
+are invalid and excluded; subsequent direct screenshots supply the observations
+above. No startup-performance or general ANR-free claim follows. The later controlled
+predictive-Back comparison above resolves the tested Back behavior on this emulator;
+it does not establish identical behavior on every Android version or device.
+
+### Earlier phone/web exchange
 
 The diagnostic `273f97d` phone and corrected `1a1c474` web export exchanged two
 synthetic messages through actual UI and the hosted service. The Child message is
@@ -190,8 +270,9 @@ establish successful app launch. The crash buffer records
 `SoLoaderDSONotFoundError: couldn't find DSO to load: libreactnative.so`.
 Package Manager selected `arm64-v8a`, but SoLoader's direct APK source selected
 `lib/x86_64`; the APK uses `extractNativeLibs=false`. This exposed a native-bridge
-packaging incompatibility. A compatible emulator runtime/build is being prepared
-on C:; no emulator UI pass is inferred from successful boot or installation.
+packaging incompatibility. At that checkpoint a compatible emulator package was
+pending; the later extraction-only result below supersedes that blocker. No emulator
+UI pass is inferred from this original boot or installation.
 Receipts include `.expo/messaging-integration/c-emulator-creation.json`,
 `emulator-launch.json`, `emulator-crash-buffer.log`, emulator stdout/stderr and
 the artifact directory's `emulator-install.log` and `emulator-launch.log`.
@@ -222,8 +303,13 @@ Receipts: `.expo/messaging-integration/emulator-extraction-0ad7a0d-v3/` contains
 `emulator-extraction-welcome.png` record the installed hash, startup and settled UI.
 Earlier packaging attempts failed an overly broad META-INF check and then detected
 unrequested v1 signature entries; both failed receipts remain preserved. The released
-experiment explicitly uses v2/v3 only. AR/EN Study, messaging and lifecycle checks
-are being recorded separately; startup alone does not pass those gates.
+experiment explicitly uses v2/v3 only. Subsequent pinned `73aced8e…` checks passed
+AR/EN Study body/tabs/mixed-script nickname, messaging header/list direction, real
+Parent login and restoration after force-stop without credential reentry. Study
+hardware Back failed and prompted `e8ae266`; its later native failure is recorded
+above. `emulator-pinned-acceptance.json` excludes the invalid conversation capture
+made while ADB was offline. The first valid conversation image does not establish
+complete history/composer scroll reachability.
 
 The extraction experiment follows the documented Android
 [installer setting](https://developer.android.com/guide/topics/manifest/application-element#extractNativeLibs)
@@ -236,17 +322,17 @@ the signed payloads, root removed four no-longer-needed unsigned/aligned APK
 intermediates, freeing 249,299,358 bytes. Both signed artifacts, source maps,
 compiled bundles and receipts remain; see `c-intermediate-cleanup.json`.
 
-| Follow-up check                          | Status | Candidate and observation                                                                                                                                         |
-| ---------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Phone/web Parent–Child exchange          | PASSED | `273f97d` phone plus `1a1c474` browser, two messages in one verified thread.                                                                                      |
-| Browser sibling permission/exchange      | PASSED | `1a1c474`, explicit Parent permission, older-Child text, younger-Child phrase and participant-only content.                                                       |
-| Browser peer revocation/cleanup          | PASSED | Both peer views cleared; separate Parent chats survived; all web sessions signed out without revoking the phone Parent or account.                                |
-| Diagnostic Study/academic goal           | PASSED | `273f97d`, plan completion and agreed 80/100 goal with reported 85, acknowledgement, unlock and synthetic mark-given.                                             |
-| Diagnostic Child isolation/reset         | PASSED | Actual Alya Child records empty, then Parent reset to Arabic Welcome and empty Salem plans/goals on reentry.                                                      |
-| Full corrected Gradle rebuild            | FAILED | Both `923cf10` and `c4b7c26` runs encountered D: lost writes. No further D: build is allocated.                                                                   |
-| C:-only internal JS-update APK           | PASSED | APK `98223bd9…` uses `273f97d` native code plus `923cf10` JavaScript; payload/signing/install/cold-launch receipts pass. This is not a full native rebuild.       |
-| JS-update phone presentation/restoration | PASSED | Study AR/EN body/tabs/nickname, messaging body/list, restored Parent context and existing message history passed. Arabic header is the explicit remaining defect. |
-| Latest `0ad7a0d` APK packaging           | PASSED | Verified `d937a462…` artifact; extraction-only `73aced8e…` separately verified and installed on the emulator. Physical header acceptance remains NOT RUN.         |
+| Follow-up check                          | Status | Candidate and observation                                                                                                                                                                                            |
+| ---------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phone/web Parent–Child exchange          | PASSED | `273f97d` phone plus `1a1c474` browser, two messages in one verified thread.                                                                                                                                         |
+| Browser sibling permission/exchange      | PASSED | `1a1c474`, explicit Parent permission, older-Child text, younger-Child phrase and participant-only content.                                                                                                          |
+| Browser peer revocation/cleanup          | PASSED | Both peer views cleared; separate Parent chats survived; all web sessions signed out without revoking the phone Parent or account.                                                                                   |
+| Diagnostic Study/academic goal           | PASSED | `273f97d`, plan completion and agreed 80/100 goal with reported 85, acknowledgement, unlock and synthetic mark-given.                                                                                                |
+| Diagnostic Child isolation/reset         | PASSED | Actual Alya Child records empty, then Parent reset to Arabic Welcome and empty Salem plans/goals on reentry.                                                                                                         |
+| Full corrected Gradle rebuild            | FAILED | Both `923cf10` and `c4b7c26` runs encountered D: lost writes. No further D: build is allocated.                                                                                                                      |
+| C:-only internal JS-update APK           | PASSED | APK `98223bd9…` uses `273f97d` native code plus `923cf10` JavaScript; payload/signing/install/cold-launch receipts pass. This is not a full native rebuild.                                                          |
+| JS-update phone presentation/restoration | PASSED | Study AR/EN body/tabs/nickname, messaging body/list, restored Parent context and existing message history passed. Arabic header is the explicit remaining defect.                                                    |
+| Pinned `0ad7a0d` APK packaging           | PASSED | Verified `d937a462…` artifact; extraction-only `73aced8e…` separately verified and installed on the emulator. Its AR/EN header/Study and Parent login/restoration checks pass; physical acceptance remains separate. |
 
 Storage-failure evidence is retained at
 `.expo/messaging-integration/d-drive-write-failure.json` and
@@ -289,7 +375,7 @@ the second failure demonstrates that the probe did not resolve the sustained-wri
 | Resumed source checks                      | PASSED  | Study `6726f25` and messaging `923cf10` have scoped lint/format checks; final TypeScript exited 0. Messaging regression passed 73 tests with one opt-in skip at 09:24:48. These checks do not pass native presentation.                                |
 | Resumed full native builds                 | FAILED  | Runs `20260914T052545228Z-085ff9a9` and `20260914T054842239Z-4f0c0b98` both failed after D: lost writes. The verified C:-only internal update has a different build provenance.                                                                        |
 | Final physical Android app acceptance      | NOT RUN | The corrected candidate still needs AR/EN layout, keyboard/Back, full study-goal flow, Child isolation/reset, messaging exchange, native lifecycle/revocation and accessibility checks. Diagnostic passes above remain separately attributed.          |
-| Android Studio emulator startup            | PASSED  | Original `d937a462…` startup FAILED before JavaScript; extraction-only `73aced8e…` installed hash verified and settled Arabic onboarding/Parent entry observed. Functional acceptance remains pending.                                                 |
+| Pinned Android Studio emulator checks      | PASSED  | Original `d937a462…` startup FAILED before JavaScript; `73aced8e…` installed hash, settled startup, AR/EN Study/header and Parent login/restoration pass. Study Back failed separately.                                                                |
 | Named human content/usability review       | NOT RUN | No named Arabic, accessibility or participant review was supplied by this session.                                                                                                                                                                     |
 
 The hosted test exercised Parent login, two separately enrolled Child identities,
@@ -427,9 +513,11 @@ raw device serials and real Child information are excluded from this record.
 
 ## Owner handoff
 
-Root retains the active emulator lane and final evidence updates. Packaging and
-installed identity for the separate `73aced8e…` extraction candidate now pass.
-Continue Arabic/English messaging header and Study checks on that exact emulator APK.
+The source boundary is ready for the previously authorized Git integration;
+all helpers are released and the owned emulator is stopped. The `a55a6acb…`
+Study Back failure remains historical evidence; the separately attributed
+`615048cd…` comparison passes Parent/Child Back and Parent keyboard draft retention.
+Record the remaining native checks against their exact installed candidate.
 Do not resume D: builds. Preserve the distinction between the verified internal
 JavaScript update and the failed full Gradle builds. The final candidate still
 needs critical Study/goal/isolation/reset regressions, messaging lifecycle/revocation,
@@ -442,7 +530,6 @@ offline/unknown-send UI recovery. Record the candidate and device before changin
 any pending gate; an emulator or one phone plus browser does not establish two
 physical-phone acceptance. Named human review remains separate.
 
-This bounded documentation update is released to root. It ran no test, build,
-server or deployment. Preserve the successful hosted and scheduled-retention
-evidence alongside the failed pre-fix browser attempt and pending final-candidate
-native acceptance; the overall task is not yet complete.
+Preserve the successful hosted and scheduled-retention evidence alongside failed
+attempts and exact corrected-candidate observations. Source integration does not
+close the remaining native, physical or human acceptance gates.

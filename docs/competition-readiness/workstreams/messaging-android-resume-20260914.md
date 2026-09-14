@@ -5,6 +5,54 @@ This checkpoint preserves completed work and the next actions; it is not final a
 
 ## Resumed status — 2026-09-14
 
+### Current technical-recovery cursor
+
+Root reached verified installation/startup and AR/EN messaging header/Study layout
+checks on extraction APK `73aced8e…` (`0ad7a0d` JavaScript). Actual Parent messaging
+login and restoration after force-stop passed. `emulator-pinned-acceptance.json`
+records exact observations and excludes the later capture made while ADB was offline.
+
+Native Study hardware Back exited the app. Fix `e8ae266` adds focused role-safe
+Back/keyboard handling; eight focused tests and final TypeScript, full lint, full
+formatting and 2,773 tests across 193 files passed, with two opt-in tests skipped.
+This source includes the motion session's released
+commits. Format-only fix `b8da974` closes its unrelated test-formatting failure.
+Logs/receipts use `.expo/messaging-integration/resumed-source-*`.
+
+Compilation and packaging passed for source
+`e8ae266bf3623d70a764f92bac8cce68d9bcaf76` using one Metro worker. APK
+`.expo/messaging-integration/resumed-candidate/ghaf-resumed-emulator.apk` is
+62,436,538 bytes, SHA-256
+`a55a6acb1e1beae32b982f364ff84b602efd83d66854e77fb6e9fd30a9ca5337`.
+Hermes SHA-256 is `da402d92ba6857afd208ea10eb39b8989769d1f13e2c6b0857895cc567c18c67`.
+All 98 resource mappings, 1,626 preserved non-bundle payloads, all 1,627 signed
+payloads, the existing signer, v2/v3 signatures and 16 KiB alignment passed.
+The package retains the `273f97d` native container and `73aced8e…` extraction
+configuration; it is not a full Gradle rebuild.
+
+Installation and two installed hashes passed for `a55a6acb…`. AR/EN messaging
+headers and Parent account restoration passed, but Study Back still exited to the
+launcher. A controlled comparison changed only four manifest bytes to disable
+`enableOnBackInvokedCallback`, preserving the exact `e8ae266` bundle and all 1,626
+other payloads. APK `615048cd27c2c2856fbbaac2de113024325d3ec8d8819d9b56c216770705b27f`
+passed packaging, installation, Parent repeated Study Back, Parent keyboard Back
+with the `Math` draft retained, and Child Study Back to Salem Today. The app stayed
+in the foreground. Configuration fix `9d756ef` records the same setting in
+`app.config.ts`; Expo introspection, scoped lint and formatting passed.
+
+Current APK: `.expo/messaging-integration/predictive-back-e8ae266/ghaf-predictive-back-disabled.apk`,
+62,436,538 bytes. This retains the existing native container and extraction
+provenance; it is not a full Gradle rebuild. A later cold-launch command timed out
+at 22,440 ms. Startup timing/reliability, physical acceptance, accessibility and
+unrecorded native cases remain open. Later settled rendering, English Study/Back,
+AR/EN messaging and restored Parent account passed separately. The final receipt
+is `.expo/messaging-integration/resumed-final-acceptance.json`; the emulator was
+stopped after collection. Original System UI ANR, sleep, null-root and
+offline captures remain excluded from passing UI evidence. Root owns final
+evidence and previously authorized Git integration; all helper boundaries are released.
+
+### Earlier resumed checkpoints — historical evidence
+
 The owner resumed this work; `56b32ba` records that authorization and restores normal
 prompt commit cadence. The saved state and original checklist below remain historical.
 Study layout correction `6726f25` and messaging layout correction `923cf10` are now
@@ -93,19 +141,21 @@ Native reached `Running main`, and settled Arabic onboarding rendered. Root also
 skipped onboarding and entered Parent. Installation/startup pass for this emulator
 candidate; skipped startup frames prevent a performance claim. Receipts include
 `.expo/messaging-integration/emulator-installed-identity.json` and
-`emulator-extraction-welcome.png`. Study and corrected-header checks remain pending;
-the primary integration record owns the exact emulator results.
+`emulator-extraction-welcome.png`. Later AR/EN Study/header checks and real Parent
+login/restoration passed on this pinned candidate. Study hardware Back failed;
+the current candidate above contains the correction. Conversation history/composer
+scroll reachability remains unverified, and the subsequent capture while ADB was
+offline is excluded. `emulator-pinned-acceptance.json` records these exact limits.
 
 Resumed messaging checks passed 73 tests with one opt-in hosted skip at 09:24:48
 Dubai (7.20 seconds), scoped lint/format passed, and root observed final TypeScript
 exit 0. Logs use the `resumed-messaging-` prefix and `resumed-final-typecheck.log`
-under `.expo/messaging-integration/`; empty TypeScript output is expected. No new
-full regression or hosted test run is claimed.
+under `.expo/messaging-integration/`; empty TypeScript output is expected. That
+earlier run did not repeat the full regression or hosted acceptance. The current
+source's full regression is recorded at the recovery cursor above.
 
-Next: check the corrected header and AR/EN Study and Messages on the verified
-`73aced8e…` extraction-only emulator APK on C:.
-Attribute any further lifecycle/revocation, keyboard/Back, study-goal, Child
-isolation/reset and accessibility checks to that exact artifact and emulator.
+Attribute further lifecycle/revocation, keyboard/Back, study-goal, Child
+isolation/reset and accessibility checks to their exact artifact and emulator.
 No new physical-phone check is allocated. Preserve earlier phone evidence and
 verified artifacts; clean up only scoped disposable C: intermediates after use.
 The diagnostic journey and browser sibling passes above do not close final-candidate,

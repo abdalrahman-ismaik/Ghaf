@@ -31,10 +31,26 @@ emulator UI or corrected-header pass follows from installation. A separate copy
 with only native-library extraction enabled now passes packaging verification,
 APK hash beginning `73aced8e9826`. Although streamed installation reported an empty
 failure, the on-emulator APK hash matched, Arabic onboarding rendered and Parent
-entry worked. These establish installation/startup for that emulator candidate;
-skipped startup frames do not establish performance acceptance. Study, messaging
-header and broader functional checks remain pending. Exact artifact identities
-and emulator results remain separately attributed in the
+entry worked. Subsequent pinned checks passed AR/EN Study body/tabs/nickname,
+messaging header/list direction and real Parent login/restoration after force-stop.
+Study hardware Back exited the app, and conversation history/composer scroll
+reachability remains unverified. A later capture made while ADB was offline is
+invalid; skipped startup frames do not establish performance acceptance.
+
+The Back correction and released motion work are now compiled and packaged from
+`e8ae266`. New APK SHA-256 is
+`a55a6acb1e1beae32b982f364ff84b602efd83d66854e77fb6e9fd30a9ca5337`, 62,436,538 bytes.
+It preserves the `273f97d` native container and `73aced8e…` extraction configuration;
+resource/payload, signer, v2/v3 and 16 KiB alignment verification passed. TypeScript,
+full lint, full formatting and 2,773 tests across 193 files passed, with two opt-in
+tests skipped. This is not a full Gradle rebuild. Installation and messaging header/
+Parent restoration checks passed, but native Back still exited to the launcher.
+The separate APK `615048cd…` changes only the predictive Back manifest flag and
+passes Parent repeated Back, Parent keyboard dismissal retaining a draft, and
+Child Back to Today. Source configuration `9d756ef` adopts the verified setting.
+A subsequent cold-launch command timed out at 22,440 ms; startup reliability,
+broader motion/native and physical acceptance remain unpassed. Exact artifact
+identities and results remain separately attributed in the
 [current integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
 The earlier diagnostic phone also completed the study-goal/prize, Child-isolation
 and Arabic reset rehearsal; those results remain attributed to that diagnostic

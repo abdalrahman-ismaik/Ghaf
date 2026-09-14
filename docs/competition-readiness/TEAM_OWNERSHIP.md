@@ -2,6 +2,17 @@
 
 ## 2026-09-14 Technical-interruption recovery
 
+Current allocation: all helpers and source boundaries are released. Root committed
+Study Back fix `e8ae266`, format-only fix `b8da974`, and verified API35 Back
+configuration `9d756ef`; the motion session's three released commits are included.
+Full runtime checks and the final `9d756ef` TypeScript rerun passed. The installed
+emulator APK is `615048cd…`; its exact bounded native passes and remaining startup,
+physical and human gaps are recorded in the integration evidence. The emulator was
+stopped and its input lane released after collection. Root retains final evidence
+and previously authorized Git integration. User skill changes are outside staging.
+
+### Earlier recovery allocations — historical
+
 Root resumes the final `0ad7a0d` C:-only emulator acceptance. The signed APK is
 already verified; the API35 ARM-translation launch failed before JavaScript.
 Root owns `.expo/messaging-integration/` experimental packaging/evidence, the
@@ -17,6 +28,15 @@ motion session retains all its listed presentation, test and documentation files
 Preserve its uncommitted work and the user-owned skill installations. Emulator
 validation uses the already pinned APK, not the changing shared source tree.
 No concurrent heavy check/build is started during that session's local checks.
+
+The motion session released source at `c8eb8f1` with passing static/full regression
+evidence. Root reproduced Android hardware Back exiting the pinned Study screen
+to the launcher. `study_back_fix` now owns only
+`src/components/study/StudyScreen.tsx` and `tests/study/android-back.test.tsx` for
+focused role-safe Back/keyboard handling and its regression. One focused test worker
+is allocated; no helper build/device/remote/Git work. Root owns the bounded
+format-only correction in `tests/access/corrupt-local-family-recovery.test.ts`
+to close the unrelated formatter failure reported by the motion session.
 
 ## 2026-09-14 Messaging backend integration and Android acceptance
 

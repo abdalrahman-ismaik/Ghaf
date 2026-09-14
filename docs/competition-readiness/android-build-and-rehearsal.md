@@ -1,17 +1,60 @@
 # Installable Android build and rehearsal
 
-## Windows phone build — September 14, 2026
+## Windows build and emulator acceptance — September 14, 2026
 
 **Current build boundary:** two later full Gradle runs failed after D: lost writes.
 No further D: build is allocated. The D: invocation below records the original
-setup; it is not an instruction to rerun on the unhealthy drive. A verified C:-only
-internal JavaScript update is installed on the phone. The later `0ad7a0d` header
-correction has a verified C:-only APK, but its first emulator launch failed before
-JavaScript ran. The owner selected Android Studio emulator acceptance, with all new
-work on C:. A separate extraction-only APK now has verified installation and
-settled Arabic startup; Study and messaging presentation checks remain pending. See the
+setup; it is not an instruction to rerun on the unhealthy drive. The owner selected
+Android Studio emulator acceptance using C: only. The pinned `73aced8e…` APK passed
+startup, AR/EN Study/header presentation and Parent login/restoration, but exposed a
+Study hardware Back failure. The released motion work and Study handler are packaged
+from `e8ae266`; a separately verified native compatibility setting now passes the
+bounded Parent/Child Back and Parent keyboard checks. Cold-start reliability remains open. See the
 [primary integration record](../../specs/016-real-family-messaging/backend-android-validation.md)
 for exact artifact identities and acceptance results.
+
+### Current compatibility candidate — `9d756ef` configuration, `e8ae266` JavaScript
+
+The installed APK is
+`.expo/messaging-integration/predictive-back-e8ae266/ghaf-predictive-back-disabled.apk`,
+62,436,538 bytes, SHA-256
+`615048cd27c2c2856fbbaac2de113024325d3ec8d8819d9b56c216770705b27f`.
+Against `a55a6acb…`, only four bytes of the compiled manifest changed to disable
+predictive Back. All 1,626 other payloads, including the JavaScript bundle below,
+are unchanged. Signing/alignment, installation and installed hash passed.
+Parent Study Back passed twice, keyboard Back retained a `Math` draft, and Child
+Study Back returned to Salem Today. `9d756ef` applies the same native setting to
+the source build configuration; Expo introspection, scoped lint and formatting passed.
+A later cold-launch command timed out at 22,440 ms, so reliable startup is not passed.
+Settled rendering, English Study/Back, AR/EN messaging and restored Parent account
+passed afterward; see `resumed-final-acceptance.json` for the exact scope.
+This is an internal compatibility package using the existing native container.
+
+### Earlier resumed candidate — `e8ae266`
+
+Compilation and packaging passed for source
+`e8ae266bf3623d70a764f92bac8cce68d9bcaf76`. APK
+`.expo/messaging-integration/resumed-candidate/ghaf-resumed-emulator.apk` is
+62,436,538 bytes, SHA-256
+`a55a6acb1e1beae32b982f364ff84b602efd83d66854e77fb6e9fd30a9ca5337`.
+Hermes bytecode SHA-256 is
+`da402d92ba6857afd208ea10eb39b8989769d1f13e2c6b0857895cc567c18c67`.
+All 98 resource mappings matched; 1,626 non-bundle payloads were preserved from the
+`73aced8e…` extraction package, and all 1,627 signed payloads matched. The existing
+signer, v2/v3 signatures and 16 KiB alignment passed. The native container remains
+`273f97d`; this is a compiled JavaScript update with extraction packaging, not a
+full Gradle rebuild.
+
+Final TypeScript, full lint, full formatting and 2,773 tests across 193 files
+passed, with two opt-in tests skipped. Format-only `b8da974` resolved the earlier
+unrelated test-formatting failure. Receipts use
+`.expo/messaging-integration/resumed-source-*` and `resumed-candidate/`.
+Installation and two installed-hash checks passed for `a55a6acb…`, along with
+AR/EN messaging headers and restored Parent account. Study Back failed on this
+artifact; the separate compatibility package above corrects that observed case.
+Neither result establishes motion performance, accessibility or physical acceptance.
+
+### Earlier Windows builds and pinned candidates — historical evidence
 
 The owner authorized native compilation on D: after the Expo Go connection failed.
 The Windows launcher is [build-apk.ps1](../../scripts/native/build-apk.ps1). It uses
@@ -118,10 +161,15 @@ hash subsequently matched `73aced8e…`. Native libraries loaded from extraction
 React Native reached `Running main`, and settled Arabic onboarding rendered;
 skipping onboarding and entering Parent also worked. Installation and startup pass
 for this exact emulator candidate. Startup skipped frames, so no performance pass
-is claimed. Receipts include `.expo/messaging-integration/emulator-installed-identity.json`
-and `emulator-extraction-welcome.png`. Study and corrected-header checks remain
-pending. This is a separate emulator packaging candidate, not a full native rebuild
-or new phone evidence.
+is claimed. Later pinned checks passed AR/EN Study body/tabs/mixed-script nickname,
+messaging header/list direction, real Parent login and restoration after force-stop
+without credential reentry. Native Study hardware Back exited the app; `e8ae266`
+addresses that failure. Conversation history/composer scroll reachability remains
+unverified. The later conversation capture made while ADB was offline is invalid
+and supplies no additional evidence. Receipts include
+`.expo/messaging-integration/emulator-pinned-acceptance.json`,
+`emulator-installed-identity.json` and `emulator-extraction-welcome.png`.
+This is a separate emulator candidate, not a full native rebuild or new phone evidence.
 
 No new phone check is allocated. Retain the verified artifacts and receipts;
 remove only scoped disposable C: intermediates after their use. Do not transfer
@@ -418,7 +466,11 @@ After approved persistence work, force-stop/relaunch at acceptance, pending conf
 recognition. Check exact counters, no duplicate memory, family/profile isolation and reset. Until
 then, record the existing lost-progress gap rather than marking restart-safe behavior passed.
 
-| Evidence                        | Required record                                                     | Current status              |
+The following matrix is the historical September 12 baseline. Current Windows
+artifact, emulator and phone results are recorded at the top of this guide and in
+the linked integration evidence; remaining human/two-phone gates stay separate.
+
+| Evidence                        | Required record                                                     | Historical status           |
 | ------------------------------- | ------------------------------------------------------------------- | --------------------------- |
 | Standalone artifact             | Commit, versions, Gradle result, signing verification, APK hash     | NOT RUN                     |
 | Primary phone                   | Actual model/OS, installation and 2–3 minute complete journey       | BLOCKED: device unavailable |
