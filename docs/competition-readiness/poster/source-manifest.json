@@ -1,0 +1,82 @@
+{
+  "format": "Editable HTML, A1 portrait",
+  "source": "docs/competition-readiness/poster/current-poster.html",
+  "sourceSha256": "c5a3ae587cb01467b252f92e58da6499db49bd36752eed00802ba21fa23d2272",
+  "physicalSizeMm": {
+    "width": 594,
+    "height": 841
+  },
+  "screenshotSizePx": {
+    "width": 2245,
+    "height": 3178
+  },
+  "assets": [
+    {
+      "path": "assets/brand/ghaf/ghaf-mark-full-color-1024.png",
+      "mime": "image/png",
+      "usage": "Approved 5A runtime mark; unchanged",
+      "bytes": 29377,
+      "sha256": "f30e8925f3ff56b3fddbf5c3d653e2a309e99d7af48fefaa30bdc2e704d8c40b"
+    },
+    {
+      "path": "docs/screenshots/parent-home-ar.png",
+      "mime": "image/png",
+      "usage": "Historical synthetic Arabic Parent Home capture",
+      "bytes": 62285,
+      "sha256": "1ed4c04fd40ddb8d6ead5957d3e5b52769ea1f36bda35472da605b2f7f8df628"
+    },
+    {
+      "path": "docs/screenshots/child-today-ar.png",
+      "mime": "image/png",
+      "usage": "Historical synthetic Arabic Child Today capture",
+      "bytes": 82102,
+      "sha256": "ce4ca7cc32b0d1df5a233e4d86ed47df52a0b180f967da3453013949d58a0ac0"
+    },
+    {
+      "path": "docs/screenshots/family-garden-ar.png",
+      "mime": "image/png",
+      "usage": "Historical synthetic Arabic Family Garden capture",
+      "bytes": 78655,
+      "sha256": "6bc4826552bea7c31fcfe36348f3fd1dc5752efa802ab4d1e714271114b6a538"
+    },
+    {
+      "path": "node_modules/@expo-google-fonts/alexandria/600SemiBold/Alexandria_600SemiBold.ttf",
+      "mime": "font/ttf",
+      "usage": "Approved Alexandria display font",
+      "bytes": 172908,
+      "sha256": "e235d2d1fb9fdc371f1f444c785824b656e8bbe2493d0a86444b658e1edf4861"
+    },
+    {
+      "path": "node_modules/@expo-google-fonts/readex-pro/400Regular/ReadexPro_400Regular.ttf",
+      "mime": "font/ttf",
+      "usage": "Approved Readex Pro body font",
+      "bytes": 99824,
+      "sha256": "cf8d20680d810289ebbd85f219ecaf77d79a5a78094a1806ca1a42fcaf6fa81f"
+    },
+    {
+      "path": "node_modules/@expo-google-fonts/readex-pro/500Medium/ReadexPro_500Medium.ttf",
+      "mime": "font/ttf",
+      "usage": "Approved Readex Pro medium control font",
+      "bytes": 100364,
+      "sha256": "f5c313c71ad772613d16f5c979a4be59380b82dcd6da32d8de17702ebfda9fc8"
+    }
+  ],
+  "licenses": [
+    {
+      "path": "node_modules/@expo-google-fonts/alexandria/LICENSE_FONT",
+      "output": "alexandria-font-license.txt",
+      "sha256": "56372aed19c2701f50e6e784110af55bf8796ed51648805324ad1adb0a3860bb"
+    },
+    {
+      "path": "node_modules/@expo-google-fonts/readex-pro/LICENSE_FONT",
+      "output": "readex-pro-font-license.txt",
+      "sha256": "b41267a3903a45955f77b44596e080480c577fb7221df59672d0bc8cd8cd4b6f"
+    }
+  ],
+  "boundaries": [
+    "Screenshots are historical checked-in synthetic captures, not new-feature or native acceptance evidence.",
+    "Original referenced PowerPoint and template inputs were not located in this checkout.",
+    "Prepared AI is not a successful live Gemini request. Supabase messaging requires separate configuration.",
+    "Task/growth synchronisation across devices and production acceptance are not established."
+  ]
+}

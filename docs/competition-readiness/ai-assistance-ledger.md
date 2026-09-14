@@ -1,5 +1,35 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Requirement audit and Feature019 implementation
+
+The owner requested an evidence-based audit of R01–R38 and A01–A07, implementation
+of feasible gaps, security fixes, validation and competition artifacts. Codex used
+four bounded helpers for core state, backend, planning/AI and presentation, with
+one integration/test lane and explicit file ownership. Existing concurrent motion
+changes were preserved. This is AI-assisted engineering and documentation, not a
+claim of student authorship or human acceptance.
+
+The [implementation ledger](feature-implementation-audit.md) and
+[Feature019 contract](../../specs/019-feature-completion-audit/spec.md) record the
+actual boundaries, changes, checks and remaining work. New work covers local text
+memories and reset protection, academic dates, family-connection editing, prepared
+recommendation explanations, onboarding completion/playback, quiet volume controls,
+template collision recovery and a gated server Gemini text adapter. Adapter tests
+use synthetic responses; no model/provider activation or Child media processing
+was performed. The poster helper reused exact approved branding/fonts and clearly
+captioned historical screenshots in an editable HTML source with checked PNG/PDF
+exports. Original architecture PowerPoint and historical template archives were
+not located in this checkout. Native, two-device and external-service evidence
+must be read at the level recorded in the ledger; historical results are not fresh
+acceptance of these changes.
+
+Disk exhaustion interrupted validation and the first render. The owner authorized
+deleting unneeded files. Only this run's regenerable bundled poster HTML and
+temporary Chrome profile were deleted; an existing generated source map was
+losslessly compressed. Source, family data and APKs were preserved. Subsequent
+free-space recovery enabled validation and a successful poster render; its full
+size is not attributed to this session's small cleanup alone.
+
 ## 2026-09-14 Native motion, persistent accounts and backend readiness
 
 The owner requested native animation improvements, real persistent adult accounts,

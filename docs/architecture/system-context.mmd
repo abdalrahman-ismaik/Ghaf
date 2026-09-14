@@ -1,24 +1,18 @@
 flowchart TB
-  Parent[Parent / demo operator]
-  Child[Child / demo operator]
-  App[Expo Router application]
-  UI[Shared UI · design tokens · i18n]
-  Store[Zustand prototype session + application commands]
-  Directory[Versioned local family directory]
-  SQLite[Expo SQLite KV on native]
-  Policies[Pure task · reward · garden · circle · assistant policies]
-  Registry[Provider-neutral service registry]
-  Mock[Deterministic local providers]
-  Fixtures[Synthetic bilingual fixtures + prepared media]
-
-  Parent --> App
-  Child --> App
-  App --> UI
-  App --> Store
-  Store --> Directory
-  Directory --> SQLite
-  Store --> Policies
-  Store --> Registry
-  Registry --> Mock
-  Mock --> Policies
-  Mock --> Fixtures
+  App[Expo Router / bilingual botanical UI]
+  Local[Local synthetic task and progression authority]
+  KV[SQLite KV native / localStorage web]
+  Adults[Adult account service / secure native session]
+  AdultDB[Supabase adult profiles and planning RPCs]
+  Messages[Independent family messaging identity]
+  MessageDB[Supabase enrollment / participant-only text RPCs]
+  AI[Prepared assistance and gated remote adapters]
+  Gateway[Reference Worker / bounded text and voice operations]
+  MCP[Optional server-only MCP text tools]
+  App --> Local
+  Local --> KV
+  App --> Adults --> AdultDB
+  App --> Messages --> MessageDB
+  Local --> AI
+  AI -. trusted broker and activation missing .-> Gateway
+  MCP --> Gateway

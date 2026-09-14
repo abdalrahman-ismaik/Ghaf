@@ -1,5 +1,18 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Current requirement audit — 2026-09-14
+
+Use the [implementation ledger](feature-implementation-audit.md) for the current
+R01–R38/A01–A07 status, 24-task checklist, configuration blockers and reproducible
+walkthrough. Feature019 adds local text memories, goal dates, editable family
+connections, prepared recommendation explanations, remembered onboarding and quiet
+volume controls. Its Gemini text adapter has local transport tests only; no live
+model transformation is established by this run. The executable task/growth journey
+still shares one running installation and does not synchronize across devices.
+Historical hosted messaging evidence below does not establish task synchronization.
+The [current editable poster](poster/README.md) explicitly identifies historical
+screenshots and capability limits.
+
 ## Dedicated messaging rehearsal — 2026-09-14
 
 The synthetic messaging backend is configured separately from the adult pilot.

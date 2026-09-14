@@ -2,13 +2,19 @@
 
 ## Purpose and boundary
 
-Ghaf P0 is one Expo/React Native application that demonstrates a deterministic Parent → Child →
-confirmation → living-garden journey. Its behavioral session remains in memory and works with
-external services denied. One narrow device-local family directory remembers a normalized
-synthetic Parent lookup identifier, configured roles, profile preferences, and synthetic
-paired-device markers across restarts. It does not contain a
-production backend, authentication system, cross-household network, analytics pipeline, or live
-child-media/AI processor.
+Ghaf is one Expo 57 / React Native 0.86 Android-first application with three separate
+data authorities. The deterministic Parent → Child → confirmation → garden journey
+uses process-local task/progression state. Ordinary local-family records, study,
+saved wording, onboarding/audio preferences and Feature019 text memories use device
+storage; quick demo and account samples use isolated memory. Real adult profiles
+and private planning workspaces use one Supabase project. Enrolled family messaging
+uses a separate Supabase project and server-authorized participants.
+
+Real messaging and adult planning do not synchronize the executable Child task,
+Seeds, landscapes, rewards or new memory timeline. None of these integrations
+establishes production readiness. This description was reconciled during the
+[R01–R38 audit](../competition-readiness/feature-implementation-audit.md); older
+specification evidence remains attributed to its original source.
 
 The [product contract](../PRODUCT.md), [design contract](../DESIGN.md), and
 [prototype limitations](../product/PROTOTYPE_LIMITATIONS.md) define the public Feature 003 boundary.
@@ -19,29 +25,23 @@ The matching Mermaid source is [system-context.mmd](system-context.mmd).
 
 ```mermaid
 flowchart TB
-  Parent[Parent / demo operator]
-  Child[Child / demo operator]
-  App[Expo Router application]
-  UI[Shared UI · design tokens · i18n]
-  Store[Zustand prototype session + application commands]
-  Directory[Versioned local family directory]
-  SQLite[Expo SQLite KV on native]
-  Policies[Pure task · reward · garden · circle · assistant policies]
-  Registry[Provider-neutral service registry]
-  Mock[Deterministic local providers]
-  Fixtures[Synthetic bilingual fixtures + prepared media]
-
-  Parent --> App
-  Child --> App
-  App --> UI
-  App --> Store
-  Store --> Directory
-  Directory --> SQLite
-  Store --> Policies
-  Store --> Registry
-  Registry --> Mock
-  Mock --> Policies
-  Mock --> Fixtures
+  App[Expo Router / bilingual botanical UI]
+  Local[Local synthetic task and progression authority]
+  KV[SQLite KV native / localStorage web]
+  Adults[Adult account service / secure native session]
+  AdultDB[Supabase adult profiles and planning RPCs]
+  Messages[Independent family messaging identity]
+  MessageDB[Supabase enrollment / participant-only text RPCs]
+  AI[Prepared assistance and gated remote adapters]
+  Gateway[Reference Worker / bounded text and voice operations]
+  MCP[Optional server-only MCP text tools]
+  App --> Local
+  Local --> KV
+  App --> Adults --> AdultDB
+  App --> Messages --> MessageDB
+  Local --> AI
+  AI -. trusted broker and activation missing .-> Gateway
+  MCP --> Gateway
 ```
 
 ## Runtime containers
@@ -79,7 +79,7 @@ fixtures remain typed fixture data. `src/design/tokens.ts` is the single visual-
 | Parent lookup identifier, configured profiles, and paired markers | Local family repository                 | Device-local, one household, normalized exact match before returning verification; Parent reset clears it    |
 | Synthetic household, Children, active journey, and ledger         | Prototype session                       | Local to the running demo; only display profile fields project from the directory                            |
 | Task lifecycle and recognition eligibility                        | Task/reward policies                    | Parent-gated; no direct route mutation                                                                       |
-| Seeds and landscape state                                         | Recognition transaction + garden policy | Symbolic, permanent, and local                                                                               |
+| Seeds and landscape state                                         | Recognition transaction + garden policy | Symbolic and no-loss in the running process; durable recovery is missing                                     |
 | Combined canopy                                                   | Household projection                    | Only after privacy filtering                                                                                 |
 | Circle progress                                                   | Circle projection                       | Coarse eligible household Green Impact action only; no Child, task, Seed, note, reflection, or media details |
 | Assistant requests/results                                        | Assistant policy and prepared providers | Bounded to an approved task or neutral synthetic summary; no unrestricted Child chat                         |
@@ -87,6 +87,25 @@ fixtures remain typed fixture data. `src/design/tokens.ts` is the single visual-
 
 `visibilityScope` and `circleEligible` are evaluated before shared counters or visuals change.
 Circle eligibility is rejected unless the task is household-visible Green Impact work.
+
+Adult profile/workspace RPCs derive ownership from provider identity and deny
+cross-account, banned, deleted and anonymous access. Messaging derives household,
+role and Child membership from provisioned server records plus current provider
+session and device state; client family IDs/selected roles are not permission.
+Peer permission management gives Parents no access to peer conversation content.
+Human messages, locations and transcripts never enter the AI context automatically.
+
+Feature019 memories are private synthetic text records bound to the existing opaque
+local family instance. Parent save requires an eligible recognized household Green
+Impact task; Child reads are profile-scoped. Tombstones prevent deleted completion
+memories reappearing. Memories confer no reward authority and cannot restore Seeds.
+
+The user's Gemini/MCP/Firebase diagram is recorded in the poster workstream, but
+the original PowerPoint was not located in this checkout. Firebase runtime code is
+absent. Existing gateway operations use Workers AI; an opt-in Gemini text adapter
+is implemented under Feature019 with local transport/validation tests. MCP projects two bounded operations server-side;
+the mobile app does not need MCP for every request. Broker/shared replay/budget
+configuration and actual external-model verification remain separate blockers.
 
 ## Critical recognition transaction
 
@@ -108,8 +127,11 @@ fallback remains available.
 
 ## Reset and recovery
 
-`resetPrototype()` first clears the current and legacy local family records, then replaces the complete session with
-the canonical schema-versioned fixture. The
+`resetPrototype()` validates Parent authority, clears the local repositories and
+replaces the session with canonical fixtures. The existing multi-key cleanup is
+sequential, not a failure-atomic database transaction; later-key failure remains a
+recorded recovery risk. Feature019 protects new memory records on failures while
+their original family binding still exists. The
 navigation adapter separately replaces browser/native history and returns to `/` in Arabic RTL.
 This separation keeps domain reset testable without storing navigation state.
 
@@ -119,7 +141,8 @@ providers. Prepared image/audio surfaces retain descriptions/transcripts when me
 ## Non-functional assumptions
 
 - Scale is intentionally one synthetic household, one or two configured Child slots, one seeded circle aggregate, eight
-  categories, five landscape tracks, and one executable Green Impact task.
+  categories, five landscape tracks, 24 executable catalog tasks plus the separate
+  canonical 12-Seed recycling demonstration.
 - Family/profile setup and synthetic paired markers persist on the current device; task, reward,
   Garden, League, and assistant-result state remains in memory and may reset on reload.
 - Android is authoritative. Web static rendering is a secondary development/evidence proxy.

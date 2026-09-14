@@ -1,5 +1,29 @@
 # Prototype Limitations
 
+## Feature019 audit and local completion — 2026-09-14
+
+The [requirement ledger](../competition-readiness/feature-implementation-audit.md)
+is the current full-feature inventory. This batch adds private local Green Impact
+text memories with Parent save/deletion, jointly agreed academic dates, editable
+family connections, prepared recommendation explanations, remembered ordinary
+onboarding, quiet volume controls and a gated server Gemini text adapter. Local
+storage/readback/reset tests and a bounded Arabic browser check passed. The Gemini
+tests use synthetic transport responses; there is no live model verification.
+
+Ordinary memory and onboarding records persist on this device; quick-demo/pilot
+samples remain isolated and ephemeral. Memory records cannot restore rewards.
+Executable task state, Seeds, landscapes, League and Family Rewards still lack
+complete durable recovery and shared-device synchronization. Legacy multi-key
+reset is not fully transactional after family deletion, although duplicate-clear,
+replacement rollback and stale-family deletion regressions are repaired.
+
+Maps/location sharing, unified/Google calendar, allowances and real call transport
+remain missing from the application. The editor, narration, audio and memories
+still need current Android/human acceptance. Separate messaging/account evidence
+below is historical service evidence, not proof of these new flows. The original
+architecture PowerPoint/template archives and companion GIF directory were not
+located; the new poster is editable HTML with checked PNG/PDF exports.
+
 ## Persistent account continuation — 2026-09-14
 
 Feature 018 now stores a bounded adult profile and private family/task/study

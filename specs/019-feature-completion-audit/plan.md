@@ -4,3 +4,9 @@ Reuse current Expo 57 / RN 0.86 / Zustand / Zod / SQLite/localStorage / bilingua
 
 Run focused regression checks for each slice; root performs aggregate checks. No local Gradle/export while disk remains constrained. Review historical configured-service evidence without representing it as current source execution.
 
+Observed tooling repair: installed SDK57 router-server's watcher compares Windows
+relative paths against a POSIX `../` prefix. New sibling test/build snapshot files
+can enter its generated route union and trigger TS2590. The typecheck command now
+uses that installed generator with a fresh app-only context before TypeScript.
+No dependency, native configuration or route behavior changes. Internal generator
+compatibility must be rechecked if the Expo stack is intentionally upgraded.

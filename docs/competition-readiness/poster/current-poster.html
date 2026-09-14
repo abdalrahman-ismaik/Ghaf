@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ghaf — Family time, one meaningful step at a time</title>
+    <style>
+      @font-face {
+        font-family: Alexandria;
+        src: url('../../../node_modules/@expo-google-fonts/alexandria/600SemiBold/Alexandria_600SemiBold.ttf')
+          format('truetype');
+        font-weight: 600;
+        font-display: block;
+      }
+      @font-face {
+        font-family: Readex;
+        src: url('../../../node_modules/@expo-google-fonts/readex-pro/400Regular/ReadexPro_400Regular.ttf')
+          format('truetype');
+        font-weight: 400;
+        font-display: block;
+      }
+      @font-face {
+        font-family: Readex;
+        src: url('../../../node_modules/@expo-google-fonts/readex-pro/500Medium/ReadexPro_500Medium.ttf')
+          format('truetype');
+        font-weight: 500;
+        font-display: block;
+      }
+      :root {
+        color-scheme: light;
+        --forest: #0d3128;
+        --teal: #188b83;
+        --pearl: #f7f8f3;
+        --muted: #4f655b;
+        --line: #c8d5cb;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      @page {
+        size: 594mm 841mm;
+        margin: 0;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Readex, sans-serif;
+        color: var(--forest);
+        background: var(--pearl);
+      }
+      .poster {
+        width: 2245px;
+        height: 3178px;
+        padding: 92px 130px 80px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      h1,
+      h2,
+      h3,
+      p,
+      figure,
+      ol {
+        margin: 0;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: Alexandria, sans-serif;
+        font-weight: 600;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 208px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .brand img {
+        width: 208px;
+        height: 208px;
+        object-fit: contain;
+      }
+      .wordmark {
+        font-family: Alexandria, sans-serif;
+        font-size: 84px;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+      .wordmark [lang='ar'] {
+        display: inline-block;
+        margin-inline-start: 26px;
+      }
+      .identity {
+        text-align: right;
+        font-size: 29px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+      .identity strong {
+        display: block;
+        color: var(--forest);
+        font-weight: 500;
+      }
+      .intro {
+        padding: 68px 0 68px;
+        border-bottom: 2px solid var(--line);
+      }
+      h1 {
+        font-size: 112px;
+        line-height: 1.16;
+        letter-spacing: -3px;
+      }
+      .intro p {
+        font-size: 38px;
+        line-height: 1.6;
+        max-width: 1790px;
+        margin-top: 34px;
+        color: var(--muted);
+      }
+      .screens {
+        padding: 51px 0 52px;
+      }
+      .section-label {
+        color: var(--teal);
+        font-size: 27px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .screen-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 99px;
+        margin-top: 32px;
+      }
+      figure {
+        min-width: 0;
+      }
+      figcaption h2 {
+        font-size: 37px;
+        line-height: 1.35;
+      }
+      figcaption p {
+        font-size: 28px;
+        line-height: 1.5;
+        margin-top: 14px;
+        color: var(--muted);
+        min-height: 86px;
+      }
+      .screen-image {
+        display: block;
+        width: 100%;
+        height: 925px;
+        object-fit: contain;
+        object-position: top center;
+        margin-top: 24px;
+      }
+      .capture-note {
+        color: var(--muted);
+        font-size: 25px;
+        line-height: 1.5;
+        margin-top: 24px;
+      }
+      .journey {
+        border-top: 2px solid var(--line);
+        padding-top: 44px;
+      }
+      .journey h2 {
+        font-size: 48px;
+        line-height: 1.35;
+      }
+      .steps {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 30px;
+        padding: 0;
+        margin-top: 36px;
+      }
+      .steps li {
+        border-top: 7px solid var(--teal);
+        padding-top: 23px;
+      }
+      .step-number {
+        display: block;
+        font-size: 24px;
+        color: var(--teal);
+        margin-bottom: 12px;
+      }
+      .step-name {
+        display: block;
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1.45;
+      }
+      .step-description {
+        display: block;
+        font-size: 25px;
+        line-height: 1.55;
+        color: var(--muted);
+        margin-top: 12px;
+      }
+      .supporting {
+        margin-top: 59px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 98px;
+      }
+      .supporting h2 {
+        font-size: 35px;
+        line-height: 1.45;
+      }
+      .supporting p {
+        font-size: 28px;
+        color: var(--muted);
+        line-height: 1.7;
+        margin-top: 17px;
+      }
+      footer {
+        margin-top: auto;
+        border-top: 2px solid var(--line);
+        padding-top: 32px;
+      }
+      .truth {
+        font-size: 24px;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+      .truth strong {
+        font-weight: 500;
+        color: var(--forest);
+      }
+      .footer-end {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+        font-size: 22px;
+        color: var(--muted);
+      }
+      @media print {
+        html,
+        body {
+          width: 594mm;
+          height: 841mm;
+        }
+        .poster {
+          width: 594mm;
+          height: 841mm;
+        }
+        * {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="poster">
+      <header>
+        <div class="brand">
+          <img
+            src="../../../assets/brand/ghaf/ghaf-mark-full-color-1024.png"
+            alt="Ghaf: three family figures beneath a Ghaf canopy"
+          />
+          <div class="wordmark">Ghaf <span lang="ar" dir="rtl">غاف</span></div>
+        </div>
+        <p class="identity">
+          <strong>Rooted in UAE identity</strong>Android-first family application
+        </p>
+      </header>
+
+      <section class="intro" aria-labelledby="poster-title">
+        <h1 id="poster-title">Family time, one meaningful<br />step at a time.</h1>
+        <p>
+          Parent-approved activities, a growing virtual Ghaf tree, and shared memories.<br />Designed
+          to make everyday family participation easier to begin and recognise.
+        </p>
+      </section>
+
+      <section class="screens" aria-label="Historical Arabic prototype screenshots">
+        <p class="section-label">A family journey, in Arabic</p>
+        <div class="screen-grid">
+          <figure>
+            <figcaption>
+              <h2>A Parent makes space</h2>
+              <p>Review a suitable activity<br />before assigning it.</p>
+            </figcaption>
+            <img
+              class="screen-image"
+              src="../../screenshots/parent-home-ar.png"
+              alt="Historical Arabic Parent Home screen with a family canopy summary and task creation button"
+            />
+          </figure>
+          <figure>
+            <figcaption>
+              <h2>A Child takes part</h2>
+              <p>Try an approved task, with clear<br />steps and help when needed.</p>
+            </figcaption>
+            <img
+              class="screen-image"
+              src="../../screenshots/child-today-ar.png"
+              alt="Historical Arabic Child Today screen showing the clean-material recycling activity and its explanation"
+            />
+          </figure>
+          <figure>
+            <figcaption>
+              <h2>The effort is recognised</h2>
+              <p>Parent confirmation connects<br />the action to symbolic progress.</p>
+            </figcaption>
+            <img
+              class="screen-image"
+              src="../../screenshots/family-garden-ar.png"
+              alt="Historical Arabic Family Garden screen praising safe sorting and asking for help"
+            />
+          </figure>
+        </div>
+        <p class="capture-note">
+          Historical, checked-in prototype captures with synthetic data; earlier screen branding and
+          sample family names remain visible.
+        </p>
+      </section>
+
+      <section class="journey" aria-labelledby="journey-title">
+        <h2 id="journey-title">One small action. A shared moment to remember.</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-number">01</span><span class="step-name">Review</span
+            ><span class="step-description">A Parent chooses<br />and approves a task.</span>
+          </li>
+          <li>
+            <span class="step-number">02</span><span class="step-name">Take part</span
+            ><span class="step-description">The Child tries<br />the agreed activity.</span>
+          </li>
+          <li>
+            <span class="step-number">03</span><span class="step-name">Ask for help</span
+            ><span class="step-description">Bounded coaching<br />supports the next step.</span>
+          </li>
+          <li>
+            <span class="step-number">04</span><span class="step-name">Confirm</span
+            ><span class="step-description">The Parent recognises<br />the completed action.</span>
+          </li>
+          <li>
+            <span class="step-number">05</span><span class="step-name">Remember</span
+            ><span class="step-description">Symbolic growth;<br />an eligible text memory.</span>
+          </li>
+        </ol>
+      </section>
+
+      <section class="supporting" aria-label="Supporting family features">
+        <div>
+          <h2>Make room for everyday life</h2>
+          <p>
+            Study plans and dated academic goals.<br />Text memories after approved shared Green
+            Impact activities.
+          </p>
+        </div>
+        <div>
+          <h2>Keep the experience comfortable</h2>
+          <p>
+            Arabic and English. Original six-screen onboarding.<br />Narration controls and
+            adjustable quiet nature audio.
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p class="truth">
+          <strong>Demonstration boundary.</strong> The journey shown is a local synthetic prototype.
+          AI responses are prepared; the Gemini adapter is not live-verified. Supabase messaging is
+          a separately configured integration. Task and growth synchronisation across devices is not
+          established. Tree growth is symbolic; it does not represent trees planted or measured
+          environmental impact.
+        </p>
+        <div class="footer-end">
+          <span>Ghaf · Family connection through meaningful participation</span
+          ><span>Editable A1 poster · Source and evidence in repository</span>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

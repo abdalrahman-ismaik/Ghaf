@@ -28,6 +28,14 @@ eligible cooperative progress.
 
 ## Latest updates — September 2026
 
+- **Implementation audit and repairs:** the [R01–R38 / A01–A07 ledger](docs/competition-readiness/feature-implementation-audit.md)
+  separates implemented behavior from missing functionality and external-service evidence.
+  This pass adds local text memory leaves for Parent-confirmed Green Impact activities,
+  goal target/review dates, ordinary onboarding completion persistence and narration Stop/Replay,
+  adjustable quiet ambience, and explanations for prepared category recommendations.
+  Memories persist in ordinary local-family mode; quick demo/account samples remain session-only.
+  Executable task and growth recovery, cloud task synchronization and live AI activation remain open.
+
 - **New Ghaf identity:** the selected [5A Refined Classic logo](docs/design/brand/5a-refined-classic/README.md)
   brings three family figures beneath one canopy, with matching app icons and botanical UI.
 - **Complete task catalog:** 24 curated tasks across eight categories now have Parent review,
