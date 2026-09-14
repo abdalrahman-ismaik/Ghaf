@@ -162,3 +162,10 @@ passed five normal restricted-session checks; invocation14222 gained one assigne
 GI01 with Help requested, no award/history mutation. Parent/Child SDK sessions
 signed out locally. Read-only hosted result confirms20migrations through015 and
 restored hourly retention with one successful scheduled run. No full backup claim.
+
+RELEASE-018: native d13c148 standalone upgrade/login reproduced a three-row footer
+at720x1600/font1, using384px before insets and obscuring most child actions until
+scroll. Root reserves ONLY CloudFamilyView.tsx for a bounded equal-column footer
+repair, retaining all six labeled destinations, existing press motion and Back.
+No NAV-MOTION files overlap. Source63353ae remains a separately identified build;
+this later repair requires its own source checks and fresh artifact acceptance.

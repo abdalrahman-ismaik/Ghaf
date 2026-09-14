@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, BackHandler, Platform, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Platform, StyleSheet, View } from 'react-native';
 
 import { AccessHeader, AccessScreen } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -8,7 +8,7 @@ import { CloudGrowthView } from '@/components/cloud-growth';
 import { CloudMessagingView } from '@/components/cloud-messaging';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { botanical } from '@/design/tokens';
+import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
 import { selectCloudFamilyProgress, type CloudFamilyController } from '@/features/cloud-family';
 import {
   CloudFamilyError,
@@ -167,7 +167,7 @@ export function CloudFamilyView({
         />
       }
       footer={
-        <CloudActions>
+        <View style={[styles.navigation, { flexDirection: logicalRowDirection(direction) }]}>
           {tabs.map((item) => (
             <CloudAction
               key={item}
@@ -175,13 +175,14 @@ export function CloudFamilyView({
               accessibilityState={{ selected: item === tab }}
               aria-selected={item === tab}
               variant={item === tab ? 'primary' : 'quiet'}
+              style={styles.navigationItem}
               onPress={() => selectTab(item)}
               testID={`cloud-tab-${item}`}
             >
               {text(item)}
             </CloudAction>
           ))}
-        </CloudActions>
+        </View>
       }
     >
       {state.busy ? (
@@ -412,3 +413,15 @@ export function CloudFamilyView({
     </AccessScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  navigation: { flexWrap: 'wrap', alignItems: 'stretch', gap: spacing.xs },
+  navigationItem: {
+    // Equal columns avoid a third footer row; labels may wrap as text grows.
+    flexBasis: '30%',
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: 0,
+    paddingHorizontal: spacing.xs,
+  },
+});
