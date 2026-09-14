@@ -11,6 +11,14 @@ harness. A bounded helper prepared the harness and setup/evidence documentation;
 another prepared the Windows build launcher, with root correcting observed Windows
 execution issues and supervising the build. Read-only tool inventory was delegated.
 
+At the user's request, a coordinator and bounded backend/web auditors worked in
+parallel. They reproduced and corrected terminal Auth refresh recovery, accepted
+message retries at the send limit, and the browser default-fetch receiver. Each fix
+has a failing-before regression and a passing-after check. The additive SQL migration
+was applied to the dedicated test backend; the actual hosted acceptance test passed.
+The coordinator independently reviewed the fetch change and native launcher. These
+audits do not establish production security or replace physical acceptance.
+
 The [integration record](../../specs/016-real-family-messaging/backend-android-validation.md)
 distinguishes the hosted pass, failed Expo Go attempt, build progress and outstanding
 physical/human gates. Generated code and documentation remain AI-assisted; no student

@@ -19,7 +19,8 @@ key, database password, Parent password or refresh token through chat or commit 
 
 1. In the chosen project's SQL editor, review/apply
    `workers/ghaf-family-messaging/migrations/001_family_messaging.sql` once for a fresh messaging
-   schema, then `002_peer_threads.sql` once for approved sibling conversations. If001 is already
+   schema, then `002_peer_threads.sql` for approved sibling conversations and
+   `003_idempotent_retry_budget.sql` for exact accepted retries at the send-attempt limit. If001 is already
    installed, inspect that state and apply only the missing upgrade; do not drop history or rerun001.
    The narrow RPCs deny direct table access and use the actual provider Auth schema. Never apply
    `tests/auth-fixture.sql` to a hosted project or run against unrelated application data.

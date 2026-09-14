@@ -26,6 +26,38 @@ At most four active agents, no descendants, one writer per file, and one seriali
 heavy build/database/browser lane. Preserve existing work. Physical passes require
 an actual connected phone; emulator and local-service results stay separately labeled.
 
+The user subsequently requested parallel backend/web audits with a coordinator.
+Earlier helpers have released their work. The active allocation is root plus
+`integration_audit_coordinator` (read-only triage), `backend_security_audit`
+(read-only SQL/client review), and `messaging_web_audit` (web review and a separately
+allocated lightweight browser lane). No descendants or overlapping writes are
+authorized. Root retains the sole heavy build lane and all source fixes; browser
+startup must fit the measured Windows headroom before it is granted.
+
+Root granted `backend_security_audit` the bounded terminal-refresh recovery fix:
+`src/features/familyMessaging/client.ts` and the minimal existing messaging
+client/controller regression test files, with exact names reported before edits.
+Only focused single-worker tests are allocated; no full suite, build, remote
+mutation or Git work. Root retains final source integration and APK identity.
+
+While the web auditor is idle pending its runtime lane, `messaging_retry_fix`
+owns only the additive `workers/ghaf-family-messaging/migrations/003_idempotent_retry_budget.sql`
+and exact existing SQL regression files reported to the coordinator. Applied
+migrations 001/002 stay unchanged. No hosted mutation, Docker/WSL startup or
+heavy database job is granted; root owns deployment and final verification.
+
+The first configured web audit reproduced a browser fetch receiver error before
+Auth HTTP dispatch. Prior writers released their boundaries; `messaging_web_audit`
+now owns only `src/features/familyMessaging/client.ts` and
+`tests/messaging/client.test.ts` for the minimal default-fetch binding correction
+and focused regression. Its browser is closed for memory headroom during this fix.
+
+All three audit fixes are released to root. The coordinator reviewed the fetch fix
+and Windows launcher without further source findings. Root owns
+`scripts/native/build-apk.ps1` and `android-build-and-rehearsal.md` integration.
+The documentation helper temporarily owns only the current backend/Android evidence
+record; root retains build, device, fresh export and final Git work.
+
 ## 2026-09-13 Study and family support — Feature 017
 
 User selected proposals 8–12 and confirmed using their saved proposals. Root starts
