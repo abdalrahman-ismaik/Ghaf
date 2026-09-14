@@ -53,6 +53,16 @@ export function AcademicGoalCard({
       </StudyText>
       <StudyText variant="heading">{goal.title}</StudyText>
       <StudyText>{goal.nextStep}</StudyText>
+      {goal.targetDate ? (
+        <StudyText tabular testID="study-goal-target-date-display">
+          {t('study.goalTargetOn', { date: '\u2068' + goal.targetDate + '\u2069' })}
+        </StudyText>
+      ) : null}
+      {goal.reviewDate ? (
+        <StudyText tabular testID="study-goal-review-date-display">
+          {t('study.goalReviewOn', { date: '\u2068' + goal.reviewDate + '\u2069' })}
+        </StudyText>
+      ) : null}
       <StudyText variant="label">{t('study.criterion')}</StudyText>
       <StudyText tabular>{criterion}</StudyText>
       <StudyText variant="label">{t('study.parentSupport')}</StudyText>

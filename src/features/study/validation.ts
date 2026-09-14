@@ -44,7 +44,7 @@ const criterion = z.discriminatedUnion('kind', [
     .refine((value) => value.threshold <= value.denominator),
 ]);
 
-export const academicGoalInputSchema = z.strictObject({
+const academicGoalInputFields = z.strictObject({
   subject: text(80),
   title: text(120),
   nextStep: text(300),
@@ -53,7 +53,15 @@ export const academicGoalInputSchema = z.strictObject({
   prize: z
     .strictObject({ kind: z.enum(['gift', 'experience', 'privilege']), label: text(160) })
     .nullable(),
+  targetDate: date.nullable().default(null),
+  reviewDate: date.nullable().default(null),
 });
+
+function validGoalDates(goal: Pick<AcademicGoal, 'targetDate' | 'reviewDate'>): boolean {
+  return goal.targetDate === null || goal.reviewDate === null || goal.reviewDate >= goal.targetDate;
+}
+
+export const academicGoalInputSchema = academicGoalInputFields.refine(validGoalDates);
 
 const reportedResult = z.discriminatedUnion('kind', [
   z.strictObject({
@@ -198,7 +206,7 @@ function validGoal(goal: AcademicGoal): boolean {
   return true;
 }
 
-const goalSchema = academicGoalInputSchema
+const goalSchema = academicGoalInputFields
   .extend({
     id: identifier,
     childId: identifier,
@@ -234,6 +242,7 @@ const goalSchema = academicGoalInputSchema
     unlockedAt: timestamp.nullable(),
     givenAt: timestamp.nullable(),
   })
+  .refine(validGoalDates)
   .refine(validGoal);
 
 export const studyStateSchema: z.ZodType<StudyState> = z

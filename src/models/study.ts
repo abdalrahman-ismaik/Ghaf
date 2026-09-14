@@ -58,6 +58,8 @@ export interface AcademicGoalInput {
   parentSupport: string;
   criterion: StudyCriterion;
   prize: StudyPrize | null;
+  targetDate?: string | null;
+  reviewDate?: string | null;
 }
 export interface StudySubmission {
   id: string;
@@ -68,6 +70,8 @@ export interface StudySubmission {
   metCriterion: boolean | null;
 }
 export interface AcademicGoal extends AcademicGoalInput {
+  targetDate: string | null;
+  reviewDate: string | null;
   id: string;
   childId: string;
   createdBy: 'parent' | 'child';

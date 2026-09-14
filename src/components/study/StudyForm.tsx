@@ -35,6 +35,8 @@ export function StudyForm({
   const [duration, setDuration] = useState('15');
   const [dueDate, setDueDate] = useState('');
   const [revisitDate, setRevisitDate] = useState('');
+  const [targetDate, setTargetDate] = useState(goal?.targetDate ?? '');
+  const [reviewDate, setReviewDate] = useState(goal?.reviewDate ?? '');
   const [parentSupport, setParentSupport] = useState(goal?.parentSupport ?? '');
   const [criterionKind, setCriterionKind] = useState<StudyCriterion['kind']>(
     goal?.criterion.kind ?? 'practice_count',
@@ -78,6 +80,8 @@ export function StudyForm({
       title,
       nextStep,
       parentSupport,
+      targetDate: normalizeStudyDigits(targetDate) || null,
+      reviewDate: normalizeStudyDigits(reviewDate) || null,
       criterion:
         criterionKind === 'practice_count'
           ? { kind: criterionKind, target: parseStudyNumber(target) }
@@ -152,6 +156,23 @@ export function StudyForm({
         </>
       ) : (
         <>
+          <StudyInput
+            label={t('study.goalTargetDate')}
+            value={targetDate}
+            onChangeText={setTargetDate}
+            maxLength={10}
+            direction="ltr"
+            testID="study-goal-target-date"
+          />
+          <StudyInput
+            label={t('study.goalReviewDate')}
+            value={reviewDate}
+            onChangeText={setReviewDate}
+            maxLength={10}
+            direction="ltr"
+            testID="study-goal-review-date"
+          />
+          <StudyText variant="caption">{t('study.goalDateGuidance')}</StudyText>
           <StudyInput
             label={t('study.parentSupport')}
             value={parentSupport}

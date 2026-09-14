@@ -24,6 +24,8 @@ function agreedTerms(goal: AcademicGoal): string {
     parentSupport: goal.parentSupport,
     criterion: goal.criterion,
     prize: goal.prize,
+    targetDate: goal.targetDate,
+    reviewDate: goal.reviewDate,
     revision: goal.revision,
     parentApprovedRevision: goal.parentApprovedRevision,
     childAcceptedRevision: goal.childAcceptedRevision,
