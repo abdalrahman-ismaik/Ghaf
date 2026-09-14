@@ -1,7 +1,8 @@
 import { useRef } from 'react';
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { BotanicalPressable } from '@/components/botanical/BotanicalPressable';
 import { Text } from '@/components/primitives';
 import {
   colors,
@@ -1056,7 +1057,7 @@ function BadgeGalleryCard({
   };
 
   return (
-    <Pressable
+    <BotanicalPressable
       accessibilityLabel={item.accessibilityLabel}
       accessibilityLanguage={language === 'ar' ? 'ar-AE' : 'en-AE'}
       accessibilityRole="button"
@@ -1064,12 +1065,8 @@ function BadgeGalleryCard({
       onLayout={focusAfterLayout}
       onPress={item.onPress}
       ref={cardRef}
-      style={({ pressed }) => [
-        styles.badgeCard,
-        wide ? styles.badgeCardWide : null,
-        badgeCardStyle[item.state],
-        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
-      ]}
+      reducedMotion={reducedMotion}
+      style={[styles.badgeCard, wide ? styles.badgeCardWide : null, badgeCardStyle[item.state]]}
       testID={item.testID}
     >
       <BadgeMedallion state={item.state} />
@@ -1112,7 +1109,7 @@ function BadgeGalleryCard({
           {item.progressText}
         </Text>
       </View>
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -1212,7 +1209,7 @@ function GrowthActionButton({
   };
 
   return (
-    <Pressable
+    <BotanicalPressable
       accessibilityLabel={accessibilityLabel}
       accessibilityLanguage={language === 'ar' ? 'ar-AE' : 'en-AE'}
       accessibilityRole="button"
@@ -1222,11 +1219,11 @@ function GrowthActionButton({
       onLayout={focusAfterLayout}
       onPress={action.onPress}
       ref={actionRef}
-      style={({ pressed }) => [
+      reducedMotion={reducedMotion}
+      style={[
         styles.actionButton,
         actionButtonStyle[tone],
         { flexDirection: logicalRowDirection(direction) },
-        pressed ? (reducedMotion ? styles.pressedStatic : styles.pressedMotion) : null,
         disabled ? styles.disabled : null,
       ]}
       testID={testID}
@@ -1250,7 +1247,7 @@ function GrowthActionButton({
           size={20}
         />
       </View>
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -1860,13 +1857,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  pressedStatic: {
-    opacity: opacity.pressed,
-  },
-  pressedMotion: {
-    opacity: opacity.pressed,
-    transform: [{ scale: 0.985 }],
   },
   disabled: {
     opacity: opacity.disabled,

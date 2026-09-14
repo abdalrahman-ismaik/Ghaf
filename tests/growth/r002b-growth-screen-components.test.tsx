@@ -257,9 +257,9 @@ describe('R002b Growth Journey presentation components', () => {
     expect(source).toContain('accessibilityLiveRegion="polite"');
     expect(source).toContain('aria-hidden');
     expect(source).toContain('{statusLabel}');
-    expect(source).toMatch(
-      /pressed\s*\?\s*\(?\s*reducedMotion\s*\?\s*styles\.pressedStatic\s*:\s*styles\.pressedMotion/u,
-    );
+    expect(source).toContain('<BotanicalPressable');
+    expect(source).toContain('reducedMotion={reducedMotion}');
+    expect(source).not.toContain('styles.pressedMotion');
   });
 
   it('renders deterministic station, badge, and criterion order without mutating domain state', () => {

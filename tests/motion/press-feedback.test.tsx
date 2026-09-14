@@ -2,7 +2,10 @@ import type { ForwardedRef, ReactElement } from 'react';
 import type { GestureResponderEvent, PressableProps, View } from 'react-native';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { BotanicalPressable } from '@/components/botanical/BotanicalPressable';
+import {
+  BotanicalPressable,
+  type BotanicalPressableProps,
+} from '@/components/botanical/BotanicalPressable';
 import { interactionMotion } from '@/design/motion';
 
 interface HookSlot {
@@ -134,11 +137,11 @@ const event = { nativeEvent: { pageX: 12, pageY: 20 } } as GestureResponderEvent
 const hoverEvent = { nativeEvent: { pageX: 12, pageY: 20 } } as Parameters<
   NonNullable<PressableProps['onHoverIn']>
 >[0];
-let input: PressableProps;
+let input: BotanicalPressableProps;
 let host: HostProps;
 let ref: ForwardedRef<View>;
 
-function render(update: Partial<PressableProps> = {}) {
+function render(update: Partial<BotanicalPressableProps> = {}) {
   input = { ...input, ...update };
   for (let attempt = 0; attempt < 8; attempt += 1) {
     mock.cursor = 0;
@@ -178,6 +181,36 @@ afterEach(unmount);
 
 // The native host and hook harness expose callback/cleanup behavior without claiming rendered physics.
 describe('BotanicalPressable interaction behavior', () => {
+  it('honors a surface static request without allowing false to override the system', () => {
+    render({ reducedMotion: true });
+    host.onPressIn?.(event);
+    render();
+    expect(flatStyle(host.style)).toMatchObject({
+      transform: [{ scale: 1 }],
+      opacity: interactionMotion.reduced.pressedOpacity,
+    });
+    expect(host).not.toHaveProperty('reducedMotion');
+    expect(mock.timing).not.toHaveBeenCalled();
+    mock.reduced = true;
+    render({ reducedMotion: false });
+    host.onPressIn?.(event);
+    render();
+    expect(mock.timing).not.toHaveBeenCalled();
+    expect(flatStyle(host.style).transform).toEqual([{ scale: 1 }]);
+  });
+
+  it('cancels a settling press when its surface requests static feedback', () => {
+    render();
+    host.onPressIn?.(event);
+    host.onPressOut?.(event);
+    mock.scales[0]!.current = 0.992;
+    render({ reducedMotion: true });
+    expect(mock.scales[0]!.pending).toBeUndefined();
+    expect(mock.scales[0]!.current).toBe(1);
+    render({ reducedMotion: false });
+    expect(mock.scales[0]!.pending).toBeUndefined();
+  });
+
   it('preserves native callbacks, child rendering, accessible state, touch area and forwarded ref', () => {
     const onPress = vi.fn();
     const onLongPress = vi.fn();
