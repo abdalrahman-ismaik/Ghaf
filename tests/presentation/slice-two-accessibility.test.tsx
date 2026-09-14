@@ -403,13 +403,12 @@ describe.each(copies)('Slice 2 accessibility in $language', (copy) => {
       show();
       rendered.hosts.find((hostProps) => hostProps.onRequestClose)!.onRequestClose!();
       expect(onDismiss).toHaveBeenCalledTimes(1);
-      if (platform === 'web') expect(rendered.focus).not.toHaveBeenCalled();
-      else expect(rendered.focus).toHaveBeenLastCalledWith(73);
+      // Static markup has not committed a visibility change; dismissal alone cannot move focus.
+      expect(rendered.focus).not.toHaveBeenCalled();
       rendered.hosts.find((hostProps) => hostProps.onShow)!.onShow!();
       show();
-      expect(control('send-support-request-button').disabled).toBe(true);
-      expect(control('support-step-prepare')['aria-checked']).toBe(false);
-      if (platform !== 'web') expect(rendered.focus).toHaveBeenLastCalledWith(42);
+      expect(control('send-support-request-button').disabled).toBe(false);
+      expect(control('support-step-prepare')['aria-checked']).toBe(true);
     },
   );
 });

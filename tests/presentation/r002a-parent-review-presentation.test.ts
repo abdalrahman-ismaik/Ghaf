@@ -66,10 +66,10 @@ describe('R002a Parent review presentation', () => {
 
     expect(sheet).toContain('<Modal');
     expect(sheet).toContain('accessibilityViewIsModal');
-    expect(sheet).toContain('useReducedMotion');
+    expect(sheet).toContain('useTaskModalPresentation');
     expect(sheet).toContain('selectedStepIds');
     expect(sheet).toContain('accessibilityRole="checkbox"');
-    expect(sheet).toContain('accessibilityState={{ checked: selected }}');
+    expect(sheet).toContain('accessibilityState={{ checked: selected, disabled: busy }}');
     expect(sheet).toContain('support-request-sheet');
     expect(review).toContain("journey.lifecycle === 'retry'");
     expect(review).toContain('kind-retry-state');
@@ -143,7 +143,7 @@ describe('R002a Parent review presentation', () => {
     expect(combined).toContain('logicalRowDirection(direction)');
     expect(support).toContain('minHeight: layout.touchTarget');
     expect(support).toContain('onRequestClose');
-    expect(support).toContain('findNodeHandle');
-    expect(support).toContain('AccessibilityInfo.setAccessibilityFocus');
+    expect(support).toContain('useTaskModalPresentation');
+    expect(source('src/utils/useTaskModalPresentation.ts')).toContain('focusAccessibilityTarget');
   });
 });

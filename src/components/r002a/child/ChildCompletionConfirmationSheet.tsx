@@ -1,21 +1,12 @@
 import { useRef, type RefObject } from 'react';
-import {
-  AccessibilityInfo,
-  findNodeHandle,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GhafIcon } from '@/components/access';
 import { PrimaryButton, SecondaryButton, Text } from '@/components/primitives';
 import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
+import { useTaskModalPresentation } from '@/utils/useTaskModalPresentation';
 
 interface ChildCompletionConfirmationSheetProps {
   awardLabel: string;
@@ -64,29 +55,19 @@ export function ChildCompletionConfirmationSheet({
   title,
   visible,
 }: ChildCompletionConfirmationSheetProps) {
-  const reducedMotion = useReducedMotion();
   const headingRef = useRef<View>(null);
-
-  const focusHeading = () => {
-    if (Platform.OS === 'web') return;
-    const handle = findNodeHandle(headingRef.current);
-    if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
-  };
+  const modalPresentation = useTaskModalPresentation(visible, headingRef, returnFocusRef, 'fade');
 
   const dismissAndRestoreFocus = () => {
-    if (busy) return;
+    if (busy || !visible) return;
     onDismiss();
-    if (Platform.OS === 'web') return;
-    requestAnimationFrame(() => {
-      const handle = findNodeHandle(returnFocusRef.current);
-      if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
-    });
   };
 
   return (
     <Modal
-      animationType={reducedMotion ? 'none' : 'fade'}
-      onShow={focusHeading}
+      animationType={modalPresentation.animationType}
+      onShow={modalPresentation.onShow}
+      onDismiss={modalPresentation.onDismiss}
       onRequestClose={dismissAndRestoreFocus}
       presentationStyle="overFullScreen"
       statusBarTranslucent
@@ -232,7 +213,9 @@ export function ChildCompletionConfirmationSheet({
                   />
                 }
                 iconPosition="end"
-                onPress={onSubmit}
+                onPress={() => {
+                  if (visible && !busy) onSubmit();
+                }}
                 size="regular"
                 testID="submit-task-button"
               >

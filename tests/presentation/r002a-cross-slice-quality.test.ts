@@ -266,8 +266,7 @@ describe('R002a cross-slice quality contracts', () => {
     const animatedFiles = [
       'src/components/access/SuccessSheet.tsx',
       'src/components/family-growth/GardenLandscape.tsx',
-      'src/components/r002a/child/ChildCompletionConfirmationSheet.tsx',
-      'src/components/r002a/parent/ParentSupportRequestSheet.tsx',
+      'src/utils/useTaskModalPresentation.ts',
       'src/components/r002a/parent/TaskCreatedSuccessSheet.tsx',
       'src/components/r002a/parent/ParentApprovalSuccessSheet.tsx',
     ];
@@ -282,10 +281,10 @@ describe('R002a cross-slice quality contracts', () => {
       'reduceMotion: ReduceMotion.Never',
     );
     expect(source('src/components/r002a/child/ChildCompletionConfirmationSheet.tsx')).toContain(
-      "animationType={reducedMotion ? 'none' : 'fade'}",
+      "useTaskModalPresentation(visible, headingRef, returnFocusRef, 'fade')",
     );
     expect(source('src/components/r002a/parent/ParentSupportRequestSheet.tsx')).toContain(
-      "animationType={reducedMotion ? 'none' : 'slide'}",
+      "useTaskModalPresentation(visible, headingRef, returnFocusRef, 'slide')",
     );
 
     const transitionSources = [

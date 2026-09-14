@@ -1,19 +1,10 @@
 import { useRef, useState, type KeyboardEvent, type RefObject } from 'react';
-import {
-  AccessibilityInfo,
-  findNodeHandle,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { Modal, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GhafIcon } from '@/components/access';
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
+import { useTaskModalPresentation } from '@/utils/useTaskModalPresentation';
 import {
   botanical,
   colors,
@@ -65,36 +56,28 @@ export function ParentSupportRequestSheet({
   title,
   visible,
 }: ParentSupportRequestSheetProps) {
-  const reducedMotion = useReducedMotion();
-  const [selectedStepIds, setSelectedStepIds] = useState<readonly string[]>([]);
+  const [selection, setSelection] = useState({ visible, ids: [] as readonly string[] });
+  if (selection.visible !== visible) setSelection({ visible, ids: visible ? [] : selection.ids });
+  const selectedStepIds = visible && !selection.visible ? [] : selection.ids;
   const headingRef = useRef<View>(null);
+  const modalPresentation = useTaskModalPresentation(visible, headingRef, returnFocusRef, 'slide');
   const nativePhysicalDirection =
     Platform.OS === 'web' ? undefined : ({ direction: 'ltr' } as const);
   const webPhysicalDirection = Platform.OS === 'web' ? ({ dir: 'ltr' } as const) : {};
 
-  const focus = (ref: RefObject<View | null>) => {
-    if (Platform.OS === 'web') return;
-    const handle = findNodeHandle(ref.current);
-    if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
-  };
-
   const dismissAndRestoreFocus = () => {
-    if (busy) return;
+    if (busy || !visible) return;
     onDismiss();
-    requestAnimationFrame(() => focus(returnFocusRef));
-  };
-
-  const prepareForPresentation = () => {
-    setSelectedStepIds([]);
-    focus(headingRef);
   };
 
   const toggleStep = (stepId: string) => {
-    setSelectedStepIds((current) =>
-      current.includes(stepId)
-        ? current.filter((currentId) => currentId !== stepId)
-        : [...current, stepId],
-    );
+    if (busy || !visible) return;
+    setSelection((current) => ({
+      visible,
+      ids: current.ids.includes(stepId)
+        ? current.ids.filter((currentId) => currentId !== stepId)
+        : [...current.ids, stepId],
+    }));
   };
 
   const webCheckboxKeys = (stepId: string) =>
@@ -110,9 +93,10 @@ export function ParentSupportRequestSheet({
 
   return (
     <Modal
-      animationType={reducedMotion ? 'none' : 'slide'}
+      animationType={modalPresentation.animationType}
       onRequestClose={dismissAndRestoreFocus}
-      onShow={prepareForPresentation}
+      onShow={modalPresentation.onShow}
+      onDismiss={modalPresentation.onDismiss}
       presentationStyle="overFullScreen"
       statusBarTranslucent
       transparent
@@ -175,8 +159,9 @@ export function ParentSupportRequestSheet({
                     <Pressable
                       {...webCheckboxKeys(step.id)}
                       accessibilityRole="checkbox"
-                      accessibilityState={{ checked: selected }}
+                      accessibilityState={{ checked: selected, disabled: busy }}
                       aria-checked={selected}
+                      disabled={busy}
                       key={step.id}
                       onPress={() => toggleStep(step.id)}
                       style={({ pressed }) => [
@@ -232,7 +217,9 @@ export function ParentSupportRequestSheet({
                 direction={direction}
                 disabled={selectedStepIds.length === 0}
                 language={language}
-                onPress={() => onSubmit(selectedStepIds)}
+                onPress={() => {
+                  if (visible && !busy && selectedStepIds.length > 0) onSubmit(selectedStepIds);
+                }}
                 size="regular"
                 testID="send-support-request-button"
               >
