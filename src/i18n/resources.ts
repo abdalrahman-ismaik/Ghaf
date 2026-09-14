@@ -1,4 +1,5 @@
 import { pilotResources } from './pilotResources';
+import { profileRecommendationResources } from './profileRecommendationResources';
 import { studyResources } from './studyResources';
 import { familyPracticeResources } from './familyPracticeResources';
 import { peerMessagingAr, peerMessagingEn } from './peerMessagingResources';
@@ -8,6 +9,7 @@ export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
+      profileRecommendations: profileRecommendationResources.ar,
       study: studyResources.ar,
       familyPractices: familyPracticeResources.ar,
       peerMessaging: peerMessagingAr,
@@ -2119,6 +2121,7 @@ export const resources = {
   en: {
     translation: {
       pilot: pilotResources.en,
+      profileRecommendations: profileRecommendationResources.en,
       study: studyResources.en,
       familyPractices: familyPracticeResources.en,
       peerMessaging: peerMessagingEn,

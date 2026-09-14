@@ -114,16 +114,28 @@ export function AIProfilePreview({
               {t('access.setup.aiStartingPointsLabel')}
             </Text>
             <View style={[styles.categories, { flexDirection: logicalRowDirection(direction) }]}>
-              {result.data.recommendedCategoryIds.map((id) => (
-                <View key={id} style={styles.categoryChip}>
+              {result.data.recommendations.map(({ categoryId, reasonCode }) => (
+                <View key={categoryId} style={styles.categoryRecommendation}>
+                  <View style={styles.categoryChip}>
+                    <Text
+                      brand
+                      color="primary"
+                      direction={direction}
+                      language={language}
+                      variant="caption"
+                    >
+                      {categoryLabels[categoryId]}
+                    </Text>
+                  </View>
                   <Text
                     brand
-                    color="primary"
+                    color="onSurfaceVariant"
                     direction={direction}
                     language={language}
                     variant="caption"
+                    testID={`profile-reason-${categoryId}`}
                   >
-                    {categoryLabels[id]}
+                    {t(`profileRecommendations.${reasonCode}`)}
                   </Text>
                 </View>
               ))}
@@ -168,5 +180,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceContainerLowest,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
+  },
+  categoryRecommendation: {
+    width: '100%',
+    gap: spacing.xxs,
   },
 });

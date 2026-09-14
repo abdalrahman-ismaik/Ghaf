@@ -31,6 +31,10 @@ describe('prepared profile recommendations in Task Builder', () => {
       ok: true,
       data: {
         recommendedCategoryIds: ['green_impact', 'learning_wellbeing'],
+        recommendations: [
+          { categoryId: 'green_impact', reasonCode: 'sustainability' },
+          { categoryId: 'learning_wellbeing', reasonCode: 'simplerInstructions' },
+        ],
         preselectedCategoryId: 'green_impact',
         parentApprovalRequired: true,
         meta: {
@@ -56,6 +60,7 @@ describe('prepared profile recommendations in Task Builder', () => {
       ok: true,
       data: {
         recommendedCategoryIds: [],
+        recommendations: [],
         orderedCategoryIds: categoryIds,
         preselectedCategoryId: null,
         parentApprovalRequired: true,
@@ -83,6 +88,8 @@ describe('prepared profile recommendations in Task Builder', () => {
     const resources = readFileSync(new URL('../../src/i18n/resources.ts', import.meta.url), 'utf8');
 
     expect(source).toContain('createPreparedTaskCategoryPlan');
+    expect(source).toContain('recommendations={profileCategoryPlan?.recommendations ?? []}');
+    expect(source).toContain('t(`profileRecommendations.${recommendation.reasonCode}`)');
     expect(source).toContain('recommendedCategoryIds.includes(category.id)');
     expect(source).toContain("t('taskNew.profileRecommended')");
     expect(source).toContain(
@@ -95,5 +102,26 @@ describe('prepared profile recommendations in Task Builder', () => {
     expect(source).toContain('<CatalogParentReview');
     expect(resources).toContain('profileRecommended:');
     expect(resources).toContain('profileRecommendationDisclosure:');
+  });
+
+  it('binds each rationale to its recommended category and selected profile', () => {
+    const first = createPreparedTaskCategoryPlan(profile, categoryIds);
+    const second = createPreparedTaskCategoryPlan(
+      { ...profile, interests: ['family_helping'], hobbies: [], accessibilityDefaults: [] },
+      categoryIds,
+    );
+    if (!first.ok || !second.ok) throw new Error('Expected prepared category plans');
+    expect(second.data.recommendations).toEqual([
+      { categoryId: 'home_responsibility', reasonCode: 'familyHelping' },
+    ]);
+    for (const plan of [first.data, second.data]) {
+      expect(plan.recommendations.map((entry) => entry.categoryId)).toEqual(
+        plan.recommendedCategoryIds,
+      );
+    }
+    expect(first.data.recommendations).toEqual([
+      { categoryId: 'green_impact', reasonCode: 'sustainability' },
+      { categoryId: 'learning_wellbeing', reasonCode: 'simplerInstructions' },
+    ]);
   });
 });

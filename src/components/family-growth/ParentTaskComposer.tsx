@@ -29,7 +29,10 @@ import {
   TASK_CATEGORIES,
   TASK_TEMPLATES,
 } from '@/features/tasks/demoContent';
-import { createPreparedTaskCategoryPlan } from '@/features/assistants/profilePersonalization';
+import {
+  createPreparedTaskCategoryPlan,
+  type PreparedCategoryRecommendation,
+} from '@/features/assistants/profilePersonalization';
 import type { ParentProgressTaskPrefill } from '@/features/growth/parentProgress';
 import { localize } from '@/i18n';
 import type {
@@ -500,6 +503,7 @@ export function ParentTaskComposer({
           selectedTemplateId={selectedTemplateId}
           orderedCategories={orderedCategories}
           recommendedCategoryIds={recommendedCategoryIds}
+          recommendations={profileCategoryPlan?.recommendations ?? []}
         />
       ) : (
         <EditStage
@@ -557,6 +561,7 @@ interface ChooseStageProps {
   selectedTemplateId: string | null;
   orderedCategories: typeof TASK_CATEGORIES;
   recommendedCategoryIds: readonly TaskCategoryId[];
+  recommendations: readonly PreparedCategoryRecommendation[];
 }
 
 function ChooseStage({
@@ -573,6 +578,7 @@ function ChooseStage({
   selectedTemplateId,
   orderedCategories,
   recommendedCategoryIds,
+  recommendations,
 }: ChooseStageProps) {
   const { t } = useTranslation();
 
@@ -620,24 +626,42 @@ function ChooseStage({
               >
                 {orderedCategories
                   .filter((category) => recommendedCategoryIds.includes(category.id))
-                  .map((category) => (
-                    <View
-                      key={category.id}
-                      style={[
-                        styles.recommendationChip,
-                        { flexDirection: logicalRowDirection(direction) },
-                      ]}
-                    >
-                      <GhafIcon
-                        color={colors.ghafEmerald}
-                        name={CATEGORY_ICONS[category.id]}
-                        size={18}
-                      />
-                      <Text brand color="primary" variant="caption">
-                        {localize(category.label, locale)}
-                      </Text>
-                    </View>
-                  ))}
+                  .map((category) => {
+                    const recommendation = recommendations.find(
+                      (entry) => entry.categoryId === category.id,
+                    );
+                    return (
+                      <View key={category.id} style={styles.recommendationItem}>
+                        <View
+                          style={[
+                            styles.recommendationChip,
+                            { flexDirection: logicalRowDirection(direction) },
+                          ]}
+                        >
+                          <GhafIcon
+                            color={colors.ghafEmerald}
+                            name={CATEGORY_ICONS[category.id]}
+                            size={18}
+                          />
+                          <Text brand color="primary" variant="caption">
+                            {localize(category.label, locale)}
+                          </Text>
+                        </View>
+                        {recommendation ? (
+                          <Text
+                            brand
+                            color="onSurfaceVariant"
+                            direction={direction}
+                            language={locale}
+                            variant="caption"
+                            testID={`task-reason-${category.id}`}
+                          >
+                            {t(`profileRecommendations.${recommendation.reasonCode}`)}
+                          </Text>
+                        ) : null}
+                      </View>
+                    );
+                  })}
               </View>
             </View>
           ) : null}
@@ -1311,6 +1335,10 @@ const styles = StyleSheet.create({
   recommendationCategories: {
     flexWrap: 'wrap',
     gap: spacing.xs,
+  },
+  recommendationItem: {
+    width: '100%',
+    gap: spacing.xxs,
   },
   recommendationChip: {
     minHeight: 36,

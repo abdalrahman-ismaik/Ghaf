@@ -62,11 +62,31 @@ export interface ProfilePersonalizationInput {
   readonly personalizationEnabled: boolean;
 }
 
+export type ProfileRecommendationReason =
+  | 'sustainability'
+  | 'nature'
+  | 'gardening'
+  | 'stories'
+  | 'reading'
+  | 'puzzles'
+  | 'simplerInstructions'
+  | 'familyHelping'
+  | 'making'
+  | 'drawing'
+  | 'customInterestMatch'
+  | 'practicalStart';
+
+export interface PreparedCategoryRecommendation {
+  readonly categoryId: TaskCategoryId;
+  readonly reasonCode: ProfileRecommendationReason;
+}
+
 export interface PreparedProfilePersonalization {
   readonly enabled: boolean;
   readonly addressForm: 'masculine' | 'feminine';
   readonly coachingStyle: 'short_visual_steps' | 'short_steps' | 'visual_steps' | 'guided_steps';
   readonly recommendedCategoryIds: readonly TaskCategoryId[];
+  readonly recommendations: readonly PreparedCategoryRecommendation[];
   readonly customSignalsUsed: boolean;
   readonly parentApprovalRequired: true;
   readonly meta: {
@@ -79,6 +99,7 @@ export interface PreparedProfilePersonalization {
 
 export interface PreparedTaskCategoryPlan {
   readonly recommendedCategoryIds: readonly TaskCategoryId[];
+  readonly recommendations: readonly PreparedCategoryRecommendation[];
   readonly orderedCategoryIds: readonly TaskCategoryId[];
   readonly preselectedCategoryId: TaskCategoryId | null;
   readonly parentApprovalRequired: true;
@@ -146,14 +167,23 @@ function customSupportSignals(input: ProfilePersonalizationInput) {
   };
 }
 
-function recommendedCategories(input: ProfilePersonalizationInput): readonly TaskCategoryId[] {
-  const categories: TaskCategoryId[] = [];
+function recommendedCategories(
+  input: ProfilePersonalizationInput,
+): readonly PreparedCategoryRecommendation[] {
+  const categories: PreparedCategoryRecommendation[] = [];
   if (
     input.interests.includes('sustainability') ||
     input.interests.includes('nature') ||
     input.hobbies.includes('gardening')
   ) {
-    categories.push('green_impact');
+    categories.push({
+      categoryId: 'green_impact',
+      reasonCode: input.interests.includes('sustainability')
+        ? 'sustainability'
+        : input.interests.includes('nature')
+          ? 'nature'
+          : 'gardening',
+    });
   }
   if (
     input.interests.includes('stories') ||
@@ -161,14 +191,38 @@ function recommendedCategories(input: ProfilePersonalizationInput): readonly Tas
     input.hobbies.includes('puzzles') ||
     input.accessibilityDefaults.includes('simpler_instructions')
   ) {
-    categories.push('learning_wellbeing');
+    categories.push({
+      categoryId: 'learning_wellbeing',
+      reasonCode: input.interests.includes('stories')
+        ? 'stories'
+        : input.hobbies.includes('reading')
+          ? 'reading'
+          : input.hobbies.includes('puzzles')
+            ? 'puzzles'
+            : 'simplerInstructions',
+    });
   }
-  if (input.interests.includes('family_helping')) categories.push('home_responsibility');
+  if (input.interests.includes('family_helping')) {
+    categories.push({ categoryId: 'home_responsibility', reasonCode: 'familyHelping' });
+  }
   if (input.interests.includes('making') || input.hobbies.includes('drawing')) {
-    categories.push('kindness_community');
+    categories.push({
+      categoryId: 'kindness_community',
+      reasonCode: input.interests.includes('making') ? 'making' : 'drawing',
+    });
   }
-  categories.push(...customCategorySignals(input));
-  return categories.length > 0 ? [...new Set(categories)].slice(0, 2) : ['home_responsibility'];
+  for (const categoryId of customCategorySignals(input)) {
+    categories.push({ categoryId, reasonCode: 'customInterestMatch' });
+  }
+  return categories.length > 0
+    ? categories
+        .filter(
+          (entry, index) =>
+            categories.findIndex((candidate) => candidate.categoryId === entry.categoryId) ===
+            index,
+        )
+        .slice(0, 2)
+    : [{ categoryId: 'home_responsibility', reasonCode: 'practicalStart' }];
 }
 
 export function createPreparedProfilePersonalization(
@@ -221,13 +275,15 @@ export function createPreparedProfilePersonalization(
         : hasVisual
           ? 'visual_steps'
           : 'guided_steps';
+  const recommendations = typed.personalizationEnabled ? recommendedCategories(typed) : [];
   return {
     ok: true,
     data: {
       enabled: typed.personalizationEnabled,
       addressForm: typed.sex === 'female' ? 'feminine' : 'masculine',
       coachingStyle,
-      recommendedCategoryIds: typed.personalizationEnabled ? recommendedCategories(typed) : [],
+      recommendedCategoryIds: recommendations.map((entry) => entry.categoryId),
+      recommendations,
       customSignalsUsed:
         typed.personalizationEnabled &&
         (customCategorySignals(typed).length > 0 || customSupport.short || customSupport.visual),
@@ -262,6 +318,9 @@ export function createPreparedTaskCategoryPlan(
     ok: true,
     data: {
       recommendedCategoryIds,
+      recommendations: personalization.data.recommendations.filter((entry) =>
+        recommendedCategoryIds.includes(entry.categoryId),
+      ),
       orderedCategoryIds: [
         ...recommendedCategoryIds,
         ...categoryIds.filter((categoryId) => !recommendedCategoryIds.includes(categoryId)),
