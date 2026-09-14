@@ -33,6 +33,19 @@ export function validateHostedBuildEnvironment(environment = process.env) {
     EXPO_PUBLIC_GHAF_AUTH_MODE: 'supabase',
     EXPO_PUBLIC_SUPABASE_URL: hostedTargets.adult,
     EXPO_PUBLIC_GHAF_MESSAGING_URL: hostedTargets.messaging,
+    EXPO_PUBLIC_GHAF_DEMO_ENTRY: 'true',
+    EXPO_PUBLIC_GHAF_AI_PARENT_TASK_DRAFTING_LIVE: 'false',
+    EXPO_PUBLIC_GHAF_AI_CHILD_COACH_TEXT_LIVE: 'false',
+    EXPO_PUBLIC_GHAF_AI_CHILD_COACH_VOICE_LIVE: 'false',
+    EXPO_PUBLIC_TASK_WORKSPACE_CANDIDATE: 'false',
+    EXPO_PUBLIC_R002B_PROGRESSION_ENGINE: 'false',
+    EXPO_PUBLIC_R002B_IMPACT_PATH_UI: 'false',
+    EXPO_PUBLIC_R002B_BADGES_UI: 'false',
+    EXPO_PUBLIC_R002B_LEARNING_UI: 'false',
+    EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2: 'false',
+    EXPO_PUBLIC_R002B_PARENT_PROGRESS_UI: 'false',
+    EXPO_PUBLIC_R002B_SHARED_GROWTH_VIEW: 'false',
+    EXPO_PUBLIC_R002B_SHARED_GROWTH_CONTRIBUTION: 'false',
   };
   for (const [name, value] of Object.entries(expected)) {
     requireCondition(environment[name] === value, `Invalid hosted-build setting: ${name}.`);
@@ -50,6 +63,35 @@ export function validateHostedBuildEnvironment(environment = process.env) {
     keys[name] = { present: true, sha256: sha256(value), valueWithheld: true };
   }
   return { settings: expected, publicClientKeys: keys };
+}
+
+export function validateApkVersion(badging, expoConfiguration) {
+  // Match the installed Expo Android version plugin, including its versionCode default.
+  const expectedName = expoConfiguration?.android?.version ?? expoConfiguration?.version;
+  const expectedCode = expoConfiguration?.android?.versionCode ?? 1;
+  requireCondition(
+    typeof expectedName === 'string' &&
+      expectedName.trim().length > 0 &&
+      Number.isInteger(expectedCode) &&
+      expectedCode > 0 &&
+      expectedCode <= 2147483647,
+    'Resolved Expo configuration must declare a valid Android version.',
+  );
+  const packageLines = badging.split(/\r?\n/).filter((line) => line.startsWith('package: '));
+  requireCondition(packageLines.length === 1, 'APK must declare exactly one package version.');
+  const names = [...packageLines[0].matchAll(/(?:^| )versionName='([^'\r\n]*)'(?= |$)/g)];
+  const codes = [...packageLines[0].matchAll(/(?:^| )versionCode='([^'\r\n]*)'(?= |$)/g)];
+  requireCondition(
+    names.length === 1 && codes.length === 1 && /^[1-9]\d*$/.test(codes[0][1]),
+    'APK must declare an unambiguous versionName and positive integer versionCode.',
+  );
+  const versionName = names[0][1];
+  const versionCode = Number(codes[0][1]);
+  requireCondition(
+    versionName === expectedName && versionCode === expectedCode,
+    'APK versionName or versionCode differs from the resolved Expo configuration.',
+  );
+  return { versionName, versionCode };
 }
 
 export function validateManifest(manifest, badging) {
@@ -112,6 +154,21 @@ function verifyApk(apkArgument, outputArgument, environment) {
   const badging = run(aapt, ['dump', 'badging', apk]);
   const manifest = run(aapt, ['dump', 'xmltree', apk, 'AndroidManifest.xml']);
   validateManifest(manifest, badging);
+  let expoConfiguration;
+  try {
+    expoConfiguration = JSON.parse(
+      run(process.execPath, [
+        path.join(repository, 'node_modules/expo/bin/cli'),
+        'config',
+        '--type',
+        'public',
+        '--json',
+      ]),
+    );
+  } catch {
+    throw new Error('Could not resolve Expo configuration for APK version verification.');
+  }
+  const version = validateApkVersion(badging, expoConfiguration);
   const payloads = run('unzip', ['-Z1', apk]).trim().split(/\r?\n/);
   requireCondition(
     payloads.includes('assets/index.android.bundle'),
@@ -204,6 +261,7 @@ function verifyApk(apkArgument, outputArgument, environment) {
     publicConfiguration,
     apk: { fileName, bytes: statSync(apk).size, sha256: apkSha256, signerSha256 },
     android: {
+      ...version,
       minSdk: 24,
       targetSdk: 36,
       buildTools: '36.0.0',
