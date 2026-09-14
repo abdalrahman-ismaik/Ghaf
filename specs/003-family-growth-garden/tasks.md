@@ -1,5 +1,11 @@
 # Tasks: Family Growth Garden
 
+## Android motion repair — 2026-09-14
+
+The scoped [motion tasks and acceptance](motion-interactions.md) track the
+user-authorized interaction repair and supersede only the older section dwell.
+Native motion acceptance requires fresh evidence from this candidate.
+
 ## Confirmed local recovery — 2026-09-13
 
 - [x] T334 Record the owner's confirmed-local-recovery decision and the narrow

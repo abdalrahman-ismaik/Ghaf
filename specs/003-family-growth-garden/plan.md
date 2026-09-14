@@ -1,5 +1,11 @@
 # Implementation Plan: Family Growth Garden
 
+## Android motion repair — 2026-09-14
+
+Apply the bounded [motion implementation plan](motion-interactions.md) with the
+installed Expo/Reanimated stack. Preserve native interaction authority; replace
+only the obsolete section dwell with readiness and cancellation-safe presentation.
+
 ## Confirmed local recovery implementation — 2026-09-13
 
 Implement FR-220–224 in the existing Welcome route and local storage boundary.

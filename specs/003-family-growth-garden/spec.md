@@ -1,5 +1,12 @@
 # Feature Specification: Family Growth Garden
 
+## Android motion repair — 2026-09-14
+
+The user-authorized [motion contract](motion-interactions.md) refines shared press,
+live reduced-motion handling, existing success presentation and interrupted section
+loading. Readiness replaces the earlier 900 ms section dwell; domain behavior,
+startup/story timing and native navigation stay unchanged.
+
 ## Confirmed corrupt local-family recovery amendment — 2026-09-13
 
 The owner explicitly approved recovery from corrupt saved demo-family data. This
