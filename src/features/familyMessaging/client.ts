@@ -8,6 +8,7 @@ import {
   messageSchema,
   MessagingError,
   PAGE_SIZE,
+  peerPermissionSchema,
   sessionSchema,
   threadSchema,
   type CredentialStorage,
@@ -32,6 +33,12 @@ const storedSchema = z.object({
   session: sessionSchema,
 });
 const okSchema = z.object({ ok: z.literal(true) });
+const terminalAuthCodes = [
+  'session_not_found',
+  'session_expired',
+  'refresh_token_not_found',
+  'refresh_token_already_used',
+];
 
 export function readMessagingConfig(
   url: string | undefined,
@@ -68,7 +75,7 @@ export class SupabaseFamilyMessagingService implements FamilyMessagingService {
   constructor(
     private readonly config: MessagingConfig | null,
     private readonly storage: CredentialStorage,
-    private readonly fetcher: typeof fetch = fetch,
+    private readonly fetcher: typeof fetch = (...args) => globalThis.fetch(...args),
     private readonly now = Date.now,
     private readonly timeoutMs = 8_000,
   ) {
@@ -151,6 +158,21 @@ export class SupabaseFamilyMessagingService implements FamilyMessagingService {
       const code = data && typeof data === 'object' && 'code' in data ? data.code : undefined;
       if (!response.ok) {
         if (isSend && response.status >= 500) throw new MessagingError('unknown');
+        const authCode =
+          typeof code === 'string'
+            ? code
+            : data && typeof data === 'object' && 'error_code' in data
+              ? data.error_code
+              : undefined;
+        if (
+          path.startsWith('/auth/v1/') &&
+          response.status >= 400 &&
+          response.status < 500 &&
+          response.status !== 429 &&
+          typeof authCode === 'string' &&
+          terminalAuthCodes.includes(authCode)
+        )
+          throw new MessagingError('not_authenticated');
         if (typeof code === 'string' && (errorCodes as readonly string[]).includes(code)) {
           throw new MessagingError(code as MessagingErrorCode);
         }
@@ -342,6 +364,29 @@ export class SupabaseFamilyMessagingService implements FamilyMessagingService {
   }
   children(signal?: AbortSignal) {
     return this.rpc('fm_children', {}, z.array(childSchema), signal);
+  }
+  peerPermissions(signal?: AbortSignal) {
+    return this.rpc('fm_peer_permissions', {}, z.array(peerPermissionSchema), signal);
+  }
+  async setPeerPermission(
+    firstChildId: string,
+    secondChildId: string,
+    enabled: boolean,
+    signal?: AbortSignal,
+  ) {
+    await this.rpc(
+      'fm_set_peer_permission',
+      {
+        p_first_child_id: firstChildId,
+        p_second_child_id: secondChildId,
+        p_enabled: enabled,
+      },
+      okSchema,
+      signal,
+    );
+  }
+  async leavePeerThread(threadId: string, signal?: AbortSignal) {
+    await this.rpc('fm_leave_peer_thread', { p_thread_id: threadId }, okSchema, signal);
   }
   createChild(name: string, ageBand: '6_8' | '9_11' | '12_14', signal?: AbortSignal) {
     return this.rpc(

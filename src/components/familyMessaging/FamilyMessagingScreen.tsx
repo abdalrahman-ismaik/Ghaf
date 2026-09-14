@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GhafIcon } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { logicalRowDirection } from '@/design/tokens';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { MessagingAccess } from './MessagingAccess';
@@ -45,13 +46,13 @@ export function FamilyMessagingScreen() {
       setManagementDevice(null);
       return;
     }
-    if (state.threadId && state.context?.role === 'parent') {
+    if (state.threadId) {
       controller.closeThread();
       return;
     }
     if (router.canGoBack()) router.back();
     else router.replace('/');
-  }, [controller, management, router, state.context?.role, state.threadId]);
+  }, [controller, management, router, state.threadId]);
   useFocusEffect(
     useCallback(() => {
       controller.setVisible(true);
@@ -73,7 +74,7 @@ export function FamilyMessagingScreen() {
     state.phase === 'signedOut' || state.phase === 'authenticating' || state.phase === 'revoked';
   return (
     <SafeAreaView
-      style={styles.root}
+      style={[styles.root, Platform.OS === 'web' ? null : { direction: 'ltr' }]}
       edges={['top', 'left', 'right', 'bottom']}
       testID="family-messaging-screen"
     >
@@ -82,7 +83,15 @@ export function FamilyMessagingScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.header}>
-          <View style={[styles.row, { direction, flexDirection: 'row' }]}>
+          <View
+            style={[
+              styles.row,
+              {
+                direction: Platform.OS === 'web' ? direction : 'ltr',
+                flexDirection: Platform.OS === 'web' ? 'row' : logicalRowDirection(direction),
+              },
+            ]}
+          >
             <MessageButton
               variant="quiet"
               fullWidth={false}
@@ -108,7 +117,11 @@ export function FamilyMessagingScreen() {
           </View>
           {ready && thread ? (
             <MessageText variant="caption" color="onSurfaceVariant">
-              {t(`messaging.${thread.otherRole}`)}
+              {t(
+                thread.kind === 'child_child'
+                  ? 'peerMessaging.participant'
+                  : `messaging.${thread.otherRole}`,
+              )}
             </MessageText>
           ) : (
             <LanguageSwitcher compact showGuidance={false} />
@@ -163,6 +176,11 @@ export function FamilyMessagingScreen() {
             {ready && !management ? (
               <>
                 <MessageText color="onSurfaceVariant">{t('messaging.separate')}</MessageText>
+                {state.peerAccessRemoved ? (
+                  <MessageText accessibilityLiveRegion="polite">
+                    {t('peerMessaging.removed')}
+                  </MessageText>
+                ) : null}
                 <MessageText accessibilityRole="header" variant="heading">
                   {t('messaging.conversations')}
                 </MessageText>
@@ -175,7 +193,11 @@ export function FamilyMessagingScreen() {
                       {candidate.otherName}
                     </MessageText>
                     <MessageText variant="caption">
-                      {t(`messaging.${candidate.otherRole}`)}
+                      {t(
+                        candidate.kind === 'child_child'
+                          ? 'peerMessaging.participant'
+                          : `messaging.${candidate.otherRole}`,
+                      )}
                     </MessageText>
                     <MessageButton
                       variant="secondary"

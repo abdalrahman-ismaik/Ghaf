@@ -5,7 +5,14 @@ import {
   resolveParentProgressTaskPrefill,
   type ParentProgressAuthority,
 } from '@/features/growth/parentProgress';
+import {
+  PARENT_GUIDE_FIXTURE,
+  PREPARED_PRAISE,
+  createResetSourceSession,
+  createSubmittedP0Session,
+} from '@/services/mock/fixtures';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { enterParentExperienceForTest, resetPrototypeForTest } from '../helpers/prototypeStore';
 
 const AUTHORITY: ParentProgressAuthority = {
   role: 'parent',
@@ -40,7 +47,7 @@ function salemInput() {
 
 describe('R002b Parent Child Progress projection', () => {
   beforeEach(() => {
-    usePrototypeStore.setState(usePrototypeStore.getInitialState(), true);
+    expect(resetPrototypeForTest().ok).toBe(true);
   });
 
   it('keeps Salem lifetime and current-stage authorities visually distinct and read-only', () => {
@@ -137,6 +144,105 @@ describe('R002b Parent Child Progress projection', () => {
         params: { ...params, prefillIntent: ['prefill_only'] },
       }),
     ).toBeNull();
+  });
+
+  it.each(['draft', 'reviewed'] as const)(
+    'keeps the existing %s task available for Parent review without assigning it',
+    async (lifecycle) => {
+      await enterParentExperienceForTest();
+      expect(
+        usePrototypeStore.getState().createTaskDraft({
+          childId: 'child_salem',
+          templateId: 'task_recycling_p0_v1',
+          parentText: PARENT_GUIDE_FIXTURE.originalParentText,
+        }).ok,
+      ).toBe(true);
+      if (lifecycle === 'reviewed') {
+        expect(
+          (
+            await usePrototypeStore.getState().requestParentGuide({
+              requestId: 'parent-progress-reviewable-draft',
+              intent: 'make_clearer',
+            })
+          ).ok,
+        ).toBe(true);
+        expect(usePrototypeStore.getState().acceptGuideSuggestion().ok).toBe(true);
+        expect(usePrototypeStore.getState().reviewTask().ok).toBe(true);
+      }
+      const before = usePrototypeStore.getState();
+
+      const result = before.getParentChildProgress('child_salem');
+
+      expect(result.ok).toBe(true);
+      if (!result.ok) return;
+      expect(result.data.suitableTaskSuggestions).toHaveLength(1);
+      expect(result.data.suitableTaskSuggestions[0]?.prefill).toMatchObject({
+        intent: 'prefill_only',
+        requiresParentReviewAndSave: true,
+      });
+      expect(before.journey).toMatchObject({ lifecycle, assignment: null });
+      expect(result.data.lifetimeSeeds).toBe(108);
+      expect(usePrototypeStore.getState()).toBe(before);
+    },
+  );
+
+  it.each(['assigned', 'chosen', 'in_progress', 'submitted', 'retry', 'confirmed'] as const)(
+    'does not suggest the one-time task while it is %s',
+    async (lifecycle) => {
+      usePrototypeStore.setState(createResetSourceSession(lifecycle));
+      await enterParentExperienceForTest();
+      const before = usePrototypeStore.getState();
+
+      const result = before.getParentChildProgress('child_salem');
+
+      expect(result.ok).toBe(true);
+      if (!result.ok) return;
+      expect(result.data.suitableTaskSuggestions).toEqual([]);
+      expect(usePrototypeStore.getState()).toBe(before);
+    },
+  );
+
+  it('removes the unavailable one-time task prefill after normal Parent recognition', async () => {
+    usePrototypeStore.setState(createSubmittedP0Session());
+    await enterParentExperienceForTest();
+    expect(
+      usePrototypeStore.getState().planConfirmation({
+        submissionId: 'submission_recycling_p0_v1_attempt_1',
+        praise: PREPARED_PRAISE,
+        neutralObservation: null,
+        uncertainty: null,
+      }).ok,
+    ).toBe(true);
+    expect(
+      usePrototypeStore.getState().markPraisePresented({
+        actionId: 'parent-progress-praise',
+        source: 'parent_press',
+        presentedAt: '2026-09-13T10:00:00.000Z',
+      }).ok,
+    ).toBe(true);
+    expect(
+      usePrototypeStore.getState().applyRecognition({
+        actionId: 'parent-progress-recognition',
+        source: 'parent_press',
+        observedRenderState: 'praise_presented',
+        presentationActionId: 'parent-progress-praise',
+      }).ok,
+    ).toBe(true);
+    const before = usePrototypeStore.getState();
+    const ledgerBefore = structuredClone(before.recognitionLedger);
+    const growthBefore = structuredClone(before.growthJourney);
+
+    const result = before.getParentChildProgress('child_salem');
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(before.journey?.lifecycle).toBe('recognized');
+    expect(result.data.lifetimeSeeds).toBe(120);
+    expect(before.children.child_salem.earnedSeeds).toBe(60);
+    expect(result.data.suitableTaskSuggestions).toEqual([]);
+    expect(usePrototypeStore.getState()).toBe(before);
+    expect(usePrototypeStore.getState().recognitionLedger).toEqual(ledgerBefore);
+    expect(usePrototypeStore.getState().growthJourney).toEqual(growthBefore);
   });
 
   it('recomputes Alya without borrowing Salem stage, learning, origin, or task suggestion', () => {

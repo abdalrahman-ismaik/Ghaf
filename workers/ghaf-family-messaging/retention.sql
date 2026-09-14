@@ -23,4 +23,3 @@ from cron.job j left join lateral (
   where d.jobid = j.jobid order by d.start_time desc limit 1
 ) r on true
 where j.jobname = 'ghaf-family-message-retention';
-

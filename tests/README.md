@@ -21,6 +21,8 @@ npm run test:watch -- tests/growth
 | [growth/](growth/)             | Garden, lifetime Seeds, badges, reveal, Parent progress and shared-growth boundaries |
 | [integration/](integration/)   | Complete deterministic journey, operator flow and prototype state                    |
 | [learning/](learning/)         | Finite learning, accessible equivalent credit and idempotent completion              |
+| [messaging/](messaging/)       | Family messaging transport, consent, revocation, conversations and scoped drafts     |
+| [study/](study/)               | Study plans, academic agreements, family-bound storage and guided family practices   |
 | [platform/](platform/)         | Assets, brand, RTL/resources, accessibility, startup, audio and tooling contracts    |
 | [presentation/](presentation/) | Released R001/R002a presentation characterization and screen composition             |
 | [tasks/](tasks/)               | Task lifecycle, recognition, review, task workspace and saved templates              |

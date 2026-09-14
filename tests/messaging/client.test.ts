@@ -3,7 +3,7 @@ import {
   SupabaseFamilyMessagingService,
   readMessagingConfig,
 } from '../../src/features/familyMessaging/client';
-import { deferred, ids, memoryStorage, message, parent } from './fixtures';
+import { deferred, ids, memoryStorage, message, parent, thread } from './fixtures';
 import { createCredentialStorage } from '../../src/features/familyMessaging/credentialStorage';
 
 const config = {
@@ -31,6 +31,50 @@ async function signedIn(fetcher = vi.fn<typeof fetch>()) {
 }
 
 describe('real messaging Auth and transport boundary', () => {
+  it('calls the default browser fetch with the global receiver', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(response(auth))
+      .mockResolvedValueOnce(response(parent));
+    vi.stubGlobal('fetch', function (this: unknown, ...args: Parameters<typeof fetch>) {
+      if (this !== globalThis) throw new TypeError('Illegal invocation');
+      return fetcher(...args);
+    });
+    try {
+      const service = new SupabaseFamilyMessagingService(config, memoryStorage());
+      await expect(
+        service.signIn('synthetic@example.invalid', 'synthetic-password', 'Web device'),
+      ).resolves.toEqual(parent);
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      expect(fetcher.mock.calls[0]?.[0]).toBe(`${config.url}/auth/v1/token?grant_type=password`);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('preserves legacy Parent threads and calls only bounded peer RPC contracts', async () => {
+    const { service, fetcher } = await signedIn();
+    const { kind: _kind, ...legacyThread } = thread;
+    expect(_kind).toBe('parent_child');
+    fetcher.mockResolvedValueOnce(response([legacyThread]));
+    expect(await service.threads()).toEqual([thread]);
+    fetcher.mockResolvedValueOnce(response({ ok: true }));
+    await service.setPeerPermission(ids.person, ids.user, true);
+    expect(fetcher.mock.calls.at(-1)?.[0]).toBe(`${config.url}/rest/v1/rpc/fm_set_peer_permission`);
+    expect(JSON.parse(String(fetcher.mock.calls.at(-1)?.[1]?.body))).toEqual({
+      p_first_child_id: ids.person,
+      p_second_child_id: ids.user,
+      p_enabled: true,
+    });
+    fetcher.mockResolvedValueOnce(response({ ok: true }));
+    await service.leavePeerThread(ids.thread);
+    expect(fetcher.mock.calls.at(-1)?.[0]).toBe(`${config.url}/rest/v1/rpc/fm_leave_peer_thread`);
+    expect(JSON.parse(String(fetcher.mock.calls.at(-1)?.[1]?.body))).toEqual({
+      p_thread_id: ids.thread,
+    });
+    fetcher.mockResolvedValueOnce(response([{ enabled: true }]));
+    await expect(service.peerPermissions()).rejects.toMatchObject({ code: 'service_unavailable' });
+  });
   it('normalizes an uppercase typed or pasted hexadecimal enrollment code', async () => {
     const { service, fetcher } = client();
     fetcher.mockResolvedValueOnce(response(auth)).mockResolvedValueOnce(response(parent));
@@ -203,6 +247,63 @@ describe('real messaging Auth and transport boundary', () => {
     expect(await first).toMatchObject({ code: 'not_authenticated' });
     expect(await second).toMatchObject({ code: 'not_authenticated' });
     expect(await storage.read()).toBeNull();
+  });
+
+  it.each([
+    ['code', 'session_not_found'],
+    ['code', 'session_expired'],
+    ['code', 'refresh_token_not_found'],
+    ['code', 'refresh_token_already_used'],
+    ['error_code', 'session_not_found'],
+    ['error_code', 'session_expired'],
+    ['error_code', 'refresh_token_not_found'],
+    ['error_code', 'refresh_token_already_used'],
+  ])('rejects terminal provider refresh %s=%s as unauthenticated', async (field, code) => {
+    let now = 0;
+    const fetcher = vi.fn<typeof fetch>();
+    const service = new SupabaseFamilyMessagingService(config, memoryStorage(), fetcher, () => now);
+    fetcher.mockResolvedValueOnce(response(auth)).mockResolvedValueOnce(response(parent));
+    await service.signIn('synthetic@example.invalid', 'synthetic-password', 'Test');
+    now = 3_550_000;
+    fetcher.mockResolvedValueOnce(response({ [field]: code }, 400));
+    await expect(service.context()).rejects.toMatchObject({ code: 'not_authenticated' });
+    expect(fetcher.mock.calls.at(-1)?.[0]).toBe(
+      `${config.url}/auth/v1/token?grant_type=refresh_token`,
+    );
+  });
+
+  it.each([
+    [400, { code: 'validation_failed' }, 'invalid_request'],
+    [429, { code: 'refresh_token_not_found' }, 'rate_limited'],
+    [503, { code: 'refresh_token_not_found' }, 'service_unavailable'],
+    [0, null, 'offline'],
+  ])(
+    'keeps recoverable refresh failure %s from discarding credentials',
+    async (status, body, code) => {
+      let now = 0;
+      const fetcher = vi.fn<typeof fetch>();
+      const storage = memoryStorage();
+      const service = new SupabaseFamilyMessagingService(config, storage, fetcher, () => now);
+      fetcher.mockResolvedValueOnce(response(auth)).mockResolvedValueOnce(response(parent));
+      await service.signIn('synthetic@example.invalid', 'synthetic-password', 'Test');
+      now = 3_550_000;
+      if (status === 0) fetcher.mockRejectedValueOnce(new Error('Synthetic network failure'));
+      else fetcher.mockResolvedValueOnce(response(body, status));
+      await expect(service.context()).rejects.toMatchObject({ code });
+      expect(await storage.read()).not.toBeNull();
+      fetcher
+        .mockResolvedValueOnce(response(auth))
+        .mockResolvedValueOnce(response({ id: ids.user }))
+        .mockResolvedValueOnce(response(parent));
+      expect(await service.context()).toEqual(parent);
+    },
+  );
+
+  it('does not interpret provider error names in RPC replies as Auth revocation', async () => {
+    const { service, fetcher, storage } = await signedIn();
+    fetcher.mockResolvedValueOnce(response({ code: 'refresh_token_not_found' }, 400));
+    await expect(service.threads()).rejects.toMatchObject({ code: 'invalid_request' });
+    expect(await storage.read()).not.toBeNull();
   });
 
   it('does not let a failed old credential write erase a newer login', async () => {

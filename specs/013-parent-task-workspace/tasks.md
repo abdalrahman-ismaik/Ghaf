@@ -64,12 +64,23 @@ persists, and Parents can understand the household without weakening Child priva
 ## CE1 — Full catalog execution
 
 - [x] T014 Commit expanded contract, content snapshot, plan and board99 grants.
-- [ ] T015 Implement occurrence/attempt identity, canonical definitions and fail-closed task services.
-- [ ] T016 Implement per-profile landscape producer/verifier and immutable accepted award/phase.
-- [ ] T017 Integrate store context, multiple tasks and profile-only projections with safe reset.
-- [ ] T018 Connect all24 Parent/Child workflows; task-specific help and zero-growth acknowledgement.
-- [ ] T019 Test all24×2 profiles and interleaving/retry/duplicate/authority/P0 compatibility.
+- [x] T015 Implement occurrence/attempt identity, canonical definitions and fail-closed task services.
+- [x] T016 Implement per-profile landscape producer/verifier and immutable accepted award/phase.
+- [x] T017 Integrate store context, multiple tasks and profile-only projections with safe reset.
+- [x] T018 Connect all24 Parent/Child workflows; task-specific help and zero-growth acknowledgement.
+- [x] T019 Test all24×2 profiles and interleaving/retry/duplicate/authority/P0 compatibility.
 - [ ] T020 Run serialized static/regression and one bilingual browser batch; resolve actual defects.
 - [ ] T021 Commit validated slices, evidence/native-human gaps and exact releases.
 
 This is the user's full-task selection, not activation of the default-off alternative workspace.
+
+2026-09-14 reconciliation: T015–T019 were implemented in the already integrated
+CE1 work, recorded by `3b58e95` and
+[the publication evidence](../../docs/competition-readiness/workstreams/repository-publication-20260913.md).
+Canonical definitions, occurrence engine, catalog screens/store and the 24×2
+execution suite are present. These are corrected stale implementation markers,
+not new work or reconstructed historical RED runs. T020's remaining bilingual
+browser batch and the compound final acceptance rows remain open where evidence
+is incomplete. Earlier formatter/dependency observations above are historical;
+current checks and remaining gates are recorded in
+[the spec completion report](../../docs/competition-readiness/workstreams/spec-completion-20260914.md).

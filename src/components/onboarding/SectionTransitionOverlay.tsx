@@ -1,15 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { usePathname } from 'expo-router';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, {
+  cancelAnimation,
+  ReduceMotion,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { GhafRasterLogo } from '@/components/brand/GhafRasterLogo';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
-import { colors, firstRunMotion, motion, spacing } from '@/design/tokens';
+import { colors, spacing } from '@/design/tokens';
+import { interactionMotion } from '@/design/motion';
 import { preloadSectionImages, type DynamicImageSection } from '@/features/startup';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 import { GhafLeafLoader } from './GhafLeafLoader';
 import {
@@ -44,38 +52,64 @@ export function SectionTransitionOverlay() {
   const warnedSections = useRef(new Set<DynamicImageSection>());
   const [destination, setDestination] = useState<ExperienceSection>('neutral');
   const [visible, setVisible] = useState(false);
+  const reducedMotion = useReducedMotionPreference();
+  const opacity = useSharedValue(0);
 
   useEffect(() => {
     const previous = previousSection.current;
     previousSection.current = section;
-    if (!shouldShowSectionTransition(previous, section) || !isDynamicImageSection(section)) return;
+    if (!shouldShowSectionTransition(previous, section) || !isDynamicImageSection(section)) {
+      setVisible(false);
+      return;
+    }
 
     setDestination(section);
     setVisible(true);
     let active = true;
-    let timeout: ReturnType<typeof setTimeout> | undefined;
-    let resolveMinimum: () => void = () => undefined;
-    const minimum = new Promise<void>((resolve) => {
-      resolveMinimum = resolve;
-      timeout = setTimeout(resolve, firstRunMotion.orientationHold);
-    });
-    void Promise.all([minimum, preloadSectionImages(section)]).then(([, result]) => {
-      if (result.failed > 0 && !warnedSections.current.has(section)) {
-        warnedSections.current.add(section);
-        console.warn(
-          `${result.failed} Ghaf ${section} image asset(s) could not be preloaded; using local fallbacks.`,
-        );
-      }
-      if (active) setVisible(false);
-    });
+    void preloadSectionImages(section).then(
+      (result) => {
+        if (!active) return;
+        if (result.failed > 0 && !warnedSections.current.has(section)) {
+          warnedSections.current.add(section);
+          console.warn(
+            `${result.failed} Ghaf ${section} image asset(s) could not be preloaded; using local fallbacks.`,
+          );
+        }
+        setVisible(false);
+      },
+      () => {
+        if (!active) return;
+        if (!warnedSections.current.has(section)) {
+          warnedSections.current.add(section);
+          console.warn(`Ghaf ${section} images could not be preloaded; using local fallbacks.`);
+        }
+        setVisible(false);
+      },
+    );
     return () => {
       active = false;
-      if (timeout !== undefined) clearTimeout(timeout);
-      resolveMinimum();
     };
   }, [section]);
 
-  if (!visible) return null;
+  const presenting = visible && destination === section;
+  useLayoutEffect(() => {
+    cancelAnimation(opacity);
+    if (!presenting || reducedMotion) {
+      opacity.set(presenting ? 1 : 0);
+      return;
+    }
+    opacity.set(
+      withTiming(1, {
+        duration: interactionMotion.timing.fade,
+        easing: interactionMotion.easing,
+        reduceMotion: ReduceMotion.Never,
+      }),
+    );
+    return () => cancelAnimation(opacity);
+  }, [opacity, presenting, reducedMotion]);
+  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.get() }));
+
+  if (!presenting) return null;
 
   const destinationKey = destinationKeys[destination] ?? 'firstRun.loading.opening';
 
@@ -84,9 +118,7 @@ export function SectionTransitionOverlay() {
       accessibilityLabel={`${t(destinationKey)}. ${t('firstRun.loading.opening')}`}
       accessibilityLiveRegion="polite"
       accessibilityViewIsModal
-      entering={FadeIn.duration(motion.duration.quick)}
-      exiting={FadeOut.duration(motion.duration.standard)}
-      style={styles.overlay}
+      style={[styles.overlay, animatedStyle]}
       testID="section-transition-overlay"
     >
       <LocalIllustration

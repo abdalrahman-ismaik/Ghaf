@@ -6,6 +6,48 @@ The directly authorized [Feature 017](../017-masroofi-demo/spec.md) adds a separ
 task-money/card practice experience. Its fixed hidden amounts, age/Parent gate, private credit
 and purchase simulation do not change Family Reward promises or any Seed/growth/League authority.
 No real-money, issuer, custody or production-finance capability is authorized.
+## Android motion repair — 2026-09-14
+
+The user-authorized [motion contract](motion-interactions.md) refines shared press,
+live reduced-motion handling, existing success presentation and interrupted section
+loading. Readiness replaces the earlier 900 ms section dwell; domain behavior,
+startup/story timing and native navigation stay unchanged.
+
+## Confirmed corrupt local-family recovery amendment — 2026-09-13
+
+The owner explicitly approved recovery from corrupt saved demo-family data. This
+resolves the earlier R-02 conflict between rejecting corrupt data and requiring an
+authenticated Parent for the only reset path. This narrow exception does not
+authorize ordinary signed-out reset, account recovery or access to a saved family.
+
+- **FR-220**: Before first-run onboarding, signed-out Welcome MUST show a bilingual
+  local-data recovery state when the family directory cannot be loaded. Corrupt
+  JSON/schema/version data MUST be distinguished from transient storage or migration
+  failure. Neither state may reveal raw saved content or grant Parent/Child access.
+- **FR-221**: Confirmed corrupt data MAY offer an explicit reset proposal followed
+  by a separate confirmation explaining that local demo profiles, pairing, remembered
+  access and current demo progress will be cleared. Cancel or Back MUST clear nothing.
+  A storage-unavailable state MUST offer a non-destructive retry, not deletion.
+- **FR-222**: The recovery command MUST require explicit confirmation, signed-out
+  experience and a fresh corruption result immediately before deletion. A valid,
+  missing, temporarily unreadable or externally repaired family MUST NOT authorize
+  deletion. Ordinary `resetPrototype()` remains Parent-only; recovery never creates
+  a temporary Parent role or weakens protected-route guards.
+- **FR-223**: Recovery MUST remove and verify remembered affinity first, then the
+  legacy migration source, then the current family record. A thrown error or failed
+  removal MUST retain a recoverable failure state and MUST NOT report success.
+  Retries must recheck current data. If a previously confirmed attempt removed all
+  records but final verification failed, a session-local continuation MAY verify
+  absence and complete reset without deleting newly repaired data.
+- **FR-224**: After verified clearing, recovery MUST reuse the existing deterministic
+  reset to clear transient role/controller/AI/task/growth state and return to Arabic
+  signed-out Welcome with fresh setup available. The UI MUST replace reset history,
+  never navigate into an authenticated experience, and require normal Parent setup.
+- **SC-065**: Synthetic behavioral tests MUST cover corrupt current/legacy records,
+  missing confirmation, cancellation, active-role denial, valid/absent/unavailable
+  data, repair between prompt and confirmation, thrown/silent removal failures,
+  retry/absence continuation, exact reset and fresh setup. Bilingual component
+  checks and available browser evidence supplement, not replace, native acceptance.
 
 ## Catalog execution CE1 — 2026-09-13
 
@@ -263,6 +305,10 @@ setup with an honest recoverable local-storage message and never creates partial
 - **FR-197**: Startup MUST restore a valid saved directory before access routing decisions, rebuild
   the existing immutable Parent completion receipt, project configured names/avatars into the
   prototype session, and never flash or enter first-family setup for a returning household.
+  The configured Child's age band MUST govern Coach input/output policy and live-voice
+  eligibility through a derived view; packaged fixtures and their stored synthetic ages MUST
+  remain unchanged. This age authority was explicitly approved on 2026-09-11 and also applies
+  after directory restoration. Existing Parent grants, notices and release flags remain required.
 - **FR-198**: Parent and Child selectors MUST expose only configured profile slots, and direct
   attempts to select an unconfigured Child MUST fail closed without changing the active profile.
 - **FR-199**: A completed synthetic Child pairing MUST persist only its allowlisted Child/device

@@ -151,5 +151,21 @@
   "tests/saved-task-templates.test.ts": "tests/tasks/saved-task-templates.test.ts",
   "tests/task-catalog.test.ts": "tests/tasks/task-catalog.test.ts",
   "tests/task-lifecycle.test.ts": "tests/tasks/task-lifecycle.test.ts",
-  "tests/temporary-parent-entry-route.test.tsx": "tests/access/temporary-parent-entry-route.test.tsx"
+  "tests/temporary-parent-entry-route.test.tsx": "tests/access/temporary-parent-entry-route.test.tsx",
+  "tests/child-pairing-back.test.tsx": "tests/access/child-pairing-back.test.tsx",
+  "tests/configured-child-age-policy.test.ts": "tests/ai/configured-child-age-policy.test.ts",
+  "tests/configured-child-age-ui.test.tsx": "tests/ai/configured-child-age-ui.test.tsx",
+  "tests/configured-child-identity-ui.test.tsx": "tests/access/configured-child-identity-ui.test.tsx",
+  "tests/corrupt-local-family-recovery.test.ts": "tests/access/corrupt-local-family-recovery.test.ts",
+  "tests/local-family-recovery-ui.test.tsx": "tests/access/local-family-recovery-ui.test.tsx",
+  "tests/onboarding-presentation-readiness.test.tsx": "tests/platform/onboarding-presentation-readiness.test.tsx",
+  "tests/parent-account-local.integration.test.ts": "tests/access/parent-account-local.integration.test.ts",
+  "tests/parent-account-sdk.test.ts": "tests/access/parent-account-sdk.test.ts",
+  "tests/parent-account-service.test.ts": "tests/access/parent-account-service.test.ts",
+  "tests/parent-account-storage.test.ts": "tests/access/parent-account-storage.test.ts",
+  "tests/pilot-account-controller.test.ts": "tests/access/pilot-account-controller.test.ts",
+  "tests/pilot-account-ui.test.tsx": "tests/access/pilot-account-ui.test.tsx",
+  "tests/pilot-demo-config.test.ts": "tests/access/pilot-demo-config.test.ts",
+  "tests/pilot-demo-lifecycle.test.ts": "tests/access/pilot-demo-lifecycle.test.ts",
+  "tests/web-hydration-boundary.test.tsx": "tests/platform/web-hydration-boundary.test.tsx"
 }

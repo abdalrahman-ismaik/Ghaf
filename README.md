@@ -22,7 +22,7 @@ symbolic Seeds and grows that Child's UAE-inspired landscapes. A separate family
 eligible cooperative progress.
 
 > **Prototype boundary:** The repeatable competition journey uses synthetic profiles, local task
-> state and prepared assistance. Optional AI and family-messaging integrations have separate
+> state and prepared assistance. Optional adult login, AI and family-messaging integrations have separate
 > configuration and validation gates. This repository does not establish production readiness,
 > payment processing or measured environmental impact.
 
@@ -41,10 +41,32 @@ eligible cooperative progress.
 - **Bounded communication foundation:** an isolated family-messaging client, server permission
   rules and task-focused helper presentation are implemented. Live service and two-device
   acceptance remain separate from the local task demonstration.
+- **Persistent adult accounts:** real Supabase sign-in, secure session restoration and local-session
+  logout protect adult profiles and account-owned family, task and study records. Hosted migrations
+  and independent-client data/ownership checks are recorded in [authentication](docs/auth.md).
+  The default authentication mode remains `demo`; native, email delivery and production acceptance
+  retain their separate evidence requirements.
+- **Confirmed local recovery:** corrupt saved demo-family data offers a separate explicit reset
+  confirmation; temporary storage failures offer non-destructive retry. Valid families retain
+  the Parent-only reset boundary.
 
 The [catalog execution contract](specs/013-parent-task-workspace/contracts/catalog-execution.md),
 [narration record](docs/competition-readiness/workstreams/c-v2-narration.md) and
 [messaging specification](specs/016-real-family-messaging/spec.md) document the exact boundaries.
+
+## Evidence and remaining gates
+
+Feature 003 Revision 3 remains the product foundation. R001/R002a retain their frozen
+behavioral baseline at `0501cf3`; R002b surfaces keep independent default-off flags.
+Feature 004 owns gated bounded AI text/voice adapters, and Feature 005 owns local remembered access.
+
+| Area                          | Evidence boundary                                                                                                                                                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maintainer and recovery fixes | The [maintainer audit](docs/audits/2026-09-11-maintainer-audit.md) and [completion review](docs/audits/2026-09-13-repository-completion.md) retain their dated checks, browser evidence and limitations.               |
+| Growth Journey                | All 12 indexed R002b code-native surfaces exist behind their flags; responsive evidence varies by surface. Approval Reveal has authoritative receipts, while station-132 Learning and release activation remain gated. |
+| Physical acceptance           | Web observations and Android JavaScript exports do not pass physical-device, TalkBack, native Back/IME, safe-area, OS font-scale or named-human review.                                                                |
+| Adult account pilot           | The [pilot validation record](specs/006-real-parent-pilot/validation.md) distinguishes local implementation and saved SMTP configuration from external delivery, hosted flows and native acceptance.                   |
+| Production readiness          | Not established. Optional providers retain their own activation gates; the default competition journey remains synthetic and deterministic.                                                                            |
 
 ## Product screens
 
@@ -218,6 +240,9 @@ is a default-off reference implementation, and the default assistant registry us
 responses. Gemini/Firebase deployment and end-to-end operation are not verified by the local
 demo or its screenshots. The separately specified [family-messaging service](workers/ghaf-family-messaging/README.md)
 uses Supabase Auth and PostgreSQL; it does not synchronize task, Seed or landscape state.
+The independently gated [adult login pilot](specs/006-real-parent-pilot/spec.md) also uses
+Supabase Auth, with server-owned administrator approval and memory-only sample-family progress.
+Its [setup guide](docs/backend/parent-pilot.md) records configuration and activation requirements.
 
 Local family settings use SQLite-backed key/value storage on native and browser storage on web.
 Competition task progress remains process-local: restarting is not durable recovery.
@@ -252,7 +277,7 @@ boundary and links to the detailed contribution history.
 - Symbolic garden growth does not claim that a real tree was planted or that environmental impact
   was measured.
 - Real payments, public ranking, analytics and notifications are outside the competition build.
-- Optional server AI and real family messaging remain subject to their own activation and evidence
+- Optional adult login, server AI and real family messaging remain subject to their own activation and evidence
   gates; their presence in source does not establish deployment or production child-data protection.
 
 Never place provider secrets in `EXPO_PUBLIC_*` variables or the mobile bundle. The complete

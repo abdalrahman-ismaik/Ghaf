@@ -421,3 +421,48 @@ to the named evidence; external gates remain as defined in `quickstart.md`.
   inspection is `BLOCKED` because Chromium lacks `libnss3` in the container and dependency
   installation requires an unavailable sudo password; physical Android and named Arabic/
   accessibility review remain `NOT RUN`.
+
+## Configured Child Age Authority Follow-up — 2026-09-11
+
+The owner explicitly approved configured age for Coach inputs and voice permissions
+while preserving the underlying demo fixtures. This resolves maintainer-audit R-01;
+it does not activate live features or authorize recording/provider activity.
+
+- [x] T088 Add one fail-closed configured-age selector and widen only the prepared
+      Coach request age contract to the existing reviewed three-band policy.
+- [x] T089 Apply effective age to prepared/live requests, output adaptation, grant,
+      capture and transcript authorization; reject pending results after age changes
+      while retaining owned cleanup and immutable fixtures.
+- [x] T090 Connect Child task and Parent permission controls to the same age authority;
+      retain curated Coach actions independently of output quick-choice limits and
+      allow existing grant revocation after age becomes ineligible or unavailable.
+- [x] T091 Verify all three bands, invalid/missing profile denial, sibling isolation,
+      pending-age changes, fixture/reset preservation and affected UI; run focused/full
+      checks and available local exports/browser checks, recording native limits.
+
+**Follow-up evidence**: Prepared schema/store regressions failed before the fixes;
+the six-file core run passed 161 tests. Actual-route/panel render tests initially
+failed 13 cases, then caught 10 revocation cases; the final four-file UI run passed
+64 tests. Final `npm.cmd run typecheck`, `npm.cmd run lint`,
+`npm.cmd run format:check`, `npm.cmd test -- --maxWorkers=1`, and Git whitespace
+checks passed. The full suite passed 129 files / 1,695 tests. One new test file's
+formatting was corrected before the final formatter/test run. Offline web export
+passed with 39 routes; Android JavaScript export produced one Hermes bundle.
+
+Automatic approval review blocked the isolated Chromium launch with “blocked by
+policy,” so new interactive browser verification is `BLOCKED / NOT RUN`; earlier
+screenshots do not verify this follow-up. Native recording, provider calls and
+release activation remain unrun/off. Fixtures, dependencies and flag defaults are
+unchanged. Detailed commands and limitations are in the maintainer audit report.
+
+**Later browser evidence — 2026-09-12**: The next day's explicitly requested
+interactive follow-up completed configured-age checks for all three bands,
+Parent grant/revocation controls, pairing and temporary Parent access, remembered
+access, and signed-out Arabic reset. It also repaired and replayed the static-web
+hydration boundary against the final default build. The earlier blocked attempt
+above remains historical evidence. The follow-up recorded 332 snapshots across
+21 routes and 20 screenshots; its final default-build interval recorded no runtime
+exception. Final static checks and 130 files / 1,699 tests passed, and the web
+export produced 39 routes. These are local synthetic browser results, not native
+audio, provider or release acceptance. See
+`docs/audits/2026-09-11-maintainer-audit.md`, section "Interactive browser follow-up".

@@ -76,6 +76,15 @@ both internal slots for existing domain compatibility, while access and presenta
 expose only ids present in this directory. Local nickname/avatar/age display projection does not
 rewrite immutable reward, task, or privacy evidence.
 
+Configured age authority clarification (2026-09-11): `LocalChildProfile.ageBand` is
+the effective age for prepared/live Coach policy, input controls, output adaptation
+and live-voice permission checks. Resolve it through one shared derived selector;
+never overwrite `SyntheticChildProfile.age`/`ageBand` or packaged fixture data.
+Unconfigured profiles remain inaccessible. The canonical no-directory synthetic
+baseline retains its fixture age but has no configured-age authority. Missing or
+unavailable directory/profile data must not authorize input. A changed effective age
+invalidates pending Coach and voice results. This adds no age-editing UI or persisted field.
+
 `PreparedProfilePersonalization` is a derived view, never persisted. Its complete input is
 `ageBand`, `interests`, `hobbies`, `accessibilityDefaults`, and `supportPreferences`; gender,
 nickname, family name, and all free text are structurally absent. Its output contains one coaching

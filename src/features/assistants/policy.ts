@@ -140,7 +140,7 @@ const childCoachRequestSchema = z
     child: z
       .object({
         id: z.enum(['child_salem', 'child_alya']),
-        ageBand: z.literal('9_11'),
+        ageBand: z.enum(['6_8', '9_11', '12_14']),
         synthetic: z.literal(true),
       })
       .strict(),
@@ -160,6 +160,13 @@ export function validateChildCoachRequest(
   const parsed = childCoachRequestSchema.safeParse(request);
   if (!parsed.success) return failure('Child Coach request shape or P0 age band is invalid');
   const value = parsed.data;
+  if (
+    value.child.ageBand === '6_8' &&
+    value.templateSelection !== null &&
+    value.templateSelection !== value.intent
+  ) {
+    return failure('Ages 6–8 may select only a curated Coach intent');
+  }
   if (
     !context.approvedByParent ||
     value.child.id !== context.activeChildId ||

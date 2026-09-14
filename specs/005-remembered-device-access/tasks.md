@@ -1,5 +1,12 @@
 # Tasks: Remembered Device Access
 
+## Confirmed recovery compatibility — 2026-09-13
+
+- [x] T033 Verify remembered-affinity removal and recovery failure/retry ordering
+  under Feature 003 FR-220–224; successful recovery must leave both roles signed
+  out, clear remembered access and support normal fresh setup. Implementation and
+  UI evidence are tracked with Feature 003 T335–T337.
+
 **Input**: Design documents from `/specs/005-remembered-device-access/`
 
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`,

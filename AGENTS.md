@@ -1,4 +1,5 @@
 <!-- SPECKIT START -->
+
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
 at specs/005-remembered-device-access/plan.md
@@ -18,6 +19,32 @@ authorship evidence remain tracked; private local notes are not a substitute for
 # Ghaf Repository Collaboration Contract
 
 ## Current Feature
+
+Feature 018 (`specs/018-persistent-adult-accounts/`) extends the adult pilot with
+owner-approved persistent adult profiles and account-owned family, task and study
+records. The default competition build stays synthetic; existing local demo data
+is never imported automatically. Constitution 2.3.0 documents this narrow exception.
+The owner authorized additive hosted backend maintenance, verified commits/pushes,
+and an internal Android APK on 2026-09-14. Feature 014 remains deferred. Read the
+Feature 018 validation record for actual hosted, native and independent-client evidence;
+this does not establish production or physical-device acceptance.
+
+Feature 017 (`specs/017-study-family-support/`) implements the user's selected
+proposals 8–12. Study/goals use synthetic family-scoped local data. Joint academic
+goals may have private nonessential mark/achievement prizes under its explicit
+narrow exception; they never feed Seeds, League or existing Family Rewards.
+Parent-approved participant-only sibling text extends Feature016 via additive SQL;
+Parent membership alone does not grant peer-content access. Prior P0 exclusions
+remain for other features. Hosted/native/human acceptance still needs direct evidence.
+
+Feature 006 (`specs/006-real-parent-pilot/`) is the owner-approved adult login-only
+pilot exception. Its separate `EXPO_PUBLIC_GHAF_AUTH_MODE=supabase` gate may use
+real adult email/password accounts, administrator approval and secure session
+persistence; `demo` remains the default. All family/Child/progression data remains
+synthetic. Apply Constitution 2.1.0's narrow exception for this feature; the P0
+production-account exclusions below still govern the default competition build.
+Hosted activation, external email delivery and native acceptance require direct
+Feature 006 evidence. Do not enable AI or migrate local sample data into accounts.
 
 Ghaf — غاف Feature 003 Revision 3 is the active pre-Stitch planning direction. It inherits the
 Arabic-first Revision 2 application with separately authenticated-looking Parent and Child
@@ -262,6 +289,8 @@ dependency, and final integration work. Preserve the Spec Kit-managed context bl
 - Commit each completed, independently verifiable function, fix, or feature slice as a small,
   cohesive commit. Split unrelated work into separate commits and avoid accumulating one large
   catch-all commit.
+- The owner revoked artificial commit spacing on 2026-09-14. Commit completed, verified work
+  promptly; do not wait 15 minutes or any other minimum interval to simulate an activity pattern.
 - During longer assignments, create a checkpoint around every 30 minutes when the work forms a
   coherent, validated state. Do not fabricate timestamps or split incomplete work only to imitate
   a particular activity pattern.

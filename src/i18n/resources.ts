@@ -1,9 +1,17 @@
+import { pilotResources } from './pilotResources';
+import { studyResources } from './studyResources';
+import { familyPracticeResources } from './familyPracticeResources';
+import { peerMessagingAr, peerMessagingEn } from './peerMessagingResources';
 import { phraseText } from '../features/familyMessaging/contracts';
 import { masroofiResources } from './masroofi';
 
 export const resources = {
   ar: {
     translation: {
+      pilot: pilotResources.ar,
+      study: studyResources.ar,
+      familyPractices: familyPracticeResources.ar,
+      peerMessaging: peerMessagingAr,
       masroofi: masroofiResources.ar,
       catalog: {
         previewIdeas: 'أفكار يمكنك مراجعتها مع وليّ الأمر. تحتاج إلى اعتماد خاص بك قبل البدء.',
@@ -352,6 +360,24 @@ export const resources = {
             'دخول الطفل ليس ضمن هذه الدفعة المعتمدة بعد. لا يفتح هذا الزر وضع وليّ الأمر.',
           switchLanguage: 'English',
           origin: 'نسخة محلية تجريبية ببيانات اصطناعية',
+        },
+        localRecovery: {
+          corruptTitle: 'تعذّرت قراءة بيانات العائلة',
+          corruptBody:
+            'بيانات العائلة التجريبية المحفوظة على هذا الجهاز تالفة. يمكنك إعادة المحاولة أو مراجعة خيار مسحها لبدء إعداد العائلة من جديد.',
+          unavailableTitle: 'بيانات العائلة غير متاحة الآن',
+          unavailableBody:
+            'تعذّر الوصول إلى البيانات المحلية. أعد المحاولة لتحميل العائلة المحفوظة. لن تُمسح أي بيانات عند إعادة المحاولة.',
+          retry: 'إعادة المحاولة',
+          propose: 'مراجعة مسح البيانات المحلية',
+          confirmTitle: 'مسح بيانات العائلة التجريبية؟',
+          confirmBody:
+            'سيُمسح من هذا الجهاز كلّ من الملفات التجريبية للعائلة، والاقتران، والدخول المحفوظ، والتقدم الحالي في العرض التجريبي. لا يمكن التراجع عن المسح. ستعود إلى شاشة الترحيب بالعربية لتبدأ إعداد العائلة من جديد.',
+          confirmAction: 'مسح البيانات والعودة إلى البداية',
+          confirmHint: 'يمسح البيانات التجريبية المحلية بعد التحقق من تلفها مجددًا.',
+          failed: 'تعذّر إكمال هذه الخطوة. يمكنك إعادة المحاولة.',
+          clearFailed: 'تعذّر إكمال مسح البيانات التجريبية المحلية. يمكنك إعادة المحاولة.',
+          origin: 'بيانات تجريبية محلية على هذا الجهاز فقط',
         },
         signIn: {
           title: 'مرحبًا بعودتك',
@@ -2094,6 +2120,10 @@ export const resources = {
   },
   en: {
     translation: {
+      pilot: pilotResources.en,
+      study: studyResources.en,
+      familyPractices: familyPracticeResources.en,
+      peerMessaging: peerMessagingEn,
       masroofi: masroofiResources.en,
       catalog: {
         previewIdeas:
@@ -2452,6 +2482,24 @@ export const resources = {
             'Child access is not part of this approved batch yet. This action never opens Parent mode.',
           switchLanguage: 'العربية',
           origin: 'Local prototype with synthetic data',
+        },
+        localRecovery: {
+          corruptTitle: 'We couldn’t read this family’s data',
+          corruptBody:
+            'The saved demo-family data on this device is damaged. You can retry, or review clearing it to start family setup again.',
+          unavailableTitle: 'Family data is unavailable right now',
+          unavailableBody:
+            'We couldn’t access local data. Retry to load the saved family. Retrying will not clear any data.',
+          retry: 'Try again',
+          propose: 'Review clearing local data',
+          confirmTitle: 'Clear this demo family’s data?',
+          confirmBody:
+            'This clears local demo profiles, pairing, remembered access and current demo progress on this device. You cannot undo this. You will return to Arabic Welcome and can start family setup again.',
+          confirmAction: 'Clear data and start again',
+          confirmHint: 'Clears local demo data after checking again that it is damaged.',
+          failed: 'We couldn’t complete this step. You can try again.',
+          clearFailed: 'We couldn’t finish clearing local demo data. You can try again.',
+          origin: 'Local demo data on this device only',
         },
         signIn: {
           title: 'Welcome back',

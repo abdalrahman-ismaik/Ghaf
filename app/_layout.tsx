@@ -6,7 +6,7 @@ import { ReadexPro_400Regular } from '@expo-google-fonts/readex-pro/400Regular';
 import { ReadexPro_500Medium } from '@expo-google-fonts/readex-pro/500Medium';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -16,6 +16,8 @@ import { TamaguiProvider } from 'tamagui';
 
 import { MessagingLifecycle } from '@/components/familyMessaging/MessagingLifecycle';
 import { PrototypeStatusBar } from '@/components/PrototypeStatusBar';
+import { PilotGate } from '@/components/pilot';
+import { getPilotConfig } from '@/features/pilot/config';
 import { AmbientAudioProvider } from '@/components/audio';
 import {
   BrandedSplash,
@@ -47,8 +49,19 @@ const startupFontAssets = {
   ReadexPro_500Medium,
 } as const;
 
+const webHydrationBoundary = {
+  subscribe: () => () => undefined,
+  getSnapshot: () => true,
+  getServerSnapshot: () => Platform.OS !== 'web',
+};
+
 export default function RootLayout() {
   const locale = usePrototypeStore((state) => state.locale);
+  const webMounted = useSyncExternalStore(
+    webHydrationBoundary.subscribe,
+    webHydrationBoundary.getSnapshot,
+    webHydrationBoundary.getServerSnapshot,
+  );
   const pathname = usePathname();
   const reducedMotion = Boolean(useReducedMotion());
   const splashStartedAt = useRef<number | null>(null);
@@ -205,29 +218,35 @@ export default function RootLayout() {
     };
   }, [startupPhase]);
 
+  if (!webMounted) return <View style={styles.root} testID="web-hydration-boundary" />;
+
+  const demo = (
+    <AmbientAudioProvider startupReady={startupPhase === 'complete'}>
+      <FirstRunExperienceProvider presentationReady={startupPhase === 'complete'}>
+        <MessagingLifecycle />
+        <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
+        <View style={styles.root}>
+          {usesLightSystemChrome ? null : <PrototypeStatusBar />}
+          <Stack
+            screenOptions={{
+              animation: reducedMotion ? 'none' : 'fade',
+              contentStyle: { backgroundColor: colors.ivory },
+              headerShown: false,
+            }}
+          />
+          <SectionTransitionOverlay />
+          <BrandedSplash phase={startupPhase} />
+        </View>
+      </FirstRunExperienceProvider>
+    </AmbientAudioProvider>
+  );
+
   return (
     <GestureHandlerRootView style={styles.root}>
       <TamaguiProvider config={ghafTamaguiConfig} defaultTheme="light">
         <SafeAreaProvider>
           <GhafFontProvider loaded={fontsLoaded}>
-            <AmbientAudioProvider startupReady={startupPhase === 'complete'}>
-              <FirstRunExperienceProvider>
-                <MessagingLifecycle />
-                <StatusBar style={usesLightSystemChrome ? 'dark' : 'light'} />
-                <View style={styles.root}>
-                  {usesLightSystemChrome ? null : <PrototypeStatusBar />}
-                  <Stack
-                    screenOptions={{
-                      animation: reducedMotion ? 'none' : 'fade',
-                      contentStyle: { backgroundColor: colors.ivory },
-                      headerShown: false,
-                    }}
-                  />
-                  <SectionTransitionOverlay />
-                  <BrandedSplash phase={startupPhase} />
-                </View>
-              </FirstRunExperienceProvider>
-            </AmbientAudioProvider>
+            {getPilotConfig().enabled ? <PilotGate>{demo}</PilotGate> : demo}
           </GhafFontProvider>
         </SafeAreaProvider>
       </TamaguiProvider>

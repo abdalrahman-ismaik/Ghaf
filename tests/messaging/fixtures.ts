@@ -32,6 +32,7 @@ export const child: MessagingContext = {
 };
 export const thread = {
   id: ids.thread,
+  kind: 'parent_child' as const,
   childId: ids.person,
   otherName: 'Synthetic Child',
   otherRole: 'child' as const,
@@ -79,6 +80,9 @@ export function fakeService(context: MessagingContext = parent): FamilyMessaging
     messages: vi.fn(async () => []),
     send: vi.fn(async () => message),
     children: vi.fn(async () => []),
+    peerPermissions: vi.fn(async () => []),
+    setPeerPermission: vi.fn(async () => undefined),
+    leavePeerThread: vi.fn(async () => undefined),
     createChild: vi.fn(),
     invite: vi.fn(),
     devices: vi.fn(async () => []),

@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SYNTHETIC_PARENT_REAUTHENTICATION_CODE } from '@/models/access';
 import { createPreparedChildCoachResponse, type LiveChildCoachTextService } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { configureChildAgeForTest } from '../helpers/configuredChildAge';
 import {
   enterChildExperienceForTest,
   enterParentExperienceForTest,
@@ -67,10 +68,131 @@ function progression() {
   };
 }
 
+function deferredProvider() {
+  let release!: () => void;
+  let entered!: () => void;
+  const waiting = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const started = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  const service: LiveChildCoachTextService = {
+    async respond(request) {
+      entered();
+      await waiting;
+      return {
+        ok: true,
+        data: createPreparedChildCoachResponse(request),
+        meta: { origin: 'live', fallbackUsed: false },
+      };
+    },
+  };
+  return { service, started, release };
+}
+
 describe('bounded live Child Coach store integration', () => {
   beforeEach(async () => {
     expectOk(resetPrototypeForTest());
     await enterParentExperienceForTest();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it.each(['6_8', '9_11', '12_14'] as const)(
+    'builds a live Coach request from configured %s and enforces its bounded-text gate',
+    async (ageBand) => {
+      const fixtures = structuredClone(usePrototypeStore.getState().children);
+      configureChildAgeForTest(ageBand);
+      await prepareActiveChildTask();
+      const respond = vi.fn<LiveChildCoachTextService['respond']>(async (request) => ({
+        ok: true,
+        data: createPreparedChildCoachResponse(request),
+        meta: { origin: 'prepared', fallbackUsed: false },
+      }));
+      const intent =
+        ageBand === '6_8' ? 'show_next_step' : ageBand === '9_11' ? 'first_step' : 'clarify_step';
+      expectOk(
+        await usePrototypeStore
+          .getState()
+          .requestLiveChildCoach({ ...requestInput(`age_${ageBand}`), intent }, { respond }),
+      );
+      expect(respond).toHaveBeenLastCalledWith(expect.objectContaining({ ageBand }));
+      respond.mockClear();
+      const typed = await usePrototypeStore.getState().requestLiveChildCoach(
+        {
+          ...requestInput(`typed_${ageBand}`),
+          intent,
+          boundedText: 'Please clarify the first step.',
+          inputOrigin: 'typed',
+        },
+        { respond },
+      );
+      expect(typed.ok).toBe(ageBand === '12_14');
+      expect(respond).toHaveBeenCalledTimes(ageBand === '12_14' ? 1 : 0);
+      expect(usePrototypeStore.getState().children).toEqual(fixtures);
+    },
+  );
+
+  it.each(['expired', 'age_changed', 'current'] as const)(
+    'revalidates the current Child grant and age after a pending response: %s',
+    async (condition) => {
+      await prepareActiveChildTask();
+      const grant = usePrototypeStore.getState().liveChildAiGrants.child_salem.text;
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(Date.parse(grant.expiresAt) - 500);
+      const provider = deferredProvider();
+      const pending = usePrototypeStore
+        .getState()
+        .requestLiveChildCoach(requestInput(condition), provider.service);
+      await provider.started;
+
+      if (condition === 'expired') vi.setSystemTime(Date.parse(grant.expiresAt));
+      if (condition === 'age_changed') {
+        configureChildAgeForTest('6_8');
+      }
+      const before = structuredClone(progression());
+      provider.release();
+      const result = await pending;
+
+      if (condition === 'current') {
+        expectOk(result);
+        expect(usePrototypeStore.getState().liveChildCoachView).toMatchObject({
+          status: 'terminal',
+          origin: 'live',
+          response: { requestId: requestInput(condition).requestId },
+        });
+      } else {
+        expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_TRANSITION' } });
+        expect(usePrototypeStore.getState().liveChildCoachView).toMatchObject({
+          status: 'idle',
+          response: null,
+          activeRequest: null,
+          snapshot: null,
+        });
+      }
+      expect(progression()).toEqual(before);
+    },
+  );
+
+  it('preserves a newer Coach result when an older request becomes stale', async () => {
+    await prepareActiveChildTask();
+    const provider = deferredProvider();
+    const pending = usePrototypeStore
+      .getState()
+      .requestLiveChildCoach(requestInput('older'), provider.service);
+    await provider.started;
+    expectOk(await usePrototypeStore.getState().requestLiveChildCoach(requestInput('newer')));
+    const newerView = usePrototypeStore.getState().liveChildCoachView;
+    provider.release();
+
+    await expect(pending).resolves.toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(usePrototypeStore.getState().liveChildCoachView).toBe(newerView);
   });
 
   it('fails closed before provider access when the text grant is off', async () => {

@@ -1,5 +1,30 @@
 # Team Ownership
 
+## Incoming merge with Masroofi ? 2026-09-14
+
+The user authorizes resolving the incoming merge additively and requires asking before deleting
+content. Root reserves the 15 currently conflicted files (listed in the merge workstream),
+`tests/family/masroofi-workflow.test.ts`, the append-only AI assistance ledger entry, and
+`docs/competition-readiness/workstreams/masroofi-merge-20260914.md`. Exact original worktree and
+all three merge stages are preserved under ignored `output/masroofi/merge-2026-09-14T16-26-52-284Z`.
+The existing unstaged package-lock.json change is excluded. Existing backend, study, messaging,
+motion and Masroofi behavior and records must remain. Helpers have read-only review scopes;
+root owns all writes and one serialized validation lane. No deletion, native build, or push.
+
+Merge verification also reserves `tests/access/{pilot-demo-lifecycle,corrupt-local-family-recovery}.test.ts`
+for additive Masroofi teardown regressions and `specs/README.md` for distinct package links.
+
+Handoff: both read-only helpers are released. Typecheck, lint, format, 3,094 tests (2 opt-in
+integration tests skipped) and repository checks passed. An initial Expo configuration timeout
+passed alone and in the full two-worker rerun; no timeout/assertion was weakened. No files were
+deleted; both feature sets and the unstaged lockfile edit remain. Source reservations end with
+the local merge commit. Fresh browser, physical Android and named human review are NOT RUN;
+see `workstreams/masroofi-merge-20260914.md` for exact evidence and preservation details.
+
+All conflicts are resolved and staged. Automatic approval review rejected the final local merge
+commit for lack of separate explicit commit authorization; it remains pending owner approval.
+
+
 ## Masroofi category and card revision — 2026-09-13
 
 User requests more spending categories (confirmed), a stronger UAE card identity, and fewer demo
@@ -46,6 +71,697 @@ Handoff: Feature 017 source is complete; all helper scopes are released. Root's 
 ends with the local integration commit. Typecheck/lint/format, 170 files / 2329 tests, repository
 checks and bounded web-phone inspection passed. Physical Android and named human review remain
 NOT RUN. See workstreams/masroofi-20260913.md for exact evidence and assistance disclosure.
+## 2026-09-14 Backend readiness, spec completion and publication
+
+**BACKEND-DELIVERY-ACK to MOTION-PASS2-001 — 2026-09-14 14:33 UTC**:
+The new independent motion second pass is acknowledged. Preserve its
+`STATUS-MOTION-PASS2.md`, Feature003 motion addendum and later explicit reservations;
+they are outside this final backend/APK evidence commit. The delivered APK is exact
+source `5ad7faa`, already tested. Root is finishing documentation-only publication;
+no additional native/build job is active. C: fell near zero during handoff and a
+bounded lossless compression job has finished; root is running only final document
+checks. Disk remains critically low, so avoid further local APK/export jobs. No unreviewed second-pass work is included in this artifact. This Windows
+coordination folder is the reachable shared location for this handoff.
+
+**BACKEND-DELIVERY-ACK update**: final `repo:check` passed. Whole-worktree
+`format:check` saw the in-progress second-pass BotanicalPressable/GrowthJourneyScreens/
+SharedGrowthScreens formatting changes; root leaves them to their owner. Only the
+eight completed delivery documents are staged for this evidence commit. No app
+source or separate second-pass files are included. Root's local heavy/check lane
+is released; C: remains critically low and native builds must stay remote.
+
+The user now authorizes updating the backend, completing accepted specification
+work, committing all reviewed changes and pushing `main`. This supersedes earlier
+no-commit/no-push instructions. Preserve existing app/backend data and keep the
+local Docker services while installed native clients depend on them. No paid
+resources, destructive migrations or public rollout are included.
+
+Root owns this entry, Feature 018 spec/plan/tasks/validation, backend/auth runbooks,
+the spec completion report, assistance evidence, serialized local/hosted database
+checks, emulator lane and Git publication. The current coordination location is
+this Windows checkout; older Linux BOARD snapshots are historical, not active jobs.
+Read-only `spec_completion_audit` and `backend_release_audit` review existing work.
+No other prior file reservation is active.
+
+Root also owns current-scope notes in `docs/PRODUCT.md`,
+`docs/product/PROTOTYPE_LIMITATIONS.md`, `specs/013-parent-task-workspace/tasks.md`,
+`specs/015-demo-entry-onboarding/tasks.md` and the assistance ledger. The user
+explicitly reconfirmed that Feature 014 stays deferred. Hosted messaging has
+additional foreground-location objects outside this checkout's accepted specs;
+preserve them and its migration history. No messaging schema replacement is planned.
+
+The owner also requests a usable APK after this work. Fresh local builds are blocked
+by missing exact NDK/CMake and disk capacity; the cached EAS session is signed out.
+`apk_delivery_audit` owns only `.github/workflows/android-internal.yml` and
+`scripts/native/validate-hosted-build.mjs` for a manually dispatched fresh GitHub
+runner build using existing Expo prebuild/Gradle, template internal signing and
+HTTPS public backend inputs. No release/public store deployment is included.
+Root owns `docs/DEVELOPMENT.md`, build dispatch/artifact verification/native install
+and final APK handoff. No provider signing secret or credentials enter tracked code.
+Root also owns `scripts/native/validate-hosted-build.test.mjs` for configuration
+and non-distributable-APK rejection tests before dispatch.
+
+The implementation helpers have released their source boundaries. Root owns final
+CI fixes and evidence. `apk_delivery_audit` now owns only the new
+`docs/backend/internal-android.md` build/install guide while root operates the build
+and emulator. That documentation is not runtime acceptance evidence.
+
+Fresh APK recording review found an auth-phase shell remount/inset flash. The
+read-only `auth_ready_flash` diagnosis is complete. `apk_delivery_audit` now owns
+only `src/components/pilot/PilotGate.tsx`, `PilotAccountView.tsx`,
+`src/components/access/AccessShell.tsx`, and focused shell/form tests under
+`tests/access/` for this fix. Root retains all commands, native interaction,
+publication and documentation. The helper preserves account/form credential resets
+and cannot broaden the change into other access flows or dependencies.
+
+The auth-shell implementation and read-only review are released. Root validated
+2,983 tests plus type/lint/format, committed `5ad7faa` and dispatched its fresh APK.
+`apk_delivery_audit` now owns only `specs/018-persistent-adult-accounts/validation.md`
+and `docs/backend/internal-android.md` to record the first hosted native run.
+`auth_ready_flash` completed the bounded `docs/motion.md` convention update and
+released it. Root retains final native comparison, settings restoration, fixture
+cleanup, artifact delivery and publication. The cleanup helper has a read-only
+cache audit; previously rejected APK deletions are not retried.
+
+`account_status_guard` owns only the additive
+`supabase/migrations/20260914000300_account_provider_status.sql` and
+`supabase/tests/database/account_provider_status.test.sql`. It may implement
+provider banned/deleted/anonymous denial and focused regression assertions.
+`backend_ci` owns only a new `.github/workflows/backend.yml` and
+`scripts/backend/verify-local.mjs` with its Node test, for isolated SQL and real
+provider CI checks. Helpers do not run builds/tests, mutate databases, access
+devices/remotes, commit or spawn descendants. Root serializes execution.
+
+All source and documentation helper boundaries above are now released to root.
+The final `5ad7faa` APK from run34851035020 was downloaded, verified, updated in
+place and tested on the API35 emulator. Hosted account/data isolation, rapid-tap
+idempotency, reduced-motion logout/Back gating and the bounded shell recording
+comparison passed. Floating-Gboard recovery first-Back behavior failed; docked
+keyboard, physical performance and named-human gates remain unverified.
+
+Root logged out both hosted test clients, deleted only the two invocation-owned
+synthetic hosted users, restored original animation/font/network settings and
+left the original installation signed out in Arabic. Test2 and local database
+volumes remain intact; its Docker backend stays running. Root owns final document
+formatting, publication and APK delivery. The latest storage pass removed a stale
+SDK download and losslessly compressed generated maps/bundles with hash checks;
+previously rejected recursive deletions were not bypassed. Disk headroom remains
+low. This is a final evidence update, not new runtime behavior.
+
+## 2026-09-14 Two isolated installations on one emulator
+
+The owner requested a second app installation with different data on the existing
+emulator. Root owns this entry, the Feature 018 spec/plan/validation addendum and
+ignored `.expo/dual-account-clients-20260914/` packaging/interaction evidence.
+`second_install_audit` performs read-only native identifier compatibility review.
+Root retains the only packaging/install/device lane. The original APK and its data
+must remain intact; no token/storage copying or app-data reset is authorized.
+This is a local test variant, not a second product or release architecture change.
+
+Root also owns the Feature 018 task result and `docs/auth.md` handoff. Packaging and
+native execution are complete: `Ghaf Test 2` has its own UID/storage/session;
+two-way task/study changes, profile/family retrieval, restart and logout/account
+isolation passed against local Supabase. Original remains test B, second remains
+test A. The second-device/fresh-Gradle gates remain blocked. No tracked app source,
+dependency or native configuration changed for the variant. The packaging helper
+owned only the ignored `package-second.py`; it and the read-only audit helper have
+released their scopes. Final documentation formatting and diff checks passed;
+this continuation's write reservations are released with evidence recorded.
+
+## 2026-09-14 Disk cleanup for two Android clients
+
+The user authorized removing unneeded disk data to allow a second Android client.
+Root owns this record, ignored `.expo/disk-cleanup-20260914/` receipts, exact
+verified build intermediates/download caches and the emulator lane. A bounded
+read-only helper audited `.expo/`; it has released its scope. Signed APKs, source,
+evidence, credentials, database volumes and emulator user data remain protected.
+No commit, push or deployment is authorized.
+
+Root also owns the Feature 018 validation addendum. Standard npm, pip, NuGet and
+Docker build-cache maintenance completed; direct intermediate-file deletion was
+blocked by command policy. C: gained about 1.71 GiB; a second AVD still fails its
+userdata-space requirement. Hyper-V's read-only VHD inspection is denied by the
+current Windows authorization policy. No disk compaction, image/volume pruning,
+app-data clearing or manual-file deletion occurred. All cleanup helper scopes are
+released; root retains only this evidence handoff.
+
+## 2026-09-14 Main native motion continuation
+
+The user authorizes implementation and actual Android Emulator interaction on
+`main`, starting clean at `d91ef57`. No commits, branch changes, pushes, merges,
+data clearing or deployments are authorized in this session. Earlier boundaries
+are released. Root owns the emulator/input lane and serialized build/check lane.
+One read-only `native_recovery` helper inspects prior C:-only packaging; no jobs,
+device actions, descendants or writes. D: remains excluded due recorded failures.
+
+Initial exact write reservations: this ownership entry,
+`docs/competition-readiness/workstreams/native-motion-main-20260914.md`,
+`docs/motion.md`, and ignored `.expo/native-motion-main-20260914/` artifacts.
+Native baseline reproduced initial onboarding CTA clipping; scrolling reveals the
+full control. Root now reserves `src/components/onboarding/FirstRunOnboarding.tsx`,
+`src/design/motion.ts`, and `specs/003-family-growth-garden/motion-interactions.md`
+for the footer/live-preference refinement. A bounded test helper owns only
+`tests/platform/onboarding-presentation-readiness.test.tsx` and
+`tests/platform/r003-first-run-experience.test.ts`; no build/test/device jobs.
+The packaging helper owns only ignored artifact scripts, with no jobs or device
+access. Helpers do not spawn descendants; root serializes all heavy commands.
+Root also reserves `src/components/illustrations/LocalIllustration.tsx` for an
+optional transition duration: the onboarding parent owns its fade, so its image
+must not add a second independent crossfade observed in baseline recordings.
+Root reserves `tests/platform/android-runtime-readiness.test.ts` to reconcile its
+stale predictive-Back expectation with the already integrated `9d756ef` fix. The
+full suite reproduced this pre-existing mismatch; no native setting is changed.
+The user's subsequent real-account request is in read-only discovery with
+`native_recovery` (auth lifecycle) and `account_data_audit` (backend/data ownership).
+Motion writes remain reserved; account implementation will reserve distinct files.
+
+Account increment reservations: root owns `specs/018-persistent-adult-accounts/`,
+the constitution amendment, account/native artifacts and final integration.
+`account_backend` owns `src/models/parentAccount.ts`,
+`src/services/accounts/SupabaseParentAccountService.ts`, the new account-profile
+SQL migration/pgTAP test, and `tests/access/parent-account-{service,sdk}.test.ts` plus
+new profile service tests. `account_ui` owns `src/features/pilot/controller.ts`,
+`src/components/pilot/PilotAccountView.tsx`, `src/i18n/pilotResources.ts` and
+`tests/access/pilot-account-{controller,ui}.test.*` plus new profile controller/UI
+tests. Root owns `PilotGate.tsx`, messaging teardown and local integration tests;
+any additional shared file is reserved before editing. No helpers run builds,
+database jobs, device commands or descendants. Root serializes those lanes.
+Existing feature authority remains Study/goals/family practices and the released
+motion repair; no new roadmap or live-service side effects are inferred.
+
+Expanded user-selected scope includes family, tasks and study. `account_backend`
+also owns `src/models/accountWorkspace.ts`, workspace migration/pgTAP tests and
+`tests/access/account-workspace-service.test.ts`. `account_ui` owns new
+`src/features/pilot/workspaceController.ts`,
+`src/components/pilot/AccountWorkspaceView.tsx` and its controller/UI tests.
+`account_data_audit` owns `tests/access/parent-account-local.integration.test.ts`.
+Root owns new account boundary integration/helper/tests and the existing account
+view integration. The packaging helper owns only ignored account build scripts.
+All builds, tests, database and emulator operations remain serialized by root.
+Native continuation also reserves `src/components/primitives.tsx` (Button only),
+`tests/motion/button-accessibility.test.tsx`,
+`src/features/familyMessaging/controller.ts`, `src/features/pilot/privateBoundary.ts`
+and its focused test for observed stale busy labels and authoritative private cleanup.
+These bounded helper writes are now released to root. Root owns `docs/auth.md`.
+
+The final native outage test reserves the account UI/controller/resources and
+their existing controller/UI tests again to `account_ui` for an explicit
+`logout-error` state and cleanup-only retry. Root owns the related
+`tests/access/account-profile-controller.test.ts` expectation, final documentation,
+artifact scripts and serialized retest. No other jobs or writes are allocated.
+
+The logout-error helper has released its files. Root completed the rebuilt native
+outage/manual-Retry/restart retest and retains only final documentation/checks.
+The complete suite passes 2,974 tests; local database checks pass 124 assertions.
+Two-native-client acceptance and fresh Gradle builds remain blocked as recorded in
+Feature 018 validation. All helper reservations are released. The checkout remains
+on `main` with the user's work uncommitted; no commit/push/deployment is authorized.
+
+## 2026-09-14 Final repository integration
+
+The owner explicitly requested merging and finalizing all remaining work, including
+conflict resolution. Root finalized the pending Apple design and React Native skills
+in `eef169c`, normalized the three installed skill directories to repository LF
+endings, and reconciled `skills-lock.json` with both working files and committed
+blobs. The existing Animate content is unchanged. Repository checks, skill links,
+lock hashes and staged whitespace checks passed.
+
+Two read-only helpers completed branch/worktree and installed-tooling audits.
+All eight local branches and eight of ten remote heads were already ancestors of
+`main` at `111880e`. The two divergent legacy refs contain explicitly superseded
+Feature 002 AI or pre-reconciliation Feature 003 work and remain historical; their
+obsolete contents are not a missing current implementation. Both C: legacy
+worktrees are clean. No merge conflict or omitted current runtime slice was found.
+
+All helper and source boundaries are released. Root owns this final record, the
+assistance ledger, the existing messaging/Android handoff and final Git verification.
+No native build or D: work is allocated. This finalization supersedes the prior
+exclusion of user skill changes from staging; recorded native and human gaps remain.
+
+## 2026-09-14 Technical-interruption recovery
+
+Current allocation: all helpers and source boundaries are released. Root committed
+Study Back fix `e8ae266`, format-only fix `b8da974`, and verified API35 Back
+configuration `9d756ef`; the motion session's three released commits are included.
+Full runtime checks and the final `9d756ef` TypeScript rerun passed. The installed
+emulator APK is `615048cd…`; its exact bounded native passes and remaining startup,
+physical and human gaps are recorded in the integration evidence. The emulator was
+stopped and its input lane released after collection. Root retains final evidence
+and previously authorized Git integration. User skill changes are outside staging.
+
+### Earlier recovery allocations — historical
+
+Root resumes the final `0ad7a0d` C:-only emulator acceptance. The signed APK is
+already verified; the API35 ARM-translation launch failed before JavaScript.
+Root owns `.expo/messaging-integration/` experimental packaging/evidence, the
+existing Feature016/017 validation records, this file, the assistance ledger,
+`android-build-and-rehearsal.md`, `workstreams/messaging-android-resume-20260914.md`
+and `docs/product/PROTOTYPE_LIMITATIONS.md`. Earlier helpers are released.
+One read-only `resume_audit` helper reviews recovery and native packaging; no
+descendants, builds or source writes. Root retains the only emulator/input lane.
+No D: operation or new phone test is allocated.
+
+Acknowledged `MOTION-20260914-001` in `coordination/STATUS-MOTION.md`: the separate
+motion session retains all its listed presentation, test and documentation files.
+Preserve its uncommitted work and the user-owned skill installations. Emulator
+validation uses the already pinned APK, not the changing shared source tree.
+No concurrent heavy check/build is started during that session's local checks.
+
+The motion session released source at `c8eb8f1` with passing static/full regression
+evidence. Root reproduced Android hardware Back exiting the pinned Study screen
+to the launcher. `study_back_fix` now owns only
+`src/components/study/StudyScreen.tsx` and `tests/study/android-back.test.tsx` for
+focused role-safe Back/keyboard handling and its regression. One focused test worker
+is allocated; no helper build/device/remote/Git work. Root owns the bounded
+format-only correction in `tests/access/corrupt-local-family-recovery.test.ts`
+to close the unrelated formatter failure reported by the motion session.
+
+## 2026-09-14 Messaging backend integration and Android acceptance
+
+**Resumed by the owner:** continue from clean checkpoint `ce6bd72`; the phone is
+authorized and D: caches are available. Artificial commit spacing is revoked:
+commit each completed, verified slice promptly. The
+[pause checkpoint](workstreams/messaging-android-resume-20260914.md) remains the
+historical handoff, not a current instruction to stay paused.
+
+Current exact grants: the Study and messaging layout fixes are committed and released.
+For the final handoff, `messaging_web_audit` owns only
+`docs/competition-readiness/android-build-and-rehearsal.md`,
+`docs/competition-readiness/workstreams/messaging-android-resume-20260914.md`, and
+`docs/product/PROTOTYPE_LIMITATIONS.md`. Root owns the two Feature 016/017 validation
+records, this ownership record, the assistance ledger, final C: packaging and phone
+checks, and Git integration. All other helpers are idle with released boundaries.
+`/root/merge_core` released `scripts/native/build-apk.ps1` after scoped output-recording
+checks. Root owns a bounded C:-only internal JavaScript-update APK experiment using
+the verified diagnostic native container; it is not a passing full native rebuild.
+No native rebuild is allocated on D: while the drive is unhealthy.
+Root owns `AGENTS.md`,
+coordination/evidence, final integration and the sole heavy build lane.
+Root also owns `src/components/familyMessaging/FamilyMessagingScreen.tsx` for the
+same directly observed native paragraph-direction correction on messaging access.
+That messaging boundary includes `MessagingAccess.tsx` and `MessagingConversation.tsx`
+to preserve explicit Arabic role/quick-phrase row order inside the corrected context.
+Root also updates the existing React Native mock in `tests/messaging/peer-ui.test.tsx`
+to support the platform-aware presentation imports; no domain-test rewrite is granted.
+`/root/integration_audit_coordinator` may review the patch read-only. Earlier grants
+below are historical releases; no other writer retains a source boundary.
+
+The user explicitly authorized backend integration and physical Android testing
+using Android Studio. Root starts from clean `caf2d00` on
+`integration/messaging-android-20260914`. A dedicated synthetic team messaging
+project may be provisioned/configured and tested; the adult pilot remains separate.
+No paid plan, real Child data or broader production rollout is implied.
+
+- `/root`: hosted setup, ignored environment/build artifacts, Android Studio/SDK
+  integration, specification/evidence/runbook updates, `.env.example`, and final Git work.
+  Root also owns the explicit `package.json` messaging start command.
+- `/root/messaging_extension`: read-only backend readiness review until an exact
+  implementation grant is issued; now owns only
+  `workers/ghaf-family-messaging/README.md` and
+  `specs/016-real-family-messaging/quickstart.md` for current setup corrections,
+  plus `tests/messaging/hosted.integration.test.ts` for opt-in real HTTP acceptance.
+  The follow-up evidence boundary is only
+  `specs/016-real-family-messaging/backend-android-validation.md`.
+- `/root/study_map`: read-only native tool/device/build inventory; no build lane.
+- `/root/merge_core`: `scripts/native/build-apk.ps1` only, a Windows launcher for
+  the explicitly selected disposable D: candidate; root retains build execution.
+
+At most four active agents, no descendants, one writer per file, and one serialized
+heavy build/database/browser lane. Preserve existing work. Physical passes require
+an actual connected phone; emulator and local-service results stay separately labeled.
+
+The user subsequently requested parallel backend/web audits with a coordinator.
+Earlier helpers have released their work. The active allocation is root plus
+`integration_audit_coordinator` (read-only triage), `backend_security_audit`
+(read-only SQL/client review), and `messaging_web_audit` (web review and a separately
+allocated lightweight browser lane). No descendants or overlapping writes are
+authorized. Root retains the sole heavy build lane and all source fixes; browser
+startup must fit the measured Windows headroom before it is granted.
+
+Root granted `backend_security_audit` the bounded terminal-refresh recovery fix:
+`src/features/familyMessaging/client.ts` and the minimal existing messaging
+client/controller regression test files, with exact names reported before edits.
+Only focused single-worker tests are allocated; no full suite, build, remote
+mutation or Git work. Root retains final source integration and APK identity.
+
+While the web auditor is idle pending its runtime lane, `messaging_retry_fix`
+owns only the additive `workers/ghaf-family-messaging/migrations/003_idempotent_retry_budget.sql`
+and exact existing SQL regression files reported to the coordinator. Applied
+migrations 001/002 stay unchanged. No hosted mutation, Docker/WSL startup or
+heavy database job is granted; root owns deployment and final verification.
+
+The first configured web audit reproduced a browser fetch receiver error before
+Auth HTTP dispatch. Prior writers released their boundaries; `messaging_web_audit`
+now owns only `src/features/familyMessaging/client.ts` and
+`tests/messaging/client.test.ts` for the minimal default-fetch binding correction
+and focused regression. Its browser is closed for memory headroom during this fix.
+
+All three audit fixes are released to root. The coordinator reviewed the fetch fix
+and Windows launcher without further source findings. Root owns
+`scripts/native/build-apk.ps1` and `android-build-and-rehearsal.md` integration.
+The documentation helper temporarily owns only the current backend/Android evidence
+record; root retains build, device, fresh export and final Git work.
+
+## 2026-09-13 Study and family support — Feature 017
+
+User selected proposals 8–12 and confirmed using their saved proposals. Root starts
+from clean `c07bad9` on `feature/017-study-family-support`. This Windows worktree is
+the coordination location; prior merge boundaries are released. At most four active
+agents, no descendants, and one serialized heavy check/database/browser lane.
+
+- `/root`: Feature017 specification/plan/tasks/research/evidence and governing addenda;
+  `src/state/usePrototypeStore.ts`, `src/services/index.ts`, i18n resource aggregation,
+  `src/components/study/`, study routes/resources, Home/Today/Family entry points,
+  integration tests, final checks and local cohesive commits.
+- `/root/study_core`: `src/models/study.ts`, `src/features/study/`,
+  `src/services/local/studyRepository.ts`, `tests/study/domain.test.ts` and
+  `tests/study/repository.test.ts`; the reviewed family-binding fix additionally owns
+  `src/models/localFamily.ts`, `src/features/local-family/schema.ts` and
+  `tests/study/family-binding.test.ts`.
+- `/root/messaging_extension`: `src/features/familyMessaging/`,
+  `src/components/familyMessaging/`, `app/messages/`, `tests/messaging/`,
+  `workers/ghaf-family-messaging/`, and `src/i18n/peerMessagingResources.ts` only.
+- `/root/family_practices`: `src/features/familyPractices/`,
+  `src/components/familyPractices/`, `app/parent/practices.tsx`,
+  `app/child/practices.tsx`, `src/i18n/familyPracticeResources.ts`,
+  `tests/study/practices.test.tsx` and Feature017 `practice-research.md` only.
+  Final integration grant: the five existing route/recovery assertions in
+  `tests/access/corrupt-local-family-recovery.test.ts`,
+  `tests/integration/operator-demo-flow.test.ts`,
+  `tests/platform/r003-first-run-experience.test.ts`,
+  `tests/presentation/r001-onboarding-flow.test.ts` and
+  `tests/presentation/r002a-child-task-presentation.test.ts`.
+
+Read-only explorers `study_map` and `messaging_map` have released their maps. Writers
+are not alone; preserve others' edits and do not stage, commit or run heavy checks.
+Root integrates every shared boundary. No provider activation or deployment is
+included; real-message delivery readiness is documented separately from source.
+
+**Implementation release:** all helper write boundaries are released to root.
+Typecheck, lint, formatting, 2,718 regression tests (one opt-in skip), 41 SQL tests,
+compact AR/EN browser journeys and web/Android exports passed. Root owns final
+documentation and the user's authorized merge/push. Source is ready for integration;
+hosted messaging, physical Android and named human review remain NOT RUN. See
+[Feature 017 evidence](../../specs/017-study-family-support/validation.md).
+
+## 2026-09-13 Main merge conflict resolution
+
+The user authorizes pushing all work, merging and resolving conflicts. `/root`
+integrates the existing merge of local `9fa5aee` and incoming `abc8598`, preserving
+both approved feature sets. This Windows worktree is the coordination location for
+this bounded merge; prior publication source boundaries are released. Maximum four
+agents including root, no descendants, and one serialized dependency/check lane.
+
+- `/root/merge_core`: `src/state/usePrototypeStore.ts`, `src/services/index.ts`,
+  `src/services/local/{index,repository,storage}.ts` only.
+- `/root/merge_ui`: `app/{_layout,index}.tsx`,
+  `src/components/onboarding/FirstRunOnboarding.tsx`,
+  `tests/platform/r003-first-run-experience.test.ts` only.
+- `/root/merge_docs`: conflicted Markdown files only, including this record and
+  Feature 003 spec/plan/tasks. Preserve both historical evidence sets and paths.
+- `/root`: dependency manifests, bilingual resources, other conflicted tests,
+  repository integration checks and corrective test paths, merge evidence,
+  Git staging/commit/fetch/push and final verification.
+
+Writers preserve each other's changes and do not stage, commit or run heavy checks.
+This merge does not activate a feature flag or assert new native/provider evidence.
+
+Follow-up regression grants: `merge_core` owns the relocated access recovery and
+pilot lifecycle tests plus the configured-age policy test. `merge_ui` owns the
+relocated onboarding-readiness, hydration and recovery UI tests and the shared
+ambient provider's existing screen-reader race safeguard. These grants supersede
+the initial boundaries only for the named files; root serializes all checks.
+
+The UI follow-up also owns `src/components/access/LocalFamilyRecovery.tsx` for
+navigation preflight and the Welcome repair-candidate guard. All helper write
+boundaries are now released. Root owns final validation and publication, including
+the exact historical-artifact manifest and measured integration-test timeouts.
+
+**Validation complete:** 2,623 tests passed, one opt-in local integration test
+skipped; TypeScript, lint, formatting, repository checks and web/Android exports
+passed. Independent review is complete. Root owns the authorized normal main
+merge/push; the [merge record](workstreams/main-merge-20260913.md) holds exact
+evidence and remaining native/provider/human limitations.
+
+## 2026-09-13 Real Parent Pilot Authentication
+
+**Integration owner**: `/root`. The user approved the complete login-only pilot
+plan: Supabase in Mumbai, email/password, self-registration with dashboard approval,
+Android and web, real adult accounts only. Feature 006 owns the narrow exception.
+Preserve all starting worktree changes; baseline copies are ignored under
+`.expo/pilot-auth/baseline/`. No more than four agents run concurrently.
+
+**Exclusive write boundaries**:
+
+- `/root`: Feature 006 specification and evidence, constitution and product/runbook
+  addenda, this ownership record, dependency/lock/config changes, `app/_layout.tsx`,
+  pilot components/controller and their tests, bilingual resources, final integration.
+  Root also owns the bounded pilot import mock in the existing hydration test and
+  additive Feature 006 guidance in `AGENTS.md`, design and demo runbooks.
+- `/root/pilot_accounts`: `src/models/parentAccount.ts`,
+  `src/services/accounts/`, and `tests/parent-account-*.test.ts` only.
+- `/root/pilot_database`: `supabase/`, `docs/backend/`, and
+  `tests/pilot-database-*.test.ts` only.
+- `/root/pilot_lifecycle`: `src/state/usePrototypeStore.ts` only additive pilot
+  lifecycle commands, `src/services/index.ts`, `src/services/local/` only memory
+  storage extraction/exports, `src/features/pilot/config.ts`, and
+  `tests/pilot-demo-*.test.ts` only.
+
+Writers are not alone in the repository. Do not revert others' edits, stage their
+work, or commit shared files. Root serializes formatting, integration and scoped
+commits. Hosted activation remains a separate reviewed gate; provisioning and
+SMTP sender readiness are recorded truthfully.
+
+**Status**: Implementation complete; Gmail SMTP and bilingual email templates are
+configured and verified. Controlled delivery, hosted account flows and physical
+Android acceptance remain outstanding; hosted activation remains blocked. Exact evidence is recorded in
+`specs/006-real-parent-pilot/validation.md`.
+
+## 2026-09-13 Repository Completion Review
+
+**Integration owner**: `/root`. Preserve the existing uncommitted maintainer,
+configured-age and hydration fixes. Read-only reviewers `unfinished_inventory`,
+`growth_task_review` and `async_ui_review` inspect disjoint behavior areas; no more
+than four agents run concurrently.
+
+**Initial writer boundary**: `/root` owns this log,
+`docs/audits/2026-09-13-repository-completion.md`,
+`specs/004-bounded-live-ai/tasks.md` only for the later browser-evidence addendum,
+and ignored `.expo/repository-completion/` verification logs. Runtime and regression
+test files will be reserved below before edits. No dependency, flag activation,
+deployment or shared-history change is included.
+
+**Scope**: Find and repair confirmed defects in approved Features 003–005, verify
+the integrated worktree, and distinguish incomplete implementation from historical,
+native, provider and named-human acceptance gates. Corrupt-directory recovery was
+initially pending; the user explicitly approved confirmed local recovery during
+this work period.
+
+**Runtime allocations**:
+
+- `/root/onboarding_audio_fix`: `app/_layout.tsx`,
+  `src/components/onboarding/{FirstRunExperienceContext,FirstRunOnboarding}.tsx`,
+  the existing narrator/ambience hooks only if necessary, one bounded foreground
+  readiness hook in that directory if needed, `tests/r003-first-run-experience.test.ts`,
+  and new `tests/onboarding-presentation-readiness.test.tsx`. Repair startup,
+  foreground/focus, and failed-image-revisit audio readiness while preserving the
+  existing hydration repair and prepared-only playback.
+- `/root`: `src/services/mock/index.ts` only Family League week creation and
+  `tests/family-league.test.ts`, for filling a rolled week after a prepared
+  encouragement without losing that valid encouragement.
+
+Every writer preserves the starting worktree changes and releases its exact
+boundary after focused verification. Root serializes final integration.
+
+- `/root/completed_task_suggestion_fix`: `src/features/growth/parentProgress.ts`
+  and `tests/r002b-parent-progress.test.ts`;
+  suppress an unavailable Task Builder suggestion after the one-time P0 task is
+  recognized. Do not add repeat assignments or change any progression authority.
+
+**Confirmed local recovery allocation**: `/root` owns the Feature 003
+`{spec,plan,tasks}.md` amendment, Feature 005 `{spec,plan,tasks}.md` compatibility
+addendum, `PRODUCT.md`, `PROTOTYPE_LIMITATIONS.md`, `DESIGN.md`, `DESIGN_DIRECTION.md`,
+`DEMO_RUNBOOK.md`, and the new audit report. Recovery is an in-route Welcome state,
+not a new route or production account-recovery feature.
+
+- `/root/local_recovery_core`: `src/models/localFamily.ts`,
+  `src/state/usePrototypeStore.ts` only family-read classification, recovery commands
+  and shared reset implementation, `src/services/local/{repository,deviceAccessRepository}.ts`,
+  `tests/local-family-repository.test.ts`, new `tests/corrupt-local-family-recovery.test.ts`,
+  and affected local-family/remembered-device tests if needed for the new contract.
+- `/root/local_recovery_ui`: `app/index.tsx`, new
+  `src/components/access/LocalFamilyRecovery.tsx`, `src/i18n/resources.ts` only additive
+  recovery copy, and new `tests/local-family-recovery-ui.test.tsx`.
+
+Core and UI writers agree the typed command contract before implementation.
+Preserve ordinary Parent-only reset and all previous source changes; no real data
+is cleared during verification. Use isolated synthetic storage.
+
+**Status:** All boundaries are released after independent review. Final typecheck,
+lint, formatting, whitespace and all 1,768 tests across 133 files pass. Updated web
+export has 39 routes; Android Hermes export passes after the required compiler
+execution retry. Browser evidence covers bilingual recovery, Cancel/Back, corrupt
+Retry, verified three-key clearing, Arabic Welcome and new-family setup. Measured
+320-pixel Arabic/English confirmation layouts fit without horizontal overflow.
+Physical Android/TalkBack, native media, named Arabic review and external provider
+acceptance remain NOT RUN or their existing blocked status. No dependency, flag,
+provider, deployment, push or shared-history rewrite occurs. Root owns final scoped
+local commits and preserves all unrelated starting changes. Full evidence and file
+boundaries are in `docs/audits/2026-09-13-repository-completion.md`.
+
+## 2026-09-12 Interactive Configured Age Verification
+
+**Owner**: `/root`, following the user's explicit request to start interactive
+browser verification. Reserved files: this ownership log,
+`docs/audits/2026-09-11-maintainer-audit.md`, ignored local preview/browser helpers,
+and `output/playwright/maintainer-audit/configured-age-*.png` evidence. Existing
+source/test changes remain preserved. `/root/configured_age_map` provides a
+read-only route and safety checklist; only root operates the browser.
+
+**Scope**: Local UI-driven synthetic setup, configured-age Coach controls and
+permission visibility. No real recording, provider requests, production systems,
+release activation, commit or push. Record observed results and exact blockers.
+
+**Status**: Complete and released. Chromium verification captured 332 snapshots
+across 21 routes and 20 new synthetic screenshots. Configured-age controls, Parent
+grants/revocation, pairing, repeated Coach actions and reset passed. A confirmed
+static-web hydration mismatch was repaired and replayed against the final default
+build for remembered Arabic/English Child, remembered English Parent and signed-out
+reset states. Final typecheck, lint, formatting, whitespace and all 1,699 tests across
+130 files passed; default web export produced 39 routes. Browser and preview are
+closed (no listeners on 8093/9225). Native/provider acceptance remains unverified.
+No default flag, fixture, dependency, commit or push change occurred.
+
+**Confirmed browser fix allocation**: `/root/configured_age_ui` owns
+`app/_layout.tsx` and new `tests/web-hydration-boundary.test.tsx` only, for the
+verified static-web hydration mismatch between exported signed-out HTML and a
+remembered Child session. Preserve native initialization, access rules and store
+restoration. Root owns subsequent export and browser replay; no overlapping edits.
+
+## 2026-09-11 Configured Child Age Authority Follow-up
+
+**Integration owner**: `/root`. The user approved configured Child age as the
+authority for Coach input options and voice permissions while retaining the
+underlying demo fixtures. Preserve every uncommitted maintainer-audit change.
+
+**Root documentation boundary**: this ownership log,
+`docs/audits/2026-09-11-maintainer-audit.md`,
+`specs/003-family-growth-garden/{spec,plan,tasks,data-model}.md`, and
+`specs/004-bounded-live-ai/{spec,plan,tasks}.md` for the approved clarification,
+implementation tasks and exact verification evidence. Runtime/test allocations
+are recorded below; no overlapping writers.
+
+**Scope**: One shared effective-age projection, corresponding prepared/live Coach
+and voice authorization, pending-result invalidation, and the existing Child task
+and Parent permissions surfaces. No fixture mutation, age-editing feature,
+dependency, native capture, provider call, release activation, commit or push.
+
+**Runtime/test allocation**:
+
+- `/root/configured_age_core`: `src/features/local-family/agePolicy.ts`, its export
+  in `src/features/local-family/index.ts`, `src/models/familyGrowth.ts` only the
+  `ChildCoachRequest` age field, `src/features/assistants/policy.ts` only prepared
+  Coach age validation, and age-related paths in `src/state/usePrototypeStore.ts`.
+  Tests: new `tests/configured-child-age-policy.test.ts`, and the directly affected
+  age cases in `tests/{assistant-safety,live-child-ai-grants,live-child-coach-store}.test.ts`,
+  `tests/{live-voice-integration,bounded-ai-integration}.test.tsx`.
+  Also `tests/helpers/configuredChildAge.ts` for shared synthetic directory setup
+  that persists through normal access rehydration without changing fixture ages.
+- `/root/configured_age_ui`: `app/child/task.tsx`,
+  `app/parent/settings/permissions.tsx`, new
+  `tests/configured-child-age-ui.test.tsx`, and directly affected source/render
+  expectations in `tests/{live-child-coach-ui,live-voice-ui}.test.tsx` only.
+- `/root/configured_age_map` remains read-only. Root owns documentation and final
+  integration; additional files require an explicit reservation.
+- `/root/audit_access_persistence`: browser-only follow-up using isolated local
+  synthetic profiles, ignored helper/profile data and `configured-age-*.png`
+  evidence under `output/playwright/maintainer-audit/`; no tracked source edits.
+- Root resumes the released boundaries for final integration, including formatting
+  only `tests/configured-child-age-policy.test.ts` after the global formatter caught
+  its newly added cases. Worker source/test edits are complete.
+
+**Status**: Complete and released. Configured age now governs prepared/live Coach
+policy and live voice eligibility through one validated selector. Missing or invalid
+age fails closed; existing grants remain revocable. Canonical fixture ages and all
+previous audit fixes are preserved. Core checks passed 161 tests; UI checks passed
+64 tests. Final typecheck, lint, formatting, whitespace and all 1,695 tests across
+129 files passed; web export produced 39 routes and Android export one Hermes bundle.
+Automatic approval review blocked the isolated Chromium launch with “blocked by
+policy”; new interactive browser evidence is `BLOCKED / NOT RUN`, as is native
+acceptance without direct device evidence. No provider/audio activity, dependency
+change, live-flag activation, commit or push occurred. R-01 is resolved; the unrelated
+corrupt-directory recovery decision remains open in the audit report.
+
+## 2026-09-11 Maintainer Correctness and Completeness Audit
+
+**Integration owner and writer**: `/root`.
+
+**Reserved boundary**: `TEAM_OWNERSHIP.md` and
+`docs/audits/2026-09-11-maintainer-audit.md` for the worklist and coverage/evidence map.
+Runtime, test, and additional documentation boundaries will be reserved explicitly
+after a defect is confirmed. Baseline logs and build output remain ignored under
+`.expo/` and `dist/`.
+
+**Allocated fix boundaries**:
+
+- `/root/audit_access_persistence`: `src/services/local/repository.ts` and
+  `tests/local-family-repository.test.ts` only, for failed reset/legacy resurrection.
+- `/root/audit_ai_lifecycle`: `src/state/usePrototypeStore.ts` only inside
+  `requestLiveChildCoach` and directly necessary local request-current validation;
+  `tests/live-child-coach-store.test.ts` for pending authorization expiry/age changes.
+  Also `src/services/native/ExpoVoiceCaptureService.ts` and
+  `tests/live-voice-services.test.ts` for duration validation against the installed
+  Android recorder's stop/reset behavior, with synthetic adapters only.
+  These first two fixes are released. The follow-up allocation is
+  `src/state/usePrototypeStore.ts` only `stopLiveVoiceHold` and
+  `tests/live-voice-integration.test.tsx` for invalid successful transcription fallback.
+  Review follow-up also includes the same native adapter/service tests for resolved
+  native stop-status failures, plus current-operation capture failure cleanup in the
+  same store/test boundary. No duration may be fabricated for native auto-stop.
+- `/root/audit_growth_transactions`: `src/features/shared-growth/sharedGrowth.ts`
+  and `tests/r002b-shared-growth.test.ts`, preventing participation actions from
+  invalidating existing contribution history.
+- `/root/audit_access_persistence`: the repository fix is released. Follow-up
+  ownership is `app/access/child/{pin,pair}.tsx`,
+  `app/parent/settings/{devices,permissions}.tsx`, and
+  `tests/configured-child-identity-ui.test.tsx` for configured identity presentation.
+  One small shared presentation selector may be added at
+  `src/features/local-family/childIdentity.ts` if needed by these four routes.
+- Root: audit/ownership records, navigation investigation, project health, and
+  final integration. Root will not edit the store while the AI boundary is owned.
+  Root additionally owns `README.md` to correct stale branch/feature-completeness
+  statements using accepted implementation evidence.
+- `/root/audit_ai_lifecycle`: prior fixes are released. Browser follow-up ownership
+  is `app/access/child/pair.tsx` and `tests/child-pairing-back.test.tsx` only,
+  restoring the credential-ready state when returning from pairing to PIN.
+  Preserve the configured identity presentation edits in the route.
+- `/root/audit_access_persistence`: identity edits are released; current work is
+  browser verification and its scoped screenshot artifacts only.
+- `/root/audit_growth_transactions`: native completion follow-up owns
+  `src/services/native/ExpoVoiceCaptureService.ts` and
+  `tests/live-voice-services.test.ts` only. Recover trustworthy duration for
+  native automatic completion using the installed silent media metadata reader;
+  preserve all previous stop/status/cleanup fixes and use synthetic adapters only.
+
+**Scope and authority**: Audit accepted Features 003–005, fix verified defects with
+local synthetic regressions, preserve default-off flags and native/human gates.
+The starting tree is clean on `main` at `07f484c`. The current user instruction
+prohibits commits, pushes, deployment, production activity, and destructive changes;
+it supersedes earlier commit/push permissions for this audit.
+
+**Status**: Complete; all runtime and test boundaries released. Root integrated
+verified persistence/reset, configured identity, pairing Back, Shared Growth history,
+Coach authorization, voice fallback/cleanup, and native stop/duration repairs.
+Final typecheck, lint, formatting and all 1,631 tests across 127 files pass. Web export
+passes for 39 routes; Android Hermes JavaScript export passes. Isolated Chromium
+verified configured identity, pairing/Back, remembered access, temporary Parent
+handoff and signed-out Arabic reset; ten synthetic screenshots are retained in
+`output/playwright/maintainer-audit/`. Physical Android is blocked by no attached
+target; live provider and named-human acceptance remain unrun. Age authority and
+corrupt-directory recovery needed owner decisions at that checkpoint; the approved
+configured-age follow-up above resolves the former.
+No dependencies, release flags or shared history changed. The patch is ready for
+contributor review and remains uncommitted/unpushed under the current user authority.
 
 ## Repository publication — 2026-09-13
 

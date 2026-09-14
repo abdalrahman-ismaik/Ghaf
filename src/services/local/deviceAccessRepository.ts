@@ -63,6 +63,9 @@ export function createDeviceAccessRepository(
   const clear = (): DomainResult<true> => {
     try {
       storage.removeItem(DEVICE_ACCESS_STORAGE_KEY);
+      if (storage.getItem(DEVICE_ACCESS_STORAGE_KEY) !== null) {
+        return storageFailure('Remembered device access was not removed');
+      }
     } catch {
       return storageFailure('Remembered device access could not be removed');
     }

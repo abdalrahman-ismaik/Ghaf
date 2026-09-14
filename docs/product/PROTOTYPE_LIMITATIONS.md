@@ -12,6 +12,129 @@ Age 9–11 profiles require Parent attestation of age 10+; this is not age verif
 prototype access guards do not become production financial security. Task progress/card history
 does not synchronize across devices or recover after restart. Existing Family Reward promise
 metadata and Seeds remain separate. Native and named-human acceptance are still required.
+## Persistent account continuation — 2026-09-14
+
+Feature 018 now stores a bounded adult profile and private family/task/study
+planning workspace through real Supabase ownership/RPCs. Two independent native
+installations on one API 35 emulator have retrieved shared account data, written
+changes both ways, restored their own sessions and maintained logout/account
+isolation. This is one emulator, not two devices; it uses a verified native
+container with the current Hermes bundle, not a fresh full Gradle build.
+The backend-maintenance pass and hosted readback are recorded separately in
+[Feature 018 validation](../../specs/018-persistent-adult-accounts/validation.md).
+No local sample migration, restored Seed/academic-goal authority, real Child media,
+production readiness or physical-performance claim follows. Feature 014 remains
+deferred by the owner's renewed decision. Older evidence below stays historical.
+
+## Dedicated hosted messaging test — 2026-09-14
+
+An explicitly configured synthetic test backend now passes real Auth/HTTP messaging
+acceptance, including Parent–Child delivery, approved peer conversations and revocation.
+The default unconfigured build still cannot send real messages. The adult pilot remains
+separate; study, goals and progression do not gain cloud synchronization.
+Scheduled hourly retention has run successfully. A diagnostic APK built and ran on a
+Samsung; real Parent session restoration and phone/browser bidirectional messaging
+passed. A separate English web audit passed sibling text/phrase exchange, Parent
+exclusion from peer content, and revocation clearing both Child peer views while
+preserving their Parent chats. This is one physical phone plus browser evidence,
+not two physical-phone acceptance. Synthetic test records and retained messages
+remain after the audit sessions signed out.
+
+Two corrected full Gradle builds (`923cf10` and `c4b7c26`) failed after D: lost writes.
+The second failed despite a successful short write probe; no further D: build is
+allocated. A C:-only internal update is installed: the verified `273f97d` native
+container with `923cf10` JavaScript prepared from `a365f9b`, APK hash beginning
+`98223bd92160`. Payload, signing, alignment, installation and cold-launch checks
+passed, as did the observed Parent restoration, Study AR/EN body/tabs/nickname and
+messaging body/list presentation. This does not establish a successful full native
+rebuild. The installed update still has a left-aligned Arabic messaging header.
+Its source correction `0ad7a0d` passed scoped checks and now has a verified C:-only
+APK, SHA-256 `d937a462598090fea79c01db68b0933fc0da9029680ff2be0c433e09cb1d3564`.
+The owner selected Android Studio emulator acceptance using C: only. The separate
+ARM64-translation AVD booted and installed this APK, but application startup failed
+before JavaScript because SoLoader selected an absent x86_64 library path. No
+emulator UI or corrected-header pass follows from installation. A separate copy
+with only native-library extraction enabled now passes packaging verification,
+APK hash beginning `73aced8e9826`. Although streamed installation reported an empty
+failure, the on-emulator APK hash matched, Arabic onboarding rendered and Parent
+entry worked. Subsequent pinned checks passed AR/EN Study body/tabs/nickname,
+messaging header/list direction and real Parent login/restoration after force-stop.
+Study hardware Back exited the app, and conversation history/composer scroll
+reachability remains unverified. A later capture made while ADB was offline is
+invalid; skipped startup frames do not establish performance acceptance.
+
+The Back correction and released motion work are now compiled and packaged from
+`e8ae266`. New APK SHA-256 is
+`a55a6acb1e1beae32b982f364ff84b602efd83d66854e77fb6e9fd30a9ca5337`, 62,436,538 bytes.
+It preserves the `273f97d` native container and `73aced8e…` extraction configuration;
+resource/payload, signer, v2/v3 and 16 KiB alignment verification passed. TypeScript,
+full lint, full formatting and 2,773 tests across 193 files passed, with two opt-in
+tests skipped. This is not a full Gradle rebuild. Installation and messaging header/
+Parent restoration checks passed, but native Back still exited to the launcher.
+The separate APK `615048cd…` changes only the predictive Back manifest flag and
+passes Parent repeated Back, Parent keyboard dismissal retaining a draft, and
+Child Back to Today. Source configuration `9d756ef` adopts the verified setting.
+A subsequent cold-launch command timed out at 22,440 ms; startup reliability,
+broader motion/native and physical acceptance remain unpassed. Exact artifact
+identities and results remain separately attributed in the
+[current integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
+The earlier diagnostic phone also completed the study-goal/prize, Child-isolation
+and Arabic reset rehearsal; those results remain attributed to that diagnostic
+APK. Final-candidate native lifecycle/revocation, accessibility, named human review
+and other unrecorded cases remain open rather than inheriting browser or source passes.
+The Free test project has no verified backup/PITR recovery, and its default-off CAPTCHA
+setting does not establish production abuse prevention or a real Child rollout.
+
+## Feature 017 study and family support — 2026-09-13
+
+Study records are synthetic, private and device-local in ordinary family mode;
+quick demo and the adult pilot sample use isolated memory. They do not sync to
+another device or connect to schools. First study entry binds storage to an opaque
+family-instance identifier; this is local isolation metadata, not authentication.
+Reset clears the study repository. Its dates and suggested durations do not trigger
+notifications, calendar events, monitoring or automatic proof of learning.
+
+The equal-groups example and own-material study guide are finite prepared content,
+not a live tutor or certified curriculum. Self-reported marks require Parent review.
+Optional academic prizes are private nonessential promises fulfilled outside the app;
+they never add Seeds, existing Family Reward progress, badges, canopy or League score.
+Sourced activities do not establish a measured Ghaf learning or wellbeing benefit.
+
+Feature 017 adds Parent-approved sibling messaging to Feature 016's separate service.
+Parent permission management grants no access to peer conversation content. The local
+PostgreSQL tests do not verify hosted Auth, PostgREST, real two-device delivery or
+native session handling. Messaging is unconfigured in the checked default build.
+The adult pilot's project and credentials are not messaging activation evidence.
+
+## Feature 006 adult account pilot — 2026-09-13
+
+Feature 006 adds a separately configured Supabase adult login and server-owned
+approval gate. It does not convert the sample family into a real household or
+provide saved tasks, Seeds, gardens, rewards, real Child access, cloud sync, live
+AI, production-readiness or compliance evidence. The default build stays entirely
+synthetic. Pilot sample data resets on process restart; adult session persistence
+is separate. Native SecureStore and namespaced web auth storage do not establish
+production Child-data protection. See [the pilot validation record](../../specs/006-real-parent-pilot/validation.md)
+for the exact local, hosted, email and physical-device evidence rather than
+assuming any feature is activated. The owner selected a dedicated Gmail SMTP
+sender without a domain purchase. SMTP and bilingual confirmation/recovery
+templates are saved and their persisted configuration is verified. Actual external
+delivery and hosted account-flow checks remain NOT RUN, so pilot activation stays
+blocked. Gmail may throttle or fail delivery; this is a small pilot option. Resend
+with an owned domain remains a later alternative.
+
+## Confirmed corrupt-data recovery — 2026-09-13
+
+The owner-approved recovery path may clear this installation's corrupt local demo
+family only after an explicit user confirmation and a fresh corruption check. It
+does not recover the damaged profiles, authenticate a guardian, retrieve a cloud
+backup, or operate across devices. Temporary storage errors do not authorize
+deletion. Valid families retain the ordinary Parent-only reset boundary.
+
+Synthetic tests can verify the confirmation, ordered clearing and retry contracts;
+physical SQLite/storage failure, Android Back and assistive-technology acceptance
+still require direct evidence. Recovery tests use isolated synthetic storage and
+never clear a user's existing local browser or device data.
 
 ## Tamagui botanical presentation — 2026-09-11
 

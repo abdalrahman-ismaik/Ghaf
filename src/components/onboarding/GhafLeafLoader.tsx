@@ -5,13 +5,14 @@ import Animated, {
   Easing,
   ReduceMotion,
   useAnimatedStyle,
-  useReducedMotion,
   useSharedValue,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
 
 import { colors, radii } from '@/design/tokens';
+import { interactionMotion } from '@/design/motion';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 interface GhafLeafLoaderProps {
   readonly accessibilityLabel: string;
@@ -19,7 +20,7 @@ interface GhafLeafLoaderProps {
 }
 
 export function GhafLeafLoader({ accessibilityLabel, testID }: GhafLeafLoaderProps) {
-  const reducedMotion = Boolean(useReducedMotion());
+  const reducedMotion = useReducedMotionPreference();
   const rotation = useSharedValue(0);
 
   useEffect(() => {
@@ -30,14 +31,14 @@ export function GhafLeafLoader({ accessibilityLabel, testID }: GhafLeafLoaderPro
     rotation.set(
       withRepeat(
         withTiming(360, {
-          duration: 1_600,
+          duration: interactionMotion.timing.busyOrbit,
           easing: Easing.linear,
-          reduceMotion: ReduceMotion.System,
+          reduceMotion: ReduceMotion.Never,
         }),
         -1,
         false,
         undefined,
-        ReduceMotion.System,
+        ReduceMotion.Never,
       ),
     );
     return () => cancelAnimation(rotation);

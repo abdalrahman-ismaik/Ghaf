@@ -22,4 +22,3 @@ create function auth.jwt() returns jsonb language sql stable as $$
 $$;
 revoke all on schema auth from public, anon, authenticated;
 grant usage on schema public to anon, authenticated;
-

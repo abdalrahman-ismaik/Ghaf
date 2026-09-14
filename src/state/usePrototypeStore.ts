@@ -9,6 +9,14 @@ import {
   type TaskAssignmentCollection,
 } from '../features/tasks/assignmentInstances';
 import { create, type StateCreator } from 'zustand';
+import { applyStudyCommand } from '../features/study';
+import type {
+  StudyActor,
+  StudyCommand,
+  StudyContext,
+  StudyResult,
+  StudyState,
+} from '../models/study';
 
 import { entryMode } from '../config/demoEntry';
 import { masroofiDemoEnabled } from '../config/masroofi';
@@ -22,6 +30,8 @@ import type {
 import { createDemoEntryAdapter, type DemoEntryAdapter } from '../features/access/demoEntry';
 import { createLocalParentEntry } from '../features/access/localParentEntry';
 import type { DemoEntryRequest, DemoEntryHandoff } from '../models/demoEntry';
+
+import { getPilotConfig } from '../features/pilot/config';
 
 import {
   createChildVoiceController,
@@ -75,11 +85,16 @@ import {
   restoreRememberedDeviceAccess,
 } from '../features/access/rememberedDeviceAccess';
 import { restoreAmbientAudioPreference } from '../features/audio';
-import { createLocalFamilyRecord, localFamilyRecordToReceipt } from '../features/local-family';
 import { createFamilyConnectionPlan } from '../features/family-connections';
+import {
+  createLocalFamilyRecord,
+  localFamilyRecordToReceipt,
+  resolveConfiguredChildAgeBand,
+} from '../features/local-family';
 import {
   createParentOnboardingController,
   normalizeParentIdentifier,
+  PARENT_VERIFICATION_CODE,
   type ParentOnboardingCompletionReceipt,
   type ParentOnboardingDraftPatch,
   type ParentOnboardingHandoff,
@@ -258,6 +273,8 @@ import type {
 } from '../models/sharedGrowth';
 import {
   serviceRegistry,
+  clearPilotSampleServiceHistory,
+  pilotSampleEnabled,
   type EphemeralMediaService,
   type LiveChildCoachTextService,
   type ParentGuideService,
@@ -291,6 +308,7 @@ export type PendingFamilyCreationIntent = 'fresh' | 'replacement' | 'profile_rep
 
 export interface BoundLiveVoiceCapture {
   readonly state: LiveVoiceCaptureState;
+  readonly pilotSampleGeneration?: number;
   readonly childId: SyntheticChildId;
   readonly assignmentId: string;
   readonly taskId: string;
@@ -346,14 +364,23 @@ function createInitialLiveChildAiGrants(): LiveChildAiGrantsByProfile {
 function localFamilyView(
   record: LocalFamilyRecord | null,
   status: LocalFamilyView['status'] = 'ready',
+  errorCode: LocalFamilyView['errorCode'] = 'invalid_or_unavailable_local_data',
 ): LocalFamilyView {
   return {
     status,
     record,
     configuredChildIds: record ? record.children.map((child) => child.id) : [],
-    errorCode: status === 'unavailable' ? 'invalid_or_unavailable_local_data' : null,
+    errorCode: status === 'unavailable' ? errorCode : null,
     storageTruth: 'device_local_demo_only',
   };
+}
+
+function localFamilyReadFailure(code: DomainErrorCode): LocalFamilyView {
+  return localFamilyView(
+    null,
+    'unavailable',
+    code === 'INVALID_RESPONSE' ? 'corrupt_local_data' : 'invalid_or_unavailable_local_data',
+  );
 }
 
 function deviceAccessView(
@@ -390,8 +417,21 @@ function refreshRememberedChildContext(childId: SyntheticChildId): {
       : deviceAccessView(null, 'unavailable'),
     localFamily: currentFamily.ok
       ? localFamilyView(currentFamily.data)
-      : localFamilyView(null, 'unavailable'),
+      : localFamilyReadFailure(currentFamily.error.code),
   };
+}
+
+function classifyLocalFamilyReadFailure(code: DomainErrorCode): {
+  readonly view: LocalFamilyView;
+  readonly profileRepair: LocalFamilyProfileRepairCandidate | null;
+} {
+  if (code !== 'INVALID_RESPONSE') {
+    return { view: localFamilyReadFailure(code), profileRepair: null };
+  }
+  const repair = serviceRegistry.localFamily.readProfileRepairCandidate();
+  return repair.ok && repair.data
+    ? { view: localFamilyView(null, 'unavailable'), profileRepair: repair.data }
+    : { view: localFamilyReadFailure(repair.ok ? code : repair.error.code), profileRepair: null };
 }
 
 function restoreInitialLocalFamily(): {
@@ -400,12 +440,7 @@ function restoreInitialLocalFamily(): {
 } {
   if (entryMode === 'demo') return { view: localFamilyView(null), profileRepair: null };
   const read = serviceRegistry.localFamily.read();
-  if (!read.ok) {
-    const repair = serviceRegistry.localFamily.readProfileRepairCandidate();
-    return repair.ok && repair.data
-      ? { view: localFamilyView(null, 'unavailable'), profileRepair: repair.data }
-      : { view: localFamilyView(null, 'unavailable'), profileRepair: null };
-  }
+  if (!read.ok) return classifyLocalFamilyReadFailure(read.error.code);
   if (!read.data) return { view: localFamilyView(null), profileRepair: null };
   const restoredReceipt = parentOnboardingController.restoreCompletionReceipt(
     localFamilyRecordToReceipt(read.data),
@@ -541,6 +576,7 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly pilotSampleActive: boolean;
   readonly taskAssignments: TaskAssignmentCollection;
   readonly catalogSupportRequests: Readonly<Record<string, true>>;
   readonly taskContexts: Readonly<
@@ -622,6 +658,10 @@ export interface PrototypeStoreState extends PrototypeSession {
   ) => ServiceResult<ParentOnboardingView>;
   readonly completeParentOnboarding: () => ServiceResult<ParentOnboardingCompletionReceipt>;
   readonly authorizeParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
+  readonly studyRevision: number;
+  readonly initializeStudy: () => StudyResult<StudyState>;
+  readonly getStudy: () => StudyResult<StudyState>;
+  readonly dispatchStudy: (command: StudyCommand) => StudyResult<StudyState>;
   readonly enterParentExperience: () => ServiceResult<ParentOnboardingHandoff>;
   readonly enterLocalParentAccount: () => ServiceResult<ParentOnboardingHandoff>;
   readonly selectChildAccessProfile: (childId: SyntheticChildId) => ServiceResult<ChildAccessView>;
@@ -702,6 +742,12 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
   readonly resetPrototype: () => ServiceResult<Omit<ResetResult, 'session'>>;
+  readonly startPilotSample: () => Promise<ServiceResult<ParentOnboardingHandoff>>;
+  readonly clearPilotSample: () => ServiceResult<Omit<ResetResult, 'session'>>;
+  readonly retryLocalFamilyLoad: () => ServiceResult<true>;
+  readonly confirmCorruptLocalFamilyRecovery: (input: {
+    readonly confirmed: boolean;
+  }) => ServiceResult<Omit<ResetResult, 'session'>>;
   // Route shell still uses this alias; resetPrototype owns the reset behavior.
   readonly resetDemo: () => ServiceResult<'/'>;
   readonly startMangroveLearning: (
@@ -1043,6 +1089,41 @@ function createEmptyChildTaskDraft(): ChildTaskDraftState {
   };
 }
 
+function studyAuthority(state: PrototypeStoreState): StudyResult<{
+  actor: StudyActor;
+  context: StudyContext;
+}> {
+  const authorized =
+    state.role === 'parent'
+      ? requireActiveParentExperience(state)
+      : requireActiveChildExperience(state);
+  const family = state.localFamily.record;
+  if (!authorized.ok || state.localFamily.status !== 'ready' || !family?.studyInstanceId) {
+    return { ok: false, error: { code: 'forbidden' } };
+  }
+  const childIds = family.children.map((child) => child.id);
+  if (!childIds.includes(state.activeChildId)) return { ok: false, error: { code: 'forbidden' } };
+  return {
+    ok: true,
+    data: {
+      actor:
+        state.role === 'parent'
+          ? { role: 'parent' }
+          : { role: 'child', childId: state.activeChildId },
+      context: { familyKey: family.studyInstanceId, childIds, now: new Date().toISOString() },
+    },
+  };
+}
+
+function projectStudy(state: StudyState, actor: StudyActor): StudyState {
+  if (actor.role === 'parent') return state;
+  return {
+    ...state,
+    plans: state.plans.filter((plan) => plan.childId === actor.childId),
+    goals: state.goals.filter((goal) => goal.childId === actor.childId),
+  };
+}
+
 function validateActiveChildAssignment(
   state: PrototypeStoreState,
   includeChosen: boolean,
@@ -1091,7 +1172,7 @@ function validateLiveVoiceAuthority(state: PrototypeStoreState): ServiceResult<{
 }> {
   const active = validateActiveChildAssignment(state, true);
   if (!active.ok) return active;
-  const ageBand: string = state.children[state.activeChildId].ageBand;
+  const ageBand = resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId);
   const grants = state.liveChildAiGrants[state.activeChildId];
   const now = Date.now();
   if (ageBand !== '12_14') {
@@ -1115,6 +1196,7 @@ function boundLiveVoiceIsCurrent(
   const authority = validateLiveVoiceAuthority(state);
   return (
     authority.ok &&
+    (!pilotSampleEnabled || bound.pilotSampleGeneration === pilotSampleGeneration) &&
     state.liveVoiceCapture?.state.envelope.voiceSessionId === bound.state.envelope.voiceSessionId &&
     state.activeChildId === bound.childId &&
     authority.data.journey.assignment.id === bound.assignmentId &&
@@ -1540,6 +1622,95 @@ function validateGuideSuggestion(
   return evaluateAssistantSafety({ audience: 'parent', texts }).accepted;
 }
 
+// Retain the confirmed corruption context only for this session's incomplete local recovery.
+let confirmedCorruptRecoveryPending: LocalFamilyView | null = null;
+let pilotSampleGeneration = 0;
+
+function resetClearedPrototype(
+  set: (updater: (state: PrototypeStoreState) => Partial<PrototypeStoreState>) => void,
+  get: () => PrototypeStoreState,
+): ServiceResult<Omit<ResetResult, 'session'>> {
+  if (pilotSampleEnabled) pilotSampleGeneration += 1;
+  const state = get();
+  const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
+  if (!ambientAudioReset.ok) return ambientAudioReset;
+  const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
+  if (!savedTaskTemplateReset.ok) return savedTaskTemplateReset;
+  const studyReset = serviceRegistry.study.clear();
+  if (!studyReset.ok) return failure('INVALID_RESPONSE', 'Study records could not be cleared');
+  const reset = serviceRegistry.prototypeSession.resetPrototype();
+  const nextGrowthJourney = createGrowthJourneyRuntime(
+    reset.session,
+    get().growthJourney.resetSequence + 1,
+  );
+  if (!nextGrowthJourney.ok) {
+    return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
+  }
+  const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
+  const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
+    profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
+  });
+  const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
+  const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+  if (!onboardingReset.ok) return onboardingReset;
+  const accessReset = serviceRegistry.access.resetPrototype();
+  if (!accessReset.ok) return accessReset;
+  const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
+  if (!liveChildAiGrantReset.ok) return liveChildAiGrantReset;
+  const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
+  releaseLiveVoiceCapture(state.liveVoiceCapture);
+  set((state) => ({
+    ...reset.session,
+    studyRevision: state.studyRevision + 1,
+    pilotSampleActive: false,
+    demoRunGeneration: entryMode === 'demo' ? state.demoRunGeneration + 1 : state.demoRunGeneration,
+    demoResetFailed: false,
+    ambientAudioPreference: {
+      enabled: entryMode !== 'demo',
+      status: 'ready',
+      source: 'default',
+    },
+    activeExperience: 'signed_out',
+    childAccess: childAccessController.reset(),
+    deviceAccess: deviceAccessView(null),
+    familyReward: createFamilyRewardRuntime(),
+    masroofi: createMasroofiRuntime(),
+    growthJourney: nextGrowthJourney.data,
+    privateLeague: nextPrivateLeague,
+    mangroveLearningByProfile: nextMangroveLearning,
+    sharedGrowth: nextSharedGrowth,
+    revealBundleQueue: createEmptyRevealBundleQueue(),
+    approvalRevealCommitments: {},
+    parentOnboarding: onboardingReset.data,
+    localFamily: localFamilyView(null),
+    localFamilyProfileRepair: null,
+    pendingFamilyCreation: null,
+    rememberParentOnThisDevice: false,
+    returningUserWelcome: null,
+    temporaryParentAccess: null,
+    parentGuideSuggestion: null,
+    parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
+    liveChildAiGrants: createInitialLiveChildAiGrants(),
+    liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
+    liveVoiceCapture: null,
+    childCoachResult: null,
+    ageAdaptedCoachResult: null,
+    childVoiceView: releasedVoiceView,
+    confirmationPlan: null,
+    lastRecognitionAttempt: null,
+    prospectiveTaskAdjustment: null,
+    preAcceptanceAdjustment: null,
+    routineProgressByTask: reset.session.routineProgressByTask ?? {},
+    childTaskDraft: createEmptyChildTaskDraft(),
+    taskDraftRevision: state.taskDraftRevision + 1,
+    permissionProofSequence: 0,
+  }));
+  confirmedCorruptRecoveryPending = null;
+  if (entryMode === 'demo') demoEntryAdapter?.invalidate();
+  if (pilotSampleEnabled) clearPilotSampleServiceHistory();
+  return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
+}
+
 function sameTaskAuthority(left: unknown, right: unknown): boolean {
   if (Object.is(left, right)) return true;
   if (
@@ -1705,6 +1876,50 @@ function withTaskAssignments(
 
 const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => ({
   ...initialPrototypeSession,
+  studyRevision: 0,
+  initializeStudy: () => {
+    const state = get();
+    const authorized =
+      state.role === 'parent'
+        ? requireActiveParentExperience(state)
+        : requireActiveChildExperience(state);
+    const family = state.localFamily.record;
+    if (!authorized.ok || !family || state.localFamily.status !== 'ready') {
+      return { ok: false, error: { code: 'forbidden' } };
+    }
+    if (family.studyInstanceId) return get().getStudy();
+    // A family without a binding cannot own records left by a failed earlier reset.
+    const cleared = serviceRegistry.study.clear();
+    if (!cleared.ok) return cleared;
+    const studyInstanceId = `study-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+    const saved = serviceRegistry.localFamily.save({ ...family, studyInstanceId });
+    if (!saved.ok) return { ok: false, error: { code: 'storage_write' } };
+    const verified = serviceRegistry.localFamily.read();
+    if (!verified.ok || verified.data?.studyInstanceId !== studyInstanceId)
+      return { ok: false, error: { code: 'storage_write' } };
+    set({ localFamily: localFamilyView(verified.data), studyRevision: state.studyRevision + 1 });
+    return get().getStudy();
+  },
+  getStudy: () => {
+    const authority = studyAuthority(get());
+    if (!authority.ok) return authority;
+    const loaded = serviceRegistry.study.load(authority.data.context.familyKey);
+    return loaded.ok ? { ok: true, data: projectStudy(loaded.data, authority.data.actor) } : loaded;
+  },
+  dispatchStudy: (command) => {
+    const authority = studyAuthority(get());
+    if (!authority.ok) return authority;
+    const { actor, context } = authority.data;
+    const loaded = serviceRegistry.study.load(context.familyKey);
+    if (!loaded.ok) return loaded;
+    const next = applyStudyCommand(loaded.data, actor, command, context);
+    if (!next.ok) return next;
+    const saved = serviceRegistry.study.save(next.data);
+    if (!saved.ok) return saved;
+    set((state) => ({ studyRevision: state.studyRevision + 1 }));
+    return { ok: true, data: projectStudy(next.data, actor) };
+  },
+  pilotSampleActive: false,
   taskAssignments: createTaskAssignmentCollection('run-0'),
   taskContexts: {},
   catalogSupportRequests: {},
@@ -2242,6 +2457,11 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         restorePreviousFamily();
         return savedTaskTemplateReset;
       }
+      const studyReset = serviceRegistry.study.clear();
+      if (!studyReset.ok) {
+        restorePreviousFamily();
+        return failure('INVALID_RESPONSE', 'Study records could not be cleared');
+      }
       replacementReset = {
         session: reset.session,
         growthJourney: nextGrowthJourney.data,
@@ -2269,6 +2489,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         releaseLiveVoiceCapture(state.liveVoiceCapture);
         set((current) => ({
           ...replacementReset.session,
+          studyRevision: current.studyRevision + 1,
           activeExperience: 'parent',
           childAccess: replacementReset.childAccess,
           deviceAccess: remembered
@@ -3015,11 +3236,11 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     if (!authority.ok) {
       return failure('INVALID_TRANSITION', 'Only the active Parent can change bounded AI access');
     }
-    if (
-      input.capability === 'voice' &&
-      input.granted &&
-      (state.children[input.childId].ageBand as string) !== '12_14'
-    ) {
+    const ageBand = resolveConfiguredChildAgeBand(state.localFamily, input.childId);
+    if (input.granted && ageBand === null) {
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
+    if (input.capability === 'voice' && input.granted && ageBand !== '12_14') {
       return failure('PRIVACY_REJECTED', 'Live voice grants are limited to ages 12–14');
     }
     const permissionProofSequence = state.permissionProofSequence + 1;
@@ -3294,6 +3515,157 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     };
   },
 
+  retryLocalFamilyLoad: () => {
+    const state = get();
+    if (state.activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Local family retry requires a signed-out experience');
+    }
+    const read = serviceRegistry.localFamily.read();
+    if (!read.ok) {
+      const failed = classifyLocalFamilyReadFailure(read.error.code);
+      set({ localFamily: failed.view, localFamilyProfileRepair: failed.profileRepair });
+      return { ok: false, error: read.error };
+    }
+    if (confirmedCorruptRecoveryPending && !read.data) {
+      set({ localFamily: confirmedCorruptRecoveryPending });
+      return {
+        ok: false,
+        error: {
+          code: 'INVALID_TRANSITION',
+          message: 'Confirm the pending local recovery to finish reset',
+          retryable: true,
+          fallbackAvailable: false,
+        },
+      };
+    }
+    confirmedCorruptRecoveryPending = null;
+    const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
+    if (!onboardingReset.ok) {
+      set({ localFamily: localFamilyView(null, 'unavailable') });
+      return onboardingReset;
+    }
+    childAccessController.reset();
+    const restoredFamily = restoreInitialLocalFamily();
+    const restored = restoredFamily.view;
+    const affinity = serviceRegistry.deviceAccess.read();
+    set({
+      localFamily: restored,
+      localFamilyProfileRepair: restoredFamily.profileRepair,
+      parentOnboarding: parentOnboardingController.getView(),
+      childAccess: childAccessController.getView(),
+      deviceAccess:
+        affinity.ok &&
+        (!affinity.data ||
+          (restored.record && deviceAffinityMatchesFamily(affinity.data, restored.record)))
+          ? deviceAccessView(affinity.data)
+          : deviceAccessView(null, 'unavailable'),
+      returningUserWelcome: null,
+    });
+    return restored.status === 'ready'
+      ? success(true)
+      : failure(
+          restored.errorCode === 'corrupt_local_data' ? 'INVALID_RESPONSE' : 'INVALID_TRANSITION',
+          'The saved local family could not be restored',
+        );
+  },
+
+  confirmCorruptLocalFamilyRecovery: (input) => {
+    if (input?.confirmed !== true || get().activeExperience !== 'signed_out') {
+      return failure('INVALID_TRANSITION', 'Explicit signed-out recovery confirmation is required');
+    }
+    const read = serviceRegistry.localFamily.read();
+    if (read.ok) {
+      if (read.data) {
+        confirmedCorruptRecoveryPending = null;
+        get().retryLocalFamilyLoad();
+        return failure(
+          'INVALID_TRANSITION',
+          'A valid saved local family cannot be cleared by recovery',
+        );
+      }
+      if (!confirmedCorruptRecoveryPending) {
+        return failure('INVALID_TRANSITION', 'No confirmed corrupt local family requires recovery');
+      }
+      const affinity = serviceRegistry.deviceAccess.read();
+      if (!affinity.ok) {
+        return { ok: false, error: affinity.error };
+      }
+      if (affinity.data !== null) {
+        return failure(
+          'INVALID_TRANSITION',
+          'Remembered access must also be absent to finish recovery',
+        );
+      }
+      return resetClearedPrototype(set, get);
+    }
+    const failed = classifyLocalFamilyReadFailure(read.error.code);
+    set({ localFamily: failed.view, localFamilyProfileRepair: failed.profileRepair });
+    if (read.error.code !== 'INVALID_RESPONSE') return { ok: false, error: read.error };
+    if (failed.profileRepair || failed.view.errorCode !== 'corrupt_local_data') {
+      return failure('INVALID_TRANSITION', 'The saved family requires profile repair or retry');
+    }
+    confirmedCorruptRecoveryPending = localFamilyReadFailure(read.error.code);
+    const affinityReset = serviceRegistry.deviceAccess.clear();
+    if (!affinityReset.ok) return affinityReset;
+    const familyReset = serviceRegistry.localFamily.clear();
+    if (!familyReset.ok) return familyReset;
+    return resetClearedPrototype(set, get);
+  },
+
+  startPilotSample: async () => {
+    if (!pilotSampleEnabled || !getPilotConfig().valid) {
+      return failure('INVALID_TRANSITION', 'A configured real-account pilot is required');
+    }
+    const locale = get().locale;
+    const cleared = get().clearPilotSample();
+    if (!cleared.ok) return cleared;
+    if (entryMode === 'demo') {
+      const state = get();
+      const entered = state.enterDemoExperience({
+        principal: 'parent_al_noor',
+        expectedGeneration: state.demoRunGeneration,
+        expectedEpoch: state.demoEntryEpoch,
+      });
+      if (!entered.ok) return entered;
+      get().setLocale(locale);
+      const authorized = get().authorizeParentExperience();
+      if (authorized.ok) set({ pilotSampleActive: true });
+      return authorized;
+    }
+    const generation = pilotSampleGeneration;
+    const requested = get().requestParentVerification({
+      identifier: 'parent@example.com',
+      networkAvailable: false,
+    });
+    if (!requested.ok) return requested;
+    const verified = await get().verifyParentCode(PARENT_VERIFICATION_CODE);
+    if (generation !== pilotSampleGeneration) {
+      return failure('INVALID_TRANSITION', 'The sample launch was interrupted');
+    }
+    if (!verified.ok) return verified;
+    const configured = get().updateParentOnboardingDraft({
+      familyName: 'عائلة النور',
+      appLanguage: locale,
+    });
+    if (!configured.ok) return configured;
+    const completed = get().completeParentOnboarding();
+    if (!completed.ok) return completed;
+    const authorized = get().authorizeParentExperience();
+    if (authorized.ok) set({ pilotSampleActive: true });
+    return authorized;
+  },
+
+  clearPilotSample: () => {
+    if (!pilotSampleEnabled) {
+      return failure('INVALID_TRANSITION', 'Sample teardown is available only in the pilot');
+    }
+    const deviceAccessReset = serviceRegistry.deviceAccess.clear();
+    if (!deviceAccessReset.ok) return { ok: false, error: deviceAccessReset.error };
+    const localReset = serviceRegistry.localFamily.clear();
+    if (!localReset.ok) return { ok: false, error: localReset.error };
+    return resetClearedPrototype(set, get);
+  },
+
   resetPrototype: () => {
     if (demoEntryInFlight) {
       demoEntryAborted = true;
@@ -3350,81 +3722,10 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       if (!deviceAccessReset.ok) return rejectReset({ ok: false, error: deviceAccessReset.error });
       const localReset = serviceRegistry.localFamily.clear();
       if (!localReset.ok) return rejectReset({ ok: false, error: localReset.error });
-      const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
-      if (!ambientAudioReset.ok) return rejectReset({ ok: false, error: ambientAudioReset.error });
-      const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
-      if (!savedTaskTemplateReset.ok)
-        return rejectReset({ ok: false, error: savedTaskTemplateReset.error });
-      const reset = serviceRegistry.prototypeSession.resetPrototype();
-      const nextGrowthJourney = createGrowthJourneyRuntime(
-        reset.session,
-        get().growthJourney.resetSequence + 1,
-      );
-      if (!nextGrowthJourney.ok) {
-        return rejectReset(failure('INVALID_RESPONSE', nextGrowthJourney.error.message));
-      }
-      const nextMangroveLearning = createLearningByProfile(nextGrowthJourney.data);
-      const nextPrivateLeague = createPrivateLeagueRecognitionRuntime({
-        profileEpochId: nextGrowthJourney.data.ledgersByProfile.child_salem.profileEpochId,
-      });
-      const nextSharedGrowth = createInitialSharedGrowth(nextGrowthJourney.data.resetSequence);
       const voiceReset = childVoiceController.resetPrototype('parent');
       if (!voiceReset.ok) return rejectReset(voiceReset);
-      const onboardingReset = parentOnboardingController.reset(R001_ONBOARDING_TIME);
-      if (!onboardingReset.ok) return rejectReset(onboardingReset);
-      const accessReset = serviceRegistry.access.resetPrototype();
-      if (!accessReset.ok) return rejectReset(accessReset);
-      const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
-      if (!liveChildAiGrantReset.ok) return rejectReset(liveChildAiGrantReset);
-      const releasedVoiceView = childVoiceController.releaseAccessAuthorityAfterPrototypeReset();
-      releaseLiveVoiceCapture(state.liveVoiceCapture);
-      set((state) => ({
-        ...reset.session,
-        demoRunGeneration:
-          entryMode === 'demo' ? state.demoRunGeneration + 1 : state.demoRunGeneration,
-        demoResetFailed: false,
-        ambientAudioPreference: {
-          enabled: entryMode !== 'demo',
-          status: 'ready',
-          source: 'default',
-        },
-        activeExperience: 'signed_out',
-        childAccess: childAccessController.reset(),
-        deviceAccess: deviceAccessView(null),
-        familyReward: createFamilyRewardRuntime(),
-        masroofi: createMasroofiRuntime(),
-        growthJourney: nextGrowthJourney.data,
-        privateLeague: nextPrivateLeague,
-        mangroveLearningByProfile: nextMangroveLearning,
-        sharedGrowth: nextSharedGrowth,
-        revealBundleQueue: createEmptyRevealBundleQueue(),
-        approvalRevealCommitments: {},
-        parentOnboarding: onboardingReset.data,
-        localFamily: localFamilyView(null),
-        localFamilyProfileRepair: null,
-        pendingFamilyCreation: null,
-        rememberParentOnThisDevice: false,
-        returningUserWelcome: null,
-        temporaryParentAccess: null,
-        parentGuideSuggestion: null,
-        parentTaskDraftingView: idleParentTaskDraftingView(state.parentTaskDraftingView),
-        liveChildAiGrants: createInitialLiveChildAiGrants(),
-        liveChildCoachView: idleLiveChildCoachView(state.liveChildCoachView),
-        liveVoiceCapture: null,
-        childCoachResult: null,
-        ageAdaptedCoachResult: null,
-        childVoiceView: releasedVoiceView,
-        confirmationPlan: null,
-        lastRecognitionAttempt: null,
-        prospectiveTaskAdjustment: null,
-        preAcceptanceAdjustment: null,
-        routineProgressByTask: reset.session.routineProgressByTask ?? {},
-        childTaskDraft: createEmptyChildTaskDraft(),
-        taskDraftRevision: state.taskDraftRevision + 1,
-        permissionProofSequence: 0,
-      }));
-      if (entryMode === 'demo') demoEntryAdapter?.invalidate();
-      return success({ navigateTo: reset.navigateTo, replaceHistory: reset.replaceHistory });
+      const reset = resetClearedPrototype(set, get);
+      return reset.ok ? reset : rejectReset(reset);
     } catch (error) {
       if (entryMode !== 'demo') throw error;
       return rejectReset(
@@ -4497,10 +4798,14 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     const guarded = validateActiveChildAssignment(state, true);
     if (!guarded.ok) return guarded;
     const journey = guarded.data;
+    const ageBand = resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId);
+    if (ageBand === null) {
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
     const result = childVoiceController.bindActiveTask({
       actorRole: 'child',
       childId: state.activeChildId,
-      ageBand: state.children[state.activeChildId].ageBand,
+      ageBand,
       taskId: journey.task.id,
       approvedTaskVersion: journey.task.version,
       lifecycle: journey.lifecycle,
@@ -4547,10 +4852,15 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
   },
 
   requestChildCoach: async (input) => {
+    const generation = pilotSampleGeneration;
     const state = get();
     const guarded = validateActiveChildAssignment(state, true);
     if (!guarded.ok) return guarded;
     const journey = guarded.data;
+    const ageBand = resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId);
+    if (ageBand === null) {
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
     if (journey.task.version !== 1 || journey.assignment.taskVersion !== 1) {
       return failure(
         'INVALID_TRANSITION',
@@ -4564,7 +4874,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       locale: state.locale,
       child: {
         id: state.activeChildId,
-        ageBand: state.children[state.activeChildId].ageBand,
+        ageBand,
         synthetic: true as const,
       },
       assignmentId: journey.assignment.id,
@@ -4572,15 +4882,18 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       approvedTaskVersion: journey.task.version,
       lifecycle: journey.lifecycle,
       fixtureId: input.fixtureId ?? null,
-      templateSelection: input.templateSelection ?? input.intent,
+      templateSelection: input.templateSelection ?? (ageBand === '6_8' ? null : input.intent),
     };
     const result = await serviceRegistry.childCoach.respond(request);
     const currentState = get();
     const currentAssignment = validateActiveChildAssignment(currentState, true);
     if (
+      generation !== pilotSampleGeneration ||
       !currentAssignment.ok ||
       (entryMode === 'demo' && currentState.demoEntryEpoch !== state.demoEntryEpoch) ||
       currentState.activeChildId !== request.child.id ||
+      resolveConfiguredChildAgeBand(currentState.localFamily, request.child.id) !==
+        request.child.ageBand ||
       currentAssignment.data.assignment.id !== request.assignmentId ||
       currentAssignment.data.task.id !== request.taskId ||
       currentAssignment.data.task.version !== request.approvedTaskVersion
@@ -4618,6 +4931,19 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     const grant = before.liveChildAiGrants[before.activeChildId].text;
     const voiceGrant = before.liveChildAiGrants[before.activeChildId].voice;
     const requestRevision = before.liveChildCoachView.requestRevision + 1;
+    const ageBand = resolveConfiguredChildAgeBand(before.localFamily, before.activeChildId);
+    if (ageBand === null) {
+      set({
+        liveChildCoachView: { ...INITIAL_LIVE_CHILD_COACH_VIEW, status: 'denied', requestRevision },
+      });
+      return failure('PRIVACY_REJECTED', 'A valid configured Child age is required');
+    }
+    if (ageBand !== '12_14' && input.boundedText !== undefined) {
+      set({
+        liveChildCoachView: { ...INITIAL_LIVE_CHILD_COACH_VIEW, status: 'denied', requestRevision },
+      });
+      return failure('INVALID_INPUT', 'Text input is outside the configured Child age policy');
+    }
     if (grant.status !== 'granted') {
       set({
         liveChildCoachView: {
@@ -4646,7 +4972,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       }
     }
     const built = createLiveChildCoachRequest({
-      ageBand: before.children[before.activeChildId].ageBand,
+      ageBand,
       childId: before.activeChildId,
       locale: before.locale,
       now: feature004Now(),
@@ -4701,15 +5027,20 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       const current = get();
       const active = validateActiveChildAssignment(current, true);
       const currentGrant = current.liveChildAiGrants[snapshot.childId].text;
+      const now = Date.now();
       return (
         active.ok &&
         current.activeChildId === snapshot.childId &&
+        resolveConfiguredChildAgeBand(current.localFamily, snapshot.childId) ===
+          built.data.ageBand &&
         active.data.assignment.id === snapshot.assignmentId &&
         active.data.task.id === snapshot.taskId &&
         active.data.task.version === snapshot.approvedTaskVersion &&
         currentGrant.status === 'granted' &&
         currentGrant.grantVersion === snapshot.grantVersion &&
         currentGrant.noticeVersion === snapshot.noticeVersion &&
+        now >= Date.parse(currentGrant.issuedAt) &&
+        now < Date.parse(currentGrant.expiresAt) &&
         (snapshot.voiceGrantVersion === null ||
           (current.liveChildAiGrants[snapshot.childId].voice.status === 'granted' &&
             current.liveChildAiGrants[snapshot.childId].voice.grantVersion ===
@@ -4721,10 +5052,17 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         current.liveChildCoachView.requestRevision === requestRevision
       );
     };
+    const rejectStaleRequest = () => {
+      const current = get();
+      if (current.liveChildCoachView.requestRevision === requestRevision) {
+        set({ liveChildCoachView: idleLiveChildCoachView(current.liveChildCoachView) });
+      }
+      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+    };
 
     const primary = await requestLiveChildCoachWithinDeadline(primaryService, built.data);
     if (!requestIsCurrent()) {
-      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+      return rejectStaleRequest();
     }
     const validated = primary.ok
       ? validateLiveChildCoachResponse(built.data, primary.data)
@@ -4752,7 +5090,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         : 'invalid_response';
     const prepared = await serviceRegistry.boundedAi.childCoachTextPrepared.respond(built.data);
     if (!requestIsCurrent()) {
-      return failure('INVALID_TRANSITION', 'The bounded Child Coach request is stale');
+      return rejectStaleRequest();
     }
     if (!prepared.ok) return prepared;
     const preparedValidated = validateLiveChildCoachResponse(built.data, prepared.data);
@@ -4821,6 +5159,7 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     }
     const bound: BoundLiveVoiceCapture = {
       state: voiceState,
+      ...(pilotSampleEnabled ? { pilotSampleGeneration } : {}),
       childId: state.activeChildId,
       assignmentId: authority.data.journey.assignment.id,
       taskId: authority.data.journey.task.id,
@@ -4889,7 +5228,8 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       services.transcription ?? serviceRegistry.boundedAi.voiceTranscriptionPrimary;
     const before = get();
     const bound = before.liveVoiceCapture;
-    if (!bound || !boundLiveVoiceIsCurrent(before, bound)) {
+    // Stopping and deleting owned audio remains required after its grant expires.
+    if (!bound || bound.state.envelope.status !== 'recording_held') {
       return failure('INVALID_TRANSITION', 'A current held voice session is required');
     }
     const stopIsCurrent = () =>
@@ -4901,8 +5241,11 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       original: ServiceResult<T>,
     ): Promise<ServiceResult<T>> => {
       const deletion = await media.delete(uri);
-      if (stopIsCurrent()) {
-        const deleting = beginVoiceDeletion(source);
+      if (get().liveVoiceCapture === bound) {
+        const deleting = beginVoiceDeletion({
+          ...source,
+          envelope: { ...source.envelope, cacheUri: uri },
+        });
         const completed = deleting.ok
           ? completeVoiceDeletion(deleting.data, deletion.ok)
           : deleting;
@@ -4910,8 +5253,56 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       }
       return deletion.ok ? original : deletion;
     };
-    const captured = await capture.stopHeld();
-    if (!captured.ok) return captured;
+    let captured: Awaited<ReturnType<VoiceCaptureService['stopHeld']>>;
+    try {
+      captured = await capture.stopHeld();
+    } catch {
+      captured = failure('REMOTE_UNAVAILABLE', 'Voice capture could not stop');
+    }
+    if (!captured.ok) {
+      if (get().liveVoiceCapture !== bound) return staleStop();
+      const deleting = beginVoiceDeletion(bound.state);
+      if (!deleting.ok) return deleting;
+      const cleaning = { ...bound, state: deleting.data };
+      set({ liveVoiceCapture: cleaning });
+      let canceled: Awaited<ReturnType<VoiceCaptureService['cancel']>>;
+      try {
+        canceled = await capture.cancel();
+      } catch {
+        canceled = failure('REMOTE_UNAVAILABLE', 'Failed voice capture cleanup is unavailable');
+      }
+      let cleanup: ServiceResult<true> = canceled.ok ? success(true) : canceled;
+      let retainedUri = bound.state.envelope.cacheUri;
+      const uris = new Set(
+        [retainedUri, canceled.ok ? canceled.data.uri : null].filter((uri): uri is string =>
+          Boolean(uri),
+        ),
+      );
+      for (const uri of uris) {
+        let deleted: ServiceResult<true>;
+        try {
+          deleted = await media.delete(uri);
+        } catch {
+          deleted = failure('REMOTE_UNAVAILABLE', 'Failed voice capture deletion is unavailable');
+        }
+        if (!deleted.ok) {
+          cleanup = deleted;
+          retainedUri = uri;
+        }
+      }
+      if (get().liveVoiceCapture !== cleaning) {
+        return staleStop();
+      }
+      const completed = completeVoiceDeletion(
+        {
+          ...deleting.data,
+          envelope: { ...deleting.data.envelope, cacheUri: retainedUri },
+        },
+        cleanup.ok,
+      );
+      if (completed.ok) set({ liveVoiceCapture: { ...bound, state: completed.data } });
+      return cleanup.ok ? captured : cleanup;
+    }
     if (!stopIsCurrent()) {
       return discardCapturedFile(captured.data.uri, bound.state, staleStop());
     }
@@ -4969,16 +5360,25 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     });
     const transcriptionIsCurrent = () =>
       get().liveVoiceCapture === transcribing && boundLiveVoiceIsCurrent(get(), transcribing);
-    const transcript =
-      primary.ok || !transcriptionIsCurrent()
-        ? primary
-        : await requestVoiceTranscriptionWithinDeadline(
-            serviceRegistry.boundedAi.voiceTranscriptionPrepared,
-            { metadata, audioBytes: bytes.data },
-          );
+    let applied = primary.ok
+      ? applyVoiceTranscript(
+          transcribing.state,
+          primary.data,
+          primary.meta.origin === 'live' ? 'transcribed' : 'prepared_synthetic',
+        )
+      : primary;
+    if (!applied.ok && transcriptionIsCurrent()) {
+      const prepared = await requestVoiceTranscriptionWithinDeadline(
+        serviceRegistry.boundedAi.voiceTranscriptionPrepared,
+        { metadata, audioBytes: bytes.data },
+      );
+      applied = prepared.ok
+        ? applyVoiceTranscript(transcribing.state, prepared.data, 'prepared_synthetic')
+        : prepared;
+    }
     bytes.data.fill(0);
     const deletion = await media.delete(captured.data.uri);
-    if (!transcriptionIsCurrent()) {
+    if (get().liveVoiceCapture !== transcribing) {
       return failure('INVALID_TRANSITION', 'Voice transcription result is stale');
     }
     if (!deletion.ok) {
@@ -4987,18 +5387,14 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       if (failed.ok) set({ liveVoiceCapture: { ...bound, state: failed.data } });
       return deletion;
     }
-    if (!transcript.ok) {
+    if (!applied.ok || !transcriptionIsCurrent()) {
       const deleting = beginVoiceDeletion(transcribing.state);
       const deleted = deleting.ok ? completeVoiceDeletion(deleting.data, true) : deleting;
       if (deleted.ok) set({ liveVoiceCapture: { ...bound, state: deleted.data } });
-      return transcript;
+      return !applied.ok
+        ? applied
+        : failure('INVALID_TRANSITION', 'Voice transcription result is stale');
     }
-    const applied = applyVoiceTranscript(
-      transcribing.state,
-      transcript.data,
-      primary.ok && primary.meta.origin === 'live' ? 'transcribed' : 'prepared_synthetic',
-    );
-    if (!applied.ok) return applied;
     const next = { ...bound, state: applied.data };
     set({ liveVoiceCapture: next });
     return success(next);

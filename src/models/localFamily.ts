@@ -54,6 +54,7 @@ export interface LocalFamilyRecord {
   readonly pairedChildIds: readonly SyntheticChildId[];
   readonly createdAt: string;
   readonly updatedAt: string;
+  readonly studyInstanceId?: string;
   readonly origin: 'local_demo';
   readonly capabilityTruth: 'local_prototype_not_authentication';
 }
@@ -90,7 +91,7 @@ export interface LocalFamilyView {
   readonly status: 'ready' | 'unavailable';
   readonly record: LocalFamilyRecord | null;
   readonly configuredChildIds: readonly SyntheticChildId[];
-  readonly errorCode: 'invalid_or_unavailable_local_data' | null;
+  readonly errorCode: 'corrupt_local_data' | 'invalid_or_unavailable_local_data' | null;
   readonly storageTruth: 'device_local_demo_only';
 }
 

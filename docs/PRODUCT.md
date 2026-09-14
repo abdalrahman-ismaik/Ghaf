@@ -16,6 +16,59 @@ in-memory and one-device only. No issuer, custody, transfer or real purchase exi
 growth, League and existing Family Reward promises are separate. See the
 [workflow](../specs/017-masroofi-demo/quickstart.md) and
 [evidence](competition-readiness/workstreams/masroofi-20260913.md).
+## Feature 018 persistent adult planning data — 2026-09-14
+
+The owner extended the real adult account pilot with a private cloud profile,
+family name/member nicknames, Parent-managed task titles/completion and study
+subjects/next steps/completion. Records belong to the stable Supabase user UUID;
+independent sign-ins retrieve the same account-owned data. This is a separate
+planning workspace, with no automatic upload of local sample data or restoration
+of Seeds, rewards, academic goals or Child access. Default demo remains synthetic.
+Feature 018 owns the current account scope and exact local/hosted/native evidence.
+The owner reconfirmed that Feature 014 local progress recovery stays deferred.
+
+## Feature 017 study and family support — 2026-09-13
+
+The owner selected saved proposals 8–12: private Study Mode, jointly agreed academic
+goals and optional prizes, Parent–Child and Parent-approved Child–Child messages,
+and sourced guided family practices. [Feature 017](../specs/017-study-family-support/spec.md)
+owns this additive scope. Study records remain synthetic and private to the local
+family; academic prizes are nonessential Parent promises with no Seeds, League or
+existing Family Reward contribution. Essential education and care are unconditional.
+Messaging retains Feature 016's independently configured service and authorization;
+peer permission management does not grant the Parent access to peer conversations.
+Research supports individual strategies, not a demonstrated Ghaf wellbeing outcome.
+
+## Feature 006 adult pilot account exception — 2026-09-13
+
+The owner approved a separate login-only pilot with real adult Supabase accounts,
+email/password, email-code verification/recovery and administrator approval.
+`EXPO_PUBLIC_GHAF_AUTH_MODE=demo` remains the competition default. The independently
+configured pilot opens only a synthetic sample family; real account email never
+enters sample profiles and sample progress is memory-only. Cloud family data,
+real Child accounts/pairing and live AI expansion remain outside this feature.
+Restart sample retains adult login; real account signout clears sample authority
+from every role. Feature 006 owns implementation and evidence; older statements
+about simulated authentication continue to describe the default competition build.
+Hosted activation requires the recorded provider, SMTP delivery and device gates.
+The owner selected a dedicated Gmail SMTP sender for the zero-cost small pilot;
+Resend with an owned domain remains a later option.
+
+## Confirmed local demo recovery — 2026-09-13
+
+If saved family data is corrupt, signed-out Welcome presents an explicit local
+recovery proposal before the introductory story. A second confirmation explains
+that local demo profiles, pairing, remembered access and current demo progress will
+be cleared. Cancel and Back preserve data. Temporary storage errors offer retry
+without deletion. Confirmation rechecks the saved data so a valid repaired family
+is never cleared under a stale error screen.
+
+Successful recovery verifies local removal, clears transient prototype state and
+returns to Arabic signed-out Welcome. Creating a new family still requires normal
+Parent setup. Ordinary reset stays Parent-only. This is a narrow local demo
+recovery exception, not production authentication, account recovery or cloud backup.
+
+<!-- impeccable:product-schema 1 -->
 
 ## Status
 

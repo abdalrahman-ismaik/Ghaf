@@ -14,6 +14,67 @@ No real money or card exists.
 See [evidence and limitations](workstreams/masroofi-20260913.md); physical Android/human review
 remains separately required. Existing Family Reward promises and all growth authorities remain
 unchanged, and the existing Parent reset clears the extension.
+## Dedicated messaging rehearsal — 2026-09-14
+
+The synthetic messaging backend is configured separately from the adult pilot.
+Use the ignored `.env.messaging.local` with `npm run start:messaging`; never put
+Parent passwords or provider administrative credentials in public configuration.
+Real HTTP acceptance passed for Parent–Child and permitted Child–Child conversations.
+Native installation and the phone journey are still in progress. Follow the
+[current backend and Android evidence](../../specs/016-real-family-messaging/backend-android-validation.md)
+before describing any device or retention gate as passed.
+
+## Feature 017 study and family support rehearsal — 2026-09-13
+
+Use synthetic data. Open **Study space** from Parent Home, select Salem, create a
+small plan, then propose an academic goal with practical Parent support and one
+criterion. An optional gift, experience or extra activity is a separate private promise.
+Review the exact proposal as Parent. Sign out, enter Salem, open Study space, choose
+the plan, start it, ask for help and complete it. Open Goals, accept the reviewed
+agreement and record a result. Return through Child settings → Parent access.
+Review the result and acknowledge the action. A matching result unlocks the promise;
+mark it fulfilled only as a synthetic rehearsal of an outside-app action. A lower
+result allows another attempt. Check Alya's space has none of Salem's records.
+
+Open **Family practices**, choose a short activity and optionally its supported route,
+then walk through the steps. Finishing acknowledges the activity on that screen only.
+Open **Practice understanding** for a finite equal-groups example and the optional
+recall/check/explain/revisit sequence. Reset from Parent settings, confirm, and verify
+Arabic signed-out Welcome and empty study records on the next entry.
+
+For real messages, use the separately configured Feature 016 service and both migrations
+in `workers/ghaf-family-messaging/`. Connect Parent and two Child devices; Parent enables
+the pair in management, Children select the peer conversation, and either may leave.
+Verify Parent content access is denied and revoked peers cannot read/send. **This hosted
+two-device segment is NOT RUN** in Feature 017's local evidence. Do not narrate a send
+when the build shows the unconfigured-service screen.
+
+## Feature 006 adult pilot and competition default — 2026-09-13
+
+Keep `EXPO_PUBLIC_GHAF_AUTH_MODE=demo` for the offline competition journey below.
+The separately configured adult pilot uses real email/password, emailed codes and
+administrator approval before opening the sample family. The pilot launcher
+enters the canonical Parent directly; every Child/PIN/pairing interaction remains
+a simulation. Pilot account controls stay available across sample roles. Restart
+sample retains adult login; Sign out of pilot removes it and clears the sample.
+Sample progress is memory-only and never syncs. See [the pilot setup guide](../backend/parent-pilot.md)
+for setup and administration, and Feature 006 validation for exact evidence.
+
+## Confirmed corrupt local-family recovery — 2026-09-13
+
+Use an isolated synthetic storage harness, never an existing family's browser or
+device data. With a corrupt current or legacy family record, signed-out Welcome
+must show recovery before onboarding. Open the reset proposal, cancel (and repeat
+with Back), and confirm no storage change. Open again and explicitly confirm;
+verify remembered affinity, legacy and current records are absent, no role remains
+authorized, Arabic Welcome appears, and normal fresh Parent setup is available.
+
+Inject a temporary read failure: only non-destructive Retry is available. Inject
+thrown or silent clear failures: no success or authenticated navigation is shown;
+retry succeeds once the failure is removed. Repair the family between prompt and
+confirmation: the valid record must survive. These are synthetic engineering
+checks, not production account-recovery or native SQLite acceptance. Current
+results are recorded in [the repository completion review](../audits/2026-09-13-repository-completion.md).
 
 ## Botanical presentation review — 2026-09-11
 

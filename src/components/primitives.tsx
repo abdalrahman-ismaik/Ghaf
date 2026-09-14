@@ -316,12 +316,17 @@ export function Button({
       : 'forest';
   const isDisabled = disabled === true || busy;
   const renderedLabel = busy && busyLabel ? busyLabel : children;
+  const accessibilityLabel =
+    props['aria-label'] ??
+    props.accessibilityLabel ??
+    (typeof renderedLabel === 'string' ? renderedLabel : undefined);
 
   return (
     <BotanicalPressable
       {...props}
       aria-busy={busy}
-      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole={props.accessibilityRole ?? 'button'}
       accessibilityState={{ ...accessibilityState, busy, disabled: isDisabled }}
       disabled={isDisabled}
       onBlur={(event) => {
@@ -333,7 +338,7 @@ export function Button({
         onFocus?.(event);
       }}
       pressRetentionOffset={pressRetentionOffset ?? spacing.sm}
-      style={({ pressed }) => [
+      style={[
         styles.button,
         brand ? styles.buttonBrand : null,
         size === 'regular' ? styles.buttonRegular : styles.buttonCompact,
@@ -343,7 +348,6 @@ export function Button({
         { flexDirection: logicalRowDirection(direction) },
         brand ? style : null,
         focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
-        pressed && !isDisabled ? { opacity: opacity.pressed } : null,
         isDisabled && dimWhenDisabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
         brand ? null : style,
       ]}

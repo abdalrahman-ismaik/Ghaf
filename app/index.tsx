@@ -3,6 +3,7 @@ import { Redirect, useRouter, type Href } from 'expo-router';
 import { Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { LocalFamilyRecovery } from '@/components/access/LocalFamilyRecovery';
 import { FirstRunOnboarding, useFirstRunExperience } from '@/components/onboarding';
 import {
   selectCanEnterChildExperience,
@@ -24,6 +25,8 @@ export default function WelcomeScreen() {
   const parentOnboarding = usePrototypeStore((state) => state.parentOnboarding);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
+  const localFamilyProfileRepair = usePrototypeStore((state) => state.localFamilyProfileRepair);
   const temporaryParentAccess = usePrototypeStore((state) => state.temporaryParentAccess);
   const enterParentExperience = usePrototypeStore((state) => state.enterParentExperience);
   const { state: firstRunState } = useFirstRunExperience();
@@ -39,6 +42,13 @@ export default function WelcomeScreen() {
   }
   if (activeExperience === 'child' && childAccess.canEnterChildExperience) {
     return <Redirect href="/child" />;
+  }
+  if (
+    activeExperience === 'signed_out' &&
+    localFamily.status === 'unavailable' &&
+    !localFamilyProfileRepair
+  ) {
+    return <LocalFamilyRecovery />;
   }
   if (activeExperience === 'signed_out' && temporaryParentAccess) {
     return <Redirect href="/access/parent/sign-in" />;

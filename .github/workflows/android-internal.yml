@@ -1,0 +1,99 @@
+name: Internal Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      adult_public_key:
+        description: Adult project sb_publishable_ client key; never an administrative key
+        required: true
+        type: string
+      messaging_public_key:
+        description: Messaging project sb_publishable_ client key; never an administrative key
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-internal-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      CI: '1'
+      EXPO_NO_DOTENV: '1'
+      EXPO_NO_TELEMETRY: '1'
+      EXPO_PUBLIC_GHAF_SERVICE_MODE: mock
+      EXPO_PUBLIC_GHAF_AUTH_MODE: supabase
+      EXPO_PUBLIC_SUPABASE_URL: https://bqcfynlbxevqlzbkimhy.supabase.co
+      EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ inputs.adult_public_key }}
+      EXPO_PUBLIC_GHAF_MESSAGING_URL: https://ijiwkmvjppfallaoahmh.supabase.co
+      EXPO_PUBLIC_GHAF_MESSAGING_PUBLISHABLE_KEY: ${{ inputs.messaging_public_key }}
+      EXPO_PUBLIC_GHAF_DEMO_ENTRY: 'true'
+      EXPO_PUBLIC_GHAF_AI_PARENT_TASK_DRAFTING_LIVE: 'false'
+      EXPO_PUBLIC_GHAF_AI_CHILD_COACH_TEXT_LIVE: 'false'
+      EXPO_PUBLIC_GHAF_AI_CHILD_COACH_VOICE_LIVE: 'false'
+      EXPO_PUBLIC_TASK_WORKSPACE_CANDIDATE: 'false'
+      EXPO_PUBLIC_R002B_PROGRESSION_ENGINE: 'false'
+      EXPO_PUBLIC_R002B_IMPACT_PATH_UI: 'false'
+      EXPO_PUBLIC_R002B_BADGES_UI: 'false'
+      EXPO_PUBLIC_R002B_LEARNING_UI: 'false'
+      EXPO_PUBLIC_R002B_REVEAL_BUNDLE_V2: 'false'
+      EXPO_PUBLIC_R002B_PARENT_PROGRESS_UI: 'false'
+      EXPO_PUBLIC_R002B_SHARED_GROWTH_VIEW: 'false'
+      EXPO_PUBLIC_R002B_SHARED_GROWTH_CONTRIBUTION: 'false'
+      NODE_OPTIONS: --max-old-space-size=2048
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Validate fixed hosted targets and public client configuration
+        run: |
+          node --test scripts/native/validate-hosted-build.test.mjs
+          node scripts/native/validate-hosted-build.mjs
+      - run: npm ci
+      - name: Select Java 17 and install the pinned Android toolchain
+        shell: bash
+        run: |
+          test -d "$JAVA_HOME_17_X64"
+          test -d "$ANDROID_HOME"
+          export JAVA_HOME="$JAVA_HOME_17_X64"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          printf 'JAVA_HOME=%s\n' "$JAVA_HOME" >> "$GITHUB_ENV"
+          printf '%s\n' "$JAVA_HOME/bin" >> "$GITHUB_PATH"
+          java -version
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+            'platforms;android-36' 'build-tools;36.0.0' \
+            'ndk;27.1.12297006' 'cmake;3.30.5'
+      - name: Generate native Android from the checked-out Expo configuration
+        shell: bash
+        run: |
+          test ! -e android
+          node node_modules/expo/bin/cli prebuild --platform android --no-install
+      - name: Build an internal signed APK with bundled JavaScript
+        working-directory: android
+        shell: bash
+        run: |
+          bash gradlew :app:assembleRelease --no-daemon --max-workers=2 \
+            -PreactNativeArchitectures=arm64-v8a,x86_64 \
+            -Pandroid.cmakeVersion=3.30.5 \
+            '-Dorg.gradle.jvmargs=-Xmx2560m -XX:MaxMetaspaceSize=512m'
+      - name: Verify APK policy, signing, alignment and source receipt
+        run: node scripts/native/validate-hosted-build.mjs --verify-apk android/app/build/outputs/apk/release/app-release.apk output/android-internal
+      - name: Retain the installable internal APK and its evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ghaf-internal-apk
+          path: output/android-internal/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0

@@ -4,6 +4,43 @@
 
 Implement the separate [Feature 017 plan](../017-masroofi-demo/plan.md) through the existing
 registry and guarded store, preserving every prior recognition and reset authority.
+## Android motion repair — 2026-09-14
+
+Apply the bounded [motion implementation plan](motion-interactions.md) with the
+installed Expo/Reanimated stack. Preserve native interaction authority; replace
+only the obsolete section dwell with readiness and cancellation-safe presentation.
+
+## Confirmed local recovery implementation — 2026-09-13
+
+Implement FR-220–224 in the existing Welcome route and local storage boundary.
+Preserve `LocalFamilyView.status` compatibility while adding a corruption-specific
+error code derived only from the repository's parser `INVALID_RESPONSE` result;
+I/O, migration and controller failures remain unavailable. Add signed-out retry and
+explicit-confirmation recovery commands. Share the existing post-clear reset
+implementation privately with Parent reset, without changing its public guard.
+
+Repository clear operations verify removal, preserving affinity-first and
+legacy-before-current ordering. A private session-local continuation may finish an
+already confirmed partial recovery only after verifying all records absent; it
+cannot delete a valid replacement family. No new persisted schema, route, library,
+credential, provider or release flag is required. Reuse current access components,
+Arabic/English resources, typography and history-reset adapter. Tests use isolated
+synthetic storage; native/human gates stay independently evidenced.
+
+## Configured Child Age Authority Clarification — 2026-09-11
+
+Use a single pure selector over the validated local family directory for effective
+Coach age. Missing, unavailable or unconfigured profiles do not authorize input.
+Keep the canonical `SyntheticChildProfile` and reset fixtures unchanged; widen only
+the prepared `ChildCoachRequest` age field and its validator to the existing three
+age bands. Feed the selected age to prepared input validation/output adaptation and
+pending-result revalidation. The Child task and Parent permission routes share this
+selector with Feature 004's grants, text, voice and transcript lifecycle. Curated
+Coach actions remain available independently of output quick-choice limits.
+
+Implementation and validation are tracked in Feature 004 T088–T091 and the
+maintainer audit. This approval adds no profile-editing feature, persistent field,
+provider call, media capture, dependency or release activation.
 
 ## Catalog execution CE1 plan — 2026-09-13
 

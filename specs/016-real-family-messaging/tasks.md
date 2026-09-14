@@ -1,5 +1,12 @@
 # Tasks — Feature016
 
+## Current hosted/native integration — 2026-09-14
+
+The user authorized a dedicated backend and Android testing. Hosted Auth/HTTP
+acceptance now passes; native compilation and acceptance are in progress. See
+[current integration evidence](backend-android-validation.md). The older project
+availability and operator deferrals below remain historical records.
+
 ## Setup and foundation
 
 - [x] T001 Reconcile shared HEAD/status/resources and publish bounded grants in docs/competition-readiness/coordination/BOARD.md.

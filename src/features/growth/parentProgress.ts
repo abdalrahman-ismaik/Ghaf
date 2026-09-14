@@ -229,9 +229,11 @@ function suitableTaskSuggestions(input: {
   readonly journey: TaskJourney | null;
 }): readonly ParentProgressSuitableTaskSuggestion[] {
   if (input.profileId !== 'child_salem') return Object.freeze([]);
-  const taskAlreadyActive =
-    input.journey?.task.id === 'task_recycling_p0_v1' && input.journey.lifecycle !== 'recognized';
-  if (taskAlreadyActive) return Object.freeze([]);
+  const taskAlreadyAssigned =
+    input.journey?.task.id === 'task_recycling_p0_v1' &&
+    input.journey.lifecycle !== 'draft' &&
+    input.journey.lifecycle !== 'reviewed';
+  if (taskAlreadyAssigned) return Object.freeze([]);
 
   const relevantBadgeIds = Object.freeze(
     input.badges

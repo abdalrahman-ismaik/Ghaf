@@ -25,7 +25,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'android.permission.READ_EXTERNAL_STORAGE',
       'android.permission.WRITE_EXTERNAL_STORAGE',
     ],
-    predictiveBackGestureEnabled: true,
+    // Keep Android Back on the verified API35 compatibility path.
+    predictiveBackGestureEnabled: false,
     softwareKeyboardLayoutMode: 'resize',
     icon: './assets/brand/ghaf/app-icon/android-legacy-icon-1024.png',
     adaptiveIcon: {

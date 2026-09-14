@@ -41,7 +41,7 @@ describe('Android runtime readiness', () => {
 
     expect(config.android).toMatchObject({
       allowBackup: false,
-      predictiveBackGestureEnabled: true,
+      predictiveBackGestureEnabled: false,
       softwareKeyboardLayoutMode: 'resize',
     });
     expect(blockedPermissions).toEqual(

@@ -297,6 +297,47 @@ describe('device-local family repository', () => {
     expect(storage.getItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
   });
 
+  it.each([
+    OLDEST_LOCAL_FAMILY_STORAGE_KEY,
+    LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+    PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+    LOCAL_FAMILY_STORAGE_KEY,
+  ])('preserves the current family when reset cannot remove %s, then allows retry', (failedKey) => {
+    const storage = createMemoryLocalKeyValueStorage();
+    let failedRemovalKey: string | null = PREVIOUS_LOCAL_FAMILY_STORAGE_KEY;
+    const repository = createLocalFamilyRepository({
+      getItem: storage.getItem,
+      setItem: storage.setItem,
+      removeItem(key) {
+        if (key === failedRemovalKey) {
+          failedRemovalKey = null;
+          throw new Error('Prepared local storage removal failure');
+        }
+        storage.removeItem(key);
+      },
+    });
+    const current = validRecord();
+    storage.setItem(
+      PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+      JSON.stringify({ ...current, schemaVersion: 3, children: [previousChild('boy')] }),
+    );
+    expect(repository.read()).toMatchObject({ ok: false });
+    expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).not.toBeNull();
+    expect(repository.save(current)).toEqual({ ok: true, data: current });
+
+    failedRemovalKey = failedKey;
+    expect(repository.clear()).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION' },
+    });
+    expect(createLocalFamilyRepository(storage).read()).toEqual({ ok: true, data: current });
+    expect(repository.clear()).toEqual({ ok: true, data: true });
+    expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+    expect(storage.getItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY)).toBeNull();
+    expect(createLocalFamilyRepository(storage).read()).toEqual({ ok: true, data: null });
+  });
+
   it('does not overwrite the prior complete record when validation or storage fails', () => {
     const storage = createMemoryLocalKeyValueStorage();
     const repository = createLocalFamilyRepository(storage);

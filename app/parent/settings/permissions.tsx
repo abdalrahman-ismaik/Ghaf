@@ -6,6 +6,7 @@ import { R002aFlowHeader, R002aScreen } from '@/components/r002a';
 import { R003ActionRow, R003Hero, R003Section, R003Status } from '@/components/r003';
 import { Text } from '@/components/primitives';
 import { aiFeatureFlags } from '@/config/aiFeatureFlags';
+import { resolveConfiguredChildAgeBand } from '@/features/local-family';
 import { localize } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -22,13 +23,23 @@ export default function ParentPermissionsScreen() {
   const direction = usePrototypeStore((state) => state.direction);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const child = usePrototypeStore((state) => state.children[state.activeChildId]);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const getGrant = usePrototypeStore((state) => state.getChildPermissionGrant);
   const grant = useMemo(() => getGrant(activeChildId), [activeChildId, getGrant]);
   const liveChildAiGrants = usePrototypeStore(
     (state) => state.liveChildAiGrants[state.activeChildId],
   );
-  const name = localize(child.displayName, locale);
-  const liveVoiceEligible = (child.ageBand as string) === '12_14';
+  const name =
+    localFamily.record?.children.find((profile) => profile.id === activeChildId)?.nickname ??
+    localize(child.displayName, locale);
+  const activeChildAgeBand = resolveConfiguredChildAgeBand(localFamily, activeChildId);
+  const liveVoiceEligible = activeChildAgeBand === '12_14';
+  const showLiveTextAction =
+    aiFeatureFlags.ai_child_coach_text_live &&
+    (activeChildAgeBand !== null || liveChildAiGrants.text.status === 'granted');
+  const showLiveVoiceAction =
+    aiFeatureFlags.ai_child_coach_voice_live &&
+    (liveVoiceEligible || liveChildAiGrants.voice.status === 'granted');
 
   const change = (kind: 'voice' | 'media' | 'ai', granted: boolean) => {
     router.push({
@@ -101,7 +112,9 @@ export default function ParentPermissionsScreen() {
           tone="warning"
         />
       )}
-      {aiFeatureFlags.ai_child_coach_text_live || aiFeatureFlags.ai_child_coach_voice_live ? (
+      {showLiveTextAction ||
+      showLiveVoiceAction ||
+      (activeChildAgeBand !== null && aiFeatureFlags.ai_child_coach_voice_live) ? (
         <R003Section testID="live-child-ai-permissions">
           <Text brand color="deepForest" direction={direction} variant="heading">
             {t('r003.permissions.liveAiTitle')}
@@ -115,7 +128,7 @@ export default function ParentPermissionsScreen() {
           <Text brand color="onSurfaceVariant" direction={direction} variant="caption">
             {t('r003.permissions.liveAiProviderBlocked')}
           </Text>
-          {aiFeatureFlags.ai_child_coach_text_live ? (
+          {showLiveTextAction ? (
             <R003ActionRow
               body={t('r003.permissions.liveAiDeletion')}
               direction={direction}
@@ -135,7 +148,7 @@ export default function ParentPermissionsScreen() {
               )}
             />
           ) : null}
-          {aiFeatureFlags.ai_child_coach_voice_live && liveVoiceEligible ? (
+          {showLiveVoiceAction ? (
             <R003ActionRow
               body={t('r003.permissions.liveAiDeletion')}
               direction={direction}

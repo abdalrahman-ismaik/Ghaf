@@ -2,6 +2,14 @@
 
 **Input**: spec.md, plan.md, research.md, data-model.md and contracts/demo-entry-v1.md.
 **Status**: Implementation active under committed contract293d351 and exact NB1 grants. Human/native acceptance remains pending.
+
+2026-09-14 current checkpoint: the accepted entry/onboarding implementation and
+later superseding six-page/Parent-chooser decisions are integrated. The status
+above and older task reservations describe their original checkpoints. Continue
+only unresolved acceptance against the current candidate; do not reimplement the
+superseded restoration proposal. See
+[the current spec completion report](../../docs/competition-readiness/workstreams/spec-completion-20260914.md).
+
 Tests are required by the selected behavior/safety/competition scope. A owns shared integration;
 B/C/D roles are actual separate leads, with one helper each and serialized heavy work.
 
@@ -124,25 +132,25 @@ T030–T033: contract56c9063, runtime42eb809. No local OTP UI; direct setup/repa
 ## Natural prepared family name
 
 - [x] T034 Apply the user-selected عائلة أبو راشد / Abu Rashid Family to prepared names and examples;
-  display old canonical saved names compatibly without persistence changes, preserve custom names,
-  and verify Arabic/English entry. Runtime0b400da;208focused tests/typecheck/scoped lint+format PASS;
-  actual browser and isolated synthetic legacy fixture PASS, native/human exact-diff NOT RUN.
+      display old canonical saved names compatibly without persistence changes, preserve custom names,
+      and verify Arabic/English entry. Runtime0b400da;208focused tests/typecheck/scoped lint+format PASS;
+      actual browser and isolated synthetic legacy fixture PASS, native/human exact-diff NOT RUN.
 
 ## Selected Welcome logo focus
 
 - [x] T035 Remove Welcome photo, enlarge selected5A mark and retain all original controls/copy.
-  Runtime829c9db. Typecheck/scoped lint+format and46existing focused tests PASS. Actual AR390x844/
-  EN320x740 logo/photo/language/navigation checks PASS; native/human and effective enlarged-text
-  NOT RUN. Evidence and limitation: docs/competition-readiness/workstreams/welcome-logo-focus.md.
+      Runtime829c9db. Typecheck/scoped lint+format and46existing focused tests PASS. Actual AR390x844/
+      EN320x740 logo/photo/language/navigation checks PASS; native/human and effective enlarged-text
+      NOT RUN. Evidence and limitation: docs/competition-readiness/workstreams/welcome-logo-focus.md.
 
 ## Assigned QA Slice2 — accessibility and compact controls
 
 - [x] T036 Commit the bounded QAF-002/003/004/009 contract and exact board97 assignment before edits.
 - [x] T037 Repair web task/success semantics, retry state/Space activation, compact onboarding
-  header and readable noninteractive Child permissions; preserve native and task behavior.
+      header and readable noninteractive Child permissions; preserve native and task behavior.
 - [x] T038 Complete affected checks, AR/EN browser evidence, cohesive commit and exact-path release.
-  Runtime08f04b3; report docs/competition-readiness/workstreams/slice-two-accessibility.md.
-  Source/web passed; Android and human acceptance NOT RUN.
+      Runtime08f04b3; report docs/competition-readiness/workstreams/slice-two-accessibility.md.
+      Source/web passed; Android and human acceptance NOT RUN.
 
 The user selected personal landscapes with a separate shared family canopy for later Slice1/3.
 No Garden source grant or implementation is included here.

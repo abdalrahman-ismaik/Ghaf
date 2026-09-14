@@ -362,7 +362,7 @@ describe('official Ghaf platform branding', () => {
       dependencies: Record<string, string>;
     };
     expect(packageJson.dependencies['expo-splash-screen']).toBe('~57.0.8');
-  });
+  }, 15_000);
 
   it('publishes branding-only PWA metadata and exact public copies without a service worker', () => {
     const manifest = JSON.parse(

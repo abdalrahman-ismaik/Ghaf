@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
+import type { AudioStatus, RecordingStatus } from 'expo-audio';
 
 import {
   ExpoEphemeralMediaService,
   ExpoVoiceCaptureService,
   type ExpoAudioRecorderPort,
 } from '@/services/native/ExpoVoiceCaptureService';
-import { createFeature003ServiceRegistry } from '@/services';
+import { createFeature003ServiceRegistry, type ServiceResult } from '@/services';
 
 function expectOk<T>(
   result: { readonly ok: true; readonly data: T } | { readonly ok: false; readonly error: unknown },
@@ -23,7 +24,442 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
+function automaticCaptureFixture(duration = 15, isLoaded = true) {
+  const uri = 'file:///cache/automatic-completion.m4a';
+  let recording = true;
+  let notifyRecording: ((status: RecordingStatus) => void) | undefined;
+  let notifyMetadata:
+    ((status: Pick<AudioStatus, 'duration' | 'isLoaded' | 'error'>) => void) | undefined;
+  const removeRecordingListener = vi.fn();
+  const removeMetadataListener = vi.fn();
+  const recorder = {
+    uri,
+    get currentTime() {
+      return recording ? 14 : 0;
+    },
+    get isRecording() {
+      return recording;
+    },
+    prepareToRecordAsync: async () => undefined,
+    record: vi.fn(),
+    stop: vi.fn(async () => ({ durationMillis: 0, url: uri })),
+    release: vi.fn(),
+    addListener: (_event: string, listener: (status: RecordingStatus) => void) => {
+      notifyRecording = listener;
+      return { remove: removeRecordingListener };
+    },
+  };
+  const player = {
+    isLoaded,
+    duration,
+    play: vi.fn(),
+    addListener: vi.fn((_event: string, listener: NonNullable<typeof notifyMetadata>) => {
+      notifyMetadata = listener;
+      return { remove: removeMetadataListener };
+    }),
+    remove: vi.fn(),
+  };
+  const options = {
+    requestRecordingPermissionsAsync: async () => ({ granted: true }),
+    setAudioModeAsync: vi.fn(async () => undefined),
+    createRecorder: vi.fn<() => ExpoAudioRecorderPort>(() => recorder),
+    createDurationPlayer: vi.fn(async () => player),
+    deleteRecording: vi.fn(async () => ({
+      ok: true as const,
+      data: true as const,
+      meta: { origin: 'live' as const, fallbackUsed: false },
+    })),
+  };
+  const service = new ExpoVoiceCaptureService(options);
+  return {
+    uri,
+    recorder,
+    player,
+    service,
+    options,
+    removeRecordingListener,
+    removeMetadataListener,
+    async start() {
+      expectOk(await service.requestPermission());
+      expectOk(await service.startHeld());
+    },
+    finishRecording(status: Partial<RecordingStatus> = {}) {
+      recording = false;
+      notifyRecording?.({
+        id: 'synthetic-recorder',
+        isFinished: true,
+        hasError: false,
+        error: null,
+        url: uri,
+        ...status,
+      });
+    },
+    resetNativeState() {
+      recording = false;
+    },
+    finishMetadata(status: Partial<Pick<AudioStatus, 'duration' | 'isLoaded' | 'error'>> = {}) {
+      notifyMetadata?.({ duration, isLoaded: true, error: null, ...status });
+    },
+  };
+}
+
 describe('voice capture and cleanup adapters', () => {
+  it.each([
+    { hasError: true },
+    { error: 'Synthetic native completion failure' },
+    { mediaServicesDidReset: true },
+    { url: 'file:///cache/unrelated-recording.m4a' },
+  ])(
+    'rejects unsuccessful or mismatched native completion %j before reading metadata',
+    async (status) => {
+      const fixture = automaticCaptureFixture();
+      await fixture.start();
+      fixture.finishRecording(status);
+      await expect(fixture.service.stopHeld()).resolves.toMatchObject({ ok: false });
+      expect(fixture.options.createDurationPlayer).not.toHaveBeenCalled();
+      expect(fixture.options.deleteRecording).toHaveBeenCalledExactlyOnceWith(fixture.uri);
+      expect(fixture.removeRecordingListener).toHaveBeenCalledOnce();
+    },
+  );
+
+  it.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY, 15.001])(
+    'rejects invalid measured duration %s without clamping',
+    async (duration) => {
+      const fixture = automaticCaptureFixture(duration);
+      await fixture.start();
+      fixture.finishRecording();
+      await expect(fixture.service.stopHeld()).resolves.toMatchObject({ ok: false });
+      expect(fixture.options.deleteRecording).toHaveBeenCalledExactlyOnceWith(fixture.uri);
+      expect(fixture.removeMetadataListener).toHaveBeenCalledOnce();
+      expect(fixture.player.remove).toHaveBeenCalledOnce();
+      expect(fixture.player.play).not.toHaveBeenCalled();
+    },
+  );
+
+  it('waits for the native terminal event after state resets and metadata loads later', async () => {
+    const fixture = automaticCaptureFixture(15, false);
+    await fixture.start();
+    fixture.resetNativeState();
+    const stopped = fixture.service.stopHeld();
+    await Promise.resolve();
+    expect(fixture.options.createDurationPlayer).not.toHaveBeenCalled();
+    fixture.finishRecording();
+    await vi.waitFor(() => expect(fixture.player.addListener).toHaveBeenCalledOnce());
+    fixture.finishMetadata();
+    expect(expectOk(await stopped).durationMs).toBe(15_000);
+    expect(fixture.recorder.stop).not.toHaveBeenCalled();
+    expect(fixture.removeMetadataListener).toHaveBeenCalledOnce();
+    expect(fixture.player.remove).toHaveBeenCalledOnce();
+  });
+
+  it('recovers native completion racing the explicit stop call', async () => {
+    const fixture = automaticCaptureFixture(14.999);
+    await fixture.start();
+    fixture.recorder.stop.mockImplementationOnce(async () => {
+      fixture.finishRecording();
+      return { durationMillis: 0, url: fixture.uri };
+    });
+    expect(expectOk(await fixture.service.stopHeld()).durationMs).toBe(14_999);
+    expect(fixture.recorder.stop).toHaveBeenCalledOnce();
+    expect(fixture.player.remove).toHaveBeenCalledOnce();
+  });
+
+  it.each(['completion', 'metadata'] as const)(
+    'bounds waiting for %s and cleans every created resource',
+    async (stage) => {
+      vi.useFakeTimers();
+      try {
+        const fixture = automaticCaptureFixture(15, false);
+        await fixture.start();
+        if (stage === 'completion') fixture.resetNativeState();
+        else fixture.finishRecording();
+        const stopped = fixture.service.stopHeld();
+        await vi.advanceTimersByTimeAsync(2_001);
+        await expect(stopped).resolves.toMatchObject({ ok: false });
+        expect(fixture.options.deleteRecording).toHaveBeenCalledExactlyOnceWith(fixture.uri);
+        expect(fixture.removeRecordingListener).toHaveBeenCalledOnce();
+        expect(fixture.recorder.release).toHaveBeenCalledOnce();
+        if (stage === 'metadata') {
+          expect(fixture.removeMetadataListener).toHaveBeenCalledOnce();
+          expect(fixture.player.remove).toHaveBeenCalledOnce();
+        } else expect(fixture.options.createDurationPlayer).not.toHaveBeenCalled();
+        expect(vi.getTimerCount()).toBe(0);
+      } finally {
+        vi.useRealTimers();
+      }
+    },
+  );
+
+  it('fails closed on metadata errors and removes the inactive player', async () => {
+    const fixture = automaticCaptureFixture(15, false);
+    await fixture.start();
+    fixture.finishRecording();
+    const stopped = fixture.service.stopHeld();
+    await vi.waitFor(() => expect(fixture.player.addListener).toHaveBeenCalledOnce());
+    fixture.finishMetadata({ error: 'Synthetic metadata error', isLoaded: false });
+    await expect(stopped).resolves.toMatchObject({ ok: false });
+    expect(fixture.player.remove).toHaveBeenCalledOnce();
+    expect(fixture.removeMetadataListener).toHaveBeenCalledOnce();
+    expect(fixture.options.deleteRecording).toHaveBeenCalledExactlyOnceWith(fixture.uri);
+  });
+
+  it.each(['cancel', 'timeout'] as const)(
+    'removes a metadata player created after %s without disturbing a new hold',
+    async (stage) => {
+      vi.useFakeTimers();
+      try {
+        const fixture = automaticCaptureFixture();
+        const creation = deferred<typeof fixture.player>();
+        fixture.options.createDurationPlayer.mockImplementationOnce(() => creation.promise);
+        await fixture.start();
+        fixture.finishRecording();
+        const stopped = fixture.service.stopHeld();
+        await vi.advanceTimersByTimeAsync(0);
+        expect(fixture.options.createDurationPlayer).toHaveBeenCalledOnce();
+        if (stage === 'cancel') expectOk(await fixture.service.cancel());
+        else await vi.advanceTimersByTimeAsync(2_001);
+        await expect(stopped).resolves.toMatchObject({ ok: false });
+        const freshRecorder: ExpoAudioRecorderPort = {
+          uri: 'file:///cache/fresh-after-completion.m4a',
+          currentTime: 1,
+          isRecording: true,
+          prepareToRecordAsync: async () => undefined,
+          record: vi.fn(),
+          stop: vi.fn(async () => undefined),
+          release: vi.fn(),
+        };
+        fixture.options.createRecorder.mockReturnValueOnce(freshRecorder);
+        expectOk(await fixture.service.startHeld());
+        creation.resolve(fixture.player);
+        fixture.finishRecording({ hasError: true });
+        await vi.advanceTimersByTimeAsync(0);
+        expect(fixture.player.remove).toHaveBeenCalledOnce();
+        expect(fixture.player.addListener).not.toHaveBeenCalled();
+        expect(freshRecorder.release).not.toHaveBeenCalled();
+        expect(expectOk(await fixture.service.stopHeld()).uri).toBe(freshRecorder.uri);
+        expect(fixture.options.deleteRecording).toHaveBeenCalledExactlyOnceWith(fixture.uri);
+        expect(vi.getTimerCount()).toBe(0);
+      } finally {
+        vi.useRealTimers();
+      }
+    },
+  );
+
+  it('retains measured duration after native automatic completion resets currentTime', async () => {
+    const uri = 'file:///cache/automatically-finished.m4a';
+    let recording = true;
+    let notify: ((status: RecordingStatus) => void) | undefined;
+    const removeRecordingListener = vi.fn();
+    const recorder = {
+      uri,
+      get currentTime() {
+        return recording ? 14 : 0;
+      },
+      get isRecording() {
+        return recording;
+      },
+      prepareToRecordAsync: async () => undefined,
+      record: vi.fn(),
+      stop: vi.fn(async () => ({ durationMillis: 0, url: uri })),
+      release: vi.fn(),
+      addListener: (_event: string, listener: (status: RecordingStatus) => void) => {
+        notify = listener;
+        return { remove: removeRecordingListener };
+      },
+    };
+    const player = {
+      isLoaded: true,
+      duration: 14.987,
+      addListener: vi.fn(() => ({ remove: vi.fn() })),
+      remove: vi.fn(),
+    };
+    const createDurationPlayer = vi.fn(async () => player);
+    const options = {
+      requestRecordingPermissionsAsync: async () => ({ granted: true }),
+      setAudioModeAsync: async () => undefined,
+      createRecorder: () => recorder,
+      createDurationPlayer,
+      deleteRecording: vi.fn(async () => ({
+        ok: true as const,
+        data: true as const,
+        meta: { origin: 'live' as const, fallbackUsed: false },
+      })),
+    };
+    const service = new ExpoVoiceCaptureService(options);
+    expectOk(await service.requestPermission());
+    expectOk(await service.startHeld());
+    recording = false;
+    notify?.({
+      id: 'synthetic-recorder',
+      isFinished: true,
+      hasError: false,
+      error: null,
+      url: uri,
+    });
+
+    expect(expectOk(await service.stopHeld())).toMatchObject({ uri, durationMs: 14_987 });
+    expect(recorder.stop).not.toHaveBeenCalled();
+    expect(createDurationPlayer).toHaveBeenCalledExactlyOnceWith(uri);
+    expect(removeRecordingListener).toHaveBeenCalledOnce();
+    expect(player.remove).toHaveBeenCalledOnce();
+    expect(recorder.release).toHaveBeenCalledOnce();
+    expect(options.deleteRecording).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { nativeStatus: { durationMillis: 4_200 }, expectedCode: 'REMOTE_UNAVAILABLE' },
+    {
+      nativeStatus: { durationMillis: Number.NaN, url: 'file:///cache/native-status.m4a' },
+      expectedCode: 'INVALID_INPUT',
+    },
+    {
+      nativeStatus: { durationMillis: 15_001, url: 'file:///cache/native-status.m4a' },
+      expectedCode: 'INVALID_INPUT',
+    },
+    {
+      nativeStatus: { durationMillis: 4_350, url: 'file:///cache/native-status.m4a' },
+      expectedCode: null,
+    },
+  ])(
+    'honors native resolved stop status with result $expectedCode',
+    async ({ nativeStatus, expectedCode }) => {
+      const recorder: ExpoAudioRecorderPort = {
+        uri: 'file:///cache/native-status.m4a',
+        currentTime: 4.2,
+        isRecording: true,
+        prepareToRecordAsync: async () => undefined,
+        record: vi.fn(),
+        stop: vi.fn(async () => nativeStatus),
+        release: vi.fn(),
+      };
+      const deleteRecording = vi.fn(async () => ({
+        ok: true as const,
+        data: true as const,
+        meta: { origin: 'live' as const, fallbackUsed: false },
+      }));
+      const service = new ExpoVoiceCaptureService({
+        requestRecordingPermissionsAsync: async () => ({ granted: true }),
+        setAudioModeAsync: async () => undefined,
+        createRecorder: () => recorder,
+        deleteRecording,
+      });
+      expectOk(await service.requestPermission());
+      expectOk(await service.startHeld());
+      const result = await service.stopHeld();
+
+      expect(recorder.release).toHaveBeenCalledOnce();
+      if (expectedCode) {
+        expect(result).toMatchObject({ ok: false, error: { code: expectedCode } });
+        expect(deleteRecording).toHaveBeenCalledExactlyOnceWith(recorder.uri);
+      } else {
+        expect(result).toMatchObject({
+          ok: true,
+          data: { uri: recorder.uri, durationMs: nativeStatus.durationMillis },
+        });
+        expect(deleteRecording).not.toHaveBeenCalled();
+      }
+    },
+  );
+
+  it('retries failed released-file deletion on cancellation before a new hold', async () => {
+    const uri = 'file:///cache/failed-stop-cleanup.m4a';
+    const cleanupFailure = {
+      ok: false as const,
+      error: {
+        code: 'REMOTE_UNAVAILABLE' as const,
+        message: 'Synthetic cleanup failure',
+        retryable: false,
+        fallbackAvailable: false,
+      },
+    };
+    const recorder: ExpoAudioRecorderPort = {
+      uri,
+      currentTime: 4.2,
+      isRecording: true,
+      prepareToRecordAsync: async () => undefined,
+      record: vi.fn(),
+      stop: vi.fn(async () => ({ durationMillis: 4_200 })),
+      release: vi.fn(),
+    };
+    const deleteRecording = vi
+      .fn<() => Promise<ServiceResult<true>>>(async () => ({
+        ok: true as const,
+        data: true as const,
+        meta: { origin: 'live' as const, fallbackUsed: false },
+      }))
+      .mockResolvedValueOnce(cleanupFailure);
+    const service = new ExpoVoiceCaptureService({
+      requestRecordingPermissionsAsync: async () => ({ granted: true }),
+      setAudioModeAsync: async () => undefined,
+      createRecorder: () => recorder,
+      deleteRecording,
+    });
+    expectOk(await service.requestPermission());
+    expectOk(await service.startHeld());
+    await expect(service.stopHeld()).resolves.toEqual(cleanupFailure);
+    await expect(service.startHeld()).resolves.toMatchObject({ ok: false });
+    expectOk(await service.cancel());
+    expect(deleteRecording).toHaveBeenCalledTimes(2);
+    expect(deleteRecording).toHaveBeenLastCalledWith(uri);
+    expectOk(await service.startHeld());
+    expect(recorder.record).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    { seconds: 4.2, resetOnStop: true, accepted: true },
+    { seconds: 15, resetOnStop: true, accepted: true },
+    { seconds: 15.001, resetOnStop: false, accepted: false },
+    { seconds: 0, resetOnStop: false, accepted: false },
+    { seconds: -1, resetOnStop: false, accepted: false },
+    { seconds: Number.NaN, resetOnStop: false, accepted: false },
+    { seconds: Number.POSITIVE_INFINITY, resetOnStop: false, accepted: false },
+  ])(
+    'validates $seconds seconds before native stop resets duration: $resetOnStop',
+    async ({ seconds, resetOnStop, accepted }) => {
+      let currentTime = seconds;
+      const recorder: ExpoAudioRecorderPort = {
+        uri: 'file:///cache/held-duration.m4a',
+        get currentTime() {
+          return currentTime;
+        },
+        isRecording: true,
+        prepareToRecordAsync: async () => undefined,
+        record: vi.fn(),
+        stop: vi.fn(async () => {
+          if (resetOnStop) currentTime = 0;
+        }),
+        release: vi.fn(),
+      };
+      const deleteRecording = vi.fn(async () => ({
+        ok: true as const,
+        data: true as const,
+        meta: { origin: 'live' as const, fallbackUsed: false },
+      }));
+      const service = new ExpoVoiceCaptureService({
+        requestRecordingPermissionsAsync: async () => ({ granted: true }),
+        setAudioModeAsync: async () => undefined,
+        createRecorder: () => recorder,
+        deleteRecording,
+      });
+      expectOk(await service.requestPermission());
+      expectOk(await service.startHeld());
+      const result = await service.stopHeld();
+
+      expect(recorder.stop).toHaveBeenCalledOnce();
+      expect(recorder.release).toHaveBeenCalledOnce();
+      if (accepted) {
+        expect(result).toMatchObject({
+          ok: true,
+          data: { durationMs: Math.round(seconds * 1_000), uri: recorder.uri },
+        });
+        expect(deleteRecording).not.toHaveBeenCalled();
+      } else {
+        expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_INPUT' } });
+        expect(deleteRecording).toHaveBeenCalledExactlyOnceWith(recorder.uri);
+      }
+    },
+  );
+
   it.each(
     (['start', 'stop', 'duration', 'cancel'] as const).flatMap((stage) =>
       [true, false].map((deletionSucceeds) => ({ stage, deletionSucceeds })),

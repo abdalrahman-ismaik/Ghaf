@@ -32,16 +32,12 @@ import {
 } from '@/components/r002a';
 import { botanical, colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { ChildVoiceCommand } from '@/features/assistants/childVoiceController';
+import { resolveConfiguredChildAgeBand } from '@/features/local-family';
 import { P0_RECYCLING_TEMPLATE, TASK_CATEGORIES } from '@/features/tasks/demoContent';
 import { TASK_REFLECTION_MAX_LENGTH } from '@/features/tasks/validation';
 import { bilingualResource, localize } from '@/i18n';
 import type { AgeAdaptedCoachResult } from '@/models/assistantVoice';
-import type {
-  AgeBand,
-  ChildCoachIntent,
-  ChildCoachResult,
-  LocalizedText,
-} from '@/models/familyGrowth';
+import type { ChildCoachIntent, ChildCoachResult, LocalizedText } from '@/models/familyGrowth';
 import { serviceRegistry } from '@/services';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -94,8 +90,8 @@ function OriginalChildTaskScreen() {
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const beginTemporaryParentAccess = usePrototypeStore((state) => state.beginTemporaryParentAccess);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
-  const activeChildAgeBand = usePrototypeStore(
-    (state): AgeBand => state.children[state.activeChildId].ageBand,
+  const activeChildAgeBand = usePrototypeStore((state) =>
+    resolveConfiguredChildAgeBand(state.localFamily, state.activeChildId),
   );
   const journey = usePrototypeStore((state) => state.journey);
   const coach = usePrototypeStore((state) => state.childCoachResult);
@@ -627,7 +623,11 @@ function OriginalChildTaskScreen() {
 
         {showSupportTools ? (
           <View style={styles.supportTools} testID="child-support-tools">
-            {aiFeatureFlags.ai_child_coach_text_live ? (
+            {activeChildAgeBand === null ? (
+              <Text accessibilityLiveRegion="polite" brand color="tertiary" direction={direction}>
+                {t('errors.safeRetry')}
+              </Text>
+            ) : aiFeatureFlags.ai_child_coach_text_live ? (
               <LiveChildCoachPanel
                 ageBand={activeChildAgeBand}
                 direction={direction}
@@ -674,10 +674,7 @@ function OriginalChildTaskScreen() {
                         direction === 'rtl' ? styles.intentGridRtl : styles.intentGridLtr,
                       ]}
                     >
-                      {COACH_INTENTS.slice(
-                        0,
-                        ageAdaptedCoachResult?.policy.quickChoiceLimit ?? COACH_INTENTS.length,
-                      ).map(({ intent, key }, index) => (
+                      {COACH_INTENTS.map(({ intent, key }, index) => (
                         <Button
                           brand
                           busy={busyIntent === intent}

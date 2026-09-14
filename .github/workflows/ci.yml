@@ -31,6 +31,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run repo:check
+      - run: node --test scripts/backend/verify-local.test.mjs scripts/native/validate-hosted-build.test.mjs
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run format:check

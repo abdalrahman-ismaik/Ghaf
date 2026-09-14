@@ -1,6 +1,11 @@
 <!--
 Sync Impact Report
-- Version change: 2.0.0 -> 2.1.0
+- Version change: 2.2.0 -> 2.3.0
+- Approved Feature018 exception: real adult-owned profile/family/task/study planning,
+  scoped backend maintenance and internal APK delivery; synthetic progression remains separate.
+- Approved Feature017 exception: selected study, jointly agreed academic prizes and family peer text.
+- Approved exception: Feature 006 real adult pilot authentication, separate from the synthetic demo.
+
 - Feature016 amendment: user-authorized real human messaging; deterministic P0 preserved
 - Modified principles: MVP Prototype First; Design Is a Core Feature; Visible AI Value;
   Demo Reliability
@@ -80,6 +85,23 @@ documented demonstration target even when network services are unavailable. The 
 recorded as an internal rehearsal goal rather than represented as an external competition rule
 unless an authoritative source establishes it.
 
+## Feature018 persistent adult account amendment — 2026-09-14
+
+The user's direct instruction authorizes real persistent adult accounts and
+account-owned backend data. The user explicitly selected adult profile plus family,
+tasks and study data. The bounded increment stores adult profile/language, a family
+name and member nicknames, Parent-managed task plans and study plans under the
+existing Supabase UUID, independently of synthetic reward/progression evidence.
+It reuses secure sessions and requires backend
+ownership, safe local logout/account switching, and direct cross-client evidence.
+This extends Feature006's login-only exception for the scope in
+`specs/018-persistent-adult-accounts/`; it authorizes no silent guest upload,
+production/compliance claim, paid resource, Child credentials, media, diagnosis or
+sensitive wellbeing records. The owner's later 2026-09-14 maintenance request
+authorizes reviewed additive updates to the existing backend, commit/push and an
+internal APK. Public rollout and production signing remain separate. Runtime tests
+use synthetic people. Feature014 remains deferred by the owner's renewed decision.
+
 ## Feature016 bounded communication amendment — 2026-09-13
 
 The direct user instruction authorizes genuine Parent authentication, explicit Child enrollment,
@@ -97,6 +119,33 @@ Retention, enrollment, server permission, native/human and provider-operation ga
 before release. Multi-turn AI, custom goals and T1/V1/V2/V3 calling need separate accepted contracts.
 
 ## Prototype Boundaries
+
+### Feature 017 selected study and communication exception — 2026-09-13
+
+The user's explicit selection of proposals 8–12 authorizes synthetic private study
+planning, jointly agreed academic practice/achievement/mark goals and optional
+nonessential prizes. This narrowly supersedes prior blanket academic-prize
+exclusions. Basic education, safety, meals, care, affection and dignity never depend
+on a result. Academic prizes remain separate from Seeds and existing Family Rewards;
+accepted terms and unlocked prizes cannot be weakened or confiscated.
+
+Feature016 may add explicit Parent-approved, same-family, participant-only Child
+peer text. Parent permission management is separate from access to peer content.
+Human messages never enter AI or grant academic/task/reward authority. No other
+networking, media, provider, calling or production exception follows from this work.
+
+### Feature 006 adult pilot exception — 2026-09-13
+
+The owner-approved Feature 006 plan permits an independent default-off Supabase
+email/password pilot for real adults, with server-owned administrator approval and
+native/web session persistence. This narrow exception to Principles I, V, VI and
+X authorizes only identity/session/approval infrastructure; real-account failures
+must fail closed rather than create synthetic authority. The complete deterministic
+demo remains available in its default build. Children, families, tasks and growth
+remain synthetic, with no cloud family data or live AI expansion. Implementation
+does not imply hosted activation, production readiness or regulatory compliance.
+The integration owner records the amendment and Feature 006 evidence separately;
+historical feature constraints and acceptance records remain attributed as written.
 
 - The app MUST use synthetic or team-created demo data and MUST NOT contain real child data.
 - API keys MUST NOT be committed, and OpenAI secret keys MUST NOT be embedded in the mobile app.
@@ -132,4 +181,4 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.1.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-13
+**Version**: 2.3.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14

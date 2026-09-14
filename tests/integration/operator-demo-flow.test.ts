@@ -69,6 +69,13 @@ const LEGACY_ROUTES = [
   '/celebration',
 ] as const;
 
+const FEATURE017_ROUTES = [
+  '/parent/study',
+  '/parent/practices',
+  '/child/study',
+  '/child/practices',
+] as const;
+
 const RESET_SOURCE_STATES = [
   'draft',
   'assistant_result',
@@ -267,10 +274,33 @@ describe('US6 bilingual offline operator and reset flow', () => {
   it('preserves established routes with authorized R002b, Feature016 and Feature017 additions', () => {
     const actual = authoredRoutes();
     expect(actual).toEqual(
-      [...EXPECTED_ROUTES, '/messages', '/child/masroofi', '/parent/family/masroofi'].sort(),
+      [
+        ...EXPECTED_ROUTES,
+        '/messages',
+        ...FEATURE017_ROUTES,
+        '/child/masroofi',
+        '/parent/family/masroofi',
+      ].sort(),
     );
     for (const legacyRoute of LEGACY_ROUTES) {
       expect(actual).not.toContain(legacyRoute);
+    }
+    for (const role of ['parent', 'child'] as const) {
+      const layout = readFileSync(
+        new URL(`../../app/${role}/_layout.tsx`, import.meta.url),
+        'utf8',
+      );
+      expect(layout).toContain(
+        role === 'parent' ? 'authorizeParentExperience' : 'authorizeChildExperience',
+      );
+      expect(layout).toContain('if (!authorization?.ok)');
+      for (const surface of ['study', 'practices']) {
+        const route = readFileSync(
+          new URL(`../../app/${role}/${surface}.tsx`, import.meta.url),
+          'utf8',
+        );
+        expect(route).toContain(`role="${role}"`);
+      }
     }
   });
 

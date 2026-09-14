@@ -1,5 +1,16 @@
 # Implementation plan — Feature016
 
+## Authorized service and native integration — 2026-09-14
+
+The user now authorizes backend integration and physical Android testing using
+Android Studio. Root may provision/configure a dedicated synthetic team-test
+messaging project and apply the reviewed migrations and retention job, then run
+real Auth/HTTP and installation checks. This supersedes prior implementation-only
+operator deferral for this bounded session. The adult pilot stays separate; no
+paid plan, real Child rollout or unrelated feature activation is authorized.
+Record actual project/device availability and results in
+`backend-android-validation.md`; unavailable physical checks cannot become emulator passes.
+
 ## Technical context and selected architecture
 
 Keep one Expo57/React Native0.86 application, Tamagui, shared tokens, Alexandria/Readex, Zod and

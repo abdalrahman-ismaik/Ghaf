@@ -1953,11 +1953,16 @@ export class DeterministicFamilyLeagueService implements FamilyLeagueService {
       existing &&
       existing.leaves.length === 0 &&
       Object.keys(existing.confirmationLedger).length === 0 &&
-      existing.cooperativeConfirmedCount === 0 &&
-      existing.preparedEncouragementLedger.length === 0;
+      existing.cooperativeConfirmedCount === 0;
     if (existing && !replaceableRolledWeek) {
       return failure('INVALID_TRANSITION', 'Synthetic League week already exists');
     }
+    const nextWeek: FamilyLeagueWeek = {
+      ...created.data,
+      preparedEncouragementLedger: existing?.preparedEncouragementLedger ?? [],
+    };
+    const validated = calculateWeeklyGrowthResults(nextWeek);
+    if (!validated.ok) return fromDomain(validated);
     if (!membershipProofId?.trim()) {
       return failure(
         'PRIVACY_REJECTED',
@@ -1970,7 +1975,7 @@ export class DeterministicFamilyLeagueService implements FamilyLeagueService {
       purpose: 'change_league_membership',
       now: authority.now,
     });
-    return authorized.ok ? this.storeWeek(fromDomain(created)) : authorized;
+    return authorized.ok ? this.storeWeek(success(nextWeek)) : authorized;
   }
 
   confirmLeaf(

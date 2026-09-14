@@ -107,6 +107,13 @@ review/approval remain authoritative.
 
 ### Child text
 
+Owner-approved configured-age authority (2026-09-11): one pure selector over the
+ready validated local family directory supplies effective age to prepared/live
+Coach requests, output adaptation, grant/capture/send validation and both UIs.
+An unavailable or unconfigured profile has no authorized age. Pending results
+revalidate the configured age before acceptance. The underlying demo age fixtures,
+task/progression authorities, independent flags and grant requirements stay intact.
+
 `src/features/assistants/liveChildCoach.ts` owns age-discriminated request schemas, exact intent and
 structured-input allowlists, Unicode/byte/topic/contact/URL/safety checks, terminal response schema,
 and canonical prepared fallbacks. Ages 6–8 send only an intent; ages 9–11 send exact structured
@@ -122,8 +129,9 @@ transcribing, transcript review, delete, explicit send, failure, background, rev
 `src/components/family-growth/LiveVoiceCapturePanel.tsx` owns the native Expo Audio hook and maps
 foreground lifecycle events into that state machine. The config plugin permits microphone capture
 but explicitly keeps background recording/playback disabled. The panel is rendered only when the
-voice flag, 12–14 age policy, separate synthetic test grant, and active task checks pass. No current
-P0 profile is 12–14, so the competition path remains unchanged.
+voice flag, configured 12–14 age policy, separate synthetic test grant, and active task checks pass.
+Canonical fixtures remain 9–11; setup may configure a 12–14 profile, which remains ineligible
+for live capture until every existing grant, notice, task and flag check passes.
 
 The `VoiceTranscriptionService` receives an ephemeral URI/byte envelope behind an interface. Its
 prepared/fake implementation returns reviewed synthetic transcript text without reading audio.

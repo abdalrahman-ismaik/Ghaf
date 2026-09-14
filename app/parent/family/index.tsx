@@ -1,4 +1,5 @@
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
+import { StudyEntries } from '@/components/study/StudyEntries';
 import { MasroofiEntry } from '@/components/masroofi/MasroofiEntry';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
@@ -177,6 +178,7 @@ export default function ParentFamilyScreen() {
       />
 
       <MessagingEntry role="parent" />
+      <StudyEntries role="parent" />
       <MasroofiEntry role="parent" />
       {familyConnections.ok && familyConnections.data.entries.length > 0 ? (
         <FamilyConnectionPlan

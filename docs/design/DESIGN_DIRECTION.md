@@ -1,5 +1,13 @@
 # Ghaf Design Direction
 
+## Local recovery extension — 2026-09-13
+
+The owner-approved corrupted-family recovery is a calm in-route access state using
+the existing shared access design and botanical tokens. Clear consequence copy and a separate explicit
+confirmation establish the hierarchy; cancellation remains obvious. Reuse the
+existing bilingual typography, tokens and controls without new assets or routes.
+This is a code-native candidate subject to the usual native and human-review limits.
+
 ## 2026-09-13 selected brand identity
 
 **5A Refined Classic** is the user-selected Ghaf logo: three family figures beneath one spreading
@@ -11,7 +19,7 @@ brand replacement does not change the botanical UI direction, typography or prod
 ## 2026-09-11 implemented botanical direction
 
 The user-approved Tamagui and Reanimated redesign is the active visual direction. The built
-system is documented in `DESIGN.md`; `src/design/tokens.ts` remains the runtime authority.
+system is documented in [the design contract](../DESIGN.md); `src/design/tokens.ts` remains the runtime authority.
 The additive botanical palette, geometry, and spacing supersede older presentation values on
 migrated surfaces. Historical R001/R002a token values remain unchanged for compatibility.
 

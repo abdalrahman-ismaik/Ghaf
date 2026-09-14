@@ -9,23 +9,23 @@ import {
   View,
 } from 'react-native';
 import Animated, {
-  Easing,
+  ReduceMotion,
   cancelAnimation,
   interpolate,
   useAnimatedStyle,
-  useReducedMotion,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton, QuietButton, Text } from '@/components/primitives';
+import { interactionMotion } from '@/design/motion';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 import {
   botanical,
   colors,
   layout,
   opacity as opacityTokens,
-  r001Motion,
   r001Radii,
   r001Shadows,
   spacing,
@@ -34,6 +34,8 @@ import {
 } from '@/design/tokens';
 
 import { GhafIcon } from './GhafIcon';
+
+const panelDisplacement = interactionMotion.displacement.panel;
 
 export interface SuccessSheetProps {
   actionLabel: string;
@@ -70,7 +72,7 @@ export function SuccessSheet({
   title,
   visible,
 }: SuccessSheetProps) {
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useReducedMotionPreference();
   const isWeb = Platform.OS === 'web';
   const resolvedAnnouncementMessage = announcementMessage ?? message;
   const progress = useSharedValue(visible && reducedMotion ? 1 : 0);
@@ -89,11 +91,11 @@ export function SuccessSheet({
       return;
     }
 
-    progress.set(0);
     progress.set(
       withTiming(1, {
-        duration: r001Motion.duration.slow,
-        easing: Easing.bezier(...r001Motion.sheetEasing),
+        duration: interactionMotion.timing.panel,
+        easing: interactionMotion.easing,
+        reduceMotion: ReduceMotion.Never,
       }),
     );
 
@@ -116,7 +118,11 @@ export function SuccessSheet({
   }));
   const sheetStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.get(), [0, 0.16, 1], [0.88, 1, 1]),
-    transform: [{ translateY: interpolate(progress.get(), [0, 1], [36, 0]) }],
+    transform: [
+      {
+        translateY: interpolate(progress.get(), [0, 1], [panelDisplacement, 0]),
+      },
+    ],
   }));
 
   const requestDismiss = () => {

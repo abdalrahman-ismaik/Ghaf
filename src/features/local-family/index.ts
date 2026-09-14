@@ -1,3 +1,4 @@
+export { resolveConfiguredChildAgeBand } from './agePolicy';
 export {
   createLocalFamilyProfileRepairCandidate,
   createLocalFamilyRecord,

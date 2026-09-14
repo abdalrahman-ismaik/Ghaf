@@ -53,7 +53,7 @@ touch, IME, media, permission, predictive Back, or device-performance gates.
 #### 1. Install the native prerequisites
 
 In Android Studio's SDK Manager, install Android SDK Platform 36, Android SDK Build-Tools,
-Android SDK Platform-Tools, NDK `27.1.12297006`, and CMake `3.22.1`. Keep at least 10 GB free for the
+Android SDK Platform-Tools, NDK `27.1.12297006`, and CMake `3.30.5`. Keep at least 10 GB free for the
 first native build. Android Studio's bundled JDK is suitable; `java -version` must work in the
 terminal used to run Expo.
 

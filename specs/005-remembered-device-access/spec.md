@@ -1,5 +1,15 @@
 # Feature Specification: Remembered Device Access
 
+## Corrupt local-family recovery compatibility — 2026-09-13
+
+The owner approved Feature 003 FR-220–224: a signed-out, explicitly confirmed
+recovery path for freshly verified corrupt local-family data. It clears and verifies
+the remembered-affinity marker before clearing legacy/current family data, then
+reuses deterministic reset. It never restores either role, treats the affinity
+marker as authentication, or deletes a valid replacement family. Ordinary Parent
+logout and Parent-only reset retain their existing contracts. This is local demo
+recovery, not production identity or cloud account recovery.
+
 **Feature Branch**: `005-remembered-device-access`
 
 **Created**: 2026-09-07

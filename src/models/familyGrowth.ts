@@ -612,7 +612,7 @@ export interface ChildCoachRequest {
   readonly locale: AssistantLocale;
   readonly child: {
     readonly id: SyntheticChildId;
-    readonly ageBand: '9_11';
+    readonly ageBand: AgeBand;
     readonly synthetic: true;
   };
   readonly assignmentId: string;

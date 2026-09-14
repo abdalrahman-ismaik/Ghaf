@@ -19,21 +19,23 @@ transparency. Older root paths resolve through the [relocation map](architecture
 
 ## Start here
 
-| Need                                                   | Document                                                                                           |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-| Install, run, reset, and troubleshoot                  | [Development and testing](DEVELOPMENT.md)                                                          |
-| Understand runtime boundaries and dependency direction | [Architecture](architecture/ARCHITECTURE.md)                                                       |
-| Find the right folder for a change                     | [Repository structure](architecture/REPOSITORY_STRUCTURE.md)                                       |
-| Review organization findings and remaining debt        | [Repository audit](architecture/REPOSITORY_AUDIT.md)                                               |
-| Run a focused test group                               | [Test suite guide](../tests/README.md)                                                             |
-| Inspect current competition work and gates             | [Competition readiness](competition-readiness/README.md)                                           |
-| Contribute safely                                      | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                              |
-| Demonstrate and verify Feature 003                     | [DEMO_RUNBOOK.md](competition-readiness/DEMO_RUNBOOK.md)                                           |
-| Inspect the active specification                       | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                                      |
-| Check current independent release gates                | [Feature 003 release gates](../specs/003-family-growth-garden/design-intake/release-gate.md)       |
-| Inspect frozen R001 composition references             | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md)                                   |
-| Inspect selected R002a compatibility references        | [R002a selections](design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md)                         |
-| Inspect the R002b implementation contract              | [R002b contract](../specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md) |
+| Need                                                    | Document                                                                                           |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Install, run, reset, and troubleshoot                   | [Development and testing](DEVELOPMENT.md)                                                          |
+| Configure persistent accounts and build an internal APK | [Authentication and account data](auth.md)                                                         |
+| Review accepted specifications and outstanding gates    | [Specification completion audit](competition-readiness/workstreams/spec-completion-20260914.md)    |
+| Understand runtime boundaries and dependency direction  | [Architecture](architecture/ARCHITECTURE.md)                                                       |
+| Find the right folder for a change                      | [Repository structure](architecture/REPOSITORY_STRUCTURE.md)                                       |
+| Review organization findings and remaining debt         | [Repository audit](architecture/REPOSITORY_AUDIT.md)                                               |
+| Run a focused test group                                | [Test suite guide](../tests/README.md)                                                             |
+| Inspect current competition work and gates              | [Competition readiness](competition-readiness/README.md)                                           |
+| Contribute safely                                       | [CONTRIBUTING.md](../CONTRIBUTING.md)                                                              |
+| Demonstrate and verify Feature 003                      | [DEMO_RUNBOOK.md](competition-readiness/DEMO_RUNBOOK.md)                                           |
+| Inspect the active specification                        | [Feature 003 spec](../specs/003-family-growth-garden/spec.md)                                      |
+| Check current independent release gates                 | [Feature 003 release gates](../specs/003-family-growth-garden/design-intake/release-gate.md)       |
+| Inspect frozen R001 composition references              | [R001 source](design/stitch/releases/ghaf-r001/STITCH_DESIGN.md)                                   |
+| Inspect selected R002a compatibility references         | [R002a selections](design/stitch/releases/ghaf-r002a/SCREEN_SELECTIONS.md)                         |
+| Inspect the R002b implementation contract               | [R002b contract](../specs/003-family-growth-garden/design-intake/r002b-implementation-contract.md) |
 
 ## Active Feature 003 contracts
 

@@ -5,12 +5,49 @@ import {
   errorCodes,
   phraseIds,
   phraseText,
+  peerPermissionSchema,
+  threadSchema,
   validBody,
 } from '../../src/features/familyMessaging/contracts';
 import { resources } from '../../src/i18n/resources';
 import { child, parent } from './fixtures';
+import { peerMessagingAr, peerMessagingEn } from '../../src/i18n/peerMessagingResources';
 
 describe('messaging policy and bilingual contract', () => {
+  it('keeps equivalent peer labels and rejects ambiguous peer DTOs', () => {
+    expect(Object.keys(peerMessagingAr).sort()).toEqual(Object.keys(peerMessagingEn).sort());
+    expect(
+      threadSchema.safeParse({
+        id: parent.deviceId,
+        kind: 'child_child',
+        childId: child.personId,
+        otherName: parent.displayName,
+        otherRole: 'parent',
+      }).success,
+    ).toBe(false);
+    expect(
+      peerPermissionSchema.safeParse({
+        firstChildId: child.personId,
+        secondChildId: child.personId,
+        firstName: 'A',
+        secondName: 'B',
+        threadId: null,
+        enabled: false,
+        available: true,
+      }).success,
+    ).toBe(false);
+    expect(
+      peerPermissionSchema.safeParse({
+        firstChildId: child.personId,
+        secondChildId: '30000000-0000-4000-8000-000000000002',
+        firstName: 'A',
+        secondName: 'B',
+        threadId: null,
+        enabled: true,
+        available: true,
+      }).success,
+    ).toBe(false);
+  });
   it('matches the server curated phrase allowlist and bilingual resources exactly', () => {
     const sql = readFileSync(
       new URL(

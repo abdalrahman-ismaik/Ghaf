@@ -1,4 +1,5 @@
 import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
+import { StudyEntries } from '@/components/study/StudyEntries';
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { MasroofiEntry } from '@/components/masroofi/MasroofiEntry';
 import { MasroofiTaskRewardNotice } from '@/components/masroofi/MasroofiTaskRewardNotice';
@@ -699,6 +700,7 @@ export default function ChildHomeScreen() {
       ) : null}
 
       <MessagingEntry role="child" />
+      <StudyEntries role="child" />
       <MasroofiEntry role="child" />
 
       {r002bGrowth.ok ? (

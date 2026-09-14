@@ -3,11 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
 
 import { Input } from '@/components/primitives';
+import { logicalRowDirection } from '@/design/tokens';
 import type {
   FamilyMessagingController,
   MessagingState,
 } from '@/features/familyMessaging/controller';
 import type { MessagingRole } from '@/features/familyMessaging';
+import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { MessageButton, MessageText, styles } from './shared';
 
 export function MessagingAccess({
@@ -18,6 +20,7 @@ export function MessagingAccess({
   state: MessagingState;
 }) {
   const { t } = useTranslation();
+  const direction = usePrototypeStore((store) => store.direction);
   const [choice, setChoice] = useState<MessagingRole>('parent');
   const mode = state.expectedRole ?? choice;
   const [email, setEmail] = useState('');
@@ -40,7 +43,14 @@ export function MessagingAccess({
         {t(mode === 'parent' ? 'messaging.authBody' : 'messaging.enrollBody')}
       </MessageText>
       {!state.expectedRole ? (
-        <View style={styles.row}>
+        <View
+          style={[
+            styles.row,
+            Platform.OS === 'web'
+              ? null
+              : { direction: 'ltr', flexDirection: logicalRowDirection(direction) },
+          ]}
+        >
           {(['parent', 'child'] as const).map((role) => (
             <MessageButton
               key={role}

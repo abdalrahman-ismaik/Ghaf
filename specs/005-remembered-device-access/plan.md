@@ -1,5 +1,14 @@
 # Implementation Plan: Remembered Device Access
 
+## Confirmed recovery compatibility — 2026-09-13
+
+Feature 003 FR-220–224 owns the new signed-out corrupt-data recovery UI and command.
+This feature contributes verified affinity removal before family deletion and
+regressions proving no remembered Parent/Child authority survives successful
+recovery. Storage errors remain retryable without pretending reset succeeded.
+Reuse existing local repositories and reset contracts; add no persisted schema,
+role, token, provider or cross-device recovery capability.
+
 **Branch**: `005-remembered-device-access` | **Date**: 2026-09-07 | **Spec**: [spec.md](spec.md)
 
 **Input**: Feature specification from `/specs/005-remembered-device-access/spec.md`

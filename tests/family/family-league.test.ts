@@ -319,58 +319,104 @@ describe('synthetic Family League week', () => {
     ).toEqual(confirmed);
   });
 
-  it('lets a reauthenticated Parent fill the rolled week with changed membership', () => {
-    const { registry, parentAuthority, week } = createLeagueServiceHarness();
-    const permanentProgress: LeaguePermanentProgressSnapshot = {
-      earnedSeedsByChild: { child_salem: 48, child_alya: 36 },
-      gardenByLandscape: {
-        ghaf: { cumulativeSeeds: 0, stage: 'seed' },
-        samar: { cumulativeSeeds: 0, stage: 'seed' },
-        sidr: { cumulativeSeeds: 0, stage: 'seed' },
-        date_palm: { cumulativeSeeds: 0, stage: 'seed' },
-        mangrove: { cumulativeSeeds: 48, stage: 'shoot' },
-      },
-    };
-    const rolled = registry.familyLeague.rollover(
-      {
-        currentWeek: week,
-        nextWeekKey: '2026-W37',
-        timeZone: 'Asia/Dubai',
-        permanentProgressBefore: permanentProgress,
-        permanentProgressAfter: permanentProgress,
-      },
-      parentAuthority,
-    );
-    expect(rolled).toMatchObject({
-      ok: true,
-      data: { week: { optedOutParticipantIds: ['cousin_noura'], leaves: [] } },
-    });
+  it.each([false, true])(
+    'lets a reauthenticated Parent fill the rolled week with changed membership (encouragement: %s)',
+    (withEncouragement) => {
+      const { registry, parentAuthority, childAuthority, week } = createLeagueServiceHarness();
+      const permanentProgress: LeaguePermanentProgressSnapshot = {
+        earnedSeedsByChild: { child_salem: 48, child_alya: 36 },
+        gardenByLandscape: {
+          ghaf: { cumulativeSeeds: 0, stage: 'seed' },
+          samar: { cumulativeSeeds: 0, stage: 'seed' },
+          sidr: { cumulativeSeeds: 0, stage: 'seed' },
+          date_palm: { cumulativeSeeds: 0, stage: 'seed' },
+          mangrove: { cumulativeSeeds: 48, stage: 'shoot' },
+        },
+      };
+      const rolled = registry.familyLeague.rollover(
+        {
+          currentWeek: week,
+          nextWeekKey: '2026-W37',
+          timeZone: 'Asia/Dubai',
+          permanentProgressBefore: permanentProgress,
+          permanentProgressAfter: permanentProgress,
+        },
+        parentAuthority,
+      );
+      expect(rolled).toMatchObject({
+        ok: true,
+        data: { week: { optedOutParticipantIds: ['cousin_noura'], leaves: [] } },
+      });
 
-    const proof = registry.access.issueReauthentication({
-      proofId: 'league-refill-membership-proof',
-      parentSession: parentAuthority.session,
-      reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
-      purpose: 'change_league_membership',
-      now: '2026-09-02T10:04:00.000Z',
-    });
-    if (!proof.ok) throw new Error(proof.error.message);
-    const filled = registry.familyLeague.createWeek(
-      {
+      const encouragementInput = {
         weekKey: '2026-W37',
-        timeZone: 'Asia/Dubai',
-        optedOutParticipantIds: [],
-        leaves: candidates(),
-      },
-      { ...parentAuthority, now: '2026-09-02T10:04:01.000Z' },
-      proof.data.id,
-    );
-    expect(filled).toMatchObject({
-      ok: true,
-      data: { optedOutParticipantIds: [], cooperativeGoal: 15 },
-    });
-    if (!filled.ok) throw new Error(filled.error.message);
-    expect(filled.data.leaves).toHaveLength(15);
-  });
+        recipientId: 'child_alya' as const,
+        phraseId: 'great_growing' as const,
+      };
+      const encouragement = withEncouragement
+        ? registry.familyLeague.sendPreparedEncouragement(encouragementInput, childAuthority)
+        : null;
+      if (encouragement && !encouragement.ok) throw new Error(encouragement.error.message);
+
+      const proof = registry.access.issueReauthentication({
+        proofId: 'league-refill-membership-proof',
+        parentSession: parentAuthority.session,
+        reauthenticationFixtureId: SYNTHETIC_PARENT_REAUTHENTICATION_FIXTURE_ID,
+        purpose: 'change_league_membership',
+        now: '2026-09-02T10:04:00.000Z',
+      });
+      if (!proof.ok) throw new Error(proof.error.message);
+      if (withEncouragement) {
+        expect(
+          registry.familyLeague.createWeek(
+            {
+              weekKey: '2026-W37',
+              timeZone: 'Asia/Dubai',
+              optedOutParticipantIds: ['child_alya'],
+              leaves: candidates(['child_alya']),
+            },
+            { ...parentAuthority, now: '2026-09-02T10:04:01.000Z' },
+            proof.data.id,
+          ),
+        ).toMatchObject({ ok: false });
+        expect(
+          registry.familyLeague.sendPreparedEncouragement(encouragementInput, childAuthority),
+        ).toEqual(encouragement);
+      }
+      const filled = registry.familyLeague.createWeek(
+        {
+          weekKey: '2026-W37',
+          timeZone: 'Asia/Dubai',
+          optedOutParticipantIds: [],
+          leaves: candidates(),
+        },
+        { ...parentAuthority, now: '2026-09-02T10:04:01.000Z' },
+        proof.data.id,
+      );
+      expect(filled).toMatchObject({
+        ok: true,
+        data: { optedOutParticipantIds: [], cooperativeGoal: 15 },
+      });
+      if (!filled.ok) throw new Error(filled.error.message);
+      expect(filled.data.leaves).toHaveLength(15);
+      expect(filled.data.preparedEncouragementLedger).toEqual(
+        encouragement?.ok ? [encouragement.data] : [],
+      );
+      expect(registry.familyLeague.calculateResults(filled.data, parentAuthority)).toMatchObject({
+        ok: true,
+        data: [
+          { participantId: 'child_salem', score: 0 },
+          { participantId: 'child_alya', score: 0 },
+          { participantId: 'cousin_noura', score: 0 },
+        ],
+      });
+      if (encouragement) {
+        expect(
+          registry.familyLeague.sendPreparedEncouragement(encouragementInput, childAuthority),
+        ).toEqual(encouragement);
+      }
+    },
+  );
 
   it('assigns exactly five unique eligible Leaves to each participating fixed invitee', () => {
     const week = createWeek(['cousin_noura']);

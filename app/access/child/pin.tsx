@@ -33,6 +33,7 @@ export default function ChildCredentialScreen() {
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const childAccess = usePrototypeStore((state) => state.childAccess);
   const children = usePrototypeStore((state) => state.children);
+  const localFamily = usePrototypeStore((state) => state.localFamily);
   const verify = usePrototypeStore((state) => state.verifyChildCredential);
   const [pin, setPin] = useState('');
   const [sequence, setSequence] = useState<string[]>([]);
@@ -42,7 +43,8 @@ export default function ChildCredentialScreen() {
   if (activeExperience === 'child') return <Redirect href="/child" />;
   if (!childAccess.selectedChildId) return <Redirect href={'/access/child' as Href} />;
   const child = children[childAccess.selectedChildId];
-  const name = localize(child.displayName, locale);
+  const profile = localFamily.record?.children.find((candidate) => candidate.id === child.id);
+  const name = profile?.nickname ?? localize(child.displayName, locale);
   const pictureMode = childAccess.credentialKind === 'picture_sequence';
 
   const submit = () => {
@@ -80,7 +82,7 @@ export default function ChildCredentialScreen() {
       <View style={styles.identity}>
         <BotanicalAvatar
           direction={direction}
-          id={child.id === 'child_salem' ? 'ghaf_tree' : 'flower'}
+          id={profile?.avatarId ?? (child.id === 'child_salem' ? 'ghaf_tree' : 'flower')}
           size={76}
         />
         <Text align="center" brand color="deepForest" direction={direction} variant="hero">

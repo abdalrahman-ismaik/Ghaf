@@ -1,16 +1,13 @@
-import { useWindowDimensions, StyleSheet, View } from 'react-native';
+import { Platform, useWindowDimensions, StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
-  Easing,
   ReduceMotion,
   useAnimatedStyle,
   useAnimatedProps,
-  useReducedMotion,
   useSharedValue,
-  withDelay,
   withTiming,
 } from 'react-native-reanimated';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Svg, { Path } from 'react-native-svg';
 
@@ -19,19 +16,21 @@ import { useAmbientAudio } from '@/components/audio';
 import { GhafBrandLockup } from '@/components/brand/GhafBrandLockup';
 import { LocalIllustration, onboardingArtworkIds } from '@/components/illustrations';
 import { Button, IconButton, Text } from '@/components/primitives';
+import { interactionMotion } from '@/design/motion';
 import {
   colors,
   layout,
   logicalRowDirection,
-  motion,
   r001Radii,
   r001Shadows,
   spacing,
 } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 import { ONBOARDING_PILLARS, ONBOARDING_STEPS, type OnboardingPillar } from './experienceModel';
 import { useFirstRunExperience } from './FirstRunExperienceContext';
+import { useOnboardingForeground } from './useOnboardingForeground';
 import { useOnboardingNarrator } from './useOnboardingNarrator';
 
 interface FirstRunStepCopy {
@@ -91,9 +90,9 @@ function ImagePerimeterProgress({ reducedMotion, stepIndex }: ImagePerimeterProg
     }
     progress.set(
       withTiming(target, {
-        duration: motion.duration.standard,
-        easing: Easing.bezier(...motion.easing),
-        reduceMotion: ReduceMotion.System,
+        duration: interactionMotion.timing.state,
+        easing: interactionMotion.easing,
+        reduceMotion: ReduceMotion.Never,
       }),
     );
     return () => cancelAnimation(progress);
@@ -165,18 +164,32 @@ export function FirstRunOnboarding({
 }: { readonly narrationEnabled?: boolean } = {}) {
   const { height } = useWindowDimensions();
   const { t } = useTranslation();
-  const reducedMotion = Boolean(useReducedMotion());
+  const reducedMotion = useReducedMotionPreference();
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
-  const { dispatch, state } = useFirstRunExperience();
-  const [imageReadyStep, setImageReadyStep] = useState<(typeof ONBOARDING_STEPS)[number] | null>(
-    null,
-  );
-  const [settledStep, setSettledStep] = useState<(typeof ONBOARDING_STEPS)[number] | null>(null);
+  const { dispatch, presentationReady, state } = useFirstRunExperience();
+  const foreground = useOnboardingForeground();
+  const [presentation, setPresentation] = useState({
+    step: state.step,
+    visit: 0,
+    imageReady: false,
+    settled: false,
+  });
+  // Invalidate the previous visit before committing narration effects.
+  if (presentation.step !== state.step) {
+    setPresentation({
+      step: state.step,
+      visit: presentation.visit + 1,
+      imageReady: false,
+      settled: false,
+    });
+  }
+  const visit = presentation.visit;
   const { setNarrationPlaying, unlockPlayback, webPlaybackUnlocked } = useAmbientAudio();
   const visualProgress = useSharedValue(1);
   const copyProgress = useSharedValue(1);
+  const presentedVisit = useRef<number | null>(null);
   const stepIndex = ONBOARDING_STEPS.indexOf(state.step);
   const stepNumber = stepIndex + 1;
   const isCompactHeight = height < 760;
@@ -186,23 +199,35 @@ export function FirstRunOnboarding({
   const isLast = stepIndex === ONBOARDING_STEPS.length - 1;
   const showPillarNavigator = stepIndex <= 3;
   const storyAccent = storyAccents[stepIndex] ?? colors.ghafEmerald;
-  const slideReady = imageReadyStep === state.step && settledStep === state.step;
+  const slideReady =
+    presentation.step === state.step && presentation.imageReady && presentation.settled;
+  const playbackReady = presentationReady && foreground && !state.completed && slideReady;
   const narration = useOnboardingNarrator({
     locale,
-    ready: narrationEnabled && slideReady,
+    ready: narrationEnabled && playbackReady,
     step: state.step,
     webPlaybackUnlocked,
   });
   const visualStyle = useAnimatedStyle(() => ({
     opacity: visualProgress.get(),
     transform: [
-      { translateY: reducedMotion ? 0 : (1 - visualProgress.get()) * 8 },
+      {
+        translateY: reducedMotion
+          ? 0
+          : (1 - visualProgress.get()) * interactionMotion.displacement.story,
+      },
       { scale: reducedMotion ? 1 : 0.985 + visualProgress.get() * 0.015 },
     ],
   }));
   const copyStyle = useAnimatedStyle(() => ({
     opacity: copyProgress.get(),
-    transform: [{ translateY: reducedMotion ? 0 : (1 - copyProgress.get()) * 8 }],
+    transform: [
+      {
+        translateY: reducedMotion
+          ? 0
+          : (1 - copyProgress.get()) * interactionMotion.displacement.story,
+      },
+    ],
   }));
   const progressLabel = t('firstRun.progress', {
     current: stepNumber,
@@ -221,35 +246,38 @@ export function FirstRunOnboarding({
   useLayoutEffect(() => {
     cancelAnimation(visualProgress);
     cancelAnimation(copyProgress);
+    const stepChanged = presentedVisit.current !== visit;
+    presentedVisit.current = visit;
     if (reducedMotion) {
       visualProgress.set(1);
       copyProgress.set(1);
       return;
     }
-    visualProgress.set(0);
-    copyProgress.set(0);
-    visualProgress.set(
-      withTiming(1, {
-        duration: motion.duration.standard,
-        easing: Easing.bezier(...motion.easing),
-        reduceMotion: ReduceMotion.System,
-      }),
-    );
-    copyProgress.set(
-      withDelay(
-        45,
+    // Preference/foreground changes must not replay the current slide.
+    if (stepChanged) {
+      // An interrupted step keeps its current opacity and displacement.
+      visualProgress.set((current) => (current === 1 ? 0 : current));
+      copyProgress.set((current) => (current === 1 ? 0 : current));
+      visualProgress.set(
         withTiming(1, {
-          duration: motion.duration.standard,
-          easing: Easing.bezier(...motion.easing),
-          reduceMotion: ReduceMotion.System,
+          duration: interactionMotion.timing.state,
+          easing: interactionMotion.easing,
+          reduceMotion: ReduceMotion.Never,
         }),
-      ),
-    );
+      );
+      copyProgress.set(
+        withTiming(1, {
+          duration: interactionMotion.timing.state,
+          easing: interactionMotion.easing,
+          reduceMotion: ReduceMotion.Never,
+        }),
+      );
+    }
     return () => {
       cancelAnimation(visualProgress);
       cancelAnimation(copyProgress);
     };
-  }, [copyProgress, reducedMotion, state.step, visualProgress]);
+  }, [copyProgress, reducedMotion, visit, visualProgress]);
 
   useEffect(() => {
     setNarrationPlaying(narrationEnabled && narration.status === 'speaking');
@@ -257,19 +285,108 @@ export function FirstRunOnboarding({
   }, [narration.status, narrationEnabled, setNarrationPlaying]);
 
   useEffect(() => {
-    const settleDelay = reducedMotion ? 0 : motion.duration.standard + 45;
-    const timeout = setTimeout(() => setSettledStep(state.step), settleDelay);
+    const settleDelay = reducedMotion ? 0 : interactionMotion.timing.state;
+    const timeout = setTimeout(
+      () =>
+        setPresentation((current) =>
+          current.visit === visit ? { ...current, settled: true } : current,
+        ),
+      settleDelay,
+    );
     return () => clearTimeout(timeout);
-  }, [reducedMotion, state.step]);
+  }, [reducedMotion, visit]);
 
   if (!step) return null;
+
+  const navigation = (
+    <View style={styles.navigation} testID="first-run-navigation">
+      <View
+        accessibilityLabel={progressAlt}
+        accessibilityRole="progressbar"
+        accessibilityValue={{
+          max: ONBOARDING_STEPS.length,
+          min: 1,
+          now: stepNumber,
+          text: progressLabel,
+        }}
+        style={[styles.progressRow, { flexDirection: logicalRowDirection(direction) }]}
+        testID="first-run-progress"
+      >
+        <Text
+          brand
+          color="deepForest"
+          direction={direction}
+          language={locale}
+          tabular
+          variant="caption"
+        >
+          {progressLabel}
+        </Text>
+        <View
+          accessibilityElementsHidden
+          aria-hidden
+          style={[styles.dots, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {ONBOARDING_STEPS.map((item, index) => (
+            <View
+              key={item}
+              style={[
+                styles.dot,
+                index === stepIndex ? [styles.dotActive, { backgroundColor: storyAccent }] : null,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+      <View
+        style={[styles.navigationActions, { flexDirection: logicalRowDirection(direction) }]}
+        testID="first-run-navigation-actions"
+      >
+        <Button
+          brand
+          direction={direction}
+          fullWidth={false}
+          language={locale}
+          onPress={() => {
+            unlockPlayback();
+            dispatch({ type: isLast ? 'start' : 'next' });
+          }}
+          size="regular"
+          style={styles.navigationAction}
+          testID={isLast ? 'first-run-start-button' : 'first-run-next-button'}
+        >
+          {t(isLast ? 'firstRun.start' : 'firstRun.next')}
+        </Button>
+        {stepIndex > 0 ? (
+          <Button
+            brand
+            direction={direction}
+            fullWidth={false}
+            language={locale}
+            onPress={() => {
+              unlockPlayback();
+              dispatch({ type: 'back' });
+            }}
+            size="regular"
+            style={styles.navigationAction}
+            testID="first-run-back-button"
+            variant="secondary"
+          >
+            {t('firstRun.back')}
+          </Button>
+        ) : null}
+      </View>
+    </View>
+  );
 
   return (
     <AccessScreen
       background="welcome"
       contentContainerStyle={styles.viewport}
       contentMaxWidth={layout.readableContentWidth}
-      contentStyle={styles.content}
+      contentStyle={[styles.content, Platform.OS !== 'web' && styles.nativeContent]}
+      footer={Platform.OS !== 'web' ? navigation : undefined}
+      footerStyle={styles.navigationFooter}
       header={
         <View style={[styles.topBar, { flexDirection: logicalRowDirection(direction) }]}>
           <GhafBrandLockup
@@ -326,10 +443,16 @@ export function FirstRunOnboarding({
               direction={direction}
               fallbackLabel={t('firstRun.imageFallback')}
               language={locale}
-              onSettled={() => setImageReadyStep(state.step)}
+              key={`${artworkId}:${visit}`}
+              onSettled={() =>
+                setPresentation((current) =>
+                  current.visit === visit ? { ...current, imageReady: true } : current,
+                )
+              }
               priority="high"
               style={styles.heroImage}
               testID={`first-run-image-${state.step}`}
+              transitionDuration={0}
             />
             <ImagePerimeterProgress reducedMotion={reducedMotion} stepIndex={stepIndex} />
             <IconButton
@@ -424,84 +547,7 @@ export function FirstRunOnboarding({
         </Animated.View>
       </View>
 
-      <View style={styles.navigation} testID="first-run-navigation">
-        <View
-          accessibilityLabel={progressAlt}
-          accessibilityRole="progressbar"
-          accessibilityValue={{
-            max: ONBOARDING_STEPS.length,
-            min: 1,
-            now: stepNumber,
-            text: progressLabel,
-          }}
-          style={[styles.progressRow, { flexDirection: logicalRowDirection(direction) }]}
-          testID="first-run-progress"
-        >
-          <Text
-            brand
-            color="deepForest"
-            direction={direction}
-            language={locale}
-            tabular
-            variant="caption"
-          >
-            {progressLabel}
-          </Text>
-          <View
-            accessibilityElementsHidden
-            aria-hidden
-            style={[styles.dots, { flexDirection: logicalRowDirection(direction) }]}
-          >
-            {ONBOARDING_STEPS.map((item, index) => (
-              <View
-                key={item}
-                style={[
-                  styles.dot,
-                  index === stepIndex ? [styles.dotActive, { backgroundColor: storyAccent }] : null,
-                ]}
-              />
-            ))}
-          </View>
-        </View>
-        <View
-          style={[styles.navigationActions, { flexDirection: logicalRowDirection(direction) }]}
-          testID="first-run-navigation-actions"
-        >
-          <Button
-            brand
-            direction={direction}
-            fullWidth={false}
-            language={locale}
-            onPress={() => {
-              unlockPlayback();
-              dispatch({ type: isLast ? 'start' : 'next' });
-            }}
-            size="regular"
-            style={styles.navigationAction}
-            testID={isLast ? 'first-run-start-button' : 'first-run-next-button'}
-          >
-            {t(isLast ? 'firstRun.start' : 'firstRun.next')}
-          </Button>
-          {stepIndex > 0 ? (
-            <Button
-              brand
-              direction={direction}
-              fullWidth={false}
-              language={locale}
-              onPress={() => {
-                unlockPlayback();
-                dispatch({ type: 'back' });
-              }}
-              size="regular"
-              style={styles.navigationAction}
-              testID="first-run-back-button"
-              variant="secondary"
-            >
-              {t('firstRun.back')}
-            </Button>
-          ) : null}
-        </View>
-      </View>
+      {Platform.OS === 'web' ? navigation : null}
     </AccessScreen>
   );
 }
@@ -514,6 +560,15 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     gap: spacing.md,
+  },
+  nativeContent: {
+    flex: 0,
+    flexGrow: 1,
+    flexShrink: 0,
+  },
+  navigationFooter: {
+    borderTopWidth: 0,
+    backgroundColor: colors.transparent,
   },
   topBar: {
     width: '100%',

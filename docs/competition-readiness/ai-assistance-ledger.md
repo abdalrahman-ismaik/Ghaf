@@ -1,5 +1,229 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Native motion, persistent accounts and backend readiness
+
+The owner requested native animation improvements, real persistent adult accounts,
+profile plus family/task/study synchronization, two independent clients and later
+backend maintenance, commit/push and a usable APK. Codex and bounded helpers
+implemented the onboarding feedback/layout fixes, account service/controller/UI,
+private teardown, owned SQL/RPCs and regression tests. Native ADB interactions used
+the actual API35 emulator and two separate package UIDs. Recordings/screenshots,
+local Auth/mail/SQL evidence and known native limits are linked from Feature018
+validation and the native motion report. This is AI-assisted implementation and
+testing, not independently student-authored code or named human acceptance.
+
+The follow-up audited all19 feature directories. Feature014 remains deferred by
+the owner's explicit answer; stale CE1 implementation markers were reconciled with
+existing commits/source/tests. A new provider-status guard reproduced23 failures
+before its additive migration and passed the full203-assertion SQL suite afterward.
+Hosted baseline/history was verified before applying account migrations; real
+Auth/HTTP checks exercised independent sessions, account-owned data and denial,
+then removed only invocation-created synthetic fixtures. Existing messaging and
+additional independently added location objects were preserved.
+
+Helpers also prepared guarded local database verification, isolated backend CI and
+a manual fresh native APK workflow after local toolchain/disk and EAS-login blockers.
+Root reviewed and tested their changes, including REST probe and Docker-context
+precedence corrections. Raw secrets and build credentials are excluded from Git.
+Current checks passed2,974 app tests,203 SQL assertions and13 tooling tests; exact
+environment/commands and later publication/build results belong to the associated
+validation receipts. No public release, production readiness, physical performance
+or unrecorded student review is implied by an automated build or push.
+
+The first fresh Gradle APK (`c9c77e4`, GitHub run34846738847) was installed and
+operated through ADB. Hosted native writes, an independent SDK session's reads
+and reverse update, restart, current-session logout and UserB isolation were
+observed. Root inspected actual Android video frames and found a104px auth-shell
+inset jump. A read-only helper identified the phase-keyed outer-shell remount;
+another helper preserved the shell and keyed only the private body, with nine
+additional regression cases. Root reviewed and ran type/lint/format and2,983
+tests (two opt-in skipped); `5ad7faa` contains that fix. Its new APK/native visual
+comparison is recorded separately in Feature018 validation. These are agent
+implementation/review and emulator observations, not student review or physical
+frame-timing measurements. Test account credentials remain outside the repository.
+
+The final fresh APK from run34851035020 uses exact source `5ad7faa`. Root verified
+its hash, signer, non-debuggable/non-test-only manifest and alignment, installed
+it without clearing data, then repeated native sign-in, saved-data retrieval,
+rapid completion, account switching and zero-animation/large-text logout checks.
+A bounded helper reviewed the actual native recording samples: the shell/inset
+jump was absent in the inspected transition. Root preserved the failed full-video
+overview caused by disk exhaustion and the floating-Gboard first-Back failure;
+no docked-keyboard, external email or physical-performance pass is invented.
+
+Root ended both hosted fixture sessions, removed only those two test accounts and
+restored operator settings. Read-only cleanup helpers found no safely disposable
+large AVD; the failed test AVD contained only configuration. Root removed a stale
+March SDK download and compressed seven archived source maps and seven JS bundles
+losslessly, verifying content hashes. Rejected recursive removals remain untouched.
+The APKs, recordings, source, installed app data and local database volumes remain.
+These implementation, test and handoff records are AI-assisted contributions;
+student review and outstanding native/human acceptance remain separate.
+
+## 2026-09-14 Final repository integration
+
+The owner requested merging and finalizing all remaining work and resolving any
+conflicts. Codex used two read-only helpers to audit branch/worktree coverage and
+the pending skill installations. All current runtime work was already in `main`
+at `111880e`; the two divergent legacy refs were classified against their obsolete
+contracts and the existing no-verbatim-port plan, then preserved as history.
+
+Root committed the owner's installed Apple design and React Native references in
+`eef169c`. Imported skill text was preserved apart from CRLF-to-LF normalization.
+The three lock hashes were recomputed using the
+[upstream skills CLI algorithm](https://github.com/vercel-labs/skills/blob/main/src/local-lock.ts)
+and independently matched the staged Git blobs. The existing Animate files had no
+content change. The helper checked all 45 relative links and nine subskill
+references; root passed repository policy/navigation checks, their five tests,
+lock formatting, newline/hash verification and staged whitespace checks.
+
+This is automated integration and tooling assistance using the configured
+contributor identity, not student authorship of the imported references. No app
+runtime changed in this finalization, so the recorded 2,773-test runtime evidence
+remains applicable without a redundant full rerun. Native startup reliability,
+full Gradle rebuild, physical-device and human acceptance gaps remain unchanged.
+
+## 2026-09-14 Technical-interruption recovery and emulator packaging
+
+The owner requested continuation after a technical interruption. Codex recovered
+the existing committed `0ad7a0d` runtime and dirty evidence without changing the
+independent motion session's files. One scoped helper audited the checkpoint,
+reviewed primary Android/SoLoader packaging sources and reconciled three existing
+handoff documents. Root owns the emulator and final integration records.
+
+Codex produced an ignored extraction-only APK experiment, parsed the compiled
+manifest and changed one existing boolean. Root verified every other payload,
+the existing signer and alignment, then independently hashed the installed APK
+after ADB returned a misleading empty installation error. The exact candidate
+rendered Arabic onboarding and opened Parent Home on the C: emulator. Packaging
+attempt failures and startup warnings remain recorded. This work is automated
+engineering assistance, not a full Gradle rebuild, physical-device acceptance,
+student authorship or named human review. Functional follow-up evidence belongs
+in the [integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
+
+The subsequent native check reproduced Study hardware Back exiting to Android's
+launcher. Codex delegated only `StudyScreen.tsx` and its focused regression to
+`study_back_fix`, which implemented focused role-safe Back handling and preserved
+keyboard drafts. Eight tests failed before the fix and passed afterward; root
+reviewed and committed `e8ae266`. The unrelated recovery-test assertion formatting
+was committed separately as `b8da974`. The released motion session was included
+without changing its source. Final TypeScript, full lint, full formatting and
+2,773 tests across 193 files passed, with two skipped tests/files recorded.
+
+Root compiled the exact `e8ae266` source and produced emulator APK `a55a6acb…`
+using the existing diagnostic native container and verified extraction package.
+Resource, payload, signer and alignment checks passed; installation returned
+Success and two independent installed hashes matched. The read-only integration
+helper found no source blocker, then reconciled exactly three existing handoff
+documents and released them. Source review and automated emulator operation do not
+constitute student teach-back, physical-device or named human acceptance. Final
+observed UI checks and exclusions are attributed in the integration record.
+
+Direct `a55a6acb…` native Back testing failed despite the eight passing tests.
+Codex retained that failure and asked `study_back_fix` to inspect installed React
+Native/Expo navigation and primary Android guidance. Root tested its bounded
+four-byte predictive Back opt-out experiment, APK `615048cd…`, with unchanged
+JavaScript and other payloads. Parent repeat Back, Parent keyboard/draft retention
+and Child Back passed; `resume_audit` independently inspected the actual images
+and receipts. Root committed the matching build configuration as `9d756ef` after
+Expo introspection, scoped lint and formatting passed. No additional Study rewrite
+or mock-only native claim was used. The later 22,440 ms cold-launch timeout remains
+an explicit reliability gap. Physical, student and named human acceptance remain separate.
+The final `9d756ef` TypeScript rerun passed. Later settled startup, English Study/Back,
+AR/EN messaging and Parent account restoration were observed separately from the
+failed launch timing. Root saved `resumed-final-acceptance.json` with screenshot
+hashes and stopped the owned emulator after collection.
+
+## 2026-09-14 Resumed native and messaging acceptance
+
+The owner resumed after reconnecting and explicitly revoked artificial commit spacing:
+"commit normally, as you finish a function commit". Codex updated the repository rule,
+corrected directly observed native Study and messaging text direction/tab wrapping,
+and committed the verified slices. A bounded implementation helper handled the Study
+files; a coordinator reviewed source and reconciled evidence. Messaging regression
+passed 73 tests with one opt-in hosted skip; TypeScript and affected lint/format passed.
+
+Root drove the actual Samsung UI: real synthetic Parent login, account restoration
+after force-stop, and bidirectional messaging with a separately enrolled browser Child.
+The web auditor recorded the actual server IDs and ordered history without mocking
+transport. A duplicate synthetic Child created during phone form navigation was
+identified and excluded from the successful same-thread delivery receipt. No human
+content review or student authorship is inferred from these automated interactions.
+
+The updated D: native build encountered actual exFAT lost-write events and an invalid
+open log handle. Root stopped its recorded client, retained the evidence, and requested
+healthy storage. The build helper investigated output-drain handling and received a
+bounded launcher correction/test grant. This failure is not a passing final native
+build. Current candidate details and remaining gates are in the
+[integration evidence](../../specs/016-real-family-messaging/backend-android-validation.md).
+
+After the owner confirmed D: was stable, a small write/read probe passed but a second
+bounded native build produced 17 further exFAT write errors. Root stopped its owned
+build processes and retained both failures. The coordinator prepared a C:-only APK
+packager that checks the verified native container, all resource mappings and every
+payload before replacing the compiled JavaScript bundle. Root compiled, aligned,
+signed and installed the internal update and checked the actual phone presentation.
+It retains mixed native/JavaScript provenance and is not a full Gradle rebuild.
+The observed Arabic header defect received a separate correction and source review.
+The owner then authorized closing unused applications; root requested graceful
+closure of idle browsers and Task Manager without forcing unsaved work to close.
+
+The web auditor also exercised actual Parent-approved sibling messaging in isolated
+browser contexts, including the younger Child's phrase-only composer, Parent content
+exclusion, permission revocation and session cleanup. Root exercised the synthetic
+Study plan, jointly agreed academic goal/prize, Child isolation and reset on the
+diagnostic phone. Candidate-specific receipts remain in the integration evidence;
+these automated checks do not establish named human review or full native acceptance.
+
+## 2026-09-14 Hosted messaging and Android integration
+
+The user authorized backend integration and physical testing using Android Studio,
+signed in to the provider dashboard, connected a phone and offered D: for build space.
+After the Expo Go attempt failed, the user asked for compilation or an Android Studio
+virtual device. Codex provisioned a dedicated synthetic Free messaging project,
+applied the reviewed SQL and retention schedule, and ran the actual HTTP acceptance
+harness. A bounded helper prepared the harness and setup/evidence documentation;
+another prepared the Windows build launcher, with root correcting observed Windows
+execution issues and supervising the build. Read-only tool inventory was delegated.
+
+At the user's request, a coordinator and bounded backend/web auditors worked in
+parallel. They reproduced and corrected terminal Auth refresh recovery, accepted
+message retries at the send limit, and the browser default-fetch receiver. Each fix
+has a failing-before regression and a passing-after check. The additive SQL migration
+was applied to the dedicated test backend; the actual hosted acceptance test passed.
+The coordinator independently reviewed the fetch change and native launcher. These
+audits do not establish production security or replace physical acceptance.
+
+The [integration record](../../specs/016-real-family-messaging/backend-android-validation.md)
+distinguishes the hosted pass, failed Expo Go attempt, build progress and outstanding
+physical/human gates. Generated code and documentation remain AI-assisted; no student
+authorship, production readiness or named human acceptance is inferred. Secrets and
+raw device identifiers remain outside tracked evidence.
+
+## 2026-09-13 Study and family support
+
+The user selected saved proposals 8–12 for implementation and then instructed:
+"Proceed from the saved proposals". Codex prepared Feature 017's specification,
+plan and task boundaries from those records. Three bounded workers were assigned
+study domain/storage, the messaging extension, and sourced family practices; root
+owns integration, UI for study/goals and validation. Generated implementation and
+tests are recorded in [Feature 017 evidence](../../specs/017-study-family-support/validation.md).
+The study worker also found and helped close a family-binding flaw caused by fixed
+prepared timestamps; root integrated an opaque local study-instance identifier and
+verified orphan cleanup. Browser validation covered real synthetic UI interactions,
+while isolated SQL exercised actual authorization functions with synthetic Auth fixtures.
+Named human Arabic review, student
+teach-back and physical-device acceptance are not inferred from automated work.
+
+## 2026-09-13 Main merge assistance
+
+User request: "push everything and merge, solve any conflict". Codex and three
+bounded helpers reconciled the existing local/remote main merge, preserving both
+approved feature sets and their regression coverage. Assistance included source,
+dependency, test and documentation conflict resolution and integration fixes.
+The [merge record](workstreams/main-merge-20260913.md) records scope and validation.
+No student review or teach-back is inferred from this maintenance work.
+
 This record covers the September 12, 2026 inspection on `redesign/ui-experiments`, starting at
 `55f9f2b`. It identifies generated assistance honestly. **Student review and teach-back are NOT RUN**
 unless a later entry records an actual named review. Local commits use the repository's configured
@@ -1272,3 +1496,17 @@ reviewed final visual captures without authoring the UI. These generated changes
 student authorship or human cultural review. The [revision record](workstreams/masroofi-20260913.md)
 preserves checks and remaining native/human gates. One clear virtual-money notice remains below
 the card; no real finance claim or payment integration follows from removing repeated stamps.
+
+## September 14 — additive incoming merge with Masroofi
+
+Actual user request: “Resolve the merge conflicts by adding the masroofi one to the new incoming
+change (don't delete anything before asking)”. Codex root preserved the original conflict stages,
+combined the documentation, routes, services and resources, restored both Child entry buttons,
+and added Masroofi clearing to the incoming shared reset implementation. Root added isolated
+pilot/recovery regression coverage and ran the recorded integration checks. The existing domain
+and UI helpers reviewed the merge read-only; root owned all writes and validation.
+
+The [merge record](workstreams/masroofi-merge-20260914.md) records exact scope, dependency setup,
+checks and remaining gates. Both Feature 017 packages retain their paths and capability limits.
+This is AI-assisted integration, not evidence of independent student work, human cultural review,
+native acceptance or real financial capability. No files were deleted or changes pushed.

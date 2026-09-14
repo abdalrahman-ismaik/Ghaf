@@ -118,16 +118,21 @@ export function AmbientAudioProvider({
   useEffect(() => {
     if (Platform.OS === 'web') return;
     let mounted = true;
+    let receivedChange = false;
     const updateScreenReader = (active: boolean) => {
       if (mounted) setScreenReaderActive(active);
     };
     void AccessibilityInfo.isScreenReaderEnabled()
-      .then(updateScreenReader)
-      .catch(() => updateScreenReader(true));
-    const subscription = AccessibilityInfo.addEventListener(
-      'screenReaderChanged',
-      updateScreenReader,
-    );
+      .then((active) => {
+        if (!receivedChange) updateScreenReader(active);
+      })
+      .catch(() => {
+        if (!receivedChange) updateScreenReader(true);
+      });
+    const subscription = AccessibilityInfo.addEventListener('screenReaderChanged', (active) => {
+      receivedChange = true;
+      updateScreenReader(active);
+    });
     return () => {
       mounted = false;
       subscription.remove();

@@ -140,6 +140,37 @@ components:
 
 # Ghaf Design System
 
+## Feature 017 study and family support — 2026-09-13
+
+Four guarded routes add Study space and Family practices for Parent and Child.
+Home, Today and Family expose contextual entries; bottom navigation is unchanged.
+These are code-native candidates authorized by Feature 017, using existing botanical
+surfaces, typography and controls. Study uses a selected-Child workspace, three views
+(plans, agreements, understanding) and explicit review/choice controls. Arabic input
+accepts Arabic digits and decimal marks; row ordering is reconciled with inherited RTL.
+Practices expose optional supported alternatives, short steps and source limitations.
+Browser evidence does not establish native keyboard, Back or human Arabic acceptance.
+
+## Feature 006 adult pilot presentation — 2026-09-13
+
+The separate adult account gate reuses the access shell, Alexandria/Readex Pro,
+shared controls and Arabic-first resources. Registration, code verification,
+password recovery and approval statuses appear before mounting the sample
+navigator. An approved adult chooses to explore the canonical sample; no second
+simulated email form is required. A persistent Pilot account control distinguishes
+real logout from restarting or leaving a synthetic role. The pilot reuses the
+current demo design and preserves all earlier release gates.
+
+## Confirmed local recovery state — 2026-09-13
+
+Reuse the existing access shell, brand lockup, Alexandria headings, Readex body and
+controls, logical RTL layout, tokens and 48dp buttons. The signed-out Welcome error
+state appears before onboarding. Corruption offers an explicit reset proposal and
+a separate confirmation with clear local-data consequences, a safe Cancel/Back
+action and recoverable error feedback. Unavailable storage offers retry only.
+Both languages remain readable without raw saved data, technical exception text,
+new imagery, new routes or a new visual system. Success returns to Arabic Welcome.
+
 ## 2026-09-13 selected brand identity
 
 The user selected **5A Refined Classic** as the new Ghaf logo and authorized replacement of the

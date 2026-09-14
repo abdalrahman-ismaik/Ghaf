@@ -54,6 +54,13 @@ const DEFAULT_OFF_R002B_ROUTES = [
   '/parent/family/shared-garden',
 ] as const;
 
+const FEATURE017_ROUTES = [
+  '/parent/study',
+  '/parent/practices',
+  '/child/study',
+  '/child/practices',
+] as const;
+
 function listTsxFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const child = resolve(directory, entry.name);
@@ -91,13 +98,14 @@ function flattenStrings(value: unknown, key = ''): Map<string, string> {
 }
 
 describe('approved R001 Parent onboarding integration', () => {
-  it('preserves the R001 routes while keeping authorized R002b routes additive', () => {
+  it('preserves the R001 routes while keeping authorized R002b and Feature017 routes additive', () => {
     expect(authoredRoutes()).toEqual(
       [
         ...PRESERVED_REMOTE_ROUTES,
         ...R001_ACCESS_ROUTES,
         ...DEFAULT_OFF_R002B_ROUTES,
         ...R003_COMPLETE_JOURNEY_ROUTES,
+        ...FEATURE017_ROUTES,
         '/messages',
         '/child/masroofi',
         '/parent/family/masroofi',

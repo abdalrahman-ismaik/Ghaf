@@ -166,10 +166,21 @@ export function createLocalFamilyRepository(storage: LocalKeyValueStorage): Loca
     },
     clear() {
       try {
-        storage.removeItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY);
-        storage.removeItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY);
-        storage.removeItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY);
+        // Verify all migration sources are absent before removing the current family.
+        for (const key of [
+          LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+          OLDEST_LOCAL_FAMILY_STORAGE_KEY,
+          PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+        ]) {
+          storage.removeItem(key);
+          if (storage.getItem(key) !== null) {
+            return storageFailure('The previous device-local family directory was not cleared');
+          }
+        }
         storage.removeItem(LOCAL_FAMILY_STORAGE_KEY);
+        if (storage.getItem(LOCAL_FAMILY_STORAGE_KEY) !== null) {
+          return storageFailure('The device-local family directory was not cleared');
+        }
       } catch {
         return storageFailure('The device-local family directory could not be cleared');
       }

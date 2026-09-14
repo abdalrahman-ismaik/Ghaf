@@ -1,7 +1,16 @@
 import { entryMode } from '../config/demoEntry';
+import { createStudyRepository } from './local/studyRepository';
 import { masroofiService, type MasroofiService } from '../features/masroofi/service';
 import { createFamilyMessaging } from '../features/familyMessaging';
-import { createFeature003ServiceRegistry } from './mock';
+import {
+  createFeature003ServiceRegistry,
+  DeterministicFamilyLeagueService,
+  DeterministicFamilyRewardService,
+  DeterministicSyntheticVoiceService,
+} from './mock';
+import { getPilotConfig } from '../features/pilot/config';
+import { createSupabaseParentAccountService } from './accounts';
+import type { ParentAccountService } from '../models/parentAccount';
 import type { Feature003ServiceRegistry } from './interfaces';
 import {
   createAmbientAudioPreferencesRepository,
@@ -102,23 +111,53 @@ export {
   type LocalKeyValueStorage,
 } from './local';
 
-const repositoryStorage =
-  entryMode === 'demo' ? createMemoryLocalKeyValueStorage() : deviceLocalStorage;
-
 // Competition defaults to deterministic services; live Parent Guide activation requires trusted injection.
+export const pilotSampleEnabled = getPilotConfig().enabled;
+const repositoryStorage =
+  pilotSampleEnabled || entryMode === 'demo'
+    ? createMemoryLocalKeyValueStorage()
+    : deviceLocalStorage;
+
 export const serviceRegistry: Feature003ServiceRegistry & {
+  readonly createParentAccountService: () => ParentAccountService | null;
   readonly masroofi: MasroofiService;
   readonly familyMessaging: ReturnType<typeof createFamilyMessaging>;
   readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
   readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
+  readonly study: ReturnType<typeof createStudyRepository>;
 } = {
   masroofi: masroofiService,
   ...createFeature003ServiceRegistry(),
+  createParentAccountService() {
+    const config = getPilotConfig();
+    if (!config.enabled || !config.valid || !config.supabaseUrl || !config.supabasePublishableKey) {
+      return null;
+    }
+    return createSupabaseParentAccountService({
+      url: config.supabaseUrl,
+      publishableKey: config.supabasePublishableKey,
+    });
+  },
   familyMessaging: createFamilyMessaging(),
   ambientAudioPreferences: createAmbientAudioPreferencesRepository(repositoryStorage),
   deviceAccess: createDeviceAccessRepository(repositoryStorage),
   localFamily: createLocalFamilyRepository(repositoryStorage),
   savedTaskTemplates: createSavedTaskTemplateRepository(repositoryStorage),
+  study: createStudyRepository(repositoryStorage),
 };
+
+// Each mounted gate owns a fresh lazy service and disposes it on final unmount.
+export function getParentAccountService(): ParentAccountService | null {
+  return serviceRegistry.createParentAccountService();
+}
+
+export function clearPilotSampleServiceHistory(): void {
+  if (!pilotSampleEnabled) return;
+  Object.assign(serviceRegistry, {
+    familyLeague: new DeterministicFamilyLeagueService(serviceRegistry.access),
+    familyReward: new DeterministicFamilyRewardService(serviceRegistry.access),
+    syntheticVoice: new DeterministicSyntheticVoiceService(serviceRegistry.access),
+  });
+}
