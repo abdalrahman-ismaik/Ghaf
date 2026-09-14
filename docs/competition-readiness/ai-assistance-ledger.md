@@ -30,6 +30,36 @@ environment/commands and later publication/build results belong to the associate
 validation receipts. No public release, production readiness, physical performance
 or unrecorded student review is implied by an automated build or push.
 
+The first fresh Gradle APK (`c9c77e4`, GitHub run34846738847) was installed and
+operated through ADB. Hosted native writes, an independent SDK session's reads
+and reverse update, restart, current-session logout and UserB isolation were
+observed. Root inspected actual Android video frames and found a104px auth-shell
+inset jump. A read-only helper identified the phase-keyed outer-shell remount;
+another helper preserved the shell and keyed only the private body, with nine
+additional regression cases. Root reviewed and ran type/lint/format and2,983
+tests (two opt-in skipped); `5ad7faa` contains that fix. Its new APK/native visual
+comparison is recorded separately in Feature018 validation. These are agent
+implementation/review and emulator observations, not student review or physical
+frame-timing measurements. Test account credentials remain outside the repository.
+
+The final fresh APK from run34851035020 uses exact source `5ad7faa`. Root verified
+its hash, signer, non-debuggable/non-test-only manifest and alignment, installed
+it without clearing data, then repeated native sign-in, saved-data retrieval,
+rapid completion, account switching and zero-animation/large-text logout checks.
+A bounded helper reviewed the actual native recording samples: the shell/inset
+jump was absent in the inspected transition. Root preserved the failed full-video
+overview caused by disk exhaustion and the floating-Gboard first-Back failure;
+no docked-keyboard, external email or physical-performance pass is invented.
+
+Root ended both hosted fixture sessions, removed only those two test accounts and
+restored operator settings. Read-only cleanup helpers found no safely disposable
+large AVD; the failed test AVD contained only configuration. Root removed a stale
+March SDK download and compressed seven archived source maps and seven JS bundles
+losslessly, verifying content hashes. Rejected recursive removals remain untouched.
+The APKs, recordings, source, installed app data and local database volumes remain.
+These implementation, test and handoff records are AI-assisted contributions;
+student review and outstanding native/human acceptance remain separate.
+
 ## 2026-09-14 Final repository integration
 
 The owner requested merging and finalizing all remaining work and resolving any

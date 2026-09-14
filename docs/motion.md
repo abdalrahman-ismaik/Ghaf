@@ -106,6 +106,25 @@ arbitrary JS blockage. Business callbacks run immediately and independently of
 animation completion. Existing route/modal ownership controls dismissal; no delayed
 business close is introduced for an exit animation.
 
+The adult account flow keeps its `AccessScreen` shell mounted across authentication
+phases so native safe-area insets, the logo and background do not restart. Only
+the private inner body is keyed by phase and stable account UID; changing either
+resets its form drafts, password visibility and codes. The workspace retains its
+own UID boundary. Phase/account changes reset scroll immediately without animation;
+ordinary edits and keyboard changes preserve position. Denied or signed-out states
+remove private content immediately. Authentication, logout, errors and successful
+operations never wait for decorative motion. The pilot shell owns a dark,
+nonanimated status bar over its light background.
+
+`tests/access/pilot-account-ui.test.tsx` and
+`tests/access/access-shell-scroll-reset.test.tsx` cover these lifecycle and reset
+contracts. The fresh `5ad7faa` APK passed the bounded native recording comparison:
+the previously observed 104px shell/inset jump was absent in inspected loading-to-ready
+samples, the logo/background stayed mounted and dark status icons stayed legible.
+See [Feature 018 validation](../specs/018-persistent-adult-accounts/validation.md)
+for the APK hash, exact samples and limitations. This is emulator visual evidence,
+not a frame-rate or physical-device performance measurement.
+
 ## Evidence and Android procedure
 
 The original source-only results below are historical. The main continuation,

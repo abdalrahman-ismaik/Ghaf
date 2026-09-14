@@ -1,5 +1,299 @@
 # Feature 018 validation — 2026-09-14
 
+## Published checks and fresh APK continuation
+
+The reviewed work is committed and pushed on `main`: motion `59a45b6`, persistent
+accounts `73f3323`, backend/build automation `c9c77e4`, and the CI runner-context
+fix `2eb881b`. Existing source/data and the separate local test installation are
+preserved. No force-push, reset, history rewrite or database reset occurred.
+
+[Repository CI 34846807782](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34846807782)
+passed repository checks, 13 tooling tests, type checking, lint, formatting,
+2,974 application tests (two opt-in tests skipped), Expo dependency compatibility
+and web export. The test phase took 48.30 seconds on its GitHub runner. This is
+build/code evidence, not native visual evidence.
+
+[Backend CI 34846807768](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34846807768)
+passed both jobs: local Supabase migration/lint/pgTAP plus the enabled real Auth
+test, and separate PostgreSQL messaging suites of 30 and 13 tests. The initial
+workflow was rejected before jobs started because job-level environment values
+cannot use the runner context. Resolving the CLI path after runner initialization
+fixed that error; the successful rerun did not weaken any backend assertion.
+
+The final local verifier also passed after its Docker context-precedence fix;
+`verifier-final-run.log` records the real provider test with none skipped. CI logs
+are `repository-ci-passed.log` and `backend-ci-passed.log` under
+`.expo/backend-readiness-20260914/`.
+
+The first fresh hosted APK build,
+[run 34846738847](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34846738847),
+succeeded at source `c9c77e4defb803d835d4727986033bf86b17dff7`. It was installed and
+tested in the Android emulator as recorded below. Native review found a brief
+authentication-shell layout flash; reviewed fix `5ad7faa` passes local checks and
+now has a successful fresh build and direct native comparison below. See the
+[internal APK guide](../../docs/backend/internal-android.md).
+
+## Final internal APK: verified build and native retest
+
+[Run 34851035020](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34851035020)
+succeeded for source `5ad7faa63c90c63287b01da2045f58a1b17106d5`. The final artifact
+is [ghaf-internal-5ad7faa63c90.apk](../../output/android-internal-final/ghaf-internal-5ad7faa63c90.apk),
+88,134,244 bytes, SHA-256
+`6e809841e6824dca0f2ef4be339323f73e2ef079449bad1ed262329b1af45100`.
+The downloaded hash matches `output/android-internal-final/build-receipt.json`;
+local signature verification matches template certificate
+`fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, and 16 KiB ZIP
+alignment passes. This fresh Gradle APK includes embedded JavaScript and
+`arm64-v8a`/`x86_64`, minimum API 24/target 36. It is non-debuggable and
+non-test-only, with disabled backup and no cleartext exception. Template debug
+signing remains internal-only; no production signing or store publication is claimed.
+
+`adb -s emulator-5554 install -r` succeeded without clearing existing data.
+The app retained UID 10209 on Android user 0; `final-installed-package.txt`
+records `x86_64`, version 0.1.0 and the update time. The emulator remains API 35,
+720×1600 at density 320. The following post-install results extend the build
+receipt's correctly separate native `NOT RUN` field. Unless stated otherwise,
+artifacts are under ignored `.expo/backend-readiness-20260914/`.
+
+| Flow / scenario                            | Expected result                                                       | Observed evidence                                                                                                                                                                 | Result                       |
+| ------------------------------------------ | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Update preserves session                   | Restore the pre-update B identity without another sign-in             | `final-updated-restored.json`: ready account after normal update                                                                                                                  | PASS                         |
+| Logout resets entry                        | Show blank sign-in credentials and no protected account content       | `final-signin-empty.json`                                                                                                                                                         | PASS                         |
+| Three immediate sign-in taps               | Reach A's account without a broken transition                         | `final-signin-rapid-taps.json`, `final-a-ready.json`; this UI result alone does not count provider operations                                                                     | PASS for observed UI         |
+| A retrieves saved data                     | Restore the same family/member/task/study/profile                     | `final-restored-workspace.json`, `final-restored-task.json`, `final-restored-study.json`, `final-restored-profile.json`                                                           | PASS                         |
+| Three rapid completion taps                | Apply one task-completion write                                       | `final-complete-rapid-taps.json`, `final-task-completion.json`; `hosted-native-read-a-1789395259098.json` confirms completed=true and workspace revision 5→6, not three revisions | PASS                         |
+| Disabled motion and large text             | Keep logout usable and close protected access immediately             | All three animation scales 0/font scale 1.5; `final-reduced-signed-out.json`                                                                                                      | PASS for observed controls   |
+| Back and protected deep link after logout  | Remain signed out                                                     | `final-reduced-back-deeplink.json`                                                                                                                                                | PASS                         |
+| Other session survives final native logout | Independent A refresh and read remain usable                          | `hosted-native-companion.json`: refresh at 14:15:51 UTC returns A/workspace revision 6                                                                                            | PASS                         |
+| Normal-motion registration and Back        | Open registration and return to a clean sign-in form                  | `final-registration.json`, `final-registration-back.json`; no registration request sent                                                                                           | PASS                         |
+| Recovery Back with floating Gboard         | First Back dismisses the keyboard and retains the recovery form/draft | Instead it returns to sign-in and clears the draft; detailed limitation below                                                                                                     | FAIL in tested keyboard mode |
+
+The saved account remains `Hosted Native Parent`, family `Hosted Family`, member
+`Synthetic Member`, task `Water plant - second client` and study `Fractions`.
+The independent server read confirms the same canonical owner/workspace and a
+single completion update. Normal visual testing used 1x animation scales.
+`final-accessibility-settings-before.json` and
+`final-accessibility-settings-restored.json` confirm the disabled-motion/large-text
+test returned all three scales and font scale to their recorded 1.0 settings.
+This bounded restoration is separate from the final operator handoff settings check.
+
+### Native shell comparison — PASS within inspected samples
+
+The final actual Android recording `final-signin.mp4` is 19.564422 seconds,
+720×1600, SHA-256
+`fa0c68a3c09e21fd65844297da24d2f8f09cc5bacb49b62590c26b215fb4ee89`.
+The whole-recording overview attempt failed with `ENOSPC` after 14 saved frames;
+`final-signin-review/metadata.json` preserves that failure. It is not relabeled
+as a passed full-recording review.
+
+The later bounded decoder passed: `final-signin-close/metadata.json` contains
+20 seek samples from 4.5–6.4 seconds at 0.1-second intervals. Independent review
+in `final-signin-close/review.md` compared full-resolution frames 008/009/010,
+presented at 4.999044/5.233411/5.364956 seconds, against the preserved baseline.
+The native header, safe-area spacing, tree logo and background remain stable
+through checking→ready. The prior approximately 104-pixel inset correction is
+not reproduced in those samples. Dark status icons are legible on the light
+background. The shorter checking body and longer ready body retain their
+appropriate different content positions while the shell stays fixed.
+
+This verifies the targeted defect within the inspected recorded samples. It is
+not all-frame coverage, proof of event latency, a frame-rate claim or a physical
+device performance measurement. Adjacent functional tests are listed separately.
+
+### Remaining native keyboard limitation
+
+In recovery, Gboard is using a floating/physical-keyboard toolbar mode. Android
+reports `mInputShown=true` in `final-recovery-before-back-ime.txt`; captures
+`final-recovery-ime-open.json` and `final-onscreen-keyboard.json` show the
+recovery form and the observed keyboard. The first Back press navigates to
+sign-in and clears the recovery draft (`final-recovery-after-settled-ime-back.json`)
+instead of only dismissing the keyboard. The behavior was reproduced with the
+expanded popup keys. A normal docked-keyboard comparison is **NOT RUN**; the
+platform-mode cause remains unresolved and no source fix is claimed.
+
+Form navigation/cancellation itself works and no recovery email was sent. This
+does not pass ordinary recovery keyboard dismissal or hosted recovery delivery.
+Keep the keyboard failure separate from the passed registration Back and
+signed-out protected-route tests.
+
+### Final code checks and artifact preservation
+
+For source `5ad7faa`,
+[repository CI 34851014409](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34851014409)
+and [backend CI 34851014416](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34851014416)
+succeeded. The locally downloaded copies of these two CI logs and
+`final-android-build-passed.log` were removed as redundant to recover disk space;
+their authoritative run URLs remain available. Older CI logs and the final
+artifact's build/signature receipts remain preserved. The local 2,983-test,
+typecheck/lint/format results are recorded with the source fix below.
+
+Automatic approval review blocked recursive deletion of the seven old cache
+directories and the new decoder profile. No alternate deletion mechanism was
+used for those targets. Lossless NTFS LZX compression reduced seven generated
+packager maps from approximately 185 MB to 41 MB allocated; before/after content
+hashes match in `lossless-map-compression.json` and
+`lossless-motion-map-compression.json`. Six byte-identical baseline overview
+PNGs were deduplicated to `fresh-signin-review/frames/frame-008-t7.000.png`, with
+the mapping/hash in `baseline-identical-frame-deduplication.json`. The original
+MP4, timing metadata and the two defect keyframes were retained.
+
+The final B-switch repetition passed on this exact APK:
+`final-b-empty-family.json`, `final-b-empty-task.json`,
+`final-b-empty-study.json` and `final-b-empty-profile.json` show B's empty family,
+tasks, study and profile, with no A data. `hosted-native-companion.json` records
+the repeated B foreign-read/update/delete denial checks at 14:24:26 UTC.
+Native B logged out normally (`final-handoff-signed-out.json`); force-stop and
+relaunch remained signed out (`final-handoff-relaunch.json`).
+
+The companion session logged out at 14:30:33 UTC. The separately scoped cleanup
+then deleted only the two hosted synthetic users created by this native test
+invocation; `hosted-native-cleanup.json` records those exact IDs and `PASS` at
+14:30:42 UTC. This explicit test-fixture cleanup is separate from ordinary logout,
+which does not delete an account or its saved data. Existing users and the local
+test installation/data were preserved.
+
+`final-operator-settings.json`, captured at 14:31:08 UTC, records window and
+transition scales 1.0, animator scale restored to its original unset value
+(system default 1x), font scale 1.0, no enabled accessibility service and
+`show_ime_with_hard_keyboard=1`. Network settings are airplane mode 0, Wi-Fi 1
+and mobile data 1. The requested 720×1600 display/density 320 is retained.
+`final-runtime-log-summary.json` counts zero `FATAL EXCEPTION`, `AndroidRuntime`
+or `ANR` lines for the signed-out relaunch PID 17605. The seven `ReactNativeJS` lines are the startup message plus existing deprecation
+warnings for ProgressBarAndroid, SafeAreaView, Clipboard, InteractionManager,
+PushNotificationIOS and the Supabase Auth lock option. No warning-free claim or
+coverage of every earlier app process is implied.
+
+Additional bounded disk recovery removed a stale 26,565,254-byte incomplete SDK
+download from March (`stale-sdk-fragment-cleanup.json`). Lossless LZX compression
+of seven archived JavaScript bundles retained every content hash and reclaimed
+approximately 79.5 MB of allocated space (`lossless-bundle-compression.json`).
+Together with the earlier approximately 144 MB reclaimed from generated maps,
+this preserves the build evidence rather than deleting it. Disk space remained
+low, approximately 190 MB at this checkpoint; no fresh local native-build or
+second-AVD capacity is implied.
+
+Subsequent host activity consumed that headroom. Root then losslessly compressed
+521 larger archived Metro cache files; all before/after SHA-256 hashes match in
+`lossless-large-metro-cache-compression.json`. This restored approximately 48 MB
+free at 14:33 UTC. The disk remains critically low; no AVD/user data, database
+volume, APK or source was removed. The empty failed second-AVD configuration
+would reclaim only 1,855 logical bytes and was preserved. The new independent
+motion pass is outside this APK and final evidence commit; its in-progress files
+remain uncommitted and untouched by this delivery.
+
+### Final documentation publication checks
+
+`npm run repo:check` passed its five tests plus navigation/artifact policy.
+Changed delivery documents passed their explicit Prettier check, and scoped
+`git diff --check` passed. The final whole-worktree `npm run format:check` failed
+on three concurrently edited second-pass files: `BotanicalPressable.tsx`,
+`GrowthJourneyScreens.tsx` and `SharedGrowthScreens.tsx`. Their separate owner is
+still implementing them; this delivery preserves those files and does not include
+them in its commit or APK. The source `5ad7faa` full formatting/type/lint/test
+passes above remain tied to that exact built revision. No repeat full app suite
+is needed for this documentation-only handoff.
+
+## First fresh hosted APK: build and native account evidence
+
+Artifact: [ghaf-internal-c9c77e4defb8.apk](../../output/android-internal/ghaf-internal-c9c77e4defb8.apk),
+88,136,968 bytes. SHA-256:
+`f3624db46f7f31fa2eb1292326a2b4a1757a583057752ff6223690dde0be0ce2`.
+`output/android-internal/build-receipt.json` records a fresh Expo prebuild and
+Gradle APK with embedded JavaScript, `arm64-v8a`/`x86_64`, minimum API 24 and
+target API 36. Signature verification and 16 KiB ZIP alignment pass. It is
+non-debuggable, non-test-only, has disabled backup and no cleartext exception.
+Signing is the unchanged Expo template debug identity for internal use, not a
+production signing identity. The receipt's native `NOT RUN` field describes the
+build job; the separate post-install evidence below adds runtime results.
+
+The actual target was `emulator-5554`, Android user 0, API 35,
+`sdk_gphone64_x86_64`, 720×1600 at density 320. Window and transition scales were
+1.0; animator scale was unset (system default 1x), font scale 1.0 and no
+accessibility service was enabled (`native-settings-before.json`). The original
+local fixture was signed out before updating the existing package. No local
+account data or session was migrated into the hosted environment. This APK uses
+the reviewed HTTPS adult and messaging project URLs; its account flows do not
+depend on Metro, ADB reverse or local Docker.
+
+Unless another location is stated, receipts and captures in this subsection are
+under ignored `.expo/backend-readiness-20260914/`. Build/download verification is
+recorded in `android-build-passed.log`, `downloaded-apk-signing.txt` and the
+artifact's `build-receipt.json`. All native identities/data below are authorized
+synthetic fixtures against hosted adult project `bqcfynlbxevqlzbkimhy`.
+
+| Flow / scenario                                | Expected result                                                | Observed evidence                                                                                                                                                                                                                    | Result |
+| ---------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
+| Incorrect credentials                          | Stay outside protected account content with a useful error     | `fresh-invalid-credentials.json`: sign-in remains visible with the generic credential error                                                                                                                                          | PASS   |
+| Independent native A sign-in                   | Resolve the real hosted account and load its private workspace | `fresh-hosted-ready-settled.json`; the companion independently resolves the same owner/workspace                                                                                                                                     | PASS   |
+| Native profile/family/task/study writes        | Save real account-owned data retrievable elsewhere             | `fresh-profile-save-result.json`, `fresh-member-save-state.json`, `fresh-task-saved.json`, `fresh-study-saved.json`; independent SDK receipt `hosted-native-read-a-1789392640971.json` reads profile revision 1/workspace revision 4 | PASS   |
+| Independent client writes, native refreshes    | Retrieve the server change through explicit refresh            | `hosted-native-update-a-1789392643821.json`: task renamed at workspace revision 5; `fresh-two-way-task-result.json` shows that name in the native app                                                                                | PASS   |
+| Force-stop and relaunch                        | Restore the same valid account and saved data                  | `fresh-restart-ready.json`, `fresh-restart-family-restored.json`: ready state and the saved family/member return                                                                                                                     | PASS   |
+| Native current-session logout and Android Back | Close native access while the independent session continues    | `fresh-logged-out.json`, `fresh-back-after-logout.json`; `hosted-native-companion.json` records successful companion refresh and revision 5 after native logout                                                                      | PASS   |
+| B signs into the same native installation      | Show none of A's private profile or workspace                  | `fresh-b-profile-empty.json`, `fresh-user-b-empty-family.json`, `fresh-b-tasks-empty.json`, `fresh-b-study-empty.json`                                                                                                               | PASS   |
+| B requests A's protected records               | No foreign reads, updates or deletes                           | `hosted-native-companion.json` records passed assertions from `hosted-native-companion.mjs`: foreign profile/workspace SELECT returns empty; UPDATE/DELETE each return `42501`                                                       | PASS   |
+
+Native A saved `Hosted Native Parent` (English preference), family `Hosted Family`,
+member `Synthetic Member`, task `Water plant` and study plan `Fractions` with next
+step `Read one example`. The independent SDK A client read all of them, then
+renamed the task to `Water plant - second client`; the native app retrieved it.
+See the [native refreshed task capture](../../.expo/backend-readiness-20260914/fresh-two-way-task-result.png)
+and [signed-out state after Android Back](../../.expo/backend-readiness-20260914/fresh-back-after-logout.png).
+These are independently authenticated native and SDK clients, not two hardware
+devices or two native clients against the hosted backend. No tokens were copied.
+
+The first family write encountered a displayed connectivity error. The editor
+retained `Hosted Family` (`fresh-family-settled.json`,
+`fresh-family-retry-controls.json`), the error stayed visible
+(`fresh-save-error-visible.json`) and the independent server read still showed
+workspace revision 0 (`hosted-native-read-a-1789392335932.json`). Explicit retry
+succeeded (`fresh-family-retry-result.json`) and a second server read confirmed
+revision 1 (`hosted-native-read-a-1789392442020.json`). The transient failure's
+cause is unknown; it is recorded as an observed error with a successful retry,
+not silently treated as an uninterrupted happy path.
+
+### Auth-shell visual defect, source fix and local checks
+
+Additional first-APK checks exercised offline startup and font scale1.5. With
+airplane mode enabled and Wi-Fi/mobile data disabled, `fresh-offline-startup`
+shows the recoverable error gate with no private account UI. After connectivity
+returned, the first Retry capture still showed the error; the later
+`fresh-offline-recovery-state` shows the same B account ready without another
+sign-in. This proves eventual session recovery, not instantaneous retry timing.
+The immediate restoration receipt observed mobile data before its asynchronous
+enable completed; `offline-network-settings-restored-settled.json` subsequently
+confirms the exact original airplane0/Wi-Fi1/mobile1 settings. Large-text capture
+`fresh-large-text-settled.png` shows readable wrapped Arabic and the full logout
+control; font scale was restored to1.0. Spoken TalkBack and full large-text
+workspace editing were not exercised by these checks.
+
+Automatic approval review rejected the attempted removal of seven old isolated
+build-cache directories with “blocked by policy.” No cache was deleted and that
+operation was not retried through another mechanism. APKs/evidence are preserved.
+
+The actual native recording `fresh-signin.mp4` is 20.987222 seconds at 720×1600.
+Offline decoding/review is in `fresh-signin-review/review.md`, its overview sheet
+and `transition-close/` frames/metadata. At presented recording times 3.023933
+and 3.255978 seconds, the ready page changes from a header beneath the status
+bar with absent logo/background to the normal presentation, moving content
+approximately 104 recorded pixels. No stuck overlay or visibly different account
+appeared in the reviewed samples. Sampling is not proof that every frame is free
+of a flash and does not establish FPS or physical-device performance.
+
+Fix `5ad7faa63c90c63287b01da2045f58a1b17106d5` retains the outer access shell and
+its native insets/artwork, keys only the inner body by auth phase/user, resets
+scroll immediately without animation and supplies dark status-bar icons. It
+preserves the workspace user boundary and immediate protected-content removal.
+Local typecheck, lint and format checks passed (`auth-shell-typecheck.log`,
+`auth-shell-lint.log`, `auth-shell-format.log`). The two focused files passed
+54 tests in 1.38 seconds (`auth-shell-focused-tests.log`); the full suite passed
+**201 files/2,983 tests, with two files/two tests skipped**, in **95.72 seconds**
+(`auth-shell-full-tests.log`). These checks are not native visual evidence.
+
+`final-apk-dispatch.json` records the second fresh build dispatch for `5ad7faa`.
+That build subsequently succeeded, and its hash/install and recorded native
+comparison are documented in the final-APK section above. The first APK does not
+contain the shell fix; its baseline evidence remains distinct.
+
 ## Backend maintenance and publication continuation
 
 The owner authorized backend updates and commit/push on main, then requested an
@@ -514,9 +808,17 @@ adb -s emulator-5554 shell am start --user 0 -W -a android.intent.action.VIEW -d
 python .expo/persistent-accounts-20260914/device.py capture <unique-name> --serial emulator-5554 --expect <screen-test-id>
 ```
 
-Two-device acceptance still requires a working second AVD/device. This is BLOCKED
-on this host; the later same-emulator installation result above verifies separate
-native storage/sign-ins, two-way writes and logout isolation on one device.
-Hosted migration/approval/email delivery, fresh Gradle/release builds,
-physical performance, native recovery/expiry/revocation, TalkBack spoken traversal
-and large native record volumes remain outstanding. No production readiness is claimed.
+Two-device acceptance still requires a working second AVD/device and is BLOCKED
+on this host. The same-emulator result above verifies two local native
+installations; the first fresh hosted APK adds native/independent-SDK data and
+session evidence. Hosted migrations, approved synthetic-account access and a
+fresh Gradle internal build now have direct evidence in the latest sections;
+their earlier blocked statuses are historical. The shell-fix APK was installed
+and its targeted recorded comparison passed within the inspected samples.
+Hosted external verification/recovery email delivery, human acceptance,
+physical performance, forced native expiry/revocation and recovery scenarios,
+TalkBack spoken traversal and large native record volumes remain outstanding.
+The floating-Gboard recovery first-Back case failed; docked-keyboard dismissal
+remains unverified. Final fixture cleanup/operator settings and the last B-switch
+repetition now pass with the explicit handoff receipts above. No production
+readiness is claimed.

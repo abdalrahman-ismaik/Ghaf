@@ -18,5 +18,11 @@
 - [x] Verify hosted independent provider sign-ins, two-way owned data, ownership denial, local logout and retained-JWT ban denial using disposable synthetic accounts.
 - [x] Add safe repeatable local backend verification and separate account/messaging CI jobs; CI execution remains separately evidenced.
 - [ ] BLOCKED: repeat with two separate Android devices/AVDs; second native environment cannot boot reliably on this host.
-- [ ] BLOCKED: fresh Gradle build with required NDK/CMake; current functional artifact uses the verified native container.
-- [ ] NOT RUN: hosted activation/email delivery, native recovery/expiry/revocation, account TalkBack/large text and physical-device performance acceptance.
+- [x] Build a fresh hosted Gradle APK with pinned NDK/CMake, verify its signature/configuration and install it normally on the emulator.
+- [x] Verify hosted native profile/family/task/study writes, independent SDK two-way sync, restart, local logout and User B isolation.
+- [x] Diagnose the recorded auth-shell inset flash and preserve the shell with focused lifecycle tests; full suite passes 2,983 tests.
+- [x] Install the fresh shell-fix APK from run 34851035020 and compare the recorded native transition: stable shell/insets/logo and legible dark status icons in inspected samples.
+- [x] Retest final APK session restoration, saved-data retrieval, one server completion after three rapid taps, reduced-motion/large-text logout and protected Back/deep-link denial.
+- [ ] FAILED / NOT RUN: recovery first Back exits the form in floating Gboard mode; docked-keyboard dismissal and root cause remain unverified.
+- [x] Repeat final B isolation/foreign-record denials, sign out and relaunch, remove only the two invocation-created hosted fixtures and record restored operator settings.
+- [ ] NOT RUN: external verification/recovery email delivery, native recovery/forced expiry/revocation, account TalkBack spoken traversal and physical-device performance acceptance.

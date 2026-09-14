@@ -11,6 +11,10 @@ Hosted independent Auth/HTTP data-isolation checks passed with disposable synthe
 provider accounts. External email delivery, full native acceptance and production
 readiness remain separate gates. See [the hosted operator record](backend/hosted-pilot.md).
 
+For a standalone hosted build, follow the
+[internal Android APK guide](backend/internal-android.md). It includes the build
+inputs, download, checksum and non-destructive installation workflow.
+
 ## Supported saved data
 
 The authenticated account page contains the adult display name/language and a
@@ -60,15 +64,17 @@ the local `ghaf-parent-pilot` database and the verified hosted adult project
 comparison; the final dry run has no pending migration. The separate messaging
 project uses its own migration stream and must not receive these migrations.
 
-For local development with the existing Docker/Supabase CLI installation:
+For local development with Docker and the validated Supabase CLI 2.117.0 on PATH
+(or its executable path in `SUPABASE_CLI`):
 
 ```powershell
-supabase start --exclude studio,postgres-meta
-supabase migration up --local
-supabase test db supabase/tests/database/account_profiles.test.sql supabase/tests/database/account_workspaces.test.sql
+supabase start --exclude studio,postgres-meta,realtime,storage-api,imgproxy,edge-runtime,logflare,vector,supavisor
+node scripts/backend/verify-local.mjs
 ```
 
-Do not use `db reset` to bypass setup errors. The opt-in real-provider harness is
+The verifier applies pending local migrations, lints SQL and runs every database
+test plus the real Auth harness. It rejects remote targets and leaves services
+running. Do not use `db reset` to bypass setup errors. The opt-in real-provider harness is
 `tests/access/parent-account-local.integration.test.ts`: set
 `GHAF_LOCAL_ACCOUNT_TEST=1` and `GHAF_LOCAL_SUPABASE_PUBLISHABLE_KEY` from local
 status, then run that file with Vitest. It refuses non-loopback endpoints, creates
@@ -136,44 +142,84 @@ Controllers and the service discard stale results on account changes/disposal.
 Account UI is keyed by the stable owner. Nothing from an old account is used as an
 initial value for another account.
 
-## Android test artifact limitation
+## Final hosted internal APK evidence
 
-This host lacks the required NDK/CMake combination for a fresh native build. The
-local test uses a freshly compiled working-tree Hermes bundle in the previously
-verified native container. Package, dependency, native payload and resource hashes
-are checked. The artifact is explicitly `testOnly=true` and requires `adb install -t`.
-Only this ignored test artifact adds cleartext permission to reach
+[Build 34851035020](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34851035020)
+passed for source `5ad7faa63c90c63287b01da2045f58a1b17106d5`. The final artifact is
+`output/android-internal-final/ghaf-internal-5ad7faa63c90.apk`, 88,134,244 bytes,
+SHA-256 `6e809841e6824dca0f2ef4be339323f73e2ef079449bad1ed262329b1af45100`.
+Its native update retained the installation UID and restored the valid hosted
+session. Independent account A sign-in retrieved the saved profile, family, task
+and study records. Three rapid completion taps produced one server revision
+change, from 5 to 6. Recorded samples showed the preserved account shell and dark
+status-bar icons without the earlier observed shell jump. Sampling does not
+establish every-frame smoothness or physical-device performance.
+
+Native logout retained the independent SDK session; switching to account B showed
+empty private profile/family/task/study fields, and independent SDK requests as B
+were denied access to A's records. Separate checks with animation scales at zero and font scale 1.5
+passed logout and Back/deep-link access denial. Recovery keyboard behavior remains
+**FAILED** with the tested floating Gboard toolbar: the first Back left recovery
+instead of only dismissing the keyboard. Docked-keyboard behavior is **NOT RUN**;
+no recovery email was sent in this check. External email delivery, full native
+recovery/expiry/revocation, spoken TalkBack, separate-device and physical/human
+acceptance remain open. Final fixture cleanup and restoration of operator settings
+passed with separate receipts. See [Feature018 validation](../specs/018-persistent-adult-accounts/validation.md)
+for the exact scenarios and [the APK guide](backend/internal-android.md) for
+installation and internal-signing limitations.
+
+## Historical localhost Android test artifacts
+
+The earlier local account tests used a freshly compiled working-tree Hermes bundle
+in the previously verified native container because this workstation lacked the
+required NDK/CMake combination. Package, dependency, native payload and resource
+hashes were checked. Those artifacts are explicitly `testOnly=true` and require
+`adb install -t`. Only these ignored localhost test artifacts add cleartext
+permission to reach
 `http://127.0.0.1:54321` through an explicitly targeted `adb reverse`.
 
-That permission is application-wide in the test artifact, not a domain-scoped
-production policy. Tracked production configuration is unchanged. Do not distribute
-this APK or use it for release performance claims. Hosted builds use HTTPS; a normal
-native build remains required for release acceptance. Native and physical-device
-results are recorded separately in the validation record.
+That permission is application-wide in those artifacts, not a domain-scoped
+production policy. Do not distribute them or use them for release performance
+claims. Test 2 still uses this localhost artifact. The original installation has
+since been updated to a fresh Gradle-built hosted APK: it uses HTTPS, is not
+test-only and has no cleartext exception. See the [internal APK guide](backend/internal-android.md)
+for its exact identity, internal signing limitation and completed shell-fix build.
+Native and physical-device results remain separately recorded in the validation
+record; a successful internal build does not establish release acceptance.
 
-## Two test installations on one emulator
+## Two installations and their current backend environments
 
 The existing API 35 emulator now has `Ghaf — غاف` (`ae.ac.ku.ghaf.prototype`) and
 `Ghaf Test 2` (`ae.ac.ku.ghaf.accounttest2`). They use separate Android UIDs, private
-storage and independent provider sign-ins. Signing into the same account retrieves
-the same server data; signing into different accounts retains separate private
-workspaces. No credentials or storage were cloned. Both icons are in the app drawer.
+storage and independent provider sign-ins. No credentials or storage were cloned.
+Both icons are in the app drawer.
 
-The original is currently signed into synthetic user B; Test 2 retains synthetic
-user A. The local Supabase backend must be running, with port 54321 reversed to the
-explicit target emulator. Launch either existing installation with the SDK `adb`:
+The original package now runs the fresh hosted APK against
+`bqcfynlbxevqlzbkimhy`. Test 2 retains its earlier local Supabase configuration and
+synthetic account data. These two currently installed copies therefore use
+different backend environments; they do not synchronize with each other as-is.
+The original needs no local Docker service or port forwarding. Test 2 still needs
+the local Supabase backend and port 54321 reversed to the explicit target emulator.
+Launch the original hosted installation with the SDK `adb`:
+
+```powershell
+adb -s emulator-5554 shell am start --user 0 -n ae.ac.ku.ghaf.prototype/.MainActivity
+```
+
+For the retained localhost Test 2 installation:
 
 ```powershell
 adb -s emulator-5554 reverse tcp:54321 tcp:54321
-adb -s emulator-5554 shell am start --user 0 -n ae.ac.ku.ghaf.prototype/.MainActivity
 adb -s emulator-5554 shell am start --user 0 -n ae.ac.ku.ghaf.accounttest2/ae.ac.ku.ghaf.prototype.MainActivity
 ```
 
 The second uses the distinct `ghaf-test2://` scheme. Its ignored artifact and
 packaging/interaction receipts are in `.expo/dual-account-clients-20260914/`.
-The original APK/data and tracked source/configuration were preserved. This bounded
-test-only packaging shares the native-build limitation above; a normal Gradle
-variant is still required for release acceptance. Native two-way task/study writes,
-profile/family retrieval, restart persistence and local logout isolation passed.
-This is same-emulator evidence, not verification on two separate devices. See
+Before the original was updated, both copies used the same local backend. That
+earlier test passed native two-way task/study writes, profile/family retrieval,
+restart persistence and logout isolation through independent sign-ins. The
+original local fixture was signed out before its hosted update; local account
+data was not migrated to the hosted project. The fresh hosted APK was subsequently
+tested with an independently authenticated SDK client. These are separate results,
+not two current hosted native clients or verification on two separate devices. See
 [the validation record](../specs/018-persistent-adult-accounts/validation.md).

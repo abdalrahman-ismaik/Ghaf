@@ -2,6 +2,23 @@
 
 ## 2026-09-14 Backend readiness, spec completion and publication
 
+**BACKEND-DELIVERY-ACK to MOTION-PASS2-001 — 2026-09-14 14:33 UTC**:
+The new independent motion second pass is acknowledged. Preserve its
+`STATUS-MOTION-PASS2.md`, Feature003 motion addendum and later explicit reservations;
+they are outside this final backend/APK evidence commit. The delivered APK is exact
+source `5ad7faa`, already tested. Root is finishing documentation-only publication;
+no additional native/build job is active. C: fell near zero during handoff and a
+bounded lossless compression job has finished; root is running only final document
+checks. Disk remains critically low, so avoid further local APK/export jobs. No unreviewed second-pass work is included in this artifact. This Windows
+coordination folder is the reachable shared location for this handoff.
+
+**BACKEND-DELIVERY-ACK update**: final `repo:check` passed. Whole-worktree
+`format:check` saw the in-progress second-pass BotanicalPressable/GrowthJourneyScreens/
+SharedGrowthScreens formatting changes; root leaves them to their owner. Only the
+eight completed delivery documents are staged for this evidence commit. No app
+source or separate second-pass files are included. Root's local heavy/check lane
+is released; C: remains critically low and native builds must stay remote.
+
 The user now authorizes updating the backend, completing accepted specification
 work, committing all reviewed changes and pushing `main`. This supersedes earlier
 no-commit/no-push instructions. Preserve existing app/backend data and keep the
@@ -33,6 +50,28 @@ and final APK handoff. No provider signing secret or credentials enter tracked c
 Root also owns `scripts/native/validate-hosted-build.test.mjs` for configuration
 and non-distributable-APK rejection tests before dispatch.
 
+The implementation helpers have released their source boundaries. Root owns final
+CI fixes and evidence. `apk_delivery_audit` now owns only the new
+`docs/backend/internal-android.md` build/install guide while root operates the build
+and emulator. That documentation is not runtime acceptance evidence.
+
+Fresh APK recording review found an auth-phase shell remount/inset flash. The
+read-only `auth_ready_flash` diagnosis is complete. `apk_delivery_audit` now owns
+only `src/components/pilot/PilotGate.tsx`, `PilotAccountView.tsx`,
+`src/components/access/AccessShell.tsx`, and focused shell/form tests under
+`tests/access/` for this fix. Root retains all commands, native interaction,
+publication and documentation. The helper preserves account/form credential resets
+and cannot broaden the change into other access flows or dependencies.
+
+The auth-shell implementation and read-only review are released. Root validated
+2,983 tests plus type/lint/format, committed `5ad7faa` and dispatched its fresh APK.
+`apk_delivery_audit` now owns only `specs/018-persistent-adult-accounts/validation.md`
+and `docs/backend/internal-android.md` to record the first hosted native run.
+`auth_ready_flash` completed the bounded `docs/motion.md` convention update and
+released it. Root retains final native comparison, settings restoration, fixture
+cleanup, artifact delivery and publication. The cleanup helper has a read-only
+cache audit; previously rejected APK deletions are not retried.
+
 `account_status_guard` owns only the additive
 `supabase/migrations/20260914000300_account_provider_status.sql` and
 `supabase/tests/database/account_provider_status.test.sql`. It may implement
@@ -41,6 +80,22 @@ provider banned/deleted/anonymous denial and focused regression assertions.
 `scripts/backend/verify-local.mjs` with its Node test, for isolated SQL and real
 provider CI checks. Helpers do not run builds/tests, mutate databases, access
 devices/remotes, commit or spawn descendants. Root serializes execution.
+
+All source and documentation helper boundaries above are now released to root.
+The final `5ad7faa` APK from run34851035020 was downloaded, verified, updated in
+place and tested on the API35 emulator. Hosted account/data isolation, rapid-tap
+idempotency, reduced-motion logout/Back gating and the bounded shell recording
+comparison passed. Floating-Gboard recovery first-Back behavior failed; docked
+keyboard, physical performance and named-human gates remain unverified.
+
+Root logged out both hosted test clients, deleted only the two invocation-owned
+synthetic hosted users, restored original animation/font/network settings and
+left the original installation signed out in Arabic. Test2 and local database
+volumes remain intact; its Docker backend stays running. Root owns final document
+formatting, publication and APK delivery. The latest storage pass removed a stale
+SDK download and losslessly compressed generated maps/bundles with hash checks;
+previously rejected recursive deletions were not bypassed. Disk headroom remains
+low. This is a final evidence update, not new runtime behavior.
 
 ## 2026-09-14 Two isolated installations on one emulator
 
