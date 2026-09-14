@@ -196,6 +196,17 @@ test('only a normal non-debuggable, non-test-only HTTPS APK may pass', () => {
   );
 });
 
+test('a merged dependency cannot reintroduce overlay access into the APK', () => {
+  assert.throws(
+    () =>
+      validateManifest(
+        manifest,
+        `${badging}\nuses-permission: name='android.permission.SYSTEM_ALERT_WINDOW'`,
+      ),
+    /must not request unused overlay access/,
+  );
+});
+
 test('wrong package/API or enabled/missing backups cannot be distributed', () => {
   for (const modified of [
     badging.replace('prototype', 'accounttest2'),

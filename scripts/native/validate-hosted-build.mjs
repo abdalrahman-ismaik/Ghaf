@@ -110,6 +110,10 @@ export function validateManifest(manifest, badging) {
   }
   requireCondition(!badging.includes('application-debuggable'), 'APK is debuggable.');
   requireCondition(
+    !badging.includes('android.permission.SYSTEM_ALERT_WINDOW'),
+    'APK must not request unused overlay access.',
+  );
+  requireCondition(
     !manifest.includes('A: android:networkSecurityConfig('),
     'Unexpected network security configuration requires separate review.',
   );

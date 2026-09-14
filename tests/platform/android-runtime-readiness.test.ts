@@ -33,7 +33,7 @@ describe('Android runtime readiness', () => {
     }
   });
 
-  it('disables Android backups, resizes for the keyboard, and blocks shared-storage permissions', () => {
+  it('disables backups, resizes for the keyboard, and blocks unused overlay and storage access', () => {
     const config = createExpoConfig({
       config: { name: 'fixture', slug: 'fixture' },
     } as ConfigContext);
@@ -46,6 +46,7 @@ describe('Android runtime readiness', () => {
     });
     expect(blockedPermissions).toEqual(
       expect.arrayContaining([
+        'android.permission.SYSTEM_ALERT_WINDOW',
         'android.permission.READ_EXTERNAL_STORAGE',
         'android.permission.WRITE_EXTERNAL_STORAGE',
       ]),

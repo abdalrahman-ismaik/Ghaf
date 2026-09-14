@@ -22,6 +22,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     package: PROVISIONAL_ANDROID_PACKAGE,
     allowBackup: false,
     blockedPermissions: [
+      // Ghaf has no overlay-on-other-apps feature; remove the Expo template permission.
+      'android.permission.SYSTEM_ALERT_WINDOW',
       'android.permission.READ_EXTERNAL_STORAGE',
       'android.permission.WRITE_EXTERNAL_STORAGE',
     ],
