@@ -8,6 +8,7 @@ import {
 } from '../../src/services/mock/boundedAiFixtures';
 import { GEMINI_MAX_RESPONSE_BYTES, runGeminiText } from '../../workers/ghaf-ai-gateway/src/gemini';
 import worker, { type AiGatewayWorkerEnv } from '../../workers/ghaf-ai-gateway/src/index';
+import { MemoryReplayStore } from '../../workers/ghaf-ai-gateway/src/security';
 import {
   executeChildCoach,
   executeParentTaskDraft,
@@ -341,20 +342,22 @@ describe('Gemini uses the real bounded operations', () => {
       CAPABILITY_HMAC_SECRET: 'synthetic-test-secret-at-least-thirty-two-bytes',
       CAPABILITY_ISSUER: 'synthetic-test-issuer',
       CAPABILITY_AUDIENCE: 'synthetic-test-audience',
+      REPLAY_STORE: new MemoryReplayStore(),
       PARENT_DRAFT_RATE_LIMITER: { limit: vi.fn() },
       CHILD_TEXT_RATE_LIMITER: { limit: vi.fn() },
       CHILD_VOICE_RATE_LIMITER: { limit: vi.fn() },
     };
-    const response = await worker.fetch(
-      new Request('https://gateway.example/v1/parent-task-drafts', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ operation: parentRequest.operation, request: parentRequest }),
-      }),
-      env,
-    );
+    const request = new Request('https://gateway.example/v1/parent-task-drafts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ operation: parentRequest.operation, request: parentRequest }),
+    });
+    const response = await worker.fetch(request, env);
     expect(response.status).toBe(401);
+    expect(await response.json()).toMatchObject({ error: { code: 'UNAUTHORIZED' } });
+    expect(request.bodyUsed).toBe(false);
     expect(fetcher).not.toHaveBeenCalled();
     expect(env.AI.run).not.toHaveBeenCalled();
+    expect(env.PARENT_DRAFT_RATE_LIMITER.limit).not.toHaveBeenCalled();
   });
 });
