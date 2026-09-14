@@ -1,4 +1,11 @@
-import { createElement, isValidElement, type ReactElement, type ReactNode } from 'react';
+import {
+  Children,
+  cloneElement,
+  createElement,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PilotAccountView } from '../../src/components/pilot/PilotAccountView';
@@ -75,6 +82,7 @@ vi.mock('expo-router', () => ({
   useRouter: () => mock.router,
   useRootNavigationState: () => (mock.navigationKey ? { key: mock.navigationKey } : undefined),
 }));
+vi.mock('expo-status-bar', () => ({ StatusBar: 'StatusBar' }));
 vi.mock('react-native', () => ({
   View: 'View',
   ActivityIndicator: 'ActivityIndicator',
@@ -158,6 +166,7 @@ vi.mock('react-i18next', () => ({
 
 type Node = ReactElement<Record<string, unknown>>;
 let tree: ReactNode;
+let renderedBodyKey: string | null | undefined;
 
 function find(match: (node: Node) => boolean, value: ReactNode = tree): Node | undefined {
   if (Array.isArray(value)) {
@@ -178,9 +187,20 @@ function byId(testID: string) {
   return find((node) => node.props.testID === testID);
 }
 
-function renderView() {
+function renderView(children?: ReactNode) {
+  const shell = PilotAccountView({ controller: mock.controller, state: mock.pilot, children });
+  const body = find((node) => typeof node.type === 'function', shell)!;
+  // Model React's keyed body replacement while the surrounding access shell keeps its identity.
+  if (body.key !== renderedBodyKey) {
+    for (const slot of mock.slots) slot.cleanup?.();
+    mock.slots = [];
+    renderedBodyKey = body.key;
+  }
   mock.cursor = 0;
-  tree = PilotAccountView({ controller: mock.controller, state: mock.pilot });
+  const rendered = (body.type as (props: Record<string, unknown>) => ReactNode)(body.props);
+  tree = cloneElement(shell, {
+    children: Children.map(shell.props.children, (child) => (child === body ? rendered : child)),
+  });
 }
 
 function renderGate() {
@@ -202,6 +222,7 @@ beforeEach(() => {
   mock.cursor = 0;
   mock.slots = [];
   mock.effects = [];
+  renderedBodyKey = undefined;
   mock.backListeners.clear();
   mock.appListeners.clear();
   mock.platform = 'android';
@@ -266,6 +287,87 @@ afterEach(async () => {
 });
 
 describe('Pilot account forms', () => {
+  it('keeps the access shell and dark status bar stable while replacing the phase-owned body', () => {
+    renderView();
+    const signedOutShell = byId('pilot-signin-screen')!;
+    const signedOutBodyKey = renderedBodyKey;
+    expect(find((node) => node.type === 'StatusBar')?.props).toMatchObject({
+      style: 'dark',
+      animated: false,
+    });
+    mock.pilot = { ...mock.pilot, phase: 'restoring' };
+    renderView();
+    const restoringShell = byId('pilot-restoring-screen')!;
+    expect(restoringShell.type).toBe(signedOutShell.type);
+    expect(restoringShell.key).toBe(signedOutShell.key);
+    expect(restoringShell.key).toBeNull();
+    expect(restoringShell.props.scrollResetKey).not.toBe(signedOutShell.props.scrollResetKey);
+    expect(renderedBodyKey).not.toBe(signedOutBodyKey);
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+    };
+    renderView();
+    expect(byId('pilot-ready-screen')?.type).toBe(signedOutShell.type);
+    expect(byId('pilot-ready-screen')?.key).toBeNull();
+    expect(find((node) => node.type === 'StatusBar')?.props.style).toBe('dark');
+  });
+
+  it('clears password and visibility on phase changes while using the controller email', () => {
+    renderView();
+    (byId('pilot-email-input')!.props.onChangeText as (value: string) => void)(
+      'local@example.test',
+    );
+    (byId('pilot-password-input')!.props.onChangeText as (value: string) => void)('private draft');
+    press('pilot-toggle-password');
+    renderView();
+    expect(byId('pilot-password-input')?.props.secureTextEntry).toBe(false);
+    mock.pilot = { ...mock.pilot, phase: 'register', email: 'controller@example.test' };
+    renderView();
+    expect(byId('pilot-password-input')?.props).toMatchObject({ value: '', secureTextEntry: true });
+    expect(byId('pilot-email-input')?.props.value).toBe('controller@example.test');
+    mock.pilot = { ...mock.pilot, phase: 'signin' };
+    renderView();
+    expect(byId('pilot-password-input')?.props).toMatchObject({ value: '', secureTextEntry: true });
+  });
+
+  it('preserves the current form during rerenders but clears codes when the identity changes', () => {
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'verify',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+    };
+    renderView();
+    (byId('pilot-code-input')!.props.onChangeText as (value: string) => void)('123456');
+    const originalResetKey = byId('pilot-verify-screen')?.props.scrollResetKey;
+    mock.pilot = { ...mock.pilot, busy: true };
+    renderView();
+    expect(byId('pilot-code-input')?.props.value).toBe('123456');
+    expect(byId('pilot-verify-screen')?.props.scrollResetKey).toBe(originalResetKey);
+    mock.pilot = {
+      ...mock.pilot,
+      busy: false,
+      account: { userId: 'adult-b', email: 'b@example.test' },
+    };
+    renderView();
+    expect(byId('pilot-code-input')?.props.value).toBe('');
+    expect(byId('pilot-verify-screen')?.props.scrollResetKey).not.toBe(originalResetKey);
+  });
+
+  it('removes protected children on the first denied render without an exit animation', () => {
+    const privateWorkspace = createElement('PrivateWorkspace', { testID: 'private-workspace' });
+    mock.pilot = { ...mock.pilot, phase: 'ready' };
+    renderView(privateWorkspace);
+    expect(byId('private-workspace')).toBeDefined();
+    for (const phase of ['restoring', 'signin', 'logout-error'] as const) {
+      mock.pilot = { ...mock.pilot, phase };
+      renderView(privateWorkspace);
+      expect(byId('private-workspace')).toBeUndefined();
+      expect(byId('pilot-cloud-profile')).toBeUndefined();
+    }
+  });
+
   it.each(['ar', 'en'])('uses bilingual labeled secure credentials in %s', (locale) => {
     mock.state.locale = locale;
     mock.state.direction = locale === 'ar' ? 'rtl' : 'ltr';
@@ -584,6 +686,26 @@ describe('cloud profile account panel', () => {
 });
 
 describe('Pilot navigator boundary', () => {
+  it('keeps the same outer view across auth phases and retains the workspace identity boundary', () => {
+    renderGate();
+    const signin = find((node) => node.type === PilotAccountView)!;
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+    };
+    renderGate();
+    const ready = find((node) => node.type === PilotAccountView)!;
+    expect(ready.type).toBe(signin.type);
+    expect(ready.key).toBe(signin.key);
+    expect(ready.key).toBeNull();
+    expect(find((node) => node.type === 'AccountWorkspaceBoundary')?.key).toBe('adult-a');
+    mock.pilot = { ...mock.pilot, phase: 'signin', account: null };
+    renderGate();
+    expect(find((node) => node.type === 'AccountWorkspaceBoundary')).toBeUndefined();
+    expect(find((node) => node.type === PilotAccountView)?.key).toBeNull();
+  });
+
   it('returns the default demo without constructing an account service', () => {
     mock.config.enabled = false;
     const child = createElement('SensitiveDemo');

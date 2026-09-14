@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -22,6 +23,49 @@ export interface PilotAccountViewProps {
 }
 
 export function PilotAccountView({ controller, state, children }: PilotAccountViewProps) {
+  const { t } = useTranslation();
+  const locale = usePrototypeStore((current) => current.locale);
+  const direction = usePrototypeStore((current) => current.direction);
+  const accountPanel = state.accountPanel && state.sampleOpen;
+  const canReturn = ['register', 'verify', 'forgot', 'recovery-code'].includes(state.phase);
+  // Reset private form state while retaining native insets and the loaded shell artwork.
+  const bodyKey = `${state.phase}:${state.account?.userId ?? 'signed-out'}`;
+
+  return (
+    <AccessScreen
+      background="organic"
+      contentMaxWidth={layout.readableContentWidth}
+      contentStyle={styles.content}
+      header={
+        <AccessHeader
+          brand={t('common.brand')}
+          backLabel={t('common.back')}
+          direction={direction}
+          language={locale}
+          onBack={
+            accountPanel || (canReturn && !state.busy)
+              ? () => {
+                  if (accountPanel) controller.continueSample();
+                  else controller.showForm('signin');
+                }
+              : undefined
+          }
+          title={t('pilot.label')}
+        />
+      }
+      keyboardAware
+      scrollResetKey={bodyKey}
+      testID={`pilot-${accountPanel ? 'account' : state.phase}-screen`}
+    >
+      <StatusBar style="dark" animated={false} />
+      <PilotAccountBody key={bodyKey} controller={controller} state={state}>
+        {children}
+      </PilotAccountBody>
+    </AccessScreen>
+  );
+}
+
+function PilotAccountBody({ controller, state, children }: PilotAccountViewProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((current) => current.locale);
   const direction = usePrototypeStore((current) => current.direction);
@@ -92,23 +136,7 @@ export function PilotAccountView({ controller, state, children }: PilotAccountVi
   };
 
   return (
-    <AccessScreen
-      background="organic"
-      contentMaxWidth={layout.readableContentWidth}
-      contentStyle={styles.content}
-      header={
-        <AccessHeader
-          brand={t('common.brand')}
-          backLabel={t('common.back')}
-          direction={direction}
-          language={locale}
-          onBack={accountPanel || (canReturn && !state.busy) ? goBack : undefined}
-          title={t('pilot.label')}
-        />
-      }
-      keyboardAware
-      testID={`pilot-${accountPanel ? 'account' : phase}-screen`}
-    >
+    <>
       <LanguageSwitcher compact showGuidance={false} testID="pilot-language-switcher" />
       <View style={styles.intro}>
         <Text brand align="center" color="deepForest" variant="parentHero">
@@ -511,7 +539,7 @@ export function PilotAccountView({ controller, state, children }: PilotAccountVi
           </Button>
         ) : null}
       </View>
-    </AccessScreen>
+    </>
   );
 }
 

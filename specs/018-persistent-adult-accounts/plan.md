@@ -23,6 +23,15 @@ these already accepted account/backend requirements.
 
 ## Original implementation plan
 
+Native acceptance follow-up (2026-09-14): the fresh hosted APK recording exposes
+a 104 px auth-ready inset/header shift when the phase key remounts the entire
+access shell. Preserve the shell, safe-area view, background and header across
+phase changes; retain keyed inner forms/account content to clear credentials and
+private drafts. Reset scroll immediately on phase changes and give the visible
+pilot dark status-bar icons. Add lifecycle/privacy regression tests, then rebuild
+and re-record real sign-in/logout before the final APK handoff. This changes no
+authentication operation, provider policy, navigation model or saved-data contract.
+
 Extend the existing account service/controller and account panel. Keep one Supabase
 client/session, stable provider UUID, existing guarded SecureStore adapter and
 provider refresh lock. No dependency or architecture migration.

@@ -141,7 +141,7 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
 
   if (!demoMounted)
     return (
-      <PilotAccountView key={state.phase} controller={controller} state={state}>
+      <PilotAccountView controller={controller} state={state}>
         {state.phase === 'ready' && state.account && service ? (
           <AccountWorkspaceBoundary
             key={state.account.userId}

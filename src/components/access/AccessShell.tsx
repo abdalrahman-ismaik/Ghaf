@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import { useLayoutEffect, useRef, type PropsWithChildren, type ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -42,6 +42,7 @@ export interface AccessScreenProps extends PropsWithChildren {
   keyboardVerticalOffset?: number;
   scroll?: boolean;
   scrollProps?: Omit<ScrollViewProps, 'contentContainerStyle'>;
+  scrollResetKey?: string;
   testID?: string;
 }
 
@@ -59,8 +60,19 @@ export function AccessScreen({
   keyboardVerticalOffset = 0,
   scroll = true,
   scrollProps,
+  scrollResetKey,
   testID,
 }: AccessScreenProps) {
+  const scrollRef = useRef<ScrollView>(null);
+  const previousScrollResetKey = useRef(scrollResetKey);
+  useLayoutEffect(() => {
+    if (previousScrollResetKey.current === scrollResetKey) return;
+    previousScrollResetKey.current = scrollResetKey;
+    if (scroll && scrollResetKey !== undefined) {
+      scrollRef.current?.scrollTo({ x: 0, y: 0, animated: false });
+    }
+  }, [scroll, scrollResetKey]);
+
   // R001 rows apply locale direction explicitly so language changes do not require a restart.
   const nativePhysicalDirection: ViewStyle | undefined =
     Platform.OS === 'web' ? undefined : { direction: 'ltr' };
@@ -92,6 +104,7 @@ export function AccessScreen({
         {scroll ? (
           <ScrollView
             {...scrollProps}
+            ref={scrollRef}
             automaticallyAdjustKeyboardInsets={keyboardAware}
             contentInsetAdjustmentBehavior="automatic"
             contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
