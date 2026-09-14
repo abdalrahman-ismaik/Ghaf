@@ -1,5 +1,37 @@
 # Hosted Parent pilot operator record
 
+## 2026-09-14 account schema maintenance
+
+The owner authorized updating the existing backend and publishing reviewed code.
+The linked target was verified as `bqcfynlbxevqlzbkimhy`, the dedicated adult pilot.
+The hosted `pilot_access` columns, constraints, triggers, indexes, RLS, policies,
+grants and function definitions matched the reviewed local baseline; only CRLF
+differed inside function source. The platform `rls_auto_enable` function was kept.
+
+After that comparison, CLI 2.117.0 marked the manually applied
+`20260913000100` baseline as applied. The dry run contained exactly the three new
+migrations: account profiles, account workspaces and provider-status enforcement
+(`20260914000100` through `20260914000300`). They were applied additively. A second
+dry run reported no pending migration. No Auth, SMTP, paid-plan or public rollout
+setting changed, and existing users/data were preserved.
+
+Real hosted Auth/HTTP checks passed with two invocation-owned synthetic accounts
+provisioned through the provider's administrator API. Three clients independently
+signed in; profile/family/member/task/study retrieval, writes both ways, stale-write
+conflicts, cross-owner read/update/delete denial, local logout with another session
+refreshing, same-account relogin and retained-JWT ban denial passed. Both temporary
+accounts and their fixture rows were removed afterward. This deliberate test
+provisioning does not verify signup email delivery or recovery messages.
+
+The separate messaging project remains `ijiwkmvjppfallaoahmh`; do not apply adult
+Auth settings or this migration directory to it. Its additional foreground-location
+objects/history are outside the current checkout and were preserved. Current
+evidence is in ignored `.expo/backend-readiness-20260914/` and
+[Feature 018 validation](../../specs/018-persistent-adult-accounts/validation.md).
+The older operator notes below remain historical.
+
+## Original Feature 006 setup
+
 Recorded **2026-09-13** for Feature 006. The owner authorized creation of the
 dedicated Mumbai pilot and signed into Supabase. `/root` owns Dashboard changes
 and direct hosted evidence; this record contains no passwords, keys or account

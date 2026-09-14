@@ -41,9 +41,11 @@ eligible cooperative progress.
 - **Bounded communication foundation:** an isolated family-messaging client, server permission
   rules and task-focused helper presentation are implemented. Live service and two-device
   acceptance remain separate from the local task demonstration.
-- **Separate adult login pilot:** real adult Supabase accounts, email-code flows and administrator
-  approval protect an isolated synthetic sample. The default authentication mode remains `demo`;
-  hosted activation still requires direct delivery, account-flow and device evidence.
+- **Persistent adult accounts:** real Supabase sign-in, secure session restoration and local-session
+  logout protect adult profiles and account-owned family, task and study records. Hosted migrations
+  and independent-client data/ownership checks are recorded in [authentication](docs/auth.md).
+  The default authentication mode remains `demo`; native, email delivery and production acceptance
+  retain their separate evidence requirements.
 - **Confirmed local recovery:** corrupt saved demo-family data offers a separate explicit reset
   confirmation; temporary storage failures offer non-destructive retry. Valid families retain
   the Parent-only reset boundary.

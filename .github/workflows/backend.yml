@@ -1,0 +1,81 @@
+name: Local backend checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  accounts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      CI: '1'
+      EXPO_NO_DOTENV: '1'
+      EXPO_NO_TELEMETRY: '1'
+      SUPABASE_CLI: ${{ runner.temp }}/ghaf-supabase-cli/node_modules/.bin/supabase
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Install the validated CLI outside the repository
+        run: npm install --prefix "$RUNNER_TEMP/ghaf-supabase-cli" --no-save --package-lock=false supabase@2.117.0
+      - name: Check local verifier safety
+        run: node --test scripts/backend/verify-local.test.mjs
+      - name: Start isolated local Auth, REST, database and mail
+        shell: bash
+        run: |
+          if ! "$SUPABASE_CLI" start --exclude studio,postgres-meta,realtime,storage-api,imgproxy,edge-runtime,logflare,vector,supavisor >"$RUNNER_TEMP/ghaf-supabase-start.log" 2>&1; then
+            echo 'Local Supabase failed to start; raw status output is withheld because it can contain credentials.'
+            exit 1
+          fi
+      - name: Apply local migrations and run SQL and real Auth checks
+        run: node scripts/backend/verify-local.mjs
+      - name: Stop this CI stack while preserving its volumes
+        if: always()
+        shell: bash
+        run: |
+          if [[ -x "$SUPABASE_CLI" ]]; then
+            "$SUPABASE_CLI" stop >"$RUNNER_TEMP/ghaf-supabase-stop.log" 2>&1
+          fi
+
+  messaging-sql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Install PostgreSQL 17 from the official package repository
+        shell: bash
+        run: |
+          if [[ -x /usr/lib/postgresql/17/bin/initdb ]] && command -v python3 > /dev/null; then
+            /usr/lib/postgresql/17/bin/postgres --version
+            exit 0
+          fi
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends curl ca-certificates
+          if ! apt-cache show postgresql-17 > /dev/null 2>&1; then
+            sudo install -d /usr/share/postgresql-common/pgdg
+            sudo curl --fail --silent --show-error https://www.postgresql.org/media/keys/ACCC4CF8.asc -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+            printf '%s\n' 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/ghaf-pgdg.list > /dev/null
+            sudo apt-get update
+          fi
+          sudo apt-get install --yes --no-install-recommends postgresql-17 python3
+      - name: Test messaging migrations and permissions in a disposable cluster
+        env:
+          FM_PG_BIN: /usr/lib/postgresql/17/bin
+          FM_RUN_ROOT: ${{ runner.temp }}/ghaf-messaging-sql
+        run: bash workers/ghaf-family-messaging/tests/run.sh

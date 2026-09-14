@@ -1,5 +1,35 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Native motion, persistent accounts and backend readiness
+
+The owner requested native animation improvements, real persistent adult accounts,
+profile plus family/task/study synchronization, two independent clients and later
+backend maintenance, commit/push and a usable APK. Codex and bounded helpers
+implemented the onboarding feedback/layout fixes, account service/controller/UI,
+private teardown, owned SQL/RPCs and regression tests. Native ADB interactions used
+the actual API35 emulator and two separate package UIDs. Recordings/screenshots,
+local Auth/mail/SQL evidence and known native limits are linked from Feature018
+validation and the native motion report. This is AI-assisted implementation and
+testing, not independently student-authored code or named human acceptance.
+
+The follow-up audited all19 feature directories. Feature014 remains deferred by
+the owner's explicit answer; stale CE1 implementation markers were reconciled with
+existing commits/source/tests. A new provider-status guard reproduced23 failures
+before its additive migration and passed the full203-assertion SQL suite afterward.
+Hosted baseline/history was verified before applying account migrations; real
+Auth/HTTP checks exercised independent sessions, account-owned data and denial,
+then removed only invocation-created synthetic fixtures. Existing messaging and
+additional independently added location objects were preserved.
+
+Helpers also prepared guarded local database verification, isolated backend CI and
+a manual fresh native APK workflow after local toolchain/disk and EAS-login blockers.
+Root reviewed and tested their changes, including REST probe and Docker-context
+precedence corrections. Raw secrets and build credentials are excluded from Git.
+Current checks passed2,974 app tests,203 SQL assertions and13 tooling tests; exact
+environment/commands and later publication/build results belong to the associated
+validation receipts. No public release, production readiness, physical performance
+or unrecorded student review is implied by an automated build or push.
+
 ## 2026-09-14 Final repository integration
 
 The owner requested merging and finalizing all remaining work and resolving any

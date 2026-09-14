@@ -1,10 +1,12 @@
 # Real Parent pilot backend
 
 Feature 006 adds real adult email/password accounts around Ghaf's synthetic sample.
-Supabase Auth owns credentials and sessions. The only application table is
-`public.pilot_access`: an Auth user UUID, `pending | approved | suspended`, and
-creation/update timestamps. It contains no email copy, child, family, task, Seed,
-garden, reward or media data. App sample state is memory-only in pilot mode.
+Supabase Auth owns credentials and sessions. `public.pilot_access` contains an Auth
+user UUID, `pending | approved | suspended`, and creation/update timestamps.
+Feature 018 adds owned `account_profiles` and `account_workspaces` for the bounded
+adult profile and family/task/study planning data described in
+[the account guide](../auth.md). The existing synthetic sample and its progression
+remain separate; no local records are uploaded automatically.
 
 The SQL migration creates pending access on registration. Authenticated clients
 have an own-row SELECT policy and no mutation grants. Anonymous clients have no
@@ -14,6 +16,14 @@ clients. Trusted Dashboard administration and the server-only `service_role` rol
 can change status. No admin key is needed in the application.
 
 ## Run the isolated local backend
+
+The verified CLI version for the current backend is **2.117.0**. Once the existing
+local services are running, `node scripts/backend/verify-local.mjs` verifies the
+local Docker endpoint/project, applies pending local migrations without reset,
+lints functions, runs all pgTAP tests and executes the real Auth integration suite.
+Set `SUPABASE_CLI` to an installed absolute executable path when it is not on PATH.
+The verifier withholds credential-bearing status output and leaves services running.
+Its safety tests are `node --test scripts/backend/verify-local.test.mjs`.
 
 Prerequisites: supported Node, the Supabase CLI, and a running Docker Linux engine.
 Use this repository's `ghaf-parent-pilot` local project only. Do not supply a hosted
@@ -61,7 +71,7 @@ USB-connected development device, select the intended device with ADB and forwar
 the local API port before starting the app:
 
 ```powershell
-adb reverse tcp:54321 tcp:54321
+adb -s YOUR_DEVICE_SERIAL reverse tcp:54321 tcp:54321
 ```
 
 Use `http://127.0.0.1:54321` in the Android app as well, then verify native

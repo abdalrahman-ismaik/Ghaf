@@ -1,5 +1,156 @@
 # Team Ownership
 
+## 2026-09-14 Backend readiness, spec completion and publication
+
+The user now authorizes updating the backend, completing accepted specification
+work, committing all reviewed changes and pushing `main`. This supersedes earlier
+no-commit/no-push instructions. Preserve existing app/backend data and keep the
+local Docker services while installed native clients depend on them. No paid
+resources, destructive migrations or public rollout are included.
+
+Root owns this entry, Feature 018 spec/plan/tasks/validation, backend/auth runbooks,
+the spec completion report, assistance evidence, serialized local/hosted database
+checks, emulator lane and Git publication. The current coordination location is
+this Windows checkout; older Linux BOARD snapshots are historical, not active jobs.
+Read-only `spec_completion_audit` and `backend_release_audit` review existing work.
+No other prior file reservation is active.
+
+Root also owns current-scope notes in `docs/PRODUCT.md`,
+`docs/product/PROTOTYPE_LIMITATIONS.md`, `specs/013-parent-task-workspace/tasks.md`,
+`specs/015-demo-entry-onboarding/tasks.md` and the assistance ledger. The user
+explicitly reconfirmed that Feature 014 stays deferred. Hosted messaging has
+additional foreground-location objects outside this checkout's accepted specs;
+preserve them and its migration history. No messaging schema replacement is planned.
+
+The owner also requests a usable APK after this work. Fresh local builds are blocked
+by missing exact NDK/CMake and disk capacity; the cached EAS session is signed out.
+`apk_delivery_audit` owns only `.github/workflows/android-internal.yml` and
+`scripts/native/validate-hosted-build.mjs` for a manually dispatched fresh GitHub
+runner build using existing Expo prebuild/Gradle, template internal signing and
+HTTPS public backend inputs. No release/public store deployment is included.
+Root owns `docs/DEVELOPMENT.md`, build dispatch/artifact verification/native install
+and final APK handoff. No provider signing secret or credentials enter tracked code.
+Root also owns `scripts/native/validate-hosted-build.test.mjs` for configuration
+and non-distributable-APK rejection tests before dispatch.
+
+`account_status_guard` owns only the additive
+`supabase/migrations/20260914000300_account_provider_status.sql` and
+`supabase/tests/database/account_provider_status.test.sql`. It may implement
+provider banned/deleted/anonymous denial and focused regression assertions.
+`backend_ci` owns only a new `.github/workflows/backend.yml` and
+`scripts/backend/verify-local.mjs` with its Node test, for isolated SQL and real
+provider CI checks. Helpers do not run builds/tests, mutate databases, access
+devices/remotes, commit or spawn descendants. Root serializes execution.
+
+## 2026-09-14 Two isolated installations on one emulator
+
+The owner requested a second app installation with different data on the existing
+emulator. Root owns this entry, the Feature 018 spec/plan/validation addendum and
+ignored `.expo/dual-account-clients-20260914/` packaging/interaction evidence.
+`second_install_audit` performs read-only native identifier compatibility review.
+Root retains the only packaging/install/device lane. The original APK and its data
+must remain intact; no token/storage copying or app-data reset is authorized.
+This is a local test variant, not a second product or release architecture change.
+
+Root also owns the Feature 018 task result and `docs/auth.md` handoff. Packaging and
+native execution are complete: `Ghaf Test 2` has its own UID/storage/session;
+two-way task/study changes, profile/family retrieval, restart and logout/account
+isolation passed against local Supabase. Original remains test B, second remains
+test A. The second-device/fresh-Gradle gates remain blocked. No tracked app source,
+dependency or native configuration changed for the variant. The packaging helper
+owned only the ignored `package-second.py`; it and the read-only audit helper have
+released their scopes. Final documentation formatting and diff checks passed;
+this continuation's write reservations are released with evidence recorded.
+
+## 2026-09-14 Disk cleanup for two Android clients
+
+The user authorized removing unneeded disk data to allow a second Android client.
+Root owns this record, ignored `.expo/disk-cleanup-20260914/` receipts, exact
+verified build intermediates/download caches and the emulator lane. A bounded
+read-only helper audited `.expo/`; it has released its scope. Signed APKs, source,
+evidence, credentials, database volumes and emulator user data remain protected.
+No commit, push or deployment is authorized.
+
+Root also owns the Feature 018 validation addendum. Standard npm, pip, NuGet and
+Docker build-cache maintenance completed; direct intermediate-file deletion was
+blocked by command policy. C: gained about 1.71 GiB; a second AVD still fails its
+userdata-space requirement. Hyper-V's read-only VHD inspection is denied by the
+current Windows authorization policy. No disk compaction, image/volume pruning,
+app-data clearing or manual-file deletion occurred. All cleanup helper scopes are
+released; root retains only this evidence handoff.
+
+## 2026-09-14 Main native motion continuation
+
+The user authorizes implementation and actual Android Emulator interaction on
+`main`, starting clean at `d91ef57`. No commits, branch changes, pushes, merges,
+data clearing or deployments are authorized in this session. Earlier boundaries
+are released. Root owns the emulator/input lane and serialized build/check lane.
+One read-only `native_recovery` helper inspects prior C:-only packaging; no jobs,
+device actions, descendants or writes. D: remains excluded due recorded failures.
+
+Initial exact write reservations: this ownership entry,
+`docs/competition-readiness/workstreams/native-motion-main-20260914.md`,
+`docs/motion.md`, and ignored `.expo/native-motion-main-20260914/` artifacts.
+Native baseline reproduced initial onboarding CTA clipping; scrolling reveals the
+full control. Root now reserves `src/components/onboarding/FirstRunOnboarding.tsx`,
+`src/design/motion.ts`, and `specs/003-family-growth-garden/motion-interactions.md`
+for the footer/live-preference refinement. A bounded test helper owns only
+`tests/platform/onboarding-presentation-readiness.test.tsx` and
+`tests/platform/r003-first-run-experience.test.ts`; no build/test/device jobs.
+The packaging helper owns only ignored artifact scripts, with no jobs or device
+access. Helpers do not spawn descendants; root serializes all heavy commands.
+Root also reserves `src/components/illustrations/LocalIllustration.tsx` for an
+optional transition duration: the onboarding parent owns its fade, so its image
+must not add a second independent crossfade observed in baseline recordings.
+Root reserves `tests/platform/android-runtime-readiness.test.ts` to reconcile its
+stale predictive-Back expectation with the already integrated `9d756ef` fix. The
+full suite reproduced this pre-existing mismatch; no native setting is changed.
+The user's subsequent real-account request is in read-only discovery with
+`native_recovery` (auth lifecycle) and `account_data_audit` (backend/data ownership).
+Motion writes remain reserved; account implementation will reserve distinct files.
+
+Account increment reservations: root owns `specs/018-persistent-adult-accounts/`,
+the constitution amendment, account/native artifacts and final integration.
+`account_backend` owns `src/models/parentAccount.ts`,
+`src/services/accounts/SupabaseParentAccountService.ts`, the new account-profile
+SQL migration/pgTAP test, and `tests/access/parent-account-{service,sdk}.test.ts` plus
+new profile service tests. `account_ui` owns `src/features/pilot/controller.ts`,
+`src/components/pilot/PilotAccountView.tsx`, `src/i18n/pilotResources.ts` and
+`tests/access/pilot-account-{controller,ui}.test.*` plus new profile controller/UI
+tests. Root owns `PilotGate.tsx`, messaging teardown and local integration tests;
+any additional shared file is reserved before editing. No helpers run builds,
+database jobs, device commands or descendants. Root serializes those lanes.
+Existing feature authority remains Study/goals/family practices and the released
+motion repair; no new roadmap or live-service side effects are inferred.
+
+Expanded user-selected scope includes family, tasks and study. `account_backend`
+also owns `src/models/accountWorkspace.ts`, workspace migration/pgTAP tests and
+`tests/access/account-workspace-service.test.ts`. `account_ui` owns new
+`src/features/pilot/workspaceController.ts`,
+`src/components/pilot/AccountWorkspaceView.tsx` and its controller/UI tests.
+`account_data_audit` owns `tests/access/parent-account-local.integration.test.ts`.
+Root owns new account boundary integration/helper/tests and the existing account
+view integration. The packaging helper owns only ignored account build scripts.
+All builds, tests, database and emulator operations remain serialized by root.
+Native continuation also reserves `src/components/primitives.tsx` (Button only),
+`tests/motion/button-accessibility.test.tsx`,
+`src/features/familyMessaging/controller.ts`, `src/features/pilot/privateBoundary.ts`
+and its focused test for observed stale busy labels and authoritative private cleanup.
+These bounded helper writes are now released to root. Root owns `docs/auth.md`.
+
+The final native outage test reserves the account UI/controller/resources and
+their existing controller/UI tests again to `account_ui` for an explicit
+`logout-error` state and cleanup-only retry. Root owns the related
+`tests/access/account-profile-controller.test.ts` expectation, final documentation,
+artifact scripts and serialized retest. No other jobs or writes are allocated.
+
+The logout-error helper has released its files. Root completed the rebuilt native
+outage/manual-Retry/restart retest and retains only final documentation/checks.
+The complete suite passes 2,974 tests; local database checks pass 124 assertions.
+Two-native-client acceptance and fresh Gradle builds remain blocked as recorded in
+Feature 018 validation. All helper reservations are released. The checkout remains
+on `main` with the user's work uncommitted; no commit/push/deployment is authorized.
+
 ## 2026-09-14 Final repository integration
 
 The owner explicitly requested merging and finalizing all remaining work, including
