@@ -73,7 +73,9 @@ repository checks, verifier tests, typecheck, lint, format and all application t
 before Gradle. It pins Java17, target/build-tools36, NDK27.1.12297006 and CMake3.30.5,
 then performs a fresh Expo prebuild and arm64-v8a/x86_64 release-mode assembly.
 
-Current candidate ref: `release/021-internal-20260914` at `4dd6490`.
+Exact artifact source: `4dd649025da828a53ee9617573ebbc0b2849245c`.
+The `release/021-internal-20260914` branch also carries later evidence/documentation
+commits; pin the artifact source when reproducing this specific binary.
 Fresh b2 run34891473556 completed successfully and its exact APK passed local
 artifact checks, a normal update of the paired Child session, a clean app-data
 profile and the native Child/Parent/persistence journey recorded in
