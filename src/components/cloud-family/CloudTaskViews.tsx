@@ -30,6 +30,33 @@ function TemplateDetails({
     template.recognitionMode !== 'recognition_only' && template.routinePhase === 'acquisition'
       ? (template.displayedSeedAward ?? 0)
       : 0;
+  const displayedSafetyText = new Set<string>();
+  const safetyGroups = [
+    {
+      label: 'adultResponsibilities',
+      items: [template.safety.adultPreCheck, ...template.safety.adultOwnedActions],
+    },
+    {
+      label: 'safetyBoundaries',
+      items: [...template.safety.excludedHazards, template.safety.stopAndAskAdult],
+    },
+    {
+      label: 'routeAndAlternative',
+      items: [template.safety.routeConstraint, template.safety.indoorAlternative],
+    },
+    {
+      label: 'afterActivity',
+      items: [template.safety.adultSecondCheck, template.safety.aftercare],
+    },
+  ].map((group) => ({
+    label: group.label,
+    items: group.items.flatMap((item) => {
+      const value = item?.[locale];
+      if (!value || displayedSafetyText.has(value)) return [];
+      displayedSafetyText.add(value);
+      return [value];
+    }),
+  }));
   return (
     <>
       <Text brand>{template.positiveAction[locale]}</Text>
@@ -46,14 +73,21 @@ function TemplateDetails({
         <Text brand>{template.permittedHelp[locale]}</Text>
         <Text brand>{template.supervision[locale]}</Text>
       </CloudSection>
-      <CloudSection title={text('safety')}>
-        <Text brand>{template.safety.adultPreCheck[locale]}</Text>
-        {template.safety.excludedHazards.map((hazard, index) => (
-          <Text brand key={index}>
-            {hazard[locale]}
-          </Text>
-        ))}
-        <Text brand>{template.safety.stopAndAskAdult[locale]}</Text>
+      <CloudSection title={text('safety')} testID="cloud-task-safety">
+        {safetyGroups.map((group) =>
+          group.items.length ? (
+            <View key={group.label} style={cloudStyles.row}>
+              <Text brand variant="label" accessibilityRole="header">
+                {text(group.label)}
+              </Text>
+              {group.items.map((item) => (
+                <Text brand key={item}>
+                  {item}
+                </Text>
+              ))}
+            </View>
+          ) : null,
+        )}
       </CloudSection>
       <Text brand color="onSurfaceVariant">
         {template.privacyNotice[locale]}
