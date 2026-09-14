@@ -8,9 +8,23 @@ This checkpoint preserves completed work and the next actions; it is not final a
 The owner resumed this work; `56b32ba` records that authorization and restores normal
 prompt commit cadence. The saved state and original checklist below remain historical.
 Study layout correction `6726f25` and messaging layout correction `923cf10` are now
-committed. The final cached D: build used `923cf10` and failed after actual exFAT lost writes under
-`D:/GhafNative/20260914/evidence/20260914T052545228Z-085ff9a9`. Final APK verification,
-installation and corrected native presentation have not passed yet.
+committed. Two corrected full Gradle builds failed after actual exFAT lost writes:
+`923cf10` run `20260914T052545228Z-085ff9a9` and `c4b7c26` retry
+`20260914T054842239Z-4f0c0b98`, both under `D:/GhafNative/20260914/evidence/`.
+The owner-authorized retry followed a matching 1 MiB probe and five minutes without
+new errors, but produced 17 new exFAT events around 09:51:13–09:51:34 Dubai. Root
+stopped that owned build. D: still reported `Warning / Full Repair Needed`; no more
+D: builds are allocated. The short probe did not prove sustained write reliability.
+Ignored receipts are `d-drive-write-failure.json`, `d-drive-second-write-failure.json`,
+`d-drive-resumed-probe.json`, `failed-native-052545/` and `failed-native-054842/`
+under `.expo/messaging-integration/`.
+
+The launcher correction now sends batch logs directly to validated file paths and
+checks utility output-copy failures while the child process is alive. AST parsing
+and 16 scoped synthetic checks passed. An additional debugger fault-injection probe
+stalled and was preserved as failed. These checks do not prove disk-failure recovery
+or establish the earlier buffer size as the cause. The passing receipt is
+`.expo/messaging-integration/native logging check 64b5595c/checks.json`.
 
 On the installed diagnostic `273f97d` APK, root completed real Parent login to the
 dedicated messaging service. After force-stop and cold restart, returning to Messages
@@ -20,7 +34,67 @@ TotalTime 926 ms; this is activity-launch timing, not authentication latency.
 Screenshots `resume-native-parent-auth.png` and `resume-native-auth-restored.png`
 are retained under ignored `.expo/messaging-integration/`. This passes the observed
 Parent login/restoration case on the diagnostic APK; it does not pass final-candidate
-or Child-session acceptance or revocation. Subsequent diagnostic phone/web bidirectional delivery passed; see the current integration evidence below.
+or Child-session acceptance or revocation. Subsequent diagnostic phone/web
+bidirectional delivery passed: the `273f97d` phone and corrected `1a1c474` web export
+each sent one synthetic message in the same verified Parent–Child thread. A separate
+English browser sibling audit passed explicit Parent permission, older-Child text,
+younger-Child phrase selection followed by Send, Parent exclusion from peer content,
+and revocation clearing both peer views while preserving Parent chats. All audit
+browser sessions signed out and its browser/server closed. Synthetic records and
+retained messages remain; no Parent account or phone device was revoked.
+
+The diagnostic phone also completed the Equal groups study plan and jointly agreed
+80/100 goal, Child-reported 85, Parent acknowledgement, prize unlock and synthetic
+mark-given. Actual Alya Child plans/goals remained empty. Parent reset returned to
+settled Arabic Welcome, then reentry confirmed empty Salem plans/goals. These direct
+results supersede the unrun items in the saved pause section for this diagnostic
+candidate only. Receipts are `diagnostic-study-journey.json` and
+`diagnostic-reset-settled.json`; the exact screenshots and messaging receipts are in
+the [current integration evidence](../../../specs/016-real-family-messaging/backend-android-validation.md).
+
+A C:-only internal update is now installed. It combines the verified `273f97d`
+native container with `923cf10` JavaScript prepared from source `a365f9b`, rather
+than completing a full Gradle rebuild. APK SHA-256 is
+`98223bd92160c843c7c9db36d19c1f38cdec0316ce945ac72c0fa4cf77f219fe`. All 98 resource
+mappings passed; the bundle was the only changed base payload, with 1,626 others
+unchanged and all 1,627 signed candidate payloads matching. The existing internal
+signer and 16 KiB alignment passed. `adb install -r` succeeded; cold activity launch
+was 1050 ms. Parent context and the existing two-message history restored. Observed
+AR/EN Study body, tabs and mixed-script nickname checks passed, along with messaging
+body/list direction. Artifact receipts are under
+`%LOCALAPPDATA%/GhafIntegration/20260914/js-update-923cf10/`.
+
+The installed update still displayed the Arabic messaging header aligned left.
+Root fixed that single row in `0ad7a0d`; source review, scoped lint/format and 73
+messaging tests with one opt-in skip passed at 10:00:24 Dubai in 6.75 seconds.
+Root completed its C:-only bundle/package after measuring 3.97 GiB available RAM
+and 17.2 GiB free on C:. APK SHA-256 is
+`d937a462598090fea79c01db68b0933fc0da9029680ff2be0c433e09cb1d3564`, 62,432,442 bytes.
+Resource/payload preservation, alignment and signing passed; this uses the existing
+diagnostic native container. The final serialized TypeScript rerun passed with
+2,048 MiB after a preserved 1,024 MiB heap failure. Receipts are under
+`%LOCALAPPDATA%/GhafIntegration/20260914/js-update-0ad7a0d/` and
+`.expo/messaging-integration/final-0ad-typecheck*`.
+
+The owner selected Android Studio emulator acceptance instead of further phone
+testing, using C: only. A separate `Ghaf_API35_ARM64Bridge` AVD booted and installed
+`d937a462…`, but app startup failed before JavaScript: SoLoader could not find
+`libreactnative.so`. Package Manager selected ARM64 while direct APK loading chose
+the absent `lib/x86_64` path. That APK supplies no emulator UI or corrected-header pass.
+Root completed a separate extraction-only package with `android:extractNativeLibs`
+changed from false to true. APK SHA-256 is
+`73aced8e982653a4825b191a28a4137e8ebb63a3080c7e18006534ac8b94c3b3`, 62,432,442 bytes.
+The four-byte manifest change, 1,626 preserved payloads, all 1,627 signed payloads,
+alignment and v2/v3 signatures passed; the original APK is unchanged. Receipt:
+`.expo/messaging-integration/emulator-extraction-0ad7a0d-v3/packaging-receipt.json`.
+The streamed install reported an empty failure, but on-emulator hashing later
+verified the installed `73aced8e…` APK. Extracted native libraries loaded, React
+Native reached `Running main`, and settled Arabic onboarding rendered. Root also
+skipped onboarding and entered Parent. Installation/startup pass for this emulator
+candidate; skipped startup frames prevent a performance claim. Receipts include
+`.expo/messaging-integration/emulator-installed-identity.json` and
+`emulator-extraction-welcome.png`. Study and corrected-header checks remain pending;
+the primary integration record owns the exact emulator results.
 
 Resumed messaging checks passed 73 tests with one opt-in hosted skip at 09:24:48
 Dubai (7.20 seconds), scoped lint/format passed, and root observed final TypeScript
@@ -28,12 +102,17 @@ exit 0. Logs use the `resumed-messaging-` prefix and `resumed-final-typecheck.lo
 under `.expo/messaging-integration/`; empty TypeScript output is expected. No new
 full regression or hosted test run is claimed.
 
-Next: use healthy build storage, finish and verify the final APK, install it, check corrected AR/EN Study and
-Messages, complete phone/web messaging and native lifecycle/revocation, then the
-joint-goal journey, Child isolation and reset. Record the final results in the
+Next: check the corrected header and AR/EN Study and Messages on the verified
+`73aced8e…` extraction-only emulator APK on C:.
+Attribute any further lifecycle/revocation, keyboard/Back, study-goal, Child
+isolation/reset and accessibility checks to that exact artifact and emulator.
+No new physical-phone check is allocated. Preserve earlier phone evidence and
+verified artifacts; clean up only scoped disposable C: intermediates after use.
+The diagnostic journey and browser sibling passes above do not close final-candidate,
+emulator or two-phone gates. Record the final hash, results and remaining gaps in the
 [current integration evidence](../../../specs/016-real-family-messaging/backend-android-validation.md)
-before the authorized merge/push. Reuse the retained caches; the older instruction
-to implement the layout corrections is already satisfied in source.
+before the authorized merge/push. Preserve the D: failure evidence and use the
+current C:-only allocation; the original D: checklist below is historical.
 
 ## Saved state at pause
 
@@ -53,7 +132,7 @@ to implement the layout corrections is already satisfied in source.
   `%LOCALAPPDATA%/GhafIntegration/20260914/`; public configuration is in the ignored
   `.env.messaging.local`. No credential should be printed or placed in a commit.
 
-## Completed build and phone evidence
+## Completed build and phone evidence at the original pause
 
 The first complete Windows build succeeded in 52m 11s and passed APK verification.
 Its source is `273f97d`; it includes the terminal-refresh and retry-budget fixes,
@@ -81,9 +160,10 @@ Two CMake LTO probe graphs have six edges outside that pool; probe serialization
 continuous runtime-wide coverage are unverified. The manifest has 10 permissions,
 including two biometric declarations inherited from SecureStore's dependency.
 No biometric login was enabled or tested. Exact build/graph/manifest receipts are
-retained beside the APK. The next launcher version improves log flushing.
+retained beside the APK. At the pause, the next launcher version targeted log
+flushing; the later observed failure and output-drain correction are recorded above.
 
-## Web and audit evidence
+## Web and audit evidence at the original pause
 
 The coordinated audits fixed three reproduced defects in separate commits:
 terminal refresh recovery (`7ee7f49`), accepted retries at the send limit

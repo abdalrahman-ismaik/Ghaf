@@ -2,6 +2,17 @@
 
 ## Windows phone build — September 14, 2026
 
+**Current build boundary:** two later full Gradle runs failed after D: lost writes.
+No further D: build is allocated. The D: invocation below records the original
+setup; it is not an instruction to rerun on the unhealthy drive. A verified C:-only
+internal JavaScript update is installed on the phone. The later `0ad7a0d` header
+correction has a verified C:-only APK, but its first emulator launch failed before
+JavaScript ran. The owner selected Android Studio emulator acceptance, with all new
+work on C:. A separate extraction-only APK now has verified installation and
+settled Arabic startup; Study and messaging presentation checks remain pending. See the
+[primary integration record](../../specs/016-real-family-messaging/backend-android-validation.md)
+for exact artifact identities and acceptance results.
+
 The owner authorized native compilation on D: after the Expo Go connection failed.
 The Windows launcher is [build-apk.ps1](../../scripts/native/build-apk.ps1). It uses
 an explicitly selected disposable checkout, SDK and cache; default invocation is
@@ -25,7 +36,8 @@ Add `-Build -AllowDependencyDownloads` for the authorized build. The public
 configuration file contains only the dedicated messaging URL and publishable key.
 The launcher fixes demo access, mock core services and disabled live AI, and records
 the public configuration hash as a bundle task input. Passwords remain outside the
-bundle and evidence. Build logs, receipts and APKs remain ignored on D:.
+bundle and evidence. The original build logs, receipts and APKs remain ignored on D:;
+the current internal-update artifacts are retained separately on C:.
 
 Keep one heavy job active. Admission requires 3 GiB of available Windows memory;
 the operator monitors the run and stops its owned build if sustained availability
@@ -39,14 +51,81 @@ for outcomes. Historical Linux stages below are not Windows or phone acceptance.
 The first complete Windows run finished at 04:25:42 UTC on September 14:
 `20260914T033313062Z-b2ba959f`, source `273f97d`, Gradle success in 52m 11s.
 Its internal APK passed signer, package, SDK, backup, storage-permission, standalone
-bundle and arm64 checks. It is a diagnostic candidate; the next candidate must
-include the later browser transport fix. Six generated main graphs contain 289
+bundle and arm64 checks. It is a diagnostic candidate that predates the browser
+transport fix; the later C:-only update includes that JavaScript correction.
+Six generated main graphs contain 289
 compile/link edges in the depth-one pool. Two CMake LTO probe graphs have six edges
 outside that pool; probe serialization and continuous runtime-wide compiler coverage
 remain unverified. The merged manifest's 10 permissions include SecureStore's
 biometric dependency declarations, which do not establish biometric login.
-The updated launcher disables file-stream buffering so later run logs are visible
-immediately; the first run's exact launcher copy and hash are retained with its receipt.
+The first run's exact launcher copy and hash are retained with its receipt. A later
+logging change reduced buffering, but that observation does not establish the cause
+of the subsequent failure. The corrected launcher now redirects batch logs directly
+to validated file paths and checks utility output-copy failures while the child
+process is alive. AST parsing and 16 scoped synthetic checks passed, including large
+dual-stream output and nonzero exit. A separate debugger fault-injection probe stalled
+and was preserved as failed; neither that probe nor the passing checks establish
+successful recovery from an actual disk failure.
+
+The corrected full build from `923cf10`, run
+`20260914T052545228Z-085ff9a9`, failed after exFAT lost-write events at
+09:27:55–09:28:06 Dubai. After the owner reported D: stable, a matching 1 MiB probe
+and five minutes without new exFAT events preceded the `c4b7c26` retry,
+`20260914T054842239Z-4f0c0b98`. That retry was stopped after 17 new exFAT events
+around 09:51:13–09:51:34 Dubai. The drive still reported `Warning / Full Repair
+Needed`; the short probe did not establish sustained write reliability. No disk
+repair or formatting was performed. Failure receipts are
+`.expo/messaging-integration/d-drive-write-failure.json`,
+`d-drive-second-write-failure.json`, and the `failed-native-052545/` and
+`failed-native-054842/` directories. Logging-check evidence is
+`.expo/messaging-integration/native logging check 64b5595c/checks.json`.
+
+The installed C:-only update uses the verified `273f97d` native container and
+`923cf10` application JavaScript prepared from source `a365f9b`. APK SHA-256
+`98223bd92160c843c7c9db36d19c1f38cdec0316ce945ac72c0fa4cf77f219fe` passed resource,
+payload, 16 KiB alignment and existing internal signer checks. Only the JavaScript
+bundle changed against the base; 1,626 other payloads remained unchanged, and all
+1,627 candidate payloads matched after signing. Installation with `adb install -r`
+passed, followed by a 1050 ms cold activity launch, restored Parent context and
+existing message history. Observed Arabic/English Study body, tabs and mixed-script
+nickname checks passed, as did messaging body/list direction. This is a verified
+internal update, not a successful full native rebuild. Receipts remain under
+`%LOCALAPPDATA%/GhafIntegration/20260914/js-update-923cf10/`.
+
+That installed APK still showed an Arabic messaging header aligned left. The
+single-row correction `0ad7a0d` passed source review, scoped lint/format and 73
+messaging tests with one opt-in skip. Its final C:-only APK is 62,432,442 bytes,
+SHA-256 `d937a462598090fea79c01db68b0933fc0da9029680ff2be0c433e09cb1d3564`.
+Resource/payload preservation, 16 KiB alignment and the existing signer passed;
+receipts are under `%LOCALAPPDATA%/GhafIntegration/20260914/js-update-0ad7a0d/`.
+The serialized 2,048 MiB TypeScript rerun passed after the preserved 1,024 MiB
+heap-exhaustion attempt. This remains a JavaScript update to the diagnostic native
+container, not a full Gradle rebuild.
+
+The separate C: AVD `Ghaf_API35_ARM64Bridge` booted and installed that APK. App
+startup then failed before JavaScript with `SoLoaderDSONotFoundError` for
+`libreactnative.so`: Package Manager selected ARM64, while SoLoader selected the
+APK's absent `lib/x86_64` path. The Activity Manager success status did not prove a
+rendered app. Root packaged a separate copy with only `android:extractNativeLibs`
+changed from false to true. Its SHA-256 is
+`73aced8e982653a4825b191a28a4137e8ebb63a3080c7e18006534ac8b94c3b3`, 62,432,442 bytes.
+The manifest changed by four bytes, 1,626 other payloads stayed unchanged, and all
+1,627 signed payloads matched. Alignment and v2/v3 signatures passed; `d937a462…`
+remains unchanged. Receipt:
+`.expo/messaging-integration/emulator-extraction-0ad7a0d-v3/packaging-receipt.json`.
+The streamed install reported an empty failure, but the installed APK's on-emulator
+hash subsequently matched `73aced8e…`. Native libraries loaded from extraction,
+React Native reached `Running main`, and settled Arabic onboarding rendered;
+skipping onboarding and entering Parent also worked. Installation and startup pass
+for this exact emulator candidate. Startup skipped frames, so no performance pass
+is claimed. Receipts include `.expo/messaging-integration/emulator-installed-identity.json`
+and `emulator-extraction-welcome.png`. Study and corrected-header checks remain
+pending. This is a separate emulator packaging candidate, not a full native rebuild
+or new phone evidence.
+
+No new phone check is allocated. Retain the verified artifacts and receipts;
+remove only scoped disposable C: intermediates after their use. Do not transfer
+the installed phone update's passes to a later artifact or emulator automatically.
 
 ## Historical Linux build — September 12, 2026
 

@@ -8,9 +8,38 @@ The default unconfigured build still cannot send real messages. The adult pilot 
 separate; study, goals and progression do not gain cloud synchronization.
 Scheduled hourly retention has run successfully. A diagnostic APK built and ran on a
 Samsung; real Parent session restoration and phone/browser bidirectional messaging
-passed. The corrected native rebuild encountered D: lost-write errors. Final corrected
-APK acceptance remains pending in the
+passed. A separate English web audit passed sibling text/phrase exchange, Parent
+exclusion from peer content, and revocation clearing both Child peer views while
+preserving their Parent chats. This is one physical phone plus browser evidence,
+not two physical-phone acceptance. Synthetic test records and retained messages
+remain after the audit sessions signed out.
+
+Two corrected full Gradle builds (`923cf10` and `c4b7c26`) failed after D: lost writes.
+The second failed despite a successful short write probe; no further D: build is
+allocated. A C:-only internal update is installed: the verified `273f97d` native
+container with `923cf10` JavaScript prepared from `a365f9b`, APK hash beginning
+`98223bd92160`. Payload, signing, alignment, installation and cold-launch checks
+passed, as did the observed Parent restoration, Study AR/EN body/tabs/nickname and
+messaging body/list presentation. This does not establish a successful full native
+rebuild. The installed update still has a left-aligned Arabic messaging header.
+Its source correction `0ad7a0d` passed scoped checks and now has a verified C:-only
+APK, SHA-256 `d937a462598090fea79c01db68b0933fc0da9029680ff2be0c433e09cb1d3564`.
+The owner selected Android Studio emulator acceptance using C: only. The separate
+ARM64-translation AVD booted and installed this APK, but application startup failed
+before JavaScript because SoLoader selected an absent x86_64 library path. No
+emulator UI or corrected-header pass follows from installation. A separate copy
+with only native-library extraction enabled now passes packaging verification,
+APK hash beginning `73aced8e9826`. Although streamed installation reported an empty
+failure, the on-emulator APK hash matched, Arabic onboarding rendered and Parent
+entry worked. These establish installation/startup for that emulator candidate;
+skipped startup frames do not establish performance acceptance. Study, messaging
+header and broader functional checks remain pending. Exact artifact identities
+and emulator results remain separately attributed in the
 [current integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
+The earlier diagnostic phone also completed the study-goal/prize, Child-isolation
+and Arabic reset rehearsal; those results remain attributed to that diagnostic
+APK. Final-candidate native lifecycle/revocation, accessibility, named human review
+and other unrecorded cases remain open rather than inheriting browser or source passes.
 The Free test project has no verified backup/PITR recovery, and its default-off CAPTCHA
 setting does not establish production abuse prevention or a real Child rollout.
 

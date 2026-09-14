@@ -1,5 +1,23 @@
 # Team Ownership
 
+## 2026-09-14 Technical-interruption recovery
+
+Root resumes the final `0ad7a0d` C:-only emulator acceptance. The signed APK is
+already verified; the API35 ARM-translation launch failed before JavaScript.
+Root owns `.expo/messaging-integration/` experimental packaging/evidence, the
+existing Feature016/017 validation records, this file, the assistance ledger,
+`android-build-and-rehearsal.md`, `workstreams/messaging-android-resume-20260914.md`
+and `docs/product/PROTOTYPE_LIMITATIONS.md`. Earlier helpers are released.
+One read-only `resume_audit` helper reviews recovery and native packaging; no
+descendants, builds or source writes. Root retains the only emulator/input lane.
+No D: operation or new phone test is allocated.
+
+Acknowledged `MOTION-20260914-001` in `coordination/STATUS-MOTION.md`: the separate
+motion session retains all its listed presentation, test and documentation files.
+Preserve its uncommitted work and the user-owned skill installations. Emulator
+validation uses the already pinned APK, not the changing shared source tree.
+No concurrent heavy check/build is started during that session's local checks.
+
 ## 2026-09-14 Messaging backend integration and Android acceptance
 
 **Resumed by the owner:** continue from clean checkpoint `ce6bd72`; the phone is
@@ -9,6 +27,12 @@ commit each completed, verified slice promptly. The
 historical handoff, not a current instruction to stay paused.
 
 Current exact grants: the Study and messaging layout fixes are committed and released.
+For the final handoff, `messaging_web_audit` owns only
+`docs/competition-readiness/android-build-and-rehearsal.md`,
+`docs/competition-readiness/workstreams/messaging-android-resume-20260914.md`, and
+`docs/product/PROTOTYPE_LIMITATIONS.md`. Root owns the two Feature 016/017 validation
+records, this ownership record, the assistance ledger, final C: packaging and phone
+checks, and Git integration. All other helpers are idle with released boundaries.
 `/root/merge_core` released `scripts/native/build-apk.ps1` after scoped output-recording
 checks. Root owns a bounded C:-only internal JavaScript-update APK experiment using
 the verified diagnostic native container; it is not a passing full native rebuild.

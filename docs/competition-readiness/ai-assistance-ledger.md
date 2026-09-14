@@ -1,5 +1,23 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Technical-interruption recovery and emulator packaging
+
+The owner requested continuation after a technical interruption. Codex recovered
+the existing committed `0ad7a0d` runtime and dirty evidence without changing the
+independent motion session's files. One scoped helper audited the checkpoint,
+reviewed primary Android/SoLoader packaging sources and reconciled three existing
+handoff documents. Root owns the emulator and final integration records.
+
+Codex produced an ignored extraction-only APK experiment, parsed the compiled
+manifest and changed one existing boolean. Root verified every other payload,
+the existing signer and alignment, then independently hashed the installed APK
+after ADB returned a misleading empty installation error. The exact candidate
+rendered Arabic onboarding and opened Parent Home on the C: emulator. Packaging
+attempt failures and startup warnings remain recorded. This work is automated
+engineering assistance, not a full Gradle rebuild, physical-device acceptance,
+student authorship or named human review. Functional follow-up evidence belongs
+in the [integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
+
 ## 2026-09-14 Resumed native and messaging acceptance
 
 The owner resumed after reconnecting and explicitly revoked artificial commit spacing:
@@ -22,6 +40,24 @@ healthy storage. The build helper investigated output-drain handling and receive
 bounded launcher correction/test grant. This failure is not a passing final native
 build. Current candidate details and remaining gates are in the
 [integration evidence](../../specs/016-real-family-messaging/backend-android-validation.md).
+
+After the owner confirmed D: was stable, a small write/read probe passed but a second
+bounded native build produced 17 further exFAT write errors. Root stopped its owned
+build processes and retained both failures. The coordinator prepared a C:-only APK
+packager that checks the verified native container, all resource mappings and every
+payload before replacing the compiled JavaScript bundle. Root compiled, aligned,
+signed and installed the internal update and checked the actual phone presentation.
+It retains mixed native/JavaScript provenance and is not a full Gradle rebuild.
+The observed Arabic header defect received a separate correction and source review.
+The owner then authorized closing unused applications; root requested graceful
+closure of idle browsers and Task Manager without forcing unsaved work to close.
+
+The web auditor also exercised actual Parent-approved sibling messaging in isolated
+browser contexts, including the younger Child's phrase-only composer, Parent content
+exclusion, permission revocation and session cleanup. Root exercised the synthetic
+Study plan, jointly agreed academic goal/prize, Child isolation and reset on the
+diagnostic phone. Candidate-specific receipts remain in the integration evidence;
+these automated checks do not establish named human review or full native acceptance.
 
 ## 2026-09-14 Hosted messaging and Android integration
 
