@@ -509,6 +509,15 @@ export default function GardenScreen() {
         />
       ) : null}
 
+      <QuietButton
+        brand
+        direction={direction}
+        onPress={() => router.push('/garden/memories' as Href)}
+        testID="garden-memories"
+      >
+        {t('memories.open')}
+      </QuietButton>
+
       <FamilyCanopy
         accessibilityLabel={`${t('parentHome.canopyTitle')}. ${t('accessibility.progress', {
           current: formatter.format(canopy.contributionLeaves),

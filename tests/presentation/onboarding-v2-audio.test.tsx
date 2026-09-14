@@ -76,6 +76,7 @@ function harness(playing = false, error = false, narrationSources: Sources = sou
     react: {
       useCallback: (callback: unknown) => callback,
       useMemo: (factory: () => unknown) => factory(),
+      useRef: (initial: unknown) => ({ current: initial }),
       useState: (initial: unknown) => [initial, vi.fn()],
       useEffect: (effect: Effect) => effects.push(effect),
     },

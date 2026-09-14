@@ -1,7 +1,9 @@
 import { pilotResources } from './pilotResources';
+import { memoryResources } from './memoryResources';
+import { onboardingControlResources } from './onboardingControlResources';
+import { profileRecommendationResources } from './profileRecommendationResources';
 import { ambientVolumeResources } from './ambientVolumeResources';
 import { familyConnectionEditResources } from './familyConnectionEditResources';
-import { profileRecommendationResources } from './profileRecommendationResources';
 import { studyResources } from './studyResources';
 import { familyPracticeResources } from './familyPracticeResources';
 import { peerMessagingAr, peerMessagingEn } from './peerMessagingResources';
@@ -11,9 +13,11 @@ export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
+      memories: memoryResources.ar,
+      onboardingControls: onboardingControlResources.ar,
+      profileRecommendations: profileRecommendationResources.ar,
       ambientVolume: ambientVolumeResources.ar,
       familyConnectionEdit: familyConnectionEditResources.ar,
-      profileRecommendations: profileRecommendationResources.ar,
       study: studyResources.ar,
       familyPractices: familyPracticeResources.ar,
       peerMessaging: peerMessagingAr,
@@ -2125,9 +2129,11 @@ export const resources = {
   en: {
     translation: {
       pilot: pilotResources.en,
+      memories: memoryResources.en,
+      onboardingControls: onboardingControlResources.en,
+      profileRecommendations: profileRecommendationResources.en,
       ambientVolume: ambientVolumeResources.en,
       familyConnectionEdit: familyConnectionEditResources.en,
-      profileRecommendations: profileRecommendationResources.en,
       study: studyResources.en,
       familyPractices: familyPracticeResources.en,
       peerMessaging: peerMessagingEn,

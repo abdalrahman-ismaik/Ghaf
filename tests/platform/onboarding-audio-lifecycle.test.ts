@@ -21,6 +21,21 @@ function setup() {
 }
 
 describe('prepared onboarding playback lifecycle', () => {
+  it('stops a pending replay without reviving it and permits a fresh explicit replay', async () => {
+    const { player, playback } = setup();
+    const seek = deferredSeek();
+    player.seekTo.mockReturnValueOnce(seek.promise);
+    playback.setEnabled(true);
+    const pending = playback.restart();
+    playback.stop();
+    seek.resolve();
+    await pending;
+    expect(player.play).not.toHaveBeenCalled();
+    await playback.restart();
+    expect(player.play).toHaveBeenCalledOnce();
+    expect(() => playback.stop()).not.toThrow();
+  });
+
   it('contains unavailable ambience configuration, playback, and cleanup failures', () => {
     const unavailable = () => {
       throw new Error('released native audio object');

@@ -125,7 +125,11 @@ describe('R003 complete screen journey', () => {
     expect(review).toContain('family-connections-review');
     expect(family).toContain('getFamilyConnectionPlan');
     expect(family).not.toContain('record.familyConnections');
-    expect(plan).not.toContain('onPress');
+    expect(plan).toContain('editable = false');
+    expect(plan).toContain('saveFamilyConnections');
+    const connections = source('app/parent/family/connections.tsx');
+    expect(connections).toContain('selectHasActiveParentExperience');
+    expect(connections).toContain('<Redirect href="/"');
   });
 
   it('keeps contextual routes out of bottom navigation', () => {

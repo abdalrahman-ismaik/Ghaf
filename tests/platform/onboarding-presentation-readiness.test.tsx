@@ -9,6 +9,8 @@ import { FirstRunOnboarding } from '../../src/components/onboarding/FirstRunOnbo
 import { interactionMotion } from '../../src/design/motion';
 import { firstRunMotion, motion } from '../../src/design/tokens';
 import { resources } from '../../src/i18n/resources';
+import { serviceRegistry } from '@/services';
+import { ONBOARDING_COMPLETION_STORAGE_KEY } from '../../src/services/local/onboardingCompletionRepository';
 
 type Effect = () => void | (() => void);
 interface HookSlot {
@@ -47,6 +49,13 @@ const mock = vi.hoisted(() => ({
   contexts: new Map<unknown, unknown>(),
   locale: 'ar',
   reducedMotion: false,
+  entryMode: 'ordinary' as 'ordinary' | 'demo',
+  resetSequence: 0,
+  completionValues: new Map<string, string>(),
+  completionReadFails: false,
+  completionWriteFails: false,
+  ambientVolume: 0.2,
+  voiceStatus: 'idle',
   sharedValues: [] as SharedValue[],
   cancelAnimation: vi.fn((shared: SharedValue) => {
     shared.animation = undefined;
@@ -152,7 +161,33 @@ vi.mock('tamagui', () => ({ TamaguiProvider: 'TamaguiProvider' }));
 vi.mock('@/design/tamagui', () => ({ ghafTamaguiConfig: {} }));
 vi.mock('@/components/pilot', () => ({ PilotGate: 'PilotGate' }));
 vi.mock('@/features/pilot/config', () => ({ getPilotConfig: () => ({ enabled: false }) }));
-vi.mock('@/config/demoEntry', () => ({ entryMode: 'ordinary' }));
+vi.mock('@/config/demoEntry', () => ({
+  get entryMode() {
+    return mock.entryMode;
+  },
+}));
+vi.mock('@/services', async () => {
+  const { createOnboardingCompletionRepository } =
+    await import('../../src/services/local/onboardingCompletionRepository');
+  return {
+    serviceRegistry: {
+      onboardingCompletion: createOnboardingCompletionRepository({
+        getItem: (key) => {
+          if (mock.completionReadFails) throw new Error('storage read failed');
+          return mock.completionValues.get(key) ?? null;
+        },
+        setItem: (key, value) => {
+          if (mock.completionWriteFails) throw new Error('storage write failed');
+          mock.completionValues.set(key, value);
+        },
+        removeItem: (key) => {
+          if (mock.completionWriteFails) throw new Error('storage remove failed');
+          mock.completionValues.delete(key);
+        },
+      }),
+    },
+  };
+});
 vi.mock('@/components/familyMessaging/MessagingLifecycle', () => ({
   MessagingLifecycle: 'MessagingLifecycle',
 }));
@@ -288,8 +323,10 @@ vi.mock('@/state/usePrototypeStore', () => ({
     selector({
       locale: mock.locale,
       direction: mock.locale === 'ar' ? 'rtl' : 'ltr',
-      ambientAudioPreference: { enabled: true },
+      ambientAudioPreference: { enabled: true, volume: mock.ambientVolume },
+      liveVoiceCapture: { state: { envelope: { status: mock.voiceStatus } } },
       activeExperience: 'signed_out',
+      growthJourney: { resetSequence: mock.resetSequence },
       setLocale: (locale: string) => {
         mock.locale = locale;
         mock.dirty = true;
@@ -441,6 +478,11 @@ function press(testID: string) {
   (control.props.onPress as () => void)();
   refresh();
 }
+function replayNarration() {
+  const control = find(onboarding, (node) => node.props.testID === 'first-run-narration-replay')!;
+  if (control.props.label === 'onboardingControls.stop') press('first-run-narration-replay');
+  press('first-run-narration-replay');
+}
 function settleImage(error = false) {
   const image = find(imageTree, (node) => node.type === 'Image');
   expect(image, 'a revisited image must get a fresh load or failure callback').toBeDefined();
@@ -473,6 +515,13 @@ beforeEach(() => {
   mock.queryScreenReader = null;
   mock.locale = 'ar';
   mock.reducedMotion = false;
+  mock.entryMode = 'ordinary';
+  mock.resetSequence = 0;
+  mock.completionValues.clear();
+  mock.completionReadFails = false;
+  mock.completionWriteFails = false;
+  mock.ambientVolume = 0.2;
+  mock.voiceStatus = 'idle';
   mock.sharedValues.length = 0;
   mock.cancelAnimation.mockClear();
   mock.withTiming.mockClear();
@@ -496,6 +545,157 @@ afterEach(() => {
 });
 
 describe('onboarding presentation readiness', () => {
+  it('applies the selected ambience level to the one player and pauses at zero or while recording', async () => {
+    refresh();
+    settleImage();
+    await reveal();
+    expect(player('ambience').playing).toBe(true);
+    expect(player('ambience').volume).toBeCloseTo(0.06);
+    mock.ambientVolume = 0.1;
+    refresh();
+    expect(player('ambience').volume).toBeCloseTo(0.03);
+    press('first-run-narration-replay');
+    await flush();
+    expect(player('ambience').volume).toBeCloseTo(0.1);
+    mock.ambientVolume = 0;
+    refresh();
+    expect(player('ambience').playing).toBe(false);
+    mock.ambientVolume = 0.3;
+    refresh();
+    expect(player('ambience').playing).toBe(true);
+    expect(player('ambience').volume).toBeCloseTo(0.3);
+    mock.voiceStatus = 'recording_held';
+    refresh();
+    expect(player('ambience').playing).toBe(false);
+    mock.voiceStatus = 'idle';
+    refresh();
+    expect(player('ambience').playing).toBe(true);
+    changeAppState('background');
+    expect(player('ambience').playing).toBe(false);
+  });
+
+  it('restores ordinary completion after provider remount and restarts only after committed reset', () => {
+    refresh();
+    press('first-run-skip-button');
+    expect(mock.experience.state).toMatchObject({ completed: true });
+    expect(serviceRegistry.onboardingCompletion.read()).toEqual({ ok: true, completed: true });
+    dispose(providerScope);
+    providerScope = scope();
+    refresh();
+    expect(mock.experience.state).toMatchObject({ completed: true });
+
+    mock.completionWriteFails = true;
+    expect(serviceRegistry.onboardingCompletion.clear().ok).toBe(false);
+    refresh();
+    expect(mock.experience.state).toMatchObject({ completed: true });
+    mock.completionWriteFails = false;
+    expect(serviceRegistry.onboardingCompletion.clear()).toEqual({ ok: true, completed: false });
+    mock.resetSequence += 1;
+    refresh();
+    expect(mock.experience.state).toEqual({ completed: false, step: 'intro' });
+  });
+
+  it('ignores ordinary saved completion in a quick demo without reading or replacing it', () => {
+    const saved = '{"schemaVersion":1,"completed":true}';
+    mock.completionValues.set(ONBOARDING_COMPLETION_STORAGE_KEY, saved);
+    mock.completionReadFails = true;
+    mock.entryMode = 'demo';
+    refresh();
+    expect(mock.experience.state).toMatchObject({ completed: false });
+    press('first-run-skip-button');
+    expect(mock.experience.state).toMatchObject({ completed: true });
+    expect(mock.experience.completionSaveFailed).toBe(false);
+    dispose(providerScope);
+    providerScope = scope();
+    refresh();
+    expect(mock.experience.state).toEqual({ completed: false, step: 'intro' });
+    expect(mock.completionValues.get(ONBOARDING_COMPLETION_STORAGE_KEY)).toBe(saved);
+  });
+
+  it('keeps unreadable completion untrusted and offers explicit session-only continuation', () => {
+    mock.completionReadFails = true;
+    refresh();
+    expect(mock.experience.state).toMatchObject({ completed: false });
+    press('first-run-skip-button');
+    expect(mock.experience.state).toMatchObject({ completed: false });
+    expect(
+      find(onboarding, (node) => node.props.testID === 'first-run-completion-error'),
+    ).toBeDefined();
+    press('first-run-continue-once');
+    expect(mock.experience.state).toMatchObject({ completed: true });
+    expect(mock.completionValues.size).toBe(0);
+    dispose(providerScope);
+    providerScope = scope();
+    refresh();
+    expect(mock.experience.state).toMatchObject({ completed: false });
+  });
+
+  it('keeps corrupt completion on the six-screen story and supports a failed-save retry', () => {
+    mock.completionValues.set(ONBOARDING_COMPLETION_STORAGE_KEY, '{bad');
+    refresh();
+    expect(mock.experience.state).toMatchObject({ completed: false });
+    mock.completionWriteFails = true;
+    press('first-run-skip-button');
+    expect(mock.experience.completionSaveFailed).toBe(true);
+    expect(mock.completionValues.get(ONBOARDING_COMPLETION_STORAGE_KEY)).toBe('{bad');
+    mock.completionWriteFails = false;
+    press('first-run-skip-button');
+    expect(mock.experience.completionSaveFailed).toBe(false);
+    expect(mock.experience.state).toMatchObject({ completed: true });
+    expect(serviceRegistry.onboardingCompletion.read()).toEqual({ ok: true, completed: true });
+  });
+
+  it('stops narration through the visible toggle and preserves silence after backgrounding', async () => {
+    refresh();
+    settleImage();
+    await reveal();
+    expect(player().playing).toBe(true);
+    const control = () =>
+      find(onboarding, (node) => node.props.testID === 'first-run-narration-replay')!;
+    expect(control().props.label).toBe('onboardingControls.stop');
+    press('first-run-narration-replay');
+    await flush();
+    expect(player().playing).toBe(false);
+    expect(control().props.label).toBe('firstRun.narrator.replay');
+    const plays = player().play.mock.calls.length;
+    changeAppState('background');
+    changeAppState('active');
+    await flush();
+    expect(player().play).toHaveBeenCalledTimes(plays);
+    press('first-run-narration-replay');
+    await flush();
+    expect(player().playing).toBe(true);
+    expect(player().play).toHaveBeenCalledTimes(plays + 1);
+  });
+
+  it('stops a still-pending replay and permits the next slide without reviving old audio', async () => {
+    refresh();
+    settleImage();
+    await reveal();
+    press('first-run-narration-replay');
+    let finishSeek!: () => void;
+    player().seekTo.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          finishSeek = resolve;
+        }),
+    );
+    press('first-run-narration-replay');
+    expect(
+      find(onboarding, (node) => node.props.testID === 'first-run-narration-replay')!.props.label,
+    ).toBe('onboardingControls.stop');
+    press('first-run-narration-replay');
+    const plays = player().play.mock.calls.length;
+    finishSeek();
+    await flush();
+    expect(player().play).toHaveBeenCalledTimes(plays);
+    press('first-run-next-button');
+    settleImage();
+    await advance(interactionMotion.timing.state + 10);
+    expect(player('ar-family').playing).toBe(true);
+    expect(player().playing).toBe(false);
+  });
+
   it.each(['android', 'web'])(
     'keeps %s navigation in its supported container with progress before the actions',
     (platform) => {
@@ -774,7 +974,7 @@ describe('onboarding presentation readiness', () => {
     expect(startupPhase).toBe('splash');
     expect(player().play).not.toHaveBeenCalled();
     expect(player('ambience').play).not.toHaveBeenCalled();
-    press('first-run-narration-replay');
+    replayNarration();
     await flush();
     expect(player().play).not.toHaveBeenCalled();
     await advance(firstRunMotion.splashHold);
@@ -793,7 +993,7 @@ describe('onboarding presentation readiness', () => {
       refresh();
       settleImage();
       await reveal();
-      press('first-run-narration-replay');
+      replayNarration();
       await flush();
       expect(player().playing).toBe(true);
       expect(player('ambience').playing).toBe(true);
@@ -801,13 +1001,13 @@ describe('onboarding presentation readiness', () => {
       changeAppState('background');
       expect(player().playing).toBe(false);
       expect(player('ambience').playing).toBe(false);
-      press('first-run-narration-replay');
+      replayNarration();
       await flush();
       expect(player().play).toHaveBeenCalledTimes(plays);
       expect(player('ambience').playing).toBe(false);
       changeAppState('active');
       await flush();
-      press('first-run-narration-replay');
+      replayNarration();
       await flush();
       expect(player().playing).toBe(true);
     },
@@ -825,7 +1025,7 @@ describe('onboarding presentation readiness', () => {
         }),
     );
     const plays = player().play.mock.calls.length;
-    press('first-run-narration-replay');
+    replayNarration();
     mock.focused = false;
     refresh();
     expect(player().playing).toBe(false);
@@ -833,7 +1033,7 @@ describe('onboarding presentation readiness', () => {
     finishSeek();
     await flush();
     expect(player().play).toHaveBeenCalledTimes(plays);
-    press('first-run-narration-replay');
+    replayNarration();
     await flush();
     expect(player().play).toHaveBeenCalledTimes(plays);
   });
@@ -849,7 +1049,7 @@ describe('onboarding presentation readiness', () => {
           finishSeek = resolve;
         }),
     );
-    press('first-run-narration-replay');
+    replayNarration();
     changeAppState('inactive');
     changeAppState('active');
     await flush();
@@ -874,7 +1074,7 @@ describe('onboarding presentation readiness', () => {
       find(imageTree, (node) => node.props.testID === 'first-run-image-intro-fallback'),
     ).toBeDefined();
     const plays = player().play.mock.calls.length;
-    press('first-run-narration-replay');
+    replayNarration();
     await flush();
     expect(player().play).toHaveBeenCalledTimes(plays + 1);
     expect(player('ar-family').playing).toBe(false);
@@ -885,7 +1085,7 @@ describe('onboarding presentation readiness', () => {
     refresh();
     settleImage();
     await reveal();
-    press('first-run-narration-replay');
+    replayNarration();
     await flush();
     expect(player().play).not.toHaveBeenCalled();
     expect(player('ambience').play).not.toHaveBeenCalled();
@@ -912,7 +1112,7 @@ describe('onboarding presentation readiness', () => {
     refresh();
     resolveQuery(false);
     await flush();
-    press('first-run-narration-replay');
+    replayNarration();
     await flush();
     expect(player().play).not.toHaveBeenCalled();
     expect(player('ambience').play).not.toHaveBeenCalled();

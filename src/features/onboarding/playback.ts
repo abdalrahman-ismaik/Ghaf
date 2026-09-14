@@ -17,6 +17,10 @@ export function createOnboardingPlayback(player: PreparedAudioPlayer) {
   let revision = 0;
 
   return {
+    stop() {
+      revision += 1;
+      runOptionalAudio(() => player.pause());
+    },
     setEnabled(value: boolean) {
       enabled = value;
       revision += 1;

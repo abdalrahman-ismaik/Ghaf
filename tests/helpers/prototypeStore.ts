@@ -15,6 +15,7 @@ import {
   routineProgressKey,
 } from '../../src/features/tasks/assignmentInstances';
 import { DeterministicTaskService } from '../../src/services/mock';
+import { serviceRegistry } from '../../src/services';
 import { PREPARED_PRAISE } from '../../src/services/mock/fixtures';
 
 function assertOk(result: { readonly ok: boolean; readonly error?: { readonly message: string } }) {
@@ -227,6 +228,21 @@ export function createCatalogSubmittedStateForTest(
 export function resetPrototypeForTest() {
   usePrototypeStore.setState({ role: 'parent', activeExperience: 'parent' });
   return usePrototypeStore.getState().resetPrototype();
+}
+
+// Only fixture boundaries that deliberately changed family snapshots may erase that synthetic setup.
+export function resetAlteredFamilyFixtureForTest() {
+  assertOk(serviceRegistry.localFamily.clear());
+  usePrototypeStore.setState({
+    localFamily: {
+      status: 'ready',
+      record: null,
+      configuredChildIds: [],
+      errorCode: null,
+      storageTruth: 'device_local_demo_only',
+    },
+  });
+  return resetPrototypeForTest();
 }
 
 export async function enterParentExperienceForTest() {

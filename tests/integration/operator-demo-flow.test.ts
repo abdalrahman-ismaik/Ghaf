@@ -273,7 +273,15 @@ describe('US6 bilingual offline operator and reset flow', () => {
 
   it('preserves established routes with authorized R002b, Feature016 and Feature017 additions', () => {
     const actual = authoredRoutes();
-    expect(actual).toEqual([...EXPECTED_ROUTES, '/messages', ...FEATURE017_ROUTES].sort());
+    expect(actual).toEqual(
+      [
+        ...EXPECTED_ROUTES,
+        '/messages',
+        ...FEATURE017_ROUTES,
+        '/garden/memories',
+        '/parent/family/connections',
+      ].sort(),
+    );
     for (const legacyRoute of LEGACY_ROUTES) {
       expect(actual).not.toContain(legacyRoute);
     }

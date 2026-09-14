@@ -126,13 +126,15 @@ describe('R003 first-run experience', () => {
     const rasterPresentation = `${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
     const routes = authoredRoutes();
-    expect(routes).toHaveLength(42);
+    expect(routes).toHaveLength(44);
     for (const addition of [
       'messages/index.tsx',
       'parent/study.tsx',
       'parent/practices.tsx',
       'child/study.tsx',
       'child/practices.tsx',
+      'garden/memories.tsx',
+      'parent/family/connections.tsx',
     ])
       expect(routes).toContain(addition);
     expect(rasterPresentation).not.toMatch(/react-native-svg|<Svg|GhafMark/u);
@@ -439,7 +441,8 @@ describe('R003 first-run experience', () => {
     expect(playback).toContain('player.pause()');
     expect(playback).toContain('player.seekTo(0)');
     expect(narration).toContain('createOnboardingPlayback(player)');
-    expect(narration).toContain('return () => playback.setEnabled(false)');
+    expect(narration).toContain('playback.setEnabled(false)');
+    expect(narration).toContain('return cancel');
     expect(onboarding).toContain(
       'presentationReady && foreground && !state.completed && slideReady',
     );
@@ -468,7 +471,10 @@ describe('R003 first-run experience', () => {
     expect(onboarding).not.toContain('first-run-narration-toggle');
     expect(onboarding).toContain('first-run-narration-replay');
     expect(onboarding).toContain('<IconButton');
-    expect(onboarding).toContain('name="speaker"');
+    expect(onboarding).toContain("name={narration.canStop ? 'media-off' : 'speaker'}");
+    expect(onboarding).toContain('if (narration.canStop) narration.stop()');
+    expect(onboarding).toContain('else narration.replay()');
+    expect(onboarding).toContain("'onboardingControls.stop' : 'firstRun.narrator.replay'");
     expect(onboarding).toContain('size={24}');
     expect(onboarding).not.toContain('narration.toggle');
     expect(`${narration}\n${ambience}\n${audioSources}`).not.toMatch(

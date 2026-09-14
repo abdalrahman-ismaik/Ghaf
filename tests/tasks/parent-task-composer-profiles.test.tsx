@@ -7,7 +7,10 @@ import { ParentTaskComposer } from '@/components/family-growth/ParentTaskCompose
 import { i18n, setI18nLocale } from '@/i18n';
 import type { LocalChildProfile } from '@/models/localFamily';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-import { enterParentExperienceForTest, resetPrototypeForTest } from '../helpers/prototypeStore';
+import {
+  enterParentExperienceForTest,
+  resetAlteredFamilyFixtureForTest,
+} from '../helpers/prototypeStore';
 
 interface ControlProps {
   children?: ReactNode;
@@ -94,7 +97,7 @@ function childChoices() {
 
 describe('Task Builder configured Child choices', () => {
   beforeEach(async () => {
-    expect(resetPrototypeForTest().ok).toBe(true);
+    expect(resetAlteredFamilyFixtureForTest().ok).toBe(true);
     await enterParentExperienceForTest();
   });
 

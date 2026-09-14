@@ -8,7 +8,10 @@ import type { ChildHomeHeader } from '@/components/r002a/child/ChildHomeHeader';
 import type { PrivateLeagueScreen } from '@/components/r002b/PrivateLeagueScreen';
 import { i18n, localize } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
-import { enterChildExperienceForTest, resetPrototypeForTest } from '../helpers/prototypeStore';
+import {
+  enterChildExperienceForTest,
+  resetAlteredFamilyFixtureForTest,
+} from '../helpers/prototypeStore';
 
 interface HostProps {
   children?: ReactNode;
@@ -79,7 +82,7 @@ function renderLeague() {
 }
 
 beforeEach(() => {
-  expect(resetPrototypeForTest().ok).toBe(true);
+  expect(resetAlteredFamilyFixtureForTest().ok).toBe(true);
 });
 
 describe.each(['ar', 'en'] as const)('League profile identity in %s', (locale) => {

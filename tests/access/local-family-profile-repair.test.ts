@@ -16,7 +16,7 @@ import {
   deviceLocalStorage,
 } from '../../src/services/local';
 import { usePrototypeStore } from '../../src/state/usePrototypeStore';
-import { resetPrototypeForTest } from '../helpers/prototypeStore';
+import { resetAlteredFamilyFixtureForTest } from '../helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
   expect(result.ok).toBe(true);
@@ -198,7 +198,7 @@ describe('legacy required-sex profile repair repository', () => {
 
 describe('verified returning-family profile repair', () => {
   beforeEach(() => {
-    expectOk(resetPrototypeForTest());
+    expectOk(resetAlteredFamilyFixtureForTest());
     deviceLocalStorage.setItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY, previousRaw());
     const candidate = expectOk(serviceRegistry.localFamily.readProfileRepairCandidate());
     usePrototypeStore.setState({

@@ -4,7 +4,10 @@ import { SYNTHETIC_PARENT_REAUTHENTICATION_CODE } from '@/models/access';
 import { createFeature003ServiceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { configureChildAgeForTest } from '../helpers/configuredChildAge';
-import { enterParentExperienceForTest, resetPrototypeForTest } from '../helpers/prototypeStore';
+import {
+  enterParentExperienceForTest,
+  resetAlteredFamilyFixtureForTest,
+} from '../helpers/prototypeStore';
 
 function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asserts result is {
   readonly ok: true;
@@ -15,7 +18,7 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): asser
 
 describe('Feature 004 synthetic Child AI grants', () => {
   beforeEach(async () => {
-    expectOk(resetPrototypeForTest());
+    expectOk(resetAlteredFamilyFixtureForTest());
     await enterParentExperienceForTest();
   });
 

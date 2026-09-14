@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PARENT_VERIFICATION_CODE } from '../../src/features/access';
 import { INITIAL_CHILD_VOICE_VIEW } from '../../src/features/assistants/childVoiceController';
 import { TASK_TEMPLATES } from '../../src/features/tasks/demoContent';
+import { FAMILY_MEMORY_STORAGE_KEY } from '../../src/models/familyMemory';
 import type { LocalFamilyRecord } from '../../src/models/localFamily';
 import { STUDY_STORAGE_KEY } from '../../src/models/study';
 import { serviceRegistry } from '../../src/services';
@@ -16,6 +17,7 @@ import {
   SAVED_TASK_TEMPLATE_STORAGE_KEY,
   deviceLocalStorage,
 } from '../../src/services/local';
+import { ONBOARDING_COMPLETION_STORAGE_KEY } from '../../src/services/local/onboardingCompletionRepository';
 import { usePrototypeStore } from '../../src/state/usePrototypeStore';
 import { enterParentExperienceForTest, resetPrototypeForTest } from '../helpers/prototypeStore';
 
@@ -27,9 +29,11 @@ const ALL_KEYS = [
   LOCAL_FAMILY_STORAGE_KEY,
 ] as const;
 const AUXILIARY_KEYS = [
+  ONBOARDING_COMPLETION_STORAGE_KEY,
   AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY,
   SAVED_TASK_TEMPLATE_STORAGE_KEY,
   STUDY_STORAGE_KEY,
+  FAMILY_MEMORY_STORAGE_KEY,
 ] as const;
 const HISTORICAL_FAMILIES = [
   { key: OLDEST_LOCAL_FAMILY_STORAGE_KEY, schemaVersion: 1 },
@@ -83,14 +87,28 @@ async function savedFamily() {
   return family;
 }
 
+function clearRecoveryFixture() {
+  [...ALL_KEYS, ...AUXILIARY_KEYS].forEach((key) => deviceLocalStorage.removeItem(key));
+  usePrototypeStore.setState({
+    localFamily: {
+      status: 'ready',
+      record: null,
+      configuredChildIds: [],
+      errorCode: null,
+      storageTruth: 'device_local_demo_only',
+    },
+  });
+  expect(resetPrototypeForTest().ok).toBe(true);
+}
+
 beforeEach(() => {
   vi.restoreAllMocks();
-  expect(resetPrototypeForTest().ok).toBe(true);
+  clearRecoveryFixture();
 });
 
 afterEach(() => {
   vi.restoreAllMocks();
-  expect(resetPrototypeForTest().ok).toBe(true);
+  clearRecoveryFixture();
 });
 
 describe('confirmed corrupt saved-family recovery', () => {
@@ -282,8 +300,7 @@ describe('confirmed corrupt saved-family recovery', () => {
     expect(confirm().ok).toBe(true);
     expect(events.slice(events.indexOf(`remove:${DEVICE_ACCESS_STORAGE_KEY}`))).toEqual([
       ...ALL_KEYS.flatMap((key) => [`remove:${key}`, `read:${key}`]),
-      ...AUXILIARY_KEYS.map((key) => `remove:${key}`),
-      `read:${STUDY_STORAGE_KEY}`,
+      ...AUXILIARY_KEYS.flatMap((key) => [`remove:${key}`, `read:${key}`]),
     ]);
     expect(deviceLocalStorage.getItem(STUDY_STORAGE_KEY)).toBeNull();
   });
@@ -534,11 +551,9 @@ describe('confirmed corrupt saved-family recovery', () => {
       pendingFamilyCreation: null,
       ambientAudioPreference: { enabled: true, volume: 0.2, status: 'ready', source: 'default' },
     });
-    expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual([
-      null,
-      null,
-      null,
-    ]);
+    expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual(
+      AUXILIARY_KEYS.map(() => null),
+    );
   });
 
   it('clears transient state and all voice authority exactly like ordinary reset, then permits normal setup', async () => {

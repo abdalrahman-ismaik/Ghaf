@@ -12,6 +12,7 @@ export {
   type SavedTaskTemplateRepository,
 } from './savedTaskTemplateRepository';
 export { deviceLocalStorage } from './storage';
+export { createFamilyMemoryRepository } from './familyMemoryRepository';
 export { createMemoryLocalKeyValueStorage, type MemoryLocalKeyValueStorage } from './memoryStorage';
 export { DEVICE_ACCESS_STORAGE_KEY } from '../../models/deviceAccess';
 export { AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY } from '../../models/audioPreferences';

@@ -9,6 +9,18 @@ import {
   type TaskAssignmentCollection,
 } from '../features/tasks/assignmentInstances';
 import { create, type StateCreator } from 'zustand';
+import {
+  addFamilyMemory,
+  deleteFamilyMemory,
+  memoryFromRecognition,
+  projectFamilyMemories,
+} from '../features/family-memory';
+import type {
+  FamilyMemory,
+  FamilyMemoryActor,
+  FamilyMemoryCollection,
+  FamilyMemoryResult,
+} from '../models/familyMemory';
 import { applyStudyCommand } from '../features/study';
 import type {
   StudyActor,
@@ -577,6 +589,12 @@ function createInitialSharedGrowth(resetSequence: number): SharedGrowthState {
 const initialSharedGrowth = createInitialSharedGrowth(initialGrowthJourney.data.resetSequence);
 
 export interface PrototypeStoreState extends PrototypeSession {
+  readonly memoryRevision: number;
+  readonly memoryRunId: string | null;
+  readonly initializeFamilyMemories: () => FamilyMemoryResult<readonly FamilyMemory[]>;
+  readonly getFamilyMemories: () => FamilyMemoryResult<readonly FamilyMemory[]>;
+  readonly saveFamilyMemory: () => FamilyMemoryResult<FamilyMemory>;
+  readonly removeFamilyMemory: (id: string) => FamilyMemoryResult<true>;
   readonly pilotSampleActive: boolean;
   readonly taskAssignments: TaskAssignmentCollection;
   readonly catalogSupportRequests: Readonly<Record<string, true>>;
@@ -1571,18 +1589,41 @@ function validateGuideSuggestion(
 let confirmedCorruptRecoveryPending: LocalFamilyView | null = null;
 let pilotSampleGeneration = 0;
 
+function memoryFamilyIsCurrent(state: PrototypeStoreState): boolean {
+  const expected = state.localFamily.record;
+  const current = serviceRegistry.localFamily.read();
+  return Boolean(
+    expected &&
+    current.ok &&
+    current.data &&
+    current.data.studyInstanceId === expected.studyInstanceId &&
+    current.data.parent.normalizedIdentifier === expected.parent.normalizedIdentifier &&
+    current.data.createdAt === expected.createdAt,
+  );
+}
+
 function resetClearedPrototype(
   set: (updater: (state: PrototypeStoreState) => Partial<PrototypeStoreState>) => void,
   get: () => PrototypeStoreState,
+  alreadyCleared: Readonly<{ onboarding?: true; memories?: true }> = {},
 ): ServiceResult<Omit<ResetResult, 'session'>> {
   if (pilotSampleEnabled) pilotSampleGeneration += 1;
   const state = get();
+  if (!alreadyCleared.onboarding) {
+    const onboardingResetRecord = serviceRegistry.onboardingCompletion.clear();
+    if (!onboardingResetRecord.ok)
+      return failure('INVALID_RESPONSE', 'Onboarding completion could not be cleared');
+  }
   const ambientAudioReset = serviceRegistry.ambientAudioPreferences.clear();
   if (!ambientAudioReset.ok) return ambientAudioReset;
   const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
   if (!savedTaskTemplateReset.ok) return savedTaskTemplateReset;
   const studyReset = serviceRegistry.study.clear();
   if (!studyReset.ok) return failure('INVALID_RESPONSE', 'Study records could not be cleared');
+  if (!alreadyCleared.memories) {
+    const memoryReset = serviceRegistry.familyMemories.clear();
+    if (!memoryReset.ok) return failure('INVALID_RESPONSE', 'Family memories could not be cleared');
+  }
   const reset = serviceRegistry.prototypeSession.resetPrototype();
   const nextGrowthJourney = createGrowthJourneyRuntime(
     reset.session,
@@ -1606,6 +1647,8 @@ function resetClearedPrototype(
   releaseLiveVoiceCapture(state.liveVoiceCapture);
   set((state) => ({
     ...reset.session,
+    memoryRevision: state.memoryRevision + 1,
+    memoryRunId: null,
     studyRevision: state.studyRevision + 1,
     pilotSampleActive: false,
     demoRunGeneration: entryMode === 'demo' ? state.demoRunGeneration + 1 : state.demoRunGeneration,
@@ -1822,6 +1865,92 @@ function withTaskAssignments(
 const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => ({
   ...initialPrototypeSession,
   studyRevision: 0,
+  memoryRevision: 0,
+  memoryRunId: null,
+  initializeFamilyMemories: () => {
+    const state = get();
+    const authorized =
+      state.role === 'parent'
+        ? requireActiveParentExperience(state)
+        : requireActiveChildExperience(state);
+    if (!authorized.ok || state.localFamily.status !== 'ready' || !state.localFamily.record)
+      return { ok: false, error: { code: 'forbidden' } };
+    if (!memoryFamilyIsCurrent(state)) return { ok: false, error: { code: 'family_mismatch' } };
+    if (!state.localFamily.record.studyInstanceId) {
+      const cleared = serviceRegistry.familyMemories.clear();
+      if (!cleared.ok) return cleared;
+      // Share the existing opaque family binding; no study content becomes memory content.
+      const initialized = get().initializeStudy();
+      if (!initialized.ok) return { ok: false, error: { code: 'storage_write' } };
+    }
+    return get().getFamilyMemories();
+  },
+  getFamilyMemories: () => {
+    const state = get();
+    const authorized =
+      state.role === 'parent'
+        ? requireActiveParentExperience(state)
+        : requireActiveChildExperience(state);
+    if (!authorized.ok || state.localFamily.status !== 'ready' || !state.localFamily.record)
+      return { ok: false, error: { code: 'forbidden' } };
+    if (!memoryFamilyIsCurrent(state)) return { ok: false, error: { code: 'family_mismatch' } };
+    const instanceId = state.localFamily.record.studyInstanceId;
+    if (!instanceId) return { ok: true, data: [] };
+    const familyKey = `memory:${instanceId}`;
+    const loaded = serviceRegistry.familyMemories.load(familyKey);
+    if (!loaded.ok) return loaded;
+    const actor: FamilyMemoryActor =
+      state.role === 'parent'
+        ? { role: 'parent' }
+        : { role: 'child', childId: state.activeChildId };
+    return projectFamilyMemories(loaded.data, familyKey, actor);
+  },
+  saveFamilyMemory: () => {
+    if (!requireActiveParentExperience(get()).ok)
+      return { ok: false, error: { code: 'forbidden' } };
+    const initialized = get().initializeFamilyMemories();
+    if (!initialized.ok) return initialized;
+    const state = get();
+    const instanceId = state.localFamily.record?.studyInstanceId;
+    if (!instanceId) return { ok: false, error: { code: 'forbidden' } };
+    const runId =
+      state.memoryRunId ??
+      `memory-run-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+    if (!state.memoryRunId) set({ memoryRunId: runId });
+    const memory = memoryFromRecognition(sessionSnapshot(state), {
+      familyKey: `memory:${instanceId}`,
+      runId,
+      savedAt: new Date().toISOString(),
+    });
+    if (!memory.ok) return memory;
+    const loaded = serviceRegistry.familyMemories.load(memory.data.familyKey);
+    if (!loaded.ok) return loaded;
+    const next = addFamilyMemory(loaded.data, { role: 'parent' }, memory.data);
+    if (!next.ok) return next;
+    const saved = serviceRegistry.familyMemories.save(next.data);
+    if (!saved.ok) return saved;
+    set({ memoryRevision: state.memoryRevision + 1 });
+    return {
+      ok: true,
+      data: next.data.memories.find((item) => item.sourceEventId === memory.data.sourceEventId)!,
+    };
+  },
+  removeFamilyMemory: (id) => {
+    const state = get();
+    if (!requireActiveParentExperience(state).ok)
+      return { ok: false, error: { code: 'forbidden' } };
+    if (!memoryFamilyIsCurrent(state)) return { ok: false, error: { code: 'family_mismatch' } };
+    const instanceId = state.localFamily.record?.studyInstanceId;
+    if (!instanceId) return { ok: false, error: { code: 'forbidden' } };
+    const loaded = serviceRegistry.familyMemories.load(`memory:${instanceId}`);
+    if (!loaded.ok) return loaded;
+    const next = deleteFamilyMemory(loaded.data, { role: 'parent' }, id);
+    if (!next.ok) return next;
+    const saved = serviceRegistry.familyMemories.save(next.data);
+    if (!saved.ok) return saved;
+    set({ memoryRevision: state.memoryRevision + 1 });
+    return { ok: true, data: true };
+  },
   initializeStudy: () => {
     const state = get();
     const authorized =
@@ -2298,6 +2427,42 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         ? state.parentOnboarding.completionReceipt.householdId
         : null;
     let newlySavedFamily: LocalFamilyRecord | null = null;
+    let replacementMemoryBackup: FamilyMemoryCollection | null = null;
+    let replacementMemoryClearAttempted = false;
+    if (previousFamily?.studyInstanceId) {
+      const memories = serviceRegistry.familyMemories.load(
+        `memory:${previousFamily.studyInstanceId}`,
+      );
+      if (!memories.ok)
+        return failure(
+          'INVALID_RESPONSE',
+          'Existing memories could not be read before replacement',
+        );
+      replacementMemoryBackup = memories.data;
+    }
+    const restorePreviousFamily = (): ServiceResult<true> => {
+      if (!previousFamily)
+        return failure('INVALID_TRANSITION', 'The previous family is unavailable');
+      const current = serviceRegistry.localFamily.read();
+      if (
+        !current.ok ||
+        (current.data &&
+          !sameTaskAuthority(current.data, previousFamily) &&
+          !sameTaskAuthority(current.data, newlySavedFamily))
+      )
+        return failure('INVALID_RESPONSE', 'Family replacement rollback could not be verified');
+      const restored = serviceRegistry.localFamily.save(previousFamily);
+      if (!restored.ok) return restored;
+      const verified = serviceRegistry.localFamily.read();
+      if (!verified.ok || !sameTaskAuthority(verified.data, previousFamily))
+        return failure('INVALID_RESPONSE', 'The previous family could not be restored');
+      if (replacementMemoryClearAttempted && replacementMemoryBackup) {
+        const memories = serviceRegistry.familyMemories.save(replacementMemoryBackup);
+        if (!memories.ok)
+          return failure('INVALID_RESPONSE', 'The previous family memories could not be restored');
+      }
+      return success(true);
+    };
     let clearedDeviceAffinity = false;
     if (!returningHouseholdId) {
       const cleared = serviceRegistry.deviceAccess.clear();
@@ -2364,12 +2529,10 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       readonly childVoiceView: ChildVoiceView;
     } | null = null;
     if (replacingFamily && newlySavedFamily && previousFamily) {
-      const restorePreviousFamily = () => {
-        serviceRegistry.localFamily.save(previousFamily);
-      };
       const deviceAccessReset = serviceRegistry.deviceAccess.clear();
       if (!deviceAccessReset.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return { ok: false, error: deviceAccessReset.error };
       }
       const reset = serviceRegistry.prototypeSession.resetPrototype();
@@ -2378,33 +2541,46 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         state.growthJourney.resetSequence + 1,
       );
       if (!nextGrowthJourney.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return failure('INVALID_RESPONSE', nextGrowthJourney.error.message);
       }
       const voiceReset = childVoiceController.resetPrototype('parent');
       if (!voiceReset.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return voiceReset;
       }
       const accessReset = serviceRegistry.access.resetPrototype();
       if (!accessReset.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return accessReset;
       }
       const liveChildAiGrantReset = serviceRegistry.boundedAi.childAiGrants.reset();
       if (!liveChildAiGrantReset.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return liveChildAiGrantReset;
       }
       const savedTaskTemplateReset = serviceRegistry.savedTaskTemplates.clear();
       if (!savedTaskTemplateReset.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return savedTaskTemplateReset;
       }
       const studyReset = serviceRegistry.study.clear();
       if (!studyReset.ok) {
-        restorePreviousFamily();
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
         return failure('INVALID_RESPONSE', 'Study records could not be cleared');
+      }
+      replacementMemoryClearAttempted = true;
+      const memoryReset = serviceRegistry.familyMemories.clear();
+      if (!memoryReset.ok) {
+        const restored = restorePreviousFamily();
+        if (!restored.ok) return restored;
+        return failure('INVALID_RESPONSE', 'Family memories could not be cleared');
       }
       replacementReset = {
         session: reset.session,
@@ -2500,8 +2676,13 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
       });
     } else {
       if (newlySavedFamily && !repairingFamily) {
-        if (replacingFamily && previousFamily) serviceRegistry.localFamily.save(previousFamily);
-        else serviceRegistry.localFamily.clear();
+        if (replacingFamily && previousFamily) {
+          const restored = restorePreviousFamily();
+          if (!restored.ok) {
+            set({ parentOnboarding: parentOnboardingController.getView() });
+            return restored;
+          }
+        } else serviceRegistry.localFamily.clear();
       }
       set({ parentOnboarding: parentOnboardingController.getView() });
     }
@@ -3572,11 +3753,14 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     if (!pilotSampleEnabled) {
       return failure('INVALID_TRANSITION', 'Sample teardown is available only in the pilot');
     }
+    const onboardingReset = serviceRegistry.onboardingCompletion.clear();
+    if (!onboardingReset.ok)
+      return failure('INVALID_RESPONSE', 'Onboarding completion could not be cleared');
     const deviceAccessReset = serviceRegistry.deviceAccess.clear();
     if (!deviceAccessReset.ok) return { ok: false, error: deviceAccessReset.error };
     const localReset = serviceRegistry.localFamily.clear();
     if (!localReset.ok) return { ok: false, error: localReset.error };
-    return resetClearedPrototype(set, get);
+    return resetClearedPrototype(set, get, { onboarding: true });
   },
 
   resetPrototype: () => {
@@ -3593,8 +3777,20 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     ) {
       return failure('INVALID_TRANSITION', 'An active Parent experience is required before reset');
     }
+    let memoryBackup: FamilyMemoryCollection | null = null;
+    let memoryClearAttempted = false;
     const rejectReset = (result: ServiceResult<never>): ServiceResult<never> => {
-      if (entryMode !== 'demo') return result;
+      let reported = result;
+      // Preserve memory records if reset fails before this family was removed.
+      if (memoryClearAttempted && memoryBackup && memoryFamilyIsCurrent(state)) {
+        const restored = serviceRegistry.familyMemories.save(memoryBackup);
+        if (!restored.ok)
+          reported = failure(
+            'INVALID_RESPONSE',
+            'Reset failed and memory restoration could not be verified',
+          );
+      }
+      if (entryMode !== 'demo') return reported;
       demoEntryAdapter?.invalidate();
       releaseLiveVoiceCapture(state.liveVoiceCapture);
       set({
@@ -3627,20 +3823,48 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
         confirmationPlan: null,
         lastRecognitionAttempt: null,
       });
-      return result;
+      return reported;
     };
     if (entryMode === 'demo') set({ demoEntryEpoch: state.demoEntryEpoch + 1 });
     try {
+      if (entryMode !== 'demo') {
+        const currentFamily = serviceRegistry.localFamily.read();
+        if (!currentFamily.ok || !sameTaskAuthority(currentFamily.data, state.localFamily.record))
+          return rejectReset(
+            failure('INVALID_TRANSITION', 'The saved family changed; reload before resetting'),
+          );
+      }
+      if (state.localFamily.record?.studyInstanceId && memoryFamilyIsCurrent(state)) {
+        const existing = serviceRegistry.familyMemories.load(
+          `memory:${state.localFamily.record.studyInstanceId}`,
+        );
+        if (existing.ok) memoryBackup = existing.data;
+        else if (existing.error.code === 'storage_read')
+          return rejectReset(
+            failure('INVALID_RESPONSE', 'Family memories could not be read before reset'),
+          );
+      }
+      const onboardingReset = serviceRegistry.onboardingCompletion.clear();
+      if (!onboardingReset.ok)
+        return rejectReset(
+          failure('INVALID_RESPONSE', 'Onboarding completion could not be cleared'),
+        );
+      memoryClearAttempted = true;
+      const memoryReset = serviceRegistry.familyMemories.clear();
+      if (!memoryReset.ok)
+        return rejectReset(failure('INVALID_RESPONSE', 'Family memories could not be cleared'));
       const deviceAccessReset = serviceRegistry.deviceAccess.clear();
       if (!deviceAccessReset.ok) return rejectReset({ ok: false, error: deviceAccessReset.error });
       const localReset = serviceRegistry.localFamily.clear();
       if (!localReset.ok) return rejectReset({ ok: false, error: localReset.error });
       const voiceReset = childVoiceController.resetPrototype('parent');
       if (!voiceReset.ok) return rejectReset(voiceReset);
-      const reset = resetClearedPrototype(set, get);
+      const reset = resetClearedPrototype(set, get, { onboarding: true, memories: true });
       return reset.ok ? reset : rejectReset(reset);
-    } catch (error) {
-      if (entryMode !== 'demo') throw error;
+    } catch {
+      if (entryMode !== 'demo') {
+        return rejectReset(failure('INVALID_RESPONSE', 'Prototype reset could not finish'));
+      }
       return rejectReset(
         failure('INVALID_RESPONSE', 'Demo reset could not finish; restart the app'),
       );

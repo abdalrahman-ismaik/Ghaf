@@ -1,4 +1,6 @@
 import { entryMode } from '../config/demoEntry';
+import { createFamilyMemoryRepository } from './local/familyMemoryRepository';
+import { createOnboardingCompletionRepository } from './local/onboardingCompletionRepository';
 import { createStudyRepository } from './local/studyRepository';
 import { createFamilyMessaging } from '../features/familyMessaging';
 import {
@@ -125,6 +127,8 @@ export const serviceRegistry: Feature003ServiceRegistry & {
   readonly localFamily: ReturnType<typeof createLocalFamilyRepository>;
   readonly savedTaskTemplates: ReturnType<typeof createSavedTaskTemplateRepository>;
   readonly study: ReturnType<typeof createStudyRepository>;
+  readonly familyMemories: ReturnType<typeof createFamilyMemoryRepository>;
+  readonly onboardingCompletion: ReturnType<typeof createOnboardingCompletionRepository>;
 } = {
   ...createFeature003ServiceRegistry(),
   createParentAccountService() {
@@ -143,6 +147,8 @@ export const serviceRegistry: Feature003ServiceRegistry & {
   localFamily: createLocalFamilyRepository(repositoryStorage),
   savedTaskTemplates: createSavedTaskTemplateRepository(repositoryStorage),
   study: createStudyRepository(repositoryStorage),
+  familyMemories: createFamilyMemoryRepository(repositoryStorage),
+  onboardingCompletion: createOnboardingCompletionRepository(repositoryStorage),
 };
 
 // Each mounted gate owns a fresh lazy service and disposes it on final unmount.

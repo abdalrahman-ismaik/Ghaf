@@ -168,7 +168,8 @@ export function FirstRunOnboarding({
   const locale = usePrototypeStore((state) => state.locale);
   const direction = usePrototypeStore((state) => state.direction);
   const setLocale = usePrototypeStore((state) => state.setLocale);
-  const { dispatch, presentationReady, state } = useFirstRunExperience();
+  const { completionSaveFailed, continueWithoutSaving, dispatch, presentationReady, state } =
+    useFirstRunExperience();
   const foreground = useOnboardingForeground();
   const [presentation, setPresentation] = useState({
     step: state.step,
@@ -241,7 +242,7 @@ export function FirstRunOnboarding({
     ? t('firstRun.narrator.screenReader')
     : narration.status === 'unavailable'
       ? t('firstRun.narrator.unavailable')
-      : t('firstRun.narrator.replayHint');
+      : t(narration.canStop ? 'onboardingControls.stopHint' : 'firstRun.narrator.replayHint');
 
   useLayoutEffect(() => {
     cancelAnimation(visualProgress);
@@ -460,16 +461,24 @@ export function FirstRunOnboarding({
               brand
               disabled={!narrationEnabled || narration.screenReaderActive || !narration.hasSource}
               icon={
-                <GhafIcon color={colors.white} direction={direction} name="speaker" size={24} />
+                <GhafIcon
+                  color={colors.white}
+                  direction={direction}
+                  name={narration.canStop ? 'media-off' : 'speaker'}
+                  size={24}
+                />
               }
               label={
                 !narration.hasSource
                   ? t('firstRun.narrator.unavailable')
-                  : t('firstRun.narrator.replay')
+                  : t(narration.canStop ? 'onboardingControls.stop' : 'firstRun.narrator.replay')
               }
               onPress={() => {
                 unlockPlayback();
-                if (narrationEnabled) narration.replay();
+                if (narrationEnabled) {
+                  if (narration.canStop) narration.stop();
+                  else narration.replay();
+                }
               }}
               style={styles.speakerButton}
               testID="first-run-narration-replay"
@@ -546,6 +555,24 @@ export function FirstRunOnboarding({
           </Text>
         </Animated.View>
       </View>
+
+      {completionSaveFailed ? (
+        <View style={styles.copy} testID="first-run-completion-error">
+          <Text accessibilityRole="alert" brand direction={direction} language={locale}>
+            {t('onboardingControls.saveFailed')}
+          </Text>
+          <Button
+            brand
+            direction={direction}
+            language={locale}
+            onPress={continueWithoutSaving}
+            testID="first-run-continue-once"
+            variant="secondary"
+          >
+            {t('onboardingControls.continueOnce')}
+          </Button>
+        </View>
+      ) : null}
 
       {Platform.OS === 'web' ? navigation : null}
     </AccessScreen>
