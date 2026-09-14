@@ -169,3 +169,9 @@ scroll. Root reserves ONLY CloudFamilyView.tsx for a bounded equal-column footer
 repair, retaining all six labeled destinations, existing press motion and Back.
 No NAV-MOTION files overlap. Source63353ae remains a separately identified build;
 this later repair requires its own source checks and fresh artifact acceptance.
+
+RELEASE-019: b2 native default footer passed, but font1.5 broke the Arabic Settings
+word across lines. Root extends the same CloudFamilyView.tsx boundary plus
+tests/cloud-family-ui/core-ui.test.tsx for responsive wider columns at enlarged
+text/narrow width. Selection state, six labels and press/Back behavior remain.
+Fresh artifact and large-text acceptance required; no NAV-MOTION edits.

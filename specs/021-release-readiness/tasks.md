@@ -24,3 +24,7 @@ Completed bounded repairs do not close the larger unchecked release obligations:
 - [x] Reproduce/fix preaccept Help, run24+73local SQL checks, deploy015 and prove ordinary hosted retry/readback without growth changes.
 - [x] Audit all24catalog tasks and separate P0, retaining missing lifecycle/safety evidence as blockers.
 - [ ] Reconcile the native family footer into two equal-column rows without reducing text size, touch targets, RTL or selected-tab semantics; verify larger text and repeated tab changes in its own fresh APK.
+
+Native b2 font1.5 follow-up: use wider two-column navigation on narrow/enlarged
+layouts to preserve whole Arabic labels; retain three columns at default size.
+Actual candidate verification remains required.

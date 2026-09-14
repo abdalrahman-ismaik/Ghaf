@@ -24,7 +24,12 @@ import type {
 import type { ParentAccountService } from '../../src/models/parentAccount';
 
 type Hook = { value?: unknown; dependencies?: readonly unknown[] };
-const mock = vi.hoisted(() => ({ cursor: 0, slots: [] as Hook[], locale: 'en' as 'ar' | 'en' }));
+const mock = vi.hoisted(() => ({
+  cursor: 0,
+  slots: [] as Hook[],
+  locale: 'en' as 'ar' | 'en',
+  fontScale: 1,
+}));
 
 vi.mock('react', async (original) => ({
   ...(await original<typeof import('react')>()),
@@ -61,6 +66,7 @@ vi.mock('react-native', () => ({
     select: (options: Record<string, unknown>) => options.android ?? options.default,
   },
   StyleSheet: { create: (value: unknown) => value },
+  useWindowDimensions: () => ({ width: 360, height: 800, scale: 2, fontScale: mock.fontScale }),
   View: 'View',
 }));
 vi.mock('@/components/access', () => ({
@@ -202,6 +208,7 @@ beforeEach(() => {
   mock.cursor = 0;
   mock.slots = [];
   mock.locale = 'en';
+  mock.fontScale = 1;
   controller = {
     command: vi.fn(async () => true),
     redeemInvite: vi.fn(async () => true),
@@ -247,6 +254,13 @@ describe('real family controls with synthetic test DTOs', () => {
       ).toBe(false);
       expect(find('cloud-empty-garden-artwork')!.props.assetId).toBe('ghaf-seed');
       expect(find('cloud-empty-garden-artwork')!.props.decorative).toBe(true);
+      mock.fontScale = 1.5;
+      render(renderView);
+      expect(tabs()).toHaveLength(6);
+      const enlargedSelection = tabs().filter((node) => node.props['aria-selected']);
+      expect(enlargedSelection).toHaveLength(1);
+      expect(enlargedSelection[0]!.props.testID).toBe('cloud-tab-garden');
+      expect(enlargedSelection[0]!.props.style).toContainEqual({ flexBasis: '45%' });
       expect(controller.command).not.toHaveBeenCalled();
     },
   );

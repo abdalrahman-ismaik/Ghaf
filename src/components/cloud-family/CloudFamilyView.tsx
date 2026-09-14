@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, BackHandler, Platform, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  BackHandler,
+  Platform,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 import { AccessHeader, AccessScreen } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -43,6 +50,9 @@ export function CloudFamilyView({
   onOpenAccount,
 }: CloudFamilyViewProps) {
   const { text, locale, direction } = useCloudCopy();
+  const { width, fontScale } = useWindowDimensions();
+  // Wider columns keep enlarged Arabic labels whole on narrow Android screens.
+  const widerNavigation = Math.min(width, 800) / fontScale < 320;
   const parent = snapshot.actor.role === 'parent';
   const home = parent ? 'family' : 'tasks';
   const [tab, setTab] = useState<Tab>(home);
@@ -175,7 +185,7 @@ export function CloudFamilyView({
               accessibilityState={{ selected: item === tab }}
               aria-selected={item === tab}
               variant={item === tab ? 'primary' : 'quiet'}
-              style={styles.navigationItem}
+              style={[styles.navigationItem, widerNavigation && styles.widerNavigationItem]}
               onPress={() => selectTab(item)}
               testID={`cloud-tab-${item}`}
             >
@@ -417,11 +427,12 @@ export function CloudFamilyView({
 const styles = StyleSheet.create({
   navigation: { flexWrap: 'wrap', alignItems: 'stretch', gap: spacing.xs },
   navigationItem: {
-    // Equal columns avoid a third footer row; labels may wrap as text grows.
+    // Three columns preserve content space at the default text size.
     flexBasis: '30%',
     flexGrow: 1,
     flexShrink: 1,
     minWidth: 0,
     paddingHorizontal: spacing.xs,
   },
+  widerNavigationItem: { flexBasis: '45%' },
 });
