@@ -10,7 +10,6 @@ import {
   colors,
   layout,
   logicalRowDirection,
-  opacity,
   spacing,
   type LayoutDirection,
 } from '@/design/tokens';
@@ -127,10 +126,7 @@ export function ParentTaskWorkspace({
         accessibilityRole="radio"
         accessibilityState={{ checked: categoryId === item.id }}
         onPress={() => setCategoryId(item.id)}
-        style={({ pressed }) => [
-          categoryId === item.id ? styles.selectedRailCard : null,
-          pressed ? styles.pressed : null,
-        ]}
+        style={[styles.railCard, categoryId === item.id ? styles.selectedRailCard : null]}
         testID={`workspace-category-${item.id}`}
       >
         <CategoryCard icon={CATEGORY_ICONS[item.id]} label={localize(item.label, locale)} />
@@ -192,11 +188,7 @@ export function ParentTaskWorkspace({
               accessibilityState={{ checked: selected }}
               key={id}
               onPress={() => selectChild(id)}
-              style={({ pressed }) => [
-                styles.filterChip,
-                selected ? styles.filterChipSelected : null,
-                pressed ? styles.pressed : null,
-              ]}
+              style={[styles.filterChip, selected ? styles.filterChipSelected : null]}
               testID={`workspace-child-${id}`}
             >
               <Text
@@ -250,7 +242,7 @@ export function ParentTaskWorkspace({
                 <Pressable
                   accessibilityRole="button"
                   onPress={onOpenCurrent}
-                  style={({ pressed }) => [styles.currentTask, pressed ? styles.pressed : null]}
+                  style={styles.currentTask}
                 >
                   <Text brand color="primary" variant="caption">
                     {childCurrent.statusLabel}
@@ -373,10 +365,13 @@ const styles = StyleSheet.create({
     backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
-  selectedRailCard: {
+  railCard: {
     borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  selectedRailCard: {
     borderColor: botanical.colors.forest,
   },
   categoryIcon: {
@@ -432,5 +427,4 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
   },
   flexText: { flex: 1, minWidth: 0 },
-  pressed: { opacity: opacity.pressed },
 });
