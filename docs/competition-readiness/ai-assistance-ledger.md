@@ -1,5 +1,28 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Final repository integration
+
+The owner requested merging and finalizing all remaining work and resolving any
+conflicts. Codex used two read-only helpers to audit branch/worktree coverage and
+the pending skill installations. All current runtime work was already in `main`
+at `111880e`; the two divergent legacy refs were classified against their obsolete
+contracts and the existing no-verbatim-port plan, then preserved as history.
+
+Root committed the owner's installed Apple design and React Native references in
+`eef169c`. Imported skill text was preserved apart from CRLF-to-LF normalization.
+The three lock hashes were recomputed using the
+[upstream skills CLI algorithm](https://github.com/vercel-labs/skills/blob/main/src/local-lock.ts)
+and independently matched the staged Git blobs. The existing Animate files had no
+content change. The helper checked all 45 relative links and nine subskill
+references; root passed repository policy/navigation checks, their five tests,
+lock formatting, newline/hash verification and staged whitespace checks.
+
+This is automated integration and tooling assistance using the configured
+contributor identity, not student authorship of the imported references. No app
+runtime changed in this finalization, so the recorded 2,773-test runtime evidence
+remains applicable without a redundant full rerun. Native startup reliability,
+full Gradle rebuild, physical-device and human acceptance gaps remain unchanged.
+
 ## 2026-09-14 Technical-interruption recovery and emulator packaging
 
 The owner requested continuation after a technical interruption. Codex recovered

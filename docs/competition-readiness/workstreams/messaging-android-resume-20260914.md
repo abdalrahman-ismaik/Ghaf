@@ -1,7 +1,34 @@
-# Messaging and Android pause checkpoint — 2026-09-14
+# Messaging and Android integration handoff — 2026-09-14
 
-The owner requested an immediate pause before unplugging the phone and going offline.
-This checkpoint preserves completed work and the next actions; it is not final acceptance.
+This record preserves the original pause, subsequent recovery and final repository
+integration. Repository finalization does not pass the remaining native acceptance gates.
+
+## Final repository integration — 2026-09-14
+
+The owner requested merging and finalizing all remaining work. `main` and
+`origin/main` were verified at `111880e` after the runtime integration. A fresh
+branch audit found every local branch and eight of ten remote heads already in
+that ancestry, including Feature 017 and both redesign branches. No current app
+work or unresolved merge conflict remained.
+
+The two divergent remote refs are historical: `origin/002-ghaf-core-mvp` has two
+superseded AI commits, and
+`origin/backup/feature-003-local-pre-r002-reconciliation-20260904` has six commits
+covered by the existing
+[no-verbatim-port plan](../../../specs/003-family-growth-garden/design-intake/revision-3-proposal/LOCAL_COMMIT_PORT_PLAN.md).
+They remain preserved without importing obsolete contracts or generated state.
+Both C: legacy worktrees were clean; no D: operation was performed.
+
+The remaining installed skills and reproducible LF-normalized lock hashes are
+committed as `eef169c`. Checks passed for repository navigation/artifact policy,
+five repository tests, all three working-tree/staged skill hashes, lock formatting
+and whitespace. The skill audit resolved 45 local links and nine subskill references.
+No app runtime changed, so the existing 2,773-test, TypeScript, lint and formatting
+evidence below remains applicable. Final Git verification belongs to root; all
+helper boundaries are released.
+
+Repository integration is ready. Cold-start reliability, a full Gradle rebuild,
+physical-device acceptance and the unrecorded native/human cases below remain open.
 
 ## Resumed status — 2026-09-14
 

@@ -1,5 +1,26 @@
 # Team Ownership
 
+## 2026-09-14 Final repository integration
+
+The owner explicitly requested merging and finalizing all remaining work, including
+conflict resolution. Root finalized the pending Apple design and React Native skills
+in `eef169c`, normalized the three installed skill directories to repository LF
+endings, and reconciled `skills-lock.json` with both working files and committed
+blobs. The existing Animate content is unchanged. Repository checks, skill links,
+lock hashes and staged whitespace checks passed.
+
+Two read-only helpers completed branch/worktree and installed-tooling audits.
+All eight local branches and eight of ten remote heads were already ancestors of
+`main` at `111880e`. The two divergent legacy refs contain explicitly superseded
+Feature 002 AI or pre-reconciliation Feature 003 work and remain historical; their
+obsolete contents are not a missing current implementation. Both C: legacy
+worktrees are clean. No merge conflict or omitted current runtime slice was found.
+
+All helper and source boundaries are released. Root owns this final record, the
+assistance ledger, the existing messaging/Android handoff and final Git verification.
+No native build or D: work is allocated. This finalization supersedes the prior
+exclusion of user skill changes from staging; recorded native and human gaps remain.
+
 ## 2026-09-14 Technical-interruption recovery
 
 Current allocation: all helpers and source boundaries are released. Root committed
