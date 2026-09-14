@@ -103,13 +103,17 @@ vi.mock('react-native', () => ({
 }));
 vi.mock('react-native-reanimated', () => ({
   default: { View: (props: HostProps) => host('div', props) },
-  Easing: { bezier: vi.fn() },
+  Easing: { bezier: vi.fn(), out: vi.fn(), cubic: vi.fn() },
+  ReduceMotion: { System: 'system', Never: 'never' },
   cancelAnimation: vi.fn(),
   interpolate: vi.fn(() => 1),
   useAnimatedStyle: (factory: () => unknown) => factory(),
   useReducedMotion: () => true,
   useSharedValue: (initial: number) => ({ get: () => initial, set: vi.fn() }),
   withTiming: (value: number) => value,
+}));
+vi.mock('@/utils/useReducedMotionPreference', () => ({
+  useReducedMotionPreference: () => true,
 }));
 vi.mock('react-native-safe-area-context', () => ({
   SafeAreaView: (props: HostProps) => host('div', props),

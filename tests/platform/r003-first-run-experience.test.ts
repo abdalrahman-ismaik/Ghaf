@@ -216,7 +216,7 @@ describe('R003 first-run experience', () => {
     expect(rootLayout).toContain("startupPhase !== 'complete'");
     expect(rootLayout.match(/requestAnimationFrame/g)?.length).toBeGreaterThanOrEqual(3);
     expect(rootLayout).not.toContain('startupReady = fontsSettled && imagesSettled &&');
-    expect(transition).toContain('firstRunMotion.orientationHold');
+    expect(transition).not.toContain('firstRunMotion.orientationHold');
     expect(tokens).toContain('splashHold: 2000');
     expect(tokens).toContain('loadingHold: 1000');
     expect(tokens).toContain('orientationHold: 900');
