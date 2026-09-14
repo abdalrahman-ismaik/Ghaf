@@ -46,7 +46,10 @@ export function createSavedTaskTemplateRepository(
   };
   const persist = (items: readonly SavedParentTaskTemplate[]): DomainResult<true> => {
     try {
-      storage.setItem(SAVED_TASK_TEMPLATE_STORAGE_KEY, JSON.stringify(items));
+      const serialized = JSON.stringify(items);
+      storage.setItem(SAVED_TASK_TEMPLATE_STORAGE_KEY, serialized);
+      if (storage.getItem(SAVED_TASK_TEMPLATE_STORAGE_KEY) !== serialized)
+        return failure('Saved task templates could not be written');
       return { ok: true, data: true };
     } catch {
       return failure('Saved task templates could not be written');
@@ -70,7 +73,11 @@ export function createSavedTaskTemplateRepository(
       if (all.data.some((item) => savedTaskTemplateFingerprint(item) === fingerprint)) {
         return failure('This wording is already saved');
       }
-      const id = `saved-task-${Date.parse(now).toString(36)}-${all.data.length + 1}`;
+      const idPrefix = `saved-task-${Date.parse(now).toString(36)}-`;
+      const existingIds = new Set(all.data.map((item) => item.id));
+      let suffix = all.data.length + 1;
+      while (existingIds.has(`${idPrefix}${suffix}`)) suffix += 1;
+      const id = `${idPrefix}${suffix}`;
       const record: SavedParentTaskTemplate = {
         ...input.data,
         id,
@@ -91,6 +98,8 @@ export function createSavedTaskTemplateRepository(
     clear() {
       try {
         storage.removeItem(SAVED_TASK_TEMPLATE_STORAGE_KEY);
+        if (storage.getItem(SAVED_TASK_TEMPLATE_STORAGE_KEY) !== null)
+          return failure('Saved task templates could not be cleared');
         return { ok: true, data: true };
       } catch {
         return failure('Saved task templates could not be cleared');

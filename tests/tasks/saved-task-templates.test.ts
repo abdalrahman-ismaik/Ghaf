@@ -57,6 +57,60 @@ describe('Parent saved task templates', () => {
     ).toBe(false);
   });
 
+  it('preserves independent template identities after deletion and a save at the same time', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createSavedTaskTemplateRepository(storage);
+    const now = '2026-09-08T10:00:00.000Z';
+    const first = repository.save(input, now);
+    const second = repository.save(
+      { ...input, title: { ar: 'ترتيب الكتب', en: 'Arrange the books' } },
+      now,
+    );
+    if (!first.ok || !second.ok) throw new Error('Expected two saved templates');
+    expect(repository.remove(first.data.id, 'household_al_noor').ok).toBe(true);
+
+    const third = repository.save(
+      { ...input, title: { ar: 'ترتيب الأقلام', en: 'Arrange the pens' } },
+      now,
+    );
+    if (!third.ok) throw new Error('Expected third saved template');
+    expect(third.data.id).not.toBe(second.data.id);
+    const restored = createSavedTaskTemplateRepository(storage);
+    expect(restored.read('household_al_noor')).toEqual({
+      ok: true,
+      data: [second.data, third.data],
+    });
+    expect(restored.remove(second.data.id, 'household_al_noor').ok).toBe(true);
+    expect(restored.read('household_al_noor')).toEqual({ ok: true, data: [third.data] });
+  });
+
+  it('does not report a saved template when storage silently drops the write', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createSavedTaskTemplateRepository({
+      ...storage,
+      setItem: () => undefined,
+    });
+    expect(repository.save(input, '2026-09-08T10:00:00.000Z').ok).toBe(false);
+    expect(repository.read('household_al_noor')).toEqual({ ok: true, data: [] });
+  });
+
+  it('keeps existing templates visible when storage silently drops removal or clearing', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const saved = createSavedTaskTemplateRepository(storage).save(
+      input,
+      '2026-09-08T10:00:00.000Z',
+    );
+    if (!saved.ok) throw new Error('Expected saved template');
+    const repository = createSavedTaskTemplateRepository({
+      ...storage,
+      setItem: () => undefined,
+      removeItem: () => undefined,
+    });
+    expect(repository.remove(saved.data.id, 'household_al_noor').ok).toBe(false);
+    expect(repository.clear().ok).toBe(false);
+    expect(repository.read('household_al_noor')).toEqual({ ok: true, data: [saved.data] });
+  });
+
   it('fails closed for corrupt storage and clears deterministically', () => {
     const storage = createMemoryLocalKeyValueStorage();
     storage.setItem('ghaf:saved-task-templates:v1', '{bad json');
