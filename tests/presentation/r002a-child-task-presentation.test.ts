@@ -259,8 +259,10 @@ describe('R002a Child Today and task presentation', () => {
     expect(confirmationSheet).toMatch(
       /error\s*\?\s*\([\s\S]{0,240}accessibilityLiveRegion="(?:polite|assertive)"/u,
     );
-    expect(confirmationSheet).toContain('iconPosition="end"');
-    expect(confirmationSheet).toContain('name="arrow-back"');
+    expect(confirmationSheet).toMatch(
+      /<\/ScrollView>\s*<View[^>]*testID="task-completion-actions"/u,
+    );
+    expect(confirmationSheet).toContain('testID="return-to-active-task-button"');
     expect(taskRoute).toContain('error && !showCompletionConfirmation');
   });
 
