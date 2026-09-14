@@ -18,24 +18,59 @@ interface Snapshot {
   schemaVersion: 1;
   familyCanopyContributions: number;
   deletedMemoryTaskIds: string[];
-  actor: { userId: string; role: 'parent' | 'child'; familyId: string | null; childId: string | null };
+  actor: {
+    userId: string;
+    role: 'parent' | 'child';
+    familyId: string | null;
+    childId: string | null;
+  };
   families: { id: string; name: string; revision: number }[];
   family: { id: string; name: string; revision: number } | null;
-  members: { id: string; userId: string; role: 'parent' | 'child'; childId: string | null; active: boolean }[];
-  children: { id: string; familyId: string; displayName: string; ageBand: '6_8' | '9_11' | '12_14'; active: boolean }[];
+  members: {
+    id: string;
+    userId: string;
+    role: 'parent' | 'child';
+    childId: string | null;
+    active: boolean;
+  }[];
+  children: {
+    id: string;
+    familyId: string;
+    displayName: string;
+    ageBand: '6_8' | '9_11' | '12_14';
+    active: boolean;
+  }[];
   tasks: {
-    id: string; familyId: string; childId: string; catalogId: string;
+    id: string;
+    familyId: string;
+    childId: string;
+    catalogId: string;
     status: 'assigned' | 'accepted' | 'in_progress' | 'submitted' | 'praised' | 'recognized';
-    revision: number; stepStates: Record<string, 'done' | 'skipped'>; helpRequested: boolean; praise: string | null;
-    createdAt: string; submittedAt: string | null; recognizedAt: string | null;
+    revision: number;
+    stepStates: Record<string, 'done' | 'skipped'>;
+    helpRequested: boolean;
+    praise: string | null;
+    createdAt: string;
+    submittedAt: string | null;
+    recognizedAt: string | null;
     template: TaskTemplate;
   }[];
   recognitions: {
-    id: string; taskId: string; childId: string; seeds: number;
+    id: string;
+    taskId: string;
+    childId: string;
+    seeds: number;
     landscapeId: 'ghaf' | 'samar' | 'sidr' | 'date_palm' | 'mangrove';
-    canopyContribution: number; createdAt: string;
+    canopyContribution: number;
+    createdAt: string;
   }[];
-  memories: { id: string; taskId: string; childId: string; title: { ar: string; en: string }; createdAt: string }[];
+  memories: {
+    id: string;
+    taskId: string;
+    childId: string;
+    title: { ar: string; en: string };
+    createdAt: string;
+  }[];
   catalog: TaskTemplate[];
 }
 ```
@@ -60,11 +95,38 @@ type Command =
   | { type: 'add_child'; displayName: string; ageBand: '6_8' | '9_11' | '12_14' }
   | { type: 'rename_child'; childId: string; displayName: string }
   | { type: 'invite_child' | 'revoke_child'; childId: string }
-  | { type: 'assign_task'; childId: string; catalogId: string; content?: { title?: {ar:string;en:string}; positiveAction?: {ar:string;en:string} } }
-  | { type: 'edit_task'; taskId: string; expectedRevision: number; content: { title?: {ar:string;en:string}; positiveAction?: {ar:string;en:string} } }
-  | { type: 'accept_task' | 'start_task' | 'request_help' | 'submit_task' | 'recognize_task' | 'save_memory' | 'delete_memory'; taskId: string; expectedRevision: number }
+  | {
+      type: 'assign_task';
+      childId: string;
+      catalogId: string;
+      content?: { title?: { ar: string; en: string }; positiveAction?: { ar: string; en: string } };
+    }
+  | {
+      type: 'edit_task';
+      taskId: string;
+      expectedRevision: number;
+      content: { title?: { ar: string; en: string }; positiveAction?: { ar: string; en: string } };
+    }
+  | {
+      type:
+        | 'accept_task'
+        | 'start_task'
+        | 'request_help'
+        | 'submit_task'
+        | 'recognize_task'
+        | 'save_memory'
+        | 'delete_memory';
+      taskId: string;
+      expectedRevision: number;
+    }
   | { type: 'praise_task'; taskId: string; expectedRevision: number; praise: string }
-  | { type: 'set_step'; taskId: string; expectedRevision: number; stepId: string; state: 'done' | 'skipped' };
+  | {
+      type: 'set_step';
+      taskId: string;
+      expectedRevision: number;
+      stepId: string;
+      state: 'done' | 'skipped';
+    };
 ```
 
 Parent owns setup, assignment, praise, recognition and memory mutations. Child owns only
@@ -125,12 +187,17 @@ The same command RPC additionally accepts:
 
 ```ts
 type ExtensionCommand =
-  | { type:'create_custom_template'; title:{ar:string;en:string};
-      positiveAction:{ar:string;en:string}; categoryId:TaskCategoryId;
-      recurrence:'once'|'recurrent'; reviewed:true }
-  | { type:'assign_custom_task'; childId:string; templateId:string }
-  | { type:'remove_custom_template'; templateId:string; expectedRevision:number }
-  | { type:'begin_maintenance'; taskId:string; expectedRevision:number };
+  | {
+      type: 'create_custom_template';
+      title: { ar: string; en: string };
+      positiveAction: { ar: string; en: string };
+      categoryId: TaskCategoryId;
+      recurrence: 'once' | 'recurrent';
+      reviewed: true;
+    }
+  | { type: 'assign_custom_task'; childId: string; templateId: string }
+  | { type: 'remove_custom_template'; templateId: string; expectedRevision: number }
+  | { type: 'begin_maintenance'; taskId: string; expectedRevision: number };
 ```
 
 Creation returns `{templateId}` and assignment returns `{taskId}`. Every operation
@@ -154,3 +221,15 @@ assignment request cannot apply a later phase decision retrospectively.
 Migration 005 depends on 003 for the fresh-password helper. It wraps the deployed
 core RPC through a private, non-client-executable original implementation and
 preserves all existing core authorization, validation and task interactions.
+
+## Instruction safety alignment (migration 011)
+
+Before any new assignment/custom definition or template edit is stored, the same
+shared trigger checks the existing client instruction safety expressions and the
+existing category-specific food-pressure rule. This prevents a committed custom
+action or catalog title from making the strict family snapshot unreadable. It
+does not rewrite existing records, replace canonical actions, change awards or
+introduce a new interpretation of negated hazard wording. The explicit existing
+`non-sharp` exception remains supported. PostgreSQL regex translation accounts
+for JavaScript word boundaries, whitespace, case folding and dot/newline behavior;
+see the [PostgreSQL 17 regular-expression documentation](https://www.postgresql.org/docs/17/functions-matching.html#FUNCTIONS-POSIX-REGEXP).
