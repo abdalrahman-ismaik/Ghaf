@@ -5,6 +5,13 @@ Owner instruction: implement saved proposals 8–12; "Proceed from the saved pro
 Evidence recorded on 2026-09-13 using synthetic local data. No hosted deployment occurred.
 Runtime validation applies to `6577897`; subsequent changes only finish documentation.
 
+This is the historical Feature017 source handoff. Later hosted messaging, diagnostic
+Android and resumed layout-fix evidence is recorded in the
+[current messaging/Android integration record](../016-real-family-messaging/backend-android-validation.md).
+Study correction `6726f25` and messaging correction `923cf10` have source checks;
+the final corrected APK and its physical acceptance remain pending. The dated
+NOT RUN rows below describe the original handoff and do not negate later evidence.
+
 | Boundary                                                | Result  | Evidence                                                                                                                                                                                                                                               |
 | ------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Study domain/repository                                 | PASSED  | Focused tests cover roles, agreements, stale revisions, lower-mark retry, idempotency, corruption and verified storage.                                                                                                                                |

@@ -8,9 +8,11 @@ commit each completed, verified slice promptly. The
 [pause checkpoint](workstreams/messaging-android-resume-20260914.md) remains the
 historical handoff, not a current instruction to stay paused.
 
-Current exact grants: `/root/merge_core` owns only
-`src/components/study/StudyScreen.tsx` and `src/components/study/shared.tsx` for the
-observed native layout correction and scoped checks. Root owns `AGENTS.md`,
+Current exact grants: the Study and messaging layout fixes are committed and released.
+`/root/merge_core` owns only `scripts/native/build-apk.ps1` for fail-fast output
+recording after the observed D: volume-write failure, with an ignored synthetic
+logging harness. No native rebuild is allocated while the drive is unhealthy.
+Root owns `AGENTS.md`,
 coordination/evidence, final integration and the sole heavy build lane.
 Root also owns `src/components/familyMessaging/FamilyMessagingScreen.tsx` for the
 same directly observed native paragraph-direction correction on messaging access.

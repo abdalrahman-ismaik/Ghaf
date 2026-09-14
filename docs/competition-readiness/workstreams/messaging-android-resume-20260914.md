@@ -3,7 +3,39 @@
 The owner requested an immediate pause before unplugging the phone and going offline.
 This checkpoint preserves completed work and the next actions; it is not final acceptance.
 
-## Saved state
+## Resumed status — 2026-09-14
+
+The owner resumed this work; `56b32ba` records that authorization and restores normal
+prompt commit cadence. The saved state and original checklist below remain historical.
+Study layout correction `6726f25` and messaging layout correction `923cf10` are now
+committed. The final cached D: build used `923cf10` and failed after actual exFAT lost writes under
+`D:/GhafNative/20260914/evidence/20260914T052545228Z-085ff9a9`. Final APK verification,
+installation and corrected native presentation have not passed yet.
+
+On the installed diagnostic `273f97d` APK, root completed real Parent login to the
+dedicated messaging service. After force-stop and cold restart, returning to Messages
+displayed "Messaging account: Synthetic Parent" and actual server conversations
+without another password entry. `resume-native-session-restart.log` reports COLD and
+TotalTime 926 ms; this is activity-launch timing, not authentication latency.
+Screenshots `resume-native-parent-auth.png` and `resume-native-auth-restored.png`
+are retained under ignored `.expo/messaging-integration/`. This passes the observed
+Parent login/restoration case on the diagnostic APK; it does not pass final-candidate
+or Child-session acceptance or revocation. Subsequent diagnostic phone/web bidirectional delivery passed; see the current integration evidence below.
+
+Resumed messaging checks passed 73 tests with one opt-in hosted skip at 09:24:48
+Dubai (7.20 seconds), scoped lint/format passed, and root observed final TypeScript
+exit 0. Logs use the `resumed-messaging-` prefix and `resumed-final-typecheck.log`
+under `.expo/messaging-integration/`; empty TypeScript output is expected. No new
+full regression or hosted test run is claimed.
+
+Next: use healthy build storage, finish and verify the final APK, install it, check corrected AR/EN Study and
+Messages, complete phone/web messaging and native lifecycle/revocation, then the
+joint-goal journey, Child isolation and reset. Record the final results in the
+[current integration evidence](../../../specs/016-real-family-messaging/backend-android-validation.md)
+before the authorized merge/push. Reuse the retained caches; the older instruction
+to implement the layout corrections is already satisfied in source.
+
+## Saved state at pause
 
 - Branch: `integration/messaging-android-20260914`; implementation/tooling head
   `1a1c4743accaa5956bd61322fa14d571797eac18`. The main C: worktree was clean before
@@ -75,7 +107,7 @@ conversation/send acceptance is inferred from the HTTP 200 alone.
 Evidence: `.expo/messaging-integration/web-audit/`, including
 `corrected-export.log` and `parent-auth-handoff.json`.
 
-## Resume in this order
+## Original pause resume checklist (historical)
 
 1. Recheck Git status, D: availability, free memory/storage and the connected phone.
    C: had only about 1 GiB free near build completion; keep heavy caches/output on D:.
@@ -105,4 +137,5 @@ Evidence: `.expo/messaging-integration/web-audit/`, including
 No real Child data, paid plan, production rollout, live Child media or AI activation
 was selected. Study/goals remain local by their current contract. No Android Studio
 AVD or editor session was started; native compilation used the installed Android
-toolchain directly. The user asked to stop; do not start new work until they resume.
+toolchain directly. The owner requested a stop at that checkpoint; the later
+resumption above supersedes that pause instruction.

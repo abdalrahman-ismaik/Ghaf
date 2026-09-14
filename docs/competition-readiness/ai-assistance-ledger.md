@@ -1,5 +1,28 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Resumed native and messaging acceptance
+
+The owner resumed after reconnecting and explicitly revoked artificial commit spacing:
+"commit normally, as you finish a function commit". Codex updated the repository rule,
+corrected directly observed native Study and messaging text direction/tab wrapping,
+and committed the verified slices. A bounded implementation helper handled the Study
+files; a coordinator reviewed source and reconciled evidence. Messaging regression
+passed 73 tests with one opt-in hosted skip; TypeScript and affected lint/format passed.
+
+Root drove the actual Samsung UI: real synthetic Parent login, account restoration
+after force-stop, and bidirectional messaging with a separately enrolled browser Child.
+The web auditor recorded the actual server IDs and ordered history without mocking
+transport. A duplicate synthetic Child created during phone form navigation was
+identified and excluded from the successful same-thread delivery receipt. No human
+content review or student authorship is inferred from these automated interactions.
+
+The updated D: native build encountered actual exFAT lost-write events and an invalid
+open log handle. Root stopped its recorded client, retained the evidence, and requested
+healthy storage. The build helper investigated output-drain handling and received a
+bounded launcher correction/test grant. This failure is not a passing final native
+build. Current candidate details and remaining gates are in the
+[integration evidence](../../specs/016-real-family-messaging/backend-android-validation.md).
+
 ## 2026-09-14 Hosted messaging and Android integration
 
 The user authorized backend integration and physical testing using Android Studio,

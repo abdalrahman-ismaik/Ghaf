@@ -6,7 +6,10 @@ An explicitly configured synthetic test backend now passes real Auth/HTTP messag
 acceptance, including Parent–Child delivery, approved peer conversations and revocation.
 The default unconfigured build still cannot send real messages. The adult pilot remains
 separate; study, goals and progression do not gain cloud synchronization.
-Scheduled hourly retention has run successfully. Physical APK acceptance remains pending in the
+Scheduled hourly retention has run successfully. A diagnostic APK built and ran on a
+Samsung; real Parent session restoration and phone/browser bidirectional messaging
+passed. The corrected native rebuild encountered D: lost-write errors. Final corrected
+APK acceptance remains pending in the
 [current integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
 The Free test project has no verified backup/PITR recovery, and its default-off CAPTCHA
 setting does not establish production abuse prevention or a real Child rollout.
