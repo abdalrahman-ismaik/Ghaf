@@ -158,7 +158,7 @@ describe('real Parent pilot sample lifecycle', () => {
       localFamily: { record: null },
       taskAssignments: { order: [], byId: {} },
       taskContexts: {},
-      ambientAudioPreference: { enabled: false, status: 'ready', source: 'default' },
+      ambientAudioPreference: { enabled: false, volume: 0.2, status: 'ready', source: 'default' },
     });
     expect(usePrototypeStore.getState().enterDemoExperience(entry).ok).toBe(false);
     expect(usePrototypeStore.getState().authorizeChildExperience().ok).toBe(false);

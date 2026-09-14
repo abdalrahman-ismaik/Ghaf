@@ -532,7 +532,7 @@ describe('confirmed corrupt saved-family recovery', () => {
       catalogSupportRequests: {},
       localFamilyProfileRepair: null,
       pendingFamilyCreation: null,
-      ambientAudioPreference: { enabled: true, status: 'ready', source: 'default' },
+      ambientAudioPreference: { enabled: true, volume: 0.2, status: 'ready', source: 'default' },
     });
     expect(AUXILIARY_KEYS.map((key) => deviceLocalStorage.getItem(key))).toEqual([
       null,

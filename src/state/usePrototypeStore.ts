@@ -76,7 +76,7 @@ import {
   resolveRememberedAccessLocale,
   restoreRememberedDeviceAccess,
 } from '../features/access/rememberedDeviceAccess';
-import { restoreAmbientAudioPreference } from '../features/audio';
+import { AMBIENT_AUDIO_QUIET_VOLUME, restoreAmbientAudioPreference } from '../features/audio';
 import {
   createFamilyConnectionPlan,
   validateCompleteFamilyConnectionDirectory,
@@ -457,7 +457,13 @@ const initialLocalFamilyRestore = restoreInitialLocalFamily();
 const initialLocalFamily = initialLocalFamilyRestore.view;
 const initialLocalFamilyProfileRepair = initialLocalFamilyRestore.profileRepair;
 const initialAmbientAudioPreference: AmbientAudioPreferenceView = (() => {
-  if (entryMode === 'demo') return { enabled: false, status: 'ready', source: 'default' };
+  if (entryMode === 'demo')
+    return {
+      enabled: false,
+      volume: AMBIENT_AUDIO_QUIET_VOLUME,
+      status: 'ready',
+      source: 'default',
+    };
   const read = serviceRegistry.ambientAudioPreferences.read();
   return read.ok
     ? restoreAmbientAudioPreference({ storageAvailable: true, record: read.data })
@@ -712,6 +718,7 @@ export interface PrototypeStoreState extends PrototypeSession {
   }) => ServiceResult<SharedGrowthParticipationActionResult>;
   readonly setLocale: (value: unknown) => void;
   readonly setAmbientSoundEnabled: (enabled: boolean) => ServiceResult<boolean>;
+  readonly setAmbientSoundVolume: (volume: number) => ServiceResult<number>;
   readonly setRole: (role: PrototypeSession['role']) => void;
   readonly switchRole: () => void;
   readonly setActiveChild: (childId: SyntheticChildId) => ServiceResult<SyntheticChildId>;
@@ -1605,6 +1612,7 @@ function resetClearedPrototype(
     demoResetFailed: false,
     ambientAudioPreference: {
       enabled: entryMode !== 'demo',
+      volume: AMBIENT_AUDIO_QUIET_VOLUME,
       status: 'ready',
       source: 'default',
     },
@@ -3352,16 +3360,42 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
   setAmbientSoundEnabled: (enabled) => {
     if (get().demoResetFailed)
       return failure('INVALID_TRANSITION', 'Restart the demo before continuing');
-    const saved = serviceRegistry.ambientAudioPreferences.save(enabled);
+    const saved = serviceRegistry.ambientAudioPreferences.save(
+      enabled,
+      get().ambientAudioPreference.volume,
+    );
     if (!saved.ok) return saved;
     set({
       ambientAudioPreference: {
         enabled: saved.data.ambientSoundEnabled,
+        volume: saved.data.volume,
         status: 'ready',
         source: 'stored',
       },
     });
     return success(saved.data.ambientSoundEnabled);
+  },
+
+  setAmbientSoundVolume: (volume) => {
+    const state = get();
+    if (state.demoResetFailed)
+      return failure('INVALID_TRANSITION', 'Restart the demo before continuing');
+    if (!Number.isFinite(volume) || volume < 0 || volume > 0.3)
+      return failure('INVALID_INPUT', 'Ambient volume must be within its quiet range');
+    const saved = serviceRegistry.ambientAudioPreferences.save(
+      state.ambientAudioPreference.enabled,
+      volume,
+    );
+    if (!saved.ok) return saved;
+    set({
+      ambientAudioPreference: {
+        enabled: saved.data.ambientSoundEnabled,
+        volume: saved.data.volume,
+        status: 'ready',
+        source: 'stored',
+      },
+    });
+    return success(saved.data.volume);
   },
 
   setRole: (role) => {

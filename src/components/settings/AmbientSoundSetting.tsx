@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { StyleSheet, Switch, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Text } from '@/components/primitives';
+import { Button, Text } from '@/components/primitives';
 import { R003Status } from '@/components/r003';
 import { colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
+import { AMBIENT_AUDIO_VOLUME_LEVELS } from '@/features/audio/ambientAudio';
+
+const volumeLabels = ['silent', 'low', 'medium', 'high'] as const;
 
 export function AmbientSoundSetting() {
   const { t } = useTranslation();
@@ -13,6 +16,7 @@ export function AmbientSoundSetting() {
   const locale = usePrototypeStore((state) => state.locale);
   const preference = usePrototypeStore((state) => state.ambientAudioPreference);
   const setAmbientSoundEnabled = usePrototypeStore((state) => state.setAmbientSoundEnabled);
+  const setAmbientSoundVolume = usePrototypeStore((state) => state.setAmbientSoundVolume);
   const [error, setError] = useState<string | null>(null);
 
   const updatePreference = (enabled: boolean) => {
@@ -38,6 +42,7 @@ export function AmbientSoundSetting() {
           </Text>
         </View>
         <Switch
+          aria-checked={preference.enabled}
           accessibilityHint={t('r003.settings.ambientAudio.hint')}
           accessibilityLabel={t('r003.settings.ambientAudio.title')}
           accessibilityRole="switch"
@@ -49,6 +54,40 @@ export function AmbientSoundSetting() {
           value={preference.enabled}
           testID="ambient-sound-switch"
         />
+      </View>
+      <View style={styles.copy}>
+        <Text brand direction={direction} language={locale} variant="label">
+          {t('ambientVolume.title')}
+        </Text>
+        <Text brand direction={direction} language={locale} variant="caption">
+          {t('ambientVolume.hint')}
+        </Text>
+        <View
+          accessibilityRole="radiogroup"
+          accessibilityLabel={t('ambientVolume.title')}
+          style={[styles.levels, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {AMBIENT_AUDIO_VOLUME_LEVELS.map((volume, index) => (
+            <Button
+              aria-checked={preference.volume === volume}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: preference.volume === volume }}
+              brand
+              direction={direction}
+              fullWidth={false}
+              key={volume}
+              language={locale}
+              onPress={() => {
+                const result = setAmbientSoundVolume(volume);
+                setError(result.ok ? null : t('r003.settings.ambientAudio.saveError'));
+              }}
+              testID={`ambient-volume-${index}`}
+              variant={preference.volume === volume ? 'primary' : 'secondary'}
+            >
+              {t(`ambientVolume.${volumeLabels[index]}`)}
+            </Button>
+          ))}
+        </View>
       </View>
       {error ? (
         <R003Status direction={direction} language={locale} message={error} tone="warning" />
@@ -67,5 +106,9 @@ const styles = StyleSheet.create({
     minWidth: 0,
     flex: 1,
     gap: spacing.xxs,
+  },
+  levels: {
+    flexWrap: 'wrap',
+    gap: spacing.sm,
   },
 });

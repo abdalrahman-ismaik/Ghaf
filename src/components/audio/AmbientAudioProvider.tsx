@@ -152,6 +152,7 @@ export function AmbientAudioProvider({
 
   const decision = resolveAmbientPlaybackDecision({
     enabled: preference.enabled && (entryMode !== 'demo' || activeExperience !== 'signed_out'),
+    volume: preference.volume,
     startupReady,
     appState,
     screenReaderActive,

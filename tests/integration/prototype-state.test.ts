@@ -137,6 +137,7 @@ function expectCanonicalResetState(): void {
     celebration: { available: false, consumed: false },
     ambientAudioPreference: {
       enabled: true,
+      volume: 0.2,
       status: 'ready',
       source: 'default',
     },

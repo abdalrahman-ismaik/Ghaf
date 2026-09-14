@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   createAmbientAudioPreference,
@@ -35,13 +35,14 @@ function expectOk<T>(result: { readonly ok: boolean; readonly data?: T }): T {
 }
 
 describe('Feature 006 ambient preference schema and repository', () => {
-  it('round-trips one exact device-local Boolean and rejects expanded or malformed records', () => {
+  it('round-trips device-local mute and volume and rejects expanded or malformed records', () => {
     const enabled = expectOk(createAmbientAudioPreference(true));
     const disabled = expectOk(createAmbientAudioPreference(false));
 
     expect(enabled).toEqual({
       schemaVersion: 1,
       ambientSoundEnabled: true,
+      volume: 0.2,
       origin: 'device_local',
     });
     expect(parseAmbientAudioPreference(JSON.stringify(enabled))).toEqual({
@@ -99,6 +100,7 @@ describe('Feature 006 ambient preference schema and repository', () => {
       'ambientSoundEnabled',
       'origin',
       'schemaVersion',
+      'volume',
     ] satisfies (keyof AmbientAudioPreferenceRecord)[]);
     expect(JSON.stringify(record)).not.toMatch(
       /child|parent|household|account|session|token|media|microphone|position|playing/iu,
@@ -110,19 +112,67 @@ describe('Feature 006 ambient preference schema and repository', () => {
 
     expect(restoreAmbientAudioPreference({ storageAvailable: true, record: null })).toEqual({
       enabled: true,
+      volume: 0.2,
       status: 'ready',
       source: 'default',
     });
     expect(restoreAmbientAudioPreference({ storageAvailable: true, record: disabled })).toEqual({
       enabled: false,
+      volume: 0.2,
       status: 'ready',
       source: 'stored',
     });
     expect(restoreAmbientAudioPreference({ storageAvailable: false })).toEqual({
       enabled: false,
+      volume: 0.2,
       status: 'unavailable',
       source: 'safe_fallback',
     });
+  });
+
+  it('reads an existing boolean-only preference without rewriting it and retains its mute state', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const legacy = JSON.stringify({
+      schemaVersion: 1,
+      ambientSoundEnabled: false,
+      origin: 'device_local',
+    });
+    storage.setItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY, legacy);
+    const repository = createAmbientAudioPreferencesRepository(storage);
+    expect(repository.read()).toMatchObject({
+      ok: true,
+      data: { volume: 0.2, ambientSoundEnabled: false },
+    });
+    expect(storage.getItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY)).toBe(legacy);
+    expectOk(repository.save(false, 0.1));
+    expect(createAmbientAudioPreferencesRepository(storage).read()).toMatchObject({
+      ok: true,
+      data: { volume: 0.1, ambientSoundEnabled: false },
+    });
+    expectOk(repository.save(true));
+    expect(repository.read()).toMatchObject({
+      ok: true,
+      data: { volume: 0.1, ambientSoundEnabled: true },
+    });
+  });
+
+  it.each([-1, 0.31, Number.NaN, Number.POSITIVE_INFINITY, null, '0.2'])(
+    'rejects unsafe or malformed volume %s',
+    (volume) => {
+      expect(createAmbientAudioPreference(true, volume).ok).toBe(false);
+    },
+  );
+
+  it('does not report persisted success when storage silently drops a volume write or clear', () => {
+    const storage = createMemoryLocalKeyValueStorage();
+    const repository = createAmbientAudioPreferencesRepository(storage);
+    expectOk(repository.save(true, 0.1));
+    vi.spyOn(storage, 'setItem').mockImplementationOnce(() => undefined);
+    expect(repository.save(true, 0.3).ok).toBe(false);
+    expect(repository.read()).toMatchObject({ ok: true, data: { volume: 0.1 } });
+    vi.spyOn(storage, 'removeItem').mockImplementationOnce(() => undefined);
+    expect(repository.clear().ok).toBe(false);
+    expect(repository.read()).toMatchObject({ ok: true, data: { volume: 0.1 } });
   });
 });
 
@@ -147,6 +197,40 @@ describe('Feature 006 ambient playback policy', () => {
       volume: 0.06,
     });
   });
+
+  it.each([0, 0.1, 0.2, 0.3])(
+    'applies chosen volume %s and preserves proportional narration ducking',
+    (volume) => {
+      expect(resolveAmbientPlaybackDecision({ ...readyInput, volume })).toEqual({
+        shouldPlay: volume > 0,
+        volume,
+      });
+      const ducked = resolveAmbientPlaybackDecision({
+        ...readyInput,
+        volume,
+        narrationPlaying: true,
+      });
+      expect(ducked.shouldPlay).toBe(volume > 0);
+      expect(ducked.volume).toBeCloseTo(volume * 0.3);
+      expect(
+        resolveAmbientPlaybackDecision({ ...readyInput, volume, enabled: false }).shouldPlay,
+      ).toBe(false);
+      expect(
+        resolveAmbientPlaybackDecision({ ...readyInput, volume, exclusiveAudioActive: true })
+          .shouldPlay,
+      ).toBe(false);
+    },
+  );
+
+  it.each([-0.1, 1, Number.NaN, Number.POSITIVE_INFINITY])(
+    'fails silently for invalid live volume %s',
+    (volume) => {
+      expect(resolveAmbientPlaybackDecision({ ...readyInput, volume })).toEqual({
+        shouldPlay: false,
+        volume: 0,
+      });
+    },
+  );
 
   it.each([
     ['disabled', { enabled: false }],
@@ -173,6 +257,7 @@ describe('Feature 006 ambient preference store integration', () => {
   it('starts default-on, persists only successful changes, and is shared across roles', () => {
     expect(usePrototypeStore.getState().ambientAudioPreference).toEqual({
       enabled: true,
+      volume: 0.2,
       status: 'ready',
       source: 'default',
     });
@@ -180,6 +265,7 @@ describe('Feature 006 ambient preference store integration', () => {
     expectOk(usePrototypeStore.getState().setAmbientSoundEnabled(false));
     expect(usePrototypeStore.getState().ambientAudioPreference).toEqual({
       enabled: false,
+      volume: 0.2,
       status: 'ready',
       source: 'stored',
     });
@@ -204,6 +290,7 @@ describe('Feature 006 ambient preference store integration', () => {
     });
     expect(usePrototypeStore.getState().ambientAudioPreference).toEqual({
       enabled: false,
+      volume: 0.2,
       status: 'ready',
       source: 'stored',
     });
@@ -233,8 +320,44 @@ describe('Feature 006 ambient preference store integration', () => {
     expect(serviceRegistry.ambientAudioPreferences.read()).toEqual({ ok: true, data: null });
     expect(usePrototypeStore.getState().ambientAudioPreference).toEqual({
       enabled: true,
+      volume: 0.2,
       status: 'ready',
       source: 'default',
+    });
+  });
+
+  it('shares the persisted level across roles, preserves it when muted, and retains it after failed writes', async () => {
+    await enterParentExperienceForTest();
+    expectOk(usePrototypeStore.getState().setAmbientSoundVolume(0.1));
+    expectOk(usePrototypeStore.getState().setAmbientSoundEnabled(false));
+    expect(usePrototypeStore.getState().ambientAudioPreference).toMatchObject({
+      enabled: false,
+      volume: 0.1,
+    });
+    expectOk(usePrototypeStore.getState().signOutExperience());
+    await enterChildExperienceForTest();
+    expect(usePrototypeStore.getState().ambientAudioPreference.volume).toBe(0.1);
+    deviceLocalStorage.failNextWrite();
+    expect(usePrototypeStore.getState().setAmbientSoundVolume(0.3).ok).toBe(false);
+    expect(usePrototypeStore.getState().ambientAudioPreference).toMatchObject({
+      enabled: false,
+      volume: 0.1,
+    });
+    expect(serviceRegistry.ambientAudioPreferences.read()).toMatchObject({
+      ok: true,
+      data: { volume: 0.1 },
+    });
+    expectOk(usePrototypeStore.getState().setAmbientSoundEnabled(true));
+    expect(usePrototypeStore.getState().ambientAudioPreference).toMatchObject({
+      enabled: true,
+      volume: 0.1,
+    });
+    expect(usePrototypeStore.getState().setAmbientSoundVolume(2).ok).toBe(false);
+    expect(usePrototypeStore.getState().ambientAudioPreference.volume).toBe(0.1);
+    expectOk(usePrototypeStore.getState().setAmbientSoundVolume(0));
+    expect(serviceRegistry.ambientAudioPreferences.read()).toMatchObject({
+      ok: true,
+      data: { volume: 0 },
     });
   });
 });
@@ -275,6 +398,11 @@ describe('Feature 006 presentation source contract', () => {
     expect(component).toContain('accessibilityState={{ checked: preference.enabled }}');
     expect(component).toContain('minHeight: layout.touchTarget');
     expect(component).toContain('logicalRowDirection(direction)');
+    expect(component).toContain('accessibilityRole="radiogroup"');
+    expect(component).toContain('accessibilityRole="radio"');
+    expect(component).toContain('accessibilityState={{ checked: preference.volume === volume }}');
+    expect(component).toContain('setAmbientSoundVolume(volume)');
+    expect(component).toContain("flexWrap: 'wrap'");
     for (const screen of [parent, child]) {
       const language = screen.indexOf('<LanguageSwitcher');
       const ambient = screen.indexOf('<AmbientSoundSetting');
@@ -291,6 +419,12 @@ describe('Feature 006 presentation source contract', () => {
       expect(english).toHaveProperty(key);
       expect(arabic[key].length).toBeGreaterThan(0);
       expect(english[key].length).toBeGreaterThan(0);
+    }
+    const volumeArabic = resources.ar.translation.ambientVolume;
+    const volumeEnglish = resources.en.translation.ambientVolume;
+    for (const key of ['title', 'hint', 'silent', 'low', 'medium', 'high'] as const) {
+      expect(volumeArabic[key].length).toBeGreaterThan(0);
+      expect(volumeEnglish[key].length).toBeGreaterThan(0);
     }
   });
 });

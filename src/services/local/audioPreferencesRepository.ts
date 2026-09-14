@@ -6,7 +6,7 @@ import type { LocalKeyValueStorage } from './storageTypes';
 
 export interface AmbientAudioPreferencesRepository {
   read(): DomainResult<AmbientAudioPreferenceRecord | null>;
-  save(enabled: boolean): DomainResult<AmbientAudioPreferenceRecord>;
+  save(enabled: boolean, volume?: number): DomainResult<AmbientAudioPreferenceRecord>;
   clear(): DomainResult<true>;
 }
 
@@ -29,21 +29,29 @@ function cloneRecord(record: AmbientAudioPreferenceRecord): AmbientAudioPreferen
 export function createAmbientAudioPreferencesRepository(
   storage: LocalKeyValueStorage,
 ): AmbientAudioPreferencesRepository {
+  const read = (): DomainResult<AmbientAudioPreferenceRecord | null> => {
+    let raw: string | null;
+    try {
+      raw = storage.getItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY);
+    } catch {
+      return storageFailure('The ambient audio preference could not be read');
+    }
+    return raw === null ? { ok: true, data: null } : parseAmbientAudioPreference(raw);
+  };
   return {
-    read() {
-      let raw: string | null;
-      try {
-        raw = storage.getItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY);
-      } catch {
-        return storageFailure('The ambient audio preference could not be read');
-      }
-      return raw === null ? { ok: true, data: null } : parseAmbientAudioPreference(raw);
-    },
-    save(enabled) {
-      const created = createAmbientAudioPreference(enabled);
+    read,
+    save(enabled, volume) {
+      const previous = volume === undefined ? read() : null;
+      if (previous && !previous.ok) return previous;
+      const selectedVolume = volume ?? (previous?.ok ? previous.data?.volume : undefined);
+      const created = createAmbientAudioPreference(enabled, selectedVolume);
       if (!created.ok) return created;
       try {
-        storage.setItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY, JSON.stringify(created.data));
+        const serialized = JSON.stringify(created.data);
+        storage.setItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY, serialized);
+        if (storage.getItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY) !== serialized) {
+          return storageFailure('The ambient audio preference write could not be verified');
+        }
       } catch {
         return storageFailure('The ambient audio preference could not be saved');
       }
@@ -52,6 +60,9 @@ export function createAmbientAudioPreferencesRepository(
     clear() {
       try {
         storage.removeItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY);
+        if (storage.getItem(AMBIENT_AUDIO_PREFERENCE_STORAGE_KEY) !== null) {
+          return storageFailure('The ambient audio preference removal could not be verified');
+        }
       } catch {
         return storageFailure('The ambient audio preference could not be cleared');
       }

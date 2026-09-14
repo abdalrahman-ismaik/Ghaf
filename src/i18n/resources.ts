@@ -1,4 +1,5 @@
 import { pilotResources } from './pilotResources';
+import { ambientVolumeResources } from './ambientVolumeResources';
 import { familyConnectionEditResources } from './familyConnectionEditResources';
 import { profileRecommendationResources } from './profileRecommendationResources';
 import { studyResources } from './studyResources';
@@ -10,6 +11,7 @@ export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
+      ambientVolume: ambientVolumeResources.ar,
       familyConnectionEdit: familyConnectionEditResources.ar,
       profileRecommendations: profileRecommendationResources.ar,
       study: studyResources.ar,
@@ -2123,6 +2125,7 @@ export const resources = {
   en: {
     translation: {
       pilot: pilotResources.en,
+      ambientVolume: ambientVolumeResources.en,
       familyConnectionEdit: familyConnectionEditResources.en,
       profileRecommendations: profileRecommendationResources.en,
       study: studyResources.en,
