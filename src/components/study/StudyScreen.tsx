@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Redirect, useRouter } from 'expo-router';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Screen } from '@/components/primitives';
 import { entryMode } from '@/config/demoEntry';
@@ -88,7 +88,11 @@ function StudyWorkspace({ role }: { role: 'parent' | 'child' }) {
         ? 'study.storageError'
         : 'study.error';
   return (
-    <Screen keyboardAware contentStyle={s.stack} testID={`study-${role}-screen`}>
+    <Screen
+      keyboardAware
+      contentStyle={[s.stack, Platform.OS === 'web' ? null : { direction: 'ltr' }]}
+      testID={`study-${role}-screen`}
+    >
       <StudyButton
         variant="quiet"
         onPress={() => router.replace(role === 'parent' ? '/parent' : '/child')}
@@ -101,7 +105,9 @@ function StudyWorkspace({ role }: { role: 'parent' | 'child' }) {
           {t('study.title')}
         </StudyText>
         <StudyText>{t('study.subtitle')}</StudyText>
-        <StudyText variant="label">{t('study.selectedChild', { child: name(childId) })}</StudyText>
+        <StudyText variant="label">
+          {t('study.selectedChild', { child: '\u2068' + name(childId) + '\u2069' })}
+        </StudyText>
       </View>
       {role === 'parent' ? (
         <View style={[s.row, { direction: 'ltr', flexDirection: logicalRowDirection(direction) }]}>

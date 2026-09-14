@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Button, Input, Text } from '@/components/primitives';
 import { botanical, spacing } from '@/design/tokens';
 
@@ -28,7 +28,7 @@ export const studyStyles = StyleSheet.create({
     borderRadius: botanical.radius.surface,
   },
   row: { flexWrap: 'wrap', gap: spacing.sm, alignItems: 'center' },
-  tabs: { flex: 1, minWidth: 110 },
+  tabs: { flex: 1, minWidth: Platform.OS === 'web' ? 110 : 180 },
   notice: {
     gap: spacing.xs,
     padding: spacing.md,
