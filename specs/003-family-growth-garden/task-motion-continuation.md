@@ -23,10 +23,12 @@ flags, actions, awards, dependencies or permissions.
    actions in a reserved footer while the summary/selection body scrolls. This
    preserves usable dismissal and submission through variable content and font
    changes without animating layout or changing business state.
+   At 130% Android text scale, omit the completion action's decorative arrow to
+   reserve its width for the full Arabic label, matching the support action.
 
 Test rapid dismiss/reopen, stale native show callbacks, unmount, externally driven
 successful close, busy/error state, live preference changes, keyboard activation,
 and selection geometry. Preserve multiline content, existing scrolling and 48dp
 controls. Mock execution is lifecycle evidence only. Android Back, keyboard,
 TalkBack, large text, native reversals and frame timing require current-device
-evidence; emulator startup currently fails its disk-space preflight.
+evidence. The workstream report records resumed emulator checks after disk recovery.

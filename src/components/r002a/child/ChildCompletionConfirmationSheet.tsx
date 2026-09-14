@@ -206,15 +206,6 @@ export function ChildCompletionConfirmationSheet({
                 busy={busy}
                 busyLabel={busyLabel}
                 direction={direction}
-                icon={
-                  <GhafIcon
-                    color={colors.onPrimary}
-                    direction={direction === 'rtl' ? 'ltr' : 'rtl'}
-                    name="arrow-back"
-                    size={21}
-                  />
-                }
-                iconPosition="end"
                 onPress={() => {
                   if (visible && !busy) onSubmit();
                 }}
