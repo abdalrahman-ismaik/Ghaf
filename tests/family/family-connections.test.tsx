@@ -157,7 +157,7 @@ describe('prepared family connection plan', () => {
 });
 
 describe('family connection presentation and isolation contract', () => {
-  it('keeps people editing on Family Basics and presents the plan only in Parent Family', () => {
+  it('keeps people setup on Family Basics and exposes later editing only through Parent routes', () => {
     const basics = source('app/access/parent/family-basics.tsx');
     const review = source('app/access/parent/review-create.tsx');
     const parentFamily = source('app/parent/family/index.tsx');
@@ -215,7 +215,10 @@ describe('family connection presentation and isolation contract', () => {
     expect(implementation).not.toMatch(
       /expo-notifications|scheduleNotificationAsync|setInterval|new Date/u,
     );
-    expect(source('src/components/family/FamilyConnectionPlan.tsx')).not.toContain('onPress');
+    const plan = source('src/components/family/FamilyConnectionPlan.tsx');
+    expect(plan).toContain('FamilyPeopleEditor');
+    expect(plan).toContain('saveFamilyConnections');
+    expect(plan).toContain('selectHasActiveParentExperience');
   });
 
   it('isolates mixed-script names and gives the Parent explicit visit and help responsibility', () => {

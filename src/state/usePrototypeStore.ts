@@ -77,7 +77,10 @@ import {
   restoreRememberedDeviceAccess,
 } from '../features/access/rememberedDeviceAccess';
 import { restoreAmbientAudioPreference } from '../features/audio';
-import { createFamilyConnectionPlan } from '../features/family-connections';
+import {
+  createFamilyConnectionPlan,
+  validateCompleteFamilyConnectionDirectory,
+} from '../features/family-connections';
 import {
   createLocalFamilyRecord,
   localFamilyRecordToReceipt,
@@ -222,7 +225,7 @@ import type {
   LocalFamilyRecord,
   LocalFamilyView,
 } from '../models/localFamily';
-import type { FamilyConnectionPlan } from '../models/familyConnections';
+import type { FamilyConnectionDirectory, FamilyConnectionPlan } from '../models/familyConnections';
 import type { AmbientAudioPreferenceView } from '../models/audioPreferences';
 import type { AgeAdaptedCoachResult } from '../models/assistantVoice';
 import {
@@ -668,6 +671,11 @@ export interface PrototypeStoreState extends PrototypeSession {
   readonly dismissReturningUserWelcome: () => void;
   readonly signOutExperience: () => ServiceResult<true>;
   readonly getFamilyConnectionPlan: () => ServiceResult<FamilyConnectionPlan>;
+  readonly saveFamilyConnections: (input: {
+    readonly directory: FamilyConnectionDirectory;
+    readonly expectedFamilySnapshot: string;
+    readonly expectedGeneration: number;
+  }) => ServiceResult<FamilyConnectionPlan>;
   readonly getFamilyReward: () => ServiceResult<FamilyRewardPresentation>;
   readonly markFamilyRewardGiven: () => ServiceResult<FamilyRewardPresentation>;
   readonly getChildPermissionGrant: (
@@ -2984,6 +2992,59 @@ const prototypeStoreCreator: StateCreator<PrototypeStoreState> = (set, get) => (
     return plan.ok
       ? success(plan.data)
       : failure('INVALID_RESPONSE', 'The local family connection plan is invalid');
+  },
+
+  saveFamilyConnections: (input) => {
+    const state = get();
+    if (!requireActiveParentExperience(state).ok) {
+      return failure('PRIVACY_REJECTED', 'Only the active Parent can edit family connections');
+    }
+    const record = state.localFamily.record;
+    const stillCurrent = () => {
+      const current = get();
+      return (
+        requireActiveParentExperience(current).ok &&
+        current.localFamily.status === 'ready' &&
+        current.demoRunGeneration === input.expectedGeneration &&
+        JSON.stringify(current.localFamily.record) === input.expectedFamilySnapshot
+      );
+    };
+    if (!record || !stillCurrent()) {
+      return failure('INVALID_TRANSITION', 'The family changed; reopen the current directory');
+    }
+    const validated = validateCompleteFamilyConnectionDirectory(input.directory);
+    if (!validated.ok) return { ok: false, error: validated.error };
+    const candidate = { ...record, familyConnections: validated.data };
+    const stored = serviceRegistry.localFamily.read();
+    if (!stored.ok) return { ok: false, error: stored.error };
+    if (!stored.data || !stillCurrent()) {
+      return failure('INVALID_TRANSITION', 'The current family could not be confirmed');
+    }
+    // A retry may confirm a completed write whose acknowledgement was interrupted.
+    if (
+      JSON.stringify({ ...candidate, updatedAt: stored.data.updatedAt }) ===
+      JSON.stringify(stored.data)
+    ) {
+      set({ localFamily: localFamilyView(stored.data) });
+      return get().getFamilyConnectionPlan();
+    }
+    if (JSON.stringify(stored.data) !== input.expectedFamilySnapshot) {
+      return failure('INVALID_TRANSITION', 'Saved family data changed; reload before editing');
+    }
+    const next = { ...candidate, updatedAt: new Date().toISOString() };
+    const saved = serviceRegistry.localFamily.save(next);
+    if (!saved.ok) return { ok: false, error: saved.error };
+    const verified = serviceRegistry.localFamily.read();
+    if (
+      !verified.ok ||
+      !verified.data ||
+      JSON.stringify(verified.data) !== JSON.stringify(next) ||
+      !stillCurrent()
+    ) {
+      return failure('INVALID_TRANSITION', 'Saving the family directory was not confirmed');
+    }
+    set({ localFamily: localFamilyView(verified.data) });
+    return get().getFamilyConnectionPlan();
   },
 
   markFamilyRewardGiven: () => {

@@ -1,4 +1,5 @@
 import { pilotResources } from './pilotResources';
+import { familyConnectionEditResources } from './familyConnectionEditResources';
 import { profileRecommendationResources } from './profileRecommendationResources';
 import { studyResources } from './studyResources';
 import { familyPracticeResources } from './familyPracticeResources';
@@ -9,6 +10,7 @@ export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
+      familyConnectionEdit: familyConnectionEditResources.ar,
       profileRecommendations: profileRecommendationResources.ar,
       study: studyResources.ar,
       familyPractices: familyPracticeResources.ar,
@@ -2121,6 +2123,7 @@ export const resources = {
   en: {
     translation: {
       pilot: pilotResources.en,
+      familyConnectionEdit: familyConnectionEditResources.en,
       profileRecommendations: profileRecommendationResources.en,
       study: studyResources.en,
       familyPractices: familyPracticeResources.en,

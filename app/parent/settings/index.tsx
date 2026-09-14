@@ -80,6 +80,15 @@ export default function ParentSettingsScreen() {
       </R003Section>
       <R003Section>
         <R003ActionRow
+          body={t('familyConnectionEdit.body')}
+          direction={direction}
+          icon="family"
+          language={locale}
+          onPress={() => router.push('/parent/family/connections' as Href)}
+          testID="open-family-connections"
+          title={t('familyConnectionEdit.title')}
+        />
+        <R003ActionRow
           body={t('r003.settings.permissionsBody')}
           direction={direction}
           icon="shield"

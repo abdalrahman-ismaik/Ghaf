@@ -1,8 +1,11 @@
-import { StyleSheet, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { BackHandler, Keyboard, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { GhafIcon } from '@/components/access';
-import { Row, Text } from '@/components/primitives';
+import { FamilyPeopleEditor } from '@/components/access/FamilyPeopleEditor';
+import { Button, Row, Text } from '@/components/primitives';
 import { R003Section } from '@/components/r003';
 import {
   botanical,
@@ -13,15 +16,22 @@ import {
 } from '@/design/tokens';
 import type { LocaleCode } from '@/models/familyGrowth';
 import type {
+  FamilyConnectionDirectory,
   FamilyConnectionIdeaKind,
   FamilyConnectionPlan as FamilyConnectionPlanModel,
   FamilyConnectionRhythm,
 } from '@/models/familyConnections';
+import {
+  cloneFamilyConnectionDirectory,
+  validateCompleteFamilyConnectionDirectory,
+} from '@/features/family-connections';
+import { selectHasActiveParentExperience, usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface FamilyConnectionPlanProps {
   readonly direction: LayoutDirection;
   readonly language: LocaleCode;
   readonly plan: FamilyConnectionPlanModel;
+  readonly editable?: boolean;
 }
 
 function rhythmKey(value: FamilyConnectionRhythm): string {
@@ -45,7 +55,12 @@ function isolateFamilyName(value: string): string {
   return '\u2068' + value + '\u2069';
 }
 
-export function FamilyConnectionPlan({ direction, language, plan }: FamilyConnectionPlanProps) {
+export function FamilyConnectionPlan({
+  direction,
+  language,
+  plan,
+  editable = false,
+}: FamilyConnectionPlanProps) {
   const { t } = useTranslation();
 
   return (
@@ -72,6 +87,13 @@ export function FamilyConnectionPlan({ direction, language, plan }: FamilyConnec
           })}
         </Text>
       </Row>
+
+      {editable ? <FamilyConnectionEditor direction={direction} language={language} /> : null}
+      {editable && plan.entries.length === 0 ? (
+        <Text brand color="onSurfaceVariant" direction={direction} language={language}>
+          {t('familyConnectionEdit.empty')}
+        </Text>
+      ) : null}
 
       <View style={styles.entries}>
         {plan.entries.map((entry, index) => (
@@ -147,6 +169,129 @@ export function FamilyConnectionPlan({ direction, language, plan }: FamilyConnec
         </Text>
       </View>
     </R003Section>
+  );
+}
+
+function FamilyConnectionEditor({
+  direction,
+  language,
+}: {
+  direction: LayoutDirection;
+  language: LocaleCode;
+}) {
+  const { t } = useTranslation();
+  const allowed = usePrototypeStore(selectHasActiveParentExperience);
+  const family = usePrototypeStore((state) => state.localFamily.record);
+  const generation = usePrototypeStore((state) => state.demoRunGeneration);
+  const saveConnections = usePrototypeStore((state) => state.saveFamilyConnections);
+  const [draft, setDraft] = useState<{
+    directory: FamilyConnectionDirectory;
+    expectedFamilySnapshot: string;
+    expectedGeneration: number;
+  } | null>(null);
+  const [relativeEditing, setRelativeEditing] = useState(false);
+  const [message, setMessage] = useState<'saved' | 'error' | 'invalid' | null>(null);
+  const cancel = useCallback(() => {
+    setDraft(null);
+    setRelativeEditing(false);
+    setMessage(null);
+  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (!draft) return;
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (Keyboard.isVisible()) Keyboard.dismiss();
+        else cancel();
+        return true;
+      });
+      return () => subscription.remove();
+    }, [cancel, draft]),
+  );
+  if (!allowed || !family) return null;
+  const save = () => {
+    if (!draft) return;
+    const validated = validateCompleteFamilyConnectionDirectory(draft.directory);
+    if (relativeEditing || !validated.ok) {
+      setMessage('invalid');
+      return;
+    }
+    const result = saveConnections({ ...draft, directory: validated.data });
+    if (!result.ok) {
+      setMessage(result.error.code === 'INVALID_INPUT' ? 'invalid' : 'error');
+      return;
+    }
+    setDraft(null);
+    setRelativeEditing(false);
+    setMessage('saved');
+  };
+  return (
+    <View style={styles.entries} testID="family-connections-editor">
+      {draft ? (
+        <>
+          <FamilyPeopleEditor
+            direction={direction}
+            language={language}
+            directory={draft.directory}
+            onEditingChange={setRelativeEditing}
+            onChange={(directory) => {
+              setDraft({ ...draft, directory });
+              setMessage(null);
+            }}
+          />
+          <Button
+            brand
+            direction={direction}
+            language={language}
+            disabled={relativeEditing}
+            onPress={save}
+            testID="save-family-connections"
+          >
+            {t('familyConnectionEdit.save')}
+          </Button>
+          <Button
+            brand
+            direction={direction}
+            language={language}
+            variant="quiet"
+            onPress={cancel}
+            testID="cancel-family-connections"
+          >
+            {t('familyConnectionEdit.cancel')}
+          </Button>
+        </>
+      ) : (
+        <Button
+          brand
+          direction={direction}
+          language={language}
+          variant="secondary"
+          testID="edit-family-connections"
+          onPress={() => {
+            setDraft({
+              directory: cloneFamilyConnectionDirectory(family.familyConnections),
+              expectedFamilySnapshot: JSON.stringify(family),
+              expectedGeneration: generation,
+            });
+            setMessage(null);
+          }}
+        >
+          {t('familyConnectionEdit.edit')}
+        </Button>
+      )}
+      {message ? (
+        <Text
+          brand
+          color="onSurfaceVariant"
+          direction={direction}
+          language={language}
+          accessibilityLiveRegion="polite"
+          accessibilityRole={message === 'saved' ? undefined : 'alert'}
+          testID="family-connections-save-result"
+        >
+          {t(`familyConnectionEdit.${message}`)}
+        </Text>
+      ) : null}
+    </View>
   );
 }
 
