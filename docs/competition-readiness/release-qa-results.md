@@ -1,6 +1,6 @@
 # Release QA execution record
 
-Updated: 2026-09-15 Dubai; the new d13 receipts are dated 2026-09-14 UTC.
+Updated: 2026-09-15 Dubai; the d13/b2 receipts are dated 2026-09-14 UTC.
 Verdict and full requirement scope live in the
 [release ledger](release-readiness.md). This is a sanitized execution record,
 not acceptance of the untested public release.
@@ -12,10 +12,12 @@ Other sessions retained their source boundaries. Runtime Feature020 was integrat
 through `c54f25f`; `d13c148` corrects a required AI test fixture. Root's subsequent
 `f129b7f` changes only the transitive YAML parser lock entry, not application code.
 The first fresh native candidate, `d13c148`, was built and installed successfully;
-its bounded standalone checks are recorded below. Candidate `63353ae` additionally
-includes the parser patch, deployed Help repair `e8c6b3b` and safety display; its
-fresh build34889994736 is running at this checkpoint. Later `b2b4302` adds the
-footer repair and is queued in build34891473556. No later APK is claimed here.
+its historical standalone checks are retained below. Candidate `63353ae` added
+the parser patch, deployed Help repair `e8c6b3b` and safety display. The tested
+`b2b4302` APK includes those changes and the default-font footer repair; fresh
+build34891473556 passed, and its native execution is recorded below. Later
+`4dd6490` adjusts enlarged-text footer columns after a b2 failure; its source
+checks passed, but fresh build34896135774/native acceptance remain pending.
 These candidates exclude the separately owned uncommitted navigation work.
 
 Package: `ae.ac.ku.ghaf.prototype`, version `0.1.0`, code `1`, minimum API24,
@@ -51,8 +53,18 @@ The separate backend CI34888514402 and repository CI34888514386 passed for
 Candidate `63353ae` backend CI34889995408 passed the clean migration/SQL/Auth and
 separate messaging checks. Root also reports repository/backend CI passed for
 `b2b4302`; its local typecheck, scoped lint and 26 focused safety/core UI tests
-passed. Those 26 tests are not a new full application-suite or native pass.
-The later native runs remain pending as described above.
+passed. Those 26 tests are distinct from the subsequent full CI application suite.
+
+[Run34891473556](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34891473556)
+at `b2b43028ebd61ba943a808bf6c3be35ff8f78d5f` **PASSED** the source gates and
+fresh Gradle compilation. The retained `b2-ci-test-summary.txt` records
+**3,397 tests passed / 7 skipped; 233 files passed / 7 skipped**, in49.10seconds.
+Typecheck, lint, format and repository checks passed; the source job also passed
+20 Node verifier tests. The artifact receipt records embedded bundle, signature,
+16KiB ZIP alignment, `testOnly=false`, `debuggable=false`, cleartext disabled and
+backup disabled. These checks do not establish physical-device or public-release
+acceptance. Later `4dd6490` has root-executed typecheck, scoped lint and26 focused
+UI passes; its fresh native result is not yet claimed.
 
 ## Task safety and Help repair
 
@@ -162,7 +174,7 @@ the measurement summaries. These are root's executed receipts, reviewed by the
 documentation helper; the helper did not repeat device actions. No private labels,
 tokens, invite values or complete UI dumps are copied into this tracked record.
 
-### Open native defects
+## Accessibility baseline and open native findings
 
 TalkBack was installed and bound on user11. Root observed touch exploration enabled
 and a visible accessibility focus outline, then a Garden activation while the
@@ -201,11 +213,102 @@ ordinary demo isolation and the existing account revision/Child-access boundarie
 Root layout already follows store locale; no NAV-owned layout change is justified
 by this diagnosis. Cold restart and profile arrival must both be regression-tested.
 
-**P2 — d13 footer height.** At720×1600/font1 the six destinations wrapped into
+**P2 — footer height and enlarged text.** On d13 at720×1600/font1 the six destinations wrapped into
 three rows, consuming384px before insets and hiding much of the Child action area
-until scrolling. The bounded equal-column source repair is `b2b4302`; its 26
-focused UI tests, typecheck and scoped lint passed. Its queued fresh build and
-actual corrected native layout are **not yet verified** here.
+until scrolling. The b2 native footer now uses two rows at font1: its top moved
+from y1120 to y1256 in the same viewport, reclaiming136px. This default-font
+correction is **verified on b2**. At font1.5, b2 broke the Arabic Settings word
+across lines. Source `4dd6490` changes enlarged-text/narrow layouts to two wider
+columns;26 focused UI tests, typecheck and scoped lint passed. Its fresh
+[build34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774)
+and corrected large-text native layout remain **pending**.
+
+## Executed b2 standalone task-to-growth journey
+
+Root executed the actual `b2b43028ebd61ba943a808bf6c3be35ff8f78d5f` APK from
+run34891473556, **88,451,812 bytes**, SHA-256
+`ec870fa8bf8153c847751482ae4bba161f86fd141bedb4b70078606ea3510ff5`.
+The APK and build receipt are retained under ignored `output/release-021-candidate/`.
+It is the existing application package and internal signer, with its embedded
+bundle. The later `4dd6490` source is not part of this artifact.
+
+The upgrade preserved the paired Child in Android user11. Root enabled the
+installed package for new Android user12 with `pm install-existing`, giving the
+Parent a separate fresh app-data boundary. This is **two independent Android-user
+sessions on one emulator**, not two devices or a clean APK installation.
+User12 opened a blank Arabic sign-in form and Parent A authenticated through
+native UI. Initial activity-not-found during user setup resolved after the user
+became ready. An initial login attempt used an automation-truncated email and
+succeeded after input correction; neither observation establishes an app auth bug.
+
+All business actions below used the retained controlled synthetic QA family.
+No owner household was used for business writes or captured. Independent Parent
+SDK readbacks corroborated server state after native actions; the readbacks do
+not replace the separately observed native UI outcomes.
+
+| Native action / readback                                           | Executed result                                                                                                                                                                                  |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Child accepts the assigned GI01 task, then starts it               | **PASSED**: accepted revision2, then in_progress revision3; recognition1, memory1 and canopy1 unchanged.                                                                                         |
+| Child skips adult step1, completes action step2, skips adult step3 | Reached revision6 with the recorded skipped/done/skipped states. This demonstrates the prerequisite gap described below, not safe real-world execution.                                          |
+| Child taps Submit three times                                      | **PASSED for this repeated-input case**: submitted revision7, one transition and no new award; recognition1, memory1 and canopy1 remained.                                                       |
+| Parent user12 praises through native UI                            | **PASSED**: praised revision8, with no new award or memory.                                                                                                                                      |
+| Parent confirms through native UI                                  | **PASSED for state/award ordering**: recognized revision9, recognition2 and canopy2; memory stayed1.                                                                                             |
+| Parent saves the memory through native UI                          | **PASSED**: memory2; task stayed recognized revision9, recognition2 and canopy2.                                                                                                                 |
+| Parent force-stops/relaunches, then Child force-stops/relaunches   | **PASSED** for both session/readback paths. Native views showed16 Seeds, canopy2 and two memories; independent Parent readback retained recognized revision9, recognition2, memory2 and canopy2. |
+
+The ignored `.expo/release-20260914/` receipts are:
+
+- `native-core-accepted-started.json`, at20:46:29UTC, confirming revision3.
+- `native-core-child-submitted.json`, at20:47:10UTC, confirming revision7 and step states.
+- `native-core-parent-praised.json`, at20:53:33UTC, confirming revision8 without an award.
+- `native-core-parent-recognized.json`, at20:54:00UTC, confirming revision9 and the new recognition/canopy.
+- `native-core-memory-saved.json`, at20:54:50UTC, confirming the second memory.
+- `native-core-both-restarted.json`, at21:00:30UTC, confirming retained server totals.
+
+These timestamps are September14UTC / September15Dubai. The receipts contain
+Parent SDK snapshots;16 Seeds is an observed native UI total, not a field in those
+receipts. This controlled test establishes application transitions and persisted
+totals, not a performed sustainability action or measured environmental impact.
+
+**G1 remains open: adult prerequisites are not authoritatively acknowledged.**
+The Child could skip both adult-owned steps and proceed to submission and Parent
+recognition without a distinct Parent prerequisite acknowledgment. Displaying
+safety text and passing the generic transition flow do not close this gap. A
+Child must not certify Parent duties; the required acknowledgment and
+retry/adaptation lifecycle remain release blockers in the
+[catalog audit](release-task-catalog.md) and [release ledger](release-readiness.md).
+
+Retained synthetic-only capture stems include `b2-child-settled`,
+`b2-native-safety`, `b2-native-safety-actions`, `b2-parent-two-memories`,
+`b2-child-canopy-restored`, `b2-child-memories-visible` and `b2-large-text-ar`.
+`b2-parent-confirmation.mp4` was requested for30seconds and pulled successfully,
+962,223bytes. A read-only ISO-BMFF `mvhd` parse reports29.2407seconds;
+SHA-256 `72560c35dca27def593c810c933982c483c06d436656d3fe6ee86128649ef4bf`.
+This verifies container metadata, not decoded-frame quality or app frame timing.
+
+Root set animator/window/transition scales to0 during Parent font1.5 tab
+interaction and Child restart/readback. These bounded actions completed; they
+are not a full reduced-motion or TalkBack acceptance pass. Settings were restored:
+animator scale unset (`null`, system default), window/transition scales1, and
+font scale1 for the tested users. Transient UIAutomator failures and code137
+around user switching remain automation limitations, not proven app crashes.
+Process death during an active mutation, traversal/spoken feedback and interrupted
+gesture/animation paths remain unverified.
+
+Before the core task test, root repeated the same two-task/one-recognition Child
+navigation workload used for d13. The [performance record](release-performance.md)
+reports b2's mixed frame counters and larger surrounding PSS increase; no overall
+improvement, memory acceptance or physical-device performance claim is made.
+
+## Account-switch follow-up on b2
+
+Root signed Parent A out of Android user12, verified the blank sign-in form,
+then logged in as the independently provisioned QA Parent B. The actual screen
+showed only create/join-family setup and two navigation destinations. No Family A
+Child, task, memory or earned history appeared. `b2-account-b-empty.png` records
+this empty state. B was an already-approved QA account without a family; this is
+not fresh public signup or a native cross-family mutation test. B was then signed
+out and the sign-in screen returned. Family A's controlled data remains intact.
 
 ## Other coordinator evidence
 
@@ -217,10 +320,12 @@ and are not substituted for current standalone Android acceptance.
 
 ## Not yet passed
 
-Latest safety/footer candidate installation and native behavior; clean install;
-complete native task completion/Parent confirmation; two independent native clients;
-minimum/current OS matrix; TalkBack, current
-large-text/reduced-motion/notification/media denial cases; process death during
-mutation; controlled comparative frame/memory acceptance; physical device; recovery email delivery;
-store-distributed installation. Historical Feature018/motion results retain their
-original source attribution and do not close these gates.
+Fresh `4dd6490` artifact installation and enlarged-text behavior; clean APK install;
+complete24-task acceptance, authoritative adult prerequisite/retry/adaptation
+lifecycle; two physical devices; minimum/current OS matrix; full TalkBack,
+large-text/reduced-motion/notification/media-denial coverage; process death during
+mutation; controlled comparative frame/memory acceptance; representative physical
+device; recovery email delivery; store-distributed installation. The b2 core
+journey and separate Android-user sessions above are executed within their stated
+limits. Historical Feature018/motion results retain their original source
+attribution and do not close remaining gates or establish public readiness.

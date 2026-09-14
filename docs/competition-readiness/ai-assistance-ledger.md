@@ -28,9 +28,13 @@ The fresh d13 APK then passed isolated Parent login, real native Child pairing,
 Child restart and offline/retry checks. Root measured repeated-navigation frame/
 memory counters, inspected50 ELF libraries and triaged raw credential-pattern
 false positives through22,314 decoded Hermes strings without publishing values.
-The next source b2b4302 reduces the reproduced three-row family footer using
-existing labeled controls;26focused UI checks, typecheck and scoped lint passed.
-Its fresh native acceptance is pending at this checkpoint. One helper executed
+The b2b4302 APK passed the native Child submission, separate Parent praise and
+recognition, memory save and both-session restart journey using synthetic QA
+records. Its default footer uses two rows, but font1.5 broke an Arabic label.
+Root corrected responsive column width in4dd6490, passing26focused UI checks,
+typecheck and scoped lint; its later fresh artifact acceptance is pending.
+Root's single confirmation email reached the exact QA inbox; no OTP redemption,
+recovery or public-onboarding acceptance is implied. One helper executed
 a30-call loopback authenticated-role SQL timing sample with transactional fixtures
 and verified rollback; this is neither HTTP authorization nor production capacity.
 

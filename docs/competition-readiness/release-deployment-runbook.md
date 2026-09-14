@@ -46,8 +46,9 @@ use it for exact feature commands and record any later migration there.
    Expo variables or committed files. Missing distributed replay/budget storage
    keeps live AI blocked; deterministic demonstrations stay labeled.
 6. Confirm auth/email configuration separately. Existing confirmation/recovery use
-   one-time codes with one-hour expiry. Custom Gmail SMTP is configured, but actual
-   delivery/recovery is unverified. Reconcile pilot approval/copy before public signup.
+   one-time codes with one-hour expiry. One QA signup confirmation reached the
+   exact Gmail plus-alias inbox on September15 at00:35Dubai; OTP/native signup and
+   recovery remain unverified. Reconcile pilot approval/copy before public signup.
 7. Check the one active retention job `ghaf-main-family-message-retention-v1`, hourly
    `0 * * * *`. Inspect its scheduled outcome; configuration alone is not proof of
    execution. Do not add a duplicate job or manually purge real data for a test.
@@ -72,11 +73,13 @@ repository checks, verifier tests, typecheck, lint, format and all application t
 before Gradle. It pins Java17, target/build-tools36, NDK27.1.12297006 and CMake3.30.5,
 then performs a fresh Expo prebuild and arm64-v8a/x86_64 release-mode assembly.
 
-Current candidate ref: `release/021-internal-20260914` at `63353ae`.
-Earlier run34888514880 at `d13c148` passed source validation; native build remains
-in progress. Current run34889994736 is queued and includes the parser/Help/safety
-fixes. Parser-patched `f129b7f` already passed clean repository/backend CI;63353ae
-backend CI passed. Preserve exact source attribution; do not relabel older binaries.
+Current candidate ref: `release/021-internal-20260914` at `4dd6490`.
+Fresh b2 run34891473556 completed successfully and its exact APK passed local
+artifact checks, a normal update of the paired Child session, a clean app-data
+profile and the native Child/Parent/persistence journey recorded in
+[QA](release-qa-results.md). Its font1.5 Arabic word break led to the bounded
+responsive-column correction4dd6490. Run34896135774 has passed source checks and
+is building that later source; its native acceptance remains pending.
 
 On a successful run, download its artifact into a new owned output directory:
 

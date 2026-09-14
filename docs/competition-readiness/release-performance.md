@@ -1,9 +1,26 @@
 # Release performance evidence
 
 Updated:2026-09-15 Dubai; receipts are dated2026-09-14UTC.
-**Historical startup baseline and bounded d13 frame/memory sample measured;
+**Historical startup baseline and bounded d13/b2 frame/memory samples measured;
 controlled comparison and performance gate NOT PASSED.** No FPS or
 lower/mid-range physical-device claim is supported.
+
+## Standalone artifact size
+
+| Source               |  APK bytes | Difference from d13 | Difference from 5ad |
+| -------------------- | ---------: | ------------------: | ------------------: |
+| Historical `5ad7faa` | 88,134,244 |                   — |                   — |
+| `d13c148`            | 88,449,616 |                   — |            +315,372 |
+| Current `b2b4302`    | 88,451,812 |    +2,196 (0.0025%) |  +317,568 (0.3603%) |
+
+The downloaded b2 artifact is `ghaf-internal-b2b43028ebd6.apk`, source
+`b2b43028ebd61ba943a808bf6c3be35ff8f78d5f`, SHA-256
+`ec870fa8bf8153c847751482ae4bba161f86fd141bedb4b70078606ea3510ff5`.
+The candidate's companion `THIRD-PARTY-NOTICES/source-manifest.json` records
+independent APK hashing and the d13 comparison; exact artifact identities are
+also recorded in the [QA record](release-qa-results.md). APK byte growth is below
+the provisional 5% investigation trigger below. This does not establish installed
+disk usage, startup performance or a passed performance gate.
 
 ## Android baseline method
 
@@ -30,7 +47,8 @@ interaction nor a clean-install cold-start benchmark. First secondary-user launc
 boot conditions and are excluded from the comparison set.
 
 The candidate must repeat this method on the same isolated user/device/configuration
-before an improvement is claimed. A build alone cannot close this comparison.
+before an improvement is claimed. Candidate startup is not yet measured in this
+record. A build alone cannot close this comparison.
 The later YAML parser patch is build-tool hardening, not an app startup optimization.
 
 ## d13 paired-Child navigation sample
@@ -39,7 +57,7 @@ Root measured the fresh standalone `d13c148e09ddd64c5cd17c8f784c21f7c5396f72`
 APK on the same isolated user11/API35 emulator, Arabic, font scale1, with two
 existing tasks and one recognition. Exact APK identity and upgrade/session checks
 are in the [QA record](release-qa-results.md). This sample does not measure the
-later `63353ae` safety/parser candidate or queued `b2b4302` footer repair.
+later candidates; the separate b2 navigation sample is recorded below.
 
 The ignored `.expo/release-20260914/d13-profile.json` records **20:19:19 UTC on
 September14 / 00:19:19 Dubai on September15**. Method: three cycles through
@@ -98,6 +116,56 @@ and package-specific ANR text in the retained crash buffer scoped to this app's
 user11/UID1110209 inspection. The raw buffer was not persisted. This is neither
 complete ANR coverage nor a crash-free/Play-vitals assertion.
 
+## b2 paired-Child navigation comparison
+
+Root repeated the same three-cycle Garden → Family → Settings → Tasks method on
+the actual b2 standalone APK, isolated user11 on the same API35 emulator, Arabic,
+font scale1, with two tasks and one recognition **before the later core task
+test**. The ignored `.expo/release-20260914/b2-profile.json` records
+**20:45:49 UTC on September14 / 00:45:49 Dubai on September15**. It retains
+the same UIAutomator resource-ID lookup, ADB taps and 200ms delay after each tap.
+Instrumented elapsed time was **41.60seconds**, compared with d13's 41.99seconds;
+both include automation overhead and are not measures of user-perceived latency.
+
+| Reported Android counter       |        d13 |         b2 |
+| ------------------------------ | ---------: | ---------: |
+| Total frames rendered          |        451 |        386 |
+| Janky frames                   | 37 (8.20%) | 32 (8.29%) |
+| Frame-duration 50th percentile |       19ms |       17ms |
+| Frame-duration 90th percentile |       31ms |       27ms |
+| Frame-duration 95th percentile |       34ms |       32ms |
+| Frame-duration 99th percentile |       46ms |       48ms |
+
+The median frame duration is lower in this b2 sample, while the janky-frame
+percentage and 99th percentile are higher. This mixed result does not support
+an overall improvement claim. Frame counts are not converted into FPS. The
+repeated journey, locale and fixture make these samples useful for screening,
+but the shared host, process/cache history and lack of controlled repetitions
+prevent causal attribution to the candidate's changes.
+
+### b2 memory snapshots
+
+`b2-memory-before.txt` and `b2-memory-after.txt` contain Android `meminfo`
+for PID19153 at uptime4642611ms and4684216ms, 41.605seconds apart. Units are
+**KB as reported by Android**; the d13 difference is included for comparison.
+
+| Counter                   | b2 before | b2 after | b2 difference | d13 difference |
+| ------------------------- | --------: | -------: | ------------: | -------------: |
+| Total PSS                 |   193,739 |  220,659 |       +26,920 |         +3,460 |
+| Total RSS                 |   288,808 |  316,160 |       +27,352 |         +2,868 |
+| Total swap PSS            |       544 |      407 |          −137 |           −355 |
+| Native heap allocated     |    66,043 |   84,633 |       +18,590 |        +15,297 |
+| Dalvik heap allocated     |     8,845 |    9,402 |          +557 |           +569 |
+| Views                     |        57 |       57 |             0 |              0 |
+| Activities / ViewRootImpl |     1 / 1 |    1 / 1 |         0 / 0 |          0 / 0 |
+
+The larger PSS increase, **26,920KB versus 3,460KB**, needs follow-up with matched
+idle settling and repeated post-settlement snapshots. Neither run records a
+matched idle/GC baseline, and process history and shared-host memory pressure
+were uncontrolled. These snapshots cannot establish retained growth, a leak or
+a regression caused by this change. Stable view/activity counts do not close
+that gap. The memory and physical-device performance gates remain **NOT PASSED**.
+
 ## Backend observations
 
 Root ran project-scoped read-only metadata/aggregate queries at19:36:42UTC on
@@ -147,7 +215,8 @@ claims that the current product meets them:
   settling, request count, API p50/p95 and offline/reconnect. Do not convert mock
   test duration, mixed database aggregates or emulator smoothness into FPS claims.
 
-The bounded d13 frame counters and two memory snapshots above are **executed**.
+The bounded d13/b2 frame counters, surrounding memory snapshots and APK byte
+comparison above are **executed**.
 Controlled before/after candidate measurement, sustained memory-growth evaluation,
 physical-device frame acceptance, battery/thermal behavior, AI latency/cost and
 bounded HTTP staging load remain **NOT RUN** in this release lane. No causal performance

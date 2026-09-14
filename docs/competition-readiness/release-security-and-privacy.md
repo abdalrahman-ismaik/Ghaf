@@ -206,3 +206,35 @@ pilot/sample-copy remains to reconcile before public launch. Root subsequently
 read back the scheduled retention success at19:45UTC and active restored hourly
 job; no message content or purge was requested by this lane. Database/media
 backup and restore, account erasure and accountable support remain blocked.
+
+## Direct mail and Play access follow-up — September15 Dubai
+
+Root requested one signup confirmation using the configured public SDK and a
+dedicated owner QA plus-alias. Supabase accepted it at20:35:50UTC, without a
+session. Authenticated Gmail's expanded message headers showed the exact QA
+recipient, Inbox delivery and15September00:35Dubai. One confirmation email was
+therefore delivered by the configured SMTP service. Its OTP was not redeemed;
+this does not prove native signup, account approval, recovery or delivery reliability.
+Only the request/delivery summary is retained in ignored
+`.expo/release-20260914/email-delivery-request.json`; credentials and codes are
+excluded from this record. The synthetic unverified QA account is retained.
+
+Play Console under the supplied Google identity reached developer registration,
+not an existing application. No developer terms, payment, identity submission,
+app creation or store action occurred. Operator and release access remain blockers.
+
+## b2 artifact follow-up
+
+The exact b2b4302 APK hash/signature and ZIP alignment passed locally; all50 ELF
+native libraries passed PT_LOAD16KiB alignment/congruence. The merged manifest
+omits SYSTEM_ALERT_WINDOW, disables backup and has no enabled debug/cleartext
+flags. All1,652 ZIP entries were scanned for known privileged credential formats.
+Raw Hermes concatenation produced two false-positive categories; review of22,322
+decoded strings left no matching privileged secret. This bounded scan is not a
+guarantee against every encoding or private-data leak.
+
+A helper compared all APK entries against d13:13 audio entries and10 TTF entries
+(six distinct fonts) have identical hash multisets. Complete exact supplied font
+licenses accompany the local candidate under THIRD-PARTY-NOTICES; unresolved
+artwork/narration rights and Roboto provenance still block public clearance.
+The later4dd6490 artifact must retain its own hash and validation evidence.

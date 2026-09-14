@@ -85,9 +85,32 @@ approval process before account-owned data is available. See
 [authentication setup](../auth.md#configuration-and-migration). A working build
 does not bypass approval or prove external email delivery.
 
-## Acceptance evidence
+## Current release-engineering evidence
 
-The current installable artifact is
+The latest validated internal artifact in this lane is
+[ghaf-internal-b2b43028ebd6.apk](../../output/release-021-candidate/ghaf-internal-b2b43028ebd6.apk),
+from [run34891473556](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34891473556).
+It is88,451,812bytes, SHA-256
+`ec870fa8bf8153c847751482ae4bba161f86fd141bedb4b70078606ea3510ff5`,
+and retains the existing internal template signer. It is not a production-signed
+AAB or store-distributed release.
+
+Root installed its normal update into API35 user11 and enabled it with clean app
+data in user12. Independent Child/Parent native sessions completed the controlled
+GI01 submission, praise, recognition and memory loop, then recovered16Seeds, two
+canopy contributions and two memories after restart. Account B showed a truthful
+empty setup. Exact boundaries and remaining blockers are in the
+[release QA record](../competition-readiness/release-qa-results.md).
+
+The default footer improved, but font1.5 split one Arabic label. Follow-up
+`4dd6490` passed source checks and is building in
+[run34896135774](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34896135774);
+its artifact/native acceptance remains pending. Public verdict is **NOT READY**.
+Do not substitute the older Feature018 evidence below for these newer journeys.
+
+## Historical Feature018 acceptance evidence
+
+The Feature018 installable artifact was
 [ghaf-internal-5ad7faa63c90.apk](../../output/android-internal-final/ghaf-internal-5ad7faa63c90.apk),
 from successful [run 34851035020](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34851035020)
 at source `5ad7faa63c90c63287b01da2045f58a1b17106d5`. Its size is 88,134,244 bytes;

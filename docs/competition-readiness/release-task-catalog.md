@@ -149,3 +149,14 @@ the accepted Feature021/Feature020 contract and targeted rejection/interruption
 checks, then collect distinct action/alternative evidence per row. Maintain the
 [main ledger](release-readiness.md); this inventory does not replace any missing
 feature or release gate.
+
+## Native b2 follow-up
+
+Root viewed GI01's restored adult guidance and restrictions on the standalone
+b2b4302 APK, including Arabic multiline instructions. The controlled native
+Child/Parent loop also demonstrated G1: the Child can skip both adult steps and
+submit; Parent praise/recognition does not separately acknowledge prerequisites.
+The resulting8Seeds and text memory persisted across separate Android profiles
+and restarts. This is one synthetic software test, not a real-world activity,
+qualified cultural review or complete acceptance of any of the24tasks. See the
+[exact QA sequence](release-qa-results.md#executed-b2-standalone-task-to-growth-journey).
