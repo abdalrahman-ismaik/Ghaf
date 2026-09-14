@@ -105,7 +105,7 @@ it.runIf(enabled)(
       passed: [] as string[],
       createdFamilyIds: [] as string[],
       limitation:
-        'Installed SDK and actual development Auth/Postgres; request staging only delays transport. No physical device or email-delivery acceptance.',
+        'Installed SDK and actual hosted Auth/Postgres; request staging only delays transport. No physical device or email-delivery acceptance.',
     };
     const instances: { service: SupabaseParentAccountService }[] = [];
     const make = () => {

@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js';
 const project = process.env.GHAF_TEST_PROJECT_REF;
 const cli = process.env.SUPABASE_CLI;
 if (project !== 'bqcfynlbxevqlzbkimhy' || !cli)
-  throw new Error('Select the existing approved development project and CLI explicitly.');
+  throw new Error('Select the existing approved hosted project and CLI explicitly.');
 const runId = randomUUID();
 const output = `.expo/family-verification/${runId}`;
 await mkdir(output, { recursive: true });
