@@ -24,7 +24,6 @@ import {
 } from './operations';
 import {
   BOUNDED_AI_OPERATION_POLICIES,
-  MemoryReplayStore,
   reserveOperationCapacity,
   readBoundedBytes,
   resolveAllowedOrigin,
@@ -58,8 +57,6 @@ const routeOperations = Object.freeze({
   '/v1/child-coach/text': 'coach_approved_task_v1',
   '/v1/child-coach/transcriptions': 'transcribe_child_task_voice_v1',
 } satisfies Record<string, BoundedAiOperation>);
-
-const localSyntheticReplayStore = new MemoryReplayStore();
 
 const parentDraftEnvelopeSchema = z
   .object({
@@ -283,6 +280,10 @@ async function authorizeOperation(
   env: AiGatewayWorkerEnv,
   operation: BoundedAiOperation,
 ) {
+  // Deployment requires atomic shared replay storage; local tests inject their adapter explicitly.
+  if (!env.REPLAY_STORE) {
+    return { ok: false, code: 'BUDGET_BLOCKED', status: 503 } as const;
+  }
   const policy = BOUNDED_AI_OPERATION_POLICIES[operation];
   return verifyCapabilityRequest(request, {
     secret: env.CAPABILITY_HMAC_SECRET,
@@ -291,7 +292,7 @@ async function authorizeOperation(
     expectedRole: policy.role,
     expectedScope: operation,
     nowEpochSeconds: Math.floor(Date.now() / 1_000),
-    replayStore: env.REPLAY_STORE ?? localSyntheticReplayStore,
+    replayStore: env.REPLAY_STORE,
   });
 }
 

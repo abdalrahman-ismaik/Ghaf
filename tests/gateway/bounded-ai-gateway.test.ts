@@ -72,6 +72,50 @@ afterEach(() => {
 });
 
 describe('bounded AI gateway isolation and content canaries', () => {
+  it.each([
+    {
+      path: '/v1/parent-task-drafts',
+      scope: 'draft_parent_task_v1',
+      role: 'parent',
+    },
+    { path: '/v1/child-coach/text', scope: 'coach_approved_task_v1', role: 'child' },
+    {
+      path: '/v1/child-coach/transcriptions',
+      scope: 'transcribe_child_task_voice_v1',
+      role: 'child',
+    },
+  ] as const)(
+    'blocks $scope without configured replay storage before consuming content',
+    async ({ path, scope, role }) => {
+      watchConsole();
+      const workerEnv = { ...env(), REPLAY_STORE: undefined };
+      const request = new Request(`https://gateway.example${path}`, {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${await token({
+            scope,
+            role,
+            ...(role === 'parent' ? { grantVersion: null, noticeVersion: null } : {}),
+          })}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ private: CONTENT_CANARY }),
+      });
+
+      const response = await worker.fetch(request, workerEnv);
+
+      expect(response.status).toBe(503);
+      expect(await response.json()).toMatchObject({ error: { code: 'BUDGET_BLOCKED' } });
+      expect(request.bodyUsed).toBe(false);
+      expect(workerEnv.AI.run).not.toHaveBeenCalled();
+      expect(workerEnv.OPERATION_BUDGET_STORE?.acquire).not.toHaveBeenCalled();
+      expect(workerEnv.PARENT_DRAFT_RATE_LIMITER.limit).not.toHaveBeenCalled();
+      expect(workerEnv.CHILD_TEXT_RATE_LIMITER.limit).not.toHaveBeenCalled();
+      expect(workerEnv.CHILD_VOICE_RATE_LIMITER.limit).not.toHaveBeenCalled();
+      expect(consoleSpies.every((spy) => spy.mock.calls.length === 0)).toBe(true);
+    },
+  );
+
   it('rejects a cross-operation capability before reading or rate-limiting the body', async () => {
     watchConsole();
     const workerEnv = env();

@@ -311,6 +311,41 @@ describe('Feature 004 minimal MCP adapter', () => {
     expect(wrongHostRequest.bodyUsed).toBe(false);
   });
 
+  it.each([
+    { name: 'draft_parent_task', scope: 'draft_parent_task_v1', role: 'parent' },
+    { name: 'coach_current_task', scope: 'coach_approved_task_v1', role: 'child' },
+  ] as const)(
+    'blocks $name without replay storage before reading tool arguments',
+    async ({ name, scope, role }) => {
+      const env = { ...workerEnv(true), REPLAY_STORE: undefined };
+      const request = mcpRequest({
+        method: 'tools/call',
+        name,
+        arguments: { canaryPrivateChildText: 'must-not-be-read' },
+        authorization: await capabilityToken(scope, role, `token_no_replay_${role}_1234`),
+      });
+
+      const response = await worker.fetch(request, env);
+
+      expect(response.status).toBe(503);
+      expect(await responseBody(response)).toMatchObject({ error: { code: 'BUDGET_BLOCKED' } });
+      expect(request.bodyUsed).toBe(false);
+      expect(env.AI.run).not.toHaveBeenCalled();
+      expect(env.OPERATION_BUDGET_STORE?.acquire).not.toHaveBeenCalled();
+      expect(env.PARENT_DRAFT_RATE_LIMITER.limit).not.toHaveBeenCalled();
+      expect(env.CHILD_TEXT_RATE_LIMITER.limit).not.toHaveBeenCalled();
+    },
+  );
+
+  it('keeps public MCP tool discovery available without replay storage or inference', async () => {
+    const env = { ...workerEnv(true), REPLAY_STORE: undefined };
+    const response = await worker.fetch(mcpRequest({ method: 'tools/list' }), env);
+
+    expect(response.status).toBe(200);
+    expect(env.AI.run).not.toHaveBeenCalled();
+    expect(env.OPERATION_BUDGET_STORE?.acquire).not.toHaveBeenCalled();
+  });
+
   it('authorizes an MCP tool call before arguments are parsed or inference runs', async () => {
     const env = workerEnv(true);
     const wrongScopeToken = await capabilityToken(
