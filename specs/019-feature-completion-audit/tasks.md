@@ -15,6 +15,7 @@
 - [x] Regenerate typed routes from app/ before typecheck to repair the observed SDK57 Windows watcher cache pollution.
 - [x] Run aggregate checks, record runtime/service limitations, commit independent verified slices.
 - [x] Record remaining requirements and a precise continuation checkpoint.
+- [x] Verify canonical local-family writes before migration/repair cleanup and cover ignored writes/read failures with regressions.
 
 These checked tasks complete this implementation batch, not all R01–R38/A01–A07.
 The ledger keeps four missing requirements, thirteen partial R requirements, six

@@ -29,11 +29,11 @@ export interface LocalFamilyRepository {
   clear(): DomainResult<true>;
 }
 
-function storageFailure(message: string): DomainResult<never> {
+function storageFailure(message: string, retryable = false): DomainResult<never> {
   const error: DomainError = {
     code: 'INVALID_TRANSITION',
     message,
-    retryable: false,
+    retryable,
     fallbackAvailable: false,
   };
   return { ok: false, error };
@@ -90,10 +90,17 @@ export function createLocalFamilyRepository(storage: LocalKeyValueStorage): Loca
     }
     if (!migrated.ok) return migrated;
     try {
-      storage.setItem(LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(migrated.data));
+      const serialized = JSON.stringify(migrated.data);
+      storage.setItem(LOCAL_FAMILY_STORAGE_KEY, serialized);
+      if (storage.getItem(LOCAL_FAMILY_STORAGE_KEY) !== serialized) {
+        return storageFailure('The device-local family directory could not be migrated', true);
+      }
       storage.removeItem(migratedKey);
+      if (storage.getItem(migratedKey) !== null) {
+        return storageFailure('The device-local family directory could not be migrated', true);
+      }
     } catch {
-      return storageFailure('The device-local family directory could not be migrated');
+      return storageFailure('The device-local family directory could not be migrated', true);
     }
     return { ok: true, data: cloneRecord(migrated.data) };
   };
@@ -102,9 +109,13 @@ export function createLocalFamilyRepository(storage: LocalKeyValueStorage): Loca
     const validated = parseLocalFamilyRecord(JSON.stringify(record));
     if (!validated.ok) return validated;
     try {
-      storage.setItem(LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(validated.data));
+      const serialized = JSON.stringify(validated.data);
+      storage.setItem(LOCAL_FAMILY_STORAGE_KEY, serialized);
+      if (storage.getItem(LOCAL_FAMILY_STORAGE_KEY) !== serialized) {
+        return storageFailure('The complete family could not be saved on this device', true);
+      }
     } catch {
-      return storageFailure('The complete family could not be saved on this device');
+      return storageFailure('The complete family could not be saved on this device', true);
     }
     return { ok: true, data: cloneRecord(validated.data) };
   };
@@ -143,11 +154,24 @@ export function createLocalFamilyRepository(storage: LocalKeyValueStorage): Loca
       const saved = save(record);
       if (!saved.ok) return saved;
       try {
-        storage.removeItem(PREVIOUS_LOCAL_FAMILY_STORAGE_KEY);
-        storage.removeItem(LEGACY_LOCAL_FAMILY_STORAGE_KEY);
-        storage.removeItem(OLDEST_LOCAL_FAMILY_STORAGE_KEY);
+        for (const key of [
+          PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+          LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+          OLDEST_LOCAL_FAMILY_STORAGE_KEY,
+        ]) {
+          storage.removeItem(key);
+          if (storage.getItem(key) !== null) {
+            return storageFailure(
+              'The repaired family was saved but legacy cleanup was interrupted',
+              true,
+            );
+          }
+        }
       } catch {
-        return storageFailure('The repaired family was saved but legacy cleanup was interrupted');
+        return storageFailure(
+          'The repaired family was saved but legacy cleanup was interrupted',
+          true,
+        );
       }
       return saved;
     },

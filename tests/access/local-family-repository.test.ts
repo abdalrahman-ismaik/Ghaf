@@ -74,6 +74,60 @@ function previousChild(gender: 'boy' | 'girl' | 'prefer_not_to_say' | null = 'bo
   return { ...previous, gender };
 }
 
+function migrationSource(key: string): string {
+  const current = validRecord();
+  if (key === PREVIOUS_LOCAL_FAMILY_STORAGE_KEY) {
+    return JSON.stringify({ ...current, schemaVersion: 3, children: [previousChild()] });
+  }
+  const { familyConnections: _familyConnections, ...previous } = current;
+  return JSON.stringify({
+    ...previous,
+    schemaVersion: key === LEGACY_LOCAL_FAMILY_STORAGE_KEY ? 2 : 1,
+    parent:
+      key === LEGACY_LOCAL_FAMILY_STORAGE_KEY
+        ? current.parent
+        : { id: current.parent.id, role: current.parent.role },
+    children: [previousChild()],
+  });
+}
+
+const canonicalWriteFaults = [
+  'ignored_write',
+  'changed_readback',
+  'readback_throw',
+  'write_throw',
+] as const;
+
+function storageWithCanonicalWriteFault(fault: (typeof canonicalWriteFaults)[number]) {
+  const backing = createMemoryLocalKeyValueStorage();
+  let enabled = true;
+  let writeAttempted = false;
+  return {
+    backing,
+    recover: () => {
+      enabled = false;
+    },
+    storage: {
+      getItem(key: string) {
+        if (enabled && writeAttempted && key === LOCAL_FAMILY_STORAGE_KEY) {
+          if (fault === 'readback_throw') throw new Error('Synthetic private storage detail');
+          if (fault === 'changed_readback') return `${backing.getItem(key)} `;
+        }
+        return backing.getItem(key);
+      },
+      setItem(key: string, value: string) {
+        if (enabled && key === LOCAL_FAMILY_STORAGE_KEY) {
+          writeAttempted = true;
+          if (fault === 'ignored_write') return;
+          if (fault === 'write_throw') throw new Error('Synthetic private storage detail');
+        }
+        backing.setItem(key, value);
+      },
+      removeItem: backing.removeItem,
+    },
+  };
+}
+
 describe('device-local family schema', () => {
   it('round-trips the schema-4 directory with private family connection data', () => {
     const record = validRecord();
@@ -161,6 +215,136 @@ describe('device-local family schema', () => {
 });
 
 describe('device-local family repository', () => {
+  it.each(canonicalWriteFaults)(
+    'reports %s as an unverified save and allows an explicit retry',
+    (fault) => {
+      const fixture = storageWithCanonicalWriteFault(fault);
+      const repository = createLocalFamilyRepository(fixture.storage);
+      const record = validRecord();
+
+      const failed = repository.save(record);
+      expect(failed).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_TRANSITION', retryable: true },
+      });
+      expect(JSON.stringify(failed)).not.toContain('Synthetic private storage detail');
+      fixture.recover();
+      expect(repository.save(record)).toEqual({ ok: true, data: record });
+      expect(createLocalFamilyRepository(fixture.backing).read()).toEqual({
+        ok: true,
+        data: record,
+      });
+    },
+  );
+
+  describe.each([
+    PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+    LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+    OLDEST_LOCAL_FAMILY_STORAGE_KEY,
+  ])('migration source %s', (sourceKey) => {
+    it.each(canonicalWriteFaults)('preserves the source when canonical storage has %s', (fault) => {
+      const fixture = storageWithCanonicalWriteFault(fault);
+      const repository = createLocalFamilyRepository(fixture.storage);
+      const original = migrationSource(sourceKey);
+      fixture.backing.setItem(sourceKey, original);
+
+      const failed = repository.read();
+      expect(failed).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_TRANSITION', retryable: true },
+      });
+      expect(JSON.stringify(failed)).not.toContain('Synthetic private storage detail');
+      expect(fixture.backing.getItem(sourceKey)).toBe(original);
+      fixture.recover();
+      expect(repository.read()).toMatchObject({ ok: true, data: { schemaVersion: 4 } });
+      expect(createLocalFamilyRepository(fixture.backing).read()).toMatchObject({
+        ok: true,
+        data: { schemaVersion: 4 },
+      });
+    });
+  });
+
+  it.each(canonicalWriteFaults)(
+    'preserves every repair source until canonical write passes after %s',
+    (fault) => {
+      const fixture = storageWithCanonicalWriteFault(fault);
+      const repository = createLocalFamilyRepository(fixture.storage);
+      const record = validRecord();
+      const sources = [
+        PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+        LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+        OLDEST_LOCAL_FAMILY_STORAGE_KEY,
+      ].map((key) => [key, migrationSource(key)] as const);
+      for (const [key, raw] of sources) fixture.backing.setItem(key, raw);
+
+      expect(repository.saveProfileRepair(record)).toMatchObject({
+        ok: false,
+        error: { code: 'INVALID_TRANSITION', retryable: true },
+      });
+      for (const [key, raw] of sources) expect(fixture.backing.getItem(key)).toBe(raw);
+      fixture.recover();
+      expect(repository.saveProfileRepair(record)).toEqual({ ok: true, data: record });
+      for (const [key] of sources) expect(fixture.backing.getItem(key)).toBeNull();
+      expect(createLocalFamilyRepository(fixture.backing).read()).toEqual({
+        ok: true,
+        data: record,
+      });
+    },
+  );
+
+  it.each([
+    PREVIOUS_LOCAL_FAMILY_STORAGE_KEY,
+    LEGACY_LOCAL_FAMILY_STORAGE_KEY,
+    OLDEST_LOCAL_FAMILY_STORAGE_KEY,
+  ])('retains the saved canonical repair when cleanup of %s is ignored, then retries', (key) => {
+    const storage = createMemoryLocalKeyValueStorage();
+    let ignoreCleanup = true;
+    const repository = createLocalFamilyRepository({
+      ...storage,
+      removeItem(candidate) {
+        if (ignoreCleanup && candidate === key) return;
+        storage.removeItem(candidate);
+      },
+    });
+    const raw = migrationSource(key);
+    const record = validRecord();
+    storage.setItem(key, raw);
+
+    expect(repository.saveProfileRepair(record)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION', retryable: true },
+    });
+    expect(storage.getItem(key)).toBe(raw);
+    expect(createLocalFamilyRepository(storage).read()).toEqual({ ok: true, data: record });
+    ignoreCleanup = false;
+    expect(repository.saveProfileRepair(record)).toEqual({ ok: true, data: record });
+    expect(storage.getItem(key)).toBeNull();
+    expect(repository.read()).toEqual({ ok: true, data: record });
+  });
+
+  it('does not report pairing success after an ignored write and pairs once on retry', () => {
+    const fixture = storageWithCanonicalWriteFault('ignored_write');
+    const record = validRecord();
+    fixture.backing.setItem(LOCAL_FAMILY_STORAGE_KEY, JSON.stringify(record));
+    const repository = createLocalFamilyRepository(fixture.storage);
+    const now = '2026-09-06T14:05:00.000Z';
+
+    expect(repository.setPairedChild('child_salem', true, now)).toMatchObject({
+      ok: false,
+      error: { code: 'INVALID_TRANSITION', retryable: true },
+    });
+    expect(repository.read()).toEqual({ ok: true, data: record });
+    fixture.recover();
+    const paired = repository.setPairedChild('child_salem', true, now);
+    expect(paired).toEqual({
+      ok: true,
+      data: { ...record, pairedChildIds: ['child_salem'], updatedAt: now },
+    });
+    expect(repository.setPairedChild('child_salem', true, '2026-09-06T14:06:00.000Z')).toEqual(
+      paired,
+    );
+  });
+
   it('migrates schema 3 explicit sex without inventing custom answers', () => {
     const storage = createMemoryLocalKeyValueStorage();
     const repository = createLocalFamilyRepository(storage);
